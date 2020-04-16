@@ -1,0 +1,6 @@
+{
+  "private": true,
+  "dependencies": {
+    "serve": "^11.3.0"
+  }
+}
