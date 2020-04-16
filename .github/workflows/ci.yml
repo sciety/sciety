@@ -27,7 +27,7 @@ jobs:
           docker build -t liberoadmin/prc-frontend:${IMAGE_TAG} .
 
       - name: Push Docker image
-        run:
+        run: |
           echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USERNAME}" --password-stdin
           docker push liberoadmin/prc-frontend:${IMAGE_TAG}
         env:
