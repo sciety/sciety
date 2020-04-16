@@ -3,7 +3,7 @@ WORKDIR /app
 
 
 
-FROM node as npm
+FROM node as npm-prod
 
 COPY package.json \
   package-lock.json \
@@ -13,9 +13,26 @@ RUN npm install --production
 
 
 
+FROM npm-prod as npm-dev
+
+RUN npm install
+
+
+
+FROM node as build
+
+COPY tsconfig.json .
+COPY --from=npm-dev /app/ .
+COPY src src
+
+RUN npm run build
+
+
+
 FROM node as app
 
-COPY --from=npm /app/node_modules node_modules
+COPY --from=npm-prod /app/ .
+COPY --from=build /app/build build
 COPY static static
 
-CMD ["npx", "serve", "static", "--listen", "80"]
+CMD ["npm", "run", "start"]
