@@ -1,0 +1,4 @@
+1. Access the frontend at this URL:
+
+export PRC_HOST=$(kubectl get --namespace {{ .Release.Namespace }} service {{ .Release.Name }}--frontend -o jsonpath='{.metadata.annotations.external-dns\.alpha\.kubernetes\.io/hostname}')
+echo "http://${PRC_HOST}"
