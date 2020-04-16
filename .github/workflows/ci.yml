@@ -40,4 +40,7 @@ jobs:
           aws --region=us-east-1 eks update-kubeconfig --name libero-eks--franklin
           #wget https://get.helm.sh/helm-v3.1.2-linux-amd64.tar.gz
           helm upgrade -i prc--prod --set images.frontend.tag=${IMAGE_TAG} .
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
