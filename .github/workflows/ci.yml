@@ -33,3 +33,10 @@ jobs:
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Deploy to prod
+        #if: github.ref == 'refs/heads/master'
+        run: |
+          aws eks update-kubeconfig --name libero-eks--franklin
+          helm upgrade -i prc--prod --set images.frontend.tag=${IMAGE_TAG} .
+
