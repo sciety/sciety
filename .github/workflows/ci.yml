@@ -36,6 +36,8 @@ jobs:
 
       - name: Deploy to prod
         #if: github.ref == 'refs/heads/master'
+        env:
+          AWS_REGION: us-east-1
         run: |
           aws eks update-kubeconfig --name libero-eks--franklin
           helm upgrade -i prc--prod --set images.frontend.tag=${IMAGE_TAG} .
