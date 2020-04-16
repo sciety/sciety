@@ -39,7 +39,7 @@ To build and run the app for development, execute:
 
 ```shell
 cd frontend
-make start
+make dev
 ```
 
 You can now access the app at <http://localhost:8080>.
@@ -52,7 +52,7 @@ Static content is attached to the containers as volumes so most updates are visi
 container. However, changes to NPM dependencies, for example, require a rebuild. So you may need to execute
 
 ```shell
-make start
+make dev
 ```
 
 again before running further commands.

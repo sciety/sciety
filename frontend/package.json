@@ -11,6 +11,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "start": "node ./build/index.js"
+    "start": "node ./build/index.js",
+    "start:dev": "node --require ts-node/register ./src/index.ts"
   }
 }

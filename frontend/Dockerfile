@@ -27,14 +27,24 @@ RUN npm install
 
 
 #
-# Stage: Production build
+# Stage: Development environment
 #
-FROM node AS build-prod
-ENV NODE_ENV=production
+FROM node AS dev
+ENV NODE_ENV=development
 
 COPY tsconfig.json .
 COPY --from=npm-dev /app/ .
 COPY src/ src/
+
+CMD ["npm", "run", "start:dev"]
+
+
+
+#
+# Stage: Production build
+#
+FROM dev AS build-prod
+ENV NODE_ENV=production
 
 RUN npm run build
 
@@ -44,6 +54,7 @@ RUN npm run build
 # Stage: Production environment
 #
 FROM node AS prod
+ENV NODE_ENV=production
 
 COPY --from=npm-prod /app/ .
 COPY --from=build-prod /app/build/ build/

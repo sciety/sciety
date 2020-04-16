@@ -24,7 +24,7 @@ jobs:
       - name: Build Docker image
         run: |
           cd frontend
-          make IMAGE_TAG=${IMAGE_TAG} build
+          make IMAGE_TAG=${IMAGE_TAG} TARGET=prod build
 
       - name: Push Docker image
         run: |
