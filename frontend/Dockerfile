@@ -1,9 +1,13 @@
 FROM node:12.16.2-alpine3.11 AS node
+ENV NODE_OPTIONS --unhandled-rejections=strict
 WORKDIR /app
 
 
 
-FROM node as npm-prod
+#
+# Stage: Production NPM install
+#
+FROM node AS npm-prod
 
 COPY package.json \
   package-lock.json \
@@ -13,26 +17,36 @@ RUN npm install --production
 
 
 
-FROM npm-prod as npm-dev
+#
+# Stage: Development NPM install
+#
+FROM npm-prod AS npm-dev
 
 RUN npm install
 
 
 
-FROM node as build
+#
+# Stage: Production build
+#
+FROM node AS build-prod
+ENV NODE_ENV=production
 
 COPY tsconfig.json .
 COPY --from=npm-dev /app/ .
-COPY src src
+COPY src/ src/
 
 RUN npm run build
 
 
 
-FROM node as app
+#
+# Stage: Production environment
+#
+FROM node AS prod
 
 COPY --from=npm-prod /app/ .
-COPY --from=build /app/build build
-COPY static static
+COPY --from=build-prod /app/build/ build/
+COPY static/ static/
 
 CMD ["npm", "run", "start"]
