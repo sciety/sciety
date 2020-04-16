@@ -35,10 +35,9 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Deploy to prod
-        #if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master'
         run: |
           aws --region=us-east-1 eks update-kubeconfig --name libero-eks--franklin
-          helm version
           helm upgrade -i prc--prod --set images.frontend.tag=${IMAGE_TAG} helm/prc
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
