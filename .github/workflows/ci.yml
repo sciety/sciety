@@ -38,7 +38,6 @@ jobs:
         #if: github.ref == 'refs/heads/master'
         run: |
           aws --region=us-east-1 eks update-kubeconfig --name libero-eks--franklin
-          #wget https://get.helm.sh/helm-v3.1.2-linux-amd64.tar.gz
           helm version
           helm upgrade -i prc--prod --set images.frontend.tag=${IMAGE_TAG} helm/prc
         env:
