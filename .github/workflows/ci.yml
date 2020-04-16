@@ -24,7 +24,7 @@ jobs:
       - name: Build Docker image
         run: |
           cd frontend
-          docker build -t liberoadmin/prc-frontend:${IMAGE_TAG} .
+          make IMAGE_TAG=${IMAGE_TAG} build
 
       - name: Push Docker image
         run: |
