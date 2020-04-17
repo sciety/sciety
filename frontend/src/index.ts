@@ -15,14 +15,14 @@ const server = http.createServer(async (request: IncomingMessage, response: Serv
   await handler(request, response, { public: 'static' });
 
   responseLog(`HTTP/${request.httpVersion} ${response.statusCode} ${response.statusMessage}`);
-})
+});
 
 const terminusOptions: TerminusOptions = {
   onShutdown: async (): Promise<void> => {
-    log('Server shutting down')
+    log('Server shutting down');
   },
   onSignal: async (): Promise<void> => {
-    log('Signal received')
+    log('Signal received');
   },
   signals: ['SIGINT', 'SIGTERM'],
 };
