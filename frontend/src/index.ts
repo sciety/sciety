@@ -6,7 +6,7 @@ const log = debug('http:server');
 
 log('Starting server');
 
-const server = createServer();
+const server = createServer(log);
 
 const terminusOptions: TerminusOptions = {
   onShutdown: async (): Promise<void> => {
