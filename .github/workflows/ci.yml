@@ -32,6 +32,11 @@ jobs:
           cd frontend
           make IMAGE_TAG=${IMAGE_TAG} lint
 
+      - name: Test
+        run: |
+          cd frontend
+          make IMAGE_TAG=${IMAGE_TAG} test
+
       - name: Push Docker image
         run: |
           echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USERNAME}" --password-stdin
