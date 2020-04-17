@@ -31,6 +31,7 @@ RUN npm install
 #
 FROM node AS dev
 ENV NODE_ENV=development
+ENV DEBUG=*
 
 COPY tsconfig.json .
 COPY --from=npm-dev /app/ .
@@ -55,6 +56,7 @@ RUN npm run build
 #
 FROM node AS prod
 ENV NODE_ENV=production
+ENV DEBUG=*
 
 COPY --from=npm-prod /app/ .
 COPY --from=build-prod /app/build/ build/
