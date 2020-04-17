@@ -27,6 +27,11 @@ jobs:
           make IMAGE_TAG=${IMAGE_TAG} TARGET=prod build
           make IMAGE_TAG=${IMAGE_TAG} TARGET=dev build
 
+      - name: Lint
+        run: |
+          cd frontend
+          make IMAGE_TAG=${IMAGE_TAG} lint
+
       - name: Push Docker image
         run: |
           echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USERNAME}" --password-stdin
