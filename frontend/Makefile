@@ -7,7 +7,7 @@ IMAGE_TAG := local
 
 dev: export TARGET = dev
 dev: install build
-	$(DOCKER) run -v $(DATA_VOLUME)/static:/app/static:ro -p 8080:80 $(IMAGE):$(IMAGE_TAG)-dev
+	$(DOCKER) run -v $(DATA_VOLUME)/src:/app/src:ro -v $(DATA_VOLUME)/static:/app/static:ro -p 8080:80 $(IMAGE):$(IMAGE_TAG)-dev
 
 prod: export TARGET = prod
 prod: build
