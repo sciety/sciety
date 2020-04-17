@@ -21,6 +21,10 @@ lint\:fix: export TARGET = dev
 lint\:fix: build
 	$(DOCKER) run --rm -v $(DATA_VOLUME)/src:/app/src -v $(DATA_VOLUME)/test:/app/test $(IMAGE):$(IMAGE_TAG)-dev npm run lint:fix
 
+test: export TARGET = dev
+test: build
+	$(DOCKER) run $(IMAGE):$(IMAGE_TAG)-dev npm run test
+
 build:
 	if [ "$(TARGET)" != prod ]; then \
 		image_tag_suffix=-dev; \
@@ -32,7 +36,3 @@ install: node_modules
 node_modules: package.json package-lock.json
 	npm install
 	touch node_modules
-
-test: export TARGET = dev
-test: build ## Run the tests
-	$(DOCKER) run -v $(DATA_VOLUME)/static:/app/static:ro $(IMAGE):$(IMAGE_TAG)-dev npm run test
