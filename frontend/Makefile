@@ -7,7 +7,7 @@ IMAGE_TAG := local
 
 dev: export TARGET = dev
 dev: install build
-	$(DOCKER) run -v $(DATA_VOLUME)/static:/app/static:ro -p 8080:80 $(IMAGE):$(IMAGE_TAG)
+	$(DOCKER) run -v $(DATA_VOLUME)/static:/app/static:ro -p 8080:80 $(IMAGE):$(IMAGE_TAG)-dev
 
 prod: export TARGET = prod
 prod: build
@@ -15,14 +15,17 @@ prod: build
 
 lint: export TARGET = dev
 lint: build
-	$(DOCKER) run --rm $(IMAGE):$(IMAGE_TAG) npm run lint
+	$(DOCKER) run --rm $(IMAGE):$(IMAGE_TAG)-dev npm run lint
 
 lint\:fix: export TARGET = dev
 lint\:fix: build
-	$(DOCKER) run --rm -v $(DATA_VOLUME)/src:/app/src -v $(DATA_VOLUME)/test:/app/test $(IMAGE):$(IMAGE_TAG) npm run lint:fix
+	$(DOCKER) run --rm -v $(DATA_VOLUME)/src:/app/src -v $(DATA_VOLUME)/test:/app/test $(IMAGE):$(IMAGE_TAG)-dev npm run lint:fix
 
 build:
-	$(DOCKER) build -t $(IMAGE):$(IMAGE_TAG) . --target $(TARGET)
+	if [ "$(TARGET)" != prod ]; then \
+		image_tag_suffix=-dev; \
+	fi; \
+	$(DOCKER) build -t $(IMAGE):$(IMAGE_TAG)$${image_tag_suffix} . --target $(TARGET)
 
 install: node_modules
 
@@ -32,4 +35,4 @@ node_modules: package.json package-lock.json
 
 test: export TARGET = dev
 test: ## Run the tests
-	$(DOCKER) run -v $(DATA_VOLUME)/static:/app/static:ro $(IMAGE):$(IMAGE_TAG) npm run test
+	$(DOCKER) run -v $(DATA_VOLUME)/static:/app/static:ro $(IMAGE):$(IMAGE_TAG)-dev npm run test
