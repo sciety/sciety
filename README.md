@@ -16,6 +16,7 @@ Table of contents
 
 1. [Development](#development)
    1. [Running the app](#running-the-app)
+   1. [Running the tests](#running-the-tests)
    1. [Linting](#linting)
 1. [License](#license)
 
@@ -60,6 +61,14 @@ again before running further commands.
 
 </details>
 
+### Running the tests
+
+We use [Jest] to test the app. You can run it by executing: 
+
+```shell
+make test
+```
+
 ### Linting
 
 We lint the app with [ESLint]. You can run it by:
@@ -85,6 +94,7 @@ We released this software under the [MIT license][license]. Copyright © 2020 [e
 [eLife]: https://elifesciences.org/
 [ESLint]: https://eslint.org/
 [GNU Make]: https://www.gnu.org/software/make/
+[Jest]: https://jestjs.io/
 [Libero]: https://libero.pub/
 [Libero logo]: https://cdn.elifesciences.org/libero/logo/libero-logo-96px.svg
 [License]: LICENSE.md
