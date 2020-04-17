@@ -26,7 +26,7 @@ test: build
 	$(DOCKER) run $(IMAGE):$(IMAGE_TAG)-dev npm run test
 
 build:
-	if [ "$(TARGET)" != prod ]; then \
+	@if [ "$(TARGET)" != prod ]; then \
 		image_tag_suffix=-dev; \
 	fi; \
 	$(DOCKER) build -t $(IMAGE):$(IMAGE_TAG)$${image_tag_suffix} . --target $(TARGET)
