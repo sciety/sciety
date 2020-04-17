@@ -9,7 +9,8 @@ WORKDIR /app
 #
 FROM node AS npm-prod
 
-COPY package.json \
+COPY jest.config.js \
+  package.json \
   package-lock.json \
   ./
 
@@ -39,6 +40,7 @@ COPY .eslintignore \
  tsconfig.lint.json \
  ./
 COPY --from=npm-dev /app/ .
+COPY test/ test/
 COPY src/ src/
 
 CMD ["npm", "run", "start:dev"]

@@ -3,7 +3,7 @@ DATA_VOLUME := $(shell pwd)
 IMAGE := liberoadmin/prc-frontend
 IMAGE_TAG := local
 
-.PHONY: build dev install lint* prod
+.PHONY: build dev install lint* prod test
 
 dev: export TARGET = dev
 dev: install build
@@ -19,7 +19,7 @@ lint: build
 
 lint\:fix: export TARGET = dev
 lint\:fix: build
-	$(DOCKER) run --rm -v $(DATA_VOLUME)/src:/app/src $(IMAGE):$(IMAGE_TAG) npm run lint:fix
+	$(DOCKER) run --rm -v $(DATA_VOLUME)/src:/app/src -v $(DATA_VOLUME)/test:/app/test $(IMAGE):$(IMAGE_TAG) npm run lint:fix
 
 build:
 	$(DOCKER) build -t $(IMAGE):$(IMAGE_TAG) . --target $(TARGET)
@@ -29,3 +29,7 @@ install: node_modules
 node_modules: package.json package-lock.json
 	npm install
 	touch node_modules
+
+test: export TARGET = dev
+test: ## Run the tests
+	$(DOCKER) run -v $(DATA_VOLUME)/static:/app/static:ro $(IMAGE):$(IMAGE_TAG) npm run test
