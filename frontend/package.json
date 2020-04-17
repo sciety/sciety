@@ -1,6 +1,7 @@
 {
   "private": true,
   "dependencies": {
+    "@godaddy/terminus": "^4.3.1",
     "serve-handler": "^6.1.2"
   },
   "devDependencies": {
