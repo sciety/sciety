@@ -15,8 +15,3 @@ prod: build
 
 build:
 	$(DOCKER) build -t $(IMAGE):$(IMAGE_TAG) . --target $(TARGET)
-
-clean:
-
-clobber: clean
-
