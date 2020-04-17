@@ -31,9 +31,13 @@ RUN npm install
 #
 FROM node AS dev
 ENV NODE_ENV=development
-ENV DEBUG=*
+ENV DEBUG=http:*
 
-COPY tsconfig.json .
+COPY .eslintignore \
+ .eslintrc.js \
+ tsconfig.json \
+ tsconfig.lint.json \
+ ./
 COPY --from=npm-dev /app/ .
 COPY src/ src/
 
@@ -56,7 +60,7 @@ RUN npm run build
 #
 FROM node AS prod
 ENV NODE_ENV=production
-ENV DEBUG=*
+ENV DEBUG=http:*
 
 COPY --from=npm-prod /app/ .
 COPY --from=build-prod /app/build/ build/

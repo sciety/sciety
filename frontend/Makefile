@@ -3,7 +3,7 @@ DATA_VOLUME := $(shell pwd)
 IMAGE := liberoadmin/prc-frontend
 IMAGE_TAG := local
 
-.PHONY: build dev install prod
+.PHONY: build dev install lint* prod
 
 dev: export TARGET = dev
 dev: install build
@@ -12,6 +12,14 @@ dev: install build
 prod: export TARGET = prod
 prod: build
 	$(DOCKER) run -p 8080:80 $(IMAGE):$(IMAGE_TAG)
+
+lint: export TARGET = dev
+lint: build
+	$(DOCKER) run --rm $(IMAGE):$(IMAGE_TAG) npm run lint
+
+lint\:fix: export TARGET = dev
+lint\:fix: build
+	$(DOCKER) run --rm -v $(DATA_VOLUME)/src:/app/src $(IMAGE):$(IMAGE_TAG) npm run lint:fix
 
 build:
 	$(DOCKER) build -t $(IMAGE):$(IMAGE_TAG) . --target $(TARGET)

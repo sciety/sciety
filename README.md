@@ -16,6 +16,7 @@ Table of contents
 
 1. [Development](#development)
    1. [Running the app](#running-the-app)
+   1. [Linting](#linting)
 1. [License](#license)
 
 Development
@@ -59,6 +60,20 @@ again before running further commands.
 
 </details>
 
+### Linting
+
+We lint the app with [ESLint]. You can run it by:
+
+```shell
+make lint
+```
+
+You can fix problems, where possible, by executing:
+
+```shell
+make lint:fix
+```
+
 License
 -------
 
@@ -68,6 +83,7 @@ We released this software under the [MIT license][license]. Copyright © 2020 [e
 [Build badge]: https://flat.badgen.net/github/checks/libero/prc?label=build&icon=github
 [Docker]: https://www.docker.com/
 [eLife]: https://elifesciences.org/
+[ESLint]: https://eslint.org/
 [GNU Make]: https://www.gnu.org/software/make/
 [Libero]: https://libero.pub/
 [Libero logo]: https://cdn.elifesciences.org/libero/logo/libero-logo-96px.svg
