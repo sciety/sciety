@@ -34,5 +34,5 @@ node_modules: package.json package-lock.json
 	touch node_modules
 
 test: export TARGET = dev
-test: ## Run the tests
+test: build ## Run the tests
 	$(DOCKER) run -v $(DATA_VOLUME)/static:/app/static:ro $(IMAGE):$(IMAGE_TAG)-dev npm run test
