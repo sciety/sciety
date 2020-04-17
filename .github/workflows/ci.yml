@@ -21,10 +21,11 @@ jobs:
         with:
           submodules: true
 
-      - name: Build Docker image
+      - name: Build Docker images
         run: |
           cd frontend
           make IMAGE_TAG=${IMAGE_TAG} TARGET=prod build
+          make IMAGE_TAG=${IMAGE_TAG} TARGET=dev build
 
       - name: Push Docker image
         run: |
