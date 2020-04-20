@@ -90,19 +90,15 @@ export default (): Handler<HTTPVersion.V1> => {
           <article>
 
             <h3>
-              Reviewed by <span id="review-2-author">PLOS Biology</span> on <time datetime="2019-12-22">Dec 22,
-              2019</time>
+              Reviewed by <span id="review-2-author">${article1.reviews[1].author}</span> on
+              ${templateDate(article1.reviews[1].publicationDate)}
             </h3>
 
             <p>
-              Using RNAi in two worm strains, the authors show that knocking down NSUN-1 expression, the specific C2982
-              m<sup>5</sup>C level is in part (not entirely) reduced. This assay proves sufficiency (but not necessity)
-              of NSUN-1 to reduce m<sup>5</sup>C levels at C2982. While it is not clear why the authors do not use a
-              complete knock out for NSUN-1 (is it lethal?), follow-up work using RNAi explores the phenotypic effects
-              of lowered NSUN-1 levels.
+              ${article1.reviews[1].summary}
             </p>
 
-            <a href="https://hypothes.is/a/1D0WaHpUEeqL3B9UdsGZjw" id="review-2-read-more"
+            <a href="${article1.reviews[1].url}" id="review-2-read-more"
               aria-labelledby="review-2-read-more review-2-author">
               Read the full review
             </a>
@@ -164,11 +160,11 @@ export default (): Handler<HTTPVersion.V1> => {
           <article>
 
             <h3>
-              <a href="https://hypothes.is/a/1D0WaHpUEeqL3B9UdsGZjw" aria-label="Review by PLOS Biology">PLOS
-                Biology</a>
+              <a href="${article1.reviews[1].url}"
+                aria-label="Review by ${article1.reviews[1].author}">${article1.reviews[1].author}</a>
             </h3>
 
-            <time datetime="2019-12-22" aria-label="Review date">Dec 22, 2019</time>
+            ${templateDate(article1.reviews[1].publicationDate)}
 
           </article>
 

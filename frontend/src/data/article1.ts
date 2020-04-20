@@ -50,5 +50,15 @@ export default {
  for specific mRNAs revealed that worms with low levels of NSUN-1 have altered translation of transcripts involved
  in cuticle collagen deposition.`,
     },
+    {
+      author: 'PLOS Biology',
+      url: 'https://hypothes.is/a/1D0WaHpUEeqL3B9UdsGZjw',
+      publicationDate: new Date('2019-12-22'),
+      summary: `Using RNAi in two worm strains, the authors show that knocking down NSUN-1 expression, the specific 
+ C2982 m<sup>5</sup>C level is in part (not entirely) reduced. This assay proves sufficiency (but not necessity)
+ of NSUN-1 to reduce m<sup>5</sup>C levels at C2982. While it is not clear why the authors do not use a
+ complete knock out for NSUN-1 (is it lethal?), follow-up work using RNAi explores the phenotypic effects
+ of lowered NSUN-1 levels.`,
+    },
   ],
 };
