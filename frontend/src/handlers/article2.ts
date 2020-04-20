@@ -1,7 +1,14 @@
 import { Handler, HTTPVersion } from 'find-my-way';
 import { IncomingMessage, ServerResponse } from 'http';
 import { OK } from 'http-status-codes';
+import article2 from '../data/article2';
 import templatePage from '../templates/page';
+
+const dateFormatOptions: Intl.DateTimeFormatOptions = {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+};
 
 export default (): Handler<HTTPVersion.V1> => {
   const page = templatePage(`<main>
@@ -12,50 +19,28 @@ export default (): Handler<HTTPVersion.V1> => {
 
       <ol>
         <li aria-label="Article category">
-          Cell Biology
+          ${article2.category}
         </li>
         <li aria-label="Article type">
-          New Results
+          ${article2.type}
         </li>
       </ol>
 
       <h1>
-        KAT2-mediated acetylation switches the mode of PALB2 chromatin association to safeguard genome integrity
+        ${article2.title}
       </h1>
 
       <ol aria-label="Authors of this article">
-        <li>
-          Marjorie Fournier
-        </li>
-        <li>
-          Jean-Yves Bleuyard
-        </li>
-        <li>
-          Anthony M. Couturier
-        </li>
-        <li>
-          Jessica Ellins
-        </li>
-        <li>
-          Svenja Hester
-        </li>
-        <li>
-          Stephen J. Smerdon
-        </li>
-        <li>
-          László Tora
-        </li>
-        <li>
-          Fumiko Esashi
-        </li>
+        ${article2.authors.reduce((carry: string, name: string): string => `${carry}<li>${name}</li>\n`, '')}
       </ol>
 
       <ul aria-label="Publication details">
         <li>
-          DOI: <a href="https://doi.org/10.1101/735811">10.1101/735811</a>
+          DOI: <a href="https://doi.org/${article2.doi}">${article2.doi}</a>
         </li>
         <li>
-          Updated <time datetime="2020-01-21">Jan 21, 2020</time>
+          Updated <time datetime="${article2.updatedDate.toLocaleDateString()}">
+          ${article2.updatedDate.toLocaleDateString(undefined, dateFormatOptions)}</time>
         </li>
       </ul>
 
@@ -67,19 +52,7 @@ export default (): Handler<HTTPVersion.V1> => {
         Abstract
       </h2>
 
-      <p>
-        The tumour suppressor PALB2 stimulates error-free repair of DNA breaks, whilst its steady-state chromatin
-        association protects active genes from genotoxic stress. Here, we report that the lysine acetyltransferases 2A
-        and 2B (KAT2A/B), commonly known to promote transcriptional activation, acetylate the PALB2 chromatin
-        association motif (ChAM), providing a dynamic regulatory mechanism for PALB2. ChAM acetylation within a cluster
-        of seven lysine residues (7K), detected in the chromatin-enriched fraction in undamaged cells, enhanced its
-        association with nucleosomes while decreasing its non-specific binding to naked DNA. DNA damage triggered a
-        rapid deacetylation of ChAM and a concomitant increase in PALB2 mobility. Significantly, a 7K-null mutation,
-        which hindered ChAM binding to both nucleosomes and DNA, conferred deficiency in DNA repair and hypersensitivity
-        to the anti-cancer drug olaparib. Thus, our study reveals a unique mechanism mediated by KAT2A/B-dependent
-        acetylation of a non-histone protein, which fine-tunes the DNA damage response and hence promotes genome
-        stability.
-      </p>
+      ${article2.abstract}
 
     </section>
 

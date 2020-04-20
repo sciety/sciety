@@ -2,6 +2,7 @@ import { Handler, HTTPVersion } from 'find-my-way';
 import { IncomingMessage, ServerResponse } from 'http';
 import { OK } from 'http-status-codes';
 import article1 from '../data/article1';
+import article2 from '../data/article2';
 import templatePage from '../templates/page';
 
 export default (): Handler<HTTPVersion.V1> => {
@@ -62,41 +63,18 @@ export default (): Handler<HTTPVersion.V1> => {
 
           <ol aria-label="Article categories">
             <li>
-              Cell Biology
+              ${article2.category}
             </li>
           </ol>
 
           <h3>
             <a href="article2">
-              KAT2-mediated acetylation switches the mode of PALB2 chromatin association to safeguard genome integrity
+              ${article2.title}
             </a>
           </h3>
 
           <ol aria-label="Authors of this article">
-            <li>
-              Marjorie Fournier
-            </li>
-            <li>
-              Jean-Yves Bleuyard
-            </li>
-            <li>
-              Anthony M. Couturier
-            </li>
-            <li>
-              Jessica Ellins
-            </li>
-            <li>
-              Svenja Hester
-            </li>
-            <li>
-              Stephen J. Smerdon
-            </li>
-            <li>
-              László Tora
-            </li>
-            <li>
-              Fumiko Esashi
-            </li>
+            ${article2.authors.reduce((carry: string, name: string): string => `${carry}<li>${name}</li>\n`, '')}
           </ol>
 
           <ul aria-label="Review details">
