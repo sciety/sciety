@@ -1,35 +1,10 @@
 import { Handler, HTTPVersion } from 'find-my-way';
 import { IncomingMessage, ServerResponse } from 'http';
 import { OK } from 'http-status-codes';
+import templatePage from '../templates/page';
 
 export default (): Handler<HTTPVersion.V1> => {
-  const page = `<!doctype html>
-
-<meta charset="utf-8">
-
-<title>
-  PRC
-</title>
-
-<link rel="stylesheet" href="style.css">
-
-<header>
-
-  <nav>
-
-    <ul>
-
-      <li>
-        <a href="./">Home</a>
-      </li>
-
-    </ul>
-
-  </nav>
-
-</header>
-
-<main>
+  const page = templatePage(`<main>
 
   <header>
 
@@ -58,7 +33,7 @@ export default (): Handler<HTTPVersion.V1> => {
 
   </section>
 
-</main>`;
+</main>`);
 
   return (request: IncomingMessage, response: ServerResponse): void => {
     response.setHeader('Content-Type', 'text/html; charset=UTF-8');

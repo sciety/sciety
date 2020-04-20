@@ -1,33 +1,10 @@
 import { Handler, HTTPVersion } from 'find-my-way';
 import { IncomingMessage, ServerResponse } from 'http';
 import { OK } from 'http-status-codes';
+import templatePage from '../templates/page';
 
 export default (): Handler<HTTPVersion.V1> => {
-  const page = `<!doctype html>
-
-<meta charset="utf-8">
-
-<title>
-  KAT2-mediated acetylation switches the mode of PALB2 chromatin association to safeguard genome integrity
-</title>
-
-<link rel="stylesheet" href="style.css">
-
-<header>
-
-  <nav>
-
-    <ul>
-
-      <li>
-        <a href="./">Home</a>
-      </li>
-
-    </ul>
-
-  </nav>
-
-</header>
+  const page = templatePage(`<main>
 
 <main>
 
@@ -303,7 +280,7 @@ export default (): Handler<HTTPVersion.V1> => {
 
   </article>
 
-</main>`;
+</main>`);
 
   return (request: IncomingMessage, response: ServerResponse): void => {
     response.setHeader('Content-Type', 'text/html; charset=UTF-8');
