@@ -6,8 +6,6 @@ import templatePage from '../templates/page';
 export default (): Handler<HTTPVersion.V1> => {
   const page = templatePage(`<main>
 
-<main>
-
   <article>
 
     <header>
