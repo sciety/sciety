@@ -1,6 +1,7 @@
 import { Handler, HTTPVersion } from 'find-my-way';
 import { IncomingMessage, ServerResponse } from 'http';
 import { OK } from 'http-status-codes';
+import article1 from '../data/article1';
 import templatePage from '../templates/page';
 
 export default (): Handler<HTTPVersion.V1> => {
@@ -34,8 +35,7 @@ export default (): Handler<HTTPVersion.V1> => {
 
           <h3>
             <a href="article1">
-              The ribosomal RNA m<sup>5</sup>C methyltransferase NSUN-1 modulates healthspan and
-              oogenesis in <i>Caenorhabditis elegans</i>
+              ${article1.title}
             </a>
           </h3>
 
