@@ -4,6 +4,12 @@ import { OK } from 'http-status-codes';
 import article1 from '../data/article1';
 import templatePage from '../templates/page';
 
+const dateFormatOptions: Intl.DateTimeFormatOptions = {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+};
+
 export default (): Handler<HTTPVersion.V1> => {
   const page = templatePage(`<main>
 
@@ -13,10 +19,10 @@ export default (): Handler<HTTPVersion.V1> => {
 
       <ol>
         <li aria-label="Article category">
-          Cell Biology
+          ${article1.category}
         </li>
         <li aria-label="Article type">
-          New Results
+          ${article1.type}
         </li>
       </ol>
 
@@ -25,50 +31,16 @@ export default (): Handler<HTTPVersion.V1> => {
       </h1>
 
       <ol aria-label="Authors of this article">
-        <li>
-          Clemens Heissenberger
-        </li>
-        <li>
-          Teresa L. Krammer
-        </li>
-        <li>
-          Jarod A. Rollins
-        </li>
-        <li>
-          Fabian Nagelreiter
-        </li>
-        <li>
-          Isabella Stocker
-        </li>
-        <li>
-          Ludivine Wacheul
-        </li>
-        <li>
-          Anton Shpylovyi
-        </li>
-        <li>
-          Santina Snow
-        </li>
-        <li>
-          Johannes Grillari
-        </li>
-        <li>
-          Aric N. Rogers
-        </li>
-        <li>
-          Denis L.J. Lafontaine
-        </li>
-        <li>
-          Markus Schosserer
-        </li>
+        ${article1.authors.reduce((carry: string, name: string): string => `${carry}<li>${name}</li>\n`, '')}
       </ol>
 
       <ul aria-label="Publication details">
         <li>
-          DOI: <a href="https://doi.org/10.1101/2020.03.16.993469">10.1101/2020.03.16.993469</a>
+          DOI: <a href="https://doi.org/${article1.doi}">${article1.doi}</a>
         </li>
         <li>
-          Posted <time datetime="2020-03-18">Mar 18, 2020</time>
+          Posted <time datetime="${article1.publicationDate.toLocaleDateString()}">
+          ${article1.publicationDate.toLocaleDateString(undefined, dateFormatOptions)}</time>
         </li>
       </ul>
 
@@ -80,26 +52,7 @@ export default (): Handler<HTTPVersion.V1> => {
         Abstract
       </h2>
 
-      <p>
-        Our knowledge about the repertoire of ribosomal RNA modifications and the enzymes responsible for installing
-        them is constantly expanding. Previously, we reported that NSUN-5 is responsible for depositing m<sup>5</sup>C
-        at position C2381 on the 26S rRNA in <i>Caenorhabditis elegans</i>.
-      </p>
-
-      <p>
-        Here, we show that NSUN-1 is writing the second known 26S rRNA m<sup>5</sup>C at position C2982. Depletion of
-        <i>nsun-1</i> or <i>nsun-5</i> improved locomotion at midlife and resistance against heat stress, however, only
-        soma-specific knockdown of <i>nsun-1</i> extended lifespan. Moreover, soma-specific knockdown of <i>nsun-1</i>
-        reduced body size and impaired fecundity, suggesting non-cell-autonomous effects. While ribosome biogenesis and
-        global protein synthesis were unaffected by <i>nsun-1</i> depletion, translation of specific mRNAs was
-        remodelled leading to reduced production of collagens, loss of structural integrity of the cuticle and impaired
-        barrier function.
-      </p>
-
-      <p>
-        We conclude that loss of a single enzyme required for rRNA methylation has profound and highly specific effects
-        on organismal physiology.
-      </p>
+      ${article1.abstract}
 
     </section>
 

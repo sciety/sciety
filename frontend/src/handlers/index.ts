@@ -29,7 +29,7 @@ export default (): Handler<HTTPVersion.V1> => {
 
           <ol aria-label="Article categories">
             <li>
-              Cell Biology
+              ${article1.category}
             </li>
           </ol>
 
@@ -40,42 +40,7 @@ export default (): Handler<HTTPVersion.V1> => {
           </h3>
 
           <ol aria-label="Authors of this article">
-            <li>
-              Clemens Heissenberger
-            </li>
-            <li>
-              Teresa L. Krammer
-            </li>
-            <li>
-              Jarod A. Rollins
-            </li>
-            <li>
-              Fabian Nagelreiter
-            </li>
-            <li>
-              Isabella Stocker
-            </li>
-            <li>
-              Ludivine Wacheul
-            </li>
-            <li>
-              Anton Shpylovyi
-            </li>
-            <li>
-              Santina Snow
-            </li>
-            <li>
-              Johannes Grillari
-            </li>
-            <li>
-              Aric N. Rogers
-            </li>
-            <li>
-              Denis L.J. Lafontaine
-            </li>
-            <li>
-              Markus Schosserer
-            </li>
+            ${article1.authors.reduce((carry: string, name: string): string => `${carry}<li>${name}</li>\n`, '')}
           </ol>
 
           <ul aria-label="Review details">
