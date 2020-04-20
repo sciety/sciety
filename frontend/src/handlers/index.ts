@@ -2,7 +2,9 @@ import { Handler, HTTPVersion } from 'find-my-way';
 import { IncomingMessage, ServerResponse } from 'http';
 import { OK } from 'http-status-codes';
 
-function page(): string {
+type HTML = string;
+
+function page(): HTML {
   return `<!doctype html>
 
 <meta charset="utf-8">
