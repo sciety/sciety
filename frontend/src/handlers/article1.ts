@@ -116,20 +116,15 @@ export default (): Handler<HTTPVersion.V1> => {
           <article>
 
             <h3>
-              Reviewed by <span id="review-1-author">eLife ECAG and Ambassadors Journal</span> on
-              <time datetime="2019-11-19">Nov 19, 2019</time>
+              Reviewed by <span id="review-1-author">${article1.reviews[0].author}</span> on
+              ${templateDate(article1.reviews[0].publicationDate)}
             </h3>
 
             <p>
-              While somatic and germline reduction of m<sup>5</sup>C levels do not have an impact on worm lifespan, it
-              does increase resistance to heat stress, slight increase in motor activity. Reducing NSUN-1 expression
-              separately in germline and soma showed allegedly lifespan increase. Somatic reduction of NSUN-1 leads to
-              changes in body size, oocyte maturation and fecundity, and has no effect on global protein translation.
-              Analysis of polysome enrichment for specific mRNAs revealed that worms with low levels of NSUN-1 have
-              altered translation of transcripts involved in cuticle collagen deposition.
+              ${article1.reviews[0].summary}
             </p>
 
-            <a href="https://hypothes.is/a/1D0WaHpUEeqL3B9UdsGZjw" id="review-1-read-more"
+            <a href="${article1.reviews[0].url}" id="review-1-read-more"
               aria-labelledby="review-1-read-more review-1-author">
               Read the full review
             </a>
@@ -184,11 +179,11 @@ export default (): Handler<HTTPVersion.V1> => {
           <article>
 
             <h3>
-              <a href="https://hypothes.is/a/1D0WaHpUEeqL3B9UdsGZjw"
-                aria-label="Review by eLife ECAG and Ambassadors Journal">eLife ECAG and Ambassadors Journal</a>
+              <a href="${article1.reviews[0].url}"
+                aria-label="Review by ${article1.reviews[0].author}">${article1.reviews[0].author}</a>
             </h3>
 
-            <time datetime="2019-11-19" aria-label="Review date">Nov 19, 2019</time>
+            ${templateDate(article1.reviews[0].publicationDate)}
 
           </article>
 

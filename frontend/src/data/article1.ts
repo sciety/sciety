@@ -38,4 +38,17 @@ export default {
   We conclude that loss of a single enzyme required for rRNA methylation has profound and highly specific effects on
   organismal physiology.
 </p>`,
+  reviews: [
+    {
+      author: 'eLife ECAG and Ambassadors Journal',
+      url: 'https://hypothes.is/a/1D0WaHpUEeqL3B9UdsGZjw',
+      publicationDate: new Date('2019-11-19'),
+      summary: `While somatic and germline reduction of m<sup>5</sup>C levels do not have an impact on worm lifespan,
+ it does increase resistance to heat stress, slight increase in motor activity. Reducing NSUN-1 expression separately
+ in germline and soma showed allegedly lifespan increase. Somatic reduction of NSUN-1 leads to changes in body size,
+ oocyte maturation and fecundity, and has no effect on global protein translation. Analysis of polysome enrichment
+ for specific mRNAs revealed that worms with low levels of NSUN-1 have altered translation of transcripts involved
+ in cuticle collagen deposition.`,
+    },
+  ],
 };
