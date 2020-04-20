@@ -12,7 +12,7 @@ describe('page template', (): void => {
     assert(property(lorem(), (body: string) => {
       const page = templatePage(body);
 
-      expect(page).toEqual(expect.stringMatching(/^<!doctype html>/i));
+      expect(page).toEqual(expect.stringContaining(body));
     }));
   });
 });
