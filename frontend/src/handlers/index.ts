@@ -2,10 +2,8 @@ import { Handler, HTTPVersion } from 'find-my-way';
 import { IncomingMessage, ServerResponse } from 'http';
 import { OK } from 'http-status-codes';
 
-type HTML = string;
-
-function page(): HTML {
-  return `<!doctype html>
+export default (): Handler<HTTPVersion.V1> => {
+  const page = `<!doctype html>
 
 <meta charset="utf-8">
 
@@ -179,12 +177,10 @@ function page(): HTML {
   </section>
 
 </main>`;
-}
 
-export default (): Handler<HTTPVersion.V1> => (
-  (request: IncomingMessage, response: ServerResponse): void => {
+  return (request: IncomingMessage, response: ServerResponse): void => {
     response.setHeader('Content-Type', 'text/html; charset=UTF-8');
     response.writeHead(OK);
-    response.end(page());
-  }
-);
+    response.end(page);
+  };
+};
