@@ -39,7 +39,7 @@ export default (): Handler<HTTPVersion.V1> => {
           DOI: <a href="https://doi.org/${article2.doi}">${article2.doi}</a>
         </li>
         <li>
-          Updated <time datetime="${article2.updatedDate.toLocaleDateString()}">
+          Updated <time datetime="${article2.updatedDate.toISOString().split('T')[0]}">
           ${article2.updatedDate.toLocaleDateString(undefined, dateFormatOptions)}</time>
         </li>
       </ul>
