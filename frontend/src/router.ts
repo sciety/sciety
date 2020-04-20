@@ -1,6 +1,7 @@
 import Router from 'find-my-way';
 import { IncomingMessage, ServerResponse } from 'http';
 import article1 from './handlers/article1';
+import article2 from './handlers/article2';
 import index from './handlers/index';
 import ping from './handlers/ping';
 
@@ -12,6 +13,7 @@ export default (defaultRoute: DefaultRoute): Router.Instance<Router.HTTPVersion.
   router.get('/ping', ping());
   router.get('/', index());
   router.get('/article1', article1());
+  router.get('/article2', article2());
 
   return router;
 };
