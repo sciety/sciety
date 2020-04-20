@@ -3,6 +3,7 @@ import { IncomingMessage, ServerResponse } from 'http';
 import { OK } from 'http-status-codes';
 import article1 from '../data/article1';
 import templateDate from '../templates/date';
+import templateListItems from '../templates/list-items';
 import templatePage from '../templates/page';
 
 export default (): Handler<HTTPVersion.V1> => {
@@ -26,7 +27,7 @@ export default (): Handler<HTTPVersion.V1> => {
       </h1>
 
       <ol aria-label="Authors of this article">
-        ${article1.authors.reduce((carry: string, name: string): string => `${carry}<li>${name}</li>\n`, '')}
+        ${templateListItems(article1.authors)}
       </ol>
 
       <ul aria-label="Publication details">
