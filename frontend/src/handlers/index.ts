@@ -1,4 +1,9 @@
-<!doctype html>
+import { Handler, HTTPVersion } from 'find-my-way';
+import { IncomingMessage, ServerResponse } from 'http';
+import { OK } from 'http-status-codes';
+
+function page(): string {
+  return `<!doctype html>
 
 <meta charset="utf-8">
 
@@ -171,4 +176,14 @@
 
   </section>
 
-</main>
+</main>`;
+}
+
+export default (): Handler<HTTPVersion.V1> => (
+  (request: IncomingMessage, response: ServerResponse): void => {
+    response.setHeader('Cache-Control', 'no-store, must-revalidate');
+    response.setHeader('Content-Type', 'text/html; charset=UTF-8');
+    response.writeHead(OK);
+    response.end(page());
+  }
+);
