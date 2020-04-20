@@ -2,13 +2,8 @@ import { Handler, HTTPVersion } from 'find-my-way';
 import { IncomingMessage, ServerResponse } from 'http';
 import { OK } from 'http-status-codes';
 import article2 from '../data/article2';
+import templateDate from '../templates/date';
 import templatePage from '../templates/page';
-
-const dateFormatOptions: Intl.DateTimeFormatOptions = {
-  year: 'numeric',
-  month: 'short',
-  day: 'numeric',
-};
 
 export default (): Handler<HTTPVersion.V1> => {
   const page = templatePage(`<main>
@@ -39,8 +34,7 @@ export default (): Handler<HTTPVersion.V1> => {
           DOI: <a href="https://doi.org/${article2.doi}">${article2.doi}</a>
         </li>
         <li>
-          Updated <time datetime="${article2.updatedDate.toISOString().split('T')[0]}">
-          ${article2.updatedDate.toLocaleDateString(undefined, dateFormatOptions)}</time>
+          Updated ${templateDate(article2.updatedDate)}
         </li>
       </ul>
 
