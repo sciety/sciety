@@ -9,4 +9,10 @@ describe('date template', (): void => {
 
     expect(date).toBe(`<time datetime="${string}">${display}</time>`);
   });
+
+  it('adds an aria-label', () => {
+    const date = templateDate(new Date('2002-05-04'), 'Creation date');
+
+    expect(date).toBe('<time datetime="2002-05-04" aria-label="Creation date">May 4, 2002</time>');
+  });
 });
