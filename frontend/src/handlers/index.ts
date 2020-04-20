@@ -183,7 +183,6 @@ function page(): HTML {
 
 export default (): Handler<HTTPVersion.V1> => (
   (request: IncomingMessage, response: ServerResponse): void => {
-    response.setHeader('Cache-Control', 'no-store, must-revalidate');
     response.setHeader('Content-Type', 'text/html; charset=UTF-8');
     response.writeHead(OK);
     response.end(page());
