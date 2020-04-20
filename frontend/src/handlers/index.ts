@@ -58,7 +58,7 @@ export default (): Handler<HTTPVersion.V1> => {
           </ol>
 
           <h3>
-            <a href="article1.html">
+            <a href="article1">
               The ribosomal RNA m<sup>5</sup>C methyltransferase NSUN-1 modulates healthspan and
               oogenesis in <i>Caenorhabditis elegans</i>
             </a>
@@ -127,7 +127,7 @@ export default (): Handler<HTTPVersion.V1> => {
           </ol>
 
           <h3>
-            <a href="article2.html">
+            <a href="article2">
               KAT2-mediated acetylation switches the mode of PALB2 chromatin association to safeguard genome integrity
             </a>
           </h3>
