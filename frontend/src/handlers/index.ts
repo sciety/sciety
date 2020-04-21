@@ -42,7 +42,7 @@ export default (): Handler<HTTPVersion.V1> => {
             </a>
           </h3>
 
-          <ol aria-label="Authors of this article">
+          <ol aria-label="Authors of this article" class="author-list">
             ${templateListItems(article1.authors)}
           </ol>
 
@@ -75,7 +75,7 @@ export default (): Handler<HTTPVersion.V1> => {
             </a>
           </h3>
 
-          <ol aria-label="Authors of this article">
+          <ol aria-label="Authors of this article" class="author-list">
             ${templateListItems(article2.authors)}
           </ol>
 

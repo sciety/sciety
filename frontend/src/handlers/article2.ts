@@ -29,7 +29,7 @@ export default (): Handler<HTTPVersion.V1> => {
         ${article2.title}
       </h1>
 
-      <ol aria-label="Authors of this article">
+      <ol aria-label="Authors of this article" class="author-list">
         ${templateListItems(article2.authors)}
       </ol>
 
