@@ -7,7 +7,9 @@ describe('article page header template', (): void => {
     type: 'Thing',
     doi: '1234',
     publicationDate: new Date('2009-11-28'),
+    abstract: 'Anything',
     authors: ['Gary', 'Uncle Wiggly'],
+    reviews: [],
   };
   let actual: string;
 
@@ -16,7 +18,7 @@ describe('article page header template', (): void => {
   });
 
   it('renders inside an header tag', () => {
-    expect(actual).toEqual(expect.stringMatching(/^<header>/));
+    expect(actual).toEqual(expect.stringMatching(/^<header/));
   });
 
   it('renders the article category', () => {
