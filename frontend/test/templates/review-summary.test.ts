@@ -9,6 +9,12 @@ describe('review-summary template', (): void => {
   };
   const idNamespace = 'review-42';
 
+  it('renders inside an article tag', () => {
+    const actual = templateReviewSummary(review, idNamespace);
+
+    expect(actual).toEqual(expect.stringMatching(/^<article>/));
+  });
+
   it('renders the summary', () => {
     const actual = templateReviewSummary(review, idNamespace);
 
