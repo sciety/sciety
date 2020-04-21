@@ -1,4 +1,4 @@
-@import "https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,700;1,700&family=Noto+Serif:ital@0;1&display=swap";
+@import "https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,700&family=Noto+Serif:ital@0;1&display=swap";
 
 *, *:before, *:after {
   box-sizing: border-box;
@@ -78,6 +78,53 @@ main > article > .content {
 
 main > article > aside {
   grid-area: secondary;
+}
+
+.content-header {
+  font-family: "Noto Sans", Arial, Helvetica, sans-serif;
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 2.9375rem;
+  padding-top: 4.5rem;
+  padding-bottom: 1.125rem;
+}
+
+.content-header__categories {
+  color: rgb(136, 136, 136);
+  font-size: .875rem;
+  line-height: 1.71429;
+  list-style-type: none;
+  margin-bottom: 1.5rem;
+  padding-left: 0;
+}
+
+.content-header__categories li {
+  display: inline;
+}
+
+.content-header__categories li:after {
+  content: "\a0|\a0";
+}
+
+.content-header__categories li:last-child:after {
+  content: "";
+}
+
+.content-header__details {
+  color: rgb(136, 136, 136);
+  font-size: .875rem;
+  line-height: 1.71429;
+  list-style-type: none;
+  margin-bottom: 1.5rem;
+  padding-left: 0;
+}
+
+.content-header__details :link, .content-header__details :visited {
+  color: inherit;
+  text-decoration: none;
+}
+
+.content-header__details :link:hover {
+  text-decoration: underline;
 }
 
 .author-list {

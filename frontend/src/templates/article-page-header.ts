@@ -3,9 +3,9 @@ import templateListItems from './list-items';
 import { Article } from './types/article';
 
 export default (article: Article): string => (
-  `<header>
+  `<header class="content-header">
 
-      <ol>
+      <ol class="content-header__categories">
         <li aria-label="Article category">
           ${article.category}
         </li>
@@ -22,7 +22,7 @@ export default (article: Article): string => (
         ${templateListItems(article.authors)}
       </ol>
 
-      <ul aria-label="Publication details">
+      <ul aria-label="Publication details" class="content-header__details">
         <li>
           DOI: <a href="https://doi.org/${article.doi}">${article.doi}</a>
         </li>

@@ -6,7 +6,7 @@ import templatePage from '../templates/page';
 export default (): Handler<HTTPVersion.V1> => {
   const page = templatePage(`<main>
 
-  <header>
+  <header class="content-header">
 
     <h1>
       PRC
