@@ -16,7 +16,7 @@ describe('article page header template', (): void => {
   });
 
   it('renders inside an header tag', () => {
-    expect(actual).toEqual(expect.stringMatching(/^<header>/));
+    expect(actual).toEqual(expect.stringMatching(/^<header\s/));
   });
 
   it('renders the article category', () => {
