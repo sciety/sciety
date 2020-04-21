@@ -18,7 +18,7 @@ export default (main: string): string => (
     <ul>
 
       <li>
-        <a href="./">Home</a>
+        <a href="/">Home</a>
       </li>
 
     </ul>
