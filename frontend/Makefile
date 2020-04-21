@@ -23,7 +23,7 @@ lint\:fix: build
 
 test: export TARGET = dev
 test: build
-	$(DOCKER) run $(IMAGE):$(IMAGE_TAG)-dev node_modules/.bin/jest
+	$(DOCKER) run $(IMAGE):$(IMAGE_TAG)-dev node_modules/.bin/jest --colors
 
 build:
 	@if [ "$(TARGET)" != prod ]; then \
