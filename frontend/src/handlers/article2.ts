@@ -44,27 +44,31 @@ export default (): Handler<HTTPVersion.V1> => {
 
     </header>
 
-    <section role="doc-abstract">
+    <div class="content">
 
-      <h2>
-        Abstract
-      </h2>
+      <section role="doc-abstract">
+  
+        <h2>
+          Abstract
+        </h2>
+  
+        ${article2.abstract}
+  
+      </section>
+  
+      <section>
+  
+        <h2>
+          Review summaries
+        </h2>
+  
+        <ol>
+          ${reviewSummaries}
+        </ol>
+  
+      </section>
 
-      ${article2.abstract}
-
-    </section>
-
-    <section>
-
-      <h2>
-        Review summaries
-      </h2>
-
-      <ol>
-        ${reviewSummaries}
-      </ol>
-
-    </section>
+    </div>
 
     <aside>
 
