@@ -132,7 +132,7 @@ export default (): Handler<HTTPVersion.V1> => {
     <aside>
 
       <h2>
-        3 peer reviews
+        ${article1.reviews.length} peer reviews
       </h2>
 
       <ol>

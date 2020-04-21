@@ -48,7 +48,7 @@ export default (): Handler<HTTPVersion.V1> => {
 
           <ul aria-label="Review details">
             <li>
-              3 reviews
+              ${article1.reviews.length} reviews
             </li>
             <li>
               Reviewed ${templateDate(article1.reviews[2].publicationDate)} by ${article1.reviews[2].author}
