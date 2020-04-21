@@ -1,11 +1,11 @@
-import templateDate from '../templates/date';
+import templateDate from './date';
 
 interface Review {
-  author: string,
-  publicationDate: Date,
-  summary: string,
-  url: string,
-};
+  author: string;
+  publicationDate: Date;
+  summary: string;
+  url: string;
+}
 
 export default (review: Review): string => (
   `<h3>
