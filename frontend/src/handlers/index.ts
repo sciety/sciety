@@ -17,13 +17,13 @@ export default (): Handler<HTTPVersion.V1> => {
 
   </header>
 
-  <section>
+  <section class="teaser-list">
 
-    <h2>
+    <h2 class="teaser-list__title">
       Recently reviewed articles
     </h2>
 
-    <ol>
+    <ol class="teaser-list__list">
 
       <li>
         ${templateArticleTeaser(article1, `/articles/${encodeURIComponent(article1.doi)}`)}

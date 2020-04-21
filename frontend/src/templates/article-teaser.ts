@@ -4,12 +4,12 @@ import templateListItems from './list-items';
 
 export default (article: Article, articleLink: string): string => {
   const lastReview = article.reviews[article.reviews.length - 1];
-  return `<article>
-          <ol aria-label="Article categories">
+  return `<article class="teaser">
+          <ol aria-label="Article categories" class="teaser__categories">
             <li>${article.category}</li>
           </ol>
 
-          <h3>
+          <h3 class="teaser__title">
             <a href="${articleLink}">${article.title}</a>
           </h3>
 
@@ -17,7 +17,7 @@ export default (article: Article, articleLink: string): string => {
             ${templateListItems(article.authors)}
           </ol>
 
-          <ul aria-label="Review details">
+          <ul aria-label="Review details" class="teaser__details">
             <li>
               ${article.reviews.length} reviews
             </li>

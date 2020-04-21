@@ -29,7 +29,7 @@ describe('article-teaser template', (): void => {
   it('renders inside an article tag', async (): Promise<void> => {
     const actual = templateArticleTeaser(article, articleLink);
 
-    expect(actual).toEqual(expect.stringMatching(/^<article>/));
+    expect(actual).toEqual(expect.stringMatching(/^<article\s/));
   });
 
   it('renders the category', () => {
