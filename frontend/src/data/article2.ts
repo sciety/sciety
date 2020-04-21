@@ -13,7 +13,7 @@ export default {
     'Fumiko Esashi',
   ],
   doi: '10.1101/735811',
-  updatedDate: new Date('2020-01-21'),
+  publicationDate: new Date('2020-01-21'),
   abstract: `<p>
   The tumour suppressor PALB2 stimulates error-free repair of DNA breaks, whilst its steady-state chromatin association
   protects active genes from genotoxic stress. Here, we report that the lysine acetyltransferases 2A and 2B (KAT2A/B),

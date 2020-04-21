@@ -3,8 +3,7 @@ import templateListItems from './list-items';
 import { Article } from './types/article';
 
 export default (article: Article): string => (
-  `<article>
-    <header>
+  `<header>
 
       <ol>
         <li aria-label="Article category">
@@ -32,6 +31,5 @@ export default (article: Article): string => (
         </li>
       </ul>
 
-    </header>
-  </article>`
+    </header>`
 );
