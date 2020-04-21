@@ -60,5 +60,19 @@ export default {
  complete knock out for NSUN-1 (is it lethal?), follow-up work using RNAi explores the phenotypic effects
  of lowered NSUN-1 levels.`,
     },
+    {
+      author: 'eLife',
+      url: 'https://hypothes.is/a/1D0WaHpUEeqL3B9UdsGZjw',
+      publicationDate: new Date('2020-04-08'),
+      summary: `Heissenberger et al. study how NSUN-1 impacts rRNA methylation
+ and health in nematodes. Eukaryotic ribosomal RNAs undergo several 
+ modifications. Among these, there are two known m<sup>5</sup>C, located 
+ in highly conserved target sequences. Previous work from the authors 
+ characterised the mechanism underlying one of these modifications in 
+ worms (C2381), as well as its functional consequences on cellular and 
+ organismal homeostasis. The current work focuses on the second 
+ m<sup>5</sup>C, at position C2982, and identifies NSUN-1 as the putative 
+ rRNA methylase. This is a novel and potentially exciting finding.`,
+    },
   ],
 };

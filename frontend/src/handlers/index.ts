@@ -3,6 +3,7 @@ import { IncomingMessage, ServerResponse } from 'http';
 import { OK } from 'http-status-codes';
 import article1 from '../data/article1';
 import article2 from '../data/article2';
+import templateDate from '../templates/date';
 import templateListItems from '../templates/list-items';
 import templatePage from '../templates/page';
 
@@ -50,7 +51,7 @@ export default (): Handler<HTTPVersion.V1> => {
               3 reviews
             </li>
             <li>
-              Reviewed <time datetime="2020-04-08">Apr 8, 2020</time> by eLife
+              Reviewed ${templateDate(article1.reviews[2].publicationDate)} by ${article1.reviews[2].author}
             </li>
           </ul>
 

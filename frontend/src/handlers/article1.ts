@@ -64,19 +64,15 @@ export default (): Handler<HTTPVersion.V1> => {
           <article>
 
             <h3>
-              Reviewed by <span id="review-3-author">eLife</span> on <time datetime="2020-04-08">Apr 8, 2020</time>
+              Reviewed by <span id="review-3-author">${article1.reviews[2].author}</span> on
+              ${templateDate(article1.reviews[2].publicationDate)}
             </h3>
 
             <p>
-              Heissenberger et al. study how NSUN-1 impacts rRNA methylation and health in nematodes. Eukaryotic
-              ribosomal RNAs undergo several modifications. Among these, there are two known m<sup>5</sup>C, located in
-              highly conserved target sequences. Previous work from the authors characterised the mechanism underlying
-              one of these modifications in worms (C2381), as well as its functional consequences on cellular and
-              organismal homeostasis. The current work focuses on the second m<sup>5</sup>C, at position C2982, and
-              identifies NSUN-1 as the putative rRNA methylase. This is a novel and potentially exciting finding.
+              ${article1.reviews[2].summary}
             </p>
 
-            <a href="https://hypothes.is/a/1D0WaHpUEeqL3B9UdsGZjw" id="review-3-read-more"
+            <a href="${article1.reviews[2].url}" id="review-3-read-more"
               aria-labelledby="review-3-read-more review-3-author">
               Read the full review
             </a>
@@ -146,12 +142,14 @@ export default (): Handler<HTTPVersion.V1> => {
           <article>
 
             <h3>
-              <a href="https://hypothes.is/a/1D0WaHpUEeqL3B9UdsGZjw" aria-label="Review by eLife">eLife</a>
+              <a href="${article1.reviews[2].url}"
+                aria-label="Review by ${article1.reviews[2].author}">${article1.reviews[2].author}</a>
             </h3>
 
-            <time datetime="2020-04-08" aria-label="Review date">Apr 8, 2020</time>
+            ${templateDate(article1.reviews[2].publicationDate)}
 
           </article>
+
 
         </li>
 
