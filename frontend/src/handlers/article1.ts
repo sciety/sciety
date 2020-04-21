@@ -5,10 +5,12 @@ import article1 from '../data/article1';
 import templateDate from '../templates/date';
 import templateListItems from '../templates/list-items';
 import templateReviewSummary from '../templates/review-summary';
+import templateReviewSidebarItem from '../templates/review-sidebar-item';
 import templatePage from '../templates/page';
 
 export default (): Handler<HTTPVersion.V1> => {
   const reviewSummaries = templateListItems(article1.reviews.map((review, index) => templateReviewSummary(review, `review-${index}`)));
+  const reviewSidebarItems = templateListItems(article1.reviews.map(review => templateReviewSidebarItem(review)));
 
   const page = templatePage(`<main>
 
@@ -73,53 +75,7 @@ export default (): Handler<HTTPVersion.V1> => {
       </h2>
 
       <ol>
-
-        <li>
-
-          <article>
-
-            <h3>
-              <a href="${article1.reviews[2].url}"
-                aria-label="Review by ${article1.reviews[2].author}">${article1.reviews[2].author}</a>
-            </h3>
-
-            ${templateDate(article1.reviews[2].publicationDate)}
-
-          </article>
-
-
-        </li>
-
-        <li>
-
-          <article>
-
-            <h3>
-              <a href="${article1.reviews[1].url}"
-                aria-label="Review by ${article1.reviews[1].author}">${article1.reviews[1].author}</a>
-            </h3>
-
-            ${templateDate(article1.reviews[1].publicationDate)}
-
-          </article>
-
-        </li>
-
-        <li>
-
-          <article>
-
-            <h3>
-              <a href="${article1.reviews[0].url}"
-                aria-label="Review by ${article1.reviews[0].author}">${article1.reviews[0].author}</a>
-            </h3>
-
-            ${templateDate(article1.reviews[0].publicationDate)}
-
-          </article>
-
-        </li>
-
+        ${reviewSidebarItems}
       </ol>
 
       <a href="add-review">Add a review</a>

@@ -1,11 +1,5 @@
 import templateDate from './date';
-
-interface Review {
-  author: string;
-  publicationDate: Date;
-  summary: string;
-  url: string;
-}
+import { Review } from './types/review';
 
 export default (review: Review, idNamespace: string): string => (
   `<article>

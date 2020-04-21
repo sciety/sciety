@@ -5,10 +5,12 @@ import article2 from '../data/article2';
 import templateDate from '../templates/date';
 import templateListItems from '../templates/list-items';
 import templateReviewSummary from '../templates/review-summary';
+import templateReviewSidebarItem from '../templates/review-sidebar-item';
 import templatePage from '../templates/page';
 
 export default (): Handler<HTTPVersion.V1> => {
   const reviewSummaries = templateListItems(article2.reviews.map((review, index) => templateReviewSummary(review, `review-${index}`)));
+  const reviewSidebarItems = templateListItems(article2.reviews.map(review => templateReviewSidebarItem(review)));
 
   const page = templatePage(`<main>
 
@@ -69,67 +71,11 @@ export default (): Handler<HTTPVersion.V1> => {
     <aside>
 
       <h2>
-        4 peer reviews
+        ${article2.reviews.length} peer reviews
       </h2>
 
       <ol>
-
-        <li>
-
-          <article>
-
-            <h3>
-              <a href="https://hypothes.is/a/JFxMDnpkEeqyx09LkDotfQ" aria-label="Review by EMBOpress">EMBOpress</a>
-            </h3>
-
-            <time datetime="2020-04-09" aria-label="Review date">Apr 9, 2020</time>
-
-          </article>
-
-        </li>
-
-        <li>
-
-          <article>
-
-            <h3>
-              <a href="https://hypothes.is/a/I-FC6HpkEeqdRav-80EtSA" aria-label="Review by EMBOpress">EMBOpress</a>
-            </h3>
-
-            <time datetime="2020-04-09" aria-label="Review date">Apr 9, 2020</time>
-
-          </article>
-
-        </li>
-
-        <li>
-
-          <article>
-
-            <h3>
-              <a href="https://hypothes.is/a/I36NiHpkEeqdZutVpxr6uQ" aria-label="Review by EMBOpress">EMBOpress</a>
-            </h3>
-
-            <time datetime="2020-04-09" aria-label="Review date">Apr 9, 2020</time>
-
-          </article>
-
-        </li>
-
-        <li>
-
-          <article>
-
-            <h3>
-              <a href="https://hypothes.is/a/I0iGrHpkEeqtkxu-1NyIbQ" aria-label="Review by EMBOpress">EMBOpress</a>
-            </h3>
-
-            <time datetime="2020-04-09" aria-label="Review date">Apr 9, 2020</time>
-
-          </article>
-
-        </li>
-
+        ${reviewSidebarItems}
       </ol>
 
       <a href="add-review">Add a review</a>
