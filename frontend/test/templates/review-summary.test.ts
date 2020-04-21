@@ -3,6 +3,7 @@ import templateReviewSummary from '../../src/templates/review-summary';
 describe('review-summary template', (): void => {
   const review = {
     author: 'John Doe',
+    publicationDate: new Date('2010-02-01'),
     summary: 'Pretty good.',
     url: 'https://example.com/some-review',
   };
@@ -23,5 +24,11 @@ describe('review-summary template', (): void => {
     const actual = templateReviewSummary(review);
 
     expect(actual).toEqual(expect.stringContaining(review.author));
+  });
+
+  it('renders the publication date', () => {
+    const actual = templateReviewSummary(review);
+
+    expect(actual).toEqual(expect.stringContaining('2010-02-01'));
   });
 });
