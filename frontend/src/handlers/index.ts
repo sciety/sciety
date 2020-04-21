@@ -28,7 +28,7 @@ export default (): Handler<HTTPVersion.V1> => {
       <li>
         ${templateArticleTeaser(article1, 'article1')}
       </li>
-      
+
       <li>
         ${templateArticleTeaser(article2, 'article2')}
       </li>
