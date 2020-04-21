@@ -4,9 +4,12 @@ import { OK } from 'http-status-codes';
 import article1 from '../data/article1';
 import templateDate from '../templates/date';
 import templateListItems from '../templates/list-items';
+import templateReviewSummary from '../templates/review-summary';
 import templatePage from '../templates/page';
 
 export default (): Handler<HTTPVersion.V1> => {
+  const reviewSummaries = templateListItems(article1.reviews.map((review, index) => templateReviewSummary(review, `review-${index}`)));
+
   const page = templatePage(`<main>
 
   <article>
@@ -58,73 +61,7 @@ export default (): Handler<HTTPVersion.V1> => {
       </h2>
 
       <ol>
-
-        <li>
-
-          <article>
-
-            <h3>
-              Reviewed by <span id="review-3-author">${article1.reviews[2].author}</span> on
-              ${templateDate(article1.reviews[2].publicationDate)}
-            </h3>
-
-            <p>
-              ${article1.reviews[2].summary}
-            </p>
-
-            <a href="${article1.reviews[2].url}" id="review-3-read-more"
-              aria-labelledby="review-3-read-more review-3-author">
-              Read the full review
-            </a>
-
-          </article>
-
-        </li>
-
-        <li>
-
-          <article>
-
-            <h3>
-              Reviewed by <span id="review-2-author">${article1.reviews[1].author}</span> on
-              ${templateDate(article1.reviews[1].publicationDate)}
-            </h3>
-
-            <p>
-              ${article1.reviews[1].summary}
-            </p>
-
-            <a href="${article1.reviews[1].url}" id="review-2-read-more"
-              aria-labelledby="review-2-read-more review-2-author">
-              Read the full review
-            </a>
-
-          </article>
-
-        </li>
-
-        <li>
-
-          <article>
-
-            <h3>
-              Reviewed by <span id="review-1-author">${article1.reviews[0].author}</span> on
-              ${templateDate(article1.reviews[0].publicationDate)}
-            </h3>
-
-            <p>
-              ${article1.reviews[0].summary}
-            </p>
-
-            <a href="${article1.reviews[0].url}" id="review-1-read-more"
-              aria-labelledby="review-1-read-more review-1-author">
-              Read the full review
-            </a>
-
-          </article>
-
-        </li>
-
+       ${reviewSummaries}
       </ol>
 
     </section>
