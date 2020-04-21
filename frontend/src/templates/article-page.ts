@@ -20,11 +20,11 @@ export default (article: Article): string => {
         ${article.abstract}
       </section>
 
-      <section>
+      <section class="review-summary-list">
         <h2>
           Review summaries
         </h2>
-        <ol>
+        <ol class="review-summary-list__list">
           ${reviewSummaries}
         </ol>
       </section>

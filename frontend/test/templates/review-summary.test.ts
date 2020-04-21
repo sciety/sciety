@@ -12,7 +12,7 @@ describe('review-summary template', (): void => {
   it('renders inside an article tag', () => {
     const actual = templateReviewSummary(review, idNamespace);
 
-    expect(actual).toEqual(expect.stringMatching(/^<article>/));
+    expect(actual).toEqual(expect.stringMatching(/^<article\s/));
   });
 
   it('renders the summary', () => {
