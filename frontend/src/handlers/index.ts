@@ -3,6 +3,7 @@ import { IncomingMessage, ServerResponse } from 'http';
 import { OK } from 'http-status-codes';
 import article1 from '../data/article1';
 import article2 from '../data/article2';
+import templateArticleTeaser from '../templates/article-teaser';
 import templateDate from '../templates/date';
 import templateListItems from '../templates/list-items';
 import templatePage from '../templates/page';
@@ -27,36 +28,7 @@ export default (): Handler<HTTPVersion.V1> => {
     <ol>
 
       <li>
-
-        <article>
-
-          <ol aria-label="Article categories">
-            <li>
-              ${article1.category}
-            </li>
-          </ol>
-
-          <h3>
-            <a href="article1">
-              ${article1.title}
-            </a>
-          </h3>
-
-          <ol aria-label="Authors of this article" class="author-list">
-            ${templateListItems(article1.authors)}
-          </ol>
-
-          <ul aria-label="Review details">
-            <li>
-              ${article1.reviews.length} reviews
-            </li>
-            <li>
-              Reviewed ${templateDate(article1.reviews[2].publicationDate)} by ${article1.reviews[2].author}
-            </li>
-          </ul>
-
-        </article>
-
+        ${templateArticleTeaser(article1, 'article1')}
       </li>
 
       <li>
