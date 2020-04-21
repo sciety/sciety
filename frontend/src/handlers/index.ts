@@ -81,10 +81,10 @@ export default (): Handler<HTTPVersion.V1> => {
 
           <ul aria-label="Review details">
             <li>
-              4 reviews
+              ${article2.reviews.length} reviews
             </li>
             <li>
-              Reviewed <time datetime="2020-04-09">Apr 9, 2020</time> by EMBOpress
+              Reviewed ${templateDate(article2.reviews[3].publicationDate)} by ${article2.reviews[3].author}
             </li>
           </ul>
 
