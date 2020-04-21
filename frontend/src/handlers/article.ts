@@ -12,7 +12,7 @@ export default (): Handler<HTTPVersion.V1> => {
     article2,
   ];
   return (request: IncomingMessage, response: ServerResponse, params: any): void => {
-    const doi = params.id;
+    const doi = decodeURIComponent(params.id);
     const matches = allArticles.filter((article) => article.doi === doi);
     response.setHeader('Content-Type', 'text/html; charset=UTF-8');
     if (matches.length !== 1) {

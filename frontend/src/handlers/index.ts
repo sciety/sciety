@@ -26,11 +26,11 @@ export default (): Handler<HTTPVersion.V1> => {
     <ol>
 
       <li>
-        ${templateArticleTeaser(article1, 'article1')}
+        ${templateArticleTeaser(article1, `/articles/${encodeURIComponent(article1.doi)}`)}
       </li>
 
       <li>
-        ${templateArticleTeaser(article2, 'article2')}
+        ${templateArticleTeaser(article2, `/articles/${encodeURIComponent(article2.doi)}`)}
       </li>
 
     </ol>
