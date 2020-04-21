@@ -38,7 +38,7 @@ export default (article: Article): string => {
       <ol>
         ${reviewSidebarItems}
       </ol>
-      <a href="add-review">Add a review</a>
+      <a href="/add-review">Add a review</a>
     </aside>
 
   </article>`;
