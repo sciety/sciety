@@ -6,6 +6,7 @@ describe('article-teaser template', (): void => {
     type: 'New Results',
     doi: '10.1101/2000.1234',
     title: 'The study of cracked pots',
+    abstract: 'More lorem ipsum',
     authors: ['John Doe'],
     publicationDate: new Date('2000-01-15'),
     reviews: [
