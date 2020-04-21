@@ -1,1 +1,47 @@
-@import "https://kognise.github.io/water.css/dist/dark.css";
+@import "https://fonts.googleapis.com/css2?family=Noto+Sans:wght@700&family=Noto+Serif&display=swap";
+
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+:root {
+  font-size: 100%;
+  line-height: 1.15;
+  min-width: 320px;
+}
+
+body {
+  background-color: rgb(255, 255, 255);
+  color: rgb(33, 33, 33);
+  font-family: "Noto Serif", serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  font-weight: normal;
+  text-rendering: optimizeLegibility;
+  margin: 0 auto;
+  max-width: 69.625rem;
+}
+
+h1, h2, h3 {
+  font-family: "Noto Sans", Arial, Helvetica, sans-serif;
+  font-weight: 600;
+  margin-top: 0;
+}
+
+h1 {
+  font-size: 2.25rem;
+  line-height: 1.33333;
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  font-size: 1.625rem;
+  line-height: 1.15385;
+  margin-bottom: 1.125rem;
+}
+
+h3 {
+  font-size: 1.4375rem;
+  line-height: 1.04348;
+  margin-bottom: 1.5rem;
+}
