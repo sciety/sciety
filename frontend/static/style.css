@@ -45,3 +45,21 @@ h3 {
   line-height: 1.04348;
   margin-bottom: 1.5rem;
 }
+
+.author-list {
+  list-style-type: none;
+  margin-bottom: 1.5rem;
+  padding-left: 0;
+}
+
+.author-list li {
+  display: inline;
+}
+
+.author-list li:after {
+  content: ",\a0";
+}
+
+.author-list li:last-child:after {
+  content: "";
+}
