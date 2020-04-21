@@ -9,7 +9,7 @@ export default (main: string): string => (
   PRC
 </title>
 
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="/style.css">
 
 <header>
 
