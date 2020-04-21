@@ -12,9 +12,7 @@ export default (): Handler<HTTPVersion.V1> => {
   const reviewSummaries = templateListItems(article2.reviews.map((review, index) => templateReviewSummary(review, `review-${index}`)));
   const reviewSidebarItems = templateListItems(article2.reviews.map((review) => templateReviewSidebarItem(review)));
 
-  const page = templatePage(`<main>
-
-  <article>
+  const page = templatePage(`<article>
 
     <header>
 
@@ -82,9 +80,7 @@ export default (): Handler<HTTPVersion.V1> => {
 
     </aside>
 
-  </article>
-
-</main>`);
+  </article>`);
 
   return (request: IncomingMessage, response: ServerResponse): void => {
     response.setHeader('Content-Type', 'text/html; charset=UTF-8');

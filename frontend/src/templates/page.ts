@@ -27,5 +27,7 @@ export default (main: string): string => (
 
 </header>
 
-${main}`
+<main>
+  ${main}
+</main>`
 );
