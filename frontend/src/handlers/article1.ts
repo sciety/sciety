@@ -61,7 +61,7 @@ export default (): Handler<HTTPVersion.V1> => {
       </h2>
 
       <ol>
-       ${reviewSummaries}
+        ${reviewSummaries}
       </ol>
 
     </section>
