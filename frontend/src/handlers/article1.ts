@@ -10,7 +10,7 @@ import templatePage from '../templates/page';
 
 export default (): Handler<HTTPVersion.V1> => {
   const reviewSummaries = templateListItems(article1.reviews.map((review, index) => templateReviewSummary(review, `review-${index}`)));
-  const reviewSidebarItems = templateListItems(article1.reviews.map(review => templateReviewSidebarItem(review)));
+  const reviewSidebarItems = templateListItems(article1.reviews.map((review) => templateReviewSidebarItem(review)));
 
   const page = templatePage(`<main>
 
