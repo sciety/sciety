@@ -29,8 +29,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "lint": "eslint . --ext .js,.ts",
-    "lint:fix": "eslint . --fix --ext .js,.ts",
+    "lint": "eslint . --ext .js,.ts --cache --cache-location .eslint/",
+    "lint:fix": "eslint . --fix --ext .js,.ts --cache --cache-location .eslint/",
     "start": "node ./build/index.js",
     "start:dev": "nodemon --exec 'node --require ts-node/register ./src/index.ts' --ext .js,.json,.ts",
     "test": "jest --silent"

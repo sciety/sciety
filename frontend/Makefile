@@ -15,11 +15,11 @@ prod: build
 
 lint: export TARGET = dev
 lint: build
-	$(DOCKER) run --rm $(IMAGE):$(IMAGE_TAG)-dev npm run lint
+	$(DOCKER) run --rm -v $(DATA_VOLUME)/.eslint:/app/.eslint $(IMAGE):$(IMAGE_TAG)-dev npm run lint
 
 lint\:fix: export TARGET = dev
 lint\:fix: build
-	$(DOCKER) run --rm -v $(DATA_VOLUME)/src:/app/src -v $(DATA_VOLUME)/test:/app/test $(IMAGE):$(IMAGE_TAG)-dev npm run lint:fix
+	$(DOCKER) run --rm -v $(DATA_VOLUME)/.eslint:/app/.eslint -v $(DATA_VOLUME)/src:/app/src -v $(DATA_VOLUME)/test:/app/test $(IMAGE):$(IMAGE_TAG)-dev npm run lint:fix
 
 test: export TARGET = dev
 test: build
