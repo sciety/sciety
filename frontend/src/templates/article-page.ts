@@ -5,8 +5,8 @@ import templateArticlePageHeader from './article-page-header';
 import { Article } from '../types/article';
 
 export default (article: Article): string => {
-  const reviewSummaries = templateListItems(article.reviews.map((review, index) => templateReviewSummary(review, `review-${index}`)));
-  const reviewSidebarItems = templateListItems(article.reviews.map((review) => templateReviewSidebarItem(review)));
+  const reviewSummaries = article.reviews.map((review, index) => templateReviewSummary(review, `review-${index}`));
+  const reviewSidebarItems = article.reviews.map((review) => templateReviewSidebarItem(review));
   return `<article>
 
     ${templateArticlePageHeader(article)}
@@ -25,7 +25,7 @@ export default (article: Article): string => {
           Review summaries
         </h2>
         <ol class="review-summary-list__list">
-          ${reviewSummaries}
+          ${templateListItems(reviewSummaries)}
         </ol>
       </section>
 
@@ -36,22 +36,22 @@ export default (article: Article): string => {
         ${article.reviews.length} peer reviews
       </h2>
       <ol>
-        ${reviewSidebarItems}
+        ${templateListItems(reviewSidebarItems)}
       </ol>
 
       <h2>
         Add a review
       </h2>
-  
+
       <form method="get" action="">
-  
+
         <label>
           DOI of the review
           <input type="text" name="review-doi">
         </label>
-  
+
         <input type="submit" value="Add review">
-  
+
       </form>
     </aside>
 
