@@ -5,8 +5,14 @@ import article1 from '../data/article1';
 import article2 from '../data/article2';
 import templateArticleTeaser from '../templates/article-teaser';
 import templatePage from '../templates/page';
+import templateListItems from '../templates/list-items';
 
 export default (): Handler<HTTPVersion.V1> => {
+  const articles = [
+    article1,
+    article2,
+  ];
+  const teasers = articles.map((article) => templateArticleTeaser(article, `/articles/${encodeURIComponent(article.doi)}`));
   const page = templatePage(`<main>
 
   <header class="content-header">
@@ -24,15 +30,7 @@ export default (): Handler<HTTPVersion.V1> => {
     </h2>
 
     <ol class="teaser-list__list">
-
-      <li>
-        ${templateArticleTeaser(article1, `/articles/${encodeURIComponent(article1.doi)}`)}
-      </li>
-
-      <li>
-        ${templateArticleTeaser(article2, `/articles/${encodeURIComponent(article2.doi)}`)}
-      </li>
-
+      ${templateListItems(teasers)}
     </ol>
 
   </section>
