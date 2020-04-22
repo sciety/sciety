@@ -41,7 +41,7 @@ describe('article handler', (): void => {
 
   describe('when the article does not exist', (): void => {
     beforeEach(async () => {
-      const fetchArticle: FetchArticle = () => undefined;
+      const fetchArticle: FetchArticle = () => { throw new Error(); };
       response = await request(createServer({ fetchArticle })).get('/articles/rubbish');
     });
 
