@@ -1,5 +1,5 @@
 import templateDate from './date';
-import { Review } from './types/review';
+import { Review } from '../types/review';
 
 export default (review: Review): string => (
   `<article>

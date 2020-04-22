@@ -2,7 +2,7 @@ import templateListItems from './list-items';
 import templateReviewSummary from './review-summary';
 import templateReviewSidebarItem from './review-sidebar-item';
 import templateArticlePageHeader from './article-page-header';
-import { Article } from './types/article';
+import { Article } from '../types/article';
 
 export default (article: Article): string => {
   const reviewSummaries = templateListItems(article.reviews.map((review, index) => templateReviewSummary(review, `review-${index}`)));

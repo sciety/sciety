@@ -1,6 +1,6 @@
 import article1 from '../data/article1';
 import article2 from '../data/article2';
-import { Article } from '../templates/types/article';
+import { Article } from '../types/article';
 
 export default (doi: string): Article | undefined => {
   const allArticles = [

@@ -1,6 +1,6 @@
 import templateDate from './date';
 import templateListItems from './list-items';
-import { Article } from './types/article';
+import { Article } from '../types/article';
 
 export default (article: Article): string => (
   `<header class="content-header">

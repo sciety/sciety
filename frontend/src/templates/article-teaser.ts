@@ -1,4 +1,4 @@
-import { Article } from './types/article';
+import { Article } from '../types/article';
 import templateDate from './date';
 import templateListItems from './list-items';
 
