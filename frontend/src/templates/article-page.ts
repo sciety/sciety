@@ -43,7 +43,9 @@ export default (reviewedArticle: ReviewedArticle): string => {
         Add a review
       </h2>
 
-      <form method="get" action="">
+      <form method="post" action="/reviews">
+
+        <input type="hidden" name="articledoi" value="${reviewedArticle.article.doi}">
 
         <label>
           DOI of the review
