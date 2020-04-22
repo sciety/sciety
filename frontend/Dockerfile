@@ -9,8 +9,7 @@ WORKDIR /app
 #
 FROM node AS npm-prod
 
-COPY jest.config.js \
-  package.json \
+COPY package.json \
   package-lock.json \
   ./
 
@@ -36,6 +35,7 @@ ENV DEBUG=http:*
 
 COPY .eslintignore \
  .eslintrc.js \
+ jest.config.js \
  tsconfig.json \
  tsconfig.lint.json \
  ./
