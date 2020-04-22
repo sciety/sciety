@@ -38,7 +38,21 @@ export default (article: Article): string => {
       <ol>
         ${reviewSidebarItems}
       </ol>
-      <a href="/add-review">Add a review</a>
+
+      <h2>
+        Add a review
+      </h2>
+  
+      <form method="get" action="">
+  
+        <label>
+          DOI of the review
+          <input type="text" name="review-doi">
+        </label>
+  
+        <input type="submit" value="Add review">
+  
+      </form>
     </aside>
 
   </article>`;

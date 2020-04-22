@@ -5,7 +5,6 @@ import createServer from '../src/server';
 describe('the application', (): void => {
   it.each([
     '/',
-    '/add-review',
     '/article1',
     '/article2',
     '/ping',
