@@ -47,7 +47,7 @@ export default (reviewedArticle: ReviewedArticle): string => {
 
         <label>
           DOI of the review
-          <input type="text" name="review-doi">
+          <input type="text" name="reviewdoi">
         </label>
 
         <input type="submit" value="Add review">

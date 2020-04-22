@@ -12,5 +12,6 @@ describe('reviews handler', (): void => {
       .post('/reviews')
       .send(`articledoi=${articleDoiParam}&reviewdoi=10.5281%2Fzenodo.3678326`);
     expect(response.status).toBe(CREATED);
+    expect(response.header.location).toBe(`/articles/${articleDoiParam}`);
   });
 });
