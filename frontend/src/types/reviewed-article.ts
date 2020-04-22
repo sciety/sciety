@@ -1,6 +1,6 @@
 import { Review } from './review';
 
-export interface Article {
+export interface ReviewedArticle {
   title: string;
   category: string;
   type: string;

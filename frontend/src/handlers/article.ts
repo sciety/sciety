@@ -4,7 +4,7 @@ import { INTERNAL_SERVER_ERROR, NOT_FOUND, OK } from 'http-status-codes';
 import { FetchArticle } from '../api/fetch-article';
 import templateArticlePage from '../templates/article-page';
 import templatePage from '../templates/page';
-import { Article } from '../types/article';
+import { ReviewedArticle } from '../types/reviewed-article';
 
 type ArticleParams = {
   [k: string]: string | undefined;
@@ -19,16 +19,16 @@ export default (fetchArticle: FetchArticle): Handler<HTTPVersion.V1> => (
     }
     const doi = decodeURIComponent(params.id);
     response.setHeader('Content-Type', 'text/html; charset=UTF-8');
-    let article: Article;
+    let reviewedArticle: ReviewedArticle;
     try {
-      article = fetchArticle(doi);
+      reviewedArticle = fetchArticle(doi);
     } catch (e) {
       response.writeHead(NOT_FOUND);
       response.end(`${doi} not found`);
       return;
     }
 
-    const page = templatePage(templateArticlePage(article));
+    const page = templatePage(templateArticlePage(reviewedArticle));
     response.writeHead(OK);
     response.end(page);
   }

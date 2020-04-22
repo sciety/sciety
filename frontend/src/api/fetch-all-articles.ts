@@ -1,8 +1,8 @@
 import article1 from '../data/article1';
 import article2 from '../data/article2';
-import { Article } from '../types/article';
+import { ReviewedArticle } from '../types/reviewed-article';
 
-export default (): Array<Article> => [
+export default (): Array<ReviewedArticle> => [
   article1,
   article2,
 ];

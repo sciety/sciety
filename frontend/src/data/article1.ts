@@ -1,6 +1,6 @@
-import { Article } from '../types/article';
+import { ReviewedArticle } from '../types/reviewed-article';
 
-const article: Article = {
+const article: ReviewedArticle = {
   title: `The ribosomal RNA m<sup>5</sup>C methyltransferase NSUN-1 modulates healthspan and oogenesis in 
 <i>Caenorhabditis elegans</i>`,
   category: 'Cell Biology',

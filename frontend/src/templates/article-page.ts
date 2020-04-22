@@ -2,14 +2,14 @@ import templateListItems from './list-items';
 import templateReviewSummary from './review-summary';
 import templateReviewSidebarItem from './review-sidebar-item';
 import templateArticlePageHeader from './article-page-header';
-import { Article } from '../types/article';
+import { ReviewedArticle } from '../types/reviewed-article';
 
-export default (article: Article): string => {
-  const reviewSummaries = article.reviews.map((review, index) => templateReviewSummary(review, `review-${index}`));
-  const reviewSidebarItems = article.reviews.map((review) => templateReviewSidebarItem(review));
+export default (reviewedArticle: ReviewedArticle): string => {
+  const reviewSummaries = reviewedArticle.reviews.map((review, index) => templateReviewSummary(review, `review-${index}`));
+  const reviewSidebarItems = reviewedArticle.reviews.map((review) => templateReviewSidebarItem(review));
   return `<article>
 
-    ${templateArticlePageHeader(article)}
+    ${templateArticlePageHeader(reviewedArticle)}
 
     <div class="content">
 
@@ -17,7 +17,7 @@ export default (article: Article): string => {
         <h2>
           Abstract
         </h2>
-        ${article.abstract}
+        ${reviewedArticle.abstract}
       </section>
 
       <section class="review-summary-list">
@@ -33,7 +33,7 @@ export default (article: Article): string => {
 
     <aside>
       <h2>
-        ${article.reviews.length} peer reviews
+        ${reviewedArticle.reviews.length} peer reviews
       </h2>
       <ol>
         ${templateListItems(reviewSidebarItems)}

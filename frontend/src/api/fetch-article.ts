@@ -1,15 +1,15 @@
 import article1 from '../data/article1';
 import article2 from '../data/article2';
-import { Article } from '../types/article';
+import { ReviewedArticle } from '../types/reviewed-article';
 
-export type FetchArticle = (doi: string) => Article;
+export type FetchArticle = (doi: string) => ReviewedArticle;
 
-export default (doi: string): Article => {
+export default (doi: string): ReviewedArticle => {
   const allArticles = [
     article1,
     article2,
   ];
-  const matches = allArticles.filter((article) => article.doi === doi);
+  const matches = allArticles.filter((reviewedArticle) => reviewedArticle.doi === doi);
   if (matches.length !== 1) {
     throw new Error(`Article DOI ${doi} not found`);
   }
