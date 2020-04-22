@@ -9,7 +9,7 @@ export default (reviewedArticle: ReviewedArticle): string => {
   const reviewSidebarItems = reviewedArticle.reviews.map((review) => templateReviewSidebarItem(review));
   return `<article>
 
-    ${templateArticlePageHeader(reviewedArticle)}
+    ${templateArticlePageHeader(reviewedArticle.article)}
 
     <div class="content">
 

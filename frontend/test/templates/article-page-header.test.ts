@@ -2,16 +2,13 @@ import templateArticlePageHeader from '../../src/templates/article-page-header';
 
 describe('article page header template', (): void => {
   const article = {
-    article: {
-      title: 'Something interesting',
-      category: 'Shoe trees',
-      type: 'Thing',
-      doi: '1234',
-      publicationDate: new Date('2009-11-28'),
-      abstract: 'Anything',
-      authors: ['Gary', 'Uncle Wiggly'],
-    },
-    reviews: [],
+    title: 'Something interesting',
+    category: 'Shoe trees',
+    type: 'Thing',
+    doi: '1234',
+    publicationDate: new Date('2009-11-28'),
+    abstract: 'Anything',
+    authors: ['Gary', 'Uncle Wiggly'],
   };
   let actual: string;
 
@@ -24,15 +21,15 @@ describe('article page header template', (): void => {
   });
 
   it('renders the article category', () => {
-    expect(actual).toEqual(expect.stringContaining(article.article.category));
+    expect(actual).toEqual(expect.stringContaining(article.category));
   });
 
   it('renders the article type', () => {
-    expect(actual).toEqual(expect.stringContaining(article.article.type));
+    expect(actual).toEqual(expect.stringContaining(article.type));
   });
 
   it('renders the article DOI', () => {
-    expect(actual).toEqual(expect.stringContaining(article.article.doi));
+    expect(actual).toEqual(expect.stringContaining(article.doi));
   });
 
   it('renders the article publication date', () => {
@@ -40,7 +37,7 @@ describe('article page header template', (): void => {
   });
 
   it('renders the article authors', () => {
-    article.article.authors.forEach((author) => {
+    article.authors.forEach((author) => {
       expect(actual).toEqual(expect.stringContaining(author));
     });
   });

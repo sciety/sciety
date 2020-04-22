@@ -1,33 +1,33 @@
 import templateDate from './date';
 import templateListItems from './list-items';
-import { ReviewedArticle } from '../types/reviewed-article';
+import { Article } from '../types/article';
 
-export default (reviewedArticle: ReviewedArticle): string => (
+export default (article: Article): string => (
   `<header class="content-header">
 
       <ol class="content-header__categories">
         <li aria-label="Article category">
-          ${reviewedArticle.article.category}
+          ${article.category}
         </li>
         <li aria-label="Article type">
-          ${reviewedArticle.article.type}
+          ${article.type}
         </li>
       </ol>
 
       <h1>
-        ${reviewedArticle.article.title}
+        ${article.title}
       </h1>
 
       <ol aria-label="Authors of this article" class="author-list">
-        ${templateListItems(reviewedArticle.article.authors)}
+        ${templateListItems(article.authors)}
       </ol>
 
       <ul aria-label="Publication details" class="content-header__details">
         <li>
-          DOI: <a href="https://doi.org/${reviewedArticle.article.doi}">${reviewedArticle.article.doi}</a>
+          DOI: <a href="https://doi.org/${article.doi}">${article.doi}</a>
         </li>
         <li>
-          Posted ${templateDate(reviewedArticle.article.publicationDate)}
+          Posted ${templateDate(article.publicationDate)}
         </li>
       </ul>
 
