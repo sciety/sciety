@@ -24,7 +24,7 @@ describe('article-teaser template', (): void => {
       },
     ],
   };
-  const articleLink = '/article1';
+  const articleLink = '/articles/10.5555%2F12345678';
 
   it('renders inside an article tag', async (): Promise<void> => {
     const actual = templateArticleTeaser(article, articleLink);
@@ -41,7 +41,7 @@ describe('article-teaser template', (): void => {
   it('renders the title as a link', () => {
     const actual = templateArticleTeaser(article, articleLink);
 
-    expect(actual).toEqual(expect.stringContaining(`<a href="/article1">${article.title}</a>`));
+    expect(actual).toEqual(expect.stringContaining(`<a href="/articles/10.5555%2F12345678">${article.title}</a>`));
   });
 
   it('renders the authors', () => {
