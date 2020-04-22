@@ -17,7 +17,7 @@ export default (reviewedArticle: ReviewedArticle): string => {
         <h2>
           Abstract
         </h2>
-        ${reviewedArticle.abstract}
+        ${reviewedArticle.article.abstract}
       </section>
 
       <section class="review-summary-list">

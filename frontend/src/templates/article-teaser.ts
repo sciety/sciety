@@ -6,15 +6,15 @@ export default (reviewedArticle: ReviewedArticle, articleLink: string): string =
   const lastReview = reviewedArticle.reviews[reviewedArticle.reviews.length - 1];
   return `<article class="teaser">
           <ol aria-label="Article categories" class="teaser__categories">
-            <li>${reviewedArticle.category}</li>
+            <li>${reviewedArticle.article.category}</li>
           </ol>
 
           <h3 class="teaser__title">
-            <a href="${articleLink}">${reviewedArticle.title}</a>
+            <a href="${articleLink}">${reviewedArticle.article.title}</a>
           </h3>
 
           <ol aria-label="Authors of this article" class="author-list">
-            ${templateListItems(reviewedArticle.authors)}
+            ${templateListItems(reviewedArticle.article.authors)}
           </ol>
 
           <ul aria-label="Review details" class="teaser__details">

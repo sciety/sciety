@@ -1,6 +1,6 @@
 import { Review } from './review';
 
-export interface ReviewedArticle {
+interface Article {
   title: string;
   category: string;
   type: string;
@@ -8,5 +8,9 @@ export interface ReviewedArticle {
   publicationDate: Date;
   abstract: string;
   authors: string[];
+}
+
+export interface ReviewedArticle {
+  article: Article;
   reviews: Review[];
 }

@@ -9,7 +9,7 @@ export default (doi: string): ReviewedArticle => {
     article1,
     article2,
   ];
-  const matches = allArticles.filter((reviewedArticle) => reviewedArticle.doi === doi);
+  const matches = allArticles.filter((reviewedArticle) => reviewedArticle.article.doi === doi);
   if (matches.length !== 1) {
     throw new Error(`Article DOI ${doi} not found`);
   }

@@ -12,13 +12,15 @@ describe('article handler', (): void => {
       const doiParam = encodeURIComponent(doi);
       const fetchArticle: FetchArticle = () => (
         {
-          category: 'Psychoceramics',
-          type: 'New Results',
-          doi,
-          title: 'The study of cracked pots',
-          abstract: 'More lorem ipsum',
-          authors: [],
-          publicationDate: new Date('2000-01-15'),
+          article: {
+            category: 'Psychoceramics',
+            type: 'New Results',
+            doi,
+            title: 'The study of cracked pots',
+            abstract: 'More lorem ipsum',
+            authors: [],
+            publicationDate: new Date('2000-01-15'),
+          },
           reviews: [],
         }
       );

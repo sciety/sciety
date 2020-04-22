@@ -7,7 +7,7 @@ import templateListItems from '../templates/list-items';
 import templatePage from '../templates/page';
 
 export default (): Handler<HTTPVersion.V1> => {
-  const teasers = fetchAllArticles().map((reviewedArticle) => templateArticleTeaser(reviewedArticle, `/articles/${encodeURIComponent(reviewedArticle.doi)}`));
+  const teasers = fetchAllArticles().map((reviewedArticle) => templateArticleTeaser(reviewedArticle, `/articles/${encodeURIComponent(reviewedArticle.article.doi)}`));
   const page = templatePage(`<main>
 
   <header class="content-header">
