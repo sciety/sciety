@@ -1,4 +1,4 @@
-import { CREATED } from 'http-status-codes';
+import { SEE_OTHER } from 'http-status-codes';
 import request from 'supertest';
 import { FetchArticle } from '../../src/api/fetch-article';
 import createServer from '../../src/server';
@@ -11,7 +11,7 @@ describe('reviews handler', (): void => {
     const response = await request(createServer({ fetchArticle }))
       .post('/reviews')
       .send(`articledoi=${articleDoiParam}&reviewdoi=10.5281%2Fzenodo.3678326`);
-    expect(response.status).toBe(CREATED);
+    expect(response.status).toBe(SEE_OTHER);
     expect(response.header.location).toBe(`/articles/${articleDoiParam}`);
   });
 });
