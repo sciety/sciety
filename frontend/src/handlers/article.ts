@@ -1,9 +1,9 @@
 import { Handler, HTTPVersion } from 'find-my-way';
 import { IncomingMessage, ServerResponse } from 'http';
-import { OK, NOT_FOUND, INTERNAL_SERVER_ERROR } from 'http-status-codes';
+import { INTERNAL_SERVER_ERROR, NOT_FOUND, OK } from 'http-status-codes';
+import fetchArticle from '../api/fetch-article';
 import templateArticlePage from '../templates/article-page';
 import templatePage from '../templates/page';
-import fetchArticle from './fetch-article';
 
 type ArticleParams = {
   [k: string]: string | undefined;
