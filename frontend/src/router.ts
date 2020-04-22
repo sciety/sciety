@@ -4,6 +4,7 @@ import { FetchArticle } from './api/fetch-article';
 import article from './handlers/article';
 import index from './handlers/index';
 import ping from './handlers/ping';
+import reviews from './handlers/reviews';
 
 type DefaultRoute = (request: IncomingMessage, response: ServerResponse) => void;
 
@@ -17,6 +18,7 @@ export default (defaultRoute: DefaultRoute, services: RouterServices): Router.In
   router.get('/ping', ping());
   router.get('/', index());
   router.get('/articles/:id', article(services.fetchArticle));
+  router.post('/reviews', reviews());
 
   return router;
 };
