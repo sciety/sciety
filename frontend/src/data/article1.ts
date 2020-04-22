@@ -1,4 +1,6 @@
-export default {
+import { Article } from '../types/article';
+
+const article: Article = {
   title: `The ribosomal RNA m<sup>5</sup>C methyltransferase NSUN-1 modulates healthspan and oogenesis in 
 <i>Caenorhabditis elegans</i>`,
   category: 'Cell Biology',
@@ -82,3 +84,5 @@ export default {
     },
   ],
 };
+
+export default article;

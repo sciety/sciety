@@ -1,4 +1,6 @@
-export default {
+import { Article } from '../types/article';
+
+const article: Article = {
   title: 'KAT2-mediated acetylation switches the mode of PALB2 chromatin association to safeguard genome integrity',
   category: 'Cell Biology',
   type: 'New Results',
@@ -86,3 +88,5 @@ PALB2 in DNA repair’.`,
     },
   ],
 };
+
+export default article;
