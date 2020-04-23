@@ -35,6 +35,6 @@
     "lint:fix": "eslint . --fix --ext .js,.ts --cache --cache-location .eslint/",
     "start": "node ./build/index.js",
     "start:dev": "nodemon --exec 'node --require ts-node/register ./src/index.ts' --ext .js,.json,.ts",
-    "test": "jest --silent"
+    "test": "jest --colors --runInBand"
   }
 }
