@@ -1,13 +1,11 @@
 import article3 from '../data/article3';
 import article4 from '../data/article4';
 import { ReviewedArticle } from '../types/reviewed-article';
-import createFetchReview from './fetch-review';
+import { FetchReview } from './fetch-review';
 
 export type FetchReviewedArticle = (doi: string) => ReviewedArticle;
 
-const fetchReview = createFetchReview();
-
-export default (): FetchReviewedArticle => (
+export default (fetchReview: FetchReview): FetchReviewedArticle => (
   (doi: string): ReviewedArticle => {
     const allArticles = [
       article3,
