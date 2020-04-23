@@ -1,12 +1,13 @@
 import { OK } from 'http-status-codes';
 import request, { Response } from 'supertest';
-import fetchReviewedArticle from '../../src/api/fetch-reviewed-article';
+import { FetchReviewedArticle } from '../../src/api/fetch-reviewed-article';
 import createServer from '../../src/server';
 
 describe('index handler', (): void => {
   let response: Response;
 
   beforeEach(async () => {
+    const fetchReviewedArticle: FetchReviewedArticle = () => { throw new Error('should never be called'); };
     response = await request(createServer({ fetchReviewedArticle })).get('/');
   });
 
