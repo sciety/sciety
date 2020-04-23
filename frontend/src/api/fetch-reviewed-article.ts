@@ -2,7 +2,7 @@ import article1 from '../data/article1';
 import article2 from '../data/article2';
 import { ReviewedArticle } from '../types/reviewed-article';
 
-export type FetchArticle = (doi: string) => ReviewedArticle;
+export type FetchReviewedArticle = (doi: string) => ReviewedArticle;
 
 export default (doi: string): ReviewedArticle => {
   const allArticles = [

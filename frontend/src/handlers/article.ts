@@ -1,7 +1,7 @@
 import { Handler, HTTPVersion } from 'find-my-way';
 import { IncomingMessage, ServerResponse } from 'http';
 import { INTERNAL_SERVER_ERROR, NOT_FOUND, OK } from 'http-status-codes';
-import { FetchArticle } from '../api/fetch-article';
+import { FetchReviewedArticle } from '../api/fetch-reviewed-article';
 import templateArticlePage from '../templates/article-page';
 import templatePage from '../templates/page';
 import { ReviewedArticle } from '../types/reviewed-article';
@@ -10,7 +10,7 @@ type ArticleParams = {
   [k: string]: string | undefined;
 };
 
-export default (fetchArticle: FetchArticle): Handler<HTTPVersion.V1> => (
+export default (fetchReviewedArticle: FetchReviewedArticle): Handler<HTTPVersion.V1> => (
   (request: IncomingMessage, response: ServerResponse, params: ArticleParams): void => {
     if (typeof params.id === 'undefined') {
       response.writeHead(INTERNAL_SERVER_ERROR);
@@ -21,7 +21,7 @@ export default (fetchArticle: FetchArticle): Handler<HTTPVersion.V1> => (
     response.setHeader('Content-Type', 'text/html; charset=UTF-8');
     let reviewedArticle: ReviewedArticle;
     try {
-      reviewedArticle = fetchArticle(doi);
+      reviewedArticle = fetchReviewedArticle(doi);
     } catch (e) {
       response.writeHead(NOT_FOUND);
       response.end(`${doi} not found`);

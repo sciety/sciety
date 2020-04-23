@@ -1,6 +1,6 @@
 import { NOT_FOUND, OK } from 'http-status-codes';
 import request, { Response } from 'supertest';
-import { FetchArticle } from '../../src/api/fetch-article';
+import { FetchReviewedArticle } from '../../src/api/fetch-reviewed-article';
 import createServer from '../../src/server';
 
 describe('article handler', (): void => {
@@ -10,7 +10,7 @@ describe('article handler', (): void => {
     beforeEach(async () => {
       const doi = '10.1101/2000.1234';
       const doiParam = encodeURIComponent(doi);
-      const fetchArticle: FetchArticle = () => (
+      const fetchReviewedArticle: FetchReviewedArticle = () => (
         {
           article: {
             category: 'Psychoceramics',
@@ -24,7 +24,7 @@ describe('article handler', (): void => {
           reviews: [],
         }
       );
-      response = await request(createServer({ fetchArticle })).get(`/articles/${doiParam}`);
+      response = await request(createServer({ fetchReviewedArticle })).get(`/articles/${doiParam}`);
     });
 
     it('returns a successful response', async (): Promise<void> => {
@@ -43,8 +43,8 @@ describe('article handler', (): void => {
 
   describe('when the article does not exist', (): void => {
     beforeEach(async () => {
-      const fetchArticle: FetchArticle = () => { throw new Error(); };
-      response = await request(createServer({ fetchArticle })).get('/articles/rubbish');
+      const fetchReviewedArticle: FetchReviewedArticle = () => { throw new Error(); };
+      response = await request(createServer({ fetchReviewedArticle })).get('/articles/rubbish');
     });
 
     it('returns a 404 response', async (): Promise<void> => {

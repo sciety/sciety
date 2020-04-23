@@ -9,14 +9,14 @@ type Services = {
   log?: Debugger;
 } & RouterServices;
 
-export default ({ log = debug('http:server'), fetchArticle }: Services): Server => {
+export default ({ log = debug('http:server'), fetchReviewedArticle }: Services): Server => {
   const requestLog = log.extend('request');
   const responseLog = log.extend('response');
 
   const defaultRoute = async (request: IncomingMessage, response: ServerResponse): Promise<void> => {
     await handler(request, response, { public: 'static' });
   };
-  const router = createRouter(defaultRoute, { fetchArticle });
+  const router = createRouter(defaultRoute, { fetchReviewedArticle });
 
   return createServer(async (request: IncomingMessage, response: ServerResponse): Promise<void> => {
     requestLog(`${request.method} ${request.url} HTTP/${request.httpVersion}`);

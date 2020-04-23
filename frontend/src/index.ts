@@ -1,13 +1,13 @@
 import { createTerminus, TerminusOptions } from '@godaddy/terminus';
 import debug from 'debug';
-import fetchArticle from './api/fetch-article';
+import fetchReviewedArticle from './api/fetch-reviewed-article';
 import createServer from './server';
 
 const log = debug('http:server');
 
 log('Starting server');
 
-const server = createServer({ log, fetchArticle });
+const server = createServer({ log, fetchReviewedArticle });
 
 const terminusOptions: TerminusOptions = {
   onShutdown: async (): Promise<void> => {
