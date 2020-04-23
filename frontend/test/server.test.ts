@@ -1,8 +1,7 @@
 import { OK } from 'http-status-codes';
 import request from 'supertest';
-import createFetchReviewedArticle from '../src/api/fetch-reviewed-article';
-import createFetchReview from '../src/api/fetch-review';
 import createServer from '../src/server';
+import shouldNotBeCalled from './should-not-be-called';
 
 describe('the application', (): void => {
   it.each([
@@ -10,7 +9,7 @@ describe('the application', (): void => {
     '/ping',
   ])('should respond with 200 OK on %s', async (path: string): Promise<void> => {
     const response = await request(createServer({
-      fetchReviewedArticle: createFetchReviewedArticle(createFetchReview()),
+      fetchReviewedArticle: shouldNotBeCalled,
     })).get(path);
 
     expect(response.status).toBe(OK);
