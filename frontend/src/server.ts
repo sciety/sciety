@@ -9,7 +9,6 @@ type Services = {
   log?: Debugger;
 } & RouterServices;
 
-// check what to pass in?
 export default ({ log = debug('http:server'), fetchReviewedArticle }: Services): Server => {
   const requestLog = log.extend('request');
   const responseLog = log.extend('response');
