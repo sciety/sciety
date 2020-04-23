@@ -1,7 +1,7 @@
 import createFetchReview from '../../src/api/fetch-review';
 import article3 from '../../src/data/article3';
 
-describe('fetch-review "api"', (): void => {
+describe('fetch-review', (): void => {
   describe('review found', (): void => {
     it('returns the review', () => {
       const fetchReview = createFetchReview();

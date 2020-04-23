@@ -3,7 +3,7 @@ import { FetchReview } from '../../src/api/fetch-review';
 import article3 from '../../src/data/article3';
 import shouldNotBeCalled from '../should-not-be-called';
 
-describe('fetch-reviewed-article "api"', (): void => {
+describe('fetch-reviewed-article', (): void => {
   describe('article found', (): void => {
     const fetchReview: FetchReview = (doi) => ({
       author: 'John Doe',
