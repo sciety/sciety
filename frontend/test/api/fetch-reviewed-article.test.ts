@@ -22,6 +22,7 @@ describe('fetch-reviewed-article "api"', (): void => {
 
   describe('article not found', (): void => {
     it('throws an error', () => {
+      const fetchReview = () => { throw new Error('should not be called'); };
       const fetchReviewedArticle = createFetchReviewedArticle(fetchReview);
       expect(() => fetchReviewedArticle('10.1234/5678')).toThrow(new Error('Article DOI 10.1234/5678 not found'));
     });
