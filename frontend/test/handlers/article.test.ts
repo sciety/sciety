@@ -2,6 +2,7 @@ import { NOT_FOUND, OK } from 'http-status-codes';
 import request, { Response } from 'supertest';
 import { FetchReviewedArticle } from '../../src/api/fetch-reviewed-article';
 import createServer from '../../src/server';
+import shouldNotBeCalled from '../should-not-be-called';
 
 describe('article handler', (): void => {
   let response: Response;
@@ -43,7 +44,7 @@ describe('article handler', (): void => {
 
   describe('when the article does not exist', (): void => {
     beforeEach(async () => {
-      const fetchReviewedArticle: FetchReviewedArticle = () => { throw new Error(); };
+      const fetchReviewedArticle: FetchReviewedArticle = shouldNotBeCalled;
       response = await request(createServer({ fetchReviewedArticle })).get('/articles/rubbish');
     });
 
