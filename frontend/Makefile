@@ -3,7 +3,7 @@ DATA_VOLUME := $(shell pwd)
 IMAGE := liberoadmin/prc-frontend
 IMAGE_TAG := local
 
-.PHONY: build dev install lint* prod test
+.PHONY: build clean dev install lint* prod test
 
 dev: export TARGET = dev
 dev: install build
@@ -36,3 +36,6 @@ install: node_modules
 node_modules: package.json package-lock.json
 	npm install
 	touch node_modules
+
+clean:
+	rm -rf .eslint .jest build node_modules
