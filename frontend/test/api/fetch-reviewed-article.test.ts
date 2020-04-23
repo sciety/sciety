@@ -3,7 +3,7 @@ import createFetchReviewedArticle from '../../src/api/fetch-reviewed-article';
 describe('fetch-reviewed-article "api"', (): void => {
   it('article found', () => {
     const fetchReviewedArticle = createFetchReviewedArticle();
-    const articleDoi = '10.1101/2020.03.16.993469';
+    const articleDoi = '10.1101/833392';
     const reviewedArticle = fetchReviewedArticle(articleDoi);
     expect(reviewedArticle.article.doi).toBe(articleDoi);
   });
