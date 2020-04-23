@@ -124,7 +124,6 @@ broadly acting antiviral therapeutics against SARS-CoV-2 and other deadly corona
   reviews: [
     {
       author: 'Craig McCormick',
-      url: 'https://doi.org/10.5281/zenodo.3756961',
       doi: '10.5281/zenodo.3756961',
       publicationDate: new Date('April 18, 2020'),
       summary: `<p>The current COVID-19 pandemic has motivated a worldwide effort to discover and develop vaccines and

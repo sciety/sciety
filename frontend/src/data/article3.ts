@@ -32,7 +32,6 @@ Gram-negative pathogens, revealing the broad-spectrum therapeutic potential for 
   reviews: [
     {
       author: 'Craig McCormick',
-      url: 'https://doi.org/10.5281/zenodo.3678325',
       doi: '10.5281/zenodo.3678325',
       publicationDate: new Date('2020-02-21'),
       summary: `<p>In this study, Farha, et al. investigate candidate antibiotics from <em>Cannabis sativa</em>.

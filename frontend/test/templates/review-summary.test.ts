@@ -5,7 +5,7 @@ describe('review-summary template', (): void => {
     author: 'John Doe',
     publicationDate: new Date('2010-02-01'),
     summary: 'Pretty good.',
-    url: 'https://example.com/some-review',
+    doi: '1234',
   };
   const idNamespace = 'review-42';
 
@@ -24,7 +24,7 @@ describe('review-summary template', (): void => {
   it('renders the link to a full review', () => {
     const actual = templateReviewSummary(review, idNamespace);
 
-    expect(actual).toEqual(expect.stringContaining(`href="${review.url}"`));
+    expect(actual).toEqual(expect.stringContaining(`href="https://doi.org/${review.doi}"`));
   });
 
   it('renders the author', () => {

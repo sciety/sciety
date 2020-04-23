@@ -16,13 +16,13 @@ describe('article-teaser template', (): void => {
         publicationDate: new Date('2000-02-01'),
         author: 'Alice',
         summary: 'Lorem ipsum',
-        url: 'https://example.com/a-review',
+        doi: '1234',
       },
       {
         publicationDate: new Date('2000-03-04'),
         author: 'Bob',
         summary: 'Sit amet',
-        url: 'https://example.com/b-review',
+        doi: '1234',
       },
     ],
   };

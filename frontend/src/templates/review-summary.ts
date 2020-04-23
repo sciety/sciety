@@ -8,7 +8,7 @@ export default (review: Review, idNamespace: string): string => (
     on ${templateDate(review.publicationDate)}
   </h3>
   ${review.summary}
-  <a href="${review.url}" class="review-summary__link" id="${idNamespace}-read-more"
+  <a href="https://doi.org/${review.doi}" class="review-summary__link" id="${idNamespace}-read-more"
     aria-labelledby="${idNamespace}-read-more ${idNamespace}-author">
     Read the full review
   </a>
