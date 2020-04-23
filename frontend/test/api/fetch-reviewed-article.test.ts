@@ -1,19 +1,24 @@
 import createFetchReviewedArticle from '../../src/api/fetch-reviewed-article';
-import createFetchReview from '../../src/api/fetch-review';
+import { FetchReview } from '../../src/api/fetch-review';
 import article3 from '../../src/data/article3';
 import shouldNotBeCalled from '../should-not-be-called';
 
 describe('fetch-reviewed-article "api"', (): void => {
   describe('article found', (): void => {
+    const fetchReview: FetchReview = (doi) => ({
+      author: 'John Doe',
+      publicationDate: new Date('2010-02-01'),
+      summary: 'Pretty good.',
+      doi,
+    });
+
     it('includes the article', () => {
-      const fetchReview = createFetchReview();
       const fetchReviewedArticle = createFetchReviewedArticle(fetchReview);
       const reviewedArticle = fetchReviewedArticle(article3.article.doi);
       expect(reviewedArticle.article.doi).toBe(article3.article.doi);
     });
 
     it('includes the reviews', () => {
-      const fetchReview = createFetchReview();
       const fetchReviewedArticle = createFetchReviewedArticle(fetchReview);
       const reviewedArticle = fetchReviewedArticle(article3.article.doi);
       expect(reviewedArticle.reviews).toHaveLength(1);
@@ -23,8 +28,7 @@ describe('fetch-reviewed-article "api"', (): void => {
 
   describe('article not found', (): void => {
     it('throws an error', () => {
-      const fetchReview = shouldNotBeCalled;
-      const fetchReviewedArticle = createFetchReviewedArticle(fetchReview);
+      const fetchReviewedArticle = createFetchReviewedArticle(shouldNotBeCalled);
       expect(() => fetchReviewedArticle('10.1234/5678')).toThrow(new Error('Article DOI 10.1234/5678 not found'));
     });
   });
