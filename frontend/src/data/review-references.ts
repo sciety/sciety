@@ -17,8 +17,10 @@ export interface ReviewReferenceRepository {
   findReviewDoisForArticleDoi(articleDoi: string): Array<string>;
 }
 
-export default const reviewReferenceRepository: ReviewReferenceRepository = {
+const reviewReferenceRepository: ReviewReferenceRepository = {
   findReviewDoisForArticleDoi: (articleDoi) => (
     reviewReferences.filter((reference) => reference.articleDoi === articleDoi).map((reference) => reference.reviewDoi)
   ),
 };
+
+export default reviewReferenceRepository;
