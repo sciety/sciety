@@ -19,17 +19,16 @@ export default (fetchDataset: FetchDataset): FetchReview => (
       throw new Error(`Review DOI ${doi} not found`);
     }
 
-
     const reviewIri = namedNode(`https://doi.org/${doi}`);
     const dataset = await fetchDataset(reviewIri);
-    const [datePublished] = dataset.match(
-      reviewIri,
-      schema.datePublished,
-    );
+
+    const [datePublished] = dataset.match(reviewIri, schema.datePublished);
+    const [summary] = dataset.match(reviewIri, schema.description);
 
     return {
       ...foundReview,
       publicationDate: new Date(datePublished.object.value),
+      summary: summary.object.value,
     };
   }
 );

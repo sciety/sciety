@@ -10,11 +10,8 @@ describe('fetch-review', (): void => {
   describe('review found', (): void => {
     it('returns the review', async () => {
       const fetchDataset: FetchDataset = async (iri) => datasetFactory([
-        quad(
-          iri,
-          schema.datePublished,
-          literal('2020-02-20'),
-        ),
+        quad(iri, schema.datePublished, literal('2020-02-20')),
+        quad(iri, schema.description, literal('A summary')),
       ]);
       const fetchReview = createFetchReview(fetchDataset);
       const review = await fetchReview(article3.reviews[0].doi);
