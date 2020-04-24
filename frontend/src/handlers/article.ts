@@ -11,7 +11,7 @@ type ArticleParams = {
 };
 
 export default (fetchReviewedArticle: FetchReviewedArticle): Handler<HTTPVersion.V1> => (
-  (request: IncomingMessage, response: ServerResponse, params: ArticleParams): void => {
+  async (request: IncomingMessage, response: ServerResponse, params: ArticleParams): Promise<void> => {
     if (typeof params.id === 'undefined') {
       response.writeHead(INTERNAL_SERVER_ERROR);
       response.end('DOI `id` parameter not present');
@@ -21,7 +21,7 @@ export default (fetchReviewedArticle: FetchReviewedArticle): Handler<HTTPVersion
     response.setHeader('Content-Type', 'text/html; charset=UTF-8');
     let reviewedArticle: ReviewedArticle;
     try {
-      reviewedArticle = fetchReviewedArticle(doi);
+      reviewedArticle = await fetchReviewedArticle(doi);
     } catch (e) {
       response.writeHead(NOT_FOUND);
       response.end(`${doi} not found`);

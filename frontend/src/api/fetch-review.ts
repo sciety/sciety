@@ -2,10 +2,10 @@ import article3 from '../data/article3';
 import article4 from '../data/article4';
 import { Review } from '../types/review';
 
-export type FetchReview = (doi: string) => Review;
+export type FetchReview = (doi: string) => Promise<Review>;
 
 export default (): FetchReview => (
-  (doi: string): Review => {
+  async (doi: string): Promise<Review> => {
     const allReviews = [
       ...article3.reviews,
       ...article4.reviews,

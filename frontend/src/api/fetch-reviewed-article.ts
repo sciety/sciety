@@ -3,10 +3,10 @@ import article4 from '../data/article4';
 import { ReviewedArticle } from '../types/reviewed-article';
 import { FetchReview } from './fetch-review';
 
-export type FetchReviewedArticle = (doi: string) => ReviewedArticle;
+export type FetchReviewedArticle = (doi: string) => Promise<ReviewedArticle>;
 
 export default (fetchReview: FetchReview): FetchReviewedArticle => (
-  (doi: string): ReviewedArticle => {
+  async (doi: string): Promise<ReviewedArticle> => {
     const allArticles = [
       article3,
       article4,
@@ -30,7 +30,7 @@ export default (fetchReview: FetchReview): FetchReviewedArticle => (
 
     return {
       article: reviewedArticle.article,
-      reviews: allReviewedArticles[doi].map(fetchReview),
+      reviews: await Promise.all(allReviewedArticles[doi].map(fetchReview)),
     };
   }
 );

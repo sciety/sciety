@@ -11,7 +11,7 @@ describe('article handler', (): void => {
     beforeEach(async () => {
       const doi = '10.1101/2000.1234';
       const doiParam = encodeURIComponent(doi);
-      const fetchReviewedArticle: FetchReviewedArticle = () => (
+      const fetchReviewedArticle: FetchReviewedArticle = async () => (
         {
           article: {
             category: 'Psychoceramics',
