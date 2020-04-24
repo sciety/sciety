@@ -1,6 +1,7 @@
 import { OK } from 'http-status-codes';
 import request, { Response } from 'supertest';
 import { FetchReviewedArticle } from '../../src/api/fetch-reviewed-article';
+import reviewReferenceRepository from '../../src/data/review-references';
 import createServer from '../../src/server';
 import shouldNotBeCalled from '../should-not-be-called';
 
@@ -9,7 +10,7 @@ describe('index handler', (): void => {
 
   beforeEach(async () => {
     const fetchReviewedArticle: FetchReviewedArticle = shouldNotBeCalled;
-    response = await request(createServer({ fetchReviewedArticle })).get('/');
+    response = await request(createServer({ fetchReviewedArticle, reviewReferenceRepository })).get('/');
   });
 
   it('returns a successful response', async (): Promise<void> => {

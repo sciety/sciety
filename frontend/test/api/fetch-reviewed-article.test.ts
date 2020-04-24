@@ -1,5 +1,5 @@
-import createFetchReviewedArticle from '../../src/api/fetch-reviewed-article';
 import { FetchReview } from '../../src/api/fetch-review';
+import createFetchReviewedArticle from '../../src/api/fetch-reviewed-article';
 import article3 from '../../src/data/article3';
 import ReviewReferenceRepository from '../../src/types/review-reference-repository';
 import shouldNotBeCalled from '../should-not-be-called';
@@ -7,6 +7,7 @@ import shouldNotBeCalled from '../should-not-be-called';
 describe('fetch-reviewed-article', (): void => {
   describe('article found', (): void => {
     const reviewReferenceRepository: ReviewReferenceRepository = {
+      add: shouldNotBeCalled,
       findReviewDoisForArticleDoi: () => [article3.reviews[0].doi],
     };
 
@@ -33,6 +34,7 @@ describe('fetch-reviewed-article', (): void => {
 
   describe('article not found', (): void => {
     const reviewReferenceRepository: ReviewReferenceRepository = {
+      add: shouldNotBeCalled,
       findReviewDoisForArticleDoi: () => [],
     };
 
