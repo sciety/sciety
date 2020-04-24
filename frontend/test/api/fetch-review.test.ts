@@ -1,15 +1,17 @@
 import { namedNode } from '@rdfjs/data-model';
-import fetch from '@rdfjs/fetch';
-import formats from '@rdfjs/formats-common';
+import fetch from '@rdfjs/fetch-lite';
 import JsonLdParser from '@rdfjs/parser-jsonld';
+import SinkMap from '@rdfjs/sink-map';
+import { EventEmitter } from 'events';
 import datasetFactory from 'rdf-dataset-indexed';
-import { DatasetCore } from 'rdf-js';
+import { DatasetCore, Stream } from 'rdf-js';
 import createFetchReview from '../../src/api/fetch-review';
 import article3 from '../../src/data/article3';
 
 describe('fetch-review', (): void => {
-  formats.parsers.set('application/vnd.schemaorg.ld+json', new JsonLdParser());
-  const fetchOptions = { factory: { dataset: datasetFactory }, formats };
+  const parsers = new SinkMap<EventEmitter, Stream>();
+  parsers.set('application/vnd.schemaorg.ld+json', new JsonLdParser());
+  const fetchOptions = { factory: { dataset: datasetFactory }, formats: { parsers } };
 
   describe('review found', (): void => {
     it('returns the review', async () => {
