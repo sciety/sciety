@@ -1,15 +1,15 @@
-import debug from 'debug';
 import fetch from '@rdfjs/fetch-lite';
 import JsonLdParser from '@rdfjs/parser-jsonld';
 import SinkMap from '@rdfjs/sink-map';
 import { EventEmitter } from 'events';
 import datasetFactory from 'rdf-dataset-indexed';
 import { DatasetCore, NamedNode, Stream } from 'rdf-js';
+import createLogger from '../logger';
 
 export type FetchDataset = (iri: NamedNode) => Promise<DatasetCore>;
 
 export default (): FetchDataset => {
-  const log = debug('app:api:fetch-dataset');
+  const log = createLogger('api:fetch-dataset');
   const factory = { dataset: datasetFactory };
   const parsers = new SinkMap<EventEmitter, Stream>();
   parsers.set('application/vnd.schemaorg.ld+json', new JsonLdParser());

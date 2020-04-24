@@ -1,21 +1,21 @@
 import { createTerminus, TerminusOptions } from '@godaddy/terminus';
-import debug from 'debug';
 import createFetchDataset from './api/fetch-dataset';
-import createFetchReviewedArticle from './api/fetch-reviewed-article';
 import createFetchReview from './api/fetch-review';
+import createFetchReviewedArticle from './api/fetch-reviewed-article';
+import createLogger from './logger';
 import createServer from './server';
 
-const log = debug('app:server');
+const log = createLogger();
 
 log('Starting server');
 
 const fetchReviewedArticle = createFetchReviewedArticle(createFetchReview(createFetchDataset()));
 
-const server = createServer({ log, fetchReviewedArticle });
+const server = createServer({ fetchReviewedArticle });
 
 const terminusOptions: TerminusOptions = {
   onShutdown: async (): Promise<void> => {
-    log('Server shutting down');
+    log('Shutting server down');
   },
   onSignal: async (): Promise<void> => {
     log('Signal received');
@@ -25,6 +25,4 @@ const terminusOptions: TerminusOptions = {
 
 createTerminus(server, terminusOptions);
 
-server.listen(80, (): void => {
-  log('Server running');
-});
+server.listen(80);

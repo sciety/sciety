@@ -31,7 +31,7 @@ RUN npm install
 #
 FROM node AS dev
 ENV NODE_ENV=development
-ENV DEBUG=app:*
+ENV DEBUG=app,app:*
 
 COPY .eslintignore \
  .eslintrc.js \
@@ -63,7 +63,7 @@ RUN npm run build
 #
 FROM node AS prod
 ENV NODE_ENV=production
-ENV DEBUG=app:*
+ENV DEBUG=app,app:*
 
 COPY --from=npm-prod /app/ .
 COPY --from=build-prod /app/build/ build/
