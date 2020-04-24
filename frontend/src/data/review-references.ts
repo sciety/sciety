@@ -1,6 +1,7 @@
 import { article3, article4 } from './article-dois';
 import { article3Review1, article4Review1 } from './review-dois';
 import ReviewReference from '../types/review-reference';
+import ReviewReferenceRepository from '../types/review-reference-repositories';
 
 const reviewReferences: Array<ReviewReference> = [
   {
@@ -12,10 +13,6 @@ const reviewReferences: Array<ReviewReference> = [
     reviewDoi: article4Review1,
   },
 ];
-
-export interface ReviewReferenceRepository {
-  findReviewDoisForArticleDoi(articleDoi: string): Array<string>;
-}
 
 const reviewReferenceRepository: ReviewReferenceRepository = {
   findReviewDoisForArticleDoi: (articleDoi) => (
