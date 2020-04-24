@@ -1,10 +1,13 @@
+import { namedNode } from '@rdfjs/data-model';
+import { schema } from '@tpluscode/rdf-ns-builders';
 import article3 from '../data/article3';
 import article4 from '../data/article4';
+import { FetchDataset } from './fetch-dataset';
 import { Review } from '../types/review';
 
 export type FetchReview = (doi: string) => Promise<Review>;
 
-export default (): FetchReview => (
+export default (fetchDataset: FetchDataset): FetchReview => (
   async (doi: string): Promise<Review> => {
     const allReviews = [
       ...article3.reviews,
@@ -16,6 +19,17 @@ export default (): FetchReview => (
       throw new Error(`Review DOI ${doi} not found`);
     }
 
-    return foundReview;
+
+    const reviewIri = namedNode(`https://doi.org/${doi}`);
+    const dataset = await fetchDataset(reviewIri);
+    const [datePublished] = dataset.match(
+      reviewIri,
+      schema.datePublished,
+    );
+
+    return {
+      ...foundReview,
+      publicationDate: new Date(datePublished.object.value),
+    };
   }
 );
