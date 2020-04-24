@@ -5,7 +5,7 @@ import createFetchReviewedArticle from './api/fetch-reviewed-article';
 import createFetchReview from './api/fetch-review';
 import createServer from './server';
 
-const log = debug('http:server');
+const log = debug('app:server');
 
 log('Starting server');
 
