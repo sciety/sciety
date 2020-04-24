@@ -14,8 +14,7 @@ export default (fetchDataset: FetchDataset): FetchReview => (
       ...article4.reviews,
     ];
 
-    const foundReview = allReviews.find((review) => review.doi === doi);
-    if (!foundReview) {
+    if (!allReviews.find((review) => review.doi === doi)) {
       throw new Error(`Review DOI ${doi} not found`);
     }
 
@@ -28,8 +27,8 @@ export default (fetchDataset: FetchDataset): FetchReview => (
     const [summary] = dataset.match(reviewIri, schema.description);
 
     return {
-      ...foundReview,
       author: author.object.value,
+      doi,
       publicationDate: new Date(datePublished.object.value),
       summary: summary.object.value,
     };
