@@ -1,7 +1,7 @@
 import { article3, article4 } from './article-dois';
 import { article3Review1, article4Review1 } from './review-dois';
 import ReviewReference from '../types/review-reference';
-import ReviewReferenceRepository from '../types/review-reference-repositories';
+import ReviewReferenceRepository from '../types/review-reference-repository';
 
 const reviewReferences: Array<ReviewReference> = [
   {
