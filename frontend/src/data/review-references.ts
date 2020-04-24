@@ -1,14 +1,15 @@
 import { article3, article4 } from './article-dois';
+import { article3Review1, article4Review1 } from './review-dois';
 import ReviewReference from '../types/review-reference';
 
 const reviewReferences: Array<ReviewReference> = [
   {
     articleDoi: article3,
-    reviewDoi: '10.5281/zenodo.3678325',
+    reviewDoi: article3Review1,
   },
   {
     articleDoi: article4,
-    reviewDoi: '10.5281/zenodo.3756961',
+    reviewDoi: article4Review1,
   },
 ];
 

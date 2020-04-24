@@ -1,4 +1,5 @@
 import { article3 } from './article-dois';
+import { article3Review1 } from './review-dois';
 import { ReviewedArticle } from '../types/reviewed-article';
 
 const article: ReviewedArticle = {
@@ -33,7 +34,7 @@ Gram-negative pathogens, revealing the broad-spectrum therapeutic potential for 
   reviews: [
     {
       author: 'Craig McCormick',
-      doi: '10.5281/zenodo.3678325',
+      doi: article3Review1,
       publicationDate: new Date('2020-02-21'),
       summary: `<p>In this study, Farha, et al. investigate candidate antibiotics from <em>Cannabis sativa</em>.
 Eighteen molecules from <em>C. sativa</em> were screened for antibiotic activity against methicillin-resistant

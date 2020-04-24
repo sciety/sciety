@@ -1,4 +1,5 @@
 import { article4 } from './article-dois';
+import { article4Review1 } from './review-dois';
 import { ReviewedArticle } from '../types/reviewed-article';
 
 const article: ReviewedArticle = {
@@ -125,7 +126,7 @@ broadly acting antiviral therapeutics against SARS-CoV-2 and other deadly corona
   reviews: [
     {
       author: 'Craig McCormick',
-      doi: '10.5281/zenodo.3756961',
+      doi: article4Review1,
       publicationDate: new Date('April 18, 2020'),
       summary: `<p>The current COVID-19 pandemic has motivated a worldwide effort to discover and develop vaccines and
 antivirals for SARS-CoV-2. In this manuscript, Gordon et al. aim report on the protein-protein interactome between
