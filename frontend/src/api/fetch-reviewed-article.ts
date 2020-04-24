@@ -1,3 +1,4 @@
+import reviewReferenceRepository from '../data/review-references';
 import article3 from '../data/article3';
 import article4 from '../data/article4';
 import { ReviewedArticle } from '../types/reviewed-article';
@@ -12,9 +13,10 @@ export default (fetchReview: FetchReview): FetchReviewedArticle => (
       article4,
     ];
 
+
     const allReviewedArticles = {
-      [article3.article.doi]: article3.reviews.map((review) => review.doi),
-      [article4.article.doi]: article4.reviews.map((review) => review.doi),
+      [article3.article.doi]: reviewReferenceRepository.findReviewDoisForArticleDoi(article3.article.doi),
+      [article4.article.doi]: reviewReferenceRepository.findReviewDoisForArticleDoi(article4.article.doi),
     };
 
     if (!(doi in allReviewedArticles)) {

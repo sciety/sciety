@@ -13,4 +13,12 @@ const reviewReferences: Array<ReviewReference> = [
   },
 ];
 
-export default reviewReferences;
+export interface ReviewReferenceRepository {
+  findReviewDoisForArticleDoi(articleDoi: string): Array<string>;
+}
+
+export default const reviewReferenceRepository: ReviewReferenceRepository = {
+  findReviewDoisForArticleDoi: (articleDoi) => (
+    reviewReferences.filter((reference) => reference.articleDoi === articleDoi).map((reference) => reference.reviewDoi)
+  ),
+};
