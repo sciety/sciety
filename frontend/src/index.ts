@@ -14,7 +14,7 @@ const fetchDataset = createFetchDataset();
 const fetchReview = createFetchReview(fetchDataset);
 const fetchReviewedArticle = createFetchReviewedArticle(reviewReferenceRepository, fetchReview);
 
-const server = createServer({ fetchReviewedArticle });
+const server = createServer({ fetchReviewedArticle, reviewReferenceRepository });
 
 const terminusOptions: TerminusOptions = {
   onShutdown: async (): Promise<void> => {

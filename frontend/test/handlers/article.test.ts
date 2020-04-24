@@ -1,6 +1,7 @@
 import { NOT_FOUND, OK } from 'http-status-codes';
 import request, { Response } from 'supertest';
 import { FetchReviewedArticle } from '../../src/api/fetch-reviewed-article';
+import reviewReferenceRepository from '../../src/data/review-references';
 import createServer from '../../src/server';
 import shouldNotBeCalled from '../should-not-be-called';
 
@@ -25,7 +26,8 @@ describe('article handler', (): void => {
           reviews: [],
         }
       );
-      response = await request(createServer({ fetchReviewedArticle })).get(`/articles/${doiParam}`);
+      const server = createServer({ fetchReviewedArticle, reviewReferenceRepository });
+      response = await request(server).get(`/articles/${doiParam}`);
     });
 
     it('returns a successful response', async (): Promise<void> => {
@@ -45,7 +47,7 @@ describe('article handler', (): void => {
   describe('when the article does not exist', (): void => {
     beforeEach(async () => {
       const fetchReviewedArticle: FetchReviewedArticle = shouldNotBeCalled;
-      response = await request(createServer({ fetchReviewedArticle })).get('/articles/rubbish');
+      response = await request(createServer({ fetchReviewedArticle, reviewReferenceRepository })).get('/articles/rubbish');
     });
 
     it('returns a 404 response', async (): Promise<void> => {
