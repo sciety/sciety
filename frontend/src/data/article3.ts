@@ -1,3 +1,4 @@
+import { article3 } from './article-dois';
 import { ReviewedArticle } from '../types/reviewed-article';
 
 const article: ReviewedArticle = {
@@ -16,7 +17,7 @@ const article: ReviewedArticle = {
       'Jakob Magolan',
       'Eric D. Brown',
     ],
-    doi: '10.1101/833392',
+    doi: article3,
     publicationDate: new Date('2019-11-07'),
     abstract: `<p>The spread of antimicrobial resistance continues to be a priority health concern worldwide,
 necessitating exploration of alternative therapies. <em>Cannabis sativa</em> has long been known to contain

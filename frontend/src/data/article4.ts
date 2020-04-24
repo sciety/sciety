@@ -1,3 +1,4 @@
+import { article4 } from './article-dois';
 import { ReviewedArticle } from '../types/reviewed-article';
 
 const article: ReviewedArticle = {
@@ -107,7 +108,7 @@ const article: ReviewedArticle = {
       'Brian K. Shoichet',
       'Nevan J. Krogan',
     ],
-    doi: '10.1101/2020.03.22.002386',
+    doi: article4,
     publicationDate: new Date('March 22, 2020'),
     abstract: `<p>An outbreak of the novel coronavirus SARS-CoV-2, the causative agent of COVID-19 respiratory disease,
 has infected over 290,000 people since the end of 2019, killed over 12,000, and caused worldwide social and economic
