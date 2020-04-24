@@ -1,11 +1,15 @@
 import createFetchReviewedArticle from '../../src/api/fetch-reviewed-article';
 import { FetchReview } from '../../src/api/fetch-review';
 import article3 from '../../src/data/article3';
-import reviewReferenceRepository from '../../src/data/review-references';
+import ReviewReferenceRepository from '../../src/types/review-reference-repository';
 import shouldNotBeCalled from '../should-not-be-called';
 
 describe('fetch-reviewed-article', (): void => {
   describe('article found', (): void => {
+    const reviewReferenceRepository: ReviewReferenceRepository = {
+      findReviewDoisForArticleDoi: () => [article3.reviews[0].doi],
+    };
+
     const fetchReview: FetchReview = async (doi) => ({
       author: 'John Doe',
       publicationDate: new Date('2010-02-01'),
@@ -28,6 +32,10 @@ describe('fetch-reviewed-article', (): void => {
   });
 
   describe('article not found', (): void => {
+    const reviewReferenceRepository: ReviewReferenceRepository = {
+      findReviewDoisForArticleDoi: () => [],
+    };
+
     it('throws an error', () => {
       const fetchReviewedArticle = createFetchReviewedArticle(reviewReferenceRepository, shouldNotBeCalled);
       expect(fetchReviewedArticle('10.1234/5678')).rejects.toStrictEqual(new Error('Article DOI 10.1234/5678 not found'));
