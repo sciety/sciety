@@ -22,11 +22,14 @@ export default (fetchDataset: FetchDataset): FetchReview => (
     const reviewIri = namedNode(`https://doi.org/${doi}`);
     const dataset = await fetchDataset(reviewIri);
 
+    const [{ object: authorIri }] = dataset.match(reviewIri, schema.author);
+    const [author] = dataset.match(authorIri, schema.name);
     const [datePublished] = dataset.match(reviewIri, schema.datePublished);
     const [summary] = dataset.match(reviewIri, schema.description);
 
     return {
       ...foundReview,
+      author: author.object.value,
       publicationDate: new Date(datePublished.object.value),
       summary: summary.object.value,
     };
