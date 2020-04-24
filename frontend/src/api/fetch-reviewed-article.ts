@@ -1,12 +1,13 @@
-import reviewReferenceRepository from '../data/review-references';
 import article3 from '../data/article3';
 import article4 from '../data/article4';
+import ReviewReferenceRepository from '../types/review-reference-repository';
 import { ReviewedArticle } from '../types/reviewed-article';
 import { FetchReview } from './fetch-review';
 
 export type FetchReviewedArticle = (doi: string) => Promise<ReviewedArticle>;
 
-export default (fetchReview: FetchReview): FetchReviewedArticle => (
+export default (reviewReferenceRepository: ReviewReferenceRepository, fetchReview: FetchReview):
+FetchReviewedArticle => (
   async (doi: string): Promise<ReviewedArticle> => {
     const allArticles = [
       article3,
