@@ -5,6 +5,9 @@ import { FetchReviewedArticle } from '../api/fetch-reviewed-article';
 import templateArticlePage from '../templates/article-page';
 import templatePage from '../templates/page';
 import { ReviewedArticle } from '../types/reviewed-article';
+import createLogger from '../logger';
+
+const log = createLogger('handler:article');
 
 type ArticleParams = {
   [k: string]: string | undefined;
@@ -13,6 +16,7 @@ type ArticleParams = {
 export default (fetchReviewedArticle: FetchReviewedArticle): Handler<HTTPVersion.V1> => (
   async (request: IncomingMessage, response: ServerResponse, params: ArticleParams): Promise<void> => {
     if (typeof params.id === 'undefined') {
+      log('DOI `id` parameter not present');
       response.writeHead(INTERNAL_SERVER_ERROR);
       response.end('DOI `id` parameter not present');
       return;
@@ -23,6 +27,7 @@ export default (fetchReviewedArticle: FetchReviewedArticle): Handler<HTTPVersion
     try {
       reviewedArticle = await fetchReviewedArticle(doi);
     } catch (e) {
+      log(`Article ${doi} not found: ${e}`);
       response.writeHead(NOT_FOUND);
       response.end(`${doi} not found`);
       return;
