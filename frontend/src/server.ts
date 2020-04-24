@@ -7,7 +7,7 @@ import createRouter, { RouterServices } from './router';
 
 type Services = RouterServices;
 
-export default ({ fetchReviewedArticle }: Services): Server => {
+export default (services: Services): Server => {
   const log = createLogger('server');
   const requestLog = log.extend('request');
   const responseLog = log.extend('response');
@@ -15,7 +15,7 @@ export default ({ fetchReviewedArticle }: Services): Server => {
   const defaultRoute = async (request: IncomingMessage, response: ServerResponse): Promise<void> => {
     await handler(request, response, { public: 'static' });
   };
-  const router = createRouter(defaultRoute, { fetchReviewedArticle });
+  const router = createRouter(defaultRoute, services);
 
   const server = createServer(async (request: IncomingMessage, response: ServerResponse): Promise<void> => {
     requestLog(`${request.method} ${request.url} HTTP/${request.httpVersion}`);
