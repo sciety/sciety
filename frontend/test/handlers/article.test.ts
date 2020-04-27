@@ -1,32 +1,16 @@
 import { NOT_FOUND, OK } from 'http-status-codes';
 import request, { Response } from 'supertest';
-import { FetchReviewedArticle } from '../../src/api/fetch-reviewed-article';
-import reviewReferenceRepository from '../../src/data/review-references';
-import createServer from '../../src/server';
-import shouldNotBeCalled from '../should-not-be-called';
+import { article3 as article3Doi } from '../../src/data/article-dois';
+import createServer from './server';
 
 describe('article handler', (): void => {
   let response: Response;
 
   describe('when the article exists', (): void => {
     beforeEach(async () => {
-      const doi = '10.1101/2000.1234';
+      const doi = article3Doi;
       const doiParam = encodeURIComponent(doi);
-      const fetchReviewedArticle: FetchReviewedArticle = async () => (
-        {
-          article: {
-            category: 'Psychoceramics',
-            type: 'New Results',
-            doi,
-            title: 'The study of cracked pots',
-            abstract: 'More lorem ipsum',
-            authors: [],
-            publicationDate: new Date('2000-01-15'),
-          },
-          reviews: [],
-        }
-      );
-      const server = createServer({ fetchReviewedArticle, reviewReferenceRepository });
+      const server = createServer();
       response = await request(server).get(`/articles/${doiParam}`);
     });
 
@@ -46,8 +30,7 @@ describe('article handler', (): void => {
 
   describe('when the article does not exist', (): void => {
     beforeEach(async () => {
-      const fetchReviewedArticle: FetchReviewedArticle = shouldNotBeCalled;
-      response = await request(createServer({ fetchReviewedArticle, reviewReferenceRepository })).get('/articles/rubbish');
+      response = await request(createServer()).get('/articles/rubbish');
     });
 
     it('returns a 404 response', async (): Promise<void> => {
