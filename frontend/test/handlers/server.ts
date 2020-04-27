@@ -1,7 +1,6 @@
-import { IncomingMessage, Server, ServerResponse } from 'http';
+import { Server } from 'http';
 import { blankNode, quad, literal } from '@rdfjs/data-model';
 import datasetFactory from 'rdf-dataset-indexed';
-import handler from 'serve-handler';
 import { schema } from '@tpluscode/rdf-ns-builders';
 import { FetchDataset } from '../../src/api/fetch-dataset';
 import createFetchReview from '../../src/api/fetch-review';
@@ -9,6 +8,7 @@ import createFetchReviewedArticle from '../../src/api/fetch-reviewed-article';
 import reviewReferenceRepository from '../../src/data/review-references';
 import createRouter, { RouterServices } from '../../src/router';
 import createServer from '../../src/server';
+import staticRoute from '../../src/static';
 
 const fetchDataset: FetchDataset = async (iri) => {
   const authorIri = blankNode();
@@ -26,9 +26,6 @@ export default (): Server => {
   const fetchReviewedArticle = createFetchReviewedArticle(reviewReferenceRepository, fetchReview);
   const services: RouterServices = { fetchReviewedArticle, reviewReferenceRepository };
 
-  const defaultRoute = async (request: IncomingMessage, response: ServerResponse): Promise<void> => {
-    await handler(request, response, { public: 'static' });
-  };
-  const router = createRouter(defaultRoute, services);
+  const router = createRouter(staticRoute, services);
   return createServer(router);
 };

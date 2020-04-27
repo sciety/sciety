@@ -1,6 +1,4 @@
-import { IncomingMessage, ServerResponse } from 'http';
 import { createTerminus, TerminusOptions } from '@godaddy/terminus';
-import handler from 'serve-handler';
 import createFetchDataset from './api/fetch-dataset';
 import createFetchReview from './api/fetch-review';
 import createFetchReviewedArticle from './api/fetch-reviewed-article';
@@ -8,6 +6,7 @@ import reviewReferenceRepository from './data/review-references';
 import createLogger from './logger';
 import createRouter, { RouterServices } from './router';
 import createServer from './server';
+import staticRoute from './static';
 
 const log = createLogger();
 
@@ -18,10 +17,7 @@ const fetchReview = createFetchReview(fetchDataset);
 const fetchReviewedArticle = createFetchReviewedArticle(reviewReferenceRepository, fetchReview);
 const services: RouterServices = { fetchReviewedArticle, reviewReferenceRepository };
 
-const defaultRoute = async (request: IncomingMessage, response: ServerResponse): Promise<void> => {
-  await handler(request, response, { public: 'static' });
-};
-const router = createRouter(defaultRoute, services);
+const router = createRouter(staticRoute, services);
 
 const server = createServer(router);
 
