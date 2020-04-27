@@ -1,16 +1,12 @@
 import { OK } from 'http-status-codes';
 import request, { Response } from 'supertest';
-import { FetchReviewedArticle } from '../../src/api/fetch-reviewed-article';
-import reviewReferenceRepository from '../../src/data/review-references';
-import createServer from '../../src/server';
-import shouldNotBeCalled from '../should-not-be-called';
+import createServer from './server';
 
 describe('index handler', (): void => {
   let response: Response;
 
   beforeEach(async () => {
-    const fetchReviewedArticle: FetchReviewedArticle = shouldNotBeCalled;
-    response = await request(createServer({ fetchReviewedArticle, reviewReferenceRepository })).get('/');
+    response = await request(createServer()).get('/');
   });
 
   it('returns a successful response', async (): Promise<void> => {
