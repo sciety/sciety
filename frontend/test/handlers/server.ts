@@ -8,7 +8,6 @@ import createFetchReviewedArticle from '../../src/api/fetch-reviewed-article';
 import reviewReferenceRepository from '../../src/data/review-references';
 import createRouter, { RouterServices } from '../../src/router';
 import createServer from '../../src/server';
-import staticRoute from '../../src/static';
 
 export default (): Server => {
   const fetchDataset: FetchDataset = async (iri) => {
@@ -25,6 +24,6 @@ export default (): Server => {
   const fetchReviewedArticle = createFetchReviewedArticle(reviewReferenceRepository, fetchReview);
   const services: RouterServices = { fetchReviewedArticle, reviewReferenceRepository };
 
-  const router = createRouter(staticRoute, services);
+  const router = createRouter(services);
   return createServer(router);
 };

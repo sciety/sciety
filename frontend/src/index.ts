@@ -6,7 +6,6 @@ import reviewReferenceRepository from './data/review-references';
 import createLogger from './logger';
 import createRouter, { RouterServices } from './router';
 import createServer from './server';
-import staticRoute from './static';
 
 const log = createLogger();
 
@@ -17,7 +16,7 @@ const fetchReview = createFetchReview(fetchDataset);
 const fetchReviewedArticle = createFetchReviewedArticle(reviewReferenceRepository, fetchReview);
 const services: RouterServices = { fetchReviewedArticle, reviewReferenceRepository };
 
-const router = createRouter(staticRoute, services);
+const router = createRouter(services);
 
 const server = createServer(router);
 

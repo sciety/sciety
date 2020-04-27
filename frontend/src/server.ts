@@ -2,6 +2,7 @@ import {
   createServer, IncomingMessage, Server, ServerResponse,
 } from 'http';
 import Router from 'find-my-way';
+import handler from 'serve-handler';
 import createLogger from './logger';
 
 export default (router: Router.Instance<Router.HTTPVersion.V1>): Server => {
@@ -12,7 +13,11 @@ export default (router: Router.Instance<Router.HTTPVersion.V1>): Server => {
   const server = createServer(async (request: IncomingMessage, response: ServerResponse): Promise<void> => {
     requestLog(`${request.method} ${request.url} HTTP/${request.httpVersion}`);
 
-    router.lookup(request, response);
+    if (request.url?.startsWith('/static/')) {
+      await handler(request, response);
+    } else {
+      router.lookup(request, response);
+    }
 
     responseLog(`HTTP/${request.httpVersion} ${response.statusCode} ${response.statusMessage}`);
   });
