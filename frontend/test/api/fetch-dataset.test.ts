@@ -3,7 +3,7 @@ import { schema } from '@tpluscode/rdf-ns-builders';
 import createFetchDataset from '../../src/api/fetch-dataset';
 import article3 from '../../src/data/article3';
 
-describe('fetch-review', (): void => {
+describe('fetch-dataset', (): void => {
   describe('dataset found', (): void => {
     it('fetches a dataset for an IRI', async () => {
       const iri = namedNode(`https://doi.org/${article3.reviews[0].doi}`);
