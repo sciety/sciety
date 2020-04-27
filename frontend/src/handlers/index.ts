@@ -1,5 +1,5 @@
-import { Handler, HTTPVersion } from 'find-my-way';
 import { IncomingMessage, ServerResponse } from 'http';
+import { Handler, HTTPVersion } from 'find-my-way';
 import { OK } from 'http-status-codes';
 import fetchAllArticles from '../api/fetch-all-articles';
 import templateArticleTeaser from '../templates/article-teaser';

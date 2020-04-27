@@ -1,11 +1,11 @@
-import { Handler, HTTPVersion } from 'find-my-way';
 import { IncomingMessage, ServerResponse } from 'http';
+import { Handler, HTTPVersion } from 'find-my-way';
 import { INTERNAL_SERVER_ERROR, NOT_FOUND, OK } from 'http-status-codes';
 import { FetchReviewedArticle } from '../api/fetch-reviewed-article';
+import createLogger from '../logger';
 import templateArticlePage from '../templates/article-page';
 import templatePage from '../templates/page';
 import { ReviewedArticle } from '../types/reviewed-article';
-import createLogger from '../logger';
 
 const log = createLogger('handler:article');
 

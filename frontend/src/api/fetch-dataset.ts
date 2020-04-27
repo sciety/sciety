@@ -1,7 +1,7 @@
+import { EventEmitter } from 'events';
 import fetch from '@rdfjs/fetch-lite';
 import JsonLdParser from '@rdfjs/parser-jsonld';
 import SinkMap from '@rdfjs/sink-map';
-import { EventEmitter } from 'events';
 import datasetFactory from 'rdf-dataset-indexed';
 import { DatasetCore, NamedNode, Stream } from 'rdf-js';
 import createLogger from '../logger';

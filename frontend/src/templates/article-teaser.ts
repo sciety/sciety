@@ -1,6 +1,6 @@
-import { ReviewedArticle } from '../types/reviewed-article';
 import templateDate from './date';
 import templateListItems from './list-items';
+import { ReviewedArticle } from '../types/reviewed-article';
 
 export default (reviewedArticle: ReviewedArticle, articleLink: string): string => {
   const lastReview = reviewedArticle.reviews[reviewedArticle.reviews.length - 1];

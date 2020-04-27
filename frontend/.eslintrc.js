@@ -20,6 +20,10 @@ module.exports = {
   ],
   root: true,
   rules: {
+    'import/order': ['error', {
+      alphabetize: { order: 'asc' },
+      groups: ['builtin', 'external', 'internal', 'index', 'sibling', 'parent'],
+    }],
     'max-len': ['error', 120, 2, {
       ignoreUrls: true,
       ignoreComments: false,

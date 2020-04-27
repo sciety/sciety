@@ -1,6 +1,6 @@
-import datasetFactory from 'rdf-dataset-indexed';
 import { blankNode, quad, literal } from '@rdfjs/data-model';
 import { schema } from '@tpluscode/rdf-ns-builders';
+import datasetFactory from 'rdf-dataset-indexed';
 import { FetchDataset } from '../../src/api/fetch-dataset';
 import createFetchReview from '../../src/api/fetch-review';
 import article3 from '../../src/data/article3';

@@ -1,5 +1,5 @@
-import Router from 'find-my-way';
 import { IncomingMessage, ServerResponse } from 'http';
+import Router from 'find-my-way';
 import { FetchReviewedArticle } from './api/fetch-reviewed-article';
 import article from './handlers/article';
 import index from './handlers/index';

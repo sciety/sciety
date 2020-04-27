@@ -1,8 +1,8 @@
+import { FetchReview } from './fetch-review';
 import article3 from '../data/article3';
 import article4 from '../data/article4';
 import ReviewReferenceRepository from '../types/review-reference-repository';
 import { ReviewedArticle } from '../types/reviewed-article';
-import { FetchReview } from './fetch-review';
 
 export type FetchReviewedArticle = (doi: string) => Promise<ReviewedArticle>;
 

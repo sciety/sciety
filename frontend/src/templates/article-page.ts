@@ -1,7 +1,7 @@
-import templateListItems from './list-items';
-import templateReviewSummary from './review-summary';
-import templateReviewSidebarItem from './review-sidebar-item';
 import templateArticlePageHeader from './article-page-header';
+import templateListItems from './list-items';
+import templateReviewSidebarItem from './review-sidebar-item';
+import templateReviewSummary from './review-summary';
 import { ReviewedArticle } from '../types/reviewed-article';
 
 export default (reviewedArticle: ReviewedArticle): string => {
