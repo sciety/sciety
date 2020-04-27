@@ -38,9 +38,11 @@ describe('fetch-reviewed-article', (): void => {
       findReviewDoisForArticleDoi: () => [],
     };
 
-    it('throws an error', () => {
+    it('throws an error', async (): Promise<void> => {
       const fetchReviewedArticle = createFetchReviewedArticle(reviewReferenceRepository, shouldNotBeCalled);
-      expect(fetchReviewedArticle('10.1234/5678')).rejects.toStrictEqual(new Error('Article DOI 10.1234/5678 not found'));
+      const expected = new Error('Article DOI 10.1234/5678 not found');
+
+      await expect(fetchReviewedArticle('10.1234/5678')).rejects.toStrictEqual(expected);
     });
   });
 });

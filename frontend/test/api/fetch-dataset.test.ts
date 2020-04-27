@@ -16,12 +16,12 @@ describe('fetch-dataset', (): void => {
   });
 
   describe('dataset not found', (): void => {
-    it('throws an errors', () => {
+    it('throws an errors', async (): Promise<void> => {
       const iri = namedNode('https://doi.org/not-a-doi');
 
       const fetchDataset = createFetchDataset();
 
-      expect(fetchDataset(iri)).rejects.toStrictEqual(new Error(`Received a 404 Not Found for ${iri.value}`));
+      await expect(fetchDataset(iri)).rejects.toStrictEqual(new Error(`Received a 404 Not Found for ${iri.value}`));
     });
   });
 });
