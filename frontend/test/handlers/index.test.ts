@@ -15,7 +15,7 @@ describe('index handler', (): void => {
 
   it('is HTML', async (): Promise<void> => {
     expect(response.type).toBe('text/html');
-    expect(response.charset).toBe('UTF-8');
+    expect(response.charset).toBe('utf-8');
   });
 
   it('has an HTML5 body', async (): Promise<void> => {

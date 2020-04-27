@@ -1,6 +1,6 @@
-import { IncomingMessage, ServerResponse } from 'http';
-import { Handler, HTTPVersion } from 'find-my-way';
-import { INTERNAL_SERVER_ERROR, NOT_FOUND, OK } from 'http-status-codes';
+import { Middleware, RouterContext } from '@koa/router';
+import { InternalServerError, NotFound } from 'http-errors';
+import { Next } from 'koa';
 import { FetchReviewedArticle } from '../api/fetch-reviewed-article';
 import createLogger from '../logger';
 import templateArticlePage from '../templates/article-page';
@@ -9,32 +9,27 @@ import { ReviewedArticle } from '../types/reviewed-article';
 
 const log = createLogger('handler:article');
 
-type ArticleParams = {
-  [k: string]: string | undefined;
-};
-
-export default (fetchReviewedArticle: FetchReviewedArticle): Handler<HTTPVersion.V1> => (
-  async (request: IncomingMessage, response: ServerResponse, params: ArticleParams): Promise<void> => {
-    if (typeof params.id === 'undefined') {
+export default (fetchReviewedArticle: FetchReviewedArticle): Middleware => (
+  async ({ response, params: { id } }: RouterContext, next: Next): Promise<void> => {
+    if (typeof id === 'undefined') {
       log('DOI `id` parameter not present');
-      response.writeHead(INTERNAL_SERVER_ERROR);
-      response.end('DOI `id` parameter not present');
-      return;
+      throw new InternalServerError('DOI `id` parameter not present');
     }
-    const doi = decodeURIComponent(params.id);
-    response.setHeader('Content-Type', 'text/html; charset=UTF-8');
+    const doi = decodeURIComponent(id);
+
     let reviewedArticle: ReviewedArticle;
     try {
       reviewedArticle = await fetchReviewedArticle(doi);
     } catch (e) {
       log(`Article ${doi} not found: ${e}`);
-      response.writeHead(NOT_FOUND);
-      response.end(`${doi} not found`);
-      return;
+      throw new NotFound(`${doi} not found`);
     }
 
     const page = templatePage(templateArticlePage(reviewedArticle));
-    response.writeHead(OK);
-    response.end(page);
+
+    response.type = 'html';
+    response.body = page;
+
+    await next();
   }
 );

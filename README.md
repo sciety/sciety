@@ -9,7 +9,7 @@ PRC
 
 ⚠️ This app only serves static HTML.
 
-It's written in [TypeScript].
+It's written in [TypeScript], and uses the [Koa framework][Koa].
 
 Table of contents
 -----------------
@@ -95,6 +95,7 @@ We released this software under the [MIT license][license]. Copyright © 2020 [e
 [ESLint]: https://eslint.org/
 [GNU Make]: https://www.gnu.org/software/make/
 [Jest]: https://jestjs.io/
+[Koa]: https://koajs.com/
 [Libero]: https://libero.pub/
 [Libero logo]: https://cdn.elifesciences.org/libero/logo/libero-logo-96px.svg
 [License]: LICENSE.md

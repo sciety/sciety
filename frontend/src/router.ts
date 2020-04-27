@@ -1,4 +1,4 @@
-import Router from 'find-my-way';
+import Router from '@koa/router';
 import { FetchReviewedArticle } from './api/fetch-reviewed-article';
 import article from './handlers/article';
 import index from './handlers/index';
@@ -11,8 +11,8 @@ export type RouterServices = {
   reviewReferenceRepository: ReviewReferenceRepository;
 };
 
-export default (services: RouterServices): Router.Instance<Router.HTTPVersion.V1> => {
-  const router = Router();
+export default (services: RouterServices): Router => {
+  const router = new Router();
 
   router.get('/ping', ping());
   router.get('/', index());

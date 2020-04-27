@@ -1,12 +1,13 @@
-import { IncomingMessage, ServerResponse } from 'http';
-import { Handler, HTTPVersion } from 'find-my-way';
 import { OK } from 'http-status-codes';
+import { Middleware, RouterContext } from '@koa/router';
+import { Next } from 'koa';
 
-export default (): Handler<HTTPVersion.V1> => (
-  (request: IncomingMessage, response: ServerResponse): void => {
-    response.setHeader('Cache-Control', 'no-store, must-revalidate');
-    response.setHeader('Content-Type', 'text/plain; charset=UTF-8');
-    response.writeHead(OK);
-    response.end('pong');
+export default (): Middleware => (
+  async ({ response }: RouterContext, next: Next): Promise<void> => {
+    response.set('Cache-Control', 'no-store, must-revalidate');
+    response.status = OK;
+    response.body = 'pong';
+
+    await next();
   }
 );

@@ -1,38 +1,32 @@
-import { IncomingMessage, ServerResponse } from 'http';
-import { Handler, HTTPVersion } from 'find-my-way';
-import { BAD_REQUEST, SEE_OTHER } from 'http-status-codes';
+import { SEE_OTHER } from 'http-status-codes';
+import { Middleware, RouterContext } from '@koa/router';
 import parseBody from 'co-body';
+import { BadRequest } from 'http-errors';
+import { Next } from 'koa';
 import ReviewReferenceRepository from '../types/review-reference-repository';
 
 const doiRegex = /^(?:doi:|(?:(?:https?:\/\/)?(?:dx\.)?doi\.org\/))?(10\.[0-9]{4,}(?:\.[1-9][0-9]*)*\/(?:[^%"#?\s])+)$/;
 const zenodoPrefix = '10.5281';
 
-export default (reviewReferenceRepository: ReviewReferenceRepository): Handler<HTTPVersion.V1> => (
-  async (request: IncomingMessage, response: ServerResponse): Promise<void> => {
-    const body: { articledoi: string; reviewdoi: string } = await parseBody.form(request);
+export default (reviewReferenceRepository: ReviewReferenceRepository): Middleware => (
+  async ({ request, response }: RouterContext, next: Next): Promise<void> => {
+    const body: { articledoi: string; reviewdoi: string } = await parseBody.form(request.req);
 
     const [, reviewDoi] = doiRegex.exec(body.reviewdoi) || [];
 
     if (!reviewDoi) {
-      response.setHeader('Content-Type', 'text/plain; charset=UTF-8');
-      response.writeHead(BAD_REQUEST);
-      response.end('Not a possible DOI.');
-
-      return;
+      throw new BadRequest('Not a possible DOI.');
     }
 
     if (!(reviewDoi.startsWith(`${zenodoPrefix}/`))) {
-      response.setHeader('Content-Type', 'text/plain; charset=UTF-8');
-      response.writeHead(BAD_REQUEST);
-      response.end('Not a Zenodo DOI.');
-
-      return;
+      throw new BadRequest('Not a Zenodo DOI.');
     }
 
     reviewReferenceRepository.add({ articleDoi: body.articledoi, reviewDoi });
 
-    response.setHeader('Location', `/articles/${encodeURIComponent(body.articledoi)}`);
-    response.writeHead(SEE_OTHER);
-    response.end('');
+    response.redirect(`/articles/${encodeURIComponent(body.articledoi)}`);
+    response.status = SEE_OTHER;
+
+    await next();
   }
 );

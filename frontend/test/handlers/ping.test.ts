@@ -19,7 +19,7 @@ describe('ping handler', (): void => {
 
   it('is plain text', async (): Promise<void> => {
     expect(response.type).toBe('text/plain');
-    expect(response.charset).toBe('UTF-8');
+    expect(response.charset).toBe('utf-8');
   });
 
   it('has a body', async (): Promise<void> => {

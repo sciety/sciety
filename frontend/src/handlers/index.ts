@@ -1,12 +1,11 @@
-import { IncomingMessage, ServerResponse } from 'http';
-import { Handler, HTTPVersion } from 'find-my-way';
-import { OK } from 'http-status-codes';
+import { Middleware, RouterContext } from '@koa/router';
+import { Next } from 'koa';
 import fetchAllArticles from '../api/fetch-all-articles';
 import templateArticleTeaser from '../templates/article-teaser';
 import templateListItems from '../templates/list-items';
 import templatePage from '../templates/page';
 
-export default (): Handler<HTTPVersion.V1> => {
+export default (): Middleware => {
   const teasers = fetchAllArticles().map((reviewedArticle) => templateArticleTeaser(reviewedArticle, `/articles/${encodeURIComponent(reviewedArticle.article.doi)}`));
   const page = templatePage(`<main>
 
@@ -32,9 +31,9 @@ export default (): Handler<HTTPVersion.V1> => {
 
 </main>`);
 
-  return (request: IncomingMessage, response: ServerResponse): void => {
-    response.setHeader('Content-Type', 'text/html; charset=UTF-8');
-    response.writeHead(OK);
-    response.end(page);
+  return async ({ response }: RouterContext, next: Next): Promise<void> => {
+    response.body = page;
+
+    await next();
   };
 };
