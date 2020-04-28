@@ -27,40 +27,29 @@ describe('article-teaser template', (): void => {
     ],
   };
   const articleLink = '/articles/10.5555%2F12345678';
+  let actual: string;
+
+  beforeEach(() => {
+    actual = templateArticleTeaser(article, articleLink);
+  });
 
   it('renders inside an article tag', async (): Promise<void> => {
-    const actual = templateArticleTeaser(article, articleLink);
-
     expect(actual).toEqual(expect.stringMatching(/^<article\s/));
   });
 
   it('renders the category', () => {
-    const actual = templateArticleTeaser(article, articleLink);
-
     expect(actual).toEqual(expect.stringContaining(article.article.category));
   });
 
   it('renders the title as a link', () => {
-    const actual = templateArticleTeaser(article, articleLink);
-
     expect(actual).toEqual(expect.stringContaining(`<a href="/articles/10.5555%2F12345678">${article.article.title}</a>`));
   });
 
   it('renders the authors', () => {
-    const actual = templateArticleTeaser(article, articleLink);
-
     expect(actual).toEqual(expect.stringContaining(article.article.authors[0]));
   });
 
   it('renders the number of reviews', () => {
-    const actual = templateArticleTeaser(article, articleLink);
-
     expect(actual).toEqual(expect.stringContaining('2 reviews'));
-  });
-
-  it('renders the last review', () => {
-    const actual = templateArticleTeaser(article, articleLink);
-
-    expect(actual).toEqual(expect.stringMatching(`Reviewed .* by ${article.reviews[1].author}`));
   });
 });
