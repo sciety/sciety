@@ -8,6 +8,12 @@ import createLogger from '../logger';
 
 export type FetchDataset = (iri: NamedNode) => Promise<DatasetCore>;
 
+export class FetchDatasetError extends Error {
+  toString(): string {
+    return `FetchDatasetError: ${this.message}`;
+  }
+}
+
 export default (): FetchDataset => {
   const log = createLogger('api:fetch-dataset');
   const factory = { dataset: datasetFactory };
@@ -20,7 +26,7 @@ export default (): FetchDataset => {
     const response = await fetch<DatasetCore>(iri.value, fetchOptions);
 
     if (!response.ok) {
-      throw new Error(`Received a ${response.status} ${response.statusText} for ${response.url}`);
+      throw new FetchDatasetError(`Received a ${response.status} ${response.statusText} for ${response.url}`);
     }
 
     return response.dataset();
