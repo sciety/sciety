@@ -1,13 +1,15 @@
 import { Middleware, RouterContext } from '@koa/router';
 import { Next } from 'koa';
-import fetchAllArticles from '../api/fetch-all-article-teasers';
+import fetchAllArticleTeasers from '../api/fetch-all-article-teasers';
 import templateArticleTeaser from '../templates/article-teaser';
 import templateListItems from '../templates/list-items';
 import templatePage from '../templates/page';
 
-export default (): Middleware => {
-  const teasers = fetchAllArticles().map((articleTeaser) => templateArticleTeaser(articleTeaser));
-  const page = templatePage(`<main>
+export default (): Middleware => (
+  async ({ response }: RouterContext, next: Next): Promise<void> => {
+    const teasers = (await fetchAllArticleTeasers()).map(templateArticleTeaser);
+
+    response.body = templatePage(`<main>
 
   <header class="content-header">
 
@@ -31,9 +33,6 @@ export default (): Middleware => {
 
 </main>`);
 
-  return async ({ response }: RouterContext, next: Next): Promise<void> => {
-    response.body = page;
-
     await next();
-  };
-};
+  }
+);
