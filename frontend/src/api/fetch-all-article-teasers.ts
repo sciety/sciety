@@ -4,15 +4,17 @@ import { ArticleTeaser } from '../types/article-teaser';
 
 export type FetchAllArticleTeasers = () => Promise<Array<ArticleTeaser>>;
 
-export default async (): Promise<Array<ArticleTeaser>> => [
-  article3,
-  article4,
-].map(({ article, reviews }) => (
-  {
-    category: article.category,
-    title: article.title,
-    authors: article.authors,
-    numberOfReviews: reviews.length,
-    link: `/articles/${encodeURIComponent(article.doi)}`,
-  }
-));
+export default (): FetchAllArticleTeasers => (
+  async (): Promise<Array<ArticleTeaser>> => [
+    article3,
+    article4,
+  ].map(({ article, reviews }) => (
+    {
+      category: article.category,
+      title: article.title,
+      authors: article.authors,
+      numberOfReviews: reviews.length,
+      link: `/articles/${encodeURIComponent(article.doi)}`,
+    }
+  ))
+);

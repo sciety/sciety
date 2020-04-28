@@ -2,7 +2,7 @@ import { Server } from 'http';
 import { blankNode, quad, literal } from '@rdfjs/data-model';
 import { schema } from '@tpluscode/rdf-ns-builders';
 import datasetFactory from 'rdf-dataset-indexed';
-import fetchAllArticleTeasers from '../../src/api/fetch-all-article-teasers';
+import createFetchAllArticleTeasers from '../../src/api/fetch-all-article-teasers';
 import { FetchDataset } from '../../src/api/fetch-dataset';
 import createFetchReview from '../../src/api/fetch-review';
 import createFetchReviewedArticle from '../../src/api/fetch-reviewed-article';
@@ -21,6 +21,7 @@ export default (): Server => {
       quad(authorIri, schema.name, literal('Author name')),
     ]);
   };
+  const fetchAllArticleTeasers = createFetchAllArticleTeasers();
   const fetchReview = createFetchReview(fetchDataset);
   const fetchReviewedArticle = createFetchReviewedArticle(reviewReferenceRepository, fetchReview);
   const services: RouterServices = { fetchAllArticleTeasers, fetchReviewedArticle, reviewReferenceRepository };
