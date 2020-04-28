@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import fetch from '@rdfjs/fetch-lite';
+import rdfFetch from '@rdfjs/fetch-lite';
 import JsonLdParser from '@rdfjs/parser-jsonld';
 import SinkMap from '@rdfjs/sink-map';
 import datasetFactory from 'rdf-dataset-indexed';
@@ -14,7 +14,7 @@ export class FetchDatasetError extends Error {
   }
 }
 
-export default (): FetchDataset => {
+export default (fetch = rdfFetch): FetchDataset => {
   const log = createLogger('api:fetch-dataset');
   const factory = { dataset: datasetFactory };
   const parsers = new SinkMap<EventEmitter, Stream>();
