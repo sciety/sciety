@@ -1,6 +1,6 @@
 import { namedNode } from '@rdfjs/data-model';
 import { schema } from '@tpluscode/rdf-ns-builders';
-import createFetchDataset from '../../src/api/fetch-dataset';
+import createFetchDataset, { FetchDatasetError } from '../../src/api/fetch-dataset';
 import article3 from '../../src/data/article3';
 
 describe('fetch-dataset', (): void => {
@@ -21,7 +21,7 @@ describe('fetch-dataset', (): void => {
 
       const fetchDataset = createFetchDataset();
 
-      await expect(fetchDataset(iri)).rejects.toStrictEqual(new Error(`Received a 404 Not Found for ${iri.value}`));
+      await expect(fetchDataset(iri)).rejects.toStrictEqual(new FetchDatasetError(`Received a 404 Not Found for ${iri.value}`));
     });
   });
 });
