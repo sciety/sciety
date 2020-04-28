@@ -1,11 +1,11 @@
 import { Middleware, RouterContext } from '@koa/router';
 import { Next } from 'koa';
-import fetchAllArticleTeasers from '../api/fetch-all-article-teasers';
+import { FetchAllArticleTeasers } from '../api/fetch-all-article-teasers';
 import templateArticleTeaser from '../templates/article-teaser';
 import templateListItems from '../templates/list-items';
 import templatePage from '../templates/page';
 
-export default (): Middleware => (
+export default (fetchAllArticleTeasers: FetchAllArticleTeasers): Middleware => (
   async ({ response }: RouterContext, next: Next): Promise<void> => {
     const teasers = (await fetchAllArticleTeasers()).map(templateArticleTeaser);
 
