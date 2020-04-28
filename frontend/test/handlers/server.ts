@@ -1,6 +1,8 @@
 import { Server } from 'http';
-import { blankNode, literal, quad } from '@rdfjs/data-model';
-import { schema } from '@tpluscode/rdf-ns-builders';
+import {
+  blankNode, literal, namedNode, quad,
+} from '@rdfjs/data-model';
+import { dcterms, schema } from '@tpluscode/rdf-ns-builders';
 import datasetFactory from 'rdf-dataset-indexed';
 import createFetchAllArticleTeasers from '../../src/api/fetch-all-article-teasers';
 import { FetchDataset } from '../../src/api/fetch-dataset';
@@ -11,7 +13,13 @@ import createRouter, { RouterServices } from '../../src/router';
 import createServer from '../../src/server';
 
 export default (): Server => {
-  const fetchCrossrefDataset: FetchDataset = async () => datasetFactory([]);
+  const fetchCrossrefDataset: FetchDataset = async (iri) => {
+    const normalisedIri = namedNode(iri.value.replace(/^https:\/\/doi\.org\//, 'http://dx.doi.org/'));
+
+    return datasetFactory([
+      quad(normalisedIri, dcterms.title, literal('Article title')),
+    ]);
+  };
   const fetchDataCiteDataset: FetchDataset = async (iri) => {
     const authorIri = blankNode();
 
