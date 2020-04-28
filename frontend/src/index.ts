@@ -13,7 +13,7 @@ const log = createLogger();
 log('Starting server');
 
 const fetchDataset = createFetchDataset();
-const fetchAllArticleTeasers = createFetchAllArticleTeasers();
+const fetchAllArticleTeasers = createFetchAllArticleTeasers(fetchDataset);
 const fetchReview = createFetchReview(fetchDataset);
 const fetchReviewedArticle = createFetchReviewedArticle(reviewReferenceRepository, fetchReview);
 const services: RouterServices = { fetchAllArticleTeasers, fetchReviewedArticle, reviewReferenceRepository };

@@ -1,5 +1,5 @@
 import { Server } from 'http';
-import { blankNode, quad, literal } from '@rdfjs/data-model';
+import { blankNode, literal, quad } from '@rdfjs/data-model';
 import { schema } from '@tpluscode/rdf-ns-builders';
 import datasetFactory from 'rdf-dataset-indexed';
 import createFetchAllArticleTeasers from '../../src/api/fetch-all-article-teasers';
@@ -11,7 +11,8 @@ import createRouter, { RouterServices } from '../../src/router';
 import createServer from '../../src/server';
 
 export default (): Server => {
-  const fetchDataset: FetchDataset = async (iri) => {
+  const fetchCrossrefDataset: FetchDataset = async () => datasetFactory([]);
+  const fetchDataCiteDataset: FetchDataset = async (iri) => {
     const authorIri = blankNode();
 
     return datasetFactory([
@@ -21,8 +22,8 @@ export default (): Server => {
       quad(authorIri, schema.name, literal('Author name')),
     ]);
   };
-  const fetchAllArticleTeasers = createFetchAllArticleTeasers();
-  const fetchReview = createFetchReview(fetchDataset);
+  const fetchAllArticleTeasers = createFetchAllArticleTeasers(fetchCrossrefDataset);
+  const fetchReview = createFetchReview(fetchDataCiteDataset);
   const fetchReviewedArticle = createFetchReviewedArticle(reviewReferenceRepository, fetchReview);
   const services: RouterServices = { fetchAllArticleTeasers, fetchReviewedArticle, reviewReferenceRepository };
 

@@ -1,6 +1,7 @@
 import { EventEmitter } from 'events';
 import rdfFetch from '@rdfjs/fetch-lite';
 import JsonLdParser from '@rdfjs/parser-jsonld';
+import N3Parser from '@rdfjs/parser-n3';
 import SinkMap from '@rdfjs/sink-map';
 import datasetFactory from 'rdf-dataset-indexed';
 import { DatasetCore, NamedNode, Stream } from 'rdf-js';
@@ -19,6 +20,7 @@ export default (fetch = rdfFetch): FetchDataset => {
   const factory = { dataset: datasetFactory };
   const parsers = new SinkMap<EventEmitter, Stream>();
   parsers.set('application/vnd.schemaorg.ld+json', new JsonLdParser());
+  parsers.set('text/turtle', new N3Parser());
   const fetchOptions = { factory, formats: { parsers } };
 
   return async (iri: NamedNode): Promise<DatasetCore> => {
