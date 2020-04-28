@@ -13,7 +13,7 @@ describe('fetch-dataset', (): void => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const stubFetch: typeof rdfFetch = async (): Promise<any> => ({
         ok: true,
-        dataset: (): DatasetCore => cannedDataset,
+        dataset: async (): Promise<DatasetCore> => cannedDataset,
       });
 
       const fetchDataset = createFetchDataset(stubFetch);
