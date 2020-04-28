@@ -2,7 +2,7 @@ import { EventEmitter } from 'events';
 import rdfFetch from '@rdfjs/fetch-lite';
 import JsonLdParser from '@rdfjs/parser-jsonld';
 import SinkMap from '@rdfjs/sink-map';
-import isomorphicFetch from 'isomorphic-fetch';
+import fetch from 'isomorphic-fetch';
 import datasetFactory from 'rdf-dataset-indexed';
 import { DatasetCore, NamedNode, Stream } from 'rdf-js';
 import createLogger from '../logger';
@@ -15,12 +15,12 @@ export class FetchDatasetError extends Error {
   }
 }
 
-export default (fetcher: typeof fetch = isomorphicFetch): FetchDataset => {
+export default (): FetchDataset => {
   const log = createLogger('api:fetch-dataset');
   const factory = { dataset: datasetFactory };
   const parsers = new SinkMap<EventEmitter, Stream>();
   parsers.set('application/vnd.schemaorg.ld+json', new JsonLdParser());
-  const fetchOptions = { factory, fetch: fetcher, formats: { parsers } };
+  const fetchOptions = { factory, fetch, formats: { parsers } };
 
   return async (iri: NamedNode): Promise<DatasetCore> => {
     log(`Fetching dataset for ${iri.value}`);
