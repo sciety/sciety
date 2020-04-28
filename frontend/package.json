@@ -11,7 +11,6 @@
     "debug": "^4.1.1",
     "http-errors": "^1.7.3",
     "http-status-codes": "^1.4.0",
-    "isomorphic-fetch": "^2.2.1",
     "koa": "^2.11.0",
     "koa-bodyparser": "^4.3.0",
     "koa-mount": "^4.0.0",
@@ -21,7 +20,6 @@
   "devDependencies": {
     "@types/debug": "^4.1.5",
     "@types/http-errors": "^1.6.3",
-    "@types/isomorphic-fetch": "0.0.35",
     "@types/jest": "^25.2.1",
     "@types/koa": "^2.11.3",
     "@types/koa-bodyparser": "^4.3.0",
