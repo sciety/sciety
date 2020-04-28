@@ -1,12 +1,12 @@
 import { Middleware, RouterContext } from '@koa/router';
 import { Next } from 'koa';
-import fetchAllArticles from '../api/fetch-all-articles';
+import fetchAllArticles from '../api/fetch-all-article-teasers';
 import templateArticleTeaser from '../templates/article-teaser';
 import templateListItems from '../templates/list-items';
 import templatePage from '../templates/page';
 
 export default (): Middleware => {
-  const teasers = fetchAllArticles().map((reviewedArticle) => templateArticleTeaser(reviewedArticle, `/articles/${encodeURIComponent(reviewedArticle.article.doi)}`));
+  const teasers = fetchAllArticles().map((articleTeaser) => templateArticleTeaser(articleTeaser));
   const page = templatePage(`<main>
 
   <header class="content-header">

@@ -1,22 +1,22 @@
 import templateListItems from './list-items';
-import { ReviewedArticle } from '../types/reviewed-article';
+import { ArticleTeaser } from '../types/article-teaser';
 
-export default (reviewedArticle: ReviewedArticle, articleLink: string): string => (
+export default (articleTeaser: ArticleTeaser): string => (
   `<article class="teaser">
     <ol aria-label="Article categories" class="teaser__categories">
-      <li>${reviewedArticle.article.category}</li>
+      <li>${articleTeaser.category}</li>
     </ol>
 
     <h3 class="teaser__title">
-      <a href="${articleLink}">${reviewedArticle.article.title}</a>
+      <a href="${articleTeaser.link}">${articleTeaser.title}</a>
     </h3>
 
     <ol aria-label="Authors of this article" class="author-list">
-      ${templateListItems(reviewedArticle.article.authors)}
+      ${templateListItems(articleTeaser.authors)}
     </ol>
 
     <ul aria-label="Review details" class="teaser__details">
-      ${reviewedArticle.reviews.length} reviews
+      ${articleTeaser.numberOfReviews} reviews
     </ul>
   </article>`
 );

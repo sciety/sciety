@@ -1,36 +1,18 @@
 import templateArticleTeaser from '../../src/templates/article-teaser';
+import { ArticleTeaser } from '../../src/types/article-teaser';
 
 describe('article-teaser template', (): void => {
-  const article = {
-    article: {
-      category: 'Psychoceramics',
-      type: 'New Results',
-      doi: '10.1101/2000.1234',
-      title: 'The study of cracked pots',
-      abstract: 'More lorem ipsum',
-      authors: ['John Doe'],
-      publicationDate: new Date('2000-01-15'),
-    },
-    reviews: [
-      {
-        publicationDate: new Date('2000-02-01'),
-        author: 'Alice',
-        summary: 'Lorem ipsum',
-        doi: '1234',
-      },
-      {
-        publicationDate: new Date('2000-03-04'),
-        author: 'Bob',
-        summary: 'Sit amet',
-        doi: '1234',
-      },
-    ],
+  const articleTeaser: ArticleTeaser = {
+    category: 'Psychoceramics',
+    title: 'The study of cracked pots',
+    authors: ['John Doe'],
+    numberOfReviews: 2,
+    link: '/articles/10.5555%2F12345678',
   };
-  const articleLink = '/articles/10.5555%2F12345678';
   let actual: string;
 
   beforeEach(() => {
-    actual = templateArticleTeaser(article, articleLink);
+    actual = templateArticleTeaser(articleTeaser);
   });
 
   it('renders inside an article tag', async (): Promise<void> => {
@@ -38,18 +20,18 @@ describe('article-teaser template', (): void => {
   });
 
   it('renders the category', () => {
-    expect(actual).toEqual(expect.stringContaining(article.article.category));
+    expect(actual).toEqual(expect.stringContaining(articleTeaser.category));
   });
 
   it('renders the title as a link', () => {
-    expect(actual).toEqual(expect.stringContaining(`<a href="/articles/10.5555%2F12345678">${article.article.title}</a>`));
+    expect(actual).toEqual(expect.stringContaining(`<a href="${articleTeaser.link}">${articleTeaser.title}</a>`));
   });
 
   it('renders the authors', () => {
-    expect(actual).toEqual(expect.stringContaining(article.article.authors[0]));
+    expect(actual).toEqual(expect.stringContaining(articleTeaser.authors[0]));
   });
 
   it('renders the number of reviews', () => {
-    expect(actual).toEqual(expect.stringContaining('2 reviews'));
+    expect(actual).toEqual(expect.stringContaining(`${articleTeaser.numberOfReviews} reviews`));
   });
 });
