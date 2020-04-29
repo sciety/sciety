@@ -23,7 +23,7 @@ export default (reviewReferenceRepository: ReviewReferenceRepository): Middlewar
 
     reviewReferenceRepository.add({ articleDoi: articledoi, reviewDoi });
 
-    response.redirect(`/articles/${encodeURIComponent(articledoi)}`);
+    response.redirect(`/articles/${articledoi}`);
     response.status = SEE_OTHER;
 
     await next();

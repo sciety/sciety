@@ -9,9 +9,8 @@ describe('article handler', (): void => {
   describe('when the article exists', (): void => {
     beforeEach(async () => {
       const doi = article3Doi;
-      const doiParam = encodeURIComponent(doi);
       const server = createServer();
-      response = await request(server).get(`/articles/${doiParam}`);
+      response = await request(server).get(`/articles/${doi}`);
     });
 
     it('returns a successful response', async (): Promise<void> => {

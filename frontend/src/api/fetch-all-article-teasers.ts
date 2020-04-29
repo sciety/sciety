@@ -28,7 +28,7 @@ export default (fetchDataset: FetchDataset): FetchAllArticleTeasers => (
       title: title.object.value,
       authors,
       numberOfReviews: reviews.length,
-      link: `/articles/${encodeURIComponent(article.doi)}`,
+      link: `/articles/${article.doi}`,
     };
   }))
 );
