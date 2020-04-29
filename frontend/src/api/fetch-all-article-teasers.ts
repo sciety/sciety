@@ -1,5 +1,5 @@
 import { namedNode } from '@rdfjs/data-model';
-import { dcterms } from '@tpluscode/rdf-ns-builders';
+import { dcterms, foaf } from '@tpluscode/rdf-ns-builders';
 import { FetchDataset } from './fetch-dataset';
 import article3 from '../data/article3';
 import article4 from '../data/article4';
@@ -17,11 +17,16 @@ export default (fetchDataset: FetchDataset): FetchAllArticleTeasers => (
     const articleIri = namedNode(`http://dx.doi.org/${article.doi}`);
 
     const [title] = dataset.match(articleIri, dcterms.title);
+    const [...authorQuads] = dataset.match(articleIri, dcterms.creator);
+    const authors = authorQuads.map(({ object }) => {
+      const [author] = dataset.match(object, foaf.name);
+      return author.object.value;
+    });
 
     return {
       category: article.category,
       title: title.object.value,
-      authors: article.authors,
+      authors,
       numberOfReviews: reviews.length,
       link: `/articles/${encodeURIComponent(article.doi)}`,
     };
