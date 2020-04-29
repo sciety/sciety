@@ -24,4 +24,4 @@ const reviewReferenceRepository: ReviewReferenceRepository = {
   ),
 };
 
-export default reviewReferenceRepository;
+export default (): ReviewReferenceRepository => reviewReferenceRepository;

@@ -3,7 +3,7 @@ import createFetchAllArticleTeasers from './api/fetch-all-article-teasers';
 import createFetchDataset from './api/fetch-dataset';
 import createFetchReview from './api/fetch-review';
 import createFetchReviewedArticle from './api/fetch-reviewed-article';
-import reviewReferenceRepository from './data/review-references';
+import createReviewReferenceRepository from './data/review-references';
 import createLogger from './logger';
 import createRouter, { RouterServices } from './router';
 import createServer from './server';
@@ -15,6 +15,7 @@ log('Starting server');
 const fetchDataset = createFetchDataset();
 const fetchAllArticleTeasers = createFetchAllArticleTeasers(fetchDataset);
 const fetchReview = createFetchReview(fetchDataset);
+const reviewReferenceRepository = createReviewReferenceRepository();
 const fetchReviewedArticle = createFetchReviewedArticle(reviewReferenceRepository, fetchReview);
 const services: RouterServices = { fetchAllArticleTeasers, fetchReviewedArticle, reviewReferenceRepository };
 
