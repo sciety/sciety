@@ -22,7 +22,7 @@ describe('reviews handler', (): void => {
     expect(response.header.location).toBe(`/articles/${articleDoi}`);
   });
 
-  it.each.skip([
+  it.skip.each([
     ['10.5281/zenodo.3678326', '10.5281/zenodo.3678326'],
     ['doi:10.5281/zenodo.3678326', '10.5281/zenodo.3678326'],
     ['http://dx.doi.org/10.5281/zenodo.3678326', '10.5281/zenodo.3678326'],
