@@ -10,7 +10,7 @@ export default (): ReviewReferenceRepository => {
 
     findReviewDoisForArticleDoi: (articleDoi) => (
       reviewReferences
-        .filter((reference) => reference.articleDoi === articleDoi)
+        .filter((reference) => reference.articleDoi.value === articleDoi.value)
         .map((reference) => reference.reviewDoi)
     ),
   };

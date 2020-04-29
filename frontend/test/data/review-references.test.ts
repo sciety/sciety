@@ -1,4 +1,5 @@
 import { article3 } from '../../src/data/article-dois';
+import Doi from '../../src/data/doi';
 import createReviewReferenceRepository from '../../src/data/review-references';
 import ReviewReferenceRepository from '../../src/types/review-reference-repository';
 
@@ -19,12 +20,12 @@ describe('review-reference-repository', () => {
   describe('a populated repository', () => {
     beforeEach(() => {
       reviewReferenceRepository.add({
-        articleDoi: '10.1234/5679',
+        articleDoi: new Doi('10.1234/5679'),
         reviewDoi: '10.9012/3456',
       });
     });
     it('finds the review references that were added', () => {
-      expect(reviewReferenceRepository.findReviewDoisForArticleDoi('10.1234/5679')).toHaveLength(1);
+      expect(reviewReferenceRepository.findReviewDoisForArticleDoi(new Doi('10.1234/5679'))).toHaveLength(1);
     });
   });
 });

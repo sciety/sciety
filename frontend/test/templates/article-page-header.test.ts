@@ -1,3 +1,4 @@
+import Doi from '../../src/data/doi';
 import templateArticlePageHeader from '../../src/templates/article-page-header';
 
 describe('article page header template', (): void => {
@@ -5,7 +6,7 @@ describe('article page header template', (): void => {
     title: 'Something interesting',
     category: 'Shoe trees',
     type: 'Thing',
-    doi: '1234',
+    doi: new Doi('10.1101/2000.1234'),
     publicationDate: new Date('2009-11-28'),
     abstract: 'Anything',
     authors: ['Gary', 'Uncle Wiggly'],
@@ -29,7 +30,7 @@ describe('article page header template', (): void => {
   });
 
   it('renders the article DOI', () => {
-    expect(actual).toEqual(expect.stringContaining(article.doi));
+    expect(actual).toEqual(expect.stringContaining(article.doi.value));
   });
 
   it('renders the article publication date', () => {

@@ -1,6 +1,7 @@
 import { FetchReview } from '../../src/api/fetch-review';
 import createFetchReviewedArticle from '../../src/api/fetch-reviewed-article';
 import article3 from '../../src/data/article3';
+import Doi from '../../src/data/doi';
 import ReviewReferenceRepository from '../../src/types/review-reference-repository';
 import shouldNotBeCalled from '../should-not-be-called';
 
@@ -42,7 +43,7 @@ describe('fetch-reviewed-article', (): void => {
       const fetchReviewedArticle = createFetchReviewedArticle(reviewReferenceRepository, shouldNotBeCalled);
       const expected = new Error('Article DOI 10.1234/5678 not found');
 
-      await expect(fetchReviewedArticle('10.1234/5678')).rejects.toStrictEqual(expected);
+      await expect(fetchReviewedArticle(new Doi('10.1234/5678'))).rejects.toStrictEqual(expected);
     });
   });
 });

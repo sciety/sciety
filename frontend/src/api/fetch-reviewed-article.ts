@@ -1,14 +1,15 @@
 import { FetchReview } from './fetch-review';
 import article3 from '../data/article3';
 import article4 from '../data/article4';
+import Doi from '../data/doi';
 import ReviewReferenceRepository from '../types/review-reference-repository';
 import { ReviewedArticle } from '../types/reviewed-article';
 
-export type FetchReviewedArticle = (doi: string) => Promise<ReviewedArticle>;
+export type FetchReviewedArticle = (doi: Doi) => Promise<ReviewedArticle>;
 
 export default (reviewReferenceRepository: ReviewReferenceRepository, fetchReview: FetchReview):
 FetchReviewedArticle => (
-  async (doi: string): Promise<ReviewedArticle> => {
+  async (doi: Doi): Promise<ReviewedArticle> => {
     const articleReviews = reviewReferenceRepository.findReviewDoisForArticleDoi(doi);
 
     if (articleReviews.length === 0) {
@@ -20,7 +21,7 @@ FetchReviewedArticle => (
       article4,
     ];
 
-    const [matched] = allArticles.filter((reviewedArticle) => reviewedArticle.article.doi === doi);
+    const [matched] = allArticles.filter((reviewedArticle) => reviewedArticle.article.doi.value === doi.value);
 
     return {
       article: matched.article,

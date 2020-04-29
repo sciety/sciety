@@ -1,9 +1,10 @@
 import { SERVICE_UNAVAILABLE } from 'http-status-codes';
 import { Middleware, RouterContext } from '@koa/router';
-import { InternalServerError, NotFound } from 'http-errors';
+import { NotFound } from 'http-errors';
 import { Next } from 'koa';
 import { FetchDatasetError } from '../api/fetch-dataset';
 import { FetchReviewedArticle } from '../api/fetch-reviewed-article';
+import Doi from '../data/doi';
 import createLogger from '../logger';
 import templateArticlePage from '../templates/article-page';
 import templatePage from '../templates/page';
@@ -12,10 +13,14 @@ import { ReviewedArticle } from '../types/reviewed-article';
 const log = createLogger('handler:article');
 
 export default (fetchReviewedArticle: FetchReviewedArticle): Middleware => (
-  async ({ response, params: { doi } }: RouterContext, next: Next): Promise<void> => {
-    if (typeof doi === 'undefined') {
-      log('DOI parameter not present');
-      throw new InternalServerError('DOI parameter not present');
+  async ({ response, params }: RouterContext, next: Next): Promise<void> => {
+    let doi: Doi;
+
+    try {
+      doi = new Doi(params.doi);
+    } catch (error) {
+      log(`Article ${params.doi} not found: (${error})`);
+      throw new NotFound(`${params.doi} not found`);
     }
 
     let reviewedArticle: ReviewedArticle;

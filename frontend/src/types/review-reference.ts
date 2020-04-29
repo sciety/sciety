@@ -1,4 +1,6 @@
+import Doi from '../data/doi';
+
 export default interface ReviewReference {
-  articleDoi: string;
+  articleDoi: Doi;
   reviewDoi: string;
 }

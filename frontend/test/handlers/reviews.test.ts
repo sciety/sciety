@@ -1,6 +1,7 @@
 import { BAD_REQUEST, SEE_OTHER } from 'http-status-codes';
 import request from 'supertest';
 import createServer from './server';
+import Doi from '../../src/data/doi';
 import createReviewReferenceRepository from '../../src/data/review-references';
 
 describe('reviews handler', (): void => {
@@ -36,7 +37,7 @@ describe('reviews handler', (): void => {
       .type('form')
       .send({ articledoi: articleDoi, reviewdoi: reviewDoi });
 
-    expect(createReviewReferenceRepository().findReviewDoisForArticleDoi(articleDoi)).toContain(expected);
+    expect(createReviewReferenceRepository().findReviewDoisForArticleDoi(new Doi(articleDoi))).toContain(expected);
   });
 
   it.each([
