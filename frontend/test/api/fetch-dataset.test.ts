@@ -24,7 +24,23 @@ describe('fetch-dataset', (): void => {
       const dataset = await fetchDataset(iri);
 
       expect(dataset.dataset).toBe(cannedDataset);
-      expect(dataset.term).toBe(iri);
+      expect(dataset.term).toStrictEqual(iri);
+    });
+
+    it('fetches a dataset that uses a different IRI', async () => {
+      const iri = namedNode(`https://doi.org/${article3.reviews[0].doi}`);
+      const usedIri = namedNode(`http://dx.doi.org/${article3.reviews[0].doi}`);
+      const cannedDataset = datasetFactory([]);
+      const stubFetch = createStubFetch({
+        ok: true,
+        dataset: async (): Promise<DatasetCore> => cannedDataset,
+        headers: new Headers({ Link: `<${usedIri.value}>; rel="canonical"` }),
+      });
+
+      const fetchDataset = createFetchDataset(stubFetch);
+      const dataset = await fetchDataset(iri);
+
+      expect(dataset.term).toStrictEqual(usedIri);
     });
   });
 

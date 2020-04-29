@@ -16,24 +16,25 @@ import createRouter, { RouterServices } from '../../src/router';
 import createServer from '../../src/server';
 
 export default (): Server => {
-  const fetchCrossrefDataset: FetchDataset = async (iri) => {
-    const normalisedIri = namedNode(iri.value.replace(/^https:\/\/doi\.org\//, 'http://dx.doi.org/'));
+  const fetchCrossrefDataset: FetchDataset = async () => {
+    const usedIri = namedNode('http://example.com/some-crossref-node');
 
     return clownface({
       dataset: datasetFactory([
-        quad(normalisedIri, dcterms.title, literal('Article title')),
+        quad(usedIri, dcterms.title, literal('Article title')),
       ]),
-      term: iri,
+      term: usedIri,
     });
   };
   const fetchDataCiteDataset: FetchDataset = async (iri) => {
+    const usedIri = namedNode('http://example.com/some-datacite-node');
     const authorIri = blankNode();
 
     return clownface({
       dataset: datasetFactory([
-        quad(iri, schema.datePublished, literal('2020-02-20')),
-        quad(iri, schema.description, literal('A summary')),
-        quad(iri, schema.author, authorIri),
+        quad(usedIri, schema.datePublished, literal('2020-02-20')),
+        quad(usedIri, schema.description, literal('A summary')),
+        quad(usedIri, schema.author, authorIri),
         quad(authorIri, schema.name, literal('Author name')),
       ]),
       term: iri,

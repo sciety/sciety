@@ -1,9 +1,11 @@
 import { EventEmitter } from 'events';
+import { namedNode } from '@rdfjs/data-model';
 import rdfFetch from '@rdfjs/fetch-lite';
 import JsonLdParser from '@rdfjs/parser-jsonld';
 import N3Parser from '@rdfjs/parser-n3';
 import SinkMap from '@rdfjs/sink-map';
 import clownface, { Clownface } from 'clownface';
+import parseLinkHeader from 'parse-link-header';
 import datasetFactory from 'rdf-dataset-indexed';
 import { DatasetCore, NamedNode, Stream } from 'rdf-js';
 import createLogger from '../logger';
@@ -32,6 +34,9 @@ export default (fetch = rdfFetch): FetchDataset => {
       throw new FetchDatasetError(`Received a ${response.status} ${response.statusText} for ${response.url}`);
     }
 
-    return clownface({ dataset: await response.dataset(), term: iri });
+    const links = parseLinkHeader(response.headers?.get('Link') || '');
+    const term = links?.canonical ? namedNode(links.canonical.url) : iri;
+
+    return clownface({ dataset: await response.dataset(), term });
   };
 };

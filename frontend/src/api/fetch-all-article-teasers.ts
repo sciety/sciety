@@ -12,8 +12,7 @@ export default (fetchDataset: FetchDataset): FetchAllArticleTeasers => (
     article3,
     article4,
   ].map(async ({ article, reviews }) => {
-    let graph = await fetchDataset(namedNode(`https://doi.org/${article.doi}`));
-    graph = graph.namedNode(`http://dx.doi.org/${article.doi}`);
+    const graph = await fetchDataset(namedNode(`https://doi.org/${article.doi}`));
 
     const title = graph.out(dcterms.title).value || 'Unknown article';
     const authors = graph.out(dcterms.creator).map((author) => author.out(foaf.name).value || 'Unknown author');
