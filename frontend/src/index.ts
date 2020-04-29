@@ -3,6 +3,8 @@ import createFetchAllArticleTeasers from './api/fetch-all-article-teasers';
 import createFetchDataset from './api/fetch-dataset';
 import createFetchReview from './api/fetch-review';
 import createFetchReviewedArticle from './api/fetch-reviewed-article';
+import { article3, article4 } from './data/article-dois';
+import { article3Review1, article4Review1 } from './data/review-dois';
 import createReviewReferenceRepository from './data/review-references';
 import createLogger from './logger';
 import createRouter, { RouterServices } from './router';
@@ -16,6 +18,14 @@ const fetchDataset = createFetchDataset();
 const fetchAllArticleTeasers = createFetchAllArticleTeasers(fetchDataset);
 const fetchReview = createFetchReview(fetchDataset);
 const reviewReferenceRepository = createReviewReferenceRepository();
+reviewReferenceRepository.add({
+  articleDoi: article3,
+  reviewDoi: article3Review1,
+});
+reviewReferenceRepository.add({
+  articleDoi: article4,
+  reviewDoi: article4Review1,
+});
 const fetchReviewedArticle = createFetchReviewedArticle(reviewReferenceRepository, fetchReview);
 const services: RouterServices = { fetchAllArticleTeasers, fetchReviewedArticle, reviewReferenceRepository };
 

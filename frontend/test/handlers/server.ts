@@ -8,6 +8,8 @@ import createFetchAllArticleTeasers from '../../src/api/fetch-all-article-teaser
 import { FetchDataset } from '../../src/api/fetch-dataset';
 import createFetchReview from '../../src/api/fetch-review';
 import createFetchReviewedArticle from '../../src/api/fetch-reviewed-article';
+import { article3, article4 } from '../../src/data/article-dois';
+import { article3Review1, article4Review1 } from '../../src/data/review-dois';
 import createReviewReferenceRepository from '../../src/data/review-references';
 import createRouter, { RouterServices } from '../../src/router';
 import createServer from '../../src/server';
@@ -33,6 +35,14 @@ export default (): Server => {
   const fetchAllArticleTeasers = createFetchAllArticleTeasers(fetchCrossrefDataset);
   const fetchReview = createFetchReview(fetchDataCiteDataset);
   const reviewReferenceRepository = createReviewReferenceRepository();
+  reviewReferenceRepository.add({
+    articleDoi: article3,
+    reviewDoi: article3Review1,
+  });
+  reviewReferenceRepository.add({
+    articleDoi: article4,
+    reviewDoi: article4Review1,
+  });
   const fetchReviewedArticle = createFetchReviewedArticle(reviewReferenceRepository, fetchReview);
   const services: RouterServices = { fetchAllArticleTeasers, fetchReviewedArticle, reviewReferenceRepository };
 
