@@ -1,4 +1,4 @@
-import createDoi from '../../src/data/doi';
+import Doi from '../../src/data/doi';
 
 describe('doi', () => {
   it.each([
@@ -9,7 +9,7 @@ describe('doi', () => {
     'http://doi.org/10.5281/zenodo.3678326',
     'https://doi.org/10.5281/zenodo.3678326',
   ])('accepts valid DOI syntax', (doiSyntaxExample) => {
-    expect(createDoi(doiSyntaxExample).toString()).toEqual('10.5281/zenodo.3678326');
+    expect(new Doi(doiSyntaxExample).toString()).toEqual('10.5281/zenodo.3678326');
   });
 
   it.each([
@@ -17,7 +17,8 @@ describe('doi', () => {
     '1.1/1.1',
     '10/134980',
     '10.001/001#00',
+    undefined,
   ])('rejects invalid DOI syntax', (badDoiSyntaxExample) => {
-    expect(() => createDoi(badDoiSyntaxExample)).toThrow();
+    expect(() => new Doi(badDoiSyntaxExample)).toThrow();
   });
 });

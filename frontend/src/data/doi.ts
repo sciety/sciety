@@ -1,14 +1,23 @@
-import { DOI } from '../types/doi';
-
 const doiRegex = /^(?:doi:|(?:(?:https?:\/\/)?(?:dx\.)?doi\.org\/))?(10\.[0-9]{4,}(?:\.[1-9][0-9]*)*\/(?:[^%"#?\s])+)$/;
 
-export default (something: string): DOI => {
-  const [, doi] = doiRegex.exec(something) || [];
+export default class Doi {
+  readonly value: string;
 
-  if (!doi) {
-    throw new Error('Not a possible DOI.');
+  constructor(input: unknown) {
+    if (typeof input !== 'string') {
+      throw new TypeError('Expected a string');
+    }
+
+    const [, doi] = doiRegex.exec(input) || [];
+
+    if (!doi) {
+      throw new Error('Not a possible DOI.');
+    }
+
+    this.value = doi;
   }
-  return {
-    toString(): string { return doi; },
-  };
-};
+
+  toString(): string {
+    return this.value;
+  }
+}
