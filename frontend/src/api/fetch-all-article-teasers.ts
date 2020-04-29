@@ -12,20 +12,15 @@ export default (fetchDataset: FetchDataset): FetchAllArticleTeasers => (
     article3,
     article4,
   ].map(async ({ article, reviews }) => {
-    const dataset = await fetchDataset(namedNode(`https://doi.org/${article.doi}`));
+    let graph = await fetchDataset(namedNode(`https://doi.org/${article.doi}`));
+    graph = graph.namedNode(`http://dx.doi.org/${article.doi}`);
 
-    const articleIri = namedNode(`http://dx.doi.org/${article.doi}`);
-
-    const [title] = dataset.match(articleIri, dcterms.title);
-    const [...authorQuads] = dataset.match(articleIri, dcterms.creator);
-    const authors = authorQuads.map(({ object }) => {
-      const [author] = dataset.match(object, foaf.name);
-      return author.object.value;
-    });
+    const title = graph.out(dcterms.title).value || 'Unknown article';
+    const authors = graph.out(dcterms.creator).map((author) => author.out(foaf.name).value || 'Unknown author');
 
     return {
       category: article.category,
-      title: title.object.value,
+      title,
       authors,
       numberOfReviews: reviews.length,
       link: `/articles/${article.doi}`,

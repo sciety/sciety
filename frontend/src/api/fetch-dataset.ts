@@ -3,11 +3,12 @@ import rdfFetch from '@rdfjs/fetch-lite';
 import JsonLdParser from '@rdfjs/parser-jsonld';
 import N3Parser from '@rdfjs/parser-n3';
 import SinkMap from '@rdfjs/sink-map';
+import clownface, { Clownface } from 'clownface';
 import datasetFactory from 'rdf-dataset-indexed';
 import { DatasetCore, NamedNode, Stream } from 'rdf-js';
 import createLogger from '../logger';
 
-export type FetchDataset = (iri: NamedNode) => Promise<DatasetCore>;
+export type FetchDataset = (iri: NamedNode) => Promise<Clownface<NamedNode>>;
 
 export class FetchDatasetError extends Error {
   toString(): string {
@@ -23,7 +24,7 @@ export default (fetch = rdfFetch): FetchDataset => {
   parsers.set('text/turtle', new N3Parser());
   const fetchOptions = { factory, formats: { parsers } };
 
-  return async (iri: NamedNode): Promise<DatasetCore> => {
+  return async (iri: NamedNode): Promise<Clownface<NamedNode>> => {
     log(`Fetching dataset for ${iri.value}`);
     const response = await fetch<DatasetCore>(iri.value, fetchOptions);
 
@@ -31,6 +32,6 @@ export default (fetch = rdfFetch): FetchDataset => {
       throw new FetchDatasetError(`Received a ${response.status} ${response.statusText} for ${response.url}`);
     }
 
-    return response.dataset();
+    return clownface({ dataset: await response.dataset(), term: iri });
   };
 };

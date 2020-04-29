@@ -2,6 +2,7 @@ import {
   blankNode, namedNode, quad, literal,
 } from '@rdfjs/data-model';
 import { dcterms, foaf } from '@tpluscode/rdf-ns-builders';
+import clownface from 'clownface';
 import datasetFactory from 'rdf-dataset-indexed';
 import createFetchAllArticleTeasers from '../../src/api/fetch-all-article-teasers';
 import { FetchDataset } from '../../src/api/fetch-dataset';
@@ -12,13 +13,16 @@ describe('fetch-all-article-teasers', (): void => {
       const normalisedIri = namedNode(iri.value.replace(/^https:\/\/doi\.org\//, 'http://dx.doi.org/'));
       const firstAuthorIri = blankNode();
       const secondAuthorIri = blankNode();
-      return datasetFactory([
-        quad(normalisedIri, dcterms.title, literal('Article title')),
-        quad(normalisedIri, dcterms.creator, firstAuthorIri),
-        quad(firstAuthorIri, foaf.name, literal('Josiah S. Carberry')),
-        quad(normalisedIri, dcterms.creator, secondAuthorIri),
-        quad(secondAuthorIri, foaf.name, literal('Albert Einstein')),
-      ]);
+      return clownface({
+        dataset: datasetFactory([
+          quad(normalisedIri, dcterms.title, literal('Article title')),
+          quad(normalisedIri, dcterms.creator, firstAuthorIri),
+          quad(firstAuthorIri, foaf.name, literal('Josiah S. Carberry')),
+          quad(normalisedIri, dcterms.creator, secondAuthorIri),
+          quad(secondAuthorIri, foaf.name, literal('Albert Einstein')),
+        ]),
+        term: normalisedIri,
+      });
     };
     const fetchAllArticleTeasers = createFetchAllArticleTeasers(fetchDataset);
     const teasers = await fetchAllArticleTeasers();

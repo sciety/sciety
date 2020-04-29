@@ -23,7 +23,8 @@ describe('fetch-dataset', (): void => {
       const fetchDataset = createFetchDataset(stubFetch);
       const dataset = await fetchDataset(iri);
 
-      expect(dataset).toBe(cannedDataset);
+      expect(dataset.dataset).toBe(cannedDataset);
+      expect(dataset.term).toBe(iri);
     });
   });
 

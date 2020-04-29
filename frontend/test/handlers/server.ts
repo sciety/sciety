@@ -3,6 +3,7 @@ import {
   blankNode, literal, namedNode, quad,
 } from '@rdfjs/data-model';
 import { dcterms, schema } from '@tpluscode/rdf-ns-builders';
+import clownface from 'clownface';
 import datasetFactory from 'rdf-dataset-indexed';
 import createFetchAllArticleTeasers from '../../src/api/fetch-all-article-teasers';
 import { FetchDataset } from '../../src/api/fetch-dataset';
@@ -18,19 +19,25 @@ export default (): Server => {
   const fetchCrossrefDataset: FetchDataset = async (iri) => {
     const normalisedIri = namedNode(iri.value.replace(/^https:\/\/doi\.org\//, 'http://dx.doi.org/'));
 
-    return datasetFactory([
-      quad(normalisedIri, dcterms.title, literal('Article title')),
-    ]);
+    return clownface({
+      dataset: datasetFactory([
+        quad(normalisedIri, dcterms.title, literal('Article title')),
+      ]),
+      term: iri,
+    });
   };
   const fetchDataCiteDataset: FetchDataset = async (iri) => {
     const authorIri = blankNode();
 
-    return datasetFactory([
-      quad(iri, schema.datePublished, literal('2020-02-20')),
-      quad(iri, schema.description, literal('A summary')),
-      quad(iri, schema.author, authorIri),
-      quad(authorIri, schema.name, literal('Author name')),
-    ]);
+    return clownface({
+      dataset: datasetFactory([
+        quad(iri, schema.datePublished, literal('2020-02-20')),
+        quad(iri, schema.description, literal('A summary')),
+        quad(iri, schema.author, authorIri),
+        quad(authorIri, schema.name, literal('Author name')),
+      ]),
+      term: iri,
+    });
   };
   const fetchAllArticleTeasers = createFetchAllArticleTeasers(fetchCrossrefDataset);
   const fetchReview = createFetchReview(fetchDataCiteDataset);

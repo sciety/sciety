@@ -8,18 +8,17 @@ export type FetchReview = (doi: string) => Promise<Review>;
 export default (fetchDataset: FetchDataset): FetchReview => (
   async (doi: string): Promise<Review> => {
     const reviewIri = namedNode(`https://doi.org/${doi}`);
-    const dataset = await fetchDataset(reviewIri);
+    const graph = await fetchDataset(reviewIri);
 
-    const [{ object: authorIri }] = dataset.match(reviewIri, schema.author);
-    const [author] = dataset.match(authorIri, schema.name);
-    const [datePublished] = dataset.match(reviewIri, schema.datePublished);
-    const [summary] = dataset.match(reviewIri, schema.description);
+    const author = graph.out(schema.author).out(schema.name).value || 'Unknown author';
+    const publicationDate = new Date(graph.out(schema.datePublished).value || '');
+    const summary = graph.out(schema.description).value || 'Unknown summary';
 
     return {
-      author: author.object.value,
+      author,
       doi,
-      publicationDate: new Date(datePublished.object.value),
-      summary: summary.object.value,
+      publicationDate,
+      summary,
     };
   }
 );
