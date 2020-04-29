@@ -13,11 +13,10 @@ describe('reviews handler', (): void => {
     'https://doi.org/10.5281/zenodo.3678326',
   ])('returns a created response (%s)', async (reviewDoi: string): Promise<void> => {
     const articleDoi = '10.1101/2000.1234';
-    const articleDoiParam = encodeURIComponent(articleDoi);
-    const reviewDoiParam = encodeURIComponent(reviewDoi);
     const response = await request(createServer())
       .post('/reviews')
-      .send(`articledoi=${articleDoiParam}&reviewdoi=${reviewDoiParam}`);
+      .type('form')
+      .send({ articledoi: articleDoi, reviewdoi: reviewDoi });
 
     expect(response.status).toBe(SEE_OTHER);
     expect(response.header.location).toBe(`/articles/${articleDoi}`);
@@ -32,11 +31,10 @@ describe('reviews handler', (): void => {
     ['https://doi.org/10.5281/zenodo.3678326', '10.5281/zenodo.3678326'],
   ])('adds the review reference to the repository (%s)', async (reviewDoi: string, expected: string): Promise<void> => {
     const articleDoi = '10.1101/2000.1234';
-    const articleDoiParam = encodeURIComponent(articleDoi);
-    const reviewDoiParam = encodeURIComponent(reviewDoi);
     await request(createServer())
       .post('/reviews')
-      .send(`articledoi=${articleDoiParam}&reviewdoi=${reviewDoiParam}`);
+      .type('form')
+      .send({ articledoi: articleDoi, reviewdoi: reviewDoi });
 
     expect(reviewReferenceRepository.findReviewDoisForArticleDoi(articleDoi)).toContain(expected);
   });
@@ -49,7 +47,8 @@ describe('reviews handler', (): void => {
   ])('requires a possible review DOI (%s)', async (reviewDoi: string): Promise<void> => {
     const response = await request(createServer())
       .post('/reviews')
-      .send(`articledoi=10.1101%2F2000.1234&reviewdoi=${encodeURIComponent(reviewDoi)}`);
+      .type('form')
+      .send({ articledoi: '10.1101/2000.1234', reviewdoi: reviewDoi });
 
     expect(response.status).toBe(BAD_REQUEST);
     expect(response.text).toBe('Not a possible DOI.');
@@ -65,7 +64,8 @@ describe('reviews handler', (): void => {
   ])('requires a Zenodo review DOI (%s)', async (reviewDoi: string): Promise<void> => {
     const response = await request(createServer())
       .post('/reviews')
-      .send(`articledoi=10.1101%2F2000.1234&reviewdoi=${encodeURIComponent(reviewDoi)}`);
+      .type('form')
+      .send({ articledoi: '10.1101/2000.1234', reviewdoi: reviewDoi });
 
     expect(response.status).toBe(BAD_REQUEST);
     expect(response.text).toBe('Not a Zenodo DOI.');
