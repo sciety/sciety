@@ -19,7 +19,7 @@ export default (services: RouterServices): Router => {
 
   router.get('/ping', ping());
   router.get('/', index(services.fetchAllArticleTeasers));
-  router.get('/articles/:prefix/:suffix', article(services.fetchReviewedArticle));
+  router.get('/articles/:doi(.+)', article(services.fetchReviewedArticle));
   router.post('/reviews', bodyParser({ enableTypes: ['form'] }), reviews(services.reviewReferenceRepository));
 
   return router;

@@ -12,12 +12,11 @@ import { ReviewedArticle } from '../types/reviewed-article';
 const log = createLogger('handler:article');
 
 export default (fetchReviewedArticle: FetchReviewedArticle): Middleware => (
-  async ({ response, params: { prefix, suffix } }: RouterContext, next: Next): Promise<void> => {
-    if (typeof prefix === 'undefined' || typeof suffix === 'undefined') {
+  async ({ response, params: { doi } }: RouterContext, next: Next): Promise<void> => {
+    if (typeof doi === 'undefined') {
       log('DOI parameter not present');
       throw new InternalServerError('DOI parameter not present');
     }
-    const doi = `${prefix}/${suffix}`;
 
     let reviewedArticle: ReviewedArticle;
     try {
