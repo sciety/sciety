@@ -1,45 +1,32 @@
 import { BAD_REQUEST, SEE_OTHER } from 'http-status-codes';
-import request from 'supertest';
+import request, { Response } from 'supertest';
 import createServer from './server';
 import Doi from '../../src/data/doi';
 
 describe('reviews handler', (): void => {
-  it.each([
-    '10.5281/zenodo.3678326',
-    'doi:10.5281/zenodo.3678326',
-    'http://dx.doi.org/10.5281/zenodo.3678326',
-    'https://dx.doi.org/10.5281/zenodo.3678326',
-    'http://doi.org/10.5281/zenodo.3678326',
-    'https://doi.org/10.5281/zenodo.3678326',
-  ])('returns a created response (%s)', async (reviewDoi: string): Promise<void> => {
-    const { server } = createServer();
-    const articleDoi = '10.1101/2000.1234';
-    const response = await request(server)
-      .post('/reviews')
-      .type('form')
-      .send({ articledoi: articleDoi, reviewdoi: reviewDoi });
+  const articleDoi = new Doi('10.1101/2000.1234');
 
-    expect(response.status).toBe(SEE_OTHER);
-    expect(response.header.location).toBe(`/articles/${articleDoi}`);
-  });
-
-  it.each([
-    ['10.5281/zenodo.3678326', '10.5281/zenodo.3678326'],
-    ['doi:10.5281/zenodo.3678326', '10.5281/zenodo.3678326'],
-    ['http://dx.doi.org/10.5281/zenodo.3678326', '10.5281/zenodo.3678326'],
-    ['https://dx.doi.org/10.5281/zenodo.3678326', '10.5281/zenodo.3678326'],
-    ['http://doi.org/10.5281/zenodo.3678326', '10.5281/zenodo.3678326'],
-    ['https://doi.org/10.5281/zenodo.3678326', '10.5281/zenodo.3678326'],
-  ])('adds the review reference to the repository (%s)', async (reviewDoi: string, expected: string): Promise<void> => {
+  describe('given a valid Zenodo review DOI', (): void => {
+    const reviewDoi = new Doi('10.5281/zenodo.3678326');
     const { server, reviewReferenceRepository } = createServer();
-    const articleDoi = '10.1101/2000.1234';
-    await request(server)
-      .post('/reviews')
-      .type('form')
-      .send({ articledoi: articleDoi, reviewdoi: reviewDoi });
+    let response: Response;
 
-    const foundReviews = reviewReferenceRepository.findReviewDoisForArticleDoi(new Doi(articleDoi));
-    expect(foundReviews).toContainEqual(new Doi(expected));
+    beforeEach(async (): Promise<void> => {
+      response = await request(server)
+        .post('/reviews')
+        .type('form')
+        .send({ articledoi: articleDoi.value, reviewdoi: `http://doi.org/${reviewDoi}` });
+    });
+
+    it('returns a created response', () => {
+      expect(response.status).toBe(SEE_OTHER);
+      expect(response.header.location).toBe(`/articles/${articleDoi}`);
+    });
+
+    it('adds the review reference to the repository', () => {
+      const foundReviews = reviewReferenceRepository.findReviewDoisForArticleDoi(articleDoi);
+      expect(foundReviews).toContainEqual(reviewDoi);
+    });
   });
 
   it('rejects syntactically invalid input', async (): Promise<void> => {
@@ -48,7 +35,7 @@ describe('reviews handler', (): void => {
     const response = await request(server)
       .post('/reviews')
       .type('form')
-      .send({ articledoi: '10.1101/2000.1234', reviewdoi: invalidInput });
+      .send({ articledoi: articleDoi.value, reviewdoi: invalidInput });
 
     expect(response.status).toBe(BAD_REQUEST);
     expect(response.text).toBe('Error: Not a possible DOI.');
@@ -60,7 +47,7 @@ describe('reviews handler', (): void => {
     const response = await request(server)
       .post('/reviews')
       .type('form')
-      .send({ articledoi: '10.1101/2000.1234', reviewdoi: otherDoi });
+      .send({ articledoi: articleDoi.value, reviewdoi: otherDoi });
 
     expect(response.status).toBe(BAD_REQUEST);
     expect(response.text).toBe('Not a Zenodo DOI.');
