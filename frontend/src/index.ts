@@ -20,7 +20,7 @@ const fetchReview = createFetchReview(fetchDataset);
 const reviewReferenceRepository = createReviewReferenceRepository();
 reviewReferenceRepository.add(article3, article3Review1);
 reviewReferenceRepository.add(article4, article4Review1);
-const fetchReviewedArticle = createFetchReviewedArticle(reviewReferenceRepository, fetchReview);
+const fetchReviewedArticle = createFetchReviewedArticle(fetchDataset, reviewReferenceRepository, fetchReview);
 const services: RouterServices = { fetchAllArticleTeasers, fetchReviewedArticle, reviewReferenceRepository };
 
 const router = createRouter(services);

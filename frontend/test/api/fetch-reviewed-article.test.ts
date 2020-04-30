@@ -1,3 +1,10 @@
+import {
+  quad, literal,
+} from '@rdfjs/data-model';
+import { dcterms } from '@tpluscode/rdf-ns-builders';
+import clownface from 'clownface';
+import datasetFactory from 'rdf-dataset-indexed';
+import { FetchDataset } from '../../src/api/fetch-dataset';
 import { FetchReview } from '../../src/api/fetch-review';
 import createFetchReviewedArticle from '../../src/api/fetch-reviewed-article';
 import article3 from '../../src/data/article3';
@@ -12,6 +19,15 @@ describe('fetch-reviewed-article', (): void => {
       findReviewDoisForArticleDoi: () => [article3.reviews[0].doi],
     };
 
+    const fetchDataset: FetchDataset = async (iri) => (
+      clownface({
+        dataset: datasetFactory([
+          quad(iri, dcterms.date, literal('2020-02-20', 'http://www.w3.org/2001/XMLSchema#date')),
+        ]),
+        term: iri,
+      })
+    );
+
     const fetchReview: FetchReview = async (doi) => ({
       author: 'John Doe',
       publicationDate: new Date('2010-02-01'),
@@ -20,13 +36,13 @@ describe('fetch-reviewed-article', (): void => {
     });
 
     it('includes the article', async () => {
-      const fetchReviewedArticle = createFetchReviewedArticle(reviewReferenceRepository, fetchReview);
+      const fetchReviewedArticle = createFetchReviewedArticle(fetchDataset, reviewReferenceRepository, fetchReview);
       const reviewedArticle = await fetchReviewedArticle(article3.article.doi);
       expect(reviewedArticle.article.doi).toBe(article3.article.doi);
     });
 
     it('includes the reviews', async () => {
-      const fetchReviewedArticle = createFetchReviewedArticle(reviewReferenceRepository, fetchReview);
+      const fetchReviewedArticle = createFetchReviewedArticle(fetchDataset, reviewReferenceRepository, fetchReview);
       const reviewedArticle = await fetchReviewedArticle(article3.article.doi);
       expect(reviewedArticle.reviews).toHaveLength(1);
       expect(reviewedArticle.reviews[0].doi).toBe(article3.reviews[0].doi);
@@ -40,7 +56,11 @@ describe('fetch-reviewed-article', (): void => {
     };
 
     it('throws an error', async (): Promise<void> => {
-      const fetchReviewedArticle = createFetchReviewedArticle(reviewReferenceRepository, shouldNotBeCalled);
+      const fetchReviewedArticle = createFetchReviewedArticle(
+        shouldNotBeCalled,
+        reviewReferenceRepository,
+        shouldNotBeCalled,
+      );
       const expected = new Error('Article DOI 10.1234/5678 not found');
 
       await expect(fetchReviewedArticle(new Doi('10.1234/5678'))).rejects.toStrictEqual(expected);
