@@ -1,3 +1,4 @@
+import Doi from '../../src/data/doi';
 import templateReviewSidebarItem from '../../src/templates/review-sidebar-item';
 
 describe('review-sidebar-item template', (): void => {
@@ -5,7 +6,7 @@ describe('review-sidebar-item template', (): void => {
     author: 'John Doe',
     publicationDate: new Date('2010-02-01'),
     summary: 'Pretty good.',
-    doi: '1234',
+    doi: new Doi('10.5281/zenodo.3678326'),
   };
 
   it('renders inside an article tag', () => {

@@ -1,3 +1,5 @@
+import Doi from '../data/doi';
+
 export interface Review {
   author: string;
   publicationDate: Date;
