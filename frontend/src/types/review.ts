@@ -2,5 +2,5 @@ export interface Review {
   author: string;
   publicationDate: Date;
   summary: string;
-  doi: string;
+  doi: Doi;
 }

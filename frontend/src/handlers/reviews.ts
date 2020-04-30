@@ -2,6 +2,7 @@ import { SEE_OTHER } from 'http-status-codes';
 import { Middleware, RouterContext } from '@koa/router';
 import { BadRequest } from 'http-errors';
 import { Next } from 'koa';
+import Doi from '../data/doi';
 import ReviewReferenceRepository from '../types/review-reference-repository';
 
 const doiRegex = /^(?:doi:|(?:(?:https?:\/\/)?(?:dx\.)?doi\.org\/))?(10\.[0-9]{4,}(?:\.[1-9][0-9]*)*\/(?:[^%"#?\s])+)$/;
@@ -21,7 +22,7 @@ export default (reviewReferenceRepository: ReviewReferenceRepository): Middlewar
       throw new BadRequest('Not a Zenodo DOI.');
     }
 
-    reviewReferenceRepository.add(articledoi, reviewDoi);
+    reviewReferenceRepository.add(new Doi(articledoi), new Doi(reviewDoi));
 
     response.redirect(`/articles/${articledoi}`);
     response.status = SEE_OTHER;

@@ -3,13 +3,13 @@ import ReviewReferenceRepository from '../types/review-reference-repository';
 
 interface ReviewReference {
   articleDoi: Doi;
-  reviewDoi: string;
+  reviewDoi: Doi;
 }
 
 export default (): ReviewReferenceRepository => {
   const reviewReferences: Array<ReviewReference> = [];
   const reviewReferenceRepository: ReviewReferenceRepository = {
-    add: (articleDoi: Doi, reviewDoi: string) => {
+    add: (articleDoi: Doi, reviewDoi: Doi) => {
       reviewReferences.push({
         articleDoi,
         reviewDoi,
