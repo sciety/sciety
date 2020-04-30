@@ -6,7 +6,8 @@ describe('index handler', (): void => {
   let response: Response;
 
   beforeEach(async () => {
-    response = await request(createServer()).get('/');
+    const { server } = createServer();
+    response = await request(server).get('/');
   });
 
   it('returns a successful response', async (): Promise<void> => {

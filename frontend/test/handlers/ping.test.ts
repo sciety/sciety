@@ -6,7 +6,8 @@ describe('ping handler', (): void => {
   let response: Response;
 
   beforeEach(async () => {
-    response = await request(createServer()).get('/ping');
+    const { server } = createServer();
+    response = await request(server).get('/ping');
   });
 
   it('returns a successful response', async (): Promise<void> => {

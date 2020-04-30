@@ -14,8 +14,14 @@ import { article3Review1, article4Review1 } from '../../src/data/review-dois';
 import createReviewReferenceRepository from '../../src/data/review-references';
 import createRouter, { RouterServices } from '../../src/router';
 import createServer from '../../src/server';
+import ReviewReferenceRepository from '../../src/types/review-reference-repository';
 
-export default (): Server => {
+export interface TestServer {
+  server: Server;
+  reviewReferenceRepository: ReviewReferenceRepository;
+}
+
+export default (): TestServer => {
   const fetchCrossrefDataset: FetchDataset = async () => {
     const usedIri = namedNode('http://example.com/some-crossref-node');
 
@@ -49,5 +55,8 @@ export default (): Server => {
   const services: RouterServices = { fetchAllArticleTeasers, fetchReviewedArticle, reviewReferenceRepository };
 
   const router = createRouter(services);
-  return createServer(router);
+  return {
+    server: createServer(router),
+    reviewReferenceRepository,
+  };
 };

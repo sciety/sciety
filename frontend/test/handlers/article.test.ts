@@ -9,7 +9,7 @@ describe('article handler', (): void => {
   describe('when the article exists', (): void => {
     beforeEach(async () => {
       const doi = article3Doi;
-      const server = createServer();
+      const { server } = createServer();
       response = await request(server).get(`/articles/${doi}`);
     });
 
@@ -29,7 +29,8 @@ describe('article handler', (): void => {
 
   describe('when the article does not exist', (): void => {
     beforeEach(async () => {
-      response = await request(createServer()).get('/articles/rubbish');
+      const { server } = createServer();
+      response = await request(server).get('/articles/rubbish');
     });
 
     it('returns a 404 response', async (): Promise<void> => {
