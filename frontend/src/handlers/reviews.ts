@@ -5,24 +5,27 @@ import { Next } from 'koa';
 import Doi from '../data/doi';
 import ReviewReferenceRepository from '../types/review-reference-repository';
 
-const doiRegex = /^(?:doi:|(?:(?:https?:\/\/)?(?:dx\.)?doi\.org\/))?(10\.[0-9]{4,}(?:\.[1-9][0-9]*)*\/(?:[^%"#?\s])+)$/;
 const zenodoPrefix = '10.5281';
+
+const validateDoi = (input: string): Doi => {
+  try {
+    return new Doi(input);
+  } catch (err) {
+    throw new BadRequest(err.toString());
+  }
+};
 
 export default (reviewReferenceRepository: ReviewReferenceRepository): Middleware => (
   async ({ request, response }: RouterContext, next: Next): Promise<void> => {
     const { articledoi, reviewdoi } = request.body;
 
-    const [, reviewDoi] = doiRegex.exec(reviewdoi) || [];
+    const reviewDoi = validateDoi(reviewdoi);
 
-    if (!reviewDoi) {
-      throw new BadRequest('Not a possible DOI.');
-    }
-
-    if (!(reviewDoi.startsWith(`${zenodoPrefix}/`))) {
+    if (!(reviewDoi.value.startsWith(`${zenodoPrefix}/`))) {
       throw new BadRequest('Not a Zenodo DOI.');
     }
 
-    reviewReferenceRepository.add(new Doi(articledoi), new Doi(reviewDoi));
+    reviewReferenceRepository.add(new Doi(articledoi), reviewDoi);
 
     response.redirect(`/articles/${articledoi}`);
     response.status = SEE_OTHER;

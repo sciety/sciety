@@ -52,7 +52,7 @@ describe('reviews handler', (): void => {
       .send({ articledoi: '10.1101/2000.1234', reviewdoi: reviewDoi });
 
     expect(response.status).toBe(BAD_REQUEST);
-    expect(response.text).toBe('Not a possible DOI.');
+    expect(response.text).toBe('Error: Not a possible DOI.');
   });
 
   it.each([
