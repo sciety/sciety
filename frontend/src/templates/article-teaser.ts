@@ -3,10 +3,6 @@ import { ArticleTeaser } from '../types/article-teaser';
 
 export default (articleTeaser: ArticleTeaser): string => (
   `<article class="teaser">
-    <ol aria-label="Article categories" class="teaser__categories">
-      <li>${articleTeaser.category}</li>
-    </ol>
-
     <h3 class="teaser__title">
       <a href="${articleTeaser.link}">${articleTeaser.title}</a>
     </h3>

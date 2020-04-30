@@ -5,7 +5,6 @@ import { ReviewedArticle } from '../types/reviewed-article';
 const article: ReviewedArticle = {
   article: {
     title: 'Uncovering the hidden antibiotic potential of Cannabis',
-    category: 'Microbiology',
     type: 'New Results',
     authors: [
       'Maya A. Farha',

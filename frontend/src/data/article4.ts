@@ -5,7 +5,6 @@ import { ReviewedArticle } from '../types/reviewed-article';
 const article: ReviewedArticle = {
   article: {
     title: 'A SARS-CoV-2-Human Protein-Protein Interaction Map Reveals Drug Targets and Potential Drug-Repurposing',
-    category: 'Systems Biology',
     type: 'New Results',
     authors: [
       'David E. Gordon',

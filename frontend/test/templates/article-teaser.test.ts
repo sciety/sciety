@@ -3,7 +3,6 @@ import { ArticleTeaser } from '../../src/types/article-teaser';
 
 describe('article-teaser template', (): void => {
   const articleTeaser: ArticleTeaser = {
-    category: 'Psychoceramics',
     title: 'The study of cracked pots',
     authors: ['John Doe'],
     numberOfReviews: 2,
@@ -17,10 +16,6 @@ describe('article-teaser template', (): void => {
 
   it('renders inside an article tag', async (): Promise<void> => {
     expect(actual).toEqual(expect.stringMatching(/^<article\s/));
-  });
-
-  it('renders the category', () => {
-    expect(actual).toEqual(expect.stringContaining(articleTeaser.category));
   });
 
   it('renders the title as a link', () => {

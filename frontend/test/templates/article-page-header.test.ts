@@ -4,7 +4,6 @@ import templateArticlePageHeader from '../../src/templates/article-page-header';
 describe('article page header template', (): void => {
   const article = {
     title: 'Something interesting',
-    category: 'Shoe trees',
     type: 'Thing',
     doi: new Doi('10.1101/2000.1234'),
     publicationDate: new Date('2009-11-28'),
@@ -19,10 +18,6 @@ describe('article page header template', (): void => {
 
   it('renders inside an header tag', () => {
     expect(actual).toEqual(expect.stringMatching(/^<header\s/));
-  });
-
-  it('renders the article category', () => {
-    expect(actual).toEqual(expect.stringContaining(article.category));
   });
 
   it('renders the article type', () => {

@@ -6,9 +6,6 @@ export default (article: Article): string => (
   `<header class="content-header">
 
       <ol class="content-header__categories">
-        <li aria-label="Article category">
-          ${article.category}
-        </li>
         <li aria-label="Article type">
           ${article.type}
         </li>

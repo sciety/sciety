@@ -18,7 +18,6 @@ export default (fetchDataset: FetchDataset): FetchAllArticleTeasers => (
     const authors = graph.out(dcterms.creator).map((author) => author.out(foaf.name).value || 'Unknown author');
 
     return {
-      category: article.category,
       title,
       authors,
       numberOfReviews: reviews.length,
