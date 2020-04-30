@@ -5,12 +5,6 @@ import { Article } from '../types/article';
 export default (article: Article): string => (
   `<header class="content-header">
 
-      <ol class="content-header__categories">
-        <li aria-label="Article type">
-          ${article.type}
-        </li>
-      </ol>
-
       <h1>
         ${article.title}
       </h1>

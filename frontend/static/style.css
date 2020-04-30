@@ -132,27 +132,6 @@ main > article > aside {
   padding-bottom: 1.125rem;
 }
 
-.content-header__categories {
-  color: rgb(136, 136, 136);
-  font-size: .875rem;
-  line-height: 1.71429;
-  list-style-type: none;
-  margin-bottom: 1.5rem;
-  padding-left: 0;
-}
-
-.content-header__categories li {
-  display: inline;
-}
-
-.content-header__categories li:after {
-  content: "\a0|\a0";
-}
-
-.content-header__categories li:last-child:after {
-  content: "";
-}
-
 .content-header__details {
   color: rgb(136, 136, 136);
   font-size: .875rem;
