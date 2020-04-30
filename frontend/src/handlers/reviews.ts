@@ -21,7 +21,7 @@ export default (reviewReferenceRepository: ReviewReferenceRepository): Middlewar
       throw new BadRequest('Not a Zenodo DOI.');
     }
 
-    reviewReferenceRepository.add({ articleDoi: articledoi, reviewDoi });
+    reviewReferenceRepository.add(articledoi, reviewDoi);
 
     response.redirect(`/articles/${articledoi}`);
     response.status = SEE_OTHER;

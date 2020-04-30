@@ -43,14 +43,8 @@ export default (): Server => {
   const fetchAllArticleTeasers = createFetchAllArticleTeasers(fetchCrossrefDataset);
   const fetchReview = createFetchReview(fetchDataCiteDataset);
   const reviewReferenceRepository = createReviewReferenceRepository();
-  reviewReferenceRepository.add({
-    articleDoi: article3,
-    reviewDoi: article3Review1,
-  });
-  reviewReferenceRepository.add({
-    articleDoi: article4,
-    reviewDoi: article4Review1,
-  });
+  reviewReferenceRepository.add(article3, article3Review1);
+  reviewReferenceRepository.add(article4, article4Review1);
   const fetchReviewedArticle = createFetchReviewedArticle(reviewReferenceRepository, fetchReview);
   const services: RouterServices = { fetchAllArticleTeasers, fetchReviewedArticle, reviewReferenceRepository };
 

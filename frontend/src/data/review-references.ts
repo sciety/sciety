@@ -1,11 +1,19 @@
-import ReviewReference from '../types/review-reference';
+import Doi from './doi';
 import ReviewReferenceRepository from '../types/review-reference-repository';
+
+interface ReviewReference {
+  articleDoi: Doi;
+  reviewDoi: string;
+}
 
 export default (): ReviewReferenceRepository => {
   const reviewReferences: Array<ReviewReference> = [];
   const reviewReferenceRepository: ReviewReferenceRepository = {
-    add: (reviewReference) => {
-      reviewReferences.push(reviewReference);
+    add: (articleDoi: Doi, reviewDoi: string) => {
+      reviewReferences.push({
+        articleDoi,
+        reviewDoi,
+      });
     },
 
     findReviewDoisForArticleDoi: (articleDoi) => (

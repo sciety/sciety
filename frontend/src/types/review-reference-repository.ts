@@ -1,8 +1,7 @@
-import ReviewReference from './review-reference';
 import Doi from '../data/doi';
 
 export default interface ReviewReferenceRepository {
-  add(reviewReference: ReviewReference): void;
+  add(articleDoi: Doi, reviewDoi: string): void;
 
   findReviewDoisForArticleDoi(articleDoi: Doi): Array<string>;
 }
