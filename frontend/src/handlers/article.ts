@@ -25,7 +25,7 @@ export default (fetchReviewedArticle: FetchReviewedArticle): Middleware => (
       throw new NotFound(`${params.doi} not found`);
     }
 
-    if (!(doi.value.startsWith(`${biorxivPrefix}/`))) {
+    if (!(doi.hasPrefix(biorxivPrefix))) {
       log(`Article ${params.doi} is not from bioRxiv`);
       throw new NotFound('Not a bioRxiv DOI.');
     }

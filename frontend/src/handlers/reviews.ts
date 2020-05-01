@@ -21,7 +21,7 @@ export default (reviewReferenceRepository: ReviewReferenceRepository): Middlewar
 
     const reviewDoi = validateDoi(reviewdoi);
 
-    if (!(reviewDoi.value.startsWith(`${zenodoPrefix}/`))) {
+    if (!(reviewDoi.hasPrefix(zenodoPrefix))) {
       throw new BadRequest('Not a Zenodo DOI.');
     }
 

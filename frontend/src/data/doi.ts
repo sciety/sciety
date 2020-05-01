@@ -17,6 +17,10 @@ export default class Doi {
     this.value = doi;
   }
 
+  hasPrefix(prefix: string): boolean {
+    return this.value.startsWith(`${prefix}/`);
+  }
+
   toString(): string {
     return this.value;
   }

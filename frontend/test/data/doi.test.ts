@@ -12,6 +12,13 @@ describe('doi', () => {
     expect(new Doi(doiSyntaxExample).toString()).toEqual('10.5281/zenodo.3678326');
   });
 
+  it('has a prefix', () => {
+    const doi = new Doi('10.5281/zenodo.3678326');
+
+    expect(doi.hasPrefix('10.5281')).toBe(true);
+    expect(doi.hasPrefix('10.5282')).toBe(false);
+  });
+
   it.each([
     '10..1000/journal.pone.0011111',
     '1.1/1.1',
