@@ -1,5 +1,5 @@
 import { namedNode } from '@rdfjs/data-model';
-import { dcterms } from '@tpluscode/rdf-ns-builders';
+import { dcterms, foaf } from '@tpluscode/rdf-ns-builders';
 import { FetchDataset } from './fetch-dataset';
 import { FetchReview } from './fetch-review';
 import article3 from '../data/article3';
@@ -34,12 +34,14 @@ FetchReviewedArticle => (
     const graph = await fetchDataset(articleIri);
 
     const title = graph.out(dcterms.title).value || 'Unknown article';
+    const authors = graph.out(dcterms.creator).map((author) => author.out(foaf.name).value || 'Unknown author');
     const publicationDate = new Date(graph.out(dcterms.date).value || 0);
 
     return {
       article: {
         ...matched.article,
         title,
+        authors,
         publicationDate,
       },
       reviews: await Promise.all(articleReviews.map(fetchReview)),

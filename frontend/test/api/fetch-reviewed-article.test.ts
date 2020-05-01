@@ -1,7 +1,7 @@
 import {
-  quad, literal,
+  quad, literal, blankNode,
 } from '@rdfjs/data-model';
-import { dcterms, xsd } from '@tpluscode/rdf-ns-builders';
+import { dcterms, foaf, xsd } from '@tpluscode/rdf-ns-builders';
 import clownface from 'clownface';
 import datasetFactory from 'rdf-dataset-indexed';
 import { FetchDataset } from '../../src/api/fetch-dataset';
@@ -19,15 +19,22 @@ describe('fetch-reviewed-article', (): void => {
       findReviewDoisForArticleDoi: () => [article3.reviews[0].doi],
     };
 
-    const fetchDataset: FetchDataset = async (iri) => (
-      clownface({
+    const fetchDataset: FetchDataset = async (iri) => {
+      const firstAuthorIri = blankNode();
+      const secondAuthorIri = blankNode();
+
+      return clownface({
         dataset: datasetFactory([
           quad(iri, dcterms.title, literal('Article title')),
           quad(iri, dcterms.date, literal('2020-02-20', xsd.date)),
+          quad(iri, dcterms.creator, firstAuthorIri),
+          quad(firstAuthorIri, foaf.name, literal('Josiah S. Carberry')),
+          quad(iri, dcterms.creator, secondAuthorIri),
+          quad(secondAuthorIri, foaf.name, literal('Albert Einstein')),
         ]),
         term: iri,
-      })
-    );
+      });
+    };
 
     const fetchReview: FetchReview = async (doi) => ({
       author: 'John Doe',
@@ -42,6 +49,8 @@ describe('fetch-reviewed-article', (): void => {
       expect(reviewedArticle.article.doi).toBe(article3.article.doi);
       expect(reviewedArticle.article.title).toBe('Article title');
       expect(reviewedArticle.article.publicationDate).toStrictEqual(new Date('2020-02-20'));
+      expect(reviewedArticle.article.authors).toContain('Josiah S. Carberry');
+      expect(reviewedArticle.article.authors).toContain('Albert Einstein');
     });
 
     it('includes the reviews', async () => {
