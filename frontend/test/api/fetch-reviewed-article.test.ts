@@ -39,6 +39,7 @@ describe('fetch-reviewed-article', (): void => {
       const fetchReviewedArticle = createFetchReviewedArticle(fetchDataset, reviewReferenceRepository, fetchReview);
       const reviewedArticle = await fetchReviewedArticle(article3.article.doi);
       expect(reviewedArticle.article.doi).toBe(article3.article.doi);
+      expect(reviewedArticle.article.publicationDate).toStrictEqual(new Date('2020-02-20'));
     });
 
     it('includes the reviews', async () => {

@@ -35,7 +35,10 @@ FetchReviewedArticle => (
     const publicationDate = new Date(graph.out(dcterms.date).value || 0);
 
     return {
-      article: matched.article,
+      article: {
+        ...matched.article,
+        publicationDate,
+      },
       reviews: await Promise.all(articleReviews.map(fetchReview)),
     };
   }
