@@ -12,7 +12,7 @@ export default (fetchDataset: FetchDataset): FetchReview => (
     const graph = await fetchDataset(reviewIri);
 
     const author = graph.out(schema.author).out(schema.name).value || 'Unknown author';
-    const publicationDate = new Date(graph.out(schema.datePublished).value || Date.now());
+    const publicationDate = new Date(graph.out(schema.datePublished).value || 0);
     const summary = graph.out(schema.description).value || 'Unknown summary';
 
     return {

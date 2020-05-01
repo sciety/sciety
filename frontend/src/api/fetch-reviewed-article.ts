@@ -32,10 +32,7 @@ FetchReviewedArticle => (
 
     const articleIri = namedNode(`https://doi.org/${doi}`);
     const graph = await fetchDataset(articleIri);
-    const maybeDate = graph.out(dcterms.date);
-    if (maybeDate.value !== undefined) {
-      const publicationDate = new Date(maybeDate.value);
-    }
+    const publicationDate = new Date(graph.out(dcterms.date).value || 0);
 
     return {
       article: matched.article,
