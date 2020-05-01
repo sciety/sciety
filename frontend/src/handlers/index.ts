@@ -38,22 +38,22 @@ export default (fetchAllArticleTeasers: FetchAllArticleTeasers): Middleware => (
 
   </header>
 
-  <form method="get" action="/" class="find-reviews">
+  <form method="get" action="/" class="find-reviews compact-form">
 
     <fieldset>
 
-      <legend class="find-reviews__title">
+      <legend class="compact-form__title">
         Find reviews for an article
       </legend>
 
-      <div class="find-reviews__row">
+      <div class="compact-form__row">
 
         <label>
           <span class="visually-hidden">DOI of an article</span>
-          <input type="text" name="articledoi" placeholder="${article3}" class="find-reviews__article-doi" required>
+          <input type="text" name="articledoi" placeholder="${article3}" class="compact-form__article-doi" required>
         </label>
     
-        <button type="submit" class="find-reviews__submit">
+        <button type="submit" class="compact-form__submit">
           <span class="visually-hidden">Find reviews</span>
         </button>
 

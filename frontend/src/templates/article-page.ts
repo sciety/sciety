@@ -2,6 +2,7 @@ import templateArticlePageHeader from './article-page-header';
 import templateListItems from './list-items';
 import templateReviewSidebarItem from './review-sidebar-item';
 import templateReviewSummary from './review-summary';
+import { article3Review1 } from '../data/review-dois';
 import { ReviewedArticle } from '../types/reviewed-article';
 
 export default (reviewedArticle: ReviewedArticle): string => {
@@ -43,16 +44,21 @@ export default (reviewedArticle: ReviewedArticle): string => {
         Add a review
       </h2>
 
-      <form method="post" action="/reviews">
+      <form method="post" action="/reviews" class="compact-form">
 
         <input type="hidden" name="articledoi" value="${reviewedArticle.article.doi}">
 
-        <label>
-          DOI of the review
-          <input type="text" name="reviewdoi">
-        </label>
+        <label for="reviewdoi">DOI of the review</label>
 
-        <input type="submit" value="Add review">
+        <div class="compact-form__row">
+
+          <input type="text" name="reviewdoi" id="reviewdoi" placeholder="${article3Review1}" class="compact-form__article-doi" required>
+
+          <button type="submit" class="compact-form__submit">
+            <span class="visually-hidden">Add review</span>
+          </button>
+
+        </div>
 
       </form>
     </aside>
