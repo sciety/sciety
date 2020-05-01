@@ -7,16 +7,18 @@ import datasetFactory from 'rdf-dataset-indexed';
 import { FetchDataset } from '../../src/api/fetch-dataset';
 import { FetchReview } from '../../src/api/fetch-review';
 import createFetchReviewedArticle from '../../src/api/fetch-reviewed-article';
-import article3 from '../../src/data/article3';
 import Doi from '../../src/data/doi';
 import ReviewReferenceRepository from '../../src/types/review-reference-repository';
 import shouldNotBeCalled from '../should-not-be-called';
+
+const articleDoi = new Doi('10.5555/12345678');
+const reviewDoi = new Doi('10.5555/987654321');
 
 describe('fetch-reviewed-article', (): void => {
   describe('article found', (): void => {
     const reviewReferenceRepository: ReviewReferenceRepository = {
       add: shouldNotBeCalled,
-      findReviewDoisForArticleDoi: () => [article3.reviews[0].doi],
+      findReviewDoisForArticleDoi: () => [reviewDoi],
     };
 
     const fetchDataset: FetchDataset = async (iri) => {
@@ -45,8 +47,9 @@ describe('fetch-reviewed-article', (): void => {
 
     it('includes the article', async () => {
       const fetchReviewedArticle = createFetchReviewedArticle(fetchDataset, reviewReferenceRepository, fetchReview);
-      const reviewedArticle = await fetchReviewedArticle(article3.article.doi);
-      expect(reviewedArticle.article.doi).toBe(article3.article.doi);
+      const reviewedArticle = await fetchReviewedArticle(articleDoi);
+
+      expect(reviewedArticle.article.doi).toBe(articleDoi);
       expect(reviewedArticle.article.title).toBe('Article title');
       expect(reviewedArticle.article.publicationDate).toStrictEqual(new Date('2020-02-20'));
       expect(reviewedArticle.article.authors).toContain('Josiah S. Carberry');
@@ -55,9 +58,10 @@ describe('fetch-reviewed-article', (): void => {
 
     it('includes the reviews', async () => {
       const fetchReviewedArticle = createFetchReviewedArticle(fetchDataset, reviewReferenceRepository, fetchReview);
-      const reviewedArticle = await fetchReviewedArticle(article3.article.doi);
+      const reviewedArticle = await fetchReviewedArticle(articleDoi);
+
       expect(reviewedArticle.reviews).toHaveLength(1);
-      expect(reviewedArticle.reviews[0].doi).toBe(article3.reviews[0].doi);
+      expect(reviewedArticle.reviews[0].doi).toBe(reviewDoi);
     });
   });
 
@@ -73,9 +77,9 @@ describe('fetch-reviewed-article', (): void => {
         reviewReferenceRepository,
         shouldNotBeCalled,
       );
-      const expected = new Error('Article DOI 10.1234/5678 not found');
+      const expected = new Error(`Article DOI ${articleDoi} not found`);
 
-      await expect(fetchReviewedArticle(new Doi('10.1234/5678'))).rejects.toStrictEqual(expected);
+      await expect(fetchReviewedArticle(articleDoi)).rejects.toStrictEqual(expected);
     });
   });
 });
