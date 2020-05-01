@@ -22,6 +22,7 @@ describe('fetch-reviewed-article', (): void => {
     const fetchDataset: FetchDataset = async (iri) => (
       clownface({
         dataset: datasetFactory([
+          quad(iri, dcterms.title, literal('Article title')),
           quad(iri, dcterms.date, literal('2020-02-20', xsd.date)),
         ]),
         term: iri,
@@ -39,6 +40,7 @@ describe('fetch-reviewed-article', (): void => {
       const fetchReviewedArticle = createFetchReviewedArticle(fetchDataset, reviewReferenceRepository, fetchReview);
       const reviewedArticle = await fetchReviewedArticle(article3.article.doi);
       expect(reviewedArticle.article.doi).toBe(article3.article.doi);
+      expect(reviewedArticle.article.title).toBe('Article title');
       expect(reviewedArticle.article.publicationDate).toStrictEqual(new Date('2020-02-20'));
     });
 

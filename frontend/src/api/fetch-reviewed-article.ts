@@ -32,11 +32,14 @@ FetchReviewedArticle => (
 
     const articleIri = namedNode(`https://doi.org/${doi}`);
     const graph = await fetchDataset(articleIri);
+
+    const title = graph.out(dcterms.title).value || 'Unknown article';
     const publicationDate = new Date(graph.out(dcterms.date).value || 0);
 
     return {
       article: {
         ...matched.article,
+        title,
         publicationDate,
       },
       reviews: await Promise.all(articleReviews.map(fetchReview)),
