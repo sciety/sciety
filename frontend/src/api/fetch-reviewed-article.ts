@@ -13,15 +13,9 @@ export default (
 ):
 FetchReviewedArticle => (
   async (doi: Doi): Promise<ReviewedArticle> => {
-    const articleReviews = reviewReferenceRepository.findReviewDoisForArticleDoi(doi);
-
-    if (articleReviews.length === 0) {
-      throw new Error(`Article DOI ${doi} not found`);
-    }
-
     const [article, reviews] = await Promise.all([
       fetchArticle(doi),
-      Promise.all(articleReviews.map(fetchReview)),
+      Promise.all(reviewReferenceRepository.findReviewDoisForArticleDoi(doi).map(fetchReview)),
     ]);
 
     return {
