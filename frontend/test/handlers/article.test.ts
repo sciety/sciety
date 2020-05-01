@@ -37,4 +37,15 @@ describe('article handler', (): void => {
       expect(response.status).toBe(NOT_FOUND);
     });
   });
+
+  describe('when the article is not from bioRxiv', (): void => {
+    beforeEach(async () => {
+      const { server } = createServer();
+      response = await request(server).get('/articles/10.7554/eLife.09560');
+    });
+
+    it('returns a 404 response', async (): Promise<void> => {
+      expect(response.status).toBe(NOT_FOUND);
+    });
+  });
 });
