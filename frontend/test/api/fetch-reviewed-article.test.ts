@@ -1,7 +1,7 @@
 import {
   quad, literal,
 } from '@rdfjs/data-model';
-import { dcterms } from '@tpluscode/rdf-ns-builders';
+import { dcterms, xsd } from '@tpluscode/rdf-ns-builders';
 import clownface from 'clownface';
 import datasetFactory from 'rdf-dataset-indexed';
 import { FetchDataset } from '../../src/api/fetch-dataset';
@@ -22,7 +22,7 @@ describe('fetch-reviewed-article', (): void => {
     const fetchDataset: FetchDataset = async (iri) => (
       clownface({
         dataset: datasetFactory([
-          quad(iri, dcterms.date, literal('2020-02-20', 'http://www.w3.org/2001/XMLSchema#date')),
+          quad(iri, dcterms.date, literal('2020-02-20', xsd.date)),
         ]),
         term: iri,
       })
