@@ -1,5 +1,5 @@
 import {
-  blankNode, namedNode, quad, literal,
+  blankNode, literal, namedNode, quad,
 } from '@rdfjs/data-model';
 import { dcterms, foaf } from '@tpluscode/rdf-ns-builders';
 import clownface from 'clownface';

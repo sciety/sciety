@@ -1,4 +1,4 @@
-import { blankNode, quad, literal } from '@rdfjs/data-model';
+import { blankNode, literal, quad } from '@rdfjs/data-model';
 import { schema } from '@tpluscode/rdf-ns-builders';
 import clownface from 'clownface';
 import datasetFactory from 'rdf-dataset-indexed';
