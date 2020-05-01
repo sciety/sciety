@@ -18,6 +18,7 @@ Table of contents
    1. [Running the app](#running-the-app)
    1. [Running the tests](#running-the-tests)
    1. [Linting](#linting)
+   1. [Architecture Decision Records](./.adr)
 1. [License](#license)
 
 Development
