@@ -19,9 +19,14 @@ FetchReviewedArticle => (
       throw new Error(`Article DOI ${doi} not found`);
     }
 
+    const [article, reviews] = await Promise.all([
+      fetchArticle(doi),
+      Promise.all(articleReviews.map(fetchReview)),
+    ]);
+
     return {
-      article: await fetchArticle(doi),
-      reviews: await Promise.all(articleReviews.map(fetchReview)),
+      article,
+      reviews,
     };
   }
 );
