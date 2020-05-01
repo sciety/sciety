@@ -1,6 +1,4 @@
-import { namedNode } from '@rdfjs/data-model';
-import { dcterms, foaf } from '@tpluscode/rdf-ns-builders';
-import { FetchDataset } from './fetch-dataset';
+import { FetchArticle } from './fetch-article';
 import { FetchReview } from './fetch-review';
 import Doi from '../data/doi';
 import ReviewReferenceRepository from '../types/review-reference-repository';
@@ -9,8 +7,8 @@ import { ReviewedArticle } from '../types/reviewed-article';
 export type FetchReviewedArticle = (doi: Doi) => Promise<ReviewedArticle>;
 
 export default (
-  fetchDataset: FetchDataset,
   reviewReferenceRepository: ReviewReferenceRepository,
+  fetchArticle: FetchArticle,
   fetchReview: FetchReview,
 ):
 FetchReviewedArticle => (
@@ -21,22 +19,8 @@ FetchReviewedArticle => (
       throw new Error(`Article DOI ${doi} not found`);
     }
 
-    const articleIri = namedNode(`https://doi.org/${doi}`);
-    const graph = await fetchDataset(articleIri);
-
-    const title = graph.out(dcterms.title).value || 'Unknown article';
-    const authors = graph.out(dcterms.creator).map((author) => author.out(foaf.name).value || 'Unknown author');
-    const publicationDate = new Date(graph.out(dcterms.date).value || 0);
-    const abstract = '<p>No abstract available.</p>';
-
     return {
-      article: {
-        doi,
-        title,
-        authors,
-        publicationDate,
-        abstract,
-      },
+      article: await fetchArticle(doi),
       reviews: await Promise.all(articleReviews.map(fetchReview)),
     };
   }

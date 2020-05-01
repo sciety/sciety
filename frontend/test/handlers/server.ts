@@ -6,6 +6,7 @@ import { dcterms, schema } from '@tpluscode/rdf-ns-builders';
 import clownface from 'clownface';
 import datasetFactory from 'rdf-dataset-indexed';
 import createFetchAllArticleTeasers from '../../src/api/fetch-all-article-teasers';
+import createFetchArticle from '../../src/api/fetch-article';
 import { FetchDataset } from '../../src/api/fetch-dataset';
 import createFetchReview from '../../src/api/fetch-review';
 import createFetchReviewedArticle from '../../src/api/fetch-reviewed-article';
@@ -47,13 +48,14 @@ export default (): TestServer => {
     });
   };
   const fetchAllArticleTeasers = createFetchAllArticleTeasers(fetchCrossrefDataset);
+  const fetchArticle = createFetchArticle(fetchCrossrefDataset);
   const fetchReview = createFetchReview(fetchDataCiteDataset);
   const reviewReferenceRepository = createReviewReferenceRepository();
   reviewReferenceRepository.add(article3, article3Review1);
   reviewReferenceRepository.add(article4, article4Review1);
   const fetchReviewedArticle = createFetchReviewedArticle(
-    fetchCrossrefDataset,
     reviewReferenceRepository,
+    fetchArticle,
     fetchReview,
   );
   const services: RouterServices = { fetchAllArticleTeasers, fetchReviewedArticle, reviewReferenceRepository };

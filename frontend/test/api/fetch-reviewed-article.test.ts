@@ -1,10 +1,4 @@
-import {
-  quad, literal, blankNode,
-} from '@rdfjs/data-model';
-import { dcterms, foaf, xsd } from '@tpluscode/rdf-ns-builders';
-import clownface from 'clownface';
-import datasetFactory from 'rdf-dataset-indexed';
-import { FetchDataset } from '../../src/api/fetch-dataset';
+import { FetchArticle } from '../../src/api/fetch-article';
 import { FetchReview } from '../../src/api/fetch-review';
 import createFetchReviewedArticle from '../../src/api/fetch-reviewed-article';
 import Doi from '../../src/data/doi';
@@ -21,22 +15,13 @@ describe('fetch-reviewed-article', (): void => {
       findReviewDoisForArticleDoi: () => [reviewDoi],
     };
 
-    const fetchDataset: FetchDataset = async (iri) => {
-      const firstAuthorIri = blankNode();
-      const secondAuthorIri = blankNode();
-
-      return clownface({
-        dataset: datasetFactory([
-          quad(iri, dcterms.title, literal('Article title')),
-          quad(iri, dcterms.date, literal('2020-02-20', xsd.date)),
-          quad(iri, dcterms.creator, firstAuthorIri),
-          quad(firstAuthorIri, foaf.name, literal('Josiah S. Carberry')),
-          quad(iri, dcterms.creator, secondAuthorIri),
-          quad(secondAuthorIri, foaf.name, literal('Albert Einstein')),
-        ]),
-        term: iri,
-      });
-    };
+    const fetchArticle: FetchArticle = async (doi) => ({
+      title: 'Article title',
+      authors: ['Josiah S. Carberry', 'Albert Einstein'],
+      publicationDate: new Date('2010-02-01'),
+      abstract: 'Article abstract.',
+      doi,
+    });
 
     const fetchReview: FetchReview = async (doi) => ({
       author: 'John Doe',
@@ -46,18 +31,14 @@ describe('fetch-reviewed-article', (): void => {
     });
 
     it('includes the article', async () => {
-      const fetchReviewedArticle = createFetchReviewedArticle(fetchDataset, reviewReferenceRepository, fetchReview);
+      const fetchReviewedArticle = createFetchReviewedArticle(reviewReferenceRepository, fetchArticle, fetchReview);
       const reviewedArticle = await fetchReviewedArticle(articleDoi);
 
       expect(reviewedArticle.article.doi).toBe(articleDoi);
-      expect(reviewedArticle.article.title).toBe('Article title');
-      expect(reviewedArticle.article.publicationDate).toStrictEqual(new Date('2020-02-20'));
-      expect(reviewedArticle.article.authors).toContain('Josiah S. Carberry');
-      expect(reviewedArticle.article.authors).toContain('Albert Einstein');
     });
 
     it('includes the reviews', async () => {
-      const fetchReviewedArticle = createFetchReviewedArticle(fetchDataset, reviewReferenceRepository, fetchReview);
+      const fetchReviewedArticle = createFetchReviewedArticle(reviewReferenceRepository, fetchArticle, fetchReview);
       const reviewedArticle = await fetchReviewedArticle(articleDoi);
 
       expect(reviewedArticle.reviews).toHaveLength(1);
@@ -73,8 +54,8 @@ describe('fetch-reviewed-article', (): void => {
 
     it('throws an error', async (): Promise<void> => {
       const fetchReviewedArticle = createFetchReviewedArticle(
-        shouldNotBeCalled,
         reviewReferenceRepository,
+        shouldNotBeCalled,
         shouldNotBeCalled,
       );
       const expected = new Error(`Article DOI ${articleDoi} not found`);
