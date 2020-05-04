@@ -9,25 +9,28 @@ describe('article page header template', (): void => {
     abstract: 'Anything',
     authors: ['Gary', 'Uncle Wiggly'],
   };
-  let actual: string;
-
-  beforeEach(() => {
-    actual = templateArticlePageHeader(article);
-  });
 
   it('renders inside an header tag', () => {
+    const actual = templateArticlePageHeader(article);
+
     expect(actual).toStrictEqual(expect.stringMatching(/^<header\s/));
   });
 
   it('renders the article DOI', () => {
+    const actual = templateArticlePageHeader(article);
+
     expect(actual).toStrictEqual(expect.stringContaining(article.doi.value));
   });
 
   it('renders the article publication date', () => {
+    const actual = templateArticlePageHeader(article);
+
     expect(actual).toStrictEqual(expect.stringContaining('2009-11-28'));
   });
 
   it('renders the article authors', () => {
+    const actual = templateArticlePageHeader(article);
+
     article.authors.forEach((author) => {
       expect(actual).toStrictEqual(expect.stringContaining(author));
     });

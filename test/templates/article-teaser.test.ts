@@ -9,25 +9,28 @@ describe('article-teaser template', (): void => {
     authors: ['John Doe'],
     numberOfReviews: 2,
   };
-  let actual: string;
-
-  beforeEach(() => {
-    actual = templateArticleTeaser(articleTeaser);
-  });
 
   it('renders inside an article tag', async (): Promise<void> => {
+    const actual = templateArticleTeaser(articleTeaser);
+
     expect(actual).toStrictEqual(expect.stringMatching(/^<article\s/));
   });
 
   it('renders the title as a link', () => {
+    const actual = templateArticleTeaser(articleTeaser);
+
     expect(actual).toStrictEqual(expect.stringContaining(`<a href="/articles/${articleTeaser.doi}">${articleTeaser.title}</a>`));
   });
 
   it('renders the authors', () => {
+    const actual = templateArticleTeaser(articleTeaser);
+
     expect(actual).toStrictEqual(expect.stringContaining(articleTeaser.authors[0]));
   });
 
   it('renders the number of reviews', () => {
+    const actual = templateArticleTeaser(articleTeaser);
+
     expect(actual).toStrictEqual(expect.stringContaining(`${articleTeaser.numberOfReviews} reviews`));
   });
 });
