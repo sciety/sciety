@@ -15,13 +15,14 @@ const log = createLogger();
 
 log('Starting server');
 
-const fetchDataset = createFetchDataset();
-const fetchAllArticleTeasers = createFetchAllArticleTeasers(fetchDataset);
-const fetchArticle = createFetchArticle(fetchDataset);
-const fetchReview = createFetchReview(fetchDataset);
 const reviewReferenceRepository = createReviewReferenceRepository();
 reviewReferenceRepository.add(article3, article3Review1);
 reviewReferenceRepository.add(article4, article4Review1);
+
+const fetchDataset = createFetchDataset();
+const fetchAllArticleTeasers = createFetchAllArticleTeasers(reviewReferenceRepository, fetchDataset);
+const fetchArticle = createFetchArticle(fetchDataset);
+const fetchReview = createFetchReview(fetchDataset);
 const fetchReviewedArticle = createFetchReviewedArticle(reviewReferenceRepository, fetchArticle, fetchReview);
 const services: RouterServices = { fetchAllArticleTeasers, fetchReviewedArticle, reviewReferenceRepository };
 

@@ -23,6 +23,9 @@ export interface TestServer {
 }
 
 export default (): TestServer => {
+  const reviewReferenceRepository = createReviewReferenceRepository();
+  reviewReferenceRepository.add(article3, article3Review1);
+  reviewReferenceRepository.add(article4, article4Review1);
   const fetchCrossrefDataset: FetchDataset = async () => {
     const usedIri = namedNode('http://example.com/some-crossref-node');
 
@@ -47,12 +50,9 @@ export default (): TestServer => {
       term: iri,
     });
   };
-  const fetchAllArticleTeasers = createFetchAllArticleTeasers(fetchCrossrefDataset);
+  const fetchAllArticleTeasers = createFetchAllArticleTeasers(reviewReferenceRepository, fetchCrossrefDataset);
   const fetchArticle = createFetchArticle(fetchCrossrefDataset);
   const fetchReview = createFetchReview(fetchDataCiteDataset);
-  const reviewReferenceRepository = createReviewReferenceRepository();
-  reviewReferenceRepository.add(article3, article3Review1);
-  reviewReferenceRepository.add(article4, article4Review1);
   const fetchReviewedArticle = createFetchReviewedArticle(
     reviewReferenceRepository,
     fetchArticle,
