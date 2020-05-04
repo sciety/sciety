@@ -8,7 +8,7 @@ describe('article-teaser template', (): void => {
     title: 'The study of cracked pots',
     authors: ['John Doe'],
     numberOfReviews: 2,
-    link: '/articles/10.5555%2F12345678',
+    link: '/articles/10.5555/12345678',
   };
   let actual: string;
 
@@ -21,7 +21,7 @@ describe('article-teaser template', (): void => {
   });
 
   it('renders the title as a link', () => {
-    expect(actual).toEqual(expect.stringContaining(`<a href="${articleTeaser.link}">${articleTeaser.title}</a>`));
+    expect(actual).toEqual(expect.stringContaining(`<a href="/articles/${articleTeaser.doi}">${articleTeaser.title}</a>`));
   });
 
   it('renders the authors', () => {

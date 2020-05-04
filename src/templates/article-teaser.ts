@@ -4,7 +4,7 @@ import { ArticleTeaser } from '../types/article-teaser';
 export default (articleTeaser: ArticleTeaser): string => (
   `<article class="teaser">
     <h3 class="teaser__title">
-      <a href="${articleTeaser.link}">${articleTeaser.title}</a>
+      <a href="/articles/${articleTeaser.doi}">${articleTeaser.title}</a>
     </h3>
 
     <ol aria-label="Authors of this article" class="author-list">
