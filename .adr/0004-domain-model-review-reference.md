@@ -32,3 +32,4 @@ Use eventual consistency across Aggregate boundaries.
 [Big Ball Of Mud]: https://www.martinfowler.com/bliki/MonolithFirst.html
 [Database normalization]: https://image.slidesharecdn.com/driveyourdbacrazyin3easysteps-111012161437-phpapp01/95/drive-your-dba-crazy-in-3-easy-steps-15-728.jpg?cb=1318493600
 [Domain-Driven Design]: https://dddcommunity.org/learning-ddd/what_is_ddd/
+[Monolith]: ./0003-monolith.md
