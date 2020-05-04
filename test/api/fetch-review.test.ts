@@ -13,7 +13,7 @@ describe('fetch-review', (): void => {
 
       return clownface({
         dataset: datasetFactory([
-          quad(iri, schema.datePublished, literal('2020-02-20')),
+          quad(iri, schema.datePublished, literal('2020-02-20', schema.Date)),
           quad(iri, schema.description, literal('A summary')),
           quad(iri, schema.author, authorIri),
           quad(authorIri, schema.name, literal('Author name')),

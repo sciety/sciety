@@ -42,7 +42,7 @@ export default (): TestServer => {
 
     return clownface({
       dataset: datasetFactory([
-        quad(usedIri, schema.datePublished, literal('2020-02-20')),
+        quad(usedIri, schema.datePublished, literal('2020-02-20', schema.Date)),
         quad(usedIri, schema.description, literal('A summary')),
         quad(usedIri, schema.author, authorIri),
         quad(authorIri, schema.name, literal('Author name')),
