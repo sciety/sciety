@@ -10,7 +10,7 @@ Proposed
 
 Development of layers that are low in the application stack can prove wasteful as they are not hit by scenarios.
 
-Codebase size increases slows down refactoring.
+As the codebase size increases, refactoring is slowed down.
 
 Code is a liability until code is executed in the real world.
 
