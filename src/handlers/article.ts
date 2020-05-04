@@ -19,7 +19,7 @@ export default (fetchReviewedArticle: FetchReviewedArticle): Middleware => (
     let doi: Doi;
 
     try {
-      doi = new Doi(params.doi);
+      doi = new Doi(params.doi || '');
     } catch (error) {
       log(`Article ${params.doi} not found: (${error})`);
       throw new NotFound(`${params.doi} not found`);

@@ -3,11 +3,7 @@ const doiRegex = /^(?:doi:|(?:(?:https?:\/\/)?(?:dx\.)?doi\.org\/))?(10\.[0-9]{4
 export default class Doi {
   readonly value: string;
 
-  constructor(input: unknown) {
-    if (typeof input !== 'string') {
-      throw new TypeError('Expected a string');
-    }
-
+  constructor(input: string) {
     const [, doi] = doiRegex.exec(input) || [];
 
     if (!doi) {

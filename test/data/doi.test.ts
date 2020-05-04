@@ -24,8 +24,7 @@ describe('doi', () => {
     '1.1/1.1',
     '10/134980',
     '10.001/001#00',
-    undefined,
   ])('rejects invalid DOI syntax', (badDoiSyntaxExample) => {
-    expect(() => new Doi(badDoiSyntaxExample)).toThrow();
+    expect(() => new Doi(badDoiSyntaxExample)).toThrow(new Error('Not a possible DOI.'));
   });
 });
