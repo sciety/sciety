@@ -20,6 +20,7 @@ module.exports = {
   ],
   root: true,
   rules: {
+    '@typescript-eslint/brace-style': ['error', '1tbs'],
     'import/order': ['error', {
       alphabetize: { order: 'asc' },
       groups: ['builtin', 'external', 'internal', 'index', 'sibling', 'parent'],
