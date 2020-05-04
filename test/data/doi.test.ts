@@ -9,7 +9,7 @@ describe('doi', () => {
     'http://doi.org/10.5281/zenodo.3678326',
     'https://doi.org/10.5281/zenodo.3678326',
   ])('accepts valid DOI syntax', (doiSyntaxExample) => {
-    expect(new Doi(doiSyntaxExample).toString()).toEqual('10.5281/zenodo.3678326');
+    expect(new Doi(doiSyntaxExample).toString()).toStrictEqual('10.5281/zenodo.3678326');
   });
 
   it('has a prefix', () => {

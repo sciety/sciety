@@ -16,20 +16,20 @@ describe('article page header template', (): void => {
   });
 
   it('renders inside an header tag', () => {
-    expect(actual).toEqual(expect.stringMatching(/^<header\s/));
+    expect(actual).toStrictEqual(expect.stringMatching(/^<header\s/));
   });
 
   it('renders the article DOI', () => {
-    expect(actual).toEqual(expect.stringContaining(article.doi.value));
+    expect(actual).toStrictEqual(expect.stringContaining(article.doi.value));
   });
 
   it('renders the article publication date', () => {
-    expect(actual).toEqual(expect.stringContaining('2009-11-28'));
+    expect(actual).toStrictEqual(expect.stringContaining('2009-11-28'));
   });
 
   it('renders the article authors', () => {
     article.authors.forEach((author) => {
-      expect(actual).toEqual(expect.stringContaining(author));
+      expect(actual).toStrictEqual(expect.stringContaining(author));
     });
   });
 });

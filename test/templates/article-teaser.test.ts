@@ -16,18 +16,18 @@ describe('article-teaser template', (): void => {
   });
 
   it('renders inside an article tag', async (): Promise<void> => {
-    expect(actual).toEqual(expect.stringMatching(/^<article\s/));
+    expect(actual).toStrictEqual(expect.stringMatching(/^<article\s/));
   });
 
   it('renders the title as a link', () => {
-    expect(actual).toEqual(expect.stringContaining(`<a href="/articles/${articleTeaser.doi}">${articleTeaser.title}</a>`));
+    expect(actual).toStrictEqual(expect.stringContaining(`<a href="/articles/${articleTeaser.doi}">${articleTeaser.title}</a>`));
   });
 
   it('renders the authors', () => {
-    expect(actual).toEqual(expect.stringContaining(articleTeaser.authors[0]));
+    expect(actual).toStrictEqual(expect.stringContaining(articleTeaser.authors[0]));
   });
 
   it('renders the number of reviews', () => {
-    expect(actual).toEqual(expect.stringContaining(`${articleTeaser.numberOfReviews} reviews`));
+    expect(actual).toStrictEqual(expect.stringContaining(`${articleTeaser.numberOfReviews} reviews`));
   });
 });

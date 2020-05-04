@@ -23,7 +23,7 @@ describe('article handler', (): void => {
     });
 
     it('has an HTML5 body', async (): Promise<void> => {
-      expect(response.text).toEqual(expect.stringMatching(/^<!doctype html>/i));
+      expect(response.text).toStrictEqual(expect.stringMatching(/^<!doctype html>/i));
     });
   });
 

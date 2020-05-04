@@ -7,7 +7,7 @@ module.exports = {
     'airbnb-typescript/base',
     'plugin:@typescript-eslint/recommended',
     'plugin:import/typescript',
-    'plugin:jest/recommended',
+    'plugin:jest/all',
     'plugin:jest-formatting/strict',
   ],
   parser: '@typescript-eslint/parser',
@@ -22,6 +22,8 @@ module.exports = {
   ],
   root: true,
   rules: {
+    'jest/no-hooks': 'off',
+    'jest/prefer-expect-assertions': 'off',
     '@typescript-eslint/brace-style': ['error', '1tbs'],
     'import/order': ['error', {
       alphabetize: { order: 'asc' },

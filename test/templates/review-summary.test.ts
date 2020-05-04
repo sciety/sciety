@@ -13,36 +13,36 @@ describe('review-summary template', (): void => {
   it('renders inside an article tag', () => {
     const actual = templateReviewSummary(review, idNamespace);
 
-    expect(actual).toEqual(expect.stringMatching(/^<article\s/));
+    expect(actual).toStrictEqual(expect.stringMatching(/^<article\s/));
   });
 
   it('renders the summary', () => {
     const actual = templateReviewSummary(review, idNamespace);
 
-    expect(actual).toEqual(expect.stringContaining(review.summary));
+    expect(actual).toStrictEqual(expect.stringContaining(review.summary));
   });
 
   it('renders the link to a full review', () => {
     const actual = templateReviewSummary(review, idNamespace);
 
-    expect(actual).toEqual(expect.stringContaining(`href="https://doi.org/${review.doi}"`));
+    expect(actual).toStrictEqual(expect.stringContaining(`href="https://doi.org/${review.doi}"`));
   });
 
   it('renders the author', () => {
     const actual = templateReviewSummary(review, idNamespace);
 
-    expect(actual).toEqual(expect.stringContaining(review.author));
+    expect(actual).toStrictEqual(expect.stringContaining(review.author));
   });
 
   it('renders the publication date', () => {
     const actual = templateReviewSummary(review, idNamespace);
 
-    expect(actual).toEqual(expect.stringContaining('2010-02-01'));
+    expect(actual).toStrictEqual(expect.stringContaining('2010-02-01'));
   });
 
   it('renders ARIA attributes and ids', () => {
     const actual = templateReviewSummary(review, idNamespace);
 
-    expect(actual).toEqual(expect.stringContaining('aria-labelledby="review-42-read-more review-42-author"'));
+    expect(actual).toStrictEqual(expect.stringContaining('aria-labelledby="review-42-read-more review-42-author"'));
   });
 });
