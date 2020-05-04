@@ -22,7 +22,7 @@ Organize state via Aggregates rather than [database normalization].
 
 Reference other Aggregates by identity, not object references.
 
-Write transactions can only span one HTTP request, one Aggregate, one database transaction.
+Write transactions that can only span one HTTP request, one Aggregate, one database transaction.
 
 Invariants can only span a single Aggregate.
 
