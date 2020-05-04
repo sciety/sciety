@@ -27,4 +27,4 @@ Any article or review property is not stored inside the application state.
 All [Queries][CQRS] are dynamically generated from remote resources based on DOIs.
 
 [Aggregate]: https://dddcommunity.org/library/vernon_2011/6
-[CQRS]: https://www.martinfowler.com/bliki/CQRS.html)
+[CQRS]: https://www.martinfowler.com/bliki/CQRS.html
