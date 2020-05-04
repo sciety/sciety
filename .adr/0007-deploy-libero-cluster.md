@@ -4,7 +4,7 @@ Date: 2020-05-04
 
 ## Status
 
-Proposed
+Accepted
 
 ## Context
 
