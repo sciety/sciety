@@ -1,0 +1,11 @@
+/.adr/
+/.eslint/
+/.github/
+/.gitignore
+/.jest/
+/build/
+/helm/
+/LICENSE.md
+/Makefile
+/node_modules/
+/README.md

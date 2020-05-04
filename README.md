@@ -41,7 +41,6 @@ The project contains a [Makefile] which uses [Docker] for development.
 To build and run the app for development, execute:
 
 ```shell
-cd frontend
 make dev
 ```
 
@@ -101,7 +100,7 @@ We released this software under the [MIT license][license]. Copyright © 2020 [e
 [Libero logo]: https://cdn.elifesciences.org/libero/logo/libero-logo-96px.svg
 [License]: LICENSE.md
 [License badge]: https://flat.badgen.net/badge/license/MIT/blue
-[Makefile]: frontend/Makefile
+[Makefile]: Makefile
 [Node.js]: https://nodejs.org/
 [Open issues]: https://github.com/libero/prc/issues?q=is%3Aissue+is%3Aopen
 [Open issues badge]: https://flat.badgen.net/github/open-issues/libero/prc?icon=github&color=pink

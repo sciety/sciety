@@ -23,18 +23,15 @@ jobs:
 
       - name: Build Docker images
         run: |
-          cd frontend
           make IMAGE_TAG=${IMAGE_TAG} TARGET=prod build
           make IMAGE_TAG=${IMAGE_TAG} TARGET=dev build
 
       - name: Lint
         run: |
-          cd frontend
           make IMAGE_TAG=${IMAGE_TAG} lint
 
       - name: Test
         run: |
-          cd frontend
           make IMAGE_TAG=${IMAGE_TAG} test
 
       - name: Push Docker image
