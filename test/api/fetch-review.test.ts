@@ -4,7 +4,7 @@ import clownface from 'clownface';
 import datasetFactory from 'rdf-dataset-indexed';
 import { FetchDataset } from '../../src/api/fetch-dataset';
 import createFetchReview from '../../src/api/fetch-review';
-import article3 from '../../src/data/article3';
+import { article3Review1 } from '../../src/data/review-dois';
 
 describe('fetch-review', (): void => {
   it('returns the review', async () => {
@@ -22,7 +22,7 @@ describe('fetch-review', (): void => {
       });
     };
     const fetchReview = createFetchReview(fetchDataset);
-    const review = await fetchReview(article3.reviews[0].doi);
+    const review = await fetchReview(article3Review1);
     expect(review.publicationDate).toStrictEqual(new Date('2020-02-20'));
   });
 });
