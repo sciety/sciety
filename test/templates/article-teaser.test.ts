@@ -1,8 +1,10 @@
+import Doi from '../../src/data/doi';
 import templateArticleTeaser from '../../src/templates/article-teaser';
 import { ArticleTeaser } from '../../src/types/article-teaser';
 
 describe('article-teaser template', (): void => {
   const articleTeaser: ArticleTeaser = {
+    doi: new Doi('10.5555/12345678'),
     title: 'The study of cracked pots',
     authors: ['John Doe'],
     numberOfReviews: 2,

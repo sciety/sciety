@@ -21,6 +21,7 @@ export default (
     const authors = graph.out(dcterms.creator).map((author) => author.out(foaf.name).value || 'Unknown author');
 
     return {
+      doi,
       title,
       authors,
       numberOfReviews: reviewReferenceRepository.findReviewDoisForArticleDoi(doi).length,
