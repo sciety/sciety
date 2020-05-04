@@ -8,7 +8,6 @@ describe('article-teaser template', (): void => {
     title: 'The study of cracked pots',
     authors: ['John Doe'],
     numberOfReviews: 2,
-    link: '/articles/10.5555/12345678',
   };
   let actual: string;
 

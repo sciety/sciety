@@ -25,7 +25,6 @@ export default (
       title,
       authors,
       numberOfReviews: reviewReferenceRepository.findReviewDoisForArticleDoi(doi).length,
-      link: `/articles/${doi}`,
     };
   }))
 );
