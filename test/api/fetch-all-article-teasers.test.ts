@@ -33,6 +33,7 @@ describe('fetch-all-article-teasers', (): void => {
     };
     const fetchAllArticleTeasers = createFetchAllArticleTeasers(reviewReferenceRepository, fetchDataset);
     const teasers = await fetchAllArticleTeasers();
+
     expect(teasers.length).toBe(2);
     expect(teasers[0].title).toStrictEqual('Article title');
     expect(teasers[0].authors).toContain('Josiah S. Carberry');

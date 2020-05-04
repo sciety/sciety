@@ -46,6 +46,7 @@
     "eslint-import-resolver-typescript": "^2.0.0",
     "eslint-plugin-import": "2.19.1",
     "eslint-plugin-jest": "^23.8.2",
+    "eslint-plugin-jest-formatting": "^1.2.0",
     "fast-check": "^1.24.1",
     "jest": "^25.3.0",
     "nodemon": "^2.0.3",

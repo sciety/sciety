@@ -8,6 +8,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:import/typescript',
     'plugin:jest/recommended',
+    'plugin:jest-formatting/strict',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -17,6 +18,7 @@ module.exports = {
   plugins: [
     '@typescript-eslint',
     'jest',
+    'jest-formatting',
   ],
   root: true,
   rules: {

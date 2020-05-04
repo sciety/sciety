@@ -23,6 +23,7 @@ describe('fetch-review', (): void => {
     };
     const fetchReview = createFetchReview(fetchDataset);
     const review = await fetchReview(article3Review1);
+
     expect(review.publicationDate).toStrictEqual(new Date('2020-02-20'));
   });
 });

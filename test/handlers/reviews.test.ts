@@ -25,6 +25,7 @@ describe('reviews handler', (): void => {
 
     it('adds the review reference to the repository', () => {
       const foundReviews = reviewReferenceRepository.findReviewDoisForArticleDoi(articleDoi);
+
       expect(foundReviews).toContainEqual(reviewDoi);
     });
   });
