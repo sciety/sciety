@@ -1,7 +1,5 @@
 import { Server } from 'http';
-import {
-  blankNode, literal, namedNode, quad,
-} from '@rdfjs/data-model';
+import { literal, namedNode } from '@rdfjs/data-model';
 import { dcterms, schema } from '@tpluscode/rdf-ns-builders';
 import clownface from 'clownface';
 import datasetFactory from 'rdf-dataset-indexed';
@@ -26,30 +24,16 @@ export default (): TestServer => {
   const reviewReferenceRepository = createReviewReferenceRepository();
   reviewReferenceRepository.add(article3, article3Review1);
   reviewReferenceRepository.add(article4, article4Review1);
-  const fetchCrossrefDataset: FetchDataset = async () => {
-    const usedIri = namedNode('http://example.com/some-crossref-node');
-
-    return clownface({
-      dataset: datasetFactory([
-        quad(usedIri, dcterms.title, literal('Article title')),
-      ]),
-      term: usedIri,
-    });
-  };
-  const fetchDataCiteDataset: FetchDataset = async (iri) => {
-    const usedIri = namedNode('http://example.com/some-datacite-node');
-    const authorIri = blankNode();
-
-    return clownface({
-      dataset: datasetFactory([
-        quad(usedIri, schema.datePublished, literal('2020-02-20', schema.Date)),
-        quad(usedIri, schema.description, literal('A summary')),
-        quad(usedIri, schema.author, authorIri),
-        quad(authorIri, schema.name, literal('Author name')),
-      ]),
-      term: iri,
-    });
-  };
+  const fetchCrossrefDataset: FetchDataset = async () => (
+    clownface({ dataset: datasetFactory(), term: namedNode('http://example.com/some-crossref-node') })
+      .addOut(dcterms.title, 'Article title')
+  );
+  const fetchDataCiteDataset: FetchDataset = async () => (
+    clownface({ dataset: datasetFactory(), term: namedNode('http://example.com/some-datacite-node') })
+      .addOut(schema.datePublished, literal('2020-02-20', schema.Date))
+      .addOut(schema.description, 'A summary')
+      .addOut(schema.author, (author) => author.addOut(schema.name, 'Author name'))
+  );
   const fetchAllArticleTeasers = createFetchAllArticleTeasers(reviewReferenceRepository, fetchCrossrefDataset);
   const fetchArticle = createFetchArticle(fetchCrossrefDataset);
   const fetchReview = createFetchReview(fetchDataCiteDataset);

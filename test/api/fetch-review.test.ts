@@ -1,4 +1,4 @@
-import { blankNode, literal, quad } from '@rdfjs/data-model';
+import { literal } from '@rdfjs/data-model';
 import { schema } from '@tpluscode/rdf-ns-builders';
 import clownface from 'clownface';
 import datasetFactory from 'rdf-dataset-indexed';
@@ -8,19 +8,12 @@ import { article3Review1 } from '../../src/data/review-dois';
 
 describe('fetch-review', (): void => {
   it('returns the review', async () => {
-    const fetchDataset: FetchDataset = async (iri) => {
-      const authorIri = blankNode();
-
-      return clownface({
-        dataset: datasetFactory([
-          quad(iri, schema.datePublished, literal('2020-02-20', schema.Date)),
-          quad(iri, schema.description, literal('A summary')),
-          quad(iri, schema.author, authorIri),
-          quad(authorIri, schema.name, literal('Author name')),
-        ]),
-        term: iri,
-      });
-    };
+    const fetchDataset: FetchDataset = async (iri) => (
+      clownface({ dataset: datasetFactory(), term: iri })
+        .addOut(schema.datePublished, literal('2020-02-20', schema.Date))
+        .addOut(schema.description, 'A summary')
+        .addOut(schema.author, (author) => author.addOut(schema.name, 'Author name'))
+    );
     const fetchReview = createFetchReview(fetchDataset);
     const review = await fetchReview(article3Review1);
 

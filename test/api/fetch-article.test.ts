@@ -1,4 +1,4 @@
-import { blankNode, literal, quad } from '@rdfjs/data-model';
+import { literal } from '@rdfjs/data-model';
 import { dcterms, foaf, xsd } from '@tpluscode/rdf-ns-builders';
 import clownface from 'clownface';
 import datasetFactory from 'rdf-dataset-indexed';
@@ -10,22 +10,13 @@ const doi = new Doi('10.5555/12345678');
 
 describe('fetch-article', (): void => {
   it('returns the article', async () => {
-    const fetchDataset: FetchDataset = async (iri) => {
-      const firstAuthorIri = blankNode();
-      const secondAuthorIri = blankNode();
-
-      return clownface({
-        dataset: datasetFactory([
-          quad(iri, dcterms.title, literal('Article title')),
-          quad(iri, dcterms.date, literal('2020-02-20', xsd.date)),
-          quad(iri, dcterms.creator, firstAuthorIri),
-          quad(firstAuthorIri, foaf.name, literal('Josiah S. Carberry')),
-          quad(iri, dcterms.creator, secondAuthorIri),
-          quad(secondAuthorIri, foaf.name, literal('Albert Einstein')),
-        ]),
-        term: iri,
-      });
-    };
+    const fetchDataset: FetchDataset = async (iri) => (
+      clownface({ dataset: datasetFactory(), term: iri })
+        .addOut(dcterms.title, 'Article title')
+        .addOut(dcterms.date, literal('2020-02-20', xsd.date))
+        .addOut(dcterms.creator, (author) => author.addOut(foaf.name, 'Josiah S. Carberry'))
+        .addOut(dcterms.creator, (author) => author.addOut(foaf.name, 'Albert Einstein'))
+    );
     const fetchArticle = createFetchArticle(fetchDataset);
     const article = await fetchArticle(doi);
 
