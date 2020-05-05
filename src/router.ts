@@ -3,6 +3,7 @@ import bodyParser from 'koa-bodyparser';
 import { FetchAllArticleTeasers } from './api/fetch-all-article-teasers';
 import { FetchReviewedArticle } from './api/fetch-reviewed-article';
 import article from './handlers/article';
+import community from './handlers/community';
 import index from './handlers/index';
 import ping from './handlers/ping';
 import reviews from './handlers/reviews';
@@ -20,6 +21,7 @@ export default (services: RouterServices): Router => {
   router.get('/ping', ping());
   router.get('/', index(services.fetchAllArticleTeasers));
   router.get('/articles/:doi(.+)', article(services.fetchReviewedArticle));
+  router.get('/communities/b560187e-f2fb-4ff9-a861-a204f3fc0fb0', community());
   router.post('/reviews', bodyParser({ enableTypes: ['form'] }), reviews(services.reviewReferenceRepository));
 
   return router;
