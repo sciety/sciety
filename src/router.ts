@@ -7,6 +7,7 @@ import community from './handlers/community';
 import index from './handlers/index';
 import ping from './handlers/ping';
 import reviews from './handlers/reviews';
+import { Community } from './types/community';
 import ReviewReferenceRepository from './types/review-reference-repository';
 
 export type RouterServices = {
@@ -18,10 +19,15 @@ export type RouterServices = {
 export default (services: RouterServices): Router => {
   const router = new Router();
 
+  const eLifeCommunity: Community = {
+    id: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
+    name: 'eLife',
+  };
+
   router.get('/ping', ping());
   router.get('/', index(services.fetchAllArticleTeasers));
   router.get('/articles/:doi(.+)', article(services.fetchReviewedArticle));
-  router.get('/communities/:id', community());
+  router.get('/communities/:id', community(eLifeCommunity));
   router.post('/reviews', bodyParser({ enableTypes: ['form'] }), reviews(services.reviewReferenceRepository));
 
   return router;
