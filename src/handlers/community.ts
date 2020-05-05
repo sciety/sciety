@@ -1,9 +1,14 @@
 import { Middleware, RouterContext } from '@koa/router';
+import { NotFound } from 'http-errors';
 import { Next } from 'koa';
 import templatePage from '../templates/page';
 
 export default (): Middleware => (
-  async ({ response }: RouterContext, next: Next): Promise<void> => {
+  async ({ params, response }: RouterContext, next: Next): Promise<void> => {
+    const communityId = params.id;
+    if (communityId !== 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0') {
+      throw new NotFound(`${communityId} not found`);
+    }
     response.type = 'html';
     response.body = templatePage(`
 
