@@ -4,7 +4,7 @@ import { Review } from '../types/review';
 export default (review: Review, idNamespace: string): string => (
   `<article class="review-summary">
     <h3 class="review-summary__title">
-    Reviewed by <span id="${idNamespace}-author">${review.author}</span>
+    Reviewed by <span id="${idNamespace}-author">eLife</span>
     on ${templateDate(review.publicationDate)}
   </h3>
   ${review.summary}

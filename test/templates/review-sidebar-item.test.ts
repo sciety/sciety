@@ -21,10 +21,10 @@ describe('review-sidebar-item template', (): void => {
     expect(actual).toStrictEqual(expect.stringContaining(`href="https://doi.org/${review.doi}"`));
   });
 
-  it('renders the author', () => {
+  it('renders the editorial community', () => {
     const actual = templateReviewSidebarItem(review);
 
-    expect(actual).toStrictEqual(expect.stringContaining(review.author));
+    expect(actual).toStrictEqual(expect.stringContaining('eLife'));
   });
 
   it('renders the publication date', () => {
