@@ -32,7 +32,7 @@ encourages and recognises the most responsible behaviours in science.`,
   router.get('/ping', ping());
   router.get('/', index(services.fetchAllArticleTeasers));
   router.get('/articles/:doi(.+)', article(services.fetchReviewedArticle));
-  router.get('/communities/:id', community(eLifeCommunity, services.fetchCommunityArticles));
+  router.get('/communities/:id', community([eLifeCommunity], services.fetchCommunityArticles));
   router.post('/reviews', bodyParser({ enableTypes: ['form'] }), reviews(services.reviewReferenceRepository));
 
   return router;

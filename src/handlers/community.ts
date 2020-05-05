@@ -6,9 +6,11 @@ import templateListItems from '../templates/list-items';
 import templatePage from '../templates/page';
 import { Community } from '../types/community';
 
-export default (community: Community, fetchCommunityArticles: FetchCommunityArticles): Middleware => (
+export default (communities: Array<Community>, fetchCommunityArticles: FetchCommunityArticles): Middleware => (
   async ({ params, response }: RouterContext, next: Next): Promise<void> => {
     const communityId = params.id;
+    const community = communities[0];
+
     if (communityId !== community.id) {
       throw new NotFound(`${communityId} not found`);
     }
