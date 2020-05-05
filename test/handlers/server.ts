@@ -5,6 +5,7 @@ import clownface from 'clownface';
 import datasetFactory from 'rdf-dataset-indexed';
 import createFetchAllArticleTeasers from '../../src/api/fetch-all-article-teasers';
 import createFetchArticle from '../../src/api/fetch-article';
+import createFetchCommunityArticles from '../../src/api/fetch-community-articles';
 import { FetchDataset } from '../../src/api/fetch-dataset';
 import createFetchReview from '../../src/api/fetch-review';
 import createFetchReviewedArticle from '../../src/api/fetch-reviewed-article';
@@ -36,13 +37,19 @@ export default (): TestServer => {
   );
   const fetchAllArticleTeasers = createFetchAllArticleTeasers(reviewReferenceRepository, fetchCrossrefDataset);
   const fetchArticle = createFetchArticle(fetchCrossrefDataset);
+  const fetchCommunityArticles = createFetchCommunityArticles();
   const fetchReview = createFetchReview(fetchDataCiteDataset);
   const fetchReviewedArticle = createFetchReviewedArticle(
     reviewReferenceRepository,
     fetchArticle,
     fetchReview,
   );
-  const services: RouterServices = { fetchAllArticleTeasers, fetchReviewedArticle, reviewReferenceRepository };
+  const services: RouterServices = {
+    fetchAllArticleTeasers,
+    fetchCommunityArticles,
+    fetchReviewedArticle,
+    reviewReferenceRepository,
+  };
 
   const router = createRouter(services);
   return {
