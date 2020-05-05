@@ -14,12 +14,12 @@ describe('community handler', (): void => {
     expect(response.status).toBe(OK);
   });
 
-  it('is plain text', async (): Promise<void> => {
-    expect(response.type).toBe('text/plain');
+  it('is HTML', async (): Promise<void> => {
+    expect(response.type).toBe('text/html');
     expect(response.charset).toBe('utf-8');
   });
 
   it('has the community name', async (): Promise<void> => {
-    expect(response.text).toStrictEqual('eLife');
+    expect(response.text).toStrictEqual(expect.stringContaining('eLife'));
   });
 });
