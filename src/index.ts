@@ -1,5 +1,4 @@
 import { createTerminus, TerminusOptions } from '@godaddy/terminus';
-import createFetchAllArticleTeasers from './api/fetch-all-article-teasers';
 import createFetchArticle from './api/fetch-article';
 import createFetchCommunityArticles from './api/fetch-community-articles';
 import createFetchDataset from './api/fetch-dataset';
@@ -21,13 +20,11 @@ reviewReferenceRepository.add(article3, article3Review1);
 reviewReferenceRepository.add(article4, article4Review1);
 
 const fetchDataset = createFetchDataset();
-const fetchAllArticleTeasers = createFetchAllArticleTeasers(reviewReferenceRepository, fetchDataset);
 const fetchArticle = createFetchArticle(fetchDataset);
 const fetchCommunityArticles = createFetchCommunityArticles();
 const fetchReview = createFetchReview(fetchDataset);
 const fetchReviewedArticle = createFetchReviewedArticle(reviewReferenceRepository, fetchArticle, fetchReview);
 const services: RouterServices = {
-  fetchAllArticleTeasers,
   fetchCommunityArticles,
   fetchReviewedArticle,
   reviewReferenceRepository,
