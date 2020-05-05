@@ -25,6 +25,27 @@ export default (): Middleware => (
 
   </section>
 
+  <section>
+
+    <h2>
+      Recently reviewed articles
+    </h2>
+
+    <ol>
+      <li>
+        <a href="/articles/10.1101/833392">
+          Uncovering the hidden antibiotic potential of Cannabis
+        </a>
+      </li>
+      <li>
+        <a href="/articles/10.1101/2020.03.22.002386">
+          A SARS-CoV-2-Human Protein-Protein Interaction Map Reveals Drug Targets and Potential Drug-Repurposing
+        </a>
+      </li>
+    </ol>
+
+  </section>
+
 `);
 
     await next();
