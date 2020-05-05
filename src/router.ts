@@ -21,7 +21,7 @@ export default (services: RouterServices): Router => {
   router.get('/ping', ping());
   router.get('/', index(services.fetchAllArticleTeasers));
   router.get('/articles/:doi(.+)', article(services.fetchReviewedArticle));
-  router.get('/communities/b560187e-f2fb-4ff9-a861-a204f3fc0fb0', community());
+  router.get('/communities/:id', community());
   router.post('/reviews', bodyParser({ enableTypes: ['form'] }), reviews(services.reviewReferenceRepository));
 
   return router;
