@@ -1,19 +1,19 @@
 import { Middleware, RouterContext } from '@koa/router';
 import { NotFound } from 'http-errors';
 import { Next } from 'koa';
-import createFetchCommunityArticles from '../api/fetch-community-articles';
+import { FetchCommunityArticles } from '../api/fetch-community-articles';
 import templateListItems from '../templates/list-items';
 import templatePage from '../templates/page';
 import { Community } from '../types/community';
 
-export default (community: Community): Middleware => (
+export default (community: Community, fetchCommunityArticles: FetchCommunityArticles): Middleware => (
   async ({ params, response }: RouterContext, next: Next): Promise<void> => {
     const communityId = params.id;
     if (communityId !== community.id) {
       throw new NotFound(`${communityId} not found`);
     }
 
-    const communityArticles = await createFetchCommunityArticles()();
+    const communityArticles = await fetchCommunityArticles();
     const communityArticleTeasers = templateListItems(communityArticles.map((communityArticle) => (
       `<a href="/articles/${communityArticle.doi}">${communityArticle.title}</a>`
     )));
