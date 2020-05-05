@@ -3,7 +3,6 @@ import { BadRequest } from 'http-errors';
 import { Next } from 'koa';
 import { article3 } from '../data/article-dois';
 import Doi from '../data/doi';
-import templatePage from '../templates/page';
 
 export default (): Middleware => (
   async ({ request, response }: RouterContext, next: Next): Promise<void> => {
@@ -23,7 +22,7 @@ export default (): Middleware => (
       return;
     }
 
-    response.body = templatePage(`<main>
+    response.body = `<main>
 
   <header class="content-header">
 
@@ -47,7 +46,7 @@ export default (): Middleware => (
           <span class="visually-hidden">DOI of an article</span>
           <input type="text" name="articledoi" placeholder="${article3}" class="compact-form__article-doi" required>
         </label>
-    
+
         <button type="submit" class="compact-form__submit">
           <span class="visually-hidden">Find reviews</span>
         </button>
@@ -58,7 +57,7 @@ export default (): Middleware => (
 
   </form>
 
-</main>`);
+</main>`;
 
     await next();
   }

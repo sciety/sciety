@@ -8,6 +8,7 @@ import community from './handlers/community';
 import index from './handlers/index';
 import ping from './handlers/ping';
 import reviews from './handlers/reviews';
+import addPageTemplate from './middleware/add-page-template';
 import ReviewReferenceRepository from './types/review-reference-repository';
 
 export type RouterServices = {
@@ -19,11 +20,22 @@ export type RouterServices = {
 export default (services: RouterServices): Router => {
   const router = new Router();
 
-  router.get('/ping', ping());
-  router.get('/', index());
-  router.get('/articles/:doi(.+)', article(services.fetchReviewedArticle));
-  router.get('/communities/:id', community(communities, services.fetchCommunityArticles));
-  router.post('/reviews', bodyParser({ enableTypes: ['form'] }), reviews(services.reviewReferenceRepository));
+  router.get('/ping',
+    ping());
+
+  router.get('/',
+    addPageTemplate(),
+    index());
+
+  router.get('/articles/:doi(.+)',
+    article(services.fetchReviewedArticle));
+
+  router.get('/communities/:id',
+    community(communities, services.fetchCommunityArticles));
+
+  router.post('/reviews',
+    bodyParser({ enableTypes: ['form'] }),
+    reviews(services.reviewReferenceRepository));
 
   return router;
 };
