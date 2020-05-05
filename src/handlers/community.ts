@@ -17,11 +17,11 @@ export default (): Middleware => (
 
   <section>
 
-  <p>
-    eLife is a non-profit organisation created by funders and led by researchers. Our mission is to accelerate discovery
-    by operating a platform for research communication that encourages and recognises the most responsible behaviours in
-    science.
-  </p>
+    <p>
+      eLife is a non-profit organisation created by funders and led by researchers. Our mission is to accelerate
+      discovery by operating a platform for research communication that encourages and recognises the most responsible
+      behaviours in science.
+    </p>
 
   </section>
 
