@@ -27,6 +27,11 @@ describe('community handler', (): void => {
     it('has the community description', async (): Promise<void> => {
       expect(response.text).toStrictEqual(expect.stringContaining('accelerate'));
     });
+
+    it('has the community article teasers', async (): Promise<void> => {
+      expect(response.text).toStrictEqual(expect.stringContaining('Uncovering'));
+      expect(response.text).toStrictEqual(expect.stringContaining('Drug-Repurposing'));
+    });
   });
 
   describe('when the community does not exist', (): void => {
