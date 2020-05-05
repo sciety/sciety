@@ -23,6 +23,10 @@ describe('community handler', (): void => {
     it('has the community name', async (): Promise<void> => {
       expect(response.text).toStrictEqual(expect.stringContaining('eLife'));
     });
+
+    it('has the community description', async (): Promise<void> => {
+      expect(response.text).toStrictEqual(expect.stringContaining('accelerate'));
+    });
   });
 
   describe('when the community does not exist', (): void => {
