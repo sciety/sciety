@@ -7,7 +7,7 @@ import { Community } from '../types/community';
 export default (community: Community): Middleware => (
   async ({ params, response }: RouterContext, next: Next): Promise<void> => {
     const communityId = params.id;
-    if (communityId !== 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0') {
+    if (communityId !== community.id) {
       throw new NotFound(`${communityId} not found`);
     }
     response.type = 'html';
@@ -16,7 +16,7 @@ export default (community: Community): Middleware => (
   <header class="content-header">
 
     <h1>
-      eLife
+      ${community.name}
     </h1>
 
   </header>
