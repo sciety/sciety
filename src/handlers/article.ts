@@ -7,7 +7,6 @@ import { FetchReviewedArticle } from '../api/fetch-reviewed-article';
 import Doi from '../data/doi';
 import createLogger from '../logger';
 import templateArticlePage from '../templates/article-page';
-import templatePage from '../templates/page';
 import { ReviewedArticle } from '../types/reviewed-article';
 
 const log = createLogger('handler:article');
@@ -44,7 +43,7 @@ export default (fetchReviewedArticle: FetchReviewedArticle): Middleware => (
       throw new NotFound(`${doi} not found`);
     }
 
-    const page = templatePage(templateArticlePage(reviewedArticle));
+    const page = templateArticlePage(reviewedArticle);
 
     response.type = 'html';
     response.body = page;

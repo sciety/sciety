@@ -28,9 +28,11 @@ export default (services: RouterServices): Router => {
     index());
 
   router.get('/articles/:doi(.+)',
+    addPageTemplate(),
     article(services.fetchReviewedArticle));
 
   router.get('/communities/:id',
+    addPageTemplate(),
     community(communities, services.fetchCommunityArticles));
 
   router.post('/reviews',

@@ -3,7 +3,6 @@ import { NotFound } from 'http-errors';
 import { Next } from 'koa';
 import { FetchCommunityArticles } from '../api/fetch-community-articles';
 import templateListItems from '../templates/list-items';
-import templatePage from '../templates/page';
 import { Community } from '../types/community';
 
 export default (communities: Array<Community>, fetchCommunityArticles: FetchCommunityArticles): Middleware => (
@@ -20,7 +19,7 @@ export default (communities: Array<Community>, fetchCommunityArticles: FetchComm
       `<a href="/articles/${communityArticle.doi}">${communityArticle.title}</a>`
     )));
     response.type = 'html';
-    response.body = templatePage(`
+    response.body = `
 
   <header class="content-header">
 
@@ -50,7 +49,7 @@ export default (communities: Array<Community>, fetchCommunityArticles: FetchComm
 
   </section>
 
-`);
+`;
 
     await next();
   }
