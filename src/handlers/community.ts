@@ -14,7 +14,7 @@ export default (communities: Array<Community>, fetchCommunityArticles: FetchComm
       throw new NotFound(`${communityId} not found`);
     }
 
-    const communityArticles = await fetchCommunityArticles();
+    const communityArticles = await fetchCommunityArticles(community.id);
     const communityArticleTeasers = templateListItems(communityArticles.map((communityArticle) => (
       `<a href="/articles/${communityArticle.doi}">${communityArticle.title}</a>`
     )));

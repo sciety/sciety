@@ -31,7 +31,7 @@ describe('community handler', (): void => {
 
     it('has the community article teasers', async (): Promise<void> => {
       expect(response.text).toStrictEqual(expect.stringContaining('Uncovering'));
-      expect(response.text).toStrictEqual(expect.stringContaining('Drug-Repurposing'));
+      expect(response.text).toStrictEqual(expect.not.stringContaining('Drug-Repurposing'));
     });
   });
 
