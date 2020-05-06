@@ -35,6 +35,18 @@ describe('community handler', (): void => {
     });
   });
 
+  describe('when a different community exists', (): void => {
+    beforeEach(async () => {
+      const { server } = createServer();
+      response = await request(server).get(`/communities/${communities[1].id}`);
+    });
+
+    it('has different community article teasers', async (): Promise<void> => {
+      expect(response.text).toStrictEqual(expect.stringContaining('Drug-Repurposing'));
+      expect(response.text).toStrictEqual(expect.not.stringContaining('Uncovering'));
+    });
+  });
+
   describe('when the community does not exist', (): void => {
     beforeEach(async () => {
       const { server } = createServer();

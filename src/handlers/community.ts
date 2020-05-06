@@ -8,9 +8,9 @@ import { Community } from '../types/community';
 export default (communities: Array<Community>, fetchCommunityArticles: FetchCommunityArticles): Middleware => (
   async ({ params, response }: RouterContext, next: Next): Promise<void> => {
     const communityId = params.id;
-    const community = communities[0];
+    const community = communities.find((each) => each.id === communityId);
 
-    if (communityId !== community.id) {
+    if (!community) {
       throw new NotFound(`${communityId} not found`);
     }
 

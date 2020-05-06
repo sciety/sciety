@@ -8,6 +8,11 @@ const communities: Array<Community> = [
 accelerate discovery by operating a platform for research communication that encourages and recognises the most
 responsible behaviours in science.`,
   },
+  {
+    id: 'e3a371f9-576d-48d5-a690-731b9fea26bd',
+    name: 'Royal Society of Psychoceramics',
+    description: 'Dulce et Decorum Est Desipere in Loco',
+  },
 ];
 
 export default communities;
