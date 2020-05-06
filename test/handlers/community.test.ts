@@ -1,6 +1,7 @@
 import { NOT_FOUND, OK } from 'http-status-codes';
 import request, { Response } from 'supertest';
 import createServer from './server';
+import communities from '../../src/data/communities';
 
 describe('community handler', (): void => {
   let response: Response;
@@ -8,7 +9,7 @@ describe('community handler', (): void => {
   describe('when the community exists', (): void => {
     beforeEach(async () => {
       const { server } = createServer();
-      response = await request(server).get('/communities/b560187e-f2fb-4ff9-a861-a204f3fc0fb0');
+      response = await request(server).get(`/communities/${communities[0].id}`);
     });
 
     it('returns a successful response', async (): Promise<void> => {
