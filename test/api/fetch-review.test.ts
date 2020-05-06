@@ -12,7 +12,6 @@ describe('fetch-review', (): void => {
       clownface({ dataset: datasetFactory(), term: iri })
         .addOut(schema.datePublished, literal('2020-02-20', schema.Date))
         .addOut(schema.description, 'A summary')
-        .addOut(schema.author, (author) => author.addOut(schema.name, 'Author name'))
     );
     const fetchReview = createFetchReview(fetchDataset);
     const review = await fetchReview(article3Review1);

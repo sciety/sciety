@@ -11,12 +11,10 @@ export default (fetchDataset: FetchDataset): FetchReview => (
     const reviewIri = namedNode(`https://doi.org/${doi}`);
     const graph = await fetchDataset(reviewIri);
 
-    const author = graph.out(schema.author).out(schema.name).value || 'Unknown author';
     const publicationDate = new Date(graph.out(schema.datePublished).value || 0);
     const summary = graph.out(schema.description).value || 'Unknown summary';
 
     return {
-      author,
       doi,
       publicationDate,
       summary,

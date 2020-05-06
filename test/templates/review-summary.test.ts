@@ -3,7 +3,6 @@ import templateReviewSummary from '../../src/templates/review-summary';
 
 describe('review-summary template', (): void => {
   const review = {
-    author: 'John Doe',
     publicationDate: new Date('2010-02-01'),
     summary: 'Pretty good.',
     doi: new Doi('10.5281/zenodo.3678326'),
@@ -43,6 +42,6 @@ describe('review-summary template', (): void => {
   it('renders ARIA attributes and ids', () => {
     const actual = templateReviewSummary(review, idNamespace);
 
-    expect(actual).toStrictEqual(expect.stringContaining('aria-labelledby="review-42-read-more review-42-author"'));
+    expect(actual).toStrictEqual(expect.stringContaining('aria-labelledby="review-42-read-more review-42-community"'));
   });
 });
