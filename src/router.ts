@@ -4,7 +4,6 @@ import { FetchArticle } from './api/fetch-article';
 import { FetchCommunityArticles } from './api/fetch-community-articles';
 import { FetchReview } from './api/fetch-review';
 import communities from './data/communities';
-import article from './handlers/article';
 import community from './handlers/community';
 import index from './handlers/index';
 import ping from './handlers/ping';
@@ -44,7 +43,6 @@ export default (services: RouterServices): Router => {
     validateBiorxivDoi(),
     fetchArticleForArticlePage(services.fetchArticle),
     fetchReviewsForArticlePage(services.reviewReferenceRepository, services.fetchReview),
-    article(),
     convertArticleAndReviewsToArticlePage(),
     renderArticlePage(),
     addPageTemplate());
