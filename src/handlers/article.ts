@@ -6,8 +6,6 @@ import { FetchDatasetError } from '../api/fetch-dataset';
 import { FetchReviewedArticle } from '../api/fetch-reviewed-article';
 import Doi from '../data/doi';
 import createLogger from '../logger';
-import templateArticlePage from '../templates/article-page';
-import { ReviewedArticle } from '../types/reviewed-article';
 
 const log = createLogger('handler:article');
 
@@ -15,9 +13,8 @@ export default (fetchReviewedArticle: FetchReviewedArticle): Middleware => (
   async (ctx: RouterContext, next: Next): Promise<void> => {
     const doi: Doi = ctx.prc.articleDoi;
 
-    let reviewedArticle: ReviewedArticle;
     try {
-      reviewedArticle = await fetchReviewedArticle(doi);
+      ctx.prc.reviewedArticle = await fetchReviewedArticle(doi);
     } catch (e) {
       if (e instanceof FetchDatasetError) {
         log(`Failed to load article ${doi}: (${e})`);
@@ -28,11 +25,6 @@ export default (fetchReviewedArticle: FetchReviewedArticle): Middleware => (
       log(`Article ${doi} not found: (${e})`);
       throw new NotFound(`${doi} not found`);
     }
-
-    const page = templateArticlePage(reviewedArticle);
-
-    ctx.response.type = 'html';
-    ctx.response.body = page;
 
     await next();
   }

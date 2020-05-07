@@ -40,11 +40,11 @@ export default (services: RouterServices): Router => {
     initializePrcContext(),
     validateDoiParam(),
     validateBiorxivDoi(),
+    article(services.fetchReviewedArticle),
     fetchArticleForArticlePage(),
     fetchReviewsForArticlePage(),
     convertArticleAndReviewsToArticlePage(),
     renderArticlePage(),
-    article(services.fetchReviewedArticle),
     addPageTemplate());
 
   router.get('/communities/:id',
