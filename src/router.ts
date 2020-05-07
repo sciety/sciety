@@ -9,6 +9,7 @@ import index from './handlers/index';
 import ping from './handlers/ping';
 import reviews from './handlers/reviews';
 import addPageTemplate from './middleware/add-page-template';
+import validateDoiParam from './middleware/validate-doi-param';
 import ReviewReferenceRepository from './types/review-reference-repository';
 
 export type RouterServices = {
@@ -28,6 +29,7 @@ export default (services: RouterServices): Router => {
     index());
 
   router.get('/articles/:doi(.+)',
+    validateDoiParam(),
     addPageTemplate(),
     article(services.fetchReviewedArticle));
 
