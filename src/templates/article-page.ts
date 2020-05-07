@@ -2,15 +2,34 @@ import templateArticlePageHeader from './article-page-header';
 import templateListItems from './list-items';
 import templateReviewSidebarItem from './review-sidebar-item';
 import templateReviewSummary from './review-summary';
+import Doi from '../data/doi';
 import { article3Review1 } from '../data/review-dois';
-import { ReviewedArticle } from '../types/reviewed-article';
 
-export default (reviewedArticle: ReviewedArticle): string => {
-  const reviewSummaries = reviewedArticle.reviews.map((review, index) => templateReviewSummary(review, `review-${index}`));
-  const reviewSidebarItems = reviewedArticle.reviews.map((review) => templateReviewSidebarItem(review));
+interface Article {
+  title: string;
+  doi: Doi;
+  publicationDate: Date;
+  abstract: string;
+  authors: Array<string>;
+}
+
+interface Review {
+  publicationDate: Date;
+  summary: string;
+  doi: Doi;
+}
+
+export interface ArticlePage {
+  article: Article;
+  reviews: Array<Review>;
+}
+
+export default ({ article, reviews }: ArticlePage): string => {
+  const reviewSummaries = reviews.map((review, index) => templateReviewSummary(review, `review-${index}`));
+  const reviewSidebarItems = reviews.map((review) => templateReviewSidebarItem(review));
   return `<article>
 
-    ${templateArticlePageHeader(reviewedArticle.article)}
+    ${templateArticlePageHeader(article)}
 
     <div class="content">
 
@@ -18,7 +37,7 @@ export default (reviewedArticle: ReviewedArticle): string => {
         <h2>
           Abstract
         </h2>
-        ${reviewedArticle.article.abstract}
+        ${article.abstract}
       </section>
 
       <section class="review-summary-list">
@@ -34,7 +53,7 @@ export default (reviewedArticle: ReviewedArticle): string => {
 
     <aside>
       <h2>
-        ${reviewedArticle.reviews.length} peer reviews
+        ${reviews.length} peer reviews
       </h2>
       <ol>
         ${templateListItems(reviewSidebarItems)}
@@ -46,7 +65,7 @@ export default (reviewedArticle: ReviewedArticle): string => {
 
       <form method="post" action="/reviews" class="compact-form">
 
-        <input type="hidden" name="articledoi" value="${reviewedArticle.article.doi}">
+        <input type="hidden" name="articledoi" value="${article.doi}">
 
         <label for="reviewdoi">DOI of the review</label>
 

@@ -1,8 +1,15 @@
 import templateDate from './date';
 import templateListItems from './list-items';
-import { Article } from '../types/article';
+import Doi from '../data/doi';
 
-export default (article: Article): string => (
+export interface ArticlePageHeader {
+  title: string;
+  authors: Array<string>;
+  doi: Doi;
+  publicationDate: Date;
+}
+
+export default (article: ArticlePageHeader): string => (
   `<header class="content-header">
 
       <h1>
