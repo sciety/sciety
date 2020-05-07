@@ -10,6 +10,7 @@ import ping from './handlers/ping';
 import reviews from './handlers/reviews';
 import addPageTemplate from './middleware/add-page-template';
 import initializePrcContext from './middleware/initialize-prc-context';
+import validateBiorxivDoi from './middleware/validate-biorxiv-doi';
 import validateDoiParam from './middleware/validate-doi-param';
 import ReviewReferenceRepository from './types/review-reference-repository';
 
@@ -34,6 +35,7 @@ export default (services: RouterServices): Router => {
   router.get('/articles/:doi(.+)',
     initializePrcContext(),
     validateDoiParam(),
+    validateBiorxivDoi(),
     addPageTemplate(),
     article(services.fetchReviewedArticle));
 

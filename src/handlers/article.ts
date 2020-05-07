@@ -11,16 +11,9 @@ import { ReviewedArticle } from '../types/reviewed-article';
 
 const log = createLogger('handler:article');
 
-const biorxivPrefix = '10.1101';
-
 export default (fetchReviewedArticle: FetchReviewedArticle): Middleware => (
   async (ctx: RouterContext, next: Next): Promise<void> => {
     const doi: Doi = ctx.prc.articleDoi;
-
-    if (!(doi.hasPrefix(biorxivPrefix))) {
-      log(`Article ${doi} is not from bioRxiv`);
-      throw new NotFound('Not a bioRxiv DOI.');
-    }
 
     let reviewedArticle: ReviewedArticle;
     try {
