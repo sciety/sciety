@@ -9,7 +9,11 @@ import index from './handlers/index';
 import ping from './handlers/ping';
 import reviews from './handlers/reviews';
 import addPageTemplate from './middleware/add-page-template';
+import convertArticleAndReviewsToArticlePage from './middleware/convert-article-and-reviews-to-article-page';
+import fetchArticleForArticlePage from './middleware/fetch-article-for-article-page';
+import fetchReviewsForArticlePage from './middleware/fetch-reviews-for-article-page';
 import initializePrcContext from './middleware/initialize-prc-context';
+import renderArticlePage from './middleware/render-article-page';
 import validateBiorxivDoi from './middleware/validate-biorxiv-doi';
 import validateDoiParam from './middleware/validate-doi-param';
 import ReviewReferenceRepository from './types/review-reference-repository';
@@ -36,8 +40,12 @@ export default (services: RouterServices): Router => {
     initializePrcContext(),
     validateDoiParam(),
     validateBiorxivDoi(),
-    addPageTemplate(),
-    article(services.fetchReviewedArticle));
+    fetchArticleForArticlePage(),
+    fetchReviewsForArticlePage(),
+    convertArticleAndReviewsToArticlePage(),
+    renderArticlePage(),
+    article(services.fetchReviewedArticle),
+    addPageTemplate());
 
   router.get('/communities/:id',
     initializePrcContext(),
