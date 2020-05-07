@@ -15,7 +15,7 @@ const biorxivPrefix = '10.1101';
 
 export default (fetchReviewedArticle: FetchReviewedArticle): Middleware => (
   async (ctx: RouterContext, next: Next): Promise<void> => {
-    const doi: Doi = ctx.articleDoi;
+    const doi: Doi = ctx.prc.articleDoi;
 
     if (!(doi.hasPrefix(biorxivPrefix))) {
       log(`Article ${doi} is not from bioRxiv`);
