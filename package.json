@@ -59,7 +59,7 @@
   "scripts": {
     "build": "tsc",
     "lint": "eslint . --ext .js,.ts --cache --cache-location .eslint/ --color",
-    "lint:fix": "eslint . --fix --ext .js,.ts --cache --cache-location .eslint/",
+    "lint:fix": "eslint . --fix --ext .js,.ts --cache --cache-location .eslint/ --color",
     "start": "node ./build/index.js",
     "start:dev": "nodemon --exec 'node --require ts-node/register ./src/index.ts' --ext .js,.json,.ts",
     "test": "jest --colors --runInBand"

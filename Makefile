@@ -7,23 +7,41 @@ IMAGE_TAG := local
 
 dev: export TARGET = dev
 dev: install build
-	$(DOCKER) run -v $(DATA_VOLUME)/src:/app/src:ro -v $(DATA_VOLUME)/static:/app/static:ro -p 8080:80 $(IMAGE):$(IMAGE_TAG)-dev
+	$(DOCKER) run \
+		-v $(DATA_VOLUME)/src:/app/src:ro \
+		-v $(DATA_VOLUME)/static:/app/static:ro \
+		-p 8080:80 \
+		$(IMAGE):$(IMAGE_TAG)-dev
 
 prod: export TARGET = prod
 prod: build
-	$(DOCKER) run -p 8080:80 $(IMAGE):$(IMAGE_TAG)
+	$(DOCKER) run \
+		-p 8080:80 \
+		$(IMAGE):$(IMAGE_TAG)
 
 lint: export TARGET = dev
 lint: build
-	$(DOCKER) run --rm -v $(DATA_VOLUME)/.eslint:/app/.eslint $(IMAGE):$(IMAGE_TAG)-dev npm run lint
+	$(DOCKER) run --rm \
+		-v $(DATA_VOLUME)/.eslint:/app/.eslint \
+		$(IMAGE):$(IMAGE_TAG)-dev \
+		npm run lint
 
 lint\:fix: export TARGET = dev
 lint\:fix: build
-	$(DOCKER) run --rm -v $(DATA_VOLUME)/.eslint:/app/.eslint -v $(DATA_VOLUME)/src:/app/src -v $(DATA_VOLUME)/test:/app/test $(IMAGE):$(IMAGE_TAG)-dev npm run lint:fix
+	$(DOCKER) run --rm \
+		-v $(DATA_VOLUME)/.eslint:/app/.eslint \
+		-v $(DATA_VOLUME)/src:/app/src \
+		-v $(DATA_VOLUME)/test:/app/test \
+		$(IMAGE):$(IMAGE_TAG)-dev \
+		npm run lint:fix
 
 test: export TARGET = dev
 test: build
-	$(DOCKER) run --env DEBUG=-* -v $(DATA_VOLUME)/.jest:/app/.jest $(IMAGE):$(IMAGE_TAG)-dev npm run test
+	$(DOCKER) run \
+		--env DEBUG=-* \
+		-v $(DATA_VOLUME)/.jest:/app/.jest \
+		$(IMAGE):$(IMAGE_TAG)-dev \
+		npm run test
 
 build:
 	@if [ "$(TARGET)" != prod ]; then \
