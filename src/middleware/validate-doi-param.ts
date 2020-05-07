@@ -4,7 +4,7 @@ import { Next } from 'koa';
 import Doi from '../data/doi';
 import createLogger from '../logger';
 
-const log = createLogger('handler:article');
+const log = createLogger('middleware:validate-doi-param');
 
 export default (): Middleware => (
   async (ctx: RouterContext, next: Next): Promise<void> => {
