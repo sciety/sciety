@@ -3,7 +3,6 @@ import createFetchArticle from './api/fetch-article';
 import createFetchCommunityArticles from './api/fetch-community-articles';
 import createFetchDataset from './api/fetch-dataset';
 import createFetchReview from './api/fetch-review';
-import createFetchReviewedArticle from './api/fetch-reviewed-article';
 import { article3, article4 } from './data/article-dois';
 import { article3Review1, article4Review1 } from './data/review-dois';
 import createReviewReferenceRepository from './data/review-references';
@@ -23,10 +22,10 @@ const fetchDataset = createFetchDataset();
 const fetchArticle = createFetchArticle(fetchDataset);
 const fetchCommunityArticles = createFetchCommunityArticles();
 const fetchReview = createFetchReview(fetchDataset);
-const fetchReviewedArticle = createFetchReviewedArticle(reviewReferenceRepository, fetchArticle, fetchReview);
 const services: RouterServices = {
+  fetchArticle,
   fetchCommunityArticles,
-  fetchReviewedArticle,
+  fetchReview,
   reviewReferenceRepository,
 };
 

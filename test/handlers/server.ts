@@ -7,7 +7,6 @@ import createFetchArticle from '../../src/api/fetch-article';
 import createFetchCommunityArticles from '../../src/api/fetch-community-articles';
 import { FetchDataset } from '../../src/api/fetch-dataset';
 import createFetchReview from '../../src/api/fetch-review';
-import createFetchReviewedArticle from '../../src/api/fetch-reviewed-article';
 import { article3, article4 } from '../../src/data/article-dois';
 import { article3Review1, article4Review1 } from '../../src/data/review-dois';
 import createReviewReferenceRepository from '../../src/data/review-references';
@@ -37,14 +36,10 @@ export default (): TestServer => {
   const fetchArticle = createFetchArticle(fetchCrossrefDataset);
   const fetchCommunityArticles = createFetchCommunityArticles();
   const fetchReview = createFetchReview(fetchDataCiteDataset);
-  const fetchReviewedArticle = createFetchReviewedArticle(
-    reviewReferenceRepository,
-    fetchArticle,
-    fetchReview,
-  );
   const services: RouterServices = {
+    fetchArticle,
     fetchCommunityArticles,
-    fetchReviewedArticle,
+    fetchReview,
     reviewReferenceRepository,
   };
 

@@ -1,7 +1,8 @@
 import Router from '@koa/router';
 import bodyParser from 'koa-bodyparser';
+import { FetchArticle } from './api/fetch-article';
 import { FetchCommunityArticles } from './api/fetch-community-articles';
-import { FetchReviewedArticle } from './api/fetch-reviewed-article';
+import { FetchReview } from './api/fetch-review';
 import communities from './data/communities';
 import article from './handlers/article';
 import community from './handlers/community';
@@ -19,8 +20,9 @@ import validateDoiParam from './middleware/validate-doi-param';
 import ReviewReferenceRepository from './types/review-reference-repository';
 
 export type RouterServices = {
+  fetchArticle: FetchArticle;
   fetchCommunityArticles: FetchCommunityArticles;
-  fetchReviewedArticle: FetchReviewedArticle;
+  fetchReview: FetchReview;
   reviewReferenceRepository: ReviewReferenceRepository;
 };
 
@@ -40,7 +42,7 @@ export default (services: RouterServices): Router => {
     initializePrcContext(),
     validateDoiParam(),
     validateBiorxivDoi(),
-    article(services.fetchReviewedArticle),
+    article(services.reviewReferenceRepository, services.fetchArticle, services.fetchReview),
     fetchArticleForArticlePage(),
     fetchReviewsForArticlePage(),
     convertArticleAndReviewsToArticlePage(),

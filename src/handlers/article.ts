@@ -2,15 +2,34 @@ import { SERVICE_UNAVAILABLE } from 'http-status-codes';
 import { Middleware, RouterContext } from '@koa/router';
 import { NotFound } from 'http-errors';
 import { Next } from 'koa';
+import { FetchArticle } from '../api/fetch-article';
 import { FetchDatasetError } from '../api/fetch-dataset';
-import { FetchReviewedArticle } from '../api/fetch-reviewed-article';
+import { FetchReview } from '../api/fetch-review';
 import Doi from '../data/doi';
 import createLogger from '../logger';
+import ReviewReferenceRepository from '../types/review-reference-repository';
+import { ReviewedArticle } from '../types/reviewed-article';
 
 const log = createLogger('handler:article');
 
-export default (fetchReviewedArticle: FetchReviewedArticle): Middleware => (
-  async (ctx: RouterContext, next: Next): Promise<void> => {
+export default (
+  reviewReferenceRepository: ReviewReferenceRepository,
+  fetchArticle: FetchArticle,
+  fetchReview: FetchReview,
+): Middleware => {
+  const fetchReviewedArticle = async (doi: Doi): Promise<ReviewedArticle> => {
+    const [article, reviews] = await Promise.all([
+      fetchArticle(doi),
+      Promise.all(reviewReferenceRepository.findReviewDoisForArticleDoi(doi).map(fetchReview)),
+    ]);
+
+    return {
+      article,
+      reviews,
+    };
+  };
+
+  return async (ctx: RouterContext, next: Next): Promise<void> => {
     const doi: Doi = ctx.prc.articleDoi;
 
     try {
@@ -27,5 +46,5 @@ export default (fetchReviewedArticle: FetchReviewedArticle): Middleware => (
     }
 
     await next();
-  }
-);
+  };
+};
