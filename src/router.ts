@@ -43,8 +43,8 @@ export default (services: RouterServices): Router => {
     validateDoiParam(),
     validateBiorxivDoi(),
     fetchArticleForArticlePage(services.fetchArticle),
-    fetchReviewsForArticlePage(),
-    article(services.reviewReferenceRepository, services.fetchReview),
+    fetchReviewsForArticlePage(services.reviewReferenceRepository, services.fetchReview),
+    article(),
     convertArticleAndReviewsToArticlePage(),
     renderArticlePage(),
     addPageTemplate());
