@@ -3,6 +3,7 @@ import bodyParser from 'koa-bodyparser';
 import { FetchCommunityArticles } from './api/fetch-community-articles';
 import { FetchReviewedArticle } from './api/fetch-reviewed-article';
 import communities from './data/communities';
+import Doi from './data/doi';
 import article from './handlers/article';
 import community from './handlers/community';
 import index from './handlers/index';
@@ -17,6 +18,12 @@ export type RouterServices = {
   fetchReviewedArticle: FetchReviewedArticle;
   reviewReferenceRepository: ReviewReferenceRepository;
 };
+
+declare module 'koa' {
+  interface BaseContext {
+    articleDoi: Doi;
+  }
+}
 
 export default (services: RouterServices): Router => {
   const router = new Router();

@@ -9,9 +9,7 @@ const log = createLogger('handler:article');
 export default (): Middleware => (
   async (ctx: RouterContext, next: Next): Promise<void> => {
     try {
-      Object.assign(ctx, {
-        articleDoi: new Doi(ctx.params.doi || ''),
-      });
+      ctx.articleDoi = new Doi(ctx.params.doi || '');
     } catch (error) {
       log(`Article ${ctx.params.doi} not found: (${error})`);
       throw new NotFound(`${ctx.params.doi} not found`);
