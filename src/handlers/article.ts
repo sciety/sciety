@@ -2,11 +2,11 @@ import { SERVICE_UNAVAILABLE } from 'http-status-codes';
 import { Middleware, RouterContext } from '@koa/router';
 import { NotFound } from 'http-errors';
 import { Next } from 'koa';
-import { FetchArticle } from '../api/fetch-article';
 import { FetchDatasetError } from '../api/fetch-dataset';
 import { FetchReview } from '../api/fetch-review';
 import Doi from '../data/doi';
 import createLogger from '../logger';
+import { Article } from '../types/article';
 import ReviewReferenceRepository from '../types/review-reference-repository';
 import { ReviewedArticle } from '../types/reviewed-article';
 
@@ -14,12 +14,11 @@ const log = createLogger('handler:article');
 
 export default (
   reviewReferenceRepository: ReviewReferenceRepository,
-  fetchArticle: FetchArticle,
   fetchReview: FetchReview,
 ): Middleware => {
-  const fetchReviewedArticle = async (doi: Doi): Promise<ReviewedArticle> => {
+  const fetchReviewedArticle = async (fetchedArticle: Promise<Article>, doi: Doi): Promise<ReviewedArticle> => {
     const [article, reviews] = await Promise.all([
-      fetchArticle(doi),
+      fetchedArticle,
       Promise.all(reviewReferenceRepository.findReviewDoisForArticleDoi(doi).map(fetchReview)),
     ]);
 
@@ -33,7 +32,7 @@ export default (
     const doi: Doi = ctx.prc.articleDoi;
 
     try {
-      ctx.prc.reviewedArticle = await fetchReviewedArticle(doi);
+      ctx.prc.reviewedArticle = await fetchReviewedArticle(ctx.prc.article, doi);
     } catch (e) {
       if (e instanceof FetchDatasetError) {
         log(`Failed to load article ${doi}: (${e})`);
