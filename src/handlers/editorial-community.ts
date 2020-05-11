@@ -7,7 +7,7 @@ import { EditorialCommunity } from '../types/editorial-community';
 
 export default (
   communities: Array<EditorialCommunity>,
-  fetchCommunityArticles: FetchEditorialCommunityReviewedArticles,
+  fetchEditorialCommunityReviewedArticles: FetchEditorialCommunityReviewedArticles,
 ): Middleware => (
   async ({ params, response }: RouterContext, next: Next): Promise<void> => {
     const communityId = params.id;
@@ -17,7 +17,7 @@ export default (
       throw new NotFound(`${communityId} not found`);
     }
 
-    const communityArticles = await fetchCommunityArticles(community.id);
+    const communityArticles = await fetchEditorialCommunityReviewedArticles(community.id);
     const communityArticleTeasers = templateListItems(communityArticles.map((communityArticle) => (
       `<a href="/articles/${communityArticle.doi}">${communityArticle.title}</a>`
     )));

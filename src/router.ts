@@ -20,7 +20,7 @@ import ReviewReferenceRepository from './types/review-reference-repository';
 
 export type RouterServices = {
   fetchArticle: FetchArticle;
-  fetchCommunityArticles: FetchEditorialCommunityReviewedArticles;
+  fetchEditorialCommunityReviewedArticles: FetchEditorialCommunityReviewedArticles;
   fetchReview: FetchReview;
   reviewReferenceRepository: ReviewReferenceRepository;
 };
@@ -50,7 +50,7 @@ export default (services: RouterServices): Router => {
   router.get('/editorial-communities/:id',
     initializePrcContext(),
     addPageTemplate(),
-    community(communities, services.fetchCommunityArticles));
+    community(communities, services.fetchEditorialCommunityReviewedArticles));
 
   router.post('/reviews',
     initializePrcContext(),

@@ -5,7 +5,7 @@ import clownface from 'clownface';
 import datasetFactory from 'rdf-dataset-indexed';
 import createFetchArticle from '../../src/api/fetch-article';
 import { FetchDataset } from '../../src/api/fetch-dataset';
-import createFetchCommunityArticles from '../../src/api/fetch-editorial-community-reviewed-articles';
+import createFetchEditorialCommunityReviewedArticles from '../../src/api/fetch-editorial-community-reviewed-articles';
 import createFetchReview from '../../src/api/fetch-review';
 import { article3, article4 } from '../../src/data/article-dois';
 import { article3Review1, article4Review1 } from '../../src/data/review-dois';
@@ -34,11 +34,11 @@ export default (): TestServer => {
       .addOut(schema.author, (author) => author.addOut(schema.name, 'Author name'))
   );
   const fetchArticle = createFetchArticle(fetchCrossrefDataset);
-  const fetchCommunityArticles = createFetchCommunityArticles();
+  const fetchEditorialCommunityReviewedArticles = createFetchEditorialCommunityReviewedArticles();
   const fetchReview = createFetchReview(fetchDataCiteDataset);
   const services: RouterServices = {
     fetchArticle,
-    fetchCommunityArticles,
+    fetchEditorialCommunityReviewedArticles,
     fetchReview,
     reviewReferenceRepository,
   };
