@@ -4,7 +4,7 @@ import { FetchArticle } from './api/fetch-article';
 import { FetchEditorialCommunityArticles } from './api/fetch-editorial-community-articles';
 import { FetchReview } from './api/fetch-review';
 import communities from './data/editorial-communities';
-import community from './handlers/community';
+import community from './handlers/editorial-community';
 import index from './handlers/index';
 import ping from './handlers/ping';
 import reviews from './handlers/reviews';
