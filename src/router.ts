@@ -47,7 +47,7 @@ export default (services: RouterServices): Router => {
     renderArticlePage(),
     addPageTemplate());
 
-  router.get('/communities/:id',
+  router.get('/editorial-communities/:id',
     initializePrcContext(),
     addPageTemplate(),
     community(communities, services.fetchCommunityArticles));

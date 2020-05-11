@@ -9,7 +9,7 @@ describe('community handler', (): void => {
   describe('when the community exists', (): void => {
     beforeEach(async () => {
       const { server } = createServer();
-      response = await request(server).get(`/communities/${communities[0].id}`);
+      response = await request(server).get(`/editorial-communities/${communities[0].id}`);
     });
 
     it('returns a successful response', async (): Promise<void> => {
@@ -38,7 +38,7 @@ describe('community handler', (): void => {
   describe('when a different community exists', (): void => {
     beforeEach(async () => {
       const { server } = createServer();
-      response = await request(server).get(`/communities/${communities[1].id}`);
+      response = await request(server).get(`/editorial-communities/${communities[1].id}`);
     });
 
     it('has different community article teasers', async (): Promise<void> => {
@@ -50,7 +50,7 @@ describe('community handler', (): void => {
   describe('when the community does not exist', (): void => {
     beforeEach(async () => {
       const { server } = createServer();
-      response = await request(server).get('/communities/rubbish');
+      response = await request(server).get('/editorial-communities/rubbish');
     });
 
     it('returns a 404 response', async (): Promise<void> => {
