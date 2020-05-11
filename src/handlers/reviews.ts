@@ -17,7 +17,7 @@ const validateDoi = (input: string): Doi => {
 
 export default (reviewReferenceRepository: ReviewReferenceRepository): Middleware => (
   async ({ request, response }: RouterContext, next: Next): Promise<void> => {
-    const { articledoi, reviewdoi } = request.body;
+    const { articleversiondoi, reviewdoi } = request.body;
 
     const reviewDoi = validateDoi(reviewdoi);
 
@@ -25,9 +25,9 @@ export default (reviewReferenceRepository: ReviewReferenceRepository): Middlewar
       throw new BadRequest('Not a Zenodo DOI.');
     }
 
-    reviewReferenceRepository.add(new Doi(articledoi), reviewDoi);
+    reviewReferenceRepository.add(new Doi(articleversiondoi), reviewDoi);
 
-    response.redirect(`/articles/${articledoi}`);
+    response.redirect(`/articles/${articleversiondoi}`);
     response.status = SEE_OTHER;
 
     await next();

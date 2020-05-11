@@ -4,7 +4,7 @@ import createServer from './server';
 import Doi from '../../src/data/doi';
 
 describe('reviews handler', (): void => {
-  const articleDoi = new Doi('10.1101/2000.1234');
+  const articleVersionDoi = new Doi('10.1101/2000.1234');
 
   describe('given a valid Zenodo review DOI', (): void => {
     const reviewDoi = new Doi('10.5281/zenodo.3678326');
@@ -15,16 +15,16 @@ describe('reviews handler', (): void => {
       response = await request(server)
         .post('/reviews')
         .type('form')
-        .send({ articledoi: articleDoi.value, reviewdoi: `http://doi.org/${reviewDoi}` });
+        .send({ articleversiondoi: articleVersionDoi.value, reviewdoi: `http://doi.org/${reviewDoi}` });
     });
 
     it('returns a created response', () => {
       expect(response.status).toBe(SEE_OTHER);
-      expect(response.header.location).toBe(`/articles/${articleDoi}`);
+      expect(response.header.location).toBe(`/articles/${articleVersionDoi}`);
     });
 
     it('adds the review reference to the repository', () => {
-      const foundReviews = reviewReferenceRepository.findReviewDoisForArticleVersionDoi(articleDoi);
+      const foundReviews = reviewReferenceRepository.findReviewDoisForArticleVersionDoi(articleVersionDoi);
 
       expect(foundReviews).toContainEqual(reviewDoi);
     });
@@ -36,7 +36,7 @@ describe('reviews handler', (): void => {
     const response = await request(server)
       .post('/reviews')
       .type('form')
-      .send({ articledoi: articleDoi.value, reviewdoi: invalidInput });
+      .send({ articleversiondoi: articleVersionDoi.value, reviewdoi: invalidInput });
 
     expect(response.status).toBe(BAD_REQUEST);
     expect(response.text).toBe('Error: Not a possible DOI.');
@@ -48,7 +48,7 @@ describe('reviews handler', (): void => {
     const response = await request(server)
       .post('/reviews')
       .type('form')
-      .send({ articledoi: articleDoi.value, reviewdoi: otherDoi });
+      .send({ articleversiondoi: articleVersionDoi.value, reviewdoi: otherDoi });
 
     expect(response.status).toBe(BAD_REQUEST);
     expect(response.text).toBe('Not a Zenodo DOI.');
