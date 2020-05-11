@@ -1,9 +1,9 @@
 import Router from '@koa/router';
 import bodyParser from 'koa-bodyparser';
 import { FetchArticle } from './api/fetch-article';
-import { FetchCommunityArticles } from './api/fetch-community-articles';
+import { FetchEditorialCommunityArticles } from './api/fetch-editorial-community-articles';
 import { FetchReview } from './api/fetch-review';
-import communities from './data/communities';
+import communities from './data/editorial-communities';
 import community from './handlers/community';
 import index from './handlers/index';
 import ping from './handlers/ping';
@@ -20,7 +20,7 @@ import ReviewReferenceRepository from './types/review-reference-repository';
 
 export type RouterServices = {
   fetchArticle: FetchArticle;
-  fetchCommunityArticles: FetchCommunityArticles;
+  fetchCommunityArticles: FetchEditorialCommunityArticles;
   fetchReview: FetchReview;
   reviewReferenceRepository: ReviewReferenceRepository;
 };

@@ -1,5 +1,5 @@
 import templateDate from './date';
-import communities from '../data/communities';
+import communities from '../data/editorial-communities';
 import { Review } from '../types/review';
 
 export default (review: Review, idNamespace: string): string => (

@@ -1,11 +1,14 @@
 import { Middleware, RouterContext } from '@koa/router';
 import { NotFound } from 'http-errors';
 import { Next } from 'koa';
-import { FetchCommunityArticles } from '../api/fetch-community-articles';
+import { FetchEditorialCommunityArticles } from '../api/fetch-editorial-community-articles';
 import templateListItems from '../templates/list-items';
-import { EditorialCommunity } from '../types/community';
+import { EditorialCommunity } from '../types/editorial-community';
 
-export default (communities: Array<EditorialCommunity>, fetchCommunityArticles: FetchCommunityArticles): Middleware => (
+export default (
+  communities: Array<EditorialCommunity>,
+  fetchCommunityArticles: FetchEditorialCommunityArticles,
+): Middleware => (
   async ({ params, response }: RouterContext, next: Next): Promise<void> => {
     const communityId = params.id;
     const community = communities.find((each) => each.id === communityId);

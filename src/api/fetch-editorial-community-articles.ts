@@ -1,6 +1,6 @@
-import communities from '../data/communities';
 import Doi from '../data/doi';
-import { EditorialCommunityArticle } from '../types/community-article';
+import communities from '../data/editorial-communities';
+import { EditorialCommunityArticle } from '../types/editorial-community-article';
 
 export type FetchEditorialCommunityArticles = (communityId: string) => Promise<Array<EditorialCommunityArticle>>;
 

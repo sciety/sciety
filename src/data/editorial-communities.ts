@@ -1,4 +1,4 @@
-import { EditorialCommunity } from '../types/community';
+import { EditorialCommunity } from '../types/editorial-community';
 
 const communities: Array<EditorialCommunity> = [
   {
