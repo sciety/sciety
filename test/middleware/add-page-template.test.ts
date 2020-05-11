@@ -1,4 +1,5 @@
 import { assert, asyncProperty, lorem } from 'fast-check';
+import { OK } from 'http-status-codes';
 import { ExtendableContext, Middleware, Response } from 'koa';
 import addPageTemplate from '../../src/middleware/add-page-template';
 import runMiddleware from '../middleware';
@@ -10,6 +11,12 @@ const makeRequest = async (next?: Middleware): Promise<Response> => {
 };
 
 describe('add-page-template middleware', (): void => {
+  it('returns a successful response', async (): Promise<void> => {
+    const response = await makeRequest();
+
+    expect(response.status).toBe(OK);
+  });
+
   it('returns HTML', async (): Promise<void> => {
     const response = await makeRequest();
 

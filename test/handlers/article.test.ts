@@ -6,24 +6,15 @@ import { article3 as article3Doi } from '../../src/data/article-dois';
 describe('article handler', (): void => {
   let response: Response;
 
-  describe('when the article exists', (): void => {
+  describe('when the article is from bioRxiv', (): void => {
     beforeEach(async () => {
       const doi = article3Doi;
       const { server } = createServer();
       response = await request(server).get(`/articles/${doi}`);
     });
 
-    it('returns a successful response', async (): Promise<void> => {
-      expect(response.status).toBe(OK);
-    });
-
-    it('is HTML', async (): Promise<void> => {
-      expect(response.type).toBe('text/html');
-      expect(response.charset).toBe('utf-8');
-    });
-
-    it('has an HTML5 body', async (): Promise<void> => {
-      expect(response.text).toStrictEqual(expect.stringMatching(/^<!doctype html>/i));
+    it('returns a page containing article metadata', async (): Promise<void> => {
+      expect(response.text).toStrictEqual(expect.stringContaining(article3Doi.toString()));
     });
   });
 
