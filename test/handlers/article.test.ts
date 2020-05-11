@@ -1,4 +1,4 @@
-import { NOT_FOUND, OK } from 'http-status-codes';
+import { NOT_FOUND } from 'http-status-codes';
 import request, { Response } from 'supertest';
 import createServer from './server';
 import { article3 as article3Doi } from '../../src/data/article-dois';
