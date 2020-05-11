@@ -1,6 +1,6 @@
-import { Community } from '../types/community';
+import { EditorialCommunity } from '../types/community';
 
-const communities: Array<Community> = [
+const communities: Array<EditorialCommunity> = [
   {
     id: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
     name: 'eLife',

@@ -3,9 +3,9 @@ import { NotFound } from 'http-errors';
 import { Next } from 'koa';
 import { FetchCommunityArticles } from '../api/fetch-community-articles';
 import templateListItems from '../templates/list-items';
-import { Community } from '../types/community';
+import { EditorialCommunity } from '../types/community';
 
-export default (communities: Array<Community>, fetchCommunityArticles: FetchCommunityArticles): Middleware => (
+export default (communities: Array<EditorialCommunity>, fetchCommunityArticles: FetchCommunityArticles): Middleware => (
   async ({ params, response }: RouterContext, next: Next): Promise<void> => {
     const communityId = params.id;
     const community = communities.find((each) => each.id === communityId);
