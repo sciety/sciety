@@ -6,20 +6,20 @@ import templateListItems from '../templates/list-items';
 import { EditorialCommunity } from '../types/editorial-community';
 
 export default (
-  communities: Array<EditorialCommunity>,
+  editorialCommunities: Array<EditorialCommunity>,
   fetchEditorialCommunityReviewedArticles: FetchEditorialCommunityReviewedArticles,
 ): Middleware => (
   async ({ params, response }: RouterContext, next: Next): Promise<void> => {
-    const communityId = params.id;
-    const community = communities.find((each) => each.id === communityId);
+    const editorialCommunityId = params.id;
+    const editorialCommunity = editorialCommunities.find((each) => each.id === editorialCommunityId);
 
-    if (!community) {
-      throw new NotFound(`${communityId} not found`);
+    if (!editorialCommunity) {
+      throw new NotFound(`${editorialCommunityId} not found`);
     }
 
-    const communityArticles = await fetchEditorialCommunityReviewedArticles(community.id);
-    const communityArticleTeasers = templateListItems(communityArticles.map((communityArticle) => (
-      `<a href="/articles/${communityArticle.doi}">${communityArticle.title}</a>`
+    const editorialCommunityReviewedArticles = await fetchEditorialCommunityReviewedArticles(editorialCommunity.id);
+    const teasers = templateListItems(editorialCommunityReviewedArticles.map((editorialCommunityReviewedArticle) => (
+      `<a href="/articles/${editorialCommunityReviewedArticle.doi}">${editorialCommunityReviewedArticle.title}</a>`
     )));
     response.type = 'html';
     response.body = `
@@ -27,7 +27,7 @@ export default (
   <header class="content-header">
 
     <h1>
-      ${community.name}
+      ${editorialCommunity.name}
     </h1>
 
   </header>
@@ -35,7 +35,7 @@ export default (
   <section>
 
     <p>
-      ${community.description}
+      ${editorialCommunity.description}
     </p>
 
   </section>
@@ -47,7 +47,7 @@ export default (
     </h2>
 
     <ol>
-      ${communityArticleTeasers}
+      ${teasers}
     </ol>
 
   </section>

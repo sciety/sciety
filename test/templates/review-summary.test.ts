@@ -42,6 +42,6 @@ describe('review-summary template', (): void => {
   it('renders ARIA attributes and ids', () => {
     const actual = templateReviewSummary(review, idNamespace);
 
-    expect(actual).toStrictEqual(expect.stringContaining('aria-labelledby="review-42-read-more review-42-community"'));
+    expect(actual).toStrictEqual(expect.stringContaining('aria-labelledby="review-42-read-more review-42-editorial-community"'));
   });
 });

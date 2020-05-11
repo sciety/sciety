@@ -3,8 +3,8 @@ import bodyParser from 'koa-bodyparser';
 import { FetchArticle } from './api/fetch-article';
 import { FetchEditorialCommunityReviewedArticles } from './api/fetch-editorial-community-reviewed-articles';
 import { FetchReview } from './api/fetch-review';
-import communities from './data/editorial-communities';
-import community from './handlers/editorial-community';
+import editorialCommunities from './data/editorial-communities';
+import editorialCommunity from './handlers/editorial-community';
 import index from './handlers/index';
 import ping from './handlers/ping';
 import reviews from './handlers/reviews';
@@ -50,7 +50,7 @@ export default (services: RouterServices): Router => {
   router.get('/editorial-communities/:id',
     initializePrcContext(),
     addPageTemplate(),
-    community(communities, services.fetchEditorialCommunityReviewedArticles));
+    editorialCommunity(editorialCommunities, services.fetchEditorialCommunityReviewedArticles));
 
   router.post('/reviews',
     initializePrcContext(),
