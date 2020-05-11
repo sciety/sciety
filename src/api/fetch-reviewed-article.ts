@@ -15,7 +15,7 @@ FetchReviewedArticle => (
   async (doi: Doi): Promise<ReviewedArticle> => {
     const [article, reviews] = await Promise.all([
       fetchArticle(doi),
-      Promise.all(reviewReferenceRepository.findReviewDoisForArticleDoi(doi).map(fetchReview)),
+      Promise.all(reviewReferenceRepository.findReviewDoisForArticleVersionDoi(doi).map(fetchReview)),
     ]);
 
     return {

@@ -2,23 +2,23 @@ import Doi from './doi';
 import ReviewReferenceRepository from '../types/review-reference-repository';
 
 interface ReviewReference {
-  articleDoi: Doi;
+  articleVersionDoi: Doi;
   reviewDoi: Doi;
 }
 
 export default (): ReviewReferenceRepository => {
   const reviewReferences: Array<ReviewReference> = [];
   const reviewReferenceRepository: ReviewReferenceRepository = {
-    add: (articleDoi: Doi, reviewDoi: Doi) => {
+    add: (articleVersionDoi: Doi, reviewDoi: Doi) => {
       reviewReferences.push({
-        articleDoi,
+        articleVersionDoi,
         reviewDoi,
       });
     },
 
-    findReviewDoisForArticleDoi: (articleDoi) => (
+    findReviewDoisForArticleVersionDoi: (articleVersionDoi) => (
       reviewReferences
-        .filter((reference) => reference.articleDoi.value === articleDoi.value)
+        .filter((reference) => reference.articleVersionDoi.value === articleVersionDoi.value)
         .map((reference) => reference.reviewDoi)
     ),
   };

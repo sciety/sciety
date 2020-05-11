@@ -11,12 +11,12 @@ const reviewDoi = new Doi('10.5555/987654321');
 describe('fetch-reviewed-article', (): void => {
   const reviewReferenceRepository: ReviewReferenceRepository = {
     add: shouldNotBeCalled,
-    findReviewDoisForArticleDoi: () => [reviewDoi],
+    findReviewDoisForArticleVersionDoi: () => [reviewDoi],
   };
 
   const emptyReviewReferenceRepository: ReviewReferenceRepository = {
     add: shouldNotBeCalled,
-    findReviewDoisForArticleDoi: () => [],
+    findReviewDoisForArticleVersionDoi: () => [],
   };
 
   const fetchArticle: FetchArticle = async (doi) => ({

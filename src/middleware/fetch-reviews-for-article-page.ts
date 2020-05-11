@@ -16,7 +16,7 @@ export default (
   async (ctx: RouterContext, next: Next): Promise<void> => {
     const doi: Doi = ctx.prc.articleDoi;
 
-    ctx.prc.reviews = Promise.all(reviewReferenceRepository.findReviewDoisForArticleDoi(doi).map(fetchReview))
+    ctx.prc.reviews = Promise.all(reviewReferenceRepository.findReviewDoisForArticleVersionDoi(doi).map(fetchReview))
       .catch((error) => {
         log(`Failed to load reviews for article ${doi}: (${error})`);
 
