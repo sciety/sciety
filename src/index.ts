@@ -1,7 +1,7 @@
 import { createTerminus, TerminusOptions } from '@godaddy/terminus';
 import createFetchArticle from './api/fetch-article';
 import createFetchDataset from './api/fetch-dataset';
-import createFetchCommunityArticles from './api/fetch-editorial-community-articles';
+import createFetchCommunityArticles from './api/fetch-editorial-community-reviewed-articles';
 import createFetchReview from './api/fetch-review';
 import { article3, article4 } from './data/article-dois';
 import { article3Review1, article4Review1 } from './data/review-dois';
