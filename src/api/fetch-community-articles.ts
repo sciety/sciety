@@ -2,9 +2,9 @@ import communities from '../data/communities';
 import Doi from '../data/doi';
 import { EditorialCommunityArticle } from '../types/community-article';
 
-export type FetchCommunityArticles = (communityId: string) => Promise<Array<EditorialCommunityArticle>>;
+export type FetchEditorialCommunityArticles = (communityId: string) => Promise<Array<EditorialCommunityArticle>>;
 
-export default (): FetchCommunityArticles => {
+export default (): FetchEditorialCommunityArticles => {
   const communityArticles: Array<EditorialCommunityArticle> = [
     {
       doi: new Doi('10.1101/833392'),
