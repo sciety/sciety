@@ -1,8 +1,14 @@
 import templateDate from './date';
+import Doi from '../data/doi';
 import editorialCommunities from '../data/editorial-communities';
-import { Review } from '../types/review';
 
-export default (review: Review, idNamespace: string): string => (
+export interface ReviewSummary {
+  publicationDate: Date;
+  summary: string;
+  doi: Doi;
+}
+
+export default (review: ReviewSummary, idNamespace: string): string => (
   `<article class="review-summary">
     <h3 class="review-summary__title">
       Reviewed by <a href="/editorial-communities/${editorialCommunities[0].id}" id="${idNamespace}-editorial-community">${editorialCommunities[0].name}</a>
