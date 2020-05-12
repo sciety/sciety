@@ -1,8 +1,8 @@
 import { OK } from 'http-status-codes';
 import request, { Response } from 'supertest';
-import createServer from './server';
+import createServer from '../handlers/server';
 
-describe('index handler', (): void => {
+describe('render-home-page handler', (): void => {
   let response: Response;
 
   beforeEach(async () => {

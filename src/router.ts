@@ -5,9 +5,9 @@ import { FetchEditorialCommunityReviewedArticles } from './api/fetch-editorial-c
 import { FetchReview } from './api/fetch-review';
 import editorialCommunities from './data/editorial-communities';
 import editorialCommunity from './handlers/editorial-community';
-import index from './handlers/index';
 import ping from './handlers/ping';
 import reviews from './handlers/reviews';
+import renderHomePage from './home-page/render-home-page';
 import addPageTemplate from './middleware/add-page-template';
 import convertArticleAndReviewsToArticlePage from './middleware/convert-article-and-reviews-to-article-page';
 import fetchArticleForArticlePage from './middleware/fetch-article-for-article-page';
@@ -31,7 +31,7 @@ export default (services: RouterServices): Router => {
     ping());
 
   router.get('/',
-    index(),
+    renderHomePage(),
     addPageTemplate());
 
   router.get('/articles/:doi(.+)',
