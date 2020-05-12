@@ -1,5 +1,6 @@
 import { Middleware, RouterContext } from '@koa/router';
 import { Next } from 'koa';
+import editorialCommunities from '../data/editorial-communities';
 import { ArticlePage } from '../templates/article-page';
 
 export default (): Middleware => (
@@ -11,7 +12,11 @@ export default (): Middleware => (
 
     ctx.state.articlePage = {
       article,
-      reviews,
+      reviews: reviews.map((review: object) => ({
+        ...review,
+        editorialCommunityId: editorialCommunities[0].id,
+        editorialCommunityName: editorialCommunities[0].name,
+      })),
     } as ArticlePage;
 
     await next();
