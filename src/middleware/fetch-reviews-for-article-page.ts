@@ -16,7 +16,15 @@ export default (
   async (ctx: RouterContext, next: Next): Promise<void> => {
     const doi: Doi = ctx.state.articleDoi;
 
-    ctx.state.reviews = Promise.all(reviewReferenceRepository.findReviewDoisForArticleVersionDoi(doi).map(fetchReview))
+    ctx.state.reviews = Promise.all(reviewReferenceRepository.findReviewsForArticleVersionDoi(doi)
+      .map(async (review) => {
+        const fetchedReview = await fetchReview(review.reviewDoi);
+
+        return {
+          ...review,
+          ...fetchedReview,
+        };
+      }))
       .catch((error) => {
         log(`Failed to load reviews for article ${doi}: (${error})`);
 
@@ -26,7 +34,6 @@ export default (
 
         throw new NotFound(`${doi} not found`);
       });
-
 
     await next();
   }

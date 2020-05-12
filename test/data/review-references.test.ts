@@ -13,7 +13,7 @@ describe('review-reference-repository', () => {
 
   describe('empty repository', () => {
     it('has no review references for any article version', () => {
-      expect(reviewReferenceRepository.findReviewDoisForArticleVersionDoi(article3)).toHaveLength(0);
+      expect(reviewReferenceRepository.findReviewsForArticleVersionDoi(article3)).toHaveLength(0);
     });
   });
 
@@ -23,7 +23,7 @@ describe('review-reference-repository', () => {
     });
 
     it('finds the review references that were added', () => {
-      expect(reviewReferenceRepository.findReviewDoisForArticleVersionDoi(new Doi('10.1234/5679'))).toHaveLength(1);
+      expect(reviewReferenceRepository.findReviewsForArticleVersionDoi(new Doi('10.1234/5679'))).toHaveLength(1);
     });
   });
 });

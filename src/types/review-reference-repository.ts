@@ -1,7 +1,13 @@
 import Doi from '../data/doi';
 
+interface Review {
+  reviewDoi: Doi;
+  editorialCommunityId: string;
+  editorialCommunityName: string;
+}
+
 export default interface ReviewReferenceRepository {
   add(articleVersionDoi: Doi, reviewDoi: Doi): void;
 
-  findReviewDoisForArticleVersionDoi(articleVersionDoi: Doi): Array<Doi>;
+  findReviewsForArticleVersionDoi(articleVersionDoi: Doi): Array<Review>;
 }

@@ -24,9 +24,10 @@ describe('reviews handler', (): void => {
     });
 
     it('adds the review reference to the repository', () => {
-      const foundReviews = reviewReferenceRepository.findReviewDoisForArticleVersionDoi(articleVersionDoi);
+      const foundReviews = reviewReferenceRepository.findReviewsForArticleVersionDoi(articleVersionDoi);
+      const foundReviewDois = foundReviews.map((review) => review.reviewDoi);
 
-      expect(foundReviews).toContainEqual(reviewDoi);
+      expect(foundReviewDois).toContainEqual(reviewDoi);
     });
   });
 

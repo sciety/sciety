@@ -1,9 +1,12 @@
 import Doi from './doi';
+import editorialCommunities from './editorial-communities';
 import ReviewReferenceRepository from '../types/review-reference-repository';
 
 interface ReviewReference {
   articleVersionDoi: Doi;
   reviewDoi: Doi;
+  editorialCommunityId: string;
+  editorialCommunityName: string;
 }
 
 export default (): ReviewReferenceRepository => {
@@ -13,13 +16,14 @@ export default (): ReviewReferenceRepository => {
       reviewReferences.push({
         articleVersionDoi,
         reviewDoi,
+        editorialCommunityId: editorialCommunities[0].id,
+        editorialCommunityName: editorialCommunities[0].name,
       });
     },
 
-    findReviewDoisForArticleVersionDoi: (articleVersionDoi) => (
+    findReviewsForArticleVersionDoi: (articleVersionDoi) => (
       reviewReferences
         .filter((reference) => reference.articleVersionDoi.value === articleVersionDoi.value)
-        .map((reference) => reference.reviewDoi)
     ),
   };
   return reviewReferenceRepository;
