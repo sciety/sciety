@@ -34,8 +34,8 @@ export default (services: RouterServices): Router => {
 
   router.get('/',
     initializePrcContext(),
-    addPageTemplate(),
-    index());
+    index(),
+    addPageTemplate());
 
   router.get('/articles/:doi(.+)',
     initializePrcContext(),
@@ -49,8 +49,8 @@ export default (services: RouterServices): Router => {
 
   router.get('/editorial-communities/:id',
     initializePrcContext(),
-    addPageTemplate(),
-    editorialCommunity(editorialCommunities, services.fetchEditorialCommunityReviewedArticles));
+    editorialCommunity(editorialCommunities, services.fetchEditorialCommunityReviewedArticles),
+    addPageTemplate());
 
   router.post('/reviews',
     initializePrcContext(),
