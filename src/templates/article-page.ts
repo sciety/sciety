@@ -2,8 +2,8 @@ import templateArticlePageHeader from './article-page-header';
 import templateListItems from './list-items';
 import templateReviewSidebarItem from './review-sidebar-item';
 import templateReviewSummary from './review-summary';
+import addReviewForm from '../article-page/add-review-form';
 import Doi from '../data/doi';
-import { article3Review1 } from '../data/review-dois';
 
 interface Article {
   title: string;
@@ -61,27 +61,9 @@ export default ({ article, reviews }: ArticlePage): string => {
         ${templateListItems(reviewSidebarItems)}
       </ol>
 
-      <h2>
-        Add a review
-      </h2>
+      <h2> Add a review </h2>
+      ${addReviewForm(article)}
 
-      <form method="post" action="/reviews" class="compact-form">
-
-        <input type="hidden" name="articleversiondoi" value="${article.doi}">
-
-        <label for="reviewdoi">DOI of the review</label>
-
-        <div class="compact-form__row">
-
-          <input type="text" name="reviewdoi" id="reviewdoi" placeholder="${article3Review1}" class="compact-form__article-doi" required>
-
-          <button type="submit" class="compact-form__submit">
-            <span class="visually-hidden">Add review</span>
-          </button>
-
-        </div>
-
-      </form>
     </aside>
 
   </article>`;
