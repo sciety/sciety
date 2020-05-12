@@ -1,4 +1,5 @@
 import Doi from '../data/doi';
+import editorialCommunities from '../data/editorial-communities';
 import { article3Review1 } from '../data/review-dois';
 
 interface Article {
@@ -8,6 +9,7 @@ interface Article {
 export default (article: Article): string => (
   `<form method="post" action="/reviews" class="compact-form">
     <input type="hidden" name="articleversiondoi" value="${article.doi}">
+    <input type="hidden" name="editorialcommunityid" value="${editorialCommunities[1].id}">
     <label for="reviewdoi">DOI of the review</label>
     <div class="compact-form__row">
       <input
