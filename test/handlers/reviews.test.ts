@@ -15,7 +15,11 @@ describe('reviews handler', (): void => {
       response = await request(server)
         .post('/reviews')
         .type('form')
-        .send({ articleversiondoi: articleVersionDoi.value, reviewdoi: `http://doi.org/${reviewDoi}` });
+        .send({
+          articleversiondoi: articleVersionDoi.value,
+          editorialcommunityid: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
+          reviewdoi: `http://doi.org/${reviewDoi}`,
+        });
     });
 
     it('returns a created response', () => {
@@ -37,7 +41,11 @@ describe('reviews handler', (): void => {
     const response = await request(server)
       .post('/reviews')
       .type('form')
-      .send({ articleversiondoi: articleVersionDoi.value, reviewdoi: invalidInput });
+      .send({
+        articleversiondoi: articleVersionDoi.value,
+        editorialcommunityid: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
+        reviewdoi: invalidInput,
+      });
 
     expect(response.status).toBe(BAD_REQUEST);
     expect(response.text).toBe('Error: Not a possible DOI.');

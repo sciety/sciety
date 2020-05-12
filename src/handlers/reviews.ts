@@ -18,19 +18,27 @@ const validateDoi = (input: string): Doi => {
 
 export default (reviewReferenceRepository: ReviewReferenceRepository): Middleware => (
   async ({ request, response }: RouterContext, next: Next): Promise<void> => {
-    const { articleversiondoi, reviewdoi } = request.body;
+    const {
+      articleversiondoi,
+      editorialcommunityid,
+      reviewdoi,
+    } = request.body;
 
     const reviewDoi = validateDoi(reviewdoi);
-
     if (!(reviewDoi.hasPrefix(zenodoPrefix))) {
       throw new BadRequest('Not a Zenodo DOI.');
+    }
+
+    const editorialCommunity = editorialCommunities.find((each) => each.id === editorialcommunityid);
+    if (!editorialCommunity) {
+      throw new BadRequest(`${editorialcommunityid} not found`);
     }
 
     reviewReferenceRepository.add(
       new Doi(articleversiondoi),
       reviewDoi,
-      editorialCommunities[0].id,
-      editorialCommunities[0].name,
+      editorialCommunity.id,
+      editorialCommunity.name,
     );
 
     response.redirect(`/articles/${articleversiondoi}`);
