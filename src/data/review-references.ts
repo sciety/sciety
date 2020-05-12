@@ -1,5 +1,4 @@
 import Doi from './doi';
-import editorialCommunities from './editorial-communities';
 import ReviewReferenceRepository from '../types/review-reference-repository';
 
 interface ReviewReference {
@@ -12,12 +11,12 @@ interface ReviewReference {
 export default (): ReviewReferenceRepository => {
   const reviewReferences: Array<ReviewReference> = [];
   const reviewReferenceRepository: ReviewReferenceRepository = {
-    add: (articleVersionDoi: Doi, reviewDoi: Doi) => {
+    add: (articleVersionDoi: Doi, reviewDoi: Doi, editorialCommunityId: string, editorialCommunityName: string) => {
       reviewReferences.push({
         articleVersionDoi,
         reviewDoi,
-        editorialCommunityId: editorialCommunities[0].id,
-        editorialCommunityName: editorialCommunities[0].name,
+        editorialCommunityId,
+        editorialCommunityName,
       });
     },
 

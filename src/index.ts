@@ -4,6 +4,7 @@ import createFetchDataset from './api/fetch-dataset';
 import createFetchEditorialCommunityReviewedArticles from './api/fetch-editorial-community-reviewed-articles';
 import createFetchReview from './api/fetch-review';
 import { article3, article4 } from './data/article-dois';
+import editorialCommunities from './data/editorial-communities';
 import { article3Review1, article4Review1 } from './data/review-dois';
 import createReviewReferenceRepository from './data/review-references';
 import createLogger from './logger';
@@ -15,8 +16,8 @@ const log = createLogger();
 log('Starting server');
 
 const reviewReferenceRepository = createReviewReferenceRepository();
-reviewReferenceRepository.add(article3, article3Review1);
-reviewReferenceRepository.add(article4, article4Review1);
+reviewReferenceRepository.add(article3, article3Review1, editorialCommunities[0].id, editorialCommunities[0].name);
+reviewReferenceRepository.add(article4, article4Review1, editorialCommunities[1].id, editorialCommunities[1].name);
 
 const fetchDataset = createFetchDataset();
 const fetchArticle = createFetchArticle(fetchDataset);

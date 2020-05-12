@@ -7,7 +7,7 @@ interface Review {
 }
 
 export default interface ReviewReferenceRepository {
-  add(articleVersionDoi: Doi, reviewDoi: Doi): void;
+  add(articleVersionDoi: Doi, reviewDoi: Doi, editorialCommunityId: string, editorialCommunityName: string): void;
 
   findReviewsForArticleVersionDoi(articleVersionDoi: Doi): Array<Review>;
 }

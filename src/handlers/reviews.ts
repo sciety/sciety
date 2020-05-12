@@ -3,6 +3,7 @@ import { Middleware, RouterContext } from '@koa/router';
 import { BadRequest } from 'http-errors';
 import { Next } from 'koa';
 import Doi from '../data/doi';
+import editorialCommunities from '../data/editorial-communities';
 import ReviewReferenceRepository from '../types/review-reference-repository';
 
 const zenodoPrefix = '10.5281';
@@ -25,7 +26,12 @@ export default (reviewReferenceRepository: ReviewReferenceRepository): Middlewar
       throw new BadRequest('Not a Zenodo DOI.');
     }
 
-    reviewReferenceRepository.add(new Doi(articleversiondoi), reviewDoi);
+    reviewReferenceRepository.add(
+      new Doi(articleversiondoi),
+      reviewDoi,
+      editorialCommunities[0].id,
+      editorialCommunities[0].name,
+    );
 
     response.redirect(`/articles/${articleversiondoi}`);
     response.status = SEE_OTHER;
