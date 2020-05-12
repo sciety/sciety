@@ -3,22 +3,21 @@ import { BadRequest } from 'http-errors';
 import { Next } from 'koa';
 import { article3 } from '../data/article-dois';
 import Doi from '../data/doi';
+import editorialCommunities from '../data/editorial-communities';
+import templateListItems from '../templates/list-items';
 
 export default (): Middleware => (
   async ({ request, response }: RouterContext, next: Next): Promise<void> => {
+    const editorialCommunityLinks = editorialCommunities.map((ec) => `<a href="/editorial-communities/${ec.id}">${ec.name}</a>`);
     if (request.query.articledoi) {
       let doi: Doi;
-
       try {
         doi = new Doi(request.query.articledoi);
       } catch (error) {
         throw new BadRequest('Not a valid DOI.');
       }
-
       response.redirect(`/articles/${doi}`);
-
       await next();
-
       return;
     }
 
@@ -56,6 +55,13 @@ export default (): Middleware => (
     </fieldset>
 
   </form>
+
+  <section>
+    <h2> Editorial communities </h2>
+    <ol>
+      ${templateListItems(editorialCommunityLinks)}
+    </ol>
+  </section>
 
 </main>`;
 

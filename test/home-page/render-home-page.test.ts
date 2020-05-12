@@ -1,5 +1,6 @@
 import { OK } from 'http-status-codes';
 import request, { Response } from 'supertest';
+import editorialCommunities from '../../src/data/editorial-communities';
 import createServer from '../handlers/server';
 
 describe('render-home-page handler', (): void => {
@@ -21,5 +22,11 @@ describe('render-home-page handler', (): void => {
 
   it('has an HTML5 body', async (): Promise<void> => {
     expect(response.text).toStrictEqual(expect.stringMatching(/^<!doctype html>/i));
+  });
+
+  it('lists all of the hard-coded editorial communities', async (): Promise<void> => {
+    editorialCommunities.forEach((ec) => {
+      expect(response.text).toContain(ec.name);
+    });
   });
 });
