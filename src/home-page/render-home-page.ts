@@ -21,9 +21,7 @@ export default (): Middleware => (
       return;
     }
 
-    response.body = `<main>
-
-  <header class="content-header">
+    response.body = `<header class="content-header">
 
     <h1>
       PRC
@@ -61,9 +59,7 @@ export default (): Middleware => (
     <ol>
       ${templateListItems(editorialCommunityLinks)}
     </ol>
-  </section>
-
-</main>`;
+  </section>`;
 
     await next();
   }
