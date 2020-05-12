@@ -67,7 +67,7 @@ export default ({ article, reviews }: ArticlePage): string => {
 
       <form method="post" action="/reviews" class="compact-form">
 
-        <input type="hidden" name="articledoi" value="${article.doi}">
+        <input type="hidden" name="articleversiondoi" value="${article.doi}">
 
         <label for="reviewdoi">DOI of the review</label>
 
