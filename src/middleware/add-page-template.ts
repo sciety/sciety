@@ -27,6 +27,10 @@ export default (): Middleware => (
         <a href="/">Home</a>
       </li>
 
+      <li>
+        <a href="https://docs.google.com/document/d/1sKjhRy55kLaNv3a4vK1PsEPTFfivKbJRvJPwNx0HOS4/edit?usp=sharing">About</a>
+      </li>
+
     </ul>
 
   </nav>
