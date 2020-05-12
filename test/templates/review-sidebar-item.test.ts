@@ -3,10 +3,9 @@ import templateReviewSidebarItem from '../../src/templates/review-sidebar-item';
 
 describe('review-sidebar-item template', (): void => {
   const review = {
-    author: 'John Doe',
     publicationDate: new Date('2010-02-01'),
-    summary: 'Pretty good.',
     doi: new Doi('10.5281/zenodo.3678326'),
+    editorialCommunityName: 'eLife',
   };
 
   it('renders inside an article tag', () => {
