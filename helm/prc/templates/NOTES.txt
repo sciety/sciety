@@ -2,3 +2,8 @@
 
 export PRC_HOST=$(kubectl get --namespace {{ .Release.Namespace }} service {{ .Release.Name }}--frontend -o jsonpath='{.metadata.annotations.external-dns\.alpha\.kubernetes\.io/hostname}')
 echo "http://${PRC_HOST}"
+
+2. Read the logs at:
+
+export PRC_APP_POD=$(kubectl get --namespace {{ .Release.Namespace }} pods --selector app.kubernetes.io/instance=prc--prod --output jsonpath='{.items[*].metadata.name}')
+kubectl exec -it $PRC_APP_POD -- sh -c 'tail /var/log/app/*.txt'
