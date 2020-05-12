@@ -6,10 +6,16 @@ interface Article {
   doi: Doi;
 }
 
-export default (article: Article): string => (
-  `<form method="post" action="/reviews" class="compact-form">
+export default (article: Article): string => {
+  const options = editorialCommunities.map((ec) => `<option value="${ec.id}">${ec.name}</option>`);
+  return `<form method="post" action="/reviews" class="compact-form">
     <input type="hidden" name="articleversiondoi" value="${article.doi}">
-    <input type="hidden" name="editorialcommunityid" value="${editorialCommunities[1].id}">
+    <label for="editorialcommunityid">Select your editorial community</label>
+    <select
+      name="editorialcommunityid"
+      id="editorialcommunityid">
+      ${options}
+    </select>
     <label for="reviewdoi">DOI of the review</label>
     <div class="compact-form__row">
       <input
@@ -23,5 +29,5 @@ export default (article: Article): string => (
         <span class="visually-hidden">Add review</span>
       </button>
     </div>
-  </form>`
-);
+  </form>`;
+};
