@@ -17,6 +17,8 @@ interface Review {
   publicationDate: Date;
   summary: string;
   doi: Doi;
+  editorialCommunityId: string;
+  editorialCommunityName: string;
 }
 
 export interface ArticlePage {

@@ -6,6 +6,8 @@ describe('review-summary template', (): void => {
     publicationDate: new Date('2010-02-01'),
     summary: 'Pretty good.',
     doi: new Doi('10.5281/zenodo.3678326'),
+    editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
+    editorialCommunityName: 'eLife',
   };
   const idNamespace = 'review-42';
 
