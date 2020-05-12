@@ -10,9 +10,9 @@ const log = createLogger('middleware:fetch-article-for-article-page');
 
 export default (fetchArticle: FetchArticle): Middleware => (
   async (ctx: RouterContext, next: Next): Promise<void> => {
-    const doi: Doi = ctx.prc.articleDoi;
+    const doi: Doi = ctx.state.articleDoi;
 
-    ctx.prc.article = fetchArticle(doi)
+    ctx.state.article = fetchArticle(doi)
       .catch((error) => {
         log(`Failed to load article ${doi}: (${error})`);
 

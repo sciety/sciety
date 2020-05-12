@@ -12,7 +12,6 @@ import addPageTemplate from './middleware/add-page-template';
 import convertArticleAndReviewsToArticlePage from './middleware/convert-article-and-reviews-to-article-page';
 import fetchArticleForArticlePage from './middleware/fetch-article-for-article-page';
 import fetchReviewsForArticlePage from './middleware/fetch-reviews-for-article-page';
-import initializePrcContext from './middleware/initialize-prc-context';
 import renderArticlePage from './middleware/render-article-page';
 import validateBiorxivDoi from './middleware/validate-biorxiv-doi';
 import validateDoiParam from './middleware/validate-doi-param';
@@ -29,16 +28,13 @@ export default (services: RouterServices): Router => {
   const router = new Router();
 
   router.get('/ping',
-    initializePrcContext(),
     ping());
 
   router.get('/',
-    initializePrcContext(),
     index(),
     addPageTemplate());
 
   router.get('/articles/:doi(.+)',
-    initializePrcContext(),
     validateDoiParam(),
     validateBiorxivDoi(),
     fetchArticleForArticlePage(services.fetchArticle),
@@ -48,12 +44,10 @@ export default (services: RouterServices): Router => {
     addPageTemplate());
 
   router.get('/editorial-communities/:id',
-    initializePrcContext(),
     editorialCommunity(editorialCommunities, services.fetchEditorialCommunityReviewedArticles),
     addPageTemplate());
 
   router.post('/reviews',
-    initializePrcContext(),
     bodyParser({ enableTypes: ['form'] }),
     reviews(services.reviewReferenceRepository));
 

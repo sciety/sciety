@@ -9,7 +9,7 @@ const biorxivPrefix = '10.1101';
 
 export default (): Middleware => (
   async (ctx: RouterContext, next: Next): Promise<void> => {
-    const { articleDoi } = ctx.prc;
+    const { articleDoi } = ctx.state;
 
     if (!(articleDoi.hasPrefix(biorxivPrefix))) {
       log(`Article ${articleDoi} is not from bioRxiv`);

@@ -14,9 +14,9 @@ export default (
   fetchReview: FetchReview,
 ): Middleware => (
   async (ctx: RouterContext, next: Next): Promise<void> => {
-    const doi: Doi = ctx.prc.articleDoi;
+    const doi: Doi = ctx.state.articleDoi;
 
-    ctx.prc.reviews = Promise.all(reviewReferenceRepository.findReviewDoisForArticleVersionDoi(doi).map(fetchReview))
+    ctx.state.reviews = Promise.all(reviewReferenceRepository.findReviewDoisForArticleVersionDoi(doi).map(fetchReview))
       .catch((error) => {
         log(`Failed to load reviews for article ${doi}: (${error})`);
 

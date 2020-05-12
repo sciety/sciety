@@ -9,7 +9,7 @@ const log = createLogger('middleware:validate-doi-param');
 export default (): Middleware => (
   async (ctx: RouterContext, next: Next): Promise<void> => {
     try {
-      ctx.prc.articleDoi = new Doi(ctx.params.doi || '');
+      ctx.state.articleDoi = new Doi(ctx.params.doi || '');
     } catch (error) {
       log(`Article ${ctx.params.doi} not found: (${error})`);
       throw new NotFound(`${ctx.params.doi} not found`);
