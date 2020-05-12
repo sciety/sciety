@@ -31,3 +31,7 @@ spec:
             httpGet:
               path: /
               port: http
+      volumes:
+        - name: app
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}--frontend
