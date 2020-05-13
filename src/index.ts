@@ -4,7 +4,7 @@ import createFetchDataset from './api/fetch-dataset';
 import createFetchEditorialCommunityReviewedArticles from './api/fetch-editorial-community-reviewed-articles';
 import createFetchReview from './api/fetch-review';
 import { article3, article4 } from './data/article-dois';
-import editorialCommunities from './data/editorial-communities';
+import editorialCommunities from './data/in-memory-editorial-communities';
 import createReviewReferenceRepository from './data/in-memory-review-references';
 import { article3Review1, article4Review1 } from './data/review-dois';
 import createLogger from './logger';

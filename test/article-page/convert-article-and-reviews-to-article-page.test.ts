@@ -1,6 +1,6 @@
 import { Context, Middleware, Response } from 'koa';
 import convertArticleAndReviewsToArticlePage from '../../src/article-page/convert-article-and-reviews-to-article-page';
-import editorialCommunities from '../../src/data/editorial-communities';
+import editorialCommunities from '../../src/data/in-memory-editorial-communities';
 import createContext from '../context';
 import runMiddleware from '../middleware';
 

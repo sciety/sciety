@@ -1,5 +1,5 @@
 import Doi from '../data/doi';
-import editorialCommunities from '../data/editorial-communities';
+import editorialCommunities from '../data/in-memory-editorial-communities';
 import { article3Review1 } from '../data/review-dois';
 
 interface Article {

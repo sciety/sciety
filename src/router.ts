@@ -5,7 +5,7 @@ import { FetchEditorialCommunityReviewedArticles } from './api/fetch-editorial-c
 import { FetchReview } from './api/fetch-review';
 import convertArticleAndReviewsToArticlePage from './article-page/convert-article-and-reviews-to-article-page';
 import fetchReviewsForArticlePage from './article-page/fetch-reviews-for-article-page';
-import editorialCommunities from './data/editorial-communities';
+import editorialCommunities from './data/in-memory-editorial-communities';
 import editorialCommunity from './handlers/editorial-community';
 import ping from './handlers/ping';
 import reviews from './handlers/reviews';

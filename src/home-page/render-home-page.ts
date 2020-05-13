@@ -3,7 +3,7 @@ import { BadRequest } from 'http-errors';
 import { Next } from 'koa';
 import { article3 } from '../data/article-dois';
 import Doi from '../data/doi';
-import editorialCommunities from '../data/editorial-communities';
+import editorialCommunities from '../data/in-memory-editorial-communities';
 import templateListItems from '../templates/list-items';
 
 export default (): Middleware => (

@@ -1,6 +1,6 @@
 import { OK } from 'http-status-codes';
 import request, { Response } from 'supertest';
-import editorialCommunities from '../../src/data/editorial-communities';
+import editorialCommunities from '../../src/data/in-memory-editorial-communities';
 import createServer from '../handlers/server';
 
 describe('render-home-page handler', (): void => {

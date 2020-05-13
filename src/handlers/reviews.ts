@@ -3,7 +3,7 @@ import { Middleware, RouterContext } from '@koa/router';
 import { BadRequest } from 'http-errors';
 import { Next } from 'koa';
 import Doi from '../data/doi';
-import editorialCommunities from '../data/editorial-communities';
+import editorialCommunities from '../data/in-memory-editorial-communities';
 import ReviewReferenceRepository from '../types/review-reference-repository';
 
 const zenodoPrefix = '10.5281';

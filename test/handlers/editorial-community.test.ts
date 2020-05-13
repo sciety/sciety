@@ -1,7 +1,7 @@
 import { NOT_FOUND, OK } from 'http-status-codes';
 import request, { Response } from 'supertest';
 import createServer from './server';
-import editorialCommunities from '../../src/data/editorial-communities';
+import editorialCommunities from '../../src/data/in-memory-editorial-communities';
 
 describe('editorial-community handler', (): void => {
   let response: Response;

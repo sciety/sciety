@@ -8,7 +8,7 @@ import { FetchDataset } from '../../src/api/fetch-dataset';
 import createFetchEditorialCommunityReviewedArticles from '../../src/api/fetch-editorial-community-reviewed-articles';
 import createFetchReview from '../../src/api/fetch-review';
 import { article3, article4 } from '../../src/data/article-dois';
-import editorialCommunities from '../../src/data/editorial-communities';
+import editorialCommunities from '../../src/data/in-memory-editorial-communities';
 import createReviewReferenceRepository from '../../src/data/in-memory-review-references';
 import { article3Review1, article4Review1 } from '../../src/data/review-dois';
 import createRouter, { RouterServices } from '../../src/router';
