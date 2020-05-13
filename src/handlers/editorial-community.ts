@@ -13,7 +13,7 @@ export default (
     const editorialCommunityId = params.id;
     const editorialCommunity = editorialCommunities.lookup(editorialCommunityId);
 
-    if (!editorialCommunity) {
+    if (editorialCommunity.name === 'Unknown') {
       throw new NotFound(`${editorialCommunityId} not found`);
     }
 

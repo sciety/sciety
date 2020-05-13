@@ -1,4 +1,4 @@
-import EditorialCommunity from './editorial-community';
+import { EditorialCommunity } from './editorial-community';
 
 export default interface EditorialCommunityRepository {
   all(): Array<EditorialCommunity>;

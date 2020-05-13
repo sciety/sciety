@@ -19,7 +19,14 @@ export default (): EditorialCommunityRepository => {
 
   const result: EditorialCommunityRepository = {
     all: () => editorialCommunities,
-    lookup: (id) => editorialCommunities.find((ec) => ec.id === id),
+    lookup: (id) => {
+      const candidate = editorialCommunities.find((ec) => ec.id === id);
+      return candidate || {
+        id,
+        name: 'Unknown',
+        description: 'Unknown',
+      };
+    },
   };
   return result;
 };
