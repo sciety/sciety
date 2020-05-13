@@ -6,12 +6,11 @@ export default (): ReviewReferenceRepository => {
   const reviewReferences: Array<ReviewReference> = [];
 
   const reviewReferenceRepository: ReviewReferenceRepository = {
-    add: (articleVersionDoi: Doi, reviewDoi: Doi, editorialCommunityId: string, editorialCommunityName: string) => {
+    add: (articleVersionDoi: Doi, reviewDoi: Doi, editorialCommunityId: string) => {
       reviewReferences.push({
         articleVersionDoi,
         reviewDoi,
         editorialCommunityId,
-        editorialCommunityName,
       });
     },
 

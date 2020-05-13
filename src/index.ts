@@ -16,8 +16,8 @@ const log = createLogger();
 log('Starting server');
 
 const reviewReferenceRepository = createReviewReferenceRepository();
-reviewReferenceRepository.add(article3, article3Review1, editorialCommunities[0].id, editorialCommunities[0].name);
-reviewReferenceRepository.add(article4, article4Review1, editorialCommunities[1].id, editorialCommunities[1].name);
+reviewReferenceRepository.add(article3, article3Review1, editorialCommunities[0].id);
+reviewReferenceRepository.add(article4, article4Review1, editorialCommunities[1].id);
 
 const fetchDataset = createFetchDataset();
 const fetchArticle = createFetchArticle(fetchDataset);

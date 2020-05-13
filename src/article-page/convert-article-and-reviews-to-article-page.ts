@@ -8,7 +8,6 @@ interface Review {
   summary: string;
   doi: Doi;
   editorialCommunityId: string;
-  editorialCommunityName: string;
 }
 
 export default (editorialCommunities: Array<EditorialCommunity>): Middleware => (

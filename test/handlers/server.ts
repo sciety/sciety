@@ -22,8 +22,8 @@ export interface TestServer {
 
 export default (): TestServer => {
   const reviewReferenceRepository = createReviewReferenceRepository();
-  reviewReferenceRepository.add(article3, article3Review1, editorialCommunities[0].id, editorialCommunities[0].name);
-  reviewReferenceRepository.add(article4, article4Review1, editorialCommunities[1].id, editorialCommunities[1].name);
+  reviewReferenceRepository.add(article3, article3Review1, editorialCommunities[0].id);
+  reviewReferenceRepository.add(article4, article4Review1, editorialCommunities[1].id);
   const fetchCrossrefDataset: FetchDataset = async () => (
     clownface({ dataset: datasetFactory(), term: namedNode('http://example.com/some-crossref-node') })
       .addOut(dcterms.title, 'Article title')
