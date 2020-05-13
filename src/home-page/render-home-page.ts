@@ -4,11 +4,11 @@ import { Next } from 'koa';
 import { article3 } from '../data/article-dois';
 import Doi from '../data/doi';
 import templateListItems from '../templates/list-items';
-import { EditorialCommunity } from '../types/editorial-community';
+import EditorialCommunityRepository from '../types/editorial-community-repository';
 
-export default (editorialCommunities: Array<EditorialCommunity>): Middleware => (
+export default (editorialCommunities: EditorialCommunityRepository): Middleware => (
   async ({ request, response }: RouterContext, next: Next): Promise<void> => {
-    const editorialCommunityLinks = editorialCommunities.map((ec) => `<a href="/editorial-communities/${ec.id}">${ec.name}</a>`);
+    const editorialCommunityLinks = editorialCommunities.all().map((ec) => `<a href="/editorial-communities/${ec.id}">${ec.name}</a>`);
     if (request.query.articledoi) {
       let doi: Doi;
       try {

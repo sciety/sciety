@@ -1,15 +1,14 @@
 import { NOT_FOUND, OK } from 'http-status-codes';
 import request, { Response } from 'supertest';
 import createServer from './server';
-import editorialCommunities from '../../src/data/in-memory-editorial-communities';
 
 describe('editorial-community handler', (): void => {
   let response: Response;
 
   describe('when the editorial community exists', (): void => {
     beforeEach(async () => {
-      const { server } = createServer();
-      response = await request(server).get(`/editorial-communities/${editorialCommunities[0].id}`);
+      const { server, editorialCommunities } = createServer();
+      response = await request(server).get(`/editorial-communities/${editorialCommunities.all()[0].id}`);
     });
 
     it('returns a successful response', async (): Promise<void> => {
@@ -37,8 +36,8 @@ describe('editorial-community handler', (): void => {
 
   describe('when a different editorial community exists', (): void => {
     beforeEach(async () => {
-      const { server } = createServer();
-      response = await request(server).get(`/editorial-communities/${editorialCommunities[1].id}`);
+      const { server, editorialCommunities } = createServer();
+      response = await request(server).get(`/editorial-communities/${editorialCommunities.all()[1].id}`);
     });
 
     it('has different editorial community article teasers', async (): Promise<void> => {

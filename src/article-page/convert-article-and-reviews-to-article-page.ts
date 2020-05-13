@@ -1,7 +1,7 @@
 import { Context, Middleware, Next } from 'koa';
 import Doi from '../data/doi';
 import { ArticlePage } from '../templates/article-page';
-import { EditorialCommunity } from '../types/editorial-community';
+import EditorialCommunityRepository from '../types/editorial-community-repository';
 
 interface Review {
   publicationDate: Date;
@@ -10,7 +10,7 @@ interface Review {
   editorialCommunityId: string;
 }
 
-export default (editorialCommunities: Array<EditorialCommunity>): Middleware => (
+export default (editorialCommunities: EditorialCommunityRepository): Middleware => (
   async (ctx: Context, next: Next): Promise<void> => {
     const [article, reviews] = await Promise.all([
       ctx.state.article,
@@ -18,7 +18,7 @@ export default (editorialCommunities: Array<EditorialCommunity>): Middleware => 
     ]);
 
     const reviewSummaries = reviews.map((review: Review) => {
-      const editorialCommunity = editorialCommunities.find((each) => each.id === review.editorialCommunityId);
+      const editorialCommunity = editorialCommunities.lookup(review.editorialCommunityId);
       return {
         ...review,
         editorialCommunityName: editorialCommunity ? editorialCommunity.name : 'Unknown',

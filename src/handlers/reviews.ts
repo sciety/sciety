@@ -3,7 +3,7 @@ import { Middleware, RouterContext } from '@koa/router';
 import { BadRequest } from 'http-errors';
 import { Next } from 'koa';
 import Doi from '../data/doi';
-import { EditorialCommunity } from '../types/editorial-community';
+import EditorialCommunityRepository from '../types/editorial-community-repository';
 import ReviewReferenceRepository from '../types/review-reference-repository';
 
 const zenodoPrefix = '10.5281';
@@ -18,7 +18,7 @@ const validateDoi = (input: string): Doi => {
 
 export default (
   reviewReferenceRepository: ReviewReferenceRepository,
-  editorialCommunities: Array<EditorialCommunity>,
+  editorialCommunities: EditorialCommunityRepository,
 ): Middleware => (
   async ({ request, response }: RouterContext, next: Next): Promise<void> => {
     const {
@@ -32,7 +32,7 @@ export default (
       throw new BadRequest('Not a Zenodo DOI.');
     }
 
-    const editorialCommunity = editorialCommunities.find((each) => each.id === editorialcommunityid);
+    const editorialCommunity = editorialCommunities.lookup(editorialcommunityid);
     if (!editorialCommunity) {
       throw new BadRequest(`${editorialcommunityid} not found`);
     }

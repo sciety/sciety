@@ -8,22 +8,25 @@ import { FetchDataset } from '../../src/api/fetch-dataset';
 import createFetchEditorialCommunityReviewedArticles from '../../src/api/fetch-editorial-community-reviewed-articles';
 import createFetchReview from '../../src/api/fetch-review';
 import { article3, article4 } from '../../src/data/article-dois';
-import editorialCommunities from '../../src/data/in-memory-editorial-communities';
+import createEditorialCommunityRepository from '../../src/data/in-memory-editorial-communities';
 import createReviewReferenceRepository from '../../src/data/in-memory-review-references';
 import { article3Review1, article4Review1 } from '../../src/data/review-dois';
 import createRouter, { RouterServices } from '../../src/router';
 import createServer from '../../src/server';
+import EditorialCommunityRepository from '../../src/types/editorial-community-repository';
 import ReviewReferenceRepository from '../../src/types/review-reference-repository';
 
 export interface TestServer {
   server: Server;
+  editorialCommunities: EditorialCommunityRepository;
   reviewReferenceRepository: ReviewReferenceRepository;
 }
 
 export default (): TestServer => {
+  const editorialCommunities = createEditorialCommunityRepository();
   const reviewReferenceRepository = createReviewReferenceRepository();
-  reviewReferenceRepository.add(article3, article3Review1, editorialCommunities[0].id);
-  reviewReferenceRepository.add(article4, article4Review1, editorialCommunities[1].id);
+  reviewReferenceRepository.add(article3, article3Review1, editorialCommunities.all()[0].id);
+  reviewReferenceRepository.add(article4, article4Review1, editorialCommunities.all()[1].id);
   const fetchCrossrefDataset: FetchDataset = async () => (
     clownface({ dataset: datasetFactory(), term: namedNode('http://example.com/some-crossref-node') })
       .addOut(dcterms.title, 'Article title')
@@ -48,6 +51,7 @@ export default (): TestServer => {
   const router = createRouter(services);
   return {
     server: createServer(router),
+    editorialCommunities,
     reviewReferenceRepository,
   };
 };

@@ -3,15 +3,15 @@ import { NotFound } from 'http-errors';
 import { Next } from 'koa';
 import { FetchEditorialCommunityReviewedArticles } from '../api/fetch-editorial-community-reviewed-articles';
 import templateListItems from '../templates/list-items';
-import { EditorialCommunity } from '../types/editorial-community';
+import EditorialCommunityRepository from '../types/editorial-community-repository';
 
 export default (
-  editorialCommunities: Array<EditorialCommunity>,
+  editorialCommunities: EditorialCommunityRepository,
   fetchEditorialCommunityReviewedArticles: FetchEditorialCommunityReviewedArticles,
 ): Middleware => (
   async ({ params, response }: RouterContext, next: Next): Promise<void> => {
     const editorialCommunityId = params.id;
-    const editorialCommunity = editorialCommunities.find((each) => each.id === editorialCommunityId);
+    const editorialCommunity = editorialCommunities.lookup(editorialCommunityId);
 
     if (!editorialCommunity) {
       throw new NotFound(`${editorialCommunityId} not found`);

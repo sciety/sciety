@@ -1,13 +1,13 @@
 import Doi from '../data/doi';
 import { article3Review1 } from '../data/review-dois';
-import { EditorialCommunity } from '../types/editorial-community';
+import EditorialCommunityRepository from '../types/editorial-community-repository';
 
 interface Article {
   doi: Doi;
 }
 
-export default (article: Article, editorialCommunities: Array<EditorialCommunity>): string => {
-  const options = editorialCommunities.map((ec) => `<option value="${ec.id}">${ec.name}</option>`);
+export default (article: Article, editorialCommunities: EditorialCommunityRepository): string => {
+  const options = editorialCommunities.all().map((ec) => `<option value="${ec.id}">${ec.name}</option>`);
   return `<form method="post" action="/reviews" class="compact-form">
     <input type="hidden" name="articleversiondoi" value="${article.doi}">
     <label for="editorialcommunityid">Select your editorial community</label>

@@ -4,7 +4,7 @@ import templateReviewSidebarItem from './review-sidebar-item';
 import templateReviewSummary from './review-summary';
 import addReviewForm from '../article-page/add-review-form';
 import Doi from '../data/doi';
-import { EditorialCommunity } from '../types/editorial-community';
+import EditorialCommunityRepository from '../types/editorial-community-repository';
 
 interface Article {
   title: string;
@@ -27,7 +27,7 @@ export interface ArticlePage {
   reviews: Array<Review>;
 }
 
-export default ({ article, reviews }: ArticlePage, editorialCommunities: Array<EditorialCommunity>): string => {
+export default ({ article, reviews }: ArticlePage, editorialCommunities: EditorialCommunityRepository): string => {
   const reviewSummaries = reviews.map((review, index) => templateReviewSummary(review, `review-${index}`));
   const reviewSidebarItems = reviews.map((review) => templateReviewSidebarItem(review));
   return `<article>

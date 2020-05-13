@@ -14,14 +14,14 @@ import fetchArticleForArticlePage from './middleware/fetch-article-for-article-p
 import renderArticlePage from './middleware/render-article-page';
 import validateBiorxivDoi from './middleware/validate-biorxiv-doi';
 import validateDoiParam from './middleware/validate-doi-param';
-import { EditorialCommunity } from './types/editorial-community';
+import EditorialCommunityRepository from './types/editorial-community-repository';
 import ReviewReferenceRepository from './types/review-reference-repository';
 
 export type RouterServices = {
   fetchArticle: FetchArticle;
   fetchEditorialCommunityReviewedArticles: FetchEditorialCommunityReviewedArticles;
   fetchReview: FetchReview;
-  editorialCommunities: Array<EditorialCommunity>;
+  editorialCommunities: EditorialCommunityRepository;
   reviewReferenceRepository: ReviewReferenceRepository;
 };
 
