@@ -35,7 +35,7 @@ export default (): TestServer => {
       .addOut(schema.author, (author) => author.addOut(schema.name, 'Author name'))
   );
   const fetchArticle = createFetchArticle(fetchCrossrefDataset);
-  const fetchEditorialCommunityReviewedArticles = createFetchEditorialCommunityReviewedArticles();
+  const fetchEditorialCommunityReviewedArticles = createFetchEditorialCommunityReviewedArticles(editorialCommunities);
   const fetchReview = createFetchReview(fetchDataCiteDataset);
   const services: RouterServices = {
     fetchArticle,

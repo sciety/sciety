@@ -1,11 +1,11 @@
 import Doi from '../data/doi';
-import editorialCommunities from '../data/editorial-communities';
+import { EditorialCommunity } from '../types/editorial-community';
 import { EditorialCommunityReviewedArticle } from '../types/editorial-community-reviewed-article';
 
 export type FetchEditorialCommunityReviewedArticles = (communityId: string) =>
 Promise<Array<EditorialCommunityReviewedArticle>>;
 
-export default (): FetchEditorialCommunityReviewedArticles => {
+export default (editorialCommunities: Array<EditorialCommunity>): FetchEditorialCommunityReviewedArticles => {
   const editorialCommunityReviewedArticles: Array<EditorialCommunityReviewedArticle> = [
     {
       doi: new Doi('10.1101/833392'),

@@ -12,7 +12,10 @@ export interface ReviewSummary {
 export default (review: ReviewSummary, idNamespace: string): string => (
   `<article class="review-summary">
     <h3 class="review-summary__title">
-      Reviewed by <a href="/editorial-communities/${review.editorialCommunityId}" id="${idNamespace}-editorial-community">${review.editorialCommunityName}</a>
+      Reviewed by
+      <a href="/editorial-communities/${review.editorialCommunityId}" id="${idNamespace}-editorial-community">
+        ${review.editorialCommunityName}
+      </a>
       on ${templateDate(review.publicationDate)}
     </h3>
     ${review.summary}

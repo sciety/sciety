@@ -21,7 +21,7 @@ reviewReferenceRepository.add(article4, article4Review1, editorialCommunities[1]
 
 const fetchDataset = createFetchDataset();
 const fetchArticle = createFetchArticle(fetchDataset);
-const fetchEditorialCommunityReviewedArticles = createFetchEditorialCommunityReviewedArticles();
+const fetchEditorialCommunityReviewedArticles = createFetchEditorialCommunityReviewedArticles(editorialCommunities);
 const fetchReview = createFetchReview(fetchDataset);
 const services: RouterServices = {
   fetchArticle,
