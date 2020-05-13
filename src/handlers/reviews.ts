@@ -38,7 +38,6 @@ export default (reviewReferenceRepository: ReviewReferenceRepository): Middlewar
       new Doi(articleversiondoi),
       reviewDoi,
       editorialCommunity.id,
-      editorialCommunity.name,
     );
 
     response.redirect(`/articles/${articleversiondoi}`);
