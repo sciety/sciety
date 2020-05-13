@@ -5,8 +5,8 @@ import createFetchEditorialCommunityReviewedArticles from './api/fetch-editorial
 import createFetchReview from './api/fetch-review';
 import { article3, article4 } from './data/article-dois';
 import editorialCommunities from './data/editorial-communities';
+import createReviewReferenceRepository from './data/in-memory-review-references';
 import { article3Review1, article4Review1 } from './data/review-dois';
-import createReviewReferenceRepository from './data/review-references';
 import createLogger from './logger';
 import createRouter, { RouterServices } from './router';
 import createServer from './server';

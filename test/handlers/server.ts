@@ -9,8 +9,8 @@ import createFetchEditorialCommunityReviewedArticles from '../../src/api/fetch-e
 import createFetchReview from '../../src/api/fetch-review';
 import { article3, article4 } from '../../src/data/article-dois';
 import editorialCommunities from '../../src/data/editorial-communities';
+import createReviewReferenceRepository from '../../src/data/in-memory-review-references';
 import { article3Review1, article4Review1 } from '../../src/data/review-dois';
-import createReviewReferenceRepository from '../../src/data/review-references';
 import createRouter, { RouterServices } from '../../src/router';
 import createServer from '../../src/server';
 import ReviewReferenceRepository from '../../src/types/review-reference-repository';

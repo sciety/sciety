@@ -1,6 +1,6 @@
 import { article3 } from '../../src/data/article-dois';
 import Doi from '../../src/data/doi';
-import createReviewReferenceRepository from '../../src/data/review-references';
+import createReviewReferenceRepository from '../../src/data/in-memory-review-references';
 import ReviewReferenceRepository from '../../src/types/review-reference-repository';
 
 
