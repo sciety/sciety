@@ -17,11 +17,11 @@ export default (
     const doi: Doi = ctx.state.articleDoi;
 
     ctx.state.reviews = Promise.all(reviewReferenceRepository.findReviewsForArticleVersionDoi(doi)
-      .map(async (review) => {
-        const fetchedReview = await fetchReview(review.reviewDoi);
+      .map(async (reviewReference) => {
+        const fetchedReview = await fetchReview(reviewReference.reviewDoi);
 
         return {
-          ...review,
+          ...reviewReference,
           ...fetchedReview,
         };
       }))
