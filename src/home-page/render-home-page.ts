@@ -3,10 +3,10 @@ import { BadRequest } from 'http-errors';
 import { Next } from 'koa';
 import { article3 } from '../data/article-dois';
 import Doi from '../data/doi';
-import editorialCommunities from '../data/in-memory-editorial-communities';
 import templateListItems from '../templates/list-items';
+import { EditorialCommunity } from '../types/editorial-community';
 
-export default (): Middleware => (
+export default (editorialCommunities: Array<EditorialCommunity>): Middleware => (
   async ({ request, response }: RouterContext, next: Next): Promise<void> => {
     const editorialCommunityLinks = editorialCommunities.map((ec) => `<a href="/editorial-communities/${ec.id}">${ec.name}</a>`);
     if (request.query.articledoi) {

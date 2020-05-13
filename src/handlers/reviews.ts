@@ -3,7 +3,7 @@ import { Middleware, RouterContext } from '@koa/router';
 import { BadRequest } from 'http-errors';
 import { Next } from 'koa';
 import Doi from '../data/doi';
-import editorialCommunities from '../data/in-memory-editorial-communities';
+import { EditorialCommunity } from '../types/editorial-community';
 import ReviewReferenceRepository from '../types/review-reference-repository';
 
 const zenodoPrefix = '10.5281';
@@ -16,7 +16,10 @@ const validateDoi = (input: string): Doi => {
   }
 };
 
-export default (reviewReferenceRepository: ReviewReferenceRepository): Middleware => (
+export default (
+  reviewReferenceRepository: ReviewReferenceRepository,
+  editorialCommunities: Array<EditorialCommunity>,
+): Middleware => (
   async ({ request, response }: RouterContext, next: Next): Promise<void> => {
     const {
       articleversiondoi,

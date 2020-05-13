@@ -5,7 +5,6 @@ import { FetchEditorialCommunityReviewedArticles } from './api/fetch-editorial-c
 import { FetchReview } from './api/fetch-review';
 import convertArticleAndReviewsToArticlePage from './article-page/convert-article-and-reviews-to-article-page';
 import fetchReviewsForArticlePage from './article-page/fetch-reviews-for-article-page';
-import editorialCommunities from './data/in-memory-editorial-communities';
 import editorialCommunity from './handlers/editorial-community';
 import ping from './handlers/ping';
 import reviews from './handlers/reviews';
@@ -15,12 +14,14 @@ import fetchArticleForArticlePage from './middleware/fetch-article-for-article-p
 import renderArticlePage from './middleware/render-article-page';
 import validateBiorxivDoi from './middleware/validate-biorxiv-doi';
 import validateDoiParam from './middleware/validate-doi-param';
+import { EditorialCommunity } from './types/editorial-community';
 import ReviewReferenceRepository from './types/review-reference-repository';
 
 export type RouterServices = {
   fetchArticle: FetchArticle;
   fetchEditorialCommunityReviewedArticles: FetchEditorialCommunityReviewedArticles;
   fetchReview: FetchReview;
+  editorialCommunities: Array<EditorialCommunity>;
   reviewReferenceRepository: ReviewReferenceRepository;
 };
 
@@ -31,7 +32,7 @@ export default (services: RouterServices): Router => {
     ping());
 
   router.get('/',
-    renderHomePage(),
+    renderHomePage(services.editorialCommunities),
     addPageTemplate());
 
   router.get('/articles/:doi(.+)',
@@ -39,17 +40,17 @@ export default (services: RouterServices): Router => {
     validateBiorxivDoi(),
     fetchArticleForArticlePage(services.fetchArticle),
     fetchReviewsForArticlePage(services.reviewReferenceRepository, services.fetchReview),
-    convertArticleAndReviewsToArticlePage(editorialCommunities),
-    renderArticlePage(),
+    convertArticleAndReviewsToArticlePage(services.editorialCommunities),
+    renderArticlePage(services.editorialCommunities),
     addPageTemplate());
 
   router.get('/editorial-communities/:id',
-    editorialCommunity(editorialCommunities, services.fetchEditorialCommunityReviewedArticles),
+    editorialCommunity(services.editorialCommunities, services.fetchEditorialCommunityReviewedArticles),
     addPageTemplate());
 
   router.post('/reviews',
     bodyParser({ enableTypes: ['form'] }),
-    reviews(services.reviewReferenceRepository));
+    reviews(services.reviewReferenceRepository, services.editorialCommunities));
 
   return router;
 };

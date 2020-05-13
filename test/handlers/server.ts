@@ -41,6 +41,7 @@ export default (): TestServer => {
     fetchArticle,
     fetchEditorialCommunityReviewedArticles,
     fetchReview,
+    editorialCommunities,
     reviewReferenceRepository,
   };
 
