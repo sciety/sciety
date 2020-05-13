@@ -19,7 +19,7 @@ describe('review-reference-repository', () => {
 
   describe('a populated repository', () => {
     beforeEach(() => {
-      reviewReferenceRepository.add(new Doi('10.1234/5679'), new Doi('10.9012/3456'), 'id', 'name');
+      reviewReferenceRepository.add(new Doi('10.1234/5679'), new Doi('10.9012/3456'), 'id');
     });
 
     it('finds the review references that were added', () => {
