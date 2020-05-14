@@ -31,10 +31,3 @@ spec:
             httpGet:
               path: /
               port: http
-          volumeMounts:
-            - name: app-logs
-              mountPath: /var/log/app
-      volumes:
-        - name: app-logs
-          persistentVolumeClaim:
-            claimName: {{ .Release.Name }}--frontend
