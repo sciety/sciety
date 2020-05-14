@@ -11,15 +11,6 @@ describe('editorial-community handler', (): void => {
       response = await request(server).get(`/editorial-communities/${editorialCommunities.all()[0].id}`);
     });
 
-    it('returns a successful response', async (): Promise<void> => {
-      expect(response.status).toBe(OK);
-    });
-
-    it('is HTML', async (): Promise<void> => {
-      expect(response.type).toBe('text/html');
-      expect(response.charset).toBe('utf-8');
-    });
-
     it('has the editorial community name', async (): Promise<void> => {
       expect(response.text).toStrictEqual(expect.stringContaining('eLife'));
     });
