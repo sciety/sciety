@@ -17,7 +17,6 @@ jobs:
       - uses: actions/checkout@v1
 
       - name: Deploy to prod
-        if: github.ref == 'refs/heads/master'
         run: |
           aws --region=us-east-1 eks update-kubeconfig --name libero-eks--franklin
           helm upgrade -i prc--prod --set images.frontend.tag=${IMAGE_TAG} --set hostname=prc.libero.pub helm/prc
