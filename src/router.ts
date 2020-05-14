@@ -2,9 +2,7 @@ import Router from '@koa/router';
 import bodyParser from 'koa-bodyparser';
 import convertArticleAndReviewsToArticlePage from './article-page/convert-article-and-reviews-to-article-page';
 import fetchReviewsForArticlePage from './article-page/fetch-reviews-for-article-page';
-import lookupEditorialCommunity from './editorial-community-page/lookup-editorial-community';
-import lookupReviewedArticles from './editorial-community-page/lookup-reviewed-articles';
-import renderEditorialCommunityPage from './editorial-community-page/render-editorial-community-page';
+import createEditorialCommunityPage from './editorial-community-page';
 import ping from './handlers/ping';
 import reviews from './handlers/reviews';
 import renderHomePage from './home-page/render-home-page';
@@ -35,9 +33,7 @@ export default (adapters: Adapters): Router => {
     addPageTemplate());
 
   router.get('/editorial-communities/:id',
-    lookupEditorialCommunity(adapters.editorialCommunities),
-    lookupReviewedArticles(adapters.reviewReferenceRepository),
-    renderEditorialCommunityPage(adapters.fetchEditorialCommunityReviewedArticles),
+    createEditorialCommunityPage(adapters),
     addPageTemplate());
 
   router.post('/reviews',
