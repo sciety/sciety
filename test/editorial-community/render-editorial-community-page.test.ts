@@ -1,6 +1,6 @@
 import { NOT_FOUND, OK } from 'http-status-codes';
 import request, { Response } from 'supertest';
-import createServer from './server';
+import createServer from '../handlers/server';
 
 describe('editorial-community handler', (): void => {
   let response: Response;
