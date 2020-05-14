@@ -5,7 +5,7 @@ import fetchReviewsForArticlePage from './article-page/fetch-reviews-for-article
 import createEditorialCommunityPage from './editorial-community-page';
 import ping from './handlers/ping';
 import reviews from './handlers/reviews';
-import renderHomePage from './home-page/render-home-page';
+import createHomePage from './home-page';
 import addPageTemplate from './middleware/add-page-template';
 import fetchArticleForArticlePage from './middleware/fetch-article-for-article-page';
 import renderArticlePage from './middleware/render-article-page';
@@ -20,7 +20,7 @@ export default (adapters: Adapters): Router => {
     ping());
 
   router.get('/',
-    renderHomePage(adapters.editorialCommunities),
+    createHomePage(adapters),
     addPageTemplate());
 
   router.get('/articles/:doi(.+)',
