@@ -3,7 +3,6 @@ name: Production
 on: 
   push:
     tags:
-      - '*'
 
 env:
   IMAGE_TAG: ${{ github.sha }}
