@@ -1,25 +1,31 @@
-import { Middleware, RouterContext } from '@koa/router';
-import { Next } from 'koa';
-import { FetchEditorialCommunityReviewedArticles } from '../api/fetch-editorial-community-reviewed-articles';
+import { Context, Middleware, Next } from 'koa';
+import Doi from '../data/doi';
 import templateListItems from '../templates/list-items';
 
-export default (
-  fetchEditorialCommunityReviewedArticles: FetchEditorialCommunityReviewedArticles,
-): Middleware => (
-  async (ctx: RouterContext, next: Next): Promise<void> => {
-    const { editorialCommunity } = ctx.state;
+interface Teaser {
+  doi: Doi;
+  title: string;
+}
 
-    const editorialCommunityReviewedArticles = await fetchEditorialCommunityReviewedArticles(editorialCommunity.id);
-    const teasers = templateListItems(editorialCommunityReviewedArticles.map((editorialCommunityReviewedArticle) => (
-      `<a href="/articles/${editorialCommunityReviewedArticle.doi}">${editorialCommunityReviewedArticle.title}</a>`
-    )));
+interface ViewModel {
+  name: string;
+  description: string;
+  teasers: Array<Teaser>;
+}
+
+export default (): Middleware => (
+  async (ctx: Context, next: Next): Promise<void> => {
+    const { viewModel } = ctx.state;
+    const teasers = viewModel.teasers.map((teaser: Teaser) => (
+      `<a href="/articles/${teaser.doi}">${teaser.title}</a>`
+    ));
     ctx.response.type = 'html';
     ctx.response.body = `
 
   <header class="content-header">
 
     <h1>
-      ${editorialCommunity.name}
+      ${viewModel.name}
     </h1>
 
   </header>
@@ -27,7 +33,7 @@ export default (
   <section>
 
     <p>
-      ${editorialCommunity.description}
+      ${viewModel.description}
     </p>
 
   </section>
@@ -39,7 +45,7 @@ export default (
     </h2>
 
     <ol>
-      ${teasers}
+      ${templateListItems(teasers)}
     </ol>
 
   </section>

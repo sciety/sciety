@@ -2,7 +2,7 @@ import { NOT_FOUND } from 'http-status-codes';
 import request, { Response } from 'supertest';
 import createServer from '../handlers/server';
 
-describe('editorial-community handler', (): void => {
+describe('render-editorial-community-page', (): void => {
   let response: Response;
 
   describe('when the editorial community exists', (): void => {
@@ -20,20 +20,7 @@ describe('editorial-community handler', (): void => {
     });
 
     it('has the editorial community article teasers', async (): Promise<void> => {
-      expect(response.text).toStrictEqual(expect.stringContaining('Uncovering'));
-      expect(response.text).toStrictEqual(expect.not.stringContaining('Drug-Repurposing'));
-    });
-  });
-
-  describe('when a different editorial community exists', (): void => {
-    beforeEach(async () => {
-      const { server, editorialCommunities } = createServer();
-      response = await request(server).get(`/editorial-communities/${editorialCommunities.all()[1].id}`);
-    });
-
-    it('has different editorial community article teasers', async (): Promise<void> => {
-      expect(response.text).toStrictEqual(expect.stringContaining('Drug-Repurposing'));
-      expect(response.text).toStrictEqual(expect.not.stringContaining('Uncovering'));
+      expect(response.text).toStrictEqual(expect.stringContaining('Article title'));
     });
   });
 
