@@ -5,7 +5,7 @@ import { FetchEditorialCommunityReviewedArticles } from './api/fetch-editorial-c
 import { FetchReview } from './api/fetch-review';
 import convertArticleAndReviewsToArticlePage from './article-page/convert-article-and-reviews-to-article-page';
 import fetchReviewsForArticlePage from './article-page/fetch-reviews-for-article-page';
-import editorialCommunity from './handlers/editorial-community';
+import renderEditorialCommunityPage from './editorial-community-page/render-editorial-community-page';
 import ping from './handlers/ping';
 import reviews from './handlers/reviews';
 import renderHomePage from './home-page/render-home-page';
@@ -45,7 +45,7 @@ export default (services: RouterServices): Router => {
     addPageTemplate());
 
   router.get('/editorial-communities/:id',
-    editorialCommunity(services.editorialCommunities, services.fetchEditorialCommunityReviewedArticles),
+    renderEditorialCommunityPage(services.editorialCommunities, services.fetchEditorialCommunityReviewedArticles),
     addPageTemplate());
 
   router.post('/reviews',
