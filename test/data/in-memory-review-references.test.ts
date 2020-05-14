@@ -21,18 +21,26 @@ describe('review-reference-repository', () => {
   });
 
   describe('when populated', () => {
+    const review1 = new Doi('10.5555/1');
+    const review2 = new Doi('10.6666/2');
+    const review3 = new Doi('10.7777/3');
+
     beforeEach(() => {
-      reviewReferenceRepository.add(article1, new Doi('10.5555/1'), editorialCommunity1);
-      reviewReferenceRepository.add(article2, new Doi('10.6666/2'), editorialCommunity1);
-      reviewReferenceRepository.add(article1, new Doi('10.7777/3'), editorialCommunity2);
+      reviewReferenceRepository.add(article1, review1, editorialCommunity1);
+      reviewReferenceRepository.add(article2, review2, editorialCommunity1);
+      reviewReferenceRepository.add(article1, review3, editorialCommunity2);
     });
 
     it.each([
-      [article1, 2],
-      [article2, 1],
-      [new Doi('10.0000/does-not-exist'), 0],
-    ])('finds the review references for article %s', (articleDoi, expectedLength) => {
-      expect(reviewReferenceRepository.findReviewsForArticleVersionDoi(articleDoi)).toHaveLength(expectedLength);
+      [article1, [review1, review3]],
+      [article2, [review2]],
+      [new Doi('10.0000/does-not-exist'), []],
+    ])('finds the review references for article %s', (articleDoi, expectedReviews) => {
+      const actualReviews = reviewReferenceRepository.findReviewsForArticleVersionDoi(articleDoi)
+        .map((reviewReference) => reviewReference.reviewDoi)
+        .sort();
+
+      expect(actualReviews).toStrictEqual(expectedReviews);
     });
   });
 });
