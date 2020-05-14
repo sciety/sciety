@@ -22,9 +22,10 @@ module.exports = {
   ],
   root: true,
   rules: {
+    '@typescript-eslint/brace-style': ['error', '1tbs'],
+    '@typescript-eslint/no-unused-vars': 'error',
     'jest/no-hooks': 'off',
     'jest/prefer-expect-assertions': 'off',
-    '@typescript-eslint/brace-style': ['error', '1tbs'],
     'import/order': ['error', {
       alphabetize: { order: 'asc' },
       groups: ['builtin', 'external', 'internal', 'index', 'sibling', 'parent'],
