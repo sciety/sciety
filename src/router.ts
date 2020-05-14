@@ -6,6 +6,7 @@ import { FetchReview } from './api/fetch-review';
 import convertArticleAndReviewsToArticlePage from './article-page/convert-article-and-reviews-to-article-page';
 import fetchReviewsForArticlePage from './article-page/fetch-reviews-for-article-page';
 import lookupEditorialCommunity from './editorial-community-page/lookup-editorial-community';
+import lookupReviewedArticles from './editorial-community-page/lookup-reviewed-articles';
 import renderEditorialCommunityPage from './editorial-community-page/render-editorial-community-page';
 import ping from './handlers/ping';
 import reviews from './handlers/reviews';
@@ -47,6 +48,7 @@ export default (services: RouterServices): Router => {
 
   router.get('/editorial-communities/:id',
     lookupEditorialCommunity(services.editorialCommunities),
+    lookupReviewedArticles(services.reviewReferenceRepository),
     renderEditorialCommunityPage(services.fetchEditorialCommunityReviewedArticles),
     addPageTemplate());
 
