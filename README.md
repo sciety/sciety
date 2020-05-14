@@ -20,6 +20,7 @@ Table of contents
    1. [Linting](#linting)
    1. [Architecture Decision Records](./.adr)
 1. [Operations](#operations)
+   1. [Releasing to production](#releasing-to-production)
    1. [Looking at logs](#looking-at-logs)
 1. [License](#license)
 
@@ -87,7 +88,18 @@ make lint:fix
 
 ## Operations
 
-The application is [deployed][production environment] on a Kubernetes cluster via an Helm chart.
+The application is deployed on a Kubernetes cluster via an Helm chart.
+
+A [staging environment] is updated with every new commit on `master` that passes tests.
+
+A [production environment] is updated manually by pushing a tag.
+
+### Releasing to production
+
+```
+TAG=latest/$(date +%Y%m%d%H%M)
+git tag $TAG && git push origin $TAG
+```
 
 ### Looking at logs
 
@@ -116,4 +128,5 @@ We released this software under the [MIT license][license]. Copyright © 2020 [e
 [Open issues]: https://github.com/libero/prc/issues?q=is%3Aissue+is%3Aopen
 [Open issues badge]: https://flat.badgen.net/github/open-issues/libero/prc?icon=github&color=pink
 [Production environment]: http://prc.libero.pub
+[Staging environment]: http://prc-staging.libero.pub
 [TypeScript]: https://www.typescriptlang.org/
