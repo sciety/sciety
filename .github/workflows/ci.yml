@@ -42,6 +42,15 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Deploy to staging
+        if: github.ref == 'refs/heads/master'
+        run: |
+          aws --region=us-east-1 eks update-kubeconfig --name libero-eks--franklin
+          helm upgrade -i prc--staging --set images.frontend.tag=${IMAGE_TAG} --set hostname=prc-staging.libero.pub helm/prc
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
       - name: Deploy to prod
         if: github.ref == 'refs/heads/master'
         run: |
