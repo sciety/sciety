@@ -6,7 +6,7 @@ metadata:
     {{- include "prc.labels" . | nindent 4 }}
     app.kubernetes.io/component: frontend
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: prc.libero.pub
+    external-dns.alpha.kubernetes.io/hostname: {{ .Values.hostname }}
 spec:
   type: LoadBalancer
   ports:
