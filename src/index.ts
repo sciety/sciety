@@ -8,8 +8,9 @@ import createEditorialCommunityRepository from './data/in-memory-editorial-commu
 import createReviewReferenceRepository from './data/in-memory-review-references';
 import { article3Review1, article4Review1 } from './data/review-dois';
 import createLogger from './logger';
-import createRouter, { RouterServices } from './router';
+import createRouter from './router';
 import createServer from './server';
+import { Adapters } from './types/adapters';
 
 const log = createLogger();
 
@@ -22,7 +23,7 @@ reviewReferenceRepository.add(article3, article3Review1, editorialCommunities.al
 reviewReferenceRepository.add(article4, article4Review1, editorialCommunities.all()[1].id);
 
 const fetchDataset = createFetchDataset();
-const services: RouterServices = {
+const adapters: Adapters = {
   fetchArticle: createFetchArticle(fetchDataset),
   fetchEditorialCommunityReviewedArticles: createFetchEditorialCommunityReviewedArticles(editorialCommunities),
   fetchReview: createFetchReview(fetchDataset),
@@ -30,7 +31,7 @@ const services: RouterServices = {
   reviewReferenceRepository,
 };
 
-const router = createRouter(services);
+const router = createRouter(adapters);
 
 const server = createServer(router);
 

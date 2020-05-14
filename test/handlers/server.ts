@@ -11,8 +11,9 @@ import { article3, article4 } from '../../src/data/article-dois';
 import createEditorialCommunityRepository from '../../src/data/in-memory-editorial-communities';
 import createReviewReferenceRepository from '../../src/data/in-memory-review-references';
 import { article3Review1, article4Review1 } from '../../src/data/review-dois';
-import createRouter, { RouterServices } from '../../src/router';
+import createRouter from '../../src/router';
 import createServer from '../../src/server';
+import { Adapters } from '../../src/types/adapters';
 import EditorialCommunityRepository from '../../src/types/editorial-community-repository';
 import ReviewReferenceRepository from '../../src/types/review-reference-repository';
 
@@ -40,7 +41,7 @@ export default (): TestServer => {
   const fetchArticle = createFetchArticle(fetchCrossrefDataset);
   const fetchEditorialCommunityReviewedArticles = createFetchEditorialCommunityReviewedArticles(editorialCommunities);
   const fetchReview = createFetchReview(fetchDataCiteDataset);
-  const services: RouterServices = {
+  const adapters: Adapters = {
     fetchArticle,
     fetchEditorialCommunityReviewedArticles,
     fetchReview,
@@ -48,7 +49,7 @@ export default (): TestServer => {
     reviewReferenceRepository,
   };
 
-  const router = createRouter(services);
+  const router = createRouter(adapters);
   return {
     server: createServer(router),
     editorialCommunities,
