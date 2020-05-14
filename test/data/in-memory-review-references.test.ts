@@ -18,6 +18,10 @@ describe('review-reference-repository', () => {
     it('has no review references for any article version', () => {
       expect(reviewReferenceRepository.findReviewsForArticleVersionDoi(article1)).toHaveLength(0);
     });
+
+    it('has no review references for any editorial community', () => {
+      expect(reviewReferenceRepository.findReviewsForEditorialCommunityId(editorialCommunity1)).toHaveLength(0);
+    });
   });
 
   describe('when populated', () => {
@@ -37,6 +41,18 @@ describe('review-reference-repository', () => {
       [new Doi('10.0000/does-not-exist'), []],
     ])('finds the review references for article %s', (articleDoi, expectedReviews) => {
       const actualReviews = reviewReferenceRepository.findReviewsForArticleVersionDoi(articleDoi)
+        .map((reviewReference) => reviewReference.reviewDoi)
+        .sort();
+
+      expect(actualReviews).toStrictEqual(expectedReviews);
+    });
+
+    it.each([
+      [editorialCommunity1, [review1, review2]],
+      [editorialCommunity2, [review3]],
+      ['does-not-exist', []],
+    ])('finds the review references for editorial community ID %s', (editorialCommunityId, expectedReviews) => {
+      const actualReviews = reviewReferenceRepository.findReviewsForEditorialCommunityId(editorialCommunityId)
         .map((reviewReference) => reviewReference.reviewDoi)
         .sort();
 

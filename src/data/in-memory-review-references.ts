@@ -18,6 +18,11 @@ export default (): ReviewReferenceRepository => {
       reviewReferences
         .filter((reference) => reference.articleVersionDoi.value === articleVersionDoi.value)
     ),
+
+    findReviewsForEditorialCommunityId: (editorialCommunityId) => (
+      reviewReferences
+        .filter((reference) => reference.editorialCommunityId === editorialCommunityId)
+    ),
   };
   return reviewReferenceRepository;
 };

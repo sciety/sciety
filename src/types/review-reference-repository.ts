@@ -10,4 +10,7 @@ export default interface ReviewReferenceRepository {
   findReviewsForArticleVersionDoi(
     articleVersionDoi: Doi,
   ): Array<ReviewReference>;
+  findReviewsForEditorialCommunityId(
+    editorialCommunityId: string,
+  ): Array<ReviewReference>;
 }
