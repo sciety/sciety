@@ -92,7 +92,7 @@ The application is deployed on a Kubernetes cluster via an Helm chart.
 
 A [staging environment] is updated with every new commit on `master` that passes tests.
 
-A [production environment] is updated manually by pushing a tag.
+A [production environment] is [updated][production deployments] manually by pushing a tag.
 
 ### Releasing to production
 
@@ -127,6 +127,7 @@ We released this software under the [MIT license][license]. Copyright © 2020 [e
 [Node.js]: https://nodejs.org/
 [Open issues]: https://github.com/libero/prc/issues?q=is%3Aissue+is%3Aopen
 [Open issues badge]: https://flat.badgen.net/github/open-issues/libero/prc?icon=github&color=pink
+[Production deployments]: https://github.com/libero/prc/actions?query=workflow%3AProduction
 [Production environment]: http://prc.libero.pub
 [Staging environment]: http://prc-staging.libero.pub
 [TypeScript]: https://www.typescriptlang.org/
