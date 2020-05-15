@@ -2,7 +2,7 @@ import templateArticlePageHeader from './article-page-header';
 import templateListItems from './list-items';
 import templateReviewSidebarItem from './review-sidebar-item';
 import templateReviewSummary from './review-summary';
-import addReviewForm from '../article-page/add-review-form';
+import addReviewForm from '../article-page/middleware/add-review-form';
 import Doi from '../data/doi';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 

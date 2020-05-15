@@ -1,8 +1,8 @@
 import { Middleware, RouterContext } from '@koa/router';
 import { NotFound } from 'http-errors';
 import { Next } from 'koa';
-import Doi from '../data/doi';
-import createLogger from '../logger';
+import Doi from '../../data/doi';
+import createLogger from '../../logger';
 
 const log = createLogger('middleware:validate-doi-param');
 

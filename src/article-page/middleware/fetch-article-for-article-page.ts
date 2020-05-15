@@ -1,10 +1,10 @@
 import { Middleware, RouterContext } from '@koa/router';
 import { NotFound, ServiceUnavailable } from 'http-errors';
 import { Next } from 'koa';
-import { FetchArticle } from '../api/fetch-article';
-import { FetchDatasetError } from '../api/fetch-dataset';
-import Doi from '../data/doi';
-import createLogger from '../logger';
+import { FetchArticle } from '../../api/fetch-article';
+import { FetchDatasetError } from '../../api/fetch-dataset';
+import Doi from '../../data/doi';
+import createLogger from '../../logger';
 
 const log = createLogger('middleware:fetch-article-for-article-page');
 

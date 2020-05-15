@@ -1,11 +1,11 @@
 import { Middleware, RouterContext } from '@koa/router';
 import { NotFound, ServiceUnavailable } from 'http-errors';
 import { Next } from 'koa';
-import { FetchDatasetError } from '../api/fetch-dataset';
-import { FetchReview } from '../api/fetch-review';
-import Doi from '../data/doi';
-import createLogger from '../logger';
-import ReviewReferenceRepository from '../types/review-reference-repository';
+import { FetchDatasetError } from '../../api/fetch-dataset';
+import { FetchReview } from '../../api/fetch-review';
+import Doi from '../../data/doi';
+import createLogger from '../../logger';
+import ReviewReferenceRepository from '../../types/review-reference-repository';
 
 const log = createLogger('middleware:fetch-reviews-for-article-page');
 

@@ -1,7 +1,7 @@
 import { Middleware, RouterContext } from '@koa/router';
 import { NotFound } from 'http-errors';
 import { Next } from 'koa';
-import createLogger from '../logger';
+import createLogger from '../../logger';
 
 const log = createLogger('middleware:validate-biorxiv-doi');
 

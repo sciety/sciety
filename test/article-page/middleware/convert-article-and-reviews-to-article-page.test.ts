@@ -1,9 +1,9 @@
 import { Context, Middleware, Response } from 'koa';
-import convertArticleAndReviewsToArticlePage from '../../src/article-page/convert-article-and-reviews-to-article-page';
-import createEditorialCommunityRepository from '../../src/data/in-memory-editorial-communities';
-import EditorialCommunityRepository from '../../src/types/editorial-community-repository';
-import createContext from '../context';
-import runMiddleware from '../middleware';
+import convertArticleAndReviewsToArticlePage from '../../../src/article-page/middleware/convert-article-and-reviews-to-article-page';
+import createEditorialCommunityRepository from '../../../src/data/in-memory-editorial-communities';
+import EditorialCommunityRepository from '../../../src/types/editorial-community-repository';
+import createContext from '../../context';
+import runMiddleware from '../../middleware';
 
 const editorialCommunities: EditorialCommunityRepository = createEditorialCommunityRepository();
 

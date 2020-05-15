@@ -1,6 +1,6 @@
-import Doi from '../data/doi';
-import { article3Review1 } from '../data/review-dois';
-import EditorialCommunityRepository from '../types/editorial-community-repository';
+import Doi from '../../data/doi';
+import { article3Review1 } from '../../data/review-dois';
+import EditorialCommunityRepository from '../../types/editorial-community-repository';
 
 interface Article {
   doi: Doi;
