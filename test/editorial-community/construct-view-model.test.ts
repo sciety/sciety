@@ -53,12 +53,12 @@ describe('construct-view-model middleware', (): void => {
     expect(ctx.state.viewModel.description).toStrictEqual('community-description');
   });
 
-  it('adds teasers for the fetched articles', async (): Promise<void> => {
+  it('adds the reviewed articles to the context', async (): Promise<void> => {
     await invokeMiddleware(ctx);
 
-    expect(ctx.state.viewModel.teasers[0].doi).toStrictEqual(article1.doi);
-    expect(ctx.state.viewModel.teasers[0].title).toStrictEqual(article1.title);
-    expect(ctx.state.viewModel.teasers[1].doi).toStrictEqual(article2.doi);
-    expect(ctx.state.viewModel.teasers[1].title).toStrictEqual(article2.title);
+    expect(ctx.state.viewModel.reviewedArticles[0].doi).toStrictEqual(article1.doi);
+    expect(ctx.state.viewModel.reviewedArticles[0].title).toStrictEqual(article1.title);
+    expect(ctx.state.viewModel.reviewedArticles[1].doi).toStrictEqual(article2.doi);
+    expect(ctx.state.viewModel.reviewedArticles[1].title).toStrictEqual(article2.title);
   });
 });

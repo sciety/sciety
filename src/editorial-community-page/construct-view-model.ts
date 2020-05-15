@@ -5,7 +5,7 @@ export default (): Middleware => (
   async (ctx: Context, next: Next): Promise<void> => {
     const { editorialCommunity, fetchedArticles } = ctx.state;
     const articles: Array<Article> = await fetchedArticles;
-    const teasers = articles.map((article) => ({
+    const reviewedArticles = articles.map((article) => ({
       doi: article.doi,
       title: article.title,
     }));
@@ -13,7 +13,7 @@ export default (): Middleware => (
     ctx.state.viewModel = {
       name: editorialCommunity.name,
       description: editorialCommunity.description,
-      teasers,
+      reviewedArticles,
     };
 
     await next();

@@ -18,7 +18,7 @@ describe('render-editorial-community-page middleware', (): void => {
       viewModel: {
         name: 'community-name',
         description: 'community-description',
-        teasers: [{
+        reviewedArticles: [{
           doi: new Doi('10.1111/1111'),
           title: 'title-1',
         },
