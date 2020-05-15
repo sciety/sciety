@@ -96,6 +96,8 @@ A [production environment] is [updated][production deployments] manually by push
 
 ### Releasing to production
 
+Name the tag `latest/*`:
+
 ```
 TAG=latest/$(date +%Y%m%d%H%M)
 git tag $TAG && git push origin $TAG

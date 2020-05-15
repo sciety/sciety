@@ -2,9 +2,8 @@ name: Production
 
 on: 
   push:
-    branches-ignore:
-      - master
     tags:
+      - 'latest/*'
 
 env:
   IMAGE_TAG: ${{ github.sha }}
