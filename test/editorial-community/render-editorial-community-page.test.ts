@@ -37,8 +37,7 @@ describe('render-editorial-community-page middleware', (): void => {
   });
 
   it('renders the editorial community description', async (): Promise<void> => {
-    const next = jest.fn();
-    await invokeMiddleware(ctx, next);
+    await invokeMiddleware(ctx);
 
     expect(ctx.response.body).toStrictEqual(expect.stringContaining('community-description'));
   });
@@ -50,5 +49,12 @@ describe('render-editorial-community-page middleware', (): void => {
     expect(ctx.response.body).toStrictEqual(expect.stringContaining('title-1'));
     expect(ctx.response.body).toStrictEqual(expect.stringContaining('10.2222/2222'));
     expect(ctx.response.body).toStrictEqual(expect.stringContaining('title-2'));
+  });
+
+  it('calls the next middleware', async (): Promise<void> => {
+    const next = jest.fn();
+    await invokeMiddleware(ctx, next);
+
+    expect(next).toHaveBeenCalledTimes(1);
   });
 });

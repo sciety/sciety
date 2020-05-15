@@ -47,8 +47,7 @@ describe('construct-view-model middleware', (): void => {
   });
 
   it('adds the editorial community description to the context', async (): Promise<void> => {
-    const next = jest.fn();
-    await invokeMiddleware(ctx, next);
+    await invokeMiddleware(ctx);
 
     expect(ctx.state.viewModel.description).toStrictEqual('community-description');
   });
@@ -60,5 +59,12 @@ describe('construct-view-model middleware', (): void => {
     expect(ctx.state.viewModel.reviewedArticles[0].title).toStrictEqual(article1.title);
     expect(ctx.state.viewModel.reviewedArticles[1].doi).toStrictEqual(article2.doi);
     expect(ctx.state.viewModel.reviewedArticles[1].title).toStrictEqual(article2.title);
+  });
+
+  it('calls the next middleware', async (): Promise<void> => {
+    const next = jest.fn();
+    await invokeMiddleware(ctx, next);
+
+    expect(next).toHaveBeenCalledTimes(1);
   });
 });
