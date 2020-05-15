@@ -1,5 +1,5 @@
-import Doi from '../../src/data/doi';
-import templateArticlePageHeader from '../../src/templates/article-page-header';
+import templateArticlePageHeader from '../../../src/article-page/templates/article-page-header';
+import Doi from '../../../src/data/doi';
 
 describe('article page header template', (): void => {
   const article = {

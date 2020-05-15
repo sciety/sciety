@@ -1,5 +1,5 @@
-import Doi from '../../src/data/doi';
-import templateReviewSidebarItem from '../../src/templates/review-sidebar-item';
+import templateReviewSidebarItem from '../../../src/article-page/templates/review-sidebar-item';
+import Doi from '../../../src/data/doi';
 
 describe('review-sidebar-item template', (): void => {
   const review = {

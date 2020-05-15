@@ -1,5 +1,5 @@
-import Doi from '../../src/data/doi';
-import templateReviewSummary from '../../src/templates/review-summary';
+import templateReviewSummary from '../../../src/article-page/templates/review-summary';
+import Doi from '../../../src/data/doi';
 
 describe('review-summary template', (): void => {
   const review = {

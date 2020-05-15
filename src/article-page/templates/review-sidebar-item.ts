@@ -1,5 +1,5 @@
-import templateDate from './date';
-import Doi from '../data/doi';
+import Doi from '../../data/doi';
+import templateDate from '../../templates/date';
 
 export interface ReviewSidebarItem {
   publicationDate: Date;

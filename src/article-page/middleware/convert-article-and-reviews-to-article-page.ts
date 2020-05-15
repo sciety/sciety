@@ -1,7 +1,7 @@
 import { Context, Middleware, Next } from 'koa';
 import Doi from '../../data/doi';
-import { ArticlePage } from '../../templates/article-page';
 import EditorialCommunityRepository from '../../types/editorial-community-repository';
+import { ArticlePage } from '../templates/article-page';
 
 interface Review {
   publicationDate: Date;

@@ -1,10 +1,10 @@
+import addReviewForm from './add-review-form';
 import templateArticlePageHeader from './article-page-header';
-import templateListItems from './list-items';
 import templateReviewSidebarItem from './review-sidebar-item';
 import templateReviewSummary from './review-summary';
-import addReviewForm from '../article-page/middleware/add-review-form';
-import Doi from '../data/doi';
-import EditorialCommunityRepository from '../types/editorial-community-repository';
+import Doi from '../../data/doi';
+import templateListItems from '../../templates/list-items';
+import EditorialCommunityRepository from '../../types/editorial-community-repository';
 
 interface Article {
   title: string;
