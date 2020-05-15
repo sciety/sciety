@@ -42,7 +42,7 @@ jobs:
         if: github.ref == 'refs/heads/master'
         run: |
           aws --region=us-east-1 eks update-kubeconfig --name libero-eks--franklin
-          helm upgrade -i prc--staging --set images.frontend.tag=${IMAGE_TAG} --set hostname=prc-staging.libero.pub helm/prc
+          helm upgrade -i prc--staging --set images.frontend.tag=${IMAGE_TAG} --set hostname=prc-staging.libero.pub --wait helm/prc
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

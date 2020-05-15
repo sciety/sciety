@@ -22,7 +22,7 @@ jobs:
       - name: Deploy to prod
         run: |
           aws --region=us-east-1 eks update-kubeconfig --name libero-eks--franklin
-          helm upgrade -i prc--prod --set images.frontend.tag=${IMAGE_TAG} --set hostname=prc.libero.pub helm/prc
+          helm upgrade -i prc--prod --set images.frontend.tag=${IMAGE_TAG} --set hostname=prc.libero.pub --wait helm/prc
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
