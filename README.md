@@ -96,6 +96,8 @@ A [production environment] is [updated][production deployments] manually by push
 
 ### Releasing to production
 
+Ensure your current reference is [green in CI][build].
+
 Name the tag `latest/*`:
 
 ```
