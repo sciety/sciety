@@ -20,6 +20,14 @@ export default (editorialCommunities: EditorialCommunityRepository): Middleware 
       return;
     }
 
+    const mostRecentReviews = [
+      '<a href="/articles/10.1101/833392">Uncovering the hidden antibiotic potential of Cannabis</a> added by eLife just now',
+      '<a href="/articles/10.1101/642017">Toxoplasma gondii Infection Drives Conversion of NK Cells into ILC1s</a> added by eLife minutes ago',
+      '<a href="/articles/10.1101/615682">A genetic selection reveals functional metastable structures embedded in a toxin-encoding mRNA</a> added by eLife 2 hours ago',
+      '<a href="/articles/10.1101/629618">Androgen-regulated transcription of ESRP2 drives alternative splicing patterns in prostate cancer</a> added by eLife 1 day ago',
+      '<a href="/articles/10.1101/600445">Extensive Ribosome and RF2 Rearrangements during Translation Termination</a> added by eLife last week',
+    ];
+
     response.body = `<header class="content-header">
 
     <h1>
@@ -63,7 +71,17 @@ export default (editorialCommunities: EditorialCommunityRepository): Middleware 
     <ol>
       ${templateListItems(editorialCommunityLinks)}
     </ol>
-  </section>`;
+  </section>
+
+  <section>
+    <h2>
+      Most recent reviews
+    </h2>
+    <ol>
+      ${templateListItems(mostRecentReviews)}
+    </ol>
+  </section>
+`;
 
     await next();
   }
