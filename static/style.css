@@ -131,58 +131,6 @@ main > article > aside {
   padding-bottom: 4.5rem;
 }
 
-.compact-form {
-  font-family: "Noto Sans", Arial, Helvetica, sans-serif;
-  border-bottom: 1px solid rgb(224, 224, 224);
-  text-align: center;
-}
-
-.compact-form > fieldset {
-  border: none;
-  margin: 0 auto;
-  max-width: 27.5rem;
-  padding: 0;
-}
-
-.compact-form__title {
-  font-weight: 600;
-  font-size: 1.625rem;
-  line-height: 1.15385;
-  margin-bottom: 1.125rem;
-}
-
-.compact-form__row {
-  position: relative;
-}
-
-.compact-form__article-doi {
-  background-color: rgb(255, 255, 255);
-  border: 1px solid rgb(224, 224, 224);
-  border-right: none;
-  border-radius: 3px;
-  display: block;
-  font-size: 1rem;
-  line-height: 1.5;
-  padding: .6875rem 3.4375rem .6875rem .75rem;
-  width: 100%;
-}
-
-.compact-form__submit {
-  background: url("forward-arrow.svg"), linear-gradient(transparent, transparent);
-  background-color: rgb(2, 136, 209);
-  background-position: 50% 50%;
-  background-repeat: no-repeat;
-  border: none;
-  border-radius: 0 3px 3px 0;
-  color: rgb(255, 255, 255);
-  cursor: pointer;
-  height: 3rem;
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 2.9375rem;
-}
-
 .content-header {
   font-family: "Noto Sans", Arial, Helvetica, sans-serif;
   border-bottom: 1px solid #e0e0e0;
@@ -270,4 +218,92 @@ main > article > aside {
   display: grid;
   grid-gap: 1.125rem;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+/*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+
+.add-review__form {
+  font-family: "Noto Sans", Arial, Helvetica, sans-serif;
+  background-color: #ededed;
+  padding: 16px;
+}
+
+.add-review__form > h2 {
+  font-weight: 300;
+  font-size: 1.25rem;
+  text-align: center;
+}
+
+.add-review__form .help-text {
+  font-size: 90%;
+  font-weight: 100;
+}
+
+.add-review-form__submit {
+  background-color: rgb(2, 136, 209);
+  color: #ffffff;
+  font-size: 175%;
+  margin-top: 24px;
+  padding: 12px;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+}
+
+.add-review-form__submit:hover {
+  background-color: #026296
+}
+
+/*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+
+.compact-form {
+  font-family: "Noto Sans", Arial, Helvetica, sans-serif;
+  border-bottom: 1px solid rgb(224, 224, 224);
+  text-align: center;
+}
+
+.compact-form > fieldset {
+  border: none;
+  margin: 0 auto;
+  max-width: 27.5rem;
+  padding: 0;
+}
+
+.compact-form__title {
+  font-weight: 600;
+  font-size: 1.625rem;
+  line-height: 1.15385;
+  margin-bottom: 1.125rem;
+}
+
+.compact-form__row {
+  position: relative;
+}
+
+.compact-form__article-doi {
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgb(224, 224, 224);
+  border-right: none;
+  border-radius: 3px;
+  display: block;
+  font-size: 1rem;
+  line-height: 1.5;
+  padding: .6875rem 3.4375rem .6875rem .75rem;
+  width: 100%;
+}
+
+.compact-form__submit {
+  background: url("forward-arrow.svg"), linear-gradient(transparent, transparent);
+  background-color: rgb(2, 136, 209);
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  border: none;
+  border-radius: 0 3px 3px 0;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  height: 3rem;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 2.9375rem;
 }
