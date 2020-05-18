@@ -1,20 +1,21 @@
 import { NOT_FOUND } from 'http-status-codes';
 import request, { Response } from 'supertest';
-import { article3 as article3Doi } from '../../src/data/article-dois';
+import Doi from '../../src/data/doi';
 import createServer from '../handlers/server';
 
 describe('article route', (): void => {
   let response: Response;
 
   describe('when the article is from bioRxiv', (): void => {
+    const articleDoi = new Doi('10.1101/833392');
+
     beforeEach(async () => {
-      const doi = article3Doi;
       const { server } = createServer();
-      response = await request(server).get(`/articles/${doi}`);
+      response = await request(server).get(`/articles/${articleDoi}`);
     });
 
     it('returns a page containing article metadata', async (): Promise<void> => {
-      expect(response.text).toStrictEqual(expect.stringContaining(article3Doi.toString()));
+      expect(response.text).toStrictEqual(expect.stringContaining(articleDoi.toString()));
     });
   });
 

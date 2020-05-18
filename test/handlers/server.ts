@@ -6,15 +6,19 @@ import datasetFactory from 'rdf-dataset-indexed';
 import createFetchArticle from '../../src/api/fetch-article';
 import { FetchDataset } from '../../src/api/fetch-dataset';
 import createFetchReview from '../../src/api/fetch-review';
-import { article3, article4 } from '../../src/data/article-dois';
+import Doi from '../../src/data/doi';
 import createEditorialCommunityRepository from '../../src/data/in-memory-editorial-communities';
 import createReviewReferenceRepository from '../../src/data/in-memory-review-references';
-import { article3Review1, article4Review1 } from '../../src/data/review-dois';
 import createRouter from '../../src/router';
 import createServer from '../../src/server';
 import { Adapters } from '../../src/types/adapters';
 import EditorialCommunityRepository from '../../src/types/editorial-community-repository';
 import ReviewReferenceRepository from '../../src/types/review-reference-repository';
+
+const articleA = new Doi('10.1101/833392');
+const articleB = new Doi('10.1101/2020.03.22.002386');
+const articleAReview1 = new Doi('10.5281/zenodo.3678325');
+const articleBReview1 = new Doi('10.5281/zenodo.3756961');
 
 export interface TestServer {
   server: Server;
@@ -25,8 +29,8 @@ export interface TestServer {
 export default (): TestServer => {
   const editorialCommunities = createEditorialCommunityRepository();
   const reviewReferenceRepository = createReviewReferenceRepository();
-  reviewReferenceRepository.add(article3, article3Review1, editorialCommunities.all()[0].id);
-  reviewReferenceRepository.add(article4, article4Review1, editorialCommunities.all()[1].id);
+  reviewReferenceRepository.add(articleA, articleAReview1, editorialCommunities.all()[0].id);
+  reviewReferenceRepository.add(articleB, articleBReview1, editorialCommunities.all()[1].id);
   const fetchCrossrefDataset: FetchDataset = async () => (
     clownface({ dataset: datasetFactory(), term: namedNode('http://example.com/some-crossref-node') })
       .addOut(dcterms.title, 'Article title')
