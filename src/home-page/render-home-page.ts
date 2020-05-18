@@ -66,21 +66,27 @@ export default (editorialCommunities: EditorialCommunityRepository): Middleware 
 
   </form>
 
-  <section>
-    <h2> Editorial communities </h2>
-    <ol>
-      ${templateListItems(editorialCommunityLinks)}
-    </ol>
-  </section>
+  <div class="content-lists">
 
-  <section>
-    <h2>
-      Most recent reviews
-    </h2>
-    <ol>
-      ${templateListItems(mostRecentReviews)}
-    </ol>
-  </section>
+    <section>
+      <h2>
+        Editorial communities
+      </h2>
+      <ol>
+        ${templateListItems(editorialCommunityLinks)}
+      </ol>
+    </section>
+  
+    <section>
+      <h2>
+        Most recent reviews
+      </h2>
+      <ol>
+        ${templateListItems(mostRecentReviews)}
+      </ol>
+    </section>
+  
+  </div>
 `;
 
     await next();

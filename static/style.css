@@ -104,19 +104,12 @@ main > article {
   display: grid;
   grid-column-gap: 1.125rem;
   grid-row-gap: 1.125rem;
-  grid-template-areas:
-    "header"
-    "secondary"
-    "primary"
-  ;
+  grid-template-areas: "header" "secondary" "primary";
 }
 
 @media (min-width: 56.25em) {
   main > article {
-    grid-template-areas:
-      "header  header"
-      "primary secondary"
-    ;
+    grid-template-areas: "header  header" "primary secondary";
     grid-template-columns: [main-start] 3fr 1fr [main-end];
   }
 }
@@ -271,4 +264,10 @@ main > article > aside {
 
 .review-summary__link:hover {
   text-decoration: underline;
+}
+
+.content-lists {
+  display: grid;
+  grid-gap: 1.125rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
