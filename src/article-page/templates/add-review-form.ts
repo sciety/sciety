@@ -11,7 +11,6 @@ export default (article: Article, editorialCommunities: EditorialCommunityReposi
     <input type="hidden" name="articleversiondoi" value="${article.doi}">
     <p class="help-text">
       Please select the Editorial Community you represent and enter a Zenodo DOI.
-      This platform is for demonstration purposes only and data entered may not persist.
     </p>
     <select
       name="editorialcommunityid"
@@ -28,5 +27,8 @@ export default (article: Article, editorialCommunities: EditorialCommunityReposi
     <button type="submit" class="add-review-form__submit">
       Add review
     </button>
+    <p class="warning">
+      This platform is for demonstration purposes only and data entered may not persist.
+    </p>
   </form>`;
 };

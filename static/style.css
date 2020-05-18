@@ -234,7 +234,7 @@ main > article > aside {
   text-align: center;
 }
 
-.add-review__form .help-text {
+.add-review__form p {
   font-size: 90%;
   font-weight: 100;
 }
@@ -266,6 +266,11 @@ main > article > aside {
 
 .add-review-form__submit:hover {
   background-color: #026296
+}
+
+.add-review-form .warning {
+  margin-top: 36px;
+  color: #d90000;
 }
 
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
