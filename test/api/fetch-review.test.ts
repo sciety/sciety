@@ -4,7 +4,9 @@ import clownface from 'clownface';
 import datasetFactory from 'rdf-dataset-indexed';
 import { FetchDataset } from '../../src/api/fetch-dataset';
 import createFetchReview from '../../src/api/fetch-review';
-import { article3Review1 } from '../../src/data/review-dois';
+import Doi from '../../src/data/doi';
+
+const reviewDoi = new Doi('10.5281/zenodo.3678325');
 
 describe('fetch-review', (): void => {
   it('returns the review', async () => {
@@ -14,7 +16,7 @@ describe('fetch-review', (): void => {
         .addOut(schema.description, 'A summary')
     );
     const fetchReview = createFetchReview(fetchDataset);
-    const review = await fetchReview(article3Review1);
+    const review = await fetchReview(reviewDoi);
 
     expect(review.publicationDate).toStrictEqual(new Date('2020-02-20'));
   });
