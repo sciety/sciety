@@ -24,6 +24,8 @@ reviewReferenceRepository.add(article4, article4Review1, editorialCommunities.al
 const bootstrapArticlesAndReviews = {
   '10.1101/642017': '10.5281/zenodo.3820276',
   '10.1101/615682': '10.5281/zenodo.3820283',
+  '10.1101/629618': '10.5281/zenodo.3820289',
+  '10.1101/600445': '10.5281/zenodo.3820295',
 };
 Object.entries(bootstrapArticlesAndReviews).forEach(([article, review]) => {
   reviewReferenceRepository.add(
