@@ -7,7 +7,7 @@ import templateListItems from '../templates/list-items';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 
 export default (editorialCommunities: EditorialCommunityRepository): Middleware => (
-  async ({ request, response }: RouterContext, next: Next): Promise<void> => {
+  async ({ request, response, state }: RouterContext, next: Next): Promise<void> => {
     const editorialCommunityLinks = editorialCommunities.all().map((ec) => `<a href="/editorial-communities/${ec.id}">${ec.name}</a>`);
     if (request.query.articledoi) {
       let doi: Doi;
@@ -20,34 +20,6 @@ export default (editorialCommunities: EditorialCommunityRepository): Middleware 
       await next();
       return;
     }
-
-    const mostRecentReviews = [
-      {
-        articleDoi: new Doi('10.1101/833392'),
-        articleTitle: 'Uncovering the hidden antibiotic potential of Cannabis',
-        editorialCommunityName: 'eLife',
-      },
-      {
-        articleDoi: new Doi('10.1101/642017'),
-        articleTitle: 'Toxoplasma gondii Infection Drives Conversion of NK Cells into ILC1s',
-        editorialCommunityName: 'eLife',
-      },
-      {
-        articleDoi: new Doi('10.1101/615682'),
-        articleTitle: 'A genetic selection reveals functional metastable structures embedded in a toxin-encoding mRNA',
-        editorialCommunityName: 'eLife',
-      },
-      {
-        articleDoi: new Doi('10.1101/629618'),
-        articleTitle: 'Androgen-regulated transcription of ESRP2 drives alternative splicing patterns in prostate cancer',
-        editorialCommunityName: 'eLife',
-      },
-      {
-        articleDoi: new Doi('10.1101/600445'),
-        articleTitle: 'Extensive Ribosome and RF2 Rearrangements during Translation Termination',
-        editorialCommunityName: 'eLife',
-      },
-    ];
 
     response.body = `<header class="content-header">
 
@@ -98,7 +70,7 @@ export default (editorialCommunities: EditorialCommunityRepository): Middleware 
       </ol>
     </section>
   
-    ${templateMostRecentReviews(mostRecentReviews)}
+    ${templateMostRecentReviews(state.viewModel.mostRecentReviews)}
   
   </div>
 `;

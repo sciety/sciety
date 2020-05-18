@@ -1,0 +1,31 @@
+import { Context, Middleware, Response } from 'koa';
+import constructViewModel from '../../src/home-page/construct-view-model';
+import createContext from '../context';
+import runMiddleware from '../middleware';
+
+const invokeMiddleware = async (ctx: Context, next?: Middleware): Promise<Response> => {
+  const { response } = await runMiddleware(constructViewModel(), ctx, next);
+  return response;
+};
+
+describe('construct-view-model middleware', (): void => {
+  let ctx: Context;
+
+  beforeEach(() => {
+    ctx = createContext();
+    ctx.state = {};
+  });
+
+  it('adds most recent reviews to the context', async (): Promise<void> => {
+    await invokeMiddleware(ctx);
+
+    expect(ctx.state.viewModel.mostRecentReviews).toHaveLength(5);
+  });
+
+  it('calls the next middleware', async (): Promise<void> => {
+    const next = jest.fn();
+    await invokeMiddleware(ctx, next);
+
+    expect(next).toHaveBeenCalledTimes(1);
+  });
+});
