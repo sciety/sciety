@@ -1,7 +1,6 @@
 import { Middleware, RouterContext } from '@koa/router';
 import { BadRequest } from 'http-errors';
 import { Next } from 'koa';
-import { article3 } from '../data/article-dois';
 import Doi from '../data/doi';
 import templateListItems from '../templates/list-items';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
