@@ -3,13 +3,13 @@ import { dcterms, foaf } from '@tpluscode/rdf-ns-builders';
 import { FetchDataset } from './fetch-dataset';
 import Doi from '../data/doi';
 import createLogger from '../logger';
-import { Article } from '../types/article';
+import { FetchedArticle } from '../types/fetched-article';
 
-export type FetchArticle = (doi: Doi) => Promise<Article>;
+export type FetchArticle = (doi: Doi) => Promise<FetchedArticle>;
 
 export default (fetchDataset: FetchDataset): FetchArticle => {
   const log = createLogger('api:fetch-article');
-  return async (doi: Doi): Promise<Article> => {
+  return async (doi: Doi): Promise<FetchedArticle> => {
     const articleIri = namedNode(`https://doi.org/${doi}`);
     log(`Fetching article ${articleIri.value}`);
     const graph = await fetchDataset(articleIri);
@@ -19,7 +19,7 @@ export default (fetchDataset: FetchDataset): FetchArticle => {
     const publicationDate = new Date(graph.out(dcterms.date).value || 0);
     const abstract = '<p>No abstract available.</p>';
 
-    const response: Article = {
+    const response: FetchedArticle = {
       doi,
       title,
       authors,

@@ -1,6 +1,6 @@
 import Doi from '../data/doi';
 
-export interface Article {
+export interface FetchedArticle {
   title: string;
   doi: Doi;
   publicationDate: Date;

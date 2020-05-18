@@ -1,11 +1,11 @@
 import { Context, Middleware, Response } from 'koa';
 import Doi from '../../src/data/doi';
 import constructViewModel from '../../src/editorial-community-page/construct-view-model';
-import { Article } from '../../src/types/article';
+import { FetchedArticle } from '../../src/types/fetched-article';
 import createContext from '../context';
 import runMiddleware from '../middleware';
 
-const article1: Article = {
+const article1: FetchedArticle = {
   doi: new Doi('10.1111/2'),
   title: 'article-1',
   publicationDate: new Date(),
@@ -13,7 +13,7 @@ const article1: Article = {
   authors: [],
 };
 
-const article2: Article = {
+const article2: FetchedArticle = {
   doi: new Doi('10.2222/2'),
   title: 'article-2',
   publicationDate: new Date(),

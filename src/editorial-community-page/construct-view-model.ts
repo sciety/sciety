@@ -1,10 +1,10 @@
 import { Context, Middleware, Next } from 'koa';
-import { Article } from '../types/article';
+import { FetchedArticle } from '../types/fetched-article';
 
 export default (): Middleware => (
   async (ctx: Context, next: Next): Promise<void> => {
     const { editorialCommunity, fetchedArticles } = ctx.state;
-    const articles: Array<Article> = await fetchedArticles;
+    const articles: Array<FetchedArticle> = await fetchedArticles;
     const reviewedArticles = articles.map((article) => ({
       doi: article.doi,
       title: article.title,
