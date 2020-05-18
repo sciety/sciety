@@ -40,8 +40,13 @@ export default (editorialCommunities: EditorialCommunityRepository): Middleware 
       <div class="compact-form__row">
 
         <label>
-          <span class="visually-hidden">DOI of an article</span>
-          <input type="text" name="articledoi" placeholder="${article3}" class="compact-form__article-doi" required>
+          <span class="visually-hidden">Search for an article by bioRxiv DOI</span>
+          <input
+            type="text"
+            name="articledoi"
+            placeholder="Search for an article by bioRxiv DOI"
+            class="compact-form__article-doi"
+            required>
         </label>
 
         <button type="submit" class="compact-form__submit">
