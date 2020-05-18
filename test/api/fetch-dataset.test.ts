@@ -3,7 +3,9 @@ import rdfFetch, { DatasetResponse } from '@rdfjs/fetch-lite';
 import datasetFactory from 'rdf-dataset-indexed';
 import { DatasetCore } from 'rdf-js';
 import createFetchDataset, { FetchDatasetError } from '../../src/api/fetch-dataset';
-import { article3Review1 } from '../../src/data/review-dois';
+import Doi from '../../src/data/doi';
+
+const reviewDoi = new Doi('10.5281/zenodo.3678325');
 
 const createStubFetch = (response: Partial<DatasetResponse<DatasetCore>>): typeof rdfFetch => (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -13,7 +15,7 @@ const createStubFetch = (response: Partial<DatasetResponse<DatasetCore>>): typeo
 describe('fetch-dataset', (): void => {
   describe('dataset found', (): void => {
     it('fetches a dataset for an IRI', async () => {
-      const iri = namedNode(`https://doi.org/${article3Review1}`);
+      const iri = namedNode(`https://doi.org/${reviewDoi}`);
       const cannedDataset = datasetFactory([]);
       const stubFetch = createStubFetch({
         ok: true,
@@ -28,8 +30,8 @@ describe('fetch-dataset', (): void => {
     });
 
     it('fetches a dataset that uses a different IRI', async () => {
-      const iri = namedNode(`https://doi.org/${article3Review1}`);
-      const usedIri = namedNode(`http://dx.doi.org/${article3Review1}`);
+      const iri = namedNode(`https://doi.org/${reviewDoi}`);
+      const usedIri = namedNode(`http://dx.doi.org/${reviewDoi}`);
       const cannedDataset = datasetFactory([]);
       const stubFetch = createStubFetch({
         ok: true,
