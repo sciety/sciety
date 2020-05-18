@@ -2,10 +2,14 @@ import { createTerminus, TerminusOptions } from '@godaddy/terminus';
 import createFetchArticle from './api/fetch-article';
 import createFetchDataset from './api/fetch-dataset';
 import createFetchReview from './api/fetch-review';
-import { article3, article4, articleElife1, articleElife2 } from './data/article-dois';
+import {
+  article3, article4, articleElife1, articleElife2,
+} from './data/article-dois';
 import createEditorialCommunityRepository from './data/in-memory-editorial-communities';
 import createReviewReferenceRepository from './data/in-memory-review-references';
-import { article3Review1, article4Review1, articleElife1Review1, articleElife2Review1 } from './data/review-dois';
+import {
+  article3Review1, article4Review1, articleElife1Review1, articleElife2Review1,
+} from './data/review-dois';
 import createLogger from './logger';
 import createRouter from './router';
 import createServer from './server';
