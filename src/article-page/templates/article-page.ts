@@ -62,8 +62,10 @@ export default ({ article, reviews }: ArticlePage, editorialCommunities: Editori
         ${templateListItems(reviewSidebarItems)}
       </ol>
 
-      <h2> Add a review of this article </h2>
-      ${addReviewForm(article, editorialCommunities)}
+      <div class="add-review-form">
+        <h2> Add a review to this article </h2>
+        ${addReviewForm(article, editorialCommunities)}
+      </div>
 
     </aside>
 
