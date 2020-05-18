@@ -3,12 +3,13 @@ import createFetchArticle from './api/fetch-article';
 import createFetchDataset from './api/fetch-dataset';
 import createFetchReview from './api/fetch-review';
 import {
-  article3, article4, articleElife1, articleElife2,
+  article3, article4, articleElife2,
 } from './data/article-dois';
+import Doi from './data/doi';
 import createEditorialCommunityRepository from './data/in-memory-editorial-communities';
 import createReviewReferenceRepository from './data/in-memory-review-references';
 import {
-  article3Review1, article4Review1, articleElife1Review1, articleElife2Review1,
+  article3Review1, article4Review1, articleElife2Review1,
 } from './data/review-dois';
 import createLogger from './logger';
 import createRouter from './router';
@@ -24,7 +25,16 @@ const editorialCommunities = createEditorialCommunityRepository();
 const reviewReferenceRepository = createReviewReferenceRepository();
 reviewReferenceRepository.add(article3, article3Review1, editorialCommunities.all()[0].id);
 reviewReferenceRepository.add(article4, article4Review1, editorialCommunities.all()[1].id);
-reviewReferenceRepository.add(articleElife1, articleElife1Review1, editorialCommunities.all()[0].id);
+const bootstrapArticlesAndReviews = {
+  '10.1101/642017': '10.5281/zenodo.3820276',
+};
+Object.entries(bootstrapArticlesAndReviews).forEach(([article, review]) => {
+  reviewReferenceRepository.add(
+    new Doi(article),
+    new Doi(review),
+    editorialCommunities.all()[0].id,
+  );
+});
 reviewReferenceRepository.add(articleElife2, articleElife2Review1, editorialCommunities.all()[0].id);
 
 const fetchDataset = createFetchDataset();
