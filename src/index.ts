@@ -2,15 +2,11 @@ import { createTerminus, TerminusOptions } from '@godaddy/terminus';
 import createFetchArticle from './api/fetch-article';
 import createFetchDataset from './api/fetch-dataset';
 import createFetchReview from './api/fetch-review';
-import {
-  article3, article4, articleElife2,
-} from './data/article-dois';
+import { article3, article4 } from './data/article-dois';
 import Doi from './data/doi';
 import createEditorialCommunityRepository from './data/in-memory-editorial-communities';
 import createReviewReferenceRepository from './data/in-memory-review-references';
-import {
-  article3Review1, article4Review1, articleElife2Review1,
-} from './data/review-dois';
+import { article3Review1, article4Review1 } from './data/review-dois';
 import createLogger from './logger';
 import createRouter from './router';
 import createServer from './server';
@@ -27,6 +23,7 @@ reviewReferenceRepository.add(article3, article3Review1, editorialCommunities.al
 reviewReferenceRepository.add(article4, article4Review1, editorialCommunities.all()[1].id);
 const bootstrapArticlesAndReviews = {
   '10.1101/642017': '10.5281/zenodo.3820276',
+  '10.1101/615682': '10.5281/zenodo.3820283',
 };
 Object.entries(bootstrapArticlesAndReviews).forEach(([article, review]) => {
   reviewReferenceRepository.add(
@@ -35,7 +32,6 @@ Object.entries(bootstrapArticlesAndReviews).forEach(([article, review]) => {
     editorialCommunities.all()[0].id,
   );
 });
-reviewReferenceRepository.add(articleElife2, articleElife2Review1, editorialCommunities.all()[0].id);
 
 const fetchDataset = createFetchDataset();
 const adapters: Adapters = {
