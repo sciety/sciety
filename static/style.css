@@ -239,11 +239,25 @@ main > article > aside {
   font-weight: 100;
 }
 
+.add-review-form select {
+  margin-top: 12px;
+  padding: 8px 0;
+  width: 100%;
+  font-size: 100%;
+}
+
+.add-review-form__review-doi {
+  margin-top: 12px;
+  padding: 8px;
+  width: 100%;
+  font-size: 100%;
+}
+
 .add-review-form__submit {
   background-color: rgb(2, 136, 209);
   color: #ffffff;
   font-size: 175%;
-  margin-top: 24px;
+  margin-top: 12px;
   padding: 12px;
   width: 100%;
   border: none;

@@ -23,7 +23,7 @@ export default (article: Article, editorialCommunities: EditorialCommunityReposi
       name="reviewdoi"
       id="reviewdoi"
       placeholder="Zenodo review DOI"
-      class="add-review-form__article-doi"
+      class="add-review-form__review-doi"
       required>
     <button type="submit" class="add-review-form__submit">
       Add review
