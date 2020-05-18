@@ -1,7 +1,6 @@
 import { createTerminus, TerminusOptions } from '@godaddy/terminus';
 import createFetchArticle from './api/fetch-article';
 import createFetchDataset from './api/fetch-dataset';
-import createFetchEditorialCommunityReviewedArticles from './api/fetch-editorial-community-reviewed-articles';
 import createFetchReview from './api/fetch-review';
 import { article3, article4 } from './data/article-dois';
 import createEditorialCommunityRepository from './data/in-memory-editorial-communities';
@@ -25,7 +24,6 @@ reviewReferenceRepository.add(article4, article4Review1, editorialCommunities.al
 const fetchDataset = createFetchDataset();
 const adapters: Adapters = {
   fetchArticle: createFetchArticle(fetchDataset),
-  fetchEditorialCommunityReviewedArticles: createFetchEditorialCommunityReviewedArticles(editorialCommunities),
   fetchReview: createFetchReview(fetchDataset),
   editorialCommunities,
   reviewReferenceRepository,
