@@ -1,9 +1,9 @@
 import { NOT_FOUND } from 'http-status-codes';
 import request, { Response } from 'supertest';
-import createServer from './server';
 import { article3 as article3Doi } from '../../src/data/article-dois';
+import createServer from '../handlers/server';
 
-describe('article handler', (): void => {
+describe('article route', (): void => {
   let response: Response;
 
   describe('when the article is from bioRxiv', (): void => {
