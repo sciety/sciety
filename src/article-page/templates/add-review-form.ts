@@ -1,5 +1,4 @@
 import Doi from '../../data/doi';
-import { article3Review1 } from '../../data/review-dois';
 import EditorialCommunityRepository from '../../types/editorial-community-repository';
 
 interface Article {
@@ -22,7 +21,7 @@ export default (article: Article, editorialCommunities: EditorialCommunityReposi
         type="text"
         name="reviewdoi"
         id="reviewdoi"
-        placeholder="${article3Review1}"
+        placeholder="Zenodo review DOI"
         class="compact-form__article-doi"
         required>
       <button type="submit" class="compact-form__submit">
