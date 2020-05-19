@@ -19,6 +19,23 @@ describe('construct-view-model middleware', (): void => {
           name: 'eLife',
         },
       },
+      fetchedArticles: Promise.resolve({
+        '10.1101/833392': {
+          title: 'Article 10.1101/833392',
+        },
+        '10.1101/642017': {
+          title: 'Article 10.1101/642017',
+        },
+        '10.1101/615682': {
+          title: 'Article 10.1101/615682',
+        },
+        '10.1101/629618': {
+          title: 'Article 10.1101/629618',
+        },
+        '10.1101/600445': {
+          title: 'Article 10.1101/600445',
+        },
+      }),
     };
   });
 
