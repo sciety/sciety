@@ -20,9 +20,6 @@ describe('construct-view-model middleware', (): void => {
         },
       },
       fetchedArticles: Promise.resolve({
-        '10.1101/833392': {
-          title: 'Article 10.1101/833392',
-        },
         '10.1101/642017': {
           title: 'Article 10.1101/642017',
         },
@@ -34,6 +31,9 @@ describe('construct-view-model middleware', (): void => {
         },
         '10.1101/600445': {
           title: 'Article 10.1101/600445',
+        },
+        '10.1101/252593': {
+          title: 'Article 10.1101/252593',
         },
       }),
     };

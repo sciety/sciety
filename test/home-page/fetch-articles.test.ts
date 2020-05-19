@@ -32,7 +32,7 @@ describe('fetch-articles middleware', (): void => {
   it('adds fetched articles to the context', async (): Promise<void> => {
     await invokeMiddleware(fetchArticle, ctx);
 
-    expect(await ctx.state.fetchedArticles).toHaveProperty(['10.1101/833392']);
+    expect(await ctx.state.fetchedArticles).toHaveProperty(['10.1101/642017']);
   });
 
   it('calls the next middleware', async (): Promise<void> => {

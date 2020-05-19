@@ -7,11 +7,11 @@ export default (
 ): Middleware => (
   async (ctx: Context, next: Next): Promise<void> => {
     const articleVersionDois = [
-      new Doi('10.1101/833392'),
       new Doi('10.1101/642017'),
       new Doi('10.1101/615682'),
       new Doi('10.1101/629618'),
       new Doi('10.1101/600445'),
+      new Doi('10.1101/252593'),
     ];
 
     ctx.state.fetchedArticles = Promise.all(articleVersionDois.map(fetchArticle)).then((fetchedArticles) => (
