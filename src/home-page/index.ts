@@ -9,7 +9,7 @@ import { Adapters } from '../types/adapters';
 
 export default (adapters: Adapters): Middleware => (
   compose([
-    lookupMostRecentReviewReferences(),
+    lookupMostRecentReviewReferences(adapters.reviewReferenceRepository),
     fetchArticles(adapters.fetchArticle),
     populateEditorialCommunities(adapters.editorialCommunities),
     constructViewModel(),

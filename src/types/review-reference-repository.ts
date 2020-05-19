@@ -13,4 +13,6 @@ export default interface ReviewReferenceRepository {
   findReviewsForEditorialCommunityId(
     editorialCommunityId: string,
   ): Array<ReviewReference>;
+  orderByAddedDescending(
+  ): Array<ReviewReference>;
 }
