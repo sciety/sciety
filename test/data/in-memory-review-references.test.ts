@@ -31,8 +31,8 @@ describe('review-reference-repository', () => {
 
     beforeEach(() => {
       reviewReferenceRepository.add(article1, review1, editorialCommunity1, new Date('2020-05-19T00:00:00Z'));
-      reviewReferenceRepository.add(article2, review2, editorialCommunity1, new Date('2020-05-19T00:00:00Z'));
-      reviewReferenceRepository.add(article1, review3, editorialCommunity2, new Date('2020-05-19T00:00:00Z'));
+      reviewReferenceRepository.add(article2, review2, editorialCommunity1, new Date('2020-05-21T00:00:00Z'));
+      reviewReferenceRepository.add(article1, review3, editorialCommunity2, new Date('2020-05-20T00:00:00Z'));
     });
 
     it.each([
@@ -55,6 +55,14 @@ describe('review-reference-repository', () => {
       const actualReviews = reviewReferenceRepository.findReviewsForEditorialCommunityId(editorialCommunityId)
         .map((reviewReference) => reviewReference.reviewDoi)
         .sort();
+
+      expect(actualReviews).toStrictEqual(expectedReviews);
+    });
+
+    it('orders the review references by added date', () => {
+      const actualReviews = reviewReferenceRepository.orderByAddedDescending()
+        .map((reviewReference) => reviewReference.reviewDoi);
+      const expectedReviews = [review2, review3, review1];
 
       expect(actualReviews).toStrictEqual(expectedReviews);
     });
