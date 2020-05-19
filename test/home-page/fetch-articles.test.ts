@@ -30,11 +30,9 @@ describe('fetch-articles middleware', (): void => {
       mostRecentReviews: [
         {
           articleVersionDoi: new Doi('10.1101/642017'),
-          reviewDoi: new Doi('10.5281/zenodo.3820276'),
         },
         {
           articleVersionDoi: new Doi('10.1101/615682'),
-          reviewDoi: new Doi('10.5281/zenodo.3820283'),
         },
       ],
     };
