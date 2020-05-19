@@ -1,5 +1,5 @@
 export default {
-    '10.1101/642017': `<p>Innate lymphoid cells (ILCs) were originally classified based on their cytokine profiles, placing
+  '10.1101/642017': `<p>Innate lymphoid cells (ILCs) were originally classified based on their cytokine profiles, placing
    natural killer (NK) cells and ILC1s together, but recent studies support their separation into different lineages 
    at steady-state. However, tumors may induce NK cell conversion into ILC1-like cells that are limited to the tumor 
    microenvironment and whether this conversion occurs beyond this environment remains unknown. Here we describe 
@@ -9,4 +9,4 @@ export default {
    cells that circulate widely and persist independent of ongoing infection. Moreover, these changes appear permanent, 
    as supported by epigenetic analyses. Thus, these studies markedly expand current concepts of NK cells, ILCs, and 
    their potential conversion.</p>`,
-} as Record<string,string|undefined>;
+} as Record<string, string|undefined>;
