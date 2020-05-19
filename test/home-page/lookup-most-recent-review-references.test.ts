@@ -48,6 +48,14 @@ describe('lookup-most-recent-review-references middleware', (): void => {
     expect(ctx.state.mostRecentReviewReferences).toHaveLength(2);
   });
 
+  it('asks for 5 review references', async (): Promise<void> => {
+    const reviewReferenceRepositorySpy = jest.spyOn(reviewReferenceRepository, 'orderByAddedDescending');
+
+    await invokeMiddleware(reviewReferenceRepository, ctx);
+
+    expect(reviewReferenceRepositorySpy).toHaveBeenCalledWith(5);
+  });
+
   it('calls the next middleware', async (): Promise<void> => {
     const next = jest.fn();
     await invokeMiddleware(reviewReferenceRepository, ctx, next);

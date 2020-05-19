@@ -29,9 +29,9 @@ export default (): ReviewReferenceRepository => {
         .filter((reference) => reference.editorialCommunityId === editorialCommunityId)
     ),
 
-    orderByAddedDescending: () => reviewReferences.sort((a, b) => (
+    orderByAddedDescending: (limit: number) => reviewReferences.sort((a, b) => (
       b.added.getTime() - a.added.getTime()
-    )),
+    )).slice(0, limit),
   };
   return reviewReferenceRepository;
 };

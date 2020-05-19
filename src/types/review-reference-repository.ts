@@ -15,5 +15,6 @@ export default interface ReviewReferenceRepository {
     editorialCommunityId: string,
   ): Array<ReviewReference>;
   orderByAddedDescending(
+    limit: number,
   ): Array<ReviewReference>;
 }
