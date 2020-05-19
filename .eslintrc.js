@@ -24,6 +24,7 @@ module.exports = {
   rules: {
     '@typescript-eslint/brace-style': ['error', '1tbs'],
     '@typescript-eslint/no-unused-vars': 'error',
+    '@typescript-eslint/array-type': ['error', { default: 'generic' }],
     'jest/no-hooks': 'off',
     'jest/prefer-expect-assertions': 'off',
     'import/order': ['error', {

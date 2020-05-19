@@ -5,5 +5,5 @@ export interface FetchedArticle {
   doi: Doi;
   publicationDate: Date;
   abstract: string;
-  authors: string[];
+  authors: Array<string>;
 }
