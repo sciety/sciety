@@ -1,11 +1,3 @@
----
-title:
-  - type: Paragraph
-    content:
-      - About the PRC Platform
-authors: [eLife]
----
-
 # Current direction
 
 The desired behaviour change we are currently exploring is that authors will increasingly rely on the platform for feedback rather than traditional peer review afforded by a journal. In order to drive this behaviour we assume that we will need to provide the same (and greater) value to its users that they currently get from journal submission and eventual publication.
