@@ -16,7 +16,7 @@ export default (
 
     ctx.state.fetchedArticles = Promise.all(articleVersionDois.map(fetchArticle)).then((fetchedArticles) => (
       fetchedArticles.reduce((fetchedArticlesMap, fetchedArticle) => ({
-        ...fetchedArticlesMap, [fetchedArticle.doi.toString()]: fetchArticle,
+        ...fetchedArticlesMap, [fetchedArticle.doi.toString()]: fetchedArticle,
       }), {})
     ));
 
