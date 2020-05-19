@@ -6,7 +6,7 @@ import renderAboutPage from './render-about-page';
 
 export default (): Middleware => (
   compose([
-    readFile('/static/about.md'),
+    readFile('about.md'),
     convertMarkdownToHtml(),
     renderAboutPage(),
   ])
