@@ -1,4 +1,5 @@
 import { Context, Middleware, Response } from 'koa';
+import Doi from '../../src/data/doi';
 import constructViewModel from '../../src/home-page/construct-view-model';
 import createContext from '../context';
 import runMiddleware from '../middleware';
@@ -26,23 +27,29 @@ describe('construct-view-model middleware', (): void => {
         '10.1101/615682': {
           title: 'Article 10.1101/615682',
         },
-        '10.1101/629618': {
-          title: 'Article 10.1101/629618',
-        },
-        '10.1101/600445': {
-          title: 'Article 10.1101/600445',
-        },
-        '10.1101/252593': {
-          title: 'Article 10.1101/252593',
-        },
       }),
+      mostRecentReviews: [
+        {
+          articleVersionDoi: new Doi('10.1101/642017'),
+          editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
+        },
+        {
+          articleVersionDoi: new Doi('10.1101/615682'),
+          editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
+        },
+      ],
     };
   });
 
   it('adds most recent reviews to the context', async (): Promise<void> => {
     await invokeMiddleware(ctx);
 
-    expect(ctx.state.viewModel.mostRecentReviews).toHaveLength(5);
+    expect(ctx.state.viewModel.mostRecentReviews).toHaveLength(2);
+    expect(ctx.state.viewModel.mostRecentReviews[0]).toMatchObject({
+      articleDoi: new Doi('10.1101/642017'),
+      articleTitle: 'Article 10.1101/642017',
+      editorialCommunityName: 'eLife',
+    });
   });
 
   it('calls the next middleware', async (): Promise<void> => {

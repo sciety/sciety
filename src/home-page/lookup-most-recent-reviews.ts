@@ -21,13 +21,13 @@ export default (): Middleware => (
         editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
       },
       {
-        articleVersionDoi: new Doi('10.1101/600445'),
-        reviewDoi: new Doi('10.5281/zenodo.3833915'),
+        articleVersionDoi: new Doi('10.1101/252593'),
+        reviewDoi: new Doi('10.5281/zenodo.3833893'),
         editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
       },
       {
-        articleVersionDoi: new Doi('10.1101/252593'),
-        reviewDoi: new Doi('10.5281/zenodo.3833893'),
+        articleVersionDoi: new Doi('10.1101/600445'),
+        reviewDoi: new Doi('10.5281/zenodo.3833915'),
         editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
       },
     ];
