@@ -1,6 +1,7 @@
 import { namedNode } from '@rdfjs/data-model';
 import { dcterms, foaf } from '@tpluscode/rdf-ns-builders';
 import { FetchDataset } from './fetch-dataset';
+import abstracts from '../data/abstracts';
 import Doi from '../data/doi';
 import createLogger from '../logger';
 import { FetchedArticle } from '../types/fetched-article';
@@ -17,7 +18,7 @@ export default (fetchDataset: FetchDataset): FetchArticle => {
     const title = graph.out(dcterms.title).value || 'Unknown article';
     const authors = graph.out(dcterms.creator).map((author) => author.out(foaf.name).value || 'Unknown author');
     const publicationDate = new Date(graph.out(dcterms.date).value || 0);
-    const abstract = '<p>No abstract available.</p>';
+    const abstract = abstracts[doi.value] || '<p>No abstract available.</p>';
 
     const response: FetchedArticle = {
       doi,
