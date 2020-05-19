@@ -9,6 +9,7 @@
     "@rdfjs/parser-n3": "^1.1.4",
     "@rdfjs/sink-map": "^1.0.1",
     "@tpluscode/rdf-ns-builders": "^0.1.0",
+    "@types/showdown": "^1.9.3",
     "clownface": "^0.12.3",
     "debug": "^4.1.1",
     "http-errors": "^1.7.3",
@@ -18,7 +19,8 @@
     "koa-mount": "^4.0.0",
     "koa-send": "^5.0.0",
     "parse-link-header": "^1.0.1",
-    "rdf-dataset-indexed": "^0.4.0"
+    "rdf-dataset-indexed": "^0.4.0",
+    "showdown": "^1.9.1"
   },
   "devDependencies": {
     "@types/clownface": "^0.12.13",

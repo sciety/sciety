@@ -28,7 +28,7 @@ export default (): Middleware => (
       </li>
 
       <li>
-        <a href="https://docs.google.com/document/d/1sKjhRy55kLaNv3a4vK1PsEPTFfivKbJRvJPwNx0HOS4/edit?usp=sharing">About</a>
+        <a href="/about">About</a>
       </li>
 
     </ul>

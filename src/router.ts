@@ -1,4 +1,5 @@
 import Router from '@koa/router';
+import createAboutPage from './about-page';
 import createAddArticleResponse from './add-article';
 import createArticlePage from './article-page';
 import createEditorialCommunityPage from './editorial-community-page';
@@ -15,6 +16,10 @@ export default (adapters: Adapters): Router => {
 
   router.get('/',
     createHomePage(adapters),
+    addPageTemplate());
+
+  router.get('/about',
+    createAboutPage(),
     addPageTemplate());
 
   router.get('/articles/:doi(.+)',

@@ -326,3 +326,9 @@ main > article > aside {
   top: 0;
   width: 2.9375rem;
 }
+
+/*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+
+.about-page {
+  font-family: "Noto Sans", Arial, Helvetica, sans-serif;
+}
