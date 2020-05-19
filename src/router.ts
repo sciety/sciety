@@ -19,7 +19,7 @@ export default (adapters: Adapters): Router => {
     addPageTemplate());
 
   router.get('/about',
-    createAboutPage(),
+    createAboutPage(adapters),
     addPageTemplate());
 
   router.get('/articles/:doi(.+)',

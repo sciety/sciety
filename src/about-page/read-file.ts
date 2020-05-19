@@ -1,7 +1,7 @@
 import { Context, Middleware, Next } from 'koa';
-import fetchStaticFile from '../api/fetch-static-file';
+import { FetchStaticFile } from '../api/fetch-static-file';
 
-export default (filename: string): Middleware => (
+export default (filename: string, fetchStaticFile: FetchStaticFile): Middleware => (
   async (ctx: Context, next: Next): Promise<void> => {
     ctx.state.markdown = fetchStaticFile(filename);
 

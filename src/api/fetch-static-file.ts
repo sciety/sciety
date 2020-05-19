@@ -2,6 +2,8 @@ import fs from 'fs';
 import path from 'path';
 import createLogger from '../logger';
 
+export type FetchStaticFile = (filename: string) => string;
+
 export default (filename: string): string => {
   const log = createLogger('api:fetch-static-file');
   const fullPath: string = path.resolve(__dirname, '..', '..', 'static', filename);

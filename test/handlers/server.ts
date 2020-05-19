@@ -46,6 +46,7 @@ export default (): TestServer => {
   const adapters: Adapters = {
     fetchArticle,
     fetchReview,
+    fetchStaticFile: (filename: string) => `Contents of ${filename}`,
     editorialCommunities,
     reviewReferenceRepository,
   };
