@@ -26,13 +26,25 @@ describe('fetch-articles middleware', (): void => {
 
   beforeEach(() => {
     ctx = createContext();
-    ctx.state = {};
+    ctx.state = {
+      mostRecentReviews: [
+        {
+          articleVersionDoi: new Doi('10.1101/642017'),
+          reviewDoi: new Doi('10.5281/zenodo.3820276'),
+        },
+        {
+          articleVersionDoi: new Doi('10.1101/615682'),
+          reviewDoi: new Doi('10.5281/zenodo.3820283'),
+        },
+      ],
+    };
   });
 
   it('adds fetched articles to the context', async (): Promise<void> => {
     await invokeMiddleware(fetchArticle, ctx);
 
     expect(await ctx.state.fetchedArticles).toHaveProperty(['10.1101/642017']);
+    expect(await ctx.state.fetchedArticles).toHaveProperty(['10.1101/615682']);
   });
 
   it('calls the next middleware', async (): Promise<void> => {
