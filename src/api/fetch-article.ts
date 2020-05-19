@@ -18,7 +18,7 @@ export default (fetchDataset: FetchDataset): FetchArticle => {
     const title = graph.out(dcterms.title).value || 'Unknown article';
     const authors = graph.out(dcterms.creator).map((author) => author.out(foaf.name).value || 'Unknown author');
     const publicationDate = new Date(graph.out(dcterms.date).value || 0);
-    const abstract = abstracts[doi.value] || '<p>No abstract available.</p>';
+    const abstract = abstracts[doi.value] || 'No abstract available.';
 
     const response: FetchedArticle = {
       doi,

@@ -40,7 +40,9 @@ export default ({ article, reviews }: ArticlePage, editorialCommunities: Editori
         <h2>
           Abstract
         </h2>
-        ${article.abstract}
+        <div class="abstract">
+          ${article.abstract}
+        </div>
       </section>
 
       <section class="review-summary-list">
