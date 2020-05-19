@@ -7,7 +7,7 @@ export default (
   fetchArticle: FetchArticle,
 ): Middleware => (
   async (ctx: Context, next: Next): Promise<void> => {
-    const articleVersionDois = [...new Set<Doi>(ctx.state.mostRecentReviews
+    const articleVersionDois = [...new Set<Doi>(ctx.state.mostRecentReviewReferences
       .map((reviewReference: ReviewReference) => reviewReference.articleVersionDoi))];
 
     ctx.state.fetchedArticles = Promise.all(articleVersionDois.map(fetchArticle)).then((fetchedArticles) => (

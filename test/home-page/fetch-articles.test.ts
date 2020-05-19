@@ -27,7 +27,7 @@ describe('fetch-articles middleware', (): void => {
   beforeEach(() => {
     ctx = createContext();
     ctx.state = {
-      mostRecentReviews: [
+      mostRecentReviewReferences: [
         {
           articleVersionDoi: new Doi('10.1101/642017'),
         },

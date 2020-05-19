@@ -4,7 +4,7 @@ import ReviewReference from '../types/review-reference';
 
 export default (): Middleware => (
   async (ctx: Context, next: Next): Promise<void> => {
-    const mostRecentReviews: Array<ReviewReference> = [
+    const mostRecentReviewReferences: Array<ReviewReference> = [
       {
         articleVersionDoi: new Doi('10.1101/642017'),
         reviewDoi: new Doi('10.5281/zenodo.3833746'),
@@ -32,7 +32,7 @@ export default (): Middleware => (
       },
     ];
 
-    ctx.state.mostRecentReviews = mostRecentReviews;
+    ctx.state.mostRecentReviewReferences = mostRecentReviewReferences;
 
     await next();
   }

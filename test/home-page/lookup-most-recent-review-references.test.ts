@@ -1,14 +1,14 @@
 import { Context, Middleware, Response } from 'koa';
-import lookupMostRecentReviews from '../../src/home-page/lookup-most-recent-reviews';
+import lookupMostRecentReviewReferences from '../../src/home-page/lookup-most-recent-review-references';
 import createContext from '../context';
 import runMiddleware from '../middleware';
 
 const invokeMiddleware = async (ctx: Context, next?: Middleware): Promise<Response> => {
-  const { response } = await runMiddleware(lookupMostRecentReviews(), ctx, next);
+  const { response } = await runMiddleware(lookupMostRecentReviewReferences(), ctx, next);
   return response;
 };
 
-describe('lookup-most-recent-reviews middleware', (): void => {
+describe('lookup-most-recent-review-references middleware', (): void => {
   let ctx: Context;
 
   beforeEach(() => {
@@ -16,10 +16,10 @@ describe('lookup-most-recent-reviews middleware', (): void => {
     ctx.state = {};
   });
 
-  it('adds most recent reviews to the context', async (): Promise<void> => {
+  it('adds most recent review references to the context', async (): Promise<void> => {
     await invokeMiddleware(ctx);
 
-    expect(ctx.state.mostRecentReviews).toHaveLength(5);
+    expect(ctx.state.mostRecentReviewReferences).toHaveLength(5);
   });
 
   it('calls the next middleware', async (): Promise<void> => {

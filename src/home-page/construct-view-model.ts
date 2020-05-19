@@ -3,11 +3,11 @@ import ReviewReference from '../types/review-reference';
 
 export default (): Middleware => (
   async (ctx: Context, next: Next): Promise<void> => {
-    const { mostRecentReviews, editorialCommunities } = ctx.state;
+    const { mostRecentReviewReferences, editorialCommunities } = ctx.state;
     const fetchedArticles = await ctx.state.fetchedArticles;
 
     ctx.state.viewModel = {
-      mostRecentReviews: mostRecentReviews.map((reviewReference: ReviewReference) => ({
+      mostRecentReviews: mostRecentReviewReferences.map((reviewReference: ReviewReference) => ({
         articleDoi: reviewReference.articleVersionDoi,
         articleTitle: fetchedArticles[reviewReference.articleVersionDoi.value].title,
         editorialCommunityName: editorialCommunities[reviewReference.editorialCommunityId].name,
