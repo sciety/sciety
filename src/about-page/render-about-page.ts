@@ -1,8 +1,7 @@
-import { Middleware, RouterContext } from '@koa/router';
-import { Next } from 'koa';
+import { Context, Middleware, Next } from 'koa';
 
 export default (): Middleware => (
-  async ({ response, state }: RouterContext, next: Next): Promise<void> => {
+  async ({ response, state }: Context, next: Next): Promise<void> => {
     response.body = `
 <section class="about-page">
   ${state.html}
