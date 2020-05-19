@@ -8,11 +8,12 @@ export default (): ReviewReferenceRepository => {
   const reviewReferences: Array<ReviewReference> = [];
 
   const reviewReferenceRepository: ReviewReferenceRepository = {
-    add: (articleVersionDoi: Doi, reviewDoi: Doi, editorialCommunityId: string) => {
-      const ref: ReviewReference = {
+    add: (articleVersionDoi: Doi, reviewDoi: Doi, editorialCommunityId: string, added: Date) => {
+      const ref: ReviewReference & { added: Date } = {
         articleVersionDoi,
         reviewDoi,
         editorialCommunityId,
+        added,
       };
       reviewReferences.push(ref);
       log(`Review reference added: ${JSON.stringify(ref)}`);

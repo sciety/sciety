@@ -6,6 +6,7 @@ export default interface ReviewReferenceRepository {
     articleVersionDoi: Doi,
     reviewDoi: Doi,
     editorialCommunityId: string,
+    added: Date,
   ): void;
   findReviewsForArticleVersionDoi(
     articleVersionDoi: Doi,

@@ -12,10 +12,10 @@ const article2 = new Doi('10.99999/2');
 const editorialCommunityId = 'some-id';
 
 const reviewReferenceRepository: ReviewReferenceRepository = createReviewReferenceRepository();
-reviewReferenceRepository.add(article1, new Doi('10.5555/1'), editorialCommunityId);
-reviewReferenceRepository.add(article2, new Doi('10.6666/2'), editorialCommunityId);
-reviewReferenceRepository.add(article2, new Doi('10.7777/3'), editorialCommunityId);
-reviewReferenceRepository.add(article2, new Doi('10.8888/4'), 'another-community');
+reviewReferenceRepository.add(article1, new Doi('10.5555/1'), editorialCommunityId, new Date('2020-05-19T14:00:00Z'));
+reviewReferenceRepository.add(article2, new Doi('10.6666/2'), editorialCommunityId, new Date('2020-05-19T14:00:00Z'));
+reviewReferenceRepository.add(article2, new Doi('10.7777/3'), editorialCommunityId, new Date('2020-05-19T14:00:00Z'));
+reviewReferenceRepository.add(article2, new Doi('10.8888/4'), 'another-community', new Date('2020-05-19T14:00:00Z'));
 
 const invokeMiddleware = async (ctx: Context, next?: Middleware): Promise<Response> => {
   const { response } = await runMiddleware(lookupReviewedArticles(reviewReferenceRepository), ctx, next);

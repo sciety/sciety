@@ -30,9 +30,9 @@ describe('review-reference-repository', () => {
     const review3 = new Doi('10.7777/3');
 
     beforeEach(() => {
-      reviewReferenceRepository.add(article1, review1, editorialCommunity1);
-      reviewReferenceRepository.add(article2, review2, editorialCommunity1);
-      reviewReferenceRepository.add(article1, review3, editorialCommunity2);
+      reviewReferenceRepository.add(article1, review1, editorialCommunity1, new Date('2020-05-19T00:00:00Z'));
+      reviewReferenceRepository.add(article2, review2, editorialCommunity1, new Date('2020-05-19T00:00:00Z'));
+      reviewReferenceRepository.add(article1, review3, editorialCommunity2, new Date('2020-05-19T00:00:00Z'));
     });
 
     it.each([

@@ -41,6 +41,7 @@ export default (
       new Doi(articleversiondoi),
       reviewDoi,
       editorialCommunity.id,
+      new Date(),
     );
 
     response.redirect(`/articles/${articleversiondoi}`);
