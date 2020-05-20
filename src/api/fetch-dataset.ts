@@ -34,7 +34,7 @@ export default (fetch = rdfFetch): FetchDataset => {
       throw new FetchDatasetError(`Received a ${response.status} ${response.statusText} for ${response.url}`);
     }
 
-    const links = parseLinkHeader(response.headers?.get('Link') || '');
+    const links = parseLinkHeader(response.headers?.get('Link') ?? '');
     const term = links?.canonical ? namedNode(links.canonical.url) : iri;
 
     return clownface({ dataset: await response.dataset(), term });

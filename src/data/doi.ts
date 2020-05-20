@@ -4,7 +4,7 @@ export default class Doi {
   readonly value: string;
 
   constructor(input: string) {
-    const [, doi] = doiRegex.exec(input) || [];
+    const [, doi] = doiRegex.exec(input) ?? [];
 
     if (!doi) {
       throw new Error('Not a possible DOI.');

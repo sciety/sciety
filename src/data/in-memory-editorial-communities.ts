@@ -21,7 +21,7 @@ export default (): EditorialCommunityRepository => {
     all: () => editorialCommunities,
     lookup: (id) => {
       const candidate = editorialCommunities.find((ec) => ec.id === id);
-      return candidate || {
+      return candidate ?? {
         id,
         name: 'Unknown',
         description: 'Unknown',
