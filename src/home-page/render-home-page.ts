@@ -34,7 +34,7 @@ export default (editorialCommunities: EditorialCommunityRepository): Middleware 
     <fieldset>
 
       <legend class="compact-form__title">
-        Find reviews for an article
+        Find an article
       </legend>
 
       <div class="compact-form__row">
@@ -50,7 +50,7 @@ export default (editorialCommunities: EditorialCommunityRepository): Middleware 
         </label>
 
         <button type="submit" class="compact-form__submit">
-          <span class="visually-hidden">Find reviews</span>
+          <span class="visually-hidden">Find an article</span>
         </button>
 
       </div>
