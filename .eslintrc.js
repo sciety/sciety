@@ -26,6 +26,7 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 'error',
     '@typescript-eslint/array-type': ['error', { default: 'generic' }],
     '@typescript-eslint/prefer-nullish-coalescing': ['error'],
+    '@typescript-eslint/promise-function-async': ['error'],
     'jest/no-hooks': 'off',
     'jest/prefer-expect-assertions': 'off',
     'import/order': ['error', {
