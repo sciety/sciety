@@ -12,7 +12,7 @@ export default (): Middleware => (
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>
-  PRC
+  Untitled Publish Review Curate Platform
 </title>
 
 <link rel="stylesheet" href="/static/style.css">

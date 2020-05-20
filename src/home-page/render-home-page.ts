@@ -24,7 +24,7 @@ export default (editorialCommunities: EditorialCommunityRepository): Middleware 
     response.body = `<header class="content-header">
 
     <h1>
-      PRC
+      Untitled Publish Review Curate Platform
     </h1>
 
   </header>
