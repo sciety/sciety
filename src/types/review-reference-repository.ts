@@ -14,7 +14,4 @@ export default interface ReviewReferenceRepository extends Iterable<ReviewRefere
   findReviewsForEditorialCommunityId(
     editorialCommunityId: string,
   ): Array<ReviewReference>;
-  orderByAddedDescending(
-    limit: number,
-  ): Array<ReviewReference>;
 }

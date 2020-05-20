@@ -60,7 +60,6 @@ describe('lookup-most-recent-review-references middleware', (): void => {
           },
         ][Symbol.iterator]()
       ),
-      orderByAddedDescending: shouldNotBeCalled,
     };
   });
 
