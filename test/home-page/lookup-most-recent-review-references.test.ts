@@ -27,6 +27,7 @@ describe('lookup-most-recent-review-references middleware', (): void => {
       add: shouldNotBeCalled,
       findReviewsForArticleVersionDoi: shouldNotBeCalled,
       findReviewsForEditorialCommunityId: shouldNotBeCalled,
+      [Symbol.iterator]: shouldNotBeCalled,
       orderByAddedDescending: (): Array<ReviewReference> => [
         {
           articleVersionDoi: new Doi('10.1101/642017'),

@@ -35,6 +35,15 @@ describe('review-reference-repository', () => {
       reviewReferenceRepository.add(article1, review3, editorialCommunity2, new Date('2020-05-20T00:00:00Z'));
     });
 
+    it('is an iterable', () => {
+      const actualReviews = Array.from(reviewReferenceRepository)
+        .map((reviewReference) => reviewReference.reviewDoi)
+        .sort();
+      const expectedReviews = [review1, review2, review3];
+
+      expect(actualReviews).toStrictEqual(expectedReviews);
+    });
+
     it.each([
       [article1, [review1, review3]],
       [article2, [review2]],

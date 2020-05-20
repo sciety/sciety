@@ -19,6 +19,10 @@ export default (): ReviewReferenceRepository => {
       log(`Review reference added: ${JSON.stringify(ref)}`);
     },
 
+    [Symbol.iterator]: () => (
+      reviewReferences[Symbol.iterator]()
+    ),
+
     findReviewsForArticleVersionDoi: (articleVersionDoi) => (
       reviewReferences
         .filter((reference) => reference.articleVersionDoi.value === articleVersionDoi.value)
