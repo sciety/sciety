@@ -22,7 +22,7 @@ export default (fetch = rdfFetch): FetchDataset => {
   const log = createLogger('api:fetch-dataset');
   const factory = { dataset: datasetFactory };
   const parsers = new SinkMap<EventEmitter, Stream>();
-  parsers.set('application/vnd.schemaorg.ld+json', new JsonLdParser());
+  parsers.set('application/vnd.codemeta.ld+json', new JsonLdParser());
   parsers.set('text/turtle', new N3Parser());
   const fetchOptions = { factory, formats: { parsers } };
 
