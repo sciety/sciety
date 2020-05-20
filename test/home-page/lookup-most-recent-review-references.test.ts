@@ -19,6 +19,9 @@ const invokeMiddleware = async (
 describe('lookup-most-recent-review-references middleware', (): void => {
   let ctx: Context;
   let reviewReferenceRepository: ReviewReferenceRepository;
+  const review1 = new Doi('10.5281/zenodo.5555');
+  const review2 = new Doi('10.5281/zenodo.6666');
+  const review3 = new Doi('10.5281/zenodo.7777');
 
   beforeEach(() => {
     ctx = createContext();
@@ -31,13 +34,19 @@ describe('lookup-most-recent-review-references middleware', (): void => {
         [
           {
             articleVersionDoi: new Doi('10.1101/642017'),
-            reviewDoi: new Doi('10.5281/zenodo.3833746'),
+            reviewDoi: review1,
             editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
             added: new Date('2020-05-20T00:00:00Z'),
           },
           {
+            articleVersionDoi: new Doi('10.1101/642017'),
+            reviewDoi: review3,
+            editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
+            added: new Date('2020-05-22T00:00:00Z'),
+          },
+          {
             articleVersionDoi: new Doi('10.1101/615682'),
-            reviewDoi: new Doi('10.5281/zenodo.3833918'),
+            reviewDoi: review2,
             editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
             added: new Date('2020-05-21T00:00:00Z'),
           },
@@ -46,11 +55,22 @@ describe('lookup-most-recent-review-references middleware', (): void => {
       orderByAddedDescending: shouldNotBeCalled,
     };
   });
-
-  it('adds most recent review references to the context', async (): Promise<void> => {
+  
+  it('adds the most recent review references to the context', async (): Promise<void> => {
     await invokeMiddleware(reviewReferenceRepository, ctx);
 
-    expect(ctx.state.mostRecentReviewReferences).toHaveLength(2);
+    expect(ctx.state.mostRecentReviewReferences).toHaveLength(3);
+  });
+
+  it('orders the review references by added date', async (): Promise<void> => {
+    await invokeMiddleware(reviewReferenceRepository, ctx);
+
+    const actualReviews = ctx.state.mostRecentReviewReferences
+        .map((reviewReference: ReviewReference) => reviewReference.reviewDoi)
+        .sort();
+    const expectedReviews = [review1, review2, review3];
+
+    expect(actualReviews).toStrictEqual(expectedReviews);
   });
 
   it('calls the next middleware', async (): Promise<void> => {

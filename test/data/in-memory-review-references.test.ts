@@ -67,13 +67,5 @@ describe('review-reference-repository', () => {
 
       expect(actualReviews).toStrictEqual(expectedReviews);
     });
-
-    it('orders the review references by added date', () => {
-      const actualReviews = reviewReferenceRepository.orderByAddedDescending(2)
-        .map((reviewReference) => reviewReference.reviewDoi);
-      const expectedReviews = [review2, review3];
-
-      expect(actualReviews).toStrictEqual(expectedReviews);
-    });
   });
 });
