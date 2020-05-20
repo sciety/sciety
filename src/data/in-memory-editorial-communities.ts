@@ -15,6 +15,13 @@ export default (): EditorialCommunityRepository => {
       name: 'Royal Society of Psychoceramics',
       description: 'Dulce et Decorum Est Desipere in Loco',
     },
+    {
+      id: '10360d97-bf52-4aef-b2fa-2f60d319edd7',
+      name: 'PREreview Community',
+      description: `PREreview's mission is to bring more diversity to scholarly peer review by supporting and 
+      empowering community of researchers, particularly those at early stages of their career (ECRs) to review 
+      preprints.`,
+    },
   ];
 
   const result: EditorialCommunityRepository = {
