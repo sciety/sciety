@@ -4,7 +4,7 @@ const textFormatOptions: Intl.DateTimeFormatOptions = {
   day: 'numeric',
 };
 
-const toString = (date: Date): string => date.toISOString().split('T')[0];
+export const toString = (date: Date): string => date.toISOString().split('T')[0];
 export const toDisplayString = (date: Date): string => date.toLocaleDateString(undefined, textFormatOptions);
 
 export default (date: Date, ariaLabel?: string): string => {
