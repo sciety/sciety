@@ -19,7 +19,7 @@ export default (): Middleware => (
 
 <header>
 
-  <nav>
+  <nav class="site-navigation">
 
     <ul>
 
