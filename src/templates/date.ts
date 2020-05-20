@@ -5,7 +5,7 @@ const textFormatOptions: Intl.DateTimeFormatOptions = {
 };
 
 const toString = (date: Date): string => date.toISOString().split('T')[0];
-const toDisplayString = (date: Date): string => date.toLocaleDateString(undefined, textFormatOptions);
+export const toDisplayString = (date: Date): string => date.toLocaleDateString(undefined, textFormatOptions);
 
 export default (date: Date, ariaLabel?: string): string => {
   const ariaLabelAttribute = ariaLabel ? ` aria-label="${ariaLabel}"` : '';
