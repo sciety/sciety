@@ -10,9 +10,17 @@ import shouldNotBeCalled from '../should-not-be-called';
 const invokeMiddleware = async (
   reviewReferenceRepository: ReviewReferenceRepository,
   ctx: Context,
+  limit?: number,
   next?: Middleware,
 ): Promise<Response> => {
-  const { response } = await runMiddleware(lookupMostRecentReviewReferences(reviewReferenceRepository), ctx, next);
+  const { response } = await runMiddleware(
+    lookupMostRecentReviewReferences(
+      reviewReferenceRepository,
+      limit,
+    ),
+    ctx,
+    next,
+  );
   return response;
 };
 
@@ -55,7 +63,7 @@ describe('lookup-most-recent-review-references middleware', (): void => {
       orderByAddedDescending: shouldNotBeCalled,
     };
   });
-  
+
   it('adds the most recent review references to the context', async (): Promise<void> => {
     await invokeMiddleware(reviewReferenceRepository, ctx);
 
@@ -66,16 +74,22 @@ describe('lookup-most-recent-review-references middleware', (): void => {
     await invokeMiddleware(reviewReferenceRepository, ctx);
 
     const actualReviews = ctx.state.mostRecentReviewReferences
-        .map((reviewReference: ReviewReference) => reviewReference.reviewDoi)
-        .sort();
+      .map((reviewReference: ReviewReference) => reviewReference.reviewDoi)
+      .sort();
     const expectedReviews = [review1, review2, review3];
 
     expect(actualReviews).toStrictEqual(expectedReviews);
   });
 
+  it('limits the number of review references', async (): Promise<void> => {
+    await invokeMiddleware(reviewReferenceRepository, ctx, 2);
+
+    expect(ctx.state.mostRecentReviewReferences).toHaveLength(2);
+  });
+
   it('calls the next middleware', async (): Promise<void> => {
     const next = jest.fn();
-    await invokeMiddleware(reviewReferenceRepository, ctx, next);
+    await invokeMiddleware(reviewReferenceRepository, ctx, undefined, next);
 
     expect(next).toHaveBeenCalledTimes(1);
   });
