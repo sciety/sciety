@@ -31,8 +31,8 @@ describe('article page header template', (): void => {
   it('renders the article authors', () => {
     const actual = templateArticlePageHeader(article);
 
-    article.authors.forEach((author) => {
+    for (const author of article.authors) {
       expect(actual).toStrictEqual(expect.stringContaining(author));
-    });
+    }
   });
 });

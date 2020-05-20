@@ -19,14 +19,14 @@ log('Starting server');
 const editorialCommunities = createEditorialCommunityRepository();
 
 const reviewReferenceRepository = createReviewReferenceRepository();
-Object.entries(bootstrapReviews).forEach(([article, review]) => {
+for (const [article, review] of Object.entries(bootstrapReviews)) {
   reviewReferenceRepository.add(
     new Doi(article),
     new Doi(review),
     editorialCommunities.all()[0].id,
     new Date('2020-05-19T14:00:00Z'),
   );
-});
+}
 reviewReferenceRepository.add(
   new Doi('10.1101/2020.03.22.002386'),
   new Doi('10.5281/zenodo.3756961'),

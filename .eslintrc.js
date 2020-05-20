@@ -38,6 +38,7 @@ module.exports = {
       ignoreStrings: true,
       ignoreTemplateLiterals: true,
     }],
+    'no-restricted-syntax': ['error', 'ForInStatement', 'LabeledStatement', 'WithStatement'],
     'sort-imports': ['error', {
       ignoreCase: true,
       ignoreDeclarationSort: true,

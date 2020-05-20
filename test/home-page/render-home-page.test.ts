@@ -27,8 +27,8 @@ describe('render-home-page handler', (): void => {
   });
 
   it('lists all of the hard-coded editorial communities', async (): Promise<void> => {
-    editorialCommunities.all().forEach((ec) => {
+    for (const ec of editorialCommunities.all()) {
       expect(response.text).toContain(ec.name);
-    });
+    }
   });
 });
