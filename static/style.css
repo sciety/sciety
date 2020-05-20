@@ -346,3 +346,16 @@ main > article > aside {
   color: inherit;
   text-decoration: none;
 }
+
+.site-navigation ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.site-navigation li {
+  display: inline;
+}
+
+.site-navigation li:first-child {
+  padding-right: 1.5rem
+}
