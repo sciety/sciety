@@ -32,10 +32,12 @@ describe('construct-view-model middleware', (): void => {
         {
           articleVersionDoi: new Doi('10.1101/642017'),
           editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
+          added: new Date('2020-05-20T00:00:00Z'),
         },
         {
           articleVersionDoi: new Doi('10.1101/615682'),
           editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
+          added: new Date('2020-05-19T00:00:00Z'),
         },
       ],
     };
@@ -49,6 +51,7 @@ describe('construct-view-model middleware', (): void => {
       articleDoi: new Doi('10.1101/642017'),
       articleTitle: 'Article 10.1101/642017',
       editorialCommunityName: 'eLife',
+      added: new Date('2020-05-20T00:00:00Z'),
     });
   });
 

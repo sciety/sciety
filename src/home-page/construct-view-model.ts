@@ -11,6 +11,7 @@ export default (): Middleware => (
         articleDoi: reviewReference.articleVersionDoi,
         articleTitle: fetchedArticles[reviewReference.articleVersionDoi.value].title,
         editorialCommunityName: editorialCommunities[reviewReference.editorialCommunityId].name,
+        added: reviewReference.added,
       })),
     };
 
