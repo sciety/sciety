@@ -341,3 +341,8 @@ main > article > aside {
   line-height: 1.5rem;
   text-transform: uppercase;
 }
+
+.site-navigation a {
+  color: inherit;
+  text-decoration: none;
+}
