@@ -27,19 +27,23 @@ describe('lookup-most-recent-review-references middleware', (): void => {
       add: shouldNotBeCalled,
       findReviewsForArticleVersionDoi: shouldNotBeCalled,
       findReviewsForEditorialCommunityId: shouldNotBeCalled,
-      [Symbol.iterator]: shouldNotBeCalled,
-      orderByAddedDescending: (): Array<ReviewReference> => [
-        {
-          articleVersionDoi: new Doi('10.1101/642017'),
-          reviewDoi: new Doi('10.5281/zenodo.3833746'),
-          editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
-        },
-        {
-          articleVersionDoi: new Doi('10.1101/615682'),
-          reviewDoi: new Doi('10.5281/zenodo.3833918'),
-          editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
-        },
-      ],
+      [Symbol.iterator]: (): IterableIterator<ReviewReference & { added: Date }> => (
+        [
+          {
+            articleVersionDoi: new Doi('10.1101/642017'),
+            reviewDoi: new Doi('10.5281/zenodo.3833746'),
+            editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
+            added: new Date('2020-05-20T00:00:00Z'),
+          },
+          {
+            articleVersionDoi: new Doi('10.1101/615682'),
+            reviewDoi: new Doi('10.5281/zenodo.3833918'),
+            editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
+            added: new Date('2020-05-21T00:00:00Z'),
+          },
+        ][Symbol.iterator]()
+      ),
+      orderByAddedDescending: shouldNotBeCalled,
     };
   });
 
@@ -47,14 +51,6 @@ describe('lookup-most-recent-review-references middleware', (): void => {
     await invokeMiddleware(reviewReferenceRepository, ctx);
 
     expect(ctx.state.mostRecentReviewReferences).toHaveLength(2);
-  });
-
-  it('asks for 5 review references', async (): Promise<void> => {
-    const reviewReferenceRepositorySpy = jest.spyOn(reviewReferenceRepository, 'orderByAddedDescending');
-
-    await invokeMiddleware(reviewReferenceRepository, ctx);
-
-    expect(reviewReferenceRepositorySpy).toHaveBeenCalledWith(5);
   });
 
   it('calls the next middleware', async (): Promise<void> => {
