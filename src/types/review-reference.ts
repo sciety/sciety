@@ -4,4 +4,5 @@ export default interface ReviewReference {
   articleVersionDoi: Doi;
   reviewDoi: Doi;
   editorialCommunityId: string;
+  added: Date;
 }

@@ -5,11 +5,11 @@ import ReviewReferenceRepository from '../types/review-reference-repository';
 
 export default (): ReviewReferenceRepository => {
   const log = createLogger('repository:in-memory-review-references');
-  const reviewReferences: Array<ReviewReference & { added: Date }> = [];
+  const reviewReferences: Array<ReviewReference> = [];
 
   const reviewReferenceRepository: ReviewReferenceRepository = {
     add: (articleVersionDoi: Doi, reviewDoi: Doi, editorialCommunityId: string, added: Date) => {
-      const ref: ReviewReference & { added: Date } = {
+      const ref: ReviewReference = {
         articleVersionDoi,
         reviewDoi,
         editorialCommunityId,

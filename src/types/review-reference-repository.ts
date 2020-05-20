@@ -1,7 +1,7 @@
 import ReviewReference from './review-reference';
 import Doi from '../data/doi';
 
-export default interface ReviewReferenceRepository extends Iterable<ReviewReference & {added: Date}> {
+export default interface ReviewReferenceRepository extends Iterable<ReviewReference> {
   add(
     articleVersionDoi: Doi,
     reviewDoi: Doi,
