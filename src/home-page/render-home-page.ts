@@ -29,7 +29,7 @@ export default (editorialCommunities: EditorialCommunityRepository): Middleware 
     </h1>
 
     <p>
-      An experimental platform for multiple communities to provide post-publication peer review of scientific research.
+      An experimental platform for multiple communities to provide post-publication peer review of scientific research.<br>
       <a href="/about">Learn more about the platform.</a>
     </p>
 
