@@ -4,7 +4,6 @@ import { Next } from 'koa';
 let googleAnalytics = '';
 if (process.env.GOOGLE_ANALYTICS_TRACKING_ID) {
   googleAnalytics = `<!-- Global site tag (gtag.js) - Google Analytics -->
-  <!--
   <script async src="https://www.googletagmanager.com/gtag/js?id=${process.env.GOOGLE_ANALYTICS_TRACKING_ID}"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -13,7 +12,6 @@ if (process.env.GOOGLE_ANALYTICS_TRACKING_ID) {
 
     gtag('config', '${process.env.GOOGLE_ANALYTICS_TRACKING_ID}');
   </script>
-  -->
   `;
 }
 
