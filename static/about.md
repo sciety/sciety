@@ -1,5 +1,3 @@
-# About the Untitled Publish–Review–Curate Platform
-
 The Publish, Review, Curate (PRC) model has been [advocated by funders](https://doi.org/10.1371/journal.pbio.3000116) and [researchers](https://elifesciences.org/inside-elife/e9091cea/peer-review-new-initiatives-to-enhance-the-value-of-elife-s-process) as a way of improving the quality and availability of published research. [Stern BM, O’Shea EK (2019)](#stern-oshea) recommend several long-term changes over three areas:
 
 > To drive scientific publishing forward, we propose several long-term changes. Although these changes could be implemented independently, together they promise to significantly increase transparency and efficiency.
