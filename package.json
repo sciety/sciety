@@ -20,7 +20,8 @@
     "koa-send": "^5.0.0",
     "parse-link-header": "^1.0.1",
     "rdf-dataset-indexed": "^0.4.0",
-    "showdown": "^1.9.1"
+    "showdown": "^1.9.1",
+    "text-clipper": "^2.0.0"
   },
   "devDependencies": {
     "@types/clownface": "^0.12.13",

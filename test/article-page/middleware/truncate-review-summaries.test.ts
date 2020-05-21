@@ -5,7 +5,7 @@ import createContext from '../../context';
 import runMiddleware from '../../middleware';
 
 const makeRequest = async (ctx: Context, next?: Middleware): Promise<Response> => {
-  const { response } = await runMiddleware(truncateReviewSummaries(7), ctx, next);
+  const { response } = await runMiddleware(truncateReviewSummaries(60), ctx, next);
   return response;
 };
 
@@ -21,7 +21,7 @@ describe('truncate-review-summaries middleware', (): void => {
             summary: 'Summary 1',
           },
           {
-            summary: 'Summary 2',
+            summary: 'bacterial-fungal symbiosis between <i>Burkholderia (Mycetohabitans) rhizoxinica</i> and',
           },
         ],
       },
@@ -32,7 +32,7 @@ describe('truncate-review-summaries middleware', (): void => {
     await makeRequest(context);
     const actual = context.state.articlePage.reviews.map((review: ReviewViewModel) => review.summary);
 
-    expect(actual).toStrictEqual(['Summary', 'Summary']);
+    expect(actual).toStrictEqual(['Summary 1', 'bacterial-fungal symbiosis between <i>Burkholderia …</i>']);
   });
 
   it('calls the next middleware', async (): Promise<void> => {
