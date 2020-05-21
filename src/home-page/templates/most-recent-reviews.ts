@@ -11,7 +11,7 @@ interface Review {
 
 const templateReview = (review: Review): string => (`
  <a href="/articles/${review.articleDoi}">${review.articleTitle}</a>
- <div>added by ${review.editorialCommunityName}
+ <div class="review-status">added by ${review.editorialCommunityName}
  <time datetime="${toString(review.added)}" title="${toDisplayString(review.added)}">recently</time></div>
 `);
 
@@ -22,7 +22,7 @@ export default (reviews: Array<Review>): string => (`
       Most recent reviews
     </h2>
 
-    <ol class="u-normalised-list">
+    <ol class="u-normalised-list article-listing">
       ${templateListItems(reviews.map(templateReview))}
     </ol>
 
