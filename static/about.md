@@ -6,7 +6,7 @@ The Publish, Review, Curate (PRC) model has been [advocated by funders](https://
 >2.  Shift the publishing decision from editors to authors.
 >3.  Shift curation from before to after publication.
 
-This community-driven technology effort is to produce an application that can support the changes in behaviour required to effect this change. It is led by technologists from eLife but independent of eLife’s journal publishing. The approach to building the software is to keep the cost of change low so that the application can quickly adapt to feedback and barriers to adoption, helping the researcher drive the technology to meet their needs.
+This community-driven technology effort is to produce an application that can support the changes in behaviour required to effect this change. The approach to building the software is to keep the cost of change low so that the application can quickly adapt to feedback and barriers to adoption, helping the researcher drive the technology to meet their needs.
 
 While the majority of people working on this application are funded by eLife and their generous funders, we are operating at a distance from the eLife journal so that other editorial communities, innovative journals and interested technologists can join on a more equal basis. eLife’s editorial community will be one of the first to use the application and this separation helps us support them in their endeavours to change behaviour in the same way we will with any other community.
 
