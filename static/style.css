@@ -80,12 +80,12 @@ sub {
   bottom: -0.25em;
 }
 
-a {
+a:link {
   color: #087acc;
   text-decoration: none;
 }
 
-a:hover {
+a:link:hover {
   text-decoration: underline;
 }
 
