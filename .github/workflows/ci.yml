@@ -45,7 +45,7 @@ jobs:
           helm upgrade -i prc--staging \
             --set images.frontend.tag=${IMAGE_TAG} \
             --set hostname=prc-staging.libero.pub \
-            --set googleAnalyticsTrackingId=UA-167311475-1 \
+            --set googleAnalyticsTrackingId=UA-167311475-2 \
             --wait \
             helm/prc
         env:
