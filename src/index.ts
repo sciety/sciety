@@ -2,7 +2,7 @@ import { createTerminus, TerminusOptions } from '@godaddy/terminus';
 import createFetchArticle from './api/fetch-article';
 import createFetchDataset from './api/fetch-dataset';
 import createFetchReview from './api/fetch-review';
-import fetchStaticFile from './api/fetch-static-file';
+import createFetchStaticFile from './api/fetch-static-file';
 import bootstrapReviews from './bootstrap-reviews';
 import Doi from './data/doi';
 import createEditorialCommunityRepository from './data/in-memory-editorial-communities';
@@ -32,7 +32,7 @@ const fetchDataset = createFetchDataset();
 const adapters: Adapters = {
   fetchArticle: createFetchArticle(fetchDataset),
   fetchReview: createFetchReview(fetchDataset),
-  fetchStaticFile,
+  fetchStaticFile: createFetchStaticFile(),
   editorialCommunities,
   reviewReferenceRepository,
 };
