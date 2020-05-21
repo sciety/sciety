@@ -12,7 +12,7 @@ interface Review {
 const templateReview = (review: Review): string => (`
  <a href="/articles/${review.articleDoi}">${review.articleTitle}</a>
  added by ${review.editorialCommunityName}
- <time datetime="${toString(review.added)}" title="${toDisplayString(review.added)}">recently</span>
+ <time datetime="${toString(review.added)}" title="${toDisplayString(review.added)}">recently</time>
 `);
 
 export default (reviews: Array<Review>): string => (`
