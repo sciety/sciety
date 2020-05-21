@@ -14,7 +14,7 @@ describe('convert-markdown-to-html middleware', (): void => {
   beforeEach(() => {
     ctx = createContext();
     ctx.state = {
-      markdown: '# Title',
+      markdown: Promise.resolve('# Title'),
     };
   });
 

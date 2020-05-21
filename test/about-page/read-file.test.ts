@@ -4,27 +4,25 @@ import { FetchStaticFile } from '../../src/api/fetch-static-file';
 import createContext from '../context';
 import runMiddleware from '../middleware';
 
-const fetchStaticFile: FetchStaticFile = (filename: string): string => (`# Contents of ${filename}`);
+const fetchStaticFile: FetchStaticFile = async (filename) => (`# Contents of ${filename}`);
 
 const invokeMiddleware = async (ctx: Context, next?: Middleware): Promise<Response> => {
   const { response } = await runMiddleware(readFile('abc.md', fetchStaticFile), ctx, next);
   return response;
 };
 
-describe('convert-markdown-to-html middleware', (): void => {
+describe('read-file middleware', (): void => {
   let ctx: Context;
 
   beforeEach(() => {
     ctx = createContext();
-    ctx.state = {
-      markdown: '# Title',
-    };
+    ctx.state = {};
   });
 
-  it('converts the markdown to HTML', async (): Promise<void> => {
+  it('reads the file', async (): Promise<void> => {
     await invokeMiddleware(ctx);
 
-    expect(ctx.state.markdown).toStrictEqual('# Contents of abc.md');
+    expect(await ctx.state.markdown).toStrictEqual('# Contents of abc.md');
   });
 
   it('calls the next middleware', async (): Promise<void> => {

@@ -4,7 +4,7 @@ import showdown from 'showdown';
 export default (): Middleware => {
   const converter = new showdown.Converter();
   return async (ctx: Context, next: Next): Promise<void> => {
-    const text: string = ctx.state.markdown;
+    const text: string = await ctx.state.markdown;
     ctx.state.html = converter.makeHtml(text);
 
     await next();
