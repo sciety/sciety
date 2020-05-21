@@ -67,6 +67,8 @@ export default (editorialCommunities: EditorialCommunityRepository): Middleware 
 
   <div class="content-lists">
 
+    ${templateMostRecentReviews(state.viewModel.mostRecentReviews)}
+
     <section>
       <h2>
         Editorial communities
@@ -75,9 +77,7 @@ export default (editorialCommunities: EditorialCommunityRepository): Middleware 
         ${templateListItems(editorialCommunityLinks)}
       </ol>
     </section>
-  
-    ${templateMostRecentReviews(state.viewModel.mostRecentReviews)}
-  
+    
   </div>
   </div>
 `;
