@@ -5,13 +5,15 @@ import createContext from '../../context';
 import runMiddleware from '../../middleware';
 
 const makeRequest = async (ctx: Context, next?: Middleware): Promise<Response> => {
-  const { response } = await runMiddleware(truncateReviewSummaries(), ctx, next);
+  const { response } = await runMiddleware(truncateReviewSummaries(7), ctx, next);
   return response;
 };
 
 describe('truncate-review-summaries middleware', (): void => {
-  it('does not change review summaries', async (): Promise<void> => {
-    const context = createContext();
+  let context: Context;
+
+  beforeEach(() => {
+    context = createContext();
     context.state = {
       articlePage: {
         reviews: [
@@ -24,17 +26,18 @@ describe('truncate-review-summaries middleware', (): void => {
         ],
       },
     };
+  });
 
-    await makeRequest(createContext());
-
+  it('truncates the review summaries', async (): Promise<void> => {
+    await makeRequest(context);
     const actual = context.state.articlePage.reviews.map((review: ReviewViewModel) => review.summary);
 
-    expect(actual).toStrictEqual(['Summary 1', 'Summary 2']);
+    expect(actual).toStrictEqual(['Summary', 'Summary']);
   });
 
   it('calls the next middleware', async (): Promise<void> => {
     const next = jest.fn();
-    await makeRequest(createContext(), next);
+    await makeRequest(context, next);
 
     expect(next).toHaveBeenCalledTimes(1);
   });

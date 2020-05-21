@@ -16,7 +16,7 @@ export default (adapters: Adapters): Middleware => (
     fetchArticleForArticlePage(adapters.fetchArticle),
     fetchReviewsForArticlePage(adapters.reviewReferenceRepository, adapters.fetchReview),
     convertArticleAndReviewsToArticlePage(adapters.editorialCommunities),
-    truncateReviewSummaries(),
+    truncateReviewSummaries(1500),
     renderArticlePage(adapters.editorialCommunities),
   ])
 );
