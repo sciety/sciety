@@ -234,6 +234,11 @@ main > article > aside {
   text-decoration: underline;
 }
 
+.content-lists ol {
+  list-style: none;
+  padding-left: 0;
+}
+
 @media (min-width: 45.625em) {
   .content-lists {
     display: grid;
