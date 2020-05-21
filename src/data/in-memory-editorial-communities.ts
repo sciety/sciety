@@ -11,11 +11,6 @@ export default (): EditorialCommunityRepository => {
   responsible behaviours in science.`,
     },
     {
-      id: 'e3a371f9-576d-48d5-a690-731b9fea26bd',
-      name: 'Royal Society of Psychoceramics',
-      description: 'Dulce et Decorum Est Desipere in Loco',
-    },
-    {
       id: '10360d97-bf52-4aef-b2fa-2f60d319edd7',
       name: 'PREreview Community',
       description: `PREreview's mission is to bring more diversity to scholarly peer review by supporting and 
