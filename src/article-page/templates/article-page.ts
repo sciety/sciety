@@ -42,7 +42,11 @@ export default ({ article, reviews }: ArticlePage, editorialCommunities: Editori
         </h2>
         <div class="abstract">
           ${article.abstract}
+          <a href="https://doi.org/${article.doi}" class="abstract__link">
+            Read the full article
+          </a>
         </div>
+
       </section>
 
       <section class="review-summary-list">

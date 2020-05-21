@@ -183,6 +183,22 @@ main > article > aside {
   content: "";
 }
 
+.abstract__link {
+  color: rgb(2, 136, 209);
+  font-family: "Noto Sans", Arial, Helvetica, sans-serif;
+  font-size: .875rem;
+  line-height: 1.71429;
+  text-decoration: none;
+}
+
+.abstract__link:after {
+  content: "\a0➔";
+}
+
+.abstract__link:hover {
+  text-decoration: underline;
+}
+
 .review-summary-list__list {
   list-style-type: none;
   padding-left: 0;
