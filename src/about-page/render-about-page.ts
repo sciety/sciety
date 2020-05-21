@@ -10,9 +10,7 @@ export default (): Middleware => (
 </h1>
 </header>
 <div class="content">
-  <section class="about-page">
-    ${state.html}
-  </section>
+  ${state.html}
 </div>`;
     await next();
   }
