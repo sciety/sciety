@@ -80,6 +80,15 @@ sub {
   bottom: -0.25em;
 }
 
+a {
+  color: #087acc;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
 @supports (font-variant-position: sub) {
   sub {
     font-size: inherit;
@@ -158,6 +167,7 @@ main > article > aside {
 }
 
 .content-header__details :link:hover {
+  color: #087acc;
   text-decoration: underline;
 }
 
