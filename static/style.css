@@ -234,10 +234,12 @@ main > article > aside {
   text-decoration: underline;
 }
 
-.content-lists {
-  display: grid;
-  grid-gap: 1.125rem;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+@media (min-width: 45.625em) {
+  .content-lists {
+    display: grid;
+    grid-gap: 1.5rem;
+    grid-template-columns: minmax(300px, 2fr) minmax(300px, 1fr)
+  }
 }
 
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/

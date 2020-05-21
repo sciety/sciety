@@ -69,7 +69,7 @@ export default (editorialCommunities: EditorialCommunityRepository): Middleware 
 
     ${templateMostRecentReviews(state.viewModel.mostRecentReviews)}
 
-    <section>
+    <secti  on>
       <h2>
         Editorial communities
       </h2>
