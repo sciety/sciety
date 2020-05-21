@@ -1,65 +1,90 @@
-# Current direction
+# About the Untitled Publish–Review–Curate Platform
 
-The desired behaviour change we are currently exploring is that authors will increasingly rely on the platform for feedback rather than traditional peer review afforded by a journal. In order to drive this behaviour we assume that we will need to provide the same (and greater) value to its users that they currently get from journal submission and eventual publication.
+The Publish, Review, Curate (PRC) model has been [advocated by funders](https://doi.org/10.1371/journal.pbio.3000116) and [researchers](https://elifesciences.org/inside-elife/e9091cea/peer-review-new-initiatives-to-enhance-the-value-of-elife-s-process) as a way of improving the quality and availability of published research. [Stern BM, O’Shea EK (2019)](#stern-oshea) recommend several long-term changes over three areas:
 
-Based on primary and secondary user research, we have learned that a major value stream offered by journal publication is feedback from a pool of reviewers vetted and approved by the journal’s editorial community.
+> To drive scientific publishing forward, we propose several long-term changes. Although these changes could be implemented independently, together they promise to significantly increase transparency and efficiency.
+>
+>1.  Change peer review to better recognize its scholarly contribution.
+>2.  Shift the publishing decision from editors to authors.
+>3.  Shift curation from before to after publication.
 
-From this, we hypothesise that the stamp of a particular editorial community engenders the content of a review with more significance in the eyes of both authors and readers of scientific content. Trust in a community’s judgement, we assume, is further fostered by the transparent disclosure of that community’s editorial policies and review process.
+This community-driven technology effort is to produce a platform that can support the changes in behaviour required to effect this change. It is led by technologists from eLife but independent of eLife’s journal publishing. The approach to building the software is to keep the cost of change low so that the platform can quickly adapt to feedback and barriers to adoption, helping the researcher drive the technology to meet their needs.
 
-Where a journal can only provide a submission with the judgement of its own community of editors and reviewers, the PRC platform will additionally facilitate concurrent reviews from multiple editorial communities- we anticipate this will be a unique selling point over traditional journal submission and thus drive adoption.
+Read more about:
 
-# Implemented Scenarios
+-   [Our current direction and hypothesis](#current-direction)
+-   [Scenarios we’ve implemented](#implemented-scenarios)
+-   [Scenarios we’re currently working on](#current-scenarios)
+-   [What we consider to be currently out of scope](#out-of-scope)
+-   [Our approach](#our-approach)
+-   [Future direction and considerations](#future-direction)
+-   [How to give us feedback](#feedback)
 
-The name of an editorial community (eLife), rather than an individual, is displayed as the author of a review
+## <a name="current-direction">Current direction</a>
 
-Clicking on the name of an editorial community will take the user to a page outlining that community’s editorial policies and review process etc.
+We are looking to test a hypothesis around the themes of trust (in preprint articles and reviews) and using the concept of editorial communities to explore that. This means we are currently expanding the platform to take on a small number of communities and display a small number of reviews while we work with the community to define precisely the next most important hypothesis to test.
 
-The editorial community’s About page contains a list of reviews that community has posted
+The desired behaviour change we are looking to drive is that authors will increasingly rely on the platform for feedback rather than traditional peer review afforded by a journal. To effect this change, we assume that we will need to provide the same (and greater) value to its users that they currently get from journal submission and eventual publication. The first element of that value to explore is the idea of trust: we want to retain the integrity of peer review while decoupling it from other aspects of journal publication. Trust in a community’s judgement, we assume, is fostered not only by the transparent disclosure of that community’s review output, but also its editorial policies and review process in order to contextualise that output for researchers.
 
-Clicking on a review listed on a community’s About page will take the user to the article page
+### <a name="implemented-scenarios">Implemented Scenarios</a>
 
-# In Progress Scenarios
+These are the most recent scenarios represented on the platform now:
 
-The platform supports an About page per one of its multiple communities
+-   It is possible for a user to attach multiple reviews to an article, each under the name of a different editorial community. In this way, an article could foreseeably garner multiple perspectives which together form a 360-degree holistic opinion of the research.
+-   When adding a review, a user is able to additionally select an editorial community from a drop down list
+-   The name of an editorial community, rather than an individual, is displayed as the author of a review
+-   Clicking on the name of an editorial community will take the user to a page outlining that community’s editorial policies and review process etc.
+-   The editorial community’s About page contains a list of reviews that community has posted
+-   Clicking on a review listed on a community’s About page will take the user to the article page
+-   The platform supports an About page per one of its multiple communities
 
-It is possible for a user to attach multiple reviews to an article, each under the name of a different editorial community
+### <a name="current-scenarios">In Progress Scenarios</a>
 
-When adding a review, a user is able to additionally select an editorial community from a drop down list
+These are the scenarios the team are currently working on:
 
-When a user attempts to attach the same review to an article, they receive an error message
+-   When a user attempts to attach the same review to an article, they receive an error message
+-   When a user subsequently attempts to attach the same review to a different article, they receive an error message
+-   A user cannot attach the same review on behalf of different editorial communities. Attempting to do so will result in an error message
+-   Surfacing recently reviewed articles on the homepage
+-   UI improvements to create a more unobtrusive user experience
+-   Adding a new editorial communities and their content
 
-When a user subsequently attempts to attach the same review to a different article, they receive an error message
+### <a name="out-of-scope">Currently out of scope</a>
 
-A user cannot attach the same review on behalf of different editorial communities. Attempting to do so will result in an error message
+To aid in the fast turn-around of changes to the software we clearly define what is currently out of scope - these will later be investigated further as feedback requires and the need arises. They will likely form part of the future direction for the platform.
 
-# Out of scope
+-   Individual reviewers operating underneath the banner of an editorial community: we do not have a concept, for example, of “Dr Spock reviewing on behalf of eLife”. We will assume one account represents a single community.
+-   Optimising the reviewer experience: we will continue to outsource this to Zenodo. A user uploading a review will use a concept DOI (see <https://help.zenodo.org/> for details of concept DOIs vs version DOIs)
+-   Persistence: data will be lost with each new deployment.
+-   Authentication: a user will not have to log in to post a review under the umbrella of an editorial community
+-   Article versioning: associating a review with a particular version of the article
 
-Individual reviewers operating underneath the banner of an editorial community: we do not have a concept, for example, of “Dr Spock reviewing on behalf of eLife”. We will assume one account represents a single community.
+## <a name="our-approach">Our Approach</a>
 
-Optimising the reviewer experience: we will continue to outsource this to Zenodo. A user uploading a review will use a concept DOI (see https&#x3A;//help.zenodo.org/ for details of concept DOIs vs version DOIs).
+Using techniques popularised by extreme programming to concentrate on meeting the needs of a “Customer” and to get feedback early, we are developing this platform with a “working software first” approach. This means that you’ll see more of the platform earlier, and some parts will be clearly labelled as a future feature that we’re asking for early feedback on. This means we can add new editorial communities quickly and respond to the feedback with changes to the platform that help meet while you’re using it.
 
-Persistence: data will be lost with each new deployment.
+We define an hypothesis to test and write software to help test that hypothesis with real users. In doing so we define the scope of the next iteration and clearly define parts that are out-of-scope. This ensures everyone knows what is being implemented but can see areas left for future exploration. For example, early on we won’t work on a complex login and authentication system as we can get faster feedback without it, but we know it is likely that this will be required at some point, and we’ll work on that then.
 
-Authentication: a user will not have to log in to post a review under the umbrella of an editorial community
+While the majority of people working on this platform are funded by eLife and their generous funders, we are operating at a distance from the eLife journal so that other editorial communities, innovative journals and interested technologists can join on a more equal basis. eLife’s editorial community will be one of the first to use the platform and this separation helps us support them in their endeavours to change behaviour in the same way we will with any other community.
 
-Surfacing recently reviewed articles on the homepage: this is a question of discovery/curation and one to be addressed at a later time
+## <a name="future-direction">Future direction and considerations</a>
 
-Article versioning: associating a review with a particular version of the article
+We attempt to record any ideas or questions that arise as we build, use and gather feedback from the platform. This will form our future direction.
 
-# Questions to consider in possible future experiments 
+-   What information about an editorial community is the most useful for a reader?
+-   Should we mandate what information is provided in order to facilitate like-for-like comparisons?
+-   Where a traditional journal can only provide a submission with the judgement of its own community of editors and reviewers, the PRC platform should additionally facilitate concurrent reviews from multiple editorial communities- we anticipate this will be a unique selling point and thus drive adoption.
+-   Should we provide the name of the reviewer(s) alongside the editorial community, if these are available?
+-   What are some other indicators that build reader trust in a review?
+-   Does a conflict of interest declaration increase trust?
+-   Does confirmation to an established set of ethical guidelines increase trust?
+-   Should we allow readers to indicate if they found a review helpful or not, as a quantitative needle we could seek to move? Would an accumulation of ‘upvotes’ itself signal additional trustworthiness?
+-   Should we additionally allow a user to ‘highlight’ an article? We hypothesise that this would enable an editorial community to add an indication of the article’s value/quality over and above the review itself, thereby reducing information overload for readers. This may influence how we present the previous reviews on a community’s About page.
 
-What information about an editorial community is the most useful for a reader?
+## <a name="feedback">How to give us feedback</a>
 
-Should we mandate what information is provided?
+We would love to talk to you so just send any comments or feedback to <prc-feedback@elifesciences.org> and we’ll be in touch.
 
-Should we provide the name of the reviewer(s) alongside the editorial community, if these are available?
+## References
 
-What are some other indicators that build reader trust in a review?
-
-Does a conflict of interest declaration increase trust?
-
-Does confirmation to an established set of ethical guidelines increase trust?
-
-Should we allow readers to indicate if they found a review helpful or not, as a quantitative needle we could seek to move? Would an accumulation of ‘upvotes’ itself signal additional trustworthiness?
-
-Should we additionally allow a user to ‘highlight’ an article? We hypothesise that this would enable an editorial community to add an indication of the article’s value/quality over and above the review itself, thereby reducing information overload for readers. This may influence how we present the previous reviews on a community’s About page.
+<a name="stern-oshea">Stern BM, O’Shea EK (2019)</a> A proposal for the future of scientific publishing in the life sciences. PLoS Biol 17(2): e3000116. <https://doi.org/10.1371/journal.pbio.3000116>
