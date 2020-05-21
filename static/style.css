@@ -335,6 +335,12 @@ main > article > aside {
 
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 
+.home-page header {
+  text-align: center;
+}
+
+/*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+
 .site-navigation {
   font-size: 0.875rem;
   font-family: "Noto Sans", Arial, Helvetica, sans-serif;

@@ -21,7 +21,8 @@ export default (editorialCommunities: EditorialCommunityRepository): Middleware 
       return;
     }
 
-    response.body = `<header class="content-header">
+    response.body = `<div class="home-page">
+    <header class="content-header">
 
     <h1>
       Untitled Publish Review Curate Platform
@@ -77,6 +78,7 @@ export default (editorialCommunities: EditorialCommunityRepository): Middleware 
   
     ${templateMostRecentReviews(state.viewModel.mostRecentReviews)}
   
+  </div>
   </div>
 `;
 
