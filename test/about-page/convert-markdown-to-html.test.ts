@@ -21,7 +21,7 @@ describe('convert-markdown-to-html middleware', (): void => {
   it('converts the markdown to HTML', async (): Promise<void> => {
     await invokeMiddleware(ctx);
 
-    expect(ctx.state.html).toStrictEqual('<h1 id="title">Title</h1>');
+    expect(ctx.state.html).toStrictEqual('<h1>Title</h1>');
   });
 
   it('calls the next middleware', async (): Promise<void> => {
