@@ -2,32 +2,14 @@ import addReviewForm from './add-review-form';
 import templateArticlePageHeader from './article-page-header';
 import templateReviewSidebarItem from './review-sidebar-item';
 import templateReviewSummary from './review-summary';
-import Doi from '../../data/doi';
 import templateListItems from '../../templates/list-items';
 import EditorialCommunityRepository from '../../types/editorial-community-repository';
+import { ArticlePageViewModel } from '../types/article-page-view-model';
 
-interface Article {
-  title: string;
-  doi: Doi;
-  publicationDate: Date;
-  abstract: string;
-  authors: Array<string>;
-}
-
-interface Review {
-  publicationDate: Date;
-  summary: string;
-  doi: Doi;
-  editorialCommunityId: string;
-  editorialCommunityName: string;
-}
-
-export interface ArticlePage {
-  article: Article;
-  reviews: Array<Review>;
-}
-
-export default ({ article, reviews }: ArticlePage, editorialCommunities: EditorialCommunityRepository): string => {
+export default (
+  { article, reviews }: ArticlePageViewModel,
+  editorialCommunities: EditorialCommunityRepository,
+): string => {
   const reviewSummaries = reviews.map((review, index) => templateReviewSummary(review, `review-${index}`));
   const reviewSidebarItems = reviews.map((review) => templateReviewSidebarItem(review));
   return `<article>

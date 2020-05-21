@@ -1,7 +1,7 @@
 import { Context, Middleware, Next } from 'koa';
 import Doi from '../../data/doi';
 import EditorialCommunityRepository from '../../types/editorial-community-repository';
-import { ArticlePage } from '../templates/article-page';
+import { ArticlePageViewModel } from '../types/article-page-view-model';
 
 interface Review {
   publicationDate: Date;
@@ -28,7 +28,7 @@ export default (editorialCommunities: EditorialCommunityRepository): Middleware 
     ctx.state.articlePage = {
       article,
       reviews: reviewSummaries,
-    } as ArticlePage;
+    } as ArticlePageViewModel;
 
     await next();
   }
