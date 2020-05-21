@@ -6,7 +6,7 @@ export default (): Middleware => (
 <header class="content-header">
 
 <h1>
-  About the Untitled Publish–Review–Curate Platform
+  About the Untitled Publish&ndash;Review&ndash;Curate Platform
 </h1>
 </header>
 <div class="content">
