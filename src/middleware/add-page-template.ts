@@ -1,7 +1,7 @@
 import { Middleware, RouterContext } from '@koa/router';
 import { Next } from 'koa';
 
-let googleAnalytics: string = '';
+let googleAnalytics = '';
 if (process.env.GOOGLE_ANALYTICS_TRACKING_ID) {
   googleAnalytics = `<!-- Global site tag (gtag.js) - Google Analytics -->
   <!--
