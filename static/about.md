@@ -20,11 +20,7 @@ Read more about:
 -   [Future direction and considerations](#future-direction)
 -   [How to give us feedback](#feedback)
 
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
+---
 
 ## <a name="our-approach">Our approach</a>
 
