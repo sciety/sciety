@@ -45,9 +45,13 @@ h1 {
 }
 
 h2 {
-  font-size: 1.625rem;
-  line-height: 1.15385;
+  font-size: 1rem;
+  line-height: 1.5;
   margin-bottom: 1.125rem;
+}
+
+.content h2 {
+  font-size: 1.625rem;
 }
 
 h3 {
@@ -306,8 +310,8 @@ main > article > aside {
 
 .compact-form__title {
   font-weight: 600;
-  font-size: 1.625rem;
-  line-height: 1.15385;
+  font-size: 1rem;
+  line-height: 1.5;
   margin-bottom: 1.125rem;
 }
 
