@@ -28,7 +28,8 @@ Read more about:
 
 ## <a name="our-approach">Our approach</a>
 
-Using techniques popularised by extreme programming to concentrate on meeting your needs and to get feedback early, we are developing this application with a “working software first” approach. This means that you’ll see more of the application earlier, and some parts will be clearly labelled as a future feature that we’re asking for early feedback on. This means we can add new editorial communities quickly and respond to the feedback with changes to the application that help meet while you’re using it.
+Using techniques popularised by [extreme programming](#beck) to concentrate on meeting your needs and to get feedback early, we are developing this application with a “working software first” approach. This means that you’ll see more of the application earlier, and some parts will be clearly labelled as a future feature that we’re asking for early feedback on.
+This means we can add new editorial communities quickly and respond to your feedback with changes to the application while you’re using it.
 
 We define an hypothesis to test and write software to help test that hypothesis with real users. In doing so we define the scope of the next iteration and clearly define parts that are to be deferred. This ensures everyone knows what is being implemented but can see areas left for future exploration. For example, early on we won’t work on a complex login and authentication system as we can get faster feedback without it, but we know it is likely that this will be required at some point, and we’ll work on that then.
 
@@ -47,12 +48,12 @@ These are the most recent scenarios represented on the application now:
     associating that review DOI with the article via the form in our
     application.
 -   It is possible for a user to attach multiple reviews to an article, each under the name of a different editorial community. In this way, an article could foreseeably garner multiple perspectives which together form a 360-degree holistic opinion of the research.
--   When adding a review, a user is able to additionally select an editorial community from a drop down list
--   The name of an editorial community, rather than an individual, is displayed as the author of a review
+-   When adding a review, a user is able to additionally select an editorial community from a drop down list.
+-   The name of an editorial community, rather than an individual, is displayed as the author of a review.
 -   Clicking on the name of an editorial community will take the user to a page outlining that community’s editorial policies and review process etc.
--   The editorial community’s About page contains a list of reviews that community has posted
--   Clicking on a review listed on a community’s About page will take the user to the article page
--   The application supports an About page per one of its multiple communities
+-   The editorial community’s About page contains a list of reviews that community has posted.
+-   Clicking on a review listed on a community’s About page will take the user to the article page.
+-   The application supports an About page per one of its multiple communities.
 
 Currently we are outsourcing the hosting of reviews to Zenodo; this
 enables us to build an end-to-end experience more quickly, and hence to
@@ -96,4 +97,9 @@ We would love to talk to you so just send any comments or feedback to <prc-feedb
 
 ## References
 
+<a name="beck">Beck K (2000)</a> <i>Extreme Programming Explained: Embrace Change</i>.
+Addison-Wesley Professional, 2000.
+ISBN 0201616416.
+
 <a name="stern-oshea">Stern BM, O’Shea EK (2019)</a> A proposal for the future of scientific publishing in the life sciences. PLoS Biol 17(2): e3000116. <https://doi.org/10.1371/journal.pbio.3000116>
+
