@@ -73,7 +73,7 @@ export default (editorialCommunities: EditorialCommunityRepository): Middleware 
       <h2>
         Editorial communities
       </h2>
-      <ol>
+      <ol class="u-normalised-list">
         ${templateListItems(editorialCommunityLinks)}
       </ol>
     </section>

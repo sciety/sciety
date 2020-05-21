@@ -46,7 +46,7 @@ export default (
       <h2>
         ${reviews.length} peer reviews
       </h2>
-      <ol>
+      <ol class="u-normalised-list">
         ${templateListItems(reviewSidebarItems)}
       </ol>
 

@@ -22,7 +22,7 @@ export default (reviews: Array<Review>): string => (`
       Most recent reviews
     </h2>
 
-    <ol>
+    <ol class="u-normalised-list">
       ${templateListItems(reviews.map(templateReview))}
     </ol>
 

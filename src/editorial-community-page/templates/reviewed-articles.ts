@@ -17,7 +17,7 @@ export default (reviewedArticles: Array<ReviewedArticle>): string => (`
       Recently reviewed articles
     </h2>
 
-    <ol>
+    <ol class="u-normalised-list">
       ${templateListItems(reviewedArticles.map(templateTeaser))}
     </ol>
 
