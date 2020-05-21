@@ -27,6 +27,11 @@ export default (editorialCommunities: EditorialCommunityRepository): Middleware 
       Untitled Publish Review Curate Platform
     </h1>
 
+    <p>
+      An experimental platform for multiple communities to provide post-publication peer review of scientific research.
+      <a href="/about">Learn more about the platform.</a>
+    </p>
+
   </header>
 
   <form method="get" action="/" class="find-reviews compact-form">
