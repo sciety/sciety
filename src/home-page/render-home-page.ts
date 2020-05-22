@@ -46,7 +46,8 @@ const createRenderMostRecentReviews = (
   reviewReferences: () => Array<ReviewReference>,
   reviews: () => Array<RecentReview>,
   fetchArticle: (doi: Doi) => Promise<FetchedArticle>,
-  limit = 5,
+  editorialCommunities: () => Array<{ id: string; name: string }>,
+  limit: number,
 ) => (
   (): string => {
     const mostRecentReviewReferences = reviewReferences()
@@ -64,6 +65,12 @@ const createRenderMostRecentReviews = (
           ...fetchedArticlesMap, [fetchedArticle.doi.value]: fetchedArticle,
         }), {})
       ));
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const editorialCommunityNames = editorialCommunities()
+      .reduce((accumulator, editorialCommunity) => ({
+        ...accumulator, [editorialCommunity.id]: editorialCommunity.name,
+      }), {});
 
     return templateMostRecentReviews(reviews());
   }
@@ -86,6 +93,8 @@ export default (
       reviewReferenceAdapter,
       mostRecentReviewsAdapter,
       fetchArticle,
+      editorialCommunities.all,
+      5,
     );
     response.body = `<div class="home-page">
     <header class="content-header">
