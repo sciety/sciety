@@ -2,6 +2,7 @@ import Router from '@koa/router';
 import createAboutPage from './about-page';
 import createAddArticleResponse from './add-article';
 import createArticlePage from './article-page';
+import createArticleRedirect from './article-redirect';
 import createEditorialCommunityPage from './editorial-community-page';
 import ping from './handlers/ping';
 import createHomePage from './home-page';
@@ -21,6 +22,9 @@ export default (adapters: Adapters): Router => {
   router.get('/about',
     createAboutPage(adapters),
     addPageTemplate());
+
+  router.get('/articles',
+    createArticleRedirect());
 
   router.get('/articles/:doi(.+)',
     createArticlePage(adapters),

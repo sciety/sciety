@@ -1,0 +1,16 @@
+import { NOT_FOUND } from 'http-status-codes';
+import request, { Response } from 'supertest';
+import createServer from '../handlers/server';
+
+describe('article redirect route', (): void => {
+  let response: Response;
+
+  beforeEach(async () => {
+    const { server } = createServer();
+    response = await request(server).get('/articles?doi=10.1101/2000.1234');
+  });
+
+  it('returns a 404 response', async (): Promise<void> => {
+    expect(response.status).toBe(NOT_FOUND);
+  });
+});
