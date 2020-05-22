@@ -29,27 +29,22 @@ interface RecentReview {
 
 interface ReviewReference {
   articleVersionDoi: Doi;
-  // reviewDoi: Doi;
-  // editorialCommunityId: string;
+  editorialCommunityId: string;
   added: Date;
 }
 
 interface FetchedArticle {
-  // title: string;
+  title: string;
   doi: Doi;
-  // publicationDate: Date;
-  // abstract: string;
-  // authors: Array<string>;
 }
 
 const createRenderMostRecentReviews = (
   reviewReferences: () => Array<ReviewReference>,
-  reviews: () => Array<RecentReview>,
   fetchArticle: (doi: Doi) => Promise<FetchedArticle>,
   editorialCommunities: () => Array<{ id: string; name: string }>,
   limit: number,
 ) => (
-  (): string => {
+  async (): Promise<string> => {
     const mostRecentReviewReferences = reviewReferences()
       .sort((a, b) => b.added.getTime() - a.added.getTime())
       .slice(0, limit);
@@ -57,22 +52,27 @@ const createRenderMostRecentReviews = (
     const articleVersionDois = [...new Set<Doi>(mostRecentReviewReferences
       .map((reviewReference) => reviewReference.articleVersionDoi))];
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const articles = Promise
+    const articles = await Promise
       .all(articleVersionDois.map(fetchArticle))
-      .then((fetchedArticles) => (
+      .then((fetchedArticles): Record<string, FetchedArticle> => (
         fetchedArticles.reduce((fetchedArticlesMap, fetchedArticle) => ({
           ...fetchedArticlesMap, [fetchedArticle.doi.value]: fetchedArticle,
         }), {})
       ));
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const editorialCommunityNames = editorialCommunities()
+    const editorialCommunityNames: Record<string, string> = editorialCommunities()
       .reduce((accumulator, editorialCommunity) => ({
         ...accumulator, [editorialCommunity.id]: editorialCommunity.name,
       }), {});
 
-    return templateMostRecentReviews(reviews());
+    const mostRecentReviews: Array<RecentReview> = mostRecentReviewReferences.map((reviewReference) => ({
+      articleDoi: reviewReference.articleVersionDoi,
+      articleTitle: articles[reviewReference.articleVersionDoi.value].title,
+      editorialCommunityName: editorialCommunityNames[reviewReference.editorialCommunityId],
+      added: reviewReference.added,
+    }));
+
+    return templateMostRecentReviews(mostRecentReviews);
   }
 );
 
@@ -82,16 +82,12 @@ export default (
   fetchArticle: (doi: Doi) => Promise<FetchedArticle>,
 ): Middleware => {
   const renderEditorialCommunities = createRenderEditorialCommunities(editorialCommunities.all);
-  return async ({ response, state }: Context, next: Next): Promise<void> => {
+  return async ({ response }: Context, next: Next): Promise<void> => {
     const reviewReferenceAdapter = (): Array<ReviewReference> => (
       Array.from(reviewReferenceRepository)
     );
-    const mostRecentReviewsAdapter = (): Array<RecentReview> => (
-      state.viewModel.mostRecentReviews
-    );
     const renderMostRecentReviews = createRenderMostRecentReviews(
       reviewReferenceAdapter,
-      mostRecentReviewsAdapter,
       fetchArticle,
       editorialCommunities.all,
       5,
@@ -142,7 +138,7 @@ export default (
 
   <div class="content-lists">
 
-    ${renderMostRecentReviews()}
+    ${await renderMostRecentReviews()}
 
     ${renderEditorialCommunities()}
 
