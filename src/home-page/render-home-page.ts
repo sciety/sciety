@@ -26,19 +26,36 @@ interface RecentReview {
   added: Date;
 }
 
-const createRenderMostRecentReviews = (reviews: () => Array<RecentReview>) => (
-  (): string => (
-    templateMostRecentReviews(reviews())
-  )
+interface ReviewReference {
+  // articleVersionDoi: Doi;
+  // reviewDoi: Doi;
+  // editorialCommunityId: string;
+  added: Date;
+}
+
+const createRenderMostRecentReviews = (
+  reviewReferences: () => Array<ReviewReference>,
+  reviews: () => Array<RecentReview>,
+  limit = 5,
+) => (
+  (): string => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const mostRecentReviewReferences = reviewReferences()
+      .sort((a, b) => b.added.getTime() - a.added.getTime())
+      .slice(0, limit);
+
+    return templateMostRecentReviews(reviews());
+  }
 );
 
 export default (editorialCommunities: EditorialCommunityRepository): Middleware => {
   const renderEditorialCommunities = createRenderEditorialCommunities(editorialCommunities.all);
   return async ({ response, state }: Context, next: Next): Promise<void> => {
+    const reviewReferenceAdapter = (): Array<ReviewReference> => [];
     const mostRecentReviewsAdapter = (): Array<RecentReview> => (
       state.viewModel.mostRecentReviews
     );
-    const renderMostRecentReviews = createRenderMostRecentReviews(mostRecentReviewsAdapter);
+    const renderMostRecentReviews = createRenderMostRecentReviews(reviewReferenceAdapter, mostRecentReviewsAdapter);
     response.body = `<div class="home-page">
     <header class="content-header">
 
