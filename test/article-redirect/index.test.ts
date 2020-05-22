@@ -13,4 +13,8 @@ describe('article redirect route', (): void => {
   it('returns a redirect response', async (): Promise<void> => {
     expect(response.status).toBe(PERMANENT_REDIRECT);
   });
+
+  it('redirects to the article page', async (): Promise<void> => {
+    expect(response.header.location).toBe('/articles/10.1101/2000.1234');
+  });
 });
