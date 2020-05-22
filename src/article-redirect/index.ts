@@ -1,6 +1,10 @@
-import { Middleware } from '@koa/router';
-import compose from 'koa-compose';
+import { Middleware, Next, Context } from 'koa';
+import { PERMANENT_REDIRECT } from 'http-status-codes';
 
 export default (): Middleware => (
-  compose([])
+  async (ctx: Context, next: Next): Promise<void> => {
+    ctx.response.status = PERMANENT_REDIRECT;
+
+    await next();
+  }
 );
