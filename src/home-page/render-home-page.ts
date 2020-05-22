@@ -1,5 +1,6 @@
 import { Context, Middleware, Next } from 'koa';
 import templateMostRecentReviews from './templates/most-recent-reviews';
+import Doi from '../data/doi';
 import templateListItems from '../templates/list-items';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 
@@ -18,9 +19,26 @@ const createRenderEditorialCommunities = (allCommunities: () => Array<{ id: stri
   }
 );
 
+interface RecentReview {
+  articleDoi: Doi;
+  articleTitle: string;
+  editorialCommunityName: string;
+  added: Date;
+}
+
+const createRenderMostRecentReviews = (reviews: () => Array<RecentReview>) => (
+  (): string => (
+    templateMostRecentReviews(reviews())
+  )
+);
+
 export default (editorialCommunities: EditorialCommunityRepository): Middleware => {
   const renderEditorialCommunities = createRenderEditorialCommunities(editorialCommunities.all);
   return async ({ response, state }: Context, next: Next): Promise<void> => {
+    const mostRecentReviewsAdapter = (): Array<RecentReview> => (
+      state.viewModel.mostRecentReviews
+    );
+    const renderMostRecentReviews = createRenderMostRecentReviews(mostRecentReviewsAdapter);
     response.body = `<div class="home-page">
     <header class="content-header">
 
@@ -67,7 +85,7 @@ export default (editorialCommunities: EditorialCommunityRepository): Middleware 
 
   <div class="content-lists">
 
-    ${templateMostRecentReviews(state.viewModel.mostRecentReviews)}
+    ${renderMostRecentReviews()}
 
     ${renderEditorialCommunities()}
 
