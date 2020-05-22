@@ -3,10 +3,24 @@ import templateMostRecentReviews from './templates/most-recent-reviews';
 import templateListItems from '../templates/list-items';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 
-export default (editorialCommunities: EditorialCommunityRepository): Middleware => (
-  async ({ response, state }: Context, next: Next): Promise<void> => {
-    const editorialCommunityLinks = editorialCommunities.all().map((ec) => `<a href="/editorial-communities/${ec.id}">${ec.name}</a>`);
+const createRenderEditorialCommunities = (allCommunities: () => Array<{ id: string; name: string }>) => (
+  (): string => {
+    const editorialCommunityLinks = allCommunities().map((ec) => `<a href="/editorial-communities/${ec.id}">${ec.name}</a>`);
+    return `
+    <section>
+      <h2>
+        Editorial communities
+      </h2>
+      <ol class="u-normalised-list">
+        ${templateListItems(editorialCommunityLinks)}
+      </ol>
+    </section>`;
+  }
+);
 
+export default (editorialCommunities: EditorialCommunityRepository): Middleware => {
+  const renderEditorialCommunities = createRenderEditorialCommunities(editorialCommunities.all);
+  return async ({ response, state }: Context, next: Next): Promise<void> => {
     response.body = `<div class="home-page">
     <header class="content-header">
 
@@ -55,19 +69,12 @@ export default (editorialCommunities: EditorialCommunityRepository): Middleware 
 
     ${templateMostRecentReviews(state.viewModel.mostRecentReviews)}
 
-    <section>
-      <h2>
-        Editorial communities
-      </h2>
-      <ol class="u-normalised-list">
-        ${templateListItems(editorialCommunityLinks)}
-      </ol>
-    </section>
-    
+    ${renderEditorialCommunities()}
+
   </div>
   </div>
 `;
 
     await next();
-  }
-);
+  };
+};
