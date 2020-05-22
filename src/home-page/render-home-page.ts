@@ -27,35 +27,62 @@ interface RecentReview {
 }
 
 interface ReviewReference {
-  // articleVersionDoi: Doi;
+  articleVersionDoi: Doi;
   // reviewDoi: Doi;
   // editorialCommunityId: string;
   added: Date;
 }
 
+interface FetchedArticle {
+  // title: string;
+  doi: Doi;
+  // publicationDate: Date;
+  // abstract: string;
+  // authors: Array<string>;
+}
+
 const createRenderMostRecentReviews = (
   reviewReferences: () => Array<ReviewReference>,
   reviews: () => Array<RecentReview>,
+  fetchArticle: (doi: Doi) => Promise<FetchedArticle>,
   limit = 5,
 ) => (
   (): string => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const mostRecentReviewReferences = reviewReferences()
       .sort((a, b) => b.added.getTime() - a.added.getTime())
       .slice(0, limit);
+
+    const articleVersionDois = [...new Set<Doi>(mostRecentReviewReferences
+      .map((reviewReference) => reviewReference.articleVersionDoi))];
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const articles = Promise
+      .all(articleVersionDois.map(fetchArticle))
+      .then((fetchedArticles) => (
+        fetchedArticles.reduce((fetchedArticlesMap, fetchedArticle) => ({
+          ...fetchedArticlesMap, [fetchedArticle.doi.value]: fetchedArticle,
+        }), {})
+      ));
 
     return templateMostRecentReviews(reviews());
   }
 );
 
-export default (editorialCommunities: EditorialCommunityRepository): Middleware => {
+export default (
+  editorialCommunities: EditorialCommunityRepository,
+  fetchArticle: (doi: Doi) => Promise<FetchedArticle>,
+): Middleware => {
   const renderEditorialCommunities = createRenderEditorialCommunities(editorialCommunities.all);
   return async ({ response, state }: Context, next: Next): Promise<void> => {
     const reviewReferenceAdapter = (): Array<ReviewReference> => [];
     const mostRecentReviewsAdapter = (): Array<RecentReview> => (
       state.viewModel.mostRecentReviews
     );
-    const renderMostRecentReviews = createRenderMostRecentReviews(reviewReferenceAdapter, mostRecentReviewsAdapter);
+    const renderMostRecentReviews = createRenderMostRecentReviews(
+      reviewReferenceAdapter,
+      mostRecentReviewsAdapter,
+      fetchArticle,
+    );
     response.body = `<div class="home-page">
     <header class="content-header">
 

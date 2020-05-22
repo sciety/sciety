@@ -13,6 +13,6 @@ export default (adapters: Adapters): Middleware => (
     fetchArticles(adapters.fetchArticle),
     populateEditorialCommunities(adapters.editorialCommunities),
     constructViewModel(),
-    renderHomePage(adapters.editorialCommunities),
+    renderHomePage(adapters.editorialCommunities, adapters.fetchArticle),
   ])
 );
