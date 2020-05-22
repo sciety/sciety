@@ -1,25 +1,11 @@
-import { Middleware, RouterContext } from '@koa/router';
-import { BadRequest } from 'http-errors';
-import { Next } from 'koa';
+import { Context, Middleware, Next } from 'koa';
 import templateMostRecentReviews from './templates/most-recent-reviews';
-import Doi from '../data/doi';
 import templateListItems from '../templates/list-items';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 
 export default (editorialCommunities: EditorialCommunityRepository): Middleware => (
-  async ({ request, response, state }: RouterContext, next: Next): Promise<void> => {
+  async ({ response, state }: Context, next: Next): Promise<void> => {
     const editorialCommunityLinks = editorialCommunities.all().map((ec) => `<a href="/editorial-communities/${ec.id}">${ec.name}</a>`);
-    if (request.query.articledoi) {
-      let doi: Doi;
-      try {
-        doi = new Doi(request.query.articledoi);
-      } catch (error) {
-        throw new BadRequest('Not a valid DOI.');
-      }
-      response.redirect(`/articles/${doi}`);
-      await next();
-      return;
-    }
 
     response.body = `<div class="home-page">
     <header class="content-header">
@@ -35,7 +21,7 @@ export default (editorialCommunities: EditorialCommunityRepository): Middleware 
 
   </header>
 
-  <form method="get" action="/" class="find-reviews compact-form">
+  <form method="get" action="/articles" class="find-reviews compact-form">
 
     <fieldset>
 
@@ -49,7 +35,7 @@ export default (editorialCommunities: EditorialCommunityRepository): Middleware 
           <span class="visually-hidden">Search for an article by bioRxiv DOI</span>
           <input
             type="text"
-            name="articledoi"
+            name="doi"
             placeholder="Search for an article by bioRxiv DOI"
             class="compact-form__article-doi"
             required>
