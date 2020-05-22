@@ -2,7 +2,7 @@ import { PERMANENT_REDIRECT } from 'http-status-codes';
 import request, { Response } from 'supertest';
 import createServer from '../handlers/server';
 
-const arbitraryDoi: string = '10.1101/2000.1234';
+const arbitraryDoi = '10.1101/2000.1234';
 
 describe('article redirect route', (): void => {
   let response: Response;
