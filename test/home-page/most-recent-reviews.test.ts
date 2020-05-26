@@ -29,7 +29,7 @@ describe('construct-view-model middleware', (): void => {
       doi,
       title: `Article ${doi}`,
     });
-    const editorialCommunities = (): Array<EditorialCommunity> => [
+    const editorialCommunities = async (): Promise<Array<EditorialCommunity>> => [
       {
         id: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
         name: 'eLife',

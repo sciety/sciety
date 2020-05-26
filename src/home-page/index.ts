@@ -4,8 +4,11 @@ import { Adapters } from '../types/adapters';
 
 export default (adapters: Adapters): Middleware => {
   const reviewReferenceAdapter = (): Array<ReviewReference> => Array.from(adapters.reviewReferenceRepository);
+  const editorialCommunitiesAdapter = async (): Promise<Array<{ id: string; name: string }>> => (
+    adapters.editorialCommunities.all()
+  );
   return renderHomePage(
-    adapters.editorialCommunities.all,
+    editorialCommunitiesAdapter,
     reviewReferenceAdapter,
     adapters.fetchArticle,
   );

@@ -3,9 +3,13 @@ import templateMostRecentReviews from './templates/most-recent-reviews';
 import Doi from '../data/doi';
 import templateListItems from '../templates/list-items';
 
-const createRenderEditorialCommunities = (allCommunities: () => Array<{ id: string; name: string }>) => (
-  (): string => {
-    const editorialCommunityLinks = allCommunities().map((ec) => `<a href="/editorial-communities/${ec.id}">${ec.name}</a>`);
+type RenderEditorialCommunities = () => Promise<string>;
+
+const createRenderEditorialCommunities = (
+  allCommunities: () => Promise<Array<{ id: string; name: string }>>,
+): RenderEditorialCommunities => (
+  async () => {
+    const editorialCommunityLinks = (await allCommunities()).map((ec) => `<a href="/editorial-communities/${ec.id}">${ec.name}</a>`);
     return `
     <section>
       <h2>
@@ -44,7 +48,7 @@ export interface EditorialCommunity {
 export const createDiscoverMostRecentReviews = (
   reviewReferences: () => Array<ReviewReference>,
   fetchArticle: (doi: Doi) => Promise<FetchedArticle>,
-  editorialCommunities: () => Array<EditorialCommunity>,
+  editorialCommunities: () => Promise<Array<EditorialCommunity>>,
   limit: number,
 ) => (
   async (): Promise<Array<RecentReview>> => {
@@ -63,7 +67,7 @@ export const createDiscoverMostRecentReviews = (
         }), {})
       ));
 
-    const editorialCommunityNames: Record<string, string> = editorialCommunities()
+    const editorialCommunityNames: Record<string, string> = (await editorialCommunities())
       .reduce((accumulator, editorialCommunity) => ({
         ...accumulator, [editorialCommunity.id]: editorialCommunity.name,
       }), {});
@@ -84,7 +88,7 @@ type RenderMostRecentReviews = () => Promise<string>;
 const createRenderMostRecentReviews = (
   reviewReferences: () => Array<ReviewReference>,
   fetchArticle: (doi: Doi) => Promise<FetchedArticle>,
-  editorialCommunities: () => Array<EditorialCommunity>,
+  editorialCommunities: () => Promise<Array<EditorialCommunity>>,
   limit: number,
 ): RenderMostRecentReviews => {
   const discoverMostRecentReviews = createDiscoverMostRecentReviews(
@@ -97,8 +101,10 @@ const createRenderMostRecentReviews = (
   return async () => templateMostRecentReviews(await discoverMostRecentReviews());
 };
 
-const createRenderFindArticle = () => (
-  () => (`
+type RenderFindArticle = () => Promise<string>;
+
+const createRenderFindArticle = (): RenderFindArticle => (
+  async () => (`
     <form method="get" action="/articles" class="find-reviews compact-form">
     <fieldset>
 
@@ -129,8 +135,10 @@ const createRenderFindArticle = () => (
   `)
 );
 
-const createRenderPageHeader = () => (
-  () => (`
+type RenderPageHeader = () => Promise<string>;
+
+const createRenderPageHeader = (): RenderPageHeader => (
+  async () => (`
     <header class="content-header">
 
       <h1>
@@ -147,7 +155,7 @@ const createRenderPageHeader = () => (
 );
 
 export default (
-  editorialCommunities: () => Array<EditorialCommunity>,
+  editorialCommunities: () => Promise<Array<EditorialCommunity>>,
   reviewReferences: () => Array<ReviewReference>,
   fetchArticle: (doi: Doi) => Promise<FetchedArticle>,
 ): Middleware => {
@@ -163,11 +171,11 @@ export default (
   return async ({ response }: Context, next: Next): Promise<void> => {
     response.body = `
       <div class="home-page">
-        ${renderPageHeader()}
-        ${renderFindArticle()}
+        ${await renderPageHeader()}
+        ${await renderFindArticle()}
         <div class="content-lists">
           ${await renderMostRecentReviews()}
-          ${renderEditorialCommunities()}
+          ${await renderEditorialCommunities()}
         </div>
       </div>
     `;
