@@ -1,4 +1,5 @@
 import { Context, Middleware, Next } from 'koa';
+import createRenderPageHeader from './render-page-header';
 import templateMostRecentReviews from './templates/most-recent-reviews';
 import Doi from '../data/doi';
 import templateListItems from '../templates/list-items';
@@ -129,25 +130,6 @@ const createRenderFindArticle = (): RenderFindArticle => (
 
     </fieldset>
     </form>
-  `)
-);
-
-type RenderPageHeader = () => Promise<string>;
-
-const createRenderPageHeader = (): RenderPageHeader => (
-  async () => (`
-    <header class="content-header">
-
-      <h1>
-        Untitled Publish Review Curate Platform
-      </h1>
-
-      <p>
-        An experimental platform for multiple communities to provide post-publication peer review of scientific
-        research.<br><a href="/about">Learn more about the platform.</a>
-      </p>
-
-    </header>
   `)
 );
 
