@@ -20,25 +20,25 @@ const createRenderEditorialCommunities = (allCommunities: () => Array<{ id: stri
   }
 );
 
-interface RecentReview {
+export interface RecentReview {
   articleDoi: Doi;
   articleTitle: string;
   editorialCommunityName: string;
   added: Date;
 }
 
-interface ReviewReference {
+export interface ReviewReference {
   articleVersionDoi: Doi;
   editorialCommunityId: string;
   added: Date;
 }
 
-interface FetchedArticle {
+export interface FetchedArticle {
   title: string;
   doi: Doi;
 }
 
-const createDiscoverMostRecentReviews = (
+export const createDiscoverMostRecentReviews = (
   reviewReferences: () => Array<ReviewReference>,
   fetchArticle: (doi: Doi) => Promise<FetchedArticle>,
   editorialCommunities: () => Array<{ id: string; name: string }>,
