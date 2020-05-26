@@ -76,18 +76,21 @@ const createDiscoverMostRecentReviews = (
   }
 );
 
+type RenderMostRecentReviews = () => Promise<string>;
+
 const createRenderMostRecentReviews = (
   reviewReferences: () => Array<ReviewReference>,
   fetchArticle: (doi: Doi) => Promise<FetchedArticle>,
   editorialCommunities: () => Array<{ id: string; name: string }>,
   limit: number,
-): () => Promise<string> => {
+): RenderMostRecentReviews => {
   const discoverMostRecentReviews = createDiscoverMostRecentReviews(
     reviewReferences,
     fetchArticle,
     editorialCommunities,
-    limit
+    limit,
   );
+
   return async (): Promise<string> => templateMostRecentReviews(await discoverMostRecentReviews());
 };
 
