@@ -3,7 +3,6 @@ import templateMostRecentReviews from './templates/most-recent-reviews';
 import Doi from '../data/doi';
 import templateListItems from '../templates/list-items';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
-import ReviewReferenceRepository from '../types/review-reference-repository';
 
 const createRenderEditorialCommunities = (allCommunities: () => Array<{ id: string; name: string }>) => (
   (): string => {
@@ -101,16 +100,13 @@ const createRenderMostRecentReviews = (
 
 export default (
   editorialCommunities: EditorialCommunityRepository,
-  reviewReferenceRepository: ReviewReferenceRepository,
+  reviewReferences: () => Array<ReviewReference>,
   fetchArticle: (doi: Doi) => Promise<FetchedArticle>,
 ): Middleware => {
   const renderEditorialCommunities = createRenderEditorialCommunities(editorialCommunities.all);
   return async ({ response }: Context, next: Next): Promise<void> => {
-    const reviewReferenceAdapter = (): Array<ReviewReference> => (
-      Array.from(reviewReferenceRepository)
-    );
     const renderMostRecentReviews = createRenderMostRecentReviews(
-      reviewReferenceAdapter,
+      reviewReferences,
       fetchArticle,
       editorialCommunities.all,
       5,
