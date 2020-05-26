@@ -97,7 +97,7 @@ const createRenderMostRecentReviews = (
   return async () => templateMostRecentReviews(await discoverMostRecentReviews());
 };
 
-const createRenderFindArticleForm = () => (
+const createRenderFindArticle = () => (
   () => (`
     <form method="get" action="/articles" class="find-reviews compact-form">
     <fieldset>
@@ -153,7 +153,7 @@ export default (
 ): Middleware => {
   const renderPageHeader = createRenderPageHeader();
   const renderEditorialCommunities = createRenderEditorialCommunities(editorialCommunities);
-  const renderFindArticleForm = createRenderFindArticleForm();
+  const renderFindArticle = createRenderFindArticle();
   return async ({ response }: Context, next: Next): Promise<void> => {
     const renderMostRecentReviews = createRenderMostRecentReviews(
       reviewReferences,
@@ -165,7 +165,7 @@ export default (
 
   ${renderPageHeader()}
 
-  ${renderFindArticleForm()}
+  ${renderFindArticle()}
 
   <div class="content-lists">
 
