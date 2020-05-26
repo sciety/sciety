@@ -20,7 +20,7 @@ describe('construct-view-model middleware', (): void => {
       },
       {
         articleVersionDoi: new Doi('10.1101/815689'),
-        editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
+        editorialCommunityId: 'e3a371f9-576d-48d5-a690-731b9fea26bd',
         added: new Date('2020-05-21T00:00:00Z'),
       },
     ];
@@ -33,6 +33,10 @@ describe('construct-view-model middleware', (): void => {
         id: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
         name: 'eLife',
       },
+      {
+        id: 'e3a371f9-576d-48d5-a690-731b9fea26bd',
+        name: 'Royal Society of Psychoceramics',
+      },
     ];
     const viewModel = await createDiscoverMostRecentReviews(reviewReferences, fetchArticle, editorialCommunities, 2)();
 
@@ -40,7 +44,7 @@ describe('construct-view-model middleware', (): void => {
     expect(viewModel[0]).toMatchObject({
       articleDoi: new Doi('10.1101/815689'),
       articleTitle: 'Article 10.1101/815689',
-      editorialCommunityName: 'eLife',
+      editorialCommunityName: 'Royal Society of Psychoceramics',
       added: new Date('2020-05-21T00:00:00Z'),
     });
     expect(viewModel[1]).toMatchObject({
