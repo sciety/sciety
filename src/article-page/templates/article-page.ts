@@ -1,6 +1,5 @@
 import addReviewForm from './add-review-form';
 import templateArticlePageHeader from './article-page-header';
-import templateReviewSidebarItem from './review-sidebar-item';
 import templateReviewSummary from './review-summary';
 import templateListItems from '../../templates/list-items';
 import EditorialCommunityRepository from '../../types/editorial-community-repository';
@@ -11,7 +10,6 @@ export default (
   editorialCommunities: EditorialCommunityRepository,
 ): string => {
   const reviewSummaries = reviews.map((review, index) => templateReviewSummary(review, `review-${index}`));
-  const reviewSidebarItems = reviews.map((review) => templateReviewSidebarItem(review));
   return `<article>
 
     ${templateArticlePageHeader(article)}
@@ -43,18 +41,10 @@ export default (
     </div>
 
     <aside>
-      <h2>
-        ${reviews.length} peer reviews
-      </h2>
-      <ol class="u-normalised-list">
-        ${templateListItems(reviewSidebarItems)}
-      </ol>
-
       <div class="add-review__form">
         <h2> Add a review<br/>to this article </h2>
         ${addReviewForm(article, editorialCommunities)}
       </div>
-
     </aside>
 
   </article>`;
