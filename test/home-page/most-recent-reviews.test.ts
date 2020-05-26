@@ -4,7 +4,7 @@ import {
   EditorialCommunity,
   FetchedArticle,
   ReviewReference,
-} from '../../src/home-page/render-home-page';
+} from '../../src/home-page/render-most-recent-reviews';
 
 describe('construct-view-model middleware', (): void => {
   it('adds most recent reviews to the context', async (): Promise<void> => {

@@ -1,6 +1,4 @@
 import { Context, Middleware, Next } from 'koa';
-import templateMostRecentReviews from './templates/most-recent-reviews';
-import Doi from '../data/doi';
 import templateListItems from '../templates/list-items';
 
 type RenderEditorialCommunities = () => Promise<string>;
@@ -21,82 +19,6 @@ const createRenderEditorialCommunities = (
     </section>`;
   }
 );
-
-export interface RecentReview {
-  articleDoi: Doi;
-  articleTitle: string;
-  editorialCommunityName: string;
-  added: Date;
-}
-
-export interface ReviewReference {
-  articleVersionDoi: Doi;
-  editorialCommunityId: string;
-  added: Date;
-}
-
-export interface FetchedArticle {
-  title: string;
-  doi: Doi;
-}
-
-export interface EditorialCommunity {
-  id: string;
-  name: string;
-}
-
-export const createDiscoverMostRecentReviews = (
-  reviewReferences: () => Promise<Array<ReviewReference>>,
-  fetchArticle: (doi: Doi) => Promise<FetchedArticle>,
-  editorialCommunities: () => Promise<Array<EditorialCommunity>>,
-) => (
-  async (limit: number): Promise<Array<RecentReview>> => {
-    const mostRecentReviewReferences = (await reviewReferences())
-      .sort((a, b) => b.added.getTime() - a.added.getTime())
-      .slice(0, limit);
-
-    const articleVersionDois = [...new Set<Doi>(mostRecentReviewReferences
-      .map((reviewReference) => reviewReference.articleVersionDoi))];
-
-    const articles = await Promise
-      .all(articleVersionDois.map(fetchArticle))
-      .then((fetchedArticles): Record<string, FetchedArticle> => (
-        fetchedArticles.reduce((fetchedArticlesMap, fetchedArticle) => ({
-          ...fetchedArticlesMap, [fetchedArticle.doi.value]: fetchedArticle,
-        }), {})
-      ));
-
-    const editorialCommunityNames: Record<string, string> = (await editorialCommunities())
-      .reduce((accumulator, editorialCommunity) => ({
-        ...accumulator, [editorialCommunity.id]: editorialCommunity.name,
-      }), {});
-
-    const mostRecentReviews: Array<RecentReview> = mostRecentReviewReferences.map((reviewReference) => ({
-      articleDoi: reviewReference.articleVersionDoi,
-      articleTitle: articles[reviewReference.articleVersionDoi.value].title,
-      editorialCommunityName: editorialCommunityNames[reviewReference.editorialCommunityId],
-      added: reviewReference.added,
-    }));
-
-    return mostRecentReviews;
-  }
-);
-
-type RenderMostRecentReviews = (limit: number) => Promise<string>;
-
-const createRenderMostRecentReviews = (
-  reviewReferences: () => Promise<Array<ReviewReference>>,
-  fetchArticle: (doi: Doi) => Promise<FetchedArticle>,
-  editorialCommunities: () => Promise<Array<EditorialCommunity>>,
-): RenderMostRecentReviews => {
-  const discoverMostRecentReviews = createDiscoverMostRecentReviews(
-    reviewReferences,
-    fetchArticle,
-    editorialCommunities,
-  );
-
-  return async (limit) => templateMostRecentReviews(await discoverMostRecentReviews(limit));
-};
 
 type RenderFindArticle = () => Promise<string>;
 
@@ -133,18 +55,12 @@ const createRenderFindArticle = (): RenderFindArticle => (
 );
 
 export default (
-  editorialCommunities: () => Promise<Array<EditorialCommunity>>,
-  reviewReferences: () => Promise<Array<ReviewReference>>,
-  fetchArticle: (doi: Doi) => Promise<FetchedArticle>,
+  editorialCommunities: () => Promise<Array<{ id: string; name: string }>>,
   renderPageHeader: () => Promise<string>,
+  renderMostRecentReviews: (limit: number) => Promise<string>,
 ): Middleware => {
   const renderEditorialCommunities = createRenderEditorialCommunities(editorialCommunities);
   const renderFindArticle = createRenderFindArticle();
-  const renderMostRecentReviews = createRenderMostRecentReviews(
-    reviewReferences,
-    fetchArticle,
-    editorialCommunities,
-  );
   return async ({ response }: Context, next: Next): Promise<void> => {
     response.body = `
       <div class="home-page">

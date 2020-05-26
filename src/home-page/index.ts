@@ -1,5 +1,6 @@
 import { Middleware } from '@koa/router';
-import renderHomePage, { ReviewReference } from './render-home-page';
+import renderHomePage from './render-home-page';
+import createMostRecentReviews, { ReviewReference } from './render-most-recent-reviews';
 import createRenderPageHeader from './render-page-header';
 import { Adapters } from '../types/adapters';
 
@@ -12,8 +13,7 @@ export default (adapters: Adapters): Middleware => {
   );
   return renderHomePage(
     editorialCommunitiesAdapter,
-    reviewReferenceAdapter,
-    adapters.fetchArticle,
     createRenderPageHeader(),
+    createMostRecentReviews(reviewReferenceAdapter, adapters.fetchArticle, editorialCommunitiesAdapter),
   );
 };
