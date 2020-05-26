@@ -3,7 +3,9 @@ import renderHomePage, { ReviewReference } from './render-home-page';
 import { Adapters } from '../types/adapters';
 
 export default (adapters: Adapters): Middleware => {
-  const reviewReferenceAdapter = (): Array<ReviewReference> => Array.from(adapters.reviewReferenceRepository);
+  const reviewReferenceAdapter = async (): Promise<Array<ReviewReference>> => (
+    Array.from(adapters.reviewReferenceRepository)
+  );
   const editorialCommunitiesAdapter = async (): Promise<Array<{ id: string; name: string }>> => (
     adapters.editorialCommunities.all()
   );

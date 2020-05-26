@@ -46,13 +46,13 @@ export interface EditorialCommunity {
 }
 
 export const createDiscoverMostRecentReviews = (
-  reviewReferences: () => Array<ReviewReference>,
+  reviewReferences: () => Promise<Array<ReviewReference>>,
   fetchArticle: (doi: Doi) => Promise<FetchedArticle>,
   editorialCommunities: () => Promise<Array<EditorialCommunity>>,
   limit: number,
 ) => (
   async (): Promise<Array<RecentReview>> => {
-    const mostRecentReviewReferences = reviewReferences()
+    const mostRecentReviewReferences = (await reviewReferences())
       .sort((a, b) => b.added.getTime() - a.added.getTime())
       .slice(0, limit);
 
@@ -86,7 +86,7 @@ export const createDiscoverMostRecentReviews = (
 type RenderMostRecentReviews = () => Promise<string>;
 
 const createRenderMostRecentReviews = (
-  reviewReferences: () => Array<ReviewReference>,
+  reviewReferences: () => Promise<Array<ReviewReference>>,
   fetchArticle: (doi: Doi) => Promise<FetchedArticle>,
   editorialCommunities: () => Promise<Array<EditorialCommunity>>,
   limit: number,
@@ -156,7 +156,7 @@ const createRenderPageHeader = (): RenderPageHeader => (
 
 export default (
   editorialCommunities: () => Promise<Array<EditorialCommunity>>,
-  reviewReferences: () => Array<ReviewReference>,
+  reviewReferences: () => Promise<Array<ReviewReference>>,
   fetchArticle: (doi: Doi) => Promise<FetchedArticle>,
 ): Middleware => {
   const renderPageHeader = createRenderPageHeader();

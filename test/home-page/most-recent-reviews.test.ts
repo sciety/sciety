@@ -8,7 +8,7 @@ import {
 
 describe('construct-view-model middleware', (): void => {
   it('adds most recent reviews to the context', async (): Promise<void> => {
-    const reviewReferences = (): Array<ReviewReference> => [
+    const reviewReferences = async (): Promise<Array<ReviewReference>> => [
       {
         articleVersionDoi: new Doi('10.1101/642017'),
         editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
