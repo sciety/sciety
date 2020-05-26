@@ -1,24 +1,4 @@
 import { Context, Middleware, Next } from 'koa';
-import templateListItems from '../templates/list-items';
-
-type RenderEditorialCommunities = () => Promise<string>;
-
-const createRenderEditorialCommunities = (
-  allCommunities: () => Promise<Array<{ id: string; name: string }>>,
-): RenderEditorialCommunities => (
-  async () => {
-    const editorialCommunityLinks = (await allCommunities()).map((ec) => `<a href="/editorial-communities/${ec.id}">${ec.name}</a>`);
-    return `
-    <section>
-      <h2>
-        Editorial communities
-      </h2>
-      <ol class="u-normalised-list">
-        ${templateListItems(editorialCommunityLinks)}
-      </ol>
-    </section>`;
-  }
-);
 
 type RenderFindArticle = () => Promise<string>;
 
@@ -55,11 +35,10 @@ const createRenderFindArticle = (): RenderFindArticle => (
 );
 
 export default (
-  editorialCommunities: () => Promise<Array<{ id: string; name: string }>>,
   renderPageHeader: () => Promise<string>,
   renderMostRecentReviews: (limit: number) => Promise<string>,
+  renderEditorialCommunities: () => Promise<string>,
 ): Middleware => {
-  const renderEditorialCommunities = createRenderEditorialCommunities(editorialCommunities);
   const renderFindArticle = createRenderFindArticle();
   return async ({ response }: Context, next: Next): Promise<void> => {
     response.body = `
