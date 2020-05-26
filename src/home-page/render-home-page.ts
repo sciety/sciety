@@ -38,13 +38,13 @@ interface FetchedArticle {
   doi: Doi;
 }
 
-const createRenderMostRecentReviews = (
+const createDiscoverMostRecentReviews = (
   reviewReferences: () => Array<ReviewReference>,
   fetchArticle: (doi: Doi) => Promise<FetchedArticle>,
   editorialCommunities: () => Array<{ id: string; name: string }>,
   limit: number,
 ) => (
-  async (): Promise<string> => {
+  async (): Promise<Array<RecentReview>> => {
     const mostRecentReviewReferences = reviewReferences()
       .sort((a, b) => b.added.getTime() - a.added.getTime())
       .slice(0, limit);
@@ -72,9 +72,24 @@ const createRenderMostRecentReviews = (
       added: reviewReference.added,
     }));
 
-    return templateMostRecentReviews(mostRecentReviews);
+    return mostRecentReviews;
   }
 );
+
+const createRenderMostRecentReviews = (
+  reviewReferences: () => Array<ReviewReference>,
+  fetchArticle: (doi: Doi) => Promise<FetchedArticle>,
+  editorialCommunities: () => Array<{ id: string; name: string }>,
+  limit: number,
+): () => Promise<string> => {
+  const discoverMostRecentReviews = createDiscoverMostRecentReviews(
+    reviewReferences,
+    fetchArticle,
+    editorialCommunities,
+    limit
+  );
+  return async (): Promise<string> => templateMostRecentReviews(await discoverMostRecentReviews());
+};
 
 export default (
   editorialCommunities: EditorialCommunityRepository,
