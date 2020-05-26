@@ -39,7 +39,7 @@ describe('construct-view-model middleware', (): void => {
         name: 'Royal Society of Psychoceramics',
       },
     ];
-    const viewModel = await createDiscoverMostRecentReviews(reviewReferences, fetchArticle, editorialCommunities, 2)();
+    const viewModel = await createDiscoverMostRecentReviews(reviewReferences, fetchArticle, editorialCommunities)(2);
 
     expect(viewModel).toHaveLength(2);
     expect(viewModel[0]).toMatchObject({

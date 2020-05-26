@@ -49,9 +49,8 @@ export const createDiscoverMostRecentReviews = (
   reviewReferences: () => Promise<Array<ReviewReference>>,
   fetchArticle: (doi: Doi) => Promise<FetchedArticle>,
   editorialCommunities: () => Promise<Array<EditorialCommunity>>,
-  limit: number,
 ) => (
-  async (): Promise<Array<RecentReview>> => {
+  async (limit: number): Promise<Array<RecentReview>> => {
     const mostRecentReviewReferences = (await reviewReferences())
       .sort((a, b) => b.added.getTime() - a.added.getTime())
       .slice(0, limit);
@@ -83,22 +82,20 @@ export const createDiscoverMostRecentReviews = (
   }
 );
 
-type RenderMostRecentReviews = () => Promise<string>;
+type RenderMostRecentReviews = (limit: number) => Promise<string>;
 
 const createRenderMostRecentReviews = (
   reviewReferences: () => Promise<Array<ReviewReference>>,
   fetchArticle: (doi: Doi) => Promise<FetchedArticle>,
   editorialCommunities: () => Promise<Array<EditorialCommunity>>,
-  limit: number,
 ): RenderMostRecentReviews => {
   const discoverMostRecentReviews = createDiscoverMostRecentReviews(
     reviewReferences,
     fetchArticle,
     editorialCommunities,
-    limit,
   );
 
-  return async () => templateMostRecentReviews(await discoverMostRecentReviews());
+  return async (limit) => templateMostRecentReviews(await discoverMostRecentReviews(limit));
 };
 
 type RenderFindArticle = () => Promise<string>;
@@ -166,7 +163,6 @@ export default (
     reviewReferences,
     fetchArticle,
     editorialCommunities,
-    5,
   );
   return async ({ response }: Context, next: Next): Promise<void> => {
     response.body = `
@@ -174,7 +170,7 @@ export default (
         ${await renderPageHeader()}
         ${await renderFindArticle()}
         <div class="content-lists">
-          ${await renderMostRecentReviews()}
+          ${await renderMostRecentReviews(5)}
           ${await renderEditorialCommunities()}
         </div>
       </div>
