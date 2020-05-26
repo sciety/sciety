@@ -44,13 +44,15 @@ export const createDiscoverMostRecentReviews = (
       .all(articleVersionDois.map(fetchArticle))
       .then((fetchedArticles): Record<string, FetchedArticle> => (
         fetchedArticles.reduce((fetchedArticlesMap, fetchedArticle) => ({
-          ...fetchedArticlesMap, [fetchedArticle.doi.value]: fetchedArticle,
+          ...fetchedArticlesMap,
+          [fetchedArticle.doi.value]: fetchedArticle,
         }), {})
       ));
 
     const editorialCommunityNames: Record<string, string> = (await editorialCommunities())
       .reduce((accumulator, editorialCommunity) => ({
-        ...accumulator, [editorialCommunity.id]: editorialCommunity.name,
+        ...accumulator,
+        [editorialCommunity.id]: editorialCommunity.name,
       }), {});
 
     const mostRecentReviews: Array<RecentReview> = mostRecentReviewReferences.map((reviewReference) => ({
@@ -65,9 +67,9 @@ export const createDiscoverMostRecentReviews = (
 );
 
 const templateRecentReview = (review: RecentReview): string => (`
- <a href="/articles/${review.articleDoi}">${review.articleTitle}</a>
- <div class="review-status">added by ${review.editorialCommunityName}
- <time datetime="${toString(review.added)}" title="${toDisplayString(review.added)}">recently</time></div>
+  <a href="/articles/${review.articleDoi}">${review.articleTitle}</a>
+  <div class="review-status">added by ${review.editorialCommunityName}
+  <time datetime="${toString(review.added)}" title="${toDisplayString(review.added)}">recently</time></div>
 `);
 
 const templateMostRecentReviews = (reviews: Array<RecentReview>): string => (`
