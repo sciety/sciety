@@ -132,16 +132,16 @@ const createRenderFindArticle = () => (
 const createRenderPageHeader = () => (
   () => (`
     <header class="content-header">
-  
+
       <h1>
         Untitled Publish Review Curate Platform
       </h1>
-  
+
       <p>
         An experimental platform for multiple communities to provide post-publication peer review of scientific
         research.<br><a href="/about">Learn more about the platform.</a>
       </p>
-  
+
     </header>
   `)
 );
@@ -154,28 +154,23 @@ export default (
   const renderPageHeader = createRenderPageHeader();
   const renderEditorialCommunities = createRenderEditorialCommunities(editorialCommunities);
   const renderFindArticle = createRenderFindArticle();
+  const renderMostRecentReviews = createRenderMostRecentReviews(
+    reviewReferences,
+    fetchArticle,
+    editorialCommunities,
+    5,
+  );
   return async ({ response }: Context, next: Next): Promise<void> => {
-    const renderMostRecentReviews = createRenderMostRecentReviews(
-      reviewReferences,
-      fetchArticle,
-      editorialCommunities,
-      5,
-    );
-    response.body = `<div class="home-page">
-
-  ${renderPageHeader()}
-
-  ${renderFindArticle()}
-
-  <div class="content-lists">
-
-    ${await renderMostRecentReviews()}
-
-    ${renderEditorialCommunities()}
-
-  </div>
-  </div>
-`;
+    response.body = `
+      <div class="home-page">
+        ${renderPageHeader()}
+        ${renderFindArticle()}
+        <div class="content-lists">
+          ${await renderMostRecentReviews()}
+          ${renderEditorialCommunities()}
+        </div>
+      </div>
+    `;
 
     await next();
   };
