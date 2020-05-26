@@ -129,11 +129,29 @@ const createRenderFindArticleForm = () => (
   `)
 );
 
+const createRenderPageHeader = () => (
+  () => (`
+    <header class="content-header">
+  
+      <h1>
+        Untitled Publish Review Curate Platform
+      </h1>
+  
+      <p>
+        An experimental platform for multiple communities to provide post-publication peer review of scientific
+        research.<br><a href="/about">Learn more about the platform.</a>
+      </p>
+  
+    </header>
+  `)
+);
+
 export default (
   editorialCommunities: () => Array<EditorialCommunity>,
   reviewReferences: () => Array<ReviewReference>,
   fetchArticle: (doi: Doi) => Promise<FetchedArticle>,
 ): Middleware => {
+  const renderPageHeader = createRenderPageHeader();
   const renderEditorialCommunities = createRenderEditorialCommunities(editorialCommunities);
   const renderFindArticleForm = createRenderFindArticleForm();
   return async ({ response }: Context, next: Next): Promise<void> => {
@@ -144,18 +162,8 @@ export default (
       5,
     );
     response.body = `<div class="home-page">
-    <header class="content-header">
 
-    <h1>
-      Untitled Publish Review Curate Platform
-    </h1>
-
-    <p>
-      An experimental platform for multiple communities to provide post-publication peer review of scientific research.<br>
-      <a href="/about">Learn more about the platform.</a>
-    </p>
-
-  </header>
+  ${renderPageHeader()}
 
   ${renderFindArticleForm()}
 
