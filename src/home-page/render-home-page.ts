@@ -91,7 +91,7 @@ const createRenderMostRecentReviews = (
     limit,
   );
 
-  return async (): Promise<string> => templateMostRecentReviews(await discoverMostRecentReviews());
+  return async () => templateMostRecentReviews(await discoverMostRecentReviews());
 };
 
 export default (
