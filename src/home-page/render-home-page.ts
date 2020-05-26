@@ -38,10 +38,15 @@ export interface FetchedArticle {
   doi: Doi;
 }
 
+export interface EditorialCommunity {
+  id: string;
+  name: string;
+}
+
 export const createDiscoverMostRecentReviews = (
   reviewReferences: () => Array<ReviewReference>,
   fetchArticle: (doi: Doi) => Promise<FetchedArticle>,
-  editorialCommunities: () => Array<{ id: string; name: string }>,
+  editorialCommunities: () => Array<EditorialCommunity>,
   limit: number,
 ) => (
   async (): Promise<Array<RecentReview>> => {
@@ -81,7 +86,7 @@ type RenderMostRecentReviews = () => Promise<string>;
 const createRenderMostRecentReviews = (
   reviewReferences: () => Array<ReviewReference>,
   fetchArticle: (doi: Doi) => Promise<FetchedArticle>,
-  editorialCommunities: () => Array<{ id: string; name: string }>,
+  editorialCommunities: () => Array<EditorialCommunity>,
   limit: number,
 ): RenderMostRecentReviews => {
   const discoverMostRecentReviews = createDiscoverMostRecentReviews(

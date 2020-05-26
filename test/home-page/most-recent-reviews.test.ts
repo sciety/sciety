@@ -1,6 +1,7 @@
 import Doi from '../../src/data/doi';
 import {
   createDiscoverMostRecentReviews,
+  EditorialCommunity,
   FetchedArticle,
   ReviewReference,
 } from '../../src/home-page/render-home-page';
@@ -28,7 +29,7 @@ describe('construct-view-model middleware', (): void => {
       doi,
       title: `Article ${doi}`,
     });
-    const editorialCommunities = (): Array<{ id: string; name: string }> => [
+    const editorialCommunities = (): Array<EditorialCommunity> => [
       {
         id: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
         name: 'eLife',
