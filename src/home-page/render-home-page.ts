@@ -1,5 +1,4 @@
 import { Context, Middleware, Next } from 'koa';
-import createRenderPageHeader from './render-page-header';
 import templateMostRecentReviews from './templates/most-recent-reviews';
 import Doi from '../data/doi';
 import templateListItems from '../templates/list-items';
@@ -137,8 +136,8 @@ export default (
   editorialCommunities: () => Promise<Array<EditorialCommunity>>,
   reviewReferences: () => Promise<Array<ReviewReference>>,
   fetchArticle: (doi: Doi) => Promise<FetchedArticle>,
+  renderPageHeader: () => Promise<string>,
 ): Middleware => {
-  const renderPageHeader = createRenderPageHeader();
   const renderEditorialCommunities = createRenderEditorialCommunities(editorialCommunities);
   const renderFindArticle = createRenderFindArticle();
   const renderMostRecentReviews = createRenderMostRecentReviews(
