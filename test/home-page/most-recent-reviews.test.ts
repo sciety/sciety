@@ -18,6 +18,11 @@ describe('construct-view-model middleware', (): void => {
         editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
         added: new Date('2020-05-19T00:00:00Z'),
       },
+      {
+        articleVersionDoi: new Doi('10.1101/815689'),
+        editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
+        added: new Date('2020-05-21T00:00:00Z'),
+      },
     ];
     const fetchArticle = async (doi: Doi): Promise<FetchedArticle> => Promise.resolve({
       doi,
@@ -33,6 +38,12 @@ describe('construct-view-model middleware', (): void => {
 
     expect(viewModel).toHaveLength(2);
     expect(viewModel[0]).toMatchObject({
+      articleDoi: new Doi('10.1101/815689'),
+      articleTitle: 'Article 10.1101/815689',
+      editorialCommunityName: 'eLife',
+      added: new Date('2020-05-21T00:00:00Z'),
+    });
+    expect(viewModel[1]).toMatchObject({
       articleDoi: new Doi('10.1101/642017'),
       articleTitle: 'Article 10.1101/642017',
       editorialCommunityName: 'eLife',
