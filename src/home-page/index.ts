@@ -4,5 +4,9 @@ import { Adapters } from '../types/adapters';
 
 export default (adapters: Adapters): Middleware => {
   const reviewReferenceAdapter = (): Array<ReviewReference> => Array.from(adapters.reviewReferenceRepository);
-  return renderHomePage(adapters.editorialCommunities, reviewReferenceAdapter, adapters.fetchArticle);
+  return renderHomePage(
+    adapters.editorialCommunities.all,
+    reviewReferenceAdapter,
+    adapters.fetchArticle,
+  );
 };
