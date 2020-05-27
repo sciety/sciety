@@ -1,3 +1,5 @@
+@import "https://unpkg.com/material-components-web@6.0.0/dist/material-components-web.min.css";
+@import "https://fonts.googleapis.com/icon?family=Material+Icons";
 @import "https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,700&family=Noto+Serif:ital@0;1&display=swap";
 
 *, *:before, *:after {
