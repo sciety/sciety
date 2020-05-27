@@ -17,7 +17,7 @@ export default (): EditorialCommunityRepository => {
         peer review reports and editors&#39; assessment for all published eLife papers. In the
         future we envision a system in which the outputs of peer review are the primary way research
         is assessed, rather than journal title.</p>
-      <p>The main features of the current eLife peer-review process are:</p>
+      <p>The main features of the current eLife peer-review process are:
       <ul>
         <li>
           <blockquote>
@@ -33,6 +33,7 @@ export default (): EditorialCommunityRepository => {
           </blockquote>
         </li>
       </ul>
+      </p>
       <p>The overall aim is to make peer review faster (by reducing rounds of revision and only
         requesting extra experiments when they are essential), fairer and more open. eLife does not
         support the Impact Factor and is a co-founder of the Declaration on Research Assessment
