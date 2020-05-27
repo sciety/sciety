@@ -17,6 +17,11 @@ export default (): EditorialCommunityRepository => {
       empowering community of researchers, particularly those at early stages of their career (ECRs) to review 
       preprints.`,
     },
+    {
+      id: '53ed5364-a016-11ea-bb37-0242ac130002',
+      name: 'PeerJ',
+      description: `This is a placeholder text for the PeerJ editorial community.`,
+    },
   ];
 
   const result: EditorialCommunityRepository = {
