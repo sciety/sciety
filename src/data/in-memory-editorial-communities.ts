@@ -6,7 +6,7 @@ export default (): EditorialCommunityRepository => {
     {
       id: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
       name: 'eLife',
-description: `<h2 id="summary">Summary</h2>
+      description: `<h2 id="summary">Summary</h2>
       <p>eLife is a non-profit organisation created by funders and led by researchers. Our mission
         is to accelerate discovery by operating a platform for research communication that
         encourages and recognises the most responsible behaviours.</p>
