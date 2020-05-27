@@ -15,18 +15,18 @@ describe('render-editorial-community-page middleware', (): void => {
   beforeEach(() => {
     ctx = createContext();
     ctx.state = {
-      viewModel: {
+      editorialCommunity: {
         name: 'community-name',
         description: 'community-description',
-        reviewedArticles: [{
-          doi: new Doi('10.1111/1111'),
-          title: 'title-1',
-        },
-        {
-          doi: new Doi('10.2222/2222'),
-          title: 'title-2',
-        }],
       },
+      fetchedArticles: Promise.resolve([{
+        doi: new Doi('10.1111/1111'),
+        title: 'title-1',
+      },
+      {
+        doi: new Doi('10.2222/2222'),
+        title: 'title-2',
+      }]),
     };
   });
 
