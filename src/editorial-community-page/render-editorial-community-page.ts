@@ -39,8 +39,17 @@ export default (editorialCommunities: EditorialCommunityRepository): Middleware 
       reviewedArticles,
     };
 
-    ctx.response.body = templateHeader(viewModel);
-    ctx.response.body += templateReviewedArticles(viewModel.reviewedArticles);
+    type RenderPageHeader = () => Promise<string>;
+
+    const createRenderPageHeader = (): RenderPageHeader => (
+      async () => Promise.resolve(templateHeader(viewModel))
+    );
+    const renderPageHeader = createRenderPageHeader();
+
+    ctx.response.body = `
+    ${await renderPageHeader()}
+    ${templateReviewedArticles(viewModel.reviewedArticles)}
+    `;
 
     await next();
   }
