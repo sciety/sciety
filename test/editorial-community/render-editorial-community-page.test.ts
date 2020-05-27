@@ -9,6 +9,7 @@ const repository = {
   lookup: () => ({
     id: '',
     name: 'community-name',
+    logo: undefined,
     description: 'community-description',
   }),
   all: shouldNotBeCalled,

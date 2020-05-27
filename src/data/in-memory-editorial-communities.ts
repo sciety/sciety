@@ -6,6 +6,7 @@ export default (): EditorialCommunityRepository => {
     {
       id: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
       name: 'eLife',
+      logo: '<img src="https://cdn.elifesciences.org/style-guide-images/elife-logo-lg_3x.png" alt="eLife" style="width: 10rem" />',
       description: `<h2 id="summary">Summary</h2>
       <p>eLife is a non-profit organisation created by funders and led by researchers. Our mission
         is to accelerate discovery by operating a platform for research communication that
@@ -36,6 +37,7 @@ export default (): EditorialCommunityRepository => {
     {
       id: '10360d97-bf52-4aef-b2fa-2f60d319edd7',
       name: 'PREreview Community',
+      logo: undefined,
       description: `<h2 id="summary">Summary</h2>
       <p>PREreview's mission is to bring more diversity to scholarly peer review by supporting and empowering 
       community of researchers, particularly those at early stages of their career (ECRs) to review preprints.</p>
@@ -63,6 +65,7 @@ export default (): EditorialCommunityRepository => {
     {
       id: '53ed5364-a016-11ea-bb37-0242ac130002',
       name: 'PeerJ',
+      logo: undefined,
       description: '<p>This is a placeholder text for the PeerJ editorial community.</p>',
     },
   ];
@@ -74,6 +77,7 @@ export default (): EditorialCommunityRepository => {
       return candidate ?? {
         id,
         name: 'Unknown',
+        logo: undefined,
         description: 'Unknown',
       };
     },

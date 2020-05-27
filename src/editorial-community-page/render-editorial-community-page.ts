@@ -11,12 +11,6 @@ interface ReviewedArticle {
   title: string;
 }
 
-interface ViewModel {
-  name: string;
-  description: string;
-  reviewedArticles: Array<ReviewedArticle>;
-}
-
 export default (editorialCommunities: EditorialCommunityRepository): Middleware => (
   async (ctx: Context, next: Next): Promise<void> => {
     const editorialCommunityId = ctx.state.editorialCommunity.id;
@@ -36,6 +30,7 @@ export default (editorialCommunities: EditorialCommunityRepository): Middleware 
     const viewModel = {
       name: editorialCommunity.name,
       description: editorialCommunity.description,
+      logo: editorialCommunity.logo,
       reviewedArticles,
     };
 
