@@ -8,6 +8,7 @@ type RenderMostRecentReviews = (limit: number) => Promise<string>;
 export interface RecentReview {
   articleDoi: Doi;
   articleTitle: string;
+  editorialCommunityId: string;
   editorialCommunityName: string;
   added: Date;
 }
@@ -59,6 +60,7 @@ export const createDiscoverMostRecentReviews = (
     const mostRecentReviews: Array<RecentReview> = mostRecentReviewReferences.map((reviewReference) => ({
       articleDoi: reviewReference.articleVersionDoi,
       articleTitle: articles[reviewReference.articleVersionDoi.value].title,
+      editorialCommunityId: reviewReference.editorialCommunityId,
       editorialCommunityName: editorialCommunityNames[reviewReference.editorialCommunityId],
       added: reviewReference.added,
     }));
@@ -69,7 +71,7 @@ export const createDiscoverMostRecentReviews = (
 
 const templateRecentReview = (review: RecentReview): string => (`
   <a href="/articles/${review.articleDoi}">${review.articleTitle}</a>
-  <div class="review-status">added by ${review.editorialCommunityName}
+  <div class="review-status">added by <a href="/editorial-communities/${review.editorialCommunityId}">${review.editorialCommunityName}</a>
   <time datetime="${toString(review.added)}" title="${toDisplayString(review.added)}">recently</time></div>
 `);
 
