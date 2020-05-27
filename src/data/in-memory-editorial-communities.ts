@@ -66,7 +66,24 @@ export default (): EditorialCommunityRepository => {
       id: '53ed5364-a016-11ea-bb37-0242ac130002',
       name: 'PeerJ',
       logo: undefined,
-      description: '<p>This is a placeholder text for the PeerJ editorial community.</p>',
+      description: `<h2 id="summary">Summary</h2>
+      <p>PeerJ evaluates articles based only on an objective determination of scientific and methodological soundness, 
+       not on subjective determinations of 'impact,' 'novelty' or 'interest'.</p>
+      <h2 id="peer-review-model">Peer review model</h2>
+      <p>We identify the most appropriate editor to handle the article, selected from our 1,709-member editorial board.
+      </p>
+      <p>The editor identifies potential reviewers and personally invites them to review the article. Most editors 
+       recruit 2 reviewers, but sometimes more may be required.</p>
+      <p>The reviewers are supplied with everything they need to complete a thorough review. Happy reviewers deliver 
+       great, constructive reviews. And our reviewing workflow has been built from the ground up to make your reviewers' 
+       work as easy, well-supported and enjoyable as possible.</p>
+      <p>To increase transparency, PeerJ operates a system of 'optional signed reviews and history'. 
+      This takes two forms: (1) peer reviewers are encouraged, but not required, to provide their names (if they do so, 
+       then their profile page records the articles they have reviewed), and (2) authors are given the option of 
+       reproducing their entire peer review history alongside their published article (in which case the complete peer 
+        review process is provided, including revisions, rebuttal letters and editor decision letters).</p>
+      <h2 id="people">People</h2>
+      <p><a href="https://peerj.com/academic-boards/editors/peerj/">https://peerj.com/academic-boards/editors/peerj/</a></p>`,
     },
   ];
 
