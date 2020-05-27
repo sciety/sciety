@@ -11,6 +11,6 @@ export default (adapters: Adapters): Middleware => (
     lookupEditorialCommunity(adapters.editorialCommunities),
     lookupReviewedArticles(adapters.reviewReferenceRepository),
     fetchReviewedArticles(adapters.fetchArticle),
-    renderEditorialCommunityPage(),
+    renderEditorialCommunityPage(adapters.editorialCommunities),
   ])
 );

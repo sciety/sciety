@@ -3,9 +3,19 @@ import Doi from '../../src/data/doi';
 import renderEditorialCommunityPage from '../../src/editorial-community-page/render-editorial-community-page';
 import createContext from '../context';
 import runMiddleware from '../middleware';
+import shouldNotBeCalled from '../should-not-be-called';
+
+const repository = {
+  lookup: () => ({
+    id: '',
+    name: 'community-name',
+    description: 'community-description',
+  }),
+  all: shouldNotBeCalled,
+};
 
 const invokeMiddleware = async (ctx: Context, next?: Middleware): Promise<Response> => {
-  const { response } = await runMiddleware(renderEditorialCommunityPage(), ctx, next);
+  const { response } = await runMiddleware(renderEditorialCommunityPage(repository), ctx, next);
   return response;
 };
 
