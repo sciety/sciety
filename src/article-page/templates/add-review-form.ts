@@ -17,21 +17,15 @@ export default (article: Article, editorialCommunities: EditorialCommunityReposi
       id="editorialcommunityid">
       ${options}
     </select>
-
-    <label class="mdc-text-field mdc-text-field--filled mdc-text-field--fullwidth">
-      <input
-        type="text"
-        name="reviewdoi"
-        placeholder="Zenodo review DOI"
-        class="mdc-text-field__input"
-        required>
-      <span class="visually-hidden">Zenodo review DOI</span>
-    </label>
-
-    <button type="submit" class="mdc-button mdc-button--raised">
-      <span class="mdc-button__label">
-        Add review
-      </span>
+    <input
+      type="text"
+      name="reviewdoi"
+      id="reviewdoi"
+      placeholder="Zenodo review DOI"
+      class="add-review-form__review-doi"
+      required>
+    <button type="submit" class="add-review-form__submit">
+      Add review
     </button>
     <p class="warning">
       This platform is for demonstration purposes only and data entered may not persist.
