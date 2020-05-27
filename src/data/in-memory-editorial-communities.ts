@@ -19,19 +19,11 @@ export default (): EditorialCommunityRepository => {
         is assessed, rather than journal title.</p>
       <p>The main features of the current eLife peer-review process are:
       <ul>
-        <li>
-          <blockquote>
-            <p>all decisions are made by editors who are active researchers in the life and
-              biomedical sciences.</p>
-          </blockquote>
-        </li>
-        <li>
-          <blockquote>
-            <p>editors and reviewers discuss their reviews with each other before reaching a
+        <li>all decisions are made by editors who are active researchers in the life and
+              biomedical sciences.</li>
+        <li>editors and reviewers discuss their reviews with each other before reaching a
               decision on a manuscript; extra experiments are only requested if they are essential
-              and can be completed within about two months.</p>
-          </blockquote>
-        </li>
+              and can be completed within about two months.</li>
       </ul>
       </p>
       <p>The overall aim is to make peer review faster (by reducing rounds of revision and only
