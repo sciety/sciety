@@ -24,8 +24,10 @@ export default (article: Article, editorialCommunities: EditorialCommunityReposi
       placeholder="Zenodo review DOI"
       class="add-review-form__review-doi"
       required>
-    <button type="submit" class="add-review-form__submit">
-      Add review
+    <button type="submit" class="mdc-button mdc-button--raised">
+      <span class="mdc-button__label">
+        Add review
+      </span>
     </button>
     <p class="warning">
       This platform is for demonstration purposes only and data entered may not persist.
