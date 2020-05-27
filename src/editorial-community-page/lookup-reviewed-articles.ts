@@ -1,3 +1,4 @@
+import arrayUniq from 'array-uniq';
 import { Context, Middleware, Next } from 'koa';
 import ReviewReferenceRepository from '../types/review-reference-repository';
 
@@ -10,7 +11,7 @@ export default (
     const reviewedArticleVersions = reviewReferenceRepository.findReviewsForEditorialCommunityId(editorialCommunity.id)
       .map((reviewReference) => reviewReference.articleVersionDoi);
 
-    ctx.state.reviewedArticleVersionDois = [...new Set(reviewedArticleVersions)];
+    ctx.state.reviewedArticleVersionDois = arrayUniq(reviewedArticleVersions);
 
     await next();
   }
