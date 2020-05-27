@@ -14,9 +14,7 @@ export default (header: Header): string => (`
 
   <section>
 
-    <p>
-      ${header.description}
-    </p>
+    ${header.description}
 
   </section>
 `);
