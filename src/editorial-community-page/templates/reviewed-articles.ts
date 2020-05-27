@@ -11,7 +11,7 @@ const templateTeaser = (article: ReviewedArticle): string => (`
 `);
 
 export default (reviewedArticles: Array<ReviewedArticle>): string => (`
-  <section>
+  <section class="editorial-community-reviewed-articles">
 
     <h2>
       Recently reviewed articles
