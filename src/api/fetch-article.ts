@@ -10,6 +10,8 @@ export type FetchArticle = (doi: Doi) => Promise<FetchedArticle>;
 
 export type FetchAbstract = (doi: Doi) => Promise<string>;
 
+export const fetchAbstractFromCrossref: FetchAbstract = async (doi) => `No abstract for ${doi} available`;
+
 export default (fetchDataset: FetchDataset, fetchAbstract?: FetchAbstract): FetchArticle => {
   const log = createLogger('api:fetch-article');
   return async (doi: Doi): Promise<FetchedArticle> => {
