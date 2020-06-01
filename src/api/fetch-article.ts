@@ -8,7 +8,9 @@ import { FetchedArticle } from '../types/fetched-article';
 
 export type FetchArticle = (doi: Doi) => Promise<FetchedArticle>;
 
-export default (fetchDataset: FetchDataset): FetchArticle => {
+type FetchAbstract = (doi: Doi) => Promise<string>;
+
+export default (fetchDataset: FetchDataset, fetchAbstract?: FetchAbstract): FetchArticle => {
   const log = createLogger('api:fetch-article');
   return async (doi: Doi): Promise<FetchedArticle> => {
     const articleIri = namedNode(`https://doi.org/${doi}`);
@@ -18,7 +20,12 @@ export default (fetchDataset: FetchDataset): FetchArticle => {
     const title = graph.out(dcterms.title).value ?? 'Unknown article';
     const authors = graph.out(dcterms.creator).map((author) => author.out(foaf.name).value ?? 'Unknown author');
     const publicationDate = new Date(graph.out(dcterms.date).value ?? 0);
-    const abstract = abstracts[doi.value] ?? 'No abstract available.';
+    let abstract;
+    if (fetchAbstract !== undefined) {
+      abstract = await fetchAbstract(doi);
+    } else {
+      abstract = abstracts[doi.value] ?? 'No abstract available.';
+    }
 
     const response: FetchedArticle = {
       doi,
