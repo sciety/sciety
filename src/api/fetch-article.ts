@@ -8,7 +8,7 @@ import { FetchedArticle } from '../types/fetched-article';
 
 export type FetchArticle = (doi: Doi) => Promise<FetchedArticle>;
 
-type FetchAbstract = (doi: Doi) => Promise<string>;
+export type FetchAbstract = (doi: Doi) => Promise<string>;
 
 export default (fetchDataset: FetchDataset, fetchAbstract?: FetchAbstract): FetchArticle => {
   const log = createLogger('api:fetch-article');

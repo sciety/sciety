@@ -2,7 +2,7 @@ import { literal } from '@rdfjs/data-model';
 import { dcterms, foaf, xsd } from '@tpluscode/rdf-ns-builders';
 import clownface from 'clownface';
 import datasetFactory from 'rdf-dataset-indexed';
-import createFetchArticle from '../../src/api/fetch-article';
+import createFetchArticle, { FetchAbstract } from '../../src/api/fetch-article';
 import { FetchDataset } from '../../src/api/fetch-dataset';
 import Doi from '../../src/data/doi';
 
@@ -25,5 +25,16 @@ describe('fetch-article', (): void => {
     expect(article.publicationDate).toStrictEqual(new Date('2020-02-20'));
     expect(article.authors).toContain('Josiah S. Carberry');
     expect(article.authors).toContain('Albert Einstein');
+  });
+
+  it('returns the abstract', async () => {
+    const fetchDataset: FetchDataset = async (iri) => (
+      clownface({ dataset: datasetFactory(), term: iri })
+    );
+    const fetchAbstract: FetchAbstract = async () => 'Article abstract.';
+    const fetchArticle = createFetchArticle(fetchDataset, fetchAbstract);
+    const article = await fetchArticle(doi);
+
+    expect(article.abstract).toBe('Article abstract.');
   });
 });
