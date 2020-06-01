@@ -12,7 +12,7 @@ export type FetchAbstract = (doi: Doi) => Promise<string>;
 
 export const fetchAbstractFromCrossref: FetchAbstract = async (doi) => `No abstract for ${doi} available`;
 
-export default (fetchDataset: FetchDataset, fetchAbstract?: FetchAbstract): FetchArticle => {
+export default (fetchDataset: FetchDataset, fetchAbstract: FetchAbstract): FetchArticle => {
   const log = createLogger('api:fetch-article');
   return async (doi: Doi): Promise<FetchedArticle> => {
     const articleIri = namedNode(`https://doi.org/${doi}`);
@@ -22,12 +22,7 @@ export default (fetchDataset: FetchDataset, fetchAbstract?: FetchAbstract): Fetc
     const title = graph.out(dcterms.title).value ?? 'Unknown article';
     const authors = graph.out(dcterms.creator).map((author) => author.out(foaf.name).value ?? 'Unknown author');
     const publicationDate = new Date(graph.out(dcterms.date).value ?? 0);
-    let abstract;
-    if (fetchAbstract !== undefined) {
-      abstract = await fetchAbstract(doi);
-    } else {
-      abstract = abstracts[doi.value] ?? 'No abstract available.';
-    }
+    const abstract = abstracts[doi.value] ?? await fetchAbstract(doi);
 
     const response: FetchedArticle = {
       doi,

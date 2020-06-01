@@ -17,7 +17,8 @@ describe('fetch-article', (): void => {
         .addOut(dcterms.creator, (author) => author.addOut(foaf.name, 'Josiah S. Carberry'))
         .addOut(dcterms.creator, (author) => author.addOut(foaf.name, 'Albert Einstein'))
     );
-    const fetchArticle = createFetchArticle(fetchDataset);
+    const fetchAbstract: FetchAbstract = async () => 'Article abstract.';
+    const fetchArticle = createFetchArticle(fetchDataset, fetchAbstract);
     const article = await fetchArticle(doi);
 
     expect(article.doi).toBe(doi);

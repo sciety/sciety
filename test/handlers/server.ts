@@ -3,7 +3,7 @@ import { literal, namedNode } from '@rdfjs/data-model';
 import { dcterms, schema } from '@tpluscode/rdf-ns-builders';
 import clownface from 'clownface';
 import datasetFactory from 'rdf-dataset-indexed';
-import createFetchArticle from '../../src/api/fetch-article';
+import createFetchArticle, { FetchAbstract } from '../../src/api/fetch-article';
 import { FetchDataset } from '../../src/api/fetch-dataset';
 import createFetchReview from '../../src/api/fetch-review';
 import Doi from '../../src/data/doi';
@@ -41,7 +41,8 @@ export default (): TestServer => {
       .addOut(schema.description, 'A summary')
       .addOut(schema.author, (author) => author.addOut(schema.name, 'Author name'))
   );
-  const fetchArticle = createFetchArticle(fetchCrossrefDataset);
+  const fetchAbstract: FetchAbstract = async () => 'Article abstract.';
+  const fetchArticle = createFetchArticle(fetchCrossrefDataset, fetchAbstract);
   const fetchReview = createFetchReview(fetchDataCiteDataset);
   const adapters: Adapters = {
     fetchArticle,
