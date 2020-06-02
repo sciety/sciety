@@ -1,5 +1,6 @@
 import { createTerminus, TerminusOptions } from '@godaddy/terminus';
-import createFetchArticle, { createFetchAbstractFromCrossref } from './api/fetch-article';
+import axios from 'axios';
+import createFetchArticle, { createFetchAbstractFromCrossref, MakeHttpRequest } from './api/fetch-article';
 import createFetchDataset from './api/fetch-dataset';
 import createFetchReview from './api/fetch-review';
 import createFetchStaticFile from './api/fetch-static-file';
@@ -28,9 +29,15 @@ for (const [article, { review, editorialCommunityIndex, added }] of Object.entri
   );
 }
 
+const makeHttpRequest: MakeHttpRequest = async (uri, acceptHeader) => {
+  const response = await axios.get(uri, { headers: { Accept: acceptHeader } });
+
+  return response.data;
+};
+
 const fetchDataset = createFetchDataset();
 const adapters: Adapters = {
-  fetchArticle: createFetchArticle(fetchDataset, createFetchAbstractFromCrossref()),
+  fetchArticle: createFetchArticle(fetchDataset, createFetchAbstractFromCrossref(makeHttpRequest)),
   fetchReview: createFetchReview(fetchDataset),
   fetchStaticFile: createFetchStaticFile(),
   editorialCommunities,

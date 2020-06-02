@@ -1,6 +1,5 @@
 import { namedNode } from '@rdfjs/data-model';
 import { dcterms, foaf } from '@tpluscode/rdf-ns-builders';
-import axios from 'axios';
 import { DOMParser } from 'xmldom';
 import { FetchDataset } from './fetch-dataset';
 import abstracts from '../data/abstracts';
@@ -12,18 +11,17 @@ export type FetchArticle = (doi: Doi) => Promise<FetchedArticle>;
 
 export type FetchAbstract = (doi: Doi) => Promise<string>;
 
-export const createFetchAbstractFromCrossref = (): FetchAbstract => {
+export type MakeHttpRequest = (uri: string, acceptHeader: string) => Promise<string>;
+
+export const createFetchAbstractFromCrossref = (makeHttpRequest: MakeHttpRequest): FetchAbstract => {
   const log = createLogger('api:fetch-abstract-from-crossref');
   return async (doi) => {
     const uri = `https://doi.org/${doi.value}`;
     log(`Fetching abstract for ${uri}`);
 
-    const response = await axios.get(
-      uri,
-      { headers: { Accept: 'application/vnd.crossref.unixref+xml' } },
-    );
+    const response = await makeHttpRequest(uri, 'application/vnd.crossref.unixref+xml');
 
-    const doc = new DOMParser().parseFromString(response.data, 'text/xml');
+    const doc = new DOMParser().parseFromString(response, 'text/xml');
     const abstractElement = doc.getElementsByTagName('abstract')[0];
 
     if (typeof abstractElement.textContent !== 'string') {
