@@ -20,18 +20,6 @@ export default {
   We propose that these short hairpins correspond to metastable structures that are transiently formed during
   transcription to avoid premature toxin expression. This work uncovers the co-transcriptional inhibition of translation
   as an additional layer of TA regulation in bacteria.`,
-  '10.1101/629618': `<p id="p-3">Prostate is the most frequent cancer in men. Prostate cancer progression is driven
-  by androgen steroid hormones, and delayed by androgen deprivation therapy (ADT). Androgens control transcription
-  by stimulating androgen receptor (AR) activity, yet also control pre-mRNA splicing through less clear mechanisms.
-  Here we find androgens regulate splicing through AR-mediated transcriptional control of the epithelial-specific
-  splicing regulator <em>ESRP2</em>. Both <em>ESRP2</em> and its close paralog <em>ESRP1</em> are highly expressed
-  in primary prostate cancer. Androgen stimulation induces splicing switches in many endogenous ESRP2-controlled
-  mRNA isoforms, including a key splicing switch in the metastatic regulator <em>FLNB</em> which is associated with
-  disease relapse. <em>ESRP2</em> expression in clinical prostate cancer is repressed by ADT, which may thus
-  inadvertently dampen epithelial splice programmes. Supporting this, <em>FLNB</em> splicing was reciprocally
-  switched by the AR antagonist bicalutamide (Casodex<sup>®</sup>). Our data reveal a new mechanism of splicing
-  control in prostate cancer with important implications for metastatic disease progression.</p><div id="sec-1" class="subsection"><p><strong>Key points</strong></p>
-  <ul class="list-unord " id="list-1"><li id="list-item-1"><p id="p-4">Transcriptional regulation of ESRP2 by the androgen receptor controls splice isoform patterns in prostate cancer cells.</p></li><li id="list-item-2"><p id="p-5">Splicing switches regulated by the androgen-ESRP2 axis include a splice isoform in the <em>FLNB</em> gene that is a known metastatic driver.</p></li><li id="list-item-3"><p id="p-6">Both ESRP1 and ESRP2 are highly expressed in prostate cancer tissue.</p></li><li id="list-item-4"><p id="p-7">Ectopic expression of ESRP1 and 2 inhibits prostate cancer cell growth.</p></li><li id="list-item-5"><p id="p-8">By repressing ESRP2 expression androgen deprivation therapy (ADT) may dampen epithelial splicing programmes to inadvertently prime disease progression towards metastasis.</p></li></ul></div>`,
   '10.1101/600445': `Protein synthesis ends when a ribosome reaches an mRNA stop codon. Release factors (RFs) decode
   the stop codon, hydrolyze peptidyl-tRNA to release the nascent protein, and then dissociate to allow ribosome recycling.
   To visualize termination by RF2, we resolved a cryo-EM ensemble of <em>E. coli</em> 70S•RF2 structures at up to 3.3

@@ -23,7 +23,7 @@ describe('fetch-abstract-from-crossref', (): void => {
     expect(abstract).toStrictEqual(expect.stringContaining('Some random nonsense.'));
   });
 
-  it('removes the title if present', async () => {
+  it('removes the first <title> if present', async () => {
     const doi = new Doi('10.1101/339747');
     const makeHttpRequest: MakeHttpRequest = async () => `
 <?xml version="1.0" encoding="UTF-8"?>
@@ -43,6 +43,35 @@ describe('fetch-abstract-from-crossref', (): void => {
     const abstract = await createFetchAbstractFromCrossref(makeHttpRequest)(doi);
 
     expect(abstract).toStrictEqual(expect.not.stringContaining('Abstract'));
+  });
+
+  it('replaces remaining <title>s with HTML <h3>s', async () => {
+    const doi = new Doi('10.1101/339747');
+    const makeHttpRequest: MakeHttpRequest = async () => `
+<?xml version="1.0" encoding="UTF-8"?>
+<doi_records>
+  <doi_record owner="10.1101" timestamp="2020-06-02 07:46:31">
+    <crossref>
+      <posted_content type="preprint" language="en" metadata_distribution_opts="any">
+      <abstract>
+        <title>expected to be removed</title>
+        <p>Lorem ipsum</p>
+        <title>should be an h3</title>
+        <p>Lorem ipsum</p>
+        <title>should also be an h3</title>
+        </sec>
+      </abstract>
+      </posted_content>
+    </crossref>
+  </doi_record>
+</doi_records>
+`;
+    const abstract = await createFetchAbstractFromCrossref(makeHttpRequest)(doi);
+
+    expect(abstract).toStrictEqual(expect.stringContaining('<h3>should be an h3</h3>'));
+    expect(abstract).toStrictEqual(expect.stringContaining('<h3>should also be an h3</h3>'));
+    expect(abstract).toStrictEqual(expect.not.stringContaining('<title>'));
+    expect(abstract).toStrictEqual(expect.not.stringContaining('</title>'));
   });
 
   it('removes the <abstract> element', async () => {
