@@ -17,6 +17,29 @@ const createRenderPageHeader = (header: () => ArticleHeader) => (
   (): string => templateArticlePageHeader(header())
 );
 
+interface ArticleViewModel {
+  title: string;
+  doi: Doi;
+  publicationDate: Date;
+  abstract: string;
+  authors: Array<string>;
+}
+
+const createRenderAbstract = (article: ArticleViewModel) => () => (`
+  <section role="doc-abstract">
+    <h2>
+      Abstract
+    </h2>
+    <div class="abstract">
+  ${article.abstract}
+  <a href="https://doi.org/${article.doi}" class="abstract__link">
+    Read the full article
+  </a>
+  </div>
+  
+  </section>`
+);
+
 export default (
   { article, reviews }: ArticlePageViewModel,
   editorialCommunities: EditorialCommunityRepository,
@@ -24,24 +47,14 @@ export default (
   const reviewSummaries = reviews.map((review, index) => templateReviewSummary(review, `review-${index}`));
   const articleHeaderAdapter = (): ArticleHeader => article;
   const renderPageheader = createRenderPageHeader(articleHeaderAdapter);
+  const renderAbstract = createRenderAbstract(article);
   return `<article>
 
     ${renderPageheader()}
 
     <div class="content">
 
-      <section role="doc-abstract">
-        <h2>
-          Abstract
-        </h2>
-        <div class="abstract">
-          ${article.abstract}
-          <a href="https://doi.org/${article.doi}" class="abstract__link">
-            Read the full article
-          </a>
-        </div>
-
-      </section>
+      ${renderAbstract()}
 
       <section class="review-summary-list">
         <h2>
