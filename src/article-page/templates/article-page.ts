@@ -17,28 +17,26 @@ const createRenderPageHeader = (header: () => ArticleHeader) => (
   (): string => templateArticlePageHeader(header())
 );
 
-interface ArticleViewModel {
-  title: string;
+interface Abstract {
   doi: Doi;
-  publicationDate: Date;
   abstract: string;
-  authors: Array<string>;
 }
 
-const createRenderAbstract = (article: ArticleViewModel) => () => (`
-  <section role="doc-abstract">
-    <h2>
-      Abstract
-    </h2>
-    <div class="abstract">
-  ${article.abstract}
-  <a href="https://doi.org/${article.doi}" class="abstract__link">
-    Read the full article
-  </a>
-  </div>
-  
-  </section>`
-);
+const createRenderAbstract = (fetchAbstract: () => Abstract) => () => {
+  const abstract = fetchAbstract();
+  return `
+    <section role="doc-abstract">
+      <h2>
+        Abstract
+      </h2>
+      <div class="abstract">
+        ${abstract.abstract}
+        <a href="https://doi.org/${abstract.doi}" class="abstract__link">
+          Read the full article
+        </a>
+      </div>
+    </section>`;
+};
 
 export default (
   { article, reviews }: ArticlePageViewModel,
@@ -46,8 +44,9 @@ export default (
 ): string => {
   const reviewSummaries = reviews.map((review, index) => templateReviewSummary(review, `review-${index}`));
   const articleHeaderAdapter = (): ArticleHeader => article;
+  const abstractAdapter = (): Abstract => article;
   const renderPageheader = createRenderPageHeader(articleHeaderAdapter);
-  const renderAbstract = createRenderAbstract(article);
+  const renderAbstract = createRenderAbstract(abstractAdapter);
   return `<article>
 
     ${renderPageheader()}
