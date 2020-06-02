@@ -41,17 +41,17 @@ export const createFetchAbstractFromCrossref = (makeHttpRequest: MakeHttpRequest
     }
 
     return `${abstractElement}`
-      .replace('<abstract>', '')
-      .replace('</abstract>', '')
-      .replace(/<italic>/g, '<i>')
+      .replace(/<abstract[^>]*>/, '')
+      .replace(/<\/abstract>/, '')
+      .replace(/<italic[^>]*>/g, '<i>')
       .replace(/<\/italic>/g, '</i>')
-      .replace(/<list list-type="bullet"/g, '<ul')
+      .replace(/<list[^>]* list-type=['"]bullet['"][^>]*/g, '<ul')
       .replace(/<\/list>/g, '</ul>')
-      .replace(/<list-item/g, '<li')
+      .replace(/<list-item[^>]*/g, '<li')
       .replace(/<\/list-item>/g, '</li>')
-      .replace(/<sec/g, '<section')
+      .replace(/<sec[^>]*/g, '<section')
       .replace(/<\/sec>/g, '</section>')
-      .replace(/<title/g, '<h3')
+      .replace(/<title[^>]*/g, '<h3')
       .replace(/<\/title>/g, '</h3>');
   };
 };

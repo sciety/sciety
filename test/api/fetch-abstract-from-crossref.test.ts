@@ -23,6 +23,28 @@ describe('fetch-abstract-from-crossref', (): void => {
     expect(abstract).toStrictEqual(expect.stringContaining('Some random nonsense.'));
   });
 
+  it('removes the <abstract> element', async () => {
+    const doi = new Doi('10.1101/339747');
+    const makeHttpRequest: MakeHttpRequest = async () => `
+<?xml version="1.0" encoding="UTF-8"?>
+<doi_records>
+  <doi_record>
+    <crossref>
+      <posted_content>
+        <abstract class="something">
+          Some random nonsense.
+        </abstract>
+      </posted_content>
+    </crossref>
+  </doi_record>
+</doi_records>
+`;
+    const abstract = await createFetchAbstractFromCrossref(makeHttpRequest)(doi);
+
+    expect(abstract).toStrictEqual(expect.not.stringContaining('<abstract>'));
+    expect(abstract).toStrictEqual(expect.not.stringContaining('</abstract>'));
+  });
+
   it('removes the first <title> if present', async () => {
     const doi = new Doi('10.1101/339747');
     const makeHttpRequest: MakeHttpRequest = async () => `
@@ -32,7 +54,7 @@ describe('fetch-abstract-from-crossref', (): void => {
     <crossref>
       <posted_content>
         <abstract>
-          <title>Abstract</title>
+          <title class="something">Abstract</title>
           Some random nonsense.
         </abstract>
       </posted_content>
@@ -54,11 +76,11 @@ describe('fetch-abstract-from-crossref', (): void => {
     <crossref>
       <posted_content type="preprint" language="en" metadata_distribution_opts="any">
       <abstract>
-        <title>expected to be removed</title>
+        <title class="something">expected to be removed</title>
         <p>Lorem ipsum</p>
-        <title>should be an h3</title>
+        <title class="something">should be an h3</title>
         <p>Lorem ipsum</p>
-        <title>should also be an h3</title>
+        <title class="something">should also be an h3</title>
         </sec>
       </abstract>
       </posted_content>
@@ -74,28 +96,6 @@ describe('fetch-abstract-from-crossref', (): void => {
     expect(abstract).toStrictEqual(expect.not.stringContaining('</title>'));
   });
 
-  it('removes the <abstract> element', async () => {
-    const doi = new Doi('10.1101/339747');
-    const makeHttpRequest: MakeHttpRequest = async () => `
-<?xml version="1.0" encoding="UTF-8"?>
-<doi_records>
-  <doi_record>
-    <crossref>
-      <posted_content>
-        <abstract>
-          Some random nonsense.
-        </abstract>
-      </posted_content>
-    </crossref>
-  </doi_record>
-</doi_records>
-`;
-    const abstract = await createFetchAbstractFromCrossref(makeHttpRequest)(doi);
-
-    expect(abstract).toStrictEqual(expect.not.stringContaining('<abstract>'));
-    expect(abstract).toStrictEqual(expect.not.stringContaining('</abstract>'));
-  });
-
   it('renders italic if present', async () => {
     const doi = new Doi('10.1101/339747');
     const makeHttpRequest: MakeHttpRequest = async () => `
@@ -108,9 +108,9 @@ describe('fetch-abstract-from-crossref', (): void => {
           <title>Abstract</title>
           <p>
             The spread of antimicrobial resistance continues to be a priority health concern worldwide, necessitating exploration of alternative therapies.
-            <italic>Cannabis sativa</italic>
+            <italic class="something">Cannabis sativa</italic>
             has long been known to contain antibacterial cannabinoids, but their potential to address antibiotic resistance has only been superficially investigated. Here, we show that cannabinoids exhibit antibacterial activity against MRSA, inhibit its ability to form biofilms and eradicate pre-formed biofilms and stationary phase cells persistent to antibiotics. We show that the mechanism of action of cannabigerol is through targeting the cytoplasmic membrane of Gram-positive bacteria and demonstrate
-            <italic>in vivo</italic>
+            <italic class="something">in vivo</italic>
             efficacy of cannabigerol in a murine systemic infection model caused by MRSA. We also show that cannabinoids are effective against Gram-negative organisms whose outer membrane is permeabilized, where cannabigerol acts on the inner membrane. Finally, we demonstrate that cannabinoids work in combination with polymyxin B against multi-drug resistant Gram-negative pathogens, revealing the broad-spectrum therapeutic potential for cannabinoids.
           </p>
         </abstract>
@@ -134,11 +134,11 @@ describe('fetch-abstract-from-crossref', (): void => {
     <crossref>
       <posted_content type="preprint" language="en" metadata_distribution_opts="any">
       <abstract>
-        <list list-type="bullet">
-          <list-item>
+        <list class="something" list-type="bullet" id="id-1">
+          <list-item class="something">
             <p>Transcriptional regulation of ESRP2.</p>
           </list-item>
-          <list-item>
+          <list-item class="something">
             <p>Both ESRP1 and ESRP2 are highly expressed in prostate cancer tissue.</p>
           </list-item>
         </list>
@@ -165,7 +165,7 @@ describe('fetch-abstract-from-crossref', (): void => {
     <crossref>
       <posted_content type="preprint" language="en" metadata_distribution_opts="any">
       <abstract>
-        <sec>
+        <sec class="something">
           <p>Lorem ipsum</p>
         </sec>
       </abstract>
