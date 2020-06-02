@@ -45,6 +45,28 @@ describe('fetch-abstract-from-crossref', (): void => {
     expect(abstract).toStrictEqual(expect.not.stringContaining('Abstract'));
   });
 
+  it('removes the <abstract> element', async () => {
+    const doi = new Doi('10.1101/339747');
+    const makeHttpRequest: MakeHttpRequest = async () => `
+<?xml version="1.0" encoding="UTF-8"?>
+<doi_records>
+  <doi_record>
+    <crossref>
+      <posted_content>
+        <abstract>
+          Some random nonsense.
+        </abstract>
+      </posted_content>
+    </crossref>
+  </doi_record>
+</doi_records>
+`;
+    const abstract = await createFetchAbstractFromCrossref(makeHttpRequest)(doi);
+
+    expect(abstract).toStrictEqual(expect.not.stringContaining('<abstract>'));
+    expect(abstract).toStrictEqual(expect.not.stringContaining('</abstract>'));
+  });
+
   it('renders italic if present', async () => {
     const doi = new Doi('10.1101/339747');
     const makeHttpRequest: MakeHttpRequest = async () => `
