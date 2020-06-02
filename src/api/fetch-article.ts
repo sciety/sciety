@@ -1,6 +1,7 @@
 import { namedNode } from '@rdfjs/data-model';
 import { dcterms, foaf } from '@tpluscode/rdf-ns-builders';
 import axios from 'axios';
+import { DOMParser } from 'xmldom';
 import { FetchDataset } from './fetch-dataset';
 import abstracts from '../data/abstracts';
 import Doi from '../data/doi';
@@ -18,6 +19,8 @@ export const fetchAbstractFromCrossref: FetchAbstract = async (doi) => {
     { headers: { Accept: 'application/vnd.crossref.unixref+xml' } },
   );
   log(`Retrieved abstract: ${response.data}`);
+  const doc = new DOMParser().parseFromString(response.data, 'text/xml');
+  log(doc);
   return `No abstract for ${doi} available`;
 };
 
