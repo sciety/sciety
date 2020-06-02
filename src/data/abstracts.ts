@@ -1,17 +1,4 @@
 export default {
-  '10.1101/497495': `Evolution under asexuality is predicted to impact genomes in numerous ways, but empirical evidence
-  remains unclear. Case studies of individual asexual animals have reported peculiar genomic features which were suggested
-  to be caused by asexuality, including high heterozygosity, a high abundance of horizontally acquired genes, a low
-  transposable element load, or the presence of palindromes. We systematically characterized these genomic features in
-  published genomes of 26 asexual animals representing at least 18 independent transitions to asexuality. Surprisingly,
-  not a single feature is systematically replicated across a majority of these transitions, suggesting that no genomic
-  feature is characteristic of asexuality and that previously reported patterns were lineage specific rather than caused
-  by asexuality. We found that only asexuals of hybrid origin were characterized by high heterozygosity levels. Asexuals
-  that were not of hybrid origin appeared to be largely homozygous, independently of the cellular mechanism underlying
-  asexuality. Overall, despite the importance of recombination rate variation for the evolution of sexual animal genomes,
-  the genome-wide absence of recombination does not appear to have had the dramatic effects which are expected from
-  classical theoretical models. The reasons for this are probably a combination of lineage-specific patterns, impact of
-  the origin of asexuality, and a survivorship bias of asexual lineages.`,
   '10.1101/856153': `Insect navigation arises from the coordinated action of concurrent guidance systems but the neural
   mechanisms through which each functions, and are then coordinated, remains unknown. We propose that insects require distinct strategies to retrace familiar routes (route-following) and directly return from novel to familiar terrain (homing) using different aspects of frequency encoded views that are processed in different neural pathways. We also demonstrate how the Central Complex and Mushroom Bodies regions of the insect brain may work in tandem to coordinate the directional output of different guidance cues through a contextually switched ring-attractor inspired by neural recordings. The resultant unified model of insect navigation reproduces behavioural data from a series of cue conflict experiments in realistic animal environments and offers testable hypotheses of where and how insects process visual cues, utilise the different information that they provide and coordinate their outputs to achieve the adaptive behaviours observed in the wild.`,
   '10.1101/871517': `<p id="p-3">Loss of functional RAB18 causes the autosomal recessive condition Warburg Micro syndrome.
