@@ -15,6 +15,9 @@ export type MakeHttpRequest = (uri: string, acceptHeader: string) => Promise<str
 
 export const createFetchAbstractFromCrossref = (makeHttpRequest: MakeHttpRequest): FetchAbstract => {
   const log = createLogger('api:fetch-abstract-from-crossref');
+  const getElement = (ancestor: Document | Element, qualifiedName: string): Element | null => (
+    ancestor.getElementsByTagName(qualifiedName).item(0)
+  );
   return async (doi) => {
     const uri = `https://doi.org/${doi.value}`;
     log(`Fetching abstract for ${uri}`);
@@ -22,9 +25,9 @@ export const createFetchAbstractFromCrossref = (makeHttpRequest: MakeHttpRequest
     const response = await makeHttpRequest(uri, 'application/vnd.crossref.unixref+xml');
 
     const doc = new DOMParser().parseFromString(response, 'text/xml');
-    const abstractElement = doc.getElementsByTagName('abstract')[0];
+    const abstractElement = getElement(doc, 'abstract');
 
-    if (typeof abstractElement.textContent !== 'string') {
+    if (typeof abstractElement?.textContent !== 'string') {
       log(`Did not find abstract for ${doi}`);
 
       return `No abstract for ${doi} available`;
@@ -32,7 +35,7 @@ export const createFetchAbstractFromCrossref = (makeHttpRequest: MakeHttpRequest
 
     log(`Found abstract for ${doi}: ${abstractElement.textContent}`);
 
-    const titleElement = abstractElement.getElementsByTagName('title')[0];
+    const titleElement = getElement(abstractElement, 'title');
     if (titleElement) {
       abstractElement.removeChild(titleElement);
     }
