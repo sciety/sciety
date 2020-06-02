@@ -1,19 +1,4 @@
 export default {
-  '10.1101/252593': `Understanding heterogeneity in neural phenotypes is an important goal on the path to precision
-  medicine for autism spectrum disorders (ASD). Age is a critically important variable in normal structural brain
-  development and examining structural features with respect to age-related norms could help to explain ASD
-  heterogeneity in neural phenotypes. Here we examined how cortical thickness (CT) in ASD can be parameterized as an
-  individualized metric of deviance relative to typically-developing (TD) age-related norms. Across a large sample
-  (n=870 per group) and wide age range (5-40 years), we applied a normative modelling approach that provides
-  individualized whole-brain maps of age-related CT deviance in ASD. This approach isolates a subgroup of ASD
-  individuals with highly age-deviant CT. The median prevalence of this ASD subgroup across all brain regions is 7.6%,
-  and can reach as high as 10% for some brain regions. This work showcases an individualized approach for understanding
-  ASD heterogeneity that could potentially further prioritize work on a subset of individuals with significant cortical
-  pathophysiology represented in age-related CT deviance. Rather than cortical thickness pathology being a widespread
-  characteristic of most ASD patients, only a small subset of ASD individuals are actually highly deviant relative to
-  age-norms. These individuals drive small on-average effects from case-control comparisons. Rather than sticking to the
-  diagnostic label of autism, future research should pivot to focus on isolating subsets of autism patients with highly
-  deviant phenotypes and better understand the underlying mechanisms that drive those phenotypes.`,
   '10.1101/497495': `Evolution under asexuality is predicted to impact genomes in numerous ways, but empirical evidence
   remains unclear. Case studies of individual asexual animals have reported peculiar genomic features which were suggested
   to be caused by asexuality, including high heterozygosity, a high abundance of horizontally acquired genes, a low
