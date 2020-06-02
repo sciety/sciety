@@ -12,31 +12,32 @@ export type FetchArticle = (doi: Doi) => Promise<FetchedArticle>;
 
 export type FetchAbstract = (doi: Doi) => Promise<string>;
 
-export const fetchAbstractFromCrossref: FetchAbstract = async (doi) => {
+export const createFetchAbstractFromCrossref = (): FetchAbstract => {
   const log = createLogger('api:fetch-abstract-from-crossref');
+  return async (doi) => {
+    const uri = `https://doi.org/${doi.value}`;
+    log(`Fetching abstract for ${uri}`);
 
-  const uri = `https://doi.org/${doi.value}`;
-  log(`Fetching abstract for ${uri}`);
+    const response = await axios.get(
+      uri,
+      { headers: { Accept: 'application/vnd.crossref.unixref+xml' } },
+    );
 
-  const response = await axios.get(
-    uri,
-    { headers: { Accept: 'application/vnd.crossref.unixref+xml' } },
-  );
+    const doc = new DOMParser().parseFromString(response.data, 'text/xml');
+    const abstractElement = doc.getElementsByTagName('abstract')[0];
 
-  const doc = new DOMParser().parseFromString(response.data, 'text/xml');
-  const abstractElement = doc.getElementsByTagName('abstract')[0];
+    if (typeof abstractElement.textContent !== 'string') {
+      log(`Did not find abstract for ${doi}`);
 
-  if (typeof abstractElement.textContent !== 'string') {
-    log(`Did not find abstract for ${doi}`);
+      return `No abstract for ${doi} available`;
+    }
 
-    return `No abstract for ${doi} available`;
-  }
+    const abstract = abstractElement.textContent;
 
-  const abstract = abstractElement.textContent;
+    log(`Found abstract for ${doi}: ${abstract}`);
 
-  log(`Found abstract for ${doi}: ${abstract}`);
-
-  return abstract;
+    return abstract;
+  };
 };
 
 export default (fetchDataset: FetchDataset, fetchAbstract: FetchAbstract): FetchArticle => {

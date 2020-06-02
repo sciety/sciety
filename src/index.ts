@@ -1,5 +1,5 @@
 import { createTerminus, TerminusOptions } from '@godaddy/terminus';
-import createFetchArticle, { fetchAbstractFromCrossref } from './api/fetch-article';
+import createFetchArticle, { createFetchAbstractFromCrossref } from './api/fetch-article';
 import createFetchDataset from './api/fetch-dataset';
 import createFetchReview from './api/fetch-review';
 import createFetchStaticFile from './api/fetch-static-file';
@@ -30,7 +30,7 @@ for (const [article, { review, editorialCommunityIndex, added }] of Object.entri
 
 const fetchDataset = createFetchDataset();
 const adapters: Adapters = {
-  fetchArticle: createFetchArticle(fetchDataset, fetchAbstractFromCrossref),
+  fetchArticle: createFetchArticle(fetchDataset, createFetchAbstractFromCrossref()),
   fetchReview: createFetchReview(fetchDataset),
   fetchStaticFile: createFetchStaticFile(),
   editorialCommunities,
