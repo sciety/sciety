@@ -30,11 +30,13 @@ export const createFetchAbstractFromCrossref = (makeHttpRequest: MakeHttpRequest
       return `No abstract for ${doi} available`;
     }
 
-    const abstract = abstractElement.textContent;
+    log(`Found abstract for ${doi}: ${abstractElement.textContent}`);
 
-    log(`Found abstract for ${doi}: ${abstract}`);
-
-    return abstract;
+    const titleElement = abstractElement.getElementsByTagName('title')[0];
+    if (titleElement) {
+      abstractElement.removeChild(titleElement);
+    }
+    return abstractElement.textContent;
   };
 };
 
