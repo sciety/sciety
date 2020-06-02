@@ -126,4 +126,30 @@ describe('fetch-abstract-from-crossref', (): void => {
     expect(abstract).toStrictEqual(expect.stringContaining('<li>'));
     expect(abstract).toStrictEqual(expect.stringContaining('</li>'));
   });
+
+  it('replaces <sec> with HTML <section>', async () => {
+    const doi = new Doi('10.1101/339747');
+    const makeHttpRequest: MakeHttpRequest = async () => `
+<?xml version="1.0" encoding="UTF-8"?>
+<doi_records>
+  <doi_record owner="10.1101" timestamp="2020-06-02 07:46:31">
+    <crossref>
+      <posted_content type="preprint" language="en" metadata_distribution_opts="any">
+      <abstract>
+        <sec>
+          <p>Lorem ipsum</p>
+        </sec>
+      </abstract>
+      </posted_content>
+    </crossref>
+  </doi_record>
+</doi_records>
+`;
+    const abstract = await createFetchAbstractFromCrossref(makeHttpRequest)(doi);
+
+    expect(abstract).toStrictEqual(expect.stringContaining('<section>'));
+    expect(abstract).toStrictEqual(expect.stringContaining('</section>'));
+    expect(abstract).toStrictEqual(expect.not.stringContaining('<sec>'));
+    expect(abstract).toStrictEqual(expect.not.stringContaining('</sec>'));
+  });
 });

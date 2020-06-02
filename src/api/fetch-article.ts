@@ -48,7 +48,9 @@ export const createFetchAbstractFromCrossref = (makeHttpRequest: MakeHttpRequest
       .replace(/<list list-type="bullet"/g, '<ul')
       .replace(/<\/list>/g, '</ul>')
       .replace(/<list-item/g, '<li')
-      .replace(/<\/list-item>/g, '</li>');
+      .replace(/<\/list-item>/g, '</li>')
+      .replace(/<sec/g, '<section')
+      .replace(/<\/sec>/g, '</section>');
   };
 };
 
