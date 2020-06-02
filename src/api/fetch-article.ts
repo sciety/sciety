@@ -39,7 +39,12 @@ export const createFetchAbstractFromCrossref = (makeHttpRequest: MakeHttpRequest
     if (titleElement) {
       abstractElement.removeChild(titleElement);
     }
-    return abstractElement.textContent;
+
+    return `${abstractElement}`
+      .replace('<abstract>', '')
+      .replace('</abstract>', '')
+      .replace(/<italic>/g, '<i>')
+      .replace(/<\/italic>/g, '</i>');
   };
 };
 
