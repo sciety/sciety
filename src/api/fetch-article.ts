@@ -44,7 +44,11 @@ export const createFetchAbstractFromCrossref = (makeHttpRequest: MakeHttpRequest
       .replace('<abstract>', '')
       .replace('</abstract>', '')
       .replace(/<italic>/g, '<i>')
-      .replace(/<\/italic>/g, '</i>');
+      .replace(/<\/italic>/g, '</i>')
+      .replace(/<list list-type="bullet"/g, '<ul')
+      .replace(/<\/list>/g, '</ul>')
+      .replace(/<list-item/g, '<li')
+      .replace(/<\/list-item>/g, '</li>');
   };
 };
 

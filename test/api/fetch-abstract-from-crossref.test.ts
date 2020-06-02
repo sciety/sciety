@@ -95,4 +95,35 @@ describe('fetch-abstract-from-crossref', (): void => {
     expect(abstract).toStrictEqual(expect.stringContaining('<i>Cannabis sativa</i>'));
     expect(abstract).toStrictEqual(expect.stringContaining('<i>in vivo</i>'));
   });
+
+  it('replaces <list> unordered list with HTML <ul>', async () => {
+    const doi = new Doi('10.1101/339747');
+    const makeHttpRequest: MakeHttpRequest = async () => `
+<?xml version="1.0" encoding="UTF-8"?>
+<doi_records>
+  <doi_record owner="10.1101" timestamp="2020-06-02 07:46:31">
+    <crossref>
+      <posted_content type="preprint" language="en" metadata_distribution_opts="any">
+      <abstract>
+        <list list-type="bullet">
+          <list-item>
+            <p>Transcriptional regulation of ESRP2.</p>
+          </list-item>
+          <list-item>
+            <p>Both ESRP1 and ESRP2 are highly expressed in prostate cancer tissue.</p>
+          </list-item>
+        </list>
+      </abstract>
+      </posted_content>
+    </crossref>
+  </doi_record>
+</doi_records>
+`;
+    const abstract = await createFetchAbstractFromCrossref(makeHttpRequest)(doi);
+
+    expect(abstract).toStrictEqual(expect.stringContaining('<ul>'));
+    expect(abstract).toStrictEqual(expect.stringContaining('</ul>'));
+    expect(abstract).toStrictEqual(expect.stringContaining('<li>'));
+    expect(abstract).toStrictEqual(expect.stringContaining('</li>'));
+  });
 });

@@ -30,8 +30,7 @@ export default {
   disease relapse. <em>ESRP2</em> expression in clinical prostate cancer is repressed by ADT, which may thus
   inadvertently dampen epithelial splice programmes. Supporting this, <em>FLNB</em> splicing was reciprocally
   switched by the AR antagonist bicalutamide (Casodex<sup>®</sup>). Our data reveal a new mechanism of splicing
-  control in prostate cancer with important implications for metastatic disease progression.</p><
-  div id="sec-1" class="subsection"><p><strong>Key points</strong></p>
+  control in prostate cancer with important implications for metastatic disease progression.</p><div id="sec-1" class="subsection"><p><strong>Key points</strong></p>
   <ul class="list-unord " id="list-1"><li id="list-item-1"><p id="p-4">Transcriptional regulation of ESRP2 by the androgen receptor controls splice isoform patterns in prostate cancer cells.</p></li><li id="list-item-2"><p id="p-5">Splicing switches regulated by the androgen-ESRP2 axis include a splice isoform in the <em>FLNB</em> gene that is a known metastatic driver.</p></li><li id="list-item-3"><p id="p-6">Both ESRP1 and ESRP2 are highly expressed in prostate cancer tissue.</p></li><li id="list-item-4"><p id="p-7">Ectopic expression of ESRP1 and 2 inhibits prostate cancer cell growth.</p></li><li id="list-item-5"><p id="p-8">By repressing ESRP2 expression androgen deprivation therapy (ADT) may dampen epithelial splicing programmes to inadvertently prime disease progression towards metastasis.</p></li></ul></div>`,
   '10.1101/600445': `Protein synthesis ends when a ribosome reaches an mRNA stop codon. Release factors (RFs) decode
   the stop codon, hydrolyze peptidyl-tRNA to release the nascent protein, and then dissociate to allow ribosome recycling.
