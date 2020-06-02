@@ -1,15 +1,4 @@
 export default {
-  '10.1101/615682': `Post-transcriptional regulation plays important roles to finely tune gene expression in bacteria.
-  In particular, regulation of type I toxin-antitoxin (TA) systems is achieved through sophisticated mechanisms
-  involving toxin mRNA folding. Here, we set up a genetic approach to decipher the molecular underpinnings behind
-  the regulation of a type I TA in <em>Helicobacter pylori</em>.
-  We used the lethality induced by chromosomal inactivation of the antitoxin to select mutations that suppress toxicity.
-  We found that single point mutations are sufficient to allow cell survival.
-  Mutations located either in the 5’ untranslated region or within the open reading frame of the toxin hamper its
-  translation by stabilizing stem-loop structures that sequester the Shine-Dalgarno sequence.
-  We propose that these short hairpins correspond to metastable structures that are transiently formed during
-  transcription to avoid premature toxin expression. This work uncovers the co-transcriptional inhibition of translation
-  as an additional layer of TA regulation in bacteria.`,
   '10.1101/600445': `Protein synthesis ends when a ribosome reaches an mRNA stop codon. Release factors (RFs) decode
   the stop codon, hydrolyze peptidyl-tRNA to release the nascent protein, and then dissociate to allow ribosome recycling.
   To visualize termination by RF2, we resolved a cryo-EM ensemble of <em>E. coli</em> 70S•RF2 structures at up to 3.3
