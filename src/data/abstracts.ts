@@ -1,13 +1,4 @@
 export default {
-  '10.1101/600445': `Protein synthesis ends when a ribosome reaches an mRNA stop codon. Release factors (RFs) decode
-  the stop codon, hydrolyze peptidyl-tRNA to release the nascent protein, and then dissociate to allow ribosome recycling.
-  To visualize termination by RF2, we resolved a cryo-EM ensemble of <em>E. coli</em> 70S•RF2 structures at up to 3.3
-  Å in a single sample. Five structures suggest a highly dynamic termination pathway. Upon peptidyl-tRNA hydrolysis,
-  the CCA end of deacyl-tRNA departs from the peptidyl transferase center. The catalytic GGQ loop of RF2 is rearranged
-  into a long β-hairpin that plugs the peptide tunnel, biasing a nascent protein toward the ribosome exit. Ribosomal
-  intersubunit rotation destabilizes the catalytic RF2 domain on the 50S subunit and disassembles the central
-  intersubunit bridge B2a, resulting in RF2 departure. Our structures visualize how local rearrangements and spontaneous
-  inter-subunit rotation poise the newly-made protein and RF2 to dissociate in preparation for ribosome recycling.`,
   '10.1101/252593': `Understanding heterogeneity in neural phenotypes is an important goal on the path to precision
   medicine for autism spectrum disorders (ASD). Age is a critically important variable in normal structural brain
   development and examining structural features with respect to age-related norms could help to explain ASD
