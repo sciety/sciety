@@ -14,14 +14,29 @@ export type FetchAbstract = (doi: Doi) => Promise<string>;
 
 export const fetchAbstractFromCrossref: FetchAbstract = async (doi) => {
   const log = createLogger('api:fetch-abstract-from-crossref');
+
+  const uri = `https://doi.org/${doi.value}`;
+  log(`Fetching abstract for ${uri}`);
+
   const response = await axios.get(
-    `https://doi.org/${doi.value}`,
+    uri,
     { headers: { Accept: 'application/vnd.crossref.unixref+xml' } },
   );
-  log(`Retrieved abstract: ${response.data}`);
+
   const doc = new DOMParser().parseFromString(response.data, 'text/xml');
-  log(doc);
-  return `No abstract for ${doi} available`;
+  const abstractElement = doc.getElementsByTagName('abstract')[0];
+
+  if (typeof abstractElement.textContent !== 'string') {
+    log(`Did not find abstract for ${doi}`);
+
+    return `No abstract for ${doi} available`;
+  }
+
+  const abstract = abstractElement.textContent;
+
+  log(`Found abstract for ${doi}: ${abstract}`);
+
+  return abstract;
 };
 
 export default (fetchDataset: FetchDataset, fetchAbstract: FetchAbstract): FetchArticle => {
