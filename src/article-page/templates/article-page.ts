@@ -18,11 +18,10 @@ const createRenderPageHeader = (header: () => ArticleHeader) => (
 );
 
 interface Abstract {
-  doi: Doi;
   abstract: string;
 }
 
-const createRenderAbstract = (fetchAbstract: () => Abstract) => () => {
+const createRenderAbstract = (fetchAbstract: () => Abstract) => (doi: Doi) => {
   const abstract = fetchAbstract();
   return `
     <section role="doc-abstract">
@@ -31,7 +30,7 @@ const createRenderAbstract = (fetchAbstract: () => Abstract) => () => {
       </h2>
       <div class="abstract">
         ${abstract.abstract}
-        <a href="https://doi.org/${abstract.doi}" class="abstract__link">
+        <a href="https://doi.org/${doi}" class="abstract__link">
           Read the full article
         </a>
       </div>
@@ -53,7 +52,7 @@ export default (
 
     <div class="content">
 
-      ${renderAbstract()}
+      ${renderAbstract(article.doi)}
 
       <section class="review-summary-list">
         <h2>
