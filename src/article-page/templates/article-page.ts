@@ -13,15 +13,19 @@ interface ArticleHeader {
   publicationDate: Date;
 }
 
-const createRenderPageHeader = (header: (doi: Doi) => ArticleHeader) => (
-  (doi: Doi): string => templateArticlePageHeader(header(doi))
+type RenderPageHeader = (doi: Doi) => string;
+
+const createRenderPageHeader = (header: (doi: Doi) => ArticleHeader): RenderPageHeader => (
+  (doi) => templateArticlePageHeader(header(doi))
 );
 
 interface Abstract {
   abstract: string;
 }
 
-const createRenderAbstract = (fetchAbstract: (doi: Doi) => Abstract) => (doi: Doi) => {
+type RenderAbstract = (doi: Doi) => string;
+
+const createRenderAbstract = (fetchAbstract: (doi: Doi) => Abstract): RenderAbstract => (doi) => {
   const abstract = fetchAbstract(doi);
   return `
     <section role="doc-abstract">
