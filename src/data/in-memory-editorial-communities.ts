@@ -67,21 +67,22 @@ export default (): EditorialCommunityRepository => {
       name: 'PeerJ',
       logo: undefined,
       description: `<h2 id="summary">Summary</h2>
-      <p>PeerJ evaluates articles based only on an objective determination of scientific and methodological soundness, 
-       not on subjective determinations of 'impact,' 'novelty' or 'interest'.</p>
+      <p><a href="https://peerj.org/">PeerJ</a> is an open access publisher of 7 peer-reviewed journals, and an editorial 
+      community of over 2000 Academic Editors and Advisors, and tens of thousands of authors and reviewers.</p>
       <h2 id="peer-review-model">Peer review model</h2>
-      <p>We identify the most appropriate editor to handle the article, selected from our 1,709-member editorial board.
+      <p>PeerJ's editorial model is based on post-publication peer review history transparency, with peer review 
+       history dates and formal decisions made available on publication. When a manuscript is accepted for publication,
+       reviewers have the option to sign their review, and authors have the option to publish the full peer review 
+       history alongside their paper. More than 80% of authors make their peer review publicly available, and around
+       40% of reviewers choose to sign their review.</p>
+      <p>Launched in 2013, PeerJ Preprints published over 5000 preprints. The rise in popularity of bioRxiv and other 
+       preprints servers meant the academic community was well-served with alternative preprint venue options, and led 
+       to the decision to cease accepting new submissions to PeerJ Preprints at the end of 2019. All preprints remain 
+       readable and downloadable at <a href="https://peerj.com/preprints">peerj.com/preprints</a>. PeerJ continues 
+       to work with preprint servers to facilitate direct submissions to our journals, as well as continuing to encourage,
+       via our <a href="https://peerj.com/about/FAQ/academic-contribution/">Contributions</a> system, uptake of open 
+       review and open Q&A on our articles. 
       </p>
-      <p>The editor identifies potential reviewers and personally invites them to review the article. Most editors 
-       recruit 2 reviewers, but sometimes more may be required.</p>
-      <p>The reviewers are supplied with everything they need to complete a thorough review. Happy reviewers deliver 
-       great, constructive reviews. And our reviewing workflow has been built from the ground up to make your reviewers' 
-       work as easy, well-supported and enjoyable as possible.</p>
-      <p>To increase transparency, PeerJ operates a system of 'optional signed reviews and history'. 
-      This takes two forms: (1) peer reviewers are encouraged, but not required, to provide their names (if they do so, 
-       then their profile page records the articles they have reviewed), and (2) authors are given the option of 
-       reproducing their entire peer review history alongside their published article (in which case the complete peer 
-        review process is provided, including revisions, rebuttal letters and editor decision letters).</p>
       <h2 id="people">People</h2>
       <p><a href="https://peerj.com/academic-boards/editors/peerj/">https://peerj.com/academic-boards/editors/peerj/</a></p>`,
     },
