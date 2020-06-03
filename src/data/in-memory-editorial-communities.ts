@@ -6,7 +6,7 @@ export default (): EditorialCommunityRepository => {
     {
       id: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
       name: 'eLife',
-      logo: '<img src="https://cdn.elifesciences.org/style-guide-images/elife-logo-lg_3x.png" alt="eLife" style="width: 10rem" />',
+      logo: 'https://cdn.elifesciences.org/style-guide-images/elife-logo-lg_3x.png',
       description: `<h2 id="summary">Summary</h2>
       <p>eLife is a non-profit organisation created by funders and led by researchers. Our mission
         is to accelerate discovery by operating a platform for research communication that
@@ -65,7 +65,7 @@ export default (): EditorialCommunityRepository => {
     {
       id: '53ed5364-a016-11ea-bb37-0242ac130002',
       name: 'PeerJ',
-      logo: '<img src="http://static.peerj.com/images/launch/press/peerj-logo-400px.png" alt="PeerJ" style="width: 10rem" />',
+      logo: 'http://static.peerj.com/images/launch/press/peerj-logo-400px.png',
       description: `<h2 id="summary">Summary</h2>
       <p><a href="https://peerj.org/">PeerJ</a> is an open access publisher of 7 peer-reviewed journals, and an editorial 
       community of over 2000 Academic Editors and Advisors, and tens of thousands of authors and reviewers.</p>
