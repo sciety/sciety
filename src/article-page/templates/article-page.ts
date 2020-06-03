@@ -21,8 +21,8 @@ interface Abstract {
   abstract: string;
 }
 
-const createRenderAbstract = (fetchAbstract: () => Abstract) => (doi: Doi) => {
-  const abstract = fetchAbstract();
+const createRenderAbstract = (fetchAbstract: (doi: Doi) => Abstract) => (doi: Doi) => {
+  const abstract = fetchAbstract(doi);
   return `
     <section role="doc-abstract">
       <h2>
