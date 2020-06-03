@@ -13,50 +13,53 @@ interface ArticleHeader {
   publicationDate: Date;
 }
 
-type RenderPageHeader = (doi: Doi) => string;
+type RenderPageHeader = (doi: Doi) => Promise<string>;
 
-const createRenderPageHeader = (header: (doi: Doi) => ArticleHeader): RenderPageHeader => (
-  (doi) => templateArticlePageHeader(header(doi))
+const createRenderPageHeader = (header: (doi: Doi) => Promise<ArticleHeader>): RenderPageHeader => (
+  async (doi) => templateArticlePageHeader(await header(doi))
 );
 
 interface Abstract {
   abstract: string;
 }
 
-type RenderAbstract = (doi: Doi) => string;
+type RenderAbstract = (doi: Doi) => Promise<string>;
 
-const createRenderAbstract = (fetchAbstract: (doi: Doi) => Abstract): RenderAbstract => (doi) => {
-  const abstract = fetchAbstract(doi);
-  return `
-    <section role="doc-abstract">
-      <h2>
-        Abstract
-      </h2>
-      <div class="abstract">
-        ${abstract.abstract}
-        <a href="https://doi.org/${doi}" class="abstract__link">
-          Read the full article
-        </a>
-      </div>
-    </section>`;
-};
+const createRenderAbstract = (fetchAbstract: (doi: Doi) => Promise<Abstract>): RenderAbstract => (
+  async (doi) => {
+    const abstract = await fetchAbstract(doi);
+    return `
+      <section role="doc-abstract">
+        <h2>
+          Abstract
+        </h2>
+        <div class="abstract">
+          ${abstract.abstract}
+          <a href="https://doi.org/${doi}" class="abstract__link">
+            Read the full article
+          </a>
+        </div>
+      </section>
+    `;
+  }
+);
 
-export default (
+export default async (
   { article, reviews }: ArticlePageViewModel,
   editorialCommunities: EditorialCommunityRepository,
-): string => {
+): Promise<string> => {
   const reviewSummaries = reviews.map((review, index) => templateReviewSummary(review, `review-${index}`));
-  const articleHeaderAdapter = (): ArticleHeader => article;
-  const abstractAdapter = (): Abstract => article;
+  const articleHeaderAdapter = async (): Promise<ArticleHeader> => article;
+  const abstractAdapter = async (): Promise<Abstract> => article;
   const renderPageHeader = createRenderPageHeader(articleHeaderAdapter);
   const renderAbstract = createRenderAbstract(abstractAdapter);
   return `<article>
 
-    ${renderPageHeader(article.doi)}
+    ${await renderPageHeader(article.doi)}
 
     <div class="content">
 
-      ${renderAbstract(article.doi)}
+      ${await renderAbstract(article.doi)}
 
       <section class="review-summary-list">
         <h2>

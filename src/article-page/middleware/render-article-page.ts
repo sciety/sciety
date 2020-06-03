@@ -5,7 +5,7 @@ import templateArticlePage from '../templates/article-page';
 
 export default (editorialCommunities: EditorialCommunityRepository): Middleware => (
   async (ctx: RouterContext, next: Next): Promise<void> => {
-    ctx.response.body = templateArticlePage(ctx.state.articlePage, editorialCommunities);
+    ctx.response.body = await templateArticlePage(ctx.state.articlePage, editorialCommunities);
 
     await next();
   }
