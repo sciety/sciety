@@ -4,6 +4,7 @@ import templateReviewSummary from './review-summary';
 import Doi from '../../data/doi';
 import templateListItems from '../../templates/list-items';
 import EditorialCommunityRepository from '../../types/editorial-community-repository';
+import createRenderArticleAbstract, { GetArticleAbstract } from '../render-article-abstract';
 import { ArticlePageViewModel } from '../types/article-page-view-model';
 
 interface ArticleDetails {
@@ -21,40 +22,13 @@ const createRenderPageHeader = (getArticleDetails: GetArticleDetails): RenderPag
   async (doi) => templateArticlePageHeader(await getArticleDetails(doi))
 );
 
-interface ArticleAbstract {
-  content: string;
-}
-
-type GetArticleAbstract = (doi: Doi) => Promise<ArticleAbstract>;
-
-type RenderArticleAbstract = (doi: Doi) => Promise<string>;
-
-const createRenderArticleAbstract = (getArticleAbstract: GetArticleAbstract): RenderArticleAbstract => (
-  async (doi) => {
-    const articleAbstract = await getArticleAbstract(doi);
-    return `
-      <section role="doc-abstract">
-        <h2>
-          Abstract
-        </h2>
-        <div class="abstract">
-          ${articleAbstract.content}
-          <a href="https://doi.org/${doi}" class="abstract__link">
-            Read the full article
-          </a>
-        </div>
-      </section>
-    `;
-  }
-);
-
 export default async (
   { article, reviews }: ArticlePageViewModel,
   editorialCommunities: EditorialCommunityRepository,
 ): Promise<string> => {
   const reviewSummaries = reviews.map((review, index) => templateReviewSummary(review, `review-${index}`));
   const getArticleDetailsAdapter = async (): Promise<ArticleDetails> => article;
-  const abstractAdapter = async (): Promise<ArticleAbstract> => ({ content: article.abstract });
+  const abstractAdapter: GetArticleAbstract = async () => ({ content: article.abstract });
   const renderPageHeader = createRenderPageHeader(getArticleDetailsAdapter);
   const renderArticleAbstract = createRenderArticleAbstract(abstractAdapter);
   return `<article>
