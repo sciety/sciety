@@ -13,8 +13,8 @@ interface ArticleHeader {
   publicationDate: Date;
 }
 
-const createRenderPageHeader = (header: () => ArticleHeader) => (
-  (): string => templateArticlePageHeader(header())
+const createRenderPageHeader = (header: (doi: Doi) => ArticleHeader) => (
+  (doi: Doi): string => templateArticlePageHeader(header(doi))
 );
 
 interface Abstract {
@@ -48,7 +48,7 @@ export default (
   const renderAbstract = createRenderAbstract(abstractAdapter);
   return `<article>
 
-    ${renderPageHeader()}
+    ${renderPageHeader(article.doi)}
 
     <div class="content">
 
