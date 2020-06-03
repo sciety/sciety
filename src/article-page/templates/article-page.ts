@@ -44,11 +44,11 @@ export default (
   const reviewSummaries = reviews.map((review, index) => templateReviewSummary(review, `review-${index}`));
   const articleHeaderAdapter = (): ArticleHeader => article;
   const abstractAdapter = (): Abstract => article;
-  const renderPageheader = createRenderPageHeader(articleHeaderAdapter);
+  const renderPageHeader = createRenderPageHeader(articleHeaderAdapter);
   const renderAbstract = createRenderAbstract(abstractAdapter);
   return `<article>
 
-    ${renderPageheader()}
+    ${renderPageHeader()}
 
     <div class="content">
 
