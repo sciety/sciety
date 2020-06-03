@@ -6,7 +6,7 @@ import templateListItems from '../../templates/list-items';
 import EditorialCommunityRepository from '../../types/editorial-community-repository';
 import { ArticlePageViewModel } from '../types/article-page-view-model';
 
-interface ArticleHeader {
+interface ArticleDetails {
   title: string;
   authors: Array<string>;
   doi: Doi;
@@ -15,8 +15,10 @@ interface ArticleHeader {
 
 type RenderPageHeader = (doi: Doi) => Promise<string>;
 
-const createRenderPageHeader = (header: (doi: Doi) => Promise<ArticleHeader>): RenderPageHeader => (
-  async (doi) => templateArticlePageHeader(await header(doi))
+type GetArticleDetails = (doi: Doi) => Promise<ArticleDetails>;
+
+const createRenderPageHeader = (getArticleDetails: GetArticleDetails): RenderPageHeader => (
+  async (doi) => templateArticlePageHeader(await getArticleDetails(doi))
 );
 
 interface ArticleAbstract {
@@ -51,9 +53,9 @@ export default async (
   editorialCommunities: EditorialCommunityRepository,
 ): Promise<string> => {
   const reviewSummaries = reviews.map((review, index) => templateReviewSummary(review, `review-${index}`));
-  const articleHeaderAdapter = async (): Promise<ArticleHeader> => article;
+  const getArticleDetailsAdapter = async (): Promise<ArticleDetails> => article;
   const abstractAdapter = async (): Promise<ArticleAbstract> => ({ content: article.abstract });
-  const renderPageHeader = createRenderPageHeader(articleHeaderAdapter);
+  const renderPageHeader = createRenderPageHeader(getArticleDetailsAdapter);
   const renderArticleAbstract = createRenderArticleAbstract(abstractAdapter);
   return `<article>
 
