@@ -78,7 +78,7 @@ const templateRecentReview = (review: RecentReview): string => (`
 const templateMostRecentReviews = (reviews: Array<RecentReview>): string => (`
   <section>
 
-    <h2>
+    <h2 class="ui header">
       Most recent reviews
     </h2>
 

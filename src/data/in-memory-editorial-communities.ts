@@ -7,11 +7,11 @@ export default (): EditorialCommunityRepository => {
       id: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
       name: 'eLife',
       logo: 'https://cdn.elifesciences.org/style-guide-images/elife-logo-lg_3x.png',
-      description: `<h2 id="summary">Summary</h2>
+      description: `<h2 class="ui header" id="summary">Summary</h2>
       <p>eLife is a non-profit organisation created by funders and led by researchers. Our mission
         is to accelerate discovery by operating a platform for research communication that
         encourages and recognises the most responsible behaviours.</p>
-      <h2 id="peer-review-model">Peer review model</h2>
+      <h2 class="ui header" id="peer-review-model">Peer review model</h2>
       <p>eLife works to improve the process of peer review so that it more effectively conveys the
         assessment of expert reviewers to authors, readers and other interested parties. This
         ambition is reflected in the transparency of our current process, where anyone can read the
@@ -31,14 +31,14 @@ export default (): EditorialCommunityRepository => {
         requesting extra experiments when they are essential), fairer and more open. eLife does not
         support the Impact Factor and is a co-founder of the Declaration on Research Assessment
         (DORA).</p>
-      <h2 id="people">People</h2>
+      <h2 class="ui header" id="people">People</h2>
       <p><a href="https://elifesciences.org/about/people">https://elifesciences.org/about/people</a></p>`,
     },
     {
       id: '10360d97-bf52-4aef-b2fa-2f60d319edd7',
       name: 'PREreview Community',
       logo: undefined,
-      description: `<h2 id="summary">Summary</h2>
+      description: `<h2 class="ui header" id="summary">Summary</h2>
       <p>PREreview's mission is to bring more diversity to scholarly peer review by supporting and empowering 
       community of researchers, particularly those at early stages of their career (ECRs) to review preprints.</p>
       <p>We envision a system in which any researcher, regardless of their prior engagement with journal-organized
@@ -46,7 +46,7 @@ export default (): EditorialCommunityRepository => {
        orientation, and ability is invited to share openly constructive feedback on early version of research 
        manuscripts shared as preprints on any web server.</p>
       </p>
-      <h2 id="peer-review-model">Peer review model</h2>
+      <h2 class="ui header" id="peer-review-model">Peer review model</h2>
       <p>At PREreview we believe all researchers should be allowed to help others by reviewing the work of their 
        peers, as long as it is done constructively.</p>
       <p>In the interest of fostering an open and welcoming environment we, as contributors and maintainers, 
@@ -59,17 +59,17 @@ export default (): EditorialCommunityRepository => {
       <p>At PREreview we ask all contributors to disclose any competing interest (CI) that may exist between a rapid
        review author (or affiliated  organization) and the author(s) (or affiliated organization) of the reviewed 
        preprint.</p>
-      <h2 id="people">People</h2>
+      <h2 class="ui header" id="people">People</h2>
       <p><a href="https://content.prereview.org/about/#toc-anchor_4">https://content.prereview.org/about/#toc-anchor_4</a></p>`,
     },
     {
       id: '53ed5364-a016-11ea-bb37-0242ac130002',
       name: 'PeerJ',
       logo: 'http://static.peerj.com/images/launch/press/peerj-logo-400px.png',
-      description: `<h2 id="summary">Summary</h2>
+      description: `<h2 class="ui header" id="summary">Summary</h2>
       <p><a href="https://peerj.org/">PeerJ</a> is an open access publisher of 7 peer-reviewed journals, and an editorial 
       community of over 2000 Academic Editors and Advisors, and tens of thousands of authors and reviewers.</p>
-      <h2 id="peer-review-model">Peer review model</h2>
+      <h2 class="ui header" id="peer-review-model">Peer review model</h2>
       <p>PeerJ's editorial model is based on post-publication peer review history transparency, with peer review 
        history dates and formal decisions made available on publication. When a manuscript is accepted for publication,
        reviewers have the option to sign their review, and authors have the option to publish the full peer review 
@@ -83,7 +83,7 @@ export default (): EditorialCommunityRepository => {
        via our <a href="https://peerj.com/about/FAQ/academic-contribution/">Contributions</a> system, uptake of open 
        review and open Q&A on our articles. 
       </p>
-      <h2 id="people">People</h2>
+      <h2 class="ui header" id="people">People</h2>
       <p><a href="https://peerj.com/academic-boards/editors/peerj/">https://peerj.com/academic-boards/editors/peerj/</a></p>`,
     },
   ];

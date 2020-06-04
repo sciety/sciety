@@ -5,7 +5,7 @@ export default (): Middleware => (
     response.body = `
 <header class="content-header">
 
-<h1>
+<h1 class="ui header">
   About the Untitled Publish&ndash;Review&ndash;Curate Platform
 </h1>
 </header>

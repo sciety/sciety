@@ -14,7 +14,7 @@ export default (getArticleAbstract: GetArticleAbstract): RenderArticleAbstract =
 
     return `
       <section role="doc-abstract">
-        <h2>
+        <h2 class="ui header">
           Abstract
         </h2>
         <div class="abstract">

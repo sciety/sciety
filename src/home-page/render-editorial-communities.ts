@@ -16,7 +16,7 @@ export default (editorialCommunities: () => Promise<Array<EditorialCommunity>>):
 
     return `
       <section>
-        <h2>
+        <h2 class="ui header">
           Editorial communities
         </h2>
         <ol class="u-normalised-list">

@@ -4,7 +4,7 @@ export default (): RenderPageHeader => (
   async () => (`
     <header class="content-header">
 
-      <h1>
+      <h1 class="ui header">
         Untitled Publish Review Curate Platform
       </h1>
 

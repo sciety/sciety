@@ -50,7 +50,7 @@ export default (): Middleware => {
   const renderSearchResults = createRenderSearchResults(makeHttpRequest);
   return async (ctx, next) => {
     ctx.response.body = `
-      <h1>Search results</h1>
+      <h1 class="ui header">Search results</h1>
       ${await renderSearchResults(ctx.request.query.query)}
     `;
 

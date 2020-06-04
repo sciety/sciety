@@ -14,7 +14,7 @@ export default (header: Header): string => {
   return `
   <header class="content-header">
 
-    <h1>
+    <h1 class="ui header">
       ${h1}
     </h1>
 

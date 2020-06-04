@@ -24,7 +24,7 @@ export default async (
       ${await renderArticleAbstract(article.doi)}
 
       <section class="review-summary-list">
-        <h2>
+        <h2 class="ui header">
           Review summaries
         </h2>
         <ol class="review-summary-list__list">
@@ -36,7 +36,7 @@ export default async (
 
     <aside>
       <div class="add-review__form">
-        <h2> Add a review<br/>to this article </h2>
+        <h2 class="ui header"> Add a review<br/>to this article </h2>
         ${addReviewForm(article, editorialCommunities)}
       </div>
     </aside>

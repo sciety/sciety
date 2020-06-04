@@ -17,7 +17,7 @@ export default (getArticleDetails: GetArticleDetails): RenderPageHeader => (
     const articleDetails = await getArticleDetails(doi);
     return `
       <header class="content-header">
-        <h1>${articleDetails.title}</h1>
+        <h1 class="ui header">${articleDetails.title}</h1>
 
         <ol aria-label="Authors of this article" class="author-list">
           ${templateListItems(articleDetails.authors)}
