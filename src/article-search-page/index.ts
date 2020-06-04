@@ -26,11 +26,18 @@ export const createRenderSearchResults = (makeHttpRequest: MakeHttpRequest): Ren
     const articles = data.resultList.result.map((result: SearchResult) => (
       `<a href="/articles/${result.doi}">${result.title}</a>`
     ));
+    let searchResultsList = '';
+    if (articles.length) {
+      searchResultsList = `
+        <ul>
+          ${templateListItems(articles)}
+        </ul>
+      `;
+    }
+
     return `
       <p>${data.hitCount} search results.</p>
-      <ul>
-        ${templateListItems(articles)}
-      </ul>
+      ${searchResultsList}
     `;
   }
 );
