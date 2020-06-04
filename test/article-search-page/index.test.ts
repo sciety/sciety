@@ -3,7 +3,7 @@ import createServer from '../handlers/server';
 
 const arbitraryDoi = '10.1101/833392';
 
-describe('article redirect route', (): void => {
+describe('article search route', (): void => {
   let response: Response;
 
   beforeEach(async () => {
