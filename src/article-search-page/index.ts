@@ -6,7 +6,7 @@ import templateListItems from '../templates/list-items';
 interface SearchResult {
   doi: string;
   title: string;
-};
+}
 
 export default (): Middleware => {
   const log = createLogger('article-search-page:index');
