@@ -8,7 +8,7 @@ interface SearchResult {
   title: string;
 }
 
-const renderSearchResults = async (query: string): Promise<string> => {
+export const renderSearchResults = async (query: string): Promise<string> => {
   const uri = `https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=${query}%20PUBLISHER%3A%22bioRxiv%22&format=json&pageSize=10`;
   const response = await axios.get(uri);
   const log = createLogger('article-search-page:index');
