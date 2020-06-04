@@ -12,11 +12,7 @@ describe('article redirect route', (): void => {
     response = await request(server).get(`/articles?doi=${arbitraryDoi}`);
   });
 
-  it('returns a redirect response', async (): Promise<void> => {
-    expect(response.status).toBe(PERMANENT_REDIRECT);
-  });
-
-  it('redirects to the article page', async (): Promise<void> => {
-    expect(response.header.location).toBe(`/articles/${arbitraryDoi}`);
+  it('displays search results', async (): Promise<void> => {
+    expect(response.text).toStrictEqual(expect.stringContaining('Search results'));
   });
 });
