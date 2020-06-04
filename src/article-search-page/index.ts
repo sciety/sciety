@@ -10,13 +10,15 @@ interface SearchResult {
 
 type RenderSearchResults = (query: string) => Promise<string>;
 
-export const createRenderSearchResults = (): RenderSearchResults => (
+export type MakeHttpRequest = (uri: string) => Promise<object>;
+
+export const createRenderSearchResults = (makeHttpRequest: MakeHttpRequest): RenderSearchResults => (
   async (query) => {
     const uri = `https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=${query}%20PUBLISHER%3A%22bioRxiv%22&format=json&pageSize=10`;
-    const response = await axios.get(uri);
+    const data = await makeHttpRequest(uri) as { resultList: { result: Array<SearchResult>}};
     const log = createLogger('article-search-page:index');
-    log(response.data);
-    const articles = response.data.resultList.result.map((result: SearchResult) => (
+    log(data);
+    const articles = data.resultList.result.map((result: SearchResult) => (
       `<a href="/articles/${result.doi}">${result.title}</a>`
     ));
     return `
@@ -28,8 +30,11 @@ export const createRenderSearchResults = (): RenderSearchResults => (
 );
 
 export default (): Middleware => {
-  const renderSearchResults = createRenderSearchResults();
-
+  const makeHttpRequest: MakeHttpRequest = async (uri) => {
+    const response = await axios.get(uri);
+    return response.data;
+  };
+  const renderSearchResults = createRenderSearchResults(makeHttpRequest);
   return async (ctx, next) => {
     ctx.response.body = `
       <h1>Search results</h1>
