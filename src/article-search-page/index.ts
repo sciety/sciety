@@ -29,7 +29,7 @@ export const createRenderSearchResults = (makeHttpRequest: MakeHttpRequest): Ren
     let searchResultsList = '';
     if (articles.length) {
       searchResultsList = `
-        <ul>
+        <ul class="ui relaxed divided items">
           ${templateListItems(articles)}
         </ul>
       `;
