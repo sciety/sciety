@@ -44,6 +44,12 @@ h1 {
   margin-bottom: 1.5rem;
 }
 
+h1 img {
+  max-width: 10rem;
+  height: auto;
+  max-height: 5rem;
+}
+
 h2 {
   font-size: 1rem;
   line-height: 1.5;

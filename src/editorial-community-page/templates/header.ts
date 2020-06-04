@@ -7,7 +7,7 @@ interface Header {
 export default (header: Header): string => {
   let h1: string;
   if (header.logo !== undefined) {
-    h1 = `<img src="${header.logo}" alt="${header.name}" style="width: 10rem">`;
+    h1 = `<img src="${header.logo}" alt="${header.name}">`;
   } else {
     h1 = header.name;
   }
