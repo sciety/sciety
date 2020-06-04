@@ -1,4 +1,3 @@
-import { PERMANENT_REDIRECT } from 'http-status-codes';
 import request, { Response } from 'supertest';
 import createServer from '../handlers/server';
 

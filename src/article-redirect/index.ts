@@ -1,4 +1,3 @@
-import { PERMANENT_REDIRECT } from 'http-status-codes';
 import { Context, Middleware, Next } from 'koa';
 
 export default (): Middleware => (
