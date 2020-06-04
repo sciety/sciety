@@ -51,7 +51,7 @@ export default (): Middleware => {
   return async (ctx, next) => {
     ctx.response.body = `
       <h1>Search results</h1>
-      ${await renderSearchResults(ctx.request.query.doi)}
+      ${await renderSearchResults(ctx.request.query.query)}
     `;
 
     await next();

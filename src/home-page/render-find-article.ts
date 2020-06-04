@@ -15,7 +15,7 @@ export default (): RenderFindArticle => (
           <span class="visually-hidden">Find a bioRxiv article</span>
           <input
             type="text"
-            name="doi"
+            name="query"
             class="compact-form__article-doi"
             required>
         </label>

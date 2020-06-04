@@ -8,7 +8,7 @@ describe('article search route', (): void => {
 
   beforeEach(async () => {
     const { server } = createServer();
-    response = await request(server).get(`/articles?doi=${arbitraryDoi}`);
+    response = await request(server).get(`/articles?query=${arbitraryDoi}`);
   });
 
   it('displays search results', async (): Promise<void> => {
