@@ -4,6 +4,7 @@ describe('render-search-results component', (): void => {
   it('queries by a DOI', async (): Promise<void> => {
     const makeHttpRequest: MakeHttpRequest = async () => (
       {
+        hitCount: 5,
         resultList: {
           result: [
             {
@@ -17,5 +18,6 @@ describe('render-search-results component', (): void => {
     const rendered = await createRenderSearchResults(makeHttpRequest)('10.1101/833392');
 
     expect(rendered).toStrictEqual(expect.stringContaining('10.1101/833392'));
+    expect(rendered).toStrictEqual(expect.stringContaining('5 search results'));
   });
 });

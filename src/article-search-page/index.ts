@@ -3,25 +3,31 @@ import { Middleware } from 'koa';
 import createLogger from '../logger';
 import templateListItems from '../templates/list-items';
 
+type RenderSearchResults = (query: string) => Promise<string>;
+
+export type MakeHttpRequest = (uri: string) => Promise<object>;
+
 interface SearchResult {
   doi: string;
   title: string;
 }
 
-type RenderSearchResults = (query: string) => Promise<string>;
-
-export type MakeHttpRequest = (uri: string) => Promise<object>;
+interface EuropePmcQueryResponse {
+  hitCount: number;
+  resultList: { result: Array<SearchResult> };
+}
 
 export const createRenderSearchResults = (makeHttpRequest: MakeHttpRequest): RenderSearchResults => (
   async (query) => {
     const uri = `https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=${query}%20PUBLISHER%3A%22bioRxiv%22&format=json&pageSize=10`;
-    const data = await makeHttpRequest(uri) as { resultList: { result: Array<SearchResult>}};
+    const data = await makeHttpRequest(uri) as EuropePmcQueryResponse;
     const log = createLogger('article-search-page:index');
     log(data);
     const articles = data.resultList.result.map((result: SearchResult) => (
       `<a href="/articles/${result.doi}">${result.title}</a>`
     ));
     return `
+      <p>${data.hitCount} search results.</p>
       <ul>
         ${templateListItems(articles)}
       </ul>
