@@ -90,8 +90,8 @@ describe('fetch-abstract-from-crossref', (): void => {
 `;
     const abstract = await createFetchAbstractFromCrossref(makeHttpRequest)(doi);
 
-    expect(abstract).toStrictEqual(expect.stringContaining('<h3>should be an h3</h3>'));
-    expect(abstract).toStrictEqual(expect.stringContaining('<h3>should also be an h3</h3>'));
+    expect(abstract).toStrictEqual(expect.stringContaining('<h3 class="ui header">should be an h3</h3>'));
+    expect(abstract).toStrictEqual(expect.stringContaining('<h3 class="ui header">should also be an h3</h3>'));
     expect(abstract).toStrictEqual(expect.not.stringContaining('<title>'));
     expect(abstract).toStrictEqual(expect.not.stringContaining('</title>'));
   });

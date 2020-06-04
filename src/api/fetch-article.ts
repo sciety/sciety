@@ -50,7 +50,7 @@ export const createFetchAbstractFromCrossref = (makeHttpRequest: MakeHttpRequest
       .replace(/<\/list-item>/g, '</li>')
       .replace(/<sec[^>]*/g, '<section')
       .replace(/<\/sec>/g, '</section>')
-      .replace(/<title[^>]*/g, '<h3 class="ui header')
+      .replace(/<title[^>]*/g, '<h3 class="ui header"')
       .replace(/<\/title>/g, '</h3>');
   };
 };
