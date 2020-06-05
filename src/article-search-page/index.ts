@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { Middleware } from 'koa';
 import createLogger from '../logger';
 import templateListItems from '../templates/list-items';
@@ -25,6 +26,12 @@ const resolveToCanonicalUri = (doi: string): string => `https://www.biorxiv.org/
 const renderSearchResult = async (result: SearchResult): Promise<string> => {
   const uri = resolveToCanonicalUri(result.doi);
   log(`Resolved URI = ${uri}`);
+  try {
+    const disqusResponse = await axios.get(`https://disqus.com/api/3.0/threads/list.json?api_key=[API_KEY]&forum=biorxivstage&thread=link:${uri}`);
+    log(`${disqusResponse}`);
+  } catch (e) {
+    log(`Disqus API error: ${e.message}`);
+  }
   return `
     <div class="content">
       <a class="header" href="/articles/${result.doi}">${result.title}</a>
