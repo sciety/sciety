@@ -18,26 +18,30 @@ interface EuropePmcQueryResponse {
   resultList: { result: Array<SearchResult> };
 }
 
+const renderSearchResult = async (result: SearchResult): Promise<string> => {
+  return `
+    <div class="content">
+      <a class="header" href="/articles/${result.doi}">${result.title}</a>
+      <div class="meta">
+        ${result.authorString}
+      </div>
+      <div class="extra">
+        <div class="ui label">
+          Comments
+          <span class="detail">n/a</span>
+        </div>
+      </div>
+    </div>
+  `;
+};
+
 export const createRenderSearchResults = (getJson: GetJson): RenderSearchResults => (
   async (query) => {
     const uri = `https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=${query}%20PUBLISHER%3A%22bioRxiv%22&format=json&pageSize=10`;
     const data = await getJson(uri) as EuropePmcQueryResponse;
     const log = createLogger('article-search-page:index');
     log(data);
-    const articles = data.resultList.result.map((result: SearchResult) => (`
-      <div class="content">
-        <a class="header" href="/articles/${result.doi}">${result.title}</a>
-        <div class="meta">
-          ${result.authorString}
-        </div>
-        <div class="extra">
-          <div class="ui label">
-            Comments
-            <span class="detail">n/a</span>
-          </div>
-        </div>
-      </div>
-    `));
+    const articles = await Promise.all(data.resultList.result.map(renderSearchResult));
     let searchResultsList = '';
     if (articles.length) {
       searchResultsList = `
