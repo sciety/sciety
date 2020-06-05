@@ -10,4 +10,5 @@ export interface Adapters {
   fetchStaticFile: FetchStaticFile;
   editorialCommunities: EditorialCommunityRepository;
   reviewReferenceRepository: ReviewReferenceRepository;
+  getJson: (uri: string) => Promise<object>;
 }

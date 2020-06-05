@@ -1,7 +1,7 @@
-import axios from 'axios';
 import { Middleware } from 'koa';
 import createLogger from '../logger';
 import templateListItems from '../templates/list-items';
+import { Adapters } from '../types/adapters';
 
 type RenderSearchResults = (query: string) => Promise<string>;
 
@@ -42,12 +42,8 @@ export const createRenderSearchResults = (getJson: GetJson): RenderSearchResults
   }
 );
 
-export default (): Middleware => {
-  const getJson: GetJson = async (uri) => {
-    const response = await axios.get(uri);
-    return response.data;
-  };
-  const renderSearchResults = createRenderSearchResults(getJson);
+export default (adapters: Adapters): Middleware => {
+  const renderSearchResults = createRenderSearchResults(adapters.getJson);
   return async (ctx, next) => {
     ctx.response.body = `
       <h1 class="ui header">Search results</h1>

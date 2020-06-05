@@ -35,6 +35,12 @@ const makeHttpRequest: MakeHttpRequest = async (uri, acceptHeader) => {
   return response.data;
 };
 
+const getJson: Adapters['getJson'] = async (uri) => {
+  const response = await axios.get(uri);
+
+  return response.data;
+};
+
 const fetchDataset = createFetchDataset();
 const adapters: Adapters = {
   fetchArticle: createFetchArticle(fetchDataset, createFetchAbstractFromCrossref(makeHttpRequest)),
@@ -42,6 +48,7 @@ const adapters: Adapters = {
   fetchStaticFile: createFetchStaticFile(),
   editorialCommunities,
   reviewReferenceRepository,
+  getJson,
 };
 
 const router = createRouter(adapters);

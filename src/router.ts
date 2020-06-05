@@ -24,7 +24,7 @@ export default (adapters: Adapters): Router => {
     addPageTemplate());
 
   router.get('/articles',
-    createArticleSearchPage(),
+    createArticleSearchPage(adapters),
     addPageTemplate());
 
   router.get('/articles/:doi(.+)',

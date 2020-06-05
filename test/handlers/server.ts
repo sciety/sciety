@@ -44,12 +44,15 @@ export default (): TestServer => {
   const fetchAbstract: FetchAbstract = async () => 'Article abstract.';
   const fetchArticle = createFetchArticle(fetchCrossrefDataset, fetchAbstract);
   const fetchReview = createFetchReview(fetchDataCiteDataset);
+  const getJson: Adapters['getJson'] = async () => ({ resultList: { result: [] } });
+
   const adapters: Adapters = {
     fetchArticle,
     fetchReview,
     fetchStaticFile: async (filename: string) => `Contents of ${filename}`,
     editorialCommunities,
     reviewReferenceRepository,
+    getJson,
   };
 
   const router = createRouter(adapters);
