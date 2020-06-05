@@ -5,7 +5,7 @@ import templateListItems from '../templates/list-items';
 
 type RenderSearchResults = (query: string) => Promise<string>;
 
-export type MakeHttpRequest = (uri: string) => Promise<object>;
+export type GetJson = (uri: string) => Promise<object>;
 
 interface SearchResult {
   doi: string;
@@ -17,10 +17,10 @@ interface EuropePmcQueryResponse {
   resultList: { result: Array<SearchResult> };
 }
 
-export const createRenderSearchResults = (makeHttpRequest: MakeHttpRequest): RenderSearchResults => (
+export const createRenderSearchResults = (getJson: GetJson): RenderSearchResults => (
   async (query) => {
     const uri = `https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=${query}%20PUBLISHER%3A%22bioRxiv%22&format=json&pageSize=10`;
-    const data = await makeHttpRequest(uri) as EuropePmcQueryResponse;
+    const data = await getJson(uri) as EuropePmcQueryResponse;
     const log = createLogger('article-search-page:index');
     log(data);
     const articles = data.resultList.result.map((result: SearchResult) => (
@@ -43,11 +43,11 @@ export const createRenderSearchResults = (makeHttpRequest: MakeHttpRequest): Ren
 );
 
 export default (): Middleware => {
-  const makeHttpRequest: MakeHttpRequest = async (uri) => {
+  const getJson: GetJson = async (uri) => {
     const response = await axios.get(uri);
     return response.data;
   };
-  const renderSearchResults = createRenderSearchResults(makeHttpRequest);
+  const renderSearchResults = createRenderSearchResults(getJson);
   return async (ctx, next) => {
     ctx.response.body = `
       <h1 class="ui header">Search results</h1>
