@@ -18,8 +18,7 @@ interface EuropePmcQueryResponse {
   resultList: { result: Array<SearchResult> };
 }
 
-const renderSearchResult = async (result: SearchResult): Promise<string> => {
-  return `
+const renderSearchResult = async (result: SearchResult): Promise<string> => `
     <div class="content">
       <a class="header" href="/articles/${result.doi}">${result.title}</a>
       <div class="meta">
@@ -33,7 +32,6 @@ const renderSearchResult = async (result: SearchResult): Promise<string> => {
       </div>
     </div>
   `;
-};
 
 export const createRenderSearchResults = (getJson: GetJson): RenderSearchResults => (
   async (query) => {
