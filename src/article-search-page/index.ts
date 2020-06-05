@@ -20,10 +20,12 @@ interface EuropePmcQueryResponse {
 
 const log = createLogger('article-search-page:index');
 
-// const response = await axios.head(`https://doi.org/${result.doi}`);
-// const resolvedDoi = response.request.res.responseUrl;
-// log(`resolved DOI ${result.doi} to ${resolvedDoi}`);
-const renderSearchResult = async (result: SearchResult): Promise<string> => `
+const resolveToCanonicalUri = (doi: string): string => `https://www.biorxiv.org/content/${doi}v1`;
+
+const renderSearchResult = async (result: SearchResult): Promise<string> => {
+  const uri = resolveToCanonicalUri(result.doi);
+  log(`Resolved URI = ${uri}`);
+  return `
     <div class="content">
       <a class="header" href="/articles/${result.doi}">${result.title}</a>
       <div class="meta">
@@ -37,10 +39,11 @@ const renderSearchResult = async (result: SearchResult): Promise<string> => `
       </div>
     </div>
   `;
+};
 
 export const createRenderSearchResults = (getJson: GetJson): RenderSearchResults => (
   async (query) => {
-    const uri = `https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=${query}%20PUBLISHER%3A%22bioRxiv%22&format=json&pageSize=1`;
+    const uri = `https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=${query}%20PUBLISHER%3A%22bioRxiv%22&format=json&pageSize=10`;
     const data = await getJson(uri) as EuropePmcQueryResponse;
     log(data);
     const articles = await Promise.all(data.resultList.result.map(renderSearchResult));
