@@ -1,3 +1,4 @@
+DOCDIR := docs
 DOCKER := docker
 DATA_VOLUME := $(shell pwd)
 IMAGE := liberoadmin/prc-frontend
@@ -49,6 +50,12 @@ build:
 		image_tag_suffix=-dev; \
 	fi; \
 	$(DOCKER) build -t $(IMAGE):$(IMAGE_TAG)$${image_tag_suffix} . --target $(TARGET)
+
+deps: install $(DOCDIR)
+	npx depcruise --include-only "^src" --validate -T archi src | dot -Tpng > $(DOCDIR)/deps.png
+
+$(DOCDIR):
+	mkdir -p $(DOCDIR)
 
 install: node_modules
 
