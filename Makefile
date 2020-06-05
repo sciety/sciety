@@ -51,8 +51,13 @@ build:
 	fi; \
 	$(DOCKER) build -t $(IMAGE):$(IMAGE_TAG)$${image_tag_suffix} . --target $(TARGET)
 
-deps: install $(DOCDIR)
-	npx depcruise --include-only "^src" --validate -T archi src | dot -Tpng > $(DOCDIR)/deps.png
+deps: $(DOCDIR)/folders.png $(DOCDIR)/modules.png
+
+$(DOCDIR)/folders.png: $(DOCDIR) install
+	npx depcruise --include-only "^src" --validate -T archi src | dot -Tpng > $@
+
+$(DOCDIR)/modules.png: $(DOCDIR) install
+	npx depcruise --include-only "^src" --validate -T dot src | dot -Tpng > $@
 
 $(DOCDIR):
 	mkdir -p $(DOCDIR)
