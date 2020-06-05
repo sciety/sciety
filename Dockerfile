@@ -33,12 +33,15 @@ FROM node AS dev
 ENV NODE_ENV=development
 ENV DEBUG=app,app:*
 
+RUN apk add --update graphviz
+
 COPY .eslintignore \
- .eslintrc.js \
- jest.config.js \
- tsconfig.json \
- tsconfig.lint.json \
- ./
+  .eslintrc.js \
+  jest.config.js \
+  tsconfig.json \
+  tsconfig.lint.json \
+  .dependency-cruiser.js \
+  ./
 COPY --from=npm-dev /app/ .
 COPY test/ test/
 COPY src/ src/

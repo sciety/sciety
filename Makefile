@@ -51,13 +51,20 @@ build:
 	fi; \
 	$(DOCKER) build -t $(IMAGE):$(IMAGE_TAG)$${image_tag_suffix} . --target $(TARGET)
 
+deps: export TARGET = dev
 deps: $(DOCDIR)/folders.png $(DOCDIR)/modules.png
 
-$(DOCDIR)/folders.png: $(DOCDIR) install
-	npx depcruise --include-only "^src" --validate -T archi src | dot -Tpng > $@
+$(DOCDIR)/folders.png: $(DOCDIR) build
+	$(DOCKER) run \
+		-v $(DATA_VOLUME)/docs:/app/docs \
+		$(IMAGE):$(IMAGE_TAG)-dev \
+		npm run deps:folders
 
-$(DOCDIR)/modules.png: $(DOCDIR) install
-	npx depcruise --include-only "^src" --validate -T dot src | dot -Tpng > $@
+$(DOCDIR)/modules.png: $(DOCDIR) build
+	$(DOCKER) run \
+		-v $(DATA_VOLUME)/docs:/app/docs \
+		$(IMAGE):$(IMAGE_TAG)-dev \
+		npm run deps:modules
 
 $(DOCDIR):
 	mkdir -p $(DOCDIR)
