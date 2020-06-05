@@ -46,11 +46,13 @@ jobs:
             --set images.frontend.tag=${IMAGE_TAG} \
             --set hostname=prc-staging.libero.pub \
             --set googleAnalyticsTrackingId=UA-167311475-2 \
+            --set disqusApiKey=${DISQUS_API_KEY} \
             --wait \
             helm/prc
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          DISQUS_API_KEY: ${{ secrets.DISQUS_API_KEY }}
 
       - name: Notify Slack
         if: failure()
