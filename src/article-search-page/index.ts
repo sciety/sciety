@@ -10,6 +10,7 @@ export type GetJson = (uri: string) => Promise<object>;
 interface SearchResult {
   doi: string;
   title: string;
+  authorString: string;
 }
 
 interface EuropePmcQueryResponse {
@@ -23,9 +24,14 @@ export const createRenderSearchResults = (getJson: GetJson): RenderSearchResults
     const data = await getJson(uri) as EuropePmcQueryResponse;
     const log = createLogger('article-search-page:index');
     log(data);
-    const articles = data.resultList.result.map((result: SearchResult) => (
-      `<a href="/articles/${result.doi}">${result.title}</a>`
-    ));
+    const articles = data.resultList.result.map((result: SearchResult) => (`
+      <div class="content">
+        <a class="header" href="/articles/${result.doi}">${result.title}</a>
+        <div class="meta">
+          ${result.authorString}
+        </div>
+      </div>
+    `));
     let searchResultsList = '';
     if (articles.length) {
       searchResultsList = `
@@ -46,7 +52,7 @@ export default (adapters: Adapters): Middleware => {
   const renderSearchResults = createRenderSearchResults(adapters.getJson);
   return async (ctx, next) => {
     ctx.response.body = `
-      <h1 class="ui header">Search results</h1>
+      <h1 class="header">Search results</h1>
       ${await renderSearchResults(ctx.request.query.query)}
     `;
 

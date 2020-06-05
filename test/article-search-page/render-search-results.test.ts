@@ -11,6 +11,7 @@ describe('render-search-results component', (): void => {
               {
                 doi: '10.1101/833392',
                 title: 'the title',
+                authorString: '1, 2, 3',
               },
             ],
           },
@@ -20,6 +21,7 @@ describe('render-search-results component', (): void => {
 
       expect(rendered).toStrictEqual(expect.stringContaining('10.1101/833392'));
       expect(rendered).toStrictEqual(expect.stringContaining('5 search results'));
+      expect(rendered).toStrictEqual(expect.stringContaining('1, 2, 3'));
     });
   });
 
