@@ -30,6 +30,12 @@ export const createRenderSearchResults = (getJson: GetJson): RenderSearchResults
         <div class="meta">
           ${result.authorString}
         </div>
+        <div class="extra">
+          <div class="ui label">
+            Comments
+            <span class="detail">n/a</span>
+          </div>
+        </div>
       </div>
     `));
     let searchResultsList = '';
