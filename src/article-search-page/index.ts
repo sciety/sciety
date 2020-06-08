@@ -1,5 +1,5 @@
-import axios, { AxiosResponse } from 'axios';
 import { Middleware } from 'koa';
+import renderSearchResult from './render-search-result';
 import createLogger from '../logger';
 import templateListItems from '../templates/list-items';
 import { Adapters } from '../types/adapters';
@@ -20,44 +20,6 @@ interface EuropePmcQueryResponse {
 }
 
 const log = createLogger('article-search-page:index');
-
-const resolveToCanonicalUri = (doi: string): string => `https://www.biorxiv.org/content/${doi}v1`;
-
-const fetchDisqusPostCount = async (uri: string): Promise<string> => {
-  let disqusResponse: AxiosResponse;
-
-  try {
-    disqusResponse = await axios.get(`https://disqus.com/api/3.0/threads/list.json?api_key=${process.env.DISQUS_API_KEY}&forum=biorxivstage&thread=link:${uri}`);
-  } catch (e) {
-    log(`Disqus API error: ${e.message}`);
-
-    return 'n/a';
-  }
-
-  log(`Disqus response: ${JSON.stringify(disqusResponse.data)}`);
-
-  return `${disqusResponse.data.response[0].posts}`;
-};
-
-const renderSearchResult = async (result: SearchResult): Promise<string> => {
-  const uri = resolveToCanonicalUri(result.doi);
-  log(`Resolved URI = ${uri}`);
-
-  return `
-    <div class="content">
-      <a class="header" href="/articles/${result.doi}">${result.title}</a>
-      <div class="meta">
-        ${result.authorString}
-      </div>
-      <div class="extra">
-        <div class="ui label">
-          Comments
-          <span class="detail">${await fetchDisqusPostCount(uri)}</span>
-        </div>
-      </div>
-    </div>
-  `;
-};
 
 export const createRenderSearchResults = (getJson: GetJson): RenderSearchResults => (
   async (query) => {
