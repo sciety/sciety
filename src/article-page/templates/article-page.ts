@@ -1,10 +1,33 @@
 import addReviewForm from './add-review-form';
 import templateReviewSummary from './review-summary';
+import Doi from '../../data/doi';
 import templateListItems from '../../templates/list-items';
 import EditorialCommunityRepository from '../../types/editorial-community-repository';
 import createRenderArticleAbstract, { GetArticleAbstract } from '../render-article-abstract';
 import createRenderPageHeader, { GetArticleDetails } from '../render-page-header';
 import { ArticlePageViewModel } from '../types/article-page-view-model';
+
+export interface ReviewSummary {
+  publicationDate: Date;
+  summary: string;
+  doi: Doi;
+  editorialCommunityId: string;
+  editorialCommunityName: string;
+}
+
+export type GetArticleReviewSummaries = () => Array<ReviewSummary>;
+
+const createRenderReviewSummaries = (reviews: GetArticleReviewSummaries) => (): string => {
+  const reviewSummaries = reviews().map((review, index) => templateReviewSummary(review, `review-${index}`));
+  return `
+    <h2 class="ui header">
+      Review summaries
+    </h2>
+    <ol class="review-summary-list__list">
+      ${templateListItems(reviewSummaries)}
+    </ol>
+  `;
+};
 
 export default async (
   { article, reviews }: ArticlePageViewModel,
@@ -12,19 +35,10 @@ export default async (
 ): Promise<string> => {
   const getArticleDetailsAdapter: GetArticleDetails = async () => article;
   const abstractAdapter: GetArticleAbstract = async () => ({ content: article.abstract });
+  const reviewsAdapter: GetArticleReviewSummaries = () => reviews;
   const renderPageHeader = createRenderPageHeader(getArticleDetailsAdapter);
   const renderArticleAbstract = createRenderArticleAbstract(abstractAdapter);
-  const renderReviewSummaries = (): string => {
-    const reviewSummaries = reviews.map((review, index) => templateReviewSummary(review, `review-${index}`));
-    return `
-      <h2 class="ui header">
-        Review summaries
-      </h2>
-      <ol class="review-summary-list__list">
-        ${templateListItems(reviewSummaries)}
-      </ol>
-    `;
-  };
+  const renderReviewSummaries = createRenderReviewSummaries(reviewsAdapter);
   const renderAddReviewForm = (): string => `
     <div class="add-review__form">
       <h2 class="ui header"> Add a review<br/>to this article </h2>
