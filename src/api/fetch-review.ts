@@ -1,5 +1,5 @@
 import { namedNode } from '@rdfjs/data-model';
-import { schema } from '@tpluscode/rdf-ns-builders';
+import { dcterms, schema } from '@tpluscode/rdf-ns-builders';
 import { FetchDataset } from './fetch-dataset';
 import Doi from '../data/doi';
 import createLogger from '../logger';
@@ -14,7 +14,10 @@ export default (fetchDataset: FetchDataset): FetchReview => {
     log(`Fetching review ${reviewIri.value}`);
     const graph = await fetchDataset(reviewIri);
 
-    const publicationDate = new Date(graph.out(schema.datePublished).value ?? 0);
+    const publicationDate = new Date(graph.out([
+      schema.datePublished,
+      dcterms.date,
+    ]).value ?? 0);
     const summary = graph.out(schema.description).value ?? '';
 
     const response: Review = {
