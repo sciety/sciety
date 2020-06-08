@@ -22,7 +22,7 @@ interface EuropePmcQueryResponse {
 const log = createLogger('article-search-page:index');
 
 export const createRenderSearchResults = (getJson: GetJson): RenderSearchResults => {
-  const renderSearchResult = createRenderSearchResult();
+  const renderSearchResult = createRenderSearchResult(getJson);
 
   return async (query) => {
     const uri = `https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=${query}%20PUBLISHER%3A%22bioRxiv%22&format=json&pageSize=10`;
