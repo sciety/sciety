@@ -1,4 +1,4 @@
-import { createRenderSearchResults, GetJson } from '../../src/article-search-page';
+import createRenderSearchResults, { GetJson } from '../../src/article-search-page/render-search-results';
 
 describe('render-search-results component', (): void => {
   describe('when there are results', (): void => {
