@@ -27,8 +27,8 @@ const renderSearchResult = async (result: SearchResult): Promise<string> => {
   const uri = resolveToCanonicalUri(result.doi);
   log(`Resolved URI = ${uri}`);
   try {
-    const disqusResponse = await axios.get(`https://disqus.com/api/3.0/threads/list.json?api_key=[API_KEY]&forum=biorxivstage&thread=link:${uri}`);
-    log(`${disqusResponse}`);
+    const disqusResponse = await axios.get(`https://disqus.com/api/3.0/threads/list.json?api_key=${process.env.DISQUS_API_KEY}&forum=biorxivstage&thread=link:${uri}`);
+    log(`${JSON.stringify(disqusResponse.data)}`);
   } catch (e) {
     log(`Disqus API error: ${e.message}`);
   }
