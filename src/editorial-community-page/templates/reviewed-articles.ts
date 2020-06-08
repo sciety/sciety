@@ -7,7 +7,9 @@ interface ReviewedArticle {
 }
 
 const templateTeaser = (article: ReviewedArticle): string => (`
- <a href="/articles/${article.doi}">${article.title}</a>
+  <div class="content">
+    <a href="/articles/${article.doi}" class="header">${article.title}</a>
+  </div>
 `);
 
 export default (reviewedArticles: Array<ReviewedArticle>): string => (`
@@ -17,7 +19,7 @@ export default (reviewedArticles: Array<ReviewedArticle>): string => (`
       Recently reviewed articles
     </h2>
 
-    <ol class="u-normalised-list article-listing">
+    <ol class="ui relaxed divided items">
       ${templateListItems(reviewedArticles.map(templateTeaser))}
     </ol>
 
