@@ -1,5 +1,5 @@
 import { Middleware } from 'koa';
-import renderSearchResult from './render-search-result';
+import createRenderSearchResult from './render-search-result';
 import createLogger from '../logger';
 import templateListItems from '../templates/list-items';
 import { Adapters } from '../types/adapters';
@@ -21,8 +21,10 @@ interface EuropePmcQueryResponse {
 
 const log = createLogger('article-search-page:index');
 
-export const createRenderSearchResults = (getJson: GetJson): RenderSearchResults => (
-  async (query) => {
+export const createRenderSearchResults = (getJson: GetJson): RenderSearchResults => {
+  const renderSearchResult = createRenderSearchResult();
+
+  return async (query) => {
     const uri = `https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=${query}%20PUBLISHER%3A%22bioRxiv%22&format=json&pageSize=10`;
     const data = await getJson(uri) as EuropePmcQueryResponse;
     log(data);
@@ -40,8 +42,8 @@ export const createRenderSearchResults = (getJson: GetJson): RenderSearchResults
       <p>${data.hitCount} search results.</p>
       ${searchResultsList}
     `;
-  }
-);
+  };
+};
 
 export default (adapters: Adapters): Middleware => {
   const renderSearchResults = createRenderSearchResults(adapters.getJson);

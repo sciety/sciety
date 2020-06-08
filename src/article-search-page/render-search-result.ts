@@ -13,38 +13,48 @@ const log = createLogger('article-search-page:render-search-result');
 
 const resolveToCanonicalUri = (doi: string): string => `https://www.biorxiv.org/content/${doi}v1`;
 
-const fetchDisqusPostCount = async (uri: string): Promise<string> => {
-  let disqusResponse: AxiosResponse;
+type FetchDisqusPostCount = (uri: string) => Promise<string>;
 
-  try {
-    disqusResponse = await axios.get(`https://disqus.com/api/3.0/threads/list.json?api_key=${process.env.DISQUS_API_KEY}&forum=biorxivstage&thread=link:${uri}`);
-  } catch (e) {
-    log(`Disqus API error: ${e.message}`);
+const createFetchDisqusPostCount = (): FetchDisqusPostCount => (
+  async (uri) => {
+    let disqusResponse: AxiosResponse;
 
-    return 'n/a';
+    try {
+      disqusResponse = await axios.get(`https://disqus.com/api/3.0/threads/list.json?api_key=${process.env.DISQUS_API_KEY}&forum=biorxivstage&thread=link:${uri}`);
+    } catch (e) {
+      log(`Disqus API error: ${e.message}`);
+
+      return 'n/a';
+    }
+
+    log(`Disqus response: ${JSON.stringify(disqusResponse.data)}`);
+
+    return `${disqusResponse.data.response[0].posts}`;
   }
+);
 
-  log(`Disqus response: ${JSON.stringify(disqusResponse.data)}`);
+type RenderSearchResult = (result: SearchResult) => Promise<string>;
 
-  return `${disqusResponse.data.response[0].posts}`;
-};
+export default (): RenderSearchResult => {
+  const fetchDisqusPostCount = createFetchDisqusPostCount();
 
-export default async (result: SearchResult): Promise<string> => {
-  const uri = resolveToCanonicalUri(result.doi);
-  log(`Resolved URI = ${uri}`);
+  return async (result) => {
+    const uri = resolveToCanonicalUri(result.doi);
+    log(`Resolved URI = ${uri}`);
 
-  return `
-    <div class="content">
-      <a class="header" href="/articles/${result.doi}">${result.title}</a>
-      <div class="meta">
-        ${result.authorString}
-      </div>
-      <div class="extra">
-        <div class="ui label">
-          Comments
-          <span class="detail">${await fetchDisqusPostCount(uri)}</span>
+    return `
+      <div class="content">
+        <a class="header" href="/articles/${result.doi}">${result.title}</a>
+        <div class="meta">
+          ${result.authorString}
+        </div>
+        <div class="extra">
+          <div class="ui label">
+            Comments
+            <span class="detail">${await fetchDisqusPostCount(uri)}</span>
+          </div>
         </div>
       </div>
-    </div>
-  `;
+    `;
+  };
 };
