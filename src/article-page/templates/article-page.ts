@@ -7,7 +7,7 @@ import createRenderArticleAbstract, { GetArticleAbstract } from '../render-artic
 import createRenderPageHeader, { GetArticleDetails } from '../render-page-header';
 import { ArticlePageViewModel } from '../types/article-page-view-model';
 
-export interface ReviewSummary {
+interface ReviewSummary {
   publicationDate: Date;
   summary: string;
   doi: Doi;
@@ -15,10 +15,10 @@ export interface ReviewSummary {
   editorialCommunityName: string;
 }
 
-export type GetArticleReviewSummaries = () => Array<ReviewSummary>;
+export type GetArticleReviewSummaries = () => Promise<Array<ReviewSummary>>;
 
-const createRenderReviewSummaries = (reviews: GetArticleReviewSummaries) => (): string => {
-  const reviewSummaries = reviews().map((review, index) => templateReviewSummary(review, `review-${index}`));
+const createRenderReviewSummaries = (reviews: GetArticleReviewSummaries) => async (): Promise<string> => {
+  const reviewSummaries = (await reviews()).map((review, index) => templateReviewSummary(review, `review-${index}`));
   return `
     <h2 class="ui header">
       Review summaries
@@ -35,7 +35,7 @@ export default async (
 ): Promise<string> => {
   const getArticleDetailsAdapter: GetArticleDetails = async () => article;
   const abstractAdapter: GetArticleAbstract = async () => ({ content: article.abstract });
-  const reviewsAdapter: GetArticleReviewSummaries = () => reviews;
+  const reviewsAdapter: GetArticleReviewSummaries = async () => reviews;
   const renderPageHeader = createRenderPageHeader(getArticleDetailsAdapter);
   const renderArticleAbstract = createRenderArticleAbstract(abstractAdapter);
   const renderReviewSummaries = createRenderReviewSummaries(reviewsAdapter);
@@ -50,7 +50,7 @@ export default async (
     <div class="content">
       ${await renderArticleAbstract(article.doi)}
       <section class="review-summary-list">
-        ${renderReviewSummaries()}
+        ${await renderReviewSummaries()}
       </section>
     </div>
     <aside>
