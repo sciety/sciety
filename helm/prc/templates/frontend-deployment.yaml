@@ -20,6 +20,8 @@ spec:
         - name: app
           image: "{{ .Values.images.frontend.repository }}:{{ .Values.images.frontend.tag }}"
           env:
+            - name: DISQUS_API_KEY
+              value: {{ .Values.disqusApiKey }}
             - name: GOOGLE_ANALYTICS_TRACKING_ID
               value: {{ .Values.googleAnalyticsTrackingId }}
           ports:
