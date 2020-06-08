@@ -19,4 +19,5 @@ export default {
   '10.1101/845081': { review: '10.5281/zenodo.3718438', editorialCommunityIndex: 1, added: new Date('2020-05-19') },
   '10.1101/823989': { review: '10.5281/zenodo.3678334', editorialCommunityIndex: 1, added: new Date('2020-05-20') },
   '10.1101/380238': { review: '10.5281/zenodo.3662409', editorialCommunityIndex: 1, added: new Date('2020-05-20') },
+  '10.1101/069484': { review: '10.7287/peerj.190v0.1/reviews/2', editorialCommunityIndex: 2, added: new Date('2020-06-08') },
 };
