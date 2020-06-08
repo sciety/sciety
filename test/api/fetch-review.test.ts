@@ -9,15 +9,31 @@ import Doi from '../../src/data/doi';
 const reviewDoi = new Doi('10.5281/zenodo.3678325');
 
 describe('fetch-review', (): void => {
-  it('returns the review', async () => {
-    const fetchDataset: FetchDataset = async (iri) => (
-      clownface({ dataset: datasetFactory(), term: iri })
-        .addOut(schema.datePublished, literal('2020-02-20', schema.Date))
-        .addOut(schema.description, 'A summary')
-    );
-    const fetchReview = createFetchReview(fetchDataset);
-    const review = await fetchReview(reviewDoi);
+  describe('given the review has a description', () => {
+    it('returns the review', async () => {
+      const fetchDataset: FetchDataset = async (iri) => (
+        clownface({ dataset: datasetFactory(), term: iri })
+          .addOut(schema.datePublished, literal('2020-02-20', schema.Date))
+          .addOut(schema.description, 'A summary')
+      );
+      const fetchReview = createFetchReview(fetchDataset);
+      const review = await fetchReview(reviewDoi);
 
-    expect(review.publicationDate).toStrictEqual(new Date('2020-02-20'));
+      expect(review.summary).toStrictEqual('A summary');
+      expect(review.publicationDate).toStrictEqual(new Date('2020-02-20'));
+    });
+  });
+
+  describe('when the review has no description', () => {
+    it('returns an empty string', async () => {
+      const fetchDataset: FetchDataset = async (iri) => (
+        clownface({ dataset: datasetFactory(), term: iri })
+      );
+
+      const fetchReview = createFetchReview(fetchDataset);
+      const review = await fetchReview(reviewDoi);
+
+      expect(review.summary).toStrictEqual('');
+    });
   });
 });
