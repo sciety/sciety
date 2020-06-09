@@ -35,16 +35,16 @@ ${googleAnalytics}
 
 <header class="ui container">
 
-  <nav class="site-navigation">
+  <nav>
 
-    <ul>
+    <ul class="ui large text menu">
 
       <li>
-        <a href="/">Home</a>
+        <a href="/" class="item">Home</a>
       </li>
 
       <li>
-        <a href="/about">About</a>
+        <a href="/about" class="item">About</a>
       </li>
 
     </ul>

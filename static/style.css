@@ -2,6 +2,7 @@
 
 ol.ui,
 ul.ui {
+  list-style-type: none;
   padding-left: 0;
 }
 
@@ -16,7 +17,7 @@ ul.ui {
   white-space: nowrap;
 }
 
-article, aside, header, main, nav, ol, p, section, ul {
+article, aside, main, ol, p, section, ul {
   margin-top: 0;
   margin-bottom: 1.125rem;
 }
@@ -330,37 +331,4 @@ sup {
 
 .editorial-community-reviewed-articles {
   margin-top: 3rem;
-}
-
-/*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-
-.site-navigation {
-  font-size: 0.875rem;
-  font-family: "Noto Sans", Arial, Helvetica, sans-serif;
-  line-height: 1.5rem;
-  text-transform: uppercase;
-  margin-top: 3rem;
-}
-
-.site-navigation a {
-  color: inherit;
-  text-decoration: none;
-  font-weight: 700;
-}
-
-.site-navigation a:hover {
-  color: #087acc;
-}
-
-.site-navigation ul {
-  list-style-type: none;
-  padding-left: 0;
-}
-
-.site-navigation li {
-  display: inline;
-}
-
-.site-navigation li:first-child {
-  padding-right: 1.5rem
 }
