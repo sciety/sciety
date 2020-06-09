@@ -18,7 +18,7 @@ export default async (
   const renderAddReviewForm = (): string => `
     <div class="add-review__form">
       <h2 class="ui header"> Add a review<br/>to this article </h2>
-      ${addReviewForm(article, editorialCommunities)}
+      ${addReviewForm(article.doi, editorialCommunities)}
     </div>
   `;
   return `<article>
