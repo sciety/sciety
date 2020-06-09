@@ -1,3 +1,3 @@
-export default (items: Array<string>): string => (
-  items.reduce((carry: string, item: string): string => `${carry}<li class="item">${item}</li>\n`, '')
+export default (items: Array<string>, itemClass = 'item'): string => (
+  items.reduce((carry: string, item: string): string => `${carry}<li class="${itemClass}">${item}</li>\n`, '')
 );

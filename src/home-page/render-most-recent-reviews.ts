@@ -70,9 +70,13 @@ export const createDiscoverMostRecentReviews = (
 );
 
 const templateRecentReview = (review: RecentReview): string => (`
-  <a href="/articles/${review.articleDoi}">${review.articleTitle}</a>
-  <div class="review-status">added by <a href="/editorial-communities/${review.editorialCommunityId}">${review.editorialCommunityName}</a>
-  <time datetime="${toString(review.added)}" title="${toDisplayString(review.added)}">recently</time></div>
+  <div class="content">
+    <div class="summary">
+      <a href="/articles/${review.articleDoi}">${review.articleTitle}</a>
+      added by <a href="/editorial-communities/${review.editorialCommunityId}">${review.editorialCommunityName}</a>
+      <time datetime="${toString(review.added)}" title="${toDisplayString(review.added)}" class="date">recently</time>
+    </div>
+  </div>
 `);
 
 const templateMostRecentReviews = (reviews: Array<RecentReview>): string => (`
@@ -82,8 +86,8 @@ const templateMostRecentReviews = (reviews: Array<RecentReview>): string => (`
       Most recent reviews
     </h2>
 
-    <ol class="u-normalised-list article-listing">
-      ${templateListItems(reviews.map(templateRecentReview))}
+    <ol class="ui large feed">
+      ${templateListItems(reviews.map(templateRecentReview), 'event')}
     </ol>
 
   </section>
