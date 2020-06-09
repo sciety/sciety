@@ -6,6 +6,23 @@ ul.ui {
   padding-left: 0;
 }
 
+ol.ui.horizontal.list li.item {
+  margin-left: 0;
+}
+
+ol.ui.horizontal.list li.item::before {
+  content: '';
+  margin: 0;
+}
+
+ol.ui.horizontal.list li.item .content::after {
+  content: ',\0a0';
+}
+
+ol.ui.horizontal.list li.item:last-child .content::after {
+  content: '';
+}
+
 @supports (font-variant-position: sub) {
   sub {
     font-size: inherit;
@@ -62,32 +79,6 @@ hr {
   list-style-type: none;
   margin-bottom: 1.5rem;
   padding-left: 0;
-}
-
-.author-list li {
-  display: inline;
-}
-
-.author-list li:after {
-  content: ",\a0";
-}
-
-.author-list {
-  list-style-type: none;
-  margin-bottom: 1.5rem;
-  padding-left: 0;
-}
-
-.author-list li {
-  display: inline;
-}
-
-.author-list li:after {
-  content: ",\a0";
-}
-
-.author-list li:last-child:after {
-  content: "";
 }
 
 .abstract__link {

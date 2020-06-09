@@ -17,7 +17,7 @@ describe('render-page-header component', (): void => {
   });
 
   it('renders inside an header tag', () => {
-    expect(rendered).toStrictEqual(expect.stringMatching(/^\s*<header\s/));
+    expect(rendered).toStrictEqual(expect.stringMatching(/^\s*<header\s|>/));
   });
 
   it('renders the title for an article', async (): Promise<void> => {

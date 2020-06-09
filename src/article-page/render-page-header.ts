@@ -16,11 +16,15 @@ export default (getArticleDetails: GetArticleDetails): RenderPageHeader => (
   async (doi) => {
     const articleDetails = await getArticleDetails(doi);
     return `
-      <header class="content-header">
+      <header>
         <h1 class="ui header">${articleDetails.title}</h1>
 
-        <ol aria-label="Authors of this article" class="author-list">
-          ${templateListItems(articleDetails.authors)}
+        <ol aria-label="Authors of this article" class="ui horizontal list">
+          ${templateListItems(
+    articleDetails.authors.map((author: string) => (`
+              <div class="content">${author}</div>
+            `)),
+  )}
         </ol>
 
         <ul aria-label="Publication details" class="content-header__details">
