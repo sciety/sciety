@@ -9,19 +9,31 @@ export interface ReviewSummary {
   editorialCommunityName: string;
 }
 
-export default (review: ReviewSummary, idNamespace: string): string => (
-  `<article class="review-summary">
-    <h3 class="ui header review-summary__title">
+export default (review: ReviewSummary, idNamespace: string): string => (`
+  <article class="content">
+
+    <h3 class="header">
       Reviewed by
       <a href="/editorial-communities/${review.editorialCommunityId}" id="${idNamespace}-editorial-community">
         ${review.editorialCommunityName}
       </a>
-      on ${templateDate(review.publicationDate)}
     </h3>
-    ${review.summary}
-    <a href="https://doi.org/${review.doi}" class="review-summary__link" id="${idNamespace}-read-more"
-      aria-labelledby="${idNamespace}-read-more ${idNamespace}-editorial-community">
-      Read the full review
-    </a>
-  </article>`
-);
+
+    <div class="meta">
+      ${templateDate(review.publicationDate)}
+    </div>
+
+    <div class="description">
+      ${review.summary}
+    </div>
+
+    <div class="extra">
+      <a href="https://doi.org/${review.doi}" class="ui right floated basic secondary button" id="${idNamespace}-read-more"
+        aria-labelledby="${idNamespace}-read-more ${idNamespace}-editorial-community">
+        Read the full review
+        <i class="right chevron icon"></i>
+      </a>
+    </div>
+
+  </article>
+`);

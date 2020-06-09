@@ -16,7 +16,7 @@ export default (reviews: GetArticleReviewSummaries) => async (): Promise<string>
     <h2 class="ui header">
       Review summaries
     </h2>
-    <ol class="review-summary-list__list">
+    <ol class="ui very relaxed divided items">
       ${templateListItems(reviewSummaries)}
     </ol>
   `;
