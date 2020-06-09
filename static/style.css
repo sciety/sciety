@@ -45,15 +45,6 @@ hr {
   margin: 2.25rem 0;
 }
 
-a:link {
-  color: #087acc;
-  text-decoration: none;
-}
-
-a:link:hover {
-  text-decoration: underline;
-}
-
 .find-reviews {
   margin: 4.5rem 0;
   padding-bottom: 4.5rem;
@@ -74,16 +65,6 @@ a:link:hover {
   list-style-type: none;
   margin-bottom: 1.5rem;
   padding-left: 0;
-}
-
-.content-header__details :link, .content-header__details :visited {
-  color: inherit;
-  text-decoration: none;
-}
-
-.content-header__details :link:hover {
-  color: #087acc;
-  text-decoration: underline;
 }
 
 .author-list li {
@@ -168,15 +149,6 @@ a:link:hover {
 
 .u-normalised-list li {
   margin-bottom: 1.5rem
-}
-
-.u-normalised-list a {
-  text-decoration: none;
-  color: inherit;
-}
-
-.u-normalised-list a:hover {
-  color: #087ACC;
 }
 
 .review-status {
