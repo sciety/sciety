@@ -29,10 +29,14 @@ export interface EditorialCommunity {
   name: string;
 }
 
+export type GetReviewReferences = () => Promise<Array<ReviewReference>>;
+export type FetchArticle = (doi: Doi) => Promise<FetchedArticle>;
+export type GetEditorialCommunities = () => Promise<Array<EditorialCommunity>>;
+
 export const createDiscoverMostRecentReviews = (
-  reviewReferences: () => Promise<Array<ReviewReference>>,
-  fetchArticle: (doi: Doi) => Promise<FetchedArticle>,
-  editorialCommunities: () => Promise<Array<EditorialCommunity>>,
+  reviewReferences: GetReviewReferences,
+  fetchArticle: FetchArticle,
+  editorialCommunities: GetEditorialCommunities,
 ) => (
   async (limit: number): Promise<Array<RecentReview>> => {
     const mostRecentReviewReferences = (await reviewReferences())
@@ -94,9 +98,9 @@ const templateMostRecentReviews = (reviews: Array<RecentReview>): string => (`
 `);
 
 export default (
-  reviewReferences: () => Promise<Array<ReviewReference>>,
-  fetchArticle: (doi: Doi) => Promise<FetchedArticle>,
-  editorialCommunities: () => Promise<Array<EditorialCommunity>>,
+  reviewReferences: GetReviewReferences,
+  fetchArticle: FetchArticle,
+  editorialCommunities: GetEditorialCommunities,
 ): RenderMostRecentReviews => {
   const discoverMostRecentReviews = createDiscoverMostRecentReviews(
     reviewReferences,
