@@ -1,19 +1,20 @@
-import { RenderSearchResult } from './render-search-result';
-import createSearchEuropePmc from './search-europe-pmc';
+import { RenderSearchResult, SearchResult } from './render-search-result';
 import templateListItems from '../templates/list-items';
 
-export type GetJson = (uri: string) => Promise<object>;
+export type FindArticles = (query: string) => Promise<{
+  items: Array<SearchResult>;
+  total: number;
+}>;
 
 type RenderSearchResults = (query: string) => Promise<string>;
 
 export default (
-  getJson: GetJson,
+  findArticles: FindArticles,
   renderSearchResult: RenderSearchResult,
 ): RenderSearchResults => (
   async (query) => {
-    const findArticles = createSearchEuropePmc(getJson);
-    const europePmcSearchResults = await findArticles(query);
-    const articles = await Promise.all(europePmcSearchResults.items.map(renderSearchResult));
+    const searchResults = await findArticles(query);
+    const articles = await Promise.all(searchResults.items.map(renderSearchResult));
     let searchResultsList = '';
     if (articles.length) {
       searchResultsList = `
@@ -24,7 +25,7 @@ export default (
     }
 
     return `
-      <p>${europePmcSearchResults.total} search results.</p>
+      <p>${searchResults.total} search results.</p>
       ${searchResultsList}
     `;
   }
