@@ -22,16 +22,18 @@ export default async (
       ${addReviewForm(doi, editorialCommunities)}
     </div>
   `;
-  return `<article>
+  return `<article class="ui aligned stackable grid container">
     ${await renderPageHeader(article.doi)}
-    <div class="content">
-      ${await renderArticleAbstract(article.doi)}
-      <section class="review-summary-list">
-        ${await renderReviewSummaries()}
+    <div class="row">
+      <section class="twelve wide column">
+        ${await renderArticleAbstract(article.doi)}
+        <section class="review-summary-list">
+          ${await renderReviewSummaries()}
+        </section>
       </section>
+      <aside class="four wide right floated column">
+        ${renderAddReviewForm(article.doi)}
+      </aside>
     </div>
-    <aside>
-      ${renderAddReviewForm(article.doi)}
-    </aside>
   </article>`;
 };
