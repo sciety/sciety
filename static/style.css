@@ -1,4 +1,3 @@
-@import "https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,700&family=Noto+Serif:ital@0;1&display=swap";
 @import "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css";
 
 ol.ui,
@@ -7,10 +6,6 @@ ul.ui {
 }
 
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-
-*, *:before, *:after {
-  box-sizing: border-box;
-}
 
 .visually-hidden:not(:focus):not(:active) {
   position: absolute !important;
@@ -21,21 +16,7 @@ ul.ui {
   white-space: nowrap;
 }
 
-:root {
-  font-size: 100%;
-  line-height: 1.15;
-  min-width: 320px;
-}
-
 body {
-  background-color: rgb(255, 255, 255);
-  color: rgb(33, 33, 33);
-  font-family: "Noto Serif", serif;
-  font-size: 1rem;
-  line-height: 1.5;
-  font-weight: normal;
-  text-rendering: optimizeLegibility;
-  padding: 0 1.125rem;
   margin: 0 auto;
   max-width: 69.625rem;
 }
