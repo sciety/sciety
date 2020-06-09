@@ -1,33 +1,9 @@
 import addReviewForm from './add-review-form';
-import templateReviewSummary from './review-summary';
-import Doi from '../../data/doi';
-import templateListItems from '../../templates/list-items';
 import EditorialCommunityRepository from '../../types/editorial-community-repository';
 import createRenderArticleAbstract, { GetArticleAbstract } from '../render-article-abstract';
 import createRenderPageHeader, { GetArticleDetails } from '../render-page-header';
+import createRenderReviewSummaries, { GetArticleReviewSummaries } from '../render-review-summaries';
 import { ArticlePageViewModel } from '../types/article-page-view-model';
-
-interface ReviewSummary {
-  publicationDate: Date;
-  summary: string;
-  doi: Doi;
-  editorialCommunityId: string;
-  editorialCommunityName: string;
-}
-
-export type GetArticleReviewSummaries = () => Promise<Array<ReviewSummary>>;
-
-const createRenderReviewSummaries = (reviews: GetArticleReviewSummaries) => async (): Promise<string> => {
-  const reviewSummaries = (await reviews()).map((review, index) => templateReviewSummary(review, `review-${index}`));
-  return `
-    <h2 class="ui header">
-      Review summaries
-    </h2>
-    <ol class="review-summary-list__list">
-      ${templateListItems(reviewSummaries)}
-    </ol>
-  `;
-};
 
 export default async (
   { article, reviews }: ArticlePageViewModel,
