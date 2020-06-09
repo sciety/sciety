@@ -2,12 +2,12 @@ import templateListItems from '../templates/list-items';
 
 type RenderEditorialCommunities = () => Promise<string>;
 
-interface EditorialCommunity {
+type GetAllEditorialCommunities = () => Promise<Array<{
   id: string;
   name: string;
-}
+}>>;
 
-export default (editorialCommunities: () => Promise<Array<EditorialCommunity>>): RenderEditorialCommunities => (
+export default (editorialCommunities: GetAllEditorialCommunities): RenderEditorialCommunities => (
   async () => {
     const editorialCommunityLinks = (await editorialCommunities())
       .map((editorialCommunity) => (
