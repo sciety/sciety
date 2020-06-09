@@ -33,7 +33,7 @@ export default (): Middleware => (
 
 ${googleAnalytics}
 
-<header>
+<header class="ui container">
 
   <nav class="site-navigation">
 
@@ -53,7 +53,7 @@ ${googleAnalytics}
 
 </header>
 
-<main>
+<main class="ui container">
   ${response.body}
 </main>`;
   }

@@ -16,11 +16,6 @@ ul.ui {
   white-space: nowrap;
 }
 
-body {
-  margin: 0 auto;
-  max-width: 69.625rem;
-}
-
 h1 img {
   max-width: 10rem;
   height: auto;
