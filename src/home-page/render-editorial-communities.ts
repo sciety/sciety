@@ -10,16 +10,18 @@ type GetAllEditorialCommunities = () => Promise<Array<{
 export default (editorialCommunities: GetAllEditorialCommunities): RenderEditorialCommunities => (
   async () => {
     const editorialCommunityLinks = (await editorialCommunities())
-      .map((editorialCommunity) => (
-        `<a href="/editorial-communities/${editorialCommunity.id}">${editorialCommunity.name}</a>`
-      ));
+      .map((editorialCommunity) => (`
+        <div class="content">
+          <a href="/editorial-communities/${editorialCommunity.id}" class="header">${editorialCommunity.name}</a>
+        </div>
+      `));
 
     return `
       <section>
         <h2 class="ui header">
           Editorial communities
         </h2>
-        <ol class="u-normalised-list">
+        <ol class="ui divided items">
           ${templateListItems(editorialCommunityLinks)}
         </ol>
       </section>
