@@ -6,6 +6,22 @@ ul.ui {
   padding-left: 0;
 }
 
+@supports (font-variant-position: sub) {
+  sub {
+    font-size: inherit;
+    font-variant-position: sub;
+    position: static;
+  }
+}
+
+@supports (font-variant-position: super) {
+  sup {
+    font-size: inherit;
+    font-variant-position: super;
+    position: static;
+  }
+}
+
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 
 .visually-hidden:not(:focus):not(:active) {
@@ -29,21 +45,6 @@ hr {
   margin: 2.25rem 0;
 }
 
-sub, sup {
-  font-size: 75%;
-  line-height: 0;
-  position: relative;
-  vertical-align: baseline;
-}
-
-sub {
-  font-size: 75%;
-  line-height: 0;
-  position: relative;
-  vertical-align: baseline;
-  bottom: -0.25em;
-}
-
 a:link {
   color: #087acc;
   text-decoration: none;
@@ -51,30 +52,6 @@ a:link {
 
 a:link:hover {
   text-decoration: underline;
-}
-
-@supports (font-variant-position: sub) {
-  sub {
-    font-size: inherit;
-    font-variant-position: sub;
-    position: static;
-  }
-}
-
-sup {
-  font-size: 75%;
-  line-height: 0;
-  position: relative;
-  vertical-align: baseline;
-  top: -0.5em;
-}
-
-@supports (font-variant-position: super) {
-  sup {
-    font-size: inherit;
-    font-variant-position: super;
-    position: static;
-  }
 }
 
 .find-reviews {
