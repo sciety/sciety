@@ -19,23 +19,30 @@ type RenderSearchResults = (query: string) => Promise<string>;
 
 const log = createLogger('article-search-page:render-search-results');
 
+type GetSearchResults = (europePmcQuery: string) => Promise<{
+  result: Array<SearchResult>;
+  hitCount: number;
+}>;
+
+const createFetchEuropePmcSearchResults = (getJson: GetJson): GetSearchResults => (
+  async (europePmcQuery) => {
+    const uri = 'https://www.ebi.ac.uk/europepmc/webservices/rest/search'
+      + `?query=${europePmcQuery}%20PUBLISHER%3A%22bioRxiv%22&format=json&pageSize=10`;
+    const data = await getJson(uri) as EuropePmcQueryResponse;
+    log(data);
+    return {
+      result: data.resultList.result,
+      hitCount: data.hitCount,
+    };
+  }
+);
+
 export default (
   getJson: GetJson,
   renderSearchResult: RenderSearchResult,
 ): RenderSearchResults => (
   async (query) => {
-    const fetchEuropePmcSearchResults = async (europePmcQuery: string): Promise<{
-      result: Array<SearchResult>; hitCount: number;
-    }> => {
-      const uri = 'https://www.ebi.ac.uk/europepmc/webservices/rest/search'
-        + `?query=${europePmcQuery}%20PUBLISHER%3A%22bioRxiv%22&format=json&pageSize=10`;
-      const data = await getJson(uri) as EuropePmcQueryResponse;
-      log(data);
-      return {
-        result: data.resultList.result,
-        hitCount: data.hitCount,
-      };
-    };
+    const fetchEuropePmcSearchResults = createFetchEuropePmcSearchResults(getJson);
     const europePmcSearchResults = await fetchEuropePmcSearchResults(query);
     const articles = await Promise.all(europePmcSearchResults.result.map(renderSearchResult));
     let searchResultsList = '';
