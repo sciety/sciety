@@ -1,5 +1,4 @@
-import createRenderSearchResult from './render-search-result';
-import Doi from '../data/doi';
+import { RenderSearchResult } from './render-search-result';
 import createLogger from '../logger';
 import templateListItems from '../templates/list-items';
 
@@ -22,11 +21,9 @@ const log = createLogger('article-search-page:render-search-results');
 
 export default (
   getJson: GetJson,
-  fetchReviewReferences: (articleVersionDoi: Doi) => Array<unknown>,
-): RenderSearchResults => {
-  const renderSearchResult = createRenderSearchResult(getJson, fetchReviewReferences);
-
-  return async (query) => {
+  renderSearchResult: RenderSearchResult,
+): RenderSearchResults => (
+  async (query) => {
     const uri = `https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=${query}%20PUBLISHER%3A%22bioRxiv%22&format=json&pageSize=10`;
     const data = await getJson(uri) as EuropePmcQueryResponse;
     log(data);
@@ -44,5 +41,5 @@ export default (
       <p>${data.hitCount} search results.</p>
       ${searchResultsList}
     `;
-  };
-};
+  }
+);

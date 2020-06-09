@@ -34,7 +34,7 @@ const createFetchDisqusPostCount = (getJson: GetJson): FetchDisqusPostCount => (
   }
 );
 
-type RenderSearchResult = (result: SearchResult) => Promise<string>;
+export type RenderSearchResult = (result: SearchResult) => Promise<string>;
 
 export default (
   getJson: GetJson,
