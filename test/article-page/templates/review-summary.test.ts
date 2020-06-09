@@ -14,7 +14,7 @@ describe('review-summary template', (): void => {
   it('renders inside an article tag', () => {
     const actual = templateReviewSummary(review, idNamespace);
 
-    expect(actual).toStrictEqual(expect.stringMatching(/^<article\s/));
+    expect(actual).toStrictEqual(expect.stringMatching(/^\s*<article\s/));
   });
 
   it('renders the summary', () => {
