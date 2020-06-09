@@ -2,31 +2,21 @@ type RenderFindArticle = () => Promise<string>;
 
 export default (): RenderFindArticle => (
   async () => (`
-    <form method="get" action="/articles" class="find-reviews compact-form">
-    <fieldset>
+    <form method="get" action="#" class="ui basic very padded center aligned form container segment">
+      <fieldset>
+                                                          
+        <legend class="ui center aligned header">
+          Find a bioRxiv article
+        </legend>
 
-      <legend class="compact-form__title">
-        Find a bioRxiv article
-      </legend>
+        <div class="ui action input">
+          <input type="text" name="query" required>
+          <button type="submit" class="ui primary icon button">
+            <i class="search icon"></i>
+          </button>
+        </div>
 
-      <div class="compact-form__row">
-
-        <label>
-          <span class="visually-hidden">Find a bioRxiv article</span>
-          <input
-            type="text"
-            name="query"
-            class="compact-form__article-doi"
-            required>
-        </label>
-
-        <button type="submit" class="compact-form__submit">
-          <span class="visually-hidden">Find a bioRxiv article</span>
-        </button>
-
-      </div>
-
-    </fieldset>
+      </fieldset>
     </form>
   `)
 );

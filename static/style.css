@@ -22,16 +22,21 @@ ul.ui {
   }
 }
 
-/*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-
-.visually-hidden:not(:focus):not(:active) {
-  position: absolute !important;
-  height: 1px;
-  width: 1px;
-  overflow: hidden;
-  clip: rect(1px, 1px, 1px, 1px);
-  white-space: nowrap;
+.ui.form fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
 }
+
+.ui.header {
+  width: 100%;
+}
+
+legend.ui.header {
+  display: block;
+}
+
+/*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 
 article, aside, main, ol, p, section, ul {
   margin-top: 0;
@@ -43,11 +48,6 @@ hr {
   border-top: 1px solid #e0e0e0;
   height: 0;
   margin: 2.25rem 0;
-}
-
-.find-reviews {
-  margin: 4.5rem 0;
-  padding-bottom: 4.5rem;
 }
 
 .content-header {
@@ -191,60 +191,6 @@ hr {
 .add-review-form .warning {
   margin-top: 36px;
   color: #d90000;
-}
-
-/*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-
-.compact-form {
-  font-family: "Noto Sans", Arial, Helvetica, sans-serif;
-  border-bottom: 1px solid rgb(224, 224, 224);
-  text-align: center;
-}
-
-.compact-form > fieldset {
-  border: none;
-  margin: 0 auto;
-  max-width: 27.5rem;
-  padding: 0;
-}
-
-.compact-form__title {
-  font-weight: 600;
-  font-size: 1rem;
-  line-height: 1.5;
-  margin-bottom: 1.125rem;
-}
-
-.compact-form__row {
-  position: relative;
-}
-
-.compact-form__article-doi {
-  background-color: rgb(255, 255, 255);
-  border: 1px solid rgb(224, 224, 224);
-  border-right: none;
-  border-radius: 3px;
-  display: block;
-  font-size: 1rem;
-  line-height: 1.5;
-  padding: .6875rem 3.4375rem .6875rem .75rem;
-  width: 100%;
-}
-
-.compact-form__submit {
-  background: url("forward-arrow.svg"), linear-gradient(transparent, transparent);
-  background-color: rgb(2, 136, 209);
-  background-position: 50% 50%;
-  background-repeat: no-repeat;
-  border: none;
-  border-radius: 0 3px 3px 0;
-  color: rgb(255, 255, 255);
-  cursor: pointer;
-  height: 3rem;
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 2.9375rem;
 }
 
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
