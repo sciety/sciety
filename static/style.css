@@ -28,12 +28,9 @@ ul.ui {
   padding: 0;
 }
 
-.ui.header {
-  width: 100%;
-}
-
 legend.ui.header {
   display: block;
+  width: 100%;
 }
 
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
@@ -141,23 +138,6 @@ hr {
 }
 
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-
-.add-review__form {
-  font-family: "Noto Sans", Arial, Helvetica, sans-serif;
-  background-color: #ededed;
-  padding: 16px;
-}
-
-.add-review__form > h2 {
-  font-weight: 300;
-  font-size: 1.25rem;
-  text-align: center;
-}
-
-.add-review__form p {
-  font-size: 90%;
-  font-weight: 100;
-}
 
 .add-review-form select {
   margin-top: 12px;

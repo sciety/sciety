@@ -17,8 +17,10 @@ export default async (
   const renderArticleAbstract = createRenderArticleAbstract(abstractAdapter);
   const renderReviewSummaries = createRenderReviewSummaries(reviewsAdapter);
   const renderAddReviewForm = (doi: Doi): string => `
-    <div class="add-review__form">
-      <h2 class="ui header"> Add a review<br/>to this article </h2>
+    <h2 class="ui top attached header">
+      Add a review to this article
+    </h2>
+    <div class="ui bottom attached segment">
       ${addReviewForm(doi, editorialCommunities)}
     </div>
   `;
