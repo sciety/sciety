@@ -18,7 +18,9 @@ describe('render-search-result component', (): void => {
         authorString: '1, 2, 3',
       });
 
+      expect(rendered).toStrictEqual(expect.stringContaining('10.1101/833392'));
       expect(rendered).toStrictEqual(expect.stringContaining('37'));
+      expect(rendered).toStrictEqual(expect.stringContaining('1, 2, 3'));
     });
   });
 

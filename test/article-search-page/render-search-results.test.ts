@@ -23,9 +23,8 @@ describe('render-search-results component', (): void => {
       const renderSearchResult = createRenderSearchResult(getJson, getReviewCount);
       const rendered = await createRenderSearchResults(getJson, renderSearchResult)('10.1101/833392');
 
-      expect(rendered).toStrictEqual(expect.stringContaining('10.1101/833392'));
       expect(rendered).toStrictEqual(expect.stringContaining('5 search results'));
-      expect(rendered).toStrictEqual(expect.stringContaining('1, 2, 3'));
+      expect(rendered).toStrictEqual(expect.stringContaining('<ul'));
     });
   });
 
@@ -43,7 +42,7 @@ describe('render-search-results component', (): void => {
       const rendered = await createRenderSearchResults(getJson, renderSearchResult)('10.1101/833392');
 
       expect(rendered).toStrictEqual(expect.stringContaining('0 search results'));
-      expect(rendered).toStrictEqual(expect.not.stringContaining('<ul>'));
+      expect(rendered).toStrictEqual(expect.not.stringContaining('<ul'));
     });
   });
 });
