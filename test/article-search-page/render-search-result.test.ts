@@ -1,5 +1,7 @@
 import createRenderSearchResult, { GetJson } from '../../src/article-search-page/render-search-result';
 
+const fetchReviewReferences = (): Array<unknown> => [];
+
 describe('render-search-result component', (): void => {
   describe('when Disqus returns a valid response', (): void => {
     it('displays the number of comments', async (): Promise<void> => {
@@ -10,7 +12,7 @@ describe('render-search-result component', (): void => {
           }],
         }
       );
-      const rendered = await createRenderSearchResult(getJson)({
+      const rendered = await createRenderSearchResult(getJson, fetchReviewReferences)({
         doi: '10.1101/833392',
         title: 'the title',
         authorString: '1, 2, 3',
@@ -23,7 +25,7 @@ describe('render-search-result component', (): void => {
   describe('when Disqus returns an invalid response', (): void => {
     it('doesn\'t display a count of the comments', async (): Promise<void> => {
       const getJson: GetJson = async () => ({});
-      const rendered = await createRenderSearchResult(getJson)({
+      const rendered = await createRenderSearchResult(getJson, fetchReviewReferences)({
         doi: '10.1101/833392',
         title: 'the title',
         authorString: '1, 2, 3',

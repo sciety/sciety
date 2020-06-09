@@ -1,5 +1,7 @@
 import createRenderSearchResults, { GetJson } from '../../src/article-search-page/render-search-results';
 
+const fetchReviewReferences = (): Array<unknown> => [];
+
 describe('render-search-results component', (): void => {
   describe('when there are results', (): void => {
     it('displays the number of results and a list', async (): Promise<void> => {
@@ -17,7 +19,7 @@ describe('render-search-results component', (): void => {
           },
         }
       );
-      const rendered = await createRenderSearchResults(getJson)('10.1101/833392');
+      const rendered = await createRenderSearchResults(getJson, fetchReviewReferences)('10.1101/833392');
 
       expect(rendered).toStrictEqual(expect.stringContaining('10.1101/833392'));
       expect(rendered).toStrictEqual(expect.stringContaining('5 search results'));
@@ -35,7 +37,7 @@ describe('render-search-results component', (): void => {
           },
         }
       );
-      const rendered = await createRenderSearchResults(getJson)('10.1101/833392');
+      const rendered = await createRenderSearchResults(getJson, fetchReviewReferences)('10.1101/833392');
 
       expect(rendered).toStrictEqual(expect.stringContaining('0 search results'));
       expect(rendered).toStrictEqual(expect.not.stringContaining('<ul>'));

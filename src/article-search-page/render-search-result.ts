@@ -1,3 +1,4 @@
+import Doi from '../data/doi';
 import createLogger from '../logger';
 
 export type GetJson = (uri: string) => Promise<object>;
@@ -35,11 +36,15 @@ const createFetchDisqusPostCount = (getJson: GetJson): FetchDisqusPostCount => (
 
 type RenderSearchResult = (result: SearchResult) => Promise<string>;
 
-export default (getJson: GetJson): RenderSearchResult => {
+export default (
+  getJson: GetJson,
+  fetchReviewReferences: (articleVersionDoi: Doi) => Array<unknown>,
+): RenderSearchResult => {
   const fetchDisqusPostCount = createFetchDisqusPostCount(getJson);
 
   return async (result) => {
     const uri = resolveToCanonicalUri(result.doi);
+    const reviewCount = fetchReviewReferences(new Doi(result.doi)).length;
     log(`Resolved URI = ${uri}`);
 
     return `
@@ -51,7 +56,7 @@ export default (getJson: GetJson): RenderSearchResult => {
         <div class="extra">
           <div class="ui label">
             Reviews
-            <span class="detail">n/a</span>
+            <span class="detail">${reviewCount}</span>
           </div>
           <div class="ui label">
             Comments
