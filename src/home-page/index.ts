@@ -1,7 +1,7 @@
 import { Middleware } from '@koa/router';
 import createRenderEditorialCommunities from './render-editorial-communities';
 import createRenderFindArticle from './render-find-article';
-import renderHomePage from './render-home-page';
+import createRenderPage from './render-home-page';
 import createMostRecentReviews, { ReviewReference } from './render-most-recent-reviews';
 import createRenderPageHeader from './render-page-header';
 import { Adapters } from '../types/adapters';
@@ -13,10 +13,14 @@ export default (adapters: Adapters): Middleware => {
   const editorialCommunitiesAdapter = async (): Promise<Array<{ id: string; name: string }>> => (
     adapters.editorialCommunities.all()
   );
-  return renderHomePage(
+  const renderPage = createRenderPage(
     createRenderPageHeader(),
     createMostRecentReviews(reviewReferenceAdapter, adapters.fetchArticle, editorialCommunitiesAdapter),
     createRenderEditorialCommunities(editorialCommunitiesAdapter),
     createRenderFindArticle(),
   );
+  return async (ctx, next) => {
+    ctx.response.body = await renderPage();
+    await next();
+  };
 };
