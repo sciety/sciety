@@ -50,6 +50,10 @@ export default (getJson: GetJson): RenderSearchResult => {
         </div>
         <div class="extra">
           <div class="ui label">
+            Reviews
+            <span class="detail">n/a</span>
+          </div>
+          <div class="ui label">
             Comments
             <span class="detail">${await fetchDisqusPostCount(uri)}</span>
           </div>
