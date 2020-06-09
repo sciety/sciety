@@ -8,7 +8,8 @@ export default (
   getJson: GetJson,
   fetchReviewReferences: (articleVersionDoi: Doi) => Array<unknown>,
 ) => async (query: string): Promise<string> => {
-  const renderSearchResult = createRenderSearchResult(getJson, fetchReviewReferences);
+  const getReviewCount = (articleVersionDoi: Doi): number => fetchReviewReferences(articleVersionDoi).length;
+  const renderSearchResult = createRenderSearchResult(getJson, getReviewCount);
   const renderSearchResults = createRenderSearchResults(getJson, renderSearchResult);
   return `
     <h1 class="header">Search results</h1>

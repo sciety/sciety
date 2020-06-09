@@ -38,13 +38,13 @@ export type RenderSearchResult = (result: SearchResult) => Promise<string>;
 
 export default (
   getJson: GetJson,
-  fetchReviewReferences: (articleVersionDoi: Doi) => Array<unknown>,
+  getReviewCount: (articleVersionDoi: Doi) => number,
 ): RenderSearchResult => {
   const fetchDisqusPostCount = createFetchDisqusPostCount(getJson);
 
   return async (result) => {
     const uri = resolveToCanonicalUri(result.doi);
-    const reviewCount = fetchReviewReferences(new Doi(result.doi)).length;
+    const reviewCount = getReviewCount(new Doi(result.doi));
     log(`Resolved URI = ${uri}`);
 
     return `
