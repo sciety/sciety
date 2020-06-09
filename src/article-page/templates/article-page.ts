@@ -1,4 +1,5 @@
 import addReviewForm from './add-review-form';
+import Doi from '../../data/doi';
 import EditorialCommunityRepository from '../../types/editorial-community-repository';
 import createRenderArticleAbstract, { GetArticleAbstract } from '../render-article-abstract';
 import createRenderPageHeader, { GetArticleDetails } from '../render-page-header';
@@ -15,10 +16,10 @@ export default async (
   const renderPageHeader = createRenderPageHeader(getArticleDetailsAdapter);
   const renderArticleAbstract = createRenderArticleAbstract(abstractAdapter);
   const renderReviewSummaries = createRenderReviewSummaries(reviewsAdapter);
-  const renderAddReviewForm = (): string => `
+  const renderAddReviewForm = (doi: Doi): string => `
     <div class="add-review__form">
       <h2 class="ui header"> Add a review<br/>to this article </h2>
-      ${addReviewForm(article.doi, editorialCommunities)}
+      ${addReviewForm(doi, editorialCommunities)}
     </div>
   `;
   return `<article>
@@ -30,7 +31,7 @@ export default async (
       </section>
     </div>
     <aside>
-      ${renderAddReviewForm()}
+      ${renderAddReviewForm(article.doi)}
     </aside>
   </article>`;
 };
