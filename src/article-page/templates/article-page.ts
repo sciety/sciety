@@ -20,9 +20,12 @@ export default async (
     <h2 class="ui top attached header">
       Add a review to this article
     </h2>
-    <div class="ui bottom attached segment">
+    <div class="ui attached segment">
       ${addReviewForm(doi, editorialCommunities)}
     </div>
+    <p class="ui bottom attached warning message">
+      This platform is for demonstration purposes only and data entered may not persist.
+    </p>
   `;
   return `<article class="ui aligned stackable grid container">
     ${await renderPageHeader(article.doi)}

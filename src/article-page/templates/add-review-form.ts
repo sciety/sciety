@@ -23,8 +23,5 @@ export default (doi: Doi, editorialCommunities: EditorialCommunityRepository): s
     <button type="submit" class="add-review-form__submit">
       Add review
     </button>
-    <p class="warning">
-      This platform is for demonstration purposes only and data entered may not persist.
-    </p>
   </form>`;
 };
