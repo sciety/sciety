@@ -245,14 +245,6 @@ main > article > aside {
   line-height: calc(1.5 / 1.25);
 }
 
-@media (min-width: 45.625em) {
-  .content-lists {
-    display: grid;
-    grid-gap: 1.5rem;
-    grid-template-columns: minmax(300px, 2fr) minmax(300px, 1fr)
-  }
-}
-
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 
 .add-review__form {

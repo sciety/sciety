@@ -11,9 +11,15 @@ export default (
       <div class="home-page">
         ${await renderPageHeader()}
         ${await renderFindArticle()}
-        <div class="content-lists">
-          ${await renderMostRecentReviews(5)}
-          ${await renderEditorialCommunities()}
+        <div class="ui aligned stackable grid container">
+          <div class="row">
+            <section class="eight wide column">
+              ${await renderMostRecentReviews(5)}
+            </section>
+            <section class="six wide right floated column">
+              ${await renderEditorialCommunities()}
+             </section>
+          </div>
         </div>
       </div>
     `;
