@@ -16,12 +16,6 @@ ul.ui {
   white-space: nowrap;
 }
 
-h1 img {
-  max-width: 10rem;
-  height: auto;
-  max-height: 5rem;
-}
-
 article, aside, header, main, nav, ol, p, section, ul {
   margin-top: 0;
   margin-bottom: 1.125rem;
