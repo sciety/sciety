@@ -3,7 +3,7 @@ import createLogger from '../logger';
 
 export type GetJson = (uri: string) => Promise<object>;
 
-interface SearchResult {
+export interface SearchResult {
   doi: string;
   title: string;
   authorString: string;

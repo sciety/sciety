@@ -1,4 +1,4 @@
-import { RenderSearchResult } from './render-search-result';
+import { RenderSearchResult, SearchResult } from './render-search-result';
 import createLogger from '../logger';
 import templateListItems from '../templates/list-items';
 
@@ -24,10 +24,20 @@ export default (
   renderSearchResult: RenderSearchResult,
 ): RenderSearchResults => (
   async (query) => {
-    const uri = `https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=${query}%20PUBLISHER%3A%22bioRxiv%22&format=json&pageSize=10`;
-    const data = await getJson(uri) as EuropePmcQueryResponse;
-    log(data);
-    const articles = await Promise.all(data.resultList.result.map(renderSearchResult));
+    const fetchEuropePmcSearchResults = async (europePmcQuery: string): Promise<{
+      result: Array<SearchResult>; hitCount: number;
+    }> => {
+      const uri = 'https://www.ebi.ac.uk/europepmc/webservices/rest/search'
+        + `?query=${europePmcQuery}%20PUBLISHER%3A%22bioRxiv%22&format=json&pageSize=10`;
+      const data = await getJson(uri) as EuropePmcQueryResponse;
+      log(data);
+      return {
+        result: data.resultList.result,
+        hitCount: data.hitCount,
+      };
+    };
+    const europePmcSearchResults = await fetchEuropePmcSearchResults(query);
+    const articles = await Promise.all(europePmcSearchResults.result.map(renderSearchResult));
     let searchResultsList = '';
     if (articles.length) {
       searchResultsList = `
@@ -38,7 +48,7 @@ export default (
     }
 
     return `
-      <p>${data.hitCount} search results.</p>
+      <p>${europePmcSearchResults.hitCount} search results.</p>
       ${searchResultsList}
     `;
   }
