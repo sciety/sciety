@@ -88,11 +88,3 @@ Allow commas on the end of each .ui.list .item by adding .comma.separated
 .ui[class*="comma separated"].list > .item:last-child:after {
   content: '.';
 }
-
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Legacy styles
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-
-.editorial-community-reviewed-articles {
-  margin-top: 3rem;
-}

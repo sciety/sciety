@@ -20,7 +20,7 @@ export default (header: Header): string => {
 
   </header>
 
-  <section>
+  <section class="ui basic vertical segment">
 
     ${header.description}
 

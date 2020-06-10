@@ -13,7 +13,7 @@ const templateTeaser = (article: ReviewedArticle): string => (`
 `);
 
 export default (reviewedArticles: Array<ReviewedArticle>): string => (`
-  <section class="editorial-community-reviewed-articles">
+  <section class="ui basic vertical segment">
 
     <h2 class="ui header">
       Recently reviewed articles
