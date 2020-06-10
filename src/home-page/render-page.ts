@@ -17,9 +17,17 @@ export default (
   const renderEditorialCommunities = createRenderEditorialCommunities(editorialCommunities);
   const renderFindArticle = createRenderFindArticle();
   return `
-    ${await renderPageHeader()}
-    ${await renderFindArticle()}
-    <div class="ui aligned stackable grid container">
+    <div class="ui aligned stackable grid">
+      <div class="row">
+        <div class="column">
+          ${await renderPageHeader()}
+        </div>
+      </div>
+      <div class="row">
+        <div class="column">
+          ${await renderFindArticle()}
+        </div>
+      </div>
       <div class="row">
         <section class="eight wide column">
           ${await renderMostRecentReviews(5)}

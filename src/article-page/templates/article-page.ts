@@ -27,7 +27,7 @@ export default async (
       This platform is for demonstration purposes only and data entered may not persist.
     </p>
   `;
-  return `<article class="ui aligned stackable grid container">
+  return `<article class="ui aligned stackable grid">
     <div class="row">
       <div class="column">
         ${await renderPageHeader(article.doi)}
