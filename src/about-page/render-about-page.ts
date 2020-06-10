@@ -3,7 +3,7 @@ import { Context, Middleware, Next } from 'koa';
 export default (): Middleware => (
   async ({ response, state }: Context, next: Next): Promise<void> => {
     response.body = `
-<header class="content-header">
+<header class="ui padded basic container segment">
 
 <h1 class="ui header">
   About the Untitled Publish&ndash;Review&ndash;Curate Platform
