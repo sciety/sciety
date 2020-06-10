@@ -2,7 +2,7 @@ type RenderPageHeader = () => Promise<string>;
 
 export default (): RenderPageHeader => (
   async () => (`
-    <header class="ui basic padded center aligned container segment">
+    <header class="ui basic padded center aligned vertical segment">
 
       <h1 class="ui header">
         Untitled Publish Review Curate Platform

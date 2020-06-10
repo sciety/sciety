@@ -16,7 +16,7 @@ export default (getArticleDetails: GetArticleDetails): RenderPageHeader => (
   async (doi) => {
     const articleDetails = await getArticleDetails(doi);
     return `
-      <header>
+      <header class="ui basic padded vertical segment">
         <h1 class="ui header">${articleDetails.title}</h1>
 
         <ol aria-label="Authors of this article" class="ui comma separated horizontal list">

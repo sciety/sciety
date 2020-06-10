@@ -28,7 +28,12 @@ export default async (
     </p>
   `;
   return `<article class="ui aligned stackable grid container">
-    ${await renderPageHeader(article.doi)}
+    <div class="row">
+      <div class="column">
+        ${await renderPageHeader(article.doi)}
+      </div>
+    </div>
+
     <div class="row">
       <section class="twelve wide column">
         ${await renderArticleAbstract(article.doi)}

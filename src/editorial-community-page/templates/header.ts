@@ -12,7 +12,7 @@ export default (header: Header): string => {
     h1 = header.name;
   }
   return `
-  <header class="ui padded basic container segment">
+  <header class="ui basic padded vertical segment">
 
     <h1 class="ui header">
       ${h1}
