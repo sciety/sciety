@@ -1,4 +1,4 @@
-import { SearchResult } from './render-search-result';
+import { FindArticles } from './render-search-results';
 import createLogger from '../logger';
 
 export type GetJson = (uri: string) => Promise<object>;
@@ -16,12 +16,7 @@ interface EuropePmcQueryResponse {
 
 const log = createLogger('article-search-page:render-search-results');
 
-type GetSearchResults = (query: string) => Promise<{
-  items: Array<SearchResult>;
-  total: number;
-}>;
-
-export default (getJson: GetJson): GetSearchResults => (
+export default (getJson: GetJson): FindArticles => (
   async (query) => {
     const uri = 'https://www.ebi.ac.uk/europepmc/webservices/rest/search'
       + `?query=${query}%20PUBLISHER%3A%22bioRxiv%22&format=json&pageSize=10`;
