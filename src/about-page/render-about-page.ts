@@ -9,9 +9,9 @@ export default (): Middleware => (
   About the Untitled Publish&ndash;Review&ndash;Curate Platform
 </h1>
 </header>
-<div class="content">
+<section class="ui basic vertical segment">
   ${state.html}
-</div>`;
+</section>`;
     await next();
   }
 );
