@@ -6,6 +6,16 @@ ul.ui {
   padding-left: 0;
 }
 
+ol.ui.list:not(.bulleted):not(.ordered),
+ul.ui.list:not(.bulleted):not(.ordered) {
+  margin-left: 0;
+}
+
+ol.ui.list:not(.bulleted):not(.ordered) li:before,
+ul.ui.list:not(.bulleted):not(.ordered) li:before {
+  content: '';
+}
+
 ol.ui.horizontal.list li.item {
   margin-left: 0;
 }

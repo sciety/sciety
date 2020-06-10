@@ -27,11 +27,11 @@ export default (getArticleDetails: GetArticleDetails): RenderPageHeader => (
   )}
         </ol>
 
-        <ul aria-label="Publication details" class="content-header__details">
-          <li>
-            DOI: <a href="https://doi.org/${doi.value}">${doi.value}</a>
+        <ul aria-label="Publication details" class="ui list">
+          <li class="item">
+            DOI <a href="https://doi.org/${doi.value}">${doi.value}</a>
           </li>
-          <li>
+          <li class="item">
             Posted ${templateDate(articleDetails.publicationDate)}
           </li>
         </ul>
