@@ -1,4 +1,4 @@
-import createRenderSearchResult from './render-search-result';
+import createRenderSearchResult, { createFetchDisqusPostCount } from './render-search-result';
 import createRenderSearchResults from './render-search-results';
 import createSearchEuropePmc from './search-europe-pmc';
 import Doi from '../data/doi';
@@ -9,9 +9,10 @@ export default (
   getJson: GetJson,
   fetchReviewReferences: (articleVersionDoi: Doi) => Array<unknown>,
 ) => async (query: string): Promise<string> => {
+  const getCommentCount = createFetchDisqusPostCount(getJson);
   const getReviewCount = (articleVersionDoi: Doi): number => fetchReviewReferences(articleVersionDoi).length;
   const findArticles = createSearchEuropePmc(getJson);
-  const renderSearchResult = createRenderSearchResult(getJson, getReviewCount);
+  const renderSearchResult = createRenderSearchResult(getCommentCount, getReviewCount);
   const renderSearchResults = createRenderSearchResults(findArticles, renderSearchResult);
   return `
     <header class="ui basic padded vertical segment">

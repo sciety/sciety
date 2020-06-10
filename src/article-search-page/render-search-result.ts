@@ -13,13 +13,13 @@ const log = createLogger('article-search-page:render-search-result');
 
 const resolveToCanonicalUri = (doi: Doi): string => `https://www.biorxiv.org/content/${doi.value}v1`;
 
-type GetCommentCount = (doi: Doi) => Promise<number>;
+export type GetCommentCount = (doi: Doi) => Promise<number>;
 
 interface DisqusData {
   response: Array< {posts: number} >;
 }
 
-const createFetchDisqusPostCount = (getJson: GetJson): GetCommentCount => (
+export const createFetchDisqusPostCount = (getJson: GetJson): GetCommentCount => (
   async (doi) => {
     const uri = resolveToCanonicalUri(doi);
     log(`Resolved URI = ${uri}`);
@@ -39,12 +39,10 @@ const createFetchDisqusPostCount = (getJson: GetJson): GetCommentCount => (
 export type RenderSearchResult = (result: SearchResult) => Promise<string>;
 
 export default (
-  getJson: GetJson,
+  getCommentCount: GetCommentCount,
   getReviewCount: (articleVersionDoi: Doi) => number,
-): RenderSearchResult => {
-  const getCommentCount = createFetchDisqusPostCount(getJson);
-
-  return async (result) => {
+): RenderSearchResult => (
+  async (result) => {
     const doi = new Doi(result.doi);
     const reviewCount = getReviewCount(doi);
     const commentCount = await getCommentCount(doi).catch(() => 'n/a');
@@ -67,5 +65,5 @@ export default (
         </div>
       </div>
     `;
-  };
-};
+  }
+);
