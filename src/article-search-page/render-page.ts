@@ -14,7 +14,12 @@ export default (
   const renderSearchResult = createRenderSearchResult(getJson, getReviewCount);
   const renderSearchResults = createRenderSearchResults(findArticles, renderSearchResult);
   return `
-    <h1 class="header">Search results</h1>
-    ${await renderSearchResults(query)}
+    <header class="ui basic padded vertical segment">
+      <h1 class="ui header">Search results</h1>
+    </header>
+
+    <section class="ui basic vertical segment">
+      ${await renderSearchResults(query)}
+    </section>
   `;
 };
