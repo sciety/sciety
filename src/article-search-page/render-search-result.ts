@@ -13,13 +13,13 @@ const log = createLogger('article-search-page:render-search-result');
 
 const resolveToCanonicalUri = (doi: Doi): string => `https://www.biorxiv.org/content/${doi.value}v1`;
 
-type FetchDisqusPostCount = (doi: Doi) => Promise<string>;
+type GetCommentCount = (doi: Doi) => Promise<number>;
 
 interface DisqusData {
   response: Array< {posts: number} >;
 }
 
-const createFetchDisqusPostCount = (getJson: GetJson): FetchDisqusPostCount => (
+const createFetchDisqusPostCount = (getJson: GetJson): GetCommentCount => (
   async (doi) => {
     const uri = resolveToCanonicalUri(doi);
     log(`Resolved URI = ${uri}`);
@@ -27,11 +27,11 @@ const createFetchDisqusPostCount = (getJson: GetJson): FetchDisqusPostCount => (
       const disqusData = await getJson(`https://disqus.com/api/3.0/threads/list.json?api_key=${process.env.DISQUS_API_KEY}&forum=biorxivstage&thread=link:${uri}`) as DisqusData;
       log(`Disqus response: ${JSON.stringify(disqusData)}`);
 
-      return `${disqusData.response[0].posts}`;
+      return disqusData.response[0].posts;
     } catch (e) {
       log(`Disqus API error: ${e.message}`);
 
-      return 'n/a';
+      throw e;
     }
   }
 );
@@ -42,11 +42,12 @@ export default (
   getJson: GetJson,
   getReviewCount: (articleVersionDoi: Doi) => number,
 ): RenderSearchResult => {
-  const fetchDisqusPostCount = createFetchDisqusPostCount(getJson);
+  const getCommentCount = createFetchDisqusPostCount(getJson);
 
   return async (result) => {
     const doi = new Doi(result.doi);
     const reviewCount = getReviewCount(doi);
+    const commentCount = await getCommentCount(doi).catch(() => 'n/a');
 
     return `
       <div class="content">
@@ -61,7 +62,7 @@ export default (
           </div>
           <div class="ui label">
             Comments
-            <span class="detail">${await fetchDisqusPostCount(doi)}</span>
+            <span class="detail">${commentCount}</span>
           </div>
         </div>
       </div>
