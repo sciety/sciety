@@ -64,23 +64,6 @@ hr {
   margin: 2.25rem 0;
 }
 
-.content-header {
-  font-family: "Noto Sans", Arial, Helvetica, sans-serif;
-  border-bottom: 1px solid #e0e0e0;
-  margin-bottom: 2.9375rem;
-  padding-top: 6rem;
-  padding-bottom: 3rem;
-}
-
-.content-header__details {
-  color: rgb(136, 136, 136);
-  font-size: .875rem;
-  line-height: 1.71429;
-  list-style-type: none;
-  margin-bottom: 1.5rem;
-  padding-left: 0;
-}
-
 .abstract__link {
   color: rgb(2, 136, 209);
   font-family: "Noto Sans", Arial, Helvetica, sans-serif;
