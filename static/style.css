@@ -52,20 +52,6 @@ legend.ui.header {
 
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 
-article, aside, main, ol, p, section, ul {
-  margin-top: 0;
-  margin-bottom: 1.125rem;
-}
-
-hr {
-  border: 0;
-  border-top: 1px solid #e0e0e0;
-  height: 0;
-  margin: 2.25rem 0;
-}
-
-/*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-
 .editorial-community-reviewed-articles {
   margin-top: 3rem;
 }
