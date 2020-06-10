@@ -1,7 +1,7 @@
 import createFetchDisqusPostCount, { GetJson } from '../../src/article-search-page/fetch-disqus-post-count';
 import Doi from '../../src/data/doi';
 
-const doi = new Doi('10.1101/833392'); 
+const doi = new Doi('10.1101/833392');
 
 describe('fetch-disqus-post-count component', (): void => {
   describe('when Disqus returns a valid response', (): void => {
