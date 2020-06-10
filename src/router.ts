@@ -5,6 +5,7 @@ import createArticlePage from './article-page';
 import createArticleSearchPage from './article-search-page';
 import createEditorialCommunityPage from './editorial-community-page';
 import ping from './handlers/ping';
+import robots from './handlers/robots';
 import createHomePage from './home-page';
 import addPageTemplate from './middleware/add-page-template';
 import { Adapters } from './types/adapters';
@@ -37,6 +38,9 @@ export default (adapters: Adapters): Router => {
 
   router.post('/reviews',
     createAddArticleResponse(adapters));
+
+  router.get('/robots.txt',
+    robots());
 
   return router;
 };
