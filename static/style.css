@@ -16,21 +16,22 @@ ul.ui.list:not(.bulleted):not(.ordered) li:before {
   content: '';
 }
 
-ol.ui.horizontal.list li.item {
+.ui[class*="comma separated"].horizontal.list:not(.bulleted):not(.ordered) > .item {
   margin-left: 0;
 }
 
-ol.ui.horizontal.list li.item::before {
-  content: '';
+.ui[class*="comma separated"].horizontal.list:not(.bulleted):not(.ordered) > .item:before {
   margin: 0;
 }
 
-ol.ui.horizontal.list li.item .content::after {
+.ui[class*="comma separated"].list > .item:after {
   content: ',\0a0';
+  display: inline;
+  visibility: inherit;
 }
 
-ol.ui.horizontal.list li.item:last-child .content::after {
-  content: '';
+.ui[class*="comma separated"].list > .item:last-child:after {
+  content: '.';
 }
 
 @supports (font-variant-position: sub) {

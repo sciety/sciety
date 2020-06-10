@@ -19,12 +19,8 @@ export default (getArticleDetails: GetArticleDetails): RenderPageHeader => (
       <header>
         <h1 class="ui header">${articleDetails.title}</h1>
 
-        <ol aria-label="Authors of this article" class="ui horizontal list">
-          ${templateListItems(
-    articleDetails.authors.map((author: string) => (`
-              <div class="content">${author}</div>
-            `)),
-  )}
+        <ol aria-label="Authors of this article" class="ui comma separated horizontal list">
+          ${templateListItems(articleDetails.authors)}
         </ol>
 
         <ul aria-label="Publication details" class="ui list">
