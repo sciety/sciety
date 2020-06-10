@@ -28,7 +28,7 @@ export default [
   { article: '10.1101/084673', review: '10.7287/peerj.4898v0.1/reviews/2', editorialCommunityIndex: 2, added: new Date('2020-06-06') },
   { article: '10.1101/084673', review: '10.7287/peerj.4898v0.2/reviews/2', editorialCommunityIndex: 2, added: new Date('2020-06-08') },
   { article: '10.1101/084673', review: '10.7287/peerj.4898v0.2/reviews/1', editorialCommunityIndex: 2, added: new Date('2020-06-07') },
-  { article: '10.1101/209320', review: '10.7287/peerj.5208v0.1/reviews/1c', editorialCommunityIndex: 2, added: new Date('2020-06-09') },
+  { article: '10.1101/209320', review: '10.7287/peerj.5208v0.1/reviews/1', editorialCommunityIndex: 2, added: new Date('2020-06-09') },
   { article: '10.1101/209320', review: '10.7287/peerj.5208v0.2/reviews/1', editorialCommunityIndex: 2, added: new Date('2020-06-09') },
   { article: '10.1101/259150', review: '10.7287/peerj.5233v0.2/reviews/1', editorialCommunityIndex: 2, added: new Date('2020-06-08') },
   { article: '10.1101/221861', review: '10.7287/peerj.5243v0.1/reviews/3', editorialCommunityIndex: 2, added: new Date('2020-06-07') },
