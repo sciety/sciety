@@ -1,4 +1,5 @@
-import createRenderSearchResult, { createFetchDisqusPostCount } from './render-search-result';
+import createFetchDisqusPostCount from './fetch-disqus-post-count';
+import createRenderSearchResult from './render-search-result';
 import createRenderSearchResults from './render-search-results';
 import createSearchEuropePmc from './search-europe-pmc';
 import Doi from '../data/doi';
