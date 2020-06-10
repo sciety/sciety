@@ -1,5 +1,43 @@
 @import "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css";
 
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Styles that override Semantic UI
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+
+/*
+Use real subscript and superscript characters where possible
+*/
+
+@supports (font-variant-position: sub) {
+  sub {
+    font-size: inherit;
+    font-variant-position: sub;
+    position: static;
+  }
+}
+
+@supports (font-variant-position: super) {
+  sup {
+    font-size: inherit;
+    font-variant-position: super;
+    position: static;
+  }
+}
+
+/*
+Reset <fieldset> in a .ui.form
+*/
+
+.ui.form fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+/*
+Make sure that .ui.list that use <ol> or <ul> don't have bullets or numbers without using .bulleted or .ordered
+*/
+
 ol.ui,
 ul.ui {
   list-style-type: none;
@@ -15,6 +53,23 @@ ol.ui.list:not(.bulleted):not(.ordered) li:before,
 ul.ui.list:not(.bulleted):not(.ordered) li:before {
   content: '';
 }
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Styles that supplement Semantic UI
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+
+/*
+Allow a form <legend> to be a .ui.header
+*/
+
+legend.ui.header {
+  display: block;
+  width: 100%;
+}
+
+/*
+Allow commas on the end of each .ui.list .item by adding .comma.separated
+*/
 
 .ui[class*="comma separated"].horizontal.list:not(.bulleted):not(.ordered) > .item {
   margin-left: 0;
@@ -34,34 +89,9 @@ ul.ui.list:not(.bulleted):not(.ordered) li:before {
   content: '.';
 }
 
-@supports (font-variant-position: sub) {
-  sub {
-    font-size: inherit;
-    font-variant-position: sub;
-    position: static;
-  }
-}
-
-@supports (font-variant-position: super) {
-  sup {
-    font-size: inherit;
-    font-variant-position: super;
-    position: static;
-  }
-}
-
-.ui.form fieldset {
-  border: none;
-  margin: 0;
-  padding: 0;
-}
-
-legend.ui.header {
-  display: block;
-  width: 100%;
-}
-
-/*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Legacy styles
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 .editorial-community-reviewed-articles {
   margin-top: 3rem;
