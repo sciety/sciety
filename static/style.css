@@ -5,6 +5,15 @@ Styles that override Semantic UI
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 /*
+Prevent styling of <a> elements that aren't links
+*/
+
+a:not([href]) {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+/*
 Use real subscript and superscript characters where possible
 */
 
