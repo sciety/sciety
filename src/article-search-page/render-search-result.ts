@@ -17,6 +17,15 @@ export default (
   async (result) => {
     const reviewCount = getReviewCount(result.doi);
     const commentCount = await getCommentCount(result.doi).catch(() => 'n/a');
+    let endorsement = '';
+    if (result.doi.value === '10.1101/209320') {
+      endorsement = `
+        <div class="ui label">
+          Endorsed by
+          <span class="detail">PeerJ</span>
+        </div>
+      `;
+    }
 
     return `
       <div class="content">
@@ -33,6 +42,7 @@ export default (
             Comments
             <span class="detail">${commentCount}</span>
           </div>
+          ${endorsement}
         </div>
       </div>
     `;
