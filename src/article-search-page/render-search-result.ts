@@ -12,6 +12,23 @@ export type GetEndorsingEditorialCommunities = (doi: Doi) => Promise<Array<strin
 
 export type RenderSearchResult = (result: SearchResult) => Promise<string>;
 
+const createRenderEndorsements = (
+  getEndorsingEditorialCommunities: GetEndorsingEditorialCommunities,
+) => (
+  async (doi: Doi): Promise<string> => {
+    const endorsingEditorialCommunities = await getEndorsingEditorialCommunities(doi);
+    if (endorsingEditorialCommunities.length) {
+      return `
+        <div class="ui label">
+          Endorsed by
+          <span class="detail">${endorsingEditorialCommunities.join(', ')}</span>
+        </div>
+      `;
+    }
+    return '';
+  }
+)
+
 export default (
   getCommentCount: GetCommentCount,
   getReviewCount: GetReviewCount,
@@ -20,17 +37,7 @@ export default (
   async (result) => {
     const reviewCount = await getReviewCount(result.doi);
     const commentCount = await getCommentCount(result.doi).catch(() => 'n/a');
-    const endorsingEditorialCommunities = await getEndorsingEditorialCommunities(result.doi);
-
-    let endorsement = '';
-    if (endorsingEditorialCommunities.length) {
-      endorsement = `
-        <div class="ui label">
-          Endorsed by
-          <span class="detail">${endorsingEditorialCommunities.join(', ')}</span>
-        </div>
-      `;
-    }
+    const renderEndorsements = createRenderEndorsements(getEndorsingEditorialCommunities);
 
     return `
       <div class="content">
@@ -47,7 +54,7 @@ export default (
             Comments
             <span class="detail">${commentCount}</span>
           </div>
-          ${endorsement}
+          ${await renderEndorsements(result.doi)}
         </div>
       </div>
     `;
