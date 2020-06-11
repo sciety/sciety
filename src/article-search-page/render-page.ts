@@ -1,10 +1,14 @@
 import createFetchDisqusPostCount from './fetch-disqus-post-count';
-import createRenderSearchResult from './render-search-result';
+import createRenderSearchResult, { GetEndorsingEditorialCommunities } from './render-search-result';
 import createRenderSearchResults from './render-search-results';
 import createSearchEuropePmc from './search-europe-pmc';
 import Doi from '../data/doi';
 
 export type GetJson = (uri: string) => Promise<object>;
+
+const getHardCodedEndorsingEditorialCommunities: GetEndorsingEditorialCommunities = async (doi) => (
+  doi.value === '10.1101/209320' ? ['PeerJ'] : []
+);
 
 export default (
   getJson: GetJson,
@@ -13,7 +17,11 @@ export default (
   const getCommentCount = createFetchDisqusPostCount(getJson);
   const getReviewCount = (articleVersionDoi: Doi): number => fetchReviewReferences(articleVersionDoi).length;
   const findArticles = createSearchEuropePmc(getJson);
-  const renderSearchResult = createRenderSearchResult(getCommentCount, getReviewCount);
+  const renderSearchResult = createRenderSearchResult(
+    getCommentCount,
+    getReviewCount,
+    getHardCodedEndorsingEditorialCommunities,
+  );
   const renderSearchResults = createRenderSearchResults(findArticles, renderSearchResult);
   return `
     <header class="ui basic padded vertical segment">

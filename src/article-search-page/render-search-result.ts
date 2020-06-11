@@ -12,18 +12,15 @@ export type RenderSearchResult = (result: SearchResult) => Promise<string>;
 
 export type GetEndorsingEditorialCommunities = (doi: Doi) => Promise<Array<string>>;
 
-const getHardCodedEndorsingEditorialCommunities: GetEndorsingEditorialCommunities = async (doi) => (
-  doi.value === '10.1101/209320' ? ['PeerJ'] : []
-);
-
 export default (
   getCommentCount: GetCommentCount,
   getReviewCount: (articleVersionDoi: Doi) => number,
+  getEndorsingEditorialCommunities: GetEndorsingEditorialCommunities,
 ): RenderSearchResult => (
   async (result) => {
     const reviewCount = getReviewCount(result.doi);
     const commentCount = await getCommentCount(result.doi).catch(() => 'n/a');
-    const endorsingEditorialCommunities = await getHardCodedEndorsingEditorialCommunities(result.doi);
+    const endorsingEditorialCommunities = await getEndorsingEditorialCommunities(result.doi);
 
     let endorsement = '';
     if (endorsingEditorialCommunities.length) {
