@@ -10,6 +10,12 @@ export type GetCommentCount = (doi: Doi) => Promise<number>;
 
 export type RenderSearchResult = (result: SearchResult) => Promise<string>;
 
+export type GetEndorsingEditorialCommunities = (doi: Doi) => Promise<Array<string>>;
+
+const getHardCodedEndorsingEditorialCommunities: GetEndorsingEditorialCommunities = async (doi) => (
+  doi.value === '10.1101/209320' ? ['PeerJ'] : []
+);
+
 export default (
   getCommentCount: GetCommentCount,
   getReviewCount: (articleVersionDoi: Doi) => number,
@@ -17,12 +23,14 @@ export default (
   async (result) => {
     const reviewCount = getReviewCount(result.doi);
     const commentCount = await getCommentCount(result.doi).catch(() => 'n/a');
+    const endorsingEditorialCommunities = await getHardCodedEndorsingEditorialCommunities(result.doi);
+
     let endorsement = '';
-    if (result.doi.value === '10.1101/209320') {
+    if (endorsingEditorialCommunities.length) {
       endorsement = `
         <div class="ui label">
           Endorsed by
-          <span class="detail">PeerJ</span>
+          <span class="detail">${endorsingEditorialCommunities.join(', ')}</span>
         </div>
       `;
     }
