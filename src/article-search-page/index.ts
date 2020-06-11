@@ -6,6 +6,7 @@ export default (adapters: Adapters): Middleware => {
   const renderPage = createRenderPage(
     adapters.getJson,
     adapters.reviewReferenceRepository.findReviewsForArticleVersionDoi,
+    adapters.editorialCommunities.lookup,
   );
   return async (ctx, next) => {
     ctx.response.body = await renderPage(ctx.request.query.query);

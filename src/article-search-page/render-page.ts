@@ -9,19 +9,27 @@ import Doi from '../data/doi';
 
 export type GetJson = (uri: string) => Promise<object>;
 
-const createGetHardCodedEndorsingEditorialCommunities = (): GetEndorsingEditorialCommunities => (
+type GetNameForEditorialCommunity = (id: string) => string;
+
+const createGetHardCodedEndorsingEditorialCommunities = (
+  getNameForEditorialCommunity: GetNameForEditorialCommunity,
+): GetEndorsingEditorialCommunities => (
   async (doi) => (
-    doi.value === '10.1101/209320' ? ['PeerJ'] : []
+    doi.value === '10.1101/209320' ? [await getNameForEditorialCommunity('53ed5364-a016-11ea-bb37-0242ac130002')] : []
   )
 );
 
 export default (
   getJson: GetJson,
   fetchReviewReferences: (articleVersionDoi: Doi) => Array<unknown>,
+  getEditorialCommunity: (id: string) => { name: string },
 ) => async (query: string): Promise<string> => {
   const getCommentCount = createFetchDisqusPostCount(getJson);
   const getReviewCount: GetReviewCount = async (doi) => fetchReviewReferences(doi).length;
-  const getEndorsingEditorialCommunities = createGetHardCodedEndorsingEditorialCommunities();
+  const getNameForEditorialCommunity: GetNameForEditorialCommunity = (id) => getEditorialCommunity(id).name;
+  const getEndorsingEditorialCommunities = createGetHardCodedEndorsingEditorialCommunities(
+    getNameForEditorialCommunity,
+  );
   const renderSearchResult = createRenderSearchResult(
     getCommentCount,
     getReviewCount,
