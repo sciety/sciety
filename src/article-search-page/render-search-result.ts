@@ -26,6 +26,21 @@ const createRenderReviews = (
   }
 );
 
+const createRenderComments = (
+  getCommentCount: GetCommentCount,
+) => (
+  async (doi: Doi): Promise<string> => {
+    const commentCount = await getCommentCount(doi).catch(() => 'n/a');
+
+    return `
+      <div class="ui label">
+        Comments
+        <span class="detail">${commentCount}</span>
+      </div>
+    `;
+  }
+);
+
 const createRenderEndorsements = (
   getEndorsingEditorialCommunities: GetEndorsingEditorialCommunities,
 ) => (
@@ -50,7 +65,7 @@ export default (
 ): RenderSearchResult => (
   async (result) => {
     const renderReviews = createRenderReviews(getReviewCount);
-    const commentCount = await getCommentCount(result.doi).catch(() => 'n/a');
+    const renderCommentCount = createRenderComments(getCommentCount);
     const renderEndorsements = createRenderEndorsements(getEndorsingEditorialCommunities);
 
     return `
@@ -61,10 +76,7 @@ export default (
         </div>
         <div class="extra">
           ${await renderReviews(result.doi)}
-          <div class="ui label">
-            Comments
-            <span class="detail">${commentCount}</span>
-          </div>
+          ${await renderCommentCount(result.doi)}
           ${await renderEndorsements(result.doi)}
         </div>
       </div>
