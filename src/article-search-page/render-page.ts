@@ -1,23 +1,11 @@
 import createFetchDisqusPostCount from './fetch-disqus-post-count';
-import createRenderSearchResult, {
-  GetEndorsingEditorialCommunities,
-  GetReviewCount,
-} from './render-search-result';
+import createGetHardCodedEndorsingEditorialCommunities, { GetNameForEditorialCommunity } from './hard-coded-endorsing-editorial-communities';
+import createRenderSearchResult, { GetReviewCount } from './render-search-result';
 import createRenderSearchResults from './render-search-results';
 import createSearchEuropePmc from './search-europe-pmc';
 import Doi from '../data/doi';
 
 export type GetJson = (uri: string) => Promise<object>;
-
-type GetNameForEditorialCommunity = (id: string) => string;
-
-const createGetHardCodedEndorsingEditorialCommunities = (
-  getNameForEditorialCommunity: GetNameForEditorialCommunity,
-): GetEndorsingEditorialCommunities => (
-  async (doi) => (
-    doi.value === '10.1101/209320' ? [await getNameForEditorialCommunity('53ed5364-a016-11ea-bb37-0242ac130002')] : []
-  )
-);
 
 export default (
   getJson: GetJson,
