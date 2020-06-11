@@ -1,6 +1,7 @@
 import createRenderSearchResult, {
   GetCommentCount,
   GetEndorsingEditorialCommunities,
+  GetReviewCount,
 } from '../../src/article-search-page/render-search-result';
 import Doi from '../../src/data/doi';
 
@@ -11,7 +12,7 @@ const searchResult = {
 };
 
 const arbitraryCommentCount: GetCommentCount = async () => 0;
-const arbitraryReviewCount = (): number => 0;
+const arbitraryReviewCount: GetReviewCount = async () => 0;
 const arbitraryEndorsingEditorialCommunities: GetEndorsingEditorialCommunities = async () => [];
 
 describe('render-search-result component', (): void => {
@@ -28,7 +29,7 @@ describe('render-search-result component', (): void => {
   });
 
   it('displays the number of reviews', async (): Promise<void> => {
-    const getReviewCount = (): number => 37;
+    const getReviewCount: GetReviewCount = async () => 37;
 
     const rendered = await createRenderSearchResult(
       arbitraryCommentCount,

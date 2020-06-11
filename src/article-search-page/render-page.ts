@@ -1,5 +1,8 @@
 import createFetchDisqusPostCount from './fetch-disqus-post-count';
-import createRenderSearchResult, { GetEndorsingEditorialCommunities } from './render-search-result';
+import createRenderSearchResult, {
+  GetEndorsingEditorialCommunities,
+  GetReviewCount,
+} from './render-search-result';
 import createRenderSearchResults from './render-search-results';
 import createSearchEuropePmc from './search-europe-pmc';
 import Doi from '../data/doi';
@@ -15,7 +18,7 @@ export default (
   fetchReviewReferences: (articleVersionDoi: Doi) => Array<unknown>,
 ) => async (query: string): Promise<string> => {
   const getCommentCount = createFetchDisqusPostCount(getJson);
-  const getReviewCount = (articleVersionDoi: Doi): number => fetchReviewReferences(articleVersionDoi).length;
+  const getReviewCount: GetReviewCount = async (doi) => fetchReviewReferences(doi).length;
   const findArticles = createSearchEuropePmc(getJson);
   const renderSearchResult = createRenderSearchResult(
     getCommentCount,

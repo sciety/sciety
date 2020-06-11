@@ -7,18 +7,18 @@ export interface SearchResult {
 }
 
 export type GetCommentCount = (doi: Doi) => Promise<number>;
+export type GetReviewCount = (doi: Doi) => Promise<number>;
+export type GetEndorsingEditorialCommunities = (doi: Doi) => Promise<Array<string>>;
 
 export type RenderSearchResult = (result: SearchResult) => Promise<string>;
 
-export type GetEndorsingEditorialCommunities = (doi: Doi) => Promise<Array<string>>;
-
 export default (
   getCommentCount: GetCommentCount,
-  getReviewCount: (articleVersionDoi: Doi) => number,
+  getReviewCount: GetReviewCount,
   getEndorsingEditorialCommunities: GetEndorsingEditorialCommunities,
 ): RenderSearchResult => (
   async (result) => {
-    const reviewCount = getReviewCount(result.doi);
+    const reviewCount = await getReviewCount(result.doi);
     const commentCount = await getCommentCount(result.doi).catch(() => 'n/a');
     const endorsingEditorialCommunities = await getEndorsingEditorialCommunities(result.doi);
 
