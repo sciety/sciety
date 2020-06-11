@@ -9,8 +9,10 @@ import Doi from '../data/doi';
 
 export type GetJson = (uri: string) => Promise<object>;
 
-const getHardCodedEndorsingEditorialCommunities: GetEndorsingEditorialCommunities = async (doi) => (
-  doi.value === '10.1101/209320' ? ['PeerJ'] : []
+const createGetHardCodedEndorsingEditorialCommunities = (): GetEndorsingEditorialCommunities => (
+  async (doi) => (
+    doi.value === '10.1101/209320' ? ['PeerJ'] : []
+  )
 );
 
 export default (
@@ -19,12 +21,13 @@ export default (
 ) => async (query: string): Promise<string> => {
   const getCommentCount = createFetchDisqusPostCount(getJson);
   const getReviewCount: GetReviewCount = async (doi) => fetchReviewReferences(doi).length;
-  const findArticles = createSearchEuropePmc(getJson);
+  const getEndorsingEditorialCommunities = createGetHardCodedEndorsingEditorialCommunities();
   const renderSearchResult = createRenderSearchResult(
     getCommentCount,
     getReviewCount,
-    getHardCodedEndorsingEditorialCommunities,
+    getEndorsingEditorialCommunities,
   );
+  const findArticles = createSearchEuropePmc(getJson);
   const renderSearchResults = createRenderSearchResults(findArticles, renderSearchResult);
   return `
     <header class="ui basic padded vertical segment">
