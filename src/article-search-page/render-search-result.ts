@@ -74,24 +74,22 @@ export default (
   getCommentCount: GetCommentCount,
   getReviewCount: GetReviewCount,
   getEndorsingEditorialCommunities: GetEndorsingEditorialCommunities,
-): RenderSearchResult => (
-  async (result) => {
-    const renderReviews = createRenderReviews(getReviewCount);
-    const renderCommentCount = createRenderComments(getCommentCount);
-    const renderEndorsements = createRenderEndorsements(getEndorsingEditorialCommunities);
+): RenderSearchResult => {
+  const renderReviews = createRenderReviews(getReviewCount);
+  const renderCommentCount = createRenderComments(getCommentCount);
+  const renderEndorsements = createRenderEndorsements(getEndorsingEditorialCommunities);
 
-    return `
-      <div class="content">
-        <a class="header" href="/articles/${result.doi.value}">${result.title}</a>
-        <div class="meta">
-          ${result.authors}
-        </div>
-        <div class="extra">
-          ${await renderReviews(result.doi)}
-          ${await renderCommentCount(result.doi)}
-          ${await renderEndorsements(result.doi)}
-        </div>
+  return async (result) => `
+    <div class="content">
+      <a class="header" href="/articles/${result.doi.value}">${result.title}</a>
+      <div class="meta">
+        ${result.authors}
       </div>
-    `;
-  }
-);
+      <div class="extra">
+        ${await renderReviews(result.doi)}
+        ${await renderCommentCount(result.doi)}
+        ${await renderEndorsements(result.doi)}
+      </div>
+    </div>
+  `;
+};
