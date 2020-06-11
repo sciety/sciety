@@ -2,10 +2,12 @@ import addReviewForm from './templates/add-review-form';
 import Doi from '../data/doi';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 
+type RenderAddReviewForm = (doi: Doi) => string;
+
 export default (
   editorialCommunities: EditorialCommunityRepository,
-) => (
-  (doi: Doi): string => `
+): RenderAddReviewForm => (
+  (doi) => `
     <h2 class="ui top attached header">
       Add a review to this article
     </h2>
