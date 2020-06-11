@@ -1,13 +1,13 @@
 import Doi from '../../src/data/doi';
 import {
-  createDiscoverMostRecentReviews,
+  createDiscoverRecentActivity,
   EditorialCommunity,
   FetchedArticle,
   ReviewReference,
-} from '../../src/home-page/render-most-recent-reviews';
+} from '../../src/home-page/render-recent-activity';
 
-describe('construct-view-model middleware', (): void => {
-  it('adds most recent reviews to the context', async (): Promise<void> => {
+describe('render-recent-activity', (): void => {
+  it('adds recent activity to the view model', async (): Promise<void> => {
     const reviewReferences = async (): Promise<Array<ReviewReference>> => [
       {
         articleVersionDoi: new Doi('10.1101/642017'),
@@ -39,7 +39,7 @@ describe('construct-view-model middleware', (): void => {
         name: 'Royal Society of Psychoceramics',
       },
     ];
-    const viewModel = await createDiscoverMostRecentReviews(reviewReferences, fetchArticle, editorialCommunities)(2);
+    const viewModel = await createDiscoverRecentActivity(reviewReferences, fetchArticle, editorialCommunities)(2);
 
     expect(viewModel).toHaveLength(2);
     expect(viewModel[0]).toMatchObject({

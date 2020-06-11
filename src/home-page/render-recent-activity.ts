@@ -3,7 +3,7 @@ import Doi from '../data/doi';
 import { toDisplayString, toString } from '../templates/date';
 import templateListItems from '../templates/list-items';
 
-type RenderMostRecentReviews = (limit: number) => Promise<string>;
+type RenderRecentActivity = (limit: number) => Promise<string>;
 
 export interface RecentReview {
   articleDoi: Doi;
@@ -33,7 +33,7 @@ export type GetReviewReferences = () => Promise<Array<ReviewReference>>;
 export type FetchArticle = (doi: Doi) => Promise<FetchedArticle>;
 export type GetEditorialCommunities = () => Promise<Array<EditorialCommunity>>;
 
-export const createDiscoverMostRecentReviews = (
+export const createDiscoverRecentActivity = (
   reviewReferences: GetReviewReferences,
   fetchArticle: FetchArticle,
   editorialCommunities: GetEditorialCommunities,
@@ -87,7 +87,7 @@ const templateMostRecentReviews = (reviews: Array<RecentReview>): string => (`
   <section>
 
     <h2 class="ui header">
-      Most recent reviews
+      Recent activity
     </h2>
 
     <ol class="ui large feed">
@@ -101,8 +101,8 @@ export default (
   reviewReferences: GetReviewReferences,
   fetchArticle: FetchArticle,
   editorialCommunities: GetEditorialCommunities,
-): RenderMostRecentReviews => {
-  const discoverMostRecentReviews = createDiscoverMostRecentReviews(
+): RenderRecentActivity => {
+  const discoverMostRecentReviews = createDiscoverRecentActivity(
     reviewReferences,
     fetchArticle,
     editorialCommunities,

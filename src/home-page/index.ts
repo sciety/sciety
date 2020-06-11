@@ -1,6 +1,6 @@
 import { Middleware } from '@koa/router';
-import { GetEditorialCommunities, GetReviewReferences } from './render-most-recent-reviews';
 import createRenderPage from './render-page';
+import { GetEditorialCommunities, GetReviewReferences } from './render-recent-activity';
 import { Adapters } from '../types/adapters';
 
 export default (adapters: Adapters): Middleware => {

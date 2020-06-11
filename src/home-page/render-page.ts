@@ -1,11 +1,11 @@
 import createRenderEditorialCommunities from './render-editorial-communities';
 import createRenderFindArticle from './render-find-article';
-import createMostRecentReviews, {
+import createRenderPageHeader from './render-page-header';
+import createRenderRecentActivity, {
   FetchArticle,
   GetEditorialCommunities,
   GetReviewReferences,
-} from './render-most-recent-reviews';
-import createRenderPageHeader from './render-page-header';
+} from './render-recent-activity';
 
 export default (
   reviewReferences: GetReviewReferences,
@@ -13,7 +13,7 @@ export default (
   editorialCommunities: GetEditorialCommunities,
 ) => async (): Promise<string> => {
   const renderPageHeader = createRenderPageHeader();
-  const renderMostRecentReviews = createMostRecentReviews(reviewReferences, fetchArticle, editorialCommunities);
+  const renderRecentActivity = createRenderRecentActivity(reviewReferences, fetchArticle, editorialCommunities);
   const renderEditorialCommunities = createRenderEditorialCommunities(editorialCommunities);
   const renderFindArticle = createRenderFindArticle();
   return `
@@ -30,7 +30,7 @@ export default (
       </div>
       <div class="row">
         <section class="eight wide column">
-          ${await renderMostRecentReviews(5)}
+          ${await renderRecentActivity(5)}
         </section>
         <section class="six wide right floated column">
           ${await renderEditorialCommunities()}
