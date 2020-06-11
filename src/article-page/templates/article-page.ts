@@ -6,6 +6,22 @@ import createRenderPageHeader, { GetArticleDetails } from '../render-page-header
 import createRenderReviewSummaries, { GetArticleReviewSummaries } from '../render-review-summaries';
 import { ArticlePageViewModel } from '../types/article-page-view-model';
 
+const createRenderAddReviewForm = (
+  editorialCommunities: EditorialCommunityRepository,
+) => (
+  (doi: Doi): string => `
+    <h2 class="ui top attached header">
+      Add a review to this article
+    </h2>
+    <div class="ui attached segment">
+      ${addReviewForm(doi, editorialCommunities)}
+    </div>
+    <p class="ui bottom attached warning message">
+      This platform is for demonstration purposes only and data entered may not persist.
+    </p>
+  `
+);
+
 export default async (
   { article, reviews }: ArticlePageViewModel,
   editorialCommunities: EditorialCommunityRepository,
@@ -16,17 +32,7 @@ export default async (
   const renderPageHeader = createRenderPageHeader(getArticleDetailsAdapter);
   const renderArticleAbstract = createRenderArticleAbstract(abstractAdapter);
   const renderReviewSummaries = createRenderReviewSummaries(reviewsAdapter);
-  const renderAddReviewForm = (doi: Doi): string => `
-    <h2 class="ui top attached header">
-      Add a review to this article
-    </h2>
-    <div class="ui attached segment">
-      ${addReviewForm(doi, editorialCommunities)}
-    </div>
-    <p class="ui bottom attached warning message">
-      This platform is for demonstration purposes only and data entered may not persist.
-    </p>
-  `;
+  const renderAddReviewForm = createRenderAddReviewForm(editorialCommunities);
   return `<article class="ui aligned stackable grid">
     <div class="row">
       <div class="column">
