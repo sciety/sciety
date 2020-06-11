@@ -27,6 +27,18 @@ describe('render-search-result component', (): void => {
     expect(rendered).toStrictEqual(expect.stringContaining(searchResult.authors));
   });
 
+  it('displays the number of reviews', async (): Promise<void> => {
+    const getReviewCount = (): number => 37;
+
+    const rendered = await createRenderSearchResult(
+      arbitraryCommentCount,
+      getReviewCount,
+      arbitraryEndorsingEditorialCommunities,
+    )(searchResult);
+
+    expect(rendered).toStrictEqual(expect.stringMatching(/Reviews[\s\S]*?37/));
+  });
+
   describe('a comment count is available', (): void => {
     it('displays the number of comments', async (): Promise<void> => {
       const getCommentCount: GetCommentCount = async () => 37;
