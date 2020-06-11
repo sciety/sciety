@@ -62,4 +62,23 @@ describe('render-search-result component', (): void => {
       expect(rendered).toStrictEqual(expect.stringContaining('n/a'));
     });
   });
+
+  describe('a list of endorsing editorial communities is available', (): void => {
+    it('displays the endorsing editorial communities', async (): Promise<void> => {
+      const getCommentCount: GetCommentCount = async () => 0;
+      const getEndorsingEditorialCommunities: GetEndorsingEditorialCommunities = async () => ['PeerJ', 'eLife'];
+      const rendered = await createRenderSearchResult(
+        getCommentCount,
+        getReviewCount,
+        getEndorsingEditorialCommunities,
+      )({
+        doi: new Doi('10.1101/833392'),
+        title: 'the title',
+        authors: '1, 2, 3',
+      });
+
+      expect(rendered).toStrictEqual(expect.stringMatching(/Endorsed by[\s\S]*?PeerJ/));
+      expect(rendered).toStrictEqual(expect.stringMatching(/Endorsed by[\s\S]*?eLife/));
+    });
+  });
 });
