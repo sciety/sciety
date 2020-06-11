@@ -17,6 +17,9 @@ const createRenderReviews = (
 ) => (
   async (doi: Doi): Promise<string> => {
     const reviewCount = await getReviewCount(doi);
+    if (reviewCount === 0) {
+      return '';
+    }
     return `
       <div class="ui label">
         Reviews

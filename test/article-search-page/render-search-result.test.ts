@@ -28,16 +28,32 @@ describe('render-search-result component', (): void => {
     expect(rendered).toStrictEqual(expect.stringContaining(searchResult.authors));
   });
 
-  it('displays the number of reviews', async (): Promise<void> => {
-    const getReviewCount: GetReviewCount = async () => 37;
+  describe('the article has reviews', (): void => {
+    it('displays the number of reviews', async (): Promise<void> => {
+      const getReviewCount: GetReviewCount = async () => 37;
 
-    const rendered = await createRenderSearchResult(
-      arbitraryCommentCount,
-      getReviewCount,
-      arbitraryEndorsingEditorialCommunities,
-    )(searchResult);
+      const rendered = await createRenderSearchResult(
+        arbitraryCommentCount,
+        getReviewCount,
+        arbitraryEndorsingEditorialCommunities,
+      )(searchResult);
 
-    expect(rendered).toStrictEqual(expect.stringMatching(/Reviews[\s\S]*?37/));
+      expect(rendered).toStrictEqual(expect.stringMatching(/Reviews[\s\S]*?37/));
+    });
+  });
+
+  describe('the article has no reviews', (): void => {
+    it('hides the number of reviews', async (): Promise<void> => {
+      const getReviewCount: GetReviewCount = async () => 0;
+
+      const rendered = await createRenderSearchResult(
+        arbitraryCommentCount,
+        getReviewCount,
+        arbitraryEndorsingEditorialCommunities,
+      )(searchResult);
+
+      expect(rendered).toStrictEqual(expect.not.stringContaining('Reviews'));
+    });
   });
 
   describe('a comment count is available', (): void => {
