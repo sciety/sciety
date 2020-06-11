@@ -33,7 +33,16 @@ const createRenderComments = (
   getCommentCount: GetCommentCount,
 ) => (
   async (doi: Doi): Promise<string> => {
-    const commentCount = await getCommentCount(doi).catch(() => 'n/a');
+    let commentCount: number;
+    try {
+      commentCount = await getCommentCount(doi);
+    } catch (e) {
+      return '';
+    }
+
+    if (commentCount === 0) {
+      return '';
+    }
 
     return `
       <div class="ui label">

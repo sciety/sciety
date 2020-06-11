@@ -56,7 +56,7 @@ describe('render-search-result component', (): void => {
     });
   });
 
-  describe('a comment count is available', (): void => {
+  describe('an article has comments', (): void => {
     it('displays the number of comments', async (): Promise<void> => {
       const getCommentCount: GetCommentCount = async () => 37;
       const rendered = await createRenderSearchResult(
@@ -65,12 +65,25 @@ describe('render-search-result component', (): void => {
         arbitraryEndorsingEditorialCommunities,
       )(searchResult);
 
-      expect(rendered).toStrictEqual(expect.stringContaining('37'));
+      expect(rendered).toStrictEqual(expect.stringMatching(/Comments[\s\S]*?37/));
+    });
+  });
+
+  describe('an article has no comments', (): void => {
+    it('hides the number of comments', async (): Promise<void> => {
+      const getCommentCount: GetCommentCount = async () => 0;
+      const rendered = await createRenderSearchResult(
+        getCommentCount,
+        arbitraryReviewCount,
+        arbitraryEndorsingEditorialCommunities,
+      )(searchResult);
+
+      expect(rendered).toStrictEqual(expect.not.stringContaining('Comments'));
     });
   });
 
   describe('an error is thrown when counting comments', (): void => {
-    it('doesn\'t display a count of the comments', async (): Promise<void> => {
+    it('hides the number of comments', async (): Promise<void> => {
       const getCommentCount: GetCommentCount = async () => {
         throw new Error('Comments could not be counted');
       };
@@ -80,7 +93,7 @@ describe('render-search-result component', (): void => {
         arbitraryEndorsingEditorialCommunities,
       )(searchResult);
 
-      expect(rendered).toStrictEqual(expect.stringContaining('n/a'));
+      expect(rendered).toStrictEqual(expect.not.stringContaining('Comments'));
     });
   });
 
