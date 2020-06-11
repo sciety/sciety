@@ -1,9 +1,9 @@
 import Doi from '../data/doi';
 
 export interface SearchResult {
-  doi: string;
+  doi: Doi;
   title: string;
-  authorString: string;
+  authors: string;
 }
 
 export type GetCommentCount = (doi: Doi) => Promise<number>;
@@ -15,15 +15,14 @@ export default (
   getReviewCount: (articleVersionDoi: Doi) => number,
 ): RenderSearchResult => (
   async (result) => {
-    const doi = new Doi(result.doi);
-    const reviewCount = getReviewCount(doi);
-    const commentCount = await getCommentCount(doi).catch(() => 'n/a');
+    const reviewCount = getReviewCount(result.doi);
+    const commentCount = await getCommentCount(result.doi).catch(() => 'n/a');
 
     return `
       <div class="content">
-        <a class="header" href="/articles/${result.doi}">${result.title}</a>
+        <a class="header" href="/articles/${result.doi.value}">${result.title}</a>
         <div class="meta">
-          ${result.authorString}
+          ${result.authors}
         </div>
         <div class="extra">
           <div class="ui label">

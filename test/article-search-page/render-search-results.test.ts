@@ -1,5 +1,6 @@
 import { RenderSearchResult } from '../../src/article-search-page/render-search-result';
 import createRenderSearchResults, { FindArticles } from '../../src/article-search-page/render-search-results';
+import Doi from '../../src/data/doi';
 import shouldNotBeCalled from '../should-not-be-called';
 
 describe('render-search-results component', (): void => {
@@ -10,9 +11,9 @@ describe('render-search-results component', (): void => {
           total: 5,
           items: [
             {
-              doi: '10.1101/833392',
+              doi: new Doi('10.1101/833392'),
               title: 'the title',
-              authorString: '1, 2, 3',
+              authors: '1, 2, 3',
             },
           ],
         }
