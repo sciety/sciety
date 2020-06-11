@@ -12,22 +12,36 @@ export type GetEndorsingEditorialCommunities = (doi: Doi) => Promise<Array<strin
 
 export type RenderSearchResult = (result: SearchResult) => Promise<string>;
 
+const createRenderReviews = (
+  getReviewCount: GetReviewCount,
+) => (
+  async (doi: Doi): Promise<string> => {
+    const reviewCount = await getReviewCount(doi);
+    return `
+      <div class="ui label">
+        Reviews
+        <span class="detail">${reviewCount}</span>
+      </div>
+    `;
+  }
+);
+
 const createRenderEndorsements = (
   getEndorsingEditorialCommunities: GetEndorsingEditorialCommunities,
 ) => (
   async (doi: Doi): Promise<string> => {
     const endorsingEditorialCommunities = await getEndorsingEditorialCommunities(doi);
-    if (endorsingEditorialCommunities.length) {
-      return `
-        <div class="ui label">
-          Endorsed by
-          <span class="detail">${endorsingEditorialCommunities.join(', ')}</span>
-        </div>
-      `;
+    if (endorsingEditorialCommunities.length === 0) {
+      return '';
     }
-    return '';
+    return `
+      <div class="ui label">
+        Endorsed by
+        <span class="detail">${endorsingEditorialCommunities.join(', ')}</span>
+      </div>
+    `;
   }
-)
+);
 
 export default (
   getCommentCount: GetCommentCount,
@@ -35,7 +49,7 @@ export default (
   getEndorsingEditorialCommunities: GetEndorsingEditorialCommunities,
 ): RenderSearchResult => (
   async (result) => {
-    const reviewCount = await getReviewCount(result.doi);
+    const renderReviews = createRenderReviews(getReviewCount);
     const commentCount = await getCommentCount(result.doi).catch(() => 'n/a');
     const renderEndorsements = createRenderEndorsements(getEndorsingEditorialCommunities);
 
@@ -46,10 +60,7 @@ export default (
           ${result.authors}
         </div>
         <div class="extra">
-          <div class="ui label">
-            Reviews
-            <span class="detail">${reviewCount}</span>
-          </div>
+          ${await renderReviews(result.doi)}
           <div class="ui label">
             Comments
             <span class="detail">${commentCount}</span>
