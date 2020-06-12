@@ -21,11 +21,19 @@ const createRenderPageHeader = (): RenderPageHeader => (
   async (editorialCommunity) => Promise.resolve(templateHeader(editorialCommunity))
 );
 
-export default async (viewModel: EditorialCommunity & ReviewedArticles): Promise<string> => {
+const renderEndorsedArticles = async (editorialCommunityId: string): Promise<string> => (
+  `<!-- Editorial community id: ${editorialCommunityId} -->`
+);
+
+export default async (
+  editorialCommunityId: string,
+  viewModel: EditorialCommunity & ReviewedArticles,
+): Promise<string> => {
   const renderPageHeader = createRenderPageHeader();
 
   return `
     ${await renderPageHeader(viewModel)}
+    ${await renderEndorsedArticles(editorialCommunityId)}
     ${templateReviewedArticles(viewModel.reviewedArticles)}
   `;
 };

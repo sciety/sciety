@@ -27,7 +27,7 @@ export default (editorialCommunities: EditorialCommunityRepository): Middleware 
       reviewedArticles,
     };
 
-    ctx.response.body = await renderPage(viewModel);
+    ctx.response.body = await renderPage(editorialCommunityId, viewModel);
 
     await next();
   }
