@@ -1,3 +1,4 @@
+import createRenderEndorsedArticles from './render-endorsed-articles';
 import templateHeader from './templates/header';
 import templateReviewedArticles from './templates/reviewed-articles';
 import Doi from '../data/doi';
@@ -21,15 +22,12 @@ const createRenderPageHeader = (): RenderPageHeader => (
   async (editorialCommunity) => Promise.resolve(templateHeader(editorialCommunity))
 );
 
-const renderEndorsedArticles = async (editorialCommunityId: string): Promise<string> => (
-  `<!-- Editorial community id: ${editorialCommunityId} -->`
-);
-
 export default async (
   editorialCommunityId: string,
   viewModel: EditorialCommunity & ReviewedArticles,
 ): Promise<string> => {
   const renderPageHeader = createRenderPageHeader();
+  const renderEndorsedArticles = createRenderEndorsedArticles();
 
   return `
     ${await renderPageHeader(viewModel)}
