@@ -1,10 +1,10 @@
 import { NotFound } from 'http-errors';
 import { Context, Middleware, Next } from 'koa';
-import templateHeader from './templates/header';
-import templateReviewedArticles from './templates/reviewed-articles';
-import Doi from '../data/doi';
-import EditorialCommunityRepository from '../types/editorial-community-repository';
-import { FetchedArticle } from '../types/fetched-article';
+import Doi from '../../data/doi';
+import EditorialCommunityRepository from '../../types/editorial-community-repository';
+import { FetchedArticle } from '../../types/fetched-article';
+import templateHeader from '../templates/header';
+import templateReviewedArticles from '../templates/reviewed-articles';
 
 interface ReviewedArticle {
   doi: Doi;

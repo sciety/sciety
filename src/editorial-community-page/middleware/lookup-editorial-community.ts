@@ -1,7 +1,7 @@
 import { Middleware, RouterContext } from '@koa/router';
 import { NotFound } from 'http-errors';
 import { Next } from 'koa';
-import EditorialCommunityRepository from '../types/editorial-community-repository';
+import EditorialCommunityRepository from '../../types/editorial-community-repository';
 
 export default (
   editorialCommunities: EditorialCommunityRepository,

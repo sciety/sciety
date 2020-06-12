@@ -1,9 +1,9 @@
 import { Context, Middleware, Response } from 'koa';
-import Doi from '../../src/data/doi';
-import renderEditorialCommunityPage from '../../src/editorial-community-page/render-editorial-community-page';
-import createContext from '../context';
-import runMiddleware from '../middleware';
-import shouldNotBeCalled from '../should-not-be-called';
+import Doi from '../../../src/data/doi';
+import renderEditorialCommunityPage from '../../../src/editorial-community-page/middleware/render-editorial-community-page';
+import createContext from '../../context';
+import runMiddleware from '../../middleware';
+import shouldNotBeCalled from '../../should-not-be-called';
 
 const repository = {
   lookup: () => ({

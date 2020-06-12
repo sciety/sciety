@@ -1,9 +1,9 @@
 import { Context, Middleware, Response } from 'koa';
-import Doi from '../../src/data/doi';
-import constructViewModel from '../../src/editorial-community-page/construct-view-model';
-import { FetchedArticle } from '../../src/types/fetched-article';
-import createContext from '../context';
-import runMiddleware from '../middleware';
+import Doi from '../../../src/data/doi';
+import constructViewModel from '../../../src/editorial-community-page/middleware/construct-view-model';
+import { FetchedArticle } from '../../../src/types/fetched-article';
+import createContext from '../../context';
+import runMiddleware from '../../middleware';
 
 const article1: FetchedArticle = {
   doi: new Doi('10.1111/2'),

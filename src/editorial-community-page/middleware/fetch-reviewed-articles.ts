@@ -1,5 +1,5 @@
 import { Context, Middleware, Next } from 'koa';
-import { FetchArticle } from '../api/fetch-article';
+import { FetchArticle } from '../../api/fetch-article';
 
 export default (
   fetchArticle: FetchArticle,

@@ -1,6 +1,6 @@
 import arrayUniq from 'array-uniq';
 import { Context, Middleware, Next } from 'koa';
-import ReviewReferenceRepository from '../types/review-reference-repository';
+import ReviewReferenceRepository from '../../types/review-reference-repository';
 
 export default (
   reviewReferenceRepository: ReviewReferenceRepository,

@@ -1,11 +1,11 @@
 import { Context, Middleware, Response } from 'koa';
-import Doi from '../../src/data/doi';
-import createReviewReferenceRepository from '../../src/data/in-memory-review-references';
-import lookupReviewedArticles from '../../src/editorial-community-page/lookup-reviewed-articles';
-import { EditorialCommunity } from '../../src/types/editorial-community';
-import ReviewReferenceRepository from '../../src/types/review-reference-repository';
-import createContext from '../context';
-import runMiddleware from '../middleware';
+import Doi from '../../../src/data/doi';
+import createReviewReferenceRepository from '../../../src/data/in-memory-review-references';
+import lookupReviewedArticles from '../../../src/editorial-community-page/middleware/lookup-reviewed-articles';
+import { EditorialCommunity } from '../../../src/types/editorial-community';
+import ReviewReferenceRepository from '../../../src/types/review-reference-repository';
+import createContext from '../../context';
+import runMiddleware from '../../middleware';
 
 const article1 = new Doi('10.1000/1');
 const article2 = new Doi('10.99999/2');

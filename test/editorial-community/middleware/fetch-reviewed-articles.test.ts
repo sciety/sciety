@@ -1,10 +1,10 @@
 import { Context, Middleware, Response } from 'koa';
-import { FetchArticle } from '../../src/api/fetch-article';
-import Doi from '../../src/data/doi';
-import fetchReviewedArticles from '../../src/editorial-community-page/fetch-reviewed-articles';
-import { FetchedArticle } from '../../src/types/fetched-article';
-import createContext from '../context';
-import runMiddleware from '../middleware';
+import { FetchArticle } from '../../../src/api/fetch-article';
+import Doi from '../../../src/data/doi';
+import fetchReviewedArticles from '../../../src/editorial-community-page/middleware/fetch-reviewed-articles';
+import { FetchedArticle } from '../../../src/types/fetched-article';
+import createContext from '../../context';
+import runMiddleware from '../../middleware';
 
 const fetchArticle: FetchArticle = async (doi: Doi) => (
   {

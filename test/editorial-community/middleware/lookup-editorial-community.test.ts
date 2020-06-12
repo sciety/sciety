@@ -1,11 +1,11 @@
 import { RouterContext } from '@koa/router';
 import { NotFound } from 'http-errors';
 import { Middleware, Response } from 'koa';
-import createEditorialCommunityRepository from '../../src/data/in-memory-editorial-communities';
-import lookupEditorialCommunity from '../../src/editorial-community-page/lookup-editorial-community';
-import EditorialCommunityRepository from '../../src/types/editorial-community-repository';
-import createContext from '../context';
-import runMiddleware from '../middleware';
+import createEditorialCommunityRepository from '../../../src/data/in-memory-editorial-communities';
+import lookupEditorialCommunity from '../../../src/editorial-community-page/middleware/lookup-editorial-community';
+import EditorialCommunityRepository from '../../../src/types/editorial-community-repository';
+import createContext from '../../context';
+import runMiddleware from '../../middleware';
 
 const editorialCommunities: EditorialCommunityRepository = createEditorialCommunityRepository();
 

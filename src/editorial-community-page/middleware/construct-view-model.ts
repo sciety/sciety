@@ -1,5 +1,5 @@
 import { Context, Middleware, Next } from 'koa';
-import { FetchedArticle } from '../types/fetched-article';
+import { FetchedArticle } from '../../types/fetched-article';
 
 export default (): Middleware => (
   async (ctx: Context, next: Next): Promise<void> => {
