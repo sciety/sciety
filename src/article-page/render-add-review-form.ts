@@ -1,13 +1,19 @@
 import Doi from '../data/doi';
-import EditorialCommunityRepository from '../types/editorial-community-repository';
 
-type RenderAddReviewForm = (doi: Doi) => string;
+export type GetAllEditorialCommunities = () => Promise<Array<{
+  id: string;
+  name: string;
+}>>;
+
+type RenderAddReviewForm = (doi: Doi) => Promise<string>;
 
 export default (
-  editorialCommunities: EditorialCommunityRepository,
+  getAllEditorialCommunities: GetAllEditorialCommunities,
 ): RenderAddReviewForm => (
-  (doi) => {
-    const options = editorialCommunities.all().map((ec) => `<option value="${ec.id}">${ec.name}</option>`);
+  async (doi) => {
+    const options = (await getAllEditorialCommunities()).map((ec) => (
+      `<option value="${ec.id}">${ec.name}</option>`
+    ));
     return `
       <h2 class="ui top attached header">
         Add a review to this article

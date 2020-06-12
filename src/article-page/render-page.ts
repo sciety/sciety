@@ -1,4 +1,4 @@
-import createRenderAddReviewForm from './render-add-review-form';
+import createRenderAddReviewForm, { GetAllEditorialCommunities } from './render-add-review-form';
 import createRenderArticleAbstract, { GetArticleAbstract } from './render-article-abstract';
 import createRenderPageHeader, { GetArticleDetails } from './render-page-header';
 import createRenderReviewSummaries, { GetArticleReviewSummaries } from './render-review-summaries';
@@ -12,10 +12,11 @@ export default async (
   const getArticleDetailsAdapter: GetArticleDetails = async () => article;
   const abstractAdapter: GetArticleAbstract = async () => ({ content: article.abstract });
   const reviewsAdapter: GetArticleReviewSummaries = async () => reviews;
+  const editorialCommunitiesAdapter: GetAllEditorialCommunities = async () => editorialCommunities.all();
   const renderPageHeader = createRenderPageHeader(getArticleDetailsAdapter);
   const renderArticleAbstract = createRenderArticleAbstract(abstractAdapter);
   const renderReviewSummaries = createRenderReviewSummaries(reviewsAdapter);
-  const renderAddReviewForm = createRenderAddReviewForm(editorialCommunities);
+  const renderAddReviewForm = createRenderAddReviewForm(editorialCommunitiesAdapter);
   return `<article class="ui aligned stackable grid">
     <div class="row">
       <div class="column">
@@ -31,7 +32,7 @@ export default async (
         </section>
       </section>
       <aside class="four wide right floated column">
-        ${renderAddReviewForm(article.doi)}
+        ${await renderAddReviewForm(article.doi)}
       </aside>
     </div>
   </article>`;
