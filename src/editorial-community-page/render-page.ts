@@ -6,23 +6,26 @@ interface EditorialCommunity {
   name: string;
   description: string;
   logo?: string;
+}
+
+interface ReviewedArticles {
   reviewedArticles: Array<{
     doi: Doi;
     title: string;
   }>;
 }
 
-type RenderPageHeader = () => Promise<string>;
+type RenderPageHeader = (editorialCommunity: EditorialCommunity) => Promise<string>;
 
-const createRenderPageHeader = (viewModel: EditorialCommunity): RenderPageHeader => (
-  async () => Promise.resolve(templateHeader(viewModel))
+const createRenderPageHeader = (): RenderPageHeader => (
+  async (editorialCommunity) => Promise.resolve(templateHeader(editorialCommunity))
 );
 
-export default async (viewModel: EditorialCommunity): Promise<string> => {
-  const renderPageHeader = createRenderPageHeader(viewModel);
+export default async (viewModel: EditorialCommunity & ReviewedArticles): Promise<string> => {
+  const renderPageHeader = createRenderPageHeader();
 
   return `
-    ${await renderPageHeader()}
+    ${await renderPageHeader(viewModel)}
     ${templateReviewedArticles(viewModel.reviewedArticles)}
   `;
 };
