@@ -1,4 +1,3 @@
-import addReviewForm from './templates/add-review-form';
 import Doi from '../data/doi';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 
@@ -7,15 +6,39 @@ type RenderAddReviewForm = (doi: Doi) => string;
 export default (
   editorialCommunities: EditorialCommunityRepository,
 ): RenderAddReviewForm => (
-  (doi) => `
-    <h2 class="ui top attached header">
-      Add a review to this article
-    </h2>
-    <div class="ui attached segment">
-      ${addReviewForm(doi, editorialCommunities)}
-    </div>
-    <p class="ui bottom attached warning message">
-      This platform is for demonstration purposes only and data entered may not persist.
-    </p>
-  `
+  (doi) => {
+    const options = editorialCommunities.all().map((ec) => `<option value="${ec.id}">${ec.name}</option>`);
+    return `
+      <h2 class="ui top attached header">
+        Add a review to this article
+      </h2>
+      <div class="ui attached segment">
+        <form method="post" action="/reviews" class="ui form">
+          <input type="hidden" name="articleversiondoi" value="${doi.value}">
+          <div class="field">
+            <label for="editorialcommunityid">Your editorial community</label>
+            <select
+              name="editorialcommunityid"
+              id="editorialcommunityid">
+              ${options}
+            </select>
+          </div>
+          <div class="field">
+            <label for="reviewdoi">Zenodo review DOI</label>
+            <input
+              type="text"
+              name="reviewdoi"
+              id="reviewdoi"
+              required>
+          </div>
+          <button type="submit" class="ui primary button">
+            Add review
+          </button>
+        </form>
+      </div>
+      <p class="ui bottom attached warning message">
+        This platform is for demonstration purposes only and data entered may not persist.
+      </p>
+    `;
+  }
 );
