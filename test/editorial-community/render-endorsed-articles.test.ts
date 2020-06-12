@@ -10,4 +10,14 @@ describe('render-endorsed-articles component', (): void => {
       expect(rendered.childNodes).toHaveLength(0);
     });
   });
+
+  describe('when there is an endorsed article', () => {
+    it('has the expected heading and link', async () => {
+      const renderEndorsedArticles = createRenderEndorsedArticles();
+      const rendered = JSDOM.fragment(await renderEndorsedArticles('53ed5364-a016-11ea-bb37-0242ac130002'));
+
+      expect(rendered.querySelector('h2')?.nodeName).toBe('H2');
+      expect(rendered.querySelector('a')?.getAttribute('href')).toBe('/articles/10.1101/209320');
+    });
+  });
 });
