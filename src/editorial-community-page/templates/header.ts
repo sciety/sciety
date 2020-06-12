@@ -1,6 +1,6 @@
 interface Header {
   name: string;
-  logo: string|undefined;
+  logo?: string;
   description: string;
 }
 

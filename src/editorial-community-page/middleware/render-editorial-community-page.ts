@@ -1,15 +1,8 @@
 import { NotFound } from 'http-errors';
 import { Context, Middleware, Next } from 'koa';
-import Doi from '../../data/doi';
 import EditorialCommunityRepository from '../../types/editorial-community-repository';
 import { FetchedArticle } from '../../types/fetched-article';
-import templateHeader from '../templates/header';
-import templateReviewedArticles from '../templates/reviewed-articles';
-
-interface ReviewedArticle {
-  doi: Doi;
-  title: string;
-}
+import renderPage from '../render-page';
 
 export default (editorialCommunities: EditorialCommunityRepository): Middleware => (
   async (ctx: Context, next: Next): Promise<void> => {
@@ -34,17 +27,7 @@ export default (editorialCommunities: EditorialCommunityRepository): Middleware 
       reviewedArticles,
     };
 
-    type RenderPageHeader = () => Promise<string>;
-
-    const createRenderPageHeader = (): RenderPageHeader => (
-      async () => Promise.resolve(templateHeader(viewModel))
-    );
-    const renderPageHeader = createRenderPageHeader();
-
-    ctx.response.body = `
-    ${await renderPageHeader()}
-    ${templateReviewedArticles(viewModel.reviewedArticles)}
-    `;
+    ctx.response.body = await renderPage(viewModel);
 
     await next();
   }
