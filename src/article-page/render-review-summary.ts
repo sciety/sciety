@@ -1,3 +1,4 @@
+import clip from 'text-clipper';
 import Doi from '../data/doi';
 import templateDate from '../templates/date';
 
@@ -9,31 +10,34 @@ export interface ReviewSummary {
   editorialCommunityName: string;
 }
 
-export default (review: ReviewSummary, idNamespace: string): string => (`
-  <article class="content">
+export default (review: ReviewSummary, idNamespace: string): string => {
+  const summary = clip(review.summary, 1500);
+  return `
+    <article class="content">
 
-    <h3 class="header">
-      Reviewed by
-      <a href="/editorial-communities/${review.editorialCommunityId}" id="${idNamespace}-editorial-community">
-        ${review.editorialCommunityName}
-      </a>
-    </h3>
+      <h3 class="header">
+        Reviewed by
+        <a href="/editorial-communities/${review.editorialCommunityId}" id="${idNamespace}-editorial-community">
+          ${review.editorialCommunityName}
+        </a>
+      </h3>
 
-    <div class="meta">
-      ${templateDate(review.publicationDate)}
-    </div>
+      <div class="meta">
+        ${templateDate(review.publicationDate)}
+      </div>
 
-    <div class="description">
-      ${review.summary}
-    </div>
+      <div class="description">
+        ${summary}
+      </div>
 
-    <div class="extra">
-      <a href="https://doi.org/${review.doi}" class="ui right floated basic secondary button" id="${idNamespace}-read-more"
-        aria-labelledby="${idNamespace}-read-more ${idNamespace}-editorial-community">
-        Read the full review
-        <i class="right chevron icon"></i>
-      </a>
-    </div>
+      <div class="extra">
+        <a href="https://doi.org/${review.doi}" class="ui right floated basic secondary button" id="${idNamespace}-read-more"
+          aria-labelledby="${idNamespace}-read-more ${idNamespace}-editorial-community">
+          Read the full review
+          <i class="right chevron icon"></i>
+        </a>
+      </div>
 
-  </article>
-`);
+    </article>
+  `;
+};
