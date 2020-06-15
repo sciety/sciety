@@ -3,7 +3,7 @@ import createRenderEndorsedArticles, {
   GetArticleTitle,
 } from './render-endorsed-articles';
 import templateHeader from './templates/header';
-import templateReviewedArticles from './templates/reviewed-articles';
+import renderReviewedArticles from './render-reviewed-articles';
 import { FetchArticle } from '../api/fetch-article';
 import Doi from '../data/doi';
 
@@ -43,7 +43,7 @@ export default (fetchArticle: FetchArticle): RenderPage => (
     return `
       ${await renderPageHeader(viewModel)}
       ${await renderEndorsedArticles(editorialCommunityId)}
-      ${templateReviewedArticles(viewModel.reviewedArticles)}
+      ${renderReviewedArticles(viewModel.reviewedArticles)}
     `;
   }
 );
