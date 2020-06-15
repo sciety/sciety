@@ -1,4 +1,5 @@
-import { Context, Middleware, Next } from 'koa';
+import { Middleware, RouterContext } from '@koa/router';
+import { Next } from 'koa';
 import { FetchArticle } from '../../api/fetch-article';
 import EditorialCommunityRepository from '../../types/editorial-community-repository';
 import ReviewReferenceRepository from '../../types/review-reference-repository';
@@ -15,8 +16,8 @@ export default (
     editorialCommunities,
   );
 
-  return async (ctx: Context, next: Next): Promise<void> => {
-    ctx.response.body = await renderPage(ctx.state.editorialCommunity.id);
+  return async (ctx: RouterContext, next: Next): Promise<void> => {
+    ctx.response.body = await renderPage(ctx.params.id);
 
     await next();
   };

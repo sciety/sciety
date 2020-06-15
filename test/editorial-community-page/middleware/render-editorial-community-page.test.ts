@@ -1,4 +1,5 @@
-import { Context, Middleware, Response } from 'koa';
+import { RouterContext } from '@koa/router';
+import { Middleware, Response } from 'koa';
 import { FetchArticle } from '../../../src/api/fetch-article';
 import Doi from '../../../src/data/doi';
 import createReviewReferenceRepository from '../../../src/data/in-memory-review-references';
@@ -38,23 +39,19 @@ reviewReferenceRepository.add(article2, new Doi('10.6666/2'), editorialCommunity
 reviewReferenceRepository.add(article2, new Doi('10.7777/3'), editorialCommunityId, new Date('2020-05-19T14:00:00Z'));
 reviewReferenceRepository.add(article2, new Doi('10.8888/4'), 'another-community', new Date('2020-05-19T14:00:00Z'));
 
-const invokeMiddleware = async (ctx: Context, next?: Middleware): Promise<Response> => {
+const invokeMiddleware = async (ctx: RouterContext, next?: Middleware): Promise<Response> => {
   const middleware = renderEditorialCommunityPage(repository, fetchArticle, reviewReferenceRepository);
   const { response } = await runMiddleware(middleware, ctx, next);
   return response;
 };
 
 describe('render-editorial-community-page middleware', (): void => {
-  let ctx: Context;
+  let ctx: RouterContext;
 
   beforeEach(() => {
-    ctx = createContext();
-    ctx.state = {
-      editorialCommunity: {
-        id: 'some-id',
-        name: 'community-name',
-        description: 'community-description',
-      },
+    ctx = createContext<RouterContext>();
+    ctx.params = {
+      id: 'some-id',
     };
   });
 
