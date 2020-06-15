@@ -13,10 +13,12 @@ interface EditorialCommunity {
   logo?: string;
 }
 
-type RenderPageHeader = (editorialCommunity: EditorialCommunity) => Promise<string>;
+type RenderPageHeader = (editorialCommunityId: string) => Promise<string>;
 
-const createRenderPageHeader = (): RenderPageHeader => (
-  async (editorialCommunity) => Promise.resolve(templateHeader(editorialCommunity))
+type GetEditorialCommunity = (editorialCommunityId: string) => Promise<EditorialCommunity>;
+
+const createRenderPageHeader = (getEditorialCommunity: GetEditorialCommunity): RenderPageHeader => (
+  async (editorialCommunityId) => Promise.resolve(templateHeader(await getEditorialCommunity(editorialCommunityId)))
 );
 
 type RenderPage = (
@@ -34,8 +36,9 @@ export default (
 
     return Promise.all(reviewedArticleVersions.map(fetchArticle));
   };
+
   return async (editorialCommunityId, viewModel) => {
-    const renderPageHeader = createRenderPageHeader();
+    const renderPageHeader = createRenderPageHeader(async () => viewModel);
     const getArticleTitle: GetArticleTitle = async (articleDoi) => {
       const article = await fetchArticle(articleDoi);
       return article.title;
@@ -44,7 +47,7 @@ export default (
     const renderReviewedArticles = createRenderReviewedArticles(getReviewedArticles);
 
     return `
-      ${await renderPageHeader(viewModel)}
+      ${await renderPageHeader(editorialCommunityId)}
       ${await renderEndorsedArticles(editorialCommunityId)}
       ${await renderReviewedArticles(editorialCommunityId)}
     `;
