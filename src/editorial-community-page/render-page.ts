@@ -26,10 +26,16 @@ const createRenderPageHeader = (): RenderPageHeader => (
   async (editorialCommunity) => Promise.resolve(templateHeader(editorialCommunity))
 );
 
-export default async (
+type RenderPage = (
   editorialCommunityId: string,
   viewModel: EditorialCommunity & ReviewedArticles,
   fetchArticle: FetchArticle,
+) => Promise<string>;
+
+const renderPage: RenderPage = async (
+  editorialCommunityId,
+  viewModel,
+  fetchArticle,
 ): Promise<string> => {
   const renderPageHeader = createRenderPageHeader();
   const getArticleTitle: GetArticleTitle = async (articleDoi) => {
@@ -44,3 +50,5 @@ export default async (
     ${templateReviewedArticles(viewModel.reviewedArticles)}
   `;
 };
+
+export default renderPage;
