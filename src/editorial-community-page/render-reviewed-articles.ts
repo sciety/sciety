@@ -12,20 +12,26 @@ const templateTeaser = (article: ReviewedArticle): string => (`
   </div>
 `);
 
-type RenderReviewedArticles = (reviewedArticles: Array<ReviewedArticle>) => Promise<string>;
+type RenderReviewedArticles = (editorialCommunityId: string) => Promise<string>;
 
-export default (): RenderReviewedArticles => (
-  async (reviewedArticles) => (`
-    <section class="ui basic vertical segment">
+export type GetReviewedArticles = (editorialCommunityId: string) => Promise<Array<ReviewedArticle>>;
 
-      <h2 class="ui header">
-        Recently reviewed articles
-      </h2>
+export default (getReviewedArticles: GetReviewedArticles): RenderReviewedArticles => (
+  async (editorialCommunityId) => {
+    const reviewedArticles = await getReviewedArticles(editorialCommunityId);
 
-      <ol class="ui relaxed divided items">
-        ${templateListItems(reviewedArticles.map(templateTeaser))}
-      </ol>
+    return `
+      <section class="ui basic vertical segment">
 
-    </section>
-  `)
+        <h2 class="ui header">
+          Recently reviewed articles
+        </h2>
+
+        <ol class="ui relaxed divided items">
+          ${templateListItems(reviewedArticles.map(templateTeaser))}
+        </ol>
+
+      </section>
+    `;
+  }
 );

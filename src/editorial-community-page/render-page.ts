@@ -2,7 +2,7 @@ import createRenderEndorsedArticles, {
   createGetHardCodedEndorsedArticles,
   GetArticleTitle,
 } from './render-endorsed-articles';
-import createRenderReviewedArticles from './render-reviewed-articles';
+import createRenderReviewedArticles, { GetReviewedArticles } from './render-reviewed-articles';
 import templateHeader from './templates/header';
 import { FetchArticle } from '../api/fetch-article';
 import Doi from '../data/doi';
@@ -38,13 +38,14 @@ export default (fetchArticle: FetchArticle): RenderPage => (
       const article = await fetchArticle(articleDoi);
       return article.title;
     };
+    const getReviewedArticles: GetReviewedArticles = async () => viewModel.reviewedArticles;
     const renderEndorsedArticles = createRenderEndorsedArticles(createGetHardCodedEndorsedArticles(getArticleTitle));
-    const renderReviewedArticles = createRenderReviewedArticles();
+    const renderReviewedArticles = createRenderReviewedArticles(getReviewedArticles);
 
     return `
       ${await renderPageHeader(viewModel)}
       ${await renderEndorsedArticles(editorialCommunityId)}
-      ${await renderReviewedArticles(viewModel.reviewedArticles)}
+      ${await renderReviewedArticles(editorialCommunityId)}
     `;
   }
 );
