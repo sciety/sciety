@@ -1,7 +1,7 @@
-import templateReviewSummary from '../../../src/article-page/templates/review-summary';
-import Doi from '../../../src/data/doi';
+import templateReviewSummary from '../../src/article-page/render-review-summary';
+import Doi from '../../src/data/doi';
 
-describe('review-summary template', (): void => {
+describe('render-review-summary component', (): void => {
   const review = {
     publicationDate: new Date('2010-02-01'),
     summary: 'Pretty good.',

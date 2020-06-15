@@ -1,5 +1,5 @@
-import Doi from '../../data/doi';
-import templateDate from '../../templates/date';
+import Doi from '../data/doi';
+import templateDate from '../templates/date';
 
 export interface ReviewSummary {
   publicationDate: Date;

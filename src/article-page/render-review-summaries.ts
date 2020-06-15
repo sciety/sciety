@@ -1,4 +1,4 @@
-import templateReviewSummary from './templates/review-summary';
+import renderReviewSummary from './render-review-summary';
 import Doi from '../data/doi';
 import templateListItems from '../templates/list-items';
 
@@ -11,7 +11,7 @@ export type GetArticleReviewSummaries = () => Promise<Array<{
 }>>;
 
 export default (reviews: GetArticleReviewSummaries) => async (): Promise<string> => {
-  const reviewSummaries = (await reviews()).map((review, index) => templateReviewSummary(review, `review-${index}`));
+  const reviewSummaries = (await reviews()).map((review, index) => renderReviewSummary(review, `review-${index}`));
   return `
     <h2 class="ui header">
       Review summaries
