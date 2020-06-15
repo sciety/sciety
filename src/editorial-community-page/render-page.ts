@@ -6,6 +6,7 @@ import createRenderReviewedArticles, { GetReviewedArticles } from './render-revi
 import templateHeader from './templates/header';
 import { FetchArticle } from '../api/fetch-article';
 import Doi from '../data/doi';
+import ReviewReferenceRepository from '../types/review-reference-repository';
 
 interface EditorialCommunity {
   name: string;
@@ -31,14 +32,23 @@ type RenderPage = (
   viewModel: EditorialCommunity & ReviewedArticles,
 ) => Promise<string>;
 
-export default (fetchArticle: FetchArticle): RenderPage => (
-  async (editorialCommunityId, viewModel) => {
+export default (
+  fetchArticle: FetchArticle,
+  reviewReferenceRepository: ReviewReferenceRepository,
+): RenderPage => {
+  const getReviewedArticles: GetReviewedArticles = async (editorialCommunityId) => {
+    const reviewedArticleVersions = reviewReferenceRepository.findReviewsForEditorialCommunityId(editorialCommunityId)
+      .map((reviewReference) => reviewReference.articleVersionDoi);
+
+    const reviewedArticleVersionDois = reviewedArticleVersions;
+    return Promise.all(reviewedArticleVersionDois.map(fetchArticle));
+  };
+  return async (editorialCommunityId, viewModel) => {
     const renderPageHeader = createRenderPageHeader();
     const getArticleTitle: GetArticleTitle = async (articleDoi) => {
       const article = await fetchArticle(articleDoi);
       return article.title;
     };
-    const getReviewedArticles: GetReviewedArticles = async () => viewModel.reviewedArticles;
     const renderEndorsedArticles = createRenderEndorsedArticles(createGetHardCodedEndorsedArticles(getArticleTitle));
     const renderReviewedArticles = createRenderReviewedArticles(getReviewedArticles);
 
@@ -47,5 +57,5 @@ export default (fetchArticle: FetchArticle): RenderPage => (
       ${await renderEndorsedArticles(editorialCommunityId)}
       ${await renderReviewedArticles(editorialCommunityId)}
     `;
-  }
-);
+  };
+};

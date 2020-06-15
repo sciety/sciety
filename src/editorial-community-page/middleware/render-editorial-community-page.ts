@@ -3,10 +3,15 @@ import { Context, Middleware, Next } from 'koa';
 import { FetchArticle } from '../../api/fetch-article';
 import EditorialCommunityRepository from '../../types/editorial-community-repository';
 import { FetchedArticle } from '../../types/fetched-article';
+import ReviewReferenceRepository from '../../types/review-reference-repository';
 import createRenderPage from '../render-page';
 
-export default (editorialCommunities: EditorialCommunityRepository, fetchArticle: FetchArticle): Middleware => {
-  const renderPage = createRenderPage(fetchArticle);
+export default (
+  editorialCommunities: EditorialCommunityRepository,
+  fetchArticle: FetchArticle,
+  reviewReferenceRepository: ReviewReferenceRepository,
+): Middleware => {
+  const renderPage = createRenderPage(fetchArticle, reviewReferenceRepository);
 
   return async (ctx: Context, next: Next): Promise<void> => {
     const editorialCommunityId = ctx.state.editorialCommunity.id;
