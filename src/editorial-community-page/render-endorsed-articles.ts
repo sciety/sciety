@@ -13,7 +13,7 @@ type RenderEndorsedArticles = (editorialCommunityId: string) => Promise<string>;
 
 type GetEndorsedArticles = (editorialCommunityId: string) => Promise<Array<{doi: Doi; title: string}>>;
 
-const getEndorsedArticles: GetEndorsedArticles = async (editorialCommunityId) => {
+export const getHardCodedEndorsedArticles: GetEndorsedArticles = async (editorialCommunityId) => {
   if (editorialCommunityId !== '53ed5364-a016-11ea-bb37-0242ac130002') {
     return [];
   }
@@ -30,7 +30,7 @@ const getEndorsedArticles: GetEndorsedArticles = async (editorialCommunityId) =>
   ];
 };
 
-export default (): RenderEndorsedArticles => (
+export default (getEndorsedArticles: GetEndorsedArticles): RenderEndorsedArticles => (
   async (editorialCommunityId) => {
     const endorsedArticles = await getEndorsedArticles(editorialCommunityId);
 

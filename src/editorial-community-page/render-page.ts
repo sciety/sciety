@@ -1,4 +1,4 @@
-import createRenderEndorsedArticles from './render-endorsed-articles';
+import createRenderEndorsedArticles, { getHardCodedEndorsedArticles } from './render-endorsed-articles';
 import templateHeader from './templates/header';
 import templateReviewedArticles from './templates/reviewed-articles';
 import Doi from '../data/doi';
@@ -27,7 +27,7 @@ export default async (
   viewModel: EditorialCommunity & ReviewedArticles,
 ): Promise<string> => {
   const renderPageHeader = createRenderPageHeader();
-  const renderEndorsedArticles = createRenderEndorsedArticles();
+  const renderEndorsedArticles = createRenderEndorsedArticles(getHardCodedEndorsedArticles);
 
   return `
     ${await renderPageHeader(viewModel)}
