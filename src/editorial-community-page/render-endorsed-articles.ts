@@ -1,5 +1,13 @@
 import Doi from '../data/doi';
 
+type RenderEndorsedArticle = (endorsedArticle: {doi: Doi; title: string}) => Promise<string>;
+
+const renderEndorsedArticle: RenderEndorsedArticle = async (endorsedArticle) => `
+  <div class="content">
+    <a href="/articles/${endorsedArticle.doi.value}" class="header">${endorsedArticle.title}</a>
+  </div>
+`;
+
 type RenderEndorsedArticles = (editorialCommunityId: string) => Promise<string>;
 
 export default (): RenderEndorsedArticles => (
@@ -24,9 +32,7 @@ export default (): RenderEndorsedArticles => (
 
         <ol class="ui relaxed divided items">
           <li class="item">
-            <div class="content">
-              <a href="/articles/${endorsedArticles[0].doi.value}" class="header">${endorsedArticles[0].title}</a>
-            </div>
+            ${await renderEndorsedArticle(endorsedArticles[0])}
           </li>
         </ol>
 
