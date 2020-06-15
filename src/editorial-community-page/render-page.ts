@@ -40,8 +40,7 @@ export default (
     const reviewedArticleVersions = reviewReferenceRepository.findReviewsForEditorialCommunityId(editorialCommunityId)
       .map((reviewReference) => reviewReference.articleVersionDoi);
 
-    const reviewedArticleVersionDois = reviewedArticleVersions;
-    return Promise.all(reviewedArticleVersionDois.map(fetchArticle));
+    return Promise.all(reviewedArticleVersions.map(fetchArticle));
   };
   return async (editorialCommunityId, viewModel) => {
     const renderPageHeader = createRenderPageHeader();
