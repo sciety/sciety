@@ -11,28 +11,34 @@ const renderEndorsedArticle: RenderEndorsedArticle = async (endorsedArticle) => 
 
 type RenderEndorsedArticles = (editorialCommunityId: string) => Promise<string>;
 
+type GetEndorsedArticles = (editorialCommunityId: string) => Promise<Array<{doi: Doi; title: string}>>;
+
+const getEndorsedArticles: GetEndorsedArticles = async (editorialCommunityId) => {
+  if (editorialCommunityId !== '53ed5364-a016-11ea-bb37-0242ac130002') {
+    return [];
+  }
+
+  return [
+    {
+      doi: new Doi('10.1101/209320'),
+      title: 'Marine cyanolichens from different littoral zones are associated with distinct bacterial communities',
+    },
+    {
+      doi: new Doi('10.1101/312330'),
+      title: 'A Real Time PCR Assay for Quantification of Parasite Burden in Murine Models of Leishmaniasis',
+    },
+  ];
+};
+
 export default (): RenderEndorsedArticles => (
   async (editorialCommunityId) => {
-    const endorsedArticleData = [];
+    const endorsedArticles = await getEndorsedArticles(editorialCommunityId);
 
-    if (editorialCommunityId === '53ed5364-a016-11ea-bb37-0242ac130002') {
-      endorsedArticleData.push(
-        {
-          doi: new Doi('10.1101/209320'),
-          title: 'Marine cyanolichens from different littoral zones are associated with distinct bacterial communities',
-        },
-        {
-          doi: new Doi('10.1101/312330'),
-          title: 'A Real Time PCR Assay for Quantification of Parasite Burden in Murine Models of Leishmaniasis',
-        },
-      );
-    }
-
-    if (endorsedArticleData.length === 0) {
+    if (endorsedArticles.length === 0) {
       return '';
     }
 
-    const endorsedArticles = await Promise.all(endorsedArticleData.map(renderEndorsedArticle));
+    const renderedEndorsedArticles = await Promise.all(endorsedArticles.map(renderEndorsedArticle));
 
     return `
       <section class="ui basic vertical segment">
@@ -42,7 +48,7 @@ export default (): RenderEndorsedArticles => (
         </h2>
 
         <ol class="ui relaxed divided items">
-          ${templateListItems(endorsedArticles)}
+          ${templateListItems(renderedEndorsedArticles)}
         </ol>
 
       </section>
