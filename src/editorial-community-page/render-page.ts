@@ -2,7 +2,7 @@ import createRenderEndorsedArticles, {
   createGetHardCodedEndorsedArticles,
   GetArticleTitle,
 } from './render-endorsed-articles';
-import renderReviewedArticles from './render-reviewed-articles';
+import createRenderReviewedArticles from './render-reviewed-articles';
 import templateHeader from './templates/header';
 import { FetchArticle } from '../api/fetch-article';
 import Doi from '../data/doi';
@@ -39,11 +39,12 @@ export default (fetchArticle: FetchArticle): RenderPage => (
       return article.title;
     };
     const renderEndorsedArticles = createRenderEndorsedArticles(createGetHardCodedEndorsedArticles(getArticleTitle));
+    const renderReviewedArticles = createRenderReviewedArticles();
 
     return `
       ${await renderPageHeader(viewModel)}
       ${await renderEndorsedArticles(editorialCommunityId)}
-      ${renderReviewedArticles(viewModel.reviewedArticles)}
+      ${await renderReviewedArticles(viewModel.reviewedArticles)}
     `;
   }
 );

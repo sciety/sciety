@@ -12,16 +12,20 @@ const templateTeaser = (article: ReviewedArticle): string => (`
   </div>
 `);
 
-export default (reviewedArticles: Array<ReviewedArticle>): string => (`
-  <section class="ui basic vertical segment">
+type RenderReviewedArticles = (reviewedArticles: Array<ReviewedArticle>) => Promise<string>;
 
-    <h2 class="ui header">
-      Recently reviewed articles
-    </h2>
+export default (): RenderReviewedArticles => (
+  async (reviewedArticles) => (`
+    <section class="ui basic vertical segment">
 
-    <ol class="ui relaxed divided items">
-      ${templateListItems(reviewedArticles.map(templateTeaser))}
-    </ol>
+      <h2 class="ui header">
+        Recently reviewed articles
+      </h2>
 
-  </section>
-`);
+      <ol class="ui relaxed divided items">
+        ${templateListItems(reviewedArticles.map(templateTeaser))}
+      </ol>
+
+    </section>
+  `)
+);
