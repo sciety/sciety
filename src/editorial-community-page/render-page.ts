@@ -36,7 +36,7 @@ const renderPage: RenderPage = async (
   editorialCommunityId,
   viewModel,
   fetchArticle,
-): Promise<string> => {
+) => {
   const renderPageHeader = createRenderPageHeader();
   const getArticleTitle: GetArticleTitle = async (articleDoi) => {
     const article = await fetchArticle(articleDoi);
