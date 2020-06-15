@@ -5,20 +5,12 @@ import createRenderEndorsedArticles, {
 import createRenderReviewedArticles, { GetReviewedArticles } from './render-reviewed-articles';
 import templateHeader from './templates/header';
 import { FetchArticle } from '../api/fetch-article';
-import Doi from '../data/doi';
 import ReviewReferenceRepository from '../types/review-reference-repository';
 
 interface EditorialCommunity {
   name: string;
   description: string;
   logo?: string;
-}
-
-interface ReviewedArticles {
-  reviewedArticles: Array<{
-    doi: Doi;
-    title: string;
-  }>;
 }
 
 type RenderPageHeader = (editorialCommunity: EditorialCommunity) => Promise<string>;
@@ -29,7 +21,7 @@ const createRenderPageHeader = (): RenderPageHeader => (
 
 type RenderPage = (
   editorialCommunityId: string,
-  viewModel: EditorialCommunity & ReviewedArticles,
+  viewModel: EditorialCommunity,
 ) => Promise<string>;
 
 export default (

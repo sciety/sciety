@@ -55,14 +55,6 @@ describe('render-editorial-community-page middleware', (): void => {
         name: 'community-name',
         description: 'community-description',
       },
-      fetchedArticles: Promise.resolve([{
-        doi: new Doi('10.1111/1111'),
-        title: 'title-1',
-      },
-      {
-        doi: new Doi('10.2222/2222'),
-        title: 'title-2',
-      }]),
     };
   });
 
