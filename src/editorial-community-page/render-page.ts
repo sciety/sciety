@@ -4,6 +4,7 @@ import createRenderEndorsedArticles, {
 } from './render-endorsed-articles';
 import templateHeader from './templates/header';
 import templateReviewedArticles from './templates/reviewed-articles';
+import { FetchArticle } from '../api/fetch-article';
 import Doi from '../data/doi';
 
 interface EditorialCommunity {
@@ -25,19 +26,16 @@ const createRenderPageHeader = (): RenderPageHeader => (
   async (editorialCommunity) => Promise.resolve(templateHeader(editorialCommunity))
 );
 
-const articleTitles: Record<string, string> = {
-  '10.1101/209320': 'Marine cyanolichens from different littoral zones are associated with distinct bacterial communities',
-  '10.1101/312330': 'A Real Time PCR Assay for Quantification of Parasite Burden in Murine Models of Leishmaniasis',
-};
-
 export default async (
   editorialCommunityId: string,
   viewModel: EditorialCommunity & ReviewedArticles,
+  fetchArticle: FetchArticle,
 ): Promise<string> => {
   const renderPageHeader = createRenderPageHeader();
-  const getArticleTitle: GetArticleTitle = async (articleDoi) => (
-    articleTitles[articleDoi.value] ?? 'Unknown article title'
-  );
+  const getArticleTitle: GetArticleTitle = async (articleDoi) => {
+    const article = await fetchArticle(articleDoi);
+    return article.title;
+  };
   const renderEndorsedArticles = createRenderEndorsedArticles(createGetHardCodedEndorsedArticles(getArticleTitle));
 
   return `

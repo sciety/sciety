@@ -1,4 +1,5 @@
 import { Context, Middleware, Response } from 'koa';
+import { FetchArticle } from '../../../src/api/fetch-article';
 import Doi from '../../../src/data/doi';
 import renderEditorialCommunityPage from '../../../src/editorial-community-page/middleware/render-editorial-community-page';
 import createContext from '../../context';
@@ -15,8 +16,18 @@ const repository = {
   all: shouldNotBeCalled,
 };
 
+const fetchArticle: FetchArticle = async (doi) => (
+  {
+    title: 'some title',
+    doi,
+    publicationDate: new Date(),
+    abstract: '',
+    authors: [],
+  }
+);
+
 const invokeMiddleware = async (ctx: Context, next?: Middleware): Promise<Response> => {
-  const { response } = await runMiddleware(renderEditorialCommunityPage(repository), ctx, next);
+  const { response } = await runMiddleware(renderEditorialCommunityPage(repository, fetchArticle), ctx, next);
   return response;
 };
 
