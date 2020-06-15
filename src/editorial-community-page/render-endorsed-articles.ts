@@ -1,3 +1,4 @@
+import endorsements from '../bootstrap-endorsements';
 import Doi from '../data/doi';
 import templateListItems from '../templates/list-items';
 
@@ -17,14 +18,8 @@ export type GetArticleTitle = (doi: Doi) => Promise<string>;
 
 export const createGetHardCodedEndorsedArticles = (getArticleTitle: GetArticleTitle): GetEndorsedArticles => (
   async (editorialCommunityId) => {
-    if (editorialCommunityId !== '53ed5364-a016-11ea-bb37-0242ac130002') {
-      return [];
-    }
-
-    const articleDois = [
-      new Doi('10.1101/209320'),
-      new Doi('10.1101/312330'),
-    ];
+    const articleDois = Object.entries(endorsements).filter((entry) => entry[1]?.includes(editorialCommunityId))
+      .map((entry) => new Doi(entry[0]));
 
     return Promise.all(articleDois.map(async (articleDoi) => (
       {
