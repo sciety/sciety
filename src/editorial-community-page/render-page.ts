@@ -30,6 +30,19 @@ export default (
   reviewReferenceRepository: ReviewReferenceRepository,
   editorialCommunities: EditorialCommunityRepository,
 ): RenderPage => {
+  const getEditorialCommunity: GetEditorialCommunity = async (editorialCommunityId) => {
+    const editorialCommunity = editorialCommunities.lookup(editorialCommunityId);
+
+    if (editorialCommunity.name === 'Unknown') {
+      throw new NotFound(`${editorialCommunityId} not found`);
+    }
+    return editorialCommunity;
+  };
+  const getArticleTitle: GetArticleTitle = async (articleDoi) => {
+    const article = await fetchArticle(articleDoi);
+    return article.title;
+  };
+  const getEndorsedArticles = createGetHardCodedEndorsedArticles(getArticleTitle);
   const getReviewedArticles: GetReviewedArticles = async (editorialCommunityId) => {
     const reviewedArticleVersions = reviewReferenceRepository.findReviewsForEditorialCommunityId(editorialCommunityId)
       .map((reviewReference) => reviewReference.articleVersionDoi);
@@ -38,17 +51,8 @@ export default (
   };
 
   return async (editorialCommunityId) => {
-    const editorialCommunity = editorialCommunities.lookup(editorialCommunityId);
-
-    if (editorialCommunity.name === 'Unknown') {
-      throw new NotFound(`${editorialCommunityId} not found`);
-    }
-    const renderPageHeader = createRenderPageHeader(async () => editorialCommunity);
-    const getArticleTitle: GetArticleTitle = async (articleDoi) => {
-      const article = await fetchArticle(articleDoi);
-      return article.title;
-    };
-    const renderEndorsedArticles = createRenderEndorsedArticles(createGetHardCodedEndorsedArticles(getArticleTitle));
+    const renderPageHeader = createRenderPageHeader(getEditorialCommunity);
+    const renderEndorsedArticles = createRenderEndorsedArticles(getEndorsedArticles);
     const renderReviewedArticles = createRenderReviewedArticles(getReviewedArticles);
 
     return `
