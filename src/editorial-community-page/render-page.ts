@@ -2,8 +2,8 @@ import createRenderEndorsedArticles, {
   createGetHardCodedEndorsedArticles,
   GetArticleTitle,
 } from './render-endorsed-articles';
-import templateHeader from './templates/header';
 import renderReviewedArticles from './render-reviewed-articles';
+import templateHeader from './templates/header';
 import { FetchArticle } from '../api/fetch-article';
 import Doi from '../data/doi';
 
