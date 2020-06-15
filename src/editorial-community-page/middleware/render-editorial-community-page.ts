@@ -3,10 +3,12 @@ import { Context, Middleware, Next } from 'koa';
 import { FetchArticle } from '../../api/fetch-article';
 import EditorialCommunityRepository from '../../types/editorial-community-repository';
 import { FetchedArticle } from '../../types/fetched-article';
-import renderPage from '../render-page';
+import createRenderPage from '../render-page';
 
-export default (editorialCommunities: EditorialCommunityRepository, fetchArticle: FetchArticle): Middleware => (
-  async (ctx: Context, next: Next): Promise<void> => {
+export default (editorialCommunities: EditorialCommunityRepository, fetchArticle: FetchArticle): Middleware => {
+  const renderPage = createRenderPage(fetchArticle);
+
+  return async (ctx: Context, next: Next): Promise<void> => {
     const editorialCommunityId = ctx.state.editorialCommunity.id;
     const editorialCommunity = editorialCommunities.lookup(editorialCommunityId);
 
@@ -28,8 +30,8 @@ export default (editorialCommunities: EditorialCommunityRepository, fetchArticle
       reviewedArticles,
     };
 
-    ctx.response.body = await renderPage(editorialCommunityId, viewModel, fetchArticle);
+    ctx.response.body = await renderPage(editorialCommunityId, viewModel);
 
     await next();
-  }
-);
+  };
+};

@@ -29,26 +29,21 @@ const createRenderPageHeader = (): RenderPageHeader => (
 type RenderPage = (
   editorialCommunityId: string,
   viewModel: EditorialCommunity & ReviewedArticles,
-  fetchArticle: FetchArticle,
 ) => Promise<string>;
 
-const renderPage: RenderPage = async (
-  editorialCommunityId,
-  viewModel,
-  fetchArticle,
-) => {
-  const renderPageHeader = createRenderPageHeader();
-  const getArticleTitle: GetArticleTitle = async (articleDoi) => {
-    const article = await fetchArticle(articleDoi);
-    return article.title;
-  };
-  const renderEndorsedArticles = createRenderEndorsedArticles(createGetHardCodedEndorsedArticles(getArticleTitle));
+export default (fetchArticle: FetchArticle): RenderPage => (
+  async (editorialCommunityId, viewModel) => {
+    const renderPageHeader = createRenderPageHeader();
+    const getArticleTitle: GetArticleTitle = async (articleDoi) => {
+      const article = await fetchArticle(articleDoi);
+      return article.title;
+    };
+    const renderEndorsedArticles = createRenderEndorsedArticles(createGetHardCodedEndorsedArticles(getArticleTitle));
 
-  return `
-    ${await renderPageHeader(viewModel)}
-    ${await renderEndorsedArticles(editorialCommunityId)}
-    ${templateReviewedArticles(viewModel.reviewedArticles)}
-  `;
-};
-
-export default renderPage;
+    return `
+      ${await renderPageHeader(viewModel)}
+      ${await renderEndorsedArticles(editorialCommunityId)}
+      ${templateReviewedArticles(viewModel.reviewedArticles)}
+    `;
+  }
+);
