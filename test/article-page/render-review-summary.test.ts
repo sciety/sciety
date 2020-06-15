@@ -11,39 +11,43 @@ describe('render-review-summary component', (): void => {
   };
   const idNamespace = 'review-42';
 
-  it('renders inside an article tag', () => {
-    const actual = renderReviewSummary(review, idNamespace);
+  describe('when the review fits without truncation', (): void => {
+    let actual: string;
 
-    expect(actual).toStrictEqual(expect.stringMatching(/^\s*<article\s/));
+    beforeEach((): void => {
+      actual = renderReviewSummary(review, idNamespace, 1500);
+    });
+
+    it('renders inside an article tag', () => {
+      expect(actual).toStrictEqual(expect.stringMatching(/^\s*<article\s/));
+    });
+
+    it('renders the summary', () => {
+      expect(actual).toStrictEqual(expect.stringContaining(review.summary));
+    });
+
+    it('renders the link to a full review', () => {
+      expect(actual).toStrictEqual(expect.stringContaining(`href="https://doi.org/${review.doi}"`));
+    });
+
+    it('renders the editorial community', () => {
+      expect(actual).toStrictEqual(expect.stringContaining('eLife'));
+    });
+
+    it('renders the publication date', () => {
+      expect(actual).toStrictEqual(expect.stringContaining('2010-02-01'));
+    });
+
+    it('renders ARIA attributes and ids', () => {
+      expect(actual).toStrictEqual(expect.stringContaining('aria-labelledby="review-42-read-more review-42-editorial-community"'));
+    });
   });
 
-  it('renders the summary', () => {
-    const actual = renderReviewSummary(review, idNamespace);
+  describe('when the review summary is very long', (): void => {
+    it('renders the summary truncated', () => {
+      const actual = renderReviewSummary(review, idNamespace, 6);
 
-    expect(actual).toStrictEqual(expect.stringContaining(review.summary));
-  });
-
-  it('renders the link to a full review', () => {
-    const actual = renderReviewSummary(review, idNamespace);
-
-    expect(actual).toStrictEqual(expect.stringContaining(`href="https://doi.org/${review.doi}"`));
-  });
-
-  it('renders the editorial community', () => {
-    const actual = renderReviewSummary(review, idNamespace);
-
-    expect(actual).toStrictEqual(expect.stringContaining('eLife'));
-  });
-
-  it('renders the publication date', () => {
-    const actual = renderReviewSummary(review, idNamespace);
-
-    expect(actual).toStrictEqual(expect.stringContaining('2010-02-01'));
-  });
-
-  it('renders ARIA attributes and ids', () => {
-    const actual = renderReviewSummary(review, idNamespace);
-
-    expect(actual).toStrictEqual(expect.stringContaining('aria-labelledby="review-42-read-more review-42-editorial-community"'));
+      expect(actual).toStrictEqual(expect.stringContaining('Prett'));
+    });
   });
 });

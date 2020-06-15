@@ -11,7 +11,9 @@ export type GetArticleReviewSummaries = () => Promise<Array<{
 }>>;
 
 export default (reviews: GetArticleReviewSummaries) => async (): Promise<string> => {
-  const reviewSummaries = (await reviews()).map((review, index) => renderReviewSummary(review, `review-${index}`));
+  const reviewSummaries = (await reviews()).map((review, index) => (
+    renderReviewSummary(review, `review-${index}`, 1500)
+  ));
   return `
     <h2 class="ui header">
       Review summaries

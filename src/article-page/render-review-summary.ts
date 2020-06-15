@@ -10,8 +10,8 @@ export interface ReviewSummary {
   editorialCommunityName: string;
 }
 
-export default (review: ReviewSummary, idNamespace: string): string => {
-  const summary = clip(review.summary, 1500);
+export default (review: ReviewSummary, idNamespace: string, maxChars: number): string => {
+  const summary = clip(review.summary, maxChars);
   return `
     <article class="content">
 
