@@ -1,4 +1,5 @@
 import Doi from '../data/doi';
+import templateListItems from '../templates/list-items';
 
 type RenderEndorsedArticle = (endorsedArticle: {doi: Doi; title: string}) => Promise<string>;
 
@@ -16,12 +17,18 @@ export default (): RenderEndorsedArticles => (
       return '';
     }
 
-    const endorsedArticles = [
+    const endorsedArticleData = [
       {
         doi: new Doi('10.1101/209320'),
         title: 'Marine cyanolichens from different littoral zones are associated with distinct bacterial communities',
       },
+      {
+        doi: new Doi('10.1101/312330'),
+        title: 'A Real Time PCR Assay for Quantification of Parasite Burden in Murine Models of Leishmaniasis',
+      },
     ];
+
+    const endorsedArticles = await Promise.all(endorsedArticleData.map(renderEndorsedArticle));
 
     return `
       <section class="ui basic vertical segment">
@@ -31,9 +38,7 @@ export default (): RenderEndorsedArticles => (
         </h2>
 
         <ol class="ui relaxed divided items">
-          <li class="item">
-            ${await renderEndorsedArticle(endorsedArticles[0])}
-          </li>
+          ${templateListItems(endorsedArticles)}
         </ol>
 
       </section>
