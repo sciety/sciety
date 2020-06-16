@@ -8,7 +8,7 @@ interface DisqusData {
   }>;
 }
 
-type FetchDisqusPostCount = (uri: string) => Promise<number>;
+export type FetchDisqusPostCount = (uri: string) => Promise<number>;
 
 export default (getJson: GetJson): FetchDisqusPostCount => {
   const log = createLogger('infrastructure:fetch-disqus-post-count');

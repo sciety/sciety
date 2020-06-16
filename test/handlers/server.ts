@@ -9,6 +9,7 @@ import createFetchReview from '../../src/api/fetch-review';
 import Doi from '../../src/data/doi';
 import createEditorialCommunityRepository from '../../src/data/in-memory-editorial-communities';
 import createReviewReferenceRepository from '../../src/data/in-memory-review-references';
+import createFetchDisqusPostCount from '../../src/infrastructure/fetch-disqus-post-count';
 import createRouter from '../../src/router';
 import createServer from '../../src/server';
 import { Adapters } from '../../src/types/adapters';
@@ -43,11 +44,13 @@ export default (): TestServer => {
   );
   const fetchAbstract: FetchAbstract = async () => 'Article abstract.';
   const fetchArticle = createFetchArticle(fetchCrossrefDataset, fetchAbstract);
+  const fetchDisqusPostCount = createFetchDisqusPostCount(async () => ({ response: [{ posts: 0 }] }));
   const fetchReview = createFetchReview(fetchDataCiteDataset);
   const getJson: Adapters['getJson'] = async () => ({ resultList: { result: [] } });
 
   const adapters: Adapters = {
     fetchArticle,
+    fetchDisqusPostCount,
     fetchReview,
     fetchStaticFile: async (filename: string) => `Contents of ${filename}`,
     editorialCommunities,

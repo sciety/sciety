@@ -1,4 +1,4 @@
-import createFetchDisqusPostCount from './fetch-disqus-post-count';
+import createGetBiorxivCommentCount, { GetCommentCountForUri } from './get-biorxiv-comment-count';
 import createGetHardCodedEndorsingEditorialCommunities, { GetNameForEditorialCommunity } from './hard-coded-endorsing-editorial-communities';
 import createRenderSearchResult, { GetReviewCount } from './render-search-result';
 import createRenderSearchResults from './render-search-results';
@@ -11,11 +11,12 @@ type RenderPage = (query: string) => Promise<string>;
 
 export default (
   getJson: GetJson,
+  getCommentCountForUri: GetCommentCountForUri,
   fetchReviewReferences: (articleVersionDoi: Doi) => Array<unknown>,
   getEditorialCommunity: (id: string) => { name: string },
 ): RenderPage => (
   async (query) => {
-    const getCommentCount = createFetchDisqusPostCount(getJson);
+    const getCommentCount = createGetBiorxivCommentCount(getCommentCountForUri);
     const getReviewCount: GetReviewCount = async (doi) => fetchReviewReferences(doi).length;
     const getNameForEditorialCommunity: GetNameForEditorialCommunity = (id) => getEditorialCommunity(id).name;
     const getEndorsingEditorialCommunities = createGetHardCodedEndorsingEditorialCommunities(

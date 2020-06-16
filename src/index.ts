@@ -8,6 +8,7 @@ import bootstrapReviews from './bootstrap-reviews';
 import Doi from './data/doi';
 import createEditorialCommunityRepository from './data/in-memory-editorial-communities';
 import createReviewReferenceRepository from './data/in-memory-review-references';
+import createFetchDisqusPostCount from './infrastructure/fetch-disqus-post-count';
 import createLogger from './logger';
 import createRouter from './router';
 import createServer from './server';
@@ -46,6 +47,7 @@ const getJson: Adapters['getJson'] = async (uri) => {
 const fetchDataset = createFetchDataset();
 const adapters: Adapters = {
   fetchArticle: createFetchArticle(fetchDataset, createFetchAbstractFromCrossref(makeHttpRequest)),
+  fetchDisqusPostCount: createFetchDisqusPostCount(getJson),
   fetchReview: createFetchReview(fetchDataset),
   fetchStaticFile: createFetchStaticFile(),
   editorialCommunities,
