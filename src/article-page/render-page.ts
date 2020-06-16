@@ -25,8 +25,9 @@ export default async (
   const abstractAdapter: GetArticleAbstract = async () => ({ content: article.abstract });
   const reviewsAdapter: GetArticleReviewSummaries = async () => reviews;
   const editorialCommunitiesAdapter: GetAllEditorialCommunities = async () => editorialCommunities.all();
-  const getEditorialCommunityName: GetEditorialCommunityName =
-    async (editorialCommunityId) => editorialCommunities.lookup(editorialCommunityId).name;
+  const getEditorialCommunityName: GetEditorialCommunityName = async (editorialCommunityId) => (
+    editorialCommunities.lookup(editorialCommunityId).name
+  );
   const renderPageHeader = createRenderPageHeader(
     getArticleDetailsAdapter,
     createGetEndorsingEditorialCommunityNames(getEditorialCommunityName),
