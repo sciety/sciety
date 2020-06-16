@@ -17,8 +17,8 @@ export type RenderPageHeader = (doi: Doi) => Promise<string>;
 export default (
   getArticleDetails: GetArticleDetails,
   getEndorsingEditorialCommunityNames: GetEndorsingEditorialCommunityNames,
-): RenderPageHeader => {
-  return async (doi) => {
+): RenderPageHeader => (
+  async (doi) => {
     const articleDetails = await getArticleDetails(doi);
 
     let endorsements = '';
@@ -53,5 +53,5 @@ export default (
         ${endorsements}
       </header>
     `;
-  };
-};
+  }
+);
