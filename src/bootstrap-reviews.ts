@@ -15,7 +15,7 @@ export default [
   { article: '10.1101/2020.03.28.013177', review: '10.5281/zenodo.3749854', editorialCommunityIndex: 1, added: new Date('2020-05-19') },
   { article: '10.1101/2020.03.22.002386', review: '10.5281/zenodo.3756962', editorialCommunityIndex: 1, added: new Date('2020-05-19') },
   { article: '10.1101/2020.02.26.966986', review: '10.5281/zenodo.3756966', editorialCommunityIndex: 1, added: new Date('2020-05-19') },
-  { article: '10.1101/2020.01.22.915660', review: '10.5281/zenodo.3832925', editorialCommunityIndex: 1, added: new Date('2020-06-12') },
+  { article: '10.1101/2020.01.22.915660', review: '10.5281/zenodo.3832925', editorialCommunityIndex: 3, added: new Date('2020-06-12') },
   { article: '10.1101/861799', review: '10.5281/zenodo.3672787', editorialCommunityIndex: 1, added: new Date('2020-05-19') },
   { article: '10.1101/862755', review: '10.5281/zenodo.3702901', editorialCommunityIndex: 1, added: new Date('2020-05-19') },
   { article: '10.1101/845081', review: '10.5281/zenodo.3718438', editorialCommunityIndex: 1, added: new Date('2020-06-15') },
