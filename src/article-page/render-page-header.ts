@@ -21,6 +21,16 @@ export default (
   async (doi) => {
     const articleDetails = await getArticleDetails(doi);
 
+    let comments = '';
+    if (doi.value === '10.1101/2020.05.11.089896') {
+      comments = `
+        <div class="ui label">
+          Comments
+          <span class="detail">11</span>
+        </div>
+      `;
+    }
+
     let endorsements = '';
     const endorsingEditorialCommunityNames = await getEndorsingEditorialCommunityNames(doi);
 
@@ -50,6 +60,7 @@ export default (
           </li>
         </ul>
 
+        ${comments}
         ${endorsements}
       </header>
     `;
