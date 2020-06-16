@@ -10,19 +10,30 @@ interface ArticleDetails {
 
 export type GetArticleDetails = (doi: Doi) => Promise<ArticleDetails>;
 
+type GetEndorsingEditorialCommunityNames = (articleDoi: Doi) => Promise<Array<string>>;
+
 export type RenderPageHeader = (doi: Doi) => Promise<string>;
 
-export default (getArticleDetails: GetArticleDetails): RenderPageHeader => (
-  async (doi) => {
+export default (getArticleDetails: GetArticleDetails): RenderPageHeader => {
+  const getEndorsingEditorialCommunityNames: GetEndorsingEditorialCommunityNames = async (articleDoi) => {
+    if (articleDoi.value !== '10.1101/209320') {
+      return [];
+    }
+
+    return ['PeerJ'];
+  };
+
+  return async (doi) => {
     const articleDetails = await getArticleDetails(doi);
 
     let endorsements = '';
+    const endorsingEditorialCommunityNames = await getEndorsingEditorialCommunityNames(doi);
 
-    if (doi.value === '10.1101/209320') {
+    if (endorsingEditorialCommunityNames.length > 0) {
       endorsements = `
         <div class="ui label">
           Endorsed by
-          <span class="detail">PeerJ</span>
+          <span class="detail">${endorsingEditorialCommunityNames.join(', ')}</span>
         </div>
       `;
     }
@@ -47,5 +58,5 @@ export default (getArticleDetails: GetArticleDetails): RenderPageHeader => (
         ${endorsements}
       </header>
     `;
-  }
-);
+  };
+};
