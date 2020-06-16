@@ -37,6 +37,20 @@ describe('render-page-header component', (): void => {
     expect(rendered).toStrictEqual(expect.stringContaining('Uncle Wiggly'));
   });
 
+  describe('the article has comments', (): void => {
+    it('displays the number of comments', async (): Promise<void> => {
+      rendered = await renderPageHeader(new Doi('10.1101/2020.05.11.089896'));
+
+      expect(rendered).toStrictEqual(expect.stringMatching(/Comments[\s\S]*?11/));
+    });
+  });
+
+  describe('the article does not have comments', (): void => {
+    it('does not display comment details', async (): Promise<void> => {
+      expect(rendered).toStrictEqual(expect.not.stringContaining('Comments'));
+    });
+  });
+
   describe('the article has been endorsed', (): void => {
     it('displays the endorsing editorial communities', async (): Promise<void> => {
       renderPageHeader = createRenderPageHeader(getArticleDetails, async () => ['PeerJ']);
