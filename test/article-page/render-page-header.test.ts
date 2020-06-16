@@ -1,19 +1,18 @@
 import createRenderPageHeader, { GetArticleDetails, RenderPageHeader } from '../../src/article-page/render-page-header';
 import Doi from '../../src/data/doi';
 
+const getArticleDetails: GetArticleDetails = async (doi) => ({
+  title: `Lorem ipsum ${doi}`,
+  authors: ['Gary', 'Uncle Wiggly'],
+  publicationDate: new Date('2020-06-03'),
+});
+
 describe('render-page-header component', (): void => {
   let renderPageHeader: RenderPageHeader;
   let rendered: string;
 
   beforeEach(async () => {
-    const getArticleDetails: GetArticleDetails = async (doi) => ({
-      title: `Lorem ipsum ${doi}`,
-      authors: ['Gary', 'Uncle Wiggly'],
-      publicationDate: new Date('2020-06-03'),
-    });
-
-    renderPageHeader = createRenderPageHeader(getArticleDetails);
-
+    renderPageHeader = createRenderPageHeader(getArticleDetails, async () => []);
     rendered = await renderPageHeader(new Doi('10.1101/815689'));
   });
 
@@ -40,7 +39,8 @@ describe('render-page-header component', (): void => {
 
   describe('the article has been endorsed', (): void => {
     it('displays the endorsing editorial communities', async (): Promise<void> => {
-      rendered = await renderPageHeader(new Doi('10.1101/209320'));
+      renderPageHeader = createRenderPageHeader(getArticleDetails, async () => ['PeerJ']);
+      rendered = await renderPageHeader(new Doi('10.1101/815689'));
 
       expect(rendered).toStrictEqual(expect.stringMatching(/Endorsed by[\s\S]*?PeerJ/));
     });

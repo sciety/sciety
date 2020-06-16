@@ -1,9 +1,17 @@
 import createRenderAddReviewForm, { GetAllEditorialCommunities } from './render-add-review-form';
 import createRenderArticleAbstract, { GetArticleAbstract } from './render-article-abstract';
-import createRenderPageHeader, { GetArticleDetails } from './render-page-header';
+import createRenderPageHeader, { GetArticleDetails, GetEndorsingEditorialCommunityNames } from './render-page-header';
 import createRenderReviewSummaries, { GetArticleReviewSummaries } from './render-review-summaries';
 import { ArticlePageViewModel } from './types/article-page-view-model';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
+
+const getEndorsingEditorialCommunityNames: GetEndorsingEditorialCommunityNames = async (articleDoi) => {
+  if (articleDoi.value !== '10.1101/209320') {
+    return [];
+  }
+
+  return ['PeerJ'];
+};
 
 export default async (
   { article, reviews }: ArticlePageViewModel,
@@ -13,7 +21,7 @@ export default async (
   const abstractAdapter: GetArticleAbstract = async () => ({ content: article.abstract });
   const reviewsAdapter: GetArticleReviewSummaries = async () => reviews;
   const editorialCommunitiesAdapter: GetAllEditorialCommunities = async () => editorialCommunities.all();
-  const renderPageHeader = createRenderPageHeader(getArticleDetailsAdapter);
+  const renderPageHeader = createRenderPageHeader(getArticleDetailsAdapter, getEndorsingEditorialCommunityNames);
   const renderArticleAbstract = createRenderArticleAbstract(abstractAdapter);
   const renderReviewSummaries = createRenderReviewSummaries(reviewsAdapter);
   const renderAddReviewForm = createRenderAddReviewForm(editorialCommunitiesAdapter);

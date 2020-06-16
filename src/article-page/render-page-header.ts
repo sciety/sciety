@@ -10,19 +10,14 @@ interface ArticleDetails {
 
 export type GetArticleDetails = (doi: Doi) => Promise<ArticleDetails>;
 
-type GetEndorsingEditorialCommunityNames = (articleDoi: Doi) => Promise<Array<string>>;
+export type GetEndorsingEditorialCommunityNames = (articleDoi: Doi) => Promise<Array<string>>;
 
 export type RenderPageHeader = (doi: Doi) => Promise<string>;
 
-export default (getArticleDetails: GetArticleDetails): RenderPageHeader => {
-  const getEndorsingEditorialCommunityNames: GetEndorsingEditorialCommunityNames = async (articleDoi) => {
-    if (articleDoi.value !== '10.1101/209320') {
-      return [];
-    }
-
-    return ['PeerJ'];
-  };
-
+export default (
+  getArticleDetails: GetArticleDetails,
+  getEndorsingEditorialCommunityNames: GetEndorsingEditorialCommunityNames,
+): RenderPageHeader => {
   return async (doi) => {
     const articleDetails = await getArticleDetails(doi);
 
