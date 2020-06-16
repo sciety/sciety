@@ -20,34 +20,33 @@ export default (
   getArticleDetails: GetArticleDetails,
   getCommentCount: GetCommentCount,
   getEndorsingEditorialCommunityNames: GetEndorsingEditorialCommunityNames,
-): RenderPageHeader => {
-  return async (doi) => {
-    const articleDetails = await getArticleDetails(doi);
+): RenderPageHeader => async (doi) => {
+  const articleDetails = await getArticleDetails(doi);
 
-    let comments = '';
-    const commentCount = await getCommentCount(doi);
-    if (commentCount > 0) {
-      comments = `
+  let comments = '';
+  const commentCount = await getCommentCount(doi);
+  if (commentCount > 0) {
+    comments = `
         <div class="ui label">
           Comments
           <span class="detail">${commentCount}</span>
         </div>
       `;
-    }
+  }
 
-    let endorsements = '';
-    const endorsingEditorialCommunityNames = await getEndorsingEditorialCommunityNames(doi);
+  let endorsements = '';
+  const endorsingEditorialCommunityNames = await getEndorsingEditorialCommunityNames(doi);
 
-    if (endorsingEditorialCommunityNames.length > 0) {
-      endorsements = `
+  if (endorsingEditorialCommunityNames.length > 0) {
+    endorsements = `
         <div class="ui label">
           Endorsed by
           <span class="detail">${endorsingEditorialCommunityNames.join(', ')}</span>
         </div>
       `;
-    }
+  }
 
-    return `
+  return `
       <header class="ui basic padded vertical segment">
         <h1 class="ui header">${articleDetails.title}</h1>
 
@@ -68,5 +67,4 @@ export default (
         ${endorsements}
       </header>
     `;
-  };
 };
