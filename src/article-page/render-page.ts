@@ -1,6 +1,10 @@
 import createRenderAddReviewForm, { GetAllEditorialCommunities } from './render-add-review-form';
 import createRenderArticleAbstract, { GetArticleAbstract } from './render-article-abstract';
-import createRenderPageHeader, { GetArticleDetails, GetEndorsingEditorialCommunityNames } from './render-page-header';
+import createRenderPageHeader, {
+  GetArticleDetails,
+  GetCommentCount,
+  GetEndorsingEditorialCommunityNames,
+} from './render-page-header';
 import createRenderReviewSummaries, { GetArticleReviewSummaries } from './render-review-summaries';
 import { ArticlePageViewModel } from './types/article-page-view-model';
 import endorsements from '../bootstrap-endorsements';
@@ -11,8 +15,8 @@ type GetEditorialCommunityName = (editorialCommunityId: string) => Promise<strin
 const createGetEndorsingEditorialCommunityNames = (
   getEditorialCommunityName: GetEditorialCommunityName,
 ): GetEndorsingEditorialCommunityNames => (
-  async (articleDoi) => {
-    const endorsingEditorialCommunityIds = endorsements[articleDoi.value] ?? [];
+  async (doi) => {
+    const endorsingEditorialCommunityIds = endorsements[doi.value] ?? [];
     return Promise.all(endorsingEditorialCommunityIds.map(getEditorialCommunityName));
   }
 );
@@ -21,6 +25,13 @@ export default async (
   { article, reviews }: ArticlePageViewModel,
   editorialCommunities: EditorialCommunityRepository,
 ): Promise<string> => {
+  const getCommentCount: GetCommentCount = async (doi) => {
+    if (doi.value === '10.1101/2020.05.11.089896') {
+      return 11;
+    }
+    return 0;
+  };
+
   const getArticleDetailsAdapter: GetArticleDetails = async () => article;
   const abstractAdapter: GetArticleAbstract = async () => ({ content: article.abstract });
   const reviewsAdapter: GetArticleReviewSummaries = async () => reviews;
@@ -30,6 +41,7 @@ export default async (
   );
   const renderPageHeader = createRenderPageHeader(
     getArticleDetailsAdapter,
+    getCommentCount,
     createGetEndorsingEditorialCommunityNames(getEditorialCommunityName),
   );
   const renderArticleAbstract = createRenderArticleAbstract(abstractAdapter);

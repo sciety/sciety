@@ -10,23 +10,17 @@ interface ArticleDetails {
 
 export type GetArticleDetails = (doi: Doi) => Promise<ArticleDetails>;
 
-export type GetEndorsingEditorialCommunityNames = (articleDoi: Doi) => Promise<Array<string>>;
+export type GetCommentCount = (doi: Doi) => Promise<number>;
 
-type GetCommentCount = (articleDoi: Doi) => Promise<number>;
+export type GetEndorsingEditorialCommunityNames = (doi: Doi) => Promise<Array<string>>;
 
 export type RenderPageHeader = (doi: Doi) => Promise<string>;
 
 export default (
   getArticleDetails: GetArticleDetails,
+  getCommentCount: GetCommentCount,
   getEndorsingEditorialCommunityNames: GetEndorsingEditorialCommunityNames,
 ): RenderPageHeader => {
-  const getCommentCount: GetCommentCount = async (doi) => {
-    if (doi.value === '10.1101/2020.05.11.089896') {
-      return 11;
-    }
-    return 0;
-  };
-
   return async (doi) => {
     const articleDetails = await getArticleDetails(doi);
 

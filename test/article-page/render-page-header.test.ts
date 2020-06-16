@@ -12,7 +12,7 @@ describe('render-page-header component', (): void => {
   let rendered: string;
 
   beforeEach(async () => {
-    renderPageHeader = createRenderPageHeader(getArticleDetails, async () => []);
+    renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 0, async () => []);
     rendered = await renderPageHeader(new Doi('10.1101/815689'));
   });
 
@@ -39,7 +39,8 @@ describe('render-page-header component', (): void => {
 
   describe('the article has comments', (): void => {
     it('displays the number of comments', async (): Promise<void> => {
-      rendered = await renderPageHeader(new Doi('10.1101/2020.05.11.089896'));
+      renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 11, async () => []);
+      rendered = await renderPageHeader(new Doi('10.1101/815689'));
 
       expect(rendered).toStrictEqual(expect.stringMatching(/Comments[\s\S]*?11/));
     });
@@ -53,7 +54,7 @@ describe('render-page-header component', (): void => {
 
   describe('the article has been endorsed', (): void => {
     it('displays the endorsing editorial communities', async (): Promise<void> => {
-      renderPageHeader = createRenderPageHeader(getArticleDetails, async () => ['PeerJ']);
+      renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 0, async () => ['PeerJ']);
       rendered = await renderPageHeader(new Doi('10.1101/815689'));
 
       expect(rendered).toStrictEqual(expect.stringMatching(/Endorsed by[\s\S]*?PeerJ/));
