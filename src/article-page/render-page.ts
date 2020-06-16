@@ -6,12 +6,14 @@ import { ArticlePageViewModel } from './types/article-page-view-model';
 import endorsements from '../bootstrap-endorsements';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 
+type GetEditorialCommunityName = (editorialCommunityId: string) => Promise<string>;
+
 const createGetEndorsingEditorialCommunityNames = (
-  editorialCommunities: EditorialCommunityRepository,
+  getEditorialCommunityName: GetEditorialCommunityName,
 ): GetEndorsingEditorialCommunityNames => (
   async (articleDoi) => {
     const endorsingEditorialCommunityIds = endorsements[articleDoi.value] ?? [];
-    return endorsingEditorialCommunityIds.map((communityId) => editorialCommunities.lookup(communityId).name);
+    return Promise.all(endorsingEditorialCommunityIds.map(getEditorialCommunityName));
   }
 );
 
@@ -23,9 +25,11 @@ export default async (
   const abstractAdapter: GetArticleAbstract = async () => ({ content: article.abstract });
   const reviewsAdapter: GetArticleReviewSummaries = async () => reviews;
   const editorialCommunitiesAdapter: GetAllEditorialCommunities = async () => editorialCommunities.all();
+  const getEditorialCommunityName: GetEditorialCommunityName =
+    async (editorialCommunityId) => editorialCommunities.lookup(editorialCommunityId).name;
   const renderPageHeader = createRenderPageHeader(
     getArticleDetailsAdapter,
-    createGetEndorsingEditorialCommunityNames(editorialCommunities),
+    createGetEndorsingEditorialCommunityNames(getEditorialCommunityName),
   );
   const renderArticleAbstract = createRenderArticleAbstract(abstractAdapter);
   const renderReviewSummaries = createRenderReviewSummaries(reviewsAdapter);
