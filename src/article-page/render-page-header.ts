@@ -12,21 +12,31 @@ export type GetArticleDetails = (doi: Doi) => Promise<ArticleDetails>;
 
 export type GetEndorsingEditorialCommunityNames = (articleDoi: Doi) => Promise<Array<string>>;
 
+type GetCommentCount = (articleDoi: Doi) => Promise<number>;
+
 export type RenderPageHeader = (doi: Doi) => Promise<string>;
 
 export default (
   getArticleDetails: GetArticleDetails,
   getEndorsingEditorialCommunityNames: GetEndorsingEditorialCommunityNames,
-): RenderPageHeader => (
-  async (doi) => {
+): RenderPageHeader => {
+  const getCommentCount: GetCommentCount = async (doi) => {
+    if (doi.value === '10.1101/2020.05.11.089896') {
+      return 11;
+    }
+    return 0;
+  };
+
+  return async (doi) => {
     const articleDetails = await getArticleDetails(doi);
 
     let comments = '';
-    if (doi.value === '10.1101/2020.05.11.089896') {
+    const commentCount = await getCommentCount(doi);
+    if (commentCount > 0) {
       comments = `
         <div class="ui label">
           Comments
-          <span class="detail">11</span>
+          <span class="detail">${commentCount}</span>
         </div>
       `;
     }
@@ -64,5 +74,5 @@ export default (
         ${endorsements}
       </header>
     `;
-  }
-);
+  };
+};
