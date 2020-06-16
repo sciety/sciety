@@ -190,6 +190,11 @@ module.exports = {
       },
       archi: {
         collapsePattern: '^(node_modules|packages|src|lib|app|bin|test(s?)|spec(s?))/[^/]+',
+        theme: {
+          graph: {
+            ordering: 'in',
+          },
+        },
       },
     },
   },
