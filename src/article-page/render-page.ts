@@ -3,17 +3,14 @@ import createRenderArticleAbstract, { GetArticleAbstract } from './render-articl
 import createRenderPageHeader, { GetArticleDetails, GetEndorsingEditorialCommunityNames } from './render-page-header';
 import createRenderReviewSummaries, { GetArticleReviewSummaries } from './render-review-summaries';
 import { ArticlePageViewModel } from './types/article-page-view-model';
+import endorsements from '../bootstrap-endorsements';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 
 const createGetEndorsingEditorialCommunityNames = (
   editorialCommunities: EditorialCommunityRepository,
 ): GetEndorsingEditorialCommunityNames => (
   async (articleDoi) => {
-    if (articleDoi.value !== '10.1101/209320') {
-      return [];
-    }
-
-    const endorsingEditorialCommunityIds = ['53ed5364-a016-11ea-bb37-0242ac130002'];
+    const endorsingEditorialCommunityIds = endorsements[articleDoi.value] ?? [];
     return endorsingEditorialCommunityIds.map((communityId) => editorialCommunities.lookup(communityId).name);
   }
 );
