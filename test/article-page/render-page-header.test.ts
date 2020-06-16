@@ -1,7 +1,8 @@
-import createRenderPageHeader, { GetArticleDetails } from '../../src/article-page/render-page-header';
+import createRenderPageHeader, { GetArticleDetails, RenderPageHeader } from '../../src/article-page/render-page-header';
 import Doi from '../../src/data/doi';
 
 describe('render-page-header component', (): void => {
+  let renderPageHeader: RenderPageHeader;
   let rendered: string;
 
   beforeEach(async () => {
@@ -11,7 +12,7 @@ describe('render-page-header component', (): void => {
       publicationDate: new Date('2020-06-03'),
     });
 
-    const renderPageHeader = createRenderPageHeader(getArticleDetails);
+    renderPageHeader = createRenderPageHeader(getArticleDetails);
 
     rendered = await renderPageHeader(new Doi('10.1101/815689'));
   });
@@ -35,5 +36,19 @@ describe('render-page-header component', (): void => {
   it('renders the article authors', () => {
     expect(rendered).toStrictEqual(expect.stringContaining('Gary'));
     expect(rendered).toStrictEqual(expect.stringContaining('Uncle Wiggly'));
+  });
+
+  describe('the article has been endorsed', (): void => {
+    it('displays the endorsing editorial communities', async (): Promise<void> => {
+      rendered = await renderPageHeader(new Doi('10.1101/209320'));
+
+      expect(rendered).toStrictEqual(expect.stringMatching(/Endorsed by[\s\S]*?PeerJ/));
+    });
+  });
+
+  describe('the article has not been endorsed', (): void => {
+    it('does not display endorsement details', async (): Promise<void> => {
+      expect(rendered).toStrictEqual(expect.not.stringContaining('Endorsed by'));
+    });
   });
 });

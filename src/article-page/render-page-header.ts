@@ -10,11 +10,23 @@ interface ArticleDetails {
 
 export type GetArticleDetails = (doi: Doi) => Promise<ArticleDetails>;
 
-type RenderPageHeader = (doi: Doi) => Promise<string>;
+export type RenderPageHeader = (doi: Doi) => Promise<string>;
 
 export default (getArticleDetails: GetArticleDetails): RenderPageHeader => (
   async (doi) => {
     const articleDetails = await getArticleDetails(doi);
+
+    let endorsements = '';
+
+    if (doi.value === '10.1101/209320') {
+      endorsements = `
+        <div class="ui label">
+          Endorsed by
+          <span class="detail">PeerJ</span>
+        </div>
+      `;
+    }
+
     return `
       <header class="ui basic padded vertical segment">
         <h1 class="ui header">${articleDetails.title}</h1>
@@ -31,6 +43,8 @@ export default (getArticleDetails: GetArticleDetails): RenderPageHeader => (
             Posted ${templateDate(articleDetails.publicationDate)}
           </li>
         </ul>
+
+        ${endorsements}
       </header>
     `;
   }
