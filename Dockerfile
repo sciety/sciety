@@ -39,7 +39,7 @@ COPY .eslintignore \
   .eslintrc.js \
   jest.config.js \
   tsconfig.json \
-  tsconfig.lint.json \
+  tsconfig.dev.json \
   .dependency-cruiser.js \
   ./
 COPY --from=npm-dev /app/ .
