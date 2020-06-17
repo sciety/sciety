@@ -52,7 +52,6 @@ export default (): TestServer => {
 
   const adapters: Adapters = {
     fetchArticle,
-    fetchDisqusPostCount,
     getBiorxivCommentCount,
     fetchReview,
     fetchStaticFile: async (filename: string) => `Contents of ${filename}`,

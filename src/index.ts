@@ -48,7 +48,6 @@ const getJson: Adapters['getJson'] = async (uri) => {
 const fetchDataset = createFetchDataset();
 const adapters: Adapters = {
   fetchArticle: createFetchArticle(fetchDataset, createFetchAbstractFromCrossref(makeHttpRequest)),
-  fetchDisqusPostCount: createFetchDisqusPostCount(getJson),
   getBiorxivCommentCount: createGetBiorxivCommentCount(createFetchDisqusPostCount(getJson)),
   fetchReview: createFetchReview(fetchDataset),
   fetchStaticFile: createFetchStaticFile(),
