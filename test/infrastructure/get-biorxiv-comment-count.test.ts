@@ -1,5 +1,5 @@
-import createGetBiorxivCommentCount, { GetCommentCountForUri } from '../../src/article-search-page/get-biorxiv-comment-count';
 import Doi from '../../src/data/doi';
+import createGetBiorxivCommentCount, { GetCommentCountForUri } from '../../src/infrastructure/get-biorxiv-comment-count';
 
 const doi = new Doi('10.1101/833392');
 

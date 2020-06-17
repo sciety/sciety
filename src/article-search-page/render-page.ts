@@ -1,9 +1,9 @@
-import createGetBiorxivCommentCount, { GetCommentCountForUri } from './get-biorxiv-comment-count';
 import createGetHardCodedEndorsingEditorialCommunities, { GetNameForEditorialCommunity } from './hard-coded-endorsing-editorial-communities';
 import createRenderSearchResult, { GetReviewCount } from './render-search-result';
 import createRenderSearchResults from './render-search-results';
 import createSearchEuropePmc from './search-europe-pmc';
 import Doi from '../data/doi';
+import createGetBiorxivCommentCount, { GetCommentCountForUri } from '../infrastructure/get-biorxiv-comment-count';
 
 export type GetJson = (uri: string) => Promise<object>;
 
