@@ -1,3 +1,4 @@
+import { JSDOM } from 'jsdom';
 import createRenderPageHeader, { GetArticleDetails, RenderPageHeader } from '../../src/article-page/render-page-header';
 import Doi from '../../src/data/doi';
 
@@ -39,6 +40,16 @@ describe('render-page-header component', (): void => {
 
   describe('the article has comments', (): void => {
     it('displays the number of comments', async (): Promise<void> => {
+      renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 11, async () => []);
+      const pageHeader = JSDOM.fragment(await renderPageHeader(new Doi('10.1101/815689')));
+
+      const anchor: HTMLAnchorElement | null = pageHeader.querySelector('a[data-test-id="biorxivCommentLink"]');
+
+      expect(anchor).not.toBeNull();
+      expect(anchor?.href).toStrictEqual('https://www.biorxiv.org/content/10.1101/815689v1');
+    });
+
+    it('links to v1 of the article on Biorxiv', async (): Promise<void> => {
       renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 11, async () => []);
       rendered = await renderPageHeader(new Doi('10.1101/815689'));
 

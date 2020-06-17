@@ -28,10 +28,12 @@ export default (
     const commentCount = await getCommentCount(doi);
     if (commentCount > 0) {
       comments = `
-        <div class="ui label">
-          Comments
-          <span class="detail">${commentCount}</span>
-        </div>
+        <a href="https://www.biorxiv.org/content/${doi.value}v1" data-test-id="biorxivCommentLink">
+          <div class="ui label">
+            Comments
+            <span class="detail">${commentCount}</span>
+          </div>
+        </a>
       `;
     } else {
       comments = '';
