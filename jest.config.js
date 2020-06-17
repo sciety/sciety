@@ -8,6 +8,7 @@ module.exports = {
     },
   },
   rootDir: 'test',
+  testEnvironment: 'node',
   transform: {
     '^.+\\.ts$': 'ts-jest',
   },
