@@ -8,7 +8,7 @@ import { FetchedArticle } from '../types/fetched-article';
 
 export type FetchArticle = (doi: Doi) => Promise<FetchedArticle>;
 
-export type FetchAbstract = (doi: Doi) => Promise<string>;
+export type FetchAbstract = (doi: Doi) => Promise<{ abstract: string }>;
 
 export type MakeHttpRequest = (uri: string, acceptHeader: string) => Promise<string>;
 
@@ -29,7 +29,7 @@ export const createFetchAbstractFromCrossref = (makeHttpRequest: MakeHttpRequest
     if (typeof abstractElement?.textContent !== 'string') {
       log(`Did not find abstract for ${doi}`);
 
-      return `No abstract for ${doi} available`;
+      return { abstract: `No abstract for ${doi} available` };
     }
 
     log(`Found abstract for ${doi}: ${abstractElement.textContent}`);
@@ -39,19 +39,21 @@ export const createFetchAbstractFromCrossref = (makeHttpRequest: MakeHttpRequest
       abstractElement.removeChild(titleElement);
     }
 
-    return `${abstractElement}`
-      .replace(/<abstract[^>]*>/, '')
-      .replace(/<\/abstract>/, '')
-      .replace(/<italic[^>]*>/g, '<i>')
-      .replace(/<\/italic>/g, '</i>')
-      .replace(/<list[^>]* list-type=['"]bullet['"][^>]*/g, '<ul')
-      .replace(/<\/list>/g, '</ul>')
-      .replace(/<list-item[^>]*/g, '<li')
-      .replace(/<\/list-item>/g, '</li>')
-      .replace(/<sec[^>]*/g, '<section')
-      .replace(/<\/sec>/g, '</section>')
-      .replace(/<title[^>]*/g, '<h3 class="ui header"')
-      .replace(/<\/title>/g, '</h3>');
+    return {
+      abstract: `${abstractElement}`
+        .replace(/<abstract[^>]*>/, '')
+        .replace(/<\/abstract>/, '')
+        .replace(/<italic[^>]*>/g, '<i>')
+        .replace(/<\/italic>/g, '</i>')
+        .replace(/<list[^>]* list-type=['"]bullet['"][^>]*/g, '<ul')
+        .replace(/<\/list>/g, '</ul>')
+        .replace(/<list-item[^>]*/g, '<li')
+        .replace(/<\/list-item>/g, '</li>')
+        .replace(/<sec[^>]*/g, '<section')
+        .replace(/<\/sec>/g, '</section>')
+        .replace(/<title[^>]*/g, '<h3 class="ui header"')
+        .replace(/<\/title>/g, '</h3>'),
+    };
   };
 };
 
@@ -72,7 +74,7 @@ export default (fetchDataset: FetchDataset, fetchAbstract: FetchAbstract): Fetch
       title,
       authors,
       publicationDate,
-      abstract,
+      abstract: abstract.abstract,
     };
     log(`Retrieved article: ${JSON.stringify(response)}`);
     return response;

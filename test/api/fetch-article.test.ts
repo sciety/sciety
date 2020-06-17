@@ -17,7 +17,7 @@ describe('fetch-article', (): void => {
         .addOut(dcterms.creator, (author) => author.addOut(foaf.name, 'Josiah S. Carberry'))
         .addOut(dcterms.creator, (author) => author.addOut(foaf.name, 'Albert Einstein'))
     );
-    const fetchAbstract: FetchAbstract = async () => 'Article abstract.';
+    const fetchAbstract: FetchAbstract = async () => ({ abstract: 'Article abstract.' });
     const fetchArticle = createFetchArticle(fetchDataset, fetchAbstract);
     const article = await fetchArticle(doi);
 
@@ -32,7 +32,7 @@ describe('fetch-article', (): void => {
     const fetchDataset: FetchDataset = async (iri) => (
       clownface({ dataset: datasetFactory(), term: iri })
     );
-    const fetchAbstract: FetchAbstract = async () => 'Article abstract.';
+    const fetchAbstract: FetchAbstract = async () => ({ abstract: 'Article abstract.' });
     const fetchArticle = createFetchArticle(fetchDataset, fetchAbstract);
     const article = await fetchArticle(doi);
 

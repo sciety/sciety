@@ -20,7 +20,7 @@ describe('fetch-abstract-from-crossref', (): void => {
 `;
     const abstract = await createFetchAbstractFromCrossref(makeHttpRequest)(doi);
 
-    expect(abstract).toStrictEqual(expect.stringContaining('Some random nonsense.'));
+    expect(abstract.abstract).toStrictEqual(expect.stringContaining('Some random nonsense.'));
   });
 
   it('removes the <abstract> element', async () => {
@@ -41,8 +41,8 @@ describe('fetch-abstract-from-crossref', (): void => {
 `;
     const abstract = await createFetchAbstractFromCrossref(makeHttpRequest)(doi);
 
-    expect(abstract).toStrictEqual(expect.not.stringContaining('<abstract>'));
-    expect(abstract).toStrictEqual(expect.not.stringContaining('</abstract>'));
+    expect(abstract.abstract).toStrictEqual(expect.not.stringContaining('<abstract>'));
+    expect(abstract.abstract).toStrictEqual(expect.not.stringContaining('</abstract>'));
   });
 
   it('removes the first <title> if present', async () => {
@@ -64,7 +64,7 @@ describe('fetch-abstract-from-crossref', (): void => {
 `;
     const abstract = await createFetchAbstractFromCrossref(makeHttpRequest)(doi);
 
-    expect(abstract).toStrictEqual(expect.not.stringContaining('Abstract'));
+    expect(abstract.abstract).toStrictEqual(expect.not.stringContaining('Abstract'));
   });
 
   it('replaces remaining <title>s with HTML <h3>s', async () => {
@@ -90,10 +90,10 @@ describe('fetch-abstract-from-crossref', (): void => {
 `;
     const abstract = await createFetchAbstractFromCrossref(makeHttpRequest)(doi);
 
-    expect(abstract).toStrictEqual(expect.stringContaining('<h3 class="ui header">should be an h3</h3>'));
-    expect(abstract).toStrictEqual(expect.stringContaining('<h3 class="ui header">should also be an h3</h3>'));
-    expect(abstract).toStrictEqual(expect.not.stringContaining('<title>'));
-    expect(abstract).toStrictEqual(expect.not.stringContaining('</title>'));
+    expect(abstract.abstract).toStrictEqual(expect.stringContaining('<h3 class="ui header">should be an h3</h3>'));
+    expect(abstract.abstract).toStrictEqual(expect.stringContaining('<h3 class="ui header">should also be an h3</h3>'));
+    expect(abstract.abstract).toStrictEqual(expect.not.stringContaining('<title>'));
+    expect(abstract.abstract).toStrictEqual(expect.not.stringContaining('</title>'));
   });
 
   it('renders italic if present', async () => {
@@ -121,8 +121,8 @@ describe('fetch-abstract-from-crossref', (): void => {
 `;
     const abstract = await createFetchAbstractFromCrossref(makeHttpRequest)(doi);
 
-    expect(abstract).toStrictEqual(expect.stringContaining('<i>Cannabis sativa</i>'));
-    expect(abstract).toStrictEqual(expect.stringContaining('<i>in vivo</i>'));
+    expect(abstract.abstract).toStrictEqual(expect.stringContaining('<i>Cannabis sativa</i>'));
+    expect(abstract.abstract).toStrictEqual(expect.stringContaining('<i>in vivo</i>'));
   });
 
   it('replaces <list> unordered list with HTML <ul>', async () => {
@@ -150,10 +150,10 @@ describe('fetch-abstract-from-crossref', (): void => {
 `;
     const abstract = await createFetchAbstractFromCrossref(makeHttpRequest)(doi);
 
-    expect(abstract).toStrictEqual(expect.stringContaining('<ul>'));
-    expect(abstract).toStrictEqual(expect.stringContaining('</ul>'));
-    expect(abstract).toStrictEqual(expect.stringContaining('<li>'));
-    expect(abstract).toStrictEqual(expect.stringContaining('</li>'));
+    expect(abstract.abstract).toStrictEqual(expect.stringContaining('<ul>'));
+    expect(abstract.abstract).toStrictEqual(expect.stringContaining('</ul>'));
+    expect(abstract.abstract).toStrictEqual(expect.stringContaining('<li>'));
+    expect(abstract.abstract).toStrictEqual(expect.stringContaining('</li>'));
   });
 
   it('replaces <sec> with HTML <section>', async () => {
@@ -176,9 +176,9 @@ describe('fetch-abstract-from-crossref', (): void => {
 `;
     const abstract = await createFetchAbstractFromCrossref(makeHttpRequest)(doi);
 
-    expect(abstract).toStrictEqual(expect.stringContaining('<section>'));
-    expect(abstract).toStrictEqual(expect.stringContaining('</section>'));
-    expect(abstract).toStrictEqual(expect.not.stringContaining('<sec>'));
-    expect(abstract).toStrictEqual(expect.not.stringContaining('</sec>'));
+    expect(abstract.abstract).toStrictEqual(expect.stringContaining('<section>'));
+    expect(abstract.abstract).toStrictEqual(expect.stringContaining('</section>'));
+    expect(abstract.abstract).toStrictEqual(expect.not.stringContaining('<sec>'));
+    expect(abstract.abstract).toStrictEqual(expect.not.stringContaining('</sec>'));
   });
 });
