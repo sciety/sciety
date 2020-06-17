@@ -49,6 +49,7 @@
     "@types/xmldom": "^0.1.29",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
+    "concurrently": "^5.2.0",
     "dependency-cruiser": "^9.4.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-typescript": "^7.2.1",
@@ -70,8 +71,8 @@
     "build": "tsc",
     "deps:folders": "depcruise --include-only '^src' --validate -T archi src | dot -Tsvg > docs/folders.svg",
     "deps:modules": "depcruise --include-only '^src' --validate -T dot src | dot -Tsvg > docs/modules.svg",
-    "lint": "tsc --noEmit --project tsconfig.lint.json && eslint . --ext .js,.ts --cache --cache-location .eslint/ --color",
-    "lint:fix": "tsc --noEmit --project tsconfig.lint.json && eslint . --fix --ext .js,.ts --cache --cache-location .eslint/ --color",
+    "lint": "concurrently --names \"TypeScript,ESLint\" \"tsc --noEmit --project tsconfig.lint.json\" \"eslint . --ext .js,.ts --cache --cache-location .eslint/ --color\"",
+    "lint:fix": "concurrently --names \"TypeScript,ESLint\" \"tsc --noEmit --project tsconfig.lint.json\" \"eslint . --fix --ext .js,.ts --cache --cache-location .eslint/ --color\"",
     "start": "node ./build/index.js",
     "start:dev": "nodemon --exec 'node --require ts-node/register ./src/index.ts' --ext .js,.json,.ts",
     "test": "jest --colors --runInBand"
