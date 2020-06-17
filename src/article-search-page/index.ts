@@ -5,7 +5,7 @@ import { Adapters } from '../types/adapters';
 export default (adapters: Adapters): Middleware => {
   const renderPage = createRenderPage(
     adapters.getJson,
-    adapters.fetchDisqusPostCount,
+    adapters.getBiorxivCommentCount,
     adapters.reviewReferenceRepository.findReviewsForArticleVersionDoi,
     adapters.editorialCommunities.lookup,
   );

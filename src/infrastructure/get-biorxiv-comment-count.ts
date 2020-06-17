@@ -7,7 +7,7 @@ const log = createLogger('infrastructure:get-biorxiv-comment-count');
 
 const resolveToCanonicalUri = (doi: Doi): string => `https://www.biorxiv.org/content/${doi.value}v1`;
 
-type GetBiorxivCommentCount = (doi: Doi) => Promise<number>;
+export type GetBiorxivCommentCount = (doi: Doi) => Promise<number>;
 
 export default (getCommentCountForUri: GetCommentCountForUri): GetBiorxivCommentCount => (
   async (doi) => {

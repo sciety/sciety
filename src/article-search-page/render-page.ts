@@ -3,7 +3,6 @@ import createRenderSearchResult, { GetReviewCount } from './render-search-result
 import createRenderSearchResults from './render-search-results';
 import createSearchEuropePmc from './search-europe-pmc';
 import Doi from '../data/doi';
-import createGetBiorxivCommentCount, { GetCommentCountForUri } from '../infrastructure/get-biorxiv-comment-count';
 
 export type GetJson = (uri: string) => Promise<object>;
 
@@ -11,12 +10,11 @@ type RenderPage = (query: string) => Promise<string>;
 
 export default (
   getJson: GetJson,
-  getCommentCountForUri: GetCommentCountForUri,
+  getCommentCount: (doi: Doi) => Promise<number>,
   fetchReviewReferences: (articleVersionDoi: Doi) => Array<unknown>,
   getEditorialCommunity: (id: string) => { name: string },
 ): RenderPage => (
   async (query) => {
-    const getCommentCount = createGetBiorxivCommentCount(getCommentCountForUri);
     const getReviewCount: GetReviewCount = async (doi) => fetchReviewReferences(doi).length;
     const getNameForEditorialCommunity: GetNameForEditorialCommunity = (id) => getEditorialCommunity(id).name;
     const getEndorsingEditorialCommunities = createGetHardCodedEndorsingEditorialCommunities(
