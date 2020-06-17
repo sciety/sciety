@@ -1,4 +1,3 @@
-import { GetCommentCount } from './render-search-result';
 import Doi from '../data/doi';
 import createLogger from '../logger';
 
@@ -8,7 +7,9 @@ const log = createLogger('article-search-page:get-biorxiv-comment-count');
 
 const resolveToCanonicalUri = (doi: Doi): string => `https://www.biorxiv.org/content/${doi.value}v1`;
 
-export default (getCommentCountForUri: GetCommentCountForUri): GetCommentCount => (
+type GetBiorxivCommentCount = (doi: Doi) => Promise<number>;
+
+export default (getCommentCountForUri: GetCommentCountForUri): GetBiorxivCommentCount => (
   async (doi) => {
     const uri = resolveToCanonicalUri(doi);
     log(`Resolved URI = ${uri}`);
