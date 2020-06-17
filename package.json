@@ -61,10 +61,9 @@
     "jest": "^25.5.4",
     "jsdom": "^16.2.2",
     "mock-http": "^1.1.0",
-    "nodemon": "^2.0.3",
     "supertest": "^4.0.2",
     "ts-jest": "^25.5.1",
-    "ts-node": "^8.10.1",
+    "ts-node-dev": "^1.0.0-pre.49",
     "typescript": "^3.9.2"
   },
   "scripts": {
@@ -74,7 +73,7 @@
     "lint": "concurrently --names \"TypeScript,ESLint\" \"tsc --project tsconfig.dev.json\" \"eslint . --ext .js,.ts --cache --cache-location .eslint/ --color\"",
     "lint:fix": "concurrently --names \"TypeScript,ESLint\" \"tsc --project tsconfig.dev.json\" \"eslint . --fix --ext .js,.ts --cache --cache-location .eslint/ --color\"",
     "start": "node ./build/index.js",
-    "start:dev": "nodemon --exec 'node --require ts-node/register ./src/index.ts' --ext .js,.json,.ts",
+    "start:dev": "ts-node-dev --project tsconfig.dev.json --transpile-only --exit-child ./src/index.ts",
     "test": "jest --colors --runInBand"
   }
 }
