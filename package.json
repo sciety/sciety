@@ -71,8 +71,8 @@
     "build": "tsc",
     "deps:folders": "depcruise --include-only '^src' --validate -T archi src | dot -Tsvg > docs/folders.svg",
     "deps:modules": "depcruise --include-only '^src' --validate -T dot src | dot -Tsvg > docs/modules.svg",
-    "lint": "concurrently --names \"TypeScript,ESLint\" \"tsc --noEmit --project tsconfig.lint.json\" \"eslint . --ext .js,.ts --cache --cache-location .eslint/ --color\"",
-    "lint:fix": "concurrently --names \"TypeScript,ESLint\" \"tsc --noEmit --project tsconfig.lint.json\" \"eslint . --fix --ext .js,.ts --cache --cache-location .eslint/ --color\"",
+    "lint": "concurrently --names \"TypeScript,ESLint\" \"tsc --project tsconfig.lint.json\" \"eslint . --ext .js,.ts --cache --cache-location .eslint/ --color\"",
+    "lint:fix": "concurrently --names \"TypeScript,ESLint\" \"tsc --project tsconfig.lint.json\" \"eslint . --fix --ext .js,.ts --cache --cache-location .eslint/ --color\"",
     "start": "node ./build/index.js",
     "start:dev": "nodemon --exec 'node --require ts-node/register ./src/index.ts' --ext .js,.json,.ts",
     "test": "jest --colors --runInBand"
