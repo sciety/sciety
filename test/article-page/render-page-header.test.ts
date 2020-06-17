@@ -52,6 +52,21 @@ describe('render-page-header component', (): void => {
     });
   });
 
+  describe('the article\'s comments are not available', (): void => {
+    it('does not display comment details', async (): Promise<void> => {
+      renderPageHeader = createRenderPageHeader(
+        getArticleDetails,
+        async () => {
+          throw new Error('Comments can\'t be retrieved');
+        },
+        async () => [],
+      );
+      rendered = await renderPageHeader(new Doi('10.1101/815689'));
+
+      expect(rendered).toStrictEqual(expect.not.stringContaining('Comments'));
+    });
+  });
+
   describe('the article has been endorsed', (): void => {
     it('displays the endorsing editorial communities', async (): Promise<void> => {
       renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 0, async () => ['PeerJ']);

@@ -23,15 +23,21 @@ export default (
 ): RenderPageHeader => async (doi) => {
   const articleDetails = await getArticleDetails(doi);
 
-  let comments = '';
-  const commentCount = await getCommentCount(doi);
-  if (commentCount > 0) {
-    comments = `
+  let comments: string;
+  try {
+    const commentCount = await getCommentCount(doi);
+    if (commentCount > 0) {
+      comments = `
         <div class="ui label">
           Comments
           <span class="detail">${commentCount}</span>
         </div>
       `;
+    } else {
+      comments = '';
+    }
+  } catch (e) {
+    comments = '';
   }
 
   let endorsements = '';
