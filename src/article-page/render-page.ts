@@ -24,14 +24,8 @@ const createGetEndorsingEditorialCommunityNames = (
 export default async (
   { article, reviews }: ArticlePageViewModel,
   editorialCommunities: EditorialCommunityRepository,
+  getCommentCount: GetCommentCount,
 ): Promise<string> => {
-  const getCommentCount: GetCommentCount = async (doi) => {
-    if (doi.value === '10.1101/2020.05.11.089896') {
-      return 11;
-    }
-    return 0;
-  };
-
   const getArticleDetailsAdapter: GetArticleDetails = async () => article;
   const abstractAdapter: GetArticleAbstract = async () => ({ content: article.abstract });
   const reviewsAdapter: GetArticleReviewSummaries = async () => reviews;
