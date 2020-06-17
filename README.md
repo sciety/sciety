@@ -64,6 +64,20 @@ again before running further commands.
 
 </details>
 
+<details>
+
+<summary>Configuring environment variables</summary>
+
+You can create a `.env` file to pass environment variables to the container:
+
+```
+DISQUS_API_KEY=...
+```
+
+Re-run `make dev` after modifying this file.
+
+</details>
+
 ### Running the tests
 
 We use [Jest] to test the app. You can run it by executing: 

@@ -9,16 +9,20 @@ PORT := 8080
 
 dev: export TARGET = dev
 dev: install build
+	touch .env
 	$(DOCKER) run \
 		-v $(DATA_VOLUME)/src:/app/src:ro \
 		-v $(DATA_VOLUME)/static:/app/static:ro \
 		-p $(PORT):80 \
+		--env-file .env \
 		$(IMAGE):$(IMAGE_TAG)-dev
 
 prod: export TARGET = prod
 prod: build
+	touch .env
 	$(DOCKER) run \
 		-p $(PORT):80 \
+		--env-file .env \
 		$(IMAGE):$(IMAGE_TAG)
 
 lint: export TARGET = dev
