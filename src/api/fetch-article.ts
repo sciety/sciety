@@ -12,6 +12,7 @@ export type FetchCrossrefArticle = (doi: Doi) => Promise<{
   abstract: string;
   authors: Array<string>;
   title: string;
+  publicationDate: Date;
 }>;
 
 export type MakeHttpRequest = (uri: string, acceptHeader: string) => Promise<string>;
@@ -82,6 +83,21 @@ export const createFetchCrossrefArticle = (makeHttpRequest: MakeHttpRequest): Fe
     return titleElement?.textContent ?? 'Unknown title';
   };
 
+  const getPublicationDate = (doc: Document): Date => {
+    const postedDateElement = getElement(doc, 'posted_date');
+
+    const postedDateYear = postedDateElement?.getElementsByTagName('year')[0];
+    const year = postedDateYear?.textContent ?? '1970';
+
+    const postedDateMonth = postedDateElement?.getElementsByTagName('month')[0];
+    const month = postedDateMonth?.textContent ?? '01';
+
+    const postedDateDay = postedDateElement?.getElementsByTagName('day')[0];
+    const day = postedDateDay?.textContent ?? '01';
+
+    return new Date(`${year}-${month}-${day}`);
+  };
+
   return async (doi) => {
     const uri = `https://doi.org/${doi.value}`;
     log(`Fetching Crossref article for ${uri}`);
@@ -94,6 +110,7 @@ export const createFetchCrossrefArticle = (makeHttpRequest: MakeHttpRequest): Fe
       abstract: getAbstract(doc, doi),
       authors: getAuthors(doc, doi),
       title: getTitle(doc),
+      publicationDate: getPublicationDate(doc),
     };
   };
 };

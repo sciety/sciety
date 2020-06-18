@@ -184,6 +184,31 @@ describe('fetch-crossref-article', (): void => {
     });
   });
 
+  describe('fetching the publication date', () => {
+    it('extracts the date', async () => {
+      const doi = new Doi('10.1101/339747');
+      const makeHttpRequest: MakeHttpRequest = async () => `
+  <?xml version="1.0" encoding="UTF-8"?>
+  <doi_records>
+    <doi_record>
+      <crossref>
+        <posted_content>
+          <posted_date>
+            <month>03</month>
+            <day>22</day>
+            <year>2020</year>
+          </posted_date>
+        </posted_content>
+      </crossref>
+    </doi_record>
+  </doi_records>
+  `;
+      const article = await createFetchCrossrefArticle(makeHttpRequest)(doi);
+
+      expect(article.publicationDate).toStrictEqual(new Date('2020-03-22'));
+    });
+  });
+
   describe('fetching the authors', (): void => {
     it('extracts no authors from the XML response when there are no contributors', async () => {
       const doi = new Doi('10.1101/339747');

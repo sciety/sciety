@@ -18,6 +18,7 @@ describe('fetch-article', (): void => {
       abstract: 'Article abstract.',
       authors: [],
       title: '',
+      publicationDate: new Date(),
     });
     const fetchArticle = createFetchArticle(fetchDataset, fetchCrossrefArticle);
     const article = await fetchArticle(doi);
@@ -34,6 +35,7 @@ describe('fetch-article', (): void => {
       abstract: '',
       authors: [],
       title: 'Article title',
+      publicationDate: new Date(),
     });
     const fetchArticle = createFetchArticle(fetchDataset, fetchCrossrefArticle);
     const article = await fetchArticle(doi);
@@ -49,6 +51,7 @@ describe('fetch-article', (): void => {
       abstract: 'Article abstract.',
       authors: [],
       title: '',
+      publicationDate: new Date(),
     });
     const fetchArticle = createFetchArticle(fetchDataset, fetchCrossrefArticle);
     const article = await fetchArticle(doi);
@@ -64,6 +67,7 @@ describe('fetch-article', (): void => {
       abstract: 'Article abstract.',
       authors: ['Eesha Ross', 'Fergus Fountain'],
       title: '',
+      publicationDate: new Date(),
     });
     const fetchArticle = createFetchArticle(fetchDataset, fetchCrossrefArticle);
     const article = await fetchArticle(doi);

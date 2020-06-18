@@ -47,6 +47,7 @@ export default (): TestServer => {
     abstract: 'Article abstract.',
     authors: [],
     title: 'Article title',
+    publicationDate: new Date(),
   });
   const fetchArticle = createFetchArticle(fetchCrossrefDataset, fetchCrossrefArticle);
   const getDisqusPostCount = createGetDisqusPostCount(async () => ({ response: [{ posts: 0 }] }));
