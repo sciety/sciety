@@ -5,7 +5,7 @@ import createRenderEndorsedArticles, {
 } from './render-endorsed-articles';
 import createRenderReviewedArticles, { GetReviewedArticles } from './render-reviewed-articles';
 import templateHeader from './templates/header';
-import { FetchArticle } from '../api/fetch-article';
+import { FetchCrossrefArticle } from '../api/fetch-crossref-article';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import ReviewReferenceRepository from '../types/review-reference-repository';
 
@@ -26,7 +26,7 @@ const createRenderPageHeader = (getEditorialCommunity: GetEditorialCommunity): R
 type RenderPage = (editorialCommunityId: string) => Promise<string>;
 
 export default (
-  fetchArticle: FetchArticle,
+  fetchArticle: FetchCrossrefArticle,
   reviewReferenceRepository: ReviewReferenceRepository,
   editorialCommunities: EditorialCommunityRepository,
 ): RenderPage => {

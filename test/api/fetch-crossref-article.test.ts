@@ -1,4 +1,4 @@
-import { createFetchCrossrefArticle, MakeHttpRequest } from '../../src/api/fetch-article';
+import createFetchCrossrefArticle, { MakeHttpRequest } from '../../src/api/fetch-crossref-article';
 import Doi from '../../src/data/doi';
 
 describe('fetch-crossref-article', (): void => {

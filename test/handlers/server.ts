@@ -1,9 +1,9 @@
 import { Server } from 'http';
 import { literal, namedNode } from '@rdfjs/data-model';
-import { dcterms, schema } from '@tpluscode/rdf-ns-builders';
+import { schema } from '@tpluscode/rdf-ns-builders';
 import clownface from 'clownface';
 import datasetFactory from 'rdf-dataset-indexed';
-import createFetchArticle, { FetchCrossrefArticle } from '../../src/api/fetch-article';
+import { FetchCrossrefArticle } from '../../src/api/fetch-crossref-article';
 import { FetchDataset } from '../../src/api/fetch-dataset';
 import createFetchReview from '../../src/api/fetch-review';
 import Doi from '../../src/data/doi';
@@ -33,23 +33,19 @@ export default (): TestServer => {
   const reviewReferenceRepository = createReviewReferenceRepository();
   reviewReferenceRepository.add(articleA, articleAReview1, editorialCommunities.all()[0].id, new Date('2020-05-19T14:00:00Z'));
   reviewReferenceRepository.add(articleB, articleBReview1, editorialCommunities.all()[1].id, new Date('2020-05-19T14:00:00Z'));
-  const fetchCrossrefDataset: FetchDataset = async () => (
-    clownface({ dataset: datasetFactory(), term: namedNode('http://example.com/some-crossref-node') })
-      .addOut(dcterms.title, 'Article title')
-  );
   const fetchDataCiteDataset: FetchDataset = async () => (
     clownface({ dataset: datasetFactory(), term: namedNode('http://example.com/some-datacite-node') })
       .addOut(schema.datePublished, literal('2020-02-20', schema.Date))
       .addOut(schema.description, 'A summary')
       .addOut(schema.author, (author) => author.addOut(schema.name, 'Author name'))
   );
-  const fetchCrossrefArticle: FetchCrossrefArticle = async () => ({
+  const fetchArticle: FetchCrossrefArticle = async (doi) => ({
     abstract: 'Article abstract.',
     authors: [],
+    doi,
     title: 'Article title',
     publicationDate: new Date(),
   });
-  const fetchArticle = createFetchArticle(fetchCrossrefDataset, fetchCrossrefArticle);
   const getDisqusPostCount = createGetDisqusPostCount(async () => ({ response: [{ posts: 0 }] }));
   const getBiorxivCommentCount = createGetBiorxivCommentCount(getDisqusPostCount);
   const fetchReview = createFetchReview(fetchDataCiteDataset);
