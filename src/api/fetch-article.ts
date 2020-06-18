@@ -1,5 +1,4 @@
 import { namedNode } from '@rdfjs/data-model';
-import { dcterms } from '@tpluscode/rdf-ns-builders';
 import { DOMParser } from 'xmldom';
 import { FetchDataset } from './fetch-dataset';
 import Doi from '../data/doi';
@@ -120,16 +119,15 @@ export default (fetchDataset: FetchDataset, fetchCrossrefArticle: FetchCrossrefA
   return async (doi: Doi): Promise<FetchedArticle> => {
     const articleIri = namedNode(`https://doi.org/${doi}`);
     log(`Fetching article ${articleIri.value}`);
-    const graph = await fetchDataset(articleIri);
+    await fetchDataset(articleIri);
 
-    const publicationDate = new Date(graph.out(dcterms.date).value ?? 0);
     const crossrefArticle = await fetchCrossrefArticle(doi);
 
     const response: FetchedArticle = {
       doi,
       title: crossrefArticle.title,
       authors: crossrefArticle.authors,
-      publicationDate,
+      publicationDate: crossrefArticle.publicationDate,
       abstract: crossrefArticle.abstract,
     };
     log(`Retrieved article: ${JSON.stringify(response)}`);

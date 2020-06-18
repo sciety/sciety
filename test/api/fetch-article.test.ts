@@ -18,7 +18,7 @@ describe('fetch-article', (): void => {
       abstract: 'Article abstract.',
       authors: [],
       title: '',
-      publicationDate: new Date(),
+      publicationDate: new Date('2020-02-20'),
     });
     const fetchArticle = createFetchArticle(fetchDataset, fetchCrossrefArticle);
     const article = await fetchArticle(doi);
