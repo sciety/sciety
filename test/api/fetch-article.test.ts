@@ -1,5 +1,5 @@
 import { literal } from '@rdfjs/data-model';
-import { dcterms, foaf, xsd } from '@tpluscode/rdf-ns-builders';
+import { dcterms, xsd } from '@tpluscode/rdf-ns-builders';
 import clownface from 'clownface';
 import datasetFactory from 'rdf-dataset-indexed';
 import createFetchArticle, { FetchCrossrefArticle } from '../../src/api/fetch-article';
@@ -14,8 +14,6 @@ describe('fetch-article', (): void => {
       clownface({ dataset: datasetFactory(), term: iri })
         .addOut(dcterms.title, 'Article title')
         .addOut(dcterms.date, literal('2020-02-20', xsd.date))
-        .addOut(dcterms.creator, (author) => author.addOut(foaf.name, 'Josiah S. Carberry'))
-        .addOut(dcterms.creator, (author) => author.addOut(foaf.name, 'Albert Einstein'))
     );
     const fetchCrossrefArticle: FetchCrossrefArticle = async () => ({
       abstract: 'Article abstract.',
@@ -27,8 +25,6 @@ describe('fetch-article', (): void => {
     expect(article.doi).toBe(doi);
     expect(article.title).toBe('Article title');
     expect(article.publicationDate).toStrictEqual(new Date('2020-02-20'));
-    expect(article.authors).toContain('Josiah S. Carberry');
-    expect(article.authors).toContain('Albert Einstein');
   });
 
   it('returns the abstract', async () => {
@@ -43,5 +39,19 @@ describe('fetch-article', (): void => {
     const article = await fetchArticle(doi);
 
     expect(article.abstract).toBe('Article abstract.');
+  });
+
+  it('returns the authors', async () => {
+    const fetchDataset: FetchDataset = async (iri) => (
+      clownface({ dataset: datasetFactory(), term: iri })
+    );
+    const fetchCrossrefArticle: FetchCrossrefArticle = async () => ({
+      abstract: 'Article abstract.',
+      authors: ['Eesha Ross', 'Fergus Fountain'],
+    });
+    const fetchArticle = createFetchArticle(fetchDataset, fetchCrossrefArticle);
+    const article = await fetchArticle(doi);
+
+    expect(article.authors).toStrictEqual(['Eesha Ross', 'Fergus Fountain']);
   });
 });
