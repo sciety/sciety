@@ -30,6 +30,7 @@ module.exports = {
       allowExpressions: true,
     }],
     '@typescript-eslint/promise-function-async': ['error'],
+    'jest/no-disabled-tests': 'off',
     'jest/no-hooks': 'off',
     'jest/prefer-expect-assertions': 'off',
     'import/order': ['error', {
