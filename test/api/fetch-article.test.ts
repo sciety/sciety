@@ -2,7 +2,7 @@ import { literal } from '@rdfjs/data-model';
 import { dcterms, foaf, xsd } from '@tpluscode/rdf-ns-builders';
 import clownface from 'clownface';
 import datasetFactory from 'rdf-dataset-indexed';
-import createFetchArticle, { FetchAbstract } from '../../src/api/fetch-article';
+import createFetchArticle, { FetchCrossrefArticle } from '../../src/api/fetch-article';
 import { FetchDataset } from '../../src/api/fetch-dataset';
 import Doi from '../../src/data/doi';
 
@@ -17,7 +17,7 @@ describe('fetch-article', (): void => {
         .addOut(dcterms.creator, (author) => author.addOut(foaf.name, 'Josiah S. Carberry'))
         .addOut(dcterms.creator, (author) => author.addOut(foaf.name, 'Albert Einstein'))
     );
-    const fetchAbstract: FetchAbstract = async () => ({ abstract: 'Article abstract.' });
+    const fetchAbstract: FetchCrossrefArticle = async () => ({ abstract: 'Article abstract.' });
     const fetchArticle = createFetchArticle(fetchDataset, fetchAbstract);
     const article = await fetchArticle(doi);
 
@@ -32,7 +32,7 @@ describe('fetch-article', (): void => {
     const fetchDataset: FetchDataset = async (iri) => (
       clownface({ dataset: datasetFactory(), term: iri })
     );
-    const fetchAbstract: FetchAbstract = async () => ({ abstract: 'Article abstract.' });
+    const fetchAbstract: FetchCrossrefArticle = async () => ({ abstract: 'Article abstract.' });
     const fetchArticle = createFetchArticle(fetchDataset, fetchAbstract);
     const article = await fetchArticle(doi);
 

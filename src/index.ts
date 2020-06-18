@@ -1,6 +1,6 @@
 import { createTerminus, TerminusOptions } from '@godaddy/terminus';
 import axios from 'axios';
-import createFetchArticle, { createFetchAbstractFromCrossref, MakeHttpRequest } from './api/fetch-article';
+import createFetchArticle, { createFetchCrossrefArticle, MakeHttpRequest } from './api/fetch-article';
 import createFetchDataset from './api/fetch-dataset';
 import createFetchReview from './api/fetch-review';
 import createFetchStaticFile from './api/fetch-static-file';
@@ -47,7 +47,7 @@ const getJson: Adapters['getJson'] = async (uri) => {
 
 const fetchDataset = createFetchDataset();
 const adapters: Adapters = {
-  fetchArticle: createFetchArticle(fetchDataset, createFetchAbstractFromCrossref(makeHttpRequest)),
+  fetchArticle: createFetchArticle(fetchDataset, createFetchCrossrefArticle(makeHttpRequest)),
   getBiorxivCommentCount: createGetBiorxivCommentCount(createGetDisqusPostCount(getJson)),
   fetchReview: createFetchReview(fetchDataset),
   fetchStaticFile: createFetchStaticFile(),

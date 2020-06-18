@@ -3,7 +3,7 @@ import { literal, namedNode } from '@rdfjs/data-model';
 import { dcterms, schema } from '@tpluscode/rdf-ns-builders';
 import clownface from 'clownface';
 import datasetFactory from 'rdf-dataset-indexed';
-import createFetchArticle, { FetchAbstract } from '../../src/api/fetch-article';
+import createFetchArticle, { FetchCrossrefArticle } from '../../src/api/fetch-article';
 import { FetchDataset } from '../../src/api/fetch-dataset';
 import createFetchReview from '../../src/api/fetch-review';
 import Doi from '../../src/data/doi';
@@ -43,8 +43,8 @@ export default (): TestServer => {
       .addOut(schema.description, 'A summary')
       .addOut(schema.author, (author) => author.addOut(schema.name, 'Author name'))
   );
-  const fetchAbstract: FetchAbstract = async () => ({ abstract: 'Article abstract.' });
-  const fetchArticle = createFetchArticle(fetchCrossrefDataset, fetchAbstract);
+  const fetchCrossrefArticle: FetchCrossrefArticle = async () => ({ abstract: 'Article abstract.' });
+  const fetchArticle = createFetchArticle(fetchCrossrefDataset, fetchCrossrefArticle);
   const getDisqusPostCount = createGetDisqusPostCount(async () => ({ response: [{ posts: 0 }] }));
   const getBiorxivCommentCount = createGetBiorxivCommentCount(getDisqusPostCount);
   const fetchReview = createFetchReview(fetchDataCiteDataset);

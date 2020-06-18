@@ -1,7 +1,7 @@
-import { createFetchAbstractFromCrossref, MakeHttpRequest } from '../../src/api/fetch-article';
+import { createFetchCrossrefArticle, MakeHttpRequest } from '../../src/api/fetch-article';
 import Doi from '../../src/data/doi';
 
-describe('fetch-abstract-from-crossref', (): void => {
+describe('fetch-crossref-article', (): void => {
   it('extracts the abstract text from the XML response', async () => {
     const doi = new Doi('10.1101/339747');
     const makeHttpRequest: MakeHttpRequest = async () => `
@@ -18,7 +18,7 @@ describe('fetch-abstract-from-crossref', (): void => {
   </doi_record>
 </doi_records>
 `;
-    const abstract = await createFetchAbstractFromCrossref(makeHttpRequest)(doi);
+    const abstract = await createFetchCrossrefArticle(makeHttpRequest)(doi);
 
     expect(abstract.abstract).toStrictEqual(expect.stringContaining('Some random nonsense.'));
   });
@@ -39,7 +39,7 @@ describe('fetch-abstract-from-crossref', (): void => {
   </doi_record>
 </doi_records>
 `;
-    const abstract = await createFetchAbstractFromCrossref(makeHttpRequest)(doi);
+    const abstract = await createFetchCrossrefArticle(makeHttpRequest)(doi);
 
     expect(abstract.abstract).toStrictEqual(expect.not.stringContaining('<abstract>'));
     expect(abstract.abstract).toStrictEqual(expect.not.stringContaining('</abstract>'));
@@ -62,7 +62,7 @@ describe('fetch-abstract-from-crossref', (): void => {
   </doi_record>
 </doi_records>
 `;
-    const abstract = await createFetchAbstractFromCrossref(makeHttpRequest)(doi);
+    const abstract = await createFetchCrossrefArticle(makeHttpRequest)(doi);
 
     expect(abstract.abstract).toStrictEqual(expect.not.stringContaining('Abstract'));
   });
@@ -88,7 +88,7 @@ describe('fetch-abstract-from-crossref', (): void => {
   </doi_record>
 </doi_records>
 `;
-    const abstract = await createFetchAbstractFromCrossref(makeHttpRequest)(doi);
+    const abstract = await createFetchCrossrefArticle(makeHttpRequest)(doi);
 
     expect(abstract.abstract).toStrictEqual(expect.stringContaining('<h3 class="ui header">should be an h3</h3>'));
     expect(abstract.abstract).toStrictEqual(expect.stringContaining('<h3 class="ui header">should also be an h3</h3>'));
@@ -119,7 +119,7 @@ describe('fetch-abstract-from-crossref', (): void => {
   </doi_record>
 </doi_records>
 `;
-    const abstract = await createFetchAbstractFromCrossref(makeHttpRequest)(doi);
+    const abstract = await createFetchCrossrefArticle(makeHttpRequest)(doi);
 
     expect(abstract.abstract).toStrictEqual(expect.stringContaining('<i>Cannabis sativa</i>'));
     expect(abstract.abstract).toStrictEqual(expect.stringContaining('<i>in vivo</i>'));
@@ -148,7 +148,7 @@ describe('fetch-abstract-from-crossref', (): void => {
   </doi_record>
 </doi_records>
 `;
-    const abstract = await createFetchAbstractFromCrossref(makeHttpRequest)(doi);
+    const abstract = await createFetchCrossrefArticle(makeHttpRequest)(doi);
 
     expect(abstract.abstract).toStrictEqual(expect.stringContaining('<ul>'));
     expect(abstract.abstract).toStrictEqual(expect.stringContaining('</ul>'));
@@ -174,7 +174,7 @@ describe('fetch-abstract-from-crossref', (): void => {
   </doi_record>
 </doi_records>
 `;
-    const abstract = await createFetchAbstractFromCrossref(makeHttpRequest)(doi);
+    const abstract = await createFetchCrossrefArticle(makeHttpRequest)(doi);
 
     expect(abstract.abstract).toStrictEqual(expect.stringContaining('<section>'));
     expect(abstract.abstract).toStrictEqual(expect.stringContaining('</section>'));

@@ -8,18 +8,18 @@ import { FetchedArticle } from '../types/fetched-article';
 
 export type FetchArticle = (doi: Doi) => Promise<FetchedArticle>;
 
-export type FetchAbstract = (doi: Doi) => Promise<{ abstract: string }>;
+export type FetchCrossrefArticle = (doi: Doi) => Promise<{ abstract: string }>;
 
 export type MakeHttpRequest = (uri: string, acceptHeader: string) => Promise<string>;
 
-export const createFetchAbstractFromCrossref = (makeHttpRequest: MakeHttpRequest): FetchAbstract => {
-  const log = createLogger('api:fetch-abstract-from-crossref');
+export const createFetchCrossrefArticle = (makeHttpRequest: MakeHttpRequest): FetchCrossrefArticle => {
+  const log = createLogger('api:fetch-crossref-article');
   const getElement = (ancestor: Document | Element, qualifiedName: string): Element | null => (
     ancestor.getElementsByTagName(qualifiedName).item(0)
   );
   return async (doi) => {
     const uri = `https://doi.org/${doi.value}`;
-    log(`Fetching abstract for ${uri}`);
+    log(`Fetching Crossref article for ${uri}`);
 
     const response = await makeHttpRequest(uri, 'application/vnd.crossref.unixref+xml');
 
@@ -57,7 +57,7 @@ export const createFetchAbstractFromCrossref = (makeHttpRequest: MakeHttpRequest
   };
 };
 
-export default (fetchDataset: FetchDataset, fetchAbstract: FetchAbstract): FetchArticle => {
+export default (fetchDataset: FetchDataset, fetchCrossrefArticle: FetchCrossrefArticle): FetchArticle => {
   const log = createLogger('api:fetch-article');
   return async (doi: Doi): Promise<FetchedArticle> => {
     const articleIri = namedNode(`https://doi.org/${doi}`);
@@ -67,14 +67,14 @@ export default (fetchDataset: FetchDataset, fetchAbstract: FetchAbstract): Fetch
     const title = graph.out(dcterms.title).value ?? 'Unknown article';
     const authors = graph.out(dcterms.creator).map((author) => author.out(foaf.name).value ?? 'Unknown author');
     const publicationDate = new Date(graph.out(dcterms.date).value ?? 0);
-    const abstract = await fetchAbstract(doi);
+    const crossrefArticle = await fetchCrossrefArticle(doi);
 
     const response: FetchedArticle = {
       doi,
       title,
       authors,
       publicationDate,
-      abstract: abstract.abstract,
+      abstract: crossrefArticle.abstract,
     };
     log(`Retrieved article: ${JSON.stringify(response)}`);
     return response;
