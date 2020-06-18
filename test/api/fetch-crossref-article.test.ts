@@ -282,4 +282,27 @@ describe('fetch-crossref-article', (): void => {
       expect(article.authors).toStrictEqual(['Eesha Ross']);
     });
   });
+
+  describe('fetching the title', (): void => {
+    it('extracts a title from the XML response', async () => {
+      const doi = new Doi('10.1101/339747');
+      const makeHttpRequest: MakeHttpRequest = async () => `
+  <?xml version="1.0" encoding="UTF-8"?>
+  <doi_records>
+    <doi_record>
+      <crossref>
+        <posted_content>
+          <titles>
+            <title>An article title</title>
+          </titles>
+        </posted_content>
+      </crossref>
+    </doi_record>
+  </doi_records>
+  `;
+      const article = await createFetchCrossrefArticle(makeHttpRequest)(doi);
+
+      expect(article.title).toStrictEqual('An article title');
+    });
+  });
 });

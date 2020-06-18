@@ -11,6 +11,7 @@ export type FetchArticle = (doi: Doi) => Promise<FetchedArticle>;
 export type FetchCrossrefArticle = (doi: Doi) => Promise<{
   abstract: string;
   authors: Array<string>;
+  title: string;
 }>;
 
 export type MakeHttpRequest = (uri: string, acceptHeader: string) => Promise<string>;
@@ -75,6 +76,12 @@ export const createFetchCrossrefArticle = (makeHttpRequest: MakeHttpRequest): Fe
       });
   };
 
+  const getTitle = (doc: Document): string => {
+    const titlesElement = getElement(doc, 'titles');
+    const titleElement = titlesElement?.getElementsByTagName('title')[0];
+    return titleElement?.textContent ?? 'Unknown title';
+  };
+
   return async (doi) => {
     const uri = `https://doi.org/${doi.value}`;
     log(`Fetching Crossref article for ${uri}`);
@@ -86,6 +93,7 @@ export const createFetchCrossrefArticle = (makeHttpRequest: MakeHttpRequest): Fe
     return {
       abstract: getAbstract(doc, doi),
       authors: getAuthors(doc, doi),
+      title: getTitle(doc),
     };
   };
 };

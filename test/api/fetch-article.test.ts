@@ -18,6 +18,7 @@ describe('fetch-article', (): void => {
     const fetchCrossrefArticle: FetchCrossrefArticle = async () => ({
       abstract: 'Article abstract.',
       authors: [],
+      title: '',
     });
     const fetchArticle = createFetchArticle(fetchDataset, fetchCrossrefArticle);
     const article = await fetchArticle(doi);
@@ -34,6 +35,7 @@ describe('fetch-article', (): void => {
     const fetchCrossrefArticle: FetchCrossrefArticle = async () => ({
       abstract: 'Article abstract.',
       authors: [],
+      title: '',
     });
     const fetchArticle = createFetchArticle(fetchDataset, fetchCrossrefArticle);
     const article = await fetchArticle(doi);
@@ -48,6 +50,7 @@ describe('fetch-article', (): void => {
     const fetchCrossrefArticle: FetchCrossrefArticle = async () => ({
       abstract: 'Article abstract.',
       authors: ['Eesha Ross', 'Fergus Fountain'],
+      title: '',
     });
     const fetchArticle = createFetchArticle(fetchDataset, fetchCrossrefArticle);
     const article = await fetchArticle(doi);
