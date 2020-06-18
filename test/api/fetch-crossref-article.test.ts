@@ -202,5 +202,33 @@ describe('fetch-crossref-article', (): void => {
 
       expect(article.authors).toHaveLength(0);
     });
+
+    it('extracts authors from the XML response', async () => {
+      const doi = new Doi('10.1101/339747');
+      const makeHttpRequest: MakeHttpRequest = async () => `
+  <?xml version="1.0" encoding="UTF-8"?>
+  <doi_records>
+    <doi_record>
+      <crossref>
+        <posted_content>
+          <contributors>
+            <person_name contributor_role="author" sequence="first">
+              <given_name>Eesha</given_name>
+              <surname>Ross</surname>
+            </person_name>
+            <person_name contributor_role="author" sequence="additional">
+              <given_name>Fergus</given_name>
+              <surname>Fountain</surname>
+            </person_name>
+          </contributors>
+        </posted_content>
+      </crossref>
+    </doi_record>
+  </doi_records>
+  `;
+      const article = await createFetchCrossrefArticle(makeHttpRequest)(doi);
+
+      expect(article.authors).toStrictEqual(['Eesha Ross', 'Fergus Fountain']);
+    });
   });
 });

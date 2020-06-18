@@ -27,6 +27,23 @@ export const createFetchCrossrefArticle = (makeHttpRequest: MakeHttpRequest): Fe
     const response = await makeHttpRequest(uri, 'application/vnd.crossref.unixref+xml');
 
     const doc = new DOMParser().parseFromString(response, 'text/xml');
+
+    const contributorsElement = getElement(doc, 'contributors');
+
+    let authors: Array<string>;
+    if (!contributorsElement || typeof contributorsElement?.textContent !== 'string') {
+      log(`Did not find contributors for ${doi}`);
+      authors = [];
+    } else {
+      authors = Array.from(contributorsElement.getElementsByTagName('person_name'))
+        .map((person) => {
+          const givenName = person.getElementsByTagName('given_name')[0].textContent;
+          const surname = person.getElementsByTagName('surname')[0].textContent;
+
+          return `${givenName} ${surname}`;
+        });
+    }
+
     const abstractElement = getElement(doc, 'abstract');
 
     if (typeof abstractElement?.textContent !== 'string') {
@@ -34,7 +51,7 @@ export const createFetchCrossrefArticle = (makeHttpRequest: MakeHttpRequest): Fe
 
       return {
         abstract: `No abstract for ${doi} available`,
-        authors: [],
+        authors,
       };
     }
 
@@ -59,7 +76,7 @@ export const createFetchCrossrefArticle = (makeHttpRequest: MakeHttpRequest): Fe
         .replace(/<\/sec>/g, '</section>')
         .replace(/<title[^>]*/g, '<h3 class="ui header"')
         .replace(/<\/title>/g, '</h3>'),
-      authors: [],
+      authors,
     };
   };
 };
