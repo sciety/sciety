@@ -62,6 +62,7 @@ export const createFetchCrossrefArticle = (makeHttpRequest: MakeHttpRequest): Fe
     }
 
     return Array.from(contributorsElement.getElementsByTagName('person_name'))
+      .filter((person) => person.getAttribute('contributor_role') === 'author')
       .map((person) => {
         const givenName = person.getElementsByTagName('given_name')[0]?.textContent;
         const surname = person.getElementsByTagName('surname')[0].textContent ?? 'Unknown author';
