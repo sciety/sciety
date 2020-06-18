@@ -60,7 +60,8 @@ export default (
   const renderEndorsedArticles = createRenderEndorsedArticles(getEndorsedArticles);
   const renderReviewedArticles = createRenderReviewedArticles(getReviewedArticles);
 
-  // components should not be created inside the function below at request time, but only at page component creation time
+  // components should not be created inside the function below at request time,
+  // but only at page component creation time
   return async (editorialCommunityId) => `
     ${await renderPageHeader(editorialCommunityId)}
     ${await renderEndorsedArticles(editorialCommunityId)}
