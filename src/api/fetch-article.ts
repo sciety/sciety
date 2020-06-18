@@ -105,13 +105,12 @@ export default (fetchDataset: FetchDataset, fetchCrossrefArticle: FetchCrossrefA
     log(`Fetching article ${articleIri.value}`);
     const graph = await fetchDataset(articleIri);
 
-    const title = graph.out(dcterms.title).value ?? 'Unknown article';
     const publicationDate = new Date(graph.out(dcterms.date).value ?? 0);
     const crossrefArticle = await fetchCrossrefArticle(doi);
 
     const response: FetchedArticle = {
       doi,
-      title,
+      title: crossrefArticle.title,
       authors: crossrefArticle.authors,
       publicationDate,
       abstract: crossrefArticle.abstract,

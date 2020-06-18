@@ -12,7 +12,6 @@ describe('fetch-article', (): void => {
   it('returns the article', async () => {
     const fetchDataset: FetchDataset = async (iri) => (
       clownface({ dataset: datasetFactory(), term: iri })
-        .addOut(dcterms.title, 'Article title')
         .addOut(dcterms.date, literal('2020-02-20', xsd.date))
     );
     const fetchCrossrefArticle: FetchCrossrefArticle = async () => ({
@@ -24,8 +23,22 @@ describe('fetch-article', (): void => {
     const article = await fetchArticle(doi);
 
     expect(article.doi).toBe(doi);
-    expect(article.title).toBe('Article title');
     expect(article.publicationDate).toStrictEqual(new Date('2020-02-20'));
+  });
+
+  it('returns the title', async () => {
+    const fetchDataset: FetchDataset = async (iri) => (
+      clownface({ dataset: datasetFactory(), term: iri })
+    );
+    const fetchCrossrefArticle: FetchCrossrefArticle = async () => ({
+      abstract: '',
+      authors: [],
+      title: 'Article title',
+    });
+    const fetchArticle = createFetchArticle(fetchDataset, fetchCrossrefArticle);
+    const article = await fetchArticle(doi);
+
+    expect(article.title).toBe('Article title');
   });
 
   it('returns the abstract', async () => {
