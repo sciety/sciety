@@ -63,8 +63,12 @@ export const createFetchCrossrefArticle = (makeHttpRequest: MakeHttpRequest): Fe
 
     return Array.from(contributorsElement.getElementsByTagName('person_name'))
       .map((person) => {
-        const givenName = person.getElementsByTagName('given_name')[0].textContent;
-        const surname = person.getElementsByTagName('surname')[0].textContent;
+        const givenName = person.getElementsByTagName('given_name')[0]?.textContent;
+        const surname = person.getElementsByTagName('surname')[0].textContent ?? 'Unknown author';
+
+        if (!givenName) {
+          return surname;
+        }
 
         return `${givenName} ${surname}`;
       });

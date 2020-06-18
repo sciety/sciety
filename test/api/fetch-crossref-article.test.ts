@@ -230,5 +230,28 @@ describe('fetch-crossref-article', (): void => {
 
       expect(article.authors).toStrictEqual(['Eesha Ross', 'Fergus Fountain']);
     });
+
+    it('handles a person without a given_name', async () => {
+      const doi = new Doi('10.1101/339747');
+      const makeHttpRequest: MakeHttpRequest = async () => `
+  <?xml version="1.0" encoding="UTF-8"?>
+  <doi_records>
+    <doi_record>
+      <crossref>
+        <posted_content>
+          <contributors>
+            <person_name contributor_role="author" sequence="first">
+              <surname>Ross</surname>
+            </person_name>
+          </contributors>
+        </posted_content>
+      </crossref>
+    </doi_record>
+  </doi_records>
+  `;
+      const article = await createFetchCrossrefArticle(makeHttpRequest)(doi);
+
+      expect(article.authors).toStrictEqual(['Ross']);
+    });
   });
 });
