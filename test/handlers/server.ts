@@ -43,7 +43,10 @@ export default (): TestServer => {
       .addOut(schema.description, 'A summary')
       .addOut(schema.author, (author) => author.addOut(schema.name, 'Author name'))
   );
-  const fetchCrossrefArticle: FetchCrossrefArticle = async () => ({ abstract: 'Article abstract.' });
+  const fetchCrossrefArticle: FetchCrossrefArticle = async () => ({
+    abstract: 'Article abstract.',
+    authors: [],
+  });
   const fetchArticle = createFetchArticle(fetchCrossrefDataset, fetchCrossrefArticle);
   const getDisqusPostCount = createGetDisqusPostCount(async () => ({ response: [{ posts: 0 }] }));
   const getBiorxivCommentCount = createGetBiorxivCommentCount(getDisqusPostCount);

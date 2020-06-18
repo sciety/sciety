@@ -17,8 +17,11 @@ describe('fetch-article', (): void => {
         .addOut(dcterms.creator, (author) => author.addOut(foaf.name, 'Josiah S. Carberry'))
         .addOut(dcterms.creator, (author) => author.addOut(foaf.name, 'Albert Einstein'))
     );
-    const fetchAbstract: FetchCrossrefArticle = async () => ({ abstract: 'Article abstract.' });
-    const fetchArticle = createFetchArticle(fetchDataset, fetchAbstract);
+    const fetchCrossrefArticle: FetchCrossrefArticle = async () => ({
+      abstract: 'Article abstract.',
+      authors: [],
+    });
+    const fetchArticle = createFetchArticle(fetchDataset, fetchCrossrefArticle);
     const article = await fetchArticle(doi);
 
     expect(article.doi).toBe(doi);
@@ -32,8 +35,11 @@ describe('fetch-article', (): void => {
     const fetchDataset: FetchDataset = async (iri) => (
       clownface({ dataset: datasetFactory(), term: iri })
     );
-    const fetchAbstract: FetchCrossrefArticle = async () => ({ abstract: 'Article abstract.' });
-    const fetchArticle = createFetchArticle(fetchDataset, fetchAbstract);
+    const fetchCrossrefArticle: FetchCrossrefArticle = async () => ({
+      abstract: 'Article abstract.',
+      authors: [],
+    });
+    const fetchArticle = createFetchArticle(fetchDataset, fetchCrossrefArticle);
     const article = await fetchArticle(doi);
 
     expect(article.abstract).toBe('Article abstract.');

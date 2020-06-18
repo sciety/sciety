@@ -8,7 +8,10 @@ import { FetchedArticle } from '../types/fetched-article';
 
 export type FetchArticle = (doi: Doi) => Promise<FetchedArticle>;
 
-export type FetchCrossrefArticle = (doi: Doi) => Promise<{ abstract: string }>;
+export type FetchCrossrefArticle = (doi: Doi) => Promise<{
+  abstract: string;
+  authors: Array<string>;
+}>;
 
 export type MakeHttpRequest = (uri: string, acceptHeader: string) => Promise<string>;
 
@@ -29,7 +32,10 @@ export const createFetchCrossrefArticle = (makeHttpRequest: MakeHttpRequest): Fe
     if (typeof abstractElement?.textContent !== 'string') {
       log(`Did not find abstract for ${doi}`);
 
-      return { abstract: `No abstract for ${doi} available` };
+      return {
+        abstract: `No abstract for ${doi} available`,
+        authors: [],
+      };
     }
 
     log(`Found abstract for ${doi}: ${abstractElement.textContent}`);
@@ -53,6 +59,7 @@ export const createFetchCrossrefArticle = (makeHttpRequest: MakeHttpRequest): Fe
         .replace(/<\/sec>/g, '</section>')
         .replace(/<title[^>]*/g, '<h3 class="ui header"')
         .replace(/<\/title>/g, '</h3>'),
+      authors: [],
     };
   };
 };
