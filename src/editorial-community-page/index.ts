@@ -3,6 +3,9 @@ import { Next } from 'koa';
 import createRenderPage from './render-page';
 import { Adapters } from '../types/adapters';
 
+// there should be a clean separation between:
+// - knowledge of Koa
+// - creation of page and its adapters
 export default (adapters: Adapters): Middleware => {
   const renderPage = createRenderPage(
     adapters.fetchArticle,

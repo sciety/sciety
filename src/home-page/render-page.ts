@@ -13,14 +13,13 @@ export default (
   reviewReferences: GetReviewReferences,
   fetchArticle: FetchArticle,
   editorialCommunities: GetEditorialCommunities,
-): RenderPage => (
-  async () => {
-    const renderPageHeader = createRenderPageHeader();
-    const renderRecentActivity = createRenderRecentActivity(reviewReferences, fetchArticle, editorialCommunities);
-    const renderEditorialCommunities = createRenderEditorialCommunities(editorialCommunities);
-    const renderFindArticle = createRenderFindArticle();
+): RenderPage => {
+  const renderPageHeader = createRenderPageHeader();
+  const renderRecentActivity = createRenderRecentActivity(reviewReferences, fetchArticle, editorialCommunities);
+  const renderEditorialCommunities = createRenderEditorialCommunities(editorialCommunities);
+  const renderFindArticle = createRenderFindArticle();
 
-    return `
+  return async () => `
       <div class="ui aligned stackable grid">
         <div class="row">
           <div class="column">
@@ -42,5 +41,4 @@ export default (
         </div>
       </div>
     `;
-  }
-);
+};
