@@ -17,42 +17,18 @@ export type MakeHttpRequest = (uri: string, acceptHeader: string) => Promise<str
 
 export const createFetchCrossrefArticle = (makeHttpRequest: MakeHttpRequest): FetchCrossrefArticle => {
   const log = createLogger('api:fetch-crossref-article');
+
   const getElement = (ancestor: Document | Element, qualifiedName: string): Element | null => (
     ancestor.getElementsByTagName(qualifiedName).item(0)
   );
-  return async (doi) => {
-    const uri = `https://doi.org/${doi.value}`;
-    log(`Fetching Crossref article for ${uri}`);
 
-    const response = await makeHttpRequest(uri, 'application/vnd.crossref.unixref+xml');
-
-    const doc = new DOMParser().parseFromString(response, 'text/xml');
-
-    const contributorsElement = getElement(doc, 'contributors');
-
-    let authors: Array<string>;
-    if (!contributorsElement || typeof contributorsElement?.textContent !== 'string') {
-      log(`Did not find contributors for ${doi}`);
-      authors = [];
-    } else {
-      authors = Array.from(contributorsElement.getElementsByTagName('person_name'))
-        .map((person) => {
-          const givenName = person.getElementsByTagName('given_name')[0].textContent;
-          const surname = person.getElementsByTagName('surname')[0].textContent;
-
-          return `${givenName} ${surname}`;
-        });
-    }
-
+  const getAbstract = (doc: Document, doi: Doi): string => {
     const abstractElement = getElement(doc, 'abstract');
 
     if (typeof abstractElement?.textContent !== 'string') {
       log(`Did not find abstract for ${doi}`);
 
-      return {
-        abstract: `No abstract for ${doi} available`,
-        authors,
-      };
+      return `No abstract for ${doi} available`;
     }
 
     log(`Found abstract for ${doi}: ${abstractElement.textContent}`);
@@ -62,21 +38,49 @@ export const createFetchCrossrefArticle = (makeHttpRequest: MakeHttpRequest): Fe
       abstractElement.removeChild(titleElement);
     }
 
+    return `${abstractElement}`
+      .replace(/<abstract[^>]*>/, '')
+      .replace(/<\/abstract>/, '')
+      .replace(/<italic[^>]*>/g, '<i>')
+      .replace(/<\/italic>/g, '</i>')
+      .replace(/<list[^>]* list-type=['"]bullet['"][^>]*/g, '<ul')
+      .replace(/<\/list>/g, '</ul>')
+      .replace(/<list-item[^>]*/g, '<li')
+      .replace(/<\/list-item>/g, '</li>')
+      .replace(/<sec[^>]*/g, '<section')
+      .replace(/<\/sec>/g, '</section>')
+      .replace(/<title[^>]*/g, '<h3 class="ui header"')
+      .replace(/<\/title>/g, '</h3>');
+  };
+
+  const getAuthors = (doc: Document, doi: Doi): Array<string> => {
+    const contributorsElement = getElement(doc, 'contributors');
+
+    if (!contributorsElement || typeof contributorsElement?.textContent !== 'string') {
+      log(`Did not find contributors for ${doi}`);
+      return [];
+    }
+
+    return Array.from(contributorsElement.getElementsByTagName('person_name'))
+      .map((person) => {
+        const givenName = person.getElementsByTagName('given_name')[0].textContent;
+        const surname = person.getElementsByTagName('surname')[0].textContent;
+
+        return `${givenName} ${surname}`;
+      });
+  };
+
+  return async (doi) => {
+    const uri = `https://doi.org/${doi.value}`;
+    log(`Fetching Crossref article for ${uri}`);
+
+    const response = await makeHttpRequest(uri, 'application/vnd.crossref.unixref+xml');
+
+    const doc = new DOMParser().parseFromString(response, 'text/xml');
+
     return {
-      abstract: `${abstractElement}`
-        .replace(/<abstract[^>]*>/, '')
-        .replace(/<\/abstract>/, '')
-        .replace(/<italic[^>]*>/g, '<i>')
-        .replace(/<\/italic>/g, '</i>')
-        .replace(/<list[^>]* list-type=['"]bullet['"][^>]*/g, '<ul')
-        .replace(/<\/list>/g, '</ul>')
-        .replace(/<list-item[^>]*/g, '<li')
-        .replace(/<\/list-item>/g, '</li>')
-        .replace(/<sec[^>]*/g, '<section')
-        .replace(/<\/sec>/g, '</section>')
-        .replace(/<title[^>]*/g, '<h3 class="ui header"')
-        .replace(/<\/title>/g, '</h3>'),
-      authors,
+      abstract: getAbstract(doc, doi),
+      authors: getAuthors(doc, doi),
     };
   };
 };
