@@ -2,7 +2,7 @@ import renderReview from './render-review';
 import Doi from '../data/doi';
 import templateListItems from '../templates/list-items';
 
-export type GetArticleReviewSummaries = () => Promise<Array<{
+export type GetReviews = () => Promise<Array<{
   publicationDate: Date;
   summary: string;
   doi: Doi;
@@ -10,7 +10,7 @@ export type GetArticleReviewSummaries = () => Promise<Array<{
   editorialCommunityName: string;
 }>>;
 
-export default (reviews: GetArticleReviewSummaries, id: string) => async (): Promise<string> => {
+export default (reviews: GetReviews, id: string) => async (): Promise<string> => {
   const renderedReviews = (await reviews()).map((review, index) => (
     renderReview(review, `review-${index}`, 1500)
   ));

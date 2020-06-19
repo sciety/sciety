@@ -1,8 +1,8 @@
 import { JSDOM } from 'jsdom';
-import createRenderReviewSummaries from '../../src/article-page/render-review-summaries';
+import createRenderReviews from '../../src/article-page/render-reviews';
 import Doi from '../../src/data/doi';
 
-describe('review summaries component', () => {
+describe('render-reviews component', () => {
   describe('when there are reviews', (): void => {
     const reviews = [{
       publicationDate: new Date(),
@@ -13,16 +13,16 @@ describe('review summaries component', () => {
     }];
 
     it('renders a HTML section', async () => {
-      const renderReviewSummaries = createRenderReviewSummaries(async () => reviews, 'expectedValue');
-      const rendered = await renderReviewSummaries();
+      const renderReviews = createRenderReviews(async () => reviews, 'expectedValue');
+      const rendered = await renderReviews();
       const reviewsElement = JSDOM.fragment(rendered).firstElementChild;
 
       expect(reviewsElement?.nodeName).toBe('SECTION');
     });
 
     it('has the correct HTML id attribute', async () => {
-      const renderReviewSummaries = createRenderReviewSummaries(async () => reviews, 'expectedValue');
-      const rendered = await renderReviewSummaries();
+      const renderReviews = createRenderReviews(async () => reviews, 'expectedValue');
+      const rendered = await renderReviews();
       const reviewsElement = JSDOM.fragment(rendered).firstElementChild;
 
       expect(reviewsElement?.getAttribute('id')).toBe('expectedValue');
@@ -31,8 +31,8 @@ describe('review summaries component', () => {
 
   describe('when there are no reviews', (): void => {
     it('renders nothing', async () => {
-      const renderReviewSummaries = createRenderReviewSummaries(async () => [], 'arbitraryId');
-      const rendered = await renderReviewSummaries();
+      const renderReviews = createRenderReviews(async () => [], 'arbitraryId');
+      const rendered = await renderReviews();
 
       expect(rendered).toStrictEqual('');
     });
