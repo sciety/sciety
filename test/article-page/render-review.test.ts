@@ -1,7 +1,7 @@
-import renderReviewSummary from '../../src/article-page/render-review-summary';
+import renderReview from '../../src/article-page/render-review';
 import Doi from '../../src/data/doi';
 
-describe('render-review-summary component', (): void => {
+describe('render-review component', (): void => {
   const review = {
     publicationDate: new Date('2010-02-01'),
     summary: 'Pretty good.',
@@ -15,7 +15,7 @@ describe('render-review-summary component', (): void => {
     let actual: string;
 
     beforeEach((): void => {
-      actual = renderReviewSummary(review, idNamespace, 1500);
+      actual = renderReview(review, idNamespace, 1500);
     });
 
     it('renders inside an article tag', () => {
@@ -45,7 +45,7 @@ describe('render-review-summary component', (): void => {
 
   describe('when the review summary is very long', (): void => {
     it('renders the summary truncated', () => {
-      const actual = renderReviewSummary(review, idNamespace, 6);
+      const actual = renderReview(review, idNamespace, 6);
 
       expect(actual).toStrictEqual(expect.stringContaining('Prett'));
     });

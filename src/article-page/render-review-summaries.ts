@@ -1,4 +1,4 @@
-import renderReviewSummary from './render-review-summary';
+import renderReview from './render-review';
 import Doi from '../data/doi';
 import templateListItems from '../templates/list-items';
 
@@ -11,10 +11,10 @@ export type GetArticleReviewSummaries = () => Promise<Array<{
 }>>;
 
 export default (reviews: GetArticleReviewSummaries, id: string) => async (): Promise<string> => {
-  const reviewSummaries = (await reviews()).map((review, index) => (
-    renderReviewSummary(review, `review-${index}`, 1500)
+  const renderedReviews = (await reviews()).map((review, index) => (
+    renderReview(review, `review-${index}`, 1500)
   ));
-  if (reviewSummaries.length === 0) {
+  if (renderedReviews.length === 0) {
     return '';
   }
   return `
@@ -23,7 +23,7 @@ export default (reviews: GetArticleReviewSummaries, id: string) => async (): Pro
         Reviews
       </h2>
       <ol class="ui very relaxed divided items">
-        ${templateListItems(reviewSummaries)}
+        ${templateListItems(renderedReviews)}
       </ol>
     </section>
   `;
