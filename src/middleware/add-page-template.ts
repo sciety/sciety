@@ -47,6 +47,10 @@ ${googleAnalytics}
         <a href="/about" class="item">About</a>
       </li>
 
+      <li>
+        <a href="https://eepurl.com/g7qqcv" class="item">Give us feedback</a>
+      </li>
+
     </ul>
 
   </nav>
