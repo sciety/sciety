@@ -10,16 +10,18 @@ export type GetArticleReviewSummaries = () => Promise<Array<{
   editorialCommunityName: string;
 }>>;
 
-export default (reviews: GetArticleReviewSummaries) => async (): Promise<string> => {
+export default (reviews: GetArticleReviewSummaries, id: string) => async (): Promise<string> => {
   const reviewSummaries = (await reviews()).map((review, index) => (
     renderReviewSummary(review, `review-${index}`, 1500)
   ));
   return `
-    <h2 class="ui header">
-      Reviews
-    </h2>
-    <ol class="ui very relaxed divided items">
-      ${templateListItems(reviewSummaries)}
-    </ol>
+    <section id="${id}">
+      <h2 class="ui header">
+        Reviews
+      </h2>
+      <ol class="ui very relaxed divided items">
+        ${templateListItems(reviewSummaries)}
+      </ol>
+    </section>
   `;
 };

@@ -44,7 +44,7 @@ export default async (
     `#${reviewsId}`,
   );
   const renderArticleAbstract = createRenderArticleAbstract(abstractAdapter);
-  const renderReviewSummaries = createRenderReviewSummaries(reviewsAdapter);
+  const renderReviewSummaries = createRenderReviewSummaries(reviewsAdapter, reviewsId);
   const renderAddReviewForm = createRenderAddReviewForm(editorialCommunitiesAdapter);
   return `<article class="ui aligned stackable grid">
     <div class="row">
@@ -56,9 +56,7 @@ export default async (
     <div class="row">
       <section class="twelve wide column">
         ${await renderArticleAbstract(article.doi)}
-        <section class="review-summary-list" id="${reviewsId}">
-          ${await renderReviewSummaries()}
-        </section>
+        ${await renderReviewSummaries()}
       </section>
       <aside class="four wide right floated column">
         ${await renderAddReviewForm(article.doi)}
