@@ -12,10 +12,7 @@ interface Review {
 
 export default (editorialCommunities: EditorialCommunityRepository): Middleware => (
   async (ctx: Context, next: Next): Promise<void> => {
-    const [article, reviews] = await Promise.all([
-      ctx.state.article,
-      ctx.state.reviews,
-    ]);
+    const reviews = await ctx.state.reviews;
 
     const reviewSummaries = reviews.map((review: Review) => {
       const editorialCommunity = editorialCommunities.lookup(review.editorialCommunityId);
@@ -26,7 +23,6 @@ export default (editorialCommunities: EditorialCommunityRepository): Middleware 
     });
 
     ctx.state.articlePage = {
-      article,
       reviews: reviewSummaries,
     } as ArticlePageViewModel;
 
