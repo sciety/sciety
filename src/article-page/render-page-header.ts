@@ -10,6 +10,8 @@ interface ArticleDetails {
 
 export type GetArticleDetails = (doi: Doi) => Promise<ArticleDetails>;
 
+export type GetReviewCount = (doi: Doi) => Promise<number>;
+
 export type GetCommentCount = (doi: Doi) => Promise<number>;
 
 export type GetEndorsingEditorialCommunityNames = (doi: Doi) => Promise<Array<string>>;
@@ -18,18 +20,19 @@ export type RenderPageHeader = (doi: Doi) => Promise<string>;
 
 export default (
   getArticleDetails: GetArticleDetails,
+  getReviewCount: GetReviewCount,
   getCommentCount: GetCommentCount,
   getEndorsingEditorialCommunityNames: GetEndorsingEditorialCommunityNames,
 ): RenderPageHeader => async (doi) => {
   const articleDetails = await getArticleDetails(doi);
 
   let reviews = '';
-
-  if (doi.value === '10.1101/209320') {
+  const reviewCount = await getReviewCount(doi);
+  if (reviewCount > 0) {
     reviews = `
       <div class="ui label">
         Reviews
-        <span class="detail">2</span>
+        <span class="detail">${reviewCount}</span>
       </div>
     `;
   }

@@ -8,6 +8,7 @@ import createRenderPageHeader, {
 import createRenderReviewSummaries, { GetArticleReviewSummaries } from './render-review-summaries';
 import { ArticlePageViewModel } from './types/article-page-view-model';
 import endorsements from '../bootstrap-endorsements';
+import Doi from '../data/doi';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 
 type GetEditorialCommunityName = (editorialCommunityId: string) => Promise<string>;
@@ -35,6 +36,9 @@ export default async (
   );
   const renderPageHeader = createRenderPageHeader(
     getArticleDetailsAdapter,
+    async (doi: Doi): Promise<number> => (
+      (doi.value === '10.1101/209320') ? 2 : 0
+    ),
     getCommentCount,
     createGetEndorsingEditorialCommunityNames(getEditorialCommunityName),
   );
