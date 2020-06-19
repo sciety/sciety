@@ -21,6 +21,8 @@ const createGetEndorsingEditorialCommunityNames = (
   }
 );
 
+const reviewsId = 'reviews';
+
 export default async (
   { article, reviews }: ArticlePageViewModel,
   editorialCommunities: EditorialCommunityRepository,
@@ -39,6 +41,7 @@ export default async (
     reviewCountAdapter,
     getCommentCount,
     createGetEndorsingEditorialCommunityNames(getEditorialCommunityName),
+    `#${reviewsId}`,
   );
   const renderArticleAbstract = createRenderArticleAbstract(abstractAdapter);
   const renderReviewSummaries = createRenderReviewSummaries(reviewsAdapter);
@@ -53,7 +56,7 @@ export default async (
     <div class="row">
       <section class="twelve wide column">
         ${await renderArticleAbstract(article.doi)}
-        <section class="review-summary-list" id="reviews">
+        <section class="review-summary-list" id="${reviewsId}">
           ${await renderReviewSummaries()}
         </section>
       </section>

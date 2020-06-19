@@ -13,7 +13,7 @@ describe('render-page-header component', (): void => {
   let rendered: string;
 
   beforeEach(async () => {
-    renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 0, async () => 0, async () => []);
+    renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 0, async () => 0, async () => [], '#reviews');
     rendered = await renderPageHeader(new Doi('10.1101/815689'));
   });
 
@@ -40,20 +40,20 @@ describe('render-page-header component', (): void => {
 
   describe('the article has reviews', (): void => {
     it('displays the number of reviews', async (): Promise<void> => {
-      renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 2, async () => 0, async () => []);
+      renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 2, async () => 0, async () => [], '#reviews');
       rendered = await renderPageHeader(new Doi('10.1101/209320'));
 
       expect(rendered).toStrictEqual(expect.stringMatching(/Reviews[\s\S]*?2/));
     });
 
     it('links to the reviews heading on the same page', async (): Promise<void> => {
-      renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 2, async () => 0, async () => []);
+      renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 2, async () => 0, async () => [], '/path/to/the/reviews');
       const pageHeader = JSDOM.fragment(await renderPageHeader(new Doi('10.1101/209320')));
 
       const anchor = pageHeader.querySelector('a[data-test-id="reviewsLink"]');
 
       expect(anchor).not.toBeNull();
-      expect(anchor?.getAttribute('href')).toStrictEqual('#reviews');
+      expect(anchor?.getAttribute('href')).toStrictEqual('/path/to/the/reviews');
     });
   });
 
@@ -65,14 +65,14 @@ describe('render-page-header component', (): void => {
 
   describe('the article has comments', (): void => {
     it('displays the number of comments', async (): Promise<void> => {
-      renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 0, async () => 11, async () => []);
+      renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 0, async () => 11, async () => [], '#reviews');
       rendered = await renderPageHeader(new Doi('10.1101/815689'));
 
       expect(rendered).toStrictEqual(expect.stringMatching(/Comments[\s\S]*?11/));
     });
 
     it('links to v1 of the article on Biorxiv', async (): Promise<void> => {
-      renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 0, async () => 11, async () => []);
+      renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 0, async () => 11, async () => [], '#reviews');
       const pageHeader = JSDOM.fragment(await renderPageHeader(new Doi('10.1101/815689')));
 
       const anchor = pageHeader.querySelector<HTMLAnchorElement>('a[data-test-id="biorxivCommentLink"]');
@@ -97,6 +97,7 @@ describe('render-page-header component', (): void => {
           throw new Error('Comments can\'t be retrieved');
         },
         async () => [],
+        '#reviews',
       );
       rendered = await renderPageHeader(new Doi('10.1101/815689'));
 
@@ -106,7 +107,7 @@ describe('render-page-header component', (): void => {
 
   describe('the article has been endorsed', (): void => {
     it('displays the endorsing editorial communities', async (): Promise<void> => {
-      renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 0, async () => 0, async () => ['PeerJ']);
+      renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 0, async () => 0, async () => ['PeerJ'], '#reviews');
       rendered = await renderPageHeader(new Doi('10.1101/815689'));
 
       expect(rendered).toStrictEqual(expect.stringMatching(/Endorsed by[\s\S]*?PeerJ/));

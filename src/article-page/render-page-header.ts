@@ -23,6 +23,7 @@ export default (
   getReviewCount: GetReviewCount,
   getCommentCount: GetCommentCount,
   getEndorsingEditorialCommunityNames: GetEndorsingEditorialCommunityNames,
+  reviewsLinkTarget: string,
 ): RenderPageHeader => async (doi) => {
   const articleDetails = await getArticleDetails(doi);
 
@@ -30,7 +31,7 @@ export default (
   const reviewCount = await getReviewCount(doi);
   if (reviewCount > 0) {
     reviews = `
-      <a href="#reviews" data-test-id="reviewsLink">
+      <a href="${reviewsLinkTarget}" data-test-id="reviewsLink">
         <div class="ui label">
           Reviews
           <span class="detail">${reviewCount}</span>
