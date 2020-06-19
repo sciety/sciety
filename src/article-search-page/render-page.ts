@@ -8,14 +8,15 @@ export type GetJson = (uri: string) => Promise<object>;
 
 type RenderPage = (query: string) => Promise<string>;
 
+export { GetReviewCount } from './render-search-result';
+
 export default (
   getJson: GetJson,
   getCommentCount: (doi: Doi) => Promise<number>,
-  fetchReviewReferences: (articleVersionDoi: Doi) => Array<unknown>,
+  getReviewCount: GetReviewCount,
   getEditorialCommunity: (id: string) => { name: string },
 ): RenderPage => (
   async (query) => {
-    const getReviewCount: GetReviewCount = async (doi) => fetchReviewReferences(doi).length;
     const getNameForEditorialCommunity: GetNameForEditorialCommunity = (id) => getEditorialCommunity(id).name;
     const getEndorsingEditorialCommunities = createGetHardCodedEndorsingEditorialCommunities(
       getNameForEditorialCommunity,

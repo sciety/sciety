@@ -1,12 +1,15 @@
 import { Middleware } from 'koa';
-import createRenderPage from './render-page';
+import createRenderPage, { GetReviewCount } from './render-page';
 import { Adapters } from '../types/adapters';
 
 export default (adapters: Adapters): Middleware => {
+  const getReviewCount: GetReviewCount = async (doi) => (
+    adapters.reviewReferenceRepository.findReviewsForArticleVersionDoi(doi).length
+  );
   const renderPage = createRenderPage(
     adapters.getJson,
     adapters.getBiorxivCommentCount,
-    adapters.reviewReferenceRepository.findReviewsForArticleVersionDoi,
+    getReviewCount,
     adapters.editorialCommunities.lookup,
   );
   return async (ctx, next) => {
