@@ -1,6 +1,5 @@
 import { Middleware } from '@koa/router';
 import compose from 'koa-compose';
-import convertArticleAndReviewsToArticlePage from './middleware/convert-article-and-reviews-to-article-page';
 import fetchReviewsForArticlePage from './middleware/fetch-reviews-for-article-page';
 import renderArticlePage from './middleware/render-article-page';
 import validateBiorxivDoi from './middleware/validate-biorxiv-doi';
@@ -12,8 +11,11 @@ export default (adapters: Adapters): Middleware => (
   compose([
     validateDoiParam(),
     validateBiorxivDoi(),
-    fetchReviewsForArticlePage(adapters.reviewReferenceRepository, adapters.fetchReview),
-    convertArticleAndReviewsToArticlePage(adapters.editorialCommunities),
+    fetchReviewsForArticlePage(
+      adapters.reviewReferenceRepository,
+      adapters.fetchReview,
+      adapters.editorialCommunities,
+    ),
     renderArticlePage(
       adapters.editorialCommunities,
       adapters.getBiorxivCommentCount,

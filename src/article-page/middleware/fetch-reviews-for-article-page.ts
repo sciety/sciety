@@ -1,22 +1,31 @@
-import { Middleware, RouterContext } from '@koa/router';
 import { NotFound, ServiceUnavailable } from 'http-errors';
-import { Next } from 'koa';
+import { Context, Middleware, Next } from 'koa';
 import { FetchDatasetError } from '../../api/fetch-dataset';
 import { FetchReview } from '../../api/fetch-review';
 import Doi from '../../data/doi';
 import createLogger from '../../logger';
+import EditorialCommunityRepository from '../../types/editorial-community-repository';
 import ReviewReferenceRepository from '../../types/review-reference-repository';
+import { ArticlePageViewModel } from '../types/article-page-view-model';
 
 const log = createLogger('middleware:fetch-reviews-for-article-page');
+
+export interface Review {
+  publicationDate: Date;
+  summary: string;
+  doi: Doi;
+  editorialCommunityId: string;
+}
 
 export default (
   reviewReferenceRepository: ReviewReferenceRepository,
   fetchReview: FetchReview,
+  editorialCommunities: EditorialCommunityRepository,
 ): Middleware => (
-  async (ctx: RouterContext, next: Next): Promise<void> => {
+  async (ctx: Context, next: Next): Promise<void> => {
     const doi: Doi = ctx.state.articleDoi;
 
-    ctx.state.reviews = Promise.all(reviewReferenceRepository.findReviewsForArticleVersionDoi(doi)
+    const reviews = await Promise.all(reviewReferenceRepository.findReviewsForArticleVersionDoi(doi)
       .map(async (reviewReference) => {
         const fetchedReview = await fetchReview(reviewReference.reviewDoi);
 
@@ -34,6 +43,18 @@ export default (
 
         throw new NotFound(`${doi} not found`);
       });
+
+    const reviewSummaries = reviews.map((review: Review) => {
+      const editorialCommunity = editorialCommunities.lookup(review.editorialCommunityId);
+      return {
+        ...review,
+        editorialCommunityName: editorialCommunity ? editorialCommunity.name : 'Unknown',
+      };
+    });
+
+    ctx.state.articlePage = {
+      reviews: reviewSummaries,
+    } as ArticlePageViewModel;
 
     await next();
   }
