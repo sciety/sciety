@@ -45,6 +45,16 @@ describe('render-page-header component', (): void => {
 
       expect(rendered).toStrictEqual(expect.stringMatching(/Reviews[\s\S]*?2/));
     });
+
+    it('links to the reviews heading on the same page', async (): Promise<void> => {
+      renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 2, async () => 0, async () => []);
+      const pageHeader = JSDOM.fragment(await renderPageHeader(new Doi('10.1101/209320')));
+
+      const anchor = pageHeader.querySelector('a[data-test-id="reviewsLink"]');
+
+      expect(anchor).not.toBeNull();
+      expect(anchor?.getAttribute('href')).toStrictEqual('#reviews');
+    });
   });
 
   describe('the article does not have reviews', (): void => {
@@ -56,19 +66,19 @@ describe('render-page-header component', (): void => {
   describe('the article has comments', (): void => {
     it('displays the number of comments', async (): Promise<void> => {
       renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 0, async () => 11, async () => []);
-      const pageHeader = JSDOM.fragment(await renderPageHeader(new Doi('10.1101/815689')));
+      rendered = await renderPageHeader(new Doi('10.1101/815689'));
 
-      const anchor: HTMLAnchorElement | null = pageHeader.querySelector('a[data-test-id="biorxivCommentLink"]');
-
-      expect(anchor).not.toBeNull();
-      expect(anchor?.href).toStrictEqual('https://www.biorxiv.org/content/10.1101/815689v1');
+      expect(rendered).toStrictEqual(expect.stringMatching(/Comments[\s\S]*?11/));
     });
 
     it('links to v1 of the article on Biorxiv', async (): Promise<void> => {
       renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 0, async () => 11, async () => []);
-      rendered = await renderPageHeader(new Doi('10.1101/815689'));
+      const pageHeader = JSDOM.fragment(await renderPageHeader(new Doi('10.1101/815689')));
 
-      expect(rendered).toStrictEqual(expect.stringMatching(/Comments[\s\S]*?11/));
+      const anchor = pageHeader.querySelector<HTMLAnchorElement>('a[data-test-id="biorxivCommentLink"]');
+
+      expect(anchor).not.toBeNull();
+      expect(anchor?.href).toStrictEqual('https://www.biorxiv.org/content/10.1101/815689v1');
     });
   });
 

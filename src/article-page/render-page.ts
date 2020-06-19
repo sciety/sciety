@@ -53,7 +53,7 @@ export default async (
     <div class="row">
       <section class="twelve wide column">
         ${await renderArticleAbstract(article.doi)}
-        <section class="review-summary-list">
+        <section class="review-summary-list" id="reviews">
           ${await renderReviewSummaries()}
         </section>
       </section>

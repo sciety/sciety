@@ -30,10 +30,12 @@ export default (
   const reviewCount = await getReviewCount(doi);
   if (reviewCount > 0) {
     reviews = `
-      <div class="ui label">
-        Reviews
-        <span class="detail">${reviewCount}</span>
-      </div>
+      <a href="#reviews" data-test-id="reviewsLink">
+        <div class="ui label">
+          Reviews
+          <span class="detail">${reviewCount}</span>
+        </div>
+      </a>
     `;
   }
 
