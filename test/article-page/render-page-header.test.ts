@@ -38,6 +38,21 @@ describe('render-page-header component', (): void => {
     expect(rendered).toStrictEqual(expect.stringContaining('Uncle Wiggly'));
   });
 
+  describe('the article has reviews', (): void => {
+    it('displays the number of reviews', async (): Promise<void> => {
+      renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 11, async () => []);
+      rendered = await renderPageHeader(new Doi('10.1101/209320'));
+
+      expect(rendered).toStrictEqual(expect.stringMatching(/Reviews[\s\S]*?2/));
+    });
+  });
+
+  describe('the article does not have reviews', (): void => {
+    it('does not display review details', async (): Promise<void> => {
+      expect(rendered).toStrictEqual(expect.not.stringContaining('Reviews'));
+    });
+  });
+
   describe('the article has comments', (): void => {
     it('displays the number of comments', async (): Promise<void> => {
       renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 11, async () => []);

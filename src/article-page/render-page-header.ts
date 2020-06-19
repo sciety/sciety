@@ -23,6 +23,17 @@ export default (
 ): RenderPageHeader => async (doi) => {
   const articleDetails = await getArticleDetails(doi);
 
+  let reviews = '';
+
+  if (doi.value === '10.1101/209320') {
+    reviews = `
+      <div class="ui label">
+        Reviews
+        <span class="detail">2</span>
+      </div>
+    `;
+  }
+
   let comments: string;
   try {
     const commentCount = await getCommentCount(doi);
@@ -71,6 +82,7 @@ export default (
           </li>
         </ul>
 
+        ${reviews}
         ${comments}
         ${endorsements}
       </header>
