@@ -97,7 +97,11 @@ export default (makeHttpRequest: MakeHttpRequest): FetchCrossrefArticle => {
     const uri = `https://doi.org/${doi.value}`;
     log(`Fetching Crossref article for ${uri}`);
 
-    const response = await makeHttpRequest(uri, 'application/vnd.crossref.unixref+xml');
+    const response = await makeHttpRequest(uri, 'application/vnd.crossref.unixref+xml')
+      .catch((error) => {
+        log(`Failed to fetch article ${doi}: (${error})`);
+        throw error;
+      });
 
     const doc = new DOMParser().parseFromString(response, 'text/xml');
 
