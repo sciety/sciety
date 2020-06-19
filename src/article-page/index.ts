@@ -16,6 +16,10 @@ export default (adapters: Adapters): Middleware => (
     fetchArticleForArticlePage(adapters.fetchArticle),
     fetchReviewsForArticlePage(adapters.reviewReferenceRepository, adapters.fetchReview),
     convertArticleAndReviewsToArticlePage(adapters.editorialCommunities),
-    renderArticlePage(adapters.editorialCommunities, adapters.getBiorxivCommentCount),
+    renderArticlePage(
+      adapters.editorialCommunities,
+      adapters.getBiorxivCommentCount,
+      adapters.fetchArticle,
+    ),
   ])
 );

@@ -1,3 +1,4 @@
+import { NotFound } from 'http-errors';
 import createRenderAddReviewForm, { GetAllEditorialCommunities } from './render-add-review-form';
 import createRenderArticleAbstract, { GetArticleAbstract } from './render-article-abstract';
 import createRenderPageHeader, {
@@ -29,8 +30,14 @@ export default async (
   { article, reviews }: ArticlePageViewModel,
   editorialCommunities: EditorialCommunityRepository,
   getCommentCount: GetCommentCount,
+  fetchArticle: GetArticleDetails,
 ): Promise<string> => {
-  const getArticleDetailsAdapter: GetArticleDetails = async () => article;
+  const getArticleDetailsAdapter: GetArticleDetails = async (articleDoi) => (
+    fetchArticle(articleDoi)
+      .catch(() => {
+        throw new NotFound(`${articleDoi} not found`);
+      })
+  );
   const abstractAdapter: GetArticleAbstract = async () => ({ content: article.abstract });
   const reviewsAdapter: GetReviews = async () => reviews;
   const reviewCountAdapter: GetReviewCount = async () => reviews.length;
