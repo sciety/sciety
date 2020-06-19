@@ -23,14 +23,19 @@ const createGetEndorsingEditorialCommunityNames = (
   }
 );
 
+type GetFullArticle = (doi: Doi) => Promise<{
+  abstract: string;
+}>;
+
 const reviewsId = 'reviews';
 
 export default async (
   doi: Doi,
-  { article, reviews }: ArticlePageViewModel,
+  { reviews }: ArticlePageViewModel,
   editorialCommunities: EditorialCommunityRepository,
   getCommentCount: GetCommentCount,
   fetchArticle: GetArticleDetails,
+  fetchAbstract: GetFullArticle,
 ): Promise<string> => {
   const getArticleDetailsAdapter: GetArticleDetails = async (articleDoi) => (
     fetchArticle(articleDoi)
@@ -38,7 +43,13 @@ export default async (
         throw new NotFound(`${articleDoi} not found`);
       })
   );
-  const abstractAdapter: GetArticleAbstract = async () => ({ content: article.abstract });
+  const abstractAdapter: GetArticleAbstract = async (articleDoi) => {
+    const fetchedArticle = await fetchAbstract(articleDoi)
+      .catch(() => {
+        throw new NotFound(`${articleDoi} not found`);
+      });
+    return { content: fetchedArticle.abstract };
+  };
   const reviewsAdapter: GetReviews = async () => reviews;
   const reviewCountAdapter: GetReviewCount = async () => reviews.length;
   const editorialCommunitiesAdapter: GetAllEditorialCommunities = async () => editorialCommunities.all();
