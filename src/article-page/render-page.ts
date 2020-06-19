@@ -8,6 +8,7 @@ import createRenderPageHeader, {
 import createRenderReviews, { GetReviews } from './render-reviews';
 import { ArticlePageViewModel } from './types/article-page-view-model';
 import endorsements from '../bootstrap-endorsements';
+import Doi from '../data/doi';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 
 type GetEditorialCommunityName = (editorialCommunityId: string) => Promise<string>;
@@ -24,6 +25,7 @@ const createGetEndorsingEditorialCommunityNames = (
 const reviewsId = 'reviews';
 
 export default async (
+  doi: Doi,
   { article, reviews }: ArticlePageViewModel,
   editorialCommunities: EditorialCommunityRepository,
   getCommentCount: GetCommentCount,
@@ -49,17 +51,17 @@ export default async (
   return `<article class="ui aligned stackable grid">
     <div class="row">
       <div class="column">
-        ${await renderPageHeader(article.doi)}
+        ${await renderPageHeader(doi)}
       </div>
     </div>
 
     <div class="row">
       <section class="twelve wide column">
-        ${await renderArticleAbstract(article.doi)}
+        ${await renderArticleAbstract(doi)}
         ${await renderReviews()}
       </section>
       <aside class="four wide right floated column">
-        ${await renderAddReviewForm(article.doi)}
+        ${await renderAddReviewForm(doi)}
       </aside>
     </div>
   </article>`;

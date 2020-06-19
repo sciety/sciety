@@ -9,7 +9,12 @@ export default (
   getCommentCount: GetCommentCount,
 ): Middleware => (
   async (ctx: RouterContext, next: Next): Promise<void> => {
-    ctx.response.body = await renderPage(ctx.state.articlePage, editorialCommunities, getCommentCount);
+    ctx.response.body = await renderPage(
+      ctx.state.articleDoi,
+      ctx.state.articlePage,
+      editorialCommunities,
+      getCommentCount,
+    );
 
     await next();
   }
