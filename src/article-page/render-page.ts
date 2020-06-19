@@ -11,6 +11,7 @@ import { ArticlePageViewModel } from './types/article-page-view-model';
 import endorsements from '../bootstrap-endorsements';
 import Doi from '../data/doi';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
+import ReviewReferenceRepository from '../types/review-reference-repository';
 
 type GetEditorialCommunityName = (editorialCommunityId: string) => Promise<string>;
 
@@ -36,6 +37,7 @@ export default async (
   getCommentCount: GetCommentCount,
   fetchArticle: GetArticleDetails,
   fetchAbstract: GetFullArticle,
+  reviewReferenceRepository: ReviewReferenceRepository,
 ): Promise<string> => {
   const getArticleDetailsAdapter: GetArticleDetails = async (articleDoi) => (
     fetchArticle(articleDoi)
@@ -51,7 +53,9 @@ export default async (
     return { content: fetchedArticle.abstract };
   };
   const reviewsAdapter: GetReviews = async () => reviews;
-  const reviewCountAdapter: GetReviewCount = async () => reviews.length;
+  const reviewCountAdapter: GetReviewCount = async (articleDoi) => (
+    reviewReferenceRepository.findReviewsForArticleVersionDoi(articleDoi).length
+  );
   const editorialCommunitiesAdapter: GetAllEditorialCommunities = async () => editorialCommunities.all();
   const getEditorialCommunityName: GetEditorialCommunityName = async (editorialCommunityId) => (
     editorialCommunities.lookup(editorialCommunityId).name
