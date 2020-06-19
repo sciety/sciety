@@ -14,6 +14,26 @@ a:not([href]) {
 }
 
 /*
+Make sure that links inside a .ui.menu that use <ol> or <ul> retain the intended styling
+*/
+
+.ui.menu > .item a:not(.ui) {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+.ui.menu > .item a:hover:not(.ui) {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.03);
+  color: rgba(0,0,0,.95);
+}
+
+.ui.text.menu > .item a:hover:not(.ui) {
+  opacity: 1;
+  background-color: transparent;
+}
+
+/*
 Use real subscript and superscript characters where possible
 */
 

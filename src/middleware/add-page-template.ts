@@ -39,16 +39,16 @@ ${googleAnalytics}
 
     <ul class="ui large text menu">
 
-      <li>
-        <a href="/" class="item">Home</a>
+      <li class="item">
+        <a href="/">Home</a>
       </li>
 
-      <li>
-        <a href="/about" class="item">About</a>
+      <li class="item">
+        <a href="/about">About</a>
       </li>
 
-      <li>
-        <a href="https://eepurl.com/g7qqcv" class="item">Give us feedback</a>
+      <li class="right item">
+        <a href="https://eepurl.com/g7qqcv" class="ui primary button">Give us feedback</a>
       </li>
 
     </ul>
