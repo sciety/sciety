@@ -14,6 +14,9 @@ export default (reviews: GetArticleReviewSummaries, id: string) => async (): Pro
   const reviewSummaries = (await reviews()).map((review, index) => (
     renderReviewSummary(review, `review-${index}`, 1500)
   ));
+  if (reviewSummaries.length === 0) {
+    return '';
+  }
   return `
     <section id="${id}">
       <h2 class="ui header">
