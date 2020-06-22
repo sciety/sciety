@@ -12,9 +12,11 @@ export default (
   fetchArticle: FetchArticle,
 ): GetReviewedArticles => (
   async (editorialCommunityId) => {
-    const reviewedArticleVersions = reviewReferenceRepository.findReviewsForEditorialCommunityId(editorialCommunityId)
-      .map((reviewReference) => reviewReference.articleVersionDoi);
+    const reviewedArticleVersionDois = reviewReferenceRepository
+      .findReviewsForEditorialCommunityId(editorialCommunityId)
+      .map((reviewReference) => reviewReference.articleVersionDoi.value);
+    const uniqueReviewedArticleVersionDois = [...new Set(reviewedArticleVersionDois)].map((value) => new Doi(value));
 
-    return Promise.all(reviewedArticleVersions.map(fetchArticle));
+    return Promise.all(uniqueReviewedArticleVersionDois.map(fetchArticle));
   }
 );
