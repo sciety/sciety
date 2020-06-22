@@ -1,6 +1,6 @@
 import { GetReviewedArticles } from './render-reviewed-articles';
 import Doi from '../data/doi';
-import ReviewReferenceRepository from '../types/review-reference-repository';
+import ReviewReference from '../types/review-reference';
 
 export type FetchArticle = (doi: Doi) => Promise<{
   doi: Doi;
@@ -13,13 +13,14 @@ const uniqueDois = (dois: ReadonlyArray<Doi>): ReadonlyArray<Doi> => {
   return Array.from(new Map(entries).values());
 };
 
+type FindReviewReferences = (editorialCommunityId: string) => ReadonlyArray<ReviewReference>;
+
 export default (
-  reviewReferenceRepository: ReviewReferenceRepository,
+  findReviewReferences: FindReviewReferences,
   fetchArticle: FetchArticle,
 ): GetReviewedArticles => (
   async (editorialCommunityId) => {
-    const reviewedArticleVersionDois = reviewReferenceRepository
-      .findReviewsForEditorialCommunityId(editorialCommunityId)
+    const reviewedArticleVersionDois = findReviewReferences(editorialCommunityId)
       .map((reviewReference) => reviewReference.articleVersionDoi);
 
     return Promise.all(uniqueDois(reviewedArticleVersionDois).map(fetchArticle));

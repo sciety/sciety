@@ -1,5 +1,5 @@
 import { NotFound } from 'http-errors';
-import createGetReviewedArticlesFromReviewReferenceRepository from './get-reviewed-articles-from-review-reference-repository';
+import createGetReviewedArticlesFromReviewReferences from './get-reviewed-articles-from-review-references';
 import createRenderEndorsedArticles, {
   createGetHardCodedEndorsedArticles,
   GetArticleTitle,
@@ -51,8 +51,8 @@ export default (
     return article.title;
   };
   const getEndorsedArticles = createGetHardCodedEndorsedArticles(getArticleTitle);
-  const getReviewedArticles = createGetReviewedArticlesFromReviewReferenceRepository(
-    reviewReferenceRepository,
+  const getReviewedArticles = createGetReviewedArticlesFromReviewReferences(
+    reviewReferenceRepository.findReviewsForEditorialCommunityId,
     fetchArticle,
   );
   const renderPageHeader = createRenderPageHeader(getEditorialCommunity);
