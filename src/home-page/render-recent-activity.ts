@@ -1,4 +1,3 @@
-import arrayUniq from 'array-uniq';
 import Doi from '../data/doi';
 import { toDisplayString, toString } from '../templates/date';
 import templateListItems from '../templates/list-items';
@@ -43,8 +42,8 @@ export const createDiscoverRecentActivity = (
       .sort((a, b) => b.added.getTime() - a.added.getTime())
       .slice(0, limit);
 
-    const articleVersionDois = arrayUniq(mostRecentReviewReferences
-      .map((reviewReference) => reviewReference.articleVersionDoi));
+    const articleVersionDois = mostRecentReviewReferences
+      .map((reviewReference) => reviewReference.articleVersionDoi);
 
     const articles = await Promise
       .all(articleVersionDois.map(fetchArticle))
