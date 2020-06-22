@@ -7,6 +7,12 @@ export type FetchArticle = (doi: Doi) => Promise<{
   title: string;
 }>;
 
+const uniqueDois = (dois: ReadonlyArray<Doi>): ReadonlyArray<Doi> => {
+  const entries = dois.map((doi): [string, Doi] => ([doi.value, doi]));
+
+  return Array.from(new Map(entries).values());
+};
+
 export default (
   reviewReferenceRepository: ReviewReferenceRepository,
   fetchArticle: FetchArticle,
@@ -14,9 +20,8 @@ export default (
   async (editorialCommunityId) => {
     const reviewedArticleVersionDois = reviewReferenceRepository
       .findReviewsForEditorialCommunityId(editorialCommunityId)
-      .map((reviewReference) => reviewReference.articleVersionDoi.value);
-    const uniqueReviewedArticleVersionDois = [...new Set(reviewedArticleVersionDois)].map((value) => new Doi(value));
+      .map((reviewReference) => reviewReference.articleVersionDoi);
 
-    return Promise.all(uniqueReviewedArticleVersionDois.map(fetchArticle));
+    return Promise.all(uniqueDois(reviewedArticleVersionDois).map(fetchArticle));
   }
 );
