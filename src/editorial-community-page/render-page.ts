@@ -1,9 +1,10 @@
 import { NotFound } from 'http-errors';
+import createGetReviewedArticlesFromReviewReferenceRepository from './get-reviewed-articles-from-review-reference-repository';
 import createRenderEndorsedArticles, {
   createGetHardCodedEndorsedArticles,
   GetArticleTitle,
 } from './render-endorsed-articles';
-import createRenderReviewedArticles, { GetReviewedArticles } from './render-reviewed-articles';
+import createRenderReviewedArticles from './render-reviewed-articles';
 import templateHeader from './templates/header';
 import Doi from '../data/doi';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
@@ -50,12 +51,10 @@ export default (
     return article.title;
   };
   const getEndorsedArticles = createGetHardCodedEndorsedArticles(getArticleTitle);
-  const getReviewedArticles: GetReviewedArticles = async (editorialCommunityId) => {
-    const reviewedArticleVersions = reviewReferenceRepository.findReviewsForEditorialCommunityId(editorialCommunityId)
-      .map((reviewReference) => reviewReference.articleVersionDoi);
-
-    return Promise.all(reviewedArticleVersions.map(fetchArticle));
-  };
+  const getReviewedArticles = createGetReviewedArticlesFromReviewReferenceRepository(
+    reviewReferenceRepository,
+    fetchArticle,
+  );
   const renderPageHeader = createRenderPageHeader(getEditorialCommunity);
   const renderEndorsedArticles = createRenderEndorsedArticles(getEndorsedArticles);
   const renderReviewedArticles = createRenderReviewedArticles(getReviewedArticles);
