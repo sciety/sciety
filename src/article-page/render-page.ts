@@ -54,7 +54,7 @@ export default async (
   };
   const reviewsAdapter: GetReviews = async () => reviews;
   const reviewCountAdapter: GetReviewCount = async (articleDoi) => (
-    reviewReferenceRepository.findReviewsForArticleVersionDoi(articleDoi).length
+    (await reviewReferenceRepository.findReviewsForArticleVersionDoi(articleDoi)).length
   );
   const editorialCommunitiesAdapter: GetAllEditorialCommunities = async () => editorialCommunities.all();
   const getEditorialCommunityName: GetEditorialCommunityName = async (editorialCommunityId) => (

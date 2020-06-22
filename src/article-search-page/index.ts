@@ -4,7 +4,7 @@ import { Adapters } from '../types/adapters';
 
 export default (adapters: Adapters): Middleware => {
   const getReviewCount: GetReviewCount = async (doi) => (
-    adapters.reviewReferenceRepository.findReviewsForArticleVersionDoi(doi).length
+    (await adapters.reviewReferenceRepository.findReviewsForArticleVersionDoi(doi)).length
   );
   const renderPage = createRenderPage(
     adapters.getJson,

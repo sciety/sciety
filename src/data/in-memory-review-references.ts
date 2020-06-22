@@ -8,7 +8,7 @@ export default (): ReviewReferenceRepository => {
   const reviewReferences: Array<ReviewReference> = [];
 
   const reviewReferenceRepository: ReviewReferenceRepository = {
-    add: (articleVersionDoi: Doi, reviewDoi: Doi, editorialCommunityId: string, added: Date) => {
+    add: async (articleVersionDoi: Doi, reviewDoi: Doi, editorialCommunityId: string, added: Date) => {
       const ref: ReviewReference = {
         articleVersionDoi,
         reviewDoi,
@@ -23,12 +23,12 @@ export default (): ReviewReferenceRepository => {
       reviewReferences[Symbol.iterator]()
     ),
 
-    findReviewsForArticleVersionDoi: (articleVersionDoi) => (
+    findReviewsForArticleVersionDoi: async (articleVersionDoi) => (
       reviewReferences
         .filter((reference) => reference.articleVersionDoi.value === articleVersionDoi.value)
     ),
 
-    findReviewsForEditorialCommunityId: (editorialCommunityId) => (
+    findReviewsForEditorialCommunityId: async (editorialCommunityId) => (
       reviewReferences
         .filter((reference) => reference.editorialCommunityId === editorialCommunityId)
     ),

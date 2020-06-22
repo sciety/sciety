@@ -15,12 +15,12 @@ describe('review-reference-repository', () => {
   });
 
   describe('when empty', () => {
-    it('has no review references for any article version', () => {
-      expect(reviewReferenceRepository.findReviewsForArticleVersionDoi(article1)).toHaveLength(0);
+    it('has no review references for any article version', async () => {
+      expect(await reviewReferenceRepository.findReviewsForArticleVersionDoi(article1)).toHaveLength(0);
     });
 
-    it('has no review references for any editorial community', () => {
-      expect(reviewReferenceRepository.findReviewsForEditorialCommunityId(editorialCommunity1)).toHaveLength(0);
+    it('has no review references for any editorial community', async () => {
+      expect(await reviewReferenceRepository.findReviewsForEditorialCommunityId(editorialCommunity1)).toHaveLength(0);
     });
   });
 
@@ -29,10 +29,10 @@ describe('review-reference-repository', () => {
     const review2 = new Doi('10.6666/2');
     const review3 = new Doi('10.7777/3');
 
-    beforeEach(() => {
-      reviewReferenceRepository.add(article1, review1, editorialCommunity1, new Date('2020-05-19T00:00:00Z'));
-      reviewReferenceRepository.add(article2, review2, editorialCommunity1, new Date('2020-05-21T00:00:00Z'));
-      reviewReferenceRepository.add(article1, review3, editorialCommunity2, new Date('2020-05-20T00:00:00Z'));
+    beforeEach(async () => {
+      await reviewReferenceRepository.add(article1, review1, editorialCommunity1, new Date('2020-05-19T00:00:00Z'));
+      await reviewReferenceRepository.add(article2, review2, editorialCommunity1, new Date('2020-05-21T00:00:00Z'));
+      await reviewReferenceRepository.add(article1, review3, editorialCommunity2, new Date('2020-05-20T00:00:00Z'));
     });
 
     it('is an iterable', () => {
@@ -48,8 +48,8 @@ describe('review-reference-repository', () => {
       [article1, [review1, review3]],
       [article2, [review2]],
       [new Doi('10.0000/does-not-exist'), []],
-    ])('finds the review references for article %s', (articleDoi, expectedReviews) => {
-      const actualReviews = reviewReferenceRepository.findReviewsForArticleVersionDoi(articleDoi)
+    ])('finds the review references for article %s', async (articleDoi, expectedReviews) => {
+      const actualReviews = (await reviewReferenceRepository.findReviewsForArticleVersionDoi(articleDoi))
         .map((reviewReference) => reviewReference.reviewDoi)
         .sort();
 
@@ -60,8 +60,8 @@ describe('review-reference-repository', () => {
       [editorialCommunity1, [review1, review2]],
       [editorialCommunity2, [review3]],
       ['does-not-exist', []],
-    ])('finds the review references for editorial community ID %s', (editorialCommunityId, expectedReviews) => {
-      const actualReviews = reviewReferenceRepository.findReviewsForEditorialCommunityId(editorialCommunityId)
+    ])('finds the review references for editorial community ID %s', async (editorialCommunityId, expectedReviews) => {
+      const actualReviews = (await reviewReferenceRepository.findReviewsForEditorialCommunityId(editorialCommunityId))
         .map((reviewReference) => reviewReference.reviewDoi)
         .sort();
 

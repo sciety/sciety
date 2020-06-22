@@ -20,15 +20,17 @@ export default (
   const log = createLogger('middleware:fetch-reviews-for-article-page');
 
   return async (doi: Doi): Promise<Array<Review>> => {
-    const reviews = await Promise.all(reviewReferenceRepository.findReviewsForArticleVersionDoi(doi)
-      .map(async (reviewReference) => {
-        const fetchedReview = await fetchReview(reviewReference.reviewDoi);
+    const reviews = await Promise.all(
+      (await reviewReferenceRepository.findReviewsForArticleVersionDoi(doi))
+        .map(async (reviewReference) => {
+          const fetchedReview = await fetchReview(reviewReference.reviewDoi);
 
-        return {
-          ...reviewReference,
-          ...fetchedReview,
-        };
-      }))
+          return {
+            ...reviewReference,
+            ...fetchedReview,
+          };
+        }),
+    )
       .catch((error) => {
         log(`Failed to load reviews for article ${doi}: (${error})`);
         throw error;

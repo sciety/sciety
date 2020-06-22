@@ -9,7 +9,7 @@ const fetchArticle: FetchArticle = async (doi) => ({
 
 describe('get-reviewed-articles-from-review-references', (): void => {
   it('returns articles for each given review reference', async (): Promise<void> => {
-    const findReviewReferences = (): ReadonlyArray<ReviewReference> => [
+    const findReviewReferences = async (): Promise<ReadonlyArray<ReviewReference>> => [
       {
         articleVersionDoi: new Doi('10.1111/1111'),
         reviewDoi: new Doi('10.3333/3333'),
@@ -32,7 +32,7 @@ describe('get-reviewed-articles-from-review-references', (): void => {
   });
 
   it('returns articles only once', async (): Promise<void> => {
-    const findReviewReferences = (): ReadonlyArray<ReviewReference> => [
+    const findReviewReferences = async (): Promise<ReadonlyArray<ReviewReference>> => [
       {
         articleVersionDoi: new Doi('10.1111/1111'),
         reviewDoi: new Doi('10.3333/3333'),

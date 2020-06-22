@@ -27,8 +27,8 @@ describe('reviews handler', (): void => {
       expect(response.header.location).toBe(`/articles/${articleVersionDoi}`);
     });
 
-    it('adds the review reference to the repository', () => {
-      const foundReviews = reviewReferenceRepository.findReviewsForArticleVersionDoi(articleVersionDoi);
+    it('adds the review reference to the repository', async () => {
+      const foundReviews = await reviewReferenceRepository.findReviewsForArticleVersionDoi(articleVersionDoi);
       const foundReviewDois = foundReviews.map((review) => review.reviewDoi);
 
       expect(foundReviewDois).toContainEqual(reviewDoi);

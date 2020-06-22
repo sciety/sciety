@@ -7,11 +7,11 @@ export default interface ReviewReferenceRepository extends Iterable<ReviewRefere
     reviewDoi: Doi,
     editorialCommunityId: string,
     added: Date,
-  ): void;
+  ): Promise<void>;
   findReviewsForArticleVersionDoi(
     articleVersionDoi: Doi,
-  ): Array<ReviewReference>;
+  ): Promise<Array<ReviewReference>>;
   findReviewsForEditorialCommunityId(
     editorialCommunityId: string,
-  ): Array<ReviewReference>;
+  ): Promise<Array<ReviewReference>>;
 }
