@@ -28,6 +28,16 @@ describe('render-search-result component', (): void => {
     expect(rendered).toStrictEqual(expect.stringContaining(searchResult.authors));
   });
 
+  it('displays the first published date', async (): Promise<void> => {
+    const rendered = await createRenderSearchResult(
+      arbitraryCommentCount,
+      arbitraryReviewCount,
+      arbitraryEndorsingEditorialCommunities,
+    )({ ...searchResult, doi: new Doi('10.1101/226092') });
+
+    expect(rendered).toStrictEqual(expect.stringMatching(/Posted[\s\S]*?Nov 30, 2017/));
+  });
+
   describe('the article has reviews', (): void => {
     it('displays the number of reviews', async (): Promise<void> => {
       const getReviewCount: GetReviewCount = async () => 37;

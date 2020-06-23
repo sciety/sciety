@@ -79,12 +79,18 @@ export default (
   const renderCommentCount = createRenderComments(getCommentCount);
   const renderEndorsements = createRenderEndorsements(getEndorsingEditorialCommunities);
 
-  return async (result) => `
+  return async (result) => {
+    let postedDate = '';
+    if (result.doi.value === '10.1101/226092') {
+      postedDate = '<div class="meta">Posted <time datetime="2017-11-30">Nov 30, 2017</time></div>';
+    }
+    return `
     <div class="content">
       <a class="header" href="/articles/${result.doi.value}">${result.title}</a>
       <div class="meta">
         ${result.authors}
       </div>
+      ${postedDate}
       <div class="extra">
         ${await renderReviews(result.doi)}
         ${await renderCommentCount(result.doi)}
@@ -92,4 +98,5 @@ export default (
       </div>
     </div>
   `;
+  };
 };
