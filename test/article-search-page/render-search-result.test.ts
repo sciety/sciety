@@ -28,12 +28,12 @@ describe('render-search-result component', (): void => {
     expect(rendered).toStrictEqual(expect.stringContaining(searchResult.authors));
   });
 
-  it('displays the first published date', async (): Promise<void> => {
+  it('displays the posted date', async (): Promise<void> => {
     const rendered = await createRenderSearchResult(
       arbitraryCommentCount,
       arbitraryReviewCount,
       arbitraryEndorsingEditorialCommunities,
-    )({ ...searchResult, doi: new Doi('10.1101/226092') });
+    )({ ...searchResult, postedDate: new Date('2017-11-30') });
 
     expect(rendered).toStrictEqual(expect.stringMatching(/Posted[\s\S]*?Nov 30, 2017/));
   });

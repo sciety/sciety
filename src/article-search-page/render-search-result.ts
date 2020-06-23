@@ -5,6 +5,7 @@ export interface SearchResult {
   doi: Doi;
   title: string;
   authors: string;
+  postedDate?: Date;
 }
 
 export type GetCommentCount = (doi: Doi) => Promise<number>;
@@ -86,8 +87,8 @@ export default (
 
   return async (result) => {
     let postedDate = '';
-    if (result.doi.value === '10.1101/226092') {
-      postedDate = templatePostedDate(new Date('2017-11-30'));
+    if (result.postedDate) {
+      postedDate = templatePostedDate(result.postedDate);
     }
     return `
     <div class="content">
