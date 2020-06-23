@@ -21,6 +21,7 @@ export default (adapters: Adapters): Middleware => {
       adapters.editorialCommunities,
       adapters.getBiorxivCommentCount,
       adapters.fetchArticle,
+      fetchReviews,
       adapters.reviewReferenceRepository,
     ),
   ]);

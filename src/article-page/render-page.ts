@@ -1,4 +1,4 @@
-import { NotFound } from 'http-errors';
+import { NotFound, ServiceUnavailable } from 'http-errors';
 import createRenderAddReviewForm, { GetAllEditorialCommunities } from './render-add-review-form';
 import createRenderArticleAbstract, { GetArticleAbstract } from './render-article-abstract';
 import createRenderPageHeader, {
@@ -7,7 +7,7 @@ import createRenderPageHeader, {
   GetEndorsingEditorialCommunityNames, GetReviewCount,
 } from './render-page-header';
 import createRenderReviews, { GetReviews } from './render-reviews';
-import { ArticlePageViewModel } from './types/article-page-view-model';
+import { FetchDatasetError } from '../api/fetch-dataset';
 import endorsements from '../bootstrap-endorsements';
 import Doi from '../data/doi';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
@@ -28,11 +28,19 @@ type GetFullArticle = (doi: Doi) => Promise<{
   abstract: string;
 }>;
 
+export type FetchReviews = (doi: Doi) => Promise<Array<{
+  publicationDate: Date;
+  summary: string;
+  doi: Doi;
+  editorialCommunityId: string;
+  editorialCommunityName: string;
+}>>;
+
 const reviewsId = 'reviews';
 
 export default async (
   doi: Doi,
-  { reviews }: ArticlePageViewModel,
+  fetchReviews: FetchReviews,
   editorialCommunities: EditorialCommunityRepository,
   getCommentCount: GetCommentCount,
   fetchArticle: GetArticleDetails,
@@ -52,7 +60,15 @@ export default async (
       });
     return { content: fetchedArticle.abstract };
   };
-  const reviewsAdapter: GetReviews = async () => reviews;
+  const reviewsAdapter: GetReviews = async (articleDoi) => (
+    fetchReviews(articleDoi)
+      .catch((error) => {
+        if (error instanceof FetchDatasetError) {
+          throw new ServiceUnavailable('Article temporarily unavailable. Please try refreshing.');
+        }
+        throw new NotFound(`${articleDoi} not found`);
+      })
+  );
   const reviewCountAdapter: GetReviewCount = async (articleDoi) => (
     (await reviewReferenceRepository.findReviewsForArticleVersionDoi(articleDoi)).length
   );
@@ -80,7 +96,7 @@ export default async (
     <div class="row">
       <section class="twelve wide column">
         ${await renderArticleAbstract(doi)}
-        ${await renderReviews()}
+        ${await renderReviews(doi)}
       </section>
       <aside class="four wide right floated column">
         ${await renderAddReviewForm(doi)}
