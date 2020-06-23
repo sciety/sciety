@@ -12,6 +12,7 @@ interface EuropePmcQueryResponse {
       doi: string;
       title: string;
       authorString: string;
+      firstPublicationDate: string;
     }>;
   };
 }
@@ -25,18 +26,12 @@ export default (getJson: GetJson): FindArticles => (
     const data = await getJson(uri) as EuropePmcQueryResponse;
     log(data);
 
-    const items = data.resultList.result.map((item): SearchResult => {
-      let postedDate;
-      if (item.doi === '10.1101/226092') {
-        postedDate = new Date('2017-11-30');
-      }
-      return {
-        doi: new Doi(item.doi),
-        title: item.title,
-        authors: item.authorString,
-        postedDate,
-      };
-    });
+    const items = data.resultList.result.map((item): SearchResult => ({
+      doi: new Doi(item.doi),
+      title: item.title,
+      authors: item.authorString,
+      postedDate: new Date(item.firstPublicationDate),
+    }));
 
     return {
       items,
