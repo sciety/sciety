@@ -2,13 +2,15 @@ import createRenderSearchResult, {
   GetCommentCount,
   GetEndorsingEditorialCommunities,
   GetReviewCount,
+  SearchResult,
 } from '../../src/article-search-page/render-search-result';
 import Doi from '../../src/data/doi';
 
-const searchResult = {
+const searchResult: SearchResult = {
   doi: new Doi('10.1101/833392'),
   title: 'the title',
   authors: '1, 2, 3',
+  postedDate: new Date('2017-11-30'),
 };
 
 const arbitraryCommentCount: GetCommentCount = async () => 0;
@@ -33,7 +35,7 @@ describe('render-search-result component', (): void => {
       arbitraryCommentCount,
       arbitraryReviewCount,
       arbitraryEndorsingEditorialCommunities,
-    )({ ...searchResult, postedDate: new Date('2017-11-30') });
+    )(searchResult);
 
     expect(rendered).toStrictEqual(expect.stringMatching(/Posted[\s\S]*?Nov 30, 2017/));
   });

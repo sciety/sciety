@@ -14,6 +14,7 @@ describe('render-search-results component', (): void => {
               doi: new Doi('10.1101/833392'),
               title: 'the title',
               authors: '1, 2, 3',
+              postedDate: new Date('2017-11-30'),
             },
           ],
         }

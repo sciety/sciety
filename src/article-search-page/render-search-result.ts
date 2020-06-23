@@ -5,7 +5,7 @@ export interface SearchResult {
   doi: Doi;
   title: string;
   authors: string;
-  postedDate?: Date;
+  postedDate: Date;
 }
 
 export type GetCommentCount = (doi: Doi) => Promise<number>;
@@ -85,18 +85,13 @@ export default (
   const renderCommentCount = createRenderComments(getCommentCount);
   const renderEndorsements = createRenderEndorsements(getEndorsingEditorialCommunities);
 
-  return async (result) => {
-    let postedDate = '';
-    if (result.postedDate) {
-      postedDate = templatePostedDate(result.postedDate);
-    }
-    return `
+  return async (result) => `
     <div class="content">
       <a class="header" href="/articles/${result.doi.value}">${result.title}</a>
       <div class="meta">
         ${result.authors}
       </div>
-      ${postedDate}
+      ${templatePostedDate(result.postedDate)}
       <div class="extra">
         ${await renderReviews(result.doi)}
         ${await renderCommentCount(result.doi)}
@@ -104,5 +99,4 @@ export default (
       </div>
     </div>
   `;
-  };
 };
