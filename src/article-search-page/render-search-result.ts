@@ -1,4 +1,5 @@
 import Doi from '../data/doi';
+import templateDate from '../templates/date';
 
 export interface SearchResult {
   doi: Doi;
@@ -70,6 +71,10 @@ const createRenderEndorsements = (
   }
 );
 
+const templatePostedDate = (date: Date): string => (
+  `<div class="meta">Posted ${templateDate(date)}</div>`
+);
+
 export default (
   getCommentCount: GetCommentCount,
   getReviewCount: GetReviewCount,
@@ -82,7 +87,7 @@ export default (
   return async (result) => {
     let postedDate = '';
     if (result.doi.value === '10.1101/226092') {
-      postedDate = '<div class="meta">Posted <time datetime="2017-11-30">Nov 30, 2017</time></div>';
+      postedDate = templatePostedDate(new Date('2017-11-30'));
     }
     return `
     <div class="content">
