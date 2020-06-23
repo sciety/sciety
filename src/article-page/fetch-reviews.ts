@@ -1,4 +1,3 @@
-import { GetReviews, Review } from './middleware/fetch-reviews-for-article-page';
 import { FetchReview } from '../api/fetch-review';
 import Doi from '../data/doi';
 import createLogger from '../logger';
@@ -11,6 +10,16 @@ interface FetchedReview {
   doi: Doi;
   editorialCommunityId: string;
 }
+
+interface Review {
+  publicationDate: Date;
+  summary: string;
+  doi: Doi;
+  editorialCommunityId: string;
+  editorialCommunityName: string;
+}
+
+type GetReviews = (doi: Doi) => Promise<Array<Review>>;
 
 export default (
   reviewReferenceRepository: ReviewReferenceRepository,
