@@ -1,4 +1,5 @@
 import EditorialCommunityRepository from './editorial-community-repository';
+import { Json } from './json';
 import ReviewReferenceRepository from './review-reference-repository';
 import { FetchCrossrefArticle } from '../api/fetch-crossref-article';
 import { FetchReview } from '../api/fetch-review';
@@ -12,5 +13,5 @@ export interface Adapters {
   fetchStaticFile: FetchStaticFile;
   editorialCommunities: EditorialCommunityRepository;
   reviewReferenceRepository: ReviewReferenceRepository;
-  getJson: (uri: string) => Promise<object>;
+  getJson: (uri: string) => Promise<Json>;
 }

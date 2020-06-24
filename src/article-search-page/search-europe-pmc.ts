@@ -2,10 +2,11 @@ import { SearchResult } from './render-search-result';
 import { FindArticles } from './render-search-results';
 import Doi from '../data/doi';
 import createLogger from '../logger';
+import { Json, JsonCompatible } from '../types/json';
 
-export type GetJson = (uri: string) => Promise<object>;
+export type GetJson = (uri: string) => Promise<Json>;
 
-interface EuropePmcQueryResponse {
+type EuropePmcQueryResponse = JsonCompatible<{
   hitCount: number;
   resultList: {
     result: Array<{
@@ -15,7 +16,7 @@ interface EuropePmcQueryResponse {
       firstPublicationDate: string;
     }>;
   };
-}
+}>;
 
 const log = createLogger('article-search-page:render-search-results');
 

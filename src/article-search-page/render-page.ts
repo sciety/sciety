@@ -3,8 +3,9 @@ import createRenderSearchResult, { GetReviewCount } from './render-search-result
 import createRenderSearchResults from './render-search-results';
 import createSearchEuropePmc from './search-europe-pmc';
 import Doi from '../data/doi';
+import { Json } from '../types/json';
 
-export type GetJson = (uri: string) => Promise<object>;
+export type GetJson = (uri: string) => Promise<Json>;
 
 type RenderPage = (query: string) => Promise<string>;
 

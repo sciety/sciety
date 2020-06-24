@@ -1,12 +1,13 @@
 import createLogger from '../logger';
+import { Json, JsonCompatible } from '../types/json';
 
-export type GetJson = (uri: string) => Promise<object>;
+export type GetJson = (uri: string) => Promise<Json>;
 
-interface DisqusData {
+type DisqusData = JsonCompatible<{
   response: Array<{
     posts: number;
   }>;
-}
+}>;
 
 type GetDisqusPostCount = (uri: string) => Promise<number>;
 
