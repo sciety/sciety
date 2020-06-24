@@ -7,7 +7,7 @@ import SinkMap from '@rdfjs/sink-map';
 import clownface, { Clownface } from 'clownface';
 import parseLinkHeader from 'parse-link-header';
 import datasetFactory from 'rdf-dataset-indexed';
-import { DatasetCore, NamedNode, Stream } from 'rdf-js'; // eslint-disable-line import/no-extraneous-dependencies
+import { DatasetCore, NamedNode, Stream } from 'rdf-js'; // eslint-disable-line import/no-extraneous-dependencies -- https://github.com/benmosher/eslint-plugin-import/issues/1618
 import createLogger from '../logger';
 
 export type FetchDataset = (iri: NamedNode) => Promise<Clownface<NamedNode>>;
