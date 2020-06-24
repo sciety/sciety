@@ -10,11 +10,10 @@ const editorialCommunities: EditorialCommunityRepository = createEditorialCommun
 const articleA = new Doi('10.1101/833392');
 const articleAReview1 = new Doi('10.5281/zenodo.3678325');
 
-const reviewReferenceRepository = createReviewReferenceRepository();
-reviewReferenceRepository.add(articleA, articleAReview1, editorialCommunities.all()[0].id, new Date('2020-05-19T14:00:00Z'));
-
 describe('fetch-reviews-for-article-page middleware', (): void => {
   it('adds editorial community names to the reviews', async (): Promise<void> => {
+    const reviewReferenceRepository = createReviewReferenceRepository();
+    await reviewReferenceRepository.add(articleA, articleAReview1, editorialCommunities.all()[0].id, new Date('2020-05-19T14:00:00Z'));
     const fetchReview: FetchReview = async (reviewDoi) => ({
       publicationDate: new Date(),
       summary: '',

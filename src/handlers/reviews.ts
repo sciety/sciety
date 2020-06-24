@@ -37,7 +37,7 @@ export default (
       throw new BadRequest(`${editorialcommunityid} not found`);
     }
 
-    reviewReferenceRepository.add(
+    await reviewReferenceRepository.add(
       new Doi(articleversiondoi),
       reviewDoi,
       editorialCommunity.id,

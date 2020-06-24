@@ -25,7 +25,7 @@ const reviewReferenceRepository = createReviewReferenceRepository();
 for (const {
   article, review, editorialCommunityIndex, added,
 } of bootstrapReviews) {
-  reviewReferenceRepository.add(
+  void reviewReferenceRepository.add(
     new Doi(article),
     new Doi(review),
     editorialCommunities.all()[editorialCommunityIndex].id,

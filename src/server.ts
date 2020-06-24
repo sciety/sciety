@@ -26,6 +26,7 @@ export default (router: Router): Server => {
   }));
   app.use(router.middleware());
 
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises -- https://github.com/DefinitelyTyped/DefinitelyTyped/issues/40070
   const server = createServer(app.callback());
 
   server.on('listening', (): void => log('Server running'));

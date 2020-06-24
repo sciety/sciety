@@ -23,6 +23,8 @@ module.exports = {
   root: true,
   rules: {
     '@typescript-eslint/brace-style': ['error', '1tbs'],
+    '@typescript-eslint/no-floating-promises': 'error',
+    '@typescript-eslint/no-misused-promises': 'error',
     '@typescript-eslint/no-unused-vars': 'error',
     '@typescript-eslint/array-type': ['error', { default: 'generic' }],
     '@typescript-eslint/prefer-nullish-coalescing': ['error'],
@@ -45,6 +47,7 @@ module.exports = {
       ignoreTemplateLiterals: true,
     }],
     'no-restricted-syntax': ['error', 'ForInStatement', 'LabeledStatement', 'WithStatement'],
+    'no-void': ['error', { allowAsStatement: true }],
     'sort-imports': ['error', {
       ignoreCase: true,
       ignoreDeclarationSort: true,
