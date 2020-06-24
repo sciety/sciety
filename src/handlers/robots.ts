@@ -1,5 +1,5 @@
-import { OK } from 'http-status-codes';
 import { Middleware, RouterContext } from '@koa/router';
+import { OK } from 'http-status-codes';
 import { Next } from 'koa';
 
 export default (): Middleware => (

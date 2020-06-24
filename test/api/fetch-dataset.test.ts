@@ -5,7 +5,7 @@
 import { namedNode } from '@rdfjs/data-model';
 import rdfFetch, { DatasetResponse } from '@rdfjs/fetch-lite';
 import datasetFactory from 'rdf-dataset-indexed';
-import { DatasetCore } from 'rdf-js';
+import { DatasetCore } from 'rdf-js'; // eslint-disable-line import/no-extraneous-dependencies
 import createFetchDataset, { FetchDatasetError } from '../../src/api/fetch-dataset';
 import Doi from '../../src/data/doi';
 
