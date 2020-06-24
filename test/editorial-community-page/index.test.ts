@@ -7,7 +7,7 @@ describe('render-editorial-community-page', (): void => {
 
   describe('when the editorial community exists', (): void => {
     beforeEach(async () => {
-      const { server, editorialCommunities } = createServer();
+      const { server, editorialCommunities } = await createServer();
       response = await request(server).get(`/editorial-communities/${editorialCommunities.all()[0].id}`);
     });
 
@@ -26,7 +26,7 @@ describe('render-editorial-community-page', (): void => {
 
   describe('when the editorial community does not exist', (): void => {
     beforeEach(async () => {
-      const { server } = createServer();
+      const { server } = await createServer();
       response = await request(server).get('/editorial-communities/rubbish');
     });
 

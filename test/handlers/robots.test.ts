@@ -6,7 +6,7 @@ describe('robots handler', (): void => {
   let response: Response;
 
   beforeEach(async () => {
-    const { server } = createServer();
+    const { server } = await createServer();
     response = await request(server).get('/robots.txt');
   });
 

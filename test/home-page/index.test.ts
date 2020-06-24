@@ -8,7 +8,7 @@ describe('render-home-page handler', (): void => {
   let editorialCommunities: EditorialCommunityRepository;
 
   beforeEach(async () => {
-    const server = createServer();
+    const server = await createServer();
     editorialCommunities = server.editorialCommunities;
     response = await request(server.server).get('/');
   });

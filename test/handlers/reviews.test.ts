@@ -1,17 +1,21 @@
+import { Server } from 'http';
 import { BAD_REQUEST, SEE_OTHER } from 'http-status-codes';
 import request, { Response } from 'supertest';
 import createServer from './server';
 import Doi from '../../src/data/doi';
+import ReviewReferenceRepository from '../../src/types/review-reference-repository';
 
 describe('reviews handler', (): void => {
   const articleVersionDoi = new Doi('10.1101/2000.1234');
 
   describe('given a valid Zenodo review DOI', (): void => {
     const reviewDoi = new Doi('10.5281/zenodo.3678326');
-    const { server, reviewReferenceRepository } = createServer();
+    let server: Server;
+    let reviewReferenceRepository: ReviewReferenceRepository;
     let response: Response;
 
     beforeEach(async (): Promise<void> => {
+      ({ server, reviewReferenceRepository } = await createServer());
       response = await request(server)
         .post('/reviews')
         .type('form')
@@ -36,7 +40,7 @@ describe('reviews handler', (): void => {
   });
 
   it('rejects syntactically invalid input', async (): Promise<void> => {
-    const { server } = createServer();
+    const { server } = await createServer();
     const invalidInput = '1.1/1.1';
     const response = await request(server)
       .post('/reviews')
@@ -52,7 +56,7 @@ describe('reviews handler', (): void => {
   });
 
   it('rejects a review DOI that is not on Zenodo', async (): Promise<void> => {
-    const { server } = createServer();
+    const { server } = await createServer();
     const otherDoi = 'http://doi.org/10.1016/j.neuron.2014.09.004';
     const response = await request(server)
       .post('/reviews')

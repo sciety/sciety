@@ -10,7 +10,7 @@ describe('article route', (): void => {
     const articleDoi = new Doi('10.1101/833392');
 
     beforeEach(async () => {
-      const { server } = createServer();
+      const { server } = await createServer();
       response = await request(server).get(`/articles/${articleDoi}`);
     });
 
@@ -21,7 +21,7 @@ describe('article route', (): void => {
 
   describe('when the article does not exist', (): void => {
     beforeEach(async () => {
-      const { server } = createServer();
+      const { server } = await createServer();
       response = await request(server).get('/articles/rubbish');
     });
 
@@ -32,7 +32,7 @@ describe('article route', (): void => {
 
   describe('when the article is not from bioRxiv', (): void => {
     beforeEach(async () => {
-      const { server } = createServer();
+      const { server } = await createServer();
       response = await request(server).get('/articles/10.7554/eLife.09560');
     });
 

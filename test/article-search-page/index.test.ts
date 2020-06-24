@@ -7,7 +7,7 @@ describe('article search route', (): void => {
   let response: Response;
 
   beforeEach(async () => {
-    const { server } = createServer();
+    const { server } = await createServer();
     response = await request(server).get(`/articles?query=${arbitraryDoi}`);
   });
 
