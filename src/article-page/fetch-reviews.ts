@@ -13,7 +13,7 @@ interface FetchedReview {
 interface Review {
   publicationDate: Date;
   summary: string;
-  doi: Doi;
+  url: URL;
   editorialCommunityId: string;
   editorialCommunityName: string;
 }
@@ -38,7 +38,7 @@ export default (
           const fetchedReview = await fetchReview(reviewReference.reviewId);
 
           return {
-            doi: reviewReference.reviewId,
+            url: new URL(`https://doi.org/${reviewReference.reviewId.value}`),
             ...reviewReference,
             ...fetchedReview,
           };

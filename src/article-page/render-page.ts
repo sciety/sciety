@@ -31,7 +31,7 @@ type GetFullArticle = (doi: Doi) => Promise<{
 export type FetchReviews = (doi: Doi) => Promise<Array<{
   publicationDate: Date;
   summary: string;
-  doi: Doi;
+  url: URL;
   editorialCommunityId: string;
   editorialCommunityName: string;
 }>>;

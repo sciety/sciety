@@ -7,7 +7,7 @@ type RenderReviews = (doi: Doi) => Promise<string>;
 export type GetReviews = (doi: Doi) => Promise<Array<{
   publicationDate: Date;
   summary: string;
-  doi: Doi;
+  url: URL;
   editorialCommunityId: string;
   editorialCommunityName: string;
 }>>;

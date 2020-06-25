@@ -1,11 +1,10 @@
 import clip from 'text-clipper';
-import Doi from '../data/doi';
 import templateDate from '../templates/date';
 
 export interface ReviewSummary {
   publicationDate: Date;
   summary: string;
-  doi: Doi;
+  url: URL;
   editorialCommunityId: string;
   editorialCommunityName: string;
 }
@@ -31,7 +30,7 @@ export default (review: ReviewSummary, idNamespace: string, maxChars: number): s
       </div>
 
       <div class="extra">
-        <a href="https://doi.org/${review.doi}" class="ui right floated basic secondary button" id="${idNamespace}-read-more"
+        <a href="${review.url.href}" class="ui right floated basic secondary button" id="${idNamespace}-read-more"
           aria-labelledby="${idNamespace}-read-more ${idNamespace}-editorial-community">
           Read the full review
           <i class="right chevron icon"></i>

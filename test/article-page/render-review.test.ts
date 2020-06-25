@@ -1,11 +1,10 @@
 import renderReview from '../../src/article-page/render-review';
-import Doi from '../../src/data/doi';
 
 describe('render-review component', (): void => {
   const review = {
     publicationDate: new Date('2010-02-01'),
     summary: 'Pretty good.',
-    doi: new Doi('10.5281/zenodo.3678326'),
+    url: new URL('https://doi.org/10.5281/zenodo.3678326'),
     editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
     editorialCommunityName: 'eLife',
   };
@@ -27,7 +26,7 @@ describe('render-review component', (): void => {
     });
 
     it('renders the link to a full review', () => {
-      expect(actual).toStrictEqual(expect.stringContaining(`href="https://doi.org/${review.doi}"`));
+      expect(actual).toStrictEqual(expect.stringContaining('href="https://doi.org/10.5281/zenodo.3678326"'));
     });
 
     it('renders the editorial community', () => {

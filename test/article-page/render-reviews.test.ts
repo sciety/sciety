@@ -9,7 +9,7 @@ describe('render-reviews component', () => {
     const reviews = [{
       publicationDate: new Date(),
       summary: 'Not used',
-      doi,
+      url: new URL('https://doi.org/10.5281/zenodo.3678326'),
       editorialCommunityId: '',
       editorialCommunityName: '',
     }];
