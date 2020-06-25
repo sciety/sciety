@@ -1,4 +1,4 @@
-import { FetchReview } from '../../src/api/fetch-review';
+import { FetchDataciteReview } from '../../src/api/fetch-datacite-review';
 import createFetchReviews from '../../src/article-page/fetch-reviews';
 import Doi from '../../src/data/doi';
 import createEditorialCommunityRepository from '../../src/data/in-memory-editorial-communities';
@@ -14,7 +14,7 @@ describe('fetch-reviews-for-article-page middleware', (): void => {
   it('adds editorial community names to the reviews', async (): Promise<void> => {
     const reviewReferenceRepository = createReviewReferenceRepository();
     await reviewReferenceRepository.add(articleA, articleAReview1, editorialCommunities.all()[0].id, new Date('2020-05-19T14:00:00Z'));
-    const fetchReview: FetchReview = async (reviewId) => ({
+    const fetchReview: FetchDataciteReview = async (reviewId) => ({
       publicationDate: new Date(),
       summary: '',
       doi: reviewId instanceof Doi ? reviewId : articleAReview1,

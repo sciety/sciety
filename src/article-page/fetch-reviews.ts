@@ -1,14 +1,8 @@
-import { FetchReview } from '../api/fetch-review';
+import { FetchDataciteReview } from '../api/fetch-datacite-review';
 import Doi from '../data/doi';
 import createLogger from '../logger';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import ReviewReferenceRepository from '../types/review-reference-repository';
-
-interface FetchedReview {
-  publicationDate: Date;
-  summary: string;
-  editorialCommunityId: string;
-}
 
 interface Review {
   publicationDate: Date;
@@ -22,7 +16,7 @@ type GetReviews = (doi: Doi) => Promise<Array<Review>>;
 
 export default (
   reviewReferenceRepository: ReviewReferenceRepository,
-  fetchReview: FetchReview,
+  fetchReview: FetchDataciteReview,
   editorialCommunities: EditorialCommunityRepository,
 ): GetReviews => {
   const log = createLogger('middleware:fetch-reviews-for-article-page');

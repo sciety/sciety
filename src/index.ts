@@ -1,8 +1,8 @@
 import { createTerminus, TerminusOptions } from '@godaddy/terminus';
 import axios from 'axios';
 import createFetchCrossrefArticle, { MakeHttpRequest } from './api/fetch-crossref-article';
+import createFetchDataciteReview from './api/fetch-datacite-review';
 import createFetchDataset from './api/fetch-dataset';
-import createFetchReview from './api/fetch-review';
 import createFetchStaticFile from './api/fetch-static-file';
 import bootstrapReviews from './bootstrap-reviews';
 import Doi from './data/doi';
@@ -49,7 +49,7 @@ const fetchDataset = createFetchDataset();
 const adapters: Adapters = {
   fetchArticle: createFetchCrossrefArticle(makeHttpRequest),
   getBiorxivCommentCount: createGetBiorxivCommentCount(createGetDisqusPostCount(getJson)),
-  fetchReview: createFetchReview(fetchDataset),
+  fetchReview: createFetchDataciteReview(fetchDataset),
   fetchStaticFile: createFetchStaticFile(),
   editorialCommunities,
   reviewReferenceRepository,

@@ -2,8 +2,8 @@ import { literal } from '@rdfjs/data-model';
 import { dcterms, schema } from '@tpluscode/rdf-ns-builders';
 import clownface from 'clownface';
 import datasetFactory from 'rdf-dataset-indexed';
+import createFetchDataciteReview from '../../src/api/fetch-datacite-review';
 import { FetchDataset } from '../../src/api/fetch-dataset';
-import createFetchReview from '../../src/api/fetch-review';
 import Doi from '../../src/data/doi';
 
 const reviewDoi = new Doi('10.5281/zenodo.3678325');
@@ -16,7 +16,7 @@ describe('fetch-review', (): void => {
           .addOut(schema.datePublished, literal('2020-02-20', schema.Date))
           .addOut(schema.description, 'A summary')
       );
-      const fetchReview = createFetchReview(fetchDataset);
+      const fetchReview = createFetchDataciteReview(fetchDataset);
       const review = await fetchReview(reviewDoi);
 
       expect(review).toMatchObject({
@@ -32,7 +32,7 @@ describe('fetch-review', (): void => {
         clownface({ dataset: datasetFactory(), term: iri })
           .addOut(dcterms.date, literal('2020-02-20', schema.Date))
       );
-      const fetchReview = createFetchReview(fetchDataset);
+      const fetchReview = createFetchDataciteReview(fetchDataset);
       const review = await fetchReview(reviewDoi);
 
       expect(review.publicationDate).toStrictEqual(new Date('2020-02-20'));
@@ -44,7 +44,7 @@ describe('fetch-review', (): void => {
       const fetchDataset: FetchDataset = async (iri) => (
         clownface({ dataset: datasetFactory(), term: iri })
       );
-      const fetchReview = createFetchReview(fetchDataset);
+      const fetchReview = createFetchDataciteReview(fetchDataset);
       const review = await fetchReview(reviewDoi);
 
       expect(review.summary).toStrictEqual('');
