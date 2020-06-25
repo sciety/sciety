@@ -6,6 +6,7 @@ import createFetchDataset from './api/fetch-dataset';
 import createFetchStaticFile from './api/fetch-static-file';
 import bootstrapReviews from './bootstrap-reviews';
 import Doi from './data/doi';
+import HypothesisAnnotationId from './data/hypothesis-annotation-id';
 import createEditorialCommunityRepository from './data/in-memory-editorial-communities';
 import createReviewReferenceRepository from './data/in-memory-review-references';
 import createGetBiorxivCommentCount from './infrastructure/get-biorxiv-comment-count';
@@ -14,6 +15,7 @@ import createLogger from './logger';
 import createRouter from './router';
 import createServer from './server';
 import { Adapters } from './types/adapters';
+import { ReviewId } from './types/review-id';
 
 const log = createLogger();
 
@@ -25,9 +27,15 @@ const reviewReferenceRepository = createReviewReferenceRepository();
 for (const {
   article, review, editorialCommunityIndex, added,
 } of bootstrapReviews) {
+  let reviewId: ReviewId;
+  try {
+    reviewId = new Doi(review);
+  } catch {
+    reviewId = new HypothesisAnnotationId(review);
+  }
   void reviewReferenceRepository.add(
     new Doi(article),
-    new Doi(review),
+    reviewId,
     editorialCommunities.all()[editorialCommunityIndex].id,
     added,
   );

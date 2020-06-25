@@ -1,7 +1,7 @@
 /* eslint-disable object-curly-newline */
 
 export default [
-  { article: '10.1101/642017', review: '10.5281/zenodo.3833746', editorialCommunityIndex: 0, added: new Date('2020-05-19') },
+  { article: '10.1101/642017', review: 'fhAtGNVDEemkyCM-sRPpVQ', editorialCommunityIndex: 0, added: new Date('2020-05-19') },
   { article: '10.1101/615682', review: '10.5281/zenodo.3833918', editorialCommunityIndex: 0, added: new Date('2020-05-19') },
   { article: '10.1101/629618', review: '10.5281/zenodo.3833917', editorialCommunityIndex: 0, added: new Date('2020-05-19') },
   { article: '10.1101/600445', review: '10.5281/zenodo.3833915', editorialCommunityIndex: 0, added: new Date('2020-05-19') },
