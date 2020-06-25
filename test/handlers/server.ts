@@ -6,6 +6,7 @@ import datasetFactory from 'rdf-dataset-indexed';
 import { FetchCrossrefArticle } from '../../src/api/fetch-crossref-article';
 import createFetchDataciteReview from '../../src/api/fetch-datacite-review';
 import { FetchDataset } from '../../src/api/fetch-dataset';
+import createFetchReview from '../../src/api/fetch-review';
 import Doi from '../../src/data/doi';
 import createEditorialCommunityRepository from '../../src/data/in-memory-editorial-communities';
 import createReviewReferenceRepository from '../../src/data/in-memory-review-references';
@@ -48,7 +49,7 @@ export default async (): Promise<TestServer> => {
   });
   const getDisqusPostCount = createGetDisqusPostCount(async () => ({ response: [{ posts: 0 }] }));
   const getBiorxivCommentCount = createGetBiorxivCommentCount(getDisqusPostCount);
-  const fetchReview = createFetchDataciteReview(fetchDataCiteDataset);
+  const fetchReview = createFetchReview(createFetchDataciteReview(fetchDataCiteDataset));
   const getJson: Adapters['getJson'] = async () => ({ resultList: { result: [] } });
 
   const adapters: Adapters = {

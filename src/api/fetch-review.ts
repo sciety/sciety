@@ -1,5 +1,4 @@
-import createFetchDataciteReview from './fetch-datacite-review';
-import { FetchDataset } from './fetch-dataset';
+import { FetchDataciteReview } from './fetch-datacite-review';
 import Doi from '../data/doi';
 import { Review } from '../types/review';
 import { ReviewId } from '../types/review-id';
@@ -11,10 +10,9 @@ export type FetchReview = (id: ReviewId) => Promise<{
 }>;
 
 export default (
-  fetchDataset: FetchDataset,
-): FetchReview => {
-  const fetchDataciteReview = createFetchDataciteReview(fetchDataset);
-  return async (id: ReviewId): Promise<Review> => {
+  fetchDataciteReview: FetchDataciteReview,
+): FetchReview => (
+  async (id: ReviewId): Promise<Review> => {
     if (id instanceof Doi) {
       return fetchDataciteReview(id);
     }
@@ -57,5 +55,5 @@ just experiments shown in A and B and initial survival to make sure there is no 
       };
     }
     throw new Error(`${id} is not a DOI`);
-  };
-};
+  }
+);
