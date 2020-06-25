@@ -1,7 +1,7 @@
-import { FetchDataciteReview } from '../api/fetch-datacite-review';
 import Doi from '../data/doi';
 import createLogger from '../logger';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
+import { ReviewId } from '../types/review-id';
 import ReviewReferenceRepository from '../types/review-reference-repository';
 
 interface Review {
@@ -14,9 +14,15 @@ interface Review {
 
 type GetReviews = (doi: Doi) => Promise<Array<Review>>;
 
+export type FetchReview = (id: ReviewId) => Promise<{
+  publicationDate: Date;
+  summary: string;
+  url: URL;
+}>;
+
 export default (
   reviewReferenceRepository: ReviewReferenceRepository,
-  fetchReview: FetchDataciteReview,
+  fetchReview: FetchReview,
   editorialCommunities: EditorialCommunityRepository,
 ): GetReviews => {
   const log = createLogger('middleware:fetch-reviews-for-article-page');
