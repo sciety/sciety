@@ -21,7 +21,6 @@ export default (fetchDataset: FetchDataset): FetchReview => {
     const summary = graph.out(schema.description).value ?? '';
 
     const response: Review = {
-      doi,
       publicationDate,
       summary,
     };

@@ -7,7 +7,6 @@ import ReviewReferenceRepository from '../types/review-reference-repository';
 interface FetchedReview {
   publicationDate: Date;
   summary: string;
-  doi: Doi;
   editorialCommunityId: string;
 }
 
@@ -35,6 +34,7 @@ export default (
           const fetchedReview = await fetchReview(reviewReference.reviewDoi);
 
           return {
+            doi: reviewReference.reviewDoi,
             ...reviewReference,
             ...fetchedReview,
           };
@@ -45,7 +45,7 @@ export default (
         throw error;
       });
 
-    return reviews.map((review: FetchedReview) => {
+    return reviews.map((review) => {
       const editorialCommunity = editorialCommunities.lookup(review.editorialCommunityId);
       return {
         ...review,
