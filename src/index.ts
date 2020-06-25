@@ -3,6 +3,7 @@ import axios from 'axios';
 import createFetchCrossrefArticle, { MakeHttpRequest } from './api/fetch-crossref-article';
 import createFetchDataciteReview from './api/fetch-datacite-review';
 import createFetchDataset from './api/fetch-dataset';
+import createFetchHypothesisAnnotation from './api/fetch-hypothesis-annotation';
 import createFetchReview from './api/fetch-review';
 import createFetchStaticFile from './api/fetch-static-file';
 import bootstrapReviews from './bootstrap-reviews';
@@ -56,10 +57,11 @@ const getJson: Adapters['getJson'] = async (uri) => {
 
 const fetchDataset = createFetchDataset();
 const fetchDataciteReview = createFetchDataciteReview(fetchDataset);
+const fetchHypothesisAnnotation = createFetchHypothesisAnnotation();
 const adapters: Adapters = {
   fetchArticle: createFetchCrossrefArticle(makeHttpRequest),
   getBiorxivCommentCount: createGetBiorxivCommentCount(createGetDisqusPostCount(getJson)),
-  fetchReview: createFetchReview(fetchDataciteReview),
+  fetchReview: createFetchReview(fetchDataciteReview, fetchHypothesisAnnotation),
   fetchStaticFile: createFetchStaticFile(),
   editorialCommunities,
   reviewReferenceRepository,
