@@ -115,6 +115,17 @@ export default (): EditorialCommunityRepository => {
       <h2 class="ui header" id="people">People</h2>
       <p><a href="https://content.prereview.org/about/#toc-anchor_4">https://content.prereview.org/about/#toc-anchor_4</a></p>`,
     },
+    {
+      id: '316db7d9-88cc-4c26-b386-f067e0f56334',
+      name: 'Review Commons',
+      logo: undefined,
+      description: `<h2 class="ui header" id="summary">Summary</h2>
+      <p></p>
+      <h2 class="ui header" id="peer-review-model">Peer review model</h2>
+      <p></p>
+      <h2 class="ui header" id="people">People</h2>
+      <p></p>`,
+    },
   ];
 
   const result: EditorialCommunityRepository = {
