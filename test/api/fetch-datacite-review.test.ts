@@ -8,7 +8,7 @@ import Doi from '../../src/data/doi';
 
 const reviewDoi = new Doi('10.5281/zenodo.3678325');
 
-describe('fetch-review', (): void => {
+describe('fetch-datacite-review', (): void => {
   describe('when the response contains Datacite data', () => {
     it('returns the review', async () => {
       const fetchDataset: FetchDataset = async (iri) => (

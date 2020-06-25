@@ -1,4 +1,4 @@
-export default class {
+export default class HypothesisAnnotationId {
   readonly value: string;
 
   constructor(input: string) {
