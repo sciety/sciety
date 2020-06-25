@@ -17,8 +17,8 @@ describe('fetch-reviews-for-article-page middleware', (): void => {
     const fetchReview: FetchDataciteReview = async (reviewId) => ({
       publicationDate: new Date(),
       summary: '',
-      doi: reviewId instanceof Doi ? reviewId : articleAReview1,
       editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
+      url: new URL(`https://doi.org/${reviewId.value}`),
     });
     const fetchReviews = createFetchReviews(
       reviewReferenceRepository,

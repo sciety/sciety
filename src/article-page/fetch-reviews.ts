@@ -32,7 +32,6 @@ export default (
           const fetchedReview = await fetchReview(reviewReference.reviewId);
 
           return {
-            url: new URL(`https://doi.org/${reviewReference.reviewId.value}`),
             ...reviewReference,
             ...fetchedReview,
           };

@@ -15,7 +15,8 @@ export default (fetchDataset: FetchDataset): FetchDataciteReview => {
       throw new Error(`${id} is not a DOI`);
     }
 
-    const reviewIri = namedNode(`https://doi.org/${id.value}`);
+    const url = `https://doi.org/${id.value}`;
+    const reviewIri = namedNode(url);
     log(`Fetching review ${reviewIri.value} from Datacite`);
     const graph = await fetchDataset(reviewIri);
 
@@ -28,6 +29,7 @@ export default (fetchDataset: FetchDataset): FetchDataciteReview => {
     const response: Review = {
       publicationDate,
       summary,
+      url: new URL(url),
     };
     log(`Retrieved review: ${JSON.stringify({ id, publicationDate })}`);
     return response;
