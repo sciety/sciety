@@ -12,13 +12,13 @@ describe('get-reviewed-articles-from-review-references', (): void => {
     const findReviewReferences = async (): Promise<ReadonlyArray<ReviewReference>> => [
       {
         articleVersionDoi: new Doi('10.1111/1111'),
-        reviewDoi: new Doi('10.3333/3333'),
+        reviewId: new Doi('10.3333/3333'),
         editorialCommunityId: '1',
         added: new Date(),
       },
       {
         articleVersionDoi: new Doi('10.2222/2222'),
-        reviewDoi: new Doi('10.3333/3333'),
+        reviewId: new Doi('10.3333/3333'),
         editorialCommunityId: '1',
         added: new Date(),
       },
@@ -35,13 +35,13 @@ describe('get-reviewed-articles-from-review-references', (): void => {
     const findReviewReferences = async (): Promise<ReadonlyArray<ReviewReference>> => [
       {
         articleVersionDoi: new Doi('10.1111/1111'),
-        reviewDoi: new Doi('10.3333/3333'),
+        reviewId: new Doi('10.3333/3333'),
         editorialCommunityId: '2',
         added: new Date(),
       },
       {
         articleVersionDoi: new Doi('10.1111/1111'),
-        reviewDoi: new Doi('10.4444/4444'),
+        reviewId: new Doi('10.4444/4444'),
         editorialCommunityId: '2',
         added: new Date(),
       },

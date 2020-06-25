@@ -33,9 +33,9 @@ describe('reviews handler', (): void => {
 
     it('adds the review reference to the repository', async () => {
       const foundReviews = await reviewReferenceRepository.findReviewsForArticleVersionDoi(articleVersionDoi);
-      const foundReviewDois = foundReviews.map((review) => review.reviewDoi);
+      const foundReviewIds = foundReviews.map((review) => review.reviewId);
 
-      expect(foundReviewDois).toContainEqual(reviewDoi);
+      expect(foundReviewIds).toContainEqual(reviewDoi);
     });
   });
 

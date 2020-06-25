@@ -31,10 +31,14 @@ export default (
     const reviews = await Promise.all(
       (await reviewReferenceRepository.findReviewsForArticleVersionDoi(doi))
         .map(async (reviewReference) => {
-          const fetchedReview = await fetchReview(reviewReference.reviewDoi);
+          if (!(reviewReference.reviewId instanceof Doi)) {
+            throw new Error(`${reviewReference.reviewId} is not a DOI`);
+          }
+
+          const fetchedReview = await fetchReview(reviewReference.reviewId);
 
           return {
-            doi: reviewReference.reviewDoi,
+            doi: reviewReference.reviewId,
             ...reviewReference,
             ...fetchedReview,
           };

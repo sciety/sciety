@@ -1,10 +1,11 @@
+import { ReviewId } from './review-id';
 import ReviewReference from './review-reference';
 import Doi from '../data/doi';
 
 export default interface ReviewReferenceRepository extends Iterable<ReviewReference> {
   add(
     articleVersionDoi: Doi,
-    reviewDoi: Doi,
+    reviewId: ReviewId,
     editorialCommunityId: string,
     added: Date,
   ): Promise<void>;

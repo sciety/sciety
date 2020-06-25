@@ -1,5 +1,6 @@
 import Doi from './doi';
 import createLogger from '../logger';
+import { ReviewId } from '../types/review-id';
 import ReviewReference from '../types/review-reference';
 import ReviewReferenceRepository from '../types/review-reference-repository';
 
@@ -8,10 +9,10 @@ export default (): ReviewReferenceRepository => {
   const reviewReferences: Array<ReviewReference> = [];
 
   const reviewReferenceRepository: ReviewReferenceRepository = {
-    add: async (articleVersionDoi: Doi, reviewDoi: Doi, editorialCommunityId: string, added: Date) => {
+    add: async (articleVersionDoi: Doi, reviewId: ReviewId, editorialCommunityId: string, added: Date) => {
       const ref: ReviewReference = {
         articleVersionDoi,
-        reviewDoi,
+        reviewId,
         editorialCommunityId,
         added,
       };

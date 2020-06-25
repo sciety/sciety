@@ -4,13 +4,18 @@ import { FetchDataset } from './fetch-dataset';
 import Doi from '../data/doi';
 import createLogger from '../logger';
 import { Review } from '../types/review';
+import { ReviewId } from '../types/review-id';
 
-export type FetchReview = (doi: Doi) => Promise<Review>;
+export type FetchReview = (id: ReviewId) => Promise<Review>;
 
 export default (fetchDataset: FetchDataset): FetchReview => {
   const log = createLogger('api:fetch-review');
-  return async (doi: Doi): Promise<Review> => {
-    const reviewIri = namedNode(`https://doi.org/${doi}`);
+  return async (id: ReviewId): Promise<Review> => {
+    if (!(id instanceof Doi)) {
+      throw new Error(`${id} is not a DOI`);
+    }
+
+    const reviewIri = namedNode(`https://doi.org/${id.value}`);
     log(`Fetching review ${reviewIri.value}`);
     const graph = await fetchDataset(reviewIri);
 
@@ -24,7 +29,7 @@ export default (fetchDataset: FetchDataset): FetchReview => {
       publicationDate,
       summary,
     };
-    log(`Retrieved review: ${JSON.stringify({ doi, publicationDate })}`);
+    log(`Retrieved review: ${JSON.stringify({ id, publicationDate })}`);
     return response;
   };
 };

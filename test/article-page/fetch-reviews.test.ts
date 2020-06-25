@@ -14,10 +14,10 @@ describe('fetch-reviews-for-article-page middleware', (): void => {
   it('adds editorial community names to the reviews', async (): Promise<void> => {
     const reviewReferenceRepository = createReviewReferenceRepository();
     await reviewReferenceRepository.add(articleA, articleAReview1, editorialCommunities.all()[0].id, new Date('2020-05-19T14:00:00Z'));
-    const fetchReview: FetchReview = async (reviewDoi) => ({
+    const fetchReview: FetchReview = async (reviewId) => ({
       publicationDate: new Date(),
       summary: '',
-      doi: reviewDoi,
+      doi: reviewId instanceof Doi ? reviewId : articleAReview1,
       editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
     });
     const fetchReviews = createFetchReviews(
