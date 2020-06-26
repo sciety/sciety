@@ -17,12 +17,12 @@ type HypothesisResponse = JsonCompatible<{
 }>;
 
 export default (getJson: GetJson): FetchHypothesisAnnotation => {
+  const converter = new showdown.Converter({ noHeaderId: true });
   const log = createLogger('api:fetch-hypothesis-annotation');
   return async (id) => {
     const uri = `https://api.hypothes.is/api/annotations/${id.value}`;
     const data = await getJson(uri) as HypothesisResponse;
     log(data);
-    const converter = new showdown.Converter({ noHeaderId: true });
     return {
       publicationDate: new Date(data.created),
       summary: converter.makeHtml(data.text),
