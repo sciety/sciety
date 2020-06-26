@@ -9,7 +9,7 @@ describe('fetch-hypothesis-annotation', (): void => {
   it('returns the review', async () => {
     const getJson: GetJson = async () => ({
       created: date,
-      text: 'Very good',
+      text: '<p>Very good</p>',
       links: {
         incontext: 'https://www.example.com',
       },
@@ -19,7 +19,7 @@ describe('fetch-hypothesis-annotation', (): void => {
 
     const expected: Review = {
       publicationDate: new Date(date),
-      summary: 'Very good',
+      summary: '<p>Very good</p>',
       url: new URL('https://www.example.com'),
     };
 
