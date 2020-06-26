@@ -14,14 +14,14 @@ describe('render-about-page middleware', (): void => {
   beforeEach(() => {
     ctx = createContext();
     ctx.state = {
-      html: 'random text',
+      markdown: '# About Xyz',
     };
   });
 
   it('inserts the HTML text into the response body', async (): Promise<void> => {
     await invokeMiddleware(ctx);
 
-    expect(ctx.response.body).toStrictEqual(expect.stringContaining('random te'));
+    expect(ctx.response.body).toStrictEqual(expect.stringContaining('<h1>About Xyz</h1>'));
   });
 
   it('calls the next middleware', async (): Promise<void> => {
