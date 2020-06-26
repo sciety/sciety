@@ -7,30 +7,26 @@ import shouldNotBeCalled from '../should-not-be-called';
 
 const reviewDoi = new Doi('10.5281/zenodo.3678325');
 
+const fetchedReview = {
+  publicationDate: new Date(),
+  summary: 'Very good',
+  url: new URL('https://example.com'),
+};
+
 describe('fetch-review', (): void => {
   it('returns a Datacite review when given a DOI', async () => {
-    const dataciteReview = {
-      publicationDate: new Date(),
-      summary: 'Very good',
-      url: new URL(`https://doi.org/${reviewDoi.value}`),
-    };
-    const fetchDataciteReview: FetchDataciteReview = async () => dataciteReview;
+    const fetchDataciteReview: FetchDataciteReview = async () => fetchedReview;
     const fetchReview = createFetchReview(fetchDataciteReview, shouldNotBeCalled);
     const review = await fetchReview(reviewDoi);
 
-    expect(review).toStrictEqual(dataciteReview);
+    expect(review).toStrictEqual(fetchedReview);
   });
 
   it('returns a Hypothes.is annotation when given a Hypothes.is id', async () => {
-    const hypothesisAnnotation = {
-      publicationDate: new Date(),
-      summary: 'Also very good',
-      url: new URL('https://example.com'),
-    };
-    const fetchHypothesisAnnotation: FetchHypothesisAnnotation = async () => hypothesisAnnotation;
+    const fetchHypothesisAnnotation: FetchHypothesisAnnotation = async () => fetchedReview;
     const fetchReview = createFetchReview(shouldNotBeCalled, fetchHypothesisAnnotation);
     const review = await fetchReview(new HypothesisAnnotationId('fhAtGNVDEemkyCM-sRPpVQ'));
 
-    expect(review).toStrictEqual(hypothesisAnnotation);
+    expect(review).toStrictEqual(fetchedReview);
   });
 });
