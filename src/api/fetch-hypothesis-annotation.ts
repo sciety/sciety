@@ -1,6 +1,6 @@
 import showdown from 'showdown';
-import HypothesisAnnotationId from '../data/hypothesis-annotation-id';
 import createLogger from '../logger';
+import HypothesisAnnotationId from '../types/hypothesis-annotation-id';
 import { Json, JsonCompatible } from '../types/json';
 import { Review } from '../types/review';
 

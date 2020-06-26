@@ -1,5 +1,5 @@
 import createFetchHypothesisAnnotation, { GetJson } from '../../src/api/fetch-hypothesis-annotation';
-import HypothesisAnnotationId from '../../src/data/hypothesis-annotation-id';
+import HypothesisAnnotationId from '../../src/types/hypothesis-annotation-id';
 import { Review } from '../../src/types/review';
 
 const date = '2019-09-12T09:55:46.146050+00:00';

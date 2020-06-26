@@ -4,7 +4,7 @@ import createRenderSearchResult, {
   GetReviewCount,
   SearchResult,
 } from '../../src/article-search-page/render-search-result';
-import Doi from '../../src/data/doi';
+import Doi from '../../src/types/doi';
 
 const searchResult: SearchResult = {
   doi: new Doi('10.1101/833392'),

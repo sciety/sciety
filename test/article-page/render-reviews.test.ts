@@ -1,6 +1,6 @@
 import { JSDOM } from 'jsdom';
 import createRenderReviews from '../../src/article-page/render-reviews';
-import Doi from '../../src/data/doi';
+import Doi from '../../src/types/doi';
 
 describe('render-reviews component', () => {
   const doi = new Doi('10.1111/1111');

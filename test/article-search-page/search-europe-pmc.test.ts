@@ -1,5 +1,5 @@
 import createSearchEuropePmc from '../../src/article-search-page/search-europe-pmc';
-import Doi from '../../src/data/doi';
+import Doi from '../../src/types/doi';
 
 describe('search-europe-pmc adapter', () => {
   it('converts Europe PMC search result into our Domain Model', async () => {

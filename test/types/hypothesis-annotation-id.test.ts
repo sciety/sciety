@@ -1,4 +1,4 @@
-import HypothesisAnnotationId from '../../src/data/hypothesis-annotation-id';
+import HypothesisAnnotationId from '../../src/types/hypothesis-annotation-id';
 
 describe('hypothesis annotation id', () => {
   it('has a value', () => {

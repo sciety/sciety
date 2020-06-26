@@ -1,5 +1,5 @@
-import Doi from '../data/doi';
 import createLogger from '../logger';
+import Doi from '../types/doi';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import { ReviewId } from '../types/review-id';
 import ReviewReferenceRepository from '../types/review-reference-repository';

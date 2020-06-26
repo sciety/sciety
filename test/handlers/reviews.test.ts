@@ -2,7 +2,7 @@ import { Server } from 'http';
 import { BAD_REQUEST, SEE_OTHER } from 'http-status-codes';
 import request, { Response } from 'supertest';
 import createServer from './server';
-import Doi from '../../src/data/doi';
+import Doi from '../../src/types/doi';
 import ReviewReferenceRepository from '../../src/types/review-reference-repository';
 
 describe('reviews handler', (): void => {

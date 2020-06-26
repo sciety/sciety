@@ -1,6 +1,6 @@
 import { NotFound } from 'http-errors';
-import Doi from '../data/doi';
 import createLogger from '../logger';
+import Doi from '../types/doi';
 
 const biorxivPrefix = '10.1101';
 

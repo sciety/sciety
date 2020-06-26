@@ -1,10 +1,10 @@
-import Doi from '../../src/data/doi';
 import {
   createDiscoverRecentActivity,
   EditorialCommunity,
   FetchedArticle,
   ReviewReference,
 } from '../../src/home-page/render-recent-activity';
+import Doi from '../../src/types/doi';
 
 describe('render-recent-activity', (): void => {
   it('adds recent activity to the view model', async (): Promise<void> => {

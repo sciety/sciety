@@ -1,6 +1,6 @@
 import { JSDOM } from 'jsdom';
 import createRenderPageHeader, { GetArticleDetails, RenderPageHeader } from '../../src/article-page/render-page-header';
-import Doi from '../../src/data/doi';
+import Doi from '../../src/types/doi';
 
 const getArticleDetails: GetArticleDetails = async (doi) => ({
   title: `Lorem ipsum ${doi}`,

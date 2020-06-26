@@ -1,5 +1,5 @@
 import createRenderArticleAbstract, { GetArticleAbstract } from '../../src/article-page/render-article-abstract';
-import Doi from '../../src/data/doi';
+import Doi from '../../src/types/doi';
 
 describe('render-article-abstract component', (): void => {
   it('renders the abstract for an article', async (): Promise<void> => {

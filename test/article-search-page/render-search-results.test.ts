@@ -1,6 +1,6 @@
 import { RenderSearchResult } from '../../src/article-search-page/render-search-result';
 import createRenderSearchResults, { FindArticles } from '../../src/article-search-page/render-search-results';
-import Doi from '../../src/data/doi';
+import Doi from '../../src/types/doi';
 import shouldNotBeCalled from '../should-not-be-called';
 
 describe('render-search-results component', (): void => {

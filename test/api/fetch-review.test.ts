@@ -1,8 +1,8 @@
 import { FetchDataciteReview } from '../../src/api/fetch-datacite-review';
 import { FetchHypothesisAnnotation } from '../../src/api/fetch-hypothesis-annotation';
 import createFetchReview from '../../src/api/fetch-review';
-import Doi from '../../src/data/doi';
-import HypothesisAnnotationId from '../../src/data/hypothesis-annotation-id';
+import Doi from '../../src/types/doi';
+import HypothesisAnnotationId from '../../src/types/hypothesis-annotation-id';
 import shouldNotBeCalled from '../should-not-be-called';
 
 const reviewDoi = new Doi('10.5281/zenodo.3678325');

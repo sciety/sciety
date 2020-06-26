@@ -2,7 +2,7 @@ import createGetHardCodedEndorsingEditorialCommunities, { GetNameForEditorialCom
 import createRenderSearchResult, { GetReviewCount } from './render-search-result';
 import createRenderSearchResults from './render-search-results';
 import createSearchEuropePmc from './search-europe-pmc';
-import Doi from '../data/doi';
+import Doi from '../types/doi';
 import { Json } from '../types/json';
 
 export type GetJson = (uri: string) => Promise<Json>;

@@ -1,7 +1,7 @@
 import createFetchReviews, { FetchReview } from '../../src/article-page/fetch-reviews';
-import Doi from '../../src/data/doi';
 import createEditorialCommunityRepository from '../../src/data/in-memory-editorial-communities';
 import createReviewReferenceRepository from '../../src/data/in-memory-review-references';
+import Doi from '../../src/types/doi';
 import EditorialCommunityRepository from '../../src/types/editorial-community-repository';
 
 const editorialCommunities: EditorialCommunityRepository = createEditorialCommunityRepository();

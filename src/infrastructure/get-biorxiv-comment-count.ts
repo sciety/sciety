@@ -1,5 +1,5 @@
-import Doi from '../data/doi';
 import createLogger from '../logger';
+import Doi from '../types/doi';
 
 export type GetCommentCountForUri = (uri: string) => Promise<number>;
 

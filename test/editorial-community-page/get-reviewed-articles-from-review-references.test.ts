@@ -1,5 +1,5 @@
-import Doi from '../../src/data/doi';
 import createAdapter, { FetchArticle } from '../../src/editorial-community-page/get-reviewed-articles-from-review-references';
+import Doi from '../../src/types/doi';
 import ReviewReference from '../../src/types/review-reference';
 
 const fetchArticle: FetchArticle = async (doi) => ({

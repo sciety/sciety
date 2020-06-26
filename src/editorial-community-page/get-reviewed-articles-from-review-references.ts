@@ -1,5 +1,5 @@
 import { GetReviewedArticles } from './render-reviewed-articles';
-import Doi from '../data/doi';
+import Doi from '../types/doi';
 import ReviewReference from '../types/review-reference';
 
 export type FetchArticle = (doi: Doi) => Promise<{

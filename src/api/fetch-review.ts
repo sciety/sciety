@@ -1,6 +1,6 @@
 import { FetchDataciteReview } from './fetch-datacite-review';
 import { FetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
-import Doi from '../data/doi';
+import Doi from '../types/doi';
 import { Review } from '../types/review';
 import { ReviewId } from '../types/review-id';
 

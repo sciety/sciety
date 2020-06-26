@@ -1,6 +1,6 @@
 import { DOMParser } from 'xmldom';
-import Doi from '../data/doi';
 import createLogger from '../logger';
+import Doi from '../types/doi';
 
 export type FetchCrossrefArticle = (doi: Doi) => Promise<{
   abstract: string;

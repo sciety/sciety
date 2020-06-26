@@ -1,5 +1,5 @@
-import Doi from '../data/doi';
 import templateListItems from '../templates/list-items';
+import Doi from '../types/doi';
 
 interface ReviewedArticle {
   doi: Doi;

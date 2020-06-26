@@ -1,4 +1,4 @@
-import Doi from '../data/doi';
+import Doi from '../types/doi';
 
 interface ArticleAbstract {
   content: string;

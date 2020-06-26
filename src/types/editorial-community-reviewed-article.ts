@@ -1,4 +1,4 @@
-import Doi from '../data/doi';
+import Doi from './doi';
 
 export interface EditorialCommunityReviewedArticle {
   doi: Doi;

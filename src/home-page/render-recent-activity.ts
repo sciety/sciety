@@ -1,6 +1,6 @@
-import Doi from '../data/doi';
 import { toDisplayString, toString } from '../templates/date';
 import templateListItems from '../templates/list-items';
+import Doi from '../types/doi';
 
 type RenderRecentActivity = (limit: number) => Promise<string>;
 

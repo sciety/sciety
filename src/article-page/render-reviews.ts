@@ -1,6 +1,6 @@
 import renderReview from './render-review';
-import Doi from '../data/doi';
 import templateListItems from '../templates/list-items';
+import Doi from '../types/doi';
 
 export type RenderReviews = (doi: Doi) => Promise<string>;
 

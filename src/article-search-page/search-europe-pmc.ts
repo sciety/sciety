@@ -1,7 +1,7 @@
 import { SearchResult } from './render-search-result';
 import { FindArticles } from './render-search-results';
-import Doi from '../data/doi';
 import createLogger from '../logger';
+import Doi from '../types/doi';
 import { Json, JsonCompatible } from '../types/json';
 
 export type GetJson = (uri: string) => Promise<Json>;

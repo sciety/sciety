@@ -1,5 +1,5 @@
-import Doi from '../../src/data/doi';
 import createReviewReferenceRepository from '../../src/data/in-memory-review-references';
+import Doi from '../../src/types/doi';
 import ReviewReferenceRepository from '../../src/types/review-reference-repository';
 
 describe('review-reference-repository', () => {

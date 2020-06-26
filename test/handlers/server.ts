@@ -8,7 +8,6 @@ import createFetchDataciteReview from '../../src/api/fetch-datacite-review';
 import { FetchDataset } from '../../src/api/fetch-dataset';
 import createFetchHypothesisAnnotation from '../../src/api/fetch-hypothesis-annotation';
 import createFetchReview from '../../src/api/fetch-review';
-import Doi from '../../src/data/doi';
 import createEditorialCommunityRepository from '../../src/data/in-memory-editorial-communities';
 import createReviewReferenceRepository from '../../src/data/in-memory-review-references';
 import createGetBiorxivCommentCount from '../../src/infrastructure/get-biorxiv-comment-count';
@@ -16,6 +15,7 @@ import createGetDisqusPostCount from '../../src/infrastructure/get-disqus-post-c
 import createRouter from '../../src/router';
 import createServer from '../../src/server';
 import { Adapters } from '../../src/types/adapters';
+import Doi from '../../src/types/doi';
 import EditorialCommunityRepository from '../../src/types/editorial-community-repository';
 import ReviewReferenceRepository from '../../src/types/review-reference-repository';
 import shouldNotBeCalled from '../should-not-be-called';

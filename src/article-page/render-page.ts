@@ -2,7 +2,7 @@ import { RenderAddReviewForm } from './render-add-review-form';
 import { RenderArticleAbstract } from './render-article-abstract';
 import { RenderPageHeader } from './render-page-header';
 import { RenderReviews } from './render-reviews';
-import Doi from '../data/doi';
+import Doi from '../types/doi';
 
 type RenderPage = (doi: Doi) => Promise<string>;
 

@@ -1,6 +1,6 @@
-import Doi from '../data/doi';
 import templateDate from '../templates/date';
 import templateListItems from '../templates/list-items';
+import Doi from '../types/doi';
 
 interface ArticleDetails {
   title: string;

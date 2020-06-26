@@ -1,4 +1,4 @@
-import Doi from '../../src/data/doi';
+import Doi from '../../src/types/doi';
 
 describe('doi', () => {
   it.each([

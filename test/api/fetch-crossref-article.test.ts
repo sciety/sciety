@@ -1,5 +1,5 @@
 import createFetchCrossrefArticle, { MakeHttpRequest } from '../../src/api/fetch-crossref-article';
-import Doi from '../../src/data/doi';
+import Doi from '../../src/types/doi';
 
 const crossrefResponseWith = (content: string): string => `
   <?xml version="1.0" encoding="UTF-8"?>

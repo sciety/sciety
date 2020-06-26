@@ -1,5 +1,5 @@
 import createHardCodedEndorsingEditorialCommunities, { GetNameForEditorialCommunity } from '../../src/article-search-page/hard-coded-endorsing-editorial-communities';
-import Doi from '../../src/data/doi';
+import Doi from '../../src/types/doi';
 import shouldNotBeCalled from '../should-not-be-called';
 
 describe('hard-coded-endorsing-editorial-communities adapter', () => {

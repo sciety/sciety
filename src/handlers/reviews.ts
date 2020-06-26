@@ -2,7 +2,7 @@ import { Middleware, RouterContext } from '@koa/router';
 import { BadRequest } from 'http-errors';
 import { SEE_OTHER } from 'http-status-codes';
 import { Next } from 'koa';
-import Doi from '../data/doi';
+import Doi from '../types/doi';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import ReviewReferenceRepository from '../types/review-reference-repository';
 

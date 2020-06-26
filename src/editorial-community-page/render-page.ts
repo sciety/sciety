@@ -6,7 +6,7 @@ import createRenderEndorsedArticles, {
 } from './render-endorsed-articles';
 import createRenderReviewedArticles from './render-reviewed-articles';
 import templateHeader from './templates/header';
-import Doi from '../data/doi';
+import Doi from '../types/doi';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import ReviewReferenceRepository from '../types/review-reference-repository';
 

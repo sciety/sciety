@@ -1,6 +1,6 @@
 import { NOT_FOUND } from 'http-status-codes';
 import request, { Response } from 'supertest';
-import Doi from '../../src/data/doi';
+import Doi from '../../src/types/doi';
 import createServer from '../handlers/server';
 
 describe('article route', (): void => {

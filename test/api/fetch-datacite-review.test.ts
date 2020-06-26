@@ -4,7 +4,7 @@ import clownface from 'clownface';
 import datasetFactory from 'rdf-dataset-indexed';
 import createFetchDataciteReview from '../../src/api/fetch-datacite-review';
 import { FetchDataset } from '../../src/api/fetch-dataset';
-import Doi from '../../src/data/doi';
+import Doi from '../../src/types/doi';
 
 const reviewDoi = new Doi('10.5281/zenodo.3678325');
 

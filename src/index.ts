@@ -7,8 +7,6 @@ import createFetchHypothesisAnnotation from './api/fetch-hypothesis-annotation';
 import createFetchReview from './api/fetch-review';
 import createFetchStaticFile from './api/fetch-static-file';
 import bootstrapReviews from './bootstrap-reviews';
-import Doi from './data/doi';
-import HypothesisAnnotationId from './data/hypothesis-annotation-id';
 import createEditorialCommunityRepository from './data/in-memory-editorial-communities';
 import createReviewReferenceRepository from './data/in-memory-review-references';
 import createGetBiorxivCommentCount from './infrastructure/get-biorxiv-comment-count';
@@ -17,6 +15,8 @@ import createLogger from './logger';
 import createRouter from './router';
 import createServer from './server';
 import { Adapters } from './types/adapters';
+import Doi from './types/doi';
+import HypothesisAnnotationId from './types/hypothesis-annotation-id';
 import { ReviewId } from './types/review-id';
 
 const log = createLogger();

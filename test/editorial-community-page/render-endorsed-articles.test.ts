@@ -1,6 +1,6 @@
 import { JSDOM } from 'jsdom';
-import Doi from '../../src/data/doi';
 import createRenderEndorsedArticles from '../../src/editorial-community-page/render-endorsed-articles';
+import Doi from '../../src/types/doi';
 
 describe('render-endorsed-articles component', (): void => {
   describe('when there are no endorsed articles', (): void => {
