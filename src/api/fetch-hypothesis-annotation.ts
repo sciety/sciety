@@ -18,6 +18,7 @@ type HypothesisResponse = JsonCompatible<{
 
 export default (getJson: GetJson): FetchHypothesisAnnotation => {
   const converter = new showdown.Converter({ noHeaderId: true });
+  converter.setFlavor('github');
   const log = createLogger('api:fetch-hypothesis-annotation');
   return async (id) => {
     const uri = `https://api.hypothes.is/api/annotations/${id.value}`;

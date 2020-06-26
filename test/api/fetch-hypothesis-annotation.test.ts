@@ -26,10 +26,13 @@ describe('fetch-hypothesis-annotation', (): void => {
     expect(review).toStrictEqual(expected);
   });
 
-  it('converts markdown to HTML', async () => {
+  it.each([
+    ['basic Markdown', '# Very good', '<h1>Very good</h1>'],
+    ['GitHub Flavored Markdown', 'www.example.com', '<a href="http://www.example.com">www.example.com</a>'],
+  ])('converts %s to HTML', async (_, input: string, expected: string) => {
     const getJson: GetJson = async () => ({
       created: date,
-      text: '# Very good',
+      text: input,
       links: {
         incontext: 'https://www.example.com',
       },
@@ -37,6 +40,6 @@ describe('fetch-hypothesis-annotation', (): void => {
     const fetchHypothesisAnnotation = createFetchHypothesisAnnotation(getJson);
     const review = await fetchHypothesisAnnotation(hypothesisAnnotationId);
 
-    expect(review.summary).toStrictEqual('<h1>Very good</h1>');
+    expect(review.summary).toContain(expected);
   });
 });
