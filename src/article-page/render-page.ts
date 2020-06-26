@@ -13,6 +13,8 @@ import Doi from '../data/doi';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import ReviewReferenceRepository from '../types/review-reference-repository';
 
+type RenderPage = (doi: Doi) => Promise<string>;
+
 type GetEditorialCommunityName = (editorialCommunityId: string) => Promise<string>;
 
 const createGetEndorsingEditorialCommunityNames = (
@@ -38,15 +40,14 @@ export type FetchReviews = (doi: Doi) => Promise<Array<{
 
 const reviewsId = 'reviews';
 
-export default async (
-  doi: Doi,
+export default (
   fetchReviews: FetchReviews,
   editorialCommunities: EditorialCommunityRepository,
   getCommentCount: GetCommentCount,
   fetchArticle: GetArticleDetails,
   fetchAbstract: GetFullArticle,
   reviewReferenceRepository: ReviewReferenceRepository,
-): Promise<string> => {
+): RenderPage => {
   const getArticleDetailsAdapter: GetArticleDetails = async (articleDoi) => (
     fetchArticle(articleDoi)
       .catch(() => {
@@ -86,21 +87,23 @@ export default async (
   const renderArticleAbstract = createRenderArticleAbstract(abstractAdapter);
   const renderReviews = createRenderReviews(reviewsAdapter, reviewsId);
   const renderAddReviewForm = createRenderAddReviewForm(editorialCommunitiesAdapter);
-  return `<article class="ui aligned stackable grid">
-    <div class="row">
-      <div class="column">
-        ${await renderPageHeader(doi)}
+  return async (doi) => (
+    `<article class="ui aligned stackable grid">
+      <div class="row">
+        <div class="column">
+          ${await renderPageHeader(doi)}
+        </div>
       </div>
-    </div>
 
-    <div class="row">
-      <section class="twelve wide column">
-        ${await renderArticleAbstract(doi)}
-        ${await renderReviews(doi)}
-      </section>
-      <aside class="four wide right floated column">
-        ${await renderAddReviewForm(doi)}
-      </aside>
-    </div>
-  </article>`;
+      <div class="row">
+        <section class="twelve wide column">
+          ${await renderArticleAbstract(doi)}
+          ${await renderReviews(doi)}
+        </section>
+        <aside class="four wide right floated column">
+          ${await renderAddReviewForm(doi)}
+        </aside>
+      </div>
+    </article>`
+  );
 };
