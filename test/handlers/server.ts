@@ -18,6 +18,7 @@ import createServer from '../../src/server';
 import { Adapters } from '../../src/types/adapters';
 import EditorialCommunityRepository from '../../src/types/editorial-community-repository';
 import ReviewReferenceRepository from '../../src/types/review-reference-repository';
+import shouldNotBeCalled from '../should-not-be-called';
 
 const articleA = new Doi('10.1101/833392');
 const articleB = new Doi('10.1101/2020.03.22.002386');
@@ -52,7 +53,7 @@ export default async (): Promise<TestServer> => {
   const getBiorxivCommentCount = createGetBiorxivCommentCount(getDisqusPostCount);
   const fetchReview = createFetchReview(
     createFetchDataciteReview(fetchDataCiteDataset),
-    createFetchHypothesisAnnotation(),
+    createFetchHypothesisAnnotation(shouldNotBeCalled),
   );
   const getJson: Adapters['getJson'] = async () => ({ resultList: { result: [] } });
 

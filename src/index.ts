@@ -57,7 +57,7 @@ const getJson: Adapters['getJson'] = async (uri) => {
 
 const fetchDataset = createFetchDataset();
 const fetchDataciteReview = createFetchDataciteReview(fetchDataset);
-const fetchHypothesisAnnotation = createFetchHypothesisAnnotation();
+const fetchHypothesisAnnotation = createFetchHypothesisAnnotation(getJson);
 const adapters: Adapters = {
   fetchArticle: createFetchCrossrefArticle(makeHttpRequest),
   getBiorxivCommentCount: createGetBiorxivCommentCount(createGetDisqusPostCount(getJson)),

@@ -1,16 +1,9 @@
-import axios from 'axios';
 import HypothesisAnnotationId from '../data/hypothesis-annotation-id';
 import createLogger from '../logger';
 import { Json, JsonCompatible } from '../types/json';
 import { Review } from '../types/review';
 
 export type GetJson = (uri: string) => Promise<Json>;
-
-const getJson: GetJson = async (uri) => {
-  const response = await axios.get(uri);
-
-  return response.data;
-};
 
 export type FetchHypothesisAnnotation = (id: HypothesisAnnotationId) => Promise<Review>;
 
@@ -22,7 +15,7 @@ type HypothesisResponse = JsonCompatible<{
   };
 }>;
 
-export default (): FetchHypothesisAnnotation => {
+export default (getJson: GetJson): FetchHypothesisAnnotation => {
   const log = createLogger('api:fetch-hypothesis-annotation');
   return async (id) => {
     const uri = `https://api.hypothes.is/api/annotations/${id.value}`;
