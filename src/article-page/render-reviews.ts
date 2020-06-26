@@ -2,7 +2,7 @@ import renderReview from './render-review';
 import Doi from '../data/doi';
 import templateListItems from '../templates/list-items';
 
-type RenderReviews = (doi: Doi) => Promise<string>;
+export type RenderReviews = (doi: Doi) => Promise<string>;
 
 export type GetReviews = (doi: Doi) => Promise<Array<{
   publicationDate: Date;

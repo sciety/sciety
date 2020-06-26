@@ -1,4 +1,4 @@
-import { NotFound, ServiceUnavailable } from 'http-errors';
+import { NotFound } from 'http-errors';
 import { RenderAddReviewForm } from './render-add-review-form';
 import { RenderArticleAbstract } from './render-article-abstract';
 import createRenderPageHeader, {
@@ -6,8 +6,7 @@ import createRenderPageHeader, {
   GetCommentCount,
   GetEndorsingEditorialCommunityNames, GetReviewCount,
 } from './render-page-header';
-import createRenderReviews, { GetReviews } from './render-reviews';
-import { FetchDatasetError } from '../api/fetch-dataset';
+import { RenderReviews } from './render-reviews';
 import endorsements from '../bootstrap-endorsements';
 import Doi from '../data/doi';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
@@ -26,18 +25,10 @@ const createGetEndorsingEditorialCommunityNames = (
   }
 );
 
-export type FetchReviews = (doi: Doi) => Promise<Array<{
-  publicationDate: Date;
-  summary: string;
-  url: URL;
-  editorialCommunityId: string;
-  editorialCommunityName: string;
-}>>;
-
 const reviewsId = 'reviews';
 
 export default (
-  fetchReviews: FetchReviews,
+  renderReviews: RenderReviews,
   editorialCommunities: EditorialCommunityRepository,
   getCommentCount: GetCommentCount,
   fetchArticle: GetArticleDetails,
@@ -64,17 +55,6 @@ export default (
     createGetEndorsingEditorialCommunityNames(getEditorialCommunityName),
     `#${reviewsId}`,
   );
-
-  const reviewsAdapter: GetReviews = async (articleDoi) => (
-    fetchReviews(articleDoi)
-      .catch((error) => {
-        if (error instanceof FetchDatasetError) {
-          throw new ServiceUnavailable('Article temporarily unavailable. Please try refreshing.');
-        }
-        throw new NotFound(`${articleDoi} not found`);
-      })
-  );
-  const renderReviews = createRenderReviews(reviewsAdapter, reviewsId);
 
   return async (doi) => (
     `<article class="ui aligned stackable grid">
