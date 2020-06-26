@@ -5,7 +5,7 @@ export type GetAllEditorialCommunities = () => Promise<Array<{
   name: string;
 }>>;
 
-type RenderAddReviewForm = (doi: Doi) => Promise<string>;
+export type RenderAddReviewForm = (doi: Doi) => Promise<string>;
 
 export default (
   getAllEditorialCommunities: GetAllEditorialCommunities,

@@ -1,5 +1,5 @@
 import { NotFound, ServiceUnavailable } from 'http-errors';
-import createRenderAddReviewForm, { GetAllEditorialCommunities } from './render-add-review-form';
+import { RenderAddReviewForm } from './render-add-review-form';
 import { RenderArticleAbstract } from './render-article-abstract';
 import createRenderPageHeader, {
   GetArticleDetails,
@@ -43,6 +43,7 @@ export default (
   fetchArticle: GetArticleDetails,
   renderAbstract: RenderArticleAbstract,
   reviewReferenceRepository: ReviewReferenceRepository,
+  renderAddReviewForm: RenderAddReviewForm,
 ): RenderPage => {
   const getArticleDetailsAdapter: GetArticleDetails = async (articleDoi) => (
     fetchArticle(articleDoi)
@@ -74,9 +75,6 @@ export default (
       })
   );
   const renderReviews = createRenderReviews(reviewsAdapter, reviewsId);
-
-  const editorialCommunitiesAdapter: GetAllEditorialCommunities = async () => editorialCommunities.all();
-  const renderAddReviewForm = createRenderAddReviewForm(editorialCommunitiesAdapter);
 
   return async (doi) => (
     `<article class="ui aligned stackable grid">
