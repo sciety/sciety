@@ -3,8 +3,6 @@ import { literal, namedNode } from '@rdfjs/data-model';
 import { schema } from '@tpluscode/rdf-ns-builders';
 import clownface from 'clownface';
 import datasetFactory from 'rdf-dataset-indexed';
-import createEditorialCommunityRepository from '../../src/data/in-memory-editorial-communities';
-import createReviewReferenceRepository from '../../src/data/in-memory-review-references';
 import { FetchCrossrefArticle } from '../../src/infrastructure/fetch-crossref-article';
 import createFetchDataciteReview from '../../src/infrastructure/fetch-datacite-review';
 import { FetchDataset } from '../../src/infrastructure/fetch-dataset';
@@ -12,6 +10,8 @@ import createFetchHypothesisAnnotation from '../../src/infrastructure/fetch-hypo
 import createFetchReview from '../../src/infrastructure/fetch-review';
 import createGetBiorxivCommentCount from '../../src/infrastructure/get-biorxiv-comment-count';
 import createGetDisqusPostCount from '../../src/infrastructure/get-disqus-post-count';
+import createEditorialCommunityRepository from '../../src/infrastructure/in-memory-editorial-communities';
+import createReviewReferenceRepository from '../../src/infrastructure/in-memory-review-references';
 import createRouter from '../../src/router';
 import createServer from '../../src/server';
 import { Adapters } from '../../src/types/adapters';

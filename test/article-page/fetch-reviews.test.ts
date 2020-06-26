@@ -1,6 +1,6 @@
 import createFetchReviews, { FetchReview } from '../../src/article-page/fetch-reviews';
-import createEditorialCommunityRepository from '../../src/data/in-memory-editorial-communities';
-import createReviewReferenceRepository from '../../src/data/in-memory-review-references';
+import createEditorialCommunityRepository from '../../src/infrastructure/in-memory-editorial-communities';
+import createReviewReferenceRepository from '../../src/infrastructure/in-memory-review-references';
 import Doi from '../../src/types/doi';
 import EditorialCommunityRepository from '../../src/types/editorial-community-repository';
 

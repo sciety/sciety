@@ -1,4 +1,4 @@
-import createReviewReferenceRepository from '../../src/data/in-memory-review-references';
+import createReviewReferenceRepository from '../../src/infrastructure/in-memory-review-references';
 import Doi from '../../src/types/doi';
 import ReviewReferenceRepository from '../../src/types/review-reference-repository';
 

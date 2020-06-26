@@ -1,8 +1,6 @@
 import { createTerminus, TerminusOptions } from '@godaddy/terminus';
 import axios from 'axios';
 import bootstrapReviews from './bootstrap-reviews';
-import createEditorialCommunityRepository from './data/in-memory-editorial-communities';
-import createReviewReferenceRepository from './data/in-memory-review-references';
 import createFetchCrossrefArticle, { MakeHttpRequest } from './infrastructure/fetch-crossref-article';
 import createFetchDataciteReview from './infrastructure/fetch-datacite-review';
 import createFetchDataset from './infrastructure/fetch-dataset';
@@ -11,6 +9,8 @@ import createFetchReview from './infrastructure/fetch-review';
 import createFetchStaticFile from './infrastructure/fetch-static-file';
 import createGetBiorxivCommentCount from './infrastructure/get-biorxiv-comment-count';
 import createGetDisqusPostCount from './infrastructure/get-disqus-post-count';
+import createEditorialCommunityRepository from './infrastructure/in-memory-editorial-communities';
+import createReviewReferenceRepository from './infrastructure/in-memory-review-references';
 import createLogger from './logger';
 import createRouter from './router';
 import createServer from './server';
