@@ -59,5 +59,6 @@ export default [
   { article: '10.1101/751099', review: '10.7287/peerj.8938v0.1/reviews/2', editorialCommunityIndex: 2, added: new Date('2020-06-07') },
   { article: '10.1101/751099', review: '10.7287/peerj.8938v0.2/reviews/2', editorialCommunityIndex: 2, added: new Date('2020-06-06') },
   { article: '10.1101/751099', review: '10.7287/peerj.8938v0.2/reviews/1', editorialCommunityIndex: 2, added: new Date('2020-06-07') },
-  { article: '10.1101/826180', review: '5Znarq_TEeqgVdfomCVLHQ', editorialCommunityIndex: 4, added: new Date('2020-06-25') },
+  { article: '10.1101/826180', review: '5Qqzzq_TEeqM-h89XQfQLQ', editorialCommunityIndex: 4, added: new Date('2020-06-01') },
+  { article: '10.1101/826180', review: '5VSYVK_TEeqiXQMmPjlxeg', editorialCommunityIndex: 4, added: new Date('2020-06-26') },
 ];
