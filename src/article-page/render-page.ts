@@ -1,6 +1,6 @@
 import { NotFound, ServiceUnavailable } from 'http-errors';
 import createRenderAddReviewForm, { GetAllEditorialCommunities } from './render-add-review-form';
-import createRenderArticleAbstract, { GetArticleAbstract } from './render-article-abstract';
+import { RenderArticleAbstract } from './render-article-abstract';
 import createRenderPageHeader, {
   GetArticleDetails,
   GetCommentCount,
@@ -26,10 +26,6 @@ const createGetEndorsingEditorialCommunityNames = (
   }
 );
 
-type GetFullArticle = (doi: Doi) => Promise<{
-  abstract: string;
-}>;
-
 export type FetchReviews = (doi: Doi) => Promise<Array<{
   publicationDate: Date;
   summary: string;
@@ -45,7 +41,7 @@ export default (
   editorialCommunities: EditorialCommunityRepository,
   getCommentCount: GetCommentCount,
   fetchArticle: GetArticleDetails,
-  fetchAbstract: GetFullArticle,
+  renderAbstract: RenderArticleAbstract,
   reviewReferenceRepository: ReviewReferenceRepository,
 ): RenderPage => {
   const getArticleDetailsAdapter: GetArticleDetails = async (articleDoi) => (
@@ -54,26 +50,9 @@ export default (
         throw new NotFound(`${articleDoi} not found`);
       })
   );
-  const abstractAdapter: GetArticleAbstract = async (articleDoi) => {
-    const fetchedArticle = await fetchAbstract(articleDoi)
-      .catch(() => {
-        throw new NotFound(`${articleDoi} not found`);
-      });
-    return { content: fetchedArticle.abstract };
-  };
-  const reviewsAdapter: GetReviews = async (articleDoi) => (
-    fetchReviews(articleDoi)
-      .catch((error) => {
-        if (error instanceof FetchDatasetError) {
-          throw new ServiceUnavailable('Article temporarily unavailable. Please try refreshing.');
-        }
-        throw new NotFound(`${articleDoi} not found`);
-      })
-  );
   const reviewCountAdapter: GetReviewCount = async (articleDoi) => (
     (await reviewReferenceRepository.findReviewsForArticleVersionDoi(articleDoi)).length
   );
-  const editorialCommunitiesAdapter: GetAllEditorialCommunities = async () => editorialCommunities.all();
   const getEditorialCommunityName: GetEditorialCommunityName = async (editorialCommunityId) => (
     editorialCommunities.lookup(editorialCommunityId).name
   );
@@ -84,9 +63,21 @@ export default (
     createGetEndorsingEditorialCommunityNames(getEditorialCommunityName),
     `#${reviewsId}`,
   );
-  const renderArticleAbstract = createRenderArticleAbstract(abstractAdapter);
+
+  const reviewsAdapter: GetReviews = async (articleDoi) => (
+    fetchReviews(articleDoi)
+      .catch((error) => {
+        if (error instanceof FetchDatasetError) {
+          throw new ServiceUnavailable('Article temporarily unavailable. Please try refreshing.');
+        }
+        throw new NotFound(`${articleDoi} not found`);
+      })
+  );
   const renderReviews = createRenderReviews(reviewsAdapter, reviewsId);
+
+  const editorialCommunitiesAdapter: GetAllEditorialCommunities = async () => editorialCommunities.all();
   const renderAddReviewForm = createRenderAddReviewForm(editorialCommunitiesAdapter);
+
   return async (doi) => (
     `<article class="ui aligned stackable grid">
       <div class="row">
@@ -97,7 +88,7 @@ export default (
 
       <div class="row">
         <section class="twelve wide column">
-          ${await renderArticleAbstract(doi)}
+          ${await renderAbstract(doi)}
           ${await renderReviews(doi)}
         </section>
         <aside class="four wide right floated column">

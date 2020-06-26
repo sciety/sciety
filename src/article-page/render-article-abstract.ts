@@ -6,7 +6,7 @@ interface ArticleAbstract {
 
 export type GetArticleAbstract = (doi: Doi) => Promise<ArticleAbstract>;
 
-type RenderArticleAbstract = (doi: Doi) => Promise<string>;
+export type RenderArticleAbstract = (doi: Doi) => Promise<string>;
 
 export default (getArticleAbstract: GetArticleAbstract): RenderArticleAbstract => (
   async (doi) => {
