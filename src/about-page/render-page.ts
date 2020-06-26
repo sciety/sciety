@@ -1,4 +1,4 @@
-type RenderPage = (filename: string) => Promise<string>;
+export type RenderPage = (filename: string) => Promise<string>;
 
 export type GetHtml = (filename: string) => Promise<string>;
 

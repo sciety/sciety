@@ -1,5 +1,5 @@
 import { Context, Middleware, Response } from 'koa';
-import renderAboutPage from '../../src/about-page/render-about-page';
+import createIndex from '../../src/about-page/index';
 import { FetchStaticFile } from '../../src/infrastructure/fetch-static-file';
 import createContext from '../context';
 import runMiddleware from '../middleware';
@@ -7,7 +7,7 @@ import runMiddleware from '../middleware';
 const fetchStaticFile: FetchStaticFile = async (filename) => (`# Contents of ${filename}`);
 
 const invokeMiddleware = async (ctx: Context, next?: Middleware): Promise<Response> => {
-  const { response } = await runMiddleware(renderAboutPage(fetchStaticFile), ctx, next);
+  const { response } = await runMiddleware(createIndex(fetchStaticFile), ctx, next);
   return response;
 };
 
