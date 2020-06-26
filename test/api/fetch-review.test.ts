@@ -1,5 +1,5 @@
 import { FetchDataciteReview } from '../../src/api/fetch-datacite-review';
-import createFetchHypothesisAnnotation from '../../src/api/fetch-hypothesis-annotation';
+import { FetchHypothesisAnnotation } from '../../src/api/fetch-hypothesis-annotation';
 import createFetchReview from '../../src/api/fetch-review';
 import Doi from '../../src/data/doi';
 import HypothesisAnnotationId from '../../src/data/hypothesis-annotation-id';
@@ -22,9 +22,15 @@ describe('fetch-review', (): void => {
   });
 
   it('returns a Hypothes.is annotation when given a Hypothes.is id', async () => {
-    const fetchReview = createFetchReview(shouldNotBeCalled, createFetchHypothesisAnnotation());
+    const hypothesisAnnotation = {
+      publicationDate: new Date(),
+      summary: 'Also very good',
+      url: new URL('https://example.com'),
+    };
+    const fetchHypothesisAnnotation: FetchHypothesisAnnotation = async () => hypothesisAnnotation;
+    const fetchReview = createFetchReview(shouldNotBeCalled, fetchHypothesisAnnotation);
     const review = await fetchReview(new HypothesisAnnotationId('fhAtGNVDEemkyCM-sRPpVQ'));
 
-    expect(review.summary).toContain('eLife');
+    expect(review).toStrictEqual(hypothesisAnnotation);
   });
 });
