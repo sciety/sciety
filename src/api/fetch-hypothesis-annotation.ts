@@ -21,12 +21,18 @@ export default (getJson: GetJson): FetchHypothesisAnnotation => {
   const log = createLogger('api:fetch-hypothesis-annotation');
   return async (id) => {
     const uri = `https://api.hypothes.is/api/annotations/${id.value}`;
+
+    log(`Fetching review ${id.value} from Hypothesis`);
     const data = await getJson(uri) as HypothesisResponse;
-    log(data);
-    return {
+
+    const response: Review = {
       publicationDate: new Date(data.created),
       summary: converter.makeHtml(data.text),
       url: new URL(data.links.incontext),
     };
+
+    log(`Retrieved review: ${JSON.stringify({ ...response, summary: '[text]' })}`);
+
+    return response;
   };
 };
