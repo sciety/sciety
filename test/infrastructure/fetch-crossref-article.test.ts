@@ -1,4 +1,4 @@
-import createFetchCrossrefArticle, { MakeHttpRequest } from '../../src/api/fetch-crossref-article';
+import createFetchCrossrefArticle, { MakeHttpRequest } from '../../src/infrastructure/fetch-crossref-article';
 import Doi from '../../src/types/doi';
 
 const crossrefResponseWith = (content: string): string => `

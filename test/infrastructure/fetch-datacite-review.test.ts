@@ -2,8 +2,8 @@ import { literal } from '@rdfjs/data-model';
 import { dcterms, schema } from '@tpluscode/rdf-ns-builders';
 import clownface from 'clownface';
 import datasetFactory from 'rdf-dataset-indexed';
-import createFetchDataciteReview from '../../src/api/fetch-datacite-review';
-import { FetchDataset } from '../../src/api/fetch-dataset';
+import createFetchDataciteReview from '../../src/infrastructure/fetch-datacite-review';
+import { FetchDataset } from '../../src/infrastructure/fetch-dataset';
 import Doi from '../../src/types/doi';
 
 const reviewDoi = new Doi('10.5281/zenodo.3678325');

@@ -1,6 +1,6 @@
 import { Context, Middleware, Response } from 'koa';
 import readFile from '../../src/about-page/read-file';
-import { FetchStaticFile } from '../../src/api/fetch-static-file';
+import { FetchStaticFile } from '../../src/infrastructure/fetch-static-file';
 import createContext from '../context';
 import runMiddleware from '../middleware';
 

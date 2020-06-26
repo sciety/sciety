@@ -13,8 +13,8 @@ import createRenderPageHeader, {
 } from './render-page-header';
 import createRenderReviews, { GetReviews, RenderReviews } from './render-reviews';
 import validateBiorxivDoi from './validate-biorxiv-doi';
-import { FetchDatasetError } from '../api/fetch-dataset';
 import endorsements from '../bootstrap-endorsements';
+import { FetchDatasetError } from '../infrastructure/fetch-dataset';
 import { Adapters } from '../types/adapters';
 import Doi from '../types/doi';
 import EditorialCommunityRepository from '../types/editorial-community-repository';

@@ -1,6 +1,6 @@
-import { FetchDataciteReview } from '../../src/api/fetch-datacite-review';
-import { FetchHypothesisAnnotation } from '../../src/api/fetch-hypothesis-annotation';
-import createFetchReview from '../../src/api/fetch-review';
+import { FetchDataciteReview } from '../../src/infrastructure/fetch-datacite-review';
+import { FetchHypothesisAnnotation } from '../../src/infrastructure/fetch-hypothesis-annotation';
+import createFetchReview from '../../src/infrastructure/fetch-review';
 import Doi from '../../src/types/doi';
 import HypothesisAnnotationId from '../../src/types/hypothesis-annotation-id';
 import shouldNotBeCalled from '../should-not-be-called';

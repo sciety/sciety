@@ -1,4 +1,4 @@
-import createFetchHypothesisAnnotation, { GetJson } from '../../src/api/fetch-hypothesis-annotation';
+import createFetchHypothesisAnnotation, { GetJson } from '../../src/infrastructure/fetch-hypothesis-annotation';
 import HypothesisAnnotationId from '../../src/types/hypothesis-annotation-id';
 import { Review } from '../../src/types/review';
 
