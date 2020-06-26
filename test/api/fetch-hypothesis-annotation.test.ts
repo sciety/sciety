@@ -25,4 +25,18 @@ describe('fetch-hypothesis-annotation', (): void => {
 
     expect(review).toStrictEqual(expected);
   });
+
+  it('converts markdown to HTML', async () => {
+    const getJson: GetJson = async () => ({
+      created: date,
+      text: '# Very good',
+      links: {
+        incontext: 'https://www.example.com',
+      },
+    });
+    const fetchHypothesisAnnotation = createFetchHypothesisAnnotation(getJson);
+    const review = await fetchHypothesisAnnotation(hypothesisAnnotationId);
+
+    expect(review.summary).toStrictEqual('<h1>Very good</h1>');
+  });
 });

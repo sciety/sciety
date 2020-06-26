@@ -1,3 +1,4 @@
+import showdown from 'showdown';
 import HypothesisAnnotationId from '../data/hypothesis-annotation-id';
 import createLogger from '../logger';
 import { Json, JsonCompatible } from '../types/json';
@@ -21,9 +22,10 @@ export default (getJson: GetJson): FetchHypothesisAnnotation => {
     const uri = `https://api.hypothes.is/api/annotations/${id.value}`;
     const data = await getJson(uri) as HypothesisResponse;
     log(data);
+    const converter = new showdown.Converter({ noHeaderId: true });
     return {
       publicationDate: new Date(data.created),
-      summary: data.text,
+      summary: converter.makeHtml(data.text),
       url: new URL(data.links.incontext),
     };
   };
