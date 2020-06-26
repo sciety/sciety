@@ -1,6 +1,5 @@
 import { Context, Middleware, Response } from 'koa';
-import createIndex from '../../src/about-page/index';
-import { FetchStaticFile } from '../../src/infrastructure/fetch-static-file';
+import createIndex, { FetchStaticFile } from '../../src/about-page/index';
 import createContext from '../context';
 import runMiddleware from '../middleware';
 

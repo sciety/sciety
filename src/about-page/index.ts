@@ -1,7 +1,8 @@
 import { Context, Middleware, Next } from 'koa';
 import showdown from 'showdown';
 import createRenderPage, { GetHtml } from './render-page';
-import { FetchStaticFile } from '../infrastructure/fetch-static-file';
+
+export type FetchStaticFile = (filename: string) => Promise<string>;
 
 export default (
   fetchStaticFile: FetchStaticFile,
