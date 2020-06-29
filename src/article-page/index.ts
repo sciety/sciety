@@ -14,6 +14,7 @@ import createRenderPageHeader, {
 import createRenderReviews, { GetReviews, RenderReviews } from './render-reviews';
 import validateBiorxivDoi from './validate-biorxiv-doi';
 import endorsements from '../bootstrap-endorsements';
+import { FetchCrossrefArticleError } from '../infrastructure/fetch-crossref-article';
 import { FetchDatasetError } from '../infrastructure/fetch-dataset';
 import { Adapters } from '../types/adapters';
 import Doi from '../types/doi';
@@ -28,12 +29,7 @@ type GetFullArticle = (doi: Doi) => Promise<{
 type GetEditorialCommunityName = (editorialCommunityId: string) => Promise<string>;
 
 const buildRenderPageHeader = (adapters: Adapters): RenderPageHeader => {
-  const getArticleDetailsAdapter: GetArticleDetails = async (articleDoi) => (
-    adapters.fetchArticle(articleDoi)
-      .catch(() => {
-        throw new NotFound(`${articleDoi} not found`);
-      })
-  );
+  const getArticleDetailsAdapter: GetArticleDetails = async (articleDoi) => adapters.fetchArticle(articleDoi);
   const reviewCountAdapter: GetReviewCount = async (articleDoi) => (
     (await adapters.reviewReferenceRepository.findReviewsForArticleVersionDoi(articleDoi)).length
   );
@@ -104,7 +100,14 @@ export default (adapters: Adapters): Middleware => {
   );
   return async (ctx: RouterContext, next: Next): Promise<void> => {
     const doi = validateBiorxivDoi(ctx.params.doi);
-    ctx.response.body = await renderPage(doi);
+    try {
+      ctx.response.body = await renderPage(doi);
+    } catch (e) {
+      if (e instanceof FetchCrossrefArticleError) {
+        throw new NotFound(`${doi} not found`);
+      }
+      throw e;
+    }
     await next();
   };
 };
