@@ -13,10 +13,10 @@ export type GetArticleDetails = (doi: Doi) => Promise<ArticleDetails>;
 export type GetReviewCount = (doi: Doi) => Promise<number>;
 
 export type GetCommentCount = (doi: Doi) => Promise<number>;
-export class GetCommentCountError extends Error {
+export class GetCommentCountErrorFromArticlePage extends Error {
   constructor(message?: string) {
     super(message);
-    this.name = 'GetCommentCountError';
+    this.name = 'GetCommentCountErrorFromArticlePage';
   }
 }
 export type GetEndorsingEditorialCommunityNames = (doi: Doi) => Promise<Array<string>>;
@@ -61,7 +61,7 @@ export default (
       comments = '';
     }
   } catch (e) {
-    if (e instanceof GetCommentCountError) {
+    if (e instanceof GetCommentCountErrorFromArticlePage) {
       comments = '';
     }
     // this should become:

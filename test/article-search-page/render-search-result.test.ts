@@ -1,5 +1,5 @@
 import createRenderSearchResult, {
-  GetCommentCount, GetCommentCountError,
+  GetCommentCount, GetCommentCountErrorFromArticleSearchPage,
   GetEndorsingEditorialCommunities,
   GetReviewCount,
   SearchResult,
@@ -97,7 +97,7 @@ describe('render-search-result component', (): void => {
   describe('an error is thrown when counting comments', (): void => {
     it('hides the number of comments', async (): Promise<void> => {
       const getCommentCount: GetCommentCount = async () => {
-        throw new GetCommentCountError();
+        throw new GetCommentCountErrorFromArticleSearchPage();
       };
       const rendered = await createRenderSearchResult(
         getCommentCount,

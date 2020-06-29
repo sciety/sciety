@@ -9,10 +9,10 @@ export interface SearchResult {
 }
 
 export type GetCommentCount = (doi: Doi) => Promise<number>;
-export class GetCommentCountError extends Error {
+export class GetCommentCountErrorFromArticleSearchPage extends Error {
   constructor(message?: string) {
     super(message);
-    this.name = 'GetCommentCountError';
+    this.name = 'GetCommentCountErrorFromArticleSearchPage';
   }
 }
 export type GetReviewCount = (doi: Doi) => Promise<number>;
@@ -45,7 +45,7 @@ const createRenderComments = (
     try {
       commentCount = await getCommentCount(doi);
     } catch (e) {
-      if (e instanceof GetCommentCountError) {
+      if (e instanceof GetCommentCountErrorFromArticleSearchPage) {
         return '';
       }
       // this should become:

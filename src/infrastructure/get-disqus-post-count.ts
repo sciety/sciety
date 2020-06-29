@@ -1,4 +1,4 @@
-import { GetCommentCountError } from '../article-search-page/render-search-result';
+import { GetCommentCountErrorFromArticleSearchPage } from '../article-search-page/render-search-result';
 import createLogger from '../logger';
 import { Json, JsonCompatible } from '../types/json';
 
@@ -25,7 +25,8 @@ export default (getJson: GetJson): GetDisqusPostCount => {
       const message = `Disqus API error: ${e.message}`;
       log(message);
 
-      throw new GetCommentCountError(message);
+      throw new GetCommentCountErrorFromArticleSearchPage(message);
+      // class GetCommentCount implements GetCommentCountErrorFromArticleSearchPage, GetCommentCountErrorFromArticlePage
     }
   };
 };

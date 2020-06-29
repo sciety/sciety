@@ -1,8 +1,8 @@
 import { JSDOM } from 'jsdom';
 import createRenderPageHeader, {
   GetArticleDetails,
-  GetCommentCountError,
-  RenderPageHeader
+  GetCommentCountErrorFromArticlePage,
+  RenderPageHeader,
 } from '../../src/article-page/render-page-header';
 import Doi from '../../src/types/doi';
 
@@ -98,7 +98,7 @@ describe('render-page-header component', (): void => {
         getArticleDetails,
         async () => 0,
         async () => {
-          throw new GetCommentCountError();
+          throw new GetCommentCountErrorFromArticlePage();
         },
         async () => [],
         '#reviews',
