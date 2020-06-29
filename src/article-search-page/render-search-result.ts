@@ -9,6 +9,7 @@ export interface SearchResult {
 }
 
 export type GetCommentCount = (doi: Doi) => Promise<number>;
+class GetCommentCountError extends Error {}
 export type GetReviewCount = (doi: Doi) => Promise<number>;
 export type GetEndorsingEditorialCommunities = (doi: Doi) => Promise<Array<string>>;
 
@@ -39,6 +40,12 @@ const createRenderComments = (
     try {
       commentCount = await getCommentCount(doi);
     } catch (e) {
+      if (e instanceof GetCommentCountError) {
+        return '';
+      }
+      // this should become:
+      //   throw e;
+      // as the component doesn't deal with exceptions that doesn't know how to handle
       return '';
     }
 
