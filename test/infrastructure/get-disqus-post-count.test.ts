@@ -1,3 +1,4 @@
+import { GetCommentCountError } from '../../src/article-search-page/render-search-result';
 import createGetDisqusPostCount, { GetJson } from '../../src/infrastructure/get-disqus-post-count';
 
 const uri = 'https://example.com/10.1101/833392';
@@ -19,11 +20,11 @@ describe('get-disqus-post-count client', (): void => {
   });
 
   describe('when Disqus returns an invalid response', (): void => {
-    it('throws an error', async (): Promise<void> => {
+    it('throws the port-specific error', async (): Promise<void> => {
       const getJson: GetJson = async () => ({});
       const getDisqusPostCount = createGetDisqusPostCount(getJson);
 
-      await expect(getDisqusPostCount(uri)).rejects.toThrow('Cannot read property \'0\' of undefined');
+      await expect(getDisqusPostCount(uri)).rejects.toBeInstanceOf(GetCommentCountError);
     });
   });
 });

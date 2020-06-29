@@ -9,7 +9,12 @@ export interface SearchResult {
 }
 
 export type GetCommentCount = (doi: Doi) => Promise<number>;
-export class GetCommentCountError extends Error {}
+export class GetCommentCountError extends Error {
+  constructor(message?: string) {
+    super(message);
+    this.name = 'GetCommentCountError';
+  }
+}
 export type GetReviewCount = (doi: Doi) => Promise<number>;
 export type GetEndorsingEditorialCommunities = (doi: Doi) => Promise<Array<string>>;
 
