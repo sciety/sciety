@@ -72,15 +72,7 @@ const buildRenderReviews = (adapters: Adapters): RenderReviews => {
     adapters.fetchReview,
     adapters.editorialCommunities,
   );
-  const reviewsAdapter: GetReviews = async (articleDoi) => (
-    fetchReviews(articleDoi)
-      .catch((error) => {
-        if (error instanceof FetchDatasetError) {
-          throw new ServiceUnavailable('Article temporarily unavailable. Please try refreshing.');
-        }
-        throw new NotFound(`${articleDoi} not found`);
-      })
-  );
+  const reviewsAdapter: GetReviews = async (articleDoi) => fetchReviews(articleDoi);
   return createRenderReviews(reviewsAdapter, reviewsId);
 };
 
@@ -102,7 +94,10 @@ export default (adapters: Adapters): Middleware => {
     } catch (e) {
       if (e instanceof FetchCrossrefArticleError) {
         throw new NotFound(`${doi} not found`);
+      } else if (e instanceof FetchDatasetError) {
+        throw new ServiceUnavailable('Article temporarily unavailable. Please try refreshing.');
       }
+
       throw e;
     }
     await next();
