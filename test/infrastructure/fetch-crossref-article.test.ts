@@ -1,4 +1,4 @@
-import createFetchCrossrefArticle, { MakeHttpRequest } from '../../src/infrastructure/fetch-crossref-article';
+import createFetchCrossrefArticle, { FetchCrossrefArticleError, MakeHttpRequest } from '../../src/infrastructure/fetch-crossref-article';
 import Doi from '../../src/types/doi';
 
 const crossrefResponseWith = (content: string): string => `
@@ -222,6 +222,19 @@ describe('fetch-crossref-article', (): void => {
       const article = await createFetchCrossrefArticle(makeHttpRequest)(doi);
 
       expect(article.title).toStrictEqual('An article title for <i>C. elegans</i>');
+    });
+  });
+
+  describe('the request fails', (): void => {
+    it('throws a specific type', async () => {
+      const doi = new Doi('10.1101/339747');
+      const makeHttpRequest: MakeHttpRequest = async () => {
+        throw new Error('HTTP timeout');
+      };
+      const fetchCrossrefArticle = createFetchCrossrefArticle(makeHttpRequest);
+      await expect(fetchCrossrefArticle(doi))
+        .rejects
+        .toThrow(new FetchCrossrefArticleError('Failed to fetch article 10.1101/339747: (Error: HTTP timeout)'));
     });
   });
 });

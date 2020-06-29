@@ -10,6 +10,9 @@ export type FetchCrossrefArticle = (doi: Doi) => Promise<{
   publicationDate: Date;
 }>;
 
+export class FetchCrossrefArticleError extends Error {
+}
+
 export type MakeHttpRequest = (uri: string, acceptHeader: string) => Promise<string>;
 
 export default (makeHttpRequest: MakeHttpRequest): FetchCrossrefArticle => {
@@ -100,7 +103,7 @@ export default (makeHttpRequest: MakeHttpRequest): FetchCrossrefArticle => {
     const response = await makeHttpRequest(uri, 'application/vnd.crossref.unixref+xml')
       .catch((error) => {
         log(`Failed to fetch article ${doi}: (${error})`);
-        throw error;
+        throw new FetchCrossrefArticleError(`Failed to fetch article ${doi}: (${error})`);
       });
 
     const doc = new DOMParser().parseFromString(response, 'text/xml');
