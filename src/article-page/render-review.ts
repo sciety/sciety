@@ -3,14 +3,17 @@ import templateDate from '../templates/date';
 
 export interface ReviewSummary {
   publicationDate: Date;
-  summary: string;
+  summary?: string;
   url: URL;
   editorialCommunityId: string;
   editorialCommunityName: string;
 }
 
 export default (review: ReviewSummary, idNamespace: string, maxChars: number): string => {
-  const summary = clip(review.summary, maxChars);
+  let summary = '';
+  if (review.summary) {
+    summary = `<div class="description" data-test-id="reviewSummary">${clip(review.summary, maxChars)}</div>`;
+  }
   return `
     <article class="content">
 
@@ -25,9 +28,7 @@ export default (review: ReviewSummary, idNamespace: string, maxChars: number): s
         ${templateDate(review.publicationDate)}
       </div>
 
-      <div class="description">
-        ${summary}
-      </div>
+      ${summary}
 
       <div class="extra">
         <a href="${review.url.href}" class="ui basic secondary button" id="${idNamespace}-read-more"

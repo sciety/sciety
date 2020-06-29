@@ -1,3 +1,4 @@
+import { JSDOM } from 'jsdom';
 import renderReview from '../../src/article-page/render-review';
 
 describe('render-review component', (): void => {
@@ -47,6 +48,21 @@ describe('render-review component', (): void => {
       const actual = renderReview(review, idNamespace, 6);
 
       expect(actual).toStrictEqual(expect.stringContaining('Prett'));
+    });
+  });
+
+  describe('when the review summary is not available', (): void => {
+    it('does not render the summary markup', () => {
+      const reviewWithoutSummary = {
+        publicationDate: new Date('2010-02-01'),
+        url: new URL('https://doi.org/10.5281/zenodo.3678326'),
+        editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
+        editorialCommunityName: 'eLife',
+      };
+
+      const rendered = JSDOM.fragment(renderReview(reviewWithoutSummary, idNamespace, 6));
+
+      expect(rendered.querySelector('[data-test-id="reviewSummary"]')).toBeNull();
     });
   });
 });
