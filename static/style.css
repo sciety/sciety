@@ -83,6 +83,10 @@ ul.ui.list:not(.bulleted):not(.ordered) li:before {
   content: '';
 }
 
+p:last-child {
+  margin-bottom: 1em;
+}
+
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Styles that supplement Semantic UI
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */

@@ -17,13 +17,11 @@ export default (getArticleAbstract: GetArticleAbstract): RenderArticleAbstract =
         <h2 class="ui header">
           Abstract
         </h2>
-        <div>
           ${articleAbstract.content}
           <a href="https://doi.org/${doi}" class="ui basic secondary button">
             Read the full article
             <i class="right chevron icon"></i>
           </a>
-        </div>
       </section>
       <div class="ui hidden clearing section divider"></div>
     `;
