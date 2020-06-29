@@ -1,5 +1,9 @@
 import { JSDOM } from 'jsdom';
-import createRenderPageHeader, { GetArticleDetails, RenderPageHeader } from '../../src/article-page/render-page-header';
+import createRenderPageHeader, {
+  GetArticleDetails,
+  GetCommentCountError,
+  RenderPageHeader
+} from '../../src/article-page/render-page-header';
 import Doi from '../../src/types/doi';
 
 const getArticleDetails: GetArticleDetails = async (doi) => ({
@@ -94,7 +98,7 @@ describe('render-page-header component', (): void => {
         getArticleDetails,
         async () => 0,
         async () => {
-          throw new Error('Comments can\'t be retrieved');
+          throw new GetCommentCountError();
         },
         async () => [],
         '#reviews',

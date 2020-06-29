@@ -13,7 +13,12 @@ export type GetArticleDetails = (doi: Doi) => Promise<ArticleDetails>;
 export type GetReviewCount = (doi: Doi) => Promise<number>;
 
 export type GetCommentCount = (doi: Doi) => Promise<number>;
-
+export class GetCommentCountError extends Error {
+  constructor(message?: string) {
+    super(message);
+    this.name = 'GetCommentCountError';
+  }
+}
 export type GetEndorsingEditorialCommunityNames = (doi: Doi) => Promise<Array<string>>;
 
 export type RenderPageHeader = (doi: Doi) => Promise<string>;
@@ -56,6 +61,12 @@ export default (
       comments = '';
     }
   } catch (e) {
+    if (e instanceof GetCommentCountError) {
+      comments = '';
+    }
+    // this should become:
+    //   throw e;
+    // as the component doesn't deal with exceptions that doesn't know how to handle
     comments = '';
   }
 
