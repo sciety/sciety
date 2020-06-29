@@ -55,10 +55,7 @@ const buildRenderPageHeader = (adapters: Adapters): RenderPageHeader => {
 
 const buildRenderAbstract = (fetchAbstract: GetFullArticle): RenderArticleAbstract => {
   const abstractAdapter: GetArticleAbstract = async (articleDoi) => {
-    const fetchedArticle = await fetchAbstract(articleDoi)
-      .catch(() => {
-        throw new NotFound(`${articleDoi} not found`);
-      });
+    const fetchedArticle = await fetchAbstract(articleDoi);
     return { content: fetchedArticle.abstract };
   };
   return createRenderArticleAbstract(abstractAdapter);
