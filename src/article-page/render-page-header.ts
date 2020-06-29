@@ -1,6 +1,7 @@
 import templateDate from '../templates/date';
 import templateListItems from '../templates/list-items';
 import Doi from '../types/doi';
+import GetCommentCountError from '../types/get-comment-count-error';
 
 interface ArticleDetails {
   title: string;
@@ -13,12 +14,6 @@ export type GetArticleDetails = (doi: Doi) => Promise<ArticleDetails>;
 export type GetReviewCount = (doi: Doi) => Promise<number>;
 
 export type GetCommentCount = (doi: Doi) => Promise<number>;
-export class GetCommentCountErrorFromArticlePage extends Error {
-  constructor(message?: string) {
-    super(message);
-    this.name = 'GetCommentCountErrorFromArticlePage';
-  }
-}
 export type GetEndorsingEditorialCommunityNames = (doi: Doi) => Promise<Array<string>>;
 
 export type RenderPageHeader = (doi: Doi) => Promise<string>;
@@ -61,7 +56,7 @@ export default (
       comments = '';
     }
   } catch (e) {
-    if (e instanceof GetCommentCountErrorFromArticlePage) {
+    if (e instanceof GetCommentCountError) {
       comments = '';
     }
     // this should become:

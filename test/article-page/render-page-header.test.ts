@@ -1,10 +1,10 @@
 import { JSDOM } from 'jsdom';
 import createRenderPageHeader, {
   GetArticleDetails,
-  GetCommentCountErrorFromArticlePage,
   RenderPageHeader,
 } from '../../src/article-page/render-page-header';
 import Doi from '../../src/types/doi';
+import GetCommentCountError from '../../src/types/get-comment-count-error';
 
 const getArticleDetails: GetArticleDetails = async (doi) => ({
   title: `Lorem ipsum ${doi}`,
@@ -98,7 +98,7 @@ describe('render-page-header component', (): void => {
         getArticleDetails,
         async () => 0,
         async () => {
-          throw new GetCommentCountErrorFromArticlePage();
+          throw new GetCommentCountError();
         },
         async () => [],
         '#reviews',

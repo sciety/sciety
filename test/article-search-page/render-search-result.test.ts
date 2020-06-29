@@ -1,10 +1,11 @@
 import createRenderSearchResult, {
-  GetCommentCount, GetCommentCountErrorFromArticleSearchPage,
+  GetCommentCount,
   GetEndorsingEditorialCommunities,
   GetReviewCount,
   SearchResult,
 } from '../../src/article-search-page/render-search-result';
 import Doi from '../../src/types/doi';
+import GetCommentCountError from '../../src/types/get-comment-count-error';
 
 const searchResult: SearchResult = {
   doi: new Doi('10.1101/833392'),
@@ -97,7 +98,7 @@ describe('render-search-result component', (): void => {
   describe('an error is thrown when counting comments', (): void => {
     it('hides the number of comments', async (): Promise<void> => {
       const getCommentCount: GetCommentCount = async () => {
-        throw new GetCommentCountErrorFromArticleSearchPage();
+        throw new GetCommentCountError();
       };
       const rendered = await createRenderSearchResult(
         getCommentCount,

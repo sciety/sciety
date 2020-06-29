@@ -1,5 +1,6 @@
 import templateDate from '../templates/date';
 import Doi from '../types/doi';
+import GetCommentCountError from '../types/get-comment-count-error';
 
 export interface SearchResult {
   doi: Doi;
@@ -9,12 +10,6 @@ export interface SearchResult {
 }
 
 export type GetCommentCount = (doi: Doi) => Promise<number>;
-export class GetCommentCountErrorFromArticleSearchPage extends Error {
-  constructor(message?: string) {
-    super(message);
-    this.name = 'GetCommentCountErrorFromArticleSearchPage';
-  }
-}
 export type GetReviewCount = (doi: Doi) => Promise<number>;
 export type GetEndorsingEditorialCommunities = (doi: Doi) => Promise<Array<string>>;
 
@@ -45,7 +40,7 @@ const createRenderComments = (
     try {
       commentCount = await getCommentCount(doi);
     } catch (e) {
-      if (e instanceof GetCommentCountErrorFromArticleSearchPage) {
+      if (e instanceof GetCommentCountError) {
         return '';
       }
       // this should become:
