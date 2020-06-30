@@ -19,7 +19,7 @@ export default (fetchDataset: FetchDataset): FetchDataciteReview => {
       schema.datePublished,
       dcterms.date,
     ]).value ?? 0);
-    const summary = graph.out(schema.description).value ?? '';
+    const summary = graph.out(schema.description).value;
 
     const response: Review = {
       publicationDate,

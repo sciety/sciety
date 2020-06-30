@@ -40,14 +40,14 @@ describe('fetch-datacite-review', (): void => {
   });
 
   describe('when the review has no description', () => {
-    it('returns an empty summary', async () => {
+    it('returns the review without a summary', async () => {
       const fetchDataset: FetchDataset = async (iri) => (
         clownface({ dataset: datasetFactory(), term: iri })
       );
       const fetchReview = createFetchDataciteReview(fetchDataset);
       const review = await fetchReview(reviewDoi);
 
-      expect(review.summary).toStrictEqual('');
+      expect(review.summary).toBeUndefined();
     });
   });
 });
