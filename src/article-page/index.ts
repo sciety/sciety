@@ -67,13 +67,12 @@ const buildRenderAddReviewForm = (editorialCommunities: EditorialCommunityReposi
 };
 
 const buildRenderReviews = (adapters: Adapters): RenderReviews => {
-  const fetchReviews = createFetchReviews(
+  const getReviews: GetReviews = createFetchReviews(
     adapters.reviewReferenceRepository,
     adapters.fetchReview,
     adapters.editorialCommunities,
   );
-  const reviewsAdapter: GetReviews = async (articleDoi) => fetchReviews(articleDoi);
-  return createRenderReviews(reviewsAdapter, reviewsId);
+  return createRenderReviews(getReviews, reviewsId);
 };
 
 export default (adapters: Adapters): Middleware => {

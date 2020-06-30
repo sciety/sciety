@@ -1,18 +1,8 @@
+import { GetReviews } from './render-reviews';
 import createLogger from '../logger';
-import Doi from '../types/doi';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import { ReviewId } from '../types/review-id';
 import ReviewReferenceRepository from '../types/review-reference-repository';
-
-interface Review {
-  publicationDate?: Date;
-  summary?: string;
-  url: URL;
-  editorialCommunityId: string;
-  editorialCommunityName: string;
-}
-
-type GetReviews = (doi: Doi) => Promise<Array<Review>>;
 
 export type FetchReview = (id: ReviewId) => Promise<{
   publicationDate?: Date;
@@ -27,7 +17,7 @@ export default (
 ): GetReviews => {
   const log = createLogger('middleware:fetch-reviews-for-article-page');
 
-  return async (doi: Doi): Promise<Array<Review>> => {
+  return async (doi) => {
     const reviews = await Promise.all(
       (await reviewReferenceRepository.findReviewsForArticleVersionDoi(doi))
         .map(async (reviewReference) => {
