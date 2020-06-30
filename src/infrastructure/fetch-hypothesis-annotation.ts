@@ -1,8 +1,8 @@
 import showdown from 'showdown';
+import { Review } from './review';
 import createLogger from '../logger';
 import HypothesisAnnotationId from '../types/hypothesis-annotation-id';
 import { Json, JsonCompatible } from '../types/json';
-import { Review } from '../types/review';
 
 export type GetJson = (uri: string) => Promise<Json>;
 

@@ -1,6 +1,6 @@
 import createFetchHypothesisAnnotation, { GetJson } from '../../src/infrastructure/fetch-hypothesis-annotation';
+import { Review } from '../../src/infrastructure/review';
 import HypothesisAnnotationId from '../../src/types/hypothesis-annotation-id';
-import { Review } from '../../src/types/review';
 
 const date = '2019-09-12T09:55:46.146050+00:00';
 const hypothesisAnnotationId = new HypothesisAnnotationId('fhAtGNVDEemkyCM-sRPpVQ');

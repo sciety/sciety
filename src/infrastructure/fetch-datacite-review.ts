@@ -1,9 +1,9 @@
 import { namedNode } from '@rdfjs/data-model';
 import { dcterms, schema } from '@tpluscode/rdf-ns-builders';
 import { FetchDataset } from './fetch-dataset';
+import { Review } from './review';
 import createLogger from '../logger';
 import Doi from '../types/doi';
-import { Review } from '../types/review';
 
 export type FetchDataciteReview = (doi: Doi) => Promise<Review>;
 
