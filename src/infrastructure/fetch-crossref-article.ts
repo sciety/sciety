@@ -107,13 +107,20 @@ export default (makeHttpRequest: MakeHttpRequest): FetchCrossrefArticle => {
       });
 
     const doc = new DOMParser().parseFromString(response, 'text/xml');
-
-    return {
-      abstract: getAbstract(doc, doi),
-      authors: getAuthors(doc, doi),
-      doi,
-      title: getTitle(doc),
-      publicationDate: getPublicationDate(doc),
-    };
+    try {
+      return {
+        abstract: getAbstract(doc, doi),
+        authors: getAuthors(doc, doi),
+        doi,
+        title: getTitle(doc),
+        publicationDate: getPublicationDate(doc),
+      };
+    } catch (e) {
+      log(`
+      Error: problem parsing document for ${doi}, original response was: ${response}.
+      Original error was ${e}
+      `);
+      throw e;
+    }
   };
 };
