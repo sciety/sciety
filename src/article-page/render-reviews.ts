@@ -5,7 +5,7 @@ import Doi from '../types/doi';
 export type RenderReviews = (doi: Doi) => Promise<string>;
 
 export type GetReviews = (doi: Doi) => Promise<Array<{
-  publicationDate: Date;
+  publicationDate?: Date;
   summary?: string;
   url: URL;
   editorialCommunityId: string;

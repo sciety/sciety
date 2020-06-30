@@ -5,7 +5,7 @@ import { Review } from '../types/review';
 import { ReviewId } from '../types/review-id';
 
 export type FetchReview = (id: ReviewId) => Promise<{
-  publicationDate: Date;
+  publicationDate?: Date;
   summary?: string;
   url: URL;
 }>;

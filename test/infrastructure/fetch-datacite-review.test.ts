@@ -3,7 +3,7 @@ import { dcterms, schema } from '@tpluscode/rdf-ns-builders';
 import clownface from 'clownface';
 import datasetFactory from 'rdf-dataset-indexed';
 import createFetchDataciteReview from '../../src/infrastructure/fetch-datacite-review';
-import { FetchDataset } from '../../src/infrastructure/fetch-dataset';
+import { FetchDataset, FetchDatasetError } from '../../src/infrastructure/fetch-dataset';
 import Doi from '../../src/types/doi';
 
 const reviewDoi = new Doi('10.5281/zenodo.3678325');
@@ -48,6 +48,19 @@ describe('fetch-datacite-review', (): void => {
       const review = await fetchReview(reviewDoi);
 
       expect(review.summary).toBeUndefined();
+    });
+  });
+
+  describe('when Datacite is unreachable', () => {
+    it('returns a review with just the URL', async () => {
+      const fetchDataset: FetchDataset = async () => {
+        throw new FetchDatasetError('Something went wrong.');
+      };
+      const fetchReview = createFetchDataciteReview(fetchDataset);
+      const review = await fetchReview(reviewDoi);
+
+      expect(review).toHaveProperty('url');
+      expect(Object.keys(review)).toHaveLength(1);
     });
   });
 });

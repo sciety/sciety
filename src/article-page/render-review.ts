@@ -2,7 +2,7 @@ import clip from 'text-clipper';
 import templateDate from '../templates/date';
 
 export interface ReviewSummary {
-  publicationDate: Date;
+  publicationDate?: Date;
   summary?: string;
   url: URL;
   editorialCommunityId: string;
@@ -14,6 +14,11 @@ export default (review: ReviewSummary, idNamespace: string, maxChars: number): s
   if (review.summary) {
     summary = `<div class="description" data-test-id="reviewSummary">${clip(review.summary, maxChars)}</div>`;
   }
+  let date = '';
+  if (review.publicationDate) {
+    date = `<div class="meta">${templateDate(review.publicationDate)}</div>`;
+  }
+
   return `
     <article class="content">
 
@@ -24,9 +29,7 @@ export default (review: ReviewSummary, idNamespace: string, maxChars: number): s
         </a>
       </h3>
 
-      <div class="meta">
-        ${templateDate(review.publicationDate)}
-      </div>
+      ${date}
 
       ${summary}
 

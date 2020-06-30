@@ -5,7 +5,7 @@ import { ReviewId } from '../types/review-id';
 import ReviewReferenceRepository from '../types/review-reference-repository';
 
 interface Review {
-  publicationDate: Date;
+  publicationDate?: Date;
   summary?: string;
   url: URL;
   editorialCommunityId: string;
@@ -15,7 +15,7 @@ interface Review {
 type GetReviews = (doi: Doi) => Promise<Array<Review>>;
 
 export type FetchReview = (id: ReviewId) => Promise<{
-  publicationDate: Date;
+  publicationDate?: Date;
   summary?: string;
   url: URL;
 }>;

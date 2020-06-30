@@ -1,5 +1,5 @@
 export interface Review {
-  publicationDate: Date;
+  publicationDate?: Date;
   summary?: string;
   url: URL;
 }
