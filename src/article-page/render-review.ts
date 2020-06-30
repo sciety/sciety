@@ -1,7 +1,7 @@
 import clip from 'text-clipper';
 import templateDate from '../templates/date';
 
-export interface ReviewSummary {
+export interface Review {
   publicationDate?: Date;
   summary?: string;
   url: URL;
@@ -9,7 +9,7 @@ export interface ReviewSummary {
   editorialCommunityName: string;
 }
 
-export default (review: ReviewSummary, idNamespace: string, maxChars: number): string => {
+export default (review: Review, idNamespace: string, maxChars: number): string => {
   let summary = '';
   if (review.summary) {
     summary = `<div class="description" data-test-id="reviewSummary">${clip(review.summary, maxChars)}</div>`;
