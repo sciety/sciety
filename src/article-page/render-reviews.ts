@@ -27,7 +27,7 @@ export default (
       <h2 class="ui header">
         Reviews
       </h2>
-      <ol class="ui very relaxed divided items">
+      <ol class="ui very relaxed divided items ordered list">
         ${templateListItems(renderedReviews)}
       </ol>
     </section>
