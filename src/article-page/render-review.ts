@@ -16,7 +16,7 @@ export default (review: ReviewSummary, idNamespace: string, maxChars: number): s
   }
   let date = '';
   if (review.publicationDate) {
-    date = `<div class="meta">${templateDate(review.publicationDate)}</div>`;
+    date = `<div class="meta" data-test-id="reviewPublicationDate">${templateDate(review.publicationDate)}</div>`;
   }
 
   return `

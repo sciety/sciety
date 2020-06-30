@@ -35,7 +35,9 @@ describe('render-review component', (): void => {
     });
 
     it('renders the publication date', () => {
-      expect(actual).toStrictEqual(expect.stringContaining('2010-02-01'));
+      const rendered = JSDOM.fragment(actual);
+
+      expect(rendered.querySelector('[data-test-id="reviewPublicationDate"]')?.textContent).toStrictEqual('Feb 1, 2010');
     });
 
     it('renders ARIA attributes and ids', () => {
@@ -54,7 +56,6 @@ describe('render-review component', (): void => {
   describe('when the review summary is not available', (): void => {
     it('does not render the summary markup', () => {
       const reviewWithoutSummary = {
-        publicationDate: new Date('2010-02-01'),
         url: new URL('https://doi.org/10.5281/zenodo.3678326'),
         editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
         editorialCommunityName: 'eLife',
@@ -63,6 +64,20 @@ describe('render-review component', (): void => {
       const rendered = JSDOM.fragment(renderReview(reviewWithoutSummary, idNamespace, 6));
 
       expect(rendered.querySelector('[data-test-id="reviewSummary"]')).toBeNull();
+    });
+  });
+
+  describe('when the review publication date is not available', (): void => {
+    it('does not render any date markup', () => {
+      const reviewWithoutPublicationDate = {
+        url: new URL('https://doi.org/10.5281/zenodo.3678326'),
+        editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
+        editorialCommunityName: 'eLife',
+      };
+
+      const rendered = JSDOM.fragment(renderReview(reviewWithoutPublicationDate, idNamespace, 6));
+
+      expect(rendered.querySelector('[data-test-id="reviewPublicationDate"]')).toBeNull();
     });
   });
 });
