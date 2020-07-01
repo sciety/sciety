@@ -4,7 +4,7 @@ import createRenderReview, { Review } from '../../src/article-page/render-review
 
 describe('render-review component', (): void => {
   const review: Review = {
-    publicationDate: new Date('2010-02-01'),
+    publicationDate: Maybe.just(new Date('2010-02-01')),
     summary: Maybe.just('Pretty good.'),
     url: new URL('https://doi.org/10.5281/zenodo.3678326'),
     editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
@@ -57,6 +57,7 @@ describe('render-review component', (): void => {
   describe('when the review summary is not available', (): void => {
     it('does not render the summary markup', () => {
       const reviewWithoutSummary: Review = {
+        publicationDate: Maybe.just(new Date('2010-02-01')),
         url: new URL('https://doi.org/10.5281/zenodo.3678326'),
         summary: Maybe.nothing(),
         editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
@@ -72,6 +73,7 @@ describe('render-review component', (): void => {
   describe('when the review publication date is not available', (): void => {
     it('does not render any date markup', () => {
       const reviewWithoutPublicationDate: Review = {
+        publicationDate: Maybe.nothing(),
         url: new URL('https://doi.org/10.5281/zenodo.3678326'),
         summary: Maybe.just('Pretty good.'),
         editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',

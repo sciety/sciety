@@ -39,6 +39,7 @@ export default (
       const editorialCommunity = editorialCommunities.lookup(review.editorialCommunityId);
       return {
         ...review,
+        publicationDate: Maybe.of(review.publicationDate),
         summary: Maybe.of(review.summary),
         editorialCommunityName: editorialCommunity ? editorialCommunity.name : 'Unknown',
       };

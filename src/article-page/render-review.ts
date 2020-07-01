@@ -3,7 +3,7 @@ import { Maybe } from 'true-myth';
 import templateDate from '../templates/date';
 
 export interface Review {
-  publicationDate?: Date;
+  publicationDate: Maybe<Date>;
   summary: Maybe<string>;
   url: URL;
   editorialCommunityId: string;
@@ -14,14 +14,13 @@ export type RenderReview = (review: Review, idNamespace: string) => string;
 
 export default (maxChars: number): RenderReview => (
   (review, idNamespace) => {
+    const date = review.publicationDate.mapOr('', (publicationDate) => (
+      `<div class="meta" data-test-id="reviewPublicationDate">${templateDate(publicationDate)}</div>`
+    ));
+
     const summary = review.summary.mapOr('', (summaryText) => (
       `<div class="description" data-test-id="reviewSummary">${clip(summaryText, maxChars)}</div>`
     ));
-
-    let date = '';
-    if (review.publicationDate) {
-      date = `<div class="meta" data-test-id="reviewPublicationDate">${templateDate(review.publicationDate)}</div>`;
-    }
 
     return `
       <article class="content">

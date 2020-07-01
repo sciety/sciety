@@ -10,8 +10,8 @@ describe('render-reviews component', () => {
 
   describe('when there are reviews', (): void => {
     const reviews: Array<Review> = [{
-      publicationDate: new Date(),
-      summary: Maybe.just('Not used'),
+      publicationDate: Maybe.nothing(),
+      summary: Maybe.nothing(),
       url: new URL('https://doi.org/10.5281/zenodo.3678326'),
       editorialCommunityId: '',
       editorialCommunityName: '',
