@@ -11,7 +11,7 @@ import createRenderPageHeader, {
   GetReviewCount,
   RenderPageHeader,
 } from './render-page-header';
-import createRenderReview, { GetReview } from './render-review';
+import createRenderReview, { GetEditorialCommunityName as GetEditorialCommunityNameForRenderReview, GetReview } from './render-review';
 import createRenderReviews, { GetReviews, RenderReviews } from './render-reviews';
 import validateBiorxivDoi from './validate-biorxiv-doi';
 import endorsements from '../bootstrap-endorsements';
@@ -78,7 +78,11 @@ const buildRenderReviews = (adapters: Adapters): RenderReviews => {
     throw new Error('Not implemented');
   };
 
-  const renderReview = createRenderReview(getReview, 1500);
+  const getEditorialCommunityName: GetEditorialCommunityNameForRenderReview = async () => {
+    throw new Error('Not implemented');
+  };
+
+  const renderReview = createRenderReview(getReview, getEditorialCommunityName, 1500);
   return createRenderReviews(renderReview, getReviews, reviewsId);
 };
 

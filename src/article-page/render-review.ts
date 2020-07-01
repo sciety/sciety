@@ -11,11 +11,23 @@ export interface Review {
   editorialCommunityName: string;
 }
 
+interface ExternalReview {
+  publicationDate: Maybe<Date>;
+  summary: Maybe<string>;
+  url: URL;
+}
+
 export type RenderReview = (review: Review, idNamespace: string) => Promise<string>;
 
-export type GetReview = (reviewId: ReviewId, editorialCommunityId: string) => Promise<Review>;
+export type GetReview = (reviewId: ReviewId) => Promise<ExternalReview>;
 
-export default (getReview: GetReview, maxChars: number): RenderReview => (
+export type GetEditorialCommunityName = (editorialCommunityId: string) => Promise<string>;
+
+export default (
+  getReview: GetReview,
+  getEditorialCommunityName: GetEditorialCommunityName,
+  maxChars: number,
+): RenderReview => (
   async (review: Review, idNamespace) => {
     const date = review.publicationDate.mapOr('', (publicationDate) => (
       `<div class="meta" data-test-id="reviewPublicationDate">${templateDate(publicationDate)}</div>`

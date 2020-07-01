@@ -17,7 +17,11 @@ describe('render-review component', (): void => {
     let actual: string;
 
     beforeEach(async (): Promise<void> => {
-      actual = await createRenderReview(shouldNotBeCalled, 1500)(review, idNamespace);
+      actual = await createRenderReview(
+        shouldNotBeCalled,
+        shouldNotBeCalled,
+        1500,
+      )(review, idNamespace);
     });
 
     it('renders inside an article tag', () => {
@@ -49,7 +53,11 @@ describe('render-review component', (): void => {
 
   describe('when the review summary is very long', (): void => {
     it('renders the summary truncated', async () => {
-      const actual = await createRenderReview(shouldNotBeCalled, 6)(review, idNamespace);
+      const actual = await createRenderReview(
+        shouldNotBeCalled,
+        shouldNotBeCalled,
+        6,
+      )(review, idNamespace);
 
       expect(actual).toStrictEqual(expect.stringContaining('Prett'));
     });
@@ -64,7 +72,11 @@ describe('render-review component', (): void => {
         editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
         editorialCommunityName: 'eLife',
       };
-      const renderReview = createRenderReview(shouldNotBeCalled, 6);
+      const renderReview = createRenderReview(
+        shouldNotBeCalled,
+        shouldNotBeCalled,
+        6,
+      );
 
       const rendered = JSDOM.fragment(await renderReview(reviewWithoutSummary, idNamespace));
 
@@ -81,7 +93,11 @@ describe('render-review component', (): void => {
         editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
         editorialCommunityName: 'eLife',
       };
-      const renderReview = createRenderReview(shouldNotBeCalled, 6);
+      const renderReview = createRenderReview(
+        shouldNotBeCalled,
+        shouldNotBeCalled,
+        6,
+      );
 
       const rendered = JSDOM.fragment(await renderReview(reviewWithoutPublicationDate, idNamespace));
 
