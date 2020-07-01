@@ -1,6 +1,7 @@
 import clip from 'text-clipper';
 import { Maybe } from 'true-myth';
 import templateDate from '../templates/date';
+import { ReviewId } from '../types/review-id';
 
 export interface Review {
   publicationDate: Maybe<Date>;
@@ -10,10 +11,12 @@ export interface Review {
   editorialCommunityName: string;
 }
 
-export type RenderReview = (review: Review, idNamespace: string) => string;
+export type RenderReview = (review: Review, idNamespace: string) => Promise<string>;
 
-export default (maxChars: number): RenderReview => (
-  (review, idNamespace) => {
+export type GetReview = (reviewId: ReviewId, editorialCommunityId: string) => Promise<Review>;
+
+export default (getReview: GetReview, maxChars: number): RenderReview => (
+  async (review: Review, idNamespace) => {
     const date = review.publicationDate.mapOr('', (publicationDate) => (
       `<div class="meta" data-test-id="reviewPublicationDate">${templateDate(publicationDate)}</div>`
     ));

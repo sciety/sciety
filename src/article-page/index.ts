@@ -11,7 +11,7 @@ import createRenderPageHeader, {
   GetReviewCount,
   RenderPageHeader,
 } from './render-page-header';
-import createRenderReview from './render-review';
+import createRenderReview, { GetReview } from './render-review';
 import createRenderReviews, { GetReviews, RenderReviews } from './render-reviews';
 import validateBiorxivDoi from './validate-biorxiv-doi';
 import endorsements from '../bootstrap-endorsements';
@@ -68,12 +68,17 @@ const buildRenderAddReviewForm = (editorialCommunities: EditorialCommunityReposi
 };
 
 const buildRenderReviews = (adapters: Adapters): RenderReviews => {
-  const renderReview = createRenderReview(1500);
   const getReviews: GetReviews = createFetchReviews(
     adapters.reviewReferenceRepository,
     adapters.fetchReview,
     adapters.editorialCommunities,
   );
+
+  const getReview: GetReview = async () => {
+    throw new Error('Not implemented');
+  };
+
+  const renderReview = createRenderReview(getReview, 1500);
   return createRenderReviews(renderReview, getReviews, reviewsId);
 };
 

@@ -1,6 +1,7 @@
 import { JSDOM } from 'jsdom';
 import { Maybe } from 'true-myth';
 import createRenderReview, { Review } from '../../src/article-page/render-review';
+import shouldNotBeCalled from '../should-not-be-called';
 
 describe('render-review component', (): void => {
   const review: Review = {
@@ -15,8 +16,8 @@ describe('render-review component', (): void => {
   describe('when the review fits without truncation', (): void => {
     let actual: string;
 
-    beforeEach((): void => {
-      actual = createRenderReview(1500)(review, idNamespace);
+    beforeEach(async (): Promise<void> => {
+      actual = await createRenderReview(shouldNotBeCalled, 1500)(review, idNamespace);
     });
 
     it('renders inside an article tag', () => {
@@ -47,15 +48,15 @@ describe('render-review component', (): void => {
   });
 
   describe('when the review summary is very long', (): void => {
-    it('renders the summary truncated', () => {
-      const actual = createRenderReview(6)(review, idNamespace);
+    it('renders the summary truncated', async () => {
+      const actual = await createRenderReview(shouldNotBeCalled, 6)(review, idNamespace);
 
       expect(actual).toStrictEqual(expect.stringContaining('Prett'));
     });
   });
 
   describe('when the review summary is not available', (): void => {
-    it('does not render the summary markup', () => {
+    it('does not render the summary markup', async () => {
       const reviewWithoutSummary: Review = {
         publicationDate: Maybe.just(new Date('2010-02-01')),
         url: new URL('https://doi.org/10.5281/zenodo.3678326'),
@@ -63,15 +64,16 @@ describe('render-review component', (): void => {
         editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
         editorialCommunityName: 'eLife',
       };
+      const renderReview = createRenderReview(shouldNotBeCalled, 6);
 
-      const rendered = JSDOM.fragment(createRenderReview(6)(reviewWithoutSummary, idNamespace));
+      const rendered = JSDOM.fragment(await renderReview(reviewWithoutSummary, idNamespace));
 
       expect(rendered.querySelector('[data-test-id="reviewSummary"]')).toBeNull();
     });
   });
 
   describe('when the review publication date is not available', (): void => {
-    it('does not render any date markup', () => {
+    it('does not render any date markup', async () => {
       const reviewWithoutPublicationDate: Review = {
         publicationDate: Maybe.nothing(),
         url: new URL('https://doi.org/10.5281/zenodo.3678326'),
@@ -79,8 +81,9 @@ describe('render-review component', (): void => {
         editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
         editorialCommunityName: 'eLife',
       };
+      const renderReview = createRenderReview(shouldNotBeCalled, 6);
 
-      const rendered = JSDOM.fragment(createRenderReview(6)(reviewWithoutPublicationDate, idNamespace));
+      const rendered = JSDOM.fragment(await renderReview(reviewWithoutPublicationDate, idNamespace));
 
       expect(rendered.querySelector('[data-test-id="reviewPublicationDate"]')).toBeNull();
     });

@@ -16,7 +16,7 @@ describe('render-reviews component', () => {
       editorialCommunityId: '',
       editorialCommunityName: '',
     }];
-    const dummyRenderReview: RenderReview = () => 'review';
+    const dummyRenderReview: RenderReview = async () => 'review';
 
     it('renders a HTML section', async () => {
       const renderReviews = createRenderReviews(dummyRenderReview, async () => reviews, 'expectedValue');
