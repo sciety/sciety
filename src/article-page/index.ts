@@ -78,9 +78,9 @@ const buildRenderReviews = (adapters: Adapters): RenderReviews => {
     throw new Error('Not implemented');
   };
 
-  const getEditorialCommunityName: GetEditorialCommunityNameForRenderReview = async () => {
-    throw new Error('Not implemented');
-  };
+  const getEditorialCommunityName: GetEditorialCommunityNameForRenderReview = async (editorialCommunityId) => (
+    adapters.editorialCommunities.lookup(editorialCommunityId).name
+  );
 
   const renderReview = createRenderReview(getReview, getEditorialCommunityName, 1500);
   return createRenderReviews(renderReview, getReviews, reviewsId);

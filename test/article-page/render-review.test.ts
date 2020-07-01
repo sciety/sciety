@@ -1,6 +1,6 @@
 import { JSDOM } from 'jsdom';
 import { Maybe } from 'true-myth';
-import createRenderReview, { Review } from '../../src/article-page/render-review';
+import createRenderReview, { GetEditorialCommunityName, Review } from '../../src/article-page/render-review';
 import shouldNotBeCalled from '../should-not-be-called';
 
 describe('render-review component', (): void => {
@@ -13,13 +13,15 @@ describe('render-review component', (): void => {
   };
   const idNamespace = 'review-42';
 
+  const getEditorialCommunityName: GetEditorialCommunityName = async () => 'eLife';
+
   describe('when the review fits without truncation', (): void => {
     let actual: string;
 
     beforeEach(async (): Promise<void> => {
       actual = await createRenderReview(
         shouldNotBeCalled,
-        shouldNotBeCalled,
+        getEditorialCommunityName,
         1500,
       )(review, idNamespace);
     });
@@ -55,7 +57,7 @@ describe('render-review component', (): void => {
     it('renders the summary truncated', async () => {
       const actual = await createRenderReview(
         shouldNotBeCalled,
-        shouldNotBeCalled,
+        getEditorialCommunityName,
         6,
       )(review, idNamespace);
 
@@ -74,7 +76,7 @@ describe('render-review component', (): void => {
       };
       const renderReview = createRenderReview(
         shouldNotBeCalled,
-        shouldNotBeCalled,
+        getEditorialCommunityName,
         6,
       );
 
@@ -95,7 +97,7 @@ describe('render-review component', (): void => {
       };
       const renderReview = createRenderReview(
         shouldNotBeCalled,
-        shouldNotBeCalled,
+        getEditorialCommunityName,
         6,
       );
 

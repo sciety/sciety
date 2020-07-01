@@ -43,7 +43,7 @@ export default (
         <h3 class="header">
           Reviewed by
           <a href="/editorial-communities/${review.editorialCommunityId}" id="${idNamespace}-editorial-community">
-            ${review.editorialCommunityName}
+            ${await getEditorialCommunityName(review.editorialCommunityId)}
           </a>
         </h3>
 
