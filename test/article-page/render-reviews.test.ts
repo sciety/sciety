@@ -1,22 +1,16 @@
 import { JSDOM } from 'jsdom';
-import { Maybe } from 'true-myth';
-import { RenderReview, Review } from '../../src/article-page/render-review';
+import { RenderReview } from '../../src/article-page/render-review';
 import createRenderReviews from '../../src/article-page/render-reviews';
 import Doi from '../../src/types/doi';
-import { ReviewId } from '../../src/types/review-id';
 import shouldNotBeCalled from '../should-not-be-called';
 
 describe('render-reviews component', () => {
   const doi = new Doi('10.1111/1111');
 
   describe('when there are reviews', (): void => {
-    const reviews: Array<Review & { reviewId: ReviewId }> = [{
+    const reviews = [{
       reviewId: new Doi('10.5281/zenodo.3678326'),
-      publicationDate: Maybe.nothing(),
-      summary: Maybe.nothing(),
-      url: new URL('https://doi.org/10.5281/zenodo.3678326'),
       editorialCommunityId: '',
-      editorialCommunityName: '',
     }];
     const dummyRenderReview: RenderReview = async () => 'review';
 

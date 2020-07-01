@@ -10,7 +10,7 @@ const articleA = new Doi('10.1101/833392');
 const articleAReview1 = new Doi('10.5281/zenodo.3678325');
 
 describe('fetch-reviews-for-article-page middleware', (): void => {
-  it('adds editorial community names to the reviews', async (): Promise<void> => {
+  it('returns editorial community ids for reviews', async (): Promise<void> => {
     const reviewReferenceRepository = createReviewReferenceRepository();
     await reviewReferenceRepository.add(articleA, articleAReview1, editorialCommunities.all()[0].id, new Date('2020-05-19T14:00:00Z'));
     const fetchReview: FetchReview = async (reviewId) => ({
@@ -26,6 +26,6 @@ describe('fetch-reviews-for-article-page middleware', (): void => {
     );
     const reviews = await fetchReviews(new Doi('10.1101/833392'));
 
-    expect(reviews[0].editorialCommunityName).toStrictEqual(editorialCommunities.all()[0].name);
+    expect(reviews[0].editorialCommunityId).toStrictEqual(editorialCommunities.all()[0].id);
   });
 });

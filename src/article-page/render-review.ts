@@ -3,14 +3,6 @@ import { Maybe } from 'true-myth';
 import templateDate from '../templates/date';
 import { ReviewId } from '../types/review-id';
 
-export interface Review {
-  publicationDate: Maybe<Date>;
-  summary: Maybe<string>;
-  url: URL;
-  editorialCommunityId: string;
-  editorialCommunityName: string;
-}
-
 export interface ExternalReview {
   publicationDate: Maybe<Date>;
   summary: Maybe<string>;

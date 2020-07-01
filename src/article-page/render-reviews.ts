@@ -1,11 +1,11 @@
-import { RenderReview, Review } from './render-review';
+import { RenderReview } from './render-review';
 import templateListItems from '../templates/list-items';
 import Doi from '../types/doi';
 import { ReviewId } from '../types/review-id';
 
 export type RenderReviews = (doi: Doi) => Promise<string>;
 
-export type GetReviews = (doi: Doi) => Promise<Array<Review & { reviewId: ReviewId }>>;
+export type GetReviews = (doi: Doi) => Promise<Array<{ editorialCommunityId: string, reviewId: ReviewId }>>;
 
 export default (
   renderReview: RenderReview,
