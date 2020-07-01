@@ -17,7 +17,7 @@ interface ExternalReview {
   url: URL;
 }
 
-export type RenderReview = (review: Review, idNamespace: string) => Promise<string>;
+export type RenderReview = (reviewId: ReviewId, review: Review, idNamespace: string) => Promise<string>;
 
 export type GetReview = (reviewId: ReviewId) => Promise<ExternalReview>;
 
@@ -28,12 +28,14 @@ export default (
   getEditorialCommunityName: GetEditorialCommunityName,
   maxChars: number,
 ): RenderReview => (
-  async (review: Review, idNamespace) => {
-    const date = review.publicationDate.mapOr('', (publicationDate) => (
+  async (reviewId, review: Review, idNamespace) => {
+    const fetchedReview = await getReview(reviewId);
+
+    const date = fetchedReview.publicationDate.mapOr('', (publicationDate) => (
       `<div class="meta" data-test-id="reviewPublicationDate">${templateDate(publicationDate)}</div>`
     ));
 
-    const summary = review.summary.mapOr('', (summaryText) => (
+    const summary = fetchedReview.summary.mapOr('', (summaryText) => (
       `<div class="description" data-test-id="reviewSummary">${clip(summaryText, maxChars)}</div>`
     ));
 
@@ -52,7 +54,7 @@ export default (
         ${summary}
 
         <div class="extra">
-          <a href="${review.url.href}" class="ui basic secondary button" id="${idNamespace}-read-more"
+          <a href="${fetchedReview.url.href}" class="ui basic secondary button" id="${idNamespace}-read-more"
             aria-labelledby="${idNamespace}-read-more ${idNamespace}-editorial-community">
             Read the full review
             <i class="right chevron icon"></i>

@@ -1,9 +1,11 @@
 import { JSDOM } from 'jsdom';
 import { Maybe } from 'true-myth';
-import createRenderReview, { GetEditorialCommunityName, Review } from '../../src/article-page/render-review';
-import shouldNotBeCalled from '../should-not-be-called';
+import createRenderReview, { GetEditorialCommunityName, GetReview, Review } from '../../src/article-page/render-review';
+import Doi from '../../src/types/doi';
+import { ReviewId } from '../../src/types/review-id';
 
 describe('render-review component', (): void => {
+  const reviewId: ReviewId = new Doi('10.5281/zenodo.3678326');
   const review: Review = {
     publicationDate: Maybe.just(new Date('2010-02-01')),
     summary: Maybe.just('Pretty good.'),
@@ -13,6 +15,7 @@ describe('render-review component', (): void => {
   };
   const idNamespace = 'review-42';
 
+  const getReview: GetReview = async () => review;
   const getEditorialCommunityName: GetEditorialCommunityName = async () => 'eLife';
 
   describe('when the review fits without truncation', (): void => {
@@ -20,10 +23,10 @@ describe('render-review component', (): void => {
 
     beforeEach(async (): Promise<void> => {
       actual = await createRenderReview(
-        shouldNotBeCalled,
+        getReview,
         getEditorialCommunityName,
         1500,
-      )(review, idNamespace);
+      )(reviewId, review, idNamespace);
     });
 
     it('renders inside an article tag', () => {
@@ -56,10 +59,10 @@ describe('render-review component', (): void => {
   describe('when the review summary is very long', (): void => {
     it('renders the summary truncated', async () => {
       const actual = await createRenderReview(
-        shouldNotBeCalled,
+        getReview,
         getEditorialCommunityName,
         6,
-      )(review, idNamespace);
+      )(reviewId, review, idNamespace);
 
       expect(actual).toStrictEqual(expect.stringContaining('Prett'));
     });
@@ -75,12 +78,12 @@ describe('render-review component', (): void => {
         editorialCommunityName: 'eLife',
       };
       const renderReview = createRenderReview(
-        shouldNotBeCalled,
+        async () => reviewWithoutSummary,
         getEditorialCommunityName,
         6,
       );
 
-      const rendered = JSDOM.fragment(await renderReview(reviewWithoutSummary, idNamespace));
+      const rendered = JSDOM.fragment(await renderReview(reviewId, reviewWithoutSummary, idNamespace));
 
       expect(rendered.querySelector('[data-test-id="reviewSummary"]')).toBeNull();
     });
@@ -96,12 +99,12 @@ describe('render-review component', (): void => {
         editorialCommunityName: 'eLife',
       };
       const renderReview = createRenderReview(
-        shouldNotBeCalled,
+        async () => reviewWithoutPublicationDate,
         getEditorialCommunityName,
         6,
       );
 
-      const rendered = JSDOM.fragment(await renderReview(reviewWithoutPublicationDate, idNamespace));
+      const rendered = JSDOM.fragment(await renderReview(reviewId, reviewWithoutPublicationDate, idNamespace));
 
       expect(rendered.querySelector('[data-test-id="reviewPublicationDate"]')).toBeNull();
     });
