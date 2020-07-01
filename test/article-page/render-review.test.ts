@@ -1,10 +1,11 @@
 import { JSDOM } from 'jsdom';
-import renderReview from '../../src/article-page/render-review';
+import { Maybe } from 'true-myth';
+import renderReview, { Review } from '../../src/article-page/render-review';
 
 describe('render-review component', (): void => {
-  const review = {
+  const review: Review = {
     publicationDate: new Date('2010-02-01'),
-    summary: 'Pretty good.',
+    summary: Maybe.just('Pretty good.'),
     url: new URL('https://doi.org/10.5281/zenodo.3678326'),
     editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
     editorialCommunityName: 'eLife',
@@ -23,7 +24,7 @@ describe('render-review component', (): void => {
     });
 
     it('renders the summary', () => {
-      expect(actual).toStrictEqual(expect.stringContaining(review.summary));
+      expect(actual).toStrictEqual(expect.stringContaining('Pretty good.'));
     });
 
     it('renders the link to a full review', () => {
@@ -55,8 +56,9 @@ describe('render-review component', (): void => {
 
   describe('when the review summary is not available', (): void => {
     it('does not render the summary markup', () => {
-      const reviewWithoutSummary = {
+      const reviewWithoutSummary: Review = {
         url: new URL('https://doi.org/10.5281/zenodo.3678326'),
+        summary: Maybe.nothing(),
         editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
         editorialCommunityName: 'eLife',
       };
@@ -69,8 +71,9 @@ describe('render-review component', (): void => {
 
   describe('when the review publication date is not available', (): void => {
     it('does not render any date markup', () => {
-      const reviewWithoutPublicationDate = {
+      const reviewWithoutPublicationDate: Review = {
         url: new URL('https://doi.org/10.5281/zenodo.3678326'),
+        summary: Maybe.just('Pretty good.'),
         editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
         editorialCommunityName: 'eLife',
       };

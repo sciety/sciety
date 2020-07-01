@@ -1,3 +1,4 @@
+import { Maybe } from 'true-myth';
 import { GetReviews } from './render-reviews';
 import createLogger from '../logger';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
@@ -38,6 +39,7 @@ export default (
       const editorialCommunity = editorialCommunities.lookup(review.editorialCommunityId);
       return {
         ...review,
+        summary: Maybe.of(review.summary),
         editorialCommunityName: editorialCommunity ? editorialCommunity.name : 'Unknown',
       };
     });

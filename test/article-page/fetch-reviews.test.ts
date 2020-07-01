@@ -15,7 +15,7 @@ describe('fetch-reviews-for-article-page middleware', (): void => {
     await reviewReferenceRepository.add(articleA, articleAReview1, editorialCommunities.all()[0].id, new Date('2020-05-19T14:00:00Z'));
     const fetchReview: FetchReview = async (reviewId) => ({
       publicationDate: new Date(),
-      summary: '',
+      summary: 'the summary',
       editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
       url: new URL(`https://doi.org/${reviewId.value}`),
     });

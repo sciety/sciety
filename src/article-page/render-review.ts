@@ -1,19 +1,20 @@
 import clip from 'text-clipper';
+import { Maybe } from 'true-myth';
 import templateDate from '../templates/date';
 
 export interface Review {
   publicationDate?: Date;
-  summary?: string;
+  summary: Maybe<string>;
   url: URL;
   editorialCommunityId: string;
   editorialCommunityName: string;
 }
 
 export default (review: Review, idNamespace: string, maxChars: number): string => {
-  let summary = '';
-  if (review.summary) {
-    summary = `<div class="description" data-test-id="reviewSummary">${clip(review.summary, maxChars)}</div>`;
-  }
+  const summary = review.summary.mapOr('', (summaryText) => (
+    `<div class="description" data-test-id="reviewSummary">${clip(summaryText, maxChars)}</div>`
+  ));
+
   let date = '';
   if (review.publicationDate) {
     date = `<div class="meta" data-test-id="reviewPublicationDate">${templateDate(review.publicationDate)}</div>`;

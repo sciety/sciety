@@ -1,4 +1,6 @@
 import { JSDOM } from 'jsdom';
+import { Maybe } from 'true-myth';
+import { Review } from '../../src/article-page/render-review';
 import createRenderReviews from '../../src/article-page/render-reviews';
 import Doi from '../../src/types/doi';
 
@@ -6,9 +8,9 @@ describe('render-reviews component', () => {
   const doi = new Doi('10.1111/1111');
 
   describe('when there are reviews', (): void => {
-    const reviews = [{
+    const reviews: Array<Review> = [{
       publicationDate: new Date(),
-      summary: 'Not used',
+      summary: Maybe.just('Not used'),
       url: new URL('https://doi.org/10.5281/zenodo.3678326'),
       editorialCommunityId: '',
       editorialCommunityName: '',
