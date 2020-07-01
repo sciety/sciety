@@ -11,6 +11,7 @@ import createRenderPageHeader, {
   GetReviewCount,
   RenderPageHeader,
 } from './render-page-header';
+import createRenderReview from './render-review';
 import createRenderReviews, { GetReviews, RenderReviews } from './render-reviews';
 import validateBiorxivDoi from './validate-biorxiv-doi';
 import endorsements from '../bootstrap-endorsements';
@@ -67,12 +68,13 @@ const buildRenderAddReviewForm = (editorialCommunities: EditorialCommunityReposi
 };
 
 const buildRenderReviews = (adapters: Adapters): RenderReviews => {
+  const renderReview = createRenderReview(1500);
   const getReviews: GetReviews = createFetchReviews(
     adapters.reviewReferenceRepository,
     adapters.fetchReview,
     adapters.editorialCommunities,
   );
-  return createRenderReviews(getReviews, reviewsId);
+  return createRenderReviews(renderReview, getReviews, reviewsId);
 };
 
 export default (adapters: Adapters): Middleware => {

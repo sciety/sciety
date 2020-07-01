@@ -1,8 +1,9 @@
 import { JSDOM } from 'jsdom';
 import { Maybe } from 'true-myth';
-import { Review } from '../../src/article-page/render-review';
+import { RenderReview, Review } from '../../src/article-page/render-review';
 import createRenderReviews from '../../src/article-page/render-reviews';
 import Doi from '../../src/types/doi';
+import shouldNotBeCalled from '../should-not-be-called';
 
 describe('render-reviews component', () => {
   const doi = new Doi('10.1111/1111');
@@ -15,9 +16,10 @@ describe('render-reviews component', () => {
       editorialCommunityId: '',
       editorialCommunityName: '',
     }];
+    const dummyRenderReview: RenderReview = () => 'review';
 
     it('renders a HTML section', async () => {
-      const renderReviews = createRenderReviews(async () => reviews, 'expectedValue');
+      const renderReviews = createRenderReviews(dummyRenderReview, async () => reviews, 'expectedValue');
       const rendered = await renderReviews(doi);
       const reviewsElement = JSDOM.fragment(rendered).firstElementChild;
 
@@ -25,7 +27,7 @@ describe('render-reviews component', () => {
     });
 
     it('has the correct HTML id attribute', async () => {
-      const renderReviews = createRenderReviews(async () => reviews, 'expectedValue');
+      const renderReviews = createRenderReviews(dummyRenderReview, async () => reviews, 'expectedValue');
       const rendered = await renderReviews(doi);
       const reviewsElement = JSDOM.fragment(rendered).firstElementChild;
 
@@ -35,7 +37,7 @@ describe('render-reviews component', () => {
 
   describe('when there are no reviews', (): void => {
     it('renders nothing', async () => {
-      const renderReviews = createRenderReviews(async () => [], 'arbitraryId');
+      const renderReviews = createRenderReviews(shouldNotBeCalled, async () => [], 'arbitraryId');
       const rendered = await renderReviews(doi);
 
       expect(rendered).toStrictEqual('');
