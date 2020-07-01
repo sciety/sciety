@@ -1,6 +1,7 @@
 import { Middleware, RouterContext } from '@koa/router';
 import { NotFound, ServiceUnavailable } from 'http-errors';
 import { Next } from 'koa';
+import { Maybe } from 'true-myth';
 import createFetchReviews from './fetch-reviews';
 import createRenderAddReviewForm, { GetAllEditorialCommunities, RenderAddReviewForm } from './render-add-review-form';
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
@@ -74,8 +75,14 @@ const buildRenderReviews = (adapters: Adapters): RenderReviews => {
     adapters.editorialCommunities,
   );
 
-  const getReview: GetReview = async () => {
-    throw new Error('Not implemented');
+  const getReview: GetReview = async (reviewId) => {
+    const fetchedReview = await adapters.fetchReview(reviewId);
+
+    return {
+      ...fetchedReview,
+      publicationDate: Maybe.of(fetchedReview.publicationDate),
+      summary: Maybe.of(fetchedReview.summary),
+    };
   };
 
   const getEditorialCommunityName: GetEditorialCommunityNameForRenderReview = async (editorialCommunityId) => (
