@@ -2,7 +2,6 @@ import { Middleware, RouterContext } from '@koa/router';
 import { NotFound, ServiceUnavailable } from 'http-errors';
 import { Next } from 'koa';
 import { Maybe } from 'true-myth';
-import createFetchReviews from './fetch-reviews';
 import createRenderAddReviewForm, { GetAllEditorialCommunities, RenderAddReviewForm } from './render-add-review-form';
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
 import createRenderPage from './render-page';
@@ -13,7 +12,7 @@ import createRenderPageHeader, {
   RenderPageHeader,
 } from './render-page-header';
 import createRenderReview, { GetEditorialCommunityName as GetEditorialCommunityNameForRenderReview, GetReview } from './render-review';
-import createRenderReviews, { GetReviews, RenderReviews } from './render-reviews';
+import createRenderReviews, { RenderReviews } from './render-reviews';
 import validateBiorxivDoi from './validate-biorxiv-doi';
 import endorsements from '../bootstrap-endorsements';
 import { FetchCrossrefArticleError } from '../infrastructure/fetch-crossref-article';
@@ -69,12 +68,6 @@ const buildRenderAddReviewForm = (editorialCommunities: EditorialCommunityReposi
 };
 
 const buildRenderReviews = (adapters: Adapters): RenderReviews => {
-  const getReviews: GetReviews = createFetchReviews(
-    adapters.reviewReferenceRepository,
-    adapters.fetchReview,
-    adapters.editorialCommunities,
-  );
-
   const getReview: GetReview = async (reviewId) => {
     const fetchedReview = await adapters.fetchReview(reviewId);
 
@@ -90,7 +83,11 @@ const buildRenderReviews = (adapters: Adapters): RenderReviews => {
   );
 
   const renderReview = createRenderReview(getReview, getEditorialCommunityName, 1500);
-  return createRenderReviews(renderReview, getReviews, reviewsId);
+  return createRenderReviews(
+    renderReview,
+    adapters.reviewReferenceRepository.findReviewsForArticleVersionDoi,
+    reviewsId,
+  );
 };
 
 export default (adapters: Adapters): Middleware => {
