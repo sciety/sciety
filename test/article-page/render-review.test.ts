@@ -1,6 +1,6 @@
 import { JSDOM } from 'jsdom';
 import { Maybe } from 'true-myth';
-import renderReview, { Review } from '../../src/article-page/render-review';
+import createRenderReview, { Review } from '../../src/article-page/render-review';
 
 describe('render-review component', (): void => {
   const review: Review = {
@@ -16,7 +16,7 @@ describe('render-review component', (): void => {
     let actual: string;
 
     beforeEach((): void => {
-      actual = renderReview(review, idNamespace, 1500);
+      actual = createRenderReview(1500)(review, idNamespace);
     });
 
     it('renders inside an article tag', () => {
@@ -48,7 +48,7 @@ describe('render-review component', (): void => {
 
   describe('when the review summary is very long', (): void => {
     it('renders the summary truncated', () => {
-      const actual = renderReview(review, idNamespace, 6);
+      const actual = createRenderReview(6)(review, idNamespace);
 
       expect(actual).toStrictEqual(expect.stringContaining('Prett'));
     });
@@ -63,7 +63,7 @@ describe('render-review component', (): void => {
         editorialCommunityName: 'eLife',
       };
 
-      const rendered = JSDOM.fragment(renderReview(reviewWithoutSummary, idNamespace, 6));
+      const rendered = JSDOM.fragment(createRenderReview(6)(reviewWithoutSummary, idNamespace));
 
       expect(rendered.querySelector('[data-test-id="reviewSummary"]')).toBeNull();
     });
@@ -78,7 +78,7 @@ describe('render-review component', (): void => {
         editorialCommunityName: 'eLife',
       };
 
-      const rendered = JSDOM.fragment(renderReview(reviewWithoutPublicationDate, idNamespace, 6));
+      const rendered = JSDOM.fragment(createRenderReview(6)(reviewWithoutPublicationDate, idNamespace));
 
       expect(rendered.querySelector('[data-test-id="reviewPublicationDate"]')).toBeNull();
     });
