@@ -1,4 +1,5 @@
 import showdown from 'showdown';
+import { Maybe } from 'true-myth';
 import { Review } from './review';
 import createLogger from '../logger';
 import HypothesisAnnotationId from '../types/hypothesis-annotation-id';
@@ -27,8 +28,8 @@ export default (getJson: GetJson): FetchHypothesisAnnotation => {
     const data = await getJson(uri) as HypothesisResponse;
 
     const response: Review = {
-      publicationDate: new Date(data.created),
-      summary: converter.makeHtml(data.text),
+      publicationDate: Maybe.just(new Date(data.created)),
+      summary: Maybe.just(data.text).map((text) => converter.makeHtml(text)),
       url: new URL(data.links.incontext),
     };
 

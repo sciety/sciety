@@ -1,5 +1,7 @@
+import { Maybe } from 'true-myth';
+
 export interface Review {
-  publicationDate?: Date;
-  summary?: string;
+  publicationDate: Maybe<Date>;
+  summary: Maybe<string>;
   url: URL;
 }

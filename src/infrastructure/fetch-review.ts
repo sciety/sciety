@@ -4,17 +4,13 @@ import { Review } from './review';
 import Doi from '../types/doi';
 import { ReviewId } from '../types/review-id';
 
-export type FetchReview = (id: ReviewId) => Promise<{
-  publicationDate?: Date;
-  summary?: string;
-  url: URL;
-}>;
+export type FetchReview = (id: ReviewId) => Promise<Review>;
 
 export default (
   fetchDataciteReview: FetchDataciteReview,
   fetchHypothesisAnnotation: FetchHypothesisAnnotation,
 ): FetchReview => (
-  async (id: ReviewId): Promise<Review> => {
+  async (id) => {
     if (id instanceof Doi) {
       return fetchDataciteReview(id);
     }

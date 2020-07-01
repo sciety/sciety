@@ -2,6 +2,7 @@ import { literal } from '@rdfjs/data-model';
 import { dcterms, schema } from '@tpluscode/rdf-ns-builders';
 import clownface from 'clownface';
 import datasetFactory from 'rdf-dataset-indexed';
+import { Maybe } from 'true-myth';
 import createFetchDataciteReview from '../../src/infrastructure/fetch-datacite-review';
 import { FetchDataset, FetchDatasetError } from '../../src/infrastructure/fetch-dataset';
 import Doi from '../../src/types/doi';
@@ -20,8 +21,8 @@ describe('fetch-datacite-review', (): void => {
       const review = await fetchReview(reviewDoi);
 
       expect(review).toMatchObject({
-        summary: 'A summary',
-        publicationDate: new Date('2020-02-20'),
+        summary: Maybe.just('A summary'),
+        publicationDate: Maybe.just(new Date('2020-02-20')),
       });
     });
   });
@@ -35,7 +36,7 @@ describe('fetch-datacite-review', (): void => {
       const fetchReview = createFetchDataciteReview(fetchDataset);
       const review = await fetchReview(reviewDoi);
 
-      expect(review.publicationDate).toStrictEqual(new Date('2020-02-20'));
+      expect(review.publicationDate.unsafelyUnwrap()).toStrictEqual(new Date('2020-02-20'));
     });
   });
 
@@ -47,12 +48,12 @@ describe('fetch-datacite-review', (): void => {
       const fetchReview = createFetchDataciteReview(fetchDataset);
       const review = await fetchReview(reviewDoi);
 
-      expect(review.summary).toBeUndefined();
+      expect(review.summary.isNothing()).toBe(true);
     });
   });
 
   describe('when Datacite is unreachable', () => {
-    it('returns a review with just the URL', async () => {
+    it('returns a review with the URL', async () => {
       const fetchDataset: FetchDataset = async () => {
         throw new FetchDatasetError('Something went wrong.');
       };
@@ -60,7 +61,6 @@ describe('fetch-datacite-review', (): void => {
       const review = await fetchReview(reviewDoi);
 
       expect(review).toHaveProperty('url');
-      expect(Object.keys(review)).toHaveLength(1);
     });
   });
 });

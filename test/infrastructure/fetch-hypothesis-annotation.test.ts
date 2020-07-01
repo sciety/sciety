@@ -1,3 +1,4 @@
+import { Maybe } from 'true-myth';
 import createFetchHypothesisAnnotation, { GetJson } from '../../src/infrastructure/fetch-hypothesis-annotation';
 import { Review } from '../../src/infrastructure/review';
 import HypothesisAnnotationId from '../../src/types/hypothesis-annotation-id';
@@ -18,8 +19,8 @@ describe('fetch-hypothesis-annotation', (): void => {
     const review = await fetchHypothesisAnnotation(hypothesisAnnotationId);
 
     const expected: Review = {
-      publicationDate: new Date(date),
-      summary: '<p>Very good</p>',
+      publicationDate: Maybe.just(new Date(date)),
+      summary: Maybe.just('<p>Very good</p>'),
       url: new URL('https://www.example.com'),
     };
 
@@ -40,6 +41,6 @@ describe('fetch-hypothesis-annotation', (): void => {
     const fetchHypothesisAnnotation = createFetchHypothesisAnnotation(getJson);
     const review = await fetchHypothesisAnnotation(hypothesisAnnotationId);
 
-    expect(review.summary).toContain(expected);
+    expect(review.summary.unsafelyUnwrap()).toContain(expected);
   });
 });

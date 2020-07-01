@@ -1,3 +1,4 @@
+import { Maybe } from 'true-myth';
 import { FetchDataciteReview } from '../../src/infrastructure/fetch-datacite-review';
 import { FetchHypothesisAnnotation } from '../../src/infrastructure/fetch-hypothesis-annotation';
 import createFetchReview from '../../src/infrastructure/fetch-review';
@@ -8,8 +9,8 @@ import shouldNotBeCalled from '../should-not-be-called';
 const reviewDoi = new Doi('10.5281/zenodo.3678325');
 
 const fetchedReview = {
-  publicationDate: new Date(),
-  summary: 'Very good',
+  publicationDate: Maybe.just(new Date()),
+  summary: Maybe.just('Very good'),
   url: new URL('https://example.com'),
 };
 

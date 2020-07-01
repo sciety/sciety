@@ -1,5 +1,6 @@
 import { namedNode } from '@rdfjs/data-model';
 import { dcterms, schema } from '@tpluscode/rdf-ns-builders';
+import { Maybe } from 'true-myth';
 import { FetchDataset } from './fetch-dataset';
 import { Review } from './review';
 import createLogger from '../logger';
@@ -15,21 +16,23 @@ export default (fetchDataset: FetchDataset): FetchDataciteReview => {
     log(`Fetching review ${reviewIri.value} from Datacite`);
     try {
       const graph = await fetchDataset(reviewIri);
-      const publicationDate = new Date(graph.out([
+      const publicationDate = graph.out([
         schema.datePublished,
         dcterms.date,
-      ]).value ?? 0);
+      ]).value;
       const summary = graph.out(schema.description).value;
 
       const response: Review = {
-        publicationDate,
-        summary,
+        publicationDate: Maybe.of(publicationDate).map((date:string) => new Date(date)),
+        summary: Maybe.of(summary),
         url: new URL(url),
       };
       log(`Retrieved review: ${JSON.stringify({ doi, publicationDate })}`);
       return response;
     } catch (e) {
       return {
+        publicationDate: Maybe.nothing(),
+        summary: Maybe.nothing(),
         url: new URL(url),
       };
     }
