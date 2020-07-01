@@ -11,13 +11,13 @@ export interface Review {
   editorialCommunityName: string;
 }
 
-interface ExternalReview {
+export interface ExternalReview {
   publicationDate: Maybe<Date>;
   summary: Maybe<string>;
   url: URL;
 }
 
-export type RenderReview = (reviewId: ReviewId, review: Review, idNamespace: string) => Promise<string>;
+export type RenderReview = (reviewId: ReviewId, editorialCommunityId: string, idNamespace: string) => Promise<string>;
 
 export type GetReview = (reviewId: ReviewId) => Promise<ExternalReview>;
 
@@ -28,7 +28,7 @@ export default (
   getEditorialCommunityName: GetEditorialCommunityName,
   maxChars: number,
 ): RenderReview => (
-  async (reviewId, review: Review, idNamespace) => {
+  async (reviewId, editorialCommunityId, idNamespace) => {
     const fetchedReview = await getReview(reviewId);
 
     const date = fetchedReview.publicationDate.mapOr('', (publicationDate) => (
@@ -44,8 +44,8 @@ export default (
 
         <h3 class="header">
           Reviewed by
-          <a href="/editorial-communities/${review.editorialCommunityId}" id="${idNamespace}-editorial-community">
-            ${await getEditorialCommunityName(review.editorialCommunityId)}
+          <a href="/editorial-communities/${editorialCommunityId}" id="${idNamespace}-editorial-community">
+            ${await getEditorialCommunityName(editorialCommunityId)}
           </a>
         </h3>
 

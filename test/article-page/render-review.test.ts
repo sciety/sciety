@@ -1,18 +1,22 @@
 import { JSDOM } from 'jsdom';
 import { Maybe } from 'true-myth';
-import createRenderReview, { GetEditorialCommunityName, GetReview, Review } from '../../src/article-page/render-review';
+import createRenderReview, {
+  ExternalReview,
+  GetEditorialCommunityName,
+  GetReview,
+} from '../../src/article-page/render-review';
 import Doi from '../../src/types/doi';
 import { ReviewId } from '../../src/types/review-id';
 
 describe('render-review component', (): void => {
   const reviewId: ReviewId = new Doi('10.5281/zenodo.3678326');
-  const review: Review = {
+  const review: ExternalReview = {
     publicationDate: Maybe.just(new Date('2010-02-01')),
     summary: Maybe.just('Pretty good.'),
     url: new URL('https://doi.org/10.5281/zenodo.3678326'),
-    editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
-    editorialCommunityName: 'eLife',
   };
+  const editorialCommunityId = 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0';
+
   const idNamespace = 'review-42';
 
   const getReview: GetReview = async () => review;
@@ -26,7 +30,7 @@ describe('render-review component', (): void => {
         getReview,
         getEditorialCommunityName,
         1500,
-      )(reviewId, review, idNamespace);
+      )(reviewId, editorialCommunityId, idNamespace);
     });
 
     it('renders inside an article tag', () => {
@@ -62,7 +66,7 @@ describe('render-review component', (): void => {
         getReview,
         getEditorialCommunityName,
         6,
-      )(reviewId, review, idNamespace);
+      )(reviewId, editorialCommunityId, idNamespace);
 
       expect(actual).toStrictEqual(expect.stringContaining('Prett'));
     });
@@ -70,12 +74,10 @@ describe('render-review component', (): void => {
 
   describe('when the review summary is not available', (): void => {
     it('does not render the summary markup', async () => {
-      const reviewWithoutSummary: Review = {
+      const reviewWithoutSummary: ExternalReview = {
         publicationDate: Maybe.just(new Date('2010-02-01')),
         url: new URL('https://doi.org/10.5281/zenodo.3678326'),
         summary: Maybe.nothing(),
-        editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
-        editorialCommunityName: 'eLife',
       };
       const renderReview = createRenderReview(
         async () => reviewWithoutSummary,
@@ -83,7 +85,7 @@ describe('render-review component', (): void => {
         6,
       );
 
-      const rendered = JSDOM.fragment(await renderReview(reviewId, reviewWithoutSummary, idNamespace));
+      const rendered = JSDOM.fragment(await renderReview(reviewId, editorialCommunityId, idNamespace));
 
       expect(rendered.querySelector('[data-test-id="reviewSummary"]')).toBeNull();
     });
@@ -91,12 +93,10 @@ describe('render-review component', (): void => {
 
   describe('when the review publication date is not available', (): void => {
     it('does not render any date markup', async () => {
-      const reviewWithoutPublicationDate: Review = {
+      const reviewWithoutPublicationDate: ExternalReview = {
         publicationDate: Maybe.nothing(),
         url: new URL('https://doi.org/10.5281/zenodo.3678326'),
         summary: Maybe.just('Pretty good.'),
-        editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
-        editorialCommunityName: 'eLife',
       };
       const renderReview = createRenderReview(
         async () => reviewWithoutPublicationDate,
@@ -104,7 +104,7 @@ describe('render-review component', (): void => {
         6,
       );
 
-      const rendered = JSDOM.fragment(await renderReview(reviewId, reviewWithoutPublicationDate, idNamespace));
+      const rendered = JSDOM.fragment(await renderReview(reviewId, editorialCommunityId, idNamespace));
 
       expect(rendered.querySelector('[data-test-id="reviewPublicationDate"]')).toBeNull();
     });

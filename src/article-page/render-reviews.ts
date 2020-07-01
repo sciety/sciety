@@ -14,7 +14,7 @@ export default (
 ): RenderReviews => (
   async (doi) => {
     const renderedReviews = await Promise.all((await reviews(doi)).map(async (review, index) => (
-      renderReview(review.reviewId, review, `review-${index}`)
+      renderReview(review.reviewId, review.editorialCommunityId, `review-${index}`)
     )));
     if (renderedReviews.length === 0) {
       return '';
