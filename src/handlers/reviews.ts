@@ -32,10 +32,10 @@ export default (
       throw new BadRequest('Not a Zenodo DOI.');
     }
 
-    const editorialCommunity = editorialCommunities.lookup(editorialcommunityid);
-    if (!editorialCommunity) {
-      throw new BadRequest(`${editorialcommunityid} not found`);
-    }
+    const editorialCommunity = editorialCommunities.lookup(editorialcommunityid)
+      .unwrapOrElse(() => {
+        throw new BadRequest(`${editorialcommunityid} not found`);
+      });
 
     await reviewReferenceRepository.add(
       new Doi(articleversiondoi),

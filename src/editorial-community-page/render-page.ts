@@ -39,11 +39,11 @@ export default (
 ): RenderPage => {
   // these adapters should be moved up into index.ts
   const getEditorialCommunity: GetEditorialCommunity = async (editorialCommunityId) => {
-    const editorialCommunity = editorialCommunities.lookup(editorialCommunityId);
-
-    if (editorialCommunity.name === 'Unknown') {
-      throw new NotFound(`${editorialCommunityId} not found`);
-    }
+    const editorialCommunity = editorialCommunities
+      .lookup(editorialCommunityId)
+      .unwrapOrElse(() => {
+        throw new NotFound(`${editorialCommunityId} not found`);
+      });
     return editorialCommunity;
   };
   const getArticleTitle: GetArticleTitle = async (articleDoi) => {

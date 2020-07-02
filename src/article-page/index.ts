@@ -42,7 +42,7 @@ const buildRenderPageHeader = (adapters: Adapters): RenderPageHeader => {
     }
   );
   const getEditorialCommunityName: GetEditorialCommunityName = async (editorialCommunityId) => (
-    adapters.editorialCommunities.lookup(editorialCommunityId).name
+    adapters.editorialCommunities.lookup(editorialCommunityId).unsafelyUnwrap().name
   );
   return createRenderPageHeader(
     getArticleDetailsAdapter,
@@ -68,7 +68,7 @@ const buildRenderAddReviewForm = (editorialCommunities: EditorialCommunityReposi
 
 const buildRenderReviews = (adapters: Adapters): RenderReviews => {
   const getEditorialCommunityName: GetEditorialCommunityNameForRenderReview = async (editorialCommunityId) => (
-    adapters.editorialCommunities.lookup(editorialCommunityId).name
+    adapters.editorialCommunities.lookup(editorialCommunityId).unsafelyUnwrap().name
   );
 
   const renderReview = createRenderReview(adapters.fetchReview, getEditorialCommunityName, 1500);

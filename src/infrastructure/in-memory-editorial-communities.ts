@@ -1,3 +1,4 @@
+import { Maybe } from 'true-myth';
 import { EditorialCommunity } from '../types/editorial-community';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 
@@ -164,12 +165,7 @@ export default (): EditorialCommunityRepository => {
     all: () => editorialCommunities,
     lookup: (id) => {
       const candidate = editorialCommunities.find((ec) => ec.id === id);
-      return candidate ?? {
-        id,
-        name: 'Unknown',
-        logo: undefined,
-        description: 'Unknown',
-      };
+      return Maybe.of(candidate);
     },
   };
   return result;
