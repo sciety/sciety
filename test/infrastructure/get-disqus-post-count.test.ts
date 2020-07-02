@@ -1,5 +1,4 @@
 import createGetDisqusPostCount, { GetJson } from '../../src/infrastructure/get-disqus-post-count';
-import GetCommentCountError from '../../src/types/get-comment-count-error';
 
 const uri = 'https://example.com/10.1101/833392';
 
@@ -15,7 +14,7 @@ describe('get-disqus-post-count client', (): void => {
       );
       const actual = await createGetDisqusPostCount(getJson)(uri);
 
-      expect(actual).toBe(37);
+      expect(actual.unsafelyUnwrap()).toBe(37);
     });
   });
 
@@ -23,8 +22,9 @@ describe('get-disqus-post-count client', (): void => {
     it('throws the domain port-specific error', async (): Promise<void> => {
       const getJson: GetJson = async () => ({});
       const getDisqusPostCount = createGetDisqusPostCount(getJson);
+      const actual = await getDisqusPostCount(uri);
 
-      await expect(getDisqusPostCount(uri)).rejects.toBeInstanceOf(GetCommentCountError);
+      expect(actual.isNothing()).toBe(true);
     });
   });
 });

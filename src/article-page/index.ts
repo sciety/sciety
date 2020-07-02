@@ -1,7 +1,6 @@
 import { Middleware, RouterContext } from '@koa/router';
 import { NotFound, ServiceUnavailable } from 'http-errors';
 import { Next } from 'koa';
-import { Maybe } from 'true-myth';
 import createRenderAddReviewForm, { GetAllEditorialCommunities, RenderAddReviewForm } from './render-add-review-form';
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
 import createRenderPage from './render-page';
@@ -20,7 +19,6 @@ import { FetchDatasetError } from '../infrastructure/fetch-dataset';
 import { Adapters } from '../types/adapters';
 import Doi from '../types/doi';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
-import GetCommentCountError from '../types/get-comment-count-error';
 
 const reviewsId = 'reviews';
 
@@ -49,16 +47,7 @@ const buildRenderPageHeader = (adapters: Adapters): RenderPageHeader => {
   return createRenderPageHeader(
     getArticleDetailsAdapter,
     reviewCountAdapter,
-    async (doi) => {
-      try {
-        return Maybe.just(await adapters.getBiorxivCommentCount(doi));
-      } catch (e) {
-        if (e instanceof GetCommentCountError) {
-          return Maybe.nothing();
-        }
-        throw e;
-      }
-    },
+    adapters.getBiorxivCommentCount,
     createGetEndorsingEditorialCommunityNames(getEditorialCommunityName),
     `#${reviewsId}`,
   );
