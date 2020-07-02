@@ -1,10 +1,10 @@
 import { JSDOM } from 'jsdom';
+import { Maybe } from 'true-myth';
 import createRenderPageHeader, {
   GetArticleDetails,
   RenderPageHeader,
 } from '../../src/article-page/render-page-header';
 import Doi from '../../src/types/doi';
-import GetCommentCountError from '../../src/types/get-comment-count-error';
 
 const getArticleDetails: GetArticleDetails = async (doi) => ({
   title: `Lorem ipsum ${doi}`,
@@ -17,7 +17,7 @@ describe('render-page-header component', (): void => {
   let rendered: string;
 
   beforeEach(async () => {
-    renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 0, async () => 0, async () => [], '#reviews');
+    renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 0, async () => Maybe.nothing(), async () => [], '#reviews');
     rendered = await renderPageHeader(new Doi('10.1101/815689'));
   });
 
@@ -44,14 +44,14 @@ describe('render-page-header component', (): void => {
 
   describe('the article has reviews', (): void => {
     it('displays the number of reviews', async (): Promise<void> => {
-      renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 2, async () => 0, async () => [], '#reviews');
+      renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 2, async () => Maybe.nothing(), async () => [], '#reviews');
       rendered = await renderPageHeader(new Doi('10.1101/209320'));
 
       expect(rendered).toStrictEqual(expect.stringMatching(/Reviews[\s\S]*?2/));
     });
 
     it('links to the reviews heading on the same page', async (): Promise<void> => {
-      renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 2, async () => 0, async () => [], '/path/to/the/reviews');
+      renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 2, async () => Maybe.nothing(), async () => [], '/path/to/the/reviews');
       const pageHeader = JSDOM.fragment(await renderPageHeader(new Doi('10.1101/209320')));
 
       const anchor = pageHeader.querySelector('a[data-test-id="reviewsLink"]');
@@ -69,14 +69,14 @@ describe('render-page-header component', (): void => {
 
   describe('the article has comments', (): void => {
     it('displays the number of comments', async (): Promise<void> => {
-      renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 0, async () => 11, async () => [], '#reviews');
+      renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 0, async () => Maybe.just(11), async () => [], '#reviews');
       rendered = await renderPageHeader(new Doi('10.1101/815689'));
 
       expect(rendered).toStrictEqual(expect.stringMatching(/Comments[\s\S]*?11/));
     });
 
     it('links to v1 of the article on Biorxiv', async (): Promise<void> => {
-      renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 0, async () => 11, async () => [], '#reviews');
+      renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 0, async () => Maybe.just(11), async () => [], '#reviews');
       const pageHeader = JSDOM.fragment(await renderPageHeader(new Doi('10.1101/815689')));
 
       const anchor = pageHeader.querySelector<HTMLAnchorElement>('a[data-test-id="biorxivCommentLink"]');
@@ -88,6 +88,15 @@ describe('render-page-header component', (): void => {
 
   describe('the article does not have comments', (): void => {
     it('does not display comment details', async (): Promise<void> => {
+      renderPageHeader = createRenderPageHeader(
+        getArticleDetails,
+        async () => 0,
+        async () => Maybe.just(0),
+        async () => [],
+        '#reviews',
+      );
+      rendered = await renderPageHeader(new Doi('10.1101/815689'));
+
       expect(rendered).toStrictEqual(expect.not.stringContaining('Comments'));
     });
   });
@@ -97,9 +106,7 @@ describe('render-page-header component', (): void => {
       renderPageHeader = createRenderPageHeader(
         getArticleDetails,
         async () => 0,
-        async () => {
-          throw new GetCommentCountError();
-        },
+        async () => Maybe.nothing(),
         async () => [],
         '#reviews',
       );
@@ -111,7 +118,7 @@ describe('render-page-header component', (): void => {
 
   describe('the article has been endorsed', (): void => {
     it('displays the endorsing editorial communities', async (): Promise<void> => {
-      renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 0, async () => 0, async () => ['PeerJ'], '#reviews');
+      renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 0, async () => Maybe.nothing(), async () => ['PeerJ'], '#reviews');
       rendered = await renderPageHeader(new Doi('10.1101/815689'));
 
       expect(rendered).toStrictEqual(expect.stringMatching(/Endorsed by[\s\S]*?PeerJ/));

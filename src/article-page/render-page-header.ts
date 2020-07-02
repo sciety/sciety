@@ -1,7 +1,7 @@
+import { Maybe } from 'true-myth';
 import templateDate from '../templates/date';
 import templateListItems from '../templates/list-items';
 import Doi from '../types/doi';
-import GetCommentCountError from '../types/get-comment-count-error';
 
 interface ArticleDetails {
   title: string;
@@ -13,7 +13,7 @@ export type GetArticleDetails = (doi: Doi) => Promise<ArticleDetails>;
 
 export type GetReviewCount = (doi: Doi) => Promise<number>;
 
-export type GetCommentCount = (doi: Doi) => Promise<number>;
+export type GetCommentCount = (doi: Doi) => Promise<Maybe<number>>;
 export type GetEndorsingEditorialCommunityNames = (doi: Doi) => Promise<Array<string>>;
 
 export type RenderPageHeader = (doi: Doi) => Promise<string>;
@@ -40,29 +40,17 @@ export default (
     `;
   }
 
-  let comments: string;
-  try {
-    const commentCount = await getCommentCount(doi);
-    if (commentCount > 0) {
-      comments = `
-        <a href="https://www.biorxiv.org/content/${doi.value}v1" data-test-id="biorxivCommentLink">
-          <div class="ui label">
-            Comments
-            <span class="detail">${commentCount}</span>
-          </div>
-        </a>
-      `;
-    } else {
-      comments = '';
-    }
-  } catch (e) {
-    if (e instanceof GetCommentCountError) {
-      comments = '';
-    }
-    // this should become:
-    //   throw e;
-    // as the component doesn't deal with exceptions that doesn't know how to handle
-    comments = '';
+  let comments = '';
+  const commentCount = (await getCommentCount(doi)).unwrapOr(0);
+  if (commentCount > 0) {
+    comments = `
+      <a href="https://www.biorxiv.org/content/${doi.value}v1" data-test-id="biorxivCommentLink">
+        <div class="ui label">
+          Comments
+          <span class="detail">${commentCount}</span>
+        </div>
+      </a>
+    `;
   }
 
   let endorsements = '';
