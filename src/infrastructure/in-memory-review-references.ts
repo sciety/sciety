@@ -1,11 +1,10 @@
-import createLogger from '../logger';
+import { Logger } from '../logger';
 import Doi from '../types/doi';
 import { ReviewId } from '../types/review-id';
 import ReviewReference from '../types/review-reference';
 import ReviewReferenceRepository from '../types/review-reference-repository';
 
-export default (): ReviewReferenceRepository => {
-  const log = createLogger('repository:in-memory-review-references');
+export default (logger: Logger): ReviewReferenceRepository => {
   const reviewReferences: Array<ReviewReference> = [];
 
   const reviewReferenceRepository: ReviewReferenceRepository = {
@@ -17,7 +16,7 @@ export default (): ReviewReferenceRepository => {
         added,
       };
       reviewReferences.push(ref);
-      log(`Review reference added: ${JSON.stringify(ref)}`);
+      logger('debug', `Review reference added: ${JSON.stringify(ref)}`);
     },
 
     [Symbol.iterator]: () => (

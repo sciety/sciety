@@ -25,7 +25,7 @@ logger('debug', 'Starting server');
 
 const editorialCommunities = createEditorialCommunityRepository();
 
-const reviewReferenceRepository = createReviewReferenceRepository();
+const reviewReferenceRepository = createReviewReferenceRepository(logger);
 for (const {
   article, review, editorialCommunityIndex, added,
 } of bootstrapReviews) {

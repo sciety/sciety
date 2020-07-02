@@ -18,6 +18,7 @@ import { Adapters } from '../../src/types/adapters';
 import Doi from '../../src/types/doi';
 import EditorialCommunityRepository from '../../src/types/editorial-community-repository';
 import ReviewReferenceRepository from '../../src/types/review-reference-repository';
+import dummyLogger from '../dummy-logger';
 import shouldNotBeCalled from '../should-not-be-called';
 
 const articleA = new Doi('10.1101/833392');
@@ -33,7 +34,7 @@ export interface TestServer {
 
 export default async (): Promise<TestServer> => {
   const editorialCommunities = createEditorialCommunityRepository();
-  const reviewReferenceRepository = createReviewReferenceRepository();
+  const reviewReferenceRepository = createReviewReferenceRepository(dummyLogger);
   await reviewReferenceRepository.add(articleA, articleAReview1, editorialCommunities.all()[0].id, new Date('2020-05-19T14:00:00Z'));
   await reviewReferenceRepository.add(articleB, articleBReview1, editorialCommunities.all()[1].id, new Date('2020-05-19T14:00:00Z'));
   const fetchDataCiteDataset: FetchDataset = async () => (

@@ -1,6 +1,6 @@
 import createFetchCrossrefArticle, { FetchCrossrefArticleError, MakeHttpRequest } from '../../src/infrastructure/fetch-crossref-article';
-import { Logger } from '../../src/logger';
 import Doi from '../../src/types/doi';
+import dummyLogger from '../dummy-logger';
 
 const crossrefResponseWith = (content: string): string => `
   <?xml version="1.0" encoding="UTF-8"?>
@@ -14,8 +14,6 @@ const crossrefResponseWith = (content: string): string => `
     </doi_record>
   </doi_records>
 `;
-
-const dummyLogger: Logger = () => {};
 
 describe('fetch-crossref-article', (): void => {
   describe('fetching the abstract', (): void => {

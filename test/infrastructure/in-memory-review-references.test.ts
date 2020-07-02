@@ -1,6 +1,7 @@
 import createReviewReferenceRepository from '../../src/infrastructure/in-memory-review-references';
 import Doi from '../../src/types/doi';
 import ReviewReferenceRepository from '../../src/types/review-reference-repository';
+import dummyLogger from '../dummy-logger';
 
 describe('review-reference-repository', () => {
   let reviewReferenceRepository: ReviewReferenceRepository;
@@ -11,7 +12,7 @@ describe('review-reference-repository', () => {
   const editorialCommunity2 = 'community-2';
 
   beforeEach(() => {
-    reviewReferenceRepository = createReviewReferenceRepository();
+    reviewReferenceRepository = createReviewReferenceRepository(dummyLogger);
   });
 
   describe('when empty', () => {
