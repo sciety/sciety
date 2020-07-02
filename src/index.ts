@@ -11,7 +11,7 @@ import createGetBiorxivCommentCount from './infrastructure/get-biorxiv-comment-c
 import createGetDisqusPostCount from './infrastructure/get-disqus-post-count';
 import createEditorialCommunityRepository from './infrastructure/in-memory-editorial-communities';
 import createReviewReferenceRepository from './infrastructure/in-memory-review-references';
-import createLogger from './logger';
+import createLogger, { createDebugLogger } from './logger';
 import createRouter from './router';
 import createServer from './server';
 import { Adapters } from './types/adapters';
@@ -20,6 +20,7 @@ import HypothesisAnnotationId from './types/hypothesis-annotation-id';
 import { ReviewId } from './types/review-id';
 
 const log = createLogger();
+const logger = createDebugLogger();
 
 log('Starting server');
 
@@ -59,7 +60,7 @@ const fetchDataset = createFetchDataset();
 const fetchDataciteReview = createFetchDataciteReview(fetchDataset);
 const fetchHypothesisAnnotation = createFetchHypothesisAnnotation(getJson);
 const adapters: Adapters = {
-  fetchArticle: createFetchCrossrefArticle(makeHttpRequest),
+  fetchArticle: createFetchCrossrefArticle(makeHttpRequest, logger),
   getBiorxivCommentCount: createGetBiorxivCommentCount(createGetDisqusPostCount(getJson)),
   fetchReview: createFetchReview(fetchDataciteReview, fetchHypothesisAnnotation),
   fetchStaticFile: createFetchStaticFile(),

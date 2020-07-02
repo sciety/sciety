@@ -1,5 +1,5 @@
 import { DOMParser } from 'xmldom';
-import createLogger from '../logger';
+import { Logger } from '../logger';
 import Doi from '../types/doi';
 
 export type FetchCrossrefArticle = (doi: Doi) => Promise<{
@@ -15,9 +15,7 @@ export class FetchCrossrefArticleError extends Error {
 
 export type MakeHttpRequest = (uri: string, acceptHeader: string) => Promise<string>;
 
-export default (makeHttpRequest: MakeHttpRequest): FetchCrossrefArticle => {
-  const log = createLogger('api:fetch-crossref-article');
-
+export default (makeHttpRequest: MakeHttpRequest, logger: Logger): FetchCrossrefArticle => {
   const getElement = (ancestor: Document | Element, qualifiedName: string): Element | null => (
     ancestor.getElementsByTagName(qualifiedName).item(0)
   );
@@ -26,12 +24,12 @@ export default (makeHttpRequest: MakeHttpRequest): FetchCrossrefArticle => {
     const abstractElement = getElement(doc, 'abstract');
 
     if (typeof abstractElement?.textContent !== 'string') {
-      log(`Did not find abstract for ${doi}`);
+      logger('warn', `Did not find abstract for ${doi}`);
 
       return `No abstract for ${doi} available`;
     }
 
-    log(`Found abstract for ${doi}: ${abstractElement.textContent}`);
+    logger('debug', `Found abstract for ${doi}: ${abstractElement.textContent}`);
 
     const titleElement = getElement(abstractElement, 'title');
     if (titleElement) {
@@ -57,7 +55,7 @@ export default (makeHttpRequest: MakeHttpRequest): FetchCrossrefArticle => {
     const contributorsElement = getElement(doc, 'contributors');
 
     if (!contributorsElement || typeof contributorsElement?.textContent !== 'string') {
-      log(`Did not find contributors for ${doi}`);
+      logger('debug', `Did not find contributors for ${doi}`);
       return [];
     }
 
@@ -98,11 +96,11 @@ export default (makeHttpRequest: MakeHttpRequest): FetchCrossrefArticle => {
 
   return async (doi) => {
     const uri = `https://doi.org/${doi.value}`;
-    log(`Fetching Crossref article for ${uri}`);
+    logger('debug', `Fetching Crossref article for ${uri}`);
 
     const response = await makeHttpRequest(uri, 'application/vnd.crossref.unixref+xml')
       .catch((error) => {
-        log(`Failed to fetch article ${doi}: (${error})`);
+        logger('error', `Failed to fetch article ${doi}: (${error})`);
         throw new FetchCrossrefArticleError(`Failed to fetch article ${doi}: (${error})`);
       });
 
@@ -116,7 +114,7 @@ export default (makeHttpRequest: MakeHttpRequest): FetchCrossrefArticle => {
         publicationDate: getPublicationDate(doc),
       };
     } catch (e) {
-      log(`
+      logger('error', `
       Error: problem parsing document for ${doi}, original response was: ${response}.
       Original error was ${e}
       `);
