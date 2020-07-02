@@ -11,7 +11,7 @@ import createGetBiorxivCommentCount from './infrastructure/get-biorxiv-comment-c
 import createGetDisqusPostCount from './infrastructure/get-disqus-post-count';
 import createEditorialCommunityRepository from './infrastructure/in-memory-editorial-communities';
 import createReviewReferenceRepository from './infrastructure/in-memory-review-references';
-import createLogger, { createDebugLogger } from './logger';
+import { createDebugLogger } from './logger';
 import createRouter from './router';
 import createServer from './server';
 import { Adapters } from './types/adapters';
@@ -19,10 +19,9 @@ import Doi from './types/doi';
 import HypothesisAnnotationId from './types/hypothesis-annotation-id';
 import { ReviewId } from './types/review-id';
 
-const log = createLogger();
 const logger = createDebugLogger();
 
-log('Starting server');
+logger('debug', 'Starting server');
 
 const editorialCommunities = createEditorialCommunityRepository();
 
@@ -75,10 +74,10 @@ const server = createServer(router);
 
 const terminusOptions: TerminusOptions = {
   onShutdown: async (): Promise<void> => {
-    log('Shutting server down');
+    logger('debug', 'Shutting server down');
   },
   onSignal: async (): Promise<void> => {
-    log('Signal received');
+    logger('debug', 'Signal received');
   },
   signals: ['SIGINT', 'SIGTERM'],
 };
