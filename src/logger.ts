@@ -2,10 +2,10 @@ import debug, { Debugger } from 'debug';
 
 type Level = 'debug' | 'warn' | 'error';
 
-export type Logger = (level: Level, message: string) => void;
+export type Logger = (level: Level, message: string, payload?: Record<string, unknown>) => void;
 
 export const createDebugLogger = (): Logger => (
-  (level, message) => debug.log(new Date(), level, message)
+  (...args) => debug.log(new Date(), ...args)
 );
 
 const log = debug('app');

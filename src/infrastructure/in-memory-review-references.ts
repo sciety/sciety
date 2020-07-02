@@ -9,14 +9,14 @@ export default (logger: Logger): ReviewReferenceRepository => {
 
   const reviewReferenceRepository: ReviewReferenceRepository = {
     add: async (articleVersionDoi: Doi, reviewId: ReviewId, editorialCommunityId: string, added: Date) => {
-      const ref: ReviewReference = {
+      const reviewReference: ReviewReference = {
         articleVersionDoi,
         reviewId,
         editorialCommunityId,
         added,
       };
-      reviewReferences.push(ref);
-      logger('debug', `Review reference added: ${JSON.stringify(ref)}`);
+      reviewReferences.push(reviewReference);
+      logger('debug', 'Review reference added', { reviewReference });
     },
 
     [Symbol.iterator]: () => (

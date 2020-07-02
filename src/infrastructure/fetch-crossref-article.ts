@@ -24,12 +24,12 @@ export default (makeHttpRequest: MakeHttpRequest, logger: Logger): FetchCrossref
     const abstractElement = getElement(doc, 'abstract');
 
     if (typeof abstractElement?.textContent !== 'string') {
-      logger('warn', `Did not find abstract for ${doi}`);
+      logger('warn', 'Did not find abstract', { doi });
 
       return `No abstract for ${doi} available`;
     }
 
-    logger('debug', `Found abstract for ${doi}: ${abstractElement.textContent}`);
+    logger('debug', 'Found abstract', { doi, abstract: abstractElement.textContent });
 
     const titleElement = getElement(abstractElement, 'title');
     if (titleElement) {
@@ -55,7 +55,7 @@ export default (makeHttpRequest: MakeHttpRequest, logger: Logger): FetchCrossref
     const contributorsElement = getElement(doc, 'contributors');
 
     if (!contributorsElement || typeof contributorsElement?.textContent !== 'string') {
-      logger('debug', `Did not find contributors for ${doi}`);
+      logger('debug', 'Did not find contributors', { doi });
       return [];
     }
 
@@ -96,11 +96,11 @@ export default (makeHttpRequest: MakeHttpRequest, logger: Logger): FetchCrossref
 
   return async (doi) => {
     const uri = `https://doi.org/${doi.value}`;
-    logger('debug', `Fetching Crossref article for ${uri}`);
+    logger('debug', 'Fetching Crossref article', { uri });
 
     const response = await makeHttpRequest(uri, 'application/vnd.crossref.unixref+xml')
       .catch((error) => {
-        logger('error', `Failed to fetch article ${doi}: (${error})`);
+        logger('error', 'Failed to fetch article', { doi, error });
         throw new FetchCrossrefArticleError(`Failed to fetch article ${doi}: (${error})`);
       });
 
@@ -113,12 +113,9 @@ export default (makeHttpRequest: MakeHttpRequest, logger: Logger): FetchCrossref
         title: getTitle(doc),
         publicationDate: getPublicationDate(doc),
       };
-    } catch (e) {
-      logger('error', `
-      Error: problem parsing document for ${doi}, original response was: ${response}.
-      Original error was ${e}
-      `);
-      throw e;
+    } catch (error) {
+      logger('error', 'Unable to parse document', { doi, response, error });
+      throw error;
     }
   };
 };
