@@ -1,19 +1,18 @@
 import createGetHardCodedEndorsingEditorialCommunities, { GetNameForEditorialCommunity } from './hard-coded-endorsing-editorial-communities';
-import createRenderSearchResult, { GetReviewCount } from './render-search-result';
+import createRenderSearchResult, { GetCommentCount, GetReviewCount } from './render-search-result';
 import createRenderSearchResults from './render-search-results';
 import createSearchEuropePmc from './search-europe-pmc';
-import Doi from '../types/doi';
 import { Json } from '../types/json';
 
 export type GetJson = (uri: string) => Promise<Json>;
 
 type RenderPage = (query: string) => Promise<string>;
 
-export { GetReviewCount } from './render-search-result';
+export { GetCommentCount, GetReviewCount } from './render-search-result';
 
 export default (
   getJson: GetJson,
-  getCommentCount: (doi: Doi) => Promise<number>,
+  getCommentCount: GetCommentCount,
   getReviewCount: GetReviewCount,
   getEditorialCommunity: (id: string) => { name: string },
 ): RenderPage => (

@@ -1,6 +1,6 @@
+import { Maybe } from 'true-myth';
 import templateDate from '../templates/date';
 import Doi from '../types/doi';
-import GetCommentCountError from '../types/get-comment-count-error';
 
 export interface SearchResult {
   doi: Doi;
@@ -9,7 +9,7 @@ export interface SearchResult {
   postedDate: Date;
 }
 
-export type GetCommentCount = (doi: Doi) => Promise<number>;
+export type GetCommentCount = (doi: Doi) => Promise<Maybe<number>>;
 export type GetReviewCount = (doi: Doi) => Promise<number>;
 export type GetEndorsingEditorialCommunities = (doi: Doi) => Promise<Array<string>>;
 
@@ -36,18 +36,7 @@ const createRenderComments = (
   getCommentCount: GetCommentCount,
 ) => (
   async (doi: Doi): Promise<string> => {
-    let commentCount: number;
-    try {
-      commentCount = await getCommentCount(doi);
-    } catch (e) {
-      if (e instanceof GetCommentCountError) {
-        return '';
-      }
-      // this should become:
-      //   throw e;
-      // as the component doesn't deal with exceptions that doesn't know how to handle
-      return '';
-    }
+    const commentCount = (await getCommentCount(doi)).unwrapOr(0);
 
     if (commentCount === 0) {
       return '';

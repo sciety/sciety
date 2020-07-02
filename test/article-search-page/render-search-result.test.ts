@@ -1,3 +1,4 @@
+import { Maybe } from 'true-myth';
 import createRenderSearchResult, {
   GetCommentCount,
   GetEndorsingEditorialCommunities,
@@ -5,7 +6,6 @@ import createRenderSearchResult, {
   SearchResult,
 } from '../../src/article-search-page/render-search-result';
 import Doi from '../../src/types/doi';
-import GetCommentCountError from '../../src/types/get-comment-count-error';
 
 const searchResult: SearchResult = {
   doi: new Doi('10.1101/833392'),
@@ -14,7 +14,7 @@ const searchResult: SearchResult = {
   postedDate: new Date('2017-11-30'),
 };
 
-const arbitraryCommentCount: GetCommentCount = async () => 0;
+const arbitraryCommentCount: GetCommentCount = async () => Maybe.nothing();
 const arbitraryReviewCount: GetReviewCount = async () => 0;
 const arbitraryEndorsingEditorialCommunities: GetEndorsingEditorialCommunities = async () => [];
 
@@ -71,7 +71,7 @@ describe('render-search-result component', (): void => {
 
   describe('an article has comments', (): void => {
     it('displays the number of comments', async (): Promise<void> => {
-      const getCommentCount: GetCommentCount = async () => 37;
+      const getCommentCount: GetCommentCount = async () => Maybe.just(37);
       const rendered = await createRenderSearchResult(
         getCommentCount,
         arbitraryReviewCount,
@@ -84,7 +84,7 @@ describe('render-search-result component', (): void => {
 
   describe('an article has no comments', (): void => {
     it('hides the number of comments', async (): Promise<void> => {
-      const getCommentCount: GetCommentCount = async () => 0;
+      const getCommentCount: GetCommentCount = async () => Maybe.just(0);
       const rendered = await createRenderSearchResult(
         getCommentCount,
         arbitraryReviewCount,
@@ -97,9 +97,7 @@ describe('render-search-result component', (): void => {
 
   describe('an error is thrown when counting comments', (): void => {
     it('hides the number of comments', async (): Promise<void> => {
-      const getCommentCount: GetCommentCount = async () => {
-        throw new GetCommentCountError();
-      };
+      const getCommentCount: GetCommentCount = async () => Maybe.nothing();
       const rendered = await createRenderSearchResult(
         getCommentCount,
         arbitraryReviewCount,
