@@ -1,4 +1,5 @@
 import { Middleware, RouterContext } from '@koa/router';
+import { NotFound } from 'http-errors';
 import { Next } from 'koa';
 import createGetReviewedArticlesFromReviewReferences from './get-reviewed-articles-from-review-references';
 import createRenderEndorsedArticles, {
@@ -7,8 +8,10 @@ import createRenderEndorsedArticles, {
   RenderEndorsedArticles,
 } from './render-endorsed-articles';
 import createRenderPage, { FetchArticle } from './render-page';
+import createRenderPageHeader, { GetEditorialCommunity, RenderPageHeader } from './render-page-header';
 import createRenderReviewedArticles, { RenderReviewedArticles } from './render-reviewed-articles';
 import { Adapters } from '../types/adapters';
+import EditorialCommunityRepository from '../types/editorial-community-repository';
 import ReviewReferenceRepository from '../types/review-reference-repository';
 
 const raiseFetchArticleErrors = (fetchArticle: Adapters['fetchArticle']): FetchArticle => (
@@ -18,6 +21,18 @@ const raiseFetchArticleErrors = (fetchArticle: Adapters['fetchArticle']): FetchA
     return result.unsafelyUnwrap();
   }
 );
+
+const buildRenderPageHeader = (editorialCommunities: EditorialCommunityRepository): RenderPageHeader => {
+  const getEditorialCommunity: GetEditorialCommunity = async (editorialCommunityId) => {
+    const editorialCommunity = editorialCommunities
+      .lookup(editorialCommunityId)
+      .unwrapOrElse(() => {
+        throw new NotFound(`${editorialCommunityId} not found`);
+      });
+    return editorialCommunity;
+  };
+  return createRenderPageHeader(getEditorialCommunity);
+};
 
 const buildRenderEndorsedArticles = (
   fetchArticle: FetchArticle,
@@ -46,11 +61,12 @@ const buildRenderReviewedArticles = (
 // - creation of page and its adapters
 export default (adapters: Adapters): Middleware => {
   const fetchArticle = raiseFetchArticleErrors(adapters.fetchArticle);
+  const renderPageHeader = buildRenderPageHeader(adapters.editorialCommunities);
   const renderEndorsedArticles = buildRenderEndorsedArticles(fetchArticle);
   const renderReviewedArticles = buildRenderReviewedArticles(fetchArticle, adapters.reviewReferenceRepository);
 
   const renderPage = createRenderPage(
-    adapters.editorialCommunities,
+    renderPageHeader,
     renderEndorsedArticles,
     renderReviewedArticles,
   );
