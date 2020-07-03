@@ -123,6 +123,10 @@ git tag $TAG && git push origin $TAG
 
 Logs of all Pods are streamed to [AWS CloudWatch][AWS CloudWatch logs] for persistence and searchability.
 
+A [CloudWatch dashboard] graphs log lines representing errors and shows the state of the alarm.
+
+An [monitoring SNS topic] triggers a [lambda function that notifies the Slack #prc-general channel][monitoring lambda].
+
 License
 -------
 
@@ -132,6 +136,7 @@ We released this software under the [MIT license][license]. Copyright © 2020 [e
 [Build]: https://github.com/libero/prc/actions?query=workflow%3ACI
 [Checks]: https://github.com/libero/prc/actions
 [Checks badge]: https://flat.badgen.net/github/checks/libero/prc/master?icon=github
+[CloudWatch dashboard]: https://console.aws.amazon.com/cloudwatch/home?region=us-east-1#dashboards:name=PRCMetrics
 [Docker]: https://www.docker.com/
 [eLife]: https://elifesciences.org/
 [ESLint]: https://eslint.org/
@@ -143,6 +148,8 @@ We released this software under the [MIT license][license]. Copyright © 2020 [e
 [License]: LICENSE.md
 [License badge]: https://flat.badgen.net/badge/license/MIT/blue
 [Makefile]: Makefile
+[Monitoring SNS topic]: https://console.aws.amazon.com/sns/v3/home?region=us-east-1#/topic/arn:aws:sns:us-east-1:540790251273:prc-logging
+[Monitoring lambda]: https://console.aws.amazon.com/lambda/home?region=us-east-1#/functions/notifySlackFromSnsTopicError
 [Node.js]: https://nodejs.org/
 [Open issues]: https://github.com/libero/prc/issues?q=is%3Aissue+is%3Aopen
 [Open issues badge]: https://flat.badgen.net/github/open-issues/libero/prc?icon=github&color=pink
