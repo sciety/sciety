@@ -6,7 +6,7 @@ export type FindArticles = (query: string) => Promise<{
   total: number;
 }>;
 
-type RenderSearchResults = (query: string) => Promise<string>;
+export type RenderSearchResults = (query: string) => Promise<string>;
 
 export default (
   findArticles: FindArticles,
