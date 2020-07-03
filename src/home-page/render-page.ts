@@ -9,6 +9,8 @@ import createRenderRecentActivity, {
 
 type RenderPage = () => Promise<string>;
 
+export { FetchArticle } from './render-recent-activity';
+
 export default (
   reviewReferences: GetReviewReferences,
   fetchArticle: FetchArticle,

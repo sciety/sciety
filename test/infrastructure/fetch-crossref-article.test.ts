@@ -1,4 +1,4 @@
-import createFetchCrossrefArticle, { FetchCrossrefArticleError, MakeHttpRequest } from '../../src/infrastructure/fetch-crossref-article';
+import createFetchCrossrefArticle, { MakeHttpRequest } from '../../src/infrastructure/fetch-crossref-article';
 import Doi from '../../src/types/doi';
 import dummyLogger from '../dummy-logger';
 
@@ -23,7 +23,7 @@ describe('fetch-crossref-article', (): void => {
         <abstract>
           Some random nonsense.
         </abstract>`);
-      const abstract = await createFetchCrossrefArticle(makeHttpRequest, dummyLogger)(doi);
+      const abstract = (await createFetchCrossrefArticle(makeHttpRequest, dummyLogger)(doi)).unsafelyUnwrap();
 
       expect(abstract.abstract).toStrictEqual(expect.stringContaining('Some random nonsense.'));
     });
@@ -34,7 +34,7 @@ describe('fetch-crossref-article', (): void => {
         <abstract class="something">
           Some random nonsense.
         </abstract>`);
-      const abstract = await createFetchCrossrefArticle(makeHttpRequest, dummyLogger)(doi);
+      const abstract = (await createFetchCrossrefArticle(makeHttpRequest, dummyLogger)(doi)).unsafelyUnwrap();
 
       expect(abstract.abstract).toStrictEqual(expect.not.stringContaining('<abstract>'));
       expect(abstract.abstract).toStrictEqual(expect.not.stringContaining('</abstract>'));
@@ -47,7 +47,7 @@ describe('fetch-crossref-article', (): void => {
           <title class="something">Abstract</title>
           Some random nonsense.
         </abstract>`);
-      const abstract = await createFetchCrossrefArticle(makeHttpRequest, dummyLogger)(doi);
+      const abstract = (await createFetchCrossrefArticle(makeHttpRequest, dummyLogger)(doi)).unsafelyUnwrap();
 
       expect(abstract.abstract).toStrictEqual(expect.not.stringContaining('Abstract'));
     });
@@ -63,7 +63,7 @@ describe('fetch-crossref-article', (): void => {
           <title class="something">should also be an h3</title>
           </sec>
         </abstract>`);
-      const abstract = await createFetchCrossrefArticle(makeHttpRequest, dummyLogger)(doi);
+      const abstract = (await createFetchCrossrefArticle(makeHttpRequest, dummyLogger)(doi)).unsafelyUnwrap();
 
       expect(abstract.abstract).toStrictEqual(expect.stringContaining('<h3 class="ui header">should be an h3</h3>'));
       expect(abstract.abstract).toStrictEqual(expect.stringContaining('<h3 class="ui header">should also be an h3</h3>'));
@@ -84,7 +84,7 @@ describe('fetch-crossref-article', (): void => {
             efficacy of cannabigerol in a murine systemic infection model caused by MRSA. We also show that cannabinoids are effective against Gram-negative organisms whose outer membrane is permeabilized, where cannabigerol acts on the inner membrane. Finally, we demonstrate that cannabinoids work in combination with polymyxin B against multi-drug resistant Gram-negative pathogens, revealing the broad-spectrum therapeutic potential for cannabinoids.
           </p>
         </abstract>`);
-      const abstract = await createFetchCrossrefArticle(makeHttpRequest, dummyLogger)(doi);
+      const abstract = (await createFetchCrossrefArticle(makeHttpRequest, dummyLogger)(doi)).unsafelyUnwrap();
 
       expect(abstract.abstract).toStrictEqual(expect.stringContaining('<i>Cannabis sativa</i>'));
       expect(abstract.abstract).toStrictEqual(expect.stringContaining('<i>in vivo</i>'));
@@ -103,7 +103,7 @@ describe('fetch-crossref-article', (): void => {
             </list-item>
           </list>
         </abstract>`);
-      const abstract = await createFetchCrossrefArticle(makeHttpRequest, dummyLogger)(doi);
+      const abstract = (await createFetchCrossrefArticle(makeHttpRequest, dummyLogger)(doi)).unsafelyUnwrap();
 
       expect(abstract.abstract).toStrictEqual(expect.stringContaining('<ul>'));
       expect(abstract.abstract).toStrictEqual(expect.stringContaining('</ul>'));
@@ -119,7 +119,7 @@ describe('fetch-crossref-article', (): void => {
             <p>Lorem ipsum</p>
           </sec>
         </abstract>`);
-      const abstract = await createFetchCrossrefArticle(makeHttpRequest, dummyLogger)(doi);
+      const abstract = (await createFetchCrossrefArticle(makeHttpRequest, dummyLogger)(doi)).unsafelyUnwrap();
 
       expect(abstract.abstract).toStrictEqual(expect.stringContaining('<section>'));
       expect(abstract.abstract).toStrictEqual(expect.stringContaining('</section>'));
@@ -137,7 +137,7 @@ describe('fetch-crossref-article', (): void => {
           <day>22</day>
           <year>2020</year>
         </posted_date>`);
-      const article = await createFetchCrossrefArticle(makeHttpRequest, dummyLogger)(doi);
+      const article = (await createFetchCrossrefArticle(makeHttpRequest, dummyLogger)(doi)).unsafelyUnwrap();
 
       expect(article.publicationDate).toStrictEqual(new Date('2020-03-22'));
     });
@@ -147,7 +147,7 @@ describe('fetch-crossref-article', (): void => {
     it('extracts no authors from the XML response when there are no contributors', async () => {
       const doi = new Doi('10.1101/339747');
       const makeHttpRequest: MakeHttpRequest = async () => crossrefResponseWith('');
-      const article = await createFetchCrossrefArticle(makeHttpRequest, dummyLogger)(doi);
+      const article = (await createFetchCrossrefArticle(makeHttpRequest, dummyLogger)(doi)).unsafelyUnwrap();
 
       expect(article.authors).toHaveLength(0);
     });
@@ -165,7 +165,7 @@ describe('fetch-crossref-article', (): void => {
             <surname>Fountain</surname>
           </person_name>
         </contributors>`);
-      const article = await createFetchCrossrefArticle(makeHttpRequest, dummyLogger)(doi);
+      const article = (await createFetchCrossrefArticle(makeHttpRequest, dummyLogger)(doi)).unsafelyUnwrap();
 
       expect(article.authors).toStrictEqual(['Eesha Ross', 'Fergus Fountain']);
     });
@@ -178,7 +178,7 @@ describe('fetch-crossref-article', (): void => {
             <surname>Ross</surname>
           </person_name>
         </contributors>`);
-      const article = await createFetchCrossrefArticle(makeHttpRequest, dummyLogger)(doi);
+      const article = (await createFetchCrossrefArticle(makeHttpRequest, dummyLogger)(doi)).unsafelyUnwrap();
 
       expect(article.authors).toStrictEqual(['Ross']);
     });
@@ -196,7 +196,7 @@ describe('fetch-crossref-article', (): void => {
             <surname>Fountain</surname>
           </person_name>
         </contributors>`);
-      const article = await createFetchCrossrefArticle(makeHttpRequest, dummyLogger)(doi);
+      const article = (await createFetchCrossrefArticle(makeHttpRequest, dummyLogger)(doi)).unsafelyUnwrap();
 
       expect(article.authors).toStrictEqual(['Eesha Ross']);
     });
@@ -209,7 +209,7 @@ describe('fetch-crossref-article', (): void => {
         <titles>
           <title>An article title</title>
         </titles>`);
-      const article = await createFetchCrossrefArticle(makeHttpRequest, dummyLogger)(doi);
+      const article = (await createFetchCrossrefArticle(makeHttpRequest, dummyLogger)(doi)).unsafelyUnwrap();
 
       expect(article.title).toStrictEqual('An article title');
     });
@@ -220,22 +220,21 @@ describe('fetch-crossref-article', (): void => {
         <titles>
           <title>An article title for <i>C. elegans</i></title>
         </titles>`);
-      const article = await createFetchCrossrefArticle(makeHttpRequest, dummyLogger)(doi);
+      const article = (await createFetchCrossrefArticle(makeHttpRequest, dummyLogger)(doi)).unsafelyUnwrap();
 
       expect(article.title).toStrictEqual('An article title for <i>C. elegans</i>');
     });
   });
 
   describe('the request fails', (): void => {
-    it('throws a specific type', async () => {
+    it('returns an error result', async () => {
       const doi = new Doi('10.1101/339747');
       const makeHttpRequest: MakeHttpRequest = async () => {
         throw new Error('HTTP timeout');
       };
-      const fetchCrossrefArticle = createFetchCrossrefArticle(makeHttpRequest, dummyLogger);
-      await expect(fetchCrossrefArticle(doi))
-        .rejects
-        .toThrow(new FetchCrossrefArticleError('Failed to fetch article 10.1101/339747: (Error: HTTP timeout)'));
+      const result = await createFetchCrossrefArticle(makeHttpRequest, dummyLogger)(doi);
+
+      expect(result.isErr()).toBe(true);
     });
   });
 });

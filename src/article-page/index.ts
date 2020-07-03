@@ -1,5 +1,5 @@
 import { Middleware, RouterContext } from '@koa/router';
-import { NotFound, ServiceUnavailable } from 'http-errors';
+import { NotFound } from 'http-errors';
 import { Next } from 'koa';
 import createRenderAddReviewForm, { GetAllEditorialCommunities, RenderAddReviewForm } from './render-add-review-form';
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
@@ -14,8 +14,6 @@ import createRenderReview, { GetEditorialCommunityName as GetEditorialCommunityN
 import createRenderReviews, { RenderReviews } from './render-reviews';
 import validateBiorxivDoi from './validate-biorxiv-doi';
 import endorsements from '../bootstrap-endorsements';
-import { FetchCrossrefArticleError } from '../infrastructure/fetch-crossref-article';
-import { FetchDatasetError } from '../infrastructure/fetch-dataset';
 import { Adapters } from '../types/adapters';
 import Doi from '../types/doi';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
@@ -28,8 +26,18 @@ type GetFullArticle = (doi: Doi) => Promise<{
 
 type GetEditorialCommunityName = (editorialCommunityId: string) => Promise<string>;
 
+const handleFetchArticleErrors = (fetchArticle: Adapters['fetchArticle']): GetArticleDetails & GetFullArticle => (
+  async (doi: Doi) => {
+    const result = await fetchArticle(doi);
+
+    return result.unwrapOrElse(() => {
+      throw new NotFound(`${doi} not found`);
+    });
+  }
+);
+
 const buildRenderPageHeader = (adapters: Adapters): RenderPageHeader => {
-  const getArticleDetailsAdapter: GetArticleDetails = async (articleDoi) => adapters.fetchArticle(articleDoi);
+  const getArticleDetailsAdapter: GetArticleDetails = handleFetchArticleErrors(adapters.fetchArticle);
   const reviewCountAdapter: GetReviewCount = async (articleDoi) => (
     (await adapters.reviewReferenceRepository.findReviewsForArticleVersionDoi(articleDoi)).length
   );
@@ -81,7 +89,7 @@ const buildRenderReviews = (adapters: Adapters): RenderReviews => {
 
 export default (adapters: Adapters): Middleware => {
   const renderPageHeader = buildRenderPageHeader(adapters);
-  const renderAbstract = buildRenderAbstract(adapters.fetchArticle);
+  const renderAbstract = buildRenderAbstract(handleFetchArticleErrors(adapters.fetchArticle));
   const renderAddReviewForm = buildRenderAddReviewForm(adapters.editorialCommunities);
   const renderReviews = buildRenderReviews(adapters);
   const renderPage = createRenderPage(
@@ -92,17 +100,9 @@ export default (adapters: Adapters): Middleware => {
   );
   return async (ctx: RouterContext, next: Next): Promise<void> => {
     const doi = validateBiorxivDoi(ctx.params.doi);
-    try {
-      ctx.response.body = await renderPage(doi);
-    } catch (e) {
-      if (e instanceof FetchCrossrefArticleError) {
-        throw new NotFound(`${doi} not found`);
-      } else if (e instanceof FetchDatasetError) {
-        throw new ServiceUnavailable('Article temporarily unavailable. Please try refreshing.');
-      }
 
-      throw e;
-    }
+    ctx.response.body = await renderPage(doi);
+
     await next();
   };
 };

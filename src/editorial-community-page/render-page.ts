@@ -26,7 +26,7 @@ const createRenderPageHeader = (getEditorialCommunity: GetEditorialCommunity): R
 
 type RenderPage = (editorialCommunityId: string) => Promise<string>;
 
-type FetchArticle = (doi: Doi) => Promise<{
+export type FetchArticle = (doi: Doi) => Promise<{
   doi: Doi;
   title: string;
 }>;

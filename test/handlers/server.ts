@@ -3,6 +3,7 @@ import { literal, namedNode } from '@rdfjs/data-model';
 import { schema } from '@tpluscode/rdf-ns-builders';
 import clownface from 'clownface';
 import datasetFactory from 'rdf-dataset-indexed';
+import { Result } from 'true-myth';
 import { FetchCrossrefArticle } from '../../src/infrastructure/fetch-crossref-article';
 import createFetchDataciteReview from '../../src/infrastructure/fetch-datacite-review';
 import { FetchDataset } from '../../src/infrastructure/fetch-dataset';
@@ -43,13 +44,13 @@ export default async (): Promise<TestServer> => {
       .addOut(schema.description, 'A summary')
       .addOut(schema.author, (author) => author.addOut(schema.name, 'Author name'))
   );
-  const fetchArticle: FetchCrossrefArticle = async (doi) => ({
+  const fetchArticle: FetchCrossrefArticle = async (doi) => (Result.ok({
     abstract: 'Article abstract.',
     authors: [],
     doi,
     title: 'Article title',
     publicationDate: new Date(),
-  });
+  }));
   const getDisqusPostCount = createGetDisqusPostCount(async () => ({ response: [{ posts: 0 }] }));
   const getBiorxivCommentCount = createGetBiorxivCommentCount(getDisqusPostCount);
   const fetchReview = createFetchReview(

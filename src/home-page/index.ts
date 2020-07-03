@@ -1,14 +1,22 @@
 import { Middleware } from '@koa/router';
-import createRenderPage from './render-page';
+import createRenderPage, { FetchArticle } from './render-page';
 import { GetEditorialCommunities, GetReviewReferences } from './render-recent-activity';
 import { Adapters } from '../types/adapters';
+
+const raiseFetchArticleErrors = (fetchArticle: Adapters['fetchArticle']): FetchArticle => (
+  async (doi) => {
+    const result = await fetchArticle(doi);
+
+    return result.unsafelyUnwrap();
+  }
+);
 
 export default (adapters: Adapters): Middleware => {
   const reviewReferenceAdapter: GetReviewReferences = async () => Array.from(adapters.reviewReferenceRepository);
   const editorialCommunitiesAdapter: GetEditorialCommunities = async () => adapters.editorialCommunities.all();
   const renderPage = createRenderPage(
     reviewReferenceAdapter,
-    adapters.fetchArticle,
+    raiseFetchArticleErrors(adapters.fetchArticle),
     editorialCommunitiesAdapter,
   );
   return async (ctx, next) => {

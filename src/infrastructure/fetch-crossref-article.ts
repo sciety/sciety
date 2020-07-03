@@ -1,17 +1,17 @@
+import { Result } from 'true-myth';
 import { DOMParser } from 'xmldom';
 import { Logger } from '../logger';
 import Doi from '../types/doi';
 
-export type FetchCrossrefArticle = (doi: Doi) => Promise<{
+type FetchCrossrefArticleError = 'not-found';
+
+export type FetchCrossrefArticle = (doi: Doi) => Promise<Result<{
   abstract: string;
   authors: Array<string>;
   doi: Doi;
   title: string;
   publicationDate: Date;
-}>;
-
-export class FetchCrossrefArticleError extends Error {
-}
+}, FetchCrossrefArticleError>>;
 
 export type MakeHttpRequest = (uri: string, acceptHeader: string) => Promise<string>;
 
@@ -98,21 +98,24 @@ export default (makeHttpRequest: MakeHttpRequest, logger: Logger): FetchCrossref
     const uri = `https://doi.org/${doi.value}`;
     logger('debug', 'Fetching Crossref article', { uri });
 
-    const response = await makeHttpRequest(uri, 'application/vnd.crossref.unixref+xml')
-      .catch((error) => {
-        logger('error', 'Failed to fetch article', { doi, error });
-        throw new FetchCrossrefArticleError(`Failed to fetch article ${doi}: (${error})`);
-      });
+    let response: string;
+    try {
+      response = await makeHttpRequest(uri, 'application/vnd.crossref.unixref+xml');
+    } catch (error) {
+      logger('error', 'Failed to fetch article', { doi, error });
+
+      return Result.err('not-found');
+    }
 
     const doc = new DOMParser().parseFromString(response, 'text/xml');
     try {
-      return {
+      return Result.ok({
         abstract: getAbstract(doc, doi),
         authors: getAuthors(doc, doi),
         doi,
         title: getTitle(doc),
         publicationDate: getPublicationDate(doc),
-      };
+      });
     } catch (error) {
       logger('error', 'Unable to parse document', { doi, response, error });
       throw error;
