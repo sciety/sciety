@@ -4,25 +4,11 @@ import createRenderEndorsedArticles, {
   createGetHardCodedEndorsedArticles,
   GetArticleTitle,
 } from './render-endorsed-articles';
+import createRenderPageHeader, { GetEditorialCommunity } from './render-page-header';
 import createRenderReviewedArticles from './render-reviewed-articles';
-import templateHeader from './templates/header';
 import Doi from '../types/doi';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import ReviewReferenceRepository from '../types/review-reference-repository';
-
-interface EditorialCommunity {
-  name: string;
-  description: string;
-  logo?: string;
-}
-
-type RenderPageHeader = (editorialCommunityId: string) => Promise<string>;
-
-type GetEditorialCommunity = (editorialCommunityId: string) => Promise<EditorialCommunity>;
-
-const createRenderPageHeader = (getEditorialCommunity: GetEditorialCommunity): RenderPageHeader => (
-  async (editorialCommunityId) => Promise.resolve(templateHeader(await getEditorialCommunity(editorialCommunityId)))
-);
 
 type RenderPage = (editorialCommunityId: string) => Promise<string>;
 
