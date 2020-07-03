@@ -10,7 +10,7 @@ const renderEndorsedArticle: RenderEndorsedArticle = async (endorsedArticle) => 
   </div>
 `;
 
-type RenderEndorsedArticles = (editorialCommunityId: string) => Promise<string>;
+export type RenderEndorsedArticles = (editorialCommunityId: string) => Promise<string>;
 
 type GetEndorsedArticles = (editorialCommunityId: string) => Promise<Array<{doi: Doi; title: string}>>;
 
@@ -30,7 +30,9 @@ export const createGetHardCodedEndorsedArticles = (getArticleTitle: GetArticleTi
   }
 );
 
-export default (getEndorsedArticles: GetEndorsedArticles): RenderEndorsedArticles => (
+export default (
+  getEndorsedArticles: GetEndorsedArticles,
+): RenderEndorsedArticles => (
   async (editorialCommunityId) => {
     const endorsedArticles = await getEndorsedArticles(editorialCommunityId);
 
