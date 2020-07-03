@@ -13,7 +13,7 @@ describe('hard-coded-endorsing-editorial-communities adapter', () => {
 
   describe('articles with endorsements', () => {
     it('returns the names of the editorial communities', async () => {
-      const getNameForEditorialCommunity: GetNameForEditorialCommunity = () => 'Journal of Psychoceramics';
+      const getNameForEditorialCommunity: GetNameForEditorialCommunity = async () => 'Journal of Psychoceramics';
       const adapter = createHardCodedEndorsingEditorialCommunities(getNameForEditorialCommunity);
 
       expect(await adapter(new Doi('10.1101/209320'))).toStrictEqual(['Journal of Psychoceramics']);

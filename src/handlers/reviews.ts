@@ -32,7 +32,7 @@ export default (
       throw new BadRequest('Not a Zenodo DOI.');
     }
 
-    const editorialCommunity = editorialCommunities.lookup(editorialcommunityid)
+    const editorialCommunity = (await editorialCommunities.lookup(editorialcommunityid))
       .unwrapOrElse(() => {
         throw new BadRequest(`${editorialcommunityid} not found`);
       });

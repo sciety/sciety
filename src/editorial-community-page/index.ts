@@ -24,8 +24,7 @@ const raiseFetchArticleErrors = (fetchArticle: Adapters['fetchArticle']): FetchA
 
 const buildRenderPageHeader = (editorialCommunities: EditorialCommunityRepository): RenderPageHeader => {
   const getEditorialCommunity: GetEditorialCommunity = async (editorialCommunityId) => {
-    const editorialCommunity = editorialCommunities
-      .lookup(editorialCommunityId)
+    const editorialCommunity = (await editorialCommunities.lookup(editorialCommunityId))
       .unwrapOrElse(() => {
         throw new NotFound(`${editorialCommunityId} not found`);
       });

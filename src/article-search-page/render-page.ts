@@ -1,4 +1,4 @@
-import createGetHardCodedEndorsingEditorialCommunities, { GetNameForEditorialCommunity } from './hard-coded-endorsing-editorial-communities';
+import createGetHardCodedEndorsingEditorialCommunities from './hard-coded-endorsing-editorial-communities';
 import createRenderSearchResult, { GetCommentCount, GetReviewCount } from './render-search-result';
 import createRenderSearchResults from './render-search-results';
 import createSearchEuropePmc from './search-europe-pmc';
@@ -14,12 +14,11 @@ export default (
   getJson: GetJson,
   getCommentCount: GetCommentCount,
   getReviewCount: GetReviewCount,
-  getEditorialCommunity: (id: string) => { name: string },
+  getEditorialCommunity: (id: string) => Promise<{ name: string }>,
 ): RenderPage => (
   async (query) => {
-    const getNameForEditorialCommunity: GetNameForEditorialCommunity = (id) => getEditorialCommunity(id).name;
     const getEndorsingEditorialCommunities = createGetHardCodedEndorsingEditorialCommunities(
-      getNameForEditorialCommunity,
+      async (id) => (await getEditorialCommunity(id)).name,
     );
     const renderSearchResult = createRenderSearchResult(
       getCommentCount,

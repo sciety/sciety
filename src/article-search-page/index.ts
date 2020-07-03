@@ -10,7 +10,7 @@ export default (adapters: Adapters): Middleware => {
     adapters.getJson,
     adapters.getBiorxivCommentCount,
     getReviewCount,
-    (editorialCommunityId) => adapters.editorialCommunities.lookup(editorialCommunityId).unsafelyUnwrap(),
+    async (editorialCommunityId) => (await adapters.editorialCommunities.lookup(editorialCommunityId)).unsafelyUnwrap(),
   );
   return async (ctx, next) => {
     ctx.response.body = await renderPage(ctx.request.query.query);

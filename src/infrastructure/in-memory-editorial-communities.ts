@@ -163,7 +163,7 @@ export default (): EditorialCommunityRepository => {
 
   const result: EditorialCommunityRepository = {
     all: () => editorialCommunities,
-    lookup: (id) => {
+    lookup: async (id) => {
       const candidate = editorialCommunities.find((ec) => ec.id === id);
       return Maybe.of(candidate);
     },
