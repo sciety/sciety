@@ -12,7 +12,7 @@ const templateTeaser = (article: ReviewedArticle): string => (`
   </div>
 `);
 
-type RenderReviewedArticles = (editorialCommunityId: string) => Promise<string>;
+export type RenderReviewedArticles = (editorialCommunityId: string) => Promise<string>;
 
 export type GetReviewedArticles = (editorialCommunityId: string) => Promise<Array<ReviewedArticle>>;
 
