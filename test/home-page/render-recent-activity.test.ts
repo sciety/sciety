@@ -56,4 +56,41 @@ describe('render-recent-activity', (): void => {
       added: new Date('2020-05-20T00:00:00Z'),
     });
   });
+
+  describe('an article is unavailable', () => {
+    it.skip('omits the entry', async () => {
+      const reviewReferences = async (): Promise<Array<ReviewReference>> => [
+        {
+          articleVersionDoi: new Doi('10.1101/642017'),
+          editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
+          added: new Date('2020-05-20T00:00:00Z'),
+        },
+        {
+          articleVersionDoi: new Doi('10.1101/815689'),
+          editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
+          added: new Date('2020-05-19T00:00:00Z'),
+        },
+      ];
+      const fetchArticle: FetchArticle = async (doi) => {
+        if (doi.value === '10.1101/642017') {
+          return Maybe.nothing();
+        }
+        return Maybe.just({
+          doi,
+          title: `Article ${doi}`,
+        });
+      };
+
+      const editorialCommunities = async (): Promise<Array<EditorialCommunity>> => [
+        {
+          id: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
+          name: 'eLife',
+        },
+      ];
+      const viewModel = await createDiscoverRecentActivity(reviewReferences, fetchArticle, editorialCommunities)(2);
+
+      expect(viewModel).toHaveLength(1);
+      expect(viewModel[0].articleDoi).toMatchObject(new Doi('10.1101/815689'));
+    });
+  });
 });

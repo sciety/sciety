@@ -39,41 +39,24 @@ export const createDiscoverRecentActivity = (
   editorialCommunities: GetEditorialCommunities,
 ) => (
   async (limit: number): Promise<Array<RecentReview>> => {
-    const mostRecentReviewReferences = (await reviewReferences())
-      .sort((a, b) => b.added.getTime() - a.added.getTime())
-      .slice(0, limit);
-
-    const articleVersionDois = mostRecentReviewReferences
-      .map((reviewReference) => reviewReference.articleVersionDoi);
-
-    const articles = await Promise
-      .all(articleVersionDois.map(fetchArticle))
-      .then((fetchedArticles): Record<string, FetchedArticle> => (
-        fetchedArticles.reduce((fetchedArticlesMap, fetchedArticle) => {
-          const unwrappedFetchedArticle = fetchedArticle.unsafelyUnwrap();
-
-          return {
-            ...fetchedArticlesMap,
-            [unwrappedFetchedArticle.doi.value]: unwrappedFetchedArticle,
-          };
-        }, {})
-      ));
-
     const editorialCommunityNames: Record<string, string> = (await editorialCommunities())
       .reduce((accumulator, editorialCommunity) => ({
         ...accumulator,
         [editorialCommunity.id]: editorialCommunity.name,
       }), {});
 
-    const mostRecentReviews: Array<RecentReview> = mostRecentReviewReferences.map((reviewReference) => ({
-      articleDoi: reviewReference.articleVersionDoi,
-      articleTitle: articles[reviewReference.articleVersionDoi.value].title,
-      editorialCommunityId: reviewReference.editorialCommunityId,
-      editorialCommunityName: editorialCommunityNames[reviewReference.editorialCommunityId],
-      added: reviewReference.added,
-    }));
+    const mostRecentReviews = (await reviewReferences())
+      .sort((a, b) => b.added.getTime() - a.added.getTime())
+      .slice(0, limit)
+      .map(async (reviewReference) => ({
+        articleDoi: reviewReference.articleVersionDoi,
+        articleTitle: (await fetchArticle(reviewReference.articleVersionDoi)).unsafelyUnwrap().title,
+        editorialCommunityId: reviewReference.editorialCommunityId,
+        editorialCommunityName: editorialCommunityNames[reviewReference.editorialCommunityId],
+        added: reviewReference.added,
+      }));
 
-    return mostRecentReviews;
+    return Promise.all(mostRecentReviews);
   }
 );
 
