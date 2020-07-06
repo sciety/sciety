@@ -1,6 +1,6 @@
 import debug, { Debugger } from 'debug';
 
-type Level = 'debug' | 'warn' | 'error';
+type Level = 'debug' | 'info' | 'warn' | 'error';
 
 export type Logger = (level: Level, message: string, payload?: Record<string, unknown>) => void;
 

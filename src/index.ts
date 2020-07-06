@@ -70,7 +70,7 @@ const adapters: Adapters = {
 
 const router = createRouter(adapters);
 
-const server = createServer(router);
+const server = createServer(router, logger);
 
 const terminusOptions: TerminusOptions = {
   onShutdown: async (): Promise<void> => {
