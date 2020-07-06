@@ -107,8 +107,8 @@ export default (makeHttpRequest: MakeHttpRequest, logger: Logger): FetchCrossref
       return Result.err('not-found');
     }
 
-    const doc = new DOMParser().parseFromString(response, 'text/xml');
     try {
+      const doc = new DOMParser().parseFromString(response, 'text/xml');
       return Result.ok({
         abstract: getAbstract(doc, doi),
         authors: getAuthors(doc, doi),

@@ -237,4 +237,14 @@ describe('fetch-crossref-article', (): void => {
       expect(result.isErr()).toBe(true);
     });
   });
+
+  describe('crossref returns an invalid XML document', (): void => {
+    it('throws an error', async () => {
+      const doi = new Doi('10.1101/339747');
+      const makeHttpRequest: MakeHttpRequest = async () => '';
+      const fetcher = createFetchCrossrefArticle(makeHttpRequest, dummyLogger);
+
+      await expect(fetcher(doi)).rejects.toThrow(/Cannot read property 'getElementsByTagName' of undefined/);
+    });
+  });
 });
