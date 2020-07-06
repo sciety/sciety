@@ -5,20 +5,24 @@ import Koa, { ExtendableContext, Next, ParameterizedContext } from 'koa';
 import mount from 'koa-mount';
 import send from 'koa-send';
 import { Logger } from './logger';
+import { v4 as uuidv4 } from 'uuid';
 
 export default (router: Router, logger: Logger): Server => {
   const app = new Koa();
 
   app.use(async ({ request, response }: ExtendableContext, next: Next): Promise<void> => {
+    const requestId = uuidv4();
     logger('info', 'Received HTTP request', {
       method: request.method,
       url: request.url,
+      requestId: requestId,
     });
     try {
       await next();
     } finally {
       logger('info', 'Sent HTTP response', {
         status: response.status,
+        requestId: requestId,
       });
     }
   });
