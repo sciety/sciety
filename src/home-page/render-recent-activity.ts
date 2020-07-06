@@ -7,7 +7,7 @@ type RenderRecentActivity = (limit: number) => Promise<string>;
 
 export interface RecentReview {
   articleDoi: Doi;
-  articleTitle: string;
+  articleTitle: Maybe<string>;
   editorialCommunityId: string;
   editorialCommunityName: string;
   added: Date;
@@ -48,27 +48,35 @@ export const createDiscoverRecentActivity = (
     const mostRecentReviews = (await reviewReferences())
       .sort((a, b) => b.added.getTime() - a.added.getTime())
       .slice(0, limit)
-      .map(async (reviewReference) => ({
-        articleDoi: reviewReference.articleVersionDoi,
-        articleTitle: (await fetchArticle(reviewReference.articleVersionDoi)).unsafelyUnwrap().title,
-        editorialCommunityId: reviewReference.editorialCommunityId,
-        editorialCommunityName: editorialCommunityNames[reviewReference.editorialCommunityId],
-        added: reviewReference.added,
-      }));
+      .map(async (reviewReference) => {
+        const article = await fetchArticle(reviewReference.articleVersionDoi);
+        return {
+          articleDoi: reviewReference.articleVersionDoi,
+          articleTitle: article.map((a) => a.title),
+          editorialCommunityId: reviewReference.editorialCommunityId,
+          editorialCommunityName: editorialCommunityNames[reviewReference.editorialCommunityId],
+          added: reviewReference.added,
+        };
+      });
 
     return Promise.all(mostRecentReviews);
   }
 );
 
-const templateRecentReview = (review: RecentReview): string => (`
-  <div class="content">
-    <div class="summary">
-      <a href="/articles/${review.articleDoi}">${review.articleTitle}</a>
-      reviewed by <a href="/editorial-communities/${review.editorialCommunityId}">${review.editorialCommunityName}</a>
-      <time datetime="${toString(review.added)}" title="${toDisplayString(review.added)}" class="date">recently</time>
+const templateRecentReview = (review: RecentReview): string => {
+  if (review.articleTitle.isNothing()) {
+    return '';
+  }
+  return `
+    <div class="content">
+      <div class="summary">
+        <a href="/articles/${review.articleDoi}">${review.articleTitle}</a>
+        reviewed by <a href="/editorial-communities/${review.editorialCommunityId}">${review.editorialCommunityName}</a>
+        <time datetime="${toString(review.added)}" title="${toDisplayString(review.added)}" class="date">recently</time>
+      </div>
     </div>
-  </div>
-`);
+  `;
+};
 
 const templateMostRecentReviews = (reviews: Array<RecentReview>): string => (`
   <section>
