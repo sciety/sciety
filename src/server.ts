@@ -43,6 +43,8 @@ export default (router: Router, logger: Logger): Server => {
   }));
   app.use(router.middleware());
 
+  app.on('error', (error) => logger('error', 'Unhandled Error', { error }));
+
   // eslint-disable-next-line @typescript-eslint/no-misused-promises -- https://github.com/DefinitelyTyped/DefinitelyTyped/issues/40070
   const server = createServer(app.callback());
 
