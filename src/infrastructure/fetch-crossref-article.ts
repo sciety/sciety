@@ -3,7 +3,7 @@ import { DOMParser } from 'xmldom';
 import { Logger } from '../logger';
 import Doi from '../types/doi';
 
-type FetchCrossrefArticleError = 'not-found';
+type FetchCrossrefArticleError = 'not-found' | 'unavailable';
 
 export type FetchCrossrefArticle = (doi: Doi) => Promise<Result<{
   abstract: string;
@@ -118,7 +118,8 @@ export default (makeHttpRequest: MakeHttpRequest, logger: Logger): FetchCrossref
       });
     } catch (error) {
       logger('error', 'Unable to parse document', { doi, response, error });
-      throw error;
+
+      return Result.err('unavailable');
     }
   };
 };

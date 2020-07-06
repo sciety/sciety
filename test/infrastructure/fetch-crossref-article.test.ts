@@ -235,6 +235,7 @@ describe('fetch-crossref-article', (): void => {
       const result = await createFetchCrossrefArticle(makeHttpRequest, dummyLogger)(doi);
 
       expect(result.isErr()).toBe(true);
+      expect(result.unsafelyUnwrapErr()).toBe('not-found');
     });
   });
 
@@ -242,9 +243,10 @@ describe('fetch-crossref-article', (): void => {
     it('throws an error', async () => {
       const doi = new Doi('10.1101/339747');
       const makeHttpRequest: MakeHttpRequest = async () => '';
-      const fetcher = createFetchCrossrefArticle(makeHttpRequest, dummyLogger);
+      const result = await createFetchCrossrefArticle(makeHttpRequest, dummyLogger)(doi);
 
-      await expect(fetcher(doi)).rejects.toThrow(/Cannot read property 'getElementsByTagName' of undefined/);
+      expect(result.isErr()).toBe(true);
+      expect(result.unsafelyUnwrapErr()).toBe('unavailable');
     });
   });
 });
