@@ -94,6 +94,10 @@ export default (makeHttpRequest: MakeHttpRequest, logger: Logger): FetchCrossref
     return new Date(`${year}-${month}-${day}`);
   };
 
+  const parser = new DOMParser({
+    errorHandler: (_, msg) => { throw msg; },
+  });
+
   return async (doi) => {
     const uri = `https://doi.org/${doi.value}`;
     logger('debug', 'Fetching Crossref article', { uri });
@@ -108,7 +112,7 @@ export default (makeHttpRequest: MakeHttpRequest, logger: Logger): FetchCrossref
     }
 
     try {
-      const doc = new DOMParser().parseFromString(response, 'text/xml');
+      const doc = parser.parseFromString(response, 'text/xml');
       return Result.ok({
         abstract: getAbstract(doc, doi),
         authors: getAuthors(doc, doi),
