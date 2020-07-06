@@ -1,3 +1,4 @@
+import { Maybe } from 'true-myth';
 import { toDisplayString, toString } from '../templates/date';
 import templateListItems from '../templates/list-items';
 import Doi from '../types/doi';
@@ -29,7 +30,7 @@ export interface EditorialCommunity {
 }
 
 export type GetReviewReferences = () => Promise<Array<ReviewReference>>;
-export type FetchArticle = (doi: Doi) => Promise<FetchedArticle>;
+export type FetchArticle = (doi: Doi) => Promise<Maybe<FetchedArticle>>;
 export type GetEditorialCommunities = () => Promise<Array<EditorialCommunity>>;
 
 export const createDiscoverRecentActivity = (
@@ -48,10 +49,14 @@ export const createDiscoverRecentActivity = (
     const articles = await Promise
       .all(articleVersionDois.map(fetchArticle))
       .then((fetchedArticles): Record<string, FetchedArticle> => (
-        fetchedArticles.reduce((fetchedArticlesMap, fetchedArticle) => ({
-          ...fetchedArticlesMap,
-          [fetchedArticle.doi.value]: fetchedArticle,
-        }), {})
+        fetchedArticles.reduce((fetchedArticlesMap, fetchedArticle) => {
+          const unwrappedFetchedArticle = fetchedArticle.unsafelyUnwrap();
+
+          return {
+            ...fetchedArticlesMap,
+            [unwrappedFetchedArticle.doi.value]: unwrappedFetchedArticle,
+          };
+        }, {})
       ));
 
     const editorialCommunityNames: Record<string, string> = (await editorialCommunities())

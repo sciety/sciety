@@ -1,7 +1,8 @@
+import { Maybe } from 'true-myth';
 import {
   createDiscoverRecentActivity,
   EditorialCommunity,
-  FetchedArticle,
+  FetchArticle,
   ReviewReference,
 } from '../../src/home-page/render-recent-activity';
 import Doi from '../../src/types/doi';
@@ -25,7 +26,7 @@ describe('render-recent-activity', (): void => {
         added: new Date('2020-05-21T00:00:00Z'),
       },
     ];
-    const fetchArticle = async (doi: Doi): Promise<FetchedArticle> => Promise.resolve({
+    const fetchArticle: FetchArticle = async (doi) => Maybe.just({
       doi,
       title: `Article ${doi}`,
     });

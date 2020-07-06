@@ -7,7 +7,7 @@ const raiseFetchArticleErrors = (fetchArticle: Adapters['fetchArticle']): FetchA
   async (doi) => {
     const result = await fetchArticle(doi);
 
-    return result.unsafelyUnwrap();
+    return result.toMaybe();
   }
 );
 
