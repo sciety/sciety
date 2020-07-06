@@ -64,13 +64,14 @@ export const createDiscoverRecentActivity = (
 );
 
 const templateRecentReview = (review: RecentReview): string => {
-  if (review.articleTitle.isNothing()) {
+  const title = review.articleTitle.unwrapOr('');
+  if (!title) {
     return '';
   }
   return `
     <div class="content">
       <div class="summary">
-        <a href="/articles/${review.articleDoi}">${review.articleTitle}</a>
+        <a href="/articles/${review.articleDoi}">${title}</a>
         reviewed by <a href="/editorial-communities/${review.editorialCommunityId}">${review.editorialCommunityName}</a>
         <time datetime="${toString(review.added)}" title="${toDisplayString(review.added)}" class="date">recently</time>
       </div>
