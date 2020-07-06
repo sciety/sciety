@@ -95,7 +95,9 @@ export default (makeHttpRequest: MakeHttpRequest, logger: Logger): FetchCrossref
   };
 
   const parser = new DOMParser({
-    errorHandler: (_, msg) => { throw msg; },
+    errorHandler: (_, msg) => {
+      throw msg;
+    },
   });
 
   return async (doi) => {
