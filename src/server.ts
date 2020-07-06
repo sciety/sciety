@@ -17,12 +17,25 @@ export default (router: Router, logger: Logger): Server => {
       url: request.url,
       requestId,
     });
-    res.on('finish', () => {
+
+    res.once('finish', () => {
       logger('info', 'Sent HTTP response', {
         status: res.statusCode,
         requestId,
       });
     });
+
+    res.once('close', () => {
+      if (res.writableFinished) {
+        return;
+      }
+
+      logger('info', 'HTTP response not completely sent', {
+        status: res.statusCode,
+        requestId,
+      });
+    });
+
     await next();
   });
   app.use(mount('/static', async (context: ParameterizedContext): Promise<void> => {
