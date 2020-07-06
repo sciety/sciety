@@ -28,10 +28,6 @@ spec:
             - name: http
               containerPort: 80
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /ping
-              port: http
           readinessProbe:
             httpGet:
               path: /ping
