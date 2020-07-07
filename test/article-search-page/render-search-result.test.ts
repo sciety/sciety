@@ -1,7 +1,7 @@
 import { Maybe } from 'true-myth';
 import createRenderSearchResult, {
   GetCommentCount,
-  GetEndorsingEditorialCommunities,
+  GetEndorsingEditorialCommunityNames,
   GetReviewCount,
   SearchResult,
 } from '../../src/article-search-page/render-search-result';
@@ -16,7 +16,7 @@ const searchResult: SearchResult = {
 
 const arbitraryCommentCount: GetCommentCount = async () => Maybe.nothing();
 const arbitraryReviewCount: GetReviewCount = async () => 0;
-const arbitraryEndorsingEditorialCommunities: GetEndorsingEditorialCommunities = async () => [];
+const arbitraryEndorsingEditorialCommunities: GetEndorsingEditorialCommunityNames = async () => [];
 
 describe('render-search-result component', (): void => {
   it('displays title and authors', async (): Promise<void> => {
@@ -110,11 +110,11 @@ describe('render-search-result component', (): void => {
 
   describe('a list of endorsing editorial communities is available', (): void => {
     it('displays the endorsing editorial communities', async (): Promise<void> => {
-      const getEndorsingEditorialCommunities: GetEndorsingEditorialCommunities = async () => ['PeerJ', 'eLife'];
+      const getEndorsingEditorialCommunityNames: GetEndorsingEditorialCommunityNames = async () => ['PeerJ', 'eLife'];
       const rendered = await createRenderSearchResult(
         arbitraryCommentCount,
         arbitraryReviewCount,
-        getEndorsingEditorialCommunities,
+        getEndorsingEditorialCommunityNames,
       )(searchResult);
 
       expect(rendered).toStrictEqual(expect.stringMatching(/Endorsed by[\s\S]*?PeerJ/));
@@ -124,11 +124,11 @@ describe('render-search-result component', (): void => {
 
   describe('the list of endorsing editorial communities is empty', (): void => {
     it('displays the endorsing editorial communities', async (): Promise<void> => {
-      const getEndorsingEditorialCommunities: GetEndorsingEditorialCommunities = async () => [];
+      const getEndorsingEditorialCommunityNames: GetEndorsingEditorialCommunityNames = async () => [];
       const rendered = await createRenderSearchResult(
         arbitraryCommentCount,
         arbitraryReviewCount,
-        getEndorsingEditorialCommunities,
+        getEndorsingEditorialCommunityNames,
       )(searchResult);
 
       expect(rendered).toStrictEqual(expect.not.stringContaining('Endorsed by'));

@@ -14,13 +14,13 @@ const buildRenderSearchResult = (
   getReviewCount: GetReviewCount,
   getEditorialCommunity: (id: string) => Promise<{ name: string }>,
 ): RenderSearchResult => {
-  const getEndorsingEditorialCommunities = createGetHardCodedEndorsingEditorialCommunities(
+  const getEndorsingEditorialCommunityNames = createGetHardCodedEndorsingEditorialCommunities(
     async (id) => (await getEditorialCommunity(id)).name,
   );
   return createRenderSearchResult(
     getCommentCount,
     getReviewCount,
-    getEndorsingEditorialCommunities,
+    getEndorsingEditorialCommunityNames,
   );
 };
 

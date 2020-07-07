@@ -11,7 +11,7 @@ export interface SearchResult {
 
 export type GetCommentCount = (doi: Doi) => Promise<Maybe<number>>;
 export type GetReviewCount = (doi: Doi) => Promise<number>;
-export type GetEndorsingEditorialCommunities = (doi: Doi) => Promise<Array<string>>;
+export type GetEndorsingEditorialCommunityNames = (doi: Doi) => Promise<Array<string>>;
 
 export type RenderSearchResult = (result: SearchResult) => Promise<string>;
 
@@ -52,10 +52,10 @@ const createRenderComments = (
 );
 
 const createRenderEndorsements = (
-  getEndorsingEditorialCommunities: GetEndorsingEditorialCommunities,
+  getEndorsingEditorialCommunityNames: GetEndorsingEditorialCommunityNames,
 ) => (
   async (doi: Doi): Promise<string> => {
-    const endorsingEditorialCommunities = await getEndorsingEditorialCommunities(doi);
+    const endorsingEditorialCommunities = await getEndorsingEditorialCommunityNames(doi);
     if (endorsingEditorialCommunities.length === 0) {
       return '';
     }
@@ -75,11 +75,11 @@ const templatePostedDate = (date: Date): string => (
 export default (
   getCommentCount: GetCommentCount,
   getReviewCount: GetReviewCount,
-  getEndorsingEditorialCommunities: GetEndorsingEditorialCommunities,
+  getEndorsingEditorialCommunityNames: GetEndorsingEditorialCommunityNames,
 ): RenderSearchResult => {
   const renderReviews = createRenderReviews(getReviewCount);
   const renderCommentCount = createRenderComments(getCommentCount);
-  const renderEndorsements = createRenderEndorsements(getEndorsingEditorialCommunities);
+  const renderEndorsements = createRenderEndorsements(getEndorsingEditorialCommunityNames);
 
   return async (result) => `
     <div class="content">
