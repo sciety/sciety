@@ -8,7 +8,6 @@ import createRenderSearchResult, {
 } from './render-search-result';
 import createRenderSearchResults, { RenderSearchResults } from './render-search-results';
 import createSearchEuropePmc from './search-europe-pmc';
-import createEndorsementsRepository from '../infrastructure/in-memory-endorsements-repository';
 import { Adapters } from '../types/adapters';
 import EndorsementsRepository from '../types/endorsements-repository';
 import { Json } from '../types/json';
@@ -48,7 +47,7 @@ export default (adapters: Adapters): Middleware => {
     adapters.getBiorxivCommentCount,
     getReviewCount,
     async (editorialCommunityId) => (await adapters.editorialCommunities.lookup(editorialCommunityId)).unsafelyUnwrap(),
-    createEndorsementsRepository(),
+    adapters.endorsements,
   );
   const renderSearchResults = buildRenderSearchResults(adapters.getJson, renderSearchResult);
 

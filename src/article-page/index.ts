@@ -13,11 +13,9 @@ import createRenderPageHeader, {
 import createRenderReview, { GetEditorialCommunityName as GetEditorialCommunityNameForRenderReview } from './render-review';
 import createRenderReviews, { RenderReviews } from './render-reviews';
 import validateBiorxivDoi from './validate-biorxiv-doi';
-import createEndorsementsRepository from '../infrastructure/in-memory-endorsements-repository';
 import { Adapters } from '../types/adapters';
 import Doi from '../types/doi';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
-import EndorsementsRepository from '../types/endorsements-repository';
 
 const reviewsId = 'reviews';
 
@@ -37,10 +35,7 @@ const handleFetchArticleErrors = (fetchArticle: Adapters['fetchArticle']): GetAr
   }
 );
 
-const buildRenderPageHeader = (
-  adapters: Adapters,
-  endorsements: EndorsementsRepository,
-): RenderPageHeader => {
+const buildRenderPageHeader = (adapters: Adapters): RenderPageHeader => {
   const getArticleDetailsAdapter: GetArticleDetails = handleFetchArticleErrors(adapters.fetchArticle);
   const reviewCountAdapter: GetReviewCount = async (articleDoi) => (
     (await adapters.reviewReferenceRepository.findReviewsForArticleVersionDoi(articleDoi)).length
@@ -49,7 +44,7 @@ const buildRenderPageHeader = (
     (await adapters.editorialCommunities.lookup(editorialCommunityId)).unsafelyUnwrap().name
   );
   const getEndorsingEditorialCommunityNames: GetEndorsingEditorialCommunityNames = async (doi) => (
-    Promise.all((await endorsements.endorsingEditorialCommunityIds(doi)).map(getEditorialCommunityName))
+    Promise.all((await adapters.endorsements.endorsingEditorialCommunityIds(doi)).map(getEditorialCommunityName))
   );
   return createRenderPageHeader(
     getArticleDetailsAdapter,
@@ -87,7 +82,7 @@ const buildRenderReviews = (adapters: Adapters): RenderReviews => {
 };
 
 export default (adapters: Adapters): Middleware => {
-  const renderPageHeader = buildRenderPageHeader(adapters, createEndorsementsRepository());
+  const renderPageHeader = buildRenderPageHeader(adapters);
   const renderAbstract = buildRenderAbstract(handleFetchArticleErrors(adapters.fetchArticle));
   const renderAddReviewForm = buildRenderAddReviewForm(adapters.editorialCommunities);
   const renderReviews = buildRenderReviews(adapters);

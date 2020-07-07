@@ -12,6 +12,7 @@ import createFetchReview from '../../src/infrastructure/fetch-review';
 import createGetBiorxivCommentCount from '../../src/infrastructure/get-biorxiv-comment-count';
 import createGetDisqusPostCount from '../../src/infrastructure/get-disqus-post-count';
 import createEditorialCommunityRepository from '../../src/infrastructure/in-memory-editorial-communities';
+import createEndorsementsRepository from '../../src/infrastructure/in-memory-endorsements-repository';
 import createReviewReferenceRepository from '../../src/infrastructure/in-memory-review-references';
 import createRouter from '../../src/router';
 import createServer from '../../src/server';
@@ -65,6 +66,7 @@ export default async (): Promise<TestServer> => {
     fetchReview,
     fetchStaticFile: async (filename: string) => `Contents of ${filename}`,
     editorialCommunities,
+    endorsements: createEndorsementsRepository(),
     reviewReferenceRepository,
     getJson,
   };

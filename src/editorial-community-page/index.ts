@@ -6,7 +6,6 @@ import createRenderEndorsedArticles, { GetEndorsedArticles, RenderEndorsedArticl
 import createRenderPage, { FetchArticle } from './render-page';
 import createRenderPageHeader, { GetEditorialCommunity, RenderPageHeader } from './render-page-header';
 import createRenderReviewedArticles, { RenderReviewedArticles } from './render-reviewed-articles';
-import createEndorsementsRepository from '../infrastructure/in-memory-endorsements-repository';
 import { Adapters } from '../types/adapters';
 import Doi from '../types/doi';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
@@ -70,7 +69,7 @@ const buildRenderReviewedArticles = (
 export default (adapters: Adapters): Middleware => {
   const fetchArticle = raiseFetchArticleErrors(adapters.fetchArticle);
   const renderPageHeader = buildRenderPageHeader(adapters.editorialCommunities);
-  const renderEndorsedArticles = buildRenderEndorsedArticles(createEndorsementsRepository(), fetchArticle);
+  const renderEndorsedArticles = buildRenderEndorsedArticles(adapters.endorsements, fetchArticle);
   const renderReviewedArticles = buildRenderReviewedArticles(fetchArticle, adapters.reviewReferenceRepository);
 
   const renderPage = createRenderPage(

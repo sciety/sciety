@@ -8,6 +8,7 @@ import createFetchStaticFile from './fetch-static-file';
 import createGetBiorxivCommentCount from './get-biorxiv-comment-count';
 import createGetDisqusPostCount from './get-disqus-post-count';
 import createEditorialCommunityRepository from './in-memory-editorial-communities';
+import createEndorsementsRepository from './in-memory-endorsements-repository';
 import createReviewReferenceRepository from './in-memory-review-references';
 import bootstrapReviews from '../data/bootstrap-reviews';
 import { Logger } from '../logger';
@@ -62,6 +63,7 @@ const createInfrastructure = (logger: Logger): Adapters => {
     fetchReview: createFetchReview(fetchDataciteReview, fetchHypothesisAnnotation),
     fetchStaticFile: createFetchStaticFile(),
     editorialCommunities,
+    endorsements: createEndorsementsRepository(),
     reviewReferenceRepository: populateReviewReferenceRepository(logger),
     getJson,
   };
