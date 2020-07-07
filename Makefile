@@ -10,7 +10,7 @@ PORT := 8080
 dev: export TARGET = dev
 dev: install build
 	touch .env
-	$(DOCKER) run \
+	$(DOCKER) run -it \
 		-v $(DATA_VOLUME)/src:/app/src:ro \
 		-v $(DATA_VOLUME)/static:/app/static:ro \
 		-p $(PORT):80 \
