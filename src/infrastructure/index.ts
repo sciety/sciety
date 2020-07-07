@@ -10,19 +10,30 @@ import createGetDisqusPostCount from './get-disqus-post-count';
 import createEditorialCommunityRepository from './in-memory-editorial-communities';
 import createEndorsementsRepository from './in-memory-endorsements-repository';
 import createReviewReferenceRepository from './in-memory-review-references';
+import bootstrapEndorsements from '../data/bootstrap-endorsements';
 import bootstrapReviews from '../data/bootstrap-reviews';
 import { Logger } from '../logger';
 import { Adapters } from '../types/adapters';
 import Doi from '../types/doi';
+import EndorsementsRepository from '../types/endorsements-repository';
 import HypothesisAnnotationId from '../types/hypothesis-annotation-id';
 import { ReviewId } from '../types/review-id';
 import ReviewReferenceRepository from '../types/review-reference-repository';
 
 const editorialCommunities = createEditorialCommunityRepository();
 
+const populateEndorsementsRepository = (): EndorsementsRepository => {
+  const repository = createEndorsementsRepository();
+  for (const {
+    article, editorialCommunity,
+  } of bootstrapEndorsements) {
+    void repository.add(new Doi(article), editorialCommunity);
+  }
+  return repository;
+};
+
 const populateReviewReferenceRepository = (logger: Logger): ReviewReferenceRepository => {
   const repository = createReviewReferenceRepository(logger);
-
   for (const {
     article, review, editorialCommunityIndex, added,
   } of bootstrapReviews) {
@@ -63,7 +74,7 @@ const createInfrastructure = (logger: Logger): Adapters => {
     fetchReview: createFetchReview(fetchDataciteReview, fetchHypothesisAnnotation),
     fetchStaticFile: createFetchStaticFile(),
     editorialCommunities,
-    endorsements: createEndorsementsRepository(),
+    endorsements: populateEndorsementsRepository(),
     reviewReferenceRepository: populateReviewReferenceRepository(logger),
     getJson,
   };
