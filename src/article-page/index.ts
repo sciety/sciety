@@ -13,7 +13,7 @@ import createRenderPageHeader, {
 import createRenderReview, { GetEditorialCommunityName as GetEditorialCommunityNameForRenderReview } from './render-review';
 import createRenderReviews, { RenderReviews } from './render-reviews';
 import validateBiorxivDoi from './validate-biorxiv-doi';
-import endorsements from '../bootstrap-endorsements';
+import { endorsingEditorialCommunityIds } from '../infrastructure/in-memory-endorsements-repository';
 import { Adapters } from '../types/adapters';
 import Doi from '../types/doi';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
@@ -41,22 +41,17 @@ const buildRenderPageHeader = (adapters: Adapters): RenderPageHeader => {
   const reviewCountAdapter: GetReviewCount = async (articleDoi) => (
     (await adapters.reviewReferenceRepository.findReviewsForArticleVersionDoi(articleDoi)).length
   );
-  const createGetEndorsingEditorialCommunityNames = (
-    getEditorialCommunityName: GetEditorialCommunityName,
-  ): GetEndorsingEditorialCommunityNames => (
-    async (doi) => {
-      const endorsingEditorialCommunityIds = endorsements[doi.value] ?? [];
-      return Promise.all(endorsingEditorialCommunityIds.map(getEditorialCommunityName));
-    }
-  );
   const getEditorialCommunityName: GetEditorialCommunityName = async (editorialCommunityId) => (
     (await adapters.editorialCommunities.lookup(editorialCommunityId)).unsafelyUnwrap().name
+  );
+  const getEndorsingEditorialCommunityNames: GetEndorsingEditorialCommunityNames = async (doi) => (
+    Promise.all((await endorsingEditorialCommunityIds(doi)).map(getEditorialCommunityName))
   );
   return createRenderPageHeader(
     getArticleDetailsAdapter,
     reviewCountAdapter,
     adapters.getBiorxivCommentCount,
-    createGetEndorsingEditorialCommunityNames(getEditorialCommunityName),
+    getEndorsingEditorialCommunityNames,
     `#${reviewsId}`,
   );
 };
