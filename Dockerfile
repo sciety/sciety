@@ -1,4 +1,4 @@
-FROM node:12.16.2-alpine3.11 AS node
+FROM node:14.5.0-alpine3.12 AS node
 ENV NODE_OPTIONS --unhandled-rejections=strict
 WORKDIR /app
 
