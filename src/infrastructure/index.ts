@@ -9,7 +9,7 @@ import createGetBiorxivCommentCount from './get-biorxiv-comment-count';
 import createGetDisqusPostCount from './get-disqus-post-count';
 import createEditorialCommunityRepository from './in-memory-editorial-communities';
 import createReviewReferenceRepository from './in-memory-review-references';
-import bootstrapReviews from '../bootstrap-reviews';
+import bootstrapReviews from '../data/bootstrap-reviews';
 import { Logger } from '../logger';
 import { Adapters } from '../types/adapters';
 import Doi from '../types/doi';

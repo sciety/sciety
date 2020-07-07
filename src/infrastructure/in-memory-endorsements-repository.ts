@@ -1,4 +1,4 @@
-import endorsements from '../bootstrap-endorsements';
+import endorsements from '../data/bootstrap-endorsements';
 import Doi from '../types/doi';
 
 type GetEndorsingEditorialCommunityIds = (doi: Doi) => Promise<Array<string>>;
