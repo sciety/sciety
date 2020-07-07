@@ -6,9 +6,9 @@ import { createDebugLogger } from './logger';
 import createRouter from './router';
 import createServer from './server';
 
-const asyncLocalStorage = new AsyncLocalStorage<string>();
+const requestIdStorage = new AsyncLocalStorage<string>();
 
-const logger = createDebugLogger(() => Maybe.of(asyncLocalStorage.getStore()));
+const logger = createDebugLogger(() => Maybe.of(requestIdStorage.getStore()));
 
 logger('debug', 'Starting server');
 
@@ -16,7 +16,11 @@ const adapters = createInfrastructure(logger);
 
 const router = createRouter(adapters);
 
-const server = createServer(router, logger, asyncLocalStorage);
+const server = createServer(
+  router,
+  logger,
+  (requestId) => requestIdStorage.enterWith(requestId),
+);
 
 const terminusOptions: TerminusOptions = {
   onShutdown: async (): Promise<void> => {

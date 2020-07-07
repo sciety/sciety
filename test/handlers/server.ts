@@ -1,4 +1,3 @@
-import { AsyncLocalStorage } from 'async_hooks';
 import { Server } from 'http';
 import { literal, namedNode } from '@rdfjs/data-model';
 import { schema } from '@tpluscode/rdf-ns-builders';
@@ -72,7 +71,7 @@ export default async (): Promise<TestServer> => {
 
   const router = createRouter(adapters);
   return {
-    server: createServer(router, dummyLogger, new AsyncLocalStorage<string>()),
+    server: createServer(router, dummyLogger, () => {}),
     editorialCommunities,
     reviewReferenceRepository,
   };
