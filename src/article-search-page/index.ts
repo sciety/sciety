@@ -8,8 +8,9 @@ import createRenderSearchResult, {
 } from './render-search-result';
 import createRenderSearchResults, { RenderSearchResults } from './render-search-results';
 import createSearchEuropePmc from './search-europe-pmc';
-import { endorsingEditorialCommunityIds } from '../infrastructure/in-memory-endorsements-repository';
+import createEndorsementsRepository from '../infrastructure/in-memory-endorsements-repository';
 import { Adapters } from '../types/adapters';
+import EndorsementsRepository from '../types/endorsements-repository';
 import { Json } from '../types/json';
 
 type GetJson = (uri: string) => Promise<Json>;
@@ -18,9 +19,10 @@ const buildRenderSearchResult = (
   getCommentCount: GetCommentCount,
   getReviewCount: GetReviewCount,
   getEditorialCommunity: (id: string) => Promise<{ name: string }>,
+  endorsements: EndorsementsRepository,
 ): RenderSearchResult => {
   const getEndorsingEditorialCommunityNames: GetEndorsingEditorialCommunityNames = async (doi) => {
-    const editorialCommunityIds = await endorsingEditorialCommunityIds(doi);
+    const editorialCommunityIds = await endorsements.endorsingEditorialCommunityIds(doi);
     return Promise.all(editorialCommunityIds.map(async (id) => (await getEditorialCommunity(id)).name));
   };
   return createRenderSearchResult(
@@ -46,6 +48,7 @@ export default (adapters: Adapters): Middleware => {
     adapters.getBiorxivCommentCount,
     getReviewCount,
     async (editorialCommunityId) => (await adapters.editorialCommunities.lookup(editorialCommunityId)).unsafelyUnwrap(),
+    createEndorsementsRepository(),
   );
   const renderSearchResults = buildRenderSearchResults(adapters.getJson, renderSearchResult);
 
