@@ -1,7 +1,12 @@
 import templateListItems from '../templates/list-items';
 import Doi from '../types/doi';
 
-type RenderEndorsedArticle = (endorsedArticle: {doi: Doi; title: string}) => Promise<string>;
+interface EndorsedArticle {
+  doi: Doi;
+  title: string;
+}
+
+type RenderEndorsedArticle = (endorsedArticle: EndorsedArticle) => Promise<string>;
 
 const renderEndorsedArticle: RenderEndorsedArticle = async (endorsedArticle) => `
   <div class="content">
@@ -11,9 +16,7 @@ const renderEndorsedArticle: RenderEndorsedArticle = async (endorsedArticle) => 
 
 export type RenderEndorsedArticles = (editorialCommunityId: string) => Promise<string>;
 
-export type GetEndorsedArticles = (editorialCommunityId: string) => Promise<Array<{doi: Doi; title: string}>>;
-
-export type GetArticleTitle = (doi: Doi) => Promise<string>;
+export type GetEndorsedArticles = (editorialCommunityId: string) => Promise<Array<EndorsedArticle>>;
 
 export default (
   getEndorsedArticles: GetEndorsedArticles,

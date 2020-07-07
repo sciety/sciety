@@ -2,11 +2,7 @@ import { Middleware, RouterContext } from '@koa/router';
 import { NotFound } from 'http-errors';
 import { Next } from 'koa';
 import createGetReviewedArticlesFromReviewReferences from './get-reviewed-articles-from-review-references';
-import createRenderEndorsedArticles, {
-  GetArticleTitle,
-  GetEndorsedArticles,
-  RenderEndorsedArticles,
-} from './render-endorsed-articles';
+import createRenderEndorsedArticles, { GetEndorsedArticles, RenderEndorsedArticles } from './render-endorsed-articles';
 import createRenderPage, { FetchArticle } from './render-page';
 import createRenderPageHeader, { GetEditorialCommunity, RenderPageHeader } from './render-page-header';
 import createRenderReviewedArticles, { RenderReviewedArticles } from './render-reviewed-articles';
@@ -34,6 +30,8 @@ const buildRenderPageHeader = (editorialCommunities: EditorialCommunityRepositor
   };
   return createRenderPageHeader(getEditorialCommunity);
 };
+
+type GetArticleTitle = (doi: Doi) => Promise<string>;
 
 export const createGetHardCodedEndorsedArticles = (getArticleTitle: GetArticleTitle): GetEndorsedArticles => (
   async (editorialCommunityId) => {
