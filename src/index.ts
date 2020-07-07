@@ -1,5 +1,6 @@
 import { AsyncLocalStorage } from 'async_hooks';
 import { createTerminus, TerminusOptions } from '@godaddy/terminus';
+import { Maybe } from 'true-myth';
 import createInfrastructure from './infrastructure';
 import { createDebugLogger } from './logger';
 import createRouter from './router';
@@ -7,7 +8,7 @@ import createServer from './server';
 
 const asyncLocalStorage = new AsyncLocalStorage<string>();
 
-const logger = createDebugLogger(asyncLocalStorage);
+const logger = createDebugLogger(() => Maybe.of(asyncLocalStorage.getStore()));
 
 logger('debug', 'Starting server');
 
