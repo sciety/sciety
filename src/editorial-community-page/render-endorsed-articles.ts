@@ -1,18 +1,5 @@
+import renderEndorsedArticle, { EndorsedArticle } from './render-endorsed-article';
 import templateListItems from '../templates/list-items';
-import Doi from '../types/doi';
-
-interface EndorsedArticle {
-  doi: Doi;
-  title: string;
-}
-
-type RenderEndorsedArticle = (endorsedArticle: EndorsedArticle) => Promise<string>;
-
-const renderEndorsedArticle: RenderEndorsedArticle = async (endorsedArticle) => `
-  <div class="content">
-    <a href="/articles/${endorsedArticle.doi.value}" class="header">${endorsedArticle.title}</a>
-  </div>
-`;
 
 export type RenderEndorsedArticles = (editorialCommunityId: string) => Promise<string>;
 
