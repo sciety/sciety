@@ -6,10 +6,11 @@ import createRenderEndorsedArticles, { GetEndorsedArticles, RenderEndorsedArticl
 import createRenderPage, { FetchArticle } from './render-page';
 import createRenderPageHeader, { GetEditorialCommunity, RenderPageHeader } from './render-page-header';
 import createRenderReviewedArticles, { RenderReviewedArticles } from './render-reviewed-articles';
-import { endorsedBy } from '../infrastructure/in-memory-endorsements-repository';
+import createEndorsementsRepository from '../infrastructure/in-memory-endorsements-repository';
 import { Adapters } from '../types/adapters';
 import Doi from '../types/doi';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
+import EndorsementsRepository from '../types/endorsements-repository';
 import ReviewReferenceRepository from '../types/review-reference-repository';
 
 const raiseFetchArticleErrors = (fetchArticle: Adapters['fetchArticle']): FetchArticle => (
@@ -32,26 +33,23 @@ const buildRenderPageHeader = (editorialCommunities: EditorialCommunityRepositor
 
 type GetArticleTitle = (doi: Doi) => Promise<string>;
 
-export const createGetHardCodedEndorsedArticles = (getArticleTitle: GetArticleTitle): GetEndorsedArticles => (
-  async (editorialCommunityId) => {
-    const articleDois = await endorsedBy(editorialCommunityId);
-    return Promise.all(articleDois.map(async (articleDoi) => (
-      {
-        doi: articleDoi,
-        title: await getArticleTitle(articleDoi),
-      }
-    )));
-  }
-);
-
 const buildRenderEndorsedArticles = (
+  endorsements: EndorsementsRepository,
   fetchArticle: FetchArticle,
 ): RenderEndorsedArticles => {
   const getArticleTitle: GetArticleTitle = async (articleDoi) => {
     const article = await fetchArticle(articleDoi);
     return article.title;
   };
-  const getEndorsedArticles = createGetHardCodedEndorsedArticles(getArticleTitle);
+  const getEndorsedArticles: GetEndorsedArticles = async (editorialCommunityId) => {
+    const articleDois = await endorsements.endorsedBy(editorialCommunityId);
+    return Promise.all(articleDois.map(async (articleDoi) => (
+      {
+        doi: articleDoi,
+        title: await getArticleTitle(articleDoi),
+      }
+    )));
+  };
   return createRenderEndorsedArticles(getEndorsedArticles);
 };
 
@@ -72,7 +70,7 @@ const buildRenderReviewedArticles = (
 export default (adapters: Adapters): Middleware => {
   const fetchArticle = raiseFetchArticleErrors(adapters.fetchArticle);
   const renderPageHeader = buildRenderPageHeader(adapters.editorialCommunities);
-  const renderEndorsedArticles = buildRenderEndorsedArticles(fetchArticle);
+  const renderEndorsedArticles = buildRenderEndorsedArticles(createEndorsementsRepository(), fetchArticle);
   const renderReviewedArticles = buildRenderReviewedArticles(fetchArticle, adapters.reviewReferenceRepository);
 
   const renderPage = createRenderPage(
