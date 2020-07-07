@@ -2,19 +2,26 @@ import endorsements from '../data/bootstrap-endorsements';
 import Doi from '../types/doi';
 import EndorsementsRepository from '../types/endorsements-repository';
 
+interface Endorsement {
+  article: string;
+  editorialCommunity: string;
+}
+
 export default (): EndorsementsRepository => {
-  const data: Record<string, Array<string> | undefined> = endorsements;
+  const data: Array<Endorsement> = endorsements;
 
   const repository: EndorsementsRepository = {
 
     endorsingEditorialCommunityIds: async (doi) => (
-      data[doi.value] ?? []
+      data
+        .filter((e) => e.article === doi.value)
+        .map((e) => e.editorialCommunity)
     ),
 
     endorsedBy: async (editorialCommunityId) => (
-      Object.entries(data)
-        .filter((entry) => entry[1]?.includes(editorialCommunityId))
-        .map((entry) => new Doi(entry[0]))
+      data
+        .filter((e) => e.editorialCommunity === editorialCommunityId)
+        .map((e) => new Doi(e.article))
     ),
   };
   return repository;
