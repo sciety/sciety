@@ -1,3 +1,4 @@
+import { Logger } from '../logger';
 import Doi from '../types/doi';
 import EndorsementsRepository from '../types/endorsements-repository';
 
@@ -6,7 +7,9 @@ interface Endorsement {
   editorialCommunity: string;
 }
 
-export default (): EndorsementsRepository => {
+export default (
+  logger: Logger,
+): EndorsementsRepository => {
   const data: Array<Endorsement> = [];
 
   const repository: EndorsementsRepository = {
@@ -16,6 +19,7 @@ export default (): EndorsementsRepository => {
         article: doi,
         editorialCommunity: editorialCommunityId,
       });
+      logger('debug', 'Endorsement added', { doi, editorialCommunityId });
     },
 
     endorsingEditorialCommunityIds: async (doi) => (

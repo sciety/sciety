@@ -66,7 +66,7 @@ export default async (): Promise<TestServer> => {
     fetchReview,
     fetchStaticFile: async (filename: string) => `Contents of ${filename}`,
     editorialCommunities,
-    endorsements: createEndorsementsRepository(),
+    endorsements: createEndorsementsRepository(dummyLogger),
     reviewReferenceRepository,
     getJson,
   };

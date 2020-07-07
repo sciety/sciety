@@ -1,6 +1,7 @@
 import createEndorsementsRepository from '../../src/infrastructure/in-memory-endorsements-repository';
 import Doi from '../../src/types/doi';
 import EndorsementsRepository from '../../src/types/endorsements-repository';
+import dummyLogger from '../dummy-logger';
 
 const endorsedArticleDoi = new Doi('10.1101/209320');
 
@@ -8,7 +9,7 @@ describe('in-memory-endorsements-repository', () => {
   let repository: EndorsementsRepository;
 
   beforeEach(async () => {
-    repository = createEndorsementsRepository();
+    repository = createEndorsementsRepository(dummyLogger);
     await repository.add(endorsedArticleDoi, '53ed5364-a016-11ea-bb37-0242ac130002');
   });
 

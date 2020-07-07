@@ -22,8 +22,8 @@ import ReviewReferenceRepository from '../types/review-reference-repository';
 
 const editorialCommunities = createEditorialCommunityRepository();
 
-const populateEndorsementsRepository = (): EndorsementsRepository => {
-  const repository = createEndorsementsRepository();
+const populateEndorsementsRepository = (logger: Logger): EndorsementsRepository => {
+  const repository = createEndorsementsRepository(logger);
   for (const {
     article, editorialCommunity,
   } of bootstrapEndorsements) {
@@ -74,7 +74,7 @@ const createInfrastructure = (logger: Logger): Adapters => {
     fetchReview: createFetchReview(fetchDataciteReview, fetchHypothesisAnnotation),
     fetchStaticFile: createFetchStaticFile(),
     editorialCommunities,
-    endorsements: populateEndorsementsRepository(),
+    endorsements: populateEndorsementsRepository(logger),
     reviewReferenceRepository: populateReviewReferenceRepository(logger),
     getJson,
   };
