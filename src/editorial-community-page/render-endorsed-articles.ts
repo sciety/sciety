@@ -1,4 +1,3 @@
-import endorsements from '../bootstrap-endorsements';
 import templateListItems from '../templates/list-items';
 import Doi from '../types/doi';
 
@@ -12,23 +11,9 @@ const renderEndorsedArticle: RenderEndorsedArticle = async (endorsedArticle) => 
 
 export type RenderEndorsedArticles = (editorialCommunityId: string) => Promise<string>;
 
-type GetEndorsedArticles = (editorialCommunityId: string) => Promise<Array<{doi: Doi; title: string}>>;
+export type GetEndorsedArticles = (editorialCommunityId: string) => Promise<Array<{doi: Doi; title: string}>>;
 
 export type GetArticleTitle = (doi: Doi) => Promise<string>;
-
-export const createGetHardCodedEndorsedArticles = (getArticleTitle: GetArticleTitle): GetEndorsedArticles => (
-  async (editorialCommunityId) => {
-    const articleDois = Object.entries(endorsements).filter((entry) => entry[1]?.includes(editorialCommunityId))
-      .map((entry) => new Doi(entry[0]));
-
-    return Promise.all(articleDois.map(async (articleDoi) => (
-      {
-        doi: articleDoi,
-        title: await getArticleTitle(articleDoi),
-      }
-    )));
-  }
-);
 
 export default (
   getEndorsedArticles: GetEndorsedArticles,

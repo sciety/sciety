@@ -3,14 +3,16 @@ import { NotFound } from 'http-errors';
 import { Next } from 'koa';
 import createGetReviewedArticlesFromReviewReferences from './get-reviewed-articles-from-review-references';
 import createRenderEndorsedArticles, {
-  createGetHardCodedEndorsedArticles,
   GetArticleTitle,
+  GetEndorsedArticles,
   RenderEndorsedArticles,
 } from './render-endorsed-articles';
 import createRenderPage, { FetchArticle } from './render-page';
 import createRenderPageHeader, { GetEditorialCommunity, RenderPageHeader } from './render-page-header';
 import createRenderReviewedArticles, { RenderReviewedArticles } from './render-reviewed-articles';
+import endorsements from '../bootstrap-endorsements';
 import { Adapters } from '../types/adapters';
+import Doi from '../types/doi';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import ReviewReferenceRepository from '../types/review-reference-repository';
 
@@ -32,6 +34,20 @@ const buildRenderPageHeader = (editorialCommunities: EditorialCommunityRepositor
   };
   return createRenderPageHeader(getEditorialCommunity);
 };
+
+export const createGetHardCodedEndorsedArticles = (getArticleTitle: GetArticleTitle): GetEndorsedArticles => (
+  async (editorialCommunityId) => {
+    const articleDois = Object.entries(endorsements).filter((entry) => entry[1]?.includes(editorialCommunityId))
+      .map((entry) => new Doi(entry[0]));
+
+    return Promise.all(articleDois.map(async (articleDoi) => (
+      {
+        doi: articleDoi,
+        title: await getArticleTitle(articleDoi),
+      }
+    )));
+  }
+);
 
 const buildRenderEndorsedArticles = (
   fetchArticle: FetchArticle,
