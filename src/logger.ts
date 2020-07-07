@@ -5,10 +5,11 @@ type Level = 'debug' | 'info' | 'warn' | 'error';
 type Payload = Record<string, unknown>;
 
 export type Logger = (level: Level, message: string, payload?: Payload) => void;
+export type BindableLogger = Logger & { bindToRequestId: () => Logger };
 
 type GetRequestId = () => Maybe<string>;
 
-export const createDebugLogger = (getRequestId: GetRequestId): Logger => {
+export const createDebugLogger = (getRequestId: GetRequestId): BindableLogger => {
   const withDefaultPayload = (payload: Payload): Payload => (
     getRequestId().mapOr(
       payload,
@@ -16,9 +17,19 @@ export const createDebugLogger = (getRequestId: GetRequestId): Logger => {
     )
   );
 
-  return (level, message, payload = {}) => {
+  const logger: Logger = (level, message, payload = {}) => {
     debug.log(new Date(), level, message, withDefaultPayload(payload));
   };
+  const bindToRequestId: BindableLogger['bindToRequestId'] = () => {
+    const defaultPayload = getRequestId().mapOr<Payload>(
+      {},
+      (requestId) => ({ requestId }),
+    );
+    return (level, message, payload = {}) => {
+      debug.log(new Date(), level, message, { ...defaultPayload, ...payload });
+    };
+  };
+  return Object.assign(logger, { bindToRequestId });
 };
 
 const log = debug('app');

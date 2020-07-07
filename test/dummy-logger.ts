@@ -2,4 +2,4 @@ import { Logger } from '../src/logger';
 
 const dummyLogger: Logger = () => {};
 
-export default dummyLogger;
+export default Object.assign(dummyLogger, { bindToRequestId: () => dummyLogger });
