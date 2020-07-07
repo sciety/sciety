@@ -1,9 +1,14 @@
 import { Middleware } from 'koa';
-import createGetHardCodedEndorsingEditorialCommunities from './hard-coded-endorsing-editorial-communities';
 import createRenderPage from './render-page';
-import createRenderSearchResult, { GetCommentCount, GetReviewCount, RenderSearchResult } from './render-search-result';
+import createRenderSearchResult, {
+  GetCommentCount,
+  GetEndorsingEditorialCommunityNames,
+  GetReviewCount,
+  RenderSearchResult,
+} from './render-search-result';
 import createRenderSearchResults, { RenderSearchResults } from './render-search-results';
 import createSearchEuropePmc from './search-europe-pmc';
+import { endorsingEditorialCommunityIds } from '../infrastructure/in-memory-endorsements-repository';
 import { Adapters } from '../types/adapters';
 import { Json } from '../types/json';
 
@@ -14,9 +19,10 @@ const buildRenderSearchResult = (
   getReviewCount: GetReviewCount,
   getEditorialCommunity: (id: string) => Promise<{ name: string }>,
 ): RenderSearchResult => {
-  const getEndorsingEditorialCommunityNames = createGetHardCodedEndorsingEditorialCommunities(
-    async (id) => (await getEditorialCommunity(id)).name,
-  );
+  const getEndorsingEditorialCommunityNames: GetEndorsingEditorialCommunityNames = async (doi) => {
+    const editorialCommunityIds = await endorsingEditorialCommunityIds(doi);
+    return Promise.all(editorialCommunityIds.map(async (id) => (await getEditorialCommunity(id)).name));
+  };
   return createRenderSearchResult(
     getCommentCount,
     getReviewCount,
