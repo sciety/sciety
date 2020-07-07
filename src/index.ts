@@ -1,3 +1,4 @@
+import { AsyncLocalStorage } from 'async_hooks';
 import { createTerminus, TerminusOptions } from '@godaddy/terminus';
 import axios from 'axios';
 import bootstrapReviews from './bootstrap-reviews';
@@ -19,7 +20,9 @@ import Doi from './types/doi';
 import HypothesisAnnotationId from './types/hypothesis-annotation-id';
 import { ReviewId } from './types/review-id';
 
-const logger = createDebugLogger();
+const asyncLocalStorage = new AsyncLocalStorage<string>();
+
+const logger = createDebugLogger(asyncLocalStorage);
 
 logger('debug', 'Starting server');
 
@@ -70,7 +73,7 @@ const adapters: Adapters = {
 
 const router = createRouter(adapters);
 
-const server = createServer(router, logger);
+const server = createServer(router, logger, asyncLocalStorage);
 
 const terminusOptions: TerminusOptions = {
   onShutdown: async (): Promise<void> => {

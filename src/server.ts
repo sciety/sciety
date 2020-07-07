@@ -1,3 +1,4 @@
+import { AsyncLocalStorage } from 'async_hooks';
 import { createServer, Server } from 'http';
 import path from 'path';
 import Router from '@koa/router';
@@ -7,11 +8,12 @@ import send from 'koa-send';
 import { v4 as uuidv4 } from 'uuid';
 import { Logger } from './logger';
 
-export default (router: Router, logger: Logger): Server => {
+export default (router: Router, logger: Logger, asyncLocalStorage: AsyncLocalStorage<string>): Server => {
   const app = new Koa();
 
   app.use(async ({ request, res }: ExtendableContext, next: Next): Promise<void> => {
     const requestId = uuidv4();
+    asyncLocalStorage.enterWith(requestId);
     logger('info', 'Received HTTP request', {
       method: request.method,
       url: request.url,
@@ -38,6 +40,7 @@ export default (router: Router, logger: Logger): Server => {
 
     await next();
   });
+
   app.use(mount('/static', async (context: ParameterizedContext): Promise<void> => {
     await send(context, context.path, { root: path.resolve(__dirname, '../static') });
   }));
