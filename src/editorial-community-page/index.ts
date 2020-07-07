@@ -6,7 +6,7 @@ import createRenderEndorsedArticles, { GetEndorsedArticles, RenderEndorsedArticl
 import createRenderPage, { FetchArticle } from './render-page';
 import createRenderPageHeader, { GetEditorialCommunity, RenderPageHeader } from './render-page-header';
 import createRenderReviewedArticles, { RenderReviewedArticles } from './render-reviewed-articles';
-import endorsements from '../bootstrap-endorsements';
+import { endorsedBy } from '../infrastructure/in-memory-endorsements-repository';
 import { Adapters } from '../types/adapters';
 import Doi from '../types/doi';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
@@ -15,7 +15,6 @@ import ReviewReferenceRepository from '../types/review-reference-repository';
 const raiseFetchArticleErrors = (fetchArticle: Adapters['fetchArticle']): FetchArticle => (
   async (doi) => {
     const result = await fetchArticle(doi);
-
     return result.unsafelyUnwrap();
   }
 );
@@ -35,9 +34,7 @@ type GetArticleTitle = (doi: Doi) => Promise<string>;
 
 export const createGetHardCodedEndorsedArticles = (getArticleTitle: GetArticleTitle): GetEndorsedArticles => (
   async (editorialCommunityId) => {
-    const articleDois = Object.entries(endorsements).filter((entry) => entry[1]?.includes(editorialCommunityId))
-      .map((entry) => new Doi(entry[0]));
-
+    const articleDois = await endorsedBy(editorialCommunityId);
     return Promise.all(articleDois.map(async (articleDoi) => (
       {
         doi: articleDoi,
