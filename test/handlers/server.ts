@@ -69,6 +69,7 @@ export default async (): Promise<TestServer> => {
     endorsements: createEndorsementsRepository(dummyLogger),
     reviewReferenceRepository,
     getJson,
+    logger: dummyLogger,
   };
 
   const router = createRouter(adapters);

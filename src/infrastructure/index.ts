@@ -77,6 +77,7 @@ const createInfrastructure = (logger: Logger): Adapters => {
     endorsements: populateEndorsementsRepository(logger),
     reviewReferenceRepository: populateReviewReferenceRepository(logger),
     getJson,
+    logger,
   };
 };
 

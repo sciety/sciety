@@ -1,5 +1,6 @@
 import createSearchEuropePmc from '../../src/article-search-page/search-europe-pmc';
 import Doi from '../../src/types/doi';
+import dummyLogger from '../dummy-logger';
 
 describe('search-europe-pmc adapter', () => {
   it('converts Europe PMC search result into our Domain Model', async () => {
@@ -15,7 +16,7 @@ describe('search-europe-pmc adapter', () => {
           },
         ],
       },
-    }));
+    }), dummyLogger);
 
     const results = await adapter('some query');
 

@@ -1,6 +1,6 @@
 import { SearchResult } from './render-search-result';
 import { FindArticles } from './render-search-results';
-import createLogger from '../logger';
+import { Logger } from '../logger';
 import Doi from '../types/doi';
 import { Json, JsonCompatible } from '../types/json';
 
@@ -18,14 +18,13 @@ type EuropePmcQueryResponse = JsonCompatible<{
   };
 }>;
 
-const log = createLogger('article-search-page:render-search-results');
-
-export default (getJson: GetJson): FindArticles => (
+export default (getJson: GetJson, logger: Logger): FindArticles => (
   async (query) => {
     const uri = 'https://www.ebi.ac.uk/europepmc/webservices/rest/search'
       + `?query=${query}%20PUBLISHER%3A%22bioRxiv%22&format=json&pageSize=10`;
     const data = await getJson(uri) as EuropePmcQueryResponse;
-    log(data);
+
+    logger('debug', 'Received Europe PMC search results', { data });
 
     const items = data.resultList.result.map((item): SearchResult => ({
       doi: new Doi(item.doi),
