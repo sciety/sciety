@@ -12,7 +12,7 @@ import createEndorsementsRepository from './in-memory-endorsements-repository';
 import createReviewReferenceRepository from './in-memory-review-references';
 import bootstrapEndorsements from '../data/bootstrap-endorsements';
 import bootstrapReviews from '../data/bootstrap-reviews';
-import { Logger } from '../logger';
+import { createDebugLogger, createRTracerLogger, Logger } from '../logger';
 import { Adapters } from '../types/adapters';
 import Doi from '../types/doi';
 import EndorsementsRepository from '../types/endorsements-repository';
@@ -63,7 +63,8 @@ const getJson: Adapters['getJson'] = async (uri) => {
   return response.data;
 };
 
-const createInfrastructure = (logger: Logger): Adapters => {
+const createInfrastructure = (): Adapters => {
+  const logger = createRTracerLogger(createDebugLogger());
   const fetchDataset = createFetchDataset();
   const fetchDataciteReview = createFetchDataciteReview(fetchDataset);
   const fetchHypothesisAnnotation = createFetchHypothesisAnnotation(getJson);
