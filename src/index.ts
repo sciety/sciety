@@ -24,6 +24,6 @@ const terminusOptions: TerminusOptions = {
 
 createTerminus(server, terminusOptions);
 
-adapters.logger('debug', 'Starting server');
+server.on('listening', (): void => adapters.logger('debug', 'Server running'));
 
 server.listen(80);

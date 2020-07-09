@@ -44,10 +44,5 @@ export default (router: Router, logger: Logger): Server => {
 
   app.on('error', (error) => logger('error', 'Unhandled Error', { error }));
 
-  const server = createServer(app.callback());
-
-  server.on('listening', (): void => logger('debug', 'Server running'));
-  server.on('close', (): void => logger('debug', 'Server stopping'));
-
-  return server;
+  return createServer(app.callback());
 };
