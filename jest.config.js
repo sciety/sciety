@@ -9,6 +9,7 @@ module.exports = {
   },
   rootDir: 'test',
   testEnvironment: 'node',
+  testRunner: 'jest-circus/runner',
   transform: {
     '^.+\\.ts$': 'ts-jest',
   },
