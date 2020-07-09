@@ -20,11 +20,11 @@ export const createRTracerLogger = (logger: Logger): Logger => {
   );
 };
 
-export const createDebugLogger = (): Logger => (
+export const createDebugLogger = (prettyPrint: boolean): Logger => (
   (level, message, payload = {}) => {
     debug.log(JSON.stringify({
       timestamp: new Date(), level, message, payload,
-    }, undefined, process.env.PRETTY_LOG ? 2 : undefined));
+    }, undefined, prettyPrint ? 2 : undefined));
   }
 );
 

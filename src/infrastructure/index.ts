@@ -66,7 +66,7 @@ const getJson = async (uri: string): Promise<Json> => {
 };
 
 const createInfrastructure = (): Adapters => {
-  const logger = createRTracerLogger(createDebugLogger());
+  const logger = createRTracerLogger(createDebugLogger(!!process.env.PRETTY_LOG));
   const fetchDataset = createFetchDataset();
   const fetchDataciteReview = createFetchDataciteReview(fetchDataset);
   const fetchHypothesisAnnotation = createFetchHypothesisAnnotation(getJson);
