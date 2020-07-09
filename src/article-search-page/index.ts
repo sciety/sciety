@@ -7,7 +7,6 @@ import createRenderSearchResult, {
   RenderSearchResult,
 } from './render-search-result';
 import createRenderSearchResults from './render-search-results';
-import createSearchEuropePmc from './search-europe-pmc';
 import { Adapters } from '../types/adapters';
 import EndorsementsRepository from '../types/endorsements-repository';
 
@@ -38,8 +37,7 @@ export default (adapters: Adapters): Middleware => {
     async (editorialCommunityId) => (await adapters.editorialCommunities.lookup(editorialCommunityId)).unsafelyUnwrap(),
     adapters.endorsements,
   );
-  const searchEuropePmc = createSearchEuropePmc(adapters.getJson, adapters.logger);
-  const renderSearchResults = createRenderSearchResults(searchEuropePmc, renderSearchResult);
+  const renderSearchResults = createRenderSearchResults(adapters.searchEuropePmc, renderSearchResult);
 
   const renderPage = createRenderPage(renderSearchResults);
   return async (ctx, next) => {

@@ -10,6 +10,7 @@ import createGetDisqusPostCount from './get-disqus-post-count';
 import createEditorialCommunityRepository from './in-memory-editorial-communities';
 import createEndorsementsRepository from './in-memory-endorsements-repository';
 import createReviewReferenceRepository from './in-memory-review-references';
+import createSearchEuropePmc from './search-europe-pmc';
 import bootstrapEndorsements from '../data/bootstrap-endorsements';
 import bootstrapReviews from '../data/bootstrap-reviews';
 import { createDebugLogger, createRTracerLogger, Logger } from '../logger';
@@ -68,12 +69,14 @@ const createInfrastructure = (): Adapters => {
   const fetchDataset = createFetchDataset();
   const fetchDataciteReview = createFetchDataciteReview(fetchDataset);
   const fetchHypothesisAnnotation = createFetchHypothesisAnnotation(getJson);
+  const searchEuropePmc = createSearchEuropePmc(getJson, logger);
 
   return {
     fetchArticle: createFetchCrossrefArticle(makeHttpRequest, logger),
     getBiorxivCommentCount: createGetBiorxivCommentCount(createGetDisqusPostCount(getJson)),
     fetchReview: createFetchReview(fetchDataciteReview, fetchHypothesisAnnotation),
     fetchStaticFile: createFetchStaticFile(),
+    searchEuropePmc,
     editorialCommunities,
     endorsements: populateEndorsementsRepository(logger),
     reviewReferenceRepository: populateReviewReferenceRepository(logger),

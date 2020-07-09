@@ -6,6 +6,7 @@ import { FetchCrossrefArticle } from '../infrastructure/fetch-crossref-article';
 import { FetchReview } from '../infrastructure/fetch-review';
 import { FetchStaticFile } from '../infrastructure/fetch-static-file';
 import { GetBiorxivCommentCount } from '../infrastructure/get-biorxiv-comment-count';
+import { SearchEuropePmc } from '../infrastructure/search-europe-pmc';
 import { Logger } from '../logger';
 
 export interface Adapters {
@@ -13,6 +14,7 @@ export interface Adapters {
   getBiorxivCommentCount: GetBiorxivCommentCount;
   fetchReview: FetchReview;
   fetchStaticFile: FetchStaticFile;
+  searchEuropePmc: SearchEuropePmc,
   editorialCommunities: EditorialCommunityRepository;
   endorsements: EndorsementsRepository,
   reviewReferenceRepository: ReviewReferenceRepository;

@@ -65,6 +65,7 @@ export default async (): Promise<TestServer> => {
     getBiorxivCommentCount,
     fetchReview,
     fetchStaticFile: async (filename: string) => `Contents of ${filename}`,
+    searchEuropePmc: async () => ({ items: [], total: 0 }),
     editorialCommunities,
     endorsements: createEndorsementsRepository(dummyLogger),
     reviewReferenceRepository,
