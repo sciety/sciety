@@ -1,6 +1,7 @@
 import { Middleware, RouterContext } from '@koa/router';
 import { NotFound } from 'http-errors';
 import { Next } from 'koa';
+import ensureBiorxivDoi from './ensure-biorxiv-doi';
 import createRenderAddReviewForm, { GetAllEditorialCommunities, RenderAddReviewForm } from './render-add-review-form';
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
 import createRenderPage from './render-page';
@@ -12,7 +13,6 @@ import createRenderPageHeader, {
 } from './render-page-header';
 import createRenderReview, { GetEditorialCommunityName as GetEditorialCommunityNameForRenderReview } from './render-review';
 import createRenderReviews, { RenderReviews } from './render-reviews';
-import validateBiorxivDoi from './validate-biorxiv-doi';
 import { Adapters } from '../types/adapters';
 import Doi from '../types/doi';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
@@ -93,7 +93,10 @@ export default (adapters: Adapters): Middleware => {
     renderAddReviewForm,
   );
   return async (ctx: RouterContext, next: Next): Promise<void> => {
-    const doi = validateBiorxivDoi(ctx.params.doi);
+    const doi = ensureBiorxivDoi(ctx.params.doi)
+      .unwrapOrElse(() => {
+        throw new NotFound();
+      });
 
     ctx.response.body = await renderPage(doi);
 
