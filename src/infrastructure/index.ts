@@ -18,6 +18,7 @@ import { Adapters } from '../types/adapters';
 import Doi from '../types/doi';
 import EndorsementsRepository from '../types/endorsements-repository';
 import HypothesisAnnotationId from '../types/hypothesis-annotation-id';
+import { Json } from '../types/json';
 import { ReviewId } from '../types/review-id';
 import ReviewReferenceRepository from '../types/review-reference-repository';
 
@@ -59,7 +60,7 @@ const makeHttpRequest: MakeHttpRequest = async (uri, acceptHeader) => {
   return response.data;
 };
 
-const getJson: Adapters['getJson'] = async (uri) => {
+const getJson = async (uri: string): Promise<Json> => {
   const response = await axios.get(uri);
   return response.data;
 };
@@ -80,7 +81,6 @@ const createInfrastructure = (): Adapters => {
     editorialCommunities,
     endorsements: populateEndorsementsRepository(logger),
     reviewReferenceRepository: populateReviewReferenceRepository(logger),
-    getJson,
     logger,
   };
 };

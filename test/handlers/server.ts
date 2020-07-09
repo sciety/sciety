@@ -58,7 +58,6 @@ export default async (): Promise<TestServer> => {
     createFetchDataciteReview(fetchDataCiteDataset),
     createFetchHypothesisAnnotation(shouldNotBeCalled),
   );
-  const getJson: Adapters['getJson'] = async () => ({ resultList: { result: [] } });
 
   const adapters: Adapters = {
     fetchArticle,
@@ -69,7 +68,6 @@ export default async (): Promise<TestServer> => {
     editorialCommunities,
     endorsements: createEndorsementsRepository(dummyLogger),
     reviewReferenceRepository,
-    getJson,
     logger: dummyLogger,
   };
 

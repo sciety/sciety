@@ -1,6 +1,5 @@
 import EditorialCommunityRepository from './editorial-community-repository';
 import EndorsementsRepository from './endorsements-repository';
-import { Json } from './json';
 import ReviewReferenceRepository from './review-reference-repository';
 import { FetchCrossrefArticle } from '../infrastructure/fetch-crossref-article';
 import { FetchReview } from '../infrastructure/fetch-review';
@@ -18,6 +17,5 @@ export interface Adapters {
   editorialCommunities: EditorialCommunityRepository;
   endorsements: EndorsementsRepository,
   reviewReferenceRepository: ReviewReferenceRepository;
-  getJson: (uri: string) => Promise<Json>;
   logger: Logger;
 }
