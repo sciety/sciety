@@ -12,8 +12,7 @@ import Doi from '../../src/types/doi';
 const reviewDoi = new Doi('10.5281/zenodo.3678325');
 
 const createStubFetch = (response: Partial<DatasetResponse<DatasetCore>>): typeof rdfFetch => (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async (): Promise<any> => response
+  async () => response as DatasetResponse<DatasetCore>
 );
 
 describe('fetch-dataset', (): void => {
