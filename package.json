@@ -67,8 +67,8 @@
     "mock-http": "^1.1.0",
     "supertest": "^4.0.2",
     "ts-jest": "^25.5.1",
-    "ts-node-dev": "^1.0.0-pre.49",
-    "typescript": "^3.9.2"
+    "ts-node-dev": "^1.0.0-pre.51",
+    "typescript": "^3.9.6"
   },
   "scripts": {
     "build": "tsc",
