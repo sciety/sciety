@@ -18,7 +18,9 @@ export const createDebugLogger = (getRequestId: GetRequestId): BindableLogger =>
   );
 
   const logger: Logger = (level, message, payload = {}) => {
-    debug.log(new Date(), level, message, withDefaultPayload(payload));
+    debug.log(JSON.stringify({
+      timestamp: new Date(), level, message, payload: withDefaultPayload(payload),
+    }));
   };
   const bindToRequestId: BindableLogger['bindToRequestId'] = () => {
     const defaultPayload = getRequestId().mapOr<Payload>(
@@ -26,7 +28,9 @@ export const createDebugLogger = (getRequestId: GetRequestId): BindableLogger =>
       (requestId) => ({ requestId }),
     );
     return (level, message, payload = {}) => {
-      debug.log(new Date(), level, message, { ...defaultPayload, ...payload });
+      debug.log(JSON.stringify({
+        timestamp: new Date(), level, message, payload: { ...defaultPayload, ...payload },
+      }));
     };
   };
   return Object.assign(logger, { bindToRequestId });
