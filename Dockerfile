@@ -31,6 +31,7 @@ RUN npm install
 #
 FROM node AS dev
 ENV NODE_ENV=development
+ENV PRETTY_LOG=true
 ENV DEBUG=app,app:*
 
 RUN apk add --update graphviz
