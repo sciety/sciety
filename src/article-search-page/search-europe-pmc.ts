@@ -1,10 +1,20 @@
-import { SearchResult } from './render-search-result';
-import { FindArticles } from './render-search-results';
 import { Logger } from '../logger';
 import Doi from '../types/doi';
 import { Json, JsonCompatible } from '../types/json';
 
 export type GetJson = (uri: string) => Promise<Json>;
+
+interface SearchResult {
+  doi: Doi;
+  title: string;
+  authors: string;
+  postedDate: Date;
+}
+
+export type SearchEuropePmc = (query: string) => Promise<{
+  items: Array<SearchResult>;
+  total: number;
+}>;
 
 type EuropePmcQueryResponse = JsonCompatible<{
   hitCount: number;
@@ -18,7 +28,7 @@ type EuropePmcQueryResponse = JsonCompatible<{
   };
 }>;
 
-export default (getJson: GetJson, logger: Logger): FindArticles => (
+export default (getJson: GetJson, logger: Logger): SearchEuropePmc => (
   async (query) => {
     const uri = 'https://www.ebi.ac.uk/europepmc/webservices/rest/search'
       + `?query=${query}%20PUBLISHER%3A%22bioRxiv%22&format=json&pageSize=10`;
