@@ -56,7 +56,7 @@ export default async (): Promise<TestServer> => {
   const getBiorxivCommentCount = createGetBiorxivCommentCount(getDisqusPostCount);
   const fetchReview = createFetchReview(
     createFetchDataciteReview(fetchDataCiteDataset),
-    createFetchHypothesisAnnotation(shouldNotBeCalled),
+    createFetchHypothesisAnnotation(shouldNotBeCalled, dummyLogger),
   );
 
   const adapters: Adapters = {

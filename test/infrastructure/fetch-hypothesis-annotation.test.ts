@@ -2,6 +2,7 @@ import { Maybe } from 'true-myth';
 import createFetchHypothesisAnnotation, { GetJson } from '../../src/infrastructure/fetch-hypothesis-annotation';
 import { Review } from '../../src/infrastructure/review';
 import HypothesisAnnotationId from '../../src/types/hypothesis-annotation-id';
+import dummyLogger from '../dummy-logger';
 
 const date = '2019-09-12T09:55:46.146050+00:00';
 const hypothesisAnnotationId = new HypothesisAnnotationId('fhAtGNVDEemkyCM-sRPpVQ');
@@ -15,7 +16,7 @@ describe('fetch-hypothesis-annotation', (): void => {
         incontext: 'https://www.example.com',
       },
     });
-    const fetchHypothesisAnnotation = createFetchHypothesisAnnotation(getJson);
+    const fetchHypothesisAnnotation = createFetchHypothesisAnnotation(getJson, dummyLogger);
     const review = await fetchHypothesisAnnotation(hypothesisAnnotationId);
 
     const expected: Review = {
@@ -38,7 +39,7 @@ describe('fetch-hypothesis-annotation', (): void => {
         incontext: 'https://www.example.com',
       },
     });
-    const fetchHypothesisAnnotation = createFetchHypothesisAnnotation(getJson);
+    const fetchHypothesisAnnotation = createFetchHypothesisAnnotation(getJson, dummyLogger);
     const review = await fetchHypothesisAnnotation(hypothesisAnnotationId);
 
     expect(review.summary.unsafelyUnwrap()).toContain(expected);

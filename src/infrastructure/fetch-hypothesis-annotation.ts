@@ -1,7 +1,7 @@
 import showdown from 'showdown';
 import { Maybe } from 'true-myth';
 import { Review } from './review';
-import createLogger from '../logger';
+import { Logger } from '../logger';
 import HypothesisAnnotationId from '../types/hypothesis-annotation-id';
 import { Json, JsonCompatible } from '../types/json';
 
@@ -17,14 +17,13 @@ type HypothesisResponse = JsonCompatible<{
   };
 }>;
 
-export default (getJson: GetJson): FetchHypothesisAnnotation => {
+export default (getJson: GetJson, logger: Logger): FetchHypothesisAnnotation => {
   const converter = new showdown.Converter({ noHeaderId: true });
   converter.setFlavor('github');
-  const log = createLogger('api:fetch-hypothesis-annotation');
   return async (id) => {
     const uri = `https://api.hypothes.is/api/annotations/${id.value}`;
 
-    log(`Fetching review ${id.value} from Hypothesis`);
+    logger('debug', 'Fetching review from Hypothesis', { uri });
     const data = await getJson(uri) as HypothesisResponse;
 
     const response: Review = {
@@ -33,7 +32,7 @@ export default (getJson: GetJson): FetchHypothesisAnnotation => {
       url: new URL(data.links.incontext),
     };
 
-    log(`Retrieved review: ${JSON.stringify({ ...response, summary: '[text]' })}`);
+    logger('debug', 'Retrieved review', { ...response, summary: '[text]' });
 
     return response;
   };
