@@ -74,7 +74,7 @@ export default async (): Promise<TestServer> => {
 
   const router = createRouter(adapters);
   return {
-    server: createServer(router, dummyLogger, () => {}),
+    server: createServer(router, dummyLogger),
     editorialCommunities,
     reviewReferenceRepository,
   };

@@ -1,14 +1,10 @@
-import { AsyncLocalStorage } from 'async_hooks';
 import { createTerminus, TerminusOptions } from '@godaddy/terminus';
-import { Maybe } from 'true-myth';
 import createInfrastructure from './infrastructure';
-import { createDebugLogger } from './logger';
+import { createDebugLogger, createRTracerLogger } from './logger';
 import createRouter from './router';
 import createServer from './server';
 
-const requestIdStorage = new AsyncLocalStorage<string>();
-
-const logger = createDebugLogger(() => Maybe.of(requestIdStorage.getStore()));
+const logger = createRTracerLogger(createDebugLogger());
 
 logger('debug', 'Starting server');
 
@@ -19,7 +15,6 @@ const router = createRouter(adapters);
 const server = createServer(
   router,
   logger,
-  (requestId) => requestIdStorage.enterWith(requestId),
 );
 
 const terminusOptions: TerminusOptions = {

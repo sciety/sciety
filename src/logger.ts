@@ -1,3 +1,4 @@
+import rTracer from 'cls-rtracer';
 import debug, { Debugger } from 'debug';
 import { Maybe } from 'true-myth';
 
@@ -5,36 +6,27 @@ type Level = 'debug' | 'info' | 'warn' | 'error';
 type Payload = Record<string, unknown>;
 
 export type Logger = (level: Level, message: string, payload?: Payload) => void;
-export type BindableLogger = Logger & { bindToRequestId: () => Logger };
 
-type GetRequestId = () => Maybe<string>;
-
-export const createDebugLogger = (getRequestId: GetRequestId): BindableLogger => {
-  const withDefaultPayload = (payload: Payload): Payload => (
-    getRequestId().mapOr(
+export const createRTracerLogger = (logger: Logger): Logger => {
+  const withRequestId = (payload: Payload): Payload => (
+    Maybe.of(rTracer.id()).mapOr(
       payload,
-      (requestId) => ({ requestId, ...payload }),
+      (requestId) => ({ ...payload, requestId }),
     )
   );
 
-  const logger: Logger = (level, message, payload = {}) => {
-    debug.log(JSON.stringify({
-      timestamp: new Date(), level, message, payload: withDefaultPayload(payload),
-    }));
-  };
-  const bindToRequestId: BindableLogger['bindToRequestId'] = () => {
-    const defaultPayload = getRequestId().mapOr<Payload>(
-      {},
-      (requestId) => ({ requestId }),
-    );
-    return (level, message, payload = {}) => {
-      debug.log(JSON.stringify({
-        timestamp: new Date(), level, message, payload: { ...defaultPayload, ...payload },
-      }));
-    };
-  };
-  return Object.assign(logger, { bindToRequestId });
+  return (level, message, payload = {}) => (
+    logger(level, message, withRequestId(payload))
+  );
 };
+
+export const createDebugLogger = (): Logger => (
+  (level, message, payload = {}) => {
+    debug.log(JSON.stringify({
+      timestamp: new Date(), level, message, payload,
+    }));
+  }
+);
 
 const log = debug('app');
 

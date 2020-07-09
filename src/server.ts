@@ -1,21 +1,16 @@
 import { createServer, Server } from 'http';
 import path from 'path';
 import Router from '@koa/router';
+import rTracer from 'cls-rtracer';
 import Koa, { ExtendableContext, Next, ParameterizedContext } from 'koa';
 import mount from 'koa-mount';
 import send from 'koa-send';
-import { v4 as uuidv4 } from 'uuid';
-import { BindableLogger } from './logger';
+import { Logger } from './logger';
 
-type SetRequestId = (requestId: string) => void;
-
-export default (router: Router, logger: BindableLogger, setRequestId: SetRequestId): Server => {
+export default (router: Router, logger: Logger): Server => {
   const app = new Koa();
 
-  app.use(async (_, next) => {
-    setRequestId(uuidv4());
-    await next();
-  });
+  app.use(rTracer.koaMiddleware());
 
   app.use(async ({ request, res }: ExtendableContext, next: Next): Promise<void> => {
     logger('info', 'Received HTTP request', {
@@ -23,10 +18,8 @@ export default (router: Router, logger: BindableLogger, setRequestId: SetRequest
       url: request.url,
     });
 
-    const requestLogger = logger.bindToRequestId();
-
     res.once('finish', () => {
-      requestLogger('info', 'Sent HTTP response', {
+      logger('info', 'Sent HTTP response', {
         status: res.statusCode,
       });
     });
@@ -36,7 +29,7 @@ export default (router: Router, logger: BindableLogger, setRequestId: SetRequest
         return;
       }
 
-      requestLogger('info', 'HTTP response not completely sent', {
+      logger('info', 'HTTP response not completely sent', {
         status: res.statusCode,
       });
     });
