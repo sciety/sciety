@@ -51,7 +51,6 @@ export default (router: Router, logger: BindableLogger, setRequestId: SetRequest
 
   app.on('error', (error) => logger('error', 'Unhandled Error', { error }));
 
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises -- https://github.com/DefinitelyTyped/DefinitelyTyped/issues/40070
   const server = createServer(app.callback());
 
   server.on('listening', (): void => logger('debug', 'Server running'));

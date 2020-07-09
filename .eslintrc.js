@@ -24,7 +24,9 @@ module.exports = {
   rules: {
     '@typescript-eslint/brace-style': ['error', '1tbs'],
     '@typescript-eslint/no-floating-promises': 'error',
-    '@typescript-eslint/no-misused-promises': 'error',
+    '@typescript-eslint/no-misused-promises': ['error', {
+      checksVoidReturn: false,
+    }],
     '@typescript-eslint/no-unused-vars': 'error',
     '@typescript-eslint/array-type': ['error', { default: 'generic' }],
     '@typescript-eslint/prefer-nullish-coalescing': ['error'],
