@@ -1,5 +1,5 @@
 import rTracer from 'cls-rtracer';
-import debug, { Debugger } from 'debug';
+import debug from 'debug';
 import { Maybe } from 'true-myth';
 
 type Level = 'debug' | 'info' | 'warn' | 'error';
@@ -27,7 +27,3 @@ export const createDebugLogger = (prettyPrint: boolean): Logger => (
     }, undefined, prettyPrint ? 2 : undefined));
   }
 );
-
-const log = debug('app');
-
-export default (namespace?: string): Debugger => (namespace ? log.extend(namespace) : log);
