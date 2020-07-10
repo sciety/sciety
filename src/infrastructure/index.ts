@@ -67,16 +67,16 @@ const getJson = async (uri: string): Promise<Json> => {
 
 const createInfrastructure = (): Adapters => {
   const logger = createRTracerLogger(createDebugLogger(!!process.env.PRETTY_LOG));
-  const fetchDataset = createFetchDataset();
-  const fetchDataciteReview = createFetchDataciteReview(fetchDataset);
+  const fetchDataset = createFetchDataset(logger);
+  const fetchDataciteReview = createFetchDataciteReview(fetchDataset, logger);
   const fetchHypothesisAnnotation = createFetchHypothesisAnnotation(getJson, logger);
   const searchEuropePmc = createSearchEuropePmc(getJson, logger);
 
   return {
     fetchArticle: createFetchCrossrefArticle(makeHttpRequest, logger),
-    getBiorxivCommentCount: createGetBiorxivCommentCount(createGetDisqusPostCount(getJson)),
+    getBiorxivCommentCount: createGetBiorxivCommentCount(createGetDisqusPostCount(getJson, logger), logger),
     fetchReview: createFetchReview(fetchDataciteReview, fetchHypothesisAnnotation),
-    fetchStaticFile: createFetchStaticFile(),
+    fetchStaticFile: createFetchStaticFile(logger),
     searchEuropePmc,
     editorialCommunities,
     endorsements: populateEndorsementsRepository(logger),

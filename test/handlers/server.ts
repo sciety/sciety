@@ -52,10 +52,10 @@ export default async (): Promise<TestServer> => {
     title: 'Article title',
     publicationDate: new Date(),
   }));
-  const getDisqusPostCount = createGetDisqusPostCount(async () => ({ response: [{ posts: 0 }] }));
-  const getBiorxivCommentCount = createGetBiorxivCommentCount(getDisqusPostCount);
+  const getDisqusPostCount = createGetDisqusPostCount(async () => ({ response: [{ posts: 0 }] }), dummyLogger);
+  const getBiorxivCommentCount = createGetBiorxivCommentCount(getDisqusPostCount, dummyLogger);
   const fetchReview = createFetchReview(
-    createFetchDataciteReview(fetchDataCiteDataset),
+    createFetchDataciteReview(fetchDataCiteDataset, dummyLogger),
     createFetchHypothesisAnnotation(shouldNotBeCalled, dummyLogger),
   );
 

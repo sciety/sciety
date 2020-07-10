@@ -6,6 +6,7 @@ import { Maybe } from 'true-myth';
 import createFetchDataciteReview from '../../src/infrastructure/fetch-datacite-review';
 import { FetchDataset, FetchDatasetError } from '../../src/infrastructure/fetch-dataset';
 import Doi from '../../src/types/doi';
+import dummyLogger from '../dummy-logger';
 
 const reviewDoi = new Doi('10.5281/zenodo.3678325');
 
@@ -17,7 +18,7 @@ describe('fetch-datacite-review', (): void => {
           .addOut(schema.datePublished, literal('2020-02-20', schema.Date))
           .addOut(schema.description, 'A summary')
       );
-      const fetchReview = createFetchDataciteReview(fetchDataset);
+      const fetchReview = createFetchDataciteReview(fetchDataset, dummyLogger);
       const review = await fetchReview(reviewDoi);
 
       expect(review).toMatchObject({
@@ -33,7 +34,7 @@ describe('fetch-datacite-review', (): void => {
         clownface({ dataset: datasetFactory(), term: iri })
           .addOut(dcterms.date, literal('2020-02-20', schema.Date))
       );
-      const fetchReview = createFetchDataciteReview(fetchDataset);
+      const fetchReview = createFetchDataciteReview(fetchDataset, dummyLogger);
       const review = await fetchReview(reviewDoi);
 
       expect(review.publicationDate.unsafelyUnwrap()).toStrictEqual(new Date('2020-02-20'));
@@ -45,7 +46,7 @@ describe('fetch-datacite-review', (): void => {
       const fetchDataset: FetchDataset = async (iri) => (
         clownface({ dataset: datasetFactory(), term: iri })
       );
-      const fetchReview = createFetchDataciteReview(fetchDataset);
+      const fetchReview = createFetchDataciteReview(fetchDataset, dummyLogger);
       const review = await fetchReview(reviewDoi);
 
       expect(review.summary.isNothing()).toBe(true);
@@ -57,7 +58,7 @@ describe('fetch-datacite-review', (): void => {
       const fetchDataset: FetchDataset = async () => {
         throw new FetchDatasetError('Something went wrong.');
       };
-      const fetchReview = createFetchDataciteReview(fetchDataset);
+      const fetchReview = createFetchDataciteReview(fetchDataset, dummyLogger);
       const review = await fetchReview(reviewDoi);
 
       expect(review).toHaveProperty('url');

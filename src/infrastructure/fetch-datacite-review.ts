@@ -3,17 +3,16 @@ import { dcterms, schema } from '@tpluscode/rdf-ns-builders';
 import { Maybe } from 'true-myth';
 import { FetchDataset } from './fetch-dataset';
 import { Review } from './review';
-import createLogger from '../logger';
+import { Logger } from '../logger';
 import Doi from '../types/doi';
 
 export type FetchDataciteReview = (doi: Doi) => Promise<Review>;
 
-export default (fetchDataset: FetchDataset): FetchDataciteReview => {
-  const log = createLogger('api:fetch-datacite-review');
-  return async (doi: Doi): Promise<Review> => {
+export default (fetchDataset: FetchDataset, logger: Logger): FetchDataciteReview => (
+  async (doi: Doi): Promise<Review> => {
     const url = `https://doi.org/${doi.value}`;
     const reviewIri = namedNode(url);
-    log(`Fetching review ${reviewIri.value} from Datacite`);
+    logger('debug', `Fetching review ${reviewIri.value} from Datacite`);
     try {
       const graph = await fetchDataset(reviewIri);
       const publicationDate = graph.out([
@@ -27,7 +26,7 @@ export default (fetchDataset: FetchDataset): FetchDataciteReview => {
         summary: Maybe.of(summary),
         url: new URL(url),
       };
-      log(`Retrieved review: ${JSON.stringify({ doi, publicationDate })}`);
+      logger('debug', `Retrieved review: ${JSON.stringify({ doi, publicationDate })}`);
       return response;
     } catch (e) {
       return {
@@ -36,5 +35,5 @@ export default (fetchDataset: FetchDataset): FetchDataciteReview => {
         url: new URL(url),
       };
     }
-  };
-};
+  }
+);

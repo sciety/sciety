@@ -8,7 +8,7 @@ import clownface, { Clownface } from 'clownface';
 import parseLinkHeader from 'parse-link-header';
 import datasetFactory from 'rdf-dataset-indexed';
 import type { DatasetCore, NamedNode, Stream } from 'rdf-js';
-import createLogger from '../logger';
+import { Logger } from '../logger';
 
 export type FetchDataset = (iri: NamedNode) => Promise<Clownface<NamedNode>>;
 
@@ -18,8 +18,7 @@ export class FetchDatasetError extends Error {
   }
 }
 
-export default (fetch = rdfFetch): FetchDataset => {
-  const log = createLogger('api:fetch-dataset');
+export default (logger: Logger, fetch = rdfFetch): FetchDataset => {
   const factory = { dataset: datasetFactory };
   const parsers = new SinkMap<EventEmitter, Stream>();
   parsers.set('application/vnd.codemeta.ld+json', new JsonLdParser());
@@ -27,7 +26,7 @@ export default (fetch = rdfFetch): FetchDataset => {
   const fetchOptions = { factory, formats: { parsers } };
 
   return async (iri: NamedNode): Promise<Clownface<NamedNode>> => {
-    log(`Fetching dataset for ${iri.value}`);
+    logger('debug', `Fetching dataset for ${iri.value}`);
     const response = await fetch<DatasetCore>(iri.value, fetchOptions);
 
     if (!response.ok) {
