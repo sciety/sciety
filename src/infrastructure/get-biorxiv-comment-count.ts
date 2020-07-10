@@ -1,5 +1,5 @@
 import { Maybe } from 'true-myth';
-import { Logger } from '../logger';
+import { Logger } from './logger';
 import Doi from '../types/doi';
 
 export type GetCommentCountForUri = (uri: string) => Promise<Maybe<number>>;

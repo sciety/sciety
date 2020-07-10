@@ -1,4 +1,4 @@
-import { Logger } from '../src/logger';
+import { Logger } from '../src/infrastructure/logger';
 
 const dummyLogger: Logger = () => {};
 

@@ -8,7 +8,7 @@ import clownface, { Clownface } from 'clownface';
 import parseLinkHeader from 'parse-link-header';
 import datasetFactory from 'rdf-dataset-indexed';
 import type { DatasetCore, NamedNode, Stream } from 'rdf-js';
-import { Logger } from '../logger';
+import { Logger } from './logger';
 
 export type FetchDataset = (iri: NamedNode) => Promise<Clownface<NamedNode>>;
 

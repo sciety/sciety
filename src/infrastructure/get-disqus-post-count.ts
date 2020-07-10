@@ -1,5 +1,5 @@
 import { Maybe } from 'true-myth';
-import { Logger } from '../logger';
+import { Logger } from './logger';
 import { Json, JsonCompatible } from '../types/json';
 
 export type GetJson = (uri: string) => Promise<Json>;

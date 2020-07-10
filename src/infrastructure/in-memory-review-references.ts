@@ -1,4 +1,4 @@
-import { Logger } from '../logger';
+import { Logger } from './logger';
 import Doi from '../types/doi';
 import { ReviewId } from '../types/review-id';
 import ReviewReference from '../types/review-reference';

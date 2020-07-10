@@ -1,7 +1,7 @@
 import showdown from 'showdown';
 import { Maybe } from 'true-myth';
+import { Logger } from './logger';
 import { Review } from './review';
-import { Logger } from '../logger';
 import HypothesisAnnotationId from '../types/hypothesis-annotation-id';
 import { Json, JsonCompatible } from '../types/json';
 

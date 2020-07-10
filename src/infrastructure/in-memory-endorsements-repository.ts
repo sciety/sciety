@@ -1,4 +1,4 @@
-import { Logger } from '../logger';
+import { Logger } from './logger';
 import Doi from '../types/doi';
 import EndorsementsRepository from '../types/endorsements-repository';
 

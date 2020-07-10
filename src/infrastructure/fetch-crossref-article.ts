@@ -1,6 +1,6 @@
 import { Result } from 'true-myth';
 import { DOMParser } from 'xmldom';
-import { Logger } from '../logger';
+import { Logger } from './logger';
 import Doi from '../types/doi';
 
 type FetchCrossrefArticleError = 'not-found' | 'unavailable';
