@@ -16,13 +16,17 @@ import createSearchEuropePmc from './search-europe-pmc';
 import bootstrapEndorsements from '../data/bootstrap-endorsements';
 import bootstrapReviews from '../data/bootstrap-reviews';
 import Doi from '../types/doi';
+import EditorialCommunityRepository from '../types/editorial-community-repository';
 import EndorsementsRepository from '../types/endorsements-repository';
 import HypothesisAnnotationId from '../types/hypothesis-annotation-id';
 import { Json } from '../types/json';
 import { ReviewId } from '../types/review-id';
 import ReviewReferenceRepository from '../types/review-reference-repository';
 
-const editorialCommunities = createEditorialCommunityRepository();
+const populateEditorialCommunities = (logger: Logger): EditorialCommunityRepository => {
+  const repository = createEditorialCommunityRepository(logger);
+  return repository;
+};
 
 const populateEndorsementsRepository = (logger: Logger): EndorsementsRepository => {
   const repository = createEndorsementsRepository(logger);
@@ -34,7 +38,10 @@ const populateEndorsementsRepository = (logger: Logger): EndorsementsRepository 
   return repository;
 };
 
-const populateReviewReferenceRepository = (logger: Logger): ReviewReferenceRepository => {
+const populateReviewReferenceRepository = (
+  editorialCommunities: EditorialCommunityRepository,
+  logger: Logger,
+): ReviewReferenceRepository => {
   const repository = createReviewReferenceRepository(logger);
   for (const {
     article, review, editorialCommunityIndex, added,
@@ -71,6 +78,7 @@ const createInfrastructure = (): Adapters => {
   const fetchDataciteReview = createFetchDataciteReview(fetchDataset, logger);
   const fetchHypothesisAnnotation = createFetchHypothesisAnnotation(getJson, logger);
   const searchEuropePmc = createSearchEuropePmc(getJson, logger);
+  const editorialCommunities = populateEditorialCommunities(logger);
 
   return {
     fetchArticle: createFetchCrossrefArticle(makeHttpRequest, logger),
@@ -80,7 +88,7 @@ const createInfrastructure = (): Adapters => {
     searchEuropePmc,
     editorialCommunities,
     endorsements: populateEndorsementsRepository(logger),
-    reviewReferenceRepository: populateReviewReferenceRepository(logger),
+    reviewReferenceRepository: populateReviewReferenceRepository(editorialCommunities, logger),
     logger,
   };
 };
