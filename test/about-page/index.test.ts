@@ -6,7 +6,7 @@ import runMiddleware from '../middleware';
 const fetchStaticFile: FetchStaticFile = async (filename) => (`# Contents of ${filename}`);
 
 const invokeMiddleware = async (ctx: Context, next?: Middleware): Promise<Response> => {
-  const { response } = await runMiddleware(createIndex(fetchStaticFile), ctx, next);
+  const { response } = await runMiddleware(createIndex({ fetchStaticFile }), ctx, next);
   return response;
 };
 

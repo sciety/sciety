@@ -21,7 +21,7 @@ export default (adapters: Adapters): Router => {
     addPageTemplate());
 
   router.get('/about',
-    createAboutPage(adapters.fetchStaticFile),
+    createAboutPage(adapters),
     addPageTemplate());
 
   router.get('/articles',
