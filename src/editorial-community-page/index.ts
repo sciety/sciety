@@ -6,13 +6,20 @@ import createRenderEndorsedArticles, { GetEndorsedArticles, RenderEndorsedArticl
 import createRenderPage, { FetchArticle } from './render-page';
 import createRenderPageHeader, { GetEditorialCommunity, RenderPageHeader } from './render-page-header';
 import createRenderReviewedArticles, { RenderReviewedArticles } from './render-reviewed-articles';
-import { Adapters } from '../types/adapters';
 import Doi from '../types/doi';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import EndorsementsRepository from '../types/endorsements-repository';
+import { FetchExternalArticle } from '../types/fetch-external-article';
 import ReviewReferenceRepository from '../types/review-reference-repository';
 
-const raiseFetchArticleErrors = (fetchArticle: Adapters['fetchArticle']): FetchArticle => (
+interface Ports {
+  fetchArticle: FetchExternalArticle;
+  editorialCommunities: EditorialCommunityRepository;
+  endorsements: EndorsementsRepository,
+  reviewReferenceRepository: ReviewReferenceRepository;
+}
+
+const raiseFetchArticleErrors = (fetchArticle: FetchExternalArticle): FetchArticle => (
   async (doi) => {
     const result = await fetchArticle(doi);
     return result.unsafelyUnwrap();
@@ -63,14 +70,11 @@ const buildRenderReviewedArticles = (
   return createRenderReviewedArticles(getReviewedArticles);
 };
 
-// there should be a clean separation between:
-// - knowledge of Koa
-// - creation of page and its adapters
-export default (adapters: Adapters): Middleware => {
-  const fetchArticle = raiseFetchArticleErrors(adapters.fetchArticle);
-  const renderPageHeader = buildRenderPageHeader(adapters.editorialCommunities);
-  const renderEndorsedArticles = buildRenderEndorsedArticles(adapters.endorsements, fetchArticle);
-  const renderReviewedArticles = buildRenderReviewedArticles(fetchArticle, adapters.reviewReferenceRepository);
+export default (ports: Ports): Middleware => {
+  const fetchArticle = raiseFetchArticleErrors(ports.fetchArticle);
+  const renderPageHeader = buildRenderPageHeader(ports.editorialCommunities);
+  const renderEndorsedArticles = buildRenderEndorsedArticles(ports.endorsements, fetchArticle);
+  const renderReviewedArticles = buildRenderReviewedArticles(fetchArticle, ports.reviewReferenceRepository);
 
   const renderPage = createRenderPage(
     renderPageHeader,
