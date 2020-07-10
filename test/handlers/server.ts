@@ -4,6 +4,7 @@ import { schema } from '@tpluscode/rdf-ns-builders';
 import clownface from 'clownface';
 import datasetFactory from 'rdf-dataset-indexed';
 import { Result } from 'true-myth';
+import { Adapters } from '../../src/infrastructure/adapters';
 import { FetchCrossrefArticle } from '../../src/infrastructure/fetch-crossref-article';
 import createFetchDataciteReview from '../../src/infrastructure/fetch-datacite-review';
 import { FetchDataset } from '../../src/infrastructure/fetch-dataset';
@@ -16,7 +17,6 @@ import createEndorsementsRepository from '../../src/infrastructure/in-memory-end
 import createReviewReferenceRepository from '../../src/infrastructure/in-memory-review-references';
 import createRouter from '../../src/router';
 import createServer from '../../src/server';
-import { Adapters } from '../../src/types/adapters';
 import Doi from '../../src/types/doi';
 import EditorialCommunityRepository from '../../src/types/editorial-community-repository';
 import ReviewReferenceRepository from '../../src/types/review-reference-repository';

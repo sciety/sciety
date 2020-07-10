@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Adapters } from './adapters';
 import createFetchCrossrefArticle, { MakeHttpRequest } from './fetch-crossref-article';
 import createFetchDataciteReview from './fetch-datacite-review';
 import createFetchDataset from './fetch-dataset';
@@ -14,7 +15,6 @@ import { createDebugLogger, createRTracerLogger, Logger } from './logger';
 import createSearchEuropePmc from './search-europe-pmc';
 import bootstrapEndorsements from '../data/bootstrap-endorsements';
 import bootstrapReviews from '../data/bootstrap-reviews';
-import { Adapters } from '../types/adapters';
 import Doi from '../types/doi';
 import EndorsementsRepository from '../types/endorsements-repository';
 import HypothesisAnnotationId from '../types/hypothesis-annotation-id';
