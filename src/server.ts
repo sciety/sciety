@@ -29,7 +29,7 @@ export default (router: Router, logger: Logger): Server => {
         return;
       }
 
-      logger('info', 'HTTP response not completely sent', {
+      logger('info', 'HTTP response may not have been completely sent', {
         status: res.statusCode,
       });
     });
@@ -44,5 +44,20 @@ export default (router: Router, logger: Logger): Server => {
 
   app.on('error', (error) => logger('error', 'Unhandled Error', { error }));
 
-  return createServer(app.callback());
+  const server = createServer(app.callback());
+
+  server.on('clientError', (error, socket) => {
+    if (error.code === 'ECONNRESET' || !socket.writable) {
+      return;
+    }
+
+    socket.end('HTTP/1.1 400 Bad Request\r\n\r\n');
+
+    logger('info', 'Sent early HTTP response due to client error', {
+      status: 400,
+      error,
+    });
+  });
+
+  return server;
 };
