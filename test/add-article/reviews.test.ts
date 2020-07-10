@@ -1,9 +1,9 @@
 import { Server } from 'http';
 import { BAD_REQUEST, SEE_OTHER } from 'http-status-codes';
 import request, { Response } from 'supertest';
-import createServer from './server';
 import Doi from '../../src/types/doi';
 import ReviewReferenceRepository from '../../src/types/review-reference-repository';
+import createServer from '../handlers/server';
 
 describe('reviews handler', (): void => {
   const articleVersionDoi = new Doi('10.1101/2000.1234');
