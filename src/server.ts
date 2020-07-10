@@ -42,7 +42,16 @@ export default (router: Router, logger: Logger): Server => {
   }));
   app.use(router.middleware());
 
-  app.on('error', (error) => logger('error', 'Unhandled Error', { error }));
+  app.on('error', (error) => {
+    const payload = { error };
+    if (error instanceof Error) {
+      payload.error = {
+        message: error.message,
+        stack: error.stack,
+      };
+    }
+    logger('error', 'Unhandled Error', payload);
+  });
 
   const server = createServer(app.callback());
 
