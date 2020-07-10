@@ -2,11 +2,17 @@ import { Middleware } from '@koa/router';
 import bodyParser from 'koa-bodyparser';
 import compose from 'koa-compose';
 import reviews from './reviews';
-import { Adapters } from '../types/adapters';
+import EditorialCommunityRepository from '../types/editorial-community-repository';
+import ReviewReferenceRepository from '../types/review-reference-repository';
 
-export default (adapters: Adapters): Middleware => (
+interface Ports {
+  reviewReferenceRepository: ReviewReferenceRepository;
+  editorialCommunities: EditorialCommunityRepository;
+}
+
+export default (ports: Ports): Middleware => (
   compose([
     bodyParser({ enableTypes: ['form'] }),
-    reviews(adapters.reviewReferenceRepository, adapters.editorialCommunities),
+    reviews(ports.reviewReferenceRepository, ports.editorialCommunities),
   ])
 );
