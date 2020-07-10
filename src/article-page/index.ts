@@ -7,15 +7,30 @@ import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract 
 import createRenderPage from './render-page';
 import createRenderPageHeader, {
   GetArticleDetails,
+  GetCommentCount,
   GetEndorsingEditorialCommunityNames,
   GetReviewCount,
   RenderPageHeader,
 } from './render-page-header';
-import createRenderReview, { GetEditorialCommunityName as GetEditorialCommunityNameForRenderReview } from './render-review';
+import createRenderReview, {
+  GetEditorialCommunityName as GetEditorialCommunityNameForRenderReview,
+  GetReview,
+} from './render-review';
 import createRenderReviews, { RenderReviews } from './render-reviews';
-import { Adapters } from '../types/adapters';
 import Doi from '../types/doi';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
+import EndorsementsRepository from '../types/endorsements-repository';
+import { FetchExternalArticle } from '../types/fetch-external-article';
+import ReviewReferenceRepository from '../types/review-reference-repository';
+
+export interface Ports {
+  fetchArticle: FetchExternalArticle;
+  getBiorxivCommentCount: GetCommentCount;
+  fetchReview: GetReview;
+  editorialCommunities: EditorialCommunityRepository;
+  endorsements: EndorsementsRepository,
+  reviewReferenceRepository: ReviewReferenceRepository;
+}
 
 const reviewsId = 'reviews';
 
@@ -25,7 +40,7 @@ type GetFullArticle = (doi: Doi) => Promise<{
 
 type GetEditorialCommunityName = (editorialCommunityId: string) => Promise<string>;
 
-const handleFetchArticleErrors = (fetchArticle: Adapters['fetchArticle']): GetArticleDetails & GetFullArticle => (
+const handleFetchArticleErrors = (fetchArticle: FetchExternalArticle): GetArticleDetails & GetFullArticle => (
   async (doi: Doi) => {
     const result = await fetchArticle(doi);
 
@@ -35,21 +50,21 @@ const handleFetchArticleErrors = (fetchArticle: Adapters['fetchArticle']): GetAr
   }
 );
 
-const buildRenderPageHeader = (adapters: Adapters): RenderPageHeader => {
-  const getArticleDetailsAdapter: GetArticleDetails = handleFetchArticleErrors(adapters.fetchArticle);
+const buildRenderPageHeader = (ports: Ports): RenderPageHeader => {
+  const getArticleDetailsAdapter: GetArticleDetails = handleFetchArticleErrors(ports.fetchArticle);
   const reviewCountAdapter: GetReviewCount = async (articleDoi) => (
-    (await adapters.reviewReferenceRepository.findReviewsForArticleVersionDoi(articleDoi)).length
+    (await ports.reviewReferenceRepository.findReviewsForArticleVersionDoi(articleDoi)).length
   );
   const getEditorialCommunityName: GetEditorialCommunityName = async (editorialCommunityId) => (
-    (await adapters.editorialCommunities.lookup(editorialCommunityId)).unsafelyUnwrap().name
+    (await ports.editorialCommunities.lookup(editorialCommunityId)).unsafelyUnwrap().name
   );
   const getEndorsingEditorialCommunityNames: GetEndorsingEditorialCommunityNames = async (doi) => (
-    Promise.all((await adapters.endorsements.endorsingEditorialCommunityIds(doi)).map(getEditorialCommunityName))
+    Promise.all((await ports.endorsements.endorsingEditorialCommunityIds(doi)).map(getEditorialCommunityName))
   );
   return createRenderPageHeader(
     getArticleDetailsAdapter,
     reviewCountAdapter,
-    adapters.getBiorxivCommentCount,
+    ports.getBiorxivCommentCount,
     getEndorsingEditorialCommunityNames,
     `#${reviewsId}`,
   );
@@ -68,24 +83,24 @@ const buildRenderAddReviewForm = (editorialCommunities: EditorialCommunityReposi
   return createRenderAddReviewForm(editorialCommunitiesAdapter);
 };
 
-const buildRenderReviews = (adapters: Adapters): RenderReviews => {
+const buildRenderReviews = (ports: Ports): RenderReviews => {
   const getEditorialCommunityName: GetEditorialCommunityNameForRenderReview = async (editorialCommunityId) => (
-    (await adapters.editorialCommunities.lookup(editorialCommunityId)).unsafelyUnwrap().name
+    (await ports.editorialCommunities.lookup(editorialCommunityId)).unsafelyUnwrap().name
   );
 
-  const renderReview = createRenderReview(adapters.fetchReview, getEditorialCommunityName, 1500);
+  const renderReview = createRenderReview(ports.fetchReview, getEditorialCommunityName, 1500);
   return createRenderReviews(
     renderReview,
-    adapters.reviewReferenceRepository.findReviewsForArticleVersionDoi,
+    ports.reviewReferenceRepository.findReviewsForArticleVersionDoi,
     reviewsId,
   );
 };
 
-export default (adapters: Adapters): Middleware => {
-  const renderPageHeader = buildRenderPageHeader(adapters);
-  const renderAbstract = buildRenderAbstract(handleFetchArticleErrors(adapters.fetchArticle));
-  const renderAddReviewForm = buildRenderAddReviewForm(adapters.editorialCommunities);
-  const renderReviews = buildRenderReviews(adapters);
+export default (ports: Ports): Middleware => {
+  const renderPageHeader = buildRenderPageHeader(ports);
+  const renderAbstract = buildRenderAbstract(handleFetchArticleErrors(ports.fetchArticle));
+  const renderAddReviewForm = buildRenderAddReviewForm(ports.editorialCommunities);
+  const renderReviews = buildRenderReviews(ports);
   const renderPage = createRenderPage(
     renderPageHeader,
     renderReviews,
