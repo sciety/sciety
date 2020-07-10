@@ -4,6 +4,7 @@ import { schema } from '@tpluscode/rdf-ns-builders';
 import clownface from 'clownface';
 import datasetFactory from 'rdf-dataset-indexed';
 import { Result } from 'true-myth';
+import bootstrapEditorialCommunities from '../../src/data/bootstrap-editorial-communities';
 import { Adapters } from '../../src/infrastructure/adapters';
 import { FetchCrossrefArticle } from '../../src/infrastructure/fetch-crossref-article';
 import createFetchDataciteReview from '../../src/infrastructure/fetch-datacite-review';
@@ -36,6 +37,9 @@ export interface TestServer {
 
 export default async (): Promise<TestServer> => {
   const editorialCommunities = createEditorialCommunityRepository(dummyLogger);
+  for (const editorialCommunity of bootstrapEditorialCommunities) {
+    void editorialCommunities.add(editorialCommunity);
+  }
   const reviewReferenceRepository = createReviewReferenceRepository(dummyLogger);
   await reviewReferenceRepository.add(articleA, articleAReview1, editorialCommunities.all()[0].id, new Date('2020-05-19T14:00:00Z'));
   await reviewReferenceRepository.add(articleB, articleBReview1, editorialCommunities.all()[1].id, new Date('2020-05-19T14:00:00Z'));

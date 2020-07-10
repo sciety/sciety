@@ -1,11 +1,10 @@
 import { Maybe } from 'true-myth';
 import { Logger } from './logger';
-import data from '../data/bootstrap-editorial-communities';
 import { EditorialCommunity } from '../types/editorial-community';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 
 export default (logger: Logger): EditorialCommunityRepository => {
-  const editorialCommunities: Array<EditorialCommunity> = data;
+  const data: Array<EditorialCommunity> = [];
 
   const result: EditorialCommunityRepository = {
     add: async (editorialCommunity) => {
@@ -13,9 +12,9 @@ export default (logger: Logger): EditorialCommunityRepository => {
       logger('debug', 'Editorial community added', { editorialCommunity });
     },
 
-    all: () => editorialCommunities,
+    all: () => data,
     lookup: async (id) => {
-      const candidate = editorialCommunities.find((ec) => ec.id === id);
+      const candidate = data.find((ec) => ec.id === id);
       return Maybe.of(candidate);
     },
   };

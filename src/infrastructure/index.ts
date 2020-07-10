@@ -13,6 +13,7 @@ import createEndorsementsRepository from './in-memory-endorsements-repository';
 import createReviewReferenceRepository from './in-memory-review-references';
 import { createDebugLogger, createRTracerLogger, Logger } from './logger';
 import createSearchEuropePmc from './search-europe-pmc';
+import bootstrapEditorialCommunities from '../data/bootstrap-editorial-communities';
 import bootstrapEndorsements from '../data/bootstrap-endorsements';
 import bootstrapReviews from '../data/bootstrap-reviews';
 import Doi from '../types/doi';
@@ -25,6 +26,9 @@ import ReviewReferenceRepository from '../types/review-reference-repository';
 
 const populateEditorialCommunities = (logger: Logger): EditorialCommunityRepository => {
   const repository = createEditorialCommunityRepository(logger);
+  for (const editorialCommunity of bootstrapEditorialCommunities) {
+    void repository.add(editorialCommunity);
+  }
   return repository;
 };
 
