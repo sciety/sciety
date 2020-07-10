@@ -6,9 +6,18 @@ import createRenderSearchResult, {
   GetReviewCount,
   RenderSearchResult,
 } from './render-search-result';
-import createRenderSearchResults from './render-search-results';
-import { Adapters } from '../types/adapters';
+import createRenderSearchResults, { FindArticles } from './render-search-results';
+import EditorialCommunityRepository from '../types/editorial-community-repository';
 import EndorsementsRepository from '../types/endorsements-repository';
+import ReviewReferenceRepository from '../types/review-reference-repository';
+
+interface Ports {
+  getBiorxivCommentCount: GetCommentCount;
+  searchEuropePmc: FindArticles,
+  editorialCommunities: EditorialCommunityRepository;
+  endorsements: EndorsementsRepository,
+  reviewReferenceRepository: ReviewReferenceRepository;
+}
 
 const buildRenderSearchResult = (
   getCommentCount: GetCommentCount,
@@ -27,17 +36,17 @@ const buildRenderSearchResult = (
   );
 };
 
-export default (adapters: Adapters): Middleware => {
+export default (ports: Ports): Middleware => {
   const getReviewCount: GetReviewCount = async (doi) => (
-    (await adapters.reviewReferenceRepository.findReviewsForArticleVersionDoi(doi)).length
+    (await ports.reviewReferenceRepository.findReviewsForArticleVersionDoi(doi)).length
   );
   const renderSearchResult = buildRenderSearchResult(
-    adapters.getBiorxivCommentCount,
+    ports.getBiorxivCommentCount,
     getReviewCount,
-    async (editorialCommunityId) => (await adapters.editorialCommunities.lookup(editorialCommunityId)).unsafelyUnwrap(),
-    adapters.endorsements,
+    async (editorialCommunityId) => (await ports.editorialCommunities.lookup(editorialCommunityId)).unsafelyUnwrap(),
+    ports.endorsements,
   );
-  const renderSearchResults = createRenderSearchResults(adapters.searchEuropePmc, renderSearchResult);
+  const renderSearchResults = createRenderSearchResults(ports.searchEuropePmc, renderSearchResult);
 
   const renderPage = createRenderPage(renderSearchResults);
   return async (ctx, next) => {
