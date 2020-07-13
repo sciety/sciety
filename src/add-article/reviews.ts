@@ -25,7 +25,7 @@ export default (
       articleversiondoi,
       editorialcommunityid,
       reviewdoi,
-    } = request.body;
+    }: {articleversiondoi: string, editorialcommunityid: string, reviewdoi: string} = request.body;
 
     const reviewDoi = validateDoi(reviewdoi);
     if (!(reviewDoi.hasPrefix(zenodoPrefix))) {

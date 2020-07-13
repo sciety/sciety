@@ -34,6 +34,7 @@ module.exports = {
       allowExpressions: true,
     }],
     '@typescript-eslint/promise-function-async': ['error'],
+    '@typescript-eslint/restrict-template-expressions': ['warn'],
     'jest/no-disabled-tests': 'off',
     'jest/no-hooks': 'off',
     'jest/prefer-expect-assertions': 'off',
