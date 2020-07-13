@@ -1,5 +1,4 @@
 import rTracer from 'cls-rtracer';
-import debug from 'debug';
 import { Maybe } from 'true-myth';
 
 type Level = 'debug' | 'info' | 'warn' | 'error';
@@ -20,10 +19,33 @@ export const createRTracerLogger = (logger: Logger): Logger => {
   );
 };
 
-export const createDebugLogger = (prettyPrint: boolean): Logger => (
+type Entry = {
+  timestamp: Date,
+  level: Level,
+  message: string,
+  payload: Payload,
+};
+
+type Serializer = (entry: Entry) => string;
+
+export const createJsonSerializer = (prettyPrint = false): Serializer => (
+  (entry) => (
+    JSON.stringify(entry, undefined, prettyPrint ? 2 : undefined)
+  )
+);
+
+export const createStreamLogger = (
+  stream: NodeJS.WritableStream,
+  serializer: Serializer,
+): Logger => (
   (level, message, payload = {}) => {
-    debug.log(JSON.stringify({
-      timestamp: new Date(), level, message, payload,
-    }, undefined, prettyPrint ? 2 : undefined));
+    const entry = {
+      timestamp: new Date(),
+      level,
+      message,
+      payload,
+    };
+
+    stream.write(`${serializer(entry)}\n`);
   }
 );

@@ -13,7 +13,6 @@
     "axios": "^0.19.2",
     "clownface": "^0.12.3",
     "cls-rtracer": "^2.2.0",
-    "debug": "^4.1.1",
     "http-errors": "^1.7.3",
     "http-status-codes": "^1.4.0",
     "koa": "^2.11.0",
@@ -30,7 +29,6 @@
   },
   "devDependencies": {
     "@types/clownface": "^0.12.13",
-    "@types/debug": "^4.1.5",
     "@types/http-errors": "^1.6.3",
     "@types/jest": "^26.0.4",
     "@types/jsdom": "^16.2.3",

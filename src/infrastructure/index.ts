@@ -11,7 +11,9 @@ import createGetDisqusPostCount from './get-disqus-post-count';
 import createEditorialCommunityRepository from './in-memory-editorial-communities';
 import createEndorsementsRepository from './in-memory-endorsements-repository';
 import createReviewReferenceRepository from './in-memory-review-references';
-import { createDebugLogger, createRTracerLogger, Logger } from './logger';
+import {
+  createJsonSerializer, createRTracerLogger, createStreamLogger, Logger,
+} from './logger';
 import createSearchEuropePmc from './search-europe-pmc';
 import bootstrapEditorialCommunities from '../data/bootstrap-editorial-communities';
 import bootstrapEndorsements from '../data/bootstrap-endorsements';
@@ -77,7 +79,12 @@ const getJson = async (uri: string): Promise<Json> => {
 };
 
 const createInfrastructure = (): Adapters => {
-  const logger = createRTracerLogger(createDebugLogger(!!process.env.PRETTY_LOG));
+  const logger = createRTracerLogger(
+    createStreamLogger(
+      process.stdout,
+      createJsonSerializer(!!process.env.PRETTY_LOG),
+    ),
+  );
   const fetchDataset = createFetchDataset(logger);
   const fetchDataciteReview = createFetchDataciteReview(fetchDataset, logger);
   const fetchHypothesisAnnotation = createFetchHypothesisAnnotation(getJson, logger);

@@ -46,7 +46,6 @@ lint\:fix: build
 test: export TARGET = dev
 test: build
 	$(DOCKER) run \
-		--env DEBUG=-* \
 		-v $(DATA_VOLUME)/.jest:/app/.jest \
 		-v $(DATA_VOLUME)/build:/app/build \
 		$(IMAGE):$(IMAGE_TAG)-dev \
