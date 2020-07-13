@@ -11,9 +11,11 @@ export default (
   getAllEditorialCommunities: GetAllEditorialCommunities,
 ): RenderAddReviewForm => (
   async (doi) => {
-    const options = (await getAllEditorialCommunities()).map((ec) => (
-      `<option value="${ec.id}">${ec.name}</option>`
-    ));
+    const options = (await getAllEditorialCommunities())
+      .map((ec) => (
+        `<option value="${ec.id}">${ec.name}</option>`
+      ))
+      .join('\n');
     return `
       <h2 class="ui top attached header">
         Add a review to this article
