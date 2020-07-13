@@ -31,25 +31,36 @@ We define an hypothesis to test and write software to help test that hypothesis 
 
 ## <a name="current-direction">Current direction</a>
 
-We are looking to test a hypothesis around the themes of trust (in preprint articles and reviews) and using the concept of editorial communities to explore that. This means we are currently expanding the application to take on a small number of communities and display a small number of reviews while we work with the community to define precisely the next most important hypothesis to test.
+We’re currently focussing on improving the user experience for postdocs who regularly engage with preprints. We are exploring ways in which we might help readers discover and consume new content that is relevant to them outside of the realm of traditional journal publication.
 
-The desired behaviour change we are looking to drive is that authors will increasingly rely on the application for feedback rather than traditional peer review afforded by a journal. To effect this change, we assume that we will need to provide the same (and greater) value to its users that they currently get from journal submission and eventual publication. The first element of that value to explore is the idea of trust: we want to retain the integrity of peer review while decoupling it from other aspects of journal publication. Trust in a community’s judgement, we assume, is fostered not only by the transparent disclosure of that community’s review output, but also its editorial policies and review process in order to contextualise that output for researchers.
+We assume that additional value indicators such as comments, reviews and endorsements from different communities of editors and reviewers will help readers choose in which articles to invest their limited time, and are testing this with a number of implemented scenarios which are further outlined below.
+
+We are working with a small number of editorial communities who have provided us with reviews and other content. We want to find out if trust in the judgement of these communities is fostered not only by the transparent disclosure of that community’s review output, but also its editorial policies and review process in order to contextualise that output for researchers.
+
+Crucially, we are hoping to move away from the current model where a community’s brand is accepted as the most important measure of its reliability.
+
 
 ## <a name="implemented-scenarios">Scenarios enabled in the current iteration</a>
 
 These are the most recent scenarios represented on the application now:
 
--   Users can add a new review to an article. This is done by uploading
-    the review to Zenodo, generating a concept DOI for the review, and then
-    associating that review DOI with the article via the form in our
-    application.
--   It is possible for a user to attach multiple reviews to an article, each under the name of a different editorial community. In this way, an article could foreseeably garner multiple perspectives which together form a 360-degree holistic opinion of the research.
--   When adding a review, a user is able to additionally select an editorial community from a drop down list.
--   The name of an editorial community, rather than an individual, is displayed as the author of a review.
--   Clicking on the name of an editorial community will take the user to a page outlining that community’s editorial policies and review process etc.
--   The editorial community’s About page contains a list of reviews that community has posted.
--   Clicking on a review listed on a community’s About page will take the user to the article page.
--   The application supports an About page per one of its multiple communities.
+- The name of an editorial community, rather than an individual, is displayed as the author of a review.
+- Clicking on the name of an editorial community will take the user to a page outlining that community’s editorial policies and review process etc.
+- The editorial community’s landing page contains a list of reviews that the community has posted.
+- Additionally, the editorial community’s landing page contains a list of articles it has endorsed, or highlighted as particularly important for its interested followers/readers.
+- Clicking on an article listed on a community’s landing page will take the user to the article page.
+- The application supports a landing page per one of its multiple communities.
+- Users can search for a bioRxiv article using the search box on the home page.
+- Clicking on an article title from the list of returned results will take the user to the article page.
+- If an article has gained comments, clicking on this indicator on the article page will take the user to bioRxiv, where the comments can be read. 
+- If an article has gained reviews, clicking on this indicator on the article page will take the user to the review content at the bottom of the article page.
+- Experimental features to explore the addition of reviews:
+    - Users can add a new review to an article. This is done by uploading the review to Zenodo, generating a concept DOI for the review, and then associating that review DOI with the article via the form in our application.
+    - When adding a review, a user is able to additionally select an editorial community from a drop down list.
+    - It is possible for a user to attach multiple reviews to an article, each under the name of a different editorial community. In this way, an article could foreseeably garner multiple perspectives which together form a 360-degree holistic opinion of the research.
+    - Reviews published via hypothes.is can also be included (although not via the form yet)
+
+
 
 Currently we are outsourcing the hosting of reviews to Zenodo; this
 enables us to build an end-to-end experience more quickly, and hence to
@@ -61,11 +72,15 @@ servers soon.
 
 ## <a name="current-scenarios">In progress scenarios</a>
 
-Link to our story map coming soon.
+Our [Opportunity Solution Tree](https://miro.com/app/board/o9J_ksVfD4E=/) and [User Story Map](https://miro.com/app/board/o9J_ksVfD4E=/?moveToWidget=3074457348328557591&cot=13) are publicly available and show our current and future ideas.
+
+The Opportunity Solution Tree shows the areas we may explore next as opportunities, hypotheses and experiments. You can [learn more about this visualisation technique here](https://www.producttalk.org/2016/08/opportunity-solution-tree/).
+
+The User Story Map shows the scenarios we've been working on (at the top), the work we're currently doing (nearer the bottom) and what we're planning next (at the bottom). The items across the top show the user journey backbone and are grouped by functionality so that you can see which areas we're concentrating on. You can [learn more about this type of visualisation here](https://www.jpattonassociates.com/user-story-mapping/).
 
 ## <a name="next-focus">Our immediate next focus</a>
 
-To aid in the rapid development the application we have deliberately
+To aid in the rapid development of the application we have deliberately
 left some key features for later:
 
 -   Persistence: at present all user entered data is lost with each new deployment.
