@@ -28,7 +28,7 @@ describe('render-recent-activity', (): void => {
     ];
     const fetchArticle: FetchArticle = async (doi) => Maybe.just({
       doi,
-      title: `Article ${doi}`,
+      title: `Article ${doi.value}`,
     });
     const editorialCommunities = async (): Promise<Array<EditorialCommunity>> => [
       {

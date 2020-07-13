@@ -26,7 +26,7 @@ export default (makeHttpRequest: MakeHttpRequest, logger: Logger): FetchCrossref
     if (typeof abstractElement?.textContent !== 'string') {
       logger('warn', 'Did not find abstract', { doi });
 
-      return `No abstract for ${doi} available`;
+      return `No abstract for ${doi.value} available`;
     }
 
     logger('debug', 'Found abstract', { doi, abstract: abstractElement.textContent });

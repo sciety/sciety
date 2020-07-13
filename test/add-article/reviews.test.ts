@@ -22,13 +22,13 @@ describe('reviews handler', (): void => {
         .send({
           articleversiondoi: articleVersionDoi.value,
           editorialcommunityid: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
-          reviewdoi: `http://doi.org/${reviewDoi}`,
+          reviewdoi: `http://doi.org/${reviewDoi.value}`,
         });
     });
 
     it('returns a created response', () => {
       expect(response.status).toBe(SEE_OTHER);
-      expect(response.header.location).toBe(`/articles/${articleVersionDoi}`);
+      expect(response.header.location).toBe(`/articles/${articleVersionDoi.value}`);
     });
 
     it('adds the review reference to the repository', async () => {

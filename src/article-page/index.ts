@@ -45,7 +45,7 @@ const handleFetchArticleErrors = (fetchArticle: FetchExternalArticle): GetArticl
     const result = await fetchArticle(doi);
 
     return result.unwrapOrElse(() => {
-      throw new NotFound(`${doi} not found`);
+      throw new NotFound(`${doi.value} not found`);
     });
   }
 );

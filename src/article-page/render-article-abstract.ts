@@ -18,7 +18,7 @@ export default (getArticleAbstract: GetArticleAbstract): RenderArticleAbstract =
           Abstract
         </h2>
           ${articleAbstract.content}
-          <a href="https://doi.org/${doi}" class="ui basic secondary button">
+          <a href="https://doi.org/${doi.value}" class="ui basic secondary button">
             Read the full article
             <i class="right chevron icon"></i>
           </a>

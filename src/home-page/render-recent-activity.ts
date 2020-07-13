@@ -71,7 +71,7 @@ const templateRecentReview = (review: RecentReview): string => {
   return `
     <div class="content">
       <div class="summary">
-        <a href="/articles/${review.articleDoi}">${title}</a>
+        <a href="/articles/${review.articleDoi.value}">${title}</a>
         reviewed by <a href="/editorial-communities/${review.editorialCommunityId}">${review.editorialCommunityName}</a>
         <time datetime="${toString(review.added)}" title="${toDisplayString(review.added)}" class="date">recently</time>
       </div>

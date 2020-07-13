@@ -3,7 +3,7 @@ import Doi from '../../src/types/doi';
 
 describe('render-article-abstract component', (): void => {
   it('renders the abstract for an article', async (): Promise<void> => {
-    const getArticleAbstract: GetArticleAbstract = async (doi) => ({ content: `Article ${doi} abstract content` });
+    const getArticleAbstract: GetArticleAbstract = async (doi) => ({ content: `Article ${doi.value} abstract content` });
 
     const renderArticleAbstract = createRenderArticleAbstract(getArticleAbstract);
 

@@ -7,7 +7,7 @@ import createRenderPageHeader, {
 import Doi from '../../src/types/doi';
 
 const getArticleDetails: GetArticleDetails = async (doi) => ({
-  title: `Lorem ipsum ${doi}`,
+  title: `Lorem ipsum ${doi.value}`,
   authors: ['Gary', 'Uncle Wiggly'],
   publicationDate: new Date('2020-06-03'),
 });

@@ -19,7 +19,7 @@ const createStubFetch = (response: Partial<DatasetResponse<DatasetCore>>): typeo
 describe('fetch-dataset', (): void => {
   describe('dataset found', (): void => {
     it('fetches a dataset for an IRI', async () => {
-      const iri = namedNode(`https://doi.org/${reviewDoi}`);
+      const iri = namedNode(`https://doi.org/${reviewDoi.value}`);
       const cannedDataset = datasetFactory([]);
       const stubFetch = createStubFetch({
         ok: true,
@@ -34,8 +34,8 @@ describe('fetch-dataset', (): void => {
     });
 
     it('fetches a dataset that uses a different IRI', async () => {
-      const iri = namedNode(`https://doi.org/${reviewDoi}`);
-      const usedIri = namedNode(`http://dx.doi.org/${reviewDoi}`);
+      const iri = namedNode(`https://doi.org/${reviewDoi.value}`);
+      const usedIri = namedNode(`http://dx.doi.org/${reviewDoi.value}`);
       const cannedDataset = datasetFactory([]);
       const stubFetch = createStubFetch({
         ok: true,

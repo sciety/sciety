@@ -11,7 +11,7 @@ describe('article route', (): void => {
 
     beforeEach(async () => {
       const { server } = await createServer();
-      response = await request(server).get(`/articles/${articleDoi}`);
+      response = await request(server).get(`/articles/${articleDoi.value}`);
     });
 
     it('returns a page containing article metadata', async (): Promise<void> => {

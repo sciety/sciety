@@ -8,7 +8,7 @@ interface ReviewedArticle {
 
 const templateTeaser = (article: ReviewedArticle): string => (`
   <div class="content">
-    <a href="/articles/${article.doi}" class="header">${article.title}</a>
+    <a href="/articles/${article.doi.value}" class="header">${article.title}</a>
   </div>
 `);
 
