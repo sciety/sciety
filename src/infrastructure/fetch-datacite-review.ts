@@ -12,7 +12,7 @@ export default (fetchDataset: FetchDataset, logger: Logger): FetchDataciteReview
   async (doi: Doi): Promise<Review> => {
     const url = `https://doi.org/${doi.value}`;
     const reviewIri = namedNode(url);
-    logger('debug', `Fetching review ${reviewIri.value} from Datacite`);
+    logger('debug', 'Fetching review from Datacite', { url });
     try {
       const graph = await fetchDataset(reviewIri);
       const publicationDate = graph.out([
@@ -21,13 +21,13 @@ export default (fetchDataset: FetchDataset, logger: Logger): FetchDataciteReview
       ]).value;
       const summary = graph.out(schema.description).value;
 
-      const response: Review = {
+      const review: Review = {
         publicationDate: Maybe.of(publicationDate).map((date:string) => new Date(date)),
         summary: Maybe.of(summary),
         url: new URL(url),
       };
-      logger('debug', `Retrieved review: ${JSON.stringify({ doi, publicationDate })}`);
-      return response;
+      logger('debug', 'Retrieved review', { review });
+      return review;
     } catch (e) {
       return {
         publicationDate: Maybe.nothing(),
