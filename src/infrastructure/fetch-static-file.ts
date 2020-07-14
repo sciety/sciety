@@ -7,7 +7,7 @@ export type FetchStaticFile = (filename: string) => Promise<string>;
 export default (logger: Logger): FetchStaticFile => (
   async (filename: string): Promise<string> => {
     const fullPath: string = path.resolve(__dirname, '..', '..', 'static', filename);
-    logger('debug', `Fetch static file ${fullPath}`);
+    logger('debug', 'Fetch static file', { fullPath });
     const text = await fs.readFile(fullPath);
     return text.toString();
   }
