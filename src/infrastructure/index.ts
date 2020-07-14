@@ -69,12 +69,12 @@ const populateReviewReferenceRepository = (
 };
 
 const makeHttpRequest: MakeHttpRequest = async (uri, acceptHeader) => {
-  const response = await axios.get(uri, { headers: { Accept: acceptHeader } });
+  const response = await axios.get<string>(uri, { headers: { Accept: acceptHeader } });
   return response.data;
 };
 
 const getJson = async (uri: string): Promise<Json> => {
-  const response = await axios.get(uri);
+  const response = await axios.get<Json>(uri);
   return response.data;
 };
 
