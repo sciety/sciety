@@ -7,7 +7,12 @@ export default async <CustomT extends ExtendableContext>(
   context: CustomT = createContext(),
   next?: Middleware<CustomT>,
 ): Promise<CustomT> => {
-  await middleware(context, next ? async (): Promise<void> => next(context, jest.fn()) : jest.fn());
+  await middleware(
+    context,
+    next ? async (): Promise<void> => {
+      await next(context, jest.fn());
+    } : jest.fn(),
+  );
 
   return context;
 };
