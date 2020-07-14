@@ -14,7 +14,7 @@ export default (
 ): GetBiorxivCommentCount => (
   async (doi) => {
     const uri = resolveToCanonicalUri(doi);
-    logger('debug', `Resolved URI = ${uri}`);
+    logger('debug', 'Resolved URI', { doi, uri });
     return getCommentCountForUri(uri);
   }
 );
