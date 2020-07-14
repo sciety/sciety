@@ -2,7 +2,6 @@ import { Middleware, RouterContext } from '@koa/router';
 import { NotFound } from 'http-errors';
 import { Next } from 'koa';
 import ensureBiorxivDoi from './ensure-biorxiv-doi';
-import createRenderAddReviewForm, { GetAllEditorialCommunities, RenderAddReviewForm } from './render-add-review-form';
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
 import createRenderPage from './render-page';
 import createRenderPageHeader, {
@@ -78,11 +77,6 @@ const buildRenderAbstract = (fetchAbstract: GetFullArticle): RenderArticleAbstra
   return createRenderArticleAbstract(abstractAdapter);
 };
 
-const buildRenderAddReviewForm = (editorialCommunities: EditorialCommunityRepository): RenderAddReviewForm => {
-  const editorialCommunitiesAdapter: GetAllEditorialCommunities = async () => editorialCommunities.all();
-  return createRenderAddReviewForm(editorialCommunitiesAdapter);
-};
-
 const buildRenderReviews = (ports: Ports): RenderReviews => {
   const getEditorialCommunityName: GetEditorialCommunityNameForRenderReview = async (editorialCommunityId) => (
     (await ports.editorialCommunities.lookup(editorialCommunityId)).unsafelyUnwrap().name
@@ -99,13 +93,11 @@ const buildRenderReviews = (ports: Ports): RenderReviews => {
 export default (ports: Ports): Middleware => {
   const renderPageHeader = buildRenderPageHeader(ports);
   const renderAbstract = buildRenderAbstract(handleFetchArticleErrors(ports.fetchArticle));
-  const renderAddReviewForm = buildRenderAddReviewForm(ports.editorialCommunities);
   const renderReviews = buildRenderReviews(ports);
   const renderPage = createRenderPage(
     renderPageHeader,
     renderReviews,
     renderAbstract,
-    renderAddReviewForm,
   );
   return async (ctx: RouterContext, next: Next): Promise<void> => {
     const doi = ensureBiorxivDoi(ctx.params.doi)
