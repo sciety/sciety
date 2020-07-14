@@ -1,5 +1,5 @@
 import { Result } from 'true-myth';
-import { DOMParser } from 'xmldom';
+import { DOMParser, XMLSerializer } from 'xmldom';
 import { Logger } from './logger';
 import Doi from '../types/doi';
 
@@ -16,6 +16,8 @@ export type FetchCrossrefArticle = (doi: Doi) => Promise<Result<{
 export type MakeHttpRequest = (uri: string, acceptHeader: string) => Promise<string>;
 
 export default (makeHttpRequest: MakeHttpRequest, logger: Logger): FetchCrossrefArticle => {
+  const serializer = new XMLSerializer();
+
   const getElement = (ancestor: Document | Element, qualifiedName: string): Element | null => (
     ancestor.getElementsByTagName(qualifiedName).item(0)
   );
@@ -36,7 +38,7 @@ export default (makeHttpRequest: MakeHttpRequest, logger: Logger): FetchCrossref
       abstractElement.removeChild(titleElement);
     }
 
-    return `${abstractElement}`
+    return `${serializer.serializeToString(abstractElement)}`
       .replace(/<abstract[^>]*>/, '')
       .replace(/<\/abstract>/, '')
       .replace(/<italic[^>]*>/g, '<i>')
