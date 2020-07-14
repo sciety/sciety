@@ -4,7 +4,11 @@ import { ExtendableContext, Middleware, Response } from 'koa';
 import addPageTemplate from '../../src/middleware/add-page-template';
 import runMiddleware from '../middleware';
 
-const makeRequest = async (next?: Middleware): Promise<Response> => {
+const defaultNext: Middleware = async ({ response }) => {
+  response.body = '';
+};
+
+const makeRequest = async (next = defaultNext): Promise<Response> => {
   const { response } = await runMiddleware(addPageTemplate(), undefined, next);
 
   return response;
@@ -40,12 +44,4 @@ describe('add-page-template middleware', (): void => {
       expect(response.body).toStrictEqual(expect.stringContaining(body));
     }))
   ));
-
-  it('calls the next middleware', async (): Promise<void> => {
-    const next = jest.fn();
-
-    await makeRequest(next);
-
-    expect(next).toHaveBeenCalledTimes(1);
-  });
 });
