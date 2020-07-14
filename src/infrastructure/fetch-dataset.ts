@@ -26,7 +26,7 @@ export default (logger: Logger, fetch = rdfFetch): FetchDataset => {
   const fetchOptions = { factory, formats: { parsers } };
 
   return async (iri: NamedNode): Promise<Clownface<NamedNode>> => {
-    logger('debug', `Fetching dataset for ${iri.value}`);
+    logger('debug', 'Fetching dataset', { url: iri.value });
     const response = await fetch<DatasetCore>(iri.value, fetchOptions);
 
     if (!response.ok) {
