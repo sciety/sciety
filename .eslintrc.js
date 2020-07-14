@@ -27,6 +27,7 @@ module.exports = {
     '@typescript-eslint/no-misused-promises': ['error', {
       checksVoidReturn: false,
     }],
+    '@typescript-eslint/no-unsafe-return': 'warn',
     '@typescript-eslint/no-unused-vars': 'error',
     '@typescript-eslint/array-type': ['error', { default: 'generic' }],
     '@typescript-eslint/prefer-nullish-coalescing': ['error'],
