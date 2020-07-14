@@ -16,14 +16,20 @@ export default (getJson: GetJson, logger: Logger): GetDisqusPostCount => (
   async (uri) => {
     const disqusApiKey = process.env.DISQUS_API_KEY ?? '';
 
-    logger('debug', `Fetching Disqus threads list for ${uri}`);
+    logger('debug', 'Fetching Disqus threads list', { uri });
     try {
       const disqusData = await getJson(`https://disqus.com/api/3.0/threads/list.json?api_key=${disqusApiKey}&forum=biorxivstage&thread=link:${uri}`) as DisqusData;
-      logger('debug', `Disqus response: ${JSON.stringify(disqusData)}`);
+      logger('debug', 'Received response from Disqus', { response: disqusData });
       return Maybe.just(disqusData.response[0].posts);
-    } catch (e) {
-      const message = `Disqus API error: ${e.message}`;
-      logger('error', message);
+    } catch (error) {
+      const payload = { error };
+      if (error instanceof Error) {
+        payload.error = {
+          message: error.message,
+          stack: error.stack,
+        };
+      }
+      logger('error', 'Disqus API error', payload);
       return Maybe.nothing();
     }
   }
