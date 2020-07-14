@@ -27,7 +27,7 @@ module.exports = {
     '@typescript-eslint/no-misused-promises': ['error', {
       checksVoidReturn: false,
     }],
-    '@typescript-eslint/no-unsafe-return': 'warn',
+    '@typescript-eslint/no-unsafe-return': 'error',
     '@typescript-eslint/no-unused-vars': 'error',
     '@typescript-eslint/array-type': ['error', { default: 'generic' }],
     '@typescript-eslint/prefer-nullish-coalescing': ['error'],
@@ -35,7 +35,7 @@ module.exports = {
       allowExpressions: true,
     }],
     '@typescript-eslint/promise-function-async': ['error'],
-    '@typescript-eslint/restrict-template-expressions': ['warn'],
+    '@typescript-eslint/restrict-template-expressions': ['error'],
     'jest/no-disabled-tests': 'off',
     'jest/no-hooks': 'off',
     'jest/prefer-expect-assertions': 'off',
