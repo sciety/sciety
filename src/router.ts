@@ -1,6 +1,5 @@
 import Router from '@koa/router';
 import createAboutPage from './about-page';
-import createAddArticleResponse from './add-article';
 import createArticlePage from './article-page';
 import createArticleSearchPage from './article-search-page';
 import createEditorialCommunityPage from './editorial-community-page';
@@ -35,9 +34,6 @@ export default (adapters: Adapters): Router => {
   router.get('/editorial-communities/:id',
     createEditorialCommunityPage(adapters),
     addPageTemplate());
-
-  router.post('/reviews',
-    createAddArticleResponse(adapters));
 
   router.get('/robots.txt',
     robots());
