@@ -68,13 +68,17 @@ const populateReviewReferenceRepository = (
   return repository;
 };
 
+const client = axios.create({
+  proxy: { host: 'localhost', port: 3128 },
+});
+
 const makeHttpRequest: MakeHttpRequest = async (uri, acceptHeader) => {
-  const response = await axios.get<string>(uri, { headers: { Accept: acceptHeader } });
+  const response = await client.get<string>(uri, { headers: { Accept: acceptHeader } });
   return response.data;
 };
 
 const getJson = async (uri: string): Promise<Json> => {
-  const response = await axios.get<Json>(uri);
+  const response = await client.get<Json>(uri);
   return response.data;
 };
 
