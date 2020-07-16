@@ -3,15 +3,18 @@ import { Next } from 'koa';
 
 let googleAnalytics = '';
 if (process.env.GOOGLE_ANALYTICS_TRACKING_ID) {
-  googleAnalytics = `<!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=${process.env.GOOGLE_ANALYTICS_TRACKING_ID}"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+  googleAnalytics = `
+    const script = document.createElement('script');
+    script.setAttribute('src', 'https://www.googletagmanager.com/gtag/js?id=${process.env.GOOGLE_ANALYTICS_TRACKING_ID}');
+    script.setAttribute('async', '');
+    document.body.appendChild(script);
 
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
     gtag('config', '${process.env.GOOGLE_ANALYTICS_TRACKING_ID}');
-  </script>
   `;
 }
 
@@ -35,8 +38,6 @@ export default (): Middleware => (
 <link rel="stylesheet" href="/static/style.css">
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.css">
-
-${googleAnalytics}
 
 <header class="ui container">
 
@@ -69,6 +70,18 @@ ${googleAnalytics}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.js"></script>
 <script>
   window.cookieconsent.initialise({
+    onInitialise: function() {
+      if (!this.hasConsented()) {
+        return;
+      }
+      ${googleAnalytics}
+    },
+    onStatusChange: function() {
+      if (!this.hasConsented()) {
+        return;
+      }
+      ${googleAnalytics}
+    }
   });
 </script>
 `;
