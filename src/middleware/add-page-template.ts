@@ -2,7 +2,6 @@ import { Middleware, RouterContext } from '@koa/router';
 import { Next } from 'koa';
 
 let googleAnalytics = '';
-process.env.GOOGLE_ANALYTICS_TRACKING_ID = '__THING__';
 if (process.env.GOOGLE_ANALYTICS_TRACKING_ID) {
   googleAnalytics = `
     const script = document.createElement('script');
