@@ -77,6 +77,9 @@ export default (): Middleware => (
   }
   
   window.cookieconsent.initialise({
+    content: {
+      message: 'This site uses cookies to deliver its services and analyse traffic. By using this site, you agree to its use of cookies.'
+    },
     onInitialise: onConsent,
     onStatusChange: onConsent,
     palette: {
