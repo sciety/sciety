@@ -34,6 +34,8 @@ export default (): Middleware => (
 
 <link rel="stylesheet" href="/static/style.css">
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.css">
+
 ${googleAnalytics}
 
 <header class="ui container">
@@ -62,6 +64,13 @@ ${googleAnalytics}
 
 <main class="ui container">
   ${response.body}
-</main>`;
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.js"></script>
+<script>
+  window.cookieconsent.initialise({
+  });
+</script>
+`;
   }
 );
