@@ -2,6 +2,7 @@ import { Middleware, RouterContext } from '@koa/router';
 import { Next } from 'koa';
 
 let googleAnalytics = '';
+process.env.GOOGLE_ANALYTICS_TRACKING_ID = '__THING__';
 if (process.env.GOOGLE_ANALYTICS_TRACKING_ID) {
   googleAnalytics = `
     const script = document.createElement('script');
@@ -69,19 +70,16 @@ export default (): Middleware => (
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.js"></script>
 <script>
+  function onConsent() {
+      if (!this.hasConsented()) {
+        return;
+      }
+      ${googleAnalytics}
+  }
+  
   window.cookieconsent.initialise({
-    onInitialise: function() {
-      if (!this.hasConsented()) {
-        return;
-      }
-      ${googleAnalytics}
-    },
-    onStatusChange: function() {
-      if (!this.hasConsented()) {
-        return;
-      }
-      ${googleAnalytics}
-    },
+    onInitialise: onConsent,
+    onStatusChange: onConsent,
     palette: {
       popup: {
         background: 'rgb(0, 0, 0, 0.8)',
