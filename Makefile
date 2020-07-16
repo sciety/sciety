@@ -38,6 +38,7 @@ lint\:fix: build
 	$(DOCKER) run --rm \
 		-v $(DATA_VOLUME)/.eslint:/app/.eslint \
 		-v $(DATA_VOLUME)/build:/app/build \
+		-v $(DATA_VOLUME)/scripts:/app/scripts \
 		-v $(DATA_VOLUME)/src:/app/src \
 		-v $(DATA_VOLUME)/test:/app/test \
 		$(IMAGE):$(IMAGE_TAG)-dev \
@@ -83,3 +84,12 @@ node_modules: package.json package-lock.json
 
 clean:
 	rm -rf .eslint .jest build node_modules
+
+find-elife-endorsements: export TARGET = dev
+find-elife-endorsements: build
+	$(DOCKER) run \
+		-v $(DATA_VOLUME)/build:/app/build \
+		-v $(DATA_VOLUME)/scripts:/app/scripts \
+		-v $(DATA_VOLUME)/src:/app/src \
+		$(IMAGE):$(IMAGE_TAG)-dev \
+		npx ts-node scripts/find-elife-endorsements
