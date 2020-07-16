@@ -81,6 +81,11 @@ export default (): Middleware => (
         return;
       }
       ${googleAnalytics}
+    },
+    palette: {
+      popup: {
+        background: 'rgb(0, 0, 0, 0.8)',
+      }
     }
   });
 </script>
