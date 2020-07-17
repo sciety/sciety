@@ -1,20 +1,6 @@
-import templateListItems from '../templates/list-items';
-import Doi from '../types/doi';
-
-interface ReviewedArticle {
-  doi: Doi;
-  title: string;
-}
-
-const templateTeaser = (article: ReviewedArticle): string => (`
-  <div class="content">
-    <a href="/articles/${article.doi.value}" class="header">${article.title}</a>
-  </div>
-`);
-
 export type RenderReviewedArticles = (editorialCommunityId: string) => Promise<string>;
 
-export type GetReviewedArticles = (editorialCommunityId: string) => Promise<Array<ReviewedArticle>>;
+export type GetReviewedArticles = (editorialCommunityId: string) => Promise<Array<unknown>>;
 
 export default (getReviewedArticles: GetReviewedArticles): RenderReviewedArticles => (
   async (editorialCommunityId) => {
@@ -27,9 +13,7 @@ export default (getReviewedArticles: GetReviewedArticles): RenderReviewedArticle
           Recently reviewed articles
         </h2>
 
-        <ol class="ui relaxed divided items">
-          ${templateListItems(reviewedArticles.map(templateTeaser))}
-        </ol>
+        <span data-test-id='reviewedCount'>${reviewedArticles.length}</span>
 
       </section>
     `;

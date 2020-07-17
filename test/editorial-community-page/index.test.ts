@@ -1,3 +1,4 @@
+import { JSDOM } from 'jsdom';
 import { NOT_FOUND } from 'http-status-codes';
 import request, { Response } from 'supertest';
 import createServer from '../handlers/server';
@@ -19,8 +20,10 @@ describe('render-editorial-community-page', (): void => {
       expect(response.text).toStrictEqual(expect.stringContaining('accelerate'));
     });
 
-    it('has the editorial community article teasers', async (): Promise<void> => {
-      expect(response.text).toStrictEqual(expect.stringContaining('Article title'));
+    it('displays a count of reviewed articles', async (): Promise<void> => {
+      const rendered = JSDOM.fragment(response.text);
+
+      expect(rendered.querySelector('[data-test-id="reviewedCount"]')?.textContent).toStrictEqual('1');
     });
   });
 
