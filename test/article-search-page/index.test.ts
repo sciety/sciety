@@ -1,17 +1,12 @@
-import request, { Response } from 'supertest';
+import { buildRenderPage } from '../../src/article-search-page';
 import createServer from '../handlers/server';
 
-const arbitraryDoi = '10.1101/833392';
-
-describe('article search route', (): void => {
-  let response: Response;
-
-  beforeEach(async () => {
-    const { server } = await createServer();
-    response = await request(server).get(`/articles?query=${arbitraryDoi}`);
-  });
-
+describe('create render page', (): void => {
   it('displays search results', async (): Promise<void> => {
-    expect(response.text).toStrictEqual(expect.stringContaining('Search results'));
+    const { adapters } = await createServer();
+    const renderPage = buildRenderPage(adapters);
+    const params = { query: '10.1101/833392' };
+
+    expect(await renderPage(params)).toStrictEqual(expect.stringContaining('Search results'));
   });
 });

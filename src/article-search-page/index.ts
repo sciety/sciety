@@ -1,4 +1,5 @@
-import { Middleware } from 'koa';
+import { Middleware, RouterContext } from '@koa/router';
+import { Next } from 'koa';
 import createRenderPage from './render-page';
 import createRenderSearchResult, {
   GetCommentCount,
@@ -36,7 +37,13 @@ const buildRenderSearchResult = (
   );
 };
 
-export default (ports: Ports): Middleware => {
+interface Params {
+  query: string;
+}
+
+export type RenderPage = (params: Params) => Promise<string>;
+
+export const buildRenderPage = (ports: Ports): RenderPage => {
   const getReviewCount: GetReviewCount = async (doi) => (
     (await ports.reviewReferenceRepository.findReviewsForArticleVersionDoi(doi)).length
   );
@@ -49,8 +56,19 @@ export default (ports: Ports): Middleware => {
   const renderSearchResults = createRenderSearchResults(ports.searchEuropePmc, renderSearchResult);
 
   const renderPage = createRenderPage(renderSearchResults);
-  return async (ctx, next) => {
-    ctx.response.body = await renderPage(ctx.request.query.query);
+  return async (params) => (
+    renderPage(params.query)
+  );
+};
+
+export default (ports: Ports): Middleware => {
+  const renderPage = buildRenderPage(ports);
+  return async (ctx: RouterContext, next: Next): Promise<void> => {
+    const params = {
+      ...ctx.params,
+      ...ctx.query,
+    };
+    ctx.response.body = await renderPage(params);
     await next();
   };
 };

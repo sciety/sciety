@@ -105,11 +105,10 @@ export const buildRenderPage = (ports: Ports): RenderPage => {
     renderReviews,
     renderAbstract,
   );
-  return async (params: Params): Promise<string> => {
-    const doi = ensureBiorxivDoi(params.doi)
-      .unwrapOrElse(() => {
-        throw new NotFound();
-      });
+  return async (params) => {
+    const doi = ensureBiorxivDoi(params.doi).unwrapOrElse(() => {
+      throw new NotFound();
+    });
     return renderPage(doi);
   };
 };
