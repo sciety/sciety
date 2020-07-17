@@ -1,5 +1,5 @@
-import { JSDOM } from 'jsdom';
 import { NOT_FOUND } from 'http-status-codes';
+import { JSDOM } from 'jsdom';
 import request, { Response } from 'supertest';
 import createServer from '../handlers/server';
 

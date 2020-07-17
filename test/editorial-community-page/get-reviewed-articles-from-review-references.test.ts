@@ -27,8 +27,6 @@ describe('get-reviewed-articles-from-review-references', (): void => {
     const articles = await getReviewedArticles('1');
 
     expect(articles).toHaveLength(2);
-    expect(articles.map((article) => article.title)).toContain('Title of 10.1111/1111');
-    expect(articles.map((article) => article.title)).toContain('Title of 10.2222/2222');
   });
 
   it('returns articles only once', async (): Promise<void> => {
