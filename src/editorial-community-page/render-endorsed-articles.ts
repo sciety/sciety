@@ -11,11 +11,14 @@ export default (
     return `
       <section class="ui basic vertical segment">
 
-        <h2 class="ui header">
-          Endorsed articles
-        </h2>
-
-        <span data-test-id='endorsementsCount'>${numberOfEndorsedArticles}</span>
+        <div class="ui statistic">
+          <div class="value">
+            <span data-test-id='endorsementsCount'>${numberOfEndorsedArticles}</span>
+          </div>
+          <div class="label">
+            Endorsed articles
+          </div>
+        </div>
 
       </section>
     `;

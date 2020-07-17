@@ -7,7 +7,6 @@ describe('render-endorsed-articles component', (): void => {
       const renderEndorsedArticles = createRenderEndorsedArticles(async () => 0);
       const rendered = JSDOM.fragment(await renderEndorsedArticles('any-old-id'));
 
-      expect(rendered.querySelector('h2')?.nodeName).toBe('H2');
       expect(rendered.querySelector('[data-test-id="endorsementsCount"]')?.textContent).toStrictEqual('0');
     });
   });
@@ -17,7 +16,6 @@ describe('render-endorsed-articles component', (): void => {
       const renderEndorsedArticles = createRenderEndorsedArticles(async () => 1);
       const rendered = JSDOM.fragment(await renderEndorsedArticles('53ed5364-a016-11ea-bb37-0242ac130002'));
 
-      expect(rendered.querySelector('h2')?.nodeName).toBe('H2');
       expect(rendered.querySelector('[data-test-id="endorsementsCount"]')?.textContent).toStrictEqual('1');
     });
   });
