@@ -1,5 +1,4 @@
 import renderEndorsedArticle, { EndorsedArticle } from './render-endorsed-article';
-import templateListItems from '../templates/list-items';
 
 export type RenderEndorsedArticles = (editorialCommunityId: string) => Promise<string>;
 
@@ -11,10 +10,6 @@ export default (
   async (editorialCommunityId) => {
     const endorsedArticles = await getEndorsedArticles(editorialCommunityId);
 
-    if (endorsedArticles.length === 0) {
-      return '';
-    }
-
     const renderedEndorsedArticles = await Promise.all(endorsedArticles.map(renderEndorsedArticle));
 
     return `
@@ -24,9 +19,7 @@ export default (
           Endorsed articles
         </h2>
 
-        <ol class="ui relaxed divided items">
-          ${templateListItems(renderedEndorsedArticles)}
-        </ol>
+        <span data-test-id='endorsementsCount'>${renderedEndorsedArticles.length}</span>
 
       </section>
     `;
