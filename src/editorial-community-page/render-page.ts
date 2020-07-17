@@ -1,6 +1,6 @@
 import { RenderEndorsedArticles } from './render-endorsed-articles';
 import { RenderPageHeader } from './render-page-header';
-import { RenderReviewedArticles } from './render-reviewed-articles';
+import { RenderReviews } from './render-reviews';
 import Doi from '../types/doi';
 
 type RenderPage = (editorialCommunityId: string) => Promise<string>;
@@ -13,7 +13,7 @@ export type FetchArticle = (doi: Doi) => Promise<{
 export default (
   renderPageHeader: RenderPageHeader,
   renderEndorsedArticles: RenderEndorsedArticles,
-  renderReviewedArticles: RenderReviewedArticles,
+  renderReviewedArticles: RenderReviews,
 ): RenderPage => (
   async (editorialCommunityId) => `
     ${await renderPageHeader(editorialCommunityId)}

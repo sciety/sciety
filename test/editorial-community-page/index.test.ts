@@ -20,10 +20,10 @@ describe('render-editorial-community-page', (): void => {
       expect(response.text).toStrictEqual(expect.stringContaining('accelerate'));
     });
 
-    it('displays a count of reviewed articles', async (): Promise<void> => {
+    it('displays a count of reviews', async (): Promise<void> => {
       const rendered = JSDOM.fragment(response.text);
 
-      expect(rendered.querySelector('[data-test-id="reviewedCount"]')?.textContent).toStrictEqual('1');
+      expect(rendered.querySelector('[data-test-id="reviewsCount"]')?.textContent).toStrictEqual('1');
     });
   });
 

@@ -1,11 +1,11 @@
 import { Middleware, RouterContext } from '@koa/router';
 import { NotFound } from 'http-errors';
 import { Next } from 'koa';
-import createGetReviewedArticlesFromReviewReferences from './get-reviewed-articles-from-review-references';
+import createGetNumberOfReviewsFromReviewReferences from './get-number-of-reviews-from-review-references';
 import createRenderEndorsedArticles, { GetEndorsedArticles, RenderEndorsedArticles } from './render-endorsed-articles';
 import createRenderPage, { FetchArticle } from './render-page';
 import createRenderPageHeader, { GetEditorialCommunity, RenderPageHeader } from './render-page-header';
-import createRenderReviewedArticles, { RenderReviewedArticles } from './render-reviewed-articles';
+import createRenderReviews, { RenderReviews } from './render-reviews';
 import Doi from '../types/doi';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import EndorsementsRepository from '../types/endorsements-repository';
@@ -59,27 +59,25 @@ const buildRenderEndorsedArticles = (
   return createRenderEndorsedArticles(getEndorsedArticles);
 };
 
-const buildRenderReviewedArticles = (
-  fetchArticle: FetchArticle,
+const buildRenderReviews = (
   reviewReferenceRepository: ReviewReferenceRepository,
-): RenderReviewedArticles => {
-  const getReviewedArticles = createGetReviewedArticlesFromReviewReferences(
+): RenderReviews => {
+  const getNumberOfReviews = createGetNumberOfReviewsFromReviewReferences(
     reviewReferenceRepository.findReviewsForEditorialCommunityId,
-    fetchArticle,
   );
-  return createRenderReviewedArticles(getReviewedArticles);
+  return createRenderReviews(getNumberOfReviews);
 };
 
 export default (ports: Ports): Middleware => {
   const fetchArticle = raiseFetchArticleErrors(ports.fetchArticle);
   const renderPageHeader = buildRenderPageHeader(ports.editorialCommunities);
   const renderEndorsedArticles = buildRenderEndorsedArticles(ports.endorsements, fetchArticle);
-  const renderReviewedArticles = buildRenderReviewedArticles(fetchArticle, ports.reviewReferenceRepository);
+  const renderReviews = buildRenderReviews(ports.reviewReferenceRepository);
 
   const renderPage = createRenderPage(
     renderPageHeader,
     renderEndorsedArticles,
-    renderReviewedArticles,
+    renderReviews,
   );
 
   return async (ctx: RouterContext, next: Next): Promise<void> => {
