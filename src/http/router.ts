@@ -1,5 +1,4 @@
 import Router from '@koa/router';
-import addPageTemplate from './add-page-template';
 import pageHandler from './page-handler';
 import ping from './ping';
 import robots from './robots';
@@ -17,24 +16,19 @@ export default (adapters: Adapters): Router => {
     ping());
 
   router.get('/',
-    pageHandler(adapters, createHomePage),
-    addPageTemplate());
+    pageHandler(createHomePage(adapters)));
 
   router.get('/about',
-    pageHandler(adapters, createAboutPage),
-    addPageTemplate());
+    pageHandler(createAboutPage(adapters)));
 
   router.get('/articles',
-    pageHandler(adapters, createArticleSearchPage),
-    addPageTemplate());
+    pageHandler(createArticleSearchPage(adapters)));
 
   router.get('/articles/:doi(.+)',
-    pageHandler(adapters, createArticlePage),
-    addPageTemplate());
+    pageHandler(createArticlePage(adapters)));
 
   router.get('/editorial-communities/:id',
-    pageHandler(adapters, createEditorialCommunityPage),
-    addPageTemplate());
+    pageHandler(createEditorialCommunityPage(adapters)));
 
   router.get('/robots.txt',
     robots());

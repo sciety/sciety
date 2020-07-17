@@ -1,6 +1,6 @@
 import { Middleware, RouterContext } from '@koa/router';
 import { Next } from 'koa';
-import { Adapters } from '../infrastructure/adapters';
+import applyStandardPageLayout from '../templates/apply-standard-page-layout';
 
 export type RenderPage = (params: {
   doi?: string;
@@ -9,16 +9,15 @@ export type RenderPage = (params: {
 }) => Promise<string>;
 
 export default (
-  adapters: Adapters,
-  createRenderPage: (adapters: Adapters) => RenderPage,
-): Middleware => {
-  const renderPage = createRenderPage(adapters);
-  return async (ctx: RouterContext, next: Next): Promise<void> => {
+  renderPage: RenderPage,
+): Middleware => (
+  async (ctx: RouterContext, next: Next): Promise<void> => {
     const params = {
       ...ctx.params,
       ...ctx.query,
     };
-    ctx.response.body = await renderPage(params);
+    ctx.response.type = 'html';
+    ctx.response.body = applyStandardPageLayout(await renderPage(params));
     await next();
-  };
-};
+  }
+);
