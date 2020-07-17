@@ -44,19 +44,34 @@ const buildRenderReviews = (
   return createRenderReviews(getNumberOfReviews);
 };
 
-export default (ports: Ports): Middleware => {
+interface Params {
+  id: string;
+}
+
+export type RenderPage = (params: Params) => Promise<string>;
+
+export const buildRenderPage = (ports: Ports): RenderPage => {
   const renderPageHeader = buildRenderPageHeader(ports.editorialCommunities);
   const renderEndorsedArticles = buildRenderEndorsedArticles(ports.endorsements);
   const renderReviews = buildRenderReviews(ports.reviewReferenceRepository);
-
   const renderPage = createRenderPage(
     renderPageHeader,
     renderEndorsedArticles,
     renderReviews,
   );
+  return async (params) => (
+    renderPage(params.id)
+  );
+};
 
+export default (ports: Ports): Middleware => {
+  const renderPage = buildRenderPage(ports);
   return async (ctx: RouterContext, next: Next): Promise<void> => {
-    ctx.response.body = await renderPage(ctx.params.id);
+    const params = {
+      ...ctx.params,
+      ...ctx.query,
+    };
+    ctx.response.body = await renderPage(params);
     await next();
   };
 };
