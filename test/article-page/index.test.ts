@@ -1,43 +1,33 @@
-import { NOT_FOUND } from 'http-status-codes';
-import request, { Response } from 'supertest';
-import Doi from '../../src/types/doi';
+import { NotFound } from 'http-errors';
+import { buildRenderPage } from '../../src/article-page';
 import createServer from '../handlers/server';
 
-describe('article route', (): void => {
-  let response: Response;
-
+describe('create render page', (): void => {
   describe('when the article is from bioRxiv', (): void => {
-    const articleDoi = new Doi('10.1101/833392');
-
-    beforeEach(async () => {
-      const { server } = await createServer();
-      response = await request(server).get(`/articles/${articleDoi.value}`);
-    });
-
     it('returns a page containing article metadata', async (): Promise<void> => {
-      expect(response.text).toStrictEqual(expect.stringContaining(articleDoi.toString()));
+      const { adapters } = await createServer();
+      const renderPage = buildRenderPage(adapters);
+      const params = { doi: '10.1101/833392' };
+
+      expect(await renderPage(params)).toStrictEqual(expect.stringContaining('10.1101/833392'));
     });
   });
 
   describe('when the article does not exist', (): void => {
-    beforeEach(async () => {
-      const { server } = await createServer();
-      response = await request(server).get('/articles/rubbish');
-    });
-
-    it('returns a 404 response', async (): Promise<void> => {
-      expect(response.status).toBe(NOT_FOUND);
+    it('throws a NotFound error', async (): Promise<void> => {
+      const { adapters } = await createServer();
+      const renderPage = buildRenderPage(adapters);
+      const params = { doi: 'rubbish' };
+      await expect(renderPage(params)).rejects.toStrictEqual(new NotFound());
     });
   });
 
   describe('when the article is not from bioRxiv', (): void => {
-    beforeEach(async () => {
-      const { server } = await createServer();
-      response = await request(server).get('/articles/10.7554/eLife.09560');
-    });
-
-    it('returns a 404 response', async (): Promise<void> => {
-      expect(response.status).toBe(NOT_FOUND);
+    it('throws a NotFound error', async (): Promise<void> => {
+      const { adapters } = await createServer();
+      const renderPage = buildRenderPage(adapters);
+      const params = { doi: '10.7554/eLife.09560' };
+      await expect(renderPage(params)).rejects.toStrictEqual(new NotFound());
     });
   });
 });

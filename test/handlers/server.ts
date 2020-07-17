@@ -30,6 +30,7 @@ const articleAReview1 = new Doi('10.5281/zenodo.3678325');
 const articleBReview1 = new Doi('10.5281/zenodo.3756961');
 
 export interface TestServer {
+  adapters: Adapters,
   server: Server;
   editorialCommunities: EditorialCommunityRepository;
   reviewReferenceRepository: ReviewReferenceRepository;
@@ -77,6 +78,7 @@ export default async (): Promise<TestServer> => {
 
   const router = createRouter(adapters);
   return {
+    adapters,
     server: createServer(router, dummyLogger),
     editorialCommunities,
     reviewReferenceRepository,

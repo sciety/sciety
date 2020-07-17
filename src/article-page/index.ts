@@ -90,7 +90,13 @@ const buildRenderReviews = (ports: Ports): RenderReviews => {
   );
 };
 
-export default (ports: Ports): Middleware => {
+interface Params {
+  doi: string;
+}
+
+export type RenderPage = (params: Params) => Promise<string>;
+
+export const buildRenderPage = (ports: Ports): RenderPage => {
   const renderPageHeader = buildRenderPageHeader(ports);
   const renderAbstract = buildRenderAbstract(handleFetchArticleErrors(ports.fetchArticle));
   const renderReviews = buildRenderReviews(ports);
@@ -99,14 +105,23 @@ export default (ports: Ports): Middleware => {
     renderReviews,
     renderAbstract,
   );
-  return async (ctx: RouterContext, next: Next): Promise<void> => {
-    const doi = ensureBiorxivDoi(ctx.params.doi)
+  return async (params: Params): Promise<string> => {
+    const doi = ensureBiorxivDoi(params.doi)
       .unwrapOrElse(() => {
         throw new NotFound();
       });
+    return renderPage(doi);
+  };
+};
 
-    ctx.response.body = await renderPage(doi);
-
+export default (ports: Ports): Middleware => {
+  const renderPage = buildRenderPage(ports);
+  return async (ctx: RouterContext, next: Next): Promise<void> => {
+    const params = {
+      ...ctx.params,
+      ...ctx.query,
+    };
+    ctx.response.body = await renderPage(params);
     await next();
   };
 };
