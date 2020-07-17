@@ -1,6 +1,4 @@
-import { Middleware, RouterContext } from '@koa/router';
 import { NotFound } from 'http-errors';
-import { Next } from 'koa';
 import ensureBiorxivDoi from './ensure-biorxiv-doi';
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
 import createRenderPage from './render-page';
@@ -91,12 +89,12 @@ const buildRenderReviews = (ports: Ports): RenderReviews => {
 };
 
 interface Params {
-  doi: string;
+  doi?: string;
 }
 
 export type RenderPage = (params: Params) => Promise<string>;
 
-export const buildRenderPage = (ports: Ports): RenderPage => {
+export default (ports: Ports): RenderPage => {
   const renderPageHeader = buildRenderPageHeader(ports);
   const renderAbstract = buildRenderAbstract(handleFetchArticleErrors(ports.fetchArticle));
   const renderReviews = buildRenderReviews(ports);
@@ -106,21 +104,9 @@ export const buildRenderPage = (ports: Ports): RenderPage => {
     renderAbstract,
   );
   return async (params) => {
-    const doi = ensureBiorxivDoi(params.doi).unwrapOrElse(() => {
+    const doi = ensureBiorxivDoi(params.doi ?? '').unwrapOrElse(() => {
       throw new NotFound();
     });
     return renderPage(doi);
-  };
-};
-
-export default (ports: Ports): Middleware => {
-  const renderPage = buildRenderPage(ports);
-  return async (ctx: RouterContext, next: Next): Promise<void> => {
-    const params = {
-      ...ctx.params,
-      ...ctx.query,
-    };
-    ctx.response.body = await renderPage(params);
-    await next();
   };
 };

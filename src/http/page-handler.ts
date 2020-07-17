@@ -2,7 +2,11 @@ import { Middleware, RouterContext } from '@koa/router';
 import { Next } from 'koa';
 import { Adapters } from '../infrastructure/adapters';
 
-export type RenderPage = (params: Record<string, string>) => Promise<string>;
+export type RenderPage = (params: {
+  doi?: string;
+  id?: string;
+  query?: string;
+}) => Promise<string>;
 
 export default (
   adapters: Adapters,

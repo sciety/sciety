@@ -21,19 +21,19 @@ export default (adapters: Adapters): Router => {
     addPageTemplate());
 
   router.get('/about',
-    createAboutPage(adapters),
+    pageHandler(adapters, createAboutPage),
     addPageTemplate());
 
   router.get('/articles',
-    createArticleSearchPage(adapters),
+    pageHandler(adapters, createArticleSearchPage),
     addPageTemplate());
 
   router.get('/articles/:doi(.+)',
-    createArticlePage(adapters),
+    pageHandler(adapters, createArticlePage),
     addPageTemplate());
 
   router.get('/editorial-communities/:id',
-    createEditorialCommunityPage(adapters),
+    pageHandler(adapters, createEditorialCommunityPage),
     addPageTemplate());
 
   router.get('/robots.txt',

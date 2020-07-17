@@ -1,6 +1,4 @@
-import { Middleware, RouterContext } from '@koa/router';
 import { NotFound } from 'http-errors';
-import { Next } from 'koa';
 import createRenderEndorsedArticles, { GetNumberOfEndorsedArticles, RenderEndorsedArticles } from './render-endorsed-articles';
 import createRenderPage from './render-page';
 import createRenderPageHeader, { GetEditorialCommunity, RenderPageHeader } from './render-page-header';
@@ -45,12 +43,12 @@ const buildRenderReviews = (
 };
 
 interface Params {
-  id: string;
+  id?: string;
 }
 
 export type RenderPage = (params: Params) => Promise<string>;
 
-export const buildRenderPage = (ports: Ports): RenderPage => {
+export default (ports: Ports): RenderPage => {
   const renderPageHeader = buildRenderPageHeader(ports.editorialCommunities);
   const renderEndorsedArticles = buildRenderEndorsedArticles(ports.endorsements);
   const renderReviews = buildRenderReviews(ports.reviewReferenceRepository);
@@ -60,18 +58,6 @@ export const buildRenderPage = (ports: Ports): RenderPage => {
     renderReviews,
   );
   return async (params) => (
-    renderPage(params.id)
+    renderPage(params.id ?? '')
   );
-};
-
-export default (ports: Ports): Middleware => {
-  const renderPage = buildRenderPage(ports);
-  return async (ctx: RouterContext, next: Next): Promise<void> => {
-    const params = {
-      ...ctx.params,
-      ...ctx.query,
-    };
-    ctx.response.body = await renderPage(params);
-    await next();
-  };
 };

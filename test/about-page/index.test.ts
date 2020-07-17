@@ -1,4 +1,4 @@
-import { buildRenderPage, FetchStaticFile } from '../../src/about-page/index';
+import buildRenderPage, { FetchStaticFile } from '../../src/about-page/index';
 
 const fetchStaticFile: FetchStaticFile = async (filename) => (`# Contents of ${filename}`);
 

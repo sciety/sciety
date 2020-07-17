@@ -1,5 +1,5 @@
 import { NotFound } from 'http-errors';
-import { buildRenderPage } from '../../src/article-page';
+import buildRenderPage from '../../src/article-page';
 import createServer from '../http/server';
 
 describe('create render page', (): void => {

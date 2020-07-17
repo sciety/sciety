@@ -1,6 +1,6 @@
 import { NotFound } from 'http-errors';
 import { JSDOM } from 'jsdom';
-import { buildRenderPage } from '../../src/editorial-community-page';
+import buildRenderPage from '../../src/editorial-community-page';
 import createServer from '../http/server';
 
 describe('create render page', (): void => {
