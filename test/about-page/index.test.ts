@@ -1,32 +1,12 @@
-import { Context, Middleware, Response } from 'koa';
-import createIndex, { FetchStaticFile } from '../../src/about-page/index';
-import createContext from '../context';
-import runMiddleware from '../middleware';
+import { buildRenderPage, FetchStaticFile } from '../../src/about-page/index';
 
 const fetchStaticFile: FetchStaticFile = async (filename) => (`# Contents of ${filename}`);
 
-const invokeMiddleware = async (ctx: Context, next?: Middleware): Promise<Response> => {
-  const { response } = await runMiddleware(createIndex({ fetchStaticFile }), ctx, next);
-  return response;
-};
-
-describe('render-about-page middleware', (): void => {
-  let ctx: Context;
-
-  beforeEach(() => {
-    ctx = createContext();
-  });
-
+describe('create render page', (): void => {
   it('inserts the HTML text into the response body', async (): Promise<void> => {
-    await invokeMiddleware(ctx);
+    const renderPage = buildRenderPage({ fetchStaticFile });
+    const rendered = await renderPage({});
 
-    expect(ctx.response.body).toStrictEqual(expect.stringContaining('<h1>Contents of about.md</h1>'));
-  });
-
-  it('calls the next middleware', async (): Promise<void> => {
-    const next = jest.fn();
-    await invokeMiddleware(ctx, next);
-
-    expect(next).toHaveBeenCalledTimes(1);
+    expect(rendered).toStrictEqual(expect.stringContaining('<h1>Contents of about.md</h1>'));
   });
 });
