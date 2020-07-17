@@ -1,8 +1,8 @@
 import { assert, asyncProperty, lorem } from 'fast-check';
 import { OK } from 'http-status-codes';
 import { ExtendableContext, Middleware, Response } from 'koa';
-import addPageTemplate from '../../src/middleware/add-page-template';
-import runMiddleware from '../middleware';
+import runMiddleware from './middleware';
+import addPageTemplate from '../../src/http/add-page-template';
 
 const defaultNext: Middleware = async ({ response }) => {
   response.body = '';

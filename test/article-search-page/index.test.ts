@@ -1,5 +1,5 @@
 import { buildRenderPage } from '../../src/article-search-page';
-import createServer from '../handlers/server';
+import createServer from '../http/server';
 
 describe('create render page', (): void => {
   it('displays search results', async (): Promise<void> => {

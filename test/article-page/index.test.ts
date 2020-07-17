@@ -1,6 +1,6 @@
 import { NotFound } from 'http-errors';
 import { buildRenderPage } from '../../src/article-page';
-import createServer from '../handlers/server';
+import createServer from '../http/server';
 
 describe('create render page', (): void => {
   describe('when the article is from bioRxiv', (): void => {

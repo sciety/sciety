@@ -1,5 +1,5 @@
 import { buildRenderPage } from '../../src/home-page';
-import createServer from '../handlers/server';
+import createServer from '../http/server';
 
 describe('create render page', (): void => {
   it('lists all of the hard-coded editorial communities', async (): Promise<void> => {

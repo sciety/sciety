@@ -5,6 +5,8 @@ import clownface from 'clownface';
 import datasetFactory from 'rdf-dataset-indexed';
 import { Result } from 'true-myth';
 import bootstrapEditorialCommunities from '../../src/data/bootstrap-editorial-communities';
+import createRouter from '../../src/http/router';
+import createServer from '../../src/http/server';
 import { Adapters } from '../../src/infrastructure/adapters';
 import { FetchCrossrefArticle } from '../../src/infrastructure/fetch-crossref-article';
 import createFetchDataciteReview from '../../src/infrastructure/fetch-datacite-review';
@@ -16,8 +18,6 @@ import createGetDisqusPostCount from '../../src/infrastructure/get-disqus-post-c
 import createEditorialCommunityRepository from '../../src/infrastructure/in-memory-editorial-communities';
 import createEndorsementsRepository from '../../src/infrastructure/in-memory-endorsements-repository';
 import createReviewReferenceRepository from '../../src/infrastructure/in-memory-review-references';
-import createRouter from '../../src/router';
-import createServer from '../../src/server';
 import Doi from '../../src/types/doi';
 import EditorialCommunityRepository from '../../src/types/editorial-community-repository';
 import ReviewReferenceRepository from '../../src/types/review-reference-repository';

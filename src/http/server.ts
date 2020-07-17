@@ -5,7 +5,7 @@ import rTracer from 'cls-rtracer';
 import Koa, { ExtendableContext, Next, ParameterizedContext } from 'koa';
 import mount from 'koa-mount';
 import send from 'koa-send';
-import { Logger } from './infrastructure/logger';
+import { Logger } from '../infrastructure/logger';
 
 export default (router: Router, logger: Logger): Server => {
   const app = new Koa();
@@ -38,7 +38,7 @@ export default (router: Router, logger: Logger): Server => {
   });
 
   app.use(mount('/static', async (context: ParameterizedContext): Promise<void> => {
-    await send(context, context.path, { root: path.resolve(__dirname, '../static') });
+    await send(context, context.path, { root: path.resolve(__dirname, '../../static') });
   }));
   app.use(router.middleware());
 

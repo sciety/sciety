@@ -1,13 +1,13 @@
 import Router from '@koa/router';
-import createAboutPage from './about-page';
-import createArticlePage from './article-page';
-import createArticleSearchPage from './article-search-page';
-import createEditorialCommunityPage from './editorial-community-page';
-import ping from './handlers/ping';
-import robots from './handlers/robots';
-import createHomePage from './home-page';
-import { Adapters } from './infrastructure/adapters';
-import addPageTemplate from './middleware/add-page-template';
+import addPageTemplate from './add-page-template';
+import ping from './ping';
+import robots from './robots';
+import createAboutPage from '../about-page';
+import createArticlePage from '../article-page';
+import createArticleSearchPage from '../article-search-page';
+import createEditorialCommunityPage from '../editorial-community-page';
+import createHomePage from '../home-page';
+import { Adapters } from '../infrastructure/adapters';
 
 export default (adapters: Adapters): Router => {
   const router = new Router();
