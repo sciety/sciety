@@ -1,12 +1,12 @@
 export type RenderEndorsedArticles = (editorialCommunityId: string) => Promise<string>;
 
-export type GetEndorsedArticles = (editorialCommunityId: string) => Promise<Array<unknown>>;
+export type GetNumberOfEndorsedArticles = (editorialCommunityId: string) => Promise<number>;
 
 export default (
-  getEndorsedArticles: GetEndorsedArticles,
+  getNumberOfEndorsedArticles: GetNumberOfEndorsedArticles,
 ): RenderEndorsedArticles => (
   async (editorialCommunityId) => {
-    const endorsedArticles = await getEndorsedArticles(editorialCommunityId);
+    const numberOfEndorsedArticles = await getNumberOfEndorsedArticles(editorialCommunityId);
 
     return `
       <section class="ui basic vertical segment">
@@ -15,7 +15,7 @@ export default (
           Endorsed articles
         </h2>
 
-        <span data-test-id='endorsementsCount'>${endorsedArticles.length}</span>
+        <span data-test-id='endorsementsCount'>${numberOfEndorsedArticles}</span>
 
       </section>
     `;
