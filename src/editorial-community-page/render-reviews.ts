@@ -9,11 +9,14 @@ export default (getNumberOfReviews: GetNumberOfReviews): RenderReviews => (
     return `
       <section class="ui basic vertical segment">
 
-        <h2 class="ui header">
-          Reviews
-        </h2>
-
-        <span data-test-id='reviewsCount'>${numberOfReviews}</span>
+        <div class="ui statistic">
+          <div class="value">
+            <span data-test-id='reviewsCount'>${numberOfReviews}</span>
+          </div>
+          <div class="label">
+            Reviews
+          </div>
+        </div>
 
       </section>
     `;
