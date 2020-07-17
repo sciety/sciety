@@ -1,11 +1,10 @@
 import { Middleware, RouterContext } from '@koa/router';
 import { NotFound } from 'http-errors';
 import { Next } from 'koa';
-import createGetNumberOfReviewsFromReviewReferences from './get-number-of-reviews-from-review-references';
 import createRenderEndorsedArticles, { GetEndorsedArticles, RenderEndorsedArticles } from './render-endorsed-articles';
 import createRenderPage, { FetchArticle } from './render-page';
 import createRenderPageHeader, { GetEditorialCommunity, RenderPageHeader } from './render-page-header';
-import createRenderReviews, { RenderReviews } from './render-reviews';
+import createRenderReviews, { GetNumberOfReviews, RenderReviews } from './render-reviews';
 import Doi from '../types/doi';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import EndorsementsRepository from '../types/endorsements-repository';
@@ -62,8 +61,8 @@ const buildRenderEndorsedArticles = (
 const buildRenderReviews = (
   reviewReferenceRepository: ReviewReferenceRepository,
 ): RenderReviews => {
-  const getNumberOfReviews = createGetNumberOfReviewsFromReviewReferences(
-    reviewReferenceRepository.findReviewsForEditorialCommunityId,
+  const getNumberOfReviews: GetNumberOfReviews = async (editorialCommunityId) => (
+    (await reviewReferenceRepository.findReviewsForEditorialCommunityId(editorialCommunityId)).length
   );
   return createRenderReviews(getNumberOfReviews);
 };
