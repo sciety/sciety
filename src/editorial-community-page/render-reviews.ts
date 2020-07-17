@@ -11,9 +11,9 @@ export default (getNumberOfReviews: GetNumberOfReviews): RenderReviews => (
 
         <div class="ui statistic">
           <div class="value">
-            <span data-test-id='reviewsCount'>${numberOfReviews}</span>
+            <span data-test-id='reviewsCount' aria-describedby="renderReviews_label">${numberOfReviews}</span>
           </div>
-          <div class="label">
+          <div class="label" id="renderReviews_label">
             Reviews
           </div>
         </div>

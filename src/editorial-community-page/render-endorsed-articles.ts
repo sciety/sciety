@@ -13,9 +13,9 @@ export default (
 
         <div class="ui statistic">
           <div class="value">
-            <span data-test-id='endorsementsCount'>${numberOfEndorsedArticles}</span>
+            <span data-test-id='endorsementsCount' aria-describedby="renderEndorsedArticles_label">${numberOfEndorsedArticles}</span>
           </div>
-          <div class="label">
+          <div class="label" id="renderEndorsedArticles_label">
             Endorsed articles
           </div>
         </div>
