@@ -7,18 +7,14 @@ export default (getNumberOfReviews: GetNumberOfReviews): RenderReviews => (
     const numberOfReviews = await getNumberOfReviews(editorialCommunityId);
 
     return `
-      <section class="ui basic vertical segment">
-
-        <div class="ui statistic">
-          <div class="value">
-            <span data-test-id='reviewsCount' aria-describedby="renderReviews_label">${numberOfReviews}</span>
-          </div>
-          <div class="label" id="renderReviews_label">
-            Reviews
-          </div>
+      <div class="statistic">
+        <div class="value">
+          <span data-test-id='reviewsCount' aria-describedby="renderReviews_label">${numberOfReviews}</span>
         </div>
-
-      </section>
+        <div class="label" id="renderReviews_label">
+          Reviews
+        </div>
+      </div>
     `;
   }
 );

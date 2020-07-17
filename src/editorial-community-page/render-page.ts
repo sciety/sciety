@@ -17,7 +17,9 @@ export default (
 ): RenderPage => (
   async (editorialCommunityId) => `
     ${await renderPageHeader(editorialCommunityId)}
-    ${await renderEndorsedArticles(editorialCommunityId)}
-    ${await renderReviewedArticles(editorialCommunityId)}
+    <section class="ui statistics">
+      ${await renderEndorsedArticles(editorialCommunityId)}
+      ${await renderReviewedArticles(editorialCommunityId)}
+    </section>
   `
 );
