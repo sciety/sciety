@@ -1,34 +1,14 @@
-import { OK } from 'http-status-codes';
-import request, { Response } from 'supertest';
-import EditorialCommunityRepository from '../../src/types/editorial-community-repository';
+import { buildRenderPage } from '../../src/home-page';
 import createServer from '../handlers/server';
 
-describe('render-home-page handler', (): void => {
-  let response: Response;
-  let editorialCommunities: EditorialCommunityRepository;
-
-  beforeEach(async () => {
-    const server = await createServer();
-    editorialCommunities = server.editorialCommunities;
-    response = await request(server.server).get('/');
-  });
-
-  it('returns a successful response', async (): Promise<void> => {
-    expect(response.status).toBe(OK);
-  });
-
-  it('is HTML', async (): Promise<void> => {
-    expect(response.type).toBe('text/html');
-    expect(response.charset).toBe('utf-8');
-  });
-
-  it('has an HTML5 body', async (): Promise<void> => {
-    expect(response.text).toStrictEqual(expect.stringMatching(/^<!doctype html>/i));
-  });
-
+describe('create render page', (): void => {
   it('lists all of the hard-coded editorial communities', async (): Promise<void> => {
-    for (const ec of editorialCommunities.all()) {
-      expect(response.text).toContain(ec.name);
+    const { adapters } = await createServer();
+    const renderPage = buildRenderPage(adapters);
+
+    const rendered = await renderPage({});
+    for (const ec of adapters.editorialCommunities.all()) {
+      expect(rendered).toContain(ec.name);
     }
   });
 });
