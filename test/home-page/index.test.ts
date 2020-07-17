@@ -1,4 +1,4 @@
-import { buildRenderPage } from '../../src/home-page';
+import buildRenderPage from '../../src/home-page';
 import createServer from '../http/server';
 
 describe('create render page', (): void => {

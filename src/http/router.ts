@@ -1,5 +1,6 @@
 import Router from '@koa/router';
 import addPageTemplate from './add-page-template';
+import pageHandler from './page-handler';
 import ping from './ping';
 import robots from './robots';
 import createAboutPage from '../about-page';
@@ -16,7 +17,7 @@ export default (adapters: Adapters): Router => {
     ping());
 
   router.get('/',
-    createHomePage(adapters),
+    pageHandler(adapters, createHomePage),
     addPageTemplate());
 
   router.get('/about',
