@@ -1,4 +1,4 @@
-import { Maybe } from 'true-myth';
+import { Maybe, Result } from 'true-myth';
 import templateDate from '../templates/date';
 import templateListItems from '../templates/list-items';
 import Doi from '../types/doi';
@@ -9,14 +9,14 @@ interface ArticleDetails {
   publicationDate: Date;
 }
 
-export type GetArticleDetails = (doi: Doi) => Promise<ArticleDetails>;
+export type GetArticleDetails = (doi: Doi) => Promise<Result<ArticleDetails, 'not-found'|'unavailable'>>;
 
 export type GetReviewCount = (doi: Doi) => Promise<number>;
 
 export type GetCommentCount = (doi: Doi) => Promise<Maybe<number>>;
 export type GetEndorsingEditorialCommunityNames = (doi: Doi) => Promise<Array<string>>;
 
-export type RenderPageHeader = (doi: Doi) => Promise<string>;
+export type RenderPageHeader = (doi: Doi) => Promise<Result<string, 'not-found'|'unavailable'>>;
 
 export default (
   getArticleDetails: GetArticleDetails,
@@ -65,12 +65,12 @@ export default (
       `;
   }
 
-  return `
+  return articleDetails.map((details) => `
       <header class="ui basic padded vertical segment">
-        <h1 class="ui header">${articleDetails.title}</h1>
+        <h1 class="ui header">${details.title}</h1>
 
         <ol aria-label="Authors of this article" class="ui comma separated horizontal list">
-          ${templateListItems(articleDetails.authors)}
+          ${templateListItems(details.authors)}
         </ol>
 
         <ul aria-label="Publication details" class="ui list">
@@ -78,7 +78,7 @@ export default (
             DOI <a href="https://doi.org/${doi.value}">${doi.value}</a>
           </li>
           <li class="item">
-            Posted ${templateDate(articleDetails.publicationDate)}
+            Posted ${templateDate(details.publicationDate)}
           </li>
         </ul>
 
@@ -86,5 +86,5 @@ export default (
         ${comments}
         ${endorsements}
       </header>
-    `;
+    `);
 };

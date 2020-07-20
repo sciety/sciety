@@ -21,10 +21,13 @@ export default (
     const abstract = (await renderAbstract(doi)).unwrapOrElse(() => {
       throw new NotFound(`${doi.value} not found`);
     });
+    const pageHeader = (await renderPageHeader(doi)).unwrapOrElse(() => {
+      throw new NotFound(`${doi.value} not found`);
+    });
     return Result.ok(`<article class="ui aligned stackable grid">
       <div class="row">
         <div class="column">
-          ${await renderPageHeader(doi)}
+          ${pageHeader}
         </div>
       </div>
 

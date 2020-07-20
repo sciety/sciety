@@ -1,4 +1,3 @@
-import { NotFound } from 'http-errors';
 import { Result } from 'true-myth';
 import ensureBiorxivDoi from './ensure-biorxiv-doi';
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
@@ -15,7 +14,6 @@ import createRenderReview, {
   GetReview,
 } from './render-review';
 import createRenderReviews, { RenderReviews } from './render-reviews';
-import Doi from '../types/doi';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import EndorsementsRepository from '../types/endorsements-repository';
 import { FetchExternalArticle } from '../types/fetch-external-article';
@@ -34,18 +32,8 @@ const reviewsId = 'reviews';
 
 type GetEditorialCommunityName = (editorialCommunityId: string) => Promise<string>;
 
-const handleFetchArticleErrors = (fetchArticle: FetchExternalArticle): GetArticleDetails => (
-  async (doi: Doi) => {
-    const result = await fetchArticle(doi);
-
-    return result.unwrapOrElse(() => {
-      throw new NotFound(`${doi.value} not found`);
-    });
-  }
-);
-
 const buildRenderPageHeader = (ports: Ports): RenderPageHeader => {
-  const getArticleDetailsAdapter: GetArticleDetails = handleFetchArticleErrors(ports.fetchArticle);
+  const getArticleDetailsAdapter: GetArticleDetails = ports.fetchArticle;
   const reviewCountAdapter: GetReviewCount = async (articleDoi) => (
     (await ports.reviewReferenceRepository.findReviewsForArticleVersionDoi(articleDoi)).length
   );

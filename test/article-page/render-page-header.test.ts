@@ -1,20 +1,20 @@
 import { JSDOM } from 'jsdom';
-import { Maybe } from 'true-myth';
+import { Maybe, Result } from 'true-myth';
 import createRenderPageHeader, {
   GetArticleDetails,
   RenderPageHeader,
 } from '../../src/article-page/render-page-header';
 import Doi from '../../src/types/doi';
 
-const getArticleDetails: GetArticleDetails = async (doi) => ({
+const getArticleDetails: GetArticleDetails = async (doi) => (Result.ok({
   title: `Lorem ipsum ${doi.value}`,
   authors: ['Gary', 'Uncle Wiggly'],
   publicationDate: new Date('2020-06-03'),
-});
+}));
 
 describe('render-page-header component', (): void => {
   let renderPageHeader: RenderPageHeader;
-  let rendered: string;
+  let rendered: Result<string, 'not-found'|'unavailable'>;
 
   beforeEach(async () => {
     renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 0, async () => Maybe.nothing(), async () => [], '#reviews');
@@ -22,24 +22,24 @@ describe('render-page-header component', (): void => {
   });
 
   it('renders inside an header tag', () => {
-    expect(rendered).toStrictEqual(expect.stringMatching(/^\s*<header\s|>/));
+    expect(rendered.unsafelyUnwrap()).toStrictEqual(expect.stringMatching(/^\s*<header\s|>/));
   });
 
   it('renders the title for an article', async (): Promise<void> => {
-    expect(rendered).toStrictEqual(expect.stringContaining('Lorem ipsum 10.1101/815689'));
+    expect(rendered.unsafelyUnwrap()).toStrictEqual(expect.stringContaining('Lorem ipsum 10.1101/815689'));
   });
 
   it('renders the article DOI', () => {
-    expect(rendered).toStrictEqual(expect.stringContaining('10.1101/815689'));
+    expect(rendered.unsafelyUnwrap()).toStrictEqual(expect.stringContaining('10.1101/815689'));
   });
 
   it('renders the article publication date', () => {
-    expect(rendered).toStrictEqual(expect.stringContaining('2020-06-03'));
+    expect(rendered.unsafelyUnwrap()).toStrictEqual(expect.stringContaining('2020-06-03'));
   });
 
   it('renders the article authors', () => {
-    expect(rendered).toStrictEqual(expect.stringContaining('Gary'));
-    expect(rendered).toStrictEqual(expect.stringContaining('Uncle Wiggly'));
+    expect(rendered.unsafelyUnwrap()).toStrictEqual(expect.stringContaining('Gary'));
+    expect(rendered.unsafelyUnwrap()).toStrictEqual(expect.stringContaining('Uncle Wiggly'));
   });
 
   describe('the article has reviews', (): void => {
@@ -47,12 +47,12 @@ describe('render-page-header component', (): void => {
       renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 2, async () => Maybe.nothing(), async () => [], '#reviews');
       rendered = await renderPageHeader(new Doi('10.1101/209320'));
 
-      expect(rendered).toStrictEqual(expect.stringMatching(/Reviews[\s\S]*?2/));
+      expect(rendered.unsafelyUnwrap()).toStrictEqual(expect.stringMatching(/Reviews[\s\S]*?2/));
     });
 
     it('links to the reviews heading on the same page', async (): Promise<void> => {
       renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 2, async () => Maybe.nothing(), async () => [], '/path/to/the/reviews');
-      const pageHeader = JSDOM.fragment(await renderPageHeader(new Doi('10.1101/209320')));
+      const pageHeader = JSDOM.fragment((await renderPageHeader(new Doi('10.1101/209320'))).unsafelyUnwrap());
 
       const anchor = pageHeader.querySelector('a[data-test-id="reviewsLink"]');
 
@@ -63,7 +63,7 @@ describe('render-page-header component', (): void => {
 
   describe('the article does not have reviews', (): void => {
     it('does not display review details', async (): Promise<void> => {
-      expect(rendered).toStrictEqual(expect.not.stringContaining('Reviews'));
+      expect(rendered.unsafelyUnwrap()).toStrictEqual(expect.not.stringContaining('Reviews'));
     });
   });
 
@@ -72,12 +72,12 @@ describe('render-page-header component', (): void => {
       renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 0, async () => Maybe.just(11), async () => [], '#reviews');
       rendered = await renderPageHeader(new Doi('10.1101/815689'));
 
-      expect(rendered).toStrictEqual(expect.stringMatching(/Comments[\s\S]*?11/));
+      expect(rendered.unsafelyUnwrap()).toStrictEqual(expect.stringMatching(/Comments[\s\S]*?11/));
     });
 
     it('links to v1 of the article on Biorxiv', async (): Promise<void> => {
       renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 0, async () => Maybe.just(11), async () => [], '#reviews');
-      const pageHeader = JSDOM.fragment(await renderPageHeader(new Doi('10.1101/815689')));
+      const pageHeader = JSDOM.fragment((await renderPageHeader(new Doi('10.1101/815689'))).unsafelyUnwrap());
 
       const anchor = pageHeader.querySelector<HTMLAnchorElement>('a[data-test-id="biorxivCommentLink"]');
 
@@ -97,7 +97,7 @@ describe('render-page-header component', (): void => {
       );
       rendered = await renderPageHeader(new Doi('10.1101/815689'));
 
-      expect(rendered).toStrictEqual(expect.not.stringContaining('Comments'));
+      expect(rendered.unsafelyUnwrap()).toStrictEqual(expect.not.stringContaining('Comments'));
     });
   });
 
@@ -112,7 +112,7 @@ describe('render-page-header component', (): void => {
       );
       rendered = await renderPageHeader(new Doi('10.1101/815689'));
 
-      expect(rendered).toStrictEqual(expect.not.stringContaining('Comments'));
+      expect(rendered.unsafelyUnwrap()).toStrictEqual(expect.not.stringContaining('Comments'));
     });
   });
 
@@ -121,13 +121,13 @@ describe('render-page-header component', (): void => {
       renderPageHeader = createRenderPageHeader(getArticleDetails, async () => 0, async () => Maybe.nothing(), async () => ['PeerJ'], '#reviews');
       rendered = await renderPageHeader(new Doi('10.1101/815689'));
 
-      expect(rendered).toStrictEqual(expect.stringMatching(/Endorsed by[\s\S]*?PeerJ/));
+      expect(rendered.unsafelyUnwrap()).toStrictEqual(expect.stringMatching(/Endorsed by[\s\S]*?PeerJ/));
     });
   });
 
   describe('the article has not been endorsed', (): void => {
     it('does not display endorsement details', async (): Promise<void> => {
-      expect(rendered).toStrictEqual(expect.not.stringContaining('Endorsed by'));
+      expect(rendered.unsafelyUnwrap()).toStrictEqual(expect.not.stringContaining('Endorsed by'));
     });
   });
 });
