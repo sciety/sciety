@@ -1,16 +1,20 @@
+import { NotFound } from 'http-errors';
+import { Result } from 'true-myth';
 import Doi from '../types/doi';
 
 interface ArticleAbstract {
   content: string;
 }
 
-export type GetArticleAbstract = (doi: Doi) => Promise<ArticleAbstract>;
+export type GetArticleAbstract = (doi: Doi) => Promise<Result<ArticleAbstract, 'not-found' | 'unavailable'>>;
 
 export type RenderArticleAbstract = (doi: Doi) => Promise<string>;
 
 export default (getArticleAbstract: GetArticleAbstract): RenderArticleAbstract => (
   async (doi) => {
-    const articleAbstract = await getArticleAbstract(doi);
+    const articleAbstract = (await getArticleAbstract(doi)).unwrapOrElse(() => {
+      throw new NotFound(`${doi.value} not found`);
+    });
 
     return `
       <section role="doc-abstract">

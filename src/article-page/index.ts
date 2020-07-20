@@ -32,13 +32,9 @@ export interface Ports {
 
 const reviewsId = 'reviews';
 
-type GetFullArticle = (doi: Doi) => Promise<{
-  abstract: string;
-}>;
-
 type GetEditorialCommunityName = (editorialCommunityId: string) => Promise<string>;
 
-const handleFetchArticleErrors = (fetchArticle: FetchExternalArticle): GetArticleDetails & GetFullArticle => (
+const handleFetchArticleErrors = (fetchArticle: FetchExternalArticle): GetArticleDetails => (
   async (doi: Doi) => {
     const result = await fetchArticle(doi);
 
@@ -68,10 +64,10 @@ const buildRenderPageHeader = (ports: Ports): RenderPageHeader => {
   );
 };
 
-const buildRenderAbstract = (fetchAbstract: GetFullArticle): RenderArticleAbstract => {
+const buildRenderAbstract = (fetchAbstract: FetchExternalArticle): RenderArticleAbstract => {
   const abstractAdapter: GetArticleAbstract = async (articleDoi) => {
     const fetchedArticle = await fetchAbstract(articleDoi);
-    return { content: fetchedArticle.abstract };
+    return fetchedArticle.map((article) => ({ content: article.abstract }));
   };
   return createRenderArticleAbstract(abstractAdapter);
 };
@@ -97,7 +93,7 @@ export type RenderPage = (params: Params) => Promise<Result<string, RenderPageEr
 
 export default (ports: Ports): RenderPage => {
   const renderPageHeader = buildRenderPageHeader(ports);
-  const renderAbstract = buildRenderAbstract(handleFetchArticleErrors(ports.fetchArticle));
+  const renderAbstract = buildRenderAbstract(ports.fetchArticle);
   const renderReviews = buildRenderReviews(ports);
   const renderPage = createRenderPage(
     renderPageHeader,
