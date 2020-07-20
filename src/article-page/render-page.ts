@@ -1,4 +1,3 @@
-import { NotFound } from 'http-errors';
 import { Result } from 'true-myth';
 import { RenderArticleAbstract } from './render-article-abstract';
 import { RenderPageHeader } from './render-page-header';
@@ -18,25 +17,37 @@ export default (
   renderAbstract: RenderArticleAbstract,
 ): RenderPage => (
   async (doi) => {
-    const abstract = (await renderAbstract(doi)).unwrapOrElse(() => {
-      throw new NotFound(`${doi.value} not found`);
-    });
-    const pageHeader = (await renderPageHeader(doi)).unwrapOrElse(() => {
-      throw new NotFound(`${doi.value} not found`);
-    });
-    return Result.ok(`<article class="ui aligned stackable grid">
-      <div class="row">
-        <div class="column">
-          ${pageHeader}
-        </div>
-      </div>
+    const abstractResult = await renderAbstract(doi);
+    const pageHeaderResult = await renderPageHeader(doi);
+    const reviews = await renderReviews(doi);
 
-      <div class="row">
-        <section class="column">
-          ${abstract}
-          ${await renderReviews(doi)}
-        </section>
-      </div>
-    </article>`);
+    return abstractResult.andThen(
+      (abstract) => (
+        pageHeaderResult.map((pageHeader) => ({
+          abstract,
+          pageHeader,
+        }))
+      ),
+    )
+      .map(({ abstract, pageHeader }) => `
+<article class="ui aligned stackable grid">
+  <div class="row">
+    <div class="column">
+      ${pageHeader}
+    </div>
+  </div>
+
+  <div class="row">
+    <section class="column">
+      ${abstract}
+      ${reviews}
+    </section>
+  </div>
+</article>
+    `)
+      .mapErr(() => ({
+        type: 'not-found',
+        content: `${doi.value} not found`,
+      }));
   }
 );
