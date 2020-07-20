@@ -1,4 +1,3 @@
-import { NotFound } from 'http-errors';
 import { Result } from 'true-myth';
 import createRenderArticleAbstract, { GetArticleAbstract } from '../../src/article-page/render-article-abstract';
 import Doi from '../../src/types/doi';
@@ -14,7 +13,7 @@ describe('render-article-abstract component', (): void => {
 
       const renderArticleAbstract = createRenderArticleAbstract(getArticleAbstract);
 
-      const rendered = await renderArticleAbstract(doi);
+      const rendered = (await renderArticleAbstract(doi)).unsafelyUnwrap();
 
       expect(rendered).toStrictEqual(expect.stringContaining(`Article ${doi.value} abstract content`));
     });
@@ -27,8 +26,9 @@ describe('render-article-abstract component', (): void => {
       );
 
       const renderArticleAbstract = createRenderArticleAbstract(getArticleAbstract);
+      const error = (await renderArticleAbstract(doi)).unsafelyUnwrapErr();
 
-      await expect(renderArticleAbstract(doi)).rejects.toThrow(NotFound);
+      expect(error).toStrictEqual('not-found');
     });
   });
 });
