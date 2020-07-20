@@ -2,7 +2,7 @@ import { NotFound } from 'http-errors';
 import { Result } from 'true-myth';
 import ensureBiorxivDoi from './ensure-biorxiv-doi';
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
-import createRenderPage from './render-page';
+import createRenderPage, { RenderPageError } from './render-page';
 import createRenderPageHeader, {
   GetArticleDetails,
   GetCommentCount,
@@ -93,11 +93,6 @@ interface Params {
   doi?: string;
 }
 
-type RenderPageError = {
-  type: 'not-found',
-  content: string,
-};
-
 export type RenderPage = (params: Params) => Promise<Result<string, RenderPageError>>;
 
 export default (ports: Ports): RenderPage => {
@@ -113,7 +108,7 @@ export default (ports: Ports): RenderPage => {
     try {
       const doi = ensureBiorxivDoi(params.doi ?? '').unsafelyUnwrap();
 
-      return Result.ok(await renderPage(doi));
+      return await renderPage(doi);
     } catch {
       return Result.err({
         type: 'not-found',
