@@ -1,4 +1,5 @@
 import { NotFound } from 'http-errors';
+import { Result } from 'true-myth';
 import createRenderEndorsedArticles, { GetNumberOfEndorsedArticles, RenderEndorsedArticles } from './render-endorsed-articles';
 import createRenderPage from './render-page';
 import createRenderPageHeader, { GetEditorialCommunity, RenderPageHeader } from './render-page-header';
@@ -46,7 +47,12 @@ interface Params {
   id?: string;
 }
 
-export type RenderPage = (params: Params) => Promise<string>;
+export type RenderPageError = {
+  type: 'not-found',
+  content: string,
+};
+
+export type RenderPage = (params: Params) => Promise<Result<string, RenderPageError>>;
 
 export default (ports: Ports): RenderPage => {
   const renderPageHeader = buildRenderPageHeader(ports.editorialCommunities);
@@ -57,7 +63,14 @@ export default (ports: Ports): RenderPage => {
     renderEndorsedArticles,
     renderReviews,
   );
-  return async (params) => (
-    renderPage(params.id ?? '')
-  );
+  return async (params) => {
+    try {
+      return Result.ok(await renderPage(params.id ?? ''));
+    } catch (error) {
+      return Result.err({
+        type: 'not-found',
+        content: `Editorial community id '${params.id ?? ''}' not found`,
+      });
+    }
+  };
 };

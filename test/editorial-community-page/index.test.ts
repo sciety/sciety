@@ -1,17 +1,16 @@
-import { NotFound } from 'http-errors';
 import { JSDOM } from 'jsdom';
 import buildRenderPage from '../../src/editorial-community-page';
 import createServer from '../http/server';
 
 describe('create render page', (): void => {
-  let renderedPage: string;
-
   describe('when the editorial community exists', (): void => {
+    let renderedPage: string;
+
     beforeEach(async () => {
       const { adapters } = await createServer();
       const renderPage = buildRenderPage(adapters);
       const params = { id: adapters.editorialCommunities.all()[0].id };
-      renderedPage = await renderPage(params);
+      renderedPage = (await renderPage(params)).unsafelyUnwrap();
     });
 
     it('has the editorial community name', async (): Promise<void> => {
@@ -34,7 +33,9 @@ describe('create render page', (): void => {
       const { adapters } = await createServer();
       const renderPage = buildRenderPage(adapters);
       const params = { id: 'no-such-community' };
-      await expect(renderPage(params)).rejects.toStrictEqual(new NotFound('no-such-community not found'));
+      const result = await renderPage(params);
+
+      expect(result.unsafelyUnwrapErr().type).toStrictEqual('not-found');
     });
   });
 });
