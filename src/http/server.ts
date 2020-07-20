@@ -1,10 +1,7 @@
 import { createServer, Server } from 'http';
-import path from 'path';
 import Router from '@koa/router';
 import rTracer from 'cls-rtracer';
-import Koa, { ExtendableContext, Next, ParameterizedContext } from 'koa';
-import mount from 'koa-mount';
-import send from 'koa-send';
+import Koa, { ExtendableContext, Next } from 'koa';
 import { Logger } from '../infrastructure/logger';
 
 export default (router: Router, logger: Logger): Server => {
@@ -37,9 +34,6 @@ export default (router: Router, logger: Logger): Server => {
     await next();
   });
 
-  app.use(mount('/static', async (context: ParameterizedContext): Promise<void> => {
-    await send(context, context.path, { root: path.resolve(__dirname, '../../static') });
-  }));
   app.use(router.middleware());
 
   app.on('error', (error) => {

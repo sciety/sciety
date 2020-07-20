@@ -1,4 +1,6 @@
+import path from 'path';
 import Router from '@koa/router';
+import send from 'koa-send';
 import pageHandler from './page-handler';
 import ping from './ping';
 import robots from './robots';
@@ -32,6 +34,10 @@ export default (adapters: Adapters): Router => {
 
   router.get('/robots.txt',
     robots());
+
+  router.get('/static/:file(.+)', async (context) => (
+    send(context, context.params.file, { root: path.resolve(__dirname, '../../static') })
+  ));
 
   return router;
 };
