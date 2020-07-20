@@ -1,4 +1,5 @@
 import { NotFound } from 'http-errors';
+import { Result } from 'true-myth';
 import ensureBiorxivDoi from './ensure-biorxiv-doi';
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
 import createRenderPage from './render-page';
@@ -92,7 +93,12 @@ interface Params {
   doi?: string;
 }
 
-export type RenderPage = (params: Params) => Promise<string>;
+type RenderPageError = {
+  type: 'not-found',
+  content: string,
+};
+
+export type RenderPage = (params: Params) => Promise<Result<string, RenderPageError>>;
 
 export default (ports: Ports): RenderPage => {
   const renderPageHeader = buildRenderPageHeader(ports);
@@ -104,9 +110,15 @@ export default (ports: Ports): RenderPage => {
     renderAbstract,
   );
   return async (params) => {
-    const doi = ensureBiorxivDoi(params.doi ?? '').unwrapOrElse(() => {
-      throw new NotFound();
-    });
-    return renderPage(doi);
+    try {
+      const doi = ensureBiorxivDoi(params.doi ?? '').unsafelyUnwrap();
+
+      return Result.ok(await renderPage(doi));
+    } catch {
+      return Result.err({
+        type: 'not-found',
+        content: `${params.doi ?? 'Article'} not found`,
+      });
+    }
   };
 };
