@@ -35,9 +35,17 @@ export default (adapters: Adapters): Router => {
   router.get('/robots.txt',
     robots());
 
-  router.get('/static/:file(.+)', async (context) => (
-    send(context, context.params.file, { root: path.resolve(__dirname, '../../static') })
-  ));
+  router.get('/static/:file(.+)', async (context) => {
+    try {
+      await send(context, context.params.file, { root: path.resolve(__dirname, '../../static') });
+    } catch (error) {
+      if (error.status && error.status === 404) {
+        context.response.status = 404;
+        return;
+      }
+      throw error;
+    }
+  });
 
   return router;
 };
