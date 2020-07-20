@@ -21,15 +21,7 @@ export default (
     const pageHeaderResult = await renderPageHeader(doi);
     const reviews = await renderReviews(doi);
 
-    return abstractResult.andThen(
-      (abstract) => (
-        pageHeaderResult.map((pageHeader) => ({
-          abstract,
-          pageHeader,
-        }))
-      ),
-    )
-      .map(({ abstract, pageHeader }) => `
+    const template = Result.ok((abstract: string) => (pageHeader: string) => `
 <article class="ui aligned stackable grid">
   <div class="row">
     <div class="column">
@@ -44,7 +36,11 @@ export default (
     </section>
   </div>
 </article>
-    `)
+    `);
+
+    return template
+      .ap(abstractResult)
+      .ap(pageHeaderResult)
       .mapErr(() => ({
         type: 'not-found',
         content: `${doi.value} not found`,
