@@ -15,13 +15,8 @@ export default (
   renderPageHeader: RenderPageHeader,
   renderReviews: RenderReviews,
   renderAbstract: RenderArticleAbstract,
-): RenderPage => (
-  async (doi) => {
-    const abstractResult = await renderAbstract(doi);
-    const pageHeaderResult = await renderPageHeader(doi);
-    const reviews = await renderReviews(doi);
-
-    const template = Result.ok((abstract: string) => (pageHeader: string) => `
+): RenderPage => {
+  const template = Result.ok((abstract: string) => (pageHeader: string) => (reviews: string) => `
 <article class="ui aligned stackable grid">
   <div class="row">
     <div class="column">
@@ -38,12 +33,18 @@ export default (
 </article>
     `);
 
+  return async (doi) => {
+    const abstractResult = await renderAbstract(doi);
+    const pageHeaderResult = await renderPageHeader(doi);
+    const reviews = await renderReviews(doi);
+
     return template
       .ap(abstractResult)
       .ap(pageHeaderResult)
+      .ap(Result.ok(reviews))
       .mapErr(() => ({
         type: 'not-found',
         content: `${doi.value} not found`,
       }));
-  }
-);
+  };
+};
