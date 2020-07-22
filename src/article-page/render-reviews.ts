@@ -1,9 +1,10 @@
+import { Maybe } from 'true-myth';
 import { RenderReview } from './render-review';
 import templateListItems from '../templates/list-items';
 import Doi from '../types/doi';
 import { ReviewId } from '../types/review-id';
 
-export type RenderReviews = (doi: Doi) => Promise<string>;
+export type RenderReviews = (doi: Doi) => Promise<Maybe<string>>;
 
 export type GetReviews = (doi: Doi) => Promise<Array<{ editorialCommunityId: string, reviewId: ReviewId }>>;
 
@@ -17,9 +18,9 @@ export default (
       renderReview(review.reviewId, review.editorialCommunityId, `review-${index}`)
     )));
     if (renderedReviews.length === 0) {
-      return '';
+      return Maybe.nothing();
     }
-    return `
+    return Maybe.just(`
       <section id="${id}">
         <h2 class="ui header">
           Reviews
@@ -28,6 +29,6 @@ export default (
           ${templateListItems(renderedReviews)}
         </ol>
       </section>
-    `;
+    `);
   }
 );

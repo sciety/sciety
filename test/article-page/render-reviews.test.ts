@@ -16,7 +16,7 @@ describe('render-reviews component', () => {
 
     it('renders a HTML section', async () => {
       const renderReviews = createRenderReviews(dummyRenderReview, async () => reviews, 'expectedValue');
-      const rendered = await renderReviews(doi);
+      const rendered = (await renderReviews(doi)).unsafelyUnwrap();
       const reviewsElement = JSDOM.fragment(rendered).firstElementChild;
 
       expect(reviewsElement?.nodeName).toBe('SECTION');
@@ -24,7 +24,7 @@ describe('render-reviews component', () => {
 
     it('has the correct HTML id attribute', async () => {
       const renderReviews = createRenderReviews(dummyRenderReview, async () => reviews, 'expectedValue');
-      const rendered = await renderReviews(doi);
+      const rendered = (await renderReviews(doi)).unsafelyUnwrap();
       const reviewsElement = JSDOM.fragment(rendered).firstElementChild;
 
       expect(reviewsElement?.getAttribute('id')).toBe('expectedValue');
@@ -36,7 +36,7 @@ describe('render-reviews component', () => {
       const renderReviews = createRenderReviews(shouldNotBeCalled, async () => [], 'arbitraryId');
       const rendered = await renderReviews(doi);
 
-      expect(rendered).toStrictEqual('');
+      expect(rendered.isNothing()).toBe(true);
     });
   });
 });

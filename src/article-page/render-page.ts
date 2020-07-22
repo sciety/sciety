@@ -1,4 +1,4 @@
-import { Result } from 'true-myth';
+import { Maybe, Result } from 'true-myth';
 import { RenderArticleAbstract } from './render-article-abstract';
 import { RenderPageHeader } from './render-page-header';
 import { RenderReviews } from './render-reviews';
@@ -16,7 +16,7 @@ export default (
   renderReviews: RenderReviews,
   renderAbstract: RenderArticleAbstract,
 ): RenderPage => {
-  const template = Result.ok((abstract: string) => (pageHeader: string) => (reviews: string) => `
+  const template = Result.ok((abstract: string) => (pageHeader: string) => (reviews: Maybe<string>) => `
 <article class="ui aligned stackable grid">
   <div class="row">
     <div class="column">
@@ -27,7 +27,7 @@ export default (
   <div class="row">
     <section class="column">
       ${abstract}
-      ${reviews}
+      ${reviews.unwrapOr('')}
     </section>
   </div>
 </article>
