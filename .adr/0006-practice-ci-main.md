@@ -1,4 +1,4 @@
-# 6. Practice Continuous Integration on master branch
+# 6. Practice Continuous Integration on the main branch
 
 Date: 2020-05-01
 
@@ -12,13 +12,13 @@ Feature branches are at big risk of problematic integration when working with an
 
 ## Decision
 
-Practice [Trunk Based Development] on the `master` branch rather than working in long-lived feature branches.
+Practice [Trunk Based Development] on the main branch rather than working in long-lived feature branches.
 
 [Integrate often], by rebasing and pushing small commits.
 
 ## Consequences
 
-`master` should always be release ready.
+The main branch should always be release ready.
 
 No [feature branches][FeatureBranch] or pull requests should normally be opened in the project.
 
