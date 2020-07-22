@@ -34,14 +34,14 @@ export default (
     `);
 
   return async (doi) => {
-    const abstractResult = await renderAbstract(doi);
-    const pageHeaderResult = await renderPageHeader(doi);
-    const reviews = await renderReviews(doi);
+    const abstractResult = renderAbstract(doi);
+    const pageHeaderResult = renderPageHeader(doi);
+    const reviews = renderReviews(doi);
 
     return template
-      .ap(abstractResult)
-      .ap(pageHeaderResult)
-      .ap(Result.ok(reviews))
+      .ap(await abstractResult)
+      .ap(await pageHeaderResult)
+      .ap(Result.ok(await reviews))
       .mapErr(() => ({
         type: 'not-found',
         content: `${doi.value} not found`,
