@@ -7,7 +7,7 @@ export default (
 ): RenderPage => async (filename) => `
   <header class="ui basic padded vertical segment">
     <h1 class="ui header">
-      About the Untitled Publish&ndash;Review&ndash;Curate Platform
+      About The Hive
     </h1>
   </header>
   <section class="ui basic vertical segment">

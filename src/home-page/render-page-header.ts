@@ -5,12 +5,11 @@ export default (): RenderPageHeader => (
     <header class="ui basic padded center aligned vertical segment">
 
       <h1 class="ui header">
-        Untitled Publish Review Curate Platform
+        The Hive
       </h1>
 
       <p>
-        An experimental platform for multiple communities to provide post-publication peer review of scientific
-        research.<br><a href="/about">Learn more about the platform.</a>
+        Where research is evaluated and curated by the communities you trust.<br><a href="/about">Learn more about the platform.</a>
       </p>
 
     </header>
