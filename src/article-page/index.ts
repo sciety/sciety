@@ -14,6 +14,7 @@ import createRenderReview, {
   GetReview,
 } from './render-review';
 import createRenderReviews, { RenderReviews } from './render-reviews';
+import Doi from '../types/doi';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import EndorsementsRepository from '../types/endorsements-repository';
 import { FetchExternalArticle } from '../types/fetch-external-article';
@@ -89,15 +90,15 @@ export default (ports: Ports): RenderPage => {
     renderAbstract,
   );
   return async (params) => {
+    let doi: Doi;
     try {
-      const doi = ensureBiorxivDoi(params.doi ?? '').unsafelyUnwrap();
-
-      return await renderPage(doi);
-    } catch {
+      doi = ensureBiorxivDoi(params.doi ?? '').unsafelyUnwrap();
+    } catch (error) {
       return Result.err({
         type: 'not-found',
         content: `${params.doi ?? 'Article'} not found`,
       });
     }
+    return renderPage(doi);
   };
 };
