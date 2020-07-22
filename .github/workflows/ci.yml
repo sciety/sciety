@@ -3,7 +3,6 @@ name: CI
 on:
   push:
     branches:
-      - master
       - main
 
 env:
@@ -44,7 +43,7 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Deploy to staging
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/main'
         run: |
           aws --region=us-east-1 eks update-kubeconfig --name libero-eks--franklin
           helm upgrade -i prc--staging \

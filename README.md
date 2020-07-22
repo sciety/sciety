@@ -104,7 +104,7 @@ make lint:fix
 
 The application is deployed on a Kubernetes cluster via an Helm chart.
 
-A [staging environment] is updated with every new commit on `master` that passes tests.
+A [staging environment] is updated with every new commit on `main` that passes tests.
 
 A [production environment] is [updated][production deployments] manually by pushing a tag.
 
@@ -135,7 +135,7 @@ We released this software under the [MIT license][license]. Copyright © 2020 [e
 [AWS CloudWatch logs]: https://console.aws.amazon.com/cloudwatch/home?region=us-east-1#logs-insights:queryDetail=~(end~0~start~-900~timeType~'RELATIVE~unit~'seconds~editorString~'fields*20*40timestamp*2c*20*40message*0a*7c*20filter*20*60kubernetes.labels.app_kubernetes_io*2finstance*60*3d*22prc--prod*22*0a*7c*20sort*20*40timestamp*20desc*0a*7c*20limit*2020~isLiveTail~false~queryId~'89133ab9-5bb4-4770-b3e9-96052e8300ef~source~(~'*2faws*2fcontainerinsights*2flibero-eks--franklin*2fapplication));tab=logs
 [Build]: https://github.com/libero/prc/actions?query=workflow%3ACI
 [Checks]: https://github.com/libero/prc/actions
-[Checks badge]: https://flat.badgen.net/github/checks/libero/prc/master?icon=github
+[Checks badge]: https://flat.badgen.net/github/checks/hivereview/thehive/main?icon=github
 [CloudWatch dashboard]: https://console.aws.amazon.com/cloudwatch/home?region=us-east-1#dashboards:name=PRCMetrics
 [Docker]: https://www.docker.com/
 [eLife]: https://elifesciences.org/
