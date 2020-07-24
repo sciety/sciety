@@ -9,7 +9,7 @@ export default (logger: Logger): EditorialCommunityRepository => {
   const result: EditorialCommunityRepository = {
     add: async (editorialCommunity) => {
       data.push(editorialCommunity);
-      logger('debug', 'Editorial community added', { editorialCommunity });
+      logger('info', 'Editorial community added', { editorialCommunity });
     },
 
     all: () => data,

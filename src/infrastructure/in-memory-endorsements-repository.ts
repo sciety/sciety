@@ -19,7 +19,7 @@ export default (
         article: doi,
         editorialCommunity: editorialCommunityId,
       });
-      logger('debug', 'Endorsement added', { doi, editorialCommunityId });
+      logger('info', 'Endorsement added', { doi, editorialCommunityId });
     },
 
     endorsingEditorialCommunityIds: async (doi) => (

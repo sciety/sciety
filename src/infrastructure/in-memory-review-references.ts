@@ -16,7 +16,7 @@ export default (logger: Logger): ReviewReferenceRepository => {
         added,
       };
       reviewReferences.push(reviewReference);
-      logger('debug', 'Review reference added', { reviewReference });
+      logger('info', 'Review reference added', { reviewReference });
     },
 
     [Symbol.iterator]: () => (
