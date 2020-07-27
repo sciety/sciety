@@ -108,12 +108,7 @@ A [production environment] is [updated][production deployments] manually by push
 
 Ensure your current reference is [green in CI][build].
 
-Name the tag `latest/*`:
-
-```
-TAG=latest/$(date +%Y%m%d%H%M)
-git tag $TAG && git push origin $TAG
-```
+Run `make release`.
 
 ### Looking at logs
 

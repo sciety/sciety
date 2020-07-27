@@ -93,3 +93,6 @@ find-elife-endorsements: build
 		-v $(DATA_VOLUME)/src:/app/src \
 		$(IMAGE):$(IMAGE_TAG)-dev \
 		npx ts-node scripts/find-elife-endorsements
+
+release:
+	TAG=latest/$$(date +%Y%m%d%H%M); git tag $$TAG && git push origin $$TAG
