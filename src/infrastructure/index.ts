@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Adapters } from './adapters';
-import createFetchCrossrefArticle, { MakeHttpRequest } from './fetch-crossref-article';
+import createFetchCrossrefArticle from './fetch-crossref-article';
 import createFetchDataciteReview from './fetch-datacite-review';
 import createFetchDataset from './fetch-dataset';
 import createFetchHypothesisAnnotation from './fetch-hypothesis-annotation';
@@ -8,6 +8,7 @@ import createFetchReview from './fetch-review';
 import createFetchStaticFile from './fetch-static-file';
 import createGetBiorxivCommentCount from './get-biorxiv-comment-count';
 import createGetDisqusPostCount from './get-disqus-post-count';
+import getXml from './get-xml';
 import createEditorialCommunityRepository from './in-memory-editorial-communities';
 import createEndorsementsRepository from './in-memory-endorsements-repository';
 import createReviewReferenceRepository from './in-memory-review-references';
@@ -68,11 +69,6 @@ const populateReviewReferenceRepository = (
   return repository;
 };
 
-const makeHttpRequest: MakeHttpRequest = async (uri, acceptHeader) => {
-  const response = await axios.get<string>(uri, { headers: { Accept: acceptHeader } });
-  return response.data;
-};
-
 const getJson = async (uri: string): Promise<Json> => {
   const response = await axios.get<Json>(uri);
   return response.data;
@@ -92,7 +88,7 @@ const createInfrastructure = (): Adapters => {
   const editorialCommunities = populateEditorialCommunities(logger);
 
   return {
-    fetchArticle: createFetchCrossrefArticle(makeHttpRequest, logger),
+    fetchArticle: createFetchCrossrefArticle(getXml, logger),
     getBiorxivCommentCount: createGetBiorxivCommentCount(createGetDisqusPostCount(getJson, logger), logger),
     fetchReview: createFetchReview(fetchDataciteReview, fetchHypothesisAnnotation),
     fetchStaticFile: createFetchStaticFile(logger),
