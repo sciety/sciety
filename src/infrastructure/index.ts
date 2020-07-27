@@ -8,7 +8,7 @@ import createFetchReview from './fetch-review';
 import createFetchStaticFile from './fetch-static-file';
 import createGetBiorxivCommentCount from './get-biorxiv-comment-count';
 import createGetDisqusPostCount from './get-disqus-post-count';
-import getXml from './get-xml';
+import createGetXml from './get-xml';
 import createEditorialCommunityRepository from './in-memory-editorial-communities';
 import createEndorsementsRepository from './in-memory-endorsements-repository';
 import createReviewReferenceRepository from './in-memory-review-references';
@@ -81,6 +81,7 @@ const createInfrastructure = (): Adapters => {
       createJsonSerializer(!!process.env.PRETTY_LOG),
     ),
   );
+  const getXml = createGetXml();
   const fetchDataset = createFetchDataset(logger);
   const fetchDataciteReview = createFetchDataciteReview(fetchDataset, logger);
   const fetchHypothesisAnnotation = createFetchHypothesisAnnotation(getJson, logger);

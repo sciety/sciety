@@ -3,11 +3,11 @@ import axiosRetry from 'axios-retry';
 
 type GetXml = (uri: string, acceptHeader: string) => Promise<string>;
 
-const getXml: GetXml = async (uri, acceptHeader) => {
+export default (): GetXml => {
   const client = axios.create();
   axiosRetry(client, { retries: 3 });
-  const response = await client.get<string>(uri, { headers: { Accept: acceptHeader } });
-  return response.data;
+  return async (uri, acceptHeader) => {
+    const response = await client.get<string>(uri, { headers: { Accept: acceptHeader } });
+    return response.data;
+  };
 };
-
-export default getXml;
