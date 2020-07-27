@@ -11,6 +11,7 @@
     "@tpluscode/rdf-ns-builders": "^0.1.0",
     "@types/showdown": "^1.9.3",
     "axios": "^0.19.2",
+    "axios-retry": "^3.1.8",
     "clownface": "^0.12.3",
     "cls-rtracer": "^2.2.0",
     "http-errors": "^1.7.3",
