@@ -83,6 +83,25 @@ export default (): RenderFeed => (
             </div>
           </div>
         </li>
+
+        <li class="event">
+          <div class="label">
+            <img src="https://pbs.twimg.com/profile_images/1095287970939265026/xgyGFDJk_200x200.jpg">
+          </div>
+          <div class="content">
+            <time datetime="2020-07-08" title="July 8, 2020" class="date">July 8</time>
+            <div class="summary">
+              <a href="/editorial-communities/53ed5364-a016-11ea-bb37-0242ac130002">
+                PeerJ
+              </a>
+              endorsed
+              <a href="/articles/10.1101/751099">
+                Diffusion tubes: a method for the mass culture of ctenophores and other pelagic marine invertebrates
+              </a>
+            </div>
+          </div>
+        </li>
+
         <li class="event">
           <div class="label">
             <img src="https://pbs.twimg.com/profile_images/1239550325188710402/7_lY-IyL_200x200.png">
