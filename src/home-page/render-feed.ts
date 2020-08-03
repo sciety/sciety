@@ -135,28 +135,30 @@ const templateEventSummary: TemplateEventSummary = (event) => {
   `;
 };
 
-export default (): RenderFeed => {
-  const feedItems = events.map((event) => `
-    <div class="label">
-      <img src="${event.imageUrl}">
-    </div>
-    <div class="content">
-      <div class="date">
-        ${templateDate(event.date)}
+export default (): RenderFeed => (
+  async () => {
+    const feedItems = events.map((event) => `
+      <div class="label">
+        <img src="${event.imageUrl}">
       </div>
-      <div class="summary">
-        ${templateEventSummary(event)}
+      <div class="content">
+        <div class="date">
+          ${templateDate(event.date)}
+        </div>
+        <div class="summary">
+          ${templateEventSummary(event)}
+        </div>
       </div>
-    </div>
-  `);
-  return async () => (`
-    <section>
-      <h2 class="ui header">
-        Feed
-      </h2>
-      <ol class="ui large feed">
-        ${templateListItems(feedItems, 'event')}
-      </ol>
-    </section>
-  `);
-};
+    `);
+    return `
+      <section>
+        <h2 class="ui header">
+          Feed
+        </h2>
+        <ol class="ui large feed">
+          ${templateListItems(feedItems, 'event')}
+        </ol>
+      </section>
+    `;
+  }
+);
