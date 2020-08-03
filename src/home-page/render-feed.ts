@@ -39,15 +39,7 @@ type EditorialCommunityJoinedEvent = {
   editorialCommunityName: string;
 };
 
-const isEditorialCommunityJoinedEvent = (event: Event): event is EditorialCommunityJoinedEvent => (
-  'type' in event && event.type === 'EditorialCommunityJoined'
-);
-
-type Event = {
-  imageUrl: string;
-  date: Date;
-  summary: string;
-} | ArticleEndorsedEvent | ArticleReviewedEvent | EditorialCommunityJoinedEvent;
+type Event = ArticleEndorsedEvent | ArticleReviewedEvent | EditorialCommunityJoinedEvent;
 
 const events: Array<Event> = [
   {
@@ -137,14 +129,10 @@ const templateEventSummary: TemplateEventSummary = (event) => {
       <a href="/articles/${event.articleId}">${event.articleTitle}</a>
     `;
   }
-  if (isEditorialCommunityJoinedEvent(event)) {
-    return `
-      <a href="/editorial-communities/${event.editorialCommunityId}">${event.editorialCommunityName}</a>
-      
-      joined The Hive
-    `;
-  }
-  return event.summary;
+  return `
+    <a href="/editorial-communities/${event.editorialCommunityId}">${event.editorialCommunityName}</a>
+    joined The Hive
+  `;
 };
 
 export default (): RenderFeed => {
