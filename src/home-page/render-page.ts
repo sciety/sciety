@@ -1,4 +1,5 @@
 import createRenderEditorialCommunities from './render-editorial-communities';
+import createRenderFeed from './render-feed';
 import createRenderFindArticle from './render-find-article';
 import createRenderPageHeader from './render-page-header';
 import createRenderRecentActivity, {
@@ -20,6 +21,7 @@ export default (
   const renderRecentActivity = createRenderRecentActivity(reviewReferences, fetchArticle, editorialCommunities);
   const renderEditorialCommunities = createRenderEditorialCommunities(editorialCommunities);
   const renderFindArticle = createRenderFindArticle();
+  const renderFeed = createRenderFeed();
 
   return async () => `
       <div class="ui aligned stackable grid">
@@ -40,6 +42,11 @@ export default (
           <section class="six wide right floated column">
             ${await renderEditorialCommunities()}
            </section>
+        </div>
+        <div class="row">
+          <div class="column">
+            ${await renderFeed()}
+          </div>
         </div>
       </div>
     `;
