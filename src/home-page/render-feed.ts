@@ -1,51 +1,54 @@
+import templateDate from '../templates/date';
+import templateListItems from '../templates/list-items';
+
 type RenderFeed = () => Promise<string>;
 
-export default (): RenderFeed => (
-  async () => (`
+type Event = {
+  imageUrl: string;
+  date: Date;
+  summary: string;
+};
+
+const events: Array<Event> = [
+  {
+    imageUrl: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png',
+    date: new Date('2020-07-09'),
+    summary: `
+      <a href="/editorial-communities/10360d97-bf52-4aef-b2fa-2f60d319edd8">
+        A PREreview Journal Club
+      </a> reviewed <a href="/articles/10.1101/2020.01.22.915660">Functional assessment of cell entry and receptor usage for lineage B β-coronaviruses, including 2019-nCoV</a>
+    `,
+  },
+  {
+    imageUrl: 'https://pbs.twimg.com/profile_images/1095287970939265026/xgyGFDJk_200x200.jpg',
+    date: new Date('2020-07-09'),
+    summary: `
+      <a href="/editorial-communities/53ed5364-a016-11ea-bb37-0242ac130002">PeerJ</a> reviewed <a href="/articles/10.1101/751099">Diffusion tubes: a method for the mass culture of ctenophores and other pelagic marine invertebrates</a>
+    `,
+  },
+];
+
+export default (): RenderFeed => {
+  const feedItems = events.map((event) => `
+    <div class="label">
+      <img src="${event.imageUrl}">
+    </div>
+    <div class="content">
+      <div class="date">
+        ${templateDate(event.date)}
+      </div>
+      <div class="summary">
+        ${event.summary}
+      </div>
+    </div>
+  `);
+  return async () => (`
     <section>
       <h2 class="ui header">
         Feed
       </h2>
       <ol class="ui large feed">
-        <li class="event">
-          <div class="label">
-            <img src="https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png">
-          </div>
-          <div class="content">
-            <time datetime="2020-07-09" title="July 9, 2020" class="date">
-              9 July
-            </time>
-            <div class="summary">
-              <a href="/editorial-communities/10360d97-bf52-4aef-b2fa-2f60d319edd8">
-                A PREreview Journal Club
-              </a>
-              reviewed
-              <a href="/articles/10.1101/2020.01.22.915660">
-                Functional assessment of cell entry and receptor usage for lineage B β-coronaviruses, including
-                2019-nCoV
-              </a>
-            </div>
-          </div>
-        </li>
-        <li class="event">
-          <div class="label">
-            <img src="https://pbs.twimg.com/profile_images/1095287970939265026/xgyGFDJk_200x200.jpg">
-          </div>
-          <div class="content">
-            <time datetime="2020-07-09" title="July 9, 2020" class="date">
-              July 9
-            </time>
-            <div class="summary">
-              <a href="/editorial-communities/53ed5364-a016-11ea-bb37-0242ac130002">
-                PeerJ
-              </a>
-              reviewed
-              <a href="/articles/10.1101/751099">
-                Diffusion tubes: a method for the mass culture of ctenophores and other pelagic marine invertebrates
-              </a>
-            </div>
-          </div>
-        </li>
+        ${templateListItems(feedItems, 'event')}
         <li class="event">
           <div class="label">
             <img src="https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg">
@@ -155,5 +158,5 @@ export default (): RenderFeed => (
         </li>
       </ol>
     </section>
-  `)
-);
+  `);
+};
