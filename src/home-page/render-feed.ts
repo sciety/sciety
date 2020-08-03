@@ -28,9 +28,9 @@ const events: Array<Event> = [
     type: 'ArticleReviewed',
     imageUrl: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png',
     date: new Date('2020-07-09'),
-    editorialCommunityId: '/editorial-communities/10360d97-bf52-4aef-b2fa-2f60d319edd8',
+    editorialCommunityId: '10360d97-bf52-4aef-b2fa-2f60d319edd8',
     editorialCommunityName: 'A PREreview Journal Club',
-    articleId: '/articles/10.1101/2020.01.22.915660',
+    articleId: '10.1101/2020.01.22.915660',
     articleTitle: 'Functional assessment of cell entry and receptor usage for lineage B β-coronaviruses, including 2019-nCoV',
   },
   {
