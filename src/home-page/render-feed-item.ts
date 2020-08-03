@@ -67,8 +67,8 @@ const templateFeedItem: TemplateFeedItem = (event) => {
   `;
 };
 
-const renderFeedItem: RenderFeedItem = async (event) => (
-  `
+export default (): RenderFeedItem => (
+  async (event) => (`
     <div class="label">
       <img src="${event.actor.imageUrl}">
     </div>
@@ -80,7 +80,5 @@ const renderFeedItem: RenderFeedItem = async (event) => (
         ${templateFeedItem(event)}
       </div>
     </div>
-  `
+  `)
 );
-
-export default renderFeedItem;

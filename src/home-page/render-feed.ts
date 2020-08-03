@@ -1,4 +1,4 @@
-import renderFeedItem, { Event } from './render-feed-item';
+import createRenderFeedItem, { Event } from './render-feed-item';
 import templateListItems from '../templates/list-items';
 import EditorialCommunityId from '../types/editorial-community-id';
 
@@ -100,8 +100,9 @@ const events: Array<Event> = [
   },
 ];
 
-export default (): RenderFeed => (
-  async () => {
+export default (): RenderFeed => {
+  const renderFeedItem = createRenderFeedItem();
+  return async () => {
     const feedItems = await Promise.all(events.map(renderFeedItem));
     return `
       <section>
@@ -113,5 +114,5 @@ export default (): RenderFeed => (
         </ol>
       </section>
     `;
-  }
-);
+  };
+};
