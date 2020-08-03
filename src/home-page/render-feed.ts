@@ -3,21 +3,35 @@ import templateListItems from '../templates/list-items';
 
 type RenderFeed = () => Promise<string>;
 
+type ArticleReviewedEvent = {
+  type: 'ArticleReviewed';
+  imageUrl: string;
+  date: Date;
+  editorialCommunityId: string;
+  editorialCommunityName: string;
+  articleId: string;
+  articleTitle: string;
+};
+
+const isArticleReviewedEvent = (event: Event): event is ArticleReviewedEvent => (
+  'type' in event && event.type === 'ArticleReviewed'
+);
+
 type Event = {
   imageUrl: string;
   date: Date;
   summary: string;
-};
+} | ArticleReviewedEvent;
 
 const events: Array<Event> = [
   {
+    type: 'ArticleReviewed',
     imageUrl: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png',
     date: new Date('2020-07-09'),
-    summary: `
-      <a href="/editorial-communities/10360d97-bf52-4aef-b2fa-2f60d319edd8">
-        A PREreview Journal Club
-      </a> reviewed <a href="/articles/10.1101/2020.01.22.915660">Functional assessment of cell entry and receptor usage for lineage B β-coronaviruses, including 2019-nCoV</a>
-    `,
+    editorialCommunityId: '/editorial-communities/10360d97-bf52-4aef-b2fa-2f60d319edd8',
+    editorialCommunityName: 'A PREreview Journal Club',
+    articleId: '/articles/10.1101/2020.01.22.915660',
+    articleTitle: 'Functional assessment of cell entry and receptor usage for lineage B β-coronaviruses, including 2019-nCoV',
   },
   {
     imageUrl: 'https://pbs.twimg.com/profile_images/1095287970939265026/xgyGFDJk_200x200.jpg',
@@ -103,7 +117,16 @@ const events: Array<Event> = [
 
 type TemplateEventSummary = (event: Event) => string;
 
-const templateEventSummary: TemplateEventSummary = (event) => event.summary;
+const templateEventSummary: TemplateEventSummary = (event) => {
+  if (isArticleReviewedEvent(event)) {
+    return `
+      <a href="/editorial-communities/${event.editorialCommunityId}">${event.editorialCommunityName}</a>
+      reviewed
+      <a href="/articles/${event.articleId}">${event.articleTitle}</a>
+    `;
+  }
+  return event.summary;
+};
 
 export default (): RenderFeed => {
   const feedItems = events.map((event) => `
