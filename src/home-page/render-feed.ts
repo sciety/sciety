@@ -102,6 +102,38 @@ export default (): RenderFeed => (
             </div>
           </div>
         </li>
+        <li class="event">
+          <div class="label">
+            <img src="https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg">
+          </div>
+          <div class="content">
+            <time datetime="2020-06-18" title="Jun 18, 2020" class="date">
+              June 18
+            </time>
+            <div class="summary">
+              <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334">
+                Review Commons
+              </a>
+              joined The Hive
+            </div>
+          </div>
+        </li>
+        <li class="event">
+          <div class="label">
+            <img src="https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png">
+          </div>
+          <div class="content">
+            <time datetime="2020-06-14" title="Jun 14, 2020" class="date">
+              June 14
+            </time>
+            <div class="summary">
+              <a href="/editorial-communities/10360d97-bf52-4aef-b2fa-2f60d319edd8">
+                A PREreview Journal Club
+              </a>
+              joined The Hive
+            </div>
+          </div>
+        </li>
       </ol>
     </section>
   `)
