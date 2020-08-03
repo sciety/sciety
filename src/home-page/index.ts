@@ -28,7 +28,7 @@ export default (ports: Ports): RenderPage => {
     return {
       name: editorialCommunity.name,
       imageUrl: '',
-      url: '',
+      url: `/editorial-communities/${id.value}`,
     };
   };
 

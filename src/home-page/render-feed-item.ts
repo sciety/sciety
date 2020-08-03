@@ -49,20 +49,20 @@ type TemplateFeedItem = (event: Event, actor: Actor) => string;
 const templateFeedItem: TemplateFeedItem = (event, actor) => {
   if (isArticleEndorsedEvent(event)) {
     return `
-      <a href="${event.actor.url}">${actor.name}</a>
+      <a href="${actor.url}">${actor.name}</a>
       endorsed
       <a href="/articles/${event.articleId}">${event.articleTitle}</a>
     `;
   }
   if (isArticleReviewedEvent(event)) {
     return `
-      <a href="${event.actor.url}">${actor.name}</a>
+      <a href="${actor.url}">${actor.name}</a>
       reviewed
       <a href="/articles/${event.articleId}">${event.articleTitle}</a>
     `;
   }
   return `
-    <a href="${event.actor.url}">${actor.name}</a>
+    <a href="${actor.url}">${actor.name}</a>
     joined The Hive
   `;
 };
