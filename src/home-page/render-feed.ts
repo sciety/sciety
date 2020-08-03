@@ -101,6 +101,10 @@ const events: Array<Event> = [
   },
 ];
 
+type TemplateEventSummary = (event: Event) => string;
+
+const templateEventSummary: TemplateEventSummary = (event) => event.summary;
+
 export default (): RenderFeed => {
   const feedItems = events.map((event) => `
     <div class="label">
@@ -111,7 +115,7 @@ export default (): RenderFeed => {
         ${templateDate(event.date)}
       </div>
       <div class="summary">
-        ${event.summary}
+        ${templateEventSummary(event)}
       </div>
     </div>
   `);
