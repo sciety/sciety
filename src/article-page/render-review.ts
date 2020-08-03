@@ -1,6 +1,7 @@
 import clip from 'text-clipper';
 import { Maybe } from 'true-myth';
 import templateDate from '../templates/date';
+import EditorialCommunityId from '../types/editorial-community-id';
 import { ReviewId } from '../types/review-id';
 
 export interface ExternalReview {
@@ -9,11 +10,15 @@ export interface ExternalReview {
   url: URL;
 }
 
-export type RenderReview = (reviewId: ReviewId, editorialCommunityId: string, idNamespace: string) => Promise<string>;
+export type RenderReview = (
+  reviewId: ReviewId,
+  editorialCommunityId: EditorialCommunityId,
+  idNamespace: string,
+) => Promise<string>;
 
 export type GetReview = (reviewId: ReviewId) => Promise<ExternalReview>;
 
-export type GetEditorialCommunityName = (editorialCommunityId: string) => Promise<string>;
+export type GetEditorialCommunityName = (editorialCommunityId: EditorialCommunityId) => Promise<string>;
 
 export default (
   getReview: GetReview,
@@ -36,7 +41,7 @@ export default (
 
         <h3 class="header">
           Reviewed by
-          <a href="/editorial-communities/${editorialCommunityId}" id="${idNamespace}-editorial-community">
+          <a href="/editorial-communities/${editorialCommunityId.value}" id="${idNamespace}-editorial-community">
             ${await getEditorialCommunityName(editorialCommunityId)}
           </a>
         </h3>

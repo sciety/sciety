@@ -15,6 +15,7 @@ import createRenderReview, {
 } from './render-review';
 import createRenderReviews, { RenderReviews } from './render-reviews';
 import Doi from '../types/doi';
+import EditorialCommunityId from '../types/editorial-community-id';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import EndorsementsRepository from '../types/endorsements-repository';
 import { FetchExternalArticle } from '../types/fetch-external-article';
@@ -31,7 +32,7 @@ export interface Ports {
 
 const reviewsId = 'reviews';
 
-type GetEditorialCommunityName = (editorialCommunityId: string) => Promise<string>;
+type GetEditorialCommunityName = (editorialCommunityId: EditorialCommunityId) => Promise<string>;
 
 const buildRenderPageHeader = (ports: Ports): RenderPageHeader => {
   const getArticleDetailsAdapter: GetArticleDetails = ports.fetchArticle;

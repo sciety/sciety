@@ -6,6 +6,7 @@ import createRenderSearchResult, {
   RenderSearchResult,
 } from './render-search-result';
 import createRenderSearchResults, { FindArticles } from './render-search-results';
+import EditorialCommunityId from '../types/editorial-community-id';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import EndorsementsRepository from '../types/endorsements-repository';
 import ReviewReferenceRepository from '../types/review-reference-repository';
@@ -21,7 +22,7 @@ interface Ports {
 const buildRenderSearchResult = (
   getCommentCount: GetCommentCount,
   getReviewCount: GetReviewCount,
-  getEditorialCommunity: (id: string) => Promise<{ name: string }>,
+  getEditorialCommunity: (id: EditorialCommunityId) => Promise<{ name: string }>,
   endorsements: EndorsementsRepository,
 ): RenderSearchResult => {
   const getEndorsingEditorialCommunityNames: GetEndorsingEditorialCommunityNames = async (doi) => {

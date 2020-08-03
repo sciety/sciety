@@ -1,9 +1,10 @@
 import templateListItems from '../templates/list-items';
+import EditorialCommunityId from '../types/editorial-community-id';
 
 type RenderEditorialCommunities = () => Promise<string>;
 
 type GetAllEditorialCommunities = () => Promise<Array<{
-  id: string;
+  id: EditorialCommunityId;
   name: string;
 }>>;
 
@@ -12,7 +13,7 @@ export default (editorialCommunities: GetAllEditorialCommunities): RenderEditori
     const editorialCommunityLinks = (await editorialCommunities())
       .map((editorialCommunity) => (`
         <div class="content">
-          <a href="/editorial-communities/${editorialCommunity.id}" class="header">${editorialCommunity.name}</a>
+          <a href="/editorial-communities/${editorialCommunity.id.value}" class="header">${editorialCommunity.name}</a>
         </div>
       `));
 

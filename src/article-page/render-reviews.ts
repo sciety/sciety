@@ -2,11 +2,15 @@ import { Maybe } from 'true-myth';
 import { RenderReview } from './render-review';
 import templateListItems from '../templates/list-items';
 import Doi from '../types/doi';
+import EditorialCommunityId from '../types/editorial-community-id';
 import { ReviewId } from '../types/review-id';
 
 export type RenderReviews = (doi: Doi) => Promise<Maybe<string>>;
 
-export type GetReviews = (doi: Doi) => Promise<Array<{ editorialCommunityId: string, reviewId: ReviewId }>>;
+export type GetReviews = (doi: Doi) => Promise<Array<{
+  editorialCommunityId: EditorialCommunityId,
+  reviewId: ReviewId,
+}>>;
 
 export default (
   renderReview: RenderReview,

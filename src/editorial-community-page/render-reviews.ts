@@ -1,6 +1,8 @@
-export type RenderReviews = (editorialCommunityId: string) => Promise<string>;
+import EditorialCommunityId from '../types/editorial-community-id';
 
-export type GetNumberOfReviews = (editorialCommunityId: string) => Promise<number>;
+export type RenderReviews = (editorialCommunityId: EditorialCommunityId) => Promise<string>;
+
+export type GetNumberOfReviews = (editorialCommunityId: EditorialCommunityId) => Promise<number>;
 
 export default (getNumberOfReviews: GetNumberOfReviews): RenderReviews => (
   async (editorialCommunityId) => {

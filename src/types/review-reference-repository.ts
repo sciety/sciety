@@ -1,4 +1,5 @@
 import Doi from './doi';
+import EditorialCommunityId from './editorial-community-id';
 import { ReviewId } from './review-id';
 import ReviewReference from './review-reference';
 
@@ -6,13 +7,13 @@ export default interface ReviewReferenceRepository extends Iterable<ReviewRefere
   add(
     articleVersionDoi: Doi,
     reviewId: ReviewId,
-    editorialCommunityId: string,
+    editorialCommunityId: EditorialCommunityId,
     added: Date,
   ): Promise<void>;
   findReviewsForArticleVersionDoi(
     articleVersionDoi: Doi,
   ): Promise<Array<ReviewReference>>;
   findReviewsForEditorialCommunityId(
-    editorialCommunityId: string,
+    editorialCommunityId: EditorialCommunityId,
   ): Promise<Array<ReviewReference>>;
 }

@@ -20,6 +20,7 @@ import bootstrapEditorialCommunities from '../data/bootstrap-editorial-communiti
 import bootstrapEndorsements from '../data/bootstrap-endorsements';
 import bootstrapReviews from '../data/bootstrap-reviews';
 import Doi from '../types/doi';
+import EditorialCommunityId from '../types/editorial-community-id';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import EndorsementsRepository from '../types/endorsements-repository';
 import HypothesisAnnotationId from '../types/hypothesis-annotation-id';
@@ -40,7 +41,7 @@ const populateEndorsementsRepository = (logger: Logger): EndorsementsRepository 
   for (const {
     article, editorialCommunity,
   } of bootstrapEndorsements) {
-    void repository.add(new Doi(article), editorialCommunity);
+    void repository.add(new Doi(article), new EditorialCommunityId(editorialCommunity));
   }
   return repository;
 };

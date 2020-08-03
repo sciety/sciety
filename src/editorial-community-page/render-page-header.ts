@@ -1,6 +1,8 @@
-export type RenderPageHeader = (editorialCommunityId: string) => Promise<string>;
+import EditorialCommunityId from '../types/editorial-community-id';
 
-export type GetEditorialCommunity = (editorialCommunityId: string) => Promise<{
+export type RenderPageHeader = (editorialCommunityId: EditorialCommunityId) => Promise<string>;
+
+export type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => Promise<{
   name: string;
   description: string;
   logo?: string;

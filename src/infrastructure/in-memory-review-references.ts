@@ -1,6 +1,4 @@
 import { Logger } from './logger';
-import Doi from '../types/doi';
-import { ReviewId } from '../types/review-id';
 import ReviewReference from '../types/review-reference';
 import ReviewReferenceRepository from '../types/review-reference-repository';
 
@@ -8,7 +6,7 @@ export default (logger: Logger): ReviewReferenceRepository => {
   const reviewReferences: Array<ReviewReference> = [];
 
   const reviewReferenceRepository: ReviewReferenceRepository = {
-    add: async (articleVersionDoi: Doi, reviewId: ReviewId, editorialCommunityId: string, added: Date) => {
+    add: async (articleVersionDoi, reviewId, editorialCommunityId, added) => {
       const reviewReference: ReviewReference = {
         articleVersionDoi,
         reviewId,
@@ -30,7 +28,7 @@ export default (logger: Logger): ReviewReferenceRepository => {
 
     findReviewsForEditorialCommunityId: async (editorialCommunityId) => (
       reviewReferences
-        .filter((reference) => reference.editorialCommunityId === editorialCommunityId)
+        .filter((reference) => reference.editorialCommunityId.value === editorialCommunityId.value)
     ),
   };
   return reviewReferenceRepository;

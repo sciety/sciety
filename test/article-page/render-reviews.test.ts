@@ -2,6 +2,7 @@ import { JSDOM } from 'jsdom';
 import { RenderReview } from '../../src/article-page/render-review';
 import createRenderReviews from '../../src/article-page/render-reviews';
 import Doi from '../../src/types/doi';
+import EditorialCommunityId from '../../src/types/editorial-community-id';
 import shouldNotBeCalled from '../should-not-be-called';
 
 describe('render-reviews component', () => {
@@ -10,7 +11,7 @@ describe('render-reviews component', () => {
   describe('when there are reviews', (): void => {
     const reviews = [{
       reviewId: new Doi('10.5281/zenodo.3678326'),
-      editorialCommunityId: '',
+      editorialCommunityId: new EditorialCommunityId(''),
     }];
     const dummyRenderReview: RenderReview = async () => 'review';
 

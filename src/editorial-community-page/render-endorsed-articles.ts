@@ -1,6 +1,8 @@
-export type RenderEndorsedArticles = (editorialCommunityId: string) => Promise<string>;
+import EditorialCommunityId from '../types/editorial-community-id';
 
-export type GetNumberOfEndorsedArticles = (editorialCommunityId: string) => Promise<number>;
+export type RenderEndorsedArticles = (editorialCommunityId: EditorialCommunityId) => Promise<string>;
+
+export type GetNumberOfEndorsedArticles = (editorialCommunityId: EditorialCommunityId) => Promise<number>;
 
 export default (
   getNumberOfEndorsedArticles: GetNumberOfEndorsedArticles,

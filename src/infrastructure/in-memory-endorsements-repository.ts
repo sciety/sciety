@@ -1,10 +1,11 @@
 import { Logger } from './logger';
 import Doi from '../types/doi';
+import EditorialCommunityId from '../types/editorial-community-id';
 import EndorsementsRepository from '../types/endorsements-repository';
 
 interface Endorsement {
   article: Doi;
-  editorialCommunity: string;
+  editorialCommunity: EditorialCommunityId;
 }
 
 export default (
@@ -30,7 +31,7 @@ export default (
 
     endorsedBy: async (editorialCommunityId) => (
       data
-        .filter((e) => e.editorialCommunity === editorialCommunityId)
+        .filter((e) => e.editorialCommunity.value === editorialCommunityId.value)
         .map((e) => e.article)
     ),
   };

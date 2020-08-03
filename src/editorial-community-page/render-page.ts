@@ -2,8 +2,9 @@ import { RenderEndorsedArticles } from './render-endorsed-articles';
 import { RenderPageHeader } from './render-page-header';
 import { RenderReviews } from './render-reviews';
 import Doi from '../types/doi';
+import EditorialCommunityId from '../types/editorial-community-id';
 
-type RenderPage = (editorialCommunityId: string) => Promise<string>;
+type RenderPage = (editorialCommunityId: EditorialCommunityId) => Promise<string>;
 
 export type FetchArticle = (doi: Doi) => Promise<{
   doi: Doi;

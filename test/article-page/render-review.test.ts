@@ -6,6 +6,7 @@ import createRenderReview, {
   GetReview,
 } from '../../src/article-page/render-review';
 import Doi from '../../src/types/doi';
+import EditorialCommunityId from '../../src/types/editorial-community-id';
 import { ReviewId } from '../../src/types/review-id';
 
 describe('render-review component', (): void => {
@@ -15,7 +16,7 @@ describe('render-review component', (): void => {
     summary: Maybe.just('Pretty good.'),
     url: new URL('https://doi.org/10.5281/zenodo.3678326'),
   };
-  const editorialCommunityId = 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0';
+  const editorialCommunityId = new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0');
 
   const idNamespace = 'review-42';
 

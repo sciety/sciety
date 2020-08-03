@@ -14,7 +14,7 @@ export default (logger: Logger): EditorialCommunityRepository => {
 
     all: () => data,
     lookup: async (id) => {
-      const candidate = data.find((ec) => ec.id === id);
+      const candidate = data.find((ec) => ec.id.value === id.value);
       return Maybe.of(candidate);
     },
   };

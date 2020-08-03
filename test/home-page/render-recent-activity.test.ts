@@ -6,23 +6,24 @@ import {
   ReviewReference,
 } from '../../src/home-page/render-recent-activity';
 import Doi from '../../src/types/doi';
+import EditorialCommunityId from '../../src/types/editorial-community-id';
 
 describe('render-recent-activity', (): void => {
   it('adds recent activity to the view model', async (): Promise<void> => {
     const reviewReferences = async (): Promise<Array<ReviewReference>> => [
       {
         articleVersionDoi: new Doi('10.1101/642017'),
-        editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
+        editorialCommunityId: new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
         added: new Date('2020-05-20T00:00:00Z'),
       },
       {
         articleVersionDoi: new Doi('10.1101/615682'),
-        editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
+        editorialCommunityId: new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
         added: new Date('2020-05-19T00:00:00Z'),
       },
       {
         articleVersionDoi: new Doi('10.1101/815689'),
-        editorialCommunityId: 'e3a371f9-576d-48d5-a690-731b9fea26bd',
+        editorialCommunityId: new EditorialCommunityId('e3a371f9-576d-48d5-a690-731b9fea26bd'),
         added: new Date('2020-05-21T00:00:00Z'),
       },
     ];
@@ -32,11 +33,11 @@ describe('render-recent-activity', (): void => {
     });
     const editorialCommunities = async (): Promise<Array<EditorialCommunity>> => [
       {
-        id: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
+        id: new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
         name: 'eLife',
       },
       {
-        id: 'e3a371f9-576d-48d5-a690-731b9fea26bd',
+        id: new EditorialCommunityId('e3a371f9-576d-48d5-a690-731b9fea26bd'),
         name: 'Royal Society of Psychoceramics',
       },
     ];
@@ -62,7 +63,7 @@ describe('render-recent-activity', (): void => {
       const reviewReferences = async (): Promise<Array<ReviewReference>> => [
         {
           articleVersionDoi: new Doi('10.1101/642017'),
-          editorialCommunityId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
+          editorialCommunityId: new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
           added: new Date('2020-05-20T00:00:00Z'),
         },
       ];
@@ -70,7 +71,7 @@ describe('render-recent-activity', (): void => {
 
       const editorialCommunities = async (): Promise<Array<EditorialCommunity>> => [
         {
-          id: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
+          id: new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
           name: 'eLife',
         },
       ];

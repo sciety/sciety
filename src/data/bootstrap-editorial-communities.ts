@@ -1,8 +1,9 @@
 import { EditorialCommunity } from '../types/editorial-community';
+import EditorialCommunityId from '../types/editorial-community-id';
 
 export default [
   {
-    id: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
+    id: new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
     name: 'eLife',
     logo: 'https://cdn.elifesciences.org/style-guide-images/elife-logo-lg_3x.png',
     description: `<h2 class="ui header" id="summary">Summary</h2>
@@ -33,7 +34,7 @@ export default [
     <p><a href="https://elifesciences.org/about/people">https://elifesciences.org/about/people</a></p>`,
   },
   {
-    id: '10360d97-bf52-4aef-b2fa-2f60d319edd7',
+    id: new EditorialCommunityId('10360d97-bf52-4aef-b2fa-2f60d319edd7'),
     name: 'PREreview Community',
     logo: undefined,
     description: `<h2 class="ui header" id="summary">Summary</h2>
@@ -61,7 +62,7 @@ export default [
     <p><a href="https://content.prereview.org/about/#toc-anchor_4">https://content.prereview.org/about/#toc-anchor_4</a></p>`,
   },
   {
-    id: '53ed5364-a016-11ea-bb37-0242ac130002',
+    id: new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002'),
     name: 'PeerJ',
     logo: 'http://static.peerj.com/images/launch/press/peerj-logo-400px.png',
     description: `<h2 class="ui header" id="summary">Summary</h2>
@@ -85,7 +86,7 @@ export default [
     <p><a href="https://peerj.com/academic-boards/editors/peerj/">https://peerj.com/academic-boards/editors/peerj/</a></p>`,
   },
   {
-    id: '10360d97-bf52-4aef-b2fa-2f60d319edd8',
+    id: new EditorialCommunityId('10360d97-bf52-4aef-b2fa-2f60d319edd8'),
     name: 'A PREreview Journal Club',
     logo: undefined,
     description: `<h2 class="ui header" id="summary">Summary</h2>
@@ -114,7 +115,7 @@ export default [
     <p><a href="https://content.prereview.org/about/#toc-anchor_4">https://content.prereview.org/about/#toc-anchor_4</a></p>`,
   },
   {
-    id: '316db7d9-88cc-4c26-b386-f067e0f56334',
+    id: new EditorialCommunityId('316db7d9-88cc-4c26-b386-f067e0f56334'),
     name: 'Review Commons',
     logo: 'https://www.reviewcommons.org/wp-content/uploads/2020/01/Review_Commons_logo_blue-01-01.png',
     description: `<h2 class="ui header" id="summary">Summary</h2>

@@ -4,6 +4,7 @@ import createRenderEndorsedArticles, { GetNumberOfEndorsedArticles, RenderEndors
 import createRenderPage from './render-page';
 import createRenderPageHeader, { GetEditorialCommunity, RenderPageHeader } from './render-page-header';
 import createRenderReviews, { GetNumberOfReviews, RenderReviews } from './render-reviews';
+import EditorialCommunityId from '../types/editorial-community-id';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import EndorsementsRepository from '../types/endorsements-repository';
 import ReviewReferenceRepository from '../types/review-reference-repository';
@@ -18,7 +19,7 @@ const buildRenderPageHeader = (editorialCommunities: EditorialCommunityRepositor
   const getEditorialCommunity: GetEditorialCommunity = async (editorialCommunityId) => {
     const editorialCommunity = (await editorialCommunities.lookup(editorialCommunityId))
       .unwrapOrElse(() => {
-        throw new NotFound(`${editorialCommunityId} not found`);
+        throw new NotFound(`${editorialCommunityId.value} not found`);
       });
     return editorialCommunity;
   };
@@ -64,12 +65,13 @@ export default (ports: Ports): RenderPage => {
     renderReviews,
   );
   return async (params) => {
+    const editorialCommunityId = new EditorialCommunityId(params.id ?? '');
     try {
-      return Result.ok(await renderPage(params.id ?? ''));
+      return Result.ok(await renderPage(editorialCommunityId));
     } catch (error) {
       return Result.err({
         type: 'not-found',
-        content: `Editorial community id '${params.id ?? ''}' not found`,
+        content: `Editorial community id '${editorialCommunityId.value}' not found`,
       });
     }
   };

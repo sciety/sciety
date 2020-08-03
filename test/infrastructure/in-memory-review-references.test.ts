@@ -1,5 +1,6 @@
 import createReviewReferenceRepository from '../../src/infrastructure/in-memory-review-references';
 import Doi from '../../src/types/doi';
+import EditorialCommunityId from '../../src/types/editorial-community-id';
 import ReviewReferenceRepository from '../../src/types/review-reference-repository';
 import dummyLogger from '../dummy-logger';
 
@@ -8,8 +9,8 @@ describe('review-reference-repository', () => {
 
   const article1 = new Doi('10.1000/1');
   const article2 = new Doi('10.99999/2');
-  const editorialCommunity1 = 'community-1';
-  const editorialCommunity2 = 'community-2';
+  const editorialCommunity1 = new EditorialCommunityId('community-1');
+  const editorialCommunity2 = new EditorialCommunityId('community-2');
 
   beforeEach(() => {
     reviewReferenceRepository = createReviewReferenceRepository(dummyLogger);
@@ -60,7 +61,7 @@ describe('review-reference-repository', () => {
     it.each([
       [editorialCommunity1, [reviewId1, reviewId2]],
       [editorialCommunity2, [reviewId3]],
-      ['does-not-exist', []],
+      [new EditorialCommunityId('does-not-exist'), []],
     ])('finds the review references for editorial community ID %s', async (editorialCommunityId, expectedReviews) => {
       const actualReviews = (await reviewReferenceRepository.findReviewsForEditorialCommunityId(editorialCommunityId))
         .map((reviewReference) => reviewReference.reviewId)
