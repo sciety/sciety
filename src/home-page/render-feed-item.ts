@@ -1,4 +1,5 @@
 import templateDate from '../templates/date';
+import EditorialCommunityId from '../types/editorial-community-id';
 
 type RenderFeedItem = (event: Event) => Promise<string>;
 
@@ -12,6 +13,7 @@ type ArticleEndorsedEvent = {
   type: 'ArticleEndorsed';
   date: Date;
   actor: Actor;
+  actorId: EditorialCommunityId;
   articleId: string;
   articleTitle: string;
 };
@@ -24,6 +26,7 @@ type ArticleReviewedEvent = {
   type: 'ArticleReviewed';
   date: Date;
   actor: Actor;
+  actorId: EditorialCommunityId;
   articleId: string;
   articleTitle: string;
 };
@@ -36,6 +39,7 @@ type EditorialCommunityJoinedEvent = {
   type: 'EditorialCommunityJoined';
   date: Date;
   actor: Actor;
+  actorId: EditorialCommunityId;
 };
 
 export type Event = ArticleEndorsedEvent | ArticleReviewedEvent | EditorialCommunityJoinedEvent;
