@@ -76,7 +76,7 @@ export default (
     const actor = await getActor(event.actorId);
     return `
       <div class="label">
-        <img src="${event.actor.imageUrl}">
+        <img src="${event.actor.imageUrl}" alt="">
       </div>
       <div class="content">
         <div class="date">
