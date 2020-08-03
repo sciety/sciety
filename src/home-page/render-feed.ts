@@ -48,7 +48,7 @@ const events: Array<Event> = [
     articleTitle: 'Functional assessment of cell entry and receptor usage for lineage B β-coronaviruses, including 2019-nCoV',
   },
   {
-    type: 'ArticleReviewed',
+    type: 'ArticleEndorsed',
     imageUrl: 'https://pbs.twimg.com/profile_images/1095287970939265026/xgyGFDJk_200x200.jpg',
     date: new Date('2020-07-09'),
     editorialCommunityId: '53ed5364-a016-11ea-bb37-0242ac130002',
@@ -75,7 +75,7 @@ const events: Array<Event> = [
     articleTitle: 'GATA-1-dependent histone H3K27ac mediates erythroid cell-specific interaction between CTCF sites',
   },
   {
-    type: 'ArticleEndorsed',
+    type: 'ArticleReviewed',
     imageUrl: 'https://pbs.twimg.com/profile_images/1095287970939265026/xgyGFDJk_200x200.jpg',
     date: new Date('2020-07-08'),
     editorialCommunityId: '53ed5364-a016-11ea-bb37-0242ac130002',
