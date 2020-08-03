@@ -3,6 +3,20 @@ import templateListItems from '../templates/list-items';
 
 type RenderFeed = () => Promise<string>;
 
+type ArticleEndorsedEvent = {
+  type: 'ArticleEndorsed';
+  imageUrl: string;
+  date: Date;
+  editorialCommunityId: string;
+  editorialCommunityName: string;
+  articleId: string;
+  articleTitle: string;
+};
+
+const isArticleEndorsedEvent = (event: Event): event is ArticleEndorsedEvent => (
+  'type' in event && event.type === 'ArticleEndorsed'
+);
+
 type ArticleReviewedEvent = {
   type: 'ArticleReviewed';
   imageUrl: string;
@@ -21,7 +35,7 @@ type Event = {
   imageUrl: string;
   date: Date;
   summary: string;
-} | ArticleReviewedEvent;
+} | ArticleEndorsedEvent | ArticleReviewedEvent;
 
 const events: Array<Event> = [
   {
@@ -61,17 +75,13 @@ const events: Array<Event> = [
     articleTitle: 'GATA-1-dependent histone H3K27ac mediates erythroid cell-specific interaction between CTCF sites',
   },
   {
+    type: 'ArticleEndorsed',
     imageUrl: 'https://pbs.twimg.com/profile_images/1095287970939265026/xgyGFDJk_200x200.jpg',
     date: new Date('2020-07-08'),
-    summary: `
-      <a href="/editorial-communities/53ed5364-a016-11ea-bb37-0242ac130002">
-        PeerJ
-      </a>
-      endorsed
-      <a href="/articles/10.1101/751099">
-        Diffusion tubes: a method for the mass culture of ctenophores and other pelagic marine invertebrates
-      </a>
-    `,
+    editorialCommunityId: '53ed5364-a016-11ea-bb37-0242ac130002',
+    editorialCommunityName: 'PeerJ',
+    articleId: '10.1101/751099',
+    articleTitle: 'Diffusion tubes: a method for the mass culture of ctenophores and other pelagic marine invertebrates',
   },
   {
     type: 'ArticleReviewed',
@@ -107,6 +117,13 @@ const events: Array<Event> = [
 type TemplateEventSummary = (event: Event) => string;
 
 const templateEventSummary: TemplateEventSummary = (event) => {
+  if (isArticleEndorsedEvent(event)) {
+    return `
+      <a href="/editorial-communities/${event.editorialCommunityId}">${event.editorialCommunityName}</a>
+      endorsed
+      <a href="/articles/${event.articleId}">${event.articleTitle}</a>
+    `;
+  }
   if (isArticleReviewedEvent(event)) {
     return `
       <a href="/editorial-communities/${event.editorialCommunityId}">${event.editorialCommunityName}</a>
