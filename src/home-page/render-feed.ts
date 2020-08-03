@@ -129,9 +129,9 @@ const events: Array<Event> = [
   },
 ];
 
-type TemplateEventSummary = (event: Event) => string;
+type TemplateFeedItem = (event: Event) => string;
 
-const templateEventSummary: TemplateEventSummary = (event) => {
+const templateFeedItem: TemplateFeedItem = (event) => {
   if (isArticleEndorsedEvent(event)) {
     return `
       <a href="${event.actor.url}">${event.actor.name}</a>
@@ -163,7 +163,7 @@ export default (): RenderFeed => (
           ${templateDate(event.date)}
         </div>
         <div class="summary">
-          ${templateEventSummary(event)}
+          ${templateFeedItem(event)}
         </div>
       </div>
     `);
