@@ -27,7 +27,7 @@ export default (ports: Ports): RenderPage => {
     const editorialCommunity = (await ports.editorialCommunities.lookup(id)).unsafelyUnwrap();
     return {
       name: editorialCommunity.name,
-      imageUrl: '',
+      imageUrl: editorialCommunity.avatarUrl,
       url: `/editorial-communities/${id.value}`,
     };
   };
