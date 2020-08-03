@@ -1,4 +1,4 @@
-import createRenderFeedItem, { Event } from './render-feed-item';
+import createRenderFeedItem, { Event, GetActor } from './render-feed-item';
 import templateListItems from '../templates/list-items';
 import EditorialCommunityId from '../types/editorial-community-id';
 
@@ -100,8 +100,12 @@ const events: Array<Event> = [
   },
 ];
 
-export default (): RenderFeed => {
-  const renderFeedItem = createRenderFeedItem();
+export { GetActor } from './render-feed-item';
+
+export default (
+  getActor: GetActor,
+): RenderFeed => {
+  const renderFeedItem = createRenderFeedItem(getActor);
   return async () => {
     const feedItems = await Promise.all(events.map(renderFeedItem));
     return `

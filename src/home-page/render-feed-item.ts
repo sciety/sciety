@@ -44,41 +44,48 @@ type EditorialCommunityJoinedEvent = {
 
 export type Event = ArticleEndorsedEvent | ArticleReviewedEvent | EditorialCommunityJoinedEvent;
 
-type TemplateFeedItem = (event: Event) => string;
+type TemplateFeedItem = (event: Event, actor: Actor) => string;
 
-const templateFeedItem: TemplateFeedItem = (event) => {
+const templateFeedItem: TemplateFeedItem = (event, actor) => {
   if (isArticleEndorsedEvent(event)) {
     return `
-      <a href="${event.actor.url}">${event.actor.name}</a>
+      <a href="${event.actor.url}">${actor.name}</a>
       endorsed
       <a href="/articles/${event.articleId}">${event.articleTitle}</a>
     `;
   }
   if (isArticleReviewedEvent(event)) {
     return `
-      <a href="${event.actor.url}">${event.actor.name}</a>
+      <a href="${event.actor.url}">${actor.name}</a>
       reviewed
       <a href="/articles/${event.articleId}">${event.articleTitle}</a>
     `;
   }
   return `
-    <a href="${event.actor.url}">${event.actor.name}</a>
+    <a href="${event.actor.url}">${actor.name}</a>
     joined The Hive
   `;
 };
 
-export default (): RenderFeedItem => (
-  async (event) => (`
-    <div class="label">
-      <img src="${event.actor.imageUrl}">
-    </div>
-    <div class="content">
-      <div class="date">
-        ${templateDate(event.date)}
+export type GetActor = (id: EditorialCommunityId) => Promise<Actor>;
+
+export default (
+  getActor: GetActor,
+): RenderFeedItem => (
+  async (event) => {
+    const actor = await getActor(event.actorId);
+    return `
+      <div class="label">
+        <img src="${event.actor.imageUrl}">
       </div>
-      <div class="summary">
-        ${templateFeedItem(event)}
+      <div class="content">
+        <div class="date">
+          ${templateDate(event.date)}
+        </div>
+        <div class="summary">
+          ${templateFeedItem(event, actor)}
+        </div>
       </div>
-    </div>
-  `)
+    `;
+  }
 );
