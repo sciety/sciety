@@ -1,5 +1,5 @@
 import createRenderEditorialCommunities from './render-editorial-communities';
-import createRenderFeed, {GetActor} from './render-feed';
+import createRenderFeed, { GetActor } from './render-feed';
 import createRenderFindArticle from './render-find-article';
 import createRenderPageHeader from './render-page-header';
 import createRenderRecentActivity, {
