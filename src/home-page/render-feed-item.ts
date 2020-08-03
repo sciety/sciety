@@ -12,7 +12,6 @@ type Actor = {
 type ArticleEndorsedEvent = {
   type: 'ArticleEndorsed';
   date: Date;
-  actor: Actor;
   actorId: EditorialCommunityId;
   articleId: string;
   articleTitle: string;
@@ -25,7 +24,6 @@ const isArticleEndorsedEvent = (event: Event): event is ArticleEndorsedEvent => 
 type ArticleReviewedEvent = {
   type: 'ArticleReviewed';
   date: Date;
-  actor: Actor;
   actorId: EditorialCommunityId;
   articleId: string;
   articleTitle: string;
@@ -38,7 +36,6 @@ const isArticleReviewedEvent = (event: Event): event is ArticleReviewedEvent => 
 type EditorialCommunityJoinedEvent = {
   type: 'EditorialCommunityJoined';
   date: Date;
-  actor: Actor;
   actorId: EditorialCommunityId;
 };
 
