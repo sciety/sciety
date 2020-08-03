@@ -31,11 +31,23 @@ const isArticleReviewedEvent = (event: Event): event is ArticleReviewedEvent => 
   'type' in event && event.type === 'ArticleReviewed'
 );
 
+type EditorialCommunityJoinedEvent = {
+  type: 'EditorialCommunityJoined';
+  imageUrl: string;
+  date: Date;
+  editorialCommunityId: string;
+  editorialCommunityName: string;
+};
+
+const isEditorialCommunityJoinedEvent = (event: Event): event is EditorialCommunityJoinedEvent => (
+  'type' in event && event.type === 'EditorialCommunityJoined'
+);
+
 type Event = {
   imageUrl: string;
   date: Date;
   summary: string;
-} | ArticleEndorsedEvent | ArticleReviewedEvent;
+} | ArticleEndorsedEvent | ArticleReviewedEvent | EditorialCommunityJoinedEvent;
 
 const events: Array<Event> = [
   {
@@ -93,24 +105,18 @@ const events: Array<Event> = [
     articleTitle: 'GATA-1-dependent histone H3K27ac mediates erythroid cell-specific interaction between CTCF sites',
   },
   {
+    type: 'EditorialCommunityJoined',
     imageUrl: 'https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg',
     date: new Date('2020-06-18'),
-    summary: `
-      <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334">
-        Review Commons
-      </a>
-      joined The Hive
-    `,
+    editorialCommunityId: '316db7d9-88cc-4c26-b386-f067e0f56334',
+    editorialCommunityName: 'Review Commons',
   },
   {
+    type: 'EditorialCommunityJoined',
     imageUrl: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png',
     date: new Date('2020-06-14'),
-    summary: `
-      <a href="/editorial-communities/10360d97-bf52-4aef-b2fa-2f60d319edd8">
-        A PREreview Journal Club
-      </a>
-      joined The Hive
-    `,
+    editorialCommunityId: '10360d97-bf52-4aef-b2fa-2f60d319edd8',
+    editorialCommunityName: 'A PREreview Journal Club',
   },
 ];
 
@@ -129,6 +135,13 @@ const templateEventSummary: TemplateEventSummary = (event) => {
       <a href="/editorial-communities/${event.editorialCommunityId}">${event.editorialCommunityName}</a>
       reviewed
       <a href="/articles/${event.articleId}">${event.articleTitle}</a>
+    `;
+  }
+  if (isEditorialCommunityJoinedEvent(event)) {
+    return `
+      <a href="/editorial-communities/${event.editorialCommunityId}">${event.editorialCommunityName}</a>
+      
+      joined The Hive
     `;
   }
   return event.summary;
