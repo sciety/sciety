@@ -87,6 +87,13 @@ p:last-child {
   margin-bottom: 1em;
 }
 
+/*
+Fix the vertical alignment in the event feed
+*/
+.ui.feed>.event>.content .date {
+  display: block;
+}
+
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Styles that supplement Semantic UI
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
