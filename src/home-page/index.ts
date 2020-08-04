@@ -1,9 +1,10 @@
 import createRenderPage, {
-  Event, GetActor, GetAllEditorialCommunities, GetArticle, GetEvents, RenderPage,
+  GetActor, GetAllEditorialCommunities, GetArticle, GetEvents, RenderPage,
 } from './render-page';
 import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
+import { Event } from '../types/events';
 import { FetchExternalArticle } from '../types/fetch-external-article';
 import { NonEmptyArray } from '../types/non-empty-array';
 import ReviewReferenceRepository from '../types/review-reference-repository';

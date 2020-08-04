@@ -7,9 +7,7 @@ import createRenderPageHeader from './render-page-header';
 export type RenderPage = () => Promise<string>;
 
 export { GetEvents } from './render-feed';
-export {
-  Event, GetActor, GetArticle,
-} from './render-feed-item';
+export { GetActor, GetArticle } from './render-feed-item';
 export { GetAllEditorialCommunities } from './render-editorial-communities';
 
 export default (

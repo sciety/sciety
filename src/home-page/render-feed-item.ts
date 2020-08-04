@@ -1,6 +1,7 @@
 import templateDate from '../templates/date';
 import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
+import { Event, isArticleEndorsedEvent, isArticleReviewedEvent } from '../types/events';
 
 export type RenderFeedItem = (event: Event) => Promise<string>;
 
@@ -13,36 +14,6 @@ type Actor = {
 type Article = {
   title: string;
 };
-
-export type ArticleEndorsedEvent = {
-  type: 'ArticleEndorsed';
-  date: Date;
-  actorId: EditorialCommunityId;
-  articleId: Doi;
-};
-
-const isArticleEndorsedEvent = (event: Event): event is ArticleEndorsedEvent => (
-  'type' in event && event.type === 'ArticleEndorsed'
-);
-
-export type ArticleReviewedEvent = {
-  type: 'ArticleReviewed';
-  date: Date;
-  actorId: EditorialCommunityId;
-  articleId: Doi;
-};
-
-const isArticleReviewedEvent = (event: Event): event is ArticleReviewedEvent => (
-  'type' in event && event.type === 'ArticleReviewed'
-);
-
-export type EditorialCommunityJoinedEvent = {
-  type: 'EditorialCommunityJoined';
-  date: Date;
-  actorId: EditorialCommunityId;
-};
-
-export type Event = ArticleEndorsedEvent | ArticleReviewedEvent | EditorialCommunityJoinedEvent;
 
 type TemplateFeedItem = (getArticle: GetArticle, event: Event, actor: Actor) => Promise<string>;
 
