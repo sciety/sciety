@@ -11,6 +11,7 @@ type BiorxivResponse = JsonCompatible<{
   }>,
   collection: Array<{
     biorxiv_doi: string,
+    published_date: string,
   }>
 }>;
 
@@ -19,8 +20,8 @@ void (async (): Promise<void> => {
 
   const { data: firstPage } = await axios.get<BiorxivResponse>(`https://api.biorxiv.org/publisher/10.7554/2000-01-01/${today}/0`);
   let endorsements = firstPage.collection.map((item) => ({
-    article: item.biorxiv_doi,
-    editorialCommunity: elifeId,
+    articleId: item.biorxiv_doi,
+    date: item.published_date,
   }));
 
   const { count } = firstPage.messages[0];
@@ -30,11 +31,20 @@ void (async (): Promise<void> => {
     const { data } = await axios.get<BiorxivResponse>(`https://api.biorxiv.org/publisher/10.7554/2000-01-01/${today}/${count * i}`);
     endorsements = endorsements.concat(
       data.collection.map((item) => ({
-        article: item.biorxiv_doi,
-        editorialCommunity: elifeId,
+        articleId: item.biorxiv_doi,
+        date: item.published_date,
       })),
     );
   }
 
-  process.stdout.write(JSON.stringify(endorsements, undefined, 2));
+  endorsements.forEach((endorsement) => {
+    process.stdout.write(`
+      {
+        type: 'ArticleEndorsed',
+        date: new Date('${endorsement.date}'),
+        actorId: new EditorialCommunityId('${elifeId}'),
+        articleId: new Doi('${endorsement.articleId}'),
+      },
+    `);
+  });
 })();
