@@ -1,8 +1,9 @@
 import { JSDOM } from 'jsdom';
-import createRenderFeed, { GetActor, GetArticle } from '../../src/home-page/render-feed';
+import createRenderFeed, { GetActor, GetArticle, GetEvents } from '../../src/home-page/render-feed';
 
 describe('render-feed', (): void => {
   it('returns a list', async (): Promise<void> => {
+    const dummyGetEvents: GetEvents = async () => [];
     const dummyGetActor: GetActor = async () => ({
       name: 'something',
       url: '',
@@ -11,7 +12,7 @@ describe('render-feed', (): void => {
     const dummyGetArticle: GetArticle = async () => ({
       title: 'something',
     });
-    const renderFeed = createRenderFeed(dummyGetActor, dummyGetArticle);
+    const renderFeed = createRenderFeed(dummyGetEvents, dummyGetActor, dummyGetArticle);
     const rendered = JSDOM.fragment(await renderFeed());
 
     expect(rendered.querySelector('.ui.feed')?.tagName).toBe('OL');
