@@ -65,6 +65,11 @@ const events: NonEmptyArray<Event> = [
     date: new Date('Wed May 27 13:36:51 2020 +0100'),
     actorId: new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002'), // PeerJ
   },
+  {
+    type: 'EditorialCommunityJoined',
+    date: new Date('Tues August 4 14:38:51 2020 +0100'),
+    actorId: new EditorialCommunityId('74fd66e9-3b90-4b5a-a4ab-5be83db4c5de'), // PCI Zoology
+  },
 ];
 
 export default events;

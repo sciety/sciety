@@ -162,4 +162,58 @@ export default [
     <h2 class="ui header" id="people">People</h2>
     <p><a href="https://www.reviewcommons.org/editors-and-board/">https://www.reviewcommons.org/editors-and-board/</a></p>`,
   },
+  {
+    id: new EditorialCommunityId('74fd66e9-3b90-4b5a-a4ab-5be83db4c5de'),
+    name: 'Peer Community In Zoology',
+    logo: 'https://zool.peercommunityin.org/PCIZool/static/images/small-background.png',
+    avatarUrl: 'https://pbs.twimg.com/profile_images/1278236903549145089/qqgLuJu__400x400.jpg',
+    description: `<h2 class="ui header" id="summary">Summary</h2>
+    <p>Peer Community in Zoology (PCI Zoology) has been launched in July 2020, replacing and broadening the scope of PCI Entomology. 
+    It is a community of recommenders playing the role of editors who recommend unpublished articles based on peer-reviews to make them complete, reliable and citable articles, without the need for publication in ‘traditional’ journals. Evaluation and recommendation by PCI Zoology are free of charge. 
+    When a recommender decides to recommend an article, he/she writes a recommendation text that is published along with all the editorial correspondence (reviews, recommender's decisions, authors’ replies) by PCI Zoology. The article itself is not published by PCI Zoology; 
+    it remains in the preprint server where it has been posted by the authors. PCI Zoology recommenders can also recommend, but to a lesser extent, postprints.</p>
+    <ul>
+      <li>PCI Zoology is a community of the parent project Peer Community In, an original idea of Denis Bourguet, Benoit Facon and Thomas Guillemaud.</li>
+      <li>PCI Zoology is not designed to be a free peer-reviewing service for authors aiming to improve their articles before submission to a journal. It is, of course, possible, for authors to then submit their recommended article to a traditional journal, but this is not the goal of PCI Zoology.</li>
+      <li>PCI Zoology is stimulating: it recommends remarkable articles.</li>
+      <li>PCI Zoology is free: there are no fees associated with the evaluation process, and no charge for access to the comments and recommendations. The website is freely accessible.</li>
+      <li>PCI Zoology is transparent: Reviews and recommendations (for unpublished articles) and recommendations (for published articles) are freely available for consultation. Recommendations are signed by the recommenders. Reviews may also be signed if the reviewers agree to do so.</li>
+      <li>PCI Zoology is not exclusive: An article may be recommended by different Peer Communities in X (a feature of particular interest for articles relating to multidisciplinary studies) and may even be published in a traditional journal (although this is not the goal of PCI Zoology).</li>
+    </ul>
+    <h3 class="ui header" id="how-it-works">How it works</h3>
+    <iframe width="370" height="200" src="https://www.youtube.com/embed/4PZhpnc8wwo" frameborder="0" allowfullscreen=""></iframe>
+    <h2 class="ui header" id="peer-review-model">Peer review model</h2>
+    <h3>Which manuscripts can be recommended?</h3>
+ 
+    <p>PCI Zoology will recommend preprints, and to a lesser extent postprints, dealing with all aspects of fundamental and applied research (anatomy, behavior, developmental biology, ecology, evolution, genetics, genomics and physiology) on all animal taxa. This PCI will focus on animals from natural populations, from sponges and invertebrates to vertebrates, both in aquatic and terrestrial ecosystems. The preprints recommended may describe empirical or theoretical studies, and be based on observations from experiments or nature, or previously acquired data. They may also report the results of verbal, computer or mathematical models. Studies of methodologies for zoology as well as interdisciplinary research with innovative ideas are appreciated. Perspectives, reviews and opinions, as well as comments on previously published articles are also welcome. PCI Zoology can consider purely taxonomic preprints but it is noteworthy that a new taxon name is only valid if the name and description are published by an identified publisher (ISSN) in a classic journal with a single doi. For work on domestic animal species and animals managed by humans, please consider PCI Animal Science.  </p>
+
+    <p>The articles recommended may have diverse formats: reviews, comments, opinion papers, research articles, data papers, technical notes, computer notes, movies, etc. No editing, formatting or proofing of the recommended papers is required. We only ask the authors of recommended article to add a cover page to their article and a sentence at the beginning of the abstract stating that their article has been recommended by PCI Zoology.</p>  
+    
+    <p>PCI Zoology welcomes anonymous submissions (see <a href="https://zool.peercommunityin.org/about/help_generic/for%20authors">details</a>).</p>
+    <p>PCI Zoology also welcomes submissions of preregistrations (see <a href="https://zool.peercommunityin.org/about/help_practical#To%20submit%20a%20preregistration%20of%20a%20study">details</a>).</p>
+    
+    <h3>Editorial Criteria</h3>
+        
+    <p>PCI Zoology recommends only preprints of high scientific quality that are methodologically and ethically sound. To this end, PCI Zoology:</p>
+    <ul>
+      <li>Requires data, computer codes and mathematical and statistical analysis scripts to be made available to reviewers and recommenders at the time of submission and to readers after recommendation.</li>
+      <li>Welcomes reproductions of studies.</li>
+      <li>Welcomes preregistration submissions and preprint submissions based on preregistrations (whether or not reviewed)</li>
+      <li>Welcomes preprints reporting negative results, provided that the questions addressed and the methodology are sound.</li>
+      <li>Does not accept submissions of preprints presenting financial conflicts of interest. Other conflicts of interest must be minimal and declared.</li>
+      <li>Ensures that, as far as possible, the reviewers and referees have no conflict of interest with the content or authors of the study being evaluated.</li>
+    </ul>
+    
+    <p>PCI Zoology does not guarantee the evaluation or recommendation of all submitted preprints. Only preprints considered interesting by at least one competent recommender (equivalent to an associate editor in a classical journal) will be peer-reviewed. The interest of the preprint, as determined by the recommender, can relate to its context, the scientific question addressed, the methodology, or the results. PCI Zoology has a large number of recommenders, ensuring a considerable diversity of interests. The recommendations published by PCI Zoology are designed to draw the attention of the research community to the qualities of the article, including the subjective reasons for the recommender’s interest in it.</p>
+    
+    <h2 class="ui header" id="people">People</h2>
+    <ul>
+      <li>Dominique Adriaens (Ghent University, Belgium)</li>
+      <li>Ellen Decaestecker (KULeuven, Belgium)</li>
+      <li>Benoït Facon (Inrae, France)</li>
+      <li>Isabelle Schon (Royal Belgian Institute of Natural Sciences, Belgium)</li>
+      <li>Bertanne Visser (UCLouvain, Belgium)</li>
+    </ul>
+    <p><a href="https://zool.peercommunityin.org/about/about">https://zool.peercommunityin.org/about/about</a></p>`,
+  },
 ] as Array<EditorialCommunity>;
