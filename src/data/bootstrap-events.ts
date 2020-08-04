@@ -42,13 +42,28 @@ const events: NonEmptyArray<Event> = [
   },
   {
     type: 'EditorialCommunityJoined',
-    date: new Date('2020-06-18'),
-    actorId: new EditorialCommunityId('316db7d9-88cc-4c26-b386-f067e0f56334'),
+    date: new Date('Thu Jun 25 10:06:23 2020 +0100'),
+    actorId: new EditorialCommunityId('316db7d9-88cc-4c26-b386-f067e0f56334'), // Review Commons
   },
   {
     type: 'EditorialCommunityJoined',
-    date: new Date('2020-06-14'),
-    actorId: new EditorialCommunityId('10360d97-bf52-4aef-b2fa-2f60d319edd8'),
+    date: new Date('Tue Jun 16 17:42:28 2020 +0100'),
+    actorId: new EditorialCommunityId('10360d97-bf52-4aef-b2fa-2f60d319edd8'), // A PREreview Journal Club
+  },
+  {
+    type: 'EditorialCommunityJoined',
+    date: new Date('Wed May 13 13:14:49 2020 +0100'),
+    actorId: new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'), // eLife
+  },
+  {
+    type: 'EditorialCommunityJoined',
+    date: new Date('Wed May 20 15:45:41 2020 +0100'),
+    actorId: new EditorialCommunityId('10360d97-bf52-4aef-b2fa-2f60d319edd7'), // PREReview
+  },
+  {
+    type: 'EditorialCommunityJoined',
+    date: new Date('Wed May 27 13:36:51 2020 +0100'),
+    actorId: new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002'), // PeerJ
   },
 ];
 
