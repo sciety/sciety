@@ -1,4 +1,5 @@
 import templateDate from '../templates/date';
+import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
 
 type RenderFeedItem = (event: Event) => Promise<string>;
@@ -13,7 +14,7 @@ type ArticleEndorsedEvent = {
   type: 'ArticleEndorsed';
   date: Date;
   actorId: EditorialCommunityId;
-  articleId: string;
+  articleId: Doi;
   articleTitle: string;
 };
 
@@ -25,7 +26,7 @@ type ArticleReviewedEvent = {
   type: 'ArticleReviewed';
   date: Date;
   actorId: EditorialCommunityId;
-  articleId: string;
+  articleId: Doi;
   articleTitle: string;
 };
 
@@ -48,14 +49,14 @@ const templateFeedItem: TemplateFeedItem = (event, actor) => {
     return `
       <a href="${actor.url}">${actor.name}</a>
       endorsed
-      <a href="/articles/${event.articleId}">${event.articleTitle}</a>
+      <a href="/articles/${event.articleId.value}">${event.articleTitle}</a>
     `;
   }
   if (isArticleReviewedEvent(event)) {
     return `
       <a href="${actor.url}">${actor.name}</a>
       reviewed
-      <a href="/articles/${event.articleId}">${event.articleTitle}</a>
+      <a href="/articles/${event.articleId.value}">${event.articleTitle}</a>
     `;
   }
   return `
