@@ -70,6 +70,12 @@ const events: NonEmptyArray<Event> = [
     date: new Date('Tues August 4 14:38:51 2020 +0100'),
     actorId: new EditorialCommunityId('74fd66e9-3b90-4b5a-a4ab-5be83db4c5de'), // PCI Zoology
   },
+  {
+    type: 'ArticleReviewed',
+    date: new Date('2020-07-22'),
+    actorId: new EditorialCommunityId('74fd66e9-3b90-4b5a-a4ab-5be83db4c5de'),
+    articleId: new Doi('10.1101/2019.12.20.884908'),
+  },
 ];
 
 export default events;

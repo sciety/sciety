@@ -259,4 +259,5 @@ export default [
   { article: '10.1101/2019.12.13.875419', review: 'vjXYyEZ-EeqqLUNjM7f3Ug', editorialCommunityIndex: 4, added: new Date('2020-07-09') },
   { article: '10.1101/2019.12.13.875419', review: 'vmlMTkZ-EeqjceOvojerYA', editorialCommunityIndex: 4, added: new Date('2020-06-23') },
   { article: '10.1101/2019.12.13.875419', review: 'vrXL-kZ-EeqfJ9PMYqZceg', editorialCommunityIndex: 4, added: new Date('2020-06-27') },
+  { article: '10.1101/2019.12.20.884908', review: '10.24072/pci.zool.100004', editorialCommunityIndex: 5, added: new Date('2020-07-22') },
 ];
