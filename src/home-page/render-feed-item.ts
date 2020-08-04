@@ -19,7 +19,6 @@ type ArticleEndorsedEvent = {
   date: Date;
   actorId: EditorialCommunityId;
   articleId: Doi;
-  articleTitle: string;
 };
 
 const isArticleEndorsedEvent = (event: Event): event is ArticleEndorsedEvent => (
@@ -31,7 +30,6 @@ type ArticleReviewedEvent = {
   date: Date;
   actorId: EditorialCommunityId;
   articleId: Doi;
-  articleTitle: string;
 };
 
 const isArticleReviewedEvent = (event: Event): event is ArticleReviewedEvent => (
