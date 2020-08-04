@@ -1,4 +1,4 @@
-import createGetEventsFromBootstrapData from './get-events-from-bootstrap-data';
+import createGetEventsFromBootstrapData from './get-most-recent-events';
 import createRenderPage, {
   GetActor, GetAllEditorialCommunities, GetArticle, RenderPage,
 } from './render-page';
