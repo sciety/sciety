@@ -1,8 +1,9 @@
 import createRenderFeedItem, {
-  ArticleEndorsedEvent, ArticleReviewedEvent, GetActor, GetArticle,
+  ArticleEndorsedEvent, ArticleReviewedEvent, EditorialCommunityJoinedEvent, GetActor, GetArticle,
 } from '../../src/home-page/render-feed-item';
 import Doi from '../../src/types/doi';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
+import shouldNotBeCalled from '../should-not-be-called';
 
 describe('render-feed-item', (): void => {
   const articleTitle = 'the title';
@@ -64,7 +65,25 @@ describe('render-feed-item', (): void => {
   });
 
   describe('when given an EditorialCommunityJoinedEvent', () => {
-    it.todo('displays the actor name');
+    it('displays the actor name', async () => {
+      const actorId = new EditorialCommunityId('');
+      const actorName = 'Some Actor';
+      const event: EditorialCommunityJoinedEvent = {
+        actorId,
+        date: new Date(),
+        type: 'EditorialCommunityJoined',
+      };
+      const getActor: GetActor = async () => ({
+        url: '',
+        name: actorName,
+        imageUrl: '',
+      });
+
+      const renderFeedItem = createRenderFeedItem(getActor, shouldNotBeCalled);
+      const rendered = await renderFeedItem(event);
+
+      expect(rendered).toStrictEqual(expect.stringContaining(actorName));
+    });
 
     it.todo('displays the word "joined"');
 
