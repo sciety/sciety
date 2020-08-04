@@ -2,6 +2,7 @@ import createGetEventsFromBootstrapData from './get-events-from-bootstrap-data';
 import createRenderPage, {
   GetActor, GetAllEditorialCommunities, GetArticle, RenderPage,
 } from './render-page';
+import events from '../data/bootstrap-events';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import { FetchExternalArticle } from '../types/fetch-external-article';
 import ReviewReferenceRepository from '../types/review-reference-repository';
@@ -25,7 +26,7 @@ export default (ports: Ports): RenderPage => {
   const getArticleAdapter: GetArticle = async (id) => (
     (await ports.fetchArticle(id)).unsafelyUnwrap()
   );
-  const getEventsAdapter = createGetEventsFromBootstrapData();
+  const getEventsAdapter = createGetEventsFromBootstrapData(events);
 
   return createRenderPage(
     editorialCommunitiesAdapter,
