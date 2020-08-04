@@ -1,20 +1,16 @@
-import createRenderFeedItem, { Event, GetActor, GetArticle } from './render-feed-item';
+import { Event, RenderFeedItem } from './render-feed-item';
 import templateListItems from '../templates/list-items';
 import { NonEmptyArray } from '../types/non-empty-array';
 
 type RenderFeed = () => Promise<string>;
 
-export { Event, GetActor, GetArticle } from './render-feed-item';
-
 export type GetEvents = () => Promise<NonEmptyArray<Event>>;
 
 export default (
   getEvents: GetEvents,
-  getActor: GetActor,
-  getArticle: GetArticle,
-): RenderFeed => {
-  const renderFeedItem = createRenderFeedItem(getActor, getArticle);
-  return async () => {
+  renderFeedItem: RenderFeedItem,
+): RenderFeed => (
+  async () => {
     const events = await getEvents();
     const feedItems = await Promise.all(events.map(renderFeedItem));
     return `
@@ -27,5 +23,5 @@ export default (
         </ol>
       </section>
     `;
-  };
-};
+  }
+);

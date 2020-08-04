@@ -1,5 +1,6 @@
 import { JSDOM } from 'jsdom';
-import createRenderFeed, { GetActor, GetArticle, GetEvents } from '../../src/home-page/render-feed';
+import createRenderFeed, { GetEvents } from '../../src/home-page/render-feed';
+import { RenderFeedItem } from '../../src/home-page/render-feed-item';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
 
 describe('render-feed', (): void => {
@@ -11,15 +12,8 @@ describe('render-feed', (): void => {
         actorId: new EditorialCommunityId(''),
       },
     ];
-    const dummyGetActor: GetActor = async () => ({
-      name: 'something',
-      url: '',
-      imageUrl: '',
-    });
-    const dummyGetArticle: GetArticle = async () => ({
-      title: 'something',
-    });
-    const renderFeed = createRenderFeed(dummyGetEvents, dummyGetActor, dummyGetArticle);
+    const dummyRenderFeedItem: RenderFeedItem = async () => '';
+    const renderFeed = createRenderFeed(dummyGetEvents, dummyRenderFeedItem);
     const rendered = JSDOM.fragment(await renderFeed());
 
     expect(rendered.querySelector('.ui.feed')?.tagName).toBe('OL');

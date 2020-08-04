@@ -1,13 +1,15 @@
 import createRenderEditorialCommunities, { GetAllEditorialCommunities } from './render-editorial-communities';
-import createRenderFeed, { GetActor, GetArticle, GetEvents } from './render-feed';
+import createRenderFeed, { GetEvents } from './render-feed';
+import createRenderFeedItem, { GetActor, GetArticle } from './render-feed-item';
 import createRenderFindArticle from './render-find-article';
 import createRenderPageHeader from './render-page-header';
 
 type RenderPage = () => Promise<string>;
 
+export { GetEvents } from './render-feed';
 export {
-  Event, GetActor, GetArticle, GetEvents,
-} from './render-feed';
+  Event, GetActor, GetArticle,
+} from './render-feed-item';
 export { GetAllEditorialCommunities } from './render-editorial-communities';
 
 export default (
@@ -19,7 +21,8 @@ export default (
   const renderPageHeader = createRenderPageHeader();
   const renderEditorialCommunities = createRenderEditorialCommunities(editorialCommunities);
   const renderFindArticle = createRenderFindArticle();
-  const renderFeed = createRenderFeed(getEvents, getActor, getArticle);
+  const renderFeedItem = createRenderFeedItem(getActor, getArticle);
+  const renderFeed = createRenderFeed(getEvents, renderFeedItem);
 
   return async () => `
       <div class="ui aligned stackable grid">

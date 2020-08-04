@@ -2,7 +2,7 @@ import templateDate from '../templates/date';
 import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
 
-type RenderFeedItem = (event: Event) => Promise<string>;
+export type RenderFeedItem = (event: Event) => Promise<string>;
 
 type Actor = {
   url: string;
