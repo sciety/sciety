@@ -18,4 +18,8 @@ describe('render-feed', (): void => {
 
     expect(rendered.querySelector('.ui.feed')?.tagName).toBe('OL');
   });
+
+  describe('when given three feed items', () => {
+    it.todo('renders the three feed items supplied');
+  });
 });
