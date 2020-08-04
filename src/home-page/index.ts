@@ -1,4 +1,4 @@
-import createRenderPage, { GetActor, GetAllEditorialCommunities } from './render-page';
+import createRenderPage, { GetActor, GetAllEditorialCommunities, GetArticle } from './render-page';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import { FetchExternalArticle } from '../types/fetch-external-article';
 import ReviewReferenceRepository from '../types/review-reference-repository';
@@ -22,10 +22,14 @@ export default (ports: Ports): RenderPage => {
       url: `/editorial-communities/${id.value}`,
     };
   };
+  const getArticleAdapter: GetArticle = async (id) => (
+    (await ports.fetchArticle(id)).unsafelyUnwrap()
+  );
 
   const renderPage = createRenderPage(
     editorialCommunitiesAdapter,
     getActorAdapter,
+    getArticleAdapter,
   );
   return renderPage;
 };

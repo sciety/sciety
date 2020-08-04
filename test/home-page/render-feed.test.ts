@@ -1,5 +1,5 @@
 import { JSDOM } from 'jsdom';
-import createRenderFeed, { GetActor } from '../../src/home-page/render-feed';
+import createRenderFeed, { GetActor, GetArticle } from '../../src/home-page/render-feed';
 
 describe('render-feed', (): void => {
   it('returns a list', async (): Promise<void> => {
@@ -8,7 +8,10 @@ describe('render-feed', (): void => {
       url: '',
       imageUrl: '',
     });
-    const renderFeed = createRenderFeed(dummyGetActor);
+    const dummyGetArticle: GetArticle = async () => ({
+      title: 'something',
+    });
+    const renderFeed = createRenderFeed(dummyGetActor, dummyGetArticle);
     const rendered = JSDOM.fragment(await renderFeed());
 
     expect(rendered.querySelector('.ui.feed')?.tagName).toBe('OL');

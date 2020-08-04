@@ -10,6 +10,10 @@ type Actor = {
   imageUrl: string;
 };
 
+type Article = {
+  title: string;
+};
+
 type ArticleEndorsedEvent = {
   type: 'ArticleEndorsed';
   date: Date;
@@ -42,21 +46,25 @@ type EditorialCommunityJoinedEvent = {
 
 export type Event = ArticleEndorsedEvent | ArticleReviewedEvent | EditorialCommunityJoinedEvent;
 
-type TemplateFeedItem = (event: Event, actor: Actor) => string;
+type TemplateFeedItem = (getArticle: GetArticle, event: Event, actor: Actor) => Promise<string>;
 
-const templateFeedItem: TemplateFeedItem = (event, actor) => {
+const templateFeedItem: TemplateFeedItem = async (getArticle, event, actor) => {
   if (isArticleEndorsedEvent(event)) {
+    const article = await getArticle(event.articleId);
+
     return `
       <a href="${actor.url}">${actor.name}</a>
       endorsed
-      <a href="/articles/${event.articleId.value}">${event.articleTitle}</a>
+      <a href="/articles/${event.articleId.value}">${article.title}</a>
     `;
   }
   if (isArticleReviewedEvent(event)) {
+    const article = await getArticle(event.articleId);
+
     return `
       <a href="${actor.url}">${actor.name}</a>
       reviewed
-      <a href="/articles/${event.articleId.value}">${event.articleTitle}</a>
+      <a href="/articles/${event.articleId.value}">${article.title}</a>
     `;
   }
   return `
@@ -67,8 +75,11 @@ const templateFeedItem: TemplateFeedItem = (event, actor) => {
 
 export type GetActor = (id: EditorialCommunityId) => Promise<Actor>;
 
+export type GetArticle = (id: Doi) => Promise<Article>;
+
 export default (
   getActor: GetActor,
+  getArticle: GetArticle,
 ): RenderFeedItem => (
   async (event) => {
     const actor = await getActor(event.actorId);
@@ -81,7 +92,7 @@ export default (
           ${templateDate(event.date)}
         </div>
         <div class="summary">
-          ${templateFeedItem(event, actor)}
+          ${await templateFeedItem(getArticle, event, actor)}
         </div>
       </div>
     `;
