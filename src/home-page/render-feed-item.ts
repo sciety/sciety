@@ -14,7 +14,7 @@ type Article = {
   title: string;
 };
 
-type ArticleEndorsedEvent = {
+export type ArticleEndorsedEvent = {
   type: 'ArticleEndorsed';
   date: Date;
   actorId: EditorialCommunityId;
