@@ -3,7 +3,7 @@ import EditorialCommunityId from '../types/editorial-community-id';
 
 type RenderEditorialCommunities = () => Promise<string>;
 
-type GetAllEditorialCommunities = () => Promise<Array<{
+export type GetAllEditorialCommunities = () => Promise<Array<{
   id: EditorialCommunityId;
   name: string;
 }>>;

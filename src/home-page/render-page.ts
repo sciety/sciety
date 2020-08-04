@@ -1,26 +1,18 @@
-import createRenderEditorialCommunities from './render-editorial-communities';
+import createRenderEditorialCommunities, { GetAllEditorialCommunities } from './render-editorial-communities';
 import createRenderFeed, { GetActor } from './render-feed';
 import createRenderFindArticle from './render-find-article';
 import createRenderPageHeader from './render-page-header';
-import createRenderRecentActivity, {
-  FetchArticle,
-  GetEditorialCommunities,
-  GetReviewReferences,
-} from './render-recent-activity';
 
 type RenderPage = () => Promise<string>;
 
-export { FetchArticle } from './render-recent-activity';
 export { GetActor } from './render-feed';
+export { GetAllEditorialCommunities } from './render-editorial-communities';
 
 export default (
-  reviewReferences: GetReviewReferences,
-  fetchArticle: FetchArticle,
-  editorialCommunities: GetEditorialCommunities,
+  editorialCommunities: GetAllEditorialCommunities,
   getActor: GetActor,
 ): RenderPage => {
   const renderPageHeader = createRenderPageHeader();
-  createRenderRecentActivity(reviewReferences, fetchArticle, editorialCommunities);
   const renderEditorialCommunities = createRenderEditorialCommunities(editorialCommunities);
   const renderFindArticle = createRenderFindArticle();
   const renderFeed = createRenderFeed(getActor);
