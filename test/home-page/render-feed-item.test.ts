@@ -16,24 +16,29 @@ describe('render-feed-item', (): void => {
   });
 
   describe('when given an ArticleEndorsedEvent', () => {
-    it('displays the article title', async () => {
-      const event: ArticleEndorsedEvent = {
-        actorId: arbitraryActorId,
-        articleId: arbitraryArticleId,
-        date: new Date(),
-        type: 'ArticleEndorsed',
-      };
+    const event: ArticleEndorsedEvent = {
+      actorId: arbitraryActorId,
+      articleId: arbitraryArticleId,
+      date: new Date(),
+      type: 'ArticleEndorsed',
+    };
+    let rendered: string;
+
+    beforeEach(async () => {
       const getArticle: GetArticle = async () => ({
         title: articleTitle,
       });
-
       const renderFeedItem = createRenderFeedItem(dummyGetActor, getArticle);
-      const rendered = await renderFeedItem(event);
+      rendered = await renderFeedItem(event);
+    });
 
+    it('displays the article title', async () => {
       expect(rendered).toStrictEqual(expect.stringContaining(articleTitle));
     });
 
-    it.todo('displays the word "endorsed"');
+    it('displays the word "endorsed"', async () => {
+      expect(rendered).toStrictEqual(expect.stringContaining('endorsed'));
+    });
 
     it.todo('displays the actor name');
 
