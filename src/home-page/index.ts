@@ -1,5 +1,5 @@
 import createRenderPage, {
-  Event, GetActor, GetAllEditorialCommunities, GetArticle, GetEvents,
+  Event, GetActor, GetAllEditorialCommunities, GetArticle, GetEvents, RenderPage,
 } from './render-page';
 import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
@@ -63,9 +63,6 @@ const events: NonEmptyArray<Event> = [
   },
 ];
 
-/* eslint-disable no-empty-pattern */
-export type RenderPage = ({}) => Promise<string>;
-
 export default (ports: Ports): RenderPage => {
   const editorialCommunitiesAdapter: GetAllEditorialCommunities = async () => ports.editorialCommunities.all();
   const getActorAdapter: GetActor = async (id) => {
@@ -81,11 +78,10 @@ export default (ports: Ports): RenderPage => {
   );
   const getEventsAdapter: GetEvents = async () => events;
 
-  const renderPage = createRenderPage(
+  return createRenderPage(
     editorialCommunitiesAdapter,
     getActorAdapter,
     getArticleAdapter,
     getEventsAdapter,
   );
-  return renderPage;
 };

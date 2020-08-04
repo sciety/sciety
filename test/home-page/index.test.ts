@@ -6,7 +6,7 @@ describe('create render page', (): void => {
     const { adapters } = await createServer();
     const renderPage = buildRenderPage(adapters);
 
-    const rendered = await renderPage({});
+    const rendered = await renderPage();
     for (const ec of adapters.editorialCommunities.all()) {
       expect(rendered).toContain(ec.name);
     }

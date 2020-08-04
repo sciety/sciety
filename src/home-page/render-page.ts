@@ -4,7 +4,7 @@ import createRenderFeedItem, { GetActor, GetArticle } from './render-feed-item';
 import createRenderFindArticle from './render-find-article';
 import createRenderPageHeader from './render-page-header';
 
-type RenderPage = () => Promise<string>;
+export type RenderPage = () => Promise<string>;
 
 export { GetEvents } from './render-feed';
 export {
