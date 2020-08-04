@@ -27,7 +27,7 @@ export default (ports: Ports): RenderPage => {
   );
   const getEventsAdapter: GetEvents = async () => {
     events.sort((a, b) => b.date.getTime() - a.date.getTime());
-    return events;
+    return events.slice(0, 20);
   };
 
   return createRenderPage(
