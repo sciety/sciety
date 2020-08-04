@@ -1,11 +1,12 @@
 import createRenderFeedItem, { Event, GetActor, GetArticle } from './render-feed-item';
 import templateListItems from '../templates/list-items';
+import { NonEmptyArray } from '../types/non-empty-array';
 
 type RenderFeed = () => Promise<string>;
 
 export { Event, GetActor, GetArticle } from './render-feed-item';
 
-export type GetEvents = () => Promise<Array<Event>>;
+export type GetEvents = () => Promise<NonEmptyArray<Event>>;
 
 export default (
   getEvents: GetEvents,

@@ -5,6 +5,7 @@ import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import { FetchExternalArticle } from '../types/fetch-external-article';
+import { NonEmptyArray } from '../types/non-empty-array';
 import ReviewReferenceRepository from '../types/review-reference-repository';
 
 interface Ports {
@@ -13,7 +14,7 @@ interface Ports {
   reviewReferenceRepository: ReviewReferenceRepository;
 }
 
-const events: Array<Event> = [
+const events: NonEmptyArray<Event> = [
   {
     type: 'ArticleReviewed',
     date: new Date('2020-07-09'),
