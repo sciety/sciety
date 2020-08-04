@@ -20,7 +20,7 @@ export default (
   getActor: GetActor,
 ): RenderPage => {
   const renderPageHeader = createRenderPageHeader();
-  const renderRecentActivity = createRenderRecentActivity(reviewReferences, fetchArticle, editorialCommunities);
+  createRenderRecentActivity(reviewReferences, fetchArticle, editorialCommunities);
   const renderEditorialCommunities = createRenderEditorialCommunities(editorialCommunities);
   const renderFindArticle = createRenderFindArticle();
   const renderFeed = createRenderFeed(getActor);
@@ -33,22 +33,13 @@ export default (
           </div>
         </div>
         <div class="row">
-          <div class="column">
-            ${await renderFindArticle()}
-          </div>
-        </div>
-        <div class="row">
-          <section class="eight wide column">
-            ${await renderRecentActivity(5)}
+          <section class="ten wide column">
+            ${await renderFeed()}
           </section>
-          <section class="six wide right floated column">
+          <section class="four wide right floated column">
+            ${await renderFindArticle()}
             ${await renderEditorialCommunities()}
            </section>
-        </div>
-        <div class="row">
-          <div class="column">
-            ${await renderFeed()}
-          </div>
         </div>
       </div>
     `;
