@@ -76,6 +76,18 @@ const events: NonEmptyArray<Event> = [
     actorId: new EditorialCommunityId('74fd66e9-3b90-4b5a-a4ab-5be83db4c5de'),
     articleId: new Doi('10.1101/2019.12.20.884908'),
   },
+  {
+    type: 'ArticleReviewed',
+    date: new Date('2020-07-01'),
+    actorId: new EditorialCommunityId('74fd66e9-3b90-4b5a-a4ab-5be83db4c5de'),
+    articleId: new Doi('10.1101/653980'),
+  },
+  {
+    type: 'ArticleReviewed',
+    date: new Date('2020-01-10'),
+    actorId: new EditorialCommunityId('74fd66e9-3b90-4b5a-a4ab-5be83db4c5de'),
+    articleId: new Doi('10.1101/722579'),
+  },
 ];
 
 export default events;

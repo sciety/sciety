@@ -260,4 +260,6 @@ export default [
   { article: '10.1101/2019.12.13.875419', review: 'vmlMTkZ-EeqjceOvojerYA', editorialCommunityIndex: 4, added: new Date('2020-06-23') },
   { article: '10.1101/2019.12.13.875419', review: 'vrXL-kZ-EeqfJ9PMYqZceg', editorialCommunityIndex: 4, added: new Date('2020-06-27') },
   { article: '10.1101/2019.12.20.884908', review: '10.24072/pci.zool.100004', editorialCommunityIndex: 5, added: new Date('2020-07-22') },
+  { article: '10.1101/653980', review: '10.24072/pci.zool.100003', editorialCommunityIndex: 5, added: new Date('2020-07-01') },
+  { article: '10.1101/722579', review: '10.24072/pci.zool.100002', editorialCommunityIndex: 5, added: new Date('2020-01-10') },
 ];
