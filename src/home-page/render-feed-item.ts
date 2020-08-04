@@ -25,7 +25,7 @@ const isArticleEndorsedEvent = (event: Event): event is ArticleEndorsedEvent => 
   'type' in event && event.type === 'ArticleEndorsed'
 );
 
-type ArticleReviewedEvent = {
+export type ArticleReviewedEvent = {
   type: 'ArticleReviewed';
   date: Date;
   actorId: EditorialCommunityId;
