@@ -88,10 +88,10 @@ p:last-child {
 }
 
 /*
-Fix the vertical spacing in the event feed
+Fix the vertical alignment in the event feed
 */
-.ui.feed>.event>.label+.content {
-  margin: 0 0 2.25rem 1.25rem;
+.ui.feed>.event>.content .date {
+  display: block;
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
