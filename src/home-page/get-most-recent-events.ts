@@ -9,7 +9,7 @@ export default (events: NonEmptyArray<Event>, maxCount: number): GetEvents => (
       .sort((a, b) => b.date.getTime() - a.date.getTime())
       .filter((event) => (
         isEditorialCommunityJoinedEvent(event)
-        || followList.find((actorId) => actorId.value === event.actorId.value)
+        || followList.some((actorId) => actorId.value === event.actorId.value)
       ))
       .slice(0, maxCount) as unknown as NonEmptyArray<Event>
   )
