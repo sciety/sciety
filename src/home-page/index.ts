@@ -1,6 +1,6 @@
-import createGetMostRecentEvents from './get-most-recent-events';
+import createGetMostRecentEvents, { GetFollowList } from './get-most-recent-events';
 import createRenderPage, {
-  GetActor, GetAllEditorialCommunities, GetArticle, GetFollowList, RenderPage,
+  GetActor, GetAllEditorialCommunities, GetArticle, RenderPage,
 } from './render-page';
 import events from '../data/bootstrap-events';
 import EditorialCommunityId from '../types/editorial-community-id';
@@ -35,13 +35,12 @@ export default (ports: Ports): RenderPage => {
     new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002'), // PeerJ
     new EditorialCommunityId('74fd66e9-3b90-4b5a-a4ab-5be83db4c5de'), // PCI Zoology
   ];
-  const getEventsAdapter = createGetMostRecentEvents(events, 20);
+  const getEventsAdapter = createGetMostRecentEvents(getFollowListAdapter, events, 20);
 
   return createRenderPage(
     editorialCommunitiesAdapter,
     getActorAdapter,
     getArticleAdapter,
-    getFollowListAdapter,
     getEventsAdapter,
   );
 };

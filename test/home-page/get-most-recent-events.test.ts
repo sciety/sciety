@@ -1,4 +1,4 @@
-import createGetMostRecentEvents from '../../src/home-page/get-most-recent-events';
+import createGetMostRecentEvents, { GetFollowList } from '../../src/home-page/get-most-recent-events';
 import Doi from '../../src/types/doi';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
 import { Event } from '../../src/types/events';
@@ -6,6 +6,7 @@ import { NonEmptyArray } from '../../src/types/non-empty-array';
 
 describe('get-most-recent-events', () => {
   const editorialCommunity1 = new EditorialCommunityId('a');
+  const getFollowList: GetFollowList = async () => [editorialCommunity1];
   const dummyEvent: Event = {
     type: 'ArticleEndorsed',
     date: new Date('2020-07-08'),
@@ -28,8 +29,8 @@ describe('get-most-recent-events', () => {
         articleId: new Doi('10.1101/2020.01.22.915660'),
       },
     ];
-    const getEvents = createGetMostRecentEvents(initial, 20);
-    const sortedEvents = await getEvents([editorialCommunity1]);
+    const getEvents = createGetMostRecentEvents(getFollowList, initial, 20);
+    const sortedEvents = await getEvents();
 
     expect(sortedEvents[0]).toStrictEqual(initial[1]);
     expect(sortedEvents[1]).toStrictEqual(initial[0]);
@@ -42,8 +43,8 @@ describe('get-most-recent-events', () => {
   describe('when there\'s a small number of items', () => {
     it('returns exactly those', async () => {
       const dummyEvents: NonEmptyArray<Event> = [dummyEvent, dummyEvent, dummyEvent];
-      const getEvents = createGetMostRecentEvents(dummyEvents, 20);
-      const events = await getEvents([editorialCommunity1]);
+      const getEvents = createGetMostRecentEvents(getFollowList, dummyEvents, 20);
+      const events = await getEvents();
 
       expect(events).toHaveLength(dummyEvents.length);
     });
@@ -53,8 +54,8 @@ describe('get-most-recent-events', () => {
     it('returns just the specified maximum number of items', async () => {
       const dummyEvents: NonEmptyArray<Event> = [dummyEvent, dummyEvent, dummyEvent];
       const maxCount = 2;
-      const getEvents = createGetMostRecentEvents(dummyEvents, maxCount);
-      const events = await getEvents([editorialCommunity1]);
+      const getEvents = createGetMostRecentEvents(getFollowList, dummyEvents, maxCount);
+      const events = await getEvents();
 
       expect(events).toHaveLength(maxCount);
     });

@@ -1,11 +1,10 @@
 import { JSDOM } from 'jsdom';
-import createRenderFeed, { GetEvents, GetFollowList } from '../../src/home-page/render-feed';
+import createRenderFeed, { GetEvents } from '../../src/home-page/render-feed';
 import { RenderFeedItem } from '../../src/home-page/render-feed-item';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
 
 describe('render-feed', (): void => {
   it('returns a list', async (): Promise<void> => {
-    const dummyGetFollowList: GetFollowList = async () => [];
     const dummyGetEvents: GetEvents = async () => [
       {
         type: 'EditorialCommunityJoined',
@@ -14,13 +13,11 @@ describe('render-feed', (): void => {
       },
     ];
     const dummyRenderFeedItem: RenderFeedItem = async () => '';
-    const renderFeed = createRenderFeed(dummyGetFollowList, dummyGetEvents, dummyRenderFeedItem);
+    const renderFeed = createRenderFeed(dummyGetEvents, dummyRenderFeedItem);
     const rendered = JSDOM.fragment(await renderFeed());
 
     expect(rendered.querySelector('.ui.feed')?.tagName).toBe('OL');
   });
-
-  it.todo('gets events for the follow list');
 
   describe('when given three feed items', () => {
     it.todo('renders the three feed items supplied');
