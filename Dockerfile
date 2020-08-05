@@ -33,7 +33,7 @@ FROM node AS dev
 ENV NODE_ENV=development
 ENV PRETTY_LOG=true
 
-RUN apk add --update graphviz
+RUN apk add --no-cache graphviz
 
 COPY .eslintignore \
   .eslintrc.js \
