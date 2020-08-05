@@ -73,6 +73,7 @@ export default async (): Promise<TestServer> => {
     editorialCommunities,
     endorsements: createEndorsementsRepository(dummyLogger),
     reviewReferenceRepository,
+    getFollowList: async () => [],
     logger: dummyLogger,
   };
 
