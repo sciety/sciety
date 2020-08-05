@@ -20,7 +20,7 @@ describe('get-most-recent-events', () => {
         articleId: new Doi('10.1101/2020.01.22.915660'),
       },
     ];
-    const getEvents = createGetMostRecentEvents(initial);
+    const getEvents = createGetMostRecentEvents(initial, 20);
     const sortedEvents = await getEvents();
 
     expect(sortedEvents[0]).toStrictEqual(initial[1]);
@@ -36,7 +36,7 @@ describe('get-most-recent-events', () => {
         articleId: new Doi('10.1101/751099'),
       };
       const dummyEvents: NonEmptyArray<Event> = [dummyEvent, dummyEvent, dummyEvent];
-      const getEvents = createGetMostRecentEvents(dummyEvents);
+      const getEvents = createGetMostRecentEvents(dummyEvents, 20);
       const events = await getEvents();
 
       expect(events).toHaveLength(dummyEvents.length);

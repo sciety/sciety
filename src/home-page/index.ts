@@ -26,7 +26,7 @@ export default (ports: Ports): RenderPage => {
   const getArticleAdapter: GetArticle = async (id) => (
     (await ports.fetchArticle(id)).unsafelyUnwrap()
   );
-  const getEventsAdapter = createGetMostRecentEvents(events);
+  const getEventsAdapter = createGetMostRecentEvents(events, 20);
 
   return createRenderPage(
     editorialCommunitiesAdapter,
