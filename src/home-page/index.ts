@@ -1,4 +1,4 @@
-import createGetEventsFromBootstrapData from './get-most-recent-events';
+import createGetMostRecentEvents from './get-most-recent-events';
 import createRenderPage, {
   GetActor, GetAllEditorialCommunities, GetArticle, RenderPage,
 } from './render-page';
@@ -26,7 +26,7 @@ export default (ports: Ports): RenderPage => {
   const getArticleAdapter: GetArticle = async (id) => (
     (await ports.fetchArticle(id)).unsafelyUnwrap()
   );
-  const getEventsAdapter = createGetEventsFromBootstrapData(events);
+  const getEventsAdapter = createGetMostRecentEvents(events);
 
   return createRenderPage(
     editorialCommunitiesAdapter,

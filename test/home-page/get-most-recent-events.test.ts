@@ -4,7 +4,7 @@ import EditorialCommunityId from '../../src/types/editorial-community-id';
 import { Event } from '../../src/types/events';
 import { NonEmptyArray } from '../../src/types/non-empty-array';
 
-describe('get-events-from-bootstrap-data', () => {
+describe('get-most-recent-events', () => {
   it('sorts by date descending', async () => {
     const initial: NonEmptyArray<Event> = [
       {
