@@ -1,9 +1,9 @@
 import { GetEvents } from './render-feed';
-import EditorialCommunityId from '../types/editorial-community-id';
 import { Event, isEditorialCommunityJoinedEvent } from '../types/events';
+import { FollowList } from '../types/follow-list';
 import { NonEmptyArray } from '../types/non-empty-array';
 
-export type GetFollowList = () => Promise<Array<EditorialCommunityId>>;
+export type GetFollowList = () => Promise<FollowList>;
 
 export default (getFollowList: GetFollowList, events: NonEmptyArray<Event>, maxCount: number): GetEvents => (
   async () => {
