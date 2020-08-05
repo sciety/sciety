@@ -5,6 +5,13 @@ import { Event } from '../../src/types/events';
 import { NonEmptyArray } from '../../src/types/non-empty-array';
 
 describe('get-most-recent-events', () => {
+  const dummyEvent: Event = {
+    type: 'ArticleEndorsed',
+    date: new Date('2020-07-08'),
+    actorId: new EditorialCommunityId(''),
+    articleId: new Doi('10.1101/751099'),
+  };
+
   it('sorts by date descending', async () => {
     const initial: NonEmptyArray<Event> = [
       {
@@ -29,12 +36,6 @@ describe('get-most-recent-events', () => {
 
   describe('when there\'s a small number of items', () => {
     it('returns exactly those', async () => {
-      const dummyEvent: Event = {
-        type: 'ArticleEndorsed',
-        date: new Date('2020-07-08'),
-        actorId: new EditorialCommunityId(''),
-        articleId: new Doi('10.1101/751099'),
-      };
       const dummyEvents: NonEmptyArray<Event> = [dummyEvent, dummyEvent, dummyEvent];
       const getEvents = createGetMostRecentEvents(dummyEvents, 20);
       const events = await getEvents();
@@ -43,7 +44,14 @@ describe('get-most-recent-events', () => {
     });
   });
 
-  describe('when there are too many items to display', () => {
-    it.todo('returns just N items');
+  describe('when there are more items than the specified maximum', () => {
+    it('returns just the specified maximum number of items', async () => {
+      const dummyEvents: NonEmptyArray<Event> = [dummyEvent, dummyEvent, dummyEvent];
+      const maxCount = 2;
+      const getEvents = createGetMostRecentEvents(dummyEvents, maxCount);
+      const events = await getEvents();
+
+      expect(events).toHaveLength(maxCount);
+    });
   });
 });
