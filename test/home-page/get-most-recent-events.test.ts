@@ -28,7 +28,19 @@ describe('get-most-recent-events', () => {
   });
 
   describe('when there\'s a small number of items', () => {
-    it.todo('returns exactly those');
+    it('returns exactly those', async () => {
+      const dummyEvent: Event = {
+        type: 'ArticleEndorsed',
+        date: new Date('2020-07-08'),
+        actorId: new EditorialCommunityId(''),
+        articleId: new Doi('10.1101/751099'),
+      };
+      const dummyEvents: NonEmptyArray<Event> = [dummyEvent, dummyEvent, dummyEvent];
+      const getEvents = createGetMostRecentEvents(dummyEvents);
+      const events = await getEvents();
+
+      expect(events).toHaveLength(dummyEvents.length);
+    });
   });
 
   describe('when there are too many items to display', () => {
