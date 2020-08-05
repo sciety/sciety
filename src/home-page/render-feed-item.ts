@@ -15,9 +15,9 @@ type Article = {
   title: string;
 };
 
-type TemplateFeedItem = (event: Event, actor: Actor) => Promise<string>;
+type RenderFeedItemSummary = (event: Event, actor: Actor) => Promise<string>;
 
-const createTemplateFeedItem = (getArticle: GetArticle): TemplateFeedItem => (
+const createRenderFeedItemSummary = (getArticle: GetArticle): RenderFeedItemSummary => (
   async (event, actor) => {
     if (isArticleEndorsedEvent(event)) {
       const article = await getArticle(event.articleId);
@@ -52,7 +52,7 @@ export default (
   getActor: GetActor,
   getArticle: GetArticle,
 ): RenderFeedItem => {
-  const templateFeedItem = createTemplateFeedItem(getArticle);
+  const renderFeedItemSummary = createRenderFeedItemSummary(getArticle);
 
   return async (event) => {
     const actor = await getActor(event.actorId);
@@ -65,7 +65,7 @@ export default (
           ${templateDate(event.date)}
         </div>
         <div class="summary">
-          ${await templateFeedItem(event, actor)}
+          ${await renderFeedItemSummary(event, actor)}
         </div>
       </div>
     `;
