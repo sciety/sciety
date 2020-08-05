@@ -139,6 +139,57 @@ const events: NonEmptyArray<Event> = [
   {
     type: 'ArticleReviewed', date: new Date('2019-10-09'), actorId: new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002'), articleId: new Doi('10.1101/751099'),
   },
+  {
+    type: 'ArticleEndorsed', date: new Date('2017-05-06'), actorId: new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002'), articleId: new Doi('10.1101/069484'),
+  },
+  {
+    type: 'ArticleEndorsed', date: new Date('2017-06-21'), actorId: new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002'), articleId: new Doi('10.1101/152397'),
+  },
+  {
+    type: 'ArticleEndorsed', date: new Date('2017-09-14'), actorId: new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002'), articleId: new Doi('10.1101/188425'),
+  },
+  {
+    type: 'ArticleEndorsed', date: new Date('2018-02-23'), actorId: new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002'), articleId: new Doi('10.1101/084673'),
+  },
+  {
+    type: 'ArticleEndorsed', date: new Date('2018-02-08'), actorId: new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002'), articleId: new Doi('10.1101/209320'),
+  },
+  {
+    type: 'ArticleEndorsed', date: new Date('2018-03-14'), actorId: new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002'), articleId: new Doi('10.1101/259150'),
+  },
+  {
+    type: 'ArticleEndorsed', date: new Date('2018-01-04'), actorId: new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002'), articleId: new Doi('10.1101/221861'),
+  },
+  {
+    type: 'ArticleEndorsed', date: new Date('2017-08-18'), actorId: new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002'), articleId: new Doi('10.1101/177253'),
+  },
+  {
+    type: 'ArticleEndorsed', date: new Date('2018-02-15'), actorId: new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002'), articleId: new Doi('10.1101/437293'),
+  },
+  {
+    type: 'ArticleEndorsed', date: new Date('2018-01-16'), actorId: new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002'), articleId: new Doi('10.1101/226092'),
+  },
+  {
+    type: 'ArticleEndorsed', date: new Date('2018-05-04'), actorId: new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002'), articleId: new Doi('10.1101/312330'),
+  },
+  {
+    type: 'ArticleEndorsed', date: new Date('2018-07-08'), actorId: new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002'), articleId: new Doi('10.1101/313015'),
+  },
+  {
+    type: 'ArticleEndorsed', date: new Date('2018-06-22'), actorId: new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002'), articleId: new Doi('10.1101/351486'),
+  },
+  {
+    type: 'ArticleEndorsed', date: new Date('2018-09-22'), actorId: new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002'), articleId: new Doi('10.1101/186825'),
+  },
+  {
+    type: 'ArticleEndorsed', date: new Date('2019-08-09'), actorId: new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002'), articleId: new Doi('10.1101/416677'),
+  },
+  {
+    type: 'ArticleEndorsed', date: new Date('2019-08-16'), actorId: new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002'), articleId: new Doi('10.1101/718031'),
+  },
+  {
+    type: 'ArticleEndorsed', date: new Date('2019-10-09'), actorId: new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002'), articleId: new Doi('10.1101/751099'),
+  },
 ];
 
 export default events;
