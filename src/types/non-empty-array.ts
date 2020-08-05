@@ -1,1 +1,1 @@
-export type NonEmptyArray<T> = [T, ...Array<T>];
+export type NonEmptyArray<T> = ReadonlyArray<T> & { 0: T };
