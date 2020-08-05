@@ -7,7 +7,7 @@ export default class Doi {
     const [, doi] = doiRegex.exec(input) ?? [];
 
     if (!doi) {
-      throw new Error('Not a possible DOI.');
+      throw new Error(`'${doi}' is not a possible DOI`);
     }
 
     this.value = doi;
