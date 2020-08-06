@@ -40,7 +40,7 @@ export default (
           <section class="four wide right floated column">
             ${await renderFindArticle()}
             ${await renderEditorialCommunities()}
-           </section>
+          </section>
         </div>
       </div>
     `;

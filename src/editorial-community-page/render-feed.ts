@@ -15,7 +15,7 @@ export default (
     const events = await getEvents(editorialCommunityId);
     const feedItems = await Promise.all(events.map(renderFeedItem));
     return `
-      <section>
+      <section class="ui very padded vertical segment">
         <h2 class="ui header">
           Feed
         </h2>
