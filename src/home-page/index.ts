@@ -1,6 +1,6 @@
 import createGetMostRecentEvents, { GetFollowList } from './get-most-recent-events';
 import createRenderPage, {
-  GetActor, GetAllEditorialCommunities, GetArticle, RenderPage,
+  GetActor, GetAllEditorialCommunities, GetArticle, IsFollowed, RenderPage,
 } from './render-page';
 import events from '../data/bootstrap-events';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
@@ -27,6 +27,9 @@ export default (ports: Ports): RenderPage => {
   const getArticleAdapter: GetArticle = async (id) => (
     (await ports.fetchArticle(id)).unsafelyUnwrap()
   );
+  const isFollowedAdapter: IsFollowed = async (editorialCommunityId) => (
+    (await ports.getFollowList()).follows(editorialCommunityId)
+  );
 
   const getEventsAdapter = createGetMostRecentEvents(ports.getFollowList, events, 20);
 
@@ -35,5 +38,6 @@ export default (ports: Ports): RenderPage => {
     getActorAdapter,
     getArticleAdapter,
     getEventsAdapter,
+    isFollowedAdapter,
   );
 };

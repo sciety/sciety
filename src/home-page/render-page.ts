@@ -2,7 +2,7 @@ import createRenderEditorialCommunities, { GetAllEditorialCommunities } from './
 import createRenderFeed, { GetEvents } from './render-feed';
 import createRenderFeedItem, { GetActor, GetArticle } from './render-feed-item';
 import createRenderFindArticle from './render-find-article';
-import createRenderFollowToggle from './render-follow-toggle';
+import createRenderFollowToggle, { IsFollowed } from './render-follow-toggle';
 import createRenderPageHeader from './render-page-header';
 
 export type RenderPage = () => Promise<string>;
@@ -10,15 +10,17 @@ export type RenderPage = () => Promise<string>;
 export { GetEvents } from './render-feed';
 export { GetActor, GetArticle } from './render-feed-item';
 export { GetAllEditorialCommunities } from './render-editorial-communities';
+export { IsFollowed } from './render-follow-toggle';
 
 export default (
   editorialCommunities: GetAllEditorialCommunities,
   getActor: GetActor,
   getArticle: GetArticle,
   getEvents: GetEvents,
+  isFollowed: IsFollowed,
 ): RenderPage => {
   const renderPageHeader = createRenderPageHeader();
-  const renderFollowToggle = createRenderFollowToggle();
+  const renderFollowToggle = createRenderFollowToggle(isFollowed);
   const renderEditorialCommunities = createRenderEditorialCommunities(editorialCommunities, renderFollowToggle);
   const renderFindArticle = createRenderFindArticle();
   const renderFeedItem = createRenderFeedItem(getActor, getArticle);
