@@ -12,6 +12,7 @@ import events from '../data/bootstrap-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import EndorsementsRepository from '../types/endorsements-repository';
+import { Event } from '../types/events';
 import { FetchExternalArticle } from '../types/fetch-external-article';
 import ReviewReferenceRepository from '../types/review-reference-repository';
 
@@ -62,6 +63,17 @@ const buildRenderReviews = (
   return createRenderReviews(getNumberOfReviews);
 };
 
+type FilterFunction = (event: Event) => boolean;
+type FilterEvents = (filterFunction: FilterFunction, maxCount: number) => Promise<Array<Event>>;
+
+const filterEvents: FilterEvents = async (filterFunction, maxCount) => (
+  events
+    .slice()
+    .sort((a, b) => b.date.getTime() - a.date.getTime())
+    .filter(filterFunction)
+    .slice(0, maxCount)
+);
+
 interface Params {
   id?: string;
 }
@@ -90,16 +102,7 @@ export default (ports: Ports): RenderPage => {
   const getArticleAdapter: GetArticle = async (id) => (
     (await ports.fetchArticle(id)).unsafelyUnwrap()
   );
-  const getEventsAdapter = createGetMostRecentEvents(
-    async (filterFunction, maxCount) => (
-      events
-        .slice()
-        .sort((a, b) => b.date.getTime() - a.date.getTime())
-        .filter(filterFunction)
-        .slice(0, maxCount)
-    ),
-    20,
-  );
+  const getEventsAdapter = createGetMostRecentEvents(filterEvents, 20);
   const renderFeedItem = createRenderFeedItem(getActorAdapter, getArticleAdapter);
   const renderFeed = createRenderFeed(getEventsAdapter, renderFeedItem);
 
