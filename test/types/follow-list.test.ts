@@ -2,7 +2,7 @@ import EditorialCommunityId from '../../src/types/editorial-community-id';
 import FollowList from '../../src/types/follow-list';
 
 describe('follow-list', () => {
-  describe ('follow', () => {
+  describe('follow', () => {
     describe('when the community to be followed is not currently followed', () => {
       it('follows the community', () => {
         const editorialCommunity1Id = new EditorialCommunityId('id1');
