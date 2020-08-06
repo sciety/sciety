@@ -14,6 +14,10 @@ export default (editorialCommunities: GetAllEditorialCommunities): RenderEditori
       .map((editorialCommunity) => (`
         <div class="content">
           <a href="/editorial-communities/${editorialCommunity.id.value}" class="header">${editorialCommunity.name}</a>
+          <form method="post" action="/unfollow">
+            <input type="hidden" name="editorialcommunityid" value="${editorialCommunity.id.value}" />
+            <button type="submit">Unfollow</button>
+          </form>
         </div>
       `));
 
