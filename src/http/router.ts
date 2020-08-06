@@ -1,5 +1,6 @@
 import path from 'path';
 import Router from '@koa/router';
+import bodyParser from 'koa-bodyparser';
 import send from 'koa-send';
 import pageHandler from './page-handler';
 import ping from './ping';
@@ -34,7 +35,8 @@ export default (adapters: Adapters): Router => {
     pageHandler(createEditorialCommunityPage(adapters)));
 
   router.post('/unfollow',
-    createUnfollowHandler());
+    bodyParser({ enableTypes: ['form'] }),
+    createUnfollowHandler(adapters));
 
   router.get('/robots.txt',
     robots());
