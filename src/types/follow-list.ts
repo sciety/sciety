@@ -10,4 +10,8 @@ export default class FollowList {
   follows(editorialCommunityId: EditorialCommunityId): boolean {
     return this.items.some((item) => item.value === editorialCommunityId.value);
   }
+
+  unfollow(editorialCommunityId: EditorialCommunityId): void {
+    this.items = this.items.filter((item) => item.value !== editorialCommunityId.value);
+  }
 }
