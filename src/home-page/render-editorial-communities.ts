@@ -1,3 +1,4 @@
+import createRenderFollowToggle from './render-follow-toggle';
 import templateListItems from '../templates/list-items';
 import EditorialCommunityId from '../types/editorial-community-id';
 
@@ -8,18 +9,17 @@ export type GetAllEditorialCommunities = () => Promise<Array<{
   name: string;
 }>>;
 
-export default (editorialCommunities: GetAllEditorialCommunities): RenderEditorialCommunities => (
-  async () => {
-    const editorialCommunityLinks = (await editorialCommunities())
-      .map((editorialCommunity) => (`
+export default (editorialCommunities: GetAllEditorialCommunities): RenderEditorialCommunities => {
+  const renderFollowToggle = createRenderFollowToggle();
+
+  return async () => {
+    const editorialCommunityLinks = await Promise.all((await editorialCommunities())
+      .map(async (editorialCommunity) => (`
         <div class="content">
           <a href="/editorial-communities/${editorialCommunity.id.value}" class="header">${editorialCommunity.name}</a>
-          <form method="post" action="/unfollow">
-            <input type="hidden" name="editorialcommunityid" value="${editorialCommunity.id.value}" />
-            <button type="submit">Unfollow</button>
-          </form>
+          ${await renderFollowToggle(editorialCommunity.id)}
         </div>
-      `));
+      `)));
 
     return `
       <section>
@@ -31,5 +31,5 @@ export default (editorialCommunities: GetAllEditorialCommunities): RenderEditori
         </ol>
       </section>
     `;
-  }
-);
+  };
+};
