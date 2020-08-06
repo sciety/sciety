@@ -10,6 +10,7 @@ import createArticleSearchPage from '../article-search-page';
 import createEditorialCommunityPage from '../editorial-community-page';
 import createHomePage from '../home-page';
 import { Adapters } from '../infrastructure/adapters';
+import createUnfollowHandler from '../unfollow/unfollow-handler';
 
 export default (adapters: Adapters): Router => {
   const router = new Router();
@@ -32,10 +33,8 @@ export default (adapters: Adapters): Router => {
   router.get('/editorial-communities/:id',
     pageHandler(createEditorialCommunityPage(adapters)));
 
-  router.post('/unfollow', async (context, next) => {
-    context.redirect('/');
-    await next();
-  });
+  router.post('/unfollow',
+    createUnfollowHandler());
 
   router.get('/robots.txt',
     robots());
