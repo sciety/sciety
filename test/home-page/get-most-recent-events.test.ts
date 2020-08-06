@@ -2,11 +2,12 @@ import createGetMostRecentEvents, { GetFollowList } from '../../src/home-page/ge
 import Doi from '../../src/types/doi';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
 import { Event } from '../../src/types/events';
+import FollowList from '../../src/types/follow-list';
 import { NonEmptyArray } from '../../src/types/non-empty-array';
 
 describe('get-most-recent-events', () => {
   const editorialCommunity1 = new EditorialCommunityId('a');
-  const getFollowList: GetFollowList = async () => [editorialCommunity1];
+  const getFollowList: GetFollowList = async () => new FollowList([editorialCommunity1]);
   const dummyEvent: Event = {
     type: 'ArticleEndorsed',
     date: new Date('2020-07-08'),

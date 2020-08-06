@@ -1,4 +1,4 @@
-import { FollowList } from '../types/follow-list';
+import FollowList from '../types/follow-list';
 
 export type GetFollowList = () => Promise<FollowList>;
 
