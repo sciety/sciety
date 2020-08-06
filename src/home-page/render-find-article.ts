@@ -2,10 +2,10 @@ type RenderFindArticle = () => Promise<string>;
 
 export default (): RenderFindArticle => (
   async () => (`
-    <form method="get" action="/articles" class="ui basic very padded center aligned form container segment">
+    <form method="get" action="/articles" class="ui basic very padded vertical form container segment">
       <fieldset>
                                                           
-        <legend class="ui center aligned header">
+        <legend class="ui large header">
           Find a bioRxiv article
         </legend>
 
