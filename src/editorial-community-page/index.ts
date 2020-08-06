@@ -90,7 +90,16 @@ export default (ports: Ports): RenderPage => {
   const getArticleAdapter: GetArticle = async (id) => (
     (await ports.fetchArticle(id)).unsafelyUnwrap()
   );
-  const getEventsAdapter = createGetMostRecentEvents(events, 20);
+  const getEventsAdapter = createGetMostRecentEvents(
+    async (filterFunction, maxCount) => (
+      events
+        .slice()
+        .sort((a, b) => b.date.getTime() - a.date.getTime())
+        .filter(filterFunction)
+        .slice(0, maxCount)
+    ),
+    20,
+  );
   const renderFeedItem = createRenderFeedItem(getActorAdapter, getArticleAdapter);
   const renderFeed = createRenderFeed(getEventsAdapter, renderFeedItem);
 

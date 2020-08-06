@@ -1,15 +1,13 @@
 import { GetEvents } from './render-feed';
 import { Event } from '../types/events';
 import FollowList from '../types/follow-list';
-import { NonEmptyArray } from '../types/non-empty-array';
 
-export default (events: NonEmptyArray<Event>, maxCount: number): GetEvents => (
+type FilterFunction = (event: Event) => boolean;
+type FilterEvents = (filterFunction: FilterFunction, maxCount: number) => Promise<Array<Event>>;
+
+export default (filterEvents: FilterEvents, maxCount: number): GetEvents => (
   async (editorialCommunityId) => {
     const followList = new FollowList([editorialCommunityId]);
-    return events
-      .slice()
-      .sort((a, b) => b.date.getTime() - a.date.getTime())
-      .filter((event) => followList.follows(event.actorId))
-      .slice(0, maxCount);
+    return filterEvents((event) => followList.follows(event.actorId), maxCount);
   }
 );
