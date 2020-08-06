@@ -1,5 +1,6 @@
 import { NotFound } from 'http-errors';
 import { Result } from 'true-myth';
+import createRenderDescription, { GetEditorialCommunityDescription, RenderDescription } from './render-description';
 import createRenderEndorsedArticles, { GetNumberOfEndorsedArticles, RenderEndorsedArticles } from './render-endorsed-articles';
 import createRenderPage from './render-page';
 import createRenderPageHeader, { GetEditorialCommunity, RenderPageHeader } from './render-page-header';
@@ -24,6 +25,17 @@ const buildRenderPageHeader = (editorialCommunities: EditorialCommunityRepositor
     return editorialCommunity;
   };
   return createRenderPageHeader(getEditorialCommunity);
+};
+
+const buildRenderDescription = (editorialCommunities: EditorialCommunityRepository): RenderDescription => {
+  const getEditorialCommunityDescription: GetEditorialCommunityDescription = async (editorialCommunityId) => {
+    const editorialCommunity = (await editorialCommunities.lookup(editorialCommunityId))
+      .unwrapOrElse(() => {
+        throw new NotFound(`${editorialCommunityId.value} not found`);
+      });
+    return editorialCommunity.description;
+  };
+  return createRenderDescription(getEditorialCommunityDescription);
 };
 
 const buildRenderEndorsedArticles = (
@@ -57,10 +69,12 @@ export type RenderPage = (params: Params) => Promise<Result<string, RenderPageEr
 
 export default (ports: Ports): RenderPage => {
   const renderPageHeader = buildRenderPageHeader(ports.editorialCommunities);
+  const renderDescription = buildRenderDescription(ports.editorialCommunities);
   const renderEndorsedArticles = buildRenderEndorsedArticles(ports.endorsements);
   const renderReviews = buildRenderReviews(ports.reviewReferenceRepository);
   const renderPage = createRenderPage(
     renderPageHeader,
+    renderDescription,
     renderEndorsedArticles,
     renderReviews,
   );

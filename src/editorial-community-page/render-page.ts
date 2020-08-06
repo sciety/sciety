@@ -1,3 +1,4 @@
+import { RenderDescription } from './render-description';
 import { RenderEndorsedArticles } from './render-endorsed-articles';
 import { RenderPageHeader } from './render-page-header';
 import { RenderReviews } from './render-reviews';
@@ -13,11 +14,13 @@ export type FetchArticle = (doi: Doi) => Promise<{
 
 export default (
   renderPageHeader: RenderPageHeader,
+  renderDescription: RenderDescription,
   renderEndorsedArticles: RenderEndorsedArticles,
   renderReviewedArticles: RenderReviews,
 ): RenderPage => (
   async (editorialCommunityId) => `
     ${await renderPageHeader(editorialCommunityId)}
+    ${await renderDescription(editorialCommunityId)}
     <section class="ui statistics">
       ${await renderEndorsedArticles(editorialCommunityId)}
       ${await renderReviewedArticles(editorialCommunityId)}

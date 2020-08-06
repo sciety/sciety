@@ -4,7 +4,6 @@ export type RenderPageHeader = (editorialCommunityId: EditorialCommunityId) => P
 
 export type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => Promise<{
   name: string;
-  description: string;
   logo?: string;
 }>;
 
@@ -25,9 +24,6 @@ export default (
           ${h1}
         </h1>
       </header>
-      <section class="ui basic vertical segment">
-        ${editorialCommunity.description}
-      </section>
     `;
   }
 );
