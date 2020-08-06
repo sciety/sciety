@@ -17,7 +17,9 @@ export default (
     .map(async (editorialCommunity) => (`
         <div class="content">
           <a href="/editorial-communities/${editorialCommunity.id.value}" class="header">${editorialCommunity.name}</a>
-          ${await renderFollowToggle(editorialCommunity.id)}
+          <div class="extra">
+            ${await renderFollowToggle(editorialCommunity.id)}
+          </div>
         </div>
       `)));
 
