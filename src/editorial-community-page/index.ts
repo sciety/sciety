@@ -1,16 +1,22 @@
 import { NotFound } from 'http-errors';
 import { Result } from 'true-myth';
+import createGetMostRecentEvents from './get-most-recent-events';
 import createRenderDescription, { GetEditorialCommunityDescription, RenderDescription } from './render-description';
 import createRenderEndorsedArticles, { GetNumberOfEndorsedArticles, RenderEndorsedArticles } from './render-endorsed-articles';
+import createRenderFeed from './render-feed';
+import createRenderFeedItem, { GetActor, GetArticle } from './render-feed-item';
 import createRenderPage from './render-page';
 import createRenderPageHeader, { GetEditorialCommunity, RenderPageHeader } from './render-page-header';
 import createRenderReviews, { GetNumberOfReviews, RenderReviews } from './render-reviews';
+import events from '../data/bootstrap-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import EndorsementsRepository from '../types/endorsements-repository';
+import { FetchExternalArticle } from '../types/fetch-external-article';
 import ReviewReferenceRepository from '../types/review-reference-repository';
 
 interface Ports {
+  fetchArticle: FetchExternalArticle;
   editorialCommunities: EditorialCommunityRepository;
   endorsements: EndorsementsRepository,
   reviewReferenceRepository: ReviewReferenceRepository;
@@ -72,11 +78,28 @@ export default (ports: Ports): RenderPage => {
   const renderDescription = buildRenderDescription(ports.editorialCommunities);
   const renderEndorsedArticles = buildRenderEndorsedArticles(ports.endorsements);
   const renderReviews = buildRenderReviews(ports.reviewReferenceRepository);
+
+  const getActorAdapter: GetActor = async (id) => {
+    const editorialCommunity = (await ports.editorialCommunities.lookup(id)).unsafelyUnwrap();
+    return {
+      name: editorialCommunity.name,
+      imageUrl: editorialCommunity.avatarUrl,
+      url: `/editorial-communities/${id.value}`,
+    };
+  };
+  const getArticleAdapter: GetArticle = async (id) => (
+    (await ports.fetchArticle(id)).unsafelyUnwrap()
+  );
+  const getEventsAdapter = createGetMostRecentEvents(events, 20);
+  const renderFeedItem = createRenderFeedItem(getActorAdapter, getArticleAdapter);
+  const renderFeed = createRenderFeed(getEventsAdapter, renderFeedItem);
+
   const renderPage = createRenderPage(
     renderPageHeader,
     renderDescription,
     renderEndorsedArticles,
     renderReviews,
+    renderFeed,
   );
   return async (params) => {
     const editorialCommunityId = new EditorialCommunityId(params.id ?? '');

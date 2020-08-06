@@ -1,5 +1,6 @@
 import { RenderDescription } from './render-description';
 import { RenderEndorsedArticles } from './render-endorsed-articles';
+import { RenderFeed } from './render-feed';
 import { RenderPageHeader } from './render-page-header';
 import { RenderReviews } from './render-reviews';
 import Doi from '../types/doi';
@@ -17,13 +18,17 @@ export default (
   renderDescription: RenderDescription,
   renderEndorsedArticles: RenderEndorsedArticles,
   renderReviewedArticles: RenderReviews,
+  renderFeed: RenderFeed,
 ): RenderPage => (
-  async (editorialCommunityId) => `
-    ${await renderPageHeader(editorialCommunityId)}
-    ${await renderDescription(editorialCommunityId)}
-    <section class="ui statistics">
-      ${await renderEndorsedArticles(editorialCommunityId)}
-      ${await renderReviewedArticles(editorialCommunityId)}
-    </section>
-  `
+  async (editorialCommunityId) => (
+    `
+      ${await renderPageHeader(editorialCommunityId)}
+      ${await renderDescription(editorialCommunityId)}
+      <section class="ui statistics">
+        ${await renderEndorsedArticles(editorialCommunityId)}
+        ${await renderReviewedArticles(editorialCommunityId)}
+      </section>
+      ${await renderFeed(editorialCommunityId)}
+    `
+  )
 );
