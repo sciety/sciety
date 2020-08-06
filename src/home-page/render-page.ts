@@ -2,6 +2,7 @@ import createRenderEditorialCommunities, { GetAllEditorialCommunities } from './
 import createRenderFeed, { GetEvents } from './render-feed';
 import createRenderFeedItem, { GetActor, GetArticle } from './render-feed-item';
 import createRenderFindArticle from './render-find-article';
+import createRenderFollowToggle from './render-follow-toggle';
 import createRenderPageHeader from './render-page-header';
 
 export type RenderPage = () => Promise<string>;
@@ -17,7 +18,8 @@ export default (
   getEvents: GetEvents,
 ): RenderPage => {
   const renderPageHeader = createRenderPageHeader();
-  const renderEditorialCommunities = createRenderEditorialCommunities(editorialCommunities);
+  const renderFollowToggle = createRenderFollowToggle();
+  const renderEditorialCommunities = createRenderEditorialCommunities(editorialCommunities, renderFollowToggle);
   const renderFindArticle = createRenderFindArticle();
   const renderFeedItem = createRenderFeedItem(getActor, getArticle);
   const renderFeed = createRenderFeed(getEvents, renderFeedItem);
