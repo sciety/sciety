@@ -7,6 +7,10 @@ export default class FollowList {
     this.items = items;
   }
 
+  follow(editorialCommunityId: EditorialCommunityId): void {
+    this.items.push(editorialCommunityId);
+  }
+
   follows(editorialCommunityId: EditorialCommunityId): boolean {
     return this.items.some((item) => item.value === editorialCommunityId.value);
   }
