@@ -34,6 +34,13 @@ export default (adapters: Adapters): Router => {
   router.get('/editorial-communities/:id',
     pageHandler(createEditorialCommunityPage(adapters)));
 
+  router.post('/follow',
+    async (context, next) => {
+      context.redirect('/');
+
+      await next();
+    });
+
   router.post('/unfollow',
     bodyParser({ enableTypes: ['form'] }),
     createUnfollowHandler(adapters));

@@ -8,13 +8,19 @@ export default (
   isFollowed: IsFollowed,
 ): RenderFollowToggle => (
   async (editorialCommunityId) => {
-    if (!(await isFollowed(editorialCommunityId))) {
-      return '';
+    if (await isFollowed(editorialCommunityId)) {
+      return `
+        <form method="post" action="/unfollow">
+          <input type="hidden" name="editorialcommunityid" value="${editorialCommunityId.value}" />
+          <button type="submit">Unfollow</button>
+        </form>
+      `;
     }
+
     return `
-      <form method="post" action="/unfollow">
+      <form method="post" action="/follow">
         <input type="hidden" name="editorialcommunityid" value="${editorialCommunityId.value}" />
-        <button type="submit">Unfollow</button>
+        <button type="submit">Follow</button>
       </form>
     `;
   }
