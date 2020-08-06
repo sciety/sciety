@@ -9,6 +9,7 @@ import createAboutPage from '../about-page';
 import createArticlePage from '../article-page';
 import createArticleSearchPage from '../article-search-page';
 import createEditorialCommunityPage from '../editorial-community-page';
+import createFollowHandler from '../follow/follow-handler';
 import createHomePage from '../home-page';
 import { Adapters } from '../infrastructure/adapters';
 import createUnfollowHandler from '../unfollow/unfollow-handler';
@@ -35,11 +36,8 @@ export default (adapters: Adapters): Router => {
     pageHandler(createEditorialCommunityPage(adapters)));
 
   router.post('/follow',
-    async (context, next) => {
-      context.redirect('/');
-
-      await next();
-    });
+    bodyParser({ enableTypes: ['form'] }),
+    createFollowHandler(adapters));
 
   router.post('/unfollow',
     bodyParser({ enableTypes: ['form'] }),
