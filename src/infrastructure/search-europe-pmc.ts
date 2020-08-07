@@ -2,7 +2,7 @@ import { Logger } from './logger';
 import Doi from '../types/doi';
 import { Json, JsonCompatible } from '../types/json';
 
-export type GetJson = (uri: string) => Promise<Json>;
+type GetJson = (uri: string) => Promise<Json>;
 
 interface SearchResult {
   doi: Doi;

@@ -7,7 +7,7 @@ import { ReviewId } from '../types/review-id';
 
 export type RenderReviews = (doi: Doi) => Promise<Result<string, 'no-content'>>;
 
-export type GetReviews = (doi: Doi) => Promise<Array<{
+type GetReviews = (doi: Doi) => Promise<Array<{
   editorialCommunityId: EditorialCommunityId,
   reviewId: ReviewId,
 }>>;

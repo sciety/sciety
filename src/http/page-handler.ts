@@ -9,7 +9,7 @@ type RenderPageError = {
   content: string
 };
 
-export type RenderPage = (params: {
+type RenderPage = (params: {
   doi?: string;
   id?: string;
   query?: string;

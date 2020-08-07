@@ -8,7 +8,7 @@ interface Ports {
 }
 
 /* eslint-disable no-empty-pattern */
-export type RenderPage = ({}) => Promise<string>;
+type RenderPage = ({}) => Promise<string>;
 
 export default (ports: Ports): RenderPage => {
   const converter = new showdown.Converter({ noHeaderId: true });

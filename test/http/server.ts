@@ -30,7 +30,7 @@ const articleB = new Doi('10.1101/2020.03.22.002386');
 const articleAReview1 = new Doi('10.5281/zenodo.3678325');
 const articleBReview1 = new Doi('10.5281/zenodo.3756961');
 
-export interface TestServer {
+interface TestServer {
   adapters: Adapters,
   server: Server;
   editorialCommunities: EditorialCommunityRepository;

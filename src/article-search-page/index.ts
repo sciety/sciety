@@ -40,7 +40,7 @@ interface Params {
   query?: string;
 }
 
-export type RenderPage = (params: Params) => Promise<string>;
+type RenderPage = (params: Params) => Promise<string>;
 
 export default (ports: Ports): RenderPage => {
   const getReviewCount: GetReviewCount = async (doi) => (

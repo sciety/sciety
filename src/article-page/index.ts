@@ -21,7 +21,7 @@ import EndorsementsRepository from '../types/endorsements-repository';
 import { FetchExternalArticle } from '../types/fetch-external-article';
 import ReviewReferenceRepository from '../types/review-reference-repository';
 
-export interface Ports {
+interface Ports {
   fetchArticle: FetchExternalArticle;
   getBiorxivCommentCount: GetCommentCount;
   fetchReview: GetReview;
@@ -79,7 +79,7 @@ interface Params {
   doi?: string;
 }
 
-export type RenderPage = (params: Params) => Promise<Result<string, RenderPageError>>;
+type RenderPage = (params: Params) => Promise<Result<string, RenderPageError>>;
 
 export default (ports: Ports): RenderPage => {
   const renderPageHeader = buildRenderPageHeader(ports);

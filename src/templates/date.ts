@@ -4,8 +4,8 @@ const textFormatOptions: Intl.DateTimeFormatOptions = {
   day: 'numeric',
 };
 
-export const toString = (date: Date): string => date.toISOString().split('T')[0];
-export const toDisplayString = (date: Date): string => date.toLocaleDateString('en-US', textFormatOptions);
+const toString = (date: Date): string => date.toISOString().split('T')[0];
+const toDisplayString = (date: Date): string => date.toLocaleDateString('en-US', textFormatOptions);
 
 export default (date: Date, ariaLabel?: string): string => {
   const ariaLabelAttribute = ariaLabel ? ` aria-label="${ariaLabel}"` : '';

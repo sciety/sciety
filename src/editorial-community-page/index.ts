@@ -83,12 +83,12 @@ interface Params {
   id?: string;
 }
 
-export type RenderPageError = {
+type RenderPageError = {
   type: 'not-found',
   content: string,
 };
 
-export type RenderPage = (params: Params) => Promise<Result<string, RenderPageError>>;
+type RenderPage = (params: Params) => Promise<Result<string, RenderPageError>>;
 
 export default (ports: Ports): RenderPage => {
   const renderPageHeader = buildRenderPageHeader(ports.editorialCommunities);
