@@ -17,7 +17,8 @@ export default (ports: Ports): Middleware => (
 
     ports.logger('info', 'User followed editorial community', { editorialCommunityId });
 
-    context.redirect('/');
+    context.redirect('back');
+
     await next();
   }
 );
