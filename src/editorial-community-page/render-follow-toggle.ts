@@ -19,7 +19,7 @@ export default (
     return `
       <form method="post" action="/follow">
         <input type="hidden" name="editorialcommunityid" value="${editorialCommunityId.value}">
-        <button type="submit" class="ui mini button">Follow</button>
+        <button type="submit" class="ui mini primary button">Follow</button>
       </form>
     `;
   }
