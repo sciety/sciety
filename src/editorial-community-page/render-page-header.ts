@@ -4,7 +4,7 @@ export type RenderPageHeader = (editorialCommunityId: EditorialCommunityId) => P
 
 export type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => Promise<{
   name: string;
-  logo?: string;
+  avatarUrl: string;
 }>;
 
 export default (
@@ -12,16 +12,12 @@ export default (
 ): RenderPageHeader => (
   async (editorialCommunityId) => {
     const editorialCommunity = await getEditorialCommunity(editorialCommunityId);
-    let h1: string;
-    if (editorialCommunity.logo !== undefined) {
-      h1 = `<img src="${editorialCommunity.logo}" alt="${editorialCommunity.name}" class="ui image">`;
-    } else {
-      h1 = editorialCommunity.name;
-    }
+
     return `
       <header class="ui basic padded vertical segment">
         <h1 class="ui header">
-          ${h1}
+          <img src="${editorialCommunity.avatarUrl}" alt="" class="ui avatar image">
+          ${editorialCommunity.name}
         </h1>
       </header>
     `;
