@@ -13,7 +13,6 @@ describe('in-memory-editorial-communities', () => {
     await repository.add({
       id: editorialCommunityId,
       name: 'My pals',
-      logo: 'https://example.com/images/1',
       avatarUrl: 'https://example.com/images/2',
       description: 'We do cool stuff',
     });

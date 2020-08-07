@@ -5,7 +5,6 @@ export default [
   {
     id: new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
     name: 'eLife',
-    logo: 'https://cdn.elifesciences.org/style-guide-images/elife-logo-lg_3x.png',
     avatarUrl: 'https://pbs.twimg.com/profile_images/1239550325188710402/7_lY-IyL_200x200.png',
     description: `<h2 class="ui header" id="summary">Summary</h2>
     <p>eLife is a non-profit organisation created by funders and led by researchers. Our mission
@@ -37,7 +36,6 @@ export default [
   {
     id: new EditorialCommunityId('10360d97-bf52-4aef-b2fa-2f60d319edd7'),
     name: 'PREreview Community',
-    logo: undefined,
     avatarUrl: 'https://pbs.twimg.com/profile_images/1163611678342184960/UskoaL9G_400x400.jpg',
     description: `<h2 class="ui header" id="summary">Summary</h2>
     <p>PREreview's mission is to bring more diversity to scholarly peer review by supporting and empowering 
@@ -66,7 +64,6 @@ export default [
   {
     id: new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002'),
     name: 'PeerJ',
-    logo: 'http://static.peerj.com/images/launch/press/peerj-logo-400px.png',
     avatarUrl: 'https://pbs.twimg.com/profile_images/1095287970939265026/xgyGFDJk_200x200.jpg',
     description: `<h2 class="ui header" id="summary">Summary</h2>
     <p><a href="https://peerj.org/">PeerJ</a> is an open access publisher of 7 peer-reviewed journals, and an editorial 
@@ -91,7 +88,6 @@ export default [
   {
     id: new EditorialCommunityId('10360d97-bf52-4aef-b2fa-2f60d319edd8'),
     name: 'A PREreview Journal Club',
-    logo: undefined,
     avatarUrl: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png',
     description: `<h2 class="ui header" id="summary">Summary</h2>
     <p>PREreview's mission is to bring more diversity to scholarly peer review by supporting and empowering 
@@ -121,7 +117,6 @@ export default [
   {
     id: new EditorialCommunityId('316db7d9-88cc-4c26-b386-f067e0f56334'),
     name: 'Review Commons',
-    logo: 'https://www.reviewcommons.org/wp-content/uploads/2020/01/Review_Commons_logo_blue-01-01.png',
     avatarUrl: 'https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg',
     description: `<h2 class="ui header" id="summary">Summary</h2>
     <p>Review Commons is a platform for high-quality journal-independent peer-review in the life sciences.</p>
@@ -165,7 +160,6 @@ export default [
   {
     id: new EditorialCommunityId('74fd66e9-3b90-4b5a-a4ab-5be83db4c5de'),
     name: 'Peer Community In Zoology',
-    logo: 'https://zool.peercommunityin.org/PCIZool/static/images/small-background.png',
     avatarUrl: 'https://pbs.twimg.com/profile_images/1278236903549145089/qqgLuJu__400x400.jpg',
     description: `<h2 class="ui header" id="summary">Summary</h2>
     <p>Peer Community in Zoology (PCI Zoology) has been launched in July 2020, replacing and broadening the scope of PCI Entomology. 
