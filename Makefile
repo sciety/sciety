@@ -26,7 +26,7 @@ prod: build
 		$(IMAGE):$(IMAGE_TAG)
 
 lint: export TARGET = dev
-lint: build
+lint: build unused\:exports
 	$(DOCKER) run --rm \
 		-v $(DATA_VOLUME)/.eslint:/app/.eslint \
 		-v $(DATA_VOLUME)/build:/app/build \
