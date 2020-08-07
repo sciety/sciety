@@ -5,6 +5,7 @@ import createRenderDescription, { GetEditorialCommunityDescription, RenderDescri
 import createRenderEndorsedArticles, { GetNumberOfEndorsedArticles, RenderEndorsedArticles } from './render-endorsed-articles';
 import createRenderFeed from './render-feed';
 import createRenderFeedItem, { GetActor, GetArticle } from './render-feed-item';
+import createRenderFollowToggle from './render-follow-toggle';
 import createRenderPage from './render-page';
 import createRenderPageHeader, { GetEditorialCommunity, RenderPageHeader } from './render-page-header';
 import createRenderReviews, { GetNumberOfReviews, RenderReviews } from './render-reviews';
@@ -104,7 +105,8 @@ export default (ports: Ports): RenderPage => {
   );
   const getEventsAdapter = createGetMostRecentEvents(filterEvents, 20);
   const renderFeedItem = createRenderFeedItem(getActorAdapter, getArticleAdapter);
-  const renderFeed = createRenderFeed(getEventsAdapter, renderFeedItem);
+  const renderFollowToggle = createRenderFollowToggle();
+  const renderFeed = createRenderFeed(getEventsAdapter, renderFeedItem, renderFollowToggle);
 
   const renderPage = createRenderPage(
     renderPageHeader,
