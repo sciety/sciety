@@ -6,7 +6,7 @@ import createFetchDataset from './fetch-dataset';
 import createFetchHypothesisAnnotation from './fetch-hypothesis-annotation';
 import createFetchReview from './fetch-review';
 import createFetchStaticFile from './fetch-static-file';
-import filterEvents from './filter-events';
+import createFilterEvents from './filter-events';
 import createGetBiorxivCommentCount from './get-biorxiv-comment-count';
 import createGetDisqusPostCount from './get-disqus-post-count';
 import createGetFollowList, { GetFollowList } from './get-follow-list';
@@ -20,6 +20,7 @@ import {
 import createSearchEuropePmc from './search-europe-pmc';
 import bootstrapEditorialCommunities from '../data/bootstrap-editorial-communities';
 import bootstrapEndorsements from '../data/bootstrap-endorsements';
+import events from '../data/bootstrap-events';
 import bootstrapReviews from '../data/bootstrap-reviews';
 import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
@@ -115,7 +116,7 @@ const createInfrastructure = (): Adapters => {
     endorsements: populateEndorsementsRepository(logger),
     reviewReferenceRepository: populateReviewReferenceRepository(editorialCommunities, logger),
     getFollowList,
-    filterEvents,
+    filterEvents: createFilterEvents(events),
     logger,
   };
 };
