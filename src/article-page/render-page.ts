@@ -1,7 +1,4 @@
-import { Maybe, Result } from 'true-myth';
-import { RenderArticleAbstract } from './render-article-abstract';
-import { RenderPageHeader } from './render-page-header';
-import { RenderReviews } from './render-reviews';
+import { Result } from 'true-myth';
 import Doi from '../types/doi';
 
 export type RenderPageError = {
@@ -9,14 +6,15 @@ export type RenderPageError = {
   content: string,
 };
 
+type Component = (doi: Doi) => Promise<Result<string, 'not-found' | 'unavailable' | 'no-content'>>;
 type RenderPage = (doi: Doi) => Promise<Result<string, RenderPageError>>;
 
 export default (
-  renderPageHeader: RenderPageHeader,
-  renderReviews: RenderReviews,
-  renderAbstract: RenderArticleAbstract,
+  renderPageHeader: Component,
+  renderReviews: Component,
+  renderAbstract: Component,
 ): RenderPage => {
-  const template = Result.ok((abstract: string) => (pageHeader: string) => (reviews: Maybe<string>) => `
+  const template = Result.ok((abstract: string) => (pageHeader: string) => (reviews: string) => `
 <article class="ui aligned stackable grid">
   <div class="row">
     <div class="column">
@@ -27,7 +25,7 @@ export default (
   <div class="row">
     <section class="column">
       ${abstract}
-      ${reviews.unwrapOr('')}
+      ${reviews}
     </section>
   </div>
 </article>
@@ -36,12 +34,15 @@ export default (
   return async (doi) => {
     const abstractResult = renderAbstract(doi);
     const pageHeaderResult = renderPageHeader(doi);
-    const reviews = renderReviews(doi);
+    const reviews = renderReviews(doi)
+      .then((reviewsResult) => (
+        reviewsResult.orElse(() => Result.ok(''))
+      ));
 
     return template
       .ap(await abstractResult)
       .ap(await pageHeaderResult)
-      .ap(Result.ok(await reviews))
+      .ap(await reviews)
       .mapErr(() => ({
         type: 'not-found',
         content: `${doi.value} not found`,

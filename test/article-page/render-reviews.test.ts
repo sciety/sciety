@@ -37,7 +37,7 @@ describe('render-reviews component', () => {
       const renderReviews = createRenderReviews(shouldNotBeCalled, async () => [], 'arbitraryId');
       const rendered = await renderReviews(doi);
 
-      expect(rendered.isNothing()).toBe(true);
+      expect(rendered.isErr()).toBe(true);
     });
   });
 });

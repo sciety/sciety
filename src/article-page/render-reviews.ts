@@ -1,11 +1,11 @@
-import { Maybe } from 'true-myth';
+import { Result } from 'true-myth';
 import { RenderReview } from './render-review';
 import templateListItems from '../templates/list-items';
 import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { ReviewId } from '../types/review-id';
 
-export type RenderReviews = (doi: Doi) => Promise<Maybe<string>>;
+export type RenderReviews = (doi: Doi) => Promise<Result<string, 'no-content'>>;
 
 export type GetReviews = (doi: Doi) => Promise<Array<{
   editorialCommunityId: EditorialCommunityId,
@@ -22,9 +22,9 @@ export default (
       renderReview(review.reviewId, review.editorialCommunityId, `review-${index}`)
     )));
     if (renderedReviews.length === 0) {
-      return Maybe.nothing();
+      return Result.err('no-content');
     }
-    return Maybe.just(`
+    return Result.ok(`
       <section id="${id}">
         <h2 class="ui header">
           Reviews
