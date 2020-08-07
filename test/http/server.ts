@@ -75,6 +75,7 @@ export default async (): Promise<TestServer> => {
     endorsements: createEndorsementsRepository(dummyLogger),
     reviewReferenceRepository,
     getFollowList: async () => new FollowList([]),
+    filterEvents: async () => [],
     logger: dummyLogger,
   };
 

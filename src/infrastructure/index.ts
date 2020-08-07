@@ -6,6 +6,7 @@ import createFetchDataset from './fetch-dataset';
 import createFetchHypothesisAnnotation from './fetch-hypothesis-annotation';
 import createFetchReview from './fetch-review';
 import createFetchStaticFile from './fetch-static-file';
+import filterEvents from './filter-events';
 import createGetBiorxivCommentCount from './get-biorxiv-comment-count';
 import createGetDisqusPostCount from './get-disqus-post-count';
 import createGetFollowList, { GetFollowList } from './get-follow-list';
@@ -114,6 +115,7 @@ const createInfrastructure = (): Adapters => {
     endorsements: populateEndorsementsRepository(logger),
     reviewReferenceRepository: populateReviewReferenceRepository(editorialCommunities, logger),
     getFollowList,
+    filterEvents,
     logger,
   };
 };

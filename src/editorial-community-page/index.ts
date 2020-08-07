@@ -9,7 +9,6 @@ import createRenderFollowToggle, { IsFollowed } from './render-follow-toggle';
 import createRenderPage from './render-page';
 import createRenderPageHeader, { GetEditorialCommunity, RenderPageHeader } from './render-page-header';
 import createRenderReviews, { GetNumberOfReviews, RenderReviews } from './render-reviews';
-import events from '../data/bootstrap-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import EndorsementsRepository from '../types/endorsements-repository';
@@ -25,6 +24,7 @@ interface Ports {
   endorsements: EndorsementsRepository,
   reviewReferenceRepository: ReviewReferenceRepository;
   getFollowList: GetFollowList;
+  filterEvents: FilterEvents;
 }
 
 const buildRenderPageHeader = (editorialCommunities: EditorialCommunityRepository): RenderPageHeader => {
@@ -68,13 +68,6 @@ const buildRenderReviews = (
 };
 
 const buildRenderFeed = (ports: Ports): RenderFeed => {
-  const filterEvents: FilterEvents = async (filterFunction, maxCount) => (
-    events
-      .slice()
-      .sort((a, b) => b.date.getTime() - a.date.getTime())
-      .filter(filterFunction)
-      .slice(0, maxCount)
-  );
   const getActorAdapter: GetActor = async (id) => {
     const editorialCommunity = (await ports.editorialCommunities.lookup(id)).unsafelyUnwrap();
     return {
@@ -86,7 +79,7 @@ const buildRenderFeed = (ports: Ports): RenderFeed => {
   const getArticleAdapter: GetArticle = async (id) => (
     (await ports.fetchArticle(id)).unsafelyUnwrap()
   );
-  const getEventsAdapter = createGetMostRecentEvents(filterEvents, 20);
+  const getEventsAdapter = createGetMostRecentEvents(ports.filterEvents, 20);
   const renderFeedItem = createRenderFeedItem(getActorAdapter, getArticleAdapter);
   const isFollowedAdapter: IsFollowed = async (editorialCommunityId) => (
     (await ports.getFollowList()).follows(editorialCommunityId)
