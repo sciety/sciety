@@ -1,18 +1,15 @@
-import { RenderDescription } from './render-description';
-import { RenderEndorsedArticles } from './render-endorsed-articles';
-import { RenderFeed } from './render-feed';
-import { RenderPageHeader } from './render-page-header';
-import { RenderReviews } from './render-reviews';
 import EditorialCommunityId from '../types/editorial-community-id';
+
+type Component = (editorialCommunityId: EditorialCommunityId) => Promise<string>;
 
 type RenderPage = (editorialCommunityId: EditorialCommunityId) => Promise<string>;
 
 export default (
-  renderPageHeader: RenderPageHeader,
-  renderDescription: RenderDescription,
-  renderEndorsedArticles: RenderEndorsedArticles,
-  renderReviewedArticles: RenderReviews,
-  renderFeed: RenderFeed,
+  renderPageHeader: Component,
+  renderDescription: Component,
+  renderEndorsedArticles: Component,
+  renderReviewedArticles: Component,
+  renderFeed: Component,
 ): RenderPage => (
   async (editorialCommunityId) => (
     `
