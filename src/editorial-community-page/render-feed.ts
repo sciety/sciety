@@ -1,5 +1,5 @@
 import { RenderFeedItem } from './render-feed-item';
-import { RenderFollowToggle } from '../home-page/render-follow-toggle';
+import { RenderFollowToggle } from './render-follow-toggle';
 import templateListItems from '../templates/list-items';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { Event } from '../types/events';
