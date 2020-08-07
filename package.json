@@ -78,6 +78,7 @@
     "lint:fix": "concurrently --names \"TypeScript,ESLint\" \"tsc --project tsconfig.dev.json\" \"eslint . --fix --ext .js,.ts --cache --cache-location .eslint/ --color\"",
     "start": "node ./build/index.js",
     "start:dev": "ts-node-dev --project tsconfig.dev.json --transpile-only --no-notify ./src/index.ts",
-    "test": "jest --colors"
+    "test": "jest --colors",
+    "unused:exports": "ts-unused-exports ./tsconfig.dev.json"
   }
 }
