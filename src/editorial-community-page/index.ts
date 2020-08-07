@@ -15,13 +15,17 @@ import EditorialCommunityRepository from '../types/editorial-community-repositor
 import EndorsementsRepository from '../types/endorsements-repository';
 import { Event } from '../types/events';
 import { FetchExternalArticle } from '../types/fetch-external-article';
+import FollowList from '../types/follow-list';
 import ReviewReferenceRepository from '../types/review-reference-repository';
+
+type GetFollowList = () => Promise<FollowList>;
 
 interface Ports {
   fetchArticle: FetchExternalArticle;
   editorialCommunities: EditorialCommunityRepository;
   endorsements: EndorsementsRepository,
   reviewReferenceRepository: ReviewReferenceRepository;
+  getFollowList: GetFollowList;
 }
 
 const buildRenderPageHeader = (editorialCommunities: EditorialCommunityRepository): RenderPageHeader => {
@@ -105,7 +109,9 @@ export default (ports: Ports): RenderPage => {
   );
   const getEventsAdapter = createGetMostRecentEvents(filterEvents, 20);
   const renderFeedItem = createRenderFeedItem(getActorAdapter, getArticleAdapter);
-  const isFollowedAdapter: IsFollowed = async () => true;
+  const isFollowedAdapter: IsFollowed = async (editorialCommunityId) => (
+    (await ports.getFollowList()).follows(editorialCommunityId)
+  );
   const renderFollowToggle = createRenderFollowToggle(isFollowedAdapter);
   const renderFeed = createRenderFeed(getEventsAdapter, renderFeedItem, renderFollowToggle);
 
