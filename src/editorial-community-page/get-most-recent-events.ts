@@ -1,8 +1,8 @@
 import { GetEvents } from './render-feed';
-import { Event } from '../types/events';
+import { DomainEvent } from '../types/domain-events';
 
-type FilterFunction = (event: Event) => boolean;
-export type FilterEvents = (filterFunction: FilterFunction, maxCount: number) => Promise<Array<Event>>;
+type FilterFunction = (event: DomainEvent) => boolean;
+export type FilterEvents = (filterFunction: FilterFunction, maxCount: number) => Promise<Array<DomainEvent>>;
 
 export default (filterEvents: FilterEvents, maxCount: number): GetEvents => (
   async (editorialCommunityId) => (

@@ -1,9 +1,9 @@
 import Doi from '../types/doi';
+import { DomainEvent } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
-import { Event } from '../types/events';
 import { NonEmptyArray } from '../types/non-empty-array';
 
-const events: NonEmptyArray<Event> = [
+const events: NonEmptyArray<DomainEvent> = [
   {
     type: 'ArticleReviewed',
     date: new Date('2020-07-09'),

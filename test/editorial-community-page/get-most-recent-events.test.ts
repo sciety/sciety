@@ -1,14 +1,14 @@
 import createGetMostRecentEvents from '../../src/editorial-community-page/get-most-recent-events';
 import createFilterEvents from '../../src/infrastructure/filter-events';
 import Doi from '../../src/types/doi';
+import { DomainEvent } from '../../src/types/domain-events';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
-import { Event } from '../../src/types/events';
 import { NonEmptyArray } from '../../src/types/non-empty-array';
 
 describe('get-most-recent-events', () => {
   const editorialCommunity1 = new EditorialCommunityId('1');
   const editorialCommunity2 = new EditorialCommunityId('2');
-  const endorsedBy = (editorialCommunityId: EditorialCommunityId): Event => ({
+  const endorsedBy = (editorialCommunityId: EditorialCommunityId): DomainEvent => ({
     type: 'ArticleEndorsed',
     date: new Date('2020-07-08'),
     actorId: editorialCommunityId,
@@ -18,7 +18,7 @@ describe('get-most-recent-events', () => {
   it.todo('always returns EditorialCommunityJoined events');
 
   it('only returns events for the given editorial community', async () => {
-    const allEvents: NonEmptyArray<Event> = [
+    const allEvents: NonEmptyArray<DomainEvent> = [
       endorsedBy(editorialCommunity2),
       endorsedBy(editorialCommunity1),
       endorsedBy(editorialCommunity2),

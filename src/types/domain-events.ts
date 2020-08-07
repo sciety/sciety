@@ -8,7 +8,7 @@ export type ArticleEndorsedEvent = {
   articleId: Doi;
 };
 
-export const isArticleEndorsedEvent = (event: Event): event is ArticleEndorsedEvent => (
+export const isArticleEndorsedEvent = (event: DomainEvent): event is ArticleEndorsedEvent => (
   event.type === 'ArticleEndorsed'
 );
 
@@ -19,7 +19,7 @@ export type ArticleReviewedEvent = {
   articleId: Doi;
 };
 
-export const isArticleReviewedEvent = (event: Event): event is ArticleReviewedEvent => (
+export const isArticleReviewedEvent = (event: DomainEvent): event is ArticleReviewedEvent => (
   event.type === 'ArticleReviewed'
 );
 
@@ -29,8 +29,8 @@ export type EditorialCommunityJoinedEvent = {
   actorId: EditorialCommunityId;
 };
 
-export const isEditorialCommunityJoinedEvent = (event: Event): event is EditorialCommunityJoinedEvent => (
+export const isEditorialCommunityJoinedEvent = (event: DomainEvent): event is EditorialCommunityJoinedEvent => (
   event.type === 'EditorialCommunityJoined'
 );
 
-export type Event = ArticleEndorsedEvent | ArticleReviewedEvent | EditorialCommunityJoinedEvent;
+export type DomainEvent = ArticleEndorsedEvent | ArticleReviewedEvent | EditorialCommunityJoinedEvent;

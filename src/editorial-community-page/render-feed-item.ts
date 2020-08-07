@@ -1,9 +1,9 @@
 import templateDate from '../templates/date';
 import Doi from '../types/doi';
+import { DomainEvent, isArticleEndorsedEvent, isArticleReviewedEvent } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
-import { Event, isArticleEndorsedEvent, isArticleReviewedEvent } from '../types/events';
 
-export type RenderFeedItem = (event: Event) => Promise<string>;
+export type RenderFeedItem = (event: DomainEvent) => Promise<string>;
 
 type Actor = {
   url: string;
@@ -15,7 +15,7 @@ type Article = {
   title: string;
 };
 
-type RenderFeedItemSummary = (event: Event, actor: Actor) => Promise<string>;
+type RenderFeedItemSummary = (event: DomainEvent, actor: Actor) => Promise<string>;
 
 const createRenderFeedItemSummary = (getArticle: GetArticle): RenderFeedItemSummary => (
   async (event, actor) => {

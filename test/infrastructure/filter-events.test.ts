@@ -1,12 +1,12 @@
 import createFilterEvents from '../../src/infrastructure/filter-events';
 import Doi from '../../src/types/doi';
+import { DomainEvent } from '../../src/types/domain-events';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
-import { Event } from '../../src/types/events';
 import { NonEmptyArray } from '../../src/types/non-empty-array';
 
 describe('filter-events', () => {
   const editorialCommunity1 = new EditorialCommunityId('a');
-  const dummyEvent: Event = {
+  const dummyEvent: DomainEvent = {
     type: 'ArticleEndorsed',
     date: new Date('2020-07-08'),
     actorId: editorialCommunity1,
@@ -14,7 +14,7 @@ describe('filter-events', () => {
   };
 
   it('sorts by date descending', async () => {
-    const initial: NonEmptyArray<Event> = [
+    const initial: NonEmptyArray<DomainEvent> = [
       {
         type: 'ArticleEndorsed',
         date: new Date('2020-07-08'),
@@ -36,7 +36,7 @@ describe('filter-events', () => {
   });
 
   it('only returns matching events', async () => {
-    const initial: NonEmptyArray<Event> = [
+    const initial: NonEmptyArray<DomainEvent> = [
       {
         type: 'ArticleEndorsed',
         date: new Date('2020-07-08'),
@@ -59,7 +59,7 @@ describe('filter-events', () => {
 
   describe('when there are a small number of matching events', () => {
     it('returns exactly those', async () => {
-      const dummyEvents: NonEmptyArray<Event> = [dummyEvent, dummyEvent, dummyEvent];
+      const dummyEvents: NonEmptyArray<DomainEvent> = [dummyEvent, dummyEvent, dummyEvent];
       const filterEvents = createFilterEvents(dummyEvents);
       const events = await filterEvents(() => true, 20);
 
@@ -69,7 +69,7 @@ describe('filter-events', () => {
 
   describe('when there are more matching events than the specified maximum', () => {
     it('returns just the specified maximum number', async () => {
-      const dummyEvents: NonEmptyArray<Event> = [dummyEvent, dummyEvent, dummyEvent];
+      const dummyEvents: NonEmptyArray<DomainEvent> = [dummyEvent, dummyEvent, dummyEvent];
       const filterEvents = createFilterEvents(dummyEvents);
       const events = await filterEvents(() => true, 2);
 

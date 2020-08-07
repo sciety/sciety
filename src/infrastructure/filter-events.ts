@@ -1,11 +1,11 @@
-import { Event } from '../types/events';
+import { DomainEvent } from '../types/domain-events';
 import { NonEmptyArray } from '../types/non-empty-array';
 
-type FilterFunction = (event: Event) => boolean;
-export type FilterEvents = (filterFunction: FilterFunction, maxCount: number) => Promise<Array<Event>>;
+type FilterFunction = (event: DomainEvent) => boolean;
+export type FilterEvents = (filterFunction: FilterFunction, maxCount: number) => Promise<Array<DomainEvent>>;
 
 export default (
-  events: NonEmptyArray<Event>,
+  events: NonEmptyArray<DomainEvent>,
 ): FilterEvents => async (filterFunction, maxCount) => (
   events
     .slice()

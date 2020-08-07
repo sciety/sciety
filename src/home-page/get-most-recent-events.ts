@@ -1,12 +1,12 @@
 import { GetEvents } from './render-feed';
-import { Event, isEditorialCommunityJoinedEvent } from '../types/events';
+import { DomainEvent, isEditorialCommunityJoinedEvent } from '../types/domain-events';
 import FollowList from '../types/follow-list';
 import { NonEmptyArray } from '../types/non-empty-array';
 
 export type GetFollowList = () => Promise<FollowList>;
 
-type FilterFunction = (event: Event) => boolean;
-export type FilterEvents = (filterFunction: FilterFunction, maxCount: number) => Promise<Array<Event>>;
+type FilterFunction = (event: DomainEvent) => boolean;
+export type FilterEvents = (filterFunction: FilterFunction, maxCount: number) => Promise<Array<DomainEvent>>;
 
 export default (
   getFollowList: GetFollowList,
@@ -18,6 +18,6 @@ export default (
     const followedEvents: FilterFunction = (event) => (
       isEditorialCommunityJoinedEvent(event) || followList.follows(event.actorId)
     );
-    return filterEvents(followedEvents, maxCount) as unknown as NonEmptyArray<Event>;
+    return filterEvents(followedEvents, maxCount) as unknown as NonEmptyArray<DomainEvent>;
   }
 );

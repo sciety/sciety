@@ -1,7 +1,7 @@
 import createRenderFeedItem, { GetActor, GetArticle } from '../../src/home-page/render-feed-item';
 import Doi from '../../src/types/doi';
+import { ArticleEndorsedEvent, ArticleReviewedEvent, EditorialCommunityJoinedEvent } from '../../src/types/domain-events';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
-import { ArticleEndorsedEvent, ArticleReviewedEvent, EditorialCommunityJoinedEvent } from '../../src/types/events';
 import shouldNotBeCalled from '../should-not-be-called';
 
 describe('render-feed-item', (): void => {

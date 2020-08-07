@@ -1,15 +1,15 @@
 import createGetMostRecentEvents, { GetFollowList } from '../../src/home-page/get-most-recent-events';
 import createFilterEvents from '../../src/infrastructure/filter-events';
 import Doi from '../../src/types/doi';
+import { DomainEvent } from '../../src/types/domain-events';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
-import { Event } from '../../src/types/events';
 import FollowList from '../../src/types/follow-list';
 import { NonEmptyArray } from '../../src/types/non-empty-array';
 
 describe('get-most-recent-events', () => {
   const editorialCommunity1 = new EditorialCommunityId('a');
   const getFollowList: GetFollowList = async () => new FollowList([editorialCommunity1]);
-  const dummyEvent: Event = {
+  const dummyEvent: DomainEvent = {
     type: 'ArticleEndorsed',
     date: new Date('2020-07-08'),
     actorId: editorialCommunity1,
@@ -17,7 +17,7 @@ describe('get-most-recent-events', () => {
   };
 
   it('sorts by date descending', async () => {
-    const initial: NonEmptyArray<Event> = [
+    const initial: NonEmptyArray<DomainEvent> = [
       {
         type: 'ArticleEndorsed',
         date: new Date('2020-07-08'),
@@ -45,7 +45,7 @@ describe('get-most-recent-events', () => {
 
   describe('when there\'s a small number of items', () => {
     it('returns exactly those', async () => {
-      const dummyEvents: NonEmptyArray<Event> = [dummyEvent, dummyEvent, dummyEvent];
+      const dummyEvents: NonEmptyArray<DomainEvent> = [dummyEvent, dummyEvent, dummyEvent];
       const filterEvents = createFilterEvents(dummyEvents);
       const getEvents = createGetMostRecentEvents(getFollowList, filterEvents, 20);
       const events = await getEvents();
@@ -56,7 +56,7 @@ describe('get-most-recent-events', () => {
 
   describe('when there are more items than the specified maximum', () => {
     it('returns just the specified maximum number of items', async () => {
-      const dummyEvents: NonEmptyArray<Event> = [dummyEvent, dummyEvent, dummyEvent];
+      const dummyEvents: NonEmptyArray<DomainEvent> = [dummyEvent, dummyEvent, dummyEvent];
       const maxCount = 2;
       const filterEvents = createFilterEvents(dummyEvents);
       const getEvents = createGetMostRecentEvents(getFollowList, filterEvents, maxCount);
