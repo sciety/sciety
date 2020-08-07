@@ -1,4 +1,5 @@
 import createGetMostRecentEvents, { GetFollowList } from '../../src/home-page/get-most-recent-events';
+import createFilterEvents from '../../src/infrastructure/filter-events';
 import Doi from '../../src/types/doi';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
 import { Event } from '../../src/types/events';
@@ -30,7 +31,8 @@ describe('get-most-recent-events', () => {
         articleId: new Doi('10.1101/2020.01.22.915660'),
       },
     ];
-    const getEvents = createGetMostRecentEvents(getFollowList, initial, 20);
+    const filterEvents = createFilterEvents(initial);
+    const getEvents = createGetMostRecentEvents(getFollowList, filterEvents, 20);
     const sortedEvents = await getEvents();
 
     expect(sortedEvents[0]).toStrictEqual(initial[1]);
@@ -44,7 +46,8 @@ describe('get-most-recent-events', () => {
   describe('when there\'s a small number of items', () => {
     it('returns exactly those', async () => {
       const dummyEvents: NonEmptyArray<Event> = [dummyEvent, dummyEvent, dummyEvent];
-      const getEvents = createGetMostRecentEvents(getFollowList, dummyEvents, 20);
+      const filterEvents = createFilterEvents(dummyEvents);
+      const getEvents = createGetMostRecentEvents(getFollowList, filterEvents, 20);
       const events = await getEvents();
 
       expect(events).toHaveLength(dummyEvents.length);
@@ -55,7 +58,8 @@ describe('get-most-recent-events', () => {
     it('returns just the specified maximum number of items', async () => {
       const dummyEvents: NonEmptyArray<Event> = [dummyEvent, dummyEvent, dummyEvent];
       const maxCount = 2;
-      const getEvents = createGetMostRecentEvents(getFollowList, dummyEvents, maxCount);
+      const filterEvents = createFilterEvents(dummyEvents);
+      const getEvents = createGetMostRecentEvents(getFollowList, filterEvents, maxCount);
       const events = await getEvents();
 
       expect(events).toHaveLength(maxCount);

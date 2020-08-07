@@ -1,4 +1,4 @@
-import createGetMostRecentEvents, { GetFollowList } from './get-most-recent-events';
+import createGetMostRecentEvents, { FilterEvents, GetFollowList } from './get-most-recent-events';
 import createRenderEditorialCommunities, { GetAllEditorialCommunities } from './render-editorial-communities';
 import createRenderFeed from './render-feed';
 import createRenderFeedItem, { GetActor, GetArticle } from './render-feed-item';
@@ -6,7 +6,6 @@ import createRenderFindArticle from './render-find-article';
 import createRenderFollowToggle, { IsFollowed } from './render-follow-toggle';
 import createRenderPage, { RenderPage } from './render-page';
 import createRenderPageHeader from './render-page-header';
-import events from '../data/bootstrap-events';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import { FetchExternalArticle } from '../types/fetch-external-article';
 import ReviewReferenceRepository from '../types/review-reference-repository';
@@ -15,6 +14,7 @@ interface Ports {
   fetchArticle: FetchExternalArticle;
   editorialCommunities: EditorialCommunityRepository;
   getFollowList: GetFollowList;
+  filterEvents: FilterEvents,
   reviewReferenceRepository: ReviewReferenceRepository;
 }
 
@@ -34,7 +34,7 @@ export default (ports: Ports): RenderPage => {
   const isFollowedAdapter: IsFollowed = async (editorialCommunityId) => (
     (await ports.getFollowList()).follows(editorialCommunityId)
   );
-  const getEventsAdapter = createGetMostRecentEvents(ports.getFollowList, events, 20);
+  const getEventsAdapter = createGetMostRecentEvents(ports.getFollowList, ports.filterEvents, 20);
 
   const renderPageHeader = createRenderPageHeader();
   const renderFollowToggle = createRenderFollowToggle(isFollowedAdapter);

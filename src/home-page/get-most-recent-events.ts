@@ -5,16 +5,19 @@ import { NonEmptyArray } from '../types/non-empty-array';
 
 export type GetFollowList = () => Promise<FollowList>;
 
-export default (getFollowList: GetFollowList, events: NonEmptyArray<Event>, maxCount: number): GetEvents => (
+type FilterFunction = (event: Event) => boolean;
+export type FilterEvents = (filterFunction: FilterFunction, maxCount: number) => Promise<Array<Event>>;
+
+export default (
+  getFollowList: GetFollowList,
+  filterEvents: FilterEvents,
+  maxCount: number,
+): GetEvents => (
   async () => {
     const followList = await getFollowList();
-    return events
-      .slice()
-      .sort((a, b) => b.date.getTime() - a.date.getTime())
-      .filter((event) => (
-        isEditorialCommunityJoinedEvent(event)
-        || followList.follows(event.actorId)
-      ))
-      .slice(0, maxCount) as unknown as NonEmptyArray<Event>;
+    const followedEvents: FilterFunction = (event) => (
+      isEditorialCommunityJoinedEvent(event) || followList.follows(event.actorId)
+    );
+    return filterEvents(followedEvents, maxCount) as unknown as NonEmptyArray<Event>;
   }
 );
