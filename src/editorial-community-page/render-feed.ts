@@ -7,6 +7,15 @@ export type RenderFeed = (editorialCommunityId: EditorialCommunityId) => Promise
 
 export type GetEvents = (editorialCommunityId: EditorialCommunityId) => Promise<Array<Event>>;
 
+type RenderFollowToggle = (editorialCommunityId: EditorialCommunityId) => Promise<string>;
+
+const renderFollowToggle: RenderFollowToggle = async (editorialCommunityId) => `
+  <form method="post" action="/unfollow">
+    <input type="hidden" name="editorialcommunityid" value="${editorialCommunityId.value}">
+    <button type="submit" class="ui mini button">Unfollow</button>
+  </form>
+`;
+
 export default (
   getEvents: GetEvents,
   renderFeedItem: RenderFeedItem,
@@ -19,10 +28,7 @@ export default (
         <h2 class="ui header">
           Feed
         </h2>
-        <form method="post" action="/unfollow">
-          <input type="hidden" name="editorialcommunityid" value="${editorialCommunityId.value}">
-          <button type="submit" class="ui mini button">Unfollow</button>
-        </form>
+        ${await renderFollowToggle(editorialCommunityId)}
         <ol class="ui large feed">
           ${templateListItems(feedItems, 'event')}
         </ol>
