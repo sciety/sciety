@@ -1,0 +1,33 @@
+import createGetMostRecentEvents from '../../src/editorial-community-page/get-most-recent-events';
+import createFilterEvents from '../../src/infrastructure/filter-events';
+import Doi from '../../src/types/doi';
+import EditorialCommunityId from '../../src/types/editorial-community-id';
+import { Event } from '../../src/types/events';
+import { NonEmptyArray } from '../../src/types/non-empty-array';
+
+describe('get-most-recent-events', () => {
+  const editorialCommunity1 = new EditorialCommunityId('1');
+  const editorialCommunity2 = new EditorialCommunityId('2');
+  const endorsedBy = (editorialCommunityId: EditorialCommunityId): Event => ({
+    type: 'ArticleEndorsed',
+    date: new Date('2020-07-08'),
+    actorId: editorialCommunityId,
+    articleId: new Doi('10.1101/751099'),
+  });
+
+  it.todo('always returns EditorialCommunityJoined events');
+
+  it('only returns events for the given editorial community', async () => {
+    const allEvents: NonEmptyArray<Event> = [
+      endorsedBy(editorialCommunity2),
+      endorsedBy(editorialCommunity1),
+      endorsedBy(editorialCommunity2),
+    ];
+    const filterEvents = createFilterEvents(allEvents);
+    const getMostRecentEvents = createGetMostRecentEvents(filterEvents, 20);
+    const feed = await getMostRecentEvents(editorialCommunity1);
+
+    expect(feed).toHaveLength(1);
+    expect(feed[0]).toStrictEqual(allEvents[1]);
+  });
+});
