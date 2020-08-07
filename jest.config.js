@@ -7,7 +7,7 @@ module.exports = {
       tsConfig: 'tsconfig.dev.json',
     },
   },
-  rootDir: 'test',
+  roots: ["./src/", "./test/"],
   testEnvironment: 'node',
   testRunner: 'jest-circus/runner',
   transform: {

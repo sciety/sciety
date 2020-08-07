@@ -52,6 +52,15 @@ test: build
 		$(IMAGE):$(IMAGE_TAG)-dev \
 		npm run test
 
+test\:coverage: export TARGET = dev
+test\:coverage: build
+	$(DOCKER) run \
+		-v $(DATA_VOLUME)/.jest:/app/.jest \
+		-v $(DATA_VOLUME)/src:/app/src \
+		-v $(DATA_VOLUME)/test:/app/test \
+		$(IMAGE):$(IMAGE_TAG)-dev \
+		npm run test:coverage
+
 build:
 	@if [ "$(TARGET)" != prod ]; then \
 		image_tag_suffix=-dev; \
