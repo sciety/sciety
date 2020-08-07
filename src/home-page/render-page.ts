@@ -1,32 +1,13 @@
-import createRenderEditorialCommunities, { GetAllEditorialCommunities } from './render-editorial-communities';
-import createRenderFeed, { GetEvents } from './render-feed';
-import createRenderFeedItem, { GetActor, GetArticle } from './render-feed-item';
-import createRenderFindArticle from './render-find-article';
-import createRenderFollowToggle, { IsFollowed } from './render-follow-toggle';
-import createRenderPageHeader from './render-page-header';
-
 export type RenderPage = () => Promise<string>;
 
-export { GetEvents } from './render-feed';
-export { GetActor, GetArticle } from './render-feed-item';
-export { GetAllEditorialCommunities } from './render-editorial-communities';
-export { IsFollowed } from './render-follow-toggle';
+type Component = () => Promise<string>;
 
 export default (
-  editorialCommunities: GetAllEditorialCommunities,
-  getActor: GetActor,
-  getArticle: GetArticle,
-  getEvents: GetEvents,
-  isFollowed: IsFollowed,
-): RenderPage => {
-  const renderPageHeader = createRenderPageHeader();
-  const renderFollowToggle = createRenderFollowToggle(isFollowed);
-  const renderEditorialCommunities = createRenderEditorialCommunities(editorialCommunities, renderFollowToggle);
-  const renderFindArticle = createRenderFindArticle();
-  const renderFeedItem = createRenderFeedItem(getActor, getArticle);
-  const renderFeed = createRenderFeed(getEvents, renderFeedItem);
-
-  return async () => `
+  renderPageHeader: Component,
+  renderEditorialCommunities: Component,
+  renderFindArticle: Component,
+  renderFeed: Component,
+): RenderPage => async () => `
       <div class="ui aligned stackable grid">
         <div class="row">
           <div class="column">
@@ -44,4 +25,3 @@ export default (
         </div>
       </div>
     `;
-};
