@@ -4,7 +4,7 @@ import templateListItems from '../templates/list-items';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { Event } from '../types/events';
 
-type RenderFeed = (editorialCommunityId: EditorialCommunityId) => Promise<string>;
+export type RenderFeed = (editorialCommunityId: EditorialCommunityId) => Promise<string>;
 
 export type GetEvents = (editorialCommunityId: EditorialCommunityId) => Promise<Array<Event>>;
 

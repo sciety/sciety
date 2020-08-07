@@ -1,9 +1,9 @@
 import { NotFound } from 'http-errors';
 import { Result } from 'true-myth';
-import createGetMostRecentEvents from './get-most-recent-events';
+import createGetMostRecentEvents, { FilterEvents } from './get-most-recent-events';
 import createRenderDescription, { GetEditorialCommunityDescription, RenderDescription } from './render-description';
 import createRenderEndorsedArticles, { GetNumberOfEndorsedArticles, RenderEndorsedArticles } from './render-endorsed-articles';
-import createRenderFeed from './render-feed';
+import createRenderFeed, { RenderFeed } from './render-feed';
 import createRenderFeedItem, { GetActor, GetArticle } from './render-feed-item';
 import createRenderFollowToggle, { IsFollowed } from './render-follow-toggle';
 import createRenderPage from './render-page';
@@ -13,7 +13,6 @@ import events from '../data/bootstrap-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import EndorsementsRepository from '../types/endorsements-repository';
-import { Event } from '../types/events';
 import { FetchExternalArticle } from '../types/fetch-external-article';
 import FollowList from '../types/follow-list';
 import ReviewReferenceRepository from '../types/review-reference-repository';
@@ -68,34 +67,14 @@ const buildRenderReviews = (
   return createRenderReviews(getNumberOfReviews);
 };
 
-type FilterFunction = (event: Event) => boolean;
-type FilterEvents = (filterFunction: FilterFunction, maxCount: number) => Promise<Array<Event>>;
-
-const filterEvents: FilterEvents = async (filterFunction, maxCount) => (
-  events
-    .slice()
-    .sort((a, b) => b.date.getTime() - a.date.getTime())
-    .filter(filterFunction)
-    .slice(0, maxCount)
-);
-
-interface Params {
-  id?: string;
-}
-
-type RenderPageError = {
-  type: 'not-found',
-  content: string,
-};
-
-type RenderPage = (params: Params) => Promise<Result<string, RenderPageError>>;
-
-export default (ports: Ports): RenderPage => {
-  const renderPageHeader = buildRenderPageHeader(ports.editorialCommunities);
-  const renderDescription = buildRenderDescription(ports.editorialCommunities);
-  const renderEndorsedArticles = buildRenderEndorsedArticles(ports.endorsements);
-  const renderReviews = buildRenderReviews(ports.reviewReferenceRepository);
-
+const buildRenderFeed = (ports: Ports): RenderFeed => {
+  const filterEvents: FilterEvents = async (filterFunction, maxCount) => (
+    events
+      .slice()
+      .sort((a, b) => b.date.getTime() - a.date.getTime())
+      .filter(filterFunction)
+      .slice(0, maxCount)
+  );
   const getActorAdapter: GetActor = async (id) => {
     const editorialCommunity = (await ports.editorialCommunities.lookup(id)).unsafelyUnwrap();
     return {
@@ -113,7 +92,26 @@ export default (ports: Ports): RenderPage => {
     (await ports.getFollowList()).follows(editorialCommunityId)
   );
   const renderFollowToggle = createRenderFollowToggle(isFollowedAdapter);
-  const renderFeed = createRenderFeed(getEventsAdapter, renderFeedItem, renderFollowToggle);
+  return createRenderFeed(getEventsAdapter, renderFeedItem, renderFollowToggle);
+};
+
+interface Params {
+  id?: string;
+}
+
+type RenderPageError = {
+  type: 'not-found',
+  content: string,
+};
+
+type RenderPage = (params: Params) => Promise<Result<string, RenderPageError>>;
+
+export default (ports: Ports): RenderPage => {
+  const renderPageHeader = buildRenderPageHeader(ports.editorialCommunities);
+  const renderDescription = buildRenderDescription(ports.editorialCommunities);
+  const renderEndorsedArticles = buildRenderEndorsedArticles(ports.endorsements);
+  const renderReviews = buildRenderReviews(ports.reviewReferenceRepository);
+  const renderFeed = buildRenderFeed(ports);
 
   const renderPage = createRenderPage(
     renderPageHeader,
