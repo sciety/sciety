@@ -19,6 +19,10 @@ export default (
         <h2 class="ui header">
           Feed
         </h2>
+        <form method="post" action="/unfollow">
+          <input type="hidden" name="editorialcommunityid" value="${editorialCommunityId.value}">
+          <button type="submit" class="ui mini button">Unfollow</button>
+        </form>
         <ol class="ui large feed">
           ${templateListItems(feedItems, 'event')}
         </ol>
