@@ -67,6 +67,7 @@
     "supertest": "^4.0.2",
     "ts-jest": "^26.1.1",
     "ts-node-dev": "^1.0.0-pre.51",
+    "ts-unused-exports": "^6.2.1",
     "typescript": "^3.9.6"
   },
   "scripts": {
