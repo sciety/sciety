@@ -1,11 +1,6 @@
 import axios from 'axios';
 import { JsonCompatible } from '../src/types/json';
 
-// PeerJ
-//const editorialCommunityId = '53ed5364-a016-11ea-bb37-0242ac130002';
-//const publisherDoiPrefix = '10.7717';
-
-// eLife
 const editorialCommunityId = 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0';
 const publisherDoiPrefix = '10.7554';
 

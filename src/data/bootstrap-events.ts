@@ -1866,7 +1866,7 @@ const events: NonEmptyArray<DomainEvent> = [
 
   {
     type: 'ArticleEndorsed',
-    date: new Date('2014-07-08 	'),
+    date: new Date('2014-07-08'),
     actorId: new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
     articleId: new Doi('10.1101/005041'),
   },
@@ -2920,7 +2920,6 @@ const events: NonEmptyArray<DomainEvent> = [
     actorId: new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
     articleId: new Doi('10.1101/091827'),
   },
-
 
   {
     type: 'ArticleEndorsed',
