@@ -102,5 +102,14 @@ find-elife-endorsements: build
 		$(IMAGE):$(IMAGE_TAG)-dev \
 		npx ts-node scripts/find-elife-endorsements
 
+find-peerj-endorsements: export TARGET = dev
+find-peerj-endorsements: build
+	$(DOCKER) run \
+		-v $(DATA_VOLUME)/build:/app/build \
+		-v $(DATA_VOLUME)/scripts:/app/scripts \
+		-v $(DATA_VOLUME)/src:/app/src \
+		$(IMAGE):$(IMAGE_TAG)-dev \
+		npx ts-node scripts/find-peerj-endorsements
+
 release:
 	TAG=latest/$$(date +%Y%m%d%H%M); git tag $$TAG && git push origin $$TAG
