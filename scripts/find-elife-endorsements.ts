@@ -1,7 +1,13 @@
 import axios from 'axios';
 import { JsonCompatible } from '../src/types/json';
 
-const elifeId = 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0';
+// PeerJ
+//const editorialCommunityId = '53ed5364-a016-11ea-bb37-0242ac130002';
+//const publisherDoiPrefix = '10.7717';
+
+// eLife
+const editorialCommunityId = 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0';
+const publisherDoiPrefix = '10.7554';
 
 type BiorxivResponse = JsonCompatible<{
   messages: Array<{
@@ -18,7 +24,7 @@ type BiorxivResponse = JsonCompatible<{
 void (async (): Promise<void> => {
   const today = new Date().toISOString().split('T')[0];
 
-  const { data: firstPage } = await axios.get<BiorxivResponse>(`https://api.biorxiv.org/publisher/10.7554/2000-01-01/${today}/0`);
+  const { data: firstPage } = await axios.get<BiorxivResponse>(`https://api.biorxiv.org/publisher/${publisherDoiPrefix}/2000-01-01/${today}/0`);
   let endorsements = firstPage.collection.map((item) => ({
     articleId: item.biorxiv_doi,
     date: item.published_date,
@@ -28,10 +34,10 @@ void (async (): Promise<void> => {
   const numRequestsNeeded = Math.ceil(firstPage.messages[0].total / count);
   for (let i = 1; i < numRequestsNeeded; i += 1) {
     // eslint-disable-next-line no-await-in-loop
-    const { data } = await axios.get<BiorxivResponse>(`https://api.biorxiv.org/publisher/10.7554/2000-01-01/${today}/${count * i}`);
+    const { data } = await axios.get<BiorxivResponse>(`https://api.biorxiv.org/publisher/${publisherDoiPrefix}/2000-01-01/${today}/${count * i}`);
     endorsements = endorsements.concat(
       data.collection.map((item) => ({
-        articleId: item.biorxiv_doi,
+        articleId: item.biorxiv_doi.trim(),
         date: item.published_date,
       })),
     );
@@ -42,7 +48,7 @@ void (async (): Promise<void> => {
       {
         type: 'ArticleEndorsed',
         date: new Date('${endorsement.date}'),
-        actorId: new EditorialCommunityId('${elifeId}'),
+        actorId: new EditorialCommunityId('${editorialCommunityId}'),
         articleId: new Doi('${endorsement.articleId}'),
       },
     `);
