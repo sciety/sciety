@@ -3,7 +3,7 @@ import createRenderEditorialCommunities, { GetAllEditorialCommunities } from './
 import createRenderFeed from './render-feed';
 import createRenderFeedItem, { GetActor, GetArticle } from './render-feed-item';
 import createRenderFindArticle from './render-find-article';
-import createRenderFollowToggle, { IsFollowed } from './render-follow-toggle';
+import createRenderFollowToggle from './render-follow-toggle';
 import createRenderPage from './render-page';
 import createRenderPageHeader from './render-page-header';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
@@ -39,13 +39,10 @@ export default (ports: Ports): RenderPage => {
   const getArticleAdapter: GetArticle = async (id) => (
     (await ports.fetchArticle(id)).unsafelyUnwrap()
   );
-  const isFollowedAdapter: IsFollowed = async (editorialCommunityId) => (
-    (await ports.getFollowList()).follows(editorialCommunityId)
-  );
   const getEventsAdapter = createGetMostRecentEvents(ports.filterEvents, 20);
 
   const renderPageHeader = createRenderPageHeader();
-  const renderFollowToggle = createRenderFollowToggle(isFollowedAdapter);
+  const renderFollowToggle = createRenderFollowToggle();
   const renderEditorialCommunities = createRenderEditorialCommunities(editorialCommunitiesAdapter, renderFollowToggle);
   const renderFindArticle = createRenderFindArticle();
   const renderFeedItem = createRenderFeedItem(getActorAdapter, getArticleAdapter);

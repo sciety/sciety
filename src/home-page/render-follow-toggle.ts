@@ -1,14 +1,14 @@
 import EditorialCommunityId from '../types/editorial-community-id';
+import FollowList from '../types/follow-list';
 
-export type RenderFollowToggle = (editorialCommunityId: EditorialCommunityId) => Promise<string>;
+export type RenderFollowToggle = (
+  followList: FollowList,
+  editorialCommunityId: EditorialCommunityId
+) => Promise<string>;
 
-export type IsFollowed = (editorialCommunityId: EditorialCommunityId) => Promise<boolean>;
-
-export default (
-  isFollowed: IsFollowed,
-): RenderFollowToggle => (
-  async (editorialCommunityId) => {
-    if (await isFollowed(editorialCommunityId)) {
+export default (): RenderFollowToggle => (
+  async (followList, editorialCommunityId) => {
+    if (followList.follows(editorialCommunityId)) {
       return `
         <form method="post" action="/unfollow">
           <input type="hidden" name="editorialcommunityid" value="${editorialCommunityId.value}" />
