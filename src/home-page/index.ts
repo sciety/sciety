@@ -8,14 +8,12 @@ import createRenderPage, { RenderPage } from './render-page';
 import createRenderPageHeader from './render-page-header';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import { FetchExternalArticle } from '../types/fetch-external-article';
-import ReviewReferenceRepository from '../types/review-reference-repository';
 
 interface Ports {
   fetchArticle: FetchExternalArticle;
   editorialCommunities: EditorialCommunityRepository;
   getFollowList: GetFollowList;
   filterEvents: FilterEvents,
-  reviewReferenceRepository: ReviewReferenceRepository;
 }
 
 export default (ports: Ports): RenderPage => {
