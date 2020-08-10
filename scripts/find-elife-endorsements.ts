@@ -33,7 +33,7 @@ void (async (): Promise<void> => {
     endorsements = endorsements.concat(
       data.collection.map((item) => ({
         articleId: item.biorxiv_doi.trim(),
-        date: item.published_date,
+        date: item.published_date.trim(),
       })),
     );
   }
