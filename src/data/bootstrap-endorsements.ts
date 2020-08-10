@@ -1,21 +1,4 @@
 export default [
-  { article: '10.1101/209320', editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002' },
-  { article: '10.1101/312330', editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002' },
-  { article: '10.1101/069484', editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002' },
-  { article: '10.1101/152397', editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002' },
-  { article: '10.1101/188425', editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002' },
-  { article: '10.1101/084673', editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002' },
-  { article: '10.1101/259150', editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002' },
-  { article: '10.1101/221861', editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002' },
-  { article: '10.1101/177253', editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002' },
-  { article: '10.1101/437293', editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002' },
-  { article: '10.1101/226092', editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002' },
-  { article: '10.1101/313015', editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002' },
-  { article: '10.1101/351486', editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002' },
-  { article: '10.1101/186825', editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002' },
-  { article: '10.1101/416677', editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002' },
-  { article: '10.1101/718031', editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002' },
-  { article: '10.1101/751099', editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002' },
   {
     article: '10.1101/001602',
     editorialCommunity: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
@@ -7311,5 +7294,1189 @@ export default [
   {
     article: '10.1101/794685',
     editorialCommunity: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
+  },
+  {
+    article: '10.1101/002717',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/005470',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/007773',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/001750',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/009134',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/013359',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/005819',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/010975',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/014357',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/025148',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/029983',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/023564',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/030924',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/024414',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/027706',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/036285',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/034462',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/035857',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/045526',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/036004',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/029801',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/069013',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/082156',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/048348',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/065243',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/024802',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/068387',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/052134',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/078170',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/088252',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/062935',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/074112',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/069567',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/080457',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/066258',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/084640',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/093344',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/072512',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/066696',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/097667',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/113142',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/069484',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/054635',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/016311',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/112060',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/121830',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/089771',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/152397',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/022657',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/095257',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/107169',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/138883',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/113571',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/134650',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/030692',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/136408',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/180950',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/188425',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/167056',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/196998',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/199570',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/146951',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/130765',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/206946',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/206011',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/191130',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/190793',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/195594',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/152082',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/086173',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/247379',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/212068',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/119925',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/181636',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/271155',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/272799',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/120915',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/213470',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/220897',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/273714',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/147009',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/203737',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/209320',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/249219',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/259150',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/275925',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/276345',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/177253',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/259135',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/288654',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/006130',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/011460',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/108381',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/050062',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/051813',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/084673',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/088666',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/094987',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/119792',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/128413',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/271460',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/293639',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/028274',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/233783',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/007641',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/175950',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/161281',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/354274',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/196352',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/211854',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/256263',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/307728',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/383091',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/221861',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/016683',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/287607',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/437293',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/312330',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/351486',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/382119',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/226092',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/300772',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/313015',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/245381',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/306407',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/202077',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/327015',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/329201',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/035675',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/384388',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/365353',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/397364',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/412130',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/305755',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/427153',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/381749',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/358788',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/174656',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/427724',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/427732',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/303750',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/485854',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/345041',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/368332',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/072017',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/310664',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/419044',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/525212',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/497859',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/274894',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/479402',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/231928',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/487447',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/349019',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/349191',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/201350',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/534511',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/447409',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/536243',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/043398',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/562587',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/568584',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/401927',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/628099',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/577452',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/328245',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/448787',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/636993',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/334243',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/515122',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/512079',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/589341',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/721449',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/328906',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/308932',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/532341',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/619544',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/049114',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/556035',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/205799',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/560706',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/445569',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/444141',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/302679',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/360156',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/728006',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/328070',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/470351',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/357996',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/416677',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/811885',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/692582',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/648683',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/702944',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/751370',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/625830',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/624783',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/559245',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/559302',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/438127',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/623553',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/746081',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/719260',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/718031',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/428201',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/532424',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/754929',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/817221',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/664987',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/668178',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/353334',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/599043',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/751099',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/712612',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/762997',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/871533',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/2020.02.10.941955',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/515833',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/808857',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/649772',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/824623',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/330787',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/2020.04.09.034462',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/553933',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/106138',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/2020.03.15.992438',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/870402',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/744748',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/216747',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/2020.01.12.903351',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/2020.02.21.958074',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/832790',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/2020.05.05.079939',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/2020.05.20.104885',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/833012',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/2020.01.13.905158',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
+  },
+
+  {
+    article: '10.1101/2020.03.30.015164',
+    editorialCommunity: '53ed5364-a016-11ea-bb37-0242ac130002',
   },
 ];

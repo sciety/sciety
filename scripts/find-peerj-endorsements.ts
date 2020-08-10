@@ -48,4 +48,13 @@ void (async (): Promise<void> => {
       },
     `);
   });
+
+  endorsements.forEach((endorsement) => {
+    process.stdout.write(`
+      {
+        article: '${endorsement.articleId}',
+        editorialCommunity: '${editorialCommunityId}',
+      },
+    `);
+  });
 })();
