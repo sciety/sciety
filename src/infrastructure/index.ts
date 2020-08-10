@@ -9,7 +9,6 @@ import createFetchStaticFile from './fetch-static-file';
 import createFilterEvents from './filter-events';
 import createGetBiorxivCommentCount from './get-biorxiv-comment-count';
 import createGetDisqusPostCount from './get-disqus-post-count';
-import createGetFollowList from './get-follow-list';
 import createGetXml from './get-xml';
 import createEditorialCommunityRepository from './in-memory-editorial-communities';
 import createEndorsementsRepository from './in-memory-endorsements-repository';
@@ -91,7 +90,6 @@ const createInfrastructure = (): Adapters => {
   const fetchHypothesisAnnotation = createFetchHypothesisAnnotation(getJson, logger);
   const searchEuropePmc = createSearchEuropePmc(getJson, logger);
   const editorialCommunities = populateEditorialCommunities(logger);
-  const getFollowList = createGetFollowList();
 
   return {
     fetchArticle: createFetchCrossrefArticle(getXml, logger),
@@ -102,7 +100,6 @@ const createInfrastructure = (): Adapters => {
     editorialCommunities,
     endorsements: populateEndorsementsRepository(logger),
     reviewReferenceRepository: populateReviewReferenceRepository(editorialCommunities, logger),
-    getFollowList,
     filterEvents: createFilterEvents(events),
     logger,
   };

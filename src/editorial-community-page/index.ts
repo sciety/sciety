@@ -15,16 +15,12 @@ import EndorsementsRepository from '../types/endorsements-repository';
 import { FetchExternalArticle } from '../types/fetch-external-article';
 import FollowList from '../types/follow-list';
 import ReviewReferenceRepository from '../types/review-reference-repository';
-import { UserFollowList } from '../types/user-follow-list';
-
-type GetFollowList = (userFollowList?: UserFollowList) => Promise<FollowList>;
 
 interface Ports {
   fetchArticle: FetchExternalArticle;
   editorialCommunities: EditorialCommunityRepository;
   endorsements: EndorsementsRepository,
   reviewReferenceRepository: ReviewReferenceRepository;
-  getFollowList: GetFollowList;
   filterEvents: FilterEvents;
 }
 

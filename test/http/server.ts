@@ -20,7 +20,6 @@ import createEndorsementsRepository from '../../src/infrastructure/in-memory-end
 import createReviewReferenceRepository from '../../src/infrastructure/in-memory-review-references';
 import Doi from '../../src/types/doi';
 import EditorialCommunityRepository from '../../src/types/editorial-community-repository';
-import FollowList from '../../src/types/follow-list';
 import ReviewReferenceRepository from '../../src/types/review-reference-repository';
 import dummyLogger from '../dummy-logger';
 import shouldNotBeCalled from '../should-not-be-called';
@@ -74,7 +73,6 @@ export default async (): Promise<TestServer> => {
     editorialCommunities,
     endorsements: createEndorsementsRepository(dummyLogger),
     reviewReferenceRepository,
-    getFollowList: async () => new FollowList([]),
     filterEvents: async () => [],
     logger: dummyLogger,
   };

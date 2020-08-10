@@ -9,14 +9,10 @@ import createRenderPageHeader from './render-page-header';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import { FetchExternalArticle } from '../types/fetch-external-article';
 import FollowList from '../types/follow-list';
-import { UserFollowList } from '../types/user-follow-list';
-
-type GetFollowList = (userFollowList?: UserFollowList) => Promise<FollowList>;
 
 interface Ports {
   fetchArticle: FetchExternalArticle;
   editorialCommunities: EditorialCommunityRepository;
-  getFollowList: GetFollowList;
   filterEvents: FilterEvents,
 }
 
