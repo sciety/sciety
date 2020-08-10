@@ -18,4 +18,8 @@ export default class FollowList {
   unfollow(editorialCommunityId: EditorialCommunityId): void {
     this.items = this.items.filter((item) => item.value !== editorialCommunityId.value);
   }
+
+  getContents(): Array<EditorialCommunityId> {
+    return this.items;
+  }
 }
