@@ -13,7 +13,12 @@ type Ports = {
 export default (ports: Ports): Middleware => (
   async (context, next) => {
     const editorialCommunityId = new EditorialCommunityId(context.request.body.editorialcommunityid);
-    (await ports.getFollowList()).unfollow(editorialCommunityId);
+    const followList = await ports.getFollowList();
+    followList.unfollow(editorialCommunityId);
+    context.cookies.set(
+      'followList',
+      JSON.stringify(followList.getContents().map((item) => item.value)),
+    );
 
     ports.logger('info', 'User unfollowed editorial community', { editorialCommunityId });
 
