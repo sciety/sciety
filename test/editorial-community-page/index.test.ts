@@ -1,5 +1,6 @@
 import { JSDOM } from 'jsdom';
 import buildRenderPage from '../../src/editorial-community-page';
+import FollowList from '../../src/types/follow-list';
 import createServer from '../http/server';
 
 describe('create render page', (): void => {
@@ -9,7 +10,7 @@ describe('create render page', (): void => {
     beforeEach(async () => {
       const { adapters } = await createServer();
       const renderPage = buildRenderPage(adapters);
-      const params = { id: adapters.editorialCommunities.all()[0].id.value };
+      const params = { id: adapters.editorialCommunities.all()[0].id.value, followList: new FollowList([]) };
       renderedPage = (await renderPage(params)).unsafelyUnwrap();
     });
 
@@ -32,7 +33,7 @@ describe('create render page', (): void => {
     it('throws a NotFound error', async (): Promise<void> => {
       const { adapters } = await createServer();
       const renderPage = buildRenderPage(adapters);
-      const params = { id: 'no-such-community' };
+      const params = { id: 'no-such-community', followList: new FollowList([]) };
       const result = await renderPage(params);
 
       expect(result.unsafelyUnwrapErr().type).toStrictEqual('not-found');

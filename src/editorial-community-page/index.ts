@@ -5,7 +5,7 @@ import createRenderDescription, { GetEditorialCommunityDescription, RenderDescri
 import createRenderEndorsedArticles, { GetNumberOfEndorsedArticles, RenderEndorsedArticles } from './render-endorsed-articles';
 import createRenderFeed, { RenderFeed } from './render-feed';
 import createRenderFeedItem, { GetActor, GetArticle } from './render-feed-item';
-import createRenderFollowToggle, { IsFollowed } from './render-follow-toggle';
+import createRenderFollowToggle from './render-follow-toggle';
 import createRenderPage from './render-page';
 import createRenderPageHeader, { GetEditorialCommunity, RenderPageHeader } from './render-page-header';
 import createRenderReviews, { GetNumberOfReviews, RenderReviews } from './render-reviews';
@@ -82,15 +82,13 @@ const buildRenderFeed = (ports: Ports): RenderFeed => {
   );
   const getEventsAdapter = createGetMostRecentEvents(ports.filterEvents, 20);
   const renderFeedItem = createRenderFeedItem(getActorAdapter, getArticleAdapter);
-  const isFollowedAdapter: IsFollowed = async (editorialCommunityId) => (
-    (await ports.getFollowList()).follows(editorialCommunityId)
-  );
-  const renderFollowToggle = createRenderFollowToggle(isFollowedAdapter);
+  const renderFollowToggle = createRenderFollowToggle();
   return createRenderFeed(getEventsAdapter, renderFeedItem, renderFollowToggle);
 };
 
 interface Params {
   id?: string;
+  followList: FollowList;
 }
 
 type RenderPageError = {
@@ -117,7 +115,7 @@ export default (ports: Ports): RenderPage => {
   return async (params) => {
     const editorialCommunityId = new EditorialCommunityId(params.id ?? '');
     try {
-      return Result.ok(await renderPage(editorialCommunityId));
+      return Result.ok(await renderPage(editorialCommunityId, params.followList));
     } catch (error) {
       return Result.err({
         type: 'not-found',
