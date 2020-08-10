@@ -3,10 +3,7 @@ import { Logger } from '../infrastructure/logger';
 import EditorialCommunityId from '../types/editorial-community-id';
 import FollowList from '../types/follow-list';
 
-type GetFollowList = () => Promise<FollowList>;
-
 type Ports = {
-  getFollowList: GetFollowList;
   logger: Logger;
 };
 

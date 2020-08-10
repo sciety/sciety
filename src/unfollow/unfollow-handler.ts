@@ -3,17 +3,24 @@ import { Logger } from '../infrastructure/logger';
 import EditorialCommunityId from '../types/editorial-community-id';
 import FollowList from '../types/follow-list';
 
-type GetFollowList = () => Promise<FollowList>;
-
 type Ports = {
-  getFollowList: GetFollowList;
   logger: Logger;
+};
+
+const readFollowListFromCookie = (cookieValue: string): Array<string> => {
+  try {
+    return JSON.parse(cookieValue) as Array<string>;
+  } catch {
+    return [];
+  }
 };
 
 export default (ports: Ports): Middleware => (
   async (context, next) => {
     const editorialCommunityId = new EditorialCommunityId(context.request.body.editorialcommunityid);
-    const followList = await ports.getFollowList();
+    const followedEditorialCommunities = readFollowListFromCookie(context.cookies.get('followList') ?? '[]')
+      .map((item) => new EditorialCommunityId(item));
+    const followList = new FollowList(followedEditorialCommunities);
     followList.unfollow(editorialCommunityId);
     context.cookies.set(
       'followList',
