@@ -3,6 +3,7 @@ import { NOT_FOUND, OK } from 'http-status-codes';
 import { Next } from 'koa';
 import { Result } from 'true-myth';
 import applyStandardPageLayout from '../templates/apply-standard-page-layout';
+import FollowList from '../types/follow-list';
 
 type RenderPageError = {
   type: 'not-found',
@@ -13,6 +14,7 @@ type RenderPage = (params: {
   doi?: string;
   id?: string;
   query?: string;
+  followList: FollowList;
 }) => Promise<string | Result<string, RenderPageError>>;
 
 export default (
@@ -22,6 +24,7 @@ export default (
     const params = {
       ...ctx.params,
       ...ctx.query,
+      followList: new FollowList([]),
     };
     ctx.response.type = 'html';
 

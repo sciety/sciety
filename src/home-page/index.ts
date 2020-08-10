@@ -4,10 +4,11 @@ import createRenderFeed from './render-feed';
 import createRenderFeedItem, { GetActor, GetArticle } from './render-feed-item';
 import createRenderFindArticle from './render-find-article';
 import createRenderFollowToggle, { IsFollowed } from './render-follow-toggle';
-import createRenderPage, { RenderPage } from './render-page';
+import createRenderPage from './render-page';
 import createRenderPageHeader from './render-page-header';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import { FetchExternalArticle } from '../types/fetch-external-article';
+import FollowList from '../types/follow-list';
 
 interface Ports {
   fetchArticle: FetchExternalArticle;
@@ -15,6 +16,12 @@ interface Ports {
   getFollowList: GetFollowList;
   filterEvents: FilterEvents,
 }
+
+interface Params {
+  followList: FollowList,
+}
+
+type RenderPage = (params: Params) => Promise<string>;
 
 export default (ports: Ports): RenderPage => {
   const editorialCommunitiesAdapter: GetAllEditorialCommunities = async () => ports.editorialCommunities.all();
@@ -40,11 +47,14 @@ export default (ports: Ports): RenderPage => {
   const renderFindArticle = createRenderFindArticle();
   const renderFeedItem = createRenderFeedItem(getActorAdapter, getArticleAdapter);
   const renderFeed = createRenderFeed(getEventsAdapter, renderFeedItem);
-
-  return createRenderPage(
+  const renderPage = createRenderPage(
     renderPageHeader,
     renderEditorialCommunities,
     renderFindArticle,
     renderFeed,
+  );
+
+  return async (params) => (
+    renderPage(params.followList)
   );
 };

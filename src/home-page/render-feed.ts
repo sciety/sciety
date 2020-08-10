@@ -1,18 +1,19 @@
 import { RenderFeedItem } from './render-feed-item';
 import templateListItems from '../templates/list-items';
 import { DomainEvent } from '../types/domain-events';
+import FollowList from '../types/follow-list';
 import { NonEmptyArray } from '../types/non-empty-array';
 
-type RenderFeed = () => Promise<string>;
+type RenderFeed = (followList: FollowList) => Promise<string>;
 
-export type GetEvents = () => Promise<NonEmptyArray<DomainEvent>>;
+export type GetEvents = (followList: FollowList) => Promise<NonEmptyArray<DomainEvent>>;
 
 export default (
   getEvents: GetEvents,
   renderFeedItem: RenderFeedItem,
 ): RenderFeed => (
-  async () => {
-    const events = await getEvents();
+  async (followList) => {
+    const events = await getEvents(followList);
     const feedItems = await Promise.all(events.map(renderFeedItem));
     return `
       <section>

@@ -33,7 +33,7 @@ describe('get-most-recent-events', () => {
     ];
     const filterEvents = createFilterEvents(initial);
     const getEvents = createGetMostRecentEvents(getFollowList, filterEvents, 20);
-    const sortedEvents = await getEvents();
+    const sortedEvents = await getEvents(new FollowList([]));
 
     expect(sortedEvents[0]).toStrictEqual(initial[1]);
     expect(sortedEvents[1]).toStrictEqual(initial[0]);
@@ -48,7 +48,7 @@ describe('get-most-recent-events', () => {
       const dummyEvents: NonEmptyArray<DomainEvent> = [dummyEvent, dummyEvent, dummyEvent];
       const filterEvents = createFilterEvents(dummyEvents);
       const getEvents = createGetMostRecentEvents(getFollowList, filterEvents, 20);
-      const events = await getEvents();
+      const events = await getEvents(new FollowList([]));
 
       expect(events).toHaveLength(dummyEvents.length);
     });
@@ -60,7 +60,7 @@ describe('get-most-recent-events', () => {
       const maxCount = 2;
       const filterEvents = createFilterEvents(dummyEvents);
       const getEvents = createGetMostRecentEvents(getFollowList, filterEvents, maxCount);
-      const events = await getEvents();
+      const events = await getEvents(new FollowList([]));
 
       expect(events).toHaveLength(maxCount);
     });
