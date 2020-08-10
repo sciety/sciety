@@ -9,7 +9,7 @@ import createFetchStaticFile from './fetch-static-file';
 import createFilterEvents from './filter-events';
 import createGetBiorxivCommentCount from './get-biorxiv-comment-count';
 import createGetDisqusPostCount from './get-disqus-post-count';
-import createGetFollowList, { GetFollowList } from './get-follow-list';
+import createGetFollowList from './get-follow-list';
 import createGetXml from './get-xml';
 import createEditorialCommunityRepository from './in-memory-editorial-communities';
 import createEndorsementsRepository from './in-memory-endorsements-repository';
@@ -26,7 +26,6 @@ import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import EndorsementsRepository from '../types/endorsements-repository';
-import FollowList from '../types/follow-list';
 import HypothesisAnnotationId from '../types/hypothesis-annotation-id';
 import { Json } from '../types/json';
 import { ReviewId } from '../types/review-id';
@@ -39,10 +38,6 @@ const populateEditorialCommunities = (logger: Logger): EditorialCommunityReposit
   }
   return repository;
 };
-
-const populateGetFollowList = (): GetFollowList => (
-  createGetFollowList(new FollowList([]))
-);
 
 const populateEndorsementsRepository = (logger: Logger): EndorsementsRepository => {
   const repository = createEndorsementsRepository(logger);
@@ -96,7 +91,7 @@ const createInfrastructure = (): Adapters => {
   const fetchHypothesisAnnotation = createFetchHypothesisAnnotation(getJson, logger);
   const searchEuropePmc = createSearchEuropePmc(getJson, logger);
   const editorialCommunities = populateEditorialCommunities(logger);
-  const getFollowList = populateGetFollowList();
+  const getFollowList = createGetFollowList();
 
   return {
     fetchArticle: createFetchCrossrefArticle(getXml, logger),
