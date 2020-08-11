@@ -7,25 +7,11 @@ type Ports = {
   logger: Logger;
 };
 
-const readFollowListFromCookie = (cookieValue: string): Array<string> => {
-  try {
-    return JSON.parse(cookieValue) as Array<string>;
-  } catch {
-    return [];
-  }
-};
-
-export default (ports: Ports): Middleware => (
+export default (ports: Ports): Middleware<{ followList: FollowList }> => (
   async (context, next) => {
     const editorialCommunityId = new EditorialCommunityId(context.request.body.editorialcommunityid);
-    const followedEditorialCommunities = readFollowListFromCookie(context.cookies.get('followList') ?? '[]')
-      .map((item) => new EditorialCommunityId(item));
-    const followList = new FollowList(followedEditorialCommunities);
+    const { followList } = context.state;
     followList.unfollow(editorialCommunityId);
-    context.cookies.set(
-      'followList',
-      JSON.stringify(followList.getContents().map((item) => item.value)),
-    );
 
     ports.logger('info', 'User unfollowed editorial community', { editorialCommunityId });
 

@@ -47,6 +47,7 @@ export default (adapters: Adapters): Router => {
     createFollowHandler(adapters));
 
   router.post('/unfollow',
+    readWriteFollowList(),
     bodyParser({ enableTypes: ['form'] }),
     createUnfollowHandler(adapters));
 
