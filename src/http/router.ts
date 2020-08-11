@@ -4,6 +4,7 @@ import bodyParser from 'koa-bodyparser';
 import send from 'koa-send';
 import pageHandler from './page-handler';
 import ping from './ping';
+import readFollowList from './read-follow-list';
 import robots from './robots';
 import createAboutPage from '../about-page';
 import createArticlePage from '../article-page';
@@ -36,6 +37,7 @@ export default (adapters: Adapters): Router => {
     pageHandler(createEditorialCommunityPage(adapters)));
 
   router.post('/follow',
+    readFollowList(),
     bodyParser({ enableTypes: ['form'] }),
     createFollowHandler(adapters));
 
