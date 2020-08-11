@@ -4,7 +4,7 @@ import { Logger } from '../infrastructure/logger';
 
 export default (logger: Logger): Middleware => (
   async (context, next) => {
-    const userIdentity = uuidv4();
+    const userIdentity = context.cookies.get('hiveSession') ?? uuidv4();
     logger('debug', 'User identity', { userIdentity });
     context.cookies.set('hiveSession', userIdentity);
 
