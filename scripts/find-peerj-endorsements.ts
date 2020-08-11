@@ -1,7 +1,7 @@
 import axios from 'axios';
+import Doi from '../src/types/doi';
 import { JsonCompatible } from '../src/types/json';
 
-const editorialCommunityId = '53ed5364-a016-11ea-bb37-0242ac130002';
 const publisherDoiPrefix = '10.7717';
 
 type BiorxivResponse = JsonCompatible<{
@@ -21,8 +21,8 @@ void (async (): Promise<void> => {
 
   const { data: firstPage } = await axios.get<BiorxivResponse>(`https://api.biorxiv.org/publisher/${publisherDoiPrefix}/2000-01-01/${today}/0`);
   let endorsements = firstPage.collection.map((item) => ({
-    articleId: item.biorxiv_doi,
-    date: item.published_date,
+    articleId: new Doi(item.biorxiv_doi.trim()),
+    date: new Date(item.published_date.trim()),
   }));
 
   const { count } = firstPage.messages[0];
@@ -32,29 +32,15 @@ void (async (): Promise<void> => {
     const { data } = await axios.get<BiorxivResponse>(`https://api.biorxiv.org/publisher/${publisherDoiPrefix}/2000-01-01/${today}/${count * i}`);
     endorsements = endorsements.concat(
       data.collection.map((item) => ({
-        articleId: item.biorxiv_doi.trim(),
-        date: item.published_date.trim(),
+        articleId: new Doi(item.biorxiv_doi.trim()),
+        date: new Date(item.published_date.trim()),
       })),
     );
   }
 
-  endorsements.forEach((endorsement) => {
-    process.stdout.write(`
-      {
-        type: 'ArticleEndorsed',
-        date: new Date('${endorsement.date}'),
-        actorId: new EditorialCommunityId('${editorialCommunityId}'),
-        articleId: new Doi('${endorsement.articleId}'),
-      },
-    `);
-  });
+  process.stdout.write('Date,Article DOI\n');
 
   endorsements.forEach((endorsement) => {
-    process.stdout.write(`
-      {
-        article: '${endorsement.articleId}',
-        editorialCommunity: '${editorialCommunityId}',
-      },
-    `);
+    process.stdout.write(`${endorsement.date.toISOString()},${endorsement.articleId.value}\n`);
   });
 })();
