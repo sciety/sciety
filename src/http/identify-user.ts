@@ -8,6 +8,7 @@ export default (logger: Logger): Middleware => (
     logger('debug', 'User identity', { userIdentity });
     context.cookies.set('hiveSession', userIdentity, {
       maxAge: 1000 * 60 * 60 * 24 * 365,
+      sameSite: 'strict',
     });
 
     await next();

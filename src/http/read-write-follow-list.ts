@@ -13,7 +13,7 @@ const readFollowListFromCookie = (cookieValue: string): Array<string> => {
 
 export default (): Middleware => (
   async (context: RouterContext, next: Next): Promise<void> => {
-    const followedEditorialCommunities = readFollowListFromCookie(context.cookies.get('followList') ?? '[]')
+    const followedEditorialCommunities = readFollowListFromCookie(context.cookies.get('hiveFollowList') ?? '[]')
       .map((item) => new EditorialCommunityId(item));
     const followList = new FollowList(followedEditorialCommunities);
     context.state.followList = followList;
@@ -21,8 +21,12 @@ export default (): Middleware => (
     await next();
 
     context.cookies.set(
-      'followList',
+      'hiveFollowList',
       JSON.stringify(followList.getContents().map((item) => item.value)),
+      {
+        maxAge: 1000 * 60 * 60 * 24 * 365,
+        sameSite: 'strict',
+      },
     );
   }
 );
