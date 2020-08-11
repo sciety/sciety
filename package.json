@@ -26,6 +26,7 @@
     "showdown": "^1.9.1",
     "text-clipper": "^2.0.0",
     "true-myth": "^4.0.0",
+    "uuid": "^8.3.0",
     "xmldom": "^0.3.0"
   },
   "devDependencies": {
@@ -47,6 +48,7 @@
     "@types/rdfjs__parser-n3": "^1.1.2",
     "@types/rdfjs__sink-map": "^1.0.0",
     "@types/supertest": "^2.0.10",
+    "@types/uuid": "^8.0.1",
     "@types/xmldom": "^0.1.29",
     "@typescript-eslint/eslint-plugin": "^3.8.0",
     "@typescript-eslint/parser": "^3.8.0",

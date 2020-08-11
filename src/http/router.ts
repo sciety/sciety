@@ -2,6 +2,7 @@ import path from 'path';
 import Router from '@koa/router';
 import bodyParser from 'koa-bodyparser';
 import send from 'koa-send';
+import identifyUser from './identify-user';
 import pageHandler from './page-handler';
 import ping from './ping';
 import readWriteFollowList from './read-write-follow-list';
@@ -22,6 +23,7 @@ export default (adapters: Adapters): Router => {
     ping());
 
   router.get('/',
+    identifyUser(adapters.logger),
     readWriteFollowList(),
     pageHandler(createHomePage(adapters)));
 
