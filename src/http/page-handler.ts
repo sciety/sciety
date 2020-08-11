@@ -20,22 +20,22 @@ type RenderPage = (params: {
 export default (
   renderPage: RenderPage,
 ): Middleware => (
-  async (ctx: RouterContext, next: Next): Promise<void> => {
+  async (context: RouterContext, next: Next): Promise<void> => {
     const params = {
-      ...ctx.params,
-      ...ctx.query,
-      ...ctx.state,
+      ...context.params,
+      ...context.query,
+      ...context.state,
     };
-    ctx.response.type = 'html';
+    context.response.type = 'html';
 
     const page = await renderPage(params);
 
     if (typeof page === 'string') {
-      ctx.response.status = OK;
-      ctx.response.body = applyStandardPageLayout(page);
+      context.response.status = OK;
+      context.response.body = applyStandardPageLayout(page);
     } else {
-      ctx.response.status = page.isOk() ? OK : NOT_FOUND;
-      ctx.response.body = applyStandardPageLayout(page.unwrapOrElse((error) => error.content));
+      context.response.status = page.isOk() ? OK : NOT_FOUND;
+      context.response.body = applyStandardPageLayout(page.unwrapOrElse((error) => error.content));
     }
 
     await next();
