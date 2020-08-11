@@ -76,11 +76,10 @@
     "build": "tsc",
     "deps:folders": "depcruise --include-only '^src' --validate -T archi src | dot -Tsvg > docs/folders.svg",
     "deps:modules": "depcruise --include-only '^src' --validate -T dot src | dot -Tsvg > docs/modules.svg",
-    "lint": "concurrently --names \"TypeScript,ESLint\" \"tsc --project tsconfig.dev.json\" \"eslint . --ext .js,.ts --cache --cache-location .eslint/ --color\"",
-    "lint:fix": "concurrently --names \"TypeScript,ESLint\" \"tsc --project tsconfig.dev.json\" \"eslint . --fix --ext .js,.ts --cache --cache-location .eslint/ --color\"",
+    "lint": "concurrently --names \"TypeScript,ESLint,Unused Exports\" \"tsc --project tsconfig.dev.json\" \"eslint . --ext .js,.ts --cache --cache-location .eslint/ --color\" \"ts-unused-exports ./tsconfig.dev.json\"",
+    "lint:fix": "concurrently --names \"TypeScript,ESLint,Unused Exports\" \"tsc --project tsconfig.dev.json\" \"eslint . --fix --ext .js,.ts --cache --cache-location .eslint/ --color\" \"ts-unused-exports ./tsconfig.dev.json\"",
     "start": "node ./build/index.js",
     "start:dev": "ts-node-dev --project tsconfig.dev.json --transpile-only --no-notify ./src/index.ts",
-    "test": "jest --colors",
-    "unused:exports": "ts-unused-exports ./tsconfig.dev.json"
+    "test": "jest --colors"
   }
 }

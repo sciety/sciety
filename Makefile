@@ -26,20 +26,12 @@ prod: build
 		$(IMAGE):$(IMAGE_TAG)
 
 lint: export TARGET = dev
-lint: build unused\:exports
+lint: build
 	$(DOCKER) run --rm \
 		-v $(DATA_VOLUME)/.eslint:/app/.eslint \
 		-v $(DATA_VOLUME)/build:/app/build \
 		$(IMAGE):$(IMAGE_TAG)-dev \
 		npm run lint
-
-unused\:exports: export TARGET = dev
-unused\:exports: build
-	$(DOCKER) run --rm -t \
-		-v $(DATA_VOLUME)/.eslint:/app/.eslint \
-		-v $(DATA_VOLUME)/build:/app/build \
-		$(IMAGE):$(IMAGE_TAG)-dev \
-		npm run unused:exports
 
 lint\:fix: export TARGET = dev
 lint\:fix: build
