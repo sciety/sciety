@@ -12,10 +12,7 @@ export default (ports: Ports): Middleware<{ followList: FollowList }> => (
     const editorialCommunityId = new EditorialCommunityId(context.request.body.editorialcommunityid);
     const { followList } = context.state;
     followList.follow(editorialCommunityId);
-    context.cookies.set(
-      'followList',
-      JSON.stringify(followList.getContents().map((item) => item.value)),
-    );
+
     ports.logger('info', 'User followed editorial community', { editorialCommunityId });
 
     context.redirect('back');

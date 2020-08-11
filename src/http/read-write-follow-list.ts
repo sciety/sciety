@@ -17,6 +17,12 @@ export default (): Middleware => (
       .map((item) => new EditorialCommunityId(item));
     const followList = new FollowList(followedEditorialCommunities);
     context.state.followList = followList;
+
     await next();
+
+    context.cookies.set(
+      'followList',
+      JSON.stringify(followList.getContents().map((item) => item.value)),
+    );
   }
 );

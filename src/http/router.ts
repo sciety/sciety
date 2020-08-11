@@ -4,7 +4,7 @@ import bodyParser from 'koa-bodyparser';
 import send from 'koa-send';
 import pageHandler from './page-handler';
 import ping from './ping';
-import readFollowList from './read-follow-list';
+import readWriteFollowList from './read-write-follow-list';
 import robots from './robots';
 import createAboutPage from '../about-page';
 import createArticlePage from '../article-page';
@@ -22,27 +22,27 @@ export default (adapters: Adapters): Router => {
     ping());
 
   router.get('/',
-    readFollowList(),
+    readWriteFollowList(),
     pageHandler(createHomePage(adapters)));
 
   router.get('/about',
-    readFollowList(),
+    readWriteFollowList(),
     pageHandler(createAboutPage(adapters)));
 
   router.get('/articles',
-    readFollowList(),
+    readWriteFollowList(),
     pageHandler(createArticleSearchPage(adapters)));
 
   router.get('/articles/:doi(.+)',
-    readFollowList(),
+    readWriteFollowList(),
     pageHandler(createArticlePage(adapters)));
 
   router.get('/editorial-communities/:id',
-    readFollowList(),
+    readWriteFollowList(),
     pageHandler(createEditorialCommunityPage(adapters)));
 
   router.post('/follow',
-    readFollowList(),
+    readWriteFollowList(),
     bodyParser({ enableTypes: ['form'] }),
     createFollowHandler(adapters));
 
