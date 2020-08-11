@@ -3,7 +3,6 @@ import { NOT_FOUND, OK } from 'http-status-codes';
 import { Next } from 'koa';
 import { Result } from 'true-myth';
 import applyStandardPageLayout from '../templates/apply-standard-page-layout';
-import EditorialCommunityId from '../types/editorial-community-id';
 import FollowList from '../types/follow-list';
 
 type RenderPageError = {
@@ -18,24 +17,14 @@ type RenderPage = (params: {
   followList: FollowList;
 }) => Promise<string | Result<string, RenderPageError>>;
 
-const readFollowListFromCookie = (cookieValue: string): Array<string> => {
-  try {
-    return JSON.parse(cookieValue) as Array<string>;
-  } catch {
-    return [];
-  }
-};
-
 export default (
   renderPage: RenderPage,
 ): Middleware => (
   async (ctx: RouterContext, next: Next): Promise<void> => {
-    const followList = readFollowListFromCookie(ctx.cookies.get('followList') ?? '[]')
-      .map((item) => new EditorialCommunityId(item));
     const params = {
       ...ctx.params,
       ...ctx.query,
-      followList: new FollowList(followList),
+      ...ctx.state,
     };
     ctx.response.type = 'html';
 

@@ -22,18 +22,23 @@ export default (adapters: Adapters): Router => {
     ping());
 
   router.get('/',
+    readFollowList(),
     pageHandler(createHomePage(adapters)));
 
   router.get('/about',
+    readFollowList(),
     pageHandler(createAboutPage(adapters)));
 
   router.get('/articles',
+    readFollowList(),
     pageHandler(createArticleSearchPage(adapters)));
 
   router.get('/articles/:doi(.+)',
+    readFollowList(),
     pageHandler(createArticlePage(adapters)));
 
   router.get('/editorial-communities/:id',
+    readFollowList(),
     pageHandler(createEditorialCommunityPage(adapters)));
 
   router.post('/follow',
