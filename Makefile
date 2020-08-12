@@ -101,7 +101,7 @@ find-elife-endorsements: build
 		-v $(DATA_VOLUME)/scripts:/app/scripts \
 		-v $(DATA_VOLUME)/src:/app/src \
 		$(IMAGE):$(IMAGE_TAG)-dev \
-		npx ts-node scripts/find-elife-endorsements
+		npx ts-node scripts/find-endorsements-from-biorxiv 10.7554
 
 find-peerj-endorsements: export TARGET = dev
 find-peerj-endorsements: build
