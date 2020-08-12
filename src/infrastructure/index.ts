@@ -81,8 +81,17 @@ const getJson = async (uri: string): Promise<Json> => {
 };
 
 const getEventsFromDataFiles = (logger: Logger): Array<DomainEvent> => {
-  const fileContents = fs.readFileSync('./src/data/endorsements/53ed5364-a016-11ea-bb37-0242ac130002.csv');
-  logger('debug', 'Parsed PeerJ endorsements', { parsedFileContents: csvParseSync(fileContents) });
+  const editorialCommunityId = '53ed5364-a016-11ea-bb37-0242ac130002';
+  const fileContents = fs.readFileSync(`./src/data/endorsements/${editorialCommunityId}.csv`);
+  const parsedEvents = csvParseSync(fileContents, { fromLine: 2 })
+    .map(([date, articleDoi]: [string, string]) => ({
+      type: 'ArticleEndorsed',
+      date: new Date(date),
+      actorId: new EditorialCommunityId(editorialCommunityId),
+      articleId: new Doi(articleDoi),
+    }));
+
+  logger('debug', 'Parsed PeerJ endorsements', { parsedEvents });
   return [];
 };
 
