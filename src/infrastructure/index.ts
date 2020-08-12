@@ -21,7 +21,6 @@ import {
 import createSearchEuropePmc from './search-europe-pmc';
 import bootstrapEditorialCommunities from '../data/bootstrap-editorial-communities';
 import bootstrapEndorsements from '../data/bootstrap-endorsements';
-import events from '../data/bootstrap-events';
 import bootstrapReviews from '../data/bootstrap-reviews';
 import Doi from '../types/doi';
 import { DomainEvent } from '../types/domain-events';
@@ -149,10 +148,7 @@ const createInfrastructure = (): Adapters => {
     editorialCommunities,
     endorsements: populateEndorsementsRepository(logger),
     reviewReferenceRepository: populateReviewReferenceRepository(editorialCommunities, logger),
-    filterEvents: createFilterEvents([
-      ...events,
-      ...getEventsFromDataFiles(),
-    ] as unknown as NonEmptyArray<DomainEvent>),
+    filterEvents: createFilterEvents(getEventsFromDataFiles() as unknown as NonEmptyArray<DomainEvent>),
     logger,
   };
 };
