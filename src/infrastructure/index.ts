@@ -81,18 +81,25 @@ const getJson = async (uri: string): Promise<Json> => {
   return response.data;
 };
 
-const getEventsFromDataFiles = (logger: Logger): ReadonlyArray<DomainEvent> => {
-  const editorialCommunityId = '53ed5364-a016-11ea-bb37-0242ac130002';
-  const fileContents = fs.readFileSync(`./data/endorsements/${editorialCommunityId}.csv`);
-  const parsedEvents: ReadonlyArray<DomainEvent> = csvParseSync(fileContents, { fromLine: 2 })
-    .map(([date, articleDoi]: [string, string]) => ({
-      type: 'ArticleEndorsed',
-      date: new Date(date),
-      actorId: new EditorialCommunityId(editorialCommunityId),
-      articleId: new Doi(articleDoi),
-    }));
+const getEventsFromDataFiles = (): ReadonlyArray<DomainEvent> => {
+  const editorialCommunities = [
+    '53ed5364-a016-11ea-bb37-0242ac130002',
+    'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
+  ];
 
-  logger('debug', 'Parsed PeerJ endorsements', { parsedEvents });
+  const parsedEvents: Array<DomainEvent> = [];
+
+  for (const editorialCommunityId of editorialCommunities) {
+    const fileContents = fs.readFileSync(`./data/endorsements/${editorialCommunityId}.csv`);
+    parsedEvents.push(...csvParseSync(fileContents, { fromLine: 2 })
+      .map(([date, articleDoi]: [string, string]) => ({
+        type: 'ArticleEndorsed',
+        date: new Date(date),
+        actorId: new EditorialCommunityId(editorialCommunityId),
+        articleId: new Doi(articleDoi),
+      })));
+  }
+
   return parsedEvents;
 };
 
@@ -110,7 +117,6 @@ const createInfrastructure = (): Adapters => {
   const searchEuropePmc = createSearchEuropePmc(getJson, logger);
   const editorialCommunities = populateEditorialCommunities(logger);
 
-  getEventsFromDataFiles(logger);
   return {
     fetchArticle: createFetchCrossrefArticle(getXml, logger),
     getBiorxivCommentCount: createGetBiorxivCommentCount(createGetDisqusPostCount(getJson, logger), logger),
@@ -122,7 +128,7 @@ const createInfrastructure = (): Adapters => {
     reviewReferenceRepository: populateReviewReferenceRepository(editorialCommunities, logger),
     filterEvents: createFilterEvents([
       ...events,
-      ...getEventsFromDataFiles(logger),
+      ...getEventsFromDataFiles(),
     ] as unknown as NonEmptyArray<DomainEvent>),
     logger,
   };
