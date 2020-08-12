@@ -113,5 +113,14 @@ find-peerj-endorsements: build
 		$(IMAGE):$(IMAGE_TAG)-dev \
 		npx ts-node scripts/find-endorsements-from-biorxiv 10.7717  | tee ./data/endorsements/53ed5364-a016-11ea-bb37-0242ac130002.csv
 
+find-review-commons-reviews: export TARGET = dev
+find-review-commons-reviews: build
+	$(DOCKER) run \
+		-v $(DATA_VOLUME)/build:/app/build \
+		-v $(DATA_VOLUME)/scripts:/app/scripts \
+		-v $(DATA_VOLUME)/src:/app/src \
+		$(IMAGE):$(IMAGE_TAG)-dev \
+		npx ts-node scripts/find-reviews-from-hypothesis
+
 release:
 	TAG=latest/$$(date +%Y%m%d%H%M); git tag $$TAG && git push origin $$TAG
