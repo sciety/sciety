@@ -82,7 +82,7 @@ const getJson = async (uri: string): Promise<Json> => {
 
 const getEventsFromDataFiles = (logger: Logger): Array<DomainEvent> => {
   const editorialCommunityId = '53ed5364-a016-11ea-bb37-0242ac130002';
-  const fileContents = fs.readFileSync(`./src/data/endorsements/${editorialCommunityId}.csv`);
+  const fileContents = fs.readFileSync(`./data/endorsements/${editorialCommunityId}.csv`);
   const parsedEvents = csvParseSync(fileContents, { fromLine: 2 })
     .map(([date, articleDoi]: [string, string]) => ({
       type: 'ArticleEndorsed',

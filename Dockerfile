@@ -47,6 +47,7 @@ COPY test/ test/
 COPY src/ src/
 COPY static/ static/
 COPY scripts/ scripts/
+COPY data/ data/
 
 CMD ["npm", "run", "start:dev"]
 
@@ -71,6 +72,7 @@ ENV NODE_ENV=production
 COPY --from=npm-prod /app/ .
 COPY --from=build-prod /app/build/ build/
 COPY static/ static/
+COPY data/ data/
 
 HEALTHCHECK --interval=5s --timeout=1s \
   CMD wget --quiet --tries=1 --spider http://localhost:80/ping || exit 1

@@ -11,6 +11,7 @@ dev: export TARGET = dev
 dev: install build
 	touch .env
 	$(DOCKER) run -it \
+		-v $(DATA_VOLUME)/data:/app/data:ro \
 		-v $(DATA_VOLUME)/src:/app/src:ro \
 		-v $(DATA_VOLUME)/static:/app/static:ro \
 		-p $(PORT):80 \
@@ -101,7 +102,7 @@ find-elife-endorsements: build
 		-v $(DATA_VOLUME)/scripts:/app/scripts \
 		-v $(DATA_VOLUME)/src:/app/src \
 		$(IMAGE):$(IMAGE_TAG)-dev \
-		npx ts-node scripts/find-endorsements-from-biorxiv 10.7554 | tee ./src/data/endorsements/b560187e-f2fb-4ff9-a861-a204f3fc0fb0.csv
+		npx ts-node scripts/find-endorsements-from-biorxiv 10.7554 | tee ./data/endorsements/b560187e-f2fb-4ff9-a861-a204f3fc0fb0.csv
 
 find-peerj-endorsements: export TARGET = dev
 find-peerj-endorsements: build
@@ -110,7 +111,7 @@ find-peerj-endorsements: build
 		-v $(DATA_VOLUME)/scripts:/app/scripts \
 		-v $(DATA_VOLUME)/src:/app/src \
 		$(IMAGE):$(IMAGE_TAG)-dev \
-		npx ts-node scripts/find-endorsements-from-biorxiv 10.7717  | tee ./src/data/endorsements/53ed5364-a016-11ea-bb37-0242ac130002.csv
+		npx ts-node scripts/find-endorsements-from-biorxiv 10.7717  | tee ./data/endorsements/53ed5364-a016-11ea-bb37-0242ac130002.csv
 
 release:
 	TAG=latest/$$(date +%Y%m%d%H%M); git tag $$TAG && git push origin $$TAG
