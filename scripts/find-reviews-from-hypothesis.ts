@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { JsonCompatible } from '../src/types/json';
 
-const publisherGroupId = 'NEGQVabn';
+const publisherGroupId = process.argv[2];
 
 type HypothesisResponse = JsonCompatible<{
   rows: Array<{
@@ -11,7 +11,7 @@ type HypothesisResponse = JsonCompatible<{
 }>;
 
 void (async (): Promise<void> => {
-  const { data } = await axios.get<HypothesisResponse>(`https://api.hypothes.is/api/search?group=${publisherGroupId}&limit=200`);
+  const { data } = await axios.get<HypothesisResponse>(`https://api.hypothes.is/api/search?group=${publisherGroupId}&uri.parts=biorxiv&limit=200`);
   process.stdout.write('Date,Article DOI\n');
 
   data.rows.forEach((row) => {
