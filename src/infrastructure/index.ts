@@ -1,4 +1,6 @@
+import fs from 'fs';
 import axios from 'axios';
+import csvParseSync from 'csv-parse/lib/sync';
 import { Adapters } from './adapters';
 import createFetchCrossrefArticle from './fetch-crossref-article';
 import createFetchDataciteReview from './fetch-datacite-review';
@@ -22,6 +24,7 @@ import bootstrapEndorsements from '../data/bootstrap-endorsements';
 import events from '../data/bootstrap-events';
 import bootstrapReviews from '../data/bootstrap-reviews';
 import Doi from '../types/doi';
+import { DomainEvent } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import EndorsementsRepository from '../types/endorsements-repository';
@@ -77,6 +80,12 @@ const getJson = async (uri: string): Promise<Json> => {
   return response.data;
 };
 
+const getEventsFromDataFiles = (logger: Logger): Array<DomainEvent> => {
+  const fileContents = fs.readFileSync('./src/data/endorsements/53ed5364-a016-11ea-bb37-0242ac130002.csv');
+  logger('debug', 'Parsed PeerJ endorsements', { parsedFileContents: csvParseSync(fileContents) });
+  return [];
+};
+
 const createInfrastructure = (): Adapters => {
   const logger = createRTracerLogger(
     createStreamLogger(
@@ -91,6 +100,7 @@ const createInfrastructure = (): Adapters => {
   const searchEuropePmc = createSearchEuropePmc(getJson, logger);
   const editorialCommunities = populateEditorialCommunities(logger);
 
+  getEventsFromDataFiles(logger);
   return {
     fetchArticle: createFetchCrossrefArticle(getXml, logger),
     getBiorxivCommentCount: createGetBiorxivCommentCount(createGetDisqusPostCount(getJson, logger), logger),
