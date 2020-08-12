@@ -131,5 +131,7 @@ find-elife-reviews: build
 		$(IMAGE):$(IMAGE_TAG)-dev \
 		npx ts-node scripts/find-reviews-from-hypothesis q5X6RWJ6 | tee ./data/reviews/b560187e-f2fb-4ff9-a861-a204f3fc0fb0.csv
 
+update-event-data: find-elife-endorsements find-peerj-endorsements find-review-commons-reviews find-elife-reviews
+
 release:
 	TAG=latest/$$(date +%Y%m%d%H%M); git tag $$TAG && git push origin $$TAG

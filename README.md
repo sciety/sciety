@@ -18,6 +18,7 @@ Table of contents
 1. [Operations](#operations)
    1. [Releasing to production](#releasing-to-production)
    1. [Looking at logs](#looking-at-logs)
+   1. [Updating event data](#updating-event-data)
 1. [License](#license)
 
 Development
@@ -117,6 +118,12 @@ Logs of all Pods are streamed to [AWS CloudWatch][AWS CloudWatch logs] for persi
 A [CloudWatch dashboard] graphs log lines representing errors and shows the state of the alarm.
 
 An [monitoring SNS topic] triggers a [lambda function that notifies the Slack #prc-general channel][monitoring lambda].
+
+### Updating event data
+
+Run `make -j 4 update-event-data`.
+
+Substitute `4` with the desired concurrency level.
 
 License
 -------
