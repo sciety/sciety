@@ -3,6 +3,7 @@ set -e
 
 function finish() {
   echo "Stopping $container"
+  docker logs "$container"
   docker stop "$container"
 }
 
