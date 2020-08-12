@@ -12,6 +12,9 @@ type HypothesisResponse = JsonCompatible<{
 
 void (async (): Promise<void> => {
   const { data } = await axios.get<HypothesisResponse>(`https://api.hypothes.is/api/search?group=${publisherGroupId}`);
+  process.stdout.write('Date,Article URI\n');
 
-  process.stdout.write(JSON.stringify(data, undefined, 2));
+  data.rows.forEach((row) => {
+    process.stdout.write(`${row.created},${row.uri}\n`);
+  });
 })();
