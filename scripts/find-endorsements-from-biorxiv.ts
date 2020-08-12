@@ -2,7 +2,7 @@ import axios from 'axios';
 import Doi from '../src/types/doi';
 import { JsonCompatible } from '../src/types/json';
 
-const publisherDoiPrefix = '10.7717';
+const publisherDoiPrefix = process.argv[2];
 
 type BiorxivResponse = JsonCompatible<{
   messages: Array<{

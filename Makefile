@@ -110,7 +110,7 @@ find-peerj-endorsements: build
 		-v $(DATA_VOLUME)/scripts:/app/scripts \
 		-v $(DATA_VOLUME)/src:/app/src \
 		$(IMAGE):$(IMAGE_TAG)-dev \
-		npx ts-node scripts/find-peerj-endorsements
+		npx ts-node scripts/find-endorsements-from-biorxiv 10.7717
 
 release:
 	TAG=latest/$$(date +%Y%m%d%H%M); git tag $$TAG && git push origin $$TAG
