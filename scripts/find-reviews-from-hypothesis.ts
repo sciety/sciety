@@ -11,7 +11,7 @@ type HypothesisResponse = JsonCompatible<{
 }>;
 
 void (async (): Promise<void> => {
-  const { data } = await axios.get<HypothesisResponse>(`https://api.hypothes.is/api/search?group=${publisherGroupId}`);
+  const { data } = await axios.get<HypothesisResponse>(`https://api.hypothes.is/api/search?group=${publisherGroupId}&limit=200`);
   process.stdout.write('Date,Article DOI\n');
 
   data.rows.forEach((row) => {

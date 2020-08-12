@@ -120,7 +120,7 @@ find-review-commons-reviews: build
 		-v $(DATA_VOLUME)/scripts:/app/scripts \
 		-v $(DATA_VOLUME)/src:/app/src \
 		$(IMAGE):$(IMAGE_TAG)-dev \
-		npx ts-node scripts/find-reviews-from-hypothesis
+		npx ts-node scripts/find-reviews-from-hypothesis | tee ./data/reviews/316db7d9-88cc-4c26-b386-f067e0f56334.csv
 
 release:
 	TAG=latest/$$(date +%Y%m%d%H%M); git tag $$TAG && git push origin $$TAG
