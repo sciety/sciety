@@ -30,6 +30,7 @@ import EditorialCommunityRepository from '../types/editorial-community-repositor
 import EndorsementsRepository from '../types/endorsements-repository';
 import HypothesisAnnotationId from '../types/hypothesis-annotation-id';
 import { Json } from '../types/json';
+import { NonEmptyArray } from '../types/non-empty-array';
 import { ReviewId } from '../types/review-id';
 import ReviewReferenceRepository from '../types/review-reference-repository';
 
@@ -80,10 +81,10 @@ const getJson = async (uri: string): Promise<Json> => {
   return response.data;
 };
 
-const getEventsFromDataFiles = (logger: Logger): Array<DomainEvent> => {
+const getEventsFromDataFiles = (logger: Logger): ReadonlyArray<DomainEvent> => {
   const editorialCommunityId = '53ed5364-a016-11ea-bb37-0242ac130002';
   const fileContents = fs.readFileSync(`./data/endorsements/${editorialCommunityId}.csv`);
-  const parsedEvents = csvParseSync(fileContents, { fromLine: 2 })
+  const parsedEvents: ReadonlyArray<DomainEvent> = csvParseSync(fileContents, { fromLine: 2 })
     .map(([date, articleDoi]: [string, string]) => ({
       type: 'ArticleEndorsed',
       date: new Date(date),
@@ -92,7 +93,7 @@ const getEventsFromDataFiles = (logger: Logger): Array<DomainEvent> => {
     }));
 
   logger('debug', 'Parsed PeerJ endorsements', { parsedEvents });
-  return [];
+  return parsedEvents;
 };
 
 const createInfrastructure = (): Adapters => {
@@ -119,7 +120,10 @@ const createInfrastructure = (): Adapters => {
     editorialCommunities,
     endorsements: populateEndorsementsRepository(logger),
     reviewReferenceRepository: populateReviewReferenceRepository(editorialCommunities, logger),
-    filterEvents: createFilterEvents(events),
+    filterEvents: createFilterEvents([
+      ...events,
+      ...getEventsFromDataFiles(logger),
+    ] as unknown as NonEmptyArray<DomainEvent>),
     logger,
   };
 };
