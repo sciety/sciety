@@ -100,6 +100,17 @@ const getEventsFromDataFiles = (): ReadonlyArray<DomainEvent> => {
       })));
   }
 
+  for (const editorialCommunityId of editorialCommunities) {
+    const fileContents = fs.readFileSync(`./data/reviews/${editorialCommunityId}.csv`);
+    parsedEvents.push(...csvParseSync(fileContents, { fromLine: 2 })
+      .map(([date, articleDoi]: [string, string]) => ({
+        type: 'ArticleReviewed',
+        date: new Date(date),
+        actorId: new EditorialCommunityId(editorialCommunityId),
+        articleId: new Doi(articleDoi),
+      })));
+  }
+
   const fileContents = fs.readFileSync('./data/editorial-community-joined.csv');
   parsedEvents.push(...csvParseSync(fileContents, { fromLine: 2 })
     .map(([date, editorialCommunityId]: [string, string]) => ({
