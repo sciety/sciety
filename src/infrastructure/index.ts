@@ -20,7 +20,6 @@ import {
 } from './logger';
 import createSearchEuropePmc from './search-europe-pmc';
 import bootstrapEditorialCommunities from '../data/bootstrap-editorial-communities';
-import bootstrapReviews from '../data/bootstrap-reviews';
 import Doi from '../types/doi';
 import { DomainEvent, isArticleEndorsedEvent, isArticleReviewedEvent } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
@@ -48,28 +47,8 @@ const populateEndorsementsRepository = (
 
 const populateReviewReferenceRepository = (
   events: ReadonlyArray<DomainEvent>,
-  editorialCommunities: EditorialCommunityRepository,
   logger: Logger,
-): ReviewReferenceRepository => {
-  const repository = createReviewReferenceRepository(events.filter(isArticleReviewedEvent), logger);
-  for (const {
-    article, review, editorialCommunityIndex, added,
-  } of bootstrapReviews) {
-    let reviewId: ReviewId;
-    try {
-      reviewId = new Doi(review);
-    } catch {
-      reviewId = new HypothesisAnnotationId(review);
-    }
-    void repository.add(
-      new Doi(article),
-      reviewId,
-      editorialCommunities.all()[editorialCommunityIndex].id,
-      added,
-    );
-  }
-  return repository;
-};
+): ReviewReferenceRepository => createReviewReferenceRepository(events.filter(isArticleReviewedEvent), logger);
 
 const getJson = async (uri: string): Promise<Json> => {
   const response = await axios.get<Json>(uri);
@@ -155,7 +134,7 @@ const createInfrastructure = (): Adapters => {
     searchEuropePmc,
     editorialCommunities,
     endorsements: populateEndorsementsRepository(events),
-    reviewReferenceRepository: populateReviewReferenceRepository(events, editorialCommunities, logger),
+    reviewReferenceRepository: populateReviewReferenceRepository(events, logger),
     filterEvents: createFilterEvents(events),
     logger,
   };

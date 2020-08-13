@@ -12,11 +12,11 @@ describe('review-reference-repository', () => {
   const editorialCommunity1 = new EditorialCommunityId('community-1');
   const editorialCommunity2 = new EditorialCommunityId('community-2');
 
-  beforeEach(() => {
-    reviewReferenceRepository = createReviewReferenceRepository([], dummyLogger);
-  });
-
   describe('when empty', () => {
+    beforeEach(() => {
+      reviewReferenceRepository = createReviewReferenceRepository([], dummyLogger);
+    });
+
     it('has no review references for any article version', async () => {
       expect(await reviewReferenceRepository.findReviewsForArticleVersionDoi(article1)).toHaveLength(0);
     });
@@ -32,9 +32,32 @@ describe('review-reference-repository', () => {
     const reviewId3 = new Doi('10.7777/3');
 
     beforeEach(async () => {
-      await reviewReferenceRepository.add(article1, reviewId1, editorialCommunity1, new Date('2020-05-19T00:00:00Z'));
-      await reviewReferenceRepository.add(article2, reviewId2, editorialCommunity1, new Date('2020-05-21T00:00:00Z'));
-      await reviewReferenceRepository.add(article1, reviewId3, editorialCommunity2, new Date('2020-05-20T00:00:00Z'));
+      reviewReferenceRepository = createReviewReferenceRepository(
+        [
+          {
+            type: 'ArticleReviewed',
+            articleId: article1,
+            reviewId: reviewId1,
+            actorId: editorialCommunity1,
+            date: new Date('2020-05-19T00:00:00Z'),
+          },
+          {
+            type: 'ArticleReviewed',
+            articleId: article2,
+            reviewId: reviewId2,
+            actorId: editorialCommunity1,
+            date: new Date('2020-05-21T00:00:00Z'),
+          },
+          {
+            type: 'ArticleReviewed',
+            articleId: article1,
+            reviewId: reviewId3,
+            actorId: editorialCommunity2,
+            date: new Date('2020-05-20T00:00:00Z'),
+          },
+        ],
+        dummyLogger,
+      );
     });
 
     it('is an iterable', () => {

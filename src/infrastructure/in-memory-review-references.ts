@@ -3,8 +3,13 @@ import { ArticleReviewedEvent } from '../types/domain-events';
 import ReviewReference from '../types/review-reference';
 import ReviewReferenceRepository from '../types/review-reference-repository';
 
-export default (_events: ReadonlyArray<ArticleReviewedEvent>, logger: Logger): ReviewReferenceRepository => {
-  const reviewReferences: Array<ReviewReference> = [];
+export default (events: ReadonlyArray<ArticleReviewedEvent>, logger: Logger): ReviewReferenceRepository => {
+  const reviewReferences: Array<ReviewReference> = events.map((event) => ({
+    articleVersionDoi: event.articleId,
+    reviewId: event.reviewId,
+    editorialCommunityId: event.actorId,
+    added: event.date,
+  }));
 
   const reviewReferenceRepository: ReviewReferenceRepository = {
     add: async (articleVersionDoi, reviewId, editorialCommunityId, added) => {
