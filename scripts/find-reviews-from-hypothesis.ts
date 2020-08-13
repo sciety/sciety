@@ -6,6 +6,7 @@ const publisherGroupId = process.argv[2];
 type HypothesisResponse = JsonCompatible<{
   total: number,
   rows: Array<{
+    id: string,
     created: string,
     uri: string,
   }>
@@ -14,7 +15,7 @@ type HypothesisResponse = JsonCompatible<{
 void (async (): Promise<void> => {
   const perPage = 200;
   const { data: firstPage } = await axios.get<HypothesisResponse>(`https://api.hypothes.is/api/search?group=${publisherGroupId}&uri.parts=biorxiv&limit=${perPage}`);
-  process.stdout.write('Date,Article DOI\n');
+  process.stdout.write('Date,Article DOI,Review ID\n');
 
   firstPage.rows.forEach((row) => {
     const doiRegex = '(10\\.[0-9]{4,}(?:\\.[1-9][0-9]*)*/(?:[^%"#?\\s])+)';
@@ -23,7 +24,7 @@ void (async (): Promise<void> => {
       throw new Error(`Cannot parse a DOI out of '${row.uri}'`);
     }
     const doi = matches[1];
-    process.stdout.write(`${row.created},${doi}\n`);
+    process.stdout.write(`${row.created},${doi},hypothesis:${row.id}\n`);
   });
 
   const numRequestsNeeded = Math.ceil(firstPage.total / perPage);
@@ -38,7 +39,7 @@ void (async (): Promise<void> => {
         throw new Error(`Cannot parse a DOI out of '${row.uri}'`);
       }
       const doi = matches[1];
-      process.stdout.write(`${row.created},${doi}\n`);
+      process.stdout.write(`${row.created},${doi},hypothesis:${row.id}\n`);
     });
   }
 })();
