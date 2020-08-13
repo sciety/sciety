@@ -69,15 +69,15 @@ build:
 	$(DOCKER) build -t $(IMAGE):$(IMAGE_TAG)$${image_tag_suffix} . --target $(TARGET)
 
 deps: export TARGET = dev
-deps: $(DOCDIR)/folders.png $(DOCDIR)/modules.png
+deps: $(DOCDIR)/folders.svg $(DOCDIR)/modules.svg
 
-$(DOCDIR)/folders.png: $(DOCDIR) build
+$(DOCDIR)/folders.svg: $(DOCDIR) build
 	$(DOCKER) run \
 		-v $(DATA_VOLUME)/docs:/app/docs \
 		$(IMAGE):$(IMAGE_TAG)-dev \
 		npm run deps:folders
 
-$(DOCDIR)/modules.png: $(DOCDIR) build
+$(DOCDIR)/modules.svg: $(DOCDIR) build
 	$(DOCKER) run \
 		-v $(DATA_VOLUME)/docs:/app/docs \
 		$(IMAGE):$(IMAGE_TAG)-dev \
