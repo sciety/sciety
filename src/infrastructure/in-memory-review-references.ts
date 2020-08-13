@@ -1,23 +1,24 @@
 import { ArticleReviewedEvent } from '../types/domain-events';
 import ReviewReferenceRepository from '../types/review-reference-repository';
 
-export default (events: ReadonlyArray<ArticleReviewedEvent>): ReviewReferenceRepository => {
-  const reviewReferences = events.map((event) => ({
-    articleVersionDoi: event.articleId,
-    reviewId: event.reviewId,
-    editorialCommunityId: event.actorId,
-    added: event.date,
-  }));
+export default (events: ReadonlyArray<ArticleReviewedEvent>): ReviewReferenceRepository => ({
+  findReviewsForArticleVersionDoi: async (articleVersionDoi) => (
+    events
+      .filter((event) => event.articleId.value === articleVersionDoi.value)
+      .map((event) => ({
+        reviewId: event.reviewId,
+        editorialCommunityId: event.actorId,
+        added: event.date,
+      }))
+  ),
 
-  return {
-    findReviewsForArticleVersionDoi: async (articleVersionDoi) => (
-      reviewReferences
-        .filter((reference) => reference.articleVersionDoi.value === articleVersionDoi.value)
-    ),
-
-    findReviewsForEditorialCommunityId: async (editorialCommunityId) => (
-      reviewReferences
-        .filter((reference) => reference.editorialCommunityId.value === editorialCommunityId.value)
-    ),
-  };
-};
+  findReviewsForEditorialCommunityId: async (editorialCommunityId) => (
+    events
+      .filter((event) => event.actorId.value === editorialCommunityId.value)
+      .map((event) => ({
+        articleVersionDoi: event.articleId,
+        reviewId: event.reviewId,
+        added: event.date,
+      }))
+  ),
+});
