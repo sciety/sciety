@@ -138,7 +138,7 @@ find-peerj-reviews: build
 		-v $(DATA_VOLUME)/scripts:/app/scripts \
 		-v $(DATA_VOLUME)/src:/app/src \
 		$(IMAGE):$(IMAGE_TAG)-dev \
-		npx ts-node scripts/find-reviews-from-crossref-via-biorxiv | tee ./data/reviews/53ed5364-a016-11ea-bb37-0242ac130002.csv
+		npx ts-node scripts/find-reviews-from-crossref-via-biorxiv 10.7717 10.7287 | tee ./data/reviews/53ed5364-a016-11ea-bb37-0242ac130002.csv
 
 update-event-data: find-elife-endorsements find-peerj-endorsements find-review-commons-reviews find-elife-reviews find-peerj-reviews
 

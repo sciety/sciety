@@ -1,5 +1,8 @@
 import axios from 'axios';
 
+const publisherDoiPrefix = process.argv[2];
+const publisherReviewDoiPrefix = process.argv[3];
+
 type BiorxivResponse = {
   messages: Array<{
     cursor: number | string,
@@ -28,6 +31,8 @@ type CrossrefResponse ={
 };
 
 void (async (): Promise<void> => {
+  const today = new Date().toISOString().split('T')[0];
+
   process.stdout.write('Date,Article DOI,Review ID\n');
 
   let offset = 0;
@@ -35,7 +40,7 @@ void (async (): Promise<void> => {
   do {
     // eslint-disable-next-line no-await-in-loop
     const { data: biorxivData } = await axios.get<BiorxivResponse>(
-      `https://api.biorxiv.org/publisher/10.7717/2000-01-01/2020-08-13/${offset}`,
+      `https://api.biorxiv.org/publisher/${publisherDoiPrefix}/2000-01-01/${today}/${offset}`,
     );
     const { count } = biorxivData.messages[0];
     total = biorxivData.messages[0].total;
@@ -47,7 +52,7 @@ void (async (): Promise<void> => {
       // specify a User-Agent: https://github.com/CrossRef/rest-api-doc/issues/491
       // eslint-disable-next-line no-await-in-loop
       const { data } = await axios.get<CrossrefResponse>(
-        `https://api.crossref.org/prefixes/10.7287/works?rows=1000&filter=type:peer-review,relation.object:${publishedDoi}`,
+        `https://api.crossref.org/prefixes/${publisherReviewDoiPrefix}/works?rows=1000&filter=type:peer-review,relation.object:${publishedDoi}`,
         { headers: { 'User-Agent': 'TheHive (http://hive.review; mailto:team@hive.review)' } },
       );
 
