@@ -42,9 +42,8 @@ const populateEditorialCommunities = (logger: Logger): EditorialCommunityReposit
 
 const populateEndorsementsRepository = (
   events: ReadonlyArray<DomainEvent>,
-  logger: Logger,
 ): EndorsementsRepository => (
-  createEndorsementsRepository(events.filter(isArticleEndorsedEvent), logger)
+  createEndorsementsRepository(events.filter(isArticleEndorsedEvent))
 );
 
 const populateReviewReferenceRepository = (
@@ -142,7 +141,7 @@ const createInfrastructure = (): Adapters => {
     fetchStaticFile: createFetchStaticFile(logger),
     searchEuropePmc,
     editorialCommunities,
-    endorsements: populateEndorsementsRepository(events, logger),
+    endorsements: populateEndorsementsRepository(events),
     reviewReferenceRepository: populateReviewReferenceRepository(editorialCommunities, logger),
     filterEvents: createFilterEvents(events),
     logger,

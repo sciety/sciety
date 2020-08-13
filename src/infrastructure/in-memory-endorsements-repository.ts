@@ -1,4 +1,3 @@
-import { Logger } from './logger';
 import Doi from '../types/doi';
 import { ArticleEndorsedEvent } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
@@ -11,23 +10,13 @@ interface Endorsement {
 
 export default (
   events: ReadonlyArray<ArticleEndorsedEvent>,
-  logger: Logger,
 ): EndorsementsRepository => {
   const data: Array<Endorsement> = events.map((event) => ({
     article: event.articleId,
     editorialCommunity: event.actorId,
   }));
 
-  const repository: EndorsementsRepository = {
-
-    add: async (doi, editorialCommunityId) => {
-      data.push({
-        article: doi,
-        editorialCommunity: editorialCommunityId,
-      });
-      logger('info', 'Endorsement added', { doi, editorialCommunityId });
-    },
-
+  return {
     endorsingEditorialCommunityIds: async (doi) => (
       data
         .filter((e) => e.article.value === doi.value)
@@ -40,5 +29,4 @@ export default (
         .map((e) => e.article)
     ),
   };
-  return repository;
 };
