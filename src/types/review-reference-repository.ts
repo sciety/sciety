@@ -1,12 +1,21 @@
 import Doi from './doi';
 import EditorialCommunityId from './editorial-community-id';
-import ReviewReference from './review-reference';
+import { ReviewId } from './review-id';
 
 export default interface ReviewReferenceRepository {
   findReviewsForArticleVersionDoi(
     articleVersionDoi: Doi,
-  ): Promise<Array<ReviewReference>>;
+  ): Promise<Array<{
+    reviewId: ReviewId;
+    editorialCommunityId: EditorialCommunityId;
+    added: Date;
+  }>>;
+
   findReviewsForEditorialCommunityId(
     editorialCommunityId: EditorialCommunityId,
-  ): Promise<Array<ReviewReference>>;
+  ): Promise<Array<{
+    articleVersionDoi: Doi;
+    reviewId: ReviewId;
+    added: Date;
+  }>>;
 }
