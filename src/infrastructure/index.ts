@@ -90,7 +90,7 @@ const getEventsFromDataFiles = (): ReadonlyArray<DomainEvent> => {
   for (const editorialCommunityId of editorialCommunities) {
     const fileContents = fs.readFileSync(`./data/endorsements/${editorialCommunityId}.csv`);
     parsedEvents.push(...csvParseSync(fileContents, { fromLine: 2 })
-      .map(([date, articleDoi]: [string, string]) => ({
+      .map(([date, articleDoi]: [string, string]): DomainEvent => ({
         type: 'ArticleEndorsed',
         date: new Date(date),
         actorId: new EditorialCommunityId(editorialCommunityId),
@@ -98,20 +98,32 @@ const getEventsFromDataFiles = (): ReadonlyArray<DomainEvent> => {
       })));
   }
 
+  const unserializeReviewId = (reviewId: string): ReviewId => {
+    const [protocol, value] = reviewId.split(':', 2);
+    switch (protocol) {
+      case 'doi':
+        return new Doi(value);
+      case 'hypothesis':
+        return new HypothesisAnnotationId(value);
+      default:
+        throw new Error(`Unable to unserialize ReviewId: "${reviewId}"`);
+    }
+  };
   for (const editorialCommunityId of editorialCommunities) {
     const fileContents = fs.readFileSync(`./data/reviews/${editorialCommunityId}.csv`);
     parsedEvents.push(...csvParseSync(fileContents, { fromLine: 2 })
-      .map(([date, articleDoi]: [string, string]) => ({
+      .map(([date, articleDoi, reviewId]: [string, string, string]): DomainEvent => ({
         type: 'ArticleReviewed',
         date: new Date(date),
         actorId: new EditorialCommunityId(editorialCommunityId),
         articleId: new Doi(articleDoi),
+        reviewId: unserializeReviewId(reviewId),
       })));
   }
 
   const fileContents = fs.readFileSync('./data/editorial-community-joined.csv');
   parsedEvents.push(...csvParseSync(fileContents, { fromLine: 2 })
-    .map(([date, editorialCommunityId]: [string, string]) => ({
+    .map(([date, editorialCommunityId]: [string, string]): DomainEvent => ({
       type: 'EditorialCommunityJoined',
       date: new Date(date),
       actorId: new EditorialCommunityId(editorialCommunityId),

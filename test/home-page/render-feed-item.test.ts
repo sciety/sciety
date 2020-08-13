@@ -51,6 +51,7 @@ describe('render-feed-item', (): void => {
         date: new Date(),
         actorId: arbitraryActorId,
         articleId: arbitraryArticleId,
+        reviewId: new Doi('10.1234/5678'),
       };
       const getArticle: GetArticle = async () => ({
         title: articleTitle,

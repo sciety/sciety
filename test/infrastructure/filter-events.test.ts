@@ -26,6 +26,7 @@ describe('filter-events', () => {
         date: new Date('2020-07-09'),
         actorId: editorialCommunity1,
         articleId: new Doi('10.1101/2020.01.22.915660'),
+        reviewId: new Doi('10.1234/5678'),
       },
     ];
     const filterEvents = createFilterEvents(initial);
@@ -48,6 +49,7 @@ describe('filter-events', () => {
         date: new Date('2020-07-09'),
         actorId: editorialCommunity1,
         articleId: new Doi('10.1101/2020.01.22.915660'),
+        reviewId: new Doi('10.1234/5678'),
       },
     ];
     const filterEvents = createFilterEvents(initial);

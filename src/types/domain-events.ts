@@ -1,5 +1,6 @@
 import Doi from './doi';
 import EditorialCommunityId from './editorial-community-id';
+import { ReviewId } from './review-id';
 
 export type ArticleEndorsedEvent = {
   type: 'ArticleEndorsed';
@@ -17,6 +18,7 @@ export type ArticleReviewedEvent = {
   date: Date;
   actorId: EditorialCommunityId;
   articleId: Doi;
+  reviewId: ReviewId;
 };
 
 export const isArticleReviewedEvent = (event: DomainEvent): event is ArticleReviewedEvent => (
