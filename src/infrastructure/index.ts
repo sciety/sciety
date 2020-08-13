@@ -22,7 +22,7 @@ import createSearchEuropePmc from './search-europe-pmc';
 import bootstrapEditorialCommunities from '../data/bootstrap-editorial-communities';
 import bootstrapReviews from '../data/bootstrap-reviews';
 import Doi from '../types/doi';
-import { DomainEvent, isArticleEndorsedEvent } from '../types/domain-events';
+import { DomainEvent, isArticleEndorsedEvent, isArticleReviewedEvent } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import EndorsementsRepository from '../types/endorsements-repository';
@@ -47,10 +47,11 @@ const populateEndorsementsRepository = (
 );
 
 const populateReviewReferenceRepository = (
+  events: ReadonlyArray<DomainEvent>,
   editorialCommunities: EditorialCommunityRepository,
   logger: Logger,
 ): ReviewReferenceRepository => {
-  const repository = createReviewReferenceRepository(logger);
+  const repository = createReviewReferenceRepository(events.filter(isArticleReviewedEvent), logger);
   for (const {
     article, review, editorialCommunityIndex, added,
   } of bootstrapReviews) {
@@ -154,7 +155,7 @@ const createInfrastructure = (): Adapters => {
     searchEuropePmc,
     editorialCommunities,
     endorsements: populateEndorsementsRepository(events),
-    reviewReferenceRepository: populateReviewReferenceRepository(editorialCommunities, logger),
+    reviewReferenceRepository: populateReviewReferenceRepository(events, editorialCommunities, logger),
     filterEvents: createFilterEvents(events),
     logger,
   };

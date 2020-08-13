@@ -1,8 +1,9 @@
 import { Logger } from './logger';
+import { ArticleReviewedEvent } from '../types/domain-events';
 import ReviewReference from '../types/review-reference';
 import ReviewReferenceRepository from '../types/review-reference-repository';
 
-export default (logger: Logger): ReviewReferenceRepository => {
+export default (_events: ReadonlyArray<ArticleReviewedEvent>, logger: Logger): ReviewReferenceRepository => {
   const reviewReferences: Array<ReviewReference> = [];
 
   const reviewReferenceRepository: ReviewReferenceRepository = {

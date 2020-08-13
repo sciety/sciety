@@ -13,7 +13,7 @@ describe('review-reference-repository', () => {
   const editorialCommunity2 = new EditorialCommunityId('community-2');
 
   beforeEach(() => {
-    reviewReferenceRepository = createReviewReferenceRepository(dummyLogger);
+    reviewReferenceRepository = createReviewReferenceRepository([], dummyLogger);
   });
 
   describe('when empty', () => {
