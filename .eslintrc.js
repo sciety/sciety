@@ -60,6 +60,7 @@ module.exports = {
       ignoreTemplateLiterals: true,
       ignoreUrls: true,
     }],
+    'no-await-in-loop': 'off',
     'no-restricted-syntax': ['error', ...[
       'ForInStatement',
       'LabeledStatement',

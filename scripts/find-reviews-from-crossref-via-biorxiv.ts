@@ -38,7 +38,6 @@ void (async (): Promise<void> => {
   let offset = 0;
   let total: number;
   do {
-    // eslint-disable-next-line no-await-in-loop
     const { data: biorxivData } = await axios.get<BiorxivResponse>(
       `https://api.biorxiv.org/publisher/${publisherDoiPrefix}/2000-01-01/${today}/${offset}`,
     );
@@ -50,7 +49,6 @@ void (async (): Promise<void> => {
       const biorxivDoi = biorxivItem.biorxiv_doi;
 
       // specify a User-Agent: https://github.com/CrossRef/rest-api-doc/issues/491
-      // eslint-disable-next-line no-await-in-loop
       const { data } = await axios.get<CrossrefResponse>(
         `https://api.crossref.org/prefixes/${publisherReviewDoiPrefix}/works?rows=1000&filter=type:peer-review,relation.object:${publishedDoi}`,
         { headers: { 'User-Agent': 'TheHive (http://hive.review; mailto:team@hive.review)' } },

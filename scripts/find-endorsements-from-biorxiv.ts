@@ -28,7 +28,6 @@ void (async (): Promise<void> => {
   const { count } = firstPage.messages[0];
   const numRequestsNeeded = Math.ceil(firstPage.messages[0].total / count);
   for (let i = 1; i < numRequestsNeeded; i += 1) {
-    // eslint-disable-next-line no-await-in-loop
     const { data } = await axios.get<BiorxivResponse>(`https://api.biorxiv.org/publisher/${publisherDoiPrefix}/2000-01-01/${today}/${count * i}`);
     endorsements = endorsements.concat(
       data.collection.map((item) => ({
