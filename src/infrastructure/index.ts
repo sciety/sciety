@@ -47,8 +47,7 @@ const populateEndorsementsRepository = (
 
 const populateReviewReferenceRepository = (
   events: ReadonlyArray<DomainEvent>,
-  logger: Logger,
-): ReviewReferenceRepository => createReviewReferenceRepository(events.filter(isArticleReviewedEvent), logger);
+): ReviewReferenceRepository => createReviewReferenceRepository(events.filter(isArticleReviewedEvent));
 
 const getJson = async (uri: string): Promise<Json> => {
   const response = await axios.get<Json>(uri);
@@ -134,7 +133,7 @@ const createInfrastructure = (): Adapters => {
     searchEuropePmc,
     editorialCommunities,
     endorsements: populateEndorsementsRepository(events),
-    reviewReferenceRepository: populateReviewReferenceRepository(events, logger),
+    reviewReferenceRepository: populateReviewReferenceRepository(events),
     filterEvents: createFilterEvents(events),
     logger,
   };

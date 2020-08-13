@@ -2,7 +2,6 @@ import createReviewReferenceRepository from '../../src/infrastructure/in-memory-
 import Doi from '../../src/types/doi';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
 import ReviewReferenceRepository from '../../src/types/review-reference-repository';
-import dummyLogger from '../dummy-logger';
 
 describe('review-reference-repository', () => {
   let reviewReferenceRepository: ReviewReferenceRepository;
@@ -14,7 +13,7 @@ describe('review-reference-repository', () => {
 
   describe('when empty', () => {
     beforeEach(() => {
-      reviewReferenceRepository = createReviewReferenceRepository([], dummyLogger);
+      reviewReferenceRepository = createReviewReferenceRepository([]);
     });
 
     it('has no review references for any article version', async () => {
@@ -32,32 +31,29 @@ describe('review-reference-repository', () => {
     const reviewId3 = new Doi('10.7777/3');
 
     beforeEach(async () => {
-      reviewReferenceRepository = createReviewReferenceRepository(
-        [
-          {
-            type: 'ArticleReviewed',
-            articleId: article1,
-            reviewId: reviewId1,
-            actorId: editorialCommunity1,
-            date: new Date('2020-05-19T00:00:00Z'),
-          },
-          {
-            type: 'ArticleReviewed',
-            articleId: article2,
-            reviewId: reviewId2,
-            actorId: editorialCommunity1,
-            date: new Date('2020-05-21T00:00:00Z'),
-          },
-          {
-            type: 'ArticleReviewed',
-            articleId: article1,
-            reviewId: reviewId3,
-            actorId: editorialCommunity2,
-            date: new Date('2020-05-20T00:00:00Z'),
-          },
-        ],
-        dummyLogger,
-      );
+      reviewReferenceRepository = createReviewReferenceRepository([
+        {
+          type: 'ArticleReviewed',
+          articleId: article1,
+          reviewId: reviewId1,
+          actorId: editorialCommunity1,
+          date: new Date('2020-05-19T00:00:00Z'),
+        },
+        {
+          type: 'ArticleReviewed',
+          articleId: article2,
+          reviewId: reviewId2,
+          actorId: editorialCommunity1,
+          date: new Date('2020-05-21T00:00:00Z'),
+        },
+        {
+          type: 'ArticleReviewed',
+          articleId: article1,
+          reviewId: reviewId3,
+          actorId: editorialCommunity2,
+          date: new Date('2020-05-20T00:00:00Z'),
+        },
+      ]);
     });
 
     it('is an iterable', () => {

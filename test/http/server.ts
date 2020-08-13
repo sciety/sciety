@@ -41,9 +41,22 @@ export default async (): Promise<TestServer> => {
   for (const editorialCommunity of bootstrapEditorialCommunities) {
     void editorialCommunities.add(editorialCommunity);
   }
-  const reviewReferenceRepository = createReviewReferenceRepository([], dummyLogger);
-  await reviewReferenceRepository.add(articleA, articleAReview1, editorialCommunities.all()[0].id, new Date('2020-05-19T14:00:00Z'));
-  await reviewReferenceRepository.add(articleB, articleBReview1, editorialCommunities.all()[1].id, new Date('2020-05-19T14:00:00Z'));
+  const reviewReferenceRepository = createReviewReferenceRepository([
+    {
+      type: 'ArticleReviewed',
+      date: new Date('2020-05-19T14:00:00Z'),
+      actorId: editorialCommunities.all()[0].id,
+      articleId: articleA,
+      reviewId: articleAReview1,
+    },
+    {
+      type: 'ArticleReviewed',
+      date: new Date('2020-05-19T14:00:00Z'),
+      actorId: editorialCommunities.all()[1].id,
+      articleId: articleB,
+      reviewId: articleBReview1,
+    },
+  ]);
   const fetchDataCiteDataset: FetchDataset = async () => (
     clownface({ dataset: datasetFactory(), term: namedNode('http://example.com/some-datacite-node') })
       .addOut(schema.datePublished, literal('2020-02-20', schema.Date))
