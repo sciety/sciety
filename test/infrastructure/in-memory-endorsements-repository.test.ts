@@ -12,7 +12,7 @@ describe('in-memory-endorsements-repository', () => {
   let repository: EndorsementsRepository;
 
   beforeEach(async () => {
-    repository = createEndorsementsRepository(dummyLogger);
+    repository = createEndorsementsRepository([], dummyLogger);
     await repository.add(endorsedArticleDoi, editorialCommunity1Id);
   });
 

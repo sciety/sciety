@@ -23,7 +23,7 @@ import bootstrapEditorialCommunities from '../data/bootstrap-editorial-communiti
 import bootstrapEndorsements from '../data/bootstrap-endorsements';
 import bootstrapReviews from '../data/bootstrap-reviews';
 import Doi from '../types/doi';
-import { DomainEvent } from '../types/domain-events';
+import { DomainEvent, isArticleEndorsedEvent } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import EndorsementsRepository from '../types/endorsements-repository';
@@ -41,8 +41,11 @@ const populateEditorialCommunities = (logger: Logger): EditorialCommunityReposit
   return repository;
 };
 
-const populateEndorsementsRepository = (logger: Logger): EndorsementsRepository => {
-  const repository = createEndorsementsRepository(logger);
+const populateEndorsementsRepository = (
+  events: ReadonlyArray<DomainEvent>,
+  logger: Logger,
+): EndorsementsRepository => {
+  const repository = createEndorsementsRepository(events.filter(isArticleEndorsedEvent), logger);
   for (const {
     article, editorialCommunity,
   } of bootstrapEndorsements) {
@@ -138,7 +141,7 @@ const createInfrastructure = (): Adapters => {
   const fetchHypothesisAnnotation = createFetchHypothesisAnnotation(getJson, logger);
   const searchEuropePmc = createSearchEuropePmc(getJson, logger);
   const editorialCommunities = populateEditorialCommunities(logger);
-
+  const events = getEventsFromDataFiles() as unknown as NonEmptyArray<DomainEvent>;
   return {
     fetchArticle: createFetchCrossrefArticle(getXml, logger),
     getBiorxivCommentCount: createGetBiorxivCommentCount(createGetDisqusPostCount(getJson, logger), logger),
@@ -146,9 +149,9 @@ const createInfrastructure = (): Adapters => {
     fetchStaticFile: createFetchStaticFile(logger),
     searchEuropePmc,
     editorialCommunities,
-    endorsements: populateEndorsementsRepository(logger),
+    endorsements: populateEndorsementsRepository(events, logger),
     reviewReferenceRepository: populateReviewReferenceRepository(editorialCommunities, logger),
-    filterEvents: createFilterEvents(getEventsFromDataFiles() as unknown as NonEmptyArray<DomainEvent>),
+    filterEvents: createFilterEvents(events),
     logger,
   };
 };

@@ -1,5 +1,6 @@
 import { Logger } from './logger';
 import Doi from '../types/doi';
+import { ArticleEndorsedEvent } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 import EndorsementsRepository from '../types/endorsements-repository';
 
@@ -9,6 +10,7 @@ interface Endorsement {
 }
 
 export default (
+  _events: ReadonlyArray<ArticleEndorsedEvent>,
   logger: Logger,
 ): EndorsementsRepository => {
   const data: Array<Endorsement> = [];
