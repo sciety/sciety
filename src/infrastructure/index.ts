@@ -20,7 +20,6 @@ import {
 } from './logger';
 import createSearchEuropePmc from './search-europe-pmc';
 import bootstrapEditorialCommunities from '../data/bootstrap-editorial-communities';
-import bootstrapEndorsements from '../data/bootstrap-endorsements';
 import bootstrapReviews from '../data/bootstrap-reviews';
 import Doi from '../types/doi';
 import { DomainEvent, isArticleEndorsedEvent } from '../types/domain-events';
@@ -44,15 +43,9 @@ const populateEditorialCommunities = (logger: Logger): EditorialCommunityReposit
 const populateEndorsementsRepository = (
   events: ReadonlyArray<DomainEvent>,
   logger: Logger,
-): EndorsementsRepository => {
-  const repository = createEndorsementsRepository(events.filter(isArticleEndorsedEvent), logger);
-  for (const {
-    article, editorialCommunity,
-  } of bootstrapEndorsements) {
-    void repository.add(new Doi(article), new EditorialCommunityId(editorialCommunity));
-  }
-  return repository;
-};
+): EndorsementsRepository => (
+  createEndorsementsRepository(events.filter(isArticleEndorsedEvent), logger)
+);
 
 const populateReviewReferenceRepository = (
   editorialCommunities: EditorialCommunityRepository,

@@ -10,10 +10,13 @@ interface Endorsement {
 }
 
 export default (
-  _events: ReadonlyArray<ArticleEndorsedEvent>,
+  events: ReadonlyArray<ArticleEndorsedEvent>,
   logger: Logger,
 ): EndorsementsRepository => {
-  const data: Array<Endorsement> = [];
+  const data: Array<Endorsement> = events.map((event) => ({
+    article: event.articleId,
+    editorialCommunity: event.actorId,
+  }));
 
   const repository: EndorsementsRepository = {
 

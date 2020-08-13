@@ -12,8 +12,14 @@ describe('in-memory-endorsements-repository', () => {
   let repository: EndorsementsRepository;
 
   beforeEach(async () => {
-    repository = createEndorsementsRepository([], dummyLogger);
-    await repository.add(endorsedArticleDoi, editorialCommunity1Id);
+    repository = createEndorsementsRepository([
+      {
+        type: 'ArticleEndorsed',
+        date: new Date(),
+        actorId: editorialCommunity1Id,
+        articleId: endorsedArticleDoi,
+      },
+    ], dummyLogger);
   });
 
   describe('endorsedBy', () => {
