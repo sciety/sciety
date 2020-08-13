@@ -131,7 +131,16 @@ find-elife-reviews: build
 		$(IMAGE):$(IMAGE_TAG)-dev \
 		npx ts-node scripts/find-reviews-from-hypothesis q5X6RWJ6 | tee ./data/reviews/b560187e-f2fb-4ff9-a861-a204f3fc0fb0.csv
 
-update-event-data: find-elife-endorsements find-peerj-endorsements find-review-commons-reviews find-elife-reviews
+find-peerj-reviews: export TARGET = dev
+find-peerj-reviews: build
+	$(DOCKER) run \
+		-v $(DATA_VOLUME)/build:/app/build \
+		-v $(DATA_VOLUME)/scripts:/app/scripts \
+		-v $(DATA_VOLUME)/src:/app/src \
+		$(IMAGE):$(IMAGE_TAG)-dev \
+		npx ts-node scripts/find-reviews-from-crossref-via-biorxiv | tee ./data/reviews/53ed5364-a016-11ea-bb37-0242ac130002.csv
+
+update-event-data: find-elife-endorsements find-peerj-endorsements find-review-commons-reviews find-elife-reviews find-peerj-reviews
 
 release:
 	TAG=latest/$$(date +%Y%m%d%H%M); git tag $$TAG && git push origin $$TAG
