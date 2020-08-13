@@ -11,10 +11,6 @@ export default (events: ReadonlyArray<ArticleReviewedEvent>): ReviewReferenceRep
   }));
 
   return {
-    [Symbol.iterator]: () => (
-      reviewReferences[Symbol.iterator]()
-    ),
-
     findReviewsForArticleVersionDoi: async (articleVersionDoi) => (
       reviewReferences
         .filter((reference) => reference.articleVersionDoi.value === articleVersionDoi.value)

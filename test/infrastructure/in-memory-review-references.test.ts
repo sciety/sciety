@@ -56,15 +56,6 @@ describe('review-reference-repository', () => {
       ]);
     });
 
-    it('is an iterable', () => {
-      const actualReviews = Array.from(reviewReferenceRepository)
-        .map((reviewReference) => reviewReference.reviewId)
-        .sort();
-      const expectedReviews = [reviewId1, reviewId2, reviewId3];
-
-      expect(actualReviews).toStrictEqual(expectedReviews);
-    });
-
     it.each([
       [article1, [reviewId1, reviewId3]],
       [article2, [reviewId2]],
