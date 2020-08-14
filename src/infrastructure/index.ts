@@ -13,10 +13,10 @@ import getEventsFromDataFiles from './get-events-from-data-files';
 import createGetXml from './get-xml';
 import createEditorialCommunityRepository from './in-memory-editorial-communities';
 import createEndorsementsRepository from './in-memory-endorsements-repository';
-import createReviewProjections from './in-memory-review-references';
 import {
   createJsonSerializer, createRTracerLogger, createStreamLogger, Logger,
 } from './logger';
+import createReviewProjections from './review-projections';
 import createSearchEuropePmc from './search-europe-pmc';
 import bootstrapEditorialCommunities from '../data/bootstrap-editorial-communities';
 import { DomainEvent, isArticleEndorsedEvent, isArticleReviewedEvent } from '../types/domain-events';

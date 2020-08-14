@@ -17,7 +17,7 @@ import createGetBiorxivCommentCount from '../../src/infrastructure/get-biorxiv-c
 import createGetDisqusPostCount from '../../src/infrastructure/get-disqus-post-count';
 import createEditorialCommunityRepository from '../../src/infrastructure/in-memory-editorial-communities';
 import createEndorsementsRepository from '../../src/infrastructure/in-memory-endorsements-repository';
-import createReviewProjections from '../../src/infrastructure/in-memory-review-references';
+import createReviewProjections from '../../src/infrastructure/review-projections';
 import EditorialCommunityRepository from '../../src/types/editorial-community-repository';
 import dummyLogger from '../dummy-logger';
 import shouldNotBeCalled from '../should-not-be-called';
