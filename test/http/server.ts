@@ -20,7 +20,6 @@ import createEndorsementsRepository from '../../src/infrastructure/in-memory-end
 import createReviewReferenceRepository from '../../src/infrastructure/in-memory-review-references';
 import Doi from '../../src/types/doi';
 import EditorialCommunityRepository from '../../src/types/editorial-community-repository';
-import ReviewReferenceRepository from '../../src/types/review-reference-repository';
 import dummyLogger from '../dummy-logger';
 import shouldNotBeCalled from '../should-not-be-called';
 
@@ -33,7 +32,6 @@ interface TestServer {
   adapters: Adapters,
   server: Server;
   editorialCommunities: EditorialCommunityRepository;
-  reviewReferenceRepository: ReviewReferenceRepository;
 }
 
 export default async (): Promise<TestServer> => {
@@ -85,7 +83,6 @@ export default async (): Promise<TestServer> => {
     searchEuropePmc: async () => ({ items: [], total: 0 }),
     editorialCommunities,
     endorsements: createEndorsementsRepository([]),
-    reviewReferenceRepository,
     findReviewsForArticleVersionDoi: reviewReferenceRepository.findReviewsForArticleVersionDoi,
     findReviewsForEditorialCommunityId: reviewReferenceRepository.findReviewsForEditorialCommunityId,
     filterEvents: async () => [],
@@ -97,6 +94,5 @@ export default async (): Promise<TestServer> => {
     adapters,
     server: createServer(router, dummyLogger),
     editorialCommunities,
-    reviewReferenceRepository,
   };
 };

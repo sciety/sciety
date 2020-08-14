@@ -8,7 +8,6 @@ import { Logger } from './logger';
 import { SearchEuropePmc } from './search-europe-pmc';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import EndorsementsRepository from '../types/endorsements-repository';
-import ReviewReferenceRepository from '../types/review-reference-repository';
 
 export interface Adapters {
   fetchArticle: FetchCrossrefArticle;
@@ -18,7 +17,6 @@ export interface Adapters {
   searchEuropePmc: SearchEuropePmc,
   editorialCommunities: EditorialCommunityRepository;
   endorsements: EndorsementsRepository,
-  reviewReferenceRepository: ReviewReferenceRepository;
   findReviewsForArticleVersionDoi: FindReviewsForArticleVersionDoi;
   findReviewsForEditorialCommunityId: FindReviewsForEditorialCommunityId;
   filterEvents: FilterEvents;

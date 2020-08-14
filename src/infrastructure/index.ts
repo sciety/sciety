@@ -136,7 +136,6 @@ const createInfrastructure = (): Adapters => {
     searchEuropePmc,
     editorialCommunities,
     endorsements: populateEndorsementsRepository(events),
-    reviewReferenceRepository,
     findReviewsForArticleVersionDoi,
     findReviewsForEditorialCommunityId,
     filterEvents: createFilterEvents(events),
