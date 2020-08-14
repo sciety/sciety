@@ -13,13 +13,12 @@ import createRenderReview, {
   GetEditorialCommunityName as GetEditorialCommunityNameForRenderReview,
   GetReview,
 } from './render-review';
-import createRenderReviews, { RenderReviews } from './render-reviews';
+import createRenderReviews, { GetReviews, RenderReviews } from './render-reviews';
 import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import EndorsementsRepository from '../types/endorsements-repository';
 import { FetchExternalArticle } from '../types/fetch-external-article';
-import ReviewReferenceRepository from '../types/review-reference-repository';
 
 interface Ports {
   fetchArticle: FetchExternalArticle;
@@ -27,7 +26,7 @@ interface Ports {
   fetchReview: GetReview;
   editorialCommunities: EditorialCommunityRepository;
   endorsements: EndorsementsRepository,
-  reviewReferenceRepository: ReviewReferenceRepository;
+  findReviewsForArticleVersionDoi: GetReviews;
 }
 
 const reviewsId = 'reviews';
@@ -37,7 +36,7 @@ type GetEditorialCommunityName = (editorialCommunityId: EditorialCommunityId) =>
 const buildRenderPageHeader = (ports: Ports): RenderPageHeader => {
   const getArticleDetailsAdapter: GetArticleDetails = ports.fetchArticle;
   const reviewCountAdapter: GetReviewCount = async (articleDoi) => (
-    (await ports.reviewReferenceRepository.findReviewsForArticleVersionDoi(articleDoi)).length
+    (await ports.findReviewsForArticleVersionDoi(articleDoi)).length
   );
   const getEditorialCommunityName: GetEditorialCommunityName = async (editorialCommunityId) => (
     (await ports.editorialCommunities.lookup(editorialCommunityId)).unsafelyUnwrap().name
@@ -70,7 +69,7 @@ const buildRenderReviews = (ports: Ports): RenderReviews => {
   const renderReview = createRenderReview(ports.fetchReview, getEditorialCommunityName, 1500);
   return createRenderReviews(
     renderReview,
-    ports.reviewReferenceRepository.findReviewsForArticleVersionDoi,
+    ports.findReviewsForArticleVersionDoi,
     reviewsId,
   );
 };
