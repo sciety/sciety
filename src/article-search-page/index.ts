@@ -11,7 +11,6 @@ import EditorialCommunityId from '../types/editorial-community-id';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import EndorsementsRepository from '../types/endorsements-repository';
 import { ReviewId } from '../types/review-id';
-import ReviewReferenceRepository from '../types/review-reference-repository';
 
 type FindReviewsForArticleVersionDoi = (articleVersionDoi: Doi) => Promise<Array<{
   reviewId: ReviewId;
@@ -24,7 +23,6 @@ interface Ports {
   searchEuropePmc: FindArticles,
   editorialCommunities: EditorialCommunityRepository;
   endorsements: EndorsementsRepository,
-  reviewReferenceRepository: ReviewReferenceRepository;
   findReviewsForArticleVersionDoi: FindReviewsForArticleVersionDoi;
 }
 
