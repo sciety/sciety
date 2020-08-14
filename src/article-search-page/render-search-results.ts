@@ -25,7 +25,7 @@ export default (
     }
 
     return `
-      <p>${searchResults.total} search results.</p>
+      <p>Showing ${searchResults.items.length} of ${searchResults.total} results.</p>
       ${searchResultsList}
     `;
   }
