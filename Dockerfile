@@ -2,27 +2,18 @@ FROM node:14.5.0-alpine3.12 AS node
 ENV NODE_OPTIONS --unhandled-rejections=strict --enable-source-maps
 WORKDIR /app
 
-
-
-#
-# Stage: Production NPM install
-#
-FROM node AS npm-prod
-
 COPY package.json \
   package-lock.json \
   ./
-
-RUN npm install --production
 
 
 
 #
 # Stage: Development NPM install
 #
-FROM npm-prod AS npm-dev
+FROM node AS npm-dev
 
-RUN npm install
+RUN npm ci
 
 
 
@@ -58,6 +49,15 @@ FROM dev AS build-prod
 ENV NODE_ENV=production
 
 RUN npm run build
+
+
+
+#
+# Stage: Production NPM install
+#
+FROM node AS npm-prod
+
+RUN npm ci --production
 
 
 
