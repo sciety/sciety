@@ -18,15 +18,9 @@ import createGetDisqusPostCount from '../../src/infrastructure/get-disqus-post-c
 import createEditorialCommunityRepository from '../../src/infrastructure/in-memory-editorial-communities';
 import createEndorsementsRepository from '../../src/infrastructure/in-memory-endorsements-repository';
 import createReviewReferenceRepository from '../../src/infrastructure/in-memory-review-references';
-import Doi from '../../src/types/doi';
 import EditorialCommunityRepository from '../../src/types/editorial-community-repository';
 import dummyLogger from '../dummy-logger';
 import shouldNotBeCalled from '../should-not-be-called';
-
-const articleA = new Doi('10.1101/833392');
-const articleB = new Doi('10.1101/2020.03.22.002386');
-const articleAReview1 = new Doi('10.5281/zenodo.3678325');
-const articleBReview1 = new Doi('10.5281/zenodo.3756961');
 
 interface TestServer {
   adapters: Adapters,
@@ -39,22 +33,7 @@ export default async (): Promise<TestServer> => {
   for (const editorialCommunity of bootstrapEditorialCommunities) {
     void editorialCommunities.add(editorialCommunity);
   }
-  const reviewReferenceRepository = createReviewReferenceRepository([
-    {
-      type: 'ArticleReviewed',
-      date: new Date('2020-05-19T14:00:00Z'),
-      actorId: editorialCommunities.all()[0].id,
-      articleId: articleA,
-      reviewId: articleAReview1,
-    },
-    {
-      type: 'ArticleReviewed',
-      date: new Date('2020-05-19T14:00:00Z'),
-      actorId: editorialCommunities.all()[1].id,
-      articleId: articleB,
-      reviewId: articleBReview1,
-    },
-  ]);
+  const reviewReferenceRepository = createReviewReferenceRepository([]);
   const fetchDataCiteDataset: FetchDataset = async () => (
     clownface({ dataset: datasetFactory(), term: namedNode('http://example.com/some-datacite-node') })
       .addOut(schema.datePublished, literal('2020-02-20', schema.Date))

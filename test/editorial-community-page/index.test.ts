@@ -1,4 +1,3 @@
-import { JSDOM } from 'jsdom';
 import buildRenderPage from '../../src/editorial-community-page';
 import FollowList from '../../src/types/follow-list';
 import createServer from '../http/server';
@@ -20,12 +19,6 @@ describe('create render page', (): void => {
 
     it('has the editorial community description', async (): Promise<void> => {
       expect(renderedPage).toStrictEqual(expect.stringContaining('accelerate'));
-    });
-
-    it('displays a count of reviews', async (): Promise<void> => {
-      const rendered = JSDOM.fragment(renderedPage);
-
-      expect(rendered.querySelector('[data-test-id="reviewsCount"]')?.textContent).toStrictEqual('1');
     });
   });
 
