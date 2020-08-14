@@ -17,7 +17,7 @@ import createGetBiorxivCommentCount from '../../src/infrastructure/get-biorxiv-c
 import createGetDisqusPostCount from '../../src/infrastructure/get-disqus-post-count';
 import createEditorialCommunityRepository from '../../src/infrastructure/in-memory-editorial-communities';
 import createEndorsementsRepository from '../../src/infrastructure/in-memory-endorsements-repository';
-import createReviewReferenceRepository from '../../src/infrastructure/in-memory-review-references';
+import createReviewProjections from '../../src/infrastructure/in-memory-review-references';
 import EditorialCommunityRepository from '../../src/types/editorial-community-repository';
 import dummyLogger from '../dummy-logger';
 import shouldNotBeCalled from '../should-not-be-called';
@@ -33,7 +33,7 @@ export default async (): Promise<TestServer> => {
   for (const editorialCommunity of bootstrapEditorialCommunities) {
     void editorialCommunities.add(editorialCommunity);
   }
-  const reviewReferenceRepository = createReviewReferenceRepository([]);
+  const reviewProjections = createReviewProjections([]);
   const fetchDataCiteDataset: FetchDataset = async () => (
     clownface({ dataset: datasetFactory(), term: namedNode('http://example.com/some-datacite-node') })
       .addOut(schema.datePublished, literal('2020-02-20', schema.Date))
@@ -62,8 +62,7 @@ export default async (): Promise<TestServer> => {
     searchEuropePmc: async () => ({ items: [], total: 0 }),
     editorialCommunities,
     endorsements: createEndorsementsRepository([]),
-    findReviewsForArticleVersionDoi: reviewReferenceRepository.findReviewsForArticleVersionDoi,
-    findReviewsForEditorialCommunityId: reviewReferenceRepository.findReviewsForEditorialCommunityId,
+    ...reviewProjections,
     filterEvents: async () => [],
     logger: dummyLogger,
   };

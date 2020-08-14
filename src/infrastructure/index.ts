@@ -13,7 +13,7 @@ import getEventsFromDataFiles from './get-events-from-data-files';
 import createGetXml from './get-xml';
 import createEditorialCommunityRepository from './in-memory-editorial-communities';
 import createEndorsementsRepository from './in-memory-endorsements-repository';
-import createReviewReferenceRepository from './in-memory-review-references';
+import createReviewProjections from './in-memory-review-references';
 import {
   createJsonSerializer, createRTracerLogger, createStreamLogger, Logger,
 } from './logger';
@@ -24,7 +24,6 @@ import EditorialCommunityRepository from '../types/editorial-community-repositor
 import EndorsementsRepository from '../types/endorsements-repository';
 import { Json } from '../types/json';
 import { NonEmptyArray } from '../types/non-empty-array';
-import ReviewReferenceRepository from '../types/review-reference-repository';
 
 const populateEditorialCommunities = (logger: Logger): EditorialCommunityRepository => {
   const repository = createEditorialCommunityRepository(logger);
@@ -40,15 +39,6 @@ const populateEndorsementsRepository = (
   createEndorsementsRepository(events.filter(isArticleEndorsedEvent))
 );
 
-const populateReviewReferenceRepository = (
-  events: ReadonlyArray<DomainEvent>,
-): ReviewReferenceRepository => createReviewReferenceRepository(events.filter(isArticleReviewedEvent));
-
-const getJson = async (uri: string): Promise<Json> => {
-  const response = await axios.get<Json>(uri);
-  return response.data;
-};
-
 const createInfrastructure = (): Adapters => {
   const logger = createRTracerLogger(
     createStreamLogger(
@@ -56,6 +46,11 @@ const createInfrastructure = (): Adapters => {
       createJsonSerializer(!!process.env.PRETTY_LOG),
     ),
   );
+
+  const getJson = async (uri: string): Promise<Json> => {
+    const response = await axios.get<Json>(uri);
+    return response.data;
+  };
   const getXml = createGetXml();
   const fetchDataset = createFetchDataset(logger);
   const fetchDataciteReview = createFetchDataciteReview(fetchDataset, logger);
@@ -63,8 +58,7 @@ const createInfrastructure = (): Adapters => {
   const searchEuropePmc = createSearchEuropePmc(getJson, logger);
   const editorialCommunities = populateEditorialCommunities(logger);
   const events = getEventsFromDataFiles() as unknown as NonEmptyArray<DomainEvent>;
-  const reviewReferenceRepository = populateReviewReferenceRepository(events);
-  const { findReviewsForArticleVersionDoi, findReviewsForEditorialCommunityId } = reviewReferenceRepository;
+  const reviewProjections = createReviewProjections(events.filter(isArticleReviewedEvent));
 
   return {
     fetchArticle: createFetchCrossrefArticle(getXml, logger),
@@ -74,8 +68,7 @@ const createInfrastructure = (): Adapters => {
     searchEuropePmc,
     editorialCommunities,
     endorsements: populateEndorsementsRepository(events),
-    findReviewsForArticleVersionDoi,
-    findReviewsForEditorialCommunityId,
+    ...reviewProjections,
     filterEvents: createFilterEvents(events),
     logger,
   };
