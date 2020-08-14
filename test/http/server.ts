@@ -86,7 +86,8 @@ export default async (): Promise<TestServer> => {
     editorialCommunities,
     endorsements: createEndorsementsRepository([]),
     reviewReferenceRepository,
-    findReviewsForArticleVersionDoi: async () => [],
+    findReviewsForArticleVersionDoi: reviewReferenceRepository.findReviewsForArticleVersionDoi,
+    findReviewsForEditorialCommunityId: reviewReferenceRepository.findReviewsForEditorialCommunityId,
     filterEvents: async () => [],
     logger: dummyLogger,
   };

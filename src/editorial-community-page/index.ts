@@ -9,19 +9,26 @@ import createRenderFollowToggle from './render-follow-toggle';
 import createRenderPage from './render-page';
 import createRenderPageHeader, { GetEditorialCommunity, RenderPageHeader } from './render-page-header';
 import createRenderReviews, { GetNumberOfReviews, RenderReviews } from './render-reviews';
+import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import EndorsementsRepository from '../types/endorsements-repository';
 import { FetchExternalArticle } from '../types/fetch-external-article';
 import FollowList from '../types/follow-list';
-import ReviewReferenceRepository from '../types/review-reference-repository';
+import { ReviewId } from '../types/review-id';
+
+type FindReviewsForEditorialCommunityId = (editorialCommunityId: EditorialCommunityId) => Promise<Array<{
+  articleVersionDoi: Doi;
+  reviewId: ReviewId;
+  added: Date;
+}>>;
 
 interface Ports {
   fetchArticle: FetchExternalArticle;
   editorialCommunities: EditorialCommunityRepository;
   endorsements: EndorsementsRepository,
-  reviewReferenceRepository: ReviewReferenceRepository;
   filterEvents: FilterEvents;
+  findReviewsForEditorialCommunityId: FindReviewsForEditorialCommunityId,
 }
 
 const buildRenderPageHeader = (editorialCommunities: EditorialCommunityRepository): RenderPageHeader => {
@@ -56,10 +63,10 @@ const buildRenderEndorsedArticles = (
 };
 
 const buildRenderReviews = (
-  reviewReferenceRepository: ReviewReferenceRepository,
+  ports: Ports,
 ): RenderReviews => {
   const getNumberOfReviews: GetNumberOfReviews = async (editorialCommunityId) => (
-    (await reviewReferenceRepository.findReviewsForEditorialCommunityId(editorialCommunityId)).length
+    (await ports.findReviewsForEditorialCommunityId(editorialCommunityId)).length
   );
   return createRenderReviews(getNumberOfReviews);
 };
@@ -98,7 +105,7 @@ export default (ports: Ports): RenderPage => {
   const renderPageHeader = buildRenderPageHeader(ports.editorialCommunities);
   const renderDescription = buildRenderDescription(ports.editorialCommunities);
   const renderEndorsedArticles = buildRenderEndorsedArticles(ports.endorsements);
-  const renderReviews = buildRenderReviews(ports.reviewReferenceRepository);
+  const renderReviews = buildRenderReviews(ports);
   const renderFeed = buildRenderFeed(ports);
 
   const renderPage = createRenderPage(

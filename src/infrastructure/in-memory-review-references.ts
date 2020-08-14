@@ -10,6 +10,12 @@ export type FindReviewsForArticleVersionDoi = (articleVersionDoi: Doi) => Promis
   added: Date;
 }>>;
 
+export type FindReviewsForEditorialCommunityId = (editorialCommunityId: EditorialCommunityId) => Promise<Array<{
+  articleVersionDoi: Doi;
+  reviewId: ReviewId;
+  added: Date;
+}>>;
+
 export default (events: ReadonlyArray<ArticleReviewedEvent>): ReviewReferenceRepository => ({
   findReviewsForArticleVersionDoi: async (articleVersionDoi) => (
     events

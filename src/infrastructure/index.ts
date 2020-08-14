@@ -126,7 +126,7 @@ const createInfrastructure = (): Adapters => {
   const editorialCommunities = populateEditorialCommunities(logger);
   const events = getEventsFromDataFiles() as unknown as NonEmptyArray<DomainEvent>;
   const reviewReferenceRepository = populateReviewReferenceRepository(events);
-  const { findReviewsForArticleVersionDoi } = reviewReferenceRepository;
+  const { findReviewsForArticleVersionDoi, findReviewsForEditorialCommunityId } = reviewReferenceRepository;
 
   return {
     fetchArticle: createFetchCrossrefArticle(getXml, logger),
@@ -138,6 +138,7 @@ const createInfrastructure = (): Adapters => {
     endorsements: populateEndorsementsRepository(events),
     reviewReferenceRepository,
     findReviewsForArticleVersionDoi,
+    findReviewsForEditorialCommunityId,
     filterEvents: createFilterEvents(events),
     logger,
   };
