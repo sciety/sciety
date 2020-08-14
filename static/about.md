@@ -15,7 +15,6 @@ Read more about:
 -   [Our approach](#our-approach)
 -   [Our current direction and hypothesis](#current-direction)
 -   [Scenarios we’ve enabled](#implemented-scenarios)
--   [Scenarios we’re currently working on](#current-scenarios)
 -   [Scope](#scope)
 -   [Future direction and considerations](#future-direction)
 -   [How to give us feedback](#feedback)
@@ -37,7 +36,7 @@ We assume that additional value indicators such as comments, reviews and endorse
 
 We are working with a small number of editorial communities who have provided us with reviews and other content. We want to find out if trust in the judgement of these communities is fostered not only by the transparent disclosure of that community’s review output, but also its editorial policies and review process in order to contextualise that output for researchers.
 
-Crucially, we are hoping to move away from the current model where a community’s brand is accepted as the most important measure of its reliability.
+Crucially, we are hoping to move away from the current model where a community’s name is a proxy for its trustworthiness.
 
 
 ## <a name="implemented-scenarios">Scenarios currently implemented</a>
@@ -50,14 +49,6 @@ These are the most recent scenarios represented on the application now:
 - Article pages collect evaluation information such as reviews and endorsements.
 - A user can customize the homepage feed by selecting editorial communities to follow.
 
-## <a name="current-scenarios">In progress scenarios</a>
-
-Our [Opportunity Solution Tree](https://miro.com/app/board/o9J_ksVfD4E=/) and [User Story Map](https://miro.com/app/board/o9J_ksVfD4E=/?moveToWidget=3074457348328557591&cot=13) are publicly available and show our current and future ideas.
-
-The Opportunity Solution Tree shows the areas we may explore next as opportunities, hypotheses and experiments. You can [learn more about this visualisation technique here](https://www.producttalk.org/2016/08/opportunity-solution-tree/).
-
-The User Story Map shows the scenarios we've been working on (at the top), the work we're currently doing (nearer the bottom) and what we're planning next (at the bottom). The items across the top show the user journey backbone and are grouped by functionality so that you can see which areas we're concentrating on. You can [learn more about this type of visualisation here](https://www.jpattonassociates.com/user-story-mapping/).
-
 ## <a name="scope">Scope</a>
 
 To aid in the rapid development of the application we have deliberately
@@ -69,21 +60,13 @@ left some key features for later:
 
 ## <a name="future-direction">Future direction and considerations</a>
 
-We attempt to record any ideas or questions that arise as we build, use and gather feedback from the application. This will form our future direction.
-
--   What information about an editorial community is the most useful for a reader?
--   Should we mandate what information is provided in order to facilitate like-for-like comparisons?
--   Where a traditional journal can only provide a submission with the judgement of its own community of editors and reviewers, the PRC application should additionally facilitate concurrent reviews from multiple editorial communities- we anticipate this will be a unique selling point and thus drive adoption.
--   Should we provide the name of the reviewer(s) alongside the editorial community, if these are available?
--   What are some other indicators that build reader trust in a review?
--   Does a conflict of interest declaration increase trust?
--   Does confirmation to an established set of ethical guidelines increase trust?
--   Should we allow readers to indicate if they found a review helpful or not, as a quantitative needle we could seek to move? Would an accumulation of ‘upvotes’ itself signal additional trustworthiness?
--   Should we additionally allow a user to ‘highlight’ an article? We hypothesise that this would enable an editorial community to add an indication of the article’s value/quality over and above the review itself, thereby reducing information overload for readers. This may influence how we present the previous reviews on a community’s About page.
--   Article versioning: associating a review with a particular version of the article?
+We gather feedback from users as we build which helps inform our future direction.
+Our [Opportunity Solution Tree](https://miro.com/app/board/o9J_ksVfD4E=/) is publicly available and shows our current and future ideas.
+It shows the areas we may explore next as opportunities, hypotheses and experiments.
+[(Learn more about this visualisation technique)](#ost).
 
 ## <a name="feedback">How to give us feedback</a>
-
+                                                                                      s
 The application is changing on a daily basis. To stay up to date, as well as letting us know what you think so far, head on over to our [feedback page](https://eepurl.com/g7qqcv).
 
 ## References
@@ -94,3 +77,4 @@ ISBN 0201616416.
 
 <a name="stern-oshea">Stern BM, O’Shea EK (2019)</a> A proposal for the future of scientific publishing in the life sciences. PLoS Biol 17(2): e3000116. <https://doi.org/10.1371/journal.pbio.3000116>
 
+<a name="ost">Teresa Torres (2016)</a> Why This Opportunity Solution Tree is Changing the Way Product Teams Work. <https://www.producttalk.org/2016/08/opportunity-solution-tree/>
