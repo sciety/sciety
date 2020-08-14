@@ -28,18 +28,22 @@ export default (adapters: Adapters): Router => {
     pageHandler(createHomePage(adapters)));
 
   router.get('/about',
+    identifyUser(adapters.logger),
     readWriteFollowList(),
     pageHandler(createAboutPage(adapters)));
 
   router.get('/articles',
+    identifyUser(adapters.logger),
     readWriteFollowList(),
     pageHandler(createArticleSearchPage(adapters)));
 
   router.get('/articles/:doi(.+)',
+    identifyUser(adapters.logger),
     readWriteFollowList(),
     pageHandler(createArticlePage(adapters)));
 
   router.get('/editorial-communities/:id',
+    identifyUser(adapters.logger),
     readWriteFollowList(),
     pageHandler(createEditorialCommunityPage(adapters)));
 
