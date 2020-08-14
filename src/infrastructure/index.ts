@@ -125,6 +125,9 @@ const createInfrastructure = (): Adapters => {
   const searchEuropePmc = createSearchEuropePmc(getJson, logger);
   const editorialCommunities = populateEditorialCommunities(logger);
   const events = getEventsFromDataFiles() as unknown as NonEmptyArray<DomainEvent>;
+  const reviewReferenceRepository = populateReviewReferenceRepository(events);
+  const { findReviewsForArticleVersionDoi } = reviewReferenceRepository;
+
   return {
     fetchArticle: createFetchCrossrefArticle(getXml, logger),
     getBiorxivCommentCount: createGetBiorxivCommentCount(createGetDisqusPostCount(getJson, logger), logger),
@@ -133,7 +136,8 @@ const createInfrastructure = (): Adapters => {
     searchEuropePmc,
     editorialCommunities,
     endorsements: populateEndorsementsRepository(events),
-    reviewReferenceRepository: populateReviewReferenceRepository(events),
+    reviewReferenceRepository,
+    findReviewsForArticleVersionDoi,
     filterEvents: createFilterEvents(events),
     logger,
   };

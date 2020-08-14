@@ -1,5 +1,14 @@
+import Doi from '../types/doi';
 import { ArticleReviewedEvent } from '../types/domain-events';
+import EditorialCommunityId from '../types/editorial-community-id';
+import { ReviewId } from '../types/review-id';
 import ReviewReferenceRepository from '../types/review-reference-repository';
+
+export type FindReviewsForArticleVersionDoi = (articleVersionDoi: Doi) => Promise<Array<{
+  reviewId: ReviewId;
+  editorialCommunityId: EditorialCommunityId;
+  added: Date;
+}>>;
 
 export default (events: ReadonlyArray<ArticleReviewedEvent>): ReviewReferenceRepository => ({
   findReviewsForArticleVersionDoi: async (articleVersionDoi) => (
