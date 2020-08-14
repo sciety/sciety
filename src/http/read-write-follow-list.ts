@@ -3,6 +3,8 @@ import { Next } from 'koa';
 import EditorialCommunityId from '../types/editorial-community-id';
 import FollowList from '../types/follow-list';
 
+const OneYear = 1000 * 60 * 60 * 24 * 365;
+
 const readFollowListFromCookie = (cookieValue: string): Array<string> => {
   try {
     return JSON.parse(cookieValue) as Array<string>;
@@ -24,7 +26,7 @@ export default (): Middleware => (
       'hiveFollowList',
       JSON.stringify(followList.getContents().map((item) => item.value)),
       {
-        maxAge: 1000 * 60 * 60 * 24 * 365,
+        maxAge: OneYear,
         sameSite: 'strict',
       },
     );
