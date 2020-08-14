@@ -1,11 +1,13 @@
 /.adr/
 /.eslint/
 /.github/
-/.gitignore
 /.jest/
 /build/
+/docs/
 /helm/
+/node_modules/
+/.env
+/.gitignore
 /LICENSE.md
 /Makefile
-/node_modules/
 /README.md

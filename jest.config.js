@@ -1,5 +1,6 @@
 module.exports = {
   cacheDirectory: './.jest',
+  coverageReporters: ['text'],
   globals: {
     'ts-jest': {
       diagnostics: false,
