@@ -73,15 +73,17 @@ deps: $(DOCDIR)/folders.svg $(DOCDIR)/modules.svg
 
 $(DOCDIR)/folders.svg: $(DOCDIR) build
 	$(DOCKER) run \
-		-v $(DATA_VOLUME)/docs:/app/docs \
 		$(IMAGE):$(IMAGE_TAG)-dev \
-		npm run deps:folders
+		npm run --silent deps:folders \
+		| docker run --interactive --rm risaacson/graphviz dot -Tsvg \
+		> $(DOCDIR)/folders.svg
 
 $(DOCDIR)/modules.svg: $(DOCDIR) build
 	$(DOCKER) run \
-		-v $(DATA_VOLUME)/docs:/app/docs \
 		$(IMAGE):$(IMAGE_TAG)-dev \
-		npm run deps:modules
+		npm run --silent deps:modules \
+		| docker run --interactive --rm risaacson/graphviz dot -Tsvg \
+		> $(DOCDIR)/modules.svg
 
 $(DOCDIR):
 	mkdir -p $(DOCDIR)
