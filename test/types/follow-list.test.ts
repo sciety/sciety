@@ -2,17 +2,33 @@ import EditorialCommunityId from '../../src/types/editorial-community-id';
 import FollowList from '../../src/types/follow-list';
 
 describe('follow-list', () => {
+  const editorialCommunity1Id = new EditorialCommunityId('id1');
+
+  describe('a new FollowList', () => {
+    it('is not changed', () => {
+      const list = new FollowList([]);
+
+      expect(list.changed).toBe(false);
+    });
+  });
+
   describe('follow', () => {
     describe('when the community to be followed is not currently followed', () => {
-      it('follows the community', () => {
-        const editorialCommunity1Id = new EditorialCommunityId('id1');
-        const list = new FollowList([]);
-        list.follow(editorialCommunity1Id);
+      const list = new FollowList([]);
 
+      beforeEach(() => {
+        list.follow(editorialCommunity1Id);
+      });
+
+      it('follows the community', () => {
         expect(list.follows(editorialCommunity1Id)).toBe(true);
       });
 
       it.todo('leaves all other followed communities in the list');
+
+      it('is marked as "changed"', () => {
+        expect(list.changed).toBe(true);
+      });
     });
 
     describe('when the community to be followed is already followed', () => {
@@ -28,15 +44,21 @@ describe('follow-list', () => {
 
   describe('unfollow', () => {
     describe('when the community to be unfollowed is currently followed', () => {
-      it('unfollows the community', () => {
-        const editorialCommunity1Id = new EditorialCommunityId('id1');
-        const list = new FollowList([editorialCommunity1Id]);
-        list.unfollow(editorialCommunity1Id);
+      const list = new FollowList([editorialCommunity1Id]);
 
+      beforeEach(() => {
+        list.unfollow(editorialCommunity1Id);
+      });
+
+      it('unfollows the community', () => {
         expect(list.follows(editorialCommunity1Id)).toBe(false);
       });
 
       it.todo('leaves all other followed communities in the list');
+
+      it('is marked as "changed"', () => {
+        expect(list.changed).toBe(true);
+      });
     });
 
     describe('when the community to be unfollowed is not already followed', () => {
