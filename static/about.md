@@ -16,7 +16,7 @@ Read more about:
 -   [Our current direction and hypothesis](#current-direction)
 -   [Scenarios we’ve enabled](#implemented-scenarios)
 -   [Scenarios we’re currently working on](#current-scenarios)
--   [What we consider to be our immediate next focus](#next-focus)
+-   [Scope](#scope)
 -   [Future direction and considerations](#future-direction)
 -   [How to give us feedback](#feedback)
 
@@ -40,35 +40,15 @@ We are working with a small number of editorial communities who have provided us
 Crucially, we are hoping to move away from the current model where a community’s brand is accepted as the most important measure of its reliability.
 
 
-## <a name="implemented-scenarios">Scenarios enabled in the current iteration</a>
+## <a name="implemented-scenarios">Scenarios currently implemented</a>
 
 These are the most recent scenarios represented on the application now:
 
-- The name of an editorial community, rather than an individual, is displayed as the author of a review.
-- Clicking on the name of an editorial community will take the user to a page outlining that community’s editorial policies and review process etc.
-- The editorial community’s landing page contains a list of reviews that the community has posted.
-- Additionally, the editorial community’s landing page contains a list of articles it has endorsed, or highlighted as particularly important for its interested followers/readers.
-- Clicking on an article listed on a community’s landing page will take the user to the article page.
-- The application supports a landing page per one of its multiple communities.
-- Users can search for a bioRxiv article using the search box on the home page.
-- Clicking on an article title from the list of returned results will take the user to the article page.
-- If an article has gained comments, clicking on this indicator on the article page will take the user to bioRxiv, where the comments can be read. 
-- If an article has gained reviews, clicking on this indicator on the article page will take the user to the review content at the bottom of the article page.
-- Experimental features to explore the addition of reviews:
-    - Users can add a new review to an article. This is done by uploading the review to Zenodo, generating a concept DOI for the review, and then associating that review DOI with the article via the form in our application.
-    - When adding a review, a user is able to additionally select an editorial community from a drop down list.
-    - It is possible for a user to attach multiple reviews to an article, each under the name of a different editorial community. In this way, an article could foreseeably garner multiple perspectives which together form a 360-degree holistic opinion of the research.
-    - Reviews published via hypothes.is can also be included (although not via the form yet)
-
-
-
-Currently we are outsourcing the hosting of reviews to Zenodo; this
-enables us to build an end-to-end experience more quickly, and hence to
-obtain [rapid feedback](#feedback) from users (that's you).
-
-The current iteration also only integrates with bioRxiv for the hosting
-of articles. It is our intention to integrate with other preprint
-servers soon.
+- The editorial community’s landing page outlines that community’s editorial policies and review process, and shows a feed of their most recent activity including reviews and endorsements.
+- Evaluations from editorial communities are automatically imported from each community's own platform(s) of choice.
+- Users can search for bioRxiv content using the search box on the home page.
+- Article pages collect evaluation information such as reviews and endorsements.
+- A user can customize the homepage feed by selecting editorial communities to follow.
 
 ## <a name="current-scenarios">In progress scenarios</a>
 
@@ -78,14 +58,14 @@ The Opportunity Solution Tree shows the areas we may explore next as opportuniti
 
 The User Story Map shows the scenarios we've been working on (at the top), the work we're currently doing (nearer the bottom) and what we're planning next (at the bottom). The items across the top show the user journey backbone and are grouped by functionality so that you can see which areas we're concentrating on. You can [learn more about this type of visualisation here](https://www.jpattonassociates.com/user-story-mapping/).
 
-## <a name="next-focus">Our immediate next focus</a>
+## <a name="scope">Scope</a>
 
 To aid in the rapid development of the application we have deliberately
 left some key features for later:
 
--   Persistence: at present all user entered data is lost with each new deployment.
--   Authentication: a user should have to log in to post a review under the umbrella of an editorial community.
--   Branding: we don't yet have a name for this application!
+-   Content: only evaluations of bioRxiv content are currently supported.
+-   Authentication: there is no concept of users, customizations are just saved in a cookie.
+-   Branding: we don't yet have a name for this application.
 
 ## <a name="future-direction">Future direction and considerations</a>
 
