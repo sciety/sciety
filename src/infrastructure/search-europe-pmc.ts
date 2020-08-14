@@ -31,7 +31,7 @@ type EuropePmcQueryResponse = JsonCompatible<{
 export default (getJson: GetJson, logger: Logger): SearchEuropePmc => (
   async (query) => {
     const uri = 'https://www.ebi.ac.uk/europepmc/webservices/rest/search'
-      + `?query=${query}%20PUBLISHER%3A%22bioRxiv%22&format=json&pageSize=10`;
+      + `?query=${query}%20PUBLISHER%3A%22bioRxiv%22%20sort_date%3Ay&format=json&pageSize=10`;
     const data = await getJson(uri) as EuropePmcQueryResponse;
 
     logger('debug', 'Received Europe PMC search results', { data });
