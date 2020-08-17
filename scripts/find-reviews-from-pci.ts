@@ -11,9 +11,9 @@ void (async (): Promise<void> => {
 
   links.forEach(async (link) => {
     const { data } = await axios.get<string>(link);
-    const date = new Date();
+    const [,date] = /<meta name="citation_publication_date" content="(.*?)" \/>/.exec(data) ?? [];
     const articleDoi = '';
     const [,reviewDoi] = /<meta name="citation_doi" content="(.*?)" \/>/.exec(data) ?? [];
-    process.stdout.write(`${date.toISOString()},${articleDoi},${reviewDoi}\n`);
+    process.stdout.write(`${new Date(date).toISOString()},${articleDoi},${reviewDoi}\n`);
   });
 })();
