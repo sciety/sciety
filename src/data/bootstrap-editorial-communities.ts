@@ -1,7 +1,7 @@
 import { EditorialCommunity } from '../types/editorial-community';
 import EditorialCommunityId from '../types/editorial-community-id';
 
-export default [
+const editorialCommunities: Array<EditorialCommunity> = [
   {
     id: new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
     name: 'eLife',
@@ -210,4 +210,36 @@ export default [
     </ul>
     <p><a href="https://zool.peercommunityin.org/about/about">https://zool.peercommunityin.org/about/about</a></p>`,
   },
-] as Array<EditorialCommunity>;
+  {
+    id: new EditorialCommunityId('19b7464a-edbe-42e8-b7cc-04d1eb1f7332'),
+    name: 'Peer Community in Evolutionary Biology',
+    avatarUrl: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png',
+    description: '',
+  },
+  {
+    id: new EditorialCommunityId('32025f28-0506-480e-84a0-b47ef1e92ec5'),
+    name: 'Peer Community in Ecology',
+    avatarUrl: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png',
+    description: '',
+  },
+  {
+    id: new EditorialCommunityId('4eebcec9-a4bb-44e1-bde3-2ae11e65daaa'),
+    name: 'Peer Community in Animal Science',
+    avatarUrl: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png',
+    description: '',
+  },
+  {
+    id: new EditorialCommunityId('b90854bf-795c-42ba-8664-8257b9c68b0c'),
+    name: 'Peer Community in Archaeology',
+    avatarUrl: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png',
+    description: '',
+  },
+  {
+    id: new EditorialCommunityId('7a9e97d1-c1fe-4ac2-9572-4ecfe28f9f84'),
+    name: 'Peer Community in Paleontology',
+    avatarUrl: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png',
+    description: '',
+  },
+];
+
+export default editorialCommunities;
