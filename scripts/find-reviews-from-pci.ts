@@ -22,10 +22,14 @@ const parser = new DOMParser({
   },
 });
 
-const processCommunity = async (community: PciCommunity): Promise<Array<string>> => {
-  process.stderr.write(`Fetching reviews for ${community.prefix}\n`);
+type Recommendation = {
+  date: Date,
+  articleDoi: string,
+  reviewDoi: string,
+};
+
+const processCommunity = async (community: PciCommunity): Promise<Array<Recommendation>> => {
   const result = [];
-  result.push('Date,Article DOI,Review ID\n');
 
   const { data: feed } = await axios.get(`https://${community.prefix}.peercommunityin.org/public/rss4bioRxiv`);
   const doc = parser.parseFromString(feed, 'text/xml');
@@ -38,18 +42,32 @@ const processCommunity = async (community: PciCommunity): Promise<Array<string>>
       const { data } = await axios.get<string>(url?.textContent ?? '');
       const [, date] = /<meta name="citation_publication_date" content="(.*?)" \/>/.exec(data) ?? [];
       const [, reviewDoi] = /<meta name="citation_doi" content="(.*?)" \/>/.exec(data) ?? [];
-      result.push(`${new Date(date).toISOString()},${articleDoi.trim()},doi:${reviewDoi}\n`);
+      result.push({
+        date: new Date(date),
+        articleDoi: articleDoi.trim(),
+        reviewDoi,
+      });
     }
   }
-  process.stderr.write(`Fetched ${result.length - 1} reviews for ${community.prefix}\n`);
+
   return result;
 };
 
 void (async (): Promise<void> => {
   pciCommunities.forEach(async (community) => {
-    const lines = await processCommunity(community);
+    const recommendations = await processCommunity(community);
+
+    if (recommendations.length === 0) {
+      process.stderr.write(`No recommendations found for ${community.prefix}\n`);
+      return;
+    }
+
     const filename = `./data/reviews/${community.id}.csv`;
-    fs.writeFileSync(filename, lines.join(''));
-    process.stderr.write(`Written reviews to ${filename}\n`);
+    const contents = recommendations.map((recommendation) => (
+      `${recommendation.date.toISOString()},${recommendation.articleDoi},doi:${recommendation.reviewDoi}`
+    )).join('\n');
+
+    fs.writeFileSync(filename, `Date,Article DOI,Review ID\n${contents}\n`);
+    process.stderr.write(`Written ${recommendations.length} reviews to ${filename} for ${community.prefix}\n`);
   });
 })();
