@@ -23,7 +23,7 @@ void (async (): Promise<void> => {
       const { data } = await axios.get<string>(url?.textContent ?? '');
       const [, date] = /<meta name="citation_publication_date" content="(.*?)" \/>/.exec(data) ?? [];
       const [, reviewDoi] = /<meta name="citation_doi" content="(.*?)" \/>/.exec(data) ?? [];
-      process.stdout.write(`${new Date(date).toISOString()},${articleDoi},doi:${reviewDoi}\n`);
+      process.stdout.write(`${new Date(date).toISOString()},${articleDoi.trim()},doi:${reviewDoi}\n`);
     }
   }
 })();
