@@ -17,10 +17,13 @@ void (async (): Promise<void> => {
 
   for (const link of Array.from(doc.getElementsByTagName('link'))) {
     const url = link.getElementsByTagName('url')[0];
-    const { data } = await axios.get<string>(url?.textContent ?? '');
-    const [,date] = /<meta name="citation_publication_date" content="(.*?)" \/>/.exec(data) ?? [];
-    const articleDoi = '';
-    const [,reviewDoi] = /<meta name="citation_doi" content="(.*?)" \/>/.exec(data) ?? [];
-    process.stdout.write(`${new Date(date).toISOString()},${articleDoi},${reviewDoi}\n`);
+    const articleDoi = link.getElementsByTagName('doi')[0]?.textContent ?? '';
+
+    if (articleDoi.startsWith('10.1101/')) {
+      const { data } = await axios.get<string>(url?.textContent ?? '');
+      const [, date] = /<meta name="citation_publication_date" content="(.*?)" \/>/.exec(data) ?? [];
+      const [, reviewDoi] = /<meta name="citation_doi" content="(.*?)" \/>/.exec(data) ?? [];
+      process.stdout.write(`${new Date(date).toISOString()},${articleDoi},doi:${reviewDoi}\n`);
+    }
   }
 })();
