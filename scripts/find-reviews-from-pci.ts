@@ -62,12 +62,18 @@ void (async (): Promise<void> => {
       return;
     }
 
-    const filename = `./data/reviews/${community.id}.csv`;
+    const reviewsFilename = `./data/reviews/${community.id}.csv`;
     const contents = recommendations.map((recommendation) => (
       `${recommendation.date.toISOString()},${recommendation.articleDoi},doi:${recommendation.reviewDoi}`
     )).join('\n');
+    fs.writeFileSync(reviewsFilename, `Date,Article DOI,Review ID\n${contents}\n`);
+    process.stderr.write(`Written ${recommendations.length} reviews to ${reviewsFilename} for ${community.prefix}\n`);
 
-    fs.writeFileSync(filename, `Date,Article DOI,Review ID\n${contents}\n`);
-    process.stderr.write(`Written ${recommendations.length} reviews to ${filename} for ${community.prefix}\n`);
+    const endorsementsFilename = `./data/endorsements/${community.id}.csv`;
+    const endorsementContents = recommendations.map((recommendation) => (
+      `${recommendation.date.toISOString()},${recommendation.articleDoi}`
+    )).join('\n');
+    fs.writeFileSync(endorsementsFilename, `Date,Article DOI\n${endorsementContents}\n`);
+    process.stderr.write(`Written ${recommendations.length} endorsements to ${endorsementsFilename} for ${community.prefix}\n`);
   });
 })();
