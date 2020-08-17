@@ -5,7 +5,7 @@ import { DOMParser } from 'xmldom';
 type PciCommunity = {
   id: string,
   prefix: string,
-}
+};
 
 const pciCommunities: Array<PciCommunity> = [
   { id: '74fd66e9-3b90-4b5a-a4ab-5be83db4c5de', prefix: 'zool' },
