@@ -142,23 +142,15 @@ find-peerj-reviews: build
 		$(IMAGE):$(IMAGE_TAG)-dev \
 		npx ts-node scripts/find-reviews-from-crossref-via-biorxiv 10.7717 10.7287 | tee ./data/reviews/53ed5364-a016-11ea-bb37-0242ac130002.csv
 
-find-pci-zoology-reviews: export TARGET = dev
-find-pci-zoology-reviews: build
+find-pci-reviews: export TARGET = dev
+find-pci-reviews: build
 	$(DOCKER) run \
 		-v $(DATA_VOLUME)/build:/app/build \
+		-v $(DATA_VOLUME)/data:/app/data \
 		-v $(DATA_VOLUME)/scripts:/app/scripts \
 		-v $(DATA_VOLUME)/src:/app/src \
 		$(IMAGE):$(IMAGE_TAG)-dev \
-		npx ts-node scripts/find-reviews-from-pci zool | tee ./data/reviews/74fd66e9-3b90-4b5a-a4ab-5be83db4c5de.csv
-
-find-pci-evolbiol-reviews: export TARGET = dev
-find-pci-evolbiol-reviews: build
-	$(DOCKER) run \
-		-v $(DATA_VOLUME)/build:/app/build \
-		-v $(DATA_VOLUME)/scripts:/app/scripts \
-		-v $(DATA_VOLUME)/src:/app/src \
-		$(IMAGE):$(IMAGE_TAG)-dev \
-		npx ts-node scripts/find-reviews-from-pci evolbiol | tee ./data/reviews/19b7464a-edbe-42e8-b7cc-04d1eb1f7332.csv
+		npx ts-node scripts/find-reviews-from-pci
 
 COMMUNITY_SCRIPTS := \
 	find-elife-endorsements \
@@ -166,8 +158,7 @@ COMMUNITY_SCRIPTS := \
 	find-review-commons-reviews \
 	find-elife-reviews \
 	find-peerj-reviews \
-	find-pci-zoology-reviews \
-	find-pci-evolbiol-reviews
+	find-pci-reviews
 
 update-event-data: $(COMMUNITY_SCRIPTS)
 
