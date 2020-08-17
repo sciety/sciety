@@ -28,7 +28,7 @@ type Recommendation = {
   reviewDoi: string,
 };
 
-const processCommunity = async (community: PciCommunity): Promise<Array<Recommendation>> => {
+const findRecommendations = async (community: PciCommunity): Promise<Array<Recommendation>> => {
   const result = [];
 
   const { data: feed } = await axios.get(`https://${community.prefix}.peercommunityin.org/public/rss4bioRxiv`);
@@ -55,7 +55,7 @@ const processCommunity = async (community: PciCommunity): Promise<Array<Recommen
 
 void (async (): Promise<void> => {
   pciCommunities.forEach(async (community) => {
-    const recommendations = await processCommunity(community);
+    const recommendations = await findRecommendations(community);
 
     if (recommendations.length === 0) {
       process.stderr.write(`No recommendations found for ${community.prefix}\n`);
