@@ -142,7 +142,14 @@ find-peerj-reviews: build
 		$(IMAGE):$(IMAGE_TAG)-dev \
 		npx ts-node scripts/find-reviews-from-crossref-via-biorxiv 10.7717 10.7287 | tee ./data/reviews/53ed5364-a016-11ea-bb37-0242ac130002.csv
 
-update-event-data: find-elife-endorsements find-peerj-endorsements find-review-commons-reviews find-elife-reviews find-peerj-reviews
+COMMUNITY_SCRIPTS := \
+	find-elife-endorsements \
+	find-peerj-endorsements \
+	find-review-commons-reviews \
+	find-elife-reviews \
+	find-peerj-reviews
+
+update-event-data: $(COMMUNITY_SCRIPTS)
 
 release:
 	TAG=latest/$$(date +%Y%m%d%H%M); git tag $$TAG && git push origin $$TAG
