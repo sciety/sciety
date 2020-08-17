@@ -7,19 +7,11 @@ import HypothesisAnnotationId from '../types/hypothesis-annotation-id';
 import { ReviewId } from '../types/review-id';
 
 export default (): ReadonlyArray<DomainEvent> => {
-  const editorialCommunities = [
-    '53ed5364-a016-11ea-bb37-0242ac130002',
-    '74fd66e9-3b90-4b5a-a4ab-5be83db4c5de',
-    '316db7d9-88cc-4c26-b386-f067e0f56334',
-    '10360d97-bf52-4aef-b2fa-2f60d319edd7',
-    '10360d97-bf52-4aef-b2fa-2f60d319edd8',
-    'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
-  ];
-
   const parsedEvents: Array<DomainEvent> = [];
 
-  for (const editorialCommunityId of editorialCommunities) {
-    const fileContents = fs.readFileSync(`./data/endorsements/${editorialCommunityId}.csv`);
+  for (const csvFile of fs.readdirSync('./data/endorsements')) {
+    const editorialCommunityId = csvFile.replace('.csv', '');
+    const fileContents = fs.readFileSync(`./data/endorsements/${csvFile}`);
     parsedEvents.push(...csvParseSync(fileContents, { fromLine: 2 })
       .map(([date, articleDoi]: [string, string]): DomainEvent => ({
         type: 'ArticleEndorsed',
@@ -30,7 +22,7 @@ export default (): ReadonlyArray<DomainEvent> => {
   }
 
   const unserializeReviewId = (reviewId: string): ReviewId => {
-    const [protocol, value] = reviewId.split(':', 2);
+    const [, protocol, value] = /^(.+?):(.+)$/.exec(reviewId) ?? [];
     switch (protocol) {
       case 'doi':
         return new Doi(value);
@@ -40,8 +32,10 @@ export default (): ReadonlyArray<DomainEvent> => {
         throw new Error(`Unable to unserialize ReviewId: "${reviewId}"`);
     }
   };
-  for (const editorialCommunityId of editorialCommunities) {
-    const fileContents = fs.readFileSync(`./data/reviews/${editorialCommunityId}.csv`);
+
+  for (const csvFile of fs.readdirSync('./data/reviews')) {
+    const editorialCommunityId = csvFile.replace('.csv', '');
+    const fileContents = fs.readFileSync(`./data/reviews/${csvFile}`);
     parsedEvents.push(...csvParseSync(fileContents, { fromLine: 2 })
       .map(([date, articleDoi, reviewId]: [string, string, string]): DomainEvent => ({
         type: 'ArticleReviewed',
