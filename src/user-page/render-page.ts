@@ -1,7 +1,14 @@
-type RenderPage = (handle: string) => Promise<string>;
+import EditorialCommunityId from '../types/editorial-community-id';
+import FollowList from '../types/follow-list';
 
-export default (): RenderPage => (
-  async (handle) => `
+type RenderPage = (handle: string, followList: FollowList) => Promise<string>;
+
+type RenderFollowToggle = (followList: FollowList, editorialcommunityid: EditorialCommunityId) => Promise<string>;
+
+export default (
+  renderFollowToggle: RenderFollowToggle,
+): RenderPage => (
+  async (handle, followList) => `
     <div class="ui aligned stackable grid">
       <div class="row">
         <div class="column">
@@ -27,10 +34,7 @@ export default (): RenderPage => (
                   </div>
                 </div>
                 <div class="right floated">
-                  <form method="post" action="/unfollow">
-                    <input type="hidden" name="editorialcommunityid" value="316db7d9-88cc-4c26-b386-f067e0f56334" />
-                    <button type="submit" class="ui mini button">Unfollow</button>
-                  </form>
+                  ${await renderFollowToggle(followList, new EditorialCommunityId('316db7d9-88cc-4c26-b386-f067e0f56334'))}
                 </div>
               </li>
               <li class="event">
@@ -43,10 +47,7 @@ export default (): RenderPage => (
                   </div>
                 </div>
                 <div class="right floated">
-                  <form method="post" action="/unfollow">
-                    <input type="hidden" name="editorialcommunityid" value="53ed5364-a016-11ea-bb37-0242ac130002" />
-                    <button type="submit" class="ui mini button">Unfollow</button>
-                  </form>
+                  ${await renderFollowToggle(followList, new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002'))}
                 </div>
               </li>
               <li class="event">
@@ -59,10 +60,7 @@ export default (): RenderPage => (
                   </div>
                 </div>
                 <div class="right floated">
-                  <form method="post" action="/follow">
-                    <input type="hidden" name="editorialcommunityid" value="74fd66e9-3b90-4b5a-a4ab-5be83db4c5de" />
-                    <button type="submit" class="ui mini primary button">Follow</button>
-                  </form>
+                  ${await renderFollowToggle(followList, new EditorialCommunityId('74fd66e9-3b90-4b5a-a4ab-5be83db4c5de'))}
                 </div>
               </li>
             </ol>
