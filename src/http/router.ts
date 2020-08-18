@@ -15,6 +15,7 @@ import createFollowHandler from '../follow/follow-handler';
 import createHomePage from '../home-page';
 import { Adapters } from '../infrastructure/adapters';
 import createUnfollowHandler from '../unfollow/unfollow-handler';
+import createUserPage from '../user-page';
 
 export default (adapters: Adapters): Router => {
   const router = new Router();
@@ -31,6 +32,11 @@ export default (adapters: Adapters): Router => {
     identifyUser(adapters.logger),
     readWriteFollowList(),
     pageHandler(createAboutPage(adapters)));
+
+  router.get('/users/:handle(.+)',
+    identifyUser(adapters.logger),
+    readWriteFollowList(),
+    pageHandler(createUserPage()));
 
   router.get('/articles',
     identifyUser(adapters.logger),
