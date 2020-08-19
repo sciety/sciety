@@ -1,6 +1,6 @@
 import createFilterEvents from '../../src/infrastructure/filter-events';
 import Doi from '../../src/types/doi';
-import { DomainEvent } from '../../src/types/domain-events';
+import { DomainEvent, isEditorialCommunityEndorsedArticleEvent } from '../../src/types/domain-events';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
 import { NonEmptyArray } from '../../src/types/non-empty-array';
 
@@ -56,10 +56,10 @@ describe('filter-events', () => {
       },
     ];
     const filterEvents = createFilterEvents(initial);
-    const filtered = await filterEvents((event) => event.actorId.value === editorialCommunity1.value, 20);
+    const filtered = await filterEvents(isEditorialCommunityEndorsedArticleEvent, 20);
 
     expect(filtered).toHaveLength(1);
-    expect(filtered[0]).toStrictEqual(initial[1]);
+    expect(filtered[0]).toStrictEqual(initial[0]);
   });
 
   describe('when there are a small number of matching events', () => {
