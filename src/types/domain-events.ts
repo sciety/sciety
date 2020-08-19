@@ -7,6 +7,7 @@ export type EditorialCommunityEndorsedArticleEvent = {
   type: 'EditorialCommunityEndorsedArticle';
   date: Date;
   actorId: EditorialCommunityId;
+  editorialCommunityId: EditorialCommunityId;
   articleId: Doi;
 };
 

@@ -10,6 +10,7 @@ describe('filter-events', () => {
     type: 'EditorialCommunityEndorsedArticle',
     date: new Date('2020-07-08'),
     actorId: editorialCommunity1,
+    editorialCommunityId: editorialCommunity1,
     articleId: new Doi('10.1101/751099'),
   };
 
@@ -19,6 +20,7 @@ describe('filter-events', () => {
         type: 'EditorialCommunityEndorsedArticle',
         date: new Date('2020-07-08'),
         actorId: editorialCommunity1,
+        editorialCommunityId: editorialCommunity1,
         articleId: new Doi('10.1101/751099'),
       },
       {
@@ -42,6 +44,7 @@ describe('filter-events', () => {
         type: 'EditorialCommunityEndorsedArticle',
         date: new Date('2020-07-08'),
         actorId: new EditorialCommunityId('something else'),
+        editorialCommunityId: new EditorialCommunityId('something else'),
         articleId: new Doi('10.1101/751099'),
       },
       {

@@ -17,6 +17,7 @@ describe('render-feed-item', (): void => {
   describe('when given an EditorialCommunityEndorsedArticleEvent', () => {
     const event: EditorialCommunityEndorsedArticleEvent = {
       actorId: arbitraryActorId,
+      editorialCommunityId: arbitraryActorId,
       articleId: arbitraryArticleId,
       date: new Date(),
       type: 'EditorialCommunityEndorsedArticle',

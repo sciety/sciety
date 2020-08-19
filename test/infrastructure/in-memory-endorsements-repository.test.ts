@@ -16,6 +16,7 @@ describe('in-memory-endorsements-repository', () => {
         type: 'EditorialCommunityEndorsedArticle',
         date: new Date(),
         actorId: editorialCommunity1Id,
+        editorialCommunityId: editorialCommunity1Id,
         articleId: endorsedArticleDoi,
       },
     ]);

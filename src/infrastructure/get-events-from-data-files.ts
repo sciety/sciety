@@ -17,6 +17,7 @@ export default (): ReadonlyArray<DomainEvent> => {
         type: 'EditorialCommunityEndorsedArticle',
         date: new Date(date),
         actorId: new EditorialCommunityId(editorialCommunityId),
+        editorialCommunityId: new EditorialCommunityId(editorialCommunityId),
         articleId: new Doi(articleDoi),
       })));
   }

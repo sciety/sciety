@@ -12,6 +12,7 @@ describe('get-most-recent-events', () => {
     type: 'EditorialCommunityEndorsedArticle',
     date: new Date('2020-07-08'),
     actorId: editorialCommunityId,
+    editorialCommunityId,
     articleId: new Doi('10.1101/751099'),
   });
 
