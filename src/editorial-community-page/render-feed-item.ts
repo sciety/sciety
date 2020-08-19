@@ -55,7 +55,12 @@ export default (
   const renderFeedItemSummary = createRenderFeedItemSummary(getArticle);
 
   return async (event) => {
-    const actor = await getActor(event.actorId);
+    let actor: Actor;
+    if (isEditorialCommunityEndorsedArticleEvent(event)) {
+      actor = await getActor(event.editorialCommunityId);
+    } else {
+      actor = await getActor(event.actorId);
+    }
     return `
       <div class="label">
         <img src="${actor.imageUrl}" alt="">
