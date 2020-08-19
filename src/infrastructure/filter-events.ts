@@ -1,8 +1,10 @@
 import { DomainEvent } from '../types/domain-events';
 import { NonEmptyArray } from '../types/non-empty-array';
 
-type FilterFunction = (event: DomainEvent) => boolean;
-export type FilterEvents = (filterFunction: FilterFunction, maxCount: number) => Promise<Array<DomainEvent>>;
+type FilterFunction<T extends DomainEvent> = (event: DomainEvent) => event is T;
+
+export type FilterEvents = <T extends DomainEvent>(filterFunction: FilterFunction<T>, maxCount: number)
+  => Promise<Array<T>>;
 
 export default (
   events: NonEmptyArray<DomainEvent>,

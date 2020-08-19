@@ -3,7 +3,7 @@ import { DomainEvent, isEditorialCommunityEndorsedArticleEvent, isEditorialCommu
 import FollowList from '../types/follow-list';
 import { NonEmptyArray } from '../types/non-empty-array';
 
-type FilterFunction = (event: DomainEvent) => boolean;
+type FilterFunction = (event: DomainEvent) => event is DomainEvent;
 export type FilterEvents = (filterFunction: FilterFunction, maxCount: number) => Promise<Array<DomainEvent>>;
 
 export default (
@@ -11,7 +11,7 @@ export default (
   maxCount: number,
 ): GetEvents => (
   async (followList: FollowList) => {
-    const followedEvents: FilterFunction = (event) => (
+    const followedEvents: FilterFunction = (event): event is DomainEvent => (
       isEditorialCommunityJoinedEvent(event)
       || (isEditorialCommunityEndorsedArticleEvent(event) && followList.follows(event.editorialCommunityId))
       || followList.follows(event.actorId)

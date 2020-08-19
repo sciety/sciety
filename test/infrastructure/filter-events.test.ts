@@ -4,6 +4,8 @@ import { DomainEvent, isEditorialCommunityEndorsedArticleEvent } from '../../src
 import EditorialCommunityId from '../../src/types/editorial-community-id';
 import { NonEmptyArray } from '../../src/types/non-empty-array';
 
+const anyEvent = (event: DomainEvent): event is DomainEvent => 'type' in event;
+
 describe('filter-events', () => {
   const editorialCommunity1 = new EditorialCommunityId('a');
   const dummyEvent: DomainEvent = {
@@ -32,7 +34,7 @@ describe('filter-events', () => {
       },
     ];
     const filterEvents = createFilterEvents(initial);
-    const sortedEvents = await filterEvents(() => true, 20);
+    const sortedEvents = await filterEvents(anyEvent, 20);
 
     expect(sortedEvents[0]).toStrictEqual(initial[1]);
     expect(sortedEvents[1]).toStrictEqual(initial[0]);
@@ -66,7 +68,7 @@ describe('filter-events', () => {
     it('returns exactly those', async () => {
       const dummyEvents: NonEmptyArray<DomainEvent> = [dummyEvent, dummyEvent, dummyEvent];
       const filterEvents = createFilterEvents(dummyEvents);
-      const events = await filterEvents(() => true, 20);
+      const events = await filterEvents(anyEvent, 20);
 
       expect(events).toHaveLength(dummyEvents.length);
     });
@@ -76,7 +78,7 @@ describe('filter-events', () => {
     it('returns just the specified maximum number', async () => {
       const dummyEvents: NonEmptyArray<DomainEvent> = [dummyEvent, dummyEvent, dummyEvent];
       const filterEvents = createFilterEvents(dummyEvents);
-      const events = await filterEvents(() => true, 2);
+      const events = await filterEvents(anyEvent, 2);
 
       expect(events).toHaveLength(2);
     });
