@@ -1,5 +1,5 @@
 import { GetEvents } from './render-feed';
-import { DomainEvent, isEditorialCommunityJoinedEvent } from '../types/domain-events';
+import { DomainEvent, isEditorialCommunityJoinedEvent, isEditorialCommunityEndorsedArticleEvent } from '../types/domain-events';
 import FollowList from '../types/follow-list';
 import { NonEmptyArray } from '../types/non-empty-array';
 
@@ -12,7 +12,9 @@ export default (
 ): GetEvents => (
   async (followList: FollowList) => {
     const followedEvents: FilterFunction = (event) => (
-      isEditorialCommunityJoinedEvent(event) || followList.follows(event.actorId)
+      isEditorialCommunityJoinedEvent(event) || 
+      (isEditorialCommunityEndorsedArticleEvent(event) && followList.follows(event.editorialCommunityId)) ||
+      followList.follows(event.actorId)
     );
     return filterEvents(followedEvents, maxCount) as unknown as NonEmptyArray<DomainEvent>;
   }
