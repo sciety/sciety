@@ -1,6 +1,10 @@
 import templateDate from '../templates/date';
 import Doi from '../types/doi';
-import { DomainEvent, isEditorialCommunityEndorsedArticleEvent, isEditorialCommunityReviewedArticleEvent } from '../types/domain-events';
+import {
+  DomainEvent,
+  EditorialCommunityEndorsedArticleEvent, EditorialCommunityJoinedEvent, EditorialCommunityReviewedArticleEvent,
+  isEditorialCommunityEndorsedArticleEvent,
+} from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 
 export type RenderFeedItem = (event: DomainEvent) => Promise<string>;
@@ -17,32 +21,51 @@ type Article = {
 
 type RenderFeedItemSummary = (event: DomainEvent, actor: Actor) => Promise<string>;
 
-const createRenderFeedItemSummary = (getArticle: GetArticle): RenderFeedItemSummary => (
-  async (event, actor) => {
-    if (isEditorialCommunityEndorsedArticleEvent(event)) {
-      const article = await getArticle(event.articleId);
+const createRenderFeedItemSummary = (getArticle: GetArticle): RenderFeedItemSummary => {
+  type RenderEvent<E extends DomainEvent> = (event: E, actor: Actor) => Promise<string>;
 
-      return `
-        <a href="${actor.url}">${actor.name}</a>
-        endorsed
-        <a href="/articles/${event.articleId.value}">${article.title}</a>
-      `;
-    }
-    if (isEditorialCommunityReviewedArticleEvent(event)) {
-      const article = await getArticle(event.articleId);
+  const renderEditorialCommunityEndorsedArticle: RenderEvent<EditorialCommunityEndorsedArticleEvent> = async (
+    event,
+    actor,
+  ) => {
+    const endorsedArticle = await getArticle(event.articleId);
 
-      return `
-        <a href="${actor.url}">${actor.name}</a>
-        reviewed
-        <a href="/articles/${event.articleId.value}">${article.title}</a>
-      `;
-    }
     return `
+      <a href="${actor.url}">${actor.name}</a>
+      endorsed
+      <a href="/articles/${event.articleId.value}">${endorsedArticle.title}</a>
+    `;
+  };
+
+  const renderEditorialCommunityReviewedArticle: RenderEvent<EditorialCommunityReviewedArticleEvent> = async (
+    event,
+    actor,
+  ) => {
+    const article = await getArticle(event.articleId);
+
+    return `
+      <a href="${actor.url}">${actor.name}</a>
+      reviewed
+      <a href="/articles/${event.articleId.value}">${article.title}</a>
+    `;
+  };
+
+  const renderEditorialCommunityJoined: RenderEvent<EditorialCommunityJoinedEvent> = async (
+    event,
+    actor,
+  ) => `
       <a href="${actor.url}">${actor.name}</a>
       joined The Hive
     `;
-  }
-);
+
+  return async (event, actor) => {
+    switch (event.type) {
+      case 'EditorialCommunityEndorsedArticle': return renderEditorialCommunityEndorsedArticle(event, actor);
+      case 'EditorialCommunityReviewedArticle': return renderEditorialCommunityReviewedArticle(event, actor);
+      default: return renderEditorialCommunityJoined(event, actor);
+    }
+  };
+};
 
 export type GetActor = (id: EditorialCommunityId) => Promise<Actor>;
 
