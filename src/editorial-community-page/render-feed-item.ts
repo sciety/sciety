@@ -1,6 +1,6 @@
 import templateDate from '../templates/date';
 import Doi from '../types/doi';
-import { DomainEvent, isArticleEndorsedEvent, isArticleReviewedEvent } from '../types/domain-events';
+import { DomainEvent, isEditorialCommunityEndorsedArticleEvent, isEditorialCommunityReviewedArticleEvent } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 
 export type RenderFeedItem = (event: DomainEvent) => Promise<string>;
@@ -19,7 +19,7 @@ type RenderFeedItemSummary = (event: DomainEvent, actor: Actor) => Promise<strin
 
 const createRenderFeedItemSummary = (getArticle: GetArticle): RenderFeedItemSummary => (
   async (event, actor) => {
-    if (isArticleEndorsedEvent(event)) {
+    if (isEditorialCommunityEndorsedArticleEvent(event)) {
       const article = await getArticle(event.articleId);
 
       return `
@@ -28,7 +28,7 @@ const createRenderFeedItemSummary = (getArticle: GetArticle): RenderFeedItemSumm
         <a href="/articles/${event.articleId.value}">${article.title}</a>
       `;
     }
-    if (isArticleReviewedEvent(event)) {
+    if (isEditorialCommunityReviewedArticleEvent(event)) {
       const article = await getArticle(event.articleId);
 
       return `

@@ -14,7 +14,7 @@ export default (): ReadonlyArray<DomainEvent> => {
     const fileContents = fs.readFileSync(`./data/endorsements/${csvFile}`);
     parsedEvents.push(...csvParseSync(fileContents, { fromLine: 2 })
       .map(([date, articleDoi]: [string, string]): DomainEvent => ({
-        type: 'ArticleEndorsed',
+        type: 'EditorialCommunityEndorsedArticle',
         date: new Date(date),
         actorId: new EditorialCommunityId(editorialCommunityId),
         articleId: new Doi(articleDoi),
@@ -38,7 +38,7 @@ export default (): ReadonlyArray<DomainEvent> => {
     const fileContents = fs.readFileSync(`./data/reviews/${csvFile}`);
     parsedEvents.push(...csvParseSync(fileContents, { fromLine: 2 })
       .map(([date, articleDoi, reviewId]: [string, string, string]): DomainEvent => ({
-        type: 'ArticleReviewed',
+        type: 'EditorialCommunityReviewedArticle',
         date: new Date(date),
         actorId: new EditorialCommunityId(editorialCommunityId),
         articleId: new Doi(articleDoi),

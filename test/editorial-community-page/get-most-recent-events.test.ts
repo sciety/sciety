@@ -9,7 +9,7 @@ describe('get-most-recent-events', () => {
   const editorialCommunity1 = new EditorialCommunityId('1');
   const editorialCommunity2 = new EditorialCommunityId('2');
   const endorsedBy = (editorialCommunityId: EditorialCommunityId): DomainEvent => ({
-    type: 'ArticleEndorsed',
+    type: 'EditorialCommunityEndorsedArticle',
     date: new Date('2020-07-08'),
     actorId: editorialCommunityId,
     articleId: new Doi('10.1101/751099'),

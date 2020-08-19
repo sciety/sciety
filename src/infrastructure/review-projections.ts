@@ -1,5 +1,5 @@
 import Doi from '../types/doi';
-import { ArticleReviewedEvent } from '../types/domain-events';
+import { EditorialCommunityReviewedArticleEvent } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { ReviewId } from '../types/review-id';
 
@@ -20,7 +20,7 @@ interface ReviewProjections {
   findReviewsForEditorialCommunityId: FindReviewsForEditorialCommunityId;
 }
 
-export default (events: ReadonlyArray<ArticleReviewedEvent>): ReviewProjections => ({
+export default (events: ReadonlyArray<EditorialCommunityReviewedArticleEvent>): ReviewProjections => ({
   findReviewsForArticleVersionDoi: async (articleVersionDoi) => (
     events
       .filter((event) => event.articleId.value === articleVersionDoi.value)

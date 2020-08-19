@@ -10,7 +10,7 @@ describe('get-most-recent-events', () => {
   const editorialCommunity1 = new EditorialCommunityId('a');
   const followList = new FollowList([editorialCommunity1]);
   const dummyEvent: DomainEvent = {
-    type: 'ArticleEndorsed',
+    type: 'EditorialCommunityEndorsedArticle',
     date: new Date('2020-07-08'),
     actorId: editorialCommunity1,
     articleId: new Doi('10.1101/751099'),
@@ -19,13 +19,13 @@ describe('get-most-recent-events', () => {
   it('sorts by date descending', async () => {
     const initial: NonEmptyArray<DomainEvent> = [
       {
-        type: 'ArticleEndorsed',
+        type: 'EditorialCommunityEndorsedArticle',
         date: new Date('2020-07-08'),
         actorId: editorialCommunity1,
         articleId: new Doi('10.1101/751099'),
       },
       {
-        type: 'ArticleReviewed',
+        type: 'EditorialCommunityReviewedArticle',
         date: new Date('2020-07-09'),
         actorId: editorialCommunity1,
         articleId: new Doi('10.1101/2020.01.22.915660'),

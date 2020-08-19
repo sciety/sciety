@@ -1,6 +1,6 @@
 import createRenderFeedItem, { GetActor, GetArticle } from '../../src/home-page/render-feed-item';
 import Doi from '../../src/types/doi';
-import { ArticleEndorsedEvent, ArticleReviewedEvent, EditorialCommunityJoinedEvent } from '../../src/types/domain-events';
+import { EditorialCommunityEndorsedArticleEvent, EditorialCommunityJoinedEvent, EditorialCommunityReviewedArticleEvent } from '../../src/types/domain-events';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
 import shouldNotBeCalled from '../should-not-be-called';
 
@@ -14,12 +14,12 @@ describe('render-feed-item', (): void => {
     imageUrl: '',
   });
 
-  describe('when given an ArticleEndorsedEvent', () => {
-    const event: ArticleEndorsedEvent = {
+  describe('when given an EditorialCommunityEndorsedArticleEvent', () => {
+    const event: EditorialCommunityEndorsedArticleEvent = {
       actorId: arbitraryActorId,
       articleId: arbitraryArticleId,
       date: new Date(),
-      type: 'ArticleEndorsed',
+      type: 'EditorialCommunityEndorsedArticle',
     };
     let rendered: string;
 
@@ -44,10 +44,10 @@ describe('render-feed-item', (): void => {
     it.todo('displays the event date');
   });
 
-  describe('when given an ArticleReviewedEvent', () => {
+  describe('when given an EditorialCommunityReviewedArticleEvent', () => {
     it('displays the article title', async () => {
-      const event: ArticleReviewedEvent = {
-        type: 'ArticleReviewed',
+      const event: EditorialCommunityReviewedArticleEvent = {
+        type: 'EditorialCommunityReviewedArticle',
         date: new Date(),
         actorId: arbitraryActorId,
         articleId: arbitraryArticleId,

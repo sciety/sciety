@@ -3,27 +3,29 @@ import EditorialCommunityId from './editorial-community-id';
 import { ReviewId } from './review-id';
 import { UserId } from './user-id';
 
-export type ArticleEndorsedEvent = {
-  type: 'ArticleEndorsed';
+export type EditorialCommunityEndorsedArticleEvent = {
+  type: 'EditorialCommunityEndorsedArticle';
   date: Date;
   actorId: EditorialCommunityId;
   articleId: Doi;
 };
 
-export const isArticleEndorsedEvent = (event: DomainEvent): event is ArticleEndorsedEvent => (
-  event.type === 'ArticleEndorsed'
+export const isEditorialCommunityEndorsedArticleEvent = (event: DomainEvent):
+event is EditorialCommunityEndorsedArticleEvent => (
+  event.type === 'EditorialCommunityEndorsedArticle'
 );
 
-export type ArticleReviewedEvent = {
-  type: 'ArticleReviewed';
+export type EditorialCommunityReviewedArticleEvent = {
+  type: 'EditorialCommunityReviewedArticle';
   date: Date;
   actorId: EditorialCommunityId;
   articleId: Doi;
   reviewId: ReviewId;
 };
 
-export const isArticleReviewedEvent = (event: DomainEvent): event is ArticleReviewedEvent => (
-  event.type === 'ArticleReviewed'
+export const isEditorialCommunityReviewedArticleEvent = (event: DomainEvent):
+event is EditorialCommunityReviewedArticleEvent => (
+  event.type === 'EditorialCommunityReviewedArticle'
 );
 
 export type EditorialCommunityJoinedEvent = {
@@ -44,6 +46,6 @@ export type UserFollowedEditorialCommunityEvent = {
 };
 
 export type DomainEvent =
-  ArticleEndorsedEvent |
-  ArticleReviewedEvent |
+  EditorialCommunityEndorsedArticleEvent |
+  EditorialCommunityReviewedArticleEvent |
   EditorialCommunityJoinedEvent;

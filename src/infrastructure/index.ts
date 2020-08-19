@@ -19,7 +19,7 @@ import {
 import createReviewProjections from './review-projections';
 import createSearchEuropePmc from './search-europe-pmc';
 import bootstrapEditorialCommunities from '../data/bootstrap-editorial-communities';
-import { DomainEvent, isArticleEndorsedEvent, isArticleReviewedEvent } from '../types/domain-events';
+import { DomainEvent, isEditorialCommunityEndorsedArticleEvent, isEditorialCommunityReviewedArticleEvent } from '../types/domain-events';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import EndorsementsRepository from '../types/endorsements-repository';
 import { Json } from '../types/json';
@@ -36,7 +36,7 @@ const populateEditorialCommunities = (logger: Logger): EditorialCommunityReposit
 const populateEndorsementsRepository = (
   events: ReadonlyArray<DomainEvent>,
 ): EndorsementsRepository => (
-  createEndorsementsRepository(events.filter(isArticleEndorsedEvent))
+  createEndorsementsRepository(events.filter(isEditorialCommunityEndorsedArticleEvent))
 );
 
 const createInfrastructure = (): Adapters => {
@@ -58,7 +58,7 @@ const createInfrastructure = (): Adapters => {
   const searchEuropePmc = createSearchEuropePmc(getJson, logger);
   const editorialCommunities = populateEditorialCommunities(logger);
   const events = getEventsFromDataFiles() as unknown as NonEmptyArray<DomainEvent>;
-  const reviewProjections = createReviewProjections(events.filter(isArticleReviewedEvent));
+  const reviewProjections = createReviewProjections(events.filter(isEditorialCommunityReviewedArticleEvent));
 
   return {
     fetchArticle: createFetchCrossrefArticle(getXml, logger),

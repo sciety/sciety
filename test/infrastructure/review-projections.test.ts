@@ -1,6 +1,6 @@
 import createReviewProjections from '../../src/infrastructure/review-projections';
 import Doi from '../../src/types/doi';
-import { ArticleReviewedEvent } from '../../src/types/domain-events';
+import { EditorialCommunityReviewedArticleEvent } from '../../src/types/domain-events';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
 
 describe('review-projections', () => {
@@ -11,23 +11,23 @@ describe('review-projections', () => {
   const reviewId1 = new Doi('10.5555/1');
   const reviewId2 = new Doi('10.6666/2');
   const reviewId3 = new Doi('10.7777/3');
-  const reviewEvents: Array<ArticleReviewedEvent> = [
+  const reviewEvents: Array<EditorialCommunityReviewedArticleEvent> = [
     {
-      type: 'ArticleReviewed',
+      type: 'EditorialCommunityReviewedArticle',
       articleId: article1,
       reviewId: reviewId1,
       actorId: editorialCommunity1,
       date: new Date('2020-05-19T00:00:00Z'),
     },
     {
-      type: 'ArticleReviewed',
+      type: 'EditorialCommunityReviewedArticle',
       articleId: article2,
       reviewId: reviewId2,
       actorId: editorialCommunity1,
       date: new Date('2020-05-21T00:00:00Z'),
     },
     {
-      type: 'ArticleReviewed',
+      type: 'EditorialCommunityReviewedArticle',
       articleId: article1,
       reviewId: reviewId3,
       actorId: editorialCommunity2,

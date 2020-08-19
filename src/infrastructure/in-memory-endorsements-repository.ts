@@ -1,8 +1,8 @@
-import { ArticleEndorsedEvent } from '../types/domain-events';
+import { EditorialCommunityEndorsedArticleEvent } from '../types/domain-events';
 import EndorsementsRepository from '../types/endorsements-repository';
 
 export default (
-  events: ReadonlyArray<ArticleEndorsedEvent>,
+  events: ReadonlyArray<EditorialCommunityEndorsedArticleEvent>,
 ): EndorsementsRepository => ({
   endorsingEditorialCommunityIds: async (doi) => (
     events

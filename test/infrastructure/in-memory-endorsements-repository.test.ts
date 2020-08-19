@@ -13,7 +13,7 @@ describe('in-memory-endorsements-repository', () => {
   beforeEach(async () => {
     repository = createEndorsementsRepository([
       {
-        type: 'ArticleEndorsed',
+        type: 'EditorialCommunityEndorsedArticle',
         date: new Date(),
         actorId: editorialCommunity1Id,
         articleId: endorsedArticleDoi,
