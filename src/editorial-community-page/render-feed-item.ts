@@ -1,13 +1,19 @@
 import templateDate from '../templates/date';
 import Doi from '../types/doi';
 import {
-  DomainEvent,
-  EditorialCommunityEndorsedArticleEvent, EditorialCommunityJoinedEvent, EditorialCommunityReviewedArticleEvent,
+  EditorialCommunityEndorsedArticleEvent,
+  EditorialCommunityJoinedEvent,
+  EditorialCommunityReviewedArticleEvent,
   isEditorialCommunityEndorsedArticleEvent,
 } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 
-export type RenderFeedItem = (event: DomainEvent) => Promise<string>;
+export type FeedEvent =
+  EditorialCommunityEndorsedArticleEvent |
+  EditorialCommunityReviewedArticleEvent |
+  EditorialCommunityJoinedEvent;
+
+export type RenderFeedItem = (event: FeedEvent) => Promise<string>;
 
 type Actor = {
   url: string;
@@ -19,10 +25,10 @@ type Article = {
   title: string;
 };
 
-type RenderFeedItemSummary = (event: DomainEvent, actor: Actor) => Promise<string>;
+type RenderFeedItemSummary = (event: FeedEvent, actor: Actor) => Promise<string>;
 
 const createRenderFeedItemSummary = (getArticle: GetArticle): RenderFeedItemSummary => {
-  type RenderEvent<E extends DomainEvent> = (event: E, actor: Actor) => Promise<string>;
+  type RenderEvent<E extends FeedEvent> = (event: E, actor: Actor) => Promise<string>;
 
   const renderEditorialCommunityEndorsedArticle: RenderEvent<EditorialCommunityEndorsedArticleEvent> = async (
     event,
