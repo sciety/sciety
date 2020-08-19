@@ -1,6 +1,7 @@
 import Doi from './doi';
 import EditorialCommunityId from './editorial-community-id';
 import { ReviewId } from './review-id';
+import { UserId } from './user-id';
 
 export type ArticleEndorsedEvent = {
   type: 'ArticleEndorsed';
@@ -35,4 +36,14 @@ export const isEditorialCommunityJoinedEvent = (event: DomainEvent): event is Ed
   event.type === 'EditorialCommunityJoined'
 );
 
-export type DomainEvent = ArticleEndorsedEvent | ArticleReviewedEvent | EditorialCommunityJoinedEvent;
+export type UserFollowedEditorialCommunityEvent = {
+  type: 'UserFollowedEditorialCommunity';
+  date: Date;
+  userId: UserId;
+  editorialCommunityId: EditorialCommunityId;
+};
+
+export type DomainEvent =
+  ArticleEndorsedEvent |
+  ArticleReviewedEvent |
+  EditorialCommunityJoinedEvent;
