@@ -49,4 +49,5 @@ export type UserFollowedEditorialCommunityEvent = {
 export type DomainEvent =
   EditorialCommunityEndorsedArticleEvent |
   EditorialCommunityReviewedArticleEvent |
-  EditorialCommunityJoinedEvent;
+  EditorialCommunityJoinedEvent |
+  UserFollowedEditorialCommunityEvent;
