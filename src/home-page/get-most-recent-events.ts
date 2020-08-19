@@ -1,21 +1,21 @@
-import { GetEvents } from './render-feed';
+import { FeedEvent, GetEvents } from './render-feed';
 import { DomainEvent, isEditorialCommunityEndorsedArticleEvent, isEditorialCommunityJoinedEvent } from '../types/domain-events';
 import FollowList from '../types/follow-list';
 import { NonEmptyArray } from '../types/non-empty-array';
 
-type FilterFunction = (event: DomainEvent) => event is DomainEvent;
-export type FilterEvents = (filterFunction: FilterFunction, maxCount: number) => Promise<Array<DomainEvent>>;
+type FilterFunction = (event: DomainEvent) => event is FeedEvent;
+export type FilterEvents = (filterFunction: FilterFunction, maxCount: number) => Promise<Array<FeedEvent>>;
 
 export default (
   filterEvents: FilterEvents,
   maxCount: number,
 ): GetEvents => (
   async (followList: FollowList) => {
-    const followedEvents: FilterFunction = (event): event is DomainEvent => (
+    const followedEvents: FilterFunction = (event): event is FeedEvent => (
       isEditorialCommunityJoinedEvent(event)
       || (isEditorialCommunityEndorsedArticleEvent(event) && followList.follows(event.editorialCommunityId))
       || followList.follows(event.actorId)
     );
-    return filterEvents(followedEvents, maxCount) as unknown as NonEmptyArray<DomainEvent>;
+    return filterEvents(followedEvents, maxCount) as unknown as NonEmptyArray<FeedEvent>;
   }
 );

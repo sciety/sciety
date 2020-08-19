@@ -1,12 +1,13 @@
-import { RenderFeedItem } from './render-feed-item';
+import { FeedEvent, RenderFeedItem } from './render-feed-item';
 import templateListItems from '../templates/list-items';
-import { DomainEvent } from '../types/domain-events';
 import FollowList from '../types/follow-list';
 import { NonEmptyArray } from '../types/non-empty-array';
 
 type RenderFeed = (followList: FollowList) => Promise<string>;
 
-export type GetEvents = (followList: FollowList) => Promise<NonEmptyArray<DomainEvent>>;
+export type GetEvents = (followList: FollowList) => Promise<NonEmptyArray<FeedEvent>>;
+
+export { FeedEvent } from './render-feed-item';
 
 export default (
   getEvents: GetEvents,
