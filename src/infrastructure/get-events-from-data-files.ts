@@ -6,7 +6,7 @@ import EditorialCommunityId from '../types/editorial-community-id';
 import HypothesisAnnotationId from '../types/hypothesis-annotation-id';
 import { ReviewId } from '../types/review-id';
 
-export default (): ReadonlyArray<DomainEvent> => {
+export default (): Array<DomainEvent> => {
   const parsedEvents: Array<DomainEvent> = [];
 
   for (const csvFile of fs.readdirSync('./data/endorsements')) {
