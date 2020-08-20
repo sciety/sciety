@@ -6,6 +6,7 @@ import { GetBiorxivCommentCount } from './get-biorxiv-comment-count';
 import { Logger } from './logger';
 import { FindReviewsForArticleVersionDoi, FindReviewsForEditorialCommunityId } from './review-projections';
 import { SearchEuropePmc } from './search-europe-pmc';
+import { DomainEvent } from '../types/domain-events';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import EndorsementsRepository from '../types/endorsements-repository';
 
@@ -20,5 +21,6 @@ export interface Adapters {
   findReviewsForArticleVersionDoi: FindReviewsForArticleVersionDoi;
   findReviewsForEditorialCommunityId: FindReviewsForEditorialCommunityId;
   filterEvents: FilterEvents;
+  getAllEvents: () => Promise<ReadonlyArray<DomainEvent>>
   logger: Logger;
 }
