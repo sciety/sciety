@@ -1,9 +1,9 @@
 import { GetFollowedEditorialCommunityIds } from './get-hardcoded-followed-editorial-communities';
-import { UserFollowedEditorialCommunityEvent, UserUnfollowedEditorialCommunityEvent } from '../types/domain-events';
+import { DomainEvent } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 import userId from '../types/user-id';
 
-const hardcodedEvents: Array<UserFollowedEditorialCommunityEvent | UserUnfollowedEditorialCommunityEvent> = [
+const hardcodedEvents: Array<DomainEvent> = [
   {
     type: 'UserFollowedEditorialCommunity',
     date: new Date(),
@@ -33,6 +33,11 @@ const hardcodedEvents: Array<UserFollowedEditorialCommunityEvent | UserUnfollowe
     date: new Date(),
     userId: userId('someone'),
     editorialCommunityId: new EditorialCommunityId('74fd66e9-3b90-4b5a-a4ab-5be83db4c5de'),
+  },
+  {
+    type: 'EditorialCommunityJoined',
+    date: new Date(),
+    actorId: new EditorialCommunityId('74fd66e9-3b90-4b5a-a4ab-5be83db4c5de'),
   },
 ];
 
