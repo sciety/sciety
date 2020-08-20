@@ -19,6 +19,25 @@ export default (
   async (userId, followList) => {
     const list = await Promise.all((await getFollowedEditorialCommunities(userId))
       .map(async (editorialCommunity) => renderFollowedEditorialCommunity(editorialCommunity, followList)));
+
+    let renderedFollowList: string;
+    if (list.length > 0) {
+      renderedFollowList = `
+        <ol class="ui large feed">
+          ${templateListItems(list, 'event')}
+        </ol>
+      `;
+    } else {
+      renderedFollowList = `
+        <div class="ui info message">
+          <div class="header">
+            @${userId} isn’t following anything
+          </div>
+          <p>When they do, they’ll be listed here.</p>
+        </div>
+      `;
+    }
+
     return `
       <div class="ui aligned stackable grid">
         <div class="row">
@@ -34,9 +53,7 @@ export default (
               <h2 class="ui header">
                 Following
               </h2>
-              <ol class="ui large feed">
-                ${templateListItems(list, 'event')}
-              </ol>
+              ${renderedFollowList}
             </section>
           </div>
         </div>
