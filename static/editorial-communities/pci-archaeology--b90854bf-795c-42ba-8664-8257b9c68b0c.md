@@ -43,3 +43,5 @@ Managers:
 * Philip Van Peer (Univ. Leuven, Belgium)
 
 To contact the Managing Board please send a message to [managing-board@archaeo.peercommunityin.org](mailto:managing-board@archaeo.peercommunityin.org)
+
+[https://archaeo.peercommunityin.org/about/about](https://archaeo.peercommunityin.org/about/about)

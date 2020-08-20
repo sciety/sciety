@@ -60,3 +60,5 @@ PCI Animal Science does not guarantee the evaluation or recommendation of all su
 * Administrator: Rafael Muñoz-Tamayo (INRAE, France)
 
 To contact the Managing Board please send a message to [managing-board@animsci.peercommunityin.org](mailto:managing-board@animsci.peercommunityin.org)
+
+[https://animsci.peercommunityin.org/about/about](https://animsci.peercommunityin.org/about/about)
