@@ -46,7 +46,7 @@ export type UserFollowedEditorialCommunityEvent = {
   editorialCommunityId: EditorialCommunityId;
 };
 
-type UserUnfollowedEditorialCommunityEvent = {
+export type UserUnfollowedEditorialCommunityEvent = {
   type: 'UserUnfollowedEditorialCommunity';
   date: Date;
   userId: UserId;
