@@ -4,10 +4,9 @@ Peer Community in Zoology (PCI Zoology) has been launched in July 2020, replacin
 
 *   PCI Zoology is a community of the parent project Peer Community In, an original idea of Denis Bourguet, Benoit Facon and Thomas Guillemaud.
 *   PCI Zoology is not designed to be a free peer-reviewing service for authors aiming to improve their articles before submission to a journal. It is, of course, possible, for authors to then submit their recommended article to a traditional journal, but this is not the goal of PCI Zoology.
-*   PCI Zoology is stimulating: it recommends remarkable articles.
 *   PCI Zoology is free: there are no fees associated with the evaluation process, and no charge for access to the comments and recommendations. The website is freely accessible.
 *   PCI Zoology is transparent: Reviews and recommendations (for unpublished articles) and recommendations (for published articles) are freely available for consultation. Recommendations are signed by the recommenders. Reviews may also be signed if the reviewers agree to do so.
-*   PCI Zoology is not exclusive: An article may be recommended by different Peer Communities in X (a feature of particular interest for articles relating to multidisciplinary studies) and may even be published in a traditional journal (although this is not the goal of PCI Zoology).
+*   PCI Zoology is not exclusive: An article may be recommended by different Peer Communities in X (a feature of particular interest for articles relating to multidisciplinary studies) and may even be published in a traditional journal.
 
 ### How it works
 <iframe width="370" height="200" src="https://www.youtube.com/embed/4PZhpnc8wwo" frameborder="0" allowfullscreen=""></iframe>
@@ -37,12 +36,12 @@ PCI Zoology recommends only preprints of high scientific quality that are method
 
 PCI Zoology does not guarantee the evaluation or recommendation of all submitted preprints. Only preprints considered interesting by at least one competent recommender (equivalent to an associate editor in a classical journal) will be peer-reviewed. The interest of the preprint, as determined by the recommender, can relate to its context, the scientific question addressed, the methodology, or the results. PCI Zoology has a large number of recommenders, ensuring a considerable diversity of interests. The recommendations published by PCI Zoology are designed to draw the attention of the research community to the qualities of the article, including the subjective reasons for the recommender’s interest in it.
 
-## People
+## Managing Board
 
 *   Dominique Adriaens (Ghent University, Belgium)
 *   Ellen Decaestecker (KULeuven, Belgium)
-*   Benoït Facon (Inrae, France)
-*   Isabelle Schon (Royal Belgian Institute of Natural Sciences, Belgium)
+*   Benoît Facon (Inrae, France)
+*   Isa Schön (Royal Belgian Institute of Natural Sciences, Belgium)
 *   Bertanne Visser (UCLouvain, Belgium)
 
 [https://zool.peercommunityin.org/about/about](https://zool.peercommunityin.org/about/about)
