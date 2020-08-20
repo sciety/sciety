@@ -61,6 +61,6 @@ PCI Evol Biol does not guarantee the evaluation or recommendation of all submitt
 * Ruth Hufbauer (Fort Collins, Colorado S. Univ., USA)
 * Caroline Nieberding (UCLouvain, Belgium)
 
-To contact the Managing Board please send a message to [contact@evolbiol.peercommunityin.org](contact@evolbiol.peercommunityin.org)
+To contact the Managing Board please send a message to [contact@evolbiol.peercommunityin.org](mailto:contact@evolbiol.peercommunityin.org)
 
 [https://evolbiol.peercommunityin.org/about/about](https://evolbiol.peercommunityin.org/about/about)
