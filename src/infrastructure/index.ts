@@ -59,8 +59,7 @@ const createInfrastructure = (): Adapters => {
   const fetchHypothesisAnnotation = createFetchHypothesisAnnotation(getJson, logger);
   const searchEuropePmc = createSearchEuropePmc(getJson, logger);
   const editorialCommunities = populateEditorialCommunities(logger);
-  const events = getEventsFromDataFiles() as unknown as NonEmptyArray<DomainEvent>;
-  const reviewProjections = createReviewProjections(events.filter(isEditorialCommunityReviewedArticleEvent));
+  const events = getEventsFromDataFiles();
   const hardcodedFollowEvents: Array<DomainEvent> = [
     {
       type: 'UserFollowedEditorialCommunity',
@@ -110,6 +109,8 @@ const createInfrastructure = (): Adapters => {
       editorialCommunityId: new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002'),
     },
   ];
+  const allEvents = events.concat(hardcodedFollowEvents);
+  const reviewProjections = createReviewProjections(allEvents.filter(isEditorialCommunityReviewedArticleEvent));
 
   return {
     fetchArticle: createFetchCrossrefArticle(getXml, logger),
@@ -120,8 +121,8 @@ const createInfrastructure = (): Adapters => {
     editorialCommunities,
     endorsements: populateEndorsementsRepository(events),
     ...reviewProjections,
-    filterEvents: createFilterEvents(events),
-    getAllEvents: async () => hardcodedFollowEvents,
+    filterEvents: createFilterEvents(allEvents),
+    getAllEvents: async () => allEvents,
     logger,
   };
 };
