@@ -6,7 +6,7 @@ export type FilterEvents = <T extends DomainEvent>(filterFunction: FilterFunctio
   => Promise<Array<T>>;
 
 export default (
-  events: Array<DomainEvent>,
+  events: ReadonlyArray<DomainEvent>,
 ): FilterEvents => async (filterFunction, maxCount) => (
   events
     .slice()

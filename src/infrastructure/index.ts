@@ -24,7 +24,6 @@ import EditorialCommunityId from '../types/editorial-community-id';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import EndorsementsRepository from '../types/endorsements-repository';
 import { Json } from '../types/json';
-import { NonEmptyArray } from '../types/non-empty-array';
 import userId from '../types/user-id';
 
 const populateEditorialCommunities = (logger: Logger): EditorialCommunityRepository => {
