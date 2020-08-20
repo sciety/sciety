@@ -1,12 +1,13 @@
 import { Middleware } from '@koa/router';
 import { Logger } from '../infrastructure/logger';
-import { UserFollowedEditorialCommunityEvent } from '../types/domain-events';
+import { DomainEvent, UserFollowedEditorialCommunityEvent } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 import FollowList from '../types/follow-list';
 import userId from '../types/user-id';
 
 type Ports = {
   logger: Logger;
+  commitEvent: (event: DomainEvent) => Promise<void>;
 };
 
 export default (ports: Ports): Middleware<{ followList: FollowList }> => (
@@ -20,6 +21,7 @@ export default (ports: Ports): Middleware<{ followList: FollowList }> => (
       userId: userId('anonymous'),
       editorialCommunityId,
     };
+    await ports.commitEvent(event);
 
     ports.logger('info', 'User followed editorial community', { editorialCommunityId, event });
 

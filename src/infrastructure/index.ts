@@ -123,6 +123,7 @@ const createInfrastructure = (): Adapters => {
     filterEvents: createFilterEvents(allEvents),
     getAllEvents: async () => allEvents,
     logger,
+    commitEvent: async (event) => { allEvents.push(event); },
   };
 };
 

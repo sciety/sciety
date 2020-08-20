@@ -65,6 +65,7 @@ export default async (): Promise<TestServer> => {
     ...reviewProjections,
     filterEvents: async () => [],
     getAllEvents: async () => [],
+    commitEvent: async () => {},
     logger: dummyLogger,
   };
 

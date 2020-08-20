@@ -21,6 +21,7 @@ export interface Adapters {
   findReviewsForArticleVersionDoi: FindReviewsForArticleVersionDoi;
   findReviewsForEditorialCommunityId: FindReviewsForEditorialCommunityId;
   filterEvents: FilterEvents;
-  getAllEvents: () => Promise<ReadonlyArray<DomainEvent>>
+  getAllEvents: () => Promise<ReadonlyArray<DomainEvent>>;
+  commitEvent: (event: DomainEvent) => Promise<void>;
   logger: Logger;
 }
