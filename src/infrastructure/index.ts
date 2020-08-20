@@ -91,11 +91,6 @@ const createInfrastructure = (): Adapters => {
       editorialCommunityId: new EditorialCommunityId('74fd66e9-3b90-4b5a-a4ab-5be83db4c5de'),
     },
     {
-      type: 'EditorialCommunityJoined',
-      date: new Date(),
-      actorId: new EditorialCommunityId('74fd66e9-3b90-4b5a-a4ab-5be83db4c5de'),
-    },
-    {
       type: 'UserFollowedEditorialCommunity',
       date: new Date(),
       userId: userId('someoneelse'),
