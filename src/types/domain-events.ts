@@ -46,8 +46,16 @@ export type UserFollowedEditorialCommunityEvent = {
   editorialCommunityId: EditorialCommunityId;
 };
 
+export type UserUnfollowedEditorialCommunityEvent = {
+  type: 'UserUnfollowedEditorialCommunity';
+  date: Date;
+  userId: UserId;
+  editorialCommunityId: EditorialCommunityId;
+};
+
 export type DomainEvent =
   EditorialCommunityEndorsedArticleEvent |
   EditorialCommunityReviewedArticleEvent |
   EditorialCommunityJoinedEvent |
-  UserFollowedEditorialCommunityEvent;
+  UserFollowedEditorialCommunityEvent |
+  UserUnfollowedEditorialCommunityEvent;
