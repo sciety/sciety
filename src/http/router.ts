@@ -36,7 +36,7 @@ export default (adapters: Adapters): Router => {
   router.get('/users/:userId(.+)',
     identifyUser(adapters.logger),
     readWriteFollowList(),
-    pageHandler(createUserPage()));
+    pageHandler(createUserPage(adapters)));
 
   router.get('/articles',
     identifyUser(adapters.logger),
