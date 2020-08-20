@@ -14,7 +14,7 @@ type RenderPage = (params: {
   doi?: string;
   id?: string;
   query?: string;
-  handle?: string;
+  userId?: string;
   followList: FollowList;
 }) => Promise<string | Result<string, RenderPageError>>;
 

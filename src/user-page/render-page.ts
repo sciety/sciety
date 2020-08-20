@@ -2,8 +2,9 @@ import { RenderFollowedEditorialCommunity } from './render-followed-editorial-co
 import templateListItems from '../templates/list-items';
 import EditorialCommunityId from '../types/editorial-community-id';
 import FollowList from '../types/follow-list';
+import { UserId } from '../types/user-id';
 
-type RenderPage = (handle: string, followList: FollowList) => Promise<string>;
+type RenderPage = (userId: UserId, followList: FollowList) => Promise<string>;
 
 const hardCodedFollowList = [
   {
@@ -26,7 +27,7 @@ const hardCodedFollowList = [
 export default (
   renderFollowedEditorialCommunity: RenderFollowedEditorialCommunity,
 ): RenderPage => (
-  async (handle, followList) => {
+  async (userId, followList) => {
     const list = await Promise.all(hardCodedFollowList
       .map(async (editorialCommunity) => renderFollowedEditorialCommunity(editorialCommunity, followList)));
     return `
@@ -34,7 +35,7 @@ export default (
         <div class="row">
           <div class="column">
             <header class="ui basic padded vertical segment">
-              <h1>@${handle}</h1>
+              <h1>@${userId}</h1>
             </header>
           </div>
         </div>
