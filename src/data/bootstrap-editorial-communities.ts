@@ -41,31 +41,31 @@ const editorialCommunities: Array<EditorialCommunity> = [
   {
     id: new EditorialCommunityId('19b7464a-edbe-42e8-b7cc-04d1eb1f7332'),
     name: 'Peer Community in Evolutionary Biology',
-    avatarUrl: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png',
+    avatarUrl: 'https://pbs.twimg.com/profile_images/794877742013628416/MtBW-h3D_200x200.jpg',
     descriptionPath: 'pci-evolutionary-biology--19b7464a-edbe-42e8-b7cc-04d1eb1f7332.md',
   },
   {
     id: new EditorialCommunityId('32025f28-0506-480e-84a0-b47ef1e92ec5'),
     name: 'Peer Community in Ecology',
-    avatarUrl: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png',
+    avatarUrl: 'https://pbs.twimg.com/profile_images/940632045579046917/zk4Wncwa_200x200.jpg',
     descriptionPath: 'pci-ecology--32025f28-0506-480e-84a0-b47ef1e92ec5.md',
   },
   {
     id: new EditorialCommunityId('4eebcec9-a4bb-44e1-bde3-2ae11e65daaa'),
     name: 'Peer Community in Animal Science',
-    avatarUrl: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png',
+    avatarUrl: 'https://pbs.twimg.com/profile_images/1111642171256508416/5Un6e8tl_200x200.png',
     descriptionPath: 'pci-animal-science--4eebcec9-a4bb-44e1-bde3-2ae11e65daaa.md',
   },
   {
     id: new EditorialCommunityId('b90854bf-795c-42ba-8664-8257b9c68b0c'),
     name: 'Peer Community in Archaeology',
-    avatarUrl: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png',
+    avatarUrl: 'https://pbs.twimg.com/profile_images/1232948279417196545/bVWCl3Vh_200x200.jpg',
     descriptionPath: 'pci-archaeology--b90854bf-795c-42ba-8664-8257b9c68b0c.md',
   },
   {
     id: new EditorialCommunityId('7a9e97d1-c1fe-4ac2-9572-4ecfe28f9f84'),
     name: 'Peer Community in Paleontology',
-    avatarUrl: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png',
+    avatarUrl: 'https://pbs.twimg.com/profile_images/923462041398063104/znm9OQNM_200x200.jpg',
     descriptionPath: 'pci-paleontology--7a9e97d1-c1fe-4ac2-9572-4ecfe28f9f84.md',
   },
 ];
