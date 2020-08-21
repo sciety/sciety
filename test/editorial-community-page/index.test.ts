@@ -18,7 +18,7 @@ describe('create render page', (): void => {
     });
 
     it('has the editorial community description', async (): Promise<void> => {
-      expect(renderedPage).toStrictEqual(expect.stringContaining('accelerate'));
+      expect(renderedPage).toStrictEqual(expect.stringContaining('Contents of'));
     });
   });
 

@@ -1,4 +1,5 @@
 import { NotFound } from 'http-errors';
+import showdown from 'showdown';
 import { Result } from 'true-myth';
 import createGetMostRecentEvents, { FilterEvents } from './get-most-recent-events';
 import createRenderDescription, { GetEditorialCommunityDescription, RenderDescription } from './render-description';
@@ -23,8 +24,11 @@ type FindReviewsForEditorialCommunityId = (editorialCommunityId: EditorialCommun
   added: Date;
 }>>;
 
+type FetchStaticFile = (filename: string) => Promise<string>;
+
 interface Ports {
   fetchArticle: FetchExternalArticle;
+  fetchStaticFile: FetchStaticFile;
   editorialCommunities: EditorialCommunityRepository;
   endorsements: EndorsementsRepository,
   filterEvents: FilterEvents;
@@ -42,13 +46,15 @@ const buildRenderPageHeader = (editorialCommunities: EditorialCommunityRepositor
   return createRenderPageHeader(getEditorialCommunity);
 };
 
-const buildRenderDescription = (editorialCommunities: EditorialCommunityRepository): RenderDescription => {
+const buildRenderDescription = (ports: Ports): RenderDescription => {
+  const converter = new showdown.Converter({ noHeaderId: true });
   const getEditorialCommunityDescription: GetEditorialCommunityDescription = async (editorialCommunityId) => {
-    const editorialCommunity = (await editorialCommunities.lookup(editorialCommunityId))
+    const editorialCommunity = (await ports.editorialCommunities.lookup(editorialCommunityId))
       .unwrapOrElse(() => {
         throw new NotFound(`${editorialCommunityId.value} not found`);
       });
-    return editorialCommunity.description;
+    const markdown = await ports.fetchStaticFile(`editorial-communities/${editorialCommunity.descriptionPath}`);
+    return converter.makeHtml(markdown);
   };
   return createRenderDescription(getEditorialCommunityDescription);
 };
@@ -103,7 +109,7 @@ type RenderPage = (params: Params) => Promise<Result<string, RenderPageError>>;
 
 export default (ports: Ports): RenderPage => {
   const renderPageHeader = buildRenderPageHeader(ports.editorialCommunities);
-  const renderDescription = buildRenderDescription(ports.editorialCommunities);
+  const renderDescription = buildRenderDescription(ports);
   const renderEndorsedArticles = buildRenderEndorsedArticles(ports.endorsements);
   const renderReviews = buildRenderReviews(ports);
   const renderFeed = buildRenderFeed(ports);
