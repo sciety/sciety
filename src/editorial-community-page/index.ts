@@ -1,6 +1,6 @@
 import { NotFound } from 'http-errors';
 import showdown from 'showdown';
-import { Result } from 'true-myth';
+import { Maybe, Result } from 'true-myth';
 import createGetMostRecentEvents, { FilterEvents } from './get-most-recent-events';
 import createRenderDescription, { GetEditorialCommunityDescription, RenderDescription } from './render-description';
 import createRenderEndorsedArticles, { GetNumberOfEndorsedArticles, RenderEndorsedArticles } from './render-endorsed-articles';
@@ -12,7 +12,6 @@ import createRenderPageHeader, { GetEditorialCommunity, RenderPageHeader } from 
 import createRenderReviews, { GetNumberOfReviews, RenderReviews } from './render-reviews';
 import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
-import EditorialCommunityRepository from '../types/editorial-community-repository';
 import EndorsementsRepository from '../types/endorsements-repository';
 import { FetchExternalArticle } from '../types/fetch-external-article';
 import FollowList from '../types/follow-list';
@@ -26,18 +25,24 @@ type FindReviewsForEditorialCommunityId = (editorialCommunityId: EditorialCommun
 
 type FetchStaticFile = (filename: string) => Promise<string>;
 
+type FetchEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => Promise<Maybe<{
+  name: string;
+  avatarUrl: string;
+  descriptionPath: string;
+}>>;
+
 interface Ports {
   fetchArticle: FetchExternalArticle;
   fetchStaticFile: FetchStaticFile;
-  editorialCommunities: EditorialCommunityRepository;
+  getEditorialCommunity: FetchEditorialCommunity;
   endorsements: EndorsementsRepository,
   filterEvents: FilterEvents;
   findReviewsForEditorialCommunityId: FindReviewsForEditorialCommunityId,
 }
 
-const buildRenderPageHeader = (editorialCommunities: EditorialCommunityRepository): RenderPageHeader => {
+const buildRenderPageHeader = (ports: Ports): RenderPageHeader => {
   const getEditorialCommunity: GetEditorialCommunity = async (editorialCommunityId) => {
-    const editorialCommunity = (await editorialCommunities.lookup(editorialCommunityId))
+    const editorialCommunity = (await ports.getEditorialCommunity(editorialCommunityId))
       .unwrapOrElse(() => {
         throw new NotFound(`${editorialCommunityId.value} not found`);
       });
@@ -49,7 +54,7 @@ const buildRenderPageHeader = (editorialCommunities: EditorialCommunityRepositor
 const buildRenderDescription = (ports: Ports): RenderDescription => {
   const converter = new showdown.Converter({ noHeaderId: true });
   const getEditorialCommunityDescription: GetEditorialCommunityDescription = async (editorialCommunityId) => {
-    const editorialCommunity = (await ports.editorialCommunities.lookup(editorialCommunityId))
+    const editorialCommunity = (await ports.getEditorialCommunity(editorialCommunityId))
       .unwrapOrElse(() => {
         throw new NotFound(`${editorialCommunityId.value} not found`);
       });
@@ -79,7 +84,7 @@ const buildRenderReviews = (
 
 const buildRenderFeed = (ports: Ports): RenderFeed => {
   const getActorAdapter: GetActor = async (id) => {
-    const editorialCommunity = (await ports.editorialCommunities.lookup(id)).unsafelyUnwrap();
+    const editorialCommunity = (await ports.getEditorialCommunity(id)).unsafelyUnwrap();
     return {
       name: editorialCommunity.name,
       imageUrl: editorialCommunity.avatarUrl,
@@ -108,7 +113,7 @@ type RenderPageError = {
 type RenderPage = (params: Params) => Promise<Result<string, RenderPageError>>;
 
 export default (ports: Ports): RenderPage => {
-  const renderPageHeader = buildRenderPageHeader(ports.editorialCommunities);
+  const renderPageHeader = buildRenderPageHeader(ports);
   const renderDescription = buildRenderDescription(ports);
   const renderEndorsedArticles = buildRenderEndorsedArticles(ports.endorsements);
   const renderReviews = buildRenderReviews(ports);

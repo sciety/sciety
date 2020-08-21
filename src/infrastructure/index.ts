@@ -66,6 +66,7 @@ const createInfrastructure = (): Adapters => {
     fetchStaticFile: createFetchStaticFile(logger),
     searchEuropePmc,
     editorialCommunities,
+    getEditorialCommunity: editorialCommunities.lookup,
     endorsements: populateEndorsementsRepository(events),
     ...reviewProjections,
     filterEvents: createFilterEvents(events),

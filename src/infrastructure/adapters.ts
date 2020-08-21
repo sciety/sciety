@@ -1,3 +1,4 @@
+import { Maybe } from 'true-myth';
 import { FetchCrossrefArticle } from './fetch-crossref-article';
 import { FetchReview } from './fetch-review';
 import { FetchStaticFile } from './fetch-static-file';
@@ -7,8 +8,15 @@ import { Logger } from './logger';
 import { FindReviewsForArticleVersionDoi, FindReviewsForEditorialCommunityId } from './review-projections';
 import { SearchEuropePmc } from './search-europe-pmc';
 import { DomainEvent } from '../types/domain-events';
+import EditorialCommunityId from '../types/editorial-community-id';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import EndorsementsRepository from '../types/endorsements-repository';
+
+type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => Promise<Maybe<{
+  name: string;
+  avatarUrl: string;
+  descriptionPath: string;
+}>>;
 
 export interface Adapters {
   fetchArticle: FetchCrossrefArticle;
@@ -17,6 +25,7 @@ export interface Adapters {
   fetchStaticFile: FetchStaticFile;
   searchEuropePmc: SearchEuropePmc,
   editorialCommunities: EditorialCommunityRepository;
+  getEditorialCommunity: GetEditorialCommunity;
   endorsements: EndorsementsRepository,
   findReviewsForArticleVersionDoi: FindReviewsForArticleVersionDoi;
   findReviewsForEditorialCommunityId: FindReviewsForEditorialCommunityId;

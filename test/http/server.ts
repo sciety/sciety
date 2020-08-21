@@ -61,6 +61,7 @@ export default async (): Promise<TestServer> => {
     fetchStaticFile: async (filename: string) => `Contents of ${filename}`,
     searchEuropePmc: async () => ({ items: [], total: 0 }),
     editorialCommunities,
+    getEditorialCommunity: editorialCommunities.lookup,
     endorsements: createEndorsementsRepository([]),
     ...reviewProjections,
     filterEvents: async () => [],
