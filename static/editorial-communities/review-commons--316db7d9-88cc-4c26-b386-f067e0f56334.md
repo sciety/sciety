@@ -15,7 +15,7 @@ Review Commons will:
 
 ### How it works
 
-![](https://www.reviewcommons.org/wp-content/uploads/2019/11/Infograph_2-scaled.jpg)
+<img src="https://www.reviewcommons.org/wp-content/uploads/2019/11/Infograph_2-scaled.jpg" width="100%">
 
 ## Peer review model
 
