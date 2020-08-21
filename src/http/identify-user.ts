@@ -18,10 +18,12 @@ export default (logger: Logger): Middleware => (
       });
     }
 
-    const user: User = { id: userId(userIdentity) };
-    context.state.user = user;
+    if (!context.state.user) {
+      const user: User = { id: userId(userIdentity) };
+      context.state.user = user;
+    }
 
-    logger('debug', 'User identity', { userIdentity });
+    logger('debug', 'User identity', { userIdentity, user: context.state.user });
     await next();
   }
 );
