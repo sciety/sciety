@@ -45,7 +45,7 @@ export default (router: Router, logger: Logger): Server => {
       {
         consumerKey: process.env.TWITTER_API_KEY ?? 'my_key',
         consumerSecret: process.env.TWITTER_API_SECRET_KEY ?? 'my_secret',
-        callbackURL: process.env.TWITTER_CALLBACK_URL ?? 'http://localhost:8080/test/callback',
+        callbackURL: `${process.env.APP_ORIGIN ?? 'http://localhost:8080'}/twitter/callback`,
       },
       (token, tokenSecret, profile, cb) => {
         cb(undefined, profile.username);

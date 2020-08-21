@@ -27,12 +27,16 @@ jobs:
             --set hostname=prc.libero.pub \
             --set googleAnalyticsTrackingId=UA-167311475-1 \
             --set disqusApiKey=${DISQUS_API_KEY} \
+            --set twitterApiKey=${TWITTER_API_KEY} \
+            --set twitterApiSecretKey=${TWITTER_API_SECRET_KEY} \
             --wait \
             helm/prc
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           DISQUS_API_KEY: ${{ secrets.DISQUS_API_KEY }}
+          TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
+          TWITTER_API_SECRET_KEY: ${{ secrets.TWITTER_API_SECRET_KEY }}
 
       - name: Notify Slack of success
         if: success()

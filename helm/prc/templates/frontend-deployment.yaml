@@ -20,10 +20,16 @@ spec:
         - name: app
           image: "{{ .Values.images.frontend.repository }}:{{ .Values.images.frontend.tag }}"
           env:
+            - name: APP_ORIGIN
+              value: http://{{ .Values.hostname }}
             - name: DISQUS_API_KEY
               value: {{ .Values.disqusApiKey }}
             - name: GOOGLE_ANALYTICS_TRACKING_ID
               value: {{ .Values.googleAnalyticsTrackingId }}
+            - name: TWITTER_API_KEY
+              value: {{ .Values.twitterApiKey }}
+            - name: TWITTER_API_SECRET_KEY
+              value: {{ .Values.twitterApiSecretKey }}
           ports:
             - name: http
               containerPort: 80
