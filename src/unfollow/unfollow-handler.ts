@@ -3,22 +3,22 @@ import { Logger } from '../infrastructure/logger';
 import { UserUnfollowedEditorialCommunityEvent } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 import FollowList from '../types/follow-list';
-import userId from '../types/user-id';
+import { UserId } from '../types/user-id';
 
 type Ports = {
   logger: Logger;
   commitEvent: (event: UserUnfollowedEditorialCommunityEvent) => Promise<void>,
 };
 
-export default (ports: Ports): Middleware<{ followList: FollowList }> => (
+export default (ports: Ports): Middleware<{ followList: FollowList, userId: UserId }> => (
   async (context, next) => {
     const editorialCommunityId = new EditorialCommunityId(context.request.body.editorialcommunityid);
-    const { followList } = context.state;
+    const { followList, userId } = context.state;
     followList.unfollow(editorialCommunityId);
     const event: UserUnfollowedEditorialCommunityEvent = {
       type: 'UserUnfollowedEditorialCommunity',
       date: new Date(),
-      userId: userId('anonymous'),
+      userId,
       editorialCommunityId,
     };
     await ports.commitEvent(event);
