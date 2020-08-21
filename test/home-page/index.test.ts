@@ -9,7 +9,8 @@ describe('create render page', (): void => {
     const followList = new FollowList([]);
 
     const rendered = await renderPage({ followList });
-    for (const ec of adapters.editorialCommunities.all()) {
+    const allCommunities = await adapters.editorialCommunities.all();
+    for (const ec of allCommunities) {
       expect(rendered).toContain(ec.name);
     }
   });

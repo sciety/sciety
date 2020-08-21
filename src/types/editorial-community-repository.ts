@@ -4,6 +4,6 @@ import EditorialCommunityId from './editorial-community-id';
 
 export default interface EditorialCommunityRepository {
   add(editorialCommunity: EditorialCommunity): Promise<void>;
-  all(): Array<EditorialCommunity>;
+  all(): Promise<Array<EditorialCommunity>>;
   lookup(id: EditorialCommunityId): Promise<Maybe<EditorialCommunity>>;
 }

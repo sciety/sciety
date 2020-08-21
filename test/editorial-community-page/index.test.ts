@@ -9,7 +9,8 @@ describe('create render page', (): void => {
     beforeEach(async () => {
       const { adapters } = await createServer();
       const renderPage = buildRenderPage(adapters);
-      const params = { id: adapters.editorialCommunities.all()[0].id.value, followList: new FollowList([]) };
+      const allCommunities = await adapters.editorialCommunities.all();
+      const params = { id: allCommunities[0].id.value, followList: new FollowList([]) };
       renderedPage = (await renderPage(params)).unsafelyUnwrap();
     });
 
