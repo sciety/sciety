@@ -5,5 +5,4 @@ export interface EditorialCommunity {
   name: string;
   avatarUrl: string;
   descriptionPath: string;
-  description: string;
 }

@@ -15,7 +15,6 @@ describe('in-memory-editorial-communities', () => {
       name: 'My pals',
       avatarUrl: 'https://example.com/images/2',
       descriptionPath: '/static/desc.md',
-      description: 'We do cool stuff',
     });
   });
 
