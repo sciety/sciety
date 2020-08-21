@@ -6,7 +6,7 @@ const editorialCommunities: Array<EditorialCommunity> = [
     id: new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
     name: 'eLife',
     avatarUrl: 'https://pbs.twimg.com/profile_images/1239550325188710402/7_lY-IyL_200x200.png',
-    descriptionPath: '/static/editorial-communities/elife--b560187e-f2fb-4ff9-a861-a204f3fc0fb0.md',
+    descriptionPath: 'elife--b560187e-f2fb-4ff9-a861-a204f3fc0fb0.md',
     description: `<h2 class="ui header" id="summary">Summary</h2>
     <p>eLife is a non-profit organisation created by funders and led by researchers. Our mission
       is to accelerate discovery by operating a platform for research communication that
@@ -38,7 +38,7 @@ const editorialCommunities: Array<EditorialCommunity> = [
     id: new EditorialCommunityId('10360d97-bf52-4aef-b2fa-2f60d319edd7'),
     name: 'PREreview Community',
     avatarUrl: 'https://pbs.twimg.com/profile_images/1163611678342184960/UskoaL9G_400x400.jpg',
-    descriptionPath: '/static/editorial-communities/prereview-community--10360d97-bf52-4aef-b2fa-2f60d319edd7.md',
+    descriptionPath: 'prereview-community--10360d97-bf52-4aef-b2fa-2f60d319edd7.md',
     description: `<h2 class="ui header" id="summary">Summary</h2>
     <p>PREreview's mission is to bring more diversity to scholarly peer review by supporting and empowering 
     community of researchers, particularly those at early stages of their career (ECRs) to review preprints.</p>
@@ -67,7 +67,7 @@ const editorialCommunities: Array<EditorialCommunity> = [
     id: new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002'),
     name: 'PeerJ',
     avatarUrl: 'https://pbs.twimg.com/profile_images/1095287970939265026/xgyGFDJk_200x200.jpg',
-    descriptionPath: '/static/editorial-communities/peerj--53ed5364-a016-11ea-bb37-0242ac130002.md',
+    descriptionPath: 'peerj--53ed5364-a016-11ea-bb37-0242ac130002.md',
     description: `<h2 class="ui header" id="summary">Summary</h2>
     <p><a href="https://peerj.org/">PeerJ</a> is an open access publisher of 7 peer-reviewed journals, and an editorial 
     community of over 2000 Academic Editors and Advisors, and tens of thousands of authors and reviewers.</p>
@@ -92,7 +92,7 @@ const editorialCommunities: Array<EditorialCommunity> = [
     id: new EditorialCommunityId('10360d97-bf52-4aef-b2fa-2f60d319edd8'),
     name: 'A PREreview Journal Club',
     avatarUrl: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png',
-    descriptionPath: '/static/editorial-communities/prereview-journal-club--10360d97-bf52-4aef-b2fa-2f60d319edd8.md',
+    descriptionPath: 'prereview-journal-club--10360d97-bf52-4aef-b2fa-2f60d319edd8.md',
     description: `<h2 class="ui header" id="summary">Summary</h2>
     <p>PREreview's mission is to bring more diversity to scholarly peer review by supporting and empowering 
     community of researchers, particularly those at early stages of their career (ECRs) to review preprints.</p>
@@ -122,7 +122,7 @@ const editorialCommunities: Array<EditorialCommunity> = [
     id: new EditorialCommunityId('316db7d9-88cc-4c26-b386-f067e0f56334'),
     name: 'Review Commons',
     avatarUrl: 'https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg',
-    descriptionPath: '/static/editorial-communities/review-commons--316db7d9-88cc-4c26-b386-f067e0f56334.md',
+    descriptionPath: 'review-commons--316db7d9-88cc-4c26-b386-f067e0f56334.md',
     description: `<h2 class="ui header" id="summary">Summary</h2>
     <p>Review Commons is a platform for high-quality journal-independent peer-review in the life sciences.</p>
 
@@ -166,7 +166,7 @@ const editorialCommunities: Array<EditorialCommunity> = [
     id: new EditorialCommunityId('74fd66e9-3b90-4b5a-a4ab-5be83db4c5de'),
     name: 'Peer Community In Zoology',
     avatarUrl: 'https://pbs.twimg.com/profile_images/1278236903549145089/qqgLuJu__400x400.jpg',
-    descriptionPath: '/static/editorial-communities/pci-zoology--74fd66e9-3b90-4b5a-a4ab-5be83db4c5de.md',
+    descriptionPath: 'pci-zoology--74fd66e9-3b90-4b5a-a4ab-5be83db4c5de.md',
     description: `<h2 class="ui header" id="summary">Summary</h2>
     <p>Peer Community in Zoology (PCI Zoology) has been launched in July 2020, replacing and broadening the scope of PCI Entomology. 
     It is a community of recommenders playing the role of editors who recommend unpublished articles based on peer-reviews to make them complete, reliable and citable articles, without the need for publication in ‘traditional’ journals. Evaluation and recommendation by PCI Zoology are free of charge. 
@@ -220,35 +220,35 @@ const editorialCommunities: Array<EditorialCommunity> = [
     id: new EditorialCommunityId('19b7464a-edbe-42e8-b7cc-04d1eb1f7332'),
     name: 'Peer Community in Evolutionary Biology',
     avatarUrl: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png',
-    descriptionPath: '/static/editorial-communities/pci-evolutionary-biology--19b7464a-edbe-42e8-b7cc-04d1eb1f7332.md',
+    descriptionPath: 'pci-evolutionary-biology--19b7464a-edbe-42e8-b7cc-04d1eb1f7332.md',
     description: '',
   },
   {
     id: new EditorialCommunityId('32025f28-0506-480e-84a0-b47ef1e92ec5'),
     name: 'Peer Community in Ecology',
     avatarUrl: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png',
-    descriptionPath: '/static/editorial-communities/pci-ecology--32025f28-0506-480e-84a0-b47ef1e92ec5.md',
+    descriptionPath: 'pci-ecology--32025f28-0506-480e-84a0-b47ef1e92ec5.md',
     description: '',
   },
   {
     id: new EditorialCommunityId('4eebcec9-a4bb-44e1-bde3-2ae11e65daaa'),
     name: 'Peer Community in Animal Science',
     avatarUrl: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png',
-    descriptionPath: '/static/editorial-communities/pci-animal-science--4eebcec9-a4bb-44e1-bde3-2ae11e65daaa.md',
+    descriptionPath: 'pci-animal-science--4eebcec9-a4bb-44e1-bde3-2ae11e65daaa.md',
     description: '',
   },
   {
     id: new EditorialCommunityId('b90854bf-795c-42ba-8664-8257b9c68b0c'),
     name: 'Peer Community in Archaeology',
     avatarUrl: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png',
-    descriptionPath: '/static/editorial-communities/pci-archaeology--b90854bf-795c-42ba-8664-8257b9c68b0c.md',
+    descriptionPath: 'pci-archaeology--b90854bf-795c-42ba-8664-8257b9c68b0c.md',
     description: '',
   },
   {
     id: new EditorialCommunityId('7a9e97d1-c1fe-4ac2-9572-4ecfe28f9f84'),
     name: 'Peer Community in Paleontology',
     avatarUrl: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png',
-    descriptionPath: '/static/editorial-communities/pci-paleontology--7a9e97d1-c1fe-4ac2-9572-4ecfe28f9f84.md',
+    descriptionPath: 'pci-paleontology--7a9e97d1-c1fe-4ac2-9572-4ecfe28f9f84.md',
     description: '',
   },
 ];
