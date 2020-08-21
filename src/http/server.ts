@@ -2,7 +2,9 @@ import { createServer, Server } from 'http';
 import Router from '@koa/router';
 import rTracer from 'cls-rtracer';
 import Koa, { ExtendableContext, Next } from 'koa';
+import koaPassport from 'koa-passport';
 import koaSession from 'koa-session';
+import { Strategy as TwitterStrategy } from 'passport-twitter';
 import { Logger } from '../infrastructure/logger';
 
 export default (router: Router, logger: Logger): Server => {
@@ -37,6 +39,30 @@ export default (router: Router, logger: Logger): Server => {
 
   app.keys = [process.env.APP_SECRET ?? 'this-is-not-secret'];
   app.use(koaSession(app));
+
+  koaPassport.use(
+    new TwitterStrategy(
+      {
+        consumerKey: process.env.TWITTER_API_KEY ?? 'my_key',
+        consumerSecret: process.env.TWITTER_API_SECRET_KEY ?? 'my_secret',
+        callbackURL: process.env.TWITTER_CALLBACK_URL ?? 'http://localhost:8080/test/callback',
+      },
+      (token, tokenSecret, profile, cb) => {
+        cb(undefined, profile.username);
+      },
+    ),
+  );
+
+  app.use(koaPassport.initialize());
+  app.use(koaPassport.session());
+
+  koaPassport.serializeUser((user, done) => {
+    done(null, user);
+  });
+
+  koaPassport.deserializeUser((user, done) => {
+    done(null, user);
+  });
 
   app.use(router.middleware());
 
