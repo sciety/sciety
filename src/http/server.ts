@@ -2,6 +2,7 @@ import { createServer, Server } from 'http';
 import Router from '@koa/router';
 import rTracer from 'cls-rtracer';
 import Koa, { ExtendableContext, Next } from 'koa';
+import koaSession from 'koa-session';
 import { Logger } from '../infrastructure/logger';
 
 export default (router: Router, logger: Logger): Server => {
@@ -33,6 +34,9 @@ export default (router: Router, logger: Logger): Server => {
 
     await next();
   });
+
+  app.keys = [process.env.APP_SECRET ?? 'this-is-not-secret'];
+  app.use(koaSession(app));
 
   app.use(router.middleware());
 
