@@ -30,13 +30,14 @@ export default (
     context.response.type = 'html';
 
     const page = await renderPage(params);
+    const { user } = context.state;
 
     if (typeof page === 'string') {
       context.response.status = OK;
-      context.response.body = applyStandardPageLayout(page);
+      context.response.body = applyStandardPageLayout(page, user);
     } else {
       context.response.status = page.isOk() ? OK : NOT_FOUND;
-      context.response.body = applyStandardPageLayout(page.unwrapOrElse((error) => error.content));
+      context.response.body = applyStandardPageLayout(page.unwrapOrElse((error) => error.content), user);
     }
 
     await next();

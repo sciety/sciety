@@ -19,7 +19,10 @@ export default (logger: Logger): Middleware => (
     }
 
     if (!context.state.user) {
-      const user: User = { id: userId(userIdentity) };
+      const user: User = {
+        id: userId(userIdentity),
+        loggedIn: false,
+      };
       context.state.user = user;
     }
 

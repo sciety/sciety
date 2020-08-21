@@ -1,3 +1,5 @@
+import { User } from '../types/user';
+
 let googleAnalytics = '';
 if (process.env.GOOGLE_ANALYTICS_TRACKING_ID) {
   googleAnalytics = `
@@ -15,7 +17,7 @@ if (process.env.GOOGLE_ANALYTICS_TRACKING_ID) {
   `;
 }
 
-export default (page: string): string => `<!doctype html>
+export default (page: string, user: User): string => `<!doctype html>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>
@@ -37,6 +39,12 @@ export default (page: string): string => `<!doctype html>
         <li class="item">
           <a href="/about">About</a>
         </li>
+
+        ${user.loggedIn ? `
+          <li class="item">
+            <a href="/users/${user.id}">My profile</a>
+          </li>
+        ` : ''}
 
         <li class="right item">
           <a href="https://eepurl.com/g7qqcv" class="ui primary button">Give us feedback</a>

@@ -52,6 +52,7 @@ export default (router: Router, logger: Logger): Server => {
       (token, tokenSecret, profile, cb) => {
         const user: User = {
           id: userId(profile.id),
+          loggedIn: true,
         };
 
         cb(undefined, user);
