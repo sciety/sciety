@@ -48,7 +48,7 @@ export default (router: Router, logger: Logger): Server => {
         callbackURL: `${process.env.APP_ORIGIN ?? 'http://localhost:8080'}/twitter/callback`,
       },
       (token, tokenSecret, profile, cb) => {
-        cb(undefined, profile.username);
+        cb(undefined, profile.id);
       },
     ),
   );

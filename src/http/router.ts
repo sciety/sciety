@@ -1,6 +1,7 @@
 import path from 'path';
 import Router from '@koa/router';
 import bodyParser from 'koa-bodyparser';
+import koaPassport from 'koa-passport';
 import send from 'koa-send';
 import identifyUser from './identify-user';
 import pageHandler from './page-handler';
@@ -64,6 +65,16 @@ export default (adapters: Adapters): Router => {
     readWriteFollowList(),
     bodyParser({ enableTypes: ['form'] }),
     createUnfollowHandler(adapters));
+
+  const authenticate = koaPassport.authenticate('twitter', {
+    successRedirect: '/',
+  });
+
+  router.get('/sign-in',
+    authenticate);
+
+  router.get('/twitter/callback',
+    authenticate);
 
   router.get('/robots.txt',
     robots());
