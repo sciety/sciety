@@ -6,6 +6,8 @@ import koaPassport from 'koa-passport';
 import koaSession from 'koa-session';
 import { Strategy as TwitterStrategy } from 'passport-twitter';
 import { Logger } from '../infrastructure/logger';
+import { User } from '../types/user';
+import userId from '../types/user-id';
 
 export default (router: Router, logger: Logger): Server => {
   const app = new Koa();
@@ -48,7 +50,11 @@ export default (router: Router, logger: Logger): Server => {
         callbackURL: `${process.env.APP_ORIGIN ?? 'http://localhost:8080'}/twitter/callback`,
       },
       (token, tokenSecret, profile, cb) => {
-        cb(undefined, profile.id);
+        const user: User = {
+          id: userId(profile.id),
+        };
+
+        cb(undefined, user);
       },
     ),
   );
