@@ -4,5 +4,6 @@ export interface EditorialCommunity {
   id: EditorialCommunityId;
   name: string;
   avatarUrl: string;
+  descriptionPath: string;
   description: string;
 }

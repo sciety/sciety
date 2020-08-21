@@ -14,6 +14,7 @@ describe('in-memory-editorial-communities', () => {
       id: editorialCommunityId,
       name: 'My pals',
       avatarUrl: 'https://example.com/images/2',
+      descriptionPath: '/static/desc.md',
       description: 'We do cool stuff',
     });
   });
