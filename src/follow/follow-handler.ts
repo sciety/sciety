@@ -4,16 +4,19 @@ import { DomainEvent, UserFollowedEditorialCommunityEvent } from '../types/domai
 import EditorialCommunityId from '../types/editorial-community-id';
 import FollowList from '../types/follow-list';
 import { User } from '../types/user';
+import { UserId } from '../types/user-id';
 
 type Ports = {
   logger: Logger;
   commitEvent: (event: DomainEvent) => Promise<void>;
+  getFollowList: (userId: UserId) => Promise<FollowList>;
 };
 
-export default (ports: Ports): Middleware<{ followList: FollowList, user: User }> => (
+export default (ports: Ports): Middleware<{ user: User }> => (
   async (context, next) => {
     const editorialCommunityId = new EditorialCommunityId(context.request.body.editorialcommunityid);
-    const { followList, user } = context.state;
+    const { user } = context.state;
+    const followList = await ports.getFollowList(user.id);
     followList.follow(editorialCommunityId);
     const event: UserFollowedEditorialCommunityEvent = {
       type: 'UserFollowedEditorialCommunity',
