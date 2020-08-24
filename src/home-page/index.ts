@@ -1,6 +1,7 @@
 import createGetMostRecentEvents, { FilterEvents } from './get-most-recent-events';
+import createProjectFollowListForUser, { GetAllEvents } from './project-follow-list-for-user';
 import createRenderEditorialCommunities, { GetAllEditorialCommunities } from './render-editorial-communities';
-import createRenderFeed, { GetFollowList } from './render-feed';
+import createRenderFeed from './render-feed';
 import createRenderFeedItem, { GetActor, GetArticle } from './render-feed-item';
 import createRenderFindArticle from './render-find-article';
 import createRenderFollowToggle from './render-follow-toggle';
@@ -14,6 +15,7 @@ interface Ports {
   fetchArticle: FetchExternalArticle;
   editorialCommunities: EditorialCommunityRepository;
   filterEvents: FilterEvents,
+  getAllEvents: GetAllEvents,
 }
 
 interface Params {
@@ -35,7 +37,7 @@ export default (ports: Ports): RenderPage => {
   const getArticleAdapter: GetArticle = async (id) => (
     (await ports.fetchArticle(id)).unsafelyUnwrap()
   );
-  const getFollowListAdapter: GetFollowList = async () => new FollowList([]);
+  const getFollowListAdapter = createProjectFollowListForUser(ports.getAllEvents);
   const getEventsAdapter = createGetMostRecentEvents(ports.filterEvents, 20);
 
   const renderPageHeader = createRenderPageHeader();
