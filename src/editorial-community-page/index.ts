@@ -6,7 +6,7 @@ import createRenderDescription, { GetEditorialCommunityDescription, RenderDescri
 import createRenderEndorsedArticles, { GetNumberOfEndorsedArticles, RenderEndorsedArticles } from './render-endorsed-articles';
 import createRenderFeed, { RenderFeed } from './render-feed';
 import createRenderFeedItem, { GetActor, GetArticle } from './render-feed-item';
-import createRenderFollowToggle, { GetFollowList } from './render-follow-toggle';
+import createRenderFollowToggle, { Follows } from './render-follow-toggle';
 import createRenderPage from './render-page';
 import createRenderPageHeader, { GetEditorialCommunity, RenderPageHeader } from './render-page-header';
 import createRenderReviews, { GetNumberOfReviews, RenderReviews } from './render-reviews';
@@ -38,7 +38,7 @@ interface Ports {
   endorsements: EndorsementsRepository,
   filterEvents: FilterEvents;
   findReviewsForEditorialCommunityId: FindReviewsForEditorialCommunityId,
-  getFollowList: GetFollowList,
+  follows: Follows,
 }
 
 const buildRenderPageHeader = (ports: Ports): RenderPageHeader => {
@@ -97,7 +97,7 @@ const buildRenderFeed = (ports: Ports): RenderFeed => {
   );
   const getEventsAdapter = createGetMostRecentEvents(ports.filterEvents, 20);
   const renderFeedItem = createRenderFeedItem(getActorAdapter, getArticleAdapter);
-  const renderFollowToggle = createRenderFollowToggle(ports.getFollowList);
+  const renderFollowToggle = createRenderFollowToggle(ports.follows);
   return createRenderFeed(getEventsAdapter, renderFeedItem, renderFollowToggle);
 };
 

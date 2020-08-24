@@ -1,7 +1,6 @@
 import { JSDOM } from 'jsdom';
-import createRenderFollowToggle, { GetFollowList } from '../../src/editorial-community-page/render-follow-toggle';
+import createRenderFollowToggle, { Follows } from '../../src/editorial-community-page/render-follow-toggle';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
-import FollowList from '../../src/types/follow-list';
 import toUserId from '../../src/types/user-id';
 
 describe('render-follow-toggle', () => {
@@ -10,8 +9,8 @@ describe('render-follow-toggle', () => {
       const userId = toUserId('u1');
       const editorialCommunityId = new EditorialCommunityId('');
 
-      const getFollowList: GetFollowList = async () => new FollowList([editorialCommunityId]);
-      const renderFollowToggle = createRenderFollowToggle(getFollowList);
+      const follows: Follows = async () => true;
+      const renderFollowToggle = createRenderFollowToggle(follows);
 
       const rendered = JSDOM.fragment(
         await renderFollowToggle(userId, editorialCommunityId),
@@ -29,8 +28,8 @@ describe('render-follow-toggle', () => {
       const userId = toUserId('u1');
       const editorialCommunityId = new EditorialCommunityId('');
 
-      const getFollowList: GetFollowList = async () => new FollowList([]);
-      const renderFollowToggle = createRenderFollowToggle(getFollowList);
+      const follows: Follows = async () => false;
+      const renderFollowToggle = createRenderFollowToggle(follows);
 
       const rendered = JSDOM.fragment(await renderFollowToggle(userId, editorialCommunityId));
 
