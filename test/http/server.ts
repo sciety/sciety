@@ -69,7 +69,7 @@ export default async (): Promise<TestServer> => {
     getAllEvents: async () => [],
     commitEvent: async () => {},
     logger: dummyLogger,
-    getFollowList: async () => new FollowList([]),
+    getFollowList: async (userId) => new FollowList(userId, []),
     follows: async () => false,
   };
 

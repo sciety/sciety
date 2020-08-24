@@ -21,6 +21,6 @@ export default (getAllEvents: GetAllEvents): EventSourcedFollowListRepository =>
 
     const list = Array.from(result).map((id: string) => new EditorialCommunityId(id));
 
-    return new FollowList(list);
+    return new FollowList(userId, list);
   }
 );
