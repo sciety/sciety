@@ -1,13 +1,18 @@
 import EditorialCommunityId from '../types/editorial-community-id';
 import FollowList from '../types/follow-list';
+import { UserId } from '../types/user-id';
 
 export type RenderFollowToggle = (
-  followList: FollowList,
+  userId: UserId,
   editorialCommunityId: EditorialCommunityId
 ) => Promise<string>;
 
-export default (): RenderFollowToggle => (
-  async (followList, editorialCommunityId) => {
+type GetFollowList = (userId: UserId) => Promise<FollowList>;
+
+export default (getFollowList: GetFollowList): RenderFollowToggle => (
+  async (userId, editorialCommunityId) => {
+    const followList = await getFollowList(userId);
+
     if (followList.follows(editorialCommunityId)) {
       return `
         <form method="post" action="/unfollow">

@@ -8,7 +8,7 @@ type UserIdBasedComponent = (userId: UserId) => Promise<string>;
 
 export default (
   renderPageHeader: FollowListBasedComponent,
-  renderEditorialCommunities: FollowListBasedComponent,
+  renderEditorialCommunities: UserIdBasedComponent,
   renderFindArticle: FollowListBasedComponent,
   renderFeed: UserIdBasedComponent,
 ): RenderPage => async (userId, followList) => `
@@ -24,7 +24,7 @@ export default (
           </section>
           <section class="four wide right floated column">
             ${await renderFindArticle(followList)}
-            ${await renderEditorialCommunities(followList)}
+            ${await renderEditorialCommunities(userId)}
           </section>
         </div>
       </div>

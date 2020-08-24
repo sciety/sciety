@@ -1,9 +1,9 @@
 import { RenderFollowToggle } from './render-follow-toggle';
 import templateListItems from '../templates/list-items';
 import EditorialCommunityId from '../types/editorial-community-id';
-import FollowList from '../types/follow-list';
+import { UserId } from '../types/user-id';
 
-type RenderEditorialCommunities = (followList: FollowList) => Promise<string>;
+type RenderEditorialCommunities = (userId: UserId) => Promise<string>;
 
 export type GetAllEditorialCommunities = () => Promise<Array<{
   id: EditorialCommunityId;
@@ -13,13 +13,13 @@ export type GetAllEditorialCommunities = () => Promise<Array<{
 export default (
   editorialCommunities: GetAllEditorialCommunities,
   renderFollowToggle: RenderFollowToggle,
-): RenderEditorialCommunities => async (followList) => {
+): RenderEditorialCommunities => async (userId) => {
   const editorialCommunityLinks = await Promise.all((await editorialCommunities())
     .map(async (editorialCommunity) => (`
         <div class="content">
           <a href="/editorial-communities/${editorialCommunity.id.value}" class="header">${editorialCommunity.name}</a>
           <div class="extra">
-            ${await renderFollowToggle(followList, editorialCommunity.id)}
+            ${await renderFollowToggle(userId, editorialCommunity.id)}
           </div>
         </div>
       `)));

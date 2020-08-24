@@ -1,6 +1,6 @@
 import createRenderEditorialCommunities from '../../src/home-page/render-editorial-communities';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
-import FollowList from '../../src/types/follow-list';
+import userId from '../../src/types/user-id';
 
 describe('render-editorial-communities', (): void => {
   it('lists all of the hard-coded editorial communities', async (): Promise<void> => {
@@ -18,9 +18,11 @@ describe('render-editorial-communities', (): void => {
       async () => dummyCommunities,
       async () => '',
     );
-    const rendered = await renderEditorialCommunities(new FollowList([]));
+    const rendered = await renderEditorialCommunities(userId('u1'));
 
     expect(rendered).toContain('Editorial Community A');
     expect(rendered).toContain('Editorial Community B');
   });
+
+  it.todo('displays a follow toggle for each editorial community');
 });
