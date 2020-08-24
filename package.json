@@ -56,7 +56,7 @@
     "@types/showdown": "^1.9.3",
     "@types/supertest": "^2.0.10",
     "@types/uuid": "^8.0.1",
-    "@types/xmldom": "^0.1.29",
+    "@types/xmldom": "^0.1.30",
     "@typescript-eslint/eslint-plugin": "^3.9.0",
     "@typescript-eslint/parser": "^3.9.0",
     "concurrently": "^5.2.0",
