@@ -6,7 +6,6 @@ import send from 'koa-send';
 import identifyUser from './identify-user';
 import pageHandler from './page-handler';
 import ping from './ping';
-import readWriteFollowList from './read-write-follow-list';
 import robots from './robots';
 import createAboutPage from '../about-page';
 import createArticlePage from '../article-page';
@@ -26,43 +25,35 @@ export default (adapters: Adapters): Router => {
 
   router.get('/',
     identifyUser(adapters.logger),
-    readWriteFollowList(),
     pageHandler(createHomePage(adapters)));
 
   router.get('/about',
     identifyUser(adapters.logger),
-    readWriteFollowList(),
     pageHandler(createAboutPage(adapters)));
 
   router.get('/users/:userId(.+)',
     identifyUser(adapters.logger),
-    readWriteFollowList(),
     pageHandler(createUserPage(adapters)));
 
   router.get('/articles',
     identifyUser(adapters.logger),
-    readWriteFollowList(),
     pageHandler(createArticleSearchPage(adapters)));
 
   router.get('/articles/:doi(.+)',
     identifyUser(adapters.logger),
-    readWriteFollowList(),
     pageHandler(createArticlePage(adapters)));
 
   router.get('/editorial-communities/:id',
     identifyUser(adapters.logger),
-    readWriteFollowList(),
     pageHandler(createEditorialCommunityPage(adapters)));
 
   router.post('/follow',
     identifyUser(adapters.logger),
-    readWriteFollowList(),
     bodyParser({ enableTypes: ['form'] }),
     createFollowHandler(adapters));
 
   router.post('/unfollow',
     identifyUser(adapters.logger),
-    readWriteFollowList(),
     bodyParser({ enableTypes: ['form'] }),
     createUnfollowHandler(adapters));
 

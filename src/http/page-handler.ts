@@ -3,7 +3,6 @@ import { NOT_FOUND, OK } from 'http-status-codes';
 import { Next } from 'koa';
 import { Result } from 'true-myth';
 import applyStandardPageLayout from '../templates/apply-standard-page-layout';
-import FollowList from '../types/follow-list';
 import { User } from '../types/user';
 
 type RenderPageError = {
@@ -16,7 +15,6 @@ type RenderPage = (params: {
   id?: string;
   query?: string;
   userId?: string;
-  followList: FollowList;
   user: User;
 }) => Promise<string | Result<string, RenderPageError>>;
 
