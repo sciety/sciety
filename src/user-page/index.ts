@@ -1,6 +1,6 @@
 import createGetFollowedEditorialCommunitiesFromIds, { GetEditorialCommunity } from './get-followed-editorial-communities-from-ids';
 import createProjectFollowedEditorialCommunityIds, { GetAllEvents } from './project-followed-editorial-community-ids';
-import createRenderFollowToggle, { GetFollowList } from './render-follow-toggle';
+import createRenderFollowToggle, { Follows } from './render-follow-toggle';
 import createRenderFollowedEditorialCommunity from './render-followed-editorial-community';
 import createRenderPage from './render-page';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
@@ -10,7 +10,7 @@ import userId from '../types/user-id';
 type Ports = {
   editorialCommunities: EditorialCommunityRepository,
   getAllEvents: GetAllEvents,
-  getFollowList: GetFollowList,
+  follows: Follows,
 };
 
 interface Params {
@@ -25,7 +25,7 @@ export default (ports: Ports): RenderPage => {
     (await ports.editorialCommunities.lookup(editorialCommunityId)).unsafelyUnwrap()
   );
 
-  const renderFollowToggle = createRenderFollowToggle(ports.getFollowList);
+  const renderFollowToggle = createRenderFollowToggle(ports.follows);
   const renderFollowedEditorialCommunity = createRenderFollowedEditorialCommunity(renderFollowToggle);
   const getFollowedEditorialCommunities = createGetFollowedEditorialCommunitiesFromIds(
     createProjectFollowedEditorialCommunityIds(ports.getAllEvents),
