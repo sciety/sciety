@@ -46,7 +46,7 @@ export default (ports: Ports): RenderPage => {
   const getEventsAdapter = createGetMostRecentEvents(ports.filterEvents, 20);
 
   const renderPageHeader = createRenderPageHeader();
-  const renderFollowToggle = createRenderFollowToggle(ports.getFollowList);
+  const renderFollowToggle = createRenderFollowToggle(getFollows);
   const renderEditorialCommunities = createRenderEditorialCommunities(editorialCommunitiesAdapter, renderFollowToggle);
   const renderFindArticle = createRenderFindArticle();
   const renderFeedItem = createRenderFeedItem(getActorAdapter, getArticleAdapter);
