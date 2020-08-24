@@ -18,6 +18,7 @@ module.exports = {
     '@typescript-eslint',
     'jest',
     'jest-formatting',
+    'node',
   ],
   root: true,
   rules: {
@@ -69,6 +70,11 @@ module.exports = {
     'no-void': ['error', {
       allowAsStatement: true,
     }],
+    'node/prefer-global/buffer': ['error', 'never'],
+    'node/prefer-global/text-decoder': ['error', 'never'],
+    'node/prefer-global/text-encoder': ['error', 'never'],
+    'node/prefer-global/url': ['error', 'never'],
+    'node/prefer-global/url-search-params': ['error', 'never'],
     'sort-imports': ['error', {
       ignoreCase: true,
       ignoreDeclarationSort: true,

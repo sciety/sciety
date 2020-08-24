@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import showdown from 'showdown';
 import { Maybe } from 'true-myth';
 import { Logger } from './logger';

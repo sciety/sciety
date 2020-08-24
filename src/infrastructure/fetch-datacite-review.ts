@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import { namedNode } from '@rdfjs/data-model';
 import { dcterms, schema } from '@tpluscode/rdf-ns-builders';
 import { Maybe } from 'true-myth';
