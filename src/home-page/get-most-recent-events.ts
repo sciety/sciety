@@ -5,7 +5,6 @@ import {
   isEditorialCommunityJoinedEvent,
   isEditorialCommunityReviewedArticleEvent,
 } from '../types/domain-events';
-import { Follows } from '../types/follows';
 import { NonEmptyArray } from '../types/non-empty-array';
 
 type FilterFunction = (event: DomainEvent) => event is FeedEvent;
@@ -15,7 +14,7 @@ export default (
   filterEvents: FilterEvents,
   maxCount: number,
 ): GetEvents => (
-  async (follows: Follows) => {
+  async (follows) => {
     const followedEvents: FilterFunction = (event): event is FeedEvent => (
       isEditorialCommunityJoinedEvent(event)
       || (isEditorialCommunityEndorsedArticleEvent(event) && follows(event.editorialCommunityId))
