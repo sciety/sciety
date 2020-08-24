@@ -1,10 +1,9 @@
 import { RenderFollowedEditorialCommunity } from './render-followed-editorial-community';
 import templateListItems from '../templates/list-items';
 import EditorialCommunityId from '../types/editorial-community-id';
-import FollowList from '../types/follow-list';
 import { UserId } from '../types/user-id';
 
-type RenderPage = (userId: UserId, followList: FollowList) => Promise<string>;
+type RenderPage = (userId: UserId, viewingUserId: UserId) => Promise<string>;
 
 export type GetFollowedEditorialCommunities = (userId: UserId) => Promise<ReadonlyArray<{
   id: EditorialCommunityId,
@@ -16,9 +15,9 @@ export default (
   getFollowedEditorialCommunities: GetFollowedEditorialCommunities,
   renderFollowedEditorialCommunity: RenderFollowedEditorialCommunity,
 ): RenderPage => (
-  async (userId, followList) => {
+  async (userId, viewingUserId) => {
     const list = await Promise.all((await getFollowedEditorialCommunities(userId))
-      .map(async (editorialCommunity) => renderFollowedEditorialCommunity(editorialCommunity, followList)));
+      .map(async (editorialCommunity) => renderFollowedEditorialCommunity(editorialCommunity, viewingUserId)));
 
     let renderedFollowList: string;
     if (list.length > 0) {

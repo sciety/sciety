@@ -1,12 +1,12 @@
 import EditorialCommunityId from '../types/editorial-community-id';
-import FollowList from '../types/follow-list';
+import { UserId } from '../types/user-id';
 
 export type RenderFollowedEditorialCommunity = (
   editorialCommunity: EditorialCommunity,
-  followList: FollowList,
+  userId: UserId,
 ) => Promise<string>;
 
-type RenderFollowToggle = (followList: FollowList, editorialcommunityid: EditorialCommunityId) => Promise<string>;
+type RenderFollowToggle = (userId: UserId, editorialcommunityid: EditorialCommunityId) => Promise<string>;
 
 interface EditorialCommunity {
   id: EditorialCommunityId;
@@ -17,7 +17,7 @@ interface EditorialCommunity {
 export default (
   renderFollowToggle: RenderFollowToggle,
 ): RenderFollowedEditorialCommunity => (
-  async (editorialCommunity, followList) => `
+  async (editorialCommunity, userId) => `
     <div class="label">
       <img src="${editorialCommunity.avatarUrl}" alt="">
     </div>
@@ -27,7 +27,7 @@ export default (
       </div>
     </div>
     <div class="right floated">
-      ${await renderFollowToggle(followList, editorialCommunity.id)}
+      ${await renderFollowToggle(userId, editorialCommunity.id)}
     </div>
   `
 );
