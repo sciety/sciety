@@ -66,7 +66,6 @@ It shows the areas we may explore next as opportunities, hypotheses and experime
 [(Learn more about this visualisation technique)](#ost).
 
 ## <a name="feedback">How to give us feedback</a>
-                                                                                      s
 The application is changing on a daily basis. To stay up to date, as well as letting us know what you think so far, head on over to our [feedback page](https://eepurl.com/g7qqcv).
 
 ## References
