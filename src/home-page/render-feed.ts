@@ -1,13 +1,14 @@
 import { FeedEvent, RenderFeedItem } from './render-feed-item';
 import templateListItems from '../templates/list-items';
 import FollowList from '../types/follow-list';
+import { Follows } from '../types/follows';
 import { NonEmptyArray } from '../types/non-empty-array';
 import { UserId } from '../types/user-id';
 
 type RenderFeed = (userId: UserId) => Promise<string>;
 
 export type GetFollowList = (userId: UserId) => Promise<FollowList>;
-export type GetEvents = (followList: FollowList) => Promise<NonEmptyArray<FeedEvent>>;
+export type GetEvents = (follows: Follows) => Promise<NonEmptyArray<FeedEvent>>;
 
 export { FeedEvent } from './render-feed-item';
 
@@ -18,7 +19,7 @@ export default (
 ): RenderFeed => (
   async (userId) => {
     const followList = await getFollowList(userId);
-    const events = await getEvents(followList);
+    const events = await getEvents((id) => followList.follows(id));
     const feedItems = await Promise.all(events.map(renderFeedItem));
     return `
       <section>
