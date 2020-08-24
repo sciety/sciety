@@ -10,7 +10,7 @@ import { NonEmptyArray } from '../types/non-empty-array';
 import { UserId } from '../types/user-id';
 
 export type GetAllEvents = () => Promise<ReadonlyArray<DomainEvent>>;
-type Follows = (userId: UserId, editorialCommunityId: EditorialCommunityId) => Promise<boolean>;
+export type Follows = (userId: UserId, editorialCommunityId: EditorialCommunityId) => Promise<boolean>;
 
 export default (
   getAllEvents: GetAllEvents,

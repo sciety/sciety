@@ -1,14 +1,12 @@
-import createGetMostRecentEvents, { GetAllEvents } from '../../src/home-page/get-most-recent-events';
+import createGetMostRecentEvents, { Follows, GetAllEvents } from '../../src/home-page/get-most-recent-events';
 import Doi from '../../src/types/doi';
 import { DomainEvent } from '../../src/types/domain-events';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
-import FollowList from '../../src/types/follow-list';
 import { NonEmptyArray } from '../../src/types/non-empty-array';
 import userId from '../../src/types/user-id';
 
 describe('get-most-recent-events', () => {
   const editorialCommunity1 = new EditorialCommunityId('a');
-  const followList = new FollowList([editorialCommunity1]);
   const dummyEvent: DomainEvent = {
     type: 'EditorialCommunityEndorsedArticle',
     date: new Date('2020-07-08'),
@@ -33,7 +31,8 @@ describe('get-most-recent-events', () => {
       },
     ];
     const getAllEvents: GetAllEvents = async () => initial;
-    const getEvents = createGetMostRecentEvents(getAllEvents, async (_, id) => followList.follows(id), 20);
+    const follows: Follows = async () => true;
+    const getEvents = createGetMostRecentEvents(getAllEvents, follows, 20);
     const sortedEvents = await getEvents(userId('user-1'));
 
     expect(sortedEvents[0]).toStrictEqual(initial[1]);
@@ -48,7 +47,8 @@ describe('get-most-recent-events', () => {
     it('returns exactly those', async () => {
       const dummyEvents: NonEmptyArray<DomainEvent> = [dummyEvent, dummyEvent, dummyEvent];
       const getAllEvents: GetAllEvents = async () => dummyEvents;
-      const getEvents = createGetMostRecentEvents(getAllEvents, async (_, id) => followList.follows(id), 20);
+      const follows: Follows = async () => true;
+      const getEvents = createGetMostRecentEvents(getAllEvents, follows, 20);
       const events = await getEvents(userId('user-1'));
 
       expect(events).toHaveLength(dummyEvents.length);
@@ -60,7 +60,8 @@ describe('get-most-recent-events', () => {
       const dummyEvents: NonEmptyArray<DomainEvent> = [dummyEvent, dummyEvent, dummyEvent];
       const maxCount = 2;
       const getAllEvents: GetAllEvents = async () => dummyEvents;
-      const getEvents = createGetMostRecentEvents(getAllEvents, async (_, id) => followList.follows(id), maxCount);
+      const follows: Follows = async () => true;
+      const getEvents = createGetMostRecentEvents(getAllEvents, follows, maxCount);
       const events = await getEvents(userId('user-1'));
 
       expect(events).toHaveLength(maxCount);

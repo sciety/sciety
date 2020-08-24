@@ -1,9 +1,10 @@
 import createProjectFollowListForUser, { GetAllEvents } from '../../src/infrastructure/project-follow-list-for-user';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
+import FollowList from '../../src/types/follow-list';
 import userId from '../../src/types/user-id';
 
 describe('project-follow-list-for-user', () => {
-  it('finds followed communities that the user follows', async () => {
+  it('builds a follow list from events', async () => {
     const editorialCommunitityId1 = new EditorialCommunityId('ed1');
     const userId1 = userId('u1');
     const getAllEvents: GetAllEvents = async () => [
@@ -16,9 +17,10 @@ describe('project-follow-list-for-user', () => {
     ];
     const projectFollowListForUser = createProjectFollowListForUser(getAllEvents);
 
-    const followList = await projectFollowListForUser(userId1);
+    const actual = await projectFollowListForUser(userId1);
+    const expected = new FollowList([editorialCommunitityId1]);
 
-    expect(followList.follows(editorialCommunitityId1)).toBe(true);
+    expect(actual).toStrictEqual(expected);
   });
 
   it.todo('ignored communities that the user has unfollowed');
