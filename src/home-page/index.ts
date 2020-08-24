@@ -10,6 +10,7 @@ import createRenderPageHeader from './render-page-header';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import { FetchExternalArticle } from '../types/fetch-external-article';
 import FollowList from '../types/follow-list';
+import { User } from '../types/user';
 
 interface Ports {
   fetchArticle: FetchExternalArticle;
@@ -20,6 +21,7 @@ interface Ports {
 
 interface Params {
   followList: FollowList,
+  user: User,
 }
 
 type RenderPage = (params: Params) => Promise<string>;
@@ -58,6 +60,6 @@ export default (ports: Ports): RenderPage => {
   );
 
   return async (params) => (
-    renderPage(params.followList)
+    renderPage(params.user.id, params.followList)
   );
 };

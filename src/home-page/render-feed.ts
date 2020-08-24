@@ -4,7 +4,7 @@ import FollowList from '../types/follow-list';
 import { NonEmptyArray } from '../types/non-empty-array';
 import { UserId } from '../types/user-id';
 
-type RenderFeed = (followList: FollowList) => Promise<string>;
+type RenderFeed = (userId: UserId) => Promise<string>;
 
 export type GetFollowList = (userId: UserId) => Promise<FollowList>;
 export type GetEvents = (followList: FollowList) => Promise<NonEmptyArray<FeedEvent>>;
@@ -16,7 +16,8 @@ export default (
   getEvents: GetEvents,
   renderFeedItem: RenderFeedItem,
 ): RenderFeed => (
-  async (followList) => {
+  async (userId) => {
+    const followList = await getFollowList(userId);
     const events = await getEvents(followList);
     const feedItems = await Promise.all(events.map(renderFeedItem));
     return `
