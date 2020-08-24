@@ -1,11 +1,13 @@
-import { GetFollowList } from './render-feed';
 import { DomainEvent } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 import FollowList from '../types/follow-list';
+import { UserId } from '../types/user-id';
 
 export type GetAllEvents = () => Promise<ReadonlyArray<DomainEvent>>;
 
-export default (getAllEvents: GetAllEvents): GetFollowList => (
+export type ProjectFollowListForUser = (userId: UserId) => Promise<FollowList>;
+
+export default (getAllEvents: GetAllEvents): ProjectFollowListForUser => (
   async (userId) => {
     const result = new Set<string>();
 

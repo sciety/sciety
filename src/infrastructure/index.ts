@@ -16,6 +16,7 @@ import createEndorsementsRepository from './in-memory-endorsements-repository';
 import {
   createJsonSerializer, createRTracerLogger, createStreamLogger, Logger,
 } from './logger';
+import createProjectFollowListForUser from './project-follow-list-for-user';
 import createReviewProjections from './review-projections';
 import createSearchEuropePmc from './search-europe-pmc';
 import bootstrapEditorialCommunities from '../data/bootstrap-editorial-communities';
@@ -73,6 +74,7 @@ const createInfrastructure = (): Adapters => {
     getAllEvents: async () => events,
     logger,
     commitEvent: async (event) => { events.push(event); },
+    getFollowList: createProjectFollowListForUser(async () => events),
   };
 };
 

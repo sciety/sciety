@@ -19,6 +19,7 @@ import createEditorialCommunityRepository from '../../src/infrastructure/in-memo
 import createEndorsementsRepository from '../../src/infrastructure/in-memory-endorsements-repository';
 import createReviewProjections from '../../src/infrastructure/review-projections';
 import EditorialCommunityRepository from '../../src/types/editorial-community-repository';
+import FollowList from '../../src/types/follow-list';
 import dummyLogger from '../dummy-logger';
 import shouldNotBeCalled from '../should-not-be-called';
 
@@ -68,6 +69,7 @@ export default async (): Promise<TestServer> => {
     getAllEvents: async () => [],
     commitEvent: async () => {},
     logger: dummyLogger,
+    getFollowList: async () => new FollowList([]),
   };
 
   const router = createRouter(adapters);

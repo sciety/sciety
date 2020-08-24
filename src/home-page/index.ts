@@ -1,5 +1,4 @@
 import createGetMostRecentEvents, { FilterEvents } from './get-most-recent-events';
-import createProjectFollowListForUser, { GetAllEvents } from './project-follow-list-for-user';
 import createRenderEditorialCommunities, { GetAllEditorialCommunities } from './render-editorial-communities';
 import createRenderFeed from './render-feed';
 import createRenderFeedItem, { GetActor, GetArticle } from './render-feed-item';
@@ -9,13 +8,15 @@ import createRenderPage from './render-page';
 import createRenderPageHeader from './render-page-header';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import { FetchExternalArticle } from '../types/fetch-external-article';
+import FollowList from '../types/follow-list';
 import { User } from '../types/user';
+import { UserId } from '../types/user-id';
 
 interface Ports {
   fetchArticle: FetchExternalArticle;
   editorialCommunities: EditorialCommunityRepository;
   filterEvents: FilterEvents,
-  getAllEvents: GetAllEvents,
+  getFollowList: (userId: UserId) => Promise<FollowList>,
 }
 
 interface Params {
@@ -37,16 +38,15 @@ export default (ports: Ports): RenderPage => {
   const getArticleAdapter: GetArticle = async (id) => (
     (await ports.fetchArticle(id)).unsafelyUnwrap()
   );
-  const getFollowListAdapter = createProjectFollowListForUser(ports.getAllEvents);
   const getEventsAdapter = createGetMostRecentEvents(ports.filterEvents, 20);
 
   const renderPageHeader = createRenderPageHeader();
-  const renderFollowToggle = createRenderFollowToggle(getFollowListAdapter);
+  const renderFollowToggle = createRenderFollowToggle(ports.getFollowList);
   const renderEditorialCommunities = createRenderEditorialCommunities(editorialCommunitiesAdapter, renderFollowToggle);
   const renderFindArticle = createRenderFindArticle();
   const renderFeedItem = createRenderFeedItem(getActorAdapter, getArticleAdapter);
   const renderFeed = createRenderFeed(
-    getFollowListAdapter,
+    ports.getFollowList,
     getEventsAdapter,
     renderFeedItem,
   );

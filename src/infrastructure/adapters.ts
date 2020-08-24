@@ -5,6 +5,7 @@ import { FetchStaticFile } from './fetch-static-file';
 import { FilterEvents } from './filter-events';
 import { GetBiorxivCommentCount } from './get-biorxiv-comment-count';
 import { Logger } from './logger';
+import { ProjectFollowListForUser } from './project-follow-list-for-user';
 import { FindReviewsForArticleVersionDoi, FindReviewsForEditorialCommunityId } from './review-projections';
 import { SearchEuropePmc } from './search-europe-pmc';
 import { DomainEvent } from '../types/domain-events';
@@ -32,5 +33,6 @@ export interface Adapters {
   filterEvents: FilterEvents;
   getAllEvents: () => Promise<ReadonlyArray<DomainEvent>>;
   commitEvent: (event: DomainEvent) => Promise<void>;
+  getFollowList: ProjectFollowListForUser,
   logger: Logger;
 }

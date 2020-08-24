@@ -1,4 +1,4 @@
-import createProjectFollowListForUser, { GetAllEvents } from '../../src/home-page/project-follow-list-for-user';
+import createProjectFollowListForUser, { GetAllEvents } from '../../src/infrastructure/project-follow-list-for-user';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
 import userId from '../../src/types/user-id';
 
