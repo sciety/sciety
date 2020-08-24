@@ -1,21 +1,19 @@
-import FollowList from '../types/follow-list';
 import { UserId } from '../types/user-id';
 
-type RenderPage = (userId: UserId, followList: FollowList) => Promise<string>;
+type RenderPage = (userId: UserId) => Promise<string>;
 
-type FollowListBasedComponent = (followList: FollowList) => Promise<string>;
-type UserIdBasedComponent = (userId: UserId) => Promise<string>;
+type Component = (userId: UserId) => Promise<string>;
 
 export default (
-  renderPageHeader: FollowListBasedComponent,
-  renderEditorialCommunities: UserIdBasedComponent,
-  renderFindArticle: FollowListBasedComponent,
-  renderFeed: UserIdBasedComponent,
-): RenderPage => async (userId, followList) => `
+  renderPageHeader: Component,
+  renderEditorialCommunities: Component,
+  renderFindArticle: Component,
+  renderFeed: Component,
+): RenderPage => async (userId) => `
       <div class="ui aligned stackable grid">
         <div class="row">
           <div class="column">
-            ${await renderPageHeader(followList)}
+            ${await renderPageHeader(userId)}
           </div>
         </div>
         <div class="row">
@@ -23,7 +21,7 @@ export default (
             ${await renderFeed(userId)}
           </section>
           <section class="four wide right floated column">
-            ${await renderFindArticle(followList)}
+            ${await renderFindArticle(userId)}
             ${await renderEditorialCommunities(userId)}
           </section>
         </div>
