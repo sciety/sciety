@@ -6,7 +6,7 @@ import createRenderDescription, { GetEditorialCommunityDescription, RenderDescri
 import createRenderEndorsedArticles, { GetNumberOfEndorsedArticles, RenderEndorsedArticles } from './render-endorsed-articles';
 import createRenderFeed, { RenderFeed } from './render-feed';
 import createRenderFeedItem, { GetActor, GetArticle } from './render-feed-item';
-import createRenderFollowToggle from './render-follow-toggle';
+import createRenderFollowToggle, { GetFollowList } from './render-follow-toggle';
 import createRenderPage from './render-page';
 import createRenderPageHeader, { GetEditorialCommunity, RenderPageHeader } from './render-page-header';
 import createRenderReviews, { GetNumberOfReviews, RenderReviews } from './render-reviews';
@@ -14,8 +14,8 @@ import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
 import EndorsementsRepository from '../types/endorsements-repository';
 import { FetchExternalArticle } from '../types/fetch-external-article';
-import FollowList from '../types/follow-list';
 import { ReviewId } from '../types/review-id';
+import { User } from '../types/user';
 
 type FindReviewsForEditorialCommunityId = (editorialCommunityId: EditorialCommunityId) => Promise<Array<{
   articleVersionDoi: Doi;
@@ -38,6 +38,7 @@ interface Ports {
   endorsements: EndorsementsRepository,
   filterEvents: FilterEvents;
   findReviewsForEditorialCommunityId: FindReviewsForEditorialCommunityId,
+  getFollowList: GetFollowList,
 }
 
 const buildRenderPageHeader = (ports: Ports): RenderPageHeader => {
@@ -96,13 +97,13 @@ const buildRenderFeed = (ports: Ports): RenderFeed => {
   );
   const getEventsAdapter = createGetMostRecentEvents(ports.filterEvents, 20);
   const renderFeedItem = createRenderFeedItem(getActorAdapter, getArticleAdapter);
-  const renderFollowToggle = createRenderFollowToggle();
+  const renderFollowToggle = createRenderFollowToggle(ports.getFollowList);
   return createRenderFeed(getEventsAdapter, renderFeedItem, renderFollowToggle);
 };
 
 interface Params {
   id?: string;
-  followList: FollowList;
+  user: User;
 }
 
 type RenderPageError = {
@@ -129,7 +130,7 @@ export default (ports: Ports): RenderPage => {
   return async (params) => {
     const editorialCommunityId = new EditorialCommunityId(params.id ?? '');
     try {
-      return Result.ok(await renderPage(editorialCommunityId, params.followList));
+      return Result.ok(await renderPage(editorialCommunityId, params.user.id));
     } catch (error) {
       return Result.err({
         type: 'not-found',

@@ -2,9 +2,9 @@ import { FeedEvent, RenderFeedItem } from './render-feed-item';
 import { RenderFollowToggle } from './render-follow-toggle';
 import templateListItems from '../templates/list-items';
 import EditorialCommunityId from '../types/editorial-community-id';
-import FollowList from '../types/follow-list';
+import { UserId } from '../types/user-id';
 
-export type RenderFeed = (editorialCommunityId: EditorialCommunityId, followList: FollowList) => Promise<string>;
+export type RenderFeed = (editorialCommunityId: EditorialCommunityId, userId: UserId) => Promise<string>;
 
 export type GetEvents = (editorialCommunityId: EditorialCommunityId) => Promise<Array<FeedEvent>>;
 
@@ -14,7 +14,7 @@ export default (
   getEvents: GetEvents,
   renderFeedItem: RenderFeedItem,
   renderFollowToggle: RenderFollowToggle,
-): RenderFeed => async (editorialCommunityId, followList) => {
+): RenderFeed => async (editorialCommunityId, userId) => {
   const events = await getEvents(editorialCommunityId);
   const feedItems = await Promise.all(events.map(renderFeedItem));
   return `
@@ -22,7 +22,7 @@ export default (
         <h2 class="ui header">
           Feed
         </h2>
-        ${await renderFollowToggle(followList, editorialCommunityId)}
+        ${await renderFollowToggle(userId, editorialCommunityId)}
         <ol class="ui large feed">
           ${templateListItems(feedItems, 'event')}
         </ol>

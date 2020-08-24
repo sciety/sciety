@@ -1,5 +1,6 @@
 import buildRenderPage from '../../src/editorial-community-page';
-import FollowList from '../../src/types/follow-list';
+import { User } from '../../src/types/user';
+import userId from '../../src/types/user-id';
 import createServer from '../http/server';
 
 describe('create render page', (): void => {
@@ -10,7 +11,8 @@ describe('create render page', (): void => {
       const { adapters } = await createServer();
       const renderPage = buildRenderPage(adapters);
       const allCommunities = await adapters.editorialCommunities.all();
-      const params = { id: allCommunities[0].id.value, followList: new FollowList([]) };
+      const user: User = { id: userId('u1'), loggedIn: false };
+      const params = { id: allCommunities[0].id.value, user };
       renderedPage = (await renderPage(params)).unsafelyUnwrap();
     });
 
@@ -27,7 +29,8 @@ describe('create render page', (): void => {
     it('throws a NotFound error', async (): Promise<void> => {
       const { adapters } = await createServer();
       const renderPage = buildRenderPage(adapters);
-      const params = { id: 'no-such-community', followList: new FollowList([]) };
+      const user: User = { id: userId('u1'), loggedIn: false };
+      const params = { id: 'no-such-community', user };
       const result = await renderPage(params);
 
       expect(result.unsafelyUnwrapErr().type).toStrictEqual('not-found');

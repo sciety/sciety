@@ -1,9 +1,9 @@
 import EditorialCommunityId from '../types/editorial-community-id';
-import FollowList from '../types/follow-list';
+import { UserId } from '../types/user-id';
 
-type Component = (editorialCommunityId: EditorialCommunityId, followList: FollowList) => Promise<string>;
+type Component = (editorialCommunityId: EditorialCommunityId, userId: UserId) => Promise<string>;
 
-type RenderPage = (editorialCommunityId: EditorialCommunityId, followList: FollowList) => Promise<string>;
+type RenderPage = (editorialCommunityId: EditorialCommunityId, userId: UserId) => Promise<string>;
 
 export default (
   renderPageHeader: Component,
@@ -12,24 +12,24 @@ export default (
   renderReviewedArticles: Component,
   renderFeed: Component,
 ): RenderPage => (
-  async (editorialCommunityId, followList) => (
+  async (editorialCommunityId, userId) => (
     `
       <div class="ui aligned stackable grid">
         <div class="row">
           <div class="column">
-            ${await renderPageHeader(editorialCommunityId, followList)}
+            ${await renderPageHeader(editorialCommunityId, userId)}
           </div>
         </div>
         <div class="row">
           <div class="eight wide column">
-            ${await renderDescription(editorialCommunityId, followList)}
+            ${await renderDescription(editorialCommunityId, userId)}
           </div>
           <div class="eight wide column">
             <section class="ui two statistics">
-              ${await renderEndorsedArticles(editorialCommunityId, followList)}
-              ${await renderReviewedArticles(editorialCommunityId, followList)}
+              ${await renderEndorsedArticles(editorialCommunityId, userId)}
+              ${await renderReviewedArticles(editorialCommunityId, userId)}
             </section>
-            ${await renderFeed(editorialCommunityId, followList)}
+            ${await renderFeed(editorialCommunityId, userId)}
           </div>
         </div> 
       </div>
