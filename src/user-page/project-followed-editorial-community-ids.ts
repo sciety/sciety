@@ -1,4 +1,4 @@
-import { GetFollowedEditorialCommunityIds } from './get-hardcoded-followed-editorial-communities';
+import { GetFollowedEditorialCommunityIds } from './get-followed-editorial-communities-from-ids';
 import { DomainEvent } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 

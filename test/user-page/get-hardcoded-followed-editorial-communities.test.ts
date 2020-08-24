@@ -1,8 +1,8 @@
 import EditorialCommunityId from '../../src/types/editorial-community-id';
 import userId from '../../src/types/user-id';
-import createGetHardcodedFollowedEditorialCommunities, { GetEditorialCommunity, GetFollowedEditorialCommunityIds } from '../../src/user-page/get-hardcoded-followed-editorial-communities';
+import createGetFollowedEditorialCommunitiesFromIds, { GetEditorialCommunity, GetFollowedEditorialCommunityIds } from '../../src/user-page/get-followed-editorial-communities-from-ids';
 
-describe('get-hardcoded-followed-editorial-communities adapter', () => {
+describe('get-followed-editorial-communities-from-ids adapter', () => {
   it('provides a list of communities', async () => {
     const getFollowedEditorialCommunityIds: GetFollowedEditorialCommunityIds = async () => [
       new EditorialCommunityId('316db7d9-88cc-4c26-b386-f067e0f56334'),
@@ -13,7 +13,7 @@ describe('get-hardcoded-followed-editorial-communities adapter', () => {
       name: 'Name',
       avatarUrl: 'http://example.com/avatar.png',
     });
-    const adapter = createGetHardcodedFollowedEditorialCommunities(
+    const adapter = createGetFollowedEditorialCommunitiesFromIds(
       getFollowedEditorialCommunityIds,
       getEditorialCommunity,
     );

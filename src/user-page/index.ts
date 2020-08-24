@@ -1,4 +1,4 @@
-import createGetHardcodedFollowedEditorialCommunities, { GetEditorialCommunity } from './get-hardcoded-followed-editorial-communities';
+import createGetFollowedEditorialCommunitiesFromIds, { GetEditorialCommunity } from './get-followed-editorial-communities-from-ids';
 import createProjectFollowedEditorialCommunityIds, { GetAllEvents } from './project-followed-editorial-community-ids';
 import createRenderFollowToggle from './render-follow-toggle';
 import createRenderFollowedEditorialCommunity from './render-followed-editorial-community';
@@ -26,10 +26,10 @@ export default (ports: Ports): RenderPage => {
 
   const renderFollowToggle = createRenderFollowToggle();
   const renderFollowedEditorialCommunity = createRenderFollowedEditorialCommunity(renderFollowToggle);
-  const getHardcodedFollowedEditorialCommunities = createGetHardcodedFollowedEditorialCommunities(
+  const getFollowedEditorialCommunities = createGetFollowedEditorialCommunitiesFromIds(
     createProjectFollowedEditorialCommunityIds(ports.getAllEvents),
     getEditorialCommunity,
   );
-  const renderPage = createRenderPage(getHardcodedFollowedEditorialCommunities, renderFollowedEditorialCommunity);
+  const renderPage = createRenderPage(getFollowedEditorialCommunities, renderFollowedEditorialCommunity);
   return async (params) => renderPage(userId(params.userId ?? ''), params.followList);
 };
