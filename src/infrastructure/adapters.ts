@@ -3,6 +3,7 @@ import { FetchCrossrefArticle } from './fetch-crossref-article';
 import { FetchReview } from './fetch-review';
 import { FetchStaticFile } from './fetch-static-file';
 import { FilterEvents } from './filter-events';
+import { Follows } from './follows';
 import { GetBiorxivCommentCount } from './get-biorxiv-comment-count';
 import { Logger } from './logger';
 import { ProjectFollowListForUser } from './project-follow-list-for-user';
@@ -34,5 +35,6 @@ export interface Adapters {
   getAllEvents: () => Promise<ReadonlyArray<DomainEvent>>;
   commitEvent: (event: DomainEvent) => Promise<void>;
   getFollowList: ProjectFollowListForUser,
+  follows: Follows,
   logger: Logger;
 }

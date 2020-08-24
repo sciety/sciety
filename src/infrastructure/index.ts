@@ -7,6 +7,7 @@ import createFetchHypothesisAnnotation from './fetch-hypothesis-annotation';
 import createFetchReview from './fetch-review';
 import createFetchStaticFile from './fetch-static-file';
 import createFilterEvents from './filter-events';
+import createFollows from './follows';
 import createGetBiorxivCommentCount from './get-biorxiv-comment-count';
 import createGetDisqusPostCount from './get-disqus-post-count';
 import getEventsFromDataFiles from './get-events-from-data-files';
@@ -59,6 +60,7 @@ const createInfrastructure = (): Adapters => {
   const editorialCommunities = populateEditorialCommunities(logger);
   const events = getEventsFromDataFiles();
   const reviewProjections = createReviewProjections(events.filter(isEditorialCommunityReviewedArticleEvent));
+  const getFollowList = createProjectFollowListForUser(async () => events);
 
   return {
     fetchArticle: createFetchCrossrefArticle(getXml, logger),
@@ -74,7 +76,8 @@ const createInfrastructure = (): Adapters => {
     getAllEvents: async () => events,
     logger,
     commitEvent: async (event) => { events.push(event); },
-    getFollowList: createProjectFollowListForUser(async () => events),
+    getFollowList,
+    follows: createFollows(getFollowList),
   };
 };
 

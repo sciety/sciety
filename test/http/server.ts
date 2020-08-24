@@ -70,6 +70,7 @@ export default async (): Promise<TestServer> => {
     commitEvent: async () => {},
     logger: dummyLogger,
     getFollowList: async () => new FollowList([]),
+    follows: async () => false,
   };
 
   const router = createRouter(adapters);
