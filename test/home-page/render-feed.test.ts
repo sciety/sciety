@@ -1,12 +1,11 @@
 import { JSDOM } from 'jsdom';
-import createRenderFeed, { GetEvents, GetFollows } from '../../src/home-page/render-feed';
+import createRenderFeed, { GetEvents } from '../../src/home-page/render-feed';
 import { RenderFeedItem } from '../../src/home-page/render-feed-item';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
 import userId from '../../src/types/user-id';
 
 describe('render-feed', (): void => {
   it('returns a list', async (): Promise<void> => {
-    const dummyGetFollows: GetFollows = async () => () => false;
     const dummyGetEvents: GetEvents = async () => [
       {
         type: 'EditorialCommunityJoined',
@@ -16,7 +15,6 @@ describe('render-feed', (): void => {
     ];
     const dummyRenderFeedItem: RenderFeedItem = async () => '';
     const renderFeed = createRenderFeed(
-      dummyGetFollows,
       dummyGetEvents,
       dummyRenderFeedItem,
     );

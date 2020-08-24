@@ -7,7 +7,7 @@ export type RenderFollowToggle = (
 ) => Promise<string>;
 
 type Follows = (editorialCommunityId: EditorialCommunityId) => boolean;
-type GetFollows = (userId: UserId) => Promise<Follows>;
+export type GetFollows = (userId: UserId) => Promise<Follows>;
 
 export default (getFollows: GetFollows): RenderFollowToggle => (
   async (userId, editorialCommunityId) => {
