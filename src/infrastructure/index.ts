@@ -77,7 +77,7 @@ const createInfrastructure = (): Adapters => {
     logger,
     commitEvent: async (event) => { events.push(event); },
     getFollowList,
-    follows: createFollows(getFollowList),
+    follows: createFollows(async () => events),
   };
 };
 
