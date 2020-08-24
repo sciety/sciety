@@ -1,4 +1,5 @@
 import { Maybe } from 'true-myth';
+import { EventSourcedFollowListRepository } from './event-sourced-follow-list-repository';
 import { FetchCrossrefArticle } from './fetch-crossref-article';
 import { FetchReview } from './fetch-review';
 import { FetchStaticFile } from './fetch-static-file';
@@ -6,7 +7,6 @@ import { FilterEvents } from './filter-events';
 import { Follows } from './follows';
 import { GetBiorxivCommentCount } from './get-biorxiv-comment-count';
 import { Logger } from './logger';
-import { ProjectFollowListForUser } from './project-follow-list-for-user';
 import { FindReviewsForArticleVersionDoi, FindReviewsForEditorialCommunityId } from './review-projections';
 import { SearchEuropePmc } from './search-europe-pmc';
 import { DomainEvent } from '../types/domain-events';
@@ -34,7 +34,7 @@ export interface Adapters {
   filterEvents: FilterEvents;
   getAllEvents: () => Promise<ReadonlyArray<DomainEvent>>;
   commitEvent: (event: DomainEvent) => Promise<void>;
-  getFollowList: ProjectFollowListForUser,
+  getFollowList: EventSourcedFollowListRepository,
   follows: Follows,
   logger: Logger;
 }

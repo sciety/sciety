@@ -5,9 +5,9 @@ import { UserId } from '../types/user-id';
 
 export type GetAllEvents = () => Promise<ReadonlyArray<DomainEvent>>;
 
-export type ProjectFollowListForUser = (userId: UserId) => Promise<FollowList>;
+export type EventSourcedFollowListRepository = (userId: UserId) => Promise<FollowList>;
 
-export default (getAllEvents: GetAllEvents): ProjectFollowListForUser => (
+export default (getAllEvents: GetAllEvents): EventSourcedFollowListRepository => (
   async (userId) => {
     const result = new Set<string>();
 

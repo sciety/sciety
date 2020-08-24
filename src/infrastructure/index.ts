@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Adapters } from './adapters';
+import createEventSourceFollowListRepository from './event-sourced-follow-list-repository';
 import createFetchCrossrefArticle from './fetch-crossref-article';
 import createFetchDataciteReview from './fetch-datacite-review';
 import createFetchDataset from './fetch-dataset';
@@ -17,7 +18,6 @@ import createEndorsementsRepository from './in-memory-endorsements-repository';
 import {
   createJsonSerializer, createRTracerLogger, createStreamLogger, Logger,
 } from './logger';
-import createProjectFollowListForUser from './project-follow-list-for-user';
 import createReviewProjections from './review-projections';
 import createSearchEuropePmc from './search-europe-pmc';
 import bootstrapEditorialCommunities from '../data/bootstrap-editorial-communities';
@@ -60,7 +60,7 @@ const createInfrastructure = (): Adapters => {
   const editorialCommunities = populateEditorialCommunities(logger);
   const events = getEventsFromDataFiles();
   const reviewProjections = createReviewProjections(events.filter(isEditorialCommunityReviewedArticleEvent));
-  const getFollowList = createProjectFollowListForUser(async () => events);
+  const getFollowList = createEventSourceFollowListRepository(async () => events);
 
   return {
     fetchArticle: createFetchCrossrefArticle(getXml, logger),
