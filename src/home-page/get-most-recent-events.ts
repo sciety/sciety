@@ -7,19 +7,23 @@ import {
 } from '../types/domain-events';
 import { NonEmptyArray } from '../types/non-empty-array';
 
-type FilterFunction = (event: DomainEvent) => event is FeedEvent;
-export type FilterEvents = (filterFunction: FilterFunction, maxCount: number) => Promise<Array<FeedEvent>>;
+export type GetAllEvents = () => Promise<ReadonlyArray<DomainEvent>>;
 
 export default (
-  filterEvents: FilterEvents,
+  getAllEvents: GetAllEvents,
   maxCount: number,
 ): GetEvents => (
   async (follows) => {
-    const followedEvents: FilterFunction = (event): event is FeedEvent => (
+    const isFollowedEvent = (event: DomainEvent): event is FeedEvent => (
       isEditorialCommunityJoinedEvent(event)
       || (isEditorialCommunityEndorsedArticleEvent(event) && follows(event.editorialCommunityId))
       || (isEditorialCommunityReviewedArticleEvent(event) && follows(event.editorialCommunityId))
     );
-    return filterEvents(followedEvents, maxCount) as unknown as NonEmptyArray<FeedEvent>;
+
+    return (await getAllEvents())
+      .slice()
+      .sort((a, b) => b.date.getTime() - a.date.getTime())
+      .filter(isFollowedEvent)
+      .slice(0, maxCount) as unknown as NonEmptyArray<FeedEvent>;
   }
 );

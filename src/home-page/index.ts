@@ -1,4 +1,4 @@
-import createGetMostRecentEvents, { FilterEvents } from './get-most-recent-events';
+import createGetMostRecentEvents, { GetAllEvents } from './get-most-recent-events';
 import createRenderEditorialCommunities, { GetAllEditorialCommunities } from './render-editorial-communities';
 import createRenderFeed, { GetFollows } from './render-feed';
 import createRenderFeedItem, { GetActor, GetArticle } from './render-feed-item';
@@ -15,7 +15,7 @@ import { UserId } from '../types/user-id';
 interface Ports {
   fetchArticle: FetchExternalArticle;
   editorialCommunities: EditorialCommunityRepository;
-  filterEvents: FilterEvents,
+  getAllEvents: GetAllEvents,
   getFollowList: (userId: UserId) => Promise<FollowList>,
 }
 
@@ -43,7 +43,7 @@ export default (ports: Ports): RenderPage => {
 
     return (editorialCommunityId) => followList.follows(editorialCommunityId);
   };
-  const getEventsAdapter = createGetMostRecentEvents(ports.filterEvents, 20);
+  const getEventsAdapter = createGetMostRecentEvents(ports.getAllEvents, 20);
 
   const renderPageHeader = createRenderPageHeader();
   const renderFollowToggle = createRenderFollowToggle(getFollows);
