@@ -24,15 +24,13 @@ describe('follow-list', () => {
 
   describe('unfollow', () => {
     describe('when the community to be unfollowed is currently followed', () => {
-      const list = new FollowList(userId1, [editorialCommunity1Id]);
+      it('unfollows the community', async () => {
+        const list = new FollowList(userId1, [editorialCommunity1Id]);
 
-      beforeEach(() => {
-        list.unfollow(editorialCommunity1Id);
+        const event = list.unfollow(editorialCommunity1Id);
+
+        expect(event.editorialCommunityId).toBe(editorialCommunity1Id);
       });
-
-      it.todo('unfollows the community');
-
-      it.todo('leaves all other followed communities in the list');
     });
 
     describe('when the community to be unfollowed is not already followed', () => {

@@ -17,13 +17,7 @@ export default (ports: Ports): Middleware<{ user: User }> => (
     const editorialCommunityId = new EditorialCommunityId(context.request.body.editorialcommunityid);
     const { user } = context.state;
     const followList = await ports.getFollowList(user.id);
-    followList.unfollow(editorialCommunityId);
-    const event: UserUnfollowedEditorialCommunityEvent = {
-      type: 'UserUnfollowedEditorialCommunity',
-      date: new Date(),
-      userId: user.id,
-      editorialCommunityId,
-    };
+    const event = followList.unfollow(editorialCommunityId);
     await ports.commitEvent(event);
 
     ports.logger('info', 'User unfollowed editorial community', { editorialCommunityId });
