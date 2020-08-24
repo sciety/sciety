@@ -19,7 +19,7 @@ export default (
     const followedEvents: FilterFunction = (event): event is FeedEvent => (
       isEditorialCommunityJoinedEvent(event)
       || (isEditorialCommunityEndorsedArticleEvent(event) && followList.follows(event.editorialCommunityId))
-      || (isEditorialCommunityReviewedArticleEvent(event) && followList.follows(event.actorId))
+      || (isEditorialCommunityReviewedArticleEvent(event) && followList.follows(event.editorialCommunityId))
     );
     return filterEvents(followedEvents, maxCount) as unknown as NonEmptyArray<FeedEvent>;
   }

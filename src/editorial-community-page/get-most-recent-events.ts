@@ -16,9 +16,9 @@ export default (filterEvents: FilterEvents, maxCount: number): GetEvents => (
         (isEditorialCommunityEndorsedArticleEvent(event)
           && event.editorialCommunityId.value === editorialCommunityId.value)
         || (isEditorialCommunityReviewedArticleEvent(event)
-          && event.actorId.value === editorialCommunityId.value)
+          && event.editorialCommunityId.value === editorialCommunityId.value)
         || (isEditorialCommunityJoinedEvent(event)
-          && event.actorId.value === editorialCommunityId.value)
+          && event.editorialCommunityId.value === editorialCommunityId.value)
       ),
       maxCount,
     )

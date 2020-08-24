@@ -4,7 +4,6 @@ import {
   EditorialCommunityEndorsedArticleEvent,
   EditorialCommunityJoinedEvent,
   EditorialCommunityReviewedArticleEvent,
-  isEditorialCommunityEndorsedArticleEvent,
 } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 
@@ -84,12 +83,7 @@ export default (
   const renderFeedItemSummary = createRenderFeedItemSummary(getArticle);
 
   return async (event) => {
-    let actor: Actor;
-    if (isEditorialCommunityEndorsedArticleEvent(event)) {
-      actor = await getActor(event.editorialCommunityId);
-    } else {
-      actor = await getActor(event.actorId);
-    }
+    const actor: Actor = await getActor(event.editorialCommunityId);
     return `
       <div class="label">
         <img src="${actor.imageUrl}" alt="">

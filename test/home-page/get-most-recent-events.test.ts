@@ -12,7 +12,6 @@ describe('get-most-recent-events', () => {
   const dummyEvent: DomainEvent = {
     type: 'EditorialCommunityEndorsedArticle',
     date: new Date('2020-07-08'),
-    actorId: editorialCommunity1,
     editorialCommunityId: editorialCommunity1,
     articleId: new Doi('10.1101/751099'),
   };
@@ -22,14 +21,13 @@ describe('get-most-recent-events', () => {
       {
         type: 'EditorialCommunityEndorsedArticle',
         date: new Date('2020-07-08'),
-        actorId: editorialCommunity1,
         editorialCommunityId: editorialCommunity1,
         articleId: new Doi('10.1101/751099'),
       },
       {
         type: 'EditorialCommunityReviewedArticle',
         date: new Date('2020-07-09'),
-        actorId: editorialCommunity1,
+        editorialCommunityId: editorialCommunity1,
         articleId: new Doi('10.1101/2020.01.22.915660'),
         reviewId: new Doi('10.1234/5678'),
       },

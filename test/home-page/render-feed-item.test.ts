@@ -16,7 +16,6 @@ describe('render-feed-item', (): void => {
 
   describe('when given an EditorialCommunityEndorsedArticleEvent', () => {
     const event: EditorialCommunityEndorsedArticleEvent = {
-      actorId: arbitraryActorId,
       editorialCommunityId: arbitraryActorId,
       articleId: arbitraryArticleId,
       date: new Date(),
@@ -50,7 +49,7 @@ describe('render-feed-item', (): void => {
       const event: EditorialCommunityReviewedArticleEvent = {
         type: 'EditorialCommunityReviewedArticle',
         date: new Date(),
-        actorId: arbitraryActorId,
+        editorialCommunityId: arbitraryActorId,
         articleId: arbitraryArticleId,
         reviewId: new Doi('10.1234/5678'),
       };
@@ -72,10 +71,10 @@ describe('render-feed-item', (): void => {
 
   describe('when given an EditorialCommunityJoinedEvent', () => {
     it('displays the actor name', async () => {
-      const actorId = new EditorialCommunityId('');
+      const editorialCommunityId = new EditorialCommunityId('');
       const actorName = 'Some Actor';
       const event: EditorialCommunityJoinedEvent = {
-        actorId,
+        editorialCommunityId,
         date: new Date(),
         type: 'EditorialCommunityJoined',
       };

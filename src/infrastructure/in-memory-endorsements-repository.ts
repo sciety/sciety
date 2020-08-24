@@ -7,12 +7,12 @@ export default (
   endorsingEditorialCommunityIds: async (doi) => (
     events
       .filter((event) => event.articleId.value === doi.value)
-      .map((event) => event.actorId)
+      .map((event) => event.editorialCommunityId)
   ),
 
   endorsedBy: async (editorialCommunityId) => (
     events
-      .filter((event) => event.actorId.value === editorialCommunityId.value)
+      .filter((event) => event.editorialCommunityId.value === editorialCommunityId.value)
       .map((event) => event.articleId)
   ),
 });

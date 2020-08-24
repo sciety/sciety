@@ -16,7 +16,6 @@ export default (): Array<DomainEvent> => {
       .map(([date, articleDoi]: [string, string]): DomainEvent => ({
         type: 'EditorialCommunityEndorsedArticle',
         date: new Date(date),
-        actorId: new EditorialCommunityId(editorialCommunityId),
         editorialCommunityId: new EditorialCommunityId(editorialCommunityId),
         articleId: new Doi(articleDoi),
       })));
@@ -41,7 +40,7 @@ export default (): Array<DomainEvent> => {
       .map(([date, articleDoi, reviewId]: [string, string, string]): DomainEvent => ({
         type: 'EditorialCommunityReviewedArticle',
         date: new Date(date),
-        actorId: new EditorialCommunityId(editorialCommunityId),
+        editorialCommunityId: new EditorialCommunityId(editorialCommunityId),
         articleId: new Doi(articleDoi),
         reviewId: unserializeReviewId(reviewId),
       })));
@@ -52,7 +51,7 @@ export default (): Array<DomainEvent> => {
     .map(([date, editorialCommunityId]: [string, string]): DomainEvent => ({
       type: 'EditorialCommunityJoined',
       date: new Date(date),
-      actorId: new EditorialCommunityId(editorialCommunityId),
+      editorialCommunityId: new EditorialCommunityId(editorialCommunityId),
     })));
 
   return parsedEvents;

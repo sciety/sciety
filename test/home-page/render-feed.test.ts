@@ -12,7 +12,7 @@ describe('render-feed', (): void => {
       {
         type: 'EditorialCommunityJoined',
         date: new Date(),
-        actorId: new EditorialCommunityId(''),
+        editorialCommunityId: new EditorialCommunityId(''),
       },
     ];
     const dummyRenderFeedItem: RenderFeedItem = async () => '';

@@ -6,7 +6,6 @@ import { UserId } from './user-id';
 export type EditorialCommunityEndorsedArticleEvent = {
   type: 'EditorialCommunityEndorsedArticle';
   date: Date;
-  actorId: EditorialCommunityId;
   editorialCommunityId: EditorialCommunityId;
   articleId: Doi;
 };
@@ -19,7 +18,7 @@ event is EditorialCommunityEndorsedArticleEvent => (
 export type EditorialCommunityReviewedArticleEvent = {
   type: 'EditorialCommunityReviewedArticle';
   date: Date;
-  actorId: EditorialCommunityId;
+  editorialCommunityId: EditorialCommunityId;
   articleId: Doi;
   reviewId: ReviewId;
 };
@@ -32,7 +31,7 @@ event is EditorialCommunityReviewedArticleEvent => (
 export type EditorialCommunityJoinedEvent = {
   type: 'EditorialCommunityJoined';
   date: Date;
-  actorId: EditorialCommunityId;
+  editorialCommunityId: EditorialCommunityId;
 };
 
 export const isEditorialCommunityJoinedEvent = (event: DomainEvent): event is EditorialCommunityJoinedEvent => (

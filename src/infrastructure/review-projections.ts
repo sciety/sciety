@@ -26,14 +26,14 @@ export default (events: ReadonlyArray<EditorialCommunityReviewedArticleEvent>): 
       .filter((event) => event.articleId.value === articleVersionDoi.value)
       .map((event) => ({
         reviewId: event.reviewId,
-        editorialCommunityId: event.actorId,
+        editorialCommunityId: event.editorialCommunityId,
         added: event.date,
       }))
   ),
 
   findReviewsForEditorialCommunityId: async (editorialCommunityId) => (
     events
-      .filter((event) => event.actorId.value === editorialCommunityId.value)
+      .filter((event) => event.editorialCommunityId.value === editorialCommunityId.value)
       .map((event) => ({
         articleVersionDoi: event.articleId,
         reviewId: event.reviewId,
