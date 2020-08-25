@@ -45,6 +45,10 @@ export default (page: string, user: Maybe<User>): string => `<!doctype html>
           <li class="item">
             <a href="/users/${id}">My profile</a>
           </li>
+
+          <li class="item">
+            <a href="/sign-out">Sign out</a>
+          </li>
         `)}
 
         <li class="right item">
