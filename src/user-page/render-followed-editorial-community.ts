@@ -1,12 +1,13 @@
+import { Maybe } from 'true-myth';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { UserId } from '../types/user-id';
 
 export type RenderFollowedEditorialCommunity = (
   editorialCommunity: EditorialCommunity,
-  userId: UserId,
+  userId: Maybe<UserId>,
 ) => Promise<string>;
 
-type RenderFollowToggle = (userId: UserId, editorialcommunityid: EditorialCommunityId) => Promise<string>;
+type RenderFollowToggle = (userId: Maybe<UserId>, editorialcommunityid: EditorialCommunityId) => Promise<string>;
 
 interface EditorialCommunity {
   id: EditorialCommunityId;

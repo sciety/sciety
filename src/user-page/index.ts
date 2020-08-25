@@ -1,3 +1,4 @@
+import { Maybe } from 'true-myth';
 import createGetFollowedEditorialCommunitiesFromIds, { GetEditorialCommunity } from './get-followed-editorial-communities-from-ids';
 import createProjectFollowedEditorialCommunityIds, { GetAllEvents } from './project-followed-editorial-community-ids';
 import createRenderFollowToggle, { Follows } from './render-follow-toggle';
@@ -32,5 +33,5 @@ export default (ports: Ports): RenderPage => {
     getEditorialCommunity,
   );
   const renderPage = createRenderPage(getFollowedEditorialCommunities, renderFollowedEditorialCommunity);
-  return async (params) => renderPage(userId(params.userId ?? ''), params.user.id);
+  return async (params) => renderPage(userId(params.userId ?? ''), Maybe.just(params.user.id));
 };
