@@ -24,7 +24,7 @@ jobs:
           aws --region=us-east-1 eks update-kubeconfig --name libero-eks--franklin
           helm upgrade -i prc--prod \
             --set images.frontend.tag=${IMAGE_TAG} \
-            --set hostname=prc.libero.pub \
+            --set hostname=hive.review \
             --set googleAnalyticsTrackingId=UA-167311475-1 \
             --set disqusApiKey=${DISQUS_API_KEY} \
             --set twitterApiKey=${TWITTER_API_KEY} \
