@@ -32,7 +32,7 @@ export default (adapters: Adapters): Router => {
     identifyUser(adapters.logger),
     pageHandler(createAboutPage(adapters)));
 
-  router.get('/users/:userId(.+)',
+  router.get('/users/:id(.+)',
     identifyUser(adapters.logger),
     pageHandler(createUserPage(adapters)));
 

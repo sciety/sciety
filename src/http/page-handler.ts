@@ -13,7 +13,6 @@ type RenderPage = (params: {
   doi?: string;
   id?: string;
   query?: string;
-  userId?: string;
   user: Maybe<User>;
 }) => Promise<string | Result<string, RenderPageError>>;
 

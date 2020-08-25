@@ -15,7 +15,7 @@ type Ports = {
 };
 
 interface Params {
-  userId?: string;
+  id?: string;
   user: Maybe<User>;
 }
 
@@ -35,7 +35,7 @@ export default (ports: Ports): RenderPage => {
   const renderPage = createRenderPage(getFollowedEditorialCommunities, renderFollowedEditorialCommunity);
 
   return async (params) => {
-    const userId = toUserId(params.userId ?? '');
+    const userId = toUserId(params.id ?? '');
     const viewingUserId = params.user.map((value) => value.id);
 
     return renderPage(userId, viewingUserId);
