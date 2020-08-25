@@ -1,7 +1,6 @@
-import { Middleware, RouterContext } from '@koa/router';
+import { Middleware } from '@koa/router';
 import { NOT_FOUND, OK } from 'http-status-codes';
-import { Next } from 'koa';
-import { Result } from 'true-myth';
+import { Maybe, Result } from 'true-myth';
 import applyStandardPageLayout from '../templates/apply-standard-page-layout';
 import { User } from '../types/user';
 
@@ -20,8 +19,8 @@ type RenderPage = (params: {
 
 export default (
   renderPage: RenderPage,
-): Middleware => (
-  async (context: RouterContext, next: Next): Promise<void> => {
+): Middleware<{ user: User }> => (
+  async (context, next): Promise<void> => {
     const params = {
       ...context.params,
       ...context.query,
@@ -30,7 +29,8 @@ export default (
     context.response.type = 'html';
 
     const page = await renderPage(params);
-    const { user } = context.state;
+
+    const user = Maybe.of(context.state.user).andThen((value) => Maybe.of(value.loggedIn ? value : null));
 
     if (typeof page === 'string') {
       context.response.status = OK;

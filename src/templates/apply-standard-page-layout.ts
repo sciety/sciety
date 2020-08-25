@@ -1,3 +1,4 @@
+import { Maybe } from 'true-myth';
 import { User } from '../types/user';
 
 let googleAnalytics = '';
@@ -17,7 +18,7 @@ if (process.env.GOOGLE_ANALYTICS_TRACKING_ID) {
   `;
 }
 
-export default (page: string, user: User): string => `<!doctype html>
+export default (page: string, user: Maybe<User>): string => `<!doctype html>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>
@@ -40,11 +41,11 @@ export default (page: string, user: User): string => `<!doctype html>
           <a href="/about">About</a>
         </li>
 
-        ${user.loggedIn ? `
+        ${user.mapOr('', ({ id }) => `
           <li class="item">
-            <a href="/users/${user.id}">My profile</a>
+            <a href="/users/${id}">My profile</a>
           </li>
-        ` : ''}
+        `)}
 
         <li class="right item">
           <a href="https://eepurl.com/g7qqcv" class="ui primary button">Give us feedback</a>
