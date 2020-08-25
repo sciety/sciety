@@ -19,7 +19,7 @@ type RenderPage = (params: {
 
 export default (
   renderPage: RenderPage,
-): Middleware<{ user: User }> => (
+): Middleware<{ user?: User }> => (
   async (context, next): Promise<void> => {
     const params = {
       ...context.params,
@@ -30,7 +30,7 @@ export default (
 
     const page = await renderPage(params);
 
-    const user = Maybe.of(context.state.user).andThen((value) => Maybe.of(value.loggedIn ? value : null));
+    const user = Maybe.of(context.state.user);
 
     if (typeof page === 'string') {
       context.response.status = OK;

@@ -48,8 +48,8 @@ export default (adapters: Adapters): Router => {
     identifyUser(adapters.logger),
     pageHandler(createEditorialCommunityPage(adapters)));
 
-  const requireAuthentication: Middleware<{ user: User }> = async (ctx, next) => {
-    if (!ctx.state.user.loggedIn) {
+  const requireAuthentication: Middleware<{ user?: User }> = async (ctx, next) => {
+    if (!(ctx.state.user?.loggedIn)) {
       ctx.redirect('/sign-in');
       return;
     }

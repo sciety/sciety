@@ -103,7 +103,7 @@ const buildRenderFeed = (ports: Ports): RenderFeed => {
 
 interface Params {
   id?: string;
-  user: User;
+  user?: User;
 }
 
 type RenderPageError = {
@@ -129,8 +129,10 @@ export default (ports: Ports): RenderPage => {
   );
   return async (params) => {
     const editorialCommunityId = new EditorialCommunityId(params.id ?? '');
+    const userId = Maybe.of(params.user).map((value) => value.id);
+
     try {
-      return Result.ok(await renderPage(editorialCommunityId, Maybe.just(params.user.id)));
+      return Result.ok(await renderPage(editorialCommunityId, userId));
     } catch (error) {
       return Result.err({
         type: 'not-found',

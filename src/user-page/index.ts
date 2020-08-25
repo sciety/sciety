@@ -6,7 +6,7 @@ import createRenderFollowedEditorialCommunity from './render-followed-editorial-
 import createRenderPage from './render-page';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import { User } from '../types/user';
-import userId from '../types/user-id';
+import toUserId from '../types/user-id';
 
 type Ports = {
   editorialCommunities: EditorialCommunityRepository,
@@ -33,5 +33,11 @@ export default (ports: Ports): RenderPage => {
     getEditorialCommunity,
   );
   const renderPage = createRenderPage(getFollowedEditorialCommunities, renderFollowedEditorialCommunity);
-  return async (params) => renderPage(userId(params.userId ?? ''), Maybe.just(params.user.id));
+
+  return async (params) => {
+    const userId = toUserId(params.userId ?? '');
+    const viewingUserId = Maybe.of(params.user).map((value) => value.id);
+
+    return renderPage(userId, viewingUserId);
+  };
 };
