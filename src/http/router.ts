@@ -49,7 +49,7 @@ export default (adapters: Adapters): Router => {
     pageHandler(createEditorialCommunityPage(adapters)));
 
   const requireAuthentication: Middleware<{ user?: User }> = async (ctx, next) => {
-    if (!(ctx.state.user?.loggedIn)) {
+    if (!(ctx.state.user)) {
       ctx.redirect('/sign-in');
       return;
     }
