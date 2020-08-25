@@ -2,7 +2,6 @@ import createFilterEvents from '../../src/infrastructure/filter-events';
 import Doi from '../../src/types/doi';
 import { DomainEvent, isEditorialCommunityEndorsedArticleEvent } from '../../src/types/domain-events';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
-import { NonEmptyArray } from '../../src/types/non-empty-array';
 
 const anyEvent = (event: DomainEvent): event is DomainEvent => 'type' in event;
 
@@ -16,7 +15,7 @@ describe('filter-events', () => {
   };
 
   it('sorts by date descending', async () => {
-    const initial: NonEmptyArray<DomainEvent> = [
+    const initial: ReadonlyArray<DomainEvent> = [
       {
         type: 'EditorialCommunityEndorsedArticle',
         date: new Date('2020-07-08'),
@@ -39,7 +38,7 @@ describe('filter-events', () => {
   });
 
   it('only returns matching events', async () => {
-    const initial: NonEmptyArray<DomainEvent> = [
+    const initial: ReadonlyArray<DomainEvent> = [
       {
         type: 'EditorialCommunityEndorsedArticle',
         date: new Date('2020-07-08'),
@@ -63,7 +62,7 @@ describe('filter-events', () => {
 
   describe('when there are a small number of matching events', () => {
     it('returns exactly those', async () => {
-      const dummyEvents: NonEmptyArray<DomainEvent> = [dummyEvent, dummyEvent, dummyEvent];
+      const dummyEvents: ReadonlyArray<DomainEvent> = [dummyEvent, dummyEvent, dummyEvent];
       const filterEvents = createFilterEvents(dummyEvents);
       const events = await filterEvents(anyEvent, 20);
 
@@ -73,7 +72,7 @@ describe('filter-events', () => {
 
   describe('when there are more matching events than the specified maximum', () => {
     it('returns just the specified maximum number', async () => {
-      const dummyEvents: NonEmptyArray<DomainEvent> = [dummyEvent, dummyEvent, dummyEvent];
+      const dummyEvents: ReadonlyArray<DomainEvent> = [dummyEvent, dummyEvent, dummyEvent];
       const filterEvents = createFilterEvents(dummyEvents);
       const events = await filterEvents(anyEvent, 2);
 

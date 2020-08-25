@@ -3,7 +3,6 @@ import createFilterEvents from '../../src/infrastructure/filter-events';
 import Doi from '../../src/types/doi';
 import { DomainEvent } from '../../src/types/domain-events';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
-import { NonEmptyArray } from '../../src/types/non-empty-array';
 
 describe('get-most-recent-events', () => {
   const editorialCommunity1 = new EditorialCommunityId('1');
@@ -18,7 +17,7 @@ describe('get-most-recent-events', () => {
   it.todo('always returns EditorialCommunityJoined events');
 
   it('only returns events for the given editorial community', async () => {
-    const allEvents: NonEmptyArray<DomainEvent> = [
+    const allEvents: ReadonlyArray<DomainEvent> = [
       endorsedBy(editorialCommunity2),
       endorsedBy(editorialCommunity1),
       endorsedBy(editorialCommunity2),

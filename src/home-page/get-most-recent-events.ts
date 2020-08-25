@@ -6,7 +6,6 @@ import {
   isEditorialCommunityReviewedArticleEvent,
 } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
-import { NonEmptyArray } from '../types/non-empty-array';
 import { UserId } from '../types/user-id';
 
 export type GetAllEvents = () => Promise<ReadonlyArray<DomainEvent>>;
@@ -35,7 +34,7 @@ export default (
       .slice()
       .sort((a, b) => b.date.getTime() - a.date.getTime());
     const filtering = await Promise.all(allEvents.map(isFollowedEvent));
-    return allEvents.filter((_, i) => filtering[i])
-      .slice(0, maxCount) as unknown as NonEmptyArray<FeedEvent>;
+    return allEvents.filter((event, i): event is FeedEvent => filtering[i])
+      .slice(0, maxCount);
   }
 );

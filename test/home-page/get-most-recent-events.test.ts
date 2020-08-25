@@ -3,7 +3,6 @@ import createGetMostRecentEvents, { Follows, GetAllEvents } from '../../src/home
 import Doi from '../../src/types/doi';
 import { DomainEvent } from '../../src/types/domain-events';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
-import { NonEmptyArray } from '../../src/types/non-empty-array';
 import userId from '../../src/types/user-id';
 
 describe('get-most-recent-events', () => {
@@ -16,7 +15,7 @@ describe('get-most-recent-events', () => {
   };
 
   it('sorts by date descending', async () => {
-    const initial: NonEmptyArray<DomainEvent> = [
+    const initial: ReadonlyArray<DomainEvent> = [
       {
         type: 'EditorialCommunityEndorsedArticle',
         date: new Date('2020-07-08'),
@@ -46,7 +45,7 @@ describe('get-most-recent-events', () => {
 
   describe('when there\'s a small number of items', () => {
     it('returns exactly those', async () => {
-      const dummyEvents: NonEmptyArray<DomainEvent> = [dummyEvent, dummyEvent, dummyEvent];
+      const dummyEvents: ReadonlyArray<DomainEvent> = [dummyEvent, dummyEvent, dummyEvent];
       const getAllEvents: GetAllEvents = async () => dummyEvents;
       const follows: Follows = async () => true;
       const getEvents = createGetMostRecentEvents(getAllEvents, follows, 20);
@@ -58,7 +57,7 @@ describe('get-most-recent-events', () => {
 
   describe('when there are more items than the specified maximum', () => {
     it('returns just the specified maximum number of items', async () => {
-      const dummyEvents: NonEmptyArray<DomainEvent> = [dummyEvent, dummyEvent, dummyEvent];
+      const dummyEvents: ReadonlyArray<DomainEvent> = [dummyEvent, dummyEvent, dummyEvent];
       const maxCount = 2;
       const getAllEvents: GetAllEvents = async () => dummyEvents;
       const follows: Follows = async () => true;
