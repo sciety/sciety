@@ -14,6 +14,7 @@ import createEditorialCommunityPage from '../editorial-community-page';
 import createFollowHandler from '../follow/follow-handler';
 import createHomePage from '../home-page';
 import { Adapters } from '../infrastructure/adapters';
+import createSignOutHandler from '../sign-out';
 import { User } from '../types/user';
 import createUnfollowHandler from '../unfollow/unfollow-handler';
 import createUserPage from '../user-page';
@@ -75,6 +76,9 @@ export default (adapters: Adapters): Router => {
 
   router.get('/sign-in',
     authenticate);
+
+  router.get('/sign-out',
+    createSignOutHandler());
 
   router.get('/twitter/callback',
     authenticate);
