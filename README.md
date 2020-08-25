@@ -151,5 +151,5 @@ We released this software under the [MIT license][license]. Copyright © 2020 [e
 [Open issues badge]: https://flat.badgen.net/github/open-issues/hivereview/thehive?icon=github&color=pink
 [Production deployments]: https://github.com/hivereview/thehive/actions?query=workflow%3AProduction
 [Production environment]: http://prc.libero.pub
-[Staging environment]: http://prc-staging.libero.pub
+[Staging environment]: http://staging.hive.review
 [TypeScript]: https://www.typescriptlang.org/
