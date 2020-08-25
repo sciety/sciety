@@ -101,9 +101,9 @@ const buildRenderFeed = (ports: Ports): RenderFeed => {
   return createRenderFeed(getEventsAdapter, renderFeedItem, renderFollowToggle);
 };
 
-interface Params {
+export interface Params {
   id?: string;
-  user?: User;
+  user: Maybe<User>;
 }
 
 type RenderPageError = {
@@ -129,7 +129,7 @@ export default (ports: Ports): RenderPage => {
   );
   return async (params) => {
     const editorialCommunityId = new EditorialCommunityId(params.id ?? '');
-    const userId = Maybe.of(params.user).map((value) => value.id);
+    const userId = params.user.map((value) => value.id);
 
     try {
       return Result.ok(await renderPage(editorialCommunityId, userId));

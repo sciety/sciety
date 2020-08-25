@@ -14,7 +14,7 @@ type RenderPage = (params: {
   id?: string;
   query?: string;
   userId?: string;
-  user: User;
+  user: Maybe<User>;
 }) => Promise<string | Result<string, RenderPageError>>;
 
 export default (
@@ -25,6 +25,7 @@ export default (
       ...context.params,
       ...context.query,
       ...context.state,
+      user: Maybe.of(context.state.user),
     };
     context.response.type = 'html';
 

@@ -1,4 +1,5 @@
-import buildRenderPage from '../../src/editorial-community-page';
+import { Maybe } from 'true-myth';
+import buildRenderPage, { Params } from '../../src/editorial-community-page';
 import createServer from '../http/server';
 
 describe('create render page', (): void => {
@@ -9,7 +10,7 @@ describe('create render page', (): void => {
       const { adapters } = await createServer();
       const renderPage = buildRenderPage(adapters);
       const allCommunities = await adapters.editorialCommunities.all();
-      const params = { id: allCommunities[0].id.value };
+      const params: Params = { id: allCommunities[0].id.value, user: Maybe.nothing() };
       renderedPage = (await renderPage(params)).unsafelyUnwrap();
     });
 
@@ -26,7 +27,7 @@ describe('create render page', (): void => {
     it('throws a NotFound error', async (): Promise<void> => {
       const { adapters } = await createServer();
       const renderPage = buildRenderPage(adapters);
-      const params = { id: 'no-such-community' };
+      const params: Params = { id: 'no-such-community', user: Maybe.nothing() };
       const result = await renderPage(params);
 
       expect(result.unsafelyUnwrapErr().type).toStrictEqual('not-found');

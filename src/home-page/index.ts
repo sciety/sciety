@@ -21,7 +21,7 @@ interface Ports {
 }
 
 interface Params {
-  user?: User,
+  user: Maybe<User>,
 }
 
 type RenderPage = (params: Params) => Promise<string>;
@@ -62,7 +62,7 @@ export default (ports: Ports): RenderPage => {
   );
 
   return async (params) => {
-    const userId = Maybe.of(params.user).map((value) => value.id);
+    const userId = params.user.map((value) => value.id);
 
     return renderPage(userId);
   };
