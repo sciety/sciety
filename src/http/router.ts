@@ -1,5 +1,5 @@
 import path from 'path';
-import Router from '@koa/router';
+import Router, { Middleware } from '@koa/router';
 import bodyParser from 'koa-bodyparser';
 import koaPassport from 'koa-passport';
 import send from 'koa-send';
@@ -14,6 +14,7 @@ import createEditorialCommunityPage from '../editorial-community-page';
 import createFollowHandler from '../follow/follow-handler';
 import createHomePage from '../home-page';
 import { Adapters } from '../infrastructure/adapters';
+import { User } from '../types/user';
 import createUnfollowHandler from '../unfollow/unfollow-handler';
 import createUserPage from '../user-page';
 
@@ -47,9 +48,19 @@ export default (adapters: Adapters): Router => {
     identifyUser(adapters.logger),
     pageHandler(createEditorialCommunityPage(adapters)));
 
+  const requireAuthentication: Middleware<{ user: User }> = async (ctx, next) => {
+    if (!ctx.state.user.loggedIn) {
+      ctx.redirect('/sign-in');
+      return;
+    }
+
+    await next();
+  };
+
   router.post('/follow',
     identifyUser(adapters.logger),
     bodyParser({ enableTypes: ['form'] }),
+    requireAuthentication,
     createFollowHandler(adapters));
 
   router.post('/unfollow',
