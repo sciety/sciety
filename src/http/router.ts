@@ -1,11 +1,12 @@
 import path from 'path';
-import Router, { Middleware } from '@koa/router';
+import Router from '@koa/router';
 import bodyParser from 'koa-bodyparser';
 import koaPassport from 'koa-passport';
 import send from 'koa-send';
 import identifyUser from './identify-user';
 import pageHandler from './page-handler';
 import ping from './ping';
+import createRequireAuthentication from './require-authentication';
 import robots from './robots';
 import createAboutPage from '../about-page';
 import createArticlePage from '../article-page';
@@ -15,7 +16,6 @@ import createFollowHandler from '../follow/follow-handler';
 import createHomePage from '../home-page';
 import { Adapters } from '../infrastructure/adapters';
 import createSignOutHandler from '../sign-out';
-import { User } from '../types/user';
 import createUnfollowHandler from '../unfollow/unfollow-handler';
 import createUserPage from '../user-page';
 
@@ -49,25 +49,16 @@ export default (adapters: Adapters): Router => {
     identifyUser(adapters.logger),
     pageHandler(createEditorialCommunityPage(adapters)));
 
-  const requireAuthentication: Middleware<{ user?: User }> = async (ctx, next) => {
-    if (!(ctx.state.user)) {
-      ctx.redirect('/sign-in');
-      return;
-    }
-
-    await next();
-  };
-
   router.post('/follow',
     identifyUser(adapters.logger),
     bodyParser({ enableTypes: ['form'] }),
-    requireAuthentication,
+    createRequireAuthentication(),
     createFollowHandler(adapters));
 
   router.post('/unfollow',
     identifyUser(adapters.logger),
     bodyParser({ enableTypes: ['form'] }),
-    requireAuthentication,
+    createRequireAuthentication(),
     createUnfollowHandler(adapters));
 
   const authenticate = koaPassport.authenticate('twitter', {
