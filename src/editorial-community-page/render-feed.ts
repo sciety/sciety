@@ -1,10 +1,11 @@
+import { Maybe } from 'true-myth';
 import { FeedEvent, RenderFeedItem } from './render-feed-item';
 import { RenderFollowToggle } from './render-follow-toggle';
 import templateListItems from '../templates/list-items';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { UserId } from '../types/user-id';
 
-export type RenderFeed = (editorialCommunityId: EditorialCommunityId, userId: UserId) => Promise<string>;
+export type RenderFeed = (editorialCommunityId: EditorialCommunityId, userId: Maybe<UserId>) => Promise<string>;
 
 export type GetEvents = (editorialCommunityId: EditorialCommunityId) => Promise<Array<FeedEvent>>;
 

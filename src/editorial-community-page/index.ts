@@ -130,7 +130,7 @@ export default (ports: Ports): RenderPage => {
   return async (params) => {
     const editorialCommunityId = new EditorialCommunityId(params.id ?? '');
     try {
-      return Result.ok(await renderPage(editorialCommunityId, params.user.id));
+      return Result.ok(await renderPage(editorialCommunityId, Maybe.just(params.user.id)));
     } catch (error) {
       return Result.err({
         type: 'not-found',

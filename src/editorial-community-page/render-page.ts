@@ -1,9 +1,10 @@
+import { Maybe } from 'true-myth';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { UserId } from '../types/user-id';
 
-type Component = (editorialCommunityId: EditorialCommunityId, userId: UserId) => Promise<string>;
+type Component = (editorialCommunityId: EditorialCommunityId, userId: Maybe<UserId>) => Promise<string>;
 
-type RenderPage = (editorialCommunityId: EditorialCommunityId, userId: UserId) => Promise<string>;
+type RenderPage = (editorialCommunityId: EditorialCommunityId, userId: Maybe<UserId>) => Promise<string>;
 
 export default (
   renderPageHeader: Component,
