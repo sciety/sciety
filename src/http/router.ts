@@ -12,11 +12,11 @@ import createAboutPage from '../about-page';
 import createArticlePage from '../article-page';
 import createArticleSearchPage from '../article-search-page';
 import createEditorialCommunityPage from '../editorial-community-page';
-import createFollowHandler from '../follow/follow-handler';
+import createFollowHandler from '../follow';
 import createHomePage from '../home-page';
 import { Adapters } from '../infrastructure/adapters';
 import createSignOutHandler from '../sign-out';
-import createUnfollowHandler from '../unfollow/unfollow-handler';
+import createUnfollowHandler from '../unfollow';
 import createUserPage from '../user-page';
 
 export default (adapters: Adapters): Router => {
