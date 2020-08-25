@@ -66,6 +66,7 @@ export default (adapters: Adapters): Router => {
   router.post('/unfollow',
     identifyUser(adapters.logger),
     bodyParser({ enableTypes: ['form'] }),
+    requireAuthentication,
     createUnfollowHandler(adapters));
 
   const authenticate = koaPassport.authenticate('twitter', {
