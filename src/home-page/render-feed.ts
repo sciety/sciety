@@ -1,11 +1,12 @@
+import { Maybe } from 'true-myth';
 import { FeedEvent, RenderFeedItem } from './render-feed-item';
 import templateListItems from '../templates/list-items';
 import { NonEmptyArray } from '../types/non-empty-array';
 import { UserId } from '../types/user-id';
 
-type RenderFeed = (userId: UserId) => Promise<string>;
+type RenderFeed = (userId: Maybe<UserId>) => Promise<string>;
 
-export type GetEvents = (userId: UserId) => Promise<NonEmptyArray<FeedEvent>>;
+export type GetEvents = (userId: Maybe<UserId>) => Promise<NonEmptyArray<FeedEvent>>;
 
 export { FeedEvent } from './render-feed-item';
 

@@ -1,8 +1,9 @@
+import { Maybe } from 'true-myth';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { UserId } from '../types/user-id';
 
 export type RenderFollowToggle = (
-  userId: UserId,
+  userId: Maybe<UserId>,
   editorialCommunityId: EditorialCommunityId
 ) => Promise<string>;
 
@@ -10,7 +11,11 @@ type Follows = (userId: UserId, editorialCommunityId: EditorialCommunityId) => P
 
 export default (follows: Follows): RenderFollowToggle => (
   async (userId, editorialCommunityId) => {
-    if (await follows(userId, editorialCommunityId)) {
+    const userFollows = await userId
+      .map(async (value) => follows(value, editorialCommunityId))
+      .unwrapOrElse(async () => false);
+
+    if (userFollows) {
       return `
         <form method="post" action="/unfollow">
           <input type="hidden" name="editorialcommunityid" value="${editorialCommunityId.value}" />

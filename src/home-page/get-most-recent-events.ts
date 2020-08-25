@@ -17,12 +17,16 @@ export default (
   follows: Follows,
   maxCount: number,
 ): GetEvents => (
-  async (userId: UserId) => {
+  async (userId) => {
     const isFollowedEvent = async (event: DomainEvent): Promise<boolean> => {
       if (isEditorialCommunityJoinedEvent(event)) {
         return true;
       }
-      const userFollows = await follows(userId, event.editorialCommunityId);
+
+      const userFollows = await userId
+        .map(async (value) => follows(value, event.editorialCommunityId))
+        .unwrapOrElse(async () => false);
+
       return (isEditorialCommunityEndorsedArticleEvent(event) && userFollows)
         || (isEditorialCommunityReviewedArticleEvent(event) && userFollows);
     };

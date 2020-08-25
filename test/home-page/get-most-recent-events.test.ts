@@ -1,3 +1,4 @@
+import { Maybe } from 'true-myth';
 import createGetMostRecentEvents, { Follows, GetAllEvents } from '../../src/home-page/get-most-recent-events';
 import Doi from '../../src/types/doi';
 import { DomainEvent } from '../../src/types/domain-events';
@@ -33,7 +34,7 @@ describe('get-most-recent-events', () => {
     const getAllEvents: GetAllEvents = async () => initial;
     const follows: Follows = async () => true;
     const getEvents = createGetMostRecentEvents(getAllEvents, follows, 20);
-    const sortedEvents = await getEvents(userId('user-1'));
+    const sortedEvents = await getEvents(Maybe.just(userId('user-1')));
 
     expect(sortedEvents[0]).toStrictEqual(initial[1]);
     expect(sortedEvents[1]).toStrictEqual(initial[0]);
@@ -49,7 +50,7 @@ describe('get-most-recent-events', () => {
       const getAllEvents: GetAllEvents = async () => dummyEvents;
       const follows: Follows = async () => true;
       const getEvents = createGetMostRecentEvents(getAllEvents, follows, 20);
-      const events = await getEvents(userId('user-1'));
+      const events = await getEvents(Maybe.just(userId('user-1')));
 
       expect(events).toHaveLength(dummyEvents.length);
     });
@@ -62,7 +63,7 @@ describe('get-most-recent-events', () => {
       const getAllEvents: GetAllEvents = async () => dummyEvents;
       const follows: Follows = async () => true;
       const getEvents = createGetMostRecentEvents(getAllEvents, follows, maxCount);
-      const events = await getEvents(userId('user-1'));
+      const events = await getEvents(Maybe.just(userId('user-1')));
 
       expect(events).toHaveLength(maxCount);
     });

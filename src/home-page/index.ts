@@ -1,3 +1,4 @@
+import { Maybe } from 'true-myth';
 import createGetMostRecentEvents, { GetAllEvents } from './get-most-recent-events';
 import createRenderEditorialCommunities, { GetAllEditorialCommunities } from './render-editorial-communities';
 import createRenderFeed from './render-feed';
@@ -61,6 +62,6 @@ export default (ports: Ports): RenderPage => {
   );
 
   return async (params) => (
-    renderPage(params.user.id)
+    renderPage(Maybe.just(params.user.id))
   );
 };

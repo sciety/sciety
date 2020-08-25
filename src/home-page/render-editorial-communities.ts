@@ -1,9 +1,10 @@
+import { Maybe } from 'true-myth';
 import { RenderFollowToggle } from './render-follow-toggle';
 import templateListItems from '../templates/list-items';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { UserId } from '../types/user-id';
 
-type RenderEditorialCommunities = (userId: UserId) => Promise<string>;
+type RenderEditorialCommunities = (userId: Maybe<UserId>) => Promise<string>;
 
 export type GetAllEditorialCommunities = () => Promise<Array<{
   id: EditorialCommunityId;

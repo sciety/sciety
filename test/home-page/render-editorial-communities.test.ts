@@ -1,6 +1,6 @@
+import { Maybe } from 'true-myth';
 import createRenderEditorialCommunities from '../../src/home-page/render-editorial-communities';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
-import userId from '../../src/types/user-id';
 
 describe('render-editorial-communities', (): void => {
   it('lists all of the hard-coded editorial communities', async (): Promise<void> => {
@@ -18,7 +18,7 @@ describe('render-editorial-communities', (): void => {
       async () => dummyCommunities,
       async () => '',
     );
-    const rendered = await renderEditorialCommunities(userId('u1'));
+    const rendered = await renderEditorialCommunities(Maybe.nothing());
 
     expect(rendered).toContain('Editorial Community A');
     expect(rendered).toContain('Editorial Community B');
