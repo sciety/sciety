@@ -2,7 +2,7 @@ import { Pool } from 'pg';
 import { Logger } from './logger';
 import { DomainEvent } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
-import { Json } from '../types/json';
+import { Json, JsonObject } from '../types/json';
 import toUserId from '../types/user-id';
 
 type Events = Array<{
@@ -11,7 +11,7 @@ type Events = Array<{
   payload: Json,
 }>;
 
-const isObject = (value: Json): value is { [prop: string]: Json } => (
+const isObject = (value: Json): value is JsonObject => (
   value !== null && typeof value === 'object' && !Array.isArray(value)
 );
 
