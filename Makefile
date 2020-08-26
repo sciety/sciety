@@ -14,10 +14,7 @@ dev: .env install build
 
 prod: export TARGET = prod
 prod: .env build
-	$(DOCKER) run \
-		-p $(PORT):80 \
-		--env-file .env \
-		$(IMAGE):$(IMAGE_TAG)
+	${DOCKER_COMPOSE} up --abort-on-container-exit --exit-code-from app
 
 .env:
 	touch .env
