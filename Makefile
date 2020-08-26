@@ -163,5 +163,7 @@ COMMUNITY_SCRIPTS := \
 
 update-event-data: $(COMMUNITY_SCRIPTS)
 
+release: export TAG = latest/$(shell date +%Y%m%d%H%M)
 release:
-	TAG=latest/$$(date +%Y%m%d%H%M); git tag $$TAG && git push origin $$TAG
+	git tag $$TAG
+	git push origin $$TAG
