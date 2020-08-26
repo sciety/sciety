@@ -5,7 +5,7 @@ IMAGE := liberoadmin/prc-frontend
 IMAGE_TAG := local
 PORT := 8080
 
-.PHONY: build clean dev install lint* prod test
+.PHONY: build clean dev find-* install lint* prod release test* update-event-data
 
 dev: export TARGET = dev
 dev: .env install build
