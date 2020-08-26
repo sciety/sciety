@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Client } from 'pg';
+import { Pool } from 'pg';
 import { Adapters } from './adapters';
 import createEventSourceFollowListRepository from './event-sourced-follow-list-repository';
 import createFetchCrossrefArticle from './fetch-crossref-article';
@@ -62,6 +62,7 @@ const createInfrastructure = (): Adapters => {
   const events = getEventsFromDataFiles();
   const reviewProjections = createReviewProjections(events.filter(isEditorialCommunityReviewedArticleEvent));
   const getFollowList = createEventSourceFollowListRepository(async () => events);
+  const pool = new Pool();
 
   return {
     fetchArticle: createFetchCrossrefArticle(getXml, logger),
@@ -77,17 +78,12 @@ const createInfrastructure = (): Adapters => {
     getAllEvents: async () => events,
     logger,
     commitEvent: async (event) => {
-      const database = new Client();
       try {
-        await database.connect();
-        logger('debug', 'Connected to the database');
-        await database.query('CREATE TABLE IF NOT EXISTS events (type varchar);');
-        const insertionResult = await database.query('INSERT INTO events (type) VALUES ($1) RETURNING *;', [event.type]);
+        await pool.query('CREATE TABLE IF NOT EXISTS events (type varchar);');
+        const insertionResult = await pool.query('INSERT INTO events (type) VALUES ($1) RETURNING *;', [event.type]);
         logger('debug', 'Insertion result', { result: insertionResult.rows });
       } catch (error) {
         logger('debug', 'Could not connect to the database', { error });
-      } finally {
-        await database.end();
       }
       events.push(event);
     },
