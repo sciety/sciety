@@ -8,8 +8,7 @@ PORT := 8080
 .PHONY: build clean dev install lint* prod test
 
 dev: export TARGET = dev
-dev: install build
-	touch .env
+dev: .env install build
 	$(DOCKER) run -it \
 		-v $(DATA_VOLUME)/data:/app/data:ro \
 		-v $(DATA_VOLUME)/src:/app/src:ro \
@@ -19,12 +18,14 @@ dev: install build
 		$(IMAGE):$(IMAGE_TAG)-dev
 
 prod: export TARGET = prod
-prod: build
-	touch .env
+prod: .env build
 	$(DOCKER) run \
 		-p $(PORT):80 \
 		--env-file .env \
 		$(IMAGE):$(IMAGE_TAG)
+
+.env:
+	touch .env
 
 lint: export TARGET = dev
 lint: build
