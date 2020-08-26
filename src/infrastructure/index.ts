@@ -81,8 +81,9 @@ const createInfrastructure = (): Adapters => {
       try {
         await database.connect();
         logger('debug', 'Connected to the database');
-        const result = await database.query('SELECT CURRENT_DATE');
-        logger('debug', 'Query result', { result: result.rows });
+        await database.query('CREATE TABLE IF NOT EXISTS events (type varchar);');
+        const insertionResult = await database.query('INSERT INTO events (type) VALUES ($1) RETURNING *;', [event.type]);
+        logger('debug', 'Insertion result', { result: insertionResult.rows });
       } catch (error) {
         logger('debug', 'Could not connect to the database', { error });
       } finally {
