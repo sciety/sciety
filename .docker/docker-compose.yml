@@ -13,3 +13,12 @@ services:
       TWITTER_API_SECRET_KEY:
     ports:
       - '8080:80'
+  db:
+    image: postgres:12.3-alpine
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: thehive
+    healthcheck:
+      test: pg_isready --username user --dbnam thehive || exit 1
+      interval: 5s
