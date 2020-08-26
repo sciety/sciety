@@ -1,3 +1,7 @@
+ifeq (${TARGET},)
+TARGET := dev
+endif
+
 DOCDIR := docs
 DOCKER := docker
 DOCKER_COMPOSE = docker-compose --file .docker/docker-compose.yml --file .docker/docker-compose.$(TARGET).yml
@@ -56,10 +60,7 @@ test\:coverage: build
 		npm run test:coverage
 
 build:
-	@if [ "$(TARGET)" != prod ]; then \
-		image_tag_suffix=-dev; \
-	fi; \
-	$(DOCKER) build -t $(IMAGE):$(IMAGE_TAG)$${image_tag_suffix} . --target $(TARGET)
+	$(DOCKER_COMPOSE) build
 
 deps: export TARGET = dev
 deps: $(DOCDIR)/folders.svg $(DOCDIR)/modules.svg
