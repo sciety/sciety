@@ -77,13 +77,16 @@ const createInfrastructure = (): Adapters => {
     getAllEvents: async () => events,
     logger,
     commitEvent: async (event) => {
+      const database = new Client();
       try {
-        const database = new Client();
         await database.connect();
         logger('debug', 'Connected to the database');
-        await database.end();
+        const result = await database.query('SELECT CURRENT_DATE');
+        logger('debug', 'Query result', { result: result.rows });
       } catch (error) {
         logger('debug', 'Could not connect to the database', { error });
+      } finally {
+        await database.end();
       }
       events.push(event);
     },
