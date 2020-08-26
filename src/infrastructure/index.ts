@@ -14,6 +14,7 @@ import createFollows from './follows';
 import createGetBiorxivCommentCount from './get-biorxiv-comment-count';
 import createGetDisqusPostCount from './get-disqus-post-count';
 import getEventsFromDataFiles from './get-events-from-data-files';
+import getEventsFromDatabase from './get-events-from-database';
 import createGetXml from './get-xml';
 import createEditorialCommunityRepository from './in-memory-editorial-communities';
 import createEndorsementsRepository from './in-memory-endorsements-repository';
@@ -61,16 +62,7 @@ const createInfrastructure = async (): Promise<Adapters> => {
   const searchEuropePmc = createSearchEuropePmc(getJson, logger);
   const editorialCommunities = populateEditorialCommunities(logger);
   const pool = new Pool();
-  const getEventsFromDatabase = async (): Promise<Array<DomainEvent>> => {
-    try {
-      const result = await pool.query('SELECT * FROM events');
-      logger('debug', 'Reading events from database', { result: result.rows });
-    } catch (error) {
-      logger('debug', 'Could not query the database', { error });
-    }
-    return [];
-  };
-  const events = getEventsFromDataFiles().concat(await getEventsFromDatabase());
+  const events = getEventsFromDataFiles().concat(await getEventsFromDatabase(pool, logger));
   const reviewProjections = createReviewProjections(events.filter(isEditorialCommunityReviewedArticleEvent));
   const getFollowList = createEventSourceFollowListRepository(async () => events);
 
