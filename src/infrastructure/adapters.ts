@@ -1,4 +1,5 @@
 import { Maybe } from 'true-myth';
+import { CommitEvent } from './commit-event';
 import { EventSourcedFollowListRepository } from './event-sourced-follow-list-repository';
 import { FetchCrossrefArticle } from './fetch-crossref-article';
 import { FetchReview } from './fetch-review';
@@ -33,8 +34,8 @@ export interface Adapters {
   findReviewsForEditorialCommunityId: FindReviewsForEditorialCommunityId;
   filterEvents: FilterEvents;
   getAllEvents: () => Promise<ReadonlyArray<DomainEvent>>;
-  commitEvent: (event: DomainEvent) => Promise<void>;
-  getFollowList: EventSourcedFollowListRepository,
-  follows: Follows,
+  commitEvent: CommitEvent;
+  getFollowList: EventSourcedFollowListRepository;
+  follows: Follows;
   logger: Logger;
 }

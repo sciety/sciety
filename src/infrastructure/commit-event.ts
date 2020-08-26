@@ -1,9 +1,10 @@
 import { Pool } from 'pg';
 import { Logger } from './logger';
-import { DomainEvent } from '../types/domain-events';
+import { DomainEvent, UserFollowedEditorialCommunityEvent, UserUnfollowedEditorialCommunityEvent } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 
-type CommitEvent = (event: DomainEvent) => Promise<void>;
+type RuntimeGeneratedEvent = UserFollowedEditorialCommunityEvent | UserUnfollowedEditorialCommunityEvent;
+export type CommitEvent = (event: RuntimeGeneratedEvent) => Promise<void>;
 
 const replacer = (key: string, value: unknown): unknown => {
   if (['date', 'type'].includes(key)) {
