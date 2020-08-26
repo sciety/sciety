@@ -9,6 +9,10 @@ services:
       APP_SECRET:
       DISQUS_API_KEY:
       GOOGLE_ANALYTICS_TRACKING_ID:
+      PGUSER: user
+      PGHOST: db
+      PGPASSWORD: secret
+      PGDATABASE: thehive
       TWITTER_API_KEY:
       TWITTER_API_SECRET_KEY:
     ports:

@@ -63,8 +63,6 @@ const createInfrastructure = (): Adapters => {
   const reviewProjections = createReviewProjections(events.filter(isEditorialCommunityReviewedArticleEvent));
   const getFollowList = createEventSourceFollowListRepository(async () => events);
 
-  const database = new Client();
-
   return {
     fetchArticle: createFetchCrossrefArticle(getXml, logger),
     getBiorxivCommentCount: createGetBiorxivCommentCount(createGetDisqusPostCount(getJson, logger), logger),
@@ -80,6 +78,7 @@ const createInfrastructure = (): Adapters => {
     logger,
     commitEvent: async (event) => {
       try {
+        const database = new Client();
         await database.connect();
         logger('debug', 'Connected to the database');
         await database.end();
