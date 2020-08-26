@@ -11,11 +11,14 @@ export default (
 ): CommitEvent => (
   async (event) => {
     try {
-      await pool.query('CREATE TABLE IF NOT EXISTS events (type varchar, date timestamp);');
-      const insertionResult = await pool.query('INSERT INTO events (type, date) VALUES ($1, $2) RETURNING *;', [event.type, event.date.toISOString()]);
+      await pool.query('CREATE TABLE IF NOT EXISTS events (type varchar, date timestamp, payload jsonb);');
+      const insertionResult = await pool.query(
+        'INSERT INTO events (type, date, payload) VALUES ($1, $2, $3) RETURNING *;',
+        [event.type, event.date.toISOString(), {}],
+      );
       logger('debug', 'Insertion result', { result: insertionResult.rows });
     } catch (error) {
-      logger('debug', 'Could not connect to the database', { error });
+      logger('debug', 'Could not insert in the database', { error });
     }
     events.push(event);
   }
