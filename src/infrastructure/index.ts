@@ -42,7 +42,7 @@ const populateEndorsementsRepository = (
   createEndorsementsRepository(events.filter(isEditorialCommunityEndorsedArticleEvent))
 );
 
-const createInfrastructure = (): Adapters => {
+const createInfrastructure = async (): Promise<Adapters> => {
   const logger = createRTracerLogger(
     createStreamLogger(
       process.stdout,
