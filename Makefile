@@ -1,5 +1,6 @@
 DOCDIR := docs
 DOCKER := docker
+DOCKER_COMPOSE = docker-compose --file .docker/docker-compose.yml
 DATA_VOLUME := $(shell pwd)
 IMAGE := liberoadmin/prc-frontend
 IMAGE_TAG := local
@@ -9,13 +10,7 @@ PORT := 8080
 
 dev: export TARGET = dev
 dev: .env install build
-	$(DOCKER) run -it \
-		-v $(DATA_VOLUME)/data:/app/data:ro \
-		-v $(DATA_VOLUME)/src:/app/src:ro \
-		-v $(DATA_VOLUME)/static:/app/static:ro \
-		-p $(PORT):80 \
-		--env-file .env \
-		$(IMAGE):$(IMAGE_TAG)-dev
+	${DOCKER_COMPOSE} up --abort-on-container-exit --exit-code-from app
 
 prod: export TARGET = prod
 prod: .env build
