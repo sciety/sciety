@@ -2,11 +2,12 @@ import { Pool } from 'pg';
 import { Logger } from './logger';
 import { DomainEvent } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
-import { generate } from '../types/event-id';
+import { EventId } from '../types/event-id';
 import { Json, JsonObject } from '../types/json';
 import toUserId from '../types/user-id';
 
 type Events = Array<{
+  id: EventId,
   type: string,
   date: Date,
   payload: Json,
@@ -37,7 +38,9 @@ export default async (pool: Pool, logger: Logger): Promise<Array<DomainEvent>> =
 
   logger('debug', 'Reading events from database', { events });
 
-  return events.map(({ type, date, payload }): DomainEvent => {
+  return events.map(({
+    id, type, date, payload,
+  }): DomainEvent => {
     if (!isObject(payload)) {
       throw new Error('Payload is not an object');
     }
@@ -45,7 +48,7 @@ export default async (pool: Pool, logger: Logger): Promise<Array<DomainEvent>> =
     switch (type) {
       case 'UserFollowedEditorialCommunity': {
         return {
-          id: generate(),
+          id,
           type,
           date,
           userId: toUserId(ensureString(payload.userId)),
@@ -54,7 +57,7 @@ export default async (pool: Pool, logger: Logger): Promise<Array<DomainEvent>> =
       }
       case 'UserUnfollowedEditorialCommunity': {
         return {
-          id: generate(),
+          id,
           type,
           date,
           userId: toUserId(ensureString(payload.userId)),
