@@ -13,7 +13,7 @@ PORT := 8080
 export IMAGE
 export IMAGE_TAG
 
-.PHONY: build clean dev find-* install lint* prod release test* update-event-data
+.PHONY: build clean* dev find-* install lint* prod release test* update-event-data
 
 dev: export TARGET = dev
 dev: .env install build
@@ -93,6 +93,9 @@ node_modules: package.json package-lock.json
 
 clean:
 	rm -rf .eslint .jest build node_modules
+
+clean\:db:
+	$(DOCKER_COMPOSE) down
 
 find-elife-endorsements: export TARGET = dev
 find-elife-endorsements: build
