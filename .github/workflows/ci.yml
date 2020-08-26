@@ -46,6 +46,8 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: |
           aws --region=us-east-1 eks update-kubeconfig --name libero-eks--franklin
+          helm repo add bitnami https://charts.bitnami.com/bitnami
+          helm dependency build
           helm upgrade -i prc--staging \
             --set images.frontend.tag=${IMAGE_TAG} \
             --set hostname=staging.hive.review \

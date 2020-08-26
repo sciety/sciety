@@ -5,3 +5,7 @@ type: application
 home: https://github.com/libero/prc
 version: 0.1.0
 appVersion: latest
+dependencies:
+  - name: postgresql
+    repository: https://charts.bitnami.com/bitnami
+    version: '9.3.2'

@@ -5,3 +5,7 @@ images:
 
 googleAnalyticsTrackingId:
 disqusApiKey:
+
+postgresql:
+  persistence:
+    enabled: false
