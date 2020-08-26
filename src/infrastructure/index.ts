@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Client } from 'pg';
 import { Adapters } from './adapters';
 import createEventSourceFollowListRepository from './event-sourced-follow-list-repository';
 import createFetchCrossrefArticle from './fetch-crossref-article';
@@ -62,6 +63,8 @@ const createInfrastructure = (): Adapters => {
   const reviewProjections = createReviewProjections(events.filter(isEditorialCommunityReviewedArticleEvent));
   const getFollowList = createEventSourceFollowListRepository(async () => events);
 
+  const database = new Client();
+
   return {
     fetchArticle: createFetchCrossrefArticle(getXml, logger),
     getBiorxivCommentCount: createGetBiorxivCommentCount(createGetDisqusPostCount(getJson, logger), logger),
@@ -75,7 +78,16 @@ const createInfrastructure = (): Adapters => {
     filterEvents: createFilterEvents(events),
     getAllEvents: async () => events,
     logger,
-    commitEvent: async (event) => { events.push(event); },
+    commitEvent: async (event) => {
+      try {
+        await database.connect();
+        logger('debug', 'Connected to the database');
+        await database.end();
+      } catch (error) {
+        logger('debug', 'Could not connect to the database', { error });
+      }
+      events.push(event);
+    },
     getFollowList,
     follows: createFollows(async () => events),
   };
