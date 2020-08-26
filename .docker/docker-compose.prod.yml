@@ -4,4 +4,4 @@ services:
   app:
     build:
       target: prod
-    image: liberoadmin/prc-frontend:local
+    image: ${IMAGE}:${IMAGE_TAG}

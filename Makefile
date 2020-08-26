@@ -10,6 +10,9 @@ IMAGE := liberoadmin/prc-frontend
 IMAGE_TAG := local
 PORT := 8080
 
+export IMAGE
+export IMAGE_TAG
+
 .PHONY: build clean dev find-* install lint* prod release test* update-event-data
 
 dev: export TARGET = dev

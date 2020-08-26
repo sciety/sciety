@@ -4,7 +4,7 @@ services:
   app:
     build:
       target: dev
-    image: liberoadmin/prc-frontend:local-dev
+    image: ${IMAGE}:${IMAGE_TAG}-dev
     volumes:
       - '../data:/app/data:ro'
       - '../src:/app/src:ro'
