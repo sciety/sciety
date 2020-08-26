@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      target: dev
+    image: liberoadmin/prc-frontend:local-dev
+    volumes:
+      - '../data:/app/data:ro'
+      - '../src:/app/src:ro'
+      - '../static:/app/static:ro'

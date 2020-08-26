@@ -4,8 +4,6 @@ services:
   app:
     build:
       context: ../
-      target: dev
-    image: liberoadmin/prc-frontend:local-dev
     environment:
       APP_ORIGIN:
       APP_SECRET:
@@ -13,9 +11,5 @@ services:
       GOOGLE_ANALYTICS_TRACKING_ID:
       TWITTER_API_KEY:
       TWITTER_API_SECRET_KEY:
-    volumes:
-      - '../data:/app/data:ro'
-      - '../src:/app/src:ro'
-      - '../static:/app/static:ro'
     ports:
       - '8080:80'
