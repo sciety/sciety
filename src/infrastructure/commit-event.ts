@@ -11,8 +11,8 @@ export default (
 ): CommitEvent => (
   async (event) => {
     try {
-      await pool.query('CREATE TABLE IF NOT EXISTS events (type varchar);');
-      const insertionResult = await pool.query('INSERT INTO events (type) VALUES ($1) RETURNING *;', [event.type]);
+      await pool.query('CREATE TABLE IF NOT EXISTS events (type varchar, date timestamp);');
+      const insertionResult = await pool.query('INSERT INTO events (type, date) VALUES ($1, $2) RETURNING *;', [event.type, event.date.toISOString()]);
       logger('debug', 'Insertion result', { result: insertionResult.rows });
     } catch (error) {
       logger('debug', 'Could not connect to the database', { error });
