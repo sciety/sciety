@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Pool } from 'pg';
 import { Adapters } from './adapters';
+import createCommitEvent from './commit-event';
 import createEventSourceFollowListRepository from './event-sourced-follow-list-repository';
 import createFetchCrossrefArticle from './fetch-crossref-article';
 import createFetchDataciteReview from './fetch-datacite-review';
@@ -77,16 +78,7 @@ const createInfrastructure = (): Adapters => {
     filterEvents: createFilterEvents(events),
     getAllEvents: async () => events,
     logger,
-    commitEvent: async (event) => {
-      try {
-        await pool.query('CREATE TABLE IF NOT EXISTS events (type varchar);');
-        const insertionResult = await pool.query('INSERT INTO events (type) VALUES ($1) RETURNING *;', [event.type]);
-        logger('debug', 'Insertion result', { result: insertionResult.rows });
-      } catch (error) {
-        logger('debug', 'Could not connect to the database', { error });
-      }
-      events.push(event);
-    },
+    commitEvent: createCommitEvent(events, pool, logger),
     getFollowList,
     follows: createFollows(async () => events),
   };
