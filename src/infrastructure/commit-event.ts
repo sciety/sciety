@@ -25,10 +25,10 @@ export default (
 ): CommitEvent => (
   async (event) => {
     try {
-      await pool.query('CREATE TABLE IF NOT EXISTS events (type varchar, date timestamp, payload jsonb);');
+      await pool.query('CREATE TABLE IF NOT EXISTS events (id uuid, type varchar, date timestamp, payload jsonb);');
       const insertionResult = await pool.query(
-        'INSERT INTO events (type, date, payload) VALUES ($1, $2, $3) RETURNING *;',
-        [event.type, event.date.toISOString(), JSON.stringify(event, replacer)],
+        'INSERT INTO events (id, type, date, payload) VALUES ($1, $2, $3, $4) RETURNING *;',
+        [event.id, event.type, event.date.toISOString(), JSON.stringify(event, replacer)],
       );
       logger('debug', 'Insertion result', { result: insertionResult.rows });
     } catch (error) {
