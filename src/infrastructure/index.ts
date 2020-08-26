@@ -60,10 +60,19 @@ const createInfrastructure = async (): Promise<Adapters> => {
   const fetchHypothesisAnnotation = createFetchHypothesisAnnotation(getJson, logger);
   const searchEuropePmc = createSearchEuropePmc(getJson, logger);
   const editorialCommunities = populateEditorialCommunities(logger);
-  const events = getEventsFromDataFiles();
+  const pool = new Pool();
+  const getEventsFromDatabase = async (): Promise<Array<DomainEvent>> => {
+    try {
+      const result = await pool.query('SELECT * FROM events');
+      logger('debug', 'Reading events from database', { result: result.rows });
+    } catch (error) {
+      logger('debug', 'Could not query the database', { error });
+    }
+    return [];
+  };
+  const events = getEventsFromDataFiles().concat(await getEventsFromDatabase());
   const reviewProjections = createReviewProjections(events.filter(isEditorialCommunityReviewedArticleEvent));
   const getFollowList = createEventSourceFollowListRepository(async () => events);
-  const pool = new Pool();
 
   return {
     fetchArticle: createFetchCrossrefArticle(getXml, logger),
