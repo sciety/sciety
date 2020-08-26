@@ -1,5 +1,6 @@
 import { UserFollowedEditorialCommunityEvent, UserUnfollowedEditorialCommunityEvent } from './domain-events';
 import EditorialCommunityId from './editorial-community-id';
+import { generate } from './event-id';
 import { UserId } from './user-id';
 
 export default class FollowList {
@@ -16,6 +17,7 @@ export default class FollowList {
     this.items.push(editorialCommunityId);
 
     return {
+      id: generate(),
       type: 'UserFollowedEditorialCommunity',
       date: new Date(),
       userId: this.userId,
@@ -27,6 +29,7 @@ export default class FollowList {
     this.items = this.items.filter((item) => item.value !== editorialCommunityId.value);
 
     return {
+      id: generate(),
       type: 'UserUnfollowedEditorialCommunity',
       date: new Date(),
       userId: this.userId,

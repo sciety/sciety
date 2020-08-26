@@ -2,6 +2,7 @@ import { Pool } from 'pg';
 import { Logger } from './logger';
 import { DomainEvent } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
+import { generate } from '../types/event-id';
 import { Json, JsonObject } from '../types/json';
 import toUserId from '../types/user-id';
 
@@ -44,6 +45,7 @@ export default async (pool: Pool, logger: Logger): Promise<Array<DomainEvent>> =
     switch (type) {
       case 'UserFollowedEditorialCommunity': {
         return {
+          id: generate(),
           type,
           date,
           userId: toUserId(ensureString(payload.userId)),
@@ -52,6 +54,7 @@ export default async (pool: Pool, logger: Logger): Promise<Array<DomainEvent>> =
       }
       case 'UserUnfollowedEditorialCommunity': {
         return {
+          id: generate(),
           type,
           date,
           userId: toUserId(ensureString(payload.userId)),
