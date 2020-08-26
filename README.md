@@ -29,12 +29,13 @@ Development
 <summary>Requirements</summary>
 
 - [Docker]
+- [Docker Compose]
 - [GNU Make]
 - [Node.js]
 
 </details>
 
-The project contains a [Makefile] which uses [Docker] for development.
+The project contains a [Makefile] which uses [Docker] and [Docker Compose] for development.
 
 ### Running the app
 
@@ -136,6 +137,7 @@ We released this software under the [MIT license][license]. Copyright © 2020 [e
 [Checks badge]: https://flat.badgen.net/github/checks/hivereview/thehive/main?icon=github
 [CloudWatch dashboard]: https://console.aws.amazon.com/cloudwatch/home?region=us-east-1#dashboards:name=PRCMetrics
 [Docker]: https://www.docker.com/
+[Docker Compose]: https://docs.docker.com/compose/
 [eLife]: https://elifesciences.org/
 [ESLint]: https://eslint.org/
 [GNU Make]: https://www.gnu.org/software/make/
