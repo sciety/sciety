@@ -1,5 +1,8 @@
 module.exports = {
   cacheDirectory: './.jest',
+  collectCoverageFrom: [
+    '**/*.ts',
+  ],
   coverageReporters: ['text'],
   globals: {
     'ts-jest': {
