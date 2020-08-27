@@ -36,11 +36,7 @@ lint\:fix: build
 
 test: export TARGET = dev
 test: build
-	$(DOCKER) run \
-		-v $(DATA_VOLUME)/.jest:/app/.jest \
-		-v $(DATA_VOLUME)/build:/app/build \
-		$(IMAGE):$(IMAGE_TAG)-dev \
-		npm run test
+	${DOCKER_COMPOSE} run --rm app npm run test
 
 test\:coverage: export TARGET = dev
 test\:coverage: build
