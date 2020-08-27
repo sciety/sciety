@@ -1,4 +1,5 @@
 import { Pool } from 'pg';
+import { Logger } from './logger';
 import { DomainEvent, UserFollowedEditorialCommunityEvent, UserUnfollowedEditorialCommunityEvent } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 
@@ -20,6 +21,7 @@ const replacer = (key: string, value: unknown): unknown => {
 export default (
   events: Array<DomainEvent>,
   pool: Pool,
+  logger: Logger,
 ): CommitEvent => (
   async (event) => {
     await pool.query(
@@ -28,5 +30,7 @@ export default (
     );
 
     events.push(event);
+
+    logger('info', 'Event committed', { event });
   }
 );

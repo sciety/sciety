@@ -91,7 +91,7 @@ const createInfrastructure = async (): Promise<Adapters> => {
     filterEvents: createFilterEvents(events),
     getAllEvents,
     logger,
-    commitEvent: createCommitEvent(events, pool),
+    commitEvent: createCommitEvent(events, pool, logger),
     getFollowList,
     follows: createFollows(getAllEvents),
   };
