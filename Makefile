@@ -32,14 +32,7 @@ lint: build
 
 lint\:fix: export TARGET = dev
 lint\:fix: build
-	$(DOCKER) run --rm \
-		-v $(DATA_VOLUME)/.eslint:/app/.eslint \
-		-v $(DATA_VOLUME)/build:/app/build \
-		-v $(DATA_VOLUME)/scripts:/app/scripts \
-		-v $(DATA_VOLUME)/src:/app/src \
-		-v $(DATA_VOLUME)/test:/app/test \
-		$(IMAGE):$(IMAGE_TAG)-dev \
-		npm run lint:fix
+	${DOCKER_COMPOSE} run --rm app npm run lint:fix
 
 test: export TARGET = dev
 test: build
