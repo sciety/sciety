@@ -2,14 +2,18 @@
 set -e
 
 function finish() {
-  echo "Stopping $container"
-  docker logs "$container"
-  docker stop "$container"
+  echo "Stopping all containers"
+  docker-compose -f .docker/docker-compose.yml -f .docker/docker-compose.prod.yml logs
+  docker-compose -f .docker/docker-compose.yml -f .docker/docker-compose.prod.yml down
 }
 
 trap finish EXIT
 
-container=$(docker run -d "liberoadmin/prc-frontend:${IMAGE_TAG:-local}")
+export IMAGE=liberoadmin/prc-frontend
+export IMAGE_TAG="${IMAGE_TAG:-local}"
+
+docker-compose -f .docker/docker-compose.yml -f .docker/docker-compose.prod.yml up -d
+container=docker_app_1
 
 timeout --foreground 10 bash << EOT
   while true; do

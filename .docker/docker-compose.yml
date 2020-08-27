@@ -17,6 +17,8 @@ services:
       TWITTER_API_SECRET_KEY:
     ports:
       - '8080:80'
+    depends_on:
+      - db
   db:
     image: postgres:12.3-alpine
     environment:
