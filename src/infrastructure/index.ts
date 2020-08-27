@@ -9,7 +9,6 @@ import createFetchDataset from './fetch-dataset';
 import createFetchHypothesisAnnotation from './fetch-hypothesis-annotation';
 import createFetchReview from './fetch-review';
 import createFetchStaticFile from './fetch-static-file';
-import createFilterEvents from './filter-events';
 import createFollows from './follows';
 import createGetBiorxivCommentCount from './get-biorxiv-comment-count';
 import createGetDisqusPostCount from './get-disqus-post-count';
@@ -88,7 +87,6 @@ const createInfrastructure = async (): Promise<Adapters> => {
     getEditorialCommunity: editorialCommunities.lookup,
     endorsements: populateEndorsementsRepository(events),
     ...reviewProjections,
-    filterEvents: createFilterEvents(events),
     getAllEvents,
     logger,
     commitEvent: createCommitEvent(events, pool, logger),

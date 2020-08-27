@@ -4,7 +4,6 @@ import { EventSourcedFollowListRepository } from './event-sourced-follow-list-re
 import { FetchCrossrefArticle } from './fetch-crossref-article';
 import { FetchReview } from './fetch-review';
 import { FetchStaticFile } from './fetch-static-file';
-import { FilterEvents } from './filter-events';
 import { Follows } from './follows';
 import { GetBiorxivCommentCount } from './get-biorxiv-comment-count';
 import { Logger } from './logger';
@@ -32,7 +31,6 @@ export interface Adapters {
   endorsements: EndorsementsRepository,
   findReviewsForArticleVersionDoi: FindReviewsForArticleVersionDoi;
   findReviewsForEditorialCommunityId: FindReviewsForEditorialCommunityId;
-  filterEvents: FilterEvents;
   getAllEvents: () => Promise<ReadonlyArray<DomainEvent>>;
   commitEvent: CommitEvent;
   getFollowList: EventSourcedFollowListRepository;
