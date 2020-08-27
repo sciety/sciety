@@ -28,7 +28,7 @@ const ensureString = (value: Json): string => {
 export default async (pool: Pool, logger: Logger): Promise<Array<DomainEvent>> => {
   const { rows } = await pool.query<EventRow>('SELECT * FROM events');
 
-  logger('debug', 'Reading events from database', { rows });
+  logger('debug', 'Reading events from database', { count: rows.length });
 
   return rows.map(({
     id, type, date, payload,
