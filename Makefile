@@ -40,12 +40,7 @@ test: build
 
 test\:coverage: export TARGET = dev
 test\:coverage: build
-	$(DOCKER) run \
-		-v $(DATA_VOLUME)/.jest:/app/.jest \
-		-v $(DATA_VOLUME)/src:/app/src \
-		-v $(DATA_VOLUME)/test:/app/test \
-		$(IMAGE):$(IMAGE_TAG)-dev \
-		npm run test:coverage
+	${DOCKER_COMPOSE} run --rm app npm run test:coverage
 
 build:
 	$(DOCKER_COMPOSE) build
