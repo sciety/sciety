@@ -72,8 +72,11 @@ const createInfrastructure = async (): Promise<Adapters> => {
     );
   `);
   const events = getEventsFromDataFiles().concat(await getEventsFromDatabase(pool, logger));
+  events.sort((a, b) => a.date.getTime() - b.date.getTime());
+  type GetAllEvents = () => Promise<ReadonlyArray<DomainEvent>>;
+  const getAllEvents: GetAllEvents = async () => events;
   const reviewProjections = createReviewProjections(events.filter(isEditorialCommunityReviewedArticleEvent));
-  const getFollowList = createEventSourceFollowListRepository(async () => events);
+  const getFollowList = createEventSourceFollowListRepository(getAllEvents);
 
   return {
     fetchArticle: createFetchCrossrefArticle(getXml, logger),
@@ -86,11 +89,11 @@ const createInfrastructure = async (): Promise<Adapters> => {
     endorsements: populateEndorsementsRepository(events),
     ...reviewProjections,
     filterEvents: createFilterEvents(events),
-    getAllEvents: async () => events,
+    getAllEvents,
     logger,
     commitEvent: createCommitEvent(events, pool),
     getFollowList,
-    follows: createFollows(async () => events),
+    follows: createFollows(getAllEvents),
   };
 };
 
