@@ -3,7 +3,6 @@ TARGET := dev
 endif
 
 DOCDIR := docs
-DOCKER := docker
 DOCKER_COMPOSE = docker-compose --file .docker/docker-compose.yml --file .docker/docker-compose.$(TARGET).yml
 DATA_VOLUME := $(shell pwd)
 IMAGE := liberoadmin/prc-frontend
@@ -75,58 +74,32 @@ clean\:db:
 
 find-elife-endorsements: export TARGET = dev
 find-elife-endorsements: build
-	$(DOCKER) run \
-		-v $(DATA_VOLUME)/build:/app/build \
-		-v $(DATA_VOLUME)/scripts:/app/scripts \
-		-v $(DATA_VOLUME)/src:/app/src \
-		$(IMAGE):$(IMAGE_TAG)-dev \
-		npx ts-node scripts/find-endorsements-from-biorxiv 10.7554 | tee ./data/endorsements/b560187e-f2fb-4ff9-a861-a204f3fc0fb0.csv
+	$(DOCKER_COMPOSE) run app npx ts-node scripts/find-endorsements-from-biorxiv 10.7554 \
+	| tee ./data/endorsements/b560187e-f2fb-4ff9-a861-a204f3fc0fb0.csv
 
 find-peerj-endorsements: export TARGET = dev
 find-peerj-endorsements: build
-	$(DOCKER) run \
-		-v $(DATA_VOLUME)/build:/app/build \
-		-v $(DATA_VOLUME)/scripts:/app/scripts \
-		-v $(DATA_VOLUME)/src:/app/src \
-		$(IMAGE):$(IMAGE_TAG)-dev \
-		npx ts-node scripts/find-endorsements-from-biorxiv 10.7717  | tee ./data/endorsements/53ed5364-a016-11ea-bb37-0242ac130002.csv
+	$(DOCKER_COMPOSE) run app npx ts-node scripts/find-endorsements-from-biorxiv 10.7717 \
+	| tee ./data/endorsements/53ed5364-a016-11ea-bb37-0242ac130002.csv
 
 find-review-commons-reviews: export TARGET = dev
 find-review-commons-reviews: build
-	$(DOCKER) run \
-		-v $(DATA_VOLUME)/build:/app/build \
-		-v $(DATA_VOLUME)/scripts:/app/scripts \
-		-v $(DATA_VOLUME)/src:/app/src \
-		$(IMAGE):$(IMAGE_TAG)-dev \
-		npx ts-node scripts/find-reviews-from-hypothesis NEGQVabn | tee ./data/reviews/316db7d9-88cc-4c26-b386-f067e0f56334.csv
+	$(DOCKER_COMPOSE) run app npx ts-node scripts/find-reviews-from-hypothesis NEGQVabn \
+	| tee ./data/reviews/316db7d9-88cc-4c26-b386-f067e0f56334.csv
 
 find-elife-reviews: export TARGET = dev
 find-elife-reviews: build
-	$(DOCKER) run \
-		-v $(DATA_VOLUME)/build:/app/build \
-		-v $(DATA_VOLUME)/scripts:/app/scripts \
-		-v $(DATA_VOLUME)/src:/app/src \
-		$(IMAGE):$(IMAGE_TAG)-dev \
-		npx ts-node scripts/find-reviews-from-hypothesis q5X6RWJ6 | tee ./data/reviews/b560187e-f2fb-4ff9-a861-a204f3fc0fb0.csv
+	$(DOCKER_COMPOSE) run app npx ts-node scripts/find-reviews-from-hypothesis q5X6RWJ6 \
+	| tee ./data/reviews/b560187e-f2fb-4ff9-a861-a204f3fc0fb0.csv
 
 find-peerj-reviews: export TARGET = dev
 find-peerj-reviews: build
-	$(DOCKER) run \
-		-v $(DATA_VOLUME)/build:/app/build \
-		-v $(DATA_VOLUME)/scripts:/app/scripts \
-		-v $(DATA_VOLUME)/src:/app/src \
-		$(IMAGE):$(IMAGE_TAG)-dev \
-		npx ts-node scripts/find-reviews-from-crossref-via-biorxiv 10.7717 10.7287 | tee ./data/reviews/53ed5364-a016-11ea-bb37-0242ac130002.csv
+	$(DOCKER_COMPOSE) run app npx ts-node scripts/find-reviews-from-crossref-via-biorxiv 10.7717 10.7287 \
+	| tee ./data/reviews/53ed5364-a016-11ea-bb37-0242ac130002.csv
 
 find-pci-reviews: export TARGET = dev
 find-pci-reviews: build
-	$(DOCKER) run \
-		-v $(DATA_VOLUME)/build:/app/build \
-		-v $(DATA_VOLUME)/data:/app/data \
-		-v $(DATA_VOLUME)/scripts:/app/scripts \
-		-v $(DATA_VOLUME)/src:/app/src \
-		$(IMAGE):$(IMAGE_TAG)-dev \
-		npx ts-node scripts/find-reviews-from-pci
+	$(DOCKER_COMPOSE) run app npx ts-node scripts/find-reviews-from-pci
 
 COMMUNITY_SCRIPTS := \
 	find-elife-endorsements \
