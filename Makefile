@@ -28,11 +28,7 @@ prod: .env build
 
 lint: export TARGET = dev
 lint: build
-	$(DOCKER) run --rm \
-		-v $(DATA_VOLUME)/.eslint:/app/.eslint \
-		-v $(DATA_VOLUME)/build:/app/build \
-		$(IMAGE):$(IMAGE_TAG)-dev \
-		npm run lint
+	${DOCKER_COMPOSE} run --rm app npm run lint
 
 lint\:fix: export TARGET = dev
 lint\:fix: build
