@@ -26,6 +26,14 @@ spec:
               value: {{ .Values.disqusApiKey }}
             - name: GOOGLE_ANALYTICS_TRACKING_ID
               value: {{ .Values.googleAnalyticsTrackingId }}
+            - name: PGHOST
+              value: {{ .Release.Name }}-postgresql
+            - name: PGDATABASE
+              value: {{ .Values.postgresql.postgresqlDatabase }}
+            - name: PGUSER
+              value: {{ .Values.postgresql.postgresqlUsername }}
+            - name: PGPASSWORD
+              value: {{ .Values.postgresql.postgresqlPassword }}
             - name: TWITTER_API_KEY
               value: {{ .Values.twitterApiKey }}
             - name: TWITTER_API_SECRET_KEY
