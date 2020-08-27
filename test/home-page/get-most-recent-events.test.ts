@@ -14,7 +14,7 @@ describe('get-most-recent-events', () => {
     articleId: new Doi('10.1101/751099'),
   };
 
-  it('sorts by date descending', async () => {
+  it('reverse the order into date descending', async () => {
     const initial: ReadonlyArray<DomainEvent> = [
       {
         type: 'EditorialCommunityEndorsedArticle',

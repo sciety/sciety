@@ -32,7 +32,7 @@ export default (
 
     const allEvents = (await getAllEvents())
       .slice()
-      .sort((a, b) => b.date.getTime() - a.date.getTime());
+      .reverse();
     const filtering = await Promise.all(allEvents.map(isFollowedEvent));
     return allEvents.filter((event, i): event is FeedEvent => filtering[i])
       .slice(0, maxCount);
