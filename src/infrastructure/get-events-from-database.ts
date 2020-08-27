@@ -6,12 +6,12 @@ import { EventId } from '../types/event-id';
 import { Json, JsonObject } from '../types/json';
 import toUserId from '../types/user-id';
 
-type Events = Array<{
+type EventRow = {
   id: EventId,
   type: string,
   date: Date,
   payload: Json,
-}>;
+};
 
 const isObject = (value: Json): value is JsonObject => (
   value !== null && typeof value === 'object' && !Array.isArray(value)
@@ -26,19 +26,11 @@ const ensureString = (value: Json): string => {
 };
 
 export default async (pool: Pool, logger: Logger): Promise<Array<DomainEvent>> => {
-  let events: Events;
+  const { rows } = await pool.query<EventRow>('SELECT * FROM events');
 
-  try {
-    const result = await pool.query('SELECT * FROM events');
-    events = result.rows;
-  } catch (error) {
-    logger('debug', 'Could not query the database', { error });
-    return [];
-  }
+  logger('debug', 'Reading events from database', { rows });
 
-  logger('debug', 'Reading events from database', { events });
-
-  return events.map(({
+  return rows.map(({
     id, type, date, payload,
   }): DomainEvent => {
     if (!isObject(payload)) {
