@@ -6,7 +6,7 @@ type RuntimeGeneratedEvent = UserFollowedEditorialCommunityEvent | UserUnfollowe
 export type CommitEvent = (event: RuntimeGeneratedEvent) => Promise<void>;
 
 const replacer = (key: string, value: unknown): unknown => {
-  if (['date', 'type'].includes(key)) {
+  if (['date', 'id', 'type'].includes(key)) {
     return undefined;
   }
 
