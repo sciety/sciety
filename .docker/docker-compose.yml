@@ -17,6 +17,7 @@ services:
       TWITTER_API_SECRET_KEY:
     ports:
       - '8080:80'
+    restart: unless-stopped
     depends_on:
       - db
   db:

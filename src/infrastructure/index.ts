@@ -62,6 +62,15 @@ const createInfrastructure = async (): Promise<Adapters> => {
   const searchEuropePmc = createSearchEuropePmc(getJson, logger);
   const editorialCommunities = populateEditorialCommunities(logger);
   const pool = new Pool();
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS events (
+      id uuid,
+      type varchar,
+      date timestamp,
+      payload jsonb,
+      PRIMARY KEY (id)
+    );
+  `);
   const events = getEventsFromDataFiles().concat(await getEventsFromDatabase(pool, logger));
   const reviewProjections = createReviewProjections(events.filter(isEditorialCommunityReviewedArticleEvent));
   const getFollowList = createEventSourceFollowListRepository(async () => events);

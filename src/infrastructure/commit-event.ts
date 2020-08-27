@@ -23,17 +23,9 @@ export default (
   pool: Pool,
   logger: Logger,
 ): CommitEvent => (
+
   async (event) => {
     try {
-      await pool.query(`
-        CREATE TABLE IF NOT EXISTS events (
-          id uuid,
-          type varchar,
-          date timestamp,
-          payload jsonb,
-          PRIMARY KEY (id)
-        );
-      `);
       const insertionResult = await pool.query(
         'INSERT INTO events (id, type, date, payload) VALUES ($1, $2, $3, $4) RETURNING *;',
         [event.id, event.type, event.date.toISOString(), JSON.stringify(event, replacer)],
