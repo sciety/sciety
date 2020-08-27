@@ -6,21 +6,21 @@ import {
   isEditorialCommunityReviewedArticleEvent,
 } from '../types/domain-events';
 
-type FilterFunction = (event: DomainEvent) => event is FeedEvent;
-export type FilterEvents = (filterFunction: FilterFunction, maxCount: number) => Promise<Array<FeedEvent>>;
+export type GetAllEvents = () => Promise<ReadonlyArray<DomainEvent>>;
 
-export default (filterEvents: FilterEvents, maxCount: number): GetEvents => (
+export default (getAllEvents: GetAllEvents, maxCount: number): GetEvents => (
   async (editorialCommunityId) => (
-    filterEvents(
-      (event): event is FeedEvent => (
+    (await getAllEvents())
+      .slice()
+      .reverse()
+      .filter((event): event is FeedEvent => (
         (isEditorialCommunityEndorsedArticleEvent(event)
           && event.editorialCommunityId.value === editorialCommunityId.value)
         || (isEditorialCommunityReviewedArticleEvent(event)
           && event.editorialCommunityId.value === editorialCommunityId.value)
         || (isEditorialCommunityJoinedEvent(event)
           && event.editorialCommunityId.value === editorialCommunityId.value)
-      ),
-      maxCount,
-    )
+      ))
+      .slice(0, maxCount)
   )
 );

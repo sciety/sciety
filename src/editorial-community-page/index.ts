@@ -1,7 +1,7 @@
 import { NotFound } from 'http-errors';
 import showdown from 'showdown';
 import { Maybe, Result } from 'true-myth';
-import createGetMostRecentEvents, { FilterEvents } from './get-most-recent-events';
+import createGetMostRecentEvents, { GetAllEvents } from './get-most-recent-events';
 import createRenderDescription, { GetEditorialCommunityDescription, RenderDescription } from './render-description';
 import createRenderEndorsedArticles, { GetNumberOfEndorsedArticles, RenderEndorsedArticles } from './render-endorsed-articles';
 import createRenderFeed, { RenderFeed } from './render-feed';
@@ -36,7 +36,7 @@ interface Ports {
   fetchStaticFile: FetchStaticFile;
   getEditorialCommunity: FetchEditorialCommunity;
   endorsements: EndorsementsRepository,
-  filterEvents: FilterEvents;
+  getAllEvents: GetAllEvents;
   findReviewsForEditorialCommunityId: FindReviewsForEditorialCommunityId,
   follows: Follows,
 }
@@ -95,7 +95,7 @@ const buildRenderFeed = (ports: Ports): RenderFeed => {
   const getArticleAdapter: GetArticle = async (id) => (
     (await ports.fetchArticle(id)).unsafelyUnwrap()
   );
-  const getEventsAdapter = createGetMostRecentEvents(ports.filterEvents, 20);
+  const getEventsAdapter = createGetMostRecentEvents(ports.getAllEvents, 20);
   const renderFeedItem = createRenderFeedItem(getActorAdapter, getArticleAdapter);
   const renderFollowToggle = createRenderFollowToggle(ports.follows);
   return createRenderFeed(getEventsAdapter, renderFeedItem, renderFollowToggle);
