@@ -49,18 +49,14 @@ deps: export TARGET = dev
 deps: $(DOCDIR)/folders.svg $(DOCDIR)/modules.svg
 
 $(DOCDIR)/folders.svg: $(DOCDIR) build
-	$(DOCKER) run \
-		$(IMAGE):$(IMAGE_TAG)-dev \
-		npm run --silent deps:folders \
-		| docker run --interactive --rm risaacson/graphviz dot -Tsvg \
-		> $(DOCDIR)/folders.svg
+	$(DOCKER_COMPOSE) run app npm run --silent deps:folders \
+	| docker run --interactive --rm risaacson/graphviz dot -Tsvg \
+	> $(DOCDIR)/folders.svg
 
 $(DOCDIR)/modules.svg: $(DOCDIR) build
-	$(DOCKER) run \
-		$(IMAGE):$(IMAGE_TAG)-dev \
-		npm run --silent deps:modules \
-		| docker run --interactive --rm risaacson/graphviz dot -Tsvg \
-		> $(DOCDIR)/modules.svg
+	$(DOCKER_COMPOSE) run app npm run --silent deps:modules \
+	| docker run --interactive --rm risaacson/graphviz dot -Tsvg \
+	> $(DOCDIR)/modules.svg
 
 $(DOCDIR):
 	mkdir -p $(DOCDIR)
