@@ -7,6 +7,8 @@ googleAnalyticsTrackingId:
 disqusApiKey:
 
 postgresql:
+  image:
+    tag: 12.3.0-debian-10-r78
   postgresqlUsername: app
   postgresqlPassword:
   postgresqlDatabase: thehive
