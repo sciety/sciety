@@ -25,7 +25,7 @@ export default (
 ): CommitEvent => (
   async (event) => {
     await pool.query(
-      'INSERT INTO events (id, type, date, payload) VALUES ($1, $2, $3, $4) RETURNING *;',
+      'INSERT INTO events (id, type, date, payload) VALUES ($1, $2, $3, $4);',
       [event.id, event.type, event.date.toISOString(), JSON.stringify(event, replacer)],
     );
 
