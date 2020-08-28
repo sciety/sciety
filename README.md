@@ -15,6 +15,7 @@ Table of contents
    1. [Running the tests](#running-the-tests)
    1. [Linting](#linting)
    1. [Architecture Decision Records](./.adr)
+   1. [Architecture sketch]
 1. [Operations](#operations)
    1. [Releasing to production](#releasing-to-production)
    1. [Looking at logs](#looking-at-logs)
@@ -129,6 +130,7 @@ License
 
 We released this software under the [MIT license][license]. Copyright © 2020 [eLife Sciences Publications, Ltd][eLife].
 
+[Architecture sketch]: https://miro.com/app/board/o9J_ksK0wlg=/
 [AWS CloudWatch logs]: https://console.aws.amazon.com/cloudwatch/home?region=us-east-1#logs-insights:queryDetail=~(end~0~start~-900~timeType~'RELATIVE~unit~'seconds~editorString~'fields*20*40timestamp*2c*20*40message*0a*7c*20filter*20*60kubernetes.labels.app_kubernetes_io*2finstance*60*3d*22prc--prod*22*0a*7c*20sort*20*40timestamp*20desc*0a*7c*20limit*2020~isLiveTail~false~queryId~'89133ab9-5bb4-4770-b3e9-96052e8300ef~source~(~'*2faws*2fcontainerinsights*2flibero-eks--franklin*2fapplication));tab=logs
 [Build]: https://github.com/hivereview/thehive/actions?query=workflow%3ACI
 [Checks]: https://github.com/hivereview/thehive/actions
