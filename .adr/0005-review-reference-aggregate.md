@@ -4,7 +4,7 @@ Date: 2020-05-01
 
 ## Status
 
-Accepted
+Superseded by [0016-event-sourcing.md]
 
 ## Context
 
