@@ -26,7 +26,7 @@ export default (
   async (event) => {
     await pool.query(
       'INSERT INTO events (id, type, date, payload) VALUES ($1, $2, $3, $4);',
-      [event.id, event.type, event.date.toISOString(), JSON.stringify(event, replacer)],
+      [event.id, event.type, event.date, JSON.stringify(event, replacer)],
     );
 
     events.push(event);
