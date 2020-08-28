@@ -66,11 +66,9 @@ again before running further commands.
 
 <summary>Configuring environment variables</summary>
 
-You can create a `.env` file to pass environment variables to the container:
+You can use a `.env` file to pass environment variables to the container.
 
-```
-DISQUS_API_KEY=...
-```
+After running `make dev` the file will contain a set of instructions to follow.
 
 Re-run `make dev` after modifying this file.
 

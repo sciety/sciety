@@ -23,7 +23,7 @@ prod: .env build
 	${DOCKER_COMPOSE} up --abort-on-container-exit --exit-code-from app
 
 .env:
-	touch .env
+	cp .env.example .env
 
 lint: export TARGET = dev
 lint: build
