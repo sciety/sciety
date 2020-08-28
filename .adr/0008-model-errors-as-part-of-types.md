@@ -1,10 +1,10 @@
-# 8. Model domain errors as part of types
+# 8. Model errors as part of types
 
 Date: 2020-07-02
 
 ## Status
 
-Proposed
+Accepted
 
 ## Context
 
