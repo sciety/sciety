@@ -1,6 +1,6 @@
 # 16. Introduce in-memory Event Sourcing
 
-Date: 2020-05-01
+Date: 2020-08-27
 
 ## Status
 
@@ -14,7 +14,7 @@ Part of the application's state can be imported from event feeds representing th
 
 ## Decision
 
-Model state primarily with [Domain Events][Event Sourcing].
+Model state primarily with immutable [Domain Events][Event Sourcing].
 
 Build projections of these events to satisfy [reads][CQRS].
 
