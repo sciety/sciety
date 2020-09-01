@@ -92,7 +92,7 @@ const createInfrastructure = async (): Promise<Adapters> => {
     logger,
     commitEvent: createCommitEvent(events, pool, logger),
     getFollowList,
-    getUserDetails: createGetTwitterUserDetails(),
+    getUserDetails: createGetTwitterUserDetails(logger),
     follows: createFollows(getAllEvents),
   };
 };
