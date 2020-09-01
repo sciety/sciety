@@ -15,6 +15,7 @@ services:
       PGDATABASE: thehive
       TWITTER_API_KEY:
       TWITTER_API_SECRET_KEY:
+      TWITTER_API_BEARER_TOKEN:
     ports:
       - '8080:80'
     restart: unless-stopped

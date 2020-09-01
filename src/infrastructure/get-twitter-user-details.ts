@@ -9,10 +9,11 @@ export type GetTwitterUserDetails = (userId: UserId) => Promise<{
 export default (logger: Logger): GetTwitterUserDetails => (
   async (userId) => {
     try {
-      await axios.get(
+      const { data } = await axios.get(
         `https://api.twitter.com/2/users/${userId}?user.fields=profile_image_url`,
         { headers: { Authorization: `Bearer ${process.env.TWITTER_API_BEARER_TOKEN ?? ''}` } },
       );
+      logger('debug', 'Data from Twitter', { data });
     } catch (error) {
       logger('warn', 'Request to Twitter API for user details failed', { error });
     }
