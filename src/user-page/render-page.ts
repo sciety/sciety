@@ -12,9 +12,11 @@ export type GetFollowedEditorialCommunities = (userId: UserId) => Promise<Readon
   avatarUrl: string,
 }>>;
 
-export type GetUserDetails = (userId: UserId) => Promise<{
+type UserDetails = {
   avatarUrl: string;
-}>;
+};
+
+export type GetUserDetails = (userId: UserId) => Promise<UserDetails>;
 
 export default (
   getFollowedEditorialCommunities: GetFollowedEditorialCommunities,
@@ -43,34 +45,39 @@ export default (
       `;
     }
     return `
-        <section>
-          <h2 class="ui header">
-            Following
-          </h2>
-          ${renderedFollowList}
-        </section>
-`;
+      <section>
+        <h2 class="ui header">
+          Following
+        </h2>
+        ${renderedFollowList}
+      </section>
+    `;
   };
-  return async (userId, viewingUserId) => {
+
+  const renderHeader = async (userId: UserId): Promise<string> => {
     const userDetails = await getUserDetails(userId);
 
     return `
-      <div class="ui aligned stackable grid">
-        <div class="row">
-          <div class="column">
-            <header class="ui basic padded vertical segment">
-              <h1 class="ui header">
-                <img class="ui avatar image" src="${userDetails.avatarUrl}" alt="">@${userId}
-              </h1>
-            </header>
-          </div>
-        </div>
-        <div class="row">
-          <div class="ten wide column">
-            ${await renderFollowList(userId, viewingUserId)}
-          </div>
-        </div>
-      </div>
+      <header class="ui basic padded vertical segment">
+        <h1 class="ui header">
+          <img class="ui avatar image" src="${userDetails.avatarUrl}" alt="">@${userId}
+        </h1>
+      </header>
     `;
   };
+
+  return async (userId, viewingUserId) => `
+    <div class="ui aligned stackable grid">
+      <div class="row">
+        <div class="column">
+          ${await renderHeader(userId)}
+        </div>
+      </div>
+      <div class="row">
+        <div class="ten wide column">
+          ${await renderFollowList(userId, viewingUserId)}
+        </div>
+      </div>
+    </div>
+  `;
 };
