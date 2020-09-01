@@ -49,7 +49,7 @@ export default (
         <div class="row">
           <div class="column">
             <header class="ui basic padded vertical segment">
-              <h1>
+              <h1 class="ui header">
                 <img class="ui avatar image" src="${userDetails.avatarUrl}" alt="">@${userId}
               </h1>
             </header>
