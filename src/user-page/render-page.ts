@@ -43,7 +43,9 @@ export default (
         <div class="row">
           <div class="column">
             <header class="ui basic padded vertical segment">
-              <h1>@${userId}</h1>
+              <h1>
+                <img class="ui avatar image" src="https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png" alt="">@${userId}
+              </h1>
             </header>
           </div>
         </div>
