@@ -14,6 +14,7 @@ import createGetBiorxivCommentCount from './get-biorxiv-comment-count';
 import createGetDisqusPostCount from './get-disqus-post-count';
 import getEventsFromDataFiles from './get-events-from-data-files';
 import getEventsFromDatabase from './get-events-from-database';
+import createGetTwitterUserDetails from './get-twitter-user-details';
 import createGetXml from './get-xml';
 import createEditorialCommunityRepository from './in-memory-editorial-communities';
 import createEndorsementsRepository from './in-memory-endorsements-repository';
@@ -91,6 +92,7 @@ const createInfrastructure = async (): Promise<Adapters> => {
     logger,
     commitEvent: createCommitEvent(events, pool, logger),
     getFollowList,
+    getUserDetails: createGetTwitterUserDetails(),
     follows: createFollows(getAllEvents),
   };
 };

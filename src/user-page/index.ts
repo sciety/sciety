@@ -12,6 +12,7 @@ type Ports = {
   editorialCommunities: EditorialCommunityRepository,
   getAllEvents: GetAllEvents,
   follows: Follows,
+  getUserDetails: GetUserDetails,
 };
 
 interface Params {
@@ -33,14 +34,10 @@ export default (ports: Ports): RenderPage => {
     getEditorialCommunity,
   );
 
-  const getUserDetails: GetUserDetails = async () => ({
-    avatarUrl: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png',
-  });
-
   const renderPage = createRenderPage(
     getFollowedEditorialCommunities,
     renderFollowedEditorialCommunity,
-    getUserDetails,
+    ports.getUserDetails,
   );
 
   return async (params) => {

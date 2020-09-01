@@ -6,6 +6,7 @@ import { FetchReview } from './fetch-review';
 import { FetchStaticFile } from './fetch-static-file';
 import { Follows } from './follows';
 import { GetBiorxivCommentCount } from './get-biorxiv-comment-count';
+import { GetTwitterUserDetails } from './get-twitter-user-details';
 import { Logger } from './logger';
 import { FindReviewsForArticleVersionDoi, FindReviewsForEditorialCommunityId } from './review-projections';
 import { SearchEuropePmc } from './search-europe-pmc';
@@ -34,6 +35,7 @@ export interface Adapters {
   getAllEvents: () => Promise<ReadonlyArray<DomainEvent>>;
   commitEvent: CommitEvent;
   getFollowList: EventSourcedFollowListRepository;
+  getUserDetails: GetTwitterUserDetails;
   follows: Follows;
   logger: Logger;
 }
