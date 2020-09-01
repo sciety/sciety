@@ -65,7 +65,7 @@
     "dependency-cruiser": "^9.9.5",
     "eslint": "^7.6.0",
     "eslint-config-airbnb-typescript": "^9.0.0",
-    "eslint-import-resolver-typescript": "^2.2.0",
+    "eslint-import-resolver-typescript": "^2.2.1",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jest": "^23.20.0",
     "eslint-plugin-jest-formatting": "^2.0.0",
