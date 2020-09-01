@@ -12,11 +12,17 @@ export type GetFollowedEditorialCommunities = (userId: UserId) => Promise<Readon
   avatarUrl: string,
 }>>;
 
+export type GetUserDetails = (userId: UserId) => Promise<{
+  avatarUrl: string;
+}>;
+
 export default (
   getFollowedEditorialCommunities: GetFollowedEditorialCommunities,
   renderFollowedEditorialCommunity: RenderFollowedEditorialCommunity,
+  getUserDetails: GetUserDetails,
 ): RenderPage => (
   async (userId, viewingUserId) => {
+    const userDetails = await getUserDetails(userId);
     const list = await Promise.all((await getFollowedEditorialCommunities(userId))
       .map(async (editorialCommunity) => renderFollowedEditorialCommunity(editorialCommunity, viewingUserId)));
 
@@ -44,7 +50,7 @@ export default (
           <div class="column">
             <header class="ui basic padded vertical segment">
               <h1>
-                <img class="ui avatar image" src="https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png" alt="">@${userId}
+                <img class="ui avatar image" src="${userDetails.avatarUrl}" alt="">@${userId}
               </h1>
             </header>
           </div>

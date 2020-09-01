@@ -3,7 +3,7 @@ import createGetFollowedEditorialCommunitiesFromIds, { GetEditorialCommunity } f
 import createProjectFollowedEditorialCommunityIds, { GetAllEvents } from './project-followed-editorial-community-ids';
 import createRenderFollowToggle, { Follows } from './render-follow-toggle';
 import createRenderFollowedEditorialCommunity from './render-followed-editorial-community';
-import createRenderPage from './render-page';
+import createRenderPage, { GetUserDetails } from './render-page';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import { User } from '../types/user';
 import toUserId from '../types/user-id';
@@ -32,7 +32,16 @@ export default (ports: Ports): RenderPage => {
     createProjectFollowedEditorialCommunityIds(ports.getAllEvents),
     getEditorialCommunity,
   );
-  const renderPage = createRenderPage(getFollowedEditorialCommunities, renderFollowedEditorialCommunity);
+
+  const getUserDetails: GetUserDetails = () => ({
+    avatarUrl: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png',
+  });
+
+  const renderPage = createRenderPage(
+    getFollowedEditorialCommunities,
+    renderFollowedEditorialCommunity,
+    getUserDetails,
+  );
 
   return async (params) => {
     const userId = toUserId(params.id ?? '');
