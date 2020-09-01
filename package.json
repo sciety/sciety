@@ -78,7 +78,7 @@
     "mock-http": "^1.1.0",
     "supertest": "^4.0.2",
     "ts-jest": "^26.2.0",
-    "ts-node-dev": "^1.0.0-pre.51",
+    "ts-node-dev": "^1.0.0-pre.61",
     "ts-unused-exports": "^6.2.1",
     "typescript": "^3.9.6"
   },
@@ -89,7 +89,7 @@
     "lint": "concurrently --names \"TypeScript (prod),TypeScript (dev),ESLint,Unused Exports\" \"tsc --noEmit\" \"tsc --project tsconfig.dev.json\" \"eslint . --ext .js,.ts --cache --cache-location .eslint/ --color\" \"ts-unused-exports ./tsconfig.dev.json\"",
     "lint:fix": "concurrently --names \"TypeScript (prod),TypeScript (dev),ESLint,Unused Exports\" \"tsc --noEmit\" \"tsc --project tsconfig.dev.json\" \"eslint . --fix --ext .js,.ts --cache --cache-location .eslint/ --color\" \"ts-unused-exports ./tsconfig.dev.json\"",
     "start": "node ./build/index.js",
-    "start:dev": "ts-node-dev --project tsconfig.dev.json --transpile-only --no-notify --watch data ./src/index.ts",
+    "start:dev": "ts-node-dev --project tsconfig.dev.json --transpile-only --watch data ./src/index.ts",
     "test": "jest --colors",
     "test:coverage": "jest --colors --coverage",
     "unused:exports": "ts-unused-exports ./tsconfig.dev.json"
