@@ -14,6 +14,9 @@ export default (logger: Logger): GetTwitterUserDetails => (
         { headers: { Authorization: `Bearer ${process.env.TWITTER_API_BEARER_TOKEN ?? ''}` } },
       );
       logger('debug', 'Data from Twitter', { data });
+      return {
+        avatarUrl: data.data.profile_image_url,
+      };
     } catch (error) {
       logger('warn', 'Request to Twitter API for user details failed', { error });
     }
