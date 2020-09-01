@@ -55,6 +55,7 @@ jobs:
             --set disqusApiKey=${DISQUS_API_KEY} \
             --set twitterApiKey=${TWITTER_API_KEY} \
             --set twitterApiSecretKey=${TWITTER_API_SECRET_KEY} \
+            --set twitterApiBearerToken=${TWITTER_API_BEARER_TOKEN} \
             --set postgresql.postgresqlPassword=${POSTGRESQL_PASSWORD} \
             --wait \
             helm/prc
@@ -65,6 +66,7 @@ jobs:
           POSTGRESQL_PASSWORD: ${{ secrets.POSTGRESQL_PASSWORD }}
           TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
           TWITTER_API_SECRET_KEY: ${{ secrets.TWITTER_API_SECRET_KEY }}
+          TWITTER_API_BEARER_TOKEN: ${{ secrets.TWITTER_API_BEARER_TOKEN }}
 
       - name: Notify Slack
         if: failure()

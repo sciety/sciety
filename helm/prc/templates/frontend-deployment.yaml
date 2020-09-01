@@ -38,6 +38,8 @@ spec:
               value: {{ .Values.twitterApiKey }}
             - name: TWITTER_API_SECRET_KEY
               value: {{ .Values.twitterApiSecretKey }}
+            - name: TWITTER_API_BEARER_TOKEN
+              value: {{ .Values.twitterApiBearerToken }}
           ports:
             - name: http
               containerPort: 80
