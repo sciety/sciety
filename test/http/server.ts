@@ -69,6 +69,9 @@ export default async (): Promise<TestServer> => {
     commitEvent: async () => {},
     logger: dummyLogger,
     getFollowList: async (userId) => new FollowList(userId, []),
+    getUserDetails: async () => ({
+      avatarUrl: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png',
+    }),
     follows: async () => false,
   };
 
