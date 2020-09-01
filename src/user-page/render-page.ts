@@ -20,9 +20,8 @@ export default (
   getFollowedEditorialCommunities: GetFollowedEditorialCommunities,
   renderFollowedEditorialCommunity: RenderFollowedEditorialCommunity,
   getUserDetails: GetUserDetails,
-): RenderPage => (
-  async (userId, viewingUserId) => {
-    const userDetails = await getUserDetails(userId);
+): RenderPage => {
+  const renderFollowList = async (userId: UserId, viewingUserId: Maybe<UserId>): Promise<string> => {
     const list = await Promise.all((await getFollowedEditorialCommunities(userId))
       .map(async (editorialCommunity) => renderFollowedEditorialCommunity(editorialCommunity, viewingUserId)));
 
@@ -43,6 +42,17 @@ export default (
         </div>
       `;
     }
+    return `
+        <section>
+          <h2 class="ui header">
+            Following
+          </h2>
+          ${renderedFollowList}
+        </section>
+`;
+  };
+  return async (userId, viewingUserId) => {
+    const userDetails = await getUserDetails(userId);
 
     return `
       <div class="ui aligned stackable grid">
@@ -57,15 +67,10 @@ export default (
         </div>
         <div class="row">
           <div class="ten wide column">
-            <section>
-              <h2 class="ui header">
-                Following
-              </h2>
-              ${renderedFollowList}
-            </section>
+            ${await renderFollowList(userId, viewingUserId)}
           </div>
         </div>
       </div>
     `;
-  }
-);
+  };
+};
