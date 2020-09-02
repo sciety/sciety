@@ -1,4 +1,4 @@
-import { Maybe } from 'true-myth';
+import { Maybe, Result } from 'true-myth';
 import { RenderFollowedEditorialCommunity } from './render-followed-editorial-community';
 import templateListItems from '../templates/list-items';
 import EditorialCommunityId from '../types/editorial-community-id';
@@ -18,12 +18,14 @@ type UserDetails = {
 
 export type GetUserDetails = (userId: UserId) => Promise<UserDetails>;
 
+type Component = (userId: UserId, viewingUserId: Maybe<UserId>) => Promise<Result<string, 'not-found' | 'unavailable'>>;
+
 export default (
   getFollowedEditorialCommunities: GetFollowedEditorialCommunities,
   renderFollowedEditorialCommunity: RenderFollowedEditorialCommunity,
   getUserDetails: GetUserDetails,
 ): RenderPage => {
-  const renderFollowList = async (userId: UserId, viewingUserId: Maybe<UserId>): Promise<string> => {
+  const renderFollowList: Component = async (userId, viewingUserId) => {
     const list = await Promise.all((await getFollowedEditorialCommunities(userId))
       .map(async (editorialCommunity) => renderFollowedEditorialCommunity(editorialCommunity, viewingUserId)));
 
@@ -44,38 +46,38 @@ export default (
         </div>
       `;
     }
-    return `
+    return Result.ok(`
       <section>
         <h2 class="ui header">
           Following
         </h2>
         ${renderedFollowList}
       </section>
-    `;
+    `);
   };
 
-  const renderHeader = async (userId: UserId): Promise<string> => {
+  const renderHeader: Component = async (userId) => {
     const userDetails = await getUserDetails(userId);
 
-    return `
+    return Result.ok(`
       <header class="ui basic padded vertical segment">
         <h1 class="ui header">
           <img class="ui avatar image" src="${userDetails.avatarUrl}" alt="">@${userId}
         </h1>
       </header>
-    `;
+    `);
   };
 
   return async (userId, viewingUserId) => `
     <div class="ui aligned stackable grid">
       <div class="row">
         <div class="column">
-          ${await renderHeader(userId)}
+          ${(await renderHeader(userId, viewingUserId)).unsafelyUnwrap()}
         </div>
       </div>
       <div class="row">
         <div class="ten wide column">
-          ${await renderFollowList(userId, viewingUserId)}
+          ${(await renderFollowList(userId, viewingUserId)).unsafelyUnwrap()}
         </div>
       </div>
     </div>
