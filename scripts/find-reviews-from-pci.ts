@@ -36,15 +36,18 @@ const findRecommendations = async (community: PciCommunity): Promise<Array<Recom
 
   for (const link of Array.from(doc.getElementsByTagName('link'))) {
     const url = link.getElementsByTagName('url')[0];
-    const articleDoi = link.getElementsByTagName('doi')[0]?.textContent ?? '';
+    const articleDoiString = link.getElementsByTagName('doi')[0]?.textContent ?? '';
 
-    if (articleDoi.startsWith('10.1101/')) {
+    const biorxivDoiRegex = /^\s*(?:doi:|(?:(?:https?:\/\/)?(?:dx\.)?doi\.org\/))?(10\.1101\/(?:[^%"#?\s])+)\s*$/;
+    const [, articleDoi] = biorxivDoiRegex.exec(articleDoiString) ?? [];
+
+    if (articleDoi) {
       const { data } = await axios.get<string>(url?.textContent ?? '');
       const [, date] = /<meta name="citation_publication_date" content="(.*?)" \/>/.exec(data) ?? [];
       const [, reviewDoi] = /<meta name="citation_doi" content="(.*?)" \/>/.exec(data) ?? [];
       result.push({
         date: new Date(date),
-        articleDoi: articleDoi.trim(),
+        articleDoi,
         reviewDoi,
       });
     }
