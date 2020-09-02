@@ -61,7 +61,6 @@
     "@types/xmldom": "^0.1.30",
     "@typescript-eslint/eslint-plugin": "^3.9.0",
     "@typescript-eslint/parser": "^3.9.0",
-    "concurrently": "^5.2.0",
     "dependency-cruiser": "^9.9.5",
     "eslint": "^7.6.0",
     "eslint-config-airbnb-typescript": "^9.0.0",
@@ -76,6 +75,7 @@
     "jest-vim-reporter": "0.0.1",
     "jsdom": "^16.4.0",
     "mock-http": "^1.1.0",
+    "npm-run-all": "^4.1.5",
     "supertest": "^4.0.2",
     "ts-jest": "^26.2.0",
     "ts-node-dev": "^1.0.0-pre.61",
@@ -86,12 +86,14 @@
     "build": "tsc",
     "deps:folders": "depcruise --include-only '^src' --validate -T archi src",
     "deps:modules": "depcruise --include-only '^src' --validate -T dot src",
-    "lint": "concurrently --names \"TypeScript (prod),TypeScript (dev),ESLint,Unused Exports\" \"tsc --noEmit\" \"tsc --project tsconfig.dev.json\" \"eslint . --ext .js,.ts --cache --cache-location .eslint/ --color\" \"ts-unused-exports ./tsconfig.dev.json\"",
-    "lint:fix": "concurrently --names \"TypeScript (prod),TypeScript (dev),ESLint,Unused Exports\" \"tsc --noEmit\" \"tsc --project tsconfig.dev.json\" \"eslint . --fix --ext .js,.ts --cache --cache-location .eslint/ --color\" \"ts-unused-exports ./tsconfig.dev.json\"",
+    "lint": "run-p --aggregate-output --continue-on-error --print-label --silent lint:**",
+    "lint:eslint": "eslint ${ESLINT:-} . --ext .js,.ts --cache --cache-location .eslint/ --color",
+    "lint:typescript:dev": "tsc --project tsconfig.dev.json",
+    "lint:typescript:prod": "tsc --noEmit",
+    "lint:unused-exports": "ts-unused-exports tsconfig.dev.json",
     "start": "node ./build/index.js",
     "start:dev": "ts-node-dev --project tsconfig.dev.json --transpile-only --watch data ./src/index.ts",
     "test": "jest --colors",
-    "test:coverage": "jest --colors --coverage",
-    "unused:exports": "ts-unused-exports ./tsconfig.dev.json"
+    "test:coverage": "jest --colors --coverage"
   }
 }

@@ -31,7 +31,7 @@ lint: build
 
 lint\:fix: export TARGET = dev
 lint\:fix: build
-	${DOCKER_COMPOSE} run --rm app npm run lint:fix
+	${DOCKER_COMPOSE} run --rm -e ESLINT=--fix app npm run lint
 
 test: export TARGET = dev
 test: build
