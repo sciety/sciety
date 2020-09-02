@@ -4,7 +4,12 @@ import templateListItems from '../templates/list-items';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { UserId } from '../types/user-id';
 
-type RenderPage = (userId: UserId, viewingUserId: Maybe<UserId>) => Promise<string>;
+export type RenderPageError = {
+  type: 'not-found',
+  content: string
+};
+
+type RenderPage = (userId: UserId, viewingUserId: Maybe<UserId>) => Promise<Result<string, RenderPageError>>;
 
 export type GetFollowedEditorialCommunities = (userId: UserId) => Promise<ReadonlyArray<{
   id: EditorialCommunityId,
@@ -68,7 +73,7 @@ export default (
     `);
   };
 
-  return async (userId, viewingUserId) => `
+  return async (userId, viewingUserId) => Result.ok(`
     <div class="ui aligned stackable grid">
       <div class="row">
         <div class="column">
@@ -81,5 +86,5 @@ export default (
         </div>
       </div>
     </div>
-  `;
+  `);
 };
