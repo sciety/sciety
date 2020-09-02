@@ -57,32 +57,32 @@ clean\:db:
 
 find-elife-endorsements: export TARGET = dev
 find-elife-endorsements: build
-	$(DOCKER_COMPOSE) run app npx ts-node scripts/find-endorsements-from-biorxiv 10.7554 \
+	$(DOCKER_COMPOSE) run -T app npx ts-node scripts/find-endorsements-from-biorxiv 10.7554 \
 	| tee ./data/endorsements/b560187e-f2fb-4ff9-a861-a204f3fc0fb0.csv
 
 find-peerj-endorsements: export TARGET = dev
 find-peerj-endorsements: build
-	$(DOCKER_COMPOSE) run app npx ts-node scripts/find-endorsements-from-biorxiv 10.7717 \
+	$(DOCKER_COMPOSE) run -T app npx ts-node scripts/find-endorsements-from-biorxiv 10.7717 \
 	| tee ./data/endorsements/53ed5364-a016-11ea-bb37-0242ac130002.csv
 
 find-review-commons-reviews: export TARGET = dev
 find-review-commons-reviews: build
-	$(DOCKER_COMPOSE) run app npx ts-node scripts/find-reviews-from-hypothesis NEGQVabn \
+	$(DOCKER_COMPOSE) run -T app npx ts-node scripts/find-reviews-from-hypothesis NEGQVabn \
 	| tee ./data/reviews/316db7d9-88cc-4c26-b386-f067e0f56334.csv
 
 find-elife-reviews: export TARGET = dev
 find-elife-reviews: build
-	$(DOCKER_COMPOSE) run app npx ts-node scripts/find-reviews-from-hypothesis q5X6RWJ6 \
+	$(DOCKER_COMPOSE) run -T app npx ts-node scripts/find-reviews-from-hypothesis q5X6RWJ6 \
 	| tee ./data/reviews/b560187e-f2fb-4ff9-a861-a204f3fc0fb0.csv
 
 find-peerj-reviews: export TARGET = dev
 find-peerj-reviews: build
-	$(DOCKER_COMPOSE) run app npx ts-node scripts/find-reviews-from-crossref-via-biorxiv 10.7717 10.7287 \
+	$(DOCKER_COMPOSE) run -T app npx ts-node scripts/find-reviews-from-crossref-via-biorxiv 10.7717 10.7287 \
 	| tee ./data/reviews/53ed5364-a016-11ea-bb37-0242ac130002.csv
 
 find-pci-reviews: export TARGET = dev
 find-pci-reviews: build
-	$(DOCKER_COMPOSE) run app npx ts-node scripts/find-reviews-from-pci
+	$(DOCKER_COMPOSE) run -T app npx ts-node scripts/find-reviews-from-pci
 
 COMMUNITY_SCRIPTS := \
 	find-elife-endorsements \
