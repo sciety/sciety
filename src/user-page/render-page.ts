@@ -21,7 +21,7 @@ type UserDetails = {
   avatarUrl: string;
 };
 
-export type GetUserDetails = (userId: UserId) => Promise<UserDetails>;
+export type GetUserDetails = (userId: UserId) => Promise<Result<UserDetails, 'not-found' | 'unavailable'>>;
 
 type Component = (userId: UserId, viewingUserId: Maybe<UserId>) => Promise<Result<string, 'not-found' | 'unavailable'>>;
 
@@ -79,13 +79,16 @@ export default (
   const renderHeader: Component = async (userId) => {
     const userDetails = await getUserDetails(userId);
 
-    return Result.ok(`
-      <header class="ui basic padded vertical segment">
-        <h1 class="ui header">
-          <img class="ui avatar image" src="${userDetails.avatarUrl}" alt="">@${userId}
-        </h1>
-      </header>
-    `);
+    if (userDetails.isOk()) {
+      return Result.ok(`
+        <header class="ui basic padded vertical segment">
+          <h1 class="ui header">
+            <img class="ui avatar image" src="${userDetails.unsafelyUnwrap().avatarUrl}" alt="">@${userId}
+          </h1>
+        </header>
+      `);
+    }
+    return Result.err('unavailable');
   };
 
   return async (userId, viewingUserId) => {
