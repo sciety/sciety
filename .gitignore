@@ -1,7 +1,6 @@
 /.eslint/
 /.jest/
 /build/
-/docs/
 /node_modules/
 /.env
 /helm/*/charts/

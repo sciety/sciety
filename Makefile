@@ -2,7 +2,6 @@ ifeq (${TARGET},)
 TARGET := dev
 endif
 
-DOCDIR := docs
 DOCKER_COMPOSE = docker-compose --file .docker/docker-compose.yml --file .docker/docker-compose.$(TARGET).yml
 DATA_VOLUME := $(shell pwd)
 IMAGE := liberoadmin/prc-frontend
@@ -43,22 +42,6 @@ test\:coverage: build
 
 build:
 	$(DOCKER_COMPOSE) build
-
-deps: export TARGET = dev
-deps: $(DOCDIR)/folders.svg $(DOCDIR)/modules.svg
-
-$(DOCDIR)/folders.svg: $(DOCDIR) build
-	$(DOCKER_COMPOSE) run app npm run --silent deps:folders \
-	| docker run --interactive --rm risaacson/graphviz dot -Tsvg \
-	> $(DOCDIR)/folders.svg
-
-$(DOCDIR)/modules.svg: $(DOCDIR) build
-	$(DOCKER_COMPOSE) run app npm run --silent deps:modules \
-	| docker run --interactive --rm risaacson/graphviz dot -Tsvg \
-	> $(DOCDIR)/modules.svg
-
-$(DOCDIR):
-	mkdir -p $(DOCDIR)
 
 install: node_modules
 

@@ -61,7 +61,6 @@
     "@types/xmldom": "^0.1.30",
     "@typescript-eslint/eslint-plugin": "^3.9.0",
     "@typescript-eslint/parser": "^3.9.0",
-    "dependency-cruiser": "^9.9.5",
     "eslint": "^7.6.0",
     "eslint-config-airbnb-typescript": "^9.0.0",
     "eslint-import-resolver-typescript": "^2.2.1",
@@ -84,8 +83,6 @@
   },
   "scripts": {
     "build": "tsc",
-    "deps:folders": "depcruise --include-only '^src' --validate -T archi src",
-    "deps:modules": "depcruise --include-only '^src' --validate -T dot src",
     "lint": "run-p --aggregate-output --continue-on-error --print-label --silent lint:**",
     "lint:eslint": "eslint ${ESLINT:-} . --ext .js,.ts --cache --cache-location .eslint/ --color",
     "lint:typescript:dev": "tsc --project tsconfig.dev.json",

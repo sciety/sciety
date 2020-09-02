@@ -3,7 +3,6 @@
 /.github/
 /.jest/
 /build/
-/docs/
 /helm/
 /node_modules/
 /.env
