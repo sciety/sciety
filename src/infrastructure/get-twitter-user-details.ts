@@ -5,7 +5,7 @@ import { UserId } from '../types/user-id';
 
 export type GetTwitterUserDetails = (userId: UserId) => Promise<Result<{
   avatarUrl: string,
-}, 'unavailable'>>;
+}, 'not-found' | 'unavailable'>>;
 
 export default (logger: Logger): GetTwitterUserDetails => (
   async (userId) => {
@@ -20,6 +20,9 @@ export default (logger: Logger): GetTwitterUserDetails => (
       });
     } catch (error) {
       logger('warn', 'Request to Twitter API for user details failed', { error });
+      if (error.response.status === 404) {
+        return Result.err('not-found');
+      }
       return Result.err('unavailable');
     }
   }
