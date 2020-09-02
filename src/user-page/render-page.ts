@@ -5,7 +5,7 @@ import EditorialCommunityId from '../types/editorial-community-id';
 import { UserId } from '../types/user-id';
 
 export type RenderPageError = {
-  type: 'not-found',
+  type: 'not-found' | 'unavailable',
   content: string
 };
 
