@@ -77,18 +77,16 @@ export default (
   };
 
   const renderHeader: Component = async (userId) => {
-    const userDetails = await getUserDetails(userId);
-
-    if (userDetails.isOk()) {
-      return Result.ok(`
-        <header class="ui basic padded vertical segment">
-          <h1 class="ui header">
-            <img class="ui avatar image" src="${userDetails.unsafelyUnwrap().avatarUrl}" alt="">@${userId}
-          </h1>
-        </header>
-      `);
-    }
-    return Result.err('unavailable');
+    const userDetails = getUserDetails(userId);
+    const headerTemplate = (ud: UserDetails): string => `
+      <header class="ui basic padded vertical segment">
+        <h1 class="ui header">
+          <img class="ui avatar image" src="${ud.avatarUrl}" alt="">@${userId}
+        </h1>
+      </header>
+    `;
+    return Result.ok<typeof headerTemplate, 'not-found' | 'unavailable'>(headerTemplate)
+      .ap(await userDetails);
   };
 
   return async (userId, viewingUserId) => {
