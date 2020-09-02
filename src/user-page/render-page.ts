@@ -96,9 +96,17 @@ export default (
     return Result.ok(template)
       .ap(await header)
       .ap(await followList)
-      .mapErr(() => ({
-        type: 'not-found',
-        content: 'User not found',
-      }));
+      .mapErr((e) => {
+        if (e === 'not-found') {
+          return {
+            type: 'not-found',
+            content: 'User not found',
+          };
+        }
+        return {
+          type: 'unavailable',
+          content: 'User information unavailable',
+        };
+      });
   };
 };
