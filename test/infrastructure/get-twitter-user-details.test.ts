@@ -4,19 +4,24 @@ import userId from '../../src/types/user-id';
 import dummyLogger from '../dummy-logger';
 
 describe('get-twitter-user-details', () => {
-  it('returns the avatar URL for the user', async () => {
-    const avatarUrl = 'http://example.com';
+  it('returns the details for the user', async () => {
     const getTwitterResponse: GetTwitterResponse = async () => ({
       data: {
-        profile_image_url: avatarUrl,
+        name: 'John Smith',
+        profile_image_url: 'http://example.com',
         username: 'arbitrary_twitter_handle',
       },
     });
     const getTwitterUserDetails = createGetTwitterUserDetails(getTwitterResponse, dummyLogger);
     const result = await getTwitterUserDetails(userId('12345'));
     const userDetails = result.unsafelyUnwrap();
+    const expected = {
+      avatarUrl: 'http://example.com',
+      displayName: 'John Smith',
+      handle: 'arbitrary_twitter_handle',
+    };
 
-    expect(userDetails.avatarUrl).toBe(avatarUrl);
+    expect(userDetails).toStrictEqual(expected);
   });
 
   it('returns not-found if the Twitter user does not exist', async () => {

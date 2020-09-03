@@ -5,6 +5,7 @@ import { UserId } from '../types/user-id';
 
 export type GetTwitterUserDetails = (userId: UserId) => Promise<Result<{
   avatarUrl: string,
+  displayName: string,
   handle: string;
 }, 'not-found' | 'unavailable'>>;
 
@@ -19,6 +20,7 @@ export default (
         logger('debug', 'Data from Twitter', { userId, data });
         return Result.ok({
           avatarUrl: data.data.profile_image_url,
+          displayName: data.data.name,
           handle: data.data.username,
         });
       }

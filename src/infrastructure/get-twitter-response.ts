@@ -2,6 +2,7 @@ import axios from 'axios';
 
 type TwitterResponse = {
   data?: {
+    name: string,
     profile_image_url: string;
     username: string;
   },
