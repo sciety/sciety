@@ -19,6 +19,7 @@ export type GetFollowedEditorialCommunities = (userId: UserId) => Promise<Readon
 
 type UserDetails = {
   avatarUrl: string;
+  handle: string;
 };
 
 export type GetUserDetails = (userId: UserId) => Promise<Result<UserDetails, 'not-found' | 'unavailable'>>;
@@ -81,7 +82,7 @@ export default (
     const headerTemplate = (ud: UserDetails): string => `
       <header class="ui basic padded vertical segment">
         <h1 class="ui header">
-          <img class="ui avatar image" src="${ud.avatarUrl}" alt="">@${userId}
+          <img class="ui avatar image" src="${ud.avatarUrl}" alt="">@${ud.handle}
         </h1>
       </header>
     `;

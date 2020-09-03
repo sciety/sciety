@@ -3,6 +3,7 @@ import axios from 'axios';
 type TwitterResponse = {
   data?: {
     profile_image_url: string;
+    username: string;
   },
   errors?: unknown,
 };

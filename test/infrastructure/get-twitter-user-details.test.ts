@@ -9,6 +9,7 @@ describe('get-twitter-user-details', () => {
     const getTwitterResponse: GetTwitterResponse = async () => ({
       data: {
         profile_image_url: avatarUrl,
+        username: 'arbitrary_twitter_handle',
       },
     });
     const getTwitterUserDetails = createGetTwitterUserDetails(getTwitterResponse, dummyLogger);
