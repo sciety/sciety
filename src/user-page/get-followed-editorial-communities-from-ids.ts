@@ -1,4 +1,4 @@
-import { GetFollowedEditorialCommunities } from './render-page';
+import { GetFollowedEditorialCommunities } from './render-follow-list';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { UserId } from '../types/user-id';
 
