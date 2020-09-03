@@ -1,6 +1,5 @@
 import { Maybe, Result } from 'true-myth';
 import { RenderFollowedEditorialCommunity } from './render-followed-editorial-community';
-import createRenderHeader, { GetUserDetails } from './render-header';
 import templateListItems from '../templates/list-items';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { UserId } from '../types/user-id';
@@ -38,7 +37,7 @@ const template = (header: string) => (followList: string) => `
 export default (
   getFollowedEditorialCommunities: GetFollowedEditorialCommunities,
   renderFollowedEditorialCommunity: RenderFollowedEditorialCommunity,
-  getUserDetails: GetUserDetails,
+  renderHeader: Component,
 ): RenderPage => {
   const renderFollowList: Component = async (userId, viewingUserId) => {
     const list = await Promise.all((await getFollowedEditorialCommunities(userId))
@@ -70,8 +69,6 @@ export default (
       </section>
     `);
   };
-
-  const renderHeader: Component = createRenderHeader(getUserDetails);
 
   return async (userId, viewingUserId) => {
     const header = renderHeader(userId, viewingUserId);
