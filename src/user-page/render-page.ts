@@ -61,7 +61,7 @@ export default (
       renderedFollowList = `
         <div class="ui info message">
           <div class="header">
-            @${userId} isn’t following anything
+            They’re not following anything
           </div>
           <p>When they do, they’ll be listed here.</p>
         </div>
