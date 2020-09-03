@@ -12,6 +12,7 @@ export default (
   renderEndorsedArticles: Component,
   renderReviewedArticles: Component,
   renderFeed: Component,
+  renderFollowers: Component,
 ): RenderPage => (
   async (editorialCommunityId, userId) => (
     `
@@ -30,6 +31,7 @@ export default (
               ${await renderEndorsedArticles(editorialCommunityId, userId)}
               ${await renderReviewedArticles(editorialCommunityId, userId)}
             </section>
+            ${await renderFollowers(editorialCommunityId, userId)}
             ${await renderFeed(editorialCommunityId, userId)}
           </div>
         </div> 

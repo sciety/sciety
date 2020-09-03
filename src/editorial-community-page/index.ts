@@ -7,6 +7,7 @@ import createRenderEndorsedArticles, { GetNumberOfEndorsedArticles, RenderEndors
 import createRenderFeed, { RenderFeed } from './render-feed';
 import createRenderFeedItem, { GetActor, GetArticle } from './render-feed-item';
 import createRenderFollowToggle, { Follows } from './render-follow-toggle';
+import createRenderFollowers from './render-followers';
 import createRenderPage from './render-page';
 import createRenderPageHeader, { GetEditorialCommunity, RenderPageHeader } from './render-page-header';
 import createRenderReviews, { GetNumberOfReviews, RenderReviews } from './render-reviews';
@@ -119,6 +120,7 @@ export default (ports: Ports): RenderPage => {
   const renderEndorsedArticles = buildRenderEndorsedArticles(ports.endorsements);
   const renderReviews = buildRenderReviews(ports);
   const renderFeed = buildRenderFeed(ports);
+  const renderFollowers = createRenderFollowers();
 
   const renderPage = createRenderPage(
     renderPageHeader,
@@ -126,6 +128,7 @@ export default (ports: Ports): RenderPage => {
     renderEndorsedArticles,
     renderReviews,
     renderFeed,
+    renderFollowers,
   );
   return async (params) => {
     const editorialCommunityId = new EditorialCommunityId(params.id ?? '');
