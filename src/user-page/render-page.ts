@@ -1,5 +1,6 @@
 import { Maybe, Result } from 'true-myth';
 import { RenderFollowedEditorialCommunity } from './render-followed-editorial-community';
+import createRenderHeader, { GetUserDetails } from './render-header';
 import templateListItems from '../templates/list-items';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { UserId } from '../types/user-id';
@@ -16,14 +17,6 @@ export type GetFollowedEditorialCommunities = (userId: UserId) => Promise<Readon
   name: string,
   avatarUrl: string,
 }>>;
-
-type UserDetails = {
-  avatarUrl: string;
-  displayName: string;
-  handle: string;
-};
-
-export type GetUserDetails = (userId: UserId) => Promise<Result<UserDetails, 'not-found' | 'unavailable'>>;
 
 type Component = (userId: UserId, viewingUserId: Maybe<UserId>) => Promise<Result<string, 'not-found' | 'unavailable'>>;
 
@@ -78,24 +71,7 @@ export default (
     `);
   };
 
-  const renderHeader: Component = async (userId) => {
-    const userDetails = getUserDetails(userId);
-    const headerTemplate = (ud: UserDetails): string => `
-      <header class="ui basic padded vertical segment">
-        <h1 class="ui header">
-          <img class="ui avatar image" src="${ud.avatarUrl}" alt="">
-          <div class="content">
-            ${ud.displayName}
-            <div class="sub header">
-              @${ud.handle}
-            </div>
-          </div>
-        </h1>
-      </header>
-    `;
-    return Result.ok<typeof headerTemplate, 'not-found' | 'unavailable'>(headerTemplate)
-      .ap(await userDetails);
-  };
+  const renderHeader: Component = createRenderHeader(getUserDetails);
 
   return async (userId, viewingUserId) => {
     const header = renderHeader(userId, viewingUserId);

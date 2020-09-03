@@ -3,7 +3,8 @@ import createGetFollowedEditorialCommunitiesFromIds, { GetEditorialCommunity } f
 import createProjectFollowedEditorialCommunityIds, { GetAllEvents } from './project-followed-editorial-community-ids';
 import createRenderFollowToggle, { Follows } from './render-follow-toggle';
 import createRenderFollowedEditorialCommunity from './render-followed-editorial-community';
-import createRenderPage, { GetUserDetails, RenderPageError } from './render-page';
+import { GetUserDetails } from './render-header';
+import createRenderPage, { RenderPageError } from './render-page';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import { User } from '../types/user';
 import toUserId from '../types/user-id';
