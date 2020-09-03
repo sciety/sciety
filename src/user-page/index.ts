@@ -1,6 +1,7 @@
 import { Maybe, Result } from 'true-myth';
 import createGetFollowedEditorialCommunitiesFromIds, { GetEditorialCommunity } from './get-followed-editorial-communities-from-ids';
 import createProjectFollowedEditorialCommunityIds, { GetAllEvents } from './project-followed-editorial-community-ids';
+import createRenderFollowList from './render-follow-list';
 import createRenderFollowToggle, { Follows } from './render-follow-toggle';
 import createRenderFollowedEditorialCommunity from './render-followed-editorial-community';
 import createRenderHeader, { GetUserDetails } from './render-header';
@@ -35,11 +36,13 @@ export default (ports: Ports): RenderPage => {
     getEditorialCommunity,
   );
   const renderHeader = createRenderHeader(ports.getUserDetails);
-
-  const renderPage = createRenderPage(
+  const renderFollowList = createRenderFollowList(
     getFollowedEditorialCommunities,
     renderFollowedEditorialCommunity,
+  );
+  const renderPage = createRenderPage(
     renderHeader,
+    renderFollowList,
   );
 
   return async (params) => {
