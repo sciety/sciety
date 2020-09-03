@@ -13,10 +13,7 @@ export default (
 ): GetTwitterUserDetails => (
   async (userId) => {
     try {
-      const data = await getTwitterResponse(
-        `https://api.twitter.com/2/users/${userId}?user.fields=profile_image_url`,
-        process.env.TWITTER_API_BEARER_TOKEN ?? '',
-      );
+      const data = await getTwitterResponse(`https://api.twitter.com/2/users/${userId}?user.fields=profile_image_url`);
       if (data.data) {
         logger('debug', 'Data from Twitter', { userId, data });
         return Result.ok({

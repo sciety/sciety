@@ -7,16 +7,13 @@ type TwitterResponse = {
   errors?: unknown,
 };
 
-export type GetTwitterResponse = (
-  url: string,
-  oauthBearerTokenValue: string
-) => Promise<TwitterResponse>;
+export type GetTwitterResponse = (url: string) => Promise<TwitterResponse>;
 
 export default (): GetTwitterResponse => (
-  async (url, oauthBearerTokenValue) => {
+  async (url) => {
     const { data } = await axios.get<TwitterResponse>(
       url,
-      { headers: { Authorization: `Bearer ${oauthBearerTokenValue}` } },
+      { headers: { Authorization: `Bearer ${process.env.TWITTER_API_BEARER_TOKEN ?? ''}` } },
     );
     return data;
   }
