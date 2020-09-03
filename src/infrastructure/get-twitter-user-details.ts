@@ -7,12 +7,30 @@ export type GetTwitterUserDetails = (userId: UserId) => Promise<Result<{
   avatarUrl: string,
 }, 'not-found' | 'unavailable'>>;
 
+type TwitterResponse = {
+  data: {
+    profile_image_url: string;
+  },
+};
+
+type GetTwitterResponse = (
+  url: string,
+  oauthBearerTokenValue: string
+) => Promise<TwitterResponse>;
+
 export default (logger: Logger): GetTwitterUserDetails => (
   async (userId) => {
     try {
-      const { data } = await axios.get(
+      const getJson: GetTwitterResponse = async (url, oauthBearerTokenValue) => {
+        const { data } = await axios.get<TwitterResponse>(
+          url,
+          { headers: { Authorization: `Bearer ${oauthBearerTokenValue}` } },
+        );
+        return data;
+      };
+      const data = await getJson(
         `https://api.twitter.com/2/users/${userId}?user.fields=profile_image_url`,
-        { headers: { Authorization: `Bearer ${process.env.TWITTER_API_BEARER_TOKEN ?? ''}` } },
+        process.env.TWITTER_API_BEARER_TOKEN ?? '',
       );
       logger('debug', 'Data from Twitter', { data });
       return Result.ok({
