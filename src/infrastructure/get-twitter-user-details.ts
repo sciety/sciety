@@ -17,18 +17,20 @@ export default (
         `https://api.twitter.com/2/users/${userId}?user.fields=profile_image_url`,
         process.env.TWITTER_API_BEARER_TOKEN ?? '',
       );
-      logger('debug', 'Data from Twitter', { data });
       if (data.data) {
+        logger('debug', 'Data from Twitter', { userId, data });
         return Result.ok({
           avatarUrl: data.data.profile_image_url,
         });
       }
+      logger('debug', 'Twitter user not found', { userId, data });
       return Result.err('not-found');
     } catch (error) {
-      logger('warn', 'Request to Twitter API for user details failed', { error });
       if (error.response && error.response.status === 400) {
+        logger('debug', 'Twitter user not found', { userId, status: error.response.status, data: error.response.data });
         return Result.err('not-found');
       }
+      logger('error', 'Request to Twitter API for user details failed', { error, status: error.response?.status, data: error.response?.data });
       return Result.err('unavailable');
     }
   }
