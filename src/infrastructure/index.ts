@@ -14,6 +14,7 @@ import createGetBiorxivCommentCount from './get-biorxiv-comment-count';
 import createGetDisqusPostCount from './get-disqus-post-count';
 import getEventsFromDataFiles from './get-events-from-data-files';
 import getEventsFromDatabase from './get-events-from-database';
+import createGetTwitterResponse from './get-twitter-response';
 import createGetTwitterUserDetails from './get-twitter-user-details';
 import createGetXml from './get-xml';
 import createEditorialCommunityRepository from './in-memory-editorial-communities';
@@ -77,6 +78,7 @@ const createInfrastructure = async (): Promise<Adapters> => {
   const getAllEvents: GetAllEvents = async () => events;
   const reviewProjections = createReviewProjections(events.filter(isEditorialCommunityReviewedArticleEvent));
   const getFollowList = createEventSourceFollowListRepository(getAllEvents);
+  const getTwitterResponse = createGetTwitterResponse();
 
   return {
     fetchArticle: createFetchCrossrefArticle(getXml, logger),
@@ -92,7 +94,7 @@ const createInfrastructure = async (): Promise<Adapters> => {
     logger,
     commitEvent: createCommitEvent(events, pool, logger),
     getFollowList,
-    getUserDetails: createGetTwitterUserDetails(logger),
+    getUserDetails: createGetTwitterUserDetails(getTwitterResponse, logger),
     follows: createFollows(getAllEvents),
   };
 };
