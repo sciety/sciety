@@ -18,7 +18,7 @@ describe('get-twitter-user-details', () => {
     expect(userDetails.avatarUrl).toBe(avatarUrl);
   });
 
-  it('returns an error if the Twitter user does not exist', async () => {
+  it('returns not-found if the Twitter user does not exist', async () => {
     const getTwitterResponse: GetTwitterResponse = async () => ({
       errors: [
         {
@@ -38,7 +38,23 @@ describe('get-twitter-user-details', () => {
     expect(error).toBe('not-found');
   });
 
-  it('returns an error if the Twitter API is unavailable', async () => {
+  it('returns not-found if the Twitter user ID is invalid', async () => {
+    const getTwitterResponse: GetTwitterResponse = async () => {
+      class InvalidTwitterIdError extends Error {
+        response = {
+          status: 400,
+        };
+      }
+      throw new InvalidTwitterIdError();
+    };
+    const getTwitterUserDetails = createGetTwitterUserDetails(getTwitterResponse, dummyLogger);
+    const result = await getTwitterUserDetails(userId('123456abcdef'));
+    const error = result.unsafelyUnwrapErr();
+
+    expect(error).toBe('not-found');
+  });
+
+  it('returns unavailable if the Twitter API is unavailable', async () => {
     const getTwitterResponse: GetTwitterResponse = async () => {
       throw new Error('Twitter API Unavailable');
     };

@@ -26,6 +26,9 @@ export default (
       return Result.err('not-found');
     } catch (error) {
       logger('warn', 'Request to Twitter API for user details failed', { error });
+      if (error.response && error.response.status === 400) {
+        return Result.err('not-found');
+      }
       return Result.err('unavailable');
     }
   }
