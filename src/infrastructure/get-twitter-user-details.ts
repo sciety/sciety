@@ -23,7 +23,7 @@ export default (
       });
     } catch (error) {
       logger('warn', 'Request to Twitter API for user details failed', { error });
-      if (error.response.status === 404) {
+      if (error.response && error.response.status === 404) {
         return Result.err('not-found');
       }
       return Result.err('unavailable');

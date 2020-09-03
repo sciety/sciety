@@ -20,5 +20,14 @@ describe('get-twitter-user-details', () => {
 
   it.todo('returns an error if the Twitter user does not exist');
 
-  it.todo('returns an error if the Twitter API is unavailable');
+  it('returns an error if the Twitter API is unavailable', async () => {
+    const getTwitterResponse: GetTwitterResponse = async () => {
+      throw new Error('Twitter API Unavailable');
+    };
+    const getTwitterUserDetails = createGetTwitterUserDetails(getTwitterResponse, dummyLogger);
+    const result = await getTwitterUserDetails(userId('12345'));
+    const error = result.unsafelyUnwrapErr();
+
+    expect(error).toBe('unavailable');
+  });
 });
