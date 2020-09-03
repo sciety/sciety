@@ -18,7 +18,25 @@ describe('get-twitter-user-details', () => {
     expect(userDetails.avatarUrl).toBe(avatarUrl);
   });
 
-  it.todo('returns an error if the Twitter user does not exist');
+  it('returns an error if the Twitter user does not exist', async () => {
+    const getTwitterResponse: GetTwitterResponse = async () => ({
+      errors: [
+        {
+          detail: 'Could not find user with id: [2244994946].',
+          title: 'Not Found Error',
+          resource_type: 'user',
+          parameter: 'id',
+          value: '2244994946',
+          type: 'https://api.twitter.com/2/problems/resource-not-found',
+        },
+      ],
+    });
+    const getTwitterUserDetails = createGetTwitterUserDetails(getTwitterResponse, dummyLogger);
+    const result = await getTwitterUserDetails(userId('12345'));
+    const error = result.unsafelyUnwrapErr();
+
+    expect(error).toBe('not-found');
+  });
 
   it('returns an error if the Twitter API is unavailable', async () => {
     const getTwitterResponse: GetTwitterResponse = async () => {

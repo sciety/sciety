@@ -1,9 +1,10 @@
 import axios from 'axios';
 
 type TwitterResponse = {
-  data: {
+  data?: {
     profile_image_url: string;
   },
+  errors?: unknown,
 };
 
 export type GetTwitterResponse = (

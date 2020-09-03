@@ -18,14 +18,14 @@ export default (
         process.env.TWITTER_API_BEARER_TOKEN ?? '',
       );
       logger('debug', 'Data from Twitter', { data });
-      return Result.ok({
-        avatarUrl: data.data.profile_image_url,
-      });
+      if (data.data) {
+        return Result.ok({
+          avatarUrl: data.data.profile_image_url,
+        });
+      }
+      return Result.err('not-found');
     } catch (error) {
       logger('warn', 'Request to Twitter API for user details failed', { error });
-      if (error.response && error.response.status === 404) {
-        return Result.err('not-found');
-      }
       return Result.err('unavailable');
     }
   }
