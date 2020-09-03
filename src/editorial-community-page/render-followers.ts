@@ -15,7 +15,7 @@ export default (): RenderFollowers => (
       contents = `
         <ul class="ui list">
           <li class="item">
-            <img class="ui avatar image" src="${userDetails.avatarUrl}">
+            <img class="ui avatar image" src="${userDetails.avatarUrl}" alt="">
             <div class="content">
               <a class="header" href="/users/${userDetails.userId}">${userDetails.displayName}</a>
               @${userDetails.handle}
