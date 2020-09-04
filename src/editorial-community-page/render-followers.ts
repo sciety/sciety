@@ -1,42 +1,39 @@
 import templateListItems from '../templates/list-items';
 import EditorialCommunityId from '../types/editorial-community-id';
-import toUserId, { UserId } from '../types/user-id';
+import { UserId } from '../types/user-id';
 
 type RenderFollowers = (editorialCommunityId: EditorialCommunityId) => Promise<string>;
 
-type UserDetails = {
+type FollowerDetails = {
   avatarUrl: string,
   handle: string,
   displayName: string,
   userId: UserId,
 };
 
-type RenderFollower = (userDetails: UserDetails) => Promise<string>;
+type RenderFollower = (followerDetails: FollowerDetails) => Promise<string>;
 
-const renderFollower: RenderFollower = async (userDetails) => `
-  <img class="ui avatar image" src="${userDetails.avatarUrl}" alt="">
+const renderFollower: RenderFollower = async (followerDetails) => `
+  <img class="ui avatar image" src="${followerDetails.avatarUrl}" alt="">
   <div class="content">
-    <a class="header" href="/users/${userDetails.userId}">${userDetails.displayName}</a>
-    @${userDetails.handle}
+    <a class="header" href="/users/${followerDetails.userId}">${followerDetails.displayName}</a>
+    @${followerDetails.handle}
   </div>
 `;
 
-export default (): RenderFollowers => (
+export type GetFollowers = (editorialCommunityId: EditorialCommunityId) => Promise<Array<FollowerDetails>>;
+
+export default (
+  getFollowers: GetFollowers,
+): RenderFollowers => (
   async (editorialCommunityId) => {
     let contents = '<p>No followers yet.</p>';
-    if (editorialCommunityId.value === 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0') {
-      const followerDetails = [{
-        avatarUrl: ' https://pbs.twimg.com/profile_images/622704117635543040/DQRaHUah_normal.jpg',
-        handle: 'giorgiosironi',
-        displayName: 'Giorgio Sironi 🇮🇹🇬🇧🇪🇺',
-        userId: toUserId('47998559'),
-      }];
-
-      const followers = await Promise.all(followerDetails.map(renderFollower));
-
+    const followers = await getFollowers(editorialCommunityId);
+    if (followers.length > 0) {
+      const renderedFollowers = await Promise.all(followers.map(renderFollower));
       contents = `
         <ul class="ui list">
-          ${templateListItems(followers)}
+          ${templateListItems(renderedFollowers)}
         </ul>
       `;
     }

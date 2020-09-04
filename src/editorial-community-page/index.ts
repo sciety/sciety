@@ -7,7 +7,7 @@ import createRenderEndorsedArticles, { GetNumberOfEndorsedArticles, RenderEndors
 import createRenderFeed, { RenderFeed } from './render-feed';
 import createRenderFeedItem, { GetActor, GetArticle } from './render-feed-item';
 import createRenderFollowToggle, { Follows } from './render-follow-toggle';
-import createRenderFollowers from './render-followers';
+import createRenderFollowers, {GetFollowers} from './render-followers';
 import createRenderPage from './render-page';
 import createRenderPageHeader, { GetEditorialCommunity, RenderPageHeader } from './render-page-header';
 import createRenderReviews, { GetNumberOfReviews, RenderReviews } from './render-reviews';
@@ -17,6 +17,7 @@ import EndorsementsRepository from '../types/endorsements-repository';
 import { FetchExternalArticle } from '../types/fetch-external-article';
 import { ReviewId } from '../types/review-id';
 import { User } from '../types/user';
+import toUserId from '../types/user-id';
 
 type FindReviewsForEditorialCommunityId = (editorialCommunityId: EditorialCommunityId) => Promise<Array<{
   articleVersionDoi: Doi;
@@ -120,7 +121,19 @@ export default (ports: Ports): RenderPage => {
   const renderEndorsedArticles = buildRenderEndorsedArticles(ports.endorsements);
   const renderReviews = buildRenderReviews(ports);
   const renderFeed = buildRenderFeed(ports);
-  const renderFollowers = createRenderFollowers();
+
+  const getFollowers: GetFollowers = async (editorialCommunityId) => {
+    if (editorialCommunityId.value === 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0') {
+      return [{
+        avatarUrl: ' https://pbs.twimg.com/profile_images/622704117635543040/DQRaHUah_normal.jpg',
+        handle: 'giorgiosironi',
+        displayName: 'Giorgio Sironi 🇮🇹🇬🇧🇪🇺',
+        userId: toUserId('47998559'),
+      }];
+    }
+    return [];
+  };
+  const renderFollowers = createRenderFollowers(getFollowers);
 
   const renderPage = createRenderPage(
     renderPageHeader,
