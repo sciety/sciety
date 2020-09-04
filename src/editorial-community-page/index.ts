@@ -121,7 +121,11 @@ export default (ports: Ports): RenderPage => {
   const renderEndorsedArticles = buildRenderEndorsedArticles(ports.endorsements);
   const renderReviews = buildRenderReviews(ports);
   const renderFeed = buildRenderFeed(ports);
-  const getFollowers = createGetHardcodedFollowers();
+  const getFollowers = createGetHardcodedFollowers(
+    async () => ({
+      handle: 'giorgiosironi',
+    }),
+  );
   const renderFollowers = createRenderFollowers(getFollowers);
 
   const renderPage = createRenderPage(
