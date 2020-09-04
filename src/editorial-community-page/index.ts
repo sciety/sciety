@@ -7,7 +7,7 @@ import createRenderEndorsedArticles, { GetNumberOfEndorsedArticles, RenderEndors
 import createRenderFeed, { RenderFeed } from './render-feed';
 import createRenderFeedItem, { GetActor, GetArticle } from './render-feed-item';
 import createRenderFollowToggle, { Follows } from './render-follow-toggle';
-import createRenderFollowers, {GetFollowers} from './render-followers';
+import createRenderFollowers, { GetFollowers } from './render-followers';
 import createRenderPage from './render-page';
 import createRenderPageHeader, { GetEditorialCommunity, RenderPageHeader } from './render-page-header';
 import createRenderReviews, { GetNumberOfReviews, RenderReviews } from './render-reviews';
