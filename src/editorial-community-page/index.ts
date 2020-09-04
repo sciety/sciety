@@ -1,9 +1,9 @@
 import { NotFound } from 'http-errors';
 import showdown from 'showdown';
 import { Maybe, Result } from 'true-myth';
-import createGetFollowerIds from './get-follower-ids';
 import createGetFollowersFromIds, { GetUserDetails } from './get-followers-from-ids';
 import createGetMostRecentEvents, { GetAllEvents } from './get-most-recent-events';
+import createProjectFollowerIds from './project-follower-ids';
 import createRenderDescription, { GetEditorialCommunityDescription, RenderDescription } from './render-description';
 import createRenderEndorsedArticles, { GetNumberOfEndorsedArticles, RenderEndorsedArticles } from './render-endorsed-articles';
 import createRenderFeed, { RenderFeed } from './render-feed';
@@ -136,7 +136,7 @@ export default (ports: Ports): RenderPage => {
 
     return userDetails.unsafelyUnwrap();
   };
-  const getFollowers = createGetFollowersFromIds(createGetFollowerIds(), getUserDetails);
+  const getFollowers = createGetFollowersFromIds(createProjectFollowerIds(), getUserDetails);
   const renderFollowers = createRenderFollowers(getFollowers);
 
   const renderPage = createRenderPage(
