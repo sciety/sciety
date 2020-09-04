@@ -11,7 +11,7 @@ describe('get-hardcoded-followers', () => {
     const getHardcodedFollowers = createGetHardcodedFollowers(getUserDetails);
     const followers = await getHardcodedFollowers(new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'));
 
-    expect(followers).toHaveLength(1);
+    expect(followers).toHaveLength(2);
     expect(followers[0]).toMatchObject({
       handle: 'some_handle',
       displayName: 'Some User',
