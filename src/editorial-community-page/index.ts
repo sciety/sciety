@@ -1,7 +1,7 @@
 import { NotFound } from 'http-errors';
 import showdown from 'showdown';
 import { Maybe, Result } from 'true-myth';
-import createGetHardcodedFollowers, { GetUserDetails } from './get-hardcoded-followers';
+import createGetFollowersFromIds, { GetFollowerIds, GetUserDetails } from './get-followers-from-ids';
 import createGetMostRecentEvents, { GetAllEvents } from './get-most-recent-events';
 import createRenderDescription, { GetEditorialCommunityDescription, RenderDescription } from './render-description';
 import createRenderEndorsedArticles, { GetNumberOfEndorsedArticles, RenderEndorsedArticles } from './render-endorsed-articles';
@@ -18,7 +18,7 @@ import EndorsementsRepository from '../types/endorsements-repository';
 import { FetchExternalArticle } from '../types/fetch-external-article';
 import { ReviewId } from '../types/review-id';
 import { User } from '../types/user';
-import { UserId } from '../types/user-id';
+import toUserId, { UserId } from '../types/user-id';
 
 type FindReviewsForEditorialCommunityId = (editorialCommunityId: EditorialCommunityId) => Promise<Array<{
   articleVersionDoi: Doi;
@@ -129,12 +129,21 @@ export default (ports: Ports): RenderPage => {
   const renderEndorsedArticles = buildRenderEndorsedArticles(ports.endorsements);
   const renderReviews = buildRenderReviews(ports);
   const renderFeed = buildRenderFeed(ports);
+  const getFollowerIds: GetFollowerIds = async (editorialCommunityId) => {
+    const userIds = [];
+    if (editorialCommunityId.value === 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0') {
+      userIds.push(toUserId('47998559'));
+      userIds.push(toUserId('23776533'));
+    }
+    return userIds;
+  };
+
   const getUserDetails: GetUserDetails = async (userId) => {
     const userDetails = await ports.getUserDetails(userId);
 
     return userDetails.unsafelyUnwrap();
   };
-  const getFollowers = createGetHardcodedFollowers(getUserDetails);
+  const getFollowers = createGetFollowersFromIds(getFollowerIds, getUserDetails);
   const renderFollowers = createRenderFollowers(getFollowers);
 
   const renderPage = createRenderPage(
