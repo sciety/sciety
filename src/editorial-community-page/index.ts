@@ -36,6 +36,8 @@ type FetchEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => P
 
 type GetUserDetailsResult = (userId: UserId) => Promise<Result<{
   handle: string,
+  displayName: string,
+  avatarUrl: string,
 }, unknown>>;
 
 interface Ports {
