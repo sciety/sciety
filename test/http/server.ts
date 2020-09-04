@@ -69,7 +69,11 @@ export default async (): Promise<TestServer> => {
     commitEvent: async () => {},
     logger: dummyLogger,
     getFollowList: async (userId) => new FollowList(userId, []),
-    getUserDetails: async () => Result.err('not-found'),
+    getUserDetails: async () => Result.ok({
+      avatarUrl: '',
+      displayName: '',
+      handle: '',
+    }),
     follows: async () => false,
   };
 

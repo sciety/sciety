@@ -1,7 +1,7 @@
 import { NotFound } from 'http-errors';
 import showdown from 'showdown';
 import { Maybe, Result } from 'true-myth';
-import createGetHardcodedFollowers from './get-hardcoded-followers';
+import createGetHardcodedFollowers, { GetUserDetails } from './get-hardcoded-followers';
 import createGetMostRecentEvents, { GetAllEvents } from './get-most-recent-events';
 import createRenderDescription, { GetEditorialCommunityDescription, RenderDescription } from './render-description';
 import createRenderEndorsedArticles, { GetNumberOfEndorsedArticles, RenderEndorsedArticles } from './render-endorsed-articles';
@@ -18,6 +18,7 @@ import EndorsementsRepository from '../types/endorsements-repository';
 import { FetchExternalArticle } from '../types/fetch-external-article';
 import { ReviewId } from '../types/review-id';
 import { User } from '../types/user';
+import { UserId } from '../types/user-id';
 
 type FindReviewsForEditorialCommunityId = (editorialCommunityId: EditorialCommunityId) => Promise<Array<{
   articleVersionDoi: Doi;
@@ -33,6 +34,10 @@ type FetchEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => P
   descriptionPath: string;
 }>>;
 
+type GetUserDetailsResult = (userId: UserId) => Promise<Result<{
+  handle: string,
+}, unknown>>;
+
 interface Ports {
   fetchArticle: FetchExternalArticle;
   fetchStaticFile: FetchStaticFile;
@@ -41,6 +46,7 @@ interface Ports {
   getAllEvents: GetAllEvents;
   findReviewsForEditorialCommunityId: FindReviewsForEditorialCommunityId,
   follows: Follows,
+  getUserDetails: GetUserDetailsResult,
 }
 
 const buildRenderPageHeader = (ports: Ports): RenderPageHeader => {
@@ -121,11 +127,12 @@ export default (ports: Ports): RenderPage => {
   const renderEndorsedArticles = buildRenderEndorsedArticles(ports.endorsements);
   const renderReviews = buildRenderReviews(ports);
   const renderFeed = buildRenderFeed(ports);
-  const getFollowers = createGetHardcodedFollowers(
-    async () => ({
-      handle: 'giorgiosironi',
-    }),
-  );
+  const getUserDetails: GetUserDetails = async (userId) => {
+    const userDetails = await ports.getUserDetails(userId);
+
+    return userDetails.unsafelyUnwrap();
+  };
+  const getFollowers = createGetHardcodedFollowers(getUserDetails);
   const renderFollowers = createRenderFollowers(getFollowers);
 
   const renderPage = createRenderPage(
