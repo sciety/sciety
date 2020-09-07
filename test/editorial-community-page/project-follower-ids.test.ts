@@ -1,5 +1,5 @@
 import createProjectFollowerIds, { GetAllEvents } from '../../src/editorial-community-page/project-follower-ids';
-import { UserFollowedEditorialCommunityEvent } from '../../src/types/domain-events';
+import { DomainEvent, UserFollowedEditorialCommunityEvent } from '../../src/types/domain-events';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
 import { generate } from '../../src/types/event-id';
 import toUserId from '../../src/types/user-id';
@@ -42,6 +42,21 @@ describe('project-follower-ids', () => {
     const getAllEvents: GetAllEvents = async () => events;
     const projectFollowerIds = createProjectFollowerIds(getAllEvents);
     const followerIds = await projectFollowerIds(new EditorialCommunityId('other'));
+
+    expect(followerIds).toHaveLength(0);
+  });
+
+  it('ignores other type of events', async () => {
+    const events: ReadonlyArray<DomainEvent> = [
+      {
+        type: 'EditorialCommunityJoined',
+        date: new Date(),
+        editorialCommunityId: new EditorialCommunityId('something'),
+      },
+    ];
+    const getAllEvents: GetAllEvents = async () => events;
+    const projectFollowerIds = createProjectFollowerIds(getAllEvents);
+    const followerIds = await projectFollowerIds(new EditorialCommunityId('something'));
 
     expect(followerIds).toHaveLength(0);
   });
