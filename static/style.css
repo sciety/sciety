@@ -140,6 +140,7 @@ Styles that are independent of Semantic UI
 }
 
 .follower__avatar {
+  border-radius: 50%;
   margin-right: 8px;
   flex: 0 0 40px
 }
