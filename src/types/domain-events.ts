@@ -47,6 +47,11 @@ export type UserFollowedEditorialCommunityEvent = Readonly<{
   editorialCommunityId: EditorialCommunityId;
 }>;
 
+export const isUserFollowedEditorialCommunityEvent = (event: DomainEvent):
+  event is UserFollowedEditorialCommunityEvent => (
+  event.type === 'UserFollowedEditorialCommunity'
+);
+
 export type UserUnfollowedEditorialCommunityEvent = Readonly<{
   id: EventId,
   type: 'UserUnfollowedEditorialCommunity';
