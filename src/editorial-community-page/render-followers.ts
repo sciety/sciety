@@ -32,7 +32,7 @@ export default (
     if (followers.length > 0) {
       const renderedFollowers = await Promise.all(followers.map(renderFollower));
       contents = `
-        <ul class="ui very relaxed list">
+        <ul class="ui very relaxed list" role="list">
           ${templateListItems(renderedFollowers)}
         </ul>
       `;
