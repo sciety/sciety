@@ -136,7 +136,7 @@ export default (ports: Ports): RenderPage => {
 
     return userDetails.unsafelyUnwrap();
   };
-  const getFollowers = createGetFollowersFromIds(createProjectFollowerIds(), getUserDetails);
+  const getFollowers = createGetFollowersFromIds(createProjectFollowerIds(async () => []), getUserDetails);
   const renderFollowers = createRenderFollowers(getFollowers);
 
   const renderPage = createRenderPage(
