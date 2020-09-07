@@ -128,3 +128,23 @@ Allow commas on the end of each .ui.list .item by adding .comma.separated
 .ui[class*="comma separated"].list > .item:last-child:after {
   content: '.';
 }
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Styles that are independent of Semantic UI
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+
+.follower {
+  display: flex;
+  align-items: center;
+  max-width: 250px;
+}
+
+.follower__avatar {
+  margin-right: 8px;
+  flex: 0 0 40px
+}
+
+.follower__handle {
+  padding-top: 2px;
+  color: rgb(0, 0, 0);
+}

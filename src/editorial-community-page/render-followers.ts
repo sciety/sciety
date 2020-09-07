@@ -14,11 +14,13 @@ type FollowerDetails = {
 type RenderFollower = (followerDetails: FollowerDetails) => Promise<string>;
 
 const renderFollower: RenderFollower = async (followerDetails) => `
-  <img class="ui avatar image" src="${followerDetails.avatarUrl}" alt="">
-  <div class="content">
-    <a class="header" href="/users/${followerDetails.userId}">${followerDetails.displayName}</a>
-    @${followerDetails.handle}
-  </div>
+  <a href="/users/${followerDetails.userId}" class="follower">
+    <img src="${followerDetails.avatarUrl}" alt="" class="follower__avatar">
+    <div>
+      <div>${followerDetails.displayName}</div>
+      <div class="follower__handle">@${followerDetails.handle}</div>
+    </div>
+  </a>
 `;
 
 export type GetFollowers = (editorialCommunityId: EditorialCommunityId) => Promise<Array<FollowerDetails>>;
