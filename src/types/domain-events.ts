@@ -60,6 +60,11 @@ export type UserUnfollowedEditorialCommunityEvent = Readonly<{
   editorialCommunityId: EditorialCommunityId;
 }>;
 
+export const isUserUnfollowedEditorialCommunityEvent = (event: DomainEvent):
+  event is UserUnfollowedEditorialCommunityEvent => (
+  event.type === 'UserUnfollowedEditorialCommunity'
+);
+
 export type DomainEvent =
   EditorialCommunityEndorsedArticleEvent |
   EditorialCommunityReviewedArticleEvent |

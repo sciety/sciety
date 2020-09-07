@@ -1,4 +1,10 @@
-import { DomainEvent, isUserFollowedEditorialCommunityEvent } from '../types/domain-events';
+import {
+  DomainEvent,
+  isUserFollowedEditorialCommunityEvent,
+  isUserUnfollowedEditorialCommunityEvent,
+  UserFollowedEditorialCommunityEvent,
+  UserUnfollowedEditorialCommunityEvent,
+} from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { UserId } from '../types/user-id';
 
@@ -6,11 +12,24 @@ type ProjectFollowerIds = (editorialCommunityId: EditorialCommunityId) => Promis
 
 export type GetAllEvents = () => Promise<ReadonlyArray<DomainEvent>>;
 
+const isInterestingEvent = (event: DomainEvent) : event is (
+UserFollowedEditorialCommunityEvent |
+UserUnfollowedEditorialCommunityEvent) => isUserFollowedEditorialCommunityEvent(event)
+  || isUserUnfollowedEditorialCommunityEvent(event);
+
 export default (getAllEvents: GetAllEvents): ProjectFollowerIds => (
   async (editorialCommunityId) => (
     (await getAllEvents())
-      .filter(isUserFollowedEditorialCommunityEvent)
+      .filter(isInterestingEvent)
       .filter((event) => event.editorialCommunityId.value === editorialCommunityId.value)
-      .map((event) => event.userId)
+      .reduce<Array<UserId>>(
+      (userIds, event) => {
+        if (isUserFollowedEditorialCommunityEvent(event)) {
+          return userIds.concat([event.userId]);
+        }
+        return userIds.filter((userId) => userId !== event.userId);
+      },
+      [],
+    )
   )
 );

@@ -60,4 +60,30 @@ describe('project-follower-ids', () => {
 
     expect(followerIds).toHaveLength(0);
   });
+
+  it('removes follower ids based on unfollow events', async () => {
+    const aUserId = toUserId('12345678');
+    const events: ReadonlyArray<DomainEvent> = [
+      {
+        id: generate(),
+        type: 'UserFollowedEditorialCommunity',
+        date: new Date(),
+        userId: aUserId,
+        editorialCommunityId: new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
+      },
+      {
+        id: generate(),
+        type: 'UserUnfollowedEditorialCommunity',
+        date: new Date(),
+        userId: aUserId,
+        editorialCommunityId: new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
+      },
+    ];
+
+    const getAllEvents: GetAllEvents = async () => events;
+    const projectFollowerIds = createProjectFollowerIds(getAllEvents);
+    const followerIds = await projectFollowerIds(new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'));
+
+    expect(followerIds).toHaveLength(0);
+  });
 });
