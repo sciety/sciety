@@ -14,6 +14,7 @@ import createArticlePage from '../article-page';
 import createArticleSearchPage from '../article-search-page';
 import createEditorialCommunityPage from '../editorial-community-page';
 import createFollowHandler from '../follow';
+import createSaveFollowCommand from '../follow/save-follow-command';
 import createHomePage from '../home-page';
 import { Adapters } from '../infrastructure/adapters';
 import createSignOutHandler from '../sign-out';
@@ -54,10 +55,7 @@ export default (adapters: Adapters): Router => {
   router.post('/follow',
     identifyUser(adapters.logger),
     bodyParser({ enableTypes: ['form'] }),
-    async (context: ParameterizedContext, next) => {
-      context.session.editorialCommunityId = context.request.body.editorialcommunityid;
-      await next();
-    },
+    createSaveFollowCommand(),
     createRequireAuthentication(),
     createFollowHandler(adapters));
 
