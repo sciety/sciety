@@ -61,9 +61,7 @@ export default (adapters: Adapters): Router => {
     createRequireAuthentication(),
     createUnfollowHandler(adapters));
 
-  const authenticate = koaPassport.authenticate('twitter', {
-    successRedirect: '/',
-  });
+  const authenticate = koaPassport.authenticate('twitter');
 
   router.get('/sign-in',
     authenticate);
@@ -72,7 +70,12 @@ export default (adapters: Adapters): Router => {
     createSignOutHandler());
 
   router.get('/twitter/callback',
-    authenticate);
+    authenticate,
+    async (context, next) => {
+      context.redirect('/');
+
+      await next();
+    });
 
   router.get('/robots.txt',
     robots());
