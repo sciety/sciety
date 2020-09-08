@@ -19,7 +19,9 @@ export default (ports: Ports): Middleware => (
       const { user } = context.state;
       const followList = await ports.getFollowList(user.id);
       const events = followList.follow(editorialCommunityId);
-      await ports.commitEvent(events[0]);
+      events.forEach(async (e) => {
+        await ports.commitEvent(e);
+      });
     }
 
     await next();
