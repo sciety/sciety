@@ -19,6 +19,7 @@ import { Adapters } from '../infrastructure/adapters';
 import createSignOutHandler from '../sign-out';
 import createUnfollowHandler from '../unfollow';
 import createUserPage from '../user-page';
+import EditorialCommunityId from '../types/editorial-community-id';
 
 export default (adapters: Adapters): Router => {
   const router = new Router();
@@ -55,6 +56,7 @@ export default (adapters: Adapters): Router => {
     bodyParser({ enableTypes: ['form'] }),
     async (context: ParameterizedContext, next) => {
       context.session.successRedirect = context.request.headers.referer ?? '/';
+      context.session.editorialCommunityId = context.request.body.editorialcommunityid;
       await next();
     },
     createRequireAuthentication(),
@@ -77,6 +79,14 @@ export default (adapters: Adapters): Router => {
   router.get('/twitter/callback',
     authenticate,
     async (context, next) => {
+      if (context.session.editorialCommunityId) {
+        const editorialCommunityId = new EditorialCommunityId(context.session.editorialCommunityId);
+        const { user } = context.state;
+        const followList = await adapters.getFollowList(user.id);
+        const event = followList.follow(editorialCommunityId);
+        await adapters.commitEvent(event);
+      }
+
       const successRedirect = context.session.successRedirect || '/';
       context.redirect(successRedirect);
 
