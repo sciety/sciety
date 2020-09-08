@@ -6,12 +6,17 @@ import createRenderFollowToggle, { Follows } from './render-follow-toggle';
 import createRenderFollowedEditorialCommunity from './render-followed-editorial-community';
 import createRenderHeader, { GetUserDetails } from './render-header';
 import createRenderPage, { RenderPageError } from './render-page';
-import EditorialCommunityRepository from '../types/editorial-community-repository';
+import EditorialCommunityId from '../types/editorial-community-id';
 import { User } from '../types/user';
 import toUserId from '../types/user-id';
 
+type FetchEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => Promise<Maybe<{
+  name: string;
+  avatarUrl: string;
+}>>;
+
 type Ports = {
-  editorialCommunities: EditorialCommunityRepository,
+  getEditorialCommunity: FetchEditorialCommunity,
   getAllEvents: GetAllEvents,
   follows: Follows,
   getUserDetails: GetUserDetails,
@@ -26,7 +31,7 @@ type RenderPage = (params: Params) => Promise<Result<string, RenderPageError>>;
 
 export default (ports: Ports): RenderPage => {
   const getEditorialCommunity: GetEditorialCommunity = async (editorialCommunityId) => (
-    (await ports.editorialCommunities.lookup(editorialCommunityId)).unsafelyUnwrap()
+    (await ports.getEditorialCommunity(editorialCommunityId)).unsafelyUnwrap()
   );
 
   const renderFollowToggle = createRenderFollowToggle(ports.follows);
