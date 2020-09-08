@@ -1,5 +1,6 @@
 import path from 'path';
 import Router from '@koa/router';
+import { ParameterizedContext } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import koaPassport from 'koa-passport';
 import send from 'koa-send';
@@ -52,6 +53,10 @@ export default (adapters: Adapters): Router => {
   router.post('/follow',
     identifyUser(adapters.logger),
     bodyParser({ enableTypes: ['form'] }),
+    async (context: ParameterizedContext, next) => {
+      context.session.successRedirect = context.request.headers.referer ?? '/';
+      await next();
+    },
     createRequireAuthentication(),
     createFollowHandler(adapters));
 
@@ -72,7 +77,8 @@ export default (adapters: Adapters): Router => {
   router.get('/twitter/callback',
     authenticate,
     async (context, next) => {
-      context.redirect('/');
+      const successRedirect = context.session.successRedirect || '/';
+      context.redirect(successRedirect);
 
       await next();
     });
