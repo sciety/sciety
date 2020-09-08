@@ -9,7 +9,7 @@ describe('follow-list', () => {
   describe('follow', () => {
     describe('when the community to be followed is not currently followed', () => {
       it('follows the community', () => {
-        const list = new FollowList(userId1, []);
+        const list = new FollowList(userId1);
 
         const events = list.follow(editorialCommunity1Id);
 
@@ -20,10 +20,10 @@ describe('follow-list', () => {
 
     describe('when the community to be followed is already followed', () => {
       it('leaves the list unchanged', () => {
-        const list = new FollowList(userId1, []);
+        const list = new FollowList(userId1);
 
         list.follow(editorialCommunity1Id);
-        const events = list.follow(editorialCommunity1Id);
+        const events = list.follow(new EditorialCommunityId(editorialCommunity1Id.value));
 
         expect(events).toHaveLength(0);
       });
@@ -33,7 +33,8 @@ describe('follow-list', () => {
   describe('unfollow', () => {
     describe('when the community to be unfollowed is currently followed', () => {
       it('unfollows the community', async () => {
-        const list = new FollowList(userId1, [editorialCommunity1Id]);
+        const list = new FollowList(userId1);
+        list.follow(editorialCommunity1Id);
 
         const events = list.unfollow(editorialCommunity1Id);
 

@@ -20,7 +20,7 @@ describe('event-sourced-follow-list-repository', () => {
     const repository = createEventSourcedFollowListRepository(getAllEvents);
 
     const actual = await repository(userId1);
-    const expected = new FollowList(userId1, [editorialCommunitityId1]);
+    const expected = new FollowList(userId1, [editorialCommunitityId1.value]);
 
     expect(actual).toStrictEqual(expected);
   });

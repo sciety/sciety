@@ -1,5 +1,4 @@
 import { DomainEvent } from '../types/domain-events';
-import EditorialCommunityId from '../types/editorial-community-id';
 import FollowList from '../types/follow-list';
 import { UserId } from '../types/user-id';
 
@@ -19,7 +18,7 @@ export default (getAllEvents: GetAllEvents): EventSourcedFollowListRepository =>
       }
     });
 
-    const list = Array.from(result).map((id: string) => new EditorialCommunityId(id));
+    const list = Array.from(result);
 
     return new FollowList(userId, list);
   }

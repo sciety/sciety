@@ -68,7 +68,7 @@ export default async (): Promise<TestServer> => {
     getAllEvents: async () => [],
     commitEvent: async () => {},
     logger: dummyLogger,
-    getFollowList: async (userId) => new FollowList(userId, []),
+    getFollowList: async (userId) => new FollowList(userId),
     getUserDetails: async () => Result.ok({
       avatarUrl: '',
       displayName: '',

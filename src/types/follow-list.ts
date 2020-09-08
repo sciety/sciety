@@ -6,19 +6,19 @@ import { UserId } from './user-id';
 export default class FollowList {
   private readonly userId: UserId;
 
-  private items: Array<EditorialCommunityId>;
+  private items: Array<string>;
 
-  constructor(userId: UserId, items: Array<EditorialCommunityId>) {
+  constructor(userId: UserId, items: Array<string> = []) {
     this.userId = userId;
     this.items = items;
   }
 
   follow(editorialCommunityId: EditorialCommunityId): ReadonlyArray<UserFollowedEditorialCommunityEvent> {
-    if (this.items.includes(editorialCommunityId)) {
+    if (this.items.includes(editorialCommunityId.value)) {
       return [];
     }
 
-    this.items.push(editorialCommunityId);
+    this.items.push(editorialCommunityId.value);
 
     return [
       {
@@ -32,7 +32,7 @@ export default class FollowList {
   }
 
   unfollow(editorialCommunityId: EditorialCommunityId): ReadonlyArray<UserUnfollowedEditorialCommunityEvent> {
-    this.items = this.items.filter((item) => item.value !== editorialCommunityId.value);
+    this.items = this.items.filter((item) => item !== editorialCommunityId.value);
 
     return [
       {
