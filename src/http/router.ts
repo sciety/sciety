@@ -55,7 +55,6 @@ export default (adapters: Adapters): Router => {
     identifyUser(adapters.logger),
     bodyParser({ enableTypes: ['form'] }),
     async (context: ParameterizedContext, next) => {
-      context.session.successRedirect = context.request.headers.referer ?? '/';
       context.session.editorialCommunityId = context.request.body.editorialcommunityid;
       await next();
     },
@@ -78,7 +77,7 @@ export default (adapters: Adapters): Router => {
 
   router.get('/twitter/callback',
     authenticate,
-    async (context, next) => {
+    async (context: ParameterizedContext, next) => {
       if (context.session.editorialCommunityId) {
         const editorialCommunityId = new EditorialCommunityId(context.session.editorialCommunityId);
         const { user } = context.state;
@@ -87,6 +86,9 @@ export default (adapters: Adapters): Router => {
         await adapters.commitEvent(events[0]);
       }
 
+      await next();
+    },
+    async (context: ParameterizedContext, next) => {
       const successRedirect = context.session.successRedirect || '/';
       context.redirect(successRedirect);
 
