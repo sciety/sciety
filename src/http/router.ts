@@ -1,6 +1,5 @@
 import path from 'path';
 import Router from '@koa/router';
-import { ParameterizedContext } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import koaPassport from 'koa-passport';
 import send from 'koa-send';
@@ -14,11 +13,11 @@ import createArticlePage from '../article-page';
 import createArticleSearchPage from '../article-search-page';
 import createEditorialCommunityPage from '../editorial-community-page';
 import createFollowHandler from '../follow';
+import createFinishFollowCommand from '../follow/finish-follow-command';
 import createSaveFollowCommand from '../follow/save-follow-command';
 import createHomePage from '../home-page';
 import { Adapters } from '../infrastructure/adapters';
 import createSignOutHandler from '../sign-out';
-import EditorialCommunityId from '../types/editorial-community-id';
 import createUnfollowHandler from '../unfollow';
 import createUserPage from '../user-page';
 
@@ -75,17 +74,7 @@ export default (adapters: Adapters): Router => {
 
   router.get('/twitter/callback',
     authenticate,
-    async (context: ParameterizedContext, next) => {
-      if (context.session.editorialCommunityId) {
-        const editorialCommunityId = new EditorialCommunityId(context.session.editorialCommunityId);
-        const { user } = context.state;
-        const followList = await adapters.getFollowList(user.id);
-        const events = followList.follow(editorialCommunityId);
-        await adapters.commitEvent(events[0]);
-      }
-
-      await next();
-    },
+    createFinishFollowCommand(adapters),
     createRedirectAfterAuthenticating());
 
   router.get('/robots.txt',
