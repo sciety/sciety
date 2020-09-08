@@ -19,7 +19,14 @@ describe('follow-list', () => {
     });
 
     describe('when the community to be followed is already followed', () => {
-      it.todo('leaves the list unchanged');
+      it('leaves the list unchanged', () => {
+        const list = new FollowList(userId1, []);
+
+        list.follow(editorialCommunity1Id);
+        const events = list.follow(editorialCommunity1Id);
+
+        expect(events).toHaveLength(0);
+      });
     });
   });
 

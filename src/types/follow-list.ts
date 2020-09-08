@@ -14,6 +14,10 @@ export default class FollowList {
   }
 
   follow(editorialCommunityId: EditorialCommunityId): ReadonlyArray<UserFollowedEditorialCommunityEvent> {
+    if (this.items.includes(editorialCommunityId)) {
+      return [];
+    }
+
     this.items.push(editorialCommunityId);
 
     return [
