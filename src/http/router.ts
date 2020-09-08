@@ -7,7 +7,7 @@ import send from 'koa-send';
 import identifyUser from './identify-user';
 import pageHandler from './page-handler';
 import ping from './ping';
-import createRequireAuthentication from './require-authentication';
+import { createRedirectAfterAuthenticating, createRequireAuthentication } from './require-authentication';
 import robots from './robots';
 import createAboutPage from '../about-page';
 import createArticlePage from '../article-page';
@@ -88,12 +88,7 @@ export default (adapters: Adapters): Router => {
 
       await next();
     },
-    async (context: ParameterizedContext, next) => {
-      const successRedirect = context.session.successRedirect || '/';
-      context.redirect(successRedirect);
-
-      await next();
-    });
+    createRedirectAfterAuthenticating());
 
   router.get('/robots.txt',
     robots());
