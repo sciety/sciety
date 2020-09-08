@@ -13,27 +13,31 @@ export default class FollowList {
     this.items = items;
   }
 
-  follow(editorialCommunityId: EditorialCommunityId): UserFollowedEditorialCommunityEvent {
+  follow(editorialCommunityId: EditorialCommunityId): ReadonlyArray<UserFollowedEditorialCommunityEvent> {
     this.items.push(editorialCommunityId);
 
-    return {
-      id: generate(),
-      type: 'UserFollowedEditorialCommunity',
-      date: new Date(),
-      userId: this.userId,
-      editorialCommunityId,
-    };
+    return [
+      {
+        id: generate(),
+        type: 'UserFollowedEditorialCommunity',
+        date: new Date(),
+        userId: this.userId,
+        editorialCommunityId,
+      },
+    ];
   }
 
-  unfollow(editorialCommunityId: EditorialCommunityId): UserUnfollowedEditorialCommunityEvent {
+  unfollow(editorialCommunityId: EditorialCommunityId): ReadonlyArray<UserUnfollowedEditorialCommunityEvent> {
     this.items = this.items.filter((item) => item.value !== editorialCommunityId.value);
 
-    return {
-      id: generate(),
-      type: 'UserUnfollowedEditorialCommunity',
-      date: new Date(),
-      userId: this.userId,
-      editorialCommunityId,
-    };
+    return [
+      {
+        id: generate(),
+        type: 'UserUnfollowedEditorialCommunity',
+        date: new Date(),
+        userId: this.userId,
+        editorialCommunityId,
+      },
+    ];
   }
 }

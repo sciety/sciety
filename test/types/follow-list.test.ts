@@ -11,9 +11,10 @@ describe('follow-list', () => {
       it('follows the community', () => {
         const list = new FollowList(userId1, []);
 
-        const event = list.follow(editorialCommunity1Id);
+        const events = list.follow(editorialCommunity1Id);
 
-        expect(event.editorialCommunityId).toBe(editorialCommunity1Id);
+        expect(events).toHaveLength(1);
+        expect(events[0].editorialCommunityId).toBe(editorialCommunity1Id);
       });
     });
 
@@ -27,9 +28,10 @@ describe('follow-list', () => {
       it('unfollows the community', async () => {
         const list = new FollowList(userId1, [editorialCommunity1Id]);
 
-        const event = list.unfollow(editorialCommunity1Id);
+        const events = list.unfollow(editorialCommunity1Id);
 
-        expect(event.editorialCommunityId).toBe(editorialCommunity1Id);
+        expect(events).toHaveLength(1);
+        expect(events[0].editorialCommunityId).toBe(editorialCommunity1Id);
       });
     });
 

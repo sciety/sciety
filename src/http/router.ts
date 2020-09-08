@@ -17,9 +17,9 @@ import createFollowHandler from '../follow';
 import createHomePage from '../home-page';
 import { Adapters } from '../infrastructure/adapters';
 import createSignOutHandler from '../sign-out';
+import EditorialCommunityId from '../types/editorial-community-id';
 import createUnfollowHandler from '../unfollow';
 import createUserPage from '../user-page';
-import EditorialCommunityId from '../types/editorial-community-id';
 
 export default (adapters: Adapters): Router => {
   const router = new Router();
@@ -83,8 +83,8 @@ export default (adapters: Adapters): Router => {
         const editorialCommunityId = new EditorialCommunityId(context.session.editorialCommunityId);
         const { user } = context.state;
         const followList = await adapters.getFollowList(user.id);
-        const event = followList.follow(editorialCommunityId);
-        await adapters.commitEvent(event);
+        const events = followList.follow(editorialCommunityId);
+        await adapters.commitEvent(events[0]);
       }
 
       const successRedirect = context.session.successRedirect || '/';
