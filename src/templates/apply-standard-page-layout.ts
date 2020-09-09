@@ -19,6 +19,7 @@ if (process.env.GOOGLE_ANALYTICS_TRACKING_ID) {
 }
 
 export default (page: string, user: Maybe<User>): string => `<!doctype html>
+<html lang="en">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>
@@ -87,4 +88,5 @@ export default (page: string, user: Maybe<User>): string => `<!doctype html>
       }
     });
   </script>
+</html>
 `;
