@@ -16,6 +16,8 @@ export default (ports: Ports): Middleware => {
     if (context.session.command === 'follow' && context.session.editorialCommunityId) {
       const editorialCommunityId = new EditorialCommunityId(context.session.editorialCommunityId);
       await followCommand(context.state.user, editorialCommunityId);
+      delete context.session.command;
+      delete context.session.editorialCommunityId;
     }
 
     await next();
