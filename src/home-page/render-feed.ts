@@ -21,7 +21,7 @@ export default (
         <h2 class="ui header">
           Feed
         </h2>
-        <ol class="ui large feed">
+        <ol class="ui large feed" role="list">
           ${templateListItems(feedItems, 'event')}
         </ol>
       </section>

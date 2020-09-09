@@ -18,7 +18,7 @@ export default (
     let searchResultsList = '';
     if (articles.length) {
       searchResultsList = `
-        <ul class="ui relaxed divided items">
+        <ul class="ui relaxed divided items" role="list">
           ${templateListItems(articles)}
         </ul>
       `;

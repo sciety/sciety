@@ -69,7 +69,7 @@ export default (
       <header class="ui basic padded vertical segment">
         <h1 class="ui header">${details.title}</h1>
 
-        <ol aria-label="Authors of this article" class="ui comma separated horizontal list">
+        <ol aria-label="Authors of this article" class="ui comma separated horizontal list" role="list">
           ${templateListItems(details.authors)}
         </ol>
 

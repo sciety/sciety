@@ -24,7 +24,7 @@ export default (
           Feed
         </h2>
         ${await renderFollowToggle(userId, editorialCommunityId)}
-        <ol class="ui large feed">
+        <ol class="ui large feed" role="list">
           ${templateListItems(feedItems, 'event')}
         </ol>
       </section>

@@ -23,7 +23,7 @@ export default (
     let renderedFollowList: string;
     if (list.length > 0) {
       renderedFollowList = `
-        <ol class="ui large feed">
+        <ol class="ui large feed" role="list">
           ${templateListItems(list, 'event')}
         </ol>
       `;
