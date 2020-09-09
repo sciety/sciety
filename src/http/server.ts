@@ -40,7 +40,12 @@ export default (router: Router, logger: Logger): Server => {
   });
 
   app.keys = [process.env.APP_SECRET ?? 'this-is-not-secret'];
-  app.use(koaSession(app));
+  app.use(koaSession(
+    {
+      maxAge: 365 * 24 * 60 * 60 * 1000,
+    },
+    app,
+  ));
 
   koaPassport.use(
     new TwitterStrategy(
