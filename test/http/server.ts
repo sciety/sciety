@@ -66,7 +66,7 @@ export default async (): Promise<TestServer> => {
     endorsements: createEndorsementsRepository([]),
     ...reviewProjections,
     getAllEvents: async () => [],
-    commitEvent: async () => {},
+    commitEvents: async () => {},
     logger: dummyLogger,
     getFollowList: async (userId) => new FollowList(userId),
     getUserDetails: async () => Result.ok({

@@ -1,5 +1,5 @@
 import { Maybe } from 'true-myth';
-import { CommitEvent } from './commit-event';
+import { CommitEvents } from './commit-events';
 import { EventSourcedFollowListRepository } from './event-sourced-follow-list-repository';
 import { FetchCrossrefArticle } from './fetch-crossref-article';
 import { FetchReview } from './fetch-review';
@@ -33,7 +33,7 @@ export interface Adapters {
   findReviewsForArticleVersionDoi: FindReviewsForArticleVersionDoi;
   findReviewsForEditorialCommunityId: FindReviewsForEditorialCommunityId;
   getAllEvents: () => Promise<ReadonlyArray<DomainEvent>>;
-  commitEvent: CommitEvent;
+  commitEvents: CommitEvents;
   getFollowList: EventSourcedFollowListRepository;
   getUserDetails: GetTwitterUserDetails;
   follows: Follows;

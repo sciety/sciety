@@ -4,7 +4,7 @@ import { DomainEvent, UserFollowedEditorialCommunityEvent, UserUnfollowedEditori
 import EditorialCommunityId from '../types/editorial-community-id';
 
 type RuntimeGeneratedEvent = UserFollowedEditorialCommunityEvent | UserUnfollowedEditorialCommunityEvent;
-export type CommitEvent = (event: RuntimeGeneratedEvent) => Promise<void>;
+export type CommitEvents = (event: RuntimeGeneratedEvent) => Promise<void>;
 
 const replacer = (key: string, value: unknown): unknown => {
   if (['date', 'id', 'type'].includes(key)) {
@@ -22,7 +22,7 @@ export default (
   events: Array<DomainEvent>,
   pool: Pool,
   logger: Logger,
-): CommitEvent => (
+): CommitEvents => (
   async (event) => {
     await pool.query(
       'INSERT INTO events (id, type, date, payload) VALUES ($1, $2, $3, $4);',

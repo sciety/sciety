@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Pool } from 'pg';
 import { Adapters } from './adapters';
-import createCommitEvent from './commit-event';
+import createCommitEvents from './commit-events';
 import createEventSourceFollowListRepository from './event-sourced-follow-list-repository';
 import createFetchCrossrefArticle from './fetch-crossref-article';
 import createFetchDataciteReview from './fetch-datacite-review';
@@ -92,7 +92,7 @@ const createInfrastructure = async (): Promise<Adapters> => {
     ...reviewProjections,
     getAllEvents,
     logger,
-    commitEvent: createCommitEvent(events, pool, logger),
+    commitEvents: createCommitEvents(events, pool, logger),
     getFollowList,
     getUserDetails: createGetTwitterUserDetails(getTwitterResponse, logger),
     follows: createFollows(getAllEvents),
