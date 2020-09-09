@@ -4,7 +4,7 @@ import { DomainEvent, UserFollowedEditorialCommunityEvent, UserUnfollowedEditori
 import EditorialCommunityId from '../types/editorial-community-id';
 
 type RuntimeGeneratedEvent = UserFollowedEditorialCommunityEvent | UserUnfollowedEditorialCommunityEvent;
-export type CommitEvents = (event: RuntimeGeneratedEvent) => Promise<void>;
+export type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => Promise<void>;
 
 const replacer = (key: string, value: unknown): unknown => {
   if (['date', 'id', 'type'].includes(key)) {
@@ -19,18 +19,20 @@ const replacer = (key: string, value: unknown): unknown => {
 };
 
 export default (
-  events: Array<DomainEvent>,
+  inMemoryEvents: Array<DomainEvent>,
   pool: Pool,
   logger: Logger,
 ): CommitEvents => (
-  async (event) => {
-    await pool.query(
-      'INSERT INTO events (id, type, date, payload) VALUES ($1, $2, $3, $4);',
-      [event.id, event.type, event.date, JSON.stringify(event, replacer)],
-    );
+  async (events) => {
+    for (const event of events) {
+      await pool.query(
+        'INSERT INTO events (id, type, date, payload) VALUES ($1, $2, $3, $4);',
+        [event.id, event.type, event.date, JSON.stringify(event, replacer)],
+      );
 
-    events.push(event);
+      inMemoryEvents.push(event);
 
-    logger('info', 'Event committed', { event });
+      logger('info', 'Event committed', { event });
+    }
   }
 );

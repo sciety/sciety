@@ -6,7 +6,7 @@ import { User } from '../types/user';
 import { UserId } from '../types/user-id';
 
 type Ports = {
-  commitEvents: (event: UserFollowedEditorialCommunityEvent) => Promise<void>;
+  commitEvents: (events: ReadonlyArray<UserFollowedEditorialCommunityEvent>) => Promise<void>;
   getFollowList: (userId: UserId) => Promise<FollowList>;
 };
 
@@ -16,9 +16,7 @@ export default (ports: Ports): Middleware<{ user: User }> => (
     const { user } = context.state;
     const followList = await ports.getFollowList(user.id);
     const events = followList.follow(editorialCommunityId);
-    events.forEach(async (event) => {
-      await ports.commitEvents(event);
-    });
+    await ports.commitEvents(events);
 
     context.redirect('back');
 
