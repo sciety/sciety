@@ -1,24 +1,25 @@
 import { Middleware } from '@koa/router';
-import { UserUnfollowedEditorialCommunityEvent } from '../types/domain-events';
+import createUnfollowCommand, { CommitEvents, GetFollowList } from './unfollow-command';
 import EditorialCommunityId from '../types/editorial-community-id';
-import FollowList from '../types/follow-list';
 import { User } from '../types/user';
-import { UserId } from '../types/user-id';
 
 type Ports = {
-  commitEvents: (events: ReadonlyArray<UserUnfollowedEditorialCommunityEvent>) => Promise<void>,
-  getFollowList: (userId: UserId) => Promise<FollowList>;
+  commitEvents: CommitEvents,
+  getFollowList: GetFollowList,
 };
 
-export default (ports: Ports): Middleware<{ user: User }> => (
-  async (context, next) => {
+export default (ports: Ports): Middleware<{ user: User }> => {
+  const unfollowCommand = createUnfollowCommand(
+    ports.getFollowList,
+    ports.commitEvents,
+  );
+  return async (context, next) => {
     const editorialCommunityId = new EditorialCommunityId(context.request.body.editorialcommunityid);
     const { user } = context.state;
-    const followList = await ports.getFollowList(user.id);
-    const events = followList.unfollow(editorialCommunityId);
-    await ports.commitEvents(events);
+    await unfollowCommand(user, editorialCommunityId);
 
     context.redirect('back');
+
     await next();
-  }
-);
+  };
+};
