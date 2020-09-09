@@ -1,5 +1,6 @@
 import { Middleware, ParameterizedContext } from 'koa';
 import createFollowCommand, { CommitEvents, GetFollowList } from './follow-command';
+import EditorialCommunityId from '../types/editorial-community-id';
 
 interface Ports {
   commitEvents: CommitEvents;
@@ -13,7 +14,8 @@ export default (ports: Ports): Middleware => {
   );
   return async (context: ParameterizedContext, next) => {
     if (context.session.command === 'follow' && context.session.editorialCommunityId) {
-      await followCommand(context.state.user, context.session.editorialCommunityId);
+      const editorialCommunityId = new EditorialCommunityId(context.session.editorialCommunityId);
+      await followCommand(context.state.user, editorialCommunityId);
     }
 
     await next();
