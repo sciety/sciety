@@ -39,6 +39,11 @@ export const createStreamLogger = (
   serializer: Serializer,
 ): Logger => (
   (level, message, payload = {}) => {
+    if (process.env.LOG_LEVEL === 'info') {
+      if (level === 'debug') {
+        return;
+      }
+    }
     const entry = {
       timestamp: new Date(),
       level,
