@@ -19,6 +19,8 @@ import createHomePage from '../home-page';
 import { Adapters } from '../infrastructure/adapters';
 import createSignOutHandler from '../sign-out';
 import createUnfollowHandler from '../unfollow';
+import createFinishUnfollowCommand from '../unfollow/finish-unfollow-command';
+import createSaveUnfollowCommand from '../unfollow/save-unfollow-command';
 import createUserPage from '../user-page';
 
 export default (adapters: Adapters): Router => {
@@ -61,6 +63,7 @@ export default (adapters: Adapters): Router => {
   router.post('/unfollow',
     identifyUser(adapters.logger),
     bodyParser({ enableTypes: ['form'] }),
+    createSaveUnfollowCommand(),
     createRequireAuthentication(),
     createUnfollowHandler(adapters));
 
@@ -75,6 +78,7 @@ export default (adapters: Adapters): Router => {
   router.get('/twitter/callback',
     authenticate,
     createFinishFollowCommand(adapters),
+    createFinishUnfollowCommand(adapters),
     createRedirectAfterAuthenticating());
 
   router.get('/robots.txt',
