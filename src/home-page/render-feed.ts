@@ -18,7 +18,7 @@ export default (
     if (userId.isNothing()) {
       contents = `
         <p class="log-in-invitation">
-          Log in to see your feed here or start building a new one by following some communities!
+          <a href="/sign-in">Log in</a> to see your feed here or start building a new one by following some communities!
           <img src="/static/images/feed-screenshot.png" alt="Screenshot of a feed" width="100%">
         </p>
       `;
