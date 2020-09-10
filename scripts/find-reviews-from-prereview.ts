@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Maybe } from 'true-myth';
 
 type ArticleSummary = {
   id: string,
@@ -7,7 +8,7 @@ type ArticleSummary = {
 
 type Review = {
   date_created: string;
-  doi: string;
+  doi: string|null;
 };
 
 type Article = {
@@ -20,17 +21,23 @@ type PrereviewResponse = {
 
 const biorxivPrefix = /^doi\/10\.1101\//;
 
-const formatRow = (articleId: string, row: Review): string => {
+const formatRow = (articleId: string, row: Review): Maybe<string> => {
   const articleDoi = articleId.replace(/^doi\//, '');
 
-  return `${new Date(row.date_created).toISOString()},${articleDoi},doi:${row.doi}`;
+  if (row.doi) {
+    return Maybe.just(`${new Date(row.date_created).toISOString()},${articleDoi},doi:${row.doi}`);
+  }
+
+  return Maybe.nothing();
 };
 
-const fetchReviews = (article: ArticleSummary): Array<Review> => {
+const fetchReviews = async (article: ArticleSummary): Promise<ReadonlyArray<Review>> => {
   if (!article.id.match(biorxivPrefix)) {
     return [];
   }
-  return [];
+
+  const { data } = await axios.get<Article>(`https://www.prereview.org/data/preprints/${article.id}`);
+  return data.prereviews;
 };
 
 void (async (): Promise<void> => {
@@ -41,12 +48,12 @@ void (async (): Promise<void> => {
     'https://www.prereview.org/data/preprints/search',
     { headers: { Accept: 'application/json' } },
   );
-  data.results.forEach((articleSummary) => {
+  data.results.forEach(async (articleSummary) => {
     if (articleSummary.n_prereviews > 0) {
-      const reviews = fetchReviews(articleSummary);
+      const reviews = await fetchReviews(articleSummary);
       reviews.forEach((review) => {
         const formatted = formatRow(articleSummary.id, review);
-        process.stdout.write(`${formatted}\n`);
+        formatted.map((value) => process.stdout.write(`${value}\n`));
       });
     }
   });
