@@ -10,7 +10,7 @@ const editorialCommunities: Array<EditorialCommunity> = [
   },
   {
     id: new EditorialCommunityId('10360d97-bf52-4aef-b2fa-2f60d319edd7'),
-    name: 'PREreview Community',
+    name: 'PREreview',
     avatarUrl: 'https://pbs.twimg.com/profile_images/1296877363712495616/p08CozPa_200x200.jpg',
     descriptionPath: 'prereview-community--10360d97-bf52-4aef-b2fa-2f60d319edd7.md',
   },
