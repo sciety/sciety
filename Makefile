@@ -84,13 +84,19 @@ find-pci-reviews: export TARGET = dev
 find-pci-reviews: build
 	$(DOCKER_COMPOSE) run -T app npx ts-node scripts/find-reviews-from-pci
 
+find-prereview-reviews: export TARGET = dev
+find-prereview-reviews: build
+	$(DOCKER_COMPOSE) run -T app npx ts-node scripts/find-reviews-from-prereview \
+		| tee ./data/reviews/10360d97-bf52-4aef-b2fa-2f60d319edd7.csv
+
 COMMUNITY_SCRIPTS := \
 	find-elife-endorsements \
 	find-peerj-endorsements \
 	find-review-commons-reviews \
 	find-elife-reviews \
 	find-peerj-reviews \
-	find-pci-reviews
+	find-pci-reviews \
+	find-prereview-reviews
 
 update-event-data: $(COMMUNITY_SCRIPTS)
 
