@@ -43,9 +43,9 @@ const fetchReviews = async (article: ArticleSummary): Promise<ReadonlyArray<Revi
 void (async (): Promise<void> => {
   process.stdout.write('Date,Article DOI,Review ID\n');
 
-  // -d '{"query":{"string":null,"sortBy":"reviews","page":1}}'
   const { data } = await axios.post<PrereviewResponse>(
     'https://www.prereview.org/data/preprints/search',
+    { query: { string: null, page: 1 } },
     { headers: { Accept: 'application/json' } },
   );
   data.results.forEach(async (articleSummary) => {
