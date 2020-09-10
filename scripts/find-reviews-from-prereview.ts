@@ -53,13 +53,15 @@ void (async (): Promise<void> => {
       { query: { string: null, page: currentPage } },
       { headers: { Accept: 'application/json' } },
     );
-    await Promise.all(data.results.map(async (searchResult) => {
-      if (searchResult.n_prereviews > 0) {
-        (await fetchPrereviews(searchResult))
-          .map((prereview) => formatRow(searchResult.id, prereview))
-          .forEach((formatted) => formatted.map((value) => process.stdout.write(`${value}\n`)));
-      }
-    }));
+    await Promise.all(
+      data.results
+        .filter((searchResult) => searchResult.n_prereviews > 0)
+        .map(async (searchResult) => {
+          (await fetchPrereviews(searchResult))
+            .map((prereview) => formatRow(searchResult.id, prereview))
+            .forEach((formatted) => formatted.map((value) => process.stdout.write(`${value}\n`)));
+        }),
+    );
     currentPage += 1;
     totalPages = data.totalpages;
   } while (currentPage <= totalPages);
