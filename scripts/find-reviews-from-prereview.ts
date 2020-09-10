@@ -17,6 +17,7 @@ type Article = {
 
 type PrereviewResponse = {
   results: ReadonlyArray<ArticleSummary>,
+  totalpages: number;
 };
 
 const biorxivPrefix = /^doi\/10\.1101\//;
@@ -43,18 +44,25 @@ const fetchReviews = async (article: ArticleSummary): Promise<ReadonlyArray<Revi
 void (async (): Promise<void> => {
   process.stdout.write('Date,Article DOI,Review ID\n');
 
-  const { data } = await axios.post<PrereviewResponse>(
-    'https://www.prereview.org/data/preprints/search',
-    { query: { string: null, page: 1 } },
-    { headers: { Accept: 'application/json' } },
-  );
-  data.results.forEach(async (articleSummary) => {
-    if (articleSummary.n_prereviews > 0) {
-      const reviews = await fetchReviews(articleSummary);
-      reviews.forEach((review) => {
-        const formatted = formatRow(articleSummary.id, review);
-        formatted.map((value) => process.stdout.write(`${value}\n`));
-      });
-    }
-  });
+  let currentPage = 1;
+  let totalPages = NaN;
+  do {
+    const response = await axios.post<PrereviewResponse>(
+      'https://www.prereview.org/data/preprints/search',
+      { query: { string: null, page: currentPage } },
+      { headers: { Accept: 'application/json' } },
+    );
+    const { data } = response;
+    data.results.forEach(async (articleSummary) => {
+      if (articleSummary.n_prereviews > 0) {
+        const reviews = await fetchReviews(articleSummary);
+        reviews.forEach((review) => {
+          const formatted = formatRow(articleSummary.id, review);
+          formatted.map((value) => process.stdout.write(`${value}\n`));
+        });
+      }
+    });
+    currentPage += 1;
+    totalPages = data.totalpages;
+  } while (currentPage <= totalPages);
 })();
