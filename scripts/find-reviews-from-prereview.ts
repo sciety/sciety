@@ -1,43 +1,44 @@
 import axios from 'axios';
 import { Maybe } from 'true-myth';
 
-type ArticleSummary = {
+type PrereviewSearchResult = {
   id: string,
   n_prereviews: number,
 };
 
-type Review = {
+type Prereview = {
   date_created: string;
   doi: string|null;
 };
 
-type Article = {
-  prereviews: Array<Review>;
+type PrereviewPreprint = {
+  prereviews: Array<Prereview>;
 };
 
-type PrereviewResponse = {
-  results: ReadonlyArray<ArticleSummary>,
+type PrereviewSearchResponse = {
+  results: ReadonlyArray<PrereviewSearchResult>,
   totalpages: number;
 };
 
 const biorxivPrefix = /^doi\/10\.1101\//;
 
-const formatRow = (articleId: string, row: Review): Maybe<string> => {
-  const articleDoi = articleId.replace(/^doi\//, '');
-
-  if (row.doi) {
-    return Maybe.just(`${new Date(row.date_created).toISOString()},${articleDoi},doi:${row.doi}`);
+const formatRow = (preprintId: string, prereview: Prereview): Maybe<string> => {
+  if (prereview.doi) {
+    const reviewDate = new Date(prereview.date_created);
+    const articleDoi = preprintId.replace(/^doi\//, '');
+    const reviewId = `doi:${prereview.doi}`;
+    return Maybe.just(`${reviewDate.toISOString()},${articleDoi},${reviewId}`);
   }
 
   return Maybe.nothing();
 };
 
-const fetchReviews = async (article: ArticleSummary): Promise<ReadonlyArray<Review>> => {
+const fetchPrereviews = async (article: PrereviewSearchResult): Promise<ReadonlyArray<Prereview>> => {
   if (!article.id.match(biorxivPrefix)) {
     return [];
   }
 
-  const { data } = await axios.get<Article>(`https://www.prereview.org/data/preprints/${article.id}`);
+  const { data } = await axios.get<PrereviewPreprint>(`https://www.prereview.org/data/preprints/${article.id}`);
   return data.prereviews;
 };
 
@@ -47,21 +48,20 @@ void (async (): Promise<void> => {
   let currentPage = 1;
   let totalPages = NaN;
   do {
-    const response = await axios.post<PrereviewResponse>(
+    const { data } = await axios.post<PrereviewSearchResponse>(
       'https://www.prereview.org/data/preprints/search',
       { query: { string: null, page: currentPage } },
       { headers: { Accept: 'application/json' } },
     );
-    const { data } = response;
-    data.results.forEach(async (articleSummary) => {
-      if (articleSummary.n_prereviews > 0) {
-        const reviews = await fetchReviews(articleSummary);
-        reviews.forEach((review) => {
-          const formatted = formatRow(articleSummary.id, review);
+    await Promise.all(data.results.map(async (searchResult) => {
+      if (searchResult.n_prereviews > 0) {
+        const prereviews = await fetchPrereviews(searchResult);
+        prereviews.forEach((prereview) => {
+          const formatted = formatRow(searchResult.id, prereview);
           formatted.map((value) => process.stdout.write(`${value}\n`));
         });
       }
-    });
+    }));
     currentPage += 1;
     totalPages = data.totalpages;
   } while (currentPage <= totalPages);
