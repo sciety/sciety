@@ -14,6 +14,18 @@ export default (
   renderFeedItem: RenderFeedItem,
 ): RenderFeed => (
   async (userId) => {
+    if (userId.isNothing()) {
+      return `
+        <section>
+          <h2 class="ui header">
+            Feed
+          </h2>
+          <p class="log-in-invitation">
+            Log in to see your feed here or start building a new one by following some communities!
+          </p>
+        </section>
+      `;
+    }
     const events = await getEvents(userId);
     const feedItems = await Promise.all(events.map(renderFeedItem));
     return `
