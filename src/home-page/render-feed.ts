@@ -14,29 +14,29 @@ export default (
   renderFeedItem: RenderFeedItem,
 ): RenderFeed => (
   async (userId) => {
+    let contents = '';
     if (userId.isNothing()) {
-      return `
-        <section>
-          <h2 class="ui header">
-            Feed
-          </h2>
-          <p class="log-in-invitation">
-            Log in to see your feed here or start building a new one by following some communities!
-            <img src="/static/images/feed-screenshot.png" alt="Screenshot of a feed" width="100%">
-          </p>
-        </section>
+      contents = `
+        <p class="log-in-invitation">
+          Log in to see your feed here or start building a new one by following some communities!
+          <img src="/static/images/feed-screenshot.png" alt="Screenshot of a feed" width="100%">
+        </p>
+      `;
+    } else {
+      const events = await getEvents(userId);
+      const feedItems = await Promise.all(events.map(renderFeedItem));
+      contents = `
+        <ol class="ui large feed" role="list">
+          ${templateListItems(feedItems, 'event')}
+        </ol>
       `;
     }
-    const events = await getEvents(userId);
-    const feedItems = await Promise.all(events.map(renderFeedItem));
     return `
       <section>
         <h2 class="ui header">
           Feed
         </h2>
-        <ol class="ui large feed" role="list">
-          ${templateListItems(feedItems, 'event')}
-        </ol>
+        ${contents}
       </section>
     `;
   }
