@@ -1,23 +1,23 @@
 import axios from 'axios';
 import { Maybe } from 'true-myth';
 
+type PrereviewSearchResponse = {
+  results: ReadonlyArray<PrereviewSearchResult>,
+  totalpages: number;
+};
+
 type PrereviewSearchResult = {
   id: string,
   n_prereviews: number,
-};
-
-type Prereview = {
-  date_created: string;
-  doi: string|null;
 };
 
 type PrereviewPreprint = {
   prereviews: Array<Prereview>;
 };
 
-type PrereviewSearchResponse = {
-  results: ReadonlyArray<PrereviewSearchResult>,
-  totalpages: number;
+type Prereview = {
+  date_created: string;
+  doi: string|null;
 };
 
 const biorxivPrefix = /^doi\/10\.1101\//;
