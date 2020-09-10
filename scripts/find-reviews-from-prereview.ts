@@ -55,11 +55,9 @@ void (async (): Promise<void> => {
     );
     await Promise.all(data.results.map(async (searchResult) => {
       if (searchResult.n_prereviews > 0) {
-        const prereviews = await fetchPrereviews(searchResult);
-        prereviews.forEach((prereview) => {
-          const formatted = formatRow(searchResult.id, prereview);
-          formatted.map((value) => process.stdout.write(`${value}\n`));
-        });
+        (await fetchPrereviews(searchResult))
+          .map((prereview) => formatRow(searchResult.id, prereview))
+          .forEach((formatted) => formatted.map((value) => process.stdout.write(`${value}\n`)));
       }
     }));
     currentPage += 1;
