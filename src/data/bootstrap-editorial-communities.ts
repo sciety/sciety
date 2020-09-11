@@ -21,12 +21,6 @@ const editorialCommunities: Array<EditorialCommunity> = [
     descriptionPath: 'peerj--53ed5364-a016-11ea-bb37-0242ac130002.md',
   },
   {
-    id: new EditorialCommunityId('10360d97-bf52-4aef-b2fa-2f60d319edd8'),
-    name: 'A PREreview Journal Club',
-    avatarUrl: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png',
-    descriptionPath: 'prereview-journal-club--10360d97-bf52-4aef-b2fa-2f60d319edd8.md',
-  },
-  {
     id: new EditorialCommunityId('316db7d9-88cc-4c26-b386-f067e0f56334'),
     name: 'Review Commons',
     avatarUrl: 'https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg',
