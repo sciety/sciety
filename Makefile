@@ -42,7 +42,7 @@ test\:coverage: build
 
 test\:features: export TARGET = dev
 test\:features: build
-	npx jest --roots=./features
+	npx jest --testTimeout=30000 --roots=./features
 
 build:
 	$(DOCKER_COMPOSE) build
