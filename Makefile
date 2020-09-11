@@ -40,6 +40,10 @@ test\:coverage: export TARGET = dev
 test\:coverage: build
 	${DOCKER_COMPOSE} run --rm app npm run test:coverage
 
+test\:features: export TARGET = dev
+test\:features: build
+	npx jest --roots=./features
+
 build:
 	$(DOCKER_COMPOSE) build
 
