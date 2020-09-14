@@ -153,6 +153,39 @@ describe('project-is-following-something', () => {
   });
 
   describe('when a second community has both follow and unfollow events and the first has only follow event', () => {
-    it.todo('is following something');
+    const someone = userId('someone');
+    const editorialCommunity1 = new EditorialCommunityId('community-1');
+    const editorialCommunity2 = new EditorialCommunityId('community-2');
+    const getAllEvents: GetAllEvents = async () => [
+      {
+        id: generate(),
+        type: 'UserFollowedEditorialCommunity',
+        date: new Date(),
+        userId: someone,
+        editorialCommunityId: editorialCommunity1,
+      },
+      {
+        id: generate(),
+        type: 'UserUnfollowedEditorialCommunity',
+        date: new Date(),
+        userId: someone,
+        editorialCommunityId: editorialCommunity1,
+      },
+      {
+        id: generate(),
+        type: 'UserFollowedEditorialCommunity',
+        date: new Date(),
+        userId: someone,
+        editorialCommunityId: editorialCommunity2,
+      },
+    ];
+
+    it('is following something', async () => {
+      const isFollowingSomething = createProjectIsFollowingSomething(getAllEvents);
+
+      const result = await isFollowingSomething(someone);
+
+      expect(result).toBe(true);
+    });
   });
 });
