@@ -24,12 +24,21 @@ export default (
       `;
     } else {
       const events = await getEvents(userId);
-      const feedItems = await Promise.all(events.map(renderFeedItem));
-      contents = `
-        <ol class="ui large feed" role="list">
-          ${templateListItems(feedItems, 'event')}
-        </ol>
-      `;
+      if (events.length > 0) {
+        const feedItems = await Promise.all(events.map(renderFeedItem));
+        contents = `
+          <ol class="ui large feed" role="list">
+            ${templateListItems(feedItems, 'event')}
+          </ol>
+        `;
+      } else {
+        contents = `
+          <p class="come-back-invitation">
+            The communities you follow haven’t made any evaluations yet,
+            come back any time to see their updates later.
+          </p>
+        `;
+      }
     }
     return `
       <section>

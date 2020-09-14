@@ -31,7 +31,18 @@ describe('render-feed', (): void => {
       });
     });
 
-    describe('and is following things but has an empty feed', () => {
+    describe('and has an empty feed', () => {
+      it('returns a come back later text', async (): Promise<void> => {
+        const dummyGetEvents: GetEvents = async () => [];
+        const dummyRenderFeedItem: RenderFeedItem = async () => '';
+        const renderFeed = createRenderFeed(
+          dummyGetEvents,
+          dummyRenderFeedItem,
+        );
+        const rendered = JSDOM.fragment(await renderFeed(Maybe.just(toUserId('1111'))));
+
+        expect(rendered.querySelector('.come-back-invitation')?.textContent).toStrictEqual(expect.stringContaining('come back any time'));
+      });
     });
 
     describe('and is following nothing yet', () => {
