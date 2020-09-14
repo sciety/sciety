@@ -45,9 +45,9 @@ describe('render-feed', (): void => {
           dummyGetEvents,
           shouldNotBeCalled,
         );
-        const rendered = JSDOM.fragment(await renderFeed(Maybe.just(toUserId('1111'))));
+        const rendered = await renderFeed(Maybe.just(toUserId('1111')));
 
-        expect(rendered.querySelector('.come-back-invitation')?.textContent).toStrictEqual(expect.stringContaining('come back any time'));
+        expect(rendered).toContain('The communities you’re following haven’t evaluated any articles yet.');
       });
     });
 

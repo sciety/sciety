@@ -50,9 +50,9 @@ export default (
         `;
       } else {
         contents = `
-          <p class="come-back-invitation">
-            The communities you follow haven’t made any evaluations yet,
-            come back any time to see their updates later.
+          <p>
+            The communities you’re following haven’t evaluated any articles yet.
+            You can have a look for other communities of interest, or try coming back later!
           </p>
         `;
       }
