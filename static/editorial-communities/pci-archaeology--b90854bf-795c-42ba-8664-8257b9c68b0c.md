@@ -27,13 +27,13 @@ PCI Archaeology welcomes anonymous submissions (see [details](https://archaeo.pe
 
 ## Managing Board
 
-Co-founders:
+### Co-founders:
 
 * Alain Queffelec (Univ. Bordeaux, CNRS, France)
 * Bruno Maureille (Univ. Bordeaux, CNRS, France)
 * Sébastien Villotte (Univ. Bordeaux, CNRS, France)
 
-Managers:
+### Managers:
 
 * Marta Arzarello (Univ. Ferrara, Italy)
 * Ruth Blasco (CENIEH, Spain)
