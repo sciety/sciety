@@ -1,5 +1,6 @@
 import { Maybe } from 'true-myth';
 import createGetMostRecentEvents, { GetAllEvents } from './get-most-recent-events';
+import createProjectIsFollowingSomething from './project-is-following-something';
 import createRenderEditorialCommunities, { GetAllEditorialCommunities } from './render-editorial-communities';
 import createRenderFeed, { IsFollowingSomething } from './render-feed';
 import createRenderFeedItem, { GetActor, GetArticle } from './render-feed-item';
@@ -39,7 +40,7 @@ export default (ports: Ports): RenderPage => {
   const getArticleAdapter: GetArticle = async (id) => (
     (await ports.fetchArticle(id)).unsafelyUnwrap()
   );
-  const isFollowingSomethingAdapter: IsFollowingSomething = async () => true;
+  const isFollowingSomethingAdapter: IsFollowingSomething = createProjectIsFollowingSomething(ports.getAllEvents);
   const getEventsAdapter = createGetMostRecentEvents(
     ports.getAllEvents,
     ports.follows,
