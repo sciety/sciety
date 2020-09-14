@@ -17,9 +17,7 @@ export default (
 ): GetEvents => (
   async (userId) => {
     const isFollowedEvent = async (event: DomainEvent): Promise<boolean> => {
-      const userFollows = await userId
-        .map(async (value) => follows(value, event.editorialCommunityId))
-        .unwrapOrElse(async () => false);
+      const userFollows = await follows(userId, event.editorialCommunityId);
 
       return (isEditorialCommunityEndorsedArticleEvent(event) && userFollows)
         || (isEditorialCommunityReviewedArticleEvent(event) && userFollows);

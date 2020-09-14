@@ -5,7 +5,7 @@ import { UserId } from '../types/user-id';
 
 type RenderFeed = (userId: Maybe<UserId>) => Promise<string>;
 
-export type GetEvents = (userId: Maybe<UserId>) => Promise<ReadonlyArray<FeedEvent>>;
+export type GetEvents = (userId: UserId) => Promise<ReadonlyArray<FeedEvent>>;
 
 export { FeedEvent } from './render-feed-item';
 
