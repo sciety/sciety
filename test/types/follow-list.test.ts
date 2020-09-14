@@ -54,13 +54,13 @@ describe('follow-list', () => {
     });
 
     describe('when the community to be unfollowed has already been unfollowed', () => {
-      it('does nothing', async() => {
+      it('does nothing', async () => {
         const list = new FollowList(userId1);
         list.follow(editorialCommunity1Id);
         list.unfollow(editorialCommunity1Id);
 
         const events = list.unfollow(editorialCommunity1Id);
-        
+
         expect(events).toHaveLength(0);
       });
     });
