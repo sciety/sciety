@@ -44,7 +44,17 @@ describe('follow-list', () => {
     });
 
     describe('when the community to be unfollowed is not already followed', () => {
-      it.todo('leaves the list unchanged');
+      it('does nothing', async () => {
+        const list = new FollowList(userId1);
+
+        const events = list.unfollow(editorialCommunity1Id);
+
+        expect(events).toHaveLength(0);
+      });
+    });
+
+    describe('when the community to be unfollowed has already been unfollowed', () => {
+      it.todo('does nothing');
     });
   });
 });

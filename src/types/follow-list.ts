@@ -32,6 +32,10 @@ export default class FollowList {
   }
 
   unfollow(editorialCommunityId: EditorialCommunityId): ReadonlyArray<UserUnfollowedEditorialCommunityEvent> {
+    if (!this.items.includes(editorialCommunityId.value)) {
+      return [];
+    }
+
     this.items = this.items.filter((item) => item !== editorialCommunityId.value);
 
     return [
