@@ -7,12 +7,12 @@ These notes and the examples will evolve.
 
 ### Font
 Fonts chosen for adequate glyph set, readability, and decent italic and bold styles.
-  
-#### Body copy  
+
+#### Body copy
 The extended glyph set offered by Noto provides a good safety net for correctly displaying scientific content. This avoids the 'tofu' box browsers display when a glyph isn't available. As serif is preferred over sans for readability, we'll use [Noto Serif](https://fonts.google.com/specimen/Noto+Serif?query=noto+serif).
 
 #### Headings
-[Lato's](https://fonts.google.com/specimen/Lato?query=lato) extended Latin character set should be sufficient for the headings, but let's keep a watching brief. The x-height is a bit smaller than Noto Serif, but it's only really slightly noticeable with heading level 6. (If these become a problem we can always switch to Noto Sans.) 
+[Lato's](https://fonts.google.com/specimen/Lato?query=lato) extended Latin character set should be sufficient for the headings, but let's keep a watching brief. The x-height is a bit smaller than Noto Serif, but it's only really slightly noticeable with heading level 6. (If these become a problem we can always switch to Noto Sans.)
 
 ### Sizing
 - Base font: 16px, line-height of 1.5
@@ -20,19 +20,19 @@ The extended glyph set offered by Noto provides a good safety net for correctly 
 - Heading 1: 38px
 - Heading 2: 30px
 - Heading 3: 26px
-- Heading 4: 22px                                           
+- Heading 4: 22px
 - Heading 5: 18px
 - Heading 6: 16px
 
 
 ## Vertical spacing
-To avoid nasty surprises like margins collapsing, in normal circumstances only add whitespace as bottom margin. If occasionally a top space is absolutely necessary, apply it with padding to avoid margin collapse (unless that's what you want). 
+To avoid nasty surprises like margins collapsing, in normal circumstances only add whitespace as bottom margin. If occasionally a top space is absolutely necessary, apply it with padding to avoid margin collapse (unless that's what you want).
 
 We're using an 8px increment for vertical spacing.
 
-- Headings: 2 increments (16px equivalent) margin bottom 
-- Paragraphs: 3 increments (24px equivalent) margin bottom 
-- Headings and body copy: zero margin top 
+- Headings: 2 increments (16px equivalent) margin bottom
+- Paragraphs: 3 increments (24px equivalent) margin bottom
+- Headings and body copy: zero margin top
 
 ## Grid
 TBC
