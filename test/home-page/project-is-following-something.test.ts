@@ -131,7 +131,25 @@ describe('project-is-following-something', () => {
   });
 
   describe('when another user has a follow event', () => {
-    it.todo('not following anything');
+    const someone = userId('someone');
+    const someoneElse = userId('someoneelse');
+    const getAllEvents: GetAllEvents = async () => [
+      {
+        id: generate(),
+        type: 'UserFollowedEditorialCommunity',
+        date: new Date(),
+        userId: someoneElse,
+        editorialCommunityId: new EditorialCommunityId('dummy'),
+      },
+    ];
+
+    it('not following anything', async () => {
+      const isFollowingSomething = createProjectIsFollowingSomething(getAllEvents);
+
+      const result = await isFollowingSomething(someone);
+
+      expect(result).toBe(false);
+    });
   });
 
   describe('when a second community has both follow and unfollow events and the first has only follow event', () => {
