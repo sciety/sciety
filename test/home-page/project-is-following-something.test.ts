@@ -68,4 +68,24 @@ describe('project-is-following-something', () => {
 
     expect(actual).toBe(true);
   });
+
+  describe('when there are no events', () => {
+    it.todo('not following anything');
+  });
+
+  describe('when there is one follow event', () => {
+    it.todo('is following something');
+  });
+
+  describe('when there is a follow event followed by unfollow event', () => {
+    it.todo('not following anything');
+  });
+
+  describe('when another user has a follow event', () => {
+    it.todo('not following anything');
+  });
+
+  describe('when a second community has both follow and unfollow events and the first has only follow event', () => {
+    it.todo('is following something');
+  });
 });
