@@ -1,10 +1,11 @@
 import { JSDOM } from 'jsdom';
 import { Maybe } from 'true-myth';
-import createRenderFeed, { GetEvents } from '../../src/home-page/render-feed';
+import createRenderFeed, { GetEvents, IsFollowingSomething } from '../../src/home-page/render-feed';
 import { RenderFeedItem } from '../../src/home-page/render-feed-item';
 import Doi from '../../src/types/doi';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
 import toUserId from '../../src/types/user-id';
+import shouldNotBeCalled from '../should-not-be-called';
 
 describe('render-feed', (): void => {
   describe('when the user is logged in', () => {
@@ -18,8 +19,10 @@ describe('render-feed', (): void => {
             articleId: new Doi('10.1101/12345678'),
           },
         ];
+        const dummyIsFollowingSomething: IsFollowingSomething = async () => true;
         const dummyRenderFeedItem: RenderFeedItem = async () => '';
         const renderFeed = createRenderFeed(
+          dummyIsFollowingSomething,
           dummyGetEvents,
           dummyRenderFeedItem,
         );
@@ -35,11 +38,12 @@ describe('render-feed', (): void => {
 
     describe('and has an empty feed', () => {
       it('returns a come back later text', async (): Promise<void> => {
+        const dummyIsFollowingSomething: IsFollowingSomething = async () => true;
         const dummyGetEvents: GetEvents = async () => [];
-        const dummyRenderFeedItem: RenderFeedItem = async () => '';
         const renderFeed = createRenderFeed(
+          dummyIsFollowingSomething,
           dummyGetEvents,
-          dummyRenderFeedItem,
+          shouldNotBeCalled,
         );
         const rendered = JSDOM.fragment(await renderFeed(Maybe.just(toUserId('1111'))));
 
@@ -47,16 +51,27 @@ describe('render-feed', (): void => {
       });
     });
 
-    describe('and is following nothing yet', () => {
+    describe('and is not following anything yet', () => {
+      it('returns a follow-something text', async () => {
+        const dummyIsFollowingSomething: IsFollowingSomething = async () => false;
+        const renderFeed = createRenderFeed(
+          dummyIsFollowingSomething,
+          shouldNotBeCalled,
+          shouldNotBeCalled,
+        );
+        const rendered = await renderFeed(Maybe.just(toUserId('1111')));
+
+        expect(rendered).toContain('Start following some communities');
+      });
     });
   });
 
   describe('when the user is not logged in', () => {
     it('invites them to log in', async () => {
-      const dummyRenderFeedItem: RenderFeedItem = async () => '';
       const renderFeed = createRenderFeed(
-        async () => [],
-        dummyRenderFeedItem,
+        shouldNotBeCalled,
+        shouldNotBeCalled,
+        shouldNotBeCalled,
       );
       const rendered = JSDOM.fragment(await renderFeed(Maybe.nothing()));
 

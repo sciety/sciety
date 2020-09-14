@@ -5,11 +5,14 @@ import { UserId } from '../types/user-id';
 
 type RenderFeed = (userId: Maybe<UserId>) => Promise<string>;
 
+export type IsFollowingSomething = (userId: UserId) => Promise<boolean>;
+
 export type GetEvents = (userId: UserId) => Promise<ReadonlyArray<FeedEvent>>;
 
 export { FeedEvent } from './render-feed-item';
 
 export default (
+  isFollowingSomething: IsFollowingSomething,
   getEvents: GetEvents,
   renderFeedItem: RenderFeedItem,
 ): RenderFeed => (
@@ -20,6 +23,12 @@ export default (
         <p class="log-in-invitation">
           <a href="/sign-in">Log in</a> to see your feed here or start building a new one by following some communities!
           <img src="/static/images/feed-screenshot.png" alt="Screenshot of a feed" width="100%">
+        </p>
+      `;
+    } else if (!(await isFollowingSomething(userId.unsafelyUnwrap()))) {
+      contents = `
+        <p>
+          Your feed is empty! Start following some communities to see their most recent evaluations right here.
         </p>
       `;
     } else {

@@ -1,7 +1,7 @@
 import { Maybe } from 'true-myth';
 import createGetMostRecentEvents, { GetAllEvents } from './get-most-recent-events';
 import createRenderEditorialCommunities, { GetAllEditorialCommunities } from './render-editorial-communities';
-import createRenderFeed from './render-feed';
+import createRenderFeed, { IsFollowingSomething } from './render-feed';
 import createRenderFeedItem, { GetActor, GetArticle } from './render-feed-item';
 import createRenderFindArticle from './render-find-article';
 import createRenderFollowToggle from './render-follow-toggle';
@@ -39,6 +39,7 @@ export default (ports: Ports): RenderPage => {
   const getArticleAdapter: GetArticle = async (id) => (
     (await ports.fetchArticle(id)).unsafelyUnwrap()
   );
+  const isFollowingSomethingAdapter: IsFollowingSomething = async () => true;
   const getEventsAdapter = createGetMostRecentEvents(
     ports.getAllEvents,
     ports.follows,
@@ -51,6 +52,7 @@ export default (ports: Ports): RenderPage => {
   const renderFindArticle = createRenderFindArticle();
   const renderFeedItem = createRenderFeedItem(getActorAdapter, getArticleAdapter);
   const renderFeed = createRenderFeed(
+    isFollowingSomethingAdapter,
     getEventsAdapter,
     renderFeedItem,
   );
