@@ -38,6 +38,9 @@ module.exports = {
     '@typescript-eslint/prefer-nullish-coalescing': 'error',
     '@typescript-eslint/promise-function-async': 'error',
     '@typescript-eslint/restrict-template-expressions': 'error',
+    '@typescript-eslint/switch-exhaustiveness-check': 'error',
+    'consistent-return': 'off',
+    'default-case': 'off',
     'import/order': ['error', {
       alphabetize: {
         order: 'asc',

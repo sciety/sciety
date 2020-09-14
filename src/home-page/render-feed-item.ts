@@ -56,7 +56,7 @@ const createRenderFeedItemSummary = (getArticle: GetArticle): RenderFeedItemSumm
   return async (event, actor) => {
     switch (event.type) {
       case 'EditorialCommunityEndorsedArticle': return renderEditorialCommunityEndorsedArticle(event, actor);
-      default: return renderEditorialCommunityReviewedArticle(event, actor);
+      case 'EditorialCommunityReviewedArticle': return renderEditorialCommunityReviewedArticle(event, actor);
     }
   };
 };
