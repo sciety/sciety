@@ -29,15 +29,11 @@ event is EditorialCommunityReviewedArticleEvent => (
   event.type === 'EditorialCommunityReviewedArticle'
 );
 
-export type EditorialCommunityJoinedEvent = Readonly<{
+type EditorialCommunityJoinedEvent = Readonly<{
   type: 'EditorialCommunityJoined';
   date: Date;
   editorialCommunityId: EditorialCommunityId;
 }>;
-
-export const isEditorialCommunityJoinedEvent = (event: DomainEvent): event is EditorialCommunityJoinedEvent => (
-  event.type === 'EditorialCommunityJoined'
-);
 
 export type UserFollowedEditorialCommunityEvent = Readonly<{
   id: EventId,

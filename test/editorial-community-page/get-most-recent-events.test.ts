@@ -13,8 +13,6 @@ describe('get-most-recent-events', () => {
     articleId: new Doi('10.1101/751099'),
   });
 
-  it.todo('always returns EditorialCommunityJoined events');
-
   it('only returns events for the given editorial community', async () => {
     const allEvents: ReadonlyArray<DomainEvent> = [
       endorsedBy(editorialCommunity2),
