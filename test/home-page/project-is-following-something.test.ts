@@ -103,7 +103,31 @@ describe('project-is-following-something', () => {
   });
 
   describe('when there is a follow event followed by unfollow event', () => {
-    it.todo('not following anything');
+    const someone = userId('someone');
+    const getAllEvents: GetAllEvents = async () => [
+      {
+        id: generate(),
+        type: 'UserFollowedEditorialCommunity',
+        date: new Date(),
+        userId: someone,
+        editorialCommunityId: new EditorialCommunityId('dummy'),
+      },
+      {
+        id: generate(),
+        type: 'UserUnfollowedEditorialCommunity',
+        date: new Date(),
+        userId: someone,
+        editorialCommunityId: new EditorialCommunityId('dummy'),
+      },
+    ];
+
+    it('not following anything', async () => {
+      const isFollowingSomething = createProjectIsFollowingSomething(getAllEvents);
+
+      const result = await isFollowingSomething(someone);
+
+      expect(result).toBe(false);
+    });
   });
 
   describe('when another user has a follow event', () => {
