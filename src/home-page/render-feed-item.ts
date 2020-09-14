@@ -2,15 +2,13 @@ import templateDate from '../templates/date';
 import Doi from '../types/doi';
 import {
   EditorialCommunityEndorsedArticleEvent,
-  EditorialCommunityJoinedEvent,
   EditorialCommunityReviewedArticleEvent,
 } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 
 export type FeedEvent =
   EditorialCommunityEndorsedArticleEvent |
-  EditorialCommunityReviewedArticleEvent |
-  EditorialCommunityJoinedEvent;
+  EditorialCommunityReviewedArticleEvent;
 
 export type RenderFeedItem = (event: FeedEvent) => Promise<string>;
 
@@ -55,19 +53,10 @@ const createRenderFeedItemSummary = (getArticle: GetArticle): RenderFeedItemSumm
     `;
   };
 
-  const renderEditorialCommunityJoined: RenderEvent<EditorialCommunityJoinedEvent> = async (
-    event,
-    actor,
-  ) => `
-      <a href="${actor.url}">${actor.name}</a>
-      joined The Hive
-    `;
-
   return async (event, actor) => {
     switch (event.type) {
       case 'EditorialCommunityEndorsedArticle': return renderEditorialCommunityEndorsedArticle(event, actor);
-      case 'EditorialCommunityReviewedArticle': return renderEditorialCommunityReviewedArticle(event, actor);
-      default: return renderEditorialCommunityJoined(event, actor);
+      default: return renderEditorialCommunityReviewedArticle(event, actor);
     }
   };
 };
