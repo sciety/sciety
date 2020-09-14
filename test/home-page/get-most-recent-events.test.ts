@@ -39,8 +39,6 @@ describe('get-most-recent-events', () => {
     expect(sortedEvents[1]).toStrictEqual(initial[0]);
   });
 
-  it.todo('always returns EditorialCommunityJoined events');
-
   it.todo('only returns events for the follow list');
 
   describe('when there\'s a small number of items', () => {

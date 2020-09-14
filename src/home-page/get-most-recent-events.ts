@@ -2,7 +2,6 @@ import { FeedEvent, GetEvents } from './render-feed';
 import {
   DomainEvent,
   isEditorialCommunityEndorsedArticleEvent,
-  isEditorialCommunityJoinedEvent,
   isEditorialCommunityReviewedArticleEvent,
 } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
@@ -18,10 +17,6 @@ export default (
 ): GetEvents => (
   async (userId) => {
     const isFollowedEvent = async (event: DomainEvent): Promise<boolean> => {
-      if (isEditorialCommunityJoinedEvent(event)) {
-        return true;
-      }
-
       const userFollows = await userId
         .map(async (value) => follows(value, event.editorialCommunityId))
         .unwrapOrElse(async () => false);
