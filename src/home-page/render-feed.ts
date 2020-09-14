@@ -23,7 +23,7 @@ export default (
         </p>
       `;
     } else {
-      const events = await getEvents(userId);
+      const events = await getEvents(userId.unsafelyUnwrap());
       if (events.length > 0) {
         const feedItems = await Promise.all(events.map(renderFeedItem));
         contents = `
