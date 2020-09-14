@@ -73,9 +73,9 @@ describe('render-feed', (): void => {
         shouldNotBeCalled,
         shouldNotBeCalled,
       );
-      const rendered = JSDOM.fragment(await renderFeed(Maybe.nothing()));
+      const rendered = await renderFeed(Maybe.nothing());
 
-      expect(rendered.querySelector('.log-in-invitation')?.textContent).toStrictEqual(expect.stringContaining('Log in to'));
+      expect(rendered).toContain('Log in');
     });
   });
 });

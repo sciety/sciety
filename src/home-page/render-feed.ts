@@ -20,18 +20,16 @@ export default (
     let contents = '';
     if (userId.isNothing()) {
       contents = `
-        <div class="log-in-invitation">
-          <p>Welcome to The Hive.</p>
-          <p>
-            Follow research as it develops- and stay up to date with the next big thing,
-            evaluated by the editorial communities you trust.
-          </p>
-          <p>
-            <a href="/sign-in">Log in</a> to see your feed here or start building a new one
-            by following some communities!
-          </p>
-          <img src="/static/images/feed-screenshot.png" alt="Screenshot of a feed" width="100%">
-        </div>
+        <p>Welcome to The Hive.</p>
+        <p>
+          Follow research as it develops- and stay up to date with the next big thing,
+          evaluated by the editorial communities you trust.
+        </p>
+        <p>
+          <a href="/sign-in">Log in</a> to see your feed here or start building a new one
+          by following some communities!
+        </p>
+        <img src="/static/images/feed-screenshot.png" alt="Screenshot of a feed" width="100%">
       `;
     } else if (!(await isFollowingSomething(userId.unsafelyUnwrap()))) {
       contents = `
