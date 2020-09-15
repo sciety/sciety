@@ -4,7 +4,7 @@ export default (): RenderPageHeader => (
   async () => (`
     <header class="ui basic padded center aligned vertical segment">
 
-      <h1 class="ui header">
+      <h1>
         The Hive
       </h1>
 

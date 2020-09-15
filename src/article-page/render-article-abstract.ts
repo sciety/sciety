@@ -13,7 +13,7 @@ export default (getArticleAbstract: GetArticleAbstract): RenderArticleAbstract =
   async (doi) => (
     (await getArticleAbstract(doi)).map((articleAbstract) => `
       <section role="doc-abstract">
-        <h2 class="ui header">
+        <h2>
           Abstract
         </h2>
           ${articleAbstract.content}

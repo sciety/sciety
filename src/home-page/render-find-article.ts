@@ -5,9 +5,9 @@ export default (): RenderFindArticle => (
     <form method="get" action="/articles" class="ui basic very padded vertical form container segment">
       <fieldset>
 
-        <legend class="ui large header">
+        <h3>
           Search bioRxiv content
-        </legend>
+        </h3>
 
         <div class="ui action input">
           <input type="text" name="query" placeholder="Keywords, author name, DOI ..." required>

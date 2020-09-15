@@ -39,7 +39,7 @@ export default (
     return `
       <article class="content">
 
-        <h3 class="header">
+        <h3>
           Reviewed by
           <a href="/editorial-communities/${editorialCommunityId.value}" id="${idNamespace}-editorial-community">
             ${await getEditorialCommunityName(editorialCommunityId)}

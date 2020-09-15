@@ -42,7 +42,7 @@ export default (
 
     return `
       <section class="ui very padded vertical segment">
-        <h2 class="ui header">
+        <h2>
           Followers
         </h2>
         ${contents}

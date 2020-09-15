@@ -57,7 +57,7 @@ export default (
     }
     return `
       <section>
-        <h2 class="ui header">
+        <h2>
           Feed
         </h2>
         ${contents}

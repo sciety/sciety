@@ -13,7 +13,7 @@ type RenderHeader = (userId: UserId) => Promise<Result<string, 'not-found' | 'un
 
 const headerTemplate = (ud: UserDetails): string => `
   <header class="ui basic padded vertical segment">
-  <h1 class="ui header">
+  <h1>
       <img class="ui avatar image" src="${ud.avatarUrl}" alt="">
       <div class="content">
       ${ud.displayName}

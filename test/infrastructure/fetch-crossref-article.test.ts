@@ -65,8 +65,8 @@ describe('fetch-crossref-article', (): void => {
         </abstract>`);
       const abstract = (await createFetchCrossrefArticle(getXml, dummyLogger)(doi)).unsafelyUnwrap();
 
-      expect(abstract.abstract).toStrictEqual(expect.stringContaining('<h3 class="ui header">should be an h3</h3>'));
-      expect(abstract.abstract).toStrictEqual(expect.stringContaining('<h3 class="ui header">should also be an h3</h3>'));
+      expect(abstract.abstract).toStrictEqual(expect.stringContaining('<h3>should be an h3</h3>'));
+      expect(abstract.abstract).toStrictEqual(expect.stringContaining('<h3>should also be an h3</h3>'));
       expect(abstract.abstract).toStrictEqual(expect.not.stringContaining('<title>'));
       expect(abstract.abstract).toStrictEqual(expect.not.stringContaining('</title>'));
     });

@@ -6,7 +6,7 @@ export default (
   getHtml: GetHtml,
 ): RenderPage => async (filename) => `
   <header class="ui basic padded vertical segment">
-    <h1 class="ui header">
+    <h1>
       About The Hive
     </h1>
   </header>

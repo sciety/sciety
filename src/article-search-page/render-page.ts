@@ -7,7 +7,7 @@ export default (
 ): RenderPage => async (query) => (
   `
     <header class="ui basic padded vertical segment">
-      <h1 class="ui header">Search results</h1>
+      <h1>Search results</h1>
     </header>
 
     <section class="ui basic vertical segment">

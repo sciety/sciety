@@ -27,7 +27,7 @@ export default (
 
   return `
       <section>
-        <h2 class="ui header">
+        <h2>
           Editorial communities
         </h2>
         <ol class="ui divided items" role="list">

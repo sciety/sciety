@@ -26,7 +26,7 @@ export default (
   }
   return `
       <section class="ui very padded vertical segment">
-        <h2 class="ui header">
+        <h2>
           Feed
         </h2>
         ${await renderFollowToggle(userId, editorialCommunityId)}

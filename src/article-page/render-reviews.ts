@@ -26,7 +26,7 @@ export default (
     }
     return Result.ok(`
       <section id="${id}">
-        <h2 class="ui header">
+        <h2>
           Reviews
         </h2>
         <ol class="ui very relaxed divided items ordered list">

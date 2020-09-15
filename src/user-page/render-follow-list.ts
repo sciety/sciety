@@ -39,7 +39,7 @@ export default (
     }
     return Result.ok(`
       <section>
-        <h2 class="ui header">
+        <h2>
           Following
         </h2>
         ${renderedFollowList}

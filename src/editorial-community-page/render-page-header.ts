@@ -15,7 +15,7 @@ export default (
 
     return `
       <header class="ui basic padded vertical segment">
-        <h1 class="ui header">
+        <h1>
           <img src="${editorialCommunity.avatarUrl}" alt="" class="ui avatar image">
           ${editorialCommunity.name}
         </h1>
