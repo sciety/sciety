@@ -1,8 +1,9 @@
+import { URLSearchParams } from 'url';
 import { Logger } from './logger';
 import Doi from '../types/doi';
 import { Json, JsonCompatible } from '../types/json';
 
-type GetJson = (uri: string) => Promise<Json>;
+export type GetJson = (uri: string) => Promise<Json>;
 
 interface SearchResult {
   doi: Doi;
@@ -30,8 +31,13 @@ type EuropePmcQueryResponse = JsonCompatible<{
 
 export default (getJson: GetJson, logger: Logger): SearchEuropePmc => (
   async (query) => {
-    const uri = 'https://www.ebi.ac.uk/europepmc/webservices/rest/search'
-      + `?query=${query}%20PUBLISHER%3A%22bioRxiv%22%20sort_date%3Ay&format=json&pageSize=10`;
+    const queryString = new URLSearchParams({
+      query: `${query} PUBLISHER:"bioRxiv" sort_date:y`,
+      format: 'json',
+      pageSize: '10',
+    });
+
+    const uri = `https://www.ebi.ac.uk/europepmc/webservices/rest/search?${queryString.toString()}`;
     const data = await getJson(uri) as EuropePmcQueryResponse;
 
     logger('debug', 'Received Europe PMC search results', { data });

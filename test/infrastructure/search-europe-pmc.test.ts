@@ -1,4 +1,4 @@
-import createSearchEuropePmc from '../../src/infrastructure/search-europe-pmc';
+import createSearchEuropePmc, { GetJson } from '../../src/infrastructure/search-europe-pmc';
 import Doi from '../../src/types/doi';
 import dummyLogger from '../dummy-logger';
 
@@ -28,5 +28,24 @@ describe('search-europe-pmc adapter', () => {
       authors: 'Author 1, Author 2',
       postedDate: new Date('2019-11-07'),
     });
+  });
+
+  it('constructs the Europe PMC query safely', async () => {
+    const getJson: GetJson = async () => ({
+      hitCount: 0,
+      resultList: {
+        result: [],
+      },
+    });
+    const spy = jest.fn(getJson);
+    const adapter = createSearchEuropePmc(spy, dummyLogger);
+
+    await adapter('Structural basis of αE&');
+
+    expect(spy).toHaveBeenCalledTimes(1);
+
+    const uri = spy.mock.calls[0][0];
+
+    expect(uri).toContain('?query=Structural+basis+of+%CE%B1E%26+PUBLISHER%3A%22bioRxiv%22+sort_date%3Ay&');
   });
 });
