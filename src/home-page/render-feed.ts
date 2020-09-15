@@ -22,7 +22,7 @@ export default (
       contents = `
         <p>Welcome to The Hive.</p>
         <p>
-          Follow research as it develops- and stay up to date with the next big thing,
+          Follow research as it develops and stay up to date with the next big thing,
           evaluated by the editorial communities you trust.
         </p>
         <p>
