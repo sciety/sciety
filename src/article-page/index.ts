@@ -1,4 +1,4 @@
-import { Result } from 'true-myth';
+import { Maybe, Result } from 'true-myth';
 import ensureBiorxivDoi from './ensure-biorxiv-doi';
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
 import createRenderPage, { RenderPageError } from './render-page';
@@ -16,15 +16,18 @@ import createRenderReview, {
 import createRenderReviews, { GetReviews, RenderReviews } from './render-reviews';
 import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
-import EditorialCommunityRepository from '../types/editorial-community-repository';
 import EndorsementsRepository from '../types/endorsements-repository';
 import { FetchExternalArticle } from '../types/fetch-external-article';
+
+type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => Promise<Maybe<{
+  name: string;
+}>>;
 
 interface Ports {
   fetchArticle: FetchExternalArticle;
   getBiorxivCommentCount: GetCommentCount;
   fetchReview: GetReview;
-  editorialCommunities: EditorialCommunityRepository;
+  getEditorialCommunity: GetEditorialCommunity,
   endorsements: EndorsementsRepository,
   findReviewsForArticleVersionDoi: GetReviews;
 }
@@ -39,7 +42,7 @@ const buildRenderPageHeader = (ports: Ports): RenderPageHeader => {
     (await ports.findReviewsForArticleVersionDoi(articleDoi)).length
   );
   const getEditorialCommunityName: GetEditorialCommunityName = async (editorialCommunityId) => (
-    (await ports.editorialCommunities.lookup(editorialCommunityId)).unsafelyUnwrap().name
+    (await ports.getEditorialCommunity(editorialCommunityId)).unsafelyUnwrap().name
   );
   const getEndorsingEditorialCommunityNames: GetEndorsingEditorialCommunityNames = async (doi) => (
     Promise.all((await ports.endorsements.endorsingEditorialCommunityIds(doi)).map(getEditorialCommunityName))
@@ -63,7 +66,7 @@ const buildRenderAbstract = (fetchAbstract: FetchExternalArticle): RenderArticle
 
 const buildRenderReviews = (ports: Ports): RenderReviews => {
   const getEditorialCommunityName: GetEditorialCommunityNameForRenderReview = async (editorialCommunityId) => (
-    (await ports.editorialCommunities.lookup(editorialCommunityId)).unsafelyUnwrap().name
+    (await ports.getEditorialCommunity(editorialCommunityId)).unsafelyUnwrap().name
   );
 
   const renderReview = createRenderReview(ports.fetchReview, getEditorialCommunityName, 1500);
