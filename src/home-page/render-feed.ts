@@ -36,6 +36,7 @@ export default (
         <p>
           Your feed is empty! Start following some communities to see their most recent evaluations right here.
         </p>
+        <img src="/static/images/feed-screenshot.png" alt="Screenshot of a feed" class="feed__image">
       `;
     } else {
       const events = await getEvents(userId.unsafelyUnwrap());
