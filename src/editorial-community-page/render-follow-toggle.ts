@@ -17,7 +17,7 @@ export default (follows: Follows): RenderFollowToggle => (
 
     if (userFollows) {
       return `
-        <form method="post" action="/unfollow">
+        <form method="post" action="/unfollow" class="follow-toggle">
           <input type="hidden" name="editorialcommunityid" value="${editorialCommunityId.value}">
           <button type="submit" class="ui mini button">Unfollow</button>
         </form>
@@ -25,7 +25,7 @@ export default (follows: Follows): RenderFollowToggle => (
     }
 
     return `
-      <form method="post" action="/follow">
+      <form method="post" action="/follow" class="follow-toggle">
         <input type="hidden" name="editorialcommunityid" value="${editorialCommunityId.value}">
         <button type="submit" class="ui mini primary button">Follow</button>
       </form>
