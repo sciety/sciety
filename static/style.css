@@ -1,5 +1,9 @@
 @import "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css";
 
+/* Hive imports, not Semantic-UI */
+@import url('https://fonts.googleapis.com/css?family=Lato:ital,wght@0,400;0,700;1,400&subset=latin,latin-ext&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap');
+
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Styles that override Semantic UI
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -148,4 +152,30 @@ Styles that are independent of Semantic UI
 .follower__handle {
   padding-top: 2px;
   color: rgb(0, 0, 0);
+}
+
+:root {
+  --BASE-FONT-PX: 16px;
+  --BASE-FONT-REM: 1rem;
+  --VERTICAL-INCREMENT: calc(var(--BASE-FONT-REM) / 2);
+  --TWO-INCREMENTS: calc(var(--VERTICAL-INCREMENT) * 2);
+  --THREE-INCREMENTS: calc(var(--VERTICAL-INCREMENT) * 3);
+}
+
+html {
+  font-size: var(--BASE-FONT-PX);
+}
+
+body,
+p
+{
+  font-family: "Noto Serif", serif;
+  font-size: var(--BASE-FONT-REM);
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: var(--THREE-INCREMENTS);
+  line-height: 1.5;
+  font-weight: 400;
 }
