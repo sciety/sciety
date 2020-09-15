@@ -14,9 +14,15 @@ import { FetchExternalArticle } from '../types/fetch-external-article';
 import { User } from '../types/user';
 import { UserId } from '../types/user-id';
 
+type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => Promise<Maybe<{
+  name: string;
+  avatarUrl: string;
+}>>;
+
 interface Ports {
   fetchArticle: FetchExternalArticle;
   editorialCommunities: EditorialCommunityRepository;
+  getEditorialCommunity: GetEditorialCommunity,
   getAllEvents: GetAllEvents,
   follows: (userId: UserId, editorialCommunityId: EditorialCommunityId) => Promise<boolean>,
 }
@@ -30,7 +36,7 @@ type RenderPage = (params: Params) => Promise<string>;
 export default (ports: Ports): RenderPage => {
   const editorialCommunitiesAdapter: GetAllEditorialCommunities = async () => ports.editorialCommunities.all();
   const getActorAdapter: GetActor = async (id) => {
-    const editorialCommunity = (await ports.editorialCommunities.lookup(id)).unsafelyUnwrap();
+    const editorialCommunity = (await ports.getEditorialCommunity(id)).unsafelyUnwrap();
     return {
       name: editorialCommunity.name,
       imageUrl: editorialCommunity.avatarUrl,
