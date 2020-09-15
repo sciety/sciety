@@ -29,7 +29,7 @@ export default (
           <a href="/sign-in">Log in</a> to see your feed here or start building a new one
           by following some communities!
         </p>
-        <img src="/static/images/feed-screenshot.png" alt="Screenshot of a feed" width="100%">
+        <img src="/static/images/feed-screenshot.png" alt="Screenshot of a feed" class="feed__image">
       `;
     } else if (!(await isFollowingSomething(userId.unsafelyUnwrap()))) {
       contents = `
