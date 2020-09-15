@@ -1,3 +1,4 @@
+import { Maybe } from 'true-myth';
 import createRenderPage from './render-page';
 import createRenderSearchResult, {
   GetCommentCount,
@@ -8,7 +9,6 @@ import createRenderSearchResult, {
 import createRenderSearchResults, { FindArticles } from './render-search-results';
 import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
-import EditorialCommunityRepository from '../types/editorial-community-repository';
 import EndorsementsRepository from '../types/endorsements-repository';
 import { ReviewId } from '../types/review-id';
 
@@ -18,10 +18,14 @@ type FindReviewsForArticleVersionDoi = (articleVersionDoi: Doi) => Promise<Array
   added: Date;
 }>>;
 
+type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => Promise<Maybe<{
+  name: string;
+}>>;
+
 interface Ports {
   getBiorxivCommentCount: GetCommentCount;
   searchEuropePmc: FindArticles,
-  editorialCommunities: EditorialCommunityRepository;
+  getEditorialCommunity: GetEditorialCommunity,
   endorsements: EndorsementsRepository,
   findReviewsForArticleVersionDoi: FindReviewsForArticleVersionDoi;
 }
@@ -56,7 +60,7 @@ export default (ports: Ports): RenderPage => {
   const renderSearchResult = buildRenderSearchResult(
     ports.getBiorxivCommentCount,
     getReviewCount,
-    async (editorialCommunityId) => (await ports.editorialCommunities.lookup(editorialCommunityId)).unsafelyUnwrap(),
+    async (editorialCommunityId) => (await ports.getEditorialCommunity(editorialCommunityId)).unsafelyUnwrap(),
     ports.endorsements,
   );
   const renderSearchResults = createRenderSearchResults(ports.searchEuropePmc, renderSearchResult);
