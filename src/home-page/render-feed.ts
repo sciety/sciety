@@ -26,7 +26,7 @@ export default (
           evaluated by the editorial communities you trust.
         </p>
         <p>
-          <a href="/sign-in">Log in</a> to see your feed here or start building a new one
+          <a href="/sign-in">Log in with Twitter</a> to see your feed here or start building a new one
           by following some communities!
         </p>
         <img src="/static/images/feed-screenshot.png" alt="Screenshot of a feed" class="feed__image">
