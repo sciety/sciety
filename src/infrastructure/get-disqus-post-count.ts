@@ -13,8 +13,9 @@ type DisqusData = JsonCompatible<{
 
 type GetDisqusPostCount = (uri: string) => Promise<Maybe<number>>;
 
-const isAxiosError = (error: unknown): error is AxiosError => typeof error === 'object'
-    && error?.hasOwnProperty('isAxiosError') === true;
+const isAxiosError = (error: unknown): error is AxiosError => (
+  typeof error === 'object' && Object.prototype.hasOwnProperty.call(error, 'isAxiosError')
+);
 
 export default (getJson: GetJson, logger: Logger): GetDisqusPostCount => (
   async (uri) => {
