@@ -1,4 +1,4 @@
-import { GetRecommendationContent } from "./get-hardcoded-recommendations";
+import { GetRecommendationContent } from './get-hardcoded-recommendations';
 
 export default (): GetRecommendationContent => (
   async () => `
