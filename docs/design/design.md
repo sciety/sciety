@@ -35,7 +35,7 @@ We're using an 8px increment for vertical spacing.
 - Headings and body copy: zero margin top
 
 ## Grid
-TBC
+Grids usually comprise 12 or 16 columns, depending on the complexity of the content to be laid out. The Hive's content is not very complicated, and so a 12 column grid should be more than enough. 
 
 ## Component styles
 Don't try to solve problems you don't have, but don't ignore the ones you do. Resize the browser a lot, and fix things when they break.

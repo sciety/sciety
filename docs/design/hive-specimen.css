@@ -2,11 +2,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap');
 
 :root {
-  --BASE-FONT-PX: 16px;
+  --BASE-FONT-MEASURE: 16;
+  --BASE-FONT-PX: calc(var(--BASE-FONT-MEASURE) * 1px);
   --BASE-FONT-REM: 1rem;
   --VERTICAL-INCREMENT: calc(var(--BASE-FONT-REM) / 2);
   --TWO-INCREMENTS: calc(var(--VERTICAL-INCREMENT) * 2);
   --THREE-INCREMENTS: calc(var(--VERTICAL-INCREMENT) * 3);
+  --GRID-COLUMN-COUNT: 12;
 }
 
 html {
@@ -80,3 +82,65 @@ h6 {
   line-height: 1.2;
   font-weight: 400;
 }
+
+.site-nav-list {
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+  justify-content: space-between;
+
+}
+
+.site-nav-list > li {
+  font-family: Lato, sans-serif;
+  color: #333;
+  flex: 0 0 auto;
+  font-size: calc((14 / var(--BASE-FONT-PX)) * 1rem);
+  padding-right: 2rem;
+}
+
+.site-nav-list > li:last-child {
+  margin-left: auto;
+  padding-right: 0;
+}
+
+.site-nav-list a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  max-width: calc((1200 / var(--BASE-FONT-MEASURE)) * 1rem);
+  margin: 0 auto;
+}
+
+.grid-section--12-col { --columns: 12; }
+.grid-section--11-col { --columns: 11; }
+.grid-section--10-col { --columns: 10; }
+.grid-section--9-col { --columns: 9; }
+.grid-section--8-col { --columns: 8; }
+.grid-section--7-col { --columns: 7; }
+.grid-section--6-col { --columns: 6; }
+.grid-section--5-col { --columns: 5; }
+.grid-section--4-col { --columns: 4; }
+.grid-section--3-col { --columns: 3; }
+.grid-section--2-col { --columns: 2; }
+.grid-section--1-col { --columns: 1; }
+
+
+.grid-section--start-anchored {
+  --starting-offset: 1;
+  --ending-offset: calc(var(--columns) + 1);
+}
+
+.grid-section--centered {
+  --starting-offset: calc(((var(--GRID-COLUMN-COUNT) - var(--columns)) / 2) + 1);
+  --ending-offset: calc(var(--starting-offset) + var(--columns));
+}
+
+.grid-section {
+  grid-column: var(--starting-offset, 1) / var(--ending-offset, calc(var(--GRID-COLUMN-COUNT) + 1));
+}
+
