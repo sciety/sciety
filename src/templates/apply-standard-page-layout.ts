@@ -1,5 +1,6 @@
 import { Maybe } from 'true-myth';
 import { User } from '../types/user';
+import { UserId } from '../types/user-id';
 
 let googleAnalytics = '';
 if (process.env.GOOGLE_ANALYTICS_TRACKING_ID) {
@@ -17,6 +18,16 @@ if (process.env.GOOGLE_ANALYTICS_TRACKING_ID) {
     gtag('config', '${process.env.GOOGLE_ANALYTICS_TRACKING_ID}');
   `;
 }
+
+const loggedInMenuItems = (id: UserId): string => `
+  <li class="item">
+    <a href="/users/${id}">My profile</a>
+  </li>
+
+  <li class="item">
+    <a href="/sign-out">Log out</a>
+  </li>
+`;
 
 export default (page: string, user: Maybe<User>): string => `<!doctype html>
 <html lang="en">
@@ -42,15 +53,7 @@ export default (page: string, user: Maybe<User>): string => `<!doctype html>
           <a href="/about">About</a>
         </li>
 
-        ${user.mapOr('', ({ id }) => `
-          <li class="item">
-            <a href="/users/${id}">My profile</a>
-          </li>
-
-          <li class="item">
-            <a href="/sign-out">Log out</a>
-          </li>
-        `)}
+        ${user.mapOr('', loggedInMenuItems)}
 
         <li class="right item">
           <a href="https://eepurl.com/g7qqcv" class="ui primary button">Give us feedback</a>
