@@ -28,6 +28,12 @@ const loggedInMenuItems = (user: User): string => `
   </li>
 `;
 
+const loggedOutMenuItems = (): string => `
+  <li class="item">
+    <a href="/sign-in">Log in</a>
+  </li>
+`;
+
 export default (page: string, user: Maybe<User>): string => `<!doctype html>
 <html lang="en">
   <meta charset="utf-8">
@@ -52,7 +58,7 @@ export default (page: string, user: Maybe<User>): string => `<!doctype html>
           <a href="/about">About</a>
         </li>
 
-        ${user.mapOr('', loggedInMenuItems)}
+        ${user.mapOrElse(loggedOutMenuItems, loggedInMenuItems)}
 
         <li class="right item">
           <a href="https://eepurl.com/g7qqcv" class="ui primary button">Give us feedback</a>
