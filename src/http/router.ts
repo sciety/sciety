@@ -17,7 +17,7 @@ import createFinishFollowCommand from '../follow/finish-follow-command';
 import createSaveFollowCommand from '../follow/save-follow-command';
 import createHomePage from '../home-page';
 import { Adapters } from '../infrastructure/adapters';
-import createSignOutHandler from '../sign-out';
+import createLogOutHandler from '../log-out';
 import createUnfollowHandler from '../unfollow';
 import createFinishUnfollowCommand from '../unfollow/finish-unfollow-command';
 import createSaveUnfollowCommand from '../unfollow/save-unfollow-command';
@@ -78,7 +78,7 @@ export default (adapters: Adapters): Router => {
     authenticate);
 
   router.get('/sign-out',
-    createSignOutHandler());
+    createLogOutHandler());
 
   router.get('/twitter/callback',
     authenticate,
