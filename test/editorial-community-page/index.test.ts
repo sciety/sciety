@@ -14,10 +14,6 @@ describe('create render page', (): void => {
       renderedPage = (await renderPage(params)).unsafelyUnwrap();
     });
 
-    it('has the editorial community name', async (): Promise<void> => {
-      expect(renderedPage).toStrictEqual(expect.stringContaining('eLife'));
-    });
-
     it('has the editorial community description', async (): Promise<void> => {
       expect(renderedPage).toStrictEqual(expect.stringContaining('Contents of'));
     });
