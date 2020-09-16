@@ -1,6 +1,5 @@
 import { Maybe } from 'true-myth';
 import { User } from '../types/user';
-import { UserId } from '../types/user-id';
 
 let googleAnalytics = '';
 if (process.env.GOOGLE_ANALYTICS_TRACKING_ID) {
@@ -19,9 +18,9 @@ if (process.env.GOOGLE_ANALYTICS_TRACKING_ID) {
   `;
 }
 
-const loggedInMenuItems = (id: UserId): string => `
+const loggedInMenuItems = (user: User): string => `
   <li class="item">
-    <a href="/users/${id}">My profile</a>
+    <a href="/users/${user.id}">My profile</a>
   </li>
 
   <li class="item">
