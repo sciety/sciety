@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import clip from 'text-clipper';
 import { Maybe } from 'true-myth';
 import templateDate from '../templates/date';
