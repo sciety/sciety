@@ -74,10 +74,10 @@ export default (adapters: Adapters): Router => {
     },
   );
 
-  router.get('/sign-in',
+  router.get('/log-in',
     authenticate);
 
-  router.get('/sign-out',
+  router.get('/log-out',
     createLogOutHandler());
 
   router.get('/twitter/callback',

@@ -5,7 +5,7 @@ import EditorialCommunityId from '../../src/types/editorial-community-id';
 import toUserId from '../../src/types/user-id';
 
 describe('render-follow-toggle', () => {
-  describe('the user is signed in', () => {
+  describe('the user is logged in', () => {
     describe('when the community is currently followed', () => {
       it('shows an unfollow button', async () => {
         const userId = toUserId('u1');
@@ -43,7 +43,7 @@ describe('render-follow-toggle', () => {
     });
   });
 
-  describe('the user is not signed in', () => {
+  describe('the user is not logged in', () => {
     it('shows a follow button', async () => {
       const editorialCommunityId = new EditorialCommunityId('');
 

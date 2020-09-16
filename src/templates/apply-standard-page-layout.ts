@@ -24,13 +24,13 @@ const loggedInMenuItems = (user: User): string => `
   </li>
 
   <li class="item">
-    <a href="/sign-out">Log out</a>
+    <a href="/log-out">Log out</a>
   </li>
 `;
 
 const loggedOutMenuItems = (): string => `
   <li class="item">
-    <a href="/sign-in">Log in</a>
+    <a href="/log-in">Log in</a>
   </li>
 `;
 
