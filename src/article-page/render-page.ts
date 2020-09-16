@@ -32,9 +32,7 @@ export default (
 </article>
     `);
 
-  return async (doi) => {
-    const abstractResult = renderAbstract(doi);
-    const pageHeaderResult = renderPageHeader(doi);
+  const renderRecommendations: Component = async (doi) => {
     let recommendations = '';
     if (doi.value === '10.1101/2020.06.03.20119925') {
       recommendations = `<section id="recommendations">
@@ -65,7 +63,14 @@ export default (
         </article>
       </section>
       `;
-    }
+    };
+    return Result.ok(recommendations);
+  };
+
+  return async (doi) => {
+    const abstractResult = renderAbstract(doi);
+    const pageHeaderResult = renderPageHeader(doi);
+    const recommendationsResult = renderRecommendations(doi);
     const reviews = renderReviews(doi)
       .then((reviewsResult) => (
         reviewsResult.orElse(() => Result.ok(''))
@@ -74,7 +79,7 @@ export default (
     return template
       .ap(await abstractResult)
       .ap(await pageHeaderResult)
-      .ap(Result.ok(recommendations))
+      .ap(await recommendationsResult)
       .ap(await reviews)
       .mapErr(() => ({
         type: 'not-found',
