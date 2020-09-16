@@ -9,6 +9,7 @@ import createRenderPageHeader, {
   GetReviewCount,
   RenderPageHeader,
 } from './render-page-header';
+import createRenderRecommendations from './render-recommendations';
 import createRenderReview, {
   GetEditorialCommunityName as GetEditorialCommunityNameForRenderReview,
   GetReview,
@@ -86,9 +87,11 @@ type RenderPage = (params: Params) => Promise<Result<string, RenderPageError>>;
 export default (ports: Ports): RenderPage => {
   const renderPageHeader = buildRenderPageHeader(ports);
   const renderAbstract = buildRenderAbstract(ports.fetchArticle);
+  const renderRecommendations = createRenderRecommendations();
   const renderReviews = buildRenderReviews(ports);
   const renderPage = createRenderPage(
     renderPageHeader,
+    renderRecommendations,
     renderReviews,
     renderAbstract,
   );
