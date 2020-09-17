@@ -19,6 +19,7 @@ export default (
           Peer Community in Evolutionary Biology
         </a>
         </h3>
+        <h4>SARS-Cov-2 genome sequence analysis suggests rapid spread followed by epidemic slowdown in France</h4>
         <p>
           ${content}
         </p>
