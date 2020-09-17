@@ -5,8 +5,6 @@ The Hive
 [![Open issues][Open issues badge]][Open issues]
 [![License][License badge]][License]
 
-It's written in [TypeScript], and uses the [Koa framework][Koa].
-
 Table of contents
 -----------------
 
@@ -142,7 +140,6 @@ We released this software under the [MIT license][license]. Copyright © 2020 [e
 [ESLint]: https://eslint.org/
 [GNU Make]: https://www.gnu.org/software/make/
 [Jest]: https://jestjs.io/
-[Koa]: https://koajs.com/
 [License]: LICENSE.md
 [License badge]: https://flat.badgen.net/badge/license/MIT/blue
 [Makefile]: Makefile
@@ -154,4 +151,3 @@ We released this software under the [MIT license][license]. Copyright © 2020 [e
 [Production deployments]: https://github.com/hivereview/thehive/actions?query=workflow%3AProduction
 [Production environment]: http://hive.review
 [Staging environment]: http://staging.hive.review
-[TypeScript]: https://www.typescriptlang.org/
