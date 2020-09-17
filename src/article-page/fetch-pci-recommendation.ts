@@ -23,8 +23,11 @@ export default (logger: Logger): GetEndorsement => (
     const date = theDom.window.document.querySelector(
       'meta[name="citation_publication_date"]',
     )?.getAttribute('content');
+    const author = theDom.window.document.querySelector(
+      'meta[name="citation_author"]',
+    )?.getAttribute('content');
 
-    if (text === null || title === null || !date) {
+    if (text === null || title === null || !date || !author) {
       throw new Error(`Cannot find PCI recommendation for ${url.toString()}`);
     }
 
@@ -32,7 +35,7 @@ export default (logger: Logger): GetEndorsement => (
       date: new Date(date),
       title: title.innerHTML,
       content: text.innerHTML,
-      author: 'B. Jesse Shapiro',
+      author,
     };
   }
 );
