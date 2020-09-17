@@ -8,13 +8,16 @@ export type GetEndorsements = (doi: Doi) => Promise<ReadonlyArray<{
   date: Date,
   title: string,
   content: string,
+  author: string,
 }>>;
 
 export default (
   getEndorsements: GetEndorsements,
 ): RenderEndorsements => (
   async (doi) => {
-    const endorsements = (await getEndorsements(doi)).map(({ title, date, content }) => `
+    const endorsements = (await getEndorsements(doi)).map(({
+      title, date, content, author,
+    }) => `
       <article class="content">
         <h3>
         Endorsed by
@@ -24,6 +27,7 @@ export default (
         </h3>
         <h4>${title}</h4>
         <p>${templateDate(date)}</p>
+        <p>By ${author}</p>
         <p>
           ${content}
         </p>

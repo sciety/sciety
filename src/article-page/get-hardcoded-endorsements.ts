@@ -5,6 +5,7 @@ export type GetEndorsement = (doi: Doi) => Promise<{
   date: Date,
   title: string,
   content: string,
+  author: string,
 }>;
 
 export default (

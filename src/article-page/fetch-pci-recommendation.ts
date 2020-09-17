@@ -32,6 +32,7 @@ export default (logger: Logger): GetEndorsement => (
       date: new Date(date),
       title: title.innerHTML,
       content: text.innerHTML,
+      author: 'B. Jesse Shapiro',
     };
   }
 );
