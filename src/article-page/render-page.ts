@@ -40,23 +40,32 @@ export default (
     if (doi.value === '10.1101/2020.06.19.160770') {
       reviewSummaries = `
         <section id="review-summaries">
-          <article>
-            <h3>
-              Reviews summarised by
-              <a href="/editorial-communities/b560187e-f2fb-4ff9-a861-a204f3fc0fb0">
-                eLife
-              </a>
-            </h3>
-            <p>
-              While we all considered the value of the dataset as a useful resource for the community, providing a
-              transcriptional landscape of prostatic monocytic cells, we all agreed that the study remains too
-              descriptive and primarily empirical correlations at this stage, with very limited mechanistic implications
-              and validation. In addition, the lack of healthy control, an incomplete bioinformatical analysis (batch
-              effects, other MPS cell clusters like cDCs), missing validation, and a limited number of cells/patients
-              dampened the enthusiasm of all the reviewers.
-            </p>
-          </article>
+          <ol role="list" class="ui very relaxed divided items list"> 
+            <li class="item">  
+              <article class="content">          
+                <h2>
+                  Summary of reviews by
+                  <a href="/editorial-communities/b560187e-f2fb-4ff9-a861-a204f3fc0fb0">
+                    eLife
+                  </a>
+                </h2>
+                <div class="meta" data-test-id="reviewPublicationDate"><time datetime="2020-09-15">Sep 15, 2020</time></div>
+                <p>
+                  While we all considered the value of the dataset as a useful resource for the community, providing a
+                  transcriptional landscape of prostatic monocytic cells, we all agreed that the study remains too
+                  descriptive and primarily empirical correlations at this stage, with very limited mechanistic implications
+                  and validation. In addition, the lack of healthy control, an incomplete bioinformatical analysis (batch
+                  effects, other MPS cell clusters like cDCs), missing validation, and a limited number of cells/patients
+                  dampened the enthusiasm of all the reviewers.
+                </p>
+                <p>
+                  This review applies only to version 1 of the manuscript.
+                </p>
+              </article>
+            </li>
+          </ol>
         </section>
+        <div class="ui hidden clearing section divider"></div>
       `;
     }
 
