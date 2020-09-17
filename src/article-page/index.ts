@@ -1,7 +1,7 @@
 import { Maybe, Result } from 'true-myth';
 import ensureBiorxivDoi from './ensure-biorxiv-doi';
 import createFetchPciRecommendation from './fetch-pci-recommendation';
-import createGetHardcodedRecommendations from './get-hardcoded-recommendations';
+import createGetHardcodedEndorsements from './get-hardcoded-endorsements';
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
 import createRenderEndorsements from './render-endorsements';
 import createRenderPage, { RenderPageError } from './render-page';
@@ -92,7 +92,7 @@ export default (ports: Ports): RenderPage => {
   const renderPageHeader = buildRenderPageHeader(ports);
   const renderAbstract = buildRenderAbstract(ports.fetchArticle);
   const fetchPciRecommendation = createFetchPciRecommendation(ports.logger);
-  const getEndorsements = createGetHardcodedRecommendations(fetchPciRecommendation);
+  const getEndorsements = createGetHardcodedEndorsements(fetchPciRecommendation);
   const renderEndorsements = createRenderEndorsements(getEndorsements);
   const renderReviews = buildRenderReviews(ports);
   const renderPage = createRenderPage(
