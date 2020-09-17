@@ -30,6 +30,7 @@ module.exports = {
       allowExpressions: true,
     }],
     '@typescript-eslint/no-floating-promises': 'error',
+    '@typescript-eslint/no-implicit-any-catch': 'error',
     '@typescript-eslint/no-misused-promises': ['error', {
       checksVoidReturn: false,
     }],

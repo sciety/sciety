@@ -153,7 +153,7 @@ export default (ports: Ports): RenderPage => {
 
     try {
       return Result.ok(await renderPage(editorialCommunityId, userId));
-    } catch (error) {
+    } catch (error: unknown) {
       return Result.err({
         type: 'not-found',
         content: `Editorial community id '${editorialCommunityId.value}' not found`,

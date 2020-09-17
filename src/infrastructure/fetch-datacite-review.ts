@@ -29,7 +29,7 @@ export default (fetchDataset: FetchDataset, logger: Logger): FetchDataciteReview
       };
       logger('debug', 'Retrieved review', { review });
       return review;
-    } catch (e) {
+    } catch (error: unknown) {
       return {
         publicationDate: Maybe.nothing(),
         summary: Maybe.nothing(),

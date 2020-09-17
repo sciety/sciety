@@ -47,6 +47,8 @@ describe('get-twitter-user-details', () => {
   it('returns not-found if the Twitter user ID is invalid', async () => {
     const getTwitterResponse: GetTwitterResponse = async () => {
       class InvalidTwitterIdError extends Error {
+        isAxiosError = true;
+
         response = {
           status: 400,
         };

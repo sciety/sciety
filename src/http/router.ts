@@ -1,5 +1,6 @@
 import path from 'path';
 import Router from '@koa/router';
+import { isHttpError } from 'http-errors';
 import bodyParser from 'koa-bodyparser';
 import koaPassport from 'koa-passport';
 import send from 'koa-send';
@@ -92,8 +93,8 @@ export default (adapters: Adapters): Router => {
   router.get('/static/:file(.+)', async (context) => {
     try {
       await send(context, context.params.file, { root: path.resolve(__dirname, '../../static') });
-    } catch (error) {
-      if (error.status && error.status === 404) {
+    } catch (error: unknown) {
+      if (isHttpError(error) && error.status === 404) {
         context.response.status = 404;
         return;
       }

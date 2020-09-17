@@ -105,7 +105,7 @@ export default (ports: Ports): RenderPage => {
     let doi: Doi;
     try {
       doi = ensureBiorxivDoi(params.doi ?? '').unsafelyUnwrap();
-    } catch (error) {
+    } catch (error: unknown) {
       return Result.err({
         type: 'not-found',
         content: `${params.doi ?? 'Article'} not found`,

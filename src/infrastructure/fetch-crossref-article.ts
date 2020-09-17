@@ -109,7 +109,7 @@ export default (getXml: GetXml, logger: Logger): FetchCrossrefArticle => {
     let response: string;
     try {
       response = await getXml(uri, 'application/vnd.crossref.unixref+xml');
-    } catch (error) {
+    } catch (error: unknown) {
       logger('error', 'Failed to fetch article', { doi, error });
 
       return Result.err('not-found');
@@ -124,7 +124,7 @@ export default (getXml: GetXml, logger: Logger): FetchCrossrefArticle => {
         title: getTitle(doc),
         publicationDate: getPublicationDate(doc),
       });
-    } catch (error) {
+    } catch (error: unknown) {
       logger('error', 'Unable to parse document', { doi, response, error });
 
       return Result.err('unavailable');
