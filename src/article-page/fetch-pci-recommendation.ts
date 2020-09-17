@@ -17,12 +17,15 @@ export default (logger: Logger): GetEndorsement => (
     const text = theDom.window.document.querySelector(
       '.pci-article-div .pci-recommendation-div .pci-bigtext',
     );
-    if (text === null) {
+    const title = theDom.window.document.querySelector(
+      '.pci-article-div .pci-recommendation-div h2',
+    );
+    if (text === null || title === null) {
       throw new Error(`Cannot find PCI recommendation for ${url.toString()}`);
     }
 
     return {
-      title: 'SARS-Cov-2 genome sequence analysis suggests rapid spread followed by epidemic slowdown in France',
+      title: title.innerHTML,
       content: text.innerHTML,
     };
   }
