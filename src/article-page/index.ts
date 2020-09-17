@@ -17,6 +17,7 @@ import createRenderReview, {
   GetReview,
 } from './render-review';
 import createRenderReviews, { GetReviews, RenderReviews } from './render-reviews';
+import { Logger } from '../infrastructure/logger';
 import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
 import EndorsementsRepository from '../types/endorsements-repository';
@@ -33,6 +34,7 @@ interface Ports {
   getEditorialCommunity: GetEditorialCommunity,
   endorsements: EndorsementsRepository,
   findReviewsForArticleVersionDoi: GetReviews;
+  logger: Logger;
 }
 
 const reviewsId = 'reviews';
@@ -89,7 +91,7 @@ type RenderPage = (params: Params) => Promise<Result<string, RenderPageError>>;
 export default (ports: Ports): RenderPage => {
   const renderPageHeader = buildRenderPageHeader(ports);
   const renderAbstract = buildRenderAbstract(ports.fetchArticle);
-  const fetchPciRecommendation = createFetchPciRecommendation();
+  const fetchPciRecommendation = createFetchPciRecommendation(ports.logger);
   const getRecommendations = createGetHardcodedRecommendations(fetchPciRecommendation);
   const renderRecommendations = createRenderRecommendations(getRecommendations);
   const renderReviews = buildRenderReviews(ports);
