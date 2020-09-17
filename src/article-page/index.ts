@@ -3,6 +3,7 @@ import ensureBiorxivDoi from './ensure-biorxiv-doi';
 import createFetchPciRecommendation from './fetch-pci-recommendation';
 import createGetHardcodedRecommendations from './get-hardcoded-recommendations';
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
+import createRenderEndorsements from './render-endorsements';
 import createRenderPage, { RenderPageError } from './render-page';
 import createRenderPageHeader, {
   GetArticleDetails,
@@ -11,7 +12,6 @@ import createRenderPageHeader, {
   GetReviewCount,
   RenderPageHeader,
 } from './render-page-header';
-import createRenderRecommendations from './render-recommendations';
 import createRenderReview, {
   GetEditorialCommunityName as GetEditorialCommunityNameForRenderReview,
   GetReview,
@@ -92,12 +92,12 @@ export default (ports: Ports): RenderPage => {
   const renderPageHeader = buildRenderPageHeader(ports);
   const renderAbstract = buildRenderAbstract(ports.fetchArticle);
   const fetchPciRecommendation = createFetchPciRecommendation(ports.logger);
-  const getRecommendations = createGetHardcodedRecommendations(fetchPciRecommendation);
-  const renderRecommendations = createRenderRecommendations(getRecommendations);
+  const getEndorsements = createGetHardcodedRecommendations(fetchPciRecommendation);
+  const renderEndorsements = createRenderEndorsements(getEndorsements);
   const renderReviews = buildRenderReviews(ports);
   const renderPage = createRenderPage(
     renderPageHeader,
-    renderRecommendations,
+    renderEndorsements,
     renderReviews,
     renderAbstract,
   );

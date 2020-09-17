@@ -11,11 +11,11 @@ type RenderPage = (doi: Doi) => Promise<Result<string, RenderPageError>>;
 
 export default (
   renderPageHeader: Component,
-  renderRecommendations: Component,
+  renderEndorsements: Component,
   renderReviews: Component,
   renderAbstract: Component,
 ): RenderPage => {
-  const template = Result.ok((abstract: string) => (pageHeader: string) => (recommendations: string) => (reviews: string) => `
+  const template = Result.ok((abstract: string) => (pageHeader: string) => (endorsements: string) => (reviews: string) => `
 <article class="ui aligned stackable grid">
   <div class="row">
     <div class="column">
@@ -26,7 +26,7 @@ export default (
   <div class="row">
     <section class="column">
       ${abstract}
-      ${recommendations}
+      ${endorsements}
       ${reviews}
     </section>
   </div>
@@ -36,7 +36,7 @@ export default (
   return async (doi) => {
     const abstractResult = renderAbstract(doi);
     const pageHeaderResult = renderPageHeader(doi);
-    const recommendationsResult = renderRecommendations(doi);
+    const endorsementsResult = renderEndorsements(doi);
     const reviews = renderReviews(doi)
       .then((reviewsResult) => (
         reviewsResult.orElse(() => Result.ok(''))
@@ -45,7 +45,7 @@ export default (
     return template
       .ap(await abstractResult)
       .ap(await pageHeaderResult)
-      .ap(await recommendationsResult)
+      .ap(await endorsementsResult)
       .ap(await reviews)
       .mapErr(() => ({
         type: 'not-found',

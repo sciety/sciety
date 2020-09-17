@@ -1,11 +1,11 @@
 import { URL } from 'url';
-import { GetRecommendations } from './render-recommendations';
+import { GetEndorsements } from './render-endorsements';
 
 export type GetRecommendationContent = (url: URL) => Promise<string>;
 
 export default (
   getRecommendationContent: GetRecommendationContent,
-): GetRecommendations => (
+): GetEndorsements => (
   async (doi) => {
     if (doi.value === '10.1101/2020.06.03.20119925') {
       return [{
