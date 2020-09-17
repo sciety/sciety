@@ -15,7 +15,7 @@ export default (
   renderReviews: Component,
   renderAbstract: Component,
 ): RenderPage => {
-  const template = Result.ok((abstract: string) => (pageHeader: string) => (endorsements: string) => (reviews: string) => `
+  const template = Result.ok((abstract: string) => (pageHeader: string) => (endorsements: string) => (reviewSummaries: string) => (reviews: string) => `
 <article class="ui aligned stackable grid">
   <div class="row">
     <div class="column">
@@ -27,16 +27,47 @@ export default (
     <section class="column">
       ${abstract}
       ${endorsements}
+      ${reviewSummaries}
       ${reviews}
     </section>
   </div>
 </article>
     `);
 
+  const renderReviewSummaries: Component = async (doi) => {
+    let reviewSummaries = '';
+
+    if (doi.value === '10.1101/2020.06.19.160770') {
+      reviewSummaries = `
+        <section id="review-summaries">
+          <article>
+            <h3>
+              Reviews summarised by
+              <a href="/editorial-communities/b560187e-f2fb-4ff9-a861-a204f3fc0fb0">
+                eLife
+              </a>
+            </h3>
+            <p>
+              While we all considered the value of the dataset as a useful resource for the community, providing a
+              transcriptional landscape of prostatic monocytic cells, we all agreed that the study remains too
+              descriptive and primarily empirical correlations at this stage, with very limited mechanistic implications
+              and validation. In addition, the lack of healthy control, an incomplete bioinformatical analysis (batch
+              effects, other MPS cell clusters like cDCs), missing validation, and a limited number of cells/patients
+              dampened the enthusiasm of all the reviewers.
+            </p>
+          </article>
+        </section>
+      `;
+    }
+
+    return Result.ok(reviewSummaries);
+  };
+
   return async (doi) => {
     const abstractResult = renderAbstract(doi);
     const pageHeaderResult = renderPageHeader(doi);
     const endorsementsResult = renderEndorsements(doi);
+    const reviewSummaries = renderReviewSummaries(doi);
     const reviews = renderReviews(doi)
       .then((reviewsResult) => (
         reviewsResult.orElse(() => Result.ok(''))
@@ -46,6 +77,7 @@ export default (
       .ap(await abstractResult)
       .ap(await pageHeaderResult)
       .ap(await endorsementsResult)
+      .ap(await reviewSummaries)
       .ap(await reviews)
       .mapErr(() => ({
         type: 'not-found',
