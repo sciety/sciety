@@ -2,6 +2,7 @@ import { GetEndorsements } from './render-endorsements';
 import Doi from '../types/doi';
 
 export type GetEndorsement = (doi: Doi) => Promise<{
+  date: Date,
   title: string,
   content: string,
 }>;

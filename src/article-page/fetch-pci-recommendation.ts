@@ -25,6 +25,7 @@ export default (logger: Logger): GetEndorsement => (
     }
 
     return {
+      date: new Date('2020-08-07'),
       title: title.innerHTML,
       content: text.innerHTML,
     };
