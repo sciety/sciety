@@ -20,12 +20,16 @@ export default (logger: Logger): GetEndorsement => (
     const title = theDom.window.document.querySelector(
       '.pci-article-div .pci-recommendation-div h2',
     );
-    if (text === null || title === null) {
+    const date = theDom.window.document.querySelector(
+      'meta[name="citation_publication_date"]',
+    )?.getAttribute('content');
+
+    if (text === null || title === null || !date) {
       throw new Error(`Cannot find PCI recommendation for ${url.toString()}`);
     }
 
     return {
-      date: new Date('2020-08-07'),
+      date: new Date(date),
       title: title.innerHTML,
       content: text.innerHTML,
     };
