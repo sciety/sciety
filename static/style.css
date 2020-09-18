@@ -161,6 +161,8 @@ Styles that are independent of Semantic UI
   --VERTICAL-INCREMENT: calc(var(--BASE-FONT-REM) / 2);
   --TWO-INCREMENTS: calc(var(--VERTICAL-INCREMENT) * 2);
   --THREE-INCREMENTS: calc(var(--VERTICAL-INCREMENT) * 3);
+  --MAX-SITE-WIDTH: 1200;
+  --MAX-SITE-WIDTH-REM: calc((var(--MAX-SITE-WIDTH) / var(--BASE-FONT-MEASURE)) * 1rem);
 }
 
 html {
@@ -258,19 +260,19 @@ h6 {
   }
 }
 
-/* Needed to work alongside Semantic-UI */
+/* Needed to work alongside Semantic-UI :-( */
 .ui.container {
-  max-width: calc((1200 / var(--BASE-FONT-MEASURE)) * 1rem) !important;
+  max-width: var(--MAX-SITE-WIDTH-REM) !important;
   width: auto !important;
 }
 
 .hive-grid {
-  max-width: calc((1200 / var(--BASE-FONT-MEASURE)) * 1rem);
+  max-width: var(--MAX-SITE-WIDTH-REM);
   margin: 0 auto;
 }
 
 .site-header {
-  max-width: calc((1200 / var(--BASE-FONT-MEASURE)) * 1rem);
+  max-width: var(--MAX-SITE-WIDTH-REM);
   margin: 0 auto;
 }
 
@@ -281,5 +283,5 @@ h6 {
 @media screen and (min-width: 56.25em) {
   .hive-grid--article > .main-content {
     grid-column: 1 / 9;
-    }
+  }
 }
