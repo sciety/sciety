@@ -14,11 +14,16 @@
 html {
   font-size: var(--BASE-FONT-PX);
 }
+
 body,
 p
 {
   font-family: "Noto Serif", serif;
   font-size: var(--BASE-FONT-REM);
+}
+
+body {
+  margin: calc(var(--BASE-FONT-REM) / 2);
 }
 
 p {
@@ -109,14 +114,14 @@ h6 {
   text-decoration: none;
 }
 @supports (display: grid) {
-  .grid {
+  .hive-grid {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     grid-gap: 20px;
   }
 }
 
-.grid {
+.hive-grid {
   max-width: calc((1200 / var(--BASE-FONT-MEASURE)) * 1rem);
   margin: 0 auto;
 }
@@ -126,12 +131,12 @@ h6 {
   margin: 0 auto;
 }
 
-.grid--article > .main-content {
+.hive-grid--article > .main-content {
   grid-column: 1 / -1;
 }
 
 @media screen and (min-width: 56.25em) {
-  .grid--article > .main-content {
-    grid-column: 3 / 11;
+  .hive-grid--article > .main-content {
+    grid-column: 1 / 9;
   }
 }

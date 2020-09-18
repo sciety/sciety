@@ -40,7 +40,7 @@ Grids usually comprise 12 or 16 columns, depending on the complexity of the cont
 ### Article grid
 This is intended for use on pages where the primary aim is reading large amounts of text, for example article pages and the about page.
 
-This grid has a centered, 8 columns wide main area, giving a line length of 90 - 100 characters, give or take. This is about the upper limit for comfortable reading online.
+This grid has an 8 columns wide main area, giving a line length of 90 - 100 characters, give or take. This is about the upper limit for comfortable reading online.
 
 At the moment, everything lives in this 8-column area. As with everything else, this can be adapted as things evolve.
  
