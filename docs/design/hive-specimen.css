@@ -113,6 +113,7 @@ h6 {
   color: inherit;
   text-decoration: none;
 }
+
 @supports (display: grid) {
   .hive-grid {
     display: grid;
@@ -123,7 +124,6 @@ h6 {
 
 .hive-grid {
   max-width: calc((1200 / var(--BASE-FONT-MEASURE)) * 1rem);
-  margin: 0 auto;
 }
 
 .site-header {
