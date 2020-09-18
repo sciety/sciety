@@ -44,7 +44,7 @@ export default (page: string, user: Maybe<User>): string => `<!doctype html>
   <link rel="stylesheet" href="/static/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.css">
 
-  <header class="site-header">
+  <header class="u-full-width">
 
     <nav>
 
@@ -70,7 +70,7 @@ export default (page: string, user: Maybe<User>): string => `<!doctype html>
 
   </header>
 
-  <main class="ui container">
+  <main class="u-full-width">
     ${page}
   </main>
 

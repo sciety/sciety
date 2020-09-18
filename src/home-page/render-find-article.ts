@@ -2,7 +2,7 @@ type RenderFindArticle = () => Promise<string>;
 
 export default (): RenderFindArticle => (
   async () => (`
-    <form method="get" action="/articles" class="ui basic very padded vertical form container segment">
+    <form method="get" action="/articles" class="ui basic very padded vertical form segment">
       <fieldset>
 
         <h3>

@@ -260,18 +260,12 @@ h6 {
   }
 }
 
-/* Needed to work alongside Semantic-UI :-( */
-.ui.container {
-  max-width: var(--MAX-SITE-WIDTH-REM) !important;
-  width: auto !important;
-}
-
 .hive-grid {
   max-width: var(--MAX-SITE-WIDTH-REM);
   margin: 0 auto;
 }
 
-.site-header {
+.u-full-width {
   max-width: var(--MAX-SITE-WIDTH-REM);
   margin: 0 auto;
 }
