@@ -155,7 +155,8 @@ Styles that are independent of Semantic UI
 }
 
 :root {
-  --BASE-FONT-PX: 16px;
+  --BASE-FONT-MEASURE: 16;
+  --BASE-FONT-PX: calc(var(--BASE-FONT-MEASURE) * 1px);
   --BASE-FONT-REM: 1rem;
   --VERTICAL-INCREMENT: calc(var(--BASE-FONT-REM) / 2);
   --TWO-INCREMENTS: calc(var(--VERTICAL-INCREMENT) * 2);
@@ -243,4 +244,40 @@ h6 {
 
 .follow-toggle {
   margin-bottom: var(--THREE-INCREMENTS);
+}
+
+@supports (display: grid) {
+  .hive-grid {
+    display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-gap: 20px;
+  }
+}
+
+/* Needed to work alongside Semantic-UI */
+.ui.container {
+  max-width: calc((1200 / var(--BASE-FONT-MEASURE)) * 1rem) !important;
+  width: auto !important;
+}
+
+.hive-grid {
+  max-width: calc((1200 / var(--BASE-FONT-MEASURE)) * 1rem);
+  margin: 0 auto;
+}
+
+.site-header {
+  max-width: calc((1200 / var(--BASE-FONT-MEASURE)) * 1rem);
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.hive-grid--article > .main-content {
+  grid-column: 1 / -1;
+}
+
+@media screen and (min-width: 56.25em) {
+  .hive-grid--article > .main-content {
+    grid-column: 1 / 9;
+    padding: 0 16px;
+  }
 }

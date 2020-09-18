@@ -16,20 +16,14 @@ export default (
   renderAbstract: Component,
 ): RenderPage => {
   const template = Result.ok((abstract: string) => (pageHeader: string) => (endorsements: string) => (reviewSummaries: string) => (reviews: string) => `
-<article class="ui aligned stackable grid">
-  <div class="row">
-    <div class="column">
-      ${pageHeader}
-    </div>
-  </div>
+<article class="hive-grid hive-grid--article">
+  <div class="main-content">
+    ${pageHeader}
 
-  <div class="row">
-    <section class="column">
-      ${abstract}
-      ${endorsements}
-      ${reviewSummaries}
-      ${reviews}
-    </section>
+    ${abstract}
+    ${endorsements}
+    ${reviewSummaries}
+    ${reviews}
   </div>
 </article>
     `);

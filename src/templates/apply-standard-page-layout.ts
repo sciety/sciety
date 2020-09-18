@@ -44,7 +44,7 @@ export default (page: string, user: Maybe<User>): string => `<!doctype html>
   <link rel="stylesheet" href="/static/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.css">
 
-  <header class="ui container">
+  <header class="site-header">
 
     <nav>
 
