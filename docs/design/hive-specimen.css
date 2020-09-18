@@ -127,6 +127,11 @@ h6 {
 }
 
 .grid--article > .main-content {
-  grid-column: 3 / 11;
+  grid-column: 1 / -1;
 }
 
+@media screen and (min-width: 56.25em) {
+  .grid--article > .main-content {
+    grid-column: 3 / 11;
+  }
+}
