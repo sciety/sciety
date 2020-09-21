@@ -85,6 +85,7 @@ const buildRenderReviews = (ports: Ports): RenderReviews => {
 
 interface Params {
   doi?: string;
+  flavour?: string;
 }
 
 type RenderPage = (params: Params) => Promise<Result<string, RenderPageError>>;
@@ -113,8 +114,8 @@ export default (ports: Ports): RenderPage => {
         content: `${params.doi ?? 'Article'} not found`,
       });
     }
-    if (doi.value === '10.1101/646810') {
-      return Result.ok(renderFlavouredPage('A'));
+    if (doi.value === '10.1101/646810' && params.flavour !== undefined) {
+      return Result.ok(renderFlavouredPage(params.flavour));
     }
     return renderPage(doi);
   };
