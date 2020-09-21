@@ -279,3 +279,35 @@ h6 {
     grid-column: 1 / 9;
   }
 }
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+article-page, flavor A, feed-item
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+.article-feed-item {
+  display: flex;
+  margin-bottom: var(--THREE-INCREMENTS);
+}
+
+.article-feed-item__avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  flex: 0 0 48px;
+  margin-right: 1.5rem;
+}
+
+.article-feed-item__date {
+  font-family: Lato, sans-serif;
+}
+
+.article-feed-item__title {
+  font-family: Lato, sans-serif;
+  font-size: 1.5rem;
+  margin-bottom: var(--TWO-INCREMENTS);
+}
+
+.article-feed-item h3 {
+  font-size: 1rem;
+  font-weight: bold;
+  line-height: 1.5rem;
+}
