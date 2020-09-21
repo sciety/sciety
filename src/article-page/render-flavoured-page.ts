@@ -25,21 +25,6 @@ const renderFlavourA = (): string => `
           </li>
         </ul>
 
-        
-      <a href="#reviews" data-test-id="reviewsLink">
-        <div class="ui label">
-          Reviews
-          <span class="detail">3</span>
-        </div>
-      </a>
-    
-        
-        
-        <div class="ui label">
-          Endorsed by
-          <span class="detail">eLife</span>
-        </div>
-      
       </header>
     
 
