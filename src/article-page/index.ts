@@ -114,7 +114,7 @@ export default (ports: Ports): RenderPage => {
       });
     }
     if (doi.value === '10.1101/646810') {
-      return Result.ok(renderFlavouredPage(doi));
+      return Result.ok(renderFlavouredPage('A'));
     }
     return renderPage(doi);
   };

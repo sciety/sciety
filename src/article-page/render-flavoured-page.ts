@@ -1,9 +1,7 @@
-import Doi from '../types/doi';
-
-type RenderFlavouredPage = (doi: Doi) => string;
+type RenderFlavouredPage = (flavour: string) => string;
 
 export default (): RenderFlavouredPage => (
-  () => `
-  Flavoured page
+  (flavour) => `
+  Flavoured page of flavour ${flavour}
   `
 );
