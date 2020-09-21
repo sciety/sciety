@@ -6,55 +6,55 @@ const feed = `
   <section>
     <h2>Feed</h2>
 
-    <ol role="list">
-      <li class="article-feed-item">
-      <img class="article-feed-item__avatar" src="https://pbs.twimg.com/profile_images/1239550325188710402/7_lY-IyL_200x200.png" alt="">
+    <ol role="list" class="article-feed">
+      <li class="article-feed__item">
+      <img class="article-feed__item__avatar" src="https://pbs.twimg.com/profile_images/1239550325188710402/7_lY-IyL_200x200.png" alt="">
     <div class="content">
-        <time class="article-feed-item__date" datetime="2020-06-30">Jun 30, 2020</time>
-        <p class="article-feed-item__title"><a href="https://elifesciences.org/articles/58925">Online version updated</a> by <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334">eLife</a></p>
+        <time class="article-feed__item__date" datetime="2020-06-30">Jun 30, 2020</time>
+        <p class="article-feed__item__title"><a href="https://elifesciences.org/articles/58925">Online version updated</a> by <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334">eLife</a></p>
     </div>
   </li>
 
-      <li class="article-feed-item">
-      <img class="article-feed-item__avatar" src="https://pbs.twimg.com/profile_images/1239550325188710402/7_lY-IyL_200x200.png" alt="">
+      <li class="article-feed__item">
+      <img class="article-feed__item__avatar" src="https://pbs.twimg.com/profile_images/1239550325188710402/7_lY-IyL_200x200.png" alt="">
     <div>
-        <time class="article-feed-item__date" datetime="2020-06-11">Jun 11, 2020</time>
-        <p class="article-feed-item__title"><a href="https://elifesciences.org/articles/58925v2">Full online version published</a> by <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334">eLife</a></p>
+        <time class="article-feed__item__date" datetime="2020-06-11">Jun 11, 2020</time>
+        <p class="article-feed__item__title"><a href="https://elifesciences.org/articles/58925v2">Full online version published</a> by <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334">eLife</a></p>
     </div>
   </li>
 
-      <li class="article-feed-item">
-      <img class="article-feed-item__avatar" src="https://pbs.twimg.com/profile_images/1239550325188710402/7_lY-IyL_200x200.png" alt="">
+      <li class="article-feed__item">
+      <img class="article-feed__item__avatar" src="https://pbs.twimg.com/profile_images/1239550325188710402/7_lY-IyL_200x200.png" alt="">
       <div>
-        <time class="article-feed-item__date" datetime="2020-05-28">May 28, 2020</time>
-        <p class="article-feed-item__title"><a href="https://elifesciences.org/articles/58925v1">Accepted manuscript published as PDF</a> by <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334">eLife</a></p>
+        <time class="article-feed__item__date" datetime="2020-05-28">May 28, 2020</time>
+        <p class="article-feed__item__title"><a href="https://elifesciences.org/articles/58925v1">Accepted manuscript published as PDF</a> by <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334">eLife</a></p>
       </div>
     </li>
     
-    <li class="article-feed-item">
-      <img class="article-feed-item__avatar" src="https://pbs.twimg.com/profile_images/1239550325188710402/7_lY-IyL_200x200.png" alt="">
+    <li class="article-feed__item">
+      <img class="article-feed__item__avatar" src="https://pbs.twimg.com/profile_images/1239550325188710402/7_lY-IyL_200x200.png" alt="">
     <div class="content">
-        <time class="article-feed-item__date" datetime="2020-05-18">May 18, 2020</time>
-        <p class="article-feed-item__title"><a href="https://elifesciences.org/articles/58925#sa1">Accepted</a> by <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334">eLife</a></p>
+        <time class="article-feed__item__date" datetime="2020-05-18">May 18, 2020</time>
+        <p class="article-feed__item__title"><a href="https://elifesciences.org/articles/58925#sa1">Accepted</a> by <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334">eLife</a></p>
         <p>
         In this manuscript the authors develop a computational approach designed to identify robust genetic interactions that can be used to predict tumor cell genetic vulnerabilities. The authors find that oncogene addiction, as opposed to synthetic lethality, tends to be a more robust predictor of genetic dependencies in tumor cells. They also find that robust genetic interactions in cancer are enriched for gene pairs whose protein products physically interact. Therefore, the latter could be considered a surrogate in target selection for tumors with currently undruggable driver oncogenes.
         </p>
     </div>
   </li>
     
-    <li class="article-feed-item">
-      <img class="article-feed-item__avatar" src="https://pbs.twimg.com/profile_images/1239550325188710402/7_lY-IyL_200x200.png" alt="">
+    <li class="article-feed__item">
+      <img class="article-feed__item__avatar" src="https://pbs.twimg.com/profile_images/1239550325188710402/7_lY-IyL_200x200.png" alt="">
     <div>
-        <time class="article-feed-item__date" datetime="2020-05-15">May 15, 2020</time>
-        <p class="article-feed-item__title">Submitted to <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334">eLife</a></p>
+        <time class="article-feed__item__date" datetime="2020-05-15">May 15, 2020</time>
+        <p class="article-feed__item__title">Submitted to <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334">eLife</a></p>
     </div>
   </li>
   
-  <li class="article-feed-item">
-    <img class="article-feed-item__avatar" src="https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg" alt="">
+  <li class="article-feed__item">
+    <img class="article-feed__item__avatar" src="https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg" alt="">
     <div>
-        <time class="article-feed-item__date" datetime="2020-05-14">May 14, 2020</time>
-    <p class="article-feed-item__title">Author responded to <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334">Review Commons</a></p>
+        <time class="article-feed__item__date" datetime="2020-05-14">May 14, 2020</time>
+    <p class="article-feed__item__title">Author responded to <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334">Review Commons</a></p>
     <h3>Reply to the reviewers</h3>
     <h4>Reviewer #1</h4>
     <p>
@@ -66,11 +66,11 @@ const feed = `
     </div>
   </li>
 
-  <li class="article-feed-item">
-    <img class="article-feed-item__avatar" src="https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg" alt="">
+  <li class="article-feed__item">
+    <img class="article-feed__item__avatar" src="https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg" alt="">
     <div>
-      <time class="article-feed-item__date" datetime="2020-05-14">May 14, 2020</time>
-      <p class="article-feed-item__title">Reviewed by <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334">Review Commons</a></p>
+      <time class="article-feed__item__date" datetime="2020-05-14">May 14, 2020</time>
+      <p class="article-feed__item__title">Reviewed by <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334">Review Commons</a></p>
       <h3>Summary</h3>
       <p>
         Reproducibility of genetic interactions across studies is low. The authors identify reproducible genetic interactions and ask the question of what are properties of robust genetic interactions. They find that 1. oncogene addiction tends to be more robust than synthetic lethality and 2. genetic interactions among physically interacting proteins tend to be more robust. They then use protein-protein interactions (PPIs) to guide the detection of genetic interactions involving passenger gene alterations.
@@ -85,11 +85,11 @@ const feed = `
     </div>
   </li>
 
-  <li class="article-feed-item">
-    <img class="article-feed-item__avatar" src="https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg" alt="">
+  <li class="article-feed__item">
+    <img class="article-feed__item__avatar" src="https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg" alt="">
     <div class="content">
-        <time class="article-feed-item__date" datetime="2020-05-14">May 14, 2020</time>
-    <p class="article-feed-item__title">Reviewed by <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334">Review Commons</a><p>
+        <time class="article-feed__item__date" datetime="2020-05-14">May 14, 2020</time>
+    <p class="article-feed__item__title">Reviewed by <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334">Review Commons</a><p>
     <h3>Summary</h3>
     <p>
     In this manuscript, Lord et al. describe the analysis of loss-of-function (LOF) screens in cancer cell lines to identify robust (i.e., technically reproducible and shared across cell lines) genetic dependencies. The authors integrate data from 4 large-scale LOF studies (DRIVE, AVANA, DEPMAP and SCORE) to estimate the reproducibility of their individual findings and examine their agreement with other types of functional information, such as physical binding. The main conclusions from the analyses are that: a) oncogene-driven cancer cell lines are more sensitive to the inhibition of the oncogene itself than any other gene in the genome; b) robust genetic interactions (i.e., those observed in multiple datasets and cell lines driven by the same oncogene/tumour suppressor) are enriched for gene pairs encoding physically interacting proteins.
@@ -106,19 +106,19 @@ const feed = `
     </div>
   </li>
 
-  <li class="article-feed-item">
-      <img class="article-feed-item__avatar" src="https://pbs.twimg.com/profile_images/956882186996662272/lwyH1HFe_200x200.jpg" alt="">
+  <li class="article-feed__item">
+      <img class="article-feed__item__avatar" src="https://pbs.twimg.com/profile_images/956882186996662272/lwyH1HFe_200x200.jpg" alt="">
     <div class="content">
-        <time class="article-feed-item__date" datetime="2019-05-24">Jan 11, 2020</time>
-        <p class="article-feed-item__title"><a href="https://www.biorxiv.org/content/10.1101/646810v2?versioned=true">Version 2 published on Biorxiv</a></p>
+        <time class="article-feed__item__date" datetime="2019-05-24">Jan 11, 2020</time>
+        <p class="article-feed__item__title"><a href="https://www.biorxiv.org/content/10.1101/646810v2?versioned=true">Version 2 published on Biorxiv</a></p>
     </div>
   </li>
   
-  <li class="article-feed-item">
-      <img class="article-feed-item__avatar" src="https://pbs.twimg.com/profile_images/956882186996662272/lwyH1HFe_200x200.jpg" alt="">
+  <li class="article-feed__item">
+      <img class="article-feed__item__avatar" src="https://pbs.twimg.com/profile_images/956882186996662272/lwyH1HFe_200x200.jpg" alt="">
     <div class="content">
-        <time class="article-feed-item__date" datetime="2019-05-24">May 24, 2019</time>
-        <p class="article-feed-item__title"><a href="https://www.biorxiv.org/content/10.1101/646810v1?versioned=true">Version 1 published on Biorxiv</a></p>
+        <time class="article-feed__item__date" datetime="2019-05-24">May 24, 2019</time>
+        <p class="article-feed__item__title"><a href="https://www.biorxiv.org/content/10.1101/646810v1?versioned=true">Version 1 published on Biorxiv</a></p>
     </div>
   </li>
 
