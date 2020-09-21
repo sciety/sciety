@@ -4,6 +4,7 @@ import createFetchPciRecommendation from './fetch-pci-recommendation';
 import createGetHardcodedEndorsements from './get-hardcoded-endorsements';
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
 import createRenderEndorsements from './render-endorsements';
+import createRenderFlavouredPage from './render-flavoured-page';
 import createRenderPage, { RenderPageError } from './render-page';
 import createRenderPageHeader, {
   GetArticleDetails,
@@ -101,6 +102,7 @@ export default (ports: Ports): RenderPage => {
     renderReviews,
     renderAbstract,
   );
+  const renderFlavouredPage = createRenderFlavouredPage();
   return async (params) => {
     let doi: Doi;
     try {
@@ -110,6 +112,9 @@ export default (ports: Ports): RenderPage => {
         type: 'not-found',
         content: `${params.doi ?? 'Article'} not found`,
       });
+    }
+    if (doi.value === '10.1101/646810') {
+      return Result.ok(renderFlavouredPage(doi));
     }
     return renderPage(doi);
   };
