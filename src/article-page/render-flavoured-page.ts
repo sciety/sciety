@@ -1,4 +1,6 @@
-type RenderFlavouredPage = (flavour: string) => string;
+type Flavour = 'a';
+
+type RenderFlavouredPage = (flavour: Flavour) => string;
 
 export default (): RenderFlavouredPage => (
   (flavour) => `
