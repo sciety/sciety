@@ -114,7 +114,7 @@ export default (ports: Ports): RenderPage => {
         content: `${params.doi ?? 'Article'} not found`,
       });
     }
-    if (doi.value === '10.1101/646810' && params.flavour === 'a') {
+    if (doi.value === '10.1101/646810' && (params.flavour === 'a' || params.flavour === 'b')) {
       return Result.ok(renderFlavouredPage(params.flavour));
     }
     return renderPage(doi);

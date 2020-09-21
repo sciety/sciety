@@ -1,9 +1,12 @@
-type Flavour = 'a';
+type Flavour = 'a' | 'b';
 
 type RenderFlavouredPage = (flavour: Flavour) => string;
 
 export default (): RenderFlavouredPage => (
-  (flavour) => `
-  Flavoured page of flavour ${flavour}
-  `
+  (flavour) => {
+    switch (flavour) {
+      case 'a': return 'Flavour A';
+      case 'b': return 'Flavour B';
+    }
+  }
 );
