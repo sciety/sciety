@@ -18,7 +18,7 @@ export default (): string => `
         <li>Andries M Bergman</li>
       </ol>
 
-      <ul aria-label="Publication details">
+      <ul aria-label="Publication details" class="article-meta-data-list" role="list">
         <li>
           DOI <a href="https://doi.org/10.1101/2020.06.19.160770">10.1101/2020.06.19.160770</a>
         </li>
