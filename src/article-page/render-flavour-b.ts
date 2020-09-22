@@ -46,11 +46,11 @@ export default (): string => `
       <h2>
         Evaluations
       </h2>
-      <section>
-        <h3>
-          <img class="article-feed__item__avatar" src="https://pbs.twimg.com/profile_images/1239550325188710402/7_lY-IyL_200x200.png" alt="">
-          <a href="/editorial-communities/b560187e-f2fb-4ff9-a861-a204f3fc0fb0">
-            eLife 
+      <section class="evaluation-section">
+        <h3> 
+          <a href="/editorial-communities/b560187e-f2fb-4ff9-a861-a204f3fc0fb0" class="evaluation-section__community_link">
+            <img class="evaluation-section__avatar" src="https://pbs.twimg.com/profile_images/1239550325188710402/7_lY-IyL_200x200.png" alt="">
+            <span>eLife</span>
           </a>
         </h3>
         <ol role="list"> 
