@@ -161,6 +161,7 @@ Styles that are independent of Semantic UI
   --VERTICAL-INCREMENT: calc(var(--BASE-FONT-REM) / 2);
   --TWO-INCREMENTS: calc(var(--VERTICAL-INCREMENT) * 2);
   --THREE-INCREMENTS: calc(var(--VERTICAL-INCREMENT) * 3);
+  --FOUR-INCREMENTS: calc(var(--VERTICAL-INCREMENT) * 4);
   --MAX-SITE-WIDTH: 1200;
   --MAX-SITE-WIDTH-REM: calc((var(--MAX-SITE-WIDTH) / var(--BASE-FONT-MEASURE)) * 1rem);
 }
@@ -289,7 +290,7 @@ article-page, flavor A, feed-item
 
 .article-feed__item {
   display: flex;
-  margin-bottom: var(--THREE-INCREMENTS);
+  margin-bottom: var(--FOUR-INCREMENTS);
 }
 
 .article-feed__item__avatar {
@@ -305,16 +306,18 @@ article-page, flavor A, feed-item
   font-family: Lato, sans-serif;
 }
 
+.article-feed p:last-child {
+  margin-bottom: 0;
+}
+
 .article-feed__item__title,
 p.article-feed__item__title {
   font-family: Lato, sans-serif;
   font-size: 1.5rem;
-  margin-bottom: var(--TWO-INCREMENTS);
 }
 
 .article-feed__item__read_more {
   display: block;
-  margin-bottom: var(--TWO-INCREMENTS);
 }
 
 .article-feed__item h3 {
