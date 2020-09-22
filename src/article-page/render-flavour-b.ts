@@ -86,11 +86,6 @@ export default (): string => `
                 <p>
                   This review applies only to version 1 of the manuscript.
                 </p>
-              </article>
-            </li>
-          </ol>
-        </section>
-        <div class="ui hidden clearing section divider"></div>
       
     
       <section id="reviews">
@@ -186,6 +181,11 @@ export default (): string => `
 
         </ol>
       </section>
+
+              </article>
+            </li>
+          </ol>
+        </section>
     
   </div>
 </article>
