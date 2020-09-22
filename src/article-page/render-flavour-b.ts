@@ -5,7 +5,7 @@ export default (): string => `
     <header>
       <h1>Human Prostate Cancer-Associated Macrophage Subtypes with Prognostic Potential Revealed by Single-cell Transcriptomics</h1>
 
-      <ol aria-label="Authors of this article" role="list">
+      <ol aria-label="Authors of this article" role="list" class="article-author-list">
         <li>Joseph C Siefert</li>
         <li>Bianca Cioni</li>
         <li>Mauro J Muraro</li>
