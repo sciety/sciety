@@ -71,20 +71,20 @@ export default (): string => `
       
     
             <section id="reviews">
-              <h2>
+              <h3>
                 Reviews
-              </h2>
+              </h3>
               <ol role="list">
                 <li>
                   <article>
                     <img class="article-feed__item__avatar" src="https://pbs.twimg.com/profile_images/1239550325188710402/7_lY-IyL_200x200.png" alt="">
 
-                    <h3>
+                    <h4>
                     Reviewed by
                     <a href="/editorial-communities/b560187e-f2fb-4ff9-a861-a204f3fc0fb0" id="review-1-editorial-community">
                         eLife
                     </a>
-                    </h3>
+                    </h4>
 
                     <time datetime="2020-09-15">Sep 15, 2020</time>
 
@@ -102,12 +102,12 @@ export default (): string => `
                   <article>
                     <img class="article-feed__item__avatar" src="https://pbs.twimg.com/profile_images/1239550325188710402/7_lY-IyL_200x200.png" alt="">
 
-                    <h3>
+                    <h4>
                       Reviewed by
                       <a href="/editorial-communities/b560187e-f2fb-4ff9-a861-a204f3fc0fb0" id="review-2-editorial-community">
                         eLife
                       </a>
-                    </h3>
+                    </h4>
 
                     <time datetime="2020-09-15">Sep 15, 2020</time>
 
@@ -126,12 +126,12 @@ export default (): string => `
                 <li>
                   <article>
                     <img class="article-feed__item__avatar" src="https://pbs.twimg.com/profile_images/1239550325188710402/7_lY-IyL_200x200.png" alt="">
-                    <h3>
+                    <h4>
                       Reviewed by
                       <a href="/editorial-communities/b560187e-f2fb-4ff9-a861-a204f3fc0fb0" id="review-3-editorial-community">
                         eLife
                       </a>
-                    </h3>
+                    </h4>
 
                     <time datetime="2020-09-15">Sep 15, 2020</time>
 
