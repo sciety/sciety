@@ -347,3 +347,7 @@ p.article-feed__item__title {
   list-style: none;
   padding-left: 0;
 }
+
+.article-call-to-action-link {
+  font-family: Lato, sans-serif;
+}

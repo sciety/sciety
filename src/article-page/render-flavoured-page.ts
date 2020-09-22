@@ -62,7 +62,7 @@ const feed = `
     <p>
     Our response: We thank the reviewer for the positive assessment of our manuscript and have addressed the issue of study bias in response to the specific queries below. ...
     </p>
-          <a href="https://hyp.is/GFEW8JXMEeqJQcuc-6NFhQ/www.biorxiv.org/content/10.1101/646810v2" class="article-feed__item__read_more">
+          <a href="https://hyp.is/GFEW8JXMEeqJQcuc-6NFhQ/www.biorxiv.org/content/10.1101/646810v2" class="article-feed__item__read_more article-call-to-action-link">
             Read the full response
           </a>
     </div>
@@ -81,7 +81,7 @@ const feed = `
       <p>
         The claims of the manuscript are clear and well supported by computational analyses. My only concern is the influence of (study) bias on the observed enrichment of physical protein interactions among genetic interactions. 1. Due to higher statistical power the here described approach favors genetic interactions involving frequently altered cancer genes (as acknowledged by the authors). 2. Also some of the libraries in the genetic screens might be biased towards better characterized screens. 3. PPI networks are highly biased towards well studied proteins (in which well studied proteins - in …
       </p>
-      <a href="https://hyp.is/F4-xmpXMEeqf3_-2H0r-9Q/www.biorxiv.org/content/10.1101/646810v2" class="article-feed__item__read_more">
+      <a href="https://hyp.is/F4-xmpXMEeqf3_-2H0r-9Q/www.biorxiv.org/content/10.1101/646810v2" class="article-feed__item__read_more article-call-to-action-link">
         Read the full review
       </a>
     </div>
@@ -102,7 +102,7 @@ const feed = `
     
     -Could the authors …
     </p>
-          <a href="https://hyp.is/F7e5QpXMEeqnbCM3UE6XLQ/www.biorxiv.org/content/10.1101/646810v2" class="article-feed__item__read_more">
+          <a href="https://hyp.is/F7e5QpXMEeqnbCM3UE6XLQ/www.biorxiv.org/content/10.1101/646810v2" class="article-feed__item__read_more article-call-to-action-link">
             Read the full review
           </a>
     </div>
@@ -163,7 +163,7 @@ const renderFlavourA = (): string => `
           
           <p>Genetic interactions, such as synthetic lethal effects, can now be systematically identified in cancer cell lines using high-throughput genetic perturbation screens. Despite this advance, few genetic interactions have been reproduced across multiple studies and many appear highly context-specific. Understanding which genetic interactions are robust in the face of the molecular heterogeneity observed in tumours and what factors influence this robustness could streamline the identification of therapeutic targets. Here, we develop a computational approach to identify robust genetic interactions that can be reproduced across independent experiments and across non-overlapping cell line panels. We used this approach to evaluate >140,000 potential genetic interactions involving cancer driver genes and identified 1,520 that are significant in at least one study but only 220 that reproduce across multiple studies. Analysis of these interactions demonstrated that: (i) oncogene addiction effects are more robust than oncogene-related synthetic lethal effects; and (ii) robust genetic interactions in cancer are enriched for gene pairs whose protein products physically interact. This suggests that protein-protein interactions can be used not only to understand the mechanistic basis of genetic interaction effects, but also to prioritise robust targets for further development. To explore the utility of this approach, we used a protein-protein interaction network to guide the search for robust synthetic lethal interactions associated with passenger gene alterations and validated two novel robust synthetic lethalities.</p>
         
-          <a href="https://doi.org/10.1101/646810">
+          <a href="https://doi.org/10.1101/646810" class="article-call-to-action-link">
             Read the full article
           </a>
       </section>
