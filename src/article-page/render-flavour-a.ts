@@ -1,9 +1,3 @@
-import renderFlavourB from './render-flavour-b';
-
-type Flavour = 'a' | 'b';
-
-type RenderFlavouredPage = (flavour: Flavour) => string;
-
 const feed = `
   <section>
     <h2>Feed</h2>
@@ -175,11 +169,4 @@ const renderFlavourA = (): string => `
 </article>
 `;
 
-export default (): RenderFlavouredPage => (
-  (flavour) => {
-    switch (flavour) {
-      case 'a': return renderFlavourA();
-      case 'b': return renderFlavourB();
-    }
-  }
-);
+export default (): string => renderFlavourA();

@@ -4,7 +4,8 @@ import createFetchPciRecommendation from './fetch-pci-recommendation';
 import createGetHardcodedEndorsements from './get-hardcoded-endorsements';
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
 import createRenderEndorsements from './render-endorsements';
-import createRenderFlavouredPage from './render-flavoured-page';
+import renderFlavourA from './render-flavour-a';
+import renderFlavourB from './render-flavour-b';
 import createRenderPage, { RenderPageError } from './render-page';
 import createRenderPageHeader, {
   GetArticleDetails,
@@ -103,7 +104,6 @@ export default (ports: Ports): RenderPage => {
     renderReviews,
     renderAbstract,
   );
-  const renderFlavouredPage = createRenderFlavouredPage();
   return async (params) => {
     let doi: Doi;
     try {
@@ -115,10 +115,10 @@ export default (ports: Ports): RenderPage => {
       });
     }
     if (doi.value === '10.1101/646810' && params.flavour === 'a') {
-      return Result.ok(renderFlavouredPage(params.flavour));
+      return Result.ok(renderFlavourA());
     }
     if (doi.value === '10.1101/2020.06.19.160770' && params.flavour === 'b') {
-      return Result.ok(renderFlavouredPage(params.flavour));
+      return Result.ok(renderFlavourB());
     }
     return renderPage(doi);
   };
