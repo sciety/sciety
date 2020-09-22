@@ -142,7 +142,7 @@ const renderFlavourA = (): string => `
           <li>Colm J. Ryan</li>
         </ol>
 
-        <ul aria-label="Publication details">
+        <ul aria-label="Publication details" class="article-meta-data-list role="list">
           <li>
             DOI <a href="https://doi.org/10.1101/646810">10.1101/646810</a>
           </li>

@@ -324,6 +324,7 @@ p.article-feed__item__title {
 }
 
 .article-author-list {
+  font-family: Lato, sans-serif;
   padding-left: 0;
   display: flow-root;
   list-style: none;
@@ -339,4 +340,10 @@ p.article-feed__item__title {
 
 .article-author-list > li:last-child:after {
   content: '';
+}
+
+.article-meta-data-list {
+  font-family: Lato, sans-serif;
+  list-style: none;
+  padding-left: 0;
 }
