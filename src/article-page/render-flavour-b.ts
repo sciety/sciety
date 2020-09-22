@@ -97,33 +97,6 @@ export default (): string => `
           Reviews
         </h2>
         <ol role="list" class="ui very relaxed divided items list">
-          <li class="item">
-      <article class="content">
-
-        <h3>
-          Reviewed by
-          <a href="/editorial-communities/b560187e-f2fb-4ff9-a861-a204f3fc0fb0" id="review-0-editorial-community">
-            eLife
-          </a>
-        </h3>
-
-        <div class="meta" data-test-id="reviewPublicationDate"><time datetime="2020-09-15">Sep 15, 2020</time></div>
-
-        <div class="description" data-test-id="reviewSummary"><p>##Preprint Review</p>
-<p>This preprint was reviewed using eLife’s Preprint Review service, which provides public peer reviews of manuscripts posted on bioRxiv for the benefit of the authors, readers, potential readers, and others interested in our assessment of the work. This review applies only to <a href="https://www.biorxiv.org/content/10.1101/2020.06.19.160770v1">version 1</a> of the manuscript.</p>
-<p>###Summary:</p>
-<p>While we all considered the value of the dataset as a useful resource for the community, providing a transcriptional landscape of prostatic monocytic cells, we all agreed that the study remains too descriptive and primarily empirical correlations at this stage, with very limited mechanistic implications and validation. In addition, the lack of healthy control, an incomplete bioinformatical analysis (batch effects, other MPS cell clusters like cDCs), missing validation, and a limited number of cells/patients dampened the enthusiasm of all the reviewers.</p></div>
-
-        <div class="extra">
-          <a href="https://hyp.is/CZT9jPdTEequMgu20M5Zmg/www.biorxiv.org/content/10.1101/2020.06.19.160770v1" class="ui basic secondary button" id="review-0-read-more"
-            aria-labelledby="review-0-read-more review-0-editorial-community">
-            Read the full review
-            <i class="right chevron icon"></i>
-          </a>
-        </div>
-
-      </article>
-    </li>
 <li class="item">
       <article class="content">
 
