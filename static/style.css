@@ -376,3 +376,8 @@ article-page, flavor B
   flex: 0 0 47px;
   margin-right: 0.75rem;
 }
+
+.evaluation-section__summary_list {
+  list-style: none;
+  padding-left: 0;
+}

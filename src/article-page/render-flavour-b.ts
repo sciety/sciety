@@ -53,7 +53,7 @@ export default (): string => `
             <span>eLife</span>
           </a>
         </h3>
-        <ol role="list"> 
+        <ol role="list" class="evaluation-section__summary_list">
           <li>  
             <article>          
               <h4>
