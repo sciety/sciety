@@ -156,7 +156,7 @@ const feed = `
               Version 2 published on Biorxiv
             </a>
           </p>
-        </div>                                            s
+        </div>
       </li>
   
       <li class="article-feed__item">
