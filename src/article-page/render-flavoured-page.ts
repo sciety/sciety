@@ -1,3 +1,5 @@
+import renderFlavourB from './render-flavour-b';
+
 type Flavour = 'a' | 'b';
 
 type RenderFlavouredPage = (flavour: Flavour) => string;
@@ -173,10 +175,6 @@ const renderFlavourA = (): string => `
       
   </div>
 </article>
-`;
-
-const renderFlavourB = (): string => `
-Flavour B
 `;
 
 export default (): RenderFlavouredPage => (
