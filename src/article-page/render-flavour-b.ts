@@ -2,37 +2,37 @@ export default (): string => `
 <article class="hive-grid hive-grid--article">
   <div class="main-content">
     
-      <header class="ui basic padded vertical segment">
+      <header>
         <h1>Human Prostate Cancer-Associated Macrophage Subtypes with Prognostic Potential Revealed by Single-cell Transcriptomics</h1>
 
-        <ol aria-label="Authors of this article" class="ui comma separated horizontal list" role="list">
-          <li class="item">Joseph C Siefert</li>
-<li class="item">Bianca Cioni</li>
-<li class="item">Mauro J Muraro</li>
-<li class="item">Mohammed Alshalalfa</li>
-<li class="item">Judith Vivié</li>
-<li class="item">Henk van der Poel</li>
-<li class="item">Felix Y Feng</li>
-<li class="item">Lodewyk Wessels</li>
-<li class="item">Wilbert Zwart</li>
-<li class="item">Andries M Bergman</li>
+        <ol aria-label="Authors of this article" role="list">
+          <li>Joseph C Siefert</li>
+<li>Bianca Cioni</li>
+<li>Mauro J Muraro</li>
+<li>Mohammed Alshalalfa</li>
+<li>Judith Vivié</li>
+<li>Henk van der Poel</li>
+<li>Felix Y Feng</li>
+<li>Lodewyk Wessels</li>
+<li>Wilbert Zwart</li>
+<li>Andries M Bergman</li>
 
         </ol>
 
-        <ul aria-label="Publication details" class="ui list">
-          <li class="item">
+        <ul aria-label="Publication details">
+          <li>
             DOI <a href="https://doi.org/10.1101/2020.06.19.160770">10.1101/2020.06.19.160770</a>
           </li>
-          <li class="item">
+          <li>
             Posted <time datetime="2020-06-20">Jun 20, 2020</time>
           </li>
         </ul>
 
         
-      <a href="#reviews" data-test-id="reviewsLink">
-        <div class="ui label">
+      <a href="#reviews">
+        <div>
           Reviews
-          <span class="detail">4</span>
+          <span>4</span>
         </div>
       </a>
     
@@ -63,7 +63,7 @@ export default (): string => `
         <section id="review-summaries">
           <ol role="list"> 
             <li>  
-              <article class="content">          
+              <article>          
                 <img class="article-feed__item__avatar" src="https://pbs.twimg.com/profile_images/1239550325188710402/7_lY-IyL_200x200.png" alt="">
                 <h2>
                   Summary of reviews by
