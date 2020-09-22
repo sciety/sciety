@@ -153,7 +153,7 @@ const feed = `
           <time class="article-feed__item__date" datetime="2019-05-24">Jan 11, 2020</time>
           <p class="article-feed__item__title">
             <a href="https://www.biorxiv.org/content/10.1101/646810v2?versioned=true">
-              Version 2 published on Biorxiv
+              Version 2 published on bioRxiv
             </a>
           </p>
         </div>
@@ -165,7 +165,7 @@ const feed = `
           <time class="article-feed__item__date" datetime="2019-05-24">May 24, 2019</time>
           <p class="article-feed__item__title">
             <a href="https://www.biorxiv.org/content/10.1101/646810v1?versioned=true">
-              Version 1 published on Biorxiv
+              Version 1 published on bioRxiv
             </a>
           </p>
         </div>
