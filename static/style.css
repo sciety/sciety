@@ -162,6 +162,7 @@ Styles that are independent of Semantic UI
   --TWO-INCREMENTS: calc(var(--VERTICAL-INCREMENT) * 2);
   --THREE-INCREMENTS: calc(var(--VERTICAL-INCREMENT) * 3);
   --FOUR-INCREMENTS: calc(var(--VERTICAL-INCREMENT) * 4);
+  --SIX-INCREMENTS: calc(var(--VERTICAL-INCREMENT) * 6);
   --MAX-SITE-WIDTH: 1200;
   --MAX-SITE-WIDTH-REM: calc((var(--MAX-SITE-WIDTH) / var(--BASE-FONT-MEASURE)) * 1rem);
 }
@@ -186,6 +187,10 @@ p {
   margin-bottom: var(--THREE-INCREMENTS);
   line-height: 1.5;
   font-weight: 400;
+}
+
+section {
+  margin-bottom: var(--SIX-INCREMENTS);
 }
 
 h1 {
