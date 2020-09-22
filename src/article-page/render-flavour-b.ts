@@ -27,9 +27,6 @@ export default (): string => `
         </li>
       </ul>
 
-      <a href="#reviews">
-        4 Reviews
-      </a>
     </header>
     
     <section role="doc-abstract">
