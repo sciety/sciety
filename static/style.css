@@ -387,3 +387,11 @@ article-page, flavor B
   display: block;
   margin-bottom: var(--THREE-INCREMENTS);
 }
+
+.evaluation-section__reviews {
+  padding-left: calc((40 / var(--BASE-FONT-MEASURE)) * 1rem);
+}
+
+.evaluation-section__review_list {
+  padding-left: 0;
+}

@@ -73,11 +73,11 @@ export default (): string => `
               </p>
       
     
-              <section id="reviews">
+              <section class="evaluation-section__reviews">
                 <h5>
                   Reviews
                 </h5>
-                <ol role="list">
+                <ol role="list" class="evaluation-section__review_list">
                   <li>
                     <article>
                       <time datetime="2020-09-15">Sep 15, 2020</time>
