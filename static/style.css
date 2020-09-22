@@ -322,3 +322,21 @@ p.article-feed__item__title {
   font-weight: bold;
   line-height: 1.5rem;
 }
+
+.article-author-list {
+  padding-left: 0;
+  display: flow-root;
+  list-style: none;
+}
+
+.article-author-list > li {
+  float:left;
+}
+
+.article-author-list > li:after {
+  content: ', \00a0';
+}
+
+.article-author-list > li:last-child:after {
+  content: '';
+}
