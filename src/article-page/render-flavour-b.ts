@@ -59,7 +59,7 @@ export default (): string => `
               <h4>
                 Summary of reviews
               </h4>
-              <time datetime="2020-09-15">Sep 15, 2020</time>
+              <time datetime="2020-09-15" class="evaluation-section__summary_date">Sep 15, 2020</time>
               <p>
                     While we all considered the value of the dataset as a useful resource for the community, providing a
                     transcriptional landscape of prostatic monocytic cells, we all agreed that the study remains too

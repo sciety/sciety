@@ -381,3 +381,9 @@ article-page, flavor B
   list-style: none;
   padding-left: 0;
 }
+
+.evaluation-section__summary_date {
+  font-family: Lato, sans-serif;
+  display: block;
+  margin-bottom: var(--THREE-INCREMENTS);
+}
