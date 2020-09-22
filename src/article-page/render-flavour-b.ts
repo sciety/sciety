@@ -67,6 +67,7 @@ export default (): string => `
           <ol role="list" class="ui very relaxed divided items list"> 
             <li class="item">  
               <article class="content">          
+                <img class="article-feed__item__avatar" src="https://pbs.twimg.com/profile_images/1239550325188710402/7_lY-IyL_200x200.png" alt="">
                 <h2>
                   Summary of reviews by
                   <a href="/editorial-communities/b560187e-f2fb-4ff9-a861-a204f3fc0fb0">
@@ -99,6 +100,7 @@ export default (): string => `
         <ol role="list" class="ui very relaxed divided items list">
 <li class="item">
       <article class="content">
+        <img class="article-feed__item__avatar" src="https://pbs.twimg.com/profile_images/1239550325188710402/7_lY-IyL_200x200.png" alt="">
 
         <h3>
           Reviewed by
@@ -125,6 +127,7 @@ export default (): string => `
     </li>
 <li class="item">
       <article class="content">
+        <img class="article-feed__item__avatar" src="https://pbs.twimg.com/profile_images/1239550325188710402/7_lY-IyL_200x200.png" alt="">
 
         <h3>
           Reviewed by
@@ -153,6 +156,7 @@ export default (): string => `
     </li>
 <li class="item">
       <article class="content">
+        <img class="article-feed__item__avatar" src="https://pbs.twimg.com/profile_images/1239550325188710402/7_lY-IyL_200x200.png" alt="">
 
         <h3>
           Reviewed by
