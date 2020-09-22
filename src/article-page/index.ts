@@ -114,7 +114,10 @@ export default (ports: Ports): RenderPage => {
         content: `${params.doi ?? 'Article'} not found`,
       });
     }
-    if (doi.value === '10.1101/646810' && (params.flavour === 'a' || params.flavour === 'b')) {
+    if (doi.value === '10.1101/646810' && params.flavour === 'a') {
+      return Result.ok(renderFlavouredPage(params.flavour));
+    }
+    if (doi.value === '10.1101/2020.06.19.160770' && params.flavour === 'b') {
       return Result.ok(renderFlavouredPage(params.flavour));
     }
     return renderPage(doi);
