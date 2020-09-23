@@ -396,3 +396,7 @@ article-page, flavor B
   padding-left: 0;
   list-style: none;
 }
+
+.evaluation-section__review_list__header {
+  font-weight: bold;
+}
