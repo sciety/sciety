@@ -161,20 +161,20 @@ export default (): string => `
         <h2>
           Reviews
         </h2>
-        <ol role="list" class="ui very relaxed divided items list">
-          <li class="item">
-      <article class="content" id="review-1">
+        <ol role="list">
+          <li>
+      <article id="review-1">
 
         <h3>
           Reviewed by
-          <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334" id="review-0-editorial-community">
+          <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334">
             Review Commons
           </a>
         </h3>
 
-        <div class="meta" data-test-id="reviewPublicationDate"><time datetime="2020-05-14">May 14, 2020</time></div>
+        <time datetime="2020-05-14">May 14, 2020</time>
 
-        <div class="description" data-test-id="reviewSummary"><p><strong>Note:</strong> This preprint has been reviewed by subject experts for <em>Review Commons</em>. Content has not been altered except for formatting.</p>
+        <p><strong>Note:</strong> This preprint has been reviewed by subject experts for <em>Review Commons</em>. Content has not been altered except for formatting.</p>
 <p>Learn more at <a href="https://reviewcommons.org">Review Commons</a></p>
 <hr>
 <h3>Referee #1</h3>
@@ -192,30 +192,27 @@ export default (): string => `
 <h4>Significance</h4>
 <p>Personalized cancer medicine aims at the identification of patient-specific vulnerabilites which allow to target cancer cells in the context of a specific genotype. Many oncogenic mutations cannot be targeted with drugs directly. The identification of genetic interactions is therefore of crucial importance. Unfortunately, genetic interactions show little reproducibility accross studies. The authors make an important contribution to understanding which factors contribute to this reproducibility and thereby providing means to also identify more reliable genetic interactions with high potential for clinical exploitation or involving passenger gene alterations (which are otherwise harder to detect for statistical reasons).</p>
 <p>REFEREES CROSS COMMENTING</p>
-<p>Reviewer 2 raises a few valid points, which if addressed would certainly increase the clarity of the paper. In particular addressing the first point (the self interactions of tumor suppressors) seems important to me. From what I can see all of reviewer 2's comments can be addressed easily.</p></div>
+<p>Reviewer 2 raises a few valid points, which if addressed would certainly increase the clarity of the paper. In particular addressing the first point (the self interactions of tumor suppressors) seems important to me. From what I can see all of reviewer 2's comments can be addressed easily.</p>
 
-        <div class="extra">
-          <a href="https://hyp.is/F4-xmpXMEeqf3_-2H0r-9Q/www.biorxiv.org/content/10.1101/646810v2" class="ui basic secondary button" id="review-0-read-more" aria-labelledby="review-0-read-more review-0-editorial-community">
+          <a href="https://hyp.is/F4-xmpXMEeqf3_-2H0r-9Q/www.biorxiv.org/content/10.1101/646810v2">
             Read the full review
-            <i class="right chevron icon"></i>
           </a>
-        </div>
 
       </article>
     </li>
-<li class="item">
-      <article class="content" id="review-2">
+<li>
+      <article id="review-2">
 
         <h3>
           Reviewed by
-          <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334" id="review-1-editorial-community">
+          <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334">
             Review Commons
           </a>
         </h3>
 
-        <div class="meta" data-test-id="reviewPublicationDate"><time datetime="2020-05-14">May 14, 2020</time></div>
+        <time datetime="2020-05-14">May 14, 2020</time>
 
-        <div class="description" data-test-id="reviewSummary"><p><strong>Note:</strong> This preprint has been reviewed by subject experts for <em>Review Commons</em>. Content has not been altered except for formatting.</p>
+        <p><strong>Note:</strong> This preprint has been reviewed by subject experts for <em>Review Commons</em>. Content has not been altered except for formatting.</p>
 <p>Learn more at <a href="https://reviewcommons.org">Review Commons</a></p>
 <hr>
 <h3>Referee #2</h3>
@@ -237,14 +234,11 @@ export default (): string => `
 <p>Similar observations have also been made in mammalian systems: e.g., in mouse fibroblasts (Roguev et al., Nat Methods, 2013) and K562 leukemia cells (Han et al., Nat Biotech, 2017). I don't think that past observations negate the novelty of this manuscript. The analysis presented here is more focused and more comprehensive as it is based on a large integrated dataset and is driven by a series of specific hypotheses. However, a reference to previous publications should be made.</p>
 <p>As a frame of reference: my expertise is in high-throughput genetics of model organisms, including mapping and analyzing genetic interactions.</p>
 <p>REFEREES CROSS COMMENTING</p>
-<p>I agree with the questions raised by reviewer #1. And I think the authors should be able to address them (either through analyses or reasoning) within 1-3 months.</p></div>
+<p>I agree with the questions raised by reviewer #1. And I think the authors should be able to address them (either through analyses or reasoning) within 1-3 months.</p>
 
-        <div class="extra">
-          <a href="https://hyp.is/F7e5QpXMEeqnbCM3UE6XLQ/www.biorxiv.org/content/10.1101/646810v2" class="ui basic secondary button" id="review-1-read-more" aria-labelledby="review-1-read-more review-1-editorial-community">
+          <a href="https://hyp.is/F7e5QpXMEeqnbCM3UE6XLQ/www.biorxiv.org/content/10.1101/646810v2">
             Read the full review
-            <i class="right chevron icon"></i>
           </a>
-        </div>
 
       </article>
     </li>
@@ -256,14 +250,14 @@ export default (): string => `
 
         <h3>
           Author response to
-          <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334" id="review-2-editorial-community">
+          <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334">
             Review Commons
           </a>
         </h3>
 
-        <div class="meta" data-test-id="reviewPublicationDate"><time datetime="2020-05-14">May 14, 2020</time></div>
+        <time datetime="2020-05-14">May 14, 2020</time>
 
-        <div class="description" data-test-id="reviewSummary"><p><strong>Note:</strong> This rebuttal was posted by the corresponding author to <em>Review Commons</em>. Content has not been altered except for formatting.</p>
+        <p><strong>Note:</strong> This rebuttal was posted by the corresponding author to <em>Review Commons</em>. Content has not been altered except for formatting.</p>
 <p>Learn more at <a href="https://reviewcommons.org">Review Commons</a></p>
 <hr>
 <h3>Reply to the reviewers</h3>
@@ -354,14 +348,11 @@ export default (): string => `
 <p>*</p>
 <p>__Our response: __We thank the reviewer for highlighting this point.</p>
 <p>We have attempted to provide better context for our work in the discussion as follows:</p>
-<p>‘In budding and fission yeast, multiple studies have shown that genetic interactions are enriched among protein-protein interaction pairs and <em>vice-versa</em> (Costanzo et al., 2010; Kelley and Ideker, 2005; Michaut et al., 2011; Roguev et al., 2008). Pairwise genetic interaction screens in individual mammalian cell lines have also revealed an enrichment of genetic interactions among protein-protein interaction pairs (Han et al., 2017; Roguev et al., 2013). Our observation that discovered genetic interactions are enriched in protein-protein interaction pairs is consistent with these studies. However, these studies have not revealed what factors influence the conservation of genetic interactions across distinct genetic backgrounds, i.e. what predicts the robustness of a genetic interaction. In yeast, the genetic interaction mapping approach relies on mating gene deletion mutants and consequently the vast majority of reported genetic interactions are observed in a single genetic background (Tong et al., 2001). In mammalian cells, pairwise genetic interaction screens across multiple cell lines have revealed differences across cell lines but not identified what factors influence the conservation of genetic interactions across cell lines(Shen et al., 2017). While variation of genetic interactions across different strains or different genetic backgrounds has been poorly studied, previous work has analysed the conservation of genetic interactions across <em>species</em> and shown that genetic interactions between gene pairs whose protein products physically interact are more highly conserved (Roguev et al., 2008; Ryan et al., 2012; Srivas et al., 2016). Our analysis here suggests that the same principles may be used to identify genetic interactions conserved across genetically heterogeneous tumour cell lines.’</p></div>
+<p>‘In budding and fission yeast, multiple studies have shown that genetic interactions are enriched among protein-protein interaction pairs and <em>vice-versa</em> (Costanzo et al., 2010; Kelley and Ideker, 2005; Michaut et al., 2011; Roguev et al., 2008). Pairwise genetic interaction screens in individual mammalian cell lines have also revealed an enrichment of genetic interactions among protein-protein interaction pairs (Han et al., 2017; Roguev et al., 2013). Our observation that discovered genetic interactions are enriched in protein-protein interaction pairs is consistent with these studies. However, these studies have not revealed what factors influence the conservation of genetic interactions across distinct genetic backgrounds, i.e. what predicts the robustness of a genetic interaction. In yeast, the genetic interaction mapping approach relies on mating gene deletion mutants and consequently the vast majority of reported genetic interactions are observed in a single genetic background (Tong et al., 2001). In mammalian cells, pairwise genetic interaction screens across multiple cell lines have revealed differences across cell lines but not identified what factors influence the conservation of genetic interactions across cell lines(Shen et al., 2017). While variation of genetic interactions across different strains or different genetic backgrounds has been poorly studied, previous work has analysed the conservation of genetic interactions across <em>species</em> and shown that genetic interactions between gene pairs whose protein products physically interact are more highly conserved (Roguev et al., 2008; Ryan et al., 2012; Srivas et al., 2016). Our analysis here suggests that the same principles may be used to identify genetic interactions conserved across genetically heterogeneous tumour cell lines.’</p>
 
-        <div class="extra">
-          <a href="https://hyp.is/GFEW8JXMEeqJQcuc-6NFhQ/www.biorxiv.org/content/10.1101/646810v2" class="ui basic secondary button" id="review-2-read-more" aria-labelledby="review-2-read-more review-2-editorial-community">
+          <a href="https://hyp.is/GFEW8JXMEeqJQcuc-6NFhQ/www.biorxiv.org/content/10.1101/646810v2">
             Read the full review
-            <i class="right chevron icon"></i>
           </a>
-        </div>
       </section>
 
   </div>
