@@ -47,6 +47,36 @@ export default (): string => `
             </tr>
           </thead>
           <tbody>
+            <tr class="timeline-publication-event">
+              <td>
+                <time datetime="2020-06-30">June 30, 2020</time>
+              </td>
+              <td>
+                <a href="https://elifesciences.org/articles/58925v3">
+                  Online version updated by eLife
+                </a>
+              </td>
+            </tr>
+            <tr class="timeline-publication-event">
+              <td>
+                <time datetime="2020-06-11">June 11, 2020</time>
+              </td>
+              <td>
+                <a href="https://elifesciences.org/articles/58925v2">
+                  Full online version published by eLife
+                </a>
+              </td>
+            </tr>
+            <tr class="timeline-publication-event">
+              <td>
+                <time datetime="2020-05-28">May 28, 2020</time>
+              </td>
+              <td>
+                <a href="https://elifesciences.org/articles/58925v1">
+                  Accepted manuscript published as PDF by eLife
+                </a>
+              </td>
+            </tr>
             <tr class="timeline-community-event">
               <td>
                 <time datetime="2020-05-18">May 18, 2020</time>
