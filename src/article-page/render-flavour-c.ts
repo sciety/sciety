@@ -37,10 +37,10 @@ export default (): string => `
           </a>
       </section>
       
-      <aside>
+      <section>
         <h2>Timeline</h2>
-        <table>
-          <thead>
+        <table class="timeline">
+          <thead class="visually-hidden">
             <tr>
               <th scope="col">Date</th>
               <th scope="col">Event</th>
@@ -140,7 +140,7 @@ export default (): string => `
             </tr>
           </tbody>
         </table>
-      </aside>
+      </section>
 
       <article id="elife-acceptance">
         <h2>Accepted by

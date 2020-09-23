@@ -159,6 +159,7 @@ Styles that are independent of Semantic UI
   --BASE-FONT-PX: calc(var(--BASE-FONT-MEASURE) * 1px);
   --BASE-FONT-REM: 1rem;
   --VERTICAL-INCREMENT: calc(var(--BASE-FONT-REM) / 2);
+  --ONE-INCREMENT: calc(var(--VERTICAL-INCREMENT));
   --TWO-INCREMENTS: calc(var(--VERTICAL-INCREMENT) * 2);
   --THREE-INCREMENTS: calc(var(--VERTICAL-INCREMENT) * 3);
   --FOUR-INCREMENTS: calc(var(--VERTICAL-INCREMENT) * 4);
@@ -418,4 +419,43 @@ article-page, flavor B
 
 .evaluation-section__review_list p:last-child {
   margin-bottom: 0;
+}
+
+.timeline td {
+  line-height: 1.5;
+  font-family: Lato, sans-serif;
+  padding-bottom: var(--ONE-INCREMENT);
+}
+
+.timeline td:first-child {
+  text-align: right;
+  padding-right: calc((12 / var(--BASE-FONT-MEASURE)) * 1rem);
+}
+
+.timeline td:last-child {
+  text-align: left;
+}
+
+.timeline-publication-event a {
+  color: red;
+}
+
+.timeline-community-event a {
+  color: green
+}
+
+.timeline-author-event a {
+  color: rebeccapurple;
+}
+
+.visually-hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+  user-select: none;
 }
