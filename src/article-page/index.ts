@@ -6,6 +6,7 @@ import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract 
 import createRenderEndorsements from './render-endorsements';
 import renderFlavourA from './render-flavour-a';
 import renderFlavourB from './render-flavour-b';
+import renderFlavourC from './render-flavour-c';
 import createRenderPage, { RenderPageError } from './render-page';
 import createRenderPageHeader, {
   GetArticleDetails,
@@ -24,7 +25,6 @@ import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
 import EndorsementsRepository from '../types/endorsements-repository';
 import { FetchExternalArticle } from '../types/fetch-external-article';
-import renderFlavourC from './render-flavour-c';
 
 type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => Promise<Maybe<{
   name: string;
