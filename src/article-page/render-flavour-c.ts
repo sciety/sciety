@@ -195,7 +195,7 @@ export default (): string => `
 <p>Reviewer 2 raises a few valid points, which if addressed would certainly increase the clarity of the paper. In particular addressing the first point (the self interactions of tumor suppressors) seems important to me. From what I can see all of reviewer 2's comments can be addressed easily.</p>
 
           <a href="https://hyp.is/F4-xmpXMEeqf3_-2H0r-9Q/www.biorxiv.org/content/10.1101/646810v2">
-            Read the full review
+            Read the original source
           </a>
 
       </article>
@@ -237,7 +237,7 @@ export default (): string => `
 <p>I agree with the questions raised by reviewer #1. And I think the authors should be able to address them (either through analyses or reasoning) within 1-3 months.</p>
 
           <a href="https://hyp.is/F7e5QpXMEeqnbCM3UE6XLQ/www.biorxiv.org/content/10.1101/646810v2">
-            Read the full review
+            Read the original source
           </a>
 
       </article>
@@ -351,7 +351,7 @@ export default (): string => `
 <p>‘In budding and fission yeast, multiple studies have shown that genetic interactions are enriched among protein-protein interaction pairs and <em>vice-versa</em> (Costanzo et al., 2010; Kelley and Ideker, 2005; Michaut et al., 2011; Roguev et al., 2008). Pairwise genetic interaction screens in individual mammalian cell lines have also revealed an enrichment of genetic interactions among protein-protein interaction pairs (Han et al., 2017; Roguev et al., 2013). Our observation that discovered genetic interactions are enriched in protein-protein interaction pairs is consistent with these studies. However, these studies have not revealed what factors influence the conservation of genetic interactions across distinct genetic backgrounds, i.e. what predicts the robustness of a genetic interaction. In yeast, the genetic interaction mapping approach relies on mating gene deletion mutants and consequently the vast majority of reported genetic interactions are observed in a single genetic background (Tong et al., 2001). In mammalian cells, pairwise genetic interaction screens across multiple cell lines have revealed differences across cell lines but not identified what factors influence the conservation of genetic interactions across cell lines(Shen et al., 2017). While variation of genetic interactions across different strains or different genetic backgrounds has been poorly studied, previous work has analysed the conservation of genetic interactions across <em>species</em> and shown that genetic interactions between gene pairs whose protein products physically interact are more highly conserved (Roguev et al., 2008; Ryan et al., 2012; Srivas et al., 2016). Our analysis here suggests that the same principles may be used to identify genetic interactions conserved across genetically heterogeneous tumour cell lines.’</p>
 
           <a href="https://hyp.is/GFEW8JXMEeqJQcuc-6NFhQ/www.biorxiv.org/content/10.1101/646810v2">
-            Read the full review
+            Read the original source
           </a>
       </section>
 
