@@ -94,7 +94,7 @@ export default (): string => `
                   <li>
                     <article>
                       <header class="evaluation-section__review_list__header">
-                        <time datetime="2020-09-15">Sep 15, 2020</time>
+                        <time datetime="2020-09-15" class="evaluation-section__review_list__date">Sep 15, 2020</time>
                         <div>Reviewer #2:</div>
                       </header>
 
@@ -111,7 +111,7 @@ export default (): string => `
                   <li>
                     <article>
                       <header class="evaluation-section__review_list__header">
-                        <time datetime="2020-09-15">Sep 15, 2020</time>
+                        <time datetime="2020-09-15" class="evaluation-section__review_list__date">Sep 15, 2020</time>
                         <div>Reviewer #3:</div>
                       </header>
 
