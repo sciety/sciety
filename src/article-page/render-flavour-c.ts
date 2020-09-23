@@ -47,7 +47,27 @@ export default (): string => `
             </tr>
           </thead>
           <tbody>
-            <tr class="timeline-review-event">
+            <tr class="timeline-community-event">
+              <td>
+                <time datetime="2020-05-18">May 18, 2020</time>
+              </td>
+              <td>
+                <a href="#elife-acceptance">
+                  Accepted by eLife
+                </a>
+              </td>
+            </tr>
+            <tr class="timeline-author-event">
+              <td>
+                <time datetime="2020-05-14">May 14, 2020</time>
+              </td>
+              <td>
+                <a href="#response">
+                  Author response to Review Commons
+                </a>
+              </td>
+            </tr>
+            <tr class="timeline-community-event">
               <td>
                 <time datetime="2020-05-14">May 14, 2020</time>
               </td>
@@ -57,7 +77,7 @@ export default (): string => `
                 </a>
               </td>
             </tr>
-            <tr class="timeline-review-event">
+            <tr class="timeline-community-event">
               <td>
                 <time datetime="2020-05-14">May 14, 2020</time>
               </td>
@@ -202,7 +222,7 @@ export default (): string => `
         </ol>
       </section>
 
-      <section>
+      <section id="response">
 
         <h3>
           Author response to
