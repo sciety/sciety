@@ -143,11 +143,14 @@ export default (): string => `
 
       </article>
     </li>
-<li class="item">
-      <article class="content">
+
+        </ol>
+      </section>
+
+      <section>
 
         <h3>
-          Reviewed by
+          Author response to
           <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334" id="review-2-editorial-community">
             Review Commons
           </a>
@@ -254,12 +257,8 @@ export default (): string => `
             <i class="right chevron icon"></i>
           </a>
         </div>
-
-      </article>
-    </li>
-
-        </ol>
       </section>
+
   </div>
 </article>
 `;
