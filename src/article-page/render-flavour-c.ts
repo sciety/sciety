@@ -174,9 +174,6 @@ export default (): string => `
 
         <time datetime="2020-05-14">May 14, 2020</time>
 
-        <p><strong>Note:</strong> This preprint has been reviewed by subject experts for <em>Review Commons</em>. Content has not been altered except for formatting.</p>
-<p>Learn more at <a href="https://reviewcommons.org">Review Commons</a></p>
-<hr>
 <h3>Referee #1</h3>
 <h4>Evidence, reproducibility and clarity</h4>
 <p><strong>Summary:</strong></p>
@@ -212,9 +209,6 @@ export default (): string => `
 
         <time datetime="2020-05-14">May 14, 2020</time>
 
-        <p><strong>Note:</strong> This preprint has been reviewed by subject experts for <em>Review Commons</em>. Content has not been altered except for formatting.</p>
-<p>Learn more at <a href="https://reviewcommons.org">Review Commons</a></p>
-<hr>
 <h3>Referee #2</h3>
 <h4>Evidence, reproducibility and clarity</h4>
 <p>In this manuscript, Lord et al. describe the analysis of loss-of-function (LOF) screens in cancer cell lines to identify robust (i.e., technically reproducible and shared across cell lines) genetic dependencies. The authors integrate data from 4 large-scale LOF studies (DRIVE, AVANA, DEPMAP and SCORE) to estimate the reproducibility of their individual findings and examine their agreement with other types of functional information, such as physical binding. The main conclusions from the analyses are that: a) oncogene-driven cancer cell lines are more sensitive to the inhibition of the oncogene itself than any other gene in the genome; b) robust genetic interactions (i.e., those observed in multiple datasets and cell lines driven by the same oncogene/tumour suppressor) are enriched for gene pairs encoding physically interacting proteins.</p>
@@ -257,9 +251,6 @@ export default (): string => `
 
         <time datetime="2020-05-14">May 14, 2020</time>
 
-        <p><strong>Note:</strong> This rebuttal was posted by the corresponding author to <em>Review Commons</em>. Content has not been altered except for formatting.</p>
-<p>Learn more at <a href="https://reviewcommons.org">Review Commons</a></p>
-<hr>
 <h3>Reply to the reviewers</h3>
 <blockquote>
   <p><strong>Reviewer #1</strong> (Evidence, reproducibility and clarity (Required)):</p>
