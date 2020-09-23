@@ -135,7 +135,7 @@ export default (): string => `
     
     <section>
       <h2>Version timeline</h2>
-      <ol>
+      <ol class="version-timeline-list">
         <li>
           <time datetime="2020-06-20">Jun 20, 2020</time>: <a href="https://www.biorxiv.org/content/10.1101/2020.06.19.160770v1">
             Version 1 on Biorxiv

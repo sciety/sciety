@@ -404,3 +404,8 @@ article-page, flavor B
 .evaluation-section__review_list__date {
   font-family: Lato, sans-serif;
 }
+
+.version-timeline-list {
+  padding-left: 0;
+  list-style: none;
+}
