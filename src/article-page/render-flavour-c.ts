@@ -37,6 +37,40 @@ export default (): string => `
           </a>
       </section>
       
+      <aside>
+        <h2>Timeline</h2>
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Date</th>
+              <th scope="col">Event</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <time datetime="2019-05-24">Jan 11, 2020</time>
+              </td>
+              <td>
+                <a href="https://www.biorxiv.org/content/10.1101/646810v2?versioned=true">
+                  Version 2 published on bioRxiv
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <time datetime="2019-05-24">May 24, 2019</time>
+              </td>
+              <td>
+                <a href="https://www.biorxiv.org/content/10.1101/646810v1?versioned=true">
+                  Version 1 published on bioRxiv
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </aside>
+
       <article id="elife-acceptance">
         <h2>Accepted by
             <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334">
