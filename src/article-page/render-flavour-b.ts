@@ -28,6 +28,29 @@ export default (): string => `
       </ul>
 
     </header>
+
+  <section>
+    <h2>Evaluated by</h2>
+    <ol>
+      <li>
+        <a href="#elife">
+          <img class="evaluation-section__avatar" src="https://pbs.twimg.com/profile_images/1239550325188710402/7_lY-IyL_200x200.png" alt="">
+          eLife
+        </a>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Version timeline</h2>
+    <ol class="version-timeline-list">
+      <li>
+        <time datetime="2020-06-20">Jun 20, 2020</time>: <a href="https://www.biorxiv.org/content/10.1101/2020.06.19.160770v1">
+          Version 1 on bioRxiv
+        </a>
+      </li>
+    </ol>
+  </section>
     
     <section role="doc-abstract">
       <h2>
@@ -41,12 +64,13 @@ export default (): string => `
         Read the full article
       </a>
     </section>
-    
+
     <section>
       <h2>
         Evaluations
       </h2>
-      <section class="evaluation-section">
+    
+      <section class="evaluation-section" id="elife">
         <h3> 
           <a href="/editorial-communities/b560187e-f2fb-4ff9-a861-a204f3fc0fb0" class="evaluation-section__community_link">
             <img class="evaluation-section__avatar" src="https://pbs.twimg.com/profile_images/1239550325188710402/7_lY-IyL_200x200.png" alt="">
@@ -109,7 +133,7 @@ export default (): string => `
                     </article>
                   </li>
                   <li>
-                    <article>
+                    <article id="review3">
                       <header class="evaluation-section__review_list__header">
                         <time datetime="2020-09-15" class="evaluation-section__review_list__date">Sep 15, 2020</time>
                         <div>Reviewer #3:</div>
@@ -133,16 +157,7 @@ export default (): string => `
       </section>
     </section>
     
-    <section>
-      <h2>Version timeline</h2>
-      <ol class="version-timeline-list">
-        <li>
-          <time datetime="2020-06-20">Jun 20, 2020</time>: <a href="https://www.biorxiv.org/content/10.1101/2020.06.19.160770v1">
-            Version 1 on bioRxiv
-          </a>
-        </li>
-      </ol>
-    </section>
   </div>
+
 </article>
 `;
