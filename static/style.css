@@ -400,3 +400,7 @@ article-page, flavor B
 .evaluation-section__review_list__header {
   font-weight: bold;
 }
+
+.evaluation-section__review_list__date {
+  font-family: Lato, sans-serif;
+}

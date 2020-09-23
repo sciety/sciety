@@ -81,7 +81,7 @@ export default (): string => `
                   <li>
                     <article>
                       <header class="evaluation-section__review_list__header">
-                        <time datetime="2020-09-15">Sep 15, 2020</time>
+                        <time datetime="2020-09-15" class="evaluation-section__review_list__date">Sep 15, 2020</time>
                         <div>Reviewer #1:</div>
                       </header>
                       <p>In this manuscript Siefert et al., profile human prostate cancer-associated macrophage subtypes by single-cell RNA-seq. This analysis identified three major sub-population of macrophage (cluster-0, 1, and 2) in human prostate cancer and adjacent normal tissue. Next, the authors investigate the association of macrophage subtypes with recurrence and metastasis in independent prostate cancer cohorts. This leads to the identification of CSF1R+ (cluster-0) macrophage as a cell type associated with early recurrence and metastasis in prostate cancer. Overall this is an interesting study, however, in the absence of specific presence and/or enrichment of cluster-0 in tumor tissue it is not clear why these macrophages lead to early relapse or metastasis in prostate cancer. Moreover, the absence of any validation and/or functional analysis further diminish the broader implication of this observation.</p>
