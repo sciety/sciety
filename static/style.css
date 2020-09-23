@@ -399,6 +399,7 @@ article-page, flavor B
 
 .evaluation-section__review_list__header {
   font-weight: bold;
+  margin-bottom: var(--TWO-INCREMENTS);
 }
 
 .evaluation-section__review_list__date {
@@ -409,4 +410,12 @@ article-page, flavor B
   padding-left: 0;
   list-style: none;
   font-family: Lato, sans-serif;
+}
+
+.evaluation-section__review_list li {
+  margin-bottom: var(--FOUR-INCREMENTS);
+}
+
+.evaluation-section__review_list p:last-child {
+  margin-bottom: 0;
 }
