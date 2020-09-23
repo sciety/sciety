@@ -100,6 +100,7 @@ COMMUNITY_SCRIPTS := \
 	find-prereview-reviews
 
 update-event-data: $(COMMUNITY_SCRIPTS)
+	find data -type f | xargs -I % sort -g -o % %
 
 release: export TAG = latest/$(shell date +%Y%m%d%H%M)
 release:
