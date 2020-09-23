@@ -37,6 +37,21 @@ export default (): string => `
           </a>
       </section>
       
+      <article id="elife-acceptance">
+        <h2>Accepted by
+            <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334">
+              eLife
+            </a>
+        </h2>
+        <time datetime="2020-05-18">May 18, 2020</time>
+        <p>
+          In this manuscript the authors develop a computational approach designed to identify robust genetic interactions that can be used to predict tumor cell genetic vulnerabilities. The authors find that oncogene addiction, as opposed to synthetic lethality, tends to be a more robust predictor of genetic dependencies in tumor cells. They also find that robust genetic interactions in cancer are enriched for gene pairs whose protein products physically interact. Therefore, the latter could be considered a surrogate in target selection for tumors with currently undruggable driver oncogenes.
+        </p>
+        <a href="https://doi.org/10.7554/eLife.58925.sa1">
+          Read the original source
+        </a>
+      </article>
+
       <section id="reviews">
         <h2>
           Reviews
