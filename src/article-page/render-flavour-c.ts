@@ -47,9 +47,30 @@ export default (): string => `
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr class="timeline-review-event">
               <td>
-                <time datetime="2019-05-24">Jan 11, 2020</time>
+                <time datetime="2020-05-14">May 14, 2020</time>
+              </td>
+              <td>
+                <a href="#review-2">
+                  Review 2 by Review Commons
+                </a>
+              </td>
+            </tr>
+            <tr class="timeline-review-event">
+              <td>
+                <time datetime="2020-05-14">May 14, 2020</time>
+              </td>
+              <td>
+                <a href="#review-1">
+                  Review 1 by Review Commons
+                </a>
+              </td>
+            </tr>
+
+            <tr class="timeline-publication-event">
+              <td>
+                <time datetime="2020-01-11">Jan 11, 2020</time>
               </td>
               <td>
                 <a href="https://www.biorxiv.org/content/10.1101/646810v2?versioned=true">
@@ -57,7 +78,7 @@ export default (): string => `
                 </a>
               </td>
             </tr>
-            <tr>
+            <tr class="timeline-publication-event">
               <td>
                 <time datetime="2019-05-24">May 24, 2019</time>
               </td>
@@ -92,7 +113,7 @@ export default (): string => `
         </h2>
         <ol role="list" class="ui very relaxed divided items list">
           <li class="item">
-      <article class="content">
+      <article class="content" id="review-1">
 
         <h3>
           Reviewed by
@@ -133,7 +154,7 @@ export default (): string => `
       </article>
     </li>
 <li class="item">
-      <article class="content">
+      <article class="content" id="review-2">
 
         <h3>
           Reviewed by
