@@ -24,6 +24,7 @@ import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
 import EndorsementsRepository from '../types/endorsements-repository';
 import { FetchExternalArticle } from '../types/fetch-external-article';
+import renderFlavourC from './render-flavour-c';
 
 type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => Promise<Maybe<{
   name: string;
@@ -119,6 +120,9 @@ export default (ports: Ports): RenderPage => {
     }
     if (doi.value === '10.1101/2020.06.19.160770' && params.flavour === 'b') {
       return Result.ok(renderFlavourB());
+    }
+    if (doi.value === '10.1101/646810' && params.flavour === 'c') {
+      return Result.ok(renderFlavourC());
     }
     return renderPage(doi);
   };
