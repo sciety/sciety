@@ -178,7 +178,7 @@ export default (): string => `
                   </h5>
                   <ol role="list" class="evaluation-section__review_list">
                     <li>
-                      <article>
+                      <article id="review-1">
                         <header class="evaluation-section__review_list__header">
                         <time datetime="2020-05-14">May 14, 2020</time>
                         <div>Referee #1</div>
@@ -206,7 +206,7 @@ export default (): string => `
                       </article>
                     </li>
                     <li>
-                      <article>
+                      <article id="review-2">
                         <header class="evaluation-section__review_list__header">
                           <time datetime="2020-05-14">May 14, 2020</time>
                           <div>Referee #2</div>
@@ -238,7 +238,7 @@ export default (): string => `
                       </article>
                     </li>
 
-                      <article>
+                      <article id="response">
                         <header class="evaluation-section__review_list__header">
                           <time datetime="2020-05-14">May 14, 2020</time>
                           <div>Reply to the reviewers</div>
@@ -352,7 +352,7 @@ export default (): string => `
         </h2>
         <ol role="list">
           <li>
-      <article id="review-1">
+      <article>
 
         <h3>
           Reviewed by
@@ -387,7 +387,7 @@ export default (): string => `
       </article>
     </li>
 <li>
-      <article id="review-2">
+      <article>
 
         <h3>
           Reviewed by
@@ -429,7 +429,7 @@ export default (): string => `
         </ol>
       </section>
 
-      <section id="response">
+      <section>
 
         <h3>
           Author response to
