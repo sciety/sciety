@@ -264,6 +264,7 @@ h6 {
     display: grid;
       grid-template-columns: repeat(12, 1fr);
       grid-gap: 20px;
+      grid-auto-flow: column;
   }
 }
 
@@ -277,15 +278,17 @@ h6 {
   margin: 0 auto;
 }
 
-.hive-grid--article > .article-header {
-  grid-column: 1 / -1;
-}
-
+.hive-grid--article > .article-header,
+.hive-grid--article > .table-of-contents,
 .hive-grid--article > .main-content {
   grid-column: 1 / -1;
 }
 
 @media screen and (min-width: 56.25em) {
+  .hive-grid--article > .table-of-contents {
+    grid-column: 9 / -1;
+  }
+
   .hive-grid--article > .main-content {
     grid-column: 1 / 9;
   }
