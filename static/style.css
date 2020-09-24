@@ -278,6 +278,10 @@ h6 {
   margin: 0 auto;
 }
 
+.hive-grid--article > .article-header {
+  margin-bottom: var(--SIX-INCREMENTS);
+}
+
 .hive-grid--article > .article-header,
 .hive-grid--article > .table-of-contents,
 .hive-grid--article > .main-content {
