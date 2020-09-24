@@ -32,10 +32,10 @@ export default (): string => `
 
     <section>
       <h2>Evaluated by</h2>
-      <ol>
+      <ol class="toc-evaluations">
         <li>
-          <a href="#elife">
-            <img class="evaluation-section__avatar" src="https://pbs.twimg.com/profile_images/1239550325188710402/7_lY-IyL_200x200.png" alt="">
+          <a href="#elife" class="toc-evaluations__community_link">
+            <img class="toc-evaluations__avatar" src="https://pbs.twimg.com/profile_images/1239550325188710402/7_lY-IyL_200x200.png" alt="">
             eLife
           </a>
         </li>

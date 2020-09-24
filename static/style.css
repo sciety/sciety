@@ -467,3 +467,24 @@ article-page, flavor B
   width: 1px;
   user-select: none;
 }
+
+.toc-evaluations {
+  list-style: none;
+  padding-left: 0;
+  font-family: Lato, sans-serif;
+}
+
+.toc-evaluations__community_link {
+  display: inline-flex;
+  align-items: center;
+  font-size: calc((26 / 16) * 1rem);
+}
+
+.toc-evaluations__avatar {
+  width: 47px;
+  height: 47px;
+  border: 1px solid #eee;
+  border-radius: 50%;
+  flex: 0 0 47px;
+  margin-right: 0.75rem;
+}
