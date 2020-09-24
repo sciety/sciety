@@ -24,6 +24,24 @@ export default (): string => `
   <div class="table-of-contents">
 
     <section>
+      <h2>Evaluated by</h2>
+      <ol class="toc-evaluations">
+        <li>
+          <a href="#elife" class="toc-evaluations__community_link">
+            <img class="toc-evaluations__avatar" src="https://pbs.twimg.com/profile_images/1239550325188710402/7_lY-IyL_200x200.png" alt="">
+            eLife
+          </a>
+        </li>
+        <li>
+          <a href="#review-commons" class="toc-evaluations__community_link">
+            <img class="toc-evaluations__avatar" src="https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg" alt="">
+            Review Commons
+          </a>
+        </li>
+      </ol>
+    </section>
+
+    <section>
       <h2>Version timeline</h2>
       <ol class="version-timeline-list">
 
@@ -103,7 +121,7 @@ export default (): string => `
         </ol>
       </section>
 
-        <section class="evaluation-section">
+        <section class="evaluation-section" id="review-commons">
           <h3> 
             <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334" class="evaluation-section__community_link">
               <img class="evaluation-section__avatar" src="https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg" alt="">
