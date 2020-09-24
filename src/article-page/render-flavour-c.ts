@@ -157,6 +157,65 @@ export default (): string => `
         </a>
       </article>
 
+      <section>
+        <h2>
+          Evaluations
+        </h2>
+    
+        <section class="evaluation-section" id="elife">
+          <h3> 
+            <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334" class="evaluation-section__community_link">
+              <img class="evaluation-section__avatar" src="https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg" alt="">
+              <span>Review Commons</span>
+            </a>
+          </h3>
+          <ol role="list" class="evaluation-section__summary_list">
+            <li>  
+              <article>          
+                <section class="evaluation-section__reviews">
+                  <h5>
+                    Reviews
+                  </h5>
+                  <ol role="list" class="evaluation-section__review_list">
+                    <li>
+                      <article>
+                        <!--
+                          <div>Reviewer #1:</div>
+                        -->
+                        <header class="evaluation-section__review_list__header">
+                        <time datetime="2020-05-14">May 14, 2020</time>
+                        <div>Referee #1</div>
+                        </header>
+
+                    <h6>Evidence, reproducibility and clarity</h6>
+                    <p><strong>Summary:</strong></p>
+                    <p>Reproducibility of genetic interactions across studies is low. The authors identify reproducible genetic interactions and ask the question of what are properties of robust genetic interactions. They find that 1. oncogene addiction tends to be more robust than synthetic lethality and 2. genetic interactions among physically interacting proteins tend to be more robust. They then use protein-protein interactions (PPIs) to guide the detection of genetic interactions involving passenger gene alterations.</p>
+                    <p><strong>Major comments:</strong></p>
+                    <p>The claims of the manuscript are clear and well supported by computational analyses. My only concern is the influence of (study) bias on the observed enrichment of physical protein interactions among genetic interactions. 1. Due to higher statistical power the here described approach favors genetic interactions involving frequently altered cancer genes (as acknowledged by the authors). 2. Also some of the libraries in the genetic screens might be biased towards better characterized screens. 3. PPI networks are highly biased towards well studied proteins (in which well studied proteins - in particular cancer-related proteins - are more likely to interact). The following tests would help to clarify if and to which extend these biases contribute to the described observations:  <br>
+                    1 . The authors should demonstrate that the PPI enrichment in reproducible vs non-reproducible genetic interactions is not solely due to the biased nature of PPI networks. One simple way of doing so would be to do the same analysis with a PPI network derived from a single screen (eg PMID: 25416956). I assume that due to the much lower coverage the effect will be largely reduced but it would be reconfirming to see a similar trend in addition to the networks on which the authors are already testing. Another way would be to use a randomized network (with the same degree distribution as the networks the authors are using and then picking degree matched random nodes) in which the observed effect should vanish.</p>
+                    <p>2 . What's the expected number of robust genetic interactions involving passenger gene alterations? Is it surprising to identify 11 interactions? This question could be addressed with some sort of randomization test: When selecting (multiple times) 47,781 non-interacting random pairs between the 2,972 passenger genes and 2,149 selectively lethal genes, how many of those pairs form robust genetic interactions?</p>
+                    <p><strong>Minor comments:</strong></p>
+                    <p>Two additional analyses would add in my opinion value to the manuscript:</p>
+                    <p>-The authors state that reasons for irreproducibility of genetic interactions are of technical or biological nature. Is it possible to disentangle the contribution of the two factors given the available data? Eg how many genetic interactions are reproducible in two different screening platforms using the same cell line vs how similar are results of screens from two different cell lines in the same study? </p>
+                    <p>-The authors state that "some of the robust genetic dependencies could be readily interpreted using known pathway structures" and argue that they recover for example MAPK or Rb pathway relationships. Is this a general trend? Do genes forming a robust genetic interactions have a higher tendency to be in the same pathway as opposed to different pathways? I think the pathway topic could be in general better exploited: eg does pathway (relative) position play a role?</p>
+                    <h6>Significance</h6>
+                    <p>Personalized cancer medicine aims at the identification of patient-specific vulnerabilites which allow to target cancer cells in the context of a specific genotype. Many oncogenic mutations cannot be targeted with drugs directly. The identification of genetic interactions is therefore of crucial importance. Unfortunately, genetic interactions show little reproducibility accross studies. The authors make an important contribution to understanding which factors contribute to this reproducibility and thereby providing means to also identify more reliable genetic interactions with high potential for clinical exploitation or involving passenger gene alterations (which are otherwise harder to detect for statistical reasons).</p>
+                    <p>REFEREES CROSS COMMENTING</p>
+                    <p>Reviewer 2 raises a few valid points, which if addressed would certainly increase the clarity of the paper. In particular addressing the first point (the self interactions of tumor suppressors) seems important to me. From what I can see all of reviewer 2's comments can be addressed easily.</p>
+
+                              <a href="https://hyp.is/F4-xmpXMEeqf3_-2H0r-9Q/www.biorxiv.org/content/10.1101/646810v2">
+                                Read the original source
+                              </a>
+                      </article>
+                    </li>
+                  </ol>
+                </section>
+              </article>
+            </li>
+          </ol>
+        </section>
+      </section>
+
       <section id="reviews">
         <h2>
           Reviews
