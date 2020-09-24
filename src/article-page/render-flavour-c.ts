@@ -147,20 +147,16 @@ export default (): string => `
           Evaluations
         </h2>
     
-        <section class="evaluation-section" id="elife">
+        <section class="evaluation-section">
           <h3> 
             <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334" class="evaluation-section__community_link">
               <img class="evaluation-section__avatar" src="https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg" alt="">
               <span>Review Commons</span>
             </a>
           </h3>
-          <ol role="list" class="evaluation-section__summary_list">
-            <li>  
-              <article>          
-                <section class="evaluation-section__reviews">
-                  <h5>
+                  <h4>
                     Reviews
-                  </h5>
+                  </h4>
                   <ol role="list" class="evaluation-section__review_list">
                     <li>
                       <article id="review-1">
@@ -222,7 +218,7 @@ export default (): string => `
           </a>
                       </article>
                     </li>
-
+                    <li>
                       <article id="response">
                         <header class="evaluation-section__review_list__header">
                           <time datetime="2020-05-14">May 14, 2020</time>
@@ -324,10 +320,6 @@ export default (): string => `
                       </article>
                     </li>
                   </ol>
-                </section>
-              </article>
-            </li>
-          </ol>
         </section>
 
       <section class="evaluation-section" id="elife">
@@ -356,6 +348,7 @@ export default (): string => `
           </li>  
         </ol>
       </section>
+    </section>
   </div>
 </article>
 `;
