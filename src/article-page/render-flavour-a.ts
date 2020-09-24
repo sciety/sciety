@@ -150,7 +150,7 @@ const feed = `
       <li class="article-feed__item">
         <img class="article-feed__item__avatar" src="https://pbs.twimg.com/profile_images/956882186996662272/lwyH1HFe_200x200.jpg" alt="">
         <div>
-          <time class="article-feed__item__date" datetime="2019-05-24">Jan 11, 2020</time>
+          <time class="article-feed__item__date" datetime="2020-01-11">Jan 11, 2020</time>
           <p class="article-feed__item__title">
             <a href="https://www.biorxiv.org/content/10.1101/646810v2?versioned=true">
               Version 2 published on bioRxiv

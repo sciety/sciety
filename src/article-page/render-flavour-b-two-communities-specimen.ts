@@ -21,6 +21,47 @@ export default (): string => `
 
       </header>
 
+  <div class="table-of-contents">
+
+    <section>
+      <h2>Version timeline</h2>
+      <ol class="version-timeline-list">
+
+        <li>
+          <time datetime="2020-06-30">Jun 30, 2020</time>:
+            <a href="https://elifesciences.org/articles/58925">
+              Online version updated on eLife
+              </a> 
+        </li>
+        <li>
+          <time datetime="2020-06-11">Jun 11, 2020</time>:
+            <a href="https://elifesciences.org/articles/58925v2">
+              Full online version published on eLife
+            </a>
+        </li>
+        <li>
+          <time datetime="2020-05-28">May 28, 2020</time>:
+            <a href="https://elifesciences.org/articles/58925v1">
+              Accepted manuscript published as PDF on eLife
+            </a>
+        </li>
+        <li>
+          <time datetime="2020-01-11">Jan 11, 2020</time>:
+            <a href="https://www.biorxiv.org/content/10.1101/646810v2?versioned=true">
+              Version 2 published on bioRxiv
+            </a>
+        </li>
+        <li>
+          <time datetime="2019-05-24">May 24, 2019</time>:
+            <a href="https://www.biorxiv.org/content/10.1101/646810v1?versioned=true">
+              Version 1 published on bioRxiv
+            </a>
+        </li>
+      </ol>
+    </section>
+
+  </div>
+
   <div class="main-content">
 
     <section role="doc-abstract">
