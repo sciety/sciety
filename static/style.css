@@ -411,6 +411,7 @@ article-page, flavor B
 }
 
 .evaluation-section__review_list__header {
+  font-family: Lato, sans-serif;
   font-weight: bold;
   margin-bottom: var(--TWO-INCREMENTS);
 }

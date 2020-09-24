@@ -162,7 +162,7 @@ export default (): string => `
                       <article id="review-1">
                         <header class="evaluation-section__review_list__header">
                         <time datetime="2020-05-14">May 14, 2020</time>
-                        <div>Referee #1</div>
+                        <h5>Referee #1</h5>
                         </header>
 
                     <h6>Evidence, reproducibility and clarity</h6>
@@ -190,7 +190,7 @@ export default (): string => `
                       <article id="review-2">
                         <header class="evaluation-section__review_list__header">
                           <time datetime="2020-05-14">May 14, 2020</time>
-                          <div>Referee #2</div>
+                          <h5>Referee #2</h5>
                         </header>
 
 <h6>Evidence, reproducibility and clarity</h6>
@@ -222,7 +222,7 @@ export default (): string => `
                       <article id="response">
                         <header class="evaluation-section__review_list__header">
                           <time datetime="2020-05-14">May 14, 2020</time>
-                          <div>Reply to the reviewers</div>
+                          <h5>Reply to the reviewers</h5>
                         </header>
 
 <blockquote>
