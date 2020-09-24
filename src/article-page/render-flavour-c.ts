@@ -154,15 +154,12 @@ export default (): string => `
               <span>Review Commons</span>
             </a>
           </h3>
-                  <h4>
-                    Reviews
-                  </h4>
-                  <ol role="list" class="evaluation-section__review_list">
+                  <ol role="list" class="evaluation-section__list">
                     <li>
                       <article id="review-1">
-                        <header class="evaluation-section__review_list__header">
+                        <header class="evaluation-section__list__header">
                         <time datetime="2020-05-14">May 14, 2020</time>
-                        <h5>Referee #1</h5>
+                        <h4>Referee #1</h4>
                         </header>
 
                     <h6>Evidence, reproducibility and clarity</h6>
@@ -188,9 +185,9 @@ export default (): string => `
                     </li>
                     <li>
                       <article id="review-2">
-                        <header class="evaluation-section__review_list__header">
+                        <header class="evaluation-section__list__header">
                           <time datetime="2020-05-14">May 14, 2020</time>
-                          <h5>Referee #2</h5>
+                          <h4>Referee #2</h4>
                         </header>
 
 <h6>Evidence, reproducibility and clarity</h6>
@@ -220,9 +217,9 @@ export default (): string => `
                     </li>
                     <li>
                       <article id="response">
-                        <header class="evaluation-section__review_list__header">
+                        <header class="evaluation-section__list__header">
                           <time datetime="2020-05-14">May 14, 2020</time>
-                          <h5>Reply to the reviewers</h5>
+                          <h4>Reply to the reviewers</h4>
                         </header>
 
 <blockquote>
@@ -329,13 +326,15 @@ export default (): string => `
             <span>eLife</span>
           </a>
         </h3>
-        <ol role="list" class="evaluation-section__summary_list">
+        <ol role="list" class="evaluation-section__list">
           <li>  
-            <article id="elife-acceptance">          
-              <h4>
-                Acceptance
-              </h4>
-              <time datetime="2020-05-18">May 18, 2020</time>
+            <article id="elife-acceptance">
+              <header class="evaluation-section__list__header">
+                <time datetime="2020-05-18">May 18, 2020</time>
+                <h4>
+                  Acceptance
+                </h4>
+              </header>
 
               <p>
                 In this manuscript the authors develop a computational approach designed to identify robust genetic interactions that can be used to predict tumor cell genetic vulnerabilities. The authors find that oncogene addiction, as opposed to synthetic lethality, tends to be a more robust predictor of genetic dependencies in tumor cells. They also find that robust genetic interactions in cancer are enriched for gene pairs whose protein products physically interact. Therefore, the latter could be considered a surrogate in target selection for tumors with currently undruggable driver oncogenes.

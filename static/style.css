@@ -493,3 +493,18 @@ article-page, flavor B
   flex: 0 0 47px;
   margin-right: 0.75rem;
 }
+
+.evaluation-section__list {
+  padding-left: 0;
+  list-style: none;
+}
+
+.evaluation-section__list__header {
+  font-family: Lato, sans-serif;
+  font-weight: bold;
+  margin-bottom: var(--TWO-INCREMENTS);
+}
+
+.evaluation-section__list li {
+  margin-bottom: var(--SIX-INCREMENTS);
+}
