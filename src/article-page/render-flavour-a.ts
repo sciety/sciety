@@ -125,25 +125,40 @@ const feed = `
         <img class="article-feed__item__avatar" src="https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg" alt="">
         <div>
           <time class="article-feed__item__date" datetime="2020-05-14">May 14, 2020</time>
-          <p class="article-feed__item__title">
+          <details>
+          <summary class="article-feed__item__title">
             Reviewed by
             <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334">
               Review Commons
             </a>
-          <p>
-          <h3>Summary</h3>
-          <p>
-            In this manuscript, Lord et al. describe the analysis of loss-of-function (LOF) screens in cancer cell lines to identify robust (i.e., technically reproducible and shared across cell lines) genetic dependencies. The authors integrate data from 4 large-scale LOF studies (DRIVE, AVANA, DEPMAP and SCORE) to estimate the reproducibility of their individual findings and examine their agreement with other types of functional information, such as physical binding. The main conclusions from the analyses are that: a) oncogene-driven cancer cell lines are more sensitive to the inhibition of the oncogene itself than any other gene in the genome; b) robust genetic interactions (i.e., those observed in multiple datasets and cell lines driven by the same oncogene/tumour suppressor) are enriched for gene pairs encoding physically interacting proteins.
-          </p>
-          <h3>Major comments</h3>
-          <p>
-            I think this study is well designed, rigorously conducted and clearly explained. The conclusions are consistent with the results and I don't have any major suggestions for improving their support. I do, however, have a few suggestions for clarifying the message.
-      
-            -Could the authors …
-          </p>
+          </summary>
+
+                          <h3>Referee #2</h3>
+
+<h4>Evidence, reproducibility and clarity</h4>
+<p>In this manuscript, Lord et al. describe the analysis of loss-of-function (LOF) screens in cancer cell lines to identify robust (i.e., technically reproducible and shared across cell lines) genetic dependencies. The authors integrate data from 4 large-scale LOF studies (DRIVE, AVANA, DEPMAP and SCORE) to estimate the reproducibility of their individual findings and examine their agreement with other types of functional information, such as physical binding. The main conclusions from the analyses are that: a) oncogene-driven cancer cell lines are more sensitive to the inhibition of the oncogene itself than any other gene in the genome; b) robust genetic interactions (i.e., those observed in multiple datasets and cell lines driven by the same oncogene/tumour suppressor) are enriched for gene pairs encoding physically interacting proteins.</p>
+<p><strong>Main comments:</strong></p>
+<p>I think this study is well designed, rigorously conducted and clearly explained. The conclusions are consistent with the results and I don't have any major suggestions for improving their support. I do, however, have a few suggestions for clarifying the message.</p>
+<p>-Could the authors provide some intuitive explanation (or speculation) about the 2 observed cases of tumour suppressor "addiction" (TP53 and CDKN2A)? While the oncogene addiction cases are relatively easy to interpret, the same effects on tumour suppressors are less clear. Is it basically an epistatic effect, which looks like a relative disadvantage? For example, if we measure fitness: TP53-wt = 1, TP53-wt + CRISPR-TP53 = 1.5, TP53-mut = 1.5, TP53-mut + CRISPR-TP53 = 1.5. That is, inhibiting TP53 in TP53 mutant cells appears to be disadvantageous (relative to WT) only because inhibiting TP53 in wild-type cells is advantageous?</p>
+<p>-In the analysis of overlap between genetic and physical interactions, the result should be presented more precisely. Currently, the text reads "when considering the set of all gene pairs tested, gene pairs whose protein products physically interact were more likely to be identified as significant genetic interactors". However, the referenced figure (Fig. 5a) shows an orthogonal perspective: relative to all gene pairs tested, those that have a significant genetic interaction are more likely to  have a physical interaction as well. In other words, in the text, we are comparing the relative abundance of genetic interactions in 2 sets: tested and physically interacting. However, in the figure, we are comparing the relative abundance of protein interactions in 2 sets -- tested and genetically interacting. The odds ratio and the p-values stay the same but the result would be more clear if the figure matched the description in the text.</p>
+<p><strong>Minor comments:</strong></p>
+<p>There're a few places where the more explicit explanation would improve the readability of the manuscript.</p>
+<p>-Page 5: The multiple regression model used to identify genetic interactions is briefly mentioned in the text (and described more extensively in the methods). I think it would be better to explicitly describe the dependent and independent variables of the model in the text, so that the reader can intuitively understand what is being estimated.</p>
+<p>-Page 5: "Using this approach, we tested 142,477 potential genetic dependencies…" -- could the authors provide a better explanation of where that number is coming from? E.g., 142,477 = … driver genes x 2470 selectively lethal genes?</p>
+<p>-Page 5: Repeating the number of findings of each type would help understanding the landscape of the genetic dependencies (suggested numbers in brackets): "Of the (229?) reproducible genetic dependencies nine were 'self vs self' associations". "The majority (7/9?) of these … were oncogene addiction effects". "We also identified 2 (2/9?) examples of 'self vs self' dependencies involving tumour suppressors".</p>
+<p>-Page 12: "Three of these interactions involve genes frequently deleted with the tumour suppressor CDKN2A (CDKN2B and MTAP) and mirror known associations with CDKN2A". It is not clear what "mirror" means -- do they recapitulate known interactions?</p>
+<p>-Page 15: "Although we have not tested them here, other features predictive of between-species conservation may also be predictive of robustness to genetic heterogeneity" -- could the authors explicitly list the features?</p>
+<h4>Significance</h4>
+<p>The identification of a significant overlap between genetic and physical interactions in cancer cell lines is an interesting and promising observation that will help understanding known genetic dependencies and predicting new ones. However, similar observations have been made in other organisms and biological systems. These past studies should be referenced to provide a historical perspective and help define further analyses in the cancer context. In particular, studies in yeast S. cerevisiae have shown that, not only there is a general overlap between genetic interactions (both positive and negative) and physical interactions, but at least 2 additional features are informative about the relationship: a) the relative strength of genetic interactions and b) the relative density of physical interactions (i.e., isolated interaction vs protein complexes). Here's a sample of relevant studies: 1) von Mering et al., Nature, 2002; 2) Kelley &amp; Ideker, Nat Biotechnol, 2005; 3) Bandyopadhyay et al., PLOS Comput Biol, 2008; 4) Ulitsky et al., Mol Syst Biol, 2008; 5) Baryshnikova et al., Nat Methods, 2010; 6) Costanzo et al., Science, 2010; 7) Costanzo et al., Science, 2016. </p>
+<p>Similar observations have also been made in mammalian systems: e.g., in mouse fibroblasts (Roguev et al., Nat Methods, 2013) and K562 leukemia cells (Han et al., Nat Biotech, 2017). I don't think that past observations negate the novelty of this manuscript. The analysis presented here is more focused and more comprehensive as it is based on a large integrated dataset and is driven by a series of specific hypotheses. However, a reference to previous publications should be made.</p>
+<p>As a frame of reference: my expertise is in high-throughput genetics of model organisms, including mapping and analyzing genetic interactions.</p>
+<p>REFEREES CROSS COMMENTING</p>
+<p>I agree with the questions raised by reviewer #1. And I think the authors should be able to address them (either through analyses or reasoning) within 1-3 months.</p>
+
           <a href="https://hyp.is/F7e5QpXMEeqnbCM3UE6XLQ/www.biorxiv.org/content/10.1101/646810v2" class="article-feed__item__read_more article-call-to-action-link">
             Read the full review
           </a>
+          </details>
         </div>
       </li>
 
