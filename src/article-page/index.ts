@@ -5,7 +5,8 @@ import createGetHardcodedEndorsements from './get-hardcoded-endorsements';
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
 import createRenderEndorsements from './render-endorsements';
 import renderFlavourA from './render-flavour-a';
-import renderFlavourB from './render-flavour-b';
+import renderFlavourBElifePreprintReviewSpecimen from './render-flavour-b-elife-preprint-review-specimen';
+import renderFlavourBTwoCommunitiesSpecimen from './render-flavour-b-two-communities-specimen';
 import renderFlavourC from './render-flavour-c';
 import createRenderPage, { RenderPageError } from './render-page';
 import createRenderPageHeader, {
@@ -119,7 +120,10 @@ export default (ports: Ports): RenderPage => {
       return Result.ok(renderFlavourA());
     }
     if (doi.value === '10.1101/2020.06.19.160770' && params.flavour === 'b') {
-      return Result.ok(renderFlavourB());
+      return Result.ok(renderFlavourBElifePreprintReviewSpecimen());
+    }
+    if (doi.value === '10.1101/646810' && params.flavour === 'b') {
+      return Result.ok(renderFlavourBTwoCommunitiesSpecimen());
     }
     if (doi.value === '10.1101/646810' && params.flavour === 'c') {
       return Result.ok(renderFlavourC());
