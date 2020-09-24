@@ -1,8 +1,7 @@
 export default (): string => `
 <article class="hive-grid hive-grid--article">
-  <div class="main-content">
     
-    <header>
+    <header class="article-header">
       <h1>Human Prostate Cancer-Associated Macrophage Subtypes with Prognostic Potential Revealed by Single-cell Transcriptomics</h1>
 
       <ol aria-label="Authors of this article" role="list" class="article-author-list">
@@ -28,6 +27,8 @@ export default (): string => `
       </ul>
 
     </header>
+
+  <div class="main-content">
 
   <section>
     <h2>Evaluated by</h2>
