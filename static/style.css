@@ -263,7 +263,7 @@ h6 {
   .hive-grid {
     display: grid;
       grid-template-columns: repeat(12, 1fr);
-      grid-gap: 20px;
+      grid-column-gap: 20px;
       grid-auto-flow: column;
   }
 }
