@@ -7,8 +7,7 @@ interface Ports {
   fetchStaticFile: FetchStaticFile;
 }
 
-/* eslint-disable no-empty-pattern */
-type RenderPage = ({}) => Promise<string>;
+type RenderPage = () => Promise<string>;
 
 export default (ports: Ports): RenderPage => {
   const converter = new showdown.Converter({ noHeaderId: true });
