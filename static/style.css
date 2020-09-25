@@ -530,6 +530,8 @@ article-page, flavor B
 
 .article-feed__item summary::after {
   content: '>';
+  font-weight: 700;
+  font-size: 1.5rem;
   position: absolute;
   right: 0;
   bottom: 0;
