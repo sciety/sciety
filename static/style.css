@@ -525,3 +525,7 @@ article-page, flavor B
   transform: rotate(90deg);
   transform-origin: center;
 }
+
+.article-feed__item details > summary::-webkit-details-marker {
+  display: none;
+}
