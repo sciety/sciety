@@ -71,6 +71,7 @@ module.exports = {
       'LabeledStatement',
       'WithStatement',
     ]],
+    'no-unreachable': 'error',
     'no-void': ['error', {
       allowAsStatement: true,
     }],
