@@ -265,7 +265,7 @@ const feed = `
 <p>I agree with the questions raised by reviewer #1. And I think the authors should be able to address them (either through analyses or reasoning) within 1-3 months.</p>
 
           <a href="https://hyp.is/F7e5QpXMEeqnbCM3UE6XLQ/www.biorxiv.org/content/10.1101/646810v2" class="article-feed__item__read_more article-call-to-action-link">
-            Read the full review
+            Read the original source
           </a>
           </details>
         </div>
