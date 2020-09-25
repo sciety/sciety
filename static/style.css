@@ -307,8 +307,14 @@ article-page, flavor A, feed-item
 }
 
 .article-feed__item {
-  display: flex;
+  display: block;
   margin-bottom: var(--FOUR-INCREMENTS);
+}
+
+@media screen and (min-width: 46.25em) {
+  .article-feed__item {
+    display: flex;
+  }
 }
 
 .article-feed__item__avatar {
