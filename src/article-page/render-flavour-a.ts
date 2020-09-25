@@ -48,15 +48,17 @@ const feed = `
         <img class="article-feed__item__avatar" src="https://pbs.twimg.com/profile_images/1239550325188710402/7_lY-IyL_200x200.png" alt="">
         <div>
           <time class="article-feed__item__date" datetime="2020-05-18">May 18, 2020</time>
+          <div class="article-feed__item__title">
+            <a href="https://elifesciences.org/articles/58925#sa1">
+              Accepted
+            </a>
+            by
+              <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334">
+                eLife
+              </a>
+          </div>
           <details>
-            <summary class="article-feed__item__title">
-                <a href="https://elifesciences.org/articles/58925#sa1">
-                  Accepted
-                </a>
-                by
-                <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334">
-                  eLife
-                </a>
+            <summary>
               <p>In this manuscript the authors develop a computational approach designed to identify robust genetic interactions that can be used to predict tumor cell genetic vulnerabilities. The authors find that oncogene addiction, as opposed to synthetic lethality, tends to be a more robust predictor of genetic dependencies in tumor cells. They also find that robust...</p>
             </summary>
            <p>genetic interactions in cancer are enriched for gene pairs whose protein products physically interact. Therefore, the latter could be considered a surrogate in target selection for tumors with currently undruggable driver oncogenes.</p>
@@ -81,12 +83,14 @@ const feed = `
         <img class="article-feed__item__avatar" src="https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg" alt="">
         <div>
           <time class="article-feed__item__date" datetime="2020-05-14">May 14, 2020</time>
-          <details>
-          <summary class="article-feed__item__title">
-            Author responded to
+          <div class="article-feed__item__title">
+                      Author responded to
             <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334">
               Review Commons
             </a>
+            </div>
+          <details>
+          <summary>
             <blockquote>
               <p><strong>Reviewer #1</strong> (Evidence, reproducibility and clarity (Required)):</p>
               <p>***Summary:**</p>
@@ -190,12 +194,14 @@ const feed = `
         <img class="article-feed__item__avatar" src="https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg" alt="">
         <div>
           <time class="article-feed__item__date" datetime="2020-05-14">May 14, 2020</time>
-          <details>
-          <summary class="article-feed__item__title">
+          <div class="article-feed__item__title">
             Reviewed by
             <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334">
               Review Commons
             </a>
+          </div>
+          <details>
+          <summary>
             <h3>Summary</h3>
             <p>
               Reproducibility of genetic interactions across studies is low. The authors identify reproducible genetic interactions and ask the question of what are properties of robust genetic interactions. They find that 1. oncogene addiction tends to be more robust than synthetic lethality and 2. genetic interactions among physically interacting proteins tend to be more ...
@@ -227,12 +233,15 @@ const feed = `
         <img class="article-feed__item__avatar" src="https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg" alt="">
         <div>
           <time class="article-feed__item__date" datetime="2020-05-14">May 14, 2020</time>
-          <details>
-          <summary class="article-feed__item__title">
-            Reviewed by
+          <div class="article-feed__item__title">
+                      Reviewed by
             <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334">
               Review Commons
             </a>
+
+        </div>
+          <details>
+          <summary>
                           <h3>Referee #2</h3><h4>Evidence, reproducibility and clarity</h4><p>In this manuscript, Lord et al. describe the analysis of loss-of-function (LOF) screens in cancer cell lines to identify robust (i.e., technically reproducible and shared across cell lines) genetic dependencies. The authors integrate data from 4 large-scale LOF studies (DRIVE, AVANA, DEPMAP and SCORE) to estimate the ...</p>
           </summary>
 

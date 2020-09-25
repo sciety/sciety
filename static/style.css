@@ -508,3 +508,20 @@ article-page, flavor B
 .evaluation-section__list li {
   margin-bottom: var(--SIX-INCREMENTS);
 }
+
+.article-feed__item summary {
+  position: relative;
+  display: block;
+}
+
+.article-feed__item summary::after {
+  content: '>';
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+.article-feed__item details[open] summary::after {
+  transform: rotate(90deg);
+  transform-origin: center;
+}
