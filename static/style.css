@@ -518,6 +518,10 @@ article-page, flavor B
   outline: 0;
 }
 
+.article-feed__item summary:focus::after {
+  outline: 1px dotted #333;
+}
+
 .article-feed__item summary::after {
   content: '>';
   position: absolute;
