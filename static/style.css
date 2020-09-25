@@ -514,6 +514,10 @@ article-page, flavor B
   display: block;
 }
 
+.article-feed__item summary:focus {
+  outline: 0;
+}
+
 .article-feed__item summary::after {
   content: '>';
   position: absolute;
