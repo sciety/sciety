@@ -1,6 +1,5 @@
 import { Result } from 'true-myth';
 import templateDate from '../templates/date';
-import templateListItems from '../templates/list-items';
 import Doi from '../types/doi';
 
 interface ArticleDetails {
@@ -22,15 +21,15 @@ export default (
       <header class="article-header">
         <h1>${details.title}</h1>
 
-        <ol aria-label="Authors of this article" class="ui comma separated horizontal list" role="list">
-          ${templateListItems(details.authors)}
+        <ol aria-label="Authors of this article" class="article-author-list" role="list">
+          ${details.authors.map((author) => `<li>${author}</li>`).join('')}
         </ol>
 
-        <ul aria-label="Publication details" class="ui list">
-          <li class="item">
+        <ul aria-label="Publication details" class="article-meta-data-list" role="list">
+          <li>
             DOI <a href="https://doi.org/${doi.value}">${doi.value}</a>
           </li>
-          <li class="item">
+          <li>
             Posted ${templateDate(details.publicationDate)}
           </li>
         </ul>
