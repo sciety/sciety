@@ -19,7 +19,7 @@ export default (
   const articleDetails = await getArticleDetails(doi);
 
   return articleDetails.map((details) => `
-      <header class="ui basic padded vertical segment">
+      <header class="article-header">
         <h1>${details.title}</h1>
 
         <ol aria-label="Authors of this article" class="ui comma separated horizontal list" role="list">

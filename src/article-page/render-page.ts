@@ -17,9 +17,9 @@ export default (
 ): RenderPage => {
   const template = Result.ok((abstract: string) => (pageHeader: string) => (endorsements: string) => (reviewSummaries: string) => (reviews: string) => `
 <article class="hive-grid hive-grid--article">
-  <div class="main-content">
-    ${pageHeader}
+  ${pageHeader}
 
+  <div class="main-content">
     ${abstract}
     ${endorsements}
     ${reviewSummaries}
