@@ -7,26 +7,9 @@ const renderAvatar = (url: string): string => `
   <img class="article-feed__item__avatar" src="${url}" alt="">
 `;
 
-export default (): RenderFeed => (
-  async (doi) => {
-    if (doi.value === '10.1101/646810') {
-      const feed = `
-  <section>
-    <h2>Feed</h2>
-
-    <ol role="list" class="article-feed">
-
-      <li class="article-feed__item">
-        ${renderAvatar('https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg')}
-        <div>
-          <time class="article-feed__item__date" datetime="2020-05-14">May 14, 2020</time>
-          <div class="article-feed__item__title">
-                      Reviewed by
-            <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334">
-              Review Commons
-            </a>
-            </div>
-          <details>
+const reviews = [
+  {
+    details: `
           <summary>
             <blockquote>
               <p><strong>Reviewer #1</strong> (Evidence, reproducibility and clarity (Required)):</p>
@@ -120,24 +103,10 @@ export default (): RenderFeed => (
             <p>__Our response: __We thank the reviewer for highlighting this point.</p>
             <p>We have attempted to provide better context for our work in the discussion as follows:</p>
             <p>‘In budding and fission yeast, multiple studies have shown that genetic interactions are enriched among protein-protein interaction pairs and <em>vice-versa</em> (Costanzo et al., 2010; Kelley and Ideker, 2005; Michaut et al., 2011; Roguev et al., 2008). Pairwise genetic interaction screens in individual mammalian cell lines have also revealed an enrichment of genetic interactions among protein-protein interaction pairs (Han et al., 2017; Roguev et al., 2013). Our observation that discovered genetic interactions are enriched in protein-protein interaction pairs is consistent with these studies. However, these studies have not revealed what factors influence the conservation of genetic interactions across distinct genetic backgrounds, i.e. what predicts the robustness of a genetic interaction. In yeast, the genetic interaction mapping approach relies on mating gene deletion mutants and consequently the vast majority of reported genetic interactions are observed in a single genetic background (Tong et al., 2001). In mammalian cells, pairwise genetic interaction screens across multiple cell lines have revealed differences across cell lines but not identified what factors influence the conservation of genetic interactions across cell lines(Shen et al., 2017). While variation of genetic interactions across different strains or different genetic backgrounds has been poorly studied, previous work has analysed the conservation of genetic interactions across <em>species</em> and shown that genetic interactions between gene pairs whose protein products physically interact are more highly conserved (Roguev et al., 2008; Ryan et al., 2012; Srivas et al., 2016). Our analysis here suggests that the same principles may be used to identify genetic interactions conserved across genetically heterogeneous tumour cell lines.’</p>
-          <a href="https://hyp.is/GFEW8JXMEeqJQcuc-6NFhQ/www.biorxiv.org/content/10.1101/646810v2" class="article-feed__item__read_more article-call-to-action-link">
-            Read the original source
-          </a>
-          </details>
-        </div>
-      </li>
-
-      <li class="article-feed__item">
-        ${renderAvatar('https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg')}
-        <div>
-          <time class="article-feed__item__date" datetime="2020-05-14">May 14, 2020</time>
-          <div class="article-feed__item__title">
-            Reviewed by
-            <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334">
-              Review Commons
-            </a>
-          </div>
-          <details>
+    `,
+  },
+  {
+    details: `
           <summary>
             <h3>Summary</h3>
             <p>
@@ -159,28 +128,13 @@ export default (): RenderFeed => (
           <p>Personalized cancer medicine aims at the identification of patient-specific vulnerabilites which allow to target cancer cells in the context of a specific genotype. Many oncogenic mutations cannot be targeted with drugs directly. The identification of genetic interactions is therefore of crucial importance. Unfortunately, genetic interactions show little reproducibility accross studies. The authors make an important contribution to understanding which factors contribute to this reproducibility and thereby providing means to also identify more reliable genetic interactions with high potential for clinical exploitation or involving passenger gene alterations (which are otherwise harder to detect for statistical reasons).</p>
           <p>REFEREES CROSS COMMENTING</p>
           <p>Reviewer 2 raises a few valid points, which if addressed would certainly increase the clarity of the paper. In particular addressing the first point (the self interactions of tumor suppressors) seems important to me. From what I can see all of reviewer 2's comments can be addressed easily.</p>
-          <a href="https://hyp.is/F4-xmpXMEeqf3_-2H0r-9Q/www.biorxiv.org/content/10.1101/646810v2" class="article-feed__item__read_more article-call-to-action-link">
-            Read the original source
-          </a>
-          </details>
-        </div>
-      </li>
-
-      <li class="article-feed__item">
-        ${renderAvatar('https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg')}
-        <div>
-          <time class="article-feed__item__date" datetime="2020-05-14">May 14, 2020</time>
-          <div class="article-feed__item__title">
-                      Reviewed by
-            <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334">
-              Review Commons
-            </a>
-
-        </div>
-          <details>
-          <summary>
-                          <h3>Referee #2</h3><h4>Evidence, reproducibility and clarity</h4><p>In this manuscript, Lord et al. describe the analysis of loss-of-function (LOF) screens in cancer cell lines to identify robust (i.e., technically reproducible and shared across cell lines) genetic dependencies. The authors integrate data from 4 large-scale LOF studies (DRIVE, AVANA, DEPMAP and SCORE) to estimate the ...</p>
-          </summary>
+    `,
+  },
+  {
+    details: `
+      <summary>
+        <h3>Referee #2</h3><h4>Evidence, reproducibility and clarity</h4><p>In this manuscript, Lord et al. describe the analysis of loss-of-function (LOF) screens in cancer cell lines to identify robust (i.e., technically reproducible and shared across cell lines) genetic dependencies. The authors integrate data from 4 large-scale LOF studies (DRIVE, AVANA, DEPMAP and SCORE) to estimate the ...</p>
+      </summary>
 
 <p>reproducibility of their individual findings and examine their agreement with other types of functional information, such as physical binding. The main conclusions from the analyses are that: a) oncogene-driven cancer cell lines are more sensitive to the inhibition of the oncogene itself than any other gene in the genome; b) robust genetic interactions (i.e., those observed in multiple datasets and cell lines driven by the same oncogene/tumour suppressor) are enriched for gene pairs encoding physically interacting proteins.</p>
 <p><strong>Main comments:</strong></p>
@@ -200,7 +154,70 @@ export default (): RenderFeed => (
 <p>As a frame of reference: my expertise is in high-throughput genetics of model organisms, including mapping and analyzing genetic interactions.</p>
 <p>REFEREES CROSS COMMENTING</p>
 <p>I agree with the questions raised by reviewer #1. And I think the authors should be able to address them (either through analyses or reasoning) within 1-3 months.</p>
+    `,
+  },
+];
 
+export default (): RenderFeed => (
+  async (doi) => {
+    if (doi.value === '10.1101/646810') {
+      const feed = `
+  <section>
+    <h2>Feed</h2>
+
+    <ol role="list" class="article-feed">
+
+      <li class="article-feed__item">
+        ${renderAvatar('https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg')}
+        <div>
+          <time class="article-feed__item__date" datetime="2020-05-14">May 14, 2020</time>
+          <div class="article-feed__item__title">
+                      Reviewed by
+            <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334">
+              Review Commons
+            </a>
+            </div>
+          <details>
+          ${reviews[0].details}
+          <a href="https://hyp.is/GFEW8JXMEeqJQcuc-6NFhQ/www.biorxiv.org/content/10.1101/646810v2" class="article-feed__item__read_more article-call-to-action-link">
+            Read the original source
+          </a>
+          </details>
+        </div>
+      </li>
+
+      <li class="article-feed__item">
+        ${renderAvatar('https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg')}
+        <div>
+          <time class="article-feed__item__date" datetime="2020-05-14">May 14, 2020</time>
+          <div class="article-feed__item__title">
+            Reviewed by
+            <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334">
+              Review Commons
+            </a>
+          </div>
+          <details>
+          ${reviews[1].details}
+          <a href="https://hyp.is/F4-xmpXMEeqf3_-2H0r-9Q/www.biorxiv.org/content/10.1101/646810v2" class="article-feed__item__read_more article-call-to-action-link">
+            Read the original source
+          </a>
+          </details>
+        </div>
+      </li>
+
+      <li class="article-feed__item">
+        ${renderAvatar('https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg')}
+        <div>
+          <time class="article-feed__item__date" datetime="2020-05-14">May 14, 2020</time>
+          <div class="article-feed__item__title">
+                      Reviewed by
+            <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334">
+              Review Commons
+            </a>
+
+        </div>
+          <details>
+          ${reviews[2].details}
           <a href="https://hyp.is/F7e5QpXMEeqnbCM3UE6XLQ/www.biorxiv.org/content/10.1101/646810v2" class="article-feed__item__read_more article-call-to-action-link">
             Read the original source
           </a>
