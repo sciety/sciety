@@ -360,6 +360,7 @@ p.article-feed__item__title {
 
 .article-author-list > li {
   float:left;
+  line-height: 1.5;
 }
 
 .article-author-list > li:after {
@@ -374,6 +375,10 @@ p.article-feed__item__title {
   font-family: Lato, sans-serif;
   list-style: none;
   padding-left: 0;
+}
+
+.article-meta-data-list > li {
+  line-height: 1.5;
 }
 
 .article-call-to-action-link {
