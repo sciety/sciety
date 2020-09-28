@@ -15,18 +15,21 @@ export default (
   renderReviews: Component,
   renderAbstract: Component,
 ): RenderPage => {
-  const template = Result.ok((abstract: string) => (pageHeader: string) => (endorsements: string) => (reviewSummaries: string) => (reviews: string) => `
+  const template = Result.ok(
+    (abstract: string) => (pageHeader: string) => (feed: string) => (endorsements: string) => (reviewSummaries: string) => (reviews: string) => `
 <article class="hive-grid hive-grid--article">
   ${pageHeader}
 
   <div class="main-content">
     ${abstract}
+    ${feed}
     ${endorsements}
     ${reviewSummaries}
     ${reviews}
   </div>
 </article>
-    `);
+    `,
+  );
 
   const renderReviewSummaries: Component = async (doi) => {
     let reviewSummaries = '';
@@ -69,6 +72,7 @@ export default (
   return async (doi) => {
     const abstractResult = renderAbstract(doi);
     const pageHeaderResult = renderPageHeader(doi);
+    const feedResult = Promise.resolve(Result.ok(''));
     const endorsementsResult = renderEndorsements(doi);
     const reviewSummaries = renderReviewSummaries(doi);
     const reviews = renderReviews(doi)
@@ -79,6 +83,7 @@ export default (
     return template
       .ap(await abstractResult)
       .ap(await pageHeaderResult)
+      .ap(await feedResult)
       .ap(await endorsementsResult)
       .ap(await reviewSummaries)
       .ap(await reviews)
