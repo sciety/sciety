@@ -4,6 +4,7 @@ import createFetchPciRecommendation from './fetch-pci-recommendation';
 import createGetHardcodedEndorsements from './get-hardcoded-endorsements';
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
 import createRenderEndorsements from './render-endorsements';
+import createRenderFeed from './render-feed';
 import renderFlavourA from './render-flavour-a';
 import renderFlavourBElifePreprintReviewSpecimen from './render-flavour-b-elife-preprint-review-specimen';
 import renderFlavourBTwoCommunitiesSpecimen from './render-flavour-b-two-communities-specimen';
@@ -75,11 +76,13 @@ export default (ports: Ports): RenderPage => {
   const getEndorsements = createGetHardcodedEndorsements(fetchPciRecommendation);
   const renderEndorsements = createRenderEndorsements(getEndorsements);
   const renderReviews = buildRenderReviews(ports);
+  const renderFeed = createRenderFeed();
   const renderPage = createRenderPage(
     renderPageHeader,
     renderEndorsements,
     renderReviews,
     renderAbstract,
+    renderFeed,
   );
   return async (params) => {
     let doi: Doi;

@@ -14,6 +14,7 @@ export default (
   renderEndorsements: Component,
   renderReviews: Component,
   renderAbstract: Component,
+  renderFeed: Component,
 ): RenderPage => {
   const template = Result.ok(
     (abstract: string) => (pageHeader: string) => (feed: string) => (endorsements: string) => (reviewSummaries: string) => (reviews: string) => `
@@ -72,7 +73,7 @@ export default (
   return async (doi) => {
     const abstractResult = renderAbstract(doi);
     const pageHeaderResult = renderPageHeader(doi);
-    const feedResult = Promise.resolve(Result.ok(''));
+    const feedResult = renderFeed(doi);
     const endorsementsResult = renderEndorsements(doi);
     const reviewSummaries = renderReviewSummaries(doi);
     const reviews = renderReviews(doi)
