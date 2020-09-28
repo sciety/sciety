@@ -3,6 +3,10 @@ import Doi from '../types/doi';
 
 type RenderFeed = (doi: Doi) => Promise<Result<string, never>>;
 
+const renderAvatar = (url: string): string => `
+  <img class="article-feed__item__avatar" src="${url}" alt="">
+`;
+
 export default (): RenderFeed => (
   async (doi) => {
     if (doi.value === '10.1101/646810') {
@@ -13,7 +17,7 @@ export default (): RenderFeed => (
     <ol role="list" class="article-feed">
 
       <li class="article-feed__item">
-        <img class="article-feed__item__avatar" src="https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg" alt="">
+        ${renderAvatar('https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg')}
         <div>
           <time class="article-feed__item__date" datetime="2020-05-14">May 14, 2020</time>
           <div class="article-feed__item__title">
@@ -124,7 +128,7 @@ export default (): RenderFeed => (
       </li>
 
       <li class="article-feed__item">
-        <img class="article-feed__item__avatar" src="https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg" alt="">
+        ${renderAvatar('https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg')}
         <div>
           <time class="article-feed__item__date" datetime="2020-05-14">May 14, 2020</time>
           <div class="article-feed__item__title">
@@ -163,7 +167,7 @@ export default (): RenderFeed => (
       </li>
 
       <li class="article-feed__item">
-        <img class="article-feed__item__avatar" src="https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg" alt="">
+        ${renderAvatar('https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg')}
         <div>
           <time class="article-feed__item__date" datetime="2020-05-14">May 14, 2020</time>
           <div class="article-feed__item__title">
