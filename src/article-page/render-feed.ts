@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import { Result } from 'true-myth';
 import Doi from '../types/doi';
 
@@ -9,6 +10,7 @@ const renderAvatar = (url: string): string => `
 
 const reviews = [
   {
+    sourceUrl: new URL('https://hyp.is/GFEW8JXMEeqJQcuc-6NFhQ/www.biorxiv.org/content/10.1101/646810v2'),
     details: `
           <summary>
             <blockquote>
@@ -106,6 +108,7 @@ const reviews = [
     `,
   },
   {
+    sourceUrl: new URL('https://hyp.is/F4-xmpXMEeqf3_-2H0r-9Q/www.biorxiv.org/content/10.1101/646810v2'),
     details: `
           <summary>
             <h3>Summary</h3>
@@ -131,6 +134,7 @@ const reviews = [
     `,
   },
   {
+    sourceUrl: new URL('https://hyp.is/F7e5QpXMEeqnbCM3UE6XLQ/www.biorxiv.org/content/10.1101/646810v2'),
     details: `
       <summary>
         <h3>Referee #2</h3><h4>Evidence, reproducibility and clarity</h4><p>In this manuscript, Lord et al. describe the analysis of loss-of-function (LOF) screens in cancer cell lines to identify robust (i.e., technically reproducible and shared across cell lines) genetic dependencies. The authors integrate data from 4 large-scale LOF studies (DRIVE, AVANA, DEPMAP and SCORE) to estimate the ...</p>
@@ -179,7 +183,7 @@ export default (): RenderFeed => (
             </div>
           <details>
           ${reviews[0].details}
-          <a href="https://hyp.is/GFEW8JXMEeqJQcuc-6NFhQ/www.biorxiv.org/content/10.1101/646810v2" class="article-feed__item__read_more article-call-to-action-link">
+          <a href="${reviews[0].sourceUrl.toString()}" class="article-feed__item__read_more article-call-to-action-link">
             Read the original source
           </a>
           </details>
@@ -198,7 +202,7 @@ export default (): RenderFeed => (
           </div>
           <details>
           ${reviews[1].details}
-          <a href="https://hyp.is/F4-xmpXMEeqf3_-2H0r-9Q/www.biorxiv.org/content/10.1101/646810v2" class="article-feed__item__read_more article-call-to-action-link">
+          <a href="${reviews[1].sourceUrl.toString()}" class="article-feed__item__read_more article-call-to-action-link">
             Read the original source
           </a>
           </details>
@@ -218,7 +222,7 @@ export default (): RenderFeed => (
         </div>
           <details>
           ${reviews[2].details}
-          <a href="https://hyp.is/F7e5QpXMEeqnbCM3UE6XLQ/www.biorxiv.org/content/10.1101/646810v2" class="article-feed__item__read_more article-call-to-action-link">
+          <a href="${reviews[2].sourceUrl.toString()}" class="article-feed__item__read_more article-call-to-action-link">
             Read the original source
           </a>
           </details>
