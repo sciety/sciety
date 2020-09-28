@@ -558,13 +558,15 @@ article-page, flavor B
 
 .user-page-header {
   display: flex;
+  align-items: center;
 }
 
 .user-page-header__avatar {
   width: 48px;
   height: 48px;
   flex: 0 0 48px;
-  padding-right: 1rem;
+  margin-right: 1rem;
+  border-radius: 50%;
 }
 
 .user-page-header__handle {
