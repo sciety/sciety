@@ -555,3 +555,19 @@ article-page, flavor B
 .article-feed__item details > summary::-webkit-details-marker {
   display: none;
 }
+
+.user-page-header {
+  display: flex;
+}
+
+.user-page-header__avatar {
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+  padding-right: 1rem;
+}
+
+.user-page-header__handle {
+  font-size: calc((26 / var(--BASE-FONT-MEASURE)) * 1rem);
+  color: #666;
+}

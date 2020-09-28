@@ -12,17 +12,15 @@ export type GetUserDetails = (userId: UserId) => Promise<Result<UserDetails, 'no
 type RenderHeader = (userId: UserId) => Promise<Result<string, 'not-found' | 'unavailable'>>;
 
 const headerTemplate = (ud: UserDetails): string => `
-  <header class="ui basic padded vertical segment">
-  <h1>
-      <img class="ui avatar image" src="${ud.avatarUrl}" alt="">
-      <div class="content">
+  <h1 class="user-page-header">
+    <img src="${ud.avatarUrl}" alt="" class="user-page-header__avatar">
+    <div>
       ${ud.displayName}
-      <div class="sub header">
-          @${ud.handle}
+      <div class="user-page-header__handle">
+        @${ud.handle}
       </div>
-      </div>
+    </div>
   </h1>
-  </header>
 `;
 
 export default (getUserDetails: GetUserDetails): RenderHeader => (
