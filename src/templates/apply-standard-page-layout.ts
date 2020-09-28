@@ -46,7 +46,7 @@ export default (page: string, user: Maybe<User>): string => `<!doctype html>
 
   <header class="u-full-width">
 
-    <nav>
+    <nav class="site-header">
 
       <ul class="ui large text menu">
 
