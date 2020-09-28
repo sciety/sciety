@@ -8,7 +8,14 @@ const renderAvatar = (url: string): string => `
   <img class="article-feed__item__avatar" src="${url}" alt="">
 `;
 
-const reviews = [
+type Review = {
+  sourceUrl: URL;
+  details: string;
+};
+
+type Reviews = ReadonlyArray<Review>;
+
+const reviews: Reviews = [
   {
     sourceUrl: new URL('https://hyp.is/GFEW8JXMEeqJQcuc-6NFhQ/www.biorxiv.org/content/10.1101/646810v2'),
     details: `
@@ -164,13 +171,7 @@ const reviews = [
 
 export default (): RenderFeed => (
   async (doi) => {
-    if (doi.value === '10.1101/646810') {
-      const feed = `
-  <section>
-    <h2>Feed</h2>
-
-    <ol role="list" class="article-feed">
-
+    const renderItem = (review: Review): string => `
       <li class="article-feed__item">
         ${renderAvatar('https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg')}
         <div>
@@ -182,52 +183,25 @@ export default (): RenderFeed => (
             </a>
             </div>
           <details>
-          ${reviews[0].details}
-          <a href="${reviews[0].sourceUrl.toString()}" class="article-feed__item__read_more article-call-to-action-link">
+          ${review.details}
+          <a href="${review.sourceUrl.toString()}" class="article-feed__item__read_more article-call-to-action-link">
             Read the original source
           </a>
           </details>
         </div>
       </li>
+    `;
 
-      <li class="article-feed__item">
-        ${renderAvatar('https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg')}
-        <div>
-          <time class="article-feed__item__date" datetime="2020-05-14">May 14, 2020</time>
-          <div class="article-feed__item__title">
-            Reviewed by
-            <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334">
-              Review Commons
-            </a>
-          </div>
-          <details>
-          ${reviews[1].details}
-          <a href="${reviews[1].sourceUrl.toString()}" class="article-feed__item__read_more article-call-to-action-link">
-            Read the original source
-          </a>
-          </details>
-        </div>
-      </li>
+    if (doi.value === '10.1101/646810') {
+      const feed = `
+  <section>
+    <h2>Feed</h2>
 
-      <li class="article-feed__item">
-        ${renderAvatar('https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg')}
-        <div>
-          <time class="article-feed__item__date" datetime="2020-05-14">May 14, 2020</time>
-          <div class="article-feed__item__title">
-                      Reviewed by
-            <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334">
-              Review Commons
-            </a>
+    <ol role="list" class="article-feed">
 
-        </div>
-          <details>
-          ${reviews[2].details}
-          <a href="${reviews[2].sourceUrl.toString()}" class="article-feed__item__read_more article-call-to-action-link">
-            Read the original source
-          </a>
-          </details>
-        </div>
-      </li>
+      ${renderItem(reviews[0])}
+      ${renderItem(reviews[1])}
+      ${renderItem(reviews[2])}
 
     </ol>
   </section>
