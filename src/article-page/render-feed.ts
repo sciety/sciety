@@ -29,17 +29,19 @@ export default (getReviews: GetReviews): RenderFeed => async (doi) => {
         <div>
           ${templateDate(review.publicationDate, 'article-feed__item__date')}
           <div class="article-feed__item__title">
-                      Reviewed by
+            Reviewed by
             <a href="/editorial-communities/${review.editorialCommunityId.value}">
               ${review.editorialCommunityName}
             </a>
-            </div>
-          <details>
-          ${review.details}
-          <a href="${review.sourceUrl.toString()}" class="article-feed__item__read_more article-call-to-action-link">
-            Read the original source
-          </a>
-          </details>
+          </div>
+
+          <div>
+            ${review.details}
+            <a href="${review.sourceUrl.toString()}" class="article-feed__item__read_more article-call-to-action-link">
+              Read the original source
+            </a>
+          </div>
+
         </div>
       </li>
     `;
