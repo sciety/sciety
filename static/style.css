@@ -338,6 +338,7 @@ p.article-feed__item__title {
   font-family: Lato, sans-serif;
   font-size: 1.5rem;
   margin-bottom: var(--TWO-INCREMENTS);
+  padding-right: calc(100 / var(--BASE-FONT-MEASURE) * 1rem)
 }
 
 .article-feed__item__read_more {
@@ -396,35 +397,18 @@ p.article-feed__item__title {
   user-select: none;
 }
 
-.article-feed__item summary {
+.article-feed__item_body {
   position: relative;
-  display: block;
 }
 
-.article-feed__item summary:focus {
-  outline: 0;
-}
-
-.article-feed__item summary:focus::after {
-  outline: 1px dotted #333;
-}
-
-.article-feed__item summary::after {
-  content: '>';
-  font-weight: 700;
-  font-size: 1.5rem;
+.article-feed__item-toggle {
   position: absolute;
+  top: calc(24 / var(--BASE-FONT-MEASURE) * 1rem);
   right: 0;
-  bottom: 0;
-}
-
-.article-feed__item details[open] summary::after {
-  transform: rotate(90deg);
-  transform-origin: center;
-}
-
-.article-feed__item details > summary::-webkit-details-marker {
-  display: none;
+  color: rgb(61, 131, 196);
+  outline-width: 0;
+  background: none;
+  border: none;
 }
 
 .user-page-header {

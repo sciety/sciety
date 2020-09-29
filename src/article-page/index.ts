@@ -89,7 +89,7 @@ export default (ports: Ports): RenderPage => {
     { reviewId: new HypothesisAnnotationId('F7e5QpXMEeqnbCM3UE6XLQ') },
   ];
   const getReviews = createGetHardcodedReviews(returnHardcodedReviewIds, ports.fetchReview, getEditorialCommunity);
-  const renderFeed = createRenderFeed(getReviews);
+  const renderFeed = createRenderFeed(getReviews, 150);
   const renderPage = createRenderPage(
     renderPageHeader,
     renderEndorsements,
