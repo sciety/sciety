@@ -1,8 +1,9 @@
+import { URL } from 'url';
 import { Maybe, Result } from 'true-myth';
 import ensureBiorxivDoi from './ensure-biorxiv-doi';
 import createFetchPciRecommendation from './fetch-pci-recommendation';
 import createGetHardcodedEndorsements from './get-hardcoded-endorsements';
-import createGetHardcodedReviews from './get-hardcoded-reviews';
+import createGetHardcodedReviews, { GetEditorialCommunity } from './get-hardcoded-reviews';
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
 import createRenderEndorsements from './render-endorsements';
 import createRenderFeed from './render-feed';
@@ -21,14 +22,13 @@ import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { FetchExternalArticle } from '../types/fetch-external-article';
 
-type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => Promise<Maybe<{
-  name: string;
-}>>;
-
 interface Ports {
   fetchArticle: FetchExternalArticle;
   fetchReview: GetReview;
-  getEditorialCommunity: GetEditorialCommunity,
+  getEditorialCommunity: (editorialCommunityId: EditorialCommunityId) => Promise<Maybe<{
+    name: string;
+    avatarUrl: string;
+  }>>,
   findReviewsForArticleVersionDoi: GetReviews;
   logger: Logger;
 }
@@ -74,9 +74,14 @@ export default (ports: Ports): RenderPage => {
   const getEndorsements = createGetHardcodedEndorsements(fetchPciRecommendation);
   const renderEndorsements = createRenderEndorsements(getEndorsements);
   const renderReviews = buildRenderReviews(ports);
-  const getEditorialCommunity = async (editorialCommunityId: EditorialCommunityId): Promise<{name: string}> => (
-    (await ports.getEditorialCommunity(editorialCommunityId)).unsafelyUnwrap()
-  );
+  const getEditorialCommunity: GetEditorialCommunity = async (editorialCommunityId) => {
+    const editorialCommunity = (await ports.getEditorialCommunity(editorialCommunityId)).unsafelyUnwrap();
+
+    return {
+      ...editorialCommunity,
+      avatar: new URL(editorialCommunity.avatarUrl),
+    };
+  };
   const getReviews = createGetHardcodedReviews(ports.fetchReview, getEditorialCommunity);
   const renderFeed = createRenderFeed(getReviews);
   const renderPage = createRenderPage(
