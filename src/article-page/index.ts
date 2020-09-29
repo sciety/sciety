@@ -74,7 +74,7 @@ export default (ports: Ports): RenderPage => {
   const getEndorsements = createGetHardcodedEndorsements(fetchPciRecommendation);
   const renderEndorsements = createRenderEndorsements(getEndorsements);
   const renderReviews = buildRenderReviews(ports);
-  const getReviews = createGetHardcodedReviews();
+  const getReviews = createGetHardcodedReviews(ports.fetchReview);
   const renderFeed = createRenderFeed(getReviews);
   const renderPage = createRenderPage(
     renderPageHeader,
