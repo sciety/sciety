@@ -3,6 +3,7 @@ import { Result } from 'true-myth';
 import templateDate from '../templates/date';
 import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
+import clip from 'text-clipper';
 
 type RenderFeed = (doi: Doi) => Promise<Result<string, 'no-content'>>;
 
@@ -35,7 +36,10 @@ export default (getReviews: GetReviews): RenderFeed => async (doi) => {
             </a>
           </div>
 
-          <div>
+          <div style="display: none;" data-teaser>
+            ${clip(review.details, 250)}
+          </div>
+          <div data-full-text>
             ${review.details}
             <a href="${review.sourceUrl.toString()}" class="article-feed__item__read_more article-call-to-action-link">
               Read the original source
