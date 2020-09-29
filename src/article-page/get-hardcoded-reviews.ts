@@ -29,24 +29,20 @@ export default (
       };
     };
 
-    if (doi.value === '10.1101/646810') {
-      return Promise.all((await getReviewIdentifiers(doi)).map(async (reviewIdentifiers) => {
-        const [editorialCommunity, review] = await Promise.all([
-          getEditorialCommunity(reviewIdentifiers.editorialCommunityId),
-          getReviewDetailsAndSource(reviewIdentifiers.reviewId),
-        ]);
+    return Promise.all((await getReviewIdentifiers(doi)).map(async (reviewIdentifiers) => {
+      const [editorialCommunity, review] = await Promise.all([
+        getEditorialCommunity(reviewIdentifiers.editorialCommunityId),
+        getReviewDetailsAndSource(reviewIdentifiers.reviewId),
+      ]);
 
-        return {
-          sourceUrl: review.source,
-          publicationDate: new Date('2020-05-14'),
-          editorialCommunityId: reviewIdentifiers.editorialCommunityId,
-          editorialCommunityName: editorialCommunity.name,
-          editorialCommunityAvatar: editorialCommunity.avatar,
-          details: review.details,
-        };
-      }));
-    }
-
-    return [];
+      return {
+        sourceUrl: review.source,
+        publicationDate: new Date('2020-05-14'),
+        editorialCommunityId: reviewIdentifiers.editorialCommunityId,
+        editorialCommunityName: editorialCommunity.name,
+        editorialCommunityAvatar: editorialCommunity.avatar,
+        details: review.details,
+      };
+    }));
   }
 );
