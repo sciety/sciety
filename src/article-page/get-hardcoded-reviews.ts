@@ -8,6 +8,7 @@ import { ReviewId } from '../types/review-id';
 export type GetReviewIdentifiers = (articleDoi: Doi) => Promise<ReadonlyArray<{
   editorialCommunityId: EditorialCommunityId;
   reviewId: ReviewId;
+  occurredAt: Date;
 }>>;
 type GetReview = (id: ReviewId) => Promise<{
   summary: Maybe<string>;
@@ -37,7 +38,7 @@ export default (
 
       return {
         sourceUrl: review.source,
-        publicationDate: new Date('2020-05-14'),
+        publicationDate: reviewIdentifiers.occurredAt,
         editorialCommunityId: reviewIdentifiers.editorialCommunityId,
         editorialCommunityName: editorialCommunity.name,
         editorialCommunityAvatar: editorialCommunity.avatar,
