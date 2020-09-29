@@ -2,8 +2,8 @@ import { URL } from 'url';
 import { Maybe, Result } from 'true-myth';
 import ensureBiorxivDoi from './ensure-biorxiv-doi';
 import createFetchPciRecommendation from './fetch-pci-recommendation';
+import createGetFeedReviews, { GetEditorialCommunity, GetFeedEvents } from './get-feed-reviews';
 import createGetHardcodedEndorsements from './get-hardcoded-endorsements';
-import createGetHardcodedReviews, { GetEditorialCommunity, GetFeedEvents } from './get-hardcoded-reviews';
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
 import createRenderEndorsements from './render-endorsements';
 import createRenderFeed from './render-feed';
@@ -105,7 +105,7 @@ export default (ports: Ports): RenderPage => {
     }
     return [];
   };
-  const getReviews = createGetHardcodedReviews(getHardcodedFeedEvents, ports.fetchReview, getEditorialCommunity);
+  const getReviews = createGetFeedReviews(getHardcodedFeedEvents, ports.fetchReview, getEditorialCommunity);
   const renderFeed = createRenderFeed(getReviews, 150);
   const renderPage = createRenderPage(
     renderPageHeader,
