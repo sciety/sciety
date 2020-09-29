@@ -10,8 +10,6 @@ import createFetchHypothesisAnnotation from './fetch-hypothesis-annotation';
 import createFetchReview from './fetch-review';
 import createFetchStaticFile from './fetch-static-file';
 import createFollows from './follows';
-import createGetBiorxivCommentCount from './get-biorxiv-comment-count';
-import createGetDisqusPostCount from './get-disqus-post-count';
 import getEventsFromDataFiles from './get-events-from-data-files';
 import getEventsFromDatabase from './get-events-from-database';
 import createGetTwitterResponse from './get-twitter-response';
@@ -82,7 +80,6 @@ const createInfrastructure = async (): Promise<Adapters> => {
 
   return {
     fetchArticle: createFetchCrossrefArticle(getXml, logger),
-    getBiorxivCommentCount: createGetBiorxivCommentCount(createGetDisqusPostCount(getJson, logger), logger),
     fetchReview: createFetchReview(fetchDataciteReview, fetchHypothesisAnnotation),
     fetchStaticFile: createFetchStaticFile(logger),
     searchEuropePmc,

@@ -1,7 +1,6 @@
 import { Maybe } from 'true-myth';
 import createRenderPage from './render-page';
 import createRenderSearchResult, {
-  GetCommentCount,
   GetEndorsingEditorialCommunityNames,
   GetReviewCount,
   RenderSearchResult,
@@ -23,7 +22,6 @@ type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => Pro
 }>>;
 
 interface Ports {
-  getBiorxivCommentCount: GetCommentCount;
   searchEuropePmc: FindArticles,
   getEditorialCommunity: GetEditorialCommunity,
   endorsements: EndorsementsRepository,
@@ -31,7 +29,6 @@ interface Ports {
 }
 
 const buildRenderSearchResult = (
-  getCommentCount: GetCommentCount,
   getReviewCount: GetReviewCount,
   getEditorialCommunity: (id: EditorialCommunityId) => Promise<{ name: string }>,
   endorsements: EndorsementsRepository,
@@ -41,7 +38,6 @@ const buildRenderSearchResult = (
     return Promise.all(editorialCommunityIds.map(async (id) => (await getEditorialCommunity(id)).name));
   };
   return createRenderSearchResult(
-    getCommentCount,
     getReviewCount,
     getEndorsingEditorialCommunityNames,
   );
@@ -58,7 +54,6 @@ export default (ports: Ports): RenderPage => {
     (await ports.findReviewsForArticleVersionDoi(doi)).length
   );
   const renderSearchResult = buildRenderSearchResult(
-    ports.getBiorxivCommentCount,
     getReviewCount,
     async (editorialCommunityId) => (await ports.getEditorialCommunity(editorialCommunityId)).unsafelyUnwrap(),
     ports.endorsements,

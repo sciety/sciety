@@ -5,7 +5,6 @@ import { FetchCrossrefArticle } from './fetch-crossref-article';
 import { FetchReview } from './fetch-review';
 import { FetchStaticFile } from './fetch-static-file';
 import { Follows } from './follows';
-import { GetBiorxivCommentCount } from './get-biorxiv-comment-count';
 import { GetTwitterUserDetails } from './get-twitter-user-details';
 import { Logger } from './logger';
 import { FindReviewsForArticleVersionDoi, FindReviewsForEditorialCommunityId } from './review-projections';
@@ -23,7 +22,6 @@ type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => Pro
 
 export interface Adapters {
   fetchArticle: FetchCrossrefArticle;
-  getBiorxivCommentCount: GetBiorxivCommentCount;
   fetchReview: FetchReview;
   fetchStaticFile: FetchStaticFile;
   searchEuropePmc: SearchEuropePmc,

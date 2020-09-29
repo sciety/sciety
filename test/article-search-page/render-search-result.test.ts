@@ -1,6 +1,4 @@
-import { Maybe } from 'true-myth';
 import createRenderSearchResult, {
-  GetCommentCount,
   GetEndorsingEditorialCommunityNames,
   GetReviewCount,
   SearchResult,
@@ -14,14 +12,12 @@ const searchResult: SearchResult = {
   postedDate: new Date('2017-11-30'),
 };
 
-const arbitraryCommentCount: GetCommentCount = async () => Maybe.nothing();
 const arbitraryReviewCount: GetReviewCount = async () => 0;
 const arbitraryEndorsingEditorialCommunities: GetEndorsingEditorialCommunityNames = async () => [];
 
 describe('render-search-result component', (): void => {
   it('displays title and authors', async (): Promise<void> => {
     const rendered = await createRenderSearchResult(
-      arbitraryCommentCount,
       arbitraryReviewCount,
       arbitraryEndorsingEditorialCommunities,
     )(searchResult);
@@ -33,7 +29,6 @@ describe('render-search-result component', (): void => {
 
   it('displays the posted date', async (): Promise<void> => {
     const rendered = await createRenderSearchResult(
-      arbitraryCommentCount,
       arbitraryReviewCount,
       arbitraryEndorsingEditorialCommunities,
     )(searchResult);
@@ -46,7 +41,6 @@ describe('render-search-result component', (): void => {
       const getReviewCount: GetReviewCount = async () => 37;
 
       const rendered = await createRenderSearchResult(
-        arbitraryCommentCount,
         getReviewCount,
         arbitraryEndorsingEditorialCommunities,
       )(searchResult);
@@ -60,7 +54,6 @@ describe('render-search-result component', (): void => {
       const getReviewCount: GetReviewCount = async () => 0;
 
       const rendered = await createRenderSearchResult(
-        arbitraryCommentCount,
         getReviewCount,
         arbitraryEndorsingEditorialCommunities,
       )(searchResult);
@@ -69,50 +62,10 @@ describe('render-search-result component', (): void => {
     });
   });
 
-  describe('an article has comments', (): void => {
-    it('displays the number of comments', async (): Promise<void> => {
-      const getCommentCount: GetCommentCount = async () => Maybe.just(37);
-      const rendered = await createRenderSearchResult(
-        getCommentCount,
-        arbitraryReviewCount,
-        arbitraryEndorsingEditorialCommunities,
-      )(searchResult);
-
-      expect(rendered).toStrictEqual(expect.stringMatching(/Comments[\s\S]*?37/));
-    });
-  });
-
-  describe('an article has no comments', (): void => {
-    it('hides the number of comments', async (): Promise<void> => {
-      const getCommentCount: GetCommentCount = async () => Maybe.just(0);
-      const rendered = await createRenderSearchResult(
-        getCommentCount,
-        arbitraryReviewCount,
-        arbitraryEndorsingEditorialCommunities,
-      )(searchResult);
-
-      expect(rendered).toStrictEqual(expect.not.stringContaining('Comments'));
-    });
-  });
-
-  describe('an error is thrown when counting comments', (): void => {
-    it('hides the number of comments', async (): Promise<void> => {
-      const getCommentCount: GetCommentCount = async () => Maybe.nothing();
-      const rendered = await createRenderSearchResult(
-        getCommentCount,
-        arbitraryReviewCount,
-        arbitraryEndorsingEditorialCommunities,
-      )(searchResult);
-
-      expect(rendered).toStrictEqual(expect.not.stringContaining('Comments'));
-    });
-  });
-
   describe('a list of endorsing editorial communities is available', (): void => {
     it('displays the endorsing editorial communities', async (): Promise<void> => {
       const getEndorsingEditorialCommunityNames: GetEndorsingEditorialCommunityNames = async () => ['PeerJ', 'eLife'];
       const rendered = await createRenderSearchResult(
-        arbitraryCommentCount,
         arbitraryReviewCount,
         getEndorsingEditorialCommunityNames,
       )(searchResult);
@@ -126,7 +79,6 @@ describe('render-search-result component', (): void => {
     it('displays the endorsing editorial communities', async (): Promise<void> => {
       const getEndorsingEditorialCommunityNames: GetEndorsingEditorialCommunityNames = async () => [];
       const rendered = await createRenderSearchResult(
-        arbitraryCommentCount,
         arbitraryReviewCount,
         getEndorsingEditorialCommunityNames,
       )(searchResult);

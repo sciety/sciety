@@ -13,8 +13,6 @@ import createFetchDataciteReview from '../../src/infrastructure/fetch-datacite-r
 import { FetchDataset } from '../../src/infrastructure/fetch-dataset';
 import createFetchHypothesisAnnotation from '../../src/infrastructure/fetch-hypothesis-annotation';
 import createFetchReview from '../../src/infrastructure/fetch-review';
-import createGetBiorxivCommentCount from '../../src/infrastructure/get-biorxiv-comment-count';
-import createGetDisqusPostCount from '../../src/infrastructure/get-disqus-post-count';
 import createEditorialCommunityRepository from '../../src/infrastructure/in-memory-editorial-communities';
 import createEndorsementsRepository from '../../src/infrastructure/in-memory-endorsements-repository';
 import createReviewProjections from '../../src/infrastructure/review-projections';
@@ -48,8 +46,6 @@ export default async (): Promise<TestServer> => {
     title: 'Article title',
     publicationDate: new Date(),
   }));
-  const getDisqusPostCount = createGetDisqusPostCount(async () => ({ response: [{ posts: 0 }] }), dummyLogger);
-  const getBiorxivCommentCount = createGetBiorxivCommentCount(getDisqusPostCount, dummyLogger);
   const fetchReview = createFetchReview(
     createFetchDataciteReview(fetchDataCiteDataset, dummyLogger),
     createFetchHypothesisAnnotation(shouldNotBeCalled, dummyLogger),
@@ -57,7 +53,6 @@ export default async (): Promise<TestServer> => {
 
   const adapters: Adapters = {
     fetchArticle,
-    getBiorxivCommentCount,
     fetchReview,
     fetchStaticFile: async (filename: string) => `Contents of ${filename}`,
     searchEuropePmc: async () => ({ items: [], total: 0 }),
