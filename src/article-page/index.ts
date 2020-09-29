@@ -3,7 +3,7 @@ import { Maybe, Result } from 'true-myth';
 import ensureBiorxivDoi from './ensure-biorxiv-doi';
 import createFetchPciRecommendation from './fetch-pci-recommendation';
 import createGetHardcodedEndorsements from './get-hardcoded-endorsements';
-import createGetHardcodedReviews, { GetEditorialCommunity } from './get-hardcoded-reviews';
+import createGetHardcodedReviews, { GetEditorialCommunity, GetReviewIdentifiers } from './get-hardcoded-reviews';
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
 import createRenderEndorsements from './render-endorsements';
 import createRenderFeed from './render-feed';
@@ -21,6 +21,7 @@ import { Logger } from '../infrastructure/logger';
 import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { FetchExternalArticle } from '../types/fetch-external-article';
+import HypothesisAnnotationId from '../types/hypothesis-annotation-id';
 
 interface Ports {
   fetchArticle: FetchExternalArticle;
@@ -82,7 +83,12 @@ export default (ports: Ports): RenderPage => {
       avatar: new URL(editorialCommunity.avatarUrl),
     };
   };
-  const getReviews = createGetHardcodedReviews(ports.fetchReview, getEditorialCommunity);
+  const returnHardcodedReviewIds: GetReviewIdentifiers = async () => [
+    { reviewId: new HypothesisAnnotationId('GFEW8JXMEeqJQcuc-6NFhQ') },
+    { reviewId: new HypothesisAnnotationId('F4-xmpXMEeqf3_-2H0r-9Q') },
+    { reviewId: new HypothesisAnnotationId('F7e5QpXMEeqnbCM3UE6XLQ') },
+  ];
+  const getReviews = createGetHardcodedReviews(returnHardcodedReviewIds, ports.fetchReview, getEditorialCommunity);
   const renderFeed = createRenderFeed(getReviews);
   const renderPage = createRenderPage(
     renderPageHeader,
