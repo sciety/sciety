@@ -16,6 +16,7 @@ import createRenderReview, {
   GetEditorialCommunityName as GetEditorialCommunityNameForRenderReview,
   GetReview,
 } from './render-review';
+import createRenderReviewedEvent from './render-reviewed-event';
 import createRenderReviews, { GetReviews, RenderReviews } from './render-reviews';
 import { Logger } from '../infrastructure/logger';
 import Doi from '../types/doi';
@@ -106,7 +107,7 @@ export default (ports: Ports): RenderPage => {
     return [];
   };
   const getReviews = createGetFeedReviews(getHardcodedFeedEvents, ports.fetchReview, getEditorialCommunity);
-  const renderFeed = createRenderFeed(getReviews, 150);
+  const renderFeed = createRenderFeed(getReviews, createRenderReviewedEvent(150));
   const renderPage = createRenderPage(
     renderPageHeader,
     renderEndorsements,
