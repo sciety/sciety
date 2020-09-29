@@ -74,7 +74,10 @@ export default (ports: Ports): RenderPage => {
   const getEndorsements = createGetHardcodedEndorsements(fetchPciRecommendation);
   const renderEndorsements = createRenderEndorsements(getEndorsements);
   const renderReviews = buildRenderReviews(ports);
-  const getReviews = createGetHardcodedReviews(ports.fetchReview);
+  const getEditorialCommunity = async (editorialCommunityId: EditorialCommunityId): Promise<{name: string}> => (
+    (await ports.getEditorialCommunity(editorialCommunityId)).unsafelyUnwrap()
+  );
+  const getReviews = createGetHardcodedReviews(ports.fetchReview, getEditorialCommunity);
   const renderFeed = createRenderFeed(getReviews);
   const renderPage = createRenderPage(
     renderPageHeader,
