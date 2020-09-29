@@ -38,7 +38,7 @@ export default (
 
       return {
         sourceUrl: review.source,
-        publicationDate: feedEvent.occurredAt,
+        occurredAt: feedEvent.occurredAt,
         editorialCommunityId: feedEvent.editorialCommunityId,
         editorialCommunityName: editorialCommunity.name,
         editorialCommunityAvatar: editorialCommunity.avatar,

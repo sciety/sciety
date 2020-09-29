@@ -13,7 +13,7 @@ const renderAvatar = (url: URL): string => `
 
 type Review = {
   sourceUrl: URL;
-  publicationDate: Date;
+  occurredAt: Date;
   editorialCommunityId: EditorialCommunityId;
   editorialCommunityName: string;
   editorialCommunityAvatar: URL;
@@ -31,7 +31,7 @@ export default (
       <li class="article-feed__item">
         ${renderAvatar(review.editorialCommunityAvatar)}
         <div class="article-feed__item_body">
-          ${templateDate(review.publicationDate, 'article-feed__item__date')}
+          ${templateDate(review.occurredAt, 'article-feed__item__date')}
           <div class="article-feed__item__title">
             Reviewed by
             <a href="/editorial-communities/${review.editorialCommunityId.value}">
