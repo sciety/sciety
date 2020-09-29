@@ -1,5 +1,6 @@
 import { URL } from 'url';
 import { Result } from 'true-myth';
+import templateDate from '../templates/date';
 import Doi from '../types/doi';
 
 type RenderFeed = (doi: Doi) => Promise<Result<string, never>>;
@@ -10,6 +11,7 @@ const renderAvatar = (url: string): string => `
 
 type Review = {
   sourceUrl: URL;
+  publicationDate: Date;
   details: string;
 };
 
@@ -18,6 +20,7 @@ type Reviews = ReadonlyArray<Review>;
 const reviews: Reviews = [
   {
     sourceUrl: new URL('https://hyp.is/GFEW8JXMEeqJQcuc-6NFhQ/www.biorxiv.org/content/10.1101/646810v2'),
+    publicationDate: new Date('2020-05-14'),
     details: `
           <summary>
             <blockquote>
@@ -116,6 +119,7 @@ const reviews: Reviews = [
   },
   {
     sourceUrl: new URL('https://hyp.is/F4-xmpXMEeqf3_-2H0r-9Q/www.biorxiv.org/content/10.1101/646810v2'),
+    publicationDate: new Date('2020-05-14'),
     details: `
           <summary>
             <h3>Summary</h3>
@@ -142,6 +146,7 @@ const reviews: Reviews = [
   },
   {
     sourceUrl: new URL('https://hyp.is/F7e5QpXMEeqnbCM3UE6XLQ/www.biorxiv.org/content/10.1101/646810v2'),
+    publicationDate: new Date('2020-05-14'),
     details: `
       <summary>
         <h3>Referee #2</h3><h4>Evidence, reproducibility and clarity</h4><p>In this manuscript, Lord et al. describe the analysis of loss-of-function (LOF) screens in cancer cell lines to identify robust (i.e., technically reproducible and shared across cell lines) genetic dependencies. The authors integrate data from 4 large-scale LOF studies (DRIVE, AVANA, DEPMAP and SCORE) to estimate the ...</p>
@@ -175,7 +180,7 @@ export default (): RenderFeed => (
       <li class="article-feed__item">
         ${renderAvatar('https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg')}
         <div>
-          <time class="article-feed__item__date" datetime="2020-05-14">May 14, 2020</time>
+          ${templateDate(review.publicationDate, 'article-feed__item__date')}
           <div class="article-feed__item__title">
                       Reviewed by
             <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334">
