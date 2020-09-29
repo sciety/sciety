@@ -6,8 +6,8 @@ import EditorialCommunityId from '../types/editorial-community-id';
 
 type RenderFeed = (doi: Doi) => Promise<Result<string, never>>;
 
-const renderAvatar = (url: string): string => `
-  <img class="article-feed__item__avatar" src="${url}" alt="">
+const renderAvatar = (url: URL): string => `
+  <img class="article-feed__item__avatar" src="${url.toString()}" alt="">
 `;
 
 type Review = {
@@ -15,6 +15,7 @@ type Review = {
   publicationDate: Date;
   editorialCommunityId: EditorialCommunityId;
   editorialCommunityName: string;
+  editorialCommunityAvatar: URL;
   details: string;
 };
 
@@ -26,6 +27,7 @@ const reviews: Reviews = [
     publicationDate: new Date('2020-05-14'),
     editorialCommunityId: new EditorialCommunityId('316db7d9-88cc-4c26-b386-f067e0f56334'),
     editorialCommunityName: 'Review Commons',
+    editorialCommunityAvatar: new URL('https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg'),
     details: `
           <summary>
             <blockquote>
@@ -127,6 +129,7 @@ const reviews: Reviews = [
     publicationDate: new Date('2020-05-14'),
     editorialCommunityId: new EditorialCommunityId('316db7d9-88cc-4c26-b386-f067e0f56334'),
     editorialCommunityName: 'Review Commons',
+    editorialCommunityAvatar: new URL('https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg'),
     details: `
           <summary>
             <h3>Summary</h3>
@@ -156,6 +159,7 @@ const reviews: Reviews = [
     publicationDate: new Date('2020-05-14'),
     editorialCommunityId: new EditorialCommunityId('316db7d9-88cc-4c26-b386-f067e0f56334'),
     editorialCommunityName: 'Review Commons',
+    editorialCommunityAvatar: new URL('https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg'),
     details: `
       <summary>
         <h3>Referee #2</h3><h4>Evidence, reproducibility and clarity</h4><p>In this manuscript, Lord et al. describe the analysis of loss-of-function (LOF) screens in cancer cell lines to identify robust (i.e., technically reproducible and shared across cell lines) genetic dependencies. The authors integrate data from 4 large-scale LOF studies (DRIVE, AVANA, DEPMAP and SCORE) to estimate the ...</p>
@@ -187,7 +191,7 @@ export default (): RenderFeed => (
   async (doi) => {
     const renderItem = (review: Review): string => `
       <li class="article-feed__item">
-        ${renderAvatar('https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg')}
+        ${renderAvatar(review.editorialCommunityAvatar)}
         <div>
           ${templateDate(review.publicationDate, 'article-feed__item__date')}
           <div class="article-feed__item__title">
