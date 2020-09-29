@@ -4,7 +4,7 @@ import templateDate from '../templates/date';
 import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
 
-type RenderFeed = (doi: Doi) => Promise<Result<string, never>>;
+type RenderFeed = (doi: Doi) => Promise<Result<string, 'no-content'>>;
 
 const renderAvatar = (url: URL): string => `
   <img class="article-feed__item__avatar" src="${url.toString()}" alt="">
@@ -44,21 +44,21 @@ export default (getReviews: GetReviews): RenderFeed => async (doi) => {
       </li>
     `;
 
-  if (doi.value === '10.1101/646810') {
-    const feed = `
-  <section>
-    <h2>Feed</h2>
-
-    <ol role="list" class="article-feed">
-
-      ${renderItem(reviews[0])}
-      ${renderItem(reviews[1])}
-      ${renderItem(reviews[2])}
-
-    </ol>
-  </section>
-    `;
-    return Promise.resolve(Result.ok(feed));
+  if (reviews.length === 0) {
+    return Result.err('no-content');
   }
-  return Promise.resolve(Result.ok(''));
+
+  return Result.ok(`
+    <section>
+      <h2>Feed</h2>
+
+      <ol role="list" class="article-feed">
+
+        ${renderItem(reviews[0])}
+        ${renderItem(reviews[1])}
+        ${renderItem(reviews[2])}
+
+      </ol>
+    </section>
+  `);
 };

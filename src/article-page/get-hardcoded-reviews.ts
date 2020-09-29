@@ -169,5 +169,11 @@ const reviews: Readonly<Array<Review>> = [
 ];
 
 export default () : GetReviews => (
-  async () => reviews
+  async (doi) => {
+    if (doi.value === '10.1101/646810') {
+      return reviews;
+    }
+
+    return [];
+  }
 );

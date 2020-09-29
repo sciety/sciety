@@ -73,7 +73,10 @@ export default (
   return async (doi) => {
     const abstractResult = renderAbstract(doi);
     const pageHeaderResult = renderPageHeader(doi);
-    const feedResult = renderFeed(doi);
+    const feedResult = renderFeed(doi)
+      .then((feed) => (
+        feed.orElse(() => Result.ok(''))
+      ));
     const endorsementsResult = renderEndorsements(doi);
     const reviewSummaries = renderReviewSummaries(doi);
     const reviews = renderReviews(doi)
