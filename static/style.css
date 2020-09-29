@@ -407,7 +407,8 @@ p.article-feed__item__title {
   right: 0;
   color: rgb(61, 131, 196);
   outline-width: 0;
-
+  background: none;
+  border: none;
 }
 
 .user-page-header {
