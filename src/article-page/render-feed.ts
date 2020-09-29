@@ -1,9 +1,9 @@
 import { URL } from 'url';
+import clip from 'text-clipper';
 import { Result } from 'true-myth';
 import templateDate from '../templates/date';
 import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
-import clip from 'text-clipper';
 
 type RenderFeed = (doi: Doi) => Promise<Result<string, 'no-content'>>;
 
