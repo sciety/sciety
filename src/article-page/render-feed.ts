@@ -39,7 +39,7 @@ export default (getReviews: GetReviews): RenderFeed => async (doi) => {
           <div data-teaser>
             ${clip(review.details, 250)}
           </div>
-          <button class="article-feed__item-toggle">See more</button>
+          <button class="article-feed__item-toggle">See more <span aria-hidden="true">+</span></button>
           <div style="display: none;" data-full-text>
             ${review.details}
             <a href="${review.sourceUrl.toString()}" class="article-feed__item__read_more article-call-to-action-link">
@@ -74,16 +74,14 @@ export default (getReviews: GetReviews): RenderFeed => async (doi) => {
               const target = e.target;
               const teaser = target.parentElement.querySelector('[data-teaser]');
               const fullText = target.parentElement.querySelector('[data-full-text]');
-              if (target.innerHTML === 'See more') {
-                console.log('expand');
+              if (target.innerHTML.indexOf('See more') > -1) {
                 teaser.style.display = 'none';
                 fullText.style.display = 'block';
-                target.innerHTML = 'See less';
+                target.innerHTML = 'See less <span aria-hidden="true">-</span>';
               } else {
-                console.log('collapse');
-                teaser.style.display = 'block';
+                  teaser.style.display = 'block';
                 fullText.style.display = 'none';
-                target.innerHTML = 'See more';
+                target.innerHTML = 'See more <span aria-hidden="true">+</span>';
               }
             })
           });
