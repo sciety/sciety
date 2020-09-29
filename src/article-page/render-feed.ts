@@ -22,7 +22,10 @@ export type Review = {
 
 export type GetReviews = (doi: Doi) => Promise<ReadonlyArray<Review>>;
 
-export default (getReviews: GetReviews): RenderFeed => async (doi) => {
+export default (
+  getReviews: GetReviews,
+  teaserChars: number,
+): RenderFeed => async (doi) => {
   const reviews = await getReviews(doi);
   const renderItem = (review: Review): string => `
       <li class="article-feed__item">
@@ -37,7 +40,7 @@ export default (getReviews: GetReviews): RenderFeed => async (doi) => {
           </div>
 
           <div data-teaser>
-            ${clip(review.details, 250)}
+            ${clip(review.details, teaserChars)}
           </div>
           <button class="article-feed__item-toggle">See more <span aria-hidden="true">+</span></button>
           <div style="display: none;" data-full-text>

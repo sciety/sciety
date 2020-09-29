@@ -83,7 +83,7 @@ export default (ports: Ports): RenderPage => {
     };
   };
   const getReviews = createGetHardcodedReviews(ports.fetchReview, getEditorialCommunity);
-  const renderFeed = createRenderFeed(getReviews);
+  const renderFeed = createRenderFeed(getReviews, 150);
   const renderPage = createRenderPage(
     renderPageHeader,
     renderEndorsements,
