@@ -27,7 +27,7 @@ export default (getReviews: GetReviews): RenderFeed => async (doi) => {
   const renderItem = (review: Review): string => `
       <li class="article-feed__item">
         ${renderAvatar(review.editorialCommunityAvatar)}
-        <div>
+        <div class="article-feed__item_body">
           ${templateDate(review.publicationDate, 'article-feed__item__date')}
           <div class="article-feed__item__title">
             Reviewed by
@@ -36,10 +36,11 @@ export default (getReviews: GetReviews): RenderFeed => async (doi) => {
             </a>
           </div>
 
-          <div style="display: none;" data-teaser>
+          <div data-teaser>
             ${clip(review.details, 250)}
           </div>
-          <div data-full-text>
+          <button class="article-feed__item-toggle">See more</button>
+          <div style="display: none;" data-full-text>
             ${review.details}
             <a href="${review.sourceUrl.toString()}" class="article-feed__item__read_more article-call-to-action-link">
               Read the original source
@@ -65,6 +66,29 @@ export default (getReviews: GetReviews): RenderFeed => async (doi) => {
         ${renderItem(reviews[2])}
 
       </ol>
+      <script>
+        (function(doc) {
+          const toggles = doc.querySelectorAll('.article-feed__item-toggle');
+          Array.prototype.forEach.call(toggles, function (toggle) {
+            toggle.addEventListener('click', function (e) {
+              const target = e.target;
+              const teaser = target.parentElement.querySelector('[data-teaser]');
+              const fullText = target.parentElement.querySelector('[data-full-text]');
+              if (target.innerHTML === 'See more') {
+                console.log('expand');
+                teaser.style.display = 'none';
+                fullText.style.display = 'block';
+                target.innerHTML = 'See less';
+              } else {
+                console.log('collapse');
+                teaser.style.display = 'block';
+                fullText.style.display = 'none';
+                target.innerHTML = 'See more';
+              }
+            })
+          });
+        }(window.document));
+      </script>
     </section>
   `);
 };
