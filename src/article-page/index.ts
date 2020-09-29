@@ -3,7 +3,7 @@ import { Maybe, Result } from 'true-myth';
 import ensureBiorxivDoi from './ensure-biorxiv-doi';
 import createFetchPciRecommendation from './fetch-pci-recommendation';
 import createGetHardcodedEndorsements from './get-hardcoded-endorsements';
-import createGetHardcodedReviews, { GetEditorialCommunity, GetReviewIdentifiers } from './get-hardcoded-reviews';
+import createGetHardcodedReviews, { GetEditorialCommunity, GetFeedEvents } from './get-hardcoded-reviews';
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
 import createRenderEndorsements from './render-endorsements';
 import createRenderFeed from './render-feed';
@@ -83,7 +83,7 @@ export default (ports: Ports): RenderPage => {
       avatar: new URL(editorialCommunity.avatarUrl),
     };
   };
-  const returnHardcodedReviewIds: GetReviewIdentifiers = async (doi) => {
+  const getHardcodedFeedEvents: GetFeedEvents = async (doi) => {
     if (doi.value === '10.1101/646810') {
       return [
         {
@@ -105,7 +105,7 @@ export default (ports: Ports): RenderPage => {
     }
     return [];
   };
-  const getReviews = createGetHardcodedReviews(returnHardcodedReviewIds, ports.fetchReview, getEditorialCommunity);
+  const getReviews = createGetHardcodedReviews(getHardcodedFeedEvents, ports.fetchReview, getEditorialCommunity);
   const renderFeed = createRenderFeed(getReviews, 150);
   const renderPage = createRenderPage(
     renderPageHeader,

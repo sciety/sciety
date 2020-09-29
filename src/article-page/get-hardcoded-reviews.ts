@@ -5,7 +5,7 @@ import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { ReviewId } from '../types/review-id';
 
-export type GetReviewIdentifiers = (articleDoi: Doi) => Promise<ReadonlyArray<{
+export type GetFeedEvents= (articleDoi: Doi) => Promise<ReadonlyArray<{
   editorialCommunityId: EditorialCommunityId;
   reviewId: ReviewId;
   occurredAt: Date;
@@ -17,7 +17,7 @@ type GetReview = (id: ReviewId) => Promise<{
 export type GetEditorialCommunity = (id: EditorialCommunityId) => Promise<{ name: string, avatar: URL }>;
 
 export default (
-  getReviewIdentifiers: GetReviewIdentifiers,
+  getFeedEvents: GetFeedEvents,
   getReview: GetReview,
   getEditorialCommunity: GetEditorialCommunity,
 ) : GetReviews => (
@@ -30,16 +30,16 @@ export default (
       };
     };
 
-    return Promise.all((await getReviewIdentifiers(doi)).map(async (reviewIdentifiers) => {
+    return Promise.all((await getFeedEvents(doi)).map(async (feedEvent) => {
       const [editorialCommunity, review] = await Promise.all([
-        getEditorialCommunity(reviewIdentifiers.editorialCommunityId),
-        getReviewDetailsAndSource(reviewIdentifiers.reviewId),
+        getEditorialCommunity(feedEvent.editorialCommunityId),
+        getReviewDetailsAndSource(feedEvent.reviewId),
       ]);
 
       return {
         sourceUrl: review.source,
-        publicationDate: reviewIdentifiers.occurredAt,
-        editorialCommunityId: reviewIdentifiers.editorialCommunityId,
+        publicationDate: feedEvent.occurredAt,
+        editorialCommunityId: feedEvent.editorialCommunityId,
         editorialCommunityName: editorialCommunity.name,
         editorialCommunityAvatar: editorialCommunity.avatar,
         details: review.details,
