@@ -11,7 +11,7 @@ const renderAvatar = (url: URL): string => `
   <img class="article-feed__item__avatar" src="${url.toString()}" alt="">
 `;
 
-export type Review = {
+type Review = {
   sourceUrl: URL;
   publicationDate: Date;
   editorialCommunityId: EditorialCommunityId;
@@ -58,16 +58,14 @@ export default (
     return Result.err('no-content');
   }
 
+  const items = reviews.map(renderItem).join('\n');
+
   return Result.ok(`
     <section>
       <h2>Feed</h2>
 
       <ol role="list" class="article-feed">
-
-        ${renderItem(reviews[0])}
-        ${renderItem(reviews[1])}
-        ${renderItem(reviews[2])}
-
+        ${items}
       </ol>
       <script>
         (function(doc) {
