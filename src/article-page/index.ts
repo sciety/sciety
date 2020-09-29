@@ -84,9 +84,18 @@ export default (ports: Ports): RenderPage => {
     };
   };
   const returnHardcodedReviewIds: GetReviewIdentifiers = async () => [
-    { reviewId: new HypothesisAnnotationId('GFEW8JXMEeqJQcuc-6NFhQ') },
-    { reviewId: new HypothesisAnnotationId('F4-xmpXMEeqf3_-2H0r-9Q') },
-    { reviewId: new HypothesisAnnotationId('F7e5QpXMEeqnbCM3UE6XLQ') },
+    {
+      reviewId: new HypothesisAnnotationId('GFEW8JXMEeqJQcuc-6NFhQ'),
+      editorialCommunityId: new EditorialCommunityId('316db7d9-88cc-4c26-b386-f067e0f56334'),
+    },
+    {
+      reviewId: new HypothesisAnnotationId('F4-xmpXMEeqf3_-2H0r-9Q'),
+      editorialCommunityId: new EditorialCommunityId('316db7d9-88cc-4c26-b386-f067e0f56334'),
+    },
+    {
+      reviewId: new HypothesisAnnotationId('F7e5QpXMEeqnbCM3UE6XLQ'),
+      editorialCommunityId: new EditorialCommunityId('316db7d9-88cc-4c26-b386-f067e0f56334'),
+    },
   ];
   const getReviews = createGetHardcodedReviews(returnHardcodedReviewIds, ports.fetchReview, getEditorialCommunity);
   const renderFeed = createRenderFeed(getReviews, 150);

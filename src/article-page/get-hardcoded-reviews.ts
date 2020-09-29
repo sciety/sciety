@@ -5,7 +5,10 @@ import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { ReviewId } from '../types/review-id';
 
-export type GetReviewIdentifiers= (articleDoi: Doi) => Promise<ReadonlyArray<{reviewId: ReviewId}>>;
+export type GetReviewIdentifiers = (articleDoi: Doi) => Promise<ReadonlyArray<{
+  editorialCommunityId: EditorialCommunityId;
+  reviewId: ReviewId;
+}>>;
 type GetReview = (id: ReviewId) => Promise<{
   summary: Maybe<string>;
   url: URL;
@@ -27,15 +30,16 @@ export default (
     };
 
     if (doi.value === '10.1101/646810') {
-      const editorialCommunityId = new EditorialCommunityId('316db7d9-88cc-4c26-b386-f067e0f56334');
-      const editorialCommunity = await getEditorialCommunity(editorialCommunityId);
-
       return Promise.all((await getReviewIdentifiers(doi)).map(async (reviewIdentifiers) => {
-        const review = await getReviewDetailsAndSource(reviewIdentifiers.reviewId);
+        const [editorialCommunity, review] = await Promise.all([
+          getEditorialCommunity(reviewIdentifiers.editorialCommunityId),
+          getReviewDetailsAndSource(reviewIdentifiers.reviewId),
+        ]);
+
         return {
           sourceUrl: review.source,
           publicationDate: new Date('2020-05-14'),
-          editorialCommunityId,
+          editorialCommunityId: reviewIdentifiers.editorialCommunityId,
           editorialCommunityName: editorialCommunity.name,
           editorialCommunityAvatar: editorialCommunity.avatar,
           details: review.details,
