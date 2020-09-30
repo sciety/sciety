@@ -3,7 +3,7 @@ import { Pool } from 'pg';
 import { Adapters } from './adapters';
 import createCommitEvents from './commit-events';
 import createEventSourceFollowListRepository from './event-sourced-follow-list-repository';
-import createFetchCrossrefArticle from './fetch-crossref-article';
+import createFetchCrossrefArticle, { FetchCrossrefArticle } from './fetch-crossref-article';
 import createFetchDataciteReview from './fetch-datacite-review';
 import createFetchDataset from './fetch-dataset';
 import createFetchHypothesisAnnotation from './fetch-hypothesis-annotation';
@@ -78,8 +78,12 @@ const createInfrastructure = async (): Promise<Adapters> => {
   const getFollowList = createEventSourceFollowListRepository(getAllEvents);
   const getTwitterResponse = createGetTwitterResponse(process.env.TWITTER_API_BEARER_TOKEN ?? '');
 
+  const createArticleCache = (fetchCrossrefArticle: FetchCrossrefArticle): FetchCrossrefArticle => (
+    fetchCrossrefArticle
+  );
+
   return {
-    fetchArticle: createFetchCrossrefArticle(getXml, logger),
+    fetchArticle: createArticleCache(createFetchCrossrefArticle(getXml, logger)),
     fetchReview: createFetchReview(fetchDataciteReview, fetchHypothesisAnnotation),
     fetchStaticFile: createFetchStaticFile(logger),
     searchEuropePmc,
