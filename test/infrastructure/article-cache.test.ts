@@ -4,18 +4,20 @@ import Doi from '../../src/types/doi';
 import dummyLogger from '../dummy-logger';
 
 describe('article-cache', () => {
+  const arbitraryArticle = {
+    abstract: '',
+    authors: [],
+    doi: new Doi('10.1101/12345678'),
+    title: '',
+    publicationDate: new Date(),
+  };
+
   describe('when the required article is not in the cache', () => {
     it('makes a call to fetch-crossref-article', async () => {
       let wasCalled = false;
-      const articleCache = createArticleCache(async (doi) => {
+      const articleCache = createArticleCache(async () => {
         wasCalled = true;
-        return Result.ok({
-          abstract: '',
-          authors: [],
-          doi,
-          title: '',
-          publicationDate: new Date(),
-        });
+        return Result.ok(arbitraryArticle);
       }, dummyLogger);
       await articleCache(new Doi('10.1101/111111'));
 
@@ -37,38 +39,12 @@ describe('article-cache', () => {
       expect(actual.unsafelyUnwrap()).toBe(fetched);
     });
 
-    describe('but a different article is in the cache', () => {
-      it('makes the call anyway', async () => {
-        let numberOfRequests = 0;
-        const articleCache = createArticleCache(async (doi) => {
-          numberOfRequests += 1;
-          return Result.ok({
-            abstract: '',
-            authors: [],
-            doi,
-            title: '',
-            publicationDate: new Date(),
-          });
-        }, dummyLogger);
-        await articleCache(new Doi('10.1101/222222'));
-        await articleCache(new Doi('10.1101/111111'));
-
-        expect(numberOfRequests).toBe(2);
-      });
-    });
-
     describe('when the result is ok', () => {
       it('adds the article to the cache', async () => {
         let numberOfRequests = 0;
-        const articleCache = createArticleCache(async (doi) => {
+        const articleCache = createArticleCache(async () => {
           numberOfRequests += 1;
-          return Result.ok({
-            abstract: '',
-            authors: [],
-            doi,
-            title: '',
-            publicationDate: new Date(),
-          });
+          return Result.ok(arbitraryArticle);
         }, dummyLogger);
         await articleCache(new Doi('10.1101/222222'));
         await articleCache(new Doi('10.1101/222222'));
@@ -94,15 +70,9 @@ describe('article-cache', () => {
     describe('when the DOI is requested twice simultaneously', () => {
       it('collapses the calls into one', async () => {
         let numberOfRequests = 0;
-        const articleCache = createArticleCache(async (doi) => {
+        const articleCache = createArticleCache(async () => {
           numberOfRequests += 1;
-          return Result.ok({
-            abstract: '',
-            authors: [],
-            doi,
-            title: '',
-            publicationDate: new Date(),
-          });
+          return Result.ok(arbitraryArticle);
         }, dummyLogger);
         await Promise.all([
           articleCache(new Doi('10.1101/222222')),
