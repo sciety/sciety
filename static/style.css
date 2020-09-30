@@ -385,6 +385,10 @@ p.article-feed__item__title {
   font-family: Lato, sans-serif;
 }
 
+.hidden {
+  display: none;
+}
+
 .visually-hidden {
   border: 0;
   clip: rect(0 0 0 0);

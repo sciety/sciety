@@ -34,12 +34,12 @@ export default (
               const teaser = target.parentElement.querySelector('[data-teaser]');
               const fullText = target.parentElement.querySelector('[data-full-text]');
               if (target.innerHTML.indexOf('See more') > -1) {
-                teaser.style.display = 'none';
-                fullText.style.display = 'block';
+                teaser.classList.add('hidden');
+                fullText.classList.remove('hidden');
                 target.innerHTML = 'See less <span aria-hidden="true">-</span>';
               } else {
-                  teaser.style.display = 'block';
-                fullText.style.display = 'none';
+                teaser.classList.remove('hidden');
+                fullText.classList.add('hidden');
                 target.innerHTML = 'See more <span aria-hidden="true">+</span>';
               }
             })

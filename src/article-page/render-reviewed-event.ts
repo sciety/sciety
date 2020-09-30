@@ -36,7 +36,7 @@ export default (
         ${clip(review.details, teaserChars)}
         </div>
         <button class="article-feed__item-toggle">See more <span aria-hidden="true">+</span></button>
-        <div style="display: none;" data-full-text>
+        <div class="hidden" data-full-text>
         ${review.details}
         <a href="${review.sourceUrl.toString()}" class="article-feed__item__read_more article-call-to-action-link">
             Read the original source
