@@ -30,19 +30,19 @@ export default (
           function buildToggle() {
             const button = doc.createElement('button');
             button.classList.add('article-feed__item-toggle');
-            button.innerHTML = 'See more <span aria-hidden="true">+</span>';
             return button;
           }
           const itemBodies = doc.querySelectorAll('.article-feed__item_body');
           Array.prototype.forEach.call(itemBodies, function (itemBody) {
             const teaser = itemBody.querySelector('[data-teaser]');
-            teaser.classList.remove('hidden');
-
             const fullText = itemBody.querySelector('[data-full-text]');
-            fullText.classList.add('hidden');
 
             const toggle = buildToggle();
             itemBody.insertBefore(toggle, fullText);
+
+            teaser.classList.remove('hidden');
+            fullText.classList.add('hidden');
+            toggle.innerHTML = 'See more <span aria-hidden="true">+</span>';
 
             toggle.addEventListener('click', function (e) {
               const target = e.target;
