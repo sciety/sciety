@@ -39,12 +39,23 @@ export default (
 
     const user = Maybe.of(context.state.user);
 
+    const errorPreamble = (): string => `
+      <p>Oops! We’re having trouble finding this information. Ensure you have the correct URL, or try refreshing the page. You may need to come back later.</p>
+      <p>
+        <a href="/">Return to Homepage</a>
+      </p>
+      <p>Technical details:</p>
+    `;
+
     if (typeof page === 'string') {
       context.response.status = OK;
       context.response.body = applyStandardPageLayout(page, user);
     } else {
       context.response.status = page.map(successToStatusCode).unwrapOrElse(errorTypeToStatusCode);
-      context.response.body = applyStandardPageLayout(page.unwrapOrElse((error) => error.content), user);
+      context.response.body = applyStandardPageLayout(page.unwrapOrElse(
+        (error) => errorPreamble + error.content,
+      ),
+      user);
     }
 
     await next();
