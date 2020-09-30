@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { Pool } from 'pg';
 import { Adapters } from './adapters';
+import createArticleCache from './article-cache';
 import createCommitEvents from './commit-events';
 import createEventSourceFollowListRepository from './event-sourced-follow-list-repository';
-import createFetchCrossrefArticle, { FetchCrossrefArticle } from './fetch-crossref-article';
+import createFetchCrossrefArticle from './fetch-crossref-article';
 import createFetchDataciteReview from './fetch-datacite-review';
 import createFetchDataset from './fetch-dataset';
 import createFetchHypothesisAnnotation from './fetch-hypothesis-annotation';
@@ -77,10 +78,6 @@ const createInfrastructure = async (): Promise<Adapters> => {
   const reviewProjections = createReviewProjections(events.filter(isEditorialCommunityReviewedArticleEvent));
   const getFollowList = createEventSourceFollowListRepository(getAllEvents);
   const getTwitterResponse = createGetTwitterResponse(process.env.TWITTER_API_BEARER_TOKEN ?? '');
-
-  const createArticleCache = (fetchCrossrefArticle: FetchCrossrefArticle): FetchCrossrefArticle => (
-    fetchCrossrefArticle
-  );
 
   return {
     fetchArticle: createArticleCache(createFetchCrossrefArticle(getXml, logger)),
