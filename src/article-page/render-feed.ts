@@ -29,10 +29,10 @@ export default (
         (function(doc) {
           const toggles = doc.querySelectorAll('.article-feed__item-toggle');
           Array.prototype.forEach.call(toggles, function (toggle) {
+            const teaser = toggle.parentElement.querySelector('[data-teaser]');
+            const fullText = toggle.parentElement.querySelector('[data-full-text]');
             toggle.addEventListener('click', function (e) {
               const target = e.target;
-              const teaser = target.parentElement.querySelector('[data-teaser]');
-              const fullText = target.parentElement.querySelector('[data-full-text]');
               if (target.innerHTML.indexOf('See more') > -1) {
                 teaser.classList.add('hidden');
                 fullText.classList.remove('hidden');
