@@ -27,10 +27,23 @@ export default (
       </ol>
       <script>
         (function(doc) {
+          function buildToggle() {
+            const button = doc.createElement('button');
+            button.classList.add('article-feed__item-toggle');
+            button.innerHTML = 'See more <span aria-hidden="true">+</span>';
+            return button;
+          }
+          const itemBodies = doc.querySelectorAll('.article-feed__item_body');
+          Array.prototype.forEach.call(itemBodies, function (itemBody) {
+            const fullText = itemBody.querySelector('[data-full-text]');
+            itemBody.insertBefore(buildToggle(), fullText);
+          });
+
           const toggles = doc.querySelectorAll('.article-feed__item-toggle');
           Array.prototype.forEach.call(toggles, function (toggle) {
             const teaser = toggle.parentElement.querySelector('[data-teaser]');
             const fullText = toggle.parentElement.querySelector('[data-full-text]');
+
             toggle.addEventListener('click', function (e) {
               const target = e.target;
               if (target.innerHTML.indexOf('See more') > -1) {
