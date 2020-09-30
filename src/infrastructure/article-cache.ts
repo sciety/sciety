@@ -11,8 +11,13 @@ export default (
     if (cached !== undefined) {
       return cached;
     }
-    const result = fetchCrossrefArticle(doi);
-    cache[doi.value] = result;
-    return result;
+    const promise = fetchCrossrefArticle(doi);
+    void promise.then((result) => {
+      if (result.isErr()) {
+        delete cache[doi.value];
+      }
+    });
+    cache[doi.value] = promise;
+    return promise;
   };
 };

@@ -57,12 +57,28 @@ describe('article-cache', () => {
     });
 
     describe('when the result is an error', () => {
-      it.todo('does not add the article to the cache');
+      it('removes the article from the cache', async () => {
+        let numberOfRequests = 0;
+        const articleCache = createArticleCache(async () => {
+          numberOfRequests += 1;
+          return Result.err('unavailable');
+        });
+        await articleCache(new Doi('10.1101/222222'));
+        await articleCache(new Doi('10.1101/222222'));
+
+        expect(numberOfRequests).toBe(2);
+      });
     });
 
     describe('when the DOI is requested twice simultaneously', () => {
       it.todo('collapses the calls into one');
     });
+
+    describe('when the DOI is requested twice simultaneously and an error happens', () => {
+      it.todo('both requests fail');
+    });
+
+    it.todo('what about promise failure?');
   });
 
   describe('when the required article is already in the cache', () => {
