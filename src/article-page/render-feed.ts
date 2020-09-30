@@ -35,7 +35,10 @@ export default (
           }
           const itemBodies = doc.querySelectorAll('.article-feed__item_body');
           Array.prototype.forEach.call(itemBodies, function (itemBody) {
+            const teaser = itemBody.querySelector('[data-teaser]');
+            teaser.classList.remove('hidden');
             const fullText = itemBody.querySelector('[data-full-text]');
+            fullText.classList.add('hidden');
             itemBody.insertBefore(buildToggle(), fullText);
           });
 

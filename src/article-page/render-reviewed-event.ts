@@ -32,10 +32,10 @@ export default (
         </a>
         </div>
 
-        <div data-teaser>
+        <div class="hidden" data-teaser>
         ${clip(review.details, teaserChars)}
         </div>
-        <div class="hidden" data-full-text>
+        <div data-full-text>
         ${review.details}
         <a href="${review.sourceUrl.toString()}" class="article-feed__item__read_more article-call-to-action-link">
             Read the original source
