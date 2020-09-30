@@ -21,7 +21,20 @@ describe('article-cache', () => {
       expect(wasCalled).toBe(true);
     });
 
-    it.todo('returns the returned article');
+    it('returns the fetched article', async () => {
+      const fetched = {
+        abstract: '',
+        authors: [],
+        doi: new Doi('10.1101/111111'),
+        title: '',
+        publicationDate: new Date(),
+      };
+      const articleCache = createArticleCache(async () => Result.ok(fetched));
+
+      const actual = await articleCache(new Doi('10.1101/111111'));
+
+      expect(actual.unsafelyUnwrap()).toBe(fetched);
+    });
 
     it.todo('adds the article to the cache');
   });
