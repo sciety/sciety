@@ -72,17 +72,29 @@ describe('article-cache', () => {
     });
 
     describe('when the DOI is requested twice simultaneously', () => {
-      it.todo('collapses the calls into one');
+      it('collapses the calls into one', async () => {
+        let numberOfRequests = 0;
+        const articleCache = createArticleCache(async (doi) => {
+          numberOfRequests += 1;
+          return Result.ok({
+            abstract: '',
+            authors: [],
+            doi,
+            title: '',
+            publicationDate: new Date(),
+          });
+        }, dummyLogger);
+        await Promise.all([
+          articleCache(new Doi('10.1101/222222')),
+          articleCache(new Doi('10.1101/222222')),
+        ]);
+
+        expect(numberOfRequests).toBe(1);
+      });
     });
 
     describe('when the DOI is requested twice simultaneously and an error happens', () => {
       it.todo('both requests fail');
     });
-  });
-
-  describe('when the required article is already in the cache', () => {
-    it.todo('makes no call to fetch-crossref-article');
-
-    it.todo('returns the cached article');
   });
 });
