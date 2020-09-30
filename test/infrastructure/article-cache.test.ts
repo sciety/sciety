@@ -36,7 +36,33 @@ describe('article-cache', () => {
       expect(actual.unsafelyUnwrap()).toBe(fetched);
     });
 
-    it.todo('adds the article to the cache');
+    describe('when the result is ok', () => {
+      it('adds the article to the cache', async () => {
+        let numberOfRequests = 0;
+        const articleCache = createArticleCache(async (doi) => {
+          numberOfRequests += 1;
+          return Result.ok({
+            abstract: '',
+            authors: [],
+            doi,
+            title: '',
+            publicationDate: new Date(),
+          });
+        });
+        await articleCache(new Doi('10.1101/222222'));
+        await articleCache(new Doi('10.1101/222222'));
+
+        expect(numberOfRequests).toBe(1);
+      });
+    });
+
+    describe('when the result is an error', () => {
+      it.todo('does not add the article to the cache');
+    });
+
+    describe('when the DOI is requested twice simultaneously', () => {
+      it.todo('collapses the calls into one');
+    });
   });
 
   describe('when the required article is already in the cache', () => {
