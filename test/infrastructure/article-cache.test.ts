@@ -91,10 +91,21 @@ describe('article-cache', () => {
 
         expect(numberOfRequests).toBe(1);
       });
-    });
 
-    describe('when the DOI is requested twice simultaneously and an error happens', () => {
-      it.todo('both requests fail');
+      describe('and an error happens', () => {
+        it('both requests fail', async () => {
+          const articleCache = createArticleCache(async (doi) => {
+            return Result.err('unavailable');
+          }, dummyLogger);
+          const results = await Promise.all([
+            articleCache(new Doi('10.1101/222222')),
+            articleCache(new Doi('10.1101/222222')),
+          ]);
+
+          expect(results[0].isErr()).toBe(true);
+          expect(results[1].isErr()).toBe(true);
+        });
+      });
     });
   });
 });
