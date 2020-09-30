@@ -80,7 +80,7 @@ const createInfrastructure = async (): Promise<Adapters> => {
   const getTwitterResponse = createGetTwitterResponse(process.env.TWITTER_API_BEARER_TOKEN ?? '');
 
   return {
-    fetchArticle: createArticleCache(createFetchCrossrefArticle(getXml, logger)),
+    fetchArticle: createArticleCache(createFetchCrossrefArticle(getXml, logger), logger),
     fetchReview: createFetchReview(fetchDataciteReview, fetchHypothesisAnnotation),
     fetchStaticFile: createFetchStaticFile(logger),
     searchEuropePmc,

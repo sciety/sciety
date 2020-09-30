@@ -1,6 +1,7 @@
 import { Result } from 'true-myth';
 import createArticleCache from '../../src/infrastructure/article-cache';
 import Doi from '../../src/types/doi';
+import dummyLogger from '../dummy-logger';
 
 describe('article-cache', () => {
   describe('when the required article is not in the cache', () => {
@@ -15,7 +16,7 @@ describe('article-cache', () => {
           title: '',
           publicationDate: new Date(),
         });
-      });
+      }, dummyLogger);
       await articleCache(new Doi('10.1101/111111'));
 
       expect(wasCalled).toBe(true);
@@ -29,7 +30,7 @@ describe('article-cache', () => {
         title: '',
         publicationDate: new Date(),
       };
-      const articleCache = createArticleCache(async () => Result.ok(fetched));
+      const articleCache = createArticleCache(async () => Result.ok(fetched), dummyLogger);
 
       const actual = await articleCache(new Doi('10.1101/111111'));
 
@@ -48,7 +49,7 @@ describe('article-cache', () => {
             title: '',
             publicationDate: new Date(),
           });
-        });
+        }, dummyLogger);
         await articleCache(new Doi('10.1101/222222'));
         await articleCache(new Doi('10.1101/222222'));
 
@@ -62,7 +63,7 @@ describe('article-cache', () => {
         const articleCache = createArticleCache(async () => {
           numberOfRequests += 1;
           return Result.err('unavailable');
-        });
+        }, dummyLogger);
         await articleCache(new Doi('10.1101/222222'));
         await articleCache(new Doi('10.1101/222222'));
 
@@ -77,8 +78,6 @@ describe('article-cache', () => {
     describe('when the DOI is requested twice simultaneously and an error happens', () => {
       it.todo('both requests fail');
     });
-
-    it.todo('what about promise failure?');
   });
 
   describe('when the required article is already in the cache', () => {
