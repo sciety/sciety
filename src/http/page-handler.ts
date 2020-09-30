@@ -39,7 +39,7 @@ export default (
 
     const user = Maybe.of(context.state.user);
 
-    const errorPreamble = (): string => `
+    const errorPreamble = `
       <p>Oops! We’re having trouble finding this information. Ensure you have the correct URL, or try refreshing the page. You may need to come back later.</p>
       <p>
         <a href="/">Return to Homepage</a>
