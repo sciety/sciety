@@ -94,9 +94,7 @@ describe('article-cache', () => {
 
       describe('and an error happens', () => {
         it('both requests fail', async () => {
-          const articleCache = createArticleCache(async (doi) => {
-            return Result.err('unavailable');
-          }, dummyLogger);
+          const articleCache = createArticleCache(async () => Result.err('unavailable'), dummyLogger);
           const results = await Promise.all([
             articleCache(new Doi('10.1101/222222')),
             articleCache(new Doi('10.1101/222222')),
