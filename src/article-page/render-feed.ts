@@ -37,15 +37,12 @@ export default (
           Array.prototype.forEach.call(itemBodies, function (itemBody) {
             const teaser = itemBody.querySelector('[data-teaser]');
             teaser.classList.remove('hidden');
+
             const fullText = itemBody.querySelector('[data-full-text]');
             fullText.classList.add('hidden');
-            itemBody.insertBefore(buildToggle(), fullText);
-          });
 
-          const toggles = doc.querySelectorAll('.article-feed__item-toggle');
-          Array.prototype.forEach.call(toggles, function (toggle) {
-            const teaser = toggle.parentElement.querySelector('[data-teaser]');
-            const fullText = toggle.parentElement.querySelector('[data-full-text]');
+            const toggle = buildToggle();
+            itemBody.insertBefore(toggle, fullText);
 
             toggle.addEventListener('click', function (e) {
               const target = e.target;
