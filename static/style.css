@@ -413,6 +413,7 @@ p.article-feed__item__title {
   outline-width: 0;
   background: none;
   border: none;
+  cursor: pointer;
 }
 
 .user-page-header {
