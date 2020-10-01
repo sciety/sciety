@@ -79,14 +79,16 @@ export default (adapters: Adapters): Router => {
   );
 
   const loggingInMiddleware: Middleware = async (context, next) => {
-    const visitorId = v4();
-    context.session.visitorId = visitorId;
+    if (!context.session.visitorId) {
+      const visitorId = v4();
+      context.session.visitorId = visitorId;
+    }
     await adapters.commitEvents([
       {
         id: generate(),
         type: 'VisitorTookAction',
         date: new Date(),
-        visitorId,
+        visitorId: context.session.visitorId,
       },
     ]);
 
