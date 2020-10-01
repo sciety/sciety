@@ -14,7 +14,7 @@ type RuntimeGeneratedEvent =
   UserFollowedEditorialCommunityEvent |
   UserUnfollowedEditorialCommunityEvent |
   UserLoggedInEvent |
-  UserAcquiredEvent | 
+  UserAcquiredEvent |
   VisitorTookActionEvent;
 
 export type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => Promise<void>;

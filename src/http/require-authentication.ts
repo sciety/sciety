@@ -1,6 +1,4 @@
 import { Middleware, ParameterizedContext } from 'koa';
-import { VisitorTookAction } from '../types/domain-events';
-import { generate } from '../types/event-id';
 import { User } from '../types/user';
 
 export const createRequireAuthentication = (): Middleware<{ user?: User }> => (

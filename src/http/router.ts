@@ -5,6 +5,7 @@ import { Middleware } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import koaPassport from 'koa-passport';
 import send from 'koa-send';
+import { v4 } from 'uuid';
 import identifyUser from './identify-user';
 import pageHandler from './page-handler';
 import ping from './ping';
@@ -60,7 +61,7 @@ export default (adapters: Adapters): Router => {
     identifyUser(adapters.logger),
     bodyParser({ enableTypes: ['form'] }),
     createSaveFollowCommand(),
-    createRequireAuthentication(adapters.commitEvents),
+    createRequireAuthentication(),
     createFollowHandler(adapters));
 
   router.post('/unfollow',
@@ -78,11 +79,14 @@ export default (adapters: Adapters): Router => {
   );
 
   const loggingInMiddleware: Middleware = async (context, next) => {
+    const visitorId = v4();
+    context.session.visitorId = visitorId;
     await adapters.commitEvents([
       {
         id: generate(),
         type: 'VisitorTookAction',
         date: new Date(),
+        visitorId,
       },
     ]);
 

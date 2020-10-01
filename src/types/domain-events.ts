@@ -79,6 +79,7 @@ export type VisitorTookActionEvent = Readonly<{
   id: EventId,
   type: 'VisitorTookAction';
   date: Date;
+  visitorId: string;
 }>;
 
 export type DomainEvent =

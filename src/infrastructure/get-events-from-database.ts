@@ -77,6 +77,7 @@ export default async (pool: Pool, logger: Logger): Promise<Array<DomainEvent>> =
           id,
           type,
           date,
+          visitorId: ensureString(payload.visitorId),
         };
       }
       default: {
