@@ -1,9 +1,15 @@
 import { Pool } from 'pg';
 import { Logger } from './logger';
-import { DomainEvent, UserFollowedEditorialCommunityEvent, UserUnfollowedEditorialCommunityEvent } from '../types/domain-events';
+import {
+  DomainEvent, UserFollowedEditorialCommunityEvent, UserLoggedInEvent, UserUnfollowedEditorialCommunityEvent,
+} from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 
-type RuntimeGeneratedEvent = UserFollowedEditorialCommunityEvent | UserUnfollowedEditorialCommunityEvent;
+type RuntimeGeneratedEvent =
+  UserFollowedEditorialCommunityEvent |
+  UserUnfollowedEditorialCommunityEvent |
+  UserLoggedInEvent;
+
 export type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => Promise<void>;
 
 const replacer = (key: string, value: unknown): unknown => {

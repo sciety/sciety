@@ -17,6 +17,10 @@ export default (
 ): GetEvents => (
   async (userId) => {
     const isFollowedEvent = async (event: DomainEvent): Promise<boolean> => {
+      if (!isEditorialCommunityEndorsedArticleEvent(event)
+        && !isEditorialCommunityReviewedArticleEvent(event)) {
+        return false;
+      }
       const userFollows = await follows(userId, event.editorialCommunityId);
 
       return (isEditorialCommunityEndorsedArticleEvent(event) && userFollows)

@@ -1,6 +1,7 @@
 import path from 'path';
 import Router from '@koa/router';
 import { isHttpError } from 'http-errors';
+import { Middleware } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import koaPassport from 'koa-passport';
 import send from 'koa-send';
@@ -19,6 +20,8 @@ import createSaveFollowCommand from '../follow/save-follow-command';
 import createHomePage from '../home-page';
 import { Adapters } from '../infrastructure/adapters';
 import createLogOutHandler from '../log-out';
+import { generate } from '../types/event-id';
+import toUserId from '../types/user-id';
 import createUnfollowHandler from '../unfollow';
 import createFinishUnfollowCommand from '../unfollow/finish-unfollow-command';
 import createSaveUnfollowCommand from '../unfollow/save-unfollow-command';
@@ -81,10 +84,24 @@ export default (adapters: Adapters): Router => {
   router.get('/log-out',
     createLogOutHandler());
 
+  const loggedInMiddleware: Middleware = async (context, next) => {
+    await adapters.commitEvents([
+      {
+        id: generate(),
+        type: 'UserLoggedIn',
+        date: new Date(),
+        userId: toUserId('999999999'),
+      },
+    ]);
+
+    await next();
+  };
+
   router.get('/twitter/callback',
     authenticate,
     createFinishFollowCommand(adapters),
     createFinishUnfollowCommand(adapters),
+    loggedInMiddleware,
     createRedirectAfterAuthenticating());
 
   router.get('/robots.txt',

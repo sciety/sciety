@@ -61,9 +61,17 @@ export const isUserUnfollowedEditorialCommunityEvent = (event: DomainEvent):
   event.type === 'UserUnfollowedEditorialCommunity'
 );
 
+export type UserLoggedInEvent = Readonly<{
+  id: EventId,
+  type: 'UserLoggedIn';
+  date: Date;
+  userId: UserId;
+}>;
+
 export type DomainEvent =
   EditorialCommunityEndorsedArticleEvent |
   EditorialCommunityReviewedArticleEvent |
   EditorialCommunityJoinedEvent |
   UserFollowedEditorialCommunityEvent |
-  UserUnfollowedEditorialCommunityEvent;
+  UserUnfollowedEditorialCommunityEvent |
+  UserLoggedInEvent;

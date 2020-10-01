@@ -56,6 +56,14 @@ export default async (pool: Pool, logger: Logger): Promise<Array<DomainEvent>> =
           editorialCommunityId: new EditorialCommunityId(ensureString(payload.editorialCommunityId)),
         };
       }
+      case 'UserLoggedIn': {
+        return {
+          id,
+          type,
+          date,
+          userId: toUserId(ensureString(payload.userId)),
+        };
+      }
       default: {
         throw new Error(`Unknown event type ${type}`);
       }
