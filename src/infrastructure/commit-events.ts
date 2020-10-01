@@ -1,14 +1,19 @@
 import { Pool } from 'pg';
 import { Logger } from './logger';
 import {
-  DomainEvent, UserFollowedEditorialCommunityEvent, UserLoggedInEvent, UserUnfollowedEditorialCommunityEvent,
+  DomainEvent,
+  UserAcquiredEvent,
+  UserFollowedEditorialCommunityEvent,
+  UserLoggedInEvent,
+  UserUnfollowedEditorialCommunityEvent,
 } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 
 type RuntimeGeneratedEvent =
   UserFollowedEditorialCommunityEvent |
   UserUnfollowedEditorialCommunityEvent |
-  UserLoggedInEvent;
+  UserLoggedInEvent |
+  UserAcquiredEvent;
 
 export type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => Promise<void>;
 

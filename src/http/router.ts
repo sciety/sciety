@@ -97,10 +97,29 @@ export default (adapters: Adapters): Router => {
     await next();
   };
 
+  const acquiredMiddleware: Middleware = async (context, next) => {
+    const { user } = context.state;
+    // rebuild of state should be in a UserRepository
+    const matchingAcquiredEvents = (await adapters.getAllEvents()).filter((candidate) => candidate.type === 'UserAcquired' && candidate.userId === user.id).length;
+    if (matchingAcquiredEvents === 0) {
+      await adapters.commitEvents([
+        {
+          id: generate(),
+          type: 'UserAcquired',
+          date: new Date(),
+          userId: user.id,
+        },
+      ]);
+    }
+
+    await next();
+  };
+
   router.get('/twitter/callback',
     authenticate,
     createFinishFollowCommand(adapters),
     createFinishUnfollowCommand(adapters),
+    acquiredMiddleware,
     loggedInMiddleware,
     createRedirectAfterAuthenticating());
 
