@@ -107,6 +107,9 @@ release:
 	git tag $$TAG
 	git push origin $$TAG
 
+psql:
+	$(DOCKER_COMPOSE) exec db sh -c "PGUSER=user PGHOST=db PGPASSWORD=secret PGDATABASE=thehive psql"
+
 list-users:
 	kubectl exec -it prc--prod-postgresql-0 -- sh -c \
 		"PGDATABASE=thehive PGUSER=app PGPASSWORD=$$( \
