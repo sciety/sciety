@@ -30,34 +30,53 @@ import createUserPage from '../user-page';
 export default (adapters: Adapters): Router => {
   const router = new Router();
 
+  const identifyVisitor: Middleware = async (context, next) => {
+    // for convenience here, should be its own middleware
+    if (!context.session.visitorId) {
+      const visitorId = v4();
+      context.session.visitorId = visitorId;
+    }
+
+    adapters.logger('debug', 'Visitor identity', { visitorId: context.session.visitorId });
+
+    await next();
+  };
+
   router.get('/ping',
     ping());
 
   router.get('/',
+    identifyVisitor,
     identifyUser(adapters.logger),
     pageHandler(createHomePage(adapters)));
 
   router.get('/about',
+    identifyVisitor,
     identifyUser(adapters.logger),
     pageHandler(createAboutPage(adapters)));
 
   router.get('/users/:id(.+)',
+    identifyVisitor,
     identifyUser(adapters.logger),
     pageHandler(createUserPage(adapters)));
 
   router.get('/articles',
+    identifyVisitor,
     identifyUser(adapters.logger),
     pageHandler(createArticleSearchPage(adapters)));
 
   router.get('/articles/:doi(.+)',
+    identifyVisitor,
     identifyUser(adapters.logger),
     pageHandler(createArticlePage(adapters)));
 
   router.get('/editorial-communities/:id',
+    identifyVisitor,
     identifyUser(adapters.logger),
     pageHandler(createEditorialCommunityPage(adapters)));
 
   router.post('/follow',
+    identifyVisitor,
     identifyUser(adapters.logger),
     bodyParser({ enableTypes: ['form'] }),
     createSaveFollowCommand(),
@@ -65,6 +84,7 @@ export default (adapters: Adapters): Router => {
     createFollowHandler(adapters));
 
   router.post('/unfollow',
+    identifyVisitor,
     identifyUser(adapters.logger),
     bodyParser({ enableTypes: ['form'] }),
     createSaveUnfollowCommand(),
@@ -79,10 +99,6 @@ export default (adapters: Adapters): Router => {
   );
 
   const loggingInMiddleware: Middleware = async (context, next) => {
-    if (!context.session.visitorId) {
-      const visitorId = v4();
-      context.session.visitorId = visitorId;
-    }
     await adapters.commitEvents([
       {
         id: generate(),
@@ -96,10 +112,12 @@ export default (adapters: Adapters): Router => {
   };
 
   router.get('/log-in',
+    identifyVisitor,
     loggingInMiddleware,
     authenticate);
 
   router.get('/log-out',
+    identifyVisitor,
     createLogOutHandler());
 
   const loggedInMiddleware: Middleware = async (context, next) => {
@@ -137,6 +155,7 @@ export default (adapters: Adapters): Router => {
   };
 
   router.get('/twitter/callback',
+    identifyVisitor,
     authenticate,
     createFinishFollowCommand(adapters),
     createFinishUnfollowCommand(adapters),
