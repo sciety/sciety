@@ -43,17 +43,20 @@ export default (
             teaser.classList.remove('hidden');
             fullText.classList.add('hidden');
             toggle.innerHTML = 'See more <span aria-hidden="true">+</span>';
+            itemBody.dataset.collapsed = '';
 
             toggle.addEventListener('click', function (e) {
               const target = e.target;
-              if (target.innerHTML.indexOf('See more') > -1) {
+              if (itemBody.dataset.collapsed !== undefined) {
                 teaser.classList.add('hidden');
                 fullText.classList.remove('hidden');
                 target.innerHTML = 'See less <span aria-hidden="true">-</span>';
+                delete itemBody.dataset.collapsed;
               } else {
                 teaser.classList.remove('hidden');
                 fullText.classList.add('hidden');
                 target.innerHTML = 'See more <span aria-hidden="true">+</span>';
+                itemBody.dataset.collapsed = '';
               }
             })
           });
