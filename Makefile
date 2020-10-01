@@ -115,6 +115,7 @@ funnel:
 	"PGUSER=user PGHOST=db PGPASSWORD=secret PGDATABASE=thehive \
 	psql -c \" \
 	  SELECT \
+	    DATE(e_landed.date) AS cohort, \
 	    e_landed.payload->>'visitorId' AS landed, \
 		e_acquired.payload->>'userId' AS acquired, \
 		COUNT(*) AS followed \
@@ -125,7 +126,7 @@ funnel:
 	  ON e_acquired.payload->>'userId' = e_followed.payload->>'userId' \
 	  WHERE e_landed.date >= '2020-10-01 00:00:00'::timestamp \
 	  AND e_landed.date < '2020-10-02 00:00:00'::timestamp \
-	  GROUP BY landed, acquired, e_landed.payload->>'visitorId' \
+	  GROUP BY e_landed.date, landed, acquired, e_landed.payload->>'visitorId' \
 	  \" \
 	"
 
