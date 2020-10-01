@@ -6,6 +6,7 @@ import {
   UserFollowedEditorialCommunityEvent,
   UserLoggedInEvent,
   UserUnfollowedEditorialCommunityEvent,
+  VisitorLandedEvent,
   VisitorTookActionEvent,
 } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
@@ -15,6 +16,7 @@ type RuntimeGeneratedEvent =
   UserUnfollowedEditorialCommunityEvent |
   UserLoggedInEvent |
   UserAcquiredEvent |
+  VisitorLandedEvent |
   VisitorTookActionEvent;
 
 export type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => Promise<void>;

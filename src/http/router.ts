@@ -35,6 +35,15 @@ export default (adapters: Adapters): Router => {
     if (!context.session.visitorId) {
       const visitorId = v4();
       context.session.visitorId = visitorId;
+
+      await adapters.commitEvents([
+        {
+          id: generate(),
+          type: 'VisitorLanded',
+          date: new Date(),
+          visitorId: context.session.visitorId,
+        },
+      ]);
     }
 
     adapters.logger('debug', 'Visitor identity', { visitorId: context.session.visitorId });

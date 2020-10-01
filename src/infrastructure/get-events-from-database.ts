@@ -74,6 +74,14 @@ export default async (pool: Pool, logger: Logger): Promise<Array<DomainEvent>> =
           visitorId: ensureString(payload.visitorId),
         };
       }
+      case 'VisitorLanded': {
+        return {
+          id,
+          type,
+          date,
+          visitorId: ensureString(payload.visitorId),
+        };
+      }
       case 'VisitorTookAction': {
         return {
           id,

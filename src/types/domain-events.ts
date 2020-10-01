@@ -77,6 +77,13 @@ export type UserLoggedInEvent = Readonly<{
   visitorId: string;
 }>;
 
+export type VisitorLandedEvent = Readonly<{
+  id: EventId,
+  type: 'VisitorLanded';
+  date: Date;
+  visitorId: string;
+}>;
+
 export type VisitorTookActionEvent = Readonly<{
   id: EventId,
   type: 'VisitorTookAction';
@@ -90,6 +97,7 @@ export type DomainEvent =
   EditorialCommunityJoinedEvent |
   UserFollowedEditorialCommunityEvent |
   UserUnfollowedEditorialCommunityEvent |
+  VisitorLandedEvent |
   VisitorTookActionEvent |
   UserAcquiredEvent |
   UserLoggedInEvent;
