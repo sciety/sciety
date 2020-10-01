@@ -64,17 +64,15 @@ describe('article-cache', () => {
 
     describe('when the DOI is requested twice simultaneously', () => {
       it('collapses the calls into one', async () => {
-        let numberOfRequests = 0;
-        const articleCache = createArticleCache(async () => {
-          numberOfRequests += 1;
-          return Result.ok(arbitraryArticle);
-        }, dummyLogger);
+        const fetchCrossrefArticle: FetchCrossrefArticle = async () => Result.ok(arbitraryArticle);
+        const spy = jest.fn(fetchCrossrefArticle);
+        const articleCache = createArticleCache(spy, dummyLogger);
         await Promise.all([
           articleCache(new Doi('10.1101/222222')),
           articleCache(new Doi('10.1101/222222')),
         ]);
 
-        expect(numberOfRequests).toBe(1);
+        expect(spy).toHaveBeenCalledTimes(1);
       });
 
       describe('and an error happens', () => {
