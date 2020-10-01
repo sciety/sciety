@@ -93,7 +93,17 @@ export default (
       .ap(await reviews)
       .mapErr(() => ({
         type: 'not-found',
-        content: `${doi.value} not found`,
+        content: `
+          <h1>Oops!</h1>
+          <p>
+            We’re having trouble finding this information.
+            Ensure you have the correct URL, or try refreshing the page.
+            You may need to come back later.
+          </p>
+          <p>
+            <a href="/">Return to Homepage</a>
+          </p>
+        `,
       }));
   };
 };
