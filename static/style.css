@@ -385,6 +385,10 @@ p.article-feed__item__title {
   font-family: Lato, sans-serif;
 }
 
+.u-call-to-action-link {
+  font-family: Lato, sans-serif;
+}
+
 .hidden {
   display: none;
 }

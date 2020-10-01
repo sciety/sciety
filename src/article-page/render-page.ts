@@ -101,7 +101,7 @@ export default (
             You may need to come back later.
           </p>
           <p>
-            <a href="/">Return to Homepage</a>
+            <a href="/" class="u-call-to-action-link">Return to Homepage</a>
           </p>
         `,
       }));
