@@ -120,7 +120,8 @@ funnel:
 	  FROM (SELECT * FROM events WHERE events.type = 'VisitorLanded') e_landed \
 	  LEFT OUTER JOIN (SELECT * FROM events WHERE events.type = 'UserAcquired') e_acquired \
 	  ON e_landed.payload->>'visitorId' = e_acquired.payload->>'visitorId' \
-	   \" \
+	  WHERE e_landed.date >= '2020-10-01 00:00:00'::timestamp \
+	  AND e_landed.date < '2020-10-02 00:00:00'::timestamp \" \
 	"
 
 list-users:
