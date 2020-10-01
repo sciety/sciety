@@ -60,7 +60,7 @@ export default (adapters: Adapters): Router => {
     identifyUser(adapters.logger),
     bodyParser({ enableTypes: ['form'] }),
     createSaveFollowCommand(),
-    createRequireAuthentication(),
+    createRequireAuthentication(adapters.commitEvents),
     createFollowHandler(adapters));
 
   router.post('/unfollow',
@@ -77,7 +77,20 @@ export default (adapters: Adapters): Router => {
     },
   );
 
+  const loggingInMiddleware: Middleware = async (context, next) => {
+    await adapters.commitEvents([
+      {
+        id: generate(),
+        type: 'VisitorTookAction',
+        date: new Date(),
+      },
+    ]);
+
+    await next();
+  };
+
   router.get('/log-in',
+    loggingInMiddleware,
     authenticate);
 
   router.get('/log-out',

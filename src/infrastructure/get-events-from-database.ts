@@ -72,6 +72,13 @@ export default async (pool: Pool, logger: Logger): Promise<Array<DomainEvent>> =
           userId: toUserId(ensureString(payload.userId)),
         };
       }
+      case 'VisitorTookAction': {
+        return {
+          id,
+          type,
+          date,
+        };
+      }
       default: {
         throw new Error(`Unknown event type ${type}`);
       }

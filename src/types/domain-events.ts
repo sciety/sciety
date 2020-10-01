@@ -75,11 +75,18 @@ export type UserLoggedInEvent = Readonly<{
   userId: UserId;
 }>;
 
+export type VisitorTookActionEvent = Readonly<{
+  id: EventId,
+  type: 'VisitorTookAction';
+  date: Date;
+}>;
+
 export type DomainEvent =
   EditorialCommunityEndorsedArticleEvent |
   EditorialCommunityReviewedArticleEvent |
   EditorialCommunityJoinedEvent |
   UserFollowedEditorialCommunityEvent |
   UserUnfollowedEditorialCommunityEvent |
+  VisitorTookActionEvent |
   UserAcquiredEvent |
   UserLoggedInEvent;
