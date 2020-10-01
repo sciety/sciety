@@ -40,29 +40,25 @@ describe('article-cache', () => {
 
     describe('when the result is ok', () => {
       it('adds the article to the cache', async () => {
-        let numberOfRequests = 0;
-        const articleCache = createArticleCache(async () => {
-          numberOfRequests += 1;
-          return Result.ok(arbitraryArticle);
-        }, dummyLogger);
+        const fetchCrossrefArticle: FetchCrossrefArticle = async () => Result.ok(arbitraryArticle);
+        const spy = jest.fn(fetchCrossrefArticle);
+        const articleCache = createArticleCache(spy, dummyLogger);
         await articleCache(new Doi('10.1101/222222'));
         await articleCache(new Doi('10.1101/222222'));
 
-        expect(numberOfRequests).toBe(1);
+        expect(spy).toHaveBeenCalledTimes(1);
       });
     });
 
     describe('when the result is an error', () => {
       it('removes the article from the cache', async () => {
-        let numberOfRequests = 0;
-        const articleCache = createArticleCache(async () => {
-          numberOfRequests += 1;
-          return Result.err('unavailable');
-        }, dummyLogger);
+        const fetchCrossrefArticle: FetchCrossrefArticle = async () => Result.err('unavailable');
+        const spy = jest.fn(fetchCrossrefArticle);
+        const articleCache = createArticleCache(spy, dummyLogger);
         await articleCache(new Doi('10.1101/222222'));
         await articleCache(new Doi('10.1101/222222'));
 
-        expect(numberOfRequests).toBe(2);
+        expect(spy).toHaveBeenCalledTimes(2);
       });
     });
 
