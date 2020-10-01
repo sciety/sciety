@@ -62,6 +62,7 @@ export default async (pool: Pool, logger: Logger): Promise<Array<DomainEvent>> =
           type,
           date,
           userId: toUserId(ensureString(payload.userId)),
+          visitorId: ensureString(payload.visitorId),
         };
       }
       case 'UserAcquired': {
@@ -70,6 +71,7 @@ export default async (pool: Pool, logger: Logger): Promise<Array<DomainEvent>> =
           type,
           date,
           userId: toUserId(ensureString(payload.userId)),
+          visitorId: ensureString(payload.visitorId),
         };
       }
       case 'VisitorTookAction': {

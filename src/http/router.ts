@@ -110,6 +110,7 @@ export default (adapters: Adapters): Router => {
         type: 'UserLoggedIn',
         date: new Date(),
         userId: user.id,
+        visitorId: context.session.visitorId,
       },
     ]);
 
@@ -127,6 +128,7 @@ export default (adapters: Adapters): Router => {
           type: 'UserAcquired',
           date: new Date(),
           userId: user.id,
+          visitorId: context.session.visitorId,
         },
       ]);
     }

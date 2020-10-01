@@ -66,6 +66,7 @@ export type UserAcquiredEvent = Readonly<{
   type: 'UserAcquired';
   date: Date;
   userId: UserId;
+  visitorId: string;
 }>;
 
 export type UserLoggedInEvent = Readonly<{
@@ -73,6 +74,7 @@ export type UserLoggedInEvent = Readonly<{
   type: 'UserLoggedIn';
   date: Date;
   userId: UserId;
+  visitorId: string;
 }>;
 
 export type VisitorTookActionEvent = Readonly<{
