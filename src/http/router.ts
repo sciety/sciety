@@ -21,7 +21,6 @@ import createHomePage from '../home-page';
 import { Adapters } from '../infrastructure/adapters';
 import createLogOutHandler from '../log-out';
 import { generate } from '../types/event-id';
-import toUserId from '../types/user-id';
 import createUnfollowHandler from '../unfollow';
 import createFinishUnfollowCommand from '../unfollow/finish-unfollow-command';
 import createSaveUnfollowCommand from '../unfollow/save-unfollow-command';
@@ -85,12 +84,13 @@ export default (adapters: Adapters): Router => {
     createLogOutHandler());
 
   const loggedInMiddleware: Middleware = async (context, next) => {
+    const { user } = context.state;
     await adapters.commitEvents([
       {
         id: generate(),
         type: 'UserLoggedIn',
         date: new Date(),
-        userId: toUserId('999999999'),
+        userId: user.id,
       },
     ]);
 
