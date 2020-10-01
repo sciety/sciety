@@ -116,17 +116,20 @@ funnel:
 	psql -c \" \
 	  SELECT \
 	    DATE(e_landed.date) AS cohort, \
-	    e_landed.payload->>'visitorId' AS landed, \
+	    CONCAT(SUBSTRING(e_landed.payload->>'visitorId', 0, 8), '...') AS landed, \
+		e_took_action.payload->>'visitorId' IS NOT NULL AS took_action, \
 		e_acquired.payload->>'userId' AS acquired, \
 		COUNT(*) AS followed \
 	  FROM (SELECT * FROM events WHERE events.type = 'VisitorLanded') e_landed \
+	  LEFT OUTER JOIN (SELECT * FROM events WHERE events.type = 'VisitorTookAction') e_took_action \
+	  ON e_landed.payload->>'visitorId' = e_took_action.payload->>'visitorId' \
 	  LEFT OUTER JOIN (SELECT * FROM events WHERE events.type = 'UserAcquired') e_acquired \
 	  ON e_landed.payload->>'visitorId' = e_acquired.payload->>'visitorId' \
 	  LEFT OUTER JOIN (SELECT * FROM events WHERE events.type = 'UserFollowedEditorialCommunity') e_followed \
 	  ON e_acquired.payload->>'userId' = e_followed.payload->>'userId' \
 	  WHERE e_landed.date >= '2020-10-01 00:00:00'::timestamp \
 	  AND e_landed.date < '2020-10-02 00:00:00'::timestamp \
-	  GROUP BY e_landed.date, landed, acquired, e_landed.payload->>'visitorId' \
+	  GROUP BY e_landed.date, landed, took_action, acquired, e_landed.payload->>'visitorId' \
 	  \" \
 	"
 
