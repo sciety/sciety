@@ -110,6 +110,19 @@ release:
 psql:
 	$(DOCKER_COMPOSE) exec db sh -c "PGUSER=user PGHOST=db PGPASSWORD=secret PGDATABASE=thehive psql"
 
+funnel:
+	$(DOCKER_COMPOSE) exec db sh -c \
+	"PGUSER=user PGHOST=db PGPASSWORD=secret PGDATABASE=thehive \
+	psql -c \" \
+	  SELECT \
+	    e_landed.payload->>'visitorId' AS landed, \
+		e_acquired.payload->>'userId' AS acquired \
+	  FROM (SELECT * FROM events WHERE events.type = 'VisitorLanded') e_landed \
+	  LEFT OUTER JOIN (SELECT * FROM events WHERE events.type = 'UserAcquired') e_acquired \
+	  ON e_landed.payload->>'visitorId' = e_acquired.payload->>'visitorId' \
+	   \" \
+	"
+
 list-users:
 	kubectl exec -it prc--prod-postgresql-0 -- sh -c \
 		"PGDATABASE=thehive PGUSER=app PGPASSWORD=$$( \
