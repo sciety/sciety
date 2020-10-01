@@ -14,6 +14,7 @@ export default (
       logger('debug', 'Article cache hit', { doi });
       return cached;
     }
+    logger('debug', 'Article cache miss', { doi });
     const promise = fetchCrossrefArticle(doi);
     void promise.then((result) => {
       if (result.isErr()) {
