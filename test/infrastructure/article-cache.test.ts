@@ -1,5 +1,6 @@
 import { Result } from 'true-myth';
 import createArticleCache from '../../src/infrastructure/article-cache';
+import { FetchCrossrefArticle } from '../../src/infrastructure/fetch-crossref-article';
 import Doi from '../../src/types/doi';
 import dummyLogger from '../dummy-logger';
 
@@ -14,14 +15,12 @@ describe('article-cache', () => {
 
   describe('when the required article is not in the cache', () => {
     it('makes a call to fetch-crossref-article', async () => {
-      let wasCalled = false;
-      const articleCache = createArticleCache(async () => {
-        wasCalled = true;
-        return Result.ok(arbitraryArticle);
-      }, dummyLogger);
+      const fetchCrossrefArticle: FetchCrossrefArticle = async () => Result.ok(arbitraryArticle);
+      const spy = jest.fn(fetchCrossrefArticle);
+      const articleCache = createArticleCache(spy, dummyLogger);
       await articleCache(new Doi('10.1101/111111'));
 
-      expect(wasCalled).toBe(true);
+      expect(spy).toHaveBeenCalledTimes(1);
     });
 
     it('returns the fetched article', async () => {
