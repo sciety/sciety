@@ -4,7 +4,7 @@
     button.classList.add('article-feed__item-toggle');
     return button;
   }
-  const itemBodies = doc.querySelectorAll('.article-feed__item_body');
+  const itemBodies = doc.querySelectorAll('[data-behaviour="collapse_to_teaser"]');
   Array.prototype.forEach.call(itemBodies, function (itemBody) {
     const teaser = itemBody.querySelector('[data-teaser]');
     const fullText = itemBody.querySelector('[data-full-text]');

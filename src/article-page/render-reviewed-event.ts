@@ -23,7 +23,7 @@ export default (
 ): RenderReviewedEvent => (review: Review): string => `
   <li class="article-feed__item">
     ${renderAvatar(review.editorialCommunityAvatar)}
-    <div class="article-feed__item_body">
+    <div class="article-feed__item_body" data-behaviour="collapse_to_teaser">
       ${templateDate(review.occurredAt, 'article-feed__item__date')}
       <div class="article-feed__item__title">
         Reviewed by
