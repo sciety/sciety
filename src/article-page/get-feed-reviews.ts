@@ -5,7 +5,7 @@ import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { ReviewId } from '../types/review-id';
 
-export type GetFeedEvents= (articleDoi: Doi) => Promise<ReadonlyArray<{
+type GetFeedEvents= (articleDoi: Doi) => Promise<ReadonlyArray<{
   editorialCommunityId: EditorialCommunityId;
   reviewId: ReviewId;
   occurredAt: Date;

@@ -4,7 +4,6 @@ import ensureBiorxivDoi from './ensure-biorxiv-doi';
 import createFetchPciRecommendation from './fetch-pci-recommendation';
 import createGetFeedReviews, { GetEditorialCommunity } from './get-feed-reviews';
 import createGetHardcodedEndorsements from './get-hardcoded-endorsements';
-import createProjectFeedEvents from './project-feed-events';
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
 import createRenderEndorsements from './render-endorsements';
 import createRenderFeed from './render-feed';
@@ -92,7 +91,7 @@ export default (ports: Ports): RenderPage => {
     };
   };
   const getReviews = createGetFeedReviews(
-    createProjectFeedEvents(),
+    ports.findReviewsForArticleVersionDoi,
     ports.fetchReview,
     getEditorialCommunity,
   );
