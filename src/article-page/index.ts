@@ -2,7 +2,7 @@ import { URL } from 'url';
 import { Maybe, Result } from 'true-myth';
 import ensureBiorxivDoi from './ensure-biorxiv-doi';
 import createFetchPciRecommendation from './fetch-pci-recommendation';
-import createGetFeedReviews, { GetEditorialCommunity } from './get-feed-reviews';
+import createGetFeedReviews, { GetEditorialCommunity, GetReview } from './get-feed-reviews';
 import createGetHardcodedEndorsements from './get-hardcoded-endorsements';
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
 import createRenderEndorsements from './render-endorsements';
@@ -12,12 +12,7 @@ import createRenderPage, { RenderPageError } from './render-page';
 import createRenderPageHeader, {
   RenderPageHeader,
 } from './render-page-header';
-import createRenderReview, {
-  GetEditorialCommunityName as GetEditorialCommunityNameForRenderReview,
-  GetReview,
-} from './render-review';
 import createRenderReviewedEvent from './render-reviewed-event';
-import createRenderReviews, { RenderReviews } from './render-reviews';
 import { Logger } from '../infrastructure/logger';
 import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
@@ -41,8 +36,6 @@ interface Ports {
   logger: Logger;
 }
 
-const reviewsId = 'reviews';
-
 const buildRenderPageHeader = (ports: Ports): RenderPageHeader => createRenderPageHeader(
   ports.fetchArticle,
 );
@@ -53,19 +46,6 @@ const buildRenderAbstract = (fetchAbstract: FetchExternalArticle): RenderArticle
     return fetchedArticle.map((article) => ({ content: article.abstract }));
   };
   return createRenderArticleAbstract(abstractAdapter);
-};
-
-const buildRenderReviews = (ports: Ports): RenderReviews => {
-  const getEditorialCommunityName: GetEditorialCommunityNameForRenderReview = async (editorialCommunityId) => (
-    (await ports.getEditorialCommunity(editorialCommunityId)).unsafelyUnwrap().name
-  );
-
-  const renderReview = createRenderReview(ports.fetchReview, getEditorialCommunityName, 1500);
-  return createRenderReviews(
-    renderReview,
-    ports.findReviewsForArticleVersionDoi,
-    reviewsId,
-  );
 };
 
 interface Params {
@@ -81,7 +61,6 @@ export default (ports: Ports): RenderPage => {
   const fetchPciRecommendation = createFetchPciRecommendation(ports.logger);
   const getEndorsements = createGetHardcodedEndorsements(fetchPciRecommendation);
   const renderEndorsements = createRenderEndorsements(getEndorsements);
-  const renderReviews = buildRenderReviews(ports);
   const getEditorialCommunity: GetEditorialCommunity = async (editorialCommunityId) => {
     const editorialCommunity = (await ports.getEditorialCommunity(editorialCommunityId)).unsafelyUnwrap();
 
@@ -99,7 +78,6 @@ export default (ports: Ports): RenderPage => {
   const renderPage = createRenderPage(
     renderPageHeader,
     renderEndorsements,
-    renderReviews,
     renderAbstract,
     renderFeed,
   );

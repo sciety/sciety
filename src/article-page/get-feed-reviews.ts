@@ -5,15 +5,17 @@ import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { ReviewId } from '../types/review-id';
 
-type GetFeedEvents= (articleDoi: Doi) => Promise<ReadonlyArray<{
+type GetFeedEvents = (articleDoi: Doi) => Promise<ReadonlyArray<{
   editorialCommunityId: EditorialCommunityId;
   reviewId: ReviewId;
   occurredAt: Date;
 }>>;
-type GetReview = (id: ReviewId) => Promise<{
+
+export type GetReview = (id: ReviewId) => Promise<{
   summary: Maybe<string>;
   url: URL;
 }>;
+
 export type GetEditorialCommunity = (id: EditorialCommunityId) => Promise<{ name: string, avatar: URL }>;
 
 export default (
