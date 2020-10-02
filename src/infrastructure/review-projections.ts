@@ -7,6 +7,7 @@ export type FindReviewsForArticleVersionDoi = (articleVersionDoi: Doi) => Promis
   reviewId: ReviewId;
   editorialCommunityId: EditorialCommunityId;
   added: Date;
+  occurredAt: Date;
 }>>;
 
 export type FindReviewsForEditorialCommunityId = (editorialCommunityId: EditorialCommunityId) => Promise<Array<{
@@ -28,6 +29,7 @@ export default (events: ReadonlyArray<EditorialCommunityReviewedArticleEvent>): 
         reviewId: event.reviewId,
         editorialCommunityId: event.editorialCommunityId,
         added: event.date,
+        occurredAt: event.date,
       }))
   ),
 
