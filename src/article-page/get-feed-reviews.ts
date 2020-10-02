@@ -24,10 +24,10 @@ export default (
   getEditorialCommunity: GetEditorialCommunity,
 ) : GetReviews => (
   async (doi) => {
-    const getReviewDetailsAndSource = async (reviewId: ReviewId): Promise<{ details: string, source: URL }> => {
+    const getReviewFullTextAndSource = async (reviewId: ReviewId): Promise<{ fullText: string, source: URL }> => {
       const review = await getReview(reviewId);
       return {
-        details: review.summary.unsafelyUnwrap(),
+        fullText: review.summary.unsafelyUnwrap(),
         source: review.url,
       };
     };
@@ -35,7 +35,7 @@ export default (
     return Promise.all((await getFeedEvents(doi)).map(async (feedEvent) => {
       const [editorialCommunity, review] = await Promise.all([
         getEditorialCommunity(feedEvent.editorialCommunityId),
-        getReviewDetailsAndSource(feedEvent.reviewId),
+        getReviewFullTextAndSource(feedEvent.reviewId),
       ]);
 
       return {
@@ -44,7 +44,7 @@ export default (
         editorialCommunityId: feedEvent.editorialCommunityId,
         editorialCommunityName: editorialCommunity.name,
         editorialCommunityAvatar: editorialCommunity.avatar,
-        details: review.details,
+        fullText: review.fullText,
       };
     }));
   }

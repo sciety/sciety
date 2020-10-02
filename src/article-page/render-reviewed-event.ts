@@ -11,7 +11,7 @@ export type Review = {
   editorialCommunityId: EditorialCommunityId;
   editorialCommunityName: string;
   editorialCommunityAvatar: URL;
-  details: string;
+  fullText: string;
 };
 
 const renderAvatar = (url: URL): string => `
@@ -33,10 +33,10 @@ export default (
       </div>
 
       <div class="hidden" data-teaser>
-        ${clip(review.details, teaserChars)}
+        ${clip(review.fullText, teaserChars)}
       </div>
       <div data-full-text>
-        ${review.details}
+        ${review.fullText}
         <a href="${review.source.toString()}" class="article-feed__item__read_more article-call-to-action-link">
           Read the original source
         </a>

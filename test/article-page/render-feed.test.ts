@@ -28,7 +28,7 @@ describe('render-feed', () => {
             editorialCommunityId: new EditorialCommunityId(''),
             editorialCommunityName: '',
             editorialCommunityAvatar: new URL('http://example.com'),
-            details: '',
+            fullText: '',
           },
         ],
         () => '',
