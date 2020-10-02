@@ -29,11 +29,11 @@ export default (getJson: GetJson, logger: Logger): FetchHypothesisAnnotation => 
 
     const response: Review = {
       publicationDate: Maybe.just(new Date(data.created)),
-      summary: Maybe.just(data.text).map((text) => converter.makeHtml(text)),
+      fullText: Maybe.just(data.text).map((text) => converter.makeHtml(text)),
       url: new URL(data.links.incontext),
     };
 
-    logger('debug', 'Retrieved review', { ...response, summary: '[text]' });
+    logger('debug', 'Retrieved review', { ...response, fullText: '[text]' });
 
     return response;
   };

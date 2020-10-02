@@ -36,7 +36,7 @@ export default async (): Promise<TestServer> => {
   const fetchDataCiteDataset: FetchDataset = async () => (
     clownface({ dataset: datasetFactory(), term: namedNode('http://example.com/some-datacite-node') })
       .addOut(schema.datePublished, literal('2020-02-20', schema.Date))
-      .addOut(schema.description, 'A summary')
+      .addOut(schema.description, 'The full text')
       .addOut(schema.author, (author) => author.addOut(schema.name, 'Author name'))
   );
   const fetchArticle: FetchCrossrefArticle = async (doi) => (Result.ok({

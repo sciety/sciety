@@ -20,11 +20,11 @@ export default (fetchDataset: FetchDataset, logger: Logger): FetchDataciteReview
         schema.datePublished,
         dcterms.date,
       ]).value;
-      const summary = graph.out(schema.description).value;
+      const fullText = graph.out(schema.description).value;
 
       const review: Review = {
         publicationDate: Maybe.of(publicationDate).map((date:string) => new Date(date)),
-        summary: Maybe.of(summary),
+        fullText: Maybe.of(fullText),
         url: new URL(url),
       };
       logger('debug', 'Retrieved review', { review });
@@ -32,7 +32,7 @@ export default (fetchDataset: FetchDataset, logger: Logger): FetchDataciteReview
     } catch (error: unknown) {
       return {
         publicationDate: Maybe.nothing(),
-        summary: Maybe.nothing(),
+        fullText: Maybe.nothing(),
         url: new URL(url),
       };
     }

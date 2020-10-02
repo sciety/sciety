@@ -16,13 +16,13 @@ describe('fetch-datacite-review', (): void => {
       const fetchDataset: FetchDataset = async (iri) => (
         clownface({ dataset: datasetFactory(), term: iri })
           .addOut(schema.datePublished, literal('2020-02-20', schema.Date))
-          .addOut(schema.description, 'A summary')
+          .addOut(schema.description, 'The full text')
       );
       const fetchReview = createFetchDataciteReview(fetchDataset, dummyLogger);
       const review = await fetchReview(reviewDoi);
 
       expect(review).toMatchObject({
-        summary: Maybe.just('A summary'),
+        fullText: Maybe.just('The full text'),
         publicationDate: Maybe.just(new Date('2020-02-20')),
       });
     });
@@ -42,14 +42,14 @@ describe('fetch-datacite-review', (): void => {
   });
 
   describe('when the review has no description', () => {
-    it('returns the review without a summary', async () => {
+    it('returns the review without a full text', async () => {
       const fetchDataset: FetchDataset = async (iri) => (
         clownface({ dataset: datasetFactory(), term: iri })
       );
       const fetchReview = createFetchDataciteReview(fetchDataset, dummyLogger);
       const review = await fetchReview(reviewDoi);
 
-      expect(review.summary.isNothing()).toBe(true);
+      expect(review.fullText.isNothing()).toBe(true);
     });
   });
 

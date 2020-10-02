@@ -22,7 +22,7 @@ describe('fetch-hypothesis-annotation', (): void => {
 
     const expected: Review = {
       publicationDate: Maybe.just(new Date(date)),
-      summary: Maybe.just('<p>Very good</p>'),
+      fullText: Maybe.just('<p>Very good</p>'),
       url: new URL('https://www.example.com'),
     };
 
@@ -43,6 +43,6 @@ describe('fetch-hypothesis-annotation', (): void => {
     const fetchHypothesisAnnotation = createFetchHypothesisAnnotation(getJson, dummyLogger);
     const review = await fetchHypothesisAnnotation(hypothesisAnnotationId);
 
-    expect(review.summary.unsafelyUnwrap()).toContain(expected);
+    expect(review.fullText.unsafelyUnwrap()).toContain(expected);
   });
 });

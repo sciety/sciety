@@ -12,7 +12,7 @@ type GetFeedEvents = (articleDoi: Doi) => Promise<ReadonlyArray<{
 }>>;
 
 export type GetReview = (id: ReviewId) => Promise<{
-  summary: Maybe<string>;
+  fullText: Maybe<string>;
   url: URL;
 }>;
 
@@ -27,7 +27,7 @@ export default (
     const getReviewFullTextAndSource = async (reviewId: ReviewId): Promise<{ fullText: string, source: URL }> => {
       const review = await getReview(reviewId);
       return {
-        fullText: review.summary.unsafelyUnwrap(),
+        fullText: review.fullText.unsafelyUnwrap(),
         source: review.url,
       };
     };

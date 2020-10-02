@@ -11,7 +11,7 @@ const reviewDoi = new Doi('10.5281/zenodo.3678325');
 
 const fetchedReview = {
   publicationDate: Maybe.just(new Date()),
-  summary: Maybe.just('Very good'),
+  fullText: Maybe.just('Very good'),
   url: new URL('https://example.com'),
 };
 
