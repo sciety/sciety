@@ -45,6 +45,33 @@ export default (
       </li>
     `;
   }
+
+  const fullText = review.fullText.unsafelyUnwrap();
+  const teaserText = clip(fullText, teaserChars);
+  if (teaserText === fullText) {
+    return `
+      <li class="article-feed__item">
+        ${renderAvatar(review.editorialCommunityAvatar)}
+        <div class="article-feed__item_body">
+          ${templateDate(review.occurredAt, 'article-feed__item__date')}
+          <div class="article-feed__item__title">
+            Reviewed by
+            <a href="/editorial-communities/${review.editorialCommunityId.value}">
+              ${review.editorialCommunityName}
+            </a>
+          </div>
+
+          <div>
+            ${fullText}
+            <a href="${review.source.toString()}" class="article-feed__item__read_more article-call-to-action-link">
+              Read the original source
+            </a>
+          </div>
+
+        </div>
+      </li>
+    `;
+  }
   return `
     <li class="article-feed__item">
       ${renderAvatar(review.editorialCommunityAvatar)}
@@ -58,10 +85,10 @@ export default (
         </div>
 
         <div class="hidden" data-teaser>
-          ${clip(review.fullText.or(Maybe.just('')).unsafelyUnwrap(), teaserChars)}
+          ${teaserText}
         </div>
         <div data-full-text>
-          ${review.fullText.or(Maybe.just('')).unsafelyUnwrap()}
+          ${fullText}
           <a href="${review.source.toString()}" class="article-feed__item__read_more article-call-to-action-link">
             Read the original source
           </a>

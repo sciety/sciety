@@ -31,7 +31,31 @@ describe('render-reviewed-event', () => {
   });
 
   describe('when the review has short full text', () => {
-    it.todo('renders without a teaser');
+    it('renders without a teaser', () => {
+      const fullText = 'tldr';
+      const source = 'http://example.com/source';
+      const renderReviewedEvent = createRenderReviewedEvent(12);
+
+      const rendered = JSDOM.fragment(
+        renderReviewedEvent({
+          source: new URL(source),
+          occurredAt: new Date(),
+          editorialCommunityId: new EditorialCommunityId('community-1'),
+          editorialCommunityName: 'Community 1',
+          editorialCommunityAvatar: new URL('http://example.com/avatar'),
+          fullText: Maybe.just(fullText),
+        }),
+      );
+      const toggleableContent = rendered.querySelector('[data-behaviour="collapse_to_teaser"]');
+      const fullTextWrapper = rendered.querySelector('.article-feed__item_body');
+      const teaserWrapper = rendered.querySelector('[data-teaser]');
+      const sourceLinkUrl = rendered.querySelector('.article-feed__item__read_more')?.getAttribute('href');
+
+      expect(toggleableContent).toBeNull();
+      expect(teaserWrapper).toBeNull();
+      expect(fullTextWrapper?.textContent).toStrictEqual(expect.stringContaining(fullText));
+      expect(sourceLinkUrl).toStrictEqual(source);
+    });
   });
 
   describe('when the review has no full text', () => {
