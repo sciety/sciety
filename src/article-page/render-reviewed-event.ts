@@ -19,6 +19,12 @@ const renderAvatar = (url: URL): string => `
   <img class="article-feed__item__avatar" src="${url.toString()}" alt="">
 `;
 
+const renderListItem = (contents: string): string => `
+    <li class="article-feed__item">
+      ${contents}
+    </li>
+`;
+
 export default (
   teaserChars: number,
 ): RenderReviewedEvent => (review: Review): string => {
@@ -37,25 +43,22 @@ export default (
     </a>
   `;
   if (review.fullText.isNothing()) {
-    return `
-      <li class="article-feed__item">
-        ${renderAvatar(review.editorialCommunityAvatar)}
-        <div class="article-feed__item_body">
-          ${eventMetadata}
+    return renderListItem(`
+      ${renderAvatar(review.editorialCommunityAvatar)}
+      <div class="article-feed__item_body">
+        ${eventMetadata}
 
-          <div>
-            ${sourceLink}
-          </div>
+        <div>
+          ${sourceLink}
         </div>
-      </li>
-    `;
+      </div>
+    `);
   }
 
   const fullText = review.fullText.unsafelyUnwrap();
   const teaserText = clip(fullText, teaserChars);
   if (teaserText === fullText) {
-    return `
-      <li class="article-feed__item">
+    return renderListItem(`
         ${renderAvatar(review.editorialCommunityAvatar)}
         <div class="article-feed__item_body">
           ${eventMetadata}
@@ -66,11 +69,9 @@ export default (
           </div>
 
         </div>
-      </li>
-    `;
+    `);
   }
-  return `
-    <li class="article-feed__item">
+  return renderListItem(`
       ${renderAvatar(review.editorialCommunityAvatar)}
       <div class="article-feed__item_body" data-behaviour="collapse_to_teaser">
         ${eventMetadata}
@@ -84,6 +85,5 @@ export default (
         </div>
 
       </div>
-    </li>
-  `;
+  `);
 };
