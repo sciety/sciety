@@ -22,25 +22,30 @@ const renderAvatar = (url: URL): string => `
 export default (
   teaserChars: number,
 ): RenderReviewedEvent => (review: Review): string => {
+  const eventMetadata = `
+    ${templateDate(review.occurredAt, 'article-feed__item__date')}
+    <div class="article-feed__item__title">
+      Reviewed by
+      <a href="/editorial-communities/${review.editorialCommunityId.value}">
+        ${review.editorialCommunityName}
+      </a>
+    </div>
+  `;
+  const sourceLink = `
+    <a href="${review.source.toString()}" class="article-feed__item__read_more article-call-to-action-link">
+      Read the original source
+    </a>
+  `;
   if (review.fullText.isNothing()) {
     return `
       <li class="article-feed__item">
         ${renderAvatar(review.editorialCommunityAvatar)}
         <div class="article-feed__item_body">
-          ${templateDate(review.occurredAt, 'article-feed__item__date')}
-          <div class="article-feed__item__title">
-            Reviewed by
-            <a href="/editorial-communities/${review.editorialCommunityId.value}">
-              ${review.editorialCommunityName}
-            </a>
-          </div>
+          ${eventMetadata}
 
           <div>
-            <a href="${review.source.toString()}" class="article-feed__item__read_more article-call-to-action-link">
-              Read the original source
-            </a>
+            ${sourceLink}
           </div>
-
         </div>
       </li>
     `;
@@ -53,19 +58,11 @@ export default (
       <li class="article-feed__item">
         ${renderAvatar(review.editorialCommunityAvatar)}
         <div class="article-feed__item_body">
-          ${templateDate(review.occurredAt, 'article-feed__item__date')}
-          <div class="article-feed__item__title">
-            Reviewed by
-            <a href="/editorial-communities/${review.editorialCommunityId.value}">
-              ${review.editorialCommunityName}
-            </a>
-          </div>
+          ${eventMetadata}
 
           <div>
             ${fullText}
-            <a href="${review.source.toString()}" class="article-feed__item__read_more article-call-to-action-link">
-              Read the original source
-            </a>
+            ${sourceLink}
           </div>
 
         </div>
@@ -76,22 +73,14 @@ export default (
     <li class="article-feed__item">
       ${renderAvatar(review.editorialCommunityAvatar)}
       <div class="article-feed__item_body" data-behaviour="collapse_to_teaser">
-        ${templateDate(review.occurredAt, 'article-feed__item__date')}
-        <div class="article-feed__item__title">
-          Reviewed by
-          <a href="/editorial-communities/${review.editorialCommunityId.value}">
-            ${review.editorialCommunityName}
-          </a>
-        </div>
+        ${eventMetadata}
 
         <div class="hidden" data-teaser>
           ${teaserText}
         </div>
         <div data-full-text>
           ${fullText}
-          <a href="${review.source.toString()}" class="article-feed__item__read_more article-call-to-action-link">
-            Read the original source
-          </a>
+          ${sourceLink}
         </div>
 
       </div>
