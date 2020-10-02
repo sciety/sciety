@@ -2,8 +2,9 @@ import { URL } from 'url';
 import { Maybe, Result } from 'true-myth';
 import ensureBiorxivDoi from './ensure-biorxiv-doi';
 import createFetchPciRecommendation from './fetch-pci-recommendation';
-import createGetFeedReviews, { GetEditorialCommunity, GetFeedEvents } from './get-feed-reviews';
+import createGetFeedReviews, { GetEditorialCommunity } from './get-feed-reviews';
 import createGetHardcodedEndorsements from './get-hardcoded-endorsements';
+import createProjectFeedEvents from './project-feed-events';
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
 import createRenderEndorsements from './render-endorsements';
 import createRenderFeed from './render-feed';
@@ -22,7 +23,6 @@ import { Logger } from '../infrastructure/logger';
 import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { FetchExternalArticle } from '../types/fetch-external-article';
-import HypothesisAnnotationId from '../types/hypothesis-annotation-id';
 
 interface Ports {
   fetchArticle: FetchExternalArticle;
@@ -84,29 +84,7 @@ export default (ports: Ports): RenderPage => {
       avatar: new URL(editorialCommunity.avatarUrl),
     };
   };
-  const getHardcodedFeedEvents: GetFeedEvents = async (doi) => {
-    if (doi.value === '10.1101/646810') {
-      return [
-        {
-          reviewId: new HypothesisAnnotationId('GFEW8JXMEeqJQcuc-6NFhQ'),
-          editorialCommunityId: new EditorialCommunityId('316db7d9-88cc-4c26-b386-f067e0f56334'),
-          occurredAt: new Date('2020-05-14'),
-        },
-        {
-          reviewId: new HypothesisAnnotationId('F4-xmpXMEeqf3_-2H0r-9Q'),
-          editorialCommunityId: new EditorialCommunityId('316db7d9-88cc-4c26-b386-f067e0f56334'),
-          occurredAt: new Date('2020-05-14'),
-        },
-        {
-          reviewId: new HypothesisAnnotationId('F7e5QpXMEeqnbCM3UE6XLQ'),
-          editorialCommunityId: new EditorialCommunityId('316db7d9-88cc-4c26-b386-f067e0f56334'),
-          occurredAt: new Date('2020-05-14'),
-        },
-      ];
-    }
-    return [];
-  };
-  const getReviews = createGetFeedReviews(getHardcodedFeedEvents, ports.fetchReview, getEditorialCommunity);
+  const getReviews = createGetFeedReviews(createProjectFeedEvents(), ports.fetchReview, getEditorialCommunity);
   const renderFeed = createRenderFeed(getReviews, createRenderReviewedEvent(150));
   const renderPage = createRenderPage(
     renderPageHeader,
