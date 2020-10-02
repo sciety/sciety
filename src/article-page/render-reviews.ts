@@ -18,6 +18,9 @@ export default (
   id: string,
 ): RenderReviews => (
   async (doi) => {
+    if (doi.value === '10.1101/646810') {
+      return Result.err('no-content');
+    }
     const renderedReviews = await Promise.all((await reviews(doi)).map(async (review, index) => (
       renderReview(review.reviewId, review.editorialCommunityId, `review-${index}`)
     )));
