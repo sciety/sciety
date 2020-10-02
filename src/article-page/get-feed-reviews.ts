@@ -39,7 +39,7 @@ export default (
       ]);
 
       return {
-        sourceUrl: review.source,
+        source: review.source,
         occurredAt: feedEvent.occurredAt,
         editorialCommunityId: feedEvent.editorialCommunityId,
         editorialCommunityName: editorialCommunity.name,

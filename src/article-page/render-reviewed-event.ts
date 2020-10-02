@@ -6,7 +6,7 @@ import EditorialCommunityId from '../types/editorial-community-id';
 export type RenderReviewedEvent = (review: Review) => string;
 
 export type Review = {
-  sourceUrl: URL;
+  source: URL;
   occurredAt: Date;
   editorialCommunityId: EditorialCommunityId;
   editorialCommunityName: string;
@@ -37,7 +37,7 @@ export default (
       </div>
       <div data-full-text>
         ${review.details}
-        <a href="${review.sourceUrl.toString()}" class="article-feed__item__read_more article-call-to-action-link">
+        <a href="${review.source.toString()}" class="article-feed__item__read_more article-call-to-action-link">
           Read the original source
         </a>
       </div>

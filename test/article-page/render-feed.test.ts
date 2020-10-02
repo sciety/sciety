@@ -23,7 +23,7 @@ describe('render-feed', () => {
       const renderFeed = createRenderFeed(
         async () => [
           {
-            sourceUrl: new URL('http://example.com'),
+            source: new URL('http://example.com'),
             occurredAt: new Date(),
             editorialCommunityId: new EditorialCommunityId(''),
             editorialCommunityName: '',
