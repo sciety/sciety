@@ -18,11 +18,18 @@ import createRenderReview, {
   GetReview,
 } from './render-review';
 import createRenderReviewedEvent from './render-reviewed-event';
-import createRenderReviews, { GetReviews, RenderReviews } from './render-reviews';
+import createRenderReviews, { RenderReviews } from './render-reviews';
 import { Logger } from '../infrastructure/logger';
 import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { FetchExternalArticle } from '../types/fetch-external-article';
+import { ReviewId } from '../types/review-id';
+
+type FindReviewsForArticleVersionDoi = (articleVersionDoi: Doi) => Promise<ReadonlyArray<{
+  reviewId: ReviewId;
+  editorialCommunityId: EditorialCommunityId;
+  occurredAt: Date;
+}>>;
 
 interface Ports {
   fetchArticle: FetchExternalArticle;
@@ -31,7 +38,7 @@ interface Ports {
     name: string;
     avatarUrl: string;
   }>>,
-  findReviewsForArticleVersionDoi: GetReviews;
+  findReviewsForArticleVersionDoi: FindReviewsForArticleVersionDoi;
   logger: Logger;
 }
 
@@ -84,7 +91,11 @@ export default (ports: Ports): RenderPage => {
       avatar: new URL(editorialCommunity.avatarUrl),
     };
   };
-  const getReviews = createGetFeedReviews(createProjectFeedEvents(), ports.fetchReview, getEditorialCommunity);
+  const getReviews = createGetFeedReviews(
+    createProjectFeedEvents(),
+    ports.fetchReview,
+    getEditorialCommunity,
+  );
   const renderFeed = createRenderFeed(getReviews, createRenderReviewedEvent(150));
   const renderPage = createRenderPage(
     renderPageHeader,

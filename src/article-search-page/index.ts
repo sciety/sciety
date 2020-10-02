@@ -11,7 +11,7 @@ import EditorialCommunityId from '../types/editorial-community-id';
 import EndorsementsRepository from '../types/endorsements-repository';
 import { ReviewId } from '../types/review-id';
 
-type FindReviewsForArticleVersionDoi = (articleVersionDoi: Doi) => Promise<Array<{
+type FindReviewsForArticleVersionDoi = (articleVersionDoi: Doi) => Promise<ReadonlyArray<{
   reviewId: ReviewId;
   editorialCommunityId: EditorialCommunityId;
   added: Date;

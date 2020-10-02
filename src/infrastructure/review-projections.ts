@@ -3,7 +3,7 @@ import { EditorialCommunityReviewedArticleEvent } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { ReviewId } from '../types/review-id';
 
-export type FindReviewsForArticleVersionDoi = (articleVersionDoi: Doi) => Promise<Array<{
+export type FindReviewsForArticleVersionDoi = (articleVersionDoi: Doi) => Promise<ReadonlyArray<{
   reviewId: ReviewId;
   editorialCommunityId: EditorialCommunityId;
   added: Date;
