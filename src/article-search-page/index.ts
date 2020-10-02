@@ -14,7 +14,6 @@ import { ReviewId } from '../types/review-id';
 type FindReviewsForArticleVersionDoi = (articleVersionDoi: Doi) => Promise<ReadonlyArray<{
   reviewId: ReviewId;
   editorialCommunityId: EditorialCommunityId;
-  added: Date;
 }>>;
 
 type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => Promise<Maybe<{

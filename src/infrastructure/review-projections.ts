@@ -6,7 +6,6 @@ import { ReviewId } from '../types/review-id';
 export type FindReviewsForArticleVersionDoi = (articleVersionDoi: Doi) => Promise<ReadonlyArray<{
   reviewId: ReviewId;
   editorialCommunityId: EditorialCommunityId;
-  added: Date;
   occurredAt: Date;
 }>>;
 
@@ -28,7 +27,6 @@ export default (events: ReadonlyArray<EditorialCommunityReviewedArticleEvent>): 
       .map((event) => ({
         reviewId: event.reviewId,
         editorialCommunityId: event.editorialCommunityId,
-        added: event.date,
         occurredAt: event.date,
       }))
   ),
