@@ -1,4 +1,5 @@
 import { URL } from 'url';
+import { Maybe } from 'true-myth';
 import createRenderFeed from '../../src/article-page/render-feed';
 import Doi from '../../src/types/doi';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
@@ -28,7 +29,7 @@ describe('render-feed', () => {
             editorialCommunityId: new EditorialCommunityId(''),
             editorialCommunityName: '',
             editorialCommunityAvatar: new URL('http://example.com'),
-            fullText: '',
+            fullText: Maybe.just(''),
           },
         ],
         () => '',

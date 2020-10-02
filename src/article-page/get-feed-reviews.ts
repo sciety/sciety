@@ -24,10 +24,15 @@ export default (
   getEditorialCommunity: GetEditorialCommunity,
 ) : GetReviews => (
   async (doi) => {
-    const getReviewFullTextAndSource = async (reviewId: ReviewId): Promise<{ fullText: string, source: URL }> => {
+    const getReviewFullTextAndSource = async (
+      reviewId: ReviewId,
+    ): Promise<{
+      fullText: Maybe<string>,
+      source: URL,
+    }> => {
       const review = await getReview(reviewId);
       return {
-        fullText: review.fullText.unsafelyUnwrap(),
+        fullText: review.fullText,
         source: review.url,
       };
     };

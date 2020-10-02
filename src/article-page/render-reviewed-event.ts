@@ -1,5 +1,6 @@
 import { URL } from 'url';
 import clip from 'text-clipper';
+import { Maybe } from 'true-myth';
 import templateDate from '../templates/date';
 import EditorialCommunityId from '../types/editorial-community-id';
 
@@ -11,7 +12,7 @@ export type Review = {
   editorialCommunityId: EditorialCommunityId;
   editorialCommunityName: string;
   editorialCommunityAvatar: URL;
-  fullText: string;
+  fullText: Maybe<string>;
 };
 
 const renderAvatar = (url: URL): string => `
@@ -33,10 +34,10 @@ export default (
       </div>
 
       <div class="hidden" data-teaser>
-        ${clip(review.fullText, teaserChars)}
+        ${clip(review.fullText.or(Maybe.just('')).unsafelyUnwrap(), teaserChars)}
       </div>
       <div data-full-text>
-        ${review.fullText}
+        ${review.fullText.or(Maybe.just('')).unsafelyUnwrap()}
         <a href="${review.source.toString()}" class="article-feed__item__read_more article-call-to-action-link">
           Read the original source
         </a>
