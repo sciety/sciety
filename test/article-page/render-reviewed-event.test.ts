@@ -20,9 +20,13 @@ describe('render-reviewed-event', () => {
           fullText: Maybe.just(fullText),
         }),
       );
+      const itemBody = rendered.querySelector('[data-behaviour="collapse_to_teaser"]');
       const fullTextWrapper = rendered.querySelector('[data-full-text]');
+      const teaserWrapper = rendered.querySelector('[data-teaser]');
 
+      expect(itemBody).not.toBeNull();
       expect(fullTextWrapper?.textContent).toStrictEqual(expect.stringContaining(fullText));
+      expect(teaserWrapper?.textContent).toStrictEqual(expect.stringContaining('A …'));
     });
   });
 
