@@ -17,7 +17,7 @@ const editorialCommunities: Array<EditorialCommunity> = [
   {
     id: new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002'),
     name: 'PeerJ',
-    avatarUrl: 'https://pbs.twimg.com/profile_images/1095287970939265026/xgyGFDJk_200x200.jpg',
+    avatarUrl: 'https://pbs.twimg.com/profile_images/1310539472401043458/gN8sl9Nd_200x200.jpg',
     descriptionPath: 'peerj--53ed5364-a016-11ea-bb37-0242ac130002.md',
   },
   {
