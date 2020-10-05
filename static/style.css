@@ -167,6 +167,7 @@ Styles that are independent of Semantic UI
   --MAX-SITE-WIDTH: 1200;
   --MAX-SITE-WIDTH-REM: calc((var(--MAX-SITE-WIDTH) / var(--BASE-FONT-MEASURE)) * 1rem);
   --COLOUR-PRIMARY: #00796b;
+  --COLOUR-PRIMARY-HOVER: black;
 }
 
 html {
@@ -452,4 +453,8 @@ p.article-feed__item__title {
 .button--primary {
   color: #fff;
   background-color: var(--COLOUR-PRIMARY);
+}
+
+.button--primary:hover {
+  background-color: var(--COLOUR-PRIMARY-HOVER);
 }
