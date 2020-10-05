@@ -11,6 +11,7 @@ describe('render-feed', () => {
       const renderFeed = createRenderFeed(
         async () => [],
         shouldNotBeCalled,
+        shouldNotBeCalled,
       );
 
       const rendered = await renderFeed(new Doi('10.1101/12345678'));
@@ -32,6 +33,7 @@ describe('render-feed', () => {
             fullText: Maybe.just(''),
           },
         ],
+        () => '',
         () => '',
       );
 
