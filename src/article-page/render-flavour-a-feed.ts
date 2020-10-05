@@ -48,7 +48,7 @@ const feed = `
 
       <li class="article-feed__item">
         <img class="article-feed__item__avatar" src="https://pbs.twimg.com/profile_images/1239550325188710402/7_lY-IyL_200x200.png" alt="">
-        <div>
+        <div class="article-feed__item_body" data-behaviour="collapse_to_teaser">
           <time class="article-feed__item__date" datetime="2020-05-18">May 18, 2020</time>
           <div class="article-feed__item__title">
             Accepted by
@@ -56,15 +56,16 @@ const feed = `
                 eLife
               </a>
           </div>
-          <details>
-            <summary>
-              <p>In this manuscript the authors develop a computational approach designed to identify robust genetic interactions that can be used to predict tumor cell genetic vulnerabilities. The authors find that oncogene addiction, as opposed to synthetic lethality, tends to be a more robust predictor of genetic dependencies in tumor cells. They also find that robust...</p>
-            </summary>
-           <p>genetic interactions in cancer are enriched for gene pairs whose protein products physically interact. Therefore, the latter could be considered a surrogate in target selection for tumors with currently undruggable driver oncogenes.</p>
+
+          <div class="hidden" data-teaser>
+              <p>In this manuscript the authors develop a computational approach designed to identify robust genetic interactions that can be used to …</p>
+          </div>
+           <div data-full-text>
+              <p>In this manuscript the authors develop a computational approach designed to identify robust genetic interactions that can be used to predict tumor cell genetic vulnerabilities. The authors find that oncogene addiction, as opposed to synthetic lethality, tends to be a more robust predictor of genetic dependencies in tumor cells. They also find that robust genetic interactions in cancer are enriched for gene pairs whose protein products physically interact. Therefore, the latter could be considered a surrogate in target selection for tumors with currently undruggable driver oncogenes.</p>
            <a href="https://doi.org/10.7554/eLife.58925.sa1" class="article-feed__item__read_more article-call-to-action-link">
              Read the original source
            </a>
-          </details>
+           </div>
         </div>
       </li>
 
@@ -88,7 +89,7 @@ const feed = `
     
           <div class="article-feed__item_body" data-behaviour="collapse_to_teaser">
             
-        <time datetime="2020-05-14" class="article-feed__item__date">May 14, 2020</time>
+        <time class="article-feed__item__date" datetime="2020-05-14">May 14, 2020</time>
         <div class="article-feed__item__title">
           Author responded to
           <a href="/editorial-communities/316db7d9-88cc-4c26-b386-f067e0f56334">
