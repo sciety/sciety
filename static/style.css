@@ -168,6 +168,10 @@ Styles that are independent of Semantic UI
   --MAX-SITE-WIDTH-REM: calc((var(--MAX-SITE-WIDTH) / var(--BASE-FONT-MEASURE)) * 1rem);
   --COLOUR-PRIMARY: #00796b;
   --COLOUR-PRIMARY-HOVER: black;
+  --COLOUR-GREY-ONE: #e0e1e2;
+  --COLOUR-GREY-ONE-HOVER: #cacbce;
+  --COLOUR-GREY-TWO: #5a5a5a;
+  --COLOUR-GREY-TWO-HOVER: #282929;
 }
 
 html {
@@ -448,6 +452,13 @@ p.article-feed__item__title {
   padding: calc((9 / var(--BASE-FONT-MEASURE)) * 1rem) calc((18 / var(--BASE-FONT-MEASURE)) * 1rem);
   font-weight: bold;
   cursor: pointer;
+  background-color: var(--COLOUR-GREY-ONE);
+  color: var(--COLOUR-GREY-TWO);
+}
+
+.button:hover {
+  background-color: var(--COLOUR-GREY-ONE-HOVER);
+  color: var(--COLOUR-GREY-TWO-HOVER);
 }
 
 .button--primary {
