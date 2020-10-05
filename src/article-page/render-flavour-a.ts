@@ -1,3 +1,5 @@
+import Doi from '../types/doi';
+
 const feed = `
   <section>
     <h2>Feed</h2>
@@ -300,8 +302,9 @@ const feed = `
 
 `;
 
-const renderFlavourA = (): string => `
-<article class="hive-grid hive-grid--article">
+export default () => (
+  async (doi: Doi): Promise<string> => `
+  <article class="hive-grid hive-grid--article">
   <div class="main-content">
     
       <header>
@@ -315,7 +318,7 @@ const renderFlavourA = (): string => `
 
         <ul aria-label="Publication details" class="article-meta-data-list" role="list">
           <li>
-            DOI <a href="https://doi.org/10.1101/646810">10.1101/646810</a>
+            DOI <a href="https://doi.org/${doi.value}">${doi.value}</a>
           </li>
           <li>
             Posted <time datetime="2019-05-24">May 24, 2019</time>
@@ -344,6 +347,4 @@ const renderFlavourA = (): string => `
       
   </div>
 </article>
-`;
-
-export default (): string => renderFlavourA();
+`);

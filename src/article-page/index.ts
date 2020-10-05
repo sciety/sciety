@@ -4,7 +4,7 @@ import ensureBiorxivDoi from './ensure-biorxiv-doi';
 import createGetFeedReviews, { GetEditorialCommunity, GetReview } from './get-feed-reviews';
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
 import createRenderFeed from './render-feed';
-import renderFlavourA from './render-flavour-a';
+import createRenderFlavourA from './render-flavour-a';
 import createRenderPage, { RenderPageError } from './render-page';
 import createRenderPageHeader, {
   RenderPageHeader,
@@ -80,7 +80,8 @@ export default (ports: Ports): RenderPage => {
       });
     }
     if (doi.value === '10.1101/646810' && params.flavour === 'a') {
-      return Result.ok(renderFlavourA());
+      const renderFlavourA = createRenderFlavourA();
+      return Result.ok(await renderFlavourA(doi));
     }
     return renderPage(doi);
   };
