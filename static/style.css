@@ -264,6 +264,10 @@ h6 {
   font-weight: 400;
 }
 
+a {
+  color: var(--COLOUR-PRIMARY);
+}
+
 .feed__image {
   margin: 0 auto;
   padding-top: var(--THREE-INCREMENTS);
