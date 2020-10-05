@@ -166,6 +166,7 @@ Styles that are independent of Semantic UI
   --SIX-INCREMENTS: calc(var(--VERTICAL-INCREMENT) * 6);
   --MAX-SITE-WIDTH: 1200;
   --MAX-SITE-WIDTH-REM: calc((var(--MAX-SITE-WIDTH) / var(--BASE-FONT-MEASURE)) * 1rem);
+  --COLOUR-PRIMARY: #00796b;
 }
 
 html {
@@ -436,4 +437,18 @@ p.article-feed__item__title {
 .user-page-header__handle {
   font-size: calc((26 / var(--BASE-FONT-MEASURE)) * 1rem);
   color: #666;
+}
+
+.button {
+  border-radius: 5px;
+  font-size: calc((12 / var(--BASE-FONT-MEASURE)) * 1rem);
+  font-family: Lato, sans-serif;
+  border-width: 0;
+  padding: calc((9 / var(--BASE-FONT-MEASURE)) * 1rem) calc((18 / var(--BASE-FONT-MEASURE)) * 1rem);
+  font-weight: bold;
+}
+
+.button--primary {
+  color: #fff;
+  background-color: var(--COLOUR-PRIMARY);
 }
