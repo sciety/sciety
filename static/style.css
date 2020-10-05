@@ -446,6 +446,7 @@ p.article-feed__item__title {
   border-width: 0;
   padding: calc((9 / var(--BASE-FONT-MEASURE)) * 1rem) calc((18 / var(--BASE-FONT-MEASURE)) * 1rem);
   font-weight: bold;
+  cursor: pointer;
 }
 
 .button--primary {
