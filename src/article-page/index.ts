@@ -1,11 +1,8 @@
 import { URL } from 'url';
 import { Maybe, Result } from 'true-myth';
 import ensureBiorxivDoi from './ensure-biorxiv-doi';
-import createFetchPciRecommendation from './fetch-pci-recommendation';
 import createGetFeedReviews, { GetEditorialCommunity, GetReview } from './get-feed-reviews';
-import createGetHardcodedEndorsements from './get-hardcoded-endorsements';
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
-import createRenderEndorsements from './render-endorsements';
 import createRenderFeed from './render-feed';
 import renderFlavourA from './render-flavour-a';
 import createRenderPage, { RenderPageError } from './render-page';
@@ -58,9 +55,6 @@ type RenderPage = (params: Params) => Promise<Result<string, RenderPageError>>;
 export default (ports: Ports): RenderPage => {
   const renderPageHeader = buildRenderPageHeader(ports);
   const renderAbstract = buildRenderAbstract(ports.fetchArticle);
-  const fetchPciRecommendation = createFetchPciRecommendation(ports.logger);
-  const getEndorsements = createGetHardcodedEndorsements(fetchPciRecommendation);
-  const renderEndorsements = createRenderEndorsements(getEndorsements);
   const getEditorialCommunity: GetEditorialCommunity = async (editorialCommunityId) => {
     const editorialCommunity = (await ports.getEditorialCommunity(editorialCommunityId)).unsafelyUnwrap();
 
@@ -77,7 +71,6 @@ export default (ports: Ports): RenderPage => {
   const renderFeed = createRenderFeed(getReviews, createRenderReviewedEvent(150));
   const renderPage = createRenderPage(
     renderPageHeader,
-    renderEndorsements,
     renderAbstract,
     renderFeed,
   );

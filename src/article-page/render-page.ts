@@ -11,19 +11,17 @@ type RenderPage = (doi: Doi) => Promise<Result<string, RenderPageError>>;
 
 export default (
   renderPageHeader: Component,
-  renderEndorsements: Component,
   renderAbstract: Component,
   renderFeed: Component,
 ): RenderPage => {
   const template = Result.ok(
-    (abstract: string) => (pageHeader: string) => (feed: string) => (endorsements: string) => `
+    (abstract: string) => (pageHeader: string) => (feed: string) => `
 <article class="hive-grid hive-grid--article">
   ${pageHeader}
 
   <div class="main-content">
     ${abstract}
     ${feed}
-    ${endorsements}
   </div>
 </article>
     `,
@@ -36,13 +34,11 @@ export default (
       .then((feed) => (
         feed.orElse(() => Result.ok(''))
       ));
-    const endorsementsResult = renderEndorsements(doi);
 
     return template
       .ap(await abstractResult)
       .ap(await pageHeaderResult)
       .ap(await feedResult)
-      .ap(await endorsementsResult)
       .mapErr(() => ({
         type: 'not-found',
         content: `
