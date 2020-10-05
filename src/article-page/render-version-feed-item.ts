@@ -1,7 +1,7 @@
 import { URL } from 'url';
 import renderDate from '../templates/date';
 
-type ArticleVersionFeedItem = {
+export type ArticleVersionFeedItem = {
   source: URL;
   postedAt: Date;
   version: number;

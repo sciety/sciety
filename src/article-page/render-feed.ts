@@ -1,26 +1,36 @@
 import { URL } from 'url';
 import { Result } from 'true-myth';
 import { RenderReviewedEvent, Review } from './render-reviewed-event';
-import { RenderVersionFeedItem } from './render-version-feed-item';
+import { ArticleVersionFeedItem, RenderVersionFeedItem } from './render-version-feed-item';
 import renderListItems from '../templates/list-items';
 import Doi from '../types/doi';
 
 type RenderFeed = (doi: Doi) => Promise<Result<string, 'no-content'>>;
 
-export type GetReviews = (doi: Doi) => Promise<ReadonlyArray<Review>>;
+export type GetReviews = (doi: Doi) => Promise<ReadonlyArray<Review|ArticleVersionFeedItem>>;
 
 export default (
-  getReviews: GetReviews,
+  getFeedItems: GetReviews,
   renderReviewedEvent: RenderReviewedEvent,
   renderVersionFeedItem: RenderVersionFeedItem,
 ): RenderFeed => async (doi) => {
-  const reviews = await getReviews(doi);
+  const feedItems = await getFeedItems(doi);
 
-  if (reviews.length === 0) {
+  if (feedItems.length === 0) {
     return Result.err('no-content');
   }
 
-  const items = reviews.map(renderReviewedEvent);
+  const isArticleVersionFeedItem = (feedItem: Review|ArticleVersionFeedItem):
+    feedItem is ArticleVersionFeedItem => (
+    Object.prototype.hasOwnProperty.call(feedItem, 'postedAt')
+  );
+
+  const items = feedItems.map((feedItem) => {
+    if (isArticleVersionFeedItem(feedItem)) {
+      return renderVersionFeedItem(feedItem);
+    }
+    return renderReviewedEvent(feedItem);
+  });
 
   if (doi.value === '10.1101/646810') {
     items.push(renderVersionFeedItem({
