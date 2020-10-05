@@ -22,22 +22,22 @@ export default (
   getFeedEvents: GetFeedEvents,
   getReview: GetReview,
   getEditorialCommunity: GetEditorialCommunity,
-) : GetReviews => (
-  async (doi) => {
-    const getReviewFullTextAndSource = async (
-      reviewId: ReviewId,
-    ): Promise<{
-      fullText: Maybe<string>,
-      source: URL,
-    }> => {
-      const review = await getReview(reviewId);
-      return {
-        fullText: review.fullText,
-        source: review.url,
-      };
+) : GetReviews => {
+  const getReviewFullTextAndSource = async (
+    reviewId: ReviewId,
+  ): Promise<{
+    fullText: Maybe<string>,
+    source: URL,
+  }> => {
+    const review = await getReview(reviewId);
+    return {
+      fullText: review.fullText,
+      source: review.url,
     };
+  };
 
-    return Promise.all((await getFeedEvents(doi)).map(async (feedEvent) => {
+  return async (doi) => (
+    Promise.all((await getFeedEvents(doi)).map(async (feedEvent) => {
       const [editorialCommunity, review] = await Promise.all([
         getEditorialCommunity(feedEvent.editorialCommunityId),
         getReviewFullTextAndSource(feedEvent.reviewId),
@@ -51,6 +51,6 @@ export default (
         editorialCommunityAvatar: editorialCommunity.avatar,
         fullText: review.fullText,
       };
-    }));
-  }
-);
+    }))
+  );
+};
