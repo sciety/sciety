@@ -4,11 +4,9 @@ import ensureBiorxivDoi from './ensure-biorxiv-doi';
 import createGetFeedReviews, { GetEditorialCommunity, GetReview } from './get-feed-reviews';
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
 import createRenderFeed from './render-feed';
-import createRenderFlavourA from './render-flavour-a';
+import createRenderFlavourAFeed from './render-flavour-a-feed';
 import createRenderPage, { RenderPageError } from './render-page';
-import createRenderPageHeader, {
-  RenderPageHeader,
-} from './render-page-header';
+import createRenderPageHeader, { RenderPageHeader } from './render-page-header';
 import createRenderReviewedEvent from './render-reviewed-event';
 import { Logger } from '../infrastructure/logger';
 import Doi from '../types/doi';
@@ -64,13 +62,16 @@ export default (ports: Ports): RenderPage => {
     getEditorialCommunity,
   );
   const renderFeed = createRenderFeed(getReviews, createRenderReviewedEvent(150));
+  const renderFlavourAFeed = createRenderFlavourAFeed();
   const renderPage = createRenderPage(
     renderPageHeader,
     renderAbstract,
     renderFeed,
   );
-  const renderFlavourA = createRenderFlavourA(
+  const renderFlavourA = createRenderPage(
     renderPageHeader,
+    renderAbstract,
+    renderFlavourAFeed,
   );
   return async (params) => {
     let doi: Doi;
@@ -83,7 +84,7 @@ export default (ports: Ports): RenderPage => {
       });
     }
     if (doi.value === '10.1101/646810' && params.flavour === 'a') {
-      return Result.ok(await renderFlavourA(doi));
+      return renderFlavourA(doi);
     }
     return renderPage(doi);
   };
