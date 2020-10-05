@@ -467,5 +467,6 @@ p.article-feed__item__title {
 }
 
 .button--primary:hover {
+  color: #fff;
   background-color: var(--COLOUR-PRIMARY-HOVER);
 }
