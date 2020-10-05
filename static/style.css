@@ -489,3 +489,35 @@ p.article-feed__item__title {
   color: #fff;
   background-color: var(--COLOUR-PRIMARY-HOVER);
 }
+
+.search-form__inputs {
+  display: flex;
+}
+
+.search-form__input::placeholder {
+  color: var(--COLOUR-GREY-ONE);
+  font-size: var(--BASE-FONT-REM);
+}
+
+.search-form__input {
+  border: 1px solid var(--COLOUR-GREY-ONE);
+  border-right-color: transparent;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  padding: calc((13 / var(--BASE-FONT-MEASURE)) * 1rem) calc((25 / var(--BASE-FONT-MEASURE)) * 1rem);
+  flex: 1 1 calc((80 / var(--BASE-FONT-MEASURE)) * 1rem);
+  min-width: calc((80 / var(--BASE-FONT-MEASURE)) * 1rem);
+}
+
+.search-form__input:focus {
+  border-color: var(--COLOUR-PRIMARY);
+  border-right-color: transparent;
+  outline: none;
+}
+
+.search-form__button {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  padding: calc((14 / var(--BASE-FONT-MEASURE)) * 1rem);
+  flex: 0 0 calc((32 / var(--BASE-FONT-MEASURE)) * 1rem);
+}
