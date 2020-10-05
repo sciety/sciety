@@ -1,5 +1,7 @@
+import { URL } from 'url';
 import { Result } from 'true-myth';
 import { RenderReviewedEvent, Review } from './render-reviewed-event';
+import renderDate from '../templates/date';
 import renderListItems from '../templates/list-items';
 import Doi from '../types/doi';
 
@@ -20,17 +22,27 @@ export default (
   const items = reviews.map(renderReviewedEvent);
 
   if (doi.value === '10.1101/646810') {
-    items.push(`
+    type ArticleVersionFeedItem = {
+      source: URL;
+      postedAt: Date;
+      version: number;
+    };
+    const renderVersionEvent = (feedItem: ArticleVersionFeedItem): string => `
       <img class="article-feed__item__avatar" src="https://pbs.twimg.com/profile_images/956882186996662272/lwyH1HFe_200x200.jpg" alt="">
       <div>
-        <time class="article-feed__item__date" datetime="2019-05-24">May 24, 2019</time>
+        ${renderDate(feedItem.postedAt, 'article-feed__item__date')}
         <p class="article-feed__item__title">
-          <a href="https://www.biorxiv.org/content/10.1101/646810v1?versioned=true">
-            Version 1 published on bioRxiv
+          <a href="${feedItem.source.toString()}">
+            Version ${feedItem.version} published on bioRxiv
           </a>
         </p>
       </div>
-    `);
+    `;
+    items.push(renderVersionEvent({
+      source: new URL('https://www.biorxiv.org/content/10.1101/646810v1?versioned=true'),
+      postedAt: new Date('2019-05-24'),
+      version: 1,
+    }));
   }
 
   return Result.ok(`
