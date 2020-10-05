@@ -19,12 +19,6 @@ const renderAvatar = (url: URL): string => `
   <img class="article-feed__item__avatar" src="${url.toString()}" alt="">
 `;
 
-const renderListItem = (contents: string): string => `
-    <li class="article-feed__item">
-      ${contents}
-    </li>
-`;
-
 export default (
   teaserChars: number,
 ): RenderReviewedEvent => (review: Review): string => {
@@ -43,47 +37,42 @@ export default (
     </a>
   `;
   if (review.fullText.isNothing()) {
-    return renderListItem(`
+    return `
       ${renderAvatar(review.editorialCommunityAvatar)}
       <div class="article-feed__item_body">
         ${eventMetadata}
-
         <div>
           ${sourceLink}
         </div>
       </div>
-    `);
+    `;
   }
 
   const fullText = review.fullText.unsafelyUnwrap();
   const teaserText = clip(fullText, teaserChars);
   if (teaserText === fullText) {
-    return renderListItem(`
-        ${renderAvatar(review.editorialCommunityAvatar)}
-        <div class="article-feed__item_body">
-          ${eventMetadata}
-
-          <div>
-            ${fullText}
-            ${sourceLink}
-          </div>
-
-        </div>
-    `);
-  }
-  return renderListItem(`
+    return `
       ${renderAvatar(review.editorialCommunityAvatar)}
-      <div class="article-feed__item_body" data-behaviour="collapse_to_teaser">
+      <div class="article-feed__item_body">
         ${eventMetadata}
-
-        <div class="hidden" data-teaser>
-          ${teaserText}
-        </div>
-        <div data-full-text>
+        <div>
           ${fullText}
           ${sourceLink}
         </div>
-
       </div>
-  `);
+    `;
+  }
+  return `
+    ${renderAvatar(review.editorialCommunityAvatar)}
+    <div class="article-feed__item_body" data-behaviour="collapse_to_teaser">
+      ${eventMetadata}
+      <div class="hidden" data-teaser>
+        ${teaserText}
+      </div>
+      <div data-full-text>
+        ${fullText}
+        ${sourceLink}
+      </div>
+    </div>
+  `;
 };
