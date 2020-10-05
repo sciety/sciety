@@ -6,7 +6,7 @@ export type RenderPageError = {
   content: string,
 };
 
-type Component = (doi: Doi) => Promise<Result<string, 'not-found' | 'unavailable' | 'no-content'>>;
+export type Component = (doi: Doi) => Promise<Result<string, 'not-found' | 'unavailable' | 'no-content'>>;
 type RenderPage = (doi: Doi) => Promise<Result<string, RenderPageError>>;
 
 export default (

@@ -69,6 +69,9 @@ export default (ports: Ports): RenderPage => {
     renderAbstract,
     renderFeed,
   );
+  const renderFlavourA = createRenderFlavourA(
+    renderPageHeader,
+  );
   return async (params) => {
     let doi: Doi;
     try {
@@ -80,7 +83,6 @@ export default (ports: Ports): RenderPage => {
       });
     }
     if (doi.value === '10.1101/646810' && params.flavour === 'a') {
-      const renderFlavourA = createRenderFlavourA();
       return Result.ok(await renderFlavourA(doi));
     }
     return renderPage(doi);
