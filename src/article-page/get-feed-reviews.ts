@@ -22,29 +22,16 @@ export default (
   getFeedEvents: GetFeedEvents,
   getReview: GetReview,
   getEditorialCommunity: GetEditorialCommunity,
-) : GetReviews => {
-  const getReviewFullTextAndSource = async (
-    reviewId: ReviewId,
-  ): Promise<{
-    fullText: Maybe<string>,
-    source: URL,
-  }> => {
-    const review = await getReview(reviewId);
-    return {
-      fullText: review.fullText,
-      source: review.url,
-    };
-  };
-
-  return async (doi) => (
+) : GetReviews => (
+  async (doi) => (
     Promise.all((await getFeedEvents(doi)).map(async (feedEvent) => {
       const [editorialCommunity, review] = await Promise.all([
         getEditorialCommunity(feedEvent.editorialCommunityId),
-        getReviewFullTextAndSource(feedEvent.reviewId),
+        getReview(feedEvent.reviewId),
       ]);
 
       return {
-        source: review.source,
+        source: review.url,
         occurredAt: feedEvent.occurredAt,
         editorialCommunityId: feedEvent.editorialCommunityId,
         editorialCommunityName: editorialCommunity.name,
@@ -52,5 +39,5 @@ export default (
         fullText: review.fullText,
       };
     }))
-  );
-};
+  )
+);
