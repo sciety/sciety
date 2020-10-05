@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import createEditorialCommunities from '../../src/infrastructure/in-memory-editorial-communities';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
 import EditorialCommunityRepository from '../../src/types/editorial-community-repository';
@@ -13,7 +14,7 @@ describe('in-memory-editorial-communities', () => {
     await repository.add({
       id: editorialCommunityId,
       name: 'My pals',
-      avatarUrl: 'https://example.com/images/2',
+      avatar: new URL('https://example.com/images/2'),
       descriptionPath: '/static/desc.md',
     });
   });

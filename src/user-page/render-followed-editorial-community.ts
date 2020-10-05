@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import { Maybe } from 'true-myth';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { UserId } from '../types/user-id';
@@ -12,7 +13,7 @@ type RenderFollowToggle = (userId: Maybe<UserId>, editorialcommunityid: Editoria
 interface EditorialCommunity {
   id: EditorialCommunityId;
   name: string;
-  avatarUrl: string;
+  avatar: URL;
 }
 
 export default (
@@ -20,7 +21,7 @@ export default (
 ): RenderFollowedEditorialCommunity => (
   async (editorialCommunity, userId) => `
     <div class="label">
-      <img src="${editorialCommunity.avatarUrl}" alt="">
+      <img src="${editorialCommunity.avatar.toString()}" alt="">
     </div>
     <div class="content">
       <div class="summary">

@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
 import userId from '../../src/types/user-id';
 import createGetFollowedEditorialCommunitiesFromIds, { GetEditorialCommunity, GetFollowedEditorialCommunityIds } from '../../src/user-page/get-followed-editorial-communities-from-ids';
@@ -11,7 +12,7 @@ describe('get-followed-editorial-communities-from-ids adapter', () => {
     ];
     const getEditorialCommunity: GetEditorialCommunity = async () => ({
       name: 'Name',
-      avatarUrl: 'http://example.com/avatar.png',
+      avatar: new URL('http://example.com/avatar.png'),
     });
     const adapter = createGetFollowedEditorialCommunitiesFromIds(
       getFollowedEditorialCommunityIds,

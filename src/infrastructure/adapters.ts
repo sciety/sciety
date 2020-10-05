@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import { Maybe } from 'true-myth';
 import { CommitEvents } from './commit-events';
 import { EventSourcedFollowListRepository } from './event-sourced-follow-list-repository';
@@ -16,7 +17,7 @@ import EndorsementsRepository from '../types/endorsements-repository';
 
 type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => Promise<Maybe<{
   name: string;
-  avatarUrl: string;
+  avatar: URL;
   descriptionPath: string;
 }>>;
 

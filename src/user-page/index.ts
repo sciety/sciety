@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import { Maybe, Result } from 'true-myth';
 import createGetFollowedEditorialCommunitiesFromIds, { GetEditorialCommunity } from './get-followed-editorial-communities-from-ids';
 import createProjectFollowedEditorialCommunityIds, { GetAllEvents } from './project-followed-editorial-community-ids';
@@ -12,7 +13,7 @@ import toUserId from '../types/user-id';
 
 type FetchEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => Promise<Maybe<{
   name: string;
-  avatarUrl: string;
+  avatar: URL;
 }>>;
 
 type Ports = {

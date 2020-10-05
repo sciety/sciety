@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import { Maybe } from 'true-myth';
 import createGetMostRecentEvents, { GetAllEvents } from './get-most-recent-events';
 import createProjectIsFollowingSomething from './project-is-following-something';
@@ -16,7 +17,7 @@ import { UserId } from '../types/user-id';
 
 type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => Promise<Maybe<{
   name: string;
-  avatarUrl: string;
+  avatar: URL;
 }>>;
 
 interface Ports {
@@ -39,7 +40,7 @@ export default (ports: Ports): RenderPage => {
     const editorialCommunity = (await ports.getEditorialCommunity(id)).unsafelyUnwrap();
     return {
       name: editorialCommunity.name,
-      imageUrl: editorialCommunity.avatarUrl,
+      imageUrl: editorialCommunity.avatar.toString(),
       url: `/editorial-communities/${id.value}`,
     };
   };

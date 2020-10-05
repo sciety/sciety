@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import createRenderHeader, { GetEditorialCommunity } from '../../src/editorial-community-page/render-page-header';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
 
@@ -6,7 +7,7 @@ describe('create render page', (): void => {
     it('renders the community name', async (): Promise<void> => {
       const getCommunity: GetEditorialCommunity = async () => ({
         name: 'My Community',
-        avatarUrl: 'http://example.com',
+        avatar: new URL('http://example.com'),
       });
       const renderHeader = createRenderHeader(getCommunity);
       const rendered = await renderHeader(new EditorialCommunityId('arbitrary-id'));

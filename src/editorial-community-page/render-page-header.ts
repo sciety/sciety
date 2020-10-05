@@ -1,10 +1,11 @@
+import { URL } from 'url';
 import EditorialCommunityId from '../types/editorial-community-id';
 
 export type RenderPageHeader = (editorialCommunityId: EditorialCommunityId) => Promise<string>;
 
 export type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => Promise<{
   name: string;
-  avatarUrl: string;
+  avatar: URL;
 }>;
 
 export default (
@@ -16,7 +17,7 @@ export default (
     return `
       <header class="ui basic padded vertical segment">
         <h1>
-          <img src="${editorialCommunity.avatarUrl}" alt="" class="ui avatar image">
+          <img src="${editorialCommunity.avatar.toString()}" alt="" class="ui avatar image">
           ${editorialCommunity.name}
         </h1>
       </header>

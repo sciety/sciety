@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import { Maybe, Result } from 'true-myth';
 import { RenderFollowedEditorialCommunity } from './render-followed-editorial-community';
 import templateListItems from '../templates/list-items';
@@ -9,7 +10,7 @@ type RenderFollowList = (userId: UserId, viewingUserId: Maybe<UserId>) => Promis
 export type GetFollowedEditorialCommunities = (userId: UserId) => Promise<ReadonlyArray<{
   id: EditorialCommunityId,
   name: string,
-  avatarUrl: string,
+  avatar: URL,
 }>>;
 
 export default (

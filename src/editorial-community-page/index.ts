@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import { NotFound } from 'http-errors';
 import showdown from 'showdown';
 import { Maybe, Result } from 'true-myth';
@@ -31,7 +32,7 @@ type FetchStaticFile = (filename: string) => Promise<string>;
 
 type FetchEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => Promise<Maybe<{
   name: string;
-  avatarUrl: string;
+  avatar: URL;
   descriptionPath: string;
 }>>;
 
@@ -99,7 +100,7 @@ const buildRenderFeed = (ports: Ports): RenderFeed => {
     const editorialCommunity = (await ports.getEditorialCommunity(id)).unsafelyUnwrap();
     return {
       name: editorialCommunity.name,
-      imageUrl: editorialCommunity.avatarUrl,
+      imageUrl: editorialCommunity.avatar.toString(),
       url: `/editorial-communities/${id.value}`,
     };
   };

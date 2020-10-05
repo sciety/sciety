@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import { GetFollowedEditorialCommunities } from './render-follow-list';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { UserId } from '../types/user-id';
@@ -6,7 +7,7 @@ export type GetFollowedEditorialCommunityIds = (userId: UserId) => Promise<Reado
 
 export type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => Promise<{
   name: string,
-  avatarUrl: string,
+  avatar: URL,
 }>;
 
 export default (

@@ -27,7 +27,7 @@ interface Ports {
   fetchReview: GetReview;
   getEditorialCommunity: (editorialCommunityId: EditorialCommunityId) => Promise<Maybe<{
     name: string;
-    avatarUrl: string;
+    avatar: URL;
   }>>,
   findReviewsForArticleVersionDoi: FindReviewsForArticleVersionDoi;
   logger: Logger;
@@ -55,14 +55,9 @@ type RenderPage = (params: Params) => Promise<Result<string, RenderPageError>>;
 export default (ports: Ports): RenderPage => {
   const renderPageHeader = buildRenderPageHeader(ports);
   const renderAbstract = buildRenderAbstract(ports.fetchArticle);
-  const getEditorialCommunity: GetEditorialCommunity = async (editorialCommunityId) => {
-    const editorialCommunity = (await ports.getEditorialCommunity(editorialCommunityId)).unsafelyUnwrap();
-
-    return {
-      ...editorialCommunity,
-      avatar: new URL(editorialCommunity.avatarUrl),
-    };
-  };
+  const getEditorialCommunity: GetEditorialCommunity = async (editorialCommunityId) => (
+    (await ports.getEditorialCommunity(editorialCommunityId)).unsafelyUnwrap()
+  );
   const getReviews = createGetFeedReviews(
     ports.findReviewsForArticleVersionDoi,
     ports.fetchReview,
