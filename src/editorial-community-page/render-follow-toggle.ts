@@ -19,7 +19,7 @@ export default (follows: Follows): RenderFollowToggle => (
       return `
         <form method="post" action="/unfollow" class="follow-toggle">
           <input type="hidden" name="editorialcommunityid" value="${editorialCommunityId.value}">
-          <button type="submit" class="button">Unfollow</button>
+          <button type="submit" class="button button--small">Unfollow</button>
         </form>
       `;
     }
@@ -27,7 +27,7 @@ export default (follows: Follows): RenderFollowToggle => (
     return `
       <form method="post" action="/follow" class="follow-toggle">
         <input type="hidden" name="editorialcommunityid" value="${editorialCommunityId.value}">
-        <button type="submit" class="button button--primary">Follow</button>
+        <button type="submit" class="button button--primary button--small">Follow</button>
       </form>
     `;
   }

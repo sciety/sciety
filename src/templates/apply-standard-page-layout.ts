@@ -61,7 +61,7 @@ export default (page: string, user: Maybe<User>): string => `<!doctype html>
         ${user.mapOrElse(loggedOutMenuItems, loggedInMenuItems)}
 
         <li class="right item">
-          <a href="https://eepurl.com/g7qqcv" class="ui primary button">Give us feedback</a>
+          <a href="https://eepurl.com/g7qqcv" class="button button--primary">Give us feedback</a>
         </li>
 
       </ul>

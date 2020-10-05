@@ -21,7 +21,7 @@ export default (
       return `
         <form method="post" action="/unfollow">
           <input type="hidden" name="editorialcommunityid" value="${editorialCommunityId.value}">
-          <button type="submit" class="button">Unfollow</button>
+          <button type="submit" class="button button--small">Unfollow</button>
         </form>
       `;
     }
@@ -29,7 +29,7 @@ export default (
     return `
       <form method="post" action="/follow">
         <input type="hidden" name="editorialcommunityid" value="${editorialCommunityId.value}">
-        <button type="submit" class="button button--primary">Follow</button>
+        <button type="submit" class="button button--primary button--small">Follow</button>
       </form>
     `;
   }
