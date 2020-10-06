@@ -47,6 +47,10 @@ Make sure that links inside a .ui.menu that use <ol> or <ul> retain the intended
   background-color: var(--COLOUR-PRIMARY-HOVER);
 }
 
+.ui.items > .item > .content > a.header:hover {
+  color: var(--COLOUR-PRIMARY-HOVER);
+}
+
 /*
 Use real subscript and superscript characters where possible
 */
