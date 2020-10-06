@@ -28,7 +28,7 @@ describe('render-feed', (): void => {
         );
         const rendered = JSDOM.fragment(await renderFeed(Maybe.just(toUserId('1111'))));
 
-        expect(rendered.querySelector('.ui.feed')?.tagName).toBe('OL');
+        expect(rendered.querySelector('.home-page-feed')?.tagName).toBe('OL');
       });
 
       describe('when given three feed items', () => {
