@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import { Result } from 'true-myth';
 import { RenderReviewFeedItem, Review } from './render-review-feed-item';
 import { ArticleVersionFeedItem, RenderVersionFeedItem } from './render-version-feed-item';
@@ -31,14 +30,6 @@ export default (
     }
     return renderReviewFeedItem(feedItem);
   });
-
-  if (doi.value === '10.1101/646810') {
-    items.push(renderVersionFeedItem({
-      source: new URL('https://www.biorxiv.org/content/10.1101/646810v1?versioned=true'),
-      postedAt: new Date('2019-05-24'),
-      version: 1,
-    }));
-  }
 
   return Result.ok(`
     <section>
