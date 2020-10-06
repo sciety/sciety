@@ -10,3 +10,5 @@
 /LICENSE.md
 /Makefile
 /README.md
+/static/*.css
+/static/*.css.map
