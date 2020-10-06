@@ -169,7 +169,6 @@ Styles that are independent of Semantic UI
 }
 
 :root {
-  --BASE-FONT-MEASURE: 16;
   --BASE-FONT-PX: calc(var(--BASE-FONT-MEASURE) * 1px);
   --BASE-FONT-REM: 1rem;
   --VERTICAL-INCREMENT: calc(var(--BASE-FONT-REM) / 2);

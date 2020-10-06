@@ -91,7 +91,7 @@
     "lint:typescript:prod": "tsc --noEmit",
     "lint:unused-exports": "ts-unused-exports tsconfig.dev.json",
     "start": "node ./build/index.js",
-    "start:dev": "ts-node-dev --project tsconfig.dev.json --transpile-only --watch data ./src/index.ts",
+    "start:dev": "node_modules/.bin/sass src/sass/sizes.scss static/sizes.css && ts-node-dev --project tsconfig.dev.json --transpile-only --watch data ./src/index.ts",
     "test": "jest --colors",
     "test:coverage": "jest --colors --coverage"
   }
