@@ -176,8 +176,8 @@ Styles that are independent of Semantic UI
   --SIX-INCREMENTS: calc(var(--VERTICAL-INCREMENT) * 6);
   --MAX-SITE-WIDTH: 1200;
   --MAX-SITE-WIDTH-REM: calc((var(--MAX-SITE-WIDTH) / var(--BASE-FONT-MEASURE)) * 1rem);
-  --COLOUR-PRIMARY: #00796b;
-  --COLOUR-PRIMARY-HOVER: black;
+  --COLOUR-PRIMARY: rgb(0,121,107);
+  --COLOUR-PRIMARY-HOVER: rgb(3,89,79);
   --COLOUR-GREY-ONE: #e0e1e2;
   --COLOUR-GREY-ONE-HOVER: #cacbce;
   --COLOUR-GREY-TWO: #5a5a5a;
@@ -266,6 +266,10 @@ h6 {
 
 a {
   color: var(--COLOUR-PRIMARY);
+}
+
+a:hover {
+  color: var(--COLOUR-PRIMARY-HOVER);
 }
 
 .feed__image {
@@ -438,6 +442,10 @@ p.article-feed__item__title {
   background: none;
   border: none;
   cursor: pointer;
+}
+
+.article-feed__item-toggle:hover {
+  color: var(--COLOUR-PRIMARY-HOVER);
 }
 
 .user-page-header {
