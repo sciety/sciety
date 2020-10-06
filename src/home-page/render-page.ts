@@ -11,20 +11,17 @@ export default (
   renderFindArticle: Component,
   renderFeed: Component,
 ): RenderPage => async (userId) => `
-      <div class="ui aligned stackable grid">
-        <div class="row">
-          <div class="column">
-            ${await renderPageHeader(userId)}
-          </div>
-        </div>
-        <div class="row">
-          <section class="ten wide column">
-            ${await renderFeed(userId)}
-          </section>
-          <section class="four wide right floated column">
-            ${await renderFindArticle(userId)}
-            ${await renderEditorialCommunities(userId)}
-          </section>
-        </div>
+      <div class="hive-grid hive-grid--home u-full-width">
+        ${await renderPageHeader(userId)}
+
+        <section class="home-page-feed-container">
+          ${await renderFeed(userId)}
+        </section>
+
+        <section class="home-page-side-bar">
+          ${await renderFindArticle(userId)}
+          ${await renderEditorialCommunities(userId)}
+        </section>
+
       </div>
     `;

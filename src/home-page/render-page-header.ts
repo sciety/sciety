@@ -2,7 +2,7 @@ type RenderPageHeader = () => Promise<string>;
 
 export default (): RenderPageHeader => (
   async () => (`
-    <header class="ui basic padded center aligned vertical segment">
+    <header class="home-page-header">
 
       <h1>
         The Hive
