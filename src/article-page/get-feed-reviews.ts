@@ -1,6 +1,6 @@
 import { URL } from 'url';
 import { Maybe } from 'true-myth';
-import { GetReviews } from './render-feed';
+import { GetFeedItems } from './render-feed';
 import { ReviewFeedItem } from './render-review-feed-item';
 import { ArticleVersionFeedItem } from './render-version-feed-item';
 import Doi from '../types/doi';
@@ -24,7 +24,7 @@ export default (
   getFeedEvents: GetFeedEvents,
   getReview: GetReview,
   getEditorialCommunity: GetEditorialCommunity,
-) : GetReviews => (
+) : GetFeedItems => (
   async (doi) => {
     const feedItems: Array<Promise<ReviewFeedItem|ArticleVersionFeedItem>> = (await getFeedEvents(doi)).map(
       async (feedEvent) => {

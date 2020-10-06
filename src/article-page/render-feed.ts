@@ -6,10 +6,10 @@ import Doi from '../types/doi';
 
 type RenderFeed = (doi: Doi) => Promise<Result<string, 'no-content'>>;
 
-export type GetReviews = (doi: Doi) => Promise<ReadonlyArray<ReviewFeedItem|ArticleVersionFeedItem>>;
+export type GetFeedItems = (doi: Doi) => Promise<ReadonlyArray<ReviewFeedItem|ArticleVersionFeedItem>>;
 
 export default (
-  getFeedItems: GetReviews,
+  getFeedItems: GetFeedItems,
   renderReviewFeedItem: RenderReviewFeedItem,
   renderVersionFeedItem: RenderVersionFeedItem,
 ): RenderFeed => async (doi) => {
