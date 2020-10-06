@@ -7,7 +7,7 @@ import createRenderFeed from './render-feed';
 import createRenderFlavourAFeed from './render-flavour-a-feed';
 import createRenderPage, { RenderPageError } from './render-page';
 import createRenderPageHeader, { RenderPageHeader } from './render-page-header';
-import createRenderReviewedEvent from './render-reviewed-event';
+import createRenderReviewedEvent from './render-review-feed-item';
 import createRenderVersionFeedItem from './render-version-feed-item';
 import { Logger } from '../infrastructure/logger';
 import Doi from '../types/doi';

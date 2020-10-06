@@ -1,6 +1,6 @@
 import { URL } from 'url';
 import { Result } from 'true-myth';
-import { RenderReviewedEvent, Review } from './render-reviewed-event';
+import { RenderReviewFeedItem, Review } from './render-review-feed-item';
 import { ArticleVersionFeedItem, RenderVersionFeedItem } from './render-version-feed-item';
 import renderListItems from '../templates/list-items';
 import Doi from '../types/doi';
@@ -11,7 +11,7 @@ export type GetReviews = (doi: Doi) => Promise<ReadonlyArray<Review|ArticleVersi
 
 export default (
   getFeedItems: GetReviews,
-  renderReviewedEvent: RenderReviewedEvent,
+  renderReviewFeedItem: RenderReviewFeedItem,
   renderVersionFeedItem: RenderVersionFeedItem,
 ): RenderFeed => async (doi) => {
   const feedItems = await getFeedItems(doi);
@@ -29,7 +29,7 @@ export default (
     if (isArticleVersionFeedItem(feedItem)) {
       return renderVersionFeedItem(feedItem);
     }
-    return renderReviewedEvent(feedItem);
+    return renderReviewFeedItem(feedItem);
   });
 
   if (doi.value === '10.1101/646810') {

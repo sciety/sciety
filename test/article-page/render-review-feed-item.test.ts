@@ -1,7 +1,7 @@
 import { URL } from 'url';
 import { JSDOM } from 'jsdom';
 import { Maybe } from 'true-myth';
-import createRenderReviewedEvent from '../../src/article-page/render-reviewed-event';
+import createRenderReviewedEvent from '../../src/article-page/render-review-feed-item';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
 
 describe('render-reviewed-event', () => {
