@@ -7,11 +7,24 @@ import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { ReviewId } from '../types/review-id';
 
-export type GetFeedEvents = (articleDoi: Doi) => Promise<ReadonlyArray<{
+type ReviewEvent = {
   editorialCommunityId: EditorialCommunityId;
   reviewId: ReviewId;
   occurredAt: Date;
-}>>;
+};
+
+type ArticleVersionEvent = {
+  source: URL;
+  postedAt: Date;
+  version: number;
+};
+
+const isArticleVersionEvent = (event: ReviewEvent|ArticleVersionEvent):
+  event is ArticleVersionEvent => (
+  Object.prototype.hasOwnProperty.call(event, 'postedAt')
+);
+
+export type GetFeedEvents = (articleDoi: Doi) => Promise<ReadonlyArray<ReviewEvent|ArticleVersionEvent>>;
 
 export type GetReview = (id: ReviewId) => Promise<{
   fullText: Maybe<string>;
@@ -28,6 +41,9 @@ export default (
   async (doi) => {
     const feedItems: Array<Promise<ReviewFeedItem|ArticleVersionFeedItem>> = (await getFeedEvents(doi)).map(
       async (feedEvent) => {
+        if (isArticleVersionEvent(feedEvent)) {
+          return feedEvent;
+        }
         const [editorialCommunity, review] = await Promise.all([
           getEditorialCommunity(feedEvent.editorialCommunityId),
           getReview(feedEvent.reviewId),
