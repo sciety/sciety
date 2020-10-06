@@ -433,7 +433,7 @@ p.article-feed__item__title {
   position: absolute;
   top: calc(24 / var(--BASE-FONT-MEASURE) * 1rem);
   right: 0;
-  color: rgb(61, 131, 196);
+  color: var(--COLOUR-PRIMARY);
   outline-width: 0;
   background: none;
   border: none;
