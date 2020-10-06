@@ -63,8 +63,8 @@ export default (ports: Ports): RenderPage => {
 
       if (doi.value === '10.1101/646810') {
         feedEvents.push({
-          source: new URL('https://www.biorxiv.org/content/10.1101/646810v1?versioned=true'),
-          postedAt: new Date('2019-05-24'),
+          source: new URL(`https://www.biorxiv.org/content/${doi.value}v1?versioned=true`),
+          postedAt: (await ports.fetchArticle(doi)).unsafelyUnwrap().publicationDate,
           version: 1,
         });
       }
