@@ -43,8 +43,8 @@ export default (
       if (events.length > 0) {
         const feedItems = await Promise.all(events.map(renderFeedItem));
         contents = `
-          <ol class="ui large feed" role="list">
-            ${templateListItems(feedItems, 'event')}
+          <ol class="home-page-feed" role="list">
+            ${templateListItems(feedItems, 'home-page-feed__item')}
           </ol>
         `;
       } else {

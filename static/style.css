@@ -325,6 +325,41 @@ a:hover {
   }
 }
 
+/* Home page feed */
+
+.home-page-feed {
+  padding-left: 0;
+}
+
+.home-page-feed__item {
+  display: block;
+  margin-bottom: var(--FOUR-INCREMENTS);
+}
+
+@media screen and (min-width: 46.25em) {
+  .home-page-feed__item {
+    display: flex;
+  }
+}
+
+.home-page-feed__item__avatar {
+  width: 47px;
+  height: 47px;
+  border: 1px solid #eee;
+  border-radius: 50%;
+  flex: 0 0 47px;
+  margin-right: 1.5rem;
+}
+
+.home-page-feed__item__date {
+  font-family: Lato, sans-serif;
+}
+
+.home-page-feed__item__title {
+  font-family: Lato, sans-serif;
+  font-size: 1.5rem;
+  margin-bottom: var(--TWO-INCREMENTS);
+}
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 article-page, flavor A, feed-item
