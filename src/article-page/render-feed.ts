@@ -1,12 +1,12 @@
 import { Result } from 'true-myth';
-import { RenderReviewFeedItem, Review } from './render-review-feed-item';
+import { RenderReviewFeedItem, ReviewFeedItem } from './render-review-feed-item';
 import { ArticleVersionFeedItem, RenderVersionFeedItem } from './render-version-feed-item';
 import renderListItems from '../templates/list-items';
 import Doi from '../types/doi';
 
 type RenderFeed = (doi: Doi) => Promise<Result<string, 'no-content'>>;
 
-export type GetReviews = (doi: Doi) => Promise<ReadonlyArray<Review|ArticleVersionFeedItem>>;
+export type GetReviews = (doi: Doi) => Promise<ReadonlyArray<ReviewFeedItem|ArticleVersionFeedItem>>;
 
 export default (
   getFeedItems: GetReviews,
@@ -19,7 +19,7 @@ export default (
     return Result.err('no-content');
   }
 
-  const isArticleVersionFeedItem = (feedItem: Review|ArticleVersionFeedItem):
+  const isArticleVersionFeedItem = (feedItem: ReviewFeedItem|ArticleVersionFeedItem):
     feedItem is ArticleVersionFeedItem => (
     Object.prototype.hasOwnProperty.call(feedItem, 'postedAt')
   );

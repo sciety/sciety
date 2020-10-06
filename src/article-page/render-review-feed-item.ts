@@ -4,9 +4,9 @@ import { Maybe } from 'true-myth';
 import templateDate from '../templates/date';
 import EditorialCommunityId from '../types/editorial-community-id';
 
-export type RenderReviewFeedItem = (review: Review) => string;
+export type RenderReviewFeedItem = (review: ReviewFeedItem) => string;
 
-export type Review = {
+export type ReviewFeedItem = {
   source: URL;
   occurredAt: Date;
   editorialCommunityId: EditorialCommunityId;
@@ -21,7 +21,7 @@ const renderAvatar = (url: URL): string => `
 
 export default (
   teaserChars: number,
-): RenderReviewFeedItem => (review: Review): string => {
+): RenderReviewFeedItem => (review: ReviewFeedItem): string => {
   const eventMetadata = `
     ${templateDate(review.occurredAt, 'article-feed__item__date')}
     <div class="article-feed__item__title">
