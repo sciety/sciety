@@ -1,7 +1,7 @@
 import { URL } from 'url';
 import { Maybe, Result } from 'true-myth';
 import ensureBiorxivDoi from './ensure-biorxiv-doi';
-import createGetFeedReviews, { GetEditorialCommunity, GetReview } from './get-feed-reviews';
+import createGetFeedReviews, { FeedEvent, GetEditorialCommunity, GetReview } from './get-feed-reviews';
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
 import createRenderFeed from './render-feed';
 import createRenderFlavourAFeed from './render-flavour-a-feed';
@@ -58,7 +58,19 @@ export default (ports: Ports): RenderPage => {
     (await ports.getEditorialCommunity(editorialCommunityId)).unsafelyUnwrap()
   );
   const getReviews = createGetFeedReviews(
-    ports.findReviewsForArticleVersionDoi,
+    async (doi: Doi) => {
+      const feedEvents: Array<FeedEvent> = Array.from(await ports.findReviewsForArticleVersionDoi(doi));
+
+      if (doi.value === '10.1101/646810') {
+        feedEvents.push({
+          source: new URL('https://www.biorxiv.org/content/10.1101/646810v1?versioned=true'),
+          postedAt: new Date('2019-05-24'),
+          version: 1,
+        });
+      }
+
+      return feedEvents;
+    },
     ports.fetchReview,
     getEditorialCommunity,
   );

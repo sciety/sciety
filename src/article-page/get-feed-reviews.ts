@@ -19,6 +19,8 @@ type ArticleVersionEvent = {
   version: number;
 };
 
+export type FeedEvent = ReviewEvent|ArticleVersionEvent;
+
 const isArticleVersionEvent = (event: ReviewEvent|ArticleVersionEvent):
   event is ArticleVersionEvent => (
   Object.prototype.hasOwnProperty.call(event, 'postedAt')
@@ -60,13 +62,6 @@ export default (
       },
     );
 
-    if (doi.value === '10.1101/646810') {
-      feedItems.push(Promise.resolve({
-        source: new URL('https://www.biorxiv.org/content/10.1101/646810v1?versioned=true'),
-        postedAt: new Date('2019-05-24'),
-        version: 1,
-      }));
-    }
     return Promise.all(feedItems);
   }
 );
