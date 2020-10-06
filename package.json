@@ -84,6 +84,7 @@
   },
   "scripts": {
     "build": "tsc",
+    "build:css": "node_modules/.bin/sass src/sass/sizes.scss static/sizes.css",
     "lint": "run-p --aggregate-output --continue-on-error --print-label --silent lint:**",
     "lint:eslint": "eslint ${ESLINT:-} . --ext .js,.ts --cache --cache-location .eslint/ --color",
     "lint:typescript:dev": "tsc --project tsconfig.dev.json",

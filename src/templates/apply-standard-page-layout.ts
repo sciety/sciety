@@ -41,6 +41,7 @@ export default (page: string, user: Maybe<User>): string => `<!doctype html>
   <title>
     The Hive
   </title>
+  <link rel="stylesheet" href="/static/sizes.css">
   <link rel="stylesheet" href="/static/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.css">
 
