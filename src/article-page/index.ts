@@ -1,7 +1,8 @@
 import { URL } from 'url';
 import { Maybe, Result } from 'true-myth';
+import createAddHardcodedBiorxivVersion1Event from './add-hardcoded-biorxiv-version-1-event';
 import ensureBiorxivDoi from './ensure-biorxiv-doi';
-import createGetFeedReviews, { FeedEvent, GetEditorialCommunity, GetReview } from './get-feed-reviews';
+import createGetFeedReviews, { GetEditorialCommunity, GetReview } from './get-feed-reviews';
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
 import createRenderFeed from './render-feed';
 import createRenderFlavourAFeed from './render-flavour-a-feed';
@@ -58,19 +59,10 @@ export default (ports: Ports): RenderPage => {
     (await ports.getEditorialCommunity(editorialCommunityId)).unsafelyUnwrap()
   );
   const getReviews = createGetFeedReviews(
-    async (doi: Doi) => {
-      const feedEvents: Array<FeedEvent> = Array.from(await ports.findReviewsForArticleVersionDoi(doi));
-
-      if (doi.value === '10.1101/646810') {
-        feedEvents.push({
-          source: new URL(`https://www.biorxiv.org/content/${doi.value}v1?versioned=true`),
-          postedAt: (await ports.fetchArticle(doi)).unsafelyUnwrap().publicationDate,
-          version: 1,
-        });
-      }
-
-      return feedEvents;
-    },
+    createAddHardcodedBiorxivVersion1Event(
+      ports.findReviewsForArticleVersionDoi,
+      ports.fetchArticle,
+    ),
     ports.fetchReview,
     getEditorialCommunity,
   );
