@@ -353,6 +353,7 @@ a:hover {
 
 .home-page-feed__item__date {
   font-family: Lato, sans-serif;
+  color: var(--COLOUR-GREY-TWO);
 }
 
 .home-page-feed__item__title {
@@ -389,6 +390,7 @@ article-page, flavor A, feed-item
 
 .article-feed__item__date {
   font-family: Lato, sans-serif;
+  color: var(--COLOUR-GREY-TWO);
 }
 
 .article-feed p:last-child {
