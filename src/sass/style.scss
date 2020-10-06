@@ -1,3 +1,4 @@
+@use "sizes";
 @import "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css";
 
 /* Hive imports, not Semantic-UI */
@@ -169,7 +170,7 @@ Styles that are independent of Semantic UI
 }
 
 :root {
-  --BASE-FONT-MEASURE: 16;
+  --BASE-FONT-MEASURE: #{sizes.$base-font-measure};
   --BASE-FONT-PX: calc(var(--BASE-FONT-MEASURE) * 1px);
   --BASE-FONT-REM: 1rem;
   --VERTICAL-INCREMENT: calc(var(--BASE-FONT-REM) / 2);
