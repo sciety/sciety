@@ -10,7 +10,7 @@ export default (): RenderFindArticle => (
         </h3>
 
         <div class="search-form__inputs">
-          <input type="text" name="query" placeholder="Keywords, author name, DOI ..." class="search-form__input" required><button type="submit" class="button button--primary search-form__button"><img src="/static/images/search-icon.svg" alt=""></button>
+          <input type="text" size="19" name="query" placeholder="Keywords, author name, DOI ..." class="search-form__input" required><button type="submit" class="button button--primary search-form__button"><img src="/static/images/search-icon.svg" alt=""></button>
         </div>
 
       </form>

@@ -584,6 +584,7 @@ p.article-feed__item__title {
   padding: calc((13 / var(--BASE-FONT-MEASURE)) * 1rem) calc((25 / var(--BASE-FONT-MEASURE)) * 1rem);
   flex: 1 1 calc((80 / var(--BASE-FONT-MEASURE)) * 1rem);
   min-width: calc((80 / var(--BASE-FONT-MEASURE)) * 1rem);
+  width: 100%;
 }
 
 .search-form__input:focus {
