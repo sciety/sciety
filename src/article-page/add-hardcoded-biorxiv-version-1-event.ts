@@ -14,13 +14,11 @@ export default (
   async (doi) => {
     const feedEvents: Array<FeedEvent> = Array.from(await getFeedEvents(doi));
 
-    if (doi.value === '10.1101/646810') {
-      feedEvents.push({
-        source: new URL(`https://www.biorxiv.org/content/${doi.value}v1?versioned=true`),
-        postedAt: (await fetchArticle(doi)).unsafelyUnwrap().publicationDate,
-        version: 1,
-      });
-    }
+    feedEvents.push({
+      source: new URL(`https://www.biorxiv.org/content/${doi.value}v1?versioned=true`),
+      postedAt: (await fetchArticle(doi)).unsafelyUnwrap().publicationDate,
+      version: 1,
+    });
 
     return feedEvents;
   }
