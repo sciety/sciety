@@ -1,6 +1,6 @@
 import { URL } from 'url';
 import { Result } from 'true-myth';
-import { FeedEvent, GetFeedEvents } from './get-feed-events-content';
+import { GetFeedEvents } from './get-feed-events-content';
 import Doi from '../types/doi';
 
 type FetchArticle = (doi: Doi) => Promise<Result<{
@@ -12,7 +12,7 @@ export default (
   fetchArticle: FetchArticle,
 ): GetFeedEvents => (
   async (doi) => {
-    const feedEvents: Array<FeedEvent> = Array.from(await getFeedEvents(doi));
+    const feedEvents = Array.from(await getFeedEvents(doi));
 
     feedEvents.push({
       source: new URL(`https://www.biorxiv.org/content/${doi.value}v1?versioned=true`),
