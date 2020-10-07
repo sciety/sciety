@@ -19,14 +19,14 @@ type ArticleVersionEvent = {
   version: number;
 };
 
-export type FeedEvent = ReviewEvent|ArticleVersionEvent;
+type FeedEvent = ReviewEvent | ArticleVersionEvent;
 
-const isArticleVersionEvent = (event: ReviewEvent|ArticleVersionEvent):
+const isArticleVersionEvent = (event: FeedEvent):
   event is ArticleVersionEvent => (
   Object.prototype.hasOwnProperty.call(event, 'postedAt')
 );
 
-export type GetFeedEvents = (articleDoi: Doi) => Promise<ReadonlyArray<ReviewEvent|ArticleVersionEvent>>;
+export type GetFeedEvents = (articleDoi: Doi) => Promise<ReadonlyArray<FeedEvent>>;
 
 export type GetReview = (id: ReviewId) => Promise<{
   fullText: Maybe<string>;
