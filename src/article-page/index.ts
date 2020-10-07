@@ -1,8 +1,9 @@
 import { URL } from 'url';
 import { Maybe, Result } from 'true-myth';
-import createAddHardcodedBiorxivVersion1Event from './add-hardcoded-biorxiv-version-1-event';
+import createComposeFeedEvents from './compose-feed-events';
 import ensureBiorxivDoi from './ensure-biorxiv-doi';
 import createGetFeedEventsContent, { GetEditorialCommunity, GetReview } from './get-feed-events-content';
+import createGetHardcodedArticleVersionEvents from './get-hardcoded-article-version-events';
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
 import createRenderArticleVersionFeedItem from './render-article-version-feed-item';
 import createRenderFeed from './render-feed';
@@ -59,12 +60,12 @@ export default (ports: Ports): RenderPage => {
     (await ports.getEditorialCommunity(editorialCommunityId)).unsafelyUnwrap()
   );
   const getFeedEventsContent = createGetFeedEventsContent(
-    createAddHardcodedBiorxivVersion1Event(
+    createComposeFeedEvents(
       async (doi) => (await ports.findReviewsForArticleVersionDoi(doi)).map((review) => ({
         type: 'review',
         ...review,
       })),
-      ports.fetchArticle,
+      createGetHardcodedArticleVersionEvents(ports.fetchArticle),
     ),
     ports.fetchReview,
     getEditorialCommunity,

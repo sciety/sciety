@@ -12,7 +12,7 @@ type ReviewEvent = {
   occurredAt: Date;
 };
 
-export type ArticleVersionEvent = {
+type ArticleVersionEvent = {
   type: 'article-version',
   source: URL;
   postedAt: Date;

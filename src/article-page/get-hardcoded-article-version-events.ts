@@ -1,13 +1,13 @@
 import { URL } from 'url';
 import { Result } from 'true-myth';
-import type { GetArticleVersionEvents } from './add-hardcoded-biorxiv-version-1-event';
+import { GetFeedEvents } from './get-feed-events-content';
 import Doi from '../types/doi';
 
 type FetchArticle = (doi: Doi) => Promise<Result<{
   publicationDate: Date;
 }, unknown>>;
 
-export default (fetchArticle: FetchArticle): GetArticleVersionEvents => (
+export default (fetchArticle: FetchArticle): GetFeedEvents => (
   async (doi) => {
     if (doi.value === '10.1101/2020.09.02.278911') {
       return [
