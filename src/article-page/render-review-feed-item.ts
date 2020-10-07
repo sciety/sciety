@@ -7,6 +7,7 @@ import EditorialCommunityId from '../types/editorial-community-id';
 export type RenderReviewFeedItem = (review: ReviewFeedItem) => string;
 
 export type ReviewFeedItem = {
+  type: 'review';
   source: URL;
   occurredAt: Date;
   editorialCommunityId: EditorialCommunityId;

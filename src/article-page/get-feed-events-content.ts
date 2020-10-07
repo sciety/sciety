@@ -1,8 +1,6 @@
 import { URL } from 'url';
 import { Maybe } from 'true-myth';
-import { GetFeedItems } from './render-feed';
-import { ReviewFeedItem } from './render-review-feed-item';
-import { ArticleVersionFeedItem } from './render-version-feed-item';
+import { FeedItem, GetFeedItems } from './render-feed';
 import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { ReviewId } from '../types/review-id';
@@ -41,10 +39,13 @@ export default (
   getEditorialCommunity: GetEditorialCommunity,
 ) : GetFeedItems => (
   async (doi) => {
-    const feedItems: Array<Promise<ReviewFeedItem|ArticleVersionFeedItem>> = (await getFeedEvents(doi)).map(
-      async (feedEvent) => {
+    const feedItems = (await getFeedEvents(doi)).map(
+      async (feedEvent): Promise<FeedItem> => {
         if (isArticleVersionEvent(feedEvent)) {
-          return feedEvent;
+          return {
+            ...feedEvent,
+            type: 'article-version',
+          };
         }
         const [editorialCommunity, review] = await Promise.all([
           getEditorialCommunity(feedEvent.editorialCommunityId),
@@ -52,6 +53,7 @@ export default (
         ]);
 
         return {
+          type: 'review',
           source: review.url,
           occurredAt: feedEvent.occurredAt,
           editorialCommunityId: feedEvent.editorialCommunityId,

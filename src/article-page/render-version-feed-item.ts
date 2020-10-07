@@ -2,6 +2,7 @@ import { URL } from 'url';
 import renderDate from '../templates/date';
 
 export type ArticleVersionFeedItem = {
+  type: 'article-version';
   source: URL;
   postedAt: Date;
   version: number;

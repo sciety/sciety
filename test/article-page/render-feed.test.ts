@@ -25,6 +25,7 @@ describe('render-feed', () => {
       const renderFeed = createRenderFeed(
         async () => [
           {
+            type: 'review',
             source: new URL('http://example.com'),
             occurredAt: new Date(),
             editorialCommunityId: new EditorialCommunityId(''),

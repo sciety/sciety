@@ -6,38 +6,41 @@ import Doi from '../types/doi';
 
 type RenderFeed = (doi: Doi) => Promise<Result<string, 'no-content'>>;
 
-export type GetFeedItems = (doi: Doi) => Promise<ReadonlyArray<ReviewFeedItem|ArticleVersionFeedItem>>;
+export type FeedItem = ReviewFeedItem | ArticleVersionFeedItem;
+
+export type GetFeedItems = (doi: Doi) => Promise<ReadonlyArray<FeedItem>>;
 
 export default (
   getFeedItems: GetFeedItems,
   renderReviewFeedItem: RenderReviewFeedItem,
   renderVersionFeedItem: RenderVersionFeedItem,
-): RenderFeed => async (doi) => {
-  const feedItems = await getFeedItems(doi);
-
-  if (feedItems.length === 0) {
-    return Result.err('no-content');
-  }
-
-  const isArticleVersionFeedItem = (feedItem: ReviewFeedItem|ArticleVersionFeedItem):
-    feedItem is ArticleVersionFeedItem => (
-    Object.prototype.hasOwnProperty.call(feedItem, 'postedAt')
-  );
-
-  const items = feedItems.map((feedItem) => {
-    if (isArticleVersionFeedItem(feedItem)) {
-      return renderVersionFeedItem(feedItem);
+): RenderFeed => {
+  const renderFeedItem = (feedItem: FeedItem): string => {
+    switch (feedItem.type) {
+      case 'article-version':
+        return renderVersionFeedItem(feedItem);
+      case 'review':
+        return renderReviewFeedItem(feedItem);
     }
-    return renderReviewFeedItem(feedItem);
-  });
+  };
 
-  return Result.ok(`
-    <section>
-      <h2>Feed</h2>
+  return async (doi) => {
+    const feedItems = await getFeedItems(doi);
 
-      <ol role="list" class="article-feed">
-        ${renderListItems(items, 'article-feed__item')}
-      </ol>
-    </section>
-  `);
+    if (feedItems.length === 0) {
+      return Result.err('no-content');
+    }
+
+    const items = feedItems.map(renderFeedItem);
+
+    return Result.ok(`
+      <section>
+        <h2>Feed</h2>
+
+        <ol role="list" class="article-feed">
+          ${renderListItems(items, 'article-feed__item')}
+        </ol>
+      </section>
+    `);
+  };
 };

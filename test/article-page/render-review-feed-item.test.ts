@@ -12,6 +12,7 @@ describe('render-reviewed-event', () => {
 
       const rendered = JSDOM.fragment(
         renderReviewedEvent({
+          type: 'review',
           source: new URL('http://example.com'),
           occurredAt: new Date(),
           editorialCommunityId: new EditorialCommunityId('community-1'),
@@ -38,6 +39,7 @@ describe('render-reviewed-event', () => {
 
       const rendered = JSDOM.fragment(
         renderReviewedEvent({
+          type: 'review',
           source: new URL(source),
           occurredAt: new Date(),
           editorialCommunityId: new EditorialCommunityId('community-1'),
@@ -65,6 +67,7 @@ describe('render-reviewed-event', () => {
 
       const rendered = JSDOM.fragment(
         renderReviewedEvent({
+          type: 'review',
           source: new URL(source),
           occurredAt: new Date(),
           editorialCommunityId: new EditorialCommunityId('community-1'),
