@@ -1,11 +1,9 @@
 import { Result } from 'true-myth';
-import templateDate from '../templates/date';
 import Doi from '../types/doi';
 
 interface ArticleDetails {
   title: string;
   authors: Array<string>;
-  publicationDate: Date;
 }
 
 export type GetArticleDetails = (doi: Doi) => Promise<Result<ArticleDetails, 'not-found'|'unavailable'>>;
@@ -28,9 +26,6 @@ export default (
         <ul aria-label="Publication details" class="article-meta-data-list" role="list">
           <li>
             DOI <a href="https://doi.org/${doi.value}">${doi.value}</a>
-          </li>
-          <li>
-            Posted ${templateDate(details.publicationDate)}
           </li>
         </ul>
       </header>
