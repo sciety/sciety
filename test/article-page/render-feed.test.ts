@@ -6,7 +6,7 @@ import EditorialCommunityId from '../../src/types/editorial-community-id';
 import shouldNotBeCalled from '../should-not-be-called';
 
 describe('render-feed', () => {
-  describe('when there are no reviews', () => {
+  describe('when there are no feed items', () => {
     it('displays nothing', async () => {
       const renderFeed = createRenderFeed(
         async () => [],
@@ -20,7 +20,7 @@ describe('render-feed', () => {
     });
   });
 
-  describe('when there are reviews', () => {
+  describe('when there are feed items', () => {
     it('returns a list', async () => {
       const renderFeed = createRenderFeed(
         async () => [
@@ -32,6 +32,12 @@ describe('render-feed', () => {
             editorialCommunityName: '',
             editorialCommunityAvatar: new URL('http://example.com'),
             fullText: Maybe.just(''),
+          },
+          {
+            type: 'article-version',
+            source: new URL('http://example.com'),
+            postedAt: new Date(),
+            version: 1,
           },
         ],
         () => '',
