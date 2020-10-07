@@ -1,5 +1,5 @@
-@use "sizes";
-@import "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css";
+@use 'sizes';
+@import 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css';
 
 /* Hive imports, not Semantic-UI */
 @import url('https://fonts.googleapis.com/css?family=Lato:ital,wght@0,400;0,700;1,400&subset=latin,latin-ext&display=swap');
@@ -30,7 +30,7 @@ Make sure that links inside a .ui.menu that use <ol> or <ul> retain the intended
 .ui.menu > .item a:hover:not(.ui) {
   cursor: pointer;
   background-color: rgba(0, 0, 0, 0.03);
-  color: rgba(0,0,0,.95);
+  color: rgba(0, 0, 0, 0.95);
 }
 
 .ui.text.menu > .item a:hover:not(.ui) {
@@ -77,7 +77,7 @@ Reset <fieldset> in a .ui.form
 */
 
 .ui.form fieldset {
-  border: none;
+  border-width: 0;
   margin: 0;
   padding: 0;
 }
@@ -97,8 +97,8 @@ ul.ui.list:not(.bulleted):not(.ordered) {
   margin-left: 0;
 }
 
-ol.ui.list:not(.bulleted):not(.ordered) li:before,
-ul.ui.list:not(.bulleted):not(.ordered) li:before {
+ol.ui.list:not(.bulleted):not(.ordered) li::before,
+ul.ui.list:not(.bulleted):not(.ordered) li::before {
   content: '';
 }
 
@@ -130,21 +130,21 @@ legend.ui.header {
 Allow commas on the end of each .ui.list .item by adding .comma.separated
 */
 
-.ui[class*="comma separated"].horizontal.list:not(.bulleted):not(.ordered) > .item {
+.ui[class*='comma separated'].horizontal.list:not(.bulleted):not(.ordered) > .item {
   margin-left: 0;
 }
 
-.ui[class*="comma separated"].horizontal.list:not(.bulleted):not(.ordered) > .item:before {
+.ui[class*='comma separated'].horizontal.list:not(.bulleted):not(.ordered) > .item::before {
   margin: 0;
 }
 
-.ui[class*="comma separated"].list > .item:after {
+.ui[class*='comma separated'].list > .item::after {
   content: ',\0a0';
   display: inline;
   visibility: inherit;
 }
 
-.ui[class*="comma separated"].list > .item:last-child:after {
+.ui[class*='comma separated'].list > .item:last-child::after {
   content: '.';
 }
 
@@ -161,7 +161,7 @@ Styles that are independent of Semantic UI
 .follower__avatar {
   border-radius: 50%;
   margin-right: 8px;
-  flex: 0 0 40px
+  flex: 0 0 40px;
 }
 
 .follower__handle {
@@ -182,8 +182,8 @@ Styles that are independent of Semantic UI
   --SEVEN-INCREMENTS: calc(var(--VERTICAL-INCREMENT) * 7);
   --MAX-SITE-WIDTH: 1200;
   --MAX-SITE-WIDTH-REM: calc((var(--MAX-SITE-WIDTH) / var(--BASE-FONT-MEASURE)) * 1rem);
-  --COLOUR-PRIMARY: rgb(0,121,107);
-  --COLOUR-PRIMARY-HOVER: rgb(3,89,79);
+  --COLOUR-PRIMARY: rgb(0, 121, 107);
+  --COLOUR-PRIMARY-HOVER: rgb(3, 89, 79);
   --COLOUR-GREY-ONE: #e0e1e2;
   --COLOUR-GREY-ONE-HOVER: #cacbce;
   --COLOUR-GREY-TWO: #5a5a5a;
@@ -195,9 +195,8 @@ html {
 }
 
 body,
-p
-{
-  font-family: "Noto Serif", serif;
+p {
+  font-family: 'Noto Serif', serif;
   font-size: var(--BASE-FONT-REM);
 }
 
@@ -292,9 +291,9 @@ a:hover {
 @supports (display: grid) {
   .hive-grid {
     display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      grid-column-gap: 20px;
-      grid-auto-flow: column;
+    grid-template-columns: repeat(12, 1fr);
+    grid-column-gap: 20px;
+    grid-auto-flow: column;
   }
 }
 
@@ -432,7 +431,7 @@ p.article-feed__item__title {
   font-family: Lato, sans-serif;
   font-size: 1.5rem;
   margin-bottom: var(--TWO-INCREMENTS);
-  padding-right: calc(100 / var(--BASE-FONT-MEASURE) * 1rem)
+  padding-right: calc(100 / var(--BASE-FONT-MEASURE) * 1rem);
 }
 
 .article-feed__item__read_more {
@@ -453,15 +452,15 @@ p.article-feed__item__title {
 }
 
 .article-author-list > li {
-  float:left;
+  float: left;
   line-height: 1.5;
 }
 
-.article-author-list > li:after {
+.article-author-list > li::after {
   content: ', \00a0';
 }
 
-.article-author-list > li:last-child:after {
+.article-author-list > li:last-child::after {
   content: '';
 }
 
@@ -510,7 +509,7 @@ p.article-feed__item__title {
   color: var(--COLOUR-PRIMARY);
   outline-width: 0;
   background: none;
-  border: none;
+  border-width: 0;
   cursor: pointer;
 }
 
