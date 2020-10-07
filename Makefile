@@ -30,11 +30,7 @@ lint: build
 
 lint\:fix: export TARGET = dev
 lint\:fix: build
-	${DOCKER_COMPOSE} run --rm -e ESLINT=--fix app npm run lint
-
-lint\:stylelint: export TARGET = dev
-lint\:stylelint: build
-	${DOCKER_COMPOSE} run --rm app npx stylelint --fix "src/sass/**/*.scss"
+	${DOCKER_COMPOSE} run --rm -e ESLINT=--fix -e STYLELINT=--fix app npm run lint
 
 test: export TARGET = dev
 test: build
