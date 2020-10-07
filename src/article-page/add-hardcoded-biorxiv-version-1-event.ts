@@ -1,6 +1,6 @@
 import { URL } from 'url';
 import { Result } from 'true-myth';
-import { FeedEvent, GetFeedEvents } from './get-feed-reviews';
+import { FeedEvent, GetFeedEvents } from './get-feed-events-content';
 import Doi from '../types/doi';
 
 type FetchArticle = (doi: Doi) => Promise<Result<{

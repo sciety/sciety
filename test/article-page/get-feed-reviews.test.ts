@@ -1,6 +1,6 @@
 import { URL } from 'url';
 import { Maybe } from 'true-myth';
-import createGetFeedReviews, { GetEditorialCommunity, GetFeedEvents, GetReview } from '../../src/article-page/get-feed-reviews';
+import createGetFeedEventsContent, { GetEditorialCommunity, GetFeedEvents, GetReview } from '../../src/article-page/get-feed-events-content';
 import Doi from '../../src/types/doi';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
 
@@ -26,8 +26,8 @@ describe('when there are reviews', () => {
       name: 'A Community',
       avatar: new URL('https://example.com/avatar'),
     });
-    const getFeedReviews = createGetFeedReviews(getFeedEvents, getReview, getEditorialCommunity);
-    const viewModel = await getFeedReviews(new Doi('10.1101/123456'));
+    const getFeedEventsContent = createGetFeedEventsContent(getFeedEvents, getReview, getEditorialCommunity);
+    const viewModel = await getFeedEventsContent(new Doi('10.1101/123456'));
 
     expect(viewModel).toHaveLength(2);
   });

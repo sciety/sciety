@@ -2,13 +2,13 @@ import { URL } from 'url';
 import { Maybe, Result } from 'true-myth';
 import createAddHardcodedBiorxivVersion1Event from './add-hardcoded-biorxiv-version-1-event';
 import ensureBiorxivDoi from './ensure-biorxiv-doi';
-import createGetFeedReviews, { GetEditorialCommunity, GetReview } from './get-feed-reviews';
+import createGetFeedEventsContent, { GetEditorialCommunity, GetReview } from './get-feed-events-content';
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
 import createRenderFeed from './render-feed';
 import createRenderFlavourAFeed from './render-flavour-a-feed';
 import createRenderPage, { RenderPageError } from './render-page';
 import createRenderPageHeader, { RenderPageHeader } from './render-page-header';
-import createRenderReviewedEvent from './render-review-feed-item';
+import createRenderReviewFeedItem from './render-review-feed-item';
 import createRenderVersionFeedItem from './render-version-feed-item';
 import { Logger } from '../infrastructure/logger';
 import Doi from '../types/doi';
@@ -58,7 +58,7 @@ export default (ports: Ports): RenderPage => {
   const getEditorialCommunity: GetEditorialCommunity = async (editorialCommunityId) => (
     (await ports.getEditorialCommunity(editorialCommunityId)).unsafelyUnwrap()
   );
-  const getReviews = createGetFeedReviews(
+  const getFeedEventsContent = createGetFeedEventsContent(
     createAddHardcodedBiorxivVersion1Event(
       ports.findReviewsForArticleVersionDoi,
       ports.fetchArticle,
@@ -67,8 +67,8 @@ export default (ports: Ports): RenderPage => {
     getEditorialCommunity,
   );
   const renderFeed = createRenderFeed(
-    getReviews,
-    createRenderReviewedEvent(150),
+    getFeedEventsContent,
+    createRenderReviewFeedItem(150),
     createRenderVersionFeedItem(),
   );
   const renderFlavourAFeed = createRenderFlavourAFeed();
