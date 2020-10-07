@@ -1,6 +1,6 @@
 import { Result } from 'true-myth';
+import { ArticleVersionFeedItem, RenderArticleVersionFeedItem } from './render-article-version-feed-item';
 import { RenderReviewFeedItem, ReviewFeedItem } from './render-review-feed-item';
-import { ArticleVersionFeedItem, RenderVersionFeedItem } from './render-version-feed-item';
 import renderListItems from '../templates/list-items';
 import Doi from '../types/doi';
 
@@ -13,12 +13,12 @@ export type GetFeedItems = (doi: Doi) => Promise<ReadonlyArray<FeedItem>>;
 export default (
   getFeedItems: GetFeedItems,
   renderReviewFeedItem: RenderReviewFeedItem,
-  renderVersionFeedItem: RenderVersionFeedItem,
+  renderArticleVersionFeedItem: RenderArticleVersionFeedItem,
 ): RenderFeed => {
   const renderFeedItem = (feedItem: FeedItem): string => {
     switch (feedItem.type) {
       case 'article-version':
-        return renderVersionFeedItem(feedItem);
+        return renderArticleVersionFeedItem(feedItem);
       case 'review':
         return renderReviewFeedItem(feedItem);
     }

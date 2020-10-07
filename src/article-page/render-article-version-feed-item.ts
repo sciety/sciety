@@ -8,10 +8,10 @@ export type ArticleVersionFeedItem = {
   version: number;
 };
 
-export type RenderVersionFeedItem = (feedItem: ArticleVersionFeedItem) => string;
+export type RenderArticleVersionFeedItem = (feedItem: ArticleVersionFeedItem) => string;
 
 export default (
-): RenderVersionFeedItem => (
+): RenderArticleVersionFeedItem => (
   (feedItem: ArticleVersionFeedItem) => `
     <img class="article-feed__item__avatar" src="https://pbs.twimg.com/profile_images/956882186996662272/lwyH1HFe_200x200.jpg" alt="">
     <div>

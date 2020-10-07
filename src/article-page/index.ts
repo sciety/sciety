@@ -4,12 +4,12 @@ import createAddHardcodedBiorxivVersion1Event from './add-hardcoded-biorxiv-vers
 import ensureBiorxivDoi from './ensure-biorxiv-doi';
 import createGetFeedEventsContent, { GetEditorialCommunity, GetReview } from './get-feed-events-content';
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
+import createRenderArticleVersionFeedItem from './render-article-version-feed-item';
 import createRenderFeed from './render-feed';
 import createRenderFlavourAFeed from './render-flavour-a-feed';
 import createRenderPage, { RenderPageError } from './render-page';
 import createRenderPageHeader, { RenderPageHeader } from './render-page-header';
 import createRenderReviewFeedItem from './render-review-feed-item';
-import createRenderVersionFeedItem from './render-version-feed-item';
 import { Logger } from '../infrastructure/logger';
 import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
@@ -72,7 +72,7 @@ export default (ports: Ports): RenderPage => {
   const renderFeed = createRenderFeed(
     getFeedEventsContent,
     createRenderReviewFeedItem(150),
-    createRenderVersionFeedItem(),
+    createRenderArticleVersionFeedItem(),
   );
   const renderFlavourAFeed = createRenderFlavourAFeed();
   const renderPage = createRenderPage(
