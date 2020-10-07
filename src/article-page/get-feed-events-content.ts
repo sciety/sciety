@@ -12,14 +12,14 @@ type ReviewEvent = {
   occurredAt: Date;
 };
 
-type ArticleVersionEvent = {
+export type ArticleVersionEvent = {
   type: 'article-version',
   source: URL;
   postedAt: Date;
   version: number;
 };
 
-export type FeedEvent = ReviewEvent | ArticleVersionEvent;
+type FeedEvent = ReviewEvent | ArticleVersionEvent;
 
 export type GetFeedEvents = (articleDoi: Doi) => Promise<ReadonlyArray<FeedEvent>>;
 
