@@ -23,7 +23,7 @@ describe('add-hardcoded-biorxiv-version-1-event', () => {
   });
 
   describe('for article 10.1101/2020.09.02.278911', () => {
-    it.skip('adds 2 version events', async () => {
+    it('adds 2 version events', async () => {
       const getFeedEvents: GetFeedEvents = async () => [
         {
           type: 'review',
