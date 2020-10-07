@@ -19,7 +19,7 @@ type ArticleVersionEvent = {
   version: number;
 };
 
-type FeedEvent = ReviewEvent | ArticleVersionEvent;
+export type FeedEvent = ReviewEvent | ArticleVersionEvent;
 
 export type GetFeedEvents = (articleDoi: Doi) => Promise<ReadonlyArray<FeedEvent>>;
 
