@@ -1,17 +1,17 @@
 import { URL } from 'url';
 import { JSDOM } from 'jsdom';
 import { Maybe } from 'true-myth';
-import createRenderReviewedEvent from '../../src/article-page/render-review-feed-item';
+import createRenderReviewFeedItem from '../../src/article-page/render-review-feed-item';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
 
-describe('render-reviewed-event', () => {
+describe('render-review-feed-item', () => {
   describe('when the review has long full text', () => {
     it('renders the full text', () => {
       const fullText = 'A very long review';
-      const renderReviewedEvent = createRenderReviewedEvent(6);
+      const renderReviewFeedItem = createRenderReviewFeedItem(6);
 
       const rendered = JSDOM.fragment(
-        renderReviewedEvent({
+        renderReviewFeedItem({
           type: 'review',
           source: new URL('http://example.com'),
           occurredAt: new Date(),
@@ -35,10 +35,10 @@ describe('render-reviewed-event', () => {
     it('renders without a teaser', () => {
       const fullText = 'tldr';
       const source = 'http://example.com/source';
-      const renderReviewedEvent = createRenderReviewedEvent(12);
+      const renderReviewFeedItem = createRenderReviewFeedItem(12);
 
       const rendered = JSDOM.fragment(
-        renderReviewedEvent({
+        renderReviewFeedItem({
           type: 'review',
           source: new URL(source),
           occurredAt: new Date(),
@@ -63,10 +63,10 @@ describe('render-reviewed-event', () => {
   describe('when the review has no full text', () => {
     it('renders without a teaser', () => {
       const source = 'http://example.com/source';
-      const renderReviewedEvent = createRenderReviewedEvent(6);
+      const renderReviewFeedItem = createRenderReviewFeedItem(6);
 
       const rendered = JSDOM.fragment(
-        renderReviewedEvent({
+        renderReviewFeedItem({
           type: 'review',
           source: new URL(source),
           occurredAt: new Date(),
