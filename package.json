@@ -83,8 +83,9 @@
     "typescript": "^4.0.2"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "run-p --aggregate-output --continue-on-error --print-label --silent build:**",
     "build:css": "sass src/sass/style.scss static/style.css",
+    "build:js": "tsc",
     "lint": "run-p --aggregate-output --continue-on-error --print-label --silent lint:**",
     "lint:eslint": "eslint ${ESLINT:-} . --ext .js,.ts --cache --cache-location .eslint/ --color",
     "lint:typescript:dev": "tsc --project tsconfig.dev.json",

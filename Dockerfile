@@ -47,7 +47,6 @@ CMD ["npm", "run", "start:dev"]
 FROM dev AS build-prod
 ENV NODE_ENV=production
 
-RUN npm run build:css
 RUN npm run build
 
 
