@@ -15,6 +15,7 @@ export default (
     const feedEvents = Array.from(await getFeedEvents(doi));
 
     feedEvents.push({
+      type: 'article-version',
       source: new URL(`https://www.biorxiv.org/content/${doi.value}v1?versioned=true`),
       postedAt: (await fetchArticle(doi)).unsafelyUnwrap().publicationDate,
       version: 1,

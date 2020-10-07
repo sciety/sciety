@@ -9,11 +9,13 @@ describe('get-feed-events-content', () => {
     it('creates a view model for the reviews', async () => {
       const getFeedEvents: GetFeedEvents = async () => [
         {
+          type: 'review',
           editorialCommunityId: new EditorialCommunityId('communityId'),
           reviewId: new Doi('10.1101/111111'),
           occurredAt: new Date(),
         },
         {
+          type: 'review',
           editorialCommunityId: new EditorialCommunityId('communityId'),
           reviewId: new Doi('10.1101/222222'),
           occurredAt: new Date(),

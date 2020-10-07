@@ -60,7 +60,10 @@ export default (ports: Ports): RenderPage => {
   );
   const getFeedEventsContent = createGetFeedEventsContent(
     createAddHardcodedBiorxivVersion1Event(
-      ports.findReviewsForArticleVersionDoi,
+      async (doi) => (await ports.findReviewsForArticleVersionDoi(doi)).map((review) => ({
+        type: 'review',
+        ...review,
+      })),
       ports.fetchArticle,
     ),
     ports.fetchReview,
