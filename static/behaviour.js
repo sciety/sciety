@@ -21,7 +21,7 @@
       if (itemBody.dataset.collapsed !== undefined) {
         teaser.classList.add('hidden');
         fullText.classList.remove('hidden');
-        toggle.innerHTML = 'See less <span aria-hidden="true">-</span>';
+        toggle.innerHTML = 'See less <span aria-hidden="true">\u2212</span>';
         delete itemBody.dataset.collapsed;
       } else {
         teaser.classList.remove('hidden');
