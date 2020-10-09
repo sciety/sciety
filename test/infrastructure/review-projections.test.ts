@@ -35,13 +35,13 @@ describe('review-projections', () => {
     },
   ];
 
-  describe('findReviewsForArticleVersionDoi', () => {
+  describe('findReviewsForArticleDoi', () => {
     it.each([
       [article1, [reviewId1, reviewId3]],
       [article2, [reviewId2]],
       [new Doi('10.0000/does-not-exist'), []],
     ])('finds the review references for article %s', async (articleDoi, expectedReviews) => {
-      const getReviews = createReviewProjections(reviewEvents).findReviewsForArticleVersionDoi;
+      const getReviews = createReviewProjections(reviewEvents).findReviewsForArticleDoi;
       const actualReviews = (await getReviews(articleDoi))
         .map((reviewReference) => reviewReference.reviewId)
         .sort();

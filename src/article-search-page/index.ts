@@ -11,7 +11,7 @@ import EditorialCommunityId from '../types/editorial-community-id';
 import EndorsementsRepository from '../types/endorsements-repository';
 import { ReviewId } from '../types/review-id';
 
-type FindReviewsForArticleVersionDoi = (articleVersionDoi: Doi) => Promise<ReadonlyArray<{
+type FindReviewsForArticleDoi = (articleDoi: Doi) => Promise<ReadonlyArray<{
   reviewId: ReviewId;
   editorialCommunityId: EditorialCommunityId;
 }>>;
@@ -24,7 +24,7 @@ interface Ports {
   searchEuropePmc: FindArticles,
   getEditorialCommunity: GetEditorialCommunity,
   endorsements: EndorsementsRepository,
-  findReviewsForArticleVersionDoi: FindReviewsForArticleVersionDoi;
+  findReviewsForArticleDoi: FindReviewsForArticleDoi;
 }
 
 const buildRenderSearchResult = (
@@ -50,7 +50,7 @@ type RenderPage = (params: Params) => Promise<string>;
 
 export default (ports: Ports): RenderPage => {
   const getReviewCount: GetReviewCount = async (doi) => (
-    (await ports.findReviewsForArticleVersionDoi(doi)).length
+    (await ports.findReviewsForArticleDoi(doi)).length
   );
   const renderSearchResult = buildRenderSearchResult(
     getReviewCount,

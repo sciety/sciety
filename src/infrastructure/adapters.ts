@@ -8,7 +8,7 @@ import { FetchStaticFile } from './fetch-static-file';
 import { Follows } from './follows';
 import { GetTwitterUserDetails } from './get-twitter-user-details';
 import { Logger } from './logger';
-import { FindReviewsForArticleVersionDoi, FindReviewsForEditorialCommunityId } from './review-projections';
+import { FindReviewsForArticleDoi, FindReviewsForEditorialCommunityId } from './review-projections';
 import { SearchEuropePmc } from './search-europe-pmc';
 import { DomainEvent } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
@@ -29,7 +29,7 @@ export interface Adapters {
   editorialCommunities: EditorialCommunityRepository;
   getEditorialCommunity: GetEditorialCommunity;
   endorsements: EndorsementsRepository,
-  findReviewsForArticleVersionDoi: FindReviewsForArticleVersionDoi;
+  findReviewsForArticleDoi: FindReviewsForArticleDoi;
   findReviewsForEditorialCommunityId: FindReviewsForEditorialCommunityId;
   getAllEvents: () => Promise<ReadonlyArray<DomainEvent>>;
   commitEvents: CommitEvents;

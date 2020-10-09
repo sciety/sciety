@@ -3,27 +3,27 @@ import { EditorialCommunityReviewedArticleEvent } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { ReviewId } from '../types/review-id';
 
-export type FindReviewsForArticleVersionDoi = (articleVersionDoi: Doi) => Promise<ReadonlyArray<{
+export type FindReviewsForArticleDoi = (articleDoi: Doi) => Promise<ReadonlyArray<{
   reviewId: ReviewId;
   editorialCommunityId: EditorialCommunityId;
   occurredAt: Date;
 }>>;
 
 export type FindReviewsForEditorialCommunityId = (editorialCommunityId: EditorialCommunityId) => Promise<Array<{
-  articleVersionDoi: Doi;
+  articleDoi: Doi;
   reviewId: ReviewId;
   added: Date;
 }>>;
 
 interface ReviewProjections {
-  findReviewsForArticleVersionDoi: FindReviewsForArticleVersionDoi;
+  findReviewsForArticleDoi: FindReviewsForArticleDoi;
   findReviewsForEditorialCommunityId: FindReviewsForEditorialCommunityId;
 }
 
 export default (events: ReadonlyArray<EditorialCommunityReviewedArticleEvent>): ReviewProjections => ({
-  findReviewsForArticleVersionDoi: async (articleVersionDoi) => (
+  findReviewsForArticleDoi: async (articleDoi) => (
     events
-      .filter((event) => event.articleId.value === articleVersionDoi.value)
+      .filter((event) => event.articleId.value === articleDoi.value)
       .map((event) => ({
         reviewId: event.reviewId,
         editorialCommunityId: event.editorialCommunityId,
@@ -35,7 +35,7 @@ export default (events: ReadonlyArray<EditorialCommunityReviewedArticleEvent>): 
     events
       .filter((event) => event.editorialCommunityId.value === editorialCommunityId.value)
       .map((event) => ({
-        articleVersionDoi: event.articleId,
+        articleDoi: event.articleId,
         reviewId: event.reviewId,
         added: event.date,
       }))

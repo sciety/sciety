@@ -17,7 +17,7 @@ import EditorialCommunityId from '../types/editorial-community-id';
 import { FetchExternalArticle } from '../types/fetch-external-article';
 import { ReviewId } from '../types/review-id';
 
-type FindReviewsForArticleVersionDoi = (articleVersionDoi: Doi) => Promise<ReadonlyArray<{
+type FindReviewsForArticleDoi = (articleVersionDoi: Doi) => Promise<ReadonlyArray<{
   reviewId: ReviewId;
   editorialCommunityId: EditorialCommunityId;
   occurredAt: Date;
@@ -30,7 +30,7 @@ interface Ports {
     name: string;
     avatar: URL;
   }>>,
-  findReviewsForArticleVersionDoi: FindReviewsForArticleVersionDoi;
+  findReviewsForArticleDoi: FindReviewsForArticleDoi;
   logger: Logger;
 }
 
@@ -61,7 +61,7 @@ export default (ports: Ports): RenderPage => {
   );
   const getFeedEventsContent = createGetFeedEventsContent(
     createComposeFeedEvents(
-      async (doi) => (await ports.findReviewsForArticleVersionDoi(doi)).map((review) => ({
+      async (doi) => (await ports.findReviewsForArticleDoi(doi)).map((review) => ({
         type: 'review',
         ...review,
       })),

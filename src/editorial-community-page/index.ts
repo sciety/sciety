@@ -23,7 +23,7 @@ import { User } from '../types/user';
 import { UserId } from '../types/user-id';
 
 type FindReviewsForEditorialCommunityId = (editorialCommunityId: EditorialCommunityId) => Promise<Array<{
-  articleVersionDoi: Doi;
+  articleDoi: Doi;
   reviewId: ReviewId;
   added: Date;
 }>>;
