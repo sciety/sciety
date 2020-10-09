@@ -70,7 +70,7 @@ export default async (): Promise<TestServer> => {
       handle: '',
     }),
     follows: async () => false,
-    getJson: async () => ({ collection: [] }),
+    findVersionsForArticleDoi: async () => [],
   };
 
   const router = createRouter(adapters);

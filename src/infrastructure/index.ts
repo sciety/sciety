@@ -11,6 +11,7 @@ import createFetchHypothesisAnnotation from './fetch-hypothesis-annotation';
 import createFetchReview from './fetch-review';
 import createFetchStaticFile from './fetch-static-file';
 import createFollows from './follows';
+import createGetBiorxivArticleVersionEvents from './get-biorxiv-article-version-events';
 import getEventsFromDataFiles from './get-events-from-data-files';
 import getEventsFromDatabase from './get-events-from-database';
 import createGetTwitterResponse from './get-twitter-response';
@@ -94,7 +95,7 @@ const createInfrastructure = async (): Promise<Adapters> => {
     getFollowList,
     getUserDetails: createGetTwitterUserDetails(getTwitterResponse, logger),
     follows: createFollows(getAllEvents),
-    getJson,
+    findVersionsForArticleDoi: createGetBiorxivArticleVersionEvents(getJson),
   };
 };
 

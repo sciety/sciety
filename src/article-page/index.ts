@@ -2,7 +2,6 @@ import { URL } from 'url';
 import { Maybe, Result } from 'true-myth';
 import createComposeFeedEvents from './compose-feed-events';
 import ensureBiorxivDoi from './ensure-biorxiv-doi';
-import createGetBiorxivArticleVersionEvents, { GetJson } from './get-biorxiv-article-version-events';
 import createGetFeedEventsContent, { GetEditorialCommunity, GetReview } from './get-feed-events-content';
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
 import createRenderArticleVersionFeedItem from './render-article-version-feed-item';
@@ -23,8 +22,13 @@ type FindReviewsForArticleDoi = (articleVersionDoi: Doi) => Promise<ReadonlyArra
   occurredAt: Date;
 }>>;
 
+type FindVersionsForArticleDoi = (doi: Doi) => Promise<ReadonlyArray<{
+  source: URL;
+  occurredAt: Date;
+  version: number;
+}>>;
+
 interface Ports {
-  getJson: GetJson;
   fetchArticle: FetchExternalArticle;
   fetchReview: GetReview;
   getEditorialCommunity: (editorialCommunityId: EditorialCommunityId) => Promise<Maybe<{
@@ -32,6 +36,7 @@ interface Ports {
     avatar: URL;
   }>>,
   findReviewsForArticleDoi: FindReviewsForArticleDoi;
+  findVersionsForArticleDoi: FindVersionsForArticleDoi;
   logger: Logger;
 }
 
@@ -66,7 +71,10 @@ export default (ports: Ports): RenderPage => {
         type: 'review',
         ...review,
       })),
-      createGetBiorxivArticleVersionEvents(ports.getJson),
+      async (doi) => (await ports.findVersionsForArticleDoi(doi)).map((version) => ({
+        type: 'article-version',
+        ...version,
+      })),
     ),
     ports.fetchReview,
     getEditorialCommunity,

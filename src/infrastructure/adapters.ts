@@ -6,6 +6,7 @@ import { FetchCrossrefArticle } from './fetch-crossref-article';
 import { FetchReview } from './fetch-review';
 import { FetchStaticFile } from './fetch-static-file';
 import { Follows } from './follows';
+import { GetBiorxivArticleVersionEvents } from './get-biorxiv-article-version-events';
 import { GetTwitterUserDetails } from './get-twitter-user-details';
 import { Logger } from './logger';
 import { FindReviewsForArticleDoi, FindReviewsForEditorialCommunityId } from './review-projections';
@@ -14,7 +15,6 @@ import { DomainEvent } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import EndorsementsRepository from '../types/endorsements-repository';
-import { Json } from '../types/json';
 
 type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => Promise<Maybe<{
   name: string;
@@ -32,11 +32,11 @@ export interface Adapters {
   endorsements: EndorsementsRepository,
   findReviewsForArticleDoi: FindReviewsForArticleDoi;
   findReviewsForEditorialCommunityId: FindReviewsForEditorialCommunityId;
+  findVersionsForArticleDoi: GetBiorxivArticleVersionEvents;
   getAllEvents: () => Promise<ReadonlyArray<DomainEvent>>;
   commitEvents: CommitEvents;
   getFollowList: EventSourcedFollowListRepository;
   getUserDetails: GetTwitterUserDetails;
-  getJson: (uri: string) => Promise<Json>;
   follows: Follows;
   logger: Logger;
 }
