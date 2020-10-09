@@ -28,6 +28,7 @@ jobs:
             --set images.frontend.tag=${IMAGE_TAG} \
             --set hostname=hive.review \
             --set googleAnalyticsTrackingId=UA-167311475-1 \
+            --set googleTagManager=1 \
             --set disqusApiKey=${DISQUS_API_KEY} \
             --set twitterApiKey=${TWITTER_API_KEY} \
             --set twitterApiSecretKey=${TWITTER_API_SECRET_KEY} \
