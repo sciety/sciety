@@ -1,5 +1,8 @@
 {
   "private": true,
+  "engines": {
+    "node": "14"
+  },
   "dependencies": {
     "@godaddy/terminus": "^4.4.1",
     "@koa/router": "^8.0.8",
