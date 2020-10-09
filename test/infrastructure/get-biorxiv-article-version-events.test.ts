@@ -1,6 +1,7 @@
 import { URL } from 'url';
 import createGetBiorxivArticleVersionEvents, { GetJson } from '../../src/infrastructure/get-biorxiv-article-version-events';
 import Doi from '../../src/types/doi';
+import dummyLogger from '../dummy-logger';
 
 describe('get-biorxiv-article-version-events', () => {
   it('returns an article-version event for each article version', async () => {
@@ -18,7 +19,7 @@ describe('get-biorxiv-article-version-events', () => {
       ],
     });
 
-    const getBiorxivArticleVersionEvents = createGetBiorxivArticleVersionEvents(getJson);
+    const getBiorxivArticleVersionEvents = createGetBiorxivArticleVersionEvents(getJson, dummyLogger);
 
     const events = await getBiorxivArticleVersionEvents(doi);
 
