@@ -5,7 +5,7 @@ describe('render-article-version-feed-item', () => {
   it('renders the feed item', async () => {
     const feedItem: ArticleVersionFeedItem = {
       type: 'article-version',
-      postedAt: new Date(),
+      occurredAt: new Date(),
       source: new URL('http://example.com'),
       version: 3,
     };

@@ -15,7 +15,7 @@ type ReviewEvent = {
 type ArticleVersionEvent = {
   type: 'article-version',
   source: URL;
-  postedAt: Date;
+  occurredAt: Date;
   version: number;
 };
 

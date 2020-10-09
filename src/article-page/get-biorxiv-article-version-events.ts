@@ -20,7 +20,7 @@ export default (
     return biorxivResponse.collection.map((articleDetail) => ({
       type: 'article-version',
       source: new URL(`https://www.biorxiv.org/content/${doi.value}v${articleDetail.version}`),
-      postedAt: new Date(articleDetail.date),
+      occurredAt: new Date(articleDetail.date),
       version: Number.parseInt(articleDetail.version, 10),
     }));
   }

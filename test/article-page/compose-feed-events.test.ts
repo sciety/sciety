@@ -18,13 +18,13 @@ describe('compose-feed-events', () => {
       {
         type: 'article-version',
         source: new URL('https://www.biorxiv.org/content/10.1101/2020.09.02.278911v2'),
-        postedAt: new Date('2020-09-24'),
+        occurredAt: new Date('2020-09-24'),
         version: 2,
       },
       {
         type: 'article-version',
         source: new URL('https://www.biorxiv.org/content/10.1101/2020.09.02.278911v1'),
-        postedAt: new Date('2020-09-03'),
+        occurredAt: new Date('2020-09-03'),
         version: 1,
       },
     ];

@@ -36,7 +36,7 @@ describe('render-feed', () => {
           {
             type: 'article-version',
             source: new URL('http://example.com'),
-            postedAt: new Date(),
+            occurredAt: new Date(),
             version: 1,
           },
         ],

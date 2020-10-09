@@ -26,13 +26,13 @@ describe('get-biorxiv-article-version-events', () => {
     expect(events[0]).toStrictEqual({
       type: 'article-version',
       source: new URL('https://www.biorxiv.org/content/10.1101/2020.09.02.278911v2'),
-      postedAt: new Date('2020-01-02'),
+      occurredAt: new Date('2020-01-02'),
       version: 2,
     });
     expect(events[1]).toStrictEqual({
       type: 'article-version',
       source: new URL('https://www.biorxiv.org/content/10.1101/2020.09.02.278911v1'),
-      postedAt: new Date('2019-12-31'),
+      occurredAt: new Date('2019-12-31'),
       version: 1,
     });
   });
