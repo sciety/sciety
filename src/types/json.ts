@@ -8,6 +8,7 @@ export type Json =
   | number
   | string
   | Array<Json>
+  | ReadonlyArray<Json>
   | JsonObject;
 
 export type JsonCompatible<Type> = {

@@ -1,5 +1,6 @@
 import { URL } from 'url';
 import { Maybe } from 'true-myth';
+import { Json } from '../types/json';
 import { CommitEvents } from './commit-events';
 import { EventSourcedFollowListRepository } from './event-sourced-follow-list-repository';
 import { FetchCrossrefArticle } from './fetch-crossref-article';
@@ -35,6 +36,7 @@ export interface Adapters {
   commitEvents: CommitEvents;
   getFollowList: EventSourcedFollowListRepository;
   getUserDetails: GetTwitterUserDetails;
+  getJson: (uri: string) => Promise<Json>;
   follows: Follows;
   logger: Logger;
 }

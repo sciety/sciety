@@ -2,28 +2,29 @@ import { URL } from 'url';
 import { Result } from 'true-myth';
 import { GetFeedEvents } from './get-feed-events-content';
 import Doi from '../types/doi';
+import { Json, JsonCompatible } from '../types/json';
 
 type FetchArticle = (doi: Doi) => Promise<Result<{
   publicationDate: Date;
 }, unknown>>;
 
+export type GetJson = (url: string) => Promise<Json>;
+
+type BiorxivResponse = JsonCompatible<{
+  collection: ReadonlyArray<{
+    date: string;
+    version: string;
+  }>
+}>;
+
 export default (
+  getJson: GetJson,
   fetchArticle: FetchArticle,
 ): GetFeedEvents => (
   async (doi) => {
     if (doi.value === '10.1101/2020.09.02.278911') {
-      const biorxivResponse = {
-        collection: [
-          {
-            date: '2020-09-03',
-            version: '1',
-          },
-          {
-            version: '2',
-            date: '2020-09-24',
-          },
-        ],
-      };
+      const biorxivResponse = await getJson(`https://api.biorxiv.org/details/biorxiv/${doi.value}`) as BiorxivResponse;
+
       return biorxivResponse.collection.map((articleDetail) => ({
         type: 'article-version',
         source: new URL(`https://www.biorxiv.org/content/${doi.value}v${articleDetail.version}`),

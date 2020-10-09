@@ -94,6 +94,7 @@ const createInfrastructure = async (): Promise<Adapters> => {
     getFollowList,
     getUserDetails: createGetTwitterUserDetails(getTwitterResponse, logger),
     follows: createFollows(getAllEvents),
+    getJson,
   };
 };
 
