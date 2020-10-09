@@ -2,8 +2,8 @@ import { URL } from 'url';
 import { Maybe, Result } from 'true-myth';
 import createComposeFeedEvents from './compose-feed-events';
 import ensureBiorxivDoi from './ensure-biorxiv-doi';
+import createGetBiorxivArticleVersionEvents, { GetJson } from './get-biorxiv-article-version-events';
 import createGetFeedEventsContent, { GetEditorialCommunity, GetReview } from './get-feed-events-content';
-import createGetHardcodedArticleVersionEvents, { GetJson } from './get-hardcoded-article-version-events';
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
 import createRenderArticleVersionFeedItem from './render-article-version-feed-item';
 import createRenderFeed from './render-feed';
@@ -66,7 +66,7 @@ export default (ports: Ports): RenderPage => {
         type: 'review',
         ...review,
       })),
-      createGetHardcodedArticleVersionEvents(ports.getJson, ports.fetchArticle),
+      createGetBiorxivArticleVersionEvents(ports.getJson),
     ),
     ports.fetchReview,
     getEditorialCommunity,
