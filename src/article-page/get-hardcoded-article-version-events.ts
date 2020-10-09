@@ -26,7 +26,7 @@ export default (
       };
       return biorxivResponse.collection.map((articleDetail) => ({
         type: 'article-version',
-        source: new URL('https://www.biorxiv.org/content/10.1101/2020.09.02.278911v2'),
+        source: new URL(`https://www.biorxiv.org/content/${doi.value}v${articleDetail.version}`),
         postedAt: new Date(articleDetail.date),
         version: Number.parseInt(articleDetail.version, 10),
       }));
