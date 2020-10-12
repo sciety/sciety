@@ -24,10 +24,6 @@ spec:
               value: http://{{ .Values.hostname }}
             - name: DISQUS_API_KEY
               value: {{ .Values.disqusApiKey }}
-            - name: GOOGLE_ANALYTICS_TRACKING_ID
-              value: {{ .Values.googleAnalyticsTrackingId }}
-            - name: GOOGLE_TAG_MANAGER
-              value: {{ .Values.googleTagManager }}
             - name: GOOGLE_TAG_MANAGER_ID
               value: {{ .Values.googleTagManagerId }}
             - name: PGHOST
