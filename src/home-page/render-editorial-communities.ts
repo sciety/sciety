@@ -35,7 +35,7 @@ export default (
         <h2>
           Editorial communities
         </h2>
-        <ol class="ui divided items" role="list">
+        <ol class="editorial-community-list" role="list">
           ${templateListItems(editorialCommunityLinks)}
         </ol>
       </section>
