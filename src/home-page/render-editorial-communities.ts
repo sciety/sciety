@@ -36,7 +36,7 @@ export default (
           Editorial communities
         </h2>
         <ol class="editorial-community-list" role="list">
-          ${templateListItems(editorialCommunityLinks)}
+          ${templateListItems(editorialCommunityLinks, 'editorial-community-list__item')}
         </ol>
       </section>
     `;
