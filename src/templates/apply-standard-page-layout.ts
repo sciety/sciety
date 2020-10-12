@@ -1,23 +1,6 @@
 import { Maybe } from 'true-myth';
 import { User } from '../types/user';
 
-let googleAnalytics = '';
-if (process.env.GOOGLE_ANALYTICS_TRACKING_ID) {
-  googleAnalytics = `
-    const script = document.createElement('script');
-    script.setAttribute('src', 'https://www.googletagmanager.com/gtag/js?id=${process.env.GOOGLE_ANALYTICS_TRACKING_ID}');
-    script.setAttribute('async', '');
-    document.body.appendChild(script);
-
-    window.dataLayer = window.dataLayer || [];
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-    gtag('js', new Date());
-    gtag('config', '${process.env.GOOGLE_ANALYTICS_TRACKING_ID}');
-  `;
-}
-
 let googleTagManager = '';
 let googleTagManagerNoScript = '';
 if (process.env.GOOGLE_TAG_MANAGER_ID) {
@@ -102,7 +85,6 @@ export default (page: string, user: Maybe<User>): string => `<!doctype html>
         if (!this.hasConsented()) {
           return;
         }
-        ${googleAnalytics}
         ${googleTagManager}
     }
 
