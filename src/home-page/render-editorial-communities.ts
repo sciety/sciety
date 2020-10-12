@@ -19,8 +19,8 @@ export default (
 ): RenderEditorialCommunities => async (userId) => {
   const editorialCommunityLinks = await Promise.all((await editorialCommunities())
     .map(async (editorialCommunity) => (`
-<!--        <img src="${editorialCommunity.avatar.toString()}" alt="">-->
           <a href="/editorial-communities/${editorialCommunity.id.value}" class="editorial-community">
+            <img src="${editorialCommunity.avatar.toString()}" alt="" class="editorial-community__avatar">
             <div class="editorial-community__name">
               ${editorialCommunity.name}
             </div>

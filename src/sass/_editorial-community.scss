@@ -44,3 +44,18 @@
 .editorial-community__toggle_wrapper {
   margin-top: auto;
 }
+
+.editorial-community__avatar {
+  flex: 0 0 60px;
+  width: 60px;
+  height: 60px;
+  border: 1px solid var(--COLOUR-GREY-ONE);
+  border-radius: 50%;
+  margin-top: -24px;
+  margin-bottom: 8px;
+  transition: border-color 0.2s ease-out;
+
+  .editorial-community:hover & {
+    border-color: var(--COLOUR-PRIMARY-HOVER);
+  }
+}
