@@ -19,7 +19,7 @@ if (process.env.GOOGLE_ANALYTICS_TRACKING_ID) {
 }
 
 let googleTagManager = '';
-let googleTagManagerBody = '';
+let googleTagManagerNoScript = '';
 if (process.env.GOOGLE_TAG_MANAGER) {
   googleTagManager = `
 (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -29,7 +29,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-NX7CQB4');
 `;
 
-  googleTagManagerBody = `
+  googleTagManagerNoScript = `
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NX7CQB4"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -64,7 +64,7 @@ export default (page: string, user: Maybe<User>): string => `<!doctype html>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.css">
 </head>
 <body>
-  ${googleTagManagerBody}
+  ${googleTagManagerNoScript}
   <header class="u-full-width">
 
     <nav class="site-header">
