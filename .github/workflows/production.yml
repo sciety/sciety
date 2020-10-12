@@ -27,7 +27,7 @@ jobs:
           helm upgrade -i prc--prod \
             --set images.frontend.tag=${IMAGE_TAG} \
             --set hostname=hive.review \
-            --set-string googleTagManagerId=GTM-NX7CQB4 \
+            --set googleTagManagerId=GTM-NX7CQB4 \
             --set disqusApiKey=${DISQUS_API_KEY} \
             --set twitterApiKey=${TWITTER_API_KEY} \
             --set twitterApiSecretKey=${TWITTER_API_SECRET_KEY} \
