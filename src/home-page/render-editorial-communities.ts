@@ -20,12 +20,14 @@ export default (
   const editorialCommunityLinks = await Promise.all((await editorialCommunities())
     .map(async (editorialCommunity) => (`
 <!--        <img src="${editorialCommunity.avatar.toString()}" alt="">-->
-        <div class="content">
-          <a href="/editorial-communities/${editorialCommunity.id.value}" class="header">${editorialCommunity.name}</a>
-          <div class="extra">
-            ${await renderFollowToggle(userId, editorialCommunity.id)}
-          </div>
-        </div>
+          <a href="/editorial-communities/${editorialCommunity.id.value}" class="editorial-community">
+            <div class="editorial-community__name">
+              ${editorialCommunity.name}
+            </div>
+            <object class="editorial-community__toggle_wrapper">
+              ${await renderFollowToggle(userId, editorialCommunity.id)}
+            </object>
+          </a>
       `)));
 
   return `
