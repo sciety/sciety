@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import { Maybe } from 'true-myth';
 import { RenderFollowToggle } from './render-follow-toggle';
 import templateListItems from '../templates/list-items';
@@ -7,6 +8,7 @@ import { UserId } from '../types/user-id';
 type RenderEditorialCommunities = (userId: Maybe<UserId>) => Promise<string>;
 
 export type GetAllEditorialCommunities = () => Promise<Array<{
+  avatar: URL;
   id: EditorialCommunityId;
   name: string;
 }>>;
@@ -17,6 +19,7 @@ export default (
 ): RenderEditorialCommunities => async (userId) => {
   const editorialCommunityLinks = await Promise.all((await editorialCommunities())
     .map(async (editorialCommunity) => (`
+<!--        <img src="${editorialCommunity.avatar.toString()}" alt="">-->
         <div class="content">
           <a href="/editorial-communities/${editorialCommunity.id.value}" class="header">${editorialCommunity.name}</a>
           <div class="extra">
