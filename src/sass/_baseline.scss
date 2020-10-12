@@ -1,0 +1,5 @@
+@use 'settings';
+
+@function increments($count) {
+  @return $count * settings.$base-line-increment;
+}
