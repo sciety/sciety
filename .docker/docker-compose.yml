@@ -9,6 +9,7 @@ services:
       APP_SECRET:
       DISQUS_API_KEY:
       GOOGLE_ANALYTICS_TRACKING_ID:
+      GOOGLE_TAG_MANAGER_ID:
       LOG_LEVEL:
       PGUSER: user
       PGHOST: db

@@ -5,6 +5,7 @@ images:
 
 googleAnalyticsTrackingId:
 googleTagManager:
+googleTagManagerId:
 disqusApiKey:
 
 postgresql:

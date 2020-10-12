@@ -28,6 +28,8 @@ spec:
               value: {{ .Values.googleAnalyticsTrackingId }}
             - name: GOOGLE_TAG_MANAGER
               value: {{ .Values.googleTagManager }}
+            - name: GOOGLE_TAG_MANAGER_ID
+              value: {{ .Values.googleTagManagerId }}
             - name: PGHOST
               value: {{ .Release.Name }}-postgresql
             - name: PGDATABASE
