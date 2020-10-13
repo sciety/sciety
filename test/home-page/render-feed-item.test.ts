@@ -10,7 +10,7 @@ describe('render-feed-item', (): void => {
   const arbitraryArticleId = new Doi('10.5281/zenodo.3678326');
   const dummyGetActor: GetActor = async () => ({
     url: '',
-    name: '',
+    name: 'dummyActorName',
     imageUrl: '',
   });
 
@@ -18,7 +18,7 @@ describe('render-feed-item', (): void => {
     const event: EditorialCommunityEndorsedArticleEvent = {
       editorialCommunityId: arbitraryActorId,
       articleId: arbitraryArticleId,
-      date: new Date(),
+      date: new Date('2020-01-01'),
       type: 'EditorialCommunityEndorsedArticle',
     };
     let rendered: string;
@@ -40,9 +40,13 @@ describe('render-feed-item', (): void => {
         expect(rendered).toStrictEqual(expect.stringContaining('endorsed'));
       });
 
-      it.todo('displays the actor name');
+      it('displays the actor name', async () => {
+        expect(rendered).toStrictEqual(expect.stringContaining('dummyActorName'));
+      });
 
-      it.todo('displays the event date');
+      it('displays the event date', async () => {
+        expect(rendered).toStrictEqual(expect.stringContaining('Jan 1, 2020'));
+      });
     });
 
     describe('and the article information cannot be retrieved', () => {
@@ -56,18 +60,24 @@ describe('render-feed-item', (): void => {
         expect(rendered).toStrictEqual(expect.stringContaining('an article'));
       });
 
-      it.todo('displays the word "endorsed"');
+      it('displays the word "endorsed"', async () => {
+        expect(rendered).toStrictEqual(expect.stringContaining('endorsed'));
+      });
 
-      it.todo('displays the actor name');
+      it('displays the actor name', async () => {
+        expect(rendered).toStrictEqual(expect.stringContaining('dummyActorName'));
+      });
 
-      it.todo('displays the event date');
+      it('displays the event date', async () => {
+        expect(rendered).toStrictEqual(expect.stringContaining('Jan 1, 2020'));
+      });
     });
   });
 
   describe('when given an EditorialCommunityReviewedArticleEvent', () => {
     const event: EditorialCommunityReviewedArticleEvent = {
       type: 'EditorialCommunityReviewedArticle',
-      date: new Date(),
+      date: new Date('2020-01-01'),
       editorialCommunityId: arbitraryActorId,
       articleId: arbitraryArticleId,
       reviewId: new Doi('10.1234/5678'),
@@ -91,9 +101,13 @@ describe('render-feed-item', (): void => {
         expect(rendered).toStrictEqual(expect.stringContaining('reviewed'));
       });
 
-      it.todo('displays the actor name');
+      it('displays the actor name', async () => {
+        expect(rendered).toStrictEqual(expect.stringContaining('dummyActorName'));
+      });
 
-      it.todo('displays the event date');
+      it('displays the event date', async () => {
+        expect(rendered).toStrictEqual(expect.stringContaining('Jan 1, 2020'));
+      });
     });
 
     describe('and the article information cannot be retrieved', () => {
@@ -107,11 +121,17 @@ describe('render-feed-item', (): void => {
         expect(rendered).toStrictEqual(expect.stringContaining('an article'));
       });
 
-      it.todo('displays the word "reviewed"');
+      it('displays the word "reviewed"', async () => {
+        expect(rendered).toStrictEqual(expect.stringContaining('reviewed'));
+      });
 
-      it.todo('displays the actor name');
+      it('displays the actor name', async () => {
+        expect(rendered).toStrictEqual(expect.stringContaining('dummyActorName'));
+      });
 
-      it.todo('displays the event date');
+      it('displays the event date', async () => {
+        expect(rendered).toStrictEqual(expect.stringContaining('Jan 1, 2020'));
+      });
     });
   });
 });
