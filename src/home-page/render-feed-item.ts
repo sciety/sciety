@@ -45,12 +45,12 @@ const createRenderFeedItemSummary = (getArticle: GetArticle): RenderFeedItemSumm
     event,
     actor,
   ) => {
-    const article = await getArticle(event.articleId);
+    const title = (await getArticle(event.articleId)).mapOr('an article', (article) => article.title);
 
     return `
       <a href="${actor.url}">${actor.name}</a>
       reviewed
-      <a href="/articles/${event.articleId.value}">${article.unsafelyUnwrap().title}</a>
+      <a href="/articles/${event.articleId.value}">${title}</a>
     `;
   };
 

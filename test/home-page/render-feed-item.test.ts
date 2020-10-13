@@ -93,7 +93,7 @@ describe('render-feed-item', (): void => {
         rendered = await renderFeedItem(event);
       });
 
-      it.skip('displays a generic article title', async () => {
+      it('displays a generic article title', async () => {
         expect(rendered).toStrictEqual(expect.stringContaining('an article'));
       });
 
