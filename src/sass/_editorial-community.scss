@@ -24,6 +24,7 @@
 }
 
 .editorial-community {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: stretch;
@@ -40,10 +41,24 @@
     background-color: rgba(0, 121, 107, 0.05);
     border-color: var(--COLOUR-PRIMARY-HOVER);
   }
+
+  button {
+    position: relative;
+    z-index: 0;
+  }
 }
 
 .editorial-community__toggle_wrapper {
   margin-top: auto;
+}
+
+.editorial-community__link::before {
+  position: absolute;
+  content: "";
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 
 .editorial-community__avatar {
