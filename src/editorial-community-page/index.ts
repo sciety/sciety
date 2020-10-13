@@ -14,6 +14,7 @@ import createRenderPage from './render-page';
 import createRenderPageHeader, { GetEditorialCommunity, RenderPageHeader } from './render-page-header';
 import createRenderReviews, { GetNumberOfReviews, RenderReviews } from './render-reviews';
 import createRenderFeedItem, { GetActor } from '../templates/render-feed-item';
+import createRenderFeedList from '../templates/render-feed-list';
 import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
 import EndorsementsRepository from '../types/endorsements-repository';
@@ -107,7 +108,11 @@ const buildRenderFeed = (ports: Ports): RenderFeed => {
   const getEventsAdapter = createGetMostRecentEvents(ports.getAllEvents, 20);
   const renderFeedItem = createRenderFeedItem(getActorAdapter, ports.fetchArticle);
   const renderFollowToggle = createRenderFollowToggle(ports.follows);
-  return createRenderFeed(getEventsAdapter, renderFeedItem, renderFollowToggle);
+  return createRenderFeed(
+    getEventsAdapter,
+    createRenderFeedList(renderFeedItem),
+    renderFollowToggle,
+  );
 };
 
 export interface Params {

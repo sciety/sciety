@@ -1,7 +1,7 @@
 import { Maybe } from 'true-myth';
 import { RenderFollowToggle } from './render-follow-toggle';
-import templateListItems from '../templates/list-items';
-import { FeedEvent, RenderFeedItem } from '../templates/render-feed-item';
+import { FeedEvent } from '../templates/render-feed-item';
+import { RenderFeedList } from '../templates/render-feed-list';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { UserId } from '../types/user-id';
 
@@ -13,16 +13,13 @@ export { FeedEvent } from '../templates/render-feed-item';
 
 export default (
   getEvents: GetEvents,
-  renderFeedItem: RenderFeedItem,
+  renderFeedList: RenderFeedList,
   renderFollowToggle: RenderFollowToggle,
 ): RenderFeed => async (editorialCommunityId, userId) => {
   const events = await getEvents(editorialCommunityId);
   let content = '<p>It looks like this community hasn’t evaluated any articles yet. Try coming back later!</p>';
   if (events.length > 0) {
-    const feedItems = await Promise.all(events.map(renderFeedItem));
-    content = `<ol class="home-page-feed" role="list">
-      ${templateListItems(feedItems, 'home-page-feed__item')}
-    </ol>`;
+    content = await renderFeedList(events);
   }
   return `
       <section class="ui very padded vertical segment">
