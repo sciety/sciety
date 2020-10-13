@@ -1,3 +1,4 @@
+@use 'settings';
 @use 'baseline';
 
 .editorial-community-list {
@@ -23,16 +24,16 @@
   align-items: center;
   margin-top: 15px;
   text-align: center;
-  border: 1px solid var(--COLOUR-GREY-ONE);
+  border: 1px solid settings.$colour-grey-one;
   border-radius: 5px;
-  color: var(--COLOUR-PRIMARY);
+  color: settings.$colour-primary;
   padding: baseline.increments(1);
   transition: background-color 0.2s ease-out, border-color 0.1s ease-out;
 
   &:hover {
-    background-color: rgba(0, 121, 107, 0.05);
-    border-color: var(--COLOUR-PRIMARY-HOVER);
-    color: var(--COLOUR-PRIMARY-HOVER);
+    background-color: settings.$colour-primary-very-light;
+    border-color: settings.$colour-primary-hover;
+    color: settings.$colour-primary-hover;
   }
 
   button {
@@ -62,14 +63,14 @@
   flex: 0 0 60px;
   width: 60px;
   height: 60px;
-  border: 1px solid var(--COLOUR-GREY-ONE);
+  border: 1px solid settings.$colour-grey-one;
   border-radius: 50%;
   margin-top: -24px;
   margin-bottom: 8px;
   transition: border-color 0.2s ease-out;
 
   .editorial-community:hover & {
-    border-color: var(--COLOUR-PRIMARY-HOVER);
+    border-color: settings.$colour-primary-hover;
   }
 }
 

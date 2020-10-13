@@ -177,9 +177,9 @@ Styles that are independent of Semantic UI
   --BASE-FONT-REM: 1rem;
   --MAX-SITE-WIDTH: 1200;
   --MAX-SITE-WIDTH-REM: calc((var(--MAX-SITE-WIDTH) / var(--BASE-FONT-MEASURE)) * 1rem);
-  --COLOUR-PRIMARY: rgb(0, 121, 107);
-  --COLOUR-PRIMARY-HOVER: rgb(3, 89, 79);
-  --COLOUR-GREY-ONE: #e0e1e2;
+  --COLOUR-PRIMARY: #{settings.$colour-primary};
+  --COLOUR-PRIMARY-HOVER: #{settings.$colour-primary-hover};
+  --COLOUR-GREY-ONE: #{settings.$colour-grey-one};
   --COLOUR-GREY-ONE-HOVER: #cacbce;
   --COLOUR-GREY-TWO: #5a5a5a;
   --COLOUR-GREY-TWO-HOVER: #282929;
