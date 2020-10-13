@@ -33,6 +33,7 @@
   text-align: center;
   border: 1px solid var(--COLOUR-GREY-ONE);
   border-radius: 5px;
+  color: var(--COLOUR-PRIMARY);
   padding: baseline.increments(1);
   transition: background-color 0.2s ease-out, border-color 0.1s ease-out;
   max-width: 284px;
@@ -40,6 +41,7 @@
   &:hover {
     background-color: rgba(0, 121, 107, 0.05);
     border-color: var(--COLOUR-PRIMARY-HOVER);
+    color: var(--COLOUR-PRIMARY-HOVER);
   }
 
   button {
@@ -52,13 +54,17 @@
   margin-top: auto;
 }
 
-.editorial-community__link::before {
-  position: absolute;
-  content: '';
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+.editorial-community__link {
+  color: inherit;
+
+  &::before {
+    position: absolute;
+    content: '';
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
 }
 
 .editorial-community__avatar {
