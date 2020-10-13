@@ -41,30 +41,56 @@ describe('render-feed-item', (): void => {
     it.todo('displays the actor name');
 
     it.todo('displays the event date');
+
+    describe('and the article information cannot be retrieved', () => {
+      it.todo('displays a generic article title');
+
+      it.todo('displays the word "endorsed"');
+
+      it.todo('displays the actor name');
+
+      it.todo('displays the event date');
+    });
   });
 
   describe('when given an EditorialCommunityReviewedArticleEvent', () => {
-    it('displays the article title', async () => {
-      const event: EditorialCommunityReviewedArticleEvent = {
-        type: 'EditorialCommunityReviewedArticle',
-        date: new Date(),
-        editorialCommunityId: arbitraryActorId,
-        articleId: arbitraryArticleId,
-        reviewId: new Doi('10.1234/5678'),
-      };
+    const event: EditorialCommunityReviewedArticleEvent = {
+      type: 'EditorialCommunityReviewedArticle',
+      date: new Date(),
+      editorialCommunityId: arbitraryActorId,
+      articleId: arbitraryArticleId,
+      reviewId: new Doi('10.1234/5678'),
+    };
+    let rendered: string;
+
+    beforeEach(async () => {
       const getArticle: GetArticle = async () => ({
         title: articleTitle,
       });
       const renderFeedItem = createRenderFeedItem(dummyGetActor, getArticle);
-      const rendered = await renderFeedItem(event);
+      rendered = await renderFeedItem(event);
+    });
 
+    it('displays the article title', async () => {
       expect(rendered).toStrictEqual(expect.stringContaining(articleTitle));
     });
 
-    it.todo('displays the word "reviewed"');
+    it('displays the word "reviewed"', async () => {
+      expect(rendered).toStrictEqual(expect.stringContaining('reviewed'));
+    });
 
     it.todo('displays the actor name');
 
     it.todo('displays the event date');
+
+    describe('and the article information cannot be retrieved', () => {
+      it.todo('displays a generic article title');
+
+      it.todo('displays the word "reviewed"');
+
+      it.todo('displays the actor name');
+
+      it.todo('displays the event date');
+    });
   });
 });
