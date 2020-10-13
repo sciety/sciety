@@ -4,7 +4,7 @@ import createGetMostRecentEvents, { GetAllEvents } from './get-most-recent-event
 import createProjectIsFollowingSomething from './project-is-following-something';
 import createRenderEditorialCommunities, { GetAllEditorialCommunities } from './render-editorial-communities';
 import createRenderFeed, { IsFollowingSomething } from './render-feed';
-import createRenderFeedItem, { GetActor, GetArticle } from './render-feed-item';
+import createRenderFeedItem, { GetActor } from './render-feed-item';
 import createRenderFindArticle from './render-find-article';
 import createRenderFollowToggle from './render-follow-toggle';
 import createRenderPage from './render-page';
@@ -44,9 +44,6 @@ export default (ports: Ports): RenderPage => {
       url: `/editorial-communities/${id.value}`,
     };
   };
-  const getArticleAdapter: GetArticle = async (id) => (
-    (await ports.fetchArticle(id)).unsafelyUnwrap()
-  );
   const isFollowingSomethingAdapter: IsFollowingSomething = createProjectIsFollowingSomething(ports.getAllEvents);
   const getEventsAdapter = createGetMostRecentEvents(
     ports.getAllEvents,
@@ -58,7 +55,7 @@ export default (ports: Ports): RenderPage => {
   const renderFollowToggle = createRenderFollowToggle(ports.follows);
   const renderEditorialCommunities = createRenderEditorialCommunities(editorialCommunitiesAdapter, renderFollowToggle);
   const renderFindArticle = createRenderFindArticle();
-  const renderFeedItem = createRenderFeedItem(getActorAdapter, getArticleAdapter);
+  const renderFeedItem = createRenderFeedItem(getActorAdapter, ports.fetchArticle);
   const renderFeed = createRenderFeed(
     isFollowingSomethingAdapter,
     getEventsAdapter,

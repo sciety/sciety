@@ -1,3 +1,4 @@
+import { Result } from 'true-myth';
 import templateDate from '../templates/date';
 import Doi from '../types/doi';
 import {
@@ -36,7 +37,7 @@ const createRenderFeedItemSummary = (getArticle: GetArticle): RenderFeedItemSumm
     return `
       <a href="${actor.url}">${actor.name}</a>
       endorsed
-      <a href="/articles/${event.articleId.value}">${endorsedArticle.title}</a>
+      <a href="/articles/${event.articleId.value}">${endorsedArticle.unsafelyUnwrap().title}</a>
     `;
   };
 
@@ -49,7 +50,7 @@ const createRenderFeedItemSummary = (getArticle: GetArticle): RenderFeedItemSumm
     return `
       <a href="${actor.url}">${actor.name}</a>
       reviewed
-      <a href="/articles/${event.articleId.value}">${article.title}</a>
+      <a href="/articles/${event.articleId.value}">${article.unsafelyUnwrap().title}</a>
     `;
   };
 
@@ -63,7 +64,7 @@ const createRenderFeedItemSummary = (getArticle: GetArticle): RenderFeedItemSumm
 
 export type GetActor = (id: EditorialCommunityId) => Promise<Actor>;
 
-export type GetArticle = (id: Doi) => Promise<Article>;
+export type GetArticle = (id: Doi) => Promise<Result<Article, unknown>>;
 
 export default (
   getActor: GetActor,
