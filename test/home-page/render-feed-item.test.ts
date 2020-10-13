@@ -23,28 +23,38 @@ describe('render-feed-item', (): void => {
     };
     let rendered: string;
 
-    beforeEach(async () => {
-      const getArticle: GetArticle = async () => Result.ok({
-        title: articleTitle,
+    describe('and the article information can be retrieved', () => {
+      beforeEach(async () => {
+        const getArticle: GetArticle = async () => Result.ok({
+          title: articleTitle,
+        });
+        const renderFeedItem = createRenderFeedItem(dummyGetActor, getArticle);
+        rendered = await renderFeedItem(event);
       });
-      const renderFeedItem = createRenderFeedItem(dummyGetActor, getArticle);
-      rendered = await renderFeedItem(event);
+
+      it('displays the article title', async () => {
+        expect(rendered).toStrictEqual(expect.stringContaining(articleTitle));
+      });
+
+      it('displays the word "endorsed"', async () => {
+        expect(rendered).toStrictEqual(expect.stringContaining('endorsed'));
+      });
+
+      it.todo('displays the actor name');
+
+      it.todo('displays the event date');
     });
-
-    it('displays the article title', async () => {
-      expect(rendered).toStrictEqual(expect.stringContaining(articleTitle));
-    });
-
-    it('displays the word "endorsed"', async () => {
-      expect(rendered).toStrictEqual(expect.stringContaining('endorsed'));
-    });
-
-    it.todo('displays the actor name');
-
-    it.todo('displays the event date');
 
     describe('and the article information cannot be retrieved', () => {
-      it.todo('displays a generic article title');
+      beforeEach(async () => {
+        const getArticle: GetArticle = async () => Result.err('something-bad');
+        const renderFeedItem = createRenderFeedItem(dummyGetActor, getArticle);
+        rendered = await renderFeedItem(event);
+      });
+
+      it('displays a generic article title', async () => {
+        expect(rendered).toStrictEqual(expect.stringContaining('an article'));
+      });
 
       it.todo('displays the word "endorsed"');
 

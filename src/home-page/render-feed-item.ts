@@ -28,31 +28,27 @@ type RenderFeedItemSummary = (event: FeedEvent, actor: Actor) => Promise<string>
 const createRenderFeedItemSummary = (getArticle: GetArticle): RenderFeedItemSummary => {
   type RenderEvent<E extends FeedEvent> = (event: E, actor: Actor) => Promise<string>;
 
+  const title = async (articleId: Doi): Promise<string> => (
+    (await getArticle(articleId)).mapOr('an article', (article) => article.title)
+  );
+
   const renderEditorialCommunityEndorsedArticle: RenderEvent<EditorialCommunityEndorsedArticleEvent> = async (
     event,
     actor,
-  ) => {
-    const endorsedArticle = await getArticle(event.articleId);
-
-    return `
+  ) => `
       <a href="${actor.url}">${actor.name}</a>
       endorsed
-      <a href="/articles/${event.articleId.value}">${endorsedArticle.unsafelyUnwrap().title}</a>
+      <a href="/articles/${event.articleId.value}">${await title(event.articleId)}</a>
     `;
-  };
 
   const renderEditorialCommunityReviewedArticle: RenderEvent<EditorialCommunityReviewedArticleEvent> = async (
     event,
     actor,
-  ) => {
-    const title = (await getArticle(event.articleId)).mapOr('an article', (article) => article.title);
-
-    return `
+  ) => `
       <a href="${actor.url}">${actor.name}</a>
       reviewed
-      <a href="/articles/${event.articleId.value}">${title}</a>
+      <a href="/articles/${event.articleId.value}">${await title(event.articleId)}</a>
     `;
-  };
 
   return async (event, actor) => {
     switch (event.type) {
