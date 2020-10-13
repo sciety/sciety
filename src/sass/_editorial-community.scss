@@ -3,6 +3,7 @@
 .editorial-community-list {
   font-family: Lato, sans-serif;
   list-style: none;
+  margin-top: 0;
   padding-left: 0;
   display: grid;
   grid-row-gap: baseline.increments(4);
@@ -29,7 +30,7 @@
   flex-direction: column;
   justify-content: stretch;
   align-items: center;
-  margin-top: 24px;
+  margin-top: 15px;
   text-align: center;
   border: 1px solid var(--COLOUR-GREY-ONE);
   border-radius: 5px;
