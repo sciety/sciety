@@ -1,5 +1,5 @@
 import { Result } from 'true-myth';
-import templateDate from '../templates/date';
+import templateDate from './date';
 import Doi from '../types/doi';
 import {
   EditorialCommunityEndorsedArticleEvent,

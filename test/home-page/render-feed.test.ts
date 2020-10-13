@@ -1,7 +1,7 @@
 import { JSDOM } from 'jsdom';
 import { Maybe } from 'true-myth';
 import createRenderFeed, { GetEvents, IsFollowingSomething } from '../../src/home-page/render-feed';
-import { RenderFeedItem } from '../../src/home-page/render-feed-item';
+import { RenderFeedItem } from '../../src/templates/render-feed-item';
 import Doi from '../../src/types/doi';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
 import toUserId from '../../src/types/user-id';

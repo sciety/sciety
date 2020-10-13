@@ -4,11 +4,11 @@ import createGetMostRecentEvents, { GetAllEvents } from './get-most-recent-event
 import createProjectIsFollowingSomething from './project-is-following-something';
 import createRenderEditorialCommunities, { GetAllEditorialCommunities } from './render-editorial-communities';
 import createRenderFeed, { IsFollowingSomething } from './render-feed';
-import createRenderFeedItem, { GetActor } from './render-feed-item';
 import createRenderFindArticle from './render-find-article';
 import createRenderFollowToggle from './render-follow-toggle';
 import createRenderPage from './render-page';
 import createRenderPageHeader from './render-page-header';
+import createRenderFeedItem, { GetActor } from '../templates/render-feed-item';
 import EditorialCommunityId from '../types/editorial-community-id';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import { FetchExternalArticle } from '../types/fetch-external-article';

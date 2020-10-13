@@ -1,5 +1,5 @@
 import { Result } from 'true-myth';
-import createRenderFeedItem, { GetActor, GetArticle } from '../../src/home-page/render-feed-item';
+import createRenderFeedItem, { GetActor, GetArticle } from '../../src/templates/render-feed-item';
 import Doi from '../../src/types/doi';
 import { EditorialCommunityEndorsedArticleEvent, EditorialCommunityReviewedArticleEvent } from '../../src/types/domain-events';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
