@@ -1,6 +1,6 @@
 import { Maybe } from 'true-myth';
-import templateListItems from '../templates/list-items';
-import { FeedEvent, RenderFeedItem } from '../templates/render-feed-item';
+import { FeedEvent } from '../templates/render-feed-item';
+import { RenderFeedList } from '../templates/render-feed-list';
 import { UserId } from '../types/user-id';
 
 type RenderFeed = (userId: Maybe<UserId>) => Promise<string>;
@@ -14,7 +14,7 @@ export { FeedEvent } from '../templates/render-feed-item';
 export default (
   isFollowingSomething: IsFollowingSomething,
   getEvents: GetEvents,
-  renderFeedItem: RenderFeedItem,
+  renderFeedList: RenderFeedList,
 ): RenderFeed => (
   async (userId) => {
     let contents = '';
@@ -41,12 +41,7 @@ export default (
     } else {
       const events = await getEvents(userId.unsafelyUnwrap());
       if (events.length > 0) {
-        const feedItems = await Promise.all(events.map(renderFeedItem));
-        contents = `
-          <ol class="home-page-feed" role="list">
-            ${templateListItems(feedItems, 'home-page-feed__item')}
-          </ol>
-        `;
+        contents = await renderFeedList(events);
       } else {
         contents = `
           <p>

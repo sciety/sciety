@@ -17,9 +17,9 @@ export default (
   renderFollowToggle: RenderFollowToggle,
 ): RenderFeed => async (editorialCommunityId, userId) => {
   const events = await getEvents(editorialCommunityId);
-  const feedItems = await Promise.all(events.map(renderFeedItem));
   let content = '<p>It looks like this community hasn’t evaluated any articles yet. Try coming back later!</p>';
-  if (feedItems.length > 0) {
+  if (events.length > 0) {
+    const feedItems = await Promise.all(events.map(renderFeedItem));
     content = `<ol class="home-page-feed" role="list">
       ${templateListItems(feedItems, 'home-page-feed__item')}
     </ol>`;

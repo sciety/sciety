@@ -1,7 +1,7 @@
 import { JSDOM } from 'jsdom';
 import { Maybe } from 'true-myth';
 import createRenderFeed, { GetEvents, IsFollowingSomething } from '../../src/home-page/render-feed';
-import { RenderFeedItem } from '../../src/templates/render-feed-item';
+import { RenderFeedList } from '../../src/templates/render-feed-list';
 import Doi from '../../src/types/doi';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
 import toUserId from '../../src/types/user-id';
@@ -20,11 +20,11 @@ describe('render-feed', (): void => {
           },
         ];
         const dummyIsFollowingSomething: IsFollowingSomething = async () => true;
-        const dummyRenderFeedItem: RenderFeedItem = async () => '';
+        const dummyRenderFeedList: RenderFeedList = async () => '';
         const renderFeed = createRenderFeed(
           dummyIsFollowingSomething,
           dummyGetEvents,
-          dummyRenderFeedItem,
+          dummyRenderFeedList,
         );
         const rendered = JSDOM.fragment(await renderFeed(Maybe.just(toUserId('1111'))));
 
