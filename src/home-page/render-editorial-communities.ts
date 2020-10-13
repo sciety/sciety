@@ -19,15 +19,17 @@ export default (
 ): RenderEditorialCommunities => async (userId) => {
   const editorialCommunityLinks = await Promise.all((await editorialCommunities())
     .map(async (editorialCommunity) => (`
-          <a href="/editorial-communities/${editorialCommunity.id.value}" class="editorial-community">
-            <img src="${editorialCommunity.avatar.toString()}" alt="" class="editorial-community__avatar">
-            <div class="editorial-community__name">
-              ${editorialCommunity.name}
-            </div>
+          <div class="editorial-community">
+            <a href="/editorial-communities/${editorialCommunity.id.value}" class="editorial-community__link">
+              <img src="${editorialCommunity.avatar.toString()}" alt="" class="editorial-community__avatar">
+              <div class="editorial-community__name">
+                ${editorialCommunity.name}
+              </div>
+            </a>
             <object class="editorial-community__toggle_wrapper">
               ${await renderFollowToggle(userId, editorialCommunity.id)}
             </object>
-          </a>
+          </div>
       `)));
 
   return `
