@@ -27,6 +27,7 @@ ENV PRETTY_LOG=true
 
 COPY .eslintignore \
   .eslintrc.js \
+  .stylelintignore \
   .stylelintrc \
   jest.config.js \
   tsconfig.json \
