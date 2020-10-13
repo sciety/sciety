@@ -1,6 +1,6 @@
 import { Maybe } from 'true-myth';
-import { FeedEvent, RenderFeedItem } from './render-feed-item';
 import { RenderFollowToggle } from './render-follow-toggle';
+import { FeedEvent, RenderFeedItem } from '../home-page/render-feed-item';
 import templateListItems from '../templates/list-items';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { UserId } from '../types/user-id';
@@ -9,7 +9,7 @@ export type RenderFeed = (editorialCommunityId: EditorialCommunityId, userId: Ma
 
 export type GetEvents = (editorialCommunityId: EditorialCommunityId) => Promise<Array<FeedEvent>>;
 
-export { FeedEvent } from './render-feed-item';
+export { FeedEvent } from '../home-page/render-feed-item';
 
 export default (
   getEvents: GetEvents,
@@ -20,8 +20,8 @@ export default (
   const feedItems = await Promise.all(events.map(renderFeedItem));
   let content = '<p>It looks like this community hasn’t evaluated any articles yet. Try coming back later!</p>';
   if (feedItems.length > 0) {
-    content = `<ol class="ui large feed" role="list">
-      ${templateListItems(feedItems, 'event')}
+    content = `<ol class="home-page-feed" role="list">
+      ${templateListItems(feedItems, 'home-page-feed__item')}
     </ol>`;
   }
   return `

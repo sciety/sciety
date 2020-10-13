@@ -8,12 +8,12 @@ import createProjectFollowerIds from './project-follower-ids';
 import createRenderDescription, { GetEditorialCommunityDescription, RenderDescription } from './render-description';
 import createRenderEndorsedArticles, { GetNumberOfEndorsedArticles, RenderEndorsedArticles } from './render-endorsed-articles';
 import createRenderFeed, { RenderFeed } from './render-feed';
-import createRenderFeedItem, { GetActor, GetArticle } from './render-feed-item';
 import createRenderFollowToggle, { Follows } from './render-follow-toggle';
 import createRenderFollowers from './render-followers';
 import createRenderPage from './render-page';
 import createRenderPageHeader, { GetEditorialCommunity, RenderPageHeader } from './render-page-header';
 import createRenderReviews, { GetNumberOfReviews, RenderReviews } from './render-reviews';
+import createRenderFeedItem, { GetActor } from '../home-page/render-feed-item';
 import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
 import EndorsementsRepository from '../types/endorsements-repository';
@@ -104,11 +104,8 @@ const buildRenderFeed = (ports: Ports): RenderFeed => {
       url: `/editorial-communities/${id.value}`,
     };
   };
-  const getArticleAdapter: GetArticle = async (id) => (
-    (await ports.fetchArticle(id)).unsafelyUnwrap()
-  );
   const getEventsAdapter = createGetMostRecentEvents(ports.getAllEvents, 20);
-  const renderFeedItem = createRenderFeedItem(getActorAdapter, getArticleAdapter);
+  const renderFeedItem = createRenderFeedItem(getActorAdapter, ports.fetchArticle);
   const renderFollowToggle = createRenderFollowToggle(ports.follows);
   return createRenderFeed(getEventsAdapter, renderFeedItem, renderFollowToggle);
 };
