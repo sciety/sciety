@@ -8,16 +8,7 @@
   display: grid;
   grid-row-gap: baseline.increments(4);
   grid-column-gap: baseline.increments(3);
-  justify-content: center;
-
-  @media all and (min-width: 680px) {
-    grid-template-columns: repeat(2, 284px);
-  }
-
-  @media all and (min-width: 900px) {
-    grid-template-columns: minmax(min-content, 284px);
-  }
-
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
 }
 
 .editorial-community-list__item {
@@ -37,7 +28,6 @@
   color: var(--COLOUR-PRIMARY);
   padding: baseline.increments(1);
   transition: background-color 0.2s ease-out, border-color 0.1s ease-out;
-  max-width: 284px;
 
   &:hover {
     background-color: rgba(0, 121, 107, 0.05);
