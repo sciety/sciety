@@ -1,4 +1,3 @@
-import { JSDOM } from 'jsdom';
 import { Maybe } from 'true-myth';
 import createRenderFeed, { GetEvents, IsFollowingSomething } from '../../src/home-page/render-feed';
 import { RenderFeedList } from '../../src/templates/render-feed-list';
@@ -20,15 +19,15 @@ describe('render-feed', (): void => {
           },
         ];
         const dummyIsFollowingSomething: IsFollowingSomething = async () => true;
-        const dummyRenderFeedList: RenderFeedList = async () => '';
+        const dummyRenderFeedList: RenderFeedList = async () => 'someNiceList';
         const renderFeed = createRenderFeed(
           dummyIsFollowingSomething,
           dummyGetEvents,
           dummyRenderFeedList,
         );
-        const rendered = JSDOM.fragment(await renderFeed(Maybe.just(toUserId('1111'))));
+        const rendered = await renderFeed(Maybe.just(toUserId('1111')));
 
-        expect(rendered.querySelector('.home-page-feed')?.tagName).toBe('OL');
+        expect(rendered).toStrictEqual(expect.stringContaining('someNiceList'));
       });
 
       describe('when given three feed items', () => {
