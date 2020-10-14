@@ -13,7 +13,7 @@ export { FeedEvent } from '../templates/render-summary-feed-list';
 export default (
   isFollowingSomething: IsFollowingSomething,
   getEvents: GetEvents,
-  renderSummaryFeedList: RenderSummaryFeedList,
+  renderSummaryFeedList: RenderSummaryFeedList<FeedEvent>,
 ): RenderFeed => (
   async (userId) => {
     let contents = '';

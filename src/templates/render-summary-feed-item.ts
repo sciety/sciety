@@ -11,7 +11,7 @@ export type FeedEvent =
   EditorialCommunityEndorsedArticleEvent |
   EditorialCommunityReviewedArticleEvent;
 
-export type RenderSummaryFeedItem = (event: FeedEvent) => Promise<string>;
+type RenderSummaryFeedItem = (event: FeedEvent) => Promise<string>;
 
 type Actor = {
   url: string;

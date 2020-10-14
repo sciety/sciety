@@ -19,7 +19,7 @@ describe('render-feed', (): void => {
           },
         ];
         const dummyIsFollowingSomething: IsFollowingSomething = async () => true;
-        const dummyRenderSummaryFeedList: RenderSummaryFeedList = async () => 'someNiceList';
+        const dummyRenderSummaryFeedList: RenderSummaryFeedList<unknown> = async () => 'someNiceList';
         const renderFeed = createRenderFeed(
           dummyIsFollowingSomething,
           dummyGetEvents,

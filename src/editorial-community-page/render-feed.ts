@@ -12,7 +12,7 @@ export { FeedEvent } from '../templates/render-summary-feed-list';
 
 export default (
   getEvents: GetEvents,
-  renderSummaryFeedList: RenderSummaryFeedList,
+  renderSummaryFeedList: RenderSummaryFeedList<FeedEvent>,
   renderFollowToggle: RenderFollowToggle,
 ): RenderFeed => async (editorialCommunityId, userId) => {
   const events = await getEvents(editorialCommunityId);
