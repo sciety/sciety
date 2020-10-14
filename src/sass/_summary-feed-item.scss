@@ -1,5 +1,30 @@
-@media screen and (min-width: 46.25em) {
-  .summary-feed-item {
+@use 'baseline';
+@use 'settings';
+
+$_avatar-size: 47px;
+
+.summary-feed-item {
+  font-family: Lato, sans-serif;
+
+  @media screen and (min-width: 46.25em) {
     display: flex;
   }
+}
+
+.summary-feed-item__avatar {
+  width: $_avatar-size;
+  height: $_avatar-size;
+  border: 1px solid settings.$colour-grey-one;
+  border-radius: 50%;
+  flex: 0 0 $_avatar-size;
+  margin-right: 1.5rem;
+}
+
+.summary-feed-item__date {
+  color: settings.$colour-grey-two;
+}
+
+.summary-feed-item__title {
+  font-family: Lato, sans-serif;
+  margin-bottom: baseline.increments(2);
 }

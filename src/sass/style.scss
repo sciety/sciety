@@ -182,7 +182,7 @@ Styles that are independent of Semantic UI
   --COLOUR-PRIMARY-HOVER: #{settings.$colour-primary-hover};
   --COLOUR-GREY-ONE: #{settings.$colour-grey-one};
   --COLOUR-GREY-ONE-HOVER: #cacbce;
-  --COLOUR-GREY-TWO: #5a5a5a;
+  --COLOUR-GREY-TWO: #{settings.$colour-grey-two};
   --COLOUR-GREY-TWO-HOVER: #282929;
 }
 
@@ -359,25 +359,6 @@ a:hover {
 .home-page-feed__item {
   display: block;
   margin-bottom: #{baseline.increments(4)};
-}
-
-.home-page-feed__item__avatar {
-  width: 47px;
-  height: 47px;
-  border: 1px solid #eee;
-  border-radius: 50%;
-  flex: 0 0 47px;
-  margin-right: 1.5rem;
-}
-
-.home-page-feed__item__date {
-  font-family: Lato, sans-serif;
-  color: var(--COLOUR-GREY-TWO);
-}
-
-.home-page-feed__item__title {
-  font-family: Lato, sans-serif;
-  margin-bottom: #{baseline.increments(2)};
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

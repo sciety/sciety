@@ -72,10 +72,10 @@ export default (
     const actor: Actor = await getActor(event.editorialCommunityId);
     return `
       <div class="summary-feed-item">
-        <img src="${actor.imageUrl}" alt="" class="home-page-feed__item__avatar">
+        <img src="${actor.imageUrl}" alt="" class="summary-feed-item__avatar">
         <div>
-          ${templateDate(event.date, 'home-page-feed__item__date')}
-          <div class="home-page-feed__item__title">
+          ${templateDate(event.date, 'summary-feed-item__date')}
+          <div class="summary-feed-item__title">
             ${await renderFeedItemSummary(event, actor)}
           </div>
         </div>
