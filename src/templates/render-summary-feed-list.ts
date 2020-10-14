@@ -3,6 +3,8 @@ import { FeedEvent, RenderSummaryFeedItem } from './render-summary-feed-item';
 
 export type RenderSummaryFeedList = (events: ReadonlyArray<FeedEvent>) => Promise<string>;
 
+export { FeedEvent } from './render-summary-feed-item';
+
 export default (
   renderSummaryFeedItem: RenderSummaryFeedItem,
 ): RenderSummaryFeedList => async (events) => {

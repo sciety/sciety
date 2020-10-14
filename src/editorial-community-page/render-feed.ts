@@ -1,7 +1,6 @@
 import { Maybe } from 'true-myth';
 import { RenderFollowToggle } from './render-follow-toggle';
-import { FeedEvent } from '../templates/render-summary-feed-item';
-import { RenderSummaryFeedList } from '../templates/render-summary-feed-list';
+import { FeedEvent, RenderSummaryFeedList } from '../templates/render-summary-feed-list';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { UserId } from '../types/user-id';
 
@@ -9,7 +8,7 @@ export type RenderFeed = (editorialCommunityId: EditorialCommunityId, userId: Ma
 
 export type GetEvents = (editorialCommunityId: EditorialCommunityId) => Promise<Array<FeedEvent>>;
 
-export { FeedEvent } from '../templates/render-summary-feed-item';
+export { FeedEvent } from '../templates/render-summary-feed-list';
 
 export default (
   getEvents: GetEvents,
