@@ -38,16 +38,12 @@ export default <T>(
       `;
     } else {
       const events = await getEvents(userId.unsafelyUnwrap());
-      if (events.length > 0) {
-        contents = (await renderSummaryFeedList(events)).unsafelyUnwrap();
-      } else {
-        contents = `
-          <p>
-            The communities you’re following haven’t evaluated any articles yet.
-            You can have a look for other communities of interest, or try coming back later!
-          </p>
-        `;
-      }
+      contents = (await renderSummaryFeedList(events)).unwrapOr(`
+        <p>
+          The communities you’re following haven’t evaluated any articles yet.
+          You can have a look for other communities of interest, or try coming back later!
+        </p>
+      `);
     }
     return `
       <section>

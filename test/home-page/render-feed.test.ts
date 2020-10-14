@@ -30,10 +30,11 @@ describe('render-feed', (): void => {
       it('returns a come back later text', async (): Promise<void> => {
         const dummyIsFollowingSomething: IsFollowingSomething = async () => true;
         const dummyGetEvents: GetEvents<unknown> = async () => [];
+        const stubRenderSummaryFeedList: RenderSummaryFeedList<unknown> = async () => Maybe.nothing();
         const renderFeed = createRenderFeed(
           dummyIsFollowingSomething,
           dummyGetEvents,
-          shouldNotBeCalled,
+          stubRenderSummaryFeedList,
         );
         const rendered = await renderFeed(Maybe.just(toUserId('1111')));
 
