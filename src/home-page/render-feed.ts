@@ -1,23 +1,18 @@
 import { Maybe } from 'true-myth';
-import { EditorialCommunityEndorsedArticleEvent, EditorialCommunityReviewedArticleEvent } from '../types/domain-events';
 import { UserId } from '../types/user-id';
 
 type RenderFeed = (userId: Maybe<UserId>) => Promise<string>;
 
 export type IsFollowingSomething = (userId: UserId) => Promise<boolean>;
 
-export type GetEvents = (userId: UserId) => Promise<ReadonlyArray<FeedEvent>>;
+export type GetEvents<T> = (userId: UserId) => Promise<ReadonlyArray<T>>;
 
-export type FeedEvent =
-  EditorialCommunityEndorsedArticleEvent |
-  EditorialCommunityReviewedArticleEvent;
+type RenderSummaryFeedList<T> = (events: ReadonlyArray<T>) => Promise<string>;
 
-type RenderSummaryFeedList = (events: ReadonlyArray<FeedEvent>) => Promise<string>;
-
-export default (
+export default <T>(
   isFollowingSomething: IsFollowingSomething,
-  getEvents: GetEvents,
-  renderSummaryFeedList: RenderSummaryFeedList,
+  getEvents: GetEvents<T>,
+  renderSummaryFeedList: RenderSummaryFeedList<T>,
 ): RenderFeed => (
   async (userId) => {
     let contents = '';

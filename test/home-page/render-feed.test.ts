@@ -10,14 +10,7 @@ describe('render-feed', (): void => {
   describe('when the user is logged in', () => {
     describe('and has a non-empty feed', () => {
       it('returns a list', async (): Promise<void> => {
-        const dummyGetEvents: GetEvents = async () => [
-          {
-            type: 'EditorialCommunityEndorsedArticle',
-            date: new Date(),
-            editorialCommunityId: new EditorialCommunityId(''),
-            articleId: new Doi('10.1101/12345678'),
-          },
-        ];
+        const dummyGetEvents: GetEvents<unknown> = async () => ['some-event'];
         const dummyIsFollowingSomething: IsFollowingSomething = async () => true;
         const dummyRenderSummaryFeedList: RenderSummaryFeedList<unknown> = async () => 'someNiceList';
         const renderFeed = createRenderFeed(
@@ -38,7 +31,7 @@ describe('render-feed', (): void => {
     describe('and has an empty feed', () => {
       it('returns a come back later text', async (): Promise<void> => {
         const dummyIsFollowingSomething: IsFollowingSomething = async () => true;
-        const dummyGetEvents: GetEvents = async () => [];
+        const dummyGetEvents: GetEvents<unknown> = async () => [];
         const renderFeed = createRenderFeed(
           dummyIsFollowingSomething,
           dummyGetEvents,

@@ -1,11 +1,17 @@
-import { FeedEvent, GetEvents } from './render-feed';
+import { GetEvents } from './render-feed';
 import {
   DomainEvent,
+  EditorialCommunityEndorsedArticleEvent,
+  EditorialCommunityReviewedArticleEvent,
   isEditorialCommunityEndorsedArticleEvent,
   isEditorialCommunityReviewedArticleEvent,
 } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { UserId } from '../types/user-id';
+
+type FeedEvent =
+  EditorialCommunityEndorsedArticleEvent |
+  EditorialCommunityReviewedArticleEvent;
 
 export type GetAllEvents = () => Promise<ReadonlyArray<DomainEvent>>;
 export type Follows = (userId: UserId, editorialCommunityId: EditorialCommunityId) => Promise<boolean>;
@@ -14,7 +20,7 @@ export default (
   getAllEvents: GetAllEvents,
   follows: Follows,
   maxCount: number,
-): GetEvents => (
+): GetEvents<FeedEvent> => (
   async (userId) => {
     const isFollowedEvent = async (event: DomainEvent): Promise<boolean> => {
       const userFollows = await follows(userId, event.editorialCommunityId);
