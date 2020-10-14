@@ -1,6 +1,7 @@
 @use 'settings';
 @use 'baseline';
 @use 'editorial-community';
+@use 'summary-feed-item';
 @import 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css';
 
 /* Hive imports, not Semantic-UI */
@@ -358,12 +359,6 @@ a:hover {
 .home-page-feed__item {
   display: block;
   margin-bottom: #{baseline.increments(4)};
-}
-
-@media screen and (min-width: 46.25em) {
-  .home-page-feed__item {
-    display: flex;
-  }
 }
 
 .home-page-feed__item__avatar {
