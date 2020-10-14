@@ -1,10 +1,10 @@
 import { Result } from 'true-myth';
-import createRenderFeedItem, { GetActor, GetArticle } from '../../src/templates/render-feed-item';
+import createRenderSummaryFeedItem, { GetActor, GetArticle } from '../../src/templates/render-summary-feed-item';
 import Doi from '../../src/types/doi';
 import { EditorialCommunityEndorsedArticleEvent, EditorialCommunityReviewedArticleEvent } from '../../src/types/domain-events';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
 
-describe('render-feed-item', (): void => {
+describe('render-summary-feed-item', (): void => {
   const articleTitle = 'the title';
   const arbitraryActorId = new EditorialCommunityId('');
   const arbitraryArticleId = new Doi('10.5281/zenodo.3678326');
@@ -28,8 +28,8 @@ describe('render-feed-item', (): void => {
         const getArticle: GetArticle = async () => Result.ok({
           title: articleTitle,
         });
-        const renderFeedItem = createRenderFeedItem(dummyGetActor, getArticle);
-        rendered = await renderFeedItem(event);
+        const renderSummaryFeedItem = createRenderSummaryFeedItem(dummyGetActor, getArticle);
+        rendered = await renderSummaryFeedItem(event);
       });
 
       it('displays the article title', async () => {
@@ -52,8 +52,8 @@ describe('render-feed-item', (): void => {
     describe('and the article information cannot be retrieved', () => {
       beforeEach(async () => {
         const getArticle: GetArticle = async () => Result.err('something-bad');
-        const renderFeedItem = createRenderFeedItem(dummyGetActor, getArticle);
-        rendered = await renderFeedItem(event);
+        const renderSummaryFeedItem = createRenderSummaryFeedItem(dummyGetActor, getArticle);
+        rendered = await renderSummaryFeedItem(event);
       });
 
       it('displays a generic article title', async () => {
@@ -89,8 +89,8 @@ describe('render-feed-item', (): void => {
         const getArticle: GetArticle = async () => Result.ok({
           title: articleTitle,
         });
-        const renderFeedItem = createRenderFeedItem(dummyGetActor, getArticle);
-        rendered = await renderFeedItem(event);
+        const renderSummaryFeedItem = createRenderSummaryFeedItem(dummyGetActor, getArticle);
+        rendered = await renderSummaryFeedItem(event);
       });
 
       it('displays the article title', async () => {
@@ -113,8 +113,8 @@ describe('render-feed-item', (): void => {
     describe('and the article information cannot be retrieved', () => {
       beforeEach(async () => {
         const getArticle: GetArticle = async () => Result.err('something-bad');
-        const renderFeedItem = createRenderFeedItem(dummyGetActor, getArticle);
-        rendered = await renderFeedItem(event);
+        const renderSummaryFeedItem = createRenderSummaryFeedItem(dummyGetActor, getArticle);
+        rendered = await renderSummaryFeedItem(event);
       });
 
       it('displays a generic article title', async () => {

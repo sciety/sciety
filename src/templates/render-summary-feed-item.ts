@@ -11,7 +11,7 @@ export type FeedEvent =
   EditorialCommunityEndorsedArticleEvent |
   EditorialCommunityReviewedArticleEvent;
 
-export type RenderFeedItem = (event: FeedEvent) => Promise<string>;
+export type RenderSummaryFeedItem = (event: FeedEvent) => Promise<string>;
 
 type Actor = {
   url: string;
@@ -65,7 +65,7 @@ export type GetArticle = (id: Doi) => Promise<Result<Article, unknown>>;
 export default (
   getActor: GetActor,
   getArticle: GetArticle,
-): RenderFeedItem => {
+): RenderSummaryFeedItem => {
   const renderFeedItemSummary = createRenderFeedItemSummary(getArticle);
 
   return async (event) => {

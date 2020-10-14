@@ -1,6 +1,6 @@
 import { Maybe } from 'true-myth';
-import { FeedEvent } from '../templates/render-feed-item';
 import { RenderFeedList } from '../templates/render-feed-list';
+import { FeedEvent } from '../templates/render-summary-feed-item';
 import { UserId } from '../types/user-id';
 
 type RenderFeed = (userId: Maybe<UserId>) => Promise<string>;
@@ -9,7 +9,7 @@ export type IsFollowingSomething = (userId: UserId) => Promise<boolean>;
 
 export type GetEvents = (userId: UserId) => Promise<ReadonlyArray<FeedEvent>>;
 
-export { FeedEvent } from '../templates/render-feed-item';
+export { FeedEvent } from '../templates/render-summary-feed-item';
 
 export default (
   isFollowingSomething: IsFollowingSomething,
