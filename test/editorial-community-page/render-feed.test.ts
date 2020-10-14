@@ -5,15 +5,18 @@ import { RenderSummaryFeedList } from '../../src/templates/render-summary-feed-l
 import EditorialCommunityId from '../../src/types/editorial-community-id';
 
 describe('render feed', () => {
+  const stubGetEvents: GetEvents<unknown> = async () => [];
+  const stubRenderFollowToggle: RenderFollowToggle = async () => '';
+  const anEditorialCommunityId = new EditorialCommunityId('');
+  const aUserId = Maybe.nothing<never>();
+
   describe('with community events', () => {
     it('returns a list of events', async () => {
-      const getEvents: GetEvents<unknown> = async () => [];
-      const renderFollowToggle: RenderFollowToggle = async () => '';
       const renderSummaryFeedList: RenderSummaryFeedList<unknown> = async () => Maybe.just('a list');
 
-      const renderFeed = createRenderFeed(getEvents, renderSummaryFeedList, renderFollowToggle);
+      const renderFeed = createRenderFeed(stubGetEvents, renderSummaryFeedList, stubRenderFollowToggle);
 
-      const rendered = await renderFeed(new EditorialCommunityId(''), Maybe.nothing());
+      const rendered = await renderFeed(anEditorialCommunityId, aUserId);
 
       expect(rendered).toContain('a list');
     });
@@ -21,13 +24,11 @@ describe('render feed', () => {
 
   describe('without community events', () => {
     it('returns fallback text', async () => {
-      const getEvents: GetEvents<unknown> = async () => [];
-      const renderFollowToggle: RenderFollowToggle = async () => '';
       const renderSummaryFeedList: RenderSummaryFeedList<unknown> = async () => Maybe.nothing();
 
-      const renderFeed = createRenderFeed(getEvents, renderSummaryFeedList, renderFollowToggle);
+      const renderFeed = createRenderFeed(stubGetEvents, renderSummaryFeedList, stubRenderFollowToggle);
 
-      const rendered = await renderFeed(new EditorialCommunityId(''), Maybe.nothing());
+      const rendered = await renderFeed(anEditorialCommunityId, aUserId);
 
       expect(rendered).toContain('community hasn’t evaluated');
     });
