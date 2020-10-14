@@ -7,7 +7,7 @@ export type RenderFeed = (editorialCommunityId: EditorialCommunityId, userId: Ma
 
 export type GetEvents<T> = (editorialCommunityId: EditorialCommunityId) => Promise<Array<T>>;
 
-type RenderSummaryFeedList<T> = (events: ReadonlyArray<T>) => Promise<string>;
+type RenderSummaryFeedList<T> = (events: ReadonlyArray<T>) => Promise<Maybe<string>>;
 
 export default <T>(
   getEvents: GetEvents<T>,
@@ -17,7 +17,7 @@ export default <T>(
   const events = await getEvents(editorialCommunityId);
   let content = '<p>It looks like this community hasn’t evaluated any articles yet. Try coming back later!</p>';
   if (events.length > 0) {
-    content = await renderSummaryFeedList(events);
+    content = (await renderSummaryFeedList(events)).unsafelyUnwrap();
   }
   return `
       <section class="ui very padded vertical segment">

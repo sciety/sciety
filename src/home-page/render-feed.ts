@@ -7,7 +7,7 @@ export type IsFollowingSomething = (userId: UserId) => Promise<boolean>;
 
 export type GetEvents<T> = (userId: UserId) => Promise<ReadonlyArray<T>>;
 
-type RenderSummaryFeedList<T> = (events: ReadonlyArray<T>) => Promise<string>;
+type RenderSummaryFeedList<T> = (events: ReadonlyArray<T>) => Promise<Maybe<string>>;
 
 export default <T>(
   isFollowingSomething: IsFollowingSomething,
@@ -39,7 +39,7 @@ export default <T>(
     } else {
       const events = await getEvents(userId.unsafelyUnwrap());
       if (events.length > 0) {
-        contents = await renderSummaryFeedList(events);
+        contents = (await renderSummaryFeedList(events)).unsafelyUnwrap();
       } else {
         contents = `
           <p>

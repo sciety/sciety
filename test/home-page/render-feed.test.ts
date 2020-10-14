@@ -10,7 +10,7 @@ describe('render-feed', (): void => {
       it('returns a list', async (): Promise<void> => {
         const dummyGetEvents: GetEvents<unknown> = async () => ['some-event'];
         const dummyIsFollowingSomething: IsFollowingSomething = async () => true;
-        const dummyRenderSummaryFeedList: RenderSummaryFeedList<unknown> = async () => 'someNiceList';
+        const dummyRenderSummaryFeedList: RenderSummaryFeedList<unknown> = async () => Maybe.just('someNiceList');
         const renderFeed = createRenderFeed(
           dummyIsFollowingSomething,
           dummyGetEvents,
