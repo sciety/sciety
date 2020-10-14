@@ -4,12 +4,6 @@ import EditorialCommunityId from '../types/editorial-community-id';
 
 const editorialCommunities: Array<EditorialCommunity> = [
   {
-    id: new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
-    name: 'eLife',
-    avatar: new URL('https://pbs.twimg.com/profile_images/1239550325188710402/7_lY-IyL_200x200.png'),
-    descriptionPath: 'elife--b560187e-f2fb-4ff9-a861-a204f3fc0fb0.md',
-  },
-  {
     id: new EditorialCommunityId('10360d97-bf52-4aef-b2fa-2f60d319edd7'),
     name: 'PREreview',
     avatar: new URL('https://pbs.twimg.com/profile_images/1296877363712495616/p08CozPa_200x200.jpg'),
@@ -26,6 +20,12 @@ const editorialCommunities: Array<EditorialCommunity> = [
     name: 'Review Commons',
     avatar: new URL('https://pbs.twimg.com/profile_images/1204012644660854784/E8JhkG7__200x200.jpg'),
     descriptionPath: 'review-commons--316db7d9-88cc-4c26-b386-f067e0f56334.md',
+  },
+  {
+    id: new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
+    name: 'eLife',
+    avatar: new URL('https://pbs.twimg.com/profile_images/1239550325188710402/7_lY-IyL_200x200.png'),
+    descriptionPath: 'elife--b560187e-f2fb-4ff9-a861-a204f3fc0fb0.md',
   },
   {
     id: new EditorialCommunityId('74fd66e9-3b90-4b5a-a4ab-5be83db4c5de'),
