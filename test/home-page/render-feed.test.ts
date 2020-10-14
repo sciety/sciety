@@ -1,8 +1,6 @@
 import { Maybe } from 'true-myth';
 import createRenderFeed, { GetEvents, IsFollowingSomething } from '../../src/home-page/render-feed';
 import { RenderSummaryFeedList } from '../../src/templates/render-summary-feed-list';
-import Doi from '../../src/types/doi';
-import EditorialCommunityId from '../../src/types/editorial-community-id';
 import toUserId from '../../src/types/user-id';
 import shouldNotBeCalled from '../should-not-be-called';
 
