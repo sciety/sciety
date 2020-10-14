@@ -9,23 +9,25 @@ export type GetEvents<T> = (editorialCommunityId: EditorialCommunityId) => Promi
 
 type RenderSummaryFeedList<T> = (events: ReadonlyArray<T>) => Promise<Maybe<string>>;
 
+const emptyFeed = `
+  <p>
+    It looks like this community hasn’t evaluated any articles yet. Try coming back later!
+  </p>
+`;
+
 export default <T>(
   getEvents: GetEvents<T>,
   renderSummaryFeedList: RenderSummaryFeedList<T>,
   renderFollowToggle: RenderFollowToggle,
 ): RenderFeed => async (editorialCommunityId, userId) => {
   const events = await getEvents(editorialCommunityId);
-  let content = '<p>It looks like this community hasn’t evaluated any articles yet. Try coming back later!</p>';
-  if (events.length > 0) {
-    content = (await renderSummaryFeedList(events)).unsafelyUnwrap();
-  }
   return `
       <section class="ui very padded vertical segment">
         <h2>
           Feed
         </h2>
         ${await renderFollowToggle(userId, editorialCommunityId)}
-        ${content}
+        ${(await renderSummaryFeedList(events)).unwrapOr(emptyFeed)}
       </section>
     `;
 };
