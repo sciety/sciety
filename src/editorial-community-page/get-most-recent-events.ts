@@ -1,13 +1,19 @@
-import { FeedEvent, GetEvents } from './render-feed';
+import { GetEvents } from './render-feed';
 import {
   DomainEvent,
+  EditorialCommunityEndorsedArticleEvent,
+  EditorialCommunityReviewedArticleEvent,
   isEditorialCommunityEndorsedArticleEvent,
   isEditorialCommunityReviewedArticleEvent,
 } from '../types/domain-events';
 
+type FeedEvent =
+  EditorialCommunityEndorsedArticleEvent |
+  EditorialCommunityReviewedArticleEvent;
+
 export type GetAllEvents = () => Promise<ReadonlyArray<DomainEvent>>;
 
-export default (getAllEvents: GetAllEvents, maxCount: number): GetEvents => (
+export default (getAllEvents: GetAllEvents, maxCount: number): GetEvents<FeedEvent> => (
   async (editorialCommunityId) => (
     (await getAllEvents())
       .slice()

@@ -1,22 +1,17 @@
 import { Maybe } from 'true-myth';
 import { RenderFollowToggle } from './render-follow-toggle';
-import { EditorialCommunityEndorsedArticleEvent, EditorialCommunityReviewedArticleEvent } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { UserId } from '../types/user-id';
 
 export type RenderFeed = (editorialCommunityId: EditorialCommunityId, userId: Maybe<UserId>) => Promise<string>;
 
-export type GetEvents = (editorialCommunityId: EditorialCommunityId) => Promise<Array<FeedEvent>>;
+export type GetEvents<T> = (editorialCommunityId: EditorialCommunityId) => Promise<Array<T>>;
 
-export type FeedEvent =
-  EditorialCommunityEndorsedArticleEvent |
-  EditorialCommunityReviewedArticleEvent;
+type RenderSummaryFeedList<T> = (events: ReadonlyArray<T>) => Promise<string>;
 
-type RenderSummaryFeedList = (events: ReadonlyArray<FeedEvent>) => Promise<string>;
-
-export default (
-  getEvents: GetEvents,
-  renderSummaryFeedList: RenderSummaryFeedList,
+export default <T>(
+  getEvents: GetEvents<T>,
+  renderSummaryFeedList: RenderSummaryFeedList<T>,
   renderFollowToggle: RenderFollowToggle,
 ): RenderFeed => async (editorialCommunityId, userId) => {
   const events = await getEvents(editorialCommunityId);
