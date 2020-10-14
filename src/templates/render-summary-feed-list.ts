@@ -4,8 +4,6 @@ export type RenderSummaryFeedList<T> = (events: ReadonlyArray<T>) => Promise<str
 
 type RenderSummaryFeedItem<T> = (event: T) => Promise<string>;
 
-export { FeedEvent } from './render-summary-feed-item';
-
 export default <T>(
   renderSummaryFeedItem: RenderSummaryFeedItem<T>,
 ): RenderSummaryFeedList<T> => async (events) => {

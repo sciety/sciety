@@ -7,7 +7,7 @@ import {
 } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 
-export type FeedEvent =
+type FeedEvent =
   EditorialCommunityEndorsedArticleEvent |
   EditorialCommunityReviewedArticleEvent;
 
