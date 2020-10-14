@@ -1,0 +1,10 @@
+@use 'baseline';
+
+.summary-feed-list {
+  padding-left: 0;
+}
+
+.summary-feed-list__list_item {
+  display: block;
+  margin-bottom: baseline.increments(4);
+}

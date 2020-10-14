@@ -1,6 +1,7 @@
 @use 'settings';
 @use 'baseline';
 @use 'editorial-community';
+@use 'summary-feed-list';
 @use 'summary-feed-item';
 @import 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css';
 
@@ -348,17 +349,6 @@ a:hover {
   .hive-grid--article > .main-content {
     grid-column: 1 / 9;
   }
-}
-
-/* Home page feed */
-
-.home-page-feed {
-  padding-left: 0;
-}
-
-.home-page-feed__item {
-  display: block;
-  margin-bottom: #{baseline.increments(4)};
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

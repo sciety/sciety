@@ -8,8 +8,8 @@ export default (
 ): RenderFeedList => async (events) => {
   const feedItems = await Promise.all(events.map(renderFeedItem));
   return `
-    <ol class="home-page-feed" role="list">
-      ${templateListItems(feedItems, 'home-page-feed__item')}
+    <ol class="summary-feed-list" role="list">
+      ${templateListItems(feedItems, 'summary-feed-list__list_item')}
     </ol>
   `;
 };
