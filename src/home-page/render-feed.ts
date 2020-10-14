@@ -1,6 +1,6 @@
 import { Maybe } from 'true-myth';
-import { RenderFeedList } from '../templates/render-feed-list';
 import { FeedEvent } from '../templates/render-summary-feed-item';
+import { RenderSummaryFeedList } from '../templates/render-summary-feed-list';
 import { UserId } from '../types/user-id';
 
 type RenderFeed = (userId: Maybe<UserId>) => Promise<string>;
@@ -14,7 +14,7 @@ export { FeedEvent } from '../templates/render-summary-feed-item';
 export default (
   isFollowingSomething: IsFollowingSomething,
   getEvents: GetEvents,
-  renderFeedList: RenderFeedList,
+  renderSummaryFeedList: RenderSummaryFeedList,
 ): RenderFeed => (
   async (userId) => {
     let contents = '';
@@ -41,7 +41,7 @@ export default (
     } else {
       const events = await getEvents(userId.unsafelyUnwrap());
       if (events.length > 0) {
-        contents = await renderFeedList(events);
+        contents = await renderSummaryFeedList(events);
       } else {
         contents = `
           <p>

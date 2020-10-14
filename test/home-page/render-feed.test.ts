@@ -1,6 +1,6 @@
 import { Maybe } from 'true-myth';
 import createRenderFeed, { GetEvents, IsFollowingSomething } from '../../src/home-page/render-feed';
-import { RenderFeedList } from '../../src/templates/render-feed-list';
+import { RenderSummaryFeedList } from '../../src/templates/render-summary-feed-list';
 import Doi from '../../src/types/doi';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
 import toUserId from '../../src/types/user-id';
@@ -19,11 +19,11 @@ describe('render-feed', (): void => {
           },
         ];
         const dummyIsFollowingSomething: IsFollowingSomething = async () => true;
-        const dummyRenderFeedList: RenderFeedList = async () => 'someNiceList';
+        const dummyRenderSummaryFeedList: RenderSummaryFeedList = async () => 'someNiceList';
         const renderFeed = createRenderFeed(
           dummyIsFollowingSomething,
           dummyGetEvents,
-          dummyRenderFeedList,
+          dummyRenderSummaryFeedList,
         );
         const rendered = await renderFeed(Maybe.just(toUserId('1111')));
 

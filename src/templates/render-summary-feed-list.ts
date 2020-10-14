@@ -1,11 +1,11 @@
 import templateListItems from './list-items';
 import { FeedEvent, RenderSummaryFeedItem } from './render-summary-feed-item';
 
-export type RenderFeedList = (events: ReadonlyArray<FeedEvent>) => Promise<string>;
+export type RenderSummaryFeedList = (events: ReadonlyArray<FeedEvent>) => Promise<string>;
 
 export default (
   renderSummaryFeedItem: RenderSummaryFeedItem,
-): RenderFeedList => async (events) => {
+): RenderSummaryFeedList => async (events) => {
   const items = await Promise.all(events.map(renderSummaryFeedItem));
   return `
     <ol class="summary-feed-list" role="list">

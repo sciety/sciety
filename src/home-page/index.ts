@@ -8,8 +8,8 @@ import createRenderFindArticle from './render-find-article';
 import createRenderFollowToggle from './render-follow-toggle';
 import createRenderPage from './render-page';
 import createRenderPageHeader from './render-page-header';
-import createRenderFeedList from '../templates/render-feed-list';
 import createRenderSummaryFeedItem, { GetActor } from '../templates/render-summary-feed-item';
+import createRenderSummaryFeedList from '../templates/render-summary-feed-list';
 import EditorialCommunityId from '../types/editorial-community-id';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import { FetchExternalArticle } from '../types/fetch-external-article';
@@ -56,12 +56,12 @@ export default (ports: Ports): RenderPage => {
   const renderFollowToggle = createRenderFollowToggle(ports.follows);
   const renderEditorialCommunities = createRenderEditorialCommunities(editorialCommunitiesAdapter, renderFollowToggle);
   const renderFindArticle = createRenderFindArticle();
-  const renderFeedItem = createRenderSummaryFeedItem(getActorAdapter, ports.fetchArticle);
-  const renderFeedList = createRenderFeedList(renderFeedItem);
+  const renderSummaryFeedItem = createRenderSummaryFeedItem(getActorAdapter, ports.fetchArticle);
+  const renderSummaryFeedList = createRenderSummaryFeedList(renderSummaryFeedItem);
   const renderFeed = createRenderFeed(
     isFollowingSomethingAdapter,
     getEventsAdapter,
-    renderFeedList,
+    renderSummaryFeedList,
   );
   const renderPage = createRenderPage(
     renderPageHeader,
