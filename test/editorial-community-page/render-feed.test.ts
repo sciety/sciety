@@ -6,7 +6,17 @@ import EditorialCommunityId from '../../src/types/editorial-community-id';
 
 describe('render feed', () => {
   describe('with community events', () => {
-    it.todo('returns a list of events');
+    it('returns a list of events', async () => {
+      const getEvents: GetEvents<unknown> = async () => [];
+      const renderFollowToggle: RenderFollowToggle = async () => '';
+      const renderSummaryFeedList: RenderSummaryFeedList<unknown> = async () => Maybe.just('a list');
+
+      const renderFeed = createRenderFeed(getEvents, renderSummaryFeedList, renderFollowToggle);
+
+      const rendered = await renderFeed(new EditorialCommunityId(''), Maybe.nothing());
+
+      expect(rendered).toContain('a list');
+    });
   });
 
   describe('without community events', () => {
