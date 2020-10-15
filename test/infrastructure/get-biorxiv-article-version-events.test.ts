@@ -53,14 +53,35 @@ describe('get-biorxiv-article-version-events', () => {
   });
 
   describe('when biorxiv returns a corrupted response', () => {
-    it('returns an empty list', async () => {
-      const getJson: GetJson = async () => ({});
+    describe('where the fields are missing', () => {
+      it('returns an empty list', async () => {
+        const getJson: GetJson = async () => ({});
 
-      const getBiorxivArticleVersionEvents = createGetBiorxivArticleVersionEvents(getJson, dummyLogger);
+        const getBiorxivArticleVersionEvents = createGetBiorxivArticleVersionEvents(getJson, dummyLogger);
 
-      const events = await getBiorxivArticleVersionEvents(new Doi('10.1101/2020.09.02.278911'));
+        const events = await getBiorxivArticleVersionEvents(new Doi('10.1101/2020.09.02.278911'));
 
-      expect(events).toHaveLength(0);
+        expect(events).toHaveLength(0);
+      });
+    });
+
+    describe('where the date is corrupt', () => {
+      it('returns an empty list', async () => {
+        const getJson: GetJson = async () => ({
+          collection: [
+            {
+              date: 'tree',
+              version: '2',
+            },
+          ],
+        });
+
+        const getBiorxivArticleVersionEvents = createGetBiorxivArticleVersionEvents(getJson, dummyLogger);
+
+        const events = await getBiorxivArticleVersionEvents(new Doi('10.1101/2020.09.02.278911'));
+
+        expect(events).toHaveLength(0);
+      });
     });
   });
 });
