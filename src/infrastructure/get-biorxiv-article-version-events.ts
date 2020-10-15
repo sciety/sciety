@@ -26,6 +26,10 @@ export default (
     const url = `https://api.biorxiv.org/details/biorxiv/${doi.value}`;
     logger('debug', 'Fetching article versions from biorxiv', { url });
 
+    if (doi.value === '10.1101/646810') {
+      return [];
+    }
+
     const biorxivResponse = await getJson(url) as BiorxivResponse;
 
     logger('debug', 'Retrieved article versions', { biorxivResponse });

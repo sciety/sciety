@@ -58,10 +58,6 @@ export default (
       },
     );
 
-    if (doi.value === '10.1101/646810') {
-      feedItems = feedItems.slice(0, -2);
-    }
-
     return Promise.all(feedItems);
   }
 );
