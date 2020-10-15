@@ -51,6 +51,7 @@ describe('handle-article-version-errors', () => {
       const feedItems = await handleArticleVersionErrors(new Doi('10.1101/123456'));
 
       expect(feedItems).toHaveLength(3);
+      expect(feedItems[2].type).toBe('article-version-error');
     });
   });
 });
