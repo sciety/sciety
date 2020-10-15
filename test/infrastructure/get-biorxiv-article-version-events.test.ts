@@ -53,6 +53,14 @@ describe('get-biorxiv-article-version-events', () => {
   });
 
   describe('when biorxiv returns a corrupted response', () => {
-    it.todo('returns an empty list');
+    it('returns an empty list', async () => {
+      const getJson: GetJson = async () => ({});
+
+      const getBiorxivArticleVersionEvents = createGetBiorxivArticleVersionEvents(getJson, dummyLogger);
+
+      const events = await getBiorxivArticleVersionEvents(new Doi('10.1101/2020.09.02.278911'));
+
+      expect(events).toHaveLength(0);
+    });
   });
 });

@@ -36,7 +36,9 @@ export default (
         occurredAt: new Date(articleDetail.date),
         version: Number.parseInt(articleDetail.version, 10),
       }));
-    } catch {
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : undefined;
+      logger('error', 'Failed to retrieve article versions', { doi, error, message });
       return [];
     }
   }
