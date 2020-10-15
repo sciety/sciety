@@ -7,7 +7,7 @@ import Doi from '../types/doi';
 
 type RenderFeed = (doi: Doi) => Promise<Result<string, 'no-content'>>;
 
-export type FeedItem = ReviewFeedItem | ArticleVersionFeedItem;
+export type FeedItem = ReviewFeedItem | ArticleVersionFeedItem | { type: 'article-version-error' };
 
 export type GetFeedItems = (doi: Doi) => Promise<ReadonlyArray<FeedItem>>;
 
@@ -16,30 +16,32 @@ export default (
   renderReviewFeedItem: RenderReviewFeedItem,
   renderArticleVersionFeedItem: RenderArticleVersionFeedItem,
 ): RenderFeed => {
+  const renderArticleVersionErrorFeedItem = createRenderArticleVersionErrorFeedItem();
+
   const renderFeedItem = (feedItem: FeedItem): string => {
     switch (feedItem.type) {
       case 'article-version':
         return renderArticleVersionFeedItem(feedItem);
+      case 'article-version-error':
+        return renderArticleVersionErrorFeedItem();
       case 'review':
         return renderReviewFeedItem(feedItem);
     }
   };
 
-  const renderArticleVersionErrorFeedItem = createRenderArticleVersionErrorFeedItem();
-
   return async (doi) => {
-    const feedItems = await getFeedItems(doi);
+    let feedItems = Array.from(await getFeedItems(doi));
 
     if (feedItems.length === 0) {
       return Result.err('no-content');
     }
 
-    let items = feedItems.map(renderFeedItem);
-
     if (doi.value === '10.1101/646810') {
-      items = items.slice(0, -2);
-      items.push(renderArticleVersionErrorFeedItem());
+      feedItems = feedItems.slice(0, -2);
+      feedItems.push({ type: 'article-version-error' });
     }
+
+    const items = feedItems.map(renderFeedItem);
 
     return Result.ok(`
       <section>

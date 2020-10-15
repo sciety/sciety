@@ -39,6 +39,9 @@ describe('render-feed', () => {
             occurredAt: new Date(),
             version: 1,
           },
+          {
+            type: 'article-version-error',
+          },
         ],
         () => '',
         () => '',
