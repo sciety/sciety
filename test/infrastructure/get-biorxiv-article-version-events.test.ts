@@ -4,35 +4,55 @@ import Doi from '../../src/types/doi';
 import dummyLogger from '../dummy-logger';
 
 describe('get-biorxiv-article-version-events', () => {
-  it('returns an article-version event for each article version', async () => {
-    const doi = new Doi('10.1101/2020.09.02.278911');
-    const getJson: GetJson = async () => ({
-      collection: [
-        {
-          date: '2020-01-02',
-          version: '2',
-        },
-        {
-          date: '2019-12-31',
-          version: '1',
-        },
-      ],
-    });
+  describe('when biorxiv is available', () => {
+    it('returns an article-version event for each article version', async () => {
+      const doi = new Doi('10.1101/2020.09.02.278911');
+      const getJson: GetJson = async () => ({
+        collection: [
+          {
+            date: '2020-01-02',
+            version: '2',
+          },
+          {
+            date: '2019-12-31',
+            version: '1',
+          },
+        ],
+      });
 
-    const getBiorxivArticleVersionEvents = createGetBiorxivArticleVersionEvents(getJson, dummyLogger);
+      const getBiorxivArticleVersionEvents = createGetBiorxivArticleVersionEvents(getJson, dummyLogger);
 
-    const events = await getBiorxivArticleVersionEvents(doi);
+      const events = await getBiorxivArticleVersionEvents(doi);
 
-    expect(events).toHaveLength(2);
-    expect(events[0]).toStrictEqual({
-      source: new URL('https://www.biorxiv.org/content/10.1101/2020.09.02.278911v2'),
-      occurredAt: new Date('2020-01-02'),
-      version: 2,
+      expect(events).toHaveLength(2);
+      expect(events[0]).toStrictEqual({
+        source: new URL('https://www.biorxiv.org/content/10.1101/2020.09.02.278911v2'),
+        occurredAt: new Date('2020-01-02'),
+        version: 2,
+      });
+      expect(events[1]).toStrictEqual({
+        source: new URL('https://www.biorxiv.org/content/10.1101/2020.09.02.278911v1'),
+        occurredAt: new Date('2019-12-31'),
+        version: 1,
+      });
     });
-    expect(events[1]).toStrictEqual({
-      source: new URL('https://www.biorxiv.org/content/10.1101/2020.09.02.278911v1'),
-      occurredAt: new Date('2019-12-31'),
-      version: 1,
+  });
+
+  describe('when biorxiv is unavailable', () => {
+    it('returns an empty list', async () => {
+      const getJson: GetJson = async () => {
+        throw new Error('HTTP timeout');
+      };
+
+      const getBiorxivArticleVersionEvents = createGetBiorxivArticleVersionEvents(getJson, dummyLogger);
+
+      const events = await getBiorxivArticleVersionEvents(new Doi('10.1101/2020.09.02.278911'));
+
+      expect(events).toHaveLength(0);
     });
+  });
+
+  describe('when biorxiv returns a corrupted response', () => {
+    it.todo('returns an empty list');
   });
 });

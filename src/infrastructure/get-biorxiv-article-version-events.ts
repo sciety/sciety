@@ -26,18 +26,18 @@ export default (
     const url = `https://api.biorxiv.org/details/biorxiv/${doi.value}`;
     logger('debug', 'Fetching article versions from biorxiv', { url });
 
-    if (doi.value === '10.1101/646810') {
+    try {
+      const biorxivResponse = await getJson(url) as BiorxivResponse;
+
+      logger('debug', 'Retrieved article versions', { biorxivResponse });
+
+      return biorxivResponse.collection.map((articleDetail) => ({
+        source: new URL(`https://www.biorxiv.org/content/${doi.value}v${articleDetail.version}`),
+        occurredAt: new Date(articleDetail.date),
+        version: Number.parseInt(articleDetail.version, 10),
+      }));
+    } catch {
       return [];
     }
-
-    const biorxivResponse = await getJson(url) as BiorxivResponse;
-
-    logger('debug', 'Retrieved article versions', { biorxivResponse });
-
-    return biorxivResponse.collection.map((articleDetail) => ({
-      source: new URL(`https://www.biorxiv.org/content/${doi.value}v${articleDetail.version}`),
-      occurredAt: new Date(articleDetail.date),
-      version: Number.parseInt(articleDetail.version, 10),
-    }));
   }
 );
