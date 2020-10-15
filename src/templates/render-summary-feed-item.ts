@@ -23,9 +23,9 @@ type Article = {
   title: string;
 };
 
-type RenderFeedItemSummary = (event: FeedEvent, actor: Actor) => Promise<string>;
+type RenderSummaryFeedItemSummary = (event: FeedEvent, actor: Actor) => Promise<string>;
 
-const createRenderFeedItemSummary = (getArticle: GetArticle): RenderFeedItemSummary => {
+const createRenderSummaryFeedItemSummary = (getArticle: GetArticle): RenderSummaryFeedItemSummary => {
   type RenderEvent<E extends FeedEvent> = (event: E, actor: Actor) => Promise<string>;
 
   const title = async (articleId: Doi): Promise<string> => (
@@ -66,7 +66,7 @@ export default (
   getActor: GetActor,
   getArticle: GetArticle,
 ): RenderSummaryFeedItem => {
-  const renderFeedItemSummary = createRenderFeedItemSummary(getArticle);
+  const renderSummaryFeedItemSummary = createRenderSummaryFeedItemSummary(getArticle);
 
   return async (event) => {
     const actor: Actor = await getActor(event.editorialCommunityId);
@@ -76,7 +76,7 @@ export default (
         <div>
           ${templateDate(event.date, 'summary-feed-item__date')}
           <div class="summary-feed-item__title">
-            ${await renderFeedItemSummary(event, actor)}
+            ${await renderSummaryFeedItemSummary(event, actor)}
           </div>
         </div>
       </div>
