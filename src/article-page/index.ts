@@ -3,6 +3,7 @@ import { Maybe, Result } from 'true-myth';
 import createComposeFeedEvents from './compose-feed-events';
 import ensureBiorxivDoi from './ensure-biorxiv-doi';
 import createGetFeedEventsContent, { GetEditorialCommunity, GetReview } from './get-feed-events-content';
+import createHandleArticleVersionErrors from './handle-article-version-errors';
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
 import createRenderArticleVersionFeedItem from './render-article-version-feed-item';
 import createRenderFeed from './render-feed';
@@ -65,7 +66,7 @@ export default (ports: Ports): RenderPage => {
   const getEditorialCommunity: GetEditorialCommunity = async (editorialCommunityId) => (
     (await ports.getEditorialCommunity(editorialCommunityId)).unsafelyUnwrap()
   );
-  const getFeedEventsContent = createGetFeedEventsContent(
+  const getFeedEventsContent = createHandleArticleVersionErrors(createGetFeedEventsContent(
     createComposeFeedEvents(
       async (doi) => (await ports.findReviewsForArticleDoi(doi)).map((review) => ({
         type: 'review',
@@ -78,7 +79,7 @@ export default (ports: Ports): RenderPage => {
     ),
     ports.fetchReview,
     getEditorialCommunity,
-  );
+  ));
   const renderFeed = createRenderFeed(
     getFeedEventsContent,
     createRenderReviewFeedItem(150),
