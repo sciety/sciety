@@ -1,4 +1,5 @@
 import { Result } from 'true-myth';
+import createRenderArticleVersionErrorFeedItem from './render-article-version-error-feed-item';
 import { ArticleVersionFeedItem, RenderArticleVersionFeedItem } from './render-article-version-feed-item';
 import { RenderReviewFeedItem, ReviewFeedItem } from './render-review-feed-item';
 import renderListItems from '../shared-components/list-items';
@@ -24,6 +25,8 @@ export default (
     }
   };
 
+  const renderArticleVersionErrorFeedItem = createRenderArticleVersionErrorFeedItem();
+
   return async (doi) => {
     const feedItems = await getFeedItems(doi);
 
@@ -35,17 +38,7 @@ export default (
 
     if (doi.value === '10.1101/646810') {
       items = items.slice(0, -2);
-      items.push(`
-        <img class="article-feed__item__avatar" src="https://pbs.twimg.com/profile_images/956882186996662272/lwyH1HFe_200x200.jpg" alt="">
-        <div>
-          <p class="article-feed__item__title">
-            Published on bioRxiv
-          </p>
-          <p>
-            We couldn't get version information from bioRxiv. Please try refreshing this page.
-          </p>
-        </div>
-      `);
+      items.push(renderArticleVersionErrorFeedItem());
     }
 
     return Result.ok(`
