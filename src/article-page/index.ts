@@ -66,20 +66,22 @@ export default (ports: Ports): RenderPage => {
   const getEditorialCommunity: GetEditorialCommunity = async (editorialCommunityId) => (
     (await ports.getEditorialCommunity(editorialCommunityId)).unsafelyUnwrap()
   );
-  const getFeedEventsContent = createHandleArticleVersionErrors(createGetFeedEventsContent(
-    createComposeFeedEvents(
-      async (doi) => (await ports.findReviewsForArticleDoi(doi)).map((review) => ({
-        type: 'review',
-        ...review,
-      })),
-      async (doi) => (await ports.findVersionsForArticleDoi(doi)).map((version) => ({
-        type: 'article-version',
-        ...version,
-      })),
+  const getFeedEventsContent = createHandleArticleVersionErrors(
+    createGetFeedEventsContent(
+      createComposeFeedEvents(
+        async (doi) => (await ports.findReviewsForArticleDoi(doi)).map((review) => ({
+          type: 'review',
+          ...review,
+        })),
+        async (doi) => (await ports.findVersionsForArticleDoi(doi)).map((version) => ({
+          type: 'article-version',
+          ...version,
+        })),
+      ),
+      ports.fetchReview,
+      getEditorialCommunity,
     ),
-    ports.fetchReview,
-    getEditorialCommunity,
-  ));
+  );
   const renderFeed = createRenderFeed(
     getFeedEventsContent,
     createRenderReviewFeedItem(150),
