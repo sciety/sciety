@@ -36,7 +36,7 @@ export default (
   getEditorialCommunity: GetEditorialCommunity,
 ) : GetFeedItems => (
   async (doi) => {
-    const feedItems = (await getFeedEvents(doi)).map(
+    let feedItems = (await getFeedEvents(doi)).map(
       async (feedEvent): Promise<FeedItem> => {
         if (feedEvent.type === 'article-version') {
           return feedEvent;
@@ -57,6 +57,11 @@ export default (
         };
       },
     );
+
+    if (doi.value === '10.1101/646810') {
+      feedItems = feedItems.slice(0, -2);
+      feedItems.push(Promise.resolve({ type: 'article-version-error' }));
+    }
 
     return Promise.all(feedItems);
   }

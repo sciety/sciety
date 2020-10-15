@@ -30,15 +30,10 @@ export default (
   };
 
   return async (doi) => {
-    let feedItems = Array.from(await getFeedItems(doi));
+    const feedItems = await getFeedItems(doi);
 
     if (feedItems.length === 0) {
       return Result.err('no-content');
-    }
-
-    if (doi.value === '10.1101/646810') {
-      feedItems = feedItems.slice(0, -2);
-      feedItems.push({ type: 'article-version-error' });
     }
 
     const items = feedItems.map(renderFeedItem);
