@@ -60,7 +60,6 @@ export default (
 
     if (doi.value === '10.1101/646810') {
       feedItems = feedItems.slice(0, -2);
-      feedItems.push(Promise.resolve({ type: 'article-version-error' }));
     }
 
     return Promise.all(feedItems);
