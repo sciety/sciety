@@ -1,4 +1,5 @@
 import createRenderSummaryFeedList from '../../src/templates/render-summary-feed-list';
+import shouldNotBeCalled from '../should-not-be-called';
 
 describe('render-summary-feed-list', () => {
   describe('when there are events', () => {
@@ -14,6 +15,11 @@ describe('render-summary-feed-list', () => {
   });
 
   describe('when there are no events', () => {
-    it.todo('returns nothing');
+    it('returns nothing', async () => {
+      const renderSummaryFeedList = createRenderSummaryFeedList(shouldNotBeCalled);
+      const rendered = await renderSummaryFeedList([]);
+
+      expect(rendered.isNothing()).toBe(true);
+    });
   });
 });
