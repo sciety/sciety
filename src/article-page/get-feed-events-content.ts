@@ -36,7 +36,7 @@ export default (
   getEditorialCommunity: GetEditorialCommunity,
 ) : GetFeedItems => (
   async (doi) => {
-    let feedItems = (await getFeedEvents(doi)).map(
+    const feedItems = (await getFeedEvents(doi)).map(
       async (feedEvent): Promise<FeedItem> => {
         if (feedEvent.type === 'article-version') {
           return feedEvent;
