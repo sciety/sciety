@@ -5,7 +5,7 @@ export default (
 ): GetFeedItems => (
   async (doi) => {
     const feedItems = Array.from(await getFeedItems(doi));
-    if (doi.value === '10.1101/646810') {
+    if (!feedItems.some((feedItem) => feedItem.type === 'article-version')) {
       feedItems.push({ type: 'article-version-error' });
     }
     return feedItems;

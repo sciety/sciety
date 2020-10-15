@@ -48,7 +48,7 @@ describe('handle-article-version-errors', () => {
       ];
       const originalGetFeedItems: GetFeedItems = async () => inputItems;
       const handleArticleVersionErrors = createHandleArticleVersionErrors(originalGetFeedItems);
-      const feedItems = await handleArticleVersionErrors(new Doi('10.1101/646810'));
+      const feedItems = await handleArticleVersionErrors(new Doi('10.1101/123456'));
 
       expect(feedItems).toHaveLength(3);
     });
