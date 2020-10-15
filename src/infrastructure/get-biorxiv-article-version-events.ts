@@ -35,10 +35,14 @@ export default (
         if (Number.isNaN(Date.parse(articleDetail.date))) {
           throw new Error(`Invalid date received for occurredAt: ${articleDetail.date}`);
         }
+        const version = Number.parseInt(articleDetail.version, 10);
+        if (Number.isNaN(version)) {
+          throw new Error(`Invalid version string received: ${articleDetail.version}`);
+        }
         return ({
           source: new URL(`https://www.biorxiv.org/content/${doi.value}v${articleDetail.version}`),
           occurredAt: new Date(articleDetail.date),
-          version: Number.parseInt(articleDetail.version, 10),
+          version,
         });
       });
     } catch (error: unknown) {
