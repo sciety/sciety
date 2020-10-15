@@ -1,7 +1,7 @@
 import { URL } from 'url';
 import { Maybe } from 'true-myth';
 import { RenderFollowToggle } from './render-follow-toggle';
-import templateListItems from '../templates/list-items';
+import templateListItems from '../shared-components/list-items';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { UserId } from '../types/user-id';
 

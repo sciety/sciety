@@ -1,4 +1,4 @@
-import templateDate from '../templates/date';
+import templateDate from '../shared-components/date';
 import Doi from '../types/doi';
 
 export interface SearchResult {

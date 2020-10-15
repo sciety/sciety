@@ -1,4 +1,4 @@
-import templateDate from '../../src/templates/date';
+import templateDate from '../../src/shared-components/date';
 
 describe('date template', (): void => {
   it.each([

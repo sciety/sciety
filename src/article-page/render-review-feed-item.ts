@@ -1,7 +1,7 @@
 import { URL } from 'url';
 import clip from 'text-clipper';
 import { Maybe } from 'true-myth';
-import templateDate from '../templates/date';
+import templateDate from '../shared-components/date';
 import EditorialCommunityId from '../types/editorial-community-id';
 
 export type RenderReviewFeedItem = (review: ReviewFeedItem) => string;

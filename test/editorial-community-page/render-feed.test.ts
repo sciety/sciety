@@ -1,7 +1,7 @@
 import { Maybe } from 'true-myth';
 import createRenderFeed, { GetEvents } from '../../src/editorial-community-page/render-feed';
 import { RenderFollowToggle } from '../../src/editorial-community-page/render-follow-toggle';
-import { RenderSummaryFeedList } from '../../src/templates/render-summary-feed-list';
+import { RenderSummaryFeedList } from '../../src/shared-components/render-summary-feed-list';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
 
 describe('render feed', () => {

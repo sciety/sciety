@@ -1,7 +1,7 @@
 import { Result } from 'true-myth';
 import { ArticleVersionFeedItem, RenderArticleVersionFeedItem } from './render-article-version-feed-item';
 import { RenderReviewFeedItem, ReviewFeedItem } from './render-review-feed-item';
-import renderListItems from '../templates/list-items';
+import renderListItems from '../shared-components/list-items';
 import Doi from '../types/doi';
 
 type RenderFeed = (doi: Doi) => Promise<Result<string, 'no-content'>>;

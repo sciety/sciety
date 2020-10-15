@@ -1,4 +1,4 @@
-import templateListItems from '../../src/templates/list-items';
+import templateListItems from '../../src/shared-components/list-items';
 
 describe('list-items template', (): void => {
   it.each([

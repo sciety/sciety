@@ -1,5 +1,5 @@
 import { RenderSearchResult, SearchResult } from './render-search-result';
-import templateListItems from '../templates/list-items';
+import templateListItems from '../shared-components/list-items';
 
 export type FindArticles = (query: string) => Promise<{
   items: Array<SearchResult>;

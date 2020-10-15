@@ -1,7 +1,7 @@
 import { Middleware } from '@koa/router';
 import { NOT_FOUND, OK, SERVICE_UNAVAILABLE } from 'http-status-codes';
 import { Maybe, Result } from 'true-myth';
-import applyStandardPageLayout from '../templates/apply-standard-page-layout';
+import applyStandardPageLayout from '../shared-components/apply-standard-page-layout';
 import { User } from '../types/user';
 
 type RenderPageError = {

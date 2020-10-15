@@ -1,4 +1,4 @@
-import createRenderSummaryFeedList from '../../src/templates/render-summary-feed-list';
+import createRenderSummaryFeedList from '../../src/shared-components/render-summary-feed-list';
 import shouldNotBeCalled from '../should-not-be-called';
 
 describe('render-summary-feed-list', () => {

@@ -1,5 +1,5 @@
 import { URL } from 'url';
-import renderDate from '../templates/date';
+import renderDate from '../shared-components/date';
 
 export type ArticleVersionFeedItem = {
   type: 'article-version';
