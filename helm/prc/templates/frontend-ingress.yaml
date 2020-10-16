@@ -12,5 +12,5 @@ spec:
         paths:
           - path: /
             backend:
-              serviceName: {{ .Release.Name }}--frontend
+              serviceName: {{ .Release.Name }}--frontend-internal
               servicePort: http
