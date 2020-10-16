@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}--frontend
+  labels:
+    {{- include "prc.labels" . | nindent 4 }}
+    app.kubernetes.io/component: frontend
+spec:
+  rules:
+    - host: ingress.hive.review
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: {{ .Release.Name }}--frontend
+              servicePort: http
