@@ -3,6 +3,7 @@ import { Maybe } from 'true-myth';
 import createGetMostRecentEvents, { GetAllEvents } from './get-most-recent-events';
 import createProjectIsFollowingSomething from './project-is-following-something';
 import createRenderEditorialCommunities, { GetAllEditorialCommunities } from './render-editorial-communities';
+import createRenderEditorialCommunity from './render-editorial-community';
 import createRenderFeed, { IsFollowingSomething } from './render-feed';
 import createRenderFindArticle from './render-find-article';
 import createRenderFollowToggle from './render-follow-toggle';
@@ -54,7 +55,11 @@ export default (ports: Ports): RenderPage => {
 
   const renderPageHeader = createRenderPageHeader();
   const renderFollowToggle = createRenderFollowToggle(ports.follows);
-  const renderEditorialCommunities = createRenderEditorialCommunities(editorialCommunitiesAdapter, renderFollowToggle);
+  const renderEditorialCommunity = createRenderEditorialCommunity(renderFollowToggle);
+  const renderEditorialCommunities = createRenderEditorialCommunities(
+    editorialCommunitiesAdapter,
+    renderEditorialCommunity,
+  );
   const renderFindArticle = createRenderFindArticle();
   const renderSummaryFeedItem = createRenderSummaryFeedItem(getActorAdapter, ports.fetchArticle);
   const renderSummaryFeedList = createRenderSummaryFeedList(renderSummaryFeedItem);
