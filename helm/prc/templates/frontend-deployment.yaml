@@ -26,7 +26,7 @@ spec:
               value: {{ .Values.disqusApiKey }}
             - name: GOOGLE_TAG_MANAGER_ID
               value: {{ .Values.googleTagManagerId }}
-            {{- if .Values.postgresql.secretName -}}
+          {{- if .Values.postgresql.secretName }}
             - name: PGDATABASE
               valueFrom:
                 secretKeyRef:
@@ -52,7 +52,7 @@ spec:
                 secretKeyRef:
                   name: "{{ .Values.postgresql.secretName }}"
                   key: postgresql-port
-            {{- else -}}
+          {{- else }}
             - name: PGHOST
               value: {{ .Release.Name }}-postgresql
             - name: PGDATABASE
@@ -61,7 +61,7 @@ spec:
               value: {{ .Values.postgresql.postgresqlUsername }}
             - name: PGPASSWORD
               value: {{ .Values.postgresql.postgresqlPassword }}
-            {{- end -}}
+          {{- end }}
             - name: TWITTER_API_KEY
               value: {{ .Values.twitterApiKey }}
             - name: TWITTER_API_SECRET_KEY
