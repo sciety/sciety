@@ -11,7 +11,7 @@ PORT := 8080
 export IMAGE
 export IMAGE_TAG
 
-.PHONY: build clean* dev find-* install lint* list-users prod release test* update-event-data
+.PHONY: build clean* dev find-* install lint* prod release test* update-event-data
 
 dev: export TARGET = dev
 dev: .env install build
@@ -106,12 +106,3 @@ release: export TAG = latest/$(shell date +%Y%m%d%H%M)
 release:
 	git tag $$TAG
 	git push origin $$TAG
-
-list-users:
-	kubectl exec -it prc--prod-postgresql-0 -- sh -c \
-		"PGDATABASE=thehive PGUSER=app PGPASSWORD=$$( \
-			kubectl get secret prc--prod-postgresql -o json \
-			| jq -r '.data."postgresql-password"' \
-			| base64 -d \
-		) \
-		psql -c \"SELECT DISTINCT payload -> 'userId' AS userid FROM events\""
