@@ -80,7 +80,10 @@ export default (page: string, user: Maybe<User>): string => `<!doctype html>
 
   <footer class="site-footer">
     
-    <a href="/terms">Terms and Conditions</a>
+    <ul class="site-footer__links_list" role="list">
+      <li><a href="/terms">Terms and conditions</a></li>
+      <li><a href="/privacy">Privacy notice</a></li>
+    </ul>
     
     <address>
       eLife Sciences Publications, Ltd<br>
