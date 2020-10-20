@@ -12,7 +12,6 @@ import createRenderPageHeader from './render-page-header';
 import createRenderSummaryFeedItem, { GetActor } from '../shared-components/render-summary-feed-item';
 import createRenderSummaryFeedList from '../shared-components/render-summary-feed-list';
 import EditorialCommunityId from '../types/editorial-community-id';
-import EditorialCommunityRepository from '../types/editorial-community-repository';
 import { FetchExternalArticle } from '../types/fetch-external-article';
 import { User } from '../types/user';
 import { UserId } from '../types/user-id';
@@ -24,7 +23,7 @@ type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => Pro
 
 interface Ports {
   fetchArticle: FetchExternalArticle;
-  editorialCommunities: EditorialCommunityRepository;
+  getAllEditorialCommunities: GetAllEditorialCommunities;
   getEditorialCommunity: GetEditorialCommunity,
   getAllEvents: GetAllEvents,
   follows: (userId: UserId, editorialCommunityId: EditorialCommunityId) => Promise<boolean>,
@@ -37,7 +36,6 @@ interface Params {
 type RenderPage = (params: Params) => Promise<string>;
 
 export default (ports: Ports): RenderPage => {
-  const editorialCommunitiesAdapter: GetAllEditorialCommunities = async () => ports.editorialCommunities.all();
   const getActorAdapter: GetActor = async (id) => {
     const editorialCommunity = (await ports.getEditorialCommunity(id)).unsafelyUnwrap();
     return {
@@ -57,7 +55,7 @@ export default (ports: Ports): RenderPage => {
   const renderFollowToggle = createRenderFollowToggle(ports.follows);
   const renderEditorialCommunity = createRenderEditorialCommunity(renderFollowToggle);
   const renderEditorialCommunities = createRenderEditorialCommunities(
-    editorialCommunitiesAdapter,
+    ports.getAllEditorialCommunities,
     renderEditorialCommunity,
   );
   const renderFindArticle = createRenderFindArticle();

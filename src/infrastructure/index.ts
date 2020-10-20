@@ -87,6 +87,7 @@ const createInfrastructure = async (): Promise<Adapters> => {
     searchEuropePmc,
     editorialCommunities,
     getEditorialCommunity: editorialCommunities.lookup,
+    getAllEditorialCommunities: editorialCommunities.all,
     endorsements: populateEndorsementsRepository(events),
     ...reviewProjections,
     getAllEvents,

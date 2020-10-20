@@ -16,11 +16,16 @@ import EditorialCommunityId from '../types/editorial-community-id';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import EndorsementsRepository from '../types/endorsements-repository';
 
-type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => Promise<Maybe<{
+type EditorialCommunity = {
   name: string;
+  id: EditorialCommunityId;
   avatar: URL;
   descriptionPath: string;
-}>>;
+};
+
+type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => Promise<Maybe<EditorialCommunity>>;
+
+type GetAllEditorialCommunities = () => Promise<Array<EditorialCommunity>>;
 
 export interface Adapters {
   fetchArticle: FetchCrossrefArticle;
@@ -29,6 +34,7 @@ export interface Adapters {
   searchEuropePmc: SearchEuropePmc,
   editorialCommunities: EditorialCommunityRepository;
   getEditorialCommunity: GetEditorialCommunity;
+  getAllEditorialCommunities: GetAllEditorialCommunities;
   endorsements: EndorsementsRepository,
   findReviewsForArticleDoi: FindReviewsForArticleDoi;
   findReviewsForEditorialCommunityId: FindReviewsForEditorialCommunityId;

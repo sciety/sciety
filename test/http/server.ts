@@ -58,6 +58,7 @@ export default async (): Promise<TestServer> => {
     searchEuropePmc: async () => ({ items: [], total: 0 }),
     editorialCommunities,
     getEditorialCommunity: editorialCommunities.lookup,
+    getAllEditorialCommunities: async () => [],
     endorsements: createEndorsementsRepository([]),
     ...reviewProjections,
     getAllEvents: async () => [],
