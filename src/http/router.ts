@@ -19,6 +19,7 @@ import createSaveFollowCommand from '../follow/save-follow-command';
 import createHomePage from '../home-page';
 import { Adapters } from '../infrastructure/adapters';
 import createLogOutHandler from '../log-out';
+import createPrivacyPage from '../privacy-page';
 import createTermsPage from '../terms-page';
 import createUnfollowHandler from '../unfollow';
 import createFinishUnfollowCommand from '../unfollow/finish-unfollow-command';
@@ -87,6 +88,10 @@ export default (adapters: Adapters): Router => {
     createFinishFollowCommand(adapters),
     createFinishUnfollowCommand(adapters),
     createRedirectAfterAuthenticating());
+
+  router.get('/privacy',
+    identifyUser(adapters.logger),
+    pageHandler(createPrivacyPage()));
 
   router.get('/terms',
     identifyUser(adapters.logger),
