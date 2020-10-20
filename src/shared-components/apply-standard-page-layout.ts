@@ -48,7 +48,7 @@ export default (page: string, user: Maybe<User>): string => `<!doctype html>
 </head>
 <body>
   ${googleTagManagerNoScript}
-  <header class="u-full-width">
+  <header>
 
     <nav class="site-header">
 
@@ -74,7 +74,7 @@ export default (page: string, user: Maybe<User>): string => `<!doctype html>
 
   </header>
 
-  <main class="u-full-width">
+  <main>
     ${page}
   </main>
 
