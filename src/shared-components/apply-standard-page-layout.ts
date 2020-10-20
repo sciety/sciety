@@ -78,6 +78,15 @@ export default (page: string, user: Maybe<User>): string => `<!doctype html>
     ${page}
   </main>
 
+  <footer>
+
+    <small>
+      © 2020 eLife Sciences Publications Ltd. Subject to a Creative Commons Attribution license, except where otherwise
+      noted.
+    </small>
+
+  </footer>
+
   <script src="/static/behaviour.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.js"></script>
   <script>
