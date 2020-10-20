@@ -33,6 +33,7 @@ jobs:
             --set twitterApiSecretKey=${TWITTER_API_SECRET_KEY} \
             --set twitterApiBearerToken=${TWITTER_API_BEARER_TOKEN} \
             --set postgresql.postgresqlPassword=${POSTGRESQL_PASSWORD} \
+            --set postgresql.secretName=hive-prod-rds-postgres \
             --wait \
             helm/prc
         env:
