@@ -1,0 +1,9 @@
+@use 'baseline';
+
+.site-footer {
+  margin-top: baseline.increments(6);
+
+  > * {
+    font-size: 0.75rem;
+  }
+}

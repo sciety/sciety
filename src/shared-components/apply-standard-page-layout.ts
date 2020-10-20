@@ -78,19 +78,19 @@ export default (page: string, user: Maybe<User>): string => `<!doctype html>
     ${page}
   </main>
 
-  <footer>
-
-    <small>
-      © 2020 eLife Sciences Publications Ltd. Subject to a Creative Commons Attribution license, except where otherwise
-      noted.
-    </small>
-
+  <footer class="site-footer">
+    
     <address>
       eLife Sciences Publications, Ltd<br>
       Westbrook Centre, Milton Road<br>
       Cambridge CB4 1YG<br>
       UK
     </address>
+
+    <small>
+      © 2020 eLife Sciences Publications Ltd. Subject to a Creative Commons Attribution license, except where otherwise
+      noted.
+    </small>
 
   </footer>
 
