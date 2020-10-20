@@ -6,5 +6,4 @@ images:
 googleTagManagerId:
 disqusApiKey:
 
-postgresql:
-  secretName: null
+postgresqlSecretName: null
