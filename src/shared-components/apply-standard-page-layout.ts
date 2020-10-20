@@ -80,6 +80,8 @@ export default (page: string, user: Maybe<User>): string => `<!doctype html>
 
   <footer class="site-footer">
     
+    <a href="/terms">Terms and Conditions</a>
+    
     <address>
       eLife Sciences Publications, Ltd<br>
       Westbrook Centre, Milton Road<br>
