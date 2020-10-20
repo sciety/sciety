@@ -5,6 +5,8 @@ metadata:
   labels:
     {{- include "prc.labels" . | nindent 4 }}
     app.kubernetes.io/component: frontend
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt"
 spec:
   rules:
     - host: {{ .Values.hostname }}
@@ -14,3 +16,7 @@ spec:
             backend:
               serviceName: {{ .Release.Name }}--frontend
               servicePort: http
+  tls:
+    - hosts:
+        - {{ .Values.hostname }}
+      secretName: {{ .Release.Name }}--frontend--letsencrypt-cert
