@@ -32,7 +32,6 @@ jobs:
             --set twitterApiKey=${TWITTER_API_KEY} \
             --set twitterApiSecretKey=${TWITTER_API_SECRET_KEY} \
             --set twitterApiBearerToken=${TWITTER_API_BEARER_TOKEN} \
-            --set postgresql.postgresqlPassword=${POSTGRESQL_PASSWORD} \
             --set postgresql.secretName=hive-prod-rds-postgres \
             --wait \
             helm/prc
@@ -40,7 +39,6 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           DISQUS_API_KEY: ${{ secrets.DISQUS_API_KEY }}
-          POSTGRESQL_PASSWORD: ${{ secrets.POSTGRESQL_PASSWORD }}
           TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
           TWITTER_API_SECRET_KEY: ${{ secrets.TWITTER_API_SECRET_KEY }}
           TWITTER_API_BEARER_TOKEN: ${{ secrets.TWITTER_API_BEARER_TOKEN }}
