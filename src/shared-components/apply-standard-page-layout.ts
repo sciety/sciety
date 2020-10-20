@@ -85,6 +85,13 @@ export default (page: string, user: Maybe<User>): string => `<!doctype html>
       noted.
     </small>
 
+    <address>
+      eLife Sciences Publications, Ltd<br>
+      Westbrook Centre, Milton Road<br>
+      Cambridge CB4 1YG<br>
+      UK
+    </address>
+
   </footer>
 
   <script src="/static/behaviour.js"></script>
