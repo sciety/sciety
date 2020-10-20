@@ -204,6 +204,7 @@ body {
   grid-template-rows: auto 1fr auto;
   max-width: var(--MAX-SITE-WIDTH-REM);
   margin: 0 auto;
+  padding: 0 var(--BASE-FONT-REM);
 }
 
 p {
