@@ -14,14 +14,14 @@ export default (
       <div class="hive-grid hive-grid--home u-full-width">
         ${await renderPageHeader(userId)}
 
-        <section class="home-page-feed-container">
+        <div class="home-page-feed-container">
           ${await renderFeed(userId)}
-        </section>
+        </div>
 
-        <section class="home-page-side-bar">
+        <div class="home-page-side-bar">
           ${await renderFindArticle(userId)}
           ${await renderEditorialCommunities(userId)}
-        </section>
+        </div>
 
       </div>
     `;
