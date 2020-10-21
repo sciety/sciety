@@ -2,8 +2,8 @@ type RenderFindArticle = () => Promise<string>;
 
 export default (): RenderFindArticle => (
   async () => (`
-    <section>
-      <form method="get" action="/articles" class="search-form">
+    <section class="search-form">
+      <form method="get" action="/articles">
 
         <h3>
           Search bioRxiv content

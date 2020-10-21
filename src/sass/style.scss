@@ -4,6 +4,7 @@
 @use 'summary-feed-list';
 @use 'summary-feed-item';
 @use 'footer';
+@use 'article-abstract';
 @import 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css';
 
 /* Hive imports, not Semantic-UI */
@@ -212,10 +213,6 @@ p {
   margin-bottom: #{baseline.increments(3)};
   line-height: 1.5;
   font-weight: 400;
-}
-
-section {
-  margin-bottom: #{baseline.increments(6)};
 }
 
 h1 {
@@ -533,6 +530,10 @@ p.article-feed__item__title {
 .button--primary:hover {
   color: #fff;
   background-color: var(--COLOUR-PRIMARY-HOVER);
+}
+
+.search-form {
+  margin-bottom: #{baseline.increments(6)};
 }
 
 .search-form__inputs {

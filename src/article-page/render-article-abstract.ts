@@ -12,7 +12,7 @@ export type RenderArticleAbstract = (doi: Doi) => Promise<Result<string, 'not-fo
 export default (getArticleAbstract: GetArticleAbstract): RenderArticleAbstract => (
   async (doi) => (
     (await getArticleAbstract(doi)).map((articleAbstract) => `
-      <section role="doc-abstract">
+      <section class="article-abstract" role="doc-abstract">
         <h2>
           Abstract
         </h2>
