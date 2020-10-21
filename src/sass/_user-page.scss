@@ -1,0 +1,19 @@
+@use 'baseline';
+
+.hive-grid--user > .user-page-header {
+  grid-column: 1 / -1;
+}
+
+.user-page-header {
+  margin-bottom: #{baseline.increments(6)};
+}
+
+.user-page-contents {
+  grid-column: 1 / -1;
+}
+
+@media screen and (min-width: 56.25em) {
+  .hive-grid--user > .user-page-contents {
+    grid-column: 1 / 8;
+  }
+}

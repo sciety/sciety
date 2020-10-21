@@ -11,17 +11,11 @@ type RenderPage = (userId: UserId, viewingUserId: Maybe<UserId>) => Promise<Resu
 type Component = (userId: UserId, viewingUserId: Maybe<UserId>) => Promise<Result<string, 'not-found' | 'unavailable'>>;
 
 const template = (header: string) => (followList: string) => `
-  <div class="ui aligned stackable grid">
-    <div class="row">
-      <div class="column">
-        ${header}
-      </div>
-    </div>
-    <div class="row">
-      <div class="ten wide column">
-        ${followList}
-      </div>
-    </div>
+  <div class="hive-grid hive-grid--user">
+    ${header}    
+    <div class="user-page-contents">
+      ${followList}
+    </div>    
   </div>
 `;
 
