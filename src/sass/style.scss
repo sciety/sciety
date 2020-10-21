@@ -208,6 +208,10 @@ body {
   padding: 0 var(--BASE-FONT-REM);
 }
 
+main {
+  margin-bottom: baseline.increments(6);
+}
+
 p {
   margin-top: 0;
   margin-bottom: #{baseline.increments(3)};
