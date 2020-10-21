@@ -7,4 +7,8 @@
 .summary-feed-list__list_item {
   display: block;
   margin-bottom: baseline.increments(4);
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
