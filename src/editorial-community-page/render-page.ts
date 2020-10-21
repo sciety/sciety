@@ -16,25 +16,20 @@ export default (
 ): RenderPage => (
   async (editorialCommunityId, userId) => (
     `
-      <div class="ui aligned stackable grid">
-        <div class="row">
-          <div class="column">
-            ${await renderPageHeader(editorialCommunityId, userId)}
-          </div>
+      <div class="hive-grid hive-grid--editorial-community u-full-width">
+        ${await renderPageHeader(editorialCommunityId, userId)}
+
+        <div class="editorial-community-page-description">
+          ${await renderDescription(editorialCommunityId, userId)}
         </div>
-        <div class="row">
-          <div class="eight wide column">
-            ${await renderDescription(editorialCommunityId, userId)}
-          </div>
-          <div class="eight wide column">
-            <section class="ui two statistics">
-              ${await renderEndorsedArticles(editorialCommunityId, userId)}
-              ${await renderReviewedArticles(editorialCommunityId, userId)}
-            </section>
-            ${await renderFollowers(editorialCommunityId, userId)}
-            ${await renderFeed(editorialCommunityId, userId)}
-          </div>
-        </div> 
+        <div class="editorial-community-page-side-bar">
+          <section class="ui two statistics">
+            ${await renderEndorsedArticles(editorialCommunityId, userId)}
+            ${await renderReviewedArticles(editorialCommunityId, userId)}
+          </section>
+          ${await renderFollowers(editorialCommunityId, userId)}
+          ${await renderFeed(editorialCommunityId, userId)}
+        </div>
       </div>
     `
   )

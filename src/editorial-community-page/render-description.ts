@@ -10,7 +10,7 @@ export default (
   async (editorialCommunityId) => {
     const editorialCommunityDescription = await getEditorialCommunityDescription(editorialCommunityId);
     return `
-      <section class="ui basic vertical segment">
+      <section>
         ${editorialCommunityDescription}
       </section>
     `;

@@ -1,0 +1,28 @@
+@use 'baseline';
+
+.hive-grid--editorial-community > .editorial-community-page-header {
+  grid-column: 1 / -1;
+}
+
+.editorial-community-page-header {
+  margin-bottom: #{baseline.increments(6)};
+}
+
+.editorial-community-page-description {
+  grid-column: 1 / -1;
+}
+
+.editorial-community-page-side-bar {
+  grid-column: 1 / -1;
+}
+
+@media screen and (min-width: 56.25em) {
+  .hive-grid--editorial-community > .editorial-community-page-description {
+    grid-column: 1 / 7;
+  }
+
+  .hive-grid--editorial-community > .editorial-community-page-side-bar {
+    grid-column: 7 / -1;
+  }
+
+}
