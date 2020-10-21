@@ -1,0 +1,5 @@
+@use 'baseline';
+
+.page-header {
+  margin-bottom: #{baseline.increments(6)};
+}
