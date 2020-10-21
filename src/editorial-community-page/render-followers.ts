@@ -41,7 +41,7 @@ export default (
     }
 
     return `
-      <section class="ui very padded vertical segment">
+      <section class="followers">
         <h2>
           Followers
         </h2>

@@ -122,6 +122,10 @@ Fix the vertical alignment in the event feed
   display: block;
 }
 
+.ui.two.statistics.metrics {
+  margin-bottom: #{baseline.increments(8)};
+}
+
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Styles that supplement Semantic UI
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -578,4 +582,8 @@ p.article-feed__item__title {
   border-bottom-left-radius: 0;
   padding: 9px 9px 7px 10px;
   flex: 0 0 calc((32 / var(--BASE-FONT-MEASURE)) * 1rem);
+}
+
+.followers {
+  margin-bottom: #{baseline.increments(8)};
 }

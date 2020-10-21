@@ -22,7 +22,7 @@ export default <T>(
 ): RenderFeed => async (editorialCommunityId, userId) => {
   const events = await getEvents(editorialCommunityId);
   return `
-      <section class="ui very padded vertical segment">
+      <section>
         <h2>
           Feed
         </h2>

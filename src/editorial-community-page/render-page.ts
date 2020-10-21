@@ -23,7 +23,7 @@ export default (
           ${await renderDescription(editorialCommunityId, userId)}
         </div>
         <div class="editorial-community-page-side-bar">
-          <section class="ui two statistics">
+          <section class="ui two statistics metrics">
             ${await renderEndorsedArticles(editorialCommunityId, userId)}
             ${await renderReviewedArticles(editorialCommunityId, userId)}
           </section>
