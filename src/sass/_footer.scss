@@ -1,10 +1,26 @@
 @use 'baseline';
 
+.site-footer {
+  @media screen and (min-width: 46.25em) {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
 .site-footer > * {
   font-size: 0.75rem;
+  @media screen and (min-width: 46.25em) {
+    max-width: 33%;
+  }
 }
 
 .site-footer__links_list {
   padding-left: 0;
   list-style: none;
+  margin-bottom: #{baseline.increments(2)};
+}
+
+.site-footer__address {
+  margin-bottom: #{baseline.increments(2)};
+  font-style: normal;
 }

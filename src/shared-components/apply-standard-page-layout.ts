@@ -85,7 +85,7 @@ export default (page: string, user: Maybe<User>): string => `<!doctype html>
       <li><a href="/privacy">Privacy notice</a></li>
     </ul>
     
-    <address>
+    <address class="site-footer__address">
       eLife Sciences Publications, Ltd<br>
       Westbrook Centre, Milton Road<br>
       Cambridge CB4 1YG<br>
