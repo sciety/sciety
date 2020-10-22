@@ -21,7 +21,7 @@ spec:
           image: "{{ .Values.images.frontend.repository }}:{{ .Values.images.frontend.tag }}"
           env:
             - name: APP_ORIGIN
-              value: http://{{ .Values.hostname }}
+              value: https://{{ .Values.hostname }}
             - name: DISQUS_API_KEY
               value: {{ .Values.disqusApiKey }}
             - name: GOOGLE_TAG_MANAGER_ID
