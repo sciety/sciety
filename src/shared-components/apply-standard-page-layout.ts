@@ -120,7 +120,9 @@ export default (page: string, user: Maybe<User>): string => `<!doctype html>
           background: 'rgb(0, 0, 0, 0.8)',
         }
       },
-      secure: ${process.env.APP_ORIGIN ? 'true' : 'false'}
+      cookie: {
+        secure: ${process.env.APP_ORIGIN ? 'true' : 'false'}
+      },
     });
   </script>
 </body>
