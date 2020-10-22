@@ -40,7 +40,7 @@ const isSecure = process.env.APP_ORIGIN !== undefined && process.env.APP_ORIGIN.
 export default (page: string, user: Maybe<User>): string => `<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">  
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>
     The Hive
@@ -81,12 +81,18 @@ export default (page: string, user: Maybe<User>): string => `<!doctype html>
   </main>
 
   <footer class="site-footer">
-    
+
     <ul class="site-footer__links_list" role="list">
       <li><a href="/terms">Terms and conditions</a></li>
       <li><a href="/privacy">Privacy notice</a></li>
     </ul>
-    
+
+    <p>
+      eLife Sciences Publications, Ltd is a limited liability non-profit non-stock corporation incorporated
+      in the State of Delaware, USA, with company number 5030732, and is registered in the UK with company
+      number FC030576 and branch number BR015634 at the address:
+    </p>
+
     <address class="site-footer__address">
       eLife Sciences Publications, Ltd<br>
       Westbrook Centre, Milton Road<br>
