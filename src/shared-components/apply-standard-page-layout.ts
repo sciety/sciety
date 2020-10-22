@@ -119,7 +119,8 @@ export default (page: string, user: Maybe<User>): string => `<!doctype html>
         popup: {
           background: 'rgb(0, 0, 0, 0.8)',
         }
-      }
+      },
+      secure: ${process.env.APP_ORIGIN ? 'true' : 'false'}
     });
   </script>
 </body>
