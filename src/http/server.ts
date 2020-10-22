@@ -43,6 +43,7 @@ export default (router: Router, logger: Logger): Server => {
   app.use(koaSession(
     {
       maxAge: 365 * 24 * 60 * 60 * 1000,
+      secure: !!process.env.APP_ORIGIN,
     },
     app,
   ));
