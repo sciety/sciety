@@ -5,7 +5,7 @@ services:
     build:
       context: ../
     environment:
-      APP_ORIGIN:
+      APP_ORIGIN: "http://localhost:8080"
       APP_SECRET:
       DISQUS_API_KEY:
       GOOGLE_TAG_MANAGER_ID:

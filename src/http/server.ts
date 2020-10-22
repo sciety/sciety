@@ -39,7 +39,12 @@ export default (router: Router, logger: Logger): Server => {
     await next();
   });
 
-  const isSecure = !!process.env.APP_ORIGIN;
+  if (!process.env.APP_ORIGIN) {
+    logger('error', 'Missing APP_ORIGIN environment variable');
+    throw new Error('Missing APP_ORIGIN from environment variables');
+  }
+
+  const isSecure = process.env.APP_ORIGIN.startsWith('https:');
   if (isSecure) {
     app.use(async (ctx, next) => {
       ctx.cookies.secure = true;
@@ -61,7 +66,7 @@ export default (router: Router, logger: Logger): Server => {
       {
         consumerKey: process.env.TWITTER_API_KEY ?? 'my_key',
         consumerSecret: process.env.TWITTER_API_SECRET_KEY ?? 'my_secret',
-        callbackURL: `${process.env.APP_ORIGIN ?? 'http://localhost:8080'}/twitter/callback`,
+        callbackURL: `${process.env.APP_ORIGIN}/twitter/callback`,
       },
       (token, tokenSecret, profile, cb) => {
         const user: User = {

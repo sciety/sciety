@@ -35,6 +35,8 @@ const loggedOutMenuItems = (): string => `
   </li>
 `;
 
+const isSecure = process.env.APP_ORIGIN !== undefined && process.env.APP_ORIGIN.startsWith('https:');
+
 export default (page: string, user: Maybe<User>): string => `<!doctype html>
 <html lang="en">
 <head>
@@ -121,7 +123,7 @@ export default (page: string, user: Maybe<User>): string => `<!doctype html>
         }
       },
       cookie: {
-        secure: ${process.env.APP_ORIGIN ? 'true' : 'false'}
+        secure: ${isSecure ? 'true' : 'false'}
       },
     });
   </script>
