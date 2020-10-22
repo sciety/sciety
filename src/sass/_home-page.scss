@@ -1,0 +1,28 @@
+@use 'baseline';
+
+.hive-grid--home > .home-page-header {
+  grid-column: 1 / -1;
+}
+
+.home-page-header {
+  text-align: center;
+  margin-bottom: #{baseline.increments(7)};
+}
+
+.home-page-feed-container {
+  grid-column: 1 / -1;
+}
+
+.home-page-side-bar {
+  grid-column: 1 / -1;
+}
+
+@media screen and (min-width: 56.25em) {
+  .hive-grid--home > .home-page-feed-container {
+    grid-column: 1 / 9;
+  }
+
+  .hive-grid--home > .home-page-side-bar {
+    grid-column: 10 / -1;
+  }
+}
