@@ -39,6 +39,11 @@ export default (router: Router, logger: Logger): Server => {
     await next();
   });
 
+  app.use(async (ctx, next) => {
+    ctx.cookies.secure = true;
+    await next();
+  });
+
   app.keys = [process.env.APP_SECRET ?? 'this-is-not-secret'];
   app.use(koaSession(
     {
