@@ -39,16 +39,19 @@ export default (router: Router, logger: Logger): Server => {
     await next();
   });
 
-  app.use(async (ctx, next) => {
-    ctx.cookies.secure = true;
-    await next();
-  });
+  const isSecure = !!process.env.APP_ORIGIN;
+  if (isSecure) {
+    app.use(async (ctx, next) => {
+      ctx.cookies.secure = true;
+      await next();
+    });
+  }
 
   app.keys = [process.env.APP_SECRET ?? 'this-is-not-secret'];
   app.use(koaSession(
     {
       maxAge: 365 * 24 * 60 * 60 * 1000,
-      secure: !!process.env.APP_ORIGIN,
+      secure: isSecure,
     },
     app,
   ));
