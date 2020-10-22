@@ -8,6 +8,8 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt"
     nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      more_set_input_headers "X-Forwarded-Proto: https";
 spec:
   rules:
     - host: {{ .Values.hostname }}
