@@ -1,11 +1,7 @@
 @use 'baseline';
 
-.hive-grid--editorial-community > .editorial-community-page-header {
+.hive-grid--editorial-community > .page-header--editorial-community {
   grid-column: 1 / -1;
-}
-
-.editorial-community-page-header {
-  margin-bottom: #{baseline.increments(6)};
 }
 
 .editorial-community-page-description {

@@ -1,7 +1,9 @@
 type RenderPage = () => Promise<string>;
 
 export default (): RenderPage => async () => `
-    <h1>Privacy notice</h1>
+    <header class="page-header">
+      <h1>Privacy notice</h1>
+    </header>
 
     <p>
       This Privacy Notice relates to data held and processed by eLife Sciences Publications, Ltd

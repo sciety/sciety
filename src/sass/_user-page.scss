@@ -1,11 +1,25 @@
 @use 'baseline';
 
-.hive-grid--user > .user-page-header {
+.hive-grid--user > .page-header--user {
   grid-column: 1 / -1;
 }
 
-.user-page-header {
-  margin-bottom: #{baseline.increments(6)};
+.page-header--user {
+  display: flex;
+  align-items: center;
+
+  .page-header__avatar {
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
+    margin-right: 1rem;
+    border-radius: 50%;
+  }
+
+  .page-header__handle {
+    font-size: calc((26 / var(--BASE-FONT-MEASURE)) * 1rem);
+    color: #666;
+  }
 }
 
 .user-page-contents {
@@ -17,3 +31,4 @@
     grid-column: 1 / 8;
   }
 }
+

@@ -15,7 +15,7 @@ export default (
     const editorialCommunity = await getEditorialCommunity(editorialCommunityId);
 
     return `
-      <header class="editorial-community-page-header">
+      <header class="page-header page-header--editorial-community">
         <h1>
           <img src="${editorialCommunity.avatar.toString()}" alt="" class="ui avatar image">
           ${editorialCommunity.name}

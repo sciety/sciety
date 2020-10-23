@@ -16,7 +16,7 @@ export default (
   const articleDetails = await getArticleDetails(doi);
 
   return articleDetails.map((details) => `
-      <header class="article-header">
+      <header class="page-header page-header--article">
         <h1>${details.title}</h1>
 
         <ol aria-label="Authors of this article" class="article-author-list" role="list">

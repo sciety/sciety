@@ -6,7 +6,7 @@ export default (
   renderSearchResults: RenderSearchResults,
 ): RenderPage => async (query) => (
   `
-    <header class="ui basic padded vertical segment">
+    <header class="page-header">
       <h1>Search results</h1>
     </header>
 

@@ -12,15 +12,15 @@ export type GetUserDetails = (userId: UserId) => Promise<Result<UserDetails, 'no
 type RenderHeader = (userId: UserId) => Promise<Result<string, 'not-found' | 'unavailable'>>;
 
 const headerTemplate = (ud: UserDetails): string => `
-  <h1 class="user-page-header">
-    <img src="${ud.avatarUrl}" alt="" class="user-page-header__avatar">
-    <div>
+  <header class="page-header page-header--user">
+    <img src="${ud.avatarUrl}" alt="" class="page-header__avatar">
+    <h1>
       ${ud.displayName}
-      <div class="user-page-header__handle">
+      <div class="page-header__handle">
         @${ud.handle}
       </div>
-    </div>
-  </h1>
+    </h1>
+  </header>
 `;
 
 export default (getUserDetails: GetUserDetails): RenderHeader => (
