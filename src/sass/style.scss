@@ -9,6 +9,8 @@
 @use 'page-header';
 @use 'user-page';
 @use 'home-page';
+@use 'button';
+@use 'search-form';
 @import 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css';
 
 /* Hive imports, not Semantic-UI */
@@ -470,39 +472,6 @@ p.article-feed__item__title {
   color: var(--COLOUR-PRIMARY-HOVER);
 }
 
-.button {
-  border-radius: 5px;
-  font-size: var(--BASE-FONT-REM);
-  font-family: Lato, sans-serif;
-  border-width: 0;
-  padding: calc((13 / var(--BASE-FONT-MEASURE)) * 1rem) calc((25 / var(--BASE-FONT-MEASURE)) * 1rem);
-  font-weight: bold;
-  cursor: pointer;
-  background-color: var(--COLOUR-GREY-ONE);
-  color: var(--COLOUR-GREY-TWO);
-}
-
-.button--small {
-  font-size: calc((12 / var(--BASE-FONT-MEASURE)) * 1rem);
-  padding: calc((9 / var(--BASE-FONT-MEASURE)) * 1rem) calc((18 / var(--BASE-FONT-MEASURE)) * 1rem);
-}
-
-.button:hover {
-  background-color: var(--COLOUR-GREY-ONE-HOVER);
-  color: var(--COLOUR-GREY-TWO-HOVER);
-}
-
-.button--primary {
-  color: #fff;
-  background-color: var(--COLOUR-PRIMARY);
-}
-
-.button--primary:hover {
-  color: #fff;
-  background-color: var(--COLOUR-PRIMARY-HOVER);
-}
-
-@import 'search-form';
 
 .followers {
   margin-bottom: #{baseline.increments(8)};
