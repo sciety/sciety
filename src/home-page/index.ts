@@ -5,10 +5,10 @@ import createProjectIsFollowingSomething from './project-is-following-something'
 import createRenderEditorialCommunities, { GetAllEditorialCommunities } from './render-editorial-communities';
 import createRenderEditorialCommunity from './render-editorial-community';
 import createRenderFeed, { IsFollowingSomething } from './render-feed';
-import createRenderFindArticle from './render-find-article';
 import createRenderFollowToggle from './render-follow-toggle';
 import createRenderPage from './render-page';
 import createRenderPageHeader from './render-page-header';
+import createRenderSearchForm from './render-search-form';
 import createRenderSummaryFeedItem, { GetActor } from '../shared-components/render-summary-feed-item';
 import createRenderSummaryFeedList from '../shared-components/render-summary-feed-list';
 import EditorialCommunityId from '../types/editorial-community-id';
@@ -58,7 +58,7 @@ export default (ports: Ports): RenderPage => {
     ports.getAllEditorialCommunities,
     renderEditorialCommunity,
   );
-  const renderFindArticle = createRenderFindArticle();
+  const renderSearchForm = createRenderSearchForm();
   const renderSummaryFeedItem = createRenderSummaryFeedItem(getActorAdapter, ports.fetchArticle);
   const renderSummaryFeedList = createRenderSummaryFeedList(renderSummaryFeedItem);
   const renderFeed = createRenderFeed(
@@ -69,7 +69,7 @@ export default (ports: Ports): RenderPage => {
   const renderPage = createRenderPage(
     renderPageHeader,
     renderEditorialCommunities,
-    renderFindArticle,
+    renderSearchForm,
     renderFeed,
   );
 

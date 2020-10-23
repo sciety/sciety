@@ -8,7 +8,7 @@ type Component = (userId: Maybe<UserId>) => Promise<string>;
 export default (
   renderPageHeader: Component,
   renderEditorialCommunities: Component,
-  renderFindArticle: Component,
+  renderSearchForm: Component,
   renderFeed: Component,
 ): RenderPage => async (userId) => `
       <div class="hive-grid hive-grid--home u-full-width">
@@ -19,7 +19,7 @@ export default (
         </div>
 
         <div class="home-page-side-bar">
-          ${await renderFindArticle(userId)}
+          ${await renderSearchForm(userId)}
           ${await renderEditorialCommunities(userId)}
         </div>
 
