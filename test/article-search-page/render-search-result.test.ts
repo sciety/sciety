@@ -1,5 +1,4 @@
 import createRenderSearchResult, {
-  GetEndorsingEditorialCommunityNames,
   GetReviewCount,
   SearchResult,
 } from '../../src/article-search-page/render-search-result';
@@ -13,14 +12,10 @@ const searchResult: SearchResult = {
 };
 
 const arbitraryReviewCount: GetReviewCount = async () => 0;
-const arbitraryEndorsingEditorialCommunities: GetEndorsingEditorialCommunityNames = async () => [];
 
 describe('render-search-result component', (): void => {
   it('displays title and authors', async (): Promise<void> => {
-    const rendered = await createRenderSearchResult(
-      arbitraryReviewCount,
-      arbitraryEndorsingEditorialCommunities,
-    )(searchResult);
+    const rendered = await createRenderSearchResult(arbitraryReviewCount)(searchResult);
 
     expect(rendered).toStrictEqual(expect.stringContaining(searchResult.doi.value));
     expect(rendered).toStrictEqual(expect.stringContaining(searchResult.title));
@@ -28,10 +23,7 @@ describe('render-search-result component', (): void => {
   });
 
   it('displays the posted date', async (): Promise<void> => {
-    const rendered = await createRenderSearchResult(
-      arbitraryReviewCount,
-      arbitraryEndorsingEditorialCommunities,
-    )(searchResult);
+    const rendered = await createRenderSearchResult(arbitraryReviewCount)(searchResult);
 
     expect(rendered).toStrictEqual(expect.stringMatching(/Posted[\s\S]*?Nov 30, 2017/));
   });
@@ -40,10 +32,7 @@ describe('render-search-result component', (): void => {
     it('displays the number of reviews', async (): Promise<void> => {
       const getReviewCount: GetReviewCount = async () => 37;
 
-      const rendered = await createRenderSearchResult(
-        getReviewCount,
-        arbitraryEndorsingEditorialCommunities,
-      )(searchResult);
+      const rendered = await createRenderSearchResult(getReviewCount)(searchResult);
 
       expect(rendered).toStrictEqual(expect.stringMatching(/Reviews[\s\S]*?37/));
     });
@@ -53,37 +42,9 @@ describe('render-search-result component', (): void => {
     it('hides the number of reviews', async (): Promise<void> => {
       const getReviewCount: GetReviewCount = async () => 0;
 
-      const rendered = await createRenderSearchResult(
-        getReviewCount,
-        arbitraryEndorsingEditorialCommunities,
-      )(searchResult);
+      const rendered = await createRenderSearchResult(getReviewCount)(searchResult);
 
       expect(rendered).toStrictEqual(expect.not.stringContaining('Reviews'));
-    });
-  });
-
-  describe('a list of endorsing editorial communities is available', (): void => {
-    it('displays the endorsing editorial communities', async (): Promise<void> => {
-      const getEndorsingEditorialCommunityNames: GetEndorsingEditorialCommunityNames = async () => ['PeerJ', 'eLife'];
-      const rendered = await createRenderSearchResult(
-        arbitraryReviewCount,
-        getEndorsingEditorialCommunityNames,
-      )(searchResult);
-
-      expect(rendered).toStrictEqual(expect.stringMatching(/Endorsed by[\s\S]*?PeerJ/));
-      expect(rendered).toStrictEqual(expect.stringMatching(/Endorsed by[\s\S]*?eLife/));
-    });
-  });
-
-  describe('the list of endorsing editorial communities is empty', (): void => {
-    it('displays the endorsing editorial communities', async (): Promise<void> => {
-      const getEndorsingEditorialCommunityNames: GetEndorsingEditorialCommunityNames = async () => [];
-      const rendered = await createRenderSearchResult(
-        arbitraryReviewCount,
-        getEndorsingEditorialCommunityNames,
-      )(searchResult);
-
-      expect(rendered).toStrictEqual(expect.not.stringContaining('Endorsed by'));
     });
   });
 });

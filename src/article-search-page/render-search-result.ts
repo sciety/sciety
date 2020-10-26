@@ -9,7 +9,6 @@ export interface SearchResult {
 }
 
 export type GetReviewCount = (doi: Doi) => Promise<number>;
-export type GetEndorsingEditorialCommunityNames = (doi: Doi) => Promise<Array<string>>;
 
 export type RenderSearchResult = (result: SearchResult) => Promise<string>;
 
@@ -30,33 +29,14 @@ const createRenderReviews = (
   }
 );
 
-const createRenderEndorsements = (
-  getEndorsingEditorialCommunityNames: GetEndorsingEditorialCommunityNames,
-) => (
-  async (doi: Doi): Promise<string> => {
-    const endorsingEditorialCommunities = await getEndorsingEditorialCommunityNames(doi);
-    if (endorsingEditorialCommunities.length === 0) {
-      return '';
-    }
-    return `
-      <div class="ui label">
-        Endorsed by
-        <span class="detail">${endorsingEditorialCommunities.join(', ')}</span>
-      </div>
-    `;
-  }
-);
-
 const templatePostedDate = (date: Date): string => (
   `<div class="meta">Posted ${templateDate(date)}</div>`
 );
 
 export default (
   getReviewCount: GetReviewCount,
-  getEndorsingEditorialCommunityNames: GetEndorsingEditorialCommunityNames,
 ): RenderSearchResult => {
   const renderReviews = createRenderReviews(getReviewCount);
-  const renderEndorsements = createRenderEndorsements(getEndorsingEditorialCommunityNames);
 
   return async (result) => `
     <div class="content">
@@ -67,7 +47,6 @@ export default (
       ${templatePostedDate(result.postedDate)}
       <div class="extra">
         ${await renderReviews(result.doi)}
-        ${await renderEndorsements(result.doi)}
       </div>
     </div>
   `;
