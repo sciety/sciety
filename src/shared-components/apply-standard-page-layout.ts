@@ -119,7 +119,9 @@ export default (page: string, user: Maybe<User>): string => `<!doctype html>
 
     window.cookieconsent.initialise({
       content: {
-        message: 'This site uses cookies to deliver its services and analyse traffic. By using this site, you agree to its use of cookies.'
+        message: 'This site uses cookies to deliver its services and analyse traffic. By using this site, you agree to its use of cookies.',
+        href: '/privacy',
+        target: '_self'
       },
       onInitialise: onConsent,
       onStatusChange: onConsent,
