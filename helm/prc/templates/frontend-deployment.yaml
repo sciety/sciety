@@ -25,7 +25,7 @@ spec:
             - name: DISQUS_API_KEY
               value: {{ .Values.disqusApiKey }}
             - name: EXPERIMENT_ENABLED
-              value: {{ .Values.experimentEnabled }}
+              value: "{{ .Values.experimentEnabled }}"
             - name: GOOGLE_TAG_MANAGER_ID
               value: {{ .Values.googleTagManagerId }}
             - name: PGDATABASE
