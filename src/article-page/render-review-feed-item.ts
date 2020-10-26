@@ -20,16 +20,19 @@ const renderAvatar = (url: URL): string => `
   <img class="article-feed__item__avatar" src="${url.toString()}" alt="">
 `;
 
+const renderVotes = (upVotes: number, downVotes: number): string => (
+  `<div>
+    ${upVotes} people found this helpful,<br/>
+    ${downVotes} people found this to be unhelpful
+  </div>`
+);
+
 export default (
   teaserChars: number,
 ): RenderReviewFeedItem => (review: ReviewFeedItem): string => {
-  let votes = '';
+  let votesHtml = '';
   if (process.env.EXPERIMENT_ENABLED === 'true') {
-    votes = `
-    <div>
-        32 people found this helpful,<br/>
-        17 people found this to be unhelpful
-    </div>`;
+    votesHtml = renderVotes(42, 7);
   }
   const eventMetadata = `
     ${templateDate(review.occurredAt, 'article-feed__item__date')}
@@ -39,7 +42,7 @@ export default (
         ${review.editorialCommunityName}
       </a>
     </div>
-    ${votes}
+    ${votesHtml}
   `;
   const sourceLink = `
     <a href="${review.source.toString()}" class="article-feed__item__read_more article-call-to-action-link">
