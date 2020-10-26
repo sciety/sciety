@@ -4,7 +4,7 @@ import { Maybe } from 'true-myth';
 import templateDate from '../shared-components/date';
 import EditorialCommunityId from '../types/editorial-community-id';
 
-export type RenderReviewFeedItem = (review: ReviewFeedItem) => string;
+export type RenderReviewFeedItem = (review: ReviewFeedItem) => Promise<string>;
 
 export type ReviewFeedItem = {
   type: 'review';
@@ -29,7 +29,7 @@ const renderVotes = (upVotes: number, downVotes: number): string => (
 
 export default (
   teaserChars: number,
-): RenderReviewFeedItem => (review: ReviewFeedItem): string => {
+): RenderReviewFeedItem => async (review) => {
   let votesHtml = '';
   if (process.env.EXPERIMENT_ENABLED === 'true') {
     votesHtml = renderVotes(42, 7);

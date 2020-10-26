@@ -18,7 +18,7 @@ export default (
 ): RenderFeed => {
   const renderArticleVersionErrorFeedItem = createRenderArticleVersionErrorFeedItem();
 
-  const renderFeedItem = (feedItem: FeedItem): string => {
+  const renderFeedItem = async (feedItem: FeedItem): Promise<string> => {
     switch (feedItem.type) {
       case 'article-version':
         return renderArticleVersionFeedItem(feedItem);
@@ -36,7 +36,7 @@ export default (
       return Result.err('no-content');
     }
 
-    const items = feedItems.map(renderFeedItem);
+    const items = await Promise.all(feedItems.map(renderFeedItem));
 
     return Result.ok(`
       <section>

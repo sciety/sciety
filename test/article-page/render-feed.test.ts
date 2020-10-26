@@ -43,7 +43,7 @@ describe('render-feed', () => {
             type: 'article-version-error',
           },
         ],
-        () => '',
+        async () => '',
         () => '',
       );
 

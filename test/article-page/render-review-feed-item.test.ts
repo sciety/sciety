@@ -6,12 +6,12 @@ import EditorialCommunityId from '../../src/types/editorial-community-id';
 
 describe('render-review-feed-item', () => {
   describe('when the review has long full text', () => {
-    it('renders the full text', () => {
+    it('renders the full text', async () => {
       const fullText = 'A very long review';
       const renderReviewFeedItem = createRenderReviewFeedItem(6);
 
       const rendered = JSDOM.fragment(
-        renderReviewFeedItem({
+        await renderReviewFeedItem({
           type: 'review',
           source: new URL('http://example.com'),
           occurredAt: new Date(),
@@ -32,13 +32,13 @@ describe('render-review-feed-item', () => {
   });
 
   describe('when the review has short full text', () => {
-    it('renders without a teaser', () => {
+    it('renders without a teaser', async () => {
       const fullText = 'tldr';
       const source = 'http://example.com/source';
       const renderReviewFeedItem = createRenderReviewFeedItem(12);
 
       const rendered = JSDOM.fragment(
-        renderReviewFeedItem({
+        await renderReviewFeedItem({
           type: 'review',
           source: new URL(source),
           occurredAt: new Date(),
@@ -61,12 +61,12 @@ describe('render-review-feed-item', () => {
   });
 
   describe('when the review has no full text', () => {
-    it('renders without a teaser', () => {
+    it('renders without a teaser', async () => {
       const source = 'http://example.com/source';
       const renderReviewFeedItem = createRenderReviewFeedItem(6);
 
       const rendered = JSDOM.fragment(
-        renderReviewFeedItem({
+        await renderReviewFeedItem({
           type: 'review',
           source: new URL(source),
           occurredAt: new Date(),
