@@ -6,6 +6,7 @@
 
 .editorial-community-page-description {
   grid-column: 1 / -1;
+  margin-bottom: baseline.increments(4);
 }
 
 .editorial-community-page-side-bar {
@@ -15,6 +16,7 @@
 @media screen and (min-width: 56.25em) {
   .hive-grid--editorial-community > .editorial-community-page-description {
     grid-column: 1 / 7;
+    margin-bottom: 0;
   }
 
   .hive-grid--editorial-community > .editorial-community-page-side-bar {
