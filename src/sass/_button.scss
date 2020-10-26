@@ -1,11 +1,25 @@
-.button {
+@mixin basics () {
+  border-width: 0;
   border-radius: 5px;
+  cursor: pointer;
+}
+
+@mixin primary-colour {
+  color: #fff;
+  background-color: var(--COLOUR-PRIMARY);
+
+  &:hover {
+    color: #fff;
+    background-color: var(--COLOUR-PRIMARY-HOVER);
+  }
+}
+
+.button {
+  @include basics();
   font-size: var(--BASE-FONT-REM);
   font-family: Lato, sans-serif;
-  border-width: 0;
   padding: calc((13 / var(--BASE-FONT-MEASURE)) * 1rem) calc((25 / var(--BASE-FONT-MEASURE)) * 1rem);
   font-weight: bold;
-  cursor: pointer;
   background-color: var(--COLOUR-GREY-ONE);
   color: var(--COLOUR-GREY-TWO);
 }
@@ -21,11 +35,5 @@
 }
 
 .button--primary {
-  color: #fff;
-  background-color: var(--COLOUR-PRIMARY);
-}
-
-.button--primary:hover {
-  color: #fff;
-  background-color: var(--COLOUR-PRIMARY-HOVER);
+  @include primary-colour();
 }

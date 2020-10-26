@@ -1,4 +1,5 @@
 @use 'baseline';
+@use 'button';
 
 .search-form {
   margin-bottom: #{baseline.increments(6)};
@@ -31,22 +32,12 @@
 }
 
 .search-form__button {
-  font-size: var(--BASE-FONT-REM);
-  font-family: Lato, sans-serif;
-  border-width: 0;
-  font-weight: bold;
-  cursor: pointer;
+  @include button.basics();
+  @include button.primary-colour();
 
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
+  font-weight: bold;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
   padding: 9px 9px 7px 10px;
   flex: 0 0 calc((32 / var(--BASE-FONT-MEASURE)) * 1rem);
-
-  color: #fff;
-  background-color: var(--COLOUR-PRIMARY);
-}
-
-.search-form__button:hover {
-  color: #fff;
-  background-color: var(--COLOUR-PRIMARY-HOVER);
 }
