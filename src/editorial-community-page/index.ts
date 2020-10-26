@@ -6,28 +6,17 @@ import createGetFollowersFromIds, { GetUserDetails } from './get-followers-from-
 import createGetMostRecentEvents, { GetAllEvents } from './get-most-recent-events';
 import createProjectFollowerIds from './project-follower-ids';
 import createRenderDescription, { GetEditorialCommunityDescription, RenderDescription } from './render-description';
-import createRenderEndorsedArticles, { GetNumberOfEndorsedArticles, RenderEndorsedArticles } from './render-endorsed-articles';
 import createRenderFeed, { RenderFeed } from './render-feed';
 import createRenderFollowToggle, { Follows } from './render-follow-toggle';
 import createRenderFollowers from './render-followers';
 import createRenderPage from './render-page';
 import createRenderPageHeader, { GetEditorialCommunity, RenderPageHeader } from './render-page-header';
-import createRenderReviews, { GetNumberOfReviews, RenderReviews } from './render-reviews';
 import createRenderSummaryFeedItem, { GetActor } from '../shared-components/render-summary-feed-item';
 import createRenderSummaryFeedList from '../shared-components/render-summary-feed-list';
-import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
-import EndorsementsRepository from '../types/endorsements-repository';
 import { FetchExternalArticle } from '../types/fetch-external-article';
-import { ReviewId } from '../types/review-id';
 import { User } from '../types/user';
 import { UserId } from '../types/user-id';
-
-type FindReviewsForEditorialCommunityId = (editorialCommunityId: EditorialCommunityId) => Promise<Array<{
-  articleDoi: Doi;
-  reviewId: ReviewId;
-  added: Date;
-}>>;
 
 type FetchStaticFile = (filename: string) => Promise<string>;
 
@@ -47,9 +36,7 @@ interface Ports {
   fetchArticle: FetchExternalArticle;
   fetchStaticFile: FetchStaticFile;
   getEditorialCommunity: FetchEditorialCommunity;
-  endorsements: EndorsementsRepository,
   getAllEvents: GetAllEvents;
-  findReviewsForEditorialCommunityId: FindReviewsForEditorialCommunityId,
   follows: Follows,
   getUserDetails: GetUserDetailsResult,
 }
@@ -76,24 +63,6 @@ const buildRenderDescription = (ports: Ports): RenderDescription => {
     return converter.makeHtml(markdown);
   };
   return createRenderDescription(getEditorialCommunityDescription);
-};
-
-const buildRenderEndorsedArticles = (
-  endorsements: EndorsementsRepository,
-): RenderEndorsedArticles => {
-  const getNumberOfEndorsedArticles: GetNumberOfEndorsedArticles = async (editorialCommunityId) => (
-    (await endorsements.endorsedBy(editorialCommunityId)).length
-  );
-  return createRenderEndorsedArticles(getNumberOfEndorsedArticles);
-};
-
-const buildRenderReviews = (
-  ports: Ports,
-): RenderReviews => {
-  const getNumberOfReviews: GetNumberOfReviews = async (editorialCommunityId) => (
-    (await ports.findReviewsForEditorialCommunityId(editorialCommunityId)).length
-  );
-  return createRenderReviews(getNumberOfReviews);
 };
 
 const buildRenderFeed = (ports: Ports): RenderFeed => {
@@ -130,8 +99,6 @@ type RenderPage = (params: Params) => Promise<Result<string, RenderPageError>>;
 export default (ports: Ports): RenderPage => {
   const renderPageHeader = buildRenderPageHeader(ports);
   const renderDescription = buildRenderDescription(ports);
-  const renderEndorsedArticles = buildRenderEndorsedArticles(ports.endorsements);
-  const renderReviews = buildRenderReviews(ports);
   const renderFeed = buildRenderFeed(ports);
 
   const getUserDetails: GetUserDetails = async (userId) => {
@@ -145,8 +112,6 @@ export default (ports: Ports): RenderPage => {
   const renderPage = createRenderPage(
     renderPageHeader,
     renderDescription,
-    renderEndorsedArticles,
-    renderReviews,
     renderFeed,
     renderFollowers,
   );

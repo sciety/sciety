@@ -9,8 +9,6 @@ type RenderPage = (editorialCommunityId: EditorialCommunityId, userId: Maybe<Use
 export default (
   renderPageHeader: Component,
   renderDescription: Component,
-  renderEndorsedArticles: Component,
-  renderReviewedArticles: Component,
   renderFeed: Component,
   renderFollowers: Component,
 ): RenderPage => (
@@ -23,10 +21,6 @@ export default (
           ${await renderDescription(editorialCommunityId, userId)}
         </div>
         <div class="editorial-community-page-side-bar">
-          <section class="ui two statistics metrics">
-            ${await renderEndorsedArticles(editorialCommunityId, userId)}
-            ${await renderReviewedArticles(editorialCommunityId, userId)}
-          </section>
           ${await renderFollowers(editorialCommunityId, userId)}
           ${await renderFeed(editorialCommunityId, userId)}
         </div>
