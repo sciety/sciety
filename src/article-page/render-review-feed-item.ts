@@ -23,6 +23,14 @@ const renderAvatar = (url: URL): string => `
 export default (
   teaserChars: number,
 ): RenderReviewFeedItem => (review: ReviewFeedItem): string => {
+  let votes = '';
+  if (process.env.EXPERIMENT_ENABLED === 'true') {
+    votes = `
+    <div>
+        32 people found this helpful,<br/>
+        17 people found this to be unhelpful
+    </div>`;
+  }
   const eventMetadata = `
     ${templateDate(review.occurredAt, 'article-feed__item__date')}
     <div class="article-feed__item__title">
@@ -31,6 +39,7 @@ export default (
         ${review.editorialCommunityName}
       </a>
     </div>
+    ${votes}
   `;
   const sourceLink = `
     <a href="${review.source.toString()}" class="article-feed__item__read_more article-call-to-action-link">

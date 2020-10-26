@@ -4,4 +4,6 @@ services:
   app:
     build:
       target: prod
+    environment:
+      EXPERIMENT_ENABLED: "false"
     image: ${IMAGE}:${IMAGE_TAG}

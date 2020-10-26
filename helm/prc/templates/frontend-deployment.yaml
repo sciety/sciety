@@ -24,6 +24,8 @@ spec:
               value: https://{{ .Values.hostname }}
             - name: DISQUS_API_KEY
               value: {{ .Values.disqusApiKey }}
+            - name: EXPERIMENT_ENABLED
+              value: "false"
             - name: GOOGLE_TAG_MANAGER_ID
               value: {{ .Values.googleTagManagerId }}
             - name: PGDATABASE

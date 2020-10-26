@@ -8,6 +8,7 @@ services:
       APP_ORIGIN: "http://localhost:8080"
       APP_SECRET:
       DISQUS_API_KEY:
+      EXPERIMENT_ENABLED: "true"
       GOOGLE_TAG_MANAGER_ID:
       LOG_LEVEL:
       PGUSER: user
