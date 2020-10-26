@@ -3,7 +3,7 @@ images:
     repository: liberoadmin/prc-frontend
     tag: ef96a5a188cf6cbad1c8eef9d0765743e3af757a
 
-googleTagManagerId:
 disqusApiKey:
-
+experimentEnabled: "false"
+googleTagManagerId:
 postgresqlSecretName: null
