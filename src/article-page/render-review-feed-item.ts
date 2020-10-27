@@ -27,7 +27,7 @@ export default (
 ): RenderReviewFeedItem => async (review) => {
   let votesHtml = '';
   if (process.env.EXPERIMENT_ENABLED === 'true') {
-    votesHtml = renderVotes(42, 7);
+    votesHtml = await renderVotes(42, 7);
   }
   const eventMetadata = `
     ${templateDate(review.occurredAt, 'article-feed__item__date')}

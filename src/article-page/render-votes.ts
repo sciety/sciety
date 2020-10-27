@@ -1,7 +1,7 @@
-export type RenderVotes = (upVotes: number, downVotes: number) => string;
+export type RenderVotes = (upVotes: number, downVotes: number) => Promise<string>;
 
 export default (): RenderVotes => (
-  (upVotes, downVotes) => `
+  async (upVotes, downVotes) => `
     <div>
       ${upVotes} people found this helpful,<br/>
       ${downVotes} people found this to be unhelpful
