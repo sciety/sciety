@@ -39,7 +39,7 @@ export default (
     const items = await Promise.all(feedItems.map(renderFeedItem));
 
     return Result.ok(`
-      <section>
+      <section class="article-feed-section">
         <h2>Feed</h2>
 
         <ol role="list" class="article-feed">

@@ -19,7 +19,7 @@ export default (
 <article class="hive-grid hive-grid--article">
   ${pageHeader}
 
-  <div class="main-content">
+  <div class="main-content main-content--article">
     ${abstract}
     ${feed}
   </div>

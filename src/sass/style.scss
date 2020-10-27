@@ -333,8 +333,25 @@ a:hover {
 @media screen and (min-width: 56.25em) {
   .hive-grid--article > .main-content {
     grid-column: 1 / 9;
+
+    &.main-content--article {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: 1fr 1fr;
+
+      .article-abstract {
+        grid-column: 1 / 9;
+      }
+
+      .article-feed-section {
+        grid-column: 1 / 11;
+        grid-row: 2;
+      }
+    }
   }
 }
+
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 article-page, flavor A, feed-item
