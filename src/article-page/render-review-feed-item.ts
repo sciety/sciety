@@ -39,7 +39,6 @@ export default (
         ${review.editorialCommunityName}
       </a>
     </div>
-    ${votesHtml}
   `;
   const sourceLink = `
     <a href="${review.source.toString()}" class="article-feed__item__read_more article-call-to-action-link">
@@ -55,6 +54,7 @@ export default (
           ${sourceLink}
         </div>
       </div>
+      ${votesHtml}
     `;
   }
 
@@ -70,6 +70,7 @@ export default (
           ${sourceLink}
         </div>
       </div>
+      ${votesHtml}
     `;
   }
   return `
@@ -84,5 +85,6 @@ export default (
         ${sourceLink}
       </div>
     </div>
+    ${votesHtml}
   `;
 };
