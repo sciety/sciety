@@ -338,7 +338,7 @@ a:hover {
       grid-column: 1 / -1;
       display: grid;
       grid-template-columns: repeat(12, 1fr);
-      grid-template-rows: 1fr 1fr;
+      grid-template-rows: auto auto;
 
       .article-abstract {
         grid-column: 1 / 9;
