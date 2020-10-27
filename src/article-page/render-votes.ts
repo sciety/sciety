@@ -14,17 +14,17 @@ export default (
       downVoted: false,
     };
     const upButton = current.upVoted
-      ? '<button type="submit" aria-label="Cancel your helpful vote"><img src="/static/images/thumb-up-solid.svg" alt=""></button>'
-      : '<button type="submit" aria-label="Indicate that this review is helpful"><img src="/static/images/thumb-up-outline.svg" alt=""></button>';
+      ? '<button type="submit" aria-label="Cancel your helpful vote" class="votes__button"><img src="/static/images/thumb-up-solid.svg" alt=""></button>'
+      : '<button type="submit" aria-label="Indicate that this review is helpful" class="votes__button"><img src="/static/images/thumb-up-outline.svg" alt=""></button>';
     const downButton = current.downVoted
-      ? '<button type="submit" aria-label="Cancel your unhelpful vote"><img src="/static/images/thumb-down-solid.svg" alt=""></button>'
-      : '<button type="submit" aria-label="Indicate that this review is unhelpful"><img src="/static/images/thumb-down-outline.svg" alt=""></button>';
+      ? '<button type="submit" aria-label="Cancel your unhelpful vote" class="votes__button"><img src="/static/images/thumb-down-solid.svg" alt=""></button>'
+      : '<button type="submit" aria-label="Indicate that this review is unhelpful" class="votes__button"><img src="/static/images/thumb-down-outline.svg" alt=""></button>';
     return `
     <div class="votes">
       <div class="votes__question">Did you find this helpful?</div>
       <div class="votes__actions">
         <div class="votes__action">
-          <form class="votes__form" method="post" action="/vote">
+          <form method="post" action="/vote">
             <input type="hidden" name="reviewid" value="${reviewId.toString()}">
             <input type="hidden" name="intention" value="toggle-upvote">
             ${upButton}
@@ -33,7 +33,7 @@ export default (
           <span class="visually-hidden">people found this helpful</span>
         </div>
         <div class="votes__action">
-          <form class="votes__form" method="post" action="/vote">
+          <form method="post" action="/vote">
             <input type="hidden" name="reviewid" value="${reviewId.toString()}">
             <input type="hidden" name="intention" value="toggle-downvote">
             ${downButton}          

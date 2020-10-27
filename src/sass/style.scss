@@ -400,8 +400,9 @@ article-page, flavor A, feed-item
   align-items: center;
 }
 
-.votes__form {
-  margin-right: 0.5rem;
+.votes__button {
+  @include button.basics();
+  background-color: #fff;
 }
 
 .article-feed__item__avatar {
