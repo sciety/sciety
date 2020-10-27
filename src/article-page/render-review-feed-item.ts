@@ -1,6 +1,7 @@
 import { URL } from 'url';
 import clip from 'text-clipper';
 import { Maybe } from 'true-myth';
+import { RenderVotes } from './render-votes';
 import templateDate from '../shared-components/date';
 import EditorialCommunityId from '../types/editorial-community-id';
 
@@ -20,15 +21,9 @@ const renderAvatar = (url: URL): string => `
   <img class="article-feed__item__avatar" src="${url.toString()}" alt="">
 `;
 
-const renderVotes = (upVotes: number, downVotes: number): string => (
-  `<div>
-    ${upVotes} people found this helpful,<br/>
-    ${downVotes} people found this to be unhelpful
-  </div>`
-);
-
 export default (
   teaserChars: number,
+  renderVotes: RenderVotes,
 ): RenderReviewFeedItem => async (review) => {
   let votesHtml = '';
   if (process.env.EXPERIMENT_ENABLED === 'true') {

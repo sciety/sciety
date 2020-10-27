@@ -11,6 +11,7 @@ import createRenderFlavourAFeed from './render-flavour-a-feed';
 import createRenderPage, { RenderPageError } from './render-page';
 import createRenderPageHeader, { RenderPageHeader } from './render-page-header';
 import createRenderReviewFeedItem from './render-review-feed-item';
+import createRenderVotes from './render-votes';
 import { Logger } from '../infrastructure/logger';
 import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
@@ -84,7 +85,10 @@ export default (ports: Ports): RenderPage => {
   );
   const renderFeed = createRenderFeed(
     getFeedEventsContent,
-    createRenderReviewFeedItem(150),
+    createRenderReviewFeedItem(
+      150,
+      createRenderVotes(),
+    ),
     createRenderArticleVersionFeedItem(),
   );
   const renderFlavourAFeed = createRenderFlavourAFeed();
