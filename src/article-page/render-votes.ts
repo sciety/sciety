@@ -10,7 +10,7 @@ export default (getVotes: GetVotes): RenderVotes => (
     return `
     <div>
       ${upVotes} people found this helpful,<br/>
-      ${downVotes} people found this to be unhelpful
+      ${downVotes} people found this unhelpful
     </div>
   `;
   }
