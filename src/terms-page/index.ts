@@ -5,12 +5,8 @@ export default (): RenderPage => async () => `
       <h1>Terms and conditions</h1>
     </header>
     <p>
-      This website is operated by eLife Sciences Publications, Ltd under their terms
-      and conditions as set out at <a href="https://elifesciences.org/terms">elifesciences.org/terms</a>.
-    </p>
-    <p>
       This website is operated by eLife Sciences Publications, Ltd under their terms and conditions as
-      set out at elifesciences.org/terms unless otherwise stated through amendments below.
+      set out at <a href="https://elifesciences.org/terms">elifesciences.org/terms</a> unless otherwise stated through amendments below.
     </p>
     <h2>
       Exceptions to Ownership
