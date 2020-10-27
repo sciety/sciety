@@ -48,6 +48,7 @@ export default (
 
         return {
           type: 'review',
+          id: feedEvent.reviewId,
           source: review.url,
           occurredAt: feedEvent.occurredAt,
           editorialCommunityId: feedEvent.editorialCommunityId,

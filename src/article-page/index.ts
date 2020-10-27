@@ -11,7 +11,7 @@ import createRenderFlavourAFeed from './render-flavour-a-feed';
 import createRenderPage, { RenderPageError } from './render-page';
 import createRenderPageHeader, { RenderPageHeader } from './render-page-header';
 import createRenderReviewFeedItem from './render-review-feed-item';
-import createRenderVotes from './render-votes';
+import createRenderVotes, { GetVotes } from './render-votes';
 import { Logger } from '../infrastructure/logger';
 import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
@@ -83,11 +83,17 @@ export default (ports: Ports): RenderPage => {
       getEditorialCommunity,
     ),
   );
+  const getVotes: GetVotes = async (reviewId) => {
+    if (reviewId instanceof Doi) {
+      return { upVotes: 36, downVotes: 8 };
+    }
+    return { upVotes: 63, downVotes: 9 };
+  };
   const renderFeed = createRenderFeed(
     getFeedEventsContent,
     createRenderReviewFeedItem(
       150,
-      createRenderVotes(async () => ({ upVotes: 63, downVotes: 9 })),
+      createRenderVotes(getVotes),
     ),
     createRenderArticleVersionFeedItem(),
   );

@@ -1,10 +1,12 @@
-export type RenderVotes = () => Promise<string>;
+import { ReviewId } from '../types/review-id';
 
-type GetVotes = () => Promise<{upVotes: number, downVotes: number}>;
+export type RenderVotes = (reviewId: ReviewId) => Promise<string>;
+
+export type GetVotes = (reviewId: ReviewId) => Promise<{upVotes: number, downVotes: number}>;
 
 export default (getVotes: GetVotes): RenderVotes => (
-  async () => {
-    const { upVotes, downVotes } = await getVotes();
+  async (reviewId) => {
+    const { upVotes, downVotes } = await getVotes(reviewId);
     return `
     <div>
       ${upVotes} people found this helpful,<br/>

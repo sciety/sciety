@@ -29,6 +29,7 @@ describe('handle-article-version-errors', () => {
       const inputItems: ReadonlyArray<FeedItem> = [
         {
           type: 'review',
+          id: new Doi('10.1111/12345678'),
           occurredAt: new Date(),
           source: new URL('https://example.com'),
           editorialCommunityId: new EditorialCommunityId('community-1'),
@@ -38,6 +39,7 @@ describe('handle-article-version-errors', () => {
         },
         {
           type: 'review',
+          id: new Doi('10.1111/12345679'),
           occurredAt: new Date(),
           source: new URL('https://example.com'),
           editorialCommunityId: new EditorialCommunityId('community-1'),

@@ -2,6 +2,7 @@ import { URL } from 'url';
 import { JSDOM } from 'jsdom';
 import { Maybe } from 'true-myth';
 import createRenderReviewFeedItem from '../../src/article-page/render-review-feed-item';
+import Doi from '../../src/types/doi';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
 
 describe('render-review-feed-item', () => {
@@ -13,6 +14,7 @@ describe('render-review-feed-item', () => {
       const rendered = JSDOM.fragment(
         await renderReviewFeedItem({
           type: 'review',
+          id: new Doi('10.1111/12345678'),
           source: new URL('http://example.com'),
           occurredAt: new Date(),
           editorialCommunityId: new EditorialCommunityId('community-1'),
@@ -40,6 +42,7 @@ describe('render-review-feed-item', () => {
       const rendered = JSDOM.fragment(
         await renderReviewFeedItem({
           type: 'review',
+          id: new Doi('10.1111/12345678'),
           source: new URL(source),
           occurredAt: new Date(),
           editorialCommunityId: new EditorialCommunityId('community-1'),
@@ -68,6 +71,7 @@ describe('render-review-feed-item', () => {
       const rendered = JSDOM.fragment(
         await renderReviewFeedItem({
           type: 'review',
+          id: new Doi('10.1111/12345678'),
           source: new URL(source),
           occurredAt: new Date(),
           editorialCommunityId: new EditorialCommunityId('community-1'),

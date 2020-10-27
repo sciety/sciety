@@ -4,11 +4,13 @@ import { Maybe } from 'true-myth';
 import { RenderVotes } from './render-votes';
 import templateDate from '../shared-components/date';
 import EditorialCommunityId from '../types/editorial-community-id';
+import { ReviewId } from '../types/review-id';
 
 export type RenderReviewFeedItem = (review: ReviewFeedItem) => Promise<string>;
 
 export type ReviewFeedItem = {
   type: 'review';
+  id: ReviewId;
   source: URL;
   occurredAt: Date;
   editorialCommunityId: EditorialCommunityId;
@@ -27,7 +29,7 @@ export default (
 ): RenderReviewFeedItem => async (review) => {
   let votesHtml = '';
   if (process.env.EXPERIMENT_ENABLED === 'true') {
-    votesHtml = await renderVotes();
+    votesHtml = await renderVotes(review.id);
   }
   const eventMetadata = `
     ${templateDate(review.occurredAt, 'article-feed__item__date')}
