@@ -25,6 +25,7 @@ import createUnfollowHandler from '../unfollow';
 import createFinishUnfollowCommand from '../unfollow/finish-unfollow-command';
 import createSaveUnfollowCommand from '../unfollow/save-unfollow-command';
 import createUserPage from '../user-page';
+import createVoteHandler from '../vote';
 
 export default (adapters: Adapters): Router => {
   const router = new Router();
@@ -69,6 +70,12 @@ export default (adapters: Adapters): Router => {
     createSaveUnfollowCommand(),
     createRequireAuthentication(),
     createUnfollowHandler(adapters));
+
+  router.post('/vote',
+    identifyUser(adapters.logger),
+    bodyParser({ enableTypes: ['form'] }),
+    createRequireAuthentication(),
+    createVoteHandler(adapters));
 
   const authenticate = koaPassport.authenticate(
     'twitter',

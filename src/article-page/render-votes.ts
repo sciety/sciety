@@ -10,13 +10,15 @@ export default (getVotes: GetVotes): RenderVotes => (
     return `
     <div>
       ${upVotes} people found this helpful
-      <form method="post" action="/upvote">
+      <form method="post" action="/vote">
         <input type="hidden" name="reviewid" value="${reviewId.toString()}">
+        <input type="hidden" name="intention" value="toggle-upvote">
         <button type="submit" aria-label="Indicate that this review is helpful"><img src="/static/images/thumb-up-outline.svg" alt=""></button>
       </form>
       ${downVotes} people found this unhelpful
-      <form method="post" action="/downvote">
+      <form method="post" action="/vote">
         <input type="hidden" name="reviewid" value="${reviewId.toString()}">
+        <input type="hidden" name="intention" value="toggle-downvote">
         <button type="submit" aria-label="Indicate that this review is not helpful"><img src="/static/images/thumb-down-outline.svg" alt=""></button>
       </form>
     </div>
