@@ -20,7 +20,7 @@ export default (
       ? '<button type="submit" aria-label="Cancel your unhelpful vote"><img src="/static/images/thumb-down-solid.svg" alt=""></button>'
       : '<button type="submit" aria-label="Indicate that this review is unhelpful"><img src="/static/images/thumb-down-outline.svg" alt=""></button>';
     return `
-    <div>
+    <div class="votes">
       ${upVotes} people found this helpful
       <form method="post" action="/vote">
         <input type="hidden" name="reviewid" value="${reviewId.toString()}">

@@ -371,7 +371,17 @@ article-page, flavor A, feed-item
 
 @media screen and (min-width: 46.25em) {
   .article-feed__item {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+  }
+
+  .article-feed__item_contents {
     display: flex;
+    grid-column: 1 / 9;
+  }
+
+  .votes {
+    grid-column: 10 / -1;
   }
 }
 

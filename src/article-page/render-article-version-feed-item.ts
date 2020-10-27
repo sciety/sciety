@@ -13,14 +13,16 @@ export type RenderArticleVersionFeedItem = (feedItem: ArticleVersionFeedItem) =>
 export default (
 ): RenderArticleVersionFeedItem => (
   (feedItem: ArticleVersionFeedItem) => `
-    <img class="article-feed__item__avatar" src="https://pbs.twimg.com/profile_images/956882186996662272/lwyH1HFe_200x200.jpg" alt="">
-    <div>
-      ${renderDate(feedItem.occurredAt, 'article-feed__item__date')}
-      <p class="article-feed__item__title">
-        <a href="${feedItem.source.toString()}">
-          Version ${feedItem.version} published on bioRxiv
-        </a>
-      </p>
+    <div class="article-feed__item_contents">
+      <img class="article-feed__item__avatar" src="https://pbs.twimg.com/profile_images/956882186996662272/lwyH1HFe_200x200.jpg" alt="">
+      <div>
+        ${renderDate(feedItem.occurredAt, 'article-feed__item__date')}
+        <p class="article-feed__item__title">
+          <a href="${feedItem.source.toString()}">
+            Version ${feedItem.version} published on bioRxiv
+          </a>
+        </p>
+      </div>
     </div>
   `
 );

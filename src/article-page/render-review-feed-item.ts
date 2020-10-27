@@ -47,11 +47,13 @@ export default (
   `;
   if (review.fullText.isNothing()) {
     return `
-      ${renderAvatar(review.editorialCommunityAvatar)}
-      <div class="article-feed__item_body">
-        ${eventMetadata}
-        <div>
-          ${sourceLink}
+      <div class="article-feed__item_contents">
+        ${renderAvatar(review.editorialCommunityAvatar)}
+        <div class="article-feed__item_body">
+          ${eventMetadata}
+          <div>
+            ${sourceLink}
+          </div>
         </div>
       </div>
       ${votesHtml}
@@ -62,27 +64,31 @@ export default (
   const teaserText = clip(fullText, teaserChars);
   if (teaserText === fullText) {
     return `
-      ${renderAvatar(review.editorialCommunityAvatar)}
-      <div class="article-feed__item_body">
-        ${eventMetadata}
-        <div>
-          ${fullText}
-          ${sourceLink}
+      <div class="article-feed__item_contents">
+        ${renderAvatar(review.editorialCommunityAvatar)}
+        <div class="article-feed__item_body">
+          ${eventMetadata}
+          <div>
+            ${fullText}
+            ${sourceLink}
+          </div>
         </div>
       </div>
       ${votesHtml}
     `;
   }
   return `
-    ${renderAvatar(review.editorialCommunityAvatar)}
-    <div class="article-feed__item_body" data-behaviour="collapse_to_teaser">
-      ${eventMetadata}
-      <div class="hidden" data-teaser>
-        ${teaserText}
-      </div>
-      <div data-full-text>
-        ${fullText}
-        ${sourceLink}
+    <div class="article-feed__item_contents">
+      ${renderAvatar(review.editorialCommunityAvatar)}
+      <div class="article-feed__item_body" data-behaviour="collapse_to_teaser">
+        ${eventMetadata}
+        <div class="hidden" data-teaser>
+          ${teaserText}
+        </div>
+        <div data-full-text>
+          ${fullText}
+          ${sourceLink}
+        </div>
       </div>
     </div>
     ${votesHtml}
