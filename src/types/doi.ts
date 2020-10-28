@@ -18,6 +18,6 @@ export default class Doi {
   }
 
   toString(): string {
-    return this.value;
+    return `doi:${this.value}`;
   }
 }
