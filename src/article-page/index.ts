@@ -90,7 +90,13 @@ export default (ports: Ports): RenderPage => {
     getFeedEventsContent,
     createRenderReviewFeedItem(
       150,
-      createRenderVotes(getVotes),
+      createRenderVotes(
+        getVotes,
+        async () => ({
+          upVoted: true,
+          downVoted: false,
+        }),
+      ),
     ),
     createRenderArticleVersionFeedItem(),
   );

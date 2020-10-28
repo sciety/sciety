@@ -1,18 +1,18 @@
 import { ReviewId } from '../types/review-id';
+import toUserId, { UserId } from '../types/user-id';
 
 export type RenderVotes = (reviewId: ReviewId) => Promise<string>;
 
 export type GetVotes = (reviewId: ReviewId) => Promise<{upVotes: number, downVotes: number}>;
+type GetUserCurrentVotes = (userId: UserId) => Promise<{upVoted:boolean, downVoted: boolean}>;
 
 export default (
   getVotes: GetVotes,
+  getUserCurrentVotes: GetUserCurrentVotes,
 ): RenderVotes => (
   async (reviewId) => {
     const { upVotes, downVotes } = await getVotes(reviewId);
-    const current = {
-      upVoted: true,
-      downVoted: false,
-    };
+    const current = await getUserCurrentVotes(toUserId('fake'));
     const upButton = current.upVoted
       ? '<button type="submit" aria-label="Cancel your helpful vote" class="votes__button"><img src="/static/images/thumb-up-solid.svg" alt=""></button>'
       : '<button type="submit" aria-label="Indicate that this review is helpful" class="votes__button"><img src="/static/images/thumb-up-outline.svg" alt=""></button>';
