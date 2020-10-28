@@ -2,7 +2,8 @@ export default class HypothesisAnnotationId {
   readonly value: string;
 
   constructor(input: string) {
-    this.value = input;
+    const prefix = 'hypothesis:';
+    this.value = input.startsWith(prefix) ? input.substring(prefix.length) : input;
   }
 
   toString(): string {
