@@ -1,9 +1,17 @@
 import { Pool } from 'pg';
 import { Logger } from './logger';
-import { DomainEvent, UserFollowedEditorialCommunityEvent, UserUnfollowedEditorialCommunityEvent } from '../types/domain-events';
+import {
+  DomainEvent,
+  UserFollowedEditorialCommunityEvent,
+  UserFoundReviewHelpfulEvent,
+  UserUnfollowedEditorialCommunityEvent,
+} from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 
-type RuntimeGeneratedEvent = UserFollowedEditorialCommunityEvent | UserUnfollowedEditorialCommunityEvent;
+type RuntimeGeneratedEvent =
+  UserFollowedEditorialCommunityEvent |
+  UserUnfollowedEditorialCommunityEvent |
+  UserFoundReviewHelpfulEvent;
 export type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => Promise<void>;
 
 const replacer = (key: string, value: unknown): unknown => {
@@ -25,10 +33,12 @@ export default (
 ): CommitEvents => (
   async (events) => {
     for (const event of events) {
-      await pool.query(
-        'INSERT INTO events (id, type, date, payload) VALUES ($1, $2, $3, $4);',
-        [event.id, event.type, event.date, JSON.stringify(event, replacer)],
-      );
+      if (event.type !== 'UserFoundReviewHelpful') {
+        await pool.query(
+          'INSERT INTO events (id, type, date, payload) VALUES ($1, $2, $3, $4);',
+          [event.id, event.type, event.date, JSON.stringify(event, replacer)],
+        );
+      }
 
       inMemoryEvents.push(event);
 
