@@ -1,14 +1,15 @@
 import { Middleware } from '@koa/router';
-import createVoteCommand from './vote-command';
+import createVoteCommand, { CommitEvents } from './vote-command';
 import { Logger } from '../infrastructure/logger';
 import { User } from '../types/user';
 
 type Ports = {
   logger: Logger;
+  commitEvents: CommitEvents;
 };
 
 export default (ports: Ports): Middleware<{ user: User }> => async (context, next) => {
-  const voteCommand = createVoteCommand();
+  const voteCommand = createVoteCommand(ports.commitEvents);
   const { user } = context.state;
 
   await voteCommand();

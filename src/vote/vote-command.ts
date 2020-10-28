@@ -1,3 +1,6 @@
 type VoteCommand = () => Promise<void>;
+export type CommitEvents = (events: []) => void;
 
-export default (): VoteCommand => async () => {};
+export default (commitEvents: CommitEvents): VoteCommand => async () => {
+  commitEvents([]);
+};
