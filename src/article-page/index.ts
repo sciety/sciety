@@ -4,6 +4,7 @@ import createComposeFeedEvents from './compose-feed-events';
 import ensureBiorxivDoi from './ensure-biorxiv-doi';
 import createGetFeedEventsContent, { GetEditorialCommunity, GetReview } from './get-feed-events-content';
 import createHandleArticleVersionErrors from './handle-article-version-errors';
+import createProjectVotes, { GetEvents } from './project-votes';
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
 import createRenderArticleVersionFeedItem from './render-article-version-feed-item';
 import createRenderFeed from './render-feed';
@@ -11,10 +12,9 @@ import createRenderFlavourAFeed from './render-flavour-a-feed';
 import createRenderPage, { RenderPageError } from './render-page';
 import createRenderPageHeader, { RenderPageHeader } from './render-page-header';
 import createRenderReviewFeedItem from './render-review-feed-item';
-import createRenderVotes, { GetVotes } from './render-votes';
+import createRenderVotes from './render-votes';
 import { Logger } from '../infrastructure/logger';
 import Doi from '../types/doi';
-import { DomainEvent, UserFoundReviewHelpfulEvent } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { FetchExternalArticle } from '../types/fetch-external-article';
 import { ReviewId } from '../types/review-id';
@@ -41,7 +41,7 @@ interface Ports {
   findReviewsForArticleDoi: FindReviewsForArticleDoi;
   findVersionsForArticleDoi: FindVersionsForArticleDoi;
   logger: Logger;
-  getAllEvents: () => Promise<ReadonlyArray<DomainEvent>>;
+  getAllEvents: GetEvents;
 }
 
 const buildRenderPageHeader = (ports: Ports): RenderPageHeader => createRenderPageHeader(
@@ -85,16 +85,7 @@ export default (ports: Ports): RenderPage => {
       getEditorialCommunity,
     ),
   );
-  const getVotes: GetVotes = async (reviewId) => {
-    const upVotes = (await ports.getAllEvents())
-      .filter((event): event is UserFoundReviewHelpfulEvent => event.type === 'UserFoundReviewHelpful')
-      .filter((event) => event.reviewId.toString() === reviewId.toString())
-      .length;
-    if (reviewId instanceof Doi) {
-      return { upVotes, downVotes: 8 };
-    }
-    return { upVotes, downVotes: 9 };
-  };
+  const getVotes = createProjectVotes(ports.getAllEvents);
   const renderFeed = createRenderFeed(
     getFeedEventsContent,
     createRenderReviewFeedItem(
