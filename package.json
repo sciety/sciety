@@ -88,7 +88,7 @@
     "build:js": "tsc",
     "lint": "run-p --aggregate-output --continue-on-error --print-label --silent lint:**",
     "lint:eslint": "eslint ${ESLINT:-} . --ext .js,.ts --cache --cache-location .eslint/ --color",
-    "lint:stylelint": "stylelint ${STYLELINT:-} \"src/sass/**/*.scss\"",
+    "lint:stylelint": "stylelint ${STYLELINT:-} \"src/sass/**/*.scss\" --cache --cache-location .stylelint/",
     "lint:typescript:dev": "tsc --project tsconfig.dev.json",
     "lint:typescript:prod": "tsc --noEmit",
     "lint:unused-exports": "ts-unused-exports tsconfig.dev.json",

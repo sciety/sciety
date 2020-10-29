@@ -2,6 +2,7 @@
 /.eslint/
 /.github/
 /.jest/
+/.stylelint/
 /build/
 /helm/
 /node_modules/

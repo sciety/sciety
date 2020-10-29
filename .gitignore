@@ -1,5 +1,6 @@
 /.eslint/
 /.jest/
+/.stylelint/
 /build/
 /node_modules/
 /.env

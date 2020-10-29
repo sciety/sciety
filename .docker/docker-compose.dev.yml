@@ -8,6 +8,7 @@ services:
     volumes:
       - '../.eslint:/app/.eslint'
       - '../.jest:/app/.jest'
+      - '../.stylelint:/app/.stylelint'
       - '../build:/app/build'
       - '../data:/app/data'
       - '../scripts:/app/scripts'
