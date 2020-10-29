@@ -1,5 +1,5 @@
 import { Middleware } from '@koa/router';
-import createVoteCommand, { CommitEvents } from './vote-command';
+import createVoteCommand, { CommitEvents, GetAllEvents } from './vote-command';
 import { Logger } from '../infrastructure/logger';
 import toReviewId from '../types/review-id';
 import { User } from '../types/user';
@@ -7,10 +7,11 @@ import { User } from '../types/user';
 type Ports = {
   logger: Logger;
   commitEvents: CommitEvents;
+  getAllEvents: GetAllEvents;
 };
 
 export default (ports: Ports): Middleware<{ user: User }> => async (context, next) => {
-  const voteCommand = createVoteCommand(ports.commitEvents);
+  const voteCommand = createVoteCommand(ports.getAllEvents, ports.commitEvents);
   const { user } = context.state;
   const reviewId = toReviewId(context.request.body.reviewid);
   await voteCommand(user, reviewId);
