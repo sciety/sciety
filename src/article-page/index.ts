@@ -20,7 +20,6 @@ import EditorialCommunityId from '../types/editorial-community-id';
 import { FetchExternalArticle } from '../types/fetch-external-article';
 import { ReviewId } from '../types/review-id';
 import { User } from '../types/user';
-import toUserId from '../types/user-id';
 
 type FindReviewsForArticleDoi = (articleVersionDoi: Doi) => Promise<ReadonlyArray<{
   reviewId: ReviewId;
@@ -123,7 +122,7 @@ export default (ports: Ports): RenderPage => {
         content: `${params.doi ?? 'Article'} not found`,
       });
     }
-    const userId = params.user.map((user) => user.id).unwrapOr(toUserId('fakeuser'));
+    const userId = params.user.map((user) => user.id);
     if (doi.value === '10.1101/646810' && params.flavour === 'a') {
       return renderFlavourA(doi, userId);
     }

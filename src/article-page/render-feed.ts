@@ -1,12 +1,12 @@
-import { Result } from 'true-myth';
+import { Maybe, Result } from 'true-myth';
 import createRenderArticleVersionErrorFeedItem from './render-article-version-error-feed-item';
 import { ArticleVersionFeedItem, RenderArticleVersionFeedItem } from './render-article-version-feed-item';
 import { RenderReviewFeedItem, ReviewFeedItem } from './render-review-feed-item';
 import renderListItems from '../shared-components/list-items';
 import Doi from '../types/doi';
-import { UserId } from '../types/user-id';
+import toUserId, { UserId } from '../types/user-id';
 
-type RenderFeed = (doi: Doi, userId: UserId) => Promise<Result<string, 'no-content'>>;
+type RenderFeed = (doi: Doi, userId: Maybe<UserId>) => Promise<Result<string, 'no-content'>>;
 
 export type FeedItem = ReviewFeedItem | ArticleVersionFeedItem | { type: 'article-version-error' };
 
@@ -37,7 +37,9 @@ export default (
       return Result.err('no-content');
     }
 
-    const items = await Promise.all(feedItems.map(async (feedItem) => renderFeedItem(feedItem, userId)));
+    const items = await Promise.all(feedItems.map(
+      async (feedItem) => renderFeedItem(feedItem, userId.unwrapOr(toUserId('fakeuser'))),
+    ));
 
     return Result.ok(`
       <section class="article-feed-section">

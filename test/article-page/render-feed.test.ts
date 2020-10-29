@@ -3,7 +3,6 @@ import { Maybe } from 'true-myth';
 import createRenderFeed from '../../src/article-page/render-feed';
 import Doi from '../../src/types/doi';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
-import toUserId from '../../src/types/user-id';
 import shouldNotBeCalled from '../should-not-be-called';
 
 describe('render-feed', () => {
@@ -15,7 +14,7 @@ describe('render-feed', () => {
         shouldNotBeCalled,
       );
 
-      const rendered = await renderFeed(new Doi('10.1101/12345678'), toUserId('user'));
+      const rendered = await renderFeed(new Doi('10.1101/12345678'), Maybe.nothing());
 
       expect(rendered.unsafelyUnwrapErr()).toBe('no-content');
     });
@@ -49,7 +48,7 @@ describe('render-feed', () => {
         () => '',
       );
 
-      const rendered = await renderFeed(new Doi('10.1101/12345678'), toUserId('user'));
+      const rendered = await renderFeed(new Doi('10.1101/12345678'), Maybe.nothing());
 
       expect(rendered.unsafelyUnwrap()).toContain('<ol');
     });
