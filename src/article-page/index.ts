@@ -18,6 +18,7 @@ import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { FetchExternalArticle } from '../types/fetch-external-article';
 import { ReviewId } from '../types/review-id';
+import { User } from '../types/user';
 import toUserId from '../types/user-id';
 
 type FindReviewsForArticleDoi = (articleVersionDoi: Doi) => Promise<ReadonlyArray<{
@@ -57,9 +58,10 @@ const buildRenderAbstract = (fetchAbstract: FetchExternalArticle): RenderArticle
   return createRenderArticleAbstract(abstractAdapter);
 };
 
-interface Params {
+export interface Params {
   doi?: string;
   flavour?: string;
+  user: Maybe<User>;
 }
 
 type RenderPage = (params: Params) => Promise<Result<string, RenderPageError>>;
@@ -122,9 +124,10 @@ export default (ports: Ports): RenderPage => {
         content: `${params.doi ?? 'Article'} not found`,
       });
     }
+    const userId = params.user.map((user) => user.id).unwrapOr(toUserId('fakeuser'));
     if (doi.value === '10.1101/646810' && params.flavour === 'a') {
-      return renderFlavourA(doi, toUserId('fakeuser'));
+      return renderFlavourA(doi, userId);
     }
-    return renderPage(doi, toUserId('fakeuser'));
+    return renderPage(doi, userId);
   };
 };
