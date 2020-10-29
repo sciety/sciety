@@ -4,7 +4,7 @@ import { UserId } from '../types/user-id';
 export type RenderVotes = (reviewId: ReviewId, userId: UserId) => Promise<string>;
 
 export type GetVotes = (reviewId: ReviewId) => Promise<{ upVotes: number, downVotes: number }>;
-export type GetUserVote = (userId: UserId) => Promise<'up' | 'down' | 'not'>;
+export type GetUserVote = (reviewId: ReviewId, userId: UserId) => Promise<'up' | 'down' | 'not'>;
 
 export default (
   getVotes: GetVotes,
@@ -12,7 +12,7 @@ export default (
 ): RenderVotes => (
   async (reviewId, userId) => {
     const { upVotes, downVotes } = await getVotes(reviewId);
-    const current = await getUserVote(userId);
+    const current = await getUserVote(reviewId, userId);
 
     const upVoted = current === 'up';
     const downVoted = current === 'down';

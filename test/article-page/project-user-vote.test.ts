@@ -7,7 +7,7 @@ describe('project-user-vote', () => {
   describe('no vote events', () => {
     it('returns `not`', async () => {
       const projectUserVote = createProjectUserVote(async () => []);
-      const vote = await projectUserVote(toUserId('someone'));
+      const vote = await projectUserVote(new Doi('10.1111/123456'), toUserId('someone'));
 
       expect(vote).toBe('not');
     });
@@ -22,7 +22,7 @@ describe('project-user-vote', () => {
         userId: toUserId('user'),
         reviewId: new Doi('10.1111/123456'),
       }]);
-      const vote = await projectUserVote(toUserId('user'));
+      const vote = await projectUserVote(new Doi('10.1111/123456'), toUserId('user'));
 
       expect(vote).toBe('up');
     });
@@ -37,7 +37,7 @@ describe('project-user-vote', () => {
         userId: toUserId('userA'),
         reviewId: new Doi('10.1111/123456'),
       }]);
-      const vote = await projectUserVote(toUserId('userB'));
+      const vote = await projectUserVote(new Doi('10.1111/123456'), toUserId('userB'));
 
       expect(vote).toBe('not');
     });
