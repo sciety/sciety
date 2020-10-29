@@ -95,10 +95,7 @@ export default (ports: Ports): RenderPage => {
       150,
       createRenderVotes(
         getVotes,
-        async () => ({
-          upVoted: true,
-          downVoted: false,
-        }),
+        async () => 'up',
       ),
     ),
     createRenderArticleVersionFeedItem(),

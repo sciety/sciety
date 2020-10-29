@@ -11,10 +11,7 @@ describe('render-votes', () => {
         upVotes: 35,
         downVotes: 17,
       }),
-      async () => ({
-        upVoted: false,
-        downVoted: false,
-      }),
+      async () => 'not',
     );
     const rendered = await renderVotes(new Doi('10.1101/111111'), toUserId('fakeuser'));
 
@@ -29,10 +26,7 @@ describe('render-votes', () => {
           upVotes: 35,
           downVotes: 17,
         }),
-        async () => ({
-          upVoted: false,
-          downVoted: false,
-        }),
+        async () => 'not',
       );
       const rendered = await renderVotes(new Doi('10.1101/111111'), toUserId('fakeuser'));
 
