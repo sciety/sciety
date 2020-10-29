@@ -5,6 +5,7 @@ import { RenderVotes } from './render-votes';
 import templateDate from '../shared-components/date';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { ReviewId } from '../types/review-id';
+import toUserId from '../types/user-id';
 
 export type RenderReviewFeedItem = (review: ReviewFeedItem) => Promise<string>;
 
@@ -29,7 +30,7 @@ export default (
 ): RenderReviewFeedItem => async (review) => {
   let votesHtml = '';
   if (process.env.EXPERIMENT_ENABLED === 'true') {
-    votesHtml = await renderVotes(review.id);
+    votesHtml = await renderVotes(review.id, toUserId('fake'));
   }
   const eventMetadata = `
     ${templateDate(review.occurredAt, 'article-feed__item__date')}

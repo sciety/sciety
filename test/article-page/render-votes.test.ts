@@ -1,5 +1,6 @@
 import createRenderVotes from '../../src/article-page/render-votes';
 import Doi from '../../src/types/doi';
+import toUserId from '../../src/types/user-id';
 
 describe('render-votes', () => {
   it.todo('uses the word `helpful`?');
@@ -15,7 +16,7 @@ describe('render-votes', () => {
         downVoted: false,
       }),
     );
-    const rendered = await renderVotes(new Doi('10.1101/111111'));
+    const rendered = await renderVotes(new Doi('10.1101/111111'), toUserId('fakeuser'));
 
     expect(rendered).toStrictEqual(expect.stringContaining('35'));
     expect(rendered).toStrictEqual(expect.stringContaining('17'));
@@ -33,10 +34,12 @@ describe('render-votes', () => {
           downVoted: false,
         }),
       );
-      const rendered = await renderVotes(new Doi('10.1101/111111'));
+      const rendered = await renderVotes(new Doi('10.1101/111111'), toUserId('fakeuser'));
 
       // TODO: what to assert on?
       expect(rendered).toStrictEqual(expect.stringContaining('thumb-up-outline'));
     });
   });
+
+  it.todo('ask for the right users votes');
 });
