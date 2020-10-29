@@ -21,8 +21,6 @@ describe('render-votes', () => {
   });
 
   describe('when the user has not upvoted', () => {
-    // TODO: when the user is not logged in...
-
     it('displays a not active upvote button', async () => {
       const renderVotes = createRenderVotes(
         async () => ({
@@ -33,10 +31,20 @@ describe('render-votes', () => {
       );
       const rendered = await renderVotes(new Doi('10.1101/111111'), Maybe.just(toUserId('fakeuser')));
 
-      // TODO: what to assert on?
       expect(rendered).toStrictEqual(expect.stringContaining('thumb-up-outline'));
     });
   });
 
-  it.todo('ask for the right users votes');
+  describe('when the user has upvoted', () => {
+    it('displays an active upvote button', async () => {
+      const renderVotes = createRenderVotes(async () => ({
+        upVotes: 1,
+        downVotes: 0,
+      }), async () => 'up');
+
+      const rendered = await renderVotes(new Doi('10.1111/123456'), Maybe.just(toUserId('user')));
+
+      expect(rendered).toStrictEqual(expect.stringContaining('thumb-up-solid'));
+    });
+  });
 });
