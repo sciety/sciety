@@ -4,6 +4,7 @@ import { ArticleVersionFeedItem, RenderArticleVersionFeedItem } from './render-a
 import { RenderReviewFeedItem, ReviewFeedItem } from './render-review-feed-item';
 import renderListItems from '../shared-components/list-items';
 import Doi from '../types/doi';
+import toUserId from '../types/user-id';
 
 type RenderFeed = (doi: Doi) => Promise<Result<string, 'no-content'>>;
 
@@ -25,7 +26,7 @@ export default (
       case 'article-version-error':
         return renderArticleVersionErrorFeedItem();
       case 'review':
-        return renderReviewFeedItem(feedItem);
+        return renderReviewFeedItem(feedItem, toUserId('fakeuser'));
     }
   };
 
