@@ -29,7 +29,18 @@ describe('project-user-vote', () => {
   });
 
   describe('one up vote event from another user', () => {
-    it.todo('returns `not`');
+    it('returns `not`', async () => {
+      const projectUserVote = createProjectUserVote(async () => [{
+        type: 'UserFoundReviewHelpful',
+        id: generate(),
+        date: new Date(),
+        userId: toUserId('userA'),
+        reviewId: new Doi('10.1111/123456'),
+      }]);
+      const vote = await projectUserVote(toUserId('userB'));
+
+      expect(vote).toBe('not');
+    });
   });
 
   describe('one up vote event for another review', () => {
