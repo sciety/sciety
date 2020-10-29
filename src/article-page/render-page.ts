@@ -1,6 +1,6 @@
 import { Result } from 'true-myth';
 import Doi from '../types/doi';
-import toUserId, { UserId } from '../types/user-id';
+import { UserId } from '../types/user-id';
 
 export type RenderPageError = {
   type: 'not-found',
@@ -8,7 +8,7 @@ export type RenderPageError = {
 };
 
 type Component = (doi: Doi, userId: UserId) => Promise<Result<string, 'not-found' | 'unavailable' | 'no-content'>>;
-type RenderPage = (doi: Doi) => Promise<Result<string, RenderPageError>>;
+type RenderPage = (doi: Doi, userId: UserId) => Promise<Result<string, RenderPageError>>;
 
 export default (
   renderPageHeader: Component,
@@ -28,8 +28,7 @@ export default (
     `,
   );
 
-  return async (doi) => {
-    const userId = toUserId('fake-user');
+  return async (doi, userId) => {
     const abstractResult = renderAbstract(doi, userId);
     const pageHeaderResult = renderPageHeader(doi, userId);
     const feedResult = renderFeed(doi, userId)

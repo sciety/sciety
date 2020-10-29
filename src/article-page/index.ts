@@ -18,6 +18,7 @@ import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { FetchExternalArticle } from '../types/fetch-external-article';
 import { ReviewId } from '../types/review-id';
+import toUserId from '../types/user-id';
 
 type FindReviewsForArticleDoi = (articleVersionDoi: Doi) => Promise<ReadonlyArray<{
   reviewId: ReviewId;
@@ -122,8 +123,8 @@ export default (ports: Ports): RenderPage => {
       });
     }
     if (doi.value === '10.1101/646810' && params.flavour === 'a') {
-      return renderFlavourA(doi);
+      return renderFlavourA(doi, toUserId('fakeuser'));
     }
-    return renderPage(doi);
+    return renderPage(doi, toUserId('fakeuser'));
   };
 };
