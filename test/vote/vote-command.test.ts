@@ -79,5 +79,9 @@ describe('vote-command', () => {
         expect(commitEvents).not.toHaveBeenCalled();
       });
     });
+
+    describe('and input contains a revoke upvote', () => {
+      it.todo('should fire a `vote revoked` event');
+    });
   });
 });
