@@ -59,7 +59,7 @@ describe('vote-command', () => {
 
   describe('when an upvote has been cast', () => {
     describe('and input contains an upvote from the same user', () => {
-      it.skip('does not produce an event', async () => {
+      it('does not produce an event', async () => {
         const userId = toUserId('currentuser');
         const reviewId = new Doi('10.1111/123456');
         const getAllEvents: GetAllEvents = async () => [

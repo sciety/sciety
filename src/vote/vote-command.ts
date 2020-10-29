@@ -10,6 +10,14 @@ export type CommitEvents = (events: ReadonlyArray<UserFoundReviewHelpfulEvent>) 
 
 export default (getAllEvents: GetAllEvents, commitEvents: CommitEvents): VoteCommand => (
   async (user, reviewId) => {
+    const events = await getAllEvents();
+    const alreadyVoted = events
+      .filter((event): event is UserFoundReviewHelpfulEvent => event.type === 'UserFoundReviewHelpful')
+      .some((event) => event.reviewId.toString() === reviewId.toString() && event.userId === user.id);
+
+    if (alreadyVoted) {
+      return;
+    }
     commitEvents([
       {
         id: generate(),
