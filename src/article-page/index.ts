@@ -4,6 +4,7 @@ import createComposeFeedEvents from './compose-feed-events';
 import ensureBiorxivDoi from './ensure-biorxiv-doi';
 import createGetFeedEventsContent, { GetEditorialCommunity, GetReview } from './get-feed-events-content';
 import createHandleArticleVersionErrors from './handle-article-version-errors';
+import createProjectUserVote from './project-user-vote';
 import createProjectVotes, { GetEvents } from './project-votes';
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
 import createRenderArticleVersionFeedItem from './render-article-version-feed-item';
@@ -95,7 +96,7 @@ export default (ports: Ports): RenderPage => {
       150,
       createRenderVotes(
         getVotes,
-        async () => 'up',
+        createProjectUserVote(),
       ),
     ),
     createRenderArticleVersionFeedItem(),

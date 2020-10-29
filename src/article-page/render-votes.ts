@@ -4,7 +4,7 @@ import { UserId } from '../types/user-id';
 export type RenderVotes = (reviewId: ReviewId, userId: UserId) => Promise<string>;
 
 export type GetVotes = (reviewId: ReviewId) => Promise<{ upVotes: number, downVotes: number }>;
-type GetUserVote = (userId: UserId) => Promise<'up' | 'down' | 'not'>;
+export type GetUserVote = (userId: UserId) => Promise<'up' | 'down' | 'not'>;
 
 export default (
   getVotes: GetVotes,
