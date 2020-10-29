@@ -10,6 +10,7 @@
     "strict": true,
     "esModuleInterop": true,
     "sourceMap": true,
+    "incremental": true,
     "types": [
       "node"
     ]
