@@ -41,7 +41,7 @@ test\:coverage: build
 	${DOCKER_COMPOSE} run --rm app npm run test:coverage
 
 build:
-	$(DOCKER_COMPOSE) build
+	$(DOCKER_COMPOSE) build app
 
 install: node_modules
 
