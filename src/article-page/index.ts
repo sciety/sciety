@@ -44,6 +44,7 @@ interface Ports {
   findReviewsForArticleDoi: FindReviewsForArticleDoi;
   findVersionsForArticleDoi: FindVersionsForArticleDoi;
   logger: Logger;
+  // TODO: This comes from project-votes and is also used in project-user-vote
   getAllEvents: GetEvents;
 }
 
@@ -96,7 +97,7 @@ export default (ports: Ports): RenderPage => {
       150,
       createRenderVotes(
         getVotes,
-        createProjectUserVote(),
+        createProjectUserVote(ports.getAllEvents),
       ),
     ),
     createRenderArticleVersionFeedItem(),
