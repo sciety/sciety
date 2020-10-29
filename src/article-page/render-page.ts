@@ -1,12 +1,13 @@
 import { Result } from 'true-myth';
 import Doi from '../types/doi';
+import toUserId, { UserId } from '../types/user-id';
 
 export type RenderPageError = {
   type: 'not-found',
   content: string,
 };
 
-type Component = (doi: Doi) => Promise<Result<string, 'not-found' | 'unavailable' | 'no-content'>>;
+type Component = (doi: Doi, userId: UserId) => Promise<Result<string, 'not-found' | 'unavailable' | 'no-content'>>;
 type RenderPage = (doi: Doi) => Promise<Result<string, RenderPageError>>;
 
 export default (
@@ -28,9 +29,10 @@ export default (
   );
 
   return async (doi) => {
-    const abstractResult = renderAbstract(doi);
-    const pageHeaderResult = renderPageHeader(doi);
-    const feedResult = renderFeed(doi)
+    const userId = toUserId('fake-user');
+    const abstractResult = renderAbstract(doi, userId);
+    const pageHeaderResult = renderPageHeader(doi, userId);
+    const feedResult = renderFeed(doi, userId)
       .then((feed) => (
         feed.orElse(() => Result.ok(''))
       ));

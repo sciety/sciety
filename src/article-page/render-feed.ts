@@ -4,9 +4,9 @@ import { ArticleVersionFeedItem, RenderArticleVersionFeedItem } from './render-a
 import { RenderReviewFeedItem, ReviewFeedItem } from './render-review-feed-item';
 import renderListItems from '../shared-components/list-items';
 import Doi from '../types/doi';
-import toUserId from '../types/user-id';
+import { UserId } from '../types/user-id';
 
-type RenderFeed = (doi: Doi) => Promise<Result<string, 'no-content'>>;
+type RenderFeed = (doi: Doi, userId: UserId) => Promise<Result<string, 'no-content'>>;
 
 export type FeedItem = ReviewFeedItem | ArticleVersionFeedItem | { type: 'article-version-error' };
 
@@ -19,25 +19,25 @@ export default (
 ): RenderFeed => {
   const renderArticleVersionErrorFeedItem = createRenderArticleVersionErrorFeedItem();
 
-  const renderFeedItem = async (feedItem: FeedItem): Promise<string> => {
+  const renderFeedItem = async (feedItem: FeedItem, userId: UserId): Promise<string> => {
     switch (feedItem.type) {
       case 'article-version':
         return renderArticleVersionFeedItem(feedItem);
       case 'article-version-error':
         return renderArticleVersionErrorFeedItem();
       case 'review':
-        return renderReviewFeedItem(feedItem, toUserId('fakeuser'));
+        return renderReviewFeedItem(feedItem, userId);
     }
   };
 
-  return async (doi) => {
+  return async (doi, userId) => {
     const feedItems = await getFeedItems(doi);
 
     if (feedItems.length === 0) {
       return Result.err('no-content');
     }
 
-    const items = await Promise.all(feedItems.map(renderFeedItem));
+    const items = await Promise.all(feedItems.map(async (feedItem) => renderFeedItem(feedItem, userId)));
 
     return Result.ok(`
       <section class="article-feed-section">
