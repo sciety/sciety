@@ -43,7 +43,18 @@ describe('project-user-vote', () => {
     });
   });
 
-  describe('one up vote event for another review', () => {
-    it.todo('returns `not`');
+  describe('one up vote event for another review from the same user', () => {
+    it('returns `not`', async () => {
+      const projectUserVote = createProjectUserVote(async () => [{
+        type: 'UserFoundReviewHelpful',
+        id: generate(),
+        date: new Date(),
+        userId: toUserId('user'),
+        reviewId: new Doi('10.1111/987654'),
+      }]);
+      const vote = await projectUserVote(new Doi('10.1111/123456'), toUserId('user'));
+
+      expect(vote).toBe('not');
+    });
   });
 });
