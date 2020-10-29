@@ -7,7 +7,7 @@ import EditorialCommunityId from '../types/editorial-community-id';
 import { ReviewId } from '../types/review-id';
 import { UserId } from '../types/user-id';
 
-export type RenderReviewFeedItem = (review: ReviewFeedItem, userId: UserId) => Promise<string>;
+export type RenderReviewFeedItem = (review: ReviewFeedItem, userId: Maybe<UserId>) => Promise<string>;
 
 export type ReviewFeedItem = {
   type: 'review';

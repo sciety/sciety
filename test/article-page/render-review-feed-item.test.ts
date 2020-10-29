@@ -4,7 +4,6 @@ import { Maybe } from 'true-myth';
 import createRenderReviewFeedItem from '../../src/article-page/render-review-feed-item';
 import Doi from '../../src/types/doi';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
-import toUserId from '../../src/types/user-id';
 
 describe('render-review-feed-item', () => {
   describe('when the review has long full text', () => {
@@ -22,7 +21,7 @@ describe('render-review-feed-item', () => {
           editorialCommunityName: 'Community 1',
           editorialCommunityAvatar: new URL('http://example.com/avatar'),
           fullText: Maybe.just(fullText),
-        }, toUserId('some-user')),
+        }, Maybe.nothing()),
       );
       const toggleableContent = rendered.querySelector('[data-behaviour="collapse_to_teaser"]');
       const fullTextWrapper = rendered.querySelector('[data-full-text]');
@@ -50,7 +49,7 @@ describe('render-review-feed-item', () => {
           editorialCommunityName: 'Community 1',
           editorialCommunityAvatar: new URL('http://example.com/avatar'),
           fullText: Maybe.just(fullText),
-        }, toUserId('some-user')),
+        }, Maybe.nothing()),
       );
       const toggleableContent = rendered.querySelector('[data-behaviour="collapse_to_teaser"]');
       const fullTextWrapper = rendered.querySelector('.article-feed__item_body');
@@ -79,7 +78,7 @@ describe('render-review-feed-item', () => {
           editorialCommunityName: 'Community 1',
           editorialCommunityAvatar: new URL('http://example.com/avatar'),
           fullText: Maybe.nothing(),
-        }, toUserId('some-user')),
+        }, Maybe.nothing()),
       );
       const toggleableContent = rendered.querySelector('[data-behaviour="collapse_to_teaser"]');
       const sourceLinkUrl = rendered.querySelector('.article-feed__item__read_more')?.getAttribute('href');
