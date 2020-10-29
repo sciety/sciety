@@ -20,7 +20,9 @@ export default (
 
     const upButton = upVoted
       ? '<button type="submit" aria-label="Cancel your helpful vote" class="votes__button"><img src="/static/images/thumb-up-solid.svg" alt=""></button>'
-      : '<button type="submit" aria-label="Indicate that this review is helpful" class="votes__button"><img src="/static/images/thumb-up-outline.svg" alt=""></button>';
+      : `<button type="submit" name="intention" value="up-vote" aria-label="Indicate that this review is helpful" class="votes__button">
+      <img src="/static/images/thumb-up-outline.svg" alt="">
+      </button>`;
     const downButton = downVoted
       ? '<button type="submit" aria-label="Cancel your unhelpful vote" class="votes__button"><img src="/static/images/thumb-down-solid.svg" alt=""></button>'
       : '<button type="submit" aria-label="Indicate that this review is unhelpful" class="votes__button"><img src="/static/images/thumb-down-outline.svg" alt=""></button>';
@@ -31,7 +33,6 @@ export default (
         <div class="votes__action">
           <form method="post" action="/vote">
             <input type="hidden" name="reviewid" value="${reviewId.toString()}">
-            <input type="hidden" name="intention" value="toggle-upvote">
             ${upButton}
           </form>
           ${upVotes}
@@ -40,7 +41,6 @@ export default (
         <div class="votes__action">
           <form method="post" action="/vote">
             <input type="hidden" name="reviewid" value="${reviewId.toString()}">
-            <input type="hidden" name="intention" value="toggle-downvote">
             ${downButton}
           </form>
           ${downVotes}
