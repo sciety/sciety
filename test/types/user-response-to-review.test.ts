@@ -1,7 +1,24 @@
+import Doi from '../../src/types/doi';
+import toUserId from '../../src/types/user-id';
+import UserResponseToReview from '../../src/types/user-response-to-review';
+
 describe('user-response-to-review', () => {
   describe('no-response-state for this review and user', () => {
     describe('command: RespondHelpful', () => {
-      it.todo('return UserFoundReviewHelpful event');
+      it('return UserFoundReviewHelpful event', () => {
+        const userId = toUserId('a-user');
+        const reviewId = new Doi('10.1101/12345678');
+        const userResponseToReview = new UserResponseToReview(userId, reviewId);
+
+        const events = userResponseToReview.respondHelpful();
+
+        expect(events).toHaveLength(1);
+        expect(events[0]).toStrictEqual(expect.objectContaining({
+          type: 'UserFoundReviewHelpful',
+          userId,
+          reviewId,
+        }));
+      });
     });
 
     describe('command: RespondNotHelpful', () => {
