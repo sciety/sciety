@@ -18,9 +18,10 @@ export default (
     const upVoted = current === 'up';
     const downVoted = current === 'down';
 
+    // TODO: remove `vote` from all the ARIA labels
     const upButton = upVoted
-      ? '<button type="submit" aria-label="Cancel your helpful vote" class="votes__button"><img src="/static/images/thumb-up-solid.svg" alt=""></button>'
-      : `<button type="submit" name="intention" value="up-vote" aria-label="Indicate that this review is helpful" class="votes__button">
+      ? '<button type="submit" name="command" value="revoke-response" aria-label="Cancel your helpful vote" class="votes__button"><img src="/static/images/thumb-up-solid.svg" alt=""></button>'
+      : `<button type="submit" name="command" value="respond-helpful" aria-label="Indicate that this review is helpful" class="votes__button">
       <img src="/static/images/thumb-up-outline.svg" alt="">
       </button>`;
     const downButton = downVoted

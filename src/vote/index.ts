@@ -12,7 +12,9 @@ export default (ports: Ports): Middleware<{ user: User }> => async (context, nex
   const handleResponseToReview = createHandleResponseToReview(ports.getAllEvents, ports.commitEvents);
   const { user } = context.state;
   const reviewId = toReviewId(context.request.body.reviewid);
-  await handleResponseToReview(user, reviewId);
+  // TODO: validate that command matches HandleResponseToReview
+  const { command } = context.request.body;
+  await handleResponseToReview(user, reviewId, command);
 
   context.redirect('back');
 

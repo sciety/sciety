@@ -11,6 +11,7 @@ describe('handle-response-to-review', () => {
         await handleResponseToReview(
           { id: toUserId('anyuser') },
           new Doi('10.1111/123456'),
+          'respond-helpful',
         );
 
         expect(commitEvents).toHaveBeenCalledTimes(1);
@@ -28,6 +29,7 @@ describe('handle-response-to-review', () => {
         await handleResponseToReview(
           { id: toUserId('anyuser') },
           reviewId,
+          'respond-helpful',
         );
 
         expect(commitEvents).toHaveBeenCalledWith([
@@ -45,6 +47,7 @@ describe('handle-response-to-review', () => {
           // TODO: pass in just a UserId?
           { id: userId },
           new Doi('10.1111/123456'),
+          'respond-helpful',
         );
 
         expect(commitEvents).toHaveBeenCalledWith([
