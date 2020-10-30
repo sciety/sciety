@@ -1,7 +1,6 @@
 import Doi from '../../src/types/doi';
-import { generate } from '../../src/types/event-id';
 import toUserId from '../../src/types/user-id';
-import createHandleResponseToReview, { GetAllEvents } from '../../src/vote/handle-response-to-review';
+import createHandleResponseToReview from '../../src/vote/handle-response-to-review';
 
 describe('handle-response-to-review', () => {
   describe('when no vote has been cast', () => {
