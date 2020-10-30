@@ -69,10 +69,19 @@ export type UserFoundReviewHelpfulEvent = Readonly<{
   reviewId: ReviewId;
 }>;
 
+export type UserRevokedFindingReviewHelpfulEvent = Readonly<{
+  id: EventId,
+  type: 'UserRevokedFindingReviewHelpful';
+  date: Date;
+  userId: UserId;
+  reviewId: ReviewId;
+}>;
+
 export type DomainEvent =
   EditorialCommunityEndorsedArticleEvent |
   EditorialCommunityReviewedArticleEvent |
   EditorialCommunityJoinedEvent |
   UserFollowedEditorialCommunityEvent |
   UserUnfollowedEditorialCommunityEvent |
-  UserFoundReviewHelpfulEvent;
+  UserFoundReviewHelpfulEvent |
+  UserRevokedFindingReviewHelpfulEvent;

@@ -1,4 +1,4 @@
-import { UserFoundReviewHelpfulEvent } from './domain-events';
+import { UserFoundReviewHelpfulEvent, UserRevokedFindingReviewHelpfulEvent } from './domain-events';
 import { generate } from './event-id';
 import { ReviewId } from './review-id';
 import { UserId } from './user-id';
@@ -27,6 +27,18 @@ export default class UserResponseToReview {
       {
         id: generate(),
         type: 'UserFoundReviewHelpful',
+        date: new Date(),
+        userId: this.userId,
+        reviewId: this.reviewId,
+      },
+    ];
+  }
+
+  revokeResponse(): ReadonlyArray<UserRevokedFindingReviewHelpfulEvent> {
+    return [
+      {
+        id: generate(),
+        type: 'UserRevokedFindingReviewHelpful',
         date: new Date(),
         userId: this.userId,
         reviewId: this.reviewId,

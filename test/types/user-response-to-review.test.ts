@@ -49,7 +49,20 @@ describe('user-response-to-review', () => {
     });
 
     describe('command: RevokeMyResponse', () => {
-      it.todo('return UserRevokedFindingReviewHelpful event');
+      it('return UserRevokedFindingReviewHelpful event', () => {
+        const userId = toUserId('a-user');
+        const reviewId = new Doi('10.1101/12345678');
+        const userResponseToReview = new UserResponseToReview(userId, reviewId, 'helpful');
+
+        const events = userResponseToReview.revokeResponse();
+
+        expect(events).toHaveLength(1);
+        expect(events[0]).toStrictEqual(expect.objectContaining({
+          type: 'UserRevokedFindingReviewHelpful',
+          userId,
+          reviewId,
+        }));
+      });
     });
   });
 
