@@ -1,7 +1,7 @@
 import { DomainEvent, UserFoundReviewHelpfulEvent } from '../types/domain-events';
-import { generate } from '../types/event-id';
 import { ReviewId } from '../types/review-id';
 import { User } from '../types/user';
+import UserResponseToReview from '../types/user-response-to-review';
 
 type VoteCommand = (user: User, reviewId: ReviewId) => Promise<void>;
 
@@ -18,14 +18,7 @@ export default (getAllEvents: GetAllEvents, commitEvents: CommitEvents): VoteCom
     if (alreadyVoted) {
       return;
     }
-    commitEvents([
-      {
-        id: generate(),
-        type: 'UserFoundReviewHelpful',
-        date: new Date(),
-        userId: user.id,
-        reviewId,
-      },
-    ]);
+    const userResponseToReview = new UserResponseToReview(user.id, reviewId);
+    commitEvents(userResponseToReview.respondHelpful());
   }
 );
