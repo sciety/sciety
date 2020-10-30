@@ -1,15 +1,15 @@
 import Doi from '../../src/types/doi';
 import { generate } from '../../src/types/event-id';
 import toUserId from '../../src/types/user-id';
-import createVoteCommand, { GetAllEvents } from '../../src/vote/vote-command';
+import createHandleResponseToReview, { GetAllEvents } from '../../src/vote/handle-response-to-review';
 
-describe('vote-command', () => {
+describe('handle-response-to-review', () => {
   describe('when no vote has been cast', () => {
     describe('and input contains an upvote', () => {
       it('produces a UserFoundReviewHelpfulEvent', async () => {
         const commitEvents = jest.fn();
-        const voteCommand = createVoteCommand(async () => [], commitEvents);
-        await voteCommand(
+        const handleResponseToReview = createHandleResponseToReview(async () => [], commitEvents);
+        await handleResponseToReview(
           { id: toUserId('anyuser') },
           new Doi('10.1111/123456'),
         );
@@ -24,9 +24,9 @@ describe('vote-command', () => {
 
       it('produces a UserFoundReviewHelpfulEvent containing a review ID', async () => {
         const commitEvents = jest.fn();
-        const voteCommand = createVoteCommand(async () => [], commitEvents);
+        const handleResponseToReview = createHandleResponseToReview(async () => [], commitEvents);
         const reviewId = new Doi('10.1111/123456');
-        await voteCommand(
+        await handleResponseToReview(
           { id: toUserId('anyuser') },
           reviewId,
         );
@@ -40,9 +40,9 @@ describe('vote-command', () => {
 
       it('produces an event containing user ID', async () => {
         const commitEvents = jest.fn();
-        const voteCommand = createVoteCommand(async () => [], commitEvents);
+        const handleResponseToReview = createHandleResponseToReview(async () => [], commitEvents);
         const userId = toUserId('currentuser');
-        await voteCommand(
+        await handleResponseToReview(
           // TODO: pass in just a UserId?
           { id: userId },
           new Doi('10.1111/123456'),
@@ -72,9 +72,9 @@ describe('vote-command', () => {
           },
         ];
         const commitEvents = jest.fn();
-        const voteCommand = createVoteCommand(getAllEvents, commitEvents);
+        const handleResponseToReview = createHandleResponseToReview(getAllEvents, commitEvents);
 
-        await voteCommand({ id: userId }, reviewId);
+        await handleResponseToReview({ id: userId }, reviewId);
 
         expect(commitEvents).not.toHaveBeenCalled();
       });

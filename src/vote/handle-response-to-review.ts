@@ -3,19 +3,19 @@ import { ReviewId } from '../types/review-id';
 import { User } from '../types/user';
 import UserResponseToReview from '../types/user-response-to-review';
 
-type VoteCommand = (user: User, reviewId: ReviewId) => Promise<void>;
+type HandleResponseToReview = (user: User, reviewId: ReviewId) => Promise<void>;
 
 export type GetAllEvents = () => Promise<ReadonlyArray<DomainEvent>>;
 export type CommitEvents = (events: ReadonlyArray<UserFoundReviewHelpfulEvent>) => void;
 
-export default (getAllEvents: GetAllEvents, commitEvents: CommitEvents): VoteCommand => (
+export default (getAllEvents: GetAllEvents, commitEvents: CommitEvents): HandleResponseToReview => (
   async (user, reviewId) => {
     const events = await getAllEvents();
-    const alreadyVoted = events
+    const alreadyResponded = events
       .filter((event): event is UserFoundReviewHelpfulEvent => event.type === 'UserFoundReviewHelpful')
       .some((event) => event.reviewId.toString() === reviewId.toString() && event.userId === user.id);
 
-    if (alreadyVoted) {
+    if (alreadyResponded) {
       return;
     }
     const userResponseToReview = new UserResponseToReview(user.id, reviewId);
