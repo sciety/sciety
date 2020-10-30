@@ -84,4 +84,8 @@ describe('vote-command', () => {
       it.todo('should fire a `vote revoked` event');
     });
   });
+
+  describe('given no previous response when the user responds yes', () => {
+    it.todo('trigger user responded yes event');
+  });
 });
