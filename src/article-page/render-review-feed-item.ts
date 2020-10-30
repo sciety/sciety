@@ -1,7 +1,7 @@
 import { URL } from 'url';
 import clip from 'text-clipper';
 import { Maybe } from 'true-myth';
-import { RenderVotes } from './render-votes';
+import { RenderReviewResponses } from './render-review-responses';
 import templateDate from '../shared-components/date';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { ReviewId } from '../types/review-id';
@@ -26,11 +26,11 @@ const renderAvatar = (url: URL): string => `
 
 export default (
   teaserChars: number,
-  renderVotes: RenderVotes,
+  renderReviewResponses: RenderReviewResponses,
 ): RenderReviewFeedItem => async (review, userId) => {
-  let votesHtml = '';
+  let reviewResponsesHtml = '';
   if (process.env.EXPERIMENT_ENABLED === 'true') {
-    votesHtml = await renderVotes(review.id, userId);
+    reviewResponsesHtml = await renderReviewResponses(review.id, userId);
   }
   const eventMetadata = `
     ${templateDate(review.occurredAt, 'article-feed__item__date')}
@@ -57,7 +57,7 @@ export default (
           </div>
         </div>
       </div>
-      ${votesHtml}
+      ${reviewResponsesHtml}
     `;
   }
 
@@ -75,7 +75,7 @@ export default (
           </div>
         </div>
       </div>
-      ${votesHtml}
+      ${reviewResponsesHtml}
     `;
   }
   return `
@@ -92,6 +92,6 @@ export default (
         </div>
       </div>
     </div>
-    ${votesHtml}
+    ${reviewResponsesHtml}
   `;
 };

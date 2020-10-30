@@ -1,4 +1,4 @@
-import { GetUserVote } from './render-votes';
+import { GetUserVote } from './render-review-responses';
 import { DomainEvent, UserFoundReviewHelpfulEvent } from '../types/domain-events';
 
 type GetEvents = () => Promise<ReadonlyArray<DomainEvent>>;

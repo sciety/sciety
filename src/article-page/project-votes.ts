@@ -1,4 +1,4 @@
-import { GetVotes } from './render-votes';
+import { GetVotes } from './render-review-responses';
 import Doi from '../types/doi';
 import { DomainEvent, UserFoundReviewHelpfulEvent } from '../types/domain-events';
 
