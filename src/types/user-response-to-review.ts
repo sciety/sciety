@@ -8,12 +8,19 @@ export default class UserResponseToReview {
 
   private readonly reviewId: ReviewId;
 
+  private response: 'no-response' | 'helpful';
+
   constructor(userId: UserId, reviewId: ReviewId) {
     this.userId = userId;
     this.reviewId = reviewId;
+    this.response = 'no-response';
   }
 
   respondHelpful(): ReadonlyArray<DomainEvent> {
+    if (this.response === 'helpful') {
+      return [];
+    }
+    this.response = 'helpful';
     return [
       {
         id: generate(),

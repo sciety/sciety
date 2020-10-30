@@ -32,7 +32,16 @@ describe('user-response-to-review', () => {
 
   describe('helpful-state for this review and user', () => {
     describe('command: RespondHelpful', () => {
-      it.todo('return no events');
+      it('return no events', () => {
+        const userId = toUserId('a-user');
+        const reviewId = new Doi('10.1101/12345678');
+        const userResponseToReview = new UserResponseToReview(userId, reviewId);
+        userResponseToReview.respondHelpful();
+
+        const events = userResponseToReview.respondHelpful();
+
+        expect(events).toHaveLength(0);
+      });
     });
 
     describe('command: RespondNotHelpful', () => {
