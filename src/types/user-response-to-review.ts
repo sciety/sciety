@@ -3,17 +3,19 @@ import { generate } from './event-id';
 import { ReviewId } from './review-id';
 import { UserId } from './user-id';
 
+type Response = 'no-response' | 'helpful';
+
 export default class UserResponseToReview {
   private readonly userId: UserId;
 
   private readonly reviewId: ReviewId;
 
-  private response: 'no-response' | 'helpful';
+  private response: Response;
 
-  constructor(userId: UserId, reviewId: ReviewId) {
+  constructor(userId: UserId, reviewId: ReviewId, response: Response = 'no-response') {
     this.userId = userId;
     this.reviewId = reviewId;
-    this.response = 'no-response';
+    this.response = response;
   }
 
   respondHelpful(): ReadonlyArray<UserFoundReviewHelpfulEvent> {

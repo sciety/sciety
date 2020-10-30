@@ -11,14 +11,12 @@ export type CommitEvents = (events: ReadonlyArray<UserFoundReviewHelpfulEvent>) 
 export default (getAllEvents: GetAllEvents, commitEvents: CommitEvents): HandleResponseToReview => (
   async (user, reviewId) => {
     const events = await getAllEvents();
-    const alreadyResponded = events
+    const priorEvents = events
       .filter((event): event is UserFoundReviewHelpfulEvent => event.type === 'UserFoundReviewHelpful')
-      .some((event) => event.reviewId.toString() === reviewId.toString() && event.userId === user.id);
+      .filter((event) => event.reviewId.toString() === reviewId.toString() && event.userId === user.id);
 
-    if (alreadyResponded) {
-      return;
-    }
-    const userResponseToReview = new UserResponseToReview(user.id, reviewId);
+    const userResponseToReview = new UserResponseToReview(user.id, reviewId,
+      priorEvents.length === 0 ? 'no-response' : 'helpful');
     commitEvents(userResponseToReview.respondHelpful());
   }
 );
