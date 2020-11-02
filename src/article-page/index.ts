@@ -4,8 +4,8 @@ import createComposeFeedEvents from './compose-feed-events';
 import ensureBiorxivDoi from './ensure-biorxiv-doi';
 import createGetFeedEventsContent, { GetEditorialCommunity, GetReview } from './get-feed-events-content';
 import createHandleArticleVersionErrors from './handle-article-version-errors';
-import createProjectReviewResponseCounts, { GetEvents } from './project-review-response-counts';
-import createProjectUserReviewResponse from './project-user-review-response';
+import createProjectReviewResponseCounts, { GetEvents as GetEventForReviewResponseCounts } from './project-review-response-counts';
+import createProjectUserReviewResponse, { GetEvents as GetEventForUserReviewResponse } from './project-user-review-response';
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
 import createRenderArticleVersionFeedItem from './render-article-version-feed-item';
 import createRenderFeed from './render-feed';
@@ -43,8 +43,7 @@ interface Ports {
   findReviewsForArticleDoi: FindReviewsForArticleDoi;
   findVersionsForArticleDoi: FindVersionsForArticleDoi;
   logger: Logger;
-  // TODO: This comes from project-votes and is also used in project-user-vote
-  getAllEvents: GetEvents;
+  getAllEvents: GetEventForUserReviewResponse & GetEventForReviewResponseCounts;
 }
 
 const buildRenderPageHeader = (ports: Ports): RenderPageHeader => createRenderPageHeader(

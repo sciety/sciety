@@ -2,7 +2,7 @@ import { Maybe } from 'true-myth';
 import { GetUserReviewResponse } from './render-review-responses';
 import { DomainEvent, UserFoundReviewHelpfulEvent } from '../types/domain-events';
 
-type GetEvents = () => Promise<ReadonlyArray<DomainEvent>>;
+export type GetEvents = () => Promise<ReadonlyArray<DomainEvent>>;
 
 export default (getEvents: GetEvents): GetUserReviewResponse => (
   async (reviewId, userId) => {
