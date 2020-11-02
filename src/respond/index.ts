@@ -1,5 +1,6 @@
 import { Middleware } from '@koa/router';
-import createHandleResponseToReview, { CommitEvents, GetAllEvents } from './handle-response-to-review';
+import createGetUserResponseToReview, { GetAllEvents } from './get-user-response-to-review';
+import createHandleResponseToReview, { CommitEvents } from './handle-response-to-review';
 import toReviewId from '../types/review-id';
 import { User } from '../types/user';
 
@@ -9,7 +10,8 @@ type Ports = {
 };
 
 export default (ports: Ports): Middleware<{ user: User }> => async (context, next) => {
-  const handleResponseToReview = createHandleResponseToReview(ports.getAllEvents, ports.commitEvents);
+  const getUserResponseToReview = createGetUserResponseToReview(ports.getAllEvents);
+  const handleResponseToReview = createHandleResponseToReview(getUserResponseToReview, ports.commitEvents);
   const { user } = context.state;
   const reviewId = toReviewId(context.request.body.reviewid);
   // TODO: validate that command matches HandleResponseToReview
