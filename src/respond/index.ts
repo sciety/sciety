@@ -1,6 +1,6 @@
 import { Middleware } from '@koa/router';
-import { GetAllEvents } from './get-user-response-to-review';
 import createHandleResponseToReview, { CommitEvents } from './handle-response-to-review';
+import { GetAllEvents } from './respond-helpful-command';
 import toReviewId from '../types/review-id';
 import { User } from '../types/user';
 

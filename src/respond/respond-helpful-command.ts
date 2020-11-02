@@ -1,4 +1,4 @@
-import { DomainEvent, UserFoundReviewHelpfulEvent, UserRevokedFindingReviewHelpfulEvent } from '../types/domain-events';
+import { DomainEvent, UserFoundReviewHelpfulEvent } from '../types/domain-events';
 import { generate } from '../types/event-id';
 import { ReviewId } from '../types/review-id';
 import { UserId } from '../types/user-id';
@@ -27,17 +27,3 @@ export const respondHelpful = (getAllEvents: GetAllEvents): RespondHelpful => as
     },
   ];
 };
-
-type RevokeResponse = (userId: UserId, reviewId: ReviewId) => Promise<
-ReadonlyArray<UserRevokedFindingReviewHelpfulEvent>
->;
-
-export const revokeResponse = (): RevokeResponse => async (userId, reviewId) => [
-  {
-    id: generate(),
-    type: 'UserRevokedFindingReviewHelpful',
-    date: new Date(),
-    userId,
-    reviewId,
-  },
-];

@@ -1,4 +1,5 @@
-import { respondHelpful, revokeResponse } from './get-user-response-to-review';
+import { respondHelpful } from './respond-helpful-command';
+import { revokeResponse } from './revoke-response-command';
 import { GetAllEvents } from '../editorial-community-page/get-most-recent-events';
 import { UserFoundReviewHelpfulEvent, UserRevokedFindingReviewHelpfulEvent } from '../types/domain-events';
 import { ReviewId } from '../types/review-id';
