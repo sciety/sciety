@@ -11,7 +11,7 @@ type Ports = {
 
 export default (ports: Ports): Middleware<{ user: User }> => async (context, next) => {
   const getUserResponseToReview = createGetUserResponseToReview(ports.getAllEvents);
-  const handleResponseToReview = createHandleResponseToReview(getUserResponseToReview, ports.commitEvents);
+  const handleResponseToReview = createHandleResponseToReview(getUserResponseToReview, ports.getAllEvents, ports.commitEvents);
   const { user } = context.state;
   const reviewId = toReviewId(context.request.body.reviewid);
   // TODO: validate that command matches HandleResponseToReview

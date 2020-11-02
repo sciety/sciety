@@ -1,3 +1,5 @@
+import { respondHelpful } from './get-user-response-to-review';
+import { GetAllEvents } from '../editorial-community-page/get-most-recent-events';
 import { UserFoundReviewHelpfulEvent, UserRevokedFindingReviewHelpfulEvent } from '../types/domain-events';
 import { ReviewId } from '../types/review-id';
 import { User } from '../types/user';
@@ -14,6 +16,7 @@ UserFoundReviewHelpfulEvent|UserRevokedFindingReviewHelpfulEvent
 
 export default (
   getUserResponseToReview: GetUserResponseToReview,
+  getAllEvents: GetAllEvents,
   commitEvents: CommitEvents,
 ): HandleResponseToReview => (
   async (user, reviewId, command) => {
@@ -21,7 +24,7 @@ export default (
 
     switch (command) {
       case 'respond-helpful':
-        commitEvents(userResponseToReview.respondHelpful());
+        commitEvents(await respondHelpful(getAllEvents)(user.id, reviewId));
         break;
       case 'revoke-response':
         commitEvents(userResponseToReview.revokeResponse());

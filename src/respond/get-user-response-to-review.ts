@@ -18,3 +18,13 @@ export default (
     return new UserResponseToReview(userId, reviewId, priorEvents.length === 0 ? 'no-response' : 'helpful');
   }
 );
+
+type RespondHelpful = (userId: UserId, reviewId: ReviewId) => Promise<ReadonlyArray<UserFoundReviewHelpfulEvent>>;
+
+export const respondHelpful = (getAllEvents: GetAllEvents): RespondHelpful => async (userId, reviewId) => {
+  const events = await getAllEvents();
+  const priorEvents = events
+    .filter((event): event is UserFoundReviewHelpfulEvent => event.type === 'UserFoundReviewHelpful')
+    .filter((event) => event.reviewId.toString() === reviewId.toString() && event.userId === userId);
+  return new UserResponseToReview(userId, reviewId, priorEvents.length === 0 ? 'no-response' : 'helpful').respondHelpful();
+};

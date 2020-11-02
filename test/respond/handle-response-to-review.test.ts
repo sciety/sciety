@@ -9,7 +9,7 @@ describe('handle-response-to-review', () => {
       it('commits the event', async () => {
         const commitEvents = jest.fn();
         const handleResponseToReview = createHandleResponseToReview(
-          async () => new UserResponseToReview(toUserId('anyuser'), new Doi('10.1111/123456')), commitEvents,
+          async () => new UserResponseToReview(toUserId('anyuser'), new Doi('10.1111/123456')), async () => [], commitEvents,
         );
         await handleResponseToReview(
           { id: toUserId('anyuser') },
