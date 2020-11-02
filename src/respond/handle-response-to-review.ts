@@ -20,7 +20,7 @@ export default (
         commitEvents(await respondHelpful(getAllEvents)(user.id, reviewId));
         break;
       case 'revoke-response':
-        commitEvents(await revokeResponse(getAllEvents)(user.id, reviewId));
+        commitEvents(await revokeResponse()(user.id, reviewId));
         break;
     }
   }
