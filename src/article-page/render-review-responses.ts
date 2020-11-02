@@ -5,7 +5,7 @@ import { UserId } from '../types/user-id';
 export type RenderReviewResponses = (reviewId: ReviewId, userId: Maybe<UserId>) => Promise<string>;
 
 export type CountReviewResponses = (reviewId: ReviewId) => Promise<{ helpfulCount: number, notHelpfulCount: number }>;
-export type GetUserReviewResponse = (reviewId: ReviewId, userId: Maybe<UserId>) => Promise<'up' | 'down' | 'not'>;
+export type GetUserReviewResponse = (reviewId: ReviewId, userId: Maybe<UserId>) => Promise<Maybe<'helpful' | 'not-helpful'>>;
 
 export default (
   countReviewResponses: CountReviewResponses,
@@ -15,8 +15,8 @@ export default (
     const { helpfulCount, notHelpfulCount } = await countReviewResponses(reviewId);
     const current = await getUserReviewResponse(reviewId, userId);
 
-    const saidHelpful = current === 'up';
-    const saidNotHelpful = current === 'down';
+    const saidHelpful = current.isJust() && current.unsafelyUnwrap() === 'helpful';
+    const saidNotHelpful = current.isJust() && current.unsafelyUnwrap() === 'not-helpful';
 
     // TODO: Move 'You said this review is helpful' etc to visually hidden span before button.
     // TODO: Change the label when the other button is selected

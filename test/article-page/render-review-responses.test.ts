@@ -12,7 +12,7 @@ describe('render-review-responses', () => {
         helpfulCount: 35,
         notHelpfulCount: 17,
       }),
-      async () => 'not',
+      async () => Maybe.nothing(),
     );
     const rendered = await renderReviewResponses(new Doi('10.1101/111111'), Maybe.nothing());
 
@@ -27,7 +27,7 @@ describe('render-review-responses', () => {
           helpfulCount: 35,
           notHelpfulCount: 17,
         }),
-        async () => 'not',
+        async () => Maybe.nothing(),
       );
       const rendered = await renderReviewResponses(new Doi('10.1101/111111'), Maybe.just(toUserId('fakeuser')));
 
@@ -40,7 +40,7 @@ describe('render-review-responses', () => {
       const renderReviewResponses = createRenderReviewResponses(async () => ({
         helpfulCount: 1,
         notHelpfulCount: 0,
-      }), async () => 'up');
+      }), async () => Maybe.just('helpful'));
 
       const rendered = await renderReviewResponses(new Doi('10.1111/123456'), Maybe.just(toUserId('user')));
 

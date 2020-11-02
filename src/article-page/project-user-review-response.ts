@@ -1,3 +1,4 @@
+import { Maybe } from 'true-myth';
 import { GetUserReviewResponse } from './render-review-responses';
 import { DomainEvent, UserFoundReviewHelpfulEvent } from '../types/domain-events';
 
@@ -6,7 +7,7 @@ type GetEvents = () => Promise<ReadonlyArray<DomainEvent>>;
 export default (getEvents: GetEvents): GetUserReviewResponse => (
   async (reviewId, userId) => {
     if (userId.isNothing()) {
-      return 'not';
+      return Maybe.nothing();
     }
 
     const events = await getEvents();
@@ -17,6 +18,6 @@ export default (getEvents: GetEvents): GetUserReviewResponse => (
       .filter((event) => event.userId === userId.unsafelyUnwrap())
       .filter((event) => event.reviewId.toString() === reviewId.toString());
 
-    return voteEvents.length > 0 ? 'up' : 'not';
+    return voteEvents.length > 0 ? Maybe.just('helpful') : Maybe.nothing();
   }
 );

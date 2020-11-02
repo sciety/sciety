@@ -6,16 +6,16 @@ import toUserId from '../../src/types/user-id';
 
 describe('project-user-review-response', () => {
   describe('no response events', () => {
-    it('returns `not`', async () => {
+    it('returns nothing', async () => {
       const projectUserReviewResponse = createProjectUserReviewResponse(async () => []);
       const userResponse = await projectUserReviewResponse(new Doi('10.1111/123456'), Maybe.just(toUserId('someone')));
 
-      expect(userResponse).toBe('not');
+      expect(userResponse.isNothing()).toBe(true);
     });
   });
 
   describe('one helpful response event', () => {
-    it('returns `up`', async () => {
+    it('returns `helpful`', async () => {
       const projectUserReviewResponse = createProjectUserReviewResponse(async () => [{
         type: 'UserFoundReviewHelpful',
         id: generate(),
@@ -25,12 +25,12 @@ describe('project-user-review-response', () => {
       }]);
       const userResponse = await projectUserReviewResponse(new Doi('10.1111/123456'), Maybe.just(toUserId('user')));
 
-      expect(userResponse).toBe('up');
+      expect(userResponse.unsafelyUnwrap()).toBe('helpful');
     });
   });
 
   describe('one helpful response event from another user', () => {
-    it('returns `not`', async () => {
+    it('returns nothing', async () => {
       const projectUserReviewResponse = createProjectUserReviewResponse(async () => [{
         type: 'UserFoundReviewHelpful',
         id: generate(),
@@ -40,12 +40,12 @@ describe('project-user-review-response', () => {
       }]);
       const userResponse = await projectUserReviewResponse(new Doi('10.1111/123456'), Maybe.just(toUserId('userB')));
 
-      expect(userResponse).toBe('not');
+      expect(userResponse.isNothing()).toBe(true);
     });
   });
 
   describe('one helpful response event for another review from the same user', () => {
-    it('returns `not`', async () => {
+    it('returns nothing', async () => {
       const projectUserReviewResponse = createProjectUserReviewResponse(async () => [{
         type: 'UserFoundReviewHelpful',
         id: generate(),
@@ -55,12 +55,12 @@ describe('project-user-review-response', () => {
       }]);
       const userResponse = await projectUserReviewResponse(new Doi('10.1111/123456'), Maybe.just(toUserId('user')));
 
-      expect(userResponse).toBe('not');
+      expect(userResponse.isNothing()).toBe(true);
     });
   });
 
   describe('there is no user', () => {
-    it('return `not`', async () => {
+    it('return nothing', async () => {
       const projectUserReviewResponse = createProjectUserReviewResponse(async () => [{
         type: 'UserFoundReviewHelpful',
         id: generate(),
@@ -71,7 +71,7 @@ describe('project-user-review-response', () => {
 
       const userResponse = await projectUserReviewResponse(new Doi('10.1111/123456'), Maybe.nothing());
 
-      expect(userResponse).toBe('not');
+      expect(userResponse.isNothing()).toBe(true);
     });
   });
 
