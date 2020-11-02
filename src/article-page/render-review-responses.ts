@@ -12,20 +12,20 @@ export default (
   getUserVote: GetUserVote,
 ): RenderReviewResponses => (
   async (reviewId, userId) => {
-    const { upVotes, downVotes } = await getVotes(reviewId);
+    const { upVotes: helpfulCount, downVotes: notHelpfulCount } = await getVotes(reviewId);
     const current = await getUserVote(reviewId, userId);
 
-    const upVoted = current === 'up';
-    const downVoted = current === 'down';
+    const saidHelpful = current === 'up';
+    const saidNotHelpful = current === 'down';
 
     // TODO: Move 'You said this review is helpful' etc to visually hidden span before button.
     // TODO: Change the label when the other button is selected
-    const upButton = upVoted
+    const helpfulButton = saidHelpful
       ? '<button type="submit" name="command" value="revoke-response" aria-label="You said this review is helpful; press to undo." class="responses__button"><img src="/static/images/thumb-up-solid.svg" alt=""></button>'
       : `<button type="submit" name="command" value="respond-helpful" aria-label="This review is helpful" class="responses__button">
       <img src="/static/images/thumb-up-outline.svg" alt="">
       </button>`;
-    const downButton = downVoted
+    const notHelpfulButton = saidNotHelpful
       ? '<button type="submit" aria-label="You said this review is not helpful; press to undo." class="responses__button"><img src="/static/images/thumb-down-solid.svg" alt=""></button>'
       : '<button type="submit" aria-label="This review is not helpful" class="responses__button"><img src="/static/images/thumb-down-outline.svg" alt=""></button>';
     return `
@@ -35,17 +35,17 @@ export default (
         <div class="responses__action">
           <form method="post" action="/respond">
             <input type="hidden" name="reviewid" value="${reviewId.toString()}">
-            ${upButton}
+            ${helpfulButton}
           </form>
-          ${upVotes}
+          ${helpfulCount}
           <span class="visually-hidden">people said this review is helpful</span>
         </div>
         <div class="responses__action">
           <form method="post" action="/respond">
             <input type="hidden" name="reviewid" value="${reviewId.toString()}">
-            ${downButton}
+            ${notHelpfulButton}
           </form>
-          ${downVotes}
+          ${notHelpfulCount}
           <span class="visually-hidden">people said this review is not helpful</span>
         </div>
       </div>
