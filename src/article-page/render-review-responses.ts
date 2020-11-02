@@ -18,6 +18,8 @@ export default (
     const upVoted = current === 'up';
     const downVoted = current === 'down';
 
+    // TODO: Move 'You said this review is helpful' etc to visually hidden span before button.
+    // TODO: Change the label when the other button is selected
     const upButton = upVoted
       ? '<button type="submit" name="command" value="revoke-response" aria-label="You said this review is helpful; press to undo." class="responses__button"><img src="/static/images/thumb-up-solid.svg" alt=""></button>'
       : `<button type="submit" name="command" value="respond-helpful" aria-label="This review is helpful" class="responses__button">
