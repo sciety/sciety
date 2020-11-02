@@ -71,7 +71,7 @@ export default (adapters: Adapters): Router => {
     createRequireAuthentication(),
     createUnfollowHandler(adapters));
 
-  router.post('/vote',
+  router.post('/respond',
     identifyUser(adapters.logger),
     bodyParser({ enableTypes: ['form'] }),
     createRequireAuthentication(),

@@ -31,7 +31,7 @@ export default (
       <div class="votes__question">Did you find this review helpful?</div>
       <div class="votes__actions">
         <div class="votes__action">
-          <form method="post" action="/vote">
+          <form method="post" action="/respond">
             <input type="hidden" name="reviewid" value="${reviewId.toString()}">
             ${upButton}
           </form>
@@ -39,7 +39,7 @@ export default (
           <span class="visually-hidden">people said this review is helpful</span>
         </div>
         <div class="votes__action">
-          <form method="post" action="/vote">
+          <form method="post" action="/respond">
             <input type="hidden" name="reviewid" value="${reviewId.toString()}">
             ${downButton}
           </form>
