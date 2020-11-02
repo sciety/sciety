@@ -4,15 +4,15 @@ import { UserId } from '../types/user-id';
 
 export type RenderReviewResponses = (reviewId: ReviewId, userId: Maybe<UserId>) => Promise<string>;
 
-export type GetVotes = (reviewId: ReviewId) => Promise<{ helpfulCount: number, notHelpfulCount: number }>;
+export type CountReviewResponses = (reviewId: ReviewId) => Promise<{ helpfulCount: number, notHelpfulCount: number }>;
 export type GetUserVote = (reviewId: ReviewId, userId: Maybe<UserId>) => Promise<'up' | 'down' | 'not'>;
 
 export default (
-  getVotes: GetVotes,
+  countReviewResponses: CountReviewResponses,
   getUserVote: GetUserVote,
 ): RenderReviewResponses => (
   async (reviewId, userId) => {
-    const { helpfulCount, notHelpfulCount } = await getVotes(reviewId);
+    const { helpfulCount, notHelpfulCount } = await countReviewResponses(reviewId);
     const current = await getUserVote(reviewId, userId);
 
     const saidHelpful = current === 'up';

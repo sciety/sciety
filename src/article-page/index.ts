@@ -89,13 +89,13 @@ export default (ports: Ports): RenderPage => {
       getEditorialCommunity,
     ),
   );
-  const getVotes = createProjectVotes(ports.getAllEvents);
+  const countReviewResponses = createProjectVotes(ports.getAllEvents);
   const renderFeed = createRenderFeed(
     getFeedEventsContent,
     createRenderReviewFeedItem(
       150,
       createRenderReviewResponses(
-        getVotes,
+        countReviewResponses,
         createProjectUserVote(ports.getAllEvents),
       ),
     ),
