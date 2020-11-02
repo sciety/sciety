@@ -1,6 +1,6 @@
+import createHandleResponseToReview from '../../src/respond/handle-response-to-review';
 import Doi from '../../src/types/doi';
 import toUserId from '../../src/types/user-id';
-import createHandleResponseToReview from '../../src/vote/handle-response-to-review';
 
 describe('handle-response-to-review', () => {
   describe('when no vote has been cast', () => {

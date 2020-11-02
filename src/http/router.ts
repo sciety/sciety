@@ -20,12 +20,12 @@ import createHomePage from '../home-page';
 import { Adapters } from '../infrastructure/adapters';
 import createLogOutHandler from '../log-out';
 import createPrivacyPage from '../privacy-page';
+import createRespondHandler from '../respond';
 import createTermsPage from '../terms-page';
 import createUnfollowHandler from '../unfollow';
 import createFinishUnfollowCommand from '../unfollow/finish-unfollow-command';
 import createSaveUnfollowCommand from '../unfollow/save-unfollow-command';
 import createUserPage from '../user-page';
-import createVoteHandler from '../vote';
 
 export default (adapters: Adapters): Router => {
   const router = new Router();
@@ -75,7 +75,7 @@ export default (adapters: Adapters): Router => {
     identifyUser(adapters.logger),
     bodyParser({ enableTypes: ['form'] }),
     createRequireAuthentication(),
-    createVoteHandler(adapters));
+    createRespondHandler(adapters));
 
   const authenticate = koaPassport.authenticate(
     'twitter',
