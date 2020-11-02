@@ -1,4 +1,5 @@
 import { DomainEvent, UserFoundReviewHelpfulEvent, UserRevokedFindingReviewHelpfulEvent } from '../types/domain-events';
+import { generate } from '../types/event-id';
 import { ReviewId } from '../types/review-id';
 import { UserId } from '../types/user-id';
 import UserResponseToReview from '../types/user-response-to-review';
@@ -14,7 +15,18 @@ export const respondHelpful = (getAllEvents: GetAllEvents): RespondHelpful => as
   const priorEvents = events
     .filter((event): event is UserFoundReviewHelpfulEvent => event.type === 'UserFoundReviewHelpful')
     .filter((event) => event.reviewId.toString() === reviewId.toString() && event.userId === userId);
-  return new UserResponseToReview(userId, reviewId, priorEvents.length === 0 ? 'no-response' : 'helpful').respondHelpful();
+  if (priorEvents.length > 0) {
+    return [];
+  }
+  return [
+    {
+      id: generate(),
+      type: 'UserFoundReviewHelpful',
+      date: new Date(),
+      userId,
+      reviewId,
+    },
+  ];
 };
 
 type RevokeResponse = (userId: UserId, reviewId: ReviewId) => Promise<
