@@ -12,15 +12,23 @@ export type CommitEvents = (events: ReadonlyArray<
 UserFoundReviewHelpfulEvent|UserRevokedFindingReviewHelpfulEvent
 >) => void;
 
-export default (getAllEvents: GetAllEvents, commitEvents: CommitEvents): HandleResponseToReview => {
-  const getUserResponseToReview: GetUserResponseToReview = async (userId, reviewId) => {
+const createGetUserResponseToReview = (
+  getAllEvents: GetAllEvents,
+): GetUserResponseToReview => (
+  async (userId, reviewId) => {
     const events = await getAllEvents();
     const priorEvents = events
       .filter((event): event is UserFoundReviewHelpfulEvent => event.type === 'UserFoundReviewHelpful')
       .filter((event) => event.reviewId.toString() === reviewId.toString() && event.userId === userId);
-
     return new UserResponseToReview(userId, reviewId, priorEvents.length === 0 ? 'no-response' : 'helpful');
-  };
+  }
+);
+
+export default (
+  getAllEvents: GetAllEvents,
+  commitEvents: CommitEvents,
+): HandleResponseToReview => {
+  const getUserResponseToReview = createGetUserResponseToReview(getAllEvents);
 
   return async (user, reviewId, command) => {
     const userResponseToReview = await getUserResponseToReview(user.id, reviewId);
