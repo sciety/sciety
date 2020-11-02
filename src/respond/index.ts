@@ -1,6 +1,7 @@
 import { Middleware } from '@koa/router';
 import createHandleResponseToReview, { CommitEvents } from './handle-response-to-review';
 import { GetAllEvents, respondHelpful } from './respond-helpful-command';
+import { revokeResponse } from './revoke-response-command';
 import toReviewId from '../types/review-id';
 import { User } from '../types/user';
 
@@ -12,6 +13,7 @@ type Ports = {
 export default (ports: Ports): Middleware<{ user: User }> => async (context, next) => {
   const handleResponseToReview = createHandleResponseToReview(
     respondHelpful(ports.getAllEvents),
+    revokeResponse(),
     ports.commitEvents,
   );
   const { user } = context.state;

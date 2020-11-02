@@ -1,4 +1,3 @@
-import { revokeResponse } from './revoke-response-command';
 import { RuntimeGeneratedEvent } from '../types/domain-events';
 import { ReviewId } from '../types/review-id';
 import { User } from '../types/user';
@@ -12,6 +11,7 @@ export type CommitEvents = (events: ReadonlyArray<RuntimeGeneratedEvent>) => voi
 
 export default (
   respondHelpful: CommandHandler,
+  revokeResponse: CommandHandler,
   commitEvents: CommitEvents,
 ): HandleResponseToReview => (
   async (user, reviewId, command) => {
@@ -20,7 +20,7 @@ export default (
         commitEvents(await respondHelpful(user.id, reviewId));
         break;
       case 'revoke-response':
-        commitEvents(await revokeResponse()(user.id, reviewId));
+        commitEvents(await revokeResponse(user.id, reviewId));
         break;
     }
   }
