@@ -380,27 +380,27 @@ article-page, flavor A, feed-item
     grid-column: 1 / 9;
   }
 
-  .votes {
+  .responses {
     grid-column: 10 / -1;
   }
 }
 
-.votes__question {
+.responses__question {
   margin-bottom: baseline.increments(2);
 }
 
-.votes__actions {
+.responses__actions {
   display: flex;
   justify-content: flex-start;
 }
 
-.votes__action {
+.responses__action {
   display: flex;
   margin-right: 1rem;
   align-items: center;
 }
 
-.votes__button {
+.responses__button {
   @include button.basics();
   background-color: #fff;
 }

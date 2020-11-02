@@ -19,18 +19,18 @@ export default (
     const downVoted = current === 'down';
 
     const upButton = upVoted
-      ? '<button type="submit" name="command" value="revoke-response" aria-label="You said this review is helpful; press to undo." class="votes__button"><img src="/static/images/thumb-up-solid.svg" alt=""></button>'
-      : `<button type="submit" name="command" value="respond-helpful" aria-label="This review is helpful" class="votes__button">
+      ? '<button type="submit" name="command" value="revoke-response" aria-label="You said this review is helpful; press to undo." class="responses__button"><img src="/static/images/thumb-up-solid.svg" alt=""></button>'
+      : `<button type="submit" name="command" value="respond-helpful" aria-label="This review is helpful" class="responses__button">
       <img src="/static/images/thumb-up-outline.svg" alt="">
       </button>`;
     const downButton = downVoted
-      ? '<button type="submit" aria-label="You said this review is not helpful; press to undo." class="votes__button"><img src="/static/images/thumb-down-solid.svg" alt=""></button>'
-      : '<button type="submit" aria-label="This review is not helpful" class="votes__button"><img src="/static/images/thumb-down-outline.svg" alt=""></button>';
+      ? '<button type="submit" aria-label="You said this review is not helpful; press to undo." class="responses__button"><img src="/static/images/thumb-down-solid.svg" alt=""></button>'
+      : '<button type="submit" aria-label="This review is not helpful" class="responses__button"><img src="/static/images/thumb-down-outline.svg" alt=""></button>';
     return `
-    <div class="votes">
-      <div class="votes__question">Did you find this review helpful?</div>
-      <div class="votes__actions">
-        <div class="votes__action">
+    <div class="responses">
+      <div class="responses__question">Did you find this review helpful?</div>
+      <div class="responses__actions">
+        <div class="responses__action">
           <form method="post" action="/respond">
             <input type="hidden" name="reviewid" value="${reviewId.toString()}">
             ${upButton}
@@ -38,7 +38,7 @@ export default (
           ${upVotes}
           <span class="visually-hidden">people said this review is helpful</span>
         </div>
-        <div class="votes__action">
+        <div class="responses__action">
           <form method="post" action="/respond">
             <input type="hidden" name="reviewid" value="${reviewId.toString()}">
             ${downButton}
