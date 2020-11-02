@@ -1,4 +1,4 @@
-describe('project-response-counts', () => {
+describe('project-review-response-counts', () => {
   describe('given no events', () => {
     it.todo('returns 0 `yes` and 0 `no`');
   });
