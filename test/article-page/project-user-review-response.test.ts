@@ -1,67 +1,67 @@
 import { Maybe } from 'true-myth';
-import createProjectUserVote from '../../src/article-page/project-user-vote';
+import createProjectUserReviewResponse from '../../src/article-page/project-user-review-response';
 import Doi from '../../src/types/doi';
 import { generate } from '../../src/types/event-id';
 import toUserId from '../../src/types/user-id';
 
-describe('project-user-vote', () => {
-  describe('no vote events', () => {
+describe('project-user-review-response', () => {
+  describe('no response events', () => {
     it('returns `not`', async () => {
-      const projectUserVote = createProjectUserVote(async () => []);
-      const vote = await projectUserVote(new Doi('10.1111/123456'), Maybe.just(toUserId('someone')));
+      const projectUserReviewResponse = createProjectUserReviewResponse(async () => []);
+      const userResponse = await projectUserReviewResponse(new Doi('10.1111/123456'), Maybe.just(toUserId('someone')));
 
-      expect(vote).toBe('not');
+      expect(userResponse).toBe('not');
     });
   });
 
-  describe('one up vote event', () => {
+  describe('one helpful response event', () => {
     it('returns `up`', async () => {
-      const projectUserVote = createProjectUserVote(async () => [{
+      const projectUserReviewResponse = createProjectUserReviewResponse(async () => [{
         type: 'UserFoundReviewHelpful',
         id: generate(),
         date: new Date(),
         userId: toUserId('user'),
         reviewId: new Doi('10.1111/123456'),
       }]);
-      const vote = await projectUserVote(new Doi('10.1111/123456'), Maybe.just(toUserId('user')));
+      const userResponse = await projectUserReviewResponse(new Doi('10.1111/123456'), Maybe.just(toUserId('user')));
 
-      expect(vote).toBe('up');
+      expect(userResponse).toBe('up');
     });
   });
 
-  describe('one up vote event from another user', () => {
+  describe('one helpful response event from another user', () => {
     it('returns `not`', async () => {
-      const projectUserVote = createProjectUserVote(async () => [{
+      const projectUserReviewResponse = createProjectUserReviewResponse(async () => [{
         type: 'UserFoundReviewHelpful',
         id: generate(),
         date: new Date(),
         userId: toUserId('userA'),
         reviewId: new Doi('10.1111/123456'),
       }]);
-      const vote = await projectUserVote(new Doi('10.1111/123456'), Maybe.just(toUserId('userB')));
+      const userResponse = await projectUserReviewResponse(new Doi('10.1111/123456'), Maybe.just(toUserId('userB')));
 
-      expect(vote).toBe('not');
+      expect(userResponse).toBe('not');
     });
   });
 
-  describe('one up vote event for another review from the same user', () => {
+  describe('one helpful response event for another review from the same user', () => {
     it('returns `not`', async () => {
-      const projectUserVote = createProjectUserVote(async () => [{
+      const projectUserReviewResponse = createProjectUserReviewResponse(async () => [{
         type: 'UserFoundReviewHelpful',
         id: generate(),
         date: new Date(),
         userId: toUserId('user'),
         reviewId: new Doi('10.1111/987654'),
       }]);
-      const vote = await projectUserVote(new Doi('10.1111/123456'), Maybe.just(toUserId('user')));
+      const userResponse = await projectUserReviewResponse(new Doi('10.1111/123456'), Maybe.just(toUserId('user')));
 
-      expect(vote).toBe('not');
+      expect(userResponse).toBe('not');
     });
   });
 
   describe('there is no user', () => {
     it('return `not`', async () => {
-      const projectUserVote = createProjectUserVote(async () => [{
+      const projectUserReviewResponse = createProjectUserReviewResponse(async () => [{
         type: 'UserFoundReviewHelpful',
         id: generate(),
         date: new Date(),
@@ -69,9 +69,9 @@ describe('project-user-vote', () => {
         reviewId: new Doi('10.1111/123456'),
       }]);
 
-      const vote = await projectUserVote(new Doi('10.1111/123456'), Maybe.nothing());
+      const userResponse = await projectUserReviewResponse(new Doi('10.1111/123456'), Maybe.nothing());
 
-      expect(vote).toBe('not');
+      expect(userResponse).toBe('not');
     });
   });
 

@@ -1,9 +1,9 @@
-import { GetUserVote } from './render-review-responses';
+import { GetUserReviewResponse } from './render-review-responses';
 import { DomainEvent, UserFoundReviewHelpfulEvent } from '../types/domain-events';
 
 type GetEvents = () => Promise<ReadonlyArray<DomainEvent>>;
 
-export default (getEvents: GetEvents): GetUserVote => (
+export default (getEvents: GetEvents): GetUserReviewResponse => (
   async (reviewId, userId) => {
     if (userId.isNothing()) {
       return 'not';

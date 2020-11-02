@@ -5,7 +5,7 @@ import ensureBiorxivDoi from './ensure-biorxiv-doi';
 import createGetFeedEventsContent, { GetEditorialCommunity, GetReview } from './get-feed-events-content';
 import createHandleArticleVersionErrors from './handle-article-version-errors';
 import createProjectReviewResponseCounts, { GetEvents } from './project-review-response-counts';
-import createProjectUserVote from './project-user-vote';
+import createProjectUserReviewResponse from './project-user-review-response';
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
 import createRenderArticleVersionFeedItem from './render-article-version-feed-item';
 import createRenderFeed from './render-feed';
@@ -96,7 +96,7 @@ export default (ports: Ports): RenderPage => {
       150,
       createRenderReviewResponses(
         countReviewResponses,
-        createProjectUserVote(ports.getAllEvents),
+        createProjectUserReviewResponse(ports.getAllEvents),
       ),
     ),
     createRenderArticleVersionFeedItem(),
