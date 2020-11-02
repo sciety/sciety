@@ -85,3 +85,9 @@ export type DomainEvent =
   UserUnfollowedEditorialCommunityEvent |
   UserFoundReviewHelpfulEvent |
   UserRevokedFindingReviewHelpfulEvent;
+
+export type RuntimeGeneratedEvent =
+  UserFollowedEditorialCommunityEvent |
+  UserUnfollowedEditorialCommunityEvent |
+  UserFoundReviewHelpfulEvent |
+  UserRevokedFindingReviewHelpfulEvent;
