@@ -9,8 +9,8 @@ describe('render-review-responses', () => {
   it('displays the number of votes', async () => {
     const renderReviewResponses = createRenderReviewResponses(
       async () => ({
-        upVotes: 35,
-        downVotes: 17,
+        helpfulCount: 35,
+        notHelpfulCount: 17,
       }),
       async () => 'not',
     );
@@ -24,8 +24,8 @@ describe('render-review-responses', () => {
     it('displays a not active upvote button', async () => {
       const renderReviewResponses = createRenderReviewResponses(
         async () => ({
-          upVotes: 35,
-          downVotes: 17,
+          helpfulCount: 35,
+          notHelpfulCount: 17,
         }),
         async () => 'not',
       );
@@ -38,8 +38,8 @@ describe('render-review-responses', () => {
   describe('when the user has upvoted', () => {
     it('displays an active upvote button', async () => {
       const renderReviewResponses = createRenderReviewResponses(async () => ({
-        upVotes: 1,
-        downVotes: 0,
+        helpfulCount: 1,
+        notHelpfulCount: 0,
       }), async () => 'up');
 
       const rendered = await renderReviewResponses(new Doi('10.1111/123456'), Maybe.just(toUserId('user')));

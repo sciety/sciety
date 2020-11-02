@@ -4,7 +4,7 @@ import { UserId } from '../types/user-id';
 
 export type RenderReviewResponses = (reviewId: ReviewId, userId: Maybe<UserId>) => Promise<string>;
 
-export type GetVotes = (reviewId: ReviewId) => Promise<{ upVotes: number, downVotes: number }>;
+export type GetVotes = (reviewId: ReviewId) => Promise<{ helpfulCount: number, notHelpfulCount: number }>;
 export type GetUserVote = (reviewId: ReviewId, userId: Maybe<UserId>) => Promise<'up' | 'down' | 'not'>;
 
 export default (
@@ -12,7 +12,7 @@ export default (
   getUserVote: GetUserVote,
 ): RenderReviewResponses => (
   async (reviewId, userId) => {
-    const { upVotes: helpfulCount, downVotes: notHelpfulCount } = await getVotes(reviewId);
+    const { helpfulCount, notHelpfulCount } = await getVotes(reviewId);
     const current = await getUserVote(reviewId, userId);
 
     const saidHelpful = current === 'up';

@@ -4,15 +4,16 @@ import { DomainEvent, UserFoundReviewHelpfulEvent } from '../types/domain-events
 
 export type GetEvents = () => Promise<ReadonlyArray<DomainEvent>>;
 
+// TODO: this function has no tests
 export default (getEvents: GetEvents): GetVotes => (
   async (reviewId) => {
-    const upVotes = (await getEvents())
+    const helpfulCount = (await getEvents())
       .filter((event): event is UserFoundReviewHelpfulEvent => event.type === 'UserFoundReviewHelpful')
       .filter((event) => event.reviewId.toString() === reviewId.toString())
       .length;
     if (reviewId instanceof Doi) {
-      return { upVotes, downVotes: 8 };
+      return { helpfulCount, notHelpfulCount: 8 };
     }
-    return { upVotes, downVotes: 9 };
+    return { helpfulCount, notHelpfulCount: 9 };
   }
 );
