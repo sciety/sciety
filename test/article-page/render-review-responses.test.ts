@@ -4,9 +4,7 @@ import Doi from '../../src/types/doi';
 import toUserId from '../../src/types/user-id';
 
 describe('render-review-responses', () => {
-  it.todo('uses the word `helpful`?');
-
-  it('displays the number of votes', async () => {
+  it('displays the response counts by type', async () => {
     const renderReviewResponses = createRenderReviewResponses(
       async () => ({
         helpfulCount: 35,
@@ -20,8 +18,8 @@ describe('render-review-responses', () => {
     expect(rendered).toStrictEqual(expect.stringContaining('17'));
   });
 
-  describe('when the user has not upvoted', () => {
-    it('displays a not active upvote button', async () => {
+  describe('when there is no current user response', () => {
+    it('displays a not active `helpful` button', async () => {
       const renderReviewResponses = createRenderReviewResponses(
         async () => ({
           helpfulCount: 35,
@@ -35,8 +33,8 @@ describe('render-review-responses', () => {
     });
   });
 
-  describe('when the user has upvoted', () => {
-    it('displays an active upvote button', async () => {
+  describe('when the user response is `helpful`', () => {
+    it('displays an active `helpful` button', async () => {
       const renderReviewResponses = createRenderReviewResponses(async () => ({
         helpfulCount: 1,
         notHelpfulCount: 0,
