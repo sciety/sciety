@@ -13,11 +13,11 @@ export default (getEvents: GetEvents): GetUserReviewResponse => (
     const events = await getEvents();
 
     // TODO number of filters could be reduced
-    const voteEvents = events
+    const helpfulReviewResponseEvents = events
       .filter((event): event is UserFoundReviewHelpfulEvent => event.type === 'UserFoundReviewHelpful')
       .filter((event) => event.userId === userId.unsafelyUnwrap())
       .filter((event) => event.reviewId.toString() === reviewId.toString());
 
-    return voteEvents.length > 0 ? Maybe.just('helpful') : Maybe.nothing();
+    return helpfulReviewResponseEvents.length > 0 ? Maybe.just('helpful') : Maybe.nothing();
   }
 );
