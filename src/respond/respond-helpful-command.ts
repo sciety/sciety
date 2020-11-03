@@ -21,7 +21,9 @@ export const respondHelpful = (getAllEvents: GetAllEvents): RespondHelpful => as
       event.reviewId.toString() === reviewId.toString() && event.userId === userId
     ));
 
-  if (priorEvents.length > 0 && priorEvents[priorEvents.length - 1].type === 'UserFoundReviewHelpful') {
+  const helpfulState = priorEvents.length > 0 && priorEvents[priorEvents.length - 1].type === 'UserFoundReviewHelpful';
+
+  if (helpfulState) {
     return [];
   }
 
