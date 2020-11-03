@@ -72,7 +72,30 @@ describe('project-review-response-counts', () => {
   });
 
   describe('given a single user responded helpful and revoked the helpful response', () => {
-    it.todo('returns 0 `helpful` and 0 `not helpful`');
+    it('returns 0 `helpful` and 0 `not helpful`', async () => {
+      const reviewId = new Doi('10.1234/5678');
+      const userId = toUserId('some-user');
+
+      const projectReviewResponseCounts = createProjectReviewResponseCounts(async () => [
+        {
+          type: 'UserFoundReviewHelpful',
+          id: generate(),
+          date: new Date(),
+          reviewId,
+          userId,
+        },
+        {
+          type: 'UserRevokedFindingReviewHelpful',
+          id: generate(),
+          date: new Date(),
+          reviewId,
+          userId,
+        },
+      ]);
+      const projected = await projectReviewResponseCounts(reviewId);
+
+      expect(projected).toStrictEqual({ helpfulCount: 0, notHelpfulCount: 0 });
+    });
   });
 
   describe('given a single user responded: helpful, revoke helpful, not helpful, revoke not helpful', () => {
