@@ -18,7 +18,7 @@ export const revokeResponse = (getAllEvents: GetAllEvents): RevokeResponse => as
         event.type === 'UserFoundReviewHelpful' || event.type === 'UserRevokedFindingReviewHelpful'
       ),
     )
-    .filter((event) => event.userId === userId);
+    .filter((event) => event.userId === userId && event.reviewId.toString() === reviewId.toString());
 
   if (ofInterest.length === 0 || ofInterest[ofInterest.length - 1].type === 'UserRevokedFindingReviewHelpful') {
     return [];

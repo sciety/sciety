@@ -36,7 +36,23 @@ describe('revoke-response-command', () => {
   });
 
   describe('given helpful state for a different review and this user', () => {
-    it.todo('silently ignores the command');
+    it('silently ignores the command', async () => {
+      const reviewId = new Doi('10.1111/333333');
+      const userId = toUserId('someone');
+      const differentReviewId = new Doi('10.1101/666666');
+
+      const getAllEvents: GetAllEvents = async () => [{
+        id: generate(),
+        date: new Date(),
+        type: 'UserFoundReviewHelpful',
+        userId,
+        reviewId: differentReviewId,
+      },
+      ];
+      const events = await revokeResponse(getAllEvents)(userId, reviewId);
+
+      expect(events).toHaveLength(0);
+    });
   });
 
   describe('given helpful state for this review and user', () => {
@@ -52,7 +68,7 @@ describe('revoke-response-command', () => {
           reviewId,
         },
       ];
-      const events = await revokeResponse(getAllEvents)(userId, reviewId);
+      const events = await revokeResponse(getAllEvents)(userId, new Doi('10.1111/333333'));
 
       expect(events).toHaveLength(1);
       expect(events[0]).toMatchObject({
