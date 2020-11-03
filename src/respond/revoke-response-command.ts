@@ -1,4 +1,4 @@
-import {DomainEvent, UserFoundReviewHelpfulEvent, UserRevokedFindingReviewHelpfulEvent} from '../types/domain-events';
+import { DomainEvent, UserFoundReviewHelpfulEvent, UserRevokedFindingReviewHelpfulEvent } from '../types/domain-events';
 import { generate } from '../types/event-id';
 import { ReviewId } from '../types/review-id';
 import { UserId } from '../types/user-id';
