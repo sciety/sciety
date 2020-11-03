@@ -74,26 +74,4 @@ describe('project-user-review-response', () => {
       expect(userResponse.isNothing()).toBe(true);
     });
   });
-
-  describe('given no events', () => {
-    it.todo('should return `not`');
-  });
-
-  describe('given `not`', () => {
-    it.todo('returns `up` with a user responded yes event');
-
-    it.todo('returns `down` with a user responded no event');
-  });
-
-  describe('given `up`', () => {
-    it.todo('returns `not` with a user revoked response event');
-
-    it.todo('returns `down` with a user responded no event');
-  });
-
-  describe('given `down`', () => {
-    it.todo('returns `not` with a user revoked response event');
-
-    it.todo('returns `up` with a user responded yes event');
-  });
 });
