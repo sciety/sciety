@@ -39,6 +39,32 @@ describe('revoke-response-command', () => {
     });
   });
 
+  describe('given the user has already revoked', () => {
+    it('silently ignores the command', async () => {
+      const reviewId = new Doi('10.1111/333333');
+      const userId = toUserId('someone');
+      const getAllEvents: GetAllEvents = async () => [
+        {
+          id: generate(),
+          date: new Date(),
+          type: 'UserFoundReviewHelpful',
+          userId,
+          reviewId,
+        },
+        {
+          id: generate(),
+          date: new Date(),
+          type: 'UserRevokedFindingReviewHelpful',
+          userId,
+          reviewId,
+        },
+      ];
+      const events = await revokeResponse(getAllEvents)(userId, reviewId);
+
+      expect(events).toHaveLength(0);
+    });
+  });
+
   describe('given not-helpful state for this review and user', () => {
     it.todo('return UserRevokedFindingReviewNotHelpful event');
   });

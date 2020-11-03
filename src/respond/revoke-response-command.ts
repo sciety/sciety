@@ -13,7 +13,7 @@ ReadonlyArray<UserRevokedFindingReviewHelpfulEvent>
 // eslint-disable-next-line import/prefer-default-export
 export const revokeResponse = (getAllEvents: GetAllEvents): RevokeResponse => async (userId, reviewId) => {
   const ofInterest = await getAllEvents();
-  if (ofInterest.length === 0) {
+  if (ofInterest.length === 0 || ofInterest[ofInterest.length - 1].type === 'UserRevokedFindingReviewHelpful') {
     return [];
   }
   return [
