@@ -6,6 +6,7 @@ import toUserId from '../../src/types/user-id';
 describe('revoke-response-command', () => {
   describe('given no-response state for this review and user', () => {
     it('silently ignores the command', async () => {
+      // TODO: extract reviewId and userId
       const reviewId = new Doi('10.1111/333333');
       const userId = toUserId('someone');
       const getAllEvents: GetAllEvents = async () => [];
@@ -22,6 +23,7 @@ describe('revoke-response-command', () => {
       const differentUserId = toUserId('someone-else');
 
       const getAllEvents: GetAllEvents = async () => [{
+        // TODO: only show relevant event properties in input
         id: generate(),
         date: new Date(),
         type: 'UserFoundReviewHelpful',
