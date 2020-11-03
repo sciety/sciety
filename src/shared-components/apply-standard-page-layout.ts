@@ -50,7 +50,7 @@ export default (page: string, user: Maybe<User>): string => `<!doctype html>
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Sciety">
   <meta name="twitter:description" content=" Where research is evaluated and curated by the communities you trust">
-  <meta name="twitter:image" content="/static/images/sciety-twitter-profile.png">
+  <meta name="twitter:image" content="https://staging.hive.review/static/images/sciety-twitter-profile.png">
 </head>
 <body>
   ${googleTagManagerNoScript}
