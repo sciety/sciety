@@ -13,6 +13,7 @@ ReadonlyArray<UserRevokedFindingReviewHelpfulEvent>
 // eslint-disable-next-line import/prefer-default-export
 export const revokeResponse = (getAllEvents: GetAllEvents): RevokeResponse => async (userId, reviewId) => {
   const ofInterest = (await getAllEvents())
+    // TODO: deduplicate filtering with other command(s) and factor out tests that duplicate this logic
     .filter(
       (event): event is UserFoundReviewHelpfulEvent | UserRevokedFindingReviewHelpfulEvent => (
         event.type === 'UserFoundReviewHelpful' || event.type === 'UserRevokedFindingReviewHelpful'
