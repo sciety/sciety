@@ -1,4 +1,4 @@
-import { DomainEvent, UserFoundReviewHelpfulEvent } from '../types/domain-events';
+import { DomainEvent, UserFoundReviewHelpfulEvent, UserRevokedFindingReviewHelpfulEvent } from '../types/domain-events';
 import { generate } from '../types/event-id';
 import { ReviewId } from '../types/review-id';
 import { UserId } from '../types/user-id';
@@ -12,11 +12,19 @@ ReadonlyArray<UserFoundReviewHelpfulEvent>
 export const respondHelpful = (getAllEvents: GetAllEvents): RespondHelpful => async (userId, reviewId) => {
   const events = await getAllEvents();
   const priorEvents = events
-    .filter((event): event is UserFoundReviewHelpfulEvent => event.type === 'UserFoundReviewHelpful')
-    .filter((event) => event.reviewId.toString() === reviewId.toString() && event.userId === userId);
-  if (priorEvents.length > 0) {
+    .filter(
+      (event): event is UserFoundReviewHelpfulEvent | UserRevokedFindingReviewHelpfulEvent => (
+        event.type === 'UserFoundReviewHelpful' || event.type === 'UserRevokedFindingReviewHelpful'
+      ),
+    )
+    .filter((event) => (
+      event.reviewId.toString() === reviewId.toString() && event.userId === userId
+    ));
+
+  if (priorEvents.length > 0 && priorEvents[priorEvents.length - 1].type === 'UserFoundReviewHelpful') {
     return [];
   }
+
   return [
     {
       id: generate(),

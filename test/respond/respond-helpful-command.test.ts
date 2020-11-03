@@ -1,11 +1,11 @@
 import { GetAllEvents, respondHelpful } from '../../src/respond/respond-helpful-command';
 import Doi from '../../src/types/doi';
-import { UserFoundReviewHelpfulEvent } from '../../src/types/domain-events';
+import { UserFoundReviewHelpfulEvent, UserRevokedFindingReviewHelpfulEvent } from '../../src/types/domain-events';
 import { generate } from '../../src/types/event-id';
 import { ReviewId } from '../../src/types/review-id';
 import toUserId, { UserId } from '../../src/types/user-id';
 
-type EventType = UserFoundReviewHelpfulEvent;
+type EventType = UserFoundReviewHelpfulEvent | UserRevokedFindingReviewHelpfulEvent;
 
 const makeEvent = (type: EventType['type'], userId: UserId, reviewId: ReviewId): EventType => ({
   id: generate(),
@@ -25,6 +25,10 @@ describe('respond-helpful-command', () => {
       ['different review helpful', [
         makeEvent('UserFoundReviewHelpful', userId, new Doi('10.1101/444444')),
       ]],
+      ['revoked helpful', [
+        makeEvent('UserFoundReviewHelpful', userId, reviewId),
+        makeEvent('UserRevokedFindingReviewHelpful', userId, reviewId),
+      ]],
     ])('given %s, return UserFoundReviewHelpful event', async (_, history) => {
       const getAllEvents: GetAllEvents = async () => history;
 
@@ -42,6 +46,11 @@ describe('respond-helpful-command', () => {
   describe('helpful-state for this review and user', () => {
     it.each([
       ['single helpful event', [makeEvent('UserFoundReviewHelpful', userId, reviewId)]],
+      ['already revoked helpful', [
+        makeEvent('UserFoundReviewHelpful', userId, reviewId),
+        makeEvent('UserRevokedFindingReviewHelpful', userId, reviewId),
+        makeEvent('UserFoundReviewHelpful', userId, reviewId),
+      ]],
     ])('given %s, return no events', async (_, history) => {
       const getAllEvents: GetAllEvents = async () => history;
 
