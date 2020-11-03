@@ -47,6 +47,7 @@ export default (page: string, user: Maybe<User>): string => `<!doctype html>
   </title>
   <link rel="stylesheet" href="/static/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.css">
+  <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Sciety">
   <meta name="twitter:description" content=" Where research is evaluated and curated by the communities you trust">
   <meta name="twitter:image" content="/static/images/sciety-twitter-profile.png">
