@@ -13,7 +13,7 @@ type Ports = {
 export default (ports: Ports): Middleware<{ user: User }> => async (context, next) => {
   const handleResponseToReview = createHandleResponseToReview(
     respondHelpful(ports.getAllEvents),
-    revokeResponse(),
+    revokeResponse(ports.getAllEvents),
     ports.commitEvents,
   );
   const { user } = context.state;

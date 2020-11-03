@@ -1,7 +1,9 @@
-import { UserRevokedFindingReviewHelpfulEvent } from '../types/domain-events';
+import { DomainEvent, UserRevokedFindingReviewHelpfulEvent } from '../types/domain-events';
 import { generate } from '../types/event-id';
 import { ReviewId } from '../types/review-id';
 import { UserId } from '../types/user-id';
+
+export type GetAllEvents = () => Promise<ReadonlyArray<DomainEvent>>;
 
 type RevokeResponse = (userId: UserId, reviewId: ReviewId) => Promise<
 ReadonlyArray<UserRevokedFindingReviewHelpfulEvent>
@@ -9,12 +11,18 @@ ReadonlyArray<UserRevokedFindingReviewHelpfulEvent>
 
 // TODO: change lint config to reflect our decision to use named functions
 // eslint-disable-next-line import/prefer-default-export
-export const revokeResponse = (): RevokeResponse => async (userId, reviewId) => [
-  {
-    id: generate(),
-    type: 'UserRevokedFindingReviewHelpful',
-    date: new Date(),
-    userId,
-    reviewId,
-  },
-];
+export const revokeResponse = (getAllEvents: GetAllEvents): RevokeResponse => async (userId, reviewId) => {
+  const ofInterest = await getAllEvents();
+  if (ofInterest.length === 0) {
+    return [];
+  }
+  return [
+    {
+      id: generate(),
+      type: 'UserRevokedFindingReviewHelpful',
+      date: new Date(),
+      userId,
+      reviewId,
+    },
+  ];
+};
