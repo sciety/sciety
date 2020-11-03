@@ -15,6 +15,26 @@ describe('project-review-response-counts', () => {
     });
   });
 
+  describe('given a user responded to a different review', () => {
+    it('returns 0 `helpful` and 0 `not helpful`', async () => {
+      const reviewId = new Doi('10.1234/5678');
+      const differentReviewId = new Doi('10.9999/9999');
+
+      const projectReviewResponseCounts = createProjectReviewResponseCounts(async () => [
+        {
+          type: 'UserFoundReviewHelpful',
+          id: generate(),
+          date: new Date(),
+          reviewId: differentReviewId,
+          userId: toUserId('some-user'),
+        },
+      ]);
+      const projected = await projectReviewResponseCounts(reviewId);
+
+      expect(projected).toStrictEqual({ helpfulCount: 0, notHelpfulCount: 0 });
+    });
+  });
+
   describe('given N different users responded helpful events', () => {
     it('returns N `helpful` and 0 `not helpful`', async () => {
       const reviewId = new Doi('10.1234/5678');
