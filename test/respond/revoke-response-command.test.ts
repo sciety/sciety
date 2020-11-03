@@ -15,6 +15,30 @@ describe('revoke-response-command', () => {
     });
   });
 
+  describe('given helpful state for this review and a different user', () => {
+    it('silently ignores the command', async () => {
+      const reviewId = new Doi('10.1111/333333');
+      const userId = toUserId('someone');
+      const differentUserId = toUserId('someone-else');
+
+      const getAllEvents: GetAllEvents = async () => [{
+        id: generate(),
+        date: new Date(),
+        type: 'UserFoundReviewHelpful',
+        userId: differentUserId,
+        reviewId,
+      },
+      ];
+      const events = await revokeResponse(getAllEvents)(userId, reviewId);
+
+      expect(events).toHaveLength(0);
+    });
+  });
+
+  describe('given helpful state for a different review and this user', () => {
+    it.todo('silently ignores the command');
+  });
+
   describe('given helpful state for this review and user', () => {
     it('return UserRevokedFindingReviewHelpful event', async () => {
       const reviewId = new Doi('10.1111/333333');
