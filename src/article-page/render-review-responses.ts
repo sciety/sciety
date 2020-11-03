@@ -4,6 +4,7 @@ import { UserId } from '../types/user-id';
 
 export type RenderReviewResponses = (reviewId: ReviewId, userId: Maybe<UserId>) => Promise<string>;
 
+// TODO Try introducing a Counter type to prevent impossible numbers (e.g. -1, 2.5)
 export type CountReviewResponses = (reviewId: ReviewId) => Promise<{ helpfulCount: number, notHelpfulCount: number }>;
 export type GetUserReviewResponse = (reviewId: ReviewId, userId: Maybe<UserId>) => Promise<Maybe<'helpful' | 'not-helpful'>>;
 
