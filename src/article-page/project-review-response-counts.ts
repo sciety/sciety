@@ -1,5 +1,4 @@
 import { CountReviewResponses } from './render-review-responses';
-import Doi from '../types/doi';
 import { DomainEvent, UserFoundReviewHelpfulEvent } from '../types/domain-events';
 
 export type GetEvents = () => Promise<ReadonlyArray<DomainEvent>>;
@@ -11,9 +10,6 @@ export default (getEvents: GetEvents): CountReviewResponses => (
       .filter((event): event is UserFoundReviewHelpfulEvent => event.type === 'UserFoundReviewHelpful')
       .filter((event) => event.reviewId.toString() === reviewId.toString())
       .length;
-    if (reviewId instanceof Doi) {
-      return { helpfulCount, notHelpfulCount: 8 };
-    }
-    return { helpfulCount, notHelpfulCount: 9 };
+    return { helpfulCount, notHelpfulCount: 0 };
   }
 );
