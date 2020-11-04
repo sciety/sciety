@@ -21,7 +21,8 @@ export default (
   renderFeed: Component,
 ): RenderPage => {
   const template = Result.ok(
-    (abstract: string) => (pageHeader: string) => (feed: string) => `
+    (abstract: string) => (pageHeader: string) => (feed: string) => (title: string) => ({
+      content: `
 <article class="hive-grid hive-grid--article">
   ${pageHeader}
 
@@ -31,6 +32,8 @@ export default (
   </div>
 </article>
     `,
+      title,
+    }),
   );
 
   return async (doi, userId) => {
@@ -40,12 +43,13 @@ export default (
       .then((feed) => (
         feed.orElse(() => Result.ok(''))
       ));
+    const titleResult = Result.ok('Article on Sciety');
 
     return template
       .ap(await abstractResult)
       .ap(await pageHeaderResult)
       .ap(await feedResult)
-      .map((content) => ({ content, title: 'Article on Sciety' }))
+      .ap(titleResult)
       .mapErr(() => ({
         type: 'not-found',
         content: `
