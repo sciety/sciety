@@ -6,6 +6,7 @@ import { User } from '../types/user';
 
 type Page = {
   content: string,
+  title?: string,
 };
 
 type RenderPageError = {
@@ -55,7 +56,7 @@ export default (
     const page = result.unwrapOrElse((error) => error);
 
     context.response.status = result.map(successToStatusCode).unwrapOrElse(errorTypeToStatusCode);
-    context.response.body = applyStandardPageLayout({ ...page, title: Maybe.just('Sciety') }, user);
+    context.response.body = applyStandardPageLayout({ ...page, title: Maybe.of(page.title) }, user);
 
     await next();
   }

@@ -4,6 +4,7 @@ import { UserId } from '../types/user-id';
 
 type Page = {
   content: string,
+  title: string,
 };
 
 type RenderPageError = {
@@ -44,7 +45,7 @@ export default (
       .ap(await abstractResult)
       .ap(await pageHeaderResult)
       .ap(await feedResult)
-      .map((content) => ({ content }))
+      .map((content) => ({ content, title: 'Article on Sciety' }))
       .mapErr(() => ({
         type: 'not-found',
         content: `
