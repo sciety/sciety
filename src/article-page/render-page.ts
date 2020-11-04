@@ -2,13 +2,13 @@ import { Maybe, Result } from 'true-myth';
 import Doi from '../types/doi';
 import { UserId } from '../types/user-id';
 
-export type RenderPageError = {
+type RenderPageError = {
   type: 'not-found',
   content: string,
 };
 
 type Component = (doi: Doi, userId: Maybe<UserId>) => Promise<Result<string, 'not-found' | 'unavailable' | 'no-content'>>;
-type RenderPage = (doi: Doi, userId: Maybe<UserId>) => Promise<Result<string, RenderPageError>>;
+export type RenderPage = (doi: Doi, userId: Maybe<UserId>) => Promise<Result<string, RenderPageError>>;
 
 export default (
   renderPageHeader: Component,
