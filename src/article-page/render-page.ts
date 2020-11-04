@@ -61,19 +61,39 @@ export default (
       .ap(await pageHeaderResult)
       .ap(await feedResult)
       .ap(await articleDetailsResult)
-      .mapErr(() => ({
-        type: 'not-found',
-        content: `
-          <h1>Oops!</h1>
-          <p>
-            We’re having trouble finding this information.
-            Ensure you have the correct URL, or try refreshing the page.
-            You may need to come back later.
-          </p>
-          <p>
-            <a href="/" class="u-call-to-action-link">Return to Homepage</a>
-          </p>
-        `,
-      }));
+      .mapErr((error) => {
+        switch (error) {
+          case 'not-found':
+            return {
+              type: 'not-found',
+              content: `
+                <h1>Oops!</h1>
+                <p>
+                  We’re having trouble finding this information.
+                  Ensure you have the correct URL, or try refreshing the page.
+                  You may need to come back later.
+                </p>
+                <p>
+                  <a href="/" class="u-call-to-action-link">Return to Homepage</a>
+                </p>
+              `,
+            };
+          case 'unavailable':
+            return {
+              type: 'unavailable',
+              content: `
+                <h1>Oops!</h1>
+                <p>
+                  We’re having trouble finding this information.
+                  Ensure you have the correct URL, or try refreshing the page.
+                  You may need to come back later.
+                </p>
+                <p>
+                  <a href="/" class="u-call-to-action-link">Return to Homepage</a>
+                </p>
+              `,
+            };
+        }
+      });
   };
 };
