@@ -1,3 +1,4 @@
+import striptags from 'striptags';
 import { Maybe, Result } from 'true-myth';
 import Doi from '../types/doi';
 import { UserId } from '../types/user-id';
@@ -41,8 +42,8 @@ export default (
   </div>
 </article>
     `,
-      title: articleDetails.title,
-      description: articleDetails.abstract,
+      title: striptags(articleDetails.title),
+      description: striptags(articleDetails.abstract),
     }),
   );
 

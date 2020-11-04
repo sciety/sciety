@@ -31,6 +31,7 @@
     "pg": "^8.3.2",
     "rdf-dataset-indexed": "^0.4.0",
     "showdown": "^1.9.1",
+    "striptags": "^3.1.1",
     "text-clipper": "^2.0.0",
     "true-myth": "^4.0.0",
     "uuid": "^8.3.0",
