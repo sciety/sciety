@@ -9,7 +9,7 @@ import createRenderDescription, { GetEditorialCommunityDescription, RenderDescri
 import createRenderFeed, { RenderFeed } from './render-feed';
 import createRenderFollowToggle, { Follows } from './render-follow-toggle';
 import createRenderFollowers from './render-followers';
-import createRenderPage from './render-page';
+import createRenderPage, { RenderPage } from './render-page';
 import createRenderPageHeader, { GetEditorialCommunity, RenderPageHeader } from './render-page-header';
 import createRenderSummaryFeedItem, { GetActor } from '../shared-components/render-summary-feed-item';
 import createRenderSummaryFeedList from '../shared-components/render-summary-feed-list';
@@ -89,14 +89,9 @@ export interface Params {
   user: Maybe<User>;
 }
 
-type RenderPageError = {
-  type: 'not-found',
-  content: string,
-};
+type EditorialCommunityPage = (params: Params) => ReturnType<RenderPage>;
 
-type RenderPage = (params: Params) => Promise<Result<string, RenderPageError>>;
-
-export default (ports: Ports): RenderPage => {
+export default (ports: Ports): EditorialCommunityPage => {
   const renderPageHeader = buildRenderPageHeader(ports);
   const renderDescription = buildRenderDescription(ports);
   const renderFeed = buildRenderFeed(ports);
@@ -118,14 +113,6 @@ export default (ports: Ports): RenderPage => {
   return async (params) => {
     const editorialCommunityId = new EditorialCommunityId(params.id ?? '');
     const userId = params.user.map((value) => value.id);
-
-    try {
-      return Result.ok(await renderPage(editorialCommunityId, userId));
-    } catch (error: unknown) {
-      return Result.err({
-        type: 'not-found',
-        content: `Editorial community id '${editorialCommunityId.value}' not found`,
-      });
-    }
+    return renderPage(editorialCommunityId, userId);
   };
 };
