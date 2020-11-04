@@ -17,6 +17,7 @@
     "clownface": "^0.12.3",
     "cls-rtracer": "^2.2.0",
     "csv-parse": "^4.12.0",
+    "escape-goat": "^3.0.0",
     "http-errors": "^1.8.0",
     "http-status-codes": "^1.4.0",
     "jsdom": "^16.4.0",
