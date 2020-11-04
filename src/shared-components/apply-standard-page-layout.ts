@@ -38,7 +38,7 @@ const loggedOutMenuItems = (): string => `
 const isSecure = process.env.APP_ORIGIN !== undefined && process.env.APP_ORIGIN.startsWith('https:');
 
 export default (page: string, user: Maybe<User>): string => `<!doctype html>
-<html lang="en">
+<html lang="en" prefix="og: http://ogp.me/ns#">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -47,10 +47,12 @@ export default (page: string, user: Maybe<User>): string => `<!doctype html>
   </title>
   <link rel="stylesheet" href="/static/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.css">
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Sciety">
-  <meta name="twitter:description" content=" Where research is evaluated and curated by the communities you trust">
-  <meta name="twitter:image" content="https://staging.hive.review/static/images/sciety-twitter-profile.png">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@hivereview_">
+  <meta property="og:site_name" content="Sciety">
+  <meta property="og:title" content="Sciety">
+  <meta property="og:description" content="Where research is evaluated and curated by the communities you trust">
+  <meta property="og:image" content="https://staging.hive.review/static/images/sciety-twitter-profile.png">
 </head>
 <body>
   ${googleTagManagerNoScript}
