@@ -1,6 +1,6 @@
+import { htmlEscape } from 'escape-goat';
 import { Maybe } from 'true-myth';
 import { User } from '../types/user';
-import { htmlEscape } from 'escape-goat';
 
 let googleTagManager = '';
 let googleTagManagerNoScript = '';

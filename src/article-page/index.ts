@@ -34,6 +34,7 @@ type FindVersionsForArticleDoi = (doi: Doi) => Promise<ReadonlyArray<{
 }>>;
 
 interface Ports {
+  // TODO: should this be a type that is compatible (or the intersection) of the various components' ports?
   fetchArticle: FetchExternalArticle;
   fetchReview: GetReview;
   getEditorialCommunity: (editorialCommunityId: EditorialCommunityId) => Promise<Maybe<{
@@ -105,20 +106,14 @@ export default (ports: Ports): ArticlePage => {
     renderPageHeader,
     renderAbstract,
     renderFeed,
-    async () => Result.ok({
-      title: 'Article on Sciety',
-      abstract: 'Where research is evaluated and curated by the communities you trust',
-    }),
+    ports.fetchArticle,
   );
   // TODO: Consider removing flavourA now
   const renderFlavourA = createRenderPage(
     renderPageHeader,
     renderAbstract,
     renderFlavourAFeed,
-    async () => Result.ok({
-      title: 'Article on Sciety',
-      abstract: 'Where research is evaluated and curated by the communities you trust',
-    }),
+    ports.fetchArticle,
   );
   return async (params) => {
     let doi: Doi;
