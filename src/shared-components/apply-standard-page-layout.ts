@@ -39,6 +39,8 @@ const isSecure = process.env.APP_ORIGIN !== undefined && process.env.APP_ORIGIN.
 
 type Page = {
   content: string;
+  // TODO: reevaluate naming (concidentally the same as OpenGraph/Twitter) after truncation and other
+  // Twitter feedback
   title: Maybe<string>;
   description: Maybe<string>;
 };
