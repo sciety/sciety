@@ -106,6 +106,7 @@ export default (ports: Ports): ArticlePage => {
     renderAbstract,
     renderFeed,
   );
+  // TODO: Consider removing flavourA now
   const renderFlavourA = createRenderPage(
     renderPageHeader,
     renderAbstract,
