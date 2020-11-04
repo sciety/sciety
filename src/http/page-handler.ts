@@ -46,13 +46,13 @@ export default (
 
     if (typeof rendered === 'string') {
       context.response.status = OK;
-      context.response.body = applyStandardPageLayout({ content: rendered }, user);
+      context.response.body = applyStandardPageLayout({ content: rendered, title: Maybe.nothing() }, user);
     } else {
       context.response.status = rendered.map(successToStatusCode).unwrapOrElse(errorTypeToStatusCode);
       const content = rendered
         .map((page) => (typeof page === 'string' ? page : page.content))
         .unwrapOrElse((error) => error.content);
-      context.response.body = applyStandardPageLayout({ content }, user);
+      context.response.body = applyStandardPageLayout({ content, title: Maybe.just('Sciety') }, user);
     }
 
     await next();
