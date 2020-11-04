@@ -1,12 +1,12 @@
 import { URL } from 'url';
-import { Maybe, Result } from 'true-myth';
+import { Maybe } from 'true-myth';
 import createGetFollowedEditorialCommunitiesFromIds, { GetEditorialCommunity } from './get-followed-editorial-communities-from-ids';
 import createProjectFollowedEditorialCommunityIds, { GetAllEvents } from './project-followed-editorial-community-ids';
 import createRenderFollowList from './render-follow-list';
 import createRenderFollowToggle, { Follows } from './render-follow-toggle';
 import createRenderFollowedEditorialCommunity from './render-followed-editorial-community';
 import createRenderHeader, { GetUserDetails } from './render-header';
-import createRenderPage, { RenderPageError } from './render-page';
+import createRenderPage, { RenderPage } from './render-page';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { User } from '../types/user';
 import toUserId from '../types/user-id';
@@ -28,9 +28,9 @@ interface Params {
   user: Maybe<User>;
 }
 
-type RenderPage = (params: Params) => Promise<Result<string, RenderPageError>>;
+type UserPage = (params: Params) => ReturnType<RenderPage>;
 
-export default (ports: Ports): RenderPage => {
+export default (ports: Ports): UserPage => {
   const getEditorialCommunity: GetEditorialCommunity = async (editorialCommunityId) => (
     (await ports.getEditorialCommunity(editorialCommunityId)).unsafelyUnwrap()
   );

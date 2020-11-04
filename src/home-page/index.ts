@@ -6,7 +6,7 @@ import createRenderEditorialCommunities, { GetAllEditorialCommunities } from './
 import createRenderEditorialCommunity from './render-editorial-community';
 import createRenderFeed, { IsFollowingSomething } from './render-feed';
 import createRenderFollowToggle from './render-follow-toggle';
-import createRenderPage from './render-page';
+import createRenderPage, { RenderPage } from './render-page';
 import createRenderPageHeader from './render-page-header';
 import createRenderSearchForm from './render-search-form';
 import createRenderSummaryFeedItem, { GetActor } from '../shared-components/render-summary-feed-item';
@@ -33,9 +33,9 @@ interface Params {
   user: Maybe<User>,
 }
 
-type RenderPage = (params: Params) => Promise<string>;
+type HomePage = (params: Params) => ReturnType<RenderPage>;
 
-export default (ports: Ports): RenderPage => {
+export default (ports: Ports): HomePage => {
   const getActorAdapter: GetActor = async (id) => {
     const editorialCommunity = (await ports.getEditorialCommunity(id)).unsafelyUnwrap();
     return {

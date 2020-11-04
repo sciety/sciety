@@ -1,12 +1,12 @@
 import { Maybe, Result } from 'true-myth';
 import { UserId } from '../types/user-id';
 
-export type RenderPageError = {
+type RenderPageError = {
   type: 'not-found' | 'unavailable',
   content: string
 };
 
-type RenderPage = (userId: UserId, viewingUserId: Maybe<UserId>) => Promise<Result<string, RenderPageError>>;
+export type RenderPage = (userId: UserId, viewingUserId: Maybe<UserId>) => Promise<Result<string, RenderPageError>>;
 
 type Component = (userId: UserId, viewingUserId: Maybe<UserId>) => Promise<Result<string, 'not-found' | 'unavailable'>>;
 

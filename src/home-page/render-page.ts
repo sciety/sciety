@@ -1,7 +1,7 @@
 import { Maybe } from 'true-myth';
 import { UserId } from '../types/user-id';
 
-type RenderPage = (userId: Maybe<UserId>) => Promise<string>;
+export type RenderPage = (userId: Maybe<UserId>) => Promise<string>;
 
 type Component = (userId: Maybe<UserId>) => Promise<string>;
 
