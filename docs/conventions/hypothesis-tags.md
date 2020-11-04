@@ -16,18 +16,6 @@ In order to gather more information we use a set of predetermined tags. When cre
 - `scietyType:ReviewSummary`
 - `scietyType:AuthorResponse`
 
-## First Received Date
-
-`scietyFirstReceivedDate`
-
-The date that the event was first received. For example, with a PeerReview this would be the date that the review was received from the reviewer and not the date that the review was first posted online 
-
-### Examples 
-
-- `scietyFirstReceivedDate:2020-10-14T00:00:00.000Z`
-- `scietyFirstReceivedDate:2020-03-11T15:15:31.830656+00:00`
-- `scietyFirstReceivedDate:2020-10-14`
-
 ## Author
 
 `scietyAuthor`
