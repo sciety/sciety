@@ -12,6 +12,8 @@ type RenderPageError = {
   content: string,
 };
 
+type GetTitle = (doi: Doi) => Promise<Result<string, unknown>>;
+
 type Component = (doi: Doi, userId: Maybe<UserId>) => Promise<Result<string, 'not-found' | 'unavailable' | 'no-content'>>;
 export type RenderPage = (doi: Doi, userId: Maybe<UserId>) => Promise<Result<Page, RenderPageError>>;
 
@@ -36,6 +38,8 @@ export default (
     }),
   );
 
+  const getTitle: GetTitle = async () => Result.ok('Article on Sciety');
+
   return async (doi, userId) => {
     const abstractResult = renderAbstract(doi, userId);
     const pageHeaderResult = renderPageHeader(doi, userId);
@@ -43,13 +47,12 @@ export default (
       .then((feed) => (
         feed.orElse(() => Result.ok(''))
       ));
-    const titleResult = Result.ok('Article on Sciety');
-
+    const titleResult = getTitle(doi);
     return template
       .ap(await abstractResult)
       .ap(await pageHeaderResult)
       .ap(await feedResult)
-      .ap(titleResult)
+      .ap(await titleResult)
       .mapErr(() => ({
         type: 'not-found',
         content: `
