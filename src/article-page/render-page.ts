@@ -10,7 +10,7 @@ type Page = {
 };
 
 type RenderPageError = {
-  type: 'not-found',
+  type: 'not-found' | 'unavailable',
   content: string,
 };
 
@@ -19,7 +19,7 @@ type ArticleDetails = {
   abstract: string,
 };
 
-type GetArticleDetails = (doi: Doi) => Promise<Result<ArticleDetails, unknown>>;
+type GetArticleDetails = (doi: Doi) => Promise<Result<ArticleDetails, 'not-found'|'unavailable'>>;
 
 type Component = (doi: Doi, userId: Maybe<UserId>) => Promise<Result<string, 'not-found' | 'unavailable' | 'no-content'>>;
 export type RenderPage = (doi: Doi, userId: Maybe<UserId>) => Promise<Result<Page, RenderPageError>>;
@@ -30,8 +30,8 @@ export default (
   renderFeed: Component,
   getArticleDetails: GetArticleDetails,
 ): RenderPage => {
-  const template = Result.ok(
-    (abstract: string) => (pageHeader: string) => (feed: string) => (articleDetails: ArticleDetails) => ({
+  const template = (abstract: string) => (pageHeader: string) => (feed: string) => (articleDetails: ArticleDetails) => (
+    {
       content: `
 <article class="hive-grid hive-grid--article">
   ${pageHeader}
@@ -44,7 +44,7 @@ export default (
     `,
       title: striptags(articleDetails.title),
       description: striptags(articleDetails.abstract),
-    }),
+    }
   );
 
   return async (doi, userId) => {
@@ -52,10 +52,10 @@ export default (
     const pageHeaderResult = renderPageHeader(doi, userId);
     const feedResult = renderFeed(doi, userId)
       .then((feed) => (
-        feed.orElse(() => Result.ok(''))
+        feed.or(Result.ok<string, never>(''))
       ));
     const articleDetailsResult = getArticleDetails(doi);
-    return template
+    return Result.ok<typeof template, 'not-found' | 'unavailable' | 'no-content'>(template)
       .ap(await abstractResult)
       .ap(await pageHeaderResult)
       .ap(await feedResult)
