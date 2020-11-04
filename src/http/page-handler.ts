@@ -4,6 +4,10 @@ import { Maybe, Result } from 'true-myth';
 import applyStandardPageLayout from '../shared-components/apply-standard-page-layout';
 import { User } from '../types/user';
 
+type Page = {
+  content: string,
+};
+
 type RenderPageError = {
   type: 'not-found' | 'unavailable',
   content: string
@@ -15,7 +19,7 @@ type RenderPage = (params: {
   query?: string;
   flavour?: string;
   user: Maybe<User>;
-}) => Promise<string | Result<string, RenderPageError>>;
+}) => Promise<string | Result<string | Page, RenderPageError>>;
 
 const successToStatusCode = (): number => OK;
 
@@ -35,19 +39,19 @@ export default (
     };
     context.response.type = 'html';
 
-    const page = await renderPage(params);
+    const rendered = await renderPage(params);
 
     const user = Maybe.of(context.state.user);
 
-    if (typeof page === 'string') {
+    if (typeof rendered === 'string') {
       context.response.status = OK;
-      context.response.body = applyStandardPageLayout(page, user);
+      context.response.body = applyStandardPageLayout(rendered, user);
     } else {
-      context.response.status = page.map(successToStatusCode).unwrapOrElse(errorTypeToStatusCode);
-      context.response.body = applyStandardPageLayout(page.unwrapOrElse(
-        (error) => error.content,
-      ),
-      user);
+      context.response.status = rendered.map(successToStatusCode).unwrapOrElse(errorTypeToStatusCode);
+      const content = rendered
+        .map((page) => (typeof page === 'string' ? page : page.content))
+        .unwrapOrElse((error) => error.content);
+      context.response.body = applyStandardPageLayout(content, user);
     }
 
     await next();
