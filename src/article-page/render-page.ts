@@ -27,6 +27,7 @@ export default (
   renderPageHeader: Component,
   renderAbstract: Component,
   renderFeed: Component,
+  getArticleDetails: GetArticleDetails,
 ): RenderPage => {
   const template = Result.ok(
     (abstract: string) => (pageHeader: string) => (feed: string) => (articleDetails: ArticleDetails) => ({
@@ -44,11 +45,6 @@ export default (
       description: articleDetails.abstract,
     }),
   );
-
-  const getArticleDetails: GetArticleDetails = async () => Result.ok({
-    title: 'Article on Sciety',
-    abstract: 'Where research is evaluated and curated by the communities you trust',
-  });
 
   return async (doi, userId) => {
     const abstractResult = renderAbstract(doi, userId);

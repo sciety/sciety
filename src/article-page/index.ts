@@ -105,12 +105,20 @@ export default (ports: Ports): ArticlePage => {
     renderPageHeader,
     renderAbstract,
     renderFeed,
+    async () => Result.ok({
+      title: 'Article on Sciety',
+      abstract: 'Where research is evaluated and curated by the communities you trust',
+    }),
   );
   // TODO: Consider removing flavourA now
   const renderFlavourA = createRenderPage(
     renderPageHeader,
     renderAbstract,
     renderFlavourAFeed,
+    async () => Result.ok({
+      title: 'Article on Sciety',
+      abstract: 'Where research is evaluated and curated by the communities you trust',
+    }),
   );
   return async (params) => {
     let doi: Doi;
