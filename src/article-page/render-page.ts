@@ -21,13 +21,14 @@ type ArticleDetails = {
 
 type GetArticleDetails = (doi: Doi) => Promise<Result<ArticleDetails, 'not-found'|'unavailable'>>;
 
-type Component = (doi: Doi, userId: Maybe<UserId>) => Promise<Result<string, 'not-found' | 'unavailable' | 'no-content'>>;
+type Component = (doi: Doi, userId: Maybe<UserId>) => Promise<Result<string, 'not-found' | 'unavailable'>>;
+type RenderFeed = (doi: Doi, userId: Maybe<UserId>) => Promise<Result<string, 'no-content'>>;
 export type RenderPage = (doi: Doi, userId: Maybe<UserId>) => Promise<Result<Page, RenderPageError>>;
 
 export default (
   renderPageHeader: Component,
   renderAbstract: Component,
-  renderFeed: Component,
+  renderFeed: RenderFeed,
   getArticleDetails: GetArticleDetails,
 ): RenderPage => {
   const template = (abstract: string) => (pageHeader: string) => (feed: string) => (articleDetails: ArticleDetails) => (
@@ -55,7 +56,7 @@ export default (
         feed.or(Result.ok<string, never>(''))
       ));
     const articleDetailsResult = getArticleDetails(doi);
-    return Result.ok<typeof template, 'not-found' | 'unavailable' | 'no-content'>(template)
+    return Result.ok<typeof template, 'not-found' | 'unavailable'>(template)
       .ap(await abstractResult)
       .ap(await pageHeaderResult)
       .ap(await feedResult)
