@@ -44,16 +44,18 @@ export default (
 
     const user = Maybe.of(context.state.user);
 
+    let result: Result<Page, RenderPageError>;
+
     if (typeof rendered === 'string') {
-      context.response.status = OK;
-      context.response.body = applyStandardPageLayout({ content: rendered, title: Maybe.nothing() }, user);
+      result = Result.ok({ content: rendered });
     } else {
-      context.response.status = rendered.map(successToStatusCode).unwrapOrElse(errorTypeToStatusCode);
-      const content = rendered
-        .map((page) => (typeof page === 'string' ? page : page.content))
-        .unwrapOrElse((error) => error.content);
-      context.response.body = applyStandardPageLayout({ content, title: Maybe.just('Sciety') }, user);
+      result = rendered.map((page) => (typeof page === 'string' ? { content: page } : page));
     }
+
+    const page = result.unwrapOrElse((error) => error);
+
+    context.response.status = result.map(successToStatusCode).unwrapOrElse(errorTypeToStatusCode);
+    context.response.body = applyStandardPageLayout({ ...page, title: Maybe.just('Sciety') }, user);
 
     await next();
   }
