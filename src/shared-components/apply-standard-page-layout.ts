@@ -40,6 +40,7 @@ const isSecure = process.env.APP_ORIGIN !== undefined && process.env.APP_ORIGIN.
 type Page = {
   content: string;
   title: Maybe<string>;
+  description: Maybe<string>;
 };
 
 export default (page: Page, user: Maybe<User>): string => `<!doctype html>
@@ -56,7 +57,7 @@ export default (page: Page, user: Maybe<User>): string => `<!doctype html>
   <meta name="twitter:site" content="@hivereview_">
   <meta property="og:site_name" content="Sciety">
   <meta property="og:title" content="${page.title.unwrapOr('Sciety')}">
-  <meta property="og:description" content="Where research is evaluated and curated by the communities you trust">
+  <meta property="og:description" content="${page.description.unwrapOr('Where research is evaluated and curated by the communities you trust')}">
   <meta property="og:image" content="${process.env.APP_ORIGIN ?? ''}/static/images/sciety-twitter-profile.png">
 </head>
 <body>

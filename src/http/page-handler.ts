@@ -56,7 +56,11 @@ export default (
     const page = result.unwrapOrElse((error) => error);
 
     context.response.status = result.map(successToStatusCode).unwrapOrElse(errorTypeToStatusCode);
-    context.response.body = applyStandardPageLayout({ ...page, title: Maybe.of(page.title) }, user);
+    context.response.body = applyStandardPageLayout({
+      ...page,
+      title: Maybe.of(page.title),
+      description: Maybe.nothing(),
+    }, user);
 
     await next();
   }
