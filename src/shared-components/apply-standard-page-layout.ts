@@ -37,7 +37,11 @@ const loggedOutMenuItems = (): string => `
 
 const isSecure = process.env.APP_ORIGIN !== undefined && process.env.APP_ORIGIN.startsWith('https:');
 
-export default (page: string, user: Maybe<User>): string => `<!doctype html>
+type Page = {
+  content: string;
+};
+
+export default (page: Page, user: Maybe<User>): string => `<!doctype html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
 <head>
   <meta charset="utf-8">
@@ -83,7 +87,7 @@ export default (page: string, user: Maybe<User>): string => `<!doctype html>
   </header>
 
   <main>
-    ${page}
+    ${page.content}
   </main>
 
   <footer class="site-footer">

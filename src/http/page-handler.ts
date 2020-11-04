@@ -13,6 +13,7 @@ type RenderPageError = {
   content: string
 };
 
+// TODO: deprecate and remove strings from the return type in favor of Page
 type RenderPage = (params: {
   doi?: string;
   id?: string;
@@ -45,13 +46,13 @@ export default (
 
     if (typeof rendered === 'string') {
       context.response.status = OK;
-      context.response.body = applyStandardPageLayout(rendered, user);
+      context.response.body = applyStandardPageLayout({ content: rendered }, user);
     } else {
       context.response.status = rendered.map(successToStatusCode).unwrapOrElse(errorTypeToStatusCode);
       const content = rendered
         .map((page) => (typeof page === 'string' ? page : page.content))
         .unwrapOrElse((error) => error.content);
-      context.response.body = applyStandardPageLayout(content, user);
+      context.response.body = applyStandardPageLayout({ content }, user);
     }
 
     await next();
