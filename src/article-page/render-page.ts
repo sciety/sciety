@@ -13,7 +13,12 @@ type RenderPageError = {
   content: string,
 };
 
-type GetTitle = (doi: Doi) => Promise<Result<string, unknown>>;
+type ArticleDetails = {
+  title: string,
+  abstract: string,
+};
+
+type GetArticleDetails = (doi: Doi) => Promise<Result<ArticleDetails, unknown>>;
 
 type Component = (doi: Doi, userId: Maybe<UserId>) => Promise<Result<string, 'not-found' | 'unavailable' | 'no-content'>>;
 export type RenderPage = (doi: Doi, userId: Maybe<UserId>) => Promise<Result<Page, RenderPageError>>;
@@ -24,7 +29,7 @@ export default (
   renderFeed: Component,
 ): RenderPage => {
   const template = Result.ok(
-    (abstract: string) => (pageHeader: string) => (feed: string) => (title: string) => ({
+    (abstract: string) => (pageHeader: string) => (feed: string) => (articleDetails: ArticleDetails) => ({
       content: `
 <article class="hive-grid hive-grid--article">
   ${pageHeader}
@@ -35,12 +40,15 @@ export default (
   </div>
 </article>
     `,
-      title,
-      description: 'Where research is evaluated and curated by the communities you trust',
+      title: articleDetails.title,
+      description: articleDetails.abstract,
     }),
   );
 
-  const getTitle: GetTitle = async () => Result.ok('Article on Sciety');
+  const getArticleDetails: GetArticleDetails = async () => Result.ok({
+    title: 'Article on Sciety',
+    abstract: 'Where research is evaluated and curated by the communities you trust',
+  });
 
   return async (doi, userId) => {
     const abstractResult = renderAbstract(doi, userId);
@@ -49,12 +57,12 @@ export default (
       .then((feed) => (
         feed.orElse(() => Result.ok(''))
       ));
-    const titleResult = getTitle(doi);
+    const articleDetailsResult = getArticleDetails(doi);
     return template
       .ap(await abstractResult)
       .ap(await pageHeaderResult)
       .ap(await feedResult)
-      .ap(await titleResult)
+      .ap(await articleDetailsResult)
       .mapErr(() => ({
         type: 'not-found',
         content: `
