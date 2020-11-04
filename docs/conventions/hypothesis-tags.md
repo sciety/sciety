@@ -5,7 +5,7 @@ In order to gather more information we use a set of predetermined tags. When cre
 ## Type
 `scietyType` 
 
-### Types of event
+### Current types
   - `PeerReview` - a review of an article by a member or members of the community
   - `ReviewSummary` - a summary of a number of reviews
   - `AuthorResponse` - a response from the paper's author(s)
