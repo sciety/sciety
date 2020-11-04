@@ -64,3 +64,7 @@ PCI Evol Biol does not guarantee the evaluation or recommendation of all submitt
 To contact the Managing Board please send a message to [contact@evolbiol.peercommunityin.org](mailto:contact@evolbiol.peercommunityin.org)
 
 [https://evolbiol.peercommunityin.org/about/about](https://evolbiol.peercommunityin.org/about/about)
+
+## Content Licence
+
+Authors of comments, reviews and recommendations retain copyright© under [CC BY-ND](https://creativecommons.org/licenses/by-nd/4.0/).
