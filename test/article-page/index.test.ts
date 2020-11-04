@@ -11,7 +11,7 @@ describe('create render page', (): void => {
 
       const page = (await renderPage(params)).unsafelyUnwrap();
 
-      expect(page).toStrictEqual(expect.stringContaining('10.1101/833392'));
+      expect(page.content).toStrictEqual(expect.stringContaining('10.1101/833392'));
     });
   });
 
