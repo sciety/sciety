@@ -5,6 +5,7 @@ import { UserId } from '../types/user-id';
 type Page = {
   content: string,
   title: string,
+  description: string,
 };
 
 type RenderPageError = {
@@ -35,6 +36,7 @@ export default (
 </article>
     `,
       title,
+      description: 'Where research is evaluated and curated by the communities you trust',
     }),
   );
 

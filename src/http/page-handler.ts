@@ -7,6 +7,7 @@ import { User } from '../types/user';
 type Page = {
   content: string,
   title?: string,
+  description?: string,
 };
 
 type RenderPageError = {
@@ -59,7 +60,7 @@ export default (
     context.response.body = applyStandardPageLayout({
       ...page,
       title: Maybe.of(page.title),
-      description: Maybe.nothing(),
+      description: Maybe.of(page.description),
     }, user);
 
     await next();
