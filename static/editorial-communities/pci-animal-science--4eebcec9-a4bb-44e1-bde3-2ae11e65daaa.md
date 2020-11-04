@@ -62,3 +62,7 @@ PCI Animal Science does not guarantee the evaluation or recommendation of all su
 To contact the Managing Board please send a message to [managing-board@animsci.peercommunityin.org](mailto:managing-board@animsci.peercommunityin.org)
 
 [https://animsci.peercommunityin.org/about/about](https://animsci.peercommunityin.org/about/about)
+
+## Content License
+
+Authors of comments, reviews and recommendations retain copyright© under [CC BY-ND](https://creativecommons.org/licenses/by-nd/4.0/).

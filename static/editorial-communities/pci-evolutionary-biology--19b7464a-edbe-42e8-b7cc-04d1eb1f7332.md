@@ -65,6 +65,6 @@ To contact the Managing Board please send a message to [contact@evolbiol.peercom
 
 [https://evolbiol.peercommunityin.org/about/about](https://evolbiol.peercommunityin.org/about/about)
 
-## Content Licence
+## Content License
 
 Authors of comments, reviews and recommendations retain copyright© under [CC BY-ND](https://creativecommons.org/licenses/by-nd/4.0/).

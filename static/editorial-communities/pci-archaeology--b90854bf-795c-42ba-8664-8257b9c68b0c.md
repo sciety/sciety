@@ -45,3 +45,7 @@ PCI Archaeology welcomes anonymous submissions (see [details](https://archaeo.pe
 To contact the Managing Board please send a message to [managing-board@archaeo.peercommunityin.org](mailto:managing-board@archaeo.peercommunityin.org)
 
 [https://archaeo.peercommunityin.org/about/about](https://archaeo.peercommunityin.org/about/about)
+
+## Content License
+
+Authors of comments, reviews and recommendations retain copyright© under [CC BY-ND](https://creativecommons.org/licenses/by-nd/4.0/).

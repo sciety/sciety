@@ -45,3 +45,7 @@ PCI Zoology does not guarantee the evaluation or recommendation of all submitted
 *   Bertanne Visser (UCLouvain, Belgium)
 
 [https://zool.peercommunityin.org/about/about](https://zool.peercommunityin.org/about/about)
+
+## Content License
+
+Authors of comments, reviews and recommendations retain copyright© under [CC BY-ND](https://creativecommons.org/licenses/by-nd/4.0/).

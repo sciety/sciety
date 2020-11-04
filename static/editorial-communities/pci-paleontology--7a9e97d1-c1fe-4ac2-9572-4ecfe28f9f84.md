@@ -47,3 +47,7 @@ PCI Paleo also welcomes anonymous submissions ([see details](https://paleo.peerc
 To contact the Managing Board please send a mail to [contact@paleo.peercommunityin.org](mailto:contact@paleo.peercommunityin.org)
 
 [https://paleo.peercommunityin.org/about/about](https://paleo.peercommunityin.org/about/about)
+
+## Content License
+
+Authors of comments, reviews and recommendations retain copyright© under [CC BY-ND](https://creativecommons.org/licenses/by-nd/4.0/).
