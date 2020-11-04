@@ -52,7 +52,7 @@ export default (page: string, user: Maybe<User>): string => `<!doctype html>
   <meta property="og:site_name" content="Sciety">
   <meta property="og:title" content="Sciety">
   <meta property="og:description" content="Where research is evaluated and curated by the communities you trust">
-  <meta property="og:image" content="https://staging.hive.review/static/images/sciety-twitter-profile.png">
+  <meta property="og:image" content="${process.env.APP_ORIGIN ?? ''}/static/images/sciety-twitter-profile.png">
 </head>
 <body>
   ${googleTagManagerNoScript}
