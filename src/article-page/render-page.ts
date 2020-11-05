@@ -5,8 +5,10 @@ import { UserId } from '../types/user-id';
 
 type Page = {
   content: string,
-  title: string,
-  description: string,
+  openGraph: {
+    title: string,
+    description: string,
+  }
 };
 
 type RenderPageError = {
@@ -43,8 +45,10 @@ export default (
   </div>
 </article>
     `,
-      title: striptags(articleDetails.title),
-      description: striptags(articleDetails.abstract),
+      openGraph: {
+        title: striptags(articleDetails.title),
+        description: striptags(articleDetails.abstract),
+      },
     }
   );
 

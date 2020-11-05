@@ -40,10 +40,10 @@ const isSecure = process.env.APP_ORIGIN !== undefined && process.env.APP_ORIGIN.
 
 type Page = {
   content: string;
-  // TODO: reevaluate naming (concidentally the same as OpenGraph/Twitter) after truncation and other
-  // Twitter feedback
-  title: Maybe<string>;
-  description: Maybe<string>;
+  openGraph?: {
+    title: string;
+    description: string;
+  }
 };
 
 export default (page: Page, user: Maybe<User>): string => `<!doctype html>
@@ -59,8 +59,8 @@ export default (page: Page, user: Maybe<User>): string => `<!doctype html>
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@hivereview_">
   <meta property="og:site_name" content="Sciety">
-  <meta property="og:title" content="${htmlEscape(page.title.unwrapOr('Sciety'))}">
-  <meta property="og:description" content="${htmlEscape(page.description.unwrapOr('Where research is evaluated and curated by the communities you trust'))}">
+  <meta property="og:title" content="${htmlEscape(page.openGraph ? page.openGraph.title : 'Sciety')}">
+  <meta property="og:description" content="${htmlEscape(page.openGraph ? page.openGraph.description : 'Where research is evaluated and curated by the communities you trust')}">
   <meta property="og:image" content="${process.env.APP_ORIGIN ?? ''}/static/images/sciety-twitter-profile.png">
 </head>
 <body>

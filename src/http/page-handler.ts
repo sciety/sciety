@@ -6,8 +6,10 @@ import { User } from '../types/user';
 
 type Page = {
   content: string,
-  title?: string,
-  description?: string,
+  openGraph?: {
+    title: string;
+    description: string;
+  }
 };
 
 type RenderPageError = {
@@ -50,11 +52,7 @@ export default (
     context.response.status = rendered.map(successToStatusCode).unwrapOrElse(errorTypeToStatusCode);
 
     const page = rendered.unwrapOrElse((error) => error);
-    context.response.body = applyStandardPageLayout({
-      ...page,
-      title: Maybe.of(page.title),
-      description: Maybe.of(page.description),
-    }, user);
+    context.response.body = applyStandardPageLayout(page, user);
 
     await next();
   }
