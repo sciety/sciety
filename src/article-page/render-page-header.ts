@@ -6,13 +6,13 @@ interface ArticleDetails {
   authors: Array<string>;
 }
 
-export type GetArticleDetails = (doi: Doi) => Promise<Result<ArticleDetails, 'not-found'|'unavailable'>>;
+export type GetArticleDetails<E> = (doi: Doi) => Promise<Result<ArticleDetails, E>>;
 
-export type RenderPageHeader = (doi: Doi) => Promise<Result<string, 'not-found'|'unavailable'>>;
+export type RenderPageHeader<E> = (doi: Doi) => Promise<Result<string, E>>;
 
-export default (
-  getArticleDetails: GetArticleDetails,
-): RenderPageHeader => async (doi) => {
+export default <E>(
+  getArticleDetails: GetArticleDetails<E>,
+): RenderPageHeader<E> => async (doi) => {
   const articleDetails = await getArticleDetails(doi);
 
   return articleDetails.map((details) => `

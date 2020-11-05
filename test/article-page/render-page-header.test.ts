@@ -5,14 +5,14 @@ import createRenderPageHeader, {
 } from '../../src/article-page/render-page-header';
 import Doi from '../../src/types/doi';
 
-const getArticleDetails: GetArticleDetails = async (doi) => (Result.ok({
+const getArticleDetails: GetArticleDetails<never> = async (doi) => (Result.ok({
   title: `Lorem ipsum ${doi.value}`,
   authors: ['Gary', 'Uncle Wiggly'],
 }));
 
 describe('render-page-header component', (): void => {
-  let renderPageHeader: RenderPageHeader;
-  let rendered: Result<string, 'not-found'|'unavailable'>;
+  let renderPageHeader: RenderPageHeader<never>;
+  let rendered: Result<string, never>;
 
   beforeEach(async () => {
     renderPageHeader = createRenderPageHeader(getArticleDetails);
