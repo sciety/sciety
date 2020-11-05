@@ -3,7 +3,7 @@ import Doi from '../types/doi';
 
 export type GetArticleAbstract = (doi: Doi) => Promise<Result<string, 'not-found' | 'unavailable'>>;
 
-export type RenderArticleAbstract = (doi: Doi) => Promise<Result<string, 'not-found' | 'unavailable'>>;
+type RenderArticleAbstract = (doi: Doi) => Promise<Result<string, 'not-found' | 'unavailable'>>;
 
 export default (getArticleAbstract: GetArticleAbstract): RenderArticleAbstract => (
   async (doi) => (
