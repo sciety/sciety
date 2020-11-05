@@ -15,14 +15,14 @@ type RenderPageError = {
   content: string
 };
 
-// TODO: deprecate and remove strings from the return type in favor of Page
+// TODO: find better way of handling params of different pages
 type RenderPage = (params: {
   doi?: string;
   id?: string;
   query?: string;
   flavour?: string;
   user: Maybe<User>;
-}) => Promise<Result<string | Page, RenderPageError>>;
+}) => Promise<Result<Page, RenderPageError>>;
 
 const successToStatusCode = (): number => OK;
 
@@ -42,15 +42,14 @@ export default (
     };
     context.response.type = 'html';
 
-    const rendered = await renderPage(params);
-
     const user = Maybe.of(context.state.user);
 
-    const result = rendered.map((page) => (typeof page === 'string' ? { content: page } : page));
+    // TODO: find more legible way of expressing this logic
+    const rendered = await renderPage(params);
 
-    const page = result.unwrapOrElse((error) => error);
+    context.response.status = rendered.map(successToStatusCode).unwrapOrElse(errorTypeToStatusCode);
 
-    context.response.status = result.map(successToStatusCode).unwrapOrElse(errorTypeToStatusCode);
+    const page = rendered.unwrapOrElse((error) => error);
     context.response.body = applyStandardPageLayout({
       ...page,
       title: Maybe.of(page.title),

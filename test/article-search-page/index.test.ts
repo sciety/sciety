@@ -10,6 +10,6 @@ describe('create render page', (): void => {
     const page = await renderPage(params);
 
     expect(page.isOk()).toBe(true);
-    expect(page.unsafelyUnwrap()).toStrictEqual(expect.stringContaining('Search results'));
+    expect(page.unsafelyUnwrap().content).toStrictEqual(expect.stringContaining('Search results'));
   });
 });

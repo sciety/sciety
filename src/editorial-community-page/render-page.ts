@@ -12,7 +12,7 @@ type RenderPageError = {
 export type RenderPage = (
   editorialCommunityId: EditorialCommunityId,
   userId: Maybe<UserId>
-) => Promise<Result<string, RenderPageError>>;
+) => Promise<Result<{content: string}, RenderPageError>>;
 
 export default (
   renderPageHeader: Component,
@@ -22,19 +22,22 @@ export default (
 ): RenderPage => (
   async (editorialCommunityId, userId) => {
     try {
-      return Result.ok(`
-        <div class="hive-grid hive-grid--editorial-community u-full-width">
-          ${await renderPageHeader(editorialCommunityId, userId)}
-  
-          <div class="editorial-community-page-description">
-            ${await renderDescription(editorialCommunityId, userId)}
+      return Result.ok({
+        content: `
+          <div class="hive-grid hive-grid--editorial-community u-full-width">
+            ${await renderPageHeader(editorialCommunityId, userId)}
+    
+            <div class="editorial-community-page-description">
+              ${await renderDescription(editorialCommunityId, userId)}
+            </div>
+            <div class="editorial-community-page-side-bar">
+              ${await renderFollowers(editorialCommunityId, userId)}
+              ${await renderFeed(editorialCommunityId, userId)}
+            </div>
           </div>
-          <div class="editorial-community-page-side-bar">
-            ${await renderFollowers(editorialCommunityId, userId)}
-            ${await renderFeed(editorialCommunityId, userId)}
-          </div>
-        </div>
-      `);
+        `,
+      });
+    // TODO: push Results further down
     } catch (error: unknown) {
       return Result.err({
         type: 'not-found',

@@ -6,18 +6,25 @@ type RenderPageError = {
   content: string
 };
 
-export type RenderPage = (userId: UserId, viewingUserId: Maybe<UserId>) => Promise<Result<string, RenderPageError>>;
+export type RenderPage = (
+  userId: UserId,
+  viewingUserId: Maybe<UserId>,
+) => Promise<Result<{content: string}, RenderPageError>>;
 
 type Component = (userId: UserId, viewingUserId: Maybe<UserId>) => Promise<Result<string, 'not-found' | 'unavailable'>>;
 
-const template = (header: string) => (followList: string) => `
-  <div class="hive-grid hive-grid--user">
-    ${header}    
-    <div class="user-page-contents">
-      ${followList}
-    </div>    
-  </div>
-`;
+const template = (header: string) => (followList: string) => (
+  {
+    content: `
+      <div class="hive-grid hive-grid--user">
+        ${header}
+        <div class="user-page-contents">
+          ${followList}
+        </div>
+      </div>
+    `,
+  }
+);
 
 export default (
   renderHeader: Component,

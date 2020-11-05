@@ -1,12 +1,12 @@
 import { Result } from 'true-myth';
 import { RenderSearchResults } from './render-search-results';
 
-export type RenderPage = (query: string) => Promise<Result<string, never>>;
+export type RenderPage = (query: string) => Promise<Result<{content: string}, never>>;
 
 export default (
   renderSearchResults: RenderSearchResults,
-): RenderPage => async (query) => Result.ok(
-  `
+): RenderPage => async (query) => Result.ok({
+  content: `
     <header class="page-header">
       <h1>Search results</h1>
     </header>
@@ -15,4 +15,4 @@ export default (
       ${await renderSearchResults(query)}
     </section>
   `,
-);
+});

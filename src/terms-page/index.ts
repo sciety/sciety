@@ -1,8 +1,9 @@
 import { Result } from 'true-myth';
 
-type RenderPage = () => Promise<Result<string, never>>;
+type RenderPage = () => Promise<Result<{content: string}, never>>;
 
-export default (): RenderPage => async () => Result.ok(`
+export default (): RenderPage => async () => Result.ok({
+  content: `
     <header class="page-header">
       <h1>Terms and conditions</h1>
     </header>
@@ -21,4 +22,5 @@ export default (): RenderPage => async () => Result.ok(`
       Evaluation content is created by the Editorial Community named alongside the evaluation content
       and is not owned by eLife or its licensors, and is subject to the licence terms shown on the Editorial Community's page.
     </p>
-  `);
+  `,
+});

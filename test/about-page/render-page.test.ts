@@ -7,6 +7,6 @@ describe('render-about-page middleware', (): void => {
     const rendered = await renderPage('anyfile.md');
 
     expect(rendered.isOk()).toBe(true);
-    expect(rendered.unsafelyUnwrap()).toStrictEqual(expect.stringContaining(html));
+    expect(rendered.unsafelyUnwrap().content).toStrictEqual(expect.stringContaining(html));
   });
 });
