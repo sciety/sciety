@@ -10,7 +10,7 @@ import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract 
 import createRenderArticleVersionFeedItem from './render-article-version-feed-item';
 import createRenderFeed from './render-feed';
 import createRenderPage, { RenderPage } from './render-page';
-import createRenderPageHeader, { RenderPageHeader } from './render-page-header';
+import createRenderPageHeader from './render-page-header';
 import createRenderReviewFeedItem from './render-review-feed-item';
 import createRenderReviewResponses from './render-review-responses';
 import { Logger } from '../infrastructure/logger';
@@ -46,10 +46,6 @@ interface Ports {
   getAllEvents: GetEventForUserReviewResponse & GetEventForReviewResponseCounts;
 }
 
-const buildRenderPageHeader = (ports: Ports): RenderPageHeader => createRenderPageHeader(
-  ports.fetchArticle,
-);
-
 const buildRenderAbstract = (fetchAbstract: FetchExternalArticle): RenderArticleAbstract => {
   const abstractAdapter: GetArticleAbstract = async (articleDoi) => {
     const fetchedArticle = await fetchAbstract(articleDoi);
@@ -67,7 +63,7 @@ export interface Params {
 type ArticlePage = (params: Params) => ReturnType<RenderPage>;
 
 export default (ports: Ports): ArticlePage => {
-  const renderPageHeader = buildRenderPageHeader(ports);
+  const renderPageHeader = createRenderPageHeader(ports.fetchArticle);
   const renderAbstract = buildRenderAbstract(ports.fetchArticle);
   const getEditorialCommunity: GetEditorialCommunity = async (editorialCommunityId) => (
     (await ports.getEditorialCommunity(editorialCommunityId)).unsafelyUnwrap()
