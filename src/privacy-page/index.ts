@@ -1,6 +1,8 @@
-type RenderPage = () => Promise<string>;
+import { Result } from 'true-myth';
 
-export default (): RenderPage => async () => `
+type RenderPage = () => Promise<Result<string, never>>;
+
+export default (): RenderPage => async () => Result.ok(`
     <header class="page-header">
       <h1>Privacy notice</h1>
     </header>
@@ -36,4 +38,4 @@ export default (): RenderPage => async () => `
       Although most changes are likely to be minor, eLife may change its Privacy Notice from time to time, and at our sole discretion. We encourage visitors to check this page frequently for any changes to its Privacy Notice. First published October 19, 2020.
     </p>
 
-  `;
+  `);

@@ -7,6 +7,9 @@ describe('create render page', (): void => {
     const renderPage = buildRenderPage(adapters);
     const params = { query: '10.1101/833392' };
 
-    expect(await renderPage(params)).toStrictEqual(expect.stringContaining('Search results'));
+    const page = await renderPage(params);
+
+    expect(page.isOk()).toBe(true);
+    expect(page.unsafelyUnwrap()).toStrictEqual(expect.stringContaining('Search results'));
   });
 });

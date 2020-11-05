@@ -1,7 +1,7 @@
-import { Maybe } from 'true-myth';
+import { Maybe, Result } from 'true-myth';
 import { UserId } from '../types/user-id';
 
-export type RenderPage = (userId: Maybe<UserId>) => Promise<string>;
+export type RenderPage = (userId: Maybe<UserId>) => Promise<Result<string, never>>;
 
 type Component = (userId: Maybe<UserId>) => Promise<string>;
 
@@ -10,7 +10,7 @@ export default (
   renderEditorialCommunities: Component,
   renderSearchForm: Component,
   renderFeed: Component,
-): RenderPage => async (userId) => `
+): RenderPage => async (userId) => Result.ok(`
       <div class="hive-grid hive-grid--home u-full-width">
         ${await renderPageHeader(userId)}
 
@@ -24,4 +24,4 @@ export default (
         </div>
 
       </div>
-    `;
+    `);

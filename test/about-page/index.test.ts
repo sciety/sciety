@@ -7,6 +7,7 @@ describe('create render page', (): void => {
     const renderPage = buildRenderPage({ fetchStaticFile });
     const rendered = await renderPage();
 
-    expect(rendered).toStrictEqual(expect.stringContaining('<h1>Contents of about.md</h1>'));
+    expect(rendered.isOk()).toBe(true);
+    expect(rendered.unsafelyUnwrap()).toStrictEqual(expect.stringContaining('<h1>Contents of about.md</h1>'));
   });
 });

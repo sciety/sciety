@@ -1,4 +1,4 @@
-import createRenderPage from './render-page';
+import createRenderPage, { RenderPage } from './render-page';
 import createRenderSearchResult, { GetReviewCount } from './render-search-result';
 import createRenderSearchResults, { FindArticles } from './render-search-results';
 import Doi from '../types/doi';
@@ -19,9 +19,9 @@ interface Params {
   query?: string;
 }
 
-type RenderPage = (params: Params) => Promise<string>;
+type ArticleSearchPage = (params: Params) => ReturnType<RenderPage>;
 
-export default (ports: Ports): RenderPage => {
+export default (ports: Ports): ArticleSearchPage => {
   const getReviewCount: GetReviewCount = async (doi) => (
     (await ports.findReviewsForArticleDoi(doi)).length
   );

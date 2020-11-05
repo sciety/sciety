@@ -22,7 +22,7 @@ type RenderPage = (params: {
   query?: string;
   flavour?: string;
   user: Maybe<User>;
-}) => Promise<string | Result<string | Page, RenderPageError>>;
+}) => Promise<Result<string | Page, RenderPageError>>;
 
 const successToStatusCode = (): number => OK;
 
@@ -46,13 +46,7 @@ export default (
 
     const user = Maybe.of(context.state.user);
 
-    let result: Result<Page, RenderPageError>;
-
-    if (typeof rendered === 'string') {
-      result = Result.ok({ content: rendered });
-    } else {
-      result = rendered.map((page) => (typeof page === 'string' ? { content: page } : page));
-    }
+    const result = rendered.map((page) => (typeof page === 'string' ? { content: page } : page));
 
     const page = result.unwrapOrElse((error) => error);
 
