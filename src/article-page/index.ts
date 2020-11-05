@@ -9,7 +9,6 @@ import createProjectUserReviewResponse, { GetEvents as GetEventForUserReviewResp
 import createRenderArticleAbstract, { GetArticleAbstract, RenderArticleAbstract } from './render-article-abstract';
 import createRenderArticleVersionFeedItem from './render-article-version-feed-item';
 import createRenderFeed from './render-feed';
-import createRenderFlavourAFeed from './render-flavour-a-feed';
 import createRenderPage, { RenderPage } from './render-page';
 import createRenderPageHeader, { RenderPageHeader } from './render-page-header';
 import createRenderReviewFeedItem from './render-review-feed-item';
@@ -101,18 +100,10 @@ export default (ports: Ports): ArticlePage => {
     ),
     createRenderArticleVersionFeedItem(),
   );
-  const renderFlavourAFeed = createRenderFlavourAFeed();
   const renderPage = createRenderPage(
     renderPageHeader,
     renderAbstract,
     renderFeed,
-    ports.fetchArticle,
-  );
-  // TODO: Consider removing flavourA now
-  const renderFlavourA = createRenderPage(
-    renderPageHeader,
-    renderAbstract,
-    renderFlavourAFeed,
     ports.fetchArticle,
   );
   return async (params) => {
@@ -126,9 +117,6 @@ export default (ports: Ports): ArticlePage => {
       });
     }
     const userId = params.user.map((user) => user.id);
-    if (doi.value === '10.1101/646810' && params.flavour === 'a') {
-      return renderFlavourA(doi, userId);
-    }
     return renderPage(doi, userId);
   };
 };
