@@ -9,14 +9,13 @@ import createProjectUserReviewResponse, { GetEvents as GetEventForUserReviewResp
 import createRenderArticleAbstract from './render-article-abstract';
 import createRenderArticleVersionFeedItem from './render-article-version-feed-item';
 import createRenderFeed from './render-feed';
-import createRenderPage, { RenderPage } from './render-page';
-import createRenderPageHeader from './render-page-header';
+import createRenderPage, { GetArticleDetails as GetArticleDetailsForPage, RenderPage } from './render-page';
+import createRenderPageHeader, { GetArticleDetails as GetArticleDetailsForHeader } from './render-page-header';
 import createRenderReviewFeedItem from './render-review-feed-item';
 import createRenderReviewResponses from './render-review-responses';
 import { Logger } from '../infrastructure/logger';
 import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
-import { FetchExternalArticle } from '../types/fetch-external-article';
 import { ReviewId } from '../types/review-id';
 import { User } from '../types/user';
 
@@ -32,9 +31,11 @@ type FindVersionsForArticleDoi = (doi: Doi) => Promise<ReadonlyArray<{
   version: number;
 }>>;
 
+type GetArticleDetailsForAbstract = (doi: Doi) => Promise<Result<{ abstract: string }, 'not-found'|'unavailable'>>;
+
 interface Ports {
   // TODO: should this be a type that is compatible (or the intersection) of the various components' ports?
-  fetchArticle: FetchExternalArticle;
+  fetchArticle: GetArticleDetailsForPage & GetArticleDetailsForHeader & GetArticleDetailsForAbstract;
   fetchReview: GetReview;
   getEditorialCommunity: (editorialCommunityId: EditorialCommunityId) => Promise<Maybe<{
     name: string;

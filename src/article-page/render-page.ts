@@ -19,7 +19,7 @@ type ArticleDetails = {
   abstract: string,
 };
 
-type GetArticleDetails = (doi: Doi) => Promise<Result<ArticleDetails, 'not-found'|'unavailable'>>;
+export type GetArticleDetails = (doi: Doi) => Promise<Result<ArticleDetails, 'not-found'|'unavailable'>>;
 
 type Component = (doi: Doi, userId: Maybe<UserId>) => Promise<Result<string, 'not-found' | 'unavailable'>>;
 type RenderFeed = (doi: Doi, userId: Maybe<UserId>) => Promise<Result<string, 'no-content'>>;
