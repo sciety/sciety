@@ -49,7 +49,7 @@ interface Ports {
 const buildRenderAbstract = (fetchAbstract: FetchExternalArticle): RenderArticleAbstract => {
   const abstractAdapter: GetArticleAbstract = async (articleDoi) => {
     const fetchedArticle = await fetchAbstract(articleDoi);
-    return fetchedArticle.map((article) => ({ content: article.abstract }));
+    return fetchedArticle.map((article) => article.abstract);
   };
   return createRenderArticleAbstract(abstractAdapter);
 };

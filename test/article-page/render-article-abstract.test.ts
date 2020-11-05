@@ -8,7 +8,7 @@ describe('render-article-abstract component', (): void => {
   describe('when the article is available', () => {
     it('renders the abstract for an article', async (): Promise<void> => {
       const getArticleAbstract: GetArticleAbstract = async () => (
-        Result.ok({ content: `Article ${doi.value} abstract content` })
+        Result.ok(`Article ${doi.value} abstract content`)
       );
 
       const renderArticleAbstract = createRenderArticleAbstract(getArticleAbstract);
