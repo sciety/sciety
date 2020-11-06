@@ -56,7 +56,7 @@ const createInfrastructure = async (): Promise<Adapters> => {
     const response = await axios.get<Json>(uri);
     return response.data;
   };
-  const getXml = createGetXml('TheHive (http://hive.review; mailto:team@hive.review)');
+  const getXml = createGetXml('Sciety (https://sciety.org; mailto:team@sciety.org)');
   const fetchDataset = createFetchDataset(logger);
   const fetchDataciteReview = createFetchDataciteReview(fetchDataset, logger);
   const fetchHypothesisAnnotation = createFetchHypothesisAnnotation(getJson, logger);
