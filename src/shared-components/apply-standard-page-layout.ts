@@ -96,7 +96,7 @@ export default (page: Page, user: Maybe<User>): string => `<!doctype html>
   </main>
 
   <footer class="site-footer">
-    <p>Sciety is operated by a team based within eLife Sciences Publications Limited. It is steered by all of its communities, readers and authors.</p>
+    <p class="site-footer__strapline">Sciety is operated by a team based within eLife Sciences Publications Limited. It is steered by all of its communities, readers and authors.</p>
 
     <div class="site-footer__container">
       <ul class="site-footer__links_list" role="list">

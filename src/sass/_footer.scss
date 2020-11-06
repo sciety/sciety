@@ -1,4 +1,15 @@
 @use 'baseline';
+@use 'settings';
+
+.site-footer {
+  font-family: settings.$font-secondary;
+}
+
+.site-footer__strapline {
+  font-family: settings.$font-secondary;
+  text-align: center;
+  font-weight: bold;
+}
 
 .site-footer__container {
   @media screen and (min-width: 48.75em) {
