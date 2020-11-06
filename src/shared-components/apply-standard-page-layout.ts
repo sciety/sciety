@@ -57,7 +57,7 @@ export default (page: Page, user: Maybe<User>): string => `<!doctype html>
   <link rel="stylesheet" href="/static/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.css">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:site" content="@hivereview_">
+  <meta name="twitter:site" content="@scietyHQ">
   <meta property="og:site_name" content="Sciety">
   <meta property="og:title" content="${htmlEscape(page.openGraph ? page.openGraph.title : 'Sciety')}">
   <meta property="og:description" content="${htmlEscape(page.openGraph ? page.openGraph.description : 'Where research is evaluated and curated by the communities you trust')}">
