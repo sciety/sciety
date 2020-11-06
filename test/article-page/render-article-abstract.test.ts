@@ -7,7 +7,7 @@ const doi = new Doi('10.1101/815689');
 describe('render-article-abstract component', (): void => {
   describe('when the article is available', () => {
     it('renders the abstract for an article', async (): Promise<void> => {
-      const getArticleAbstract: GetArticleAbstract = async () => (
+      const getArticleAbstract: GetArticleAbstract<never> = async () => (
         Result.ok(`Article ${doi.value} abstract content`)
       );
 
@@ -20,15 +20,15 @@ describe('render-article-abstract component', (): void => {
   });
 
   describe('when the article is unavailable', () => {
-    it('throws an error', async (): Promise<void> => {
-      const getArticleAbstract: GetArticleAbstract = async () => (
-        Result.err('not-found')
+    it('passes the error through unchanged', async (): Promise<void> => {
+      const getArticleAbstract: GetArticleAbstract<'any-error'> = async () => (
+        Result.err('any-error')
       );
 
       const renderArticleAbstract = createRenderArticleAbstract(getArticleAbstract);
       const error = (await renderArticleAbstract(doi)).unsafelyUnwrapErr();
 
-      expect(error).toStrictEqual('not-found');
+      expect(error).toStrictEqual('any-error');
     });
   });
 });

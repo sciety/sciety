@@ -34,7 +34,6 @@ type FindVersionsForArticleDoi = (doi: Doi) => Promise<ReadonlyArray<{
 type GetArticleDetailsForAbstract = (doi: Doi) => Promise<Result<{ abstract: string }, 'not-found'|'unavailable'>>;
 
 interface Ports {
-  // TODO: should this be a type that is compatible (or the intersection) of the various components' ports?
   fetchArticle: GetArticleDetailsForPage & GetArticleDetailsForHeader<'not-found'|'unavailable'> & GetArticleDetailsForAbstract;
   fetchReview: GetReview;
   getEditorialCommunity: (editorialCommunityId: EditorialCommunityId) => Promise<Maybe<{

@@ -1,11 +1,11 @@
 import { Result } from 'true-myth';
 import Doi from '../types/doi';
 
-export type GetArticleAbstract = (doi: Doi) => Promise<Result<string, 'not-found' | 'unavailable'>>;
+export type GetArticleAbstract<E> = (doi: Doi) => Promise<Result<string, E>>;
 
-type RenderArticleAbstract = (doi: Doi) => Promise<Result<string, 'not-found' | 'unavailable'>>;
+type RenderArticleAbstract<E> = (doi: Doi) => Promise<Result<string, E>>;
 
-export default (getArticleAbstract: GetArticleAbstract): RenderArticleAbstract => (
+export default <E> (getArticleAbstract: GetArticleAbstract<E>): RenderArticleAbstract<E> => (
   async (doi) => (
     (await getArticleAbstract(doi)).map((articleAbstract) => `
       <section class="article-abstract" role="doc-abstract">
