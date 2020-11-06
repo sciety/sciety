@@ -14,6 +14,14 @@ $_avatar-border-width: 1px;
   }
 }
 
+.summary-feed-item__link {
+  color: inherit;
+}
+
+.summary-feed-item__link:hover {
+  color: settings.$colour-primary;
+}
+
 .summary-feed-item__avatar {
   width: $_avatar-size;
   height: $_avatar-size;

@@ -45,9 +45,9 @@ const createRenderSummaryFeedItemSummary = (getArticle: GetArticle): RenderSumma
     event,
     actor,
   ) => `
-      <a href="${actor.url}">${actor.name}</a>
+      <a href="${actor.url}" class="summary-feed-item__link">${actor.name}</a>
       reviewed
-      <a href="/articles/${event.articleId.value}">${await title(event.articleId)}</a>
+      <a href="/articles/${event.articleId.value}" class="summary-feed-item__link">${await title(event.articleId)}</a>
     `;
 
   return async (event, actor) => {
