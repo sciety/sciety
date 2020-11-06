@@ -21,18 +21,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 }
 
 const loggedInMenuItems = (user: User): string => `
-  <li class="item">
-    <a href="/users/${user.id}">My profile</a>
+  <li class="site-header__nav_list_item">
+    <a href="/users/${user.id}" class="site-header__nav_list_link">My profile</a>
   </li>
 
-  <li class="item">
-    <a href="/log-out">Log out</a>
+  <li class="site-header__nav_list_item">
+    <a href="/log-out" class="site-header__nav_list_link">Log out</a>
   </li>
 `;
 
 const loggedOutMenuItems = (): string => `
-  <li class="item">
-    <a href="/log-in">Log in</a>
+  <li class="site-header__nav_list_item">
+    <a href="/log-in" class="site-header__nav_list_link">Log in</a>
   </li>
 `;
 
@@ -69,19 +69,19 @@ export default (page: Page, user: Maybe<User>): string => `<!doctype html>
 
     <nav>
 
-      <ul class="ui large text menu">
+      <ul class="site-header__nav_list" role="list">
 
-        <li class="item">
-          <a href="/">Home</a>
+        <li class="site-header__nav_list_item">
+          <a href="/" class="site-header__nav_list_link">Home</a>
         </li>
 
-        <li class="item">
-          <a href="/about">About</a>
+        <li class="site-header__nav_list_item">
+          <a href="/about" class="site-header__nav_list_link">About</a>
         </li>
 
         ${user.mapOrElse(loggedOutMenuItems, loggedInMenuItems)}
 
-        <li class="right item">
+        <li class="site-header__nav_list_item">
           <a href="https://eepurl.com/g7qqcv" class="button button--primary">Give us feedback</a>
         </li>
 

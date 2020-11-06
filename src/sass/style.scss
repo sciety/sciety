@@ -11,6 +11,7 @@
 @use 'home-page';
 @use 'button';
 @use 'search-form';
+@use 'site-header';
 @import 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css';
 
 /* Hive imports, not Semantic-UI */
@@ -319,10 +320,6 @@ a:hover {
 .u-full-width {
   max-width: var(--MAX-SITE-WIDTH-REM);
   margin: 0 auto;
-}
-
-.site-header {
-  margin-bottom: #{baseline.increments(6)};
 }
 
 .hive-grid--article > .page-header--article,
