@@ -65,9 +65,9 @@ export default (page: Page, user: Maybe<User>): string => `<!doctype html>
 </head>
 <body>
   ${googleTagManagerNoScript}
-  <header>
+  <header class="site-header">
 
-    <nav class="site-header">
+    <nav>
 
       <ul class="ui large text menu">
 
