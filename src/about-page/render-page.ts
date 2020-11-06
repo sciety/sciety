@@ -10,7 +10,7 @@ export default (
   content: `
     <header class="page-header">
       <h1>
-        About The Hive
+        About Sciety
       </h1>
     </header>
     ${await getHtml(filename)}
