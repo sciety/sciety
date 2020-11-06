@@ -19,6 +19,28 @@ spec:
             backend:
               serviceName: {{ .Release.Name }}--frontend
               servicePort: http
+  tls:
+    - hosts:
+        - {{ .Values.hostname }}
+        - www.{{ .Values.hostname }}
+      secretName: {{ .Release.Name }}--frontend--letsencrypt-cert
+
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}--frontend
+  labels:
+    {{- include "prc.labels" . | nindent 4 }}
+    app.kubernetes.io/component: frontend
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt"
+    nginx.ingress.kubernetes.io/permanent-redirect: "https://{{ .Values.hostname }}"
+    nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      more_set_input_headers "X-Forwarded-Proto: https";
+spec:
+  rules:
     - host: {{ .Values.oldHostname }}
       http:
         paths:
@@ -27,10 +49,6 @@ spec:
               serviceName: {{ .Release.Name }}--frontend
               servicePort: http
   tls:
-    - hosts:
-        - {{ .Values.hostname }}
-        - www.{{ .Values.hostname }}
-      secretName: {{ .Release.Name }}--frontend--letsencrypt-cert
     - hosts:
         - {{ .Values.oldHostname }}
         - www.{{ .Values.oldHostname }}
