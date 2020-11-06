@@ -18,7 +18,7 @@ export default <T>(
     let contents = '';
     if (userId.isNothing()) {
       contents = `
-        <p>Welcome to The Hive.</p>
+        <p>Welcome to Sciety.</p>
         <p>
           Follow research as it develops and stay up to date with the next big thing,
           evaluated by the editorial communities you trust.

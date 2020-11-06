@@ -5,7 +5,7 @@ export default (): RenderPageHeader => (
     <header class="home-page-header">
 
       <h1>
-        The Hive
+        Welcome to Sciety
       </h1>
 
       <p>
