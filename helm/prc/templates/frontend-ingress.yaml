@@ -19,8 +19,19 @@ spec:
             backend:
               serviceName: {{ .Release.Name }}--frontend
               servicePort: http
+    - host: {{ .Values.oldHostname }}
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: {{ .Release.Name }}--frontend
+              servicePort: http
   tls:
     - hosts:
         - {{ .Values.hostname }}
         - www.{{ .Values.hostname }}
+      secretName: {{ .Release.Name }}--frontend--letsencrypt-cert
+    - hosts:
+        - {{ .Values.oldHostname }}
+        - www.{{ .Values.oldHostname }}
       secretName: {{ .Release.Name }}--frontend--letsencrypt-cert

@@ -50,7 +50,8 @@ jobs:
           helm dependency build helm/prc
           helm upgrade -i prc--staging \
             --set images.frontend.tag=${IMAGE_TAG} \
-            --set hostname=staging.hive.review \
+            --set hostname=staging.sciety.org \
+            --set oldHostname=staging.hive.review \
             --set disqusApiKey=${DISQUS_API_KEY} \
             --set-string experimentEnabled="true" \
             --set twitterApiKey=${TWITTER_API_KEY} \
