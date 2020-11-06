@@ -1,13 +1,17 @@
 @use 'baseline';
 
 .site-footer {
+
+}
+
+.site-footer__container {
   @media screen and (min-width: 48.75em) {
     display: flex;
     justify-content: space-between;
   }
 }
 
-.site-footer > * {
+.site-footer__container > * {
   font-size: 0.75rem;
   @media screen and (min-width: 48.75em) {
     max-width: 25%;
