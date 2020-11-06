@@ -21,7 +21,7 @@ spec:
           image: "{{ .Values.images.frontend.repository }}:{{ .Values.images.frontend.tag }}"
           env:
             - name: APP_ORIGIN
-              value: https://{{ .Values.oldHostname }}
+              value: https://{{ .Values.hostname }}
             - name: DISQUS_API_KEY
               value: {{ .Values.disqusApiKey }}
             - name: EXPERIMENT_ENABLED
