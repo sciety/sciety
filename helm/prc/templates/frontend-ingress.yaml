@@ -34,4 +34,4 @@ spec:
     - hosts:
         - {{ .Values.oldHostname }}
         - www.{{ .Values.oldHostname }}
-      secretName: {{ .Release.Name }}--frontend--letsencrypt-cert
+      secretName: {{ .Release.Name }}--frontend--letsencrypt-cert--old
