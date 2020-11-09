@@ -20,12 +20,11 @@
 }
 
 .site-footer__strapline {
+  background-color: rgba(255, 255, 255, 0.1);
   font-family: settings.$font-secondary;
   text-align: center;
-  font-weight: bold;
-  max-width: var(--MAX-SITE-WIDTH-REM);
-  margin-left: 1rem;
-  margin-right: 1rem;
+  padding: 1.5rem 1rem;
+  width: 100%;
 }
 
 .site-footer__container {
