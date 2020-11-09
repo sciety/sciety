@@ -24,7 +24,7 @@ export default (
     try {
       return Result.ok({
         content: `
-          <div class="hive-grid hive-grid--editorial-community u-full-width">
+          <div class="sciety-grid sciety-grid--editorial-community u-full-width">
             ${await renderPageHeader(editorialCommunityId, userId)}
     
             <div class="editorial-community-page-description">

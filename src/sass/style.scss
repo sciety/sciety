@@ -15,7 +15,7 @@
 @use 'about-page';
 @import 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css';
 
-/* Hive imports, not Semantic-UI */
+/* Sciety imports, not Semantic-UI */
 @import url('https://fonts.googleapis.com/css?family=Lato:ital,wght@0,400;0,700;1,400&subset=latin,latin-ext&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap');
 
@@ -304,7 +304,7 @@ a:hover {
 }
 
 @supports (display: grid) {
-  .hive-grid {
+  .sciety-grid {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     grid-column-gap: 20px;
@@ -312,7 +312,7 @@ a:hover {
   }
 }
 
-.hive-grid {
+.sciety-grid {
   max-width: var(--MAX-SITE-WIDTH-REM);
   margin: 0 1rem;
   flex-grow: 1;
@@ -323,13 +323,13 @@ a:hover {
   margin: 0 auto;
 }
 
-.hive-grid--article > .page-header--article,
-.hive-grid--article > .main-content {
+.sciety-grid--article > .page-header--article,
+.sciety-grid--article > .main-content {
   grid-column: 1 / -1;
 }
 
 @media screen and (min-width: 56.25em) {
-  .hive-grid--article > .main-content {
+  .sciety-grid--article > .main-content {
     grid-column: 1 / 9;
 
     &.main-content--article {

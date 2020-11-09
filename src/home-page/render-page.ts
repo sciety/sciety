@@ -12,7 +12,7 @@ export default (
   renderFeed: Component,
 ): RenderPage => async (userId) => Result.ok({
   content: `
-    <div class="hive-grid hive-grid--home">
+    <div class="sciety-grid sciety-grid--home">
       ${await renderPageHeader(userId)}
 
       <div class="home-page-feed-container">

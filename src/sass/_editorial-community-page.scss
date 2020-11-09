@@ -1,6 +1,6 @@
 @use 'baseline';
 
-.hive-grid--editorial-community > .page-header--editorial-community {
+.sciety-grid--editorial-community > .page-header--editorial-community {
   grid-column: 1 / -1;
 }
 
@@ -14,12 +14,12 @@
 }
 
 @media screen and (min-width: 56.25em) {
-  .hive-grid--editorial-community > .editorial-community-page-description {
+  .sciety-grid--editorial-community > .editorial-community-page-description {
     grid-column: 1 / 7;
     margin-bottom: 0;
   }
 
-  .hive-grid--editorial-community > .editorial-community-page-side-bar {
+  .sciety-grid--editorial-community > .editorial-community-page-side-bar {
     grid-column: 8 / -1;
   }
 

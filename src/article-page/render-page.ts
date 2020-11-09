@@ -36,7 +36,7 @@ export default (
   const template = (abstract: string) => (pageHeader: string) => (feed: string) => (articleDetails: ArticleDetails) => (
     {
       content: `
-<article class="hive-grid hive-grid--article">
+<article class="sciety-grid sciety-grid--article">
   ${pageHeader}
 
   <div class="main-content main-content--article">

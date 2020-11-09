@@ -16,7 +16,7 @@ type Component = (userId: UserId, viewingUserId: Maybe<UserId>) => Promise<Resul
 const template = (header: string) => (followList: string) => (
   {
     content: `
-      <div class="hive-grid hive-grid--user">
+      <div class="sciety-grid sciety-grid--user">
         ${header}
         <div class="user-page-contents">
           ${followList}

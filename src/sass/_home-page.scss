@@ -1,6 +1,6 @@
 @use 'baseline';
 
-.hive-grid--home {
+.sciety-grid--home {
   margin-left: 1rem;
   margin-right: 1rem;
 
@@ -23,11 +23,11 @@
 }
 
 @media screen and (min-width: 56.25em) {
-  .hive-grid--home > .home-page-feed-container {
+  .sciety-grid--home > .home-page-feed-container {
     grid-column: 1 / 9;
   }
 
-  .hive-grid--home > .home-page-side-bar {
+  .sciety-grid--home > .home-page-side-bar {
     grid-column: 10 / -1;
   }
 }
