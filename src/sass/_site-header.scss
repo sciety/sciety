@@ -18,6 +18,7 @@
   display: block;
 
   @media screen and (min-width: functions.px-to-rem(690)) {
+    padding-top: functions.px-to-rem(14);
     display: inline;
     flex: 0 0 150px;
     margin-right: functions.px-to-rem(50);
