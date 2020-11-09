@@ -71,7 +71,7 @@ export default (page: Page, user: Maybe<User>): string => `<!doctype html>
       <img src="/static/images/sciety-logo-full-colour.svg" alt="Sciety logo" class="site-header__logo">
     </a>
 
-    <nav>
+    <nav class="site-header__nav">
 
       <ul class="site-header__nav_list" role="list">
 

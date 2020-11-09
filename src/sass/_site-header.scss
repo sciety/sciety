@@ -1,16 +1,35 @@
 @use 'baseline';
+@use 'functions';
 @use 'settings';
 
 .site-header {
+  $logo-breakpoint: 690;
   margin-bottom: #{baseline.increments(8)};
+
+  @media screen and (min-width: functions.px-to-rem(690)) {
+    @supports (display: flex) {
+      display: flex;
+    }
+  }
 }
 
-.site-header__logo {
+.site-header__logo_link {
   padding-top: baseline.increments(1);
+  display: block;
+
+  @media screen and (min-width: functions.px-to-rem(690)) {
+    display: inline;
+    flex: 0 0 150px;
+    margin-right: functions.px-to-rem(50);
+  }
 }
 
 .site-header__logo {
   max-width: 150px;
+}
+
+.site-header__nav {
+  flex-grow: 1;
 }
 
 .site-header__nav_list {
