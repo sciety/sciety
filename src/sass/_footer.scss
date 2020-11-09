@@ -7,6 +7,16 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: rgb(49, 73, 82);
+  color: settings.$colour-white;
+
+  a {
+    color: inherit;
+  }
+
+  a:hover {
+    color: currentColor;
+  }
 }
 
 .site-footer__strapline {

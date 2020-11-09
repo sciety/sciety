@@ -123,7 +123,7 @@ export default (page: Page, user: Maybe<User>): string => `<!doctype html>
       </address>
     </div>
 
-    <small>
+    <small class="site-footer__copyright">
       © 2020 eLife Sciences Publications Ltd. Subject to a Creative Commons Attribution license, except where otherwise
       noted.
     </small>
