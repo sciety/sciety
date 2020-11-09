@@ -62,6 +62,7 @@ export default (page: Page, user: Maybe<User>): string => `<!doctype html>
   <meta property="og:title" content="${htmlEscape(page.openGraph ? page.openGraph.title : 'Sciety')}">
   <meta property="og:description" content="${htmlEscape(page.openGraph ? page.openGraph.description : 'Where research is evaluated and curated by the communities you trust')}">
   <meta property="og:image" content="${process.env.APP_ORIGIN ?? ''}/static/images/sciety-twitter-profile.png">
+  <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
 </head>
 <body>
   ${googleTagManagerNoScript}
