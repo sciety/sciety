@@ -1,3 +1,5 @@
+@use 'settings';
+
 @mixin basics () {
   border-width: 0;
   border-radius: 5px;
@@ -20,18 +22,20 @@
   font-family: Lato, sans-serif;
   padding: calc((13 / var(--BASE-FONT-MEASURE)) * 1rem) calc((25 / var(--BASE-FONT-MEASURE)) * 1rem);
   font-weight: bold;
-  background-color: var(--COLOUR-GREY-ONE);
-  color: var(--COLOUR-GREY-TWO);
+  background-color: settings.$colour-white;
+  color: settings.$colour-ui-default;
+  border: 1px solid currentColor;
+
+  &:hover {
+    background-color: settings.$colour-primary;
+    color: settings.$colour-white;
+    border-color: settings.$colour-primary;
+  }
 }
 
 .button--small {
   font-size: calc((12 / var(--BASE-FONT-MEASURE)) * 1rem);
   padding: calc((9 / var(--BASE-FONT-MEASURE)) * 1rem) calc((18 / var(--BASE-FONT-MEASURE)) * 1rem);
-}
-
-.button:hover {
-  background-color: var(--COLOUR-GREY-ONE-HOVER);
-  color: var(--COLOUR-GREY-TWO-HOVER);
 }
 
 .button--primary {
