@@ -14,7 +14,7 @@ services:
       PGUSER: user
       PGHOST: db
       PGPASSWORD: secret
-      PGDATABASE: thehive
+      PGDATABASE: sciety
       TWITTER_API_KEY:
       TWITTER_API_SECRET_KEY:
       TWITTER_API_BEARER_TOKEN:
@@ -26,7 +26,7 @@ services:
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: secret
-      POSTGRES_DB: thehive
+      POSTGRES_DB: sciety
     healthcheck:
-      test: pg_isready --username user --dbnam thehive || exit 1
+      test: pg_isready --username $$POSTGRES_USER --dbnam $$POSTGRES_DB || exit 1
       interval: 5s
