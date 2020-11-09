@@ -9,7 +9,7 @@ function finish() {
 
 trap finish EXIT
 
-export IMAGE=liberoadmin/prc-frontend
+export IMAGE=sciety/sciety
 export IMAGE_TAG="${IMAGE_TAG:-local}"
 
 docker-compose -f .docker/docker-compose.yml -f .docker/docker-compose.prod.yml up -d

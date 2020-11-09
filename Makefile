@@ -4,7 +4,7 @@ endif
 
 DOCKER_COMPOSE = docker-compose --file .docker/docker-compose.yml --file .docker/docker-compose.$(TARGET).yml
 DATA_VOLUME := $(shell pwd)
-IMAGE := liberoadmin/prc-frontend
+IMAGE := sciety/sciety
 IMAGE_TAG := local
 PORT := 8080
 

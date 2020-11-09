@@ -34,9 +34,10 @@ jobs:
         run: |
           .github/smoke-test.sh
 
-      - name: Push Docker image to liberoadmin
+      - name: Push Docker image to legacy Libero registry
         run: |
           echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USERNAME}" --password-stdin
+          docker tag sciety/sciety:${IMAGE_TAG} liberoadmin/prc-frontend:${IMAGE_TAG}
           docker push liberoadmin/prc-frontend:${IMAGE_TAG}
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
@@ -45,7 +46,6 @@ jobs:
       - name: Push Image to Docker Hub
         run: |
           echo "${DOCKERHUB_PASSWORD}" | docker login --username "${DOCKERHUB_USERNAME}" --password-stdin
-          docker tag liberoadmin/prc-frontend:${IMAGE_TAG} sciety/sciety:${IMAGE_TAG}
           docker push sciety/sciety:${IMAGE_TAG}
         env:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
