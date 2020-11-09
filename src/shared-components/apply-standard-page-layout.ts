@@ -121,12 +121,12 @@ export default (page: Page, user: Maybe<User>): string => `<!doctype html>
         Cambridge CB4 1YG<br>
         UK
       </address>
-
-      <small>
-        © 2020 eLife Sciences Publications Ltd. Subject to a Creative Commons Attribution license, except where otherwise
-        noted.
-      </small>
     </div>
+
+    <small>
+      © 2020 eLife Sciences Publications Ltd. Subject to a Creative Commons Attribution license, except where otherwise
+      noted.
+    </small>
 
   </footer>
 
