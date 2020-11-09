@@ -32,17 +32,17 @@
   width: 100%;
   margin: 0;
   padding-top: baseline.increments(3);
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .site-footer__details {
   max-width: var(--MAX-SITE-WIDTH-REM);
-  margin: 0 auto;
-  margin-left: 1rem;
-  margin-right: 1rem;
 
   @media screen and (min-width: 48.75em) {
     display: flex;
     justify-content: space-between;
+    margin: 0 auto;
   }
 }
 
