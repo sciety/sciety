@@ -3,8 +3,18 @@
 @use 'settings';
 
 .site-header {
-  $logo-breakpoint: 690;
   margin-bottom: #{baseline.increments(8)};
+  display: flex;
+  justify-content: center;
+}
+
+.site-header__wrapper {
+  // TODO: move to top level as private member & use instead of 690 below x 2
+  $logo-breakpoint: 690;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  max-width: var(--MAX-SITE-WIDTH-REM);
+  flex-grow: 1;
 
   @media screen and (min-width: functions.px-to-rem(690)) {
     @supports (display: flex) {

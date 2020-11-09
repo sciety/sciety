@@ -210,12 +210,11 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  max-width: var(--MAX-SITE-WIDTH-REM);
-  margin: 0 auto;
-  padding: 0 var(--BASE-FONT-REM);
 }
 
 main {
+  display: flex;
+  justify-content: center;
   margin-bottom: baseline.increments(6);
 }
 
@@ -314,7 +313,7 @@ a:hover {
 
 .hive-grid {
   max-width: var(--MAX-SITE-WIDTH-REM);
-  margin: 0 auto;
+  margin: 0 1rem;
 }
 
 .u-full-width {

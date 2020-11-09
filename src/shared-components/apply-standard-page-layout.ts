@@ -67,33 +67,33 @@ export default (page: Page, user: Maybe<User>): string => `<!doctype html>
 <body>
   ${googleTagManagerNoScript}
   <header class="site-header">
+    <div class="site-header__wrapper">
+      <a href="/" class="site-header__logo_link">
+        <img src="/static/images/sciety-logo-full-colour.svg" alt="Sciety" class="site-header__logo">
+      </a>
 
-    <a href="/" class="site-header__logo_link">
-      <img src="/static/images/sciety-logo-full-colour.svg" alt="Sciety" class="site-header__logo">
-    </a>
+      <nav class="site-header__nav">
 
-    <nav class="site-header__nav">
+        <ul class="site-header__nav_list" role="list">
 
-      <ul class="site-header__nav_list" role="list">
+          <li class="site-header__nav_list_item">
+            <a href="/" class="site-header__nav_list_link">Home</a>
+          </li>
 
-        <li class="site-header__nav_list_item">
-          <a href="/" class="site-header__nav_list_link">Home</a>
-        </li>
+          <li class="site-header__nav_list_item">
+            <a href="/about" class="site-header__nav_list_link">About</a>
+          </li>
 
-        <li class="site-header__nav_list_item">
-          <a href="/about" class="site-header__nav_list_link">About</a>
-        </li>
+          ${user.mapOrElse(loggedOutMenuItems, loggedInMenuItems)}
 
-        ${user.mapOrElse(loggedOutMenuItems, loggedInMenuItems)}
+          <li class="site-header__nav_list_item">
+            <a href="https://eepurl.com/g7qqcv" class="button">Give us feedback</a>
+          </li>
 
-        <li class="site-header__nav_list_item">
-          <a href="https://eepurl.com/g7qqcv" class="button">Give us feedback</a>
-        </li>
+        </ul>
 
-      </ul>
-
-    </nav>
-
+      </nav>
+    </div>
   </header>
 
   <main>
