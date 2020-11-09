@@ -209,7 +209,8 @@ p {
 
 body {
   min-height: 100vh;
-  display: flex;
+  // TODO: Flex causing layout bug in Safari, fix before reintroducing
+  //display: flex;
   flex-direction: column;
 }
 
