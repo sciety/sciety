@@ -1,4 +1,4 @@
-import { Result } from 'true-myth'
+import { Result } from 'true-myth';
 import { UserId } from '../types/user-id';
 
 type UserDetails = {
