@@ -115,7 +115,8 @@ Logs of all Pods are streamed to [AWS CloudWatch][AWS CloudWatch logs] for persi
 
 A [CloudWatch dashboard] graphs log lines representing errors and shows the state of the alarm.
 
-An [monitoring SNS topic] triggers a [lambda function that notifies the Slack #prc-general channel][monitoring lambda].
+An [monitoring SNS topic] triggers a [lambda function that notifies the Slack #sciety-general channel][monitoring
+ lambda].
 
 ### Updating event data
 
