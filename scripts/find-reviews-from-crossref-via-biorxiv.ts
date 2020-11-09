@@ -51,7 +51,7 @@ void (async (): Promise<void> => {
       // specify a User-Agent: https://github.com/CrossRef/rest-api-doc/issues/491
       const { data } = await axios.get<CrossrefResponse>(
         `https://api.crossref.org/prefixes/${publisherReviewDoiPrefix}/works?rows=1000&filter=type:peer-review,relation.object:${publishedDoi}`,
-        { headers: { 'User-Agent': 'TheHive (http://hive.review; mailto:team@hive.review)' } },
+        { headers: { 'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)' } },
       );
 
       data.message.items.forEach((item) => {
