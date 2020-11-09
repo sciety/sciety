@@ -22,7 +22,7 @@ The main branch should always be release ready.
 
 No [feature branches][FeatureBranch] or pull requests should normally be opened in the project.
 
-The [Andon cord] is a Slack notification in the `#prc-general` channel for broken builds.
+The [Andon cord] is a Slack notification in the `#sciety-general` channel for broken builds.
 
 [Branch By Abstraction][BranchByAbstraction] can be used to execute large scale changes.
 
