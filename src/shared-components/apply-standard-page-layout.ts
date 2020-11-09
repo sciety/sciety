@@ -67,9 +67,9 @@ export default (page: Page, user: Maybe<User>): string => `<!doctype html>
   ${googleTagManagerNoScript}
   <header class="site-header">
 
-    <a href="/">
-    </a>
+    <a href="/" class="site-header__logo_link">
       <img src="/static/images/sciety-logo-full-colour.svg" alt="Sciety logo" class="site-header__logo">
+    </a>
 
     <nav>
 
