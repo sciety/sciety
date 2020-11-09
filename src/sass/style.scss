@@ -209,12 +209,13 @@ p {
 
 body {
   min-height: 100vh;
-  // TODO: Flex causing layout bug in Safari, fix before reintroducing
-  //display: flex;
+  display: flex;
   flex-direction: column;
 }
 
 main {
+  flex-grow: 1;
+  flex-shrink: 0;
   display: flex;
   justify-content: center;
   margin-bottom: baseline.increments(6);

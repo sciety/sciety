@@ -2,10 +2,13 @@
 @use 'settings';
 
 .site-footer {
+  flex-grow: 1;
+  flex-shrink: 0;
   font-family: settings.$font-secondary;
   margin-top: auto;
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
   align-items: center;
   color: settings.$colour-white;
 

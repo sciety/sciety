@@ -3,6 +3,8 @@
 @use 'settings';
 
 .site-header {
+  flex-grow: 1;
+  flex-shrink: 0;
   margin-bottom: #{baseline.increments(8)};
   display: flex;
   justify-content: center;
