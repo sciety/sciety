@@ -57,7 +57,7 @@ jobs:
           aws --region=us-east-1 eks update-kubeconfig --name libero-eks--franklin
           helm repo add bitnami https://charts.bitnami.com/bitnami
           helm dependency build helm/sciety
-          helm upgrade -i prc--staging \
+          helm upgrade -i sciety--staging \
             --set images.frontend.tag=${IMAGE_TAG} \
             --set hostname=staging.sciety.org \
             --set oldHostname=staging.hive.review \
