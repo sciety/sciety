@@ -1,7 +1,12 @@
 @use 'baseline';
 
-.hive-grid--home > .home-page-header {
-  grid-column: 1 / -1;
+.hive-grid--home {
+  margin-left: 1rem;
+  margin-right: 1rem;
+
+  > .home-page-header {
+    grid-column: 1 / -1;
+  }
 }
 
 .home-page-header {
