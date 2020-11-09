@@ -1,16 +1,16 @@
 {{/*
 Common labels
 */}}
-{{- define "prc.labels" -}}
+{{- define "sciety.labels" -}}
 helm.sh/chart: {{ printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" }}
-{{ include "prc.selectorLabels" . }}
+{{ include "sciety.selectorLabels" . }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
 
 {{/*
 Selector labels
 */}}
-{{- define "prc.selectorLabels" -}}
+{{- define "sciety.selectorLabels" -}}
 app.kubernetes.io/name: {{ .Chart.Name }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}

@@ -3,17 +3,17 @@ kind: Deployment
 metadata:
   name: {{ .Release.Name }}--frontend
   labels:
-    {{- include "prc.labels" . | nindent 4 }}
+    {{- include "sciety.labels" . | nindent 4 }}
     app.kubernetes.io/component: frontend
 spec:
   selector:
     matchLabels:
-      {{- include "prc.selectorLabels" . | nindent 6 }}
+      {{- include "sciety.selectorLabels" . | nindent 6 }}
       app.kubernetes.io/component: frontend
   template:
     metadata:
       labels:
-        {{- include "prc.selectorLabels" . | nindent 8 }}
+        {{- include "sciety.selectorLabels" . | nindent 8 }}
         app.kubernetes.io/component: frontend
     spec:
       containers:

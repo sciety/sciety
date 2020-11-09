@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   name: {{ .Release.Name }}--frontend
   labels:
-    {{- include "prc.labels" . | nindent 4 }}
+    {{- include "sciety.labels" . | nindent 4 }}
     app.kubernetes.io/component: frontend
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt"
@@ -31,7 +31,7 @@ kind: Ingress
 metadata:
   name: {{ .Release.Name }}--frontend--old
   labels:
-    {{- include "prc.labels" . | nindent 4 }}
+    {{- include "sciety.labels" . | nindent 4 }}
     app.kubernetes.io/component: frontend
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt"

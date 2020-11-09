@@ -1,8 +1,8 @@
 apiVersion: v2
-name: prc
-description: Libero PRC
+name: sciety
+description: Sciety.org publish-review-curate application
 type: application
-home: https://github.com/libero/prc
+home: https://github.com/sciety/sciety
 version: 0.1.0
 appVersion: latest
 dependencies: []

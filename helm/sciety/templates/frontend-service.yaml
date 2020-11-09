@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: {{ .Release.Name }}--frontend
   labels:
-    {{- include "prc.labels" . | nindent 4 }}
+    {{- include "sciety.labels" . | nindent 4 }}
     app.kubernetes.io/component: frontend
 spec:
   type: ClusterIP
@@ -12,5 +12,5 @@ spec:
       port: 80
       protocol: TCP
   selector:
-    {{- include "prc.selectorLabels" . | nindent 4 }}
+    {{- include "sciety.selectorLabels" . | nindent 4 }}
     app.kubernetes.io/component: frontend
