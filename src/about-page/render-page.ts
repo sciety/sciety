@@ -8,11 +8,13 @@ export default (
   getHtml: GetHtml,
 ): RenderPage => async (filename) => Result.ok({
   content: `
-    <header class="page-header">
-      <h1>
-        About Sciety
-      </h1>
-    </header>
-    ${await getHtml(filename)}
+    <div class="about-page-wrapper">
+      <header class="page-header">
+        <h1>
+          About Sciety
+        </h1>
+      </header>
+      ${await getHtml(filename)}
+    </div>
   `,
 });
