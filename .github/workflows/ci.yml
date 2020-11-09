@@ -56,7 +56,7 @@ jobs:
         run: |
           aws --region=us-east-1 eks update-kubeconfig --name libero-eks--franklin
           helm repo add bitnami https://charts.bitnami.com/bitnami
-          helm dependency build helm/prc
+          helm dependency build helm/sciety
           helm upgrade -i prc--staging \
             --set images.frontend.tag=${IMAGE_TAG} \
             --set hostname=staging.sciety.org \
@@ -68,7 +68,7 @@ jobs:
             --set twitterApiBearerToken=${TWITTER_API_BEARER_TOKEN} \
             --set postgresqlSecretName=hive-staging-rds-postgres \
             --wait \
-            helm/prc
+            helm/sciety
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
