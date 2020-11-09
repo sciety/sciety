@@ -5,6 +5,10 @@
   margin-bottom: #{baseline.increments(8)};
 }
 
+.site-header__logo {
+  max-width: 150px;
+}
+
 .site-header__nav_list {
   list-style: none;
   display: flex;
