@@ -318,11 +318,6 @@ a:hover {
   flex-grow: 1;
 }
 
-.u-full-width {
-  max-width: var(--MAX-SITE-WIDTH-REM);
-  margin: 0 auto;
-}
-
 .sciety-grid--article > .page-header--article,
 .sciety-grid--article > .main-content {
   grid-column: 1 / -1;
