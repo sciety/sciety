@@ -62,8 +62,17 @@ export default (page: Page, user: Maybe<User>): string => `<!doctype html>
   <meta property="og:title" content="${htmlEscape(page.openGraph ? page.openGraph.title : 'Sciety')}">
   <meta property="og:description" content="${htmlEscape(page.openGraph ? page.openGraph.description : 'Where research is evaluated and curated by the communities you trust')}">
   <meta property="og:image" content="${process.env.APP_ORIGIN ?? ''}/static/images/sciety-twitter-profile.png">
-  <link rel="icon" type="image/svg+xml" href="/static/images/favicon.svg">
-  <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
+  <link rel="icon" type="image/svg+xml" href="/static/images/favicons/favicon.svg">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/static/images/favicons/generated/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/static/images/favicons/generated/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/static/images/favicons/generated/favicon-16x16.png">
+  <link rel="manifest" href="/static/images/favicons/generated/site.webmanifest">
+  <link rel="mask-icon" href="/static/images/favicons/generated/safari-pinned-tab.svg" color="#cf4500">
+  <link rel="shortcut icon" href="/static/images/favicons/generated/favicon.ico">
+  <meta name="msapplication-TileColor" content="#cf4500">
+  <meta name="msapplication-config" content="/static/images/favicons/generated/browserconfig.xml">
+  <meta name="theme-color" content="#ffffff">
 </head>
 <body>
   ${googleTagManagerNoScript}
