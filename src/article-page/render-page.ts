@@ -67,34 +67,40 @@ export default (
       .ap(await articleDetailsResult)
       .mapErr((error) => {
         switch (error) {
+          // TODO: remove duplication between these cases and the sciety-grid case
+          // which is coupled to them
           case 'not-found':
             return {
               type: 'not-found',
               content: `
-                <h1>Oops!</h1>
-                <p>
-                  We’re having trouble finding this information.
-                  Ensure you have the correct URL, or try refreshing the page.
-                  You may need to come back later.
-                </p>
-                <p>
-                  <a href="/" class="u-call-to-action-link">Return to Homepage</a>
-                </p>
+                <div class="page-content-wrapper">
+                  <h1>Oops!</h1>
+                  <p>
+                    We’re having trouble finding this information.
+                    Ensure you have the correct URL, or try refreshing the page.
+                    You may need to come back later.
+                  </p>
+                  <p>
+                    <a href="/" class="u-call-to-action-link">Return to Homepage</a>
+                  </p>
+                </div>
               `,
             };
           case 'unavailable':
             return {
               type: 'unavailable',
               content: `
-                <h1>Oops!</h1>
-                <p>
-                  We’re having trouble finding this information.
-                  Ensure you have the correct URL, or try refreshing the page.
-                  You may need to come back later.
-                </p>
-                <p>
-                  <a href="/" class="u-call-to-action-link">Return to Homepage</a>
-                </p>
+                <div class="page-content-wrapper">
+                  <h1>Oops!</h1>
+                  <p>
+                    We’re having trouble finding this information.
+                    Ensure you have the correct URL, or try refreshing the page.
+                    You may need to come back later.
+                  </p>
+                  <p>
+                    <a href="/" class="u-call-to-action-link">Return to Homepage</a>
+                  </p>
+                </div>
               `,
             };
         }
