@@ -282,6 +282,12 @@ h6 {
   font-weight: 400;
 }
 
+blockquote {
+  border-left: 8px solid settings.$colour-grey-one;
+  margin-left: 1.5rem;
+  padding-left: 1rem;
+}
+
 ul {
   margin-top: 0;
 }

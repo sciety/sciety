@@ -28,7 +28,7 @@ export default (getJson: GetJson, logger: Logger): FetchHypothesisAnnotation => 
         fullText: Maybe.just(`
 **Author Response**
 
-> **Summary:** This study tackles a difficult problem of understanding the basis for hippocampal theta rhythms through reduction of a highly detailed model, seeking to validate a reduced model that would be more amenable to analysis. The reviewers appreciated the attention to this challenging problem and the substantial work that went into it, but had several fundamental concerns about the methodology, interpretation, and reporting.*
+> **Summary:** This study tackles a difficult problem of understanding the basis for hippocampal theta rhythms through reduction of a highly detailed model, seeking to validate a reduced model that would be more amenable to analysis. The reviewers appreciated the attention to this challenging problem and the substantial work that went into it, but had several fundamental concerns about the methodology, interpretation, and reporting.
 
 We appreciate the detailed feedback provided to us by the reviewers and editors and we are pleased that there was an appreciation for the attention we have given to this challenging problem and the substantial work that went into it.  We would like to thank the reviewers for their efforts.
 
