@@ -7,12 +7,16 @@ export default (
   renderSearchResults: RenderSearchResults,
 ): RenderPage => async (query) => Result.ok({
   content: `
-    <header class="page-header">
-      <h1>Search results</h1>
-    </header>
+    <div class="page-content-wrapper">
 
-    <section class="ui basic vertical segment">
-      ${await renderSearchResults(query)}
-    </section>
+      <header class="page-header">
+        <h1>Search results</h1>
+      </header>
+
+      <section class="ui basic vertical segment">
+        ${await renderSearchResults(query)}
+      </section>
+
+    </div>
   `,
 });
