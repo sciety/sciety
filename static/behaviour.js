@@ -1,7 +1,7 @@
 (function(doc) {
   function buildToggle() {
     const button = doc.createElement('button');
-    button.classList.add('article-feed__item-toggle');
+    button.classList.add('article-feed__item-toggle', 'button', 'button--secondary');
     return button;
   }
   const itemBodies = doc.querySelectorAll('[data-behaviour="collapse_to_teaser"]');

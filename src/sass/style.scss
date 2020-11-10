@@ -498,19 +498,13 @@ p.article-feed__item__title {
 
 .article-feed__item-toggle {
   position: absolute;
-  top: calc(24 / var(--BASE-FONT-MEASURE) * 1rem);
+  top: 0;
   right: 0;
-  color: var(--COLOUR-PRIMARY);
   outline-width: 0;
   background: none;
-  border-width: 0;
   cursor: pointer;
+  padding: calc((7 / var(--BASE-FONT-MEASURE)) * 1rem) calc((13 / var(--BASE-FONT-MEASURE)) * 1rem);
 }
-
-.article-feed__item-toggle:hover {
-  color: var(--COLOUR-PRIMARY-HOVER);
-}
-
 
 .followers {
   margin-bottom: #{baseline.increments(8)};

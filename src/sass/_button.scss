@@ -41,3 +41,9 @@
 .button--primary {
   @include primary-colour();
 }
+
+.button--secondary:hover {
+  background-color: settings.$colour-grey-one;
+  color: settings.$colour-ui-default;
+  border-color: currentColor;
+}
