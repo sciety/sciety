@@ -501,6 +501,11 @@ p.article-feed__item__title {
   position: relative;
   width: 100%;
   margin-right: 1.5rem;
+
+  ol,
+  ul {
+    margin-bottom: baseline.increments(3);
+  }
 }
 
 .article-feed__item-toggle {
