@@ -46,4 +46,17 @@ describe('fetch-hypothesis-annotation', (): void => {
 
     expect(review.fullText.unsafelyUnwrap()).toContain(expected);
   });
+
+  it.todo('blockquotes');
+
+  // References:**\n\nBezaire, M. J., Raikov, I., Burk, K., Vyas, D., & Soltesz, I. (2016). Interneuronal mechanisms of hippocampal theta oscillation in a full-scale model of the rodent CA1 circuit. ELife, 5, e18566. https://doi.org/10.7554/eLife.18566\n\n');
+  it.todo('linkify references');
+
+  it.todo('rendering 1)\n2) to a list, Hypothesis doesn\'t while Github does: Reviewer 1 on https://staging.sciety.org/articles/10.1101/2020.07.28.225557');
+
+  it.todo('cases specifically supported by Hypothesis at https://web.hypothes.is/help/formatting-annotations-with-markdown/ as opposed to all features of Github flavored markdown');
+
+  it.todo('possible intended sublist or broken markdown: http://localhost:8080/articles/10.1101/2020.07.27.222893');
+
+  it.todo('Review Commons using h2 and h3: http://localhost:8080/articles/10.1101/2020.07.08.193938');
 });
