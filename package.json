@@ -30,6 +30,7 @@
     "passport-twitter": "^1.0.4",
     "pg": "^8.3.2",
     "rdf-dataset-indexed": "^0.4.0",
+    "remarkable": "^2.0.1",
     "showdown": "^1.9.1",
     "striptags": "^3.1.1",
     "text-clipper": "^2.0.0",
