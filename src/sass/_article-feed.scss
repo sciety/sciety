@@ -1,5 +1,7 @@
 @use 'baseline';
 @use 'button';
+@use 'functions';
+@use 'settings';
 
 .article-feed {
   padding-left: 0;
@@ -7,7 +9,7 @@
 
 .article-feed__item {
   display: block;
-  margin-bottom: #{baseline.increments(4)};
+  margin-bottom: baseline.increments(4);
 
   &:last-child {
     margin-bottom: 0;
@@ -64,7 +66,7 @@
 
 .article-feed__item__date {
   font-family: Lato, sans-serif;
-  color: var(--COLOUR-GREY-TWO);
+  color: settings.$colour-grey-two;
 }
 
 .article-feed p:last-child {
@@ -75,8 +77,8 @@
 p.article-feed__item__title {
   font-family: Lato, sans-serif;
   font-size: 1.5rem;
-  margin-bottom: #{baseline.increments(2)};
-  padding-right: calc(100 / var(--BASE-FONT-MEASURE) * 1rem);
+  margin-bottom: baseline.increments(2);
+  padding-right: functions.px-to-rem(100);
 }
 
 .article-feed__item__read_more {
@@ -107,5 +109,5 @@ p.article-feed__item__title {
   outline-width: 0;
   background: none;
   cursor: pointer;
-  padding: calc((7 / var(--BASE-FONT-MEASURE)) * 1rem) calc((13 / var(--BASE-FONT-MEASURE)) * 1rem);
+  padding: functions.px-to-rem(7) functions.px-to-rem(13);
 }
