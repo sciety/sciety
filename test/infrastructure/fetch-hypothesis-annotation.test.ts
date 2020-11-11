@@ -32,7 +32,7 @@ describe('fetch-hypothesis-annotation', (): void => {
   it.each([
     ['basic Markdown', '# Very good', '<h1>Very good</h1>'],
     ['(linkify) GitHub Flavored Markdown', 'www.example.com', '<a href="http://www.example.com">www.example.com</a>'],
-    // ['bold italics', '***bold/italics** italics*', '<p><em><strong>bold/italics</strong> italics</em></p>'],
+    ['bold italics', '***bold/italics** italics*', '<p><em><strong>bold/italics</strong> italics</em></p>'],
   ])('converts %s to HTML', async (_, input: string, expected: string) => {
     const getJson: GetJson = async () => ({
       created: date,

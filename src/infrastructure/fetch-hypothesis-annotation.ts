@@ -1,5 +1,6 @@
 import { URL } from 'url';
-import showdown from 'showdown';
+import { Remarkable } from 'remarkable';
+import { linkify } from 'remarkable/linkify';
 import { Maybe } from 'true-myth';
 import { Logger } from './logger';
 import { Review } from './review';
@@ -19,8 +20,7 @@ type HypothesisResponse = JsonCompatible<{
 }>;
 
 export default (getJson: GetJson, logger: Logger): FetchHypothesisAnnotation => {
-  const converter = new showdown.Converter({ noHeaderId: true });
-  converter.setFlavor('github');
+  const converter = new Remarkable({ html: true }).use(linkify);
   return async (id) => {
     const uri = `https://api.hypothes.is/api/annotations/${id.value}`;
 
@@ -29,7 +29,7 @@ export default (getJson: GetJson, logger: Logger): FetchHypothesisAnnotation => 
 
     const response: Review = {
       publicationDate: Maybe.just(new Date(data.created)),
-      fullText: Maybe.just(data.text).map((text) => converter.makeHtml(text)),
+      fullText: Maybe.just(data.text).map((text) => converter.render(text)),
       url: new URL(data.links.incontext),
     };
 
