@@ -12,20 +12,23 @@
   &:last-child {
     margin-bottom: 0;
   }
-}
 
-@media screen and (min-width: 46.25em) {
-  .article-feed__item {
+  @media screen and (min-width: 46.25em) {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
   }
 
-  .article-feed__item_contents {
+}
+
+.article-feed__item_contents {
+  @media screen and (min-width: 46.25em) {
     display: flex;
     grid-column: 1 / 9;
   }
+}
 
-  .responses {
+.responses {
+  @media screen and (min-width: 46.25em) {
     grid-column: 10 / -1;
   }
 }
