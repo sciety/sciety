@@ -1,6 +1,6 @@
 import { URL } from 'url';
 import { NotFound } from 'http-errors';
-import showdown from 'showdown';
+import { Remarkable } from 'remarkable';
 import { Maybe, Result } from 'true-myth';
 import createGetFollowersFromIds, { GetUserDetails } from './get-followers-from-ids';
 import createGetMostRecentEvents, { GetAllEvents } from './get-most-recent-events';
@@ -53,14 +53,14 @@ const buildRenderPageHeader = (ports: Ports): RenderPageHeader => {
 };
 
 const buildRenderDescription = (ports: Ports): RenderDescription => {
-  const converter = new showdown.Converter({ noHeaderId: true });
+  const converter = new Remarkable({ html: true });
   const getEditorialCommunityDescription: GetEditorialCommunityDescription = async (editorialCommunityId) => {
     const editorialCommunity = (await ports.getEditorialCommunity(editorialCommunityId))
       .unwrapOrElse(() => {
         throw new NotFound(`${editorialCommunityId.value} not found`);
       });
     const markdown = await ports.fetchStaticFile(`editorial-communities/${editorialCommunity.descriptionPath}`);
-    return converter.makeHtml(markdown);
+    return converter.render(markdown);
   };
   return createRenderDescription(getEditorialCommunityDescription);
 };
