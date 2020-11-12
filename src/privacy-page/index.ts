@@ -1,9 +1,10 @@
 import { Result } from 'true-myth';
+import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
-type RenderPage = () => Promise<Result<{content: string}, never>>;
+type RenderPage = () => Promise<Result<{content: HtmlFragment}, never>>;
 
 export default (): RenderPage => async () => Result.ok({
-  content: `
+  content: toHtmlFragment(`
     <div class="page-content-wrapper">
       <header class="page-header">
         <h1>Privacy notice</h1>
@@ -40,5 +41,5 @@ export default (): RenderPage => async () => Result.ok({
         Although most changes are likely to be minor, eLife may change its Privacy Notice from time to time, and at our sole discretion. We encourage visitors to check this page frequently for any changes to its Privacy Notice. First published October 19, 2020.
       </p>
     </div>
-  `,
+  `),
 });
