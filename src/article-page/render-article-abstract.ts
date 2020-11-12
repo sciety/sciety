@@ -1,7 +1,8 @@
 import { Result } from 'true-myth';
 import Doi from '../types/doi';
+import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
-export type GetArticleAbstract<E> = (doi: Doi) => Promise<Result<string, E>>;
+export type GetArticleAbstract<E> = (doi: Doi) => Promise<Result<SanitisedHtmlFragment, E>>;
 
 type RenderArticleAbstract<E> = (doi: Doi) => Promise<Result<string, E>>;
 

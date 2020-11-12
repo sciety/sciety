@@ -1,6 +1,7 @@
 import { Result } from 'true-myth';
 import createRenderArticleAbstract, { GetArticleAbstract } from '../../src/article-page/render-article-abstract';
 import Doi from '../../src/types/doi';
+import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
 
 const doi = new Doi('10.1101/815689');
 
@@ -8,7 +9,7 @@ describe('render-article-abstract component', (): void => {
   describe('when the article is available', () => {
     it('renders the abstract for an article', async (): Promise<void> => {
       const getArticleAbstract: GetArticleAbstract<never> = async () => (
-        Result.ok(`Article ${doi.value} abstract content`)
+        Result.ok(`Article ${doi.value} abstract content` as SanitisedHtmlFragment)
       );
 
       const renderArticleAbstract = createRenderArticleAbstract(getArticleAbstract);

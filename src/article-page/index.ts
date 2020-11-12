@@ -17,6 +17,7 @@ import { Logger } from '../infrastructure/logger';
 import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { ReviewId } from '../types/review-id';
+import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { User } from '../types/user';
 
 type FindReviewsForArticleDoi = (articleVersionDoi: Doi) => Promise<ReadonlyArray<{
@@ -57,7 +58,7 @@ type ArticlePage = (params: Params) => ReturnType<RenderPage>;
 export default (ports: Ports): ArticlePage => {
   const renderPageHeader = createRenderPageHeader(ports.fetchArticle);
   const renderAbstract = createRenderArticleAbstract(async (doi) => (
-    (await ports.fetchArticle(doi)).map((article) => article.abstract)
+    (await ports.fetchArticle(doi)).map((article) => article.abstract as SanitisedHtmlFragment)
   ));
   const getEditorialCommunity: GetEditorialCommunity = async (editorialCommunityId) => (
     (await ports.getEditorialCommunity(editorialCommunityId)).unsafelyUnwrap()
