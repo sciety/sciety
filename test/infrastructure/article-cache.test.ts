@@ -3,11 +3,12 @@ import createArticleCache from '../../src/infrastructure/article-cache';
 import { FetchCrossrefArticle } from '../../src/infrastructure/fetch-crossref-article';
 import Doi from '../../src/types/doi';
 import { toHtmlFragment } from '../../src/types/html-fragment';
+import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
 import dummyLogger from '../dummy-logger';
 
 describe('article-cache', () => {
   const arbitraryArticle = {
-    abstract: toHtmlFragment(''),
+    abstract: toHtmlFragment('') as SanitisedHtmlFragment,
     authors: [],
     doi: new Doi('10.1101/12345678'),
     title: '',
@@ -26,7 +27,7 @@ describe('article-cache', () => {
 
     it('returns the fetched article', async () => {
       const fetched = {
-        abstract: toHtmlFragment(''),
+        abstract: toHtmlFragment('') as SanitisedHtmlFragment,
         authors: [],
         doi: new Doi('10.1101/111111'),
         title: '',

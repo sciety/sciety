@@ -32,7 +32,7 @@ type FindVersionsForArticleDoi = (doi: Doi) => Promise<ReadonlyArray<{
   version: number;
 }>>;
 
-type GetArticleDetailsForAbstract = (doi: Doi) => Promise<Result<{ abstract: string }, 'not-found'|'unavailable'>>;
+type GetArticleDetailsForAbstract = (doi: Doi) => Promise<Result<{ abstract: SanitisedHtmlFragment }, 'not-found'|'unavailable'>>;
 
 interface Ports {
   fetchArticle: GetArticleDetailsForPage & GetArticleDetailsForHeader<'not-found'|'unavailable'> & GetArticleDetailsForAbstract;
@@ -58,7 +58,7 @@ type ArticlePage = (params: Params) => ReturnType<RenderPage>;
 export default (ports: Ports): ArticlePage => {
   const renderPageHeader = createRenderPageHeader(ports.fetchArticle);
   const renderAbstract = createRenderArticleAbstract(async (doi) => (
-    (await ports.fetchArticle(doi)).map((article) => article.abstract as SanitisedHtmlFragment)
+    (await ports.fetchArticle(doi)).map((article) => article.abstract)
   ));
   const getEditorialCommunity: GetEditorialCommunity = async (editorialCommunityId) => (
     (await ports.getEditorialCommunity(editorialCommunityId)).unsafelyUnwrap()
