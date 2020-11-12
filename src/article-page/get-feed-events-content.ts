@@ -5,7 +5,7 @@ import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { HtmlFragment } from '../types/html-fragment';
 import { ReviewId } from '../types/review-id';
-import { toSanitisedHtmlFragment } from '../types/sanitised-html-fragment';
+import { sanitise } from '../types/sanitised-html-fragment';
 
 type ReviewEvent = {
   type: 'review',
@@ -56,7 +56,7 @@ export default (
           editorialCommunityId: feedEvent.editorialCommunityId,
           editorialCommunityName: editorialCommunity.name,
           editorialCommunityAvatar: editorialCommunity.avatar,
-          fullText: review.fullText.map(toSanitisedHtmlFragment),
+          fullText: review.fullText.map(sanitise),
         };
       },
     );
