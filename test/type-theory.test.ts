@@ -48,6 +48,33 @@ describe('type theory', () => {
       //tuple.push('c'); 
       //tuple.pop();
     });
+
+    it('provides interfaces that can be merged', () => {
+      // can only represent objects, not other primitive types
+      interface A {
+        first: number;
+      }
+
+      interface A {
+        second: number;
+      }
+
+      const a: A = {first: 1, second: 2};
+      expect(a.first).toStrictEqual(1);
+    });
+
+    it('provides type aliases for what interfaces do', () => {
+      type A = {
+        first: number;
+      }
+
+      type B = {
+        second: number;
+      }
+
+      const a: A & B = {first: 1, second: 2};
+      expect(a.first).toStrictEqual(1);
+    });
   });
 
   describe('higher-order types', () => {
@@ -79,9 +106,19 @@ describe('type theory', () => {
     });
 
     describe('can use tagged intersections to restrict a new type without runtime overhead', () => {
-      type UserId = string & { __compileTimeOnly: any };
+      type UserId = string & { readonly __compileTimeOnly: unique symbol };
       const userId: UserId = 'my-user-id' as UserId;
       expect(userId.length).toStrictEqual(10);
+    });
+
+    describe('can use classes to box values and avoid operations on them', () => {
+      class UserId {
+        constructor(private value: string) {}
+        // other methods...
+      }
+      const userId = new UserId('my-user-id');
+      // will not mutate anyway, but doesn't compile because ids are opaque
+      // expect(userId.replace('my-', 'foo-')).toStrictEqual('foo-user-id');
     });
   });
 });
