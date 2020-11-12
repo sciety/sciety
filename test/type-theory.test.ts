@@ -5,6 +5,8 @@ describe('type theory', () => {
       const b: string = 'forty-two';
       const c: bigint = BigInt('424242424242424242424242424242');
       const d: boolean = true;
+      // PROPOSAL: is there any type that would benefit from Symbol over string?
+      // e.g. error types like 'not-found' as they are never printed
       const e: symbol = Symbol('my-iterator');
       const f: null = null;
       const g: undefined = undefined;
@@ -12,13 +14,14 @@ describe('type theory', () => {
       expect([a, b, c, d, e, f, g, h]).toHaveLength(8);
     });
 
-    it('prefers Record instead of object', () => {
+    it('prefers Record instead of primitive object', () => {
       const record: Record<string, number> = {};
       record['answer'] = 42;
       expect(record.answer).toStrictEqual(42);
     });
 
     it('uses unknown as the top type', () => {
+      // PROPOSAL: check what types can be abstracted to unknown, without requiring generics
       const acceptsEverything = (_input: unknown) => 42;
       acceptsEverything('some-input');
     });
@@ -29,6 +32,9 @@ describe('type theory', () => {
 
     describe('provides unit types', () => {
       const canOnlyHaveOneValue = 'foobar';
+      // PROPOSAL: consider substitute unit types with Symbols where we don't want
+      // operations to be available on them e.g. substring or increment in-place
+      // on error codes such as `not-found` 
       it('allows operations', () => {
         expect(canOnlyHaveOneValue.substr(0, 3)).toStrictEqual('foo');
       });
@@ -36,11 +42,13 @@ describe('type theory', () => {
   });
 
   describe('data structures', () => {
-    it('provides Arrays', () => {
-      const array: Array<string> = ['a', 'b'];
+    it('provides (Readonly)Arrays', () => {
+      const array: ReadonlyArray<string> = ['a', 'b'];
       expect(array).toHaveLength(2);
     });
 
+    // REFLECTION: not clear if this is ever better than an explicit object which
+    // has names for the two/N properties
     it('provides (im)mutable tuples', () => {
       const tuple: readonly [string, string] = ['a', 'b'];
       expect(tuple).toHaveLength(2);
@@ -49,6 +57,8 @@ describe('type theory', () => {
       //tuple.pop();
     });
 
+    // PROPOSAL: evaluate const enum over union type where ordering is needed
+    // (I put this in the log levels a while ago to support filtering out levels locally)
     it('provides const enums which are ordered', () => {
       const enum Direction {
         Up,
@@ -68,6 +78,8 @@ describe('type theory', () => {
       interface A {
         second: number;
       }
+      // PROPOSAL: abandon interfaces in favor of type aliases for consistency
+      // and stricter behavior (no extension from multiple places), see next test
 
       const a: A = {first: 1, second: 2};
       expect(a.first).toStrictEqual(1);
@@ -115,7 +127,7 @@ describe('type theory', () => {
       expect(x[0]).toStrictEqual(101);
     });
 
-    describe('can use tagged intersections to restrict a new type without runtime overhead', () => {
+    describe('can use tagged intersections to restrict a new type without runtime overhead and only allowing explicit assignment with a conversion', () => {
       type UserId = string & { readonly __compileTimeOnly: unique symbol };
       const userId: UserId = 'my-user-id' as UserId;
       expect(userId.length).toStrictEqual(10);
@@ -127,7 +139,7 @@ describe('type theory', () => {
         // other methods...
       }
       const userId = new UserId('my-user-id');
-      // will not mutate anyway, but doesn't compile because ids are opaque
+      // will not mutate anyway, but doesn't compile because such a value is opaque
       // expect(userId.replace('my-', 'foo-')).toStrictEqual('foo-user-id');
     });
   });
