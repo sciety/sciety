@@ -2,11 +2,12 @@ import { Result } from 'true-myth';
 import { DOMParser, XMLSerializer } from 'xmldom';
 import { Logger } from './logger';
 import Doi from '../types/doi';
+import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 type FetchCrossrefArticleError = 'not-found' | 'unavailable';
 
 export type FetchCrossrefArticle = (doi: Doi) => Promise<Result<{
-  abstract: string;
+  abstract: HtmlFragment;
   authors: Array<string>;
   doi: Doi;
   title: string;
@@ -118,7 +119,7 @@ export default (getXml: GetXml, logger: Logger): FetchCrossrefArticle => {
     try {
       const doc = parser.parseFromString(response, 'text/xml');
       return Result.ok({
-        abstract: getAbstract(doc, doi),
+        abstract: toHtmlFragment(getAbstract(doc, doi)),
         authors: getAuthors(doc, doi),
         doi,
         title: getTitle(doc),

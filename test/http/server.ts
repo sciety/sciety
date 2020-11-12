@@ -18,6 +18,7 @@ import createEndorsementsRepository from '../../src/infrastructure/in-memory-end
 import createReviewProjections from '../../src/infrastructure/review-projections';
 import EditorialCommunityRepository from '../../src/types/editorial-community-repository';
 import FollowList from '../../src/types/follow-list';
+import { toHtmlFragment } from '../../src/types/html-fragment';
 import dummyLogger from '../dummy-logger';
 import shouldNotBeCalled from '../should-not-be-called';
 
@@ -40,7 +41,7 @@ export default async (): Promise<TestServer> => {
       .addOut(schema.author, (author) => author.addOut(schema.name, 'Author name'))
   );
   const fetchArticle: FetchCrossrefArticle = async (doi) => (Result.ok({
-    abstract: 'Article abstract.',
+    abstract: toHtmlFragment('Article abstract.'),
     authors: [],
     doi,
     title: 'Article title',

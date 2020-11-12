@@ -1,6 +1,7 @@
 import striptags from 'striptags';
 import { Maybe, Result } from 'true-myth';
 import Doi from '../types/doi';
+import { HtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
 type Page = {
@@ -18,7 +19,7 @@ type RenderPageError = {
 
 type ArticleDetails = {
   title: string,
-  abstract: string,
+  abstract: HtmlFragment,
 };
 
 export type GetArticleDetails = (doi: Doi) => Promise<Result<ArticleDetails, 'not-found'|'unavailable'>>;
