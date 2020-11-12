@@ -1,9 +1,10 @@
 import { Result } from 'true-myth';
+import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
-type RenderPage = () => Promise<Result<{content: string}, never>>;
+type RenderPage = () => Promise<Result<{content: HtmlFragment}, never>>;
 
 export default (): RenderPage => async () => Result.ok({
-  content: `
+  content: toHtmlFragment(`
     <div class="page-content-wrapper">
       <header class="page-header">
         <h1>Terms and conditions</h1>
@@ -24,5 +25,5 @@ export default (): RenderPage => async () => Result.ok({
         and is not owned by eLife or its licensors, and is subject to the licence terms shown on the Editorial Community's page.
       </p>
     </div>
-  `,
+  `),
 });
