@@ -2,6 +2,7 @@ import { URL } from 'url';
 import { Maybe } from 'true-myth';
 import createFetchHypothesisAnnotation, { GetJson } from '../../src/infrastructure/fetch-hypothesis-annotation';
 import { Review } from '../../src/infrastructure/review';
+import { toHtmlFragment } from '../../src/types/html-fragment';
 import HypothesisAnnotationId from '../../src/types/hypothesis-annotation-id';
 import dummyLogger from '../dummy-logger';
 
@@ -22,7 +23,7 @@ describe('fetch-hypothesis-annotation', (): void => {
 
     const expected: Review = {
       publicationDate: Maybe.just(new Date(date)),
-      fullText: Maybe.just('<p>Very good</p>'),
+      fullText: Maybe.just('<p>Very good</p>').map(toHtmlFragment),
       url: new URL('https://www.example.com'),
     };
 

@@ -3,7 +3,7 @@ import { Maybe } from 'true-myth';
 import { FeedItem, GetFeedItems } from './render-feed';
 import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
-import { toHtmlFragment } from '../types/html-fragment';
+import { HtmlFragment } from '../types/html-fragment';
 import { ReviewId } from '../types/review-id';
 
 type ReviewEvent = {
@@ -25,7 +25,7 @@ type FeedEvent = ReviewEvent | ArticleVersionEvent;
 export type GetFeedEvents = (articleDoi: Doi) => Promise<ReadonlyArray<FeedEvent>>;
 
 export type GetReview = (id: ReviewId) => Promise<{
-  fullText: Maybe<string>;
+  fullText: Maybe<HtmlFragment>;
   url: URL;
 }>;
 
@@ -55,7 +55,7 @@ export default (
           editorialCommunityId: feedEvent.editorialCommunityId,
           editorialCommunityName: editorialCommunity.name,
           editorialCommunityAvatar: editorialCommunity.avatar,
-          fullText: review.fullText.map(toHtmlFragment),
+          fullText: review.fullText,
         };
       },
     );

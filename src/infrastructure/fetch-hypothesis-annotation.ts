@@ -4,6 +4,7 @@ import { linkify } from 'remarkable/linkify';
 import { Maybe } from 'true-myth';
 import { Logger } from './logger';
 import { Review } from './review';
+import { toHtmlFragment } from '../types/html-fragment';
 import HypothesisAnnotationId from '../types/hypothesis-annotation-id';
 import { Json, JsonCompatible } from '../types/json';
 
@@ -29,7 +30,7 @@ export default (getJson: GetJson, logger: Logger): FetchHypothesisAnnotation => 
 
     const response: Review = {
       publicationDate: Maybe.just(new Date(data.created)),
-      fullText: Maybe.just(data.text).map((text) => converter.render(text)),
+      fullText: Maybe.just(data.text).map((text) => converter.render(text)).map(toHtmlFragment),
       url: new URL(data.links.incontext),
     };
 

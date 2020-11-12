@@ -6,6 +6,7 @@ import { FetchDataset } from './fetch-dataset';
 import { Logger } from './logger';
 import { Review } from './review';
 import Doi from '../types/doi';
+import { toHtmlFragment } from '../types/html-fragment';
 
 export type FetchDataciteReview = (doi: Doi) => Promise<Review>;
 
@@ -24,7 +25,7 @@ export default (fetchDataset: FetchDataset, logger: Logger): FetchDataciteReview
 
       const review: Review = {
         publicationDate: Maybe.of(publicationDate).map((date:string) => new Date(date)),
-        fullText: Maybe.of(fullText),
+        fullText: Maybe.of(fullText).map(toHtmlFragment),
         url: new URL(url),
       };
       logger('debug', 'Retrieved review', { review });

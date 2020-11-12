@@ -3,6 +3,7 @@ import { Maybe } from 'true-myth';
 import createGetFeedEventsContent, { GetEditorialCommunity, GetFeedEvents, GetReview } from '../../src/article-page/get-feed-events-content';
 import Doi from '../../src/types/doi';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
+import { toHtmlFragment } from '../../src/types/html-fragment';
 
 describe('get-feed-events-content', () => {
   describe('when there are reviews', () => {
@@ -22,7 +23,7 @@ describe('get-feed-events-content', () => {
         },
       ];
       const getReview: GetReview = async () => ({
-        fullText: Maybe.just('some text'),
+        fullText: Maybe.just(toHtmlFragment('some text')),
         url: new URL('http://example.com'),
       });
       const getEditorialCommunity: GetEditorialCommunity = async () => ({
