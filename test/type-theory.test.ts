@@ -56,7 +56,6 @@ describe('type theory', () => {
       }
       expect(Direction.Up).toStrictEqual(0);
       expect(Direction.Down).toStrictEqual(1);
-      expect(Direction[0]).toStrictEqual('Up');
       expect(Direction.Up < Direction.Down).toBe(true);
     });
 
