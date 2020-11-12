@@ -4,8 +4,8 @@ import { Maybe } from 'true-myth';
 import { RenderReviewResponses } from './render-review-responses';
 import templateDate from '../shared-components/date';
 import EditorialCommunityId from '../types/editorial-community-id';
-import { HtmlFragment } from '../types/html-fragment';
 import { ReviewId } from '../types/review-id';
+import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { UserId } from '../types/user-id';
 
 export type RenderReviewFeedItem = (review: ReviewFeedItem, userId: Maybe<UserId>) => Promise<string>;
@@ -18,7 +18,7 @@ export type ReviewFeedItem = {
   editorialCommunityId: EditorialCommunityId;
   editorialCommunityName: string;
   editorialCommunityAvatar: URL;
-  fullText: Maybe<HtmlFragment>;
+  fullText: Maybe<SanitisedHtmlFragment>;
 };
 
 const renderAvatar = (url: URL): string => `

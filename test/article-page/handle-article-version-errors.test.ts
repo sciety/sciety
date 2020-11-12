@@ -5,6 +5,7 @@ import { FeedItem, GetFeedItems } from '../../src/article-page/render-feed';
 import Doi from '../../src/types/doi';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
 import { toHtmlFragment } from '../../src/types/html-fragment';
+import { toSanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
 
 describe('handle-article-version-errors', () => {
   describe('there are article version events', () => {
@@ -36,7 +37,9 @@ describe('handle-article-version-errors', () => {
           editorialCommunityId: new EditorialCommunityId('community-1'),
           editorialCommunityName: 'OUR COMMUNITY',
           editorialCommunityAvatar: new URL('http://example.com/images/us.png'),
-          fullText: Maybe.just(toHtmlFragment('review-1')),
+          fullText: Maybe.just('review-1')
+            .map(toHtmlFragment)
+            .map(toSanitisedHtmlFragment),
         },
         {
           type: 'review',
@@ -46,7 +49,9 @@ describe('handle-article-version-errors', () => {
           editorialCommunityId: new EditorialCommunityId('community-1'),
           editorialCommunityName: 'OUR COMMUNITY',
           editorialCommunityAvatar: new URL('http://example.com/images/us.png'),
-          fullText: Maybe.just(toHtmlFragment('review-2')),
+          fullText: Maybe.just('review-2')
+            .map(toHtmlFragment)
+            .map(toSanitisedHtmlFragment),
         },
       ];
       const originalGetFeedItems: GetFeedItems = async () => inputItems;

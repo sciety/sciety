@@ -5,6 +5,7 @@ import createRenderReviewFeedItem from '../../src/article-page/render-review-fee
 import Doi from '../../src/types/doi';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
 import { toHtmlFragment } from '../../src/types/html-fragment';
+import { toSanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
 
 describe('render-review-feed-item', () => {
   describe('when the review has long full text', () => {
@@ -21,7 +22,9 @@ describe('render-review-feed-item', () => {
           editorialCommunityId: new EditorialCommunityId('community-1'),
           editorialCommunityName: 'Community 1',
           editorialCommunityAvatar: new URL('http://example.com/avatar'),
-          fullText: Maybe.just(toHtmlFragment(fullText)),
+          fullText: Maybe.just(fullText)
+            .map(toHtmlFragment)
+            .map(toSanitisedHtmlFragment),
         }, Maybe.nothing()),
       );
       const toggleableContent = rendered.querySelector('[data-behaviour="collapse_to_teaser"]');
@@ -49,7 +52,9 @@ describe('render-review-feed-item', () => {
           editorialCommunityId: new EditorialCommunityId('community-1'),
           editorialCommunityName: 'Community 1',
           editorialCommunityAvatar: new URL('http://example.com/avatar'),
-          fullText: Maybe.just(toHtmlFragment(fullText)),
+          fullText: Maybe.just(fullText)
+            .map(toHtmlFragment)
+            .map(toSanitisedHtmlFragment),
         }, Maybe.nothing()),
       );
       const toggleableContent = rendered.querySelector('[data-behaviour="collapse_to_teaser"]');
