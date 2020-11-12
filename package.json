@@ -80,7 +80,7 @@
     "supertest": "^4.0.2",
     "ts-jest": "^26.3.0",
     "ts-node-dev": "^1.0.0-pre.62",
-    "ts-unused-exports": "^6.2.1",
+    "ts-unused-exports": "^7.0.0",
     "typescript": "^4.0.2"
   },
   "scripts": {
@@ -92,7 +92,7 @@
     "lint:stylelint": "stylelint ${STYLELINT:-} \"src/sass/**/*.scss\" --cache --cache-location .stylelint/",
     "lint:typescript:dev": "tsc --noEmit --project tsconfig.dev.json",
     "lint:typescript:prod": "tsc --noEmit",
-    "lint:unused-exports": "ts-unused-exports tsconfig.dev.json",
+    "lint:unused-exports": "ts-unused-exports tsconfig.dev.json --silent",
     "start": "node ./build/index.js",
     "start:dev:sass": "sass --watch --embed-sources src/sass:static",
     "start:dev:ts": "ts-node-dev --project tsconfig.dev.json --transpile-only --watch data ./src/index.ts",
