@@ -1,7 +1,8 @@
 import { Maybe, Result } from 'true-myth';
+import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
-export type RenderPage = (userId: Maybe<UserId>) => Promise<Result<{content: string}, never>>;
+export type RenderPage = (userId: Maybe<UserId>) => Promise<Result<{content: HtmlFragment}, never>>;
 
 type Component = (userId: Maybe<UserId>) => Promise<string>;
 
@@ -11,7 +12,7 @@ export default (
   renderSearchForm: Component,
   renderFeed: Component,
 ): RenderPage => async (userId) => Result.ok({
-  content: `
+  content: toHtmlFragment(`
     <div class="sciety-grid sciety-grid--home">
       ${await renderPageHeader(userId)}
 
@@ -25,5 +26,5 @@ export default (
       </div>
 
     </div>
-  `,
+  `),
 });
