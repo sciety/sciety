@@ -1,11 +1,12 @@
 import striptags from 'striptags';
 import { Maybe, Result } from 'true-myth';
 import Doi from '../types/doi';
+import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { UserId } from '../types/user-id';
 
 type Page = {
-  content: string,
+  content: HtmlFragment,
   openGraph: {
     title: string,
     description: string,
@@ -14,7 +15,7 @@ type Page = {
 
 type RenderPageError = {
   type: 'not-found' | 'unavailable',
-  content: string,
+  content: HtmlFragment,
 };
 
 type ArticleDetails = {
@@ -36,7 +37,7 @@ export default (
 ): RenderPage => {
   const template = (abstract: string) => (pageHeader: string) => (feed: string) => (articleDetails: ArticleDetails) => (
     {
-      content: `
+      content: toHtmlFragment(`
 <article class="sciety-grid sciety-grid--article">
   ${pageHeader}
 
@@ -45,7 +46,7 @@ export default (
     ${feed}
   </div>
 </article>
-    `,
+    `),
       openGraph: {
         title: striptags(articleDetails.title),
         description: striptags(articleDetails.abstract),
@@ -73,7 +74,7 @@ export default (
           case 'not-found':
             return {
               type: 'not-found',
-              content: `
+              content: toHtmlFragment(`
                 <div class="page-content-wrapper">
                   <h1>Oops!</h1>
                   <p>
@@ -85,12 +86,12 @@ export default (
                     <a href="/" class="u-call-to-action-link">Return to Homepage</a>
                   </p>
                 </div>
-              `,
+              `),
             };
           case 'unavailable':
             return {
               type: 'unavailable',
-              content: `
+              content: toHtmlFragment(`
                 <div class="page-content-wrapper">
                   <h1>Oops!</h1>
                   <p>
@@ -102,7 +103,7 @@ export default (
                     <a href="/" class="u-call-to-action-link">Return to Homepage</a>
                   </p>
                 </div>
-              `,
+              `),
             };
         }
       });

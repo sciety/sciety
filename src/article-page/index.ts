@@ -16,6 +16,7 @@ import createRenderReviewResponses from './render-review-responses';
 import { Logger } from '../infrastructure/logger';
 import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
+import { toHtmlFragment } from '../types/html-fragment';
 import { ReviewId } from '../types/review-id';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { User } from '../types/user';
@@ -104,7 +105,7 @@ export default (ports: Ports): ArticlePage => {
     } catch (error: unknown) {
       return Result.err({
         type: 'not-found',
-        content: `${params.doi ?? 'Article'} not found`,
+        content: toHtmlFragment(`${params.doi ?? 'Article'} not found`),
       });
     }
     const userId = params.user.map((user) => user.id);
