@@ -121,4 +121,24 @@ describe('type theory', () => {
       // expect(userId.replace('my-', 'foo-')).toStrictEqual('foo-user-id');
     });
   });
+
+  describe('polymorphism', () => {
+    it('provides generic types on functions', () => {
+      const id = <T>(a: T) => a;
+      expect(id(42)).toStrictEqual(42);
+    });
+
+    it('provides constraints on generic types', () => {
+      const id = <T extends { 'answer': unknown }>(a: T) => a;
+      expect(id({ answer: 42 }).answer).toStrictEqual(42);
+    });
+
+    it('provides generic types on classes', () => {
+      class Tag<T> {
+        constructor(private value: T, private tag: string) {}
+        toString() {return `${this.tag}:${this.value.toString()}`; }
+      } 
+      expect((new Tag(42, 'answer')).toString()).toStrictEqual('answer:42');
+    });
+  })
 });
