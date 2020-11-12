@@ -49,6 +49,17 @@ describe('type theory', () => {
       //tuple.pop();
     });
 
+    it('provides const enums which are ordered', () => {
+      const enum Direction {
+        Up,
+        Down,
+      }
+      expect(Direction.Up).toStrictEqual(0);
+      expect(Direction.Down).toStrictEqual(1);
+      expect(Direction[0]).toStrictEqual('Up');
+      expect(Direction.Up < Direction.Down).toBe(true);
+    });
+
     it('provides interfaces that can be merged', () => {
       // can only represent objects, not other primitive types
       interface A {
