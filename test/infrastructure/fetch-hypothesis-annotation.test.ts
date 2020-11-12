@@ -46,4 +46,19 @@ describe('fetch-hypothesis-annotation', (): void => {
 
     expect(review.fullText.unsafelyUnwrap()).toContain(expected);
   });
+
+  it('leaves broken embedded HTML unchanged', async () => {
+    const input = '<p><strong><em>bold italic</strong> italic</em></p>';
+    const getJson: GetJson = async () => ({
+      created: date,
+      text: input,
+      links: {
+        incontext: 'https://www.example.com',
+      },
+    });
+    const fetchHypothesisAnnotation = createFetchHypothesisAnnotation(getJson, dummyLogger);
+    const review = await fetchHypothesisAnnotation(hypothesisAnnotationId);
+
+    expect(review.fullText.unsafelyUnwrap()).toStrictEqual(input);
+  });
 });
