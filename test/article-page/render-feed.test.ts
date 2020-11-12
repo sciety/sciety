@@ -32,7 +32,7 @@ describe('render-feed', () => {
             editorialCommunityId: new EditorialCommunityId(''),
             editorialCommunityName: '',
             editorialCommunityAvatar: new URL('http://example.com'),
-            fullText: Maybe.just(''),
+            fullText: Maybe.nothing(),
           },
           {
             type: 'article-version',

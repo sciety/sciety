@@ -4,6 +4,7 @@ import { Maybe } from 'true-myth';
 import { RenderReviewResponses } from './render-review-responses';
 import templateDate from '../shared-components/date';
 import EditorialCommunityId from '../types/editorial-community-id';
+import { HtmlFragment } from '../types/html-fragment';
 import { ReviewId } from '../types/review-id';
 import { UserId } from '../types/user-id';
 
@@ -17,7 +18,7 @@ export type ReviewFeedItem = {
   editorialCommunityId: EditorialCommunityId;
   editorialCommunityName: string;
   editorialCommunityAvatar: URL;
-  fullText: Maybe<string>;
+  fullText: Maybe<HtmlFragment>;
 };
 
 const renderAvatar = (url: URL): string => `

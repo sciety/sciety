@@ -4,6 +4,7 @@ import { Maybe } from 'true-myth';
 import createRenderReviewFeedItem from '../../src/article-page/render-review-feed-item';
 import Doi from '../../src/types/doi';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
+import { toHtmlFragment } from '../../src/types/html-fragment';
 
 describe('render-review-feed-item', () => {
   describe('when the review has long full text', () => {
@@ -20,7 +21,7 @@ describe('render-review-feed-item', () => {
           editorialCommunityId: new EditorialCommunityId('community-1'),
           editorialCommunityName: 'Community 1',
           editorialCommunityAvatar: new URL('http://example.com/avatar'),
-          fullText: Maybe.just(fullText),
+          fullText: Maybe.just(toHtmlFragment(fullText)),
         }, Maybe.nothing()),
       );
       const toggleableContent = rendered.querySelector('[data-behaviour="collapse_to_teaser"]');
@@ -48,7 +49,7 @@ describe('render-review-feed-item', () => {
           editorialCommunityId: new EditorialCommunityId('community-1'),
           editorialCommunityName: 'Community 1',
           editorialCommunityAvatar: new URL('http://example.com/avatar'),
-          fullText: Maybe.just(fullText),
+          fullText: Maybe.just(toHtmlFragment(fullText)),
         }, Maybe.nothing()),
       );
       const toggleableContent = rendered.querySelector('[data-behaviour="collapse_to_teaser"]');

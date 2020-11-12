@@ -3,6 +3,7 @@ import { Maybe } from 'true-myth';
 import { FeedItem, GetFeedItems } from './render-feed';
 import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
+import { toHtmlFragment } from '../types/html-fragment';
 import { ReviewId } from '../types/review-id';
 
 type ReviewEvent = {
@@ -54,7 +55,7 @@ export default (
           editorialCommunityId: feedEvent.editorialCommunityId,
           editorialCommunityName: editorialCommunity.name,
           editorialCommunityAvatar: editorialCommunity.avatar,
-          fullText: review.fullText,
+          fullText: review.fullText.map(toHtmlFragment),
         };
       },
     );
