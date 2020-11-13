@@ -1,5 +1,6 @@
 @use 'baseline';
 @use 'button';
+@use 'settings';
 
 .search-form {
   margin-bottom: #{baseline.increments(6)};
@@ -32,12 +33,20 @@
 }
 
 .search-form__button {
-  @include button.basics();
-  @include button.primary-colour();
+  border: 1px solid settings.$colour-ui-default;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+
+  color: settings.$colour-ui-default;
+  background-color: settings.$colour-white;
 
   font-weight: bold;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
   padding: 9px 9px 7px 10px;
   flex: 0 0 calc((32 / var(--BASE-FONT-MEASURE)) * 1rem);
+
+  &:hover {
+    color: settings.$colour-white;
+    background-color: settings.$colour-primary;
+    border-color: settings.$colour-primary;
+  }
 }
