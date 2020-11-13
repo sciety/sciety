@@ -47,7 +47,8 @@ type Page = {
   }
 };
 
-export default (page: Page, user: Maybe<User>): HtmlFragment => toHtmlFragment(`<!doctype html>
+// TODO: return a more specific type e.g. HtmlDocument
+export default (page: Page, user: Maybe<User>): string => `<!doctype html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
 <head>
   <meta charset="utf-8">
@@ -174,4 +175,4 @@ export default (page: Page, user: Maybe<User>): HtmlFragment => toHtmlFragment(`
   </script>
 </body>
 </html>
-`);
+`;
