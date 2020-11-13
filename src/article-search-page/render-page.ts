@@ -1,12 +1,13 @@
 import { Result } from 'true-myth';
 import { RenderSearchResults } from './render-search-results';
+import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
-export type RenderPage = (query: string) => Promise<Result<{content: string}, never>>;
+export type RenderPage = (query: string) => Promise<Result<{content: HtmlFragment}, never>>;
 
 export default (
   renderSearchResults: RenderSearchResults,
 ): RenderPage => async (query) => Result.ok({
-  content: `
+  content: toHtmlFragment(`
     <div class="page-content-wrapper">
 
       <header class="page-header">
@@ -18,5 +19,5 @@ export default (
       </section>
 
     </div>
-  `,
+  `),
 });
