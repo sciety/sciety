@@ -1,5 +1,6 @@
 import { htmlEscape } from 'escape-goat';
 import { Maybe } from 'true-myth';
+import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { User } from '../types/user';
 
 let googleTagManager = '';
@@ -13,14 +14,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','${process.env.GOOGLE_TAG_MANAGER_ID}');
 `;
 
-  googleTagManagerNoScript = `
+  googleTagManagerNoScript = toHtmlFragment(`
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=${process.env.GOOGLE_TAG_MANAGER_ID}"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->`;
+<!-- End Google Tag Manager (noscript) -->`);
 }
 
-const loggedInMenuItems = (user: User): string => `
+const loggedInMenuItems = (user: User): HtmlFragment => toHtmlFragment(`
   <li class="site-header__nav_list_item">
     <a href="/users/${user.id}" class="site-header__nav_list_link">My profile</a>
   </li>
@@ -28,25 +29,25 @@ const loggedInMenuItems = (user: User): string => `
   <li class="site-header__nav_list_item">
     <a href="/log-out" class="site-header__nav_list_link">Log out</a>
   </li>
-`;
+`);
 
-const loggedOutMenuItems = (): string => `
+const loggedOutMenuItems = (): HtmlFragment => toHtmlFragment(`
   <li class="site-header__nav_list_item">
     <a href="/log-in" class="site-header__nav_list_link">Log in</a>
   </li>
-`;
+`);
 
 const isSecure = process.env.APP_ORIGIN !== undefined && process.env.APP_ORIGIN.startsWith('https:');
 
 type Page = {
-  content: string;
+  content: HtmlFragment;
   openGraph?: {
     title: string;
     description: string;
   }
 };
 
-export default (page: Page, user: Maybe<User>): string => `<!doctype html>
+export default (page: Page, user: Maybe<User>): HtmlFragment => toHtmlFragment(`<!doctype html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
 <head>
   <meta charset="utf-8">
@@ -173,4 +174,4 @@ export default (page: Page, user: Maybe<User>): string => `<!doctype html>
   </script>
 </body>
 </html>
-`;
+`);
