@@ -1,4 +1,5 @@
 import { Result } from 'true-myth';
+import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
 type UserDetails = {
@@ -9,9 +10,9 @@ type UserDetails = {
 
 export type GetUserDetails = (userId: UserId) => Promise<Result<UserDetails, 'not-found' | 'unavailable'>>;
 
-type RenderHeader = (userId: UserId) => Promise<Result<string, 'not-found' | 'unavailable'>>;
+type RenderHeader = (userId: UserId) => Promise<Result<HtmlFragment, 'not-found' | 'unavailable'>>;
 
-const headerTemplate = (ud: UserDetails): string => `
+const headerTemplate = (ud: UserDetails): HtmlFragment => toHtmlFragment(`
   <header class="page-header page-header--user">
     <img src="${ud.avatarUrl}" alt="" class="page-header__avatar">
     <h1>
@@ -21,7 +22,7 @@ const headerTemplate = (ud: UserDetails): string => `
       </div>
     </h1>
   </header>
-`;
+`);
 
 export default (getUserDetails: GetUserDetails): RenderHeader => (
   async (userId) => {
