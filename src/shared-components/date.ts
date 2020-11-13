@@ -1,3 +1,5 @@
+import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+
 const textFormatOptions: Intl.DateTimeFormatOptions = {
   year: 'numeric',
   month: 'short',
@@ -7,7 +9,7 @@ const textFormatOptions: Intl.DateTimeFormatOptions = {
 const toString = (date: Date): string => date.toISOString().split('T')[0];
 const toDisplayString = (date: Date): string => date.toLocaleDateString('en-US', textFormatOptions);
 
-export default (date: Date, className?: string): string => {
+export default (date: Date, className?: string): HtmlFragment => {
   const classNameAttribute = className ? ` class="${className}"` : '';
-  return `<time datetime="${toString(date)}"${classNameAttribute}>${toDisplayString(date)}</time>`;
+  return toHtmlFragment(`<time datetime="${toString(date)}"${classNameAttribute}>${toDisplayString(date)}</time>`);
 };
