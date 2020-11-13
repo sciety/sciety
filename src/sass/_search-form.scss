@@ -50,3 +50,13 @@
     border-color: settings.$colour-primary;
   }
 }
+
+.search-form__icon {
+  fill: settings.$colour-ui-default;
+}
+
+.search-form__button:hover {
+  .search-form__icon {
+    fill: settings.$colour-white;
+  }
+}
