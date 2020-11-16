@@ -1,3 +1,4 @@
+@use 'sass:color';
 @use 'baseline';
 @use 'settings';
 @use 'functions';
@@ -23,7 +24,7 @@
 }
 
 .site-footer__strapline {
-  background-color: rgba(49, 73, 82, 0.8);
+  background-color: color.change(settings.$colour-teal, $alpha: 0.8);
   font-family: settings.$font-secondary;
   text-align: center;
   padding: baseline.increments(3) 1rem;
@@ -32,7 +33,7 @@
 }
 
 .site-footer__container {
-  background-color: rgba(49, 73, 82, 0.9);
+  background-color: color.change(settings.$colour-teal, $alpha: 0.9);
   width: 100%;
   margin: 0;
   padding-top: baseline.increments(3);
@@ -74,7 +75,7 @@
 }
 
 .site-footer__copyright {
-  background-color: rgb(49, 73, 82);
+  background-color: settings.$colour-teal;
   padding: baseline.increments(3) 1rem;
   width: 100%;
   text-align: center;
