@@ -32,7 +32,7 @@
   transition: background-color 0.2s ease-out, border-color 0.1s ease-out;
 
   &:hover {
-    background-color: settings.$colour-primary-very-light;
+    background-color: settings.$colour-grey-three;
     border-color: settings.$colour-primary-hover;
     color: settings.$colour-primary-hover;
   }
@@ -48,7 +48,7 @@
 }
 
 .editorial-community__link {
-  color: inherit;
+  color: settings.$colour-ui-default;
 
   &::before {
     position: absolute;
