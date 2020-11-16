@@ -19,7 +19,7 @@
 
 .button {
   @include basics();
-  font-size: var(--BASE-FONT-REM);
+  font-size: functions.px-to-rem(settings.$base-font-measure);
   font-family: Lato, sans-serif;
   padding: functions.px-to-rem(13) functions.px-to-rem(25);
   font-weight: bold;

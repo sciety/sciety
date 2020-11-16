@@ -56,7 +56,7 @@ Make sure that links inside a .ui.menu that use <ol> or <ul> retain the intended
 
 .ui.menu:not(.vertical) .item > .button.button--primary {
   color: #fff;
-  font-size: var(--BASE-FONT-REM);
+  font-size: functions.px-to-rem(settings.$base-font-measure);
   padding: functions.px-to-rem(13) functions.px-to-rem(25);
 }
 
@@ -185,10 +185,6 @@ Styles that are independent of Semantic UI
   color: rgb(0, 0, 0);
 }
 
-:root {
-  --BASE-FONT-REM: 1rem;
-}
-
 html {
   font-size: unset;
 }
@@ -196,7 +192,7 @@ html {
 body,
 p {
   font-family: 'Noto Serif', serif;
-  font-size: var(--BASE-FONT-REM);
+  font-size: functions.px-to-rem(settings.$base-font-measure);
 }
 
 body {
@@ -267,7 +263,7 @@ h5 {
 
 h6 {
   font-family: Lato, sans-serif;
-  font-size: var(--BASE-FONT-REM);
+  font-size: functions.px-to-rem(settings.$base-font-measure);
   margin-top: 0;
   margin-bottom: #{baseline.increments(2)};
   line-height: 1.2;

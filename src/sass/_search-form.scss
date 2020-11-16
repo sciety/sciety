@@ -13,7 +13,7 @@
 
 .search-form__input::placeholder {
   color: settings.$colour-grey-one;
-  font-size: var(--BASE-FONT-REM);
+  font-size: functions.px-to-rem(settings.$base-font-measure);
 }
 
 .search-form__input {
