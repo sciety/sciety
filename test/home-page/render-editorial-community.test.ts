@@ -2,6 +2,7 @@ import { URL } from 'url';
 import { Maybe } from 'true-myth';
 import createRenderEditorialCommunity from '../../src/home-page/render-editorial-community';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
+import { toHtmlFragment } from '../../src/types/html-fragment';
 
 describe('render-editorial-community', (): void => {
   it('renders the name of the community', async (): Promise<void> => {
@@ -11,7 +12,7 @@ describe('render-editorial-community', (): void => {
       avatar: new URL('http://example.com'),
     };
     const renderEditorialCommunity = createRenderEditorialCommunity(
-      async () => '',
+      async () => toHtmlFragment(''),
     );
     const rendered = await renderEditorialCommunity(Maybe.nothing(), community);
 

@@ -3,9 +3,10 @@ import { Maybe } from 'true-myth';
 import { RenderEditorialCommunity } from './render-editorial-community';
 import templateListItems from '../shared-components/list-items';
 import EditorialCommunityId from '../types/editorial-community-id';
+import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
-type RenderEditorialCommunities = (userId: Maybe<UserId>) => Promise<string>;
+type RenderEditorialCommunities = (userId: Maybe<UserId>) => Promise<HtmlFragment>;
 
 export type GetAllEditorialCommunities = () => Promise<Array<{
   avatar: URL;
@@ -22,7 +23,7 @@ export default (
       .map(async (editorialCommunity) => renderEditorialCommunity(userId, editorialCommunity)),
   );
 
-  return `
+  return toHtmlFragment(`
     <section>
       <h2>
         Editorial communities
@@ -31,5 +32,5 @@ export default (
         ${templateListItems(editorialCommunityLinks, 'editorial-community-list__item')}
       </ol>
     </section>
-  `;
+  `);
 };

@@ -2,6 +2,7 @@ import { URL } from 'url';
 import { Maybe } from 'true-myth';
 import { RenderFollowToggle } from './render-follow-toggle';
 import EditorialCommunityId from '../types/editorial-community-id';
+import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
 type Community = {
@@ -10,11 +11,11 @@ type Community = {
   name: string;
 };
 
-export type RenderEditorialCommunity = (userId: Maybe<UserId>, community: Community) => Promise<string>;
+export type RenderEditorialCommunity = (userId: Maybe<UserId>, community: Community) => Promise<HtmlFragment>;
 
 export default (
   renderFollowToggle: RenderFollowToggle,
-): RenderEditorialCommunity => async (userId, community) => `
+): RenderEditorialCommunity => async (userId, community) => toHtmlFragment(`
   <div class="editorial-community">
     <a href="/editorial-communities/${community.id.value}" class="editorial-community__link">
       <img src="${community.avatar.toString()}" alt="" class="editorial-community__avatar">
@@ -26,4 +27,4 @@ export default (
       ${await renderFollowToggle(userId, community.id, community.name)}
     </div>
   </div>
-`;
+`);

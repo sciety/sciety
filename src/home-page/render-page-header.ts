@@ -1,7 +1,9 @@
-type RenderPageHeader = () => Promise<string>;
+import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+
+type RenderPageHeader = () => Promise<HtmlFragment>;
 
 export default (): RenderPageHeader => (
-  async () => (`
+  async () => toHtmlFragment(`
     <header class="home-page-header">
 
       <h1>
