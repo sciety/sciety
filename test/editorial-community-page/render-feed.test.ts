@@ -13,7 +13,7 @@ describe('render feed', () => {
 
   describe('with community events', () => {
     it('returns a list of events', async () => {
-      const renderSummaryFeedList: RenderSummaryFeedList<unknown> = async () => Maybe.just('a list');
+      const renderSummaryFeedList: RenderSummaryFeedList<unknown> = async () => Maybe.just(toHtmlFragment('a list'));
 
       const renderFeed = createRenderFeed(stubGetEvents, renderSummaryFeedList, stubRenderFollowToggle);
 

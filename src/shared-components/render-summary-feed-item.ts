@@ -6,12 +6,13 @@ import {
   EditorialCommunityReviewedArticleEvent,
 } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
+import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 type FeedEvent =
   EditorialCommunityEndorsedArticleEvent |
   EditorialCommunityReviewedArticleEvent;
 
-type RenderSummaryFeedItem = (event: FeedEvent) => Promise<string>;
+type RenderSummaryFeedItem = (event: FeedEvent) => Promise<HtmlFragment>;
 
 type Actor = {
   url: string;
@@ -35,20 +36,20 @@ const createRenderSummaryFeedItemSummary = (getArticle: GetArticle): RenderSumma
   const renderEditorialCommunityEndorsedArticle: RenderEvent<EditorialCommunityEndorsedArticleEvent> = async (
     event,
     actor,
-  ) => `
+  ) => toHtmlFragment(`
       <a href="${actor.url}" class="summary-feed-item__link">${actor.name}</a>
       endorsed
       <a href="/articles/${event.articleId.value}" class="summary-feed-item__link">${await title(event.articleId)}</a>
-    `;
+    `);
 
   const renderEditorialCommunityReviewedArticle: RenderEvent<EditorialCommunityReviewedArticleEvent> = async (
     event,
     actor,
-  ) => `
+  ) => toHtmlFragment(`
       <a href="${actor.url}" class="summary-feed-item__link">${actor.name}</a>
       reviewed
       <a href="/articles/${event.articleId.value}" class="summary-feed-item__link">${await title(event.articleId)}</a>
-    `;
+    `);
 
   return async (event, actor) => {
     switch (event.type) {
@@ -70,7 +71,7 @@ export default (
 
   return async (event) => {
     const actor: Actor = await getActor(event.editorialCommunityId);
-    return `
+    return toHtmlFragment(`
       <div class="summary-feed-item">
         <img src="${actor.imageUrl}" alt="" class="summary-feed-item__avatar">
         <div>
@@ -80,6 +81,6 @@ export default (
           </div>
         </div>
       </div>
-    `;
+    `);
   };
 };

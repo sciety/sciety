@@ -1,6 +1,7 @@
 import { Maybe } from 'true-myth';
 import createRenderFeed, { GetEvents, IsFollowingSomething } from '../../src/home-page/render-feed';
 import { RenderSummaryFeedList } from '../../src/shared-components/render-summary-feed-list';
+import { toHtmlFragment } from '../../src/types/html-fragment';
 import toUserId from '../../src/types/user-id';
 import shouldNotBeCalled from '../should-not-be-called';
 
@@ -10,7 +11,7 @@ describe('render-feed', (): void => {
       it('returns a list', async (): Promise<void> => {
         const dummyGetEvents: GetEvents<unknown> = async () => ['some-event'];
         const dummyIsFollowingSomething: IsFollowingSomething = async () => true;
-        const dummyRenderSummaryFeedList: RenderSummaryFeedList<unknown> = async () => Maybe.just('someNiceList');
+        const dummyRenderSummaryFeedList: RenderSummaryFeedList<unknown> = async () => Maybe.just(toHtmlFragment('someNiceList'));
         const renderFeed = createRenderFeed(
           dummyIsFollowingSomething,
           dummyGetEvents,
