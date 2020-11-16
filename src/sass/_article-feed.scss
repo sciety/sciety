@@ -32,7 +32,7 @@
 .article-feed__item__avatar {
   width: 47px;
   height: 47px;
-  border: 1px solid #eee;
+  border: 1px solid rgb(238, 238, 238);
   border-radius: 50%;
   flex: 0 0 47px;
   margin-right: 1.5rem;
@@ -110,5 +110,5 @@ p.article-feed__item__title {
 
 .responses__button {
   @include button.basics();
-  background-color: #fff;
+  background-color: rgb(255, 255, 255);
 }

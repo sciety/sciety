@@ -55,7 +55,7 @@ Make sure that links inside a .ui.menu that use <ol> or <ul> retain the intended
 }
 
 .ui.menu:not(.vertical) .item > .button.button--primary {
-  color: #fff;
+  color: rgb(255, 255, 255);
   font-size: functions.px-to-rem(settings.$base-font-measure);
   padding: functions.px-to-rem(13px) functions.px-to-rem(25px);
 }
