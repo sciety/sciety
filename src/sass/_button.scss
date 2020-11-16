@@ -21,7 +21,7 @@
   @include basics();
   font-size: functions.px-to-rem(settings.$base-font-measure);
   font-family: Lato, sans-serif;
-  padding: functions.px-to-rem(13) functions.px-to-rem(25);
+  padding: functions.px-to-rem(13px) functions.px-to-rem(25px);
   font-weight: bold;
   background-color: settings.$colour-white;
   color: settings.$colour-ui-default;
@@ -35,8 +35,8 @@
 }
 
 .button--small {
-  font-size: functions.px-to-rem(12);
-  padding: functions.px-to-rem(9) functions.px-to-rem(18);
+  font-size: functions.px-to-rem(12px);
+  padding: functions.px-to-rem(9px) functions.px-to-rem(18px);
 }
 
 .button--primary {

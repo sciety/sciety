@@ -18,7 +18,7 @@
   max-width: functions.px-to-rem(settings.$max-site-width);
   flex-grow: 1;
 
-  @media screen and (min-width: functions.px-to-rem(690)) {
+  @media screen and (min-width: functions.px-to-rem(690px)) {
     @supports (display: flex) {
       display: flex;
     }
@@ -29,11 +29,11 @@
   padding-top: baseline.increments(1);
   display: block;
 
-  @media screen and (min-width: functions.px-to-rem(690)) {
-    padding-top: functions.px-to-rem(14);
+  @media screen and (min-width: functions.px-to-rem(690px)) {
+    padding-top: functions.px-to-rem(14px);
     display: inline;
     flex: 0 0 150px;
-    margin-right: functions.px-to-rem(50);
+    margin-right: functions.px-to-rem(50px);
   }
 }
 

@@ -21,9 +21,9 @@
   border-right-color: transparent;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
-  padding: functions.px-to-rem(13) functions.px-to-rem(25);
-  flex: 1 1 functions.px-to-rem(80);
-  min-width: functions.px-to-rem(80);
+  padding: functions.px-to-rem(13px) functions.px-to-rem(25px);
+  flex: 1 1 functions.px-to-rem(80px);
+  min-width: functions.px-to-rem(80px);
   width: 100%;
 }
 
@@ -43,7 +43,7 @@
 
   font-weight: bold;
   padding: 11px 9px 5px 10px;
-  flex: 0 0 functions.px-to-rem(32);
+  flex: 0 0 functions.px-to-rem(32px);
 
   &:hover {
     color: settings.$colour-white;

@@ -48,7 +48,7 @@ p.article-feed__item__title {
   font-family: Lato, sans-serif;
   font-size: 1.5rem;
   margin-bottom: baseline.increments(2);
-  padding-right: functions.px-to-rem(116);
+  padding-right: functions.px-to-rem(116px);
 }
 
 .article-feed__item-toggle {
@@ -58,8 +58,8 @@ p.article-feed__item__title {
   outline-width: 0;
   background: none;
   cursor: pointer;
-  padding: functions.px-to-rem(7) functions.px-to-rem(13);
-  width: functions.px-to-rem(107);
+  padding: functions.px-to-rem(7px) functions.px-to-rem(13px);
+  width: functions.px-to-rem(107px);
 }
 
 .article-feed__item__read_more {
