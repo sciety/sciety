@@ -20,7 +20,7 @@ export default (
 ): RenderFeed => {
   const renderArticleVersionErrorFeedItem = createRenderArticleVersionErrorFeedItem();
 
-  const renderFeedItem = async (feedItem: FeedItem, userId: Maybe<UserId>): Promise<string> => {
+  const renderFeedItem = async (feedItem: FeedItem, userId: Maybe<UserId>): Promise<HtmlFragment> => {
     switch (feedItem.type) {
       case 'article-version':
         return renderArticleVersionFeedItem(feedItem);

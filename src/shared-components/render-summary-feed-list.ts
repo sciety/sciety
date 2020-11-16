@@ -4,7 +4,7 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 export type RenderSummaryFeedList<T> = (events: ReadonlyArray<T>) => Promise<Maybe<HtmlFragment>>;
 
-type RenderSummaryFeedItem<T> = (event: T) => Promise<string>;
+type RenderSummaryFeedItem<T> = (event: T) => Promise<HtmlFragment>;
 
 export default <T>(
   renderSummaryFeedItem: RenderSummaryFeedItem<T>,

@@ -7,7 +7,7 @@ import { UserId } from '../types/user-id';
 export type RenderFollowedEditorialCommunity = (
   editorialCommunity: EditorialCommunity,
   userId: Maybe<UserId>,
-) => Promise<string>;
+) => Promise<HtmlFragment>;
 
 type RenderFollowToggle = (userId: Maybe<UserId>, editorialcommunityid: EditorialCommunityId) => Promise<HtmlFragment>;
 
