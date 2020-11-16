@@ -1,5 +1,6 @@
 @use 'baseline';
 @use 'settings';
+@use 'functions';
 
 .site-footer {
   flex-grow: 1;
@@ -40,7 +41,7 @@
 }
 
 .site-footer__details {
-  max-width: var(--MAX-SITE-WIDTH-REM);
+  max-width: functions.px-to-rem(settings.$max-site-width);
 
   @media screen and (min-width: 48.75em) {
     display: flex;

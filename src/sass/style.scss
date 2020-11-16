@@ -4,6 +4,7 @@
 @use 'summary-feed-list';
 @use 'summary-feed-item';
 @use 'footer';
+@use 'functions';
 @use 'article-abstract';
 @use 'editorial-community-page';
 @use 'page-header';
@@ -188,8 +189,6 @@ Styles that are independent of Semantic UI
   --BASE-FONT-MEASURE: #{settings.$base-font-measure};
   --BASE-FONT-PX: calc(var(--BASE-FONT-MEASURE) * 1px);
   --BASE-FONT-REM: 1rem;
-  --MAX-SITE-WIDTH: 1200;
-  --MAX-SITE-WIDTH-REM: calc((var(--MAX-SITE-WIDTH) / var(--BASE-FONT-MEASURE)) * 1rem);
 }
 
 html {
@@ -317,7 +316,7 @@ a:hover {
 
 .page-content-wrapper,
 .sciety-grid {
-  max-width: var(--MAX-SITE-WIDTH-REM);
+  max-width: functions.px-to-rem(settings.$max-site-width);
   margin: 0 1rem;
   flex-grow: 1;
 }
