@@ -27,7 +27,7 @@ export default (
         content: toHtmlFragment(`
           <div class="sciety-grid sciety-grid--editorial-community">
             ${await renderPageHeader(editorialCommunityId, userId)}
-    
+
             <div class="editorial-community-page-description">
               ${await renderDescription(editorialCommunityId, userId)}
             </div>

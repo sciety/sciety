@@ -1,11 +1,12 @@
 import { Maybe } from 'true-myth';
 import EditorialCommunityId from '../types/editorial-community-id';
+import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
 export type RenderFollowToggle = (
   userId: Maybe<UserId>,
   editorialCommunityId: EditorialCommunityId
-) => Promise<string>;
+) => Promise<HtmlFragment>;
 
 export type Follows = (userId: UserId, editorialCommunityId: EditorialCommunityId) => Promise<boolean>;
 
@@ -16,19 +17,19 @@ export default (follows: Follows): RenderFollowToggle => (
       .unwrapOrElse(async () => false);
 
     if (userFollows) {
-      return `
+      return toHtmlFragment(`
         <form method="post" action="/unfollow" class="follow-toggle">
           <input type="hidden" name="editorialcommunityid" value="${editorialCommunityId.value}">
           <button type="submit" class="button button--small">Unfollow</button>
         </form>
-      `;
+      `);
     }
 
-    return `
+    return toHtmlFragment(`
       <form method="post" action="/follow" class="follow-toggle">
         <input type="hidden" name="editorialcommunityid" value="${editorialCommunityId.value}">
         <button type="submit" class="button button--primary button--small">Follow</button>
       </form>
-    `;
+    `);
   }
 );
