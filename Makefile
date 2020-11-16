@@ -11,7 +11,7 @@ PORT := 8080
 export IMAGE
 export IMAGE_TAG
 
-.PHONY: build clean* dev find-* install lint* prod release test* update-event-data
+.PHONY: backstop build clean* dev find-* install lint* prod release test* update-event-data
 
 dev: export TARGET = dev
 dev: .env install build
@@ -39,6 +39,10 @@ test: build
 test\:coverage: export TARGET = dev
 test\:coverage: build
 	${DOCKER_COMPOSE} run --rm app npm run test:coverage
+
+backstop:
+	npx backstop --docker reference
+	npx backstop --docker test
 
 build:
 	$(DOCKER_COMPOSE) build app
