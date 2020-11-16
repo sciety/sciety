@@ -11,12 +11,12 @@
 }
 
 .search-form__input::placeholder {
-  color: var(--COLOUR-GREY-ONE);
+  color: settings.$colour-grey-one;
   font-size: var(--BASE-FONT-REM);
 }
 
 .search-form__input {
-  border: 1px solid var(--COLOUR-GREY-ONE);
+  border: 1px solid settings.$colour-grey-one;
   border-right-color: transparent;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
@@ -27,7 +27,7 @@
 }
 
 .search-form__input:focus {
-  border-color: var(--COLOUR-PRIMARY);
+  border-color: settings.$colour-primary;
   border-right-color: transparent;
   outline: none;
 }

@@ -8,11 +8,11 @@
 
 @mixin primary-colour {
   color: #fff;
-  background-color: var(--COLOUR-PRIMARY);
+  background-color: settings.$colour-primary;
 
   &:hover {
     color: #fff;
-    background-color: var(--COLOUR-PRIMARY-HOVER);
+    background-color: settings.$colour-primary-hover;
   }
 }
 

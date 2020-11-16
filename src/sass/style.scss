@@ -60,11 +60,11 @@ Make sure that links inside a .ui.menu that use <ol> or <ul> retain the intended
 }
 
 .ui.menu:not(.vertical) .item > .button.button--primary:hover {
-  background-color: var(--COLOUR-PRIMARY-HOVER);
+  background-color: settings.$colour-primary-hover;
 }
 
 .ui.items > .item > .content > a.header:hover {
-  color: var(--COLOUR-PRIMARY-HOVER);
+  color: settings.$colour-primary-hover;
 }
 
 /*
@@ -190,12 +190,6 @@ Styles that are independent of Semantic UI
   --BASE-FONT-REM: 1rem;
   --MAX-SITE-WIDTH: 1200;
   --MAX-SITE-WIDTH-REM: calc((var(--MAX-SITE-WIDTH) / var(--BASE-FONT-MEASURE)) * 1rem);
-  --COLOUR-PRIMARY: #{settings.$colour-primary};
-  --COLOUR-PRIMARY-HOVER: #{settings.$colour-primary-hover};
-  --COLOUR-GREY-ONE: #{settings.$colour-grey-one};
-  --COLOUR-GREY-ONE-HOVER: #cacbce;
-  --COLOUR-GREY-TWO: #{settings.$colour-grey-two};
-  --COLOUR-GREY-TWO-HOVER: #282929;
 }
 
 html {
@@ -294,11 +288,11 @@ ul {
 }
 
 a {
-  color: var(--COLOUR-PRIMARY);
+  color: settings.$colour-primary;
 }
 
 a:hover {
-  color: var(--COLOUR-PRIMARY-HOVER);
+  color: settings.$colour-primary-hover;
 }
 
 .feed__image {
