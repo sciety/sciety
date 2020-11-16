@@ -4,6 +4,7 @@
 /.jest/
 /.stylelint/
 /build/
+/backstop_data/
 /helm/
 /node_modules/
 /.env
