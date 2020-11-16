@@ -4,9 +4,10 @@ import { ArticleVersionFeedItem, RenderArticleVersionFeedItem } from './render-a
 import { RenderReviewFeedItem, ReviewFeedItem } from './render-review-feed-item';
 import renderListItems from '../shared-components/list-items';
 import Doi from '../types/doi';
+import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
-type RenderFeed = (doi: Doi, userId: Maybe<UserId>) => Promise<Result<string, 'no-content'>>;
+type RenderFeed = (doi: Doi, userId: Maybe<UserId>) => Promise<Result<HtmlFragment, 'no-content'>>;
 
 export type FeedItem = ReviewFeedItem | ArticleVersionFeedItem | { type: 'article-version-error' };
 
@@ -41,7 +42,7 @@ export default (
       async (feedItem) => renderFeedItem(feedItem, userId),
     ));
 
-    return Result.ok(`
+    return Result.ok(toHtmlFragment(`
       <section class="article-feed-section">
         <h2>Feed</h2>
 
@@ -49,6 +50,6 @@ export default (
           ${renderListItems(items, 'article-feed__item')}
         </ol>
       </section>
-    `);
+    `));
   };
 };

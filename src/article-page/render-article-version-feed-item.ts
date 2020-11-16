@@ -1,5 +1,6 @@
 import { URL } from 'url';
 import renderDate from '../shared-components/date';
+import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 export type ArticleVersionFeedItem = {
   type: 'article-version';
@@ -8,11 +9,11 @@ export type ArticleVersionFeedItem = {
   version: number;
 };
 
-export type RenderArticleVersionFeedItem = (feedItem: ArticleVersionFeedItem) => string;
+export type RenderArticleVersionFeedItem = (feedItem: ArticleVersionFeedItem) => HtmlFragment;
 
 export default (
 ): RenderArticleVersionFeedItem => (
-  (feedItem: ArticleVersionFeedItem) => `
+  (feedItem: ArticleVersionFeedItem) => toHtmlFragment(`
     <div class="article-feed__item_contents">
       <img class="article-feed__item__avatar" src="https://pbs.twimg.com/profile_images/956882186996662272/lwyH1HFe_200x200.jpg" alt="">
       <div>
@@ -24,5 +25,5 @@ export default (
         </p>
       </div>
     </div>
-  `
+  `)
 );

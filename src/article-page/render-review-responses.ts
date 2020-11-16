@@ -1,8 +1,9 @@
 import { Maybe } from 'true-myth';
+import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { ReviewId } from '../types/review-id';
 import { UserId } from '../types/user-id';
 
-export type RenderReviewResponses = (reviewId: ReviewId, userId: Maybe<UserId>) => Promise<string>;
+export type RenderReviewResponses = (reviewId: ReviewId, userId: Maybe<UserId>) => Promise<HtmlFragment>;
 
 // TODO Try introducing a Counter type to prevent impossible numbers (e.g. -1, 2.5)
 export type CountReviewResponses = (reviewId: ReviewId) => Promise<{ helpfulCount: number, notHelpfulCount: number }>;
@@ -22,14 +23,14 @@ export default (
     // TODO: Move 'You said this review is helpful' etc to visually hidden span before button.
     // TODO: Change the label when the other button is selected
     const helpfulButton = saidHelpful
-      ? '<button type="submit" name="command" value="revoke-response" aria-label="You said this review is helpful; press to undo." class="responses__button"><img src="/static/images/thumb-up-solid.svg" alt=""></button>'
-      : `<button type="submit" name="command" value="respond-helpful" aria-label="This review is helpful" class="responses__button">
+      ? toHtmlFragment('<button type="submit" name="command" value="revoke-response" aria-label="You said this review is helpful; press to undo." class="responses__button"><img src="/static/images/thumb-up-solid.svg" alt=""></button>')
+      : toHtmlFragment(`<button type="submit" name="command" value="respond-helpful" aria-label="This review is helpful" class="responses__button">
       <img src="/static/images/thumb-up-outline.svg" alt="">
-      </button>`;
+      </button>`);
     const notHelpfulButton = saidNotHelpful
-      ? '<button type="submit" aria-label="You said this review is not helpful; press to undo." class="responses__button"><img src="/static/images/thumb-down-solid.svg" alt=""></button>'
-      : '<button type="submit" aria-label="This review is not helpful" class="responses__button"><img src="/static/images/thumb-down-outline.svg" alt=""></button>';
-    return `
+      ? toHtmlFragment('<button type="submit" aria-label="You said this review is not helpful; press to undo." class="responses__button"><img src="/static/images/thumb-down-solid.svg" alt=""></button>')
+      : toHtmlFragment('<button type="submit" aria-label="This review is not helpful" class="responses__button"><img src="/static/images/thumb-down-outline.svg" alt=""></button>');
+    return toHtmlFragment(`
     <div class="responses">
       <div class="responses__question">Did you find this review helpful?</div>
       <div class="responses__actions">
@@ -51,6 +52,6 @@ export default (
         </div>
       </div>
     </div>
-  `;
+  `);
   }
 );

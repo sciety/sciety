@@ -11,7 +11,7 @@ describe('render-review-feed-item', () => {
   describe('when the review has long full text', () => {
     it('renders the full text', async () => {
       const fullText = 'A very long review';
-      const renderReviewFeedItem = createRenderReviewFeedItem(6, async () => '');
+      const renderReviewFeedItem = createRenderReviewFeedItem(6, async () => toHtmlFragment(''));
 
       const rendered = JSDOM.fragment(
         await renderReviewFeedItem({
@@ -41,7 +41,7 @@ describe('render-review-feed-item', () => {
     it('renders without a teaser', async () => {
       const fullText = 'tldr';
       const source = 'http://example.com/source';
-      const renderReviewFeedItem = createRenderReviewFeedItem(12, async () => '');
+      const renderReviewFeedItem = createRenderReviewFeedItem(12, async () => toHtmlFragment(''));
 
       const rendered = JSDOM.fragment(
         await renderReviewFeedItem({
@@ -72,7 +72,7 @@ describe('render-review-feed-item', () => {
   describe('when the review has no full text', () => {
     it('renders without a teaser', async () => {
       const source = 'http://example.com/source';
-      const renderReviewFeedItem = createRenderReviewFeedItem(6, async () => '');
+      const renderReviewFeedItem = createRenderReviewFeedItem(6, async () => toHtmlFragment(''));
 
       const rendered = JSDOM.fragment(
         await renderReviewFeedItem({

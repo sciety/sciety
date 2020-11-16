@@ -3,6 +3,7 @@ import { Maybe } from 'true-myth';
 import createRenderFeed from '../../src/article-page/render-feed';
 import Doi from '../../src/types/doi';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
+import { toHtmlFragment } from '../../src/types/html-fragment';
 import shouldNotBeCalled from '../should-not-be-called';
 
 describe('render-feed', () => {
@@ -44,8 +45,8 @@ describe('render-feed', () => {
             type: 'article-version-error',
           },
         ],
-        async () => '',
-        () => '',
+        async () => toHtmlFragment(''),
+        () => toHtmlFragment(''),
       );
 
       const rendered = await renderFeed(new Doi('10.1101/12345678'), Maybe.nothing());
