@@ -1,6 +1,7 @@
 @use 'baseline';
 @use 'button';
 @use 'settings';
+@use 'functions';
 
 .search-form {
   margin-bottom: #{baseline.increments(6)};
@@ -20,9 +21,9 @@
   border-right-color: transparent;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
-  padding: calc((13 / var(--BASE-FONT-MEASURE)) * 1rem) calc((25 / var(--BASE-FONT-MEASURE)) * 1rem);
-  flex: 1 1 calc((80 / var(--BASE-FONT-MEASURE)) * 1rem);
-  min-width: calc((80 / var(--BASE-FONT-MEASURE)) * 1rem);
+  padding: functions.px-to-rem(13) functions.px-to-rem(25);
+  flex: 1 1 functions.px-to-rem(80);
+  min-width: functions.px-to-rem(80);
   width: 100%;
 }
 
@@ -42,7 +43,7 @@
 
   font-weight: bold;
   padding: 11px 9px 5px 10px;
-  flex: 0 0 calc((32 / var(--BASE-FONT-MEASURE)) * 1rem);
+  flex: 0 0 functions.px-to-rem(32);
 
   &:hover {
     color: settings.$colour-white;

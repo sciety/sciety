@@ -57,7 +57,7 @@ Make sure that links inside a .ui.menu that use <ol> or <ul> retain the intended
 .ui.menu:not(.vertical) .item > .button.button--primary {
   color: #fff;
   font-size: var(--BASE-FONT-REM);
-  padding: calc((13 / var(--BASE-FONT-MEASURE)) * 1rem) calc((25 / var(--BASE-FONT-MEASURE)) * 1rem);
+  padding: functions.px-to-rem(13) functions.px-to-rem(25);
 }
 
 .ui.menu:not(.vertical) .item > .button.button--primary:hover {
@@ -186,13 +186,11 @@ Styles that are independent of Semantic UI
 }
 
 :root {
-  --BASE-FONT-MEASURE: #{settings.$base-font-measure};
-  --BASE-FONT-PX: calc(var(--BASE-FONT-MEASURE) * 1px);
   --BASE-FONT-REM: 1rem;
 }
 
 html {
-  font-size: var(--BASE-FONT-PX);
+  font-size: unset;
 }
 
 body,

@@ -1,4 +1,5 @@
 @use 'settings';
+@use 'functions';
 
 @mixin basics () {
   border-width: 0;
@@ -20,7 +21,7 @@
   @include basics();
   font-size: var(--BASE-FONT-REM);
   font-family: Lato, sans-serif;
-  padding: calc((13 / var(--BASE-FONT-MEASURE)) * 1rem) calc((25 / var(--BASE-FONT-MEASURE)) * 1rem);
+  padding: functions.px-to-rem(13) functions.px-to-rem(25);
   font-weight: bold;
   background-color: settings.$colour-white;
   color: settings.$colour-ui-default;
@@ -34,8 +35,8 @@
 }
 
 .button--small {
-  font-size: calc((12 / var(--BASE-FONT-MEASURE)) * 1rem);
-  padding: calc((9 / var(--BASE-FONT-MEASURE)) * 1rem) calc((18 / var(--BASE-FONT-MEASURE)) * 1rem);
+  font-size: functions.px-to-rem(12);
+  padding: functions.px-to-rem(9) functions.px-to-rem(18);
 }
 
 .button--primary {
