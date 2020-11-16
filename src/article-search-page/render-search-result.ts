@@ -1,5 +1,6 @@
 import templateDate from '../shared-components/date';
 import Doi from '../types/doi';
+import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 export interface SearchResult {
   doi: Doi;
@@ -10,27 +11,27 @@ export interface SearchResult {
 
 export type GetReviewCount = (doi: Doi) => Promise<number>;
 
-export type RenderSearchResult = (result: SearchResult) => Promise<string>;
+export type RenderSearchResult = (result: SearchResult) => Promise<HtmlFragment>;
 
 const createRenderReviews = (
   getReviewCount: GetReviewCount,
 ) => (
-  async (doi: Doi): Promise<string> => {
+  async (doi: Doi): Promise<HtmlFragment> => {
     const reviewCount = await getReviewCount(doi);
     if (reviewCount === 0) {
-      return '';
+      return toHtmlFragment('');
     }
-    return `
+    return toHtmlFragment(`
       <div class="ui label">
         Reviews
         <span class="detail">${reviewCount}</span>
       </div>
-    `;
+    `);
   }
 );
 
-const templatePostedDate = (date: Date): string => (
-  `<div class="meta">Posted ${templateDate(date)}</div>`
+const templatePostedDate = (date: Date): HtmlFragment => toHtmlFragment(
+  `<div class="meta">Posted ${templateDate(date)}</div>`,
 );
 
 export default (
@@ -38,7 +39,7 @@ export default (
 ): RenderSearchResult => {
   const renderReviews = createRenderReviews(getReviewCount);
 
-  return async (result) => `
+  return async (result) => toHtmlFragment(`
     <div class="content">
       <a class="header" href="/articles/${result.doi.value}">${result.title}</a>
       <div class="meta">
@@ -49,5 +50,5 @@ export default (
         ${await renderReviews(result.doi)}
       </div>
     </div>
-  `;
+  `);
 };

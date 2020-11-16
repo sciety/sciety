@@ -1,6 +1,7 @@
 import EditorialCommunityId from '../types/editorial-community-id';
+import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
-export type RenderDescription = (editorialCommunityId: EditorialCommunityId) => Promise<string>;
+export type RenderDescription = (editorialCommunityId: EditorialCommunityId) => Promise<HtmlFragment>;
 
 export type GetEditorialCommunityDescription = (editorialCommunityId: EditorialCommunityId) => Promise<string>;
 
@@ -9,10 +10,10 @@ export default (
 ): RenderDescription => (
   async (editorialCommunityId) => {
     const editorialCommunityDescription = await getEditorialCommunityDescription(editorialCommunityId);
-    return `
+    return toHtmlFragment(`
       <section>
         ${editorialCommunityDescription}
       </section>
-    `;
+    `);
   }
 );

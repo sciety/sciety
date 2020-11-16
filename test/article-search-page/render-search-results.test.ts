@@ -1,6 +1,7 @@
 import { RenderSearchResult } from '../../src/article-search-page/render-search-result';
 import createRenderSearchResults, { FindArticles } from '../../src/article-search-page/render-search-results';
 import Doi from '../../src/types/doi';
+import { toHtmlFragment } from '../../src/types/html-fragment';
 import shouldNotBeCalled from '../should-not-be-called';
 
 describe('render-search-results component', (): void => {
@@ -19,7 +20,7 @@ describe('render-search-results component', (): void => {
           ],
         }
       );
-      const renderSearchResult: RenderSearchResult = async () => '';
+      const renderSearchResult: RenderSearchResult = async () => toHtmlFragment('');
       const rendered = await createRenderSearchResults(findArticles, renderSearchResult)('10.1101/833392');
 
       expect(rendered).toStrictEqual(expect.stringContaining('5 results'));
