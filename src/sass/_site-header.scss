@@ -3,7 +3,7 @@
 @use 'settings';
 
 .site-header {
-  flex-grow: 1;
+  flex-grow: 0;
   flex-shrink: 0;
   margin-bottom: #{baseline.increments(8)};
   display: flex;
