@@ -41,8 +41,8 @@ test\:coverage: build
 	${DOCKER_COMPOSE} run --rm app npm run test:coverage
 
 backstop: node_modules
-	npx backstop --docker reference
-	npx backstop --docker test
+	npx backstop --docker reference > /tmp/backstop_reference.log
+	npx backstop --docker test > /tmp/backstop_test.log
 
 build:
 	$(DOCKER_COMPOSE) build app
