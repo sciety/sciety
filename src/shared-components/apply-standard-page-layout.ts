@@ -155,6 +155,7 @@ export default (page: Page, user: Maybe<User>): string => `<!doctype html>
         ${googleTagManager}
     }
 
+    window.cookieconsent.hasTransition = false;
     window.cookieconsent.initialise({
       content: {
         message: 'This site uses cookies to deliver its services and analyse traffic. By using this site, you agree to its use of cookies.',
