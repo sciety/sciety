@@ -40,7 +40,7 @@ test\:coverage: export TARGET = dev
 test\:coverage: build
 	${DOCKER_COMPOSE} run --rm app npm run test:coverage
 
-backstop:
+backstop: node_modules 
 	npx backstop --docker reference
 	npx backstop --docker test
 
