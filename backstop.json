@@ -46,6 +46,11 @@
       "referenceUrl": "https://sciety.org/articles?query=elephant+shark"
     },
     {
+      "label": "ScietyHQ user page",
+      "url": "https://staging.sciety.org/users/1295307136415735808",
+      "referenceUrl": "https://sciety.org/users/1295307136415735808"
+    },
+    {
       "label": "An editorial community page",
       "url": "https://staging.sciety.org/editorial-communities/b560187e-f2fb-4ff9-a861-a204f3fc0fb0",
       "referenceUrl": "https://sciety.org/editorial-communities/b560187e-f2fb-4ff9-a861-a204f3fc0fb0",
