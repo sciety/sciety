@@ -40,7 +40,7 @@ test\:coverage: export TARGET = dev
 test\:coverage: build
 	${DOCKER_COMPOSE} run --rm app npm run test:coverage
 
-backstop: node_modules 
+backstop: node_modules
 	npx backstop --docker reference
 	npx backstop --docker test
 
@@ -49,6 +49,7 @@ build:
 
 install: node_modules
 
+node_modules: export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD = true
 node_modules: package.json package-lock.json
 	npm install
 	touch node_modules
