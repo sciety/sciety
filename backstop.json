@@ -30,13 +30,15 @@
     {
       "label": "An article page",
       "url": "https://staging.sciety.org/articles/10.1101/646810",
-      "referenceUrl": "https://sciety.org/articles/10.1101/646810"
+      "referenceUrl": "https://sciety.org/articles/10.1101/646810",
+      "removeSelectors": [".responses"]
     },
     {
       "label": "An article page (expanded reviews)",
       "url": "https://staging.sciety.org/articles/10.1101/646810",
       "referenceUrl": "https://sciety.org/articles/10.1101/646810",
-      "clickSelector": ".article-feed__item-toggle"
+      "clickSelector": ".article-feed__item-toggle",
+      "removeSelectors": [".responses"]
     },
     {
       "label": "An editorial community page",
