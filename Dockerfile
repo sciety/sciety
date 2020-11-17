@@ -13,6 +13,7 @@ COPY .npmrc \
 # Stage: Development NPM install
 #
 FROM node AS npm-dev
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 
 RUN npm ci
 
