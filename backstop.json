@@ -13,6 +13,7 @@
     }
   ],
   "onBeforeScript": "puppet/onBefore.js",
+  "onReadyScript": "puppet/onReady.js",
   "scenarios": [
     {
       "label": "Homepage (with cookie banner)",
@@ -29,6 +30,12 @@
       "label": "An article page",
       "url": "https://staging.sciety.org/articles/10.1101/646810",
       "referenceUrl": "https://sciety.org/articles/10.1101/646810"
+    },
+    {
+      "label": "An article page (expanded reviews)",
+      "url": "https://staging.sciety.org/articles/10.1101/646810",
+      "referenceUrl": "https://sciety.org/articles/10.1101/646810",
+      "clickSelector": ".article-feed__item-toggle"
     },
     {
       "label": "Terms and conditions",
