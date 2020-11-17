@@ -12,9 +12,16 @@
       "height": 768
     }
   ],
+  "onBeforeScript": "puppet/onBefore.js",
   "scenarios": [
     {
       "label": "Homepage (with cookie banner)",
+      "url": "https://staging.sciety.org",
+      "referenceUrl": "https://sciety.org",
+      "showCookieConsent": true
+    },
+    {
+      "label": "Homepage",
       "url": "https://staging.sciety.org",
       "referenceUrl": "https://sciety.org"
     },
@@ -27,6 +34,7 @@
   "paths": {
     "bitmaps_reference": "backstop_data/bitmaps_reference",
     "bitmaps_test": "backstop_data/bitmaps_test",
+    "engine_scripts": "backstop_data/engine_scripts",
     "html_report": "backstop_data/html_report",
     "ci_report": "backstop_data/ci_report"
   },
