@@ -45,6 +45,11 @@
       "removeSelectors": [".followers .item"]
     },
     {
+      "label": "About",
+      "url": "https://staging.sciety.org/about",
+      "referenceUrl": "https://sciety.org/about"
+    },
+    {
       "label": "Terms and conditions",
       "url": "https://staging.sciety.org/terms",
       "referenceUrl": "https://sciety.org/terms"
