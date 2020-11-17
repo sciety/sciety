@@ -14,9 +14,14 @@
   ],
   "scenarios": [
     {
-      "label": "Sciety Homepage",
+      "label": "Homepage (with cookie banner)",
       "url": "https://staging.sciety.org",
       "referenceUrl": "https://sciety.org"
+    },
+    {
+      "label": "Terms and conditions",
+      "url": "https://staging.sciety.org/terms",
+      "referenceUrl": "https://sciety.org/terms"
     }
   ],
   "paths": {
