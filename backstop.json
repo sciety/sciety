@@ -26,6 +26,11 @@
       "referenceUrl": "https://sciety.org"
     },
     {
+      "label": "An article page",
+      "url": "https://staging.sciety.org/articles/10.1101/646810",
+      "referenceUrl": "https://sciety.org/articles/10.1101/646810"
+    },
+    {
       "label": "Terms and conditions",
       "url": "https://staging.sciety.org/terms",
       "referenceUrl": "https://sciety.org/terms"
