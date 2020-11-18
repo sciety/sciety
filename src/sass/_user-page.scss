@@ -1,6 +1,10 @@
 @use 'baseline';
 @use 'functions';
 
+.sciety-grid--user {
+  grid-auto-rows: min-content;
+}
+
 .sciety-grid--user > .page-header--user {
   grid-column: 1 / -1;
 }
