@@ -26,7 +26,6 @@ describe('page-handler', (): void => {
       const description = toHtmlFragment('Something bad happened');
       const page = Result.err<Page, RenderPageError>({
         type: 'not-found',
-        content: toHtmlFragment('unused'),
         description,
       });
       const rendered = renderFullPage(page, Maybe.nothing());

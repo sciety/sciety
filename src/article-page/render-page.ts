@@ -70,19 +70,6 @@ export default (
           case 'not-found':
             return {
               type: 'not-found',
-              content: toHtmlFragment(`
-                <div class="sciety-grid sciety-grid--simple">
-                  <h1>Oops!</h1>
-                  <p>
-                    We’re having trouble finding this information.
-                    Ensure you have the correct URL, or try refreshing the page.
-                    You may need to come back later.
-                  </p>
-                  <p>
-                    <a href="/" class="u-call-to-action-link">Return to Homepage</a>
-                  </p>
-                </div>
-              `),
               description: toHtmlFragment(`
                 We’re having trouble finding this information.
                 Ensure you have the correct URL, or try refreshing the page.
@@ -92,19 +79,6 @@ export default (
           case 'unavailable':
             return {
               type: 'unavailable',
-              content: toHtmlFragment(`
-                <div class="sciety-grid sciety-grid--simple">
-                  <h1>Oops!</h1>
-                  <p>
-                    We’re having trouble finding this information.
-                    Ensure you have the correct URL, or try refreshing the page.
-                    You may need to come back later.
-                  </p>
-                  <p>
-                    <a href="/" class="u-call-to-action-link">Return to Homepage</a>
-                  </p>
-                </div>
-              `),
               description: toHtmlFragment(`
                 We’re having trouble finding this information.
                 Ensure you have the correct URL, or try refreshing the page.
