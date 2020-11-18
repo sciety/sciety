@@ -21,9 +21,12 @@ describe('page-handler', (): void => {
     it('renders the description of an error', async () => {
       const { server } = await createServer();
       const response: Response = await request(server).get('/articles/10.14234321/not-on-biorxiv');
+      const html = response.text;
+      const rendered = JSDOM.fragment(html);
 
-      // TODO: use a JSDOM.fragment and a CSS query
-      expect(response.text).toStrictEqual(expect.stringContaining('10.14234321/not-on-biorxiv not found'));
+      const errorMessage = rendered.querySelector('main p')?.textContent;
+
+      expect(errorMessage).toStrictEqual(expect.stringContaining('10.14234321/not-on-biorxiv not found'));
     });
   });
 });
