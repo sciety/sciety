@@ -75,7 +75,7 @@ export default (
             return {
               type: 'not-found',
               content: toHtmlFragment(`
-                <div class="page-content-wrapper">
+                <div class="sciety-grid sciety-grid--simple">
                   <h1>Oops!</h1>
                   <p>
                     We’re having trouble finding this information.
@@ -92,7 +92,7 @@ export default (
             return {
               type: 'unavailable',
               content: toHtmlFragment(`
-                <div class="page-content-wrapper">
+                <div class="sciety-grid sciety-grid--simple">
                   <h1>Oops!</h1>
                   <p>
                     We’re having trouble finding this information.
