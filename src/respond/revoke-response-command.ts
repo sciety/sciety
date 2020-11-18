@@ -9,8 +9,6 @@ type RevokeResponse = (userId: UserId, reviewId: ReviewId) => Promise<
 ReadonlyArray<UserRevokedFindingReviewHelpfulEvent>
 >;
 
-// TODO: change lint config to reflect our decision to use named functions
-// eslint-disable-next-line import/prefer-default-export
 export const revokeResponse = (getAllEvents: GetAllEvents): RevokeResponse => async (userId, reviewId) => {
   const ofInterest = (await getAllEvents())
     // TODO: deduplicate filtering with other command(s) and factor out tests that duplicate this logic

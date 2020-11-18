@@ -1,8 +1,9 @@
 import { Middleware } from '@koa/router';
 import { NOT_FOUND, OK, SERVICE_UNAVAILABLE } from 'http-status-codes';
 import { Maybe, Result } from 'true-myth';
+import { renderErrorPage } from './render-error-page';
 import applyStandardPageLayout from '../shared-components/apply-standard-page-layout';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { HtmlFragment } from '../types/html-fragment';
 import { RenderPageError } from '../types/render-page-error';
 import { User } from '../types/user';
 
@@ -30,20 +31,6 @@ const successToStatusCode = (): number => OK;
 const errorTypeToStatusCode = ({ type }: RenderPageError): number => (
   type === 'not-found' ? NOT_FOUND : SERVICE_UNAVAILABLE
 );
-
-type RenderErrorPage = (description: HtmlFragment) => HtmlFragment;
-
-const renderErrorPage: RenderErrorPage = (description) => toHtmlFragment(`
-  <div class="sciety-grid sciety-grid--simple">
-    <h1>Oops!</h1>
-    <p>
-      ${description}
-    </p>
-    <p>
-      <a href="/" class="u-call-to-action-link">Return to Homepage</a>
-    </p>
-  </div>
-`);
 
 export const renderFullPage = (pageResult: RenderedPage, user: Maybe<User>): string => {
   const page = pageResult.unwrapOrElse((error) => ({

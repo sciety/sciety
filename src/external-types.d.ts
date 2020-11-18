@@ -1,5 +1,3 @@
-// eslint-disable import/prefer-default-export
-
 declare module 'remarkable' {
 
   export class Remarkable {

@@ -55,6 +55,7 @@ module.exports = {
         'parent',
       ],
     }],
+    'import/prefer-default-export': 'off',
     'jest/no-disabled-tests': 'off',
     'jest/no-hooks': 'off',
     'jest/prefer-expect-assertions': 'off',
