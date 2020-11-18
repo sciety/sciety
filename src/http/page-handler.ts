@@ -6,13 +6,15 @@ import { HtmlFragment } from '../types/html-fragment';
 import { RenderPageError } from '../types/render-page-error';
 import { User } from '../types/user';
 
-type Page = {
+export type Page = {
   content: HtmlFragment,
   openGraph?: {
     title: string;
     description: string;
   }
 };
+
+type RenderedPage = Result<Page, RenderPageError>;
 
 // TODO: find better way of handling params of different pages
 type RenderPage = (params: {
@@ -21,13 +23,20 @@ type RenderPage = (params: {
   query?: string;
   flavour?: string;
   user: Maybe<User>;
-}) => Promise<Result<Page, RenderPageError>>;
+}) => Promise<RenderedPage>;
 
 const successToStatusCode = (): number => OK;
 
 const errorTypeToStatusCode = ({ type }: RenderPageError): number => (
   type === 'not-found' ? NOT_FOUND : SERVICE_UNAVAILABLE
 );
+
+export const renderFullPage = (pageResult: RenderedPage, user: Maybe<User>): string => {
+  const page = pageResult.unwrapOrElse((error) => ({
+    content: error.description,
+  }));
+  return applyStandardPageLayout(page, user);
+};
 
 export default (
   renderPage: RenderPage,

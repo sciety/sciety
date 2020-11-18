@@ -1,6 +1,10 @@
 import { JSDOM } from 'jsdom';
 import request, { Response } from 'supertest';
+import { Maybe, Result } from 'true-myth';
 import createServer from './server';
+import { Page, renderFullPage } from '../../src/http/page-handler';
+import { toHtmlFragment } from '../../src/types/html-fragment';
+import { RenderPageError } from '../../src/types/render-page-error';
 
 describe('page-handler', (): void => {
   describe('article page', () => {
@@ -17,5 +21,17 @@ describe('page-handler', (): void => {
     });
   });
 
-  it.todo('renders the description of an error');
+  describe('render-full-page', () => {
+    it('renders the description of an error', async () => {
+      const description = toHtmlFragment('Something bad happened');
+      const page = Result.err<Page, RenderPageError>({
+        type: 'not-found',
+        content: toHtmlFragment('unused'),
+        description,
+      });
+      const rendered = renderFullPage(page, Maybe.nothing());
+
+      expect(rendered).toStrictEqual(expect.stringContaining(description));
+    });
+  });
 });
