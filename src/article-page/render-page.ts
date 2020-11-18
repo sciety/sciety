@@ -65,8 +65,6 @@ export default (
       .ap(await articleDetailsResult)
       .mapErr((error) => {
         switch (error) {
-          // TODO: remove duplication between these cases and the sciety-grid case
-          // which is coupled to them
           case 'not-found':
             return {
               type: 'not-found',
