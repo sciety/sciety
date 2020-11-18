@@ -5,7 +5,7 @@ type RenderPage = () => Promise<Result<{content: HtmlFragment}, never>>;
 
 export default (): RenderPage => async () => Result.ok({
   content: toHtmlFragment(`
-    <div class="page-content-wrapper">
+    <div class="sciety-grid sciety-grid--simple">
       <header class="page-header">
         <h1>Terms and conditions</h1>
       </header>
