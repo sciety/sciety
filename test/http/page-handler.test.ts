@@ -16,4 +16,6 @@ describe('page-handler', (): void => {
       expect(ogDescription).toBe('Article abstract.');
     });
   });
+
+  it.todo('renders the description of an error');
 });

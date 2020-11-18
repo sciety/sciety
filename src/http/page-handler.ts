@@ -3,6 +3,7 @@ import { NOT_FOUND, OK, SERVICE_UNAVAILABLE } from 'http-status-codes';
 import { Maybe, Result } from 'true-myth';
 import applyStandardPageLayout from '../shared-components/apply-standard-page-layout';
 import { HtmlFragment } from '../types/html-fragment';
+import { RenderPageError } from '../types/render-page-error';
 import { User } from '../types/user';
 
 type Page = {
@@ -11,11 +12,6 @@ type Page = {
     title: string;
     description: string;
   }
-};
-
-type RenderPageError = {
-  type: 'not-found' | 'unavailable',
-  content: HtmlFragment,
 };
 
 // TODO: find better way of handling params of different pages

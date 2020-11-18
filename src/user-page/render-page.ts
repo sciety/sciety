@@ -1,11 +1,7 @@
 import { Maybe, Result } from 'true-myth';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { RenderPageError } from '../types/render-page-error';
 import { UserId } from '../types/user-id';
-
-type RenderPageError = {
-  type: 'not-found' | 'unavailable',
-  content: HtmlFragment
-};
 
 export type RenderPage = (
   userId: UserId,
@@ -42,11 +38,13 @@ export default (
         return {
           type: 'not-found',
           content: toHtmlFragment('User not found'),
+          description: toHtmlFragment('User not found'),
         };
       }
       return {
         type: 'unavailable',
         content: toHtmlFragment('User information unavailable'),
+        description: toHtmlFragment('User information unavailable'),
       };
     });
 };

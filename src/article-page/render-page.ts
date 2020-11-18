@@ -2,6 +2,7 @@ import striptags from 'striptags';
 import { Maybe, Result } from 'true-myth';
 import Doi from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { RenderPageError } from '../types/render-page-error';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { UserId } from '../types/user-id';
 
@@ -11,11 +12,6 @@ type Page = {
     title: string,
     description: string,
   }
-};
-
-type RenderPageError = {
-  type: 'not-found' | 'unavailable',
-  content: HtmlFragment,
 };
 
 type ArticleDetails = {
@@ -87,6 +83,11 @@ export default (
                   </p>
                 </div>
               `),
+              description: toHtmlFragment(`
+                We’re having trouble finding this information.
+                Ensure you have the correct URL, or try refreshing the page.
+                You may need to come back later.
+              `),
             };
           case 'unavailable':
             return {
@@ -103,6 +104,11 @@ export default (
                     <a href="/" class="u-call-to-action-link">Return to Homepage</a>
                   </p>
                 </div>
+              `),
+              description: toHtmlFragment(`
+                We’re having trouble finding this information.
+                Ensure you have the correct URL, or try refreshing the page.
+                You may need to come back later.
               `),
             };
         }

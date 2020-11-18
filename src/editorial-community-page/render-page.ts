@@ -1,14 +1,10 @@
 import { Maybe, Result } from 'true-myth';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { RenderPageError } from '../types/render-page-error';
 import { UserId } from '../types/user-id';
 
 type Component = (editorialCommunityId: EditorialCommunityId, userId: Maybe<UserId>) => Promise<string>;
-
-type RenderPageError = {
-  type: 'not-found',
-  content: HtmlFragment,
-};
 
 export type RenderPage = (
   editorialCommunityId: EditorialCommunityId,
@@ -43,6 +39,7 @@ export default (
       return Result.err({
         type: 'not-found',
         content: toHtmlFragment(`Editorial community id '${editorialCommunityId.value}' not found`),
+        description: toHtmlFragment(`Editorial community id '${editorialCommunityId.value}' not found`),
       });
     }
   }
