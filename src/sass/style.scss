@@ -304,6 +304,7 @@ a:hover {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     grid-column-gap: 20px;
+    grid-auto-rows: min-content;
     grid-auto-flow: column;
   }
 }
@@ -314,12 +315,8 @@ a:hover {
   flex-grow: 1;
 }
 
-.sciety-grid--simple {
-  grid-auto-rows: min-content;
-
-  > * {
-    grid-column: 1 / -1;
-  }
+.sciety-grid--simple > * {
+  grid-column: 1 / -1;
 }
 
 .sciety-grid--article > .page-header--article,
