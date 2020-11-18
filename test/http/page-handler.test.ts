@@ -1,10 +1,6 @@
 import { JSDOM } from 'jsdom';
 import request, { Response } from 'supertest';
-import { Maybe, Result } from 'true-myth';
 import createServer from './server';
-import { Page, renderFullPage } from '../../src/http/page-handler';
-import { toHtmlFragment } from '../../src/types/html-fragment';
-import { RenderPageError } from '../../src/types/render-page-error';
 
 describe('page-handler', (): void => {
   describe('article page', () => {
@@ -21,16 +17,13 @@ describe('page-handler', (): void => {
     });
   });
 
-  describe('render-full-page', () => {
+  describe('article-page errors', () => {
     it('renders the description of an error', async () => {
-      const description = toHtmlFragment('Something bad happened');
-      const page = Result.err<Page, RenderPageError>({
-        type: 'not-found',
-        description,
-      });
-      const rendered = renderFullPage(page, Maybe.nothing());
+      const { server } = await createServer();
+      const response: Response = await request(server).get('/articles/10.14234321/not-on-biorxiv');
 
-      expect(rendered).toStrictEqual(expect.stringContaining(description));
+      // TODO: use a JSDOM.fragment and a CSS query
+      expect(response.text).toStrictEqual(expect.stringContaining('10.14234321/not-on-biorxiv not found'));
     });
   });
 });

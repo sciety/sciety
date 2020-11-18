@@ -7,7 +7,7 @@ import { HtmlFragment } from '../types/html-fragment';
 import { RenderPageError } from '../types/render-page-error';
 import { User } from '../types/user';
 
-export type Page = {
+type Page = {
   content: HtmlFragment,
   openGraph?: {
     title: string;
@@ -15,7 +15,7 @@ export type Page = {
   }
 };
 
-type RenderedPage = Result<Page, RenderPageError>;
+type RenderedResult = Result<Page, RenderPageError>;
 
 // TODO: find better way of handling params of different pages
 type RenderPage = (params: {
@@ -24,7 +24,7 @@ type RenderPage = (params: {
   query?: string;
   flavour?: string;
   user: Maybe<User>;
-}) => Promise<RenderedPage>;
+}) => Promise<RenderedResult>;
 
 const successToStatusCode = (): number => OK;
 
@@ -32,12 +32,15 @@ const errorTypeToStatusCode = ({ type }: RenderPageError): number => (
   type === 'not-found' ? NOT_FOUND : SERVICE_UNAVAILABLE
 );
 
-export const renderFullPage = (pageResult: RenderedPage, user: Maybe<User>): string => {
-  const page = pageResult.unwrapOrElse((error) => ({
+type FoldToPage = (
+  pageResult: RenderedResult,
+) => Page;
+
+const foldToPage: FoldToPage = (pageResult) => (
+  pageResult.unwrapOrElse((error) => ({
     content: renderErrorPage(error.description),
-  }));
-  return applyStandardPageLayout(page, user);
-};
+  }))
+);
 
 export default (
   renderPage: RenderPage,
@@ -53,12 +56,11 @@ export default (
 
     const user = Maybe.of(context.state.user);
 
-    // TODO: find more legible way of expressing this logic
-    const page = await renderPage(params);
+    const renderedResult = await renderPage(params);
 
-    context.response.status = page.map(successToStatusCode).unwrapOrElse(errorTypeToStatusCode);
+    context.response.status = renderedResult.map(successToStatusCode).unwrapOrElse(errorTypeToStatusCode);
 
-    context.response.body = renderFullPage(page, user);
+    context.response.body = applyStandardPageLayout(foldToPage(renderedResult), user);
 
     await next();
   }
