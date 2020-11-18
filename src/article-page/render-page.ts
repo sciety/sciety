@@ -70,7 +70,7 @@ export default (
           case 'not-found':
             return {
               type: 'not-found',
-              description: toHtmlFragment(`
+              message: toHtmlFragment(`
                 We’re having trouble finding this information.
                 Ensure you have the correct URL, or try refreshing the page.
                 You may need to come back later.
@@ -79,7 +79,7 @@ export default (
           case 'unavailable':
             return {
               type: 'unavailable',
-              description: toHtmlFragment(`
+              message: toHtmlFragment(`
                 We’re having trouble finding this information.
                 Ensure you have the correct URL, or try refreshing the page.
                 You may need to come back later.

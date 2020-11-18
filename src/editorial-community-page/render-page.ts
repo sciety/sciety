@@ -38,7 +38,7 @@ export default (
     } catch (error: unknown) {
       return Result.err({
         type: 'not-found',
-        description: toHtmlFragment(`Editorial community id '${editorialCommunityId.value}' not found`),
+        message: toHtmlFragment(`Editorial community id '${editorialCommunityId.value}' not found`),
       });
     }
   }

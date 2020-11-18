@@ -38,7 +38,7 @@ type FoldToPage = (
 
 const foldToPage: FoldToPage = (pageResult) => (
   pageResult.unwrapOrElse((error) => ({
-    content: renderErrorPage(error.description),
+    content: renderErrorPage(error.message),
   }))
 );
 

@@ -37,12 +37,12 @@ export default (
       if (e === 'not-found') {
         return {
           type: 'not-found',
-          description: toHtmlFragment('User not found'),
+          message: toHtmlFragment('User not found'),
         };
       }
       return {
         type: 'unavailable',
-        description: toHtmlFragment('User information unavailable'),
+        message: toHtmlFragment('User information unavailable'),
       };
     });
 };

@@ -105,7 +105,7 @@ export default (ports: Ports): ArticlePage => {
     } catch (error: unknown) {
       return Result.err({
         type: 'not-found',
-        description: toHtmlFragment(`${params.doi ?? 'Article'} not found`),
+        message: toHtmlFragment(`${params.doi ?? 'Article'} not found`),
       });
     }
     const userId = params.user.map((user) => user.id);
