@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import { Result } from 'true-myth';
 import { DOMParser, XMLSerializer } from 'xmldom';
 import { Logger } from './logger';
@@ -15,7 +16,7 @@ export type FetchCrossrefArticle = (doi: Doi) => Promise<Result<{
   publicationDate: Date;
 }, FetchCrossrefArticleError>>;
 
-export type GetXml = (uri: string, acceptHeader: string) => Promise<string>;
+export type GetXml = (url: URL, acceptHeader: string) => Promise<string>;
 
 export default (getXml: GetXml, logger: Logger): FetchCrossrefArticle => {
   const serializer = new XMLSerializer();
@@ -105,12 +106,12 @@ export default (getXml: GetXml, logger: Logger): FetchCrossrefArticle => {
   });
 
   return async (doi) => {
-    const uri = `https://api.crossref.org/works/${doi.value}/transform`;
-    logger('debug', 'Fetching Crossref article', { uri });
+    const url = new URL(`https://api.crossref.org/works/${doi.value}/transform`);
+    logger('debug', 'Fetching Crossref article', { url });
 
     let response: string;
     try {
-      response = await getXml(uri, 'application/vnd.crossref.unixref+xml');
+      response = await getXml(url, 'application/vnd.crossref.unixref+xml');
     } catch (error: unknown) {
       logger('error', 'Failed to fetch article', { doi, error });
 
