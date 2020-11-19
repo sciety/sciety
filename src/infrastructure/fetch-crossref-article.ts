@@ -105,7 +105,7 @@ export default (getXml: GetXml, logger: Logger): FetchCrossrefArticle => {
   });
 
   return async (doi) => {
-    const uri = `https://doi.org/${doi.value}`;
+    const uri = `https://api.crossref.org/works/${doi.value}/transform`;
     logger('debug', 'Fetching Crossref article', { uri });
 
     let response: string;

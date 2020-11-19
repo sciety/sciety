@@ -7,7 +7,11 @@ export default (userAgent: string): GetXml => {
   const client = axios.create();
   axiosRetry(client, { retries: 3 });
   return async (uri, acceptHeader) => {
-    const response = await client.get<string>(uri, { headers: { Accept: acceptHeader, 'User-Agent': userAgent } });
+    const headers: Record<string, string> = { Accept: acceptHeader, 'User-Agent': userAgent };
+    if (process.env.CROSSREF_API_BEARER_TOKEN !== undefined) {
+      headers['Crossref-Plus-API-Token'] = `Bearer ${process.env.CROSSREF_API_BEARER_TOKEN}`;
+    }
+    const response = await client.get<string>(uri, { headers });
     return response.data;
   };
 };
