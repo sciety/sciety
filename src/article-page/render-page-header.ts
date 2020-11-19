@@ -26,7 +26,7 @@ export default <E>(
 
       <ul aria-label="Publication details" class="article-meta-data-list" role="list">
         <li>
-          DOI <a href="https://doi.org/${doi.value}">${doi.value}</a>
+          <a href="https://doi.org/${doi.value}">https://doi.org/${doi.value}</a>
         </li>
       </ul>
     </header>

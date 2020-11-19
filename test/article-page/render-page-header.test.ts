@@ -1,3 +1,4 @@
+import { JSDOM } from 'jsdom';
 import { Result } from 'true-myth';
 import createRenderPageHeader, {
   GetArticleDetails,
@@ -27,8 +28,11 @@ describe('render-page-header component', (): void => {
     expect(rendered.unsafelyUnwrap()).toStrictEqual(expect.stringContaining('Lorem ipsum 10.1101/815689'));
   });
 
-  it('renders the article DOI', () => {
-    expect(rendered.unsafelyUnwrap()).toStrictEqual(expect.stringContaining('10.1101/815689'));
+  it('renders the article DOI according to CrossRef display guidelines', () => {
+    const links = JSDOM.fragment(rendered.unsafelyUnwrap()).querySelectorAll('a');
+
+    expect(links).toHaveLength(1);
+    expect(links[0].textContent).toStrictEqual('https://doi.org/10.1101/815689');
   });
 
   it('renders the article authors', () => {
