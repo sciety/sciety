@@ -22,6 +22,8 @@ spec:
           env:
             - name: APP_ORIGIN
               value: https://{{ .Values.hostname }}
+            - name: CROSSREF_API_BEARER_TOKEN
+              value: {{ .Values.crossrefApiBearerToken }}
             - name: DISQUS_API_KEY
               value: {{ .Values.disqusApiKey }}
             - name: EXPERIMENT_ENABLED
