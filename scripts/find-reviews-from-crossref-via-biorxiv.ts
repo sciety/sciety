@@ -49,9 +49,15 @@ void (async (): Promise<void> => {
       const biorxivDoi = biorxivItem.biorxiv_doi;
 
       // specify a User-Agent: https://github.com/CrossRef/rest-api-doc/issues/491
+      const headers: Record<string, string> = {
+        'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)',
+      };
+      if (process.env.CROSSREF_API_BEARER_TOKEN !== undefined) {
+        headers['Crossref-Plus-API-Token'] = `Bearer ${process.env.CROSSREF_API_BEARER_TOKEN}`;
+      }
       const { data } = await axios.get<CrossrefResponse>(
         `https://api.crossref.org/prefixes/${publisherReviewDoiPrefix}/works?rows=1000&filter=type:peer-review,relation.object:${publishedDoi}`,
-        { headers: { 'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)' } },
+        { headers },
       );
 
       data.message.items.forEach((item) => {
