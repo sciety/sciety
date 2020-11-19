@@ -2,9 +2,9 @@ import { URL } from 'url';
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
 
-type GetXml = (url: URL, acceptHeader: string) => Promise<string>;
+type GetXmlFromCrossrefRestApi = (url: URL, acceptHeader: string) => Promise<string>;
 
-export default (userAgent: string): GetXml => {
+export default (userAgent: string): GetXmlFromCrossrefRestApi => {
   const client = axios.create();
   axiosRetry(client, { retries: 3 });
   return async (url, acceptHeader) => {

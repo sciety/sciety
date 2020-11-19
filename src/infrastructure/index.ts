@@ -16,7 +16,7 @@ import getEventsFromDataFiles from './get-events-from-data-files';
 import getEventsFromDatabase from './get-events-from-database';
 import createGetTwitterResponse from './get-twitter-response';
 import createGetTwitterUserDetails from './get-twitter-user-details';
-import createGetXml from './get-xml';
+import createGetXmlFromCrossrefRestApi from './get-xml-from-crossref-rest-api';
 import createEditorialCommunityRepository from './in-memory-editorial-communities';
 import createEndorsementsRepository from './in-memory-endorsements-repository';
 import {
@@ -56,7 +56,7 @@ const createInfrastructure = async (): Promise<Adapters> => {
     const response = await axios.get<Json>(uri);
     return response.data;
   };
-  const getXml = createGetXml('Sciety (https://sciety.org; mailto:team@sciety.org)');
+  const getXmlFromCrossrefRestApi = createGetXmlFromCrossrefRestApi('Sciety (https://sciety.org; mailto:team@sciety.org)');
   const fetchDataset = createFetchDataset(logger);
   const fetchDataciteReview = createFetchDataciteReview(fetchDataset, logger);
   const fetchHypothesisAnnotation = createFetchHypothesisAnnotation(getJson, logger);
@@ -81,7 +81,7 @@ const createInfrastructure = async (): Promise<Adapters> => {
   const getTwitterResponse = createGetTwitterResponse(process.env.TWITTER_API_BEARER_TOKEN ?? '');
 
   return {
-    fetchArticle: createArticleCache(createFetchCrossrefArticle(getXml, logger), logger),
+    fetchArticle: createArticleCache(createFetchCrossrefArticle(getXmlFromCrossrefRestApi, logger), logger),
     fetchReview: createFetchReview(fetchDataciteReview, fetchHypothesisAnnotation),
     fetchStaticFile: createFetchStaticFile(logger),
     searchEuropePmc,
