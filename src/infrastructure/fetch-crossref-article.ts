@@ -113,7 +113,14 @@ export default (getXml: GetXml, logger: Logger): FetchCrossrefArticle => {
     try {
       response = await getXml(url, 'application/vnd.crossref.unixref+xml');
     } catch (error: unknown) {
-      logger('error', 'Failed to fetch article', { doi, error });
+      const payload: Record<string, unknown> = {
+        doi,
+        error,
+      };
+      if (error instanceof Error) {
+        payload.message = error.message;
+      }
+      logger('error', 'Failed to fetch article', payload);
 
       return Result.err('not-found');
     }

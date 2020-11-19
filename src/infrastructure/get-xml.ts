@@ -8,7 +8,13 @@ export default (userAgent: string): GetXml => {
   const client = axios.create();
   axiosRetry(client, { retries: 3 });
   return async (url, acceptHeader) => {
-    const headers: Record<string, string> = { Accept: acceptHeader, 'User-Agent': userAgent };
+    if (url.hostname !== 'api.crossref.org') {
+      throw new Error(`${url.toString()} does not refer to the Crossref REST API`);
+    }
+    const headers: Record<string, string> = {
+      Accept: acceptHeader,
+      'User-Agent': userAgent,
+    };
     if (process.env.CROSSREF_API_BEARER_TOKEN !== undefined) {
       headers['Crossref-Plus-API-Token'] = `Bearer ${process.env.CROSSREF_API_BEARER_TOKEN}`;
     }
