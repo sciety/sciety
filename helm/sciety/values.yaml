@@ -3,7 +3,6 @@ images:
     repository: sciety/sciety
 
 crossrefApiBearerToken:
-disqusApiKey:
 experimentEnabled: "false"
 googleTagManagerId:
 postgresqlSecretName: null

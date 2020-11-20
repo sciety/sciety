@@ -53,7 +53,6 @@ jobs:
             --set hostname=staging.sciety.org \
             --set oldHostname=staging.hive.review \
             --set crossrefApiBearerToken=${CROSSREF_API_BEARER_TOKEN} \
-            --set disqusApiKey=${DISQUS_API_KEY} \
             --set-string experimentEnabled="true" \
             --set twitterApiKey=${TWITTER_API_KEY} \
             --set twitterApiSecretKey=${TWITTER_API_SECRET_KEY} \
@@ -65,7 +64,6 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           CROSSREF_API_BEARER_TOKEN: ${{ secrets.CROSSREF_API_BEARER_TOKEN }}
-          DISQUS_API_KEY: ${{ secrets.DISQUS_API_KEY }}
           TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
           TWITTER_API_SECRET_KEY: ${{ secrets.TWITTER_API_SECRET_KEY }}
           TWITTER_API_BEARER_TOKEN: ${{ secrets.TWITTER_API_BEARER_TOKEN }}
