@@ -56,7 +56,10 @@ const createInfrastructure = async (): Promise<Adapters> => {
     const response = await axios.get<Json>(uri);
     return response.data;
   };
-  const getXmlFromCrossrefRestApi = createGetXmlFromCrossrefRestApi('Sciety (https://sciety.org; mailto:team@sciety.org)');
+  const getXmlFromCrossrefRestApi = createGetXmlFromCrossrefRestApi(
+    'Sciety (https://sciety.org; mailto:team@sciety.org)',
+    logger,
+  );
   const fetchDataset = createFetchDataset(logger);
   const fetchDataciteReview = createFetchDataciteReview(fetchDataset, logger);
   const fetchHypothesisAnnotation = createFetchHypothesisAnnotation(getJson, logger);
