@@ -7,7 +7,6 @@ import Doi from '../types/doi';
 type GetXmlFromCrossrefRestApi = (doi: Doi, acceptHeader: string) => Promise<string>;
 
 export default (
-  userAgent: string,
   logger: Logger,
 ): GetXmlFromCrossrefRestApi => {
   const client = axios.create();
@@ -18,7 +17,7 @@ export default (
 
     const headers: Record<string, string> = {
       Accept: acceptHeader,
-      'User-Agent': userAgent,
+      'User-Agent': 'Sciety (https://sciety.org; mailto:team@sciety.org)',
     };
     if (process.env.CROSSREF_API_BEARER_TOKEN) {
       headers['Crossref-Plus-API-Token'] = `Bearer ${process.env.CROSSREF_API_BEARER_TOKEN}`;
