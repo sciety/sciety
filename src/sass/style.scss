@@ -165,6 +165,8 @@ Allow commas on the end of each .ui.list .item by adding .comma.separated
 }
 
 table {
+  border-top: 1px solid settings.$colour-grey-two;
+  border-bottom: 1px solid settings.$colour-grey-two;
   margin-bottom: baseline.increments(3);
 }
 
