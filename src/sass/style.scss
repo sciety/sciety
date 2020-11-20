@@ -164,6 +164,31 @@ Allow commas on the end of each .ui.list .item by adding .comma.separated
   content: '.';
 }
 
+table {
+  margin-bottom: baseline.increments(3);
+}
+
+td,
+th {
+  padding: baseline.increments(0.5) 0.25rem;
+
+  &:first-child {
+    padding-left: 0;
+  }
+
+  &:last-child {
+    padding-right: 0;
+  }
+
+  tr:first-child & {
+    padding-top: 0;
+  }
+
+  tr:last-child & {
+    padding-bottom: 0;
+  }
+}
+
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Styles that are independent of Semantic UI
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
