@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import axios from 'axios';
 import { Pool } from 'pg';
 import { Adapters } from './adapters';
@@ -26,11 +27,10 @@ import createReviewProjections from './review-projections';
 import createSearchEuropePmc from './search-europe-pmc';
 import bootstrapEditorialCommunities from '../data/bootstrap-editorial-communities';
 import { DomainEvent, isEditorialCommunityEndorsedArticleEvent, isEditorialCommunityReviewedArticleEvent } from '../types/domain-events';
+import EditorialCommunityId from '../types/editorial-community-id';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import EndorsementsRepository from '../types/endorsements-repository';
 import { Json } from '../types/json';
-import EditorialCommunityId from '../types/editorial-community-id';
-import { URL } from 'url';
 
 const populateEditorialCommunities = (logger: Logger): EditorialCommunityRepository => {
   const repository = createEditorialCommunityRepository(logger);
