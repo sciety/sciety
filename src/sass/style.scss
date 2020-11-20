@@ -171,6 +171,7 @@ table {
 td,
 th {
   padding: baseline.increments(0.5) 0.25rem;
+  vertical-align: top;
 
   &:first-child {
     padding-left: 0;
