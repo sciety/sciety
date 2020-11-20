@@ -26,10 +26,12 @@ import {
 import createReviewProjections from './review-projections';
 import createSearchEuropePmc from './search-europe-pmc';
 import bootstrapEditorialCommunities from '../data/bootstrap-editorial-communities';
+import Doi from '../types/doi';
 import { DomainEvent, isEditorialCommunityEndorsedArticleEvent, isEditorialCommunityReviewedArticleEvent } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import EndorsementsRepository from '../types/endorsements-repository';
+import HypothesisAnnotationId from '../types/hypothesis-annotation-id';
 import { Json } from '../types/json';
 
 const populateEditorialCommunities = (logger: Logger): EditorialCommunityRepository => {
@@ -81,6 +83,13 @@ const createInfrastructure = async (): Promise<Adapters> => {
       descriptionPath: 'sciscore--8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65.md',
       id: new EditorialCommunityId('8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65'),
       name: 'SciScore',
+    });
+    events.push({
+      type: 'EditorialCommunityReviewedArticle',
+      date: new Date('2020-11-02'),
+      editorialCommunityId: new EditorialCommunityId('8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65'),
+      articleId: new Doi('10.1101/2020.10.31.362848'),
+      reviewId: new HypothesisAnnotationId('RoKzMByfEeusRXcsUx3i_Q'),
     });
   }
   events.sort((a, b) => a.date.getTime() - b.date.getTime());
