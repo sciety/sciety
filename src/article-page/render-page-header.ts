@@ -3,7 +3,7 @@ import Doi from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 interface ArticleDetails {
-  title: string;
+  title: HtmlFragment;
   authors: Array<string>;
 }
 

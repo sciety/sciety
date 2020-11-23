@@ -21,7 +21,7 @@ type Actor = {
 };
 
 type Article = {
-  title: string;
+  title: HtmlFragment;
 };
 
 type RenderSummaryFeedItemSummary = (event: FeedEvent, actor: Actor) => Promise<string>;
@@ -29,8 +29,8 @@ type RenderSummaryFeedItemSummary = (event: FeedEvent, actor: Actor) => Promise<
 const createRenderSummaryFeedItemSummary = (getArticle: GetArticle): RenderSummaryFeedItemSummary => {
   type RenderEvent<E extends FeedEvent> = (event: E, actor: Actor) => Promise<string>;
 
-  const title = async (articleId: Doi): Promise<string> => (
-    (await getArticle(articleId)).mapOr('an article', (article) => article.title)
+  const title = async (articleId: Doi): Promise<HtmlFragment> => (
+    (await getArticle(articleId)).mapOr(toHtmlFragment('an article'), (article) => article.title)
   );
 
   const renderEditorialCommunityEndorsedArticle: RenderEvent<EditorialCommunityEndorsedArticleEvent> = async (

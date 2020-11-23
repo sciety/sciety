@@ -45,7 +45,7 @@ export default async (): Promise<TestServer> => {
     abstract: toHtmlFragment('Article abstract.') as SanitisedHtmlFragment,
     authors: [],
     doi,
-    title: 'Article title',
+    title: toHtmlFragment('Article title'),
     publicationDate: new Date(),
   }));
   const fetchReview = createFetchReview(

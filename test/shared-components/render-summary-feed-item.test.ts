@@ -3,9 +3,10 @@ import createRenderSummaryFeedItem, { GetActor, GetArticle } from '../../src/sha
 import Doi from '../../src/types/doi';
 import { EditorialCommunityEndorsedArticleEvent, EditorialCommunityReviewedArticleEvent } from '../../src/types/domain-events';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
+import { toHtmlFragment } from '../../src/types/html-fragment';
 
 describe('render-summary-feed-item', (): void => {
-  const articleTitle = 'the title';
+  const articleTitle = toHtmlFragment('the title');
   const arbitraryActorId = new EditorialCommunityId('');
   const arbitraryArticleId = new Doi('10.5281/zenodo.3678326');
   const dummyGetActor: GetActor = async () => ({

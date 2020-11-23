@@ -11,7 +11,7 @@ describe('article-cache', () => {
     abstract: toHtmlFragment('') as SanitisedHtmlFragment,
     authors: [],
     doi: new Doi('10.1101/12345678'),
-    title: '',
+    title: toHtmlFragment(''),
     publicationDate: new Date(),
   };
 
@@ -30,7 +30,7 @@ describe('article-cache', () => {
         abstract: toHtmlFragment('') as SanitisedHtmlFragment,
         authors: [],
         doi: new Doi('10.1101/111111'),
-        title: '',
+        title: toHtmlFragment(''),
         publicationDate: new Date(),
       };
       const articleCache = createArticleCache(async () => Result.ok(fetched), dummyLogger);
