@@ -1,6 +1,7 @@
 import fs from 'fs';
 import axios from 'axios';
 import { DOMParser } from 'xmldom';
+import { JSDOM } from 'jsdom';
 
 type PciCommunity = {
   id: string,
@@ -42,9 +43,16 @@ const findRecommendations = async (community: PciCommunity): Promise<Array<Recom
     const [, articleDoi] = biorxivDoiRegex.exec(articleDoiString) ?? [];
 
     if (articleDoi) {
-      const { data } = await axios.get<string>(url?.textContent ?? '');
-      const [, date] = /<meta name="citation_publication_date" content="(.*?)" \/>/.exec(data) ?? [];
-      const [, reviewDoi] = /<meta name="citation_doi" content="(.*?)" \/>/.exec(data) ?? [];
+      const { data: html } = await axios.get<string>(url?.textContent ?? '');
+      const { document } = new JSDOM(html).window;
+      const date = document.querySelector('meta[name="citation_publication_date"]')?.getAttribute('content');
+      if (!date) {
+        throw new Error(`Unable to get citation publication date for ${articleDoi}`);
+      }
+      const reviewDoi = document.querySelector('meta[name="citation_doi"]')?.getAttribute('content');
+      if (!reviewDoi) {
+        throw new Error(`Unable to get the review (citation) doi for ${articleDoi}`);
+      }
       result.push({
         date: new Date(date),
         articleDoi,
