@@ -80,7 +80,7 @@ export default (getXml: GetXml, logger: Logger): FetchCrossrefArticle => {
   const getTitle = (doc: Document): SanitisedHtmlFragment => {
     const titlesElement = getElement(doc, 'titles');
     const titleElement = titlesElement?.getElementsByTagName('title')[0];
-    return sanitise(toHtmlFragment(titleElement?.textContent ?? 'Unknown title'));
+    return sanitise(toHtmlFragment(titleElement ? serializer.serializeToString(titleElement) : 'Unknown title'));
   };
 
   const getPublicationDate = (doc: Document): Date => {

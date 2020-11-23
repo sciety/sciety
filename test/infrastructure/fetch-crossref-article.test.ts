@@ -214,7 +214,7 @@ describe('fetch-crossref-article', (): void => {
       expect(article.title).toStrictEqual('An article title');
     });
 
-    it.skip('extracts a title containing inline HTML tags from the XML response', async () => {
+    it('extracts a title containing inline HTML tags from the XML response', async () => {
       const doi = new Doi('10.1101/339747');
       const getXml: GetXml = async () => crossrefResponseWith(`
         <titles>
