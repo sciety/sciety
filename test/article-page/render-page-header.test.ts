@@ -5,10 +5,11 @@ import createRenderPageHeader, {
   RenderPageHeader,
 } from '../../src/article-page/render-page-header';
 import Doi from '../../src/types/doi';
-import { HtmlFragment, toHtmlFragment } from '../../src/types/html-fragment';
+import { HtmlFragment } from '../../src/types/html-fragment';
+import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
 
 const getArticleDetails: GetArticleDetails<never> = async (doi) => (Result.ok({
-  title: toHtmlFragment(`Lorem ipsum ${doi.value}`),
+  title: `Lorem ipsum ${doi.value}` as SanitisedHtmlFragment,
   authors: ['Gary', 'Uncle Wiggly'],
 }));
 

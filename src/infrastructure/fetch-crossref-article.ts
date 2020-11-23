@@ -2,7 +2,7 @@ import { Result } from 'true-myth';
 import { DOMParser, XMLSerializer } from 'xmldom';
 import { Logger } from './logger';
 import Doi from '../types/doi';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { toHtmlFragment } from '../types/html-fragment';
 import { sanitise, SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
 type FetchCrossrefArticleError = 'not-found' | 'unavailable';
@@ -11,7 +11,7 @@ export type FetchCrossrefArticle = (doi: Doi) => Promise<Result<{
   abstract: SanitisedHtmlFragment;
   authors: Array<string>;
   doi: Doi;
-  title: HtmlFragment;
+  title: SanitisedHtmlFragment;
   publicationDate: Date;
 }, FetchCrossrefArticleError>>;
 
@@ -77,10 +77,10 @@ export default (getXml: GetXml, logger: Logger): FetchCrossrefArticle => {
       });
   };
 
-  const getTitle = (doc: Document): HtmlFragment => {
+  const getTitle = (doc: Document): SanitisedHtmlFragment => {
     const titlesElement = getElement(doc, 'titles');
     const titleElement = titlesElement?.getElementsByTagName('title')[0];
-    return toHtmlFragment(titleElement?.textContent ?? 'Unknown title');
+    return sanitise(toHtmlFragment(titleElement?.textContent ?? 'Unknown title'));
   };
 
   const getPublicationDate = (doc: Document): Date => {

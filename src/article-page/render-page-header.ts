@@ -1,9 +1,10 @@
 import { Result } from 'true-myth';
 import Doi from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
 interface ArticleDetails {
-  title: HtmlFragment;
+  title: SanitisedHtmlFragment;
   authors: Array<string>;
 }
 

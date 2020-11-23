@@ -2,16 +2,15 @@ import { Result } from 'true-myth';
 import createArticleCache from '../../src/infrastructure/article-cache';
 import { FetchCrossrefArticle } from '../../src/infrastructure/fetch-crossref-article';
 import Doi from '../../src/types/doi';
-import { toHtmlFragment } from '../../src/types/html-fragment';
 import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
 import dummyLogger from '../dummy-logger';
 
 describe('article-cache', () => {
   const arbitraryArticle = {
-    abstract: toHtmlFragment('') as SanitisedHtmlFragment,
+    abstract: '' as SanitisedHtmlFragment,
     authors: [],
     doi: new Doi('10.1101/12345678'),
-    title: toHtmlFragment(''),
+    title: '' as SanitisedHtmlFragment,
     publicationDate: new Date(),
   };
 
@@ -27,10 +26,10 @@ describe('article-cache', () => {
 
     it('returns the fetched article', async () => {
       const fetched = {
-        abstract: toHtmlFragment('') as SanitisedHtmlFragment,
+        abstract: '' as SanitisedHtmlFragment,
         authors: [],
         doi: new Doi('10.1101/111111'),
-        title: toHtmlFragment(''),
+        title: '' as SanitisedHtmlFragment,
         publicationDate: new Date(),
       };
       const articleCache = createArticleCache(async () => Result.ok(fetched), dummyLogger);
