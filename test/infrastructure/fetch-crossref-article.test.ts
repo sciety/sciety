@@ -214,6 +214,14 @@ describe('fetch-crossref-article', (): void => {
       expect(article.title).toStrictEqual('An article title');
     });
 
+    it('returns `Unknown title` when no title present', async () => {
+      const doi = new Doi('10.1101/339747');
+      const getXml: GetXml = async () => crossrefResponseWith('');
+      const article = (await createFetchCrossrefArticle(getXml, dummyLogger)(doi)).unsafelyUnwrap();
+
+      expect(article.title).toStrictEqual('Unknown title');
+    });
+
     it('extracts a title containing inline HTML tags from the XML response', async () => {
       const doi = new Doi('10.1101/339747');
       const getXml: GetXml = async () => crossrefResponseWith(`

@@ -77,10 +77,15 @@ export default (getXml: GetXml, logger: Logger): FetchCrossrefArticle => {
       });
   };
 
-  const getTitle = (doc: Document): SanitisedHtmlFragment => {
+  const getTitle = (doc: Document, doi: Doi): string => {
     const titlesElement = getElement(doc, 'titles');
     const titleElement = titlesElement?.getElementsByTagName('title')[0];
-    return sanitise(toHtmlFragment(titleElement ? serializer.serializeToString(titleElement) : 'Unknown title'));
+    if (!titleElement) {
+      logger('warn', 'Did not find title', { doi });
+      return 'Unknown title';
+    }
+
+    return serializer.serializeToString(titleElement);
   };
 
   const getPublicationDate = (doc: Document): Date => {
@@ -127,7 +132,7 @@ export default (getXml: GetXml, logger: Logger): FetchCrossrefArticle => {
         abstract: sanitise(toHtmlFragment(getAbstract(doc, doi))),
         authors: getAuthors(doc, doi),
         doi,
-        title: getTitle(doc),
+        title: sanitise(toHtmlFragment(getTitle(doc, doi))),
         publicationDate: getPublicationDate(doc),
       });
     } catch (error: unknown) {
