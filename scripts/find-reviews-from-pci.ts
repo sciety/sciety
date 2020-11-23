@@ -45,19 +45,27 @@ const findRecommendations = async (community: PciCommunity): Promise<Array<Recom
     if (articleDoi) {
       const { data: html } = await axios.get<string>(url?.textContent ?? '');
       const { document } = new JSDOM(html).window;
-      const date = document.querySelector('meta[name="citation_publication_date"]')?.getAttribute('content');
-      if (!date) {
-        throw new Error(`Unable to get citation publication date for ${articleDoi}`);
+      const source = document.querySelector('.pci-recomOfSource')?.textContent;
+      if (!source) {
+        throw new Error(`Cannot find pci-recomOfSource element for ${articleDoi}`);
       }
-      const reviewDoi = document.querySelector('meta[name="citation_doi"]')?.getAttribute('content');
-      if (!reviewDoi) {
-        throw new Error(`Unable to get the review (citation) doi for ${articleDoi}`);
+      if (source.toLowerCase().includes('biorxiv')) {
+        const date = document.querySelector('meta[name="citation_publication_date"]')?.getAttribute('content');
+        if (!date) {
+          throw new Error(`Unable to get citation publication date for ${articleDoi}`);
+        }
+        const reviewDoi = document.querySelector('meta[name="citation_doi"]')?.getAttribute('content');
+        if (!reviewDoi) {
+          throw new Error(`Unable to get the review (citation) doi for ${articleDoi}`);
+        }
+        result.push({
+          date: new Date(date),
+          articleDoi,
+          reviewDoi,
+        });
+      } else {
+        process.stderr.write(`Skipped non-bioRxiv article ${articleDoi}\n`);
       }
-      result.push({
-        date: new Date(date),
-        articleDoi,
-        reviewDoi,
-      });
     }
   }
 
