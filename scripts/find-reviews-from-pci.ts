@@ -1,7 +1,7 @@
 import fs from 'fs';
 import axios from 'axios';
-import { DOMParser } from 'xmldom';
 import { JSDOM } from 'jsdom';
+import { DOMParser } from 'xmldom';
 
 type PciCommunity = {
   id: string,
