@@ -1,11 +1,11 @@
 import { Result } from 'true-myth';
 import Doi from './doi';
-import { HtmlFragment } from './html-fragment';
+import { SanitisedHtmlFragment } from './sanitised-html-fragment';
 
 export type FetchExternalArticle = (doi: Doi) => Promise<Result<{
-  abstract: string;
+  abstract: SanitisedHtmlFragment;
   authors: Array<string>;
   doi: Doi;
-  title: HtmlFragment;
+  title: SanitisedHtmlFragment;
   publicationDate: Date;
 }, 'not-found' | 'unavailable'>>;

@@ -7,6 +7,7 @@ import {
 } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
 type FeedEvent =
   EditorialCommunityEndorsedArticleEvent |
@@ -21,7 +22,7 @@ type Actor = {
 };
 
 type Article = {
-  title: HtmlFragment;
+  title: SanitisedHtmlFragment;
 };
 
 type RenderSummaryFeedItemSummary = (event: FeedEvent, actor: Actor) => Promise<string>;
