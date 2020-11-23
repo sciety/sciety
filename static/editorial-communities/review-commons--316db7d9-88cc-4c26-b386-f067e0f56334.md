@@ -30,3 +30,7 @@ The technology, workflow and policies of Review Commons are expected to evolve w
 ## People
 
 [https://www.reviewcommons.org/editors-and-board/](https://www.reviewcommons.org/editors-and-board/)
+
+## Content License
+
+All rights reserved and used on Sciety by kind permission from Review Commons.
