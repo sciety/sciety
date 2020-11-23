@@ -224,6 +224,17 @@ describe('fetch-crossref-article', (): void => {
 
       expect(article.title).toStrictEqual('An article title for <i>C. elegans</i>');
     });
+
+    it('strips non html tags from the title', async () => {
+      const doi = new Doi('10.1101/339747');
+      const getXml: GetXml = async () => crossrefResponseWith(`
+        <titles>
+          <title>An article title for <scp>C. elegans</scp></title>
+        </titles>`);
+      const article = (await createFetchCrossrefArticle(getXml, dummyLogger)(doi)).unsafelyUnwrap();
+
+      expect(article.title).toStrictEqual('An article title for C. elegans');
+    });
   });
 
   describe('the request fails', (): void => {
