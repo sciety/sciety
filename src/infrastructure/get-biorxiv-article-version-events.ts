@@ -31,6 +31,10 @@ export default (
 
       logger('debug', 'Retrieved article versions', { biorxivResponse });
 
+      if (biorxivResponse.collection.length === 0) {
+        logger('error', 'No article versions found', { doi });
+      }
+
       return biorxivResponse.collection.map((articleDetail) => {
         if (Number.isNaN(Date.parse(articleDetail.date))) {
           throw new Error(`Invalid date received for occurredAt: ${articleDetail.date}`);
