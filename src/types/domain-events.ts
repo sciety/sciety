@@ -77,6 +77,22 @@ export type UserRevokedFindingReviewHelpfulEvent = Readonly<{
   reviewId: ReviewId;
 }>;
 
+export type UserFoundReviewNotHelpfulEvent = Readonly<{
+  id: EventId,
+  type: 'UserFoundReviewNotHelpful';
+  date: Date;
+  userId: UserId;
+  reviewId: ReviewId;
+}>;
+
+export type UserRevokedFindingReviewNotHelpfulEvent = Readonly<{
+  id: EventId,
+  type: 'UserRevokedFindingReviewNotHelpful';
+  date: Date;
+  userId: UserId;
+  reviewId: ReviewId;
+}>;
+
 export type DomainEvent =
   EditorialCommunityEndorsedArticleEvent |
   EditorialCommunityReviewedArticleEvent |
@@ -84,7 +100,9 @@ export type DomainEvent =
   UserFollowedEditorialCommunityEvent |
   UserUnfollowedEditorialCommunityEvent |
   UserFoundReviewHelpfulEvent |
-  UserRevokedFindingReviewHelpfulEvent;
+  UserRevokedFindingReviewHelpfulEvent |
+  UserFoundReviewNotHelpfulEvent |
+  UserRevokedFindingReviewNotHelpfulEvent;
 
 export type RuntimeGeneratedEvent =
   UserFollowedEditorialCommunityEvent |
