@@ -9,7 +9,7 @@
 
 .article-feed__item {
   display: block;
-  margin-bottom: baseline.increments(4);
+  margin-bottom: baseline.increments(6);
 
   &:last-child {
     margin-bottom: 0;
@@ -17,6 +17,7 @@
 }
 
 .article-feed__item_contents {
+  margin-bottom: baseline.increments(3);
   @media screen and (min-width: 46.25em) {
     display: flex;
     grid-column: 1 / 9;
@@ -82,11 +83,13 @@ p.article-feed__item__title {
 }
 
 .responses {
-  padding-left: functions.px-to-rem(71px);
+  @media screen and (min-width: 46.25em) {
+    padding-left: functions.px-to-rem(71px);
+  }
 }
 
 .responses__question {
-  margin-bottom: baseline.increments(2);
+  margin-bottom: baseline.increments(1);
 }
 
 .responses__actions {
