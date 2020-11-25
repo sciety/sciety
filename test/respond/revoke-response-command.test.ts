@@ -108,6 +108,26 @@ describe('revoke-response-command', () => {
   });
 
   describe('given not-helpful state for this review and user', () => {
-    it.todo('return UserRevokedFindingReviewNotHelpful event');
+    it('return UserRevokedFindingReviewNotHelpful event', async () => {
+      const reviewId = new Doi('10.1111/333333');
+      const userId = toUserId('someone');
+      const getAllEvents: GetAllEvents = async () => [
+        {
+          id: generate(),
+          date: new Date(),
+          type: 'UserFoundReviewNotHelpful',
+          userId,
+          reviewId,
+        },
+      ];
+      const events = await revokeResponse(getAllEvents)(userId, new Doi('10.1111/333333'));
+
+      expect(events).toHaveLength(1);
+      expect(events[0]).toMatchObject({
+        type: 'UserRevokedFindingReviewNotHelpful',
+        reviewId,
+        userId,
+      });
+    });
   });
 });
