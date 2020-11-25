@@ -20,19 +20,19 @@ export default (
     const saidHelpful = current.isJust() && current.unsafelyUnwrap() === 'helpful';
     const saidNotHelpful = current.isJust() && current.unsafelyUnwrap() === 'not-helpful';
 
-    // TODO: Move 'You said this review is helpful' etc to visually hidden span before button.
+    // TODO: Move 'You said this evaluation is helpful' etc to visually hidden span before button.
     // TODO: Change the label when the other button is selected
     const helpfulButton = saidHelpful
-      ? toHtmlFragment('<button type="submit" name="command" value="revoke-response" aria-label="You said this review is helpful; press to undo." class="responses__button"><img src="/static/images/thumb-up-solid.svg" alt=""></button>')
-      : toHtmlFragment(`<button type="submit" name="command" value="respond-helpful" aria-label="This review is helpful" class="responses__button">
+      ? toHtmlFragment('<button type="submit" name="command" value="revoke-response" aria-label="You said this evaluation is helpful; press to undo." class="responses__button"><img src="/static/images/thumb-up-solid.svg" alt=""></button>')
+      : toHtmlFragment(`<button type="submit" name="command" value="respond-helpful" aria-label="This evaluation is helpful" class="responses__button">
       <img src="/static/images/thumb-up-outline.svg" alt="">
       </button>`);
     const notHelpfulButton = saidNotHelpful
-      ? toHtmlFragment('<button type="submit" aria-label="You said this review is not helpful; press to undo." class="responses__button"><img src="/static/images/thumb-down-solid.svg" alt=""></button>')
-      : toHtmlFragment('<button type="submit" aria-label="This review is not helpful" class="responses__button"><img src="/static/images/thumb-down-outline.svg" alt=""></button>');
+      ? toHtmlFragment('<button type="submit" aria-label="You said this evaluation is not helpful; press to undo." class="responses__button"><img src="/static/images/thumb-down-solid.svg" alt=""></button>')
+      : toHtmlFragment('<button type="submit" aria-label="This evaluation is not helpful" class="responses__button"><img src="/static/images/thumb-down-outline.svg" alt=""></button>');
     return toHtmlFragment(`
     <div class="responses">
-      <div class="responses__question">Did you find this review helpful?</div>
+      <div class="responses__question">Did you find this evaluation helpful?</div>
       <div class="responses__actions">
         <div class="responses__action">
           <form method="post" action="/respond">
@@ -40,7 +40,7 @@ export default (
             ${helpfulButton}
           </form>
           ${helpfulCount}
-          <span class="visually-hidden">people said this review is helpful</span>
+          <span class="visually-hidden">people said this evaluation is helpful</span>
         </div>
         <div class="responses__action">
           <form method="post" action="/respond">
@@ -48,7 +48,7 @@ export default (
             ${notHelpfulButton}
           </form>
           ${notHelpfulCount}
-          <span class="visually-hidden">people said this review is not helpful</span>
+          <span class="visually-hidden">people said this evaluation is not helpful</span>
         </div>
       </div>
     </div>
