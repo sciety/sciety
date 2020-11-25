@@ -7,6 +7,7 @@ type HandleResponseToReview = (user: User, reviewId: ReviewId, command: 'respond
 
 export type CommandHandler = (userId: UserId, reviewId: ReviewId) => Promise<ReadonlyArray<RuntimeGeneratedEvent>>;
 
+// TODO: should be Promise<void> so that we don't fire and forget?
 export type CommitEvents = (events: ReadonlyArray<RuntimeGeneratedEvent>) => void;
 
 export default (
@@ -24,7 +25,7 @@ export default (
         commitEvents(await revokeResponse(user.id, reviewId));
         break;
       case 'respond-not-helpful':
-        await respondNotHelpful(user.id, reviewId);
+        commitEvents(await respondNotHelpful(user.id, reviewId));
         break;
     }
   }
