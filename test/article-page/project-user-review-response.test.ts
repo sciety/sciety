@@ -101,4 +101,19 @@ describe('project-user-review-response', () => {
       expect(userResponse.isNothing()).toBe(true);
     });
   });
+
+  describe('one not helpful response event', () => {
+    it('returns `not helpful`', async () => {
+      const projectUserReviewResponse = createProjectUserReviewResponse(async () => [{
+        type: 'UserFoundReviewNotHelpful',
+        id: generate(),
+        date: new Date(),
+        userId: toUserId('user'),
+        reviewId: new Doi('10.1111/123456'),
+      }]);
+      const userResponse = await projectUserReviewResponse(new Doi('10.1111/123456'), Maybe.just(toUserId('user')));
+
+      expect(userResponse.unsafelyUnwrap()).toBe('not-helpful');
+    });
+  });
 });

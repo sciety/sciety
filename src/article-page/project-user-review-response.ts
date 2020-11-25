@@ -1,6 +1,8 @@
 import { Maybe } from 'true-myth';
 import { GetUserReviewResponse } from './render-review-responses';
-import { DomainEvent, UserFoundReviewHelpfulEvent, UserRevokedFindingReviewHelpfulEvent } from '../types/domain-events';
+import {
+  DomainEvent, UserFoundReviewHelpfulEvent, UserFoundReviewNotHelpfulEvent, UserRevokedFindingReviewHelpfulEvent,
+} from '../types/domain-events';
 
 export type GetEvents = () => Promise<ReadonlyArray<DomainEvent>>;
 
@@ -14,8 +16,11 @@ export default (getEvents: GetEvents): GetUserReviewResponse => (
 
     // TODO number of filters could be reduced
     const ofInterest = events
-      .filter((event): event is UserFoundReviewHelpfulEvent | UserRevokedFindingReviewHelpfulEvent => (
-        event.type === 'UserFoundReviewHelpful' || event.type === 'UserRevokedFindingReviewHelpful'
+      .filter((event): event is
+      UserFoundReviewHelpfulEvent |
+      UserRevokedFindingReviewHelpfulEvent |
+      UserFoundReviewNotHelpfulEvent => (
+        event.type === 'UserFoundReviewHelpful' || event.type === 'UserRevokedFindingReviewHelpful' || event.type === 'UserFoundReviewNotHelpful'
       ))
       .filter((event) => event.userId === userId.unsafelyUnwrap())
       .filter((event) => event.reviewId.toString() === reviewId.toString());
@@ -25,6 +30,13 @@ export default (getEvents: GetEvents): GetUserReviewResponse => (
     }
 
     const mostRecentEventType = events[events.length - 1].type;
-    return mostRecentEventType === 'UserFoundReviewHelpful' ? Maybe.just('helpful') : Maybe.nothing();
+    switch (mostRecentEventType) {
+      case 'UserFoundReviewHelpful':
+        return Maybe.just('helpful');
+      case 'UserFoundReviewNotHelpful':
+        return Maybe.just('not-helpful');
+      default:
+        return Maybe.nothing();
+    }
   }
 );
