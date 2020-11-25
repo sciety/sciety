@@ -108,4 +108,6 @@ export type RuntimeGeneratedEvent =
   UserFollowedEditorialCommunityEvent |
   UserUnfollowedEditorialCommunityEvent |
   UserFoundReviewHelpfulEvent |
-  UserRevokedFindingReviewHelpfulEvent;
+  UserRevokedFindingReviewHelpfulEvent |
+  UserFoundReviewNotHelpfulEvent |
+  UserRevokedFindingReviewNotHelpfulEvent;

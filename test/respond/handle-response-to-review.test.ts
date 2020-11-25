@@ -22,6 +22,7 @@ describe('handle-response-to-review', () => {
       const handleResponseToReview = createHandleResponseToReview(
         respondHelpful,
         shouldNotBeCalled,
+        shouldNotBeCalled,
         commitEvents,
       );
       await handleResponseToReview(

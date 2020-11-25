@@ -12,6 +12,7 @@ export type CommitEvents = (events: ReadonlyArray<RuntimeGeneratedEvent>) => voi
 export default (
   respondHelpful: CommandHandler,
   revokeResponse: CommandHandler,
+  respondNotHelpful: CommandHandler,
   commitEvents: CommitEvents,
 ): HandleResponseToReview => (
   async (user, reviewId, command) => {
@@ -23,6 +24,7 @@ export default (
         commitEvents(await revokeResponse(user.id, reviewId));
         break;
       case 'respond-not-helpful':
+        await respondNotHelpful(user.id, reviewId);
         break;
     }
   }

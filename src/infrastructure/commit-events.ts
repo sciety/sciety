@@ -25,7 +25,9 @@ export default (
   async (events) => {
     for (const event of events) {
       // TODO: start persisting these events
-      if (event.type !== 'UserFoundReviewHelpful' && event.type !== 'UserRevokedFindingReviewHelpful') {
+      // TODO: this should not persists by default an Event that is added to RuntimeGeneratedEvent type
+      if (event.type !== 'UserFoundReviewHelpful' && event.type !== 'UserRevokedFindingReviewHelpful' 
+      && event.type !== 'UserFoundReviewNotHelpful' && event.type !== 'UserRevokedFindingReviewNotHelpful') {
         await pool.query(
           'INSERT INTO events (id, type, date, payload) VALUES ($1, $2, $3, $4);',
           [event.id, event.type, event.date, JSON.stringify(event, replacer)],

@@ -22,6 +22,7 @@ export const revokeResponse = (getAllEvents: GetAllEvents): RevokeResponse => as
   if (ofInterest.length === 0 || ofInterest[ofInterest.length - 1].type === 'UserRevokedFindingReviewHelpful') {
     return [];
   }
+  // TODO: this code never produces a UserRevokedFindingReviewNotHelpful Event
   return [
     {
       id: generate(),
