@@ -104,6 +104,7 @@ p.article-feed__item__title {
 }
 
 .responses__button {
+  padding-left: 0;
   @include button.basics();
   background-color: settings.$colour-white;
 }
