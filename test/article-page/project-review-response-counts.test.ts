@@ -99,7 +99,7 @@ describe('project-review-response-counts', () => {
   });
 
   describe('given N different users responded not helpful events', () => {
-    it.skip('returns 0 `helpful` and N `not helpful`', async () => {
+    it('returns 0 `helpful` and N `not helpful`', async () => {
       const reviewId = new Doi('10.1234/5678');
       const userA = toUserId('A');
       const userB = toUserId('B');
