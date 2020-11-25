@@ -17,6 +17,12 @@ const replacer = (key: string, value: unknown): unknown => {
   return value;
 };
 
+// TODO: should be all RuntimeGeneratedEvents
+const persistedEventsWhiteList: ReadonlyArray<string> = [
+  'UserFollowedEditorialCommunity',
+  'UserUnfollowedEditorialCommunity',
+];
+
 export default (
   inMemoryEvents: Array<DomainEvent>,
   pool: Pool,
@@ -24,10 +30,7 @@ export default (
 ): CommitEvents => (
   async (events) => {
     for (const event of events) {
-      // TODO: start persisting these events
-      // TODO: this should not persists by default an Event that is added to RuntimeGeneratedEvent type
-      if (event.type !== 'UserFoundReviewHelpful' && event.type !== 'UserRevokedFindingReviewHelpful' 
-      && event.type !== 'UserFoundReviewNotHelpful' && event.type !== 'UserRevokedFindingReviewNotHelpful') {
+      if (persistedEventsWhiteList.includes(event.type)) {
         await pool.query(
           'INSERT INTO events (id, type, date, payload) VALUES ($1, $2, $3, $4);',
           [event.id, event.type, event.date, JSON.stringify(event, replacer)],
