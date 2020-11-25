@@ -14,12 +14,6 @@
   &:last-child {
     margin-bottom: 0;
   }
-
-  @media screen and (min-width: 46.25em) {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-  }
-
 }
 
 .article-feed__item_contents {
@@ -88,9 +82,7 @@ p.article-feed__item__title {
 }
 
 .responses {
-  @media screen and (min-width: 46.25em) {
-    grid-column: 10 / -1;
-  }
+  padding-left: functions.px-to-rem(71px);
 }
 
 .responses__question {
