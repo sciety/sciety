@@ -29,7 +29,7 @@ export default (
       </button>`);
     const notHelpfulButton = saidNotHelpful
       ? toHtmlFragment('<button type="submit" aria-label="You said this evaluation is not helpful; press to undo." class="responses__button"><img src="/static/images/thumb-down-solid.svg" alt=""></button>')
-      : toHtmlFragment('<button type="submit" aria-label="This evaluation is not helpful" class="responses__button"><img src="/static/images/thumb-down-outline.svg" alt=""></button>');
+      : toHtmlFragment('<button type="submit" name="command" value="respond-not-helpful" aria-label="This evaluation is not helpful" class="responses__button"><img src="/static/images/thumb-down-outline.svg" alt=""></button>');
     return toHtmlFragment(`
     <div class="responses">
       <div class="responses__question">Did you find this evaluation helpful?</div>

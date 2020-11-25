@@ -3,7 +3,7 @@ import { ReviewId } from '../types/review-id';
 import { User } from '../types/user';
 import { UserId } from '../types/user-id';
 
-type HandleResponseToReview = (user: User, reviewId: ReviewId, command: 'respond-helpful'|'revoke-response') => Promise<void>;
+type HandleResponseToReview = (user: User, reviewId: ReviewId, command: 'respond-helpful'|'revoke-response'|'respond-not-helpful') => Promise<void>;
 
 export type CommandHandler = (userId: UserId, reviewId: ReviewId) => Promise<ReadonlyArray<RuntimeGeneratedEvent>>;
 
@@ -21,6 +21,8 @@ export default (
         break;
       case 'revoke-response':
         commitEvents(await revokeResponse(user.id, reviewId));
+        break;
+      case 'respond-not-helpful':
         break;
     }
   }
