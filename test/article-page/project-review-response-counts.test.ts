@@ -98,6 +98,42 @@ describe('project-review-response-counts', () => {
     });
   });
 
+  describe('given N different users responded not helpful events', () => {
+    it.skip('returns 0 `helpful` and N `not helpful`', async () => {
+      const reviewId = new Doi('10.1234/5678');
+      const userA = toUserId('A');
+      const userB = toUserId('B');
+      const userC = toUserId('C');
+
+      const projectReviewResponseCounts = createProjectReviewResponseCounts(async () => [
+        {
+          type: 'UserFoundReviewNotHelpful',
+          id: generate(),
+          date: new Date(),
+          reviewId,
+          userId: userA,
+        },
+        {
+          type: 'UserFoundReviewNotHelpful',
+          id: generate(),
+          date: new Date(),
+          reviewId,
+          userId: userB,
+        },
+        {
+          type: 'UserFoundReviewNotHelpful',
+          id: generate(),
+          date: new Date(),
+          reviewId,
+          userId: userC,
+        },
+      ]);
+      const projected = await projectReviewResponseCounts(reviewId);
+
+      expect(projected).toStrictEqual({ helpfulCount: 0, notHelpfulCount: 3 });
+    });
+  });
+
   describe('given a single user responded: helpful, revoke helpful, not helpful, revoke not helpful', () => {
     it.todo('returns 0 `helpful` and 0 `not helpful`');
   });
