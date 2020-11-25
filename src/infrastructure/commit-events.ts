@@ -18,7 +18,7 @@ const replacer = (key: string, value: unknown): unknown => {
 };
 
 // TODO: should be all RuntimeGeneratedEvents
-const persistedEventsWhiteList: ReadonlyArray<string> = [
+const persistedEventsWhiteList: ReadonlyArray<RuntimeGeneratedEvent['type']> = [
   'UserFollowedEditorialCommunity',
   'UserUnfollowedEditorialCommunity',
 ];
