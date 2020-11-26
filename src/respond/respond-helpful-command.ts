@@ -1,4 +1,10 @@
-import { DomainEvent, UserFoundReviewHelpfulEvent, UserRevokedFindingReviewHelpfulEvent } from '../types/domain-events';
+import {
+  DomainEvent,
+  UserFoundReviewHelpfulEvent,
+  UserFoundReviewNotHelpfulEvent,
+  UserRevokedFindingReviewHelpfulEvent,
+  UserRevokedFindingReviewNotHelpfulEvent,
+} from '../types/domain-events';
 import { generate } from '../types/event-id';
 import { ReviewId } from '../types/review-id';
 import { UserId } from '../types/user-id';
@@ -9,21 +15,52 @@ type RespondHelpful = (userId: UserId, reviewId: ReviewId) => Promise<
 ReadonlyArray<UserFoundReviewHelpfulEvent>
 >;
 
+type InterestingEvent =
+  | UserFoundReviewHelpfulEvent
+  | UserRevokedFindingReviewHelpfulEvent
+  | UserFoundReviewNotHelpfulEvent
+  | UserRevokedFindingReviewNotHelpfulEvent;
+
+type Response = 'none' | 'helpful' | 'not-helpful';
+
 export const respondHelpful = (getAllEvents: GetAllEvents): RespondHelpful => async (userId, reviewId) => {
-  const events = await getAllEvents();
-  const priorEvents = events
+  const ofInterest = (await getAllEvents())
+    // TODO: deduplicate filtering with other command(s) and factor out tests that duplicate this logic
     .filter(
-      (event): event is UserFoundReviewHelpfulEvent | UserRevokedFindingReviewHelpfulEvent => (
-        event.type === 'UserFoundReviewHelpful' || event.type === 'UserRevokedFindingReviewHelpful'
+      (event): event is InterestingEvent => (
+        event.type === 'UserFoundReviewHelpful'
+        || event.type === 'UserRevokedFindingReviewHelpful'
+        || event.type === 'UserFoundReviewNotHelpful'
+        || event.type === 'UserRevokedFindingReviewNotHelpful'
       ),
     )
-    .filter((event) => (
-      event.reviewId.toString() === reviewId.toString() && event.userId === userId
-    ));
+    .filter((event) => event.userId === userId && event.reviewId.toString() === reviewId.toString());
 
-  const helpfulState = priorEvents.length > 0 && priorEvents[priorEvents.length - 1].type === 'UserFoundReviewHelpful';
+  let response: Response;
 
-  if (helpfulState) {
+  // TODO: fold if else into switch
+  if (ofInterest.length === 0) {
+    response = 'none';
+  } else {
+    const typeOfMostRecentEvent = ofInterest[ofInterest.length - 1].type;
+
+    switch (typeOfMostRecentEvent) {
+      case 'UserRevokedFindingReviewHelpful':
+        response = 'none';
+        break;
+      case 'UserRevokedFindingReviewNotHelpful':
+        response = 'none';
+        break;
+      case 'UserFoundReviewHelpful':
+        response = 'helpful';
+        break;
+      case 'UserFoundReviewNotHelpful':
+        response = 'not-helpful';
+        break;
+    }
+  }
+
+  if (response === 'helpful') {
     return [];
   }
 
