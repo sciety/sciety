@@ -20,6 +20,8 @@ type InterestingEvent =
   | UserFoundReviewNotHelpfulEvent
   | UserRevokedFindingReviewNotHelpfulEvent;
 
+type Response = 'none' | 'helpful' | 'not-helpful';
+
 export const revokeResponse = (getAllEvents: GetAllEvents): RevokeResponse => async (userId, reviewId) => {
   const ofInterest = (await getAllEvents())
     // TODO: deduplicate filtering with other command(s) and factor out tests that duplicate this logic
@@ -33,16 +35,34 @@ export const revokeResponse = (getAllEvents: GetAllEvents): RevokeResponse => as
     )
     .filter((event) => event.userId === userId && event.reviewId.toString() === reviewId.toString());
 
+  let response: Response;
+
+  // TODO: fold if else into switch
   if (ofInterest.length === 0) {
-    return [];
+    response = 'none';
+  } else {
+    const typeOfMostRecentEvent = ofInterest[ofInterest.length - 1].type;
+
+    switch (typeOfMostRecentEvent) {
+      case 'UserRevokedFindingReviewHelpful':
+        response = 'none';
+        break;
+      case 'UserRevokedFindingReviewNotHelpful':
+        response = 'none';
+        break;
+      case 'UserFoundReviewHelpful':
+        response = 'helpful';
+        break;
+      case 'UserFoundReviewNotHelpful':
+        response = 'not-helpful';
+        break;
+    }
   }
-  const typeOfMostRecentEvent = ofInterest[ofInterest.length - 1].type;
-  switch (typeOfMostRecentEvent) {
-    case 'UserRevokedFindingReviewHelpful':
+
+  switch (response) {
+    case 'none':
       return [];
-    case 'UserRevokedFindingReviewNotHelpful':
-      return [];
-    case 'UserFoundReviewHelpful':
+    case 'helpful':
       return [
         {
           id: generate(),
@@ -52,7 +72,7 @@ export const revokeResponse = (getAllEvents: GetAllEvents): RevokeResponse => as
           reviewId,
         },
       ];
-    case 'UserFoundReviewNotHelpful':
+    case 'not-helpful':
       return [
         {
           id: generate(),
