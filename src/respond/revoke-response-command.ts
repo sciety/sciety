@@ -37,23 +37,30 @@ export const revokeResponse = (getAllEvents: GetAllEvents): RevokeResponse => as
     return [];
   }
   const typeOfMostRecentEvent = ofInterest[ofInterest.length - 1].type;
-  // TODO: refactor these into a switch
-  if (typeOfMostRecentEvent === 'UserRevokedFindingReviewHelpful') {
-    return [];
+  switch (typeOfMostRecentEvent) {
+    case 'UserRevokedFindingReviewHelpful':
+      return [];
+    case 'UserRevokedFindingReviewNotHelpful':
+      return [];
+    case 'UserFoundReviewHelpful':
+      return [
+        {
+          id: generate(),
+          type: 'UserRevokedFindingReviewHelpful',
+          date: new Date(),
+          userId,
+          reviewId,
+        },
+      ];
+    case 'UserFoundReviewNotHelpful':
+      return [
+        {
+          id: generate(),
+          type: 'UserRevokedFindingReviewNotHelpful',
+          date: new Date(),
+          userId,
+          reviewId,
+        },
+      ];
   }
-  if (typeOfMostRecentEvent === 'UserRevokedFindingReviewNotHelpful') {
-    return [];
-  }
-  const typeOfGeneratedEvent = (typeOfMostRecentEvent === 'UserFoundReviewHelpful')
-    ? 'UserRevokedFindingReviewHelpful'
-    : 'UserRevokedFindingReviewNotHelpful';
-  return [
-    {
-      id: generate(),
-      type: typeOfGeneratedEvent,
-      date: new Date(),
-      userId,
-      reviewId,
-    },
-  ];
 };
