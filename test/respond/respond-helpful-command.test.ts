@@ -1,11 +1,18 @@
 import { GetAllEvents, respondHelpful } from '../../src/respond/respond-helpful-command';
 import Doi from '../../src/types/doi';
-import { UserFoundReviewHelpfulEvent, UserRevokedFindingReviewHelpfulEvent } from '../../src/types/domain-events';
+import {
+  UserFoundReviewHelpfulEvent,
+  UserFoundReviewNotHelpfulEvent,
+  UserRevokedFindingReviewHelpfulEvent,
+} from '../../src/types/domain-events';
 import { generate } from '../../src/types/event-id';
 import { ReviewId } from '../../src/types/review-id';
 import toUserId, { UserId } from '../../src/types/user-id';
 
-type EventType = UserFoundReviewHelpfulEvent | UserRevokedFindingReviewHelpfulEvent;
+type EventType =
+  | UserFoundReviewHelpfulEvent
+  | UserFoundReviewNotHelpfulEvent
+  | UserRevokedFindingReviewHelpfulEvent;
 
 const makeEvent = (type: EventType['type'], userId: UserId, reviewId: ReviewId): EventType => ({
   id: generate(),
@@ -61,6 +68,23 @@ describe('respond-helpful-command', () => {
   });
 
   describe('not-helpful-state for this review and user', () => {
-    it.todo('return UserRevokedFindingReviewNotHelpful and UserFoundReviewHelpful events');
+    it.skip('return UserRevokedFindingReviewNotHelpful and UserFoundReviewHelpful events', async () => {
+      const history = [makeEvent('UserFoundReviewNotHelpful', userId, reviewId)];
+      const getAllEvents: GetAllEvents = async () => history;
+
+      const events = await respondHelpful(getAllEvents)(userId, reviewId);
+
+      expect(events).toHaveLength(2);
+      expect(events[0]).toMatchObject({
+        type: 'UserRevokedFindingReviewNotHelpful',
+        userId,
+        reviewId,
+      });
+      expect(events[1]).toMatchObject({
+        type: 'UserFoundReviewHelpful',
+        userId,
+        reviewId,
+      });
+    });
   });
 });
