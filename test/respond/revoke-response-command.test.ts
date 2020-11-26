@@ -82,7 +82,7 @@ describe('revoke-response-command', () => {
   });
 
   describe('given the user has already revoked', () => {
-    it('silently ignores the command', async () => {
+    it('silently ignores the command when last event is UserRevokedFindingReviewHelpful', async () => {
       const reviewId = new Doi('10.1111/333333');
       const userId = toUserId('someone');
       const getAllEvents: GetAllEvents = async () => [
@@ -97,6 +97,30 @@ describe('revoke-response-command', () => {
           id: generate(),
           date: new Date(),
           type: 'UserRevokedFindingReviewHelpful',
+          userId,
+          reviewId,
+        },
+      ];
+      const events = await revokeResponse(getAllEvents)(userId, reviewId);
+
+      expect(events).toHaveLength(0);
+    });
+
+    it('silently ignores the command when last event is UserRevokedFindingReviewNotHelpful', async () => {
+      const reviewId = new Doi('10.1111/333333');
+      const userId = toUserId('someone');
+      const getAllEvents: GetAllEvents = async () => [
+        {
+          id: generate(),
+          date: new Date(),
+          type: 'UserFoundReviewNotHelpful',
+          userId,
+          reviewId,
+        },
+        {
+          id: generate(),
+          date: new Date(),
+          type: 'UserRevokedFindingReviewNotHelpful',
           userId,
           reviewId,
         },

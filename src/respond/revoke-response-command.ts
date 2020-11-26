@@ -1,5 +1,10 @@
 import {
-  DomainEvent, RuntimeGeneratedEvent, UserFoundReviewHelpfulEvent, UserRevokedFindingReviewHelpfulEvent,
+  DomainEvent,
+  RuntimeGeneratedEvent,
+  UserFoundReviewHelpfulEvent,
+  UserFoundReviewNotHelpfulEvent,
+  UserRevokedFindingReviewHelpfulEvent,
+  UserRevokedFindingReviewNotHelpfulEvent,
 } from '../types/domain-events';
 import { generate } from '../types/event-id';
 import { ReviewId } from '../types/review-id';
@@ -12,8 +17,8 @@ type RevokeResponse = (userId: UserId, reviewId: ReviewId) => Promise<ReadonlyAr
 type InterestingEvent =
   | UserFoundReviewHelpfulEvent
   | UserRevokedFindingReviewHelpfulEvent
-  | UserFoundReviewHelpfulEvent
-  | UserRevokedFindingReviewHelpfulEvent;
+  | UserFoundReviewNotHelpfulEvent
+  | UserRevokedFindingReviewNotHelpfulEvent;
 
 export const revokeResponse = (getAllEvents: GetAllEvents): RevokeResponse => async (userId, reviewId) => {
   const ofInterest = (await getAllEvents())
@@ -32,7 +37,11 @@ export const revokeResponse = (getAllEvents: GetAllEvents): RevokeResponse => as
     return [];
   }
   const typeOfMostRecentEvent = ofInterest[ofInterest.length - 1].type;
+  // TODO: refactor these into a switch
   if (typeOfMostRecentEvent === 'UserRevokedFindingReviewHelpful') {
+    return [];
+  }
+  if (typeOfMostRecentEvent === 'UserRevokedFindingReviewNotHelpful') {
     return [];
   }
   const typeOfGeneratedEvent = (typeOfMostRecentEvent === 'UserFoundReviewHelpful')
