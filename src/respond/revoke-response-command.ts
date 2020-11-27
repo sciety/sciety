@@ -22,7 +22,7 @@ type InterestingEvent =
   | UserFoundReviewNotHelpfulEvent
   | UserRevokedFindingReviewNotHelpfulEvent;
 
-type Response = 'none' | 'helpful' | 'not-helpful';
+type ReviewResponse = 'none' | 'helpful' | 'not-helpful';
 
 const filterEventType = (events: ReadonlyArray<DomainEvent>): ReadonlyArray<InterestingEvent> => (
   events.filter(
@@ -41,7 +41,7 @@ const filterUserAndReview = (
   events.filter((event) => event.userId === userId && event.reviewId.toString() === reviewId.toString())
 );
 
-const translateEventsToResponse = (events: ReadonlyArray<InterestingEvent>): Response => {
+const calculateCurrentState = (events: ReadonlyArray<InterestingEvent>): ReviewResponse => {
   // TODO: fold if into switch
   if (events.length === 0) {
     return 'none';
@@ -60,7 +60,10 @@ const translateEventsToResponse = (events: ReadonlyArray<InterestingEvent>): Res
   }
 };
 
-const handleCommand = (userId: UserId, reviewId: ReviewId) => (response: Response): ReadonlyArray<InterestingEvent> => {
+const handleCommand = (
+  userId: UserId,
+  reviewId: ReviewId,
+) => (response: ReviewResponse): ReadonlyArray<InterestingEvent> => {
   switch (response) {
     case 'none':
       return [];
@@ -88,11 +91,16 @@ const handleCommand = (userId: UserId, reviewId: ReviewId) => (response: Respons
 };
 
 type Command = (events: ReadonlyArray<DomainEvent>) => ReadonlyArray<InterestingEvent>;
+type ReviewResponseType = (events: ReadonlyArray<DomainEvent>) => ReviewResponse;
 
-const command = (userId: UserId, reviewId: ReviewId): Command => flow(
+const reviewResponse = (userId: UserId, reviewId: ReviewId): ReviewResponseType => flow(
   filterEventType,
   filterUserAndReview(userId, reviewId),
-  translateEventsToResponse,
+  calculateCurrentState,
+);
+
+const command = (userId: UserId, reviewId: ReviewId): Command => flow(
+  reviewResponse(userId, reviewId),
   handleCommand(userId, reviewId),
 );
 
