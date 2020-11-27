@@ -1,8 +1,4 @@
-import * as T from 'fp-ts/lib/Task';
-import { flow, pipe } from 'fp-ts/lib/function';
-import { reviewResponse } from './review-response';
 import {
-  DomainEvent,
   RuntimeGeneratedEvent,
   UserFoundReviewHelpfulEvent,
   UserFoundReviewNotHelpfulEvent,
@@ -13,10 +9,9 @@ import { generate } from '../types/event-id';
 import { ReviewId } from '../types/review-id';
 import { UserId } from '../types/user-id';
 
-export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
+type RevokeResponse = (userId: UserId, reviewId: ReviewId) => ReadonlyArray<RuntimeGeneratedEvent>;
 
-type RevokeResponse = (userId: UserId, reviewId: ReviewId) => T.Task<ReadonlyArray<RuntimeGeneratedEvent>>;
-
+// TODO: this should only produce revoke events
 type InterestingEvent =
   | UserFoundReviewHelpfulEvent
   | UserRevokedFindingReviewHelpfulEvent
@@ -55,16 +50,4 @@ const handleCommand = (
   }
 };
 
-type Command = (events: ReadonlyArray<DomainEvent>) => ReadonlyArray<InterestingEvent>;
-
-const command = (userId: UserId, reviewId: ReviewId): Command => flow(
-  reviewResponse(userId, reviewId),
-  handleCommand(userId, reviewId),
-);
-
-export const revokeResponse = (getAllEvents: GetAllEvents): RevokeResponse => (userId, reviewId) => (
-  pipe(
-    getAllEvents,
-    T.map(command(userId, reviewId)),
-  )
-);
+export const revokeResponse = (currentResponse: 'helpful' | 'not-helpful' | 'none'): RevokeResponse => (userId, reviewId) => handleCommand(userId, reviewId)(currentResponse);
