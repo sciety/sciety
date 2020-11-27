@@ -77,21 +77,6 @@ const createInfrastructure = async (): Promise<Adapters> => {
     );
   `);
   const events = getEventsFromDataFiles().concat(await getEventsFromDatabase(pool, logger));
-  if (process.env.EXPERIMENT_ENABLED === 'true') {
-    await editorialCommunities.add({
-      avatar: new URL('https://pbs.twimg.com/profile_images/1170022265557110785/Zif8ucW8_200x200.jpg'),
-      descriptionPath: 'sciscore--8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65.md',
-      id: new EditorialCommunityId('8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65'),
-      name: 'SciScore',
-    });
-    events.push({
-      type: 'EditorialCommunityReviewedArticle',
-      date: new Date('2020-11-02'),
-      editorialCommunityId: new EditorialCommunityId('8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65'),
-      articleId: new Doi('10.1101/2020.10.31.362848'),
-      reviewId: new HypothesisAnnotationId('RoKzMByfEeusRXcsUx3i_Q'),
-    });
-  }
   events.sort((a, b) => a.date.getTime() - b.date.getTime());
   type GetAllEvents = () => Promise<ReadonlyArray<DomainEvent>>;
   const getAllEvents: GetAllEvents = async () => events;
