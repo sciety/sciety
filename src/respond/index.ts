@@ -2,6 +2,7 @@ import { Middleware } from '@koa/router';
 import createHandleResponseToReview, { CommitEvents } from './handle-response-to-review';
 import { GetAllEvents, respondHelpful } from './respond-helpful-command';
 import { respondNotHelpful } from './respond-not-helpful-command';
+import { reviewResponse } from './review-response';
 import { revokeResponse } from './revoke-response-command';
 import toReviewId from '../types/review-id';
 import { User } from '../types/user';
@@ -12,14 +13,17 @@ type Ports = {
 };
 
 export default (ports: Ports): Middleware<{ user: User }> => async (context, next) => {
+  const { user } = context.state;
+  const reviewId = toReviewId(context.request.body.reviewid);
+
+  const currentResponse = reviewResponse(user.id, reviewId)(await ports.getAllEvents());
+
   const handleResponseToReview = createHandleResponseToReview(
-    respondHelpful(ports.getAllEvents),
+    respondHelpful(currentResponse),
     revokeResponse(ports.getAllEvents),
     respondNotHelpful(ports.getAllEvents),
     ports.commitEvents,
   );
-  const { user } = context.state;
-  const reviewId = toReviewId(context.request.body.reviewid);
   // TODO: validate that command matches HandleResponseToReview
   const { command } = context.request.body;
   await handleResponseToReview(user, reviewId, command);
