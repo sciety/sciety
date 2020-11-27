@@ -68,7 +68,7 @@ describe('respond-helpful-command', () => {
   });
 
   describe('not-helpful-state for this review and user', () => {
-    it.skip('return UserRevokedFindingReviewNotHelpful and UserFoundReviewHelpful events', async () => {
+    it('return UserRevokedFindingReviewNotHelpful and UserFoundReviewHelpful events', async () => {
       const history = [makeEvent('UserFoundReviewNotHelpful', userId, reviewId)];
       const getAllEvents: GetAllEvents = async () => history;
 
