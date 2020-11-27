@@ -49,10 +49,6 @@ export default (
           getReview(feedEvent.reviewId),
         ]);
 
-        if (feedEvent.reviewId.toString() === new HypothesisAnnotationId('RoKzMByfEeusRXcsUx3i_Q').toString()) {
-          review.fullText = review.fullText.map((html) => html.replace(/<tr">/g, '<tr>') as HtmlFragment);
-        }
-
         return {
           type: 'review',
           id: feedEvent.reviewId,
