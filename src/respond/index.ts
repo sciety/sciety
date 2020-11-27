@@ -1,4 +1,6 @@
 import { Middleware } from '@koa/router';
+import * as T from 'fp-ts/lib/Task';
+import { pipe } from 'fp-ts/lib/function';
 import createHandleResponseToReview, { CommitEvents } from './handle-response-to-review';
 import { GetAllEvents, respondHelpful } from './respond-helpful-command';
 import { respondNotHelpful } from './respond-not-helpful-command';
@@ -16,7 +18,10 @@ export default (ports: Ports): Middleware<{ user: User }> => async (context, nex
   const { user } = context.state;
   const reviewId = toReviewId(context.request.body.reviewid);
 
-  const currentResponse = reviewResponse(user.id, reviewId)(await ports.getAllEvents());
+  const currentResponse = await pipe(
+    ports.getAllEvents,
+    T.map(reviewResponse(user.id, reviewId)),
+  )();
 
   const handleResponseToReview = createHandleResponseToReview(
     respondHelpful(currentResponse),
