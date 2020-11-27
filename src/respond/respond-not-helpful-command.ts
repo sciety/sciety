@@ -1,4 +1,5 @@
-import { DomainEvent, UserFoundReviewNotHelpfulEvent, UserRevokedFindingReviewNotHelpfulEvent } from '../types/domain-events';
+import { reviewResponse } from './review-response';
+import { DomainEvent, UserFoundReviewNotHelpfulEvent } from '../types/domain-events';
 import { generate } from '../types/event-id';
 import { ReviewId } from '../types/review-id';
 import { UserId } from '../types/user-id';
@@ -11,19 +12,9 @@ ReadonlyArray<UserFoundReviewNotHelpfulEvent>
 
 export const respondNotHelpful = (getAllEvents: GetAllEvents): RespondNotHelpful => async (userId, reviewId) => {
   const events = await getAllEvents();
-  const priorEvents = events
-    .filter(
-      (event): event is UserFoundReviewNotHelpfulEvent | UserRevokedFindingReviewNotHelpfulEvent => (
-        event.type === 'UserFoundReviewNotHelpful' || event.type === 'UserRevokedFindingReviewNotHelpful'
-      ),
-    )
-    .filter((event) => (
-      event.reviewId.toString() === reviewId.toString() && event.userId === userId
-    ));
+  const currentResponse = reviewResponse(userId, reviewId)(events);
 
-  const notHelpfulState = priorEvents.length > 0 && priorEvents[priorEvents.length - 1].type === 'UserFoundReviewNotHelpful';
-
-  if (notHelpfulState) {
+  if (currentResponse === 'not-helpful') {
     return [];
   }
 
