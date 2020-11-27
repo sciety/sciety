@@ -1,9 +1,10 @@
+import * as T from 'fp-ts/lib/Task';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
-type RenderPageHeader = () => Promise<HtmlFragment>;
+type RenderPageHeader = T.Task<HtmlFragment>;
 
 export default (): RenderPageHeader => (
-  async () => toHtmlFragment(`
+  T.of(toHtmlFragment(`
     <header class="home-page-header">
 
       <h1>
@@ -15,5 +16,5 @@ export default (): RenderPageHeader => (
       </p>
 
     </header>
-  `)
+  `))
 );
