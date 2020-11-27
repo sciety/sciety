@@ -1,3 +1,5 @@
+import * as T from 'fp-ts/lib/Task';
+import { flow, pipe } from 'fp-ts/lib/function';
 import {
   DomainEvent,
   RuntimeGeneratedEvent,
@@ -10,9 +12,9 @@ import { generate } from '../types/event-id';
 import { ReviewId } from '../types/review-id';
 import { UserId } from '../types/user-id';
 
-export type GetAllEvents = () => Promise<ReadonlyArray<DomainEvent>>;
+export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-type RevokeResponse = (userId: UserId, reviewId: ReviewId) => Promise<ReadonlyArray<RuntimeGeneratedEvent>>;
+type RevokeResponse = (userId: UserId, reviewId: ReviewId) => T.Task<ReadonlyArray<RuntimeGeneratedEvent>>;
 
 type InterestingEvent =
   | UserFoundReviewHelpfulEvent
@@ -22,43 +24,43 @@ type InterestingEvent =
 
 type Response = 'none' | 'helpful' | 'not-helpful';
 
-export const revokeResponse = (getAllEvents: GetAllEvents): RevokeResponse => async (userId, reviewId) => {
-  const ofInterest = (await getAllEvents())
-    // TODO: deduplicate filtering with other command(s) and factor out tests that duplicate this logic
-    .filter(
-      (event): event is InterestingEvent => (
-        event.type === 'UserFoundReviewHelpful'
-        || event.type === 'UserRevokedFindingReviewHelpful'
-        || event.type === 'UserFoundReviewNotHelpful'
-        || event.type === 'UserRevokedFindingReviewNotHelpful'
-      ),
-    )
-    .filter((event) => event.userId === userId && event.reviewId.toString() === reviewId.toString());
+const filterEventType = (events: ReadonlyArray<DomainEvent>): ReadonlyArray<InterestingEvent> => (
+  events.filter(
+    (event): event is InterestingEvent => (
+      event.type === 'UserFoundReviewHelpful'
+      || event.type === 'UserRevokedFindingReviewHelpful'
+      || event.type === 'UserFoundReviewNotHelpful'
+      || event.type === 'UserRevokedFindingReviewNotHelpful'
+    ),
+  ));
 
-  let response: Response;
+const filterUserAndReview = (
+  userId: UserId,
+  reviewId: ReviewId,
+) => (events: ReadonlyArray<InterestingEvent>): ReadonlyArray<InterestingEvent> => (
+  events.filter((event) => event.userId === userId && event.reviewId.toString() === reviewId.toString())
+);
 
-  // TODO: fold if else into switch
-  if (ofInterest.length === 0) {
-    response = 'none';
-  } else {
-    const typeOfMostRecentEvent = ofInterest[ofInterest.length - 1].type;
-
-    switch (typeOfMostRecentEvent) {
-      case 'UserRevokedFindingReviewHelpful':
-        response = 'none';
-        break;
-      case 'UserRevokedFindingReviewNotHelpful':
-        response = 'none';
-        break;
-      case 'UserFoundReviewHelpful':
-        response = 'helpful';
-        break;
-      case 'UserFoundReviewNotHelpful':
-        response = 'not-helpful';
-        break;
-    }
+const translateEventsToResponse = (events: ReadonlyArray<InterestingEvent>): Response => {
+  // TODO: fold if into switch
+  if (events.length === 0) {
+    return 'none';
   }
+  const typeOfMostRecentEvent = events[events.length - 1].type;
 
+  switch (typeOfMostRecentEvent) {
+    case 'UserRevokedFindingReviewHelpful':
+      return 'none';
+    case 'UserRevokedFindingReviewNotHelpful':
+      return 'none';
+    case 'UserFoundReviewHelpful':
+      return 'helpful';
+    case 'UserFoundReviewNotHelpful':
+      return 'not-helpful';
+  }
+};
+
+const handleCommand = (userId: UserId, reviewId: ReviewId) => (response: Response): ReadonlyArray<InterestingEvent> => {
   switch (response) {
     case 'none':
       return [];
@@ -84,3 +86,19 @@ export const revokeResponse = (getAllEvents: GetAllEvents): RevokeResponse => as
       ];
   }
 };
+
+type Command = (events: ReadonlyArray<DomainEvent>) => ReadonlyArray<InterestingEvent>;
+
+const command = (userId: UserId, reviewId: ReviewId): Command => flow(
+  filterEventType,
+  filterUserAndReview(userId, reviewId),
+  translateEventsToResponse,
+  handleCommand(userId, reviewId),
+);
+
+export const revokeResponse = (getAllEvents: GetAllEvents): RevokeResponse => (userId, reviewId) => (
+  pipe(
+    getAllEvents,
+    T.map(command(userId, reviewId)),
+  )
+);

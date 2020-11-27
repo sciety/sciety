@@ -1,3 +1,4 @@
+import * as T from 'fp-ts/lib/Task';
 import { RuntimeGeneratedEvent } from '../types/domain-events';
 import { ReviewId } from '../types/review-id';
 import { User } from '../types/user';
@@ -12,7 +13,7 @@ export type CommitEvents = (events: ReadonlyArray<RuntimeGeneratedEvent>) => voi
 
 export default (
   respondHelpful: CommandHandler,
-  revokeResponse: CommandHandler,
+  revokeResponse: (userId: UserId, reviewId: ReviewId) => T.Task <ReadonlyArray<RuntimeGeneratedEvent>>,
   respondNotHelpful: CommandHandler,
   commitEvents: CommitEvents,
 ): HandleResponseToReview => (
@@ -22,7 +23,7 @@ export default (
         commitEvents(await respondHelpful(user.id, reviewId));
         break;
       case 'revoke-response':
-        commitEvents(await revokeResponse(user.id, reviewId));
+        commitEvents(await revokeResponse(user.id, reviewId)());
         break;
       case 'respond-not-helpful':
         commitEvents(await respondNotHelpful(user.id, reviewId));

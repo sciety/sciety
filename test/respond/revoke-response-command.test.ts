@@ -10,7 +10,7 @@ describe('revoke-response-command', () => {
       const reviewId = new Doi('10.1111/333333');
       const userId = toUserId('someone');
       const getAllEvents: GetAllEvents = async () => [];
-      const events = await revokeResponse(getAllEvents)(userId, reviewId);
+      const events = await revokeResponse(getAllEvents)(userId, reviewId)();
 
       expect(events).toHaveLength(0);
     });
@@ -51,7 +51,7 @@ describe('revoke-response-command', () => {
         reviewId: differentReviewId,
       },
       ];
-      const events = await revokeResponse(getAllEvents)(userId, reviewId);
+      const events = await revokeResponse(getAllEvents)(userId, reviewId)();
 
       expect(events).toHaveLength(0);
     });
@@ -70,7 +70,7 @@ describe('revoke-response-command', () => {
           reviewId,
         },
       ];
-      const events = await revokeResponse(getAllEvents)(userId, new Doi('10.1111/333333'));
+      const events = await revokeResponse(getAllEvents)(userId, new Doi('10.1111/333333'))();
 
       expect(events).toHaveLength(1);
       expect(events[0]).toMatchObject({
@@ -101,7 +101,7 @@ describe('revoke-response-command', () => {
           reviewId,
         },
       ];
-      const events = await revokeResponse(getAllEvents)(userId, reviewId);
+      const events = await revokeResponse(getAllEvents)(userId, reviewId)();
 
       expect(events).toHaveLength(0);
     });
@@ -125,7 +125,7 @@ describe('revoke-response-command', () => {
           reviewId,
         },
       ];
-      const events = await revokeResponse(getAllEvents)(userId, reviewId);
+      const events = await revokeResponse(getAllEvents)(userId, reviewId)();
 
       expect(events).toHaveLength(0);
     });
@@ -144,7 +144,7 @@ describe('revoke-response-command', () => {
           reviewId,
         },
       ];
-      const events = await revokeResponse(getAllEvents)(userId, new Doi('10.1111/333333'));
+      const events = await revokeResponse(getAllEvents)(userId, new Doi('10.1111/333333'))();
 
       expect(events).toHaveLength(1);
       expect(events[0]).toMatchObject({
