@@ -1,5 +1,6 @@
 import * as T from 'fp-ts/lib/Task';
 import { flow, pipe } from 'fp-ts/lib/function';
+import { reviewResponse } from './review-response';
 import {
   DomainEvent,
   RuntimeGeneratedEvent,
@@ -23,42 +24,6 @@ type InterestingEvent =
   | UserRevokedFindingReviewNotHelpfulEvent;
 
 type ReviewResponse = 'none' | 'helpful' | 'not-helpful';
-
-const filterEventType = (events: ReadonlyArray<DomainEvent>): ReadonlyArray<InterestingEvent> => (
-  events.filter(
-    (event): event is InterestingEvent => (
-      event.type === 'UserFoundReviewHelpful'
-      || event.type === 'UserRevokedFindingReviewHelpful'
-      || event.type === 'UserFoundReviewNotHelpful'
-      || event.type === 'UserRevokedFindingReviewNotHelpful'
-    ),
-  ));
-
-const filterUserAndReview = (
-  userId: UserId,
-  reviewId: ReviewId,
-) => (events: ReadonlyArray<InterestingEvent>): ReadonlyArray<InterestingEvent> => (
-  events.filter((event) => event.userId === userId && event.reviewId.toString() === reviewId.toString())
-);
-
-const calculateCurrentState = (events: ReadonlyArray<InterestingEvent>): ReviewResponse => {
-  // TODO: fold if into switch
-  if (events.length === 0) {
-    return 'none';
-  }
-  const typeOfMostRecentEvent = events[events.length - 1].type;
-
-  switch (typeOfMostRecentEvent) {
-    case 'UserRevokedFindingReviewHelpful':
-      return 'none';
-    case 'UserRevokedFindingReviewNotHelpful':
-      return 'none';
-    case 'UserFoundReviewHelpful':
-      return 'helpful';
-    case 'UserFoundReviewNotHelpful':
-      return 'not-helpful';
-  }
-};
 
 const handleCommand = (
   userId: UserId,
@@ -91,13 +56,6 @@ const handleCommand = (
 };
 
 type Command = (events: ReadonlyArray<DomainEvent>) => ReadonlyArray<InterestingEvent>;
-type ReviewResponseType = (events: ReadonlyArray<DomainEvent>) => ReviewResponse;
-
-const reviewResponse = (userId: UserId, reviewId: ReviewId): ReviewResponseType => flow(
-  filterEventType,
-  filterUserAndReview(userId, reviewId),
-  calculateCurrentState,
-);
 
 const command = (userId: UserId, reviewId: ReviewId): Command => flow(
   reviewResponse(userId, reviewId),

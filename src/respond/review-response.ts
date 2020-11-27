@@ -1,0 +1,62 @@
+import { flow } from 'fp-ts/function';
+import {
+  DomainEvent,
+  UserFoundReviewHelpfulEvent,
+  UserFoundReviewNotHelpfulEvent,
+  UserRevokedFindingReviewHelpfulEvent,
+  UserRevokedFindingReviewNotHelpfulEvent,
+} from '../types/domain-events';
+import { ReviewId } from '../types/review-id';
+import { UserId } from '../types/user-id';
+
+type ReviewResponse = 'none' | 'helpful' | 'not-helpful';
+
+type ReviewResponseType = (events: ReadonlyArray<DomainEvent>) => ReviewResponse;
+
+type InterestingEvent =
+  | UserFoundReviewHelpfulEvent
+  | UserRevokedFindingReviewHelpfulEvent
+  | UserFoundReviewNotHelpfulEvent
+  | UserRevokedFindingReviewNotHelpfulEvent;
+
+const filterEventType = (events: ReadonlyArray<DomainEvent>): ReadonlyArray<InterestingEvent> => (
+  events.filter(
+    (event): event is InterestingEvent => (
+      event.type === 'UserFoundReviewHelpful'
+      || event.type === 'UserRevokedFindingReviewHelpful'
+      || event.type === 'UserFoundReviewNotHelpful'
+      || event.type === 'UserRevokedFindingReviewNotHelpful'
+    ),
+  ));
+
+const filterUserAndReview = (
+  userId: UserId,
+  reviewId: ReviewId,
+) => (events: ReadonlyArray<InterestingEvent>): ReadonlyArray<InterestingEvent> => (
+  events.filter((event) => event.userId === userId && event.reviewId.toString() === reviewId.toString())
+);
+
+const calculateCurrentState = (events: ReadonlyArray<InterestingEvent>): ReviewResponse => {
+  // TODO: fold if into switch
+  if (events.length === 0) {
+    return 'none';
+  }
+  const typeOfMostRecentEvent = events[events.length - 1].type;
+
+  switch (typeOfMostRecentEvent) {
+    case 'UserRevokedFindingReviewHelpful':
+      return 'none';
+    case 'UserRevokedFindingReviewNotHelpful':
+      return 'none';
+    case 'UserFoundReviewHelpful':
+      return 'helpful';
+    case 'UserFoundReviewNotHelpful':
+      return 'not-helpful';
+  }
+};
+
+export const reviewResponse = (userId: UserId, reviewId: ReviewId): ReviewResponseType => flow(
+  filterEventType,
+  filterUserAndReview(userId, reviewId),
+  calculateCurrentState,
+);
