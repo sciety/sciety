@@ -4,7 +4,6 @@ import { FeedItem, GetFeedItems } from './render-feed';
 import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { HtmlFragment } from '../types/html-fragment';
-import HypothesisAnnotationId from '../types/hypothesis-annotation-id';
 import { ReviewId } from '../types/review-id';
 import { sanitise } from '../types/sanitised-html-fragment';
 

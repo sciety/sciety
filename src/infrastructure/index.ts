@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import axios from 'axios';
 import { Pool } from 'pg';
 import { Adapters } from './adapters';
@@ -26,12 +25,9 @@ import {
 import createReviewProjections from './review-projections';
 import createSearchEuropePmc from './search-europe-pmc';
 import bootstrapEditorialCommunities from '../data/bootstrap-editorial-communities';
-import Doi from '../types/doi';
 import { DomainEvent, isEditorialCommunityEndorsedArticleEvent, isEditorialCommunityReviewedArticleEvent } from '../types/domain-events';
-import EditorialCommunityId from '../types/editorial-community-id';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import EndorsementsRepository from '../types/endorsements-repository';
-import HypothesisAnnotationId from '../types/hypothesis-annotation-id';
 import { Json } from '../types/json';
 
 const populateEditorialCommunities = (logger: Logger): EditorialCommunityRepository => {
