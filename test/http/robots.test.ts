@@ -18,12 +18,4 @@ describe('robots handler', (): void => {
     expect(response.type).toBe('text/plain');
     expect(response.charset).toBe('utf-8');
   });
-
-  it('disallows all bots', async (): Promise<void> => {
-    expect(response.text).toStrictEqual(expect.stringContaining('User-Agent: *'));
-  });
-
-  it('disallows all pages', async (): Promise<void> => {
-    expect(response.text).toStrictEqual(expect.stringContaining('Disallow: /'));
-  });
 });
