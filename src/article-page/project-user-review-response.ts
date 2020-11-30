@@ -1,7 +1,11 @@
 import { Maybe } from 'true-myth';
 import { GetUserReviewResponse } from './render-review-responses';
 import {
-  DomainEvent, UserFoundReviewHelpfulEvent, UserFoundReviewNotHelpfulEvent, UserRevokedFindingReviewHelpfulEvent,
+  DomainEvent,
+  UserFoundReviewHelpfulEvent,
+  UserFoundReviewNotHelpfulEvent,
+  UserRevokedFindingReviewHelpfulEvent,
+  UserRevokedFindingReviewNotHelpfulEvent,
 } from '../types/domain-events';
 
 export type GetEvents = () => Promise<ReadonlyArray<DomainEvent>>;
@@ -19,8 +23,12 @@ export default (getEvents: GetEvents): GetUserReviewResponse => (
       .filter((event): event is
       UserFoundReviewHelpfulEvent |
       UserRevokedFindingReviewHelpfulEvent |
+      UserRevokedFindingReviewNotHelpfulEvent |
       UserFoundReviewNotHelpfulEvent => (
-        event.type === 'UserFoundReviewHelpful' || event.type === 'UserRevokedFindingReviewHelpful' || event.type === 'UserFoundReviewNotHelpful'
+        event.type === 'UserFoundReviewHelpful'
+        || event.type === 'UserRevokedFindingReviewHelpful'
+        || event.type === 'UserFoundReviewNotHelpful'
+        || event.type === 'UserRevokedFindingReviewNotHelpful'
       ))
       .filter((event) => event.userId === userId.unsafelyUnwrap())
       .filter((event) => event.reviewId.toString() === reviewId.toString());

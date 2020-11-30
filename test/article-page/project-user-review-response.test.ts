@@ -151,4 +151,31 @@ describe('project-user-review-response', () => {
       expect(userResponse.unsafelyUnwrap()).toBe('not-helpful');
     });
   });
+
+  describe('one revoked not-helpful response', () => {
+    it('returns nothing', async () => {
+      const userId = toUserId('some-user');
+      const reviewId = new Doi('10.1111/123456');
+      const projectUserReviewResponse = createProjectUserReviewResponse(async () => [
+        {
+          type: 'UserFoundReviewNotHelpful',
+          id: generate(),
+          date: new Date(),
+          userId,
+          reviewId,
+        },
+        {
+          type: 'UserRevokedFindingReviewNotHelpful',
+          id: generate(),
+          date: new Date(),
+          userId,
+          reviewId,
+        },
+      ]);
+
+      const userResponse = await projectUserReviewResponse(new Doi('10.1111/123456'), Maybe.just(userId));
+
+      expect(userResponse.isNothing()).toBe(true);
+    });
+  });
 });
