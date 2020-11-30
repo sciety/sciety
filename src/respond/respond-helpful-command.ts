@@ -1,7 +1,7 @@
 import { ReviewResponse } from './review-response';
 import {
   DomainEvent,
-  UserFoundReviewHelpfulEvent,
+  UserFoundReviewHelpfulEvent, userRevokedFindingReviewNotHelpful,
   UserRevokedFindingReviewNotHelpfulEvent,
 } from '../types/domain-events';
 import { generate } from '../types/event-id';
@@ -29,13 +29,7 @@ export const respondHelpful: RespondHelpful = (currentResponse, userId, reviewId
       return [];
     case 'not-helpful':
       return [
-        {
-          id: generate(),
-          type: 'UserRevokedFindingReviewNotHelpful',
-          date: new Date(),
-          userId,
-          reviewId,
-        },
+        userRevokedFindingReviewNotHelpful(userId, reviewId),
         {
           id: generate(),
           type: 'UserFoundReviewHelpful',
