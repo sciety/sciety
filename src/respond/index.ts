@@ -17,7 +17,7 @@ type Ports = {
   getAllEvents: GetAllEvents;
 };
 
-export default (ports: Ports): Middleware<{ user: User }> => async (context, next) => {
+export const createRespondHandler = (ports: Ports): Middleware<{ user: User }> => async (context, next) => {
   const { user } = context.state;
   const reviewId = toReviewId(context.request.body.reviewid);
 

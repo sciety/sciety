@@ -20,7 +20,7 @@ import createHomePage from '../home-page';
 import { Adapters } from '../infrastructure/adapters';
 import createLogOutHandler from '../log-out';
 import createPrivacyPage from '../privacy-page';
-import createRespondHandler from '../respond';
+import { createRespondHandler } from '../respond';
 import createTermsPage from '../terms-page';
 import createUnfollowHandler from '../unfollow';
 import createFinishUnfollowCommand from '../unfollow/finish-unfollow-command';
