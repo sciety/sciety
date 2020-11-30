@@ -7,7 +7,7 @@ export default (): Middleware => (
     response.status = OK;
     response.body = `
 User-Agent: *
-Disallow:
+${process.env.ALLOW_SITE_CRAWLERS === 'true' ? 'Allow' : 'Disallow'}: /
 `;
 
     await next();
