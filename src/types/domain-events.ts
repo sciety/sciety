@@ -107,6 +107,17 @@ export type UserFoundReviewNotHelpfulEvent = Readonly<{
   reviewId: ReviewId;
 }>;
 
+export const userFoundReviewNotHelpful = (
+  userId: UserId,
+  reviewId: ReviewId,
+): UserFoundReviewNotHelpfulEvent => ({
+  id: generate(),
+  type: 'UserFoundReviewNotHelpful',
+  date: new Date(),
+  userId,
+  reviewId,
+});
+
 export type UserRevokedFindingReviewNotHelpfulEvent = Readonly<{
   id: EventId,
   type: 'UserRevokedFindingReviewNotHelpful';
