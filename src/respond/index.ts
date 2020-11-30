@@ -25,20 +25,17 @@ export default (ports: Ports): Middleware<{ user: User }> => async (context, nex
   if (command !== 'respond-helpful' && command !== 'revoke-response' && command !== 'respond-not-helpful') {
     throw new BadRequest();
   }
+
+  const commands = {
+    'respond-helpful': respondHelpful,
+    'respond-not-helpful': respondNotHelpful,
+    'revoke-response': revokeResponse,
+  };
+
   await pipe(
     ports.getAllEvents,
     T.map(reviewResponse(user.id, reviewId)),
-    // eslint-disable-next-line array-callback-return -- replace switch with map lookup
-    T.map((currentResponse) => {
-      switch (command) {
-        case 'respond-helpful':
-          return respondHelpful(currentResponse)(user.id, reviewId);
-        case 'revoke-response':
-          return revokeResponse(currentResponse)(user.id, reviewId);
-        case 'respond-not-helpful':
-          return respondNotHelpful(currentResponse)(user.id, reviewId);
-      }
-    }),
+    T.map((currentResponse) => commands[command](currentResponse)(user.id, reviewId)),
     T.map(ports.commitEvents),
   )();
 
