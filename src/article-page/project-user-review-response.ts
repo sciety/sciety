@@ -29,7 +29,7 @@ export default (getEvents: GetEvents): GetUserReviewResponse => (
       return Maybe.nothing();
     }
 
-    const mostRecentEventType = events[events.length - 1].type;
+    const mostRecentEventType = ofInterest[ofInterest.length - 1].type;
     switch (mostRecentEventType) {
       case 'UserFoundReviewHelpful':
         return Maybe.just('helpful');

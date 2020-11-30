@@ -102,6 +102,41 @@ describe('project-user-review-response', () => {
     });
   });
 
+  describe('one revoked helpful response on a different review', () => {
+    it('doesn\'t change the state of the current review', async () => {
+      const userId = toUserId('some-user');
+      const reviewId = new Doi('10.1111/123456');
+      const otherReviewId = new Doi('10.1111/987654');
+      const projectUserReviewResponse = createProjectUserReviewResponse(async () => [
+        {
+          type: 'UserFoundReviewHelpful',
+          id: generate(),
+          date: new Date(),
+          userId,
+          reviewId,
+        },
+        {
+          type: 'UserFoundReviewHelpful',
+          id: generate(),
+          date: new Date(),
+          userId,
+          reviewId: otherReviewId,
+        },
+        {
+          type: 'UserRevokedFindingReviewHelpful',
+          id: generate(),
+          date: new Date(),
+          userId,
+          reviewId: otherReviewId,
+        },
+      ]);
+
+      const userResponse = await projectUserReviewResponse(reviewId, Maybe.just(userId));
+
+      expect(userResponse.unsafelyUnwrap()).toBe('helpful');
+    });
+  });
+
   describe('one not helpful response event', () => {
     it('returns `not helpful`', async () => {
       const projectUserReviewResponse = createProjectUserReviewResponse(async () => [{
