@@ -22,7 +22,7 @@ export default (ports: Ports): Middleware<{ user: User }> => async (context, nex
 
   // TODO: validate that command matches HandleResponseToReview
   const { command } = context.request.body;
-  const newEvents = await pipe(
+  await pipe(
     ports.getAllEvents,
     T.map(reviewResponse(user.id, reviewId)),
     T.map((currentResponse: 'helpful' | 'not-helpful' | 'none') => {
@@ -37,9 +37,8 @@ export default (ports: Ports): Middleware<{ user: User }> => async (context, nex
           return [];
       }
     }),
+    T.map(ports.commitEvents),
   )();
-
-  ports.commitEvents(newEvents);
 
   context.redirect('back');
 
