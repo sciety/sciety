@@ -10,9 +10,9 @@ import { UserId } from '../types/user-id';
 export type GetAllEvents = () => Promise<ReadonlyArray<DomainEvent>>;
 
 type RespondHelpful = (userId: UserId, reviewId: ReviewId) =>
-Promise<ReadonlyArray<UserFoundReviewHelpfulEvent | UserRevokedFindingReviewNotHelpfulEvent>>;
+ReadonlyArray<UserFoundReviewHelpfulEvent | UserRevokedFindingReviewNotHelpfulEvent>;
 
-export const respondHelpful = (currentResponse: 'helpful' | 'not-helpful' | 'none'): RespondHelpful => async (userId, reviewId) => {
+export const respondHelpful = (currentResponse: 'helpful' | 'not-helpful' | 'none'): RespondHelpful => (userId, reviewId) => {
   switch (currentResponse) {
     case 'none':
       return [

@@ -25,7 +25,7 @@ export default (ports: Ports): Middleware<{ user: User }> => async (context, nex
   const newEvents = await pipe(
     ports.getAllEvents,
     T.map(reviewResponse(user.id, reviewId)),
-    T.map(async (currentResponse: 'helpful' | 'not-helpful' | 'none') => {
+    T.map((currentResponse: 'helpful' | 'not-helpful' | 'none') => {
       switch (command) {
         case 'respond-helpful':
           return respondHelpful(currentResponse)(user.id, reviewId);

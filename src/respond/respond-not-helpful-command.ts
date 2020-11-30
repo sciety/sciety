@@ -6,11 +6,10 @@ import { generate } from '../types/event-id';
 import { ReviewId } from '../types/review-id';
 import { UserId } from '../types/user-id';
 
-type RespondNotHelpful = (userId: UserId, reviewId: ReviewId) => Promise<
-ReadonlyArray<UserRevokedFindingReviewHelpfulEvent | UserFoundReviewNotHelpfulEvent>
->;
+type RespondNotHelpful = (userId: UserId, reviewId: ReviewId)
+=> ReadonlyArray<UserRevokedFindingReviewHelpfulEvent | UserFoundReviewNotHelpfulEvent>;
 
-export const respondNotHelpful = (currentResponse: 'helpful' | 'not-helpful' | 'none'): RespondNotHelpful => async (userId, reviewId) => {
+export const respondNotHelpful = (currentResponse: 'helpful' | 'not-helpful' | 'none'): RespondNotHelpful => (userId, reviewId) => {
   switch (currentResponse) {
     case 'none':
       return [
