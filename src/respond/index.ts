@@ -32,7 +32,7 @@ export default (ports: Ports): Middleware<{ user: User }> => async (context, nex
         case 'revoke-response':
           return revokeResponse(currentResponse)(user.id, reviewId);
         case 'respond-not-helpful':
-          return respondNotHelpful(ports.getAllEvents)(user.id, reviewId);
+          return respondNotHelpful(currentResponse)(user.id, reviewId);
         default:
           return [];
       }
