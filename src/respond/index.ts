@@ -1,6 +1,7 @@
 import { Middleware } from '@koa/router';
 import * as T from 'fp-ts/lib/Task';
 import { pipe } from 'fp-ts/lib/function';
+import { BadRequest } from 'http-errors';
 import { GetAllEvents, respondHelpful } from './respond-helpful-command';
 import { respondNotHelpful } from './respond-not-helpful-command';
 import { reviewResponse } from './review-response';
@@ -20,11 +21,14 @@ export default (ports: Ports): Middleware<{ user: User }> => async (context, nex
   const { user } = context.state;
   const reviewId = toReviewId(context.request.body.reviewid);
 
-  // TODO: validate that command matches HandleResponseToReview
-  const { command } = context.request.body;
+  const command = context.request.body.command as string;
+  if (command !== 'respond-helpful' && command !== 'revoke-response' && command !== 'respond-not-helpful') {
+    throw new BadRequest();
+  }
   await pipe(
     ports.getAllEvents,
     T.map(reviewResponse(user.id, reviewId)),
+    // eslint-disable-next-line array-callback-return -- replace switch with map lookup
     T.map((currentResponse) => {
       switch (command) {
         case 'respond-helpful':
@@ -33,8 +37,6 @@ export default (ports: Ports): Middleware<{ user: User }> => async (context, nex
           return revokeResponse(currentResponse)(user.id, reviewId);
         case 'respond-not-helpful':
           return respondNotHelpful(currentResponse)(user.id, reviewId);
-        default:
-          return [];
       }
     }),
     T.map(ports.commitEvents),
