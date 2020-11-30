@@ -9,7 +9,7 @@ import {
 import { ReviewId } from '../types/review-id';
 import { UserId } from '../types/user-id';
 
-type ReviewResponse = 'none' | 'helpful' | 'not-helpful';
+export type ReviewResponse = 'none' | 'helpful' | 'not-helpful';
 
 type ReviewResponseType = (events: ReadonlyArray<DomainEvent>) => ReviewResponse;
 

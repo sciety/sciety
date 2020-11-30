@@ -1,3 +1,4 @@
+import { ReviewResponse } from './review-response';
 import {
   RuntimeGeneratedEvent,
   UserFoundReviewHelpfulEvent,
@@ -17,8 +18,6 @@ type InterestingEvent =
   | UserRevokedFindingReviewHelpfulEvent
   | UserFoundReviewNotHelpfulEvent
   | UserRevokedFindingReviewNotHelpfulEvent;
-
-type ReviewResponse = 'none' | 'helpful' | 'not-helpful';
 
 const handleCommand = (
   userId: UserId,

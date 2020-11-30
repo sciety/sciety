@@ -1,3 +1,4 @@
+import { ReviewResponse } from './review-response';
 import {
   UserFoundReviewNotHelpfulEvent,
   UserRevokedFindingReviewHelpfulEvent,
@@ -9,7 +10,7 @@ import { UserId } from '../types/user-id';
 type RespondNotHelpful = (userId: UserId, reviewId: ReviewId)
 => ReadonlyArray<UserRevokedFindingReviewHelpfulEvent | UserFoundReviewNotHelpfulEvent>;
 
-export const respondNotHelpful = (currentResponse: 'helpful' | 'not-helpful' | 'none'): RespondNotHelpful => (userId, reviewId) => {
+export const respondNotHelpful = (currentResponse: ReviewResponse): RespondNotHelpful => (userId, reviewId) => {
   switch (currentResponse) {
     case 'none':
       return [

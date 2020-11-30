@@ -1,3 +1,4 @@
+import { ReviewResponse } from './review-response';
 import {
   DomainEvent,
   UserFoundReviewHelpfulEvent,
@@ -12,7 +13,7 @@ export type GetAllEvents = () => Promise<ReadonlyArray<DomainEvent>>;
 type RespondHelpful = (userId: UserId, reviewId: ReviewId) =>
 ReadonlyArray<UserFoundReviewHelpfulEvent | UserRevokedFindingReviewNotHelpfulEvent>;
 
-export const respondHelpful = (currentResponse: 'helpful' | 'not-helpful' | 'none'): RespondHelpful => (userId, reviewId) => {
+export const respondHelpful = (currentResponse: ReviewResponse): RespondHelpful => (userId, reviewId) => {
   switch (currentResponse) {
     case 'none':
       return [
