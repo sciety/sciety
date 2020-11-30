@@ -47,6 +47,10 @@ export default (adapters: Adapters): Router => {
 
   router.get('/articles',
     identifyUser(adapters.logger),
+    async (context, next) => {
+      context.response.set('X-Robots-Tag', 'noindex');
+      await next();
+    },
     pageHandler(createArticleSearchPage(adapters)));
 
   router.get('/articles/:doi(.+)',
