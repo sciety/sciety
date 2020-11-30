@@ -40,6 +40,7 @@ const loggedOutMenuItems = (): HtmlFragment => toHtmlFragment(`
 const isSecure = process.env.APP_ORIGIN !== undefined && process.env.APP_ORIGIN.startsWith('https:');
 
 type Page = {
+  title?: string;
   content: HtmlFragment;
   openGraph?: {
     title: string;
@@ -54,7 +55,7 @@ export default (page: Page, user: Maybe<User>): string => `<!doctype html>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>
-    Sciety
+    ${page.title ?? 'Sciety'}
   </title>
   <link rel="stylesheet" href="/static/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.css">

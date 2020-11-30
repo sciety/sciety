@@ -12,6 +12,7 @@ export default (
   renderSearchForm: Component,
   renderFeed: Component,
 ): RenderPage => async (userId) => Result.ok({
+  title: 'Sciety: where research is evaluated and curated by the communities you trust',
   content: toHtmlFragment(`
     <div class="sciety-grid sciety-grid--home">
       ${await renderPageHeader(userId)}
