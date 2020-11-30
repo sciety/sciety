@@ -109,6 +109,8 @@ export default (ports: Ports): EditorialCommunityPage => {
     renderDescription,
     renderFeed,
     renderFollowers,
+    // TODO: do not unsafelyUnwrap()
+    async (id) => (await ports.getEditorialCommunity(id)).unsafelyUnwrap().name,
   );
   return async (params) => {
     const editorialCommunityId = new EditorialCommunityId(params.id ?? '');
