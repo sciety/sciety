@@ -7,6 +7,7 @@ import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { UserId } from '../types/user-id';
 
 type Page = {
+  title: string,
   content: HtmlFragment,
   openGraph: {
     title: string,
@@ -33,6 +34,7 @@ export default (
 ): RenderPage => {
   const template = (abstract: string) => (pageHeader: string) => (feed: string) => (articleDetails: ArticleDetails) => (
     {
+      title: `${striptags(articleDetails.title)} | Sciety`,
       content: toHtmlFragment(`
 <article class="sciety-grid sciety-grid--article">
   ${pageHeader}
