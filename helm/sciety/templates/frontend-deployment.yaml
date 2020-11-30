@@ -20,6 +20,8 @@ spec:
         - name: app
           image: "{{ .Values.images.frontend.repository }}:{{ .Values.images.frontend.tag }}"
           env:
+            - name: ALLOW_SITE_CRAWLERS
+              value: "{{ .Values.allowSiteCrawlers }}"
             - name: APP_ORIGIN
               value: https://{{ .Values.hostname }}
             - name: CROSSREF_API_BEARER_TOKEN

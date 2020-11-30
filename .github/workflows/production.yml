@@ -25,6 +25,7 @@ jobs:
           helm repo add bitnami https://charts.bitnami.com/bitnami
           helm dependency build helm/sciety
           helm upgrade -i sciety--prod \
+            --set-string allowSiteCrawlers=true \
             --set images.frontend.tag=${IMAGE_TAG} \
             --set hostname=sciety.org \
             --set oldHostname=hive.review \
