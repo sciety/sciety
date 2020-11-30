@@ -1,6 +1,6 @@
 import Doi from './doi';
 import EditorialCommunityId from './editorial-community-id';
-import { EventId } from './event-id';
+import { EventId, generate } from './event-id';
 import { ReviewId } from './review-id';
 import { UserId } from './user-id';
 
@@ -77,6 +77,17 @@ export type UserRevokedFindingReviewHelpfulEvent = Readonly<{
   reviewId: ReviewId;
 }>;
 
+export const userRevokedFindingReviewHelpful = (
+  userId: UserId,
+  reviewId: ReviewId,
+): UserRevokedFindingReviewHelpfulEvent => ({
+  id: generate(),
+  type: 'UserRevokedFindingReviewHelpful',
+  date: new Date(),
+  userId,
+  reviewId,
+});
+
 export type UserFoundReviewNotHelpfulEvent = Readonly<{
   id: EventId,
   type: 'UserFoundReviewNotHelpful';
@@ -93,6 +104,16 @@ export type UserRevokedFindingReviewNotHelpfulEvent = Readonly<{
   reviewId: ReviewId;
 }>;
 
+export const userRevokedFindingReviewNotHelpful = (
+  userId: UserId,
+  reviewId: ReviewId,
+): UserRevokedFindingReviewNotHelpfulEvent => ({
+  id: generate(),
+  type: 'UserRevokedFindingReviewNotHelpful',
+  date: new Date(),
+  userId,
+  reviewId,
+});
 export type DomainEvent =
   EditorialCommunityEndorsedArticleEvent |
   EditorialCommunityReviewedArticleEvent |
