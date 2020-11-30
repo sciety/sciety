@@ -49,6 +49,8 @@ export default (ports: Ports): UserPage => {
   const renderPage = createRenderPage(
     renderHeader,
     renderFollowList,
+    // TODO for goodness sake don't do this for longer than you have to - doubles Twitter API calls unnecessarily
+    async (userId) => (await ports.getUserDetails(userId)).unsafelyUnwrap().displayName,
   );
 
   return async (params) => {

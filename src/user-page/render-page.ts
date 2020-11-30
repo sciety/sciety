@@ -10,8 +10,9 @@ export type RenderPage = (
 
 type Component = (userId: UserId, viewingUserId: Maybe<UserId>) => Promise<Result<string, 'not-found' | 'unavailable'>>;
 
-const template = (header: string) => (followList: string) => (
+const template = (header: string) => (followList: string) => (userDisplayName:string) => (
   {
+    title: `${userDisplayName} | Sciety`,
     content: toHtmlFragment(`
       <div class="sciety-grid sciety-grid--user">
         ${header}
@@ -23,16 +24,21 @@ const template = (header: string) => (followList: string) => (
   }
 );
 
+type GetUserDisplayName = (userId: UserId) => Promise<string>;
+
 export default (
   renderHeader: Component,
   renderFollowList: Component,
+  getUserDisplayName: GetUserDisplayName,
 ): RenderPage => async (userId, viewingUserId) => {
   const header = renderHeader(userId, viewingUserId);
   const followList = renderFollowList(userId, viewingUserId);
+  const userDisplayName = getUserDisplayName(userId);
 
   return Result.ok(template)
     .ap(await header)
     .ap(await followList)
+    .ap(Result.ok(await userDisplayName))
     .mapErr((e) => {
       if (e === 'not-found') {
         return {
