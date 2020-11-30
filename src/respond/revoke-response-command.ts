@@ -1,29 +1,14 @@
 import { ReviewResponse } from './review-response';
-import {
-  RuntimeGeneratedEvent,
-  UserFoundReviewHelpfulEvent,
-  UserFoundReviewNotHelpfulEvent,
-  UserRevokedFindingReviewHelpfulEvent,
-  UserRevokedFindingReviewNotHelpfulEvent,
-} from '../types/domain-events';
+import { UserRevokedFindingReviewHelpfulEvent, UserRevokedFindingReviewNotHelpfulEvent } from '../types/domain-events';
 import { generate } from '../types/event-id';
 import { ReviewId } from '../types/review-id';
 import { UserId } from '../types/user-id';
 
-type RevokeResponse = (userId: UserId, reviewId: ReviewId) => ReadonlyArray<RuntimeGeneratedEvent>;
+type RevokeResponse = (currentResponse: ReviewResponse, userId: UserId, reviewId: ReviewId) =>
+ReadonlyArray<UserRevokedFindingReviewHelpfulEvent | UserRevokedFindingReviewNotHelpfulEvent>;
 
-// TODO: this should only produce revoke events
-type InterestingEvent =
-  | UserFoundReviewHelpfulEvent
-  | UserRevokedFindingReviewHelpfulEvent
-  | UserFoundReviewNotHelpfulEvent
-  | UserRevokedFindingReviewNotHelpfulEvent;
-
-const handleCommand = (
-  userId: UserId,
-  reviewId: ReviewId,
-) => (response: ReviewResponse): ReadonlyArray<InterestingEvent> => {
-  switch (response) {
+export const revokeResponse: RevokeResponse = (currentResponse, userId, reviewId) => {
+  switch (currentResponse) {
     case 'none':
       return [];
     case 'helpful':
@@ -48,5 +33,3 @@ const handleCommand = (
       ];
   }
 };
-
-export const revokeResponse = (currentResponse: 'helpful' | 'not-helpful' | 'none'): RevokeResponse => (userId, reviewId) => handleCommand(userId, reviewId)(currentResponse);

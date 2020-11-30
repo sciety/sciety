@@ -35,7 +35,7 @@ export default (ports: Ports): Middleware<{ user: User }> => async (context, nex
   await pipe(
     ports.getAllEvents,
     T.map(reviewResponse(user.id, reviewId)),
-    T.map((currentResponse) => commands[command](currentResponse)(user.id, reviewId)),
+    T.map((currentResponse) => commands[command](currentResponse, user.id, reviewId)),
     T.map(ports.commitEvents),
   )();
 

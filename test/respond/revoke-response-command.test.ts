@@ -8,7 +8,7 @@ describe('revoke-response-command', () => {
       // TODO: extract reviewId and userId
       const reviewId = new Doi('10.1111/333333');
       const userId = toUserId('someone');
-      const events = revokeResponse('none')(userId, reviewId);
+      const events = revokeResponse('none', userId, reviewId);
 
       expect(events).toHaveLength(0);
     });
@@ -18,7 +18,7 @@ describe('revoke-response-command', () => {
     it('return UserRevokedFindingReviewHelpful event', async () => {
       const reviewId = new Doi('10.1111/333333');
       const userId = toUserId('someone');
-      const events = revokeResponse('helpful')(userId, new Doi('10.1111/333333'));
+      const events = revokeResponse('helpful', userId, new Doi('10.1111/333333'));
 
       expect(events).toHaveLength(1);
       expect(events[0]).toMatchObject({
@@ -33,7 +33,7 @@ describe('revoke-response-command', () => {
     it('return UserRevokedFindingReviewNotHelpful event', async () => {
       const reviewId = new Doi('10.1111/333333');
       const userId = toUserId('someone');
-      const events = revokeResponse('not-helpful')(userId, new Doi('10.1111/333333'));
+      const events = revokeResponse('not-helpful', userId, new Doi('10.1111/333333'));
 
       expect(events).toHaveLength(1);
       expect(events[0]).toMatchObject({

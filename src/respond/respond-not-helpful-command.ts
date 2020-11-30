@@ -7,10 +7,10 @@ import { generate } from '../types/event-id';
 import { ReviewId } from '../types/review-id';
 import { UserId } from '../types/user-id';
 
-type RespondNotHelpful = (userId: UserId, reviewId: ReviewId)
+type RespondNotHelpful = (currentResponse: ReviewResponse, userId: UserId, reviewId: ReviewId)
 => ReadonlyArray<UserRevokedFindingReviewHelpfulEvent | UserFoundReviewNotHelpfulEvent>;
 
-export const respondNotHelpful = (currentResponse: ReviewResponse): RespondNotHelpful => (userId, reviewId) => {
+export const respondNotHelpful: RespondNotHelpful = (currentResponse, userId, reviewId) => {
   switch (currentResponse) {
     case 'none':
       return [
