@@ -45,4 +45,17 @@ describe('render-review-responses', () => {
       expect(rendered).toStrictEqual(expect.stringContaining('thumb-up-solid'));
     });
   });
+
+  describe('when the user response is `not helpful`', () => {
+    it('displays an active `not helpful` button', async () => {
+      const renderReviewResponses = createRenderReviewResponses(async () => ({
+        helpfulCount: 1,
+        notHelpfulCount: 0,
+      }), async () => Maybe.just('not-helpful'));
+
+      const rendered = await renderReviewResponses(new Doi('10.1111/123456'), Maybe.just(toUserId('user')));
+
+      expect(rendered).toStrictEqual(expect.stringContaining('thumb-down-solid'));
+    });
+  });
 });
