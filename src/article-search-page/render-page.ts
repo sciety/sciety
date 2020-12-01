@@ -2,11 +2,15 @@ import { Result } from 'true-myth';
 import { RenderSearchResults } from './render-search-results';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
-export type RenderPage = (query: string) => Promise<Result<{content: HtmlFragment}, never>>;
+export type RenderPage = (query: string) => Promise<Result<{
+  title: string,
+  content: HtmlFragment,
+}, never>>;
 
 export default (
   renderSearchResults: RenderSearchResults,
 ): RenderPage => async (query) => Result.ok({
+  title: 'Search results | Sciety',
   content: toHtmlFragment(`
     <div class="sciety-grid sciety-grid--simple">
 

@@ -1,9 +1,13 @@
 import { Result } from 'true-myth';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
-type RenderPage = () => Promise<Result<{content: HtmlFragment}, never>>;
+type RenderPage = () => Promise<Result<{
+  title: string,
+  content: HtmlFragment,
+}, never>>;
 
 export default (): RenderPage => async () => Result.ok({
+  title: 'Privacy notice | Sciety',
   content: toHtmlFragment(`
     <div class="sciety-grid sciety-grid--simple">
       <header class="page-header">
