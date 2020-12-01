@@ -11,7 +11,10 @@ type GetCommunityName = (editorialCommunityId: EditorialCommunityId) => Promise<
 export type RenderPage = (
   editorialCommunityId: EditorialCommunityId,
   userId: Maybe<UserId>
-) => Promise<Result<{content: HtmlFragment}, RenderPageError>>;
+) => Promise<Result<{
+  title: string,
+  content: HtmlFragment
+}, RenderPageError>>;
 
 export default (
   renderPageHeader: Component,

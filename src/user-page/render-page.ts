@@ -6,7 +6,10 @@ import { UserId } from '../types/user-id';
 export type RenderPage = (
   userId: UserId,
   viewingUserId: Maybe<UserId>,
-) => Promise<Result<{content: HtmlFragment}, RenderPageError>>;
+) => Promise<Result<{
+  title: string,
+  content: HtmlFragment
+}, RenderPageError>>;
 
 type Component = (userId: UserId, viewingUserId: Maybe<UserId>) => Promise<Result<string, 'not-found' | 'unavailable'>>;
 

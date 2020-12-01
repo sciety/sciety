@@ -2,7 +2,10 @@ import { Maybe, Result } from 'true-myth';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
-export type RenderPage = (userId: Maybe<UserId>) => Promise<Result<{content: HtmlFragment}, never>>;
+export type RenderPage = (userId: Maybe<UserId>) => Promise<Result<{
+  title: string,
+  content: HtmlFragment
+}, never>>;
 
 type Component = (userId: Maybe<UserId>) => Promise<string>;
 
