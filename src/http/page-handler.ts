@@ -8,7 +8,7 @@ import { RenderPageError } from '../types/render-page-error';
 import { User } from '../types/user';
 
 type Page = {
-  title?: string,
+  title: string,
   content: HtmlFragment,
   openGraph?: {
     title: string;
