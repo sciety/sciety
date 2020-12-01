@@ -39,6 +39,7 @@ type FoldToPage = (
 
 const foldToPage: FoldToPage = (pageResult) => (
   pageResult.unwrapOrElse((error) => ({
+    title: 'Error | Sciety',
     content: renderErrorPage(error.message),
   }))
 );
