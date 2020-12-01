@@ -2,19 +2,9 @@ import { Middleware } from '@koa/router';
 import { NOT_FOUND, OK, SERVICE_UNAVAILABLE } from 'http-status-codes';
 import { Maybe, Result } from 'true-myth';
 import { renderErrorPage } from './render-error-page';
-import applyStandardPageLayout from '../shared-components/apply-standard-page-layout';
-import { HtmlFragment } from '../types/html-fragment';
+import applyStandardPageLayout, { Page } from '../shared-components/apply-standard-page-layout';
 import { RenderPageError } from '../types/render-page-error';
 import { User } from '../types/user';
-
-type Page = {
-  title: string,
-  content: HtmlFragment,
-  openGraph?: {
-    title: string;
-    description: string;
-  }
-};
 
 type RenderedResult = Result<Page, RenderPageError>;
 

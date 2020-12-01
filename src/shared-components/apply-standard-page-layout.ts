@@ -39,7 +39,7 @@ const loggedOutMenuItems = (): HtmlFragment => toHtmlFragment(`
 
 const isSecure = process.env.APP_ORIGIN !== undefined && process.env.APP_ORIGIN.startsWith('https:');
 
-type Page = {
+export type Page = {
   title: string;
   content: HtmlFragment;
   openGraph?: {
