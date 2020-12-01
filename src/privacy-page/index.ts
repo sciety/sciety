@@ -7,7 +7,7 @@ type RenderPage = () => Promise<Result<{
 }, never>>;
 
 export default (): RenderPage => async () => Result.ok({
-  title: 'Privacy notice | Sciety',
+  title: 'Privacy notice',
   content: toHtmlFragment(`
     <div class="sciety-grid sciety-grid--simple">
       <header class="page-header">

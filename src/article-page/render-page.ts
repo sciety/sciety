@@ -34,7 +34,7 @@ export default (
 ): RenderPage => {
   const template = (abstract: string) => (pageHeader: string) => (feed: string) => (articleDetails: ArticleDetails) => (
     {
-      title: `${striptags(articleDetails.title)} | Sciety`,
+      title: `${striptags(articleDetails.title)}`,
       content: toHtmlFragment(`
 <article class="sciety-grid sciety-grid--article">
   ${pageHeader}

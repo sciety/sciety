@@ -15,7 +15,7 @@ type Component = (userId: UserId, viewingUserId: Maybe<UserId>) => Promise<Resul
 
 const template = (header: string) => (followList: string) => (userDisplayName:string) => (
   {
-    title: `${userDisplayName} | Sciety`,
+    title: `${userDisplayName}`,
     content: toHtmlFragment(`
       <div class="sciety-grid sciety-grid--user">
         ${header}

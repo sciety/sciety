@@ -29,7 +29,7 @@ type FoldToPage = (
 
 const foldToPage: FoldToPage = (pageResult) => (
   pageResult.unwrapOrElse((error) => ({
-    title: 'Error | Sciety',
+    title: 'Error',
     content: renderErrorPage(error.message),
   }))
 );
@@ -52,7 +52,15 @@ export default (
 
     context.response.status = renderedResult.map(successToStatusCode).unwrapOrElse(errorTypeToStatusCode);
 
-    context.response.body = applyStandardPageLayout(foldToPage(renderedResult), user);
+    const addScietySuffixIfNotHomepage = (page: Page): Page => ({
+      ...page,
+      title: context.request.path === '/' ? page.title : `${page.title} | Sciety`,
+    });
+
+    context.response.body = applyStandardPageLayout(
+      addScietySuffixIfNotHomepage(foldToPage(renderedResult)),
+      user,
+    );
 
     await next();
   }

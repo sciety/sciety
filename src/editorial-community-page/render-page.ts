@@ -26,7 +26,7 @@ export default (
   async (editorialCommunityId, userId) => {
     try {
       return Result.ok({
-        title: `${await getCommunityName(editorialCommunityId)} | Sciety`,
+        title: `${await getCommunityName(editorialCommunityId)}`,
         content: toHtmlFragment(`
           <div class="sciety-grid sciety-grid--editorial-community">
             ${await renderPageHeader(editorialCommunityId, userId)}

@@ -10,7 +10,7 @@ export type RenderPage = (query: string) => Promise<Result<{
 export default (
   renderSearchResults: RenderSearchResults,
 ): RenderPage => async (query) => Result.ok({
-  title: 'Search results | Sciety',
+  title: 'Search results',
   content: toHtmlFragment(`
     <div class="sciety-grid sciety-grid--simple">
 
