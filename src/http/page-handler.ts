@@ -1,4 +1,5 @@
 import { Middleware } from '@koa/router';
+import { pipe } from 'fp-ts/lib/function';
 import { NOT_FOUND, OK, SERVICE_UNAVAILABLE } from 'http-status-codes';
 import { Maybe, Result } from 'true-myth';
 import { renderErrorPage } from './render-error-page';
@@ -50,17 +51,19 @@ export default (
 
     const renderedResult = await renderPage(params);
 
-    context.response.status = renderedResult.map(successToStatusCode).unwrapOrElse(errorTypeToStatusCode);
-
     const addScietySuffixIfNotHomepage = (page: Page): Page => ({
       ...page,
       title: context.request.path === '/' ? page.title : `${page.title} | Sciety`,
     });
 
-    context.response.body = applyStandardPageLayout(
-      addScietySuffixIfNotHomepage(foldToPage(renderedResult)),
-      user,
+    context.response.body = pipe(
+      renderedResult,
+      foldToPage,
+      addScietySuffixIfNotHomepage,
+      (page) => applyStandardPageLayout(page, user),
     );
+
+    context.response.status = renderedResult.map(successToStatusCode).unwrapOrElse(errorTypeToStatusCode);
 
     await next();
   }
