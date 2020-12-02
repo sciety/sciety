@@ -1,4 +1,5 @@
-import { GetFollowers } from './render-followers';
+import { Maybe } from 'true-myth';
+import { FollowerDetails, GetFollowers } from './render-followers';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { UserId } from '../types/user-id';
 
@@ -14,11 +15,15 @@ export default (getFollowerIds: GetFollowerIds, getUserDetails: GetUserDetails):
   async (editorialCommunityId) => {
     const userIds = await getFollowerIds(editorialCommunityId);
     return Promise.all(userIds.map(async (userId) => {
-      const userDetails = await getUserDetails(userId);
-      return {
-        ...userDetails,
-        userId,
-      };
+      try {
+        const userDetails = await getUserDetails(userId);
+        return Maybe.just({
+          ...userDetails,
+          userId,
+        });
+      } catch {
+        return Maybe.nothing<FollowerDetails>();
+      }
     }));
   }
 );

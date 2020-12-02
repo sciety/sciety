@@ -9,6 +9,7 @@ export type FollowerDetails = {
 };
 
 type RenderFollower = (followerDetails: FollowerDetails) => Promise<HtmlFragment>;
+type RenderFollowerError = () => Promise<HtmlFragment>;
 
 export const renderFollower: RenderFollower = async (followerDetails) => toHtmlFragment(`
   <a href="/users/${followerDetails.userId}" class="follower">
@@ -18,4 +19,11 @@ export const renderFollower: RenderFollower = async (followerDetails) => toHtmlF
       <div class="follower__handle">@${followerDetails.handle}</div>
     </div>
   </a>
+`);
+
+export const renderFollowerError: RenderFollowerError = async () => toHtmlFragment(`
+  <div class="follower">
+    <img src="https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png" alt="" class="follower__avatar">
+    <div>Can't retrieve user details</div>
+  </div>
 `);

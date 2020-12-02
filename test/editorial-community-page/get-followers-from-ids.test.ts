@@ -19,7 +19,7 @@ describe('get-followers-from-ids', () => {
     const followers = await getFollowersFromIds(new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'));
 
     expect(followers).toHaveLength(1);
-    expect(followers[0]).toStrictEqual({
+    expect(followers[0].unsafelyUnwrap()).toStrictEqual({
       handle: 'some_handle',
       displayName: 'Some User',
       avatarUrl: 'http://example.com',
