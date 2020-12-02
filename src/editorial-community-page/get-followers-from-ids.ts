@@ -1,5 +1,5 @@
 import { Maybe } from 'true-myth';
-import { FollowerDetails, GetFollowers } from './render-followers';
+import { GetFollowers } from './render-followers';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { UserId } from '../types/user-id';
 
@@ -11,7 +11,17 @@ export type GetUserDetails = (userId: UserId) => Promise<{
   avatarUrl: string;
 }>;
 
-export default (getFollowerIds: GetFollowerIds, getUserDetails: GetUserDetails): GetFollowers => (
+type FollowerDetails = {
+  avatarUrl: string,
+  handle: string,
+  displayName: string,
+  userId: UserId,
+};
+
+export default (
+  getFollowerIds: GetFollowerIds,
+  getUserDetails: GetUserDetails,
+): GetFollowers<Maybe<FollowerDetails>> => (
   async (editorialCommunityId) => {
     const userIds = await getFollowerIds(editorialCommunityId);
     return Promise.all(userIds.map(async (userId) => {

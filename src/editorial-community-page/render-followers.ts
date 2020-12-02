@@ -1,23 +1,15 @@
-import { Maybe } from 'true-myth';
 import templateListItems from '../shared-components/list-items';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-import { UserId } from '../types/user-id';
 
-export type FollowerDetails = {
-  avatarUrl: string,
-  handle: string,
-  displayName: string,
-  userId: UserId,
-};
 type RenderFollowers = (editorialCommunityId: EditorialCommunityId) => Promise<HtmlFragment>;
-type RenderFollower = (followerDetails: Maybe<FollowerDetails>) => Promise<HtmlFragment>;
+type RenderFollower<T> = (followerDetails: T) => Promise<HtmlFragment>;
 
-export type GetFollowers = (editorialCommunityId: EditorialCommunityId) => Promise<Array<Maybe<FollowerDetails>>>;
+export type GetFollowers<T> = (editorialCommunityId: EditorialCommunityId) => Promise<ReadonlyArray<T>>;
 
-export default (
-  getFollowers: GetFollowers,
-  renderFollower: RenderFollower,
+export default <T>(
+  getFollowers: GetFollowers<T>,
+  renderFollower: RenderFollower<T>,
 ): RenderFollowers => (
   async (editorialCommunityId) => {
     let contents = toHtmlFragment('<p>No followers yet.</p>');
