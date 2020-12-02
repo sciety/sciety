@@ -27,4 +27,16 @@ describe('get-followers-from-ids', () => {
       userId: toUserId('11111111'),
     });
   });
+
+  it('makes sure that error results become nothing', async () => {
+    const getFollowerIds: GetFollowerIds = async () => [
+      toUserId('11111111'),
+    ];
+    const getUserDetails: GetUserDetails = async () => Result.err();
+    const getFollowersFromIds = createGetFollowersFromIds(getFollowerIds, getUserDetails);
+    const followers = await getFollowersFromIds(new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'));
+
+    expect(followers).toHaveLength(1);
+    expect(followers[0].isNothing()).toBe(true);
+  });
 });
