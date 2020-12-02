@@ -9,6 +9,7 @@ type PrereviewSearchResponse = {
 type PrereviewSearchResult = {
   id: string,
   n_prereviews: number,
+  source: string,
 };
 
 type PrereviewPreprint = {
@@ -34,10 +35,6 @@ const formatRow = (preprintId: string, prereview: Prereview): Maybe<string> => {
 };
 
 const fetchPrereviews = async (article: PrereviewSearchResult): Promise<ReadonlyArray<Prereview>> => {
-  if (!article.id.match(biorxivPrefix)) {
-    return [];
-  }
-
   const { data } = await axios.get<PrereviewPreprint>(`https://www.prereview.org/data/preprints/${article.id}`);
   return data.prereviews;
 };
@@ -56,6 +53,10 @@ void (async (): Promise<void> => {
     await Promise.all(
       data.results
         .filter((searchResult) => searchResult.n_prereviews > 0)
+        .filter((searchResult) => searchResult.id.match(biorxivPrefix))
+        // TODO: not sure it excludes every medRxiv result,
+        // as some of these values are just `Crossref`
+        .filter((searchResult) => !searchResult.source.startsWith('https://www.medrxiv.org/'))
         .map(async (searchResult) => {
           (await fetchPrereviews(searchResult))
             .map((prereview) => formatRow(searchResult.id, prereview))
