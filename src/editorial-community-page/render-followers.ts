@@ -1,28 +1,9 @@
+import { FollowerDetails, renderFollower } from './render-follower';
 import templateListItems from '../shared-components/list-items';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-import { UserId } from '../types/user-id';
 
 type RenderFollowers = (editorialCommunityId: EditorialCommunityId) => Promise<HtmlFragment>;
-
-type FollowerDetails = {
-  avatarUrl: string,
-  handle: string,
-  displayName: string,
-  userId: UserId,
-};
-
-type RenderFollower = (followerDetails: FollowerDetails) => Promise<HtmlFragment>;
-
-const renderFollower: RenderFollower = async (followerDetails) => toHtmlFragment(`
-  <a href="/users/${followerDetails.userId}" class="follower">
-    <img src="${followerDetails.avatarUrl}" alt="" class="follower__avatar">
-    <div>
-      <div>${followerDetails.displayName}</div>
-      <div class="follower__handle">@${followerDetails.handle}</div>
-    </div>
-  </a>
-`);
 
 export type GetFollowers = (editorialCommunityId: EditorialCommunityId) => Promise<Array<FollowerDetails>>;
 
