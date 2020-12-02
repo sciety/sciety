@@ -1,7 +1,7 @@
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
-export type FollowerDetails = {
+type FollowerDetails = {
   avatarUrl: string,
   handle: string,
   displayName: string,

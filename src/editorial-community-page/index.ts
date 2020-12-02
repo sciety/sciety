@@ -8,6 +8,7 @@ import createProjectFollowerIds from './project-follower-ids';
 import createRenderDescription, { GetEditorialCommunityDescription, RenderDescription } from './render-description';
 import createRenderFeed, { RenderFeed } from './render-feed';
 import createRenderFollowToggle, { Follows } from './render-follow-toggle';
+import { renderFollower, renderFollowerError } from './render-follower';
 import createRenderFollowers from './render-followers';
 import createRenderPage, { RenderPage } from './render-page';
 import createRenderPageHeader, { GetEditorialCommunity, RenderPageHeader } from './render-page-header';
@@ -102,7 +103,9 @@ export default (ports: Ports): EditorialCommunityPage => {
     return userDetails.unsafelyUnwrap();
   };
   const getFollowers = createGetFollowersFromIds(createProjectFollowerIds(ports.getAllEvents), getUserDetails);
-  const renderFollowers = createRenderFollowers(getFollowers);
+  const renderFollowers = createRenderFollowers(getFollowers, async (follower) => (
+    follower.mapOrElse(renderFollowerError, renderFollower)
+  ));
 
   const renderPage = createRenderPage(
     renderPageHeader,
