@@ -39,4 +39,19 @@ describe('render-followers', () => {
       expect(rendered).toContain('No followers yet');
     });
   });
+
+  describe('when a follower cannot be fetched', () => {
+    it('renders an error for that follower', async () => {
+      const getFollowers: GetFollowers = async () => [
+        Maybe.nothing(),
+      ];
+      const renderFollowers = createRenderFollowers(getFollowers);
+
+      const rendered = await renderFollowers(new EditorialCommunityId('arbitrary id'));
+
+      expect(rendered).toContain('Can\'t retrieve user details');
+    });
+
+    it.todo('renders the other followers');
+  });
 });
