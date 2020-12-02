@@ -1,3 +1,5 @@
+import { isHttpError } from 'http-errors';
+import { NOT_FOUND } from 'http-status-codes';
 import { Maybe, Result } from 'true-myth';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -43,9 +45,16 @@ export default (
       });
     // TODO: push Results further down
     } catch (error: unknown) {
+      if (isHttpError(error) && error.status === NOT_FOUND) {
+        return Result.err({
+          type: 'not-found',
+          message: toHtmlFragment(`Editorial community id '${editorialCommunityId.value}' not found`),
+        });
+      }
+
       return Result.err({
-        type: 'not-found',
-        message: toHtmlFragment(`Editorial community id '${editorialCommunityId.value}' not found`),
+        type: 'unavailable',
+        message: toHtmlFragment(`Editorial community id '${editorialCommunityId.value}' unavailable`),
       });
     }
   }
