@@ -52,6 +52,22 @@ describe('render-followers', () => {
       expect(rendered).toContain('Can\'t retrieve user details');
     });
 
-    it.todo('renders the other followers');
+    it('renders both the error and the other followers', async () => {
+      const getFollowers: GetFollowers = async () => [
+        Maybe.nothing(),
+        Maybe.just({
+          avatarUrl: 'http://example.com',
+          handle: 'some_user',
+          displayName: 'Some User',
+          userId: toUserId('11111111'),
+        }),
+      ];
+      const renderFollowers = createRenderFollowers(getFollowers);
+
+      const rendered = await renderFollowers(new EditorialCommunityId('arbitrary id'));
+
+      expect(rendered).toContain('Can\'t retrieve user details');
+      expect(rendered).toContain('/users/11111111');
+    });
   });
 });
