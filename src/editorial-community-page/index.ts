@@ -1,7 +1,7 @@
 import { URL } from 'url';
 import { NotFound } from 'http-errors';
 import { Remarkable } from 'remarkable';
-import { Maybe, Result } from 'true-myth';
+import { Maybe } from 'true-myth';
 import createGetFollowersFromIds, { GetUserDetails } from './get-followers-from-ids';
 import createGetMostRecentEvents, { GetAllEvents } from './get-most-recent-events';
 import createProjectFollowerIds from './project-follower-ids';
@@ -17,7 +17,6 @@ import createRenderSummaryFeedList from '../shared-components/render-summary-fee
 import EditorialCommunityId from '../types/editorial-community-id';
 import { FetchExternalArticle } from '../types/fetch-external-article';
 import { User } from '../types/user';
-import { UserId } from '../types/user-id';
 
 type FetchStaticFile = (filename: string) => Promise<string>;
 
@@ -27,19 +26,13 @@ type FetchEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => P
   descriptionPath: string;
 }>>;
 
-type GetUserDetailsResult = (userId: UserId) => Promise<Result<{
-  handle: string,
-  displayName: string,
-  avatarUrl: string,
-}, unknown>>;
-
 interface Ports {
   fetchArticle: FetchExternalArticle;
   fetchStaticFile: FetchStaticFile;
   getEditorialCommunity: FetchEditorialCommunity;
   getAllEvents: GetAllEvents;
   follows: Follows,
-  getUserDetails: GetUserDetailsResult,
+  getUserDetails: GetUserDetails,
 }
 
 const buildRenderPageHeader = (ports: Ports): RenderPageHeader => {
@@ -96,13 +89,7 @@ export default (ports: Ports): EditorialCommunityPage => {
   const renderPageHeader = buildRenderPageHeader(ports);
   const renderDescription = buildRenderDescription(ports);
   const renderFeed = buildRenderFeed(ports);
-
-  const getUserDetails: GetUserDetails = async (userId) => {
-    const userDetails = await ports.getUserDetails(userId);
-
-    return userDetails.unsafelyUnwrap();
-  };
-  const getFollowers = createGetFollowersFromIds(createProjectFollowerIds(ports.getAllEvents), getUserDetails);
+  const getFollowers = createGetFollowersFromIds(createProjectFollowerIds(ports.getAllEvents), ports.getUserDetails);
   const renderFollowers = createRenderFollowers(getFollowers, async (follower) => (
     follower.mapOrElse(renderFollowerError, renderFollower)
   ));

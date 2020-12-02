@@ -1,15 +1,15 @@
-import { Maybe } from 'true-myth';
+import { Maybe, Result } from 'true-myth';
 import { GetFollowers } from './render-followers';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { UserId } from '../types/user-id';
 
 export type GetFollowerIds = (editorialCommunityId: EditorialCommunityId) => Promise<ReadonlyArray<UserId>>;
 
-export type GetUserDetails = (userId: UserId) => Promise<{
+export type GetUserDetails = (userId: UserId) => Promise<Result<{
   handle: string;
   displayName: string;
   avatarUrl: string;
-}>;
+}, unknown>>;
 
 type FollowerDetails = {
   avatarUrl: string,
@@ -24,16 +24,13 @@ export default (
 ): GetFollowers<Maybe<FollowerDetails>> => (
   async (editorialCommunityId) => {
     const userIds = await getFollowerIds(editorialCommunityId);
-    return Promise.all(userIds.map(async (userId) => {
-      try {
-        const userDetails = await getUserDetails(userId);
-        return Maybe.just({
+    return Promise.all(userIds.map(async (userId) => (
+      (await getUserDetails(userId))
+        .map((userDetails) => ({
           ...userDetails,
           userId,
-        });
-      } catch {
-        return Maybe.nothing<FollowerDetails>();
-      }
-    }));
+        }))
+        .toMaybe()
+    )));
   }
 );

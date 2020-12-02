@@ -1,3 +1,4 @@
+import { Result } from 'true-myth';
 import createGetFollowersFromIds, {
   GetFollowerIds,
   GetUserDetails,
@@ -10,7 +11,7 @@ describe('get-followers-from-ids', () => {
     const getFollowerIds: GetFollowerIds = async () => [
       toUserId('11111111'),
     ];
-    const getUserDetails: GetUserDetails = async () => ({
+    const getUserDetails: GetUserDetails = async () => Result.ok({
       handle: 'some_handle',
       displayName: 'Some User',
       avatarUrl: 'http://example.com',
