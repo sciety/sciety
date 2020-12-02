@@ -78,7 +78,7 @@ const createInfrastructure = async (): Promise<Adapters> => {
   const getAllEvents: GetAllEvents = async () => events;
   const reviewProjections = createReviewProjections(events.filter(isEditorialCommunityReviewedArticleEvent));
   const getFollowList = createEventSourceFollowListRepository(getAllEvents);
-  const getTwitterResponse = createGetTwitterResponse(process.env.TWITTER_API_BEARER_TOKEN ?? '');
+  const getTwitterResponse = createGetTwitterResponse(process.env.TWITTER_API_BEARER_TOKEN ?? '', logger);
 
   return {
     fetchArticle: createArticleCache(createFetchCrossrefArticle(getXmlFromCrossrefRestApi, logger), logger),
