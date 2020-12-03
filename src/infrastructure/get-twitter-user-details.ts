@@ -1,3 +1,6 @@
+import { pipe } from 'fp-ts/function';
+import * as T from 'fp-ts/lib/Task';
+import * as TE from 'fp-ts/lib/TaskEither';
 import { Result } from 'true-myth';
 import { GetTwitterResponse, TwitterResponse } from './get-twitter-response';
 import isAxiosError from './is-axios-error';
@@ -15,22 +18,22 @@ export type GetTwitterUserDetails = (userId: UserId) => Promise<Result<TwitterUs
 const handleOk = (
   logger: Logger,
   userId: UserId,
-) => async (
+) => (
   data: TwitterResponse,
-): Promise<Result<TwitterUserDetails, 'not-found' | 'unavailable'>> => {
+): TE.TaskEither<'not-found' | 'unavailable', TwitterUserDetails> => {
   if (data.data) {
     logger('debug', 'Data from Twitter', { userId, data });
-    return Result.ok({
+    return TE.right({
       avatarUrl: data.data.profile_image_url,
       displayName: data.data.name,
       handle: data.data.username,
     });
   }
   logger('debug', 'Twitter user not found', { userId, data });
-  return Result.err('not-found');
+  return TE.left('not-found');
 };
 
-const handleError = (logger: Logger, userId: UserId) => (error: unknown): Result<never, 'not-found' | 'unavailable'> => {
+const handleError = (logger: Logger, userId: UserId) => (error: unknown): 'not-found' | 'unavailable' => {
   const payload: Payload = { error, userId };
 
   if (isAxiosError(error) && error.response) {
@@ -39,21 +42,27 @@ const handleError = (logger: Logger, userId: UserId) => (error: unknown): Result
 
     if (error.response.status === 400) {
       logger('debug', 'Twitter user not found', payload);
-      return Result.err('not-found');
+      return 'not-found';
     }
   }
 
   logger('error', 'Request to Twitter API for user details failed', payload);
-  return Result.err('unavailable');
+  return 'unavailable';
 };
 
 export default (
   getTwitterResponse: GetTwitterResponse,
   logger: Logger,
 ): GetTwitterUserDetails => (
-  async (userId) => (
-    getTwitterResponse(`https://api.twitter.com/2/users/${userId}?user.fields=profile_image_url`)
-      .then(handleOk(logger, userId))
-      .catch(handleError(logger, userId))
-  )
+  async (userId) => pipe(
+    TE.tryCatch(
+      async () => getTwitterResponse(`https://api.twitter.com/2/users/${userId}?user.fields=profile_image_url`),
+      handleError(logger, userId),
+    ),
+    TE.chain(handleOk(logger, userId)),
+    TE.fold(
+      (error) => T.of(Result.err<TwitterUserDetails, 'not-found' | 'unavailable'>(error)),
+      (userDetails) => T.of(Result.ok<TwitterUserDetails, 'not-found' | 'unavailable'>(userDetails)),
+    ),
+  )()
 );
