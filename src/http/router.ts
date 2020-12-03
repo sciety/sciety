@@ -140,11 +140,18 @@ export default (adapters: Adapters): Router => {
     try {
       await send(context, context.params.file, { root: path.resolve(__dirname, '../../static') });
     } catch (error: unknown) {
+      adapters.logger('error', 'Static file could not be read', { error });
+      let pageMessage = 'Something went wrong, please try again.';
       if (isHttpError(error) && error.status === 404) {
+        pageMessage = 'File not found';
         context.response.status = 404;
-        return;
+      } else {
+        context.response.status = INTERNAL_SERVER_ERROR;
       }
-      throw error;
+      context.response.body = applyStandardPageLayout({
+        title: 'Error | Sciety',
+        content: renderErrorPage(toHtmlFragment(pageMessage)),
+      }, Maybe.nothing());
     }
   });
 
