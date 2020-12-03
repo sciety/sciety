@@ -51,12 +51,9 @@ export default (
   getTwitterResponse: GetTwitterResponse,
   logger: Logger,
 ): GetTwitterUserDetails => (
-  async (userId) => {
-    try {
-      const data = await getTwitterResponse(`https://api.twitter.com/2/users/${userId}?user.fields=profile_image_url`);
-      return handleOk(logger, userId)(data);
-    } catch (error: unknown) {
-      return handleError(logger, userId)(error);
-    }
-  }
+  async (userId) => (
+    getTwitterResponse(`https://api.twitter.com/2/users/${userId}?user.fields=profile_image_url`)
+      .then(handleOk(logger, userId))
+      .catch(handleError(logger, userId))
+  )
 );
