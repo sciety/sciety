@@ -95,6 +95,14 @@ export default (adapters: Adapters): Router => {
     createLogOutHandler());
 
   router.get('/twitter/callback',
+    async (context, next) => {
+      try {
+        await next();
+      } catch (error: unknown) {
+        adapters.logger('error', 'Detected Twitter callback error', { error });
+        throw error;
+      }
+    },
     authenticate,
     createFinishFollowCommand(adapters),
     createFinishUnfollowCommand(adapters),
