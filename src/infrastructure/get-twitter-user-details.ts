@@ -30,6 +30,23 @@ const handleOk = (
   return Result.err('not-found');
 };
 
+const handleError = (logger: Logger, userId: UserId) => (error: unknown): Result<never, 'not-found' | 'unavailable'> => {
+  const payload: Payload = { error, userId };
+
+  if (isAxiosError(error) && error.response) {
+    payload.status = error.response.status;
+    payload.data = error.response.data;
+
+    if (error.response.status === 400) {
+      logger('debug', 'Twitter user not found', payload);
+      return Result.err('not-found');
+    }
+  }
+
+  logger('error', 'Request to Twitter API for user details failed', payload);
+  return Result.err('unavailable');
+};
+
 export default (
   getTwitterResponse: GetTwitterResponse,
   logger: Logger,
@@ -39,20 +56,7 @@ export default (
       const data = await getTwitterResponse(`https://api.twitter.com/2/users/${userId}?user.fields=profile_image_url`);
       return handleOk(logger, userId)(data);
     } catch (error: unknown) {
-      const payload: Payload = { error, userId };
-
-      if (isAxiosError(error) && error.response) {
-        payload.status = error.response.status;
-        payload.data = error.response.data;
-
-        if (error.response.status === 400) {
-          logger('debug', 'Twitter user not found', payload);
-          return Result.err('not-found');
-        }
-      }
-
-      logger('error', 'Request to Twitter API for user details failed', payload);
-      return Result.err('unavailable');
+      return handleError(logger, userId)(error);
     }
   }
 );
