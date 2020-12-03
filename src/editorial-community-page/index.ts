@@ -1,8 +1,11 @@
 import { URL } from 'url';
+import * as T from 'fp-ts/lib/Task';
+import * as TE from 'fp-ts/lib/TaskEither';
+import { pipe } from 'fp-ts/lib/function';
 import { NotFound } from 'http-errors';
 import { Remarkable } from 'remarkable';
-import { Maybe } from 'true-myth';
-import createGetFollowersFromIds, { GetUserDetails } from './get-followers-from-ids';
+import { Maybe, Result } from 'true-myth';
+import createGetFollowersFromIds, { UserDetails } from './get-followers-from-ids';
 import createGetMostRecentEvents, { GetAllEvents } from './get-most-recent-events';
 import createProjectFollowerIds from './project-follower-ids';
 import createRenderDescription, { GetEditorialCommunityDescription, RenderDescription } from './render-description';
@@ -17,6 +20,7 @@ import createRenderSummaryFeedList from '../shared-components/render-summary-fee
 import EditorialCommunityId from '../types/editorial-community-id';
 import { FetchExternalArticle } from '../types/fetch-external-article';
 import { User } from '../types/user';
+import { UserId } from '../types/user-id';
 
 type FetchStaticFile = (filename: string) => Promise<string>;
 
@@ -26,6 +30,7 @@ type FetchEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => P
   descriptionPath: string;
 }>>;
 
+type GetUserDetails = (userId: UserId) => TE.TaskEither<'not-found' | 'unavailable', UserDetails>;
 interface Ports {
   fetchArticle: FetchExternalArticle;
   fetchStaticFile: FetchStaticFile;
@@ -89,7 +94,17 @@ export default (ports: Ports): EditorialCommunityPage => {
   const renderPageHeader = buildRenderPageHeader(ports);
   const renderDescription = buildRenderDescription(ports);
   const renderFeed = buildRenderFeed(ports);
-  const getFollowers = createGetFollowersFromIds(createProjectFollowerIds(ports.getAllEvents), ports.getUserDetails);
+  const wrapGetUserDetails = async (userId: UserId): Promise<Result<UserDetails, 'not-found' | 'unavailable'>> => (
+    pipe(
+      userId,
+      ports.getUserDetails,
+      TE.fold(
+        (error) => T.of(Result.err<UserDetails, 'not-found' | 'unavailable'>(error)),
+        (userDetails) => T.of(Result.ok<UserDetails, 'not-found' | 'unavailable'>(userDetails)),
+      ),
+    )()
+  );
+  const getFollowers = createGetFollowersFromIds(createProjectFollowerIds(ports.getAllEvents), wrapGetUserDetails);
   const renderFollowers = createRenderFollowers(getFollowers, async (follower) => (
     follower.mapOrElse(renderFollowerError, renderFollower)
   ));

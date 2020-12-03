@@ -2,13 +2,13 @@ import { Result } from 'true-myth';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
-type UserDetails = {
+export type UserDetails = {
   avatarUrl: string;
   displayName: string;
   handle: string;
 };
 
-export type GetUserDetails = (userId: UserId) => Promise<Result<UserDetails, 'not-found' | 'unavailable'>>;
+type GetUserDetails = (userId: UserId) => Promise<Result<UserDetails, 'not-found' | 'unavailable'>>;
 
 type RenderHeader = (userId: UserId) => Promise<Result<HtmlFragment, 'not-found' | 'unavailable'>>;
 

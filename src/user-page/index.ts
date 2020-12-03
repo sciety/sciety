@@ -1,20 +1,25 @@
 import { URL } from 'url';
-import { Maybe } from 'true-myth';
+import * as T from 'fp-ts/lib/Task';
+import * as TE from 'fp-ts/lib/TaskEither';
+import { pipe } from 'fp-ts/lib/function';
+import { Maybe, Result } from 'true-myth';
 import createGetFollowedEditorialCommunitiesFromIds, { GetEditorialCommunity } from './get-followed-editorial-communities-from-ids';
 import createProjectFollowedEditorialCommunityIds, { GetAllEvents } from './project-followed-editorial-community-ids';
 import createRenderFollowList from './render-follow-list';
 import createRenderFollowToggle, { Follows } from './render-follow-toggle';
 import createRenderFollowedEditorialCommunity from './render-followed-editorial-community';
-import createRenderHeader, { GetUserDetails } from './render-header';
+import createRenderHeader, { UserDetails } from './render-header';
 import createRenderPage, { RenderPage } from './render-page';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { User } from '../types/user';
-import toUserId from '../types/user-id';
+import toUserId, { UserId } from '../types/user-id';
 
 type FetchEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => Promise<Maybe<{
   name: string;
   avatar: URL;
 }>>;
+
+type GetUserDetails = (userId: UserId) => TE.TaskEither<'not-found' | 'unavailable', UserDetails>;
 
 type Ports = {
   getEditorialCommunity: FetchEditorialCommunity,
@@ -41,7 +46,17 @@ export default (ports: Ports): UserPage => {
     createProjectFollowedEditorialCommunityIds(ports.getAllEvents),
     getEditorialCommunity,
   );
-  const renderHeader = createRenderHeader(ports.getUserDetails);
+  const wrapGetUserDetails = async (userId: UserId): Promise<Result<UserDetails, 'not-found' | 'unavailable'>> => (
+    pipe(
+      userId,
+      ports.getUserDetails,
+      TE.fold(
+        (error) => T.of(Result.err<UserDetails, 'not-found' | 'unavailable'>(error)),
+        (userDetails) => T.of(Result.ok<UserDetails, 'not-found' | 'unavailable'>(userDetails)),
+      ),
+    )()
+  );
+  const renderHeader = createRenderHeader(wrapGetUserDetails);
   const renderFollowList = createRenderFollowList(
     getFollowedEditorialCommunities,
     renderFollowedEditorialCommunity,
@@ -50,7 +65,7 @@ export default (ports: Ports): UserPage => {
     renderHeader,
     renderFollowList,
     // TODO for goodness sake don't do this for longer than you have to - doubles Twitter API calls unnecessarily
-    async (userId) => (await ports.getUserDetails(userId)).map(({ displayName }) => displayName),
+    async (userId) => (await wrapGetUserDetails(userId)).map(({ displayName }) => displayName),
   );
 
   return async (params) => {

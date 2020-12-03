@@ -5,11 +5,13 @@ import { UserId } from '../types/user-id';
 
 export type GetFollowerIds = (editorialCommunityId: EditorialCommunityId) => Promise<ReadonlyArray<UserId>>;
 
-export type GetUserDetails = (userId: UserId) => Promise<Result<{
+export type UserDetails = {
   handle: string;
   displayName: string;
   avatarUrl: string;
-}, unknown>>;
+};
+
+export type GetUserDetails = (userId: UserId) => Promise<Result<UserDetails, unknown>>;
 
 type FollowerDetails = {
   avatarUrl: string,

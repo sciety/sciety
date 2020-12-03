@@ -1,7 +1,5 @@
 import { pipe } from 'fp-ts/function';
-import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
-import { Result } from 'true-myth';
 import { GetTwitterResponse, TwitterResponse } from './get-twitter-response';
 import isAxiosError from './is-axios-error';
 import { Logger, Payload } from './logger';
@@ -13,7 +11,7 @@ type TwitterUserDetails = {
   handle: string;
 };
 
-export type GetTwitterUserDetails = (userId: UserId) => Promise<Result<TwitterUserDetails, 'not-found' | 'unavailable'>>;
+export type GetTwitterUserDetails = (userId: UserId) => TE.TaskEither<'not-found' | 'unavailable', TwitterUserDetails>;
 
 const handleOk = (
   logger: Logger,
@@ -54,15 +52,11 @@ export default (
   getTwitterResponse: GetTwitterResponse,
   logger: Logger,
 ): GetTwitterUserDetails => (
-  async (userId) => pipe(
+  (userId) => pipe(
     TE.tryCatch(
       async () => getTwitterResponse(`https://api.twitter.com/2/users/${userId}?user.fields=profile_image_url`),
       handleError(logger, userId),
     ),
     TE.chain(handleOk(logger, userId)),
-    TE.fold(
-      (error) => T.of(Result.err<TwitterUserDetails, 'not-found' | 'unavailable'>(error)),
-      (userDetails) => T.of(Result.ok<TwitterUserDetails, 'not-found' | 'unavailable'>(userDetails)),
-    ),
-  )()
+  )
 );

@@ -2,6 +2,7 @@ import { Server } from 'http';
 import { literal, namedNode } from '@rdfjs/data-model';
 import { schema } from '@tpluscode/rdf-ns-builders';
 import clownface from 'clownface';
+import * as TE from 'fp-ts/lib/TaskEither';
 import datasetFactory from 'rdf-dataset-indexed';
 import { Result } from 'true-myth';
 import bootstrapEditorialCommunities from '../../src/data/bootstrap-editorial-communities';
@@ -66,7 +67,7 @@ export default async (): Promise<TestServer> => {
     commitEvents: async () => {},
     logger: dummyLogger,
     getFollowList: async (userId) => new FollowList(userId),
-    getUserDetails: async () => Result.ok({
+    getUserDetails: () => TE.right({
       avatarUrl: '',
       displayName: '',
       handle: '',

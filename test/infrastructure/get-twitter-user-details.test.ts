@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/lib/Either';
 import { GetTwitterResponse } from '../../src/infrastructure/get-twitter-response';
 import createGetTwitterUserDetails from '../../src/infrastructure/get-twitter-user-details';
 import userId from '../../src/types/user-id';
@@ -13,15 +14,14 @@ describe('get-twitter-user-details', () => {
       },
     });
     const getTwitterUserDetails = createGetTwitterUserDetails(getTwitterResponse, dummyLogger);
-    const result = await getTwitterUserDetails(userId('12345'));
-    const userDetails = result.unsafelyUnwrap();
+    const result = getTwitterUserDetails(userId('12345'));
     const expected = {
       avatarUrl: 'http://example.com',
       displayName: 'John Smith',
       handle: 'arbitrary_twitter_handle',
     };
 
-    expect(userDetails).toStrictEqual(expected);
+    expect(await result()).toStrictEqual(E.right(expected));
   });
 
   it('returns not-found if the Twitter user does not exist', async () => {
@@ -38,10 +38,9 @@ describe('get-twitter-user-details', () => {
       ],
     });
     const getTwitterUserDetails = createGetTwitterUserDetails(getTwitterResponse, dummyLogger);
-    const result = await getTwitterUserDetails(userId('12345'));
-    const error = result.unsafelyUnwrapErr();
+    const result = getTwitterUserDetails(userId('12345'));
 
-    expect(error).toBe('not-found');
+    expect(await result()).toStrictEqual(E.left('not-found'));
   });
 
   it('returns not-found if the Twitter user ID is invalid', async () => {
@@ -56,10 +55,9 @@ describe('get-twitter-user-details', () => {
       throw new InvalidTwitterIdError();
     };
     const getTwitterUserDetails = createGetTwitterUserDetails(getTwitterResponse, dummyLogger);
-    const result = await getTwitterUserDetails(userId('123456abcdef'));
-    const error = result.unsafelyUnwrapErr();
+    const result = getTwitterUserDetails(userId('123456abcdef'));
 
-    expect(error).toBe('not-found');
+    expect(await result()).toStrictEqual(E.left('not-found'));
   });
 
   it('returns unavailable if the Twitter API is unavailable', async () => {
@@ -67,9 +65,8 @@ describe('get-twitter-user-details', () => {
       throw new Error('Twitter API Unavailable');
     };
     const getTwitterUserDetails = createGetTwitterUserDetails(getTwitterResponse, dummyLogger);
-    const result = await getTwitterUserDetails(userId('12345'));
-    const error = result.unsafelyUnwrapErr();
+    const result = getTwitterUserDetails(userId('12345'));
 
-    expect(error).toBe('unavailable');
+    expect(await result()).toStrictEqual(E.left('unavailable'));
   });
 });
