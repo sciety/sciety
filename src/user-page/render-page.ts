@@ -11,9 +11,9 @@ export type RenderPage = (
   content: HtmlFragment
 }, RenderPageError>>;
 
-type Component = (userId: UserId, viewingUserId: Maybe<UserId>) => Promise<Result<string, 'not-found' | 'unavailable'>>;
+type Component = (userId: UserId, viewingUserId: Maybe<UserId>) => Promise<Result<HtmlFragment, 'not-found' | 'unavailable'>>;
 
-const template = (header: string) => (followList: string) => (userDisplayName:string) => (
+const template = (header: HtmlFragment) => (followList: HtmlFragment) => (userDisplayName:string) => (
   {
     title: `${userDisplayName}`,
     content: toHtmlFragment(`
