@@ -1,12 +1,15 @@
 import path from 'path';
 import Router from '@koa/router';
 import { isHttpError } from 'http-errors';
+import { INTERNAL_SERVER_ERROR } from 'http-status-codes';
 import bodyParser from 'koa-bodyparser';
 import koaPassport from 'koa-passport';
 import send from 'koa-send';
+import { Maybe } from 'true-myth';
 import identifyUser from './identify-user';
 import pageHandler from './page-handler';
 import ping from './ping';
+import { renderErrorPage } from './render-error-page';
 import { createRedirectAfterAuthenticating, createRequireAuthentication } from './require-authentication';
 import robots from './robots';
 import createAboutPage from '../about-page';
@@ -21,7 +24,9 @@ import { Adapters } from '../infrastructure/adapters';
 import createLogOutHandler from '../log-out';
 import createPrivacyPage from '../privacy-page';
 import { createRespondHandler } from '../respond';
+import applyStandardPageLayout from '../shared-components/apply-standard-page-layout';
 import createTermsPage from '../terms-page';
+import { toHtmlFragment } from '../types/html-fragment';
 import createUnfollowHandler from '../unfollow';
 import createFinishUnfollowCommand from '../unfollow/finish-unfollow-command';
 import createSaveUnfollowCommand from '../unfollow/save-unfollow-command';
@@ -100,7 +105,12 @@ export default (adapters: Adapters): Router => {
         await next();
       } catch (error: unknown) {
         adapters.logger('error', 'Detected Twitter callback error', { error });
-        throw error;
+
+        context.response.status = INTERNAL_SERVER_ERROR;
+        context.response.body = applyStandardPageLayout({
+          title: 'Error | Sciety',
+          content: renderErrorPage(toHtmlFragment('Something went wrong, please try again.')),
+        }, Maybe.nothing());
       }
     },
     authenticate,
