@@ -1,4 +1,5 @@
 import rTracer from 'cls-rtracer';
+import { serializeError } from 'serialize-error';
 import { Maybe } from 'true-myth';
 
 enum Level {
@@ -34,9 +35,16 @@ type Entry = {
 
 type Serializer = (entry: Entry) => string;
 
+const replaceError = (_key: string, value: unknown): unknown => {
+  if (value instanceof Error) {
+    return serializeError(value);
+  }
+  return value;
+};
+
 export const createJsonSerializer = (prettyPrint = false): Serializer => (
   (entry) => (
-    JSON.stringify(entry, undefined, prettyPrint ? 2 : undefined)
+    JSON.stringify(entry, replaceError, prettyPrint ? 2 : undefined)
   )
 );
 

@@ -33,6 +33,7 @@
     "rdf-dataset-indexed": "^0.4.0",
     "remarkable": "^2.0.1",
     "sanitize-html": "^2.1.2",
+    "serialize-error": "^7.0.1",
     "striptags": "^3.1.1",
     "text-clipper": "^2.0.0",
     "true-myth": "^4.0.0",
