@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Logger } from './logger';
 
-type TwitterResponse = {
+export type TwitterResponse = {
   data?: {
     name: string,
     profile_image_url: string;

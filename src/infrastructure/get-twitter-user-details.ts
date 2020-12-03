@@ -1,14 +1,34 @@
 import { Result } from 'true-myth';
-import { GetTwitterResponse } from './get-twitter-response';
+import { GetTwitterResponse, TwitterResponse } from './get-twitter-response';
 import isAxiosError from './is-axios-error';
 import { Logger, Payload } from './logger';
 import { UserId } from '../types/user-id';
 
-export type GetTwitterUserDetails = (userId: UserId) => Promise<Result<{
+type TwitterUserDetails = {
   avatarUrl: string,
   displayName: string,
   handle: string;
-}, 'not-found' | 'unavailable'>>;
+};
+
+export type GetTwitterUserDetails = (userId: UserId) => Promise<Result<TwitterUserDetails, 'not-found' | 'unavailable'>>;
+
+const handleOk = (
+  logger: Logger,
+  userId: UserId,
+) => async (
+  data: TwitterResponse,
+): Promise<Result<TwitterUserDetails, 'not-found' | 'unavailable'>> => {
+  if (data.data) {
+    logger('debug', 'Data from Twitter', { userId, data });
+    return Result.ok({
+      avatarUrl: data.data.profile_image_url,
+      displayName: data.data.name,
+      handle: data.data.username,
+    });
+  }
+  logger('debug', 'Twitter user not found', { userId, data });
+  return Result.err('not-found');
+};
 
 export default (
   getTwitterResponse: GetTwitterResponse,
@@ -17,16 +37,7 @@ export default (
   async (userId) => {
     try {
       const data = await getTwitterResponse(`https://api.twitter.com/2/users/${userId}?user.fields=profile_image_url`);
-      if (data.data) {
-        logger('debug', 'Data from Twitter', { userId, data });
-        return Result.ok({
-          avatarUrl: data.data.profile_image_url,
-          displayName: data.data.name,
-          handle: data.data.username,
-        });
-      }
-      logger('debug', 'Twitter user not found', { userId, data });
-      return Result.err('not-found');
+      return handleOk(logger, userId)(data);
     } catch (error: unknown) {
       const payload: Payload = { error, userId };
 
