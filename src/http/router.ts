@@ -35,6 +35,30 @@ import createUserPage from '../user-page';
 export default (adapters: Adapters): Router => {
   const router = new Router();
 
+  const catchStaticFileErrors: Middleware = async (context, next) => {
+    try {
+      await next();
+    } catch (error: unknown) {
+      adapters.logger('error', 'Static file could not be read', { error });
+      let pageMessage = 'Something went wrong, please try again.';
+      if (isHttpError(error) && error.status === 404) {
+        pageMessage = 'File not found';
+        context.response.status = 404;
+      } else {
+        context.response.status = INTERNAL_SERVER_ERROR;
+      }
+      context.response.body = applyStandardPageLayout({
+        title: 'Error | Sciety',
+        content: renderErrorPage(toHtmlFragment(pageMessage)),
+      }, Maybe.nothing());
+    }
+  };
+
+  const loadStaticFile: Middleware = async (context, next) => {
+    await send(context, context.params.file, { root: path.resolve(__dirname, '../../static') });
+    await next();
+  };
+
   router.get('/ping',
     ping());
 
@@ -136,24 +160,9 @@ export default (adapters: Adapters): Router => {
   router.get('/robots.txt',
     robots());
 
-  router.get('/static/:file(.+)', async (context) => {
-    try {
-      await send(context, context.params.file, { root: path.resolve(__dirname, '../../static') });
-    } catch (error: unknown) {
-      adapters.logger('error', 'Static file could not be read', { error });
-      let pageMessage = 'Something went wrong, please try again.';
-      if (isHttpError(error) && error.status === 404) {
-        pageMessage = 'File not found';
-        context.response.status = 404;
-      } else {
-        context.response.status = INTERNAL_SERVER_ERROR;
-      }
-      context.response.body = applyStandardPageLayout({
-        title: 'Error | Sciety',
-        content: renderErrorPage(toHtmlFragment(pageMessage)),
-      }, Maybe.nothing());
-    }
-  });
+  router.get('/static/:file(.+)',
+    catchStaticFileErrors,
+    loadStaticFile);
 
   return router;
 };
