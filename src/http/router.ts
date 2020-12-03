@@ -1,5 +1,5 @@
 import path from 'path';
-import Router from '@koa/router';
+import Router, { Middleware } from '@koa/router';
 import { isHttpError } from 'http-errors';
 import { INTERNAL_SERVER_ERROR } from 'http-status-codes';
 import bodyParser from 'koa-bodyparser';
@@ -99,20 +99,27 @@ export default (adapters: Adapters): Router => {
   router.get('/log-out',
     createLogOutHandler());
 
-  router.get('/twitter/callback',
+  const catchErrors = (logMessage: string, pageMessage: string): Middleware => (
     async (context, next) => {
       try {
         await next();
       } catch (error: unknown) {
-        adapters.logger('error', 'Detected Twitter callback error', { error });
+        adapters.logger('error', logMessage, { error });
 
         context.response.status = INTERNAL_SERVER_ERROR;
         context.response.body = applyStandardPageLayout({
           title: 'Error | Sciety',
-          content: renderErrorPage(toHtmlFragment('Something went wrong, please try again.')),
+          content: renderErrorPage(toHtmlFragment(pageMessage)),
         }, Maybe.nothing());
       }
-    },
+    }
+  );
+
+  router.get('/twitter/callback',
+    catchErrors(
+      'Detected Twitter callback error',
+      'Something went wrong, please try again.',
+    ),
     authenticate,
     createFinishFollowCommand(adapters),
     createFinishUnfollowCommand(adapters),
