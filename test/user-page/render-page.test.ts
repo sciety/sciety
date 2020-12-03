@@ -31,6 +31,15 @@ describe('render-page', () => {
   });
 
   describe('when the user display name is unavailable', () => {
-    it.todo('returns an unavailable error page');
+    it('returns an unavailable error page', async () => {
+      const renderPage = createRenderPage(
+        async () => Result.ok(''),
+        async () => Result.ok(''),
+        async () => Result.err('unavailable'),
+      );
+      const result = await renderPage(toUserId('1234'), Maybe.nothing());
+
+      expect(result.unsafelyUnwrapErr().type).toBe('unavailable');
+    });
   });
 });
