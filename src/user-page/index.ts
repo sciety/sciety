@@ -50,7 +50,7 @@ export default (ports: Ports): UserPage => {
     renderHeader,
     renderFollowList,
     // TODO for goodness sake don't do this for longer than you have to - doubles Twitter API calls unnecessarily
-    async (userId) => (await ports.getUserDetails(userId)).unsafelyUnwrap().displayName,
+    async (userId) => (await ports.getUserDetails(userId)).map(({ displayName }) => displayName),
   );
 
   return async (params) => {

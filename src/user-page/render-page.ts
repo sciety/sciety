@@ -27,7 +27,7 @@ const template = (header: string) => (followList: string) => (userDisplayName:st
   }
 );
 
-type GetUserDisplayName = (userId: UserId) => Promise<string>;
+type GetUserDisplayName = (userId: UserId) => Promise<Result<string, 'not-found' | 'unavailable'>>;
 
 export default (
   renderHeader: Component,
@@ -41,7 +41,7 @@ export default (
   return Result.ok(template)
     .ap(await header)
     .ap(await followList)
-    .ap(Result.ok(await userDisplayName))
+    .ap(await userDisplayName)
     .mapErr((e) => {
       if (e === 'not-found') {
         return {

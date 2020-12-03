@@ -8,7 +8,7 @@ describe('render-page', () => {
       const renderPage = createRenderPage(
         async () => Result.ok(''),
         async () => Result.ok(''),
-        async () => 'someone',
+        async () => Result.ok('someone'),
       );
 
       const result = await renderPage(toUserId('1234'), Maybe.nothing());
@@ -18,7 +18,16 @@ describe('render-page', () => {
   });
 
   describe('when the user display name is not found', () => {
-    it.todo('returns a not-found error page');
+    it('returns a not-found error page', async () => {
+      const renderPage = createRenderPage(
+        async () => Result.ok(''),
+        async () => Result.ok(''),
+        async () => Result.err('not-found'),
+      );
+      const result = await renderPage(toUserId('1234'), Maybe.nothing());
+
+      expect(result.unsafelyUnwrapErr().type).toBe('not-found');
+    });
   });
 
   describe('when the user display name is unavailable', () => {
