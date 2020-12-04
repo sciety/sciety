@@ -13,7 +13,6 @@ import createRenderPage, { GetArticleDetails as GetArticleDetailsForPage, Render
 import createRenderPageHeader, { GetArticleDetails as GetArticleDetailsForHeader } from './render-page-header';
 import createRenderReviewFeedItem from './render-review-feed-item';
 import createRenderReviewResponses from './render-review-responses';
-import { Logger } from '../infrastructure/logger';
 import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { toHtmlFragment } from '../types/html-fragment';
@@ -44,7 +43,6 @@ interface Ports {
   }>>,
   findReviewsForArticleDoi: FindReviewsForArticleDoi;
   findVersionsForArticleDoi: FindVersionsForArticleDoi;
-  logger: Logger;
   getAllEvents: GetEventForUserReviewResponse & GetEventForReviewResponseCounts;
 }
 
