@@ -1,4 +1,5 @@
 import { Middleware } from '@koa/router';
+import * as O from 'fp-ts/lib/Option';
 import { pipe } from 'fp-ts/lib/function';
 import { NOT_FOUND, OK, SERVICE_UNAVAILABLE } from 'http-status-codes';
 import { Maybe, Result } from 'true-myth';
@@ -47,7 +48,7 @@ export default (
     };
     context.response.type = 'html';
 
-    const user = Maybe.of(context.state.user);
+    const user = O.fromNullable(context.state.user);
 
     const renderedResult = await renderPage(params);
 

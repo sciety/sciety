@@ -1,5 +1,5 @@
 import { htmlEscape } from 'escape-goat';
-import { Maybe } from 'true-myth';
+import * as O from 'fp-ts/lib/Option';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { User } from '../types/user';
 
@@ -49,7 +49,7 @@ export type Page = {
 };
 
 // TODO: return a more specific type e.g. HtmlDocument
-export default (page: Page, user: Maybe<User>): string => `<!doctype html>
+export default (page: Page, user: O.Option<User>): string => `<!doctype html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
 <head>
   <meta charset="utf-8">
@@ -97,7 +97,7 @@ export default (page: Page, user: Maybe<User>): string => `<!doctype html>
             <a href="/about" class="site-header__nav_list_link">About</a>
           </li>
 
-          ${user.mapOrElse(loggedOutMenuItems, loggedInMenuItems)}
+          ${O.fold(loggedOutMenuItems, loggedInMenuItems)(user)}
 
           <li class="site-header__nav_list_item">
             <a href="https://eepurl.com/g7qqcv" class="button">Give us feedback</a>
