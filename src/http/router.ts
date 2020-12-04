@@ -6,6 +6,7 @@ import bodyParser from 'koa-bodyparser';
 import koaPassport from 'koa-passport';
 import send from 'koa-send';
 import { Maybe } from 'true-myth';
+import { catchErrors } from './catch-errors';
 import identifyUser from './identify-user';
 import pageHandler from './page-handler';
 import ping from './ping';
@@ -21,7 +22,6 @@ import createFinishFollowCommand from '../follow/finish-follow-command';
 import createSaveFollowCommand from '../follow/save-follow-command';
 import createHomePage from '../home-page';
 import { Adapters } from '../infrastructure/adapters';
-import { Logger } from '../infrastructure/logger';
 import createLogOutHandler from '../log-out';
 import createPrivacyPage from '../privacy-page';
 import { createRespondHandler } from '../respond';
@@ -32,22 +32,6 @@ import createUnfollowHandler from '../unfollow';
 import createFinishUnfollowCommand from '../unfollow/finish-unfollow-command';
 import createSaveUnfollowCommand from '../unfollow/save-unfollow-command';
 import createUserPage from '../user-page';
-
-const catchErrors = (logger: Logger, logMessage: string, pageMessage: string): Middleware => (
-  async (context, next) => {
-    try {
-      await next();
-    } catch (error: unknown) {
-      logger('error', logMessage, { error });
-
-      context.response.status = INTERNAL_SERVER_ERROR;
-      context.response.body = applyStandardPageLayout({
-        title: 'Error | Sciety',
-        content: renderErrorPage(toHtmlFragment(pageMessage)),
-      }, Maybe.nothing());
-    }
-  }
-);
 
 export default (adapters: Adapters): Router => {
   const router = new Router();
