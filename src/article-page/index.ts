@@ -1,5 +1,6 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/lib/Option';
+import { pipe } from 'fp-ts/lib/function';
 import { Maybe, Result } from 'true-myth';
 import createComposeFeedEvents from './compose-feed-events';
 import ensureBiorxivDoi from './ensure-biorxiv-doi';
@@ -98,13 +99,15 @@ export default (ports: Ports): ArticlePage => {
     renderFeed,
     ports.fetchArticle,
   );
-  return async (params) => (
+  return async (params) => pipe(
+    params.doi ?? '',
+    ensureBiorxivDoi,
     O.fold(
       async () => Result.err<Page, RenderPageError>({
         type: 'not-found',
         message: toHtmlFragment(`${params.doi ?? 'Article'} not found`),
       }),
       async (doi: Doi) => renderPage(doi, params.user.map((user) => user.id)),
-    )(ensureBiorxivDoi(params.doi ?? ''))
+    ),
   );
 };
