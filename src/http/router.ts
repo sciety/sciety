@@ -1,11 +1,10 @@
-import path from 'path';
-import Router, { Middleware } from '@koa/router';
+import Router from '@koa/router';
 import bodyParser from 'koa-bodyparser';
 import koaPassport from 'koa-passport';
-import send from 'koa-send';
 import { catchErrors } from './catch-errors';
 import { catchStaticFileErrors } from './catch-static-file-errors';
 import identifyUser from './identify-user';
+import { loadStaticFile } from './load-static-file';
 import pageHandler from './page-handler';
 import ping from './ping';
 import { createRedirectAfterAuthenticating, createRequireAuthentication } from './require-authentication';
@@ -30,11 +29,6 @@ import createUserPage from '../user-page';
 
 export default (adapters: Adapters): Router => {
   const router = new Router();
-
-  const loadStaticFile: Middleware = async (context, next) => {
-    await send(context, context.params.file, { root: path.resolve(__dirname, '../../static') });
-    await next();
-  };
 
   router.get('/ping',
     ping());
