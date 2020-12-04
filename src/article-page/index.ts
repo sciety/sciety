@@ -1,4 +1,5 @@
 import { URL } from 'url';
+import * as O from 'fp-ts/lib/Option';
 import { Maybe, Result } from 'true-myth';
 import createComposeFeedEvents from './compose-feed-events';
 import ensureBiorxivDoi from './ensure-biorxiv-doi';
@@ -9,13 +10,14 @@ import createProjectUserReviewResponse, { GetEvents as GetEventForUserReviewResp
 import createRenderArticleAbstract from './render-article-abstract';
 import createRenderArticleVersionFeedItem from './render-article-version-feed-item';
 import createRenderFeed from './render-feed';
-import createRenderPage, { GetArticleDetails as GetArticleDetailsForPage, RenderPage } from './render-page';
+import createRenderPage, { GetArticleDetails as GetArticleDetailsForPage, Page, RenderPage } from './render-page';
 import createRenderPageHeader, { GetArticleDetails as GetArticleDetailsForHeader } from './render-page-header';
 import createRenderReviewFeedItem from './render-review-feed-item';
 import createRenderReviewResponses from './render-review-responses';
 import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { toHtmlFragment } from '../types/html-fragment';
+import { RenderPageError } from '../types/render-page-error';
 import { ReviewId } from '../types/review-id';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { User } from '../types/user';
@@ -96,17 +98,13 @@ export default (ports: Ports): ArticlePage => {
     renderFeed,
     ports.fetchArticle,
   );
-  return async (params) => {
-    let doi: Doi;
-    try {
-      doi = ensureBiorxivDoi(params.doi ?? '').unsafelyUnwrap();
-    } catch (error: unknown) {
-      return Result.err({
+  return async (params) => (
+    O.fold(
+      async () => Result.err<Page, RenderPageError>({
         type: 'not-found',
         message: toHtmlFragment(`${params.doi ?? 'Article'} not found`),
-      });
-    }
-    const userId = params.user.map((user) => user.id);
-    return renderPage(doi, userId);
-  };
+      }),
+      async (doi: Doi) => renderPage(doi, params.user.map((user) => user.id)),
+    )(ensureBiorxivDoi(params.doi ?? ''))
+  );
 };

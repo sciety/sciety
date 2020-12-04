@@ -1,18 +1,18 @@
-import { Maybe } from 'true-myth';
+import * as O from 'fp-ts/lib/Option';
 import Doi from '../types/doi';
 
 const biorxivPrefix = '10.1101';
 
-export default (value: string): Maybe<Doi> => {
+export default (value: string): O.Option<Doi> => {
   let doi: Doi;
   try {
     doi = new Doi(value);
   } catch (error: unknown) {
-    return Maybe.nothing();
+    return O.none;
   }
 
   if (!(doi.hasPrefix(biorxivPrefix))) {
-    return Maybe.nothing();
+    return O.none;
   }
-  return Maybe.just(doi);
+  return O.some(doi);
 };

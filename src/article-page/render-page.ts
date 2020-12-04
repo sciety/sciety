@@ -6,7 +6,7 @@ import { RenderPageError } from '../types/render-page-error';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { UserId } from '../types/user-id';
 
-type Page = {
+export type Page = {
   title: string,
   content: HtmlFragment,
   openGraph: {
