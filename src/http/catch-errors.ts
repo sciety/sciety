@@ -5,16 +5,7 @@ import { renderErrorPage } from './render-error-page';
 import applyStandardPageLayout from '../shared-components/apply-standard-page-layout';
 import { toHtmlFragment } from '../types/html-fragment';
 
-enum Level {
-  error,
-  warn,
-  info,
-  debug,
-}
-type LevelName = keyof typeof Level;
-type Payload = Record<string, unknown>;
-
-type Logger = (level: LevelName, message: string, payload?: Payload) => void;
+type Logger = (level: 'error', message: string, payload: Record<string, unknown>) => void;
 
 export const catchErrors = (logger: Logger, logMessage: string, pageMessage: string): Middleware => (
   async (context, next) => {

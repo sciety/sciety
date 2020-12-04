@@ -3,11 +3,12 @@ import { isHttpError } from 'http-errors';
 import { INTERNAL_SERVER_ERROR } from 'http-status-codes';
 import { Maybe } from 'true-myth';
 import { renderErrorPage } from './render-error-page';
-import { Logger } from '../infrastructure/logger';
 import applyStandardPageLayout from '../shared-components/apply-standard-page-layout';
 import { toHtmlFragment } from '../types/html-fragment';
 
-export const catchStaticFileErrors = (logger: Logger):Middleware => async (context, next) => {
+type Logger = (level: 'error', message: string, payload: Record<string, unknown>) => void;
+
+export const catchStaticFileErrors = (logger: Logger): Middleware => async (context, next) => {
   try {
     await next();
   } catch (error: unknown) {
