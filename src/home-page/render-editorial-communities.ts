@@ -20,7 +20,7 @@ export default (
 ): RenderEditorialCommunities => async (userId) => {
   const editorialCommunityLinks = await Promise.all(
     (await editorialCommunities())
-      .map(async (editorialCommunity) => renderEditorialCommunity(userId, editorialCommunity)),
+      .map(async (editorialCommunity) => renderEditorialCommunity(userId, editorialCommunity)()),
   );
 
   return toHtmlFragment(`

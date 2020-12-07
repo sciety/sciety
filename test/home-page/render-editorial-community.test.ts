@@ -14,7 +14,7 @@ describe('render-editorial-community', (): void => {
     const renderEditorialCommunity = createRenderEditorialCommunity(
       async () => toHtmlFragment(''),
     );
-    const rendered = await renderEditorialCommunity(O.none, community);
+    const rendered = await renderEditorialCommunity(O.none, community)();
 
     expect(rendered).toContain('Editorial Community A');
   });
