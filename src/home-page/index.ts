@@ -9,8 +9,8 @@ import createRenderEditorialCommunity from './render-editorial-community';
 import createRenderFeed, { IsFollowingSomething } from './render-feed';
 import createRenderFollowToggle from './render-follow-toggle';
 import createRenderPage, { RenderPage } from './render-page';
-import createRenderPageHeader from './render-page-header';
-import createRenderSearchForm from './render-search-form';
+import renderPageHeader from './render-page-header';
+import renderSearchForm from './render-search-form';
 import createRenderSummaryFeedItem, { GetActor } from '../shared-components/render-summary-feed-item';
 import createRenderSummaryFeedList from '../shared-components/render-summary-feed-list';
 import EditorialCommunityId from '../types/editorial-community-id';
@@ -53,14 +53,12 @@ export default (ports: Ports): HomePage => {
     20,
   );
 
-  const renderPageHeader = createRenderPageHeader();
   const renderFollowToggle = createRenderFollowToggle(ports.follows);
   const renderEditorialCommunity = createRenderEditorialCommunity(renderFollowToggle);
   const renderEditorialCommunities = createRenderEditorialCommunities(
     ports.getAllEditorialCommunities,
     renderEditorialCommunity,
   );
-  const renderSearchForm = createRenderSearchForm();
   const renderSummaryFeedItem = createRenderSummaryFeedItem(getActorAdapter, ports.fetchArticle);
   const renderSummaryFeedList = createRenderSummaryFeedList(renderSummaryFeedItem);
   const renderFeed = createRenderFeed(

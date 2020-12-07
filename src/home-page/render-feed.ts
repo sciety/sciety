@@ -1,15 +1,16 @@
 import * as O from 'fp-ts/lib/Option';
+import * as T from 'fp-ts/lib/Task';
 import { Maybe } from 'true-myth';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
-type RenderFeed = (userId: O.Option<UserId>) => Promise<HtmlFragment>;
+type RenderFeed = (userId: O.Option<UserId>) => T.Task<HtmlFragment>;
 
 export type IsFollowingSomething = (userId: UserId) => Promise<boolean>;
 
-export type GetEvents<T> = (userId: UserId) => Promise<ReadonlyArray<T>>;
+export type GetEvents<E> = (userId: UserId) => Promise<ReadonlyArray<E>>;
 
-type RenderSummaryFeedList<T> = (events: ReadonlyArray<T>) => Promise<Maybe<string>>;
+type RenderSummaryFeedList<E> = (events: ReadonlyArray<E>) => Promise<Maybe<string>>;
 
 const toMaybe = (uid: O.Option<UserId>): Maybe<UserId> => (
   O.fold(
@@ -18,12 +19,12 @@ const toMaybe = (uid: O.Option<UserId>): Maybe<UserId> => (
   )(uid)
 );
 
-export default <T>(
+export default <E>(
   isFollowingSomething: IsFollowingSomething,
-  getEvents: GetEvents<T>,
-  renderSummaryFeedList: RenderSummaryFeedList<T>,
+  getEvents: GetEvents<E>,
+  renderSummaryFeedList: RenderSummaryFeedList<E>,
 ): RenderFeed => (
-  async (uid) => {
+  (uid) => async () => {
     let contents = '';
     const userId = toMaybe(uid);
     if (userId.isNothing()) {

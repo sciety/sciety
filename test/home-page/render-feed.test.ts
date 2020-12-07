@@ -18,7 +18,7 @@ describe('render-feed', (): void => {
           dummyGetEvents,
           dummyRenderSummaryFeedList,
         );
-        const rendered = await renderFeed(O.some(toUserId('1111')));
+        const rendered = await renderFeed(O.some(toUserId('1111')))();
 
         expect(rendered).toStrictEqual(expect.stringContaining('someNiceList'));
       });
@@ -38,7 +38,7 @@ describe('render-feed', (): void => {
           dummyGetEvents,
           stubRenderSummaryFeedList,
         );
-        const rendered = await renderFeed(O.some(toUserId('1111')));
+        const rendered = await renderFeed(O.some(toUserId('1111')))();
 
         expect(rendered).toContain('The communities you’re following haven’t evaluated any articles yet.');
       });
@@ -52,7 +52,7 @@ describe('render-feed', (): void => {
           shouldNotBeCalled,
           shouldNotBeCalled,
         );
-        const rendered = await renderFeed(O.some(toUserId('1111')));
+        const rendered = await renderFeed(O.some(toUserId('1111')))();
 
         expect(rendered).toContain('Start following some communities');
       });
@@ -66,7 +66,7 @@ describe('render-feed', (): void => {
         shouldNotBeCalled,
         shouldNotBeCalled,
       );
-      const rendered = await renderFeed(O.none);
+      const rendered = await renderFeed(O.none)();
 
       expect(rendered).toContain('Log in');
     });

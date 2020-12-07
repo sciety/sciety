@@ -1,12 +1,13 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/lib/Option';
+import * as T from 'fp-ts/lib/Task';
 import { RenderEditorialCommunity } from './render-editorial-community';
 import templateListItems from '../shared-components/list-items';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
-type RenderEditorialCommunities = (userId: O.Option<UserId>) => Promise<HtmlFragment>;
+type RenderEditorialCommunities = (userId: O.Option<UserId>) => T.Task<HtmlFragment>;
 
 export type GetAllEditorialCommunities = () => Promise<Array<{
   avatar: URL;
@@ -17,7 +18,7 @@ export type GetAllEditorialCommunities = () => Promise<Array<{
 export default (
   editorialCommunities: GetAllEditorialCommunities,
   renderEditorialCommunity: RenderEditorialCommunity,
-): RenderEditorialCommunities => async (userId) => {
+): RenderEditorialCommunities => (userId) => async () => {
   const editorialCommunityLinks = await Promise.all(
     (await editorialCommunities())
       .map(async (editorialCommunity) => renderEditorialCommunity(userId, editorialCommunity)()),
