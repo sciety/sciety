@@ -44,6 +44,10 @@ const handleError = (logger: Logger, userId: UserId) => (error: unknown): 'not-f
     }
   }
 
+  if (isAxiosError(payload.error) && payload.error.config.headers?.Authorization) {
+    payload.error.config.headers.Authorization = '--redacted--';
+  }
+
   logger('error', 'Request to Twitter API for user details failed', payload);
   return 'unavailable';
 };
