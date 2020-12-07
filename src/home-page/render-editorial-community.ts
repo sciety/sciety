@@ -13,7 +13,7 @@ type Community = {
   name: string;
 };
 
-export type RenderEditorialCommunity = (userId: O.Option<UserId>, community: Community) => T.Task<HtmlFragment>;
+export type RenderEditorialCommunity = (userId: O.Option<UserId>) => (community: Community) => T.Task<HtmlFragment>;
 
 const toMaybe = (uid: O.Option<UserId>): Maybe<UserId> => (
   O.fold(
@@ -24,7 +24,7 @@ const toMaybe = (uid: O.Option<UserId>): Maybe<UserId> => (
 
 export default (
   renderFollowToggle: RenderFollowToggle,
-): RenderEditorialCommunity => (userId, community) => async () => toHtmlFragment(`
+): RenderEditorialCommunity => (userId) => (community) => async () => toHtmlFragment(`
   <div class="editorial-community">
     <a href="/editorial-communities/${community.id.value}" class="editorial-community__link">
       <img src="${community.avatar.toString()}" alt="" class="editorial-community__avatar">
