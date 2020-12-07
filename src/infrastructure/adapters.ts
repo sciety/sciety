@@ -1,4 +1,5 @@
 import { URL } from 'url';
+import * as T from 'fp-ts/lib/Task';
 import { Maybe } from 'true-myth';
 import { CommitEvents } from './commit-events';
 import { EventSourcedFollowListRepository } from './event-sourced-follow-list-repository';
@@ -25,7 +26,7 @@ type EditorialCommunity = {
 
 type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => Promise<Maybe<EditorialCommunity>>;
 
-type GetAllEditorialCommunities = () => Promise<Array<EditorialCommunity>>;
+type GetAllEditorialCommunities = T.Task<Array<EditorialCommunity>>;
 
 export interface Adapters {
   fetchArticle: FetchCrossrefArticle;
