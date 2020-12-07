@@ -1,5 +1,5 @@
 import { URL } from 'url';
-import { Maybe } from 'true-myth';
+import * as O from 'fp-ts/lib/Option';
 import createRenderEditorialCommunity from '../../src/home-page/render-editorial-community';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
 import { toHtmlFragment } from '../../src/types/html-fragment';
@@ -14,7 +14,7 @@ describe('render-editorial-community', (): void => {
     const renderEditorialCommunity = createRenderEditorialCommunity(
       async () => toHtmlFragment(''),
     );
-    const rendered = await renderEditorialCommunity(Maybe.nothing(), community);
+    const rendered = await renderEditorialCommunity(O.none, community);
 
     expect(rendered).toContain('Editorial Community A');
   });

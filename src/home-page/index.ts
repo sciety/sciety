@@ -1,4 +1,6 @@
 import { URL } from 'url';
+import * as O from 'fp-ts/lib/Option';
+import { pipe } from 'fp-ts/lib/function';
 import { Maybe } from 'true-myth';
 import createGetMostRecentEvents, { GetAllEvents } from './get-most-recent-events';
 import createProjectIsFollowingSomething from './project-is-following-something';
@@ -74,7 +76,10 @@ export default (ports: Ports): HomePage => {
   );
 
   return async (params) => {
-    const userId = params.user.map((value) => value.id);
+    const userId = pipe(
+      params.user.mapOr(O.none, (v) => O.some(v)),
+      O.map((user) => user.id),
+    );
 
     return renderPage(userId);
   };

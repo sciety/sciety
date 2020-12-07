@@ -1,13 +1,14 @@
-import { Maybe, Result } from 'true-myth';
+import * as O from 'fp-ts/lib/Option';
+import { Result } from 'true-myth';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
-export type RenderPage = (userId: Maybe<UserId>) => Promise<Result<{
+export type RenderPage = (userId: O.Option<UserId>) => Promise<Result<{
   title: string,
   content: HtmlFragment
 }, never>>;
 
-type Component = (userId: Maybe<UserId>) => Promise<string>;
+type Component = (userId: O.Option<UserId>) => Promise<string>;
 
 export default (
   renderPageHeader: Component,

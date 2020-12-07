@@ -1,12 +1,12 @@
 import { URL } from 'url';
-import { Maybe } from 'true-myth';
+import * as O from 'fp-ts/lib/Option';
 import { RenderEditorialCommunity } from './render-editorial-community';
 import templateListItems from '../shared-components/list-items';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
-type RenderEditorialCommunities = (userId: Maybe<UserId>) => Promise<HtmlFragment>;
+type RenderEditorialCommunities = (userId: O.Option<UserId>) => Promise<HtmlFragment>;
 
 export type GetAllEditorialCommunities = () => Promise<Array<{
   avatar: URL;

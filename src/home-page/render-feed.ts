@@ -1,8 +1,9 @@
+import * as O from 'fp-ts/lib/Option';
 import { Maybe } from 'true-myth';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
-type RenderFeed = (userId: Maybe<UserId>) => Promise<HtmlFragment>;
+type RenderFeed = (userId: O.Option<UserId>) => Promise<HtmlFragment>;
 
 export type IsFollowingSomething = (userId: UserId) => Promise<boolean>;
 
@@ -10,13 +11,21 @@ export type GetEvents<T> = (userId: UserId) => Promise<ReadonlyArray<T>>;
 
 type RenderSummaryFeedList<T> = (events: ReadonlyArray<T>) => Promise<Maybe<string>>;
 
+const toMaybe = (uid: O.Option<UserId>): Maybe<UserId> => (
+  O.fold(
+    () => Maybe.nothing<UserId>(),
+    (u: UserId) => Maybe.just(u),
+  )(uid)
+);
+
 export default <T>(
   isFollowingSomething: IsFollowingSomething,
   getEvents: GetEvents<T>,
   renderSummaryFeedList: RenderSummaryFeedList<T>,
 ): RenderFeed => (
-  async (userId) => {
+  async (uid) => {
     let contents = '';
+    const userId = toMaybe(uid);
     if (userId.isNothing()) {
       contents = toHtmlFragment(`
         <p>Welcome to Sciety.</p>
