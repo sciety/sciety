@@ -36,7 +36,7 @@ type Entry = {
 type Serializer = (entry: Entry) => string;
 
 const replaceError = (_key: string, value: unknown): unknown => {
-  if (_key === 'Authorization') {
+  if (_key === 'Authorization' || _key === 'Crossref-Plus-API-Token') {
     return '--redacted--';
   }
   if (value instanceof Error) {
