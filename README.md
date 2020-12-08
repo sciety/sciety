@@ -118,6 +118,8 @@ A [CloudWatch dashboard] graphs log lines representing errors and shows the stat
 An [monitoring SNS topic] triggers a [lambda function that notifies the Slack #sciety-general channel][monitoring
  lambda].
 
+A [CloudWatch user journey by IP] query is available to track a single client across multiple requests (adjust timeframe and IP).
+
 ### Updating event data
 
 Run `make -j 4 update-event-data`.
@@ -135,6 +137,7 @@ We released this software under the [MIT license][license]. Copyright © 2020 [e
 [Checks]: https://github.com/sciety/sciety/actions
 [Checks badge]: https://flat.badgen.net/github/checks/sciety/sciety/main?icon=github
 [CloudWatch dashboard]: https://console.aws.amazon.com/cloudwatch/home?region=us-east-1#dashboards:name=PRCMetrics
+[CloudWatch user journey by IP]: https://console.aws.amazon.com/cloudwatch/home?region=us-east-1#logsV2:logs-insights$3FqueryDetail$3D$257E$2528end$257E0$257Estart$257E-1800$257EtimeType$257E$2527RELATIVE$257Eunit$257E$2527seconds$257EeditorString$257E$2527fields*20*40timestamp*2c*20app_request*0a*7c*20filter*20*60kubernetes.labels.app_kubernetes_io*2finstance*60*20*3d*3d*20*27ingress-nginx*27*20and*20app_remote_addr*20*3d*3d*20*2778.105.99.80*27*20and*20app_request*20not*20like*20*2fstatic*2f*0a*7c*20filter*20app_ingress_name*20*3d*3d*20*27sciety--prod--frontend*27*0a*7c*20sort*20*40timestamp*20asc*0a*7c*20limit*20200$257EisLiveTail$257Efalse$257EqueryId$257E$2527e3086054-9d14-4384-bca5-a9c12b181c87$257Esource$257E$2528$257E$2527*2faws*2fcontainerinsights*2flibero-eks--franklin*2fapplication$2529$2529
 [Docker]: https://www.docker.com/
 [Docker Compose]: https://docs.docker.com/compose/
 [eLife]: https://elifesciences.org/
