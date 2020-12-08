@@ -7,4 +7,3 @@ crossrefApiBearerToken:
 experimentEnabled: "false"
 googleTagManagerId:
 postgresqlSecretName: null
-ingressClass:
