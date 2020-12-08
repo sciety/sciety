@@ -58,6 +58,7 @@ jobs:
             --set twitterApiSecretKey=${TWITTER_API_SECRET_KEY} \
             --set twitterApiBearerToken=${TWITTER_API_BEARER_TOKEN} \
             --set postgresqlSecretName=hive-staging-rds-postgres \
+            --set ingressClass=nginx-nlb \
             --wait \
             helm/sciety
         env:
