@@ -10,7 +10,7 @@ export type IsFollowingSomething = (userId: UserId) => Promise<boolean>;
 
 export type GetEvents<E> = (userId: UserId) => Promise<ReadonlyArray<E>>;
 
-type RenderSummaryFeedList<E> = (events: ReadonlyArray<E>) => Promise<Maybe<string>>;
+type RenderSummaryFeedList<E> = (events: ReadonlyArray<E>) => Promise<O.Option<string>>;
 
 const toMaybe = (uid: O.Option<UserId>): Maybe<UserId> => (
   O.fold(
@@ -18,6 +18,13 @@ const toMaybe = (uid: O.Option<UserId>): Maybe<UserId> => (
     (u: UserId) => Maybe.just(u),
   )(uid)
 );
+
+const noEvaluationsYet = (): string => `
+  <p>
+    The communities you’re following haven’t evaluated any articles yet.
+    You can have a look for other communities of interest, or try coming back later!
+  </p>
+`;
 
 export default <E>(
   isFollowingSomething: IsFollowingSomething,
@@ -49,12 +56,7 @@ export default <E>(
       `);
     } else {
       const events = await getEvents(userId.unsafelyUnwrap());
-      contents = (await renderSummaryFeedList(events)).unwrapOr(toHtmlFragment(`
-        <p>
-          The communities you’re following haven’t evaluated any articles yet.
-          You can have a look for other communities of interest, or try coming back later!
-        </p>
-      `));
+      contents = toHtmlFragment(O.getOrElse(noEvaluationsYet)(await renderSummaryFeedList(events)));
     }
     return toHtmlFragment(`
       <section>

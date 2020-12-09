@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/lib/Option';
 import { Maybe } from 'true-myth';
 import createRenderFeed, { GetEvents } from '../../src/editorial-community-page/render-feed';
 import { RenderFollowToggle } from '../../src/editorial-community-page/render-follow-toggle';
@@ -13,7 +14,7 @@ describe('render feed', () => {
 
   describe('with community events', () => {
     it('returns a list of events', async () => {
-      const renderSummaryFeedList: RenderSummaryFeedList<unknown> = async () => Maybe.just(toHtmlFragment('a list'));
+      const renderSummaryFeedList: RenderSummaryFeedList<unknown> = async () => O.some(toHtmlFragment('a list'));
 
       const renderFeed = createRenderFeed(stubGetEvents, renderSummaryFeedList, stubRenderFollowToggle);
 
@@ -25,7 +26,7 @@ describe('render feed', () => {
 
   describe('without community events', () => {
     it('returns fallback text', async () => {
-      const renderSummaryFeedList: RenderSummaryFeedList<unknown> = async () => Maybe.nothing();
+      const renderSummaryFeedList: RenderSummaryFeedList<unknown> = async () => O.none;
 
       const renderFeed = createRenderFeed(stubGetEvents, renderSummaryFeedList, stubRenderFollowToggle);
 

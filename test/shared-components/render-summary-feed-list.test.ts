@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/lib/Option';
 import createRenderSummaryFeedList from '../../src/shared-components/render-summary-feed-list';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import shouldNotBeCalled from '../should-not-be-called';
@@ -11,7 +12,7 @@ describe('render-summary-feed-list', () => {
       ];
       const rendered = await renderSummaryFeedList(events);
 
-      expect(rendered.unsafelyUnwrap()).toStrictEqual(expect.stringContaining('<ol class="summary-feed-list"'));
+      expect(O.getOrElse(() => 'error')(rendered)).toStrictEqual(expect.stringContaining('<ol class="summary-feed-list"'));
     });
   });
 
@@ -20,7 +21,7 @@ describe('render-summary-feed-list', () => {
       const renderSummaryFeedList = createRenderSummaryFeedList(shouldNotBeCalled);
       const rendered = await renderSummaryFeedList([]);
 
-      expect(rendered.isNothing()).toBe(true);
+      expect(rendered).toBe(O.none);
     });
   });
 });

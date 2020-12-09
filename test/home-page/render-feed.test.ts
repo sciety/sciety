@@ -1,5 +1,4 @@
 import * as O from 'fp-ts/lib/Option';
-import { Maybe } from 'true-myth';
 import createRenderFeed, { GetEvents, IsFollowingSomething } from '../../src/home-page/render-feed';
 import { RenderSummaryFeedList } from '../../src/shared-components/render-summary-feed-list';
 import { toHtmlFragment } from '../../src/types/html-fragment';
@@ -12,7 +11,7 @@ describe('render-feed', (): void => {
       it('returns a list', async (): Promise<void> => {
         const dummyGetEvents: GetEvents<unknown> = async () => ['some-event'];
         const dummyIsFollowingSomething: IsFollowingSomething = async () => true;
-        const dummyRenderSummaryFeedList: RenderSummaryFeedList<unknown> = async () => Maybe.just(toHtmlFragment('someNiceList'));
+        const dummyRenderSummaryFeedList: RenderSummaryFeedList<unknown> = async () => O.some(toHtmlFragment('someNiceList'));
         const renderFeed = createRenderFeed(
           dummyIsFollowingSomething,
           dummyGetEvents,
@@ -32,7 +31,7 @@ describe('render-feed', (): void => {
       it('returns a come back later text', async (): Promise<void> => {
         const dummyIsFollowingSomething: IsFollowingSomething = async () => true;
         const dummyGetEvents: GetEvents<unknown> = async () => [];
-        const stubRenderSummaryFeedList: RenderSummaryFeedList<unknown> = async () => Maybe.nothing();
+        const stubRenderSummaryFeedList: RenderSummaryFeedList<unknown> = async () => O.none;
         const renderFeed = createRenderFeed(
           dummyIsFollowingSomething,
           dummyGetEvents,

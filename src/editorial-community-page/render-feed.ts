@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/lib/Option';
 import { Maybe } from 'true-myth';
 import { RenderFollowToggle } from './render-follow-toggle';
 import EditorialCommunityId from '../types/editorial-community-id';
@@ -8,13 +9,13 @@ export type RenderFeed = (editorialCommunityId: EditorialCommunityId, userId: Ma
 
 export type GetEvents<T> = (editorialCommunityId: EditorialCommunityId) => Promise<Array<T>>;
 
-type RenderSummaryFeedList<T> = (events: ReadonlyArray<T>) => Promise<Maybe<string>>;
+type RenderSummaryFeedList<T> = (events: ReadonlyArray<T>) => Promise<O.Option<string>>;
 
-const emptyFeed = toHtmlFragment(`
+const emptyFeed = `
   <p>
     It looks like this community hasn’t evaluated any articles yet. Try coming back later!
   </p>
-`);
+`;
 
 export default <T>(
   getEvents: GetEvents<T>,
@@ -28,7 +29,7 @@ export default <T>(
           Feed
         </h2>
         ${await renderFollowToggle(userId, editorialCommunityId)}
-        ${(await renderSummaryFeedList(events)).unwrapOr(emptyFeed)}
+        ${toHtmlFragment(O.getOrElse(() => emptyFeed)(await renderSummaryFeedList(events)))}
       </section>
     `);
 };
