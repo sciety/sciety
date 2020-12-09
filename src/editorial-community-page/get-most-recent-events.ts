@@ -1,3 +1,6 @@
+import * as A from 'fp-ts/lib/ReadonlyArray';
+import * as T from 'fp-ts/lib/Task';
+import { flow, pipe } from 'fp-ts/lib/function';
 import { GetEvents } from './render-feed';
 import {
   DomainEvent,
@@ -6,24 +9,32 @@ import {
   isEditorialCommunityEndorsedArticleEvent,
   isEditorialCommunityReviewedArticleEvent,
 } from '../types/domain-events';
+import EditorialCommunityId from '../types/editorial-community-id';
 
 type FeedEvent =
   EditorialCommunityEndorsedArticleEvent |
   EditorialCommunityReviewedArticleEvent;
 
-export type GetAllEvents = () => Promise<ReadonlyArray<DomainEvent>>;
+const wasCreatedBy = (editorialCommunityId: EditorialCommunityId) => (event: DomainEvent): event is FeedEvent => (
+  (isEditorialCommunityEndorsedArticleEvent(event)
+    && event.editorialCommunityId.value === editorialCommunityId.value)
+  || (isEditorialCommunityReviewedArticleEvent(event)
+    && event.editorialCommunityId.value === editorialCommunityId.value)
+);
+
+export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 export default (getAllEvents: GetAllEvents, maxCount: number): GetEvents<FeedEvent> => (
   async (editorialCommunityId) => (
-    (await getAllEvents())
-      .slice()
-      .reverse()
-      .filter((event): event is FeedEvent => (
-        (isEditorialCommunityEndorsedArticleEvent(event)
-          && event.editorialCommunityId.value === editorialCommunityId.value)
-        || (isEditorialCommunityReviewedArticleEvent(event)
-          && event.editorialCommunityId.value === editorialCommunityId.value)
-      ))
-      .slice(0, maxCount)
+    pipe(
+      getAllEvents,
+      T.map(
+        flow(
+          A.reverse,
+          A.filter(wasCreatedBy(editorialCommunityId)),
+          A.takeLeft(maxCount),
+        ),
+      ),
+    )()
   )
 );

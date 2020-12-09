@@ -7,7 +7,7 @@ import { UserId } from '../types/user-id';
 
 export type RenderFeed = (editorialCommunityId: EditorialCommunityId, userId: Maybe<UserId>) => Promise<HtmlFragment>;
 
-export type GetEvents<T> = (editorialCommunityId: EditorialCommunityId) => Promise<Array<T>>;
+export type GetEvents<T> = (editorialCommunityId: EditorialCommunityId) => Promise<ReadonlyArray<T>>;
 
 type RenderSummaryFeedList<T> = (events: ReadonlyArray<T>) => Promise<O.Option<string>>;
 
