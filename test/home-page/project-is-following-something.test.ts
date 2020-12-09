@@ -10,7 +10,7 @@ describe('project-is-following-something', () => {
     it('not following anything', async () => {
       const isFollowingSomething = createProjectIsFollowingSomething(getAllEvents);
 
-      const result = await isFollowingSomething(userId('someone'));
+      const result = await isFollowingSomething(userId('someone'))();
 
       expect(result).toBe(false);
     });
@@ -31,7 +31,7 @@ describe('project-is-following-something', () => {
     it('is following something', async () => {
       const isFollowingSomething = createProjectIsFollowingSomething(getAllEvents);
 
-      const result = await isFollowingSomething(someone);
+      const result = await isFollowingSomething(someone)();
 
       expect(result).toBe(true);
     });
@@ -59,7 +59,7 @@ describe('project-is-following-something', () => {
     it('not following anything', async () => {
       const isFollowingSomething = createProjectIsFollowingSomething(getAllEvents);
 
-      const result = await isFollowingSomething(someone);
+      const result = await isFollowingSomething(someone)();
 
       expect(result).toBe(false);
     });
@@ -81,7 +81,7 @@ describe('project-is-following-something', () => {
     it('not following anything', async () => {
       const isFollowingSomething = createProjectIsFollowingSomething(getAllEvents);
 
-      const result = await isFollowingSomething(someone);
+      const result = await isFollowingSomething(someone)();
 
       expect(result).toBe(false);
     });
@@ -118,7 +118,7 @@ describe('project-is-following-something', () => {
     it('is following something', async () => {
       const isFollowingSomething = createProjectIsFollowingSomething(getAllEvents);
 
-      const result = await isFollowingSomething(someone);
+      const result = await isFollowingSomething(someone)();
 
       expect(result).toBe(true);
     });

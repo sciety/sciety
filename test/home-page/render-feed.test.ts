@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/lib/Option';
+import * as T from 'fp-ts/lib/Task';
 import createRenderFeed, { GetEvents, IsFollowingSomething } from '../../src/home-page/render-feed';
 import { RenderSummaryFeedList } from '../../src/shared-components/render-summary-feed-list';
 import { toHtmlFragment } from '../../src/types/html-fragment';
@@ -10,7 +11,7 @@ describe('render-feed', (): void => {
     describe('and has a non-empty feed', () => {
       it('returns a list', async (): Promise<void> => {
         const dummyGetEvents: GetEvents<unknown> = async () => ['some-event'];
-        const dummyIsFollowingSomething: IsFollowingSomething = async () => true;
+        const dummyIsFollowingSomething: IsFollowingSomething = () => T.of(true);
         const dummyRenderSummaryFeedList: RenderSummaryFeedList<unknown> = async () => O.some(toHtmlFragment('someNiceList'));
         const renderFeed = createRenderFeed(
           dummyIsFollowingSomething,
@@ -29,7 +30,7 @@ describe('render-feed', (): void => {
 
     describe('and has an empty feed', () => {
       it('returns a come back later text', async (): Promise<void> => {
-        const dummyIsFollowingSomething: IsFollowingSomething = async () => true;
+        const dummyIsFollowingSomething: IsFollowingSomething = () => T.of(true);
         const dummyGetEvents: GetEvents<unknown> = async () => [];
         const stubRenderSummaryFeedList: RenderSummaryFeedList<unknown> = async () => O.none;
         const renderFeed = createRenderFeed(
@@ -45,7 +46,7 @@ describe('render-feed', (): void => {
 
     describe('and is not following anything yet', () => {
       it('returns a follow-something text', async () => {
-        const dummyIsFollowingSomething: IsFollowingSomething = async () => false;
+        const dummyIsFollowingSomething: IsFollowingSomething = () => T.of(false);
         const renderFeed = createRenderFeed(
           dummyIsFollowingSomething,
           shouldNotBeCalled,

@@ -6,7 +6,7 @@ import { UserId } from '../types/user-id';
 
 type RenderFeed = (userId: O.Option<UserId>) => T.Task<HtmlFragment>;
 
-export type IsFollowingSomething = (userId: UserId) => Promise<boolean>;
+export type IsFollowingSomething = (userId: UserId) => T.Task<boolean>;
 
 export type GetEvents<E> = (userId: UserId) => Promise<ReadonlyArray<E>>;
 
@@ -55,7 +55,7 @@ export default <E>(
 ): RenderFeed => (
   (uid) => async () => {
     const userFeed = async (u: UserId): Promise<string> => {
-      if (!(await isFollowingSomething(u))) {
+      if (!(await isFollowingSomething(u)())) {
         return followSomething();
       }
       const events = await getEvents(u);
