@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/lib/Option';
+import * as T from 'fp-ts/lib/Task';
 import { Maybe } from 'true-myth';
 import { RenderFollowToggle } from './render-follow-toggle';
 import EditorialCommunityId from '../types/editorial-community-id';
@@ -7,9 +8,9 @@ import { UserId } from '../types/user-id';
 
 export type RenderFeed = (editorialCommunityId: EditorialCommunityId, userId: Maybe<UserId>) => Promise<HtmlFragment>;
 
-export type GetEvents<T> = (editorialCommunityId: EditorialCommunityId) => Promise<ReadonlyArray<T>>;
+export type GetEvents<E> = (editorialCommunityId: EditorialCommunityId) => T.Task<ReadonlyArray<E>>;
 
-type RenderSummaryFeedList<T> = (events: ReadonlyArray<T>) => Promise<O.Option<string>>;
+type RenderSummaryFeedList<E> = (events: ReadonlyArray<E>) => Promise<O.Option<string>>;
 
 const emptyFeed = `
   <p>
@@ -17,19 +18,19 @@ const emptyFeed = `
   </p>
 `;
 
-export default <T>(
-  getEvents: GetEvents<T>,
-  renderSummaryFeedList: RenderSummaryFeedList<T>,
+export default <E>(
+  getEvents: GetEvents<E>,
+  renderSummaryFeedList: RenderSummaryFeedList<E>,
   renderFollowToggle: RenderFollowToggle,
 ): RenderFeed => async (editorialCommunityId, userId) => {
-  const events = await getEvents(editorialCommunityId);
+  const events = await getEvents(editorialCommunityId)();
   return toHtmlFragment(`
-      <section>
-        <h2>
-          Feed
-        </h2>
-        ${await renderFollowToggle(userId, editorialCommunityId)}
-        ${toHtmlFragment(O.getOrElse(() => emptyFeed)(await renderSummaryFeedList(events)))}
-      </section>
-    `);
+    <section>
+      <h2>
+        Feed
+      </h2>
+      ${await renderFollowToggle(userId, editorialCommunityId)}
+      ${toHtmlFragment(O.getOrElse(() => emptyFeed)(await renderSummaryFeedList(events)))}
+    </section>
+  `);
 };

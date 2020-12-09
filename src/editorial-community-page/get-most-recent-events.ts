@@ -25,16 +25,14 @@ const wasCreatedBy = (editorialCommunityId: EditorialCommunityId) => (event: Dom
 export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 export default (getAllEvents: GetAllEvents, maxCount: number): GetEvents<FeedEvent> => (
-  async (editorialCommunityId) => (
-    pipe(
-      getAllEvents,
-      T.map(
-        flow(
-          A.reverse,
-          A.filter(wasCreatedBy(editorialCommunityId)),
-          A.takeLeft(maxCount),
-        ),
+  (editorialCommunityId) => pipe(
+    getAllEvents,
+    T.map(
+      flow(
+        A.reverse,
+        A.filter(wasCreatedBy(editorialCommunityId)),
+        A.takeLeft(maxCount),
       ),
-    )()
+    ),
   )
 );

@@ -21,7 +21,7 @@ describe('get-most-recent-events', () => {
     ];
     const getAllEvents: GetAllEvents = async () => allEvents;
     const getMostRecentEvents = createGetMostRecentEvents(getAllEvents, 20);
-    const feed = await getMostRecentEvents(editorialCommunity1);
+    const feed = await getMostRecentEvents(editorialCommunity1)();
 
     expect(feed).toHaveLength(1);
     expect(feed[0]).toStrictEqual(allEvents[1]);
