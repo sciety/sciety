@@ -19,6 +19,26 @@ const toMaybe = (uid: O.Option<UserId>): Maybe<UserId> => (
   )(uid)
 );
 
+const welcomeMessage = (): string => `
+  <p>Welcome to Sciety.</p>
+  <p>
+    Follow research as it develops and stay up to date with the next big thing,
+    evaluated by the editorial communities you trust.
+  </p>
+  <p>
+    <a href="/log-in">Log in with Twitter</a> to see your feed here or start building a new one
+    by following some communities!
+  </p>
+  <img src="/static/images/feed-screenshot.png" alt="Screenshot of a feed" class="feed__image">
+`;
+
+const followSomething = (): string => `
+  <p>
+    Your feed is empty! Start following some communities to see their most recent evaluations right here.
+  </p>
+  <img src="/static/images/feed-screenshot.png" alt="Screenshot of a feed" class="feed__image">
+`;
+
 const noEvaluationsYet = (): string => `
   <p>
     The communities you’re following haven’t evaluated any articles yet.
@@ -26,45 +46,34 @@ const noEvaluationsYet = (): string => `
   </p>
 `;
 
+const renderAsSection = (contents: HtmlFragment): HtmlFragment => toHtmlFragment(`
+  <section>
+    <h2>
+      Feed
+    </h2>
+    ${contents}
+  </section>
+`);
+
 export default <E>(
   isFollowingSomething: IsFollowingSomething,
   getEvents: GetEvents<E>,
   renderSummaryFeedList: RenderSummaryFeedList<E>,
 ): RenderFeed => (
   (uid) => async () => {
-    let contents = '';
     const userId = toMaybe(uid);
-    if (userId.isNothing()) {
-      contents = toHtmlFragment(`
-        <p>Welcome to Sciety.</p>
-        <p>
-          Follow research as it develops and stay up to date with the next big thing,
-          evaluated by the editorial communities you trust.
-        </p>
-        <p>
-          <a href="/log-in">Log in with Twitter</a> to see your feed here or start building a new one
-          by following some communities!
-        </p>
-        <img src="/static/images/feed-screenshot.png" alt="Screenshot of a feed" class="feed__image">
-      `);
-    } else if (!(await isFollowingSomething(userId.unsafelyUnwrap()))) {
-      contents = toHtmlFragment(`
-        <p>
-          Your feed is empty! Start following some communities to see their most recent evaluations right here.
-        </p>
-        <img src="/static/images/feed-screenshot.png" alt="Screenshot of a feed" class="feed__image">
-      `);
-    } else {
+
+    const calculateFeedContents = async (): Promise<string> => {
+      if (userId.isNothing()) {
+        return welcomeMessage();
+      }
+      if (!(await isFollowingSomething(userId.unsafelyUnwrap()))) {
+        return followSomething();
+      }
       const events = await getEvents(userId.unsafelyUnwrap());
-      contents = toHtmlFragment(O.getOrElse(noEvaluationsYet)(await renderSummaryFeedList(events)));
-    }
-    return toHtmlFragment(`
-      <section>
-        <h2>
-          Feed
-        </h2>
-        ${contents}
-      </section>
-    `);
+      return O.getOrElse(noEvaluationsYet)(await renderSummaryFeedList(events));
+    };
+
+    return renderAsSection(toHtmlFragment(await calculateFeedContents()));
   }
 );
