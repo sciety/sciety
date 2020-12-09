@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
-import { Maybe } from 'true-myth';
+import { pipe } from 'fp-ts/lib/function';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
@@ -12,14 +12,7 @@ export type GetEvents<E> = (userId: UserId) => Promise<ReadonlyArray<E>>;
 
 type RenderSummaryFeedList<E> = (events: ReadonlyArray<E>) => Promise<O.Option<string>>;
 
-const toMaybe = (uid: O.Option<UserId>): Maybe<UserId> => (
-  O.fold(
-    () => Maybe.nothing<UserId>(),
-    (u: UserId) => Maybe.just(u),
-  )(uid)
-);
-
-const welcomeMessage = (): string => `
+const welcomeMessage = async (): Promise<string> => `
   <p>Welcome to Sciety.</p>
   <p>
     Follow research as it develops and stay up to date with the next big thing,
@@ -61,18 +54,20 @@ export default <E>(
   renderSummaryFeedList: RenderSummaryFeedList<E>,
 ): RenderFeed => (
   (uid) => async () => {
-    const userId = toMaybe(uid);
-
-    const calculateFeedContents = async (): Promise<string> => {
-      if (userId.isNothing()) {
-        return welcomeMessage();
-      }
-      if (!(await isFollowingSomething(userId.unsafelyUnwrap()))) {
+    const userFeed = async (u: UserId): Promise<string> => {
+      if (!(await isFollowingSomething(u))) {
         return followSomething();
       }
-      const events = await getEvents(userId.unsafelyUnwrap());
+      const events = await getEvents(u);
       return O.getOrElse(noEvaluationsYet)(await renderSummaryFeedList(events));
     };
+
+    const calculateFeedContents = async (): Promise<string> => (
+      pipe(
+        uid,
+        O.fold(welcomeMessage, userFeed),
+      )
+    );
 
     return renderAsSection(toHtmlFragment(await calculateFeedContents()));
   }
