@@ -1,7 +1,6 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
-import { Maybe } from 'true-myth';
 import { RenderFollowToggle } from './render-follow-toggle';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -15,13 +14,6 @@ type Community = {
 
 export type RenderEditorialCommunity = (userId: O.Option<UserId>) => (community: Community) => T.Task<HtmlFragment>;
 
-const toMaybe = (uid: O.Option<UserId>): Maybe<UserId> => (
-  O.fold(
-    () => Maybe.nothing<UserId>(),
-    (u: UserId) => Maybe.just(u),
-  )(uid)
-);
-
 export default (
   renderFollowToggle: RenderFollowToggle,
 ): RenderEditorialCommunity => (userId) => (community) => async () => toHtmlFragment(`
@@ -33,7 +25,7 @@ export default (
       </div>
     </a>
     <div class="editorial-community__toggle_wrapper">
-      ${await renderFollowToggle(toMaybe(userId), community.id, community.name)}
+      ${await renderFollowToggle(userId, community.id, community.name)}
     </div>
   </div>
 `);
