@@ -1,6 +1,6 @@
-import * as E from 'fp-ts/lib/Either';
+import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
-import { identity, pipe } from 'fp-ts/lib/function';
+import { pipe } from 'fp-ts/lib/function';
 import templateDate from '../shared-components/date';
 import Doi from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -16,6 +16,15 @@ export type GetReviewCount = (doi: Doi) => T.Task<number>;
 
 export type RenderSearchResult = (result: SearchResult) => Promise<HtmlFragment>;
 
+const renderReviewCount: (reviewCount: number) => string = (reviewCount) => (
+  `
+    <div class="ui label">
+      Reviews
+      <span class="detail">${reviewCount}</span>
+    </div>
+  `
+);
+
 const createRenderReviews = (
   getReviewCount: GetReviewCount,
 ) => (
@@ -23,13 +32,8 @@ const createRenderReviews = (
     pipe(
       doi,
       getReviewCount,
-      T.map(E.fromPredicate((reviewCount) => reviewCount > 0, () => '')),
-      T.map(E.fold(identity, (reviewCount) => `
-        <div class="ui label">
-          Reviews
-          <span class="detail">${reviewCount}</span>
-        </div>
-      `)),
+      T.map(O.fromPredicate((reviewCount) => reviewCount > 0)),
+      T.map(O.fold(() => '', renderReviewCount)),
       T.map(toHtmlFragment),
     )()
   )
