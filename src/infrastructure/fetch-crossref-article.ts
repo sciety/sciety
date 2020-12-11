@@ -67,6 +67,7 @@ export default (getXml: GetXml, logger: Logger): FetchCrossrefArticle => {
       .filter((person) => person.getAttribute('contributor_role') === 'author')
       .map((person) => {
         const givenName = person.getElementsByTagName('given_name')[0]?.textContent;
+        // TODO: the decision as to what to display on error should live with th rendering component
         const surname = person.getElementsByTagName('surname')[0].textContent ?? 'Unknown author';
 
         if (!givenName) {
@@ -82,6 +83,7 @@ export default (getXml: GetXml, logger: Logger): FetchCrossrefArticle => {
     const titleElement = titlesElement?.getElementsByTagName('title')[0];
     if (!titleElement) {
       logger('warn', 'Did not find title', { doi });
+      // TODO: the decision as to what to display on error should live with th rendering component
       return 'Unknown title';
     }
 
