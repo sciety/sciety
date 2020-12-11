@@ -42,7 +42,7 @@ describe('review-projections', () => {
       [new Doi('10.0000/does-not-exist'), []],
     ])('finds the review references for article %s', async (articleDoi, expectedReviews) => {
       const getReviews = createReviewProjections(reviewEvents).findReviewsForArticleDoi;
-      const actualReviews = (await getReviews(articleDoi))
+      const actualReviews = (await getReviews(articleDoi)())
         .map((reviewReference) => reviewReference.reviewId)
         .sort();
 

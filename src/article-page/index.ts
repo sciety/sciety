@@ -1,5 +1,6 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/lib/Option';
+import * as T from 'fp-ts/lib/Task';
 import { pipe } from 'fp-ts/lib/function';
 import { Maybe, Result } from 'true-myth';
 import createComposeFeedEvents from './compose-feed-events';
@@ -23,7 +24,7 @@ import { ReviewId } from '../types/review-id';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { User } from '../types/user';
 
-type FindReviewsForArticleDoi = (articleVersionDoi: Doi) => Promise<ReadonlyArray<{
+type FindReviewsForArticleDoi = (articleVersionDoi: Doi) => T.Task<ReadonlyArray<{
   reviewId: ReviewId;
   editorialCommunityId: EditorialCommunityId;
   occurredAt: Date;
@@ -68,7 +69,7 @@ export default (ports: Ports): ArticlePage => {
   const getFeedEventsContent = createHandleArticleVersionErrors(
     createGetFeedEventsContent(
       createComposeFeedEvents(
-        async (doi) => (await ports.findReviewsForArticleDoi(doi)).map((review) => ({
+        async (doi) => (await ports.findReviewsForArticleDoi(doi)()).map((review) => ({
           type: 'review',
           ...review,
         })),
