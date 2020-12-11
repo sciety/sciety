@@ -1,3 +1,4 @@
+import * as T from 'fp-ts/lib/Task';
 import { Result } from 'true-myth';
 import Doi from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -5,10 +6,10 @@ import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
 export type GetArticleAbstract<E> = (doi: Doi) => Promise<Result<SanitisedHtmlFragment, E>>;
 
-type RenderArticleAbstract<E> = (doi: Doi) => Promise<Result<HtmlFragment, E>>;
+type RenderArticleAbstract<E> = (doi: Doi) => T.Task<Result<HtmlFragment, E>>;
 
 export default <E> (getArticleAbstract: GetArticleAbstract<E>): RenderArticleAbstract<E> => (
-  async (doi) => (
+  (doi) => async () => (
     (await getArticleAbstract(doi)).map((articleAbstract) => toHtmlFragment(`
       <section class="article-abstract" role="doc-abstract">
         <h2>

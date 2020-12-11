@@ -14,7 +14,7 @@ describe('render-article-abstract component', (): void => {
 
       const renderArticleAbstract = createRenderArticleAbstract(getArticleAbstract);
 
-      const rendered = (await renderArticleAbstract(doi)).unsafelyUnwrap();
+      const rendered = (await renderArticleAbstract(doi)()).unsafelyUnwrap();
 
       expect(rendered).toStrictEqual(expect.stringContaining(`Article ${doi.value} abstract content`));
     });
@@ -27,7 +27,7 @@ describe('render-article-abstract component', (): void => {
       );
 
       const renderArticleAbstract = createRenderArticleAbstract(getArticleAbstract);
-      const error = (await renderArticleAbstract(doi)).unsafelyUnwrapErr();
+      const error = (await renderArticleAbstract(doi)()).unsafelyUnwrapErr();
 
       expect(error).toStrictEqual('any-error');
     });

@@ -1,3 +1,4 @@
+import * as T from 'fp-ts/Task';
 import striptags from 'striptags';
 import { Maybe, Result } from 'true-myth';
 import Doi from '../types/doi';
@@ -28,7 +29,7 @@ export type RenderPage = (doi: Doi, userId: Maybe<UserId>) => Promise<Result<Pag
 
 export default (
   renderPageHeader: Component,
-  renderAbstract: Component,
+  renderAbstract: (doi: Doi) => T.Task<Result<HtmlFragment, 'not-found' | 'unavailable'>>,
   renderFeed: RenderFeed,
   getArticleDetails: GetArticleDetails,
 ): RenderPage => {
@@ -53,7 +54,7 @@ export default (
   );
 
   return async (doi, userId) => {
-    const abstractResult = renderAbstract(doi, userId);
+    const abstractResult = renderAbstract(doi)();
     const pageHeaderResult = renderPageHeader(doi, userId);
     const feedResult = renderFeed(doi, userId)
       .then((feed) => (
