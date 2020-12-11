@@ -1,18 +1,19 @@
+import * as O from 'fp-ts/lib/Option';
 import { isHttpError } from 'http-errors';
 import { NOT_FOUND } from 'http-status-codes';
-import { Maybe, Result } from 'true-myth';
+import { Result } from 'true-myth';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { RenderPageError } from '../types/render-page-error';
 import { UserId } from '../types/user-id';
 
-type Component = (editorialCommunityId: EditorialCommunityId, userId: Maybe<UserId>) => Promise<string>;
+type Component = (editorialCommunityId: EditorialCommunityId, userId: O.Option<UserId>) => Promise<string>;
 
 type GetCommunityName = (editorialCommunityId: EditorialCommunityId) => Promise<string>;
 
 export type RenderPage = (
   editorialCommunityId: EditorialCommunityId,
-  userId: Maybe<UserId>
+  userId: O.Option<UserId>
 ) => Promise<Result<{
   title: string,
   content: HtmlFragment

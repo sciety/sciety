@@ -1,6 +1,5 @@
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
-import { Maybe } from 'true-myth';
 import createRenderFeed, { GetEvents } from '../../src/editorial-community-page/render-feed';
 import { RenderFollowToggle } from '../../src/editorial-community-page/render-follow-toggle';
 import { RenderSummaryFeedList } from '../../src/shared-components/render-summary-feed-list';
@@ -11,7 +10,7 @@ describe('render feed', () => {
   const stubGetEvents: GetEvents<unknown> = () => T.of([]);
   const stubRenderFollowToggle: RenderFollowToggle = async () => toHtmlFragment('');
   const anEditorialCommunityId = new EditorialCommunityId('');
-  const aUserId = Maybe.nothing<never>();
+  const aUserId = O.none;
 
   describe('with community events', () => {
     it('returns a list of events', async () => {

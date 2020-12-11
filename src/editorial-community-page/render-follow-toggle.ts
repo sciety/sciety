@@ -1,10 +1,10 @@
-import { Maybe } from 'true-myth';
+import * as O from 'fp-ts/lib/Option';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
 export type RenderFollowToggle = (
-  userId: Maybe<UserId>,
+  userId: O.Option<UserId>,
   editorialCommunityId: EditorialCommunityId
 ) => Promise<HtmlFragment>;
 
@@ -12,9 +12,10 @@ export type Follows = (userId: UserId, editorialCommunityId: EditorialCommunityI
 
 export default (follows: Follows): RenderFollowToggle => (
   async (userId, editorialCommunityId) => {
-    const userFollows = await userId
-      .map(async (value) => follows(value, editorialCommunityId))
-      .unwrapOrElse(async () => false);
+    const userFollows = await O.fold(
+      async () => false,
+      async (value: UserId) => follows(value, editorialCommunityId),
+    )(userId);
 
     if (userFollows) {
       return toHtmlFragment(`

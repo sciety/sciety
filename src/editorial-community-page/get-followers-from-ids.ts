@@ -1,4 +1,5 @@
-import { Maybe, Result } from 'true-myth';
+import * as O from 'fp-ts/lib/Option';
+import { Result } from 'true-myth';
 import { GetFollowers } from './render-followers';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { UserId } from '../types/user-id';
@@ -23,7 +24,7 @@ type FollowerDetails = {
 export default (
   getFollowerIds: GetFollowerIds,
   getUserDetails: GetUserDetails,
-): GetFollowers<Maybe<FollowerDetails>> => (
+): GetFollowers<O.Option<FollowerDetails>> => (
   async (editorialCommunityId) => {
     const userIds = await getFollowerIds(editorialCommunityId);
     return Promise.all(userIds.map(async (userId) => (
@@ -32,7 +33,7 @@ export default (
           ...userDetails,
           userId,
         }))
-        .toMaybe()
+        .mapOr(O.none, (u) => O.some(u))
     )));
   }
 );

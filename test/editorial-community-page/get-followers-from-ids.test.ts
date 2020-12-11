@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/lib/Option';
 import { Result } from 'true-myth';
 import createGetFollowersFromIds, {
   GetFollowerIds,
@@ -20,12 +21,12 @@ describe('get-followers-from-ids', () => {
     const followers = await getFollowersFromIds(new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'));
 
     expect(followers).toHaveLength(1);
-    expect(followers[0].unsafelyUnwrap()).toStrictEqual({
+    expect(followers[0]).toStrictEqual(O.some({
       handle: 'some_handle',
       displayName: 'Some User',
       avatarUrl: 'http://example.com',
       userId: toUserId('11111111'),
-    });
+    }));
   });
 
   it('makes sure that error results become nothing', async () => {
@@ -37,6 +38,6 @@ describe('get-followers-from-ids', () => {
     const followers = await getFollowersFromIds(new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'));
 
     expect(followers).toHaveLength(1);
-    expect(followers[0].isNothing()).toBe(true);
+    expect(followers[0]).toBe(O.none);
   });
 });

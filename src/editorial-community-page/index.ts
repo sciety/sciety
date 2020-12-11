@@ -1,4 +1,5 @@
 import { URL } from 'url';
+import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { pipe } from 'fp-ts/lib/function';
@@ -106,7 +107,7 @@ export default (ports: Ports): EditorialCommunityPage => {
   );
   const getFollowers = createGetFollowersFromIds(createProjectFollowerIds(ports.getAllEvents), wrapGetUserDetails);
   const renderFollowers = createRenderFollowers(getFollowers, async (follower) => (
-    follower.mapOrElse(renderFollowerError, renderFollower)
+    O.fold(renderFollowerError, renderFollower)(follower)
   ));
 
   const renderPage = createRenderPage(
@@ -121,7 +122,10 @@ export default (ports: Ports): EditorialCommunityPage => {
   );
   return async (params) => {
     const editorialCommunityId = new EditorialCommunityId(params.id ?? '');
-    const userId = params.user.map((value) => value.id);
+    const userId = pipe(
+      params.user.mapOr(O.none, (v) => O.some(v)),
+      O.map((user) => user.id),
+    );
     return renderPage(editorialCommunityId, userId);
   };
 };
