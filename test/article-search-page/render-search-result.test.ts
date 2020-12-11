@@ -1,3 +1,4 @@
+import * as T from 'fp-ts/lib/Task';
 import createRenderSearchResult, {
   GetReviewCount,
   SearchResult,
@@ -11,7 +12,7 @@ const searchResult: SearchResult = {
   postedDate: new Date('2017-11-30'),
 };
 
-const arbitraryReviewCount: GetReviewCount = async () => 0;
+const arbitraryReviewCount: GetReviewCount = () => T.of(0);
 
 describe('render-search-result component', (): void => {
   it('displays title and authors', async (): Promise<void> => {
@@ -30,7 +31,7 @@ describe('render-search-result component', (): void => {
 
   describe('the article has reviews', (): void => {
     it('displays the number of reviews', async (): Promise<void> => {
-      const getReviewCount: GetReviewCount = async () => 37;
+      const getReviewCount: GetReviewCount = () => T.of(37);
 
       const rendered = await createRenderSearchResult(getReviewCount)(searchResult);
 
@@ -40,7 +41,7 @@ describe('render-search-result component', (): void => {
 
   describe('the article has no reviews', (): void => {
     it('hides the number of reviews', async (): Promise<void> => {
-      const getReviewCount: GetReviewCount = async () => 0;
+      const getReviewCount: GetReviewCount = () => T.of(0);
 
       const rendered = await createRenderSearchResult(getReviewCount)(searchResult);
 

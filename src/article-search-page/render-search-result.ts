@@ -1,3 +1,4 @@
+import * as T from 'fp-ts/lib/Task';
 import templateDate from '../shared-components/date';
 import Doi from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -9,7 +10,7 @@ export interface SearchResult {
   postedDate: Date;
 }
 
-export type GetReviewCount = (doi: Doi) => Promise<number>;
+export type GetReviewCount = (doi: Doi) => T.Task<number>;
 
 export type RenderSearchResult = (result: SearchResult) => Promise<HtmlFragment>;
 
@@ -17,7 +18,7 @@ const createRenderReviews = (
   getReviewCount: GetReviewCount,
 ) => (
   async (doi: Doi): Promise<HtmlFragment> => {
-    const reviewCount = await getReviewCount(doi);
+    const reviewCount = await getReviewCount(doi)();
     if (reviewCount === 0) {
       return toHtmlFragment('');
     }

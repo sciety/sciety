@@ -1,4 +1,5 @@
 import * as T from 'fp-ts/lib/Task';
+import { pipe } from 'fp-ts/lib/function';
 import createRenderPage, { RenderPage } from './render-page';
 import createRenderSearchResult, { GetReviewCount } from './render-search-result';
 import createRenderSearchResults, { FindArticles } from './render-search-results';
@@ -23,8 +24,9 @@ interface Params {
 type ArticleSearchPage = (params: Params) => ReturnType<RenderPage>;
 
 export default (ports: Ports): ArticleSearchPage => {
-  const getReviewCount: GetReviewCount = async (doi) => (
-    (await ports.findReviewsForArticleDoi(doi)()).length
+  const getReviewCount: GetReviewCount = (doi) => pipe(
+    ports.findReviewsForArticleDoi(doi),
+    T.map((list) => list.length),
   );
   const renderSearchResult = createRenderSearchResult(getReviewCount);
   const renderSearchResults = createRenderSearchResults(ports.searchEuropePmc, renderSearchResult);
