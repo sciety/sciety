@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
-import { pipe } from 'fp-ts/lib/function';
+import { flow, pipe } from 'fp-ts/lib/function';
 import templateDate from '../shared-components/date';
 import Doi from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -25,6 +25,12 @@ const renderReviewCount: (reviewCount: number) => string = (reviewCount) => (
   `
 );
 
+const renderIfNecessary = flow(
+  O.fromPredicate((reviewCount: number) => reviewCount > 0),
+  O.fold(() => '', renderReviewCount),
+  toHtmlFragment,
+);
+
 const createRenderReviews = (
   getReviewCount: GetReviewCount,
 ) => (
@@ -32,9 +38,7 @@ const createRenderReviews = (
     pipe(
       doi,
       getReviewCount,
-      T.map(O.fromPredicate((reviewCount) => reviewCount > 0)),
-      T.map(O.fold(() => '', renderReviewCount)),
-      T.map(toHtmlFragment),
+      T.map(renderIfNecessary),
     )()
   )
 );
