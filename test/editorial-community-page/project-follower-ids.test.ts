@@ -1,3 +1,4 @@
+import * as T from 'fp-ts/lib/Task';
 import createProjectFollowerIds, { GetAllEvents } from '../../src/editorial-community-page/project-follower-ids';
 import { DomainEvent, UserFollowedEditorialCommunityEvent } from '../../src/types/domain-events';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
@@ -22,7 +23,7 @@ describe('project-follower-ids', () => {
         editorialCommunityId: new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
       },
     ];
-    const getAllEvents: GetAllEvents = async () => events;
+    const getAllEvents: GetAllEvents = T.of(events);
     const projectFollowerIds = createProjectFollowerIds(getAllEvents);
     const followerIds = await projectFollowerIds(new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'));
 
@@ -39,7 +40,7 @@ describe('project-follower-ids', () => {
         editorialCommunityId: new EditorialCommunityId('something'),
       },
     ];
-    const getAllEvents: GetAllEvents = async () => events;
+    const getAllEvents: GetAllEvents = T.of(events);
     const projectFollowerIds = createProjectFollowerIds(getAllEvents);
     const followerIds = await projectFollowerIds(new EditorialCommunityId('other'));
 
@@ -54,7 +55,7 @@ describe('project-follower-ids', () => {
         editorialCommunityId: new EditorialCommunityId('something'),
       },
     ];
-    const getAllEvents: GetAllEvents = async () => events;
+    const getAllEvents: GetAllEvents = T.of(events);
     const projectFollowerIds = createProjectFollowerIds(getAllEvents);
     const followerIds = await projectFollowerIds(new EditorialCommunityId('something'));
 
@@ -80,7 +81,7 @@ describe('project-follower-ids', () => {
       },
     ];
 
-    const getAllEvents: GetAllEvents = async () => events;
+    const getAllEvents: GetAllEvents = T.of(events);
     const projectFollowerIds = createProjectFollowerIds(getAllEvents);
     const followerIds = await projectFollowerIds(new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'));
 

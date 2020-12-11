@@ -1,4 +1,5 @@
 import axios from 'axios';
+import * as T from 'fp-ts/lib/Task';
 import { Pool } from 'pg';
 import { Adapters } from './adapters';
 import createArticleCache from './article-cache';
@@ -74,8 +75,7 @@ const createInfrastructure = async (): Promise<Adapters> => {
   `);
   const events = getEventsFromDataFiles().concat(await getEventsFromDatabase(pool, logger));
   events.sort((a, b) => a.date.getTime() - b.date.getTime());
-  type GetAllEvents = () => Promise<ReadonlyArray<DomainEvent>>;
-  const getAllEvents: GetAllEvents = async () => events;
+  const getAllEvents = T.of(events);
   const reviewProjections = createReviewProjections(events.filter(isEditorialCommunityReviewedArticleEvent));
   const getFollowList = createEventSourceFollowListRepository(getAllEvents);
   const getTwitterResponse = createGetTwitterResponse(process.env.TWITTER_API_BEARER_TOKEN ?? '', logger);

@@ -1,3 +1,4 @@
+import * as T from 'fp-ts/lib/Task';
 import createGetMostRecentEvents, { Follows, GetAllEvents } from '../../src/home-page/get-most-recent-events';
 import Doi from '../../src/types/doi';
 import { DomainEvent } from '../../src/types/domain-events';
@@ -29,7 +30,7 @@ describe('get-most-recent-events', () => {
         reviewId: new Doi('10.1234/5678'),
       },
     ];
-    const getAllEvents: GetAllEvents = async () => initial;
+    const getAllEvents: GetAllEvents = T.of(initial);
     const follows: Follows = async () => true;
     const getEvents = createGetMostRecentEvents(getAllEvents, follows, 20);
     const sortedEvents = await getEvents(userId('user-1'));
@@ -43,7 +44,7 @@ describe('get-most-recent-events', () => {
   describe('when there\'s a small number of items', () => {
     it('returns exactly those', async () => {
       const dummyEvents: ReadonlyArray<DomainEvent> = [dummyEvent, dummyEvent, dummyEvent];
-      const getAllEvents: GetAllEvents = async () => dummyEvents;
+      const getAllEvents: GetAllEvents = T.of(dummyEvents);
       const follows: Follows = async () => true;
       const getEvents = createGetMostRecentEvents(getAllEvents, follows, 20);
       const events = await getEvents(userId('user-1'));
@@ -56,7 +57,7 @@ describe('get-most-recent-events', () => {
     it('returns just the specified maximum number of items', async () => {
       const dummyEvents: ReadonlyArray<DomainEvent> = [dummyEvent, dummyEvent, dummyEvent];
       const maxCount = 2;
-      const getAllEvents: GetAllEvents = async () => dummyEvents;
+      const getAllEvents: GetAllEvents = T.of(dummyEvents);
       const follows: Follows = async () => true;
       const getEvents = createGetMostRecentEvents(getAllEvents, follows, maxCount);
       const events = await getEvents(userId('user-1'));

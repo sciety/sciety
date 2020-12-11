@@ -1,3 +1,4 @@
+import * as T from 'fp-ts/lib/Task';
 import createGetMostRecentEvents, { GetAllEvents } from '../../src/editorial-community-page/get-most-recent-events';
 import Doi from '../../src/types/doi';
 import { DomainEvent } from '../../src/types/domain-events';
@@ -19,7 +20,7 @@ describe('get-most-recent-events', () => {
       endorsedBy(editorialCommunity1),
       endorsedBy(editorialCommunity2),
     ];
-    const getAllEvents: GetAllEvents = async () => allEvents;
+    const getAllEvents: GetAllEvents = T.of(allEvents);
     const getMostRecentEvents = createGetMostRecentEvents(getAllEvents, 20);
     const feed = await getMostRecentEvents(editorialCommunity1)();
 

@@ -1,3 +1,4 @@
+import * as T from 'fp-ts/lib/Task';
 import { ReviewResponse } from './review-response';
 import {
   DomainEvent,
@@ -9,7 +10,7 @@ import {
 import { ReviewId } from '../types/review-id';
 import { UserId } from '../types/user-id';
 
-export type GetAllEvents = () => Promise<ReadonlyArray<DomainEvent>>;
+export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 type RespondHelpful = (reviewResponse: ReviewResponse, userId: UserId, reviewId: ReviewId) =>
 ReadonlyArray<UserFoundReviewHelpfulEvent | UserRevokedFindingReviewNotHelpfulEvent>;

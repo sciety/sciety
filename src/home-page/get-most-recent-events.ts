@@ -1,3 +1,4 @@
+import * as T from 'fp-ts/lib/Task';
 import { GetEvents } from './render-feed';
 import {
   DomainEvent,
@@ -13,7 +14,7 @@ type FeedEvent =
   EditorialCommunityEndorsedArticleEvent |
   EditorialCommunityReviewedArticleEvent;
 
-export type GetAllEvents = () => Promise<ReadonlyArray<DomainEvent>>;
+export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 export type Follows = (userId: UserId, editorialCommunityId: EditorialCommunityId) => Promise<boolean>;
 
 export default (

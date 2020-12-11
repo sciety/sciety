@@ -1,8 +1,9 @@
+import * as T from 'fp-ts/lib/Task';
 import { DomainEvent } from '../types/domain-events';
 import FollowList from '../types/follow-list';
 import { UserId } from '../types/user-id';
 
-export type GetAllEvents = () => Promise<ReadonlyArray<DomainEvent>>;
+export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 export type EventSourcedFollowListRepository = (userId: UserId) => Promise<FollowList>;
 

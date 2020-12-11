@@ -40,7 +40,7 @@ export interface Adapters {
   findReviewsForArticleDoi: FindReviewsForArticleDoi;
   findReviewsForEditorialCommunityId: FindReviewsForEditorialCommunityId;
   findVersionsForArticleDoi: GetBiorxivArticleVersionEvents;
-  getAllEvents: () => Promise<ReadonlyArray<DomainEvent>>;
+  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>;
   commitEvents: CommitEvents;
   getFollowList: EventSourcedFollowListRepository;
   getUserDetails: GetTwitterUserDetails;

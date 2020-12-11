@@ -1,10 +1,11 @@
+import * as T from 'fp-ts/lib/Task';
 import { DomainEvent } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { UserId } from '../types/user-id';
 
 export type Follows = (userId: UserId, editorialCommunityId: EditorialCommunityId) => Promise<boolean>;
 
-type GetAllEvents = () => Promise<ReadonlyArray<DomainEvent>>;
+type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 export default (getAllEvents: GetAllEvents): Follows => (
   async (userId, editorialCommunityId) => {

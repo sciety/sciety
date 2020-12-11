@@ -1,10 +1,11 @@
+import * as T from 'fp-ts/lib/Task';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
 import { generate } from '../../src/types/event-id';
 import userId from '../../src/types/user-id';
 import createProjectFollowedEditorialCommunityIds, { GetAllEvents } from '../../src/user-page/project-followed-editorial-community-ids';
 
 describe('project-followed-editorial-community-ids', () => {
-  const getAllEvents: GetAllEvents = async () => [
+  const getAllEvents: GetAllEvents = T.of([
     {
       id: generate(),
       type: 'UserFollowedEditorialCommunity',
@@ -59,7 +60,7 @@ describe('project-followed-editorial-community-ids', () => {
       userId: userId('someoneelse'),
       editorialCommunityId: new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002'),
     },
-  ];
+  ]);
 
   it('returns a list', async () => {
     const projectFollowedEditorialCommunityIds = createProjectFollowedEditorialCommunityIds(getAllEvents);

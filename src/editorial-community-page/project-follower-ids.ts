@@ -1,3 +1,4 @@
+import * as T from 'fp-ts/lib/Task';
 import {
   DomainEvent,
   isUserFollowedEditorialCommunityEvent,
@@ -10,7 +11,7 @@ import { UserId } from '../types/user-id';
 
 type ProjectFollowerIds = (editorialCommunityId: EditorialCommunityId) => Promise<ReadonlyArray<UserId>>;
 
-export type GetAllEvents = () => Promise<ReadonlyArray<DomainEvent>>;
+export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 const isInterestingEvent = (event: DomainEvent) : event is (
 UserFollowedEditorialCommunityEvent |
