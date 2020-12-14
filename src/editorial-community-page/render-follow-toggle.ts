@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/lib/Option';
+import * as T from 'fp-ts/lib/Task';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
@@ -8,14 +9,14 @@ export type RenderFollowToggle = (
   editorialCommunityId: EditorialCommunityId
 ) => Promise<HtmlFragment>;
 
-export type Follows = (userId: UserId, editorialCommunityId: EditorialCommunityId) => Promise<boolean>;
+export type Follows = (userId: UserId, editorialCommunityId: EditorialCommunityId) => T.Task<boolean>;
 
 export default (follows: Follows): RenderFollowToggle => (
   async (userId, editorialCommunityId) => {
     const userFollows = await O.fold(
-      async () => false,
-      async (value: UserId) => follows(value, editorialCommunityId),
-    )(userId);
+      () => T.of(false),
+      (value: UserId) => follows(value, editorialCommunityId),
+    )(userId)();
 
     if (userFollows) {
       return toHtmlFragment(`

@@ -15,7 +15,7 @@ type FeedEvent =
   EditorialCommunityReviewedArticleEvent;
 
 export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
-export type Follows = (userId: UserId, editorialCommunityId: EditorialCommunityId) => Promise<boolean>;
+export type Follows = (userId: UserId, editorialCommunityId: EditorialCommunityId) => T.Task<boolean>;
 
 export default (
   getAllEvents: GetAllEvents,
@@ -28,7 +28,7 @@ export default (
         return false;
       }
 
-      const userFollows = await follows(userId, event.editorialCommunityId);
+      const userFollows = await follows(userId, event.editorialCommunityId)();
 
       return (isEditorialCommunityEndorsedArticleEvent(event) && userFollows)
         || (isEditorialCommunityReviewedArticleEvent(event) && userFollows);

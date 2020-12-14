@@ -31,7 +31,7 @@ describe('get-most-recent-events', () => {
       },
     ];
     const getAllEvents: GetAllEvents = T.of(initial);
-    const follows: Follows = async () => true;
+    const follows: Follows = () => T.of(true);
     const getEvents = createGetMostRecentEvents(getAllEvents, follows, 20);
     const sortedEvents = await getEvents(userId('user-1'));
 
@@ -45,7 +45,7 @@ describe('get-most-recent-events', () => {
     it('returns exactly those', async () => {
       const dummyEvents: ReadonlyArray<DomainEvent> = [dummyEvent, dummyEvent, dummyEvent];
       const getAllEvents: GetAllEvents = T.of(dummyEvents);
-      const follows: Follows = async () => true;
+      const follows: Follows = () => T.of(true);
       const getEvents = createGetMostRecentEvents(getAllEvents, follows, 20);
       const events = await getEvents(userId('user-1'));
 
@@ -58,7 +58,7 @@ describe('get-most-recent-events', () => {
       const dummyEvents: ReadonlyArray<DomainEvent> = [dummyEvent, dummyEvent, dummyEvent];
       const maxCount = 2;
       const getAllEvents: GetAllEvents = T.of(dummyEvents);
-      const follows: Follows = async () => true;
+      const follows: Follows = () => T.of(true);
       const getEvents = createGetMostRecentEvents(getAllEvents, follows, maxCount);
       const events = await getEvents(userId('user-1'));
 

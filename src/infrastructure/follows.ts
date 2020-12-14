@@ -3,12 +3,12 @@ import { DomainEvent } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { UserId } from '../types/user-id';
 
-export type Follows = (userId: UserId, editorialCommunityId: EditorialCommunityId) => Promise<boolean>;
+export type Follows = (userId: UserId, editorialCommunityId: EditorialCommunityId) => T.Task<boolean>;
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 export default (getAllEvents: GetAllEvents): Follows => (
-  async (userId, editorialCommunityId) => {
+  (userId, editorialCommunityId) => async () => {
     const result = new Set<string>();
 
     (await getAllEvents()).forEach((event) => {

@@ -1,3 +1,4 @@
+import * as T from 'fp-ts/lib/Task';
 import { Maybe } from 'true-myth';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -8,14 +9,14 @@ type RenderFollowToggle = (
   editorialCommunityId: EditorialCommunityId
 ) => Promise<HtmlFragment>;
 
-export type Follows = (userId: UserId, editorialCommunityId: EditorialCommunityId) => Promise<boolean>;
+export type Follows = (userId: UserId, editorialCommunityId: EditorialCommunityId) => T.Task<boolean>;
 
 export default (
   follows: Follows,
 ): RenderFollowToggle => (
   async (userId, editorialCommunityId) => {
     const userFollows = await userId
-      .map(async (value) => follows(value, editorialCommunityId))
+      .map(async (value) => follows(value, editorialCommunityId)())
       .unwrapOrElse(async () => false);
 
     if (userFollows) {

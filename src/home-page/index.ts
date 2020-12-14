@@ -1,5 +1,6 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/lib/Option';
+import * as T from 'fp-ts/lib/Task';
 import { pipe } from 'fp-ts/lib/function';
 import { Maybe } from 'true-myth';
 import createGetMostRecentEvents, { GetAllEvents } from './get-most-recent-events';
@@ -28,7 +29,7 @@ interface Ports {
   getAllEditorialCommunities: GetAllEditorialCommunities;
   getEditorialCommunity: GetEditorialCommunity,
   getAllEvents: GetAllEvents,
-  follows: (userId: UserId, editorialCommunityId: EditorialCommunityId) => Promise<boolean>,
+  follows: (userId: UserId, editorialCommunityId: EditorialCommunityId) => T.Task<boolean>,
 }
 
 interface Params {

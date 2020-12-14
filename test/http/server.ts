@@ -73,7 +73,7 @@ export default async (): Promise<TestServer> => {
       displayName: '',
       handle: '',
     }),
-    follows: async () => false,
+    follows: () => T.of(false),
     findVersionsForArticleDoi: async () => [],
   };
 
