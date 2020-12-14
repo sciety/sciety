@@ -10,15 +10,8 @@ export type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray
   occurredAt: Date;
 }>>;
 
-export type FindReviewsForEditorialCommunityId = (editorialCommunityId: EditorialCommunityId) => Promise<Array<{
-  articleDoi: Doi;
-  reviewId: ReviewId;
-  added: Date;
-}>>;
-
 interface ReviewProjections {
   findReviewsForArticleDoi: FindReviewsForArticleDoi;
-  findReviewsForEditorialCommunityId: FindReviewsForEditorialCommunityId;
 }
 
 export default (events: ReadonlyArray<EditorialCommunityReviewedArticleEvent>): ReviewProjections => ({
@@ -30,15 +23,5 @@ export default (events: ReadonlyArray<EditorialCommunityReviewedArticleEvent>): 
         editorialCommunityId: event.editorialCommunityId,
         occurredAt: event.date,
       })),
-  ),
-
-  findReviewsForEditorialCommunityId: async (editorialCommunityId) => (
-    events
-      .filter((event) => event.editorialCommunityId.value === editorialCommunityId.value)
-      .map((event) => ({
-        articleDoi: event.articleId,
-        reviewId: event.reviewId,
-        added: event.date,
-      }))
   ),
 });

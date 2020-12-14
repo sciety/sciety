@@ -10,7 +10,7 @@ import { Follows } from './follows';
 import { GetBiorxivArticleVersionEvents } from './get-biorxiv-article-version-events';
 import { GetTwitterUserDetails } from './get-twitter-user-details';
 import { Logger } from './logger';
-import { FindReviewsForArticleDoi, FindReviewsForEditorialCommunityId } from './review-projections';
+import { FindReviewsForArticleDoi } from './review-projections';
 import { SearchEuropePmc } from './search-europe-pmc';
 import { DomainEvent } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
@@ -38,7 +38,6 @@ export interface Adapters {
   getAllEditorialCommunities: GetAllEditorialCommunities;
   endorsements: EndorsementsRepository,
   findReviewsForArticleDoi: FindReviewsForArticleDoi;
-  findReviewsForEditorialCommunityId: FindReviewsForEditorialCommunityId;
   findVersionsForArticleDoi: GetBiorxivArticleVersionEvents;
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>;
   commitEvents: CommitEvents;

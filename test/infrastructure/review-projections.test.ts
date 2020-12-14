@@ -49,19 +49,4 @@ describe('review-projections', () => {
       expect(actualReviews).toStrictEqual(expectedReviews);
     });
   });
-
-  describe('findReviewsForEditorialCommunityId', () => {
-    it.each([
-      [editorialCommunity1, [reviewId1, reviewId2]],
-      [editorialCommunity2, [reviewId3]],
-      [new EditorialCommunityId('does-not-exist'), []],
-    ])('finds the review references for editorial community ID %s', async (editorialCommunityId, expectedReviews) => {
-      const getReviews = createReviewProjections(reviewEvents).findReviewsForEditorialCommunityId;
-      const actualReviews = (await getReviews(editorialCommunityId))
-        .map((reviewReference) => reviewReference.reviewId)
-        .sort();
-
-      expect(actualReviews).toStrictEqual(expectedReviews);
-    });
-  });
 });
