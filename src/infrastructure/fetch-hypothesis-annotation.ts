@@ -26,16 +26,16 @@ export default (getJson: GetJson, logger: Logger): FetchHypothesisAnnotation => 
     const uri = `https://api.hypothes.is/api/annotations/${id.value}`;
 
     logger('debug', 'Fetching review from Hypothesis', { uri });
-    const data = await getJson(uri) as HypothesisResponse;
-
-    const response: Review = {
-      publicationDate: Maybe.just(new Date(data.created)),
-      fullText: Maybe.just(data.text).map((text) => converter.render(text)).map(toHtmlFragment),
-      url: new URL(data.links.incontext),
-    };
-
-    logger('debug', 'Retrieved review', { ...response, fullText: '[text]' });
-
-    return response;
+    return getJson(uri)
+      .then((response) => {
+        const data = response as HypothesisResponse;
+        const review: Review = {
+          publicationDate: Maybe.just(new Date(data.created)),
+          fullText: Maybe.just(data.text).map((text) => converter.render(text)).map(toHtmlFragment),
+          url: new URL(data.links.incontext),
+        };
+        logger('debug', 'Retrieved review', { ...review, fullText: '[text]' });
+        return review;
+      });
   };
 };
