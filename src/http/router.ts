@@ -18,6 +18,7 @@ import createFinishFollowCommand from '../follow/finish-follow-command';
 import createSaveFollowCommand from '../follow/save-follow-command';
 import createHomePage from '../home-page';
 import { Adapters } from '../infrastructure/adapters';
+import createCommunityOutreachManagerPage from '../jobs/community-outreach-manager-page';
 import createLogOutHandler from '../log-out';
 import createPrivacyPage from '../privacy-page';
 import { createRespondHandler } from '../respond';
@@ -112,6 +113,10 @@ export default (adapters: Adapters): Router => {
   router.get('/terms',
     identifyUser(adapters.logger),
     pageHandler(createTermsPage()));
+
+  router.get('/jobs/community-outreach-manager',
+    identifyUser(adapters.logger),
+    pageHandler(createCommunityOutreachManagerPage(adapters)));
 
   router.get('/robots.txt',
     robots());
