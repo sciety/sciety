@@ -5,7 +5,6 @@
 @use 'summary-feed-item';
 @use 'footer';
 @use 'functions';
-@use 'article-abstract';
 @use 'editorial-community-page';
 @use 'page-header';
 @use 'user-page';
@@ -15,6 +14,7 @@
 @use 'site-header';
 @use 'about-page';
 @use 'article-feed';
+@use 'article-page';
 @import 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css';
 
 /* Sciety imports, not Semantic-UI */
@@ -373,44 +373,6 @@ a:hover {
       }
     }
   }
-}
-
-
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-article-page, flavor A
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-.article-author-list {
-  font-family: Lato, sans-serif;
-  padding-left: 0;
-  display: flow-root;
-  list-style: none;
-}
-
-.article-author-list > li {
-  float: left;
-  line-height: 1.5;
-}
-
-.article-author-list > li::after {
-  content: ', \00a0';
-}
-
-.article-author-list > li:last-child::after {
-  content: '';
-}
-
-.article-meta-data-list {
-  font-family: Lato, sans-serif;
-  list-style: none;
-  padding-left: 0;
-}
-
-.article-meta-data-list > li {
-  line-height: 1.5;
-}
-
-.article-call-to-action-link {
-  font-family: Lato, sans-serif;
 }
 
 .u-call-to-action-link {
