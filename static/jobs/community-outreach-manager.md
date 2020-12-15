@@ -1,4 +1,4 @@
-Sciety is a platform for research communication where new research results in biology, medicine and other sciences are made available for peer review and curation by different expert communities (https://sciety.org). It is built and operated by a small team at eLife Sciences Publications Limited.
+Sciety is a platform for research communication where new research results in biology, medicine and other sciences are made available for peer review and curation by different expert communities. It is built and operated by a small team at eLife Sciences Publications Limited.
 
 Communities of discipline experts, academic societies, journal editors, early-career reviewers, or institution- and department-level teams can share expert reviews of new findings and help readers to navigate the expanding volume of literature made openly available every day. We have communities like eLife, PREReview, Review Commons and Peer Community as examples of those already on board.
 
@@ -39,7 +39,7 @@ The post is a permanent position, 37.5 hours per week, and offers a competitive 
 We are an equal opportunity employer and value diversity at our company. We do not discriminate on the basis of race, religion, colour, national origin, gender, sexual orientation, age, marital status or disability status. We are committed to increasing the diversity of our workplace and we actively encourage applications from groups that are underrepresented throughout the industry.
 
 ### To apply
-Please send your CV and a covering letter explaining your enthusiasm for this position and why you are a great person for this role to hr@elifesciences.org. Informal enquiries are very welcome; please contact Paul Shannon, Head of Technology, via p.shannon@elifesciences.org.
+Please send your CV and a covering letter explaining your enthusiasm for this position and why you are a great person for this role to [hr@elifesciences.org](mailto:hr@elifesciences.org). Informal enquiries are very welcome; please contact Paul Shannon, Head of Technology, via Informal enquiries are very welcome; please contact Paul Shannon, Head of Technology, via Informal enquiries are very welcome; please contact Paul Shannon, Head of Technology, via [p.shannon@elifesciences.org](mailto:p.shannon@elifesciences.org).
 
 The closing date for applications is Friday, 29th January, 2021 at 5pm GMT. Interviews will be arranged remotely via Google Meet or Zoom video-call. Candidates invited for an interview will be contacted by Friday, 5th February, 2021.
 
