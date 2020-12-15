@@ -15,7 +15,9 @@ export default <T>(
         <h2>
           Followers
         </h2>
-        ${followers.length}
+        <p>
+          ${followers.length} users are following this community.
+        </p>
       </section>
     `);
   });
