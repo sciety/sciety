@@ -111,3 +111,12 @@ release: export TAG = latest/$(shell date +%Y%m%d%H%M)
 release:
 	git tag $$TAG
 	git push origin $$TAG
+
+prod-sql:
+	kubectl run psql \
+	--rm -it --image=postgres:12.3 \
+	--env=PGHOST=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-host"'| base64 -d) \
+	--env=PGDATABASE=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-database"'| base64 -d) \
+	--env=PGUSER=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-username"'| base64 -d) \
+	--env=PGPASSWORD=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-password"'| base64 -d) \
+	-- psql
