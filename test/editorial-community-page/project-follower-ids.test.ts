@@ -25,7 +25,7 @@ describe('project-follower-ids', () => {
     ];
     const getAllEvents: GetAllEvents = T.of(events);
     const projectFollowerIds = createProjectFollowerIds(getAllEvents);
-    const followerIds = await projectFollowerIds(new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'));
+    const followerIds = await projectFollowerIds(new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'))();
 
     expect(followerIds).toHaveLength(2);
   });
@@ -42,7 +42,7 @@ describe('project-follower-ids', () => {
     ];
     const getAllEvents: GetAllEvents = T.of(events);
     const projectFollowerIds = createProjectFollowerIds(getAllEvents);
-    const followerIds = await projectFollowerIds(new EditorialCommunityId('other'));
+    const followerIds = await projectFollowerIds(new EditorialCommunityId('other'))();
 
     expect(followerIds).toHaveLength(0);
   });
@@ -57,7 +57,7 @@ describe('project-follower-ids', () => {
     ];
     const getAllEvents: GetAllEvents = T.of(events);
     const projectFollowerIds = createProjectFollowerIds(getAllEvents);
-    const followerIds = await projectFollowerIds(new EditorialCommunityId('something'));
+    const followerIds = await projectFollowerIds(new EditorialCommunityId('something'))();
 
     expect(followerIds).toHaveLength(0);
   });
@@ -83,7 +83,7 @@ describe('project-follower-ids', () => {
 
     const getAllEvents: GetAllEvents = T.of(events);
     const projectFollowerIds = createProjectFollowerIds(getAllEvents);
-    const followerIds = await projectFollowerIds(new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'));
+    const followerIds = await projectFollowerIds(new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'))();
 
     expect(followerIds).toHaveLength(0);
   });
