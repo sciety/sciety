@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/lib/Option';
+import * as T from 'fp-ts/lib/Task';
 import { isHttpError } from 'http-errors';
 import { NOT_FOUND } from 'http-status-codes';
 import { Result } from 'true-myth';
@@ -23,7 +24,7 @@ export default (
   renderPageHeader: Component,
   renderDescription: Component,
   renderFeed: Component,
-  renderFollowers: Component,
+  renderFollowers: (editorialCommunityId: EditorialCommunityId) => T.Task<HtmlFragment>,
   getCommunityName: GetCommunityName,
 ): RenderPage => (
   async (editorialCommunityId, userId) => {
@@ -38,7 +39,7 @@ export default (
               ${await renderDescription(editorialCommunityId, userId)}
             </div>
             <div class="editorial-community-page-side-bar">
-              ${await renderFollowers(editorialCommunityId, userId)}
+              ${await renderFollowers(editorialCommunityId)()}
               ${await renderFeed(editorialCommunityId, userId)}
             </div>
           </div>

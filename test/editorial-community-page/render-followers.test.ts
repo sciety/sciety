@@ -8,7 +8,7 @@ describe('render-followers', () => {
       () => T.of(['11111111', '22222222']),
     );
 
-    const rendered = await renderFollowers(new EditorialCommunityId('arbitrary id'));
+    const rendered = await renderFollowers(new EditorialCommunityId('arbitrary id'))();
 
     expect(rendered).toContain('2');
   });
