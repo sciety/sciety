@@ -9,14 +9,15 @@ export default <T>(
   getFollowers: GetFollowers<T>,
 ): RenderFollowers => (
   async (editorialCommunityId) => {
-    const followers = await getFollowers(editorialCommunityId);
+    const followerCount = (await getFollowers(editorialCommunityId)).length;
+    const usersFragment = followerCount === 1 ? 'user is' : 'users are';
     return toHtmlFragment(`
       <section class="followers">
         <h2>
           Followers
         </h2>
         <p>
-          ${followers.length} users are following this community.
+          ${followerCount} ${usersFragment} following this community.
         </p>
       </section>
     `);
