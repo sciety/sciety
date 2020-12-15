@@ -3,7 +3,7 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 type RenderFollowers = (editorialCommunityId: EditorialCommunityId) => Promise<HtmlFragment>;
 
-export type GetFollowers<T> = (editorialCommunityId: EditorialCommunityId) => Promise<ReadonlyArray<T>>;
+type GetFollowers<T> = (editorialCommunityId: EditorialCommunityId) => Promise<ReadonlyArray<T>>;
 
 export default <T>(
   getFollowers: GetFollowers<T>,
