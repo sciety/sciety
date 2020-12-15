@@ -3,8 +3,12 @@
 @use 'functions';
 @use 'settings';
 
-.article-feed {
+.article-feed__list {
   padding-left: 0;
+
+  p:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .article-feed__item {
@@ -13,6 +17,12 @@
 
   &:last-child {
     margin-bottom: 0;
+  }
+
+  h3 {
+    font-size: functions.px-to-rem(settings.$base-font-measure);
+    font-weight: bold;
+    line-height: 1.5rem;
   }
 }
 
@@ -70,16 +80,6 @@ p.article-feed__item__title {
   ul {
     margin-bottom: baseline.increments(3);
   }
-}
-
-.article-feed__item h3 {
-  font-size: functions.px-to-rem(settings.$base-font-measure);
-  font-weight: bold;
-  line-height: 1.5rem;
-}
-
-.article-feed p:last-child {
-  margin-bottom: 0;
 }
 
 .responses {

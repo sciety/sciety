@@ -43,10 +43,10 @@ export default (
     ));
 
     return Result.ok(toHtmlFragment(`
-      <section class="article-feed-section">
+      <section class="article-feed">
         <h2>Feed</h2>
 
-        <ol role="list" class="article-feed">
+        <ol role="list" class="article-feed__list">
           ${renderListItems(items, 'article-feed__item')}
         </ol>
       </section>
