@@ -1,7 +1,7 @@
 import * as T from 'fp-ts/lib/Task';
 import createProjectIsFollowingSomething, { GetAllEvents } from '../../src/home-page/project-is-following-something';
+import { userFollowedEditorialCommunity, userUnfollowedEditorialCommunity } from '../../src/types/domain-events';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
-import { generate } from '../../src/types/event-id';
 import userId from '../../src/types/user-id';
 
 describe('project-is-following-something', () => {
@@ -10,7 +10,6 @@ describe('project-is-following-something', () => {
 
     it('not following anything', async () => {
       const isFollowingSomething = createProjectIsFollowingSomething(getAllEvents);
-
       const result = await isFollowingSomething(userId('someone'))();
 
       expect(result).toBe(false);
@@ -20,18 +19,11 @@ describe('project-is-following-something', () => {
   describe('when there is one follow event', () => {
     const someone = userId('someone');
     const getAllEvents: GetAllEvents = T.of([
-      {
-        id: generate(),
-        type: 'UserFollowedEditorialCommunity',
-        date: new Date(),
-        userId: someone,
-        editorialCommunityId: new EditorialCommunityId('dummy'),
-      },
+      userFollowedEditorialCommunity(someone, new EditorialCommunityId('dummy')),
     ]);
 
     it('is following something', async () => {
       const isFollowingSomething = createProjectIsFollowingSomething(getAllEvents);
-
       const result = await isFollowingSomething(someone)();
 
       expect(result).toBe(true);
@@ -41,25 +33,12 @@ describe('project-is-following-something', () => {
   describe('when there is a follow event followed by unfollow event', () => {
     const someone = userId('someone');
     const getAllEvents: GetAllEvents = T.of([
-      {
-        id: generate(),
-        type: 'UserFollowedEditorialCommunity',
-        date: new Date(),
-        userId: someone,
-        editorialCommunityId: new EditorialCommunityId('dummy'),
-      },
-      {
-        id: generate(),
-        type: 'UserUnfollowedEditorialCommunity',
-        date: new Date(),
-        userId: someone,
-        editorialCommunityId: new EditorialCommunityId('dummy'),
-      },
+      userFollowedEditorialCommunity(someone, new EditorialCommunityId('dummy')),
+      userUnfollowedEditorialCommunity(someone, new EditorialCommunityId('dummy')),
     ]);
 
     it('not following anything', async () => {
       const isFollowingSomething = createProjectIsFollowingSomething(getAllEvents);
-
       const result = await isFollowingSomething(someone)();
 
       expect(result).toBe(false);
@@ -70,18 +49,11 @@ describe('project-is-following-something', () => {
     const someone = userId('someone');
     const someoneElse = userId('someoneelse');
     const getAllEvents: GetAllEvents = T.of([
-      {
-        id: generate(),
-        type: 'UserFollowedEditorialCommunity',
-        date: new Date(),
-        userId: someoneElse,
-        editorialCommunityId: new EditorialCommunityId('dummy'),
-      },
+      userFollowedEditorialCommunity(someoneElse, new EditorialCommunityId('dummy')),
     ]);
 
     it('not following anything', async () => {
       const isFollowingSomething = createProjectIsFollowingSomething(getAllEvents);
-
       const result = await isFollowingSomething(someone)();
 
       expect(result).toBe(false);
@@ -93,32 +65,13 @@ describe('project-is-following-something', () => {
     const editorialCommunity1 = new EditorialCommunityId('community-1');
     const editorialCommunity2 = new EditorialCommunityId('community-2');
     const getAllEvents: GetAllEvents = T.of([
-      {
-        id: generate(),
-        type: 'UserFollowedEditorialCommunity',
-        date: new Date(),
-        userId: someone,
-        editorialCommunityId: editorialCommunity1,
-      },
-      {
-        id: generate(),
-        type: 'UserUnfollowedEditorialCommunity',
-        date: new Date(),
-        userId: someone,
-        editorialCommunityId: editorialCommunity1,
-      },
-      {
-        id: generate(),
-        type: 'UserFollowedEditorialCommunity',
-        date: new Date(),
-        userId: someone,
-        editorialCommunityId: editorialCommunity2,
-      },
+      userFollowedEditorialCommunity(someone, editorialCommunity2),
+      userFollowedEditorialCommunity(someone, editorialCommunity1),
+      userUnfollowedEditorialCommunity(someone, editorialCommunity2),
     ]);
 
     it('is following something', async () => {
       const isFollowingSomething = createProjectIsFollowingSomething(getAllEvents);
-
       const result = await isFollowingSomething(someone)();
 
       expect(result).toBe(true);

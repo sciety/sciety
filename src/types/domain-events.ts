@@ -43,6 +43,17 @@ export type UserFollowedEditorialCommunityEvent = Readonly<{
   editorialCommunityId: EditorialCommunityId;
 }>;
 
+export const userFollowedEditorialCommunity = (
+  userId: UserId,
+  editorialCommunityId: EditorialCommunityId,
+): UserFollowedEditorialCommunityEvent => ({
+  id: generate(),
+  type: 'UserFollowedEditorialCommunity',
+  date: new Date(),
+  userId,
+  editorialCommunityId,
+});
+
 export const isUserFollowedEditorialCommunityEvent = (event: DomainEvent):
   event is UserFollowedEditorialCommunityEvent => (
   event.type === 'UserFollowedEditorialCommunity'
@@ -55,6 +66,17 @@ export type UserUnfollowedEditorialCommunityEvent = Readonly<{
   userId: UserId;
   editorialCommunityId: EditorialCommunityId;
 }>;
+
+export const userUnfollowedEditorialCommunity = (
+  userId: UserId,
+  editorialCommunityId: EditorialCommunityId,
+): UserUnfollowedEditorialCommunityEvent => ({
+  id: generate(),
+  type: 'UserUnfollowedEditorialCommunity',
+  date: new Date(),
+  userId,
+  editorialCommunityId,
+});
 
 export const isUserUnfollowedEditorialCommunityEvent = (event: DomainEvent):
   event is UserUnfollowedEditorialCommunityEvent => (
@@ -136,6 +158,7 @@ export const userRevokedFindingReviewNotHelpful = (
   userId,
   reviewId,
 });
+
 export type DomainEvent =
   EditorialCommunityEndorsedArticleEvent |
   EditorialCommunityReviewedArticleEvent |
