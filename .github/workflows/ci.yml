@@ -58,6 +58,7 @@ jobs:
             --set twitterApiSecretKey=${TWITTER_API_SECRET_KEY} \
             --set twitterApiBearerToken=${TWITTER_API_BEARER_TOKEN} \
             --set postgresqlSecretName=hive-staging-rds-postgres \
+            --set googleTagManagerId='GTM-NX7CQB4&gtm_auth=tr7n0_xarXwUvEK3s5TIbg&gtm_preview=env-19&gtm_cookies_win=x' \
             --wait \
             helm/sciety
         env:
