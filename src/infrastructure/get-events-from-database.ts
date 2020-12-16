@@ -4,6 +4,7 @@ import { DomainEvent } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { EventId } from '../types/event-id';
 import { Json, JsonObject } from '../types/json';
+import toReviewId from '../types/review-id';
 import toUserId from '../types/user-id';
 
 type EventRow = {
@@ -36,7 +37,6 @@ export default async (pool: Pool, logger: Logger): Promise<Array<DomainEvent>> =
     if (!isObject(payload)) {
       throw new Error('Payload is not an object');
     }
-
     switch (type) {
       case 'UserFollowedEditorialCommunity': {
         return {
@@ -54,6 +54,18 @@ export default async (pool: Pool, logger: Logger): Promise<Array<DomainEvent>> =
           date,
           userId: toUserId(ensureString(payload.userId)),
           editorialCommunityId: new EditorialCommunityId(ensureString(payload.editorialCommunityId)),
+        };
+      }
+      case 'UserFoundReviewHelpful':
+      case 'UserFoundReviewNotHelpful':
+      case 'UserRevokedFindingReviewHelpful':
+      case 'UserRevokedFindingReviewNotHelpful': {
+        return {
+          id,
+          type,
+          date,
+          reviewId: toReviewId(ensureString(payload.reviewId)),
+          userId: toUserId(ensureString(payload.userId)),
         };
       }
       default: {

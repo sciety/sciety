@@ -1,7 +1,9 @@
 import { Pool } from 'pg';
 import { Logger } from './logger';
+import Doi from '../types/doi';
 import { DomainEvent, RuntimeGeneratedEvent } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
+import HypothesisAnnotationId from '../types/hypothesis-annotation-id';
 
 export type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => Promise<void>;
 
@@ -14,6 +16,10 @@ const replacer = (key: string, value: unknown): unknown => {
     return value.value;
   }
 
+  if (value instanceof HypothesisAnnotationId || value instanceof Doi) {
+    return value.toString();
+  }
+
   return value;
 };
 
@@ -21,6 +27,10 @@ const replacer = (key: string, value: unknown): unknown => {
 const persistedEventsWhiteList: ReadonlyArray<RuntimeGeneratedEvent['type']> = [
   'UserFollowedEditorialCommunity',
   'UserUnfollowedEditorialCommunity',
+  'UserFoundReviewHelpful',
+  'UserFoundReviewNotHelpful',
+  'UserRevokedFindingReviewHelpful',
+  'UserRevokedFindingReviewNotHelpful',
 ];
 
 export default (
