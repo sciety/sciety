@@ -5,7 +5,7 @@ import { UserId } from '../types/user-id';
 
 export type Follows = (userId: UserId, editorialCommunityId: EditorialCommunityId) => T.Task<boolean>;
 
-type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
+export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 export default (getAllEvents: GetAllEvents): Follows => (
   (userId, editorialCommunityId) => async () => {
