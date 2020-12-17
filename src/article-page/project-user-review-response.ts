@@ -1,3 +1,4 @@
+import * as T from 'fp-ts/lib/Task';
 import { Maybe } from 'true-myth';
 import { GetUserReviewResponse } from './render-review-responses';
 import {
@@ -8,7 +9,7 @@ import {
   UserRevokedFindingReviewNotHelpfulEvent,
 } from '../types/domain-events';
 
-export type GetEvents = () => Promise<ReadonlyArray<DomainEvent>>;
+export type GetEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 export default (getEvents: GetEvents): GetUserReviewResponse => (
   async (reviewId, userId) => {
