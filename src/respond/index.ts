@@ -7,8 +7,9 @@ import { respondNotHelpful } from './respond-not-helpful-command';
 import { reviewResponse } from './review-response';
 import { revokeResponse } from './revoke-response-command';
 import { RuntimeGeneratedEvent } from '../types/domain-events';
-import toReviewId from '../types/review-id';
+import toReviewId, { ReviewId } from '../types/review-id';
 import { User } from '../types/user';
+import { UserId } from '../types/user-id';
 
 type CommitEvents = (events: ReadonlyArray<RuntimeGeneratedEvent>) => void;
 
@@ -16,6 +17,27 @@ type Ports = {
   commitEvents: CommitEvents;
   getAllEvents: GetAllEvents;
 };
+
+const commands = {
+  'respond-helpful': respondHelpful,
+  'respond-not-helpful': respondNotHelpful,
+  'revoke-response': revokeResponse,
+};
+
+const commandHandler = (
+  commitEvents: CommitEvents,
+  getAllEvents: GetAllEvents,
+  command: 'respond-helpful' | 'respond-not-helpful' | 'revoke-response',
+  userId: UserId,
+  reviewId: ReviewId,
+): T.Task<void> => (
+  pipe(
+    getAllEvents,
+    T.map(reviewResponse(userId, reviewId)),
+    T.map((currentResponse) => commands[command](currentResponse, userId, reviewId)),
+    T.map(commitEvents),
+  )
+);
 
 export const createRespondHandler = (ports: Ports): Middleware<{ user: User }> => async (context, next) => {
   const { user } = context.state;
@@ -26,17 +48,12 @@ export const createRespondHandler = (ports: Ports): Middleware<{ user: User }> =
     throw new BadRequest();
   }
 
-  const commands = {
-    'respond-helpful': respondHelpful,
-    'respond-not-helpful': respondNotHelpful,
-    'revoke-response': revokeResponse,
-  };
-
-  await pipe(
+  await commandHandler(
+    ports.commitEvents,
     ports.getAllEvents,
-    T.map(reviewResponse(user.id, reviewId)),
-    T.map((currentResponse) => commands[command](currentResponse, user.id, reviewId)),
-    T.map(ports.commitEvents),
+    command,
+    user.id,
+    reviewId,
   )();
 
   context.redirect('back');
