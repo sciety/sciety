@@ -22,6 +22,7 @@ import createCommunityOutreachManagerPage from '../jobs/community-outreach-manag
 import createLogOutHandler from '../log-out';
 import createPrivacyPage from '../privacy-page';
 import { createRespondHandler } from '../respond';
+import { saveRespondCommand } from '../respond/save-respond-command';
 import createTermsPage from '../terms-page';
 import createUnfollowHandler from '../unfollow';
 import createFinishUnfollowCommand from '../unfollow/finish-unfollow-command';
@@ -79,6 +80,7 @@ export default (adapters: Adapters): Router => {
   router.post('/respond',
     identifyUser(adapters.logger),
     bodyParser({ enableTypes: ['form'] }),
+    saveRespondCommand,
     createRequireAuthentication(),
     createRespondHandler(adapters));
 
