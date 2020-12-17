@@ -22,6 +22,7 @@ import createCommunityOutreachManagerPage from '../jobs/community-outreach-manag
 import createLogOutHandler from '../log-out';
 import createPrivacyPage from '../privacy-page';
 import { createRespondHandler } from '../respond';
+import { finishRespondCommand } from '../respond/finish-respond-command';
 import { saveRespondCommand } from '../respond/save-respond-command';
 import createTermsPage from '../terms-page';
 import createUnfollowHandler from '../unfollow';
@@ -106,6 +107,7 @@ export default (adapters: Adapters): Router => {
     authenticate,
     createFinishFollowCommand(adapters),
     createFinishUnfollowCommand(adapters),
+    finishRespondCommand(),
     createRedirectAfterAuthenticating());
 
   router.get('/privacy',
