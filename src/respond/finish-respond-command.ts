@@ -18,16 +18,21 @@ type Ports = {
 };
 
 export const finishRespondCommand = (ports: Ports): Middleware => async (context, next) => {
+  const commands = {
+    'respond-helpful': respondHelpful,
+    'respond-not-helpful': respondNotHelpful,
+    'revoke-response': revokeResponse,
+  };
+
   const command = context.session.command as string;
-  if (command === 'respond-helpful' && context.session.reviewId) {
+  if (
+    (command === 'respond-helpful'
+      || command === 'revoke-response'
+      || command === 'respond-not-helpful')
+     && context.session.reviewId
+  ) {
     const { user } = context.state;
     const reviewId = toReviewId(context.session.reviewId);
-
-    const commands = {
-      'respond-helpful': respondHelpful,
-      'respond-not-helpful': respondNotHelpful,
-      'revoke-response': revokeResponse,
-    };
 
     await pipe(
       ports.getAllEvents,
