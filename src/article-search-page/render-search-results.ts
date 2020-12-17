@@ -8,13 +8,13 @@ export type FindArticles = (query: string) => T.Task<{
   total: number;
 }>;
 
-export type RenderSearchResults = (query: string) => Promise<HtmlFragment>;
+export type RenderSearchResults = (query: string) => T.Task<HtmlFragment>;
 
 export default (
   findArticles: FindArticles,
   renderSearchResult: RenderSearchResult,
 ): RenderSearchResults => (
-  async (query) => {
+  (query) => async () => {
     const searchResults = await findArticles(query)();
     const articles = await Promise.all(searchResults.items.map(async (item) => renderSearchResult(item)()));
     let searchResultsList = '';

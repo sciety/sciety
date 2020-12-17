@@ -19,7 +19,7 @@ export default (
       </header>
 
       <section class="ui basic vertical segment">
-        ${await renderSearchResults(query)}
+        ${await renderSearchResults(query)()}
       </section>
 
     </div>
