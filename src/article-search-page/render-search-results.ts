@@ -16,7 +16,7 @@ export default (
 ): RenderSearchResults => (
   async (query) => {
     const searchResults = await findArticles(query)();
-    const articles = await Promise.all(searchResults.items.map(renderSearchResult));
+    const articles = await Promise.all(searchResults.items.map(async (item) => renderSearchResult(item)()));
     let searchResultsList = '';
     if (articles.length) {
       searchResultsList = toHtmlFragment(`

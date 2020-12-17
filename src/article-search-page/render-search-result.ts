@@ -14,7 +14,7 @@ export interface SearchResult {
 
 export type GetReviewCount = (doi: Doi) => T.Task<number>;
 
-export type RenderSearchResult = (result: SearchResult) => Promise<HtmlFragment>;
+export type RenderSearchResult = (result: SearchResult) => T.Task<HtmlFragment>;
 
 const renderReviewCount: (reviewCount: number) => string = (reviewCount) => (
   `
@@ -52,7 +52,7 @@ export default (
 ): RenderSearchResult => {
   const renderReviews = createRenderReviews(getReviewCount);
 
-  return async (result) => toHtmlFragment(`
+  return (result) => async () => toHtmlFragment(`
     <div class="content">
       <a class="header" href="/articles/${result.doi.value}">${result.title}</a>
       <div class="meta">

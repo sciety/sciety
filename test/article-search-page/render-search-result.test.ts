@@ -16,7 +16,7 @@ const arbitraryReviewCount: GetReviewCount = () => T.of(0);
 
 describe('render-search-result component', (): void => {
   it('displays title and authors', async (): Promise<void> => {
-    const rendered = await createRenderSearchResult(arbitraryReviewCount)(searchResult);
+    const rendered = await createRenderSearchResult(arbitraryReviewCount)(searchResult)();
 
     expect(rendered).toStrictEqual(expect.stringContaining(searchResult.doi.value));
     expect(rendered).toStrictEqual(expect.stringContaining(searchResult.title));
@@ -24,7 +24,7 @@ describe('render-search-result component', (): void => {
   });
 
   it('displays the posted date', async (): Promise<void> => {
-    const rendered = await createRenderSearchResult(arbitraryReviewCount)(searchResult);
+    const rendered = await createRenderSearchResult(arbitraryReviewCount)(searchResult)();
 
     expect(rendered).toStrictEqual(expect.stringMatching(/Posted[\s\S]*?Nov 30, 2017/));
   });
@@ -33,7 +33,7 @@ describe('render-search-result component', (): void => {
     it('displays the number of reviews', async (): Promise<void> => {
       const getReviewCount: GetReviewCount = () => T.of(37);
 
-      const rendered = await createRenderSearchResult(getReviewCount)(searchResult);
+      const rendered = await createRenderSearchResult(getReviewCount)(searchResult)();
 
       expect(rendered).toStrictEqual(expect.stringMatching(/Reviews[\s\S]*?37/));
     });

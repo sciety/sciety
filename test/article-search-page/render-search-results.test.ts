@@ -21,7 +21,7 @@ describe('render-search-results component', (): void => {
           ],
         },
       );
-      const renderSearchResult: RenderSearchResult = async () => toHtmlFragment('');
+      const renderSearchResult: RenderSearchResult = () => T.of(toHtmlFragment(''));
       const rendered = await createRenderSearchResults(findArticles, renderSearchResult)('10.1101/833392');
 
       expect(rendered).toStrictEqual(expect.stringContaining('5 results'));
