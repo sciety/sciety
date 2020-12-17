@@ -30,10 +30,7 @@ export default (
   teaserChars: number,
   renderReviewResponses: RenderReviewResponses,
 ): RenderReviewFeedItem => async (review, userId) => {
-  let reviewResponsesHtml = '';
-  if (process.env.EXPERIMENT_ENABLED === 'true') {
-    reviewResponsesHtml = await renderReviewResponses(review.id, userId);
-  }
+  const reviewResponsesHtml = await renderReviewResponses(review.id, userId);
   const eventMetadata = toHtmlFragment(`
     ${templateDate(review.occurredAt, 'article-feed__item__date')}
     <div class="article-feed__item__title">
