@@ -1,4 +1,5 @@
 import { URLSearchParams } from 'url';
+import * as T from 'fp-ts/lib/Task';
 import { Logger } from './logger';
 import Doi from '../types/doi';
 import { Json, JsonCompatible } from '../types/json';
@@ -12,7 +13,7 @@ interface SearchResult {
   postedDate: Date;
 }
 
-export type SearchEuropePmc = (query: string) => Promise<{
+export type SearchEuropePmc = (query: string) => T.Task<{
   items: Array<SearchResult>;
   total: number;
 }>;
@@ -30,7 +31,7 @@ type EuropePmcQueryResponse = JsonCompatible<{
 }>;
 
 export default (getJson: GetJson, logger: Logger): SearchEuropePmc => (
-  async (query) => {
+  (query) => async () => {
     const queryString = new URLSearchParams({
       query: `${query} PUBLISHER:"bioRxiv" sort_date:y`,
       format: 'json',

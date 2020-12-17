@@ -1,8 +1,9 @@
+import * as T from 'fp-ts/lib/Task';
 import { RenderSearchResult, SearchResult } from './render-search-result';
 import templateListItems from '../shared-components/list-items';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
-export type FindArticles = (query: string) => Promise<{
+export type FindArticles = (query: string) => T.Task<{
   items: Array<SearchResult>;
   total: number;
 }>;
@@ -14,7 +15,7 @@ export default (
   renderSearchResult: RenderSearchResult,
 ): RenderSearchResults => (
   async (query) => {
-    const searchResults = await findArticles(query);
+    const searchResults = await findArticles(query)();
     const articles = await Promise.all(searchResults.items.map(renderSearchResult));
     let searchResultsList = '';
     if (articles.length) {

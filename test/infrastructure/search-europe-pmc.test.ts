@@ -18,7 +18,7 @@ describe('search-europe-pmc adapter', () => {
       },
     }), dummyLogger);
 
-    const results = await adapter('some query');
+    const results = await adapter('some query')();
 
     expect(results.total).toStrictEqual(1);
     expect(results.items).toHaveLength(1);
@@ -40,7 +40,7 @@ describe('search-europe-pmc adapter', () => {
     const spy = jest.fn(getJson);
     const adapter = createSearchEuropePmc(spy, dummyLogger);
 
-    await adapter('Structural basis of αE&');
+    await adapter('Structural basis of αE&')();
 
     expect(spy).toHaveBeenCalledTimes(1);
 
