@@ -124,7 +124,7 @@ prod-sql:
 taiko: export TARGET = dev
 taiko: clean-db
 	${DOCKER_COMPOSE} up -d
-	sleep 5 && (find feature-test -type f | xargs -n 1 npx taiko)
+	sleep 7 && npx jest --roots ./feature-test
 	${DOCKER_COMPOSE} down
 
 regression: taiko backstop
