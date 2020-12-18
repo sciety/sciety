@@ -126,3 +126,5 @@ taiko: clean-db
 	${DOCKER_COMPOSE} up -d
 	sleep 5 && (find feature-test -type f | xargs -n 1 npx taiko)
 	${DOCKER_COMPOSE} down
+
+regression: taiko backstop
