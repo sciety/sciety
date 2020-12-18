@@ -123,7 +123,6 @@ prod-sql:
 
 taiko: export TARGET = dev
 taiko: clean-db
-	echo 'hello'
 	${DOCKER_COMPOSE} up -d
-	sleep 5 && npx taiko ./feature-test/respond.js
+	sleep 5 && (find feature-test -type f | xargs -n 1 npx taiko)
 	${DOCKER_COMPOSE} down
