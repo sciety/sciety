@@ -1,6 +1,7 @@
+import * as T from 'fp-ts/lib/Task';
 import buildRenderPage, { FetchStaticFile } from '../../src/about-page/index';
 
-const fetchStaticFile: FetchStaticFile = async (filename) => (`# Contents of ${filename}`);
+const fetchStaticFile: FetchStaticFile = (filename) => T.of(`# Contents of ${filename}`);
 
 describe('create render page', (): void => {
   it('inserts the HTML text into the response body', async (): Promise<void> => {

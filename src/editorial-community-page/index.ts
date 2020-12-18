@@ -1,5 +1,6 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/lib/Option';
+import * as T from 'fp-ts/lib/Task';
 import { pipe } from 'fp-ts/lib/function';
 import { NotFound } from 'http-errors';
 import { Remarkable } from 'remarkable';
@@ -18,7 +19,7 @@ import EditorialCommunityId from '../types/editorial-community-id';
 import { FetchExternalArticle } from '../types/fetch-external-article';
 import { User } from '../types/user';
 
-type FetchStaticFile = (filename: string) => Promise<string>;
+type FetchStaticFile = (filename: string) => T.Task<string>;
 
 type FetchEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => Promise<Maybe<{
   name: string;
@@ -52,7 +53,7 @@ const buildRenderDescription = (ports: Ports): RenderDescription => {
       .unwrapOrElse(() => {
         throw new NotFound(`${editorialCommunityId.value} not found`);
       });
-    const markdown = await ports.fetchStaticFile(`editorial-communities/${editorialCommunity.descriptionPath}`);
+    const markdown = await ports.fetchStaticFile(`editorial-communities/${editorialCommunity.descriptionPath}`)();
     return converter.render(markdown);
   };
   return createRenderDescription(getEditorialCommunityDescription);

@@ -57,7 +57,7 @@ export default async (): Promise<TestServer> => {
   const adapters: Adapters = {
     fetchArticle,
     fetchReview,
-    fetchStaticFile: async (filename: string) => `Contents of ${filename}`,
+    fetchStaticFile: (filename: string) => T.of(`Contents of ${filename}`),
     searchEuropePmc: () => T.of({ items: [], total: 0 }),
     editorialCommunities,
     getEditorialCommunity: editorialCommunities.lookup,
