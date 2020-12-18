@@ -1,6 +1,7 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
+import { pipe } from 'fp-ts/lib/function';
 import { RenderEditorialCommunity } from './render-editorial-community';
 import templateListItems from '../shared-components/list-items';
 import EditorialCommunityId from '../types/editorial-community-id';
@@ -15,23 +16,25 @@ export type GetAllEditorialCommunities = T.Task<Array<{
   name: string;
 }>>;
 
+const render = (links: ReadonlyArray<HtmlFragment>): string => `
+  <section>
+    <h2>
+      Editorial communities
+    </h2>
+    <ol class="editorial-community-list" role="list">
+      ${templateListItems(links, 'editorial-community-list__item')}
+    </ol>
+  </section>
+`;
+
 export default (
   editorialCommunities: GetAllEditorialCommunities,
   renderEditorialCommunity: RenderEditorialCommunity,
-): RenderEditorialCommunities => (userId) => async () => {
-  const editorialCommunityLinks = await Promise.all(
-    (await editorialCommunities())
-      .map(async (editorialCommunity) => renderEditorialCommunity(userId)(editorialCommunity)()),
-  );
-
-  return toHtmlFragment(`
-    <section>
-      <h2>
-        Editorial communities
-      </h2>
-      <ol class="editorial-community-list" role="list">
-        ${templateListItems(editorialCommunityLinks, 'editorial-community-list__item')}
-      </ol>
-    </section>
-  `);
-};
+): RenderEditorialCommunities => (userId) => (
+  pipe(
+    editorialCommunities,
+    T.chain(T.traverseArray(renderEditorialCommunity(userId))),
+    T.map(render),
+    T.map(toHtmlFragment),
+  )
+);
