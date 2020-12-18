@@ -65,7 +65,7 @@ describe('project-followed-editorial-community-ids', () => {
   it('returns a list', async () => {
     const projectFollowedEditorialCommunityIds = createProjectFollowedEditorialCommunityIds(getAllEvents);
 
-    const actual = await projectFollowedEditorialCommunityIds(userId('someone'));
+    const actual = await projectFollowedEditorialCommunityIds(userId('someone'))();
     const expected = [
       new EditorialCommunityId('316db7d9-88cc-4c26-b386-f067e0f56334'),
       new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002'),
