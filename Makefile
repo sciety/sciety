@@ -57,7 +57,7 @@ node_modules: package.json package-lock.json
 clean:
 	rm -rf .eslint .jest build node_modules
 
-clean\:db:
+clean-db:
 	$(DOCKER_COMPOSE) down
 
 find-elife-endorsements: export TARGET = dev
@@ -120,3 +120,10 @@ prod-sql:
 	--env=PGUSER=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-username"'| base64 -d) \
 	--env=PGPASSWORD=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-password"'| base64 -d) \
 	-- psql
+
+taiko: export TARGET = dev
+taiko: clean-db
+	echo 'hello'
+	${DOCKER_COMPOSE} up -d
+	sleep 5 && npx taiko ./feature-test/respond.js
+	${DOCKER_COMPOSE} down
