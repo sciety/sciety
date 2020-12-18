@@ -1,5 +1,6 @@
-const dotenv = require("dotenv")
-const { openBrowser, goto, click, closeBrowser, into, textBox, write } = require('taiko');
+const dotenv = require("dotenv");
+const assert = require('assert').strict;
+const { openBrowser, goto, click, closeBrowser, into, textBox, write, link } = require('taiko');
 
 dotenv.config();
 
@@ -11,6 +12,7 @@ dotenv.config();
         await write(process.env.TAIKO_TWITTER_USERNAME, into(textBox('Username')));
         await write(process.env.TAIKO_TWITTER_PASSWORD, into(textBox('Password')));
         await click('Sign in');
+        await assert.ok(await link('Log out').exists());
     } catch (error) {
         console.error(error);
     } finally {
