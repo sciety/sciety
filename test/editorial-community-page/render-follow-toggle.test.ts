@@ -16,7 +16,7 @@ describe('render-follow-toggle', () => {
         const renderFollowToggle = createRenderFollowToggle(follows);
 
         const rendered = JSDOM.fragment(
-          await renderFollowToggle(O.some(userId), editorialCommunityId),
+          await renderFollowToggle(O.some(userId), editorialCommunityId)(),
         );
 
         const button = rendered.querySelector('button');
@@ -34,7 +34,7 @@ describe('render-follow-toggle', () => {
         const follows: Follows = () => T.of(false);
         const renderFollowToggle = createRenderFollowToggle(follows);
 
-        const rendered = JSDOM.fragment(await renderFollowToggle(O.some(userId), editorialCommunityId));
+        const rendered = JSDOM.fragment(await renderFollowToggle(O.some(userId), editorialCommunityId)());
 
         const button = rendered.querySelector('button');
         const buttonText = button?.textContent;
@@ -51,7 +51,7 @@ describe('render-follow-toggle', () => {
       const follows: Follows = () => T.of(false);
       const renderFollowToggle = createRenderFollowToggle(follows);
 
-      const rendered = JSDOM.fragment(await renderFollowToggle(O.none, editorialCommunityId));
+      const rendered = JSDOM.fragment(await renderFollowToggle(O.none, editorialCommunityId)());
 
       const button = rendered.querySelector('button');
       const buttonText = button?.textContent;

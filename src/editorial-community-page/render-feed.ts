@@ -29,7 +29,7 @@ export default <E>(
       <h2>
         Feed
       </h2>
-      ${await renderFollowToggle(userId, editorialCommunityId)}
+      ${await renderFollowToggle(userId, editorialCommunityId)()}
       ${toHtmlFragment(O.getOrElse(() => emptyFeed)(await renderSummaryFeedList(events)))}
     </section>
   `);

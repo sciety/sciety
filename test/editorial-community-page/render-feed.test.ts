@@ -8,7 +8,7 @@ import { toHtmlFragment } from '../../src/types/html-fragment';
 
 describe('render feed', () => {
   const stubGetEvents: GetEvents<unknown> = () => T.of([]);
-  const stubRenderFollowToggle: RenderFollowToggle = async () => toHtmlFragment('');
+  const stubRenderFollowToggle: RenderFollowToggle = () => T.of(toHtmlFragment(''));
   const anEditorialCommunityId = new EditorialCommunityId('');
   const aUserId = O.none;
 

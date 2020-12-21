@@ -1,5 +1,7 @@
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
+import * as B from 'fp-ts/lib/boolean';
+import { pipe } from 'fp-ts/lib/function';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
@@ -7,7 +9,7 @@ import { UserId } from '../types/user-id';
 export type RenderFollowToggle = (
   userId: O.Option<UserId>,
   editorialCommunityId: EditorialCommunityId
-) => Promise<HtmlFragment>;
+) => T.Task<HtmlFragment>;
 
 export type Follows = (userId: UserId, editorialCommunityId: EditorialCommunityId) => T.Task<boolean>;
 
@@ -26,16 +28,20 @@ const renderUnfollowButton = (editorialCommunityId: EditorialCommunityId): strin
 `;
 
 export default (follows: Follows): RenderFollowToggle => (
-  async (userId, editorialCommunityId) => {
-    const userFollows = await O.fold(
-      () => T.of(false),
-      (value: UserId) => follows(value, editorialCommunityId),
-    )(userId)();
-
-    if (userFollows) {
-      return toHtmlFragment(renderUnfollowButton(editorialCommunityId));
-    }
-
-    return toHtmlFragment(renderFollowButton(editorialCommunityId));
-  }
+  (userId, editorialCommunityId) => (
+    pipe(
+      userId,
+      O.fold(
+        () => T.of(false),
+        (value: UserId) => follows(value, editorialCommunityId),
+      ),
+      T.map(
+        B.fold(
+          () => renderFollowButton(editorialCommunityId),
+          () => renderUnfollowButton(editorialCommunityId),
+        ),
+      ),
+      T.map(toHtmlFragment),
+    )
+  )
 );
