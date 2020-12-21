@@ -1,3 +1,4 @@
+import * as T from 'fp-ts/lib/Task';
 import { Result } from 'true-myth';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
@@ -6,7 +7,7 @@ export type RenderPage = (filename: string) => Promise<Result<{
   content: HtmlFragment,
 }, never>>;
 
-export type GetHtml = (filename: string) => Promise<string>;
+export type GetHtml = (filename: string) => T.Task<string>;
 
 export default (
   getHtml: GetHtml,
@@ -19,7 +20,7 @@ export default (
           About Sciety
         </h1>
       </header>
-      ${await getHtml(filename)}
+      ${await getHtml(filename)()}
     </div>
   `),
 });
