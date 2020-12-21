@@ -48,7 +48,7 @@ const buildRenderPageHeader = (ports: Ports): RenderPageHeader => {
 
 const buildRenderDescription = (ports: Ports): RenderDescription => {
   const converter = new Remarkable({ html: true });
-  const getEditorialCommunityDescription: GetEditorialCommunityDescription = async (editorialCommunityId) => {
+  const getEditorialCommunityDescription: GetEditorialCommunityDescription = (editorialCommunityId) => async () => {
     const editorialCommunity = (await ports.getEditorialCommunity(editorialCommunityId))
       .unwrapOrElse(() => {
         throw new NotFound(`${editorialCommunityId.value} not found`);
