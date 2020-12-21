@@ -8,9 +8,9 @@ export type UserDetails = {
   handle: string;
 };
 
-type GetUserDetails = (userId: UserId) => Promise<Result<UserDetails, 'not-found' | 'unavailable'>>;
+type GetUserDetails<E> = (userId: UserId) => Promise<Result<UserDetails, E>>;
 
-type RenderHeader = (userId: UserId) => Promise<Result<HtmlFragment, 'not-found' | 'unavailable'>>;
+type RenderHeader<E> = (userId: UserId) => Promise<Result<HtmlFragment, E>>;
 
 const headerTemplate = (ud: UserDetails): HtmlFragment => toHtmlFragment(`
   <header class="page-header page-header--user">
@@ -24,10 +24,10 @@ const headerTemplate = (ud: UserDetails): HtmlFragment => toHtmlFragment(`
   </header>
 `);
 
-export default (getUserDetails: GetUserDetails): RenderHeader => (
+export default <E>(getUserDetails: GetUserDetails<E>): RenderHeader<E> => (
   async (userId) => {
     const userDetails = getUserDetails(userId);
-    return Result.ok<typeof headerTemplate, 'not-found' | 'unavailable'>(headerTemplate)
+    return Result.ok<typeof headerTemplate, E>(headerTemplate)
       .ap(await userDetails);
   }
 );
