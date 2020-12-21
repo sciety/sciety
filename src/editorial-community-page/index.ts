@@ -36,7 +36,7 @@ interface Ports {
 }
 
 const buildRenderPageHeader = (ports: Ports): RenderPageHeader => {
-  const getEditorialCommunity: GetEditorialCommunity = async (editorialCommunityId) => {
+  const getEditorialCommunity: GetEditorialCommunity = (editorialCommunityId) => async () => {
     const editorialCommunity = (await ports.getEditorialCommunity(editorialCommunityId))
       .unwrapOrElse(() => {
         throw new NotFound(`${editorialCommunityId.value} not found`);
