@@ -1,5 +1,7 @@
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
+import * as B from 'fp-ts/lib/boolean';
+import { pipe } from 'fp-ts/lib/function';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
@@ -33,16 +35,20 @@ const renderUnfollowButton: RenderButton = (editorialCommunityId, editorialCommu
 `;
 
 export default (follows: Follows): RenderFollowToggle => (
-  async (userId, editorialCommunityId, editorialCommunityName) => {
-    const userFollows = await O.fold(
-      () => T.of(false),
-      (value: UserId) => follows(value, editorialCommunityId),
-    )(userId)();
-
-    if (userFollows) {
-      return toHtmlFragment(renderUnfollowButton(editorialCommunityId, editorialCommunityName));
-    }
-
-    return toHtmlFragment(renderFollowButton(editorialCommunityId, editorialCommunityName));
-  }
+  async (userId, editorialCommunityId, editorialCommunityName) => (
+    pipe(
+      userId,
+      O.fold(
+        () => T.of(false),
+        (value: UserId) => follows(value, editorialCommunityId),
+      ),
+      T.map(
+        B.fold(
+          () => renderFollowButton(editorialCommunityId, editorialCommunityName),
+          () => renderUnfollowButton(editorialCommunityId, editorialCommunityName),
+        ),
+      ),
+      T.map(toHtmlFragment),
+    )
+  )()
 );
