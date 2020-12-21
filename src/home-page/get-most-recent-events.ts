@@ -22,7 +22,7 @@ export default (
   follows: Follows,
   maxCount: number,
 ): GetEvents<FeedEvent> => (
-  async (userId) => {
+  (userId) => async () => {
     const isFollowedEvent = async (event: DomainEvent): Promise<boolean> => {
       if (!('editorialCommunityId' in event)) {
         return false;

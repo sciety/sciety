@@ -8,7 +8,7 @@ type RenderFeed = (userId: O.Option<UserId>) => T.Task<HtmlFragment>;
 
 export type IsFollowingSomething = (userId: UserId) => T.Task<boolean>;
 
-export type GetEvents<E> = (userId: UserId) => Promise<ReadonlyArray<E>>;
+export type GetEvents<E> = (userId: UserId) => T.Task<ReadonlyArray<E>>;
 
 type RenderSummaryFeedList<E> = (events: ReadonlyArray<E>) => Promise<O.Option<string>>;
 
@@ -58,7 +58,7 @@ export default <E>(
       if (!(await isFollowingSomething(u)())) {
         return followSomething();
       }
-      const events = await getEvents(u);
+      const events = await getEvents(u)();
       return O.getOrElse(noEvaluationsYet)(await renderSummaryFeedList(events));
     };
 

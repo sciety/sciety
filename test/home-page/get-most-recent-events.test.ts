@@ -33,7 +33,7 @@ describe('get-most-recent-events', () => {
     const getAllEvents: GetAllEvents = T.of(initial);
     const follows: Follows = () => T.of(true);
     const getEvents = createGetMostRecentEvents(getAllEvents, follows, 20);
-    const sortedEvents = await getEvents(userId('user-1'));
+    const sortedEvents = await getEvents(userId('user-1'))();
 
     expect(sortedEvents[0]).toStrictEqual(initial[1]);
     expect(sortedEvents[1]).toStrictEqual(initial[0]);
@@ -47,7 +47,7 @@ describe('get-most-recent-events', () => {
       const getAllEvents: GetAllEvents = T.of(dummyEvents);
       const follows: Follows = () => T.of(true);
       const getEvents = createGetMostRecentEvents(getAllEvents, follows, 20);
-      const events = await getEvents(userId('user-1'));
+      const events = await getEvents(userId('user-1'))();
 
       expect(events).toHaveLength(dummyEvents.length);
     });
@@ -60,7 +60,7 @@ describe('get-most-recent-events', () => {
       const getAllEvents: GetAllEvents = T.of(dummyEvents);
       const follows: Follows = () => T.of(true);
       const getEvents = createGetMostRecentEvents(getAllEvents, follows, maxCount);
-      const events = await getEvents(userId('user-1'));
+      const events = await getEvents(userId('user-1'))();
 
       expect(events).toHaveLength(maxCount);
     });

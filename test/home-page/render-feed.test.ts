@@ -10,7 +10,7 @@ describe('render-feed', (): void => {
   describe('when the user is logged in', () => {
     describe('and has a non-empty feed', () => {
       it('returns a list', async (): Promise<void> => {
-        const dummyGetEvents: GetEvents<unknown> = async () => ['some-event'];
+        const dummyGetEvents: GetEvents<unknown> = () => T.of(['some-event']);
         const dummyIsFollowingSomething: IsFollowingSomething = () => T.of(true);
         const dummyRenderSummaryFeedList: RenderSummaryFeedList<unknown> = async () => O.some(toHtmlFragment('someNiceList'));
         const renderFeed = createRenderFeed(
@@ -31,7 +31,7 @@ describe('render-feed', (): void => {
     describe('and has an empty feed', () => {
       it('returns a come back later text', async (): Promise<void> => {
         const dummyIsFollowingSomething: IsFollowingSomething = () => T.of(true);
-        const dummyGetEvents: GetEvents<unknown> = async () => [];
+        const dummyGetEvents: GetEvents<unknown> = () => T.of([]);
         const stubRenderSummaryFeedList: RenderSummaryFeedList<unknown> = async () => O.none;
         const renderFeed = createRenderFeed(
           dummyIsFollowingSomething,
