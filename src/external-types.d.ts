@@ -15,3 +15,9 @@ declare module 'remarkable/linkify' {
   export const linkify: () => void;
 
 }
+
+declare module 'devtools-protocol' {
+  export namespace Network {
+    export type Cookie = unknown;
+  }
+}
