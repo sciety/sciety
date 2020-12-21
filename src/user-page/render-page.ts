@@ -1,3 +1,4 @@
+import * as T from 'fp-ts/lib/Task';
 import { Maybe, Result } from 'true-myth';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { RenderPageError } from '../types/render-page-error';
@@ -27,11 +28,12 @@ const template = (header: HtmlFragment) => (followList: HtmlFragment) => (userDi
   }
 );
 
+type RenderFollowList = (userId: UserId, viewingUserId: Maybe<UserId>) => T.Task<Result<HtmlFragment, never>>;
 type GetUserDisplayName = (userId: UserId) => Promise<Result<string, 'not-found' | 'unavailable'>>;
 
 export default (
   renderHeader: Component,
-  renderFollowList: Component,
+  renderFollowList: RenderFollowList,
   getUserDisplayName: GetUserDisplayName,
 ): RenderPage => async (userId, viewingUserId) => {
   const header = renderHeader(userId, viewingUserId);
@@ -40,7 +42,7 @@ export default (
 
   return Result.ok(template)
     .ap(await header)
-    .ap(await followList)
+    .ap(await followList())
     .ap(await userDisplayName)
     .mapErr((e) => {
       if (e === 'not-found') {

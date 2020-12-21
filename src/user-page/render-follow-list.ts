@@ -1,4 +1,5 @@
 import { URL } from 'url';
+import * as T from 'fp-ts/lib/Task';
 import { Maybe, Result } from 'true-myth';
 import { RenderFollowedEditorialCommunity } from './render-followed-editorial-community';
 import templateListItems from '../shared-components/list-items';
@@ -6,7 +7,7 @@ import EditorialCommunityId from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
-type RenderFollowList = (userId: UserId, viewingUserId: Maybe<UserId>) => Promise<Result<HtmlFragment, never>>;
+type RenderFollowList = (userId: UserId, viewingUserId: Maybe<UserId>) => T.Task<Result<HtmlFragment, never>>;
 
 export type GetFollowedEditorialCommunities = (userId: UserId) => Promise<ReadonlyArray<{
   id: EditorialCommunityId,
@@ -18,7 +19,7 @@ export default (
   getFollowedEditorialCommunities: GetFollowedEditorialCommunities,
   renderFollowedEditorialCommunity: RenderFollowedEditorialCommunity,
 ): RenderFollowList => (
-  async (userId, viewingUserId) => {
+  (userId, viewingUserId) => async () => {
     const list = await Promise.all((await getFollowedEditorialCommunities(userId))
       .map(async (editorialCommunity) => renderFollowedEditorialCommunity(editorialCommunity, viewingUserId)));
 

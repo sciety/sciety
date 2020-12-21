@@ -1,3 +1,4 @@
+import * as T from 'fp-ts/lib/Task';
 import { Maybe, Result } from 'true-myth';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import toUserId from '../../src/types/user-id';
@@ -8,7 +9,7 @@ describe('render-page', () => {
     it('is used as the page title', async () => {
       const renderPage = createRenderPage(
         async () => Result.ok(toHtmlFragment('')),
-        async () => Result.ok(toHtmlFragment('')),
+        () => T.of(Result.ok(toHtmlFragment(''))),
         async () => Result.ok('someone'),
       );
 
@@ -22,7 +23,7 @@ describe('render-page', () => {
     it('returns a not-found error page', async () => {
       const renderPage = createRenderPage(
         async () => Result.ok(toHtmlFragment('')),
-        async () => Result.ok(toHtmlFragment('')),
+        () => T.of(Result.ok(toHtmlFragment(''))),
         async () => Result.err('not-found'),
       );
       const result = await renderPage(toUserId('1234'), Maybe.nothing());
@@ -35,7 +36,7 @@ describe('render-page', () => {
     it('returns an unavailable error page', async () => {
       const renderPage = createRenderPage(
         async () => Result.ok(toHtmlFragment('')),
-        async () => Result.ok(toHtmlFragment('')),
+        () => T.of(Result.ok(toHtmlFragment(''))),
         async () => Result.err('unavailable'),
       );
       const result = await renderPage(toUserId('1234'), Maybe.nothing());
