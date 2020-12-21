@@ -10,7 +10,7 @@ export type RenderFollowToggle = (
   userId: O.Option<UserId>,
   editorialCommunityId: EditorialCommunityId,
   editorialCommunityName: string,
-) => Promise<HtmlFragment>;
+) => T.Task<HtmlFragment>;
 
 type Follows = (userId: UserId, editorialCommunityId: EditorialCommunityId) => T.Task<boolean>;
 
@@ -35,7 +35,7 @@ const renderUnfollowButton: RenderButton = (editorialCommunityId, editorialCommu
 `;
 
 export default (follows: Follows): RenderFollowToggle => (
-  async (userId, editorialCommunityId, editorialCommunityName) => (
+  (userId, editorialCommunityId, editorialCommunityName) => (
     pipe(
       userId,
       O.fold(
@@ -50,5 +50,5 @@ export default (follows: Follows): RenderFollowToggle => (
       ),
       T.map(toHtmlFragment),
     )
-  )()
+  )
 );

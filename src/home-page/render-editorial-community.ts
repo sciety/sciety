@@ -25,7 +25,7 @@ export default (
       </div>
     </a>
     <div class="editorial-community__toggle_wrapper">
-      ${await renderFollowToggle(userId, community.id, community.name)}
+      ${await renderFollowToggle(userId, community.id, community.name)()}
     </div>
   </div>
 `);

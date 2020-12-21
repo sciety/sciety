@@ -1,5 +1,6 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/lib/Option';
+import * as T from 'fp-ts/lib/Task';
 import createRenderEditorialCommunity from '../../src/home-page/render-editorial-community';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
 import { toHtmlFragment } from '../../src/types/html-fragment';
@@ -12,7 +13,7 @@ describe('render-editorial-community', (): void => {
       avatar: new URL('http://example.com'),
     };
     const renderEditorialCommunity = createRenderEditorialCommunity(
-      async () => toHtmlFragment(''),
+      () => T.of(toHtmlFragment('')),
     );
     const rendered = await renderEditorialCommunity(O.none)(community)();
 
