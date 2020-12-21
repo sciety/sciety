@@ -11,6 +11,20 @@ export type RenderFollowToggle = (
 
 export type Follows = (userId: UserId, editorialCommunityId: EditorialCommunityId) => T.Task<boolean>;
 
+const renderFollowButton = (editorialCommunityId: EditorialCommunityId): string => `
+  <form method="post" action="/follow" class="follow-toggle">
+    <input type="hidden" name="editorialcommunityid" value="${editorialCommunityId.value}">
+    <button type="submit" class="button button--primary button--small">Follow</button>
+  </form>
+`;
+
+const renderUnfollowButton = (editorialCommunityId: EditorialCommunityId): string => `
+  <form method="post" action="/unfollow" class="follow-toggle">
+    <input type="hidden" name="editorialcommunityid" value="${editorialCommunityId.value}">
+    <button type="submit" class="button button--small">Unfollow</button>
+  </form>
+`;
+
 export default (follows: Follows): RenderFollowToggle => (
   async (userId, editorialCommunityId) => {
     const userFollows = await O.fold(
@@ -19,19 +33,9 @@ export default (follows: Follows): RenderFollowToggle => (
     )(userId)();
 
     if (userFollows) {
-      return toHtmlFragment(`
-        <form method="post" action="/unfollow" class="follow-toggle">
-          <input type="hidden" name="editorialcommunityid" value="${editorialCommunityId.value}">
-          <button type="submit" class="button button--small">Unfollow</button>
-        </form>
-      `);
+      return toHtmlFragment(renderUnfollowButton(editorialCommunityId));
     }
 
-    return toHtmlFragment(`
-      <form method="post" action="/follow" class="follow-toggle">
-        <input type="hidden" name="editorialcommunityid" value="${editorialCommunityId.value}">
-        <button type="submit" class="button button--primary button--small">Follow</button>
-      </form>
-    `);
+    return toHtmlFragment(renderFollowButton(editorialCommunityId));
   }
 );
