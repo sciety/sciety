@@ -20,9 +20,11 @@ export type RenderPage = (
   content: HtmlFragment
 }, RenderPageError>>;
 
+type RenderDescription = (editorialCommunityId: EditorialCommunityId) => T.Task<HtmlFragment>;
+
 export default (
   renderPageHeader: Component,
-  renderDescription: Component,
+  renderDescription: RenderDescription,
   renderFeed: Component,
   renderFollowers: (editorialCommunityId: EditorialCommunityId) => T.Task<HtmlFragment>,
   getCommunityName: GetCommunityName,
@@ -36,7 +38,7 @@ export default (
             ${await renderPageHeader(editorialCommunityId, userId)}
 
             <div class="editorial-community-page-description">
-              ${await renderDescription(editorialCommunityId, userId)}
+              ${await renderDescription(editorialCommunityId)()}
             </div>
             <div class="editorial-community-page-side-bar">
               ${await renderFollowers(editorialCommunityId)()}
