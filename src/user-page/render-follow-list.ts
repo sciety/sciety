@@ -21,7 +21,7 @@ export default (
 ): RenderFollowList => (
   (userId, viewingUserId) => async () => {
     const list = await Promise.all((await getFollowedEditorialCommunities(userId))
-      .map(async (editorialCommunity) => renderFollowedEditorialCommunity(editorialCommunity, viewingUserId)));
+      .map(async (editorialCommunity) => renderFollowedEditorialCommunity(editorialCommunity, viewingUserId)()));
 
     let renderedFollowList: HtmlFragment;
     if (list.length > 0) {
