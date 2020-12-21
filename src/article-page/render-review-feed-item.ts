@@ -78,7 +78,7 @@ export default (
     `);
   }
   return toHtmlFragment(`
-    <div class="article-feed__item_contents">
+    <div class="article-feed__item_contents" id="${review.id.toString()}">
       ${renderAvatar(review.editorialCommunityAvatar)}
       <div class="article-feed__item_body" data-behaviour="collapse_to_teaser">
         ${eventMetadata}
