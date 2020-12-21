@@ -13,7 +13,7 @@ describe('get-followed-editorial-communities-from-ids adapter', () => {
         new EditorialCommunityId('74fd66e9-3b90-4b5a-a4ab-5be83db4c5de'),
       ])
     );
-    const getEditorialCommunity: GetEditorialCommunity = async () => ({
+    const getEditorialCommunity: GetEditorialCommunity = () => T.of({
       name: 'Name',
       avatar: new URL('http://example.com/avatar.png'),
     });

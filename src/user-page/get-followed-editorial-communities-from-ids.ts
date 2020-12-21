@@ -6,7 +6,7 @@ import { UserId } from '../types/user-id';
 
 export type GetFollowedEditorialCommunityIds = (userId: UserId) => T.Task<ReadonlyArray<EditorialCommunityId>>;
 
-export type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => Promise<{
+export type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.Task<{
   name: string,
   avatar: URL,
 }>;
@@ -19,7 +19,7 @@ export default (
     const list = await getFollowedEditorialCommunityIds(userId)();
     return Promise.all(list.map(async (editorialCommunityId) => ({
       id: editorialCommunityId,
-      ...await getEditorialCommunity(editorialCommunityId),
+      ...await getEditorialCommunity(editorialCommunityId)(),
     })));
   }
 );
