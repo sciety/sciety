@@ -10,7 +10,7 @@ describe('create render page', (): void => {
         avatar: new URL('http://example.com'),
       });
       const renderHeader = createRenderHeader(getCommunity);
-      const rendered = await renderHeader(new EditorialCommunityId('arbitrary-id'));
+      const rendered = await renderHeader(new EditorialCommunityId('arbitrary-id'))();
 
       expect(rendered).toStrictEqual(expect.stringContaining('My Community'));
     });

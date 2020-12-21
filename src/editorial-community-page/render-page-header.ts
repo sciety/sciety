@@ -1,8 +1,9 @@
 import { URL } from 'url';
+import * as T from 'fp-ts/lib/Task';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
-export type RenderPageHeader = (editorialCommunityId: EditorialCommunityId) => Promise<HtmlFragment>;
+export type RenderPageHeader = (editorialCommunityId: EditorialCommunityId) => T.Task<HtmlFragment>;
 
 export type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => Promise<{
   name: string;
@@ -12,7 +13,7 @@ export type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId)
 export default (
   getEditorialCommunity: GetEditorialCommunity,
 ): RenderPageHeader => (
-  async (editorialCommunityId) => {
+  (editorialCommunityId) => async () => {
     const editorialCommunity = await getEditorialCommunity(editorialCommunityId);
 
     return toHtmlFragment(`

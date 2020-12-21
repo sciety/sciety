@@ -20,10 +20,12 @@ export type RenderPage = (
   content: HtmlFragment
 }, RenderPageError>>;
 
+type RenderPageHeader = (editorialCommunityId: EditorialCommunityId) => T.Task<HtmlFragment>;
+
 type RenderDescription = (editorialCommunityId: EditorialCommunityId) => T.Task<HtmlFragment>;
 
 export default (
-  renderPageHeader: Component,
+  renderPageHeader: RenderPageHeader,
   renderDescription: RenderDescription,
   renderFeed: Component,
   renderFollowers: (editorialCommunityId: EditorialCommunityId) => T.Task<HtmlFragment>,
@@ -35,10 +37,10 @@ export default (
         title: `${await getCommunityName(editorialCommunityId)}`,
         content: toHtmlFragment(`
           <div class="sciety-grid sciety-grid--editorial-community">
-            ${await renderPageHeader(editorialCommunityId, userId)}
+            ${await renderPageHeader(editorialCommunityId)()}
 
             <div class="editorial-community-page-description">
-              ${await renderDescription(editorialCommunityId)()}
+            ${await renderDescription(editorialCommunityId)()}
             </div>
             <div class="editorial-community-page-side-bar">
               ${await renderFollowers(editorialCommunityId)()}
