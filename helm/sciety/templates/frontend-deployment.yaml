@@ -24,6 +24,8 @@ spec:
               value: "{{ .Values.allowSiteCrawlers }}"
             - name: APP_ORIGIN
               value: https://{{ .Values.hostname }}
+            - name: APP_SECRET
+              value: "{{ .Values.appSecret }}"
             - name: CROSSREF_API_BEARER_TOKEN
               value: {{ .Values.crossrefApiBearerToken }}
             - name: EXPERIMENT_ENABLED

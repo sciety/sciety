@@ -31,6 +31,7 @@ jobs:
             --set oldHostname=hive.review \
             --set googleTagManagerId='GTM-NX7CQB4&gtm_auth=UitQkYzjC4B-ccI61RXi9Q&gtm_preview=env-1&gtm_cookies_win=x' \
             --set crossrefApiBearerToken=${CROSSREF_API_BEARER_TOKEN} \
+            --set appSecret=${APP_SECRET} \
             --set twitterApiKey=${TWITTER_API_KEY} \
             --set twitterApiSecretKey=${TWITTER_API_SECRET_KEY} \
             --set twitterApiBearerToken=${TWITTER_API_BEARER_TOKEN} \
@@ -38,6 +39,7 @@ jobs:
             --wait \
             helm/sciety
         env:
+          APP_SECRET: ${{ secrets.APP_SECRET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           CROSSREF_API_BEARER_TOKEN: ${{ secrets.CROSSREF_API_BEARER_TOKEN }}
