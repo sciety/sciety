@@ -3,6 +3,7 @@ import * as T from 'fp-ts/lib/Task';
 import { Pool } from 'pg';
 import { Adapters } from './adapters';
 import createArticleCache from './article-cache';
+import createBiorxivCache from './biorxiv-cache';
 import createCommitEvents from './commit-events';
 import createEventSourceFollowListRepository from './event-sourced-follow-list-repository';
 import createFetchCrossrefArticle from './fetch-crossref-article';
@@ -96,7 +97,7 @@ const createInfrastructure = async (): Promise<Adapters> => {
     getFollowList,
     getUserDetails: createGetTwitterUserDetails(getTwitterResponse, logger),
     follows: createFollows(getAllEvents),
-    findVersionsForArticleDoi: createGetBiorxivArticleVersionEvents(getJson, logger),
+    findVersionsForArticleDoi: createBiorxivCache(createGetBiorxivArticleVersionEvents(getJson, logger), logger),
   };
 };
 
