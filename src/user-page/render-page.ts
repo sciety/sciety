@@ -1,4 +1,6 @@
 import * as T from 'fp-ts/lib/Task';
+import * as TE from 'fp-ts/lib/TaskEither';
+import { pipe } from 'fp-ts/lib/function';
 import { Maybe, Result } from 'true-myth';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { RenderPageError } from '../types/render-page-error';
@@ -12,7 +14,7 @@ export type RenderPage = (
   content: HtmlFragment
 }, RenderPageError>>;
 
-type Component = (userId: UserId, viewingUserId: Maybe<UserId>) => Promise<Result<HtmlFragment, 'not-found' | 'unavailable'>>;
+type Component = (userId: UserId, viewingUserId: Maybe<UserId>) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>;
 
 const template = (header: HtmlFragment) => (followList: HtmlFragment) => (userDisplayName:string) => (
   {
@@ -36,7 +38,13 @@ export default (
   renderFollowList: RenderFollowList,
   getUserDisplayName: GetUserDisplayName,
 ): RenderPage => async (userId, viewingUserId) => {
-  const header = renderHeader(userId, viewingUserId);
+  const header = pipe(
+    renderHeader(userId, viewingUserId),
+    TE.fold(
+      (error) => T.of(Result.err<HtmlFragment, 'not-found' | 'unavailable'>(error)),
+      (html) => T.of(Result.ok<HtmlFragment, 'not-found' | 'unavailable'>(html)),
+    ),
+  )();
   const followList = renderFollowList(userId, viewingUserId);
   const userDisplayName = getUserDisplayName(userId);
 

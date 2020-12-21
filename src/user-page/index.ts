@@ -56,7 +56,7 @@ export default (ports: Ports): UserPage => {
       ),
     )()
   );
-  const renderHeader = createRenderHeader(wrapGetUserDetails);
+  const renderHeader = createRenderHeader(ports.getUserDetails);
   const renderFollowList = createRenderFollowList(
     getFollowedEditorialCommunities,
     renderFollowedEditorialCommunity,

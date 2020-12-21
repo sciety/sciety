@@ -1,4 +1,5 @@
-import { Result } from 'true-myth';
+import * as TE from 'fp-ts/lib/TaskEither';
+import { flow } from 'fp-ts/lib/function';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
@@ -8,11 +9,11 @@ export type UserDetails = {
   handle: string;
 };
 
-type GetUserDetails<E> = (userId: UserId) => Promise<Result<UserDetails, E>>;
+type GetUserDetails<E> = (userId: UserId) => TE.TaskEither<E, UserDetails>;
 
-type RenderHeader<E> = (userId: UserId) => Promise<Result<HtmlFragment, E>>;
+type RenderHeader<E> = (userId: UserId) => TE.TaskEither<E, HtmlFragment>;
 
-const headerTemplate = (ud: UserDetails): HtmlFragment => toHtmlFragment(`
+const headerTemplate = (ud: UserDetails): string => `
   <header class="page-header page-header--user">
     <img src="${ud.avatarUrl}" alt="" class="page-header__avatar">
     <h1>
@@ -22,12 +23,10 @@ const headerTemplate = (ud: UserDetails): HtmlFragment => toHtmlFragment(`
       </div>
     </h1>
   </header>
-`);
+`;
 
-export default <E>(getUserDetails: GetUserDetails<E>): RenderHeader<E> => (
-  async (userId) => {
-    const userDetails = getUserDetails(userId);
-    return Result.ok<typeof headerTemplate, E>(headerTemplate)
-      .ap(await userDetails);
-  }
+export default <E>(getUserDetails: GetUserDetails<E>): RenderHeader<E> => flow(
+  getUserDetails,
+  TE.map(headerTemplate),
+  TE.map(toHtmlFragment),
 );
