@@ -15,3 +15,4 @@ services:
       - '../src:/app/src'
       - '../static:/app/static'
       - '../test:/app/test'
+      - '../feature-test:/app/feature-test'
