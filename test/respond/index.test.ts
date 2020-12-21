@@ -2,7 +2,7 @@ import request from 'supertest';
 import createServer from '../http/server';
 
 describe('index', () => {
-  it.skip('redirects to review anchor on article page', async () => {
+  it('redirects to review anchor on article page', async () => {
     const { server } = await createServer();
     const response = await request(server)
       .post('/respond')
@@ -11,6 +11,6 @@ describe('index', () => {
       .send('reviewid=hypothesis%3A643mSEEaEeu6JufBBcH3cA&command=respond-helpful');
 
     expect(response.status).toBe(302);
-    expect(response.header.location).toBe('/articles/10.1101/blabla#10.1234/5678');
+    expect(response.header.location).toBe('/articles/10.1101/blabla#hypothesis:643mSEEaEeu6JufBBcH3cA');
   });
 });

@@ -22,6 +22,7 @@ export const createRespondHandler = (ports: Ports): Middleware<{ user: User }> =
   const { user } = context.state;
   const reviewId = toReviewId(context.request.body.reviewid);
 
+  const referrer = (context.request.headers.referer ?? '/') as string;
   const command = context.request.body.command as string;
   const validatedCommand = validateCommand(command);
 
@@ -36,7 +37,7 @@ export const createRespondHandler = (ports: Ports): Middleware<{ user: User }> =
     reviewId,
   )();
 
-  context.redirect('back');
+  context.redirect(`${referrer}#${reviewId.toString()}`);
 
   await next();
 };
