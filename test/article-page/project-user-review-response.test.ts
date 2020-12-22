@@ -1,4 +1,4 @@
-import { Maybe } from 'true-myth';
+import * as O from 'fp-ts/lib/Option';
 import createProjectUserReviewResponse from '../../src/article-page/project-user-review-response';
 import Doi from '../../src/types/doi';
 import { generate } from '../../src/types/event-id';
@@ -8,7 +8,7 @@ describe('project-user-review-response', () => {
   describe('no response events', () => {
     it('returns nothing', async () => {
       const projectUserReviewResponse = createProjectUserReviewResponse(async () => []);
-      const userResponse = await projectUserReviewResponse(new Doi('10.1111/123456'), Maybe.just(toUserId('someone')));
+      const userResponse = await projectUserReviewResponse(new Doi('10.1111/123456'), O.some(toUserId('someone')));
 
       expect(userResponse.isNothing()).toBe(true);
     });
@@ -23,7 +23,7 @@ describe('project-user-review-response', () => {
         userId: toUserId('user'),
         reviewId: new Doi('10.1111/123456'),
       }]);
-      const userResponse = await projectUserReviewResponse(new Doi('10.1111/123456'), Maybe.just(toUserId('user')));
+      const userResponse = await projectUserReviewResponse(new Doi('10.1111/123456'), O.some(toUserId('user')));
 
       expect(userResponse.unsafelyUnwrap()).toBe('helpful');
     });
@@ -38,7 +38,7 @@ describe('project-user-review-response', () => {
         userId: toUserId('userA'),
         reviewId: new Doi('10.1111/123456'),
       }]);
-      const userResponse = await projectUserReviewResponse(new Doi('10.1111/123456'), Maybe.just(toUserId('userB')));
+      const userResponse = await projectUserReviewResponse(new Doi('10.1111/123456'), O.some(toUserId('userB')));
 
       expect(userResponse.isNothing()).toBe(true);
     });
@@ -53,7 +53,7 @@ describe('project-user-review-response', () => {
         userId: toUserId('user'),
         reviewId: new Doi('10.1111/987654'),
       }]);
-      const userResponse = await projectUserReviewResponse(new Doi('10.1111/123456'), Maybe.just(toUserId('user')));
+      const userResponse = await projectUserReviewResponse(new Doi('10.1111/123456'), O.some(toUserId('user')));
 
       expect(userResponse.isNothing()).toBe(true);
     });
@@ -69,7 +69,7 @@ describe('project-user-review-response', () => {
         reviewId: new Doi('10.1111/123456'),
       }]);
 
-      const userResponse = await projectUserReviewResponse(new Doi('10.1111/123456'), Maybe.nothing());
+      const userResponse = await projectUserReviewResponse(new Doi('10.1111/123456'), O.none);
 
       expect(userResponse.isNothing()).toBe(true);
     });
@@ -96,7 +96,7 @@ describe('project-user-review-response', () => {
         },
       ]);
 
-      const userResponse = await projectUserReviewResponse(new Doi('10.1111/123456'), Maybe.just(userId));
+      const userResponse = await projectUserReviewResponse(new Doi('10.1111/123456'), O.some(userId));
 
       expect(userResponse.isNothing()).toBe(true);
     });
@@ -131,7 +131,7 @@ describe('project-user-review-response', () => {
         },
       ]);
 
-      const userResponse = await projectUserReviewResponse(reviewId, Maybe.just(userId));
+      const userResponse = await projectUserReviewResponse(reviewId, O.some(userId));
 
       expect(userResponse.unsafelyUnwrap()).toBe('helpful');
     });
@@ -146,7 +146,7 @@ describe('project-user-review-response', () => {
         userId: toUserId('user'),
         reviewId: new Doi('10.1111/123456'),
       }]);
-      const userResponse = await projectUserReviewResponse(new Doi('10.1111/123456'), Maybe.just(toUserId('user')));
+      const userResponse = await projectUserReviewResponse(new Doi('10.1111/123456'), O.some(toUserId('user')));
 
       expect(userResponse.unsafelyUnwrap()).toBe('not-helpful');
     });
@@ -173,7 +173,7 @@ describe('project-user-review-response', () => {
         },
       ]);
 
-      const userResponse = await projectUserReviewResponse(new Doi('10.1111/123456'), Maybe.just(userId));
+      const userResponse = await projectUserReviewResponse(new Doi('10.1111/123456'), O.some(userId));
 
       expect(userResponse.isNothing()).toBe(true);
     });

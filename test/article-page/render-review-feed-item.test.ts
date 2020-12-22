@@ -1,4 +1,5 @@
 import { URL } from 'url';
+import * as O from 'fp-ts/lib/Option';
 import { JSDOM } from 'jsdom';
 import { Maybe } from 'true-myth';
 import createRenderReviewFeedItem from '../../src/article-page/render-review-feed-item';
@@ -25,7 +26,7 @@ describe('render-review-feed-item', () => {
           fullText: Maybe.just(fullText)
             .map(toHtmlFragment)
             .map(sanitise),
-        }, Maybe.nothing()),
+        }, O.none),
       );
       const toggleableContent = rendered.querySelector('[data-behaviour="collapse_to_teaser"]');
       const fullTextWrapper = rendered.querySelector('[data-full-text]');
@@ -55,7 +56,7 @@ describe('render-review-feed-item', () => {
           fullText: Maybe.just(fullText)
             .map(toHtmlFragment)
             .map(sanitise),
-        }, Maybe.nothing()),
+        }, O.none),
       );
       const toggleableContent = rendered.querySelector('[data-behaviour="collapse_to_teaser"]');
       const fullTextWrapper = rendered.querySelector('.article-feed__item_body');
@@ -84,7 +85,7 @@ describe('render-review-feed-item', () => {
           editorialCommunityName: 'Community 1',
           editorialCommunityAvatar: new URL('http://example.com/avatar'),
           fullText: Maybe.nothing(),
-        }, Maybe.nothing()),
+        }, O.none),
       );
       const toggleableContent = rendered.querySelector('[data-behaviour="collapse_to_teaser"]');
       const sourceLinkUrl = rendered.querySelector('.article-feed__item__read_more')?.getAttribute('href');

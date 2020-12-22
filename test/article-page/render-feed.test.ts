@@ -1,4 +1,5 @@
 import { URL } from 'url';
+import * as O from 'fp-ts/lib/Option';
 import { Maybe } from 'true-myth';
 import createRenderFeed from '../../src/article-page/render-feed';
 import Doi from '../../src/types/doi';
@@ -15,7 +16,7 @@ describe('render-feed', () => {
         shouldNotBeCalled,
       );
 
-      const rendered = await renderFeed(new Doi('10.1101/12345678'), Maybe.nothing());
+      const rendered = await renderFeed(new Doi('10.1101/12345678'), O.none);
 
       expect(rendered.unsafelyUnwrapErr()).toBe('no-content');
     });
@@ -49,7 +50,7 @@ describe('render-feed', () => {
         () => toHtmlFragment(''),
       );
 
-      const rendered = await renderFeed(new Doi('10.1101/12345678'), Maybe.nothing());
+      const rendered = await renderFeed(new Doi('10.1101/12345678'), O.none);
 
       expect(rendered.unsafelyUnwrap()).toContain('<ol');
     });

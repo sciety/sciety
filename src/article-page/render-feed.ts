@@ -1,4 +1,5 @@
-import { Maybe, Result } from 'true-myth';
+import * as O from 'fp-ts/lib/Option';
+import { Result } from 'true-myth';
 import createRenderArticleVersionErrorFeedItem from './render-article-version-error-feed-item';
 import { ArticleVersionFeedItem, RenderArticleVersionFeedItem } from './render-article-version-feed-item';
 import { RenderReviewFeedItem, ReviewFeedItem } from './render-review-feed-item';
@@ -7,7 +8,7 @@ import Doi from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
-type RenderFeed = (doi: Doi, userId: Maybe<UserId>) => Promise<Result<HtmlFragment, 'no-content'>>;
+type RenderFeed = (doi: Doi, userId: O.Option<UserId>) => Promise<Result<HtmlFragment, 'no-content'>>;
 
 export type FeedItem = ReviewFeedItem | ArticleVersionFeedItem | { type: 'article-version-error' };
 
@@ -20,7 +21,7 @@ export default (
 ): RenderFeed => {
   const renderArticleVersionErrorFeedItem = createRenderArticleVersionErrorFeedItem();
 
-  const renderFeedItem = async (feedItem: FeedItem, userId: Maybe<UserId>): Promise<HtmlFragment> => {
+  const renderFeedItem = async (feedItem: FeedItem, userId: O.Option<UserId>): Promise<HtmlFragment> => {
     switch (feedItem.type) {
       case 'article-version':
         return renderArticleVersionFeedItem(feedItem);

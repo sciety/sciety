@@ -1,4 +1,5 @@
 import { URL } from 'url';
+import * as O from 'fp-ts/lib/Option';
 import clip from 'text-clipper';
 import { Maybe } from 'true-myth';
 import { RenderReviewResponses } from './render-review-responses';
@@ -9,7 +10,7 @@ import { ReviewId } from '../types/review-id';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { UserId } from '../types/user-id';
 
-export type RenderReviewFeedItem = (review: ReviewFeedItem, userId: Maybe<UserId>) => Promise<HtmlFragment>;
+export type RenderReviewFeedItem = (review: ReviewFeedItem, userId: O.Option<UserId>) => Promise<HtmlFragment>;
 
 export type ReviewFeedItem = {
   type: 'review';

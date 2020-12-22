@@ -1,13 +1,14 @@
+import * as O from 'fp-ts/lib/Option';
 import { Maybe } from 'true-myth';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { ReviewId } from '../types/review-id';
 import { UserId } from '../types/user-id';
 
-export type RenderReviewResponses = (reviewId: ReviewId, userId: Maybe<UserId>) => Promise<HtmlFragment>;
+export type RenderReviewResponses = (reviewId: ReviewId, userId: O.Option<UserId>) => Promise<HtmlFragment>;
 
 // TODO Try introducing a Counter type to prevent impossible numbers (e.g. -1, 2.5)
 export type CountReviewResponses = (reviewId: ReviewId) => Promise<{ helpfulCount: number, notHelpfulCount: number }>;
-export type GetUserReviewResponse = (reviewId: ReviewId, userId: Maybe<UserId>) => Promise<Maybe<'helpful' | 'not-helpful'>>;
+export type GetUserReviewResponse = (reviewId: ReviewId, userId: O.Option<UserId>) => Promise<Maybe<'helpful' | 'not-helpful'>>;
 
 export default (
   countReviewResponses: CountReviewResponses,

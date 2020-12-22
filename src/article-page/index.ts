@@ -23,6 +23,7 @@ import { RenderPageError } from '../types/render-page-error';
 import { ReviewId } from '../types/review-id';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { User } from '../types/user';
+import { UserId } from '../types/user-id';
 
 type FindReviewsForArticleDoi = (articleVersionDoi: Doi) => T.Task<ReadonlyArray<{
   reviewId: ReviewId;
@@ -55,6 +56,11 @@ export interface Params {
   flavour?: string;
   user: Maybe<User>;
 }
+
+const getUserId = (user: Maybe<User>): O.Option<UserId> => pipe(
+  user.mapOr(O.none, (v) => O.some(v)),
+  O.map((u) => u.id),
+);
 
 type ArticlePage = (params: Params) => ReturnType<RenderPage>;
 
@@ -108,7 +114,7 @@ export default (ports: Ports): ArticlePage => {
         type: 'not-found',
         message: toHtmlFragment(`${params.doi ?? 'Article'} not found`),
       }),
-      async (doi: Doi) => renderPage(doi, params.user.map((user) => user.id)),
+      async (doi: Doi) => renderPage(doi, getUserId(params.user)),
     ),
   );
 };

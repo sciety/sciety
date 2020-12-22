@@ -1,6 +1,7 @@
+import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import striptags from 'striptags';
-import { Maybe, Result } from 'true-myth';
+import { Result } from 'true-myth';
 import Doi from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { RenderPageError } from '../types/render-page-error';
@@ -23,9 +24,9 @@ type ArticleDetails = {
 
 export type GetArticleDetails = (doi: Doi) => Promise<Result<ArticleDetails, 'not-found'|'unavailable'>>;
 
-type Component = (doi: Doi, userId: Maybe<UserId>) => Promise<Result<string, 'not-found' | 'unavailable'>>;
-type RenderFeed = (doi: Doi, userId: Maybe<UserId>) => Promise<Result<string, 'no-content'>>;
-export type RenderPage = (doi: Doi, userId: Maybe<UserId>) => Promise<Result<Page, RenderPageError>>;
+type Component = (doi: Doi, userId: O.Option<UserId>) => Promise<Result<string, 'not-found' | 'unavailable'>>;
+type RenderFeed = (doi: Doi, userId: O.Option<UserId>) => Promise<Result<string, 'no-content'>>;
+export type RenderPage = (doi: Doi, userId: O.Option<UserId>) => Promise<Result<Page, RenderPageError>>;
 
 export default (
   renderPageHeader: Component,
