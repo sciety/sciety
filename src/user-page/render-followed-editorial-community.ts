@@ -13,7 +13,7 @@ export type RenderFollowedEditorialCommunity = (
 type RenderFollowToggle = (
   userId: O.Option<UserId>,
   editorialcommunityid: EditorialCommunityId,
-) => Promise<HtmlFragment>;
+) => T.Task<HtmlFragment>;
 
 interface EditorialCommunity {
   id: EditorialCommunityId;
@@ -34,7 +34,7 @@ export default (
       </div>
     </div>
     <div class="right floated">
-      ${await renderFollowToggle(userId, editorialCommunity.id)}
+      ${await renderFollowToggle(userId, editorialCommunity.id)()}
     </div>
   `)
 );
