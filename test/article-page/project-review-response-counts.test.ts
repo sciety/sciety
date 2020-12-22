@@ -9,7 +9,7 @@ describe('project-review-response-counts', () => {
       const reviewId = new Doi('10.1234/5678');
 
       const projectReviewResponseCounts = createProjectReviewResponseCounts(async () => []);
-      const projected = await projectReviewResponseCounts(reviewId);
+      const projected = await projectReviewResponseCounts(reviewId)();
 
       expect(projected).toStrictEqual({ helpfulCount: 0, notHelpfulCount: 0 });
     });
@@ -29,7 +29,7 @@ describe('project-review-response-counts', () => {
           userId: toUserId('some-user'),
         },
       ]);
-      const projected = await projectReviewResponseCounts(reviewId);
+      const projected = await projectReviewResponseCounts(reviewId)();
 
       expect(projected).toStrictEqual({ helpfulCount: 0, notHelpfulCount: 0 });
     });
@@ -65,7 +65,7 @@ describe('project-review-response-counts', () => {
           userId: userC,
         },
       ]);
-      const projected = await projectReviewResponseCounts(reviewId);
+      const projected = await projectReviewResponseCounts(reviewId)();
 
       expect(projected).toStrictEqual({ helpfulCount: 3, notHelpfulCount: 0 });
     });
@@ -92,7 +92,7 @@ describe('project-review-response-counts', () => {
           userId,
         },
       ]);
-      const projected = await projectReviewResponseCounts(reviewId);
+      const projected = await projectReviewResponseCounts(reviewId)();
 
       expect(projected).toStrictEqual({ helpfulCount: 0, notHelpfulCount: 0 });
     });
@@ -128,7 +128,7 @@ describe('project-review-response-counts', () => {
           userId: userC,
         },
       ]);
-      const projected = await projectReviewResponseCounts(reviewId);
+      const projected = await projectReviewResponseCounts(reviewId)();
 
       expect(projected).toStrictEqual({ helpfulCount: 0, notHelpfulCount: 3 });
     });
@@ -169,7 +169,7 @@ describe('project-review-response-counts', () => {
           userId,
         },
       ]);
-      const projected = await projectReviewResponseCounts(reviewId);
+      const projected = await projectReviewResponseCounts(reviewId)();
 
       expect(projected).toStrictEqual({ helpfulCount: 0, notHelpfulCount: 0 });
     });

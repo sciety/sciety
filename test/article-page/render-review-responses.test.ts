@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/lib/Option';
+import * as T from 'fp-ts/lib/Task';
 import { Maybe } from 'true-myth';
 import createRenderReviewResponses from '../../src/article-page/render-review-responses';
 import Doi from '../../src/types/doi';
@@ -7,7 +8,7 @@ import toUserId from '../../src/types/user-id';
 describe('render-review-responses', () => {
   it('displays the response counts by type', async () => {
     const renderReviewResponses = createRenderReviewResponses(
-      async () => ({
+      () => T.of({
         helpfulCount: 35,
         notHelpfulCount: 17,
       }),
@@ -21,7 +22,7 @@ describe('render-review-responses', () => {
 
   describe('when there is no current user response', () => {
     const renderReviewResponses = createRenderReviewResponses(
-      async () => ({
+      () => T.of({
         helpfulCount: 35,
         notHelpfulCount: 17,
       }),
@@ -42,7 +43,7 @@ describe('render-review-responses', () => {
   });
 
   describe('when the user response is `helpful`', () => {
-    const renderReviewResponses = createRenderReviewResponses(async () => ({
+    const renderReviewResponses = createRenderReviewResponses(() => T.of({
       helpfulCount: 1,
       notHelpfulCount: 0,
     }), async () => Maybe.just('helpful'));
@@ -61,7 +62,7 @@ describe('render-review-responses', () => {
   });
 
   describe('when the user response is `not helpful`', () => {
-    const renderReviewResponses = createRenderReviewResponses(async () => ({
+    const renderReviewResponses = createRenderReviewResponses(() => T.of({
       helpfulCount: 0,
       notHelpfulCount: 1,
     }), async () => Maybe.just('not-helpful'));

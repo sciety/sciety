@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/lib/Option';
+import * as T from 'fp-ts/lib/Task';
 import { Maybe } from 'true-myth';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { ReviewId } from '../types/review-id';
@@ -7,7 +8,7 @@ import { UserId } from '../types/user-id';
 export type RenderReviewResponses = (reviewId: ReviewId, userId: O.Option<UserId>) => Promise<HtmlFragment>;
 
 // TODO Try introducing a Counter type to prevent impossible numbers (e.g. -1, 2.5)
-export type CountReviewResponses = (reviewId: ReviewId) => Promise<{ helpfulCount: number, notHelpfulCount: number }>;
+export type CountReviewResponses = (reviewId: ReviewId) => T.Task<{ helpfulCount: number, notHelpfulCount: number }>;
 export type GetUserReviewResponse = (reviewId: ReviewId, userId: O.Option<UserId>) => Promise<Maybe<'helpful' | 'not-helpful'>>;
 
 export default (
@@ -15,7 +16,7 @@ export default (
   getUserReviewResponse: GetUserReviewResponse,
 ): RenderReviewResponses => (
   async (reviewId, userId) => {
-    const { helpfulCount, notHelpfulCount } = await countReviewResponses(reviewId);
+    const { helpfulCount, notHelpfulCount } = await countReviewResponses(reviewId)();
     const current = await getUserReviewResponse(reviewId, userId);
 
     const saidHelpful = current.isJust() && current.unsafelyUnwrap() === 'helpful';
