@@ -39,7 +39,15 @@ export default (getJson: GetJson, logger: Logger): SearchEuropePmc => (
     });
 
     const uri = `https://www.ebi.ac.uk/europepmc/webservices/rest/search?${queryString.toString()}`;
-    const data = await getJson(uri) as EuropePmcQueryResponse;
+    let data: EuropePmcQueryResponse;
+
+    try {
+      data = await getJson(uri) as EuropePmcQueryResponse;
+    } catch (error: unknown) {
+      logger('error', 'Failed to search Europe PMC', { query, uri, error });
+
+      throw error;
+    }
 
     logger('debug', 'Received Europe PMC search results', { data });
 
