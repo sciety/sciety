@@ -1,3 +1,4 @@
+import * as T from 'fp-ts/lib/Task';
 import { Result } from 'true-myth';
 import Doi from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -8,14 +9,14 @@ interface ArticleDetails {
   authors: Array<string>;
 }
 
-export type GetArticleDetails<E> = (doi: Doi) => Promise<Result<ArticleDetails, E>>;
+export type GetArticleDetails<E> = (doi: Doi) => T.Task<Result<ArticleDetails, E>>;
 
 export type RenderPageHeader<E> = (doi: Doi) => Promise<Result<HtmlFragment, E>>;
 
 export default <E>(
   getArticleDetails: GetArticleDetails<E>,
 ): RenderPageHeader<E> => async (doi) => {
-  const articleDetails = await getArticleDetails(doi);
+  const articleDetails = await getArticleDetails(doi)();
 
   return articleDetails.map((details) => toHtmlFragment(`
     <header class="page-header page-header--article">

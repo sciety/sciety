@@ -1,3 +1,4 @@
+import * as T from 'fp-ts/lib/Task';
 import { Result } from 'true-myth';
 import templateDate from './date';
 import Doi from '../types/doi';
@@ -31,7 +32,7 @@ const createRenderSummaryFeedItemSummary = (getArticle: GetArticle): RenderSumma
   type RenderEvent<E extends FeedEvent> = (event: E, actor: Actor) => Promise<string>;
 
   const title = async (articleId: Doi): Promise<HtmlFragment> => (
-    (await getArticle(articleId)).mapOr(toHtmlFragment('an article'), (article) => article.title)
+    (await getArticle(articleId)()).mapOr(toHtmlFragment('an article'), (article) => article.title)
   );
 
   const renderEditorialCommunityEndorsedArticle: RenderEvent<EditorialCommunityEndorsedArticleEvent> = async (
@@ -62,7 +63,7 @@ const createRenderSummaryFeedItemSummary = (getArticle: GetArticle): RenderSumma
 
 export type GetActor = (id: EditorialCommunityId) => Promise<Actor>;
 
-export type GetArticle = (id: Doi) => Promise<Result<Article, unknown>>;
+export type GetArticle = (id: Doi) => T.Task<Result<Article, unknown>>;
 
 export default (
   getActor: GetActor,

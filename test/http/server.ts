@@ -42,7 +42,7 @@ export default async (): Promise<TestServer> => {
       .addOut(schema.description, 'The full text')
       .addOut(schema.author, (author) => author.addOut(schema.name, 'Author name'))
   );
-  const fetchArticle: FetchCrossrefArticle = async (doi) => (Result.ok({
+  const fetchArticle: FetchCrossrefArticle = (doi) => T.of(Result.ok({
     abstract: 'Article abstract.' as SanitisedHtmlFragment,
     authors: [],
     doi,

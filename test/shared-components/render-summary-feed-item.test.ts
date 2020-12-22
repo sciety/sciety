@@ -1,3 +1,4 @@
+import * as T from 'fp-ts/lib/Task';
 import { Result } from 'true-myth';
 import createRenderSummaryFeedItem, { GetActor, GetArticle } from '../../src/shared-components/render-summary-feed-item';
 import Doi from '../../src/types/doi';
@@ -26,9 +27,9 @@ describe('render-summary-feed-item', (): void => {
 
     describe('and the article information can be retrieved', () => {
       beforeEach(async () => {
-        const getArticle: GetArticle = async () => Result.ok({
+        const getArticle: GetArticle = () => T.of(Result.ok({
           title: articleTitle,
-        });
+        }));
         const renderSummaryFeedItem = createRenderSummaryFeedItem(dummyGetActor, getArticle);
         rendered = await renderSummaryFeedItem(event);
       });
@@ -52,7 +53,7 @@ describe('render-summary-feed-item', (): void => {
 
     describe('and the article information cannot be retrieved', () => {
       beforeEach(async () => {
-        const getArticle: GetArticle = async () => Result.err('something-bad');
+        const getArticle: GetArticle = () => T.of(Result.err('something-bad'));
         const renderSummaryFeedItem = createRenderSummaryFeedItem(dummyGetActor, getArticle);
         rendered = await renderSummaryFeedItem(event);
       });
@@ -87,9 +88,9 @@ describe('render-summary-feed-item', (): void => {
 
     describe('and the article information can be retrieved', () => {
       beforeEach(async () => {
-        const getArticle: GetArticle = async () => Result.ok({
+        const getArticle: GetArticle = () => T.of(Result.ok({
           title: articleTitle,
-        });
+        }));
         const renderSummaryFeedItem = createRenderSummaryFeedItem(dummyGetActor, getArticle);
         rendered = await renderSummaryFeedItem(event);
       });
@@ -113,7 +114,7 @@ describe('render-summary-feed-item', (): void => {
 
     describe('and the article information cannot be retrieved', () => {
       beforeEach(async () => {
-        const getArticle: GetArticle = async () => Result.err('something-bad');
+        const getArticle: GetArticle = () => T.of(Result.err('something-bad'));
         const renderSummaryFeedItem = createRenderSummaryFeedItem(dummyGetActor, getArticle);
         rendered = await renderSummaryFeedItem(event);
       });

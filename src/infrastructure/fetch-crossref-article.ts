@@ -1,3 +1,4 @@
+import * as T from 'fp-ts/lib/Task';
 import { Result } from 'true-myth';
 import { DOMParser, XMLSerializer } from 'xmldom';
 import { Logger } from './logger';
@@ -7,7 +8,7 @@ import { sanitise, SanitisedHtmlFragment } from '../types/sanitised-html-fragmen
 
 type FetchCrossrefArticleError = 'not-found' | 'unavailable';
 
-export type FetchCrossrefArticle = (doi: Doi) => Promise<Result<{
+export type FetchCrossrefArticle = (doi: Doi) => T.Task<Result<{
   abstract: SanitisedHtmlFragment;
   authors: Array<string>;
   doi: Doi;
@@ -111,7 +112,7 @@ export default (getXml: GetXml, logger: Logger): FetchCrossrefArticle => {
     },
   });
 
-  return async (doi) => {
+  return (doi) => async () => {
     // TODO:
     // pipe(
     //   fetch the xml,

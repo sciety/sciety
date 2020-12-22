@@ -22,7 +22,7 @@ type ArticleDetails = {
   abstract: SanitisedHtmlFragment, // TODO Use HtmlFragment as the HTML is stripped
 };
 
-export type GetArticleDetails = (doi: Doi) => Promise<Result<ArticleDetails, 'not-found'|'unavailable'>>;
+export type GetArticleDetails = (doi: Doi) => T.Task<Result<ArticleDetails, 'not-found'|'unavailable'>>;
 
 type Component = (doi: Doi, userId: O.Option<UserId>) => Promise<Result<string, 'not-found' | 'unavailable'>>;
 type RenderFeed = (doi: Doi, userId: O.Option<UserId>) => Promise<Result<string, 'no-content'>>;
@@ -66,7 +66,7 @@ export default (
       .ap(await abstractResult)
       .ap(await pageHeaderResult)
       .ap(await feedResult)
-      .ap(await articleDetailsResult)
+      .ap(await articleDetailsResult())
       .mapErr((error) => {
         switch (error) {
           case 'not-found':

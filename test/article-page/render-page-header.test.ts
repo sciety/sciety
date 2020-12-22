@@ -1,3 +1,4 @@
+import * as T from 'fp-ts/lib/Task';
 import { JSDOM } from 'jsdom';
 import { Result } from 'true-myth';
 import createRenderPageHeader, {
@@ -8,7 +9,7 @@ import Doi from '../../src/types/doi';
 import { HtmlFragment } from '../../src/types/html-fragment';
 import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
 
-const getArticleDetails: GetArticleDetails<never> = async (doi) => (Result.ok({
+const getArticleDetails: GetArticleDetails<never> = (doi) => T.of(Result.ok({
   title: `Lorem ipsum ${doi.value}` as SanitisedHtmlFragment,
   authors: ['Gary', 'Uncle Wiggly'],
 }));
