@@ -2,7 +2,6 @@ import axios from 'axios';
 import * as T from 'fp-ts/lib/Task';
 import { Pool } from 'pg';
 import { Adapters } from './adapters';
-import createArticleCache from './article-cache';
 import createBiorxivCache from './biorxiv-cache';
 import createCommitEvents from './commit-events';
 import createEventSourceFollowListRepository from './event-sourced-follow-list-repository';
@@ -24,6 +23,7 @@ import createEndorsementsRepository from './in-memory-endorsements-repository';
 import {
   createJsonSerializer, createRTracerLogger, createStreamLogger, Logger,
 } from './logger';
+import { responseCache } from './response-cache';
 import createReviewProjections from './review-projections';
 import createSearchEuropePmc from './search-europe-pmc';
 import bootstrapEditorialCommunities from '../data/bootstrap-editorial-communities';
@@ -82,7 +82,7 @@ const createInfrastructure = async (): Promise<Adapters> => {
   const getTwitterResponse = createGetTwitterResponse(process.env.TWITTER_API_BEARER_TOKEN ?? '', logger);
 
   return {
-    fetchArticle: createArticleCache(createFetchCrossrefArticle(getXmlFromCrossrefRestApi, logger), logger),
+    fetchArticle: createFetchCrossrefArticle(responseCache(getXmlFromCrossrefRestApi, logger), logger),
     fetchReview: createFetchReview(fetchDataciteReview, fetchHypothesisAnnotation),
     fetchStaticFile: createFetchStaticFile(logger),
     searchEuropePmc,
