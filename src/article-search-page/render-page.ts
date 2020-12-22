@@ -9,9 +9,11 @@ export type RenderPage = (query: string) => Promise<Result<{
 
 export default (
   renderSearchResults: RenderSearchResults,
-): RenderPage => async (query) => Result.ok({
-  title: 'Search results',
-  content: toHtmlFragment(`
+): RenderPage => async (query) => {
+  const searchResults = await renderSearchResults(query)();
+  return Result.ok({
+    title: 'Search results',
+    content: toHtmlFragment(`
     <div class="sciety-grid sciety-grid--simple">
 
       <header class="page-header">
@@ -19,9 +21,10 @@ export default (
       </header>
 
       <section class="ui basic vertical segment">
-        ${await renderSearchResults(query)()}
+        ${searchResults}
       </section>
 
     </div>
   `),
-});
+  });
+};
