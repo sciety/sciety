@@ -1,16 +1,19 @@
 import { URL } from 'url';
+import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
-import { Maybe } from 'true-myth';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
 export type RenderFollowedEditorialCommunity = (
   editorialCommunity: EditorialCommunity,
-  userId: Maybe<UserId>,
+  userId: O.Option<UserId>,
 ) => T.Task<HtmlFragment>;
 
-type RenderFollowToggle = (userId: Maybe<UserId>, editorialcommunityid: EditorialCommunityId) => Promise<HtmlFragment>;
+type RenderFollowToggle = (
+  userId: O.Option<UserId>,
+  editorialcommunityid: EditorialCommunityId,
+) => Promise<HtmlFragment>;
 
 interface EditorialCommunity {
   id: EditorialCommunityId;

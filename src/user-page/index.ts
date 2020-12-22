@@ -1,4 +1,5 @@
 import { URL } from 'url';
+import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { pipe } from 'fp-ts/lib/function';
@@ -70,7 +71,10 @@ export default (ports: Ports): UserPage => {
 
   return async (params) => {
     const userId = toUserId(params.id ?? '');
-    const viewingUserId = params.user.map((value) => value.id);
+    const viewingUserId = pipe(
+      params.user.mapOr(O.none, (v) => O.some(v)),
+      O.map((user) => user.id),
+    );
 
     return renderPage(userId, viewingUserId);
   };

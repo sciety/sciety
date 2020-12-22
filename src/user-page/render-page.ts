@@ -1,20 +1,21 @@
+import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { pipe } from 'fp-ts/lib/function';
-import { Maybe, Result } from 'true-myth';
+import { Result } from 'true-myth';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { RenderPageError } from '../types/render-page-error';
 import { UserId } from '../types/user-id';
 
 export type RenderPage = (
   userId: UserId,
-  viewingUserId: Maybe<UserId>,
+  viewingUserId: O.Option<UserId>,
 ) => Promise<Result<{
   title: string,
   content: HtmlFragment
 }, RenderPageError>>;
 
-type Component = (userId: UserId, viewingUserId: Maybe<UserId>) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>;
+type Component = (userId: UserId, viewingUserId: O.Option<UserId>) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>;
 
 const template = (header: HtmlFragment) => (followList: HtmlFragment) => (userDisplayName:string) => (
   {
@@ -30,7 +31,7 @@ const template = (header: HtmlFragment) => (followList: HtmlFragment) => (userDi
   }
 );
 
-type RenderFollowList = (userId: UserId, viewingUserId: Maybe<UserId>) => T.Task<Result<HtmlFragment, never>>;
+type RenderFollowList = (userId: UserId, viewingUserId: O.Option<UserId>) => T.Task<Result<HtmlFragment, never>>;
 type GetUserDisplayName = (userId: UserId) => Promise<Result<string, 'not-found' | 'unavailable'>>;
 
 export default (

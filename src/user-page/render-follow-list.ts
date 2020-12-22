@@ -1,13 +1,14 @@
 import { URL } from 'url';
+import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
-import { Maybe, Result } from 'true-myth';
+import { Result } from 'true-myth';
 import { RenderFollowedEditorialCommunity } from './render-followed-editorial-community';
 import templateListItems from '../shared-components/list-items';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
-type RenderFollowList = (userId: UserId, viewingUserId: Maybe<UserId>) => T.Task<Result<HtmlFragment, never>>;
+type RenderFollowList = (userId: UserId, viewingUserId: O.Option<UserId>) => T.Task<Result<HtmlFragment, never>>;
 
 export type GetFollowedEditorialCommunities = (userId: UserId) => Promise<ReadonlyArray<{
   id: EditorialCommunityId,

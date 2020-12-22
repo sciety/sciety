@@ -1,11 +1,11 @@
+import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
-import { Maybe } from 'true-myth';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
 type RenderFollowToggle = (
-  userId: Maybe<UserId>,
+  userId: O.Option<UserId>,
   editorialCommunityId: EditorialCommunityId
 ) => Promise<HtmlFragment>;
 
@@ -15,9 +15,10 @@ export default (
   follows: Follows,
 ): RenderFollowToggle => (
   async (userId, editorialCommunityId) => {
-    const userFollows = await userId
-      .map(async (value) => follows(value, editorialCommunityId)())
-      .unwrapOrElse(async () => false);
+    const userFollows = await O.fold(
+      () => T.of(false),
+      (value: UserId) => follows(value, editorialCommunityId),
+    )(userId)();
 
     if (userFollows) {
       return toHtmlFragment(`

@@ -1,6 +1,7 @@
+import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
-import { Maybe, Result } from 'true-myth';
+import { Result } from 'true-myth';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import toUserId from '../../src/types/user-id';
 import createRenderPage from '../../src/user-page/render-page';
@@ -14,7 +15,7 @@ describe('render-page', () => {
         async () => Result.ok('someone'),
       );
 
-      const result = await renderPage(toUserId('1234'), Maybe.nothing());
+      const result = await renderPage(toUserId('1234'), O.none);
 
       expect(result.unsafelyUnwrap().title).toStrictEqual('someone');
     });
@@ -27,7 +28,7 @@ describe('render-page', () => {
         () => T.of(Result.ok(toHtmlFragment(''))),
         async () => Result.err('not-found'),
       );
-      const result = await renderPage(toUserId('1234'), Maybe.nothing());
+      const result = await renderPage(toUserId('1234'), O.none);
 
       expect(result.unsafelyUnwrapErr().type).toBe('not-found');
     });
@@ -40,7 +41,7 @@ describe('render-page', () => {
         () => T.of(Result.ok(toHtmlFragment(''))),
         async () => Result.err('unavailable'),
       );
-      const result = await renderPage(toUserId('1234'), Maybe.nothing());
+      const result = await renderPage(toUserId('1234'), O.none);
 
       expect(result.unsafelyUnwrapErr().type).toBe('unavailable');
     });
