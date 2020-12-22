@@ -1,4 +1,5 @@
 import axios from 'axios';
+import axiosRetry from 'axios-retry';
 import * as T from 'fp-ts/lib/Task';
 import { Pool } from 'pg';
 import { Adapters } from './adapters';
@@ -58,11 +59,25 @@ const createInfrastructure = async (): Promise<Adapters> => {
     const response = await axios.get<Json>(uri);
     return response.data;
   };
+
+  const retryingClient = axios.create();
+  axiosRetry(retryingClient, {
+    retryDelay: (count, error) => {
+      logger('debug', 'Retrying HTTP request', { count, error });
+      return 0;
+    },
+    retries: 3,
+  });
+  const getJsonWithRetries = async (uri: string): Promise<Json> => {
+    const response = await retryingClient.get<Json>(uri);
+    return response.data;
+  };
+
   const getXmlFromCrossrefRestApi = createGetXmlFromCrossrefRestApi(logger);
   const fetchDataset = createFetchDataset(logger);
   const fetchDataciteReview = createFetchDataciteReview(fetchDataset, logger);
   const fetchHypothesisAnnotation = createFetchHypothesisAnnotation(getJson, logger);
-  const searchEuropePmc = createSearchEuropePmc(getJson, logger);
+  const searchEuropePmc = createSearchEuropePmc(getJsonWithRetries, logger);
   const editorialCommunities = populateEditorialCommunities(logger);
   const pool = new Pool();
   await pool.query(`
