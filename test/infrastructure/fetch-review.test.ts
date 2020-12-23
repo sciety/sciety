@@ -1,4 +1,5 @@
 import { URL } from 'url';
+import * as T from 'fp-ts/lib/Task';
 import { Maybe } from 'true-myth';
 import { FetchDataciteReview } from '../../src/infrastructure/fetch-datacite-review';
 import { FetchHypothesisAnnotation } from '../../src/infrastructure/fetch-hypothesis-annotation';
@@ -18,17 +19,17 @@ const fetchedReview = {
 
 describe('fetch-review', (): void => {
   it('returns a Datacite review when given a DOI', async () => {
-    const fetchDataciteReview: FetchDataciteReview = async () => fetchedReview;
+    const fetchDataciteReview: FetchDataciteReview = () => T.of(fetchedReview);
     const fetchReview = createFetchReview(fetchDataciteReview, shouldNotBeCalled);
-    const review = await fetchReview(reviewDoi);
+    const review = await fetchReview(reviewDoi)();
 
     expect(review).toStrictEqual(fetchedReview);
   });
 
   it('returns a Hypothes.is annotation when given a Hypothes.is id', async () => {
-    const fetchHypothesisAnnotation: FetchHypothesisAnnotation = async () => fetchedReview;
+    const fetchHypothesisAnnotation: FetchHypothesisAnnotation = () => T.of(fetchedReview);
     const fetchReview = createFetchReview(shouldNotBeCalled, fetchHypothesisAnnotation);
-    const review = await fetchReview(new HypothesisAnnotationId('fhAtGNVDEemkyCM-sRPpVQ'));
+    const review = await fetchReview(new HypothesisAnnotationId('fhAtGNVDEemkyCM-sRPpVQ'))();
 
     expect(review).toStrictEqual(fetchedReview);
   });

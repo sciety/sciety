@@ -19,7 +19,7 @@ describe('fetch-hypothesis-annotation', (): void => {
       },
     });
     const fetchHypothesisAnnotation = createFetchHypothesisAnnotation(getJson, dummyLogger);
-    const review = await fetchHypothesisAnnotation(hypothesisAnnotationId);
+    const review = await fetchHypothesisAnnotation(hypothesisAnnotationId)();
 
     const expected: Review = {
       publicationDate: Maybe.just(new Date(date)),
@@ -43,7 +43,7 @@ describe('fetch-hypothesis-annotation', (): void => {
       },
     });
     const fetchHypothesisAnnotation = createFetchHypothesisAnnotation(getJson, dummyLogger);
-    const review = await fetchHypothesisAnnotation(hypothesisAnnotationId);
+    const review = await fetchHypothesisAnnotation(hypothesisAnnotationId)();
 
     expect(review.fullText.unsafelyUnwrap()).toContain(expected);
   });
@@ -58,7 +58,7 @@ describe('fetch-hypothesis-annotation', (): void => {
       },
     });
     const fetchHypothesisAnnotation = createFetchHypothesisAnnotation(getJson, dummyLogger);
-    const review = await fetchHypothesisAnnotation(hypothesisAnnotationId);
+    const review = await fetchHypothesisAnnotation(hypothesisAnnotationId)();
 
     expect(review.fullText.unsafelyUnwrap()).toStrictEqual(input);
   });

@@ -19,7 +19,7 @@ describe('fetch-datacite-review', (): void => {
           .addOut(schema.description, 'The full text')
       );
       const fetchReview = createFetchDataciteReview(fetchDataset, dummyLogger);
-      const review = await fetchReview(reviewDoi);
+      const review = await fetchReview(reviewDoi)();
 
       expect(review).toMatchObject({
         fullText: Maybe.just('The full text'),
@@ -35,7 +35,7 @@ describe('fetch-datacite-review', (): void => {
           .addOut(dcterms.date, literal('2020-02-20', schema.Date))
       );
       const fetchReview = createFetchDataciteReview(fetchDataset, dummyLogger);
-      const review = await fetchReview(reviewDoi);
+      const review = await fetchReview(reviewDoi)();
 
       expect(review.publicationDate.unsafelyUnwrap()).toStrictEqual(new Date('2020-02-20'));
     });
@@ -47,7 +47,7 @@ describe('fetch-datacite-review', (): void => {
         clownface({ dataset: datasetFactory(), term: iri })
       );
       const fetchReview = createFetchDataciteReview(fetchDataset, dummyLogger);
-      const review = await fetchReview(reviewDoi);
+      const review = await fetchReview(reviewDoi)();
 
       expect(review.fullText.isNothing()).toBe(true);
     });
@@ -59,7 +59,7 @@ describe('fetch-datacite-review', (): void => {
         throw new FetchDatasetError('Something went wrong.');
       };
       const fetchReview = createFetchDataciteReview(fetchDataset, dummyLogger);
-      const review = await fetchReview(reviewDoi);
+      const review = await fetchReview(reviewDoi)();
 
       expect(review).toHaveProperty('url');
     });

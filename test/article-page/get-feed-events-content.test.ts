@@ -1,4 +1,5 @@
 import { URL } from 'url';
+import * as T from 'fp-ts/lib/Task';
 import { Maybe } from 'true-myth';
 import createGetFeedEventsContent, { GetEditorialCommunity, GetFeedEvents, GetReview } from '../../src/article-page/get-feed-events-content';
 import Doi from '../../src/types/doi';
@@ -22,7 +23,7 @@ describe('get-feed-events-content', () => {
           occurredAt: new Date(),
         },
       ];
-      const getReview: GetReview = async () => ({
+      const getReview: GetReview = () => T.of({
         fullText: Maybe.just(toHtmlFragment('some text')),
         url: new URL('http://example.com'),
       });

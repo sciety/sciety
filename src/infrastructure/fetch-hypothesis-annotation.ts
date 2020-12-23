@@ -1,4 +1,5 @@
 import { URL } from 'url';
+import * as T from 'fp-ts/lib/Task';
 import { Remarkable } from 'remarkable';
 import { linkify } from 'remarkable/linkify';
 import { Maybe } from 'true-myth';
@@ -10,7 +11,7 @@ import { Json, JsonCompatible } from '../types/json';
 
 export type GetJson = (uri: string) => Promise<Json>;
 
-export type FetchHypothesisAnnotation = (id: HypothesisAnnotationId) => Promise<Review>;
+export type FetchHypothesisAnnotation = (id: HypothesisAnnotationId) => T.Task<Review>;
 
 type HypothesisResponse = JsonCompatible<{
   created: string;
@@ -22,7 +23,7 @@ type HypothesisResponse = JsonCompatible<{
 
 export default (getJson: GetJson, logger: Logger): FetchHypothesisAnnotation => {
   const converter = new Remarkable({ html: true }).use(linkify);
-  return async (id) => {
+  return (id) => async () => {
     const uri = `https://api.hypothes.is/api/annotations/${id.value}`;
 
     logger('debug', 'Fetching review from Hypothesis', { uri });

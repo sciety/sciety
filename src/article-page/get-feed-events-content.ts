@@ -1,4 +1,5 @@
 import { URL } from 'url';
+import * as T from 'fp-ts/lib/Task';
 import { Maybe } from 'true-myth';
 import { FeedItem, GetFeedItems } from './render-feed';
 import Doi from '../types/doi';
@@ -25,7 +26,7 @@ type FeedEvent = ReviewEvent | ArticleVersionEvent;
 
 export type GetFeedEvents = (articleDoi: Doi) => Promise<ReadonlyArray<FeedEvent>>;
 
-export type GetReview = (id: ReviewId) => Promise<{
+export type GetReview = (id: ReviewId) => T.Task<{
   fullText: Maybe<HtmlFragment>;
   url: URL;
 }>;
@@ -45,7 +46,7 @@ export default (
         }
         const [editorialCommunity, review] = await Promise.all([
           getEditorialCommunity(feedEvent.editorialCommunityId),
-          getReview(feedEvent.reviewId),
+          getReview(feedEvent.reviewId)(),
         ]);
 
         return {
