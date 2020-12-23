@@ -15,7 +15,7 @@ import EditorialCommunityId from '../types/editorial-community-id';
 import { User } from '../types/user';
 import toUserId, { UserId } from '../types/user-id';
 
-type FetchEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => Promise<Maybe<{
+type FetchEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.Task<Maybe<{
   name: string;
   avatar: URL;
 }>>;
@@ -38,7 +38,7 @@ type UserPage = (params: Params) => ReturnType<RenderPage>;
 
 export default (ports: Ports): UserPage => {
   const getEditorialCommunity: GetEditorialCommunity = (editorialCommunityId) => async () => (
-    (await ports.getEditorialCommunity(editorialCommunityId)).unsafelyUnwrap()
+    (await ports.getEditorialCommunity(editorialCommunityId)()).unsafelyUnwrap()
   );
 
   const renderFollowToggle = createRenderFollowToggle(ports.follows);

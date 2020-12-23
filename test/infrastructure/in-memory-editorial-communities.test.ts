@@ -21,11 +21,11 @@ describe('in-memory-editorial-communities', () => {
 
   describe('lookup', () => {
     it('returns nothing when the editorial community does not exist', async () => {
-      expect((await repository.lookup(new EditorialCommunityId('no-such-thing'))).isNothing()).toBe(true);
+      expect((await repository.lookup(new EditorialCommunityId('no-such-thing'))()).isNothing()).toBe(true);
     });
 
     it('returns the editorial community when it does exist', async () => {
-      const actual = await repository.lookup(new EditorialCommunityId(editorialCommunityId.value));
+      const actual = await repository.lookup(new EditorialCommunityId(editorialCommunityId.value))();
 
       expect(actual.isNothing()).toBe(false);
     });

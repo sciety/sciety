@@ -24,7 +24,7 @@ type EditorialCommunity = {
   descriptionPath: string;
 };
 
-type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => Promise<Maybe<EditorialCommunity>>;
+type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.Task<Maybe<EditorialCommunity>>;
 
 type GetAllEditorialCommunities = T.Task<Array<EditorialCommunity>>;
 

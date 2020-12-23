@@ -19,7 +19,7 @@ import { FetchExternalArticle } from '../types/fetch-external-article';
 import { User } from '../types/user';
 import { UserId } from '../types/user-id';
 
-type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => Promise<Maybe<{
+type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.Task<Maybe<{
   name: string;
   avatar: URL;
 }>>;
@@ -40,7 +40,7 @@ type HomePage = (params: Params) => ReturnType<RenderPage>;
 
 export default (ports: Ports): HomePage => {
   const getActorAdapter: GetActor = async (id) => {
-    const editorialCommunity = (await ports.getEditorialCommunity(id)).unsafelyUnwrap();
+    const editorialCommunity = (await ports.getEditorialCommunity(id)()).unsafelyUnwrap();
     return {
       name: editorialCommunity.name,
       imageUrl: editorialCommunity.avatar.toString(),

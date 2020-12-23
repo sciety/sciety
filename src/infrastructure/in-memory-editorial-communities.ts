@@ -1,3 +1,4 @@
+import * as T from 'fp-ts/lib/Task';
 import { Maybe } from 'true-myth';
 import { Logger } from './logger';
 import { EditorialCommunity } from '../types/editorial-community';
@@ -13,9 +14,9 @@ export default (logger: Logger): EditorialCommunityRepository => {
     },
 
     all: async () => data,
-    lookup: async (id) => {
+    lookup: (id) => {
       const candidate = data.find((ec) => ec.id.value === id.value);
-      return Maybe.of(candidate);
+      return T.of(Maybe.of(candidate));
     },
   };
   return result;

@@ -42,7 +42,7 @@ type GetArticleDetailsForAbstract = (doi: Doi) => T.Task<Result<{ abstract: Sani
 interface Ports {
   fetchArticle: GetArticleDetailsForPage & GetArticleDetailsForHeader<'not-found'|'unavailable'> & GetArticleDetailsForAbstract;
   fetchReview: GetReview;
-  getEditorialCommunity: (editorialCommunityId: EditorialCommunityId) => Promise<Maybe<{
+  getEditorialCommunity: (editorialCommunityId: EditorialCommunityId) => T.Task<Maybe<{
     name: string;
     avatar: URL;
   }>>,
@@ -70,7 +70,7 @@ export default (ports: Ports): ArticlePage => {
     (await ports.fetchArticle(doi)()).map((article) => article.abstract)
   ));
   const getEditorialCommunity: GetEditorialCommunity = async (editorialCommunityId) => (
-    (await ports.getEditorialCommunity(editorialCommunityId)).unsafelyUnwrap()
+    (await ports.getEditorialCommunity(editorialCommunityId)()).unsafelyUnwrap()
   );
   const getFeedEventsContent = createHandleArticleVersionErrors(
     createGetFeedEventsContent(

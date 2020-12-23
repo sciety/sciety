@@ -21,7 +21,7 @@ import { User } from '../types/user';
 
 type FetchStaticFile = (filename: string) => T.Task<string>;
 
-type FetchEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => Promise<Maybe<{
+type FetchEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.Task<Maybe<{
   name: string;
   avatar: URL;
   descriptionPath: string;
@@ -37,7 +37,7 @@ interface Ports {
 
 const buildRenderPageHeader = (ports: Ports): RenderPageHeader => {
   const getEditorialCommunity: GetEditorialCommunity = (editorialCommunityId) => async () => {
-    const editorialCommunity = (await ports.getEditorialCommunity(editorialCommunityId))
+    const editorialCommunity = (await ports.getEditorialCommunity(editorialCommunityId)())
       .unwrapOrElse(() => {
         throw new NotFound(`${editorialCommunityId.value} not found`);
       });
@@ -49,7 +49,7 @@ const buildRenderPageHeader = (ports: Ports): RenderPageHeader => {
 const buildRenderDescription = (ports: Ports): RenderDescription => {
   const converter = new Remarkable({ html: true });
   const getEditorialCommunityDescription: GetEditorialCommunityDescription = (editorialCommunityId) => async () => {
-    const editorialCommunity = (await ports.getEditorialCommunity(editorialCommunityId))
+    const editorialCommunity = (await ports.getEditorialCommunity(editorialCommunityId)())
       .unwrapOrElse(() => {
         throw new NotFound(`${editorialCommunityId.value} not found`);
       });
@@ -61,7 +61,7 @@ const buildRenderDescription = (ports: Ports): RenderDescription => {
 
 const buildRenderFeed = (ports: Ports): RenderFeed => {
   const getActorAdapter: GetActor = async (id) => {
-    const editorialCommunity = (await ports.getEditorialCommunity(id)).unsafelyUnwrap();
+    const editorialCommunity = (await ports.getEditorialCommunity(id)()).unsafelyUnwrap();
     return {
       name: editorialCommunity.name,
       imageUrl: editorialCommunity.avatar.toString(),
@@ -97,7 +97,7 @@ export default (ports: Ports): EditorialCommunityPage => {
     renderFeed,
     renderFollowers,
     // TODO: do not unsafelyUnwrap()
-    async (id) => (await ports.getEditorialCommunity(id)).unwrapOrElse(() => {
+    async (id) => (await ports.getEditorialCommunity(id)()).unwrapOrElse(() => {
       throw new NotFound(`${id.value} not found`);
     }).name,
   );
