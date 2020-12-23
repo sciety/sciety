@@ -1,16 +1,19 @@
 import * as T from 'fp-ts/lib/Task';
+import { pipe } from 'fp-ts/lib/function';
 import { Result } from 'true-myth';
 import Doi from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
-export type GetArticleAbstract<E> = (doi: Doi) => Promise<Result<SanitisedHtmlFragment, E>>;
+export type GetArticleAbstract<E> = (doi: Doi) => T.Task<Result<SanitisedHtmlFragment, E>>;
 
 type RenderArticleAbstract<E> = (doi: Doi) => T.Task<Result<HtmlFragment, E>>;
 
 export default <E> (getArticleAbstract: GetArticleAbstract<E>): RenderArticleAbstract<E> => (
-  (doi) => async () => (
-    (await getArticleAbstract(doi)).map((articleAbstract) => toHtmlFragment(`
+  (doi) => pipe(
+    doi,
+    getArticleAbstract,
+    T.map((result) => result.map((articleAbstract) => toHtmlFragment(`
       <section class="article-abstract" role="doc-abstract">
         <h2>
           Abstract
@@ -20,6 +23,6 @@ export default <E> (getArticleAbstract: GetArticleAbstract<E>): RenderArticleAbs
             Read the full article
           </a>
       </section>
-    `))
+    `))),
   )
 );

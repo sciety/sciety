@@ -1,7 +1,7 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
-import { pipe } from 'fp-ts/lib/function';
+import { flow, pipe } from 'fp-ts/lib/function';
 import { Maybe, Result } from 'true-myth';
 import createComposeFeedEvents from './compose-feed-events';
 import ensureBiorxivDoi from './ensure-biorxiv-doi';
@@ -66,9 +66,9 @@ type ArticlePage = (params: Params) => ReturnType<RenderPage>;
 
 export default (ports: Ports): ArticlePage => {
   const renderPageHeader = createRenderPageHeader(ports.fetchArticle);
-  const renderAbstract = createRenderArticleAbstract(async (doi) => (
-    (await ports.fetchArticle(doi)()).map((article) => article.abstract)
-  ));
+  const renderAbstract = createRenderArticleAbstract(
+    flow(ports.fetchArticle, T.map((result) => result.map((article) => article.abstract))),
+  );
   const getEditorialCommunity: GetEditorialCommunity = async (editorialCommunityId) => (
     (await ports.getEditorialCommunity(editorialCommunityId)()).unsafelyUnwrap()
   );
