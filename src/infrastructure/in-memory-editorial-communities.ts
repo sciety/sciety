@@ -13,7 +13,8 @@ export default (logger: Logger): EditorialCommunityRepository => {
       logger('info', 'Editorial community added', { editorialCommunity });
     },
 
-    all: async () => data,
+    all: T.of(data),
+
     lookup: (id) => {
       const candidate = data.find((ec) => ec.id.value === id.value);
       return T.of(Maybe.of(candidate));

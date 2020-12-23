@@ -5,6 +5,6 @@ import EditorialCommunityId from './editorial-community-id';
 
 export default interface EditorialCommunityRepository {
   add(editorialCommunity: EditorialCommunity): Promise<void>;
-  all(): Promise<Array<EditorialCommunity>>;
+  all: T.Task<Array<EditorialCommunity>>;
   lookup(id: EditorialCommunityId): T.Task<Maybe<EditorialCommunity>>;
 }
