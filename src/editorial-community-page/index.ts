@@ -60,7 +60,7 @@ const buildRenderDescription = (ports: Ports): RenderDescription => {
 };
 
 const buildRenderFeed = (ports: Ports): RenderFeed => {
-  const getActorAdapter: GetActor = async (id) => {
+  const getActorAdapter: GetActor = (id) => async () => {
     const editorialCommunity = (await ports.getEditorialCommunity(id)()).unsafelyUnwrap();
     return {
       name: editorialCommunity.name,

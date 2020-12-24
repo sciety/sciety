@@ -10,7 +10,7 @@ describe('render-summary-feed-item', (): void => {
   const articleTitle = 'the title' as SanitisedHtmlFragment;
   const arbitraryActorId = new EditorialCommunityId('');
   const arbitraryArticleId = new Doi('10.5281/zenodo.3678326');
-  const dummyGetActor: GetActor = async () => ({
+  const dummyGetActor: GetActor = () => T.of({
     url: '',
     name: 'dummyActorName',
     imageUrl: '',

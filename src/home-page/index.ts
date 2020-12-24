@@ -39,7 +39,7 @@ interface Params {
 type HomePage = (params: Params) => ReturnType<RenderPage>;
 
 export default (ports: Ports): HomePage => {
-  const getActorAdapter: GetActor = async (id) => {
+  const getActorAdapter: GetActor = (id) => async () => {
     const editorialCommunity = (await ports.getEditorialCommunity(id)()).unsafelyUnwrap();
     return {
       name: editorialCommunity.name,

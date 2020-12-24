@@ -61,7 +61,7 @@ const createRenderSummaryFeedItemSummary = (getArticle: GetArticle): RenderSumma
   };
 };
 
-export type GetActor = (id: EditorialCommunityId) => Promise<Actor>;
+export type GetActor = (id: EditorialCommunityId) => T.Task<Actor>;
 
 export type GetArticle = (id: Doi) => T.Task<Result<Article, unknown>>;
 
@@ -72,7 +72,7 @@ export default (
   const renderSummaryFeedItemSummary = createRenderSummaryFeedItemSummary(getArticle);
 
   return async (event) => {
-    const actor: Actor = await getActor(event.editorialCommunityId);
+    const actor: Actor = await getActor(event.editorialCommunityId)();
     return toHtmlFragment(`
       <div class="summary-feed-item">
         <img src="${actor.imageUrl}" alt="" class="summary-feed-item__avatar">
