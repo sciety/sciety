@@ -24,13 +24,13 @@ type ArticleDetails = {
 
 export type GetArticleDetails = (doi: Doi) => T.Task<Result<ArticleDetails, 'not-found'|'unavailable'>>;
 
-type Component = (doi: Doi, userId: O.Option<UserId>) => Promise<Result<string, 'not-found' | 'unavailable'>>;
+type Component = (doi: Doi) => T.Task<Result<string, 'not-found' | 'unavailable'>>;
 type RenderFeed = (doi: Doi, userId: O.Option<UserId>) => Promise<Result<string, 'no-content'>>;
 export type RenderPage = (doi: Doi, userId: O.Option<UserId>) => Promise<Result<Page, RenderPageError>>;
 
 export default (
   renderPageHeader: Component,
-  renderAbstract: (doi: Doi) => T.Task<Result<HtmlFragment, 'not-found' | 'unavailable'>>,
+  renderAbstract: Component,
   renderFeed: RenderFeed,
   getArticleDetails: GetArticleDetails,
 ): RenderPage => {
@@ -56,7 +56,7 @@ export default (
 
   return async (doi, userId) => {
     const abstractResult = renderAbstract(doi)();
-    const pageHeaderResult = renderPageHeader(doi, userId);
+    const pageHeaderResult = renderPageHeader(doi)();
     const feedResult = renderFeed(doi, userId)
       .then((feed) => (
         feed.or(Result.ok<string, never>(''))

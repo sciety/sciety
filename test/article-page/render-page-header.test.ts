@@ -20,7 +20,7 @@ describe('render-page-header component', (): void => {
 
   beforeEach(async () => {
     renderPageHeader = createRenderPageHeader(getArticleDetails);
-    rendered = (await renderPageHeader(new Doi('10.1101/815689'))).unsafelyUnwrap();
+    rendered = (await renderPageHeader(new Doi('10.1101/815689'))()).unsafelyUnwrap();
   });
 
   it('renders inside an header tag', () => {
