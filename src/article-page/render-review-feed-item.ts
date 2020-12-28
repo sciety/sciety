@@ -23,75 +23,80 @@ export type ReviewFeedItem = {
   fullText: Maybe<SanitisedHtmlFragment>;
 };
 
-const renderAvatar = (url: URL): string => toHtmlFragment(`
-  <img class="article-feed__item__avatar" src="${url.toString()}" alt="">
+const avatar = (review: ReviewFeedItem): HtmlFragment => toHtmlFragment(`
+  <img class="article-feed__item__avatar" src="${review.editorialCommunityAvatar.toString()}" alt="">
 `);
 
-export default (
-  teaserChars: number,
-  renderReviewResponses: RenderReviewResponses,
-): RenderReviewFeedItem => async (review, userId) => {
-  const reviewResponsesHtml = await renderReviewResponses(review.id, userId);
-  const eventMetadata = toHtmlFragment(`
-    ${templateDate(review.occurredAt, 'article-feed__item__date')}
-    <div class="article-feed__item__title">
-      Reviewed by
-      <a href="/editorial-communities/${review.editorialCommunityId.value}">
-        ${review.editorialCommunityName}
-      </a>
-    </div>
-  `);
-  const sourceLink = toHtmlFragment(`
-    <a href="${review.source.toString()}" class="article-feed__item__read_more article-call-to-action-link">
-      Read the original source
+const eventMetadata = (review: ReviewFeedItem): HtmlFragment => toHtmlFragment(`
+  ${templateDate(review.occurredAt, 'article-feed__item__date')}
+  <div class="article-feed__item__title">
+    Reviewed by
+    <a href="/editorial-communities/${review.editorialCommunityId.value}">
+      ${review.editorialCommunityName}
     </a>
-  `);
-  if (review.fullText.isNothing()) {
-    return toHtmlFragment(`
-      <div class="article-feed__item_contents">
-        ${renderAvatar(review.editorialCommunityAvatar)}
-        <div class="article-feed__item_body">
-          ${eventMetadata}
-          <div>
-            ${sourceLink}
-          </div>
-        </div>
-      </div>
-      ${reviewResponsesHtml}
-    `);
-  }
+  </div>
+`);
 
+const sourceLink = (review: ReviewFeedItem): HtmlFragment => toHtmlFragment(`
+  <a href="${review.source.toString()}" class="article-feed__item__read_more article-call-to-action-link">
+    Read the original source
+  </a>
+`);
+
+const renderWithText = (teaserChars: number, review: ReviewFeedItem) => (responses: HtmlFragment): HtmlFragment => {
   const fullText = review.fullText.unsafelyUnwrap();
   const teaserText = clip(fullText, teaserChars);
   if (teaserText === fullText) {
     return toHtmlFragment(`
       <div class="article-feed__item_contents">
-        ${renderAvatar(review.editorialCommunityAvatar)}
+        ${avatar(review)}
         <div class="article-feed__item_body">
-          ${eventMetadata}
+          ${eventMetadata(review)}
           <div>
             ${fullText}
-            ${sourceLink}
+            ${sourceLink(review)}
           </div>
         </div>
       </div>
-      ${reviewResponsesHtml}
+      ${responses}
     `);
   }
   return toHtmlFragment(`
     <div class="article-feed__item_contents" id="${review.id.toString()}">
-      ${renderAvatar(review.editorialCommunityAvatar)}
+      ${avatar(review)}
       <div class="article-feed__item_body" data-behaviour="collapse_to_teaser">
-        ${eventMetadata}
+        ${eventMetadata(review)}
         <div class="hidden" data-teaser>
           ${teaserText}
         </div>
         <div data-full-text>
           ${fullText}
-          ${sourceLink}
+          ${sourceLink(review)}
         </div>
       </div>
     </div>
-    ${reviewResponsesHtml}
+    ${responses}
   `);
+};
+
+export default (
+  teaserChars: number,
+  renderReviewResponses: RenderReviewResponses,
+): RenderReviewFeedItem => async (review, userId) => {
+  const responses = await renderReviewResponses(review.id, userId);
+  if (review.fullText.isNothing()) {
+    return toHtmlFragment(`
+      <div class="article-feed__item_contents">
+        ${avatar(review)}
+        <div class="article-feed__item_body">
+          ${eventMetadata(review)}
+          <div>
+            ${sourceLink(review)}
+          </div>
+        </div>
+      </div>
+      ${responses}
+    `);
+  }
+  return renderWithText(teaserChars, review)(responses);
 };
