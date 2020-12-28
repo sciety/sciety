@@ -83,7 +83,7 @@ export default (
   teaserChars: number,
   renderReviewResponses: RenderReviewResponses,
 ): RenderReviewFeedItem => async (review, userId) => {
-  const responses = await renderReviewResponses(review.id, userId);
+  const responses = await renderReviewResponses(review.id, userId)();
   if (review.fullText.isNothing()) {
     return toHtmlFragment(`
       <div class="article-feed__item_contents">

@@ -5,7 +5,7 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { ReviewId } from '../types/review-id';
 import { UserId } from '../types/user-id';
 
-export type RenderReviewResponses = (reviewId: ReviewId, userId: O.Option<UserId>) => Promise<HtmlFragment>;
+export type RenderReviewResponses = (reviewId: ReviewId, userId: O.Option<UserId>) => T.Task<HtmlFragment>;
 
 // TODO Try introducing a Counter type to prevent impossible numbers (e.g. -1, 2.5)
 export type CountReviewResponses = (reviewId: ReviewId) => T.Task<{ helpfulCount: number, notHelpfulCount: number }>;
@@ -15,7 +15,7 @@ export default (
   countReviewResponses: CountReviewResponses,
   getUserReviewResponse: GetUserReviewResponse,
 ): RenderReviewResponses => (
-  async (reviewId, userId) => {
+  (reviewId, userId) => async () => {
     const { helpfulCount, notHelpfulCount } = await countReviewResponses(reviewId)();
     const current = await getUserReviewResponse(reviewId, userId);
 

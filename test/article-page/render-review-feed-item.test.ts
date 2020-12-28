@@ -1,5 +1,6 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/lib/Option';
+import * as T from 'fp-ts/lib/Task';
 import { JSDOM } from 'jsdom';
 import { Maybe } from 'true-myth';
 import createRenderReviewFeedItem from '../../src/article-page/render-review-feed-item';
@@ -12,7 +13,7 @@ describe('render-review-feed-item', () => {
   describe('when the review has long full text', () => {
     it('renders the full text', async () => {
       const fullText = 'A very long review';
-      const renderReviewFeedItem = createRenderReviewFeedItem(6, async () => toHtmlFragment(''));
+      const renderReviewFeedItem = createRenderReviewFeedItem(6, () => T.of(toHtmlFragment('')));
 
       const rendered = JSDOM.fragment(
         await renderReviewFeedItem({
@@ -42,7 +43,7 @@ describe('render-review-feed-item', () => {
     it('renders without a teaser', async () => {
       const fullText = 'tldr';
       const source = 'http://example.com/source';
-      const renderReviewFeedItem = createRenderReviewFeedItem(12, async () => toHtmlFragment(''));
+      const renderReviewFeedItem = createRenderReviewFeedItem(12, () => T.of(toHtmlFragment('')));
 
       const rendered = JSDOM.fragment(
         await renderReviewFeedItem({
@@ -73,7 +74,7 @@ describe('render-review-feed-item', () => {
   describe('when the review has no full text', () => {
     it('renders without a teaser', async () => {
       const source = 'http://example.com/source';
-      const renderReviewFeedItem = createRenderReviewFeedItem(6, async () => toHtmlFragment(''));
+      const renderReviewFeedItem = createRenderReviewFeedItem(6, () => T.of(toHtmlFragment('')));
 
       const rendered = JSDOM.fragment(
         await renderReviewFeedItem({
