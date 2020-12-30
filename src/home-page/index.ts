@@ -2,20 +2,21 @@ import { URL } from 'url';
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import { pipe } from 'fp-ts/lib/function';
-import { Maybe } from 'true-myth';
+import { Maybe, Result } from 'true-myth';
 import createGetMostRecentEvents, { GetAllEvents } from './get-most-recent-events';
 import createProjectIsFollowingSomething from './project-is-following-something';
 import createRenderEditorialCommunities, { GetAllEditorialCommunities } from './render-editorial-communities';
 import createRenderEditorialCommunity from './render-editorial-community';
 import createRenderFeed, { IsFollowingSomething } from './render-feed';
 import createRenderFollowToggle from './render-follow-toggle';
-import createRenderPage, { RenderPage } from './render-page';
+import createRenderPage from './render-page';
 import renderPageHeader from './render-page-header';
 import renderSearchForm from './render-search-form';
 import createRenderSummaryFeedItem, { GetActor } from '../shared-components/render-summary-feed-item';
 import createRenderSummaryFeedList from '../shared-components/render-summary-feed-list';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { FetchExternalArticle } from '../types/fetch-external-article';
+import { HtmlFragment } from '../types/html-fragment';
 import { User } from '../types/user';
 import { UserId } from '../types/user-id';
 
@@ -36,7 +37,10 @@ interface Params {
   user: Maybe<User>,
 }
 
-type HomePage = (params: Params) => ReturnType<RenderPage>;
+type HomePage = (params: Params) => Promise<Result<{
+  title: string,
+  content: HtmlFragment
+}, never>>;
 
 export default (ports: Ports): HomePage => {
   const getActorAdapter: GetActor = (id) => async () => {
@@ -80,6 +84,6 @@ export default (ports: Ports): HomePage => {
       O.map((user) => user.id),
     );
 
-    return renderPage(userId);
+    return renderPage(userId)();
   };
 };
