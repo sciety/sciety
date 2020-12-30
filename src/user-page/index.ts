@@ -3,8 +3,9 @@ import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { pipe } from 'fp-ts/lib/function';
-import { Maybe, Result } from 'true-myth';
+import { Maybe } from 'true-myth';
 import createGetFollowedEditorialCommunitiesFromIds, { GetEditorialCommunity } from './get-followed-editorial-communities-from-ids';
+import { getUserDisplayName } from './get-user-display-name';
 import createProjectFollowedEditorialCommunityIds, { GetAllEvents } from './project-followed-editorial-community-ids';
 import createRenderFollowList from './render-follow-list';
 import createRenderFollowToggle, { Follows } from './render-follow-toggle';
@@ -47,16 +48,6 @@ export default (ports: Ports): UserPage => {
     createProjectFollowedEditorialCommunityIds(ports.getAllEvents),
     getEditorialCommunity,
   );
-  const wrapGetUserDetails = async (userId: UserId): Promise<Result<UserDetails, 'not-found' | 'unavailable'>> => (
-    pipe(
-      userId,
-      ports.getUserDetails,
-      TE.fold(
-        (error) => T.of(Result.err<UserDetails, 'not-found' | 'unavailable'>(error)),
-        (userDetails) => T.of(Result.ok<UserDetails, 'not-found' | 'unavailable'>(userDetails)),
-      ),
-    )()
-  );
   const renderHeader = createRenderHeader(ports.getUserDetails);
   const renderFollowList = createRenderFollowList(
     getFollowedEditorialCommunities,
@@ -65,8 +56,7 @@ export default (ports: Ports): UserPage => {
   const renderPage = createRenderPage(
     renderHeader,
     renderFollowList,
-    // TODO for goodness sake don't do this for longer than you have to - doubles Twitter API calls unnecessarily
-    async (userId) => (await wrapGetUserDetails(userId)).map(({ displayName }) => displayName),
+    getUserDisplayName(ports.getUserDetails),
   );
 
   return async (params) => {

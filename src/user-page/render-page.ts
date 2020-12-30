@@ -32,7 +32,7 @@ const template = (header: HtmlFragment) => (followList: HtmlFragment) => (userDi
 );
 
 type RenderFollowList = (userId: UserId, viewingUserId: O.Option<UserId>) => T.Task<Result<HtmlFragment, never>>;
-type GetUserDisplayName = (userId: UserId) => Promise<Result<string, 'not-found' | 'unavailable'>>;
+type GetUserDisplayName = (userId: UserId) => TE.TaskEither<'not-found' | 'unavailable', string>;
 
 export default (
   renderHeader: Component,
@@ -47,7 +47,15 @@ export default (
     ),
   )();
   const followList = renderFollowList(userId, viewingUserId);
-  const userDisplayName = getUserDisplayName(userId);
+  const userDisplayName = pipe(
+    userId,
+    getUserDisplayName,
+    TE.map(toHtmlFragment),
+    TE.fold(
+      (error) => T.of(Result.err<HtmlFragment, 'not-found' | 'unavailable'>(error)),
+      (html) => T.of(Result.ok<HtmlFragment, 'not-found' | 'unavailable'>(html)),
+    ),
+  )();
 
   return Result.ok(template)
     .ap(await header)

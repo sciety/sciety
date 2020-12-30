@@ -12,7 +12,7 @@ describe('render-page', () => {
       const renderPage = createRenderPage(
         () => TE.right(toHtmlFragment('')),
         () => T.of(Result.ok(toHtmlFragment(''))),
-        async () => Result.ok('someone'),
+        () => TE.right('someone'),
       );
 
       const result = await renderPage(toUserId('1234'), O.none);
@@ -26,7 +26,7 @@ describe('render-page', () => {
       const renderPage = createRenderPage(
         () => TE.right(toHtmlFragment('')),
         () => T.of(Result.ok(toHtmlFragment(''))),
-        async () => Result.err('not-found'),
+        () => TE.left('not-found'),
       );
       const result = await renderPage(toUserId('1234'), O.none);
 
@@ -39,7 +39,7 @@ describe('render-page', () => {
       const renderPage = createRenderPage(
         () => TE.right(toHtmlFragment('')),
         () => T.of(Result.ok(toHtmlFragment(''))),
-        async () => Result.err('unavailable'),
+        () => TE.left('unavailable'),
       );
       const result = await renderPage(toUserId('1234'), O.none);
 
