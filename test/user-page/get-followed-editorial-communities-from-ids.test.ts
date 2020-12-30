@@ -21,7 +21,7 @@ describe('get-followed-editorial-communities-from-ids adapter', () => {
       getFollowedEditorialCommunityIds,
       getEditorialCommunity,
     );
-    const editorialCommunities = await adapter(userId('someone'));
+    const editorialCommunities = await adapter(userId('someone'))();
 
     expect(editorialCommunities).toHaveLength(3);
   });

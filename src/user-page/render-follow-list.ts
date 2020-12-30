@@ -10,7 +10,7 @@ import { UserId } from '../types/user-id';
 
 type RenderFollowList = (userId: UserId, viewingUserId: O.Option<UserId>) => T.Task<Result<HtmlFragment, never>>;
 
-export type GetFollowedEditorialCommunities = (userId: UserId) => Promise<ReadonlyArray<{
+export type GetFollowedEditorialCommunities = (userId: UserId) => T.Task<ReadonlyArray<{
   id: EditorialCommunityId,
   name: string,
   avatar: URL,
@@ -21,7 +21,7 @@ export default (
   renderFollowedEditorialCommunity: RenderFollowedEditorialCommunity,
 ): RenderFollowList => (
   (userId, viewingUserId) => async () => {
-    const list = await Promise.all((await getFollowedEditorialCommunities(userId))
+    const list = await Promise.all((await getFollowedEditorialCommunities(userId)())
       .map(async (editorialCommunity) => renderFollowedEditorialCommunity(editorialCommunity, viewingUserId)()));
 
     let renderedFollowList: HtmlFragment;

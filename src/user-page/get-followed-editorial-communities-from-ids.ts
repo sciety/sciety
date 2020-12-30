@@ -1,5 +1,6 @@
 import { URL } from 'url';
 import * as T from 'fp-ts/lib/Task';
+import { pipe } from 'fp-ts/lib/function';
 import { GetFollowedEditorialCommunities } from './render-follow-list';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { UserId } from '../types/user-id';
@@ -14,12 +15,17 @@ export type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId)
 export default (
   getFollowedEditorialCommunityIds: GetFollowedEditorialCommunityIds,
   getEditorialCommunity: GetEditorialCommunity,
-): GetFollowedEditorialCommunities => (
-  async (userId) => {
-    const list = await getFollowedEditorialCommunityIds(userId)();
-    return Promise.all(list.map(async (editorialCommunityId) => ({
-      id: editorialCommunityId,
-      ...await getEditorialCommunity(editorialCommunityId)(),
-    })));
-  }
+): GetFollowedEditorialCommunities => (userId) => (
+  pipe(
+    userId,
+    getFollowedEditorialCommunityIds,
+    T.chain(T.traverseArray((editorialCommunityId) => pipe(
+      editorialCommunityId,
+      getEditorialCommunity,
+      T.map((det) => ({
+        id: editorialCommunityId,
+        ...det,
+      })),
+    ))),
+  )
 );
