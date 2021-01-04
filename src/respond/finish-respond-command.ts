@@ -13,6 +13,8 @@ type Ports = {
 };
 
 export const finishRespondCommand = (ports: Ports): Middleware => async (context, next) => {
+  const userId = context.state.user.id;
+  const reviewId = toReviewId(context.session.reviewId);
   await pipe(
     context.session.command,
     O.fromNullable,
@@ -20,14 +22,7 @@ export const finishRespondCommand = (ports: Ports): Middleware => async (context
     O.fold(
       () => T.of(undefined),
       flow(
-        (command2) => (
-          commandHandler(
-            ports.commitEvents,
-            ports.getAllEvents,
-            command2,
-            context.state.user.id,
-            toReviewId(context.session.reviewId),
-          )),
+        commandHandler(ports.commitEvents, ports.getAllEvents, userId, reviewId),
         T.map((task) => {
           delete context.session.command;
           delete context.session.editorialCommunityId;

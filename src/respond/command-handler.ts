@@ -28,10 +28,9 @@ export const validateCommand = O.fromPredicate((command): command is ValidComman
 export const commandHandler = (
   commitEvents: CommitEvents,
   getAllEvents: GetAllEvents,
-  command: ValidCommand,
   userId: UserId,
   reviewId: ReviewId,
-): T.Task<void> => (
+) => (command: ValidCommand): T.Task<void> => (
   pipe(
     getAllEvents,
     T.map(reviewResponse(userId, reviewId)),

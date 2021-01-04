@@ -25,15 +25,7 @@ export const respondHandler = (ports: Ports): Middleware<{ user: User }> => asyn
     O.chain(validateCommand),
     O.fold(
       () => { throw new BadRequest(); },
-      (validatedCommand) => (
-        commandHandler(
-          ports.commitEvents,
-          ports.getAllEvents,
-          validatedCommand,
-          user.id,
-          reviewId,
-        )
-      ),
+      commandHandler(ports.commitEvents, ports.getAllEvents, user.id, reviewId),
     ),
   )();
 
