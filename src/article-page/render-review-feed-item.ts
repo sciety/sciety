@@ -61,6 +61,7 @@ const renderWithText = (teaserChars: number, review: ReviewFeedItem) => (respons
       ${responses}
     `);
   }
+  // TODO: a review.id containing dodgy chars could break this
   return toHtmlFragment(`
     <div class="article-feed__item_contents" id="${review.id.toString()}">
       ${avatar(review)}
