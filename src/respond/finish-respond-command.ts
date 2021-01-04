@@ -1,5 +1,10 @@
+import * as O from 'fp-ts/lib/Option';
+import { pipe } from 'fp-ts/lib/function';
+import { BadRequest } from 'http-errors';
 import { Middleware } from 'koa';
-import { commandHandler, CommitEvents, GetAllEvents } from './command-handler';
+import {
+  commandHandler, CommitEvents, GetAllEvents, validateCommand, ValidCommand,
+} from './command-handler';
 import toReviewId from '../types/review-id';
 
 type Ports = {
@@ -9,11 +14,9 @@ type Ports = {
 
 export const finishRespondCommand = (ports: Ports): Middleware => async (context, next) => {
   const command = context.session.command as string;
+  const validatedCommand = validateCommand(command);
   if (
-    (command === 'respond-helpful'
-      || command === 'revoke-response'
-      || command === 'respond-not-helpful')
-     && context.session.reviewId
+    O.isSome(validatedCommand) && context.session.reviewId
   ) {
     const { user } = context.state;
     const reviewId = toReviewId(context.session.reviewId);
@@ -21,7 +24,10 @@ export const finishRespondCommand = (ports: Ports): Middleware => async (context
     await commandHandler(
       ports.commitEvents,
       ports.getAllEvents,
-      command,
+      pipe(
+        validatedCommand,
+        O.getOrElse<ValidCommand>(() => { throw new BadRequest(); }),
+      ),
       user.id,
       reviewId,
     )();

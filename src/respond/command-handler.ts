@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import { pipe } from 'fp-ts/lib/function';
 import { respondHelpful } from './respond-helpful-command';
@@ -17,6 +18,12 @@ const commands = {
   'respond-not-helpful': respondNotHelpful,
   'revoke-response': revokeResponse,
 };
+
+export type ValidCommand = 'respond-helpful' | 'respond-not-helpful' | 'revoke-response';
+
+export const validateCommand = O.fromPredicate((command): command is ValidCommand => (
+  command === 'respond-helpful' || command === 'revoke-response' || command === 'respond-not-helpful'
+));
 
 export const commandHandler = (
   commitEvents: CommitEvents,
