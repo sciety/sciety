@@ -14,15 +14,20 @@ type Ports = {
 
 export const finishRespondCommand = (ports: Ports): Middleware => async (context, next) => {
   const userId = context.state.user.id;
-  const reviewId = toReviewId(context.session.reviewId);
   await pipe(
+    // TODO: move userId, reviewId, command into a new type that gets contstructed by a validator
     context.session.command,
     O.fromNullable,
     O.chain(validateCommand),
     O.fold(
       () => T.of(undefined),
       flow(
-        commandHandler(ports.commitEvents, ports.getAllEvents, userId, reviewId),
+        (validatedCommand) => commandHandler(
+          ports.commitEvents,
+          ports.getAllEvents,
+          userId,
+          toReviewId(context.session.reviewId),
+        )(validatedCommand),
         T.map((task) => {
           delete context.session.command;
           delete context.session.reviewId;
