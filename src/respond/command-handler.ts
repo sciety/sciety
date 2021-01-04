@@ -28,7 +28,7 @@ export const validateCommand = O.fromPredicate((command): command is ValidComman
 export const commandHandler = (
   commitEvents: CommitEvents,
   getAllEvents: GetAllEvents,
-  command: 'respond-helpful' | 'respond-not-helpful' | 'revoke-response',
+  command: ValidCommand,
   userId: UserId,
   reviewId: ReviewId,
 ): T.Task<void> => (

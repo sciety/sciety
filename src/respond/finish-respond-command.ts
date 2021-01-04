@@ -1,9 +1,9 @@
 import * as O from 'fp-ts/lib/Option';
-import { pipe } from 'fp-ts/lib/function';
-import { BadRequest } from 'http-errors';
+import * as T from 'fp-ts/lib/Task';
+import { flow, pipe } from 'fp-ts/lib/function';
 import { Middleware } from 'koa';
 import {
-  commandHandler, CommitEvents, GetAllEvents, validateCommand, ValidCommand,
+  commandHandler, CommitEvents, GetAllEvents, validateCommand,
 } from './command-handler';
 import toReviewId from '../types/review-id';
 
@@ -14,27 +14,28 @@ type Ports = {
 
 export const finishRespondCommand = (ports: Ports): Middleware => async (context, next) => {
   const command = context.session.command as string;
-  const validatedCommand = validateCommand(command);
-  if (
-    O.isSome(validatedCommand) && context.session.reviewId
-  ) {
-    const { user } = context.state;
-    const reviewId = toReviewId(context.session.reviewId);
-
-    await commandHandler(
-      ports.commitEvents,
-      ports.getAllEvents,
-      pipe(
-        validatedCommand,
-        O.getOrElse<ValidCommand>(() => { throw new BadRequest(); }),
+  await pipe(
+    command,
+    validateCommand,
+    O.fold(
+      () => T.of(undefined),
+      flow(
+        (command2) => (
+          commandHandler(
+            ports.commitEvents,
+            ports.getAllEvents,
+            command2,
+            context.state.user.id,
+            toReviewId(context.session.reviewId),
+          )),
+        T.map((task) => {
+          delete context.session.command;
+          delete context.session.editorialCommunityId;
+          return task;
+        }),
       ),
-      user.id,
-      reviewId,
-    )();
-
-    delete context.session.command;
-    delete context.session.editorialCommunityId;
-  }
+    ),
+  )();
 
   await next();
 };
