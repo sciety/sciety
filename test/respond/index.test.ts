@@ -1,16 +1,35 @@
-import request from 'supertest';
-import createServer from '../http/server';
+import { RouterParamContext } from '@koa/router';
+import { ParameterizedContext } from 'koa';
+import { createRespondHandler } from '../../src/respond';
+import { User } from '../../src/types/user';
+import toUserId from '../../src/types/user-id';
 
 describe('index', () => {
-  it('redirects to review anchor on article page', async () => {
-    const { server } = await createServer();
-    const response = await request(server)
-      .post('/respond')
-      .set('Cookie', 'koa.sess=eyJwYXNzcG9ydCI6eyJ1c2VyIjp7ImlkIjoiNDc5OTg1NTkifX0sIl9leHBpcmUiOjE2Mzk2NDYyMTkxNzksIl9tYXhBZ2UiOjMxNTM2MDAwMDAwfQ==; koa.sess.sig=RgE8q0FkaqCqhJ3Y-E3XxHkTDP8;')
-      .set('Referer', '/articles/10.1101/blabla')
-      .send('reviewid=hypothesis%3A643mSEEaEeu6JufBBcH3cA&command=respond-helpful');
+  it('redirects to review anchor on referer', async () => {
+    const context = ({
+      request: {
+        body: {
+          command: 'respond-helpful',
+          reviewid: 'hypothesis:bar',
+        },
+        headers: {
+          referer: '/foo',
+        },
+      },
+      state: {
+        user: {
+          id: toUserId('my-user'),
+        },
+      },
+      redirect: jest.fn(),
+    } as unknown) as ParameterizedContext<{ user: User }, RouterParamContext<{ user: User }>>;
+    const ports = {
+      getAllEvents: async () => [],
+      commitEvents: async () => {},
+    };
+    const respond = createRespondHandler(ports);
+    await respond(context, async () => {});
 
-    expect(response.status).toBe(302);
-    expect(response.header.location).toBe('/articles/10.1101/blabla#hypothesis:643mSEEaEeu6JufBBcH3cA');
+    expect(context.redirect).toHaveBeenCalledWith('/foo#hypothesis:bar');
   });
 });
