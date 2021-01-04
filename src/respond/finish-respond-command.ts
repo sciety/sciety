@@ -13,10 +13,10 @@ type Ports = {
 };
 
 export const finishRespondCommand = (ports: Ports): Middleware => async (context, next) => {
-  const command = context.session.command as string;
   await pipe(
-    command,
-    validateCommand,
+    context.session.command,
+    O.fromNullable,
+    O.chain(validateCommand),
     O.fold(
       () => T.of(undefined),
       flow(

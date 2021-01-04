@@ -20,8 +20,9 @@ export const respondHandler = (ports: Ports): Middleware<{ user: User }> => asyn
 
   const referrer = (context.request.headers.referer ?? '/') as string;
   await pipe(
-    context.request.body.command as string,
-    validateCommand,
+    context.request.body.command,
+    O.fromNullable,
+    O.chain(validateCommand),
     O.fold(
       () => { throw new BadRequest(); },
       (validatedCommand) => (

@@ -19,7 +19,7 @@ const commands = {
   'revoke-response': revokeResponse,
 };
 
-export type ValidCommand = 'respond-helpful' | 'respond-not-helpful' | 'revoke-response';
+type ValidCommand = 'respond-helpful' | 'respond-not-helpful' | 'revoke-response';
 
 export const validateCommand = O.fromPredicate((command): command is ValidCommand => (
   command === 'respond-helpful' || command === 'revoke-response' || command === 'respond-not-helpful'
