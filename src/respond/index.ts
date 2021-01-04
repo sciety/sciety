@@ -3,7 +3,7 @@ import * as O from 'fp-ts/lib/Option';
 import { pipe } from 'fp-ts/lib/function';
 import { BadRequest } from 'http-errors';
 import {
-  commandHandler, CommitEvents, validateCommand, ValidCommand,
+  commandHandler, CommitEvents, validateCommand,
 } from './command-handler';
 import { GetAllEvents } from './respond-helpful-command';
 import toReviewId from '../types/review-id';
@@ -19,18 +19,21 @@ export const respondHandler = (ports: Ports): Middleware<{ user: User }> => asyn
   const reviewId = toReviewId(context.request.body.reviewid);
 
   const referrer = (context.request.headers.referer ?? '/') as string;
-  const command = context.request.body.command as string;
-  const validatedCommand = validateCommand(command);
-
-  await commandHandler(
-    ports.commitEvents,
-    ports.getAllEvents,
-    pipe(
-      validatedCommand,
-      O.getOrElse<ValidCommand>(() => { throw new BadRequest(); }),
+  await pipe(
+    context.request.body.command as string,
+    validateCommand,
+    O.fold(
+      () => { throw new BadRequest(); },
+      (validatedCommand) => (
+        commandHandler(
+          ports.commitEvents,
+          ports.getAllEvents,
+          validatedCommand,
+          user.id,
+          reviewId,
+        )
+      ),
     ),
-    user.id,
-    reviewId,
   )();
 
   context.redirect(`${referrer}#${reviewId.toString()}`);
