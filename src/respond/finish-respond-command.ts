@@ -25,7 +25,7 @@ export const finishRespondCommand = (ports: Ports): Middleware => async (context
         commandHandler(ports.commitEvents, ports.getAllEvents, userId, reviewId),
         T.map((task) => {
           delete context.session.command;
-          delete context.session.editorialCommunityId;
+          delete context.session.reviewId;
           return task;
         }),
       ),
