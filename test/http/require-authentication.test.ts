@@ -17,7 +17,7 @@ describe('require-authentication', () => {
         redirect: () => {},
       } as unknown) as ParameterizedContext;
 
-      await requireAuthentication()(context, async () => {});
+      await requireAuthentication(context, async () => {});
 
       expect(context.session.successRedirect).toBe('/foo#bar');
     });

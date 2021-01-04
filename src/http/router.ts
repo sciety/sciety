@@ -68,21 +68,21 @@ export default (adapters: Adapters): Router => {
     identifyUser(adapters.logger),
     bodyParser({ enableTypes: ['form'] }),
     createSaveFollowCommand(),
-    requireAuthentication(),
+    requireAuthentication,
     createFollowHandler(adapters));
 
   router.post('/unfollow',
     identifyUser(adapters.logger),
     bodyParser({ enableTypes: ['form'] }),
     createSaveUnfollowCommand(),
-    requireAuthentication(),
+    requireAuthentication,
     createUnfollowHandler(adapters));
 
   router.post('/respond',
     identifyUser(adapters.logger),
     bodyParser({ enableTypes: ['form'] }),
     saveRespondCommand,
-    requireAuthentication(),
+    requireAuthentication,
     respondHandler(adapters));
 
   const authenticate = koaPassport.authenticate(
