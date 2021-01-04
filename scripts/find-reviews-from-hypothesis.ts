@@ -24,6 +24,11 @@ void (async (): Promise<void> => {
       throw new Error(`Cannot parse a DOI out of '${row.uri}'`);
     }
     const doi = matches[1];
+    // TODO: remove this when biorxiv have posted this to crossref #357
+    if (doi === '10.1101/2020.12.16.423020') {
+      process.stderr.write('Skipping 10.1101/2020.12.16.423020\n');
+      return;
+    }
     process.stdout.write(`${row.created},${doi},hypothesis:${row.id}\n`);
   });
 
@@ -38,6 +43,11 @@ void (async (): Promise<void> => {
         throw new Error(`Cannot parse a DOI out of '${row.uri}'`);
       }
       const doi = matches[1];
+      // TODO: remove this when biorxiv have posted this to crossref #357
+      if (doi === '10.1101/2020.12.16.423020') {
+        process.stderr.write('Skipping 10.1101/2020.12.16.423020\n');
+        return;
+      }
       process.stdout.write(`${row.created},${doi},hypothesis:${row.id}\n`);
     });
   }
