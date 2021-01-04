@@ -54,11 +54,11 @@ interface Ports {
 export interface Params {
   doi?: string;
   flavour?: string;
-  user: Maybe<User>;
+  user: O.Option<User>;
 }
 
-const getUserId = (user: Maybe<User>): O.Option<UserId> => pipe(
-  user.mapOr(O.none, (v) => O.some(v)),
+const getUserId = (user: O.Option<User>): O.Option<UserId> => pipe(
+  user,
   O.map((u) => u.id),
 );
 

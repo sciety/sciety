@@ -34,7 +34,7 @@ interface Ports {
 }
 
 interface Params {
-  user: Maybe<User>,
+  user: O.Option<User>,
 }
 
 type HomePage = (params: Params) => Promise<Result<{
@@ -80,7 +80,7 @@ export default (ports: Ports): HomePage => {
 
   return async (params) => {
     const userId = pipe(
-      params.user.mapOr(O.none, (v) => O.some(v)),
+      params.user,
       O.map((user) => user.id),
     );
 

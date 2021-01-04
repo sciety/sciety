@@ -32,7 +32,7 @@ type Ports = {
 
 interface Params {
   id?: string;
-  user: Maybe<User>;
+  user: O.Option<User>;
 }
 
 type UserPage = (params: Params) => ReturnType<RenderPage>;
@@ -62,7 +62,7 @@ export default (ports: Ports): UserPage => {
   return async (params) => {
     const userId = toUserId(params.id ?? '');
     const viewingUserId = pipe(
-      params.user.mapOr(O.none, (v) => O.some(v)),
+      params.user,
       O.map((user) => user.id),
     );
 

@@ -1,4 +1,4 @@
-import { Maybe } from 'true-myth';
+import * as O from 'fp-ts/lib/Option';
 import buildRenderPage, { Params } from '../../src/article-page';
 import createServer from '../http/server';
 
@@ -7,7 +7,7 @@ describe('create render page', (): void => {
     it('returns a page containing article metadata', async (): Promise<void> => {
       const { adapters } = await createServer();
       const renderPage = buildRenderPage(adapters);
-      const params: Params = { doi: '10.1101/833392', user: Maybe.nothing() };
+      const params: Params = { doi: '10.1101/833392', user: O.none };
 
       const page = (await renderPage(params)).unsafelyUnwrap();
 
@@ -19,7 +19,7 @@ describe('create render page', (): void => {
     it('returns a not-found error', async (): Promise<void> => {
       const { adapters } = await createServer();
       const renderPage = buildRenderPage(adapters);
-      const params: Params = { doi: 'rubbish', user: Maybe.nothing() };
+      const params: Params = { doi: 'rubbish', user: O.none };
 
       const error = (await renderPage(params)).unsafelyUnwrapErr();
 
@@ -31,7 +31,7 @@ describe('create render page', (): void => {
     it('returns a not-found error', async (): Promise<void> => {
       const { adapters } = await createServer();
       const renderPage = buildRenderPage(adapters);
-      const params: Params = { doi: '10.7554/eLife.09560', user: Maybe.nothing() };
+      const params: Params = { doi: '10.7554/eLife.09560', user: O.none };
 
       const error = (await renderPage(params)).unsafelyUnwrapErr();
 

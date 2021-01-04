@@ -80,7 +80,7 @@ const buildRenderFeed = (ports: Ports): RenderFeed => {
 
 export interface Params {
   id?: string;
-  user: Maybe<User>;
+  user: O.Option<User>;
 }
 
 type EditorialCommunityPage = (params: Params) => ReturnType<RenderPage>;
@@ -104,7 +104,7 @@ export default (ports: Ports): EditorialCommunityPage => {
   return async (params) => {
     const editorialCommunityId = new EditorialCommunityId(params.id ?? '');
     const userId = pipe(
-      params.user.mapOr(O.none, (v) => O.some(v)),
+      params.user,
       O.map((user) => user.id),
     );
     return renderPage(editorialCommunityId, userId);

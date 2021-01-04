@@ -2,7 +2,7 @@ import { Middleware } from '@koa/router';
 import * as O from 'fp-ts/lib/Option';
 import { pipe } from 'fp-ts/lib/function';
 import { NOT_FOUND, OK, SERVICE_UNAVAILABLE } from 'http-status-codes';
-import { Maybe, Result } from 'true-myth';
+import { Result } from 'true-myth';
 import { renderErrorPage } from './render-error-page';
 import applyStandardPageLayout, { Page } from '../shared-components/apply-standard-page-layout';
 import { RenderPageError } from '../types/render-page-error';
@@ -16,7 +16,7 @@ type RenderPage = (params: {
   id?: string;
   query?: string;
   flavour?: string;
-  user: Maybe<User>;
+  user: O.Option<User>;
 }) => Promise<RenderedResult>;
 
 const successToStatusCode = (): number => OK;
@@ -40,18 +40,15 @@ export default (
   renderPage: RenderPage,
 ): Middleware<{ user?: User }> => (
   async (context, next): Promise<void> => {
+    const user = O.fromNullable(context.state.user);
     const params = {
       ...context.params,
       ...context.query,
       ...context.state,
-      user: Maybe.of(context.state.user),
+      user,
     };
     context.response.type = 'html';
-
-    const user = O.fromNullable(context.state.user);
-
     const renderedResult = await renderPage(params);
-
     const addScietySuffixIfNotHomepage = (page: Page): Page => ({
       ...page,
       title: context.request.path === '/' ? page.title : `${page.title} | Sciety`,
