@@ -78,12 +78,9 @@ export default (ports: Ports): HomePage => {
     renderFeed,
   );
 
-  return async (params) => {
-    const userId = pipe(
-      params.user,
-      O.map((user) => user.id),
-    );
-
-    return renderPage(userId)();
-  };
+  return async (params) => pipe(
+    params.user,
+    O.map((user) => user.id),
+    renderPage,
+  )();
 };
