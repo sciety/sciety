@@ -6,13 +6,18 @@ type State = {
   targetFragmentId?: string,
 };
 
+const constructRedirectUrl = (context: ParameterizedContext<State>): string => {
+  const result: string = context.request.headers.referer ?? '/';
+  if (context.state.targetFragmentId) {
+    return `${result}#${context.state.targetFragmentId}`;
+  }
+  return result;
+};
+
 export const createRequireAuthentication = (): Middleware<State> => (
   async (context, next) => {
     if (!(context.state.user)) {
-      context.session.successRedirect = context.request.headers.referer ?? '/';
-      if (context.state.targetFragmentId) {
-        context.session.successRedirect = `${context.session.successRedirect as string}#${context.state.targetFragmentId}`;
-      }
+      context.session.successRedirect = constructRedirectUrl(context);
       context.redirect('/log-in');
       return;
     }
