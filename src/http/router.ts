@@ -7,7 +7,7 @@ import identifyUser from './identify-user';
 import { loadStaticFile } from './load-static-file';
 import pageHandler from './page-handler';
 import ping from './ping';
-import { createRedirectAfterAuthenticating, createRequireAuthentication } from './require-authentication';
+import { createRedirectAfterAuthenticating, requireAuthentication } from './require-authentication';
 import robots from './robots';
 import createAboutPage from '../about-page';
 import createArticlePage from '../article-page';
@@ -21,7 +21,7 @@ import { Adapters } from '../infrastructure/adapters';
 import createCommunityOutreachManagerPage from '../jobs/community-outreach-manager-page';
 import createLogOutHandler from '../log-out';
 import createPrivacyPage from '../privacy-page';
-import { createRespondHandler } from '../respond';
+import { respondHandler } from '../respond';
 import { finishRespondCommand } from '../respond/finish-respond-command';
 import { saveRespondCommand } from '../respond/save-respond-command';
 import createTermsPage from '../terms-page';
@@ -68,22 +68,22 @@ export default (adapters: Adapters): Router => {
     identifyUser(adapters.logger),
     bodyParser({ enableTypes: ['form'] }),
     createSaveFollowCommand(),
-    createRequireAuthentication(),
+    requireAuthentication(),
     createFollowHandler(adapters));
 
   router.post('/unfollow',
     identifyUser(adapters.logger),
     bodyParser({ enableTypes: ['form'] }),
     createSaveUnfollowCommand(),
-    createRequireAuthentication(),
+    requireAuthentication(),
     createUnfollowHandler(adapters));
 
   router.post('/respond',
     identifyUser(adapters.logger),
     bodyParser({ enableTypes: ['form'] }),
     saveRespondCommand,
-    createRequireAuthentication(),
-    createRespondHandler(adapters));
+    requireAuthentication(),
+    respondHandler(adapters));
 
   const authenticate = koaPassport.authenticate(
     'twitter',

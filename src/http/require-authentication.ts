@@ -14,7 +14,7 @@ const constructRedirectUrl = (context: ParameterizedContext<State>): string => {
   return result;
 };
 
-export const createRequireAuthentication = (): Middleware<State> => (
+export const requireAuthentication = (): Middleware<State> => (
   async (context, next) => {
     if (!(context.state.user)) {
       context.session.successRedirect = constructRedirectUrl(context);

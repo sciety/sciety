@@ -1,6 +1,6 @@
 import { RouterParamContext } from '@koa/router';
 import { ParameterizedContext } from 'koa';
-import { createRespondHandler } from '../../src/respond';
+import { respondHandler } from '../../src/respond';
 import { User } from '../../src/types/user';
 import toUserId from '../../src/types/user-id';
 
@@ -27,7 +27,7 @@ describe('index', () => {
       getAllEvents: async () => [],
       commitEvents: async () => {},
     };
-    const respond = createRespondHandler(ports);
+    const respond = respondHandler(ports);
     await respond(context, async () => {});
 
     expect(context.redirect).toHaveBeenCalledWith('/foo#hypothesis:bar');

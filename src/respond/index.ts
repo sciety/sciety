@@ -18,7 +18,7 @@ const validateCommand = O.fromPredicate((command): command is ValidCommand => (
   command === 'respond-helpful' || command === 'revoke-response' || command === 'respond-not-helpful'
 ));
 
-export const createRespondHandler = (ports: Ports): Middleware<{ user: User }> => async (context, next) => {
+export const respondHandler = (ports: Ports): Middleware<{ user: User }> => async (context, next) => {
   const { user } = context.state;
   const reviewId = toReviewId(context.request.body.reviewid);
 
