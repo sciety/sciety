@@ -6,11 +6,16 @@ import EditorialCommunityId from '../types/editorial-community-id';
 import HypothesisAnnotationId from '../types/hypothesis-annotation-id';
 import { ReviewId } from '../types/review-id';
 
-export default (): Array<DomainEvent> => {
+/* eslint-disable no-continue */
+
+export default (editorialCommunityIds: ReadonlyArray<string>): Array<DomainEvent> => {
   const parsedEvents: Array<DomainEvent> = [];
 
   for (const csvFile of fs.readdirSync('./data/endorsements')) {
     const editorialCommunityId = csvFile.replace('.csv', '');
+    if (!editorialCommunityIds.includes(editorialCommunityId)) {
+      continue;
+    }
     const fileContents = fs.readFileSync(`./data/endorsements/${csvFile}`);
     parsedEvents.push(...csvParseSync(fileContents, { fromLine: 2 })
       .map(([date, articleDoi]: [string, string]): DomainEvent => ({
@@ -35,6 +40,9 @@ export default (): Array<DomainEvent> => {
 
   for (const csvFile of fs.readdirSync('./data/reviews')) {
     const editorialCommunityId = csvFile.replace('.csv', '');
+    if (!editorialCommunityIds.includes(editorialCommunityId)) {
+      continue;
+    }
     const fileContents = fs.readFileSync(`./data/reviews/${csvFile}`);
     parsedEvents.push(...csvParseSync(fileContents, { fromLine: 2 })
       .map(([date, articleDoi, reviewId]: [string, string, string]): DomainEvent => ({

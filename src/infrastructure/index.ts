@@ -89,7 +89,8 @@ const createInfrastructure = async (): Promise<Adapters> => {
       PRIMARY KEY (id)
     );
   `);
-  const events = getEventsFromDataFiles().concat(await getEventsFromDatabase(pool, logger));
+  const editorialCommunityIds = bootstrapEditorialCommunities.map(({ id }) => id.value);
+  const events = getEventsFromDataFiles(editorialCommunityIds).concat(await getEventsFromDatabase(pool, logger));
   events.sort((a, b) => a.date.getTime() - b.date.getTime());
   const getAllEvents = T.of(events);
   const reviewProjections = createReviewProjections(events.filter(isEditorialCommunityReviewedArticleEvent));
