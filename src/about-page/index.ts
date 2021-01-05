@@ -1,7 +1,8 @@
 import * as T from 'fp-ts/lib/Task';
-import { flow, pipe } from 'fp-ts/lib/function';
-import { Remarkable } from 'remarkable';
-import renderPage, { RenderPage } from './render-page';
+import { pipe } from 'fp-ts/lib/function';
+import { Result } from 'true-myth';
+import { renderPage } from './render-page';
+import { HtmlFragment } from '../types/html-fragment';
 
 export type FetchStaticFile = (filename: string) => T.Task<string>;
 
@@ -9,14 +10,17 @@ interface Ports {
   fetchStaticFile: FetchStaticFile;
 }
 
-type AboutPage = ReturnType<RenderPage>;
+type AboutPage = T.Task<Result<{
+  title: string,
+  content: HtmlFragment,
+}, never>>;
 
 export default (ports: Ports): AboutPage => pipe(
   'about.md',
-  renderPage(
-    flow(
-      ports.fetchStaticFile,
-      T.map((md: string) => new Remarkable({ html: true }).render(md)),
-    ),
-  ),
+  ports.fetchStaticFile,
+  T.map(renderPage),
+  T.map((html) => Result.ok({
+    title: 'About',
+    content: html,
+  })),
 );

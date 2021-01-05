@@ -1,16 +1,10 @@
-import * as T from 'fp-ts/lib/Task';
-import { flow, pipe } from 'fp-ts/lib/function';
-import { Result } from 'true-myth';
+import { flow } from 'fp-ts/lib/function';
+import { Remarkable } from 'remarkable';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
-export type RenderPage = (filename: string) => T.Task<Result<{
-  title: string,
-  content: HtmlFragment,
-}, never>>;
+type RenderPage = (markdown: string) => HtmlFragment;
 
-type GetHtml = (filename: string) => T.Task<string>;
-
-const pageWrapper = (html: string): string => `
+const addPageWrapper = (html: string): string => `
   <div class="about-page-wrapper">
     <header class="page-header">
       <h1>
@@ -21,10 +15,10 @@ const pageWrapper = (html: string): string => `
   </div>
 `;
 
-export default (getHtml: GetHtml): RenderPage => flow(
-  getHtml,
-  T.map((html) => Result.ok({
-    title: 'About',
-    content: pipe(html, pageWrapper, toHtmlFragment),
-  })),
+const convertMarkdownToHtml = (md: string): string => new Remarkable({ html: true }).render(md);
+
+export const renderPage: RenderPage = flow(
+  convertMarkdownToHtml,
+  addPageWrapper,
+  toHtmlFragment,
 );
