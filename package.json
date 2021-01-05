@@ -12,7 +12,7 @@
     "@rdfjs/parser-n3": "^1.1.4",
     "@rdfjs/sink-map": "^1.0.1",
     "@tpluscode/rdf-ns-builders": "^0.1.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "axios-retry": "^3.1.8",
     "clownface": "^0.12.3",
     "cls-rtracer": "^2.2.0",
