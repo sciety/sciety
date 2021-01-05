@@ -1,4 +1,6 @@
+import { DOMParser } from 'xmldom';
 import createFetchCrossrefArticle, { GetXml } from '../../src/infrastructure/fetch-crossref-article';
+import { getAbstract } from '../../src/infrastructure/parse-crossref-article';
 import Doi from '../../src/types/doi';
 import dummyLogger from '../dummy-logger';
 
@@ -163,18 +165,20 @@ describe('fetch-crossref-article', (): void => {
 
     it('doesn\'t strip <section> elements that are not empty', async () => {
       const doi = new Doi('10.1101/339747');
-      const getXml: GetXml = async () => crossrefResponseWith(`
+      const response = crossrefResponseWith(`
         <abstract>
           <sec>
             Lorem ipsum
           </sec>
         </abstract>`);
 
-      const abstract = (await createFetchCrossrefArticle(getXml, dummyLogger)(doi)()).unsafelyUnwrap();
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(response, 'text/xml');
+      const abstract = getAbstract(doc, doi, dummyLogger);
 
-      expect(abstract.abstract).toStrictEqual(expect.stringContaining('<section>'));
-      expect(abstract.abstract).toStrictEqual(expect.stringContaining('Lorem ipsum'));
-      expect(abstract.abstract).toStrictEqual(expect.stringContaining('</section>'));
+      expect(abstract).toStrictEqual(expect.stringContaining('<section>'));
+      expect(abstract).toStrictEqual(expect.stringContaining('Lorem ipsum'));
+      expect(abstract).toStrictEqual(expect.stringContaining('</section>'));
     });
   });
 
