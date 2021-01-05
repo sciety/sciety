@@ -49,7 +49,7 @@ const createRenderSummaryFeedItemSummary = (getArticle: GetArticle): RenderSumma
     actor,
   ) => toHtmlFragment(`
       <a href="${actor.url}" class="summary-feed-item__link">${actor.name}</a>
-      reviewed
+      ${actor.name === 'preLights' ? 'highlighted' : 'reviewed'}
       <a href="/articles/${event.articleId.value}" class="summary-feed-item__link">${await title(event.articleId)}</a>
     `);
 
