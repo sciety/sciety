@@ -24,7 +24,7 @@ export const requireAuthentication: Middleware<State> = async (context, next) =>
   await next();
 };
 
-export const createRedirectAfterAuthenticating = (): Middleware => (
+export const redirectAfterAuthenticating = (): Middleware => (
   async (context, next) => {
     const successRedirect = context.session.successRedirect || '/';
     delete context.session.successRedirect;

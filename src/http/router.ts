@@ -7,28 +7,28 @@ import identifyUser from './identify-user';
 import { loadStaticFile } from './load-static-file';
 import pageHandler from './page-handler';
 import ping from './ping';
-import { createRedirectAfterAuthenticating, requireAuthentication } from './require-authentication';
+import { redirectAfterAuthenticating, requireAuthentication } from './require-authentication';
 import robots from './robots';
-import createAboutPage from '../about-page';
-import createArticlePage from '../article-page';
-import createArticleSearchPage from '../article-search-page';
-import createEditorialCommunityPage from '../editorial-community-page';
-import createFollowHandler from '../follow';
-import createFinishFollowCommand from '../follow/finish-follow-command';
-import createSaveFollowCommand from '../follow/save-follow-command';
-import createHomePage from '../home-page';
+import aboutPage from '../about-page';
+import articlePage from '../article-page';
+import articleSearchPage from '../article-search-page';
+import editorialCommunityPage from '../editorial-community-page';
+import followHandler from '../follow';
+import finishFollowCommand from '../follow/finish-follow-command';
+import saveFollowCommand from '../follow/save-follow-command';
+import homePage from '../home-page';
 import { Adapters } from '../infrastructure/adapters';
-import createCommunityOutreachManagerPage from '../jobs/community-outreach-manager-page';
-import createLogOutHandler from '../log-out';
-import createPrivacyPage from '../privacy-page';
+import communityOutreachManagerPage from '../jobs/community-outreach-manager-page';
+import logOutHandler from '../log-out';
+import privacyPage from '../privacy-page';
 import { respondHandler } from '../respond';
 import { finishRespondCommand } from '../respond/finish-respond-command';
 import { saveRespondCommand } from '../respond/save-respond-command';
-import createTermsPage from '../terms-page';
-import createUnfollowHandler from '../unfollow';
-import createFinishUnfollowCommand from '../unfollow/finish-unfollow-command';
-import createSaveUnfollowCommand from '../unfollow/save-unfollow-command';
-import createUserPage from '../user-page';
+import termsPage from '../terms-page';
+import unfollowHandler from '../unfollow';
+import finishUnfollowCommand from '../unfollow/finish-unfollow-command';
+import saveUnfollowCommand from '../unfollow/save-unfollow-command';
+import userPage from '../user-page';
 
 export default (adapters: Adapters): Router => {
   const router = new Router();
@@ -38,15 +38,15 @@ export default (adapters: Adapters): Router => {
 
   router.get('/',
     identifyUser(adapters.logger),
-    pageHandler(createHomePage(adapters)));
+    pageHandler(homePage(adapters)));
 
   router.get('/about',
     identifyUser(adapters.logger),
-    pageHandler(createAboutPage(adapters)));
+    pageHandler(aboutPage(adapters)));
 
   router.get('/users/:id(.+)',
     identifyUser(adapters.logger),
-    pageHandler(createUserPage(adapters)));
+    pageHandler(userPage(adapters)));
 
   router.get('/articles',
     identifyUser(adapters.logger),
@@ -54,29 +54,29 @@ export default (adapters: Adapters): Router => {
       context.response.set('X-Robots-Tag', 'noindex');
       await next();
     },
-    pageHandler(createArticleSearchPage(adapters)));
+    pageHandler(articleSearchPage(adapters)));
 
   router.get('/articles/:doi(.+)',
     identifyUser(adapters.logger),
-    pageHandler(createArticlePage(adapters)));
+    pageHandler(articlePage(adapters)));
 
   router.get('/editorial-communities/:id',
     identifyUser(adapters.logger),
-    pageHandler(createEditorialCommunityPage(adapters)));
+    pageHandler(editorialCommunityPage(adapters)));
 
   router.post('/follow',
     identifyUser(adapters.logger),
     bodyParser({ enableTypes: ['form'] }),
-    createSaveFollowCommand(),
+    saveFollowCommand(),
     requireAuthentication,
-    createFollowHandler(adapters));
+    followHandler(adapters));
 
   router.post('/unfollow',
     identifyUser(adapters.logger),
     bodyParser({ enableTypes: ['form'] }),
-    createSaveUnfollowCommand(),
+    saveUnfollowCommand(),
     requireAuthentication,
-    createUnfollowHandler(adapters));
+    unfollowHandler(adapters));
 
   router.post('/respond',
     identifyUser(adapters.logger),
@@ -96,7 +96,7 @@ export default (adapters: Adapters): Router => {
     authenticate);
 
   router.get('/log-out',
-    createLogOutHandler());
+    logOutHandler());
 
   router.get('/twitter/callback',
     catchErrors(
@@ -105,22 +105,22 @@ export default (adapters: Adapters): Router => {
       'Something went wrong, please try again.',
     ),
     authenticate,
-    createFinishFollowCommand(adapters),
-    createFinishUnfollowCommand(adapters),
+    finishFollowCommand(adapters),
+    finishUnfollowCommand(adapters),
     finishRespondCommand(adapters),
-    createRedirectAfterAuthenticating());
+    redirectAfterAuthenticating());
 
   router.get('/privacy',
     identifyUser(adapters.logger),
-    pageHandler(createPrivacyPage()));
+    pageHandler(privacyPage()));
 
   router.get('/terms',
     identifyUser(adapters.logger),
-    pageHandler(createTermsPage()));
+    pageHandler(termsPage()));
 
   router.get('/jobs/community-outreach-manager',
     identifyUser(adapters.logger),
-    pageHandler(createCommunityOutreachManagerPage(adapters)));
+    pageHandler(communityOutreachManagerPage(adapters)));
 
   router.get('/robots.txt',
     robots());
