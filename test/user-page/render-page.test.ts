@@ -15,7 +15,7 @@ describe('render-page', () => {
         () => TE.right('someone'),
       );
 
-      const result = await renderPage(toUserId('1234'), O.none);
+      const result = await renderPage(toUserId('1234'), O.none)();
 
       expect(result.unsafelyUnwrap().title).toStrictEqual('someone');
     });
@@ -28,7 +28,7 @@ describe('render-page', () => {
         () => T.of(Result.ok(toHtmlFragment(''))),
         () => TE.left('not-found'),
       );
-      const result = await renderPage(toUserId('1234'), O.none);
+      const result = await renderPage(toUserId('1234'), O.none)();
 
       expect(result.unsafelyUnwrapErr().type).toBe('not-found');
     });
@@ -41,7 +41,7 @@ describe('render-page', () => {
         () => T.of(Result.ok(toHtmlFragment(''))),
         () => TE.left('unavailable'),
       );
-      const result = await renderPage(toUserId('1234'), O.none);
+      const result = await renderPage(toUserId('1234'), O.none)();
 
       expect(result.unsafelyUnwrapErr().type).toBe('unavailable');
     });

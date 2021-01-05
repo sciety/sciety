@@ -7,10 +7,10 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { RenderPageError } from '../types/render-page-error';
 import { UserId } from '../types/user-id';
 
-export type RenderPage = (
+type RenderPage = (
   userId: UserId,
   viewingUserId: O.Option<UserId>,
-) => Promise<Result<{
+) => T.Task<Result<{
   title: string,
   content: HtmlFragment
 }, RenderPageError>>;
@@ -38,7 +38,7 @@ export default (
   renderHeader: Component,
   renderFollowList: RenderFollowList,
   getUserDisplayName: GetUserDisplayName,
-): RenderPage => async (userId, viewingUserId) => {
+): RenderPage => (userId, viewingUserId) => async () => {
   const header = pipe(
     renderHeader(userId, viewingUserId),
     TE.fold(
