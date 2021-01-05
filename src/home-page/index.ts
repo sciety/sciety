@@ -4,13 +4,13 @@ import * as T from 'fp-ts/lib/Task';
 import { pipe } from 'fp-ts/lib/function';
 import { Maybe, Result } from 'true-myth';
 import { getActor } from './get-actor';
-import createGetMostRecentEvents, { GetAllEvents } from './get-most-recent-events';
-import createProjectIsFollowingSomething from './project-is-following-something';
+import getMostRecentEvents, { GetAllEvents } from './get-most-recent-events';
+import projectIsFollowingSomething from './project-is-following-something';
 import createRenderEditorialCommunities, { GetAllEditorialCommunities } from './render-editorial-communities';
 import createRenderEditorialCommunity from './render-editorial-community';
-import createRenderFeed, { IsFollowingSomething } from './render-feed';
+import createRenderFeed from './render-feed';
 import createRenderFollowToggle from './render-follow-toggle';
-import createRenderPage from './render-page';
+import renderPage from './render-page';
 import renderPageHeader from './render-page-header';
 import renderSearchForm from './render-search-form';
 import createRenderSummaryFeedItem from '../shared-components/render-summary-feed-item';
@@ -44,36 +44,22 @@ type HomePage = (params: Params) => Promise<Result<{
 }, never>>;
 
 export default (ports: Ports): HomePage => {
-  const isFollowingSomethingAdapter: IsFollowingSomething = createProjectIsFollowingSomething(ports.getAllEvents);
-  const getEventsAdapter = createGetMostRecentEvents(
-    ports.getAllEvents,
-    ports.follows,
-    20,
-  );
-
   const renderFollowToggle = createRenderFollowToggle(ports.follows);
-  const renderEditorialCommunity = createRenderEditorialCommunity(renderFollowToggle);
   const renderEditorialCommunities = createRenderEditorialCommunities(
     ports.getAllEditorialCommunities,
-    renderEditorialCommunity,
+    createRenderEditorialCommunity(renderFollowToggle),
   );
   const renderSummaryFeedItem = createRenderSummaryFeedItem(getActor(ports.getEditorialCommunity), ports.fetchArticle);
   const renderSummaryFeedList = createRenderSummaryFeedList(renderSummaryFeedItem);
   const renderFeed = createRenderFeed(
-    isFollowingSomethingAdapter,
-    getEventsAdapter,
+    projectIsFollowingSomething(ports.getAllEvents),
+    getMostRecentEvents(ports.getAllEvents, ports.follows, 20),
     renderSummaryFeedList,
-  );
-  const renderPage = createRenderPage(
-    renderPageHeader,
-    renderEditorialCommunities,
-    renderSearchForm,
-    renderFeed,
   );
 
   return async (params) => pipe(
     params.user,
     O.map((user) => user.id),
-    renderPage,
+    renderPage(renderPageHeader, renderEditorialCommunities, renderSearchForm, renderFeed),
   )();
 };
