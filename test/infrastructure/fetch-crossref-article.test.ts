@@ -131,8 +131,8 @@ describe('fetch-crossref-article', (): void => {
       const doi = new Doi('10.1101/339747');
       const getXml: GetXml = async () => crossrefResponseWith(`
         <abstract>
+          <title>First title</title>
           <sec>
-            <title>First title</title>
             <title>Graphical abstract</title>
             <fig id="ufig1" position="float" fig-type="figure" orientation="portrait">
               <graphic href="222794v2_ufig1" position="float" orientation="portrait" />
@@ -142,6 +142,39 @@ describe('fetch-crossref-article', (): void => {
       const abstract = (await createFetchCrossrefArticle(getXml, dummyLogger)(doi)()).unsafelyUnwrap();
 
       expect(abstract.abstract).toStrictEqual(expect.not.stringContaining('Graphical abstract'));
+    });
+
+    it('strips <section> elements that are empty or only contain whitespace', async () => {
+      const doi = new Doi('10.1101/339747');
+      const getXml: GetXml = async () => crossrefResponseWith(`
+        <abstract>
+          <sec>
+            <fig id="ufig1" position="float" fig-type="figure" orientation="portrait">
+              <graphic href="222794v2_ufig1" position="float" orientation="portrait" />
+            </fig>
+          </sec>
+        </abstract>`);
+
+      const abstract = (await createFetchCrossrefArticle(getXml, dummyLogger)(doi)()).unsafelyUnwrap();
+
+      expect(abstract.abstract).toStrictEqual(expect.not.stringContaining('<section>'));
+      expect(abstract.abstract).toStrictEqual(expect.not.stringContaining('</section>'));
+    });
+
+    it('doesn\'t strip <section> elements that are not empty', async () => {
+      const doi = new Doi('10.1101/339747');
+      const getXml: GetXml = async () => crossrefResponseWith(`
+        <abstract>
+          <sec>
+            Lorem ipsum
+          </sec>
+        </abstract>`);
+
+      const abstract = (await createFetchCrossrefArticle(getXml, dummyLogger)(doi)()).unsafelyUnwrap();
+
+      expect(abstract.abstract).toStrictEqual(expect.stringContaining('<section>'));
+      expect(abstract.abstract).toStrictEqual(expect.stringContaining('Lorem ipsum'));
+      expect(abstract.abstract).toStrictEqual(expect.stringContaining('</section>'));
     });
   });
 

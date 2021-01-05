@@ -1,4 +1,5 @@
 import * as T from 'fp-ts/lib/Task';
+import { pipe } from 'fp-ts/lib/function';
 import { Result } from 'true-myth';
 import { DOMParser, XMLSerializer } from 'xmldom';
 import { Logger } from './logger';
@@ -51,19 +52,35 @@ export default (getXml: GetXml, logger: Logger): FetchCrossrefArticle => {
       }
     }
 
-    return `${serializer.serializeToString(abstractElement)}`
-      .replace(/<abstract[^>]*>/, '')
-      .replace(/<\/abstract>/, '')
-      .replace(/<italic[^>]*>/g, '<i>')
-      .replace(/<\/italic>/g, '</i>')
-      .replace(/<list[^>]* list-type=['"]bullet['"][^>]*/g, '<ul')
-      .replace(/<\/list>/g, '</ul>')
-      .replace(/<list-item[^>]*/g, '<li')
-      .replace(/<\/list-item>/g, '</li>')
-      .replace(/<sec[^>]*/g, '<section')
-      .replace(/<\/sec>/g, '</section>')
-      .replace(/<title[^>]*/g, '<h3')
-      .replace(/<\/title>/g, '</h3>');
+    const abstract = serializer.serializeToString(abstractElement);
+
+    const transformXmlToHtml = (xml: string): string => (
+      xml
+        .replace(/<abstract[^>]*>/, '')
+        .replace(/<\/abstract>/, '')
+        .replace(/<italic[^>]*>/g, '<i>')
+        .replace(/<\/italic>/g, '</i>')
+        .replace(/<list[^>]* list-type=['"]bullet['"][^>]*/g, '<ul')
+        .replace(/<\/list>/g, '</ul>')
+        .replace(/<list-item[^>]*/g, '<li')
+        .replace(/<\/list-item>/g, '</li>')
+        .replace(/<sec[^>]*/g, '<section')
+        .replace(/<\/sec>/g, '</section>')
+        .replace(/<title[^>]*/g, '<h3')
+        .replace(/<\/title>/g, '</h3>')
+    );
+
+    const stripEmptySections = (html: string): string => (
+      html.replace(/<section>\s*<\/section>/g, '')
+    );
+
+    return pipe(
+      abstract,
+      transformXmlToHtml,
+      toHtmlFragment,
+      sanitise,
+      stripEmptySections,
+    );
   };
 
   const getAuthors = (doc: Document, doi: Doi): Array<string> => {
