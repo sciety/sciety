@@ -63,6 +63,12 @@ const editorialCommunities: Array<EditorialCommunity> = [
     avatar: new URL('https://pbs.twimg.com/profile_images/923462041398063104/znm9OQNM_200x200.jpg'),
     descriptionPath: 'pci-paleontology--7a9e97d1-c1fe-4ac2-9572-4ecfe28f9f84.md',
   },
+  {
+    id: new EditorialCommunityId('f97bd177-5cb6-4296-8573-078318755bf2'),
+    name: 'preLights',
+    avatar: new URL('https://pbs.twimg.com/profile_images/956876220599296002/zo2tD3p5_200x200.jpg'),
+    descriptionPath: 'prelights--f97bd177-5cb6-4296-8573-078318755bf2.md',
+  },
 ];
 
 export default editorialCommunities;
