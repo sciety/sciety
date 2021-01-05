@@ -3,6 +3,7 @@ import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import { pipe } from 'fp-ts/lib/function';
 import { Maybe, Result } from 'true-myth';
+import { getActor } from './get-actor';
 import createGetMostRecentEvents, { GetAllEvents } from './get-most-recent-events';
 import createProjectIsFollowingSomething from './project-is-following-something';
 import createRenderEditorialCommunities, { GetAllEditorialCommunities } from './render-editorial-communities';
@@ -12,7 +13,7 @@ import createRenderFollowToggle from './render-follow-toggle';
 import createRenderPage from './render-page';
 import renderPageHeader from './render-page-header';
 import renderSearchForm from './render-search-form';
-import createRenderSummaryFeedItem, { GetActor } from '../shared-components/render-summary-feed-item';
+import createRenderSummaryFeedItem from '../shared-components/render-summary-feed-item';
 import createRenderSummaryFeedList from '../shared-components/render-summary-feed-list';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { FetchExternalArticle } from '../types/fetch-external-article';
@@ -43,14 +44,6 @@ type HomePage = (params: Params) => Promise<Result<{
 }, never>>;
 
 export default (ports: Ports): HomePage => {
-  const getActorAdapter: GetActor = (id) => async () => {
-    const editorialCommunity = (await ports.getEditorialCommunity(id)()).unsafelyUnwrap();
-    return {
-      name: editorialCommunity.name,
-      imageUrl: editorialCommunity.avatar.toString(),
-      url: `/editorial-communities/${id.value}`,
-    };
-  };
   const isFollowingSomethingAdapter: IsFollowingSomething = createProjectIsFollowingSomething(ports.getAllEvents);
   const getEventsAdapter = createGetMostRecentEvents(
     ports.getAllEvents,
@@ -64,7 +57,7 @@ export default (ports: Ports): HomePage => {
     ports.getAllEditorialCommunities,
     renderEditorialCommunity,
   );
-  const renderSummaryFeedItem = createRenderSummaryFeedItem(getActorAdapter, ports.fetchArticle);
+  const renderSummaryFeedItem = createRenderSummaryFeedItem(getActor(ports.getEditorialCommunity), ports.fetchArticle);
   const renderSummaryFeedList = createRenderSummaryFeedList(renderSummaryFeedItem);
   const renderFeed = createRenderFeed(
     isFollowingSomethingAdapter,
