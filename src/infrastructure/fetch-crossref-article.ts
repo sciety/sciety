@@ -41,6 +41,16 @@ export default (getXml: GetXml, logger: Logger): FetchCrossrefArticle => {
       abstractElement.removeChild(titleElement);
     }
 
+    const titles = abstractElement.getElementsByTagName('title');
+    for (let i = 0; i < titles.length; i += 1) {
+      const title = titles.item(i);
+      if (title) {
+        if (title.textContent === 'Graphical abstract') {
+          abstractElement.removeChild(title);
+        }
+      }
+    }
+
     return `${serializer.serializeToString(abstractElement)}`
       .replace(/<abstract[^>]*>/, '')
       .replace(/<\/abstract>/, '')

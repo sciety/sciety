@@ -126,6 +126,23 @@ describe('fetch-crossref-article', (): void => {
       expect(abstract.abstract).toStrictEqual(expect.not.stringContaining('<sec>'));
       expect(abstract.abstract).toStrictEqual(expect.not.stringContaining('</sec>'));
     });
+
+    it('strips <title> named Graphical abstract', async () => {
+      const doi = new Doi('10.1101/339747');
+      const getXml: GetXml = async () => crossrefResponseWith(`
+        <abstract>
+          <sec>
+            <title>First title</title>
+            <title>Graphical abstract</title>
+            <fig id="ufig1" position="float" fig-type="figure" orientation="portrait">
+              <graphic href="222794v2_ufig1" position="float" orientation="portrait" />
+            </fig>
+          </sec>
+        </abstract>`);
+      const abstract = (await createFetchCrossrefArticle(getXml, dummyLogger)(doi)()).unsafelyUnwrap();
+
+      expect(abstract.abstract).toStrictEqual(expect.not.stringContaining('Graphical abstract'));
+    });
   });
 
   describe('fetching the publication date', () => {
