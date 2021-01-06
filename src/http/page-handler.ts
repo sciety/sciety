@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/lib/function';
 import { NOT_FOUND, OK, SERVICE_UNAVAILABLE } from 'http-status-codes';
 import { Result } from 'true-myth';
 import { renderErrorPage } from './render-error-page';
-import applyStandardPageLayout, { Page } from '../shared-components/apply-standard-page-layout';
+import { applyStandardPageLayout, Page } from '../shared-components/apply-standard-page-layout';
 import { RenderPageError } from '../types/render-page-error';
 import { User } from '../types/user';
 
@@ -59,7 +59,7 @@ export default (
       renderedResult,
       foldToPage,
       addScietySuffixIfNotHomepage,
-      (page) => applyStandardPageLayout(page, user),
+      applyStandardPageLayout(user),
     );
 
     context.response.status = renderedResult.map(successToStatusCode).unwrapOrElse(errorTypeToStatusCode);

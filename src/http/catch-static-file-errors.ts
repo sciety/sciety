@@ -3,7 +3,7 @@ import * as O from 'fp-ts/lib/Option';
 import { isHttpError } from 'http-errors';
 import { INTERNAL_SERVER_ERROR } from 'http-status-codes';
 import { renderErrorPage } from './render-error-page';
-import applyStandardPageLayout from '../shared-components/apply-standard-page-layout';
+import { applyStandardPageLayout } from '../shared-components/apply-standard-page-layout';
 import { toHtmlFragment } from '../types/html-fragment';
 
 type Logger = (level: 'error', message: string, payload: Record<string, unknown>) => void;
@@ -20,9 +20,9 @@ export const catchStaticFileErrors = (logger: Logger): Middleware => async (cont
     } else {
       context.response.status = INTERNAL_SERVER_ERROR;
     }
-    context.response.body = applyStandardPageLayout({
+    context.response.body = applyStandardPageLayout(O.none)({
       title: 'Error | Sciety',
       content: renderErrorPage(toHtmlFragment(pageMessage)),
-    }, O.none);
+    });
   }
 };

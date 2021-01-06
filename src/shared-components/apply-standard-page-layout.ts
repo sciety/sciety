@@ -49,7 +49,7 @@ export type Page = {
 };
 
 // TODO: return a more specific type e.g. HtmlDocument
-export default (page: Page, user: O.Option<User>): string => `<!doctype html>
+export const applyStandardPageLayout = (user: O.Option<User>) => (page: Page): string => `<!doctype html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
 <head>
   <meta charset="utf-8">
