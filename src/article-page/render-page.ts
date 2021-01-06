@@ -34,6 +34,10 @@ export default (
   renderFeed: RenderFeed,
   getArticleDetails: GetArticleDetails,
 ): RenderPage => {
+  let tweetThis = '';
+  if (process.env.EXPERIMENT_ENABLED === 'true') {
+    tweetThis = '<button>Tweet this</button>';
+  }
   const template = (abstract: string) => (pageHeader: string) => (feed: string) => (articleDetails: ArticleDetails) => (
     {
       title: `${striptags(articleDetails.title)}`,
@@ -45,6 +49,8 @@ export default (
     ${abstract}
     ${feed}
   </div>
+
+  ${tweetThis}
 </article>
     `),
       openGraph: {
