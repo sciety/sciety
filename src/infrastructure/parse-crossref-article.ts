@@ -9,13 +9,17 @@ const getElement = (ancestor: Document | Element, qualifiedName: string): Elemen
   ancestor.getElementsByTagName(qualifiedName).item(0)
 );
 
-export const getAbstract = (doc: Document, doi: Doi, logger: Logger): string => {
+export const getAbstract = (doc: Document, doi: Doi, logger: Logger): SanitisedHtmlFragment => {
   const abstractElement = getElement(doc, 'abstract');
 
   if (typeof abstractElement?.textContent !== 'string') {
     logger('warn', 'Did not find abstract', { doi });
 
-    return `No abstract for ${doi.value} available`;
+    return pipe(
+      `No abstract for ${doi.value} available`,
+      toHtmlFragment,
+      sanitise,
+    );
   }
 
   logger('debug', 'Found abstract', { doi, abstract: abstractElement.textContent });
@@ -63,6 +67,8 @@ export const getAbstract = (doc: Document, doi: Doi, logger: Logger): string => 
     toHtmlFragment,
     sanitise,
     stripEmptySections,
+    toHtmlFragment,
+    sanitise,
   );
 };
 

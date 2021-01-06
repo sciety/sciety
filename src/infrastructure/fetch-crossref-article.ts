@@ -6,8 +6,7 @@ import {
   getAbstract, getAuthors, getPublicationDate, getTitle,
 } from './parse-crossref-article';
 import Doi from '../types/doi';
-import { toHtmlFragment } from '../types/html-fragment';
-import { sanitise, SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
+import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
 type FetchCrossrefArticleError = 'not-found' | 'unavailable';
 
@@ -54,7 +53,7 @@ export default (getXml: GetXml, logger: Logger): FetchCrossrefArticle => {
     try {
       const doc = parser.parseFromString(response, 'text/xml');
       return Result.ok({
-        abstract: sanitise(toHtmlFragment(getAbstract(doc, doi, logger))), // TODO: push sanitisation down
+        abstract: getAbstract(doc, doi, logger),
         authors: getAuthors(doc, doi, logger),
         doi,
         title: getTitle(doc, doi, logger),
