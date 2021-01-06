@@ -1,6 +1,6 @@
 import { DOMParser } from 'xmldom';
 import createFetchCrossrefArticle, { GetXml } from '../../src/infrastructure/fetch-crossref-article';
-import { getAbstract } from '../../src/infrastructure/parse-crossref-article';
+import { getAbstract, getPublicationDate } from '../../src/infrastructure/parse-crossref-article';
 import Doi from '../../src/types/doi';
 import dummyLogger from '../dummy-logger';
 
@@ -18,13 +18,14 @@ const crossrefResponseWith = (content: string): string => `
 `;
 
 describe('fetch-crossref-article', (): void => {
+  const parser = new DOMParser({
+    errorHandler: (_, msg) => {
+      throw msg;
+    },
+  });
+
   describe('fetching the abstract', (): void => {
     const doi = new Doi('10.1101/339747');
-    const parser = new DOMParser({
-      errorHandler: (_, msg) => {
-        throw msg;
-      },
-    });
 
     it('extracts the abstract text from the XML response', async () => {
       const response = crossrefResponseWith(`
@@ -189,16 +190,17 @@ describe('fetch-crossref-article', (): void => {
 
   describe('fetching the publication date', () => {
     it('extracts the date', async () => {
-      const doi = new Doi('10.1101/339747');
-      const getXml: GetXml = async () => crossrefResponseWith(`
+      const response = crossrefResponseWith(`
         <posted_date>
           <month>03</month>
           <day>22</day>
           <year>2020</year>
         </posted_date>`);
-      const article = (await createFetchCrossrefArticle(getXml, dummyLogger)(doi)()).unsafelyUnwrap();
 
-      expect(article.publicationDate).toStrictEqual(new Date('2020-03-22'));
+      const doc = parser.parseFromString(response, 'text/xml');
+      const publicationDate = getPublicationDate(doc);
+
+      expect(publicationDate).toStrictEqual(new Date('2020-03-22'));
     });
   });
 
