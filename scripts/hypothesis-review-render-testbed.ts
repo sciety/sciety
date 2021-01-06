@@ -1,9 +1,9 @@
-const { Remarkable } = require('remarkable');
-const { linkify } = require('remarkable/linkify');
-const sanitiseHtml = require('sanitize-html');
+import { Remarkable } from 'remarkable';
+import { linkify } from 'remarkable/linkify';
+import sanitiseHtml from 'sanitize-html';
 
-const text = ``;
+const text = '- list item';
 
 const converter = new Remarkable({ html: true }).use(linkify);
 
-console.log(sanitiseHtml(converter.render(text)));
+process.stdout.write(sanitiseHtml(converter.render(text)));

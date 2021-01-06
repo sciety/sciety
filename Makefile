@@ -129,3 +129,6 @@ taiko: clean-db
 	${DOCKER_COMPOSE} down
 
 regression: taiko backstop
+
+render-sanitised-markdown: node_modules
+	npx ts-node --transpile-only ./scripts/hypothesis-review-render-testbed.ts
