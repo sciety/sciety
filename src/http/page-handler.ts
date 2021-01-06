@@ -37,6 +37,11 @@ const foldToPage: FoldToPage = (pageResult) => (
   }))
 );
 
+const addScietySuffixIfNotHomepage = (requestPath: string) => (page: Page): Page => ({
+  ...page,
+  title: requestPath === '/' ? page.title : `${page.title} | Sciety`,
+});
+
 export default (
   renderPage: RenderPage,
 ): Middleware<{ user?: User }> => (
@@ -50,15 +55,10 @@ export default (
     };
     context.response.type = 'html';
     const renderedResult = await renderPage(params)();
-    const addScietySuffixIfNotHomepage = (page: Page): Page => ({
-      ...page,
-      title: context.request.path === '/' ? page.title : `${page.title} | Sciety`,
-    });
-
     context.response.body = pipe(
       renderedResult,
       foldToPage,
-      addScietySuffixIfNotHomepage,
+      addScietySuffixIfNotHomepage(context.request.path),
       applyStandardPageLayout(user),
     );
 
