@@ -15,7 +15,7 @@ type GetCommunityName = (editorialCommunityId: EditorialCommunityId) => Promise<
 export type RenderPage = (
   editorialCommunityId: EditorialCommunityId,
   userId: O.Option<UserId>
-) => Promise<Result<{
+) => T.Task<Result<{
   title: string,
   content: HtmlFragment
 }, RenderPageError>>;
@@ -31,7 +31,7 @@ export default (
   renderFollowers: (editorialCommunityId: EditorialCommunityId) => T.Task<HtmlFragment>,
   getCommunityName: GetCommunityName,
 ): RenderPage => (
-  async (editorialCommunityId, userId) => {
+  (editorialCommunityId, userId) => async () => {
     try {
       return Result.ok({
         title: `${await getCommunityName(editorialCommunityId)}`,

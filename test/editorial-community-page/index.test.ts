@@ -8,7 +8,7 @@ describe('create render page', (): void => {
       const { adapters } = await createServer();
       const renderPage = buildRenderPage(adapters);
       const params: Params = { id: 'no-such-community', user: O.none };
-      const result = await renderPage(params);
+      const result = await renderPage(params)();
 
       expect(result.unsafelyUnwrapErr().type).toStrictEqual('not-found');
     });

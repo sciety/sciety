@@ -1,12 +1,13 @@
+import * as T from 'fp-ts/lib/Task';
 import { Result } from 'true-myth';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
-type RenderPage = () => Promise<Result<{
+type RenderPage = () => T.Task<Result<{
   title: string,
   content: HtmlFragment,
 }, never>>;
 
-export default (): RenderPage => async () => Result.ok({
+export default (): RenderPage => () => T.of(Result.ok({
   title: 'Terms and conditions',
   content: toHtmlFragment(`
     <div class="sciety-grid sciety-grid--simple">
@@ -30,4 +31,4 @@ export default (): RenderPage => async () => Result.ok({
       </p>
     </div>
   `),
-});
+}));

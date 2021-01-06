@@ -1,5 +1,6 @@
 import { Middleware } from '@koa/router';
 import * as O from 'fp-ts/lib/Option';
+import * as T from 'fp-ts/lib/Task';
 import { pipe } from 'fp-ts/lib/function';
 import { NOT_FOUND, OK, SERVICE_UNAVAILABLE } from 'http-status-codes';
 import { Result } from 'true-myth';
@@ -17,7 +18,7 @@ type RenderPage = (params: {
   query?: string;
   flavour?: string;
   user: O.Option<User>;
-}) => Promise<RenderedResult>;
+}) => T.Task<RenderedResult>;
 
 const successToStatusCode = (): number => OK;
 
@@ -48,7 +49,7 @@ export default (
       user,
     };
     context.response.type = 'html';
-    const renderedResult = await renderPage(params);
+    const renderedResult = await renderPage(params)();
     const addScietySuffixIfNotHomepage = (page: Page): Page => ({
       ...page,
       title: context.request.path === '/' ? page.title : `${page.title} | Sciety`,

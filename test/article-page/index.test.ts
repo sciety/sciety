@@ -9,7 +9,7 @@ describe('create render page', (): void => {
       const renderPage = buildRenderPage(adapters);
       const params: Params = { doi: '10.1101/833392', user: O.none };
 
-      const page = (await renderPage(params)).unsafelyUnwrap();
+      const page = (await renderPage(params)()).unsafelyUnwrap();
 
       expect(page.content).toStrictEqual(expect.stringContaining('10.1101/833392'));
     });
@@ -21,7 +21,7 @@ describe('create render page', (): void => {
       const renderPage = buildRenderPage(adapters);
       const params: Params = { doi: 'rubbish', user: O.none };
 
-      const error = (await renderPage(params)).unsafelyUnwrapErr();
+      const error = (await renderPage(params)()).unsafelyUnwrapErr();
 
       expect(error.type).toBe('not-found');
     });
@@ -33,7 +33,7 @@ describe('create render page', (): void => {
       const renderPage = buildRenderPage(adapters);
       const params: Params = { doi: '10.7554/eLife.09560', user: O.none };
 
-      const error = (await renderPage(params)).unsafelyUnwrapErr();
+      const error = (await renderPage(params)()).unsafelyUnwrapErr();
 
       expect(error.type).toBe('not-found');
     });

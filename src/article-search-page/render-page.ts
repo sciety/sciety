@@ -1,16 +1,17 @@
+import * as T from 'fp-ts/lib/Task';
 import { Result } from 'true-myth';
 import { RenderSearchResults } from './render-search-results';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { RenderPageError } from '../types/render-page-error';
 
-export type RenderPage = (query: string) => Promise<Result<{
+export type RenderPage = (query: string) => T.Task<Result<{
   title: string,
   content: HtmlFragment,
 }, RenderPageError>>;
 
 export default (
   renderSearchResults: RenderSearchResults,
-): RenderPage => async (query) => {
+): RenderPage => (query) => async () => {
   try {
     const searchResults = await renderSearchResults(query)();
     return Result.ok({

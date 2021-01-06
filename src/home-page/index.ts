@@ -38,7 +38,7 @@ interface Params {
   user: O.Option<User>,
 }
 
-type HomePage = (params: Params) => Promise<Result<{
+type HomePage = (params: Params) => T.Task<Result<{
   title: string,
   content: HtmlFragment
 }, never>>;
@@ -57,9 +57,9 @@ export default (ports: Ports): HomePage => {
     renderSummaryFeedList,
   );
 
-  return async (params) => pipe(
+  return (params) => pipe(
     params.user,
     O.map((user) => user.id),
     renderPage(renderPageHeader, renderEditorialCommunities, renderSearchForm, renderFeed),
-  )();
+  );
 };

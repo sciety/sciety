@@ -32,7 +32,7 @@ export default (ports: Ports): ArticleSearchPage => {
   const renderSearchResults = createRenderSearchResults(ports.searchEuropePmc, renderSearchResult);
 
   const renderPage = createRenderPage(renderSearchResults);
-  return async (params) => (
+  return (params) => (
     renderPage(params.query ?? '')
   );
 };

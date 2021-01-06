@@ -26,7 +26,7 @@ export type GetArticleDetails = (doi: Doi) => T.Task<Result<ArticleDetails, 'not
 
 type Component = (doi: Doi) => T.Task<Result<string, 'not-found' | 'unavailable'>>;
 type RenderFeed = (doi: Doi, userId: O.Option<UserId>) => Promise<Result<string, 'no-content'>>;
-export type RenderPage = (doi: Doi, userId: O.Option<UserId>) => Promise<Result<Page, RenderPageError>>;
+export type RenderPage = (doi: Doi, userId: O.Option<UserId>) => T.Task<Result<Page, RenderPageError>>;
 
 export default (
   renderPageHeader: Component,
@@ -54,7 +54,7 @@ export default (
     }
   );
 
-  return async (doi, userId) => {
+  return (doi, userId) => async () => {
     const abstractResult = renderAbstract(doi)();
     const pageHeaderResult = renderPageHeader(doi)();
     const feedResult = renderFeed(doi, userId)

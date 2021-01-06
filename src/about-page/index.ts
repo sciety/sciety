@@ -10,12 +10,12 @@ interface Ports {
   fetchStaticFile: FetchStaticFile;
 }
 
-type AboutPage = T.Task<Result<{
+type AboutPage = () => T.Task<Result<{
   title: string,
   content: HtmlFragment,
 }, never>>;
 
-export default (ports: Ports): AboutPage => pipe(
+export default (ports: Ports): AboutPage => () => pipe(
   'about.md',
   ports.fetchStaticFile,
   T.map(renderPage),

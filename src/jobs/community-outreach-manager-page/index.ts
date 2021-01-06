@@ -10,12 +10,12 @@ interface Ports {
   fetchStaticFile: FetchStaticFile;
 }
 
-type CommunityOutreachManagerPage = T.Task<Result<{
+type CommunityOutreachManagerPage = () => T.Task<Result<{
   title: string,
   content: HtmlFragment,
 }, never>>;
 
-export default (ports: Ports): CommunityOutreachManagerPage => pipe(
+export default (ports: Ports): CommunityOutreachManagerPage => () => pipe(
   'jobs/community-outreach-manager.md',
   ports.fetchStaticFile,
   T.map(renderPage),

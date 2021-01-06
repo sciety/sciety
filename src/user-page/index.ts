@@ -37,7 +37,7 @@ interface Params {
   user: O.Option<User>;
 }
 
-type UserPage = (params: Params) => Promise<Result<{
+type UserPage = (params: Params) => T.Task<Result<{
   title: string,
   content: HtmlFragment
 }, RenderPageError>>;
@@ -64,13 +64,13 @@ export default (ports: Ports): UserPage => {
     getUserDisplayName(ports.getUserDetails),
   );
 
-  return async (params) => {
+  return (params) => {
     const userId = toUserId(params.id ?? '');
     const viewingUserId = pipe(
       params.user,
       O.map((user) => user.id),
     );
 
-    return renderPage(userId, viewingUserId)();
+    return renderPage(userId, viewingUserId);
   };
 };

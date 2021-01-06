@@ -101,7 +101,7 @@ export default (ports: Ports): EditorialCommunityPage => {
       throw new NotFound(`${id.value} not found`);
     }).name,
   );
-  return async (params) => {
+  return (params) => {
     const editorialCommunityId = new EditorialCommunityId(params.id ?? '');
     const userId = pipe(
       params.user,

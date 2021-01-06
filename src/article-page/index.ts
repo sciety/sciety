@@ -106,15 +106,15 @@ export default (ports: Ports): ArticlePage => {
     renderFeed,
     ports.fetchArticle,
   );
-  return async (params) => pipe(
+  return (params) => pipe(
     params.doi ?? '',
     ensureBiorxivDoi,
     O.fold(
-      async () => Result.err<Page, RenderPageError>({
+      () => T.of(Result.err<Page, RenderPageError>({
         type: 'not-found',
         message: toHtmlFragment(`${params.doi ?? 'Article'} not found`),
-      }),
-      async (doi: Doi) => renderPage(doi, getUserId(params.user)),
+      })),
+      (doi: Doi) => renderPage(doi, getUserId(params.user)),
     ),
   );
 };
