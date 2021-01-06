@@ -34,16 +34,9 @@ export default (
   renderFeed: RenderFeed,
   getArticleDetails: GetArticleDetails,
 ): RenderPage => {
-  let tweetThis = '';
-  if (process.env.EXPERIMENT_ENABLED === 'true') {
-    const tweetText = 'Hello World @ScietyHQ https://sciety.org/articles/10.1101/2020.10.21.348359';
-    tweetThis = `
-      <a target="_blank" href="https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}">
-        Tweet this
-      </a>
-    `;
-  }
-  const template = (abstract: string) => (pageHeader: string) => (feed: string) => (articleDetails: ArticleDetails) => (
+  const template = (
+    abstract: string,
+  ) => (pageHeader: string) => (feed: string) => (articleDetails: ArticleDetails) => (tweetThis: string) => (
     {
       title: `${striptags(articleDetails.title)}`,
       content: toHtmlFragment(`
@@ -73,11 +66,22 @@ export default (
         feed.or(Result.ok<string, never>(''))
       ));
     const articleDetailsResult = getArticleDetails(doi);
+
+    let tweetThis = '';
+    if (process.env.EXPERIMENT_ENABLED === 'true') {
+      const tweetText = `Hello World @ScietyHQ https://sciety.org/articles/${doi.value}`;
+      tweetThis = `
+      <a target="_blank" href="https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}">
+        Tweet this
+      </a>
+    `;
+    }
     return Result.ok<typeof template, 'not-found' | 'unavailable'>(template)
       .ap(await abstractResult)
       .ap(await pageHeaderResult)
       .ap(await feedResult)
       .ap(await articleDetailsResult())
+      .ap(Result.ok(tweetThis))
       .mapErr((error) => {
         switch (error) {
           case 'not-found':
