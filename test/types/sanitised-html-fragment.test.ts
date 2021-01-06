@@ -15,11 +15,4 @@ describe('sanitise', () => {
 
     expect(sanitised).toStrictEqual('cleaned  html');
   });
-
-  it('blah', () => {
-    const dirtyInput = toHtmlFragment('<ol start="1"><li>1</li></ol><ol start="2"><li>2</li></ol>');
-    const sanitised = sanitise(dirtyInput);
-
-    expect(sanitised).toStrictEqual('cleaned  html');
-  });
 });
