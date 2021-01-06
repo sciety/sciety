@@ -2,7 +2,7 @@ import { URL } from 'url';
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import { pipe } from 'fp-ts/lib/function';
-import { Maybe, Result } from 'true-myth';
+import { Maybe } from 'true-myth';
 import { getActor } from './get-actor';
 import getMostRecentEvents, { GetAllEvents } from './get-most-recent-events';
 import projectIsFollowingSomething from './project-is-following-something';
@@ -10,14 +10,13 @@ import createRenderEditorialCommunities, { GetAllEditorialCommunities } from './
 import createRenderEditorialCommunity from './render-editorial-community';
 import createRenderFeed from './render-feed';
 import createRenderFollowToggle from './render-follow-toggle';
-import renderPage from './render-page';
+import renderPage, { RenderPage } from './render-page';
 import renderPageHeader from './render-page-header';
 import renderSearchForm from './render-search-form';
 import createRenderSummaryFeedItem from '../shared-components/render-summary-feed-item';
 import createRenderSummaryFeedList from '../shared-components/render-summary-feed-list';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { FetchExternalArticle } from '../types/fetch-external-article';
-import { HtmlFragment } from '../types/html-fragment';
 import { User } from '../types/user';
 import { UserId } from '../types/user-id';
 
@@ -38,10 +37,7 @@ interface Params {
   user: O.Option<User>,
 }
 
-type HomePage = (params: Params) => T.Task<Result<{
-  title: string,
-  content: HtmlFragment
-}, never>>;
+type HomePage = (params: Params) => ReturnType<RenderPage>;
 
 export default (ports: Ports): HomePage => {
   const renderFollowToggle = createRenderFollowToggle(ports.follows);

@@ -11,7 +11,7 @@ type Page = {
   content: HtmlFragment
 };
 
-type RenderPage = (userId: O.Option<UserId>) => T.Task<Result<Page, never>>;
+export type RenderPage = (userId: O.Option<UserId>) => T.Task<Result<Page, never>>;
 
 type Component = (userId: O.Option<UserId>) => T.Task<string>;
 

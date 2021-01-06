@@ -7,10 +7,7 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { RenderPageError } from '../types/render-page-error';
 import { UserId } from '../types/user-id';
 
-type RenderPage = (
-  userId: UserId,
-  viewingUserId: O.Option<UserId>,
-) => T.Task<Result<{
+export type RenderPage = (userId: UserId, viewingUserId: O.Option<UserId>) => T.Task<Result<{
   title: string,
   content: HtmlFragment
 }, RenderPageError>>;
