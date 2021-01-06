@@ -72,7 +72,7 @@ export default (
       const tweetText = `Hello World @ScietyHQ https://sciety.org/articles/${doi.value}`;
       tweetThis = `
       <a target="_blank" href="https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}">
-        Tweet this
+        <img src="/static/images/twitter-logo.svg" alt=""> Tweet this
       </a>
     `;
     }
