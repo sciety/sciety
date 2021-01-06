@@ -36,7 +36,11 @@ export default (
 ): RenderPage => {
   let tweetThis = '';
   if (process.env.EXPERIMENT_ENABLED === 'true') {
-    tweetThis = '<button>Tweet this</button>';
+    tweetThis = `
+      <a target="_blank" href="https://twitter.com/intent/tweet?text=Hello%20world">
+        Tweet this
+      </a>
+    `;
   }
   const template = (abstract: string) => (pageHeader: string) => (feed: string) => (articleDetails: ArticleDetails) => (
     {
