@@ -1,6 +1,6 @@
 import { DOMParser } from 'xmldom';
 import createFetchCrossrefArticle, { GetXml } from '../../src/infrastructure/fetch-crossref-article';
-import { getAbstract, getPublicationDate } from '../../src/infrastructure/parse-crossref-article';
+import { getAbstract, getAuthors, getPublicationDate } from '../../src/infrastructure/parse-crossref-article';
 import Doi from '../../src/types/doi';
 import dummyLogger from '../dummy-logger';
 
@@ -23,10 +23,9 @@ describe('fetch-crossref-article', (): void => {
       throw msg;
     },
   });
+  const doi = new Doi('10.1101/339747');
 
   describe('fetching the abstract', (): void => {
-    const doi = new Doi('10.1101/339747');
-
     it('extracts the abstract text from the XML response', async () => {
       const response = crossrefResponseWith(`
         <abstract>
@@ -206,16 +205,15 @@ describe('fetch-crossref-article', (): void => {
 
   describe('fetching the authors', (): void => {
     it('extracts no authors from the XML response when there are no contributors', async () => {
-      const doi = new Doi('10.1101/339747');
-      const getXml: GetXml = async () => crossrefResponseWith('');
-      const article = (await createFetchCrossrefArticle(getXml, dummyLogger)(doi)()).unsafelyUnwrap();
+      const response = crossrefResponseWith('');
+      const doc = parser.parseFromString(response, 'text/xml');
+      const authors = getAuthors(doc, doi, dummyLogger);
 
-      expect(article.authors).toHaveLength(0);
+      expect(authors).toHaveLength(0);
     });
 
     it('extracts authors from the XML response', async () => {
-      const doi = new Doi('10.1101/339747');
-      const getXml: GetXml = async () => crossrefResponseWith(`
+      const response = crossrefResponseWith(`
         <contributors>
           <person_name contributor_role="author" sequence="first">
             <given_name>Eesha</given_name>
@@ -226,27 +224,27 @@ describe('fetch-crossref-article', (): void => {
             <surname>Fountain</surname>
           </person_name>
         </contributors>`);
-      const article = (await createFetchCrossrefArticle(getXml, dummyLogger)(doi)()).unsafelyUnwrap();
+      const doc = parser.parseFromString(response, 'text/xml');
+      const authors = getAuthors(doc, doi, dummyLogger);
 
-      expect(article.authors).toStrictEqual(['Eesha Ross', 'Fergus Fountain']);
+      expect(authors).toStrictEqual(['Eesha Ross', 'Fergus Fountain']);
     });
 
     it('handles a person without a given_name', async () => {
-      const doi = new Doi('10.1101/339747');
-      const getXml: GetXml = async () => crossrefResponseWith(`
+      const response = crossrefResponseWith(`
         <contributors>
           <person_name contributor_role="author" sequence="first">
             <surname>Ross</surname>
           </person_name>
         </contributors>`);
-      const article = (await createFetchCrossrefArticle(getXml, dummyLogger)(doi)()).unsafelyUnwrap();
+      const doc = parser.parseFromString(response, 'text/xml');
+      const authors = getAuthors(doc, doi, dummyLogger);
 
-      expect(article.authors).toStrictEqual(['Ross']);
+      expect(authors).toStrictEqual(['Ross']);
     });
 
     it('only includes authors', async () => {
-      const doi = new Doi('10.1101/339747');
-      const getXml: GetXml = async () => crossrefResponseWith(`
+      const response = crossrefResponseWith(`
         <contributors>
           <person_name contributor_role="author" sequence="first">
             <given_name>Eesha</given_name>
@@ -257,15 +255,15 @@ describe('fetch-crossref-article', (): void => {
             <surname>Fountain</surname>
           </person_name>
         </contributors>`);
-      const article = (await createFetchCrossrefArticle(getXml, dummyLogger)(doi)()).unsafelyUnwrap();
+      const doc = parser.parseFromString(response, 'text/xml');
+      const authors = getAuthors(doc, doi, dummyLogger);
 
-      expect(article.authors).toStrictEqual(['Eesha Ross']);
+      expect(authors).toStrictEqual(['Eesha Ross']);
     });
   });
 
   describe('fetching the title', (): void => {
     it('extracts a title from the XML response', async () => {
-      const doi = new Doi('10.1101/339747');
       const getXml: GetXml = async () => crossrefResponseWith(`
         <titles>
           <title>An article title</title>
@@ -276,7 +274,6 @@ describe('fetch-crossref-article', (): void => {
     });
 
     it('returns `Unknown title` when no title present', async () => {
-      const doi = new Doi('10.1101/339747');
       const getXml: GetXml = async () => crossrefResponseWith('');
       const article = (await createFetchCrossrefArticle(getXml, dummyLogger)(doi)()).unsafelyUnwrap();
 
@@ -284,7 +281,6 @@ describe('fetch-crossref-article', (): void => {
     });
 
     it('extracts a title containing inline HTML tags from the XML response', async () => {
-      const doi = new Doi('10.1101/339747');
       const getXml: GetXml = async () => crossrefResponseWith(`
         <titles>
           <title>An article title for <i>C. elegans</i></title>
@@ -295,7 +291,6 @@ describe('fetch-crossref-article', (): void => {
     });
 
     it('strips non html tags from the title', async () => {
-      const doi = new Doi('10.1101/339747');
       const getXml: GetXml = async () => crossrefResponseWith(`
         <titles>
           <title>An article title for <scp>C. elegans</scp></title>
@@ -308,7 +303,6 @@ describe('fetch-crossref-article', (): void => {
 
   describe('the request fails', (): void => {
     it('returns an error result', async () => {
-      const doi = new Doi('10.1101/339747');
       const getXml: GetXml = async () => {
         throw new Error('HTTP timeout');
       };
@@ -321,7 +315,6 @@ describe('fetch-crossref-article', (): void => {
 
   describe('crossref returns an invalid XML document', (): void => {
     it('throws an error', async () => {
-      const doi = new Doi('10.1101/339747');
       const getXml: GetXml = async () => '';
       const result = await createFetchCrossrefArticle(getXml, dummyLogger)(doi)();
 
