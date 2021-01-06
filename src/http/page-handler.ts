@@ -42,6 +42,17 @@ const addScietySuffixIfNotHomepage = (requestPath: string) => (page: Page): Page
   title: requestPath === '/' ? page.title : `${page.title} | Sciety`,
 });
 
+const createResponse = (user: O.Option<User>, requestPath: string) => (rendered: RenderedResult) => ({
+  type: 'html',
+  body: pipe(
+    rendered,
+    foldToPage,
+    addScietySuffixIfNotHomepage(requestPath),
+    applyStandardPageLayout(user),
+  ),
+  status: rendered.map(successToStatusCode).unwrapOrElse(errorTypeToStatusCode),
+});
+
 export default (
   renderPage: RenderPage,
 ): Middleware<{ user?: User }> => (
@@ -53,16 +64,14 @@ export default (
       ...context.state,
       user,
     };
-    context.response.type = 'html';
-    const renderedResult = await renderPage(params)();
-    context.response.body = pipe(
-      renderedResult,
-      foldToPage,
-      addScietySuffixIfNotHomepage(context.request.path),
-      applyStandardPageLayout(user),
-    );
 
-    context.response.status = renderedResult.map(successToStatusCode).unwrapOrElse(errorTypeToStatusCode);
+    const response = await pipe(
+      params,
+      renderPage,
+      T.map(createResponse(user, context.request.path)),
+    )();
+
+    Object.assign(context.response, response);
 
     await next();
   }
