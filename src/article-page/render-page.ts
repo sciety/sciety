@@ -28,6 +28,19 @@ type Component = (doi: Doi) => T.Task<Result<string, 'not-found' | 'unavailable'
 type RenderFeed = (doi: Doi, userId: O.Option<UserId>) => Promise<Result<string, 'no-content'>>;
 export type RenderPage = (doi: Doi, userId: O.Option<UserId>) => T.Task<Result<Page, RenderPageError>>;
 
+const renderTweetThis = (doi: Doi): HtmlFragment => {
+  let tweetThis = '';
+  if (process.env.EXPERIMENT_ENABLED === 'true') {
+    const tweetText = `Hello World @ScietyHQ https://sciety.org/articles/${doi.value}?utm_source=twitter&utm_medium=social&utm_campaign=tweet_button`;
+    tweetThis = `
+    <a target="_blank" href="https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}">
+      <img src="/static/images/twitter-logo.svg" alt=""> Tweet this
+    </a>
+  `;
+  }
+  return toHtmlFragment(tweetThis);
+};
+
 export default (
   renderPageHeader: Component,
   renderAbstract: Component,
@@ -67,21 +80,14 @@ export default (
       ));
     const articleDetailsResult = getArticleDetails(doi);
 
-    let tweetThis = '';
-    if (process.env.EXPERIMENT_ENABLED === 'true') {
-      const tweetText = `Hello World @ScietyHQ https://sciety.org/articles/${doi.value}?utm_source=twitter&utm_medium=social&utm_campaign=tweet_button`;
-      tweetThis = `
-      <a target="_blank" href="https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}">
-        <img src="/static/images/twitter-logo.svg" alt=""> Tweet this
-      </a>
-    `;
-    }
+    const tweetThisResult = Result.ok<HtmlFragment, 'not-found' | 'unavailable'>(renderTweetThis(doi));
+
     return Result.ok<typeof template, 'not-found' | 'unavailable'>(template)
       .ap(await abstractResult)
       .ap(await pageHeaderResult)
       .ap(await feedResult)
       .ap(await articleDetailsResult())
-      .ap(Result.ok(tweetThis))
+      .ap(tweetThisResult)
       .mapErr((error) => {
         switch (error) {
           case 'not-found':
