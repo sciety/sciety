@@ -1,6 +1,8 @@
 import { DOMParser } from 'xmldom';
 import createFetchCrossrefArticle, { GetXml } from '../../src/infrastructure/fetch-crossref-article';
-import { getAbstract, getAuthors, getPublicationDate } from '../../src/infrastructure/parse-crossref-article';
+import {
+  getAbstract, getAuthors, getPublicationDate, getTitle,
+} from '../../src/infrastructure/parse-crossref-article';
 import Doi from '../../src/types/doi';
 import dummyLogger from '../dummy-logger';
 
@@ -264,40 +266,44 @@ describe('fetch-crossref-article', (): void => {
 
   describe('fetching the title', (): void => {
     it('extracts a title from the XML response', async () => {
-      const getXml: GetXml = async () => crossrefResponseWith(`
+      const response = crossrefResponseWith(`
         <titles>
           <title>An article title</title>
         </titles>`);
-      const article = (await createFetchCrossrefArticle(getXml, dummyLogger)(doi)()).unsafelyUnwrap();
+      const doc = parser.parseFromString(response, 'text/xml');
+      const title = getTitle(doc, doi, dummyLogger);
 
-      expect(article.title).toStrictEqual('An article title');
+      expect(title).toStrictEqual('An article title');
     });
 
     it('returns `Unknown title` when no title present', async () => {
-      const getXml: GetXml = async () => crossrefResponseWith('');
-      const article = (await createFetchCrossrefArticle(getXml, dummyLogger)(doi)()).unsafelyUnwrap();
+      const response = crossrefResponseWith('');
+      const doc = parser.parseFromString(response, 'text/xml');
+      const title = getTitle(doc, doi, dummyLogger);
 
-      expect(article.title).toStrictEqual('Unknown title');
+      expect(title).toStrictEqual('Unknown title');
     });
 
     it('extracts a title containing inline HTML tags from the XML response', async () => {
-      const getXml: GetXml = async () => crossrefResponseWith(`
+      const response = crossrefResponseWith(`
         <titles>
           <title>An article title for <i>C. elegans</i></title>
         </titles>`);
-      const article = (await createFetchCrossrefArticle(getXml, dummyLogger)(doi)()).unsafelyUnwrap();
+      const doc = parser.parseFromString(response, 'text/xml');
+      const title = getTitle(doc, doi, dummyLogger);
 
-      expect(article.title).toStrictEqual('An article title for <i>C. elegans</i>');
+      expect(title).toStrictEqual('An article title for <i>C. elegans</i>');
     });
 
     it('strips non html tags from the title', async () => {
-      const getXml: GetXml = async () => crossrefResponseWith(`
+      const response = crossrefResponseWith(`
         <titles>
           <title>An article title for <scp>C. elegans</scp></title>
         </titles>`);
-      const article = (await createFetchCrossrefArticle(getXml, dummyLogger)(doi)()).unsafelyUnwrap();
+      const doc = parser.parseFromString(response, 'text/xml');
+      const title = getTitle(doc, doi, dummyLogger);
 
-      expect(article.title).toStrictEqual('An article title for C. elegans');
+      expect(title).toStrictEqual('An article title for C. elegans');
     });
   });
 

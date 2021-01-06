@@ -54,10 +54,10 @@ export default (getXml: GetXml, logger: Logger): FetchCrossrefArticle => {
     try {
       const doc = parser.parseFromString(response, 'text/xml');
       return Result.ok({
-        abstract: sanitise(toHtmlFragment(getAbstract(doc, doi, logger))),
+        abstract: sanitise(toHtmlFragment(getAbstract(doc, doi, logger))), // TODO: push sanitisation down
         authors: getAuthors(doc, doi, logger),
         doi,
-        title: sanitise(toHtmlFragment(getTitle(doc, doi, logger))),
+        title: getTitle(doc, doi, logger),
         publicationDate: getPublicationDate(doc),
       });
     } catch (error: unknown) {

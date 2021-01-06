@@ -3,7 +3,7 @@ import { XMLSerializer } from 'xmldom';
 import { Logger } from './logger';
 import Doi from '../types/doi';
 import { toHtmlFragment } from '../types/html-fragment';
-import { sanitise } from '../types/sanitised-html-fragment';
+import { sanitise, SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
 const getElement = (ancestor: Document | Element, qualifiedName: string): Element | null => (
   ancestor.getElementsByTagName(qualifiedName).item(0)
@@ -66,16 +66,22 @@ export const getAbstract = (doc: Document, doi: Doi, logger: Logger): string => 
   );
 };
 
-export const getTitle = (doc: Document, doi: Doi, logger: Logger): string => {
+export const getTitle = (doc: Document, doi: Doi, logger: Logger): SanitisedHtmlFragment => {
   const titlesElement = getElement(doc, 'titles');
   const titleElement = titlesElement?.getElementsByTagName('title')[0];
-  if (!titleElement) {
+  let title = 'Unknown title';
+  // TODO: the decision as to what to display on error should live with the rendering component
+  if (titleElement) {
+    title = new XMLSerializer().serializeToString(titleElement);
+  } else {
     logger('warn', 'Did not find title', { doi });
-    // TODO: the decision as to what to display on error should live with th rendering component
-    return 'Unknown title';
   }
 
-  return new XMLSerializer().serializeToString(titleElement);
+  return pipe(
+    title,
+    toHtmlFragment,
+    sanitise,
+  );
 };
 
 export const getPublicationDate = (doc: Document): Date => {
