@@ -35,5 +35,3 @@ Each sub list item `-` needs to start in the same column as the outer list item 
 
    - The authors discuss how their main aim of identifying expression "hotspots"
 2)
-
-## Line Endings
