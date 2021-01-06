@@ -36,8 +36,9 @@ export default (
 ): RenderPage => {
   let tweetThis = '';
   if (process.env.EXPERIMENT_ENABLED === 'true') {
+    const tweetText = 'Hello World @ScietyHQ https://sciety.org/articles/10.1101/2020.10.21.348359';
     tweetThis = `
-      <a target="_blank" href="https://twitter.com/intent/tweet?text=Hello%20world">
+      <a target="_blank" href="https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}">
         Tweet this
       </a>
     `;
