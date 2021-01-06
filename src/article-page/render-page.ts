@@ -2,6 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import striptags from 'striptags';
 import { Result } from 'true-myth';
+import { renderTweetThis } from './render-tweet-this';
 import Doi from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { RenderPageError } from '../types/render-page-error';
@@ -27,19 +28,6 @@ export type GetArticleDetails = (doi: Doi) => T.Task<Result<ArticleDetails, 'not
 type Component = (doi: Doi) => T.Task<Result<string, 'not-found' | 'unavailable'>>;
 type RenderFeed = (doi: Doi, userId: O.Option<UserId>) => Promise<Result<string, 'no-content'>>;
 export type RenderPage = (doi: Doi, userId: O.Option<UserId>) => T.Task<Result<Page, RenderPageError>>;
-
-const renderTweetThis = (doi: Doi): HtmlFragment => {
-  let tweetThis = '';
-  if (process.env.EXPERIMENT_ENABLED === 'true') {
-    const tweetText = `Hello World @ScietyHQ https://sciety.org/articles/${doi.value}?utm_source=twitter&utm_medium=social&utm_campaign=tweet_button`;
-    tweetThis = `
-    <a target="_blank" href="https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}">
-      <img src="/static/images/twitter-logo.svg" alt=""> Tweet this
-    </a>
-  `;
-  }
-  return toHtmlFragment(tweetThis);
-};
 
 export default (
   renderPageHeader: Component,
