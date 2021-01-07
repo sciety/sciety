@@ -2,7 +2,6 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import striptags from 'striptags';
 import { Result } from 'true-myth';
-import { renderTweetThis } from './render-tweet-this';
 import Doi from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { RenderPageError } from '../types/render-page-error';
@@ -37,7 +36,7 @@ export default (
 ): RenderPage => {
   const template = (
     abstract: string,
-  ) => (pageHeader: string) => (feed: string) => (articleDetails: ArticleDetails) => (tweetThis: string) => (
+  ) => (pageHeader: string) => (feed: string) => (articleDetails: ArticleDetails) => (
     {
       title: `${striptags(articleDetails.title)}`,
       content: toHtmlFragment(`
@@ -49,7 +48,6 @@ export default (
     ${feed}
   </div>
 
-  ${tweetThis}
 </article>
     `),
       openGraph: {
@@ -68,14 +66,11 @@ export default (
       ));
     const articleDetailsResult = getArticleDetails(doi);
 
-    const tweetThisResult = Result.ok<HtmlFragment, 'not-found' | 'unavailable'>(renderTweetThis(doi));
-
     return Result.ok<typeof template, 'not-found' | 'unavailable'>(template)
       .ap(await abstractResult)
       .ap(await pageHeaderResult)
       .ap(await feedResult)
       .ap(await articleDetailsResult())
-      .ap(tweetThisResult)
       .mapErr((error) => {
         switch (error) {
           case 'not-found':
