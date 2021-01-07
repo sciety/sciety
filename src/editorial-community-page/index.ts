@@ -4,7 +4,7 @@ import * as T from 'fp-ts/lib/Task';
 import { pipe } from 'fp-ts/lib/function';
 import { NotFound } from 'http-errors';
 import { Remarkable } from 'remarkable';
-import { Maybe } from 'true-myth';
+import { Maybe, Result } from 'true-myth';
 import createGetMostRecentEvents, { GetAllEvents } from './get-most-recent-events';
 import createProjectFollowerIds from './project-follower-ids';
 import createRenderDescription, { GetEditorialCommunityDescription, RenderDescription } from './render-description';
@@ -17,6 +17,7 @@ import createRenderSummaryFeedItem, { GetActor } from '../shared-components/rend
 import createRenderSummaryFeedList from '../shared-components/render-summary-feed-list';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { FetchExternalArticle } from '../types/fetch-external-article';
+import { toHtmlFragment } from '../types/html-fragment';
 import { User } from '../types/user';
 
 type FetchStaticFile = (filename: string) => T.Task<string>;
@@ -107,6 +108,17 @@ export default (ports: Ports): EditorialCommunityPage => {
       params.user,
       O.map((user) => user.id),
     );
-    return renderPage(editorialCommunityId, userId);
+
+    return pipe(
+      editorialCommunityId,
+      ports.getEditorialCommunity,
+      T.chain((editorialCommunity) => (
+        editorialCommunity.mapOrElse(() => T.of(Result.err({
+          type: 'not-found',
+          message: toHtmlFragment(`Editorial community id '${editorialCommunityId.value}' not found`),
+        })),
+        () => renderPage(editorialCommunityId, userId))
+      )),
+    );
   };
 };
