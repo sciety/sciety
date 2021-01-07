@@ -49,6 +49,7 @@
   color: settings.$colour-white;
   display: inline-flex;
   align-items: center;
+  padding-right: functions.px-to-rem(5px);
 
   &:hover {
     background-color: settings.$colour-ui-default;
