@@ -1,7 +1,10 @@
 @use 'baseline';
+@use 'button';
+@use 'functions';
+@use 'settings';
 
 .article-author-list {
-  font-family: Lato, sans-serif;
+  font-family: settings.$font-secondary;
   padding-left: 0;
   display: flow-root;
   list-style: none;
@@ -21,7 +24,7 @@
 }
 
 .article-meta-data-list {
-  font-family: Lato, sans-serif;
+  font-family: settings.$font-secondary;
   list-style: none;
   padding-left: 0;
 }
@@ -31,9 +34,24 @@
 }
 
 .article-call-to-action-link {
-  font-family: Lato, sans-serif;
+  font-family: settings.$font-secondary;
 }
 
 .article-abstract {
   margin-bottom: #{baseline.increments(6)};
+}
+
+.tweet-button {
+  @include button.basics();
+  font-family: settings.$font-secondary;
+  font-size: functions.px-to-rem(14px);
+  background-color: settings.$colour-teal;
+  color: settings.$colour-white;
+  display: inline-flex;
+  align-items: center;
+
+  &:hover {
+    background-color: settings.$colour-ui-default;
+    color: settings.$colour-white;
+  }
 }
