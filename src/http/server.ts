@@ -18,6 +18,7 @@ export default (router: Router, logger: Logger): Server => {
     logger('info', 'Received HTTP request', {
       method: request.method,
       url: request.url,
+      referer: request.headers.referer,
     });
 
     res.once('finish', () => {
