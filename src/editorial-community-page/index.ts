@@ -26,6 +26,7 @@ type FetchEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T
   name: string;
   avatar: URL;
   descriptionPath: string;
+  id: EditorialCommunityId;
 }>>;
 
 interface Ports {
@@ -112,12 +113,12 @@ export default (ports: Ports): EditorialCommunityPage => {
     return pipe(
       editorialCommunityId,
       ports.getEditorialCommunity,
-      T.chain((editorialCommunity) => (
-        editorialCommunity.mapOrElse(() => T.of(Result.err({
+      T.chain((editorialCommunityMaybe) => (
+        editorialCommunityMaybe.mapOrElse(() => T.of(Result.err({
           type: 'not-found',
           message: toHtmlFragment(`Editorial community id '${editorialCommunityId.value}' not found`),
         })),
-        () => renderPage(editorialCommunityId, userId))
+        (editorialCommunity) => renderPage(editorialCommunity.id, userId))
       )),
     );
   };
