@@ -34,7 +34,6 @@ describe('render-page-header component', (): void => {
   it('renders the article DOI according to CrossRef display guidelines', () => {
     const links = JSDOM.fragment(rendered).querySelectorAll('a');
 
-    expect(links).toHaveLength(1);
     expect(links[0].textContent).toStrictEqual('https://doi.org/10.1101/815689');
   });
 
