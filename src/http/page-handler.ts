@@ -8,7 +8,6 @@ import { NOT_FOUND, OK, SERVICE_UNAVAILABLE } from 'http-status-codes';
 import { Result } from 'true-myth';
 import { renderErrorPage } from './render-error-page';
 import { applyStandardPageLayout, Page } from '../shared-components/apply-standard-page-layout';
-import { HtmlFragment } from '../types/html-fragment';
 import { RenderPageError } from '../types/render-page-error';
 import { User } from '../types/user';
 
@@ -23,17 +22,7 @@ type RenderPage = (params: {
   user: O.Option<User>;
 }) => T.Task<RenderedResult>;
 
-type InterimResult = {
-  title: string;
-  content: HtmlFragment;
-  openGraph?: {
-    title: string;
-    description: string;
-  };
-  status: number;
-};
-
-const addScietySuffixIfNotHomepage = (requestPath: string) => (page: InterimResult): InterimResult => ({
+const addScietySuffixIfNotHomepage = (requestPath: string) => (page: Page): Page => ({
   ...page,
   title: requestPath === '/' ? page.title : `${page.title} | Sciety`,
 });
@@ -44,6 +33,22 @@ const toTaskEither = (rendered: T.Task<RenderedResult>): TE.TaskEither<RenderPag
     .map((page) => E.right<RenderPageError, Page>(page))
     .unwrapOrElse((error) => E.left<RenderPageError, Page>(error))),
   T.chain(TE.fromEither),
+);
+
+const errorToWebPage = (user: O.Option<User>, requestPath: string) => (error: RenderPageError) => pipe(
+  error,
+  (e) => ({
+    title: 'Error',
+    content: renderErrorPage(e.message),
+  }),
+  addScietySuffixIfNotHomepage(requestPath),
+  applyStandardPageLayout(user),
+);
+
+const pageToWebPage = (user: O.Option<User>, requestPath: string) => (page: Page): string => pipe(
+  page,
+  addScietySuffixIfNotHomepage(requestPath),
+  applyStandardPageLayout(user),
 );
 
 export default (
@@ -64,20 +69,14 @@ export default (
       toTaskEither,
       TE.fold(
         (error) => T.of({
-          title: 'Error',
-          content: renderErrorPage(error.message),
+          body: errorToWebPage(user, context.request.path)(error),
           status: error.type === 'not-found' ? NOT_FOUND : SERVICE_UNAVAILABLE,
         }),
         (page) => T.of({
-          ...page,
+          body: pageToWebPage(user, context.request.path)(page),
           status: OK,
         }),
       ),
-      T.map(addScietySuffixIfNotHomepage(context.request.path)),
-      T.map((obj) => ({
-        body: applyStandardPageLayout(user)(obj),
-        status: obj.status,
-      })),
     )();
 
     context.response.type = 'html';
