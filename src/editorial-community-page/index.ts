@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import { pipe } from 'fp-ts/lib/function';
@@ -15,6 +14,7 @@ import createRenderPage, { RenderPage } from './render-page';
 import createRenderPageHeader, { GetEditorialCommunity, RenderPageHeader } from './render-page-header';
 import createRenderSummaryFeedItem, { GetActor } from '../shared-components/render-summary-feed-item';
 import createRenderSummaryFeedList from '../shared-components/render-summary-feed-list';
+import { EditorialCommunity } from '../types/editorial-community';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { FetchExternalArticle } from '../types/fetch-external-article';
 import { toHtmlFragment } from '../types/html-fragment';
@@ -22,12 +22,7 @@ import { User } from '../types/user';
 
 type FetchStaticFile = (filename: string) => T.Task<string>;
 
-type FetchEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.Task<Maybe<{
-  name: string;
-  avatar: URL;
-  descriptionPath: string;
-  id: EditorialCommunityId;
-}>>;
+type FetchEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.Task<Maybe<EditorialCommunity>>;
 
 interface Ports {
   fetchArticle: FetchExternalArticle;
@@ -118,7 +113,7 @@ export default (ports: Ports): EditorialCommunityPage => {
           type: 'not-found',
           message: toHtmlFragment(`Editorial community id '${editorialCommunityId.value}' not found`),
         })),
-        (editorialCommunity) => renderPage(editorialCommunity.id, userId))
+        (editorialCommunity) => renderPage(editorialCommunity, userId))
       )),
     );
   };
