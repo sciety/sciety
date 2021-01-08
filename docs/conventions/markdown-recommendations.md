@@ -2,7 +2,7 @@
 
 ## Lists
 ### Supported List styles
-#### multiple paragraphs within a single list item
+#### Multiple paragraphs within a single list item
 Each paragraph in the list item needs to start in the same column as the initial one (in this example align with the `I` in `Imprinted`)
 ```markdown
 1) Imprinted genes that were identified as enriched are not clearly named or listed
@@ -19,7 +19,7 @@ Each paragraph in the list item needs to start in the same column as the initial
    The authors discuss how their main aim of identifying expression "hotspots"
 2)
 
-#### sublist within a single list item
+#### Sublist within a single list item
 Each sub list item `-` needs to start in the same column as the outer list item (in this example align with the `I` in `Imprinted`)
 ```markdown
 1) Imprinted genes that were identified as enriched are not clearly named or listed
