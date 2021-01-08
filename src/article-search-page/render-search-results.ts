@@ -29,18 +29,17 @@ const renderListIfNecessary = (articles: ReadonlyArray<HtmlFragment>): string =>
     `;
 };
 
-const renderSearchResults = (renderSearchResult: RenderSearchResult) => (searchResults: SearchResults) => async () => {
-  const searchResultsList = await pipe(
+const renderSearchResults = (renderSearchResult: RenderSearchResult) => (searchResults: SearchResults) => (
+  pipe(
     searchResults.items,
     T.traverseArray(renderSearchResult),
     T.map(renderListIfNecessary),
-  )();
-
-  return `
-    <p>Showing ${searchResults.items.length} of ${searchResults.total} results.</p>
-    ${searchResultsList}
-  `;
-};
+    T.map((searchResultsList) => `
+      <p>Showing ${searchResults.items.length} of ${searchResults.total} results.</p>
+      ${searchResultsList}
+    `),
+  )
+);
 
 export default (
   findArticles: FindArticles,
