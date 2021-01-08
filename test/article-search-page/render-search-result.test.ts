@@ -48,4 +48,14 @@ describe('render-search-result component', (): void => {
       expect(rendered).toStrictEqual(expect.not.stringContaining('Reviews'));
     });
   });
+
+  describe('can\'t retrive reviews', () => {
+    it('hides the number of reviews', async (): Promise<void> => {
+      const getReviewCount: GetReviewCount = () => TE.left('some error');
+
+      const rendered = await createRenderSearchResult(getReviewCount)(searchResult);
+
+      expect(rendered).toStrictEqual(expect.not.stringContaining('Reviews'));
+    });
+  });
 });
