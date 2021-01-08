@@ -17,8 +17,11 @@ export default (
 ): RenderPage => (query) => pipe(
   TE.tryCatch(
     renderSearchResults(query),
-    (): RenderPageError => ({
-      type: 'unavailable',
+    ():RenderPageError['type'] => 'unavailable',
+  ),
+  TE.mapLeft(
+    (error) => ({
+      type: error,
       message: toHtmlFragment('We\'re having trouble searching for you, please come back later.'),
     }),
   ),
