@@ -21,17 +21,17 @@ const renderSearchResults = (renderSearchResult: RenderSearchResult) => (searchR
   const articles = await Promise.all(searchResults.items.map(async (item) => renderSearchResult(item)()));
   let searchResultsList = '';
   if (articles.length) {
-    searchResultsList = toHtmlFragment(`
+    searchResultsList = `
       <ul class="ui relaxed divided items" role="list">
         ${templateListItems(articles)}
       </ul>
-    `);
+    `;
   }
 
-  return toHtmlFragment(`
+  return `
     <p>Showing ${searchResults.items.length} of ${searchResults.total} results.</p>
     ${searchResultsList}
-  `);
+  `;
 };
 
 export default (
@@ -47,6 +47,7 @@ export default (
         (searchResults) => T.of(searchResults),
       ),
       T.chain(renderSearchResults(renderSearchResult)),
+      T.map(toHtmlFragment),
     )
   )
 );
