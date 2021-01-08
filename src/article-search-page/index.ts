@@ -1,4 +1,5 @@
 import * as T from 'fp-ts/lib/Task';
+import * as TE from 'fp-ts/lib/TaskEither';
 import { pipe } from 'fp-ts/lib/function';
 import createRenderPage, { RenderPage } from './render-page';
 import createRenderSearchResult, { GetReviewCount } from './render-search-result';
@@ -27,6 +28,7 @@ export default (ports: Ports): ArticleSearchPage => {
   const getReviewCount: GetReviewCount = (doi) => pipe(
     ports.findReviewsForArticleDoi(doi),
     T.map((list) => list.length),
+    TE.rightTask,
   );
   const renderSearchResult = createRenderSearchResult(getReviewCount);
   const renderSearchResults = createRenderSearchResults(ports.searchEuropePmc, renderSearchResult);

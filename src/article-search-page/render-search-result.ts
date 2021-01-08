@@ -1,5 +1,6 @@
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
+import * as TE from 'fp-ts/lib/TaskEither';
 import { flow, pipe } from 'fp-ts/lib/function';
 import templateDate from '../shared-components/date';
 import Doi from '../types/doi';
@@ -12,7 +13,7 @@ export interface SearchResult {
   postedDate: Date;
 }
 
-export type GetReviewCount = (doi: Doi) => T.Task<number>;
+export type GetReviewCount = (doi: Doi) => TE.TaskEither<unknown, number>;
 
 export type RenderSearchResult = (result: SearchResult) => T.Task<HtmlFragment>;
 
@@ -38,7 +39,10 @@ const createRenderReviews = (
     pipe(
       doi,
       getReviewCount,
-      T.map(renderIfNecessary),
+      TE.fold(
+        () => T.of(toHtmlFragment('')),
+        (reviewCount) => T.of(renderIfNecessary(reviewCount)),
+      ),
     )()
   )
 );
