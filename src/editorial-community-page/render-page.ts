@@ -11,8 +11,6 @@ import { UserId } from '../types/user-id';
 
 type Component = (editorialCommunityId: EditorialCommunityId, userId: O.Option<UserId>) => Promise<string>;
 
-type GetCommunityName = (editorialCommunityId: EditorialCommunityId) => Promise<string>;
-
 export type RenderPage = (
   editorialCommunity: EditorialCommunity,
   userId: O.Option<UserId>
@@ -30,12 +28,11 @@ export default (
   renderDescription: RenderDescription,
   renderFeed: Component,
   renderFollowers: (editorialCommunityId: EditorialCommunityId) => T.Task<HtmlFragment>,
-  getCommunityName: GetCommunityName,
 ): RenderPage => (
   (editorialCommunity, userId) => async () => {
     try {
       return Result.ok({
-        title: `${await getCommunityName(editorialCommunity.id)}`,
+        title: editorialCommunity.name,
         content: toHtmlFragment(`
           <div class="sciety-grid sciety-grid--editorial-community">
             ${await renderPageHeader(editorialCommunity.id)()}

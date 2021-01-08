@@ -93,10 +93,6 @@ export default (ports: Ports): EditorialCommunityPage => {
     renderDescription,
     renderFeed,
     renderFollowers,
-    // TODO: do not unsafelyUnwrap()
-    async (id) => (await ports.getEditorialCommunity(id)()).unwrapOrElse(() => {
-      throw new NotFound(`${id.value} not found`);
-    }).name,
   );
   return (params) => {
     const editorialCommunityId = new EditorialCommunityId(params.id ?? '');
