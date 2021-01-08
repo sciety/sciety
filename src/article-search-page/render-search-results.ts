@@ -1,6 +1,6 @@
 import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
-import { pipe } from 'fp-ts/lib/function';
+import { flow, pipe } from 'fp-ts/lib/function';
 import { RenderSearchResult, SearchResult } from './render-search-result';
 import templateListItems from '../shared-components/list-items';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -44,17 +44,18 @@ const renderSearchResults = (renderSearchResult: RenderSearchResult) => (searchR
 export default (
   findArticles: FindArticles,
   renderSearchResult: RenderSearchResult,
-): RenderSearchResults => (
-  (query) => (
-    pipe(
-      query,
-      findArticles,
-      TE.fold(
-        (error) => { throw new Error(error); },
-        (searchResults) => T.of(searchResults),
-      ),
-      T.chain(renderSearchResults(renderSearchResult)),
-      T.map(toHtmlFragment),
-    )
-  )
+): RenderSearchResults => (query) => pipe(
+  query,
+  findArticles,
+  TE.chainW(
+    flow(
+      renderSearchResults(renderSearchResult),
+      TE.rightTask,
+    ),
+  ),
+  TE.map(toHtmlFragment),
+  TE.fold(
+    (error) => { throw new Error(error); },
+    (searchResults) => T.of(searchResults),
+  ),
 );
