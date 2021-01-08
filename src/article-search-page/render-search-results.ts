@@ -17,16 +17,24 @@ type SearchResults = {
   total: number;
 };
 
-const renderSearchResults = (renderSearchResult: RenderSearchResult) => (searchResults: SearchResults) => async () => {
-  const articles = await T.traverseArray(renderSearchResult)(searchResults.items)();
-  let searchResultsList = '';
-  if (articles.length) {
-    searchResultsList = `
+const renderListIfNecessary = (articles: ReadonlyArray<HtmlFragment>): string => {
+  if (articles.length === 0) {
+    return '';
+  }
+
+  return `
       <ul class="ui relaxed divided items" role="list">
         ${templateListItems(articles)}
       </ul>
     `;
-  }
+};
+
+const renderSearchResults = (renderSearchResult: RenderSearchResult) => (searchResults: SearchResults) => async () => {
+  const searchResultsList = await pipe(
+    searchResults.items,
+    T.traverseArray(renderSearchResult),
+    T.map(renderListIfNecessary),
+  )();
 
   return `
     <p>Showing ${searchResults.items.length} of ${searchResults.total} results.</p>
