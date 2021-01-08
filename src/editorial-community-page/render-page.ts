@@ -19,7 +19,7 @@ export type RenderPage = (
   content: HtmlFragment
 }, RenderPageError>>;
 
-type RenderPageHeader = (editorialCommunityId: EditorialCommunityId) => T.Task<HtmlFragment>;
+type RenderPageHeader = (editorialCommunity: EditorialCommunity) => HtmlFragment;
 
 type RenderDescription = (editorialCommunityId: EditorialCommunityId) => T.Task<HtmlFragment>;
 
@@ -35,7 +35,7 @@ export default (
         title: editorialCommunity.name,
         content: toHtmlFragment(`
           <div class="sciety-grid sciety-grid--editorial-community">
-            ${await renderPageHeader(editorialCommunity.id)()}
+            ${renderPageHeader(editorialCommunity)}
 
             <div class="editorial-community-page-description">
             ${await renderDescription(editorialCommunity.id)()}

@@ -11,7 +11,7 @@ import createRenderFeed, { RenderFeed } from './render-feed';
 import createRenderFollowToggle, { Follows } from './render-follow-toggle';
 import createRenderFollowers from './render-followers';
 import createRenderPage, { RenderPage } from './render-page';
-import createRenderPageHeader, { GetEditorialCommunity, RenderPageHeader } from './render-page-header';
+import { renderPageHeader } from './render-page-header';
 import createRenderSummaryFeedItem, { GetActor } from '../shared-components/render-summary-feed-item';
 import createRenderSummaryFeedList from '../shared-components/render-summary-feed-list';
 import { EditorialCommunity } from '../types/editorial-community';
@@ -31,17 +31,6 @@ interface Ports {
   getAllEvents: GetAllEvents;
   follows: Follows,
 }
-
-const buildRenderPageHeader = (ports: Ports): RenderPageHeader => {
-  const getEditorialCommunity: GetEditorialCommunity = (editorialCommunityId) => async () => {
-    const editorialCommunity = (await ports.getEditorialCommunity(editorialCommunityId)())
-      .unwrapOrElse(() => {
-        throw new NotFound(`${editorialCommunityId.value} not found`);
-      });
-    return editorialCommunity;
-  };
-  return createRenderPageHeader(getEditorialCommunity);
-};
 
 const buildRenderDescription = (ports: Ports): RenderDescription => {
   const converter = new Remarkable({ html: true });
@@ -83,7 +72,6 @@ export interface Params {
 type EditorialCommunityPage = (params: Params) => ReturnType<RenderPage>;
 
 export default (ports: Ports): EditorialCommunityPage => {
-  const renderPageHeader = buildRenderPageHeader(ports);
   const renderDescription = buildRenderDescription(ports);
   const renderFeed = buildRenderFeed(ports);
   const renderFollowers = createRenderFollowers(createProjectFollowerIds(ports.getAllEvents));
