@@ -18,7 +18,7 @@ type SearchResults = {
 };
 
 const renderSearchResults = (renderSearchResult: RenderSearchResult) => (searchResults: SearchResults) => async () => {
-  const articles = await Promise.all(searchResults.items.map(async (item) => renderSearchResult(item)()));
+  const articles = await T.traverseArray(renderSearchResult)(searchResults.items)();
   let searchResultsList = '';
   if (articles.length) {
     searchResultsList = `
