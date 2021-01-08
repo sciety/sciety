@@ -17,14 +17,12 @@ export default (
 ): RenderPage => (query) => pipe(
   TE.tryCatch(
     renderSearchResults(query),
-    () => Result.err<PageResult, RenderPageError>({
+    (): RenderPageError => ({
       type: 'unavailable',
-      message: toHtmlFragment(`
-        We’re having trouble searching for you, please come back later.
-      `),
+      message: toHtmlFragment('We\'re having trouble searching for you, please come back later.'),
     }),
   ),
-  TE.map((searchResults) => Result.ok<PageResult, RenderPageError>({
+  TE.map((searchResults) => ({
     title: 'Search results',
     content: toHtmlFragment(`
       <div class="sciety-grid sciety-grid--simple">
@@ -41,7 +39,7 @@ export default (
     `),
   })),
   TE.fold(
-    (result) => T.of(result),
-    (result) => T.of(result),
+    (result) => T.of(Result.err<PageResult, RenderPageError>(result)),
+    (result) => T.of(Result.ok<PageResult, RenderPageError>(result)),
   ),
 );
