@@ -1,6 +1,6 @@
 import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
-import { pipe } from 'fp-ts/lib/function';
+import { flow } from 'fp-ts/lib/function';
 import { Result } from 'true-myth';
 import { RenderSearchResults } from './render-search-results';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -12,13 +12,8 @@ type PageResult = {
 };
 export type RenderPage = (query: string) => T.Task<Result<PageResult, RenderPageError>>;
 
-export default (
-  renderSearchResults: RenderSearchResults,
-): RenderPage => (query) => pipe(
-  TE.tryCatch(
-    renderSearchResults(query),
-    ():RenderPageError['type'] => 'unavailable',
-  ),
+export default (renderSearchResults: RenderSearchResults): RenderPage => flow(
+  renderSearchResults,
   TE.mapLeft(
     (error) => ({
       type: error,

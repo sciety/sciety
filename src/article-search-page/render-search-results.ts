@@ -10,7 +10,7 @@ export type FindArticles = (query: string) => TE.TaskEither<'unavailable', {
   total: number;
 }>;
 
-export type RenderSearchResults = (query: string) => T.Task<HtmlFragment>;
+export type RenderSearchResults = (query: string) => TE.TaskEither<'unavailable', HtmlFragment>;
 
 type SearchResults = {
   items: Array<SearchResult>;
@@ -54,8 +54,4 @@ export default (
     ),
   ),
   TE.map(toHtmlFragment),
-  TE.fold(
-    (error) => { throw new Error(error); },
-    (searchResults) => T.of(searchResults),
-  ),
 );
