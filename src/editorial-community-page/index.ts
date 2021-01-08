@@ -1,7 +1,6 @@
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import { pipe } from 'fp-ts/lib/function';
-import { NotFound } from 'http-errors';
 import { Remarkable } from 'remarkable';
 import { Maybe, Result } from 'true-myth';
 import createGetMostRecentEvents, { GetAllEvents } from './get-most-recent-events';
@@ -34,11 +33,7 @@ interface Ports {
 
 const buildRenderDescription = (ports: Ports): RenderDescription => {
   const converter = new Remarkable({ html: true });
-  const getEditorialCommunityDescription: GetEditorialCommunityDescription = (editorialCommunityId) => async () => {
-    const editorialCommunity = (await ports.getEditorialCommunity(editorialCommunityId)())
-      .unwrapOrElse(() => {
-        throw new NotFound(`${editorialCommunityId.value} not found`);
-      });
+  const getEditorialCommunityDescription: GetEditorialCommunityDescription = (editorialCommunity) => async () => {
     const markdown = await ports.fetchStaticFile(`editorial-communities/${editorialCommunity.descriptionPath}`)();
     return converter.render(markdown);
   };

@@ -21,7 +21,7 @@ export type RenderPage = (
 
 type RenderPageHeader = (editorialCommunity: EditorialCommunity) => HtmlFragment;
 
-type RenderDescription = (editorialCommunityId: EditorialCommunityId) => T.Task<HtmlFragment>;
+type RenderDescription = (editorialCommunity: EditorialCommunity) => T.Task<HtmlFragment>;
 
 export default (
   renderPageHeader: RenderPageHeader,
@@ -38,7 +38,7 @@ export default (
             ${renderPageHeader(editorialCommunity)}
 
             <div class="editorial-community-page-description">
-            ${await renderDescription(editorialCommunity.id)()}
+            ${await renderDescription(editorialCommunity)()}
             </div>
             <div class="editorial-community-page-side-bar">
               ${await renderFollowers(editorialCommunity.id)()}

@@ -1,11 +1,11 @@
 import * as T from 'fp-ts/lib/Task';
 import { flow } from 'fp-ts/lib/function';
-import EditorialCommunityId from '../types/editorial-community-id';
+import { EditorialCommunity } from '../types/editorial-community';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
-export type RenderDescription = (editorialCommunityId: EditorialCommunityId) => T.Task<HtmlFragment>;
+export type RenderDescription = (editorialCommunity: EditorialCommunity) => T.Task<HtmlFragment>;
 
-export type GetEditorialCommunityDescription = (editorialCommunityId: EditorialCommunityId) => T.Task<string>;
+export type GetEditorialCommunityDescription = (editorialCommunity: EditorialCommunity) => T.Task<string>;
 
 export default (
   getEditorialCommunityDescription: GetEditorialCommunityDescription,
