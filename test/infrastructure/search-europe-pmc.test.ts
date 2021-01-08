@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/lib/Either';
 import createSearchEuropePmc, { GetJson } from '../../src/infrastructure/search-europe-pmc';
 import Doi from '../../src/types/doi';
 import dummyLogger from '../dummy-logger';
@@ -20,14 +21,19 @@ describe('search-europe-pmc adapter', () => {
 
     const results = await adapter('some query')();
 
-    expect(results.total).toStrictEqual(1);
-    expect(results.items).toHaveLength(1);
-    expect(results.items[0]).toMatchObject({
-      doi: new Doi('10.1111/1234'),
-      title: 'Article title',
-      authors: 'Author 1, Author 2',
-      postedDate: new Date('2019-11-07'),
+    const expected = E.right({
+      total: 1,
+      items: [
+        {
+          doi: new Doi('10.1111/1234'),
+          title: 'Article title',
+          authors: 'Author 1, Author 2',
+          postedDate: new Date('2019-11-07'),
+        },
+      ],
     });
+
+    expect(results).toStrictEqual(expected);
   });
 
   it('constructs the Europe PMC query safely', async () => {

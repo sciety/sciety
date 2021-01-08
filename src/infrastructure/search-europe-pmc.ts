@@ -1,5 +1,4 @@
 import { URLSearchParams } from 'url';
-import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { pipe } from 'fp-ts/lib/pipeable';
 import { Logger } from './logger';
@@ -20,7 +19,7 @@ type SearchResults = {
   total: number;
 };
 
-export type SearchEuropePmc = (query: string) => T.Task<SearchResults>;
+export type SearchEuropePmc = (query: string) => TE.TaskEither<'unavailable', SearchResults>;
 
 type EuropePmcQueryResponse = JsonCompatible<{
   hitCount: number;
@@ -81,10 +80,6 @@ export default (getJson: GetJson, logger: Logger): SearchEuropePmc => (
     pipe(
       TE.tryCatch(async () => search(getJson, query), logError(logger)),
       TE.chain(constructSearchResults),
-      TE.fold(
-        (error) => { throw new Error(error); },
-        (searchResults) => T.of(searchResults),
-      ),
     )
   )
 );

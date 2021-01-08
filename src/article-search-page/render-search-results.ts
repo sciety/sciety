@@ -1,10 +1,11 @@
 import * as T from 'fp-ts/lib/Task';
+import * as TE from 'fp-ts/lib/TaskEither';
 import { pipe } from 'fp-ts/lib/function';
 import { RenderSearchResult, SearchResult } from './render-search-result';
 import templateListItems from '../shared-components/list-items';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
-export type FindArticles = (query: string) => T.Task<{
+export type FindArticles = (query: string) => TE.TaskEither<'unavailable', {
   items: Array<SearchResult>;
   total: number;
 }>;
@@ -41,6 +42,10 @@ export default (
     pipe(
       query,
       findArticles,
+      TE.fold(
+        (error) => { throw new Error(error); },
+        (searchResults) => T.of(searchResults),
+      ),
       T.chain(renderSearchResults(renderSearchResult)),
     )
   )
