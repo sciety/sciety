@@ -1,7 +1,7 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
-import { pipe } from 'fp-ts/lib/function';
+import { flow, pipe } from 'fp-ts/lib/function';
 import { Result } from 'true-myth';
 import { RenderFollowedEditorialCommunity } from './render-followed-editorial-community';
 import templateListItems from '../shared-components/list-items';
@@ -35,7 +35,7 @@ const followListSection = (list: string): string => `
   </section>
 `;
 
-const renderList = (list: Array<HtmlFragment>): string => ((list.length === 0) ? followingNothing : `
+const renderList = (list: ReadonlyArray<HtmlFragment>): string => ((list.length === 0) ? followingNothing : `
   <ol class="ui large feed" role="list">
     ${templateListItems(list, 'event')}
   </ol>
@@ -45,17 +45,15 @@ export default (
   getFollowedEditorialCommunities: GetFollowedEditorialCommunities,
   renderFollowedEditorialCommunity: RenderFollowedEditorialCommunity,
 ): RenderFollowList => (
-  (userId, viewingUserId) => async () => {
-    const list = await Promise.all((await getFollowedEditorialCommunities(userId)())
-      .map(async (editorialCommunity) => renderFollowedEditorialCommunity(editorialCommunity, viewingUserId)()));
-
-    return Result.ok(
-      pipe(
-        list,
-        renderList,
-        followListSection,
-        toHtmlFragment,
-      ),
-    );
-  }
+  (userId, viewingUserId) => pipe(
+    userId,
+    getFollowedEditorialCommunities,
+    T.chain(T.traverseArray(renderFollowedEditorialCommunity(viewingUserId))),
+    T.map(flow(
+      renderList,
+      followListSection,
+      toHtmlFragment,
+    )),
+    T.map((html) => Result.ok(html)),
+  )
 );

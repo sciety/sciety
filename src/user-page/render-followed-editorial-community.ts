@@ -12,9 +12,8 @@ interface Community {
   avatar: URL;
 }
 
-export type RenderFollowedEditorialCommunity = (
+export type RenderFollowedEditorialCommunity = (userId: O.Option<UserId>) => (
   community: Community,
-  userId: O.Option<UserId>,
 ) => T.Task<HtmlFragment>;
 
 type RenderFollowToggle = (
@@ -38,7 +37,7 @@ const render = (community: Community) => (toggle: string): string => `
 
 export default (
   renderFollowToggle: RenderFollowToggle,
-): RenderFollowedEditorialCommunity => (community, userId) => pipe(
+): RenderFollowedEditorialCommunity => (userId) => (community) => pipe(
   renderFollowToggle(userId, community.id),
   T.map(render(community)),
   T.map(toHtmlFragment),
