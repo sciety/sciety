@@ -12,6 +12,7 @@ import createRenderFollowToggle, { Follows } from './render-follow-toggle';
 import createRenderFollowedEditorialCommunity from './render-followed-editorial-community';
 import createRenderHeader, { UserDetails } from './render-header';
 import createRenderPage, { RenderPage } from './render-page';
+import { renderSavedArticles } from './render-saved-articles';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { User } from '../types/user';
 import toUserId, { UserId } from '../types/user-id';
@@ -57,6 +58,7 @@ export default (ports: Ports): UserPage => {
     renderHeader,
     renderFollowList,
     getUserDisplayName(ports.getUserDetails),
+    renderSavedArticles,
   );
 
   return (params) => {

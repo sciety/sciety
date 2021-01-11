@@ -11,6 +11,7 @@ describe('render-page', () => {
         () => TE.right(toHtmlFragment('')),
         () => TE.right(toHtmlFragment('')),
         () => TE.right('someone'),
+        () => TE.right(toHtmlFragment('')),
       );
 
       const result = await renderPage(toUserId('1234'), O.none)();
@@ -25,6 +26,7 @@ describe('render-page', () => {
         () => TE.right(toHtmlFragment('')),
         () => TE.right(toHtmlFragment('')),
         () => TE.left('not-found'),
+        () => TE.right(toHtmlFragment('')),
       );
       const result = await renderPage(toUserId('1234'), O.none)();
 
@@ -38,6 +40,7 @@ describe('render-page', () => {
         () => TE.right(toHtmlFragment('')),
         () => TE.right(toHtmlFragment('')),
         () => TE.left('unavailable'),
+        () => TE.right(toHtmlFragment('')),
       );
       const result = await renderPage(toUserId('1234'), O.none)();
 
