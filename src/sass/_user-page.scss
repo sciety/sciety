@@ -1,5 +1,6 @@
 @use 'baseline';
 @use 'functions';
+@use 'settings';
 
 .sciety-grid--user > .page-header--user {
   grid-column: 1 / -1;
@@ -33,3 +34,24 @@
   }
 }
 
+.followed-communities {
+  margin-bottom: #{baseline.increments(6)};
+}
+
+.saved-articles {
+  font-family: settings.$font-secondary;
+  list-style: none;
+  padding-left: 0;
+}
+
+.saved-articles__item {
+  margin-bottom: baseline.increments(2);
+}
+
+.saved-articles__link {
+  color: inherit;
+}
+
+.saved-articles__link:hover {
+  color: settings.$colour-primary;
+}

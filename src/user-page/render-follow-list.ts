@@ -27,7 +27,7 @@ const followingNothing = `
 `;
 
 const followListSection = (list: string): string => `
-  <section>
+  <section class="followed-communities">
     <h2>
       Following
     </h2>

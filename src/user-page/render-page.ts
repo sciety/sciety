@@ -20,9 +20,13 @@ const template = (header: HtmlFragment) => (followList: HtmlFragment) => (userDi
     savedArticlesList = `
       <section>
         <h2>Saved articles</h2>
-        <ol>
-          <li><a href="/articles/10.1101/2020.07.04.187583">Gender, race and parenthood impact academic productivity during the COVID-19 pandemic: from survey to action</a></li>
-          <li><a href="/articles/10.1101/2020.09.09.289785">The Costs and Benefits of a Modified Biomedical Science Workforce</a></li>
+        <ol class="saved-articles">
+          <li class="saved-articles__item">
+            <a href="/articles/10.1101/2020.07.04.187583" class="saved-articles__link">Gender, race and parenthood impact academic productivity during the COVID-19 pandemic: from survey to action</a>
+          </li>
+          <li class="saved-articles__item">
+            <a href="/articles/10.1101/2020.09.09.289785" class="saved-articles__link">The Costs and Benefits of a Modified Biomedical Science Workforce</a>
+          </li>
         </ol>
       </section>
     `;
