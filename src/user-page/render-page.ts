@@ -14,24 +14,10 @@ export type RenderPage = (userId: UserId, viewingUserId: O.Option<UserId>) => T.
 
 type Component = (userId: UserId, viewingUserId: O.Option<UserId>) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>;
 
-const template = (header: HtmlFragment) => (followList: HtmlFragment) => (userDisplayName:string) => {
-  let savedArticlesList = '';
-  if (userDisplayName === 'Sciety') {
-    savedArticlesList = `
-      <section>
-        <h2>Saved articles</h2>
-        <ol class="saved-articles">
-          <li class="saved-articles__item">
-            <a href="/articles/10.1101/2020.07.04.187583" class="saved-articles__link">Gender, race and parenthood impact academic productivity during the COVID-19 pandemic: from survey to action</a>
-          </li>
-          <li class="saved-articles__item">
-            <a href="/articles/10.1101/2020.09.09.289785" class="saved-articles__link">The Costs and Benefits of a Modified Biomedical Science Workforce</a>
-          </li>
-        </ol>
-      </section>
-    `;
-  }
-  return {
+const template = (
+  header: HtmlFragment,
+) => (followList: HtmlFragment) => (userDisplayName:string) => (savedArticlesList: HtmlFragment) => (
+  {
     title: `${userDisplayName}`,
     content: toHtmlFragment(`
       <div class="sciety-grid sciety-grid--user">
@@ -42,8 +28,8 @@ const template = (header: HtmlFragment) => (followList: HtmlFragment) => (userDi
         </div>
       </div>
     `),
-  };
-};
+  }
+);
 
 type RenderFollowList = (userId: UserId, viewingUserId: O.Option<UserId>) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>;
 type GetUserDisplayName = (userId: UserId) => TE.TaskEither<'not-found' | 'unavailable', string>;
@@ -77,10 +63,28 @@ export default (
     ),
   )();
 
+  let savedArticlesList = toHtmlFragment('');
+  if (userId === '1295307136415735808') {
+    savedArticlesList = toHtmlFragment(`
+      <section>
+        <h2>Saved articles</h2>
+        <ol class="saved-articles">
+          <li class="saved-articles__item">
+            <a href="/articles/10.1101/2020.07.04.187583" class="saved-articles__link">Gender, race and parenthood impact academic productivity during the COVID-19 pandemic: from survey to action</a>
+          </li>
+          <li class="saved-articles__item">
+            <a href="/articles/10.1101/2020.09.09.289785" class="saved-articles__link">The Costs and Benefits of a Modified Biomedical Science Workforce</a>
+          </li>
+        </ol>
+      </section>
+    `);
+  }
+
   return Result.ok(template)
     .ap(await header)
     .ap(await followList())
     .ap(await userDisplayName)
+    .ap(Result.ok(savedArticlesList))
     .mapErr((e) => {
       if (e === 'not-found') {
         return {
