@@ -14,19 +14,32 @@ export type RenderPage = (userId: UserId, viewingUserId: O.Option<UserId>) => T.
 
 type Component = (userId: UserId, viewingUserId: O.Option<UserId>) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>;
 
-const template = (header: HtmlFragment) => (followList: HtmlFragment) => (userDisplayName:string) => (
-  {
+const template = (header: HtmlFragment) => (followList: HtmlFragment) => (userDisplayName:string) => {
+  let savedArticlesList = '';
+  if (userDisplayName === 'Sciety') {
+    savedArticlesList = `
+      <section>
+        <h2>Saved articles</h2>
+        <ol>
+          <li><a href="/articles/10.1101/2020.07.04.187583">Gender, race and parenthood impact academic productivity during the COVID-19 pandemic: from survey to action</a></li>
+          <li><a href="/articles/10.1101/2020.09.09.289785">The Costs and Benefits of a Modified Biomedical Science Workforce</a></li>
+        </ol>
+      </section>
+    `;
+  }
+  return {
     title: `${userDisplayName}`,
     content: toHtmlFragment(`
       <div class="sciety-grid sciety-grid--user">
         ${header}
         <div class="user-page-contents">
           ${followList}
+          ${savedArticlesList}
         </div>
       </div>
     `),
-  }
-);
+  };
+};
 
 type RenderFollowList = (userId: UserId, viewingUserId: O.Option<UserId>) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>;
 type GetUserDisplayName = (userId: UserId) => TE.TaskEither<'not-found' | 'unavailable', string>;
