@@ -1,7 +1,5 @@
 import * as O from 'fp-ts/lib/Option';
-import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
-import { Result } from 'true-myth';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import toUserId from '../../src/types/user-id';
 import createRenderPage from '../../src/user-page/render-page';
@@ -11,7 +9,7 @@ describe('render-page', () => {
     it('is used as the page title', async () => {
       const renderPage = createRenderPage(
         () => TE.right(toHtmlFragment('')),
-        () => T.of(Result.ok(toHtmlFragment(''))),
+        () => TE.right(toHtmlFragment('')),
         () => TE.right('someone'),
       );
 
@@ -25,7 +23,7 @@ describe('render-page', () => {
     it('returns a not-found error page', async () => {
       const renderPage = createRenderPage(
         () => TE.right(toHtmlFragment('')),
-        () => T.of(Result.ok(toHtmlFragment(''))),
+        () => TE.right(toHtmlFragment('')),
         () => TE.left('not-found'),
       );
       const result = await renderPage(toUserId('1234'), O.none)();
@@ -38,7 +36,7 @@ describe('render-page', () => {
     it('returns an unavailable error page', async () => {
       const renderPage = createRenderPage(
         () => TE.right(toHtmlFragment('')),
-        () => T.of(Result.ok(toHtmlFragment(''))),
+        () => TE.right(toHtmlFragment('')),
         () => TE.left('unavailable'),
       );
       const result = await renderPage(toUserId('1234'), O.none)();

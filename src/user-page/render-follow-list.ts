@@ -1,15 +1,15 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
+import * as TE from 'fp-ts/lib/TaskEither';
 import { flow, pipe } from 'fp-ts/lib/function';
-import { Result } from 'true-myth';
 import { RenderFollowedEditorialCommunity } from './render-followed-editorial-community';
 import templateListItems from '../shared-components/list-items';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
-type RenderFollowList = (userId: UserId, viewingUserId: O.Option<UserId>) => T.Task<Result<HtmlFragment, never>>;
+type RenderFollowList = (userId: UserId, viewingUserId: O.Option<UserId>) => TE.TaskEither<never, HtmlFragment>;
 
 export type GetFollowedEditorialCommunities = (userId: UserId) => T.Task<ReadonlyArray<{
   id: EditorialCommunityId,
@@ -54,6 +54,6 @@ export default (
       followListSection,
       toHtmlFragment,
     )),
-    T.map((html) => Result.ok(html)),
+    TE.rightTask,
   )
 );
