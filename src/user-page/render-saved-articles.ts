@@ -1,4 +1,6 @@
+import * as O from 'fp-ts/lib/Option';
 import * as TE from 'fp-ts/lib/TaskEither';
+import { pipe } from 'fp-ts/lib/function';
 import templateListItems from '../shared-components/list-items';
 import Doi from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -25,23 +27,23 @@ const savedArticles = (userId: UserId): ReadonlyArray<SavedArticle> => {
   return [];
 };
 
-export const renderSavedArticles = (userId: UserId): TE.TaskEither<never, HtmlFragment> => {
-  let savedArticlesList = toHtmlFragment('');
-
-  const items = savedArticles(userId).map((item) => toHtmlFragment(`
+export const renderSavedArticles = (userId: UserId): TE.TaskEither<never, HtmlFragment> => pipe(
+  savedArticles(userId).map((item) => toHtmlFragment(`
     <a href="/articles/${item.doi.value}" class="saved-articles__link">${item.title}</a>
-  `));
-  if (items.length > 0) {
-    const list = templateListItems(items, 'saved-articles__item');
-    savedArticlesList = toHtmlFragment(`
+  `)),
+  O.fromPredicate((items) => items.length > 0),
+  O.map((items) => templateListItems(items, 'saved-articles__item')),
+  O.fold(
+    () => '',
+    (list) => `
       <section>
         <h2>Saved articles</h2>
         <ol class="saved-articles">
           ${list}
         </ol>
       </section>
-    `);
-  }
-
-  return TE.right(savedArticlesList);
-};
+    `,
+  ),
+  toHtmlFragment,
+  TE.right,
+);
