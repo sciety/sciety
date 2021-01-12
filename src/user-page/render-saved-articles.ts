@@ -13,12 +13,14 @@ type SavedArticle = {
 
 export type GetSavedArticles = (userId: UserId) => ReadonlyArray<SavedArticle>;
 
+const renderAsLink = (item: SavedArticle): HtmlFragment => toHtmlFragment(`
+  <a href="/articles/${item.doi.value}" class="saved-articles__link">${item.title}</a>
+`);
+
 export const renderSavedArticles = (
   savedArticles: GetSavedArticles,
 ) => (userId: UserId): TE.TaskEither<never, HtmlFragment> => pipe(
-  savedArticles(userId).map((item) => toHtmlFragment(`
-    <a href="/articles/${item.doi.value}" class="saved-articles__link">${item.title}</a>
-  `)),
+  savedArticles(userId).map(renderAsLink),
   O.fromPredicate((items) => items.length > 0),
   O.map((items) => templateListItems(items, 'saved-articles__item')),
   O.fold(
