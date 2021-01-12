@@ -6,7 +6,7 @@ import { pipe } from 'fp-ts/lib/function';
 import { Maybe } from 'true-myth';
 import createGetFollowedEditorialCommunitiesFromIds, { GetEditorialCommunity } from './get-followed-editorial-communities-from-ids';
 import { getUserDisplayName } from './get-user-display-name';
-import { getSavedArticles } from './hardcoded-get-saved-articles';
+import { GetArticleFromCrossref, getSavedArticles } from './hardcoded-get-saved-articles';
 import createProjectFollowedEditorialCommunityIds, { GetAllEvents } from './project-followed-editorial-community-ids';
 import createRenderFollowList from './render-follow-list';
 import createRenderFollowToggle, { Follows } from './render-follow-toggle';
@@ -30,6 +30,7 @@ type Ports = {
   getAllEvents: GetAllEvents,
   follows: Follows,
   getUserDetails: GetUserDetails,
+  fetchArticle: GetArticleFromCrossref,
 };
 
 interface Params {
@@ -60,7 +61,7 @@ export default (ports: Ports): UserPage => {
     renderHeader,
     renderFollowList,
     getUserDisplayName(ports.getUserDetails),
-    renderSavedArticles(getSavedArticles),
+    renderSavedArticles(getSavedArticles(ports.fetchArticle)),
   );
 
   return (params) => {
