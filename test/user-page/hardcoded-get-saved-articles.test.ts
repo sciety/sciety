@@ -10,8 +10,9 @@ import shouldNotBeCalled from '../should-not-be-called';
 describe('hardcoded-get-saved-articles', () => {
   describe('when the user has saved articles', () => {
     it('returns doi and title for those articles', async () => {
+      const getArticleDois = ():ReadonlyArray<Doi> => [new Doi('10.1101/2020.07.04.187583')];
       const getArticle: GetArticleFromCrossref = () => T.of(Result.ok({ title: toHtmlFragment('Gender, race and parenthood') }));
-      const savedArticles = await getSavedArticles(getArticle)(toUserId('1295307136415735808'))();
+      const savedArticles = await getSavedArticles(getArticle, getArticleDois)(toUserId('1295307136415735808'))();
 
       expect(savedArticles[0]).toMatchObject({
         doi: new Doi('10.1101/2020.07.04.187583'),
@@ -22,7 +23,8 @@ describe('hardcoded-get-saved-articles', () => {
 
   describe('when the user has no saved articles', () => {
     it('returns an empty array', async () => {
-      const savedArticles = await getSavedArticles(shouldNotBeCalled)(toUserId('anything-else'))();
+      const getArticleDois = ():ReadonlyArray<Doi> => [];
+      const savedArticles = await getSavedArticles(shouldNotBeCalled, getArticleDois)(toUserId('anything-else'))();
 
       expect(savedArticles).toHaveLength(0);
     });

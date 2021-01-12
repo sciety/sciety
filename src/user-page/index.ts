@@ -1,4 +1,5 @@
 import { URL } from 'url';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
@@ -6,7 +7,7 @@ import { pipe } from 'fp-ts/lib/function';
 import { Maybe } from 'true-myth';
 import createGetFollowedEditorialCommunitiesFromIds, { GetEditorialCommunity } from './get-followed-editorial-communities-from-ids';
 import { getUserDisplayName } from './get-user-display-name';
-import { GetArticleFromCrossref, getSavedArticles } from './hardcoded-get-saved-articles';
+import { GetArticleFromCrossref, GetSavedArticleDois, getSavedArticles } from './hardcoded-get-saved-articles';
 import createProjectFollowedEditorialCommunityIds, { GetAllEvents } from './project-followed-editorial-community-ids';
 import createRenderFollowList from './render-follow-list';
 import createRenderFollowToggle, { Follows } from './render-follow-toggle';
@@ -14,6 +15,7 @@ import createRenderFollowedEditorialCommunity from './render-followed-editorial-
 import createRenderHeader, { UserDetails } from './render-header';
 import createRenderPage, { RenderPage } from './render-page';
 import { renderSavedArticles } from './render-saved-articles';
+import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { User } from '../types/user';
 import toUserId, { UserId } from '../types/user-id';
@@ -57,11 +59,21 @@ export default (ports: Ports): UserPage => {
     renderFollowedEditorialCommunity,
   );
 
+  const getSavedArticleDois: GetSavedArticleDois = (userId) => {
+    if (userId !== '1295307136415735808') {
+      return [];
+    }
+    return RA.fromArray([
+      new Doi('10.1101/2020.07.04.187583'),
+      new Doi('10.1101/2020.09.09.289785'),
+    ]);
+  };
+
   const renderPage = createRenderPage(
     renderHeader,
     renderFollowList,
     getUserDisplayName(ports.getUserDetails),
-    renderSavedArticles(getSavedArticles(ports.fetchArticle)),
+    renderSavedArticles(getSavedArticles(ports.fetchArticle, getSavedArticleDois)),
   );
 
   return (params) => {
