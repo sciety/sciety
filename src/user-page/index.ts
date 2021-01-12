@@ -6,16 +6,15 @@ import { pipe } from 'fp-ts/lib/function';
 import { Maybe } from 'true-myth';
 import createGetFollowedEditorialCommunitiesFromIds, { GetEditorialCommunity } from './get-followed-editorial-communities-from-ids';
 import { getUserDisplayName } from './get-user-display-name';
+import { getSavedArticles } from './hardcoded-get-saved-articles';
 import createProjectFollowedEditorialCommunityIds, { GetAllEvents } from './project-followed-editorial-community-ids';
 import createRenderFollowList from './render-follow-list';
 import createRenderFollowToggle, { Follows } from './render-follow-toggle';
 import createRenderFollowedEditorialCommunity from './render-followed-editorial-community';
 import createRenderHeader, { UserDetails } from './render-header';
 import createRenderPage, { RenderPage } from './render-page';
-import { GetSavedArticles, renderSavedArticles } from './render-saved-articles';
-import Doi from '../types/doi';
+import { renderSavedArticles } from './render-saved-articles';
 import EditorialCommunityId from '../types/editorial-community-id';
-import { toHtmlFragment } from '../types/html-fragment';
 import { User } from '../types/user';
 import toUserId, { UserId } from '../types/user-id';
 
@@ -57,27 +56,11 @@ export default (ports: Ports): UserPage => {
     renderFollowedEditorialCommunity,
   );
 
-  const savedArticles: GetSavedArticles = (userId) => {
-    if (userId === '1295307136415735808') {
-      return [
-        {
-          doi: new Doi('10.1101/2020.07.04.187583'),
-          title: toHtmlFragment('Gender, race and parenthood impact academic productivity during the COVID-19 pandemic: from survey to action'),
-        },
-        {
-          doi: new Doi('10.1101/2020.09.09.289785'),
-          title: toHtmlFragment('The Costs and Benefits of a Modified Biomedical Science Workforce'),
-        },
-      ];
-    }
-    return [];
-  };
-
   const renderPage = createRenderPage(
     renderHeader,
     renderFollowList,
     getUserDisplayName(ports.getUserDetails),
-    renderSavedArticles(savedArticles),
+    renderSavedArticles(getSavedArticles),
   );
 
   return (params) => {
