@@ -159,7 +159,12 @@ export const userRevokedFindingReviewNotHelpful = (
   reviewId,
 });
 
-export type UserSavedArticleEvent = Readonly<{
+export const isUserSavedArticleEvent = (event: DomainEvent):
+  event is UserSavedArticleEvent => (
+  event.type === 'UserSavedArticle'
+);
+
+type UserSavedArticleEvent = Readonly<{
   type: 'UserSavedArticle';
   date: Date;
   userId: UserId;
@@ -170,6 +175,7 @@ export type DomainEvent =
   EditorialCommunityEndorsedArticleEvent |
   EditorialCommunityReviewedArticleEvent |
   EditorialCommunityJoinedEvent |
+  UserSavedArticleEvent |
   UserFollowedEditorialCommunityEvent |
   UserUnfollowedEditorialCommunityEvent |
   UserFoundReviewHelpfulEvent |
