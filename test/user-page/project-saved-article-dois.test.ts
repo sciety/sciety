@@ -12,7 +12,7 @@ describe('project-saved-article-dois', () => {
         new Doi('10.1101/67890'),
       ];
 
-      const getAllEvents: GetAllEvents = () => T.of([
+      const getAllEvents: GetAllEvents = T.of([
         {
           type: 'UserSavedArticle',
           date: new Date(),
@@ -39,7 +39,7 @@ describe('project-saved-article-dois', () => {
 
   describe('when the user has not saved articles', () => {
     it('returns an empty array', async () => {
-      const getAllEvents: GetAllEvents = () => T.of([]);
+      const getAllEvents: GetAllEvents = T.of([]);
 
       const output = await projectSavedArticleDois(getAllEvents)(toUserId('some-user'))();
 

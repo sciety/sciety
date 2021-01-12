@@ -15,7 +15,6 @@ import createRenderFollowedEditorialCommunity from './render-followed-editorial-
 import createRenderHeader, { UserDetails } from './render-header';
 import createRenderPage, { RenderPage } from './render-page';
 import { renderSavedArticles } from './render-saved-articles';
-import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { User } from '../types/user';
 import toUserId, { UserId } from '../types/user-id';
@@ -63,20 +62,7 @@ export default (ports: Ports): UserPage => {
     renderHeader,
     renderFollowList,
     getUserDisplayName(ports.getUserDetails),
-    renderSavedArticles(getSavedArticles(ports.fetchArticle, projectSavedArticleDois(() => T.of([
-      {
-        type: 'UserSavedArticle',
-        date: new Date(),
-        userId: toUserId('1295307136415735808'),
-        articleId: new Doi('10.1101/2020.07.04.187583'),
-      },
-      {
-        type: 'UserSavedArticle',
-        date: new Date(),
-        userId: toUserId('1295307136415735808'),
-        articleId: new Doi('10.1101/2020.09.09.289785'),
-      },
-    ])))),
+    renderSavedArticles(getSavedArticles(ports.fetchArticle, projectSavedArticleDois(ports.getAllEvents))),
   );
 
   return (params) => {

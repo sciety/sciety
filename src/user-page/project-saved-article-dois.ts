@@ -4,10 +4,10 @@ import { flow, pipe } from 'fp-ts/lib/function';
 import { GetSavedArticleDois } from './hardcoded-get-saved-articles';
 import { DomainEvent, isUserSavedArticleEvent } from '../types/domain-events';
 
-export type GetAllEvents = () => T.Task<ReadonlyArray<DomainEvent>>;
+export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 export const projectSavedArticleDois = (getAllEvents: GetAllEvents): GetSavedArticleDois => (userId) => pipe(
-  getAllEvents(),
+  getAllEvents,
   T.map(flow(
     RA.filter(isUserSavedArticleEvent),
     RA.filter((event) => event.userId === userId),
