@@ -11,23 +11,11 @@ type SavedArticle = {
   title: HtmlFragment,
 };
 
-const savedArticles = (userId: UserId): ReadonlyArray<SavedArticle> => {
-  if (userId === '1295307136415735808') {
-    return [
-      {
-        doi: new Doi('10.1101/2020.07.04.187583'),
-        title: toHtmlFragment('Gender, race and parenthood impact academic productivity during the COVID-19 pandemic: from survey to action'),
-      },
-      {
-        doi: new Doi('10.1101/2020.09.09.289785'),
-        title: toHtmlFragment('The Costs and Benefits of a Modified Biomedical Science Workforce'),
-      },
-    ];
-  }
-  return [];
-};
+export type GetSavedArticles = (userId: UserId) => ReadonlyArray<SavedArticle>;
 
-export const renderSavedArticles = (userId: UserId): TE.TaskEither<never, HtmlFragment> => pipe(
+export const renderSavedArticles = (
+  savedArticles: GetSavedArticles,
+) => (userId: UserId): TE.TaskEither<never, HtmlFragment> => pipe(
   savedArticles(userId).map((item) => toHtmlFragment(`
     <a href="/articles/${item.doi.value}" class="saved-articles__link">${item.title}</a>
   `)),
