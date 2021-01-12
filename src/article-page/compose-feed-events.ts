@@ -1,6 +1,6 @@
 import { GetFeedEvents } from './get-feed-events-content';
 
-export default (
+export const composeFeedEvents = (
   ...composedGetFeedEvents: Array<GetFeedEvents>
 ): GetFeedEvents => (
   async (doi) => {

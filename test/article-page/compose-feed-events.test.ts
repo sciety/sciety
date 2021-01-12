@@ -1,5 +1,5 @@
 import { URL } from 'url';
-import createAddHardcodedBiorxivVersion1Event from '../../src/article-page/compose-feed-events';
+import { composeFeedEvents } from '../../src/article-page/compose-feed-events';
 import { GetFeedEvents } from '../../src/article-page/get-feed-events-content';
 import Doi from '../../src/types/doi';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
@@ -29,7 +29,7 @@ describe('compose-feed-events', () => {
       },
     ];
 
-    const composite = createAddHardcodedBiorxivVersion1Event(
+    const composite = composeFeedEvents(
       getFeedEvents1,
       getFeedEvents2,
     );

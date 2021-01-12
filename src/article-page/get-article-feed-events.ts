@@ -1,7 +1,7 @@
 import { URL } from 'url';
 import * as T from 'fp-ts/lib/Task';
 import { Maybe } from 'true-myth';
-import createComposeFeedEvents from './compose-feed-events';
+import { composeFeedEvents } from './compose-feed-events';
 import createGetFeedEventsContent, { GetReview } from './get-feed-events-content';
 import createHandleArticleVersionErrors from './handle-article-version-errors';
 import { GetFeedItems } from './render-feed';
@@ -31,7 +31,7 @@ export const getArticleFeedEvents = (
   }>>,
 ): GetFeedItems => createHandleArticleVersionErrors(
   createGetFeedEventsContent(
-    createComposeFeedEvents(
+    composeFeedEvents(
       async (doi) => (await findReviewsForArticleDoi(doi)()).map((review) => ({
         type: 'review',
         ...review,
