@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/lib/Either';
+import * as O from 'fp-ts/lib/Option';
 import Doi from '../../src/types/doi';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import toUserId from '../../src/types/user-id';
@@ -10,7 +11,7 @@ describe('render-saved-articles', () => {
       const savedArticles: GetSavedArticles = () => [
         {
           doi: new Doi('10.1101/2020.07.04.187583'),
-          title: toHtmlFragment('Gender, race and parenthood impact academic productivity during the COVID-19 pandemic: from survey to action'),
+          title: O.some(toHtmlFragment('Some title')),
         },
       ];
       const rendered = await renderSavedArticles(savedArticles)(toUserId('1295307136415735808'))();
