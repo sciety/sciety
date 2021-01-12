@@ -11,5 +11,11 @@ describe('render-saved-articles', () => {
     });
   });
 
-  describe('when there are no saved articles', () => {});
+  describe('when there are no saved articles', () => {
+    it('renders nothing', async () => {
+      const rendered = await renderSavedArticles(toUserId('no-such-user'))();
+
+      expect(rendered).toStrictEqual(E.right(''));
+    });
+  });
 });
