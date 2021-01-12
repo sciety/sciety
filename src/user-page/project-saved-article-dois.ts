@@ -1,13 +1,14 @@
 import * as RA from 'fp-ts/ReadonlyArray';
-import { pipe } from 'fp-ts/lib/function';
+import * as T from 'fp-ts/lib/Task';
+import { flow, pipe } from 'fp-ts/lib/function';
 import { GetSavedArticleDois } from './hardcoded-get-saved-articles';
 import Doi from '../types/doi';
 import { DomainEvent, isUserSavedArticleEvent } from '../types/domain-events';
 import toUserId from '../types/user-id';
 
-type GetAllEvents = () => ReadonlyArray<DomainEvent>;
+type GetAllEvents = () => T.Task<ReadonlyArray<DomainEvent>>;
 
-const getAllEvents: GetAllEvents = () => [
+const getAllEvents: GetAllEvents = () => T.of([
   {
     type: 'UserSavedArticle',
     date: new Date(),
@@ -20,11 +21,13 @@ const getAllEvents: GetAllEvents = () => [
     userId: toUserId('1295307136415735808'),
     articleId: new Doi('10.1101/2020.09.09.289785'),
   },
-];
+]);
 
 export const projectSavedArticleDois: GetSavedArticleDois = (userId) => pipe(
   getAllEvents(),
-  RA.filter(isUserSavedArticleEvent),
-  RA.filter((event) => event.userId === userId),
-  RA.map((event) => event.articleId),
+  T.map(flow(
+    RA.filter(isUserSavedArticleEvent),
+    RA.filter((event) => event.userId === userId),
+    RA.map((event) => event.articleId),
+  )),
 );

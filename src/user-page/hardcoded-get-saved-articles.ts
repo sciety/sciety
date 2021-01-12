@@ -14,25 +14,27 @@ export type GetArticleFromCrossref = (doi: Doi) => T.Task<Result<{
   title: HtmlFragment;
 }, unknown>>;
 
-export type GetSavedArticleDois = (userId: UserId) => ReadonlyArray<Doi>;
+export type GetSavedArticleDois = (userId: UserId) => T.Task<ReadonlyArray<Doi>>;
 
 export const getSavedArticles = (
   getArticleFromCrossref: GetArticleFromCrossref,
   getSavedArticleDois: GetSavedArticleDois,
 ): GetSavedArticles => flow(
   getSavedArticleDois,
-  RA.map((doi) => (
-    pipe(
-      doi,
-      getArticleFromCrossref,
-      T.map((articleResult) => {
-        const title = articleResult.mapOr(O.none, (article) => O.some(article.title));
-        return {
-          doi,
-          title,
-        };
-      }),
-    )
+  T.chain(flow(
+    RA.map((doi) => (
+      pipe(
+        doi,
+        getArticleFromCrossref,
+        T.map((articleResult) => {
+          const title = articleResult.mapOr(O.none, (article) => O.some(article.title));
+          return {
+            doi,
+            title,
+          };
+        }),
+      )
+    )),
+    T.sequenceArray,
   )),
-  T.sequenceArray,
 );
