@@ -3,10 +3,9 @@ import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import { flow, pipe } from 'fp-ts/lib/function';
 import { Maybe, Result } from 'true-myth';
-import createComposeFeedEvents from './compose-feed-events';
 import ensureBiorxivDoi from './ensure-biorxiv-doi';
-import createGetFeedEventsContent, { GetEditorialCommunity, GetReview } from './get-feed-events-content';
-import createHandleArticleVersionErrors from './handle-article-version-errors';
+import { getArticleFeedEvents } from './get-article-feed-events';
+import { GetReview } from './get-feed-events-content';
 import createProjectReviewResponseCounts, { GetEvents as GetEventForReviewResponseCounts } from './project-review-response-counts';
 import createProjectUserReviewResponse, { GetEvents as GetEventForUserReviewResponse } from './project-user-review-response';
 import createRenderArticleAbstract from './render-article-abstract';
@@ -69,28 +68,14 @@ export default (ports: Ports): ArticlePage => {
   const renderAbstract = createRenderArticleAbstract(
     flow(ports.fetchArticle, T.map((result) => result.map((article) => article.abstract))),
   );
-  const getEditorialCommunity: GetEditorialCommunity = async (editorialCommunityId) => (
-    (await ports.getEditorialCommunity(editorialCommunityId)()).unsafelyUnwrap()
-  );
-  const getFeedEventsContent = createHandleArticleVersionErrors(
-    createGetFeedEventsContent(
-      createComposeFeedEvents(
-        async (doi) => (await ports.findReviewsForArticleDoi(doi)()).map((review) => ({
-          type: 'review',
-          ...review,
-        })),
-        async (doi) => (await ports.findVersionsForArticleDoi(doi)).map((version) => ({
-          type: 'article-version',
-          ...version,
-        })),
-      ),
-      ports.fetchReview,
-      getEditorialCommunity,
-    ),
-  );
   const countReviewResponses = createProjectReviewResponseCounts(ports.getAllEvents);
   const renderFeed = createRenderFeed(
-    getFeedEventsContent,
+    getArticleFeedEvents(
+      ports.findReviewsForArticleDoi,
+      ports.findVersionsForArticleDoi,
+      ports.fetchReview,
+      ports.getEditorialCommunity,
+    ),
     createRenderReviewFeedItem(
       150,
       createRenderReviewResponses(
