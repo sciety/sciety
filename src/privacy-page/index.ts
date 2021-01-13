@@ -2,12 +2,12 @@ import * as T from 'fp-ts/lib/Task';
 import { Result } from 'true-myth';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
-type RenderPage = () => T.Task<Result<{
+type RenderPage = () => T.Task<{
   title: string,
   content: HtmlFragment,
-}, never>>;
+}>;
 
-export default (): RenderPage => () => T.of(Result.ok({
+export default (): RenderPage => () => T.of({
   title: 'Privacy notice',
   content: toHtmlFragment(`
     <div class="sciety-grid sciety-grid--simple">
@@ -47,4 +47,4 @@ export default (): RenderPage => () => T.of(Result.ok({
       </p>
     </div>
   `),
-}));
+});

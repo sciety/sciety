@@ -125,11 +125,11 @@ export default (adapters: Adapters): Router => {
 
   router.get('/privacy',
     identifyUser(adapters.logger),
-    pageHandler(flow(privacyPage(), T.map(toEither))));
+    pageHandler(flow(privacyPage(), TE.rightTask)));
 
   router.get('/terms',
     identifyUser(adapters.logger),
-    pageHandler(flow(termsPage(), T.map(toEither))));
+    pageHandler(flow(termsPage(), TE.rightTask)));
 
   router.get('/jobs/community-outreach-manager',
     identifyUser(adapters.logger),
