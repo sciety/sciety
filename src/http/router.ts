@@ -1,6 +1,10 @@
 import Router from '@koa/router';
+import * as E from 'fp-ts/lib/Either';
+import * as T from 'fp-ts/lib/Task';
+import { flow } from 'fp-ts/lib/function';
 import bodyParser from 'koa-bodyparser';
 import koaPassport from 'koa-passport';
+import { Result } from 'true-myth';
 import { catchErrors } from './catch-errors';
 import { catchStaticFileErrors } from './catch-static-file-errors';
 import identifyUser from './identify-user';
@@ -24,11 +28,19 @@ import privacyPage from '../privacy-page';
 import { respondHandler } from '../respond';
 import { finishRespondCommand } from '../respond/finish-respond-command';
 import { saveRespondCommand } from '../respond/save-respond-command';
+import { Page } from '../shared-components/apply-standard-page-layout';
 import termsPage from '../terms-page';
+import { RenderPageError } from '../types/render-page-error';
 import unfollowHandler from '../unfollow';
 import finishUnfollowCommand from '../unfollow/finish-unfollow-command';
 import saveUnfollowCommand from '../unfollow/save-unfollow-command';
 import userPage from '../user-page';
+
+const toEither = <L = RenderPageError, R = Page>(result: Result<R, L>): E.Either<L, R> => (
+  result
+    .map((page) => E.right<L, R>(page))
+    .unwrapOrElse((error) => E.left<L, R>(error))
+);
 
 export default (adapters: Adapters): Router => {
   const router = new Router();
@@ -38,7 +50,7 @@ export default (adapters: Adapters): Router => {
 
   router.get('/',
     identifyUser(adapters.logger),
-    pageHandler(homePage(adapters)));
+    pageHandler(flow(homePage(adapters), T.map(toEither))));
 
   router.get('/about',
     identifyUser(adapters.logger),
