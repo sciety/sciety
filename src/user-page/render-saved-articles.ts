@@ -1,14 +1,12 @@
-import { flow, pipe } from 'fp-ts/function';
+import { flow } from 'fp-ts/function';
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
-import * as TE from 'fp-ts/lib/TaskEither';
-
 import templateListItems from '../shared-components/list-items';
 import Doi from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
-type SavedArticle = {
+export type SavedArticle = {
   doi: Doi,
   title: O.Option<HtmlFragment>,
 };
@@ -28,17 +26,13 @@ const renderAsLink: RenderAsLink = flow(
   toHtmlFragment,
 );
 
-export const renderSavedArticles = (
-  savedArticles: GetSavedArticles,
-) => (userId: UserId): TE.TaskEither<never, HtmlFragment> => pipe(
-  savedArticles(userId),
-  T.map(flow(
-    (savedArticlesArray) => savedArticlesArray.map(renderAsLink),
-    O.fromPredicate((items) => items.length > 0),
-    O.map((items) => templateListItems(items, 'saved-articles__item')),
-    O.fold(
-      () => '',
-      (list) => `
+export const renderSavedArticles = flow(
+  (savedArticlesArray: ReadonlyArray<SavedArticle>) => savedArticlesArray.map(renderAsLink),
+  O.fromPredicate((items) => items.length > 0),
+  O.map((items) => templateListItems(items, 'saved-articles__item')),
+  O.fold(
+    () => '',
+    (list) => `
         <section>
           <h2>Saved articles</h2>
           <ol class="saved-articles">
@@ -46,8 +40,6 @@ export const renderSavedArticles = (
           </ol>
         </section>
       `,
-    ),
-    toHtmlFragment,
-  )),
-  TE.rightTask,
+  ),
+  toHtmlFragment,
 );

@@ -1,8 +1,8 @@
 import { URL } from 'url';
+import { flow, pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
-import { pipe } from 'fp-ts/lib/function';
 import { Maybe } from 'true-myth';
 import createGetFollowedEditorialCommunitiesFromIds, { GetEditorialCommunity } from './get-followed-editorial-communities-from-ids';
 import { getUserDisplayName } from './get-user-display-name';
@@ -62,7 +62,14 @@ export default (ports: Ports): UserPage => {
     renderHeader,
     renderFollowList,
     getUserDisplayName(ports.getUserDetails),
-    renderSavedArticles(getSavedArticles(ports.fetchArticle, projectSavedArticleDois(ports.getAllEvents))),
+    flow(
+      getSavedArticles(
+        ports.fetchArticle,
+        projectSavedArticleDois(ports.getAllEvents),
+      ),
+      T.map(renderSavedArticles),
+      TE.rightTask,
+    ),
   );
 
   return (params) => {

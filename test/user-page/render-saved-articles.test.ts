@@ -1,32 +1,29 @@
-import * as E from 'fp-ts/lib/Either';
 import * as O from 'fp-ts/lib/Option';
-import * as T from 'fp-ts/lib/Task';
 import Doi from '../../src/types/doi';
 import { toHtmlFragment } from '../../src/types/html-fragment';
-import toUserId from '../../src/types/user-id';
-import { GetSavedArticles, renderSavedArticles } from '../../src/user-page/render-saved-articles';
+import { renderSavedArticles, SavedArticle } from '../../src/user-page/render-saved-articles';
 
 describe('render-saved-articles', () => {
   describe('when there are saved articles', () => {
     it('renders an HTML ordered list', async () => {
-      const savedArticles: GetSavedArticles = () => T.of([
+      const savedArticles: ReadonlyArray<SavedArticle> = [
         {
           doi: new Doi('10.1101/2020.07.04.187583'),
           title: O.some(toHtmlFragment('Some title')),
         },
-      ]);
-      const rendered = await renderSavedArticles(savedArticles)(toUserId('1295307136415735808'))();
+      ];
+      const rendered = renderSavedArticles(savedArticles);
 
-      expect(rendered).toStrictEqual(E.right(expect.stringContaining('<ol')));
+      expect(rendered).toContain('<ol');
     });
   });
 
   describe('when there are no saved articles', () => {
     it('renders nothing', async () => {
-      const savedArticles: GetSavedArticles = () => T.of([]);
-      const rendered = await renderSavedArticles(savedArticles)(toUserId('no-such-user'))();
+      const savedArticles: ReadonlyArray<SavedArticle> = [];
+      const rendered = renderSavedArticles(savedArticles);
 
-      expect(rendered).toStrictEqual(E.right(''));
+      expect(rendered).toHaveLength(0);
     });
   });
 });
