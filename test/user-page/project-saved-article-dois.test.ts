@@ -8,20 +8,20 @@ describe('project-saved-article-dois', () => {
     it('returns the DOIs of the saved articles', async () => {
       const userId = toUserId('1295307136415735808');
       const expected = [
-        new Doi('10.1101/12345'),
         new Doi('10.1101/67890'),
+        new Doi('10.1101/12345'),
       ];
 
       const getAllEvents: GetAllEvents = T.of([
         {
           type: 'UserSavedArticle',
-          date: new Date(),
+          date: new Date('2020-01-01'),
           articleId: new Doi('10.1101/12345'),
           userId,
         },
         {
           type: 'UserSavedArticle',
-          date: new Date(),
+          date: new Date('2020-01-02'),
           articleId: new Doi('10.1101/67890'),
           userId,
         },

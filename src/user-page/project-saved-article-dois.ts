@@ -12,5 +12,6 @@ export const projectSavedArticleDois = (getAllEvents: GetAllEvents): GetSavedArt
     RA.filter(isUserSavedArticleEvent),
     RA.filter((event) => event.userId === userId),
     RA.map((event) => event.articleId),
+    RA.reverse,
   )),
 );
