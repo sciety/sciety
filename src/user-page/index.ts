@@ -4,9 +4,9 @@ import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { Maybe } from 'true-myth';
+import { fetchSavedArticles, GetArticleFromCrossref } from './fetch-saved-articles';
 import createGetFollowedEditorialCommunitiesFromIds, { GetEditorialCommunity } from './get-followed-editorial-communities-from-ids';
 import { getUserDisplayName } from './get-user-display-name';
-import { GetArticleFromCrossref, getSavedArticles } from './hardcoded-get-saved-articles';
 import createProjectFollowedEditorialCommunityIds, { GetAllEvents } from './project-followed-editorial-community-ids';
 import { projectSavedArticleDois } from './project-saved-article-dois';
 import createRenderFollowList from './render-follow-list';
@@ -63,10 +63,8 @@ export default (ports: Ports): UserPage => {
     renderFollowList,
     getUserDisplayName(ports.getUserDetails),
     flow(
-      getSavedArticles(
-        ports.fetchArticle,
-        projectSavedArticleDois(ports.getAllEvents),
-      ),
+      projectSavedArticleDois(ports.getAllEvents),
+      T.chain(fetchSavedArticles(ports.fetchArticle)),
       T.map(renderSavedArticles),
       TE.rightTask,
     ),

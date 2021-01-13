@@ -1,8 +1,7 @@
 import * as O from 'fp-ts/lib/Option';
 import * as RA from 'fp-ts/lib/ReadonlyArray';
 import * as T from 'fp-ts/lib/Task';
-import { flow } from 'fp-ts/lib/function';
-import { pipe } from 'fp-ts/lib/pipeable';
+import { flow, pipe } from 'fp-ts/lib/function';
 import Result from 'true-myth/result';
 import Doi from '../types/doi';
 import { HtmlFragment } from '../types/html-fragment';
@@ -20,27 +19,23 @@ type SavedArticle = {
   title: O.Option<HtmlFragment>,
 };
 
-type GetSavedArticles = (userId: UserId) => T.Task<ReadonlyArray<SavedArticle>>;
+type FetchSavedArticles = (articles: ReadonlyArray<Doi>) => T.Task<ReadonlyArray<SavedArticle>>;
 
-export const getSavedArticles = (
+export const fetchSavedArticles = (
   getArticleFromCrossref: GetArticleFromCrossref,
-  getSavedArticleDois: GetSavedArticleDois,
-): GetSavedArticles => flow(
-  getSavedArticleDois,
-  T.chain(flow(
-    RA.map((doi) => (
-      pipe(
-        doi,
-        getArticleFromCrossref,
-        T.map((articleResult) => {
-          const title = articleResult.mapOr(O.none, (article) => O.some(article.title));
-          return {
-            doi,
-            title,
-          };
-        }),
-      )
-    )),
-    T.sequenceArray,
+): FetchSavedArticles => flow(
+  RA.map((doi) => (
+    pipe(
+      doi,
+      getArticleFromCrossref,
+      T.map((articleResult) => {
+        const title = articleResult.mapOr(O.none, (article) => O.some(article.title));
+        return {
+          doi,
+          title,
+        };
+      }),
+    )
   )),
+  T.sequenceArray,
 );
