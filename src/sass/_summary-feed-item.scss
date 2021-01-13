@@ -1,5 +1,6 @@
 @use 'baseline';
 @use 'settings';
+@use 'typography';
 
 $_avatar-size: 47px;
 $_avatar-border-width: 1px;
@@ -15,11 +16,7 @@ $_avatar-border-width: 1px;
 }
 
 .summary-feed-item__link {
-  color: inherit;
-}
-
-.summary-feed-item__link:hover {
-  color: settings.$colour-primary;
+  @include typography.subtle-link;
 }
 
 .summary-feed-item__avatar {

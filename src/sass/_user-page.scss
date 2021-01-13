@@ -1,6 +1,7 @@
 @use 'baseline';
 @use 'functions';
 @use 'settings';
+@use 'typography';
 
 .sciety-grid--user > .page-header--user {
   grid-column: 1 / -1;
@@ -49,9 +50,5 @@
 }
 
 .saved-articles__link {
-  color: inherit;
-}
-
-.saved-articles__link:hover {
-  color: settings.$colour-primary;
+  @include typography.subtle-link;
 }

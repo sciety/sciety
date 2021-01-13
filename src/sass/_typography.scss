@@ -1,0 +1,9 @@
+@use 'settings';
+
+@mixin subtle-link () {
+  color: inherit;
+
+  &:hover {
+    color: settings.$colour-primary;
+  }
+}
