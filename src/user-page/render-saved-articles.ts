@@ -1,5 +1,6 @@
 import { flow } from 'fp-ts/function';
 import * as O from 'fp-ts/lib/Option';
+import * as RA from 'fp-ts/lib/ReadonlyArray';
 import templateListItems from '../shared-components/list-items';
 import Doi from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -25,7 +26,7 @@ const renderAsLink: RenderAsLink = flow(
 );
 
 export const renderSavedArticles: RenderSavedArticles = flow(
-  (savedArticlesArray) => savedArticlesArray.map(renderAsLink),
+  RA.map(renderAsLink),
   O.fromPredicate((items) => items.length > 0),
   O.map((items) => templateListItems(items, 'saved-articles__item')),
   O.fold(
