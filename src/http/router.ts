@@ -1,6 +1,7 @@
 import Router from '@koa/router';
 import * as E from 'fp-ts/lib/Either';
 import * as T from 'fp-ts/lib/Task';
+import * as TE from 'fp-ts/lib/TaskEither';
 import { flow } from 'fp-ts/lib/function';
 import bodyParser from 'koa-bodyparser';
 import koaPassport from 'koa-passport';
@@ -54,7 +55,7 @@ export default (adapters: Adapters): Router => {
 
   router.get('/about',
     identifyUser(adapters.logger),
-    pageHandler(aboutPage(adapters)));
+    pageHandler(flow(aboutPage(adapters), TE.rightTask)));
 
   router.get('/users/:id(.+)',
     identifyUser(adapters.logger),
