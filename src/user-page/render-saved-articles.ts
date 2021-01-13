@@ -1,17 +1,13 @@
 import { flow } from 'fp-ts/function';
 import * as O from 'fp-ts/lib/Option';
-import * as T from 'fp-ts/lib/Task';
 import templateListItems from '../shared-components/list-items';
 import Doi from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-import { UserId } from '../types/user-id';
 
 export type SavedArticle = {
   doi: Doi,
   title: O.Option<HtmlFragment>,
 };
-
-export type GetSavedArticles = (userId: UserId) => T.Task<ReadonlyArray<SavedArticle>>;
 
 type RenderAsLink = (savedArticle: SavedArticle) => HtmlFragment;
 

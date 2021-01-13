@@ -4,7 +4,6 @@ import * as T from 'fp-ts/lib/Task';
 import { flow } from 'fp-ts/lib/function';
 import { pipe } from 'fp-ts/lib/pipeable';
 import Result from 'true-myth/result';
-import { GetSavedArticles } from './render-saved-articles';
 import Doi from '../types/doi';
 import { HtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
@@ -15,6 +14,13 @@ export type GetArticleFromCrossref = (doi: Doi) => T.Task<Result<{
 }, unknown>>;
 
 export type GetSavedArticleDois = (userId: UserId) => T.Task<ReadonlyArray<Doi>>;
+
+type SavedArticle = {
+  doi: Doi,
+  title: O.Option<HtmlFragment>,
+};
+
+type GetSavedArticles = (userId: UserId) => T.Task<ReadonlyArray<SavedArticle>>;
 
 export const getSavedArticles = (
   getArticleFromCrossref: GetArticleFromCrossref,
