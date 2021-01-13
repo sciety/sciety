@@ -1,5 +1,4 @@
 import * as T from 'fp-ts/lib/Task';
-import { Result } from 'true-myth';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 type RenderPage = () => T.Task<{
