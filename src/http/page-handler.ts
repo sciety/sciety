@@ -11,7 +11,7 @@ import { applyStandardPageLayout, Page } from '../shared-components/apply-standa
 import { RenderPageError } from '../types/render-page-error';
 import { User } from '../types/user';
 
-type RenderedResult = Result<Page, RenderPageError>;
+type RenderedResult = E.Either<RenderPageError, Page> | Result<Page, RenderPageError>;
 
 // TODO: find better way of handling params of different pages
 type RenderPage = (params: {
@@ -29,9 +29,15 @@ const addScietySuffixIfNotHomepage = (requestPath: string) => (page: Page): Page
 
 const toTaskEither = (rendered: T.Task<RenderedResult>): TE.TaskEither<RenderPageError, Page> => pipe(
   rendered,
-  T.map((result) => result
-    .map((page) => E.right<RenderPageError, Page>(page))
-    .unwrapOrElse((error) => E.left<RenderPageError, Page>(error))),
+  T.map((value) => {
+    if (('_tag' in value)) {
+      return value;
+    }
+
+    return value
+      .map((page) => E.right<RenderPageError, Page>(page))
+      .unwrapOrElse((error) => E.left<RenderPageError, Page>(error));
+  }),
   T.chain(TE.fromEither),
 );
 
