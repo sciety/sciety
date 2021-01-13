@@ -1,7 +1,5 @@
-import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { flow } from 'fp-ts/lib/function';
-import { Result } from 'true-myth';
 import { RenderSearchResults } from './render-search-results';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { RenderPageError } from '../types/render-page-error';
@@ -10,7 +8,7 @@ type PageResult = {
   title: string,
   content: HtmlFragment,
 };
-export type RenderPage = (query: string) => T.Task<Result<PageResult, RenderPageError>>;
+export type RenderPage = (query: string) => TE.TaskEither<RenderPageError, PageResult>;
 
 export default (renderSearchResults: RenderSearchResults): RenderPage => flow(
   renderSearchResults,
@@ -36,8 +34,4 @@ export default (renderSearchResults: RenderSearchResults): RenderPage => flow(
       </div>
     `),
   })),
-  TE.fold(
-    (result) => T.of(Result.err<PageResult, RenderPageError>(result)),
-    (result) => T.of(Result.ok<PageResult, RenderPageError>(result)),
-  ),
 );
