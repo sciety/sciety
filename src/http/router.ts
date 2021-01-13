@@ -59,7 +59,7 @@ export default (adapters: Adapters): Router => {
 
   router.get('/users/:id(.+)',
     identifyUser(adapters.logger),
-    pageHandler(userPage(adapters)));
+    pageHandler(flow(userPage(adapters), T.map(toEither))));
 
   router.get('/articles',
     identifyUser(adapters.logger),
@@ -67,15 +67,15 @@ export default (adapters: Adapters): Router => {
       context.response.set('X-Robots-Tag', 'noindex');
       await next();
     },
-    pageHandler(articleSearchPage(adapters)));
+    pageHandler(flow(articleSearchPage(adapters), T.map(toEither))));
 
   router.get('/articles/:doi(.+)',
     identifyUser(adapters.logger),
-    pageHandler(articlePage(adapters)));
+    pageHandler(flow(articlePage(adapters), T.map(toEither))));
 
   router.get('/editorial-communities/:id',
     identifyUser(adapters.logger),
-    pageHandler(editorialCommunityPage(adapters)));
+    pageHandler(flow(editorialCommunityPage(adapters), T.map(toEither))));
 
   router.post('/follow',
     identifyUser(adapters.logger),
@@ -125,15 +125,15 @@ export default (adapters: Adapters): Router => {
 
   router.get('/privacy',
     identifyUser(adapters.logger),
-    pageHandler(privacyPage()));
+    pageHandler(flow(privacyPage(), T.map(toEither))));
 
   router.get('/terms',
     identifyUser(adapters.logger),
-    pageHandler(termsPage()));
+    pageHandler(flow(termsPage(), T.map(toEither))));
 
   router.get('/jobs/community-outreach-manager',
     identifyUser(adapters.logger),
-    pageHandler(communityOutreachManagerPage(adapters)));
+    pageHandler(flow(communityOutreachManagerPage(adapters), T.map(toEither))));
 
   router.get('/robots.txt',
     robots());
