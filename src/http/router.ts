@@ -67,7 +67,7 @@ export default (adapters: Adapters): Router => {
       context.response.set('X-Robots-Tag', 'noindex');
       await next();
     },
-    pageHandler(flow(articleSearchPage(adapters), T.map(toEither))));
+    pageHandler(articleSearchPage(adapters)));
 
   router.get('/articles/:doi(.+)',
     identifyUser(adapters.logger),

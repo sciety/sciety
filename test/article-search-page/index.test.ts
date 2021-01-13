@@ -1,3 +1,6 @@
+import { pipe } from 'fp-ts/function';
+import * as E from 'fp-ts/lib/Either';
+import * as TE from 'fp-ts/lib/TaskEither';
 import buildRenderPage from '../../src/article-search-page';
 import createServer from '../http/server';
 
@@ -7,9 +10,11 @@ describe('create render page', (): void => {
     const renderPage = buildRenderPage(adapters);
     const params = { query: '10.1101/833392' };
 
-    const page = await renderPage(params)();
+    const content = await pipe(
+      renderPage(params),
+      TE.map((page) => page.content),
+    )();
 
-    expect(page.isOk()).toBe(true);
-    expect(page.unsafelyUnwrap().content).toStrictEqual(expect.stringContaining('Search results'));
+    expect(content).toStrictEqual(E.right(expect.stringContaining('Search results')));
   });
 });
