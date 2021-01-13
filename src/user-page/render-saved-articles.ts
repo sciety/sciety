@@ -11,6 +11,8 @@ export type SavedArticle = {
 
 type RenderAsLink = (savedArticle: SavedArticle) => HtmlFragment;
 
+type RenderSavedArticles = (savedArticles: ReadonlyArray<SavedArticle>) => HtmlFragment;
+
 const renderAsLink: RenderAsLink = flow(
   (item) => ({
     doi: item.doi,
@@ -22,8 +24,8 @@ const renderAsLink: RenderAsLink = flow(
   toHtmlFragment,
 );
 
-export const renderSavedArticles = flow(
-  (savedArticlesArray: ReadonlyArray<SavedArticle>) => savedArticlesArray.map(renderAsLink),
+export const renderSavedArticles: RenderSavedArticles = flow(
+  (savedArticlesArray) => savedArticlesArray.map(renderAsLink),
   O.fromPredicate((items) => items.length > 0),
   O.map((items) => templateListItems(items, 'saved-articles__item')),
   O.fold(
