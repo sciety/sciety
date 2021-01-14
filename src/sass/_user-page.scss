@@ -52,7 +52,8 @@
 .followed-communities__item_link {
   @include typography.subtle-link;
   font-family: settings.$font-secondary;
-  flex: 1 0 auto;
+  flex: 1 1 auto;
+  padding-right: functions.px-to-rem(6px);
 }
 
 // TODO: extract to avatar mixin
