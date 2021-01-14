@@ -68,7 +68,8 @@ export default (ports: Ports): UserPage => {
       projectSavedArticleDois(ports.getAllEvents),
       T.chain(fetchSavedArticles(flow(
         ports.fetchArticle,
-        T.map((articleResult) => articleResult.map((article) => article.title)),
+        T.map((articleResult) => articleResult.mapOr(O.none, O.some)),
+        T.map(O.map((article) => article.title)),
       ))),
       T.map(renderSavedArticles),
       TE.rightTask,

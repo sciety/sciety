@@ -2,12 +2,11 @@ import * as O from 'fp-ts/lib/Option';
 import * as RA from 'fp-ts/lib/ReadonlyArray';
 import * as T from 'fp-ts/lib/Task';
 import { flow, pipe } from 'fp-ts/lib/function';
-import Result from 'true-myth/result';
 import Doi from '../types/doi';
 import { HtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
-export type GetArticleTitle = (doi: Doi) => T.Task<Result<HtmlFragment, unknown>>;
+export type GetArticleTitle = (doi: Doi) => T.Task<O.Option<HtmlFragment>>;
 
 export type GetSavedArticleDois = (userId: UserId) => T.Task<ReadonlyArray<Doi>>;
 
@@ -25,9 +24,9 @@ export const fetchSavedArticles = (
     pipe(
       doi,
       getArticleFromCrossref,
-      T.map((articleResult) => ({
+      T.map((title) => ({
         doi,
-        title: articleResult.mapOr(O.none, (title) => O.some(title)),
+        title,
       })),
     )
   )),
