@@ -21,18 +21,10 @@ type RenderFollowToggle = (
   editorialcommunityid: EditorialCommunityId,
 ) => T.Task<HtmlFragment>;
 
-const render = (community: Community) => (toggle: string): string => `
-  <div class="label">
-    <img src="${community.avatar.toString()}" alt="">
-  </div>
-  <div class="content">
-    <div class="summary">
-      <a href="/editorial-communities/${community.id.value}">${community.name}</a>
-    </div>
-  </div>
-  <div class="right floated">
-    ${toggle}
-  </div>
+const render = (community: Community) => (toggle: HtmlFragment): string => `
+  <img class="followed-communities__item_avatar" src="${community.avatar.toString()}" alt="">
+  <a class="followed-communities__item_link" href="/editorial-communities/${community.id.value}">${community.name}</a>
+  ${toggle}
 `;
 
 export default (

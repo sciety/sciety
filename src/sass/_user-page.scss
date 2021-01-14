@@ -39,6 +39,35 @@
   margin-bottom: #{baseline.increments(6)};
 }
 
+.followed-communities__list {
+  padding-left: 0;
+}
+
+.followed-communities__item {
+  display: flex;
+  align-items: center;
+  margin-bottom: baseline.increments(1);
+}
+
+.followed-communities__item_link {
+  @include typography.subtle-link;
+  font-family: settings.$font-secondary;
+  flex: 1 0 auto;
+}
+
+// TODO: extract to avatar mixin
+$_avatar-size: 47px;
+$_avatar-border-width: 1px;
+
+.followed-communities__item_avatar {
+  width: $_avatar-size;
+  height: $_avatar-size;
+  border: $_avatar-border-width solid settings.$colour-grey-one;
+  border-radius: 50%;
+  flex: 0 0 $_avatar-size;
+  margin-right: 1.5rem;
+}
+
 .saved-articles {
   font-family: settings.$font-secondary;
   list-style: none;

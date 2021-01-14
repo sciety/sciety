@@ -31,8 +31,8 @@ const followListSection = (list: string): string => `
 `;
 
 const renderList = (list: ReadonlyArray<HtmlFragment>): string => ((list.length === 0) ? followingNothing : `
-  <ol class="ui large feed" role="list">
-    ${templateListItems(list, 'event')}
+  <ol class="followed-communities__list" role="list">
+    ${templateListItems(list, 'followed-communities__item')}
   </ol>
 `);
 
