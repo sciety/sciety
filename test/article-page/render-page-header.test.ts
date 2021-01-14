@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import { JSDOM } from 'jsdom';
 import { Result } from 'true-myth';
@@ -20,7 +21,7 @@ describe('render-page-header component', (): void => {
 
   beforeEach(async () => {
     renderPageHeader = createRenderPageHeader(getArticleDetails);
-    rendered = (await renderPageHeader(new Doi('10.1101/815689'))()).unsafelyUnwrap();
+    rendered = (await renderPageHeader(new Doi('10.1101/815689'), O.none)()).unsafelyUnwrap();
   });
 
   it('renders inside an header tag', () => {

@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import { pipe } from 'fp-ts/lib/function';
 import { Result } from 'true-myth';
@@ -5,6 +6,7 @@ import { renderTweetThis } from './render-tweet-this';
 import Doi from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
+import { UserId } from '../types/user-id';
 
 interface ArticleDetails {
   title: SanitisedHtmlFragment;
@@ -13,9 +15,17 @@ interface ArticleDetails {
 
 export type GetArticleDetails<E> = (doi: Doi) => T.Task<Result<ArticleDetails, E>>;
 
-export type RenderPageHeader<E> = (doi: Doi) => T.Task<Result<HtmlFragment, E>>;
+export type RenderPageHeader<E> = (doi: Doi, userId: O.Option<UserId>) => T.Task<Result<HtmlFragment, E>>;
 
-const render = (doi: Doi) => (details: ArticleDetails): HtmlFragment => toHtmlFragment(`
+const renderSavedLink = (doi: Doi, userId: O.Option<UserId>): string => {
+  if (doi.value === '17' && userId === O.some('1295307136415735808')) {
+    return 'Saved to list';
+  }
+  return '';
+};
+
+// TODO: inject renderTweetThis and similar
+const render = (doi: Doi, userId: O.Option<UserId>) => (details: ArticleDetails): HtmlFragment => toHtmlFragment(`
   <header class="page-header page-header--article">
     <h1>${details.title}</h1>
     <ol aria-label="Authors of this article" class="article-author-list" role="list">
@@ -27,15 +37,16 @@ const render = (doi: Doi) => (details: ArticleDetails): HtmlFragment => toHtmlFr
       </li>
     </ul>
     ${renderTweetThis(doi)}
+    ${renderSavedLink(doi, userId)}
   </header>
 `);
 
 export default <E>(
   getArticleDetails: GetArticleDetails<E>,
-): RenderPageHeader<E> => (doi) => (
+): RenderPageHeader<E> => (doi, userId) => (
   pipe(
     doi,
     getArticleDetails,
-    T.map((article) => article.map(render(doi))),
+    T.map((article) => article.map(render(doi, userId))),
   )
 );

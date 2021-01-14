@@ -29,7 +29,7 @@ type RenderFeed = (doi: Doi, userId: O.Option<UserId>) => Promise<Result<string,
 export type RenderPage = (doi: Doi, userId: O.Option<UserId>) => T.Task<Result<Page, RenderPageError>>;
 
 export default (
-  renderPageHeader: Component,
+  renderPageHeader: (doi: Doi, userId: O.Option<UserId>) => T.Task<Result<string, 'not-found' | 'unavailable'>>,
   renderAbstract: Component,
   renderFeed: RenderFeed,
   getArticleDetails: GetArticleDetails,
@@ -59,7 +59,7 @@ export default (
 
   return (doi, userId) => async () => {
     const abstractResult = renderAbstract(doi)();
-    const pageHeaderResult = renderPageHeader(doi)();
+    const pageHeaderResult = renderPageHeader(doi, userId)();
     const feedResult = renderFeed(doi, userId)
       .then((feed) => (
         feed.or(Result.ok<string, never>(''))
