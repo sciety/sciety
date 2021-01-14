@@ -1,5 +1,5 @@
 import * as T from 'fp-ts/lib/Task';
-import { pipe } from 'fp-ts/lib/function';
+import { flow, pipe } from 'fp-ts/lib/function';
 import { Result } from 'true-myth';
 import templateDate from './date';
 import Doi from '../types/doi';
@@ -30,36 +30,50 @@ type Article = {
 type RenderSummaryFeedItemSummary = (event: FeedEvent, actor: Actor) => Promise<string>;
 
 const createRenderSummaryFeedItemSummary = (getArticle: GetArticle): RenderSummaryFeedItemSummary => {
-  type RenderEvent<E extends FeedEvent> = (event: E, actor: Actor) => Promise<string>;
+  type RenderEvent<E extends FeedEvent> = (event: E, actor: Actor) => T.Task<string>;
 
-  const title = (articleId: Doi): T.Task<HtmlFragment> => pipe(
+  const getTitle = (articleId: Doi): T.Task<HtmlFragment> => pipe(
     articleId,
     getArticle,
     T.map((result) => result.mapOr(toHtmlFragment('an article'), (article) => article.title)),
   );
 
-  const renderEditorialCommunityEndorsedArticle: RenderEvent<EditorialCommunityEndorsedArticleEvent> = async (
+  const renderEditorialCommunityEndorsedArticle: RenderEvent<EditorialCommunityEndorsedArticleEvent> = (
     event,
     actor,
-  ) => toHtmlFragment(`
-      <a href="${actor.url}" class="summary-feed-item__link">${actor.name}</a>
-      endorsed
-      <a href="/articles/${event.articleId.value}" class="summary-feed-item__link">${await title(event.articleId)()}</a>
-    `);
+  ) => pipe(
+    event.articleId,
+    getTitle,
+    T.map(flow(
+      (title) => `
+        <a href="${actor.url}" class="summary-feed-item__link">${actor.name}</a>
+        endorsed
+        <a href="/articles/${event.articleId.value}" class="summary-feed-item__link">${title}</a>
+      `,
+      toHtmlFragment,
+    )),
+  );
 
-  const renderEditorialCommunityReviewedArticle: RenderEvent<EditorialCommunityReviewedArticleEvent> = async (
+  const renderEditorialCommunityReviewedArticle: RenderEvent<EditorialCommunityReviewedArticleEvent> = (
     event,
     actor,
-  ) => toHtmlFragment(`
-      <a href="${actor.url}" class="summary-feed-item__link">${actor.name}</a>
-      ${actor.name === 'preLights' ? 'highlighted' : 'reviewed'}
-      <a href="/articles/${event.articleId.value}" class="summary-feed-item__link">${await title(event.articleId)()}</a>
-    `);
+  ) => pipe(
+    event.articleId,
+    getTitle,
+    T.map(flow(
+      (title) => `
+        <a href="${actor.url}" class="summary-feed-item__link">${actor.name}</a>
+        ${actor.name === 'preLights' ? 'highlighted' : 'reviewed'}
+        <a href="/articles/${event.articleId.value}" class="summary-feed-item__link">${title}</a>
+      `,
+      toHtmlFragment,
+    )),
+  );
 
   return async (event, actor) => {
     switch (event.type) {
-      case 'EditorialCommunityEndorsedArticle': return renderEditorialCommunityEndorsedArticle(event, actor);
-      case 'EditorialCommunityReviewedArticle': return renderEditorialCommunityReviewedArticle(event, actor);
+      case 'EditorialCommunityEndorsedArticle': return renderEditorialCommunityEndorsedArticle(event, actor)();
+      case 'EditorialCommunityReviewedArticle': return renderEditorialCommunityReviewedArticle(event, actor)();
     }
   };
 };
