@@ -7,10 +7,7 @@ import Doi from '../types/doi';
 import { HtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
-// TODO: rename and separate shim from rest of this module
-export type GetArticleFromCrossref = (doi: Doi) => T.Task<Result<{
-  title: HtmlFragment;
-}, unknown>>;
+export type GetArticleTitle = (doi: Doi) => T.Task<Result<HtmlFragment, unknown>>;
 
 export type GetSavedArticleDois = (userId: UserId) => T.Task<ReadonlyArray<Doi>>;
 
@@ -22,19 +19,16 @@ type SavedArticle = {
 type FetchSavedArticles = (articles: ReadonlyArray<Doi>) => T.Task<ReadonlyArray<SavedArticle>>;
 
 export const fetchSavedArticles = (
-  getArticleFromCrossref: GetArticleFromCrossref,
+  getArticleFromCrossref: GetArticleTitle,
 ): FetchSavedArticles => flow(
   RA.map((doi) => (
     pipe(
       doi,
       getArticleFromCrossref,
-      T.map((articleResult) => {
-        const title = articleResult.mapOr(O.none, (article) => O.some(article.title));
-        return {
-          doi,
-          title,
-        };
-      }),
+      T.map((articleResult) => ({
+        doi,
+        title: articleResult.mapOr(O.none, (title) => O.some(title)),
+      })),
     )
   )),
   T.sequenceArray,

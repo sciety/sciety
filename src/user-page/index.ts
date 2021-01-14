@@ -3,8 +3,8 @@ import { flow, pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
-import { Maybe } from 'true-myth';
-import { fetchSavedArticles, GetArticleFromCrossref } from './fetch-saved-articles';
+import { Maybe, Result } from 'true-myth';
+import { fetchSavedArticles } from './fetch-saved-articles';
 import createGetFollowedEditorialCommunitiesFromIds, { GetEditorialCommunity } from './get-followed-editorial-communities-from-ids';
 import { getUserDisplayName } from './get-user-display-name';
 import createProjectFollowedEditorialCommunityIds, { GetAllEvents } from './project-followed-editorial-community-ids';
@@ -15,7 +15,9 @@ import createRenderFollowedEditorialCommunity from './render-followed-editorial-
 import createRenderHeader, { UserDetails } from './render-header';
 import createRenderPage, { RenderPage } from './render-page';
 import { renderSavedArticles } from './render-saved-articles';
+import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
+import { HtmlFragment } from '../types/html-fragment';
 import { User } from '../types/user';
 import toUserId, { UserId } from '../types/user-id';
 
@@ -31,7 +33,7 @@ type Ports = {
   getAllEvents: GetAllEvents,
   follows: Follows,
   getUserDetails: GetUserDetails,
-  fetchArticle: GetArticleFromCrossref,
+  fetchArticle: (doi: Doi) => T.Task<Result<{title: HtmlFragment;}, unknown>>,
 };
 
 interface Params {
@@ -64,7 +66,10 @@ export default (ports: Ports): UserPage => {
     getUserDisplayName(ports.getUserDetails),
     flow(
       projectSavedArticleDois(ports.getAllEvents),
-      T.chain(fetchSavedArticles(ports.fetchArticle)),
+      T.chain(fetchSavedArticles(flow(
+        ports.fetchArticle,
+        T.map((articleResult) => articleResult.map((article) => article.title)),
+      ))),
       T.map(renderSavedArticles),
       TE.rightTask,
     ),
