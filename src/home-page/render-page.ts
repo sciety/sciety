@@ -2,7 +2,6 @@ import { sequenceS } from 'fp-ts/lib/Apply';
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import { pipe } from 'fp-ts/lib/function';
-import { Result } from 'true-myth';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
@@ -11,7 +10,7 @@ type Page = {
   content: HtmlFragment
 };
 
-export type RenderPage = (userId: O.Option<UserId>) => T.Task<Result<Page, never>>;
+export type RenderPage = (userId: O.Option<UserId>) => T.Task<Page>;
 
 type Component = (userId: O.Option<UserId>) => T.Task<string>;
 
@@ -56,6 +55,5 @@ export default (
       ),
     },
     sequenceS(T.task),
-    T.map((p) => Result.ok(p)),
   );
 };

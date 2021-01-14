@@ -51,7 +51,7 @@ export default (adapters: Adapters): Router => {
 
   router.get('/',
     identifyUser(adapters.logger),
-    pageHandler(flow(homePage(adapters), T.map(toEither))));
+    pageHandler(flow(homePage(adapters), TE.rightTask)));
 
   router.get('/about',
     identifyUser(adapters.logger),
