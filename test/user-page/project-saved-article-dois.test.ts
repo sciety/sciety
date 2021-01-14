@@ -34,7 +34,20 @@ describe('project-saved-article-dois', () => {
   });
 
   describe('when another user has saved articles and the current user has not', () => {
-    it.todo('returns an empty array');
+    it('returns an empty array', async () => {
+      const getAllEvents: GetAllEvents = T.of([
+        {
+          type: 'UserSavedArticle',
+          date: new Date('2020-01-02'),
+          articleId: new Doi('10.1101/67890'),
+          userId: toUserId('another-user'),
+        },
+      ]);
+
+      const output = await projectSavedArticleDois(getAllEvents)(toUserId('the-current-user'))();
+
+      expect(output).toHaveLength(0);
+    });
   });
 
   describe('when the user has not saved articles', () => {
