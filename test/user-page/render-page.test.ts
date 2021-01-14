@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/lib/Either';
 import * as O from 'fp-ts/lib/Option';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { toHtmlFragment } from '../../src/types/html-fragment';
@@ -16,7 +17,7 @@ describe('render-page', () => {
 
       const result = await renderPage(toUserId('1234'), O.none)();
 
-      expect(result.unsafelyUnwrap().title).toStrictEqual('someone');
+      expect(result).toStrictEqual(E.right(expect.objectContaining({ title: 'someone' })));
     });
   });
 
@@ -30,7 +31,7 @@ describe('render-page', () => {
       );
       const result = await renderPage(toUserId('1234'), O.none)();
 
-      expect(result.unsafelyUnwrapErr().type).toBe('not-found');
+      expect(result).toStrictEqual(E.left(expect.objectContaining({ type: 'not-found' })));
     });
   });
 
@@ -44,7 +45,7 @@ describe('render-page', () => {
       );
       const result = await renderPage(toUserId('1234'), O.none)();
 
-      expect(result.unsafelyUnwrapErr().type).toBe('unavailable');
+      expect(result).toStrictEqual(E.left(expect.objectContaining({ type: 'unavailable' })));
     });
   });
 });

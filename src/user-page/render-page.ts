@@ -1,30 +1,36 @@
+import { sequenceS } from 'fp-ts/lib/Apply';
 import * as O from 'fp-ts/lib/Option';
-import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { pipe } from 'fp-ts/lib/function';
-import { Result } from 'true-myth';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { RenderPageError } from '../types/render-page-error';
 import { UserId } from '../types/user-id';
 
-export type RenderPage = (userId: UserId, viewingUserId: O.Option<UserId>) => T.Task<Result<{
+type Page = {
   title: string,
   content: HtmlFragment
-}, RenderPageError>>;
+};
+
+export type RenderPage = (userId: UserId, viewingUserId: O.Option<UserId>) => TE.TaskEither<RenderPageError, Page>;
 
 type Component = (userId: UserId, viewingUserId: O.Option<UserId>) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>;
 
 const template = (
-  header: HtmlFragment,
-) => (followList: HtmlFragment) => (userDisplayName:string) => (savedArticlesList: HtmlFragment) => (
+  components: {
+    header: HtmlFragment,
+    followList: HtmlFragment,
+    userDisplayName: string,
+    savedArticlesList: HtmlFragment
+  },
+): Page => (
   {
-    title: `${userDisplayName}`,
+    title: `${components.userDisplayName}`,
     content: toHtmlFragment(`
       <div class="sciety-grid sciety-grid--user">
-        ${header}
+        ${components.header}
         <div class="user-page-contents">
-          ${followList}
-          ${savedArticlesList}
+          ${components.followList}
+          ${components.savedArticlesList}
         </div>
       </div>
     `),
@@ -39,53 +45,25 @@ export default (
   renderFollowList: RenderFollowList,
   getUserDisplayName: GetUserDisplayName,
   renderSavedArticles: Component,
-): RenderPage => (userId, viewingUserId) => async () => {
-  const header = pipe(
-    renderHeader(userId, viewingUserId),
-    TE.fold(
-      (error) => T.of(Result.err<HtmlFragment, 'not-found' | 'unavailable'>(error)),
-      (html) => T.of(Result.ok<HtmlFragment, 'not-found' | 'unavailable'>(html)),
-    ),
-  )();
-  const followList = pipe(
-    renderFollowList(userId, viewingUserId),
-    TE.fold(
-      (error) => T.of(Result.err<HtmlFragment, 'not-found' | 'unavailable'>(error)),
-      (html) => T.of(Result.ok<HtmlFragment, 'not-found' | 'unavailable'>(html)),
-    ),
-  );
-  const userDisplayName = pipe(
-    userId,
-    getUserDisplayName,
-    TE.map(toHtmlFragment),
-    TE.fold(
-      (error) => T.of(Result.err<HtmlFragment, 'not-found' | 'unavailable'>(error)),
-      (html) => T.of(Result.ok<HtmlFragment, 'not-found' | 'unavailable'>(html)),
-    ),
-  )();
-  const savedArticlesList = pipe(
-    renderSavedArticles(userId, viewingUserId),
-    TE.fold(
-      (error) => T.of(Result.err<HtmlFragment, 'not-found' | 'unavailable'>(error)),
-      (html) => T.of(Result.ok<HtmlFragment, 'not-found' | 'unavailable'>(html)),
-    ),
-  )();
-
-  return Result.ok(template)
-    .ap(await header)
-    .ap(await followList())
-    .ap(await userDisplayName)
-    .ap(await savedArticlesList)
-    .mapErr((e) => {
-      if (e === 'not-found') {
-        return {
-          type: 'not-found',
-          message: toHtmlFragment('User not found'),
-        };
-      }
+): RenderPage => (userId, viewingUserId) => pipe(
+  {
+    header: renderHeader(userId, viewingUserId),
+    followList: renderFollowList(userId, viewingUserId),
+    userDisplayName: pipe(userId, getUserDisplayName, TE.map(toHtmlFragment)),
+    savedArticlesList: renderSavedArticles(userId, viewingUserId),
+  },
+  sequenceS(TE.taskEither),
+  TE.map(template),
+  TE.mapLeft((e) => {
+    if (e === 'not-found') {
       return {
-        type: 'unavailable',
-        message: toHtmlFragment('User information unavailable'),
+        type: 'not-found',
+        message: toHtmlFragment('User not found'),
       };
-    });
-};
+    }
+    return {
+      type: 'unavailable',
+      message: toHtmlFragment('User information unavailable'),
+    };
+  }),
+);

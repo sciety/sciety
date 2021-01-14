@@ -59,7 +59,7 @@ export default (adapters: Adapters): Router => {
 
   router.get('/users/:id(.+)',
     identifyUser(adapters.logger),
-    pageHandler(flow(userPage(adapters), T.map(toEither))));
+    pageHandler(userPage(adapters)));
 
   router.get('/articles',
     identifyUser(adapters.logger),
