@@ -27,7 +27,7 @@ type Article = {
   title: SanitisedHtmlFragment;
 };
 
-type RenderSummaryFeedItemSummary = (event: FeedEvent, actor: Actor) => Promise<string>;
+type RenderSummaryFeedItemSummary = (event: FeedEvent, actor: Actor) => T.Task<string>;
 
 const createRenderSummaryFeedItemSummary = (getArticle: GetArticle): RenderSummaryFeedItemSummary => {
   type RenderEvent<E extends FeedEvent> = (event: E, actor: Actor) => T.Task<string>;
@@ -70,10 +70,10 @@ const createRenderSummaryFeedItemSummary = (getArticle: GetArticle): RenderSumma
     )),
   );
 
-  return async (event, actor) => {
+  return (event, actor) => {
     switch (event.type) {
-      case 'EditorialCommunityEndorsedArticle': return renderEditorialCommunityEndorsedArticle(event, actor)();
-      case 'EditorialCommunityReviewedArticle': return renderEditorialCommunityReviewedArticle(event, actor)();
+      case 'EditorialCommunityEndorsedArticle': return renderEditorialCommunityEndorsedArticle(event, actor);
+      case 'EditorialCommunityReviewedArticle': return renderEditorialCommunityReviewedArticle(event, actor);
     }
   };
 };
@@ -96,7 +96,7 @@ export default (
         <div>
           ${templateDate(event.date, 'summary-feed-item__date')}
           <div class="summary-feed-item__title">
-            ${await renderSummaryFeedItemSummary(event, actor)}
+            ${await renderSummaryFeedItemSummary(event, actor)()}
           </div>
         </div>
       </div>
