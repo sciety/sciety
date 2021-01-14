@@ -1,4 +1,5 @@
 import * as T from 'fp-ts/lib/Task';
+import { pipe } from 'fp-ts/lib/function';
 import { Result } from 'true-myth';
 import templateDate from './date';
 import Doi from '../types/doi';
@@ -31,8 +32,10 @@ type RenderSummaryFeedItemSummary = (event: FeedEvent, actor: Actor) => Promise<
 const createRenderSummaryFeedItemSummary = (getArticle: GetArticle): RenderSummaryFeedItemSummary => {
   type RenderEvent<E extends FeedEvent> = (event: E, actor: Actor) => Promise<string>;
 
-  const title = async (articleId: Doi): Promise<HtmlFragment> => (
-    (await getArticle(articleId)()).mapOr(toHtmlFragment('an article'), (article) => article.title)
+  const title = (articleId: Doi): T.Task<HtmlFragment> => pipe(
+    articleId,
+    getArticle,
+    T.map((result) => result.mapOr(toHtmlFragment('an article'), (article) => article.title)),
   );
 
   const renderEditorialCommunityEndorsedArticle: RenderEvent<EditorialCommunityEndorsedArticleEvent> = async (
@@ -41,7 +44,7 @@ const createRenderSummaryFeedItemSummary = (getArticle: GetArticle): RenderSumma
   ) => toHtmlFragment(`
       <a href="${actor.url}" class="summary-feed-item__link">${actor.name}</a>
       endorsed
-      <a href="/articles/${event.articleId.value}" class="summary-feed-item__link">${await title(event.articleId)}</a>
+      <a href="/articles/${event.articleId.value}" class="summary-feed-item__link">${await title(event.articleId)()}</a>
     `);
 
   const renderEditorialCommunityReviewedArticle: RenderEvent<EditorialCommunityReviewedArticleEvent> = async (
@@ -50,7 +53,7 @@ const createRenderSummaryFeedItemSummary = (getArticle: GetArticle): RenderSumma
   ) => toHtmlFragment(`
       <a href="${actor.url}" class="summary-feed-item__link">${actor.name}</a>
       ${actor.name === 'preLights' ? 'highlighted' : 'reviewed'}
-      <a href="/articles/${event.articleId.value}" class="summary-feed-item__link">${await title(event.articleId)}</a>
+      <a href="/articles/${event.articleId.value}" class="summary-feed-item__link">${await title(event.articleId)()}</a>
     `);
 
   return async (event, actor) => {
