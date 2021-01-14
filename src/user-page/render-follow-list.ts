@@ -18,12 +18,7 @@ export type GetFollowedEditorialCommunities = (userId: UserId) => T.Task<Readonl
 }>>;
 
 const followingNothing = `
-  <div class="ui info message">
-    <div class="header">
-      They’re not following anything
-    </div>
-    <p>When they do, they’ll be listed here.</p>
-  </div>
+  <p>They’re not following anything. When they do, they’ll be listed here.</p>
 `;
 
 const followListSection = (list: string): string => `
