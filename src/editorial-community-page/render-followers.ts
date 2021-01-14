@@ -1,5 +1,5 @@
 import * as T from 'fp-ts/lib/Task';
-import { pipe } from 'fp-ts/lib/function';
+import { flow } from 'fp-ts/lib/function';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
@@ -18,16 +18,9 @@ const renderFragment = (followerCount: number): string => `
   </section>
 `;
 
-export default <U>(
-  getFollowers: GetFollowers<U>,
-): RenderFollowers => (
-  (editorialCommunityId) => (
-    pipe(
-      editorialCommunityId,
-      getFollowers,
-      T.map((followers) => followers.length),
-      T.map(renderFragment),
-      T.map(toHtmlFragment),
-    )
-  )
+export default <U>(getFollowers: GetFollowers<U>): RenderFollowers => flow(
+  getFollowers,
+  T.map((followers) => followers.length),
+  T.map(renderFragment),
+  T.map(toHtmlFragment),
 );
