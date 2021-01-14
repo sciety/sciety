@@ -133,7 +133,7 @@ export default (adapters: Adapters): Router => {
 
   router.get('/jobs/community-outreach-manager',
     identifyUser(adapters.logger),
-    pageHandler(flow(communityOutreachManagerPage(adapters), T.map(toEither))));
+    pageHandler(flow(communityOutreachManagerPage(adapters), TE.rightTask)));
 
   router.get('/robots.txt',
     robots());
