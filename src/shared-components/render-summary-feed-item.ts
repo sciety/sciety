@@ -30,30 +30,16 @@ type Article = {
 type RenderSummaryFeedItemSummary = (event: FeedEvent, actor: Actor) => T.Task<string>;
 
 const renderSummaryFeedItemSummary = (getArticle: GetArticle): RenderSummaryFeedItemSummary => {
-  type RenderEvent = (doi: Doi, actor: Actor) => T.Task<string>;
+  type RenderEvent = (doi: Doi, actor: Actor, action: string) => T.Task<string>;
 
-  const renderEditorialCommunityEndorsedArticle: RenderEvent = (doi, actor) => pipe(
+  const renderEvent: RenderEvent = (doi, actor, action) => pipe(
     doi,
     getArticle,
     T.map(flow(
       (result) => result.mapOr(toHtmlFragment('an article'), (article) => article.title),
       (title) => `
         <a href="${actor.url}" class="summary-feed-item__link">${actor.name}</a>
-        endorsed
-        <a href="/articles/${doi.value}" class="summary-feed-item__link">${title}</a>
-      `,
-      toHtmlFragment,
-    )),
-  );
-
-  const renderEditorialCommunityReviewedArticle: RenderEvent = (doi, actor) => pipe(
-    doi,
-    getArticle,
-    T.map(flow(
-      (result) => result.mapOr(toHtmlFragment('an article'), (article) => article.title),
-      (title) => `
-        <a href="${actor.url}" class="summary-feed-item__link">${actor.name}</a>
-        ${actor.name === 'preLights' ? 'highlighted' : 'reviewed'}
+        ${action}
         <a href="/articles/${doi.value}" class="summary-feed-item__link">${title}</a>
       `,
       toHtmlFragment,
@@ -62,8 +48,10 @@ const renderSummaryFeedItemSummary = (getArticle: GetArticle): RenderSummaryFeed
 
   return (event, actor) => {
     switch (event.type) {
-      case 'EditorialCommunityEndorsedArticle': return renderEditorialCommunityEndorsedArticle(event.articleId, actor);
-      case 'EditorialCommunityReviewedArticle': return renderEditorialCommunityReviewedArticle(event.articleId, actor);
+      case 'EditorialCommunityEndorsedArticle':
+        return renderEvent(event.articleId, actor, 'endorsed');
+      case 'EditorialCommunityReviewedArticle':
+        return renderEvent(event.articleId, actor, actor.name === 'preLights' ? 'highlighted' : 'reviewed');
     }
   };
 };
