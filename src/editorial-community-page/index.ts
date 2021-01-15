@@ -2,12 +2,12 @@ import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { pipe } from 'fp-ts/lib/function';
-import { Remarkable } from 'remarkable';
 import { Maybe } from 'true-myth';
 import { getActor } from './get-actor';
+import { getDescription } from './get-description';
 import createGetMostRecentEvents, { GetAllEvents } from './get-most-recent-events';
 import createProjectFollowerIds from './project-follower-ids';
-import createRenderDescription, { GetEditorialCommunityDescription, RenderDescription } from './render-description';
+import createRenderDescription from './render-description';
 import createRenderFeed, { RenderFeed } from './render-feed';
 import createRenderFollowToggle, { Follows } from './render-follow-toggle';
 import createRenderFollowers from './render-followers';
@@ -33,15 +33,6 @@ interface Ports {
   follows: Follows,
 }
 
-const buildRenderDescription = (ports: Ports): RenderDescription => {
-  const converter = new Remarkable({ html: true });
-  const getEditorialCommunityDescription: GetEditorialCommunityDescription = (editorialCommunity) => async () => {
-    const markdown = await ports.fetchStaticFile(`editorial-communities/${editorialCommunity.descriptionPath}`)();
-    return converter.render(markdown);
-  };
-  return createRenderDescription(getEditorialCommunityDescription);
-};
-
 const buildRenderFeed = (ports: Ports): RenderFeed => {
   const renderSummaryFeedItem = createRenderSummaryFeedItem(getActor(ports.getEditorialCommunity), ports.fetchArticle);
   return createRenderFeed(
@@ -61,7 +52,7 @@ type EditorialCommunityPage = (params: Params) => ReturnType<RenderPage>;
 export default (ports: Ports): EditorialCommunityPage => {
   const renderPage = createRenderPage(
     renderPageHeader,
-    buildRenderDescription(ports),
+    createRenderDescription(getDescription(ports.fetchStaticFile)),
     buildRenderFeed(ports),
     createRenderFollowers(createProjectFollowerIds(ports.getAllEvents)),
   );
