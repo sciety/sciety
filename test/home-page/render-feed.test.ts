@@ -12,7 +12,7 @@ describe('render-feed', (): void => {
       it('returns a list', async (): Promise<void> => {
         const dummyGetEvents: GetEvents<unknown> = () => T.of(['some-event']);
         const dummyIsFollowingSomething: IsFollowingSomething = () => T.of(true);
-        const dummyRenderSummaryFeedList: RenderSummaryFeedList<unknown> = async () => O.some(toHtmlFragment('someNiceList'));
+        const dummyRenderSummaryFeedList: RenderSummaryFeedList<unknown> = () => T.of(O.some(toHtmlFragment('someNiceList')));
         const renderFeed = createRenderFeed(
           dummyIsFollowingSomething,
           dummyGetEvents,
@@ -32,7 +32,7 @@ describe('render-feed', (): void => {
       it('returns a come back later text', async (): Promise<void> => {
         const dummyIsFollowingSomething: IsFollowingSomething = () => T.of(true);
         const dummyGetEvents: GetEvents<unknown> = () => T.of([]);
-        const stubRenderSummaryFeedList: RenderSummaryFeedList<unknown> = async () => O.none;
+        const stubRenderSummaryFeedList: RenderSummaryFeedList<unknown> = () => T.of(O.none);
         const renderFeed = createRenderFeed(
           dummyIsFollowingSomething,
           dummyGetEvents,

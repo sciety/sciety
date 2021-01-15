@@ -10,7 +10,7 @@ export type IsFollowingSomething = (userId: UserId) => T.Task<boolean>;
 
 export type GetEvents<E> = (userId: UserId) => T.Task<ReadonlyArray<E>>;
 
-type RenderSummaryFeedList<E> = (events: ReadonlyArray<E>) => Promise<O.Option<string>>;
+type RenderSummaryFeedList<E> = (events: ReadonlyArray<E>) => T.Task<O.Option<string>>;
 
 const welcomeMessage = async (): Promise<string> => `
   <p>Welcome to Sciety.</p>
@@ -59,7 +59,7 @@ export default <E>(
         return followSomething();
       }
       const events = await getEvents(u)();
-      return O.getOrElse(noEvaluationsYet)(await renderSummaryFeedList(events));
+      return O.getOrElse(noEvaluationsYet)(await renderSummaryFeedList(events)());
     };
 
     const calculateFeedContents = async (): Promise<string> => (

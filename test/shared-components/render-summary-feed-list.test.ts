@@ -10,7 +10,7 @@ describe('render-summary-feed-list', () => {
       const events = [
         {}, {}, {},
       ];
-      const rendered = await renderSummaryFeedList(() => T.of(toHtmlFragment('')))(events);
+      const rendered = await renderSummaryFeedList(() => T.of(toHtmlFragment('')))(events)();
 
       expect(rendered).toStrictEqual(O.some(expect.stringContaining('<ol class="summary-feed-list"')));
     });
@@ -18,7 +18,7 @@ describe('render-summary-feed-list', () => {
 
   describe('when there are no events', () => {
     it('returns nothing', async () => {
-      const rendered = await renderSummaryFeedList(shouldNotBeCalled)([]);
+      const rendered = await renderSummaryFeedList(shouldNotBeCalled)([])();
 
       expect(rendered).toBe(O.none);
     });

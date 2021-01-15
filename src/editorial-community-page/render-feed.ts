@@ -10,7 +10,7 @@ export type RenderFeed = (editorialCommunityId: EditorialCommunityId, userId: O.
 
 export type GetEvents<E> = (editorialCommunityId: EditorialCommunityId) => T.Task<ReadonlyArray<E>>;
 
-type RenderSummaryFeedList<E> = (events: ReadonlyArray<E>) => Promise<O.Option<string>>;
+type RenderSummaryFeedList<E> = (events: ReadonlyArray<E>) => T.Task<O.Option<string>>;
 
 const emptyFeed = `
   <p>
@@ -30,7 +30,7 @@ export default <E>(
         Feed
       </h2>
       ${await renderFollowToggle(userId, editorialCommunityId)()}
-      ${toHtmlFragment(O.getOrElse(() => emptyFeed)(await renderSummaryFeedList(events)))}
+      ${toHtmlFragment(O.getOrElse(() => emptyFeed)(await renderSummaryFeedList(events)()))}
     </section>
   `);
 };
