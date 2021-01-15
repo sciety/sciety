@@ -17,6 +17,13 @@ export type GetArticleDetails<E> = (doi: Doi) => T.Task<Result<ArticleDetails, E
 
 export type RenderPageHeader<E> = (doi: Doi, userId: O.Option<UserId>) => T.Task<Result<HtmlFragment, E>>;
 
+const templateSavedLink = (userId: UserId): string => `
+  <a class="saved-to-list" href="/users/${userId}">
+    <img src="/static/images/playlist_add_check-24px.svg" alt="" class="saved-to-list__icon">
+    Saved to list
+  </a>
+`;
+
 const renderSavedLink = (doi: Doi, userId: O.Option<UserId>): string => {
   const savedDois = ['10.1101/2020.07.04.187583', '10.1101/2020.09.09.289785'];
 
@@ -24,7 +31,7 @@ const renderSavedLink = (doi: Doi, userId: O.Option<UserId>): string => {
     userId,
     O.filter((u) => u === '1295307136415735808'),
     O.filter(() => savedDois.includes(doi.value)),
-    O.map((u) => `<a class="saved-to-list" href="/users/${u}"><img src="/static/images/playlist_add_check-24px.svg" alt="">Saved to list</a>`),
+    O.map(templateSavedLink),
     O.fold(
       constant(''),
       identity,
