@@ -1,6 +1,6 @@
 import * as T from 'fp-ts/lib/Task';
 import { Result } from 'true-myth';
-import createRenderSummaryFeedItem, { GetActor, GetArticle } from '../../src/shared-components/render-summary-feed-item';
+import renderSummaryFeedItem, { GetActor, GetArticle } from '../../src/shared-components/render-summary-feed-item';
 import Doi from '../../src/types/doi';
 import { EditorialCommunityEndorsedArticleEvent, EditorialCommunityReviewedArticleEvent } from '../../src/types/domain-events';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
@@ -30,8 +30,7 @@ describe('render-summary-feed-item', (): void => {
         const getArticle: GetArticle = () => T.of(Result.ok({
           title: articleTitle,
         }));
-        const renderSummaryFeedItem = createRenderSummaryFeedItem(dummyGetActor, getArticle);
-        rendered = await renderSummaryFeedItem(event)();
+        rendered = await renderSummaryFeedItem(dummyGetActor, getArticle)(event)();
       });
 
       it('displays the article title', async () => {
@@ -54,8 +53,7 @@ describe('render-summary-feed-item', (): void => {
     describe('and the article information cannot be retrieved', () => {
       beforeEach(async () => {
         const getArticle: GetArticle = () => T.of(Result.err('something-bad'));
-        const renderSummaryFeedItem = createRenderSummaryFeedItem(dummyGetActor, getArticle);
-        rendered = await renderSummaryFeedItem(event)();
+        rendered = await renderSummaryFeedItem(dummyGetActor, getArticle)(event)();
       });
 
       it('displays a generic article title', async () => {
@@ -91,8 +89,7 @@ describe('render-summary-feed-item', (): void => {
         const getArticle: GetArticle = () => T.of(Result.ok({
           title: articleTitle,
         }));
-        const renderSummaryFeedItem = createRenderSummaryFeedItem(dummyGetActor, getArticle);
-        rendered = await renderSummaryFeedItem(event)();
+        rendered = await renderSummaryFeedItem(dummyGetActor, getArticle)(event)();
       });
 
       it('displays the article title', async () => {
@@ -115,8 +112,7 @@ describe('render-summary-feed-item', (): void => {
     describe('and the article information cannot be retrieved', () => {
       beforeEach(async () => {
         const getArticle: GetArticle = () => T.of(Result.err('something-bad'));
-        const renderSummaryFeedItem = createRenderSummaryFeedItem(dummyGetActor, getArticle);
-        rendered = await renderSummaryFeedItem(event)();
+        rendered = await renderSummaryFeedItem(dummyGetActor, getArticle)(event)();
       });
 
       it('displays a generic article title', async () => {
