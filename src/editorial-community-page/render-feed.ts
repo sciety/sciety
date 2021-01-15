@@ -8,7 +8,7 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
 export type RenderFeed = (editorialCommunityId: EditorialCommunityId, userId: O.Option<UserId>)
-=> Promise<HtmlFragment>;
+=> T.Task<HtmlFragment>;
 
 export type GetEvents<E> = (editorialCommunityId: EditorialCommunityId) => T.Task<ReadonlyArray<E>>;
 
@@ -39,7 +39,7 @@ export default <E>(
   getEvents: GetEvents<E>,
   renderSummaryFeedList: RenderSummaryFeedList<E>,
   renderFollowToggle: RenderFollowToggle,
-): RenderFeed => async (editorialCommunityId, userId) => pipe(
+): RenderFeed => (editorialCommunityId, userId) => pipe(
   {
     button: renderFollowToggle(userId, editorialCommunityId),
     feed: pipe(
@@ -55,4 +55,4 @@ export default <E>(
     renderAsSection,
     toHtmlFragment,
   )),
-)();
+);

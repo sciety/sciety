@@ -18,7 +18,7 @@ describe('render feed', () => {
 
       const renderFeed = createRenderFeed(stubGetEvents, renderSummaryFeedList, stubRenderFollowToggle);
 
-      const rendered = await renderFeed(anEditorialCommunityId, aUserId);
+      const rendered = await renderFeed(anEditorialCommunityId, aUserId)();
 
       expect(rendered).toContain('a list');
     });
@@ -30,7 +30,7 @@ describe('render feed', () => {
 
       const renderFeed = createRenderFeed(stubGetEvents, renderSummaryFeedList, stubRenderFollowToggle);
 
-      const rendered = await renderFeed(anEditorialCommunityId, aUserId);
+      const rendered = await renderFeed(anEditorialCommunityId, aUserId)();
 
       expect(rendered).toContain('community hasn’t evaluated');
     });

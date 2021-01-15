@@ -9,7 +9,7 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { RenderPageError } from '../types/render-page-error';
 import { UserId } from '../types/user-id';
 
-type Component = (editorialCommunityId: EditorialCommunityId, userId: O.Option<UserId>) => Promise<string>;
+type Component = (editorialCommunityId: EditorialCommunityId, userId: O.Option<UserId>) => T.Task<string>;
 
 export type RenderPage = (
   editorialCommunity: EditorialCommunity,
@@ -42,7 +42,7 @@ export default (
             </div>
             <div class="editorial-community-page-side-bar">
               ${await renderFollowers(editorialCommunity.id)()}
-              ${await renderFeed(editorialCommunity.id, userId)}
+              ${await renderFeed(editorialCommunity.id, userId)()}
             </div>
           </div>
         `),
