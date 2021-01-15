@@ -43,13 +43,11 @@ const buildRenderDescription = (ports: Ports): RenderDescription => {
 };
 
 const buildRenderFeed = (ports: Ports): RenderFeed => {
-  const getEventsAdapter = createGetMostRecentEvents(ports.getAllEvents, 20);
   const renderSummaryFeedItem = createRenderSummaryFeedItem(getActor(ports.getEditorialCommunity), ports.fetchArticle);
-  const renderFollowToggle = createRenderFollowToggle(ports.follows);
   return createRenderFeed(
-    getEventsAdapter,
+    createGetMostRecentEvents(ports.getAllEvents, 20),
     createRenderSummaryFeedList(renderSummaryFeedItem),
-    renderFollowToggle,
+    createRenderFollowToggle(ports.follows),
   );
 };
 
@@ -61,15 +59,11 @@ export interface Params {
 type EditorialCommunityPage = (params: Params) => ReturnType<RenderPage>;
 
 export default (ports: Ports): EditorialCommunityPage => {
-  const renderDescription = buildRenderDescription(ports);
-  const renderFeed = buildRenderFeed(ports);
-  const renderFollowers = createRenderFollowers(createProjectFollowerIds(ports.getAllEvents));
-
   const renderPage = createRenderPage(
     renderPageHeader,
-    renderDescription,
-    renderFeed,
-    renderFollowers,
+    buildRenderDescription(ports),
+    buildRenderFeed(ports),
+    createRenderFollowers(createProjectFollowerIds(ports.getAllEvents)),
   );
   return (params) => {
     const editorialCommunityId = new EditorialCommunityId(params.id ?? '');
