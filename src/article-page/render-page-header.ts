@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
-import { constant, pipe } from 'fp-ts/lib/function';
+import { constant, identity, pipe } from 'fp-ts/lib/function';
 import { Result } from 'true-myth';
 import { renderTweetThis } from './render-tweet-this';
 import Doi from '../types/doi';
@@ -24,7 +24,11 @@ const renderSavedLink = (doi: Doi, userId: O.Option<UserId>): string => {
     userId,
     O.filter((u) => u === '1295307136415735808'),
     O.filter(() => savedDois.includes(doi.value)),
-    O.fold(constant(''), constant('Saved to list')),
+    O.map((u) => `<a href="/users/${u}">Saved to list</a>`),
+    O.fold(
+      constant(''),
+      identity,
+    ),
   );
 };
 
