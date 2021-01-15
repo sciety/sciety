@@ -29,7 +29,7 @@ type Article = {
 
 type RenderSummaryFeedItemSummary = (event: FeedEvent, actor: Actor) => T.Task<string>;
 
-const createRenderSummaryFeedItemSummary = (getArticle: GetArticle): RenderSummaryFeedItemSummary => {
+const renderSummaryFeedItemSummary = (getArticle: GetArticle): RenderSummaryFeedItemSummary => {
   type RenderEvent<E extends FeedEvent> = (event: E, actor: Actor) => T.Task<string>;
 
   const getTitle = (articleId: Doi): T.Task<HtmlFragment> => pipe(
@@ -85,21 +85,17 @@ export type GetArticle = (id: Doi) => T.Task<Result<Article, unknown>>;
 export default (
   getActor: GetActor,
   getArticle: GetArticle,
-): RenderSummaryFeedItem => {
-  const renderSummaryFeedItemSummary = createRenderSummaryFeedItemSummary(getArticle);
-
-  return async (event) => {
-    const actor: Actor = await getActor(event.editorialCommunityId)();
-    return toHtmlFragment(`
-      <div class="summary-feed-item">
-        <img src="${actor.imageUrl}" alt="" class="summary-feed-item__avatar">
-        <div>
-          ${templateDate(event.date, 'summary-feed-item__date')}
-          <div class="summary-feed-item__title">
-            ${await renderSummaryFeedItemSummary(event, actor)()}
-          </div>
+): RenderSummaryFeedItem => async (event) => {
+  const actor: Actor = await getActor(event.editorialCommunityId)();
+  return toHtmlFragment(`
+    <div class="summary-feed-item">
+      <img src="${actor.imageUrl}" alt="" class="summary-feed-item__avatar">
+      <div>
+        ${templateDate(event.date, 'summary-feed-item__date')}
+        <div class="summary-feed-item__title">
+          ${await renderSummaryFeedItemSummary(getArticle)(event, actor)()}
         </div>
       </div>
-    `);
-  };
+    </div>
+  `);
 };
