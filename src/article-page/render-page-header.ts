@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
-import { pipe } from 'fp-ts/lib/function';
+import { constant, pipe } from 'fp-ts/lib/function';
 import { Result } from 'true-myth';
 import { renderTweetThis } from './render-tweet-this';
 import Doi from '../types/doi';
@@ -18,10 +18,14 @@ export type GetArticleDetails<E> = (doi: Doi) => T.Task<Result<ArticleDetails, E
 export type RenderPageHeader<E> = (doi: Doi, userId: O.Option<UserId>) => T.Task<Result<HtmlFragment, E>>;
 
 const renderSavedLink = (doi: Doi, userId: O.Option<UserId>): string => {
-  if (doi.value === '17' && userId === O.some('1295307136415735808')) {
-    return 'Saved to list';
-  }
-  return '';
+  const savedDois = ['10.1101/2020.07.04.187583', '10.1101/2020.09.09.289785'];
+
+  return pipe(
+    userId,
+    O.filter((u) => u === '1295307136415735808'),
+    O.filter(() => savedDois.includes(doi.value)),
+    O.fold(constant(''), constant('Saved to list')),
+  );
 };
 
 // TODO: inject renderTweetThis and similar
