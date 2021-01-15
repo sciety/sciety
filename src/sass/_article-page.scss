@@ -62,3 +62,8 @@
   height: functions.px-to-rem(24px);
   border-radius: 5px;
 }
+
+.saved-to-list {
+  font-family: settings.$font-secondary;
+  font-size: functions.px-to-rem(14px);
+}
