@@ -12,13 +12,9 @@ const templateSavedLink = (userId: UserId): string => `
   </a>
 `;
 
-type HasUserSavedArticle = (doi: Doi, userId: UserId) => boolean;
-const hasUserSavedArticle: HasUserSavedArticle = (doi, userId) => {
-  const savedDois = ['10.1101/2020.07.04.187583', '10.1101/2020.09.09.289785'];
-  return userId === '1295307136415735808' && savedDois.includes(doi.value);
-};
+export type HasUserSavedArticle = (doi: Doi, userId: UserId) => boolean;
 
-export const renderSavedLink: RenderSavedLink = (doi, userId) => pipe(
+export const renderSavedLink = (hasUserSavedArticle: HasUserSavedArticle): RenderSavedLink => (doi, userId) => pipe(
   userId,
   O.filter((u) => hasUserSavedArticle(doi, u)),
   O.map(templateSavedLink),
