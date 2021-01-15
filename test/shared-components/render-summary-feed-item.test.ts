@@ -31,7 +31,7 @@ describe('render-summary-feed-item', (): void => {
           title: articleTitle,
         }));
         const renderSummaryFeedItem = createRenderSummaryFeedItem(dummyGetActor, getArticle);
-        rendered = await renderSummaryFeedItem(event);
+        rendered = await renderSummaryFeedItem(event)();
       });
 
       it('displays the article title', async () => {
@@ -55,7 +55,7 @@ describe('render-summary-feed-item', (): void => {
       beforeEach(async () => {
         const getArticle: GetArticle = () => T.of(Result.err('something-bad'));
         const renderSummaryFeedItem = createRenderSummaryFeedItem(dummyGetActor, getArticle);
-        rendered = await renderSummaryFeedItem(event);
+        rendered = await renderSummaryFeedItem(event)();
       });
 
       it('displays a generic article title', async () => {
@@ -92,7 +92,7 @@ describe('render-summary-feed-item', (): void => {
           title: articleTitle,
         }));
         const renderSummaryFeedItem = createRenderSummaryFeedItem(dummyGetActor, getArticle);
-        rendered = await renderSummaryFeedItem(event);
+        rendered = await renderSummaryFeedItem(event)();
       });
 
       it('displays the article title', async () => {
@@ -116,7 +116,7 @@ describe('render-summary-feed-item', (): void => {
       beforeEach(async () => {
         const getArticle: GetArticle = () => T.of(Result.err('something-bad'));
         const renderSummaryFeedItem = createRenderSummaryFeedItem(dummyGetActor, getArticle);
-        rendered = await renderSummaryFeedItem(event);
+        rendered = await renderSummaryFeedItem(event)();
       });
 
       it('displays a generic article title', async () => {

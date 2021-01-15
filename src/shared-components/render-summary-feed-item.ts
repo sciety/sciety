@@ -17,7 +17,7 @@ type FeedEvent =
   EditorialCommunityEndorsedArticleEvent |
   EditorialCommunityReviewedArticleEvent;
 
-type RenderSummaryFeedItem = (event: FeedEvent) => Promise<HtmlFragment>;
+type RenderSummaryFeedItem = (event: FeedEvent) => T.Task<HtmlFragment>;
 
 type Actor = {
   url: string;
@@ -73,10 +73,7 @@ export type GetActor = (id: EditorialCommunityId) => T.Task<Actor>;
 
 export type GetArticle = (id: Doi) => T.Task<Result<Article, unknown>>;
 
-export default (
-  getActor: GetActor,
-  getArticle: GetArticle,
-): RenderSummaryFeedItem => async (event) => pipe(
+export default (getActor: GetActor, getArticle: GetArticle): RenderSummaryFeedItem => (event) => pipe(
   event.editorialCommunityId,
   getActor,
   T.chain(flow(
@@ -89,4 +86,4 @@ export default (
   )),
   T.map(render),
   T.map(toHtmlFragment),
-)();
+);
