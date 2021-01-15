@@ -15,6 +15,7 @@ import createRenderPage, { GetArticleDetails as GetArticleDetailsForPage, Page, 
 import createRenderPageHeader, { GetArticleDetails as GetArticleDetailsForHeader } from './render-page-header';
 import createRenderReviewFeedItem from './render-review-feed-item';
 import createRenderReviewResponses from './render-review-responses';
+import { renderSavedLink } from './render-saved-link';
 import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { toHtmlFragment } from '../types/html-fragment';
@@ -64,7 +65,7 @@ const getUserId = (user: O.Option<User>): O.Option<UserId> => pipe(
 type ArticlePage = (params: Params) => ReturnType<RenderPage>;
 
 export default (ports: Ports): ArticlePage => {
-  const renderPageHeader = createRenderPageHeader(ports.fetchArticle);
+  const renderPageHeader = createRenderPageHeader(ports.fetchArticle, renderSavedLink);
   const renderAbstract = createRenderArticleAbstract(
     flow(ports.fetchArticle, T.map((result) => result.map((article) => article.abstract))),
   );
