@@ -4,6 +4,7 @@ import * as TE from 'fp-ts/lib/TaskEither';
 import { pipe } from 'fp-ts/lib/function';
 import { Remarkable } from 'remarkable';
 import { Maybe } from 'true-myth';
+import { getActor } from './get-actor';
 import createGetMostRecentEvents, { GetAllEvents } from './get-most-recent-events';
 import createProjectFollowerIds from './project-follower-ids';
 import createRenderDescription, { GetEditorialCommunityDescription, RenderDescription } from './render-description';
@@ -12,7 +13,7 @@ import createRenderFollowToggle, { Follows } from './render-follow-toggle';
 import createRenderFollowers from './render-followers';
 import createRenderPage, { RenderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
-import createRenderSummaryFeedItem, { GetActor } from '../shared-components/render-summary-feed-item';
+import createRenderSummaryFeedItem from '../shared-components/render-summary-feed-item';
 import createRenderSummaryFeedList from '../shared-components/render-summary-feed-list';
 import { EditorialCommunity } from '../types/editorial-community';
 import EditorialCommunityId from '../types/editorial-community-id';
@@ -42,16 +43,8 @@ const buildRenderDescription = (ports: Ports): RenderDescription => {
 };
 
 const buildRenderFeed = (ports: Ports): RenderFeed => {
-  const getActorAdapter: GetActor = (id) => async () => {
-    const editorialCommunity = (await ports.getEditorialCommunity(id)()).unsafelyUnwrap();
-    return {
-      name: editorialCommunity.name,
-      imageUrl: editorialCommunity.avatar.toString(),
-      url: `/editorial-communities/${id.value}`,
-    };
-  };
   const getEventsAdapter = createGetMostRecentEvents(ports.getAllEvents, 20);
-  const renderSummaryFeedItem = createRenderSummaryFeedItem(getActorAdapter, ports.fetchArticle);
+  const renderSummaryFeedItem = createRenderSummaryFeedItem(getActor(ports.getEditorialCommunity), ports.fetchArticle);
   const renderFollowToggle = createRenderFollowToggle(ports.follows);
   return createRenderFeed(
     getEventsAdapter,
