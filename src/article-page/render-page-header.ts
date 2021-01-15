@@ -24,23 +24,10 @@ const templateSavedLink = (userId: UserId): string => `
   </a>
 `;
 
-const renderSavedLink = (doi: Doi, userId: O.Option<UserId>): string => {
-  const savedDois = ['10.1101/2020.07.04.187583', '10.1101/2020.09.09.289785'];
-
-  return pipe(
-    userId,
-    O.filter((u) => u === '1295307136415735808'),
-    O.filter(() => savedDois.includes(doi.value)),
-    O.map(templateSavedLink),
-    O.fold(
-      constant(''),
-      identity,
-    ),
-  );
-};
+type RenderSavedLink = (doi: Doi, userId: O.Option<UserId>) => string;
 
 // TODO: inject renderTweetThis and similar
-const render = (doi: Doi, userId: O.Option<UserId>) => (details: ArticleDetails): HtmlFragment => toHtmlFragment(`
+const render = (renderSavedLink: RenderSavedLink) => (doi: Doi, userId: O.Option<UserId>) => (details: ArticleDetails): HtmlFragment => toHtmlFragment(`
   <header class="page-header page-header--article">
     <h1>${details.title}</h1>
     <ol aria-label="Authors of this article" class="article-author-list" role="list">
@@ -60,10 +47,25 @@ const render = (doi: Doi, userId: O.Option<UserId>) => (details: ArticleDetails)
 
 export default <E>(
   getArticleDetails: GetArticleDetails<E>,
-): RenderPageHeader<E> => (doi, userId) => (
-  pipe(
+): RenderPageHeader<E> => (doi, userId) => {
+  const renderSavedLink: RenderSavedLink = () => {
+    const savedDois = ['10.1101/2020.07.04.187583', '10.1101/2020.09.09.289785'];
+
+    return pipe(
+      userId,
+      O.filter((u) => u === '1295307136415735808'),
+      O.filter(() => savedDois.includes(doi.value)),
+      O.map(templateSavedLink),
+      O.fold(
+        constant(''),
+        identity,
+      ),
+    );
+  };
+
+  return pipe(
     doi,
     getArticleDetails,
-    T.map((article) => article.map(render(doi, userId))),
-  )
-);
+    T.map((article) => article.map(render(renderSavedLink)(doi, userId))),
+  );
+};
