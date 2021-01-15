@@ -1,5 +1,7 @@
+import * as E from 'fp-ts/lib/Either';
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
+import * as TE from 'fp-ts/lib/TaskEither';
 import { pipe } from 'fp-ts/lib/function';
 import { Result } from 'true-myth';
 import { renderTweetThis } from './render-tweet-this';
@@ -38,11 +40,16 @@ const render = (renderSavedLink: RenderSavedLink) => (doi: Doi, userId: O.Option
   </header>
 `);
 
-export default <E>(
-  getArticleDetails: GetArticleDetails<E>,
+export default <Err>(
+  getArticleDetails: GetArticleDetails<Err>,
   renderSavedLink: RenderSavedLink,
-): RenderPageHeader<E> => (doi, userId) => pipe(
+): RenderPageHeader<Err> => (doi, userId) => pipe(
   doi,
   getArticleDetails,
-  T.map((article) => article.map(render(renderSavedLink)(doi, userId))),
+  T.map((result) => result.mapOrElse((error) => E.left(error), (success) => E.right(success))),
+  TE.map(render(renderSavedLink)(doi, userId)),
+  T.map(E.fold(
+    (error) => Result.err<HtmlFragment, Err>(error),
+    (success) => Result.ok<HtmlFragment, Err>(success),
+  )),
 );
