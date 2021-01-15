@@ -29,8 +29,8 @@ type Article = {
 
 type RenderSummaryFeedItemSummary = (event: FeedEvent, actor: Actor) => T.Task<string>;
 
-const createRenderSummaryFeedItemSummary = (getArticle: GetArticle): RenderSummaryFeedItemSummary => {
-  type RenderEvent<E extends FeedEvent> = (event: E, actor: Actor) => T.Task<string>;
+const renderSummaryFeedItemSummary = (getArticle: GetArticle): RenderSummaryFeedItemSummary => {
+  type RenderEvent = (doi: Doi, actor: Actor) => T.Task<string>;
 
   const getTitle = (articleId: Doi): T.Task<HtmlFragment> => pipe(
     articleId,
@@ -38,33 +38,27 @@ const createRenderSummaryFeedItemSummary = (getArticle: GetArticle): RenderSumma
     T.map((result) => result.mapOr(toHtmlFragment('an article'), (article) => article.title)),
   );
 
-  const renderEditorialCommunityEndorsedArticle: RenderEvent<EditorialCommunityEndorsedArticleEvent> = (
-    event,
-    actor,
-  ) => pipe(
-    event.articleId,
+  const renderEditorialCommunityEndorsedArticle: RenderEvent = (doi, actor) => pipe(
+    doi,
     getTitle,
     T.map(flow(
       (title) => `
         <a href="${actor.url}" class="summary-feed-item__link">${actor.name}</a>
         endorsed
-        <a href="/articles/${event.articleId.value}" class="summary-feed-item__link">${title}</a>
+        <a href="/articles/${doi.value}" class="summary-feed-item__link">${title}</a>
       `,
       toHtmlFragment,
     )),
   );
 
-  const renderEditorialCommunityReviewedArticle: RenderEvent<EditorialCommunityReviewedArticleEvent> = (
-    event,
-    actor,
-  ) => pipe(
-    event.articleId,
+  const renderEditorialCommunityReviewedArticle: RenderEvent = (doi, actor) => pipe(
+    doi,
     getTitle,
     T.map(flow(
       (title) => `
         <a href="${actor.url}" class="summary-feed-item__link">${actor.name}</a>
         ${actor.name === 'preLights' ? 'highlighted' : 'reviewed'}
-        <a href="/articles/${event.articleId.value}" class="summary-feed-item__link">${title}</a>
+        <a href="/articles/${doi.value}" class="summary-feed-item__link">${title}</a>
       `,
       toHtmlFragment,
     )),
@@ -72,8 +66,8 @@ const createRenderSummaryFeedItemSummary = (getArticle: GetArticle): RenderSumma
 
   return (event, actor) => {
     switch (event.type) {
-      case 'EditorialCommunityEndorsedArticle': return renderEditorialCommunityEndorsedArticle(event, actor);
-      case 'EditorialCommunityReviewedArticle': return renderEditorialCommunityReviewedArticle(event, actor);
+      case 'EditorialCommunityEndorsedArticle': return renderEditorialCommunityEndorsedArticle(event.articleId, actor);
+      case 'EditorialCommunityReviewedArticle': return renderEditorialCommunityReviewedArticle(event.articleId, actor);
     }
   };
 };
@@ -85,21 +79,17 @@ export type GetArticle = (id: Doi) => T.Task<Result<Article, unknown>>;
 export default (
   getActor: GetActor,
   getArticle: GetArticle,
-): RenderSummaryFeedItem => {
-  const renderSummaryFeedItemSummary = createRenderSummaryFeedItemSummary(getArticle);
-
-  return async (event) => {
-    const actor: Actor = await getActor(event.editorialCommunityId)();
-    return toHtmlFragment(`
-      <div class="summary-feed-item">
-        <img src="${actor.imageUrl}" alt="" class="summary-feed-item__avatar">
-        <div>
-          ${templateDate(event.date, 'summary-feed-item__date')}
-          <div class="summary-feed-item__title">
-            ${await renderSummaryFeedItemSummary(event, actor)()}
-          </div>
+): RenderSummaryFeedItem => async (event) => {
+  const actor: Actor = await getActor(event.editorialCommunityId)();
+  return toHtmlFragment(`
+    <div class="summary-feed-item">
+      <img src="${actor.imageUrl}" alt="" class="summary-feed-item__avatar">
+      <div>
+        ${templateDate(event.date, 'summary-feed-item__date')}
+        <div class="summary-feed-item__title">
+          ${await renderSummaryFeedItemSummary(getArticle)(event, actor)()}
         </div>
       </div>
-    `);
-  };
+    </div>
+  `);
 };
