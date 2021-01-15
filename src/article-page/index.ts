@@ -6,6 +6,7 @@ import { Maybe, Result } from 'true-myth';
 import ensureBiorxivDoi from './ensure-biorxiv-doi';
 import { getArticleFeedEvents } from './get-article-feed-events';
 import { GetReview } from './get-feed-events-content';
+import { projectHasUserSavedArticle } from './project-has-user-saved-article';
 import createProjectReviewResponseCounts, { GetEvents as GetEventForReviewResponseCounts } from './project-review-response-counts';
 import createProjectUserReviewResponse, { GetEvents as GetEventForUserReviewResponse } from './project-user-review-response';
 import createRenderArticleAbstract from './render-article-abstract';
@@ -15,7 +16,7 @@ import createRenderPage, { GetArticleDetails as GetArticleDetailsForPage, Page, 
 import createRenderPageHeader, { GetArticleDetails as GetArticleDetailsForHeader } from './render-page-header';
 import createRenderReviewFeedItem from './render-review-feed-item';
 import createRenderReviewResponses from './render-review-responses';
-import { HasUserSavedArticle, renderSavedLink } from './render-saved-link';
+import { renderSavedLink } from './render-saved-link';
 import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { toHtmlFragment } from '../types/html-fragment';
@@ -64,13 +65,11 @@ const getUserId = (user: O.Option<User>): O.Option<UserId> => pipe(
 
 type ArticlePage = (params: Params) => ReturnType<RenderPage>;
 
-const hasUserSavedArticle: HasUserSavedArticle = (doi, userId) => {
-  const savedDois = ['10.1101/2020.07.04.187583', '10.1101/2020.09.09.289785'];
-  return userId === '1295307136415735808' && savedDois.includes(doi.value);
-};
-
 export default (ports: Ports): ArticlePage => {
-  const renderPageHeader = createRenderPageHeader(ports.fetchArticle, renderSavedLink(hasUserSavedArticle));
+  const renderPageHeader = createRenderPageHeader(
+    ports.fetchArticle,
+    renderSavedLink(projectHasUserSavedArticle),
+  );
   const renderAbstract = createRenderArticleAbstract(
     flow(ports.fetchArticle, T.map((result) => result.map((article) => article.abstract))),
   );
