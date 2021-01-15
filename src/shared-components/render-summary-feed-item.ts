@@ -32,16 +32,11 @@ type RenderSummaryFeedItemSummary = (event: FeedEvent, actor: Actor) => T.Task<s
 const renderSummaryFeedItemSummary = (getArticle: GetArticle): RenderSummaryFeedItemSummary => {
   type RenderEvent = (doi: Doi, actor: Actor) => T.Task<string>;
 
-  const getTitle = (articleId: Doi): T.Task<HtmlFragment> => pipe(
-    articleId,
-    getArticle,
-    T.map((result) => result.mapOr(toHtmlFragment('an article'), (article) => article.title)),
-  );
-
   const renderEditorialCommunityEndorsedArticle: RenderEvent = (doi, actor) => pipe(
     doi,
-    getTitle,
+    getArticle,
     T.map(flow(
+      (result) => result.mapOr(toHtmlFragment('an article'), (article) => article.title),
       (title) => `
         <a href="${actor.url}" class="summary-feed-item__link">${actor.name}</a>
         endorsed
@@ -53,8 +48,9 @@ const renderSummaryFeedItemSummary = (getArticle: GetArticle): RenderSummaryFeed
 
   const renderEditorialCommunityReviewedArticle: RenderEvent = (doi, actor) => pipe(
     doi,
-    getTitle,
+    getArticle,
     T.map(flow(
+      (result) => result.mapOr(toHtmlFragment('an article'), (article) => article.title),
       (title) => `
         <a href="${actor.url}" class="summary-feed-item__link">${actor.name}</a>
         ${actor.name === 'preLights' ? 'highlighted' : 'reviewed'}
