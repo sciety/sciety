@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/lib/Either';
 import * as O from 'fp-ts/lib/Option';
 import buildRenderPage, { Params } from '../../src/editorial-community-page';
 import createServer from '../http/server';
@@ -10,7 +11,7 @@ describe('create render page', (): void => {
       const params: Params = { id: 'no-such-community', user: O.none };
       const result = await renderPage(params)();
 
-      expect(result.unsafelyUnwrapErr().type).toStrictEqual('not-found');
+      expect(result).toStrictEqual(E.left(expect.objectContaining({ type: 'not-found' })));
     });
   });
 });

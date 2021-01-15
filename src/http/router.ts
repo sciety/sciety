@@ -75,7 +75,7 @@ export default (adapters: Adapters): Router => {
 
   router.get('/editorial-communities/:id',
     identifyUser(adapters.logger),
-    pageHandler(flow(editorialCommunityPage(adapters), T.map(toEither))));
+    pageHandler(editorialCommunityPage(adapters)));
 
   router.post('/follow',
     identifyUser(adapters.logger),
