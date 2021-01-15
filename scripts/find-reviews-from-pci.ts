@@ -29,10 +29,19 @@ type Recommendation = {
   reviewDoi: string,
 };
 
+const fetchPage = async (url: string): Promise<{ data: string }> => {
+  try {
+    return axios.get<string>(url);
+  } catch (e: unknown) {
+    process.stderr.write(`Could not fetch ${url}\n`);
+    throw e;
+  }
+};
+
 const findRecommendations = async (community: PciCommunity): Promise<Array<Recommendation>> => {
   const result = [];
 
-  const { data: feed } = await axios.get(`https://${community.prefix}.peercommunityin.org/public/rss4bioRxiv`);
+  const { data: feed } = await fetchPage(`https://${community.prefix}.peercommunityin.org/public/rss4bioRxiv`);
   const doc = parser.parseFromString(feed, 'text/xml');
 
   for (const link of Array.from(doc.getElementsByTagName('link'))) {
@@ -43,7 +52,7 @@ const findRecommendations = async (community: PciCommunity): Promise<Array<Recom
     const [, articleDoi] = biorxivDoiRegex.exec(articleDoiString) ?? [];
 
     if (articleDoi) {
-      const { data: html } = await axios.get<string>(url?.textContent ?? '');
+      const { data: html } = await fetchPage(url?.textContent ?? '');
       const { document } = new JSDOM(html).window;
       const source = document.querySelector('.pci-recomOfSource')?.textContent;
       if (!source) {
