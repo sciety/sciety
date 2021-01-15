@@ -44,8 +44,10 @@ const render = (doi: Doi, userId: O.Option<UserId>) => (details: ArticleDetails)
         <a href="https://doi.org/${doi.value}">https://doi.org/${doi.value}</a>
       </li>
     </ul>
-    ${renderTweetThis(doi)}
-    ${renderSavedLink(doi, userId)}
+    <div class="article-actions">
+      ${renderTweetThis(doi)}
+      ${renderSavedLink(doi, userId)}
+    </div>
   </header>
 `);
 

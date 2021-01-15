@@ -41,15 +41,22 @@
   margin-bottom: #{baseline.increments(6)};
 }
 
+.article-actions {
+  display: flex;
+  align-items: center;
+}
+
 .tweet-button {
   @include button.basics();
   font-family: settings.$font-secondary;
   font-size: functions.px-to-rem(14px);
+  line-height: functions.px-to-rem(24px);
   background-color: settings.$colour-teal;
   color: settings.$colour-white;
   display: inline-flex;
   align-items: center;
   padding-right: functions.px-to-rem(5px);
+  margin-right: 1em;
 
   &:hover {
     background-color: settings.$colour-ui-default;
@@ -66,4 +73,5 @@
 .saved-to-list {
   font-family: settings.$font-secondary;
   font-size: functions.px-to-rem(14px);
+  line-height: functions.px-to-rem(24px);
 }
