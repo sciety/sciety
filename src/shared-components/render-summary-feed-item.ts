@@ -1,3 +1,4 @@
+import { sequenceS } from 'fp-ts/lib/Apply';
 import * as T from 'fp-ts/lib/Task';
 import { flow, pipe } from 'fp-ts/lib/function';
 import { Result } from 'true-myth';
@@ -36,7 +37,7 @@ const verb = (event: FeedEvent, actor: Actor): string => (
   isEditorialCommunityEndorsedArticleEvent(event) ? 'endorsed' : reviewedBy(actor)
 );
 
-const renderSummaryFeedItemSummary = (getArticle: GetArticle, event: FeedEvent, actor: Actor): T.Task<string> => pipe(
+const renderItem = (getArticle: GetArticle, event: FeedEvent, actor: Actor): T.Task<HtmlFragment> => pipe(
   event.articleId,
   getArticle,
   T.map(flow(
@@ -50,6 +51,24 @@ const renderSummaryFeedItemSummary = (getArticle: GetArticle, event: FeedEvent, 
   )),
 );
 
+type ViewModel = {
+  avatar: string,
+  date: Date,
+  item: HtmlFragment;
+};
+
+const render = (viewModel: ViewModel): string => `
+  <div class="summary-feed-item">
+    <img src="${viewModel.avatar}" alt="" class="summary-feed-item__avatar">
+    <div>
+      ${templateDate(viewModel.date, 'summary-feed-item__date')}
+      <div class="summary-feed-item__title">
+        ${viewModel.item}
+      </div>
+    </div>
+  </div>
+`;
+
 export type GetActor = (id: EditorialCommunityId) => T.Task<Actor>;
 
 export type GetArticle = (id: Doi) => T.Task<Result<Article, unknown>>;
@@ -57,17 +76,17 @@ export type GetArticle = (id: Doi) => T.Task<Result<Article, unknown>>;
 export default (
   getActor: GetActor,
   getArticle: GetArticle,
-): RenderSummaryFeedItem => async (event) => {
-  const actor: Actor = await getActor(event.editorialCommunityId)();
-  return toHtmlFragment(`
-    <div class="summary-feed-item">
-      <img src="${actor.imageUrl}" alt="" class="summary-feed-item__avatar">
-      <div>
-        ${templateDate(event.date, 'summary-feed-item__date')}
-        <div class="summary-feed-item__title">
-          ${await renderSummaryFeedItemSummary(getArticle, event, actor)()}
-        </div>
-      </div>
-    </div>
-  `);
-};
+): RenderSummaryFeedItem => async (event) => pipe(
+  event.editorialCommunityId,
+  getActor,
+  T.chain(flow(
+    (actor) => ({
+      avatar: T.of(actor.imageUrl),
+      date: T.of(event.date),
+      item: renderItem(getArticle, event, actor),
+    }),
+    sequenceS(T.task),
+  )),
+  T.map(render),
+  T.map(toHtmlFragment),
+)();
