@@ -1,8 +1,9 @@
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
+import * as TE from 'fp-ts/lib/TaskEither';
 import { pipe } from 'fp-ts/lib/function';
 import { Remarkable } from 'remarkable';
-import { Maybe, Result } from 'true-myth';
+import { Maybe } from 'true-myth';
 import createGetMostRecentEvents, { GetAllEvents } from './get-most-recent-events';
 import createProjectFollowerIds from './project-follower-ids';
 import createRenderDescription, { GetEditorialCommunityDescription, RenderDescription } from './render-description';
@@ -88,10 +89,10 @@ export default (ports: Ports): EditorialCommunityPage => {
       editorialCommunityId,
       ports.getEditorialCommunity,
       T.chain((editorialCommunityMaybe) => (
-        editorialCommunityMaybe.mapOrElse(() => T.of(Result.err({
+        editorialCommunityMaybe.mapOrElse(() => TE.left({
           type: 'not-found',
           message: toHtmlFragment(`Editorial community id '${editorialCommunityId.value}' not found`),
-        })),
+        }),
         (editorialCommunity) => renderPage(editorialCommunity, userId))
       )),
     );

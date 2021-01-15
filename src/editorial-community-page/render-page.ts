@@ -1,10 +1,10 @@
 import { sequenceS } from 'fp-ts/lib/Apply';
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
+import * as TE from 'fp-ts/lib/TaskEither';
 import { pipe } from 'fp-ts/lib/function';
 import { isHttpError } from 'http-errors';
 import { NOT_FOUND } from 'http-status-codes';
-import { Result } from 'true-myth';
 import { EditorialCommunity } from '../types/editorial-community';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -16,10 +16,10 @@ type Component = (editorialCommunityId: EditorialCommunityId, userId: O.Option<U
 export type RenderPage = (
   editorialCommunity: EditorialCommunity,
   userId: O.Option<UserId>
-) => T.Task<Result<{
+) => TE.TaskEither<RenderPageError, {
   title: string,
   content: HtmlFragment
-}, RenderPageError>>;
+}>;
 
 type RenderPageHeader = (editorialCommunity: EditorialCommunity) => HtmlFragment;
 
@@ -51,32 +51,32 @@ export default (
   renderFeed: Component,
   renderFollowers: (editorialCommunityId: EditorialCommunityId) => T.Task<HtmlFragment>,
 ): RenderPage => (
-  (editorialCommunity, userId) => async () => {
+  (editorialCommunity, userId) => {
     try {
-      return Result.ok({
-        title: editorialCommunity.name,
-        content: await pipe(
-          {
-            header: T.of(renderPageHeader(editorialCommunity)),
-            description: renderDescription(editorialCommunity),
-            followers: renderFollowers(editorialCommunity.id),
-            feed: renderFeed(editorialCommunity.id, userId),
-          },
-          sequenceS(T.task),
-          T.map(render),
-          T.map(toHtmlFragment),
-        )(),
-      });
+      return pipe(
+        {
+          header: T.of(renderPageHeader(editorialCommunity)),
+          description: renderDescription(editorialCommunity),
+          followers: renderFollowers(editorialCommunity.id),
+          feed: renderFeed(editorialCommunity.id, userId),
+        },
+        sequenceS(T.task),
+        T.map((components) => ({
+          title: editorialCommunity.name,
+          content: pipe(components, render, toHtmlFragment),
+        })),
+        TE.rightTask,
+      );
     // TODO: push Results further down
     } catch (error: unknown) {
       if (isHttpError(error) && error.status === NOT_FOUND) {
-        return Result.err({
+        return TE.left({
           type: 'not-found',
           message: toHtmlFragment(`Editorial community id '${editorialCommunity.id.value}' not found`),
         });
       }
 
-      return Result.err({
+      return TE.left({
         type: 'unavailable',
         message: toHtmlFragment(`Editorial community id '${editorialCommunity.id.value}' unavailable`),
       });
