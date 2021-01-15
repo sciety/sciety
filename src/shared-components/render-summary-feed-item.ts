@@ -6,6 +6,7 @@ import Doi from '../types/doi';
 import {
   EditorialCommunityEndorsedArticleEvent,
   EditorialCommunityReviewedArticleEvent,
+  isEditorialCommunityEndorsedArticleEvent,
 } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -29,6 +30,14 @@ type Article = {
 
 type RenderSummaryFeedItemSummary = (event: FeedEvent, actor: Actor) => T.Task<string>;
 
+const reviewedBy = (actor: Actor): string => (
+  (actor.name === 'preLights') ? 'highlighted' : 'reviewed'
+);
+
+const verb = (event: FeedEvent, actor: Actor): string => (
+  isEditorialCommunityEndorsedArticleEvent(event) ? 'endorsed' : reviewedBy(actor)
+);
+
 const renderSummaryFeedItemSummary = (getArticle: GetArticle): RenderSummaryFeedItemSummary => {
   type RenderEvent = (doi: Doi, actor: Actor, action: string) => T.Task<string>;
 
@@ -46,14 +55,7 @@ const renderSummaryFeedItemSummary = (getArticle: GetArticle): RenderSummaryFeed
     )),
   );
 
-  return (event, actor) => {
-    switch (event.type) {
-      case 'EditorialCommunityEndorsedArticle':
-        return renderEvent(event.articleId, actor, 'endorsed');
-      case 'EditorialCommunityReviewedArticle':
-        return renderEvent(event.articleId, actor, actor.name === 'preLights' ? 'highlighted' : 'reviewed');
-    }
-  };
+  return (event, actor) => renderEvent(event.articleId, actor, verb(event, actor));
 };
 
 export type GetActor = (id: EditorialCommunityId) => T.Task<Actor>;
