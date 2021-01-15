@@ -50,7 +50,7 @@
   @include button.basics();
   font-family: settings.$font-secondary;
   font-size: functions.px-to-rem(14px);
-  line-height: functions.px-to-rem(24px);
+  line-height: calc(24 / 14);
   background-color: settings.$colour-teal;
   color: settings.$colour-white;
   display: inline-flex;
@@ -73,5 +73,5 @@
 .saved-to-list {
   font-family: settings.$font-secondary;
   font-size: functions.px-to-rem(14px);
-  line-height: functions.px-to-rem(24px);
+  line-height: calc(24 / 14);
 }
