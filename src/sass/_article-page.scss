@@ -71,6 +71,8 @@
 }
 
 .saved-to-list {
+  display: flex;
+  align-items: center;
   font-family: settings.$font-secondary;
   font-size: functions.px-to-rem(14px);
   line-height: calc(24 / 14);

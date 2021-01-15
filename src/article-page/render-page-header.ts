@@ -24,7 +24,7 @@ const renderSavedLink = (doi: Doi, userId: O.Option<UserId>): string => {
     userId,
     O.filter((u) => u === '1295307136415735808'),
     O.filter(() => savedDois.includes(doi.value)),
-    O.map((u) => `<a class="saved-to-list" href="/users/${u}">Saved to list</a>`),
+    O.map((u) => `<a class="saved-to-list" href="/users/${u}"><img src="/static/images/playlist_add_check-24px.svg" alt="">Saved to list</a>`),
     O.fold(
       constant(''),
       identity,
