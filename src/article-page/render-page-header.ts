@@ -2,7 +2,7 @@ import * as E from 'fp-ts/lib/Either';
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
-import { pipe } from 'fp-ts/lib/function';
+import { flow, pipe } from 'fp-ts/lib/function';
 import { Result } from 'true-myth';
 import { renderTweetThis } from './render-tweet-this';
 import Doi from '../types/doi';
@@ -19,10 +19,14 @@ export type GetArticleDetails<E> = (doi: Doi) => T.Task<Result<ArticleDetails, E
 
 export type RenderPageHeader<E> = (doi: Doi, userId: O.Option<UserId>) => T.Task<Result<HtmlFragment, E>>;
 
-type RenderSavedLink = (doi: Doi, userId: O.Option<UserId>) => string;
+type RenderSavedLink = (doi: Doi, userId: O.Option<UserId>) => T.Task<string>;
 
 // TODO: inject renderTweetThis and similar
-const render = (renderSavedLink: RenderSavedLink) => (doi: Doi, userId: O.Option<UserId>) => (details: ArticleDetails): HtmlFragment => toHtmlFragment(`
+const render = (
+  renderSavedLink: RenderSavedLink,
+) => (doi: Doi, userId: O.Option<UserId>) => (details: ArticleDetails): T.Task<HtmlFragment> => pipe(
+  renderSavedLink(doi, userId),
+  T.map((renderedSavedLink) => `
   <header class="page-header page-header--article">
     <h1>${details.title}</h1>
     <ol aria-label="Authors of this article" class="article-author-list" role="list">
@@ -35,10 +39,12 @@ const render = (renderSavedLink: RenderSavedLink) => (doi: Doi, userId: O.Option
     </ul>
     <div class="article-actions">
       ${renderTweetThis(doi)}
-      ${renderSavedLink(doi, userId)}
+      ${renderedSavedLink}
     </div>
   </header>
-`);
+  `),
+  T.map(toHtmlFragment),
+);
 
 export default <Err>(
   getArticleDetails: GetArticleDetails<Err>,
@@ -46,8 +52,14 @@ export default <Err>(
 ): RenderPageHeader<Err> => (doi, userId) => pipe(
   doi,
   getArticleDetails,
-  T.map((result) => result.mapOrElse((error) => E.left(error), (success) => E.right(success))),
-  TE.map(render(renderSavedLink)(doi, userId)),
+  T.map((result) => result.mapOrElse(
+    (error) => E.left<Err, ArticleDetails>(error),
+    (success) => E.right<Err, ArticleDetails >(success),
+  )),
+  TE.chain(flow(
+    render(renderSavedLink)(doi, userId),
+    (rendered) => TE.rightTask<Err, HtmlFragment>(rendered),
+  )),
   T.map(E.fold(
     (error) => Result.err<HtmlFragment, Err>(error),
     (success) => Result.ok<HtmlFragment, Err>(success),

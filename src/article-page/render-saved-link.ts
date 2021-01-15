@@ -1,9 +1,11 @@
 import * as O from 'fp-ts/Option';
-import { constant, identity, pipe } from 'fp-ts/function';
+import * as T from 'fp-ts/Task';
+import * as B from 'fp-ts/boolean';
+import { constant, pipe } from 'fp-ts/function';
 import Doi from '../types/doi';
 import { UserId } from '../types/user-id';
 
-type RenderSavedLink = (doi: Doi, userId: O.Option<UserId>) => string;
+type RenderSavedLink = (doi: Doi, userId: O.Option<UserId>) => T.Task<string>;
 
 const templateSavedLink = (userId: UserId): string => `
   <a class="saved-to-list" href="/users/${userId}">
@@ -12,14 +14,18 @@ const templateSavedLink = (userId: UserId): string => `
   </a>
 `;
 
-export type HasUserSavedArticle = (doi: Doi, userId: UserId) => boolean;
+export type HasUserSavedArticle = (doi: Doi, userId: UserId) => T.Task<boolean>;
 
 export const renderSavedLink = (hasUserSavedArticle: HasUserSavedArticle): RenderSavedLink => (doi, userId) => pipe(
   userId,
-  O.filter((u) => hasUserSavedArticle(doi, u)),
-  O.map(templateSavedLink),
   O.fold(
-    constant(''),
-    identity,
+    constant(T.of('')),
+    (u) => pipe(
+      hasUserSavedArticle(doi, u),
+      T.map(B.fold(
+        constant(''),
+        () => templateSavedLink(u),
+      )),
+    ),
   ),
 );

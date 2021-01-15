@@ -21,7 +21,7 @@ describe('render-page-header component', (): void => {
   let rendered: HtmlFragment;
 
   beforeEach(async () => {
-    renderPageHeader = createRenderPageHeader(getArticleDetails, constant(''));
+    renderPageHeader = createRenderPageHeader(getArticleDetails, constant(T.of('')));
     rendered = (await renderPageHeader(new Doi('10.1101/815689'), O.none)()).unsafelyUnwrap();
   });
 
