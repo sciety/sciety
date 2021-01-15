@@ -1,5 +1,7 @@
+import { sequenceS } from 'fp-ts/lib/Apply';
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
+import { constant, flow, pipe } from 'fp-ts/lib/function';
 import { RenderFollowToggle } from './render-follow-toggle';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -18,19 +20,39 @@ const emptyFeed = `
   </p>
 `;
 
+type ViewModel = {
+  button: HtmlFragment,
+  feed: HtmlFragment,
+};
+
+const renderAsSection = (viewModel: ViewModel): string => `
+  <section>
+    <h2>
+      Feed
+    </h2>
+    ${viewModel.button}
+    ${viewModel.feed}
+  </section>
+`;
+
 export default <E>(
   getEvents: GetEvents<E>,
   renderSummaryFeedList: RenderSummaryFeedList<E>,
   renderFollowToggle: RenderFollowToggle,
-): RenderFeed => async (editorialCommunityId, userId) => {
-  const events = await getEvents(editorialCommunityId)();
-  return toHtmlFragment(`
-    <section>
-      <h2>
-        Feed
-      </h2>
-      ${await renderFollowToggle(userId, editorialCommunityId)()}
-      ${toHtmlFragment(O.getOrElse(() => emptyFeed)(await renderSummaryFeedList(events)()))}
-    </section>
-  `);
-};
+): RenderFeed => async (editorialCommunityId, userId) => pipe(
+  {
+    button: renderFollowToggle(userId, editorialCommunityId),
+    feed: pipe(
+      editorialCommunityId,
+      getEvents,
+      T.chain(renderSummaryFeedList),
+      T.map(O.getOrElse(constant(emptyFeed))),
+      T.map(toHtmlFragment),
+    ),
+  },
+  sequenceS(T.task),
+  T.map(flow(
+    renderAsSection,
+    toHtmlFragment,
+  )),
+)();
