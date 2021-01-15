@@ -1,5 +1,7 @@
+import { sequenceS } from 'fp-ts/lib/Apply';
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
+import { pipe } from 'fp-ts/lib/function';
 import { isHttpError } from 'http-errors';
 import { NOT_FOUND } from 'http-status-codes';
 import { Result } from 'true-myth';
@@ -23,6 +25,26 @@ type RenderPageHeader = (editorialCommunity: EditorialCommunity) => HtmlFragment
 
 type RenderDescription = (editorialCommunity: EditorialCommunity) => T.Task<HtmlFragment>;
 
+type Components = {
+  header: HtmlFragment,
+  description: HtmlFragment,
+  feed: string,
+  followers: HtmlFragment,
+};
+
+const render = (components: Components): string => `
+  <div class="sciety-grid sciety-grid--editorial-community">
+    ${components.header}
+    <div class="editorial-community-page-description">
+    ${components.description}
+    </div>
+    <div class="editorial-community-page-side-bar">
+      ${components.followers}
+      ${components.feed}
+    </div>
+  </div>
+`;
+
 export default (
   renderPageHeader: RenderPageHeader,
   renderDescription: RenderDescription,
@@ -33,19 +55,17 @@ export default (
     try {
       return Result.ok({
         title: editorialCommunity.name,
-        content: toHtmlFragment(`
-          <div class="sciety-grid sciety-grid--editorial-community">
-            ${renderPageHeader(editorialCommunity)}
-
-            <div class="editorial-community-page-description">
-            ${await renderDescription(editorialCommunity)()}
-            </div>
-            <div class="editorial-community-page-side-bar">
-              ${await renderFollowers(editorialCommunity.id)()}
-              ${await renderFeed(editorialCommunity.id, userId)()}
-            </div>
-          </div>
-        `),
+        content: await pipe(
+          {
+            header: T.of(renderPageHeader(editorialCommunity)),
+            description: renderDescription(editorialCommunity),
+            followers: renderFollowers(editorialCommunity.id),
+            feed: renderFeed(editorialCommunity.id, userId),
+          },
+          sequenceS(T.task),
+          T.map(render),
+          T.map(toHtmlFragment),
+        )(),
       });
     // TODO: push Results further down
     } catch (error: unknown) {
