@@ -28,8 +28,6 @@ type Article = {
   title: SanitisedHtmlFragment;
 };
 
-type RenderSummaryFeedItemSummary = (event: FeedEvent, actor: Actor) => T.Task<string>;
-
 const reviewedBy = (actor: Actor): string => (
   (actor.name === 'preLights') ? 'highlighted' : 'reviewed'
 );
@@ -38,25 +36,19 @@ const verb = (event: FeedEvent, actor: Actor): string => (
   isEditorialCommunityEndorsedArticleEvent(event) ? 'endorsed' : reviewedBy(actor)
 );
 
-const renderSummaryFeedItemSummary = (getArticle: GetArticle): RenderSummaryFeedItemSummary => {
-  type RenderEvent = (doi: Doi, actor: Actor, action: string) => T.Task<string>;
-
-  const renderEvent: RenderEvent = (doi, actor, action) => pipe(
-    doi,
-    getArticle,
-    T.map(flow(
-      (result) => result.mapOr(toHtmlFragment('an article'), (article) => article.title),
-      (title) => `
-        <a href="${actor.url}" class="summary-feed-item__link">${actor.name}</a>
-        ${action}
-        <a href="/articles/${doi.value}" class="summary-feed-item__link">${title}</a>
-      `,
-      toHtmlFragment,
-    )),
-  );
-
-  return (event, actor) => renderEvent(event.articleId, actor, verb(event, actor));
-};
+const renderSummaryFeedItemSummary = (getArticle: GetArticle, event: FeedEvent, actor: Actor): T.Task<string> => pipe(
+  event.articleId,
+  getArticle,
+  T.map(flow(
+    (result) => result.mapOr(toHtmlFragment('an article'), (article) => article.title),
+    (title) => `
+      <a href="${actor.url}" class="summary-feed-item__link">${actor.name}</a>
+      ${verb(event, actor)}
+      <a href="/articles/${event.articleId.value}" class="summary-feed-item__link">${title}</a>
+    `,
+    toHtmlFragment,
+  )),
+);
 
 export type GetActor = (id: EditorialCommunityId) => T.Task<Actor>;
 
@@ -73,7 +65,7 @@ export default (
       <div>
         ${templateDate(event.date, 'summary-feed-item__date')}
         <div class="summary-feed-item__title">
-          ${await renderSummaryFeedItemSummary(getArticle)(event, actor)()}
+          ${await renderSummaryFeedItemSummary(getArticle, event, actor)()}
         </div>
       </div>
     </div>
