@@ -1,12 +1,15 @@
 import * as T from 'fp-ts/Task';
+import { pipe } from 'fp-ts/lib/function';
 import { HasUserSavedArticle } from './render-saved-link';
 import Doi from '../types/doi';
 import { DomainEvent, isUserSavedArticleEvent } from '../types/domain-events';
 
 import toUserId from '../types/user-id';
 
+type GetEvents = T.Task<ReadonlyArray<DomainEvent>>;
+
 export const projectHasUserSavedArticle: HasUserSavedArticle = (doi, userId) => {
-  const events: ReadonlyArray<DomainEvent> = [
+  const getEvents: GetEvents = T.of([
     {
       type: 'UserSavedArticle',
       date: new Date(),
@@ -19,11 +22,14 @@ export const projectHasUserSavedArticle: HasUserSavedArticle = (doi, userId) => 
       userId: toUserId('1295307136415735808'),
       articleId: new Doi('10.1101/2020.09.09.289785'),
     },
-  ];
+  ]);
 
-  const savedDois = events
-    .filter(isUserSavedArticleEvent)
-    .filter((event) => event.userId === userId)
-    .map((event) => event.articleId.value);
-  return T.of(savedDois.includes(doi.value));
+  return pipe(
+    getEvents,
+    T.map((events) => events
+      .filter(isUserSavedArticleEvent)
+      .filter((event) => event.userId === userId)
+      .map((event) => event.articleId.value)
+      .includes(doi.value)),
+  );
 };
