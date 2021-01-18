@@ -90,7 +90,7 @@ export default (ports: Ports): ArticlePage => {
         constant(T.of(false)),
         (u) => projectHasUserSavedArticle(ports.getAllEvents)(doi, u),
       ),
-      T.chain((hasUserSavedArticle) => renderSavedLink(hasUserSavedArticle, userId)),
+      T.map((hasUserSavedArticle) => renderSavedLink(hasUserSavedArticle, userId)),
     ),
   );
   const renderAbstract = createRenderArticleAbstract(
