@@ -4,18 +4,13 @@ import Doi from '../../src/types/doi';
 import { userSavedArticle } from '../../src/types/domain-events';
 import toUserId from '../../src/types/user-id';
 
-const getEvents: GetEvents = T.of([
-  userSavedArticle(toUserId('1295307136415735808'), new Doi('10.1101/2020.07.04.187583')),
-  userSavedArticle(toUserId('1295307136415735808'), new Doi('10.1101/2020.09.09.289785')),
-]);
-
 describe('project-has-user-saved-article', () => {
   describe('when the user has saved the article', () => {
     it('returns true', async () => {
-      const getEventsLocal: GetEvents = T.of([
+      const getEvents: GetEvents = T.of([
         userSavedArticle(toUserId('this-user'), new Doi('10.1101/111111')),
       ]);
-      const result = await projectHasUserSavedArticle(getEventsLocal)(
+      const result = await projectHasUserSavedArticle(getEvents)(
         new Doi('10.1101/111111'),
         toUserId('this-user'),
       )();
@@ -26,8 +21,8 @@ describe('project-has-user-saved-article', () => {
 
   describe('when the user has not saved the article', () => {
     it('returns false', async () => {
-      const getEventsLocal: GetEvents = T.of([]);
-      const result = await projectHasUserSavedArticle(getEventsLocal)(
+      const getEvents: GetEvents = T.of([]);
+      const result = await projectHasUserSavedArticle(getEvents)(
         new Doi('10.1101/some-doi'),
         toUserId('this-user'),
       )();
@@ -38,10 +33,10 @@ describe('project-has-user-saved-article', () => {
 
   describe('when the user has saved a different article', () => {
     it('returns false', async () => {
-      const getEventsLocal: GetEvents = T.of([
+      const getEvents: GetEvents = T.of([
         userSavedArticle(toUserId('this-user'), new Doi('10.1101/111111')),
       ]);
-      const result = await projectHasUserSavedArticle(getEventsLocal)(
+      const result = await projectHasUserSavedArticle(getEvents)(
         new Doi('10.1101/some-other-doi'),
         toUserId('this-user'),
       )();
@@ -50,11 +45,14 @@ describe('project-has-user-saved-article', () => {
     });
   });
 
-  describe('when another user has saved this article', () => {
+  describe('when a different user has saved this article', () => {
     it('returns false', async () => {
+      const getEvents: GetEvents = T.of([
+        userSavedArticle(toUserId('other-user'), new Doi('10.1101/111111')),
+      ]);
       const result = await projectHasUserSavedArticle(getEvents)(
-        new Doi('10.1101/2020.07.04.187583'),
-        toUserId('the-user'),
+        new Doi('10.1101/111111'),
+        toUserId('this-user'),
       )();
 
       expect(result).toBe(false);
