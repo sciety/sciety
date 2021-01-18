@@ -1,23 +1,21 @@
-import * as E from 'fp-ts/lib/Either';
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { flow, pipe } from 'fp-ts/lib/function';
-import { Result } from 'true-myth';
 import { renderTweetThis } from './render-tweet-this';
 import Doi from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { UserId } from '../types/user-id';
 
-interface ArticleDetails {
+type ArticleDetails = {
   title: SanitisedHtmlFragment;
   authors: Array<string>;
-}
+};
 
-export type GetArticleDetails<E> = (doi: Doi) => T.Task<Result<ArticleDetails, E>>;
+export type GetArticleDetails<Err> = (doi: Doi) => TE.TaskEither<Err, ArticleDetails>;
 
-export type RenderPageHeader<E> = (doi: Doi, userId: O.Option<UserId>) => TE.TaskEither<E, HtmlFragment>;
+export type RenderPageHeader<Err> = (doi: Doi, userId: O.Option<UserId>) => TE.TaskEither<Err, HtmlFragment>;
 
 type RenderSavedLink = (doi: Doi, userId: O.Option<UserId>) => T.Task<HtmlFragment>;
 
@@ -52,10 +50,6 @@ export default <Err>(
 ): RenderPageHeader<Err> => (doi, userId) => pipe(
   doi,
   getArticleDetails,
-  T.map((result) => result.mapOrElse(
-    (error) => E.left<Err, ArticleDetails>(error),
-    (success) => E.right<Err, ArticleDetails >(success),
-  )),
   TE.chain(flow(
     render(renderSavedLink)(doi, userId),
     (rendered) => TE.rightTask<Err, HtmlFragment>(rendered),

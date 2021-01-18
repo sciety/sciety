@@ -1,9 +1,9 @@
 import * as E from 'fp-ts/lib/Either';
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
+import * as TE from 'fp-ts/lib/TaskEither';
 import { constant, pipe } from 'fp-ts/lib/function';
 import { JSDOM } from 'jsdom';
-import { Result } from 'true-myth';
 import createRenderPageHeader, {
   GetArticleDetails,
   RenderPageHeader,
@@ -12,10 +12,10 @@ import Doi from '../../src/types/doi';
 import { HtmlFragment, toHtmlFragment } from '../../src/types/html-fragment';
 import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
 
-const getArticleDetails: GetArticleDetails<never> = (doi) => T.of(Result.ok({
+const getArticleDetails: GetArticleDetails<never> = (doi) => TE.right({
   title: `Lorem ipsum ${doi.value}` as SanitisedHtmlFragment,
   authors: ['Gary', 'Uncle Wiggly'],
-}));
+});
 
 describe('render-page-header component', (): void => {
   let renderPageHeader: RenderPageHeader<never>;

@@ -1,4 +1,5 @@
 import { URL } from 'url';
+import * as E from 'fp-ts/lib/Either';
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import { flow, pipe } from 'fp-ts/lib/function';
@@ -12,8 +13,8 @@ import createProjectUserReviewResponse from './project-user-review-response';
 import createRenderArticleAbstract from './render-article-abstract';
 import createRenderArticleVersionFeedItem from './render-article-version-feed-item';
 import createRenderFeed from './render-feed';
-import createRenderPage, { GetArticleDetails as GetArticleDetailsForPage, Page, RenderPage } from './render-page';
-import createRenderPageHeader, { GetArticleDetails as GetArticleDetailsForHeader } from './render-page-header';
+import createRenderPage, { Page, RenderPage } from './render-page';
+import createRenderPageHeader from './render-page-header';
 import createRenderReviewFeedItem from './render-review-feed-item';
 import createRenderReviewResponses from './render-review-responses';
 import { renderSavedLink } from './render-saved-link';
@@ -39,11 +40,17 @@ type FindVersionsForArticleDoi = (doi: Doi) => Promise<ReadonlyArray<{
   version: number;
 }>>;
 
-type GetArticleDetailsForAbstract = (doi: Doi) => T.Task<Result<{ abstract: SanitisedHtmlFragment }, 'not-found'|'unavailable'>>;
+type ArticleDetails = {
+  title: SanitisedHtmlFragment;
+  abstract: SanitisedHtmlFragment, // TODO Use HtmlFragment as the HTML is stripped
+  authors: Array<string>;
+};
+
+type GetArticleDetails = (doi: Doi) => T.Task<Result<ArticleDetails, 'not-found'|'unavailable'>>;
 
 type GetEvents = T.Task<ReadonlyArray<DomainEvent>>;
 interface Ports {
-  fetchArticle: GetArticleDetailsForPage & GetArticleDetailsForHeader<'not-found'|'unavailable'> & GetArticleDetailsForAbstract;
+  fetchArticle: GetArticleDetails;
   fetchReview: GetReview;
   getEditorialCommunity: (editorialCommunityId: EditorialCommunityId) => T.Task<Maybe<{
     name: string;
@@ -68,8 +75,15 @@ const getUserId = (user: O.Option<User>): O.Option<UserId> => pipe(
 type ArticlePage = (params: Params) => ReturnType<RenderPage>;
 
 export default (ports: Ports): ArticlePage => {
-  const renderPageHeader = createRenderPageHeader(
+  const shimmedFetchArticle = flow(
     ports.fetchArticle,
+    T.map((result) => result.mapOrElse(
+      (error) => E.left<'not-found'|'unavailable', ArticleDetails>(error),
+      (success) => E.right<'not-found'|'unavailable', ArticleDetails >(success),
+    )),
+  );
+  const renderPageHeader = createRenderPageHeader(
+    shimmedFetchArticle,
     renderSavedLink(projectHasUserSavedArticle(ports.getAllEvents)),
   );
   const renderAbstract = createRenderArticleAbstract(

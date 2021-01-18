@@ -25,7 +25,7 @@ type ArticleDetails = {
   abstract: SanitisedHtmlFragment, // TODO Use HtmlFragment as the HTML is stripped
 };
 
-export type GetArticleDetails = (doi: Doi) => T.Task<Result<ArticleDetails, 'not-found'|'unavailable'>>;
+type GetArticleDetails = (doi: Doi) => T.Task<Result<ArticleDetails, 'not-found'|'unavailable'>>;
 
 type Component = (doi: Doi) => T.Task<Result<string, 'not-found' | 'unavailable'>>;
 type RenderFeed = (doi: Doi, userId: O.Option<UserId>) => Promise<Result<string, 'no-content'>>;
