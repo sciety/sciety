@@ -98,13 +98,13 @@ const createInfrastructure = async (): Promise<Adapters> => {
       {
         type: 'UserSavedArticle',
         date: new Date(),
-        userId: toUserId('129390320'),
+        userId: toUserId('1295307136415735808'),
         articleId: new Doi('10.1101/2020.07.04.187583'),
       },
       {
         type: 'UserSavedArticle',
         date: new Date(),
-        userId: toUserId('129390320'),
+        userId: toUserId('1295307136415735808'),
         articleId: new Doi('10.1101/2020.09.09.289785'),
       },
     ]);
