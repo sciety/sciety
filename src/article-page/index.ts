@@ -22,7 +22,7 @@ import { renderSavedLink } from './render-saved-link';
 import Doi from '../types/doi';
 import { DomainEvent } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
-import { toHtmlFragment } from '../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { RenderPageError } from '../types/render-page-error';
 import { ReviewId } from '../types/review-id';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
@@ -83,29 +83,28 @@ export default (ports: Ports): ArticlePage => {
       (success) => E.right<'not-found'|'unavailable', ArticleDetails >(success),
     )),
   );
-  const renderPageHeader = createRenderPageHeader(
-    shimmedFetchArticle,
-    (doi, userId) => pipe(
-      userId,
-      O.fold(
-        constant(T.of(false)),
-        (u) => projectHasUserSavedArticle(ports.getAllEvents)(doi, u),
-      ),
-      T.map((hasUserSavedArticle) => pipe(
-        hasUserSavedArticle,
-        B.fold(
-          () => O.none,
-          () => userId,
-        ),
-        O.fold(
-          constant(''),
-          renderSavedLink,
-        ),
-        toHtmlFragment,
-      )),
+  type RenderSavedLinkIfNeeded = (doi: Doi, userId: O.Option<UserId>) => T.Task<HtmlFragment>;
+  const renderSavedLinkIfNeeded: RenderSavedLinkIfNeeded = (doi, userId) => pipe(
+    userId,
+    O.fold(
+      constant(T.of(false)),
+      (u) => projectHasUserSavedArticle(ports.getAllEvents)(doi, u),
     ),
+    T.map((hasUserSavedArticle) => pipe(
+      hasUserSavedArticle,
+      B.fold(
+        () => O.none,
+        () => userId,
+      ),
+      O.fold(
+        constant(''),
+        renderSavedLink,
+      ),
+      toHtmlFragment,
+    )),
   );
 
+  const renderPageHeader = createRenderPageHeader(shimmedFetchArticle, renderSavedLinkIfNeeded);
   const renderAbstract = createRenderArticleAbstract(
     flow(ports.fetchArticle, T.map((result) => result.map((article) => article.abstract))),
   );
