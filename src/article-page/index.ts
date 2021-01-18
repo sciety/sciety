@@ -2,7 +2,7 @@ import { URL } from 'url';
 import * as E from 'fp-ts/lib/Either';
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
-import { flow, pipe } from 'fp-ts/lib/function';
+import { constant, flow, pipe } from 'fp-ts/lib/function';
 import { Maybe, Result } from 'true-myth';
 import ensureBiorxivDoi from './ensure-biorxiv-doi';
 import { getArticleFeedEvents } from './get-article-feed-events';
@@ -84,7 +84,14 @@ export default (ports: Ports): ArticlePage => {
   );
   const renderPageHeader = createRenderPageHeader(
     shimmedFetchArticle,
-    renderSavedLink(projectHasUserSavedArticle(ports.getAllEvents)),
+    (doi, userId) => pipe(
+      userId,
+      O.fold(
+        constant(T.of(false)),
+        (u) => projectHasUserSavedArticle(ports.getAllEvents)(doi, u),
+      ),
+      T.chain((hasUserSavedArticle) => renderSavedLink(hasUserSavedArticle, userId)),
+    ),
   );
   const renderAbstract = createRenderArticleAbstract(
     flow(ports.fetchArticle, T.map((result) => result.map((article) => article.abstract))),

@@ -1,11 +1,14 @@
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/lib/function';
-import { HasUserSavedArticle } from './render-saved-link';
+import Doi from '../types/doi';
 import { DomainEvent, isUserSavedArticleEvent } from '../types/domain-events';
+import { UserId } from '../types/user-id';
 
 export type GetEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-export const projectHasUserSavedArticle = (getEvents: GetEvents): HasUserSavedArticle => (doi, userId) => pipe(
+type ProjectHasUserSavedArticle = (getEvents: GetEvents) => (doi: Doi, userId: UserId) => T.Task<boolean>;
+
+export const projectHasUserSavedArticle: ProjectHasUserSavedArticle = (getEvents) => (doi, userId) => pipe(
   getEvents,
   T.map((events) => events
     .filter(isUserSavedArticleEvent)
