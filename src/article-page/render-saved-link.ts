@@ -11,7 +11,7 @@ type RenderSavedLink = (doi: Doi, userId: O.Option<UserId>) => T.Task<HtmlFragme
 const templateSavedLink = (userId: UserId): string => `
   <a class="saved-to-list" href="/users/${userId}#saved-articles">
     <img src="/static/images/playlist_add_check-24px.svg" alt="" class="saved-to-list__icon">
-    Saved to list
+    Saved to my list
   </a>
 `;
 
