@@ -26,7 +26,8 @@ describe('project-has-user-saved-article', () => {
 
   describe('when the user has not saved the article', () => {
     it('returns false', async () => {
-      const result = await projectHasUserSavedArticle(getEvents)(
+      const getEventsLocal: GetEvents = T.of([]);
+      const result = await projectHasUserSavedArticle(getEventsLocal)(
         new Doi('10.1101/some-doi'),
         toUserId('the-user'),
       )();
