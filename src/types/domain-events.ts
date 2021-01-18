@@ -164,7 +164,7 @@ export const isUserSavedArticleEvent = (event: DomainEvent):
   event.type === 'UserSavedArticle'
 );
 
-type UserSavedArticleEvent = Readonly<{
+export type UserSavedArticleEvent = Readonly<{
   type: 'UserSavedArticle';
   date: Date;
   userId: UserId;
