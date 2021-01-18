@@ -9,7 +9,7 @@ import { UserId } from '../types/user-id';
 type RenderSavedLink = (doi: Doi, userId: O.Option<UserId>) => T.Task<HtmlFragment>;
 
 const templateSavedLink = (userId: UserId): string => `
-  <a class="saved-to-list" href="/users/${userId}">
+  <a class="saved-to-list" href="/users/${userId}#saved-articles">
     <img src="/static/images/playlist_add_check-24px.svg" alt="" class="saved-to-list__icon">
     Saved to list
   </a>

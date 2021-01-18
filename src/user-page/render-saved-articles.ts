@@ -32,7 +32,7 @@ export const renderSavedArticles: RenderSavedArticles = flow(
   O.fold(
     () => '',
     (list) => `
-        <section>
+        <section id="saved-articles">
           <h2>Saved articles</h2>
           <ol class="saved-articles" role="list">
             ${list}
