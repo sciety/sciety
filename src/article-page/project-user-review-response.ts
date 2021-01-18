@@ -13,7 +13,7 @@ import {
 import { ReviewId } from '../types/review-id';
 import { UserId } from '../types/user-id';
 
-export type GetEvents = T.Task<ReadonlyArray<DomainEvent>>;
+type GetEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 const projectResponse = (getEvents: GetEvents) => async (reviewId: ReviewId, userId: UserId): Promise<Maybe<'helpful' | 'not-helpful'>> => {
   const events = await getEvents();

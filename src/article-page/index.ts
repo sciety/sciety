@@ -7,8 +7,8 @@ import ensureBiorxivDoi from './ensure-biorxiv-doi';
 import { getArticleFeedEvents } from './get-article-feed-events';
 import { GetReview } from './get-feed-events-content';
 import { projectHasUserSavedArticle } from './project-has-user-saved-article';
-import createProjectReviewResponseCounts, { GetEvents as GetEventForReviewResponseCounts } from './project-review-response-counts';
-import createProjectUserReviewResponse, { GetEvents as GetEventForUserReviewResponse } from './project-user-review-response';
+import createProjectReviewResponseCounts from './project-review-response-counts';
+import createProjectUserReviewResponse from './project-user-review-response';
 import createRenderArticleAbstract from './render-article-abstract';
 import createRenderArticleVersionFeedItem from './render-article-version-feed-item';
 import createRenderFeed from './render-feed';
@@ -18,6 +18,7 @@ import createRenderReviewFeedItem from './render-review-feed-item';
 import createRenderReviewResponses from './render-review-responses';
 import { renderSavedLink } from './render-saved-link';
 import Doi from '../types/doi';
+import { DomainEvent } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { toHtmlFragment } from '../types/html-fragment';
 import { RenderPageError } from '../types/render-page-error';
@@ -40,6 +41,7 @@ type FindVersionsForArticleDoi = (doi: Doi) => Promise<ReadonlyArray<{
 
 type GetArticleDetailsForAbstract = (doi: Doi) => T.Task<Result<{ abstract: SanitisedHtmlFragment }, 'not-found'|'unavailable'>>;
 
+type GetEvents = T.Task<ReadonlyArray<DomainEvent>>;
 interface Ports {
   fetchArticle: GetArticleDetailsForPage & GetArticleDetailsForHeader<'not-found'|'unavailable'> & GetArticleDetailsForAbstract;
   fetchReview: GetReview;
@@ -49,7 +51,7 @@ interface Ports {
   }>>,
   findReviewsForArticleDoi: FindReviewsForArticleDoi;
   findVersionsForArticleDoi: FindVersionsForArticleDoi;
-  getAllEvents: GetEventForUserReviewResponse & GetEventForReviewResponseCounts;
+  getAllEvents: GetEvents;
 }
 
 export interface Params {
@@ -68,7 +70,7 @@ type ArticlePage = (params: Params) => ReturnType<RenderPage>;
 export default (ports: Ports): ArticlePage => {
   const renderPageHeader = createRenderPageHeader(
     ports.fetchArticle,
-    renderSavedLink(projectHasUserSavedArticle),
+    renderSavedLink(projectHasUserSavedArticle(ports.getAllEvents)),
   );
   const renderAbstract = createRenderArticleAbstract(
     flow(ports.fetchArticle, T.map((result) => result.map((article) => article.abstract))),

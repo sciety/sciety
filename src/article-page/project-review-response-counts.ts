@@ -9,7 +9,7 @@ import {
 } from '../types/domain-events';
 import { ReviewId } from '../types/review-id';
 
-export type GetEvents = T.Task<ReadonlyArray<DomainEvent>>;
+type GetEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 const projection = (reviewId: ReviewId) => (events: ReadonlyArray<DomainEvent>) => {
   const helpfulCount = events
