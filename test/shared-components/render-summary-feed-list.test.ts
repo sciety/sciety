@@ -9,7 +9,7 @@ describe('render-summary-feed-list', () => {
   describe('when there are events', () => {
     it('returns a list', async () => {
       const rendered = await pipe(
-        [ {}, {}, {}, ],
+        [{}, {}, {}],
         renderSummaryFeedList(() => T.of(toHtmlFragment(''))),
       )();
 
