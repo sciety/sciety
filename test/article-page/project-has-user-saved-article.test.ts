@@ -12,9 +12,12 @@ const getEvents: GetEvents = T.of([
 describe('project-has-user-saved-article', () => {
   describe('when the user has saved the article', () => {
     it('returns true', async () => {
-      const result = await projectHasUserSavedArticle(getEvents)(
-        new Doi('10.1101/2020.07.04.187583'),
-        toUserId('1295307136415735808'),
+      const getEventsLocal: GetEvents = T.of([
+        userSavedArticle(toUserId('this-user'), new Doi('10.1101/111111')),
+      ]);
+      const result = await projectHasUserSavedArticle(getEventsLocal)(
+        new Doi('10.1101/111111'),
+        toUserId('this-user'),
       )();
 
       expect(result).toBe(true);
