@@ -104,8 +104,10 @@ COMMUNITY_SCRIPTS := \
 	find-pci-reviews \
 	find-prereview-reviews
 
-update-event-data: $(COMMUNITY_SCRIPTS)
+sort-event-data:
 	find data -type f | xargs -I % sort -g -o % %
+
+update-event-data: $(COMMUNITY_SCRIPTS) sort-event-data
 
 release: export TAG = latest/$(shell date +%Y%m%d%H%M)
 release:
