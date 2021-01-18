@@ -171,6 +171,13 @@ type UserSavedArticleEvent = Readonly<{
   articleId: Doi;
 }>;
 
+export const userSavedArticle = (userId: UserId, doi: Doi): UserSavedArticleEvent => ({
+  type: 'UserSavedArticle',
+  date: new Date(),
+  userId,
+  articleId: doi,
+});
+
 export type DomainEvent =
   EditorialCommunityEndorsedArticleEvent |
   EditorialCommunityReviewedArticleEvent |

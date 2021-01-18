@@ -1,21 +1,12 @@
 import * as T from 'fp-ts/lib/Task';
 import { GetEvents, projectHasUserSavedArticle } from '../../src/article-page/project-has-user-saved-article';
 import Doi from '../../src/types/doi';
+import { userSavedArticle } from '../../src/types/domain-events';
 import toUserId from '../../src/types/user-id';
 
 const getEvents: GetEvents = T.of([
-  {
-    type: 'UserSavedArticle',
-    date: new Date(),
-    userId: toUserId('1295307136415735808'),
-    articleId: new Doi('10.1101/2020.07.04.187583'),
-  },
-  {
-    type: 'UserSavedArticle',
-    date: new Date(),
-    userId: toUserId('1295307136415735808'),
-    articleId: new Doi('10.1101/2020.09.09.289785'),
-  },
+  userSavedArticle(toUserId('1295307136415735808'), new Doi('10.1101/2020.07.04.187583')),
+  userSavedArticle(toUserId('1295307136415735808'), new Doi('10.1101/2020.09.09.289785')),
 ]);
 
 describe('project-has-user-saved-article', () => {
