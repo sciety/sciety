@@ -84,24 +84,29 @@ export default (ports: Ports): ArticlePage => {
     )),
   );
   type RenderSavedLinkIfNeeded = (doi: Doi, userId: O.Option<UserId>) => T.Task<HtmlFragment>;
+  type ViewModel = { state: 'logged-out' } | { state: 'saved', userId: UserId } | { state: 'not-saved' };
   const renderSavedLinkIfNeeded: RenderSavedLinkIfNeeded = (doi, userId) => pipe(
     userId,
     O.fold(
-      constant(T.of(false)),
-      (u) => projectHasUserSavedArticle(ports.getAllEvents)(doi, u),
+      (): T.Task<ViewModel> => T.of({ state: 'logged-out' }),
+      (u) => pipe(
+        ports.getAllEvents,
+        T.map(flow(
+          projectHasUserSavedArticle(doi, u),
+          B.fold(
+            (): ViewModel => ({ state: 'not-saved' }),
+            (): ViewModel => ({ state: 'saved', userId: u }),
+          ),
+        )),
+      ),
     ),
-    T.map((hasUserSavedArticle) => pipe(
-      hasUserSavedArticle,
-      B.fold(
-        () => O.none,
-        () => userId,
-      ),
-      O.fold(
-        constant(''),
-        renderSavedLink,
-      ),
-      toHtmlFragment,
-    )),
+    T.map((viewModel: ViewModel) => {
+      switch (viewModel.state) {
+        case 'logged-out': return toHtmlFragment('');
+        case 'not-saved': return toHtmlFragment('');
+        case 'saved': return renderSavedLink(viewModel.userId);
+      }
+    }),
   );
 
   const renderPageHeader = createRenderPageHeader(shimmedFetchArticle, renderSavedLinkIfNeeded);
