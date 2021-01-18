@@ -90,9 +90,17 @@ export default (ports: Ports): ArticlePage => {
         constant(T.of(false)),
         (u) => projectHasUserSavedArticle(ports.getAllEvents)(doi, u),
       ),
-      T.map((hasUserSavedArticle) => renderSavedLink(hasUserSavedArticle, userId)),
+      T.map((hasUserSavedArticle) => pipe(
+        userId,
+        O.fold(
+          constant(''),
+          (u) => renderSavedLink(hasUserSavedArticle, u),
+        ),
+        toHtmlFragment,
+      )),
     ),
   );
+
   const renderAbstract = createRenderArticleAbstract(
     flow(ports.fetchArticle, T.map((result) => result.map((article) => article.abstract))),
   );
