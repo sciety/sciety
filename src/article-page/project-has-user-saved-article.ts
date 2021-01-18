@@ -20,6 +20,8 @@ export const projectHasUserSavedArticle: HasUserSavedArticle = (doi, userId) => 
     },
   ];
 
-  const savedDois = events.map((event) => event.articleId.value);
-  return T.of(userId === '1295307136415735808' && savedDois.includes(doi.value));
+  const savedDois = events
+    .filter((event) => event.userId === userId)
+    .map((event) => event.articleId.value);
+  return T.of(savedDois.includes(doi.value));
 };
