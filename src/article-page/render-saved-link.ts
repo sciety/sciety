@@ -3,9 +3,10 @@ import * as T from 'fp-ts/Task';
 import * as B from 'fp-ts/boolean';
 import { constant, pipe } from 'fp-ts/function';
 import Doi from '../types/doi';
+import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
-type RenderSavedLink = (doi: Doi, userId: O.Option<UserId>) => T.Task<string>;
+type RenderSavedLink = (doi: Doi, userId: O.Option<UserId>) => T.Task<HtmlFragment>;
 
 const templateSavedLink = (userId: UserId): string => `
   <a class="saved-to-list" href="/users/${userId}">
@@ -28,4 +29,5 @@ export const renderSavedLink = (hasUserSavedArticle: HasUserSavedArticle): Rende
       )),
     ),
   ),
+  T.map(toHtmlFragment),
 );

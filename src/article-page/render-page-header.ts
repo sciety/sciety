@@ -19,7 +19,7 @@ export type GetArticleDetails<E> = (doi: Doi) => T.Task<Result<ArticleDetails, E
 
 export type RenderPageHeader<E> = (doi: Doi, userId: O.Option<UserId>) => T.Task<Result<HtmlFragment, E>>;
 
-type RenderSavedLink = (doi: Doi, userId: O.Option<UserId>) => T.Task<string>;
+type RenderSavedLink = (doi: Doi, userId: O.Option<UserId>) => T.Task<HtmlFragment>;
 
 // TODO: inject renderTweetThis and similar
 const render = (

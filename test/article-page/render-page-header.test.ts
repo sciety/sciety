@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
-import { constant } from 'fp-ts/lib/function';
+import { pipe } from 'fp-ts/lib/function';
 import { JSDOM } from 'jsdom';
 import { Result } from 'true-myth';
 import createRenderPageHeader, {
@@ -8,7 +8,7 @@ import createRenderPageHeader, {
   RenderPageHeader,
 } from '../../src/article-page/render-page-header';
 import Doi from '../../src/types/doi';
-import { HtmlFragment } from '../../src/types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../../src/types/html-fragment';
 import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
 
 const getArticleDetails: GetArticleDetails<never> = (doi) => T.of(Result.ok({
@@ -21,7 +21,7 @@ describe('render-page-header component', (): void => {
   let rendered: HtmlFragment;
 
   beforeEach(async () => {
-    renderPageHeader = createRenderPageHeader(getArticleDetails, constant(T.of('')));
+    renderPageHeader = createRenderPageHeader(getArticleDetails, () => pipe('', toHtmlFragment, T.of));
     rendered = (await renderPageHeader(new Doi('10.1101/815689'), O.none)()).unsafelyUnwrap();
   });
 
