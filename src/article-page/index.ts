@@ -2,6 +2,7 @@ import { URL } from 'url';
 import * as E from 'fp-ts/lib/Either';
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
+import * as B from 'fp-ts/lib/boolean';
 import { constant, flow, pipe } from 'fp-ts/lib/function';
 import { Maybe, Result } from 'true-myth';
 import ensureBiorxivDoi from './ensure-biorxiv-doi';
@@ -91,10 +92,14 @@ export default (ports: Ports): ArticlePage => {
         (u) => projectHasUserSavedArticle(ports.getAllEvents)(doi, u),
       ),
       T.map((hasUserSavedArticle) => pipe(
-        userId,
+        hasUserSavedArticle,
+        B.fold(
+          () => O.none,
+          () => userId,
+        ),
         O.fold(
           constant(''),
-          (u) => renderSavedLink(hasUserSavedArticle, u),
+          renderSavedLink,
         ),
         toHtmlFragment,
       )),
