@@ -1,5 +1,8 @@
-import * as O from 'fp-ts/Option';
-import * as T from 'fp-ts/Task';
+import * as E from 'fp-ts/lib/Either';
+import * as O from 'fp-ts/lib/Option';
+import * as T from 'fp-ts/lib/Task';
+import * as TE from 'fp-ts/lib/TaskEither';
+import { pipe } from 'fp-ts/lib/function';
 import striptags from 'striptags';
 import { Result } from 'true-myth';
 import Doi from '../types/doi';
@@ -29,7 +32,7 @@ type RenderFeed = (doi: Doi, userId: O.Option<UserId>) => Promise<Result<string,
 export type RenderPage = (doi: Doi, userId: O.Option<UserId>) => T.Task<Result<Page, RenderPageError>>;
 
 export default (
-  renderPageHeader: (doi: Doi, userId: O.Option<UserId>) => T.Task<Result<string, 'not-found' | 'unavailable'>>,
+  renderPageHeader: (doi: Doi, userId: O.Option<UserId>) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>,
   renderAbstract: Component,
   renderFeed: RenderFeed,
   getArticleDetails: GetArticleDetails,
@@ -59,7 +62,13 @@ export default (
 
   return (doi, userId) => async () => {
     const abstractResult = renderAbstract(doi)();
-    const pageHeaderResult = renderPageHeader(doi, userId)();
+    const pageHeaderResult = pipe(
+      renderPageHeader(doi, userId),
+      T.map(E.fold(
+        (error) => Result.err<HtmlFragment, 'not-found' | 'unavailable'>(error),
+        (success) => Result.ok<HtmlFragment, 'not-found' | 'unavailable'>(success),
+      )),
+    )();
     const feedResult = renderFeed(doi, userId)
       .then((feed) => (
         feed.or(Result.ok<string, never>(''))

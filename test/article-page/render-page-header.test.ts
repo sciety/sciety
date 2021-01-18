@@ -1,6 +1,7 @@
+import * as E from 'fp-ts/lib/Either';
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
-import { pipe } from 'fp-ts/lib/function';
+import { constant, pipe } from 'fp-ts/lib/function';
 import { JSDOM } from 'jsdom';
 import { Result } from 'true-myth';
 import createRenderPageHeader, {
@@ -18,29 +19,30 @@ const getArticleDetails: GetArticleDetails<never> = (doi) => T.of(Result.ok({
 
 describe('render-page-header component', (): void => {
   let renderPageHeader: RenderPageHeader<never>;
-  let rendered: HtmlFragment;
+  let rendered: E.Either<unknown, HtmlFragment>;
 
   beforeEach(async () => {
     renderPageHeader = createRenderPageHeader(getArticleDetails, () => pipe('', toHtmlFragment, T.of));
-    rendered = (await renderPageHeader(new Doi('10.1101/815689'), O.none)()).unsafelyUnwrap();
+    rendered = (await renderPageHeader(new Doi('10.1101/815689'), O.none)());
   });
 
   it('renders inside an header tag', () => {
-    expect(rendered).toStrictEqual(expect.stringMatching(/^\s*<header\s|>/));
+    expect(rendered).toStrictEqual(E.right(expect.stringMatching(/^\s*<header\s|>/)));
   });
 
   it('renders the title for an article', async (): Promise<void> => {
-    expect(rendered).toStrictEqual(expect.stringContaining('Lorem ipsum 10.1101/815689'));
+    expect(rendered).toStrictEqual(E.right(expect.stringContaining('Lorem ipsum 10.1101/815689')));
   });
 
   it('renders the article DOI according to CrossRef display guidelines', () => {
-    const links = JSDOM.fragment(rendered).querySelectorAll('a');
+    const html = pipe(rendered, E.getOrElse(constant('')));
+    const links = JSDOM.fragment(html).querySelectorAll('a');
 
     expect(links[0].textContent).toStrictEqual('https://doi.org/10.1101/815689');
   });
 
   it('renders the article authors', () => {
-    expect(rendered).toStrictEqual(expect.stringContaining('Gary'));
-    expect(rendered).toStrictEqual(expect.stringContaining('Uncle Wiggly'));
+    expect(rendered).toStrictEqual(E.right(expect.stringContaining('Gary')));
+    expect(rendered).toStrictEqual(E.right(expect.stringContaining('Uncle Wiggly')));
   });
 });

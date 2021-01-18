@@ -17,7 +17,7 @@ interface ArticleDetails {
 
 export type GetArticleDetails<E> = (doi: Doi) => T.Task<Result<ArticleDetails, E>>;
 
-export type RenderPageHeader<E> = (doi: Doi, userId: O.Option<UserId>) => T.Task<Result<HtmlFragment, E>>;
+export type RenderPageHeader<E> = (doi: Doi, userId: O.Option<UserId>) => TE.TaskEither<E, HtmlFragment>;
 
 type RenderSavedLink = (doi: Doi, userId: O.Option<UserId>) => T.Task<HtmlFragment>;
 
@@ -59,9 +59,5 @@ export default <Err>(
   TE.chain(flow(
     render(renderSavedLink)(doi, userId),
     (rendered) => TE.rightTask<Err, HtmlFragment>(rendered),
-  )),
-  T.map(E.fold(
-    (error) => Result.err<HtmlFragment, Err>(error),
-    (success) => Result.ok<HtmlFragment, Err>(success),
   )),
 );
