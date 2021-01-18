@@ -1,11 +1,12 @@
 import * as T from 'fp-ts/Task';
 import { HasUserSavedArticle } from './render-saved-link';
 import Doi from '../types/doi';
-import { UserSavedArticleEvent } from '../types/domain-events';
+import { DomainEvent, isUserSavedArticleEvent } from '../types/domain-events';
+
 import toUserId from '../types/user-id';
 
 export const projectHasUserSavedArticle: HasUserSavedArticle = (doi, userId) => {
-  const events: ReadonlyArray<UserSavedArticleEvent> = [
+  const events: ReadonlyArray<DomainEvent> = [
     {
       type: 'UserSavedArticle',
       date: new Date(),
@@ -21,6 +22,7 @@ export const projectHasUserSavedArticle: HasUserSavedArticle = (doi, userId) => 
   ];
 
   const savedDois = events
+    .filter(isUserSavedArticleEvent)
     .filter((event) => event.userId === userId)
     .map((event) => event.articleId.value);
   return T.of(savedDois.includes(doi.value));
