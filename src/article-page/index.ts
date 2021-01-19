@@ -83,9 +83,9 @@ export default (ports: Ports): ArticlePage => {
       (success) => E.right<'not-found'|'unavailable', ArticleDetails >(success),
     )),
   );
-  const renderSaveForm = (doi: Doi, userId: O.Option<UserId>): HtmlFragment => {
+  const renderSaveForm = (doi: Doi): HtmlFragment => {
     let saveForm = '';
-    if (process.env.EXPERIMENT_ENABLED === 'true' && O.isSome(userId)) {
+    if (process.env.EXPERIMENT_ENABLED === 'true') {
       saveForm = `
       <form class="save-article-form">
         <input type="hidden" name="articleid" value="${doi.value}">
@@ -108,7 +108,7 @@ export default (ports: Ports): ArticlePage => {
         T.map((hasUserSavedArticle) => pipe(
           hasUserSavedArticle,
           B.fold(
-            () => renderSaveForm(doi, userId),
+            () => renderSaveForm(doi),
             () => renderSavedLink(u),
           ),
         )),
