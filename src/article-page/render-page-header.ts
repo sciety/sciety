@@ -22,9 +22,9 @@ type RenderSavedLink = (doi: Doi, userId: O.Option<UserId>) => T.Task<HtmlFragme
 let saveForm = '';
 if (process.env.EXPERIMENT_ENABLED === 'true') {
   saveForm = `
-    <form>
-      <button type="submit">
-        <img src="/static/images/playlist_add-24px.svg" alt=""> Save to my list
+    <form class="save-article-form">
+      <button type="submit" class="save-article-button">
+        <img class="save-article-button__icon" src="/static/images/playlist_add-24px.svg" alt=""> Save to my list
       </button>
     </form>
   `;

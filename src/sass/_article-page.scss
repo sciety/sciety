@@ -77,6 +77,37 @@
   border-radius: 5px;
 }
 
+.save-article-form {
+  display: inline-flex;
+}
+
+.save-article-button {
+  @include button.basics();
+  font-family: settings.$font-secondary;
+  font-size: functions.px-to-rem(14px);
+  line-height: calc(24 / 14);
+  display: inline-flex;
+  align-items: center;
+  margin-right: 2em;
+  background-color: settings.$colour-teal;
+  color: settings.$colour-white;
+  padding-right: functions.px-to-rem(5px);
+  padding-top: 0;
+  padding-bottom: 0;
+
+  &:hover,
+  &:active {
+    background-color: settings.$colour-ui-default;
+    color: settings.$colour-white;
+  }
+}
+
+.save-article-button__icon {
+  width: functions.px-to-rem(24px);
+  height: functions.px-to-rem(24px);
+  border-radius: 5px;
+}
+
 .saved-to-list {
   display: flex;
   align-items: center;
