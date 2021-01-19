@@ -98,6 +98,13 @@ export default (adapters: Adapters): Router => {
     requireAuthentication,
     respondHandler(adapters));
 
+  router.post('/save-article',
+    async (context, next) => {
+      context.redirect('back');
+
+      await next();
+    });
+
   const authenticate = koaPassport.authenticate(
     'twitter',
     {
