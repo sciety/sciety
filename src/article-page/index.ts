@@ -2,8 +2,7 @@ import { URL } from 'url';
 import * as E from 'fp-ts/lib/Either';
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
-import * as B from 'fp-ts/lib/boolean';
-import { constant, flow, pipe } from 'fp-ts/lib/function';
+import { flow, pipe } from 'fp-ts/lib/function';
 import { Maybe, Result } from 'true-myth';
 import ensureBiorxivDoi from './ensure-biorxiv-doi';
 import { getArticleFeedEvents } from './get-article-feed-events';
@@ -18,12 +17,11 @@ import createRenderPage, { Page, RenderPage } from './render-page';
 import createRenderPageHeader from './render-page-header';
 import createRenderReviewFeedItem from './render-review-feed-item';
 import createRenderReviewResponses from './render-review-responses';
-import { renderSaveForm } from './render-save-form';
-import { renderSavedLink } from './render-saved-link';
+import { renderSaveArticle } from './render-save-article';
 import Doi from '../types/doi';
 import { DomainEvent } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { toHtmlFragment } from '../types/html-fragment';
 import { RenderPageError } from '../types/render-page-error';
 import { ReviewId } from '../types/review-id';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
@@ -85,28 +83,9 @@ export default (ports: Ports): ArticlePage => {
     )),
   );
 
-  type HasUserSavedArticle = (doi: Doi, userId: UserId) => T.Task<boolean>;
-  type RenderSavedLinkIfNeeded = (doi: Doi, userId: O.Option<UserId>) => T.Task<HtmlFragment>;
-  const renderSavedLinkIfNeeded = (
-    hasUserSavedArticle: HasUserSavedArticle,
-  ): RenderSavedLinkIfNeeded => (doi, userId) => pipe(
-    userId,
-    O.fold(
-      constant(T.of('')),
-      (u) => pipe(
-        hasUserSavedArticle(doi, u),
-        T.map(B.fold(
-          () => renderSaveForm(doi),
-          () => renderSavedLink(u),
-        )),
-      ),
-    ),
-    T.map(toHtmlFragment),
-  );
-
   const renderPageHeader = createRenderPageHeader(
     shimmedFetchArticle,
-    renderSavedLinkIfNeeded(projectHasUserSavedArticle(ports.getAllEvents)),
+    renderSaveArticle(projectHasUserSavedArticle(ports.getAllEvents)),
   );
   const renderAbstract = createRenderArticleAbstract(
     flow(ports.fetchArticle, T.map((result) => result.map((article) => article.abstract))),
