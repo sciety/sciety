@@ -1,5 +1,6 @@
 import * as T from 'fp-ts/lib/Task';
 import Doi from '../../src/types/doi';
+import { generate } from '../../src/types/event-id';
 import toUserId from '../../src/types/user-id';
 import { GetAllEvents, projectSavedArticleDois } from '../../src/user-page/project-saved-article-dois';
 
@@ -14,12 +15,14 @@ describe('project-saved-article-dois', () => {
 
       const getAllEvents: GetAllEvents = T.of([
         {
+          id: generate(),
           type: 'UserSavedArticle',
           date: new Date('2020-01-01'),
           articleId: new Doi('10.1101/12345'),
           userId,
         },
         {
+          id: generate(),
           type: 'UserSavedArticle',
           date: new Date('2020-01-02'),
           articleId: new Doi('10.1101/67890'),
@@ -37,6 +40,7 @@ describe('project-saved-article-dois', () => {
     it('returns an empty array', async () => {
       const getAllEvents: GetAllEvents = T.of([
         {
+          id: generate(),
           type: 'UserSavedArticle',
           date: new Date('2020-01-02'),
           articleId: new Doi('10.1101/67890'),

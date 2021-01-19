@@ -31,7 +31,10 @@ import { finishRespondCommand } from '../respond/finish-respond-command';
 import { saveRespondCommand } from '../respond/save-respond-command';
 import { Page } from '../shared-components/apply-standard-page-layout';
 import termsPage from '../terms-page';
+import Doi from '../types/doi';
+import { userSavedArticle } from '../types/domain-events';
 import { RenderPageError } from '../types/render-page-error';
+import toUserId from '../types/user-id';
 import unfollowHandler from '../unfollow';
 import finishUnfollowCommand from '../unfollow/finish-unfollow-command';
 import saveUnfollowCommand from '../unfollow/save-unfollow-command';
@@ -100,6 +103,9 @@ export default (adapters: Adapters): Router => {
 
   router.post('/save-article',
     async (context, next) => {
+      await adapters.commitEvents([
+        userSavedArticle(toUserId('1295307136415735808'), new Doi('10.1101/2020.07.04.187583')),
+      ]);
       context.redirect('back');
 
       await next();

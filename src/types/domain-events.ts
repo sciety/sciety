@@ -197,6 +197,7 @@ export const isUserSavedArticleEvent = (event: DomainEvent):
 );
 
 type UserSavedArticleEvent = Readonly<{
+  id: EventId,
   type: 'UserSavedArticle';
   date: Date;
   userId: UserId;
@@ -204,6 +205,7 @@ type UserSavedArticleEvent = Readonly<{
 }>;
 
 export const userSavedArticle = (userId: UserId, doi: Doi): UserSavedArticleEvent => ({
+  id: generate(),
   type: 'UserSavedArticle',
   date: new Date(),
   userId,
@@ -230,4 +232,5 @@ export type RuntimeGeneratedEvent =
   UserFoundReviewHelpfulEvent |
   UserRevokedFindingReviewHelpfulEvent |
   UserFoundReviewNotHelpfulEvent |
-  UserRevokedFindingReviewNotHelpfulEvent;
+  UserRevokedFindingReviewNotHelpfulEvent |
+  UserSavedArticleEvent;

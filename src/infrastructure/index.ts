@@ -32,6 +32,7 @@ import Doi from '../types/doi';
 import { DomainEvent, isEditorialCommunityEndorsedArticleEvent, isEditorialCommunityReviewedArticleEvent } from '../types/domain-events';
 import EditorialCommunityRepository from '../types/editorial-community-repository';
 import EndorsementsRepository from '../types/endorsements-repository';
+import { generate } from '../types/event-id';
 import { Json } from '../types/json';
 import toUserId from '../types/user-id';
 
@@ -96,12 +97,14 @@ const createInfrastructure = async (): Promise<Adapters> => {
     .concat(await getEventsFromDatabase(pool, logger))
     .concat([
       {
+        id: generate(),
         type: 'UserSavedArticle',
         date: new Date(),
         userId: toUserId('1295307136415735808'),
         articleId: new Doi('10.1101/2020.07.04.187583'),
       },
       {
+        id: generate(),
         type: 'UserSavedArticle',
         date: new Date(),
         userId: toUserId('1295307136415735808'),
