@@ -19,16 +19,20 @@ export type RenderPageHeader<Err> = (doi: Doi, userId: O.Option<UserId>) => TE.T
 
 type RenderSavedLink = (doi: Doi, userId: O.Option<UserId>) => T.Task<HtmlFragment>;
 
-let saveForm = '';
-if (process.env.EXPERIMENT_ENABLED === 'true') {
-  saveForm = `
-    <form class="save-article-form">
-      <button type="submit" class="save-article-button">
-        <img class="save-article-button__icon" src="/static/images/playlist_add-24px.svg" alt=""> Save to my list
-      </button>
-    </form>
-  `;
-}
+const renderSaveForm = (doi: Doi): HtmlFragment => {
+  let saveForm = '';
+  if (process.env.EXPERIMENT_ENABLED === 'true') {
+    saveForm = `
+      <form class="save-article-form">
+        <input type="hidden" name="articleid" value="${doi.value}">
+        <button type="submit" class="save-article-button">
+          <img class="save-article-button__icon" src="/static/images/playlist_add-24px.svg" alt=""> Save to my list
+        </button>
+      </form>
+    `;
+  }
+  return toHtmlFragment(saveForm);
+};
 
 // TODO: inject renderTweetThis and similar
 const render = (
@@ -48,7 +52,7 @@ const render = (
     </ul>
     <div class="article-actions">
       ${renderTweetThis(doi)}
-      ${saveForm}
+      ${renderSaveForm(doi)}
       ${renderedSavedLink}
     </div>
   </header>
