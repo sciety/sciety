@@ -4,6 +4,8 @@ import { EventId, generate } from './event-id';
 import { ReviewId } from './review-id';
 import { UserId } from './user-id';
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 export type EditorialCommunityEndorsedArticleEvent = Readonly<{
   type: 'EditorialCommunityEndorsedArticle';
   date: Date;
@@ -15,6 +17,8 @@ export const isEditorialCommunityEndorsedArticleEvent = (event: DomainEvent):
 event is EditorialCommunityEndorsedArticleEvent => (
   event.type === 'EditorialCommunityEndorsedArticle'
 );
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export type EditorialCommunityReviewedArticleEvent = Readonly<{
   type: 'EditorialCommunityReviewedArticle';
@@ -29,11 +33,27 @@ event is EditorialCommunityReviewedArticleEvent => (
   event.type === 'EditorialCommunityReviewedArticle'
 );
 
+export const editorialCommunityReviewedArticle = (
+  editorialCommunityId: EditorialCommunityId,
+  doi: Doi,
+  reviewId: ReviewId,
+): EditorialCommunityReviewedArticleEvent => ({
+  type: 'EditorialCommunityReviewedArticle',
+  date: new Date(),
+  editorialCommunityId,
+  articleId: doi,
+  reviewId,
+});
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 type EditorialCommunityJoinedEvent = Readonly<{
   type: 'EditorialCommunityJoined';
   date: Date;
   editorialCommunityId: EditorialCommunityId;
 }>;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export type UserFollowedEditorialCommunityEvent = Readonly<{
   id: EventId,
@@ -59,6 +79,8 @@ export const isUserFollowedEditorialCommunityEvent = (event: DomainEvent):
   event.type === 'UserFollowedEditorialCommunity'
 );
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 export type UserUnfollowedEditorialCommunityEvent = Readonly<{
   id: EventId,
   type: 'UserUnfollowedEditorialCommunity';
@@ -83,6 +105,8 @@ export const isUserUnfollowedEditorialCommunityEvent = (event: DomainEvent):
   event.type === 'UserUnfollowedEditorialCommunity'
 );
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 export type UserFoundReviewHelpfulEvent = Readonly<{
   id: EventId,
   type: 'UserFoundReviewHelpful';
@@ -101,6 +125,8 @@ export const userFoundReviewHelpful = (
   userId,
   reviewId,
 });
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export type UserRevokedFindingReviewHelpfulEvent = Readonly<{
   id: EventId,
@@ -121,6 +147,8 @@ export const userRevokedFindingReviewHelpful = (
   reviewId,
 });
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 export type UserFoundReviewNotHelpfulEvent = Readonly<{
   id: EventId,
   type: 'UserFoundReviewNotHelpful';
@@ -139,6 +167,8 @@ export const userFoundReviewNotHelpful = (
   userId,
   reviewId,
 });
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export type UserRevokedFindingReviewNotHelpfulEvent = Readonly<{
   id: EventId,
@@ -159,6 +189,8 @@ export const userRevokedFindingReviewNotHelpful = (
   reviewId,
 });
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 export const isUserSavedArticleEvent = (event: DomainEvent):
   event is UserSavedArticleEvent => (
   event.type === 'UserSavedArticle'
@@ -177,6 +209,8 @@ export const userSavedArticle = (userId: UserId, doi: Doi): UserSavedArticleEven
   userId,
   articleId: doi,
 });
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export type DomainEvent =
   EditorialCommunityEndorsedArticleEvent |
