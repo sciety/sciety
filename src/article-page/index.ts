@@ -108,12 +108,8 @@ export default (ports: Ports): ArticlePage => {
     T.map((hasUserSavedArticle) => pipe(
       hasUserSavedArticle,
       B.fold(
-        () => O.none,
-        () => userId,
-      ),
-      O.fold(
         () => renderSaveForm(doi, userId),
-        renderSavedLink,
+        () => O.fold(constant(''), renderSavedLink)(userId),
       ),
       toHtmlFragment,
     )),
