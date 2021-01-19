@@ -102,17 +102,19 @@ export default (ports: Ports): ArticlePage => {
   const renderSavedLinkIfNeeded: RenderSavedLinkIfNeeded = (doi, userId) => pipe(
     userId,
     O.fold(
-      constant(T.of(false)),
-      (u) => projectHasUserSavedArticle(ports.getAllEvents)(doi, u),
-    ),
-    T.map((hasUserSavedArticle) => pipe(
-      hasUserSavedArticle,
-      B.fold(
-        () => renderSaveForm(doi, userId),
-        () => O.fold(constant(''), renderSavedLink)(userId),
+      constant(T.of('')),
+      (u) => pipe(
+        projectHasUserSavedArticle(ports.getAllEvents)(doi, u),
+        T.map((hasUserSavedArticle) => pipe(
+          hasUserSavedArticle,
+          B.fold(
+            () => renderSaveForm(doi, userId),
+            () => renderSavedLink(u),
+          ),
+        )),
       ),
-      toHtmlFragment,
-    )),
+    ),
+    T.map(toHtmlFragment),
   );
 
   const renderPageHeader = createRenderPageHeader(shimmedFetchArticle, renderSavedLinkIfNeeded);
