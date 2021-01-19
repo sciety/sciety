@@ -18,6 +18,7 @@ import createRenderPage, { Page, RenderPage } from './render-page';
 import createRenderPageHeader from './render-page-header';
 import createRenderReviewFeedItem from './render-review-feed-item';
 import createRenderReviewResponses from './render-review-responses';
+import { renderSaveForm } from './render-save-form';
 import { renderSavedLink } from './render-saved-link';
 import Doi from '../types/doi';
 import { DomainEvent } from '../types/domain-events';
@@ -83,20 +84,6 @@ export default (ports: Ports): ArticlePage => {
       (success) => E.right<'not-found'|'unavailable', ArticleDetails >(success),
     )),
   );
-  const renderSaveForm = (doi: Doi): HtmlFragment => {
-    let saveForm = '';
-    if (process.env.EXPERIMENT_ENABLED === 'true') {
-      saveForm = `
-      <form class="save-article-form">
-        <input type="hidden" name="articleid" value="${doi.value}">
-        <button type="submit" class="save-article-button">
-          <img class="save-article-button__icon" src="/static/images/playlist_add-24px.svg" alt=""> Save to my list
-        </button>
-      </form>
-    `;
-    }
-    return toHtmlFragment(saveForm);
-  };
 
   type RenderSavedLinkIfNeeded = (doi: Doi, userId: O.Option<UserId>) => T.Task<HtmlFragment>;
   const renderSavedLinkIfNeeded: RenderSavedLinkIfNeeded = (doi, userId) => pipe(
