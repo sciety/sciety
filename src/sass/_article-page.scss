@@ -52,18 +52,23 @@
   font-family: settings.$font-secondary;
   font-size: functions.px-to-rem(14px);
   line-height: calc(24 / 14);
-  background-color: settings.$colour-teal;
-  color: settings.$colour-white;
   display: inline-flex;
   align-items: center;
   padding-right: functions.px-to-rem(5px);
   margin-right: 2em;
 
-  &:hover,
-  &:active {
-    background-color: settings.$colour-ui-default;
+  &:link,
+  &:visited {
+    background-color: settings.$colour-teal;
     color: settings.$colour-white;
+
+    &:hover,
+    &:active {
+      background-color: settings.$colour-ui-default;
+      color: settings.$colour-white;
+    }
   }
+
 }
 
 .tweet-button__icon {
