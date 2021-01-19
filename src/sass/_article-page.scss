@@ -59,7 +59,8 @@
   padding-right: functions.px-to-rem(5px);
   margin-right: 2em;
 
-  &:hover {
+  &:hover,
+  &:active {
     background-color: settings.$colour-ui-default;
     color: settings.$colour-white;
   }

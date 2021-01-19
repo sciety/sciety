@@ -312,7 +312,8 @@ a:link,
 a:visited {
   color: settings.$colour-primary;
 
-  &:hover {
+  &:hover,
+  &:active {
     color: settings.$colour-primary-hover;
   }
 }

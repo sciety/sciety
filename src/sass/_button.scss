@@ -11,7 +11,8 @@
   color: settings.$colour-white;
   background-color: settings.$colour-primary;
 
-  &:hover {
+  &:hover,
+  &:active {
     color: settings.$colour-white;
     background-color: settings.$colour-primary-hover;
   }
@@ -27,7 +28,8 @@
   color: settings.$colour-ui-default;
   border: 1px solid currentColor;
 
-  &:hover {
+  &:hover,
+  &:active {
     background-color: settings.$colour-primary;
     color: settings.$colour-white;
     border-color: settings.$colour-primary;
@@ -43,7 +45,8 @@
   @include primary-colour();
 }
 
-.button--secondary:hover {
+.button--secondary:hover,
+.button--secondary:active {
   background-color: settings.$colour-grey-one;
   color: settings.$colour-ui-default;
   border-color: currentColor;

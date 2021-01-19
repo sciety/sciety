@@ -3,7 +3,8 @@
 @mixin subtle-link () {
   color: inherit;
 
-  &:hover {
+  &:hover,
+  &:active {
     color: settings.$colour-primary;
   }
 }

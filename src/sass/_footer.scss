@@ -14,12 +14,14 @@
   align-items: center;
   color: settings.$colour-white;
 
-  a {
+  a:link,
+  a:visited {
     color: inherit;
-  }
 
-  a:hover {
-    color: currentColor;
+    &:hover,
+    &:active {
+      color: currentColor;
+    }
   }
 }
 

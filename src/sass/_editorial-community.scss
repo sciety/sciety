@@ -31,7 +31,8 @@
   padding: baseline.increments(1);
   transition: background-color 0.2s ease-out, border-color 0.1s ease-out;
 
-  &:hover {
+  &:hover,
+  &:active {
     background-color: settings.$colour-grey-three;
     border-color: settings.$colour-primary-hover;
     color: settings.$colour-primary-hover;
@@ -70,7 +71,8 @@
   margin-bottom: 8px;
   transition: border-color 0.2s ease-out;
 
-  .editorial-community:hover & {
+  .editorial-community:hover,
+  .editorial-community:active & {
     border-color: settings.$colour-primary-hover;
   }
 }

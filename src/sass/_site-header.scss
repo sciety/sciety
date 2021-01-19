@@ -70,7 +70,8 @@
 .site-header__nav_list_link {
   color: settings.$colour-ui-default;
 
-  &:hover {
+  &:hover,
+  &:active {
     color: settings.$colour-primary;
   }
 }
