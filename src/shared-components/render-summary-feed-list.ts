@@ -10,11 +10,11 @@ const renderAsList = (items: ReadonlyArray<HtmlFragment>): string => `
   </ol>
 `;
 
-export type RenderSummaryFeedList<T> = (events: ReadonlyArray<T>) => T.Task<O.Option<HtmlFragment>>;
+export type RenderSummaryFeedList<E> = (events: ReadonlyArray<E>) => T.Task<O.Option<HtmlFragment>>;
 
 type RenderSummaryFeedItem<E> = (event: E) => T.Task<HtmlFragment>;
 
-export default <T>(renderSummaryFeedItem: RenderSummaryFeedItem<T>): RenderSummaryFeedList<T> => flow(
+export default <E>(renderSummaryFeedItem: RenderSummaryFeedItem<E>): RenderSummaryFeedList<E> => flow(
   T.traverseArray(renderSummaryFeedItem),
   T.map(O.fromPredicate((es) => es.length > 0)),
   T.map(O.map(flow(
