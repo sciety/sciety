@@ -105,12 +105,9 @@ export default (ports: Ports): ArticlePage => {
       constant(T.of('')),
       (u) => pipe(
         projectHasUserSavedArticle(ports.getAllEvents)(doi, u),
-        T.map((hasUserSavedArticle) => pipe(
-          hasUserSavedArticle,
-          B.fold(
-            () => renderSaveForm(doi),
-            () => renderSavedLink(u),
-          ),
+        T.map(B.fold(
+          () => renderSaveForm(doi),
+          () => renderSavedLink(u),
         )),
       ),
     ),
