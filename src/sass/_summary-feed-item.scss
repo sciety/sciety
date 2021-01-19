@@ -15,8 +15,9 @@ $_avatar-border-width: 1px;
   }
 }
 
-.summary-feed-item__link {
-  @include typography.subtle-link;
+.summary-feed-item__link:link,
+.summary-feed-item__link:visited {
+  @include typography.subtle-link();
 }
 
 .summary-feed-item__avatar {

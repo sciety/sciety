@@ -308,12 +308,13 @@ ul {
   margin-top: 0;
 }
 
-a {
+a:link,
+a:visited {
   color: settings.$colour-primary;
-}
 
-a:hover {
-  color: settings.$colour-primary-hover;
+  &:hover {
+    color: settings.$colour-primary-hover;
+  }
 }
 
 .feed__image {

@@ -49,8 +49,9 @@
   margin-bottom: baseline.increments(1);
 }
 
-.followed-communities__item_link {
-  @include typography.subtle-link;
+.followed-communities__item_link:link,
+.followed-communities__item_link:visited {
+  @include typography.subtle-link();
   font-family: settings.$font-secondary;
   flex: 1 1 auto;
   padding-right: functions.px-to-rem(6px);
@@ -79,6 +80,7 @@ $_avatar-border-width: 1px;
   margin-bottom: baseline.increments(2);
 }
 
-.saved-articles__link {
-  @include typography.subtle-link;
+.saved-articles__link:link,
+.saved-articles__link:visited {
+  @include typography.subtle-link();
 }
