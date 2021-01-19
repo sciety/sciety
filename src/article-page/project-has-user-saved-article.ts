@@ -6,7 +6,7 @@ import { UserId } from '../types/user-id';
 
 export type GetEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-type ProjectHasUserSavedArticle = (getEvents: GetEvents) => (doi: Doi, userId: UserId) => T.Task<boolean>;
+export type ProjectHasUserSavedArticle = (getEvents: GetEvents) => (doi: Doi, userId: UserId) => T.Task<boolean>;
 
 export const projectHasUserSavedArticle: ProjectHasUserSavedArticle = (getEvents) => (doi, userId) => pipe(
   getEvents,

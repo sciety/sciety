@@ -85,13 +85,16 @@ export default (ports: Ports): ArticlePage => {
     )),
   );
 
+  type HasUserSavedArticle = (doi: Doi, userId: UserId) => T.Task<boolean>;
   type RenderSavedLinkIfNeeded = (doi: Doi, userId: O.Option<UserId>) => T.Task<HtmlFragment>;
-  const renderSavedLinkIfNeeded: RenderSavedLinkIfNeeded = (doi, userId) => pipe(
+  const renderSavedLinkIfNeeded = (
+    hasUserSavedArticle: HasUserSavedArticle,
+  ): RenderSavedLinkIfNeeded => (doi, userId) => pipe(
     userId,
     O.fold(
       constant(T.of('')),
       (u) => pipe(
-        projectHasUserSavedArticle(ports.getAllEvents)(doi, u),
+        hasUserSavedArticle(doi, u),
         T.map(B.fold(
           () => renderSaveForm(doi),
           () => renderSavedLink(u),
@@ -101,7 +104,10 @@ export default (ports: Ports): ArticlePage => {
     T.map(toHtmlFragment),
   );
 
-  const renderPageHeader = createRenderPageHeader(shimmedFetchArticle, renderSavedLinkIfNeeded);
+  const renderPageHeader = createRenderPageHeader(
+    shimmedFetchArticle,
+    renderSavedLinkIfNeeded(projectHasUserSavedArticle(ports.getAllEvents)),
+  );
   const renderAbstract = createRenderArticleAbstract(
     flow(ports.fetchArticle, T.map((result) => result.map((article) => article.abstract))),
   );
