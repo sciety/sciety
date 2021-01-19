@@ -24,7 +24,7 @@ if (process.env.EXPERIMENT_ENABLED === 'true') {
   saveForm = `
     <form>
       <button type="submit">
-        Save to my list
+        <img src="/static/images/playlist_add-24px.svg" alt=""> Save to my list
       </button>
     </form>
   `;
