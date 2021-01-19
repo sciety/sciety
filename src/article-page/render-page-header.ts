@@ -17,14 +17,14 @@ export type GetArticleDetails<Err> = (doi: Doi) => TE.TaskEither<Err, ArticleDet
 
 export type RenderPageHeader<Err> = (doi: Doi, userId: O.Option<UserId>) => TE.TaskEither<Err, HtmlFragment>;
 
-type RenderSavedLink = (doi: Doi, userId: O.Option<UserId>) => T.Task<HtmlFragment>;
+type RenderSaveArticle = (doi: Doi, userId: O.Option<UserId>) => T.Task<HtmlFragment>;
 
 // TODO: inject renderTweetThis and similar
 const render = (
-  renderSavedLink: RenderSavedLink,
+  renderSaveArticle: RenderSaveArticle,
 ) => (doi: Doi, userId: O.Option<UserId>) => (details: ArticleDetails): T.Task<HtmlFragment> => pipe(
-  renderSavedLink(doi, userId),
-  T.map((renderedSavedLink) => `
+  renderSaveArticle(doi, userId),
+  T.map((renderedSaveArticle) => `
   <header class="page-header page-header--article">
     <h1>${details.title}</h1>
     <ol aria-label="Authors of this article" class="article-author-list" role="list">
@@ -37,7 +37,7 @@ const render = (
     </ul>
     <div class="article-actions">
       ${renderTweetThis(doi)}
-      ${renderedSavedLink}
+      ${renderedSaveArticle}
     </div>
   </header>
   `),
@@ -46,12 +46,12 @@ const render = (
 
 export default <Err>(
   getArticleDetails: GetArticleDetails<Err>,
-  renderSavedLink: RenderSavedLink,
+  renderSaveArticle: RenderSaveArticle,
 ): RenderPageHeader<Err> => (doi, userId) => pipe(
   doi,
   getArticleDetails,
   TE.chain(flow(
-    render(renderSavedLink)(doi, userId),
+    render(renderSaveArticle)(doi, userId),
     (rendered) => TE.rightTask<Err, HtmlFragment>(rendered),
   )),
 );
