@@ -19,9 +19,9 @@ export type RenderPageHeader<Err> = (doi: Doi, userId: O.Option<UserId>) => TE.T
 
 type RenderSavedLink = (doi: Doi, userId: O.Option<UserId>) => T.Task<HtmlFragment>;
 
-const renderSaveForm = (doi: Doi): HtmlFragment => {
+const renderSaveForm = (doi: Doi, userId: O.Option<UserId>): HtmlFragment => {
   let saveForm = '';
-  if (process.env.EXPERIMENT_ENABLED === 'true') {
+  if (process.env.EXPERIMENT_ENABLED === 'true' && O.isSome(userId)) {
     saveForm = `
       <form class="save-article-form">
         <input type="hidden" name="articleid" value="${doi.value}">
@@ -52,7 +52,7 @@ const render = (
     </ul>
     <div class="article-actions">
       ${renderTweetThis(doi)}
-      ${renderSaveForm(doi)}
+      ${renderSaveForm(doi, userId)}
       ${renderedSavedLink}
     </div>
   </header>
