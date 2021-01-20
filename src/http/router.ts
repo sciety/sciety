@@ -29,12 +29,10 @@ import privacyPage from '../privacy-page';
 import { respondHandler } from '../respond';
 import { finishRespondCommand } from '../respond/finish-respond-command';
 import { saveRespondCommand } from '../respond/save-respond-command';
+import { saveArticleHandler } from '../save-article';
 import { Page } from '../shared-components/apply-standard-page-layout';
 import termsPage from '../terms-page';
-import Doi from '../types/doi';
-import { userSavedArticle } from '../types/domain-events';
 import { RenderPageError } from '../types/render-page-error';
-import { User } from '../types/user';
 import unfollowHandler from '../unfollow';
 import finishUnfollowCommand from '../unfollow/finish-unfollow-command';
 import saveUnfollowCommand from '../unfollow/save-unfollow-command';
@@ -103,16 +101,7 @@ export default (adapters: Adapters): Router => {
 
   router.post('/save-article',
     bodyParser({ enableTypes: ['form'] }),
-    async (context, next) => {
-      const user = context.state.user as User;
-      const articleId = new Doi(context.request.body.articleid);
-      await adapters.commitEvents([
-        userSavedArticle(user.id, articleId),
-      ]);
-      context.redirect('back');
-
-      await next();
-    });
+    saveArticleHandler(adapters));
 
   const authenticate = koaPassport.authenticate(
     'twitter',
