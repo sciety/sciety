@@ -1,5 +1,6 @@
 import { Pool } from 'pg';
 import { Logger } from './logger';
+import Doi from '../types/doi';
 import { DomainEvent } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { EventId } from '../types/event-id';
@@ -66,6 +67,15 @@ export default async (pool: Pool, logger: Logger): Promise<Array<DomainEvent>> =
           date,
           reviewId: toReviewId(ensureString(payload.reviewId)),
           userId: toUserId(ensureString(payload.userId)),
+        };
+      }
+      case 'UserSavedArticle': {
+        return {
+          id,
+          type,
+          date,
+          userId: toUserId(ensureString(payload.userId)),
+          articleId: new Doi(ensureString(payload.articleId)),
         };
       }
       default: {

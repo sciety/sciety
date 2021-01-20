@@ -31,6 +31,7 @@ const persistedEventsWhiteList: ReadonlyArray<RuntimeGeneratedEvent['type']> = [
   'UserFoundReviewNotHelpful',
   'UserRevokedFindingReviewHelpful',
   'UserRevokedFindingReviewNotHelpful',
+  'UserSavedArticle',
 ];
 
 export default (
