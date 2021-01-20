@@ -39,5 +39,23 @@ describe('save-article', () => {
     it.todo('does nothing');
   });
 
-  it.todo('redirects back');
+  it('redirects back', async () => {
+    const context = ({
+      request: {
+        body: {
+          articleid: new Doi('10.1234/5678').value,
+        },
+      },
+      redirect: jest.fn(),
+      state: {
+        user: {
+          id: toUserId('user-id'),
+        },
+      },
+    } as unknown) as RouterContext<{ user: User }>;
+
+    await saveArticleHandler({ commitEvents: jest.fn() })(context, jest.fn());
+
+    expect(context.redirect).toHaveBeenCalledWith('back');
+  });
 });
