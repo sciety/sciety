@@ -26,7 +26,7 @@ describe('save-article', () => {
       } as unknown) as RouterContext<{ user: User }>;
 
       const getAllEvents = T.of([]);
-      const commitEvents = jest.fn();
+      const commitEvents = jest.fn().mockImplementation(() => T.of(undefined));
 
       await saveArticleHandler({ getAllEvents, commitEvents })(context, jest.fn());
 
@@ -59,7 +59,7 @@ describe('save-article', () => {
       const getAllEvents = T.of([
         userSavedArticle(userId, articleId),
       ]);
-      const commitEvents = jest.fn();
+      const commitEvents = jest.fn().mockImplementation(() => T.of(undefined));
 
       await saveArticleHandler({ getAllEvents, commitEvents })(context, jest.fn());
 
@@ -83,7 +83,7 @@ describe('save-article', () => {
     } as unknown) as RouterContext<{ user: User }>;
 
     const getAllEvents = T.of([]);
-    await saveArticleHandler({ getAllEvents, commitEvents: jest.fn() })(context, jest.fn());
+    await saveArticleHandler({ getAllEvents, commitEvents: () => T.of(undefined) })(context, jest.fn());
 
     expect(context.redirect).toHaveBeenCalledWith('back');
   });

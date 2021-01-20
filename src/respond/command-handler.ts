@@ -11,7 +11,7 @@ import { UserId } from '../types/user-id';
 
 export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-export type CommitEvents = (events: ReadonlyArray<RuntimeGeneratedEvent>) => void;
+export type CommitEvents = (events: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<void>;
 
 const commands = {
   'respond-helpful': respondHelpful,
@@ -35,6 +35,6 @@ export const commandHandler = (
     getAllEvents,
     T.map(reviewResponse(userId, reviewId)),
     T.map((currentResponse) => commands[command](currentResponse, userId, reviewId)),
-    T.map(commitEvents),
+    T.chain(commitEvents),
   )
 );

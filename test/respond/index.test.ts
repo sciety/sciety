@@ -1,4 +1,5 @@
 import { RouterParamContext } from '@koa/router';
+import * as T from 'fp-ts/lib/Task';
 import { ParameterizedContext } from 'koa';
 import { respondHandler } from '../../src/respond';
 import { User } from '../../src/types/user';
@@ -25,7 +26,7 @@ describe('index', () => {
     } as unknown) as ParameterizedContext<{ user: User }, RouterParamContext<{ user: User }>>;
     const ports = {
       getAllEvents: async () => [],
-      commitEvents: async () => {},
+      commitEvents: () => T.of(undefined),
     };
     const respond = respondHandler(ports);
     await respond(context, async () => {});

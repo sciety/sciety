@@ -12,7 +12,7 @@ import { User } from '../types/user';
 
 type Ports = {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>;
-  commitEvents: (events: ReadonlyArray<UserSavedArticleEvent>) => Promise<void>,
+  commitEvents: (events: ReadonlyArray<UserSavedArticleEvent>) => T.Task<void>,
 };
 
 export const saveArticleHandler = (ports: Ports): Middleware<{ user: User }> => async (context, next) => {
@@ -26,7 +26,7 @@ export const saveArticleHandler = (ports: Ports): Middleware<{ user: User }> => 
       () => [userSavedArticle(user.id, articleId)],
       constant([]),
     )),
-    T.chain((events) => async () => ports.commitEvents(events)),
+    T.chain(ports.commitEvents),
   )();
 
   context.redirect('back');

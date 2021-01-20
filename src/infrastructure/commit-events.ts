@@ -1,3 +1,4 @@
+import * as T from 'fp-ts/lib/Task';
 import { Pool } from 'pg';
 import { Logger } from './logger';
 import Doi from '../types/doi';
@@ -5,7 +6,7 @@ import { DomainEvent, RuntimeGeneratedEvent } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
 import HypothesisAnnotationId from '../types/hypothesis-annotation-id';
 
-export type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => Promise<void>;
+export type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<void>;
 
 const replacer = (key: string, value: unknown): unknown => {
   if (['date', 'id', 'type'].includes(key)) {
@@ -39,7 +40,7 @@ export default (
   pool: Pool,
   logger: Logger,
 ): CommitEvents => (
-  async (events) => {
+  (events) => async () => {
     for (const event of events) {
       if (persistedEventsWhiteList.includes(event.type)) {
         await pool.query(
