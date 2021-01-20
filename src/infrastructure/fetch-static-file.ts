@@ -6,7 +6,7 @@ import { Logger } from './logger';
 
 export type FetchStaticFile = (filename: string) => T.Task<string>;
 
-export default (logger: Logger): FetchStaticFile => (
+export const createFetchStaticFile = (logger: Logger): FetchStaticFile => (
   (filename) => {
     const fullPath: string = path.resolve(__dirname, '..', '..', 'static', filename);
     logger('debug', 'Fetch static file', { filename, fullPath });

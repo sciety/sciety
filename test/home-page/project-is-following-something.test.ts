@@ -1,7 +1,7 @@
 import * as T from 'fp-ts/lib/Task';
 import createProjectIsFollowingSomething, { GetAllEvents } from '../../src/home-page/project-is-following-something';
 import { userFollowedEditorialCommunity, userUnfollowedEditorialCommunity } from '../../src/types/domain-events';
-import EditorialCommunityId from '../../src/types/editorial-community-id';
+import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 import { toUserId } from '../../src/types/user-id';
 
 describe('project-is-following-something', () => {

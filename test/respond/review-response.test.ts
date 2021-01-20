@@ -1,5 +1,5 @@
 import { reviewResponse } from '../../src/respond/review-response';
-import Doi from '../../src/types/doi';
+import { Doi } from '../../src/types/doi';
 import {
   UserFoundReviewHelpfulEvent,
   UserFoundReviewNotHelpfulEvent,

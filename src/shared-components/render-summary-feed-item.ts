@@ -3,13 +3,13 @@ import * as T from 'fp-ts/lib/Task';
 import { flow, pipe } from 'fp-ts/lib/function';
 import { Result } from 'true-myth';
 import templateDate from './date';
-import Doi from '../types/doi';
+import { Doi } from '../types/doi';
 import {
   EditorialCommunityEndorsedArticleEvent,
   EditorialCommunityReviewedArticleEvent,
   isEditorialCommunityEndorsedArticleEvent,
 } from '../types/domain-events';
-import EditorialCommunityId from '../types/editorial-community-id';
+import { EditorialCommunityId } from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 

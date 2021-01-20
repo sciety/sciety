@@ -3,10 +3,10 @@ import * as T from 'fp-ts/lib/Task';
 import { constVoid, pipe } from 'fp-ts/lib/function';
 import { Pool } from 'pg';
 import { Logger } from './logger';
-import Doi from '../types/doi';
+import { Doi } from '../types/doi';
 import { DomainEvent, RuntimeGeneratedEvent } from '../types/domain-events';
-import EditorialCommunityId from '../types/editorial-community-id';
-import HypothesisAnnotationId from '../types/hypothesis-annotation-id';
+import { EditorialCommunityId } from '../types/editorial-community-id';
+import { HypothesisAnnotationId } from '../types/hypothesis-annotation-id';
 
 export type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<void>;
 

@@ -1,7 +1,7 @@
 import * as T from 'fp-ts/lib/Task';
 import { Maybe } from 'true-myth';
 import { EditorialCommunity } from '../types/editorial-community';
-import EditorialCommunityId from '../types/editorial-community-id';
+import { EditorialCommunityId } from '../types/editorial-community-id';
 
 type Actor = {
   url: string;

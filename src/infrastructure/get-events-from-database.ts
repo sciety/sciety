@@ -1,11 +1,11 @@
 import { Pool } from 'pg';
 import { Logger } from './logger';
-import Doi from '../types/doi';
+import { Doi } from '../types/doi';
 import { DomainEvent } from '../types/domain-events';
-import EditorialCommunityId from '../types/editorial-community-id';
+import { EditorialCommunityId } from '../types/editorial-community-id';
 import { EventId } from '../types/event-id';
 import { Json, JsonObject } from '../types/json';
-import toReviewId from '../types/review-id';
+import { toReviewId } from '../types/review-id';
 import { toUserId } from '../types/user-id';
 
 type EventRow = {

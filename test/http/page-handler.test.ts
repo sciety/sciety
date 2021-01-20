@@ -1,11 +1,11 @@
 import { JSDOM } from 'jsdom';
 import request, { Response } from 'supertest';
-import createServer from './server';
+import { createTestServer } from './server';
 
 describe('page-handler', (): void => {
   describe('article page', () => {
     it('sets the og meta tags to the article details', async () => {
-      const { server } = await createServer();
+      const { server } = await createTestServer();
       const response: Response = await request(server).get('/articles/10.1101/646810');
       const html = response.text;
       const rendered = JSDOM.fragment(html);
@@ -19,7 +19,7 @@ describe('page-handler', (): void => {
 
   describe('article-page errors', () => {
     it('renders the description of an error', async () => {
-      const { server } = await createServer();
+      const { server } = await createTestServer();
       const response: Response = await request(server).get('/articles/10.14234321/not-on-biorxiv');
       const html = response.text;
       const rendered = JSDOM.fragment(html);

@@ -1,5 +1,5 @@
-import Doi from './doi';
-import EditorialCommunityId from './editorial-community-id';
+import { Doi } from './doi';
+import { EditorialCommunityId } from './editorial-community-id';
 import { EventId, generate } from './event-id';
 import { ReviewId } from './review-id';
 import { UserId } from './user-id';

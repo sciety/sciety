@@ -1,6 +1,6 @@
 import { URL } from 'url';
 import { EditorialCommunity } from '../types/editorial-community';
-import EditorialCommunityId from '../types/editorial-community-id';
+import { EditorialCommunityId } from '../types/editorial-community-id';
 
 const editorialCommunities: Array<EditorialCommunity> = [
   {

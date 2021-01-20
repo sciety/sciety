@@ -1,8 +1,8 @@
 import { URL } from 'url';
 import * as T from 'fp-ts/lib/Task';
-import EditorialCommunityId from '../../src/types/editorial-community-id';
+import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 import { toUserId } from '../../src/types/user-id';
-import createGetFollowedEditorialCommunitiesFromIds, { GetEditorialCommunity, GetFollowedEditorialCommunityIds } from '../../src/user-page/get-followed-editorial-communities-from-ids';
+import { createGetFollowedEditorialCommunitiesFromIds, GetEditorialCommunity, GetFollowedEditorialCommunityIds } from '../../src/user-page/get-followed-editorial-communities-from-ids';
 
 describe('get-followed-editorial-communities-from-ids adapter', () => {
   it('provides a list of communities', async () => {

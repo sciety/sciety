@@ -1,8 +1,8 @@
 import * as T from 'fp-ts/lib/Task';
-import EditorialCommunityId from '../../src/types/editorial-community-id';
+import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 import { generate } from '../../src/types/event-id';
 import { toUserId } from '../../src/types/user-id';
-import createProjectFollowedEditorialCommunityIds, { GetAllEvents } from '../../src/user-page/project-followed-editorial-community-ids';
+import { createProjectFollowedEditorialCommunityIds, GetAllEvents } from '../../src/user-page/project-followed-editorial-community-ids';
 
 describe('project-followed-editorial-community-ids', () => {
   const getAllEvents: GetAllEvents = T.of([

@@ -1,6 +1,6 @@
 import { GetFeedItems } from './render-feed';
 
-export default (
+export const createHandleArticleVersionErrors = (
   getFeedItems: GetFeedItems,
 ): GetFeedItems => (
   async (doi) => {

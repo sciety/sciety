@@ -1,7 +1,7 @@
 import * as T from 'fp-ts/lib/Task';
 import { Result } from 'true-myth';
 import createRenderArticleAbstract, { GetArticleAbstract } from '../../src/article-page/render-article-abstract';
-import Doi from '../../src/types/doi';
+import { Doi } from '../../src/types/doi';
 import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
 
 const doi = new Doi('10.1101/815689');

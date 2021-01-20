@@ -1,4 +1,4 @@
-import Doi from '../types/doi';
+import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 export const renderSaveForm = (doi: Doi): HtmlFragment => toHtmlFragment(`

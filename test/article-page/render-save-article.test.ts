@@ -2,7 +2,7 @@ import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import { constant } from 'fp-ts/lib/function';
 import { renderSaveArticle } from '../../src/article-page/render-save-article';
-import Doi from '../../src/types/doi';
+import { Doi } from '../../src/types/doi';
 import { toUserId } from '../../src/types/user-id';
 
 describe('render-save-article', () => {

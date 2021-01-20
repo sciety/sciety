@@ -1,9 +1,9 @@
 import * as T from 'fp-ts/lib/Task';
 import { Result } from 'true-myth';
 import renderSummaryFeedItem, { GetActor, GetArticle } from '../../src/shared-components/render-summary-feed-item';
-import Doi from '../../src/types/doi';
+import { Doi } from '../../src/types/doi';
 import { EditorialCommunityEndorsedArticleEvent, EditorialCommunityReviewedArticleEvent } from '../../src/types/domain-events';
-import EditorialCommunityId from '../../src/types/editorial-community-id';
+import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
 
 describe('render-summary-feed-item', (): void => {

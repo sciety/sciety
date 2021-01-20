@@ -1,5 +1,5 @@
 import { respondNotHelpful } from '../../src/respond/respond-not-helpful-command';
-import Doi from '../../src/types/doi';
+import { Doi } from '../../src/types/doi';
 import { toUserId } from '../../src/types/user-id';
 
 const userId = toUserId('someone');

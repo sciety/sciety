@@ -16,7 +16,7 @@ import { renderPageHeader } from './render-page-header';
 import createRenderSummaryFeedItem from '../shared-components/render-summary-feed-item';
 import createRenderSummaryFeedList from '../shared-components/render-summary-feed-list';
 import { EditorialCommunity } from '../types/editorial-community';
-import EditorialCommunityId from '../types/editorial-community-id';
+import { EditorialCommunityId } from '../types/editorial-community-id';
 import { FetchExternalArticle } from '../types/fetch-external-article';
 import { toHtmlFragment } from '../types/html-fragment';
 import { User } from '../types/user';

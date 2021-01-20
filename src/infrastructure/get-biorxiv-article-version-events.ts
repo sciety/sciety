@@ -1,6 +1,6 @@
 import { URL } from 'url';
 import { Logger } from './logger';
-import Doi from '../types/doi';
+import { Doi } from '../types/doi';
 import { Json, JsonCompatible } from '../types/json';
 
 export type GetJson = (url: string) => Promise<Json>;

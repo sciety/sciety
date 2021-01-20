@@ -1,6 +1,6 @@
-import Doi from '../../src/types/doi';
-import HypothesisAnnotationId from '../../src/types/hypothesis-annotation-id';
-import toReviewId, { ReviewId } from '../../src/types/review-id';
+import { Doi } from '../../src/types/doi';
+import { HypothesisAnnotationId } from '../../src/types/hypothesis-annotation-id';
+import { ReviewId, toReviewId } from '../../src/types/review-id';
 
 describe('review-id', () => {
   describe('when is a DOI', () => {

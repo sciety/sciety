@@ -1,6 +1,6 @@
 import { Middleware } from '@koa/router';
 import createFollowCommand, { CommitEvents, GetFollowList } from './follow-command';
-import EditorialCommunityId from '../types/editorial-community-id';
+import { EditorialCommunityId } from '../types/editorial-community-id';
 import { User } from '../types/user';
 
 interface Ports {

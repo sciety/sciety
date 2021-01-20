@@ -15,7 +15,7 @@ import renderPageHeader from './render-page-header';
 import renderSearchForm from './render-search-form';
 import createRenderSummaryFeedItem from '../shared-components/render-summary-feed-item';
 import createRenderSummaryFeedList from '../shared-components/render-summary-feed-list';
-import EditorialCommunityId from '../types/editorial-community-id';
+import { EditorialCommunityId } from '../types/editorial-community-id';
 import { FetchExternalArticle } from '../types/fetch-external-article';
 import { User } from '../types/user';
 import { UserId } from '../types/user-id';

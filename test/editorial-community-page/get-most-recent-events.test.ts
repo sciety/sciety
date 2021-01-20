@@ -1,8 +1,8 @@
 import * as T from 'fp-ts/lib/Task';
 import createGetMostRecentEvents, { GetAllEvents } from '../../src/editorial-community-page/get-most-recent-events';
-import Doi from '../../src/types/doi';
+import { Doi } from '../../src/types/doi';
 import { DomainEvent } from '../../src/types/domain-events';
-import EditorialCommunityId from '../../src/types/editorial-community-id';
+import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 
 describe('get-most-recent-events', () => {
   const editorialCommunity1 = new EditorialCommunityId('1');

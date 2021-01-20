@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/lib/Either';
-import createSearchEuropePmc, { GetJson } from '../../src/infrastructure/search-europe-pmc';
-import Doi from '../../src/types/doi';
+import { createSearchEuropePmc, GetJson } from '../../src/infrastructure/search-europe-pmc';
+import { Doi } from '../../src/types/doi';
 import dummyLogger from '../dummy-logger';
 
 describe('search-europe-pmc adapter', () => {

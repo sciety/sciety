@@ -1,9 +1,9 @@
 import fs from 'fs';
 import csvParseSync from 'csv-parse/lib/sync';
-import Doi from '../types/doi';
+import { Doi } from '../types/doi';
 import { DomainEvent } from '../types/domain-events';
-import EditorialCommunityId from '../types/editorial-community-id';
-import HypothesisAnnotationId from '../types/hypothesis-annotation-id';
+import { EditorialCommunityId } from '../types/editorial-community-id';
+import { HypothesisAnnotationId } from '../types/hypothesis-annotation-id';
 import { ReviewId } from '../types/review-id';
 
 /* eslint-disable no-continue */

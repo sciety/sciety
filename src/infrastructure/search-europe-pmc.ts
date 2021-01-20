@@ -2,7 +2,7 @@ import { URLSearchParams } from 'url';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { pipe } from 'fp-ts/lib/pipeable';
 import { Logger } from './logger';
-import Doi from '../types/doi';
+import { Doi } from '../types/doi';
 import { Json, JsonCompatible } from '../types/json';
 
 export type GetJson = (uri: string) => Promise<Json>;
@@ -75,7 +75,7 @@ const constructSearchResults = (json: Json): TE.TaskEither<'unavailable', Search
   }
 };
 
-export default (getJson: GetJson, logger: Logger): SearchEuropePmc => (
+export const createSearchEuropePmc = (getJson: GetJson, logger: Logger): SearchEuropePmc => (
   (query) => (
     pipe(
       TE.tryCatch(async () => search(getJson, query), logError(logger)),

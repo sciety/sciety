@@ -1,7 +1,7 @@
 import { createTerminus, TerminusOptions } from '@godaddy/terminus';
 import createRouter from './http/router';
 import createServer from './http/server';
-import createInfrastructure from './infrastructure';
+import { createInfrastructure } from './infrastructure';
 
 void (async (): Promise<void> => {
   const adapters = await createInfrastructure();

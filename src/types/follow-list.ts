@@ -1,9 +1,9 @@
 import { UserFollowedEditorialCommunityEvent, UserUnfollowedEditorialCommunityEvent } from './domain-events';
-import EditorialCommunityId from './editorial-community-id';
+import { EditorialCommunityId } from './editorial-community-id';
 import { generate } from './event-id';
 import { UserId } from './user-id';
 
-export default class FollowList {
+export class FollowList {
   private readonly userId: UserId;
 
   private items: Array<string>;

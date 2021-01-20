@@ -1,12 +1,12 @@
 import { OK } from 'http-status-codes';
 import request, { Response } from 'supertest';
-import createServer from './server';
+import { createTestServer } from './server';
 
 describe('ping handler', (): void => {
   let response: Response;
 
   beforeEach(async () => {
-    const { server } = await createServer();
+    const { server } = await createTestServer();
     response = await request(server).get('/ping');
   });
 

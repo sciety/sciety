@@ -1,6 +1,6 @@
 /* eslint-disable no-empty */
 import { DownstreamFetcher, responseCache } from '../../src/infrastructure/response-cache';
-import Doi from '../../src/types/doi';
+import { Doi } from '../../src/types/doi';
 import dummyLogger from '../dummy-logger';
 
 describe('article-cache', () => {

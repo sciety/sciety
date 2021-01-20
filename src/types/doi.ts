@@ -1,6 +1,6 @@
 const doiRegex = /^(?:doi:|(?:(?:https?:\/\/)?(?:dx\.)?doi\.org\/))?(10\.[0-9]{4,}(?:\.[1-9][0-9]*)*\/(?:[^%"#?\s])+)$/;
 
-export default class Doi {
+export class Doi {
   readonly value: string;
 
   constructor(input: string) {

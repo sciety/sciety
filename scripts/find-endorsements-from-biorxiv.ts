@@ -1,5 +1,5 @@
 import axios from 'axios';
-import Doi from '../src/types/doi';
+import { Doi } from '../src/types/doi';
 import { JsonCompatible } from '../src/types/json';
 
 const publisherDoiPrefix = process.argv[2];

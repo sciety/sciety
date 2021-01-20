@@ -1,6 +1,6 @@
 import { ParameterizedContext } from 'koa';
 import { finishRespondCommand } from '../../src/respond/finish-respond-command';
-import shouldNotBeCalled from '../should-not-be-called';
+import { shouldNotBeCalled } from '../should-not-be-called';
 
 describe('finish-respond-command', () => {
   describe('when there is no respond command to finish', () => {

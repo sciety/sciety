@@ -1,7 +1,7 @@
 import createEndorsementsRepository from '../../src/infrastructure/in-memory-endorsements-repository';
-import Doi from '../../src/types/doi';
-import EditorialCommunityId from '../../src/types/editorial-community-id';
-import EndorsementsRepository from '../../src/types/endorsements-repository';
+import { Doi } from '../../src/types/doi';
+import { EditorialCommunityId } from '../../src/types/editorial-community-id';
+import { EndorsementsRepository } from '../../src/types/endorsements-repository';
 
 const endorsedArticleDoi = new Doi('10.1101/209320');
 const editorialCommunity1Id = new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002');

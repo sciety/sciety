@@ -6,7 +6,7 @@ import {
   commandHandler, CommitEvents, validateCommand,
 } from './command-handler';
 import { GetAllEvents } from './respond-helpful-command';
-import toReviewId from '../types/review-id';
+import { toReviewId } from '../types/review-id';
 import { User } from '../types/user';
 
 type Ports = {

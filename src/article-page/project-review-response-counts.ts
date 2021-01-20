@@ -33,7 +33,7 @@ const projection = (reviewId: ReviewId) => (events: ReadonlyArray<DomainEvent>) 
   return { helpfulCount, notHelpfulCount };
 };
 
-export default (getEvents: GetEvents): CountReviewResponses => (reviewId) => pipe(
+export const createProjectReviewResponseCounts = (getEvents: GetEvents): CountReviewResponses => (reviewId) => pipe(
   getEvents,
   T.map(projection(reviewId)),
 );

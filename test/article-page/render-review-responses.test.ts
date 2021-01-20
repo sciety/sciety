@@ -2,7 +2,7 @@ import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import { Maybe } from 'true-myth';
 import createRenderReviewResponses from '../../src/article-page/render-review-responses';
-import Doi from '../../src/types/doi';
+import { Doi } from '../../src/types/doi';
 import { toUserId } from '../../src/types/user-id';
 
 describe('render-review-responses', () => {

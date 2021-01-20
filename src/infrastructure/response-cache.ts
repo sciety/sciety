@@ -1,5 +1,5 @@
 import { Logger } from './logger';
-import Doi from '../types/doi';
+import { Doi } from '../types/doi';
 
 type ResponseCache = Record<string, Promise<string>>;
 

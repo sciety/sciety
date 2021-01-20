@@ -1,5 +1,5 @@
 import { flow } from 'fp-ts/lib/function';
-import Doi from '../types/doi';
+import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 const constructLink = (doi: Doi): string => `

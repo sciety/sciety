@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/lib/ReadonlyArray';
 import * as T from 'fp-ts/lib/Task';
 import * as B from 'fp-ts/lib/boolean';
 import { constant, pipe } from 'fp-ts/lib/function';
-import Doi from '../types/doi';
+import { Doi } from '../types/doi';
 import {
   DomainEvent, isUserSavedArticleEvent, userSavedArticle, UserSavedArticleEvent,
 } from '../types/domain-events';

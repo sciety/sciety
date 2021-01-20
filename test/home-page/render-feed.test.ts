@@ -4,7 +4,7 @@ import createRenderFeed, { GetEvents, IsFollowingSomething } from '../../src/hom
 import { RenderSummaryFeedList } from '../../src/shared-components/render-summary-feed-list';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { toUserId } from '../../src/types/user-id';
-import shouldNotBeCalled from '../should-not-be-called';
+import { shouldNotBeCalled } from '../should-not-be-called';
 
 describe('render-feed', (): void => {
   describe('when the user is logged in', () => {

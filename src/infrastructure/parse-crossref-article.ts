@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import { XMLSerializer } from 'xmldom';
 import { Logger } from './logger';
-import Doi from '../types/doi';
+import { Doi } from '../types/doi';
 import { toHtmlFragment } from '../types/html-fragment';
 import { sanitise, SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 

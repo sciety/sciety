@@ -3,7 +3,7 @@ import * as A from 'fp-ts/lib/ReadonlyArray';
 import * as T from 'fp-ts/lib/Task';
 import { flow, pipe } from 'fp-ts/lib/function';
 import { DomainEvent } from '../types/domain-events';
-import EditorialCommunityId from '../types/editorial-community-id';
+import { EditorialCommunityId } from '../types/editorial-community-id';
 import { UserId } from '../types/user-id';
 
 export type Follows = (userId: UserId, editorialCommunityId: EditorialCommunityId) => T.Task<boolean>;
@@ -22,7 +22,7 @@ const isSignificantTo = (
     && event.userId === userId)
 );
 
-export default (getAllEvents: GetAllEvents): Follows => (
+export const createFollows = (getAllEvents: GetAllEvents): Follows => (
   (userId, editorialCommunityId) => (
     pipe(
       getAllEvents,

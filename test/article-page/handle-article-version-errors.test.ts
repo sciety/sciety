@@ -1,9 +1,9 @@
 import { URL } from 'url';
 import { Maybe } from 'true-myth';
-import createHandleArticleVersionErrors from '../../src/article-page/handle-article-version-errors';
+import { createHandleArticleVersionErrors } from '../../src/article-page/handle-article-version-errors';
 import { FeedItem, GetFeedItems } from '../../src/article-page/render-feed';
-import Doi from '../../src/types/doi';
-import EditorialCommunityId from '../../src/types/editorial-community-id';
+import { Doi } from '../../src/types/doi';
+import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
 

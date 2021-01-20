@@ -3,7 +3,7 @@ import { Maybe } from 'true-myth';
 import createFetchHypothesisAnnotation, { GetJson } from '../../src/infrastructure/fetch-hypothesis-annotation';
 import { Review } from '../../src/infrastructure/review';
 import { toHtmlFragment } from '../../src/types/html-fragment';
-import HypothesisAnnotationId from '../../src/types/hypothesis-annotation-id';
+import { HypothesisAnnotationId } from '../../src/types/hypothesis-annotation-id';
 import dummyLogger from '../dummy-logger';
 
 const date = '2019-09-12T09:55:46.146050+00:00';

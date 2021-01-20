@@ -4,7 +4,7 @@ import clip from 'text-clipper';
 import { Maybe } from 'true-myth';
 import { RenderReviewResponses } from './render-review-responses';
 import templateDate from '../shared-components/date';
-import EditorialCommunityId from '../types/editorial-community-id';
+import { EditorialCommunityId } from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { ReviewId } from '../types/review-id';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';

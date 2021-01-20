@@ -6,7 +6,7 @@ import { Maybe } from 'true-myth';
 import { Logger } from './logger';
 import { Review } from './review';
 import { toHtmlFragment } from '../types/html-fragment';
-import HypothesisAnnotationId from '../types/hypothesis-annotation-id';
+import { HypothesisAnnotationId } from '../types/hypothesis-annotation-id';
 import { Json, JsonCompatible } from '../types/json';
 
 export type GetJson = (uri: string) => Promise<Json>;

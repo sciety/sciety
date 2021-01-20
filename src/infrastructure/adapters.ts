@@ -13,9 +13,9 @@ import { Logger } from './logger';
 import { FindReviewsForArticleDoi } from './review-projections';
 import { SearchEuropePmc } from './search-europe-pmc';
 import { DomainEvent } from '../types/domain-events';
-import EditorialCommunityId from '../types/editorial-community-id';
-import EditorialCommunityRepository from '../types/editorial-community-repository';
-import EndorsementsRepository from '../types/endorsements-repository';
+import { EditorialCommunityId } from '../types/editorial-community-id';
+import { EditorialCommunityRepository } from '../types/editorial-community-repository';
+import { EndorsementsRepository } from '../types/endorsements-repository';
 
 type EditorialCommunity = {
   name: string;

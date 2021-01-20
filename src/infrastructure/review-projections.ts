@@ -1,7 +1,7 @@
 import * as T from 'fp-ts/lib/Task';
-import Doi from '../types/doi';
+import { Doi } from '../types/doi';
 import { EditorialCommunityReviewedArticleEvent } from '../types/domain-events';
-import EditorialCommunityId from '../types/editorial-community-id';
+import { EditorialCommunityId } from '../types/editorial-community-id';
 import { ReviewId } from '../types/review-id';
 
 export type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{

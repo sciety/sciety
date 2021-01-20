@@ -2,7 +2,7 @@ import { URL } from 'url';
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
 import { Logger } from './logger';
-import Doi from '../types/doi';
+import { Doi } from '../types/doi';
 
 type GetXmlFromCrossrefRestApi = (doi: Doi, acceptHeader: string) => Promise<string>;
 

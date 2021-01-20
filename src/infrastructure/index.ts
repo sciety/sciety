@@ -11,8 +11,8 @@ import createFetchDataciteReview from './fetch-datacite-review';
 import createFetchDataset from './fetch-dataset';
 import createFetchHypothesisAnnotation from './fetch-hypothesis-annotation';
 import createFetchReview from './fetch-review';
-import createFetchStaticFile from './fetch-static-file';
-import createFollows from './follows';
+import { createFetchStaticFile } from './fetch-static-file';
+import { createFollows } from './follows';
 import createGetBiorxivArticleVersionEvents from './get-biorxiv-article-version-events';
 import getEventsFromDataFiles from './get-events-from-data-files';
 import getEventsFromDatabase from './get-events-from-database';
@@ -26,11 +26,11 @@ import {
 } from './logger';
 import { responseCache } from './response-cache';
 import createReviewProjections from './review-projections';
-import createSearchEuropePmc from './search-europe-pmc';
+import { createSearchEuropePmc } from './search-europe-pmc';
 import bootstrapEditorialCommunities from '../data/bootstrap-editorial-communities';
 import { DomainEvent, isEditorialCommunityEndorsedArticleEvent, isEditorialCommunityReviewedArticleEvent } from '../types/domain-events';
-import EditorialCommunityRepository from '../types/editorial-community-repository';
-import EndorsementsRepository from '../types/endorsements-repository';
+import { EditorialCommunityRepository } from '../types/editorial-community-repository';
+import { EndorsementsRepository } from '../types/endorsements-repository';
 import { Json } from '../types/json';
 
 const populateEditorialCommunities = (logger: Logger): EditorialCommunityRepository => {
@@ -47,7 +47,7 @@ const populateEndorsementsRepository = (
   createEndorsementsRepository(events.filter(isEditorialCommunityEndorsedArticleEvent))
 );
 
-const createInfrastructure = async (): Promise<Adapters> => {
+export const createInfrastructure = async (): Promise<Adapters> => {
   const logger = createRTracerLogger(
     createStreamLogger(
       process.stdout,
@@ -117,5 +117,3 @@ const createInfrastructure = async (): Promise<Adapters> => {
     findVersionsForArticleDoi: createBiorxivCache(createGetBiorxivArticleVersionEvents(getJson, logger), logger),
   };
 };
-
-export default createInfrastructure;

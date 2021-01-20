@@ -6,7 +6,7 @@ import { pipe } from 'fp-ts/lib/function';
 import { isHttpError } from 'http-errors';
 import { NOT_FOUND } from 'http-status-codes';
 import { EditorialCommunity } from '../types/editorial-community';
-import EditorialCommunityId from '../types/editorial-community-id';
+import { EditorialCommunityId } from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { RenderPageError } from '../types/render-page-error';
 import { UserId } from '../types/user-id';

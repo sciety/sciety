@@ -1,7 +1,7 @@
 import { RouterContext } from '@koa/router';
 import * as T from 'fp-ts/lib/Task';
 import { saveArticleHandler } from '../../src/save-article';
-import Doi from '../../src/types/doi';
+import { Doi } from '../../src/types/doi';
 import { userSavedArticle } from '../../src/types/domain-events';
 import { User } from '../../src/types/user';
 import { toUserId } from '../../src/types/user-id';

@@ -1,6 +1,6 @@
 import * as T from 'fp-ts/lib/Task';
 import { flow } from 'fp-ts/lib/function';
-import EditorialCommunityId from '../types/editorial-community-id';
+import { EditorialCommunityId } from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 type RenderFollowers = (editorialCommunityId: EditorialCommunityId) => T.Task<HtmlFragment>;

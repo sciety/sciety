@@ -1,6 +1,6 @@
 import { URL } from 'url';
 import createGetBiorxivArticleVersionEvents, { GetJson } from '../../src/infrastructure/get-biorxiv-article-version-events';
-import Doi from '../../src/types/doi';
+import { Doi } from '../../src/types/doi';
 import dummyLogger from '../dummy-logger';
 
 describe('get-biorxiv-article-version-events', () => {

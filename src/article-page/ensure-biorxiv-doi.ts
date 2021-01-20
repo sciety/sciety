@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/lib/Option';
 import { pipe } from 'fp-ts/lib/function';
-import Doi from '../types/doi';
+import { Doi } from '../types/doi';
 
 const biorxivPrefix = '10.1101';
 

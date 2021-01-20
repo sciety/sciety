@@ -1,6 +1,6 @@
 import { Middleware } from '@koa/router';
 import createUnfollowCommand, { CommitEvents, GetFollowList } from './unfollow-command';
-import EditorialCommunityId from '../types/editorial-community-id';
+import { EditorialCommunityId } from '../types/editorial-community-id';
 import { User } from '../types/user';
 
 type Ports = {

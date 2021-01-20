@@ -3,7 +3,7 @@ import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { flow, pipe } from 'fp-ts/lib/function';
 import templateDate from '../shared-components/date';
-import Doi from '../types/doi';
+import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 export interface SearchResult {

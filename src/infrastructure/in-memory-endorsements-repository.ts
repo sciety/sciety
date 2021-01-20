@@ -1,5 +1,5 @@
 import { EditorialCommunityEndorsedArticleEvent } from '../types/domain-events';
-import EndorsementsRepository from '../types/endorsements-repository';
+import { EndorsementsRepository } from '../types/endorsements-repository';
 
 export default (
   events: ReadonlyArray<EditorialCommunityEndorsedArticleEvent>,

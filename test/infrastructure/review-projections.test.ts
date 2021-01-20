@@ -1,7 +1,7 @@
 import createReviewProjections from '../../src/infrastructure/review-projections';
-import Doi from '../../src/types/doi';
+import { Doi } from '../../src/types/doi';
 import { EditorialCommunityReviewedArticleEvent } from '../../src/types/domain-events';
-import EditorialCommunityId from '../../src/types/editorial-community-id';
+import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 
 describe('review-projections', () => {
   const article1 = new Doi('10.1000/1');

@@ -2,7 +2,7 @@ import { DOMParser } from 'xmldom';
 import {
   getAbstract, getAuthors, getPublicationDate, getTitle,
 } from '../../src/infrastructure/parse-crossref-article';
-import Doi from '../../src/types/doi';
+import { Doi } from '../../src/types/doi';
 import dummyLogger from '../dummy-logger';
 
 const crossrefResponseWith = (content: string): string => `

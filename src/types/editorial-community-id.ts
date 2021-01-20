@@ -1,4 +1,4 @@
-export default class EditorialCommunityId {
+export class EditorialCommunityId {
   readonly value: string;
 
   constructor(input: string) {

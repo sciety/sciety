@@ -18,11 +18,11 @@ import createFetchReview from '../../src/infrastructure/fetch-review';
 import createEditorialCommunityRepository from '../../src/infrastructure/in-memory-editorial-communities';
 import createEndorsementsRepository from '../../src/infrastructure/in-memory-endorsements-repository';
 import createReviewProjections from '../../src/infrastructure/review-projections';
-import EditorialCommunityRepository from '../../src/types/editorial-community-repository';
-import FollowList from '../../src/types/follow-list';
+import { EditorialCommunityRepository } from '../../src/types/editorial-community-repository';
+import { FollowList } from '../../src/types/follow-list';
 import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
 import dummyLogger from '../dummy-logger';
-import shouldNotBeCalled from '../should-not-be-called';
+import { shouldNotBeCalled } from '../should-not-be-called';
 
 interface TestServer {
   adapters: Adapters,
@@ -30,7 +30,7 @@ interface TestServer {
   editorialCommunities: EditorialCommunityRepository;
 }
 
-export default async (): Promise<TestServer> => {
+export const createTestServer = async (): Promise<TestServer> => {
   const editorialCommunities = createEditorialCommunityRepository(dummyLogger);
   for (const editorialCommunity of bootstrapEditorialCommunities) {
     void editorialCommunities.add(editorialCommunity);

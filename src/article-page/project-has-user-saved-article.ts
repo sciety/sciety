@@ -1,6 +1,6 @@
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/lib/function';
-import Doi from '../types/doi';
+import { Doi } from '../types/doi';
 import { DomainEvent, isUserSavedArticleEvent } from '../types/domain-events';
 import { UserId } from '../types/user-id';
 

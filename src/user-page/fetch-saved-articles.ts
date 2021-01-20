@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import { pipe } from 'fp-ts/lib/function';
-import Doi from '../types/doi';
+import { Doi } from '../types/doi';
 import { HtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 

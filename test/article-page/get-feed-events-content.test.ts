@@ -2,8 +2,8 @@ import { URL } from 'url';
 import * as T from 'fp-ts/lib/Task';
 import { Maybe } from 'true-myth';
 import createGetFeedEventsContent, { GetEditorialCommunity, GetFeedEvents, GetReview } from '../../src/article-page/get-feed-events-content';
-import Doi from '../../src/types/doi';
-import EditorialCommunityId from '../../src/types/editorial-community-id';
+import { Doi } from '../../src/types/doi';
+import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 
 describe('get-feed-events-content', () => {

@@ -1,8 +1,8 @@
 import { URL } from 'url';
 import { composeFeedEvents } from '../../src/article-page/compose-feed-events';
 import { GetFeedEvents } from '../../src/article-page/get-feed-events-content';
-import Doi from '../../src/types/doi';
-import EditorialCommunityId from '../../src/types/editorial-community-id';
+import { Doi } from '../../src/types/doi';
+import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 
 describe('compose-feed-events', () => {
   it('merges feed event lists', async () => {

@@ -1,5 +1,5 @@
 import { revokeResponse } from '../../src/respond/revoke-response-command';
-import Doi from '../../src/types/doi';
+import { Doi } from '../../src/types/doi';
 import { toUserId } from '../../src/types/user-id';
 
 describe('revoke-response-command', () => {

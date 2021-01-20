@@ -9,7 +9,7 @@ import {
   isEditorialCommunityEndorsedArticleEvent,
   isEditorialCommunityReviewedArticleEvent,
 } from '../types/domain-events';
-import EditorialCommunityId from '../types/editorial-community-id';
+import { EditorialCommunityId } from '../types/editorial-community-id';
 
 type FeedEvent =
   EditorialCommunityEndorsedArticleEvent |

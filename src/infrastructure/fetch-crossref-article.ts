@@ -5,7 +5,7 @@ import { Logger } from './logger';
 import {
   getAbstract, getAuthors, getPublicationDate, getTitle,
 } from './parse-crossref-article';
-import Doi from '../types/doi';
+import { Doi } from '../types/doi';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
 type FetchCrossrefArticleError = 'not-found' | 'unavailable';

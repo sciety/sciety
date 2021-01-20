@@ -6,7 +6,7 @@ import { Maybe } from 'true-myth';
 import { FetchDataset } from './fetch-dataset';
 import { Logger } from './logger';
 import { Review } from './review';
-import Doi from '../types/doi';
+import { Doi } from '../types/doi';
 import { toHtmlFragment } from '../types/html-fragment';
 
 export type FetchDataciteReview = (doi: Doi) => T.Task<Review>;

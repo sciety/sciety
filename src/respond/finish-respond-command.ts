@@ -5,7 +5,7 @@ import { Middleware } from 'koa';
 import {
   commandHandler, CommitEvents, GetAllEvents, validateCommand,
 } from './command-handler';
-import toReviewId from '../types/review-id';
+import { toReviewId } from '../types/review-id';
 
 type Ports = {
   commitEvents: CommitEvents;

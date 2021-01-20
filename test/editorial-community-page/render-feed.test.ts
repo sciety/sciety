@@ -3,7 +3,7 @@ import * as T from 'fp-ts/lib/Task';
 import createRenderFeed, { GetEvents } from '../../src/editorial-community-page/render-feed';
 import { RenderFollowToggle } from '../../src/editorial-community-page/render-follow-toggle';
 import { RenderSummaryFeedList } from '../../src/shared-components/render-summary-feed-list';
-import EditorialCommunityId from '../../src/types/editorial-community-id';
+import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 
 describe('render feed', () => {

@@ -1,4 +1,4 @@
-import toEventId from '../../src/types/event-id';
+import { toEventId } from '../../src/types/event-id';
 
 describe('event-id', () => {
   it('is a uuid', () => {

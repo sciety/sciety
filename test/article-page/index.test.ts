@@ -1,11 +1,11 @@
 import * as O from 'fp-ts/lib/Option';
 import buildRenderPage, { Params } from '../../src/article-page';
-import createServer from '../http/server';
+import { createTestServer } from '../http/server';
 
 describe('create render page', (): void => {
   describe('when the article is from bioRxiv', (): void => {
     it('returns a page containing article metadata', async (): Promise<void> => {
-      const { adapters } = await createServer();
+      const { adapters } = await createTestServer();
       const renderPage = buildRenderPage(adapters);
       const params: Params = { doi: '10.1101/833392', user: O.none };
 
@@ -17,7 +17,7 @@ describe('create render page', (): void => {
 
   describe('when the article does not exist', (): void => {
     it('returns a not-found error', async (): Promise<void> => {
-      const { adapters } = await createServer();
+      const { adapters } = await createTestServer();
       const renderPage = buildRenderPage(adapters);
       const params: Params = { doi: 'rubbish', user: O.none };
 
@@ -29,7 +29,7 @@ describe('create render page', (): void => {
 
   describe('when the article is not from bioRxiv', (): void => {
     it('returns a not-found error', async (): Promise<void> => {
-      const { adapters } = await createServer();
+      const { adapters } = await createTestServer();
       const renderPage = buildRenderPage(adapters);
       const params: Params = { doi: '10.7554/eLife.09560', user: O.none };
 
