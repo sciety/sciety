@@ -51,7 +51,8 @@
     {
       "label": "ScietyHQ user page",
       "url": "https://staging.sciety.org/users/1295307136415735808",
-      "referenceUrl": "https://sciety.org/users/1295307136415735808"
+      "referenceUrl": "https://sciety.org/users/1295307136415735808",
+      "removeSelectors": [".saved-articles"]
     },
     {
       "label": "About",
