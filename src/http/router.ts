@@ -102,9 +102,11 @@ export default (adapters: Adapters): Router => {
     respondHandler(adapters));
 
   router.post('/save-article',
+    bodyParser({ enableTypes: ['form'] }),
     async (context, next) => {
+      const articleId = new Doi(context.request.body.articleid);
       await adapters.commitEvents([
-        userSavedArticle(toUserId('1295307136415735808'), new Doi('10.1101/2020.07.04.187583')),
+        userSavedArticle(toUserId('1295307136415735808'), articleId),
       ]);
       context.redirect('back');
 
