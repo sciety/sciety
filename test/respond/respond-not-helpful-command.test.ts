@@ -1,6 +1,6 @@
 import { respondNotHelpful } from '../../src/respond/respond-not-helpful-command';
 import Doi from '../../src/types/doi';
-import toUserId from '../../src/types/user-id';
+import { toUserId } from '../../src/types/user-id';
 
 const userId = toUserId('someone');
 const reviewId = new Doi('10.1234/5678');

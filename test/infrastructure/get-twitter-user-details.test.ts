@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/lib/Either';
 import { GetTwitterResponse } from '../../src/infrastructure/get-twitter-response';
 import createGetTwitterUserDetails from '../../src/infrastructure/get-twitter-user-details';
-import userId from '../../src/types/user-id';
+import { toUserId } from '../../src/types/user-id';
 import dummyLogger from '../dummy-logger';
 
 describe('get-twitter-user-details', () => {
@@ -14,7 +14,7 @@ describe('get-twitter-user-details', () => {
       },
     });
     const getTwitterUserDetails = createGetTwitterUserDetails(getTwitterResponse, dummyLogger);
-    const result = getTwitterUserDetails(userId('12345'));
+    const result = getTwitterUserDetails(toUserId('12345'));
     const expected = {
       avatarUrl: 'http://example.com',
       displayName: 'John Smith',
@@ -38,7 +38,7 @@ describe('get-twitter-user-details', () => {
       ],
     });
     const getTwitterUserDetails = createGetTwitterUserDetails(getTwitterResponse, dummyLogger);
-    const result = getTwitterUserDetails(userId('12345'));
+    const result = getTwitterUserDetails(toUserId('12345'));
 
     expect(await result()).toStrictEqual(E.left('not-found'));
   });
@@ -55,7 +55,7 @@ describe('get-twitter-user-details', () => {
       throw new InvalidTwitterIdError();
     };
     const getTwitterUserDetails = createGetTwitterUserDetails(getTwitterResponse, dummyLogger);
-    const result = getTwitterUserDetails(userId('123456abcdef'));
+    const result = getTwitterUserDetails(toUserId('123456abcdef'));
 
     expect(await result()).toStrictEqual(E.left('not-found'));
   });
@@ -65,7 +65,7 @@ describe('get-twitter-user-details', () => {
       throw new Error('Twitter API Unavailable');
     };
     const getTwitterUserDetails = createGetTwitterUserDetails(getTwitterResponse, dummyLogger);
-    const result = getTwitterUserDetails(userId('12345'));
+    const result = getTwitterUserDetails(toUserId('12345'));
 
     expect(await result()).toStrictEqual(E.left('unavailable'));
   });

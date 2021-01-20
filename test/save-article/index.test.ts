@@ -4,7 +4,7 @@ import { saveArticleHandler } from '../../src/save-article';
 import Doi from '../../src/types/doi';
 import { userSavedArticle } from '../../src/types/domain-events';
 import { User } from '../../src/types/user';
-import toUserId from '../../src/types/user-id';
+import { toUserId } from '../../src/types/user-id';
 
 describe('save-article', () => {
   describe('when the user has not already saved the article', () => {

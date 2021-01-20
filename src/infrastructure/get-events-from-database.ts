@@ -5,7 +5,7 @@ import EditorialCommunityId from '../types/editorial-community-id';
 import { EventId } from '../types/event-id';
 import { Json, JsonObject } from '../types/json';
 import toReviewId from '../types/review-id';
-import toUserId from '../types/user-id';
+import { toUserId } from '../types/user-id';
 
 type EventRow = {
   id: EventId,

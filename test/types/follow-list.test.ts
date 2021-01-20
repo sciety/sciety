@@ -1,9 +1,9 @@
 import EditorialCommunityId from '../../src/types/editorial-community-id';
 import FollowList from '../../src/types/follow-list';
-import userId from '../../src/types/user-id';
+import { toUserId } from '../../src/types/user-id';
 
 describe('follow-list', () => {
-  const userId1 = userId('u1');
+  const userId1 = toUserId('u1');
   const editorialCommunity1Id = new EditorialCommunityId('id1');
 
   describe('follow', () => {

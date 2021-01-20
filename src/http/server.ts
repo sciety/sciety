@@ -7,7 +7,7 @@ import koaSession from 'koa-session';
 import { Strategy as TwitterStrategy } from 'passport-twitter';
 import { Logger } from '../infrastructure/logger';
 import { User } from '../types/user';
-import userId from '../types/user-id';
+import { toUserId } from '../types/user-id';
 
 export default (router: Router, logger: Logger): Server => {
   const app = new Koa();
@@ -71,7 +71,7 @@ export default (router: Router, logger: Logger): Server => {
       },
       (token, tokenSecret, profile, cb) => {
         const user: User = {
-          id: userId(profile.id),
+          id: toUserId(profile.id),
         };
 
         cb(undefined, user);

@@ -2,7 +2,7 @@ import * as E from 'fp-ts/lib/Either';
 import * as O from 'fp-ts/lib/Option';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { toHtmlFragment } from '../../src/types/html-fragment';
-import toUserId from '../../src/types/user-id';
+import { toUserId } from '../../src/types/user-id';
 import createRenderPage from '../../src/user-page/render-page';
 
 describe('render-page', () => {

@@ -1,7 +1,7 @@
 import { URL } from 'url';
 import * as T from 'fp-ts/lib/Task';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
-import userId from '../../src/types/user-id';
+import { toUserId } from '../../src/types/user-id';
 import createGetFollowedEditorialCommunitiesFromIds, { GetEditorialCommunity, GetFollowedEditorialCommunityIds } from '../../src/user-page/get-followed-editorial-communities-from-ids';
 
 describe('get-followed-editorial-communities-from-ids adapter', () => {
@@ -21,7 +21,7 @@ describe('get-followed-editorial-communities-from-ids adapter', () => {
       getFollowedEditorialCommunityIds,
       getEditorialCommunity,
     );
-    const editorialCommunities = await adapter(userId('someone'))();
+    const editorialCommunities = await adapter(toUserId('someone'))();
 
     expect(editorialCommunities).toHaveLength(3);
   });

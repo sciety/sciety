@@ -3,12 +3,12 @@ import createEventSourcedFollowListRepository, { GetAllEvents } from '../../src/
 import EditorialCommunityId from '../../src/types/editorial-community-id';
 import { generate } from '../../src/types/event-id';
 import FollowList from '../../src/types/follow-list';
-import userId from '../../src/types/user-id';
+import { toUserId } from '../../src/types/user-id';
 
 describe('event-sourced-follow-list-repository', () => {
   it('builds a follow list from events', async () => {
     const editorialCommunitityId1 = new EditorialCommunityId('ed1');
-    const userId1 = userId('u1');
+    const userId1 = toUserId('u1');
     const getAllEvents: GetAllEvents = T.of([
       {
         id: generate(),

@@ -1,7 +1,7 @@
 import createProjectReviewResponseCounts from '../../src/article-page/project-review-response-counts';
 import Doi from '../../src/types/doi';
 import { generate } from '../../src/types/event-id';
-import toUserId from '../../src/types/user-id';
+import { toUserId } from '../../src/types/user-id';
 
 describe('project-review-response-counts', () => {
   describe('given no events', () => {

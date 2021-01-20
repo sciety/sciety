@@ -34,7 +34,7 @@ import EditorialCommunityRepository from '../types/editorial-community-repositor
 import EndorsementsRepository from '../types/endorsements-repository';
 import { generate } from '../types/event-id';
 import { Json } from '../types/json';
-import toUserId from '../types/user-id';
+import { toUserId } from '../types/user-id';
 
 const populateEditorialCommunities = (logger: Logger): EditorialCommunityRepository => {
   const repository = createEditorialCommunityRepository(logger);

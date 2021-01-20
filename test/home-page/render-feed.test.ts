@@ -3,7 +3,7 @@ import * as T from 'fp-ts/lib/Task';
 import createRenderFeed, { GetEvents, IsFollowingSomething } from '../../src/home-page/render-feed';
 import { RenderSummaryFeedList } from '../../src/shared-components/render-summary-feed-list';
 import { toHtmlFragment } from '../../src/types/html-fragment';
-import toUserId from '../../src/types/user-id';
+import { toUserId } from '../../src/types/user-id';
 import shouldNotBeCalled from '../should-not-be-called';
 
 describe('render-feed', (): void => {

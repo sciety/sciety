@@ -3,7 +3,7 @@ import createProjectFollowerIds, { GetAllEvents } from '../../src/editorial-comm
 import { DomainEvent, UserFollowedEditorialCommunityEvent } from '../../src/types/domain-events';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
 import { generate } from '../../src/types/event-id';
-import toUserId from '../../src/types/user-id';
+import { toUserId } from '../../src/types/user-id';
 
 describe('project-follower-ids', () => {
   it('projects a list of follower ids based on follow events', async () => {

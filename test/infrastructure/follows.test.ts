@@ -2,10 +2,10 @@ import * as T from 'fp-ts/lib/Task';
 import follows, { GetAllEvents } from '../../src/infrastructure/follows';
 import { userFollowedEditorialCommunity, userUnfollowedEditorialCommunity } from '../../src/types/domain-events';
 import EditorialCommunityId from '../../src/types/editorial-community-id';
-import userId from '../../src/types/user-id';
+import { toUserId } from '../../src/types/user-id';
 
 describe('follows', () => {
-  const someone = userId('someone');
+  const someone = toUserId('someone');
   const editorialCommunity1 = new EditorialCommunityId('community-1');
   const editorialCommunity2 = new EditorialCommunityId('community-2');
 
@@ -45,7 +45,7 @@ describe('follows', () => {
   });
 
   describe('when another user has a follow event', () => {
-    const someoneElse = userId('someoneelse');
+    const someoneElse = toUserId('someoneelse');
     const getAllEvents: GetAllEvents = T.of([
       userFollowedEditorialCommunity(someoneElse, editorialCommunity1),
     ]);

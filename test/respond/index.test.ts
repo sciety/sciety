@@ -2,7 +2,7 @@ import { RouterParamContext } from '@koa/router';
 import { ParameterizedContext } from 'koa';
 import { respondHandler } from '../../src/respond';
 import { User } from '../../src/types/user';
-import toUserId from '../../src/types/user-id';
+import { toUserId } from '../../src/types/user-id';
 
 describe('index', () => {
   it('redirects to review anchor on referer', async () => {

@@ -19,7 +19,7 @@ import Doi from '../types/doi';
 import EditorialCommunityId from '../types/editorial-community-id';
 import { HtmlFragment } from '../types/html-fragment';
 import { User } from '../types/user';
-import toUserId, { UserId } from '../types/user-id';
+import { toUserId, UserId } from '../types/user-id';
 
 type FetchEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.Task<Maybe<{
   name: string;

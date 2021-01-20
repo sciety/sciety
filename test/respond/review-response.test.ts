@@ -7,7 +7,7 @@ import {
 } from '../../src/types/domain-events';
 import { generate } from '../../src/types/event-id';
 import { ReviewId } from '../../src/types/review-id';
-import toUserId, { UserId } from '../../src/types/user-id';
+import { toUserId, UserId } from '../../src/types/user-id';
 
 type EventType =
     | UserFoundReviewHelpfulEvent

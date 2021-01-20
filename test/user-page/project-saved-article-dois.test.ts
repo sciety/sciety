@@ -1,7 +1,7 @@
 import * as T from 'fp-ts/lib/Task';
 import Doi from '../../src/types/doi';
 import { userSavedArticle } from '../../src/types/domain-events';
-import toUserId from '../../src/types/user-id';
+import { toUserId } from '../../src/types/user-id';
 import { GetAllEvents, projectSavedArticleDois } from '../../src/user-page/project-saved-article-dois';
 
 describe('project-saved-article-dois', () => {

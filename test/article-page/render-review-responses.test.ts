@@ -3,7 +3,7 @@ import * as T from 'fp-ts/lib/Task';
 import { Maybe } from 'true-myth';
 import createRenderReviewResponses from '../../src/article-page/render-review-responses';
 import Doi from '../../src/types/doi';
-import toUserId from '../../src/types/user-id';
+import { toUserId } from '../../src/types/user-id';
 
 describe('render-review-responses', () => {
   it('displays the response counts by type', async () => {

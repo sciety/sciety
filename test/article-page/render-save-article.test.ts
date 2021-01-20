@@ -3,7 +3,7 @@ import * as T from 'fp-ts/lib/Task';
 import { constant } from 'fp-ts/lib/function';
 import { renderSaveArticle } from '../../src/article-page/render-save-article';
 import Doi from '../../src/types/doi';
-import toUserId from '../../src/types/user-id';
+import { toUserId } from '../../src/types/user-id';
 
 describe('render-save-article', () => {
   describe('not logged in', () => {
