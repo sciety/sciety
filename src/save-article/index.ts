@@ -9,19 +9,23 @@ import {
 } from '../types/domain-events';
 
 import { User } from '../types/user';
+import { UserId } from '../types/user-id';
 
 type Ports = {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>;
   commitEvents: (events: ReadonlyArray<UserSavedArticleEvent>) => T.Task<void>,
 };
 
+const isMatchingSavedEvent = (userId: UserId, articleId: Doi) => (event: DomainEvent) => (
+  isUserSavedArticleEvent(event) && event.userId === userId && event.articleId.value === articleId.value
+);
+
 export const saveArticleHandler = (ports: Ports): Middleware<{ user: User }> => async (context, next) => {
   const user = context.state.user as User;
   const articleId = new Doi(context.request.body.articleid);
   await pipe(
     ports.getAllEvents,
-    T.map(RA.some((event) => (
-      isUserSavedArticleEvent(event) && event.userId === user.id && event.articleId.value === articleId.value))),
+    T.map(RA.some(isMatchingSavedEvent(user.id, articleId))),
     T.map(B.fold(
       () => [userSavedArticle(user.id, articleId)],
       constant([]),
