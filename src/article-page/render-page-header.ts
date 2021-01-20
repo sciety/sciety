@@ -2,7 +2,6 @@ import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { flow, pipe } from 'fp-ts/lib/function';
-import { renderTweetThis } from './render-tweet-this';
 import Doi from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
@@ -17,10 +16,11 @@ export type GetArticleDetails<Err> = (doi: Doi) => TE.TaskEither<Err, ArticleDet
 
 export type RenderPageHeader<Err> = (doi: Doi, userId: O.Option<UserId>) => TE.TaskEither<Err, HtmlFragment>;
 
+type RenderTweetThis = (doi: Doi) => HtmlFragment;
 type RenderSaveArticle = (doi: Doi, userId: O.Option<UserId>) => T.Task<HtmlFragment>;
 
-// TODO: inject renderTweetThis and similar
 const render = (
+  renderTweetThis: RenderTweetThis,
   renderSaveArticle: RenderSaveArticle,
 ) => (doi: Doi, userId: O.Option<UserId>) => (details: ArticleDetails): T.Task<HtmlFragment> => pipe(
   renderSaveArticle(doi, userId),
@@ -46,12 +46,13 @@ const render = (
 
 export default <Err>(
   getArticleDetails: GetArticleDetails<Err>,
+  renderTweetThis: RenderTweetThis,
   renderSaveArticle: RenderSaveArticle,
 ): RenderPageHeader<Err> => (doi, userId) => pipe(
   doi,
   getArticleDetails,
   TE.chain(flow(
-    render(renderSaveArticle)(doi, userId),
+    render(renderTweetThis, renderSaveArticle)(doi, userId),
     (rendered) => TE.rightTask<Err, HtmlFragment>(rendered),
   )),
 );

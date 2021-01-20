@@ -22,7 +22,11 @@ describe('render-page-header component', (): void => {
   let rendered: E.Either<unknown, HtmlFragment>;
 
   beforeEach(async () => {
-    renderPageHeader = createRenderPageHeader(getArticleDetails, () => pipe('', toHtmlFragment, T.of));
+    renderPageHeader = createRenderPageHeader(
+      getArticleDetails,
+      constant(toHtmlFragment('')),
+      constant(T.of(toHtmlFragment(''))),
+    );
     rendered = (await renderPageHeader(new Doi('10.1101/815689'), O.none)());
   });
 

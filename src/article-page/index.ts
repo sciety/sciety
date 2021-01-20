@@ -18,6 +18,7 @@ import createRenderPageHeader from './render-page-header';
 import createRenderReviewFeedItem from './render-review-feed-item';
 import createRenderReviewResponses from './render-review-responses';
 import { renderSaveArticle } from './render-save-article';
+import { renderTweetThis } from './render-tweet-this';
 import Doi from '../types/doi';
 import { DomainEvent } from '../types/domain-events';
 import EditorialCommunityId from '../types/editorial-community-id';
@@ -85,6 +86,7 @@ export default (ports: Ports): ArticlePage => {
 
   const renderPageHeader = createRenderPageHeader(
     shimmedFetchArticle,
+    renderTweetThis,
     renderSaveArticle(projectHasUserSavedArticle(ports.getAllEvents)),
   );
   const renderAbstract = createRenderArticleAbstract(
