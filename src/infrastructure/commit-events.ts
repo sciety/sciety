@@ -1,4 +1,6 @@
+import * as RA from 'fp-ts/lib/ReadonlyArray';
 import * as T from 'fp-ts/lib/Task';
+import { constVoid, pipe } from 'fp-ts/lib/function';
 import { Pool } from 'pg';
 import { Logger } from './logger';
 import Doi from '../types/doi';
@@ -40,8 +42,9 @@ export default (
   pool: Pool,
   logger: Logger,
 ): CommitEvents => (
-  (events) => async () => {
-    for (const event of events) {
+  (events) => pipe(
+    events,
+    RA.map((event) => async () => {
       if (persistedEventsWhiteList.includes(event.type)) {
         await pool.query(
           'INSERT INTO events (id, type, date, payload) VALUES ($1, $2, $3, $4);',
@@ -52,6 +55,8 @@ export default (
       inMemoryEvents.push(event);
 
       logger('info', 'Event committed', { event });
-    }
-  }
+    }),
+    T.sequenceArray,
+    T.map(constVoid),
+  )
 );
