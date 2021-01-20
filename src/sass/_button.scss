@@ -18,7 +18,9 @@
   }
 }
 
-.button {
+.button,
+.button:link,
+.button:visited {
   @include basics();
   font-size: functions.px-to-rem(settings.$base-font-measure);
   font-family: Lato, sans-serif;

@@ -68,10 +68,13 @@
 }
 
 .site-header__nav_list_link {
-  color: settings.$colour-ui-default;
+  &:link,
+  &:visited {
+    color: settings.$colour-ui-default;
 
-  &:hover,
-  &:active {
-    color: settings.$colour-primary;
+    &:hover,
+    &:active {
+      color: settings.$colour-primary;
+    }
   }
 }
