@@ -102,6 +102,7 @@ export default (adapters: Adapters): Router => {
     respondHandler(adapters));
 
   router.post('/save-article',
+    identifyUser(adapters.logger),
     bodyParser({ enableTypes: ['form'] }),
     saveSaveArticleCommand,
     requireAuthentication,
@@ -119,6 +120,7 @@ export default (adapters: Adapters): Router => {
     authenticate);
 
   router.get('/log-out',
+    identifyUser(adapters.logger),
     logOutHandler());
 
   router.get('/twitter/callback',
