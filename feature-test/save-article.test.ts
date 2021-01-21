@@ -9,7 +9,7 @@ describe('save-article', () => {
   afterAll(closeBrowser);
 
   describe('when not logged in', () => {
-    it.skip('saves the article to the list', async () => {
+    it('saves the article to the list', async () => {
       dotenv.config();
       await openBrowser();
       await goto('localhost:8080/articles/10.1101/2020.05.01.072975');
