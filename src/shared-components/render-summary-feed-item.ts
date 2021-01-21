@@ -19,6 +19,38 @@ type FeedEvent =
 
 type RenderSummaryFeedItem = (event: FeedEvent) => T.Task<HtmlFragment>;
 
+const reviewedBy = (actor: Actor): string => (
+  (actor.name === 'preLights') ? 'highlighted' : 'reviewed'
+);
+
+const verb = (event: FeedEvent, actor: Actor): string => (
+  isEditorialCommunityEndorsedArticleEvent(event) ? 'endorsed' : reviewedBy(actor)
+);
+
+type ViewModel = {
+  avatar: string,
+  date: Date,
+  actorName: string,
+  actorUrl: string,
+  doi: Doi,
+  title: HtmlFragment,
+  verb: string,
+};
+
+const render = (viewModel: ViewModel): string => `
+  <div class="summary-feed-item">
+    <img src="${viewModel.avatar}" alt="" class="summary-feed-item__avatar">
+    <div>
+      ${templateDate(viewModel.date, 'summary-feed-item__date')}
+      <div class="summary-feed-item__title">
+        <a href="${viewModel.actorUrl}" class="summary-feed-item__link">${viewModel.actorName}</a>
+        ${viewModel.verb}
+        <a href="/articles/${viewModel.doi.value}" class="summary-feed-item__link">${viewModel.title}</a>
+      </div>
+    </div>
+  </div>
+`;
+
 type Actor = {
   url: string;
   name: string;
@@ -29,45 +61,21 @@ type Article = {
   title: SanitisedHtmlFragment;
 };
 
-const reviewedBy = (actor: Actor): string => (
-  (actor.name === 'preLights') ? 'highlighted' : 'reviewed'
-);
-
-const verb = (event: FeedEvent, actor: Actor): string => (
-  isEditorialCommunityEndorsedArticleEvent(event) ? 'endorsed' : reviewedBy(actor)
-);
-
-const renderItem = (getArticle: GetArticle, event: FeedEvent, actor: Actor): T.Task<HtmlFragment> => pipe(
-  event.articleId,
-  getArticle,
-  T.map(flow(
-    (result) => result.mapOr(toHtmlFragment('an article'), (article) => article.title),
-    (title) => `
-      <a href="${actor.url}" class="summary-feed-item__link">${actor.name}</a>
-      ${verb(event, actor)}
-      <a href="/articles/${event.articleId.value}" class="summary-feed-item__link">${title}</a>
-    `,
-    toHtmlFragment,
-  )),
-);
-
-type ViewModel = {
-  avatar: string,
-  date: Date,
-  item: HtmlFragment;
+type Inputs = {
+  actor: Actor,
+  article: Result<Article, unknown>,
+  event: FeedEvent,
 };
 
-const render = (viewModel: ViewModel): string => `
-  <div class="summary-feed-item">
-    <img src="${viewModel.avatar}" alt="" class="summary-feed-item__avatar">
-    <div>
-      ${templateDate(viewModel.date, 'summary-feed-item__date')}
-      <div class="summary-feed-item__title">
-        ${viewModel.item}
-      </div>
-    </div>
-  </div>
-`;
+const constructViewModel = ({ actor, article, event }: Inputs): ViewModel => ({
+  avatar: actor.imageUrl,
+  date: event.date,
+  actorName: actor.name,
+  actorUrl: actor.url,
+  doi: event.articleId,
+  title: article.mapOr(toHtmlFragment('an article'), (a) => a.title),
+  verb: verb(event, actor),
+});
 
 export type GetActor = (id: EditorialCommunityId) => T.Task<Actor>;
 
@@ -77,16 +85,15 @@ export const renderSummaryFeedItem = (
   getActor: GetActor,
   getArticle: GetArticle,
 ): RenderSummaryFeedItem => (event) => pipe(
-  event.editorialCommunityId,
-  getActor,
-  T.chain(flow(
-    (actor) => ({
-      avatar: T.of(actor.imageUrl),
-      date: T.of(event.date),
-      item: renderItem(getArticle, event, actor),
-    }),
-    sequenceS(T.task),
+  {
+    actor: getActor(event.editorialCommunityId),
+    article: getArticle(event.articleId),
+    event: T.of(event),
+  },
+  sequenceS(T.task),
+  T.map(flow(
+    constructViewModel,
+    render,
+    toHtmlFragment,
   )),
-  T.map(render),
-  T.map(toHtmlFragment),
 );
