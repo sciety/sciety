@@ -73,7 +73,10 @@ export type GetActor = (id: EditorialCommunityId) => T.Task<Actor>;
 
 export type GetArticle = (id: Doi) => T.Task<Result<Article, unknown>>;
 
-export default (getActor: GetActor, getArticle: GetArticle): RenderSummaryFeedItem => (event) => pipe(
+export const renderSummaryFeedItem = (
+  getActor: GetActor,
+  getArticle: GetArticle,
+): RenderSummaryFeedItem => (event) => pipe(
   event.editorialCommunityId,
   getActor,
   T.chain(flow(

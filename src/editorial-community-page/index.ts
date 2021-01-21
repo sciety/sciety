@@ -13,8 +13,8 @@ import createRenderFollowToggle, { Follows } from './render-follow-toggle';
 import createRenderFollowers from './render-followers';
 import createRenderPage, { RenderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
-import createRenderSummaryFeedItem from '../shared-components/render-summary-feed-item';
-import createRenderSummaryFeedList from '../shared-components/render-summary-feed-list';
+import { renderSummaryFeedItem } from '../shared-components/render-summary-feed-item';
+import { renderSummaryFeedList } from '../shared-components/render-summary-feed-list';
 import { EditorialCommunity } from '../types/editorial-community';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { FetchExternalArticle } from '../types/fetch-external-article';
@@ -33,14 +33,11 @@ interface Ports {
   follows: Follows,
 }
 
-const buildRenderFeed = (ports: Ports): RenderFeed => {
-  const renderSummaryFeedItem = createRenderSummaryFeedItem(getActor(ports.getEditorialCommunity), ports.fetchArticle);
-  return createRenderFeed(
-    createGetMostRecentEvents(ports.getAllEvents, 20),
-    createRenderSummaryFeedList(renderSummaryFeedItem),
-    createRenderFollowToggle(ports.follows),
-  );
-};
+const buildRenderFeed = (ports: Ports): RenderFeed => createRenderFeed(
+  createGetMostRecentEvents(ports.getAllEvents, 20),
+  renderSummaryFeedList(renderSummaryFeedItem(getActor(ports.getEditorialCommunity), ports.fetchArticle)),
+  createRenderFollowToggle(ports.follows),
+);
 
 export interface Params {
   id?: string;

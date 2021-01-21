@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import { pipe } from 'fp-ts/lib/function';
-import renderSummaryFeedList from '../../src/shared-components/render-summary-feed-list';
+import { renderSummaryFeedList } from '../../src/shared-components/render-summary-feed-list';
 import { Doi } from '../../src/types/doi';
 import { editorialCommunityReviewedArticle } from '../../src/types/domain-events';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';

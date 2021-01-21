@@ -13,8 +13,8 @@ import createRenderFollowToggle from './render-follow-toggle';
 import renderPage, { RenderPage } from './render-page';
 import renderPageHeader from './render-page-header';
 import renderSearchForm from './render-search-form';
-import createRenderSummaryFeedItem from '../shared-components/render-summary-feed-item';
-import createRenderSummaryFeedList from '../shared-components/render-summary-feed-list';
+import { renderSummaryFeedItem } from '../shared-components/render-summary-feed-item';
+import { renderSummaryFeedList } from '../shared-components/render-summary-feed-list';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { FetchExternalArticle } from '../types/fetch-external-article';
 import { User } from '../types/user';
@@ -45,12 +45,10 @@ export default (ports: Ports): HomePage => {
     ports.getAllEditorialCommunities,
     createRenderEditorialCommunity(renderFollowToggle),
   );
-  const renderSummaryFeedItem = createRenderSummaryFeedItem(getActor(ports.getEditorialCommunity), ports.fetchArticle);
-  const renderSummaryFeedList = createRenderSummaryFeedList(renderSummaryFeedItem);
   const renderFeed = createRenderFeed(
     projectIsFollowingSomething(ports.getAllEvents),
     getMostRecentEvents(ports.getAllEvents, ports.follows, 20),
-    renderSummaryFeedList,
+    renderSummaryFeedList(renderSummaryFeedItem(getActor(ports.getEditorialCommunity), ports.fetchArticle)),
   );
 
   return (params) => pipe(

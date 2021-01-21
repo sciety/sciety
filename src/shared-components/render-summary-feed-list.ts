@@ -14,11 +14,13 @@ export type RenderSummaryFeedList<E> = (events: ReadonlyArray<E>) => T.Task<O.Op
 
 type RenderSummaryFeedItem<E> = (event: E) => T.Task<HtmlFragment>;
 
-export default <E>(renderSummaryFeedItem: RenderSummaryFeedItem<E>): RenderSummaryFeedList<E> => flow(
-  T.traverseArray(renderSummaryFeedItem),
-  T.map(O.fromPredicate((es) => es.length > 0)),
-  T.map(O.map(flow(
-    renderAsList,
-    toHtmlFragment,
-  ))),
-);
+export const renderSummaryFeedList = <E>(
+  renderSummaryFeedItem: RenderSummaryFeedItem<E>,
+): RenderSummaryFeedList<E> => flow(
+    T.traverseArray(renderSummaryFeedItem),
+    T.map(O.fromPredicate((es) => es.length > 0)),
+    T.map(O.map(flow(
+      renderAsList,
+      toHtmlFragment,
+    ))),
+  );
