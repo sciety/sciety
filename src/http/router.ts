@@ -12,6 +12,7 @@ import identifyUser from './identify-user';
 import { loadStaticFile } from './load-static-file';
 import pageHandler from './page-handler';
 import ping from './ping';
+import { redirectBack } from './redirect-back';
 import { redirectAfterAuthenticating, requireAuthentication } from './require-authentication';
 import robots from './robots';
 import { aboutPage } from '../about-page';
@@ -105,10 +106,7 @@ export default (adapters: Adapters): Router => {
     saveSaveArticleCommand,
     requireAuthentication,
     finishSaveArticleCommand(adapters),
-    async (context, next) => {
-      context.redirect('back');
-      await next();
-    });
+    redirectBack);
 
   const authenticate = koaPassport.authenticate(
     'twitter',
