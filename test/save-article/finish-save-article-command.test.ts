@@ -6,7 +6,7 @@ import { toUserId } from '../../src/types/user-id';
 
 describe('finish-save-article-command', () => {
   describe('after saving', () => {
-    it.skip('deletes session parameters', async () => {
+    it('deletes session parameters', async () => {
       const userId = toUserId('user-id');
       const articleId = new Doi('10.1234/5678');
       const context = ({
@@ -26,7 +26,7 @@ describe('finish-save-article-command', () => {
         getAllEvents: async () => [],
       })(context, jest.fn());
 
-      expect(context.session).toBe({});
+      expect(context.session).toStrictEqual({});
     });
   });
 });

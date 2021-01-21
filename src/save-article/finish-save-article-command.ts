@@ -42,6 +42,11 @@ export const finishSaveArticleCommand = (
           constant([]),
         )),
         T.chain(commitEvents),
+        T.map(() => {
+          delete context.session.command;
+          delete context.session.articleId;
+          return undefined;
+        }),
       ),
     ),
   )();
