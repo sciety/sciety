@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/lib/function';
 import { renderSaveForm } from './render-save-form';
 import { renderSavedLink } from './render-saved-link';
 import { Doi } from '../types/doi';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { HtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
 type HasUserSavedArticle = (doi: Doi, userId: UserId) => T.Task<boolean>;
@@ -17,7 +17,7 @@ export const renderSaveArticle = (
 ): RenderSaveArticle => (doi, userId) => pipe(
   userId,
   O.fold(
-    () => (process.env.EXPERIMENT_ENABLED === 'true' ? T.of(renderSaveForm(doi)) : T.of(toHtmlFragment(''))),
+    () => T.of(renderSaveForm(doi)),
     (u) => pipe(
       hasUserSavedArticle(doi, u),
       T.map(B.fold(
