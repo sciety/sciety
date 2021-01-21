@@ -8,6 +8,7 @@ import { DomainEvent, RuntimeGeneratedEvent } from '../types/domain-events';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { HypothesisAnnotationId } from '../types/hypothesis-annotation-id';
 
+// TODO: should return a TaskEither
 export type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<void>;
 
 const replacer = (key: string, value: unknown): unknown => {
