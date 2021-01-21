@@ -75,7 +75,7 @@ const getUserId = (user: O.Option<User>): O.Option<UserId> => pipe(
 
 type ArticlePage = (params: Params) => ReturnType<RenderPage>;
 
-export default (ports: Ports): ArticlePage => {
+export const articlePage = (ports: Ports): ArticlePage => {
   const shimmedFetchArticle = flow(
     ports.fetchArticle,
     T.map((result) => result.mapOrElse(
