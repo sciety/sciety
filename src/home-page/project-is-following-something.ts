@@ -17,7 +17,7 @@ const countFollowedCommunities = (userId: UserId) => (count: number, event: Doma
   return count;
 };
 
-export default (getAllEvents: GetAllEvents): IsFollowingSomething => (userId) => pipe(
+export const projectIsFollowingSomething = (getAllEvents: GetAllEvents): IsFollowingSomething => (userId) => pipe(
   getAllEvents,
   T.map(A.reduce(0, countFollowedCommunities(userId))),
   T.map((count) => count > 0),
