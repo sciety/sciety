@@ -29,7 +29,6 @@ import privacyPage from '../privacy-page';
 import { respondHandler } from '../respond';
 import { finishRespondCommand } from '../respond/finish-respond-command';
 import { saveRespondCommand } from '../respond/save-respond-command';
-import { saveArticleHandler } from '../save-article';
 import { finishSaveArticleCommand } from '../save-article/finish-save-article-command';
 import { saveSaveArticleCommand } from '../save-article/save-save-article-command';
 import { Page } from '../shared-components/apply-standard-page-layout';
@@ -105,7 +104,11 @@ export default (adapters: Adapters): Router => {
     bodyParser({ enableTypes: ['form'] }),
     saveSaveArticleCommand,
     requireAuthentication,
-    saveArticleHandler(adapters));
+    finishSaveArticleCommand(adapters),
+    async (context, next) => {
+      context.redirect('back');
+      await next();
+    });
 
   const authenticate = koaPassport.authenticate(
     'twitter',
