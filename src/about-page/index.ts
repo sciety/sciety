@@ -14,7 +14,7 @@ type AboutPage = () => T.Task<{
   content: HtmlFragment,
 }>;
 
-export default (ports: Ports): AboutPage => () => pipe(
+export const aboutPage = (ports: Ports): AboutPage => () => pipe(
   'about.md',
   ports.fetchStaticFile,
   T.map(renderPage),
