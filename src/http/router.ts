@@ -20,7 +20,7 @@ import articlePage from '../article-page';
 import articleSearchPage from '../article-search-page';
 import editorialCommunityPage from '../editorial-community-page';
 import followHandler from '../follow';
-import finishFollowCommand from '../follow/finish-follow-command';
+import { finishFollowCommand } from '../follow/finish-follow-command';
 import saveFollowCommand from '../follow/save-follow-command';
 import homePage from '../home-page';
 import { Adapters } from '../infrastructure/adapters';
