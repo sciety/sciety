@@ -30,6 +30,7 @@ import { respondHandler } from '../respond';
 import { finishRespondCommand } from '../respond/finish-respond-command';
 import { saveRespondCommand } from '../respond/save-respond-command';
 import { saveArticleHandler } from '../save-article';
+import { finishSaveArticleCommand } from '../save-article/finish-save-article-command';
 import { Page } from '../shared-components/apply-standard-page-layout';
 import termsPage from '../terms-page';
 import { RenderPageError } from '../types/render-page-error';
@@ -127,6 +128,7 @@ export default (adapters: Adapters): Router => {
     finishFollowCommand(adapters),
     finishUnfollowCommand(adapters),
     finishRespondCommand(adapters),
+    finishSaveArticleCommand(),
     redirectAfterAuthenticating());
 
   router.get('/privacy',
