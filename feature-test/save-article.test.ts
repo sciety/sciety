@@ -10,6 +10,7 @@ describe('save-article', () => {
     dotenv.config();
     await openBrowser();
   });
+
   afterEach(closeBrowser);
 
   describe('when not logged in', () => {
