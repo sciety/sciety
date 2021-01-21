@@ -3,7 +3,7 @@ import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import { JSDOM } from 'jsdom';
 import { Maybe } from 'true-myth';
-import createRenderReviewFeedItem from '../../src/article-page/render-review-feed-item';
+import { createRenderReviewFeedItem } from '../../src/article-page/render-review-feed-item';
 import { Doi } from '../../src/types/doi';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 import { toHtmlFragment } from '../../src/types/html-fragment';

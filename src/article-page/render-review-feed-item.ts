@@ -80,7 +80,7 @@ const renderWithText = (teaserChars: number, review: ReviewFeedItem) => (respons
   `);
 };
 
-export default (
+export const createRenderReviewFeedItem = (
   teaserChars: number,
   renderReviewResponses: RenderReviewResponses,
 ): RenderReviewFeedItem => async (review, userId) => {
