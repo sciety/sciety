@@ -25,7 +25,7 @@ const headerTemplate = (ud: UserDetails): string => `
   </header>
 `;
 
-export default <E>(getUserDetails: GetUserDetails<E>): RenderHeader<E> => flow(
+export const createRenderHeader = <E>(getUserDetails: GetUserDetails<E>): RenderHeader<E> => flow(
   getUserDetails,
   TE.map(headerTemplate),
   TE.map(toHtmlFragment),
