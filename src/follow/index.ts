@@ -8,7 +8,7 @@ interface Ports {
   getFollowList: GetFollowList;
 }
 
-export default (ports: Ports): Middleware<{ user: User }> => {
+export const followHandler = (ports: Ports): Middleware<{ user: User }> => {
   const followCommand = createFollowCommand(
     ports.getFollowList,
     ports.commitEvents,
