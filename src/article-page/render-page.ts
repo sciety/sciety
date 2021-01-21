@@ -31,7 +31,7 @@ type Component = (doi: Doi) => T.Task<Result<string, 'not-found' | 'unavailable'
 type RenderFeed = (doi: Doi, userId: O.Option<UserId>) => Promise<Result<string, 'no-content'>>;
 export type RenderPage = (doi: Doi, userId: O.Option<UserId>) => T.Task<Result<Page, RenderPageError>>;
 
-export default (
+export const createRenderPage = (
   renderPageHeader: (doi: Doi, userId: O.Option<UserId>) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>,
   renderAbstract: Component,
   renderFeed: RenderFeed,
