@@ -6,7 +6,7 @@ import { Maybe } from 'true-myth';
 import { getActor } from './get-actor';
 import { GetAllEvents, getMostRecentEvents } from './get-most-recent-events';
 import { projectIsFollowingSomething } from './project-is-following-something';
-import createRenderEditorialCommunities, { GetAllEditorialCommunities } from './render-editorial-communities';
+import { createRenderEditorialCommunities, GetAllEditorialCommunities } from './render-editorial-communities';
 import createRenderEditorialCommunity from './render-editorial-community';
 import createRenderFeed from './render-feed';
 import createRenderFollowToggle from './render-follow-toggle';

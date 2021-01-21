@@ -27,7 +27,7 @@ const render = (links: ReadonlyArray<HtmlFragment>): string => `
   </section>
 `;
 
-export default (
+export const createRenderEditorialCommunities = (
   editorialCommunities: GetAllEditorialCommunities,
   renderEditorialCommunity: RenderEditorialCommunity,
 ): RenderEditorialCommunities => (userId) => (
