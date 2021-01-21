@@ -29,7 +29,7 @@ const render = (community: Community) => (toggle: HtmlFragment): string => `
   </div>
 `;
 
-export default (
+export const createRenderEditorialCommunity = (
   renderFollowToggle: RenderFollowToggle,
 ): RenderEditorialCommunity => (userId) => (community) => pipe(
   renderFollowToggle(userId, community.id, community.name),

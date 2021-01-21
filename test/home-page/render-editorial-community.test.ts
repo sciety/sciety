@@ -1,7 +1,7 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
-import createRenderEditorialCommunity from '../../src/home-page/render-editorial-community';
+import { createRenderEditorialCommunity } from '../../src/home-page/render-editorial-community';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 
