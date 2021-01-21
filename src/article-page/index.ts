@@ -4,7 +4,7 @@ import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import { flow, pipe } from 'fp-ts/lib/function';
 import { Maybe, Result } from 'true-myth';
-import ensureBiorxivDoi from './ensure-biorxiv-doi';
+import { ensureBiorxivDoi } from './ensure-biorxiv-doi';
 import { getArticleFeedEvents } from './get-article-feed-events';
 import { GetReview } from './get-feed-events-content';
 import { projectHasUserSavedArticle } from './project-has-user-saved-article';

@@ -4,7 +4,7 @@ import { Doi } from '../types/doi';
 
 const biorxivPrefix = '10.1101';
 
-export default (value: string): O.Option<Doi> => pipe(
+export const ensureBiorxivDoi = (value: string): O.Option<Doi> => pipe(
   O.tryCatch(() => new Doi(value)),
   O.filter((doi) => doi.hasPrefix(biorxivPrefix)),
 );

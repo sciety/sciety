@@ -1,5 +1,5 @@
 import * as O from 'fp-ts/lib/Option';
-import ensureBiorxivDoi from '../../src/article-page/ensure-biorxiv-doi';
+import { ensureBiorxivDoi } from '../../src/article-page/ensure-biorxiv-doi';
 import { Doi } from '../../src/types/doi';
 
 describe('ensure-biorxiv-doi', (): void => {
