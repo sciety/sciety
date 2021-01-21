@@ -1,5 +1,6 @@
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
-import { pipe } from 'fp-ts/lib/function';
+import { flow, pipe } from 'fp-ts/lib/function';
 import { Doi } from '../types/doi';
 import { DomainEvent, isUserSavedArticleEvent } from '../types/domain-events';
 import { UserId } from '../types/user-id';
@@ -10,9 +11,10 @@ type ProjectHasUserSavedArticle = (getEvents: GetEvents) => (doi: Doi, userId: U
 
 export const projectHasUserSavedArticle: ProjectHasUserSavedArticle = (getEvents) => (doi, userId) => pipe(
   getEvents,
-  T.map((events) => events
-    .filter(isUserSavedArticleEvent)
-    .filter((event) => event.userId === userId)
-    .map((event) => event.articleId.value)
-    .includes(doi.value)),
+  T.map(
+    flow(
+      RA.filter(isUserSavedArticleEvent),
+      RA.some((event) => (event.userId === userId && event.articleId.value === doi.value)),
+    ),
+  ),
 );
