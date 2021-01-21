@@ -33,7 +33,7 @@ export type GetReview = (id: ReviewId) => T.Task<{
 
 export type GetEditorialCommunity = (id: EditorialCommunityId) => Promise<{ name: string, avatar: URL }>;
 
-export default (
+export const getFeedEventsContent = (
   getFeedEvents: GetFeedEvents,
   getReview: GetReview,
   getEditorialCommunity: GetEditorialCommunity,

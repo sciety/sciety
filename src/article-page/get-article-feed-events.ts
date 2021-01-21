@@ -2,7 +2,7 @@ import { URL } from 'url';
 import * as T from 'fp-ts/lib/Task';
 import { Maybe } from 'true-myth';
 import { composeFeedEvents } from './compose-feed-events';
-import createGetFeedEventsContent, { GetReview } from './get-feed-events-content';
+import { getFeedEventsContent, GetReview } from './get-feed-events-content';
 import { createHandleArticleVersionErrors } from './handle-article-version-errors';
 import { GetFeedItems } from './render-feed';
 import { Doi } from '../types/doi';
@@ -30,7 +30,7 @@ export const getArticleFeedEvents = (
     avatar: URL;
   }>>,
 ): GetFeedItems => createHandleArticleVersionErrors(
-  createGetFeedEventsContent(
+  getFeedEventsContent(
     composeFeedEvents(
       async (doi) => (await findReviewsForArticleDoi(doi)()).map((review) => ({
         type: 'review',

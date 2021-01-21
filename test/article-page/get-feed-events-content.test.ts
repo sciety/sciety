@@ -1,7 +1,10 @@
 import { URL } from 'url';
 import * as T from 'fp-ts/lib/Task';
+import { pipe } from 'fp-ts/lib/function';
 import { Maybe } from 'true-myth';
-import createGetFeedEventsContent, { GetEditorialCommunity, GetFeedEvents, GetReview } from '../../src/article-page/get-feed-events-content';
+import {
+  GetEditorialCommunity, GetFeedEvents, getFeedEventsContent, GetReview,
+} from '../../src/article-page/get-feed-events-content';
 import { Doi } from '../../src/types/doi';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 import { toHtmlFragment } from '../../src/types/html-fragment';
@@ -31,8 +34,10 @@ describe('get-feed-events-content', () => {
         name: 'A Community',
         avatar: new URL('https://example.com/avatar'),
       });
-      const getFeedEventsContent = createGetFeedEventsContent(getFeedEvents, getReview, getEditorialCommunity);
-      const viewModel = await getFeedEventsContent(new Doi('10.1101/123456'));
+      const viewModel = await pipe(
+        new Doi('10.1101/123456'),
+        getFeedEventsContent(getFeedEvents, getReview, getEditorialCommunity),
+      );
 
       expect(viewModel).toHaveLength(2);
     });
