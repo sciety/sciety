@@ -44,15 +44,15 @@ const render = (
   T.map(toHtmlFragment),
 );
 
-export default <Err>(
+export const createRenderPageHeader = <Err>(
   getArticleDetails: GetArticleDetails<Err>,
   renderTweetThis: RenderTweetThis,
   renderSaveArticle: RenderSaveArticle,
 ): RenderPageHeader<Err> => (doi, userId) => pipe(
-  doi,
-  getArticleDetails,
-  TE.chain(flow(
-    render(renderTweetThis, renderSaveArticle)(doi, userId),
-    (rendered) => TE.rightTask<Err, HtmlFragment>(rendered),
-  )),
-);
+    doi,
+    getArticleDetails,
+    TE.chain(flow(
+      render(renderTweetThis, renderSaveArticle)(doi, userId),
+      (rendered) => TE.rightTask<Err, HtmlFragment>(rendered),
+    )),
+  );

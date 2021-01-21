@@ -14,7 +14,7 @@ import createRenderArticleAbstract from './render-article-abstract';
 import createRenderArticleVersionFeedItem from './render-article-version-feed-item';
 import { createRenderFeed } from './render-feed';
 import createRenderPage, { Page, RenderPage } from './render-page';
-import createRenderPageHeader from './render-page-header';
+import { createRenderPageHeader } from './render-page-header';
 import createRenderReviewFeedItem from './render-review-feed-item';
 import { createRenderReviewResponses } from './render-review-responses';
 import { renderSaveArticle } from './render-save-article';

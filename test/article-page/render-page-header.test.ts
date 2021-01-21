@@ -4,10 +4,7 @@ import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { constant, pipe } from 'fp-ts/lib/function';
 import { JSDOM } from 'jsdom';
-import createRenderPageHeader, {
-  GetArticleDetails,
-  RenderPageHeader,
-} from '../../src/article-page/render-page-header';
+import { createRenderPageHeader, GetArticleDetails, RenderPageHeader } from '../../src/article-page/render-page-header';
 import { Doi } from '../../src/types/doi';
 import { HtmlFragment, toHtmlFragment } from '../../src/types/html-fragment';
 import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
