@@ -9,11 +9,13 @@ export type GetArticleAbstract<E> = (doi: Doi) => T.Task<Result<SanitisedHtmlFra
 
 type RenderArticleAbstract<E> = (doi: Doi) => T.Task<Result<HtmlFragment, E>>;
 
-export default <E> (getArticleAbstract: GetArticleAbstract<E>): RenderArticleAbstract<E> => (
-  (doi) => pipe(
-    doi,
-    getArticleAbstract,
-    T.map((result) => result.map((articleAbstract) => toHtmlFragment(`
+export const createRenderArticleAbstract = <E> (
+  getArticleAbstract: GetArticleAbstract<E>,
+): RenderArticleAbstract<E> => (
+    (doi) => pipe(
+      doi,
+      getArticleAbstract,
+      T.map((result) => result.map((articleAbstract) => toHtmlFragment(`
       <section class="article-abstract" role="doc-abstract">
         <h2>
           Abstract
@@ -24,5 +26,5 @@ export default <E> (getArticleAbstract: GetArticleAbstract<E>): RenderArticleAbs
           </a>
       </section>
     `))),
-  )
-);
+    )
+  );
