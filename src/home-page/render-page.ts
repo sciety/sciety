@@ -32,7 +32,7 @@ const render = (components: {
   </div>
 `;
 
-export default (
+export const renderPage = (
   renderPageHeader: Component,
   renderEditorialCommunities: Component,
   renderSearchForm: Component,
