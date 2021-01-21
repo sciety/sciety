@@ -101,6 +101,7 @@ export default (adapters: Adapters): Router => {
 
   router.post('/save-article',
     bodyParser({ enableTypes: ['form'] }),
+    requireAuthentication,
     saveArticleHandler(adapters));
 
   const authenticate = koaPassport.authenticate(
