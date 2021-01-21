@@ -11,7 +11,7 @@ export type RenderReviewResponses = (reviewId: ReviewId, userId: O.Option<UserId
 export type CountReviewResponses = (reviewId: ReviewId) => T.Task<{ helpfulCount: number, notHelpfulCount: number }>;
 export type GetUserReviewResponse = (reviewId: ReviewId, userId: O.Option<UserId>) => Promise<Maybe<'helpful' | 'not-helpful'>>;
 
-export default (
+export const createRenderReviewResponses = (
   countReviewResponses: CountReviewResponses,
   getUserReviewResponse: GetUserReviewResponse,
 ): RenderReviewResponses => (

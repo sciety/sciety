@@ -16,7 +16,7 @@ import createRenderFeed from './render-feed';
 import createRenderPage, { Page, RenderPage } from './render-page';
 import createRenderPageHeader from './render-page-header';
 import createRenderReviewFeedItem from './render-review-feed-item';
-import createRenderReviewResponses from './render-review-responses';
+import { createRenderReviewResponses } from './render-review-responses';
 import { renderSaveArticle } from './render-save-article';
 import { renderTweetThis } from './render-tweet-this';
 import { Doi } from '../types/doi';
