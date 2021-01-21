@@ -6,12 +6,14 @@ import {
 jest.setTimeout(15000);
 
 describe('save-article', () => {
+  beforeEach(async () => {
+    dotenv.config();
+    await openBrowser();
+  });
   afterEach(closeBrowser);
 
   describe('when not logged in', () => {
     it('saves the article to the list', async () => {
-      dotenv.config();
-      await openBrowser();
       await goto('localhost:8080/articles/10.1101/2020.05.01.072975');
       await click('Save to my list');
       await write(process.env.TAIKO_TWITTER_USERNAME ?? '', into(textBox('Username')));
@@ -25,8 +27,6 @@ describe('save-article', () => {
 
   describe('when logged in', () => {
     beforeEach(async () => {
-      dotenv.config();
-      await openBrowser();
       await goto('localhost:8080/');
       await click('Log in');
       await write(process.env.TAIKO_TWITTER_USERNAME ?? '', into(textBox('Username')));
