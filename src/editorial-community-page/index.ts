@@ -13,7 +13,6 @@ import createRenderFollowToggle, { Follows } from './render-follow-toggle';
 import createRenderFollowers from './render-followers';
 import createRenderPage, { RenderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
-import { renderSummaryFeedItem } from '../shared-components/render-summary-feed-item';
 import { renderSummaryFeedList } from '../shared-components/render-summary-feed-list';
 import { EditorialCommunity } from '../types/editorial-community';
 import { EditorialCommunityId } from '../types/editorial-community-id';
@@ -35,7 +34,7 @@ interface Ports {
 
 const buildRenderFeed = (ports: Ports): RenderFeed => createRenderFeed(
   createGetMostRecentEvents(ports.getAllEvents, 20),
-  renderSummaryFeedList(renderSummaryFeedItem(getActor(ports.getEditorialCommunity), ports.fetchArticle)),
+  renderSummaryFeedList(getActor(ports.getEditorialCommunity), ports.fetchArticle),
   createRenderFollowToggle(ports.follows),
 );
 

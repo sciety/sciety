@@ -13,7 +13,6 @@ import createRenderFollowToggle from './render-follow-toggle';
 import renderPage, { RenderPage } from './render-page';
 import renderPageHeader from './render-page-header';
 import renderSearchForm from './render-search-form';
-import { renderSummaryFeedItem } from '../shared-components/render-summary-feed-item';
 import { renderSummaryFeedList } from '../shared-components/render-summary-feed-list';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { FetchExternalArticle } from '../types/fetch-external-article';
@@ -48,7 +47,7 @@ export default (ports: Ports): HomePage => {
   const renderFeed = createRenderFeed(
     projectIsFollowingSomething(ports.getAllEvents),
     getMostRecentEvents(ports.getAllEvents, ports.follows, 20),
-    renderSummaryFeedList(renderSummaryFeedItem(getActor(ports.getEditorialCommunity), ports.fetchArticle)),
+    renderSummaryFeedList(getActor(ports.getEditorialCommunity), ports.fetchArticle),
   );
 
   return (params) => pipe(

@@ -2,7 +2,9 @@ import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import { flow } from 'fp-ts/lib/function';
 import templateListItems from './list-items';
-import { FeedEvent } from './render-summary-feed-item';
+import {
+  FeedEvent, GetActor, GetArticle, renderSummaryFeedItem,
+} from './render-summary-feed-item';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 const renderAsList = (items: ReadonlyArray<HtmlFragment>): string => `
@@ -13,12 +15,11 @@ const renderAsList = (items: ReadonlyArray<HtmlFragment>): string => `
 
 export type RenderSummaryFeedList = (events: ReadonlyArray<FeedEvent>) => T.Task<O.Option<HtmlFragment>>;
 
-type RenderSummaryFeedItem = (event: FeedEvent) => T.Task<HtmlFragment>;
-
 export const renderSummaryFeedList = (
-  renderSummaryFeedItem: RenderSummaryFeedItem,
+  getActor: GetActor,
+  getArticle: GetArticle,
 ): RenderSummaryFeedList => flow(
-  T.traverseArray(renderSummaryFeedItem),
+  T.traverseArray(renderSummaryFeedItem(getActor, getArticle)),
   T.map(O.fromPredicate((es) => es.length > 0)),
   T.map(O.map(flow(
     renderAsList,
