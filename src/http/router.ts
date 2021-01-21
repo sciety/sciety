@@ -128,7 +128,7 @@ export default (adapters: Adapters): Router => {
     finishFollowCommand(adapters),
     finishUnfollowCommand(adapters),
     finishRespondCommand(adapters),
-    finishSaveArticleCommand(),
+    finishSaveArticleCommand(adapters),
     redirectAfterAuthenticating());
 
   router.get('/privacy',
