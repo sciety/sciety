@@ -11,7 +11,7 @@ import {
 } from '../types/domain-events';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
+import { sanitise, SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
 export type FeedEvent =
   EditorialCommunityEndorsedArticleEvent |
@@ -33,7 +33,7 @@ type ViewModel = {
   actorName: string,
   actorUrl: string,
   doi: Doi,
-  title: HtmlFragment,
+  title: SanitisedHtmlFragment,
   verb: string,
 };
 
@@ -73,7 +73,7 @@ const constructViewModel = ({ actor, article, event }: Inputs): ViewModel => ({
   actorName: actor.name,
   actorUrl: actor.url,
   doi: event.articleId,
-  title: article.mapOr(toHtmlFragment('an article'), (a) => a.title),
+  title: article.mapOr(sanitise(toHtmlFragment('an article')), (a) => a.title),
   verb: verb(event, actor),
 });
 
