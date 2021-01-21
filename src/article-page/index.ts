@@ -9,7 +9,7 @@ import { getArticleFeedEvents } from './get-article-feed-events';
 import { GetReview } from './get-feed-events-content';
 import { projectHasUserSavedArticle } from './project-has-user-saved-article';
 import { createProjectReviewResponseCounts } from './project-review-response-counts';
-import createProjectUserReviewResponse from './project-user-review-response';
+import { createProjectUserReviewResponse } from './project-user-review-response';
 import createRenderArticleAbstract from './render-article-abstract';
 import createRenderArticleVersionFeedItem from './render-article-version-feed-item';
 import { createRenderFeed } from './render-feed';
