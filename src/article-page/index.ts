@@ -11,7 +11,7 @@ import { projectHasUserSavedArticle } from './project-has-user-saved-article';
 import { createProjectReviewResponseCounts } from './project-review-response-counts';
 import { createProjectUserReviewResponse } from './project-user-review-response';
 import { createRenderArticleAbstract } from './render-article-abstract';
-import createRenderArticleVersionFeedItem from './render-article-version-feed-item';
+import { createRenderArticleVersionFeedItem } from './render-article-version-feed-item';
 import { createRenderFeed } from './render-feed';
 import { createRenderPage, Page, RenderPage } from './render-page';
 import { createRenderPageHeader } from './render-page-header';

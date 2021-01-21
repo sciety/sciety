@@ -11,7 +11,7 @@ export type ArticleVersionFeedItem = {
 
 export type RenderArticleVersionFeedItem = (feedItem: ArticleVersionFeedItem) => HtmlFragment;
 
-export default (
+export const createRenderArticleVersionFeedItem = (
 ): RenderArticleVersionFeedItem => (
   (feedItem: ArticleVersionFeedItem) => toHtmlFragment(`
     <div class="article-feed__item_contents">

@@ -1,5 +1,5 @@
 import { URL } from 'url';
-import createRenderArticleVersionFeedItem, { ArticleVersionFeedItem } from '../../src/article-page/render-article-version-feed-item';
+import { ArticleVersionFeedItem, createRenderArticleVersionFeedItem } from '../../src/article-page/render-article-version-feed-item';
 
 describe('render-article-version-feed-item', () => {
   it('renders the feed item', async () => {
