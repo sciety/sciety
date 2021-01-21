@@ -37,7 +37,7 @@ const renderList = (list: RNEA.ReadonlyNonEmptyArray<HtmlFragment>): string => (
   </ol>
 `);
 
-export default (
+export const createRenderFollowList = (
   getFollowedEditorialCommunities: GetFollowedEditorialCommunities,
   renderFollowedEditorialCommunity: RenderFollowedEditorialCommunity,
 ): RenderFollowList => (
