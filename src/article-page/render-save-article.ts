@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import * as B from 'fp-ts/lib/boolean';
-import { constant, pipe } from 'fp-ts/lib/function';
+import { pipe } from 'fp-ts/lib/function';
 import { renderSaveForm } from './render-save-form';
 import { renderSavedLink } from './render-saved-link';
 import { Doi } from '../types/doi';
@@ -17,7 +17,7 @@ export const renderSaveArticle = (
 ): RenderSaveArticle => (doi, userId) => pipe(
   userId,
   O.fold(
-    constant(T.of('')),
+    () => (process.env.EXPERIMENT_ENABLED === 'true' ? T.of(renderSaveForm(doi)) : T.of(toHtmlFragment(''))),
     (u) => pipe(
       hasUserSavedArticle(doi, u),
       T.map(B.fold(
@@ -26,5 +26,4 @@ export const renderSaveArticle = (
       )),
     ),
   ),
-  T.map(toHtmlFragment),
 );

@@ -7,12 +7,12 @@ import { toUserId } from '../../src/types/user-id';
 
 describe('render-save-article', () => {
   describe('not logged in', () => {
-    it('renders nothing', async () => {
+    it('renders save-to-your-list-form', async () => {
       const projection = jest.fn().mockImplementation(constant(T.of(false)));
       const render = renderSaveArticle(projection);
       const rendered = await render(new Doi('10.1111/foobar'), O.none)();
 
-      expect(rendered).toStrictEqual('');
+      expect(rendered).toContain('Save to my list');
       expect(projection).not.toHaveBeenCalled();
     });
   });
