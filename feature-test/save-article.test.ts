@@ -24,7 +24,7 @@ describe('save-article', () => {
   });
 
   describe('when logged in', () => {
-    it('saves the article to the list', async () => {
+    beforeEach(async () => {
       dotenv.config();
       await openBrowser();
       await goto('localhost:8080/');
@@ -32,6 +32,9 @@ describe('save-article', () => {
       await write(process.env.TAIKO_TWITTER_USERNAME ?? '', into(textBox('Username')));
       await write(process.env.TAIKO_TWITTER_PASSWORD ?? '', into(textBox('Password')));
       await click('Sign in');
+    });
+
+    it('saves the article to the list', async () => {
       await goto('localhost:8080/articles/10.1101/862755');
       await click('Save to my list');
       const result = await text('Saved to my list').exists();
