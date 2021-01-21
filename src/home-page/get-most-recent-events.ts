@@ -17,7 +17,7 @@ type FeedEvent =
 export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 export type Follows = (userId: UserId, editorialCommunityId: EditorialCommunityId) => T.Task<boolean>;
 
-export default (
+export const getMostRecentEvents = (
   getAllEvents: GetAllEvents,
   follows: Follows,
   maxCount: number,

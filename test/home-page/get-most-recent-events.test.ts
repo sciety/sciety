@@ -1,5 +1,5 @@
 import * as T from 'fp-ts/lib/Task';
-import createGetMostRecentEvents, { Follows, GetAllEvents } from '../../src/home-page/get-most-recent-events';
+import { Follows, GetAllEvents, getMostRecentEvents } from '../../src/home-page/get-most-recent-events';
 import { Doi } from '../../src/types/doi';
 import { DomainEvent } from '../../src/types/domain-events';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
@@ -32,7 +32,7 @@ describe('get-most-recent-events', () => {
     ];
     const getAllEvents: GetAllEvents = T.of(initial);
     const follows: Follows = () => T.of(true);
-    const getEvents = createGetMostRecentEvents(getAllEvents, follows, 20);
+    const getEvents = getMostRecentEvents(getAllEvents, follows, 20);
     const sortedEvents = await getEvents(toUserId('user-1'))();
 
     expect(sortedEvents[0]).toStrictEqual(initial[1]);
@@ -46,7 +46,7 @@ describe('get-most-recent-events', () => {
       const dummyEvents: ReadonlyArray<DomainEvent> = [dummyEvent, dummyEvent, dummyEvent];
       const getAllEvents: GetAllEvents = T.of(dummyEvents);
       const follows: Follows = () => T.of(true);
-      const getEvents = createGetMostRecentEvents(getAllEvents, follows, 20);
+      const getEvents = getMostRecentEvents(getAllEvents, follows, 20);
       const events = await getEvents(toUserId('user-1'))();
 
       expect(events).toHaveLength(dummyEvents.length);
@@ -59,7 +59,7 @@ describe('get-most-recent-events', () => {
       const maxCount = 2;
       const getAllEvents: GetAllEvents = T.of(dummyEvents);
       const follows: Follows = () => T.of(true);
-      const getEvents = createGetMostRecentEvents(getAllEvents, follows, maxCount);
+      const getEvents = getMostRecentEvents(getAllEvents, follows, maxCount);
       const events = await getEvents(toUserId('user-1'))();
 
       expect(events).toHaveLength(maxCount);
