@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/lib/Option';
 import { Result } from 'true-myth';
-import createRenderArticleVersionErrorFeedItem from './render-article-version-error-feed-item';
+import { createRenderArticleVersionErrorFeedItem } from './render-article-version-error-feed-item';
 import { ArticleVersionFeedItem, RenderArticleVersionFeedItem } from './render-article-version-feed-item';
 import { RenderReviewFeedItem, ReviewFeedItem } from './render-review-feed-item';
 import renderListItems from '../shared-components/list-items';
