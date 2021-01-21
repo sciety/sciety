@@ -38,7 +38,7 @@ interface Params {
 
 type HomePage = (params: Params) => ReturnType<RenderPage>;
 
-export default (ports: Ports): HomePage => {
+export const homePage = (ports: Ports): HomePage => {
   const renderFollowToggle = createRenderFollowToggle(ports.follows);
   const renderEditorialCommunities = createRenderEditorialCommunities(
     ports.getAllEditorialCommunities,

@@ -22,7 +22,7 @@ import editorialCommunityPage from '../editorial-community-page';
 import { followHandler } from '../follow';
 import { finishFollowCommand } from '../follow/finish-follow-command';
 import { saveFollowCommand } from '../follow/save-follow-command';
-import homePage from '../home-page';
+import { homePage } from '../home-page';
 import { Adapters } from '../infrastructure/adapters';
 import communityOutreachManagerPage from '../jobs/community-outreach-manager-page';
 import logOutHandler from '../log-out';
