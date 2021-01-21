@@ -18,6 +18,7 @@ Table of contents
    1. [Releasing to production](#releasing-to-production)
    1. [Looking at logs](#looking-at-logs)
    1. [Updating event data](#updating-event-data)
+   1. [Dump all data to a CSV](#dump-all-data)
 1. [License](#license)
 
 Development
@@ -125,6 +126,17 @@ A [CloudWatch user journey by IP] query is available to track a single client ac
 Run `make -j 4 update-event-data`.
 
 Substitute `4` with the desired concurrency level.
+
+
+### Dump all data
+
+Run `make prod-sql`.
+
+At the prompt, execute this command:
+
+```sql
+\copy (SELECT date, type, payload FROM events ORDER BY date) TO STDOUT WITH CSV;
+```
 
 License
 -------
