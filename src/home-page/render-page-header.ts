@@ -3,7 +3,7 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 type RenderPageHeader = T.Task<HtmlFragment>;
 
-export default (): RenderPageHeader => (
+export const renderPageHeader = (): RenderPageHeader => (
   T.of(toHtmlFragment(`
     <header class="home-page-header">
 

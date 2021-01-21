@@ -11,7 +11,7 @@ import { createRenderEditorialCommunity } from './render-editorial-community';
 import { createRenderFeed } from './render-feed';
 import { createRenderFollowToggle } from './render-follow-toggle';
 import { renderPage, RenderPage } from './render-page';
-import renderPageHeader from './render-page-header';
+import { renderPageHeader } from './render-page-header';
 import { renderSearchForm } from './render-search-form';
 import { renderSummaryFeedList } from '../shared-components/render-summary-feed-list';
 import { EditorialCommunityId } from '../types/editorial-community-id';
