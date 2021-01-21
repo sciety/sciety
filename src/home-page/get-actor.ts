@@ -1,8 +1,15 @@
 import { URL } from 'url';
 import * as T from 'fp-ts/lib/Task';
 import { Maybe } from 'true-myth';
-import { GetActor } from '../shared-components/render-summary-feed-item';
 import { EditorialCommunityId } from '../types/editorial-community-id';
+
+type Actor = {
+  url: string;
+  name: string;
+  imageUrl: string;
+};
+
+type GetActor = (id: EditorialCommunityId) => T.Task<Actor>;
 
 type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.Task<Maybe<{
   name: string;

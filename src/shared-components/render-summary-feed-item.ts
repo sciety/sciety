@@ -15,7 +15,7 @@ type FeedEvent =
 
 type RenderSummaryFeedItem = (event: FeedEvent) => T.Task<HtmlFragment>;
 
-type ViewModel = {
+type FeedItem = {
   avatar: string,
   date: Date,
   actorName: string,
@@ -25,7 +25,7 @@ type ViewModel = {
   verb: string,
 };
 
-const render = (viewModel: ViewModel): string => `
+const render = (viewModel: FeedItem): string => `
   <div class="summary-feed-item">
     <img src="${viewModel.avatar}" alt="" class="summary-feed-item__avatar">
     <div>
@@ -45,11 +45,11 @@ type Actor = {
   imageUrl: string;
 };
 
+export type GetActor = (id: EditorialCommunityId) => T.Task<Actor>;
+
 type Article = {
   title: SanitisedHtmlFragment;
 };
-
-export type GetActor = (id: EditorialCommunityId) => T.Task<Actor>;
 
 export type GetArticle = (id: Doi) => T.Task<Result<Article, unknown>>;
 
