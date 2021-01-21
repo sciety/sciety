@@ -33,7 +33,7 @@ import { saveRespondCommand } from '../respond/save-respond-command';
 import { finishSaveArticleCommand } from '../save-article/finish-save-article-command';
 import { saveSaveArticleCommand } from '../save-article/save-save-article-command';
 import { Page } from '../shared-components/apply-standard-page-layout';
-import termsPage from '../terms-page';
+import { termsPage } from '../terms-page';
 import { RenderPageError } from '../types/render-page-error';
 import unfollowHandler from '../unfollow';
 import finishUnfollowCommand from '../unfollow/finish-unfollow-command';

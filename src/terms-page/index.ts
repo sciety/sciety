@@ -6,7 +6,7 @@ type RenderPage = () => T.Task<{
   content: HtmlFragment,
 }>;
 
-export default (): RenderPage => () => T.of({
+export const termsPage = (): RenderPage => () => T.of({
   title: 'Terms and conditions',
   content: toHtmlFragment(`
     <div class="sciety-grid sciety-grid--simple">
