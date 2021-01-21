@@ -48,27 +48,27 @@ const renderAsSection = (contents: HtmlFragment): HtmlFragment => toHtmlFragment
   </section>
 `);
 
-export default <E>(
+export const createRenderFeed = <E>(
   isFollowingSomething: IsFollowingSomething,
   getEvents: GetEvents<E>,
   renderSummaryFeedList: RenderSummaryFeedList<E>,
 ): RenderFeed => (
-  (uid) => async () => {
-    const userFeed = async (u: UserId): Promise<string> => {
-      if (!(await isFollowingSomething(u)())) {
-        return followSomething();
-      }
-      const events = await getEvents(u)();
-      return O.getOrElse(noEvaluationsYet)(await renderSummaryFeedList(events)());
-    };
+    (uid) => async () => {
+      const userFeed = async (u: UserId): Promise<string> => {
+        if (!(await isFollowingSomething(u)())) {
+          return followSomething();
+        }
+        const events = await getEvents(u)();
+        return O.getOrElse(noEvaluationsYet)(await renderSummaryFeedList(events)());
+      };
 
-    const calculateFeedContents = async (): Promise<string> => (
-      pipe(
-        uid,
-        O.fold(welcomeMessage, userFeed),
-      )
-    );
+      const calculateFeedContents = async (): Promise<string> => (
+        pipe(
+          uid,
+          O.fold(welcomeMessage, userFeed),
+        )
+      );
 
-    return renderAsSection(toHtmlFragment(await calculateFeedContents()));
-  }
-);
+      return renderAsSection(toHtmlFragment(await calculateFeedContents()));
+    }
+  );

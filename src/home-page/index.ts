@@ -8,7 +8,7 @@ import { GetAllEvents, getMostRecentEvents } from './get-most-recent-events';
 import { projectIsFollowingSomething } from './project-is-following-something';
 import { createRenderEditorialCommunities, GetAllEditorialCommunities } from './render-editorial-communities';
 import createRenderEditorialCommunity from './render-editorial-community';
-import createRenderFeed from './render-feed';
+import { createRenderFeed } from './render-feed';
 import createRenderFollowToggle from './render-follow-toggle';
 import renderPage, { RenderPage } from './render-page';
 import renderPageHeader from './render-page-header';
