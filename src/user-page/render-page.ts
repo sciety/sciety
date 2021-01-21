@@ -40,7 +40,7 @@ const template = (
 type RenderFollowList = (userId: UserId, viewingUserId: O.Option<UserId>) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>;
 type GetUserDisplayName = (userId: UserId) => TE.TaskEither<'not-found' | 'unavailable', string>;
 
-export default (
+export const createRenderPage = (
   renderHeader: Component,
   renderFollowList: RenderFollowList,
   getUserDisplayName: GetUserDisplayName,

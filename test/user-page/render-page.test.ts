@@ -3,7 +3,7 @@ import * as O from 'fp-ts/lib/Option';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { toUserId } from '../../src/types/user-id';
-import createRenderPage from '../../src/user-page/render-page';
+import { createRenderPage } from '../../src/user-page/render-page';
 
 describe('render-page', () => {
   describe('when the user display name is found', () => {

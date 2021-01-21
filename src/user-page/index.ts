@@ -13,7 +13,7 @@ import { createRenderFollowList } from './render-follow-list';
 import { createRenderFollowToggle, Follows } from './render-follow-toggle';
 import createRenderFollowedEditorialCommunity from './render-followed-editorial-community';
 import { createRenderHeader, UserDetails } from './render-header';
-import createRenderPage, { RenderPage } from './render-page';
+import { createRenderPage, RenderPage } from './render-page';
 import { renderSavedArticles } from './render-saved-articles';
 import { Doi } from '../types/doi';
 import { EditorialCommunityId } from '../types/editorial-community-id';
