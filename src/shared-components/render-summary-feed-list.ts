@@ -1,10 +1,9 @@
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import { flow } from 'fp-ts/lib/function';
+import { FeedEvent } from './construct-feed-item';
 import templateListItems from './list-items';
-import {
-  FeedEvent, GetActor, GetArticle, renderSummaryFeedItem,
-} from './render-summary-feed-item';
+import { GetActor, GetArticle, renderSummaryFeedItem } from './render-summary-feed-item';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 const renderAsList = (items: ReadonlyArray<HtmlFragment>): string => `

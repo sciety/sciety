@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import createRenderFeed, { GetEvents, IsFollowingSomething } from '../../src/home-page/render-feed';
-import { FeedEvent } from '../../src/shared-components/render-summary-feed-item';
+import { FeedEvent } from '../../src/shared-components/construct-feed-item';
 import { RenderSummaryFeedList } from '../../src/shared-components/render-summary-feed-list';
 import { Doi } from '../../src/types/doi';
 import { editorialCommunityReviewedArticle } from '../../src/types/domain-events';
