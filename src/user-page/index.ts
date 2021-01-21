@@ -10,7 +10,7 @@ import { getUserDisplayName } from './get-user-display-name';
 import { createProjectFollowedEditorialCommunityIds, GetAllEvents } from './project-followed-editorial-community-ids';
 import { projectSavedArticleDois } from './project-saved-article-dois';
 import createRenderFollowList from './render-follow-list';
-import createRenderFollowToggle, { Follows } from './render-follow-toggle';
+import { createRenderFollowToggle, Follows } from './render-follow-toggle';
 import createRenderFollowedEditorialCommunity from './render-followed-editorial-community';
 import createRenderHeader, { UserDetails } from './render-header';
 import createRenderPage, { RenderPage } from './render-page';
