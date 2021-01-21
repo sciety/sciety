@@ -43,7 +43,7 @@ interface Params {
 
 type UserPage = (params: Params) => ReturnType<RenderPage>;
 
-export default (ports: Ports): UserPage => {
+export const userPage = (ports: Ports): UserPage => {
   const getEditorialCommunity: GetEditorialCommunity = (editorialCommunityId) => async () => (
     (await ports.getEditorialCommunity(editorialCommunityId)()).unsafelyUnwrap()
   );

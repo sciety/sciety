@@ -38,7 +38,7 @@ import { RenderPageError } from '../types/render-page-error';
 import unfollowHandler from '../unfollow';
 import finishUnfollowCommand from '../unfollow/finish-unfollow-command';
 import saveUnfollowCommand from '../unfollow/save-unfollow-command';
-import userPage from '../user-page';
+import { userPage } from '../user-page';
 
 const toEither = <L = RenderPageError, R = Page>(result: Result<R, L>): E.Either<L, R> => (
   result
