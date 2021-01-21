@@ -34,7 +34,7 @@ const renderUnfollowButton: RenderButton = (editorialCommunityId, editorialCommu
   </form>
 `;
 
-export default (follows: Follows): RenderFollowToggle => (
+export const createRenderFollowToggle = (follows: Follows): RenderFollowToggle => (
   (userId, editorialCommunityId, editorialCommunityName) => (
     pipe(
       userId,
