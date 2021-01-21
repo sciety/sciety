@@ -1,7 +1,7 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/lib/Option';
 import { Maybe } from 'true-myth';
-import createRenderFeed from '../../src/article-page/render-feed';
+import { createRenderFeed } from '../../src/article-page/render-feed';
 import { Doi } from '../../src/types/doi';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 import { toHtmlFragment } from '../../src/types/html-fragment';

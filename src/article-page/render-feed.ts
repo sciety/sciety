@@ -14,7 +14,7 @@ export type FeedItem = ReviewFeedItem | ArticleVersionFeedItem | { type: 'articl
 
 export type GetFeedItems = (doi: Doi) => Promise<ReadonlyArray<FeedItem>>;
 
-export default (
+export const createRenderFeed = (
   getFeedItems: GetFeedItems,
   renderReviewFeedItem: RenderReviewFeedItem,
   renderArticleVersionFeedItem: RenderArticleVersionFeedItem,
