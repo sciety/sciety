@@ -14,7 +14,7 @@ import pageHandler from './page-handler';
 import ping from './ping';
 import { redirectBack } from './redirect-back';
 import { redirectAfterAuthenticating, requireAuthentication } from './require-authentication';
-import robots from './robots';
+import { robots } from './robots';
 import { aboutPage } from '../about-page';
 import { articlePage } from '../article-page';
 import articleSearchPage from '../article-search-page';
