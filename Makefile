@@ -127,7 +127,7 @@ taiko: export TARGET = dev
 taiko: clean-db
 	${DOCKER_COMPOSE} up -d
 	scripts/wait-for-healthy.sh
-	npx jest --roots ./feature-test
+	npx jest ${TEST} --roots ./feature-test/
 	${DOCKER_COMPOSE} down
 
 regression: taiko backstop
