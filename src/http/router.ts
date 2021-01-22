@@ -111,6 +111,7 @@ export default (adapters: Adapters): Router => {
   router.get('/log-out',
     logOutHandler());
 
+  // TODO set commands as an object on the session rather than individual properties
   router.get('/twitter/callback',
     catchErrors(
       adapters.logger,
