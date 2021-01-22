@@ -11,7 +11,7 @@ import { catchStaticFileErrors } from './catch-static-file-errors';
 import { identifyUser } from './identify-user';
 import { loadStaticFile } from './load-static-file';
 import { pageHandler } from './page-handler';
-import ping from './ping';
+import { ping } from './ping';
 import { redirectBack } from './redirect-back';
 import { redirectAfterAuthenticating, requireAuthentication } from './require-authentication';
 import { robots } from './robots';
