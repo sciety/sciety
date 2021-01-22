@@ -15,7 +15,7 @@ type FeedEvent =
 
 type RenderSummaryFeedItem = (event: FeedEvent) => T.Task<HtmlFragment>;
 
-type FeedItem = {
+export type FeedItem = {
   avatar: string,
   date: Date,
   actorName: string,

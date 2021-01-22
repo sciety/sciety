@@ -1,12 +1,13 @@
 import * as T from 'fp-ts/lib/Task';
 import { Result } from 'true-myth';
-import { GetActor, GetArticle, renderSummaryFeedItem } from '../../src/shared-components/render-summary-feed-item';
+import { constructFeedItem } from '../../src/shared-components/construct-feed-item';
+import { FeedItem, GetActor, GetArticle } from '../../src/shared-components/render-summary-feed-item';
 import { Doi } from '../../src/types/doi';
 import { EditorialCommunityEndorsedArticleEvent, EditorialCommunityReviewedArticleEvent } from '../../src/types/domain-events';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
 
-describe('render-summary-feed-item', (): void => {
+describe('construct-feed-item', (): void => {
   const articleTitle = 'the title' as SanitisedHtmlFragment;
   const arbitraryActorId = new EditorialCommunityId('');
   const arbitraryArticleId = new Doi('10.5281/zenodo.3678326');
@@ -23,53 +24,53 @@ describe('render-summary-feed-item', (): void => {
       date: new Date('2020-01-01'),
       type: 'EditorialCommunityEndorsedArticle',
     };
-    let rendered: string;
+    let feedItem: FeedItem;
 
     describe('and the article information can be retrieved', () => {
       beforeEach(async () => {
         const getArticle: GetArticle = () => T.of(Result.ok({
           title: articleTitle,
         }));
-        rendered = await renderSummaryFeedItem(dummyGetActor, getArticle)(event)();
+        feedItem = await constructFeedItem(dummyGetActor, getArticle)(event)();
       });
 
       it('displays the article title', async () => {
-        expect(rendered).toStrictEqual(expect.stringContaining(articleTitle));
+        expect(feedItem).toStrictEqual(expect.objectContaining({ title: articleTitle }));
       });
 
       it('displays the word "endorsed"', async () => {
-        expect(rendered).toStrictEqual(expect.stringContaining('endorsed'));
+        expect(feedItem).toStrictEqual(expect.objectContaining({ verb: 'endorsed' }));
       });
 
       it('displays the actor name', async () => {
-        expect(rendered).toStrictEqual(expect.stringContaining('dummyActorName'));
+        expect(feedItem).toStrictEqual(expect.objectContaining({ actorName: 'dummyActorName' }));
       });
 
       it('displays the event date', async () => {
-        expect(rendered).toStrictEqual(expect.stringContaining('Jan 1, 2020'));
+        expect(feedItem).toStrictEqual(expect.objectContaining({ date: new Date('2020-01-01') }));
       });
     });
 
     describe('and the article information cannot be retrieved', () => {
       beforeEach(async () => {
         const getArticle: GetArticle = () => T.of(Result.err('something-bad'));
-        rendered = await renderSummaryFeedItem(dummyGetActor, getArticle)(event)();
+        feedItem = await constructFeedItem(dummyGetActor, getArticle)(event)();
       });
 
       it('displays a generic article title', async () => {
-        expect(rendered).toStrictEqual(expect.stringContaining('an article'));
+        expect(feedItem).toStrictEqual(expect.objectContaining({ title: 'an article' }));
       });
 
       it('displays the word "endorsed"', async () => {
-        expect(rendered).toStrictEqual(expect.stringContaining('endorsed'));
+        expect(feedItem).toStrictEqual(expect.objectContaining({ verb: 'endorsed' }));
       });
 
       it('displays the actor name', async () => {
-        expect(rendered).toStrictEqual(expect.stringContaining('dummyActorName'));
+        expect(feedItem).toStrictEqual(expect.objectContaining({ actorName: 'dummyActorName' }));
       });
 
       it('displays the event date', async () => {
-        expect(rendered).toStrictEqual(expect.stringContaining('Jan 1, 2020'));
+        expect(feedItem).toStrictEqual(expect.objectContaining({ date: new Date('2020-01-01') }));
       });
     });
   });
@@ -82,53 +83,53 @@ describe('render-summary-feed-item', (): void => {
       articleId: arbitraryArticleId,
       reviewId: new Doi('10.1234/5678'),
     };
-    let rendered: string;
+    let feedItem: FeedItem;
 
     describe('and the article information can be retrieved', () => {
       beforeEach(async () => {
         const getArticle: GetArticle = () => T.of(Result.ok({
           title: articleTitle,
         }));
-        rendered = await renderSummaryFeedItem(dummyGetActor, getArticle)(event)();
+        feedItem = await constructFeedItem(dummyGetActor, getArticle)(event)();
       });
 
       it('displays the article title', async () => {
-        expect(rendered).toStrictEqual(expect.stringContaining(articleTitle));
+        expect(feedItem).toStrictEqual(expect.objectContaining({ title: articleTitle }));
       });
 
       it('displays the word "reviewed"', async () => {
-        expect(rendered).toStrictEqual(expect.stringContaining('reviewed'));
+        expect(feedItem).toStrictEqual(expect.objectContaining({ verb: 'reviewed' }));
       });
 
       it('displays the actor name', async () => {
-        expect(rendered).toStrictEqual(expect.stringContaining('dummyActorName'));
+        expect(feedItem).toStrictEqual(expect.objectContaining({ actorName: 'dummyActorName' }));
       });
 
       it('displays the event date', async () => {
-        expect(rendered).toStrictEqual(expect.stringContaining('Jan 1, 2020'));
+        expect(feedItem).toStrictEqual(expect.objectContaining({ date: new Date('2020-01-01') }));
       });
     });
 
     describe('and the article information cannot be retrieved', () => {
       beforeEach(async () => {
         const getArticle: GetArticle = () => T.of(Result.err('something-bad'));
-        rendered = await renderSummaryFeedItem(dummyGetActor, getArticle)(event)();
+        feedItem = await constructFeedItem(dummyGetActor, getArticle)(event)();
       });
 
       it('displays a generic article title', async () => {
-        expect(rendered).toStrictEqual(expect.stringContaining('an article'));
+        expect(feedItem).toStrictEqual(expect.objectContaining({ title: 'an article' }));
       });
 
       it('displays the word "reviewed"', async () => {
-        expect(rendered).toStrictEqual(expect.stringContaining('reviewed'));
+        expect(feedItem).toStrictEqual(expect.objectContaining({ verb: 'reviewed' }));
       });
 
       it('displays the actor name', async () => {
-        expect(rendered).toStrictEqual(expect.stringContaining('dummyActorName'));
+        expect(feedItem).toStrictEqual(expect.objectContaining({ actorName: 'dummyActorName' }));
       });
 
       it('displays the event date', async () => {
-        expect(rendered).toStrictEqual(expect.stringContaining('Jan 1, 2020'));
+        expect(feedItem).toStrictEqual(expect.objectContaining({ date: new Date('2020-01-01') }));
       });
     });
   });
