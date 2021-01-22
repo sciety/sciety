@@ -39,7 +39,7 @@ const pageToWebPage = (user: O.Option<User>, requestPath: string) => (page: Page
   applyStandardPageLayout(user),
 );
 
-export default (
+export const pageHandler = (
   renderPage: RenderPage,
 ): Middleware<{ user?: User }> => (
   async (context, next): Promise<void> => {
