@@ -8,7 +8,6 @@ import koaPassport from 'koa-passport';
 import { Result } from 'true-myth';
 import { catchErrors } from './catch-errors';
 import { catchStaticFileErrors } from './catch-static-file-errors';
-import { identifyUser } from './identify-user';
 import { loadStaticFile } from './load-static-file';
 import { pageHandler } from './page-handler';
 import { ping } from './ping';
@@ -53,19 +52,15 @@ export default (adapters: Adapters): Router => {
     ping());
 
   router.get('/',
-    identifyUser(adapters.logger),
     pageHandler(flow(homePage(adapters), TE.rightTask)));
 
   router.get('/about',
-    identifyUser(adapters.logger),
     pageHandler(flow(aboutPage(adapters), TE.rightTask)));
 
   router.get('/users/:id(.+)',
-    identifyUser(adapters.logger),
     pageHandler(userPage(adapters)));
 
   router.get('/articles',
-    identifyUser(adapters.logger),
     async (context, next) => {
       context.response.set('X-Robots-Tag', 'noindex');
       await next();
@@ -73,36 +68,30 @@ export default (adapters: Adapters): Router => {
     pageHandler(articleSearchPage(adapters)));
 
   router.get('/articles/:doi(.+)',
-    identifyUser(adapters.logger),
     pageHandler(flow(articlePage(adapters), T.map(toEither))));
 
   router.get('/editorial-communities/:id',
-    identifyUser(adapters.logger),
     pageHandler(editorialCommunityPage(adapters)));
 
   router.post('/follow',
-    identifyUser(adapters.logger),
     bodyParser({ enableTypes: ['form'] }),
     saveFollowCommand(),
     requireAuthentication,
     followHandler(adapters));
 
   router.post('/unfollow',
-    identifyUser(adapters.logger),
     bodyParser({ enableTypes: ['form'] }),
     saveUnfollowCommand(),
     requireAuthentication,
     unfollowHandler(adapters));
 
   router.post('/respond',
-    identifyUser(adapters.logger),
     bodyParser({ enableTypes: ['form'] }),
     saveRespondCommand,
     requireAuthentication,
     respondHandler(adapters));
 
   router.post('/save-article',
-    identifyUser(adapters.logger),
     bodyParser({ enableTypes: ['form'] }),
     saveSaveArticleCommand,
     requireAuthentication,
@@ -120,7 +109,6 @@ export default (adapters: Adapters): Router => {
     authenticate);
 
   router.get('/log-out',
-    identifyUser(adapters.logger),
     logOutHandler());
 
   router.get('/twitter/callback',
@@ -137,15 +125,12 @@ export default (adapters: Adapters): Router => {
     redirectAfterAuthenticating());
 
   router.get('/privacy',
-    identifyUser(adapters.logger),
     pageHandler(flow(privacyPage(), TE.rightTask)));
 
   router.get('/terms',
-    identifyUser(adapters.logger),
     pageHandler(flow(termsPage(), TE.rightTask)));
 
   router.get('/jobs/community-outreach-manager',
-    identifyUser(adapters.logger),
     pageHandler(flow(communityOutreachManagerPage(adapters), TE.rightTask)));
 
   router.get('/robots.txt',
