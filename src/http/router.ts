@@ -8,7 +8,7 @@ import koaPassport from 'koa-passport';
 import { Result } from 'true-myth';
 import { catchErrors } from './catch-errors';
 import { catchStaticFileErrors } from './catch-static-file-errors';
-import identifyUser from './identify-user';
+import { identifyUser } from './identify-user';
 import { loadStaticFile } from './load-static-file';
 import pageHandler from './page-handler';
 import ping from './ping';
