@@ -62,9 +62,9 @@ const construct = ({ actor, article, event }: Inputs): FeedItem => ({
   verb: verb(event, actor),
 });
 
-type GetActor = (id: EditorialCommunityId) => T.Task<Actor>;
+export type GetActor = (id: EditorialCommunityId) => T.Task<Actor>;
 
-type GetArticle = (id: Doi) => T.Task<Result<Article, unknown>>;
+export type GetArticle = (id: Doi) => T.Task<Result<Article, unknown>>;
 
 export const constructFeedItem = (
   getActor: GetActor,

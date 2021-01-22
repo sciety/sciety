@@ -1,7 +1,7 @@
 import * as T from 'fp-ts/lib/Task';
 import { Result } from 'true-myth';
-import { constructFeedItem } from '../../src/shared-components/construct-feed-item';
-import { FeedItem, GetActor, GetArticle } from '../../src/shared-components/render-summary-feed-item';
+import { constructFeedItem, GetActor, GetArticle } from '../../src/shared-components/construct-feed-item';
+import { FeedItem } from '../../src/shared-components/render-summary-feed-list';
 import { Doi } from '../../src/types/doi';
 import { EditorialCommunityEndorsedArticleEvent, EditorialCommunityReviewedArticleEvent } from '../../src/types/domain-events';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
