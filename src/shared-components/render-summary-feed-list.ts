@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/lib/Option';
+import * as A from 'fp-ts/lib/ReadonlyArray';
 import * as T from 'fp-ts/lib/Task';
 import { flow } from 'fp-ts/lib/function';
 import { Result } from 'true-myth';
@@ -34,14 +35,11 @@ const renderItem = (viewModel: FeedItem): string => `
   </div>
 `;
 
-type RenderSummaryFeedItem = (event: FeedEvent) => T.Task<HtmlFragment>;
+type RenderSummaryFeedItem = (item: FeedItem) => HtmlFragment;
 
-const renderSummaryFeedItem = (getActor: GetActor, getArticle: GetArticle): RenderSummaryFeedItem => flow(
-  constructFeedItem(getActor, getArticle),
-  T.map(flow(
-    renderItem,
-    toHtmlFragment,
-  )),
+const renderSummaryFeedItem: RenderSummaryFeedItem = flow(
+  renderItem,
+  toHtmlFragment,
 );
 
 type Actor = {
@@ -70,10 +68,13 @@ export const renderSummaryFeedList = (
   getActor: GetActor,
   getArticle: GetArticle,
 ): RenderSummaryFeedList => flow(
-  T.traverseArray(renderSummaryFeedItem(getActor, getArticle)),
-  T.map(O.fromPredicate((es) => es.length > 0)),
-  T.map(O.map(flow(
-    renderAsList,
-    toHtmlFragment,
-  ))),
+  T.traverseArray(constructFeedItem(getActor, getArticle)),
+  T.map(flow(
+    A.map(renderSummaryFeedItem),
+    O.fromPredicate((es) => es.length > 0),
+    O.map(flow(
+      renderAsList,
+      toHtmlFragment,
+    )),
+  )),
 );
