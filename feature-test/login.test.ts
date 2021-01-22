@@ -3,8 +3,6 @@ import {
   click, closeBrowser, goto, into, link, openBrowser, textBox, write,
 } from 'taiko';
 
-jest.setTimeout(15000);
-
 describe('login', () => {
   afterAll(closeBrowser);
 

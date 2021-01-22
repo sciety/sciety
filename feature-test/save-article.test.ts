@@ -3,8 +3,6 @@ import {
   click, closeBrowser, goto, into, openBrowser, text, textBox, write,
 } from 'taiko';
 
-jest.setTimeout(15000);
-
 describe('save-article', () => {
   beforeEach(async () => {
     dotenv.config();

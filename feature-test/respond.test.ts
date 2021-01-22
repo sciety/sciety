@@ -3,8 +3,6 @@ import {
   $, click, closeBrowser, goto, into, openBrowser, text, textBox, toRightOf, write,
 } from 'taiko';
 
-jest.setTimeout(15000);
-
 describe('respond', () => {
   afterAll(closeBrowser);
 
