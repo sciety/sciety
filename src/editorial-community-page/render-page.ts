@@ -11,8 +11,6 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { RenderPageError } from '../types/render-page-error';
 import { UserId } from '../types/user-id';
 
-type Component = (editorialCommunityId: EditorialCommunityId, userId: O.Option<UserId>) => T.Task<string>;
-
 export type RenderPage = (
   editorialCommunity: EditorialCommunity,
   userId: O.Option<UserId>
@@ -24,6 +22,8 @@ export type RenderPage = (
 type RenderPageHeader = (editorialCommunity: EditorialCommunity) => HtmlFragment;
 
 type RenderDescription = (editorialCommunity: EditorialCommunity) => T.Task<HtmlFragment>;
+
+type RenderFeed = (editorialCommunity: EditorialCommunity, userId: O.Option<UserId>) => T.Task<HtmlFragment>;
 
 type Components = {
   header: HtmlFragment,
@@ -48,7 +48,7 @@ const render = (components: Components): string => `
 export default (
   renderPageHeader: RenderPageHeader,
   renderDescription: RenderDescription,
-  renderFeed: Component,
+  renderFeed: RenderFeed,
   renderFollowers: (editorialCommunityId: EditorialCommunityId) => T.Task<HtmlFragment>,
 ): RenderPage => (
   (editorialCommunity, userId) => {
@@ -58,7 +58,7 @@ export default (
           header: T.of(renderPageHeader(editorialCommunity)),
           description: renderDescription(editorialCommunity),
           followers: renderFollowers(editorialCommunity.id),
-          feed: renderFeed(editorialCommunity.id, userId),
+          feed: renderFeed(editorialCommunity, userId),
         },
         sequenceS(T.task),
         T.map((components) => ({

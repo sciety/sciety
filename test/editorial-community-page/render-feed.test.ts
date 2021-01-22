@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import createRenderFeed, { GetEvents } from '../../src/editorial-community-page/render-feed';
@@ -19,7 +20,12 @@ describe('render feed', () => {
 
       const renderFeed = createRenderFeed(stubGetEvents, renderSummaryFeedList, stubRenderFollowToggle);
 
-      const rendered = await renderFeed(anEditorialCommunityId, aUserId)();
+      const rendered = await renderFeed({
+        id: anEditorialCommunityId,
+        name: 'name',
+        avatar: new URL('http://example.com/image'),
+        descriptionPath: 'path',
+      }, aUserId)();
 
       expect(rendered).toContain('a list');
     });
@@ -31,7 +37,12 @@ describe('render feed', () => {
 
       const renderFeed = createRenderFeed(stubGetEvents, renderSummaryFeedList, stubRenderFollowToggle);
 
-      const rendered = await renderFeed(anEditorialCommunityId, aUserId)();
+      const rendered = await renderFeed({
+        id: anEditorialCommunityId,
+        name: 'name',
+        avatar: new URL('http://example.com/image'),
+        descriptionPath: 'path',
+      }, aUserId)();
 
       expect(rendered).toContain('community hasn’t evaluated');
     });

@@ -3,11 +3,12 @@ import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import { constant, flow, pipe } from 'fp-ts/lib/function';
 import { RenderFollowToggle } from './render-follow-toggle';
+import { EditorialCommunity } from '../types/editorial-community';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
-export type RenderFeed = (editorialCommunityId: EditorialCommunityId, userId: O.Option<UserId>)
+export type RenderFeed = (editorialCommunity: EditorialCommunity, userId: O.Option<UserId>)
 => T.Task<HtmlFragment>;
 
 export type GetEvents<E> = (editorialCommunityId: EditorialCommunityId) => T.Task<ReadonlyArray<E>>;
@@ -39,11 +40,11 @@ export default <E>(
   getEvents: GetEvents<E>,
   renderSummaryFeedList: RenderSummaryFeedList<E>,
   renderFollowToggle: RenderFollowToggle,
-): RenderFeed => (editorialCommunityId, userId) => pipe(
+): RenderFeed => (editorialCommunity, userId) => pipe(
   {
-    button: renderFollowToggle(userId, editorialCommunityId),
+    button: renderFollowToggle(userId, editorialCommunity.id),
     feed: pipe(
-      editorialCommunityId,
+      editorialCommunity.id,
       getEvents,
       T.chain(renderSummaryFeedList),
       T.map(O.getOrElse(constant(emptyFeed))),
