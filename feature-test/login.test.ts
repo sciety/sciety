@@ -4,11 +4,14 @@ import {
 } from 'taiko';
 
 describe('login', () => {
+  beforeEach(async () => {
+    dotenv.config();
+    await openBrowser();
+  });
+
   afterAll(closeBrowser);
 
   it('authenticates via Twitter', async () => {
-    dotenv.config();
-    await openBrowser();
     await goto('localhost:8080');
     await click('Log in');
     await write(process.env.TAIKO_TWITTER_USERNAME ?? '', into(textBox('Username')));
