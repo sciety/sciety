@@ -2,7 +2,9 @@ import { sequenceS } from 'fp-ts/lib/Apply';
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import { constant, flow, pipe } from 'fp-ts/lib/function';
+import { ConstructFeedItem, FeedEvent } from './construct-feed-item';
 import { RenderFollowToggle } from './render-follow-toggle';
+import { FeedItem } from '../shared-components/render-summary-feed-list';
 import { EditorialCommunity } from '../types/editorial-community';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -11,9 +13,9 @@ import { UserId } from '../types/user-id';
 export type RenderFeed = (editorialCommunity: EditorialCommunity, userId: O.Option<UserId>)
 => T.Task<HtmlFragment>;
 
-export type GetEvents<E> = (editorialCommunityId: EditorialCommunityId) => T.Task<ReadonlyArray<E>>;
+export type GetEvents = (editorialCommunityId: EditorialCommunityId) => T.Task<ReadonlyArray<FeedEvent>>;
 
-export type RenderSummaryFeedList<E> = (events: ReadonlyArray<E>) => T.Task<O.Option<HtmlFragment>>;
+export type RenderSummaryFeedList = (events: ReadonlyArray<FeedItem>) => O.Option<HtmlFragment>;
 
 const emptyFeed = `
   <p>
@@ -36,9 +38,10 @@ const renderAsSection = (viewModel: ViewModel): string => `
   </section>
 `;
 
-export default <E>(
-  getEvents: GetEvents<E>,
-  renderSummaryFeedList: RenderSummaryFeedList<E>,
+export default (
+  getEvents: GetEvents,
+  constructFeedItem: ConstructFeedItem,
+  renderSummaryFeedList: RenderSummaryFeedList,
   renderFollowToggle: RenderFollowToggle,
 ): RenderFeed => (editorialCommunity, userId) => pipe(
   {
@@ -46,9 +49,12 @@ export default <E>(
     feed: pipe(
       editorialCommunity.id,
       getEvents,
-      T.chain(renderSummaryFeedList),
-      T.map(O.getOrElse(constant(emptyFeed))),
-      T.map(toHtmlFragment),
+      T.chain(T.traverseArray(constructFeedItem)),
+      T.map(flow(
+        renderSummaryFeedList,
+        O.getOrElse(constant(emptyFeed)),
+        toHtmlFragment,
+      )),
     ),
   },
   sequenceS(T.task),

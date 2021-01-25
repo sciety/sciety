@@ -16,7 +16,7 @@ export type FeedEvent =
   EditorialCommunityEndorsedArticleEvent |
   EditorialCommunityReviewedArticleEvent;
 
-type ConstructFeedItem = (event: FeedEvent) => T.Task<FeedItem>;
+export type ConstructFeedItem = (event: FeedEvent) => T.Task<FeedItem>;
 
 const reviewedBy = (actor: Actor): string => (
   (actor.name === 'preLights') ? 'highlighted' : 'reviewed'

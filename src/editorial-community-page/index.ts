@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
-import { flow, pipe } from 'fp-ts/lib/function';
+import { pipe } from 'fp-ts/lib/function';
 import { Maybe } from 'true-myth';
 import { constructFeedItem } from './construct-feed-item';
 import { getActor } from './get-actor';
@@ -35,10 +35,8 @@ interface Ports {
 
 const buildRenderFeed = (ports: Ports): RenderFeed => createRenderFeed(
   createGetMostRecentEvents(ports.getAllEvents, 20),
-  flow(
-    T.traverseArray(constructFeedItem(getActor(ports.getEditorialCommunity), ports.fetchArticle)),
-    T.map(renderSummaryFeedList),
-  ),
+  constructFeedItem(getActor(ports.getEditorialCommunity), ports.fetchArticle),
+  renderSummaryFeedList,
   createRenderFollowToggle(ports.follows),
 );
 
