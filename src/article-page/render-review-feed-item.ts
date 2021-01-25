@@ -1,5 +1,7 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/lib/Option';
+import * as T from 'fp-ts/lib/Task';
+import { flow, pipe } from 'fp-ts/lib/function';
 import clip from 'text-clipper';
 import { Maybe } from 'true-myth';
 import { RenderReviewResponses } from './render-review-responses';
@@ -10,7 +12,7 @@ import { ReviewId } from '../types/review-id';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { UserId } from '../types/user-id';
 
-export type RenderReviewFeedItem = (review: ReviewFeedItem, userId: O.Option<UserId>) => Promise<HtmlFragment>;
+export type RenderReviewFeedItem = (review: ReviewFeedItem, userId: O.Option<UserId>) => T.Task<HtmlFragment>;
 
 export type ReviewFeedItem = {
   type: 'review';
@@ -80,11 +82,7 @@ const renderWithText = (teaserChars: number, review: ReviewFeedItem) => (respons
   `);
 };
 
-export const createRenderReviewFeedItem = (
-  teaserChars: number,
-  renderReviewResponses: RenderReviewResponses,
-): RenderReviewFeedItem => async (review, userId) => {
-  const responses = await renderReviewResponses(review.id, userId)();
+const render = (teaserChars: number, review: ReviewFeedItem) => (responses: HtmlFragment): string => {
   if (review.fullText.isNothing()) {
     return toHtmlFragment(`
       <div class="article-feed__item_contents">
@@ -101,3 +99,14 @@ export const createRenderReviewFeedItem = (
   }
   return renderWithText(teaserChars, review)(responses);
 };
+
+export const createRenderReviewFeedItem = (
+  teaserChars: number,
+  renderReviewResponses: RenderReviewResponses,
+): RenderReviewFeedItem => (review, userId) => pipe(
+  renderReviewResponses(review.id, userId),
+  T.map(flow(
+    render(teaserChars, review),
+    toHtmlFragment,
+  )),
+);

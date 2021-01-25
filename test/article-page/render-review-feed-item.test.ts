@@ -27,7 +27,7 @@ describe('render-review-feed-item', () => {
           fullText: Maybe.just(fullText)
             .map(toHtmlFragment)
             .map(sanitise),
-        }, O.none),
+        }, O.none)(),
       );
       const toggleableContent = rendered.querySelector('[data-behaviour="collapse_to_teaser"]');
       const fullTextWrapper = rendered.querySelector('[data-full-text]');
@@ -57,7 +57,7 @@ describe('render-review-feed-item', () => {
           fullText: Maybe.just(fullText)
             .map(toHtmlFragment)
             .map(sanitise),
-        }, O.none),
+        }, O.none)(),
       );
       const toggleableContent = rendered.querySelector('[data-behaviour="collapse_to_teaser"]');
       const fullTextWrapper = rendered.querySelector('.article-feed__item_body');
@@ -86,7 +86,7 @@ describe('render-review-feed-item', () => {
           editorialCommunityName: 'Community 1',
           editorialCommunityAvatar: new URL('http://example.com/avatar'),
           fullText: Maybe.nothing(),
-        }, O.none),
+        }, O.none)(),
       );
       const toggleableContent = rendered.querySelector('[data-behaviour="collapse_to_teaser"]');
       const sourceLinkUrl = rendered.querySelector('.article-feed__item__read_more')?.getAttribute('href');

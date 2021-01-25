@@ -1,5 +1,6 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/lib/Option';
+import * as T from 'fp-ts/lib/Task';
 import { Maybe } from 'true-myth';
 import { createRenderFeed } from '../../src/article-page/render-feed';
 import { Doi } from '../../src/types/doi';
@@ -46,7 +47,7 @@ describe('render-feed', () => {
             type: 'article-version-error',
           },
         ],
-        async () => toHtmlFragment(''),
+        () => T.of(toHtmlFragment('')),
         () => toHtmlFragment(''),
       );
 

@@ -28,7 +28,7 @@ export const createRenderFeed = (
       case 'article-version-error':
         return renderArticleVersionErrorFeedItem();
       case 'review':
-        return renderReviewFeedItem(feedItem, userId);
+        return renderReviewFeedItem(feedItem, userId)();
     }
   };
 
