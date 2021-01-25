@@ -26,7 +26,7 @@ describe('render feed', () => {
       const renderSummaryFeedList: RenderSummaryFeedList = () => O.some(toHtmlFragment('a list'));
       const renderFeed = createRenderFeed(
         stubGetEvents,
-        () => T.of({
+        () => () => T.of({
           avatar: '',
           date: new Date(),
           actorName: '',
@@ -49,7 +49,7 @@ describe('render feed', () => {
       const renderSummaryFeedList: RenderSummaryFeedList = () => O.none;
       const renderFeed = createRenderFeed(
         stubGetEvents,
-        () => T.of({
+        () => () => T.of({
           avatar: '',
           date: new Date(),
           actorName: '',

@@ -49,7 +49,7 @@ export default (
     feed: pipe(
       editorialCommunity.id,
       getEvents,
-      T.chain(T.traverseArray(constructFeedItem)),
+      T.chain(T.traverseArray(constructFeedItem(editorialCommunity))),
       T.map(flow(
         renderSummaryFeedList,
         O.getOrElse(constant(emptyFeed)),

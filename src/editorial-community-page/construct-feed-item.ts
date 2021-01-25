@@ -8,7 +8,7 @@ import {
   EditorialCommunityReviewedArticleEvent,
   isEditorialCommunityEndorsedArticleEvent,
 } from '../types/domain-events';
-import { EditorialCommunityId } from '../types/editorial-community-id';
+import { EditorialCommunity } from '../types/editorial-community';
 import { toHtmlFragment } from '../types/html-fragment';
 import { sanitise, SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
@@ -16,7 +16,7 @@ export type FeedEvent =
   EditorialCommunityEndorsedArticleEvent |
   EditorialCommunityReviewedArticleEvent;
 
-export type ConstructFeedItem = (event: FeedEvent) => T.Task<FeedItem>;
+export type ConstructFeedItem = (community: EditorialCommunity) => (event: FeedEvent) => T.Task<FeedItem>;
 
 const reviewedBy = (actor: Actor): string => (
   (actor.name === 'preLights') ? 'highlighted' : 'reviewed'
@@ -62,19 +62,22 @@ const construct = ({ actor, article, event }: Inputs): FeedItem => ({
   verb: verb(event, actor),
 });
 
-export type GetActor = (id: EditorialCommunityId) => T.Task<Actor>;
-
 export type GetArticle = (id: Doi) => T.Task<Result<Article, unknown>>;
 
 export const constructFeedItem = (
-  getActor: GetActor,
   getArticle: GetArticle,
-): ConstructFeedItem => (event) => pipe(
-  {
-    actor: getActor(event.editorialCommunityId),
+): ConstructFeedItem => (community: EditorialCommunity) => (event) => pipe(
+  community,
+  (c) => ({
+    name: c.name,
+    imageUrl: c.avatar.toString(),
+    url: `/editorial-communities/${c.id.value}`,
+  }),
+  (actor) => ({
+    actor: T.of(actor),
     article: getArticle(event.articleId),
     event: T.of(event),
-  },
+  }),
   sequenceS(T.task),
   T.map(construct),
 );
