@@ -1,13 +1,9 @@
 import * as O from 'fp-ts/lib/Option';
 import * as A from 'fp-ts/lib/ReadonlyArray';
-import * as T from 'fp-ts/lib/Task';
 import { flow } from 'fp-ts/lib/function';
-import { Result } from 'true-myth';
-import { constructFeedItem, FeedEvent } from './construct-feed-item';
 import templateDate from './date';
 import templateListItems from './list-items';
 import { Doi } from '../types/doi';
-import { EditorialCommunityId } from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
@@ -42,39 +38,19 @@ const renderSummaryFeedItem: RenderSummaryFeedItem = flow(
   toHtmlFragment,
 );
 
-type Actor = {
-  url: string;
-  name: string;
-  imageUrl: string;
-};
-
-type GetActor = (id: EditorialCommunityId) => T.Task<Actor>;
-
-type Article = {
-  title: SanitisedHtmlFragment;
-};
-
-type GetArticle = (id: Doi) => T.Task<Result<Article, unknown>>;
-
 const renderAsList = (items: ReadonlyArray<HtmlFragment>): string => `
   <ol class="summary-feed-list" role="list">
     ${templateListItems(items, 'summary-feed-list__list_item')}
   </ol>
 `;
 
-export type RenderSummaryFeedList = (events: ReadonlyArray<FeedEvent>) => T.Task<O.Option<HtmlFragment>>;
+type RenderSummaryFeedList = (events: ReadonlyArray<FeedItem>) => O.Option<HtmlFragment>;
 
-export const renderSummaryFeedList = (
-  getActor: GetActor,
-  getArticle: GetArticle,
-): RenderSummaryFeedList => flow(
-  T.traverseArray(constructFeedItem(getActor, getArticle)),
-  T.map(flow(
-    A.map(renderSummaryFeedItem),
-    O.fromPredicate((es) => es.length > 0),
-    O.map(flow(
-      renderAsList,
-      toHtmlFragment,
-    )),
+export const renderSummaryFeedList: RenderSummaryFeedList = flow(
+  A.map(renderSummaryFeedItem),
+  O.fromPredicate((es) => es.length > 0),
+  O.map(flow(
+    renderAsList,
+    toHtmlFragment,
   )),
 );

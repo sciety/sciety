@@ -1,8 +1,9 @@
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
-import { createRenderFeed, GetEvents, IsFollowingSomething } from '../../src/home-page/render-feed';
-import { FeedEvent } from '../../src/shared-components/construct-feed-item';
-import { RenderSummaryFeedList } from '../../src/shared-components/render-summary-feed-list';
+import { FeedEvent } from '../../src/home-page/construct-feed-item';
+import {
+  createRenderFeed, GetEvents, IsFollowingSomething, RenderSummaryFeedList,
+} from '../../src/home-page/render-feed';
 import { Doi } from '../../src/types/doi';
 import { editorialCommunityReviewedArticle } from '../../src/types/domain-events';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
@@ -23,7 +24,7 @@ describe('render-feed', (): void => {
           ),
         ]);
         const dummyIsFollowingSomething: IsFollowingSomething = () => T.of(true);
-        const dummyRenderSummaryFeedList: RenderSummaryFeedList = () => T.of(O.some(toHtmlFragment('someNiceList')));
+        const dummyRenderSummaryFeedList: RenderSummaryFeedList<FeedEvent> = () => T.of(O.some(toHtmlFragment('someNiceList')));
         const renderFeed = createRenderFeed(
           dummyIsFollowingSomething,
           dummyGetEvents,
@@ -43,7 +44,7 @@ describe('render-feed', (): void => {
       it('returns a come back later text', async (): Promise<void> => {
         const dummyIsFollowingSomething: IsFollowingSomething = () => T.of(true);
         const dummyGetEvents: GetEvents<FeedEvent> = () => T.of([]);
-        const stubRenderSummaryFeedList: RenderSummaryFeedList = () => T.of(O.none);
+        const stubRenderSummaryFeedList: RenderSummaryFeedList<FeedEvent> = () => T.of(O.none);
         const renderFeed = createRenderFeed(
           dummyIsFollowingSomething,
           dummyGetEvents,

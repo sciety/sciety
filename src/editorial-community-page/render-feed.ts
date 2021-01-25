@@ -13,7 +13,7 @@ export type RenderFeed = (editorialCommunity: EditorialCommunity, userId: O.Opti
 
 export type GetEvents<E> = (editorialCommunityId: EditorialCommunityId) => T.Task<ReadonlyArray<E>>;
 
-type RenderSummaryFeedList<E> = (events: ReadonlyArray<E>) => T.Task<O.Option<string>>;
+export type RenderSummaryFeedList<E> = (events: ReadonlyArray<E>) => T.Task<O.Option<HtmlFragment>>;
 
 const emptyFeed = `
   <p>
