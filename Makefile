@@ -60,16 +60,6 @@ clean:
 clean-db:
 	$(DOCKER_COMPOSE) down
 
-find-elife-endorsements: export TARGET = dev
-find-elife-endorsements: build
-	$(DOCKER_COMPOSE) run -T app \
-	 	npx ts-node scripts/find-endorsements-from-biorxiv 10.7554 > ./data/endorsements/b560187e-f2fb-4ff9-a861-a204f3fc0fb0.csv
-
-find-peerj-endorsements: export TARGET = dev
-find-peerj-endorsements: build
-	$(DOCKER_COMPOSE) run -T app \
-		npx ts-node scripts/find-endorsements-from-biorxiv 10.7717 > ./data/endorsements/53ed5364-a016-11ea-bb37-0242ac130002.csv
-
 find-review-commons-reviews: export TARGET = dev
 find-review-commons-reviews: build
 	$(DOCKER_COMPOSE) run -T app \
@@ -96,8 +86,6 @@ find-prereview-reviews: build
 		npx ts-node scripts/find-reviews-from-prereview > ./data/reviews/10360d97-bf52-4aef-b2fa-2f60d319edd7.csv
 
 COMMUNITY_SCRIPTS := \
-	find-elife-endorsements \
-	find-peerj-endorsements \
 	find-review-commons-reviews \
 	find-elife-reviews \
 	find-peerj-reviews \
