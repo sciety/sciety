@@ -48,6 +48,7 @@ export const createTestServer = async (): Promise<TestServer> => {
     doi,
     title: 'Article title' as SanitisedHtmlFragment,
     publicationDate: new Date(),
+    server: 'biorxiv',
   }));
   const fetchReview = createFetchReview(
     createFetchDataciteReview(fetchDataCiteDataset, dummyLogger),

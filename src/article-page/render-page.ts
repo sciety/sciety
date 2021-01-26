@@ -23,6 +23,7 @@ export type Page = {
 type ArticleDetails = {
   title: string,
   abstract: SanitisedHtmlFragment, // TODO Use HtmlFragment as the HTML is stripped
+  server: 'biorxiv' | 'medrxiv',
 };
 
 type GetArticleDetails = (doi: Doi) => T.Task<Result<ArticleDetails, 'not-found'|'unavailable'>>;
@@ -69,12 +70,12 @@ export const createRenderPage = (
         (success) => Result.ok<HtmlFragment, 'not-found' | 'unavailable'>(success),
       )),
     )();
-    const server = doi.value === '10.1101/2020.09.03.20184051' ? 'medrxiv' : 'biorxiv';
+    const articleDetailsResult = getArticleDetails(doi);
+    const server = (await articleDetailsResult()).mapOr('biorxiv', (articleDetails) => articleDetails.server);
     const feedResult = renderFeed(doi, server, userId)
       .then((feed) => (
         feed.or(Result.ok<string, never>(''))
       ));
-    const articleDetailsResult = getArticleDetails(doi);
 
     return Result.ok<typeof template, 'not-found' | 'unavailable'>(template)
       .ap(await abstractResult)

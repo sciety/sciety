@@ -45,6 +45,7 @@ type ArticleDetails = {
   title: SanitisedHtmlFragment;
   abstract: SanitisedHtmlFragment, // TODO Use HtmlFragment as the HTML is stripped
   authors: Array<string>;
+  server: 'biorxiv' | 'medrxiv',
 };
 
 type GetArticleDetails = (doi: Doi) => T.Task<Result<ArticleDetails, 'not-found'|'unavailable'>>;

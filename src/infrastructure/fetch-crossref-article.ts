@@ -16,6 +16,7 @@ export type FetchCrossrefArticle = (doi: Doi) => T.Task<Result<{
   doi: Doi;
   title: SanitisedHtmlFragment;
   publicationDate: Date;
+  server: 'biorxiv' | 'medrxiv',
 }, FetchCrossrefArticleError>>;
 
 export type GetXml = (doi: Doi, acceptHeader: string) => Promise<string>;
@@ -52,12 +53,14 @@ export default (getXml: GetXml, logger: Logger): FetchCrossrefArticle => {
 
     try {
       const doc = parser.parseFromString(response, 'text/xml');
+      const server = doi.value === '10.1101/2020.09.03.20184051' ? 'medrxiv' : 'biorxiv';
       return Result.ok({
         abstract: getAbstract(doc, doi, logger),
         authors: getAuthors(doc, doi, logger),
         doi,
         title: getTitle(doc, doi, logger),
         publicationDate: getPublicationDate(doc),
+        server,
       });
     } catch (error: unknown) {
       logger('error', 'Unable to parse document', { doi, response, error });
