@@ -41,6 +41,7 @@ describe('render-feed', () => {
             source: new URL('http://example.com'),
             occurredAt: new Date(),
             version: 1,
+            server: 'biorxiv',
           },
           {
             type: 'article-version-error',

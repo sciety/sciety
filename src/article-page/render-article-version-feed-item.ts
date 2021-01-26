@@ -7,6 +7,7 @@ export type ArticleVersionFeedItem = {
   source: URL;
   occurredAt: Date;
   version: number;
+  server: 'biorxiv' | 'medrxiv';
 };
 
 export type RenderArticleVersionFeedItem = (feedItem: ArticleVersionFeedItem) => HtmlFragment;

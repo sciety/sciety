@@ -17,6 +17,7 @@ describe('handle-article-version-errors', () => {
           version: 1,
           occurredAt: new Date(),
           source: new URL('https://example.com'),
+          server: 'biorxiv',
         },
       ];
       const originalGetFeedItems: GetFeedItems = async () => inputItems;

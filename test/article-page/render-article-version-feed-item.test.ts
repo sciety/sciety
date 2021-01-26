@@ -8,6 +8,7 @@ describe('render-article-version-feed-item', () => {
       occurredAt: new Date(),
       source: new URL('http://example.com'),
       version: 3,
+      server: 'biorxiv',
     };
 
     const renderArticleVersionFeedItem = createRenderArticleVersionFeedItem();
