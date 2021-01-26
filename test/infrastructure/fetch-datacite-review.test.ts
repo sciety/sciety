@@ -1,6 +1,7 @@
 import { literal } from '@rdfjs/data-model';
 import { dcterms, schema } from '@tpluscode/rdf-ns-builders';
 import clownface from 'clownface';
+import * as O from 'fp-ts/lib/Option';
 import datasetFactory from 'rdf-dataset-indexed';
 import { Maybe } from 'true-myth';
 import createFetchDataciteReview from '../../src/infrastructure/fetch-datacite-review';
@@ -22,7 +23,7 @@ describe('fetch-datacite-review', (): void => {
       const review = await fetchReview(reviewDoi)();
 
       expect(review).toMatchObject({
-        fullText: Maybe.just('The full text'),
+        fullText: O.some('The full text'),
         publicationDate: Maybe.just(new Date('2020-02-20')),
       });
     });
@@ -49,7 +50,7 @@ describe('fetch-datacite-review', (): void => {
       const fetchReview = createFetchDataciteReview(fetchDataset, dummyLogger);
       const review = await fetchReview(reviewDoi)();
 
-      expect(review.fullText.isNothing()).toBe(true);
+      expect(review.fullText).toBe(O.none);
     });
   });
 

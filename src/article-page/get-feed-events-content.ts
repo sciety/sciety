@@ -1,6 +1,6 @@
 import { URL } from 'url';
+import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
-import { Maybe } from 'true-myth';
 import { FeedItem, GetFeedItems } from './render-feed';
 import { Doi } from '../types/doi';
 import { EditorialCommunityId } from '../types/editorial-community-id';
@@ -27,7 +27,7 @@ type FeedEvent = ReviewEvent | ArticleVersionEvent;
 export type GetFeedEvents = (articleDoi: Doi) => Promise<ReadonlyArray<FeedEvent>>;
 
 export type GetReview = (id: ReviewId) => T.Task<{
-  fullText: Maybe<HtmlFragment>;
+  fullText: O.Option<HtmlFragment>;
   url: URL;
 }>;
 
@@ -57,7 +57,7 @@ export const getFeedEventsContent = (
           editorialCommunityId: feedEvent.editorialCommunityId,
           editorialCommunityName: editorialCommunity.name,
           editorialCommunityAvatar: editorialCommunity.avatar,
-          fullText: review.fullText.map(sanitise),
+          fullText: O.map(sanitise)(review.fullText),
         };
       },
     );

@@ -1,4 +1,6 @@
 import { URL } from 'url';
+import * as O from 'fp-ts/lib/Option';
+import { pipe } from 'fp-ts/lib/function';
 import { Maybe } from 'true-myth';
 import createFetchHypothesisAnnotation, { GetJson } from '../../src/infrastructure/fetch-hypothesis-annotation';
 import { Review } from '../../src/infrastructure/review';
@@ -23,7 +25,7 @@ describe('fetch-hypothesis-annotation', (): void => {
 
     const expected: Review = {
       publicationDate: Maybe.just(new Date(date)),
-      fullText: Maybe.just('<p>Very good</p>').map(toHtmlFragment),
+      fullText: pipe('<p>Very good</p>', toHtmlFragment, O.some),
       url: new URL('https://www.example.com'),
     };
 
@@ -45,7 +47,7 @@ describe('fetch-hypothesis-annotation', (): void => {
     const fetchHypothesisAnnotation = createFetchHypothesisAnnotation(getJson, dummyLogger);
     const review = await fetchHypothesisAnnotation(hypothesisAnnotationId)();
 
-    expect(review.fullText.unsafelyUnwrap()).toContain(expected);
+    expect(review.fullText).toStrictEqual(O.some(expect.stringContaining(expected)));
   });
 
   it('leaves broken embedded HTML unchanged', async () => {
@@ -60,6 +62,6 @@ describe('fetch-hypothesis-annotation', (): void => {
     const fetchHypothesisAnnotation = createFetchHypothesisAnnotation(getJson, dummyLogger);
     const review = await fetchHypothesisAnnotation(hypothesisAnnotationId)();
 
-    expect(review.fullText.unsafelyUnwrap()).toStrictEqual(input);
+    expect(review.fullText).toStrictEqual(O.some(input));
   });
 });

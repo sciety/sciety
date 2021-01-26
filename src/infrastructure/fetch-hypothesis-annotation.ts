@@ -1,5 +1,7 @@
 import { URL } from 'url';
+import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
+import { pipe } from 'fp-ts/lib/function';
 import { Remarkable } from 'remarkable';
 import { linkify } from 'remarkable/linkify';
 import { Maybe } from 'true-myth';
@@ -32,7 +34,12 @@ export default (getJson: GetJson, logger: Logger): FetchHypothesisAnnotation => 
         const data = response as HypothesisResponse;
         const review: Review = {
           publicationDate: Maybe.just(new Date(data.created)),
-          fullText: Maybe.just(data.text).map((text) => converter.render(text)).map(toHtmlFragment),
+          fullText: pipe(
+            data.text,
+            O.fromNullable,
+            O.map((text) => converter.render(text)),
+            O.map(toHtmlFragment),
+          ),
           url: new URL(data.links.incontext),
         };
         logger('debug', 'Retrieved review', { ...review, fullText: '[text]' });

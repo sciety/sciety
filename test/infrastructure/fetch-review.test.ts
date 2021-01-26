@@ -1,5 +1,7 @@
 import { URL } from 'url';
+import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
+import { pipe } from 'fp-ts/lib/function';
 import { Maybe } from 'true-myth';
 import { FetchDataciteReview } from '../../src/infrastructure/fetch-datacite-review';
 import { FetchHypothesisAnnotation } from '../../src/infrastructure/fetch-hypothesis-annotation';
@@ -13,7 +15,7 @@ const reviewDoi = new Doi('10.5281/zenodo.3678325');
 
 const fetchedReview = {
   publicationDate: Maybe.just(new Date()),
-  fullText: Maybe.just('Very good').map(toHtmlFragment),
+  fullText: pipe('Very good', toHtmlFragment, O.some),
   url: new URL('https://example.com'),
 };
 

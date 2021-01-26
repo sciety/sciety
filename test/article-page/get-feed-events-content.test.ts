@@ -1,7 +1,7 @@
 import { URL } from 'url';
+import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import { pipe } from 'fp-ts/lib/function';
-import { Maybe } from 'true-myth';
 import {
   GetEditorialCommunity, GetFeedEvents, getFeedEventsContent, GetReview,
 } from '../../src/article-page/get-feed-events-content';
@@ -27,7 +27,7 @@ describe('get-feed-events-content', () => {
         },
       ];
       const getReview: GetReview = () => T.of({
-        fullText: Maybe.just(toHtmlFragment('some text')),
+        fullText: pipe('some text', toHtmlFragment, O.some),
         url: new URL('http://example.com'),
       });
       const getEditorialCommunity: GetEditorialCommunity = async () => ({

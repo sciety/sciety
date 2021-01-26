@@ -1,5 +1,6 @@
 import { URL } from 'url';
-import { Maybe } from 'true-myth';
+import * as O from 'fp-ts/lib/Option';
+import { pipe } from 'fp-ts/lib/function';
 import { createHandleArticleVersionErrors } from '../../src/article-page/handle-article-version-errors';
 import { FeedItem, GetFeedItems } from '../../src/article-page/render-feed';
 import { Doi } from '../../src/types/doi';
@@ -37,9 +38,7 @@ describe('handle-article-version-errors', () => {
           editorialCommunityId: new EditorialCommunityId('community-1'),
           editorialCommunityName: 'OUR COMMUNITY',
           editorialCommunityAvatar: new URL('http://example.com/images/us.png'),
-          fullText: Maybe.just('review-1')
-            .map(toHtmlFragment)
-            .map(sanitise),
+          fullText: pipe('review-1', toHtmlFragment, sanitise, O.some),
         },
         {
           type: 'review',
@@ -49,9 +48,7 @@ describe('handle-article-version-errors', () => {
           editorialCommunityId: new EditorialCommunityId('community-1'),
           editorialCommunityName: 'OUR COMMUNITY',
           editorialCommunityAvatar: new URL('http://example.com/images/us.png'),
-          fullText: Maybe.just('review-2')
-            .map(toHtmlFragment)
-            .map(sanitise),
+          fullText: pipe('review-2', toHtmlFragment, sanitise, O.some),
         },
       ];
       const originalGetFeedItems: GetFeedItems = async () => inputItems;

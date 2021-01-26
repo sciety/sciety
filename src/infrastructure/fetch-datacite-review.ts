@@ -1,7 +1,9 @@
 import { URL } from 'url';
 import { namedNode } from '@rdfjs/data-model';
 import { dcterms, schema } from '@tpluscode/rdf-ns-builders';
+import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
+import { pipe } from 'fp-ts/lib/function';
 import { Maybe } from 'true-myth';
 import { FetchDataset } from './fetch-dataset';
 import { Logger } from './logger';
@@ -26,7 +28,11 @@ export default (fetchDataset: FetchDataset, logger: Logger): FetchDataciteReview
 
       const review: Review = {
         publicationDate: Maybe.of(publicationDate).map((date:string) => new Date(date)),
-        fullText: Maybe.of(fullText).map(toHtmlFragment),
+        fullText: pipe(
+          fullText,
+          O.fromNullable,
+          O.map(toHtmlFragment),
+        ),
         url: new URL(url),
       };
       logger('debug', 'Retrieved review', { review });
@@ -34,7 +40,7 @@ export default (fetchDataset: FetchDataset, logger: Logger): FetchDataciteReview
     } catch (error: unknown) {
       return {
         publicationDate: Maybe.nothing(),
-        fullText: Maybe.nothing(),
+        fullText: O.none,
         url: new URL(url),
       };
     }

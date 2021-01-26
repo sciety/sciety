@@ -3,7 +3,6 @@ import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import { flow, pipe } from 'fp-ts/lib/function';
 import clip from 'text-clipper';
-import { Maybe } from 'true-myth';
 import { RenderReviewResponses } from './render-review-responses';
 import templateDate from '../shared-components/date';
 import { EditorialCommunityId } from '../types/editorial-community-id';
@@ -22,7 +21,7 @@ export type ReviewFeedItem = {
   editorialCommunityId: EditorialCommunityId;
   editorialCommunityName: string;
   editorialCommunityAvatar: URL;
-  fullText: Maybe<SanitisedHtmlFragment>;
+  fullText: O.Option<SanitisedHtmlFragment>;
 };
 
 const avatar = (review: ReviewFeedItem): HtmlFragment => toHtmlFragment(`
@@ -45,11 +44,16 @@ const sourceLink = (review: ReviewFeedItem): HtmlFragment => toHtmlFragment(`
   </a>
 `);
 
-const renderWithText = (teaserChars: number, review: ReviewFeedItem) => (responses: HtmlFragment): HtmlFragment => {
-  const fullText = review.fullText.unsafelyUnwrap();
+type RenderWithText = (
+  teaserChars: number,
+  review: ReviewFeedItem,
+  fullText: string,
+) => (responses: HtmlFragment) => string;
+
+const renderWithText: RenderWithText = (teaserChars, review, fullText) => (responses) => {
   const teaserText = clip(fullText, teaserChars);
   if (teaserText === fullText) {
-    return toHtmlFragment(`
+    return `
       <div class="article-feed__item_contents">
         ${avatar(review)}
         <div class="article-feed__item_body">
@@ -61,10 +65,10 @@ const renderWithText = (teaserChars: number, review: ReviewFeedItem) => (respons
         </div>
       </div>
       ${responses}
-    `);
+    `;
   }
   // TODO: a review.id containing dodgy chars could break this
-  return toHtmlFragment(`
+  return `
     <div class="article-feed__item_contents" id="${review.id.toString()}">
       ${avatar(review)}
       <div class="article-feed__item_body" data-behaviour="collapse_to_teaser">
@@ -79,12 +83,13 @@ const renderWithText = (teaserChars: number, review: ReviewFeedItem) => (respons
       </div>
     </div>
     ${responses}
-  `);
+  `;
 };
 
-const render = (teaserChars: number, review: ReviewFeedItem) => (responses: HtmlFragment): string => {
-  if (review.fullText.isNothing()) {
-    return toHtmlFragment(`
+const render = (teaserChars: number, review: ReviewFeedItem) => (responses: HtmlFragment): string => pipe(
+  review.fullText,
+  O.fold(
+    () => `
       <div class="article-feed__item_contents">
         ${avatar(review)}
         <div class="article-feed__item_body">
@@ -95,10 +100,10 @@ const render = (teaserChars: number, review: ReviewFeedItem) => (responses: Html
         </div>
       </div>
       ${responses}
-    `);
-  }
-  return renderWithText(teaserChars, review)(responses);
-};
+    `,
+    (fullText) => renderWithText(teaserChars, review, fullText)(responses),
+  ),
+);
 
 export const createRenderReviewFeedItem = (
   teaserChars: number,
