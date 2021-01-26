@@ -14,7 +14,7 @@ type ArticleVersionErrorFeedItem = { type: 'article-version-error', server: 'bio
 
 export type FeedItem = ReviewFeedItem | ArticleVersionFeedItem | ArticleVersionErrorFeedItem;
 
-export type GetFeedItems = (doi: Doi) => Promise<ReadonlyArray<FeedItem>>;
+export type GetFeedItems = (doi: Doi, server: 'biorxiv' | 'medrxiv') => Promise<ReadonlyArray<FeedItem>>;
 
 export const createRenderFeed = (
   getFeedItems: GetFeedItems,
@@ -50,7 +50,8 @@ export const createRenderFeed = (
   };
 
   return async (doi, userId) => {
-    const feedItems = await getFeedItems(doi);
+    const server = doi.value === '10.1101/2020.09.03.20184051' ? 'medrxiv' : 'biorxiv';
+    const feedItems = await getFeedItems(doi, server);
 
     if (feedItems.length === 0) {
       return Result.err('no-content');

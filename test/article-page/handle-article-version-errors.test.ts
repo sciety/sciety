@@ -21,7 +21,7 @@ describe('handle-article-version-errors', () => {
       ];
       const originalGetFeedItems: GetFeedItems = async () => inputItems;
       const handleArticleVersionErrors = createHandleArticleVersionErrors(originalGetFeedItems);
-      const feedItems = await handleArticleVersionErrors(new Doi('10.1111/123456'));
+      const feedItems = await handleArticleVersionErrors(new Doi('10.1111/123456'), 'biorxiv');
 
       expect(feedItems).toStrictEqual(inputItems);
     });
@@ -53,7 +53,7 @@ describe('handle-article-version-errors', () => {
       ];
       const originalGetFeedItems: GetFeedItems = async () => inputItems;
       const handleArticleVersionErrors = createHandleArticleVersionErrors(originalGetFeedItems);
-      const feedItems = await handleArticleVersionErrors(new Doi('10.1101/123456'));
+      const feedItems = await handleArticleVersionErrors(new Doi('10.1101/123456'), 'biorxiv');
 
       expect(feedItems).toHaveLength(3);
       expect(feedItems[2].type).toBe('article-version-error');
