@@ -9,6 +9,7 @@ import { Result } from 'true-myth';
 import { catchErrors } from './catch-errors';
 import { catchStaticFileErrors } from './catch-static-file-errors';
 import { loadStaticFile } from './load-static-file';
+import { logOut } from './log-out';
 import { pageHandler } from './page-handler';
 import { ping } from './ping';
 import { redirectBack } from './redirect-back';
@@ -24,7 +25,6 @@ import { saveFollowCommand } from '../follow/save-follow-command';
 import { homePage } from '../home-page';
 import { Adapters } from '../infrastructure/adapters';
 import communityOutreachManagerPage from '../jobs/community-outreach-manager-page';
-import logOutHandler from '../log-out';
 import privacyPage from '../privacy-page';
 import { respondHandler } from '../respond';
 import { finishRespondCommand } from '../respond/finish-respond-command';
@@ -121,7 +121,7 @@ export default (adapters: Adapters): Router => {
     authenticate);
 
   router.get('/log-out',
-    logOutHandler());
+    logOut);
 
   // TODO set commands as an object on the session rather than individual properties
   router.get('/twitter/callback',
