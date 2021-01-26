@@ -44,6 +44,7 @@ describe('render-feed', () => {
           },
           {
             type: 'article-version-error',
+            server: 'biorxiv',
           },
         ],
         () => T.of(toHtmlFragment('')),

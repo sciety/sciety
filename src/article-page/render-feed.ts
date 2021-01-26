@@ -10,7 +10,9 @@ import { UserId } from '../types/user-id';
 
 type RenderFeed = (doi: Doi, userId: O.Option<UserId>) => Promise<Result<HtmlFragment, 'no-content'>>;
 
-export type FeedItem = ReviewFeedItem | ArticleVersionFeedItem | { type: 'article-version-error' };
+type ArticleVersionErrorFeedItem = { type: 'article-version-error', server: 'biorxiv' | 'medrxiv' };
+
+export type FeedItem = ReviewFeedItem | ArticleVersionFeedItem | ArticleVersionErrorFeedItem;
 
 export type GetFeedItems = (doi: Doi) => Promise<ReadonlyArray<FeedItem>>;
 
@@ -21,12 +23,12 @@ export const createRenderFeed = (
 ): RenderFeed => {
   const renderArticleVersionErrorFeedItem = createRenderArticleVersionErrorFeedItem();
 
-  const renderFeedItem = async (feedItem: FeedItem, userId: O.Option<UserId>, doi: Doi): Promise<HtmlFragment> => {
+  const renderFeedItem = async (feedItem: FeedItem, userId: O.Option<UserId>): Promise<HtmlFragment> => {
     switch (feedItem.type) {
       case 'article-version':
         return renderArticleVersionFeedItem(feedItem);
       case 'article-version-error':
-        if (doi.value === '10.1101/2020.09.03.20184051') {
+        if (feedItem.server === 'medrxiv') {
           return toHtmlFragment(`
             <div class="article-feed__item_contents">
               <img class="article-feed__item__avatar" src="https://pbs.twimg.com/profile_images/956565401588002816/0rESoCS0_200x200.jpg" alt="">
@@ -55,7 +57,7 @@ export const createRenderFeed = (
     }
 
     const items = await Promise.all(feedItems.map(
-      async (feedItem) => renderFeedItem(feedItem, userId, doi),
+      async (feedItem) => renderFeedItem(feedItem, userId),
     ));
 
     return Result.ok(toHtmlFragment(`
