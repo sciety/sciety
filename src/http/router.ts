@@ -4,8 +4,8 @@ import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { flow } from 'fp-ts/lib/function';
 import bodyParser from 'koa-bodyparser';
-import koaPassport from 'koa-passport';
 import { Result } from 'true-myth';
+import { authenticate } from './authenticate';
 import { catchErrors } from './catch-errors';
 import { catchStaticFileErrors } from './catch-static-file-errors';
 import { loadStaticFile } from './load-static-file';
@@ -109,13 +109,6 @@ export default (adapters: Adapters): Router => {
     redirectBack);
 
   // AUTHENTICATION
-
-  const authenticate = koaPassport.authenticate(
-    'twitter',
-    {
-      failureRedirect: '/',
-    },
-  );
 
   router.get('/log-in',
     authenticate);
