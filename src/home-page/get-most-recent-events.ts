@@ -2,17 +2,11 @@ import * as T from 'fp-ts/lib/Task';
 import { GetEvents } from './render-feed';
 import {
   DomainEvent,
-  EditorialCommunityEndorsedArticleEvent,
   EditorialCommunityReviewedArticleEvent,
-  isEditorialCommunityEndorsedArticleEvent,
   isEditorialCommunityReviewedArticleEvent,
 } from '../types/domain-events';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { UserId } from '../types/user-id';
-
-type FeedEvent =
-  EditorialCommunityEndorsedArticleEvent |
-  EditorialCommunityReviewedArticleEvent;
 
 export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 export type Follows = (userId: UserId, editorialCommunityId: EditorialCommunityId) => T.Task<boolean>;
@@ -21,7 +15,7 @@ export const getMostRecentEvents = (
   getAllEvents: GetAllEvents,
   follows: Follows,
   maxCount: number,
-): GetEvents<FeedEvent> => (
+): GetEvents<EditorialCommunityReviewedArticleEvent> => (
   (userId) => async () => {
     const isFollowedEvent = async (event: DomainEvent): Promise<boolean> => {
       if (!('editorialCommunityId' in event)) {
@@ -30,15 +24,14 @@ export const getMostRecentEvents = (
 
       const userFollows = await follows(userId, event.editorialCommunityId)();
 
-      return (isEditorialCommunityEndorsedArticleEvent(event) && userFollows)
-        || (isEditorialCommunityReviewedArticleEvent(event) && userFollows);
+      return isEditorialCommunityReviewedArticleEvent(event) && userFollows;
     };
 
     const allEvents = (await getAllEvents())
       .slice()
       .reverse();
     const filtering = await Promise.all(allEvents.map(isFollowedEvent));
-    return allEvents.filter((event, i): event is FeedEvent => filtering[i])
+    return allEvents.filter((event, i): event is EditorialCommunityReviewedArticleEvent => filtering[i])
       .slice(0, maxCount);
   }
 );

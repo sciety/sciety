@@ -8,19 +8,21 @@ import { toUserId } from '../../src/types/user-id';
 describe('get-most-recent-events', () => {
   const editorialCommunity1 = new EditorialCommunityId('a');
   const dummyEvent: DomainEvent = {
-    type: 'EditorialCommunityEndorsedArticle',
+    type: 'EditorialCommunityReviewedArticle',
     date: new Date('2020-07-08'),
     editorialCommunityId: editorialCommunity1,
     articleId: new Doi('10.1101/751099'),
+    reviewId: new Doi('10.1234/8765'),
   };
 
   it('reverse the order into date descending', async () => {
     const initial: ReadonlyArray<DomainEvent> = [
       {
-        type: 'EditorialCommunityEndorsedArticle',
+        type: 'EditorialCommunityReviewedArticle',
         date: new Date('2020-07-08'),
         editorialCommunityId: editorialCommunity1,
         articleId: new Doi('10.1101/751099'),
+        reviewId: new Doi('10.1234/8765'),
       },
       {
         type: 'EditorialCommunityReviewedArticle',

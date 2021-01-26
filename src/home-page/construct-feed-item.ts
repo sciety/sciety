@@ -3,27 +3,15 @@ import * as T from 'fp-ts/lib/Task';
 import { pipe } from 'fp-ts/lib/function';
 import { Result } from 'true-myth';
 import { Doi } from '../types/doi';
-import {
-  EditorialCommunityEndorsedArticleEvent,
-  EditorialCommunityReviewedArticleEvent,
-  isEditorialCommunityEndorsedArticleEvent,
-} from '../types/domain-events';
+import { EditorialCommunityReviewedArticleEvent } from '../types/domain-events';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { toHtmlFragment } from '../types/html-fragment';
 import { sanitise, SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
-export type FeedEvent =
-  EditorialCommunityEndorsedArticleEvent |
-  EditorialCommunityReviewedArticleEvent;
-
-type ConstructFeedItem = (event: FeedEvent) => T.Task<FeedItem>;
+type ConstructFeedItem = (event: EditorialCommunityReviewedArticleEvent) => T.Task<FeedItem>;
 
 const reviewedBy = (actor: Actor): string => (
   (actor.name === 'preLights') ? 'highlighted' : 'reviewed'
-);
-
-const verb = (event: FeedEvent, actor: Actor): string => (
-  isEditorialCommunityEndorsedArticleEvent(event) ? 'endorsed' : reviewedBy(actor)
 );
 
 type FeedItem = {
@@ -49,7 +37,7 @@ type Article = {
 type Inputs = {
   actor: Actor,
   article: Result<Article, unknown>,
-  event: FeedEvent,
+  event: EditorialCommunityReviewedArticleEvent,
 };
 
 const construct = ({ actor, article, event }: Inputs): FeedItem => ({
@@ -59,7 +47,7 @@ const construct = ({ actor, article, event }: Inputs): FeedItem => ({
   actorUrl: actor.url,
   doi: event.articleId,
   title: article.mapOr(sanitise(toHtmlFragment('an article')), (a) => a.title),
-  verb: verb(event, actor),
+  verb: reviewedBy(actor),
 });
 
 export type GetActor = (id: EditorialCommunityId) => T.Task<Actor>;

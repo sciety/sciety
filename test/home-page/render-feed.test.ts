@@ -1,11 +1,16 @@
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
-import { FeedEvent } from '../../src/home-page/construct-feed-item';
 import {
-  createRenderFeed, GetEvents, IsFollowingSomething, RenderSummaryFeedList,
+  createRenderFeed,
+  GetEvents,
+  IsFollowingSomething,
+  RenderSummaryFeedList,
 } from '../../src/home-page/render-feed';
 import { Doi } from '../../src/types/doi';
-import { editorialCommunityReviewedArticle } from '../../src/types/domain-events';
+import {
+  editorialCommunityReviewedArticle,
+  EditorialCommunityReviewedArticleEvent,
+} from '../../src/types/domain-events';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { toReviewId } from '../../src/types/review-id';
@@ -16,7 +21,7 @@ describe('render-feed', (): void => {
   describe('when the user is logged in', () => {
     describe('and has a non-empty feed', () => {
       it('returns a list', async (): Promise<void> => {
-        const dummyGetEvents: GetEvents<FeedEvent> = () => T.of([
+        const dummyGetEvents: GetEvents<EditorialCommunityReviewedArticleEvent> = () => T.of([
           editorialCommunityReviewedArticle(
             new EditorialCommunityId('our-community'),
             new Doi('10.1101/111111'),
@@ -24,7 +29,7 @@ describe('render-feed', (): void => {
           ),
         ]);
         const dummyIsFollowingSomething: IsFollowingSomething = () => T.of(true);
-        const dummyRenderSummaryFeedList: RenderSummaryFeedList<FeedEvent> = () => T.of(O.some(toHtmlFragment('someNiceList')));
+        const dummyRenderSummaryFeedList: RenderSummaryFeedList<EditorialCommunityReviewedArticleEvent> = () => T.of(O.some(toHtmlFragment('someNiceList')));
         const renderFeed = createRenderFeed(
           dummyIsFollowingSomething,
           dummyGetEvents,
@@ -43,8 +48,10 @@ describe('render-feed', (): void => {
     describe('and has an empty feed', () => {
       it('returns a come back later text', async (): Promise<void> => {
         const dummyIsFollowingSomething: IsFollowingSomething = () => T.of(true);
-        const dummyGetEvents: GetEvents<FeedEvent> = () => T.of([]);
-        const stubRenderSummaryFeedList: RenderSummaryFeedList<FeedEvent> = () => T.of(O.none);
+        const dummyGetEvents: GetEvents<EditorialCommunityReviewedArticleEvent> = () => T.of([]);
+        const stubRenderSummaryFeedList: RenderSummaryFeedList<EditorialCommunityReviewedArticleEvent> = (
+          () => T.of(O.none)
+        );
         const renderFeed = createRenderFeed(
           dummyIsFollowingSomething,
           dummyGetEvents,
