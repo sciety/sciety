@@ -105,6 +105,16 @@ export const getPublicationDate = (doc: Document): Date => {
   return new Date(`${year}-${month}-${day}`);
 };
 
+export const getServer = (doc: Document): 'biorxiv' | 'medrxiv' => {
+  const doiDataElement = getElement(doc, 'doi_data');
+  const resourceElement = doiDataElement?.getElementsByTagName('resource')[0];
+  const resource = resourceElement?.textContent ?? '';
+  if (resource.includes('://medrxiv.org')) {
+    return 'medrxiv';
+  }
+  return 'biorxiv';
+};
+
 export const getAuthors = (doc: Document, doi: Doi, logger: Logger): Array<string> => {
   const contributorsElement = getElement(doc, 'contributors');
 

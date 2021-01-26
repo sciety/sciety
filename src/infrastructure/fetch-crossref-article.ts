@@ -3,7 +3,7 @@ import { Result } from 'true-myth';
 import { DOMParser } from 'xmldom';
 import { Logger } from './logger';
 import {
-  getAbstract, getAuthors, getPublicationDate, getTitle,
+  getAbstract, getAuthors, getPublicationDate, getServer, getTitle,
 } from './parse-crossref-article';
 import { Doi } from '../types/doi';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
@@ -53,14 +53,13 @@ export default (getXml: GetXml, logger: Logger): FetchCrossrefArticle => {
 
     try {
       const doc = parser.parseFromString(response, 'text/xml');
-      const server = doi.value === '10.1101/2020.09.03.20184051' ? 'medrxiv' : 'biorxiv';
       return Result.ok({
         abstract: getAbstract(doc, doi, logger),
         authors: getAuthors(doc, doi, logger),
         doi,
         title: getTitle(doc, doi, logger),
         publicationDate: getPublicationDate(doc),
-        server,
+        server: getServer(doc),
       });
     } catch (error: unknown) {
       logger('error', 'Unable to parse document', { doi, response, error });

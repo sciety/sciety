@@ -1,6 +1,6 @@
 import { DOMParser } from 'xmldom';
 import {
-  getAbstract, getAuthors, getPublicationDate, getTitle,
+  getAbstract, getAuthors, getPublicationDate, getServer, getTitle,
 } from '../../src/infrastructure/parse-crossref-article';
 import { Doi } from '../../src/types/doi';
 import dummyLogger from '../dummy-logger';
@@ -201,6 +201,36 @@ describe('parse-crossref-article', () => {
       const publicationDate = getPublicationDate(doc);
 
       expect(publicationDate).toStrictEqual(new Date('2020-03-22'));
+    });
+  });
+
+  describe('parsing the server', () => {
+    describe('when the resource is medrxiv', () => {
+      it('returns medrxiv', () => {
+        const response = crossrefResponseWith(`
+          <doi_data>
+            <resource>http://medrxiv.org/lookup/doi/10.1101/2021.01.15.21249880</resource>
+          </doi_data>
+        `);
+        const doc = parser.parseFromString(response, 'text/xml');
+        const server = getServer(doc);
+
+        expect(server).toBe('medrxiv');
+      });
+    });
+
+    describe('when the resource is not medrxiv', () => {
+      it('returns biorxiv', () => {
+        const response = crossrefResponseWith(`
+          <doi_data>
+            <resource>http://biorxiv.org/lookup/doi/10.1101/2020.07.04.187583</resource>
+          </doi_data>
+        `);
+        const doc = parser.parseFromString(response, 'text/xml');
+        const server = getServer(doc);
+
+        expect(server).toBe('biorxiv');
+      });
     });
   });
 
