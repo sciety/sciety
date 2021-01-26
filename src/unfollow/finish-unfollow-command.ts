@@ -1,5 +1,5 @@
 import { Middleware } from 'koa';
-import createUnfollowCommand, { CommitEvents, GetFollowList } from './unfollow-command';
+import { CommitEvents, createUnfollowCommand, GetFollowList } from './unfollow-command';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 
 interface Ports {
@@ -7,7 +7,7 @@ interface Ports {
   getFollowList: GetFollowList;
 }
 
-export default (ports: Ports): Middleware => {
+export const finishUnfollowCommand = (ports: Ports): Middleware => {
   const unfollowCommand = createUnfollowCommand(
     ports.getFollowList,
     ports.commitEvents,

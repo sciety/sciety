@@ -34,9 +34,9 @@ import { saveSaveArticleCommand } from '../save-article/save-save-article-comman
 import { Page } from '../shared-components/apply-standard-page-layout';
 import { termsPage } from '../terms-page';
 import { RenderPageError } from '../types/render-page-error';
-import unfollowHandler from '../unfollow';
-import finishUnfollowCommand from '../unfollow/finish-unfollow-command';
-import saveUnfollowCommand from '../unfollow/save-unfollow-command';
+import { unfollowHandler } from '../unfollow';
+import { finishUnfollowCommand } from '../unfollow/finish-unfollow-command';
+import { saveUnfollowCommand } from '../unfollow/save-unfollow-command';
 import { userPage } from '../user-page';
 
 const toEither = <L = RenderPageError, R = Page>(result: Result<R, L>): E.Either<L, R> => (
