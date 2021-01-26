@@ -11,21 +11,6 @@ import { ReviewId } from '../types/review-id';
 export default (editorialCommunityIds: ReadonlyArray<string>): Array<DomainEvent> => {
   const parsedEvents: Array<DomainEvent> = [];
 
-  for (const csvFile of fs.readdirSync('./data/endorsements')) {
-    const editorialCommunityId = csvFile.replace('.csv', '');
-    if (!editorialCommunityIds.includes(editorialCommunityId)) {
-      continue;
-    }
-    const fileContents = fs.readFileSync(`./data/endorsements/${csvFile}`);
-    parsedEvents.push(...csvParseSync(fileContents, { fromLine: 2 })
-      .map(([date, articleDoi]: [string, string]): DomainEvent => ({
-        type: 'EditorialCommunityEndorsedArticle',
-        date: new Date(date),
-        editorialCommunityId: new EditorialCommunityId(editorialCommunityId),
-        articleId: new Doi(articleDoi),
-      })));
-  }
-
   const unserializeReviewId = (reviewId: string): ReviewId => {
     const [, protocol, value] = /^(.+?):(.+)$/.exec(reviewId) ?? [];
     switch (protocol) {
