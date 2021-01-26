@@ -28,7 +28,7 @@ type ArticleDetails = {
 type GetArticleDetails = (doi: Doi) => T.Task<Result<ArticleDetails, 'not-found'|'unavailable'>>;
 
 type Component = (doi: Doi) => T.Task<Result<string, 'not-found' | 'unavailable'>>;
-type RenderFeed = (doi: Doi, userId: O.Option<UserId>) => Promise<Result<string, 'no-content'>>;
+type RenderFeed = (doi: Doi, server: 'biorxiv' | 'medrxiv', userId: O.Option<UserId>) => Promise<Result<string, 'no-content'>>;
 export type RenderPage = (doi: Doi, userId: O.Option<UserId>) => T.Task<Result<Page, RenderPageError>>;
 
 export const createRenderPage = (
@@ -69,7 +69,8 @@ export const createRenderPage = (
         (success) => Result.ok<HtmlFragment, 'not-found' | 'unavailable'>(success),
       )),
     )();
-    const feedResult = renderFeed(doi, userId)
+    const server = doi.value === '10.1101/2020.09.03.20184051' ? 'medrxiv' : 'biorxiv';
+    const feedResult = renderFeed(doi, server, userId)
       .then((feed) => (
         feed.or(Result.ok<string, never>(''))
       ));

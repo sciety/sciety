@@ -16,7 +16,7 @@ describe('render-feed', () => {
         shouldNotBeCalled,
       );
 
-      const rendered = await renderFeed(new Doi('10.1101/12345678'), O.none);
+      const rendered = await renderFeed(new Doi('10.1101/12345678'), 'biorxiv', O.none);
 
       expect(rendered.unsafelyUnwrapErr()).toBe('no-content');
     });
@@ -51,7 +51,7 @@ describe('render-feed', () => {
         () => toHtmlFragment(''),
       );
 
-      const rendered = await renderFeed(new Doi('10.1101/12345678'), O.none);
+      const rendered = await renderFeed(new Doi('10.1101/12345678'), 'biorxiv', O.none);
 
       expect(rendered.unsafelyUnwrap()).toContain('<ol');
     });

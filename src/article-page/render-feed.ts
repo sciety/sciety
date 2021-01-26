@@ -8,7 +8,7 @@ import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
-type RenderFeed = (doi: Doi, userId: O.Option<UserId>) => Promise<Result<HtmlFragment, 'no-content'>>;
+type RenderFeed = (doi: Doi, server: 'biorxiv' | 'medrxiv', userId: O.Option<UserId>) => Promise<Result<HtmlFragment, 'no-content'>>;
 
 type ArticleVersionErrorFeedItem = { type: 'article-version-error', server: 'biorxiv' | 'medrxiv' };
 
@@ -49,8 +49,7 @@ export const createRenderFeed = (
     }
   };
 
-  return async (doi, userId) => {
-    const server = doi.value === '10.1101/2020.09.03.20184051' ? 'medrxiv' : 'biorxiv';
+  return async (doi, server, userId) => {
     const feedItems = await getFeedItems(doi, server);
 
     if (feedItems.length === 0) {
