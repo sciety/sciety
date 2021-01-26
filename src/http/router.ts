@@ -48,8 +48,7 @@ const toEither = <L = RenderPageError, R = Page>(result: Result<R, L>): E.Either
 export default (adapters: Adapters): Router => {
   const router = new Router();
 
-  router.get('/ping',
-    ping());
+  // PAGES
 
   router.get('/',
     pageHandler(flow(homePage(adapters), TE.rightTask)));
@@ -72,6 +71,17 @@ export default (adapters: Adapters): Router => {
 
   router.get('/editorial-communities/:id',
     pageHandler(editorialCommunityPage(adapters)));
+
+  router.get('/privacy',
+    pageHandler(flow(privacyPage(), TE.rightTask)));
+
+  router.get('/terms',
+    pageHandler(flow(termsPage(), TE.rightTask)));
+
+  router.get('/jobs/community-outreach-manager',
+    pageHandler(flow(communityOutreachManagerPage(adapters), TE.rightTask)));
+
+  // COMMANDS
 
   router.post('/follow',
     bodyParser({ enableTypes: ['form'] }),
@@ -97,6 +107,8 @@ export default (adapters: Adapters): Router => {
     requireAuthentication,
     finishSaveArticleCommand(adapters),
     redirectBack);
+
+  // AUTHENTICATION
 
   const authenticate = koaPassport.authenticate(
     'twitter',
@@ -125,14 +137,10 @@ export default (adapters: Adapters): Router => {
     finishSaveArticleCommand(adapters),
     redirectAfterAuthenticating());
 
-  router.get('/privacy',
-    pageHandler(flow(privacyPage(), TE.rightTask)));
+  // MISC
 
-  router.get('/terms',
-    pageHandler(flow(termsPage(), TE.rightTask)));
-
-  router.get('/jobs/community-outreach-manager',
-    pageHandler(flow(communityOutreachManagerPage(adapters), TE.rightTask)));
+  router.get('/ping',
+    ping());
 
   router.get('/robots.txt',
     robots());
