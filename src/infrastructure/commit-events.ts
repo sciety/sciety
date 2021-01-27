@@ -38,7 +38,7 @@ const persistedEventsWhiteList: ReadonlyArray<RuntimeGeneratedEvent['type']> = [
   'UserSavedArticle',
 ];
 
-export default (
+export const createCommitEvents = (
   inMemoryEvents: Array<DomainEvent>,
   pool: Pool,
   logger: Logger,
