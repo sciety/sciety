@@ -5,7 +5,7 @@ import * as T from 'fp-ts/lib/Task';
 import { flow, pipe } from 'fp-ts/lib/function';
 import { Maybe, Result } from 'true-myth';
 import { ensureBiorxivDoi } from './ensure-biorxiv-doi';
-import { getArticleFeedEvents } from './get-article-feed-events';
+import { FindVersionsForArticleDoi, getArticleFeedEvents } from './get-article-feed-events';
 import { GetReview } from './get-feed-events-content';
 import { projectHasUserSavedArticle } from './project-has-user-saved-article';
 import { createProjectReviewResponseCounts } from './project-review-response-counts';
@@ -33,12 +33,6 @@ type FindReviewsForArticleDoi = (articleVersionDoi: Doi) => T.Task<ReadonlyArray
   reviewId: ReviewId;
   editorialCommunityId: EditorialCommunityId;
   occurredAt: Date;
-}>>;
-
-type FindVersionsForArticleDoi = (doi: Doi) => Promise<ReadonlyArray<{
-  source: URL;
-  occurredAt: Date;
-  version: number;
 }>>;
 
 type ArticleDetails = {

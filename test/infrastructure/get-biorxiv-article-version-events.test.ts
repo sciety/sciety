@@ -22,7 +22,7 @@ describe('get-biorxiv-article-version-events', () => {
 
       const getBiorxivArticleVersionEvents = createGetBiorxivArticleVersionEvents(getJson, dummyLogger);
 
-      const events = await getBiorxivArticleVersionEvents(doi);
+      const events = await getBiorxivArticleVersionEvents(doi, 'biorxiv');
 
       expect(events).toHaveLength(2);
       expect(events[0]).toStrictEqual({
@@ -46,7 +46,7 @@ describe('get-biorxiv-article-version-events', () => {
 
       const getBiorxivArticleVersionEvents = createGetBiorxivArticleVersionEvents(getJson, dummyLogger);
 
-      const events = await getBiorxivArticleVersionEvents(new Doi('10.1101/2020.09.02.278911'));
+      const events = await getBiorxivArticleVersionEvents(new Doi('10.1101/2020.09.02.278911'), 'biorxiv');
 
       expect(events).toHaveLength(0);
     });
@@ -59,7 +59,7 @@ describe('get-biorxiv-article-version-events', () => {
 
         const getBiorxivArticleVersionEvents = createGetBiorxivArticleVersionEvents(getJson, dummyLogger);
 
-        const events = await getBiorxivArticleVersionEvents(new Doi('10.1101/2020.09.02.278911'));
+        const events = await getBiorxivArticleVersionEvents(new Doi('10.1101/2020.09.02.278911'), 'biorxiv');
 
         expect(events).toHaveLength(0);
       });
@@ -78,7 +78,7 @@ describe('get-biorxiv-article-version-events', () => {
 
         const getBiorxivArticleVersionEvents = createGetBiorxivArticleVersionEvents(getJson, dummyLogger);
 
-        const events = await getBiorxivArticleVersionEvents(new Doi('10.1101/2020.09.02.278911'));
+        const events = await getBiorxivArticleVersionEvents(new Doi('10.1101/2020.09.02.278911'), 'biorxiv');
 
         expect(events).toHaveLength(0);
       });
@@ -97,7 +97,7 @@ describe('get-biorxiv-article-version-events', () => {
 
         const getBiorxivArticleVersionEvents = createGetBiorxivArticleVersionEvents(getJson, dummyLogger);
 
-        const events = await getBiorxivArticleVersionEvents(new Doi('10.1101/2020.09.02.278911'));
+        const events = await getBiorxivArticleVersionEvents(new Doi('10.1101/2020.09.02.278911'), 'biorxiv');
 
         expect(events).toHaveLength(0);
       });

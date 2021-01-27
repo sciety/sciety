@@ -15,7 +15,7 @@ type FindReviewsForArticleDoi = (articleVersionDoi: Doi) => T.Task<ReadonlyArray
   occurredAt: Date;
 }>>;
 
-type FindVersionsForArticleDoi = (doi: Doi) => Promise<ReadonlyArray<{
+export type FindVersionsForArticleDoi = (doi: Doi, server: 'biorxiv' | 'medrxiv') => Promise<ReadonlyArray<{
   source: URL;
   occurredAt: Date;
   version: number;
@@ -29,19 +29,23 @@ export const getArticleFeedEvents = (
     name: string;
     avatar: URL;
   }>>,
-): GetFeedItems => createHandleArticleVersionErrors(
-  getFeedEventsContent(
-    composeFeedEvents(
-      async (doi) => (await findReviewsForArticleDoi(doi)()).map((review) => ({
-        type: 'review',
-        ...review,
-      })),
-      async (doi) => (await findVersionsForArticleDoi(doi)).map((version) => ({
-        type: 'article-version',
-        ...version,
-      })),
-    ),
-    fetchReview,
-    async (editorialCommunityId) => ((await getEditorialCommunity(editorialCommunityId)()).unsafelyUnwrap()),
-  ),
+): GetFeedItems => (
+  async (doi, server) => (
+    createHandleArticleVersionErrors(
+      getFeedEventsContent(
+        composeFeedEvents(
+          async () => (await findReviewsForArticleDoi(doi)()).map((review) => ({
+            type: 'review',
+            ...review,
+          })),
+          async () => (await findVersionsForArticleDoi(doi, server)).map((version) => ({
+            type: 'article-version',
+            ...version,
+          })),
+        ),
+        fetchReview,
+        async (editorialCommunityId) => ((await getEditorialCommunity(editorialCommunityId)()).unsafelyUnwrap()),
+      ),
+    )(doi, server)
+  )
 );

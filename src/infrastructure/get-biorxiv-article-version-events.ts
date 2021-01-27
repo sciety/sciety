@@ -12,7 +12,7 @@ type BiorxivResponse = JsonCompatible<{
   }>
 }>;
 
-export type GetBiorxivArticleVersionEvents = (doi: Doi) => Promise<ReadonlyArray<{
+export type GetBiorxivArticleVersionEvents = (doi: Doi, server: 'biorxiv' | 'medrxiv') => Promise<ReadonlyArray<{
   source: URL;
   occurredAt: Date;
   version: number;
@@ -22,9 +22,9 @@ export default (
   getJson: GetJson,
   logger: Logger,
 ): GetBiorxivArticleVersionEvents => (
-  async (doi) => {
-    const url = `https://api.biorxiv.org/details/biorxiv/${doi.value}`;
-    logger('debug', 'Fetching article versions from biorxiv', { url });
+  async (doi, server) => {
+    const url = `https://api.biorxiv.org/details/${server}/${doi.value}`;
+    logger('debug', `Fetching article versions from ${server}`, { url });
 
     try {
       const biorxivResponse = await getJson(url) as BiorxivResponse;
@@ -44,7 +44,7 @@ export default (
           throw new Error(`Invalid version string received: ${articleDetail.version}`);
         }
         return ({
-          source: new URL(`https://www.biorxiv.org/content/${doi.value}v${articleDetail.version}`),
+          source: new URL(`https://www.${server}.org/content/${doi.value}v${articleDetail.version}`),
           occurredAt: new Date(articleDetail.date),
           version,
         });
