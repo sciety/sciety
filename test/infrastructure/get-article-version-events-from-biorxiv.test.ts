@@ -1,5 +1,5 @@
 import { URL } from 'url';
-import createGetArticleVersionEventsFromBiorxiv, { GetJson } from '../../src/infrastructure/get-article-version-events-from-biorxiv';
+import { createGetArticleVersionEventsFromBiorxiv, GetJson } from '../../src/infrastructure/get-article-version-events-from-biorxiv';
 import { Doi } from '../../src/types/doi';
 import dummyLogger from '../dummy-logger';
 

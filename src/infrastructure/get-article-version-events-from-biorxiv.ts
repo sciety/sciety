@@ -19,7 +19,7 @@ export type GetArticleVersionEventsFromBiorxiv = (doi: Doi, server: ArticleServe
   version: number;
 }>>;
 
-export default (
+export const createGetArticleVersionEventsFromBiorxiv = (
   getJson: GetJson,
   logger: Logger,
 ): GetArticleVersionEventsFromBiorxiv => (
