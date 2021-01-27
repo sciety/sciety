@@ -27,7 +27,7 @@ type ArticleDetails = {
   server: ArticleServer,
 };
 
-type GetArticleDetails = (doi: Doi) => T.Task<Result<ArticleDetails, 'not-found'|'unavailable'>>;
+type GetArticleDetails = (doi: Doi) => TE.TaskEither<'not-found' | 'unavailable', ArticleDetails>;
 
 type RenderAbstract = (doi: Doi) => TE.TaskEither<'not-found' | 'unavailable', string>;
 type RenderFeed = (doi: Doi, server: ArticleServer, userId: O.Option<UserId>) => TE.TaskEither<'no-content', string>;
@@ -77,10 +77,21 @@ export const createRenderPage = (
         (success) => Result.ok<HtmlFragment, 'not-found' | 'unavailable'>(success),
       )),
     )();
-    const articleDetailsResult = getArticleDetails(doi);
-    const server = (await articleDetailsResult()).mapOr('biorxiv', (articleDetails) => articleDetails.server);
+    const articleDetails = getArticleDetails(doi);
+    const articleDetailsResult = pipe(
+      articleDetails,
+      T.map(E.fold(
+        (error) => Result.err<ArticleDetails, 'not-found' | 'unavailable'>(error),
+        (success) => Result.ok<ArticleDetails, 'not-found' | 'unavailable'>(success),
+      )),
+    )();
     const feedResult = pipe(
-      renderFeed(doi, server, userId),
+      articleDetails,
+      T.map(E.fold(
+        constant<ArticleServer>('biorxiv'),
+        ({ server }) => server,
+      )),
+      T.chain((server) => renderFeed(doi, server, userId)),
       T.map(E.getOrElse(constant(''))),
       T.map((feed) => Result.ok<string, never>(feed)),
     )();
@@ -89,7 +100,7 @@ export const createRenderPage = (
       .ap(await abstractResult)
       .ap(await pageHeaderResult)
       .ap(await feedResult)
-      .ap(await articleDetailsResult())
+      .ap(await articleDetailsResult)
       .mapErr((error) => {
         switch (error) {
           case 'not-found':

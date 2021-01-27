@@ -109,7 +109,7 @@ export const articlePage = (ports: Ports): ArticlePage => {
     renderPageHeader,
     renderAbstract,
     renderFeed,
-    ports.fetchArticle,
+    shimmedFetchArticle,
   );
   return (params) => pipe(
     params.doi ?? '',
