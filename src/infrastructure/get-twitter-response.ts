@@ -12,7 +12,7 @@ export type TwitterResponse = {
 
 export type GetTwitterResponse = (url: string) => Promise<TwitterResponse>;
 
-export default (twitterApiBearerToken: string, logger: Logger): GetTwitterResponse => (
+export const createGetTwitterResponse = (twitterApiBearerToken: string, logger: Logger): GetTwitterResponse => (
   async (url) => {
     const startTime = new Date();
     const { data } = await axios.get<TwitterResponse>(
