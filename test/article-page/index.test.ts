@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/lib/Either';
 import * as O from 'fp-ts/lib/Option';
 import { articlePage, Params } from '../../src/article-page';
 import { createTestServer } from '../http/server';
@@ -9,9 +10,15 @@ describe('create render page', (): void => {
       const renderPage = articlePage(adapters);
       const params: Params = { doi: '10.1101/833392', user: O.none };
 
-      const page = (await renderPage(params)()).unsafelyUnwrap();
+      const page = await renderPage(params)();
 
-      expect(page.content).toStrictEqual(expect.stringContaining('10.1101/833392'));
+      expect(page).toStrictEqual(
+        E.right(
+          expect.objectContaining({
+            content: expect.stringContaining('10.1101/833392'),
+          }),
+        ),
+      );
     });
   });
 
@@ -21,9 +28,9 @@ describe('create render page', (): void => {
       const renderPage = articlePage(adapters);
       const params: Params = { doi: 'rubbish', user: O.none };
 
-      const error = (await renderPage(params)()).unsafelyUnwrapErr();
+      const error = await renderPage(params)();
 
-      expect(error.type).toBe('not-found');
+      expect(error).toStrictEqual(E.left(expect.objectContaining({ type: 'not-found' })));
     });
   });
 
@@ -33,9 +40,9 @@ describe('create render page', (): void => {
       const renderPage = articlePage(adapters);
       const params: Params = { doi: '10.7554/eLife.09560', user: O.none };
 
-      const error = (await renderPage(params)()).unsafelyUnwrapErr();
+      const error = await renderPage(params)();
 
-      expect(error.type).toBe('not-found');
+      expect(error).toStrictEqual(E.left(expect.objectContaining({ type: 'not-found' })));
     });
   });
 });

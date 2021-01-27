@@ -1,10 +1,7 @@
 import Router from '@koa/router';
-import * as E from 'fp-ts/lib/Either';
-import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { flow } from 'fp-ts/lib/function';
 import bodyParser from 'koa-bodyparser';
-import { Result } from 'true-myth';
 import { authenticate } from './authenticate';
 import { catchErrors } from './catch-errors';
 import { catchStaticFileErrors } from './catch-static-file-errors';
@@ -31,19 +28,11 @@ import { finishRespondCommand } from '../respond/finish-respond-command';
 import { saveRespondCommand } from '../respond/save-respond-command';
 import { finishSaveArticleCommand } from '../save-article/finish-save-article-command';
 import { saveSaveArticleCommand } from '../save-article/save-save-article-command';
-import { Page } from '../shared-components/apply-standard-page-layout';
 import { termsPage } from '../terms-page';
-import { RenderPageError } from '../types/render-page-error';
 import { unfollowHandler } from '../unfollow';
 import { finishUnfollowCommand } from '../unfollow/finish-unfollow-command';
 import { saveUnfollowCommand } from '../unfollow/save-unfollow-command';
 import { userPage } from '../user-page';
-
-const toEither = <L = RenderPageError, R = Page>(result: Result<R, L>): E.Either<L, R> => (
-  result
-    .map((page) => E.right<L, R>(page))
-    .unwrapOrElse((error) => E.left<L, R>(error))
-);
 
 export default (adapters: Adapters): Router => {
   const router = new Router();
@@ -67,7 +56,7 @@ export default (adapters: Adapters): Router => {
     pageHandler(articleSearchPage(adapters)));
 
   router.get('/articles/:doi(.+)',
-    pageHandler(flow(articlePage(adapters), T.map(toEither))));
+    pageHandler(articlePage(adapters)));
 
   router.get('/editorial-communities/:id',
     pageHandler(editorialCommunityPage(adapters)));

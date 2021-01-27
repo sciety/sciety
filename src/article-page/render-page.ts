@@ -12,7 +12,7 @@ import { RenderPageError } from '../types/render-page-error';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { UserId } from '../types/user-id';
 
-export type Page = {
+type Page = {
   title: string,
   content: HtmlFragment,
   openGraph: {
@@ -31,7 +31,7 @@ type GetArticleDetails = (doi: Doi) => TE.TaskEither<'not-found' | 'unavailable'
 
 type RenderAbstract = (doi: Doi) => TE.TaskEither<'not-found' | 'unavailable', string>;
 type RenderFeed = (doi: Doi, server: ArticleServer, userId: O.Option<UserId>) => TE.TaskEither<'no-content', string>;
-export type RenderPage = (doi: Doi, userId: O.Option<UserId>) => T.Task<Result<Page, RenderPageError>>;
+export type RenderPage = (doi: Doi, userId: O.Option<UserId>) => TE.TaskEither<RenderPageError, Page>;
 
 export const createRenderPage = (
   renderPageHeader: (doi: Doi, userId: O.Option<UserId>) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>,
@@ -101,7 +101,7 @@ export const createRenderPage = (
       .ap(await pageHeaderResult)
       .ap(await feedResult)
       .ap(await articleDetailsResult)
-      .mapErr((error) => {
+      .mapErr((error): RenderPageError => {
         switch (error) {
           case 'not-found':
             return {
@@ -122,6 +122,7 @@ export const createRenderPage = (
               `),
             };
         }
-      });
+      })
+      .mapOrElse<E.Either<RenderPageError, Page>>(E.left, E.right);
   };
 };
