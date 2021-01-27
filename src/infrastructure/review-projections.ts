@@ -14,7 +14,9 @@ interface ReviewProjections {
   findReviewsForArticleDoi: FindReviewsForArticleDoi;
 }
 
-export default (events: ReadonlyArray<EditorialCommunityReviewedArticleEvent>): ReviewProjections => ({
+export const createReviewProjections = (
+  events: ReadonlyArray<EditorialCommunityReviewedArticleEvent>,
+): ReviewProjections => ({
   findReviewsForArticleDoi: (articleDoi) => T.of(
     events
       .filter((event) => event.articleId.value === articleDoi.value)

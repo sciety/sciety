@@ -1,4 +1,4 @@
-import createReviewProjections from '../../src/infrastructure/review-projections';
+import { createReviewProjections } from '../../src/infrastructure/review-projections';
 import { Doi } from '../../src/types/doi';
 import { EditorialCommunityReviewedArticleEvent } from '../../src/types/domain-events';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';

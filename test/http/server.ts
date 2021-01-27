@@ -17,7 +17,7 @@ import createFetchHypothesisAnnotation from '../../src/infrastructure/fetch-hypo
 import createFetchReview from '../../src/infrastructure/fetch-review';
 import createEditorialCommunityRepository from '../../src/infrastructure/in-memory-editorial-communities';
 import createEndorsementsRepository from '../../src/infrastructure/in-memory-endorsements-repository';
-import createReviewProjections from '../../src/infrastructure/review-projections';
+import { createReviewProjections } from '../../src/infrastructure/review-projections';
 import { EditorialCommunityRepository } from '../../src/types/editorial-community-repository';
 import { FollowList } from '../../src/types/follow-list';
 import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';

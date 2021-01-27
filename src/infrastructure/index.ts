@@ -25,7 +25,7 @@ import {
   createJsonSerializer, createRTracerLogger, createStreamLogger, Logger,
 } from './logger';
 import { responseCache } from './response-cache';
-import createReviewProjections from './review-projections';
+import { createReviewProjections } from './review-projections';
 import { createSearchEuropePmc } from './search-europe-pmc';
 import bootstrapEditorialCommunities from '../data/bootstrap-editorial-communities';
 import { DomainEvent, isEditorialCommunityEndorsedArticleEvent, isEditorialCommunityReviewedArticleEvent } from '../types/domain-events';
