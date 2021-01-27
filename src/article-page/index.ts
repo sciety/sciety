@@ -12,7 +12,7 @@ import { projectHasUserSavedArticle } from './project-has-user-saved-article';
 import { createProjectReviewResponseCounts } from './project-review-response-counts';
 import { createProjectUserReviewResponse } from './project-user-review-response';
 import { createRenderArticleAbstract } from './render-article-abstract';
-import { createRenderArticleVersionFeedItem } from './render-article-version-feed-item';
+import { renderArticleVersionFeedItem } from './render-article-version-feed-item';
 import { createRenderFeed } from './render-feed';
 import { createRenderPage, RenderPage } from './render-page';
 import { createRenderPageHeader } from './render-page-header';
@@ -103,7 +103,7 @@ export const articlePage = (ports: Ports): ArticlePage => {
         createProjectUserReviewResponse(ports.getAllEvents),
       ),
     ),
-    createRenderArticleVersionFeedItem(),
+    renderArticleVersionFeedItem,
   );
   const renderPage = createRenderPage(
     renderPageHeader,
