@@ -6,7 +6,7 @@ import { Doi } from '../types/doi';
 
 type GetXmlFromCrossrefRestApi = (doi: Doi, acceptHeader: string) => Promise<string>;
 
-export default (
+export const createGetXmlFromCrossrefRestApi = (
   logger: Logger,
 ): GetXmlFromCrossrefRestApi => {
   const client = axios.create();

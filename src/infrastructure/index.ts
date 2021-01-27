@@ -18,7 +18,7 @@ import getEventsFromDataFiles from './get-events-from-data-files';
 import getEventsFromDatabase from './get-events-from-database';
 import createGetTwitterResponse from './get-twitter-response';
 import createGetTwitterUserDetails from './get-twitter-user-details';
-import createGetXmlFromCrossrefRestApi from './get-xml-from-crossref-rest-api';
+import { createGetXmlFromCrossrefRestApi } from './get-xml-from-crossref-rest-api';
 import createEditorialCommunityRepository from './in-memory-editorial-communities';
 import createEndorsementsRepository from './in-memory-endorsements-repository';
 import {
