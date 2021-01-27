@@ -1,4 +1,5 @@
 import { URL } from 'url';
+import * as E from 'fp-ts/lib/Either';
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import { createRenderFeed } from '../../src/article-page/render-feed';
@@ -16,9 +17,9 @@ describe('render-feed', () => {
         shouldNotBeCalled,
       );
 
-      const rendered = await renderFeed(new Doi('10.1101/12345678'), 'biorxiv', O.none);
+      const rendered = await renderFeed(new Doi('10.1101/12345678'), 'biorxiv', O.none)();
 
-      expect(rendered.unsafelyUnwrapErr()).toBe('no-content');
+      expect(rendered).toStrictEqual(E.left('no-content'));
     });
   });
 
@@ -52,9 +53,9 @@ describe('render-feed', () => {
         () => toHtmlFragment(''),
       );
 
-      const rendered = await renderFeed(new Doi('10.1101/12345678'), 'biorxiv', O.none);
+      const rendered = await renderFeed(new Doi('10.1101/12345678'), 'biorxiv', O.none)();
 
-      expect(rendered.unsafelyUnwrap()).toContain('<ol');
+      expect(rendered).toStrictEqual(E.right(expect.stringContaining('<ol')));
     });
   });
 });

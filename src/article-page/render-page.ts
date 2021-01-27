@@ -2,7 +2,7 @@ import * as E from 'fp-ts/lib/Either';
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
-import { pipe } from 'fp-ts/lib/function';
+import { constant, pipe } from 'fp-ts/lib/function';
 import striptags from 'striptags';
 import { Result } from 'true-myth';
 import { ArticleServer } from '../types/article-server';
@@ -30,7 +30,7 @@ type ArticleDetails = {
 type GetArticleDetails = (doi: Doi) => T.Task<Result<ArticleDetails, 'not-found'|'unavailable'>>;
 
 type RenderAbstract = (doi: Doi) => TE.TaskEither<'not-found' | 'unavailable', string>;
-type RenderFeed = (doi: Doi, server: ArticleServer, userId: O.Option<UserId>) => Promise<Result<string, 'no-content'>>;
+type RenderFeed = (doi: Doi, server: ArticleServer, userId: O.Option<UserId>) => TE.TaskEither<'no-content', string>;
 export type RenderPage = (doi: Doi, userId: O.Option<UserId>) => T.Task<Result<Page, RenderPageError>>;
 
 export const createRenderPage = (
@@ -79,10 +79,11 @@ export const createRenderPage = (
     )();
     const articleDetailsResult = getArticleDetails(doi);
     const server = (await articleDetailsResult()).mapOr('biorxiv', (articleDetails) => articleDetails.server);
-    const feedResult = renderFeed(doi, server, userId)
-      .then((feed) => (
-        feed.or(Result.ok<string, never>(''))
-      ));
+    const feedResult = pipe(
+      renderFeed(doi, server, userId),
+      T.map(E.getOrElse(constant(''))),
+      T.map((feed) => Result.ok<string, never>(feed)),
+    )();
 
     return Result.ok<typeof template, 'not-found' | 'unavailable'>(template)
       .ap(await abstractResult)

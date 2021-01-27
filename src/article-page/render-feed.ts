@@ -1,5 +1,6 @@
+import * as E from 'fp-ts/lib/Either';
 import * as O from 'fp-ts/lib/Option';
-import { Result } from 'true-myth';
+import * as TE from 'fp-ts/lib/TaskEither';
 import { createRenderArticleVersionErrorFeedItem } from './render-article-version-error-feed-item';
 import { ArticleVersionFeedItem, RenderArticleVersionFeedItem } from './render-article-version-feed-item';
 import { RenderReviewFeedItem, ReviewFeedItem } from './render-review-feed-item';
@@ -10,7 +11,7 @@ import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
-type RenderFeed = (doi: Doi, server: ArticleServer, userId: O.Option<UserId>) => Promise<Result<HtmlFragment, 'no-content'>>;
+type RenderFeed = (doi: Doi, server: ArticleServer, userId: O.Option<UserId>) => TE.TaskEither<'no-content', HtmlFragment>;
 
 type ArticleVersionErrorFeedItem = { type: 'article-version-error', server: ArticleServer };
 
@@ -66,18 +67,18 @@ export const createRenderFeed = (
     }
   };
 
-  return async (doi, server, userId) => {
+  return (doi, server, userId) => async () => {
     const feedItems = await getFeedItems(doi, server);
 
     if (feedItems.length === 0) {
-      return Result.err('no-content');
+      return E.left('no-content');
     }
 
     const items = await Promise.all(feedItems.map(
       async (feedItem) => renderFeedItem(feedItem, userId),
     ));
 
-    return Result.ok(toHtmlFragment(`
+    return E.right(toHtmlFragment(`
       <section class="article-feed">
         <h2>Feed</h2>
 
