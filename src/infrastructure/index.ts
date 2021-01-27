@@ -8,7 +8,7 @@ import { createCommitEvents } from './commit-events';
 import { createEventSourceFollowListRepository } from './event-sourced-follow-list-repository';
 import createFetchCrossrefArticle from './fetch-crossref-article';
 import createFetchDataciteReview from './fetch-datacite-review';
-import createFetchDataset from './fetch-dataset';
+import { createFetchDataset } from './fetch-dataset';
 import createFetchHypothesisAnnotation from './fetch-hypothesis-annotation';
 import createFetchReview from './fetch-review';
 import { createFetchStaticFile } from './fetch-static-file';

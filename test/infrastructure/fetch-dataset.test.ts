@@ -6,7 +6,7 @@ import { namedNode } from '@rdfjs/data-model';
 import rdfFetch, { DatasetResponse } from '@rdfjs/fetch-lite';
 import datasetFactory from 'rdf-dataset-indexed';
 import type { DatasetCore } from 'rdf-js';
-import createFetchDataset, { FetchDatasetError } from '../../src/infrastructure/fetch-dataset';
+import { createFetchDataset, FetchDatasetError } from '../../src/infrastructure/fetch-dataset';
 import { Doi } from '../../src/types/doi';
 import dummyLogger from '../dummy-logger';
 
