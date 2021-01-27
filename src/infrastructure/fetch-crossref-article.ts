@@ -5,6 +5,7 @@ import { Logger } from './logger';
 import {
   getAbstract, getAuthors, getPublicationDate, getServer, getTitle,
 } from './parse-crossref-article';
+import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
@@ -16,7 +17,7 @@ export type FetchCrossrefArticle = (doi: Doi) => T.Task<Result<{
   doi: Doi;
   title: SanitisedHtmlFragment;
   publicationDate: Date;
-  server: 'biorxiv' | 'medrxiv',
+  server: ArticleServer,
 }, FetchCrossrefArticleError>>;
 
 export type GetXml = (doi: Doi, acceptHeader: string) => Promise<string>;

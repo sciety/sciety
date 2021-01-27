@@ -1,5 +1,6 @@
 import { URL } from 'url';
 import renderDate from '../shared-components/date';
+import { ArticleServer } from '../types/article-server';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 export type ArticleVersionFeedItem = {
@@ -7,7 +8,7 @@ export type ArticleVersionFeedItem = {
   source: URL;
   occurredAt: Date;
   version: number;
-  server: 'biorxiv' | 'medrxiv';
+  server: ArticleServer;
 };
 
 export type RenderArticleVersionFeedItem = (feedItem: ArticleVersionFeedItem) => HtmlFragment;

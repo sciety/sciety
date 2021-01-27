@@ -19,6 +19,7 @@ import { createRenderReviewFeedItem } from './render-review-feed-item';
 import { createRenderReviewResponses } from './render-review-responses';
 import { renderSaveArticle } from './render-save-article';
 import { renderTweetThis } from './render-tweet-this';
+import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 import { DomainEvent } from '../types/domain-events';
 import { EditorialCommunityId } from '../types/editorial-community-id';
@@ -39,7 +40,7 @@ type ArticleDetails = {
   title: SanitisedHtmlFragment;
   abstract: SanitisedHtmlFragment, // TODO Use HtmlFragment as the HTML is stripped
   authors: Array<string>;
-  server: 'biorxiv' | 'medrxiv',
+  server: ArticleServer,
 };
 
 type GetArticleDetails = (doi: Doi) => T.Task<Result<ArticleDetails, 'not-found'|'unavailable'>>;

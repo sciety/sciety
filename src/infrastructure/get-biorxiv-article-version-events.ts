@@ -1,5 +1,6 @@
 import { URL } from 'url';
 import { Logger } from './logger';
+import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 import { Json, JsonCompatible } from '../types/json';
 
@@ -12,7 +13,7 @@ type BiorxivResponse = JsonCompatible<{
   }>
 }>;
 
-export type GetBiorxivArticleVersionEvents = (doi: Doi, server: 'biorxiv' | 'medrxiv') => Promise<ReadonlyArray<{
+export type GetBiorxivArticleVersionEvents = (doi: Doi, server: ArticleServer) => Promise<ReadonlyArray<{
   source: URL;
   occurredAt: Date;
   version: number;

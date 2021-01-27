@@ -5,6 +5,7 @@ import * as TE from 'fp-ts/lib/TaskEither';
 import { pipe } from 'fp-ts/lib/function';
 import striptags from 'striptags';
 import { Result } from 'true-myth';
+import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { RenderPageError } from '../types/render-page-error';
@@ -23,13 +24,13 @@ export type Page = {
 type ArticleDetails = {
   title: string,
   abstract: SanitisedHtmlFragment, // TODO Use HtmlFragment as the HTML is stripped
-  server: 'biorxiv' | 'medrxiv',
+  server: ArticleServer,
 };
 
 type GetArticleDetails = (doi: Doi) => T.Task<Result<ArticleDetails, 'not-found'|'unavailable'>>;
 
 type Component = (doi: Doi) => T.Task<Result<string, 'not-found' | 'unavailable'>>;
-type RenderFeed = (doi: Doi, server: 'biorxiv' | 'medrxiv', userId: O.Option<UserId>) => Promise<Result<string, 'no-content'>>;
+type RenderFeed = (doi: Doi, server: ArticleServer, userId: O.Option<UserId>) => Promise<Result<string, 'no-content'>>;
 export type RenderPage = (doi: Doi, userId: O.Option<UserId>) => T.Task<Result<Page, RenderPageError>>;
 
 export const createRenderPage = (

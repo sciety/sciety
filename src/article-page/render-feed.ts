@@ -5,17 +5,18 @@ import { ArticleVersionFeedItem, RenderArticleVersionFeedItem } from './render-a
 import { RenderReviewFeedItem, ReviewFeedItem } from './render-review-feed-item';
 import renderDate from '../shared-components/date';
 import renderListItems from '../shared-components/list-items';
+import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
-type RenderFeed = (doi: Doi, server: 'biorxiv' | 'medrxiv', userId: O.Option<UserId>) => Promise<Result<HtmlFragment, 'no-content'>>;
+type RenderFeed = (doi: Doi, server: ArticleServer, userId: O.Option<UserId>) => Promise<Result<HtmlFragment, 'no-content'>>;
 
-type ArticleVersionErrorFeedItem = { type: 'article-version-error', server: 'biorxiv' | 'medrxiv' };
+type ArticleVersionErrorFeedItem = { type: 'article-version-error', server: ArticleServer };
 
 export type FeedItem = ReviewFeedItem | ArticleVersionFeedItem | ArticleVersionErrorFeedItem;
 
-export type GetFeedItems = (doi: Doi, server: 'biorxiv' | 'medrxiv') => Promise<ReadonlyArray<FeedItem>>;
+export type GetFeedItems = (doi: Doi, server: ArticleServer) => Promise<ReadonlyArray<FeedItem>>;
 
 export const createRenderFeed = (
   getFeedItems: GetFeedItems,
