@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/lib/Either';
 import * as T from 'fp-ts/lib/Task';
 import { Result } from 'true-myth';
 import { createRenderArticleAbstract, GetArticleAbstract } from '../../src/article-page/render-article-abstract';
@@ -15,9 +16,9 @@ describe('render-article-abstract component', (): void => {
 
       const renderArticleAbstract = createRenderArticleAbstract(getArticleAbstract);
 
-      const rendered = (await renderArticleAbstract(doi)()).unsafelyUnwrap();
+      const rendered = await renderArticleAbstract(doi)();
 
-      expect(rendered).toStrictEqual(expect.stringContaining(`Article ${doi.value} abstract content`));
+      expect(rendered).toStrictEqual(E.right(expect.stringContaining(`Article ${doi.value} abstract content`)));
     });
   });
 
@@ -26,9 +27,9 @@ describe('render-article-abstract component', (): void => {
       const getArticleAbstract: GetArticleAbstract<'any-error'> = () => T.of(Result.err('any-error'));
 
       const renderArticleAbstract = createRenderArticleAbstract(getArticleAbstract);
-      const error = (await renderArticleAbstract(doi)()).unsafelyUnwrapErr();
+      const error = await renderArticleAbstract(doi)();
 
-      expect(error).toStrictEqual('any-error');
+      expect(error).toStrictEqual(E.left('any-error'));
     });
   });
 });

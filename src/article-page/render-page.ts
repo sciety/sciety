@@ -29,13 +29,13 @@ type ArticleDetails = {
 
 type GetArticleDetails = (doi: Doi) => T.Task<Result<ArticleDetails, 'not-found'|'unavailable'>>;
 
-type Component = (doi: Doi) => T.Task<Result<string, 'not-found' | 'unavailable'>>;
+type RenderAbstract = (doi: Doi) => TE.TaskEither<'not-found' | 'unavailable', string>;
 type RenderFeed = (doi: Doi, server: ArticleServer, userId: O.Option<UserId>) => Promise<Result<string, 'no-content'>>;
 export type RenderPage = (doi: Doi, userId: O.Option<UserId>) => T.Task<Result<Page, RenderPageError>>;
 
 export const createRenderPage = (
   renderPageHeader: (doi: Doi, userId: O.Option<UserId>) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>,
-  renderAbstract: Component,
+  renderAbstract: RenderAbstract,
   renderFeed: RenderFeed,
   getArticleDetails: GetArticleDetails,
 ): RenderPage => {
@@ -63,7 +63,13 @@ export const createRenderPage = (
   );
 
   return (doi, userId) => async () => {
-    const abstractResult = renderAbstract(doi)();
+    const abstractResult = pipe(
+      renderAbstract(doi),
+      T.map(E.fold(
+        (error) => Result.err<string, 'not-found' | 'unavailable'>(error),
+        (success) => Result.ok<string, 'not-found' | 'unavailable'>(success),
+      )),
+    )();
     const pageHeaderResult = pipe(
       renderPageHeader(doi, userId),
       T.map(E.fold(
