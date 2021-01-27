@@ -48,7 +48,7 @@ const handleError = (logger: Logger, userId: UserId) => (error: unknown): 'not-f
   return 'unavailable';
 };
 
-export default (
+export const createGetTwitterUserDetails = (
   getTwitterResponse: GetTwitterResponse,
   logger: Logger,
 ): GetTwitterUserDetails => (

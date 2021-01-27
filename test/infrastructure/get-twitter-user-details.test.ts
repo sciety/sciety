@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/lib/Either';
 import { GetTwitterResponse } from '../../src/infrastructure/get-twitter-response';
-import createGetTwitterUserDetails from '../../src/infrastructure/get-twitter-user-details';
+import { createGetTwitterUserDetails } from '../../src/infrastructure/get-twitter-user-details';
 import { toUserId } from '../../src/types/user-id';
 import dummyLogger from '../dummy-logger';
 
