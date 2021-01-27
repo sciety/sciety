@@ -7,7 +7,7 @@ export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 export type EventSourcedFollowListRepository = (userId: UserId) => Promise<FollowList>;
 
-export default (getAllEvents: GetAllEvents): EventSourcedFollowListRepository => (
+export const createEventSourceFollowListRepository = (getAllEvents: GetAllEvents): EventSourcedFollowListRepository => (
   async (userId) => {
     const result = new Set<string>();
 

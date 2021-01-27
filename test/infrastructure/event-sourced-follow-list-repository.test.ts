@@ -1,5 +1,5 @@
 import * as T from 'fp-ts/lib/Task';
-import createEventSourcedFollowListRepository, { GetAllEvents } from '../../src/infrastructure/event-sourced-follow-list-repository';
+import { createEventSourceFollowListRepository, GetAllEvents } from '../../src/infrastructure/event-sourced-follow-list-repository';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 import { generate } from '../../src/types/event-id';
 import { FollowList } from '../../src/types/follow-list';
@@ -18,7 +18,7 @@ describe('event-sourced-follow-list-repository', () => {
         editorialCommunityId: editorialCommunitityId1,
       },
     ]);
-    const repository = createEventSourcedFollowListRepository(getAllEvents);
+    const repository = createEventSourceFollowListRepository(getAllEvents);
 
     const actual = await repository(userId1);
     const expected = new FollowList(userId1, [editorialCommunitityId1.value]);
