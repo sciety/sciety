@@ -13,7 +13,7 @@ import createFetchHypothesisAnnotation from './fetch-hypothesis-annotation';
 import createFetchReview from './fetch-review';
 import { createFetchStaticFile } from './fetch-static-file';
 import { createFollows } from './follows';
-import createGetBiorxivArticleVersionEvents from './get-biorxiv-article-version-events';
+import createGetArticleVersionEventsFromBiorxiv from './get-article-version-events-from-biorxiv';
 import getEventsFromDataFiles from './get-events-from-data-files';
 import getEventsFromDatabase from './get-events-from-database';
 import createGetTwitterResponse from './get-twitter-response';
@@ -114,6 +114,6 @@ export const createInfrastructure = async (): Promise<Adapters> => {
     getFollowList,
     getUserDetails: createGetTwitterUserDetails(getTwitterResponse, logger),
     follows: createFollows(getAllEvents),
-    findVersionsForArticleDoi: createBiorxivCache(createGetBiorxivArticleVersionEvents(getJson, logger), logger),
+    findVersionsForArticleDoi: createBiorxivCache(createGetArticleVersionEventsFromBiorxiv(getJson, logger), logger),
   };
 };

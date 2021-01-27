@@ -1,12 +1,12 @@
-import { GetBiorxivArticleVersionEvents } from './get-biorxiv-article-version-events';
+import { GetArticleVersionEventsFromBiorxiv } from './get-article-version-events-from-biorxiv';
 import { Logger } from './logger';
 
-type BiorxivCache = Record<string, ReturnType<GetBiorxivArticleVersionEvents>>;
+type BiorxivCache = Record<string, ReturnType<GetArticleVersionEventsFromBiorxiv>>;
 
 export default (
-  getBiorxivArticleVersionEvents: GetBiorxivArticleVersionEvents,
+  getArticleVersionEventsFromBiorxiv: GetArticleVersionEventsFromBiorxiv,
   logger: Logger,
-): GetBiorxivArticleVersionEvents => {
+): GetArticleVersionEventsFromBiorxiv => {
   const cache: BiorxivCache = {};
   return async (doi, server) => {
     const cached = cache[doi.value];
@@ -15,7 +15,7 @@ export default (
       return cached;
     }
     logger('debug', 'bioRxiv cache miss', { doi });
-    const promise = getBiorxivArticleVersionEvents(doi, server);
+    const promise = getArticleVersionEventsFromBiorxiv(doi, server);
     void promise.then((result) => {
       if (result.length === 0) {
         delete cache[doi.value];

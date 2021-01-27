@@ -13,7 +13,7 @@ type BiorxivResponse = JsonCompatible<{
   }>
 }>;
 
-export type GetBiorxivArticleVersionEvents = (doi: Doi, server: ArticleServer) => Promise<ReadonlyArray<{
+export type GetArticleVersionEventsFromBiorxiv = (doi: Doi, server: ArticleServer) => Promise<ReadonlyArray<{
   source: URL;
   occurredAt: Date;
   version: number;
@@ -22,7 +22,7 @@ export type GetBiorxivArticleVersionEvents = (doi: Doi, server: ArticleServer) =
 export default (
   getJson: GetJson,
   logger: Logger,
-): GetBiorxivArticleVersionEvents => (
+): GetArticleVersionEventsFromBiorxiv => (
   async (doi, server) => {
     const url = `https://api.biorxiv.org/details/${server}/${doi.value}`;
     logger('debug', `Fetching article versions from ${server}`, { url });

@@ -7,7 +7,7 @@ import { FetchCrossrefArticle } from './fetch-crossref-article';
 import { FetchReview } from './fetch-review';
 import { FetchStaticFile } from './fetch-static-file';
 import { Follows } from './follows';
-import { GetBiorxivArticleVersionEvents } from './get-biorxiv-article-version-events';
+import { GetArticleVersionEventsFromBiorxiv } from './get-article-version-events-from-biorxiv';
 import { GetTwitterUserDetails } from './get-twitter-user-details';
 import { Logger } from './logger';
 import { FindReviewsForArticleDoi } from './review-projections';
@@ -38,7 +38,7 @@ export interface Adapters {
   getAllEditorialCommunities: GetAllEditorialCommunities;
   endorsements: EndorsementsRepository,
   findReviewsForArticleDoi: FindReviewsForArticleDoi;
-  findVersionsForArticleDoi: GetBiorxivArticleVersionEvents;
+  findVersionsForArticleDoi: GetArticleVersionEventsFromBiorxiv;
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>;
   commitEvents: CommitEvents;
   getFollowList: EventSourcedFollowListRepository;
