@@ -1,6 +1,6 @@
 import { URL } from 'url';
 import { namedNode } from '@rdfjs/data-model';
-import { dcterms, schema } from '@tpluscode/rdf-ns-builders';
+import { schema } from '@tpluscode/rdf-ns-builders';
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import { pipe } from 'fp-ts/lib/function';
@@ -19,14 +19,9 @@ export default (fetchDataset: FetchDataset, logger: Logger): FetchDataciteReview
     logger('debug', 'Fetching review from Datacite', { url });
     try {
       const graph = await fetchDataset(reviewIri);
-      const publicationDate = graph.out([
-        schema.datePublished,
-        dcterms.date,
-      ]).value;
       const fullText = graph.out(schema.description).value;
 
       const review: Review = {
-        publicationDate: pipe(publicationDate, O.fromNullable, O.map((date:string) => new Date(date))),
         fullText: pipe(
           fullText,
           O.fromNullable,

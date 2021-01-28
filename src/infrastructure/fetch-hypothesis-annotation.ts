@@ -32,7 +32,6 @@ export default (getJson: GetJson, logger: Logger): FetchHypothesisAnnotation => 
       .then((response) => {
         const data = response as HypothesisResponse;
         const review: Review = {
-          publicationDate: O.some(new Date(data.created)),
           fullText: pipe(
             data.text,
             O.fromNullable,

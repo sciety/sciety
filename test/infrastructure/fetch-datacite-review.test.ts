@@ -1,5 +1,5 @@
 import { literal } from '@rdfjs/data-model';
-import { dcterms, schema } from '@tpluscode/rdf-ns-builders';
+import { schema } from '@tpluscode/rdf-ns-builders';
 import clownface from 'clownface';
 import * as O from 'fp-ts/lib/Option';
 import datasetFactory from 'rdf-dataset-indexed';
@@ -23,21 +23,7 @@ describe('fetch-datacite-review', (): void => {
 
       expect(review).toMatchObject({
         fullText: O.some('The full text'),
-        publicationDate: O.some(new Date('2020-02-20')),
       });
-    });
-  });
-
-  describe('when the response contains Crossref data', () => {
-    it('returns the correct date of the review', async () => {
-      const fetchDataset: FetchDataset = async (iri) => (
-        clownface({ dataset: datasetFactory(), term: iri })
-          .addOut(dcterms.date, literal('2020-02-20', schema.Date))
-      );
-      const fetchReview = createFetchDataciteReview(fetchDataset, dummyLogger);
-      const review = await fetchReview(reviewDoi)();
-
-      expect(review.publicationDate).toStrictEqual(O.some(new Date('2020-02-20')));
     });
   });
 

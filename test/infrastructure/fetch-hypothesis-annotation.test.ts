@@ -23,7 +23,6 @@ describe('fetch-hypothesis-annotation', (): void => {
     const review = await fetchHypothesisAnnotation(hypothesisAnnotationId)();
 
     const expected: Review = {
-      publicationDate: O.some(new Date(date)),
       fullText: pipe('<p>Very good</p>', toHtmlFragment, O.some),
       url: new URL('https://www.example.com'),
     };
