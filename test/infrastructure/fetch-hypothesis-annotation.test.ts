@@ -1,7 +1,6 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/lib/Option';
 import { pipe } from 'fp-ts/lib/function';
-import { Maybe } from 'true-myth';
 import createFetchHypothesisAnnotation, { GetJson } from '../../src/infrastructure/fetch-hypothesis-annotation';
 import { Review } from '../../src/infrastructure/review';
 import { toHtmlFragment } from '../../src/types/html-fragment';
@@ -24,7 +23,7 @@ describe('fetch-hypothesis-annotation', (): void => {
     const review = await fetchHypothesisAnnotation(hypothesisAnnotationId)();
 
     const expected: Review = {
-      publicationDate: Maybe.just(new Date(date)),
+      publicationDate: O.some(new Date(date)),
       fullText: pipe('<p>Very good</p>', toHtmlFragment, O.some),
       url: new URL('https://www.example.com'),
     };

@@ -4,7 +4,6 @@ import { dcterms, schema } from '@tpluscode/rdf-ns-builders';
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import { pipe } from 'fp-ts/lib/function';
-import { Maybe } from 'true-myth';
 import { FetchDataset } from './fetch-dataset';
 import { Logger } from './logger';
 import { Review } from './review';
@@ -27,7 +26,7 @@ export default (fetchDataset: FetchDataset, logger: Logger): FetchDataciteReview
       const fullText = graph.out(schema.description).value;
 
       const review: Review = {
-        publicationDate: Maybe.of(publicationDate).map((date:string) => new Date(date)),
+        publicationDate: pipe(publicationDate, O.fromNullable, O.map((date:string) => new Date(date))),
         fullText: pipe(
           fullText,
           O.fromNullable,
@@ -39,7 +38,7 @@ export default (fetchDataset: FetchDataset, logger: Logger): FetchDataciteReview
       return review;
     } catch (error: unknown) {
       return {
-        publicationDate: Maybe.nothing(),
+        publicationDate: O.none,
         fullText: O.none,
         url: new URL(url),
       };

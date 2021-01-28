@@ -1,10 +1,9 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/lib/Option';
-import { Maybe } from 'true-myth';
 import { HtmlFragment } from '../types/html-fragment';
 
 export interface Review {
-  publicationDate: Maybe<Date>;
+  publicationDate: O.Option<Date>;
   fullText: O.Option<HtmlFragment>;
   url: URL;
 }
