@@ -1,4 +1,5 @@
 import { URL } from 'url';
+import * as T from 'fp-ts/lib/Task';
 import { Logger } from './logger';
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
@@ -13,7 +14,7 @@ type BiorxivResponse = JsonCompatible<{
   }>
 }>;
 
-export type GetArticleVersionEventsFromBiorxiv = (doi: Doi, server: ArticleServer) => Promise<ReadonlyArray<{
+export type GetArticleVersionEventsFromBiorxiv = (doi: Doi, server: ArticleServer) => T.Task<ReadonlyArray<{
   source: URL;
   occurredAt: Date;
   version: number;
@@ -23,7 +24,7 @@ export const createGetArticleVersionEventsFromBiorxiv = (
   getJson: GetJson,
   logger: Logger,
 ): GetArticleVersionEventsFromBiorxiv => (
-  async (doi, server) => {
+  (doi, server) => async () => {
     const url = `https://api.biorxiv.org/details/${server}/${doi.value}`;
     logger('debug', `Fetching article versions from ${server}`, { url });
 

@@ -23,7 +23,7 @@ describe('get-article-version-events-from-biorxiv', () => {
 
         const getArticleVersionEventsFromBiorxiv = createGetArticleVersionEventsFromBiorxiv(getJson, dummyLogger);
 
-        const events = await getArticleVersionEventsFromBiorxiv(doi, 'biorxiv');
+        const events = await getArticleVersionEventsFromBiorxiv(doi, 'biorxiv')();
 
         expect(getJson).toHaveBeenCalledWith('https://api.biorxiv.org/details/biorxiv/10.1101/2020.09.02.278911');
         expect(events).toHaveLength(2);
@@ -58,7 +58,7 @@ describe('get-article-version-events-from-biorxiv', () => {
 
         const getArticleVersionEventsFromBiorxiv = createGetArticleVersionEventsFromBiorxiv(getJson, dummyLogger);
 
-        const events = await getArticleVersionEventsFromBiorxiv(doi, 'medrxiv');
+        const events = await getArticleVersionEventsFromBiorxiv(doi, 'medrxiv')();
 
         expect(getJson).toHaveBeenCalledWith('https://api.biorxiv.org/details/medrxiv/10.1101/2020.09.02.278911');
         expect(events).toHaveLength(2);

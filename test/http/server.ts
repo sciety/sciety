@@ -75,7 +75,7 @@ export const createTestServer = async (): Promise<TestServer> => {
       handle: '',
     }),
     follows: () => T.of(false),
-    findVersionsForArticleDoi: async () => [],
+    findVersionsForArticleDoi: () => T.of([]),
   };
 
   const router = createRouter(adapters);

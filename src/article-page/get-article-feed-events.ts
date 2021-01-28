@@ -16,7 +16,7 @@ type FindReviewsForArticleDoi = (articleVersionDoi: Doi) => T.Task<ReadonlyArray
   occurredAt: Date;
 }>>;
 
-export type FindVersionsForArticleDoi = (doi: Doi, server: ArticleServer) => Promise<ReadonlyArray<{
+export type FindVersionsForArticleDoi = (doi: Doi, server: ArticleServer) => T.Task<ReadonlyArray<{
   source: URL;
   occurredAt: Date;
   version: number;
@@ -39,7 +39,7 @@ export const getArticleFeedEvents = (
             type: 'review',
             ...review,
           })),
-          async () => (await findVersionsForArticleDoi(doi, server)).map((version) => ({
+          async () => (await findVersionsForArticleDoi(doi, server)()).map((version) => ({
             type: 'article-version',
             ...version,
           })),
