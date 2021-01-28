@@ -1,7 +1,7 @@
 import { URL } from 'url';
 import * as RA from 'fp-ts/lib/ReadonlyArray';
 import * as T from 'fp-ts/lib/Task';
-import { pipe } from 'fp-ts/lib/function';
+import { flow, pipe } from 'fp-ts/lib/function';
 import { Maybe } from 'true-myth';
 import { composeFeedEvents } from './compose-feed-events';
 import { getFeedEventsContent, GetReview } from './get-feed-events-content';
@@ -48,7 +48,10 @@ export const getArticleFeedEvents = (
           ),
         ),
         fetchReview,
-        async (editorialCommunityId) => ((await getEditorialCommunity(editorialCommunityId)()).unsafelyUnwrap()),
+        flow(
+          getEditorialCommunity,
+          T.map((editorialCommunityMaybe) => editorialCommunityMaybe.unsafelyUnwrap()),
+        ),
       ),
     )(doi, server)
   )

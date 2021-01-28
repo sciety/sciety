@@ -30,7 +30,7 @@ describe('get-feed-events-content', () => {
         fullText: pipe('some text', toHtmlFragment, O.some),
         url: new URL('http://example.com'),
       });
-      const getEditorialCommunity: GetEditorialCommunity = async () => ({
+      const getEditorialCommunity: GetEditorialCommunity = () => T.of({
         name: 'A Community',
         avatar: new URL('https://example.com/avatar'),
       });

@@ -31,7 +31,7 @@ export type GetReview = (id: ReviewId) => T.Task<{
   url: URL;
 }>;
 
-export type GetEditorialCommunity = (id: EditorialCommunityId) => Promise<{ name: string, avatar: URL }>;
+export type GetEditorialCommunity = (id: EditorialCommunityId) => T.Task<{ name: string, avatar: URL }>;
 
 export const getFeedEventsContent = (
   getFeedEvents: GetFeedEvents,
@@ -45,7 +45,7 @@ export const getFeedEventsContent = (
           return { ...feedEvent, server };
         }
         const [editorialCommunity, review] = await Promise.all([
-          getEditorialCommunity(feedEvent.editorialCommunityId),
+          getEditorialCommunity(feedEvent.editorialCommunityId)(),
           getReview(feedEvent.reviewId)(),
         ]);
 
