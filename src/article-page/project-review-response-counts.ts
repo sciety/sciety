@@ -14,6 +14,8 @@ import { ReviewId } from '../types/review-id';
 type GetEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 const onNewEvent = (acc: {[key:string]: { helpfulCount: number, notHelpfulCount: number}}, newEvent: DomainEvent) => {
+  // TODO: terrible cloning to avoid updating acc in place, use an immutable data structure instead
+  const newAcc = {...acc};
   if (
     newEvent.type === 'UserFoundReviewHelpful' 
     || newEvent.type === 'UserRevokedFindingReviewHelpful'
@@ -22,23 +24,23 @@ const onNewEvent = (acc: {[key:string]: { helpfulCount: number, notHelpfulCount:
   ) {
     const key = newEvent.reviewId.toString();
     if (!(key in acc)) {
-      acc[key] = { helpfulCount: 0, notHelpfulCount: 0};
+      newAcc[key] = { helpfulCount: 0, notHelpfulCount: 0};
     }
     // TODO: switch rather than if
     if (newEvent.type === 'UserFoundReviewHelpful') {
-      acc[key].helpfulCount = acc[key].helpfulCount + 1;
+      newAcc[key].helpfulCount = newAcc[key].helpfulCount + 1;
     }
     if (newEvent.type === 'UserRevokedFindingReviewHelpful') {
-      acc[key].helpfulCount = acc[key].helpfulCount - 1;
+      newAcc[key].helpfulCount = newAcc[key].helpfulCount - 1;
     }
     if (newEvent.type === 'UserFoundReviewNotHelpful') {
-      acc[key].notHelpfulCount = acc[key].notHelpfulCount + 1;
+      newAcc[key].notHelpfulCount = newAcc[key].notHelpfulCount + 1;
     }
     if (newEvent.type === 'UserRevokedFindingReviewNotHelpful') {
-      acc[key].notHelpfulCount = acc[key].notHelpfulCount - 1;
+      newAcc[key].notHelpfulCount = newAcc[key].notHelpfulCount - 1;
     }
   }
-  return acc;
+  return newAcc;
 };
 
 export const createProjectReviewResponseCounts = (getEvents: GetEvents): CountReviewResponses => {
