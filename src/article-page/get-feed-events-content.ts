@@ -22,9 +22,9 @@ type ArticleVersionEvent = {
   version: number;
 };
 
-type FeedEvent = ReviewEvent | ArticleVersionEvent;
+export type FeedEvent = ReviewEvent | ArticleVersionEvent;
 
-export type GetFeedEvents = (articleDoi: Doi) => Promise<ReadonlyArray<FeedEvent>>;
+export type GetFeedEvents = (articleDoi: Doi) => T.Task<ReadonlyArray<FeedEvent>>;
 
 export type GetReview = (id: ReviewId) => T.Task<{
   fullText: O.Option<HtmlFragment>;
@@ -39,7 +39,7 @@ export const getFeedEventsContent = (
   getEditorialCommunity: GetEditorialCommunity,
 ) : GetFeedItems => (
   async (doi, server) => {
-    const feedItems = (await getFeedEvents(doi)).map(
+    const feedItems = (await getFeedEvents(doi)()).map(
       async (feedEvent): Promise<FeedItem> => {
         if (feedEvent.type === 'article-version') {
           return { ...feedEvent, server };

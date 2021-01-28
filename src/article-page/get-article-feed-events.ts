@@ -1,5 +1,7 @@
 import { URL } from 'url';
+import * as RA from 'fp-ts/lib/ReadonlyArray';
 import * as T from 'fp-ts/lib/Task';
+import { pipe } from 'fp-ts/lib/function';
 import { Maybe } from 'true-myth';
 import { composeFeedEvents } from './compose-feed-events';
 import { getFeedEventsContent, GetReview } from './get-feed-events-content';
@@ -35,14 +37,15 @@ export const getArticleFeedEvents = (
     createHandleArticleVersionErrors(
       getFeedEventsContent(
         composeFeedEvents(
-          async () => (await findReviewsForArticleDoi(doi)()).map((review) => ({
-            type: 'review',
-            ...review,
-          })),
-          async () => (await findVersionsForArticleDoi(doi, server)()).map((version) => ({
-            type: 'article-version',
-            ...version,
-          })),
+          () => pipe(
+            doi,
+            findReviewsForArticleDoi,
+            T.map(RA.map((review) => ({ type: 'review', ...review }))),
+          ),
+          () => pipe(
+            findVersionsForArticleDoi(doi, server),
+            T.map(RA.map((version) => ({ type: 'article-version', ...version }))),
+          ),
         ),
         fetchReview,
         async (editorialCommunityId) => ((await getEditorialCommunity(editorialCommunityId)()).unsafelyUnwrap()),

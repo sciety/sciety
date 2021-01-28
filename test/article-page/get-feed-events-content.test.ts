@@ -12,7 +12,7 @@ import { toHtmlFragment } from '../../src/types/html-fragment';
 describe('get-feed-events-content', () => {
   describe('when there are reviews', () => {
     it('creates a view model for the reviews', async () => {
-      const getFeedEvents: GetFeedEvents = async () => [
+      const getFeedEvents: GetFeedEvents = () => T.of([
         {
           type: 'review',
           editorialCommunityId: new EditorialCommunityId('communityId'),
@@ -25,7 +25,7 @@ describe('get-feed-events-content', () => {
           reviewId: new Doi('10.1101/222222'),
           occurredAt: new Date(),
         },
-      ];
+      ]);
       const getReview: GetReview = () => T.of({
         fullText: pipe('some text', toHtmlFragment, O.some),
         url: new URL('http://example.com'),
