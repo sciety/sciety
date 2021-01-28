@@ -12,7 +12,7 @@ describe('render-feed', () => {
   describe('when there are no feed items', () => {
     it('displays nothing', async () => {
       const renderFeed = createRenderFeed(
-        async () => [],
+        () => T.of([]),
         shouldNotBeCalled,
         shouldNotBeCalled,
       );
@@ -26,7 +26,7 @@ describe('render-feed', () => {
   describe('when there are feed items', () => {
     it('returns a list', async () => {
       const renderFeed = createRenderFeed(
-        async () => [
+        () => T.of([
           {
             type: 'review',
             id: new Doi('10.1111/12345678'),
@@ -48,7 +48,7 @@ describe('render-feed', () => {
             type: 'article-version-error',
             server: 'biorxiv',
           },
-        ],
+        ]),
         () => T.of(toHtmlFragment('')),
         () => toHtmlFragment(''),
       );

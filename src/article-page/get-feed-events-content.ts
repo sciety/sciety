@@ -38,7 +38,7 @@ export const getFeedEventsContent = (
   getReview: GetReview,
   getEditorialCommunity: GetEditorialCommunity,
 ) : GetFeedItems => (
-  async (doi, server) => {
+  (doi, server) => async () => {
     const feedItems = (await getFeedEvents(doi)()).map(
       async (feedEvent): Promise<FeedItem> => {
         if (feedEvent.type === 'article-version') {

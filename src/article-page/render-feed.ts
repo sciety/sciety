@@ -1,5 +1,6 @@
 import * as E from 'fp-ts/lib/Either';
 import * as O from 'fp-ts/lib/Option';
+import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
 import {
   biorxivArticleVersionErrorFeedItem,
@@ -19,7 +20,7 @@ type ArticleVersionErrorFeedItem = { type: 'article-version-error', server: Arti
 
 export type FeedItem = ReviewFeedItem | ArticleVersionFeedItem | ArticleVersionErrorFeedItem;
 
-export type GetFeedItems = (doi: Doi, server: ArticleServer) => Promise<ReadonlyArray<FeedItem>>;
+export type GetFeedItems = (doi: Doi, server: ArticleServer) => T.Task<ReadonlyArray<FeedItem>>;
 
 export const createRenderFeed = (
   getFeedItems: GetFeedItems,
@@ -38,7 +39,7 @@ export const createRenderFeed = (
   };
 
   return (doi, server, userId) => async () => {
-    const feedItems = await getFeedItems(doi, server);
+    const feedItems = await getFeedItems(doi, server)();
 
     if (feedItems.length === 0) {
       return E.left('no-content');

@@ -1,5 +1,6 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/lib/Option';
+import * as T from 'fp-ts/lib/Task';
 import { pipe } from 'fp-ts/lib/function';
 import { createHandleArticleVersionErrors } from '../../src/article-page/handle-article-version-errors';
 import { FeedItem, GetFeedItems } from '../../src/article-page/render-feed';
@@ -20,9 +21,9 @@ describe('handle-article-version-errors', () => {
           server: 'biorxiv',
         },
       ];
-      const originalGetFeedItems: GetFeedItems = async () => inputItems;
+      const originalGetFeedItems: GetFeedItems = () => T.of(inputItems);
       const handleArticleVersionErrors = createHandleArticleVersionErrors(originalGetFeedItems);
-      const feedItems = await handleArticleVersionErrors(new Doi('10.1111/123456'), 'biorxiv');
+      const feedItems = await handleArticleVersionErrors(new Doi('10.1111/123456'), 'biorxiv')();
 
       expect(feedItems).toStrictEqual(inputItems);
     });
@@ -52,9 +53,9 @@ describe('handle-article-version-errors', () => {
           fullText: pipe('review-2', toHtmlFragment, sanitise, O.some),
         },
       ];
-      const originalGetFeedItems: GetFeedItems = async () => inputItems;
+      const originalGetFeedItems: GetFeedItems = () => T.of(inputItems);
       const handleArticleVersionErrors = createHandleArticleVersionErrors(originalGetFeedItems);
-      const feedItems = await handleArticleVersionErrors(new Doi('10.1101/123456'), 'biorxiv');
+      const feedItems = await handleArticleVersionErrors(new Doi('10.1101/123456'), 'biorxiv')();
 
       expect(feedItems).toHaveLength(3);
       expect(feedItems[2].type).toBe('article-version-error');

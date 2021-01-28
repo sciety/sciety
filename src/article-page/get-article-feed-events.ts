@@ -33,7 +33,7 @@ export const getArticleFeedEvents = (
     avatar: URL;
   }>>,
 ): GetFeedItems => (
-  async (doi, server) => (
+  (doi, server) => async () => (
     createHandleArticleVersionErrors(
       getFeedEventsContent(
         composeFeedEvents(
@@ -53,6 +53,6 @@ export const getArticleFeedEvents = (
           T.map((editorialCommunityMaybe) => editorialCommunityMaybe.unsafelyUnwrap()),
         ),
       ),
-    )(doi, server)
+    )(doi, server)()
   )
 );

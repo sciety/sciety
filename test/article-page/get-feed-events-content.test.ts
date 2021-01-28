@@ -34,7 +34,7 @@ describe('get-feed-events-content', () => {
         name: 'A Community',
         avatar: new URL('https://example.com/avatar'),
       });
-      const viewModel = await getFeedEventsContent(getFeedEvents, getReview, getEditorialCommunity)(new Doi('10.1101/123456'), 'biorxiv');
+      const viewModel = await getFeedEventsContent(getFeedEvents, getReview, getEditorialCommunity)(new Doi('10.1101/123456'), 'biorxiv')();
 
       expect(viewModel).toHaveLength(2);
     });
