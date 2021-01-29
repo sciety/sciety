@@ -29,8 +29,8 @@ type ArticleDetails = {
 
 type GetArticleDetails = (doi: Doi) => TE.TaskEither<'not-found' | 'unavailable', ArticleDetails>;
 
-type RenderAbstract = (doi: Doi) => TE.TaskEither<'not-found' | 'unavailable', string>;
-type RenderFeed = (doi: Doi, server: ArticleServer, userId: O.Option<UserId>) => TE.TaskEither<'no-content', string>;
+type RenderAbstract = (doi: Doi) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>;
+type RenderFeed = (doi: Doi, server: ArticleServer, userId: O.Option<UserId>) => TE.TaskEither<'no-content', HtmlFragment>;
 export type RenderPage = (doi: Doi, userId: O.Option<UserId>) => TE.TaskEither<RenderPageError, Page>;
 
 export const createRenderPage = (
