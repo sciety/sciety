@@ -20,9 +20,6 @@ export const createGetFollowedEditorialCommunitiesFromIds = (
   pipe(
     userId,
     getFollowedEditorialCommunityIds,
-    T.chain(T.traverseArray((editorialCommunityId) => pipe(
-      editorialCommunityId,
-      getEditorialCommunity,
-    ))),
+    T.chain(T.traverseArray(getEditorialCommunity)),
   )
 );
