@@ -107,7 +107,9 @@ export const createRenderPage = (
   return pipe(
     components,
     sequenceS(TE.taskEither),
-    TE.map(render),
-    TE.mapLeft(toErrorPage),
+    TE.bimap(
+      toErrorPage,
+      render,
+    ),
   );
 };

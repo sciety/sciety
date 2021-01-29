@@ -9,7 +9,7 @@ module.exports = {
     'plugin:import/typescript',
     'plugin:jest/all',
     'plugin:jest-formatting/strict',
-    'plugin:fp-ts/recommended',
+    'plugin:fp-ts/all',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -54,6 +54,7 @@ module.exports = {
     '@typescript-eslint/switch-exhaustiveness-check': 'error',
     'consistent-return': 'off',
     'default-case': 'off',
+    'fp-ts/no-module-imports': 'off',
     'import/order': ['error', {
       alphabetize: {
         order: 'asc',

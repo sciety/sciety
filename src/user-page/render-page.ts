@@ -53,17 +53,19 @@ export const createRenderPage = (
     savedArticlesList: renderSavedArticles(userId, viewingUserId),
   },
   sequenceS(TE.taskEither),
-  TE.map(template),
-  TE.mapLeft((e) => {
-    if (e === 'not-found') {
+  TE.bimap(
+    (e) => {
+      if (e === 'not-found') {
+        return {
+          type: 'not-found',
+          message: toHtmlFragment('User not found'),
+        };
+      }
       return {
-        type: 'not-found',
-        message: toHtmlFragment('User not found'),
+        type: 'unavailable',
+        message: toHtmlFragment('User information unavailable'),
       };
-    }
-    return {
-      type: 'unavailable',
-      message: toHtmlFragment('User information unavailable'),
-    };
-  }),
+    },
+    template,
+  ),
 );

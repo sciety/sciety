@@ -12,26 +12,26 @@ export type RenderPage = (query: string) => TE.TaskEither<RenderPageError, PageR
 
 export default (renderSearchResults: RenderSearchResults): RenderPage => flow(
   renderSearchResults,
-  TE.mapLeft(
+  TE.bimap(
     (error) => ({
       type: error,
       message: toHtmlFragment('We\'re having trouble searching for you, please come back later.'),
     }),
+    (searchResults) => ({
+      title: 'Search results',
+      content: toHtmlFragment(`
+        <div class="sciety-grid sciety-grid--simple">
+
+          <header class="page-header">
+            <h1>Search results</h1>
+          </header>
+
+          <section class="ui basic vertical segment">
+            ${searchResults}
+          </section>
+
+        </div>
+      `),
+    }),
   ),
-  TE.map((searchResults) => ({
-    title: 'Search results',
-    content: toHtmlFragment(`
-      <div class="sciety-grid sciety-grid--simple">
-
-        <header class="page-header">
-          <h1>Search results</h1>
-        </header>
-
-        <section class="ui basic vertical segment">
-          ${searchResults}
-        </section>
-
-      </div>
-    `),
-  })),
 );
