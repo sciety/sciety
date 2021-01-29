@@ -13,11 +13,6 @@ export type EditorialCommunityEndorsedArticleEvent = Readonly<{
   articleId: Doi,
 }>;
 
-export const isEditorialCommunityEndorsedArticleEvent = (event: DomainEvent):
-event is EditorialCommunityEndorsedArticleEvent => (
-  event.type === 'EditorialCommunityEndorsedArticle'
-);
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export type EditorialCommunityReviewedArticleEvent = Readonly<{

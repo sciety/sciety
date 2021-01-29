@@ -20,7 +20,6 @@ import { createGetTwitterResponse } from './get-twitter-response';
 import { createGetTwitterUserDetails } from './get-twitter-user-details';
 import { createGetXmlFromCrossrefRestApi } from './get-xml-from-crossref-rest-api';
 import createEditorialCommunityRepository from './in-memory-editorial-communities';
-import createEndorsementsRepository from './in-memory-endorsements-repository';
 import {
   createJsonSerializer, createRTracerLogger, createStreamLogger, Logger,
 } from './logger';
@@ -28,9 +27,8 @@ import { responseCache } from './response-cache';
 import { createReviewProjections } from './review-projections';
 import { createSearchEuropePmc } from './search-europe-pmc';
 import bootstrapEditorialCommunities from '../data/bootstrap-editorial-communities';
-import { DomainEvent, isEditorialCommunityEndorsedArticleEvent, isEditorialCommunityReviewedArticleEvent } from '../types/domain-events';
+import { isEditorialCommunityReviewedArticleEvent } from '../types/domain-events';
 import { EditorialCommunityRepository } from '../types/editorial-community-repository';
-import { EndorsementsRepository } from '../types/endorsements-repository';
 import { Json } from '../types/json';
 
 const populateEditorialCommunities = (logger: Logger): EditorialCommunityRepository => {
@@ -40,12 +38,6 @@ const populateEditorialCommunities = (logger: Logger): EditorialCommunityReposit
   }
   return repository;
 };
-
-const populateEndorsementsRepository = (
-  events: ReadonlyArray<DomainEvent>,
-): EndorsementsRepository => (
-  createEndorsementsRepository(events.filter(isEditorialCommunityEndorsedArticleEvent))
-);
 
 export const createInfrastructure = async (): Promise<Adapters> => {
   const logger = createRTracerLogger(
@@ -106,7 +98,6 @@ export const createInfrastructure = async (): Promise<Adapters> => {
     editorialCommunities,
     getEditorialCommunity: editorialCommunities.lookup,
     getAllEditorialCommunities: editorialCommunities.all,
-    endorsements: populateEndorsementsRepository(events),
     ...reviewProjections,
     getAllEvents,
     logger,

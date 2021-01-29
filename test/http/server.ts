@@ -16,7 +16,6 @@ import { FetchDataset } from '../../src/infrastructure/fetch-dataset';
 import createFetchHypothesisAnnotation from '../../src/infrastructure/fetch-hypothesis-annotation';
 import createFetchReview from '../../src/infrastructure/fetch-review';
 import createEditorialCommunityRepository from '../../src/infrastructure/in-memory-editorial-communities';
-import createEndorsementsRepository from '../../src/infrastructure/in-memory-endorsements-repository';
 import { createReviewProjections } from '../../src/infrastructure/review-projections';
 import { EditorialCommunityRepository } from '../../src/types/editorial-community-repository';
 import { FollowList } from '../../src/types/follow-list';
@@ -63,7 +62,6 @@ export const createTestServer = async (): Promise<TestServer> => {
     editorialCommunities,
     getEditorialCommunity: editorialCommunities.lookup,
     getAllEditorialCommunities: async () => [],
-    endorsements: createEndorsementsRepository([]),
     ...reviewProjections,
     getAllEvents: T.of([]),
     commitEvents: () => T.of(undefined),

@@ -15,7 +15,6 @@ import { SearchEuropePmc } from './search-europe-pmc';
 import { DomainEvent } from '../types/domain-events';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { EditorialCommunityRepository } from '../types/editorial-community-repository';
-import { EndorsementsRepository } from '../types/endorsements-repository';
 
 type EditorialCommunity = {
   name: string,
@@ -36,7 +35,6 @@ export type Adapters = {
   editorialCommunities: EditorialCommunityRepository,
   getEditorialCommunity: GetEditorialCommunity,
   getAllEditorialCommunities: GetAllEditorialCommunities,
-  endorsements: EndorsementsRepository,
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
   findVersionsForArticleDoi: GetArticleVersionEventsFromBiorxiv,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
