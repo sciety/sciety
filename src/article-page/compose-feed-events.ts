@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/lib/pipeable';
 import { FeedEvent, GetFeedEvents } from './get-feed-events-content';
 
 const byDate = contramap<Date, FeedEvent>((event) => event.occurredAt)(ordDate);
-const byDateDescending = getDualOrd(byDate)
+const byDateDescending = getDualOrd(byDate);
 
 export const composeFeedEvents = (
   ...composedGetFeedEvents: Array<GetFeedEvents>
