@@ -2,8 +2,8 @@ import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { pipe } from 'fp-ts/lib/function';
-import { Maybe, Result } from 'true-myth';
-import { constructFeedItem } from './construct-feed-item';
+import { Maybe } from 'true-myth';
+import { constructFeedItem, GetArticle } from './construct-feed-item';
 import { getDescription } from './get-description';
 import createGetMostRecentEvents, { GetAllEvents } from './get-most-recent-events';
 import createProjectFollowerIds from './project-follower-ids';
@@ -14,27 +14,17 @@ import createRenderFollowers from './render-followers';
 import createRenderPage, { RenderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
 import { renderSummaryFeedList } from '../shared-components/render-summary-feed-list';
-import { Doi } from '../types/doi';
 import { EditorialCommunity } from '../types/editorial-community';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { toHtmlFragment } from '../types/html-fragment';
-import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { User } from '../types/user';
 
 type FetchStaticFile = (filename: string) => T.Task<string>;
 
 type FetchEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.Task<Maybe<EditorialCommunity>>;
 
-type FetchExternalArticle = (doi: Doi) => T.Task<Result<{
-  abstract: SanitisedHtmlFragment;
-  authors: Array<string>;
-  doi: Doi;
-  title: SanitisedHtmlFragment;
-  publicationDate: Date;
-}, 'not-found' | 'unavailable'>>;
-
 interface Ports {
-  fetchArticle: FetchExternalArticle;
+  fetchArticle: GetArticle;
   fetchStaticFile: FetchStaticFile;
   getEditorialCommunity: FetchEditorialCommunity;
   getAllEvents: GetAllEvents;
