@@ -8,6 +8,7 @@ import { UserId } from '../types/user-id';
 export type GetFollowedEditorialCommunityIds = (userId: UserId) => T.Task<ReadonlyArray<EditorialCommunityId>>;
 
 export type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.Task<{
+  id: EditorialCommunityId,
   name: string,
   avatar: URL,
 }>;
@@ -22,10 +23,6 @@ export const createGetFollowedEditorialCommunitiesFromIds = (
     T.chain(T.traverseArray((editorialCommunityId) => pipe(
       editorialCommunityId,
       getEditorialCommunity,
-      T.map((det) => ({
-        id: editorialCommunityId,
-        ...det,
-      })),
     ))),
   )
 );

@@ -14,6 +14,7 @@ describe('get-followed-editorial-communities-from-ids adapter', () => {
       ])
     );
     const getEditorialCommunity: GetEditorialCommunity = () => T.of({
+      id: new EditorialCommunityId('my-community'),
       name: 'Name',
       avatar: new URL('http://example.com/avatar.png'),
     });

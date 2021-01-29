@@ -22,6 +22,7 @@ import { User } from '../types/user';
 import { toUserId, UserId } from '../types/user-id';
 
 type FetchEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.Task<Maybe<{
+  id: EditorialCommunityId,
   name: string;
   avatar: URL;
 }>>;
