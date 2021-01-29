@@ -24,7 +24,7 @@ type ArticleVersionEvent = {
 
 export type FeedEvent = ReviewEvent | ArticleVersionEvent;
 
-export type GetFeedEvents = (articleDoi: Doi) => T.Task<ReadonlyArray<FeedEvent>>;
+export type Feed = (articleDoi: Doi) => T.Task<ReadonlyArray<FeedEvent>>;
 
 export type GetReview = (id: ReviewId) => T.Task<{
   fullText: O.Option<HtmlFragment>;
@@ -34,7 +34,7 @@ export type GetReview = (id: ReviewId) => T.Task<{
 export type GetEditorialCommunity = (id: EditorialCommunityId) => T.Task<{ name: string, avatar: URL }>;
 
 export const getFeedEventsContent = (
-  getFeedEvents: GetFeedEvents,
+  getFeedEvents: Feed,
   getReview: GetReview,
   getEditorialCommunity: GetEditorialCommunity,
 ) : GetFeedItems => (

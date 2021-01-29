@@ -3,9 +3,9 @@ import * as RA from 'fp-ts/lib/ReadonlyArray';
 import * as T from 'fp-ts/lib/Task';
 import { flow, pipe } from 'fp-ts/lib/function';
 import { Maybe } from 'true-myth';
-import { composeFeedEvents } from './compose-feed-events';
 import { getFeedEventsContent, GetReview } from './get-feed-events-content';
 import { createHandleArticleVersionErrors } from './handle-article-version-errors';
+import { mergeFeeds } from './merge-feeds';
 import { GetFeedItems } from './render-feed';
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
@@ -36,7 +36,7 @@ export const getArticleFeedEvents = (
   (doi, server) => async () => (
     createHandleArticleVersionErrors(
       getFeedEventsContent(
-        composeFeedEvents(
+        mergeFeeds([
           () => pipe(
             doi,
             findReviewsForArticleDoi,
@@ -46,7 +46,7 @@ export const getArticleFeedEvents = (
             findVersionsForArticleDoi(doi, server),
             T.map(RA.map((version) => ({ type: 'article-version', ...version }))),
           ),
-        ),
+        ]),
         fetchReview,
         flow(
           getEditorialCommunity,

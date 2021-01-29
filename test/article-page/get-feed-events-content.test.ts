@@ -3,7 +3,7 @@ import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import { pipe } from 'fp-ts/lib/function';
 import {
-  GetEditorialCommunity, GetFeedEvents, getFeedEventsContent, GetReview,
+  Feed, GetEditorialCommunity, getFeedEventsContent, GetReview,
 } from '../../src/article-page/get-feed-events-content';
 import { Doi } from '../../src/types/doi';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
@@ -12,7 +12,7 @@ import { toHtmlFragment } from '../../src/types/html-fragment';
 describe('get-feed-events-content', () => {
   describe('when there are reviews', () => {
     it('creates a view model for the reviews', async () => {
-      const getFeedEvents: GetFeedEvents = () => T.of([
+      const getFeedEvents: Feed = () => T.of([
         {
           type: 'review',
           editorialCommunityId: new EditorialCommunityId('communityId'),

@@ -1,13 +1,13 @@
 import { URL } from 'url';
 import * as T from 'fp-ts/lib/Task';
-import { composeFeedEvents } from '../../src/article-page/compose-feed-events';
-import { GetFeedEvents } from '../../src/article-page/get-feed-events-content';
+import { Feed } from '../../src/article-page/get-feed-events-content';
+import { mergeFeeds } from '../../src/article-page/merge-feeds';
 import { Doi } from '../../src/types/doi';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 
 describe('compose-feed-events', () => {
   it('merges feed event lists', async () => {
-    const getFeedEvents1: GetFeedEvents = () => T.of([
+    const feed1: Feed = () => T.of([
       {
         type: 'review',
         editorialCommunityId: new EditorialCommunityId('communityId'),
@@ -15,7 +15,7 @@ describe('compose-feed-events', () => {
         occurredAt: new Date('2020-09-10'),
       },
     ]);
-    const getFeedEvents2: GetFeedEvents = () => T.of([
+    const feed2: Feed = () => T.of([
       {
         type: 'article-version',
         source: new URL('https://www.biorxiv.org/content/10.1101/2020.09.02.278911v2'),
@@ -30,10 +30,7 @@ describe('compose-feed-events', () => {
       },
     ]);
 
-    const composite = composeFeedEvents(
-      getFeedEvents1,
-      getFeedEvents2,
-    );
+    const composite = mergeFeeds([feed1, feed2]);
 
     const feedEvents = await composite(new Doi('10.1101/2020.09.02.278911'))();
 
