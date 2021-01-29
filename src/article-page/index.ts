@@ -31,15 +31,15 @@ import { User } from '../types/user';
 import { UserId } from '../types/user-id';
 
 type FindReviewsForArticleDoi = (articleVersionDoi: Doi) => T.Task<ReadonlyArray<{
-  reviewId: ReviewId;
-  editorialCommunityId: EditorialCommunityId;
-  occurredAt: Date;
+  reviewId: ReviewId,
+  editorialCommunityId: EditorialCommunityId,
+  occurredAt: Date,
 }>>;
 
 type ArticleDetails = {
-  title: SanitisedHtmlFragment;
+  title: SanitisedHtmlFragment,
   abstract: SanitisedHtmlFragment, // TODO Use HtmlFragment as the HTML is stripped
-  authors: Array<string>;
+  authors: Array<string>,
   server: ArticleServer,
 };
 
@@ -47,21 +47,21 @@ type GetArticleDetails = (doi: Doi) => T.Task<Result<ArticleDetails, 'not-found'
 
 type GetEvents = T.Task<ReadonlyArray<DomainEvent>>;
 interface Ports {
-  fetchArticle: GetArticleDetails;
-  fetchReview: GetReview;
+  fetchArticle: GetArticleDetails,
+  fetchReview: GetReview,
   getEditorialCommunity: (editorialCommunityId: EditorialCommunityId) => T.Task<Maybe<{
-    name: string;
-    avatar: URL;
+    name: string,
+    avatar: URL,
   }>>,
-  findReviewsForArticleDoi: FindReviewsForArticleDoi;
-  findVersionsForArticleDoi: FindVersionsForArticleDoi;
-  getAllEvents: GetEvents;
+  findReviewsForArticleDoi: FindReviewsForArticleDoi,
+  findVersionsForArticleDoi: FindVersionsForArticleDoi,
+  getAllEvents: GetEvents,
 }
 
 export interface Params {
-  doi?: string;
-  flavour?: string;
-  user: O.Option<User>;
+  doi?: string,
+  flavour?: string,
+  user: O.Option<User>,
 }
 
 const getUserId = (user: O.Option<User>): O.Option<UserId> => pipe(

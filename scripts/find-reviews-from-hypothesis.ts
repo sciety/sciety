@@ -9,7 +9,7 @@ type HypothesisResponse = JsonCompatible<{
     id: string,
     created: string,
     uri: string,
-  }>
+  }>,
 }>;
 
 void (async (): Promise<void> => {

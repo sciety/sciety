@@ -15,11 +15,11 @@ export type GetJson = (uri: string) => Promise<Json>;
 export type FetchHypothesisAnnotation = (id: HypothesisAnnotationId) => T.Task<Review>;
 
 type HypothesisResponse = JsonCompatible<{
-  created: string;
-  text: string;
+  created: string,
+  text: string,
   links: {
-    incontext: string;
-  };
+    incontext: string,
+  },
 }>;
 
 export default (getJson: GetJson, logger: Logger): FetchHypothesisAnnotation => {

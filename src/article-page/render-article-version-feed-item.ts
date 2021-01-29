@@ -4,11 +4,11 @@ import { ArticleServer } from '../types/article-server';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 export type ArticleVersionFeedItem = {
-  type: 'article-version';
-  source: URL;
-  occurredAt: Date;
-  version: number;
-  server: ArticleServer;
+  type: 'article-version',
+  source: URL,
+  occurredAt: Date,
+  version: number,
+  server: ArticleServer,
 };
 
 export type RenderArticleVersionFeedItem = (feedItem: ArticleVersionFeedItem) => HtmlFragment;

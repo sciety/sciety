@@ -9,17 +9,17 @@ import { EditorialCommunityId } from '../types/editorial-community-id';
 import { ReviewId } from '../types/review-id';
 
 type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
-  reviewId: ReviewId;
-  editorialCommunityId: EditorialCommunityId;
+  reviewId: ReviewId,
+  editorialCommunityId: EditorialCommunityId,
 }>>;
 
 interface Ports {
   searchEuropePmc: FindArticles,
-  findReviewsForArticleDoi: FindReviewsForArticleDoi;
+  findReviewsForArticleDoi: FindReviewsForArticleDoi,
 }
 
 interface Params {
-  query?: string;
+  query?: string,
 }
 
 type ArticleSearchPage = (params: Params) => ReturnType<RenderPage>;

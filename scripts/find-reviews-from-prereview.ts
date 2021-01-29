@@ -3,7 +3,7 @@ import { Maybe } from 'true-myth';
 
 type PrereviewSearchResponse = {
   results: ReadonlyArray<PrereviewSearchResult>,
-  totalpages: number;
+  totalpages: number,
 };
 
 type PrereviewSearchResult = {
@@ -13,12 +13,12 @@ type PrereviewSearchResult = {
 };
 
 type PrereviewPreprint = {
-  prereviews: Array<Prereview>;
+  prereviews: Array<Prereview>,
 };
 
 type Prereview = {
-  date_created: string;
-  doi: string|null;
+  date_created: string,
+  doi: string|null,
 };
 
 const biorxivPrefix = /^doi\/10\.1101\//;

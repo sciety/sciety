@@ -3,8 +3,8 @@ import { CommitEvents, createFollowCommand, GetFollowList } from './follow-comma
 import { EditorialCommunityId } from '../types/editorial-community-id';
 
 interface Ports {
-  commitEvents: CommitEvents;
-  getFollowList: GetFollowList;
+  commitEvents: CommitEvents,
+  getFollowList: GetFollowList,
 }
 
 export const finishFollowCommand = (ports: Ports): Middleware => {

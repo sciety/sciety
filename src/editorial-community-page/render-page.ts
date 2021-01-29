@@ -16,7 +16,7 @@ export type RenderPage = (
   userId: O.Option<UserId>
 ) => TE.TaskEither<RenderPageError, {
   title: string,
-  content: HtmlFragment
+  content: HtmlFragment,
 }>;
 
 type RenderPageHeader = (editorialCommunity: EditorialCommunity) => HtmlFragment;

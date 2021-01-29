@@ -7,10 +7,10 @@ import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 export interface SearchResult {
-  doi: Doi;
-  title: string;
-  authors: string;
-  postedDate: Date;
+  doi: Doi,
+  title: string,
+  authors: string,
+  postedDate: Date,
 }
 
 export type GetReviewCount = (doi: Doi) => TE.TaskEither<unknown, number>;

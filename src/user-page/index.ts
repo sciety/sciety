@@ -23,8 +23,8 @@ import { toUserId, UserId } from '../types/user-id';
 
 type FetchEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.Task<Maybe<{
   id: EditorialCommunityId,
-  name: string;
-  avatar: URL;
+  name: string,
+  avatar: URL,
 }>>;
 
 type GetUserDetails = (userId: UserId) => TE.TaskEither<'not-found' | 'unavailable', UserDetails>;
@@ -34,12 +34,12 @@ type Ports = {
   getAllEvents: GetAllEvents,
   follows: Follows,
   getUserDetails: GetUserDetails,
-  fetchArticle: (doi: Doi) => T.Task<Result<{title: HtmlFragment;}, unknown>>,
+  fetchArticle: (doi: Doi) => T.Task<Result<{title: HtmlFragment}, unknown>>,
 };
 
 interface Params {
-  id?: string;
-  user: O.Option<User>;
+  id?: string,
+  user: O.Option<User>,
 }
 
 type UserPage = (params: Params) => ReturnType<RenderPage>;

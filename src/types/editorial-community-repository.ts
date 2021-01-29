@@ -4,7 +4,7 @@ import { EditorialCommunity } from './editorial-community';
 import { EditorialCommunityId } from './editorial-community-id';
 
 export interface EditorialCommunityRepository {
-  add(editorialCommunity: EditorialCommunity): Promise<void>;
-  all: T.Task<Array<EditorialCommunity>>;
-  lookup(id: EditorialCommunityId): T.Task<Maybe<EditorialCommunity>>;
+  add(editorialCommunity: EditorialCommunity): Promise<void>,
+  all: T.Task<Array<EditorialCommunity>>,
+  lookup(id: EditorialCommunityId): T.Task<Maybe<EditorialCommunity>>,
 }

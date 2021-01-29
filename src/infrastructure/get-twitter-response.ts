@@ -4,8 +4,8 @@ import { Logger } from './logger';
 export type TwitterResponse = {
   data?: {
     name: string,
-    profile_image_url: string;
-    username: string;
+    profile_image_url: string,
+    username: string,
   },
   errors?: unknown,
 };

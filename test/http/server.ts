@@ -26,8 +26,8 @@ import { shouldNotBeCalled } from '../should-not-be-called';
 
 interface TestServer {
   adapters: Adapters,
-  server: Server;
-  editorialCommunities: EditorialCommunityRepository;
+  server: Server,
+  editorialCommunities: EditorialCommunityRepository,
 }
 
 export const createTestServer = async (): Promise<TestServer> => {

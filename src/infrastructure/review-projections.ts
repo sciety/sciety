@@ -5,13 +5,13 @@ import { EditorialCommunityId } from '../types/editorial-community-id';
 import { ReviewId } from '../types/review-id';
 
 export type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
-  reviewId: ReviewId;
-  editorialCommunityId: EditorialCommunityId;
-  occurredAt: Date;
+  reviewId: ReviewId,
+  editorialCommunityId: EditorialCommunityId,
+  occurredAt: Date,
 }>>;
 
 interface ReviewProjections {
-  findReviewsForArticleDoi: FindReviewsForArticleDoi;
+  findReviewsForArticleDoi: FindReviewsForArticleDoi,
 }
 
 export const createReviewProjections = (

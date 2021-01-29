@@ -6,7 +6,7 @@ import { HtmlFragment } from '../types/html-fragment';
 export type FetchStaticFile = (filename: string) => T.Task<string>;
 
 interface Ports {
-  fetchStaticFile: FetchStaticFile;
+  fetchStaticFile: FetchStaticFile,
 }
 
 type AboutPage = () => T.Task<{

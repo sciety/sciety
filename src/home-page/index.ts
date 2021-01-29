@@ -20,13 +20,13 @@ import { User } from '../types/user';
 import { UserId } from '../types/user-id';
 
 type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.Task<Maybe<{
-  name: string;
-  avatar: URL;
+  name: string,
+  avatar: URL,
 }>>;
 
 interface Ports {
-  fetchArticle: GetArticle;
-  getAllEditorialCommunities: GetAllEditorialCommunities;
+  fetchArticle: GetArticle,
+  getAllEditorialCommunities: GetAllEditorialCommunities,
   getEditorialCommunity: GetEditorialCommunity,
   getAllEvents: GetAllEvents,
   follows: (userId: UserId, editorialCommunityId: EditorialCommunityId) => T.Task<boolean>,

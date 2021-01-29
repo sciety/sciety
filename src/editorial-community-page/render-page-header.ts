@@ -5,8 +5,8 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 type RenderPageHeader = (editorialCommunity: Community) => HtmlFragment;
 
 type Community = {
-  name: string;
-  avatar: URL;
+  name: string,
+  avatar: URL,
 };
 
 const render = (editorialCommunity: Community): string => `

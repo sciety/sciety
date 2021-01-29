@@ -11,9 +11,9 @@ import { UserId } from '../types/user-id';
 type RenderEditorialCommunities = (userId: O.Option<UserId>) => T.Task<HtmlFragment>;
 
 export type GetAllEditorialCommunities = T.Task<Array<{
-  avatar: URL;
-  id: EditorialCommunityId;
-  name: string;
+  avatar: URL,
+  id: EditorialCommunityId,
+  name: string,
 }>>;
 
 const render = (links: ReadonlyArray<HtmlFragment>): string => `

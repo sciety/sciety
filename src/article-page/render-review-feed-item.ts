@@ -14,14 +14,14 @@ import { UserId } from '../types/user-id';
 export type RenderReviewFeedItem = (review: ReviewFeedItem, userId: O.Option<UserId>) => T.Task<HtmlFragment>;
 
 export type ReviewFeedItem = {
-  type: 'review';
-  id: ReviewId;
-  source: URL;
-  occurredAt: Date;
-  editorialCommunityId: EditorialCommunityId;
-  editorialCommunityName: string;
-  editorialCommunityAvatar: URL;
-  fullText: O.Option<SanitisedHtmlFragment>;
+  type: 'review',
+  id: ReviewId,
+  source: URL,
+  occurredAt: Date,
+  editorialCommunityId: EditorialCommunityId,
+  editorialCommunityName: string,
+  editorialCommunityAvatar: URL,
+  fullText: O.Option<SanitisedHtmlFragment>,
 };
 
 const avatar = (review: ReviewFeedItem): HtmlFragment => toHtmlFragment(`

@@ -18,7 +18,7 @@ type Page = {
   openGraph: {
     title: string,
     description: string,
-  }
+  },
 };
 
 type ArticleDetails = {

@@ -7,7 +7,7 @@ import { UserId } from '../types/user-id';
 
 type Page = {
   title: string,
-  content: HtmlFragment
+  content: HtmlFragment,
 };
 
 export type RenderPage = (userId: O.Option<UserId>) => T.Task<Page>;

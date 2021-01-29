@@ -7,10 +7,10 @@ import { UserId } from './user-id';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export type EditorialCommunityEndorsedArticleEvent = Readonly<{
-  type: 'EditorialCommunityEndorsedArticle';
-  date: Date;
-  editorialCommunityId: EditorialCommunityId;
-  articleId: Doi;
+  type: 'EditorialCommunityEndorsedArticle',
+  date: Date,
+  editorialCommunityId: EditorialCommunityId,
+  articleId: Doi,
 }>;
 
 export const isEditorialCommunityEndorsedArticleEvent = (event: DomainEvent):
@@ -21,11 +21,11 @@ event is EditorialCommunityEndorsedArticleEvent => (
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export type EditorialCommunityReviewedArticleEvent = Readonly<{
-  type: 'EditorialCommunityReviewedArticle';
-  date: Date;
-  editorialCommunityId: EditorialCommunityId;
-  articleId: Doi;
-  reviewId: ReviewId;
+  type: 'EditorialCommunityReviewedArticle',
+  date: Date,
+  editorialCommunityId: EditorialCommunityId,
+  articleId: Doi,
+  reviewId: ReviewId,
 }>;
 
 export const isEditorialCommunityReviewedArticleEvent = (event: DomainEvent):
@@ -48,19 +48,19 @@ export const editorialCommunityReviewedArticle = (
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 type EditorialCommunityJoinedEvent = Readonly<{
-  type: 'EditorialCommunityJoined';
-  date: Date;
-  editorialCommunityId: EditorialCommunityId;
+  type: 'EditorialCommunityJoined',
+  date: Date,
+  editorialCommunityId: EditorialCommunityId,
 }>;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export type UserFollowedEditorialCommunityEvent = Readonly<{
   id: EventId,
-  type: 'UserFollowedEditorialCommunity';
-  date: Date;
-  userId: UserId;
-  editorialCommunityId: EditorialCommunityId;
+  type: 'UserFollowedEditorialCommunity',
+  date: Date,
+  userId: UserId,
+  editorialCommunityId: EditorialCommunityId,
 }>;
 
 export const userFollowedEditorialCommunity = (
@@ -83,10 +83,10 @@ export const isUserFollowedEditorialCommunityEvent = (event: DomainEvent):
 
 export type UserUnfollowedEditorialCommunityEvent = Readonly<{
   id: EventId,
-  type: 'UserUnfollowedEditorialCommunity';
-  date: Date;
-  userId: UserId;
-  editorialCommunityId: EditorialCommunityId;
+  type: 'UserUnfollowedEditorialCommunity',
+  date: Date,
+  userId: UserId,
+  editorialCommunityId: EditorialCommunityId,
 }>;
 
 export const userUnfollowedEditorialCommunity = (
@@ -109,10 +109,10 @@ export const isUserUnfollowedEditorialCommunityEvent = (event: DomainEvent):
 
 export type UserFoundReviewHelpfulEvent = Readonly<{
   id: EventId,
-  type: 'UserFoundReviewHelpful';
-  date: Date;
-  userId: UserId;
-  reviewId: ReviewId;
+  type: 'UserFoundReviewHelpful',
+  date: Date,
+  userId: UserId,
+  reviewId: ReviewId,
 }>;
 
 export const userFoundReviewHelpful = (
@@ -130,10 +130,10 @@ export const userFoundReviewHelpful = (
 
 export type UserRevokedFindingReviewHelpfulEvent = Readonly<{
   id: EventId,
-  type: 'UserRevokedFindingReviewHelpful';
-  date: Date;
-  userId: UserId;
-  reviewId: ReviewId;
+  type: 'UserRevokedFindingReviewHelpful',
+  date: Date,
+  userId: UserId,
+  reviewId: ReviewId,
 }>;
 
 export const userRevokedFindingReviewHelpful = (
@@ -151,10 +151,10 @@ export const userRevokedFindingReviewHelpful = (
 
 export type UserFoundReviewNotHelpfulEvent = Readonly<{
   id: EventId,
-  type: 'UserFoundReviewNotHelpful';
-  date: Date;
-  userId: UserId;
-  reviewId: ReviewId;
+  type: 'UserFoundReviewNotHelpful',
+  date: Date,
+  userId: UserId,
+  reviewId: ReviewId,
 }>;
 
 export const userFoundReviewNotHelpful = (
@@ -172,10 +172,10 @@ export const userFoundReviewNotHelpful = (
 
 export type UserRevokedFindingReviewNotHelpfulEvent = Readonly<{
   id: EventId,
-  type: 'UserRevokedFindingReviewNotHelpful';
-  date: Date;
-  userId: UserId;
-  reviewId: ReviewId;
+  type: 'UserRevokedFindingReviewNotHelpful',
+  date: Date,
+  userId: UserId,
+  reviewId: ReviewId,
 }>;
 
 export const userRevokedFindingReviewNotHelpful = (
@@ -198,10 +198,10 @@ export const isUserSavedArticleEvent = (event: DomainEvent):
 
 export type UserSavedArticleEvent = Readonly<{
   id: EventId,
-  type: 'UserSavedArticle';
-  date: Date;
-  userId: UserId;
-  articleId: Doi;
+  type: 'UserSavedArticle',
+  date: Date,
+  userId: UserId,
+  articleId: Doi,
 }>;
 
 export const userSavedArticle = (userId: UserId, doi: Doi): UserSavedArticleEvent => ({

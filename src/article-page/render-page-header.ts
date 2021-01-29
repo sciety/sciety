@@ -8,8 +8,8 @@ import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { UserId } from '../types/user-id';
 
 type ArticleDetails = {
-  title: SanitisedHtmlFragment;
-  authors: Array<string>;
+  title: SanitisedHtmlFragment,
+  authors: Array<string>,
 };
 
 export type GetArticleDetails<Err> = (doi: Doi) => TE.TaskEither<Err, ArticleDetails>;

@@ -20,7 +20,7 @@ const isMatchingSavedEvent = (userId: UserId, articleId: Doi) => (event: DomainE
 );
 
 type Ports = {
-  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>;
+  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
   commitEvents: (events: ReadonlyArray<UserSavedArticleEvent>) => T.Task<void>,
 };
 

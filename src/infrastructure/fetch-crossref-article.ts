@@ -12,11 +12,11 @@ import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 type FetchCrossrefArticleError = 'not-found' | 'unavailable';
 
 export type FetchCrossrefArticle = (doi: Doi) => T.Task<Result<{
-  abstract: SanitisedHtmlFragment;
-  authors: Array<string>;
-  doi: Doi;
-  title: SanitisedHtmlFragment;
-  publicationDate: Date;
+  abstract: SanitisedHtmlFragment,
+  authors: Array<string>,
+  doi: Doi,
+  title: SanitisedHtmlFragment,
+  publicationDate: Date,
   server: ArticleServer,
 }, FetchCrossrefArticleError>>;
 

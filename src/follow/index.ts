@@ -4,8 +4,8 @@ import { EditorialCommunityId } from '../types/editorial-community-id';
 import { User } from '../types/user';
 
 interface Ports {
-  commitEvents: CommitEvents;
-  getFollowList: GetFollowList;
+  commitEvents: CommitEvents,
+  getFollowList: GetFollowList,
 }
 
 export const followHandler = (ports: Ports): Middleware<{ user: User }> => {

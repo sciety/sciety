@@ -56,12 +56,12 @@ const loggedOutMenuItems = (): HtmlFragment => toHtmlFragment(`
 const isSecure = process.env.APP_ORIGIN !== undefined && process.env.APP_ORIGIN.startsWith('https:');
 
 export type Page = {
-  title: string;
-  content: HtmlFragment;
+  title: string,
+  content: HtmlFragment,
   openGraph?: {
-    title: string;
-    description: string;
-  }
+    title: string,
+    description: string,
+  },
 };
 
 // TODO: return a more specific type e.g. HtmlDocument

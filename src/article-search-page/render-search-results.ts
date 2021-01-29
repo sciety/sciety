@@ -6,15 +6,15 @@ import templateListItems from '../shared-components/list-items';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 export type FindArticles = (query: string) => TE.TaskEither<'unavailable', {
-  items: Array<SearchResult>;
-  total: number;
+  items: Array<SearchResult>,
+  total: number,
 }>;
 
 export type RenderSearchResults = (query: string) => TE.TaskEither<'unavailable', HtmlFragment>;
 
 type SearchResults = {
-  items: Array<SearchResult>;
-  total: number;
+  items: Array<SearchResult>,
+  total: number,
 };
 
 const renderListIfNecessary = (articles: ReadonlyArray<HtmlFragment>): string => {

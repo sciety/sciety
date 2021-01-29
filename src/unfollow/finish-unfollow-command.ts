@@ -3,8 +3,8 @@ import { CommitEvents, createUnfollowCommand, GetFollowList } from './unfollow-c
 import { EditorialCommunityId } from '../types/editorial-community-id';
 
 interface Ports {
-  commitEvents: CommitEvents;
-  getFollowList: GetFollowList;
+  commitEvents: CommitEvents,
+  getFollowList: GetFollowList,
 }
 
 export const finishUnfollowCommand = (ports: Ports): Middleware => {

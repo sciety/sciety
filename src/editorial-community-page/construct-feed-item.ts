@@ -26,7 +26,7 @@ type FeedItem = {
 };
 
 type Article = {
-  title: SanitisedHtmlFragment;
+  title: SanitisedHtmlFragment,
 };
 
 const construct = (

@@ -9,15 +9,15 @@ export type GetJson = (url: string) => Promise<Json>;
 
 type BiorxivResponse = JsonCompatible<{
   collection: ReadonlyArray<{
-    date: string;
-    version: string;
-  }>
+    date: string,
+    version: string,
+  }>,
 }>;
 
 export type GetArticleVersionEventsFromBiorxiv = (doi: Doi, server: ArticleServer) => T.Task<ReadonlyArray<{
-  source: URL;
-  occurredAt: Date;
-  version: number;
+  source: URL,
+  occurredAt: Date,
+  version: number,
 }>>;
 
 export const createGetArticleVersionEventsFromBiorxiv = (

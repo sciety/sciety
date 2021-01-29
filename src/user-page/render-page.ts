@@ -8,7 +8,7 @@ import { UserId } from '../types/user-id';
 
 type Page = {
   title: string,
-  content: HtmlFragment
+  content: HtmlFragment,
 };
 
 export type RenderPage = (userId: UserId, viewingUserId: O.Option<UserId>) => TE.TaskEither<RenderPageError, Page>;
@@ -20,7 +20,7 @@ const template = (
     header: HtmlFragment,
     followList: HtmlFragment,
     userDisplayName: string,
-    savedArticlesList: HtmlFragment
+    savedArticlesList: HtmlFragment,
   },
 ): Page => (
   {

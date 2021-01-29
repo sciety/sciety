@@ -12,22 +12,22 @@ type BiorxivResponse = {
   collection: Array<{
     biorxiv_doi: string,
     published_doi: string,
-  }>
+  }>,
 };
 
 type CrossrefResponse ={
   message: {
     items: [
       {
-        DOI: string;
+        DOI: string,
         'published-print': {
           'date-parts': [
             [number, number, number],
           ],
-        }
+        },
       }
-    ]
-  }
+    ],
+  },
 };
 
 void (async (): Promise<void> => {

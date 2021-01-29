@@ -4,9 +4,9 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
 export type UserDetails = {
-  avatarUrl: string;
-  displayName: string;
-  handle: string;
+  avatarUrl: string,
+  displayName: string,
+  handle: string,
 };
 
 type GetUserDetails<E> = (userId: UserId) => TE.TaskEither<E, UserDetails>;

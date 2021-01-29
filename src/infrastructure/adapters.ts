@@ -18,10 +18,10 @@ import { EditorialCommunityRepository } from '../types/editorial-community-repos
 import { EndorsementsRepository } from '../types/endorsements-repository';
 
 type EditorialCommunity = {
-  name: string;
-  id: EditorialCommunityId;
-  avatar: URL;
-  descriptionPath: string;
+  name: string,
+  id: EditorialCommunityId,
+  avatar: URL,
+  descriptionPath: string,
 };
 
 type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.Task<Maybe<EditorialCommunity>>;
@@ -29,20 +29,20 @@ type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.T
 type GetAllEditorialCommunities = T.Task<Array<EditorialCommunity>>;
 
 export interface Adapters {
-  fetchArticle: FetchCrossrefArticle;
-  fetchReview: FetchReview;
-  fetchStaticFile: FetchStaticFile;
+  fetchArticle: FetchCrossrefArticle,
+  fetchReview: FetchReview,
+  fetchStaticFile: FetchStaticFile,
   searchEuropePmc: SearchEuropePmc,
-  editorialCommunities: EditorialCommunityRepository;
-  getEditorialCommunity: GetEditorialCommunity;
-  getAllEditorialCommunities: GetAllEditorialCommunities;
+  editorialCommunities: EditorialCommunityRepository,
+  getEditorialCommunity: GetEditorialCommunity,
+  getAllEditorialCommunities: GetAllEditorialCommunities,
   endorsements: EndorsementsRepository,
-  findReviewsForArticleDoi: FindReviewsForArticleDoi;
-  findVersionsForArticleDoi: GetArticleVersionEventsFromBiorxiv;
-  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>;
-  commitEvents: CommitEvents;
-  getFollowList: EventSourcedFollowListRepository;
-  getUserDetails: GetTwitterUserDetails;
-  follows: Follows;
-  logger: Logger;
+  findReviewsForArticleDoi: FindReviewsForArticleDoi,
+  findVersionsForArticleDoi: GetArticleVersionEventsFromBiorxiv,
+  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
+  commitEvents: CommitEvents,
+  getFollowList: EventSourcedFollowListRepository,
+  getUserDetails: GetTwitterUserDetails,
+  follows: Follows,
+  logger: Logger,
 }

@@ -8,29 +8,29 @@ import { Json, JsonCompatible } from '../types/json';
 export type GetJson = (uri: string) => Promise<Json>;
 
 interface SearchResult {
-  doi: Doi;
-  title: string;
-  authors: string;
-  postedDate: Date;
+  doi: Doi,
+  title: string,
+  authors: string,
+  postedDate: Date,
 }
 
 type SearchResults = {
-  items: Array<SearchResult>;
-  total: number;
+  items: Array<SearchResult>,
+  total: number,
 };
 
 export type SearchEuropePmc = (query: string) => TE.TaskEither<'unavailable', SearchResults>;
 
 type EuropePmcQueryResponse = JsonCompatible<{
-  hitCount: number;
+  hitCount: number,
   resultList: {
     result: Array<{
-      doi: string;
-      title: string;
-      authorString: string;
-      firstPublicationDate: string;
-    }>;
-  };
+      doi: string,
+      title: string,
+      authorString: string,
+      firstPublicationDate: string,
+    }>,
+  },
 }>;
 
 const constructQueryParams = (query: string): URLSearchParams => (

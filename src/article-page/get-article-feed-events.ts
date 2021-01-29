@@ -13,15 +13,15 @@ import { EditorialCommunityId } from '../types/editorial-community-id';
 import { ReviewId } from '../types/review-id';
 
 type FindReviewsForArticleDoi = (articleVersionDoi: Doi) => T.Task<ReadonlyArray<{
-  reviewId: ReviewId;
-  editorialCommunityId: EditorialCommunityId;
-  occurredAt: Date;
+  reviewId: ReviewId,
+  editorialCommunityId: EditorialCommunityId,
+  occurredAt: Date,
 }>>;
 
 export type FindVersionsForArticleDoi = (doi: Doi, server: ArticleServer) => T.Task<ReadonlyArray<{
-  source: URL;
-  occurredAt: Date;
-  version: number;
+  source: URL,
+  occurredAt: Date,
+  version: number,
 }>>;
 
 export const getArticleFeedEvents = (
@@ -29,8 +29,8 @@ export const getArticleFeedEvents = (
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
   fetchReview: GetReview,
   getEditorialCommunity: (editorialCommunityId: EditorialCommunityId) => T.Task<Maybe<{
-    name: string;
-    avatar: URL;
+    name: string,
+    avatar: URL,
   }>>,
 ): GetFeedItems => (
   (doi, server) => async () => (

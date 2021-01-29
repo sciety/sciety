@@ -25,13 +25,13 @@ type FeedItem = {
 };
 
 type Actor = {
-  url: string;
-  name: string;
-  imageUrl: string;
+  url: string,
+  name: string,
+  imageUrl: string,
 };
 
 type Article = {
-  title: SanitisedHtmlFragment;
+  title: SanitisedHtmlFragment,
 };
 
 type Inputs = {

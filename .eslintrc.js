@@ -29,6 +29,16 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': ['error', {
       allowExpressions: true,
     }],
+    '@typescript-eslint/member-delimiter-style': ['error', {
+      multiline: {
+        delimiter: 'comma',
+        requireLast: true,
+      },
+      singleline: {
+        delimiter: 'comma',
+        requireLast: false,
+      },
+    }],
     '@typescript-eslint/no-floating-promises': 'error',
     '@typescript-eslint/no-implicit-any-catch': 'error',
     '@typescript-eslint/no-misused-promises': ['error', {

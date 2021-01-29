@@ -8,7 +8,7 @@ import { UserId } from '../types/user-id';
 type TwitterUserDetails = {
   avatarUrl: string,
   displayName: string,
-  handle: string;
+  handle: string,
 };
 
 export type GetTwitterUserDetails = (userId: UserId) => TE.TaskEither<'not-found' | 'unavailable', TwitterUserDetails>;

@@ -10,16 +10,16 @@ import { sanitise } from '../types/sanitised-html-fragment';
 
 type ReviewEvent = {
   type: 'review',
-  editorialCommunityId: EditorialCommunityId;
-  reviewId: ReviewId;
-  occurredAt: Date;
+  editorialCommunityId: EditorialCommunityId,
+  reviewId: ReviewId,
+  occurredAt: Date,
 };
 
 type ArticleVersionEvent = {
   type: 'article-version',
-  source: URL;
-  occurredAt: Date;
-  version: number;
+  source: URL,
+  occurredAt: Date,
+  version: number,
 };
 
 export type FeedEvent = ReviewEvent | ArticleVersionEvent;
@@ -27,8 +27,8 @@ export type FeedEvent = ReviewEvent | ArticleVersionEvent;
 export type Feed = (articleDoi: Doi) => T.Task<ReadonlyArray<FeedEvent>>;
 
 export type GetReview = (id: ReviewId) => T.Task<{
-  fullText: O.Option<HtmlFragment>;
-  url: URL;
+  fullText: O.Option<HtmlFragment>,
+  url: URL,
 }>;
 
 export type GetEditorialCommunity = (id: EditorialCommunityId) => T.Task<{ name: string, avatar: URL }>;

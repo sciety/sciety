@@ -8,9 +8,9 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
 type Community = {
-  avatar: URL;
-  id: EditorialCommunityId;
-  name: string;
+  avatar: URL,
+  id: EditorialCommunityId,
+  name: string,
 };
 
 export type RenderEditorialCommunity = (userId: O.Option<UserId>) => (community: Community) => T.Task<HtmlFragment>;

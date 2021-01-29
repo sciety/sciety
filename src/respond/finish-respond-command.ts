@@ -8,8 +8,8 @@ import {
 import { toReviewId } from '../types/review-id';
 
 type Ports = {
-  commitEvents: CommitEvents;
-  getAllEvents: GetAllEvents;
+  commitEvents: CommitEvents,
+  getAllEvents: GetAllEvents,
 };
 
 export const finishRespondCommand = (ports: Ports): Middleware => async (context, next) => {

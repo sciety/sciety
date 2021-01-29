@@ -10,8 +10,8 @@ import { toReviewId } from '../types/review-id';
 import { User } from '../types/user';
 
 type Ports = {
-  commitEvents: CommitEvents;
-  getAllEvents: GetAllEvents;
+  commitEvents: CommitEvents,
+  getAllEvents: GetAllEvents,
 };
 
 export const respondHandler = (ports: Ports): Middleware<{ user: User }> => async (context, next) => {

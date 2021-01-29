@@ -24,10 +24,10 @@ type FetchStaticFile = (filename: string) => T.Task<string>;
 type FetchEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.Task<Maybe<EditorialCommunity>>;
 
 interface Ports {
-  fetchArticle: GetArticle;
-  fetchStaticFile: FetchStaticFile;
-  getEditorialCommunity: FetchEditorialCommunity;
-  getAllEvents: GetAllEvents;
+  fetchArticle: GetArticle,
+  fetchStaticFile: FetchStaticFile,
+  getEditorialCommunity: FetchEditorialCommunity,
+  getAllEvents: GetAllEvents,
   follows: Follows,
 }
 
@@ -39,8 +39,8 @@ const buildRenderFeed = (ports: Ports): RenderFeed => createRenderFeed(
 );
 
 export interface Params {
-  id?: string;
-  user: O.Option<User>;
+  id?: string,
+  user: O.Option<User>,
 }
 
 type EditorialCommunityPage = (params: Params) => ReturnType<RenderPage>;

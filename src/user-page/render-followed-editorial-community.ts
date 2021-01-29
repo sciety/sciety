@@ -7,9 +7,9 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
 interface Community {
-  id: EditorialCommunityId;
-  name: string;
-  avatar: URL;
+  id: EditorialCommunityId,
+  name: string,
+  avatar: URL,
 }
 
 export type RenderFollowedEditorialCommunity = (userId: O.Option<UserId>) => (

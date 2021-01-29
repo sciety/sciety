@@ -11,11 +11,11 @@ import { User } from '../types/user';
 
 // TODO: find better way of handling params of different pages
 type RenderPage = (params: {
-  doi?: string;
-  id?: string;
-  query?: string;
-  flavour?: string;
-  user: O.Option<User>;
+  doi?: string,
+  id?: string,
+  query?: string,
+  flavour?: string,
+  user: O.Option<User>,
 }) => TE.TaskEither<RenderPageError, Page>;
 
 const addScietySuffixIfNotHomepage = (requestPath: string) => (page: Page): Page => ({
