@@ -44,7 +44,7 @@ These are the most recent scenarios represented on the application now:
 - Each community's landing page contains a list of current followers. 
 - Evaluations from editorial communities are automatically imported from each community's own platform(s) of choice.
 - Users can search for bioRxiv content using the search box on the home page.
-- Article pages collect evaluation information such as reviews and endorsements.
+- Article pages collect evaluation information such as reviews.
 - A user can log in using Twitter credentials and customize the homepage feed by selecting editorial communities to follow.
 
 ## <a name="scope">Scope</a>
