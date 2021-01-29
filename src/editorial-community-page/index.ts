@@ -1,7 +1,7 @@
-import * as O from 'fp-ts/lib/Option';
-import * as T from 'fp-ts/lib/Task';
-import * as TE from 'fp-ts/lib/TaskEither';
-import { pipe } from 'fp-ts/lib/function';
+import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
+import { pipe } from 'fp-ts/function';
 import { Maybe } from 'true-myth';
 import { constructFeedItem, GetArticle } from './construct-feed-item';
 import { getDescription } from './get-description';

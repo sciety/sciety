@@ -1,4 +1,4 @@
-import * as T from 'fp-ts/lib/Task';
+import * as T from 'fp-ts/Task';
 import { createEventSourceFollowListRepository, GetAllEvents } from '../../src/infrastructure/event-sourced-follow-list-repository';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 import { generate } from '../../src/types/event-id';

@@ -1,4 +1,4 @@
-import * as T from 'fp-ts/lib/Task';
+import * as T from 'fp-ts/Task';
 import { Result } from 'true-myth';
 import { constructFeedItem, GetActor, GetArticle } from '../../src/home-page/construct-feed-item';
 import { FeedItem } from '../../src/shared-components/render-summary-feed-list';

@@ -1,6 +1,6 @@
 import { URLSearchParams } from 'url';
-import * as TE from 'fp-ts/lib/TaskEither';
-import { pipe } from 'fp-ts/lib/pipeable';
+import * as TE from 'fp-ts/TaskEither';
+import { pipe } from 'fp-ts/function';
 import { Logger } from './logger';
 import { Doi } from '../types/doi';
 import { Json, JsonCompatible } from '../types/json';

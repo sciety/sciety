@@ -1,5 +1,5 @@
-import * as E from 'fp-ts/lib/Either';
-import * as T from 'fp-ts/lib/Task';
+import * as E from 'fp-ts/Either';
+import * as T from 'fp-ts/Task';
 import { Result } from 'true-myth';
 import { createRenderArticleAbstract, GetArticleAbstract } from '../../src/article-page/render-article-abstract';
 import { Doi } from '../../src/types/doi';

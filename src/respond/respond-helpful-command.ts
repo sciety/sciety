@@ -1,4 +1,4 @@
-import * as T from 'fp-ts/lib/Task';
+import * as T from 'fp-ts/Task';
 import { ReviewResponse } from './review-response';
 import {
   DomainEvent,

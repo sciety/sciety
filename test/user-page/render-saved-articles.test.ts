@@ -1,4 +1,4 @@
-import * as O from 'fp-ts/lib/Option';
+import * as O from 'fp-ts/Option';
 import { Doi } from '../../src/types/doi';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { renderSavedArticles, SavedArticle } from '../../src/user-page/render-saved-articles';

@@ -1,5 +1,5 @@
+import * as O from 'fp-ts/Option';
 import { constant, flow, pipe } from 'fp-ts/function';
-import * as O from 'fp-ts/lib/Option';
 import { XMLSerializer } from 'xmldom';
 import { Logger } from './logger';
 import { ArticleServer } from '../types/article-server';

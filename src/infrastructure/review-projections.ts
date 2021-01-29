@@ -1,4 +1,4 @@
-import * as T from 'fp-ts/lib/Task';
+import * as T from 'fp-ts/Task';
 import { Doi } from '../types/doi';
 import { EditorialCommunityReviewedArticleEvent } from '../types/domain-events';
 import { EditorialCommunityId } from '../types/editorial-community-id';

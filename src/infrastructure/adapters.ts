@@ -1,5 +1,5 @@
 import { URL } from 'url';
-import * as T from 'fp-ts/lib/Task';
+import * as T from 'fp-ts/Task';
 import { Maybe } from 'true-myth';
 import { CommitEvents } from './commit-events';
 import { EventSourcedFollowListRepository } from './event-sourced-follow-list-repository';

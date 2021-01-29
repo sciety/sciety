@@ -1,6 +1,6 @@
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as T from 'fp-ts/lib/Task';
-import { flow, pipe } from 'fp-ts/lib/function';
+import * as T from 'fp-ts/Task';
+import { flow, pipe } from 'fp-ts/function';
 import { GetSavedArticleDois } from './fetch-saved-articles';
 import { DomainEvent, isUserSavedArticleEvent } from '../types/domain-events';
 

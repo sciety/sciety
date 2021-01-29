@@ -1,5 +1,5 @@
-import * as T from 'fp-ts/lib/Task';
-import { flow } from 'fp-ts/lib/function';
+import * as T from 'fp-ts/Task';
+import { flow } from 'fp-ts/function';
 import { EditorialCommunity } from '../types/editorial-community';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 

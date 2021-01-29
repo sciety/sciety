@@ -1,6 +1,6 @@
-import * as O from 'fp-ts/lib/Option';
-import * as A from 'fp-ts/lib/ReadonlyArray';
-import { flow } from 'fp-ts/lib/function';
+import * as O from 'fp-ts/Option';
+import * as A from 'fp-ts/ReadonlyArray';
+import { flow } from 'fp-ts/function';
 import templateDate from './date';
 import templateListItems from './list-items';
 import { Doi } from '../types/doi';

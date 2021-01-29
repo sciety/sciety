@@ -1,5 +1,5 @@
-import * as T from 'fp-ts/lib/Task';
-import { pipe } from 'fp-ts/lib/function';
+import * as T from 'fp-ts/Task';
+import { pipe } from 'fp-ts/function';
 import { Result } from 'true-myth';
 import { Doi } from '../types/doi';
 import { EditorialCommunityReviewedArticleEvent } from '../types/domain-events';

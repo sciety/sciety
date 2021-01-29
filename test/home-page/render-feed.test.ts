@@ -1,5 +1,5 @@
-import * as O from 'fp-ts/lib/Option';
-import * as T from 'fp-ts/lib/Task';
+import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
 import {
   createRenderFeed,
   GetEvents,

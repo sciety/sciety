@@ -1,5 +1,5 @@
 import { RouterContext } from '@koa/router';
-import * as T from 'fp-ts/lib/Task';
+import * as T from 'fp-ts/Task';
 import { ParameterizedContext } from 'koa';
 import { finishSaveArticleCommand } from '../../src/save-article/finish-save-article-command';
 import { Doi } from '../../src/types/doi';

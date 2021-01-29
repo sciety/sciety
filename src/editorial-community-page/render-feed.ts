@@ -1,7 +1,7 @@
-import { sequenceS } from 'fp-ts/lib/Apply';
-import * as O from 'fp-ts/lib/Option';
-import * as T from 'fp-ts/lib/Task';
-import { constant, flow, pipe } from 'fp-ts/lib/function';
+import { sequenceS } from 'fp-ts/Apply';
+import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
+import { constant, flow, pipe } from 'fp-ts/function';
 import { ConstructFeedItem, FeedEvent } from './construct-feed-item';
 import { RenderFollowToggle } from './render-follow-toggle';
 import { FeedItem } from '../shared-components/render-summary-feed-list';

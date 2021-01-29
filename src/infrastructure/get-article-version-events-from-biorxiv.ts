@@ -1,5 +1,5 @@
 import { URL } from 'url';
-import * as T from 'fp-ts/lib/Task';
+import * as T from 'fp-ts/Task';
 import { Logger } from './logger';
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';

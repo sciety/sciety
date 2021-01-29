@@ -1,5 +1,5 @@
 import { URL } from 'url';
-import * as T from 'fp-ts/lib/Task';
+import * as T from 'fp-ts/Task';
 import { Maybe } from 'true-myth';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 

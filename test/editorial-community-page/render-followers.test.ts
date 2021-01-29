@@ -1,4 +1,4 @@
-import * as T from 'fp-ts/lib/Task';
+import * as T from 'fp-ts/Task';
 import createRenderFollowers from '../../src/editorial-community-page/render-followers';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 

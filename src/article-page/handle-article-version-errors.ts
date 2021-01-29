@@ -1,7 +1,7 @@
-import * as E from 'fp-ts/lib/Either';
-import * as RA from 'fp-ts/lib/ReadonlyArray';
-import * as T from 'fp-ts/lib/Task';
-import { identity, pipe } from 'fp-ts/lib/function';
+import * as E from 'fp-ts/Either';
+import * as RA from 'fp-ts/ReadonlyArray';
+import * as T from 'fp-ts/Task';
+import { identity, pipe } from 'fp-ts/function';
 import { GetFeedItems } from './render-feed';
 
 export const createHandleArticleVersionErrors = (

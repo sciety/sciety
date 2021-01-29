@@ -1,4 +1,4 @@
-import * as T from 'fp-ts/lib/Task';
+import * as T from 'fp-ts/Task';
 import { createFollows, GetAllEvents } from '../../src/infrastructure/follows';
 import { userFollowedEditorialCommunity, userUnfollowedEditorialCommunity } from '../../src/types/domain-events';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';

@@ -1,7 +1,7 @@
-import * as O from 'fp-ts/lib/Option';
-import * as T from 'fp-ts/lib/Task';
-import * as TE from 'fp-ts/lib/TaskEither';
-import { flow, pipe } from 'fp-ts/lib/function';
+import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
+import { flow, pipe } from 'fp-ts/function';
 import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';

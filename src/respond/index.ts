@@ -1,6 +1,6 @@
 import { Middleware } from '@koa/router';
-import * as O from 'fp-ts/lib/Option';
-import { pipe } from 'fp-ts/lib/function';
+import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
 import { BadRequest } from 'http-errors';
 import {
   commandHandler, CommitEvents, validateCommand,

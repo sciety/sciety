@@ -1,7 +1,7 @@
 import { URL } from 'url';
-import * as O from 'fp-ts/lib/Option';
-import * as T from 'fp-ts/lib/Task';
-import { flow, pipe } from 'fp-ts/lib/function';
+import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
+import { flow, pipe } from 'fp-ts/function';
 import clip from 'text-clipper';
 import { RenderReviewResponses } from './render-review-responses';
 import templateDate from '../shared-components/date';

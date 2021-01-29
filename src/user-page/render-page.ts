@@ -1,7 +1,7 @@
-import { sequenceS } from 'fp-ts/lib/Apply';
-import * as O from 'fp-ts/lib/Option';
-import * as TE from 'fp-ts/lib/TaskEither';
-import { pipe } from 'fp-ts/lib/function';
+import { sequenceS } from 'fp-ts/Apply';
+import * as O from 'fp-ts/Option';
+import * as TE from 'fp-ts/TaskEither';
+import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { RenderPageError } from '../types/render-page-error';
 import { UserId } from '../types/user-id';

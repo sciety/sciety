@@ -1,4 +1,4 @@
-import * as T from 'fp-ts/lib/Task';
+import * as T from 'fp-ts/Task';
 import { Result } from 'true-myth';
 import { DOMParser } from 'xmldom';
 import { Logger } from './logger';

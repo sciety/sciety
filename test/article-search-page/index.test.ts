@@ -1,6 +1,6 @@
+import * as E from 'fp-ts/Either';
+import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import * as E from 'fp-ts/lib/Either';
-import * as TE from 'fp-ts/lib/TaskEither';
 import buildRenderPage from '../../src/article-search-page';
 import { createTestServer } from '../http/server';
 

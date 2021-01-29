@@ -1,7 +1,7 @@
 import { URL } from 'url';
-import * as RA from 'fp-ts/lib/ReadonlyArray';
-import * as T from 'fp-ts/lib/Task';
-import { flow, pipe } from 'fp-ts/lib/function';
+import * as RA from 'fp-ts/ReadonlyArray';
+import * as T from 'fp-ts/Task';
+import { flow, pipe } from 'fp-ts/function';
 import { Maybe } from 'true-myth';
 import { getFeedEventsContent, GetReview } from './get-feed-events-content';
 import { createHandleArticleVersionErrors } from './handle-article-version-errors';

@@ -1,9 +1,9 @@
 import { URL } from 'url';
 import { namedNode } from '@rdfjs/data-model';
 import { schema } from '@tpluscode/rdf-ns-builders';
-import * as O from 'fp-ts/lib/Option';
-import * as T from 'fp-ts/lib/Task';
-import { pipe } from 'fp-ts/lib/function';
+import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
+import { pipe } from 'fp-ts/function';
 import { FetchDataset } from './fetch-dataset';
 import { Logger } from './logger';
 import { Review } from './review';

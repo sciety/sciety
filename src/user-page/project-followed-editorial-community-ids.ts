@@ -1,5 +1,5 @@
-import * as T from 'fp-ts/lib/Task';
-import { pipe } from 'fp-ts/lib/function';
+import * as T from 'fp-ts/Task';
+import { pipe } from 'fp-ts/function';
 import { GetFollowedEditorialCommunityIds } from './get-followed-editorial-communities-from-ids';
 import { DomainEvent } from '../types/domain-events';
 import { EditorialCommunityId } from '../types/editorial-community-id';

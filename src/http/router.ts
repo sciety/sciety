@@ -1,6 +1,6 @@
 import Router from '@koa/router';
-import * as TE from 'fp-ts/lib/TaskEither';
-import { flow } from 'fp-ts/lib/function';
+import * as TE from 'fp-ts/TaskEither';
+import { flow } from 'fp-ts/function';
 import bodyParser from 'koa-bodyparser';
 import { authenticate } from './authenticate';
 import { catchErrors } from './catch-errors';

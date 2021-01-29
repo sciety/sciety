@@ -1,6 +1,6 @@
+import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { flow } from 'fp-ts/function';
-import * as O from 'fp-ts/lib/Option';
-import * as RA from 'fp-ts/lib/ReadonlyArray';
 import templateListItems from '../shared-components/list-items';
 import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';

@@ -1,4 +1,4 @@
-import * as T from 'fp-ts/lib/Task';
+import * as T from 'fp-ts/Task';
 import { Maybe } from 'true-myth';
 import { Logger } from './logger';
 import { EditorialCommunity } from '../types/editorial-community';

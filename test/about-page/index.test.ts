@@ -1,4 +1,4 @@
-import * as T from 'fp-ts/lib/Task';
+import * as T from 'fp-ts/Task';
 import { aboutPage, FetchStaticFile } from '../../src/about-page/index';
 
 const fetchStaticFile: FetchStaticFile = (filename) => T.of(`# Contents of ${filename}`);

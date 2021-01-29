@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-import * as T from 'fp-ts/lib/Task';
-import { pipe } from 'fp-ts/lib/function';
+import * as T from 'fp-ts/Task';
+import { pipe } from 'fp-ts/function';
 import { Logger } from './logger';
 
 export type FetchStaticFile = (filename: string) => T.Task<string>;

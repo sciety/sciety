@@ -1,5 +1,5 @@
-import * as TE from 'fp-ts/lib/TaskEither';
-import { flow } from 'fp-ts/lib/function';
+import * as TE from 'fp-ts/TaskEither';
+import { flow } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 

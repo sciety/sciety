@@ -1,4 +1,4 @@
-import * as E from 'fp-ts/lib/Either';
+import * as E from 'fp-ts/Either';
 import { createSearchEuropePmc, GetJson } from '../../src/infrastructure/search-europe-pmc';
 import { Doi } from '../../src/types/doi';
 import dummyLogger from '../dummy-logger';

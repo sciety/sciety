@@ -1,7 +1,7 @@
-import * as Ord from 'fp-ts/lib/Ord';
-import * as RA from 'fp-ts/lib/ReadonlyArray';
-import * as T from 'fp-ts/lib/Task';
-import { pipe } from 'fp-ts/lib/pipeable';
+import * as Ord from 'fp-ts/Ord';
+import * as RA from 'fp-ts/ReadonlyArray';
+import * as T from 'fp-ts/Task';
+import { pipe } from 'fp-ts/function';
 import { Feed, FeedEvent } from './get-feed-events-content';
 
 const byDate = Ord.contramap<Date, FeedEvent>((event) => event.occurredAt)(Ord.ordDate);

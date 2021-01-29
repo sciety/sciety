@@ -1,4 +1,4 @@
-import * as T from 'fp-ts/lib/Task';
+import * as T from 'fp-ts/Task';
 import { FetchDataciteReview } from './fetch-datacite-review';
 import { FetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
 import { Review } from './review';

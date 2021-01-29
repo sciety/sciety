@@ -1,4 +1,4 @@
-import { flow } from 'fp-ts/lib/function';
+import { flow } from 'fp-ts/function';
 import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 

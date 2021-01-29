@@ -1,4 +1,4 @@
-import * as T from 'fp-ts/lib/Task';
+import * as T from 'fp-ts/Task';
 import { Doi } from '../../src/types/doi';
 import { userSavedArticle } from '../../src/types/domain-events';
 import { toUserId } from '../../src/types/user-id';

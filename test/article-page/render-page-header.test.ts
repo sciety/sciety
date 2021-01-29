@@ -1,8 +1,8 @@
-import * as E from 'fp-ts/lib/Either';
-import * as O from 'fp-ts/lib/Option';
-import * as T from 'fp-ts/lib/Task';
-import * as TE from 'fp-ts/lib/TaskEither';
-import { constant, pipe } from 'fp-ts/lib/function';
+import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
+import { constant, pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import { createRenderPageHeader, GetArticleDetails, RenderPageHeader } from '../../src/article-page/render-page-header';
 import { Doi } from '../../src/types/doi';

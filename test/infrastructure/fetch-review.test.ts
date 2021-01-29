@@ -1,7 +1,7 @@
 import { URL } from 'url';
-import * as O from 'fp-ts/lib/Option';
-import * as T from 'fp-ts/lib/Task';
-import { pipe } from 'fp-ts/lib/function';
+import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
+import { pipe } from 'fp-ts/function';
 import { FetchDataciteReview } from '../../src/infrastructure/fetch-datacite-review';
 import { FetchHypothesisAnnotation } from '../../src/infrastructure/fetch-hypothesis-annotation';
 import createFetchReview from '../../src/infrastructure/fetch-review';

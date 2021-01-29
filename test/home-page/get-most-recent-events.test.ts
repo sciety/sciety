@@ -1,4 +1,4 @@
-import * as T from 'fp-ts/lib/Task';
+import * as T from 'fp-ts/Task';
 import { Follows, GetAllEvents, getMostRecentEvents } from '../../src/home-page/get-most-recent-events';
 import { Doi } from '../../src/types/doi';
 import { DomainEvent } from '../../src/types/domain-events';

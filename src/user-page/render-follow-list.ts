@@ -1,9 +1,9 @@
 import { URL } from 'url';
-import * as O from 'fp-ts/lib/Option';
-import * as RNEA from 'fp-ts/lib/ReadonlyNonEmptyArray';
-import * as T from 'fp-ts/lib/Task';
-import * as TE from 'fp-ts/lib/TaskEither';
-import { constant, flow, pipe } from 'fp-ts/lib/function';
+import * as O from 'fp-ts/Option';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
+import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
+import { constant, flow, pipe } from 'fp-ts/function';
 import { RenderFollowedEditorialCommunity } from './render-followed-editorial-community';
 import templateListItems from '../shared-components/list-items';
 import { EditorialCommunityId } from '../types/editorial-community-id';

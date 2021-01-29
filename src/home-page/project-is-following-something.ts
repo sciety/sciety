@@ -1,6 +1,6 @@
-import * as A from 'fp-ts/lib/ReadonlyArray';
-import * as T from 'fp-ts/lib/Task';
-import { pipe } from 'fp-ts/lib/function';
+import * as A from 'fp-ts/ReadonlyArray';
+import * as T from 'fp-ts/Task';
+import { pipe } from 'fp-ts/function';
 import { IsFollowingSomething } from './render-feed';
 import { DomainEvent } from '../types/domain-events';
 import { UserId } from '../types/user-id';

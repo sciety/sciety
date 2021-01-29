@@ -1,4 +1,4 @@
-import * as T from 'fp-ts/lib/Task';
+import * as T from 'fp-ts/Task';
 import { DomainEvent } from '../types/domain-events';
 import { FollowList } from '../types/follow-list';
 import { UserId } from '../types/user-id';

@@ -1,7 +1,7 @@
-import * as O from 'fp-ts/lib/Option';
-import * as A from 'fp-ts/lib/ReadonlyArray';
-import * as T from 'fp-ts/lib/Task';
-import { flow, pipe } from 'fp-ts/lib/function';
+import * as O from 'fp-ts/Option';
+import * as A from 'fp-ts/ReadonlyArray';
+import * as T from 'fp-ts/Task';
+import { flow, pipe } from 'fp-ts/function';
 import { DomainEvent } from '../types/domain-events';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { UserId } from '../types/user-id';

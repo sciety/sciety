@@ -1,8 +1,8 @@
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as T from 'fp-ts/Task';
 import * as B from 'fp-ts/boolean';
-import * as O from 'fp-ts/lib/Option';
-import * as T from 'fp-ts/lib/Task';
-import { constant, pipe } from 'fp-ts/lib/function';
+import { constant, pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
 import { Doi } from '../types/doi';
 import {

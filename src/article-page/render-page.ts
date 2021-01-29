@@ -1,9 +1,9 @@
+import { sequenceS } from 'fp-ts/Apply';
+import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
-import { sequenceS } from 'fp-ts/lib/Apply';
-import * as E from 'fp-ts/lib/Either';
-import * as O from 'fp-ts/lib/Option';
-import * as T from 'fp-ts/lib/Task';
-import * as TE from 'fp-ts/lib/TaskEither';
 import striptags from 'striptags';
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';

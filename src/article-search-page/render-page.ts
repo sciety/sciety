@@ -1,5 +1,5 @@
-import * as TE from 'fp-ts/lib/TaskEither';
-import { flow } from 'fp-ts/lib/function';
+import * as TE from 'fp-ts/TaskEither';
+import { flow } from 'fp-ts/function';
 import { RenderSearchResults } from './render-search-results';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { RenderPageError } from '../types/render-page-error';

@@ -1,5 +1,5 @@
-import * as O from 'fp-ts/lib/Option';
-import * as T from 'fp-ts/lib/Task';
+import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
 import { Maybe } from 'true-myth';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { ReviewId } from '../types/review-id';

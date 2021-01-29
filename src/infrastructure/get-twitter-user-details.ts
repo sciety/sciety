@@ -1,5 +1,5 @@
+import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import * as TE from 'fp-ts/lib/TaskEither';
 import { GetTwitterResponse, TwitterResponse } from './get-twitter-response';
 import isAxiosError from './is-axios-error';
 import { Logger, Payload } from './logger';

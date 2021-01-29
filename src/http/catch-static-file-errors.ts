@@ -1,5 +1,5 @@
 import { Middleware } from '@koa/router';
-import * as O from 'fp-ts/lib/Option';
+import * as O from 'fp-ts/Option';
 import { isHttpError } from 'http-errors';
 import { INTERNAL_SERVER_ERROR } from 'http-status-codes';
 import { renderErrorPage } from './render-error-page';

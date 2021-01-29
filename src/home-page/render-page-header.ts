@@ -1,4 +1,4 @@
-import * as T from 'fp-ts/lib/Task';
+import * as T from 'fp-ts/Task';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 type RenderPageHeader = T.Task<HtmlFragment>;

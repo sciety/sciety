@@ -1,5 +1,5 @@
-import * as T from 'fp-ts/lib/Task';
-import { pipe } from 'fp-ts/lib/function';
+import * as T from 'fp-ts/Task';
+import { pipe } from 'fp-ts/function';
 import { renderPage } from './render-page';
 import { HtmlFragment } from '../../types/html-fragment';
 

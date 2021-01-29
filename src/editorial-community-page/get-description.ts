@@ -1,5 +1,5 @@
-import * as T from 'fp-ts/lib/Task';
-import { pipe } from 'fp-ts/lib/function';
+import * as T from 'fp-ts/Task';
+import { pipe } from 'fp-ts/function';
 import { Remarkable } from 'remarkable';
 import { EditorialCommunity } from '../types/editorial-community';
 

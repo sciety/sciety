@@ -1,4 +1,4 @@
-import { flow } from 'fp-ts/lib/function';
+import { flow } from 'fp-ts/function';
 import { Remarkable } from 'remarkable';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 

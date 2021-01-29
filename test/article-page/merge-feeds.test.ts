@@ -1,5 +1,5 @@
 import { URL } from 'url';
-import * as T from 'fp-ts/lib/Task';
+import * as T from 'fp-ts/Task';
 import { Feed } from '../../src/article-page/get-feed-events-content';
 import { mergeFeeds } from '../../src/article-page/merge-feeds';
 import { Doi } from '../../src/types/doi';

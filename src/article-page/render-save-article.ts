@@ -1,7 +1,7 @@
-import * as O from 'fp-ts/lib/Option';
-import * as T from 'fp-ts/lib/Task';
-import * as B from 'fp-ts/lib/boolean';
-import { pipe } from 'fp-ts/lib/function';
+import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
+import * as B from 'fp-ts/boolean';
+import { pipe } from 'fp-ts/function';
 import { renderSaveForm } from './render-save-form';
 import { renderSavedLink } from './render-saved-link';
 import { Doi } from '../types/doi';

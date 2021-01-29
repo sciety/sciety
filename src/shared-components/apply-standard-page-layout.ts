@@ -1,5 +1,5 @@
 import { htmlEscape } from 'escape-goat';
-import * as O from 'fp-ts/lib/Option';
+import * as O from 'fp-ts/Option';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { User } from '../types/user';
 

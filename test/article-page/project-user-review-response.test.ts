@@ -1,4 +1,4 @@
-import * as O from 'fp-ts/lib/Option';
+import * as O from 'fp-ts/Option';
 import { createProjectUserReviewResponse } from '../../src/article-page/project-user-review-response';
 import { Doi } from '../../src/types/doi';
 import { generate } from '../../src/types/event-id';

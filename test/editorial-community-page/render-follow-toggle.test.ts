@@ -1,5 +1,5 @@
-import * as O from 'fp-ts/lib/Option';
-import * as T from 'fp-ts/lib/Task';
+import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
 import { JSDOM } from 'jsdom';
 import createRenderFollowToggle, { Follows } from '../../src/editorial-community-page/render-follow-toggle';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';

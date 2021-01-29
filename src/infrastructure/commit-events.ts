@@ -1,6 +1,6 @@
-import * as RA from 'fp-ts/lib/ReadonlyArray';
-import * as T from 'fp-ts/lib/Task';
-import { constVoid, pipe } from 'fp-ts/lib/function';
+import * as RA from 'fp-ts/ReadonlyArray';
+import * as T from 'fp-ts/Task';
+import { constVoid, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
 import { Logger } from './logger';
 import { Doi } from '../types/doi';

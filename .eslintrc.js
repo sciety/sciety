@@ -9,6 +9,7 @@ module.exports = {
     'plugin:import/typescript',
     'plugin:jest/all',
     'plugin:jest-formatting/strict',
+    'plugin:fp-ts/recommended',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {

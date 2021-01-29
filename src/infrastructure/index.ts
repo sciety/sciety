@@ -1,6 +1,6 @@
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
-import * as T from 'fp-ts/lib/Task';
+import * as T from 'fp-ts/Task';
 import { Pool } from 'pg';
 import { Adapters } from './adapters';
 import createBiorxivCache from './biorxiv-cache';

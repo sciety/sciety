@@ -1,5 +1,5 @@
 import { RouterParamContext } from '@koa/router';
-import * as T from 'fp-ts/lib/Task';
+import * as T from 'fp-ts/Task';
 import { ParameterizedContext } from 'koa';
 import { respondHandler } from '../../src/respond';
 import { User } from '../../src/types/user';

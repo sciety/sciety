@@ -1,8 +1,8 @@
 import { URL } from 'url';
+import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import * as O from 'fp-ts/lib/Option';
-import * as T from 'fp-ts/lib/Task';
-import * as TE from 'fp-ts/lib/TaskEither';
 import { Maybe, Result } from 'true-myth';
 import { fetchSavedArticles } from './fetch-saved-articles';
 import { createGetFollowedEditorialCommunitiesFromIds, GetEditorialCommunity } from './get-followed-editorial-communities-from-ids';

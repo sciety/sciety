@@ -1,6 +1,6 @@
 import { URL } from 'url';
-import * as T from 'fp-ts/lib/Task';
-import { pipe } from 'fp-ts/lib/function';
+import * as T from 'fp-ts/Task';
+import { pipe } from 'fp-ts/function';
 import { GetFollowedEditorialCommunities } from './render-follow-list';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { UserId } from '../types/user-id';

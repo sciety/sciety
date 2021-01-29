@@ -1,6 +1,6 @@
-import * as O from 'fp-ts/lib/Option';
-import * as T from 'fp-ts/lib/Task';
-import { pipe } from 'fp-ts/lib/function';
+import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
+import { pipe } from 'fp-ts/function';
 import { Doi } from '../../src/types/doi';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { fetchSavedArticles, GetArticleTitle } from '../../src/user-page/fetch-saved-articles';

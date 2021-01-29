@@ -1,5 +1,5 @@
 import { URL } from 'url';
-import { flow } from 'fp-ts/lib/function';
+import { flow } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 type RenderPageHeader = (editorialCommunity: Community) => HtmlFragment;

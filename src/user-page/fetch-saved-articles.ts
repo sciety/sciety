@@ -1,6 +1,6 @@
-import * as O from 'fp-ts/lib/Option';
-import * as T from 'fp-ts/lib/Task';
-import { pipe } from 'fp-ts/lib/function';
+import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
+import { pipe } from 'fp-ts/function';
 import { Doi } from '../types/doi';
 import { HtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';

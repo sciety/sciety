@@ -1,5 +1,5 @@
-import * as O from 'fp-ts/lib/Option';
-import { pipe } from 'fp-ts/lib/function';
+import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
 import { renderSummaryFeedList } from '../../src/shared-components/render-summary-feed-list';
 import { Doi } from '../../src/types/doi';
 import { toHtmlFragment } from '../../src/types/html-fragment';
