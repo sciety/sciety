@@ -7,12 +7,12 @@ import { Json, JsonCompatible } from '../types/json';
 
 export type GetJson = (uri: string) => Promise<Json>;
 
-interface SearchResult {
+type SearchResult = {
   doi: Doi,
   title: string,
   authors: string,
   postedDate: Date,
-}
+};
 
 type SearchResults = {
   items: Array<SearchResult>,

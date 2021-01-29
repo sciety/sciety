@@ -28,7 +28,7 @@ type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.T
 
 type GetAllEditorialCommunities = T.Task<Array<EditorialCommunity>>;
 
-export interface Adapters {
+export type Adapters = {
   fetchArticle: FetchCrossrefArticle,
   fetchReview: FetchReview,
   fetchStaticFile: FetchStaticFile,
@@ -45,4 +45,4 @@ export interface Adapters {
   getUserDetails: GetTwitterUserDetails,
   follows: Follows,
   logger: Logger,
-}
+};

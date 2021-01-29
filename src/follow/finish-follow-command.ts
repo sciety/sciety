@@ -2,10 +2,10 @@ import { Middleware } from 'koa';
 import { CommitEvents, createFollowCommand, GetFollowList } from './follow-command';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 
-interface Ports {
+type Ports = {
   commitEvents: CommitEvents,
   getFollowList: GetFollowList,
-}
+};
 
 export const finishFollowCommand = (ports: Ports): Middleware => {
   const followCommand = createFollowCommand(

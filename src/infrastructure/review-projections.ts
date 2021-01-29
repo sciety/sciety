@@ -10,9 +10,9 @@ export type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray
   occurredAt: Date,
 }>>;
 
-interface ReviewProjections {
+type ReviewProjections = {
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
-}
+};
 
 export const createReviewProjections = (
   events: ReadonlyArray<EditorialCommunityReviewedArticleEvent>,

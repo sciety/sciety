@@ -24,11 +24,11 @@ import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
 import dummyLogger from '../dummy-logger';
 import { shouldNotBeCalled } from '../should-not-be-called';
 
-interface TestServer {
+type TestServer = {
   adapters: Adapters,
   server: Server,
   editorialCommunities: EditorialCommunityRepository,
-}
+};
 
 export const createTestServer = async (): Promise<TestServer> => {
   const editorialCommunities = createEditorialCommunityRepository(dummyLogger);

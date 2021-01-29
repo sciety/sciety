@@ -46,7 +46,7 @@ type ArticleDetails = {
 type GetArticleDetails = (doi: Doi) => T.Task<Result<ArticleDetails, 'not-found'|'unavailable'>>;
 
 type GetEvents = T.Task<ReadonlyArray<DomainEvent>>;
-interface Ports {
+type Ports = {
   fetchArticle: GetArticleDetails,
   fetchReview: GetReview,
   getEditorialCommunity: (editorialCommunityId: EditorialCommunityId) => T.Task<Maybe<{
@@ -56,13 +56,13 @@ interface Ports {
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
   getAllEvents: GetEvents,
-}
+};
 
-export interface Params {
+export type Params = {
   doi?: string,
   flavour?: string,
   user: O.Option<User>,
-}
+};
 
 const getUserId = (user: O.Option<User>): O.Option<UserId> => pipe(
   user,

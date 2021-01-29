@@ -37,10 +37,10 @@ type Ports = {
   fetchArticle: (doi: Doi) => T.Task<Result<{title: HtmlFragment}, unknown>>,
 };
 
-interface Params {
+type Params = {
   id?: string,
   user: O.Option<User>,
-}
+};
 
 type UserPage = (params: Params) => ReturnType<RenderPage>;
 

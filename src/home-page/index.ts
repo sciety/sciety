@@ -24,17 +24,17 @@ type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.T
   avatar: URL,
 }>>;
 
-interface Ports {
+type Ports = {
   fetchArticle: GetArticle,
   getAllEditorialCommunities: GetAllEditorialCommunities,
   getEditorialCommunity: GetEditorialCommunity,
   getAllEvents: GetAllEvents,
   follows: (userId: UserId, editorialCommunityId: EditorialCommunityId) => T.Task<boolean>,
-}
+};
 
-interface Params {
+type Params = {
   user: O.Option<User>,
-}
+};
 
 type HomePage = (params: Params) => ReturnType<RenderPage>;
 

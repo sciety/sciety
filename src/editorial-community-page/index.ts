@@ -23,13 +23,13 @@ type FetchStaticFile = (filename: string) => T.Task<string>;
 
 type FetchEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.Task<Maybe<EditorialCommunity>>;
 
-interface Ports {
+type Ports = {
   fetchArticle: GetArticle,
   fetchStaticFile: FetchStaticFile,
   getEditorialCommunity: FetchEditorialCommunity,
   getAllEvents: GetAllEvents,
   follows: Follows,
-}
+};
 
 const buildRenderFeed = (ports: Ports): RenderFeed => createRenderFeed(
   createGetMostRecentEvents(ports.getAllEvents, 20),
@@ -38,10 +38,10 @@ const buildRenderFeed = (ports: Ports): RenderFeed => createRenderFeed(
   createRenderFollowToggle(ports.follows),
 );
 
-export interface Params {
+export type Params = {
   id?: string,
   user: O.Option<User>,
-}
+};
 
 type EditorialCommunityPage = (params: Params) => ReturnType<RenderPage>;
 

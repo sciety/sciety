@@ -6,11 +6,11 @@ import { EditorialCommunityId } from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
-interface Community {
+type Community = {
   id: EditorialCommunityId,
   name: string,
   avatar: URL,
-}
+};
 
 export type RenderFollowedEditorialCommunity = (userId: O.Option<UserId>) => (
   community: Community,

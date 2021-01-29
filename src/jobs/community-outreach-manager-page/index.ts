@@ -5,9 +5,9 @@ import { HtmlFragment } from '../../types/html-fragment';
 
 type FetchStaticFile = (filename: string) => T.Task<string>;
 
-interface Ports {
+type Ports = {
   fetchStaticFile: FetchStaticFile,
-}
+};
 
 type CommunityOutreachManagerPage = () => T.Task<{
   title: string,

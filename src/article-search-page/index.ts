@@ -13,14 +13,14 @@ type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
   editorialCommunityId: EditorialCommunityId,
 }>>;
 
-interface Ports {
+type Ports = {
   searchEuropePmc: FindArticles,
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
-}
+};
 
-interface Params {
+type Params = {
   query?: string,
-}
+};
 
 type ArticleSearchPage = (params: Params) => ReturnType<RenderPage>;
 
