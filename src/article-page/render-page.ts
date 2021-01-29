@@ -33,6 +33,29 @@ type RenderAbstract = (doi: Doi) => TE.TaskEither<'not-found' | 'unavailable', H
 type RenderFeed = (doi: Doi, server: ArticleServer, userId: O.Option<UserId>) => TE.TaskEither<'no-content', HtmlFragment>;
 export type RenderPage = (doi: Doi, userId: O.Option<UserId>) => TE.TaskEither<RenderPageError, Page>;
 
+const toErrorPage = (error: 'not-found' | 'unavailable'): RenderPageError => {
+  switch (error) {
+    case 'not-found':
+      return {
+        type: 'not-found',
+        message: toHtmlFragment(`
+            We’re having trouble finding this information.
+            Ensure you have the correct URL, or try refreshing the page.
+            You may need to come back later.
+          `),
+      };
+    case 'unavailable':
+      return {
+        type: 'unavailable',
+        message: toHtmlFragment(`
+            We’re having trouble finding this information.
+            Ensure you have the correct URL, or try refreshing the page.
+            You may need to come back later.
+          `),
+      };
+  }
+};
+
 export const createRenderPage = (
   renderPageHeader: (doi: Doi, userId: O.Option<UserId>) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>,
   renderAbstract: RenderAbstract,
@@ -101,28 +124,7 @@ export const createRenderPage = (
       .ap(await pageHeaderResult)
       .ap(await feedResult)
       .ap(await articleDetailsResult)
-      .mapErr((error): RenderPageError => {
-        switch (error) {
-          case 'not-found':
-            return {
-              type: 'not-found',
-              message: toHtmlFragment(`
-                We’re having trouble finding this information.
-                Ensure you have the correct URL, or try refreshing the page.
-                You may need to come back later.
-              `),
-            };
-          case 'unavailable':
-            return {
-              type: 'unavailable',
-              message: toHtmlFragment(`
-                We’re having trouble finding this information.
-                Ensure you have the correct URL, or try refreshing the page.
-                You may need to come back later.
-              `),
-            };
-        }
-      })
+      .mapErr(toErrorPage)
       .mapOrElse<E.Either<RenderPageError, Page>>(E.left, E.right);
   };
 };
