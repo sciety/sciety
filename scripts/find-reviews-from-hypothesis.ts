@@ -40,6 +40,8 @@ const processServer = async (server: string): Promise<void> => {
 
 void (async (): Promise<void> => {
   process.stdout.write('Date,Article DOI,Review ID\n');
-  await processServer('biorxiv');
-  await processServer('medrxiv');
+  await Promise.all([
+    processServer('biorxiv'),
+    processServer('medrxiv'),
+  ]);
 })();
