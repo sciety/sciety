@@ -2,7 +2,7 @@ import { URL } from 'url';
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import { flow, pipe } from 'fp-ts/lib/function';
-import { Maybe } from 'true-myth';
+import { Maybe, Result } from 'true-myth';
 import { constructFeedItem } from './construct-feed-item';
 import { getActor } from './get-actor';
 import { GetAllEvents, getMostRecentEvents } from './get-most-recent-events';
@@ -15,8 +15,9 @@ import { renderPage, RenderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
 import { renderSearchForm } from './render-search-form';
 import { renderSummaryFeedList } from '../shared-components/render-summary-feed-list';
+import { Doi } from '../types/doi';
 import { EditorialCommunityId } from '../types/editorial-community-id';
-import { FetchExternalArticle } from '../types/fetch-external-article';
+import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { User } from '../types/user';
 import { UserId } from '../types/user-id';
 
@@ -24,6 +25,14 @@ type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.T
   name: string;
   avatar: URL;
 }>>;
+
+type FetchExternalArticle = (doi: Doi) => T.Task<Result<{
+  abstract: SanitisedHtmlFragment;
+  authors: Array<string>;
+  doi: Doi;
+  title: SanitisedHtmlFragment;
+  publicationDate: Date;
+}, 'not-found' | 'unavailable'>>;
 
 interface Ports {
   fetchArticle: FetchExternalArticle;
