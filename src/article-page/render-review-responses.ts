@@ -9,6 +9,7 @@ export type RenderReviewResponses = (reviewId: ReviewId, userId: O.Option<UserId
 
 // TODO Try introducing a Counter type to prevent impossible numbers (e.g. -1, 2.5)
 export type CountReviewResponses = (reviewId: ReviewId) => T.Task<{ helpfulCount: number, notHelpfulCount: number }>;
+// TODO: remove Maybe and Promise in favour of TaskOption
 export type GetUserReviewResponse = (reviewId: ReviewId, userId: O.Option<UserId>) => Promise<Maybe<'helpful' | 'not-helpful'>>;
 
 export const createRenderReviewResponses = (
@@ -16,6 +17,7 @@ export const createRenderReviewResponses = (
   getUserReviewResponse: GetUserReviewResponse,
 ): RenderReviewResponses => (
   (reviewId, userId) => async () => {
+    // TODO: do not invoke task
     const { helpfulCount, notHelpfulCount } = await countReviewResponses(reviewId)();
     const current = await getUserReviewResponse(reviewId, userId);
 

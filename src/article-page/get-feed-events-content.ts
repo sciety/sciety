@@ -39,6 +39,7 @@ export const getFeedEventsContent = (
   getEditorialCommunity: GetEditorialCommunity,
 ) : GetFeedItems => (
   (doi, server) => async () => {
+    // TODO: remove Task invocation
     const feedItems = (await getFeedEvents(doi)()).map(
       async (feedEvent): Promise<FeedItem> => {
         if (feedEvent.type === 'article-version') {

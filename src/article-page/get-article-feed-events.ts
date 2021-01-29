@@ -34,6 +34,7 @@ export const getArticleFeedEvents = (
   }>>,
 ): GetFeedItems => (
   (doi, server) => async () => (
+    // TODO: turn into pipe to remove nesting
     createHandleArticleVersionErrors(
       getFeedEventsContent(
         mergeFeeds([

@@ -111,6 +111,7 @@ export const createRenderReviewFeedItem = (
 ): RenderReviewFeedItem => (review, userId) => pipe(
   renderReviewResponses(review.id, userId),
   T.map(flow(
+    // TODO: remove the currying
     render(teaserChars, review),
     toHtmlFragment,
   )),

@@ -39,6 +39,7 @@ export const createRenderFeed = (
   };
 
   return (doi, server, userId) => async () => {
+    // TODO: remove Task invocation
     const feedItems = await getFeedItems(doi, server)();
 
     if (feedItems.length === 0) {

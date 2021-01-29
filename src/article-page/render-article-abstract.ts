@@ -7,6 +7,7 @@ import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
+// TODO: remove Result
 export type GetArticleAbstract<Err> = (doi: Doi) => T.Task<Result<SanitisedHtmlFragment, Err>>;
 
 type RenderArticleAbstract<Err> = (doi: Doi) => TE.TaskEither<Err, HtmlFragment>;

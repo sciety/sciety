@@ -100,7 +100,7 @@ export const createRenderPage = (
         ({ server }) => server,
       )),
       T.chain((server) => renderFeed(doi, server, userId)),
-      T.map(flow(E.getOrElse(constant('')), E.right)),
+      TE.orElse(flow(constant(''), TE.right)),
     ),
   };
 
