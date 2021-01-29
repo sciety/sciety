@@ -4,7 +4,7 @@ import { Result } from 'true-myth';
 import { constructFeedItem, GetArticle } from '../../src/editorial-community-page/construct-feed-item';
 import { FeedItem } from '../../src/shared-components/render-summary-feed-list';
 import { Doi } from '../../src/types/doi';
-import { EditorialCommunityEndorsedArticleEvent, EditorialCommunityReviewedArticleEvent } from '../../src/types/domain-events';
+import { EditorialCommunityReviewedArticleEvent } from '../../src/types/domain-events';
 import { EditorialCommunity } from '../../src/types/editorial-community';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
@@ -19,64 +19,6 @@ describe('construct-feed-item', (): void => {
     descriptionPath: '',
     avatar: new URL('http://example.com/image'),
   };
-
-  describe('when given an EditorialCommunityEndorsedArticleEvent', () => {
-    const event: EditorialCommunityEndorsedArticleEvent = {
-      editorialCommunityId: arbitraryActorId,
-      articleId: arbitraryArticleId,
-      date: new Date('2020-01-01'),
-      type: 'EditorialCommunityEndorsedArticle',
-    };
-    let feedItem: FeedItem;
-
-    describe('and the article information can be retrieved', () => {
-      beforeEach(async () => {
-        const getArticle: GetArticle = () => T.of(Result.ok({
-          title: articleTitle,
-        }));
-        feedItem = await constructFeedItem(getArticle)(community)(event)();
-      });
-
-      it('displays the article title', async () => {
-        expect(feedItem).toStrictEqual(expect.objectContaining({ title: articleTitle }));
-      });
-
-      it('displays the word "endorsed"', async () => {
-        expect(feedItem).toStrictEqual(expect.objectContaining({ verb: 'endorsed' }));
-      });
-
-      it('displays the actor name', async () => {
-        expect(feedItem).toStrictEqual(expect.objectContaining({ actorName: 'dummyActorName' }));
-      });
-
-      it('displays the event date', async () => {
-        expect(feedItem).toStrictEqual(expect.objectContaining({ date: new Date('2020-01-01') }));
-      });
-    });
-
-    describe('and the article information cannot be retrieved', () => {
-      beforeEach(async () => {
-        const getArticle: GetArticle = () => T.of(Result.err('something-bad'));
-        feedItem = await constructFeedItem(getArticle)(community)(event)();
-      });
-
-      it('displays a generic article title', async () => {
-        expect(feedItem).toStrictEqual(expect.objectContaining({ title: 'an article' }));
-      });
-
-      it('displays the word "endorsed"', async () => {
-        expect(feedItem).toStrictEqual(expect.objectContaining({ verb: 'endorsed' }));
-      });
-
-      it('displays the actor name', async () => {
-        expect(feedItem).toStrictEqual(expect.objectContaining({ actorName: 'dummyActorName' }));
-      });
-
-      it('displays the event date', async () => {
-        expect(feedItem).toStrictEqual(expect.objectContaining({ date: new Date('2020-01-01') }));
-      });
-    });
-  });
 
   describe('when given an EditorialCommunityReviewedArticleEvent', () => {
     const event: EditorialCommunityReviewedArticleEvent = {

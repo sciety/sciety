@@ -4,21 +4,16 @@ import { flow, pipe } from 'fp-ts/lib/function';
 import { GetEvents } from './render-feed';
 import {
   DomainEvent,
-  EditorialCommunityEndorsedArticleEvent,
   EditorialCommunityReviewedArticleEvent,
-  isEditorialCommunityEndorsedArticleEvent,
   isEditorialCommunityReviewedArticleEvent,
 } from '../types/domain-events';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 
 type FeedEvent =
-  EditorialCommunityEndorsedArticleEvent |
   EditorialCommunityReviewedArticleEvent;
 
 const wasCreatedBy = (editorialCommunityId: EditorialCommunityId) => (event: DomainEvent): event is FeedEvent => (
-  (isEditorialCommunityEndorsedArticleEvent(event)
-    && event.editorialCommunityId.value === editorialCommunityId.value)
-  || (isEditorialCommunityReviewedArticleEvent(event)
+  (isEditorialCommunityReviewedArticleEvent(event)
     && event.editorialCommunityId.value === editorialCommunityId.value)
 );
 
