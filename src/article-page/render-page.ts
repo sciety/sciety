@@ -1,10 +1,10 @@
+import { constant, flow, pipe } from 'fp-ts/function';
+import { sequenceS } from 'fp-ts/lib/Apply';
 import * as E from 'fp-ts/lib/Either';
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
-import { constant, pipe } from 'fp-ts/lib/function';
 import striptags from 'striptags';
-import { Result } from 'true-myth';
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -56,75 +56,58 @@ const toErrorPage = (error: 'not-found' | 'unavailable'): RenderPageError => {
   }
 };
 
+const render = (components: {
+  articleDetails: ArticleDetails,
+  abstract: string,
+  pageHeader: string,
+  feed: string,
+}): Page => (
+  {
+    title: `${striptags(components.articleDetails.title)}`,
+    content: toHtmlFragment(`
+<article class="sciety-grid sciety-grid--article">
+  ${components.pageHeader}
+
+  <div class="main-content main-content--article">
+    ${components.abstract}
+    ${components.feed}
+  </div>
+
+</article>
+    `),
+    openGraph: {
+      title: striptags(components.articleDetails.title),
+      description: striptags(components.articleDetails.abstract),
+    },
+  }
+);
+
 export const createRenderPage = (
   renderPageHeader: (doi: Doi, userId: O.Option<UserId>) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>,
   renderAbstract: RenderAbstract,
   renderFeed: RenderFeed,
   getArticleDetails: GetArticleDetails,
-): RenderPage => {
-  const template = (
-    abstract: string,
-  ) => (pageHeader: string) => (feed: string) => (articleDetails: ArticleDetails) => (
-    {
-      title: `${striptags(articleDetails.title)}`,
-      content: toHtmlFragment(`
-<article class="sciety-grid sciety-grid--article">
-  ${pageHeader}
-
-  <div class="main-content main-content--article">
-    ${abstract}
-    ${feed}
-  </div>
-
-</article>
-    `),
-      openGraph: {
-        title: striptags(articleDetails.title),
-        description: striptags(articleDetails.abstract),
-      },
-    }
-  );
-
-  return (doi, userId) => async () => {
-    const abstractResult = pipe(
-      renderAbstract(doi),
-      T.map(E.fold(
-        (error) => Result.err<string, 'not-found' | 'unavailable'>(error),
-        (success) => Result.ok<string, 'not-found' | 'unavailable'>(success),
-      )),
-    )();
-    const pageHeaderResult = pipe(
-      renderPageHeader(doi, userId),
-      T.map(E.fold(
-        (error) => Result.err<HtmlFragment, 'not-found' | 'unavailable'>(error),
-        (success) => Result.ok<HtmlFragment, 'not-found' | 'unavailable'>(success),
-      )),
-    )();
-    const articleDetails = getArticleDetails(doi);
-    const articleDetailsResult = pipe(
-      articleDetails,
-      T.map(E.fold(
-        (error) => Result.err<ArticleDetails, 'not-found' | 'unavailable'>(error),
-        (success) => Result.ok<ArticleDetails, 'not-found' | 'unavailable'>(success),
-      )),
-    )();
-    const feedResult = pipe(
+): RenderPage => (doi, userId) => {
+  const articleDetails = getArticleDetails(doi);
+  const components = {
+    articleDetails,
+    abstract: renderAbstract(doi),
+    pageHeader: renderPageHeader(doi, userId),
+    feed: pipe(
       articleDetails,
       T.map(E.fold(
         constant<ArticleServer>('biorxiv'),
         ({ server }) => server,
       )),
       T.chain((server) => renderFeed(doi, server, userId)),
-      T.map(E.getOrElse(constant(''))),
-      T.map((feed) => Result.ok<string, never>(feed)),
-    )();
-
-    return Result.ok<typeof template, 'not-found' | 'unavailable'>(template)
-      .ap(await abstractResult)
-      .ap(await pageHeaderResult)
-      .ap(await feedResult)
-      .ap(await articleDetailsResult)
-      .mapErr(toErrorPage)
-      .mapOrElse<E.Either<RenderPageError, Page>>(E.left, E.right);
+      T.map(flow(E.getOrElse(constant('')), E.right)),
+    ),
   };
+
+  return pipe(
+    components,
+    sequenceS(TE.taskEither),
+    TE.map(render),
+    TE.mapLeft(toErrorPage),
+  );
 };
