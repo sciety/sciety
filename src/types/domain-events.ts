@@ -6,15 +6,6 @@ import { UserId } from './user-id';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export type EditorialCommunityEndorsedArticleEvent = Readonly<{
-  type: 'EditorialCommunityEndorsedArticle',
-  date: Date,
-  editorialCommunityId: EditorialCommunityId,
-  articleId: Doi,
-}>;
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 export type EditorialCommunityReviewedArticleEvent = Readonly<{
   type: 'EditorialCommunityReviewedArticle',
   date: Date,
@@ -210,7 +201,6 @@ export const userSavedArticle = (userId: UserId, doi: Doi): UserSavedArticleEven
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export type DomainEvent =
-  EditorialCommunityEndorsedArticleEvent |
   EditorialCommunityReviewedArticleEvent |
   EditorialCommunityJoinedEvent |
   UserSavedArticleEvent |
