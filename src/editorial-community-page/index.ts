@@ -45,7 +45,7 @@ export type Params = {
 
 type EditorialCommunityPage = (params: Params) => ReturnType<RenderPage>;
 
-export default (ports: Ports): EditorialCommunityPage => {
+export const editorialCommunityPage = (ports: Ports): EditorialCommunityPage => {
   const renderPage = createRenderPage(
     renderPageHeader,
     createRenderDescription(getDescription(ports.fetchStaticFile)),
