@@ -4,7 +4,7 @@ import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
 import clip from 'text-clipper';
 import { RenderReviewResponses } from './render-review-responses';
-import templateDate from '../shared-components/date';
+import { templateDate } from '../shared-components/date';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { ReviewId } from '../types/review-id';

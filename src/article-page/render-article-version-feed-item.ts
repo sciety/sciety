@@ -1,5 +1,5 @@
 import { URL } from 'url';
-import renderDate from '../shared-components/date';
+import { templateDate } from '../shared-components/date';
 import { ArticleServer } from '../types/article-server';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
@@ -17,7 +17,7 @@ const renderBiorxivArticleVersionFeedItem: RenderArticleVersionFeedItem = (feedI
   <div class="article-feed__item_contents">
     <img class="article-feed__item__avatar" src="https://pbs.twimg.com/profile_images/956882186996662272/lwyH1HFe_200x200.jpg" alt="">
     <div>
-      ${renderDate(feedItem.occurredAt, 'article-feed__item__date')}
+      ${templateDate(feedItem.occurredAt, 'article-feed__item__date')}
       <p class="article-feed__item__title">
         <a href="${feedItem.source.toString()}">
           Version ${feedItem.version} published on bioRxiv
@@ -31,7 +31,7 @@ const renderMedrxivArticleVersionFeedItem: RenderArticleVersionFeedItem = (feedI
   <div class="article-feed__item_contents">
     <img class="article-feed__item__avatar" src="https://pbs.twimg.com/profile_images/956565401588002816/0rESoCS0_200x200.jpg" alt="">
     <div>
-      ${renderDate(feedItem.occurredAt, 'article-feed__item__date')}
+      ${templateDate(feedItem.occurredAt, 'article-feed__item__date')}
       <p class="article-feed__item__title">
         <a href="${feedItem.source.toString()}">
           Version ${feedItem.version} published on medRxiv

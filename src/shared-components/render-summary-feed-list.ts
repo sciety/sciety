@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as A from 'fp-ts/ReadonlyArray';
 import { flow } from 'fp-ts/function';
-import templateDate from './date';
+import { templateDate } from './date';
 import templateListItems from './list-items';
 import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
