@@ -21,7 +21,7 @@ import { finishFollowCommand } from '../follow/finish-follow-command';
 import { saveFollowCommand } from '../follow/save-follow-command';
 import { homePage } from '../home-page';
 import { Adapters } from '../infrastructure/adapters';
-import privacyPage from '../privacy-page';
+import { privacyPage } from '../privacy-page';
 import { respondHandler } from '../respond';
 import { finishRespondCommand } from '../respond/finish-respond-command';
 import { saveRespondCommand } from '../respond/save-respond-command';

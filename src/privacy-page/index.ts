@@ -6,7 +6,7 @@ type RenderPage = () => T.Task<{
   content: HtmlFragment,
 }>;
 
-export default (): RenderPage => () => T.of({
+export const privacyPage = (): RenderPage => () => T.of({
   title: 'Privacy notice',
   content: toHtmlFragment(`
     <div class="sciety-grid sciety-grid--simple">
