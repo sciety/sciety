@@ -14,7 +14,7 @@ import { redirectAfterAuthenticating, requireAuthentication } from './require-au
 import { robots } from './robots';
 import { aboutPage } from '../about-page';
 import { articlePage } from '../article-page';
-import articleSearchPage from '../article-search-page';
+import { articleSearchPage } from '../article-search-page';
 import editorialCommunityPage from '../editorial-community-page';
 import { followHandler } from '../follow';
 import { finishFollowCommand } from '../follow/finish-follow-command';
