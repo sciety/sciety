@@ -1,4 +1,4 @@
-import templateListItems from '../../src/shared-components/list-items';
+import { templateListItems } from '../../src/shared-components/list-items';
 import { HtmlFragment, toHtmlFragment } from '../../src/types/html-fragment';
 
 describe('list-items template', (): void => {

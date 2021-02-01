@@ -8,7 +8,7 @@ import {
 } from './render-article-version-error-feed-item';
 import { ArticleVersionFeedItem, RenderArticleVersionFeedItem } from './render-article-version-feed-item';
 import { RenderReviewFeedItem, ReviewFeedItem } from './render-review-feed-item';
-import renderListItems from '../shared-components/list-items';
+import { templateListItems } from '../shared-components/list-items';
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -55,7 +55,7 @@ export const createRenderFeed = (
         <h2>Feed</h2>
 
         <ol role="list" class="article-feed__list">
-          ${renderListItems(items, 'article-feed__item')}
+          ${templateListItems(items, 'article-feed__item')}
         </ol>
       </section>
     `));

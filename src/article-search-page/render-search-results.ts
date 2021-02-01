@@ -2,7 +2,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { RenderSearchResult, SearchResult } from './render-search-result';
-import templateListItems from '../shared-components/list-items';
+import { templateListItems } from '../shared-components/list-items';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 export type FindArticles = (query: string) => TE.TaskEither<'unavailable', {

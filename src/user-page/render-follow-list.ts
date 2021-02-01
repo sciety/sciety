@@ -5,7 +5,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { RenderFollowedEditorialCommunity } from './render-followed-editorial-community';
-import templateListItems from '../shared-components/list-items';
+import { templateListItems } from '../shared-components/list-items';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
