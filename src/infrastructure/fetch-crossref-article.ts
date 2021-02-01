@@ -44,12 +44,15 @@ export default (getXml: GetXml, logger: Logger): FetchCrossrefArticle => {
         doi,
         error,
       };
+      let errorType: FetchCrossrefArticleError = 'not-found';
       if (error instanceof Error) {
         payload.message = error.message;
+        if (error.message === 'Empty response from Crossref') {
+          errorType = 'unavailable';
+        }
       }
       logger('error', 'Failed to fetch article', payload);
-
-      return Result.err('not-found');
+      return Result.err(errorType);
     }
 
     try {
