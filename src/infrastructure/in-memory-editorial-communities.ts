@@ -4,7 +4,7 @@ import { Logger } from './logger';
 import { EditorialCommunity } from '../types/editorial-community';
 import { EditorialCommunityRepository } from '../types/editorial-community-repository';
 
-export default (logger: Logger): EditorialCommunityRepository => {
+export const createEditorialCommunityRepository = (logger: Logger): EditorialCommunityRepository => {
   const data: Array<EditorialCommunity> = [];
 
   const result: EditorialCommunityRepository = {

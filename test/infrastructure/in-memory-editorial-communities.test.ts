@@ -1,5 +1,5 @@
 import { URL } from 'url';
-import createEditorialCommunities from '../../src/infrastructure/in-memory-editorial-communities';
+import { createEditorialCommunityRepository } from '../../src/infrastructure/in-memory-editorial-communities';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 import { EditorialCommunityRepository } from '../../src/types/editorial-community-repository';
 import dummyLogger from '../dummy-logger';
@@ -10,7 +10,7 @@ describe('in-memory-editorial-communities', () => {
   let repository: EditorialCommunityRepository;
 
   beforeEach(async () => {
-    repository = createEditorialCommunities(dummyLogger);
+    repository = createEditorialCommunityRepository(dummyLogger);
     await repository.add({
       id: editorialCommunityId,
       name: 'My pals',

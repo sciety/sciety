@@ -19,7 +19,7 @@ import { getEventsFromDatabase } from './get-events-from-database';
 import { createGetTwitterResponse } from './get-twitter-response';
 import { createGetTwitterUserDetails } from './get-twitter-user-details';
 import { createGetXmlFromCrossrefRestApi } from './get-xml-from-crossref-rest-api';
-import createEditorialCommunityRepository from './in-memory-editorial-communities';
+import { createEditorialCommunityRepository } from './in-memory-editorial-communities';
 import {
   createJsonSerializer, createRTracerLogger, createStreamLogger, Logger,
 } from './logger';
