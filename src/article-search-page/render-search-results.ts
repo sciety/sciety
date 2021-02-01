@@ -41,7 +41,7 @@ const renderSearchResults = (renderSearchResult: RenderSearchResult) => (searchR
   )
 );
 
-export default (
+export const createRenderSearchResults = (
   findArticles: FindArticles,
   renderSearchResult: RenderSearchResult,
 ): RenderSearchResults => (query) => pipe(

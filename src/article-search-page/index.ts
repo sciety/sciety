@@ -3,7 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { createRenderPage, RenderPage } from './render-page';
 import { createRenderSearchResult, GetReviewCount } from './render-search-result';
-import createRenderSearchResults, { FindArticles } from './render-search-results';
+import { createRenderSearchResults, FindArticles } from './render-search-results';
 import { Doi } from '../types/doi';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { ReviewId } from '../types/review-id';

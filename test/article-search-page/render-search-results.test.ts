@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { RenderSearchResult } from '../../src/article-search-page/render-search-result';
-import createRenderSearchResults, { FindArticles } from '../../src/article-search-page/render-search-results';
+import { createRenderSearchResults, FindArticles } from '../../src/article-search-page/render-search-results';
 import { Doi } from '../../src/types/doi';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { shouldNotBeCalled } from '../should-not-be-called';
