@@ -1,5 +1,6 @@
 @use 'baseline';
 @use 'settings';
+@use 'typography';
 
 .search-results {
   font-family: settings.$font-secondary;
@@ -20,4 +21,9 @@
   &:last-child {
     margin-bottom: 0;
   }
+}
+
+.search-results-list__item__link:link,
+.search-results-list__item__link:visited {
+  @include typography.subtle-link();
 }

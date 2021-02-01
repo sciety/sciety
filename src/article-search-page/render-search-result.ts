@@ -21,7 +21,7 @@ const renderReviewCount: (reviewCount: number) => string = (reviewCount) => (
   `
     <div>
       Reviews
-      <span class="detail">${reviewCount}</span>
+      <span>${reviewCount}</span>
     </div>
   `
 );
@@ -48,7 +48,7 @@ const createRenderReviews = (
 );
 
 const templatePostedDate = (date: Date): HtmlFragment => toHtmlFragment(
-  `<div class="meta">Posted ${templateDate(date)}</div>`,
+  `<div>Posted ${templateDate(date)}</div>`,
 );
 
 export default (
@@ -57,13 +57,13 @@ export default (
   const renderReviews = createRenderReviews(getReviewCount);
 
   return (result) => async () => toHtmlFragment(`
-    <div class="content">
-      <a class="header" href="/articles/${result.doi.value}">${result.title}</a>
-      <div class="meta">
+    <div>
+      <a class="search-results-list__item__link" href="/articles/${result.doi.value}">${result.title}</a>
+      <div>
         ${result.authors}
       </div>
       ${templatePostedDate(result.postedDate)}
-      <div class="extra">
+      <div>
         ${await renderReviews(result.doi)}
       </div>
     </div>
