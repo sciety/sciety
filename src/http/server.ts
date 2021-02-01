@@ -10,7 +10,7 @@ import { Logger } from '../infrastructure/logger';
 import { User } from '../types/user';
 import { toUserId } from '../types/user-id';
 
-export default (router: Router, logger: Logger): Server => {
+export const createApplicationServer = (router: Router, logger: Logger): Server => {
   const app = new Koa();
 
   app.use(rTracer.koaMiddleware());

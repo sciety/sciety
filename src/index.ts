@@ -1,6 +1,6 @@
 import { createTerminus, TerminusOptions } from '@godaddy/terminus';
 import { createRouter } from './http/router';
-import createServer from './http/server';
+import { createApplicationServer } from './http/server';
 import { createInfrastructure } from './infrastructure';
 
 void (async (): Promise<void> => {
@@ -8,7 +8,7 @@ void (async (): Promise<void> => {
 
   const router = createRouter(adapters);
 
-  const server = createServer(
+  const server = createApplicationServer(
     router,
     adapters.logger,
   );

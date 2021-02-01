@@ -7,7 +7,7 @@ import * as TE from 'fp-ts/TaskEither';
 import datasetFactory from 'rdf-dataset-indexed';
 import bootstrapEditorialCommunities from '../../src/data/bootstrap-editorial-communities';
 import { createRouter } from '../../src/http/router';
-import createServer from '../../src/http/server';
+import { createApplicationServer } from '../../src/http/server';
 import { Adapters } from '../../src/infrastructure/adapters';
 import { FetchCrossrefArticle } from '../../src/infrastructure/fetch-crossref-article';
 import { createFetchDataciteReview } from '../../src/infrastructure/fetch-datacite-review';
@@ -78,7 +78,7 @@ export const createTestServer = async (): Promise<TestServer> => {
   const router = createRouter(adapters);
   return {
     adapters,
-    server: createServer(router, dummyLogger),
+    server: createApplicationServer(router, dummyLogger),
     editorialCommunities,
   };
 };
