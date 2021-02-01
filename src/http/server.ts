@@ -1,17 +1,12 @@
 import { createServer, Server } from 'http';
-import Router, { RouterContext } from '@koa/router';
+import Router from '@koa/router';
 import rTracer from 'cls-rtracer';
-import * as O from 'fp-ts/Option';
-import { pipe } from 'fp-ts/function';
-import { NOT_FOUND } from 'http-status-codes';
 import Koa, { ExtendableContext, Next } from 'koa';
 import koaPassport from 'koa-passport';
 import koaSession from 'koa-session';
 import { Strategy as TwitterStrategy } from 'passport-twitter';
-import { renderErrorPage } from './render-error-page';
+import { routeNotFound } from './route-not-found';
 import { Logger } from '../infrastructure/logger';
-import { applyStandardPageLayout } from '../shared-components/apply-standard-page-layout';
-import { toHtmlFragment } from '../types/html-fragment';
 import { User } from '../types/user';
 import { toUserId } from '../types/user-id';
 
@@ -97,22 +92,7 @@ export default (router: Router, logger: Logger): Server => {
   });
 
   app.use(router.middleware());
-
-  app.use(async (context: RouterContext, next) => {
-    const user = O.fromNullable(context.state.user);
-    // eslint-disable-next-line no-underscore-dangle
-    if (context._matchedRoute === undefined) {
-      context.status = NOT_FOUND;
-      context.body = pipe(
-        {
-          title: 'Page not found | Sciety',
-          content: renderErrorPage(toHtmlFragment('Page not found.')),
-        },
-        applyStandardPageLayout(user),
-      );
-    }
-    await next();
-  });
+  app.use(routeNotFound);
 
   app.on('error', (error) => {
     const payload = { error };
