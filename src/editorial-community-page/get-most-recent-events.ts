@@ -19,7 +19,7 @@ const wasCreatedBy = (editorialCommunityId: EditorialCommunityId) => (event: Dom
 
 export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-export default (getAllEvents: GetAllEvents, maxCount: number): GetEvents => (
+export const createGetMostRecentEvents = (getAllEvents: GetAllEvents, maxCount: number): GetEvents => (
   (editorialCommunityId) => pipe(
     getAllEvents,
     T.map(

@@ -1,5 +1,5 @@
 import * as T from 'fp-ts/Task';
-import createGetMostRecentEvents, { GetAllEvents } from '../../src/editorial-community-page/get-most-recent-events';
+import { createGetMostRecentEvents, GetAllEvents } from '../../src/editorial-community-page/get-most-recent-events';
 import { Doi } from '../../src/types/doi';
 import { DomainEvent, editorialCommunityReviewedArticle } from '../../src/types/domain-events';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
