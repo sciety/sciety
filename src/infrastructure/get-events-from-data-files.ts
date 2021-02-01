@@ -8,7 +8,7 @@ import { ReviewId } from '../types/review-id';
 
 /* eslint-disable no-continue */
 
-export default (editorialCommunityIds: ReadonlyArray<string>): Array<DomainEvent> => {
+export const getEventsFromDataFiles = (editorialCommunityIds: ReadonlyArray<string>): Array<DomainEvent> => {
   const parsedEvents: Array<DomainEvent> = [];
 
   const unserializeReviewId = (reviewId: string): ReviewId => {

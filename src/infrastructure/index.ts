@@ -14,7 +14,7 @@ import { createFetchReview } from './fetch-review';
 import { createFetchStaticFile } from './fetch-static-file';
 import { createFollows } from './follows';
 import { createGetArticleVersionEventsFromBiorxiv } from './get-article-version-events-from-biorxiv';
-import getEventsFromDataFiles from './get-events-from-data-files';
+import { getEventsFromDataFiles } from './get-events-from-data-files';
 import { getEventsFromDatabase } from './get-events-from-database';
 import { createGetTwitterResponse } from './get-twitter-response';
 import { createGetTwitterUserDetails } from './get-twitter-user-details';
