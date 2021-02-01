@@ -22,7 +22,7 @@ type HypothesisResponse = JsonCompatible<{
   },
 }>;
 
-export default (getJson: GetJson, logger: Logger): FetchHypothesisAnnotation => {
+export const createFetchHypothesisAnnotation = (getJson: GetJson, logger: Logger): FetchHypothesisAnnotation => {
   const converter = new Remarkable({ html: true }).use(linkify);
   return (id) => async () => {
     const uri = `https://api.hypothes.is/api/annotations/${id.value}`;

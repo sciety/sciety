@@ -9,7 +9,7 @@ import { createEventSourceFollowListRepository } from './event-sourced-follow-li
 import { createFetchCrossrefArticle } from './fetch-crossref-article';
 import { createFetchDataciteReview } from './fetch-datacite-review';
 import { createFetchDataset } from './fetch-dataset';
-import createFetchHypothesisAnnotation from './fetch-hypothesis-annotation';
+import { createFetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
 import { createFetchReview } from './fetch-review';
 import { createFetchStaticFile } from './fetch-static-file';
 import { createFollows } from './follows';

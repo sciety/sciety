@@ -12,7 +12,7 @@ import { Adapters } from '../../src/infrastructure/adapters';
 import { FetchCrossrefArticle } from '../../src/infrastructure/fetch-crossref-article';
 import { createFetchDataciteReview } from '../../src/infrastructure/fetch-datacite-review';
 import { FetchDataset } from '../../src/infrastructure/fetch-dataset';
-import createFetchHypothesisAnnotation from '../../src/infrastructure/fetch-hypothesis-annotation';
+import { createFetchHypothesisAnnotation } from '../../src/infrastructure/fetch-hypothesis-annotation';
 import { createFetchReview } from '../../src/infrastructure/fetch-review';
 import { createEditorialCommunityRepository } from '../../src/infrastructure/in-memory-editorial-communities';
 import { createReviewProjections } from '../../src/infrastructure/review-projections';

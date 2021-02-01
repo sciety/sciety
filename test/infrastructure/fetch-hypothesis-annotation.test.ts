@@ -1,7 +1,7 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import createFetchHypothesisAnnotation, { GetJson } from '../../src/infrastructure/fetch-hypothesis-annotation';
+import { createFetchHypothesisAnnotation, GetJson } from '../../src/infrastructure/fetch-hypothesis-annotation';
 import { Review } from '../../src/infrastructure/review';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { HypothesisAnnotationId } from '../../src/types/hypothesis-annotation-id';
