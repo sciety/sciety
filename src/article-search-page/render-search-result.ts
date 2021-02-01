@@ -50,7 +50,7 @@ const templatePostedDate = (date: Date): HtmlFragment => toHtmlFragment(
   `<div class="search-results-list__item__date">Posted ${templateDate(date)}</div>`,
 );
 
-export default (
+export const createRenderSearchResult = (
   getReviewCount: GetReviewCount,
 ): RenderSearchResult => {
   const renderReviews = createRenderReviews(getReviewCount);

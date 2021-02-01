@@ -1,5 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
-import createRenderSearchResult, {
+import {
+  createRenderSearchResult,
   GetReviewCount,
   SearchResult,
 } from '../../src/article-search-page/render-search-result';
