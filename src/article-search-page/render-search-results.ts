@@ -23,7 +23,7 @@ const renderListIfNecessary = (articles: ReadonlyArray<HtmlFragment>): string =>
   }
 
   return `
-      <ul class="ui relaxed divided items" role="list">
+      <ul role="list">
         ${templateListItems(articles)}
       </ul>
     `;

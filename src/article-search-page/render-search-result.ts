@@ -19,7 +19,7 @@ export type RenderSearchResult = (result: SearchResult) => T.Task<HtmlFragment>;
 
 const renderReviewCount: (reviewCount: number) => string = (reviewCount) => (
   `
-    <div class="ui label">
+    <div>
       Reviews
       <span class="detail">${reviewCount}</span>
     </div>
