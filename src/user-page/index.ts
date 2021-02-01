@@ -2,8 +2,8 @@ import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, pipe } from 'fp-ts/function';
-import { Maybe, Result } from 'true-myth';
+import { constant, flow, pipe } from 'fp-ts/function';
+import { Maybe } from 'true-myth';
 import { fetchSavedArticles } from './fetch-saved-articles';
 import { createGetFollowedEditorialCommunitiesFromIds, GetEditorialCommunity } from './get-followed-editorial-communities-from-ids';
 import { getUserDisplayName } from './get-user-display-name';
@@ -34,7 +34,7 @@ type Ports = {
   getAllEvents: GetAllEvents,
   follows: Follows,
   getUserDetails: GetUserDetails,
-  fetchArticle: (doi: Doi) => T.Task<Result<{title: HtmlFragment}, unknown>>,
+  fetchArticle: (doi: Doi) => TE.TaskEither<unknown, {title: HtmlFragment}>,
 };
 
 type Params = {
@@ -69,7 +69,10 @@ export const userPage = (ports: Ports): UserPage => {
       projectSavedArticleDois(ports.getAllEvents),
       T.chain(fetchSavedArticles(flow(
         ports.fetchArticle,
-        T.map((articleResult) => articleResult.mapOr(O.none, O.some)),
+        TE.fold(
+          () => T.of(O.none),
+          (article) => T.of(O.some(article)),
+        ),
         T.map(O.map((article) => article.title)),
       ))),
       T.map(renderSavedArticles),

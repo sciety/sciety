@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import { Result } from 'true-myth';
 import { DOMParser } from 'xmldom';
@@ -11,14 +12,17 @@ import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
 type FetchCrossrefArticleError = 'not-found' | 'unavailable';
 
-export type FetchCrossrefArticle = (doi: Doi) => T.Task<Result<{
+export type FetchCrossrefArticle = (doi: Doi) => T.Task<E.Either<
+FetchCrossrefArticleError,
+{
   abstract: SanitisedHtmlFragment,
   authors: Array<string>,
   doi: Doi,
   title: SanitisedHtmlFragment,
   publicationDate: Date,
   server: ArticleServer,
-}, FetchCrossrefArticleError>>;
+}
+>>;
 
 export type GetXml = (doi: Doi, acceptHeader: string) => Promise<string>;
 
@@ -52,12 +56,12 @@ export default (getXml: GetXml, logger: Logger): FetchCrossrefArticle => {
         }
       }
       logger('error', 'Failed to fetch article', payload);
-      return Result.err(errorType);
+      return E.left(errorType);
     }
 
     try {
       const doc = parser.parseFromString(response, 'text/xml');
-      return Result.ok({
+      return E.right({
         abstract: getAbstract(doc, doi, logger),
         authors: getAuthors(doc, doi, logger),
         doi,
@@ -75,7 +79,7 @@ export default (getXml: GetXml, logger: Logger): FetchCrossrefArticle => {
       // - what happens if the title cannot be parsed (e.g. it's missing from the XML)?
       // - what happens if the abstract cannot be parsed (e.g. it has unforeseen tags)?
       // - ...
-      return Result.err('unavailable');
+      return E.left('unavailable');
     }
   };
 };
