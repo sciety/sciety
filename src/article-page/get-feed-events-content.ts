@@ -1,6 +1,7 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
+import { pipe } from 'fp-ts/function';
 import { FeedItem, GetFeedItems } from './render-feed';
 import { Doi } from '../types/doi';
 import { EditorialCommunityId } from '../types/editorial-community-id';
@@ -38,31 +39,30 @@ export const getFeedEventsContent = (
   getReview: GetReview,
   getEditorialCommunity: GetEditorialCommunity,
 ) : GetFeedItems => (
-  (doi, server) => async () => {
+  (doi, server) => {
     // TODO: remove Task invocation
-    const feedItems = (await getFeedEvents(doi)()).map(
-      async (feedEvent): Promise<FeedItem> => {
-        if (feedEvent.type === 'article-version') {
-          return { ...feedEvent, server };
-        }
-        const [editorialCommunity, review] = await Promise.all([
-          getEditorialCommunity(feedEvent.editorialCommunityId)(),
-          getReview(feedEvent.reviewId)(),
-        ]);
+    const toFeedItem = (feedEvent: FeedEvent) => async (): Promise<FeedItem> => {
+      if (feedEvent.type === 'article-version') {
+        return { ...feedEvent, server };
+      }
+      const editorialCommunity = await getEditorialCommunity(feedEvent.editorialCommunityId)();
+      const review = await getReview(feedEvent.reviewId)();
 
-        return {
-          type: 'review',
-          id: feedEvent.reviewId,
-          source: review.url,
-          occurredAt: feedEvent.occurredAt,
-          editorialCommunityId: feedEvent.editorialCommunityId,
-          editorialCommunityName: editorialCommunity.name,
-          editorialCommunityAvatar: editorialCommunity.avatar,
-          fullText: O.map(sanitise)(review.fullText),
-        };
-      },
+      return {
+        type: 'review',
+        id: feedEvent.reviewId,
+        source: review.url,
+        occurredAt: feedEvent.occurredAt,
+        editorialCommunityId: feedEvent.editorialCommunityId,
+        editorialCommunityName: editorialCommunity.name,
+        editorialCommunityAvatar: editorialCommunity.avatar,
+        fullText: O.map(sanitise)(review.fullText),
+      };
+    };
+    return pipe(
+      doi,
+      getFeedEvents,
+      T.chain(T.traverseArray(toFeedItem)),
     );
-
-    return Promise.all(feedItems);
   }
 );
