@@ -21,7 +21,6 @@ import { finishFollowCommand } from '../follow/finish-follow-command';
 import { saveFollowCommand } from '../follow/save-follow-command';
 import { homePage } from '../home-page';
 import { Adapters } from '../infrastructure/adapters';
-import communityOutreachManagerPage from '../jobs/community-outreach-manager-page';
 import privacyPage from '../privacy-page';
 import { respondHandler } from '../respond';
 import { finishRespondCommand } from '../respond/finish-respond-command';
@@ -66,9 +65,6 @@ export default (adapters: Adapters): Router => {
 
   router.get('/terms',
     pageHandler(flow(termsPage(), TE.rightTask)));
-
-  router.get('/jobs/community-outreach-manager',
-    pageHandler(flow(communityOutreachManagerPage(adapters), TE.rightTask)));
 
   // COMMANDS
 
