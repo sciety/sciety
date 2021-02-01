@@ -10,7 +10,7 @@ type PageResult = {
 };
 export type RenderPage = (query: string) => TE.TaskEither<RenderPageError, PageResult>;
 
-export default (renderSearchResults: RenderSearchResults): RenderPage => flow(
+export const createRenderPage = (renderSearchResults: RenderSearchResults): RenderPage => flow(
   renderSearchResults,
   TE.bimap(
     (error) => ({
