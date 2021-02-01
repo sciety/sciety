@@ -10,7 +10,7 @@ export const renderSearchForm = (): RenderFindArticle => T.of(toHtmlFragment(`
     <form method="get" action="/articles">
 
       <h3>
-        Search bioRxiv content
+        Search bioRxiv and medRxiv
       </h3>
 
       <div class="search-form__inputs">
