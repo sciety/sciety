@@ -3,7 +3,7 @@ import { schema } from '@tpluscode/rdf-ns-builders';
 import clownface from 'clownface';
 import * as O from 'fp-ts/Option';
 import datasetFactory from 'rdf-dataset-indexed';
-import createFetchDataciteReview from '../../src/infrastructure/fetch-datacite-review';
+import { createFetchDataciteReview } from '../../src/infrastructure/fetch-datacite-review';
 import { FetchDataset, FetchDatasetError } from '../../src/infrastructure/fetch-dataset';
 import { Doi } from '../../src/types/doi';
 import dummyLogger from '../dummy-logger';

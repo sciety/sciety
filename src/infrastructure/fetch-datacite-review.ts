@@ -12,7 +12,7 @@ import { toHtmlFragment } from '../types/html-fragment';
 
 export type FetchDataciteReview = (doi: Doi) => T.Task<Review>;
 
-export default (fetchDataset: FetchDataset, logger: Logger): FetchDataciteReview => (
+export const createFetchDataciteReview = (fetchDataset: FetchDataset, logger: Logger): FetchDataciteReview => (
   (doi) => async () => {
     const url = `https://doi.org/${doi.value}`;
     const reviewIri = namedNode(url);
