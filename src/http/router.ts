@@ -33,7 +33,7 @@ import { finishUnfollowCommand } from '../unfollow/finish-unfollow-command';
 import { saveUnfollowCommand } from '../unfollow/save-unfollow-command';
 import { userPage } from '../user-page';
 
-export default (adapters: Adapters): Router => {
+export const createRouter = (adapters: Adapters): Router => {
   const router = new Router();
 
   // PAGES

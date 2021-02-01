@@ -6,7 +6,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import datasetFactory from 'rdf-dataset-indexed';
 import bootstrapEditorialCommunities from '../../src/data/bootstrap-editorial-communities';
-import createRouter from '../../src/http/router';
+import { createRouter } from '../../src/http/router';
 import createServer from '../../src/http/server';
 import { Adapters } from '../../src/infrastructure/adapters';
 import { FetchCrossrefArticle } from '../../src/infrastructure/fetch-crossref-article';
