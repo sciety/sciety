@@ -5,7 +5,6 @@ import clownface from 'clownface';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import datasetFactory from 'rdf-dataset-indexed';
-import { Result } from 'true-myth';
 import bootstrapEditorialCommunities from '../../src/data/bootstrap-editorial-communities';
 import createRouter from '../../src/http/router';
 import createServer from '../../src/http/server';
@@ -41,14 +40,14 @@ export const createTestServer = async (): Promise<TestServer> => {
       .addOut(schema.description, 'The full text')
       .addOut(schema.author, (author) => author.addOut(schema.name, 'Author name'))
   );
-  const fetchArticle: FetchCrossrefArticle = (doi) => T.of(Result.ok({
+  const fetchArticle: FetchCrossrefArticle = (doi) => TE.right({
     abstract: 'Article abstract.' as SanitisedHtmlFragment,
     authors: [],
     doi,
     title: 'Article title' as SanitisedHtmlFragment,
     publicationDate: new Date(),
     server: 'biorxiv',
-  }));
+  });
   const fetchReview = createFetchReview(
     createFetchDataciteReview(fetchDataCiteDataset, dummyLogger),
     createFetchHypothesisAnnotation(shouldNotBeCalled, dummyLogger),

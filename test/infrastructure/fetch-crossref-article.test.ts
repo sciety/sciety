@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/Either';
 import createFetchCrossrefArticle, { GetXml } from '../../src/infrastructure/fetch-crossref-article';
 import { Doi } from '../../src/types/doi';
 import dummyLogger from '../dummy-logger';
@@ -12,8 +13,7 @@ describe('fetch-crossref-article', () => {
       };
       const result = await createFetchCrossrefArticle(getXml, dummyLogger)(doi)();
 
-      expect(result.isErr()).toBe(true);
-      expect(result.unsafelyUnwrapErr()).toBe('not-found');
+      expect(result).toStrictEqual(E.left('not-found'));
     });
   });
 
@@ -22,8 +22,7 @@ describe('fetch-crossref-article', () => {
       const getXml: GetXml = async () => '';
       const result = await createFetchCrossrefArticle(getXml, dummyLogger)(doi)();
 
-      expect(result.isErr()).toBe(true);
-      expect(result.unsafelyUnwrapErr()).toBe('unavailable');
+      expect(result).toStrictEqual(E.left('unavailable'));
     });
   });
 });
