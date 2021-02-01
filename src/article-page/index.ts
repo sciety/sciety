@@ -1,10 +1,9 @@
 import { URL } from 'url';
-import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import { Maybe, Result } from 'true-myth';
+import { Maybe } from 'true-myth';
 import { ensureBiorxivDoi } from './ensure-biorxiv-doi';
 import { FindVersionsForArticleDoi, getArticleFeedEvents } from './get-article-feed-events';
 import { GetReview } from './get-feed-events-content';
@@ -43,7 +42,7 @@ type ArticleDetails = {
   server: ArticleServer,
 };
 
-type GetArticleDetails = (doi: Doi) => T.Task<Result<ArticleDetails, 'not-found'|'unavailable'>>;
+type GetArticleDetails = (doi: Doi) => TE.TaskEither<'not-found'|'unavailable', ArticleDetails>;
 
 type GetEvents = T.Task<ReadonlyArray<DomainEvent>>;
 type Ports = {
@@ -72,21 +71,16 @@ const getUserId = (user: O.Option<User>): O.Option<UserId> => pipe(
 type ArticlePage = (params: Params) => ReturnType<RenderPage>;
 
 export const articlePage = (ports: Ports): ArticlePage => {
-  const shimmedFetchArticle = flow(
-    ports.fetchArticle,
-    T.map((result) => result.mapOrElse(
-      (error) => E.left<'not-found'|'unavailable', ArticleDetails>(error),
-      (success) => E.right<'not-found'|'unavailable', ArticleDetails >(success),
-    )),
-  );
-
   const renderPageHeader = createRenderPageHeader(
-    shimmedFetchArticle,
+    ports.fetchArticle,
     renderTweetThis,
     renderSaveArticle(projectHasUserSavedArticle(ports.getAllEvents)),
   );
   const renderAbstract = createRenderArticleAbstract(
-    flow(ports.fetchArticle, T.map((result) => result.map((article) => article.abstract))),
+    flow(
+      ports.fetchArticle,
+      TE.map((article) => article.abstract),
+    ),
   );
   const countReviewResponses = createProjectReviewResponseCounts(ports.getAllEvents);
   const renderFeed = createRenderFeed(
@@ -109,7 +103,7 @@ export const articlePage = (ports: Ports): ArticlePage => {
     renderPageHeader,
     renderAbstract,
     renderFeed,
-    shimmedFetchArticle,
+    ports.fetchArticle,
   );
   return (params) => pipe(
     params.doi ?? '',

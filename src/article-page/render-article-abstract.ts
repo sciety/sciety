@@ -1,14 +1,10 @@
-import * as E from 'fp-ts/Either';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { Result } from 'true-myth';
 import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
-// TODO: remove Result
-export type GetArticleAbstract<Err> = (doi: Doi) => T.Task<Result<SanitisedHtmlFragment, Err>>;
+export type GetArticleAbstract<Err> = (doi: Doi) => TE.TaskEither<Err, SanitisedHtmlFragment>;
 
 type RenderArticleAbstract<Err> = (doi: Doi) => TE.TaskEither<Err, HtmlFragment>;
 
@@ -18,12 +14,6 @@ export const createRenderArticleAbstract = <Err> (
     (doi) => pipe(
       doi,
       getArticleAbstract,
-      T.map((result) => (
-        result.mapOrElse<E.Either<Err, SanitisedHtmlFragment>>(
-          E.left,
-          E.right,
-        )
-      )),
       TE.map((articleAbstract) => toHtmlFragment(`
         <section class="article-abstract" role="doc-abstract">
           <h2>

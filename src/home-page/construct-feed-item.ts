@@ -1,7 +1,8 @@
 import { sequenceS } from 'fp-ts/Apply';
+import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
-import { pipe } from 'fp-ts/function';
-import { Result } from 'true-myth';
+import * as TE from 'fp-ts/TaskEither';
+import { constant, pipe } from 'fp-ts/function';
 import { Doi } from '../types/doi';
 import { EditorialCommunityReviewedArticleEvent } from '../types/domain-events';
 import { EditorialCommunityId } from '../types/editorial-community-id';
@@ -36,7 +37,7 @@ type Article = {
 
 type Inputs = {
   actor: Actor,
-  article: Result<Article, unknown>,
+  article: E.Either<unknown, Article>,
   event: EditorialCommunityReviewedArticleEvent,
 };
 
@@ -46,13 +47,19 @@ const construct = ({ actor, article, event }: Inputs): FeedItem => ({
   actorName: actor.name,
   actorUrl: actor.url,
   doi: event.articleId,
-  title: article.mapOr(sanitise(toHtmlFragment('an article')), (a) => a.title),
+  title: pipe(
+    article,
+    E.fold(
+      constant(sanitise(toHtmlFragment('an article'))),
+      (a) => a.title,
+    ),
+  ),
   verb: reviewedBy(actor),
 });
 
 export type GetActor = (id: EditorialCommunityId) => T.Task<Actor>;
 
-export type GetArticle = (id: Doi) => T.Task<Result<Article, unknown>>;
+export type GetArticle = (id: Doi) => TE.TaskEither<unknown, Article>;
 
 export const constructFeedItem = (
   getActor: GetActor,

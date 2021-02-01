@@ -1,6 +1,7 @@
+import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
-import { pipe } from 'fp-ts/function';
-import { Result } from 'true-myth';
+import * as TE from 'fp-ts/TaskEither';
+import { constant, pipe } from 'fp-ts/function';
 import { Doi } from '../types/doi';
 import { EditorialCommunityReviewedArticleEvent } from '../types/domain-events';
 import { EditorialCommunity } from '../types/editorial-community';
@@ -32,17 +33,23 @@ type Article = {
 const construct = (
   community: EditorialCommunity,
   event: FeedEvent,
-) => (article: Result<Article, unknown>): FeedItem => ({
+) => (article: E.Either<unknown, Article>): FeedItem => ({
   avatar: community.avatar.toString(),
   date: event.date,
   actorName: community.name,
   actorUrl: `/editorial-communities/${community.id.value}`,
   doi: event.articleId,
-  title: article.mapOr(sanitise(toHtmlFragment('an article')), (a) => a.title),
+  title: pipe(
+    article,
+    E.fold(
+      constant(sanitise(toHtmlFragment('an article'))),
+      (a) => a.title,
+    ),
+  ),
   verb: reviewedBy(community),
 });
 
-export type GetArticle = (id: Doi) => T.Task<Result<Article, unknown>>;
+export type GetArticle = (id: Doi) => TE.TaskEither<unknown, Article>;
 
 export const constructFeedItem = (
   getArticle: GetArticle,
