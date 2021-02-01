@@ -1,5 +1,5 @@
 import * as T from 'fp-ts/Task';
-import { Result } from 'true-myth';
+import * as TE from 'fp-ts/TaskEither';
 import { constructFeedItem, GetActor, GetArticle } from '../../src/home-page/construct-feed-item';
 import { FeedItem } from '../../src/shared-components/render-summary-feed-list';
 import { Doi } from '../../src/types/doi';
@@ -29,9 +29,9 @@ describe('construct-feed-item', (): void => {
 
     describe('and the article information can be retrieved', () => {
       beforeEach(async () => {
-        const getArticle: GetArticle = () => T.of(Result.ok({
+        const getArticle: GetArticle = () => TE.right({
           title: articleTitle,
-        }));
+        });
         feedItem = await constructFeedItem(dummyGetActor, getArticle)(event)();
       });
 
@@ -54,7 +54,7 @@ describe('construct-feed-item', (): void => {
 
     describe('and the article information cannot be retrieved', () => {
       beforeEach(async () => {
-        const getArticle: GetArticle = () => T.of(Result.err('something-bad'));
+        const getArticle: GetArticle = () => TE.left('something-bad');
         feedItem = await constructFeedItem(dummyGetActor, getArticle)(event)();
       });
 
