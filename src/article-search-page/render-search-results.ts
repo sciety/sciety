@@ -35,7 +35,7 @@ const renderSearchResults = (renderSearchResult: RenderSearchResult) => (searchR
     T.traverseArray(renderSearchResult),
     T.map(renderListIfNecessary),
     T.map((searchResultsList) => `
-      <p>Showing ${searchResults.items.length} of ${searchResults.total} results.</p>
+      <p class="search-results__summary">Showing ${searchResults.items.length} of ${searchResults.total} results.</p>
       ${searchResultsList}
     `),
   )

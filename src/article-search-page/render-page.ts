@@ -26,7 +26,7 @@ export default (renderSearchResults: RenderSearchResults): RenderPage => flow(
             <h1>Search results</h1>
           </header>
 
-          <section>
+          <section class="search-results">
             ${searchResults}
           </section>
 

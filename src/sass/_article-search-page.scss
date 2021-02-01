@@ -1,0 +1,9 @@
+@use 'settings';
+
+.search-results {
+  font-family: settings.$font-secondary;
+}
+
+.search-results__summary {
+  font-family: settings.$font-secondary;
+}
