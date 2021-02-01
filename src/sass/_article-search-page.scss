@@ -37,4 +37,14 @@
 .search-results-list__item__date {
   font-size: functions.px-to-rem(14px);
   line-height: calc(24 / 14);
+  margin-bottom: baseline.increments(0.5);
+}
+
+.search-results-list__item__review-count {
+  display: inline-block;
+  background-color: settings.$colour-grey-one;
+  border-radius: 5px;
+  padding: 2px 12px;
+  font-size: functions.px-to-rem(14px);
+  line-height: calc(24 / 14);
 }
