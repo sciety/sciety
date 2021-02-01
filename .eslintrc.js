@@ -20,6 +20,7 @@ module.exports = {
     'jest',
     'jest-formatting',
     'node',
+    'unused-imports',
   ],
   root: true,
   rules: {
@@ -98,6 +99,7 @@ module.exports = {
       ignoreCase: true,
       ignoreDeclarationSort: true,
     }],
+    'unused-imports/no-unused-imports-ts': 'error',
   },
   settings: {
     'import/resolver': {
