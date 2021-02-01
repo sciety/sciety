@@ -6,7 +6,7 @@ import datasetFactory from 'rdf-dataset-indexed';
 import { createFetchDataciteReview } from '../../src/infrastructure/fetch-datacite-review';
 import { FetchDataset, FetchDatasetError } from '../../src/infrastructure/fetch-dataset';
 import { Doi } from '../../src/types/doi';
-import dummyLogger from '../dummy-logger';
+import { dummyLogger } from '../dummy-logger';
 
 const reviewDoi = new Doi('10.5281/zenodo.3678325');
 

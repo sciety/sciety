@@ -2,7 +2,7 @@ import { URL } from 'url';
 import { createEditorialCommunityRepository } from '../../src/infrastructure/in-memory-editorial-communities';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 import { EditorialCommunityRepository } from '../../src/types/editorial-community-repository';
-import dummyLogger from '../dummy-logger';
+import { dummyLogger } from '../dummy-logger';
 
 const editorialCommunityId = new EditorialCommunityId('530812a5-838a-4fb2-95b6-eb4828f0d37c');
 

@@ -1,7 +1,7 @@
 import { URL } from 'url';
 import { createGetArticleVersionEventsFromBiorxiv, GetJson } from '../../src/infrastructure/get-article-version-events-from-biorxiv';
 import { Doi } from '../../src/types/doi';
-import dummyLogger from '../dummy-logger';
+import { dummyLogger } from '../dummy-logger';
 
 describe('get-article-version-events-from-biorxiv', () => {
   describe('when biorxiv is available', () => {

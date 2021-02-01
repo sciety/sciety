@@ -1,7 +1,7 @@
 /* eslint-disable no-empty */
 import { DownstreamFetcher, responseCache } from '../../src/infrastructure/response-cache';
 import { Doi } from '../../src/types/doi';
-import dummyLogger from '../dummy-logger';
+import { dummyLogger } from '../dummy-logger';
 
 describe('article-cache', () => {
   describe('when the required response is not in the cache', () => {

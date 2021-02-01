@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import { GetTwitterResponse } from '../../src/infrastructure/get-twitter-response';
 import { createGetTwitterUserDetails } from '../../src/infrastructure/get-twitter-user-details';
 import { toUserId } from '../../src/types/user-id';
-import dummyLogger from '../dummy-logger';
+import { dummyLogger } from '../dummy-logger';
 
 describe('get-twitter-user-details', () => {
   it('returns the details for the user', async () => {

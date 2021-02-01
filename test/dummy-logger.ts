@@ -1,5 +1,5 @@
 import { Logger } from '../src/infrastructure/logger';
 
-const dummyLogger: Logger = () => {};
+const loggerStub: Logger = () => {};
 
-export default Object.assign(dummyLogger, { bindToRequestId: () => dummyLogger });
+export const dummyLogger = Object.assign(loggerStub, { bindToRequestId: () => loggerStub });

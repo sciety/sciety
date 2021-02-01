@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import { createFetchCrossrefArticle, GetXml } from '../../src/infrastructure/fetch-crossref-article';
 import { Doi } from '../../src/types/doi';
-import dummyLogger from '../dummy-logger';
+import { dummyLogger } from '../dummy-logger';
 
 describe('fetch-crossref-article', () => {
   const doi = new Doi('10.1101/339747');

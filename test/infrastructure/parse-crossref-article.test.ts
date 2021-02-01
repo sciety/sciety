@@ -3,7 +3,7 @@ import {
   getAbstract, getAuthors, getPublicationDate, getServer, getTitle,
 } from '../../src/infrastructure/parse-crossref-article';
 import { Doi } from '../../src/types/doi';
-import dummyLogger from '../dummy-logger';
+import { dummyLogger } from '../dummy-logger';
 
 const crossrefResponseWith = (content: string): string => `
   <?xml version="1.0" encoding="UTF-8"?>

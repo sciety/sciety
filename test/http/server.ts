@@ -19,7 +19,7 @@ import { createReviewProjections } from '../../src/infrastructure/review-project
 import { EditorialCommunityRepository } from '../../src/types/editorial-community-repository';
 import { FollowList } from '../../src/types/follow-list';
 import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
-import dummyLogger from '../dummy-logger';
+import { dummyLogger } from '../dummy-logger';
 import { shouldNotBeCalled } from '../should-not-be-called';
 
 type TestServer = {

@@ -5,7 +5,7 @@ import { createFetchHypothesisAnnotation, GetJson } from '../../src/infrastructu
 import { Review } from '../../src/infrastructure/review';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { HypothesisAnnotationId } from '../../src/types/hypothesis-annotation-id';
-import dummyLogger from '../dummy-logger';
+import { dummyLogger } from '../dummy-logger';
 
 const date = '2019-09-12T09:55:46.146050+00:00';
 const hypothesisAnnotationId = new HypothesisAnnotationId('fhAtGNVDEemkyCM-sRPpVQ');
