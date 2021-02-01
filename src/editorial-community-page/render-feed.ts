@@ -38,7 +38,7 @@ const renderAsSection = (viewModel: ViewModel): string => `
   </section>
 `;
 
-export default (
+export const createRenderFeed = (
   getEvents: GetEvents,
   constructFeedItem: ConstructFeedItem,
   renderSummaryFeedList: RenderSummaryFeedList,
