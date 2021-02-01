@@ -10,7 +10,7 @@ import createProjectFollowerIds from './project-follower-ids';
 import createRenderDescription from './render-description';
 import createRenderFeed, { RenderFeed } from './render-feed';
 import createRenderFollowToggle, { Follows } from './render-follow-toggle';
-import createRenderFollowers from './render-followers';
+import { createRenderFollowers } from './render-followers';
 import { createRenderPage, RenderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
 import { renderSummaryFeedList } from '../shared-components/render-summary-feed-list';

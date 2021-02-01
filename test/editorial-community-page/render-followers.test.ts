@@ -1,5 +1,5 @@
 import * as T from 'fp-ts/Task';
-import createRenderFollowers from '../../src/editorial-community-page/render-followers';
+import { createRenderFollowers } from '../../src/editorial-community-page/render-followers';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 
 describe('render-followers', () => {

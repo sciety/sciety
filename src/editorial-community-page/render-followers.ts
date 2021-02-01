@@ -18,7 +18,7 @@ const renderFragment = (followerCount: number): string => `
   </section>
 `;
 
-export default <U>(getFollowers: GetFollowers<U>): RenderFollowers => flow(
+export const createRenderFollowers = <U>(getFollowers: GetFollowers<U>): RenderFollowers => flow(
   getFollowers,
   T.map((followers) => followers.length),
   T.map(renderFragment),
