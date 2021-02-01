@@ -3,7 +3,7 @@ import { Logger } from './logger';
 
 type BiorxivCache = Record<string, ReturnType<ReturnType<GetArticleVersionEventsFromBiorxiv>>>;
 
-export default (
+export const createBiorxivCache = (
   getArticleVersionEventsFromBiorxiv: GetArticleVersionEventsFromBiorxiv,
   logger: Logger,
 ): GetArticleVersionEventsFromBiorxiv => {
