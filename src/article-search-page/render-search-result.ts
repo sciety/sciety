@@ -48,7 +48,7 @@ const createRenderReviews = (
 );
 
 const templatePostedDate = (date: Date): HtmlFragment => toHtmlFragment(
-  `<div>Posted ${templateDate(date)}</div>`,
+  `<div class="search-results-list__item__date">Posted ${templateDate(date)}</div>`,
 );
 
 export default (

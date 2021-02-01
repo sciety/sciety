@@ -1,4 +1,5 @@
 @use 'baseline';
+@use 'functions';
 @use 'settings';
 @use 'typography';
 
@@ -31,4 +32,8 @@
   &:visited {
     @include typography.subtle-link();
   }
+}
+
+.search-results-list__item__date {
+  font-size: functions.px-to-rem(14px);
 }
