@@ -5,7 +5,7 @@ import clownface from 'clownface';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import datasetFactory from 'rdf-dataset-indexed';
-import bootstrapEditorialCommunities from '../../src/data/bootstrap-editorial-communities';
+import { bootstrapEditorialCommunities } from '../../src/data/bootstrap-editorial-communities';
 import { createRouter } from '../../src/http/router';
 import { createApplicationServer } from '../../src/http/server';
 import { Adapters } from '../../src/infrastructure/adapters';

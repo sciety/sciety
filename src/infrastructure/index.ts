@@ -26,7 +26,7 @@ import {
 import { responseCache } from './response-cache';
 import { createReviewProjections } from './review-projections';
 import { createSearchEuropePmc } from './search-europe-pmc';
-import bootstrapEditorialCommunities from '../data/bootstrap-editorial-communities';
+import { bootstrapEditorialCommunities } from '../data/bootstrap-editorial-communities';
 import { isEditorialCommunityReviewedArticleEvent } from '../types/domain-events';
 import { EditorialCommunityRepository } from '../types/editorial-community-repository';
 import { Json } from '../types/json';

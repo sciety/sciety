@@ -76,4 +76,4 @@ if (process.env.EXPERIMENT_ENABLED === 'true') {
   );
 }
 
-export default editorialCommunities;
+export const bootstrapEditorialCommunities = editorialCommunities;
