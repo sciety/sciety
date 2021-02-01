@@ -9,7 +9,7 @@ import { createGetMostRecentEvents, GetAllEvents } from './get-most-recent-event
 import { createProjectFollowerIds } from './project-follower-ids';
 import { createRenderDescription } from './render-description';
 import { createRenderFeed, RenderFeed } from './render-feed';
-import createRenderFollowToggle, { Follows } from './render-follow-toggle';
+import { createRenderFollowToggle, Follows } from './render-follow-toggle';
 import { createRenderFollowers } from './render-followers';
 import { createRenderPage, RenderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';

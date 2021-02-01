@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { JSDOM } from 'jsdom';
-import createRenderFollowToggle, { Follows } from '../../src/editorial-community-page/render-follow-toggle';
+import { createRenderFollowToggle, Follows } from '../../src/editorial-community-page/render-follow-toggle';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 import { toUserId } from '../../src/types/user-id';
 
