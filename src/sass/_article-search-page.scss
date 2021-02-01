@@ -1,3 +1,4 @@
+@use 'baseline';
 @use 'settings';
 
 .search-results {
@@ -6,4 +7,17 @@
 
 .search-results__summary {
   font-family: settings.$font-secondary;
+}
+
+.search-results-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.search-results-list__item {
+  margin-bottom: baseline.increments(4);
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 }

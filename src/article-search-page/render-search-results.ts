@@ -23,8 +23,8 @@ const renderListIfNecessary = (articles: ReadonlyArray<HtmlFragment>): string =>
   }
 
   return `
-      <ul role="list">
-        ${templateListItems(articles)}
+      <ul class="search-results-list" role="list">
+        ${templateListItems(articles, 'search-results-list__item')}
       </ul>
     `;
 };
