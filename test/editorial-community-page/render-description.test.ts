@@ -1,5 +1,5 @@
 import * as T from 'fp-ts/Task';
-import createRenderDescription, { GetEditorialCommunityDescription } from '../../src/editorial-community-page/render-description';
+import { createRenderDescription, GetEditorialCommunityDescription } from '../../src/editorial-community-page/render-description';
 import { EditorialCommunity } from '../../src/types/editorial-community';
 
 describe('create render page', (): void => {
