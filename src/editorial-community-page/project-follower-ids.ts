@@ -35,7 +35,7 @@ const projectFollowerIds = (editorialCommunityId: EditorialCommunityId) => (
   )
 );
 
-export default (getAllEvents: GetAllEvents): ProjectFollowerIds => (
+export const createProjectFollowerIds = (getAllEvents: GetAllEvents): ProjectFollowerIds => (
   (editorialCommunityId) => pipe(
     getAllEvents,
     T.map(projectFollowerIds(editorialCommunityId)),

@@ -6,7 +6,7 @@ import { Maybe } from 'true-myth';
 import { constructFeedItem, GetArticle } from './construct-feed-item';
 import { getDescription } from './get-description';
 import { createGetMostRecentEvents, GetAllEvents } from './get-most-recent-events';
-import createProjectFollowerIds from './project-follower-ids';
+import { createProjectFollowerIds } from './project-follower-ids';
 import { createRenderDescription } from './render-description';
 import { createRenderFeed, RenderFeed } from './render-feed';
 import createRenderFollowToggle, { Follows } from './render-follow-toggle';
