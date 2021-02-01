@@ -4,7 +4,7 @@ import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { FetchDataciteReview } from '../../src/infrastructure/fetch-datacite-review';
 import { FetchHypothesisAnnotation } from '../../src/infrastructure/fetch-hypothesis-annotation';
-import createFetchReview from '../../src/infrastructure/fetch-review';
+import { createFetchReview } from '../../src/infrastructure/fetch-review';
 import { Doi } from '../../src/types/doi';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { HypothesisAnnotationId } from '../../src/types/hypothesis-annotation-id';

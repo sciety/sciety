@@ -7,7 +7,7 @@ import { ReviewId } from '../types/review-id';
 
 export type FetchReview = (id: ReviewId) => T.Task<Review>;
 
-export default (
+export const createFetchReview = (
   fetchDataciteReview: FetchDataciteReview,
   fetchHypothesisAnnotation: FetchHypothesisAnnotation,
 ): FetchReview => (
