@@ -25,6 +25,9 @@ export const createGetXmlFromCrossrefRestApi = (
     const startTime = new Date();
     try {
       const response = await client.get<string>(url.toString(), { headers });
+      if (response.data.length === 0) {
+        throw new Error('Empty response from Crossref');
+      }
       return response.data;
     } finally {
       const durationInMs = new Date().getTime() - startTime.getTime();
