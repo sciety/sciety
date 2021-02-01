@@ -35,7 +35,7 @@ type EuropePmcQueryResponse = JsonCompatible<{
 
 const constructQueryParams = (query: string): URLSearchParams => (
   new URLSearchParams({
-    query: `${query} PUBLISHER:"bioRxiv" sort_date:y`,
+    query: `${query} (PUBLISHER:"bioRxiv" OR PUBLISHER:"medRxiv") sort_date:y`,
     format: 'json',
     pageSize: '10',
   }));
