@@ -1,5 +1,5 @@
 import * as E from 'fp-ts/Either';
-import createFetchCrossrefArticle, { GetXml } from '../../src/infrastructure/fetch-crossref-article';
+import { createFetchCrossrefArticle, GetXml } from '../../src/infrastructure/fetch-crossref-article';
 import { Doi } from '../../src/types/doi';
 import dummyLogger from '../dummy-logger';
 

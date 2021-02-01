@@ -6,7 +6,7 @@ import { Adapters } from './adapters';
 import createBiorxivCache from './biorxiv-cache';
 import { createCommitEvents } from './commit-events';
 import { createEventSourceFollowListRepository } from './event-sourced-follow-list-repository';
-import createFetchCrossrefArticle from './fetch-crossref-article';
+import { createFetchCrossrefArticle } from './fetch-crossref-article';
 import { createFetchDataciteReview } from './fetch-datacite-review';
 import { createFetchDataset } from './fetch-dataset';
 import createFetchHypothesisAnnotation from './fetch-hypothesis-annotation';

@@ -25,7 +25,7 @@ FetchCrossrefArticleError,
 
 export type GetXml = (doi: Doi, acceptHeader: string) => Promise<string>;
 
-export default (getXml: GetXml, logger: Logger): FetchCrossrefArticle => {
+export const createFetchCrossrefArticle = (getXml: GetXml, logger: Logger): FetchCrossrefArticle => {
   const parser = new DOMParser({
     errorHandler: (_, msg) => {
       throw msg;
