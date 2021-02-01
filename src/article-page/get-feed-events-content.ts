@@ -1,4 +1,5 @@
 import { URL } from 'url';
+import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
@@ -40,24 +41,27 @@ export const getFeedEventsContent = (
   getEditorialCommunity: GetEditorialCommunity,
 ) : GetFeedItems => (
   (doi, server) => {
-    // TODO: remove Task invocation
-    const toFeedItem = (feedEvent: FeedEvent) => async (): Promise<FeedItem> => {
+    const toFeedItem = (feedEvent: FeedEvent): T.Task<FeedItem> => {
       if (feedEvent.type === 'article-version') {
-        return { ...feedEvent, server };
+        return T.of({ ...feedEvent, server });
       }
-      const editorialCommunity = await getEditorialCommunity(feedEvent.editorialCommunityId)();
-      const review = await getReview(feedEvent.reviewId)();
-
-      return {
-        type: 'review',
-        id: feedEvent.reviewId,
-        source: review.url,
-        occurredAt: feedEvent.occurredAt,
-        editorialCommunityId: feedEvent.editorialCommunityId,
-        editorialCommunityName: editorialCommunity.name,
-        editorialCommunityAvatar: editorialCommunity.avatar,
-        fullText: O.map(sanitise)(review.fullText),
-      };
+      return pipe(
+        {
+          editorialCommunity: getEditorialCommunity(feedEvent.editorialCommunityId),
+          review: getReview(feedEvent.reviewId),
+        },
+        sequenceS(T.task),
+        T.map(({ editorialCommunity, review }) => ({
+          type: 'review',
+          id: feedEvent.reviewId,
+          source: review.url,
+          occurredAt: feedEvent.occurredAt,
+          editorialCommunityId: feedEvent.editorialCommunityId,
+          editorialCommunityName: editorialCommunity.name,
+          editorialCommunityAvatar: editorialCommunity.avatar,
+          fullText: O.map(sanitise)(review.fullText),
+        })),
+      );
     };
     return pipe(
       doi,
