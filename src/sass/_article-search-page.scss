@@ -23,7 +23,11 @@
   }
 }
 
-.search-results-list__item__link:link,
-.search-results-list__item__link:visited {
-  @include typography.subtle-link();
+.search-results-list__item__link {
+  font-weight: bold;
+
+  &:link,
+  &:visited {
+    @include typography.subtle-link();
+  }
 }
