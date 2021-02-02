@@ -1,4 +1,14 @@
+@use 'baseline';
+@use 'functions';
 @use 'settings';
+
+@mixin sizing ($font-size, $line-height-in-increments: 3) {
+  $font-size-in-rem: functions.px-to-rem($font-size);
+  $line-height-in-rem: baseline.increments($line-height-in-increments);
+
+  font-size: $font-size-in-rem;
+  line-height: $line-height-in-rem / $font-size-in-rem;
+}
 
 @mixin subtle-link () {
   color: inherit;
