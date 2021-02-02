@@ -16,6 +16,7 @@
 @use 'about-page';
 @use 'article-feed';
 @use 'article-page';
+@use 'list';
 @import 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css';
 
 /* Sciety imports, not Semantic-UI */
@@ -105,8 +106,7 @@ Make sure that .ui.list that use <ol> or <ul> don't have bullets or numbers with
 
 ol.ui,
 ul.ui {
-  list-style-type: none;
-  padding-left: 0;
+  @include list.basics();
 }
 
 ol.ui.list:not(.bulleted):not(.ordered),

@@ -1,5 +1,6 @@
 @use 'sass:color';
 @use 'baseline';
+@use 'list';
 @use 'settings';
 @use 'functions';
 
@@ -61,8 +62,7 @@
 }
 
 .site-footer__links_list {
-  padding-left: 0;
-  list-style: none;
+  @include list.basics();
   margin-bottom: #{baseline.increments(2)};
 }
 

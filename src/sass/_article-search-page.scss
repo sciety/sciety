@@ -1,5 +1,6 @@
 @use 'baseline';
 @use 'functions';
+@use 'list';
 @use 'settings';
 @use 'typography';
 
@@ -12,8 +13,7 @@
 }
 
 .search-results-list {
-  list-style: none;
-  padding-left: 0;
+  @include list.basics();
 }
 
 .search-results-list__item {

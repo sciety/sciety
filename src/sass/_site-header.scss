@@ -1,5 +1,6 @@
 @use 'baseline';
 @use 'functions';
+@use 'list';
 @use 'settings';
 
 .site-header {
@@ -46,10 +47,9 @@
 }
 
 .site-header__nav_list {
-  list-style: none;
+  @include list.basics();
   display: flex;
   justify-content: flex-start;
-  padding-left: 0;
   margin-top: baseline.increments(2);
   margin-bottom: 0;
 }

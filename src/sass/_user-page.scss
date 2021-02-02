@@ -1,5 +1,6 @@
 @use 'baseline';
 @use 'functions';
+@use 'list';
 @use 'settings';
 @use 'typography';
 
@@ -71,9 +72,8 @@ $_avatar-border-width: 1px;
 }
 
 .saved-articles {
+  @include list.basics();
   font-family: settings.$font-secondary;
-  list-style: none;
-  padding-left: 0;
 }
 
 .saved-articles__item {

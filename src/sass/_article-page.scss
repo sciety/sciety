@@ -1,14 +1,14 @@
 @use 'baseline';
 @use 'button';
 @use 'functions';
+@use 'list';
 @use 'settings';
 @use 'typography';
 
 .article-author-list {
+  @include list.basics();
   font-family: settings.$font-secondary;
-  padding-left: 0;
   display: flow-root;
-  list-style: none;
 }
 
 .article-author-list > li {
@@ -25,9 +25,8 @@
 }
 
 .article-meta-data-list {
+  @include list.basics();
   font-family: settings.$font-secondary;
-  list-style: none;
-  padding-left: 0;
 }
 
 .article-meta-data-list > li {
