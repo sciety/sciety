@@ -17,7 +17,7 @@
 }
 
 .search-results-list__item {
-  line-height: 1.5;
+  @include typography.sizing($font-size: settings.$base-font-measure, $line-height-in-increments: 3);
   margin-bottom: baseline.increments(4);
 
   &:last-child {

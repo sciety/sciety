@@ -12,8 +12,8 @@
 }
 
 .article-author-list > li {
+  @include typography.sizing($font-size: settings.$base-font-measure, $line-height-in-increments: 3);
   float: left;
-  line-height: 1.5;
 }
 
 .article-author-list > li::after {
@@ -30,7 +30,7 @@
 }
 
 .article-meta-data-list > li {
-  line-height: 1.5;
+  @include typography.sizing($font-size: settings.$base-font-measure, $line-height-in-increments: 3);
 }
 
 .article-call-to-action-link {
