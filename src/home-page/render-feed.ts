@@ -72,10 +72,8 @@ export const createRenderFeed = <E>(
 
       return pipe(
         uid,
-        O.fold(
-          constant(TE.left(welcomeMessage)),
-          (u) => TE.rightTask(userFeed(u)),
-        ),
+        TE.fromOption(constant(welcomeMessage)),
+        TE.chain((u) => TE.rightTask(userFeed(u))),
         TE.fold(
           (left) => T.of(left),
           (right) => T.of(right),
