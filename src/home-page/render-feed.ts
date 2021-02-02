@@ -58,21 +58,24 @@ export const createRenderFeed = <E>(
     (uid) => async () => {
       const userFeed = (u: UserId): T.Task<string> => pipe(
         u,
-        isFollowingSomething,
-        T.chain(B.fold(
-          constant(T.of(followSomething)),
-          () => pipe(
-            u,
-            getEvents,
-            T.chain(renderSummaryFeedList),
-            T.map(O.getOrElse(noEvaluationsYet)),
-          ),
-        )),
+        getEvents,
+        T.chain(renderSummaryFeedList),
+        T.map(O.getOrElse(noEvaluationsYet)),
       );
 
       return pipe(
         uid,
         TE.fromOption(constant(welcomeMessage)),
+        TE.chainFirst((u) => pipe(
+          u,
+          isFollowingSomething,
+          T.chain(
+            B.fold(
+              constant(TE.left(followSomething)),
+              () => TE.right(u),
+            ),
+          ),
+        )),
         TE.chain((u) => TE.rightTask(userFeed(u))),
         TE.fold(
           (left) => T.of(left),
