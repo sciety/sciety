@@ -1,11 +1,11 @@
 @use 'baseline';
+@use 'list';
 
 .summary-feed-list {
-  padding-left: 0;
+  @include list.basics();
 }
 
 .summary-feed-list__list_item {
-  display: block;
   margin-bottom: baseline.increments(4);
 
   &:last-child {
