@@ -221,8 +221,8 @@ html {
 
 body,
 p {
+  @include typography.sizing($font-size: settings.$base-font-measure, $line-height-in-increments: 3);
   font-family: 'Noto Serif', serif;
-  font-size: functions.px-to-rem(settings.$base-font-measure);
 }
 
 body {

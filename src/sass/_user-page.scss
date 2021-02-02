@@ -21,7 +21,7 @@
   }
 
   .page-header__handle {
-    font-size: functions.px-to-rem(26px);
+    @include typography.sizing($font-size: 26px, $line-height-in-increments: 3.9);
     color: rgb(102, 102, 102);
   }
 }

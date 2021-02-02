@@ -2,6 +2,7 @@
 @use 'button';
 @use 'settings';
 @use 'functions';
+@use 'typography';
 
 .search-form {
   margin-bottom: #{baseline.increments(6)};
@@ -12,8 +13,8 @@
 }
 
 .search-form__input::placeholder {
+  @include typography.sizing($font-size: settings.$base-font-measure, $line-height-in-increments: 3);
   color: settings.$colour-grey-one;
-  font-size: functions.px-to-rem(settings.$base-font-measure);
 }
 
 .search-form__input {

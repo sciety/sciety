@@ -3,6 +3,7 @@
 @use 'list';
 @use 'settings';
 @use 'functions';
+@use 'typography';
 
 .site-footer {
   flex-grow: 1;
@@ -55,7 +56,7 @@
 }
 
 .site-footer__details > * {
-  font-size: 0.75rem;
+  @include typography.sizing($font-size: 12px, $line-height-in-increments: 3);
   @media screen and (min-width: 48.75em) {
     max-width: 33%;
   }
