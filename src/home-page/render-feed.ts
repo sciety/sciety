@@ -34,7 +34,7 @@ const followSomething = `
   <img src="/static/images/feed-screenshot.png" alt="Screenshot of a feed" class="feed__image">
 `;
 
-const noEvaluationsYet = (): string => `
+const noEvaluationsYet = `
   <p>
     The communities you’re following haven’t evaluated any articles yet.
     You can have a look for other communities of interest, or try coming back later!
@@ -69,7 +69,12 @@ export const createRenderFeed = <E>(
     )),
     TE.chain((u) => TE.rightTask(getEvents(u))),
     TE.chain((events) => TE.rightTask(renderSummaryFeedList(events))),
-    TE.map(O.getOrElse(noEvaluationsYet)),
+    TE.chain(
+      O.fold(
+        constant(TE.left(noEvaluationsYet)),
+        (summaryFeedList) => TE.right(summaryFeedList),
+      ),
+    ),
     TE.fold(
       (left) => T.of(left),
       (right) => T.of(right),
