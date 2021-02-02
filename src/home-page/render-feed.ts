@@ -69,6 +69,10 @@ export const createRenderFeed = <E>(
         )
       );
 
-      return renderAsSection(toHtmlFragment(await calculateFeedContents()));
+      return pipe(
+        calculateFeedContents,
+        T.map(toHtmlFragment),
+        T.map(renderAsSection),
+      )();
     }
   );
