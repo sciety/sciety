@@ -69,10 +69,7 @@ export const userPage = (ports: Ports): UserPage => {
       projectSavedArticleDois(ports.getAllEvents),
       T.chain(fetchSavedArticles(flow(
         ports.fetchArticle,
-        TE.fold(
-          () => T.of(O.none),
-          (article) => T.of(O.some(article)),
-        ),
+        T.map(O.fromEither),
         T.map(O.map((article) => article.title)),
       ))),
       T.map(renderSavedArticles),
