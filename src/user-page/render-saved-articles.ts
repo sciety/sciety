@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { flow } from 'fp-ts/function';
+import { constant, flow, pipe } from 'fp-ts/function';
 import { templateListItems } from '../shared-components/list-items';
 import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -17,9 +17,7 @@ type RenderSavedArticles = (savedArticles: ReadonlyArray<SavedArticle>) => HtmlF
 const renderAsLink: RenderAsLink = flow(
   (item) => ({
     doi: item.doi,
-    title: O.getOrElse(
-      () => toHtmlFragment('an article'),
-    )(item.title),
+    title: pipe(item.title, O.getOrElse(constant(toHtmlFragment('an article')))),
   }),
   (item) => `<a href="/articles/${item.doi.value}" class="saved-articles__link">${item.title}</a>`,
   toHtmlFragment,
