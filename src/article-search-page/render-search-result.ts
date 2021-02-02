@@ -62,9 +62,7 @@ export const createRenderSearchResult = (
         ${result.authors}
       </div>
       ${templatePostedDate(result.postedDate)}
-      <div>
-        ${await renderReviews(result.doi)}
-      </div>
+      ${await renderReviews(result.doi)}
     </div>
   `);
 };
