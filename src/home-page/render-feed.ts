@@ -59,7 +59,11 @@ export const createRenderFeed = <E>(
           return followSomething();
         }
         const events = await getEvents(u)();
-        return O.getOrElse(noEvaluationsYet)(await renderSummaryFeedList(events)());
+        return pipe(
+          events,
+          renderSummaryFeedList,
+          T.map(O.getOrElse(noEvaluationsYet)),
+        )();
       };
 
       const calculateFeedContents = async (): Promise<string> => (
