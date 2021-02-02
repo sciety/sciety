@@ -17,6 +17,7 @@
 @use 'article-feed';
 @use 'article-page';
 @use 'list';
+@use 'typography';
 @import 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css';
 
 /* Sciety imports, not Semantic-UI */
@@ -249,56 +250,50 @@ p {
 }
 
 h1 {
+  @include typography.sizing($font-size: 38px, $line-height-in-increments: 5.7);
   font-family: Lato, sans-serif;
-  font-size: functions.px-to-rem(38px);
   margin-top: 0;
   margin-bottom: #{baseline.increments(2)};
-  line-height: 1.2;
   font-weight: 400;
 }
 
 h2 {
+  @include typography.sizing($font-size: 30px, $line-height-in-increments: 4.5);
   font-family: Lato, sans-serif;
-  font-size: functions.px-to-rem(30px);
   margin-top: 0;
   margin-bottom: #{baseline.increments(2)};
-  line-height: 1.2;
   font-weight: 400;
 }
 
 h3 {
+  @include typography.sizing($font-size: 26px, $line-height-in-increments: 4);
   font-family: Lato, sans-serif;
-  font-size: functions.px-to-rem(26px);
   margin-top: 0;
   margin-bottom: #{baseline.increments(2)};
-  line-height: 1.2;
   font-weight: 400;
 }
 
 h4 {
+  @include typography.sizing($font-size: 22px, $line-height-in-increments: 3.3);
   font-family: Lato, sans-serif;
-  font-size: functions.px-to-rem(22px);
   margin-top: 0;
   margin-bottom: #{baseline.increments(2)};
-  line-height: 1.2;
   font-weight: 400;
 }
 
 h5 {
+  @include typography.sizing($font-size: 18px, $line-height-in-increments: 2.7);
   font-family: Lato, sans-serif;
-  font-size: functions.px-to-rem(18px);
   margin-top: 0;
   margin-bottom: #{baseline.increments(2)};
-  line-height: 1.2;
   font-weight: 400;
 }
 
 h6 {
+  @include typography.sizing(settings.$base-font-measure, $line-height-in-increments: 2.4);
   font-family: Lato, sans-serif;
-  font-size: functions.px-to-rem(settings.$base-font-measure);
   margin-top: 0;
   margin-bottom: #{baseline.increments(2)};
-  line-height: 1.2;
   font-weight: 400;
 }
 

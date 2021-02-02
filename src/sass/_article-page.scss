@@ -48,9 +48,8 @@
 
 .tweet-button {
   @include button.basics();
+  @include typography.sizing($font-size: 14px, $line-height-in-increments: 3);
   font-family: settings.$font-secondary;
-  font-size: functions.px-to-rem(14px);
-  line-height: calc(24 / 14);
   display: inline-flex;
   align-items: center;
   padding-right: functions.px-to-rem(5px);
@@ -82,9 +81,8 @@
 
 .save-article-button {
   @include button.basics();
+  @include typography.sizing($font-size: 14px, $line-height-in-increments: 3);
   font-family: settings.$font-secondary;
-  font-size: functions.px-to-rem(14px);
-  line-height: calc(24 / 14);
   display: inline-flex;
   align-items: center;
   margin-right: 2em;
@@ -108,11 +106,10 @@
 }
 
 .saved-to-list {
+  @include typography.sizing($font-size: 14px, $line-height-in-increments: 3);
   display: flex;
   align-items: center;
   font-family: settings.$font-secondary;
-  font-size: functions.px-to-rem(14px);
-  line-height: calc(24 / 14);
 }
 
 .saved-to-list:link,

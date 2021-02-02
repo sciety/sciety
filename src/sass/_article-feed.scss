@@ -3,6 +3,7 @@
 @use 'functions';
 @use 'list';
 @use 'settings';
+@use 'typography';
 
 .article-feed__list {
   @include list.basics();
@@ -20,9 +21,8 @@
   }
 
   h3 {
-    font-size: functions.px-to-rem(settings.$base-font-measure);
+    @include typography.sizing($font-size: settings.$base-font-measure, $line-height-in-increments: 3);
     font-weight: bold;
-    line-height: 1.5rem;
   }
 }
 

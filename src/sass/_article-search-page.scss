@@ -40,10 +40,9 @@
 }
 
 .search-results-list__item__review-count {
+  @include typography.sizing($font-size: 14px, $line-height-in-increments: 3);
   display: inline-block;
   background-color: settings.$colour-grey-one;
   border-radius: 5px;
   padding: 2px 12px;
-  font-size: functions.px-to-rem(14px);
-  line-height: calc(24 / 14);
 }

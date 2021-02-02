@@ -2,6 +2,7 @@
 @use 'functions';
 @use 'list';
 @use 'settings';
+@use 'typography';
 
 .site-header {
   flex-grow: 0;
@@ -55,10 +56,9 @@
 }
 
 .site-header__nav_list_item {
+  @include typography.sizing($font-size: 18px, $line-height-in-increments: 5);
   padding-right: 1.5rem;
-  line-height: 2.5rem;
   flex-shrink: 0;
-  font-size: 1.125rem;
   font-family: settings.$font-secondary;
 
   &:last-child {
