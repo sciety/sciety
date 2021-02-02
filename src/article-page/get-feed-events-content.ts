@@ -5,6 +5,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { FeedItem, GetFeedItems } from './render-feed';
+import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { HtmlFragment } from '../types/html-fragment';
@@ -36,40 +37,47 @@ export type GetReview = (id: ReviewId) => T.Task<{
 
 export type GetEditorialCommunity = (id: EditorialCommunityId) => T.Task<{ name: string, avatar: URL }>;
 
+const articleVersionToFeedItem = (
+  server: ArticleServer,
+  feedEvent: ArticleVersionEvent,
+): T.Task<O.Option<FeedItem>> => (
+  T.of(O.some({ ...feedEvent, server }))
+);
+
+const reviewToFeedItem = (
+  getReview: GetReview,
+  getEditorialCommunity: GetEditorialCommunity,
+  feedEvent: ReviewEvent,
+): T.Task<O.Option<FeedItem>> => pipe(
+  {
+    editorialCommunity: getEditorialCommunity(feedEvent.editorialCommunityId),
+    review: getReview(feedEvent.reviewId),
+  },
+  sequenceS(T.task),
+  T.map(({ editorialCommunity, review }) => O.some({
+    type: 'review',
+    id: feedEvent.reviewId,
+    source: review.url,
+    occurredAt: feedEvent.occurredAt,
+    editorialCommunityId: feedEvent.editorialCommunityId,
+    editorialCommunityName: editorialCommunity.name,
+    editorialCommunityAvatar: editorialCommunity.avatar,
+    fullText: O.map(sanitise)(review.fullText),
+  })),
+);
+
 export const getFeedEventsContent = (
   getFeedEvents: Feed,
   getReview: GetReview,
   getEditorialCommunity: GetEditorialCommunity,
-) : GetFeedItems => (
+): GetFeedItems => (
   (doi, server) => {
-    const reviewToFeedItem = (feedEvent: ReviewEvent): T.Task<O.Option<FeedItem>> => pipe(
-      {
-        editorialCommunity: getEditorialCommunity(feedEvent.editorialCommunityId),
-        review: getReview(feedEvent.reviewId),
-      },
-      sequenceS(T.task),
-      T.map(({ editorialCommunity, review }) => O.some({
-        type: 'review',
-        id: feedEvent.reviewId,
-        source: review.url,
-        occurredAt: feedEvent.occurredAt,
-        editorialCommunityId: feedEvent.editorialCommunityId,
-        editorialCommunityName: editorialCommunity.name,
-        editorialCommunityAvatar: editorialCommunity.avatar,
-        fullText: O.map(sanitise)(review.fullText),
-      })),
-    );
-
-    const articleVersionToFeedItem = (feedEvent: ArticleVersionEvent): T.Task<O.Option<FeedItem>> => (
-      T.of(O.some({ ...feedEvent, server }))
-    );
-
     const toFeedItem = (feedEvent: FeedEvent): T.Task<O.Option<FeedItem>> => {
       switch (feedEvent.type) {
         case 'article-version':
-          return articleVersionToFeedItem(feedEvent);
+          return articleVersionToFeedItem(server, feedEvent);
         case 'review':
-          return reviewToFeedItem(feedEvent);
+          return reviewToFeedItem(getReview, getEditorialCommunity, feedEvent);
       }
     };
     return pipe(
