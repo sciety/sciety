@@ -1,34 +1,64 @@
 import * as T from 'fp-ts/Task';
 import { createEventSourceFollowListRepository, GetAllEvents } from '../../src/infrastructure/event-sourced-follow-list-repository';
+import { userFollowedEditorialCommunity, userUnfollowedEditorialCommunity } from '../../src/types/domain-events';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
-import { generate } from '../../src/types/event-id';
 import { FollowList } from '../../src/types/follow-list';
 import { toUserId } from '../../src/types/user-id';
 
+const editorialCommunityId1 = new EditorialCommunityId('ed1');
+const editorialCommunityId2 = new EditorialCommunityId('ed2');
+const userId1 = toUserId('u1');
+const userId2 = toUserId('u2');
+
 describe('event-sourced-follow-list-repository', () => {
   it('builds a follow list from events', async () => {
-    const editorialCommunitityId1 = new EditorialCommunityId('ed1');
-    const userId1 = toUserId('u1');
     const getAllEvents: GetAllEvents = T.of([
-      {
-        id: generate(),
-        type: 'UserFollowedEditorialCommunity',
-        date: new Date(),
-        userId: userId1,
-        editorialCommunityId: editorialCommunitityId1,
-      },
+      userFollowedEditorialCommunity(userId1, editorialCommunityId1),
     ]);
     const repository = createEventSourceFollowListRepository(getAllEvents);
 
     const actual = await repository(userId1);
-    const expected = new FollowList(userId1, [editorialCommunitityId1.value]);
+    const expected = new FollowList(userId1, [editorialCommunityId1.value]);
 
     expect(actual).toStrictEqual(expected);
   });
 
-  it.todo('ignored communities that the user has unfollowed');
+  it('ignored communities that the user has unfollowed', async () => {
+    const getAllEvents: GetAllEvents = T.of([
+      userFollowedEditorialCommunity(userId1, editorialCommunityId1),
+      userUnfollowedEditorialCommunity(userId1, editorialCommunityId1),
+    ]);
+    const repository = createEventSourceFollowListRepository(getAllEvents);
 
-  it.todo('ignores communities that other users have followed');
+    const actual = await repository(userId1);
+    const expected = new FollowList(userId1, []);
 
-  it.todo('ignores communities followed by the user that other users have unfollowed');
+    expect(actual).toStrictEqual(expected);
+  });
+
+  it('ignores communities that other users have followed', async () => {
+    const getAllEvents: GetAllEvents = T.of([
+      userFollowedEditorialCommunity(userId1, editorialCommunityId1),
+      userFollowedEditorialCommunity(userId2, editorialCommunityId2),
+    ]);
+    const repository = createEventSourceFollowListRepository(getAllEvents);
+
+    const actual = await repository(userId1);
+    const expected = new FollowList(userId1, [editorialCommunityId1.value]);
+
+    expect(actual).toStrictEqual(expected);
+  });
+
+  it('ignores communities followed by the user that other users have unfollowed', async () => {
+    const getAllEvents: GetAllEvents = T.of([
+      userFollowedEditorialCommunity(userId1, editorialCommunityId1),
+      userUnfollowedEditorialCommunity(userId2, editorialCommunityId1),
+    ]);
+    const repository = createEventSourceFollowListRepository(getAllEvents);
+
+    const actual = await repository(userId1);
+    const expected = new FollowList(userId1, [editorialCommunityId1.value]);
+
+    expect(actual).toStrictEqual(expected);
+  });
 });
