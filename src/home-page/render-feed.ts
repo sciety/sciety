@@ -1,5 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
+import * as B from 'fp-ts/boolean';
 import { constant, pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
@@ -25,7 +26,7 @@ const welcomeMessage = `
   <img src="/static/images/feed-screenshot.png" alt="Screenshot of a feed" class="feed__image">
 `;
 
-const followSomething = (): string => `
+const followSomething = `
   <p>
     Your feed is empty! Start following some communities to see their most recent evaluations right here.
   </p>
@@ -54,17 +55,19 @@ export const createRenderFeed = <E>(
   renderSummaryFeedList: RenderSummaryFeedList<E>,
 ): RenderFeed => (
     (uid) => async () => {
-      const userFeed = (u: UserId) => async ():Promise<string> => {
-        if (!(await isFollowingSomething(u)())) {
-          return followSomething();
-        }
-        return pipe(
-          u,
-          getEvents,
-          T.chain(renderSummaryFeedList),
-          T.map(O.getOrElse(noEvaluationsYet)),
-        )();
-      };
+      const userFeed = (u: UserId): T.Task<string> => pipe(
+        u,
+        isFollowingSomething,
+        T.chain(B.fold(
+          constant(T.of(followSomething)),
+          () => pipe(
+            u,
+            getEvents,
+            T.chain(renderSummaryFeedList),
+            T.map(O.getOrElse(noEvaluationsYet)),
+          ),
+        )),
+      );
 
       return pipe(
         uid,
