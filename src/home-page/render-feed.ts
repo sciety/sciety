@@ -54,35 +54,26 @@ export const createRenderFeed = <E>(
   isFollowingSomething: IsFollowingSomething,
   getEvents: GetEvents<E>,
   renderSummaryFeedList: RenderSummaryFeedList<E>,
-): RenderFeed => (
-    (uid) => async () => {
-      const userFeed = (u: UserId): T.Task<string> => pipe(
-        u,
-        getEvents,
-        T.chain(renderSummaryFeedList),
-        T.map(O.getOrElse(noEvaluationsYet)),
-      );
-
-      return pipe(
-        uid,
-        TE.fromOption(constant(welcomeMessage)),
-        TE.chainFirst((u) => pipe(
-          u,
-          isFollowingSomething,
-          T.chain(
-            B.fold(
-              constant(TE.left(followSomething)),
-              () => TE.right(u),
-            ),
-          ),
-        )),
-        TE.chain((u) => TE.rightTask(userFeed(u))),
-        TE.fold(
-          (left) => T.of(left),
-          (right) => T.of(right),
+): RenderFeed => (uid) => pipe(
+    uid,
+    TE.fromOption(constant(welcomeMessage)),
+    TE.chainFirst((u) => pipe(
+      u,
+      isFollowingSomething,
+      T.chain(
+        B.fold(
+          constant(TE.left(followSomething)),
+          () => TE.right(u),
         ),
-        T.map(toHtmlFragment),
-        T.map(renderAsSection),
-      )();
-    }
+      ),
+    )),
+    TE.chain((u) => TE.rightTask(getEvents(u))),
+    TE.chain((events) => TE.rightTask(renderSummaryFeedList(events))),
+    TE.map(O.getOrElse(noEvaluationsYet)),
+    TE.fold(
+      (left) => T.of(left),
+      (right) => T.of(right),
+    ),
+    T.map(toHtmlFragment),
+    T.map(renderAsSection),
   );
