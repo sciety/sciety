@@ -243,9 +243,9 @@ main {
 }
 
 p {
+  @include typography.sizing($font-size: settings.$base-font-measure, $line-height-in-increments: 3);
   margin-top: 0;
   margin-bottom: #{baseline.increments(3)};
-  line-height: 1.5;
   font-weight: 400;
 }
 
