@@ -1,5 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import * as B from 'fp-ts/boolean';
 import { constant, pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -72,8 +73,12 @@ export const createRenderFeed = <E>(
       return pipe(
         uid,
         O.fold(
-          constant(T.of(welcomeMessage)),
-          userFeed,
+          constant(TE.left(welcomeMessage)),
+          (u) => TE.rightTask(userFeed(u)),
+        ),
+        TE.fold(
+          (left) => T.of(left),
+          (right) => T.of(right),
         ),
         T.map(toHtmlFragment),
         T.map(renderAsSection),
