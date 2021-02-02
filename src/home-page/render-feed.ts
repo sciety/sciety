@@ -58,10 +58,10 @@ export const createRenderFeed = <E>(
         if (!(await isFollowingSomething(u)())) {
           return followSomething();
         }
-        const events = await getEvents(u)();
         return pipe(
-          events,
-          renderSummaryFeedList,
+          u,
+          getEvents,
+          T.chain(renderSummaryFeedList),
           T.map(O.getOrElse(noEvaluationsYet)),
         )();
       };
