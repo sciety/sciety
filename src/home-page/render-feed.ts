@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
-import { pipe } from 'fp-ts/function';
+import { constant, pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
@@ -12,7 +12,7 @@ export type GetEvents<E> = (userId: UserId) => T.Task<ReadonlyArray<E>>;
 
 export type RenderSummaryFeedList<E> = (events: ReadonlyArray<E>) => T.Task<O.Option<string>>;
 
-const welcomeMessage = async (): Promise<string> => `
+const welcomeMessage = `
   <p>Welcome to Sciety.</p>
   <p>
     Follow research as it develops and stay up to date with the next big thing,
@@ -54,7 +54,7 @@ export const createRenderFeed = <E>(
   renderSummaryFeedList: RenderSummaryFeedList<E>,
 ): RenderFeed => (
     (uid) => async () => {
-      const userFeed = async (u: UserId): Promise<string> => {
+      const userFeed = (u: UserId) => async ():Promise<string> => {
         if (!(await isFollowingSomething(u)())) {
           return followSomething();
         }
@@ -66,15 +66,12 @@ export const createRenderFeed = <E>(
         )();
       };
 
-      const calculateFeedContents = async (): Promise<string> => (
-        pipe(
-          uid,
-          O.fold(welcomeMessage, userFeed),
-        )
-      );
-
       return pipe(
-        calculateFeedContents,
+        uid,
+        O.fold(
+          constant(T.of(welcomeMessage)),
+          userFeed,
+        ),
         T.map(toHtmlFragment),
         T.map(renderAsSection),
       )();
