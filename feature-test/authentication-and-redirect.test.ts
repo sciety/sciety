@@ -24,13 +24,17 @@ describe('authentication-and-redirect', () => {
 
   describe('not logged in', () => {
     it.todo('log in from the article page returns to the article page');
+
     it.todo('respond command returns to review fragment on the article page');
+
     it.todo('follow command from the editorial community page returns to the editorial community page');
   });
 
   describe('logged in', () => {
     it.todo('log out from the article page returns to the article page');
+
     it.todo('respond command returns to review fragment on the article page');
+
     it.todo('follow command from the editorial community page returns to the editorial community page');
   });
 });
