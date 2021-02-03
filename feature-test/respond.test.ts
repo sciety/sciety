@@ -9,7 +9,7 @@ describe('respond', () => {
     await openBrowser();
   });
 
-  afterAll(closeBrowser);
+  afterEach(closeBrowser);
 
   describe('when not logged in', () => {
     it('authenticates via twitter, returns and displays increased response count', async () => {
