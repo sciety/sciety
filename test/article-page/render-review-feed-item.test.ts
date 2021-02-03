@@ -11,11 +11,12 @@ import { sanitise } from '../../src/types/sanitised-html-fragment';
 
 describe('render-review-feed-item', () => {
   describe('when the review has long full text', () => {
-    it('renders the full text', async () => {
-      const fullText = 'A very long review';
-      const renderReviewFeedItem = createRenderReviewFeedItem(6, () => T.of(toHtmlFragment('')));
+    let rendered: DocumentFragment;
+    const fullText = 'A very long review';
 
-      const rendered = JSDOM.fragment(
+    beforeEach(async () => {
+      const renderReviewFeedItem = createRenderReviewFeedItem(6, () => T.of(toHtmlFragment('')));
+      rendered = JSDOM.fragment(
         await renderReviewFeedItem({
           type: 'review',
           id: new Doi('10.1111/12345678'),
@@ -27,6 +28,9 @@ describe('render-review-feed-item', () => {
           fullText: pipe(fullText, toHtmlFragment, sanitise, O.some),
         }, O.none)(),
       );
+    });
+
+    it('renders the full text', async () => {
       const toggleableContent = rendered.querySelector('[data-behaviour="collapse_to_teaser"]');
       const fullTextWrapper = rendered.querySelector('[data-full-text]');
       const teaserWrapper = rendered.querySelector('[data-teaser]');
@@ -34,6 +38,10 @@ describe('render-review-feed-item', () => {
       expect(toggleableContent).not.toBeNull();
       expect(fullTextWrapper?.textContent).toStrictEqual(expect.stringContaining(fullText));
       expect(teaserWrapper?.textContent).toStrictEqual(expect.stringContaining('A …'));
+    });
+
+    it('renders an id tag with the correct value', async () => {
+      expect(rendered.getElementById('doi:10.1111/12345678')).not.toBeNull();
     });
   });
 
