@@ -39,10 +39,6 @@ describe('render-feed', (): void => {
 
         expect(rendered).toStrictEqual(expect.stringContaining('someNiceList'));
       });
-
-      describe('when given three feed items', () => {
-        it.todo('renders the three feed items supplied');
-      });
     });
 
     describe('and has an empty feed', () => {
