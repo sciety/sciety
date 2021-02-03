@@ -62,6 +62,13 @@ describe('authentication-and-redirect', () => {
       expect(result).toMatch(/\/articles\/10\.1101\/2020\.07\.13\.199174#(hypothesis|doi):/);
     });
 
-    it.todo('follow command from the editorial community page returns to the editorial community page');
+    it('follow command from the editorial community page returns to the editorial community page', async () => {
+      await goto('localhost:8080/editorial-communities/10360d97-bf52-4aef-b2fa-2f60d319edd7');
+      await click('Follow');
+
+      const result = await currentURL();
+
+      expect(result).toContain('/editorial-communities/10360d97-bf52-4aef-b2fa-2f60d319edd7');
+    });
   });
 });
