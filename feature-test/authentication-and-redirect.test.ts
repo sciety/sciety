@@ -42,9 +42,25 @@ describe('authentication-and-redirect', () => {
   });
 
   describe('logged in', () => {
+    beforeEach(async () => {
+      await goto('localhost:8080/');
+      await click('Got it!');
+      await click('Log in');
+      await write(process.env.TAIKO_TWITTER_USERNAME ?? '', into(textBox('Username')));
+      await write(process.env.TAIKO_TWITTER_PASSWORD ?? '', into(textBox('Password')));
+      await click('Sign in');
+    });
+
     it.todo('log out from the article page returns to the article page');
 
-    it.todo('respond command returns to review fragment on the article page');
+    it('respond command returns to review fragment on the article page', async () => {
+      await goto('localhost:8080/articles/10.1101/2020.07.13.199174');
+      await click($('.article-feed__item:first-child button[value="respond-not-helpful"]'));
+
+      const result = await currentURL();
+
+      expect(result).toMatch(/\/articles\/10\.1101\/2020\.07\.13\.199174#(hypothesis|doi):/);
+    });
 
     it.todo('follow command from the editorial community page returns to the editorial community page');
   });
