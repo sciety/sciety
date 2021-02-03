@@ -32,6 +32,7 @@ import { unfollowHandler } from '../unfollow';
 import { finishUnfollowCommand } from '../unfollow/finish-unfollow-command';
 import { saveUnfollowCommand } from '../unfollow/save-unfollow-command';
 import { userPage } from '../user-page';
+import { ParameterizedContext } from "koa";
 
 export const createRouter = (adapters: Adapters): Router => {
   const router = new Router();
@@ -96,6 +97,12 @@ export const createRouter = (adapters: Adapters): Router => {
   // AUTHENTICATION
 
   router.get('/log-in',
+    async (context: ParameterizedContext, next) => {
+      if (!context.session.successRedirect) {
+        context.session.successRedirect = context.request.headers.referer ?? '/';
+      }
+      await next();
+    },
     authenticate);
 
   router.get('/log-out',

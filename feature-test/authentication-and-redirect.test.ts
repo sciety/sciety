@@ -23,7 +23,7 @@ describe('authentication-and-redirect', () => {
   });
 
   describe('not logged in', () => {
-    it.skip('log in from the article page returns to the article page', async () => {
+    it('log in from the article page returns to the article page', async () => {
       await goto('localhost:8080/articles/10.1101/2020.07.13.199174');
       await click('Log in');
       await write(process.env.TAIKO_TWITTER_USERNAME ?? '', into(textBox('Username')));
