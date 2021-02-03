@@ -46,12 +46,14 @@ describe('render-review-feed-item', () => {
   });
 
   describe('when the review has short full text', () => {
-    it('renders without a teaser', async () => {
-      const fullText = 'tldr';
-      const source = 'http://example.com/source';
+    let rendered: DocumentFragment;
+    const fullText = 'tldr';
+    const source = 'http://example.com/source';
+
+    beforeEach(async () => {
       const renderReviewFeedItem = createRenderReviewFeedItem(12, () => T.of(toHtmlFragment('')));
 
-      const rendered = JSDOM.fragment(
+      rendered = JSDOM.fragment(
         await renderReviewFeedItem({
           type: 'review',
           id: new Doi('10.1111/12345678'),
@@ -63,6 +65,9 @@ describe('render-review-feed-item', () => {
           fullText: pipe(fullText, toHtmlFragment, sanitise, O.some),
         }, O.none)(),
       );
+    });
+
+    it('renders without a teaser', async () => {
       const toggleableContent = rendered.querySelector('[data-behaviour="collapse_to_teaser"]');
       const fullTextWrapper = rendered.querySelector('.article-feed__item_body');
       const teaserWrapper = rendered.querySelector('[data-teaser]');
@@ -73,14 +78,20 @@ describe('render-review-feed-item', () => {
       expect(fullTextWrapper?.textContent).toStrictEqual(expect.stringContaining(fullText));
       expect(sourceLinkUrl).toStrictEqual(source);
     });
+
+    it('renders an id tag with the correct value', async () => {
+      expect(rendered.getElementById('doi:10.1111/12345678')).not.toBeNull();
+    });
   });
 
   describe('when the review has no full text', () => {
-    it('renders without a teaser', async () => {
-      const source = 'http://example.com/source';
+    const source = 'http://example.com/source';
+    let rendered: DocumentFragment;
+
+    beforeEach(async () => {
       const renderReviewFeedItem = createRenderReviewFeedItem(6, () => T.of(toHtmlFragment('')));
 
-      const rendered = JSDOM.fragment(
+      rendered = JSDOM.fragment(
         await renderReviewFeedItem({
           type: 'review',
           id: new Doi('10.1111/12345678'),
@@ -92,11 +103,18 @@ describe('render-review-feed-item', () => {
           fullText: O.none,
         }, O.none)(),
       );
+    });
+
+    it('renders without a teaser', async () => {
       const toggleableContent = rendered.querySelector('[data-behaviour="collapse_to_teaser"]');
       const sourceLinkUrl = rendered.querySelector('.article-feed__item__read_more')?.getAttribute('href');
 
       expect(toggleableContent).toBeNull();
       expect(sourceLinkUrl).toStrictEqual(source);
+    });
+
+    it('renders an id tag with the correct value', async () => {
+      expect(rendered.getElementById('doi:10.1111/12345678')).not.toBeNull();
     });
   });
 });
