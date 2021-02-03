@@ -1,7 +1,8 @@
 import dotenv from 'dotenv';
 import {
-  $, click, closeBrowser, currentURL, goto, into, link, openBrowser, textBox, write,
+  $, click, closeBrowser, currentURL, goto, link, openBrowser,
 } from 'taiko';
+import { authenticateViaTwitter } from './utilities';
 
 describe('authentication-and-redirect', () => {
   beforeEach(async () => {
@@ -14,9 +15,7 @@ describe('authentication-and-redirect', () => {
   it('log in works', async () => {
     await goto('localhost:8080');
     await click('Log in');
-    await write(process.env.TAIKO_TWITTER_USERNAME ?? '', into(textBox('Username')));
-    await write(process.env.TAIKO_TWITTER_PASSWORD ?? '', into(textBox('Password')));
-    await click('Sign in');
+    await authenticateViaTwitter();
     const result = await link('Log out').exists();
 
     expect(result).toBe(true);
@@ -26,9 +25,7 @@ describe('authentication-and-redirect', () => {
     it('log in from the article page returns to the article page', async () => {
       await goto('localhost:8080/articles/10.1101/2020.07.13.199174');
       await click('Log in');
-      await write(process.env.TAIKO_TWITTER_USERNAME ?? '', into(textBox('Username')));
-      await write(process.env.TAIKO_TWITTER_PASSWORD ?? '', into(textBox('Password')));
-      await click('Sign in');
+      await authenticateViaTwitter();
 
       const result = await currentURL();
 
@@ -39,9 +36,7 @@ describe('authentication-and-redirect', () => {
       await goto('localhost:8080/articles/10.1101/2020.07.13.199174');
       await click('Got it!');
       await click($('.article-feed__item:first-child button[value="respond-helpful"]'));
-      await write(process.env.TAIKO_TWITTER_USERNAME ?? '', into(textBox('Username')));
-      await write(process.env.TAIKO_TWITTER_PASSWORD ?? '', into(textBox('Password')));
-      await click('Sign in');
+      await authenticateViaTwitter();
 
       const result = await currentURL();
 
@@ -52,9 +47,7 @@ describe('authentication-and-redirect', () => {
       await goto('localhost:8080/editorial-communities/4eebcec9-a4bb-44e1-bde3-2ae11e65daaa');
       await click('Got it!');
       await click('Follow');
-      await write(process.env.TAIKO_TWITTER_USERNAME ?? '', into(textBox('Username')));
-      await write(process.env.TAIKO_TWITTER_PASSWORD ?? '', into(textBox('Password')));
-      await click('Sign in');
+      await authenticateViaTwitter();
 
       const result = await currentURL();
 
@@ -67,9 +60,7 @@ describe('authentication-and-redirect', () => {
       await goto('localhost:8080/');
       await click('Got it!');
       await click('Log in');
-      await write(process.env.TAIKO_TWITTER_USERNAME ?? '', into(textBox('Username')));
-      await write(process.env.TAIKO_TWITTER_PASSWORD ?? '', into(textBox('Password')));
-      await click('Sign in');
+      await authenticateViaTwitter();
     });
 
     it('log out from the article page returns to the article page', async () => {

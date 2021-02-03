@@ -100,6 +100,7 @@ module.exports = {
       ignoreDeclarationSort: true,
     }],
     'unused-imports/no-unused-imports-ts': 'error',
+    'import/no-extraneous-dependencies': ['error', { devDependencies: ['feature-test/**/*.ts', 'test/**/*.ts'] }],
   },
   settings: {
     'import/resolver': {
