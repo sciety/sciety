@@ -23,7 +23,17 @@ describe('authentication-and-redirect', () => {
   });
 
   describe('not logged in', () => {
-    it.todo('log in from the article page returns to the article page');
+    it.skip('log in from the article page returns to the article page', async () => {
+      await goto('localhost:8080/articles/10.1101/2020.07.13.199174');
+      await click('Log in');
+      await write(process.env.TAIKO_TWITTER_USERNAME ?? '', into(textBox('Username')));
+      await write(process.env.TAIKO_TWITTER_PASSWORD ?? '', into(textBox('Password')));
+      await click('Sign in');
+
+      const result = await currentURL();
+
+      expect(result).toContain('/articles/10.1101/2020.07.13.199174');
+    });
 
     it('respond command returns to review fragment on the article page', async () => {
       await goto('localhost:8080/articles/10.1101/2020.07.13.199174');
