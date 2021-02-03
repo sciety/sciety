@@ -1,6 +1,7 @@
 import Router from '@koa/router';
 import * as TE from 'fp-ts/TaskEither';
 import { flow } from 'fp-ts/function';
+import { ParameterizedContext } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import { authenticate } from './authenticate';
 import { catchErrors } from './catch-errors';
@@ -32,7 +33,6 @@ import { unfollowHandler } from '../unfollow';
 import { finishUnfollowCommand } from '../unfollow/finish-unfollow-command';
 import { saveUnfollowCommand } from '../unfollow/save-unfollow-command';
 import { userPage } from '../user-page';
-import { ParameterizedContext } from "koa";
 
 export const createRouter = (adapters: Adapters): Router => {
   const router = new Router();
