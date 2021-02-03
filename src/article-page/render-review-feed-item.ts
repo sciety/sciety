@@ -54,7 +54,7 @@ const renderWithText: RenderWithText = (teaserChars, review, fullText) => (respo
   const teaserText = clip(fullText, teaserChars);
   if (teaserText === fullText) {
     return `
-      <div class="article-feed__item_contents">
+      <div class="article-feed__item_contents" id="${review.id.toString()}">
         ${avatar(review)}
         <div class="article-feed__item_body">
           ${eventMetadata(review)}
@@ -90,7 +90,7 @@ const render = (teaserChars: number, review: ReviewFeedItem) => (responses: Html
   review.fullText,
   O.fold(
     () => `
-      <div class="article-feed__item_contents">
+      <div class="article-feed__item_contents" id="${review.id.toString()}">
         ${avatar(review)}
         <div class="article-feed__item_body">
           ${eventMetadata(review)}
