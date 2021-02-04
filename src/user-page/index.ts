@@ -2,7 +2,6 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import { Maybe } from 'true-myth';
 import { fetchSavedArticles } from './fetch-saved-articles';
 import { createGetFollowedEditorialCommunitiesFromIds, GetEditorialCommunity } from './get-followed-editorial-communities-from-ids';
 import { getUserDisplayName } from './get-user-display-name';
@@ -20,7 +19,7 @@ import { HtmlFragment } from '../types/html-fragment';
 import { User } from '../types/user';
 import { toUserId, UserId } from '../types/user-id';
 
-type FetchEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.Task<Maybe<{
+type FetchEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.Task<O.Option<{
   id: EditorialCommunityId,
   name: string,
   avatarPath: string,
@@ -44,8 +43,10 @@ type Params = {
 type UserPage = (params: Params) => ReturnType<RenderPage>;
 
 export const userPage = (ports: Ports): UserPage => {
-  const getEditorialCommunity: GetEditorialCommunity = (editorialCommunityId) => async () => (
-    (await ports.getEditorialCommunity(editorialCommunityId)()).unsafelyUnwrap()
+  const getEditorialCommunity: GetEditorialCommunity = (editorialCommunityId) => pipe(
+    editorialCommunityId,
+    ports.getEditorialCommunity,
+    T.map(O.getOrElseW(() => { throw new Error(`No such community ${editorialCommunityId.value}`); })),
   );
 
   const renderFollowToggle = createRenderFollowToggle(ports.follows);

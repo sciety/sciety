@@ -1,5 +1,6 @@
+import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
-import { Maybe } from 'true-myth';
+import { flow, pipe } from 'fp-ts/function';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 
 type Actor = {
@@ -10,16 +11,20 @@ type Actor = {
 
 type GetActor = (id: EditorialCommunityId) => T.Task<Actor>;
 
-type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.Task<Maybe<{
+type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.Task<O.Option<{
   name: string,
   avatarPath: string,
 }>>;
 
-export const getActor = (getEditorialCommunity: GetEditorialCommunity): GetActor => (id) => async () => {
-  const editorialCommunity = (await getEditorialCommunity(id)()).unsafelyUnwrap();
-  return {
-    name: editorialCommunity.name,
-    imageUrl: editorialCommunity.avatarPath,
-    url: `/editorial-communities/${id.value}`,
-  };
-};
+export const getActor = (getEditorialCommunity: GetEditorialCommunity): GetActor => (id) => pipe(
+  id,
+  getEditorialCommunity,
+  T.map(flow(
+    O.getOrElseW(() => { throw new Error(`No such community ${id.value}`); }),
+    (community) => ({
+      name: community.name,
+      imageUrl: community.avatarPath,
+      url: `/editorial-communities/${id.value}`,
+    }),
+  )),
+);

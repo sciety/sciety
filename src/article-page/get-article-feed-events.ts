@@ -1,8 +1,8 @@
 import { URL } from 'url';
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
-import { Maybe } from 'true-myth';
 import { getFeedEventsContent, GetReview } from './get-feed-events-content';
 import { createHandleArticleVersionErrors } from './handle-article-version-errors';
 import { mergeFeeds } from './merge-feeds';
@@ -28,7 +28,7 @@ export const getArticleFeedEvents = (
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
   fetchReview: GetReview,
-  getEditorialCommunity: (editorialCommunityId: EditorialCommunityId) => T.Task<Maybe<{
+  getEditorialCommunity: (editorialCommunityId: EditorialCommunityId) => T.Task<O.Option<{
     name: string,
     avatarPath: string,
   }>>,
@@ -51,7 +51,7 @@ export const getArticleFeedEvents = (
         fetchReview,
         flow(
           getEditorialCommunity,
-          T.map((editorialCommunityMaybe) => editorialCommunityMaybe.unsafelyUnwrap()),
+          T.map(O.getOrElseW(() => { throw new Error('No such community'); })),
         ),
       ),
     )(doi, server)()

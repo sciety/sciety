@@ -2,7 +2,6 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { Maybe } from 'true-myth';
 import { constructFeedItem, GetArticle } from './construct-feed-item';
 import { getDescription } from './get-description';
 import { createGetMostRecentEvents, GetAllEvents } from './get-most-recent-events';
@@ -11,17 +10,18 @@ import { createRenderDescription } from './render-description';
 import { createRenderFeed, RenderFeed } from './render-feed';
 import { createRenderFollowToggle, Follows } from './render-follow-toggle';
 import { createRenderFollowers } from './render-followers';
-import { createRenderPage, RenderPage } from './render-page';
+import { createRenderPage, Page, RenderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
 import { renderSummaryFeedList } from '../shared-components/render-summary-feed-list';
 import { EditorialCommunity } from '../types/editorial-community';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { toHtmlFragment } from '../types/html-fragment';
+import { RenderPageError } from '../types/render-page-error';
 import { User } from '../types/user';
 
 type FetchStaticFile = (filename: string) => T.Task<string>;
 
-type FetchEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.Task<Maybe<EditorialCommunity>>;
+type FetchEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.Task<O.Option<EditorialCommunity>>;
 
 type Ports = {
   fetchArticle: GetArticle,
@@ -62,12 +62,12 @@ export const editorialCommunityPage = (ports: Ports): EditorialCommunityPage => 
     return pipe(
       editorialCommunityId,
       ports.getEditorialCommunity,
-      T.chain((editorialCommunityMaybe) => (
-        editorialCommunityMaybe.mapOrElse(() => TE.left({
+      T.chain(O.fold(
+        () => TE.left<RenderPageError, Page>({
           type: 'not-found',
           message: toHtmlFragment(`Editorial community id '${editorialCommunityId.value}' not found`),
         }),
-        (editorialCommunity) => renderPage(editorialCommunity, userId))
+        (editorialCommunity) => renderPage(editorialCommunity, userId),
       )),
     );
   };

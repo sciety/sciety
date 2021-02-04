@@ -1,5 +1,5 @@
+import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
-import { Maybe } from 'true-myth';
 import { Logger } from './logger';
 import { EditorialCommunity } from '../types/editorial-community';
 import { EditorialCommunityRepository } from '../types/editorial-community-repository';
@@ -17,7 +17,7 @@ export const createEditorialCommunityRepository = (logger: Logger): EditorialCom
 
     lookup: (id) => {
       const candidate = data.find((ec) => ec.id.value === id.value);
-      return T.of(Maybe.of(candidate));
+      return T.of(O.fromNullable(candidate));
     },
   };
   return result;

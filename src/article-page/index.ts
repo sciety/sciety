@@ -2,7 +2,6 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import { Maybe } from 'true-myth';
 import { ensureBiorxivDoi } from './ensure-biorxiv-doi';
 import { FindVersionsForArticleDoi, getArticleFeedEvents } from './get-article-feed-events';
 import { GetReview } from './get-feed-events-content';
@@ -47,7 +46,7 @@ type GetEvents = T.Task<ReadonlyArray<DomainEvent>>;
 type Ports = {
   fetchArticle: GetArticleDetails,
   fetchReview: GetReview,
-  getEditorialCommunity: (editorialCommunityId: EditorialCommunityId) => T.Task<Maybe<{
+  getEditorialCommunity: (editorialCommunityId: EditorialCommunityId) => T.Task<O.Option<{
     name: string,
     avatarPath: string,
   }>>,

@@ -1,7 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
-import { Maybe } from 'true-myth';
 import { constructFeedItem, GetArticle } from './construct-feed-item';
 import { getActor } from './get-actor';
 import { GetAllEvents, getMostRecentEvents } from './get-most-recent-events';
@@ -18,7 +17,7 @@ import { EditorialCommunityId } from '../types/editorial-community-id';
 import { User } from '../types/user';
 import { UserId } from '../types/user-id';
 
-type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.Task<Maybe<{
+type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.Task<O.Option<{
   name: string,
   avatarPath: string,
 }>>;

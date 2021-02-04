@@ -11,13 +11,15 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { RenderPageError } from '../types/render-page-error';
 import { UserId } from '../types/user-id';
 
+export type Page = {
+  title: string,
+  content: HtmlFragment,
+};
+
 export type RenderPage = (
   editorialCommunity: EditorialCommunity,
   userId: O.Option<UserId>
-) => TE.TaskEither<RenderPageError, {
-  title: string,
-  content: HtmlFragment,
-}>;
+) => TE.TaskEither<RenderPageError, Page>;
 
 type RenderPageHeader = (editorialCommunity: EditorialCommunity) => HtmlFragment;
 
