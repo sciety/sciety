@@ -34,7 +34,7 @@ import { Json } from '../types/json';
 const populateEditorialCommunities = (logger: Logger): EditorialCommunityRepository => {
   const repository = createEditorialCommunityRepository(logger);
   for (const editorialCommunity of bootstrapEditorialCommunities) {
-    void repository.add(editorialCommunity);
+    void repository.add(editorialCommunity)();
   }
   return repository;
 };

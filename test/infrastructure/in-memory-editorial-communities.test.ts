@@ -18,7 +18,7 @@ describe('in-memory-editorial-communities', () => {
 
   beforeEach(async () => {
     repository = createEditorialCommunityRepository(dummyLogger);
-    await repository.add(community);
+    await repository.add(community)();
   });
 
   describe('lookup', () => {

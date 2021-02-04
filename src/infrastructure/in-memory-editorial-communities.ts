@@ -8,7 +8,7 @@ export const createEditorialCommunityRepository = (logger: Logger): EditorialCom
   const data: Array<EditorialCommunity> = [];
 
   const result: EditorialCommunityRepository = {
-    add: async (editorialCommunity) => {
+    add: (editorialCommunity) => async () => {
       data.push(editorialCommunity);
       logger('info', 'Editorial community added', { editorialCommunity });
     },

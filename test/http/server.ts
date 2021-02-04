@@ -31,7 +31,7 @@ type TestServer = {
 export const createTestServer = async (): Promise<TestServer> => {
   const editorialCommunities = createEditorialCommunityRepository(dummyLogger);
   for (const editorialCommunity of bootstrapEditorialCommunities) {
-    void editorialCommunities.add(editorialCommunity);
+    await editorialCommunities.add(editorialCommunity)();
   }
   const reviewProjections = createReviewProjections([]);
   const fetchDataCiteDataset: FetchDataset = async () => (
