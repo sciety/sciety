@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import * as T from 'fp-ts/Task';
 import { Maybe } from 'true-myth';
 import { CommitEvents } from './commit-events';
@@ -13,15 +12,9 @@ import { Logger } from './logger';
 import { FindReviewsForArticleDoi } from './review-projections';
 import { SearchEuropePmc } from './search-europe-pmc';
 import { DomainEvent } from '../types/domain-events';
+import { EditorialCommunity } from '../types/editorial-community';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { EditorialCommunityRepository } from '../types/editorial-community-repository';
-
-type EditorialCommunity = {
-  name: string,
-  id: EditorialCommunityId,
-  avatar: URL,
-  descriptionPath: string,
-};
 
 type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.Task<Maybe<EditorialCommunity>>;
 

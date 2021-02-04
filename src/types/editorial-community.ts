@@ -5,5 +5,6 @@ export type EditorialCommunity = {
   id: EditorialCommunityId,
   name: string,
   avatar: URL,
+  avatarPath: string,
   descriptionPath: string,
 };

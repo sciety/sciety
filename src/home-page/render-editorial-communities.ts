@@ -1,20 +1,14 @@
-import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
-import { RenderEditorialCommunity } from './render-editorial-community';
+import { Community, RenderEditorialCommunity } from './render-editorial-community';
 import { templateListItems } from '../shared-components/list-items';
-import { EditorialCommunityId } from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
 type RenderEditorialCommunities = (userId: O.Option<UserId>) => T.Task<HtmlFragment>;
 
-export type GetAllEditorialCommunities = T.Task<Array<{
-  avatar: URL,
-  id: EditorialCommunityId,
-  name: string,
-}>>;
+export type GetAllEditorialCommunities = T.Task<Array<Community>>;
 
 const render = (links: ReadonlyArray<HtmlFragment>): string => `
   <section>

@@ -18,6 +18,7 @@ describe('render feed', () => {
     id: anEditorialCommunityId,
     name: 'name',
     avatar: new URL('http://example.com/image'),
+    avatarPath: '',
     descriptionPath: 'path',
   };
 

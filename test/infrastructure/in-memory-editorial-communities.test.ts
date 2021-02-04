@@ -15,6 +15,7 @@ describe('in-memory-editorial-communities', () => {
       id: editorialCommunityId,
       name: 'My pals',
       avatar: new URL('https://example.com/images/2'),
+      avatarPath: '',
       descriptionPath: '/static/desc.md',
     });
   });

@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
@@ -7,8 +6,8 @@ import { EditorialCommunityId } from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
-type Community = {
-  avatar: URL,
+export type Community = {
+  avatarPath: string,
   id: EditorialCommunityId,
   name: string,
 };
@@ -18,7 +17,7 @@ export type RenderEditorialCommunity = (userId: O.Option<UserId>) => (community:
 const render = (community: Community) => (toggle: HtmlFragment): string => `
   <div class="editorial-community">
     <a href="/editorial-communities/${community.id.value}" class="editorial-community__link">
-      <img src="${community.avatar.toString()}" alt="" class="editorial-community__avatar">
+      <img src="${community.avatarPath}" alt="" class="editorial-community__avatar">
       <div class="editorial-community__name">
         ${community.name}
       </div>

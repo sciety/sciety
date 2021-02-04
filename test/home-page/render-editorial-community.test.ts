@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { createRenderEditorialCommunity } from '../../src/home-page/render-editorial-community';
@@ -10,7 +9,7 @@ describe('render-editorial-community', (): void => {
     const community = {
       id: new EditorialCommunityId('A'),
       name: 'Editorial Community A',
-      avatar: new URL('http://example.com'),
+      avatarPath: '',
     };
     const renderEditorialCommunity = createRenderEditorialCommunity(
       () => T.of(toHtmlFragment('')),

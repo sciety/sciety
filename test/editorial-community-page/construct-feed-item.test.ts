@@ -16,6 +16,7 @@ describe('construct-feed-item', (): void => {
     id: new EditorialCommunityId('my-community'),
     name: 'dummyActorName',
     descriptionPath: '',
+    avatarPath: '',
     avatar: new URL('http://example.com/image'),
   };
 
