@@ -41,12 +41,25 @@ export const createApplicationServer = (router: Router, logger: Logger): Server 
     await next();
   });
 
-  if (!process.env.APP_ORIGIN) {
-    logger('error', 'Missing APP_ORIGIN environment variable');
-    throw new Error('Missing APP_ORIGIN from environment variables');
-  }
+  const requiredEnvironmentVariables = [
+    'APP_ORIGIN',
+    'APP_SECRET',
+    'PGUSER',
+    'PGHOST',
+    'PGPASSWORD',
+    'PGDATABASE',
+    'TWITTER_API_KEY',
+    'TWITTER_API_SECRET_KEY',
+    'TWITTER_API_BEARER_TOKEN',
+  ];
+  requiredEnvironmentVariables.forEach((variableName) => {
+    if (!process.env[variableName]) {
+      logger('error', `Missing ${variableName} environment variable`);
+      throw new Error(`Missing ${variableName} from environment variables`);
+    }
+  });
 
-  const isSecure = process.env.APP_ORIGIN.startsWith('https:');
+  const isSecure = process.env.APP_ORIGIN?.startsWith('https:');
   if (isSecure) {
     app.use(async (ctx, next) => {
       ctx.cookies.secure = true;
@@ -66,9 +79,9 @@ export const createApplicationServer = (router: Router, logger: Logger): Server 
   koaPassport.use(
     new TwitterStrategy(
       {
-        consumerKey: process.env.TWITTER_API_KEY ?? 'my_key',
-        consumerSecret: process.env.TWITTER_API_SECRET_KEY ?? 'my_secret',
-        callbackURL: `${process.env.APP_ORIGIN}/twitter/callback`,
+        consumerKey: process.env.TWITTER_API_KEY ?? '',
+        consumerSecret: process.env.TWITTER_API_SECRET_KEY ?? '',
+        callbackURL: `${process.env.APP_ORIGIN ?? ''}/twitter/callback`,
       },
       (token, tokenSecret, profile, cb) => {
         const user: User = {
