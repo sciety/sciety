@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/Option';
+import { Task } from 'fp-ts/Task';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { GetUserReviewResponse } from './render-review-responses';
@@ -14,7 +15,7 @@ import { UserId } from '../types/user-id';
 
 type GetEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-const projectResponse = (getEvents: GetEvents) => async (reviewId: ReviewId, userId: UserId): Promise<O.Option<'helpful' | 'not-helpful'>> => {
+const projectResponse = (getEvents: GetEvents) => (reviewId: ReviewId, userId: UserId): Task<O.Option<'helpful' | 'not-helpful'>> => async () => {
   const events = await getEvents();
 
   // TODO number of filters could be reduced
@@ -52,7 +53,7 @@ export const createProjectUserReviewResponse = (getEvents: GetEvents): GetUserRe
     userId,
     O.fold(
       async () => O.none,
-      async (u) => projectResponse(getEvents)(reviewId, u),
+      async (u) => projectResponse(getEvents)(reviewId, u)(),
     ),
   )
 );
