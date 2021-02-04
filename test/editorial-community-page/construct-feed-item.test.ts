@@ -7,7 +7,7 @@ import { EditorialCommunity } from '../../src/types/editorial-community';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
 
-describe('construct-feed-item', (): void => {
+describe('construct-feed-item', () => {
   const articleTitle = 'the title' as SanitisedHtmlFragment;
   const arbitraryActorId = new EditorialCommunityId('');
   const arbitraryArticleId = new Doi('10.5281/zenodo.3678326');

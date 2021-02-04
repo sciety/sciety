@@ -4,8 +4,8 @@ import { pipe } from 'fp-ts/function';
 import { articleSearchPage } from '../../src/article-search-page';
 import { createTestServer } from '../http/server';
 
-describe('create render page', (): void => {
-  it('displays search results', async (): Promise<void> => {
+describe('create render page', () => {
+  it('displays search results', async () => {
     const { adapters } = await createTestServer();
     const renderPage = articleSearchPage(adapters);
     const params = { query: '10.1101/833392' };

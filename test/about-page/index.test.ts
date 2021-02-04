@@ -3,8 +3,8 @@ import { aboutPage, FetchStaticFile } from '../../src/about-page/index';
 
 const fetchStaticFile: FetchStaticFile = (filename) => T.of(`# Contents of ${filename}`);
 
-describe('create render page', (): void => {
-  it('inserts the HTML text into the response body', async (): Promise<void> => {
+describe('create render page', () => {
+  it('inserts the HTML text into the response body', async () => {
     const renderPage = aboutPage({ fetchStaticFile });
     const rendered = await renderPage()();
 

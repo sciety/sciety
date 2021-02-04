@@ -3,9 +3,9 @@ import * as O from 'fp-ts/Option';
 import { articlePage, Params } from '../../src/article-page';
 import { createTestServer } from '../http/server';
 
-describe('create render page', (): void => {
-  describe('when the article is from bioRxiv', (): void => {
-    it('returns a page containing article metadata', async (): Promise<void> => {
+describe('create render page', () => {
+  describe('when the article is from bioRxiv', () => {
+    it('returns a page containing article metadata', async () => {
       const { adapters } = await createTestServer();
       const renderPage = articlePage(adapters);
       const params: Params = { doi: '10.1101/833392', user: O.none };
@@ -22,8 +22,8 @@ describe('create render page', (): void => {
     });
   });
 
-  describe('when the article does not exist', (): void => {
-    it('returns a not-found error', async (): Promise<void> => {
+  describe('when the article does not exist', () => {
+    it('returns a not-found error', async () => {
       const { adapters } = await createTestServer();
       const renderPage = articlePage(adapters);
       const params: Params = { doi: 'rubbish', user: O.none };
@@ -34,8 +34,8 @@ describe('create render page', (): void => {
     });
   });
 
-  describe('when the article is not from bioRxiv', (): void => {
-    it('returns a not-found error', async (): Promise<void> => {
+  describe('when the article is not from bioRxiv', () => {
+    it('returns a not-found error', async () => {
       const { adapters } = await createTestServer();
       const renderPage = articlePage(adapters);
       const params: Params = { doi: '10.7554/eLife.09560', user: O.none };

@@ -3,9 +3,9 @@ import * as O from 'fp-ts/Option';
 import { editorialCommunityPage, Params } from '../../src/editorial-community-page';
 import { createTestServer } from '../http/server';
 
-describe('create render page', (): void => {
-  describe('when the editorial community does not exist', (): void => {
-    it('throws a NotFound error', async (): Promise<void> => {
+describe('create render page', () => {
+  describe('when the editorial community does not exist', () => {
+    it('throws a NotFound error', async () => {
       const { adapters } = await createTestServer();
       const renderPage = editorialCommunityPage(adapters);
       const params: Params = { id: 'no-such-community', user: O.none };

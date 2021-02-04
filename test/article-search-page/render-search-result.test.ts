@@ -15,8 +15,8 @@ const searchResult: SearchResult = {
 
 const arbitraryReviewCount: GetReviewCount = () => TE.right(0);
 
-describe('render-search-result component', (): void => {
-  it('displays title and authors', async (): Promise<void> => {
+describe('render-search-result component', () => {
+  it('displays title and authors', async () => {
     const rendered = await createRenderSearchResult(arbitraryReviewCount)(searchResult)();
 
     expect(rendered).toStrictEqual(expect.stringContaining(searchResult.doi.value));
@@ -24,14 +24,14 @@ describe('render-search-result component', (): void => {
     expect(rendered).toStrictEqual(expect.stringContaining(searchResult.authors));
   });
 
-  it('displays the posted date', async (): Promise<void> => {
+  it('displays the posted date', async () => {
     const rendered = await createRenderSearchResult(arbitraryReviewCount)(searchResult)();
 
     expect(rendered).toStrictEqual(expect.stringMatching(/Posted[\s\S]*?Nov 30, 2017/));
   });
 
-  describe('the article has reviews', (): void => {
-    it('displays the number of reviews', async (): Promise<void> => {
+  describe('the article has reviews', () => {
+    it('displays the number of reviews', async () => {
       const getReviewCount: GetReviewCount = () => TE.right(37);
 
       const rendered = await createRenderSearchResult(getReviewCount)(searchResult)();
@@ -40,8 +40,8 @@ describe('render-search-result component', (): void => {
     });
   });
 
-  describe('the article has no reviews', (): void => {
-    it('hides the number of reviews', async (): Promise<void> => {
+  describe('the article has no reviews', () => {
+    it('hides the number of reviews', async () => {
       const getReviewCount: GetReviewCount = () => TE.right(0);
 
       const rendered = await createRenderSearchResult(getReviewCount)(searchResult);
@@ -51,7 +51,7 @@ describe('render-search-result component', (): void => {
   });
 
   describe('can\'t retrive reviews', () => {
-    it('hides the number of reviews', async (): Promise<void> => {
+    it('hides the number of reviews', async () => {
       const getReviewCount: GetReviewCount = () => TE.left('some error');
 
       const rendered = await createRenderSearchResult(getReviewCount)(searchResult);

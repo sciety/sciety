@@ -6,9 +6,9 @@ import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
 
 const doi = new Doi('10.1101/815689');
 
-describe('render-article-abstract component', (): void => {
+describe('render-article-abstract component', () => {
   describe('when the article is available', () => {
-    it('renders the abstract for an article', async (): Promise<void> => {
+    it('renders the abstract for an article', async () => {
       const getArticleAbstract: GetArticleAbstract<never> = () => TE.right(
         `Article ${doi.value} abstract content` as SanitisedHtmlFragment,
       );
@@ -22,7 +22,7 @@ describe('render-article-abstract component', (): void => {
   });
 
   describe('when the article is unavailable', () => {
-    it('passes the error through unchanged', async (): Promise<void> => {
+    it('passes the error through unchanged', async () => {
       const getArticleAbstract: GetArticleAbstract<'any-error'> = () => TE.left('any-error');
 
       const renderArticleAbstract = createRenderArticleAbstract(getArticleAbstract);

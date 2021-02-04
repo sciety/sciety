@@ -1,7 +1,7 @@
 import { renderPage } from '../../src/about-page/render-page';
 
-describe('render-about-page middleware', (): void => {
-  it('returns a page with the given HTML embedded', async (): Promise<void> => {
+describe('render-about-page middleware', () => {
+  it('returns a page with the given HTML embedded', async () => {
     const html = '<h1>About stuff</h1>';
     const rendered = renderPage(html);
 

@@ -10,7 +10,7 @@ import { dummyLogger } from '../dummy-logger';
 
 const reviewDoi = new Doi('10.5281/zenodo.3678325');
 
-describe('fetch-datacite-review', (): void => {
+describe('fetch-datacite-review', () => {
   describe('when the response contains Datacite data', () => {
     it('returns the review', async () => {
       const fetchDataset: FetchDataset = async (iri) => (

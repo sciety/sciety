@@ -17,10 +17,10 @@ import { toReviewId } from '../../src/types/review-id';
 import { toUserId } from '../../src/types/user-id';
 import { shouldNotBeCalled } from '../should-not-be-called';
 
-describe('render-feed', (): void => {
+describe('render-feed', () => {
   describe('when the user is logged in', () => {
     describe('and has a non-empty feed', () => {
-      it('returns a list', async (): Promise<void> => {
+      it('returns a list', async () => {
         const dummyGetEvents: GetEvents<EditorialCommunityReviewedArticleEvent> = () => T.of([
           editorialCommunityReviewedArticle(
             new EditorialCommunityId('our-community'),
@@ -42,7 +42,7 @@ describe('render-feed', (): void => {
     });
 
     describe('and has an empty feed', () => {
-      it('returns a come back later text', async (): Promise<void> => {
+      it('returns a come back later text', async () => {
         const dummyIsFollowingSomething: IsFollowingSomething = () => T.of(true);
         const dummyGetEvents: GetEvents<EditorialCommunityReviewedArticleEvent> = () => T.of([]);
         const stubRenderSummaryFeedList: RenderSummaryFeedList<EditorialCommunityReviewedArticleEvent> = (

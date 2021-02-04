@@ -2,7 +2,7 @@ import { JSDOM } from 'jsdom';
 import request, { Response } from 'supertest';
 import { createTestServer } from './server';
 
-describe('page-handler', (): void => {
+describe('page-handler', () => {
   describe('article page', () => {
     it('sets the og meta tags to the article details', async () => {
       const { server } = await createTestServer();

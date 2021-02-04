@@ -18,7 +18,7 @@ const fetchedReview = {
   url: new URL('https://example.com'),
 };
 
-describe('fetch-review', (): void => {
+describe('fetch-review', () => {
   it('returns a Datacite review when given a DOI', async () => {
     const fetchDataciteReview: FetchDataciteReview = () => T.of(fetchedReview);
     const fetchReview = createFetchReview(fetchDataciteReview, shouldNotBeCalled);

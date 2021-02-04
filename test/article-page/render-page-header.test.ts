@@ -14,7 +14,7 @@ const getArticleDetails: GetArticleDetails<never> = (doi) => TE.right({
   authors: ['Gary', 'Uncle Wiggly'],
 });
 
-describe('render-page-header component', (): void => {
+describe('render-page-header component', () => {
   let renderPageHeader: RenderPageHeader<never>;
   let rendered: E.Either<unknown, HtmlFragment>;
 
@@ -31,7 +31,7 @@ describe('render-page-header component', (): void => {
     expect(rendered).toStrictEqual(E.right(expect.stringMatching(/^\s*<header\s|>/)));
   });
 
-  it('renders the title for an article', async (): Promise<void> => {
+  it('renders the title for an article', async () => {
     expect(rendered).toStrictEqual(E.right(expect.stringContaining('Lorem ipsum 10.1101/815689')));
   });
 

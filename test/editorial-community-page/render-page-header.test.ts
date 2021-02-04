@@ -1,8 +1,8 @@
 import { renderPageHeader } from '../../src/editorial-community-page/render-page-header';
 
-describe('create render page', (): void => {
-  describe('when the community exists', (): void => {
-    it('renders the community name', async (): Promise<void> => {
+describe('create render page', () => {
+  describe('when the community exists', () => {
+    it('renders the community name', async () => {
       const rendered = renderPageHeader({
         name: 'My Community',
         avatarPath: '/images/xyz.png',

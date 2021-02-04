@@ -2,7 +2,7 @@ import { OK } from 'http-status-codes';
 import request, { Response } from 'supertest';
 import { createTestServer } from './server';
 
-describe('robots handler', (): void => {
+describe('robots handler', () => {
   let response: Response;
 
   beforeEach(async () => {
@@ -10,11 +10,11 @@ describe('robots handler', (): void => {
     response = await request(server).get('/robots.txt');
   });
 
-  it('returns a successful response', async (): Promise<void> => {
+  it('returns a successful response', async () => {
     expect(response.status).toBe(OK);
   });
 
-  it('is plain text', async (): Promise<void> => {
+  it('is plain text', async () => {
     expect(response.type).toBe('text/plain');
     expect(response.charset).toBe('utf-8');
   });

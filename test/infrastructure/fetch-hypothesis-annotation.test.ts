@@ -10,7 +10,7 @@ import { dummyLogger } from '../dummy-logger';
 const date = '2019-09-12T09:55:46.146050+00:00';
 const hypothesisAnnotationId = new HypothesisAnnotationId('fhAtGNVDEemkyCM-sRPpVQ');
 
-describe('fetch-hypothesis-annotation', (): void => {
+describe('fetch-hypothesis-annotation', () => {
   it('returns the review', async () => {
     const getJson: GetJson = async () => ({
       created: date,

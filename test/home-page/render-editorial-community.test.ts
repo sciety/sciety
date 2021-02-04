@@ -4,8 +4,8 @@ import { createRenderEditorialCommunity } from '../../src/home-page/render-edito
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 
-describe('render-editorial-community', (): void => {
-  it('renders the name of the community', async (): Promise<void> => {
+describe('render-editorial-community', () => {
+  it('renders the name of the community', async () => {
     const community = {
       id: new EditorialCommunityId('A'),
       name: 'Editorial Community A',

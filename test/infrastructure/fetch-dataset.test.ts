@@ -16,8 +16,8 @@ const createStubFetch = (response: Partial<DatasetResponse<DatasetCore>>): typeo
   async () => response as DatasetResponse<DatasetCore>
 );
 
-describe('fetch-dataset', (): void => {
-  describe('dataset found', (): void => {
+describe('fetch-dataset', () => {
+  describe('dataset found', () => {
     it('fetches a dataset for an IRI', async () => {
       const iri = namedNode(`https://doi.org/${reviewDoi.value}`);
       const cannedDataset = datasetFactory([]);
@@ -50,8 +50,8 @@ describe('fetch-dataset', (): void => {
     });
   });
 
-  describe('dataset not found', (): void => {
-    it('throws an errors', async (): Promise<void> => {
+  describe('dataset not found', () => {
+    it('throws an errors', async () => {
       const iri = namedNode('https://doi.org/not-a-doi');
       const stubFetch = createStubFetch({
         ok: false,
