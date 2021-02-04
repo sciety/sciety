@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
-import { Maybe } from 'true-myth';
+import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { ReviewId } from '../types/review-id';
 import { UserId } from '../types/user-id';
@@ -9,8 +9,8 @@ export type RenderReviewResponses = (reviewId: ReviewId, userId: O.Option<UserId
 
 // TODO Try introducing a Counter type to prevent impossible numbers (e.g. -1, 2.5)
 export type CountReviewResponses = (reviewId: ReviewId) => T.Task<{ helpfulCount: number, notHelpfulCount: number }>;
-// TODO: remove Maybe and Promise in favour of TaskOption
-export type GetUserReviewResponse = (reviewId: ReviewId, userId: O.Option<UserId>) => Promise<Maybe<'helpful' | 'not-helpful'>>;
+// TODO: remove Promise in favour of Task
+export type GetUserReviewResponse = (reviewId: ReviewId, userId: O.Option<UserId>) => Promise<O.Option<'helpful' | 'not-helpful'>>;
 
 export const createRenderReviewResponses = (
   countReviewResponses: CountReviewResponses,
@@ -21,8 +21,8 @@ export const createRenderReviewResponses = (
     const { helpfulCount, notHelpfulCount } = await countReviewResponses(reviewId)();
     const current = await getUserReviewResponse(reviewId, userId);
 
-    const saidHelpful = current.isJust() && current.unsafelyUnwrap() === 'helpful';
-    const saidNotHelpful = current.isJust() && current.unsafelyUnwrap() === 'not-helpful';
+    const saidHelpful = pipe(current, O.filter((value) => value === 'helpful'), O.isSome);
+    const saidNotHelpful = pipe(current, O.filter((value) => value === 'not-helpful'), O.isSome);
 
     // TODO: Move 'You said this evaluation is helpful' etc to visually hidden span before button.
     // TODO: Change the label when the other button is selected

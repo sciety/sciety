@@ -10,7 +10,7 @@ describe('project-user-review-response', () => {
       const projectUserReviewResponse = createProjectUserReviewResponse(async () => []);
       const userResponse = await projectUserReviewResponse(new Doi('10.1111/123456'), O.some(toUserId('someone')));
 
-      expect(userResponse.isNothing()).toBe(true);
+      expect(userResponse).toStrictEqual(O.none);
     });
   });
 
@@ -25,7 +25,7 @@ describe('project-user-review-response', () => {
       }]);
       const userResponse = await projectUserReviewResponse(new Doi('10.1111/123456'), O.some(toUserId('user')));
 
-      expect(userResponse.unsafelyUnwrap()).toBe('helpful');
+      expect(userResponse).toStrictEqual(O.some('helpful'));
     });
   });
 
@@ -40,7 +40,7 @@ describe('project-user-review-response', () => {
       }]);
       const userResponse = await projectUserReviewResponse(new Doi('10.1111/123456'), O.some(toUserId('userB')));
 
-      expect(userResponse.isNothing()).toBe(true);
+      expect(userResponse).toStrictEqual(O.none);
     });
   });
 
@@ -55,7 +55,7 @@ describe('project-user-review-response', () => {
       }]);
       const userResponse = await projectUserReviewResponse(new Doi('10.1111/123456'), O.some(toUserId('user')));
 
-      expect(userResponse.isNothing()).toBe(true);
+      expect(userResponse).toStrictEqual(O.none);
     });
   });
 
@@ -71,7 +71,7 @@ describe('project-user-review-response', () => {
 
       const userResponse = await projectUserReviewResponse(new Doi('10.1111/123456'), O.none);
 
-      expect(userResponse.isNothing()).toBe(true);
+      expect(userResponse).toStrictEqual(O.none);
     });
   });
 
@@ -98,7 +98,7 @@ describe('project-user-review-response', () => {
 
       const userResponse = await projectUserReviewResponse(new Doi('10.1111/123456'), O.some(userId));
 
-      expect(userResponse.isNothing()).toBe(true);
+      expect(userResponse).toStrictEqual(O.none);
     });
   });
 
@@ -133,7 +133,7 @@ describe('project-user-review-response', () => {
 
       const userResponse = await projectUserReviewResponse(reviewId, O.some(userId));
 
-      expect(userResponse.unsafelyUnwrap()).toBe('helpful');
+      expect(userResponse).toStrictEqual(O.some('helpful'));
     });
   });
 
@@ -148,7 +148,7 @@ describe('project-user-review-response', () => {
       }]);
       const userResponse = await projectUserReviewResponse(new Doi('10.1111/123456'), O.some(toUserId('user')));
 
-      expect(userResponse.unsafelyUnwrap()).toBe('not-helpful');
+      expect(userResponse).toStrictEqual(O.some('not-helpful'));
     });
   });
 
@@ -175,7 +175,7 @@ describe('project-user-review-response', () => {
 
       const userResponse = await projectUserReviewResponse(new Doi('10.1111/123456'), O.some(userId));
 
-      expect(userResponse.isNothing()).toBe(true);
+      expect(userResponse).toStrictEqual(O.none);
     });
   });
 });

@@ -1,6 +1,5 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
-import { Maybe } from 'true-myth';
 import { createRenderReviewResponses } from '../../src/article-page/render-review-responses';
 import { Doi } from '../../src/types/doi';
 import { toUserId } from '../../src/types/user-id';
@@ -12,7 +11,7 @@ describe('render-review-responses', () => {
         helpfulCount: 35,
         notHelpfulCount: 17,
       }),
-      async () => Maybe.nothing(),
+      async () => O.none,
     );
     const rendered = await renderReviewResponses(new Doi('10.1101/111111'), O.none)();
 
@@ -26,7 +25,7 @@ describe('render-review-responses', () => {
         helpfulCount: 35,
         notHelpfulCount: 17,
       }),
-      async () => Maybe.nothing(),
+      async () => O.none,
     );
 
     it('displays an off `helpful` button', async () => {
@@ -46,7 +45,7 @@ describe('render-review-responses', () => {
     const renderReviewResponses = createRenderReviewResponses(() => T.of({
       helpfulCount: 1,
       notHelpfulCount: 0,
-    }), async () => Maybe.just('helpful'));
+    }), async () => O.some('helpful'));
 
     it('displays an on `helpful` button', async () => {
       const rendered = await renderReviewResponses(new Doi('10.1111/123456'), O.some(toUserId('user')))();
@@ -65,7 +64,7 @@ describe('render-review-responses', () => {
     const renderReviewResponses = createRenderReviewResponses(() => T.of({
       helpfulCount: 0,
       notHelpfulCount: 1,
-    }), async () => Maybe.just('not-helpful'));
+    }), async () => O.some('not-helpful'));
 
     it('displays an on `not helpful` button', async () => {
       const rendered = await renderReviewResponses(new Doi('10.1111/123456'), O.some(toUserId('user')))();

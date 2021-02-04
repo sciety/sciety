@@ -1,7 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
-import { Maybe } from 'true-myth';
 import { GetUserReviewResponse } from './render-review-responses';
 import {
   DomainEvent,
@@ -15,7 +14,7 @@ import { UserId } from '../types/user-id';
 
 type GetEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-const projectResponse = (getEvents: GetEvents) => async (reviewId: ReviewId, userId: UserId): Promise<Maybe<'helpful' | 'not-helpful'>> => {
+const projectResponse = (getEvents: GetEvents) => async (reviewId: ReviewId, userId: UserId): Promise<O.Option<'helpful' | 'not-helpful'>> => {
   const events = await getEvents();
 
   // TODO number of filters could be reduced
@@ -34,17 +33,17 @@ const projectResponse = (getEvents: GetEvents) => async (reviewId: ReviewId, use
     .filter((event) => event.reviewId.toString() === reviewId.toString());
 
   if (ofInterest.length === 0) {
-    return Maybe.nothing();
+    return O.none;
   }
 
   const mostRecentEventType = ofInterest[ofInterest.length - 1].type;
   switch (mostRecentEventType) {
     case 'UserFoundReviewHelpful':
-      return Maybe.just('helpful');
+      return O.some('helpful');
     case 'UserFoundReviewNotHelpful':
-      return Maybe.just('not-helpful');
+      return O.some('not-helpful');
     default:
-      return Maybe.nothing();
+      return O.none;
   }
 };
 
@@ -52,7 +51,7 @@ export const createProjectUserReviewResponse = (getEvents: GetEvents): GetUserRe
   async (reviewId, userId) => pipe(
     userId,
     O.fold(
-      async () => Maybe.nothing(),
+      async () => O.none,
       async (u) => projectResponse(getEvents)(reviewId, u),
     ),
   )
