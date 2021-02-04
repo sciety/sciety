@@ -2,6 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
+import { pipe } from 'fp-ts/function';
 import {
   biorxivArticleVersionErrorFeedItem,
   medrxivArticleVersionErrorFeedItem,
@@ -27,14 +28,14 @@ export const createRenderFeed = (
   renderReviewFeedItem: RenderReviewFeedItem,
   renderArticleVersionFeedItem: RenderArticleVersionFeedItem,
 ): RenderFeed => {
-  const renderFeedItem = async (feedItem: FeedItem, userId: O.Option<UserId>): Promise<HtmlFragment> => {
+  const renderFeedItem = (feedItem: FeedItem, userId: O.Option<UserId>): T.Task<HtmlFragment> => {
     switch (feedItem.type) {
       case 'article-version':
-        return renderArticleVersionFeedItem(feedItem);
+        return T.of(renderArticleVersionFeedItem(feedItem));
       case 'article-version-error':
-        return feedItem.server === 'medrxiv' ? medrxivArticleVersionErrorFeedItem : biorxivArticleVersionErrorFeedItem;
+        return T.of(feedItem.server === 'medrxiv' ? medrxivArticleVersionErrorFeedItem : biorxivArticleVersionErrorFeedItem);
       case 'review':
-        return renderReviewFeedItem(feedItem, userId)();
+        return renderReviewFeedItem(feedItem, userId);
     }
   };
 
@@ -46,9 +47,10 @@ export const createRenderFeed = (
       return E.left('no-content');
     }
 
-    const items = await Promise.all(feedItems.map(
-      async (feedItem) => renderFeedItem(feedItem, userId),
-    ));
+    const items = await pipe(
+      feedItems,
+      T.traverseArray((feedItem) => renderFeedItem(feedItem, userId)),
+    )();
 
     return E.right(toHtmlFragment(`
       <section class="article-feed">
