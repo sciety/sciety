@@ -1,6 +1,7 @@
 import rTracer from 'cls-rtracer';
+import * as O from 'fp-ts/Option';
+import { constant, pipe } from 'fp-ts/function';
 import { serializeError } from 'serialize-error';
-import { Maybe } from 'true-myth';
 
 enum Level {
   error,
@@ -14,11 +15,12 @@ export type Payload = Record<string, unknown>;
 export type Logger = (level: LevelName, message: string, payload?: Payload) => void;
 
 export const createRTracerLogger = (logger: Logger): Logger => {
-  const withRequestId = (payload: Payload): Payload => (
-    Maybe.of(rTracer.id()).mapOr(
-      payload,
+  const withRequestId = (payload: Payload): Payload => pipe(
+    O.of(rTracer.id()),
+    O.fold(
+      constant(payload),
       (requestId) => ({ ...payload, requestId }),
-    )
+    ),
   );
 
   return (level, message, payload = {}) => (
