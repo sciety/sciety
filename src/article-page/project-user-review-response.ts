@@ -44,11 +44,11 @@ const projectResponse = (getEvents: GetEvents) => (reviewId: ReviewId, userId: U
 );
 
 export const createProjectUserReviewResponse = (getEvents: GetEvents): GetUserReviewResponse => (
-  async (reviewId, userId) => pipe(
+  (reviewId, userId) => pipe(
     userId,
     O.fold(
-      async () => O.none,
-      async (u) => projectResponse(getEvents)(reviewId, u)(),
+      () => T.of(O.none),
+      (u) => projectResponse(getEvents)(reviewId, u),
     ),
   )
 );

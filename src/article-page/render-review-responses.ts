@@ -9,17 +9,16 @@ export type RenderReviewResponses = (reviewId: ReviewId, userId: O.Option<UserId
 
 // TODO Try introducing a Counter type to prevent impossible numbers (e.g. -1, 2.5)
 export type CountReviewResponses = (reviewId: ReviewId) => T.Task<{ helpfulCount: number, notHelpfulCount: number }>;
-// TODO: remove Promise in favour of Task
-export type GetUserReviewResponse = (reviewId: ReviewId, userId: O.Option<UserId>) => Promise<O.Option<'helpful' | 'not-helpful'>>;
+export type GetUserReviewResponse = (reviewId: ReviewId, userId: O.Option<UserId>) => T.Task<O.Option<'helpful' | 'not-helpful'>>;
 
 export const createRenderReviewResponses = (
   countReviewResponses: CountReviewResponses,
   getUserReviewResponse: GetUserReviewResponse,
 ): RenderReviewResponses => (
   (reviewId, userId) => async () => {
-    // TODO: do not invoke task
+    // TODO: do not invoke tasks
     const { helpfulCount, notHelpfulCount } = await countReviewResponses(reviewId)();
-    const current = await getUserReviewResponse(reviewId, userId);
+    const current = await getUserReviewResponse(reviewId, userId)();
 
     const saidHelpful = pipe(current, O.filter((value) => value === 'helpful'), O.isSome);
     const saidNotHelpful = pipe(current, O.filter((value) => value === 'not-helpful'), O.isSome);

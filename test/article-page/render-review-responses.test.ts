@@ -11,7 +11,7 @@ describe('render-review-responses', () => {
         helpfulCount: 35,
         notHelpfulCount: 17,
       }),
-      async () => O.none,
+      () => T.of(O.none),
     );
     const rendered = await renderReviewResponses(new Doi('10.1101/111111'), O.none)();
 
@@ -25,7 +25,7 @@ describe('render-review-responses', () => {
         helpfulCount: 35,
         notHelpfulCount: 17,
       }),
-      async () => O.none,
+      () => T.of(O.none),
     );
 
     it('displays an off `helpful` button', async () => {
@@ -45,7 +45,7 @@ describe('render-review-responses', () => {
     const renderReviewResponses = createRenderReviewResponses(() => T.of({
       helpfulCount: 1,
       notHelpfulCount: 0,
-    }), async () => O.some('helpful'));
+    }), () => T.of(O.some('helpful')));
 
     it('displays an on `helpful` button', async () => {
       const rendered = await renderReviewResponses(new Doi('10.1111/123456'), O.some(toUserId('user')))();
@@ -64,7 +64,7 @@ describe('render-review-responses', () => {
     const renderReviewResponses = createRenderReviewResponses(() => T.of({
       helpfulCount: 0,
       notHelpfulCount: 1,
-    }), async () => O.some('not-helpful'));
+    }), () => T.of(O.some('not-helpful')));
 
     it('displays an on `not helpful` button', async () => {
       const rendered = await renderReviewResponses(new Doi('10.1111/123456'), O.some(toUserId('user')))();
