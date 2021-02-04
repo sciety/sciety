@@ -1,7 +1,7 @@
 import { createServer, Server } from 'http';
 import Router from '@koa/router';
 import rTracer from 'cls-rtracer';
-import Koa, { ExtendableContext, Next } from 'koa';
+import Koa from 'koa';
 import koaPassport from 'koa-passport';
 import koaSession from 'koa-session';
 import { Strategy as TwitterStrategy } from 'passport-twitter';
@@ -15,7 +15,7 @@ export const createApplicationServer = (router: Router, logger: Logger): Server 
 
   app.use(rTracer.koaMiddleware());
 
-  app.use(async ({ request, res }: ExtendableContext, next: Next): Promise<void> => {
+  app.use(async ({ request, res }, next) => {
     logger('info', 'Received HTTP request', {
       method: request.method,
       url: request.url,

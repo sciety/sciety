@@ -1,9 +1,8 @@
-import { Middleware, RouterContext } from '@koa/router';
 import { OK } from 'http-status-codes';
-import { Next } from 'koa';
+import { Middleware } from 'koa';
 
 export const ping = (): Middleware => (
-  async ({ response }: RouterContext, next: Next): Promise<void> => {
+  async ({ response }, next) => {
     response.set('Cache-Control', 'no-store, must-revalidate');
     response.status = OK;
     response.body = 'pong';

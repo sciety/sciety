@@ -1,6 +1,6 @@
-import { Middleware, ParameterizedContext } from 'koa';
+import { Middleware } from 'koa';
 
-export const saveRespondCommand: Middleware = async (context: ParameterizedContext, next) => {
+export const saveRespondCommand: Middleware = async (context, next) => {
   context.session.command = context.request.body.command;
   context.session.reviewId = context.request.body.reviewid;
   context.state.targetFragmentId = context.request.body.reviewid;
