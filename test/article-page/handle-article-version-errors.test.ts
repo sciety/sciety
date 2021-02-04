@@ -39,7 +39,7 @@ describe('handle-article-version-errors', () => {
           source: new URL('https://example.com'),
           editorialCommunityId: new EditorialCommunityId('community-1'),
           editorialCommunityName: 'OUR COMMUNITY',
-          editorialCommunityAvatar: new URL('http://example.com/images/us.png'),
+          editorialCommunityAvatar: '/images/us.png',
           fullText: pipe('review-1', toHtmlFragment, sanitise, O.some),
         },
         {
@@ -49,7 +49,7 @@ describe('handle-article-version-errors', () => {
           source: new URL('https://example.com'),
           editorialCommunityId: new EditorialCommunityId('community-1'),
           editorialCommunityName: 'OUR COMMUNITY',
-          editorialCommunityAvatar: new URL('http://example.com/images/us.png'),
+          editorialCommunityAvatar: '/images/us.png',
           fullText: pipe('review-2', toHtmlFragment, sanitise, O.some),
         },
       ];

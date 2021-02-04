@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { GetFollowedEditorialCommunities } from './render-follow-list';
@@ -10,7 +9,7 @@ export type GetFollowedEditorialCommunityIds = (userId: UserId) => T.Task<Readon
 export type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.Task<{
   id: EditorialCommunityId,
   name: string,
-  avatar: URL,
+  avatarPath: string,
 }>;
 
 export const createGetFollowedEditorialCommunitiesFromIds = (

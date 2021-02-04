@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import { renderPageHeader } from '../../src/editorial-community-page/render-page-header';
 
 describe('create render page', (): void => {
@@ -6,7 +5,7 @@ describe('create render page', (): void => {
     it('renders the community name', async (): Promise<void> => {
       const rendered = renderPageHeader({
         name: 'My Community',
-        avatar: new URL('http://example.com'),
+        avatarPath: '/images/xyz.png',
       });
 
       expect(rendered).toStrictEqual(expect.stringContaining('My Community'));

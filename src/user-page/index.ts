@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -24,7 +23,7 @@ import { toUserId, UserId } from '../types/user-id';
 type FetchEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.Task<Maybe<{
   id: EditorialCommunityId,
   name: string,
-  avatar: URL,
+  avatarPath: string,
 }>>;
 
 type GetUserDetails = (userId: UserId) => TE.TaskEither<'not-found' | 'unavailable', UserDetails>;

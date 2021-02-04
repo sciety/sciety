@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
@@ -21,7 +20,7 @@ import { UserId } from '../types/user-id';
 
 type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.Task<Maybe<{
   name: string,
-  avatar: URL,
+  avatarPath: string,
 }>>;
 
 type Ports = {

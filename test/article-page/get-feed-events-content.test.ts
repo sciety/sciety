@@ -32,7 +32,7 @@ describe('get-feed-events-content', () => {
       });
       const getEditorialCommunity: GetEditorialCommunity = () => T.of({
         name: 'A Community',
-        avatar: new URL('https://example.com/avatar'),
+        avatarPath: 'https://example.com/avatar',
       });
       const viewModel = await getFeedEventsContent(getFeedEvents, getReview, getEditorialCommunity)(new Doi('10.1101/123456'), 'biorxiv')();
 

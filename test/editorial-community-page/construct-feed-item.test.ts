@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import * as TE from 'fp-ts/TaskEither';
 import { constructFeedItem, GetArticle } from '../../src/editorial-community-page/construct-feed-item';
 import { FeedItem } from '../../src/shared-components/render-summary-feed-list';
@@ -17,7 +16,6 @@ describe('construct-feed-item', (): void => {
     name: 'dummyActorName',
     descriptionPath: '',
     avatarPath: '',
-    avatar: new URL('http://example.com/image'),
   };
 
   describe('when given an EditorialCommunityReviewedArticleEvent', () => {

@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
@@ -9,7 +8,7 @@ import { UserId } from '../types/user-id';
 type Community = {
   id: EditorialCommunityId,
   name: string,
-  avatar: URL,
+  avatarPath: string,
 };
 
 export type RenderFollowedEditorialCommunity = (userId: O.Option<UserId>) => (
@@ -22,7 +21,7 @@ type RenderFollowToggle = (
 ) => T.Task<HtmlFragment>;
 
 const render = (community: Community) => (toggle: HtmlFragment): string => `
-  <img class="followed-communities__item_avatar" src="${community.avatar.toString()}" alt="">
+  <img class="followed-communities__item_avatar" src="${community.avatarPath}" alt="">
   <a class="followed-communities__item_link" href="/editorial-communities/${community.id.value}">${community.name}</a>
   ${toggle}
 `;

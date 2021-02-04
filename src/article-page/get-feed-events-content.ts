@@ -35,7 +35,10 @@ export type GetReview = (id: ReviewId) => T.Task<{
   url: URL,
 }>;
 
-export type GetEditorialCommunity = (id: EditorialCommunityId) => T.Task<{ name: string, avatar: URL }>;
+export type GetEditorialCommunity = (id: EditorialCommunityId) => T.Task<{
+  name: string,
+  avatarPath: string,
+}>;
 
 const articleVersionToFeedItem = (
   server: ArticleServer,
@@ -61,7 +64,7 @@ const reviewToFeedItem = (
     occurredAt: feedEvent.occurredAt,
     editorialCommunityId: feedEvent.editorialCommunityId,
     editorialCommunityName: editorialCommunity.name,
-    editorialCommunityAvatar: editorialCommunity.avatar,
+    editorialCommunityAvatar: editorialCommunity.avatarPath,
     fullText: O.map(sanitise)(review.fullText),
   })),
 );

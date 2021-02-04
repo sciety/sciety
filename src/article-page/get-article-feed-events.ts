@@ -30,7 +30,7 @@ export const getArticleFeedEvents = (
   fetchReview: GetReview,
   getEditorialCommunity: (editorialCommunityId: EditorialCommunityId) => T.Task<Maybe<{
     name: string,
-    avatar: URL,
+    avatarPath: string,
   }>>,
 ): GetFeedItems => (
   (doi, server) => async () => (

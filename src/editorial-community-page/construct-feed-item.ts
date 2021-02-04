@@ -34,7 +34,7 @@ const construct = (
   community: EditorialCommunity,
   event: FeedEvent,
 ) => (article: E.Either<unknown, Article>): FeedItem => ({
-  avatar: community.avatar.toString(),
+  avatar: community.avatarPath,
   date: event.date,
   actorName: community.name,
   actorUrl: `/editorial-communities/${community.id.value}`,

@@ -20,12 +20,12 @@ export type ReviewFeedItem = {
   occurredAt: Date,
   editorialCommunityId: EditorialCommunityId,
   editorialCommunityName: string,
-  editorialCommunityAvatar: URL,
+  editorialCommunityAvatar: string,
   fullText: O.Option<SanitisedHtmlFragment>,
 };
 
 const avatar = (review: ReviewFeedItem): HtmlFragment => toHtmlFragment(`
-  <img class="article-feed__item__avatar" src="${review.editorialCommunityAvatar.toString()}" alt="">
+  <img class="article-feed__item__avatar" src="${review.editorialCommunityAvatar}" alt="">
 `);
 
 const eventMetadata = (review: ReviewFeedItem): HtmlFragment => toHtmlFragment(`

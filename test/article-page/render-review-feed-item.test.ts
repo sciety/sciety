@@ -24,7 +24,7 @@ describe('render-review-feed-item', () => {
           occurredAt: new Date(),
           editorialCommunityId: new EditorialCommunityId('community-1'),
           editorialCommunityName: 'Community 1',
-          editorialCommunityAvatar: new URL('http://example.com/avatar'),
+          editorialCommunityAvatar: '/avatar',
           fullText: pipe(fullText, toHtmlFragment, sanitise, O.some),
         }, O.none)(),
       );
@@ -61,7 +61,7 @@ describe('render-review-feed-item', () => {
           occurredAt: new Date(),
           editorialCommunityId: new EditorialCommunityId('community-1'),
           editorialCommunityName: 'Community 1',
-          editorialCommunityAvatar: new URL('http://example.com/avatar'),
+          editorialCommunityAvatar: '/avatar',
           fullText: pipe(fullText, toHtmlFragment, sanitise, O.some),
         }, O.none)(),
       );
@@ -99,7 +99,7 @@ describe('render-review-feed-item', () => {
           occurredAt: new Date(),
           editorialCommunityId: new EditorialCommunityId('community-1'),
           editorialCommunityName: 'Community 1',
-          editorialCommunityAvatar: new URL('http://example.com/avatar'),
+          editorialCommunityAvatar: '/avatar',
           fullText: O.none,
         }, O.none)(),
       );

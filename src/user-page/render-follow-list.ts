@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
@@ -15,7 +14,7 @@ type RenderFollowList = (userId: UserId, viewingUserId: O.Option<UserId>) => TE.
 export type GetFollowedEditorialCommunities = (userId: UserId) => T.Task<ReadonlyArray<{
   id: EditorialCommunityId,
   name: string,
-  avatar: URL,
+  avatarPath: string,
 }>>;
 
 const followingNothing = `

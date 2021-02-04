@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -50,7 +49,7 @@ type Ports = {
   fetchReview: GetReview,
   getEditorialCommunity: (editorialCommunityId: EditorialCommunityId) => T.Task<Maybe<{
     name: string,
-    avatar: URL,
+    avatarPath: string,
   }>>,
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,

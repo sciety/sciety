@@ -34,7 +34,7 @@ describe('render-feed', () => {
             occurredAt: new Date(),
             editorialCommunityId: new EditorialCommunityId(''),
             editorialCommunityName: '',
-            editorialCommunityAvatar: new URL('http://example.com'),
+            editorialCommunityAvatar: '/images/xyz.png',
             fullText: O.none,
           },
           {
