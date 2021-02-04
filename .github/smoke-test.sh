@@ -13,7 +13,7 @@ export IMAGE=sciety/sciety
 export IMAGE_TAG="${IMAGE_TAG:-local}"
 
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
-container=docker_app_1
+container=sciety_app
 
 timeout --foreground 10 bash << EOT
   while true; do
