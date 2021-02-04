@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Maybe } from 'true-myth';
+import * as O from 'fp-ts/Option';
 
 type PrereviewSearchResponse = {
   results: ReadonlyArray<PrereviewSearchResult>,
@@ -23,15 +23,15 @@ type Prereview = {
 
 const biorxivPrefix = /^doi\/10\.1101\//;
 
-const formatRow = (preprintId: string, prereview: Prereview): Maybe<string> => {
+const formatRow = (preprintId: string, prereview: Prereview): O.Option<string> => {
   if (prereview.doi) {
     const reviewDate = new Date(prereview.date_created);
     const articleDoi = preprintId.replace(/^doi\//, '');
     const reviewId = `doi:${prereview.doi}`;
-    return Maybe.just(`${reviewDate.toISOString()},${articleDoi},${reviewId}`);
+    return O.some(`${reviewDate.toISOString()},${articleDoi},${reviewId}`);
   }
 
-  return Maybe.nothing();
+  return O.none;
 };
 
 const fetchPrereviews = async (article: PrereviewSearchResult): Promise<ReadonlyArray<Prereview>> => {
@@ -60,7 +60,7 @@ void (async (): Promise<void> => {
         .map(async (searchResult) => {
           (await fetchPrereviews(searchResult))
             .map((prereview) => formatRow(searchResult.id, prereview))
-            .forEach((formatted) => formatted.map((value) => process.stdout.write(`${value}\n`)));
+            .forEach(O.map((value) => process.stdout.write(`${value}\n`)));
         }),
     );
     currentPage += 1;
