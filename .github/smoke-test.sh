@@ -3,8 +3,8 @@ set -e
 
 function finish() {
   echo "Stopping all containers"
-  docker-compose -f .docker/docker-compose.yml -f .docker/docker-compose.prod.yml logs
-  docker-compose -f .docker/docker-compose.yml -f .docker/docker-compose.prod.yml down
+  docker-compose -f docker-compose.yml -f docker-compose.prod.yml logs
+  docker-compose -f docker-compose.yml -f docker-compose.prod.yml down
 }
 
 trap finish EXIT
@@ -12,7 +12,7 @@ trap finish EXIT
 export IMAGE=sciety/sciety
 export IMAGE_TAG="${IMAGE_TAG:-local}"
 
-docker-compose -f .docker/docker-compose.yml -f .docker/docker-compose.prod.yml up -d
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 container=docker_app_1
 
 timeout --foreground 10 bash << EOT

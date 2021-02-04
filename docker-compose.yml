@@ -3,7 +3,7 @@ version: '3.8'
 services:
   app:
     build:
-      context: ../
+      context: ""
     environment:
       ALLOW_SITE_CRAWLERS: "true"
       APP_ORIGIN: "http://localhost:8080"
