@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { constant, pipe } from 'fp-ts/function';
 import {
   biorxivArticleVersionErrorFeedItem,
   medrxivArticleVersionErrorFeedItem,
@@ -39,20 +39,11 @@ export const createRenderFeed = (
     }
   };
 
-  return (doi, server, userId) => async () => {
-    // TODO: remove Task invocation
-    const feedItems = await getFeedItems(doi, server)();
-
-    if (feedItems.length === 0) {
-      return E.left('no-content');
-    }
-
-    const items = await pipe(
-      feedItems,
-      T.traverseArray((feedItem) => renderFeedItem(feedItem, userId)),
-    )();
-
-    return E.right(toHtmlFragment(`
+  return (doi, server, userId) => pipe(
+    getFeedItems(doi, server),
+    T.map(E.fromPredicate((items) => items.length > 0, constant<'no-content'>('no-content'))),
+    TE.chainW(TE.traverseArray((feedItem) => pipe(renderFeedItem(feedItem, userId), TE.rightTask))),
+    TE.map((items) => `
       <section class="article-feed">
         <h2>Feed</h2>
 
@@ -60,6 +51,7 @@ export const createRenderFeed = (
           ${templateListItems(items, 'article-feed__item')}
         </ol>
       </section>
-    `));
-  };
+    `),
+    TE.map(toHtmlFragment),
+  );
 };
