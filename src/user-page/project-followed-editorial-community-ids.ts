@@ -1,4 +1,3 @@
-import * as Eq from 'fp-ts/Eq';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
@@ -10,6 +9,7 @@ import {
   UserFollowedEditorialCommunityEvent,
   UserUnfollowedEditorialCommunityEvent,
 } from '../types/domain-events';
+import { eqEditorialCommunityId } from '../types/editorial-community-id';
 import { UserId } from '../types/user-id';
 
 export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
@@ -21,7 +21,7 @@ const projectFollowedCommunities = (userId: UserId) => (events: ReadonlyArray<Do
   )),
   RA.filter((event) => event.userId === userId),
   RA.map((event) => event.editorialCommunityId),
-  RA.uniq(Eq.fromEquals((a, b) => a.value === b.value)),
+  RA.uniq(eqEditorialCommunityId),
 );
 
 export const createProjectFollowedEditorialCommunityIds = (

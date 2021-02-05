@@ -7,7 +7,7 @@ import {
   UserFollowedEditorialCommunityEvent,
   UserUnfollowedEditorialCommunityEvent,
 } from '../types/domain-events';
-import { EditorialCommunityId } from '../types/editorial-community-id';
+import { EditorialCommunityId, eqEditorialCommunityId } from '../types/editorial-community-id';
 import { UserId } from '../types/user-id';
 
 type ProjectFollowerIds = (editorialCommunityId: EditorialCommunityId) => T.Task<ReadonlyArray<UserId>>;
@@ -23,7 +23,7 @@ const projectFollowerIds = (editorialCommunityId: EditorialCommunityId) => (
   events: ReadonlyArray<DomainEvent>,
 ): ReadonlyArray<UserId> => (
   events.filter(isInterestingEvent)
-    .filter((event) => event.editorialCommunityId.value === editorialCommunityId.value)
+    .filter((event) => eqEditorialCommunityId.equals(event.editorialCommunityId, editorialCommunityId))
     .reduce<Array<UserId>>(
     (userIds, event) => {
       if (isUserFollowedEditorialCommunityEvent(event)) {
