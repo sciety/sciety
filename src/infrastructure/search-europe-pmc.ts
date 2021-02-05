@@ -1,7 +1,7 @@
 import { URLSearchParams } from 'url';
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, pipe } from 'fp-ts/function';
+import { constant, flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { DateFromISOString } from 'io-ts-types/DateFromISOString';
 import * as PR from 'io-ts/PathReporter';
@@ -63,9 +63,9 @@ const constructSearchResults = (data: EuropePmcResponse): SearchResults => {
   };
 };
 
-type FetchJSON = <A>(codec: t.Decoder<Json, A>) => (url: string) => TE.TaskEither<'unavailable', A>;
+type GetFromUrl = <A>(codec: t.Decoder<Json, A>) => (url: string) => TE.TaskEither<'not-found' | 'unavailable', A>;
 
-const fetchJSON = (getJson: GetJson, logger: Logger): FetchJSON => (codec) => (url) => pipe(
+const getFromUrl = (getJson: GetJson, logger: Logger): GetFromUrl => (codec) => (url) => pipe(
   TE.tryCatch(async () => getJson(url), E.toError),
   TE.chain(flow(
     codec.decode,
@@ -84,20 +84,9 @@ export const createSearchEuropePmc = (getJson: GetJson, logger: Logger): SearchE
   query,
   constructQueryParams,
   constructSearchUrl,
-  fetchJSON(getJson, logger)(europePmcResponse),
-  TE.map(constructSearchResults),
+  getFromUrl(getJson, logger)(europePmcResponse),
+  TE.bimap(
+    constant('unavailable'),
+    constructSearchResults,
+  ),
 );
-
-// TE.tryCatch(async () => search(getJson, query), E.toError),
-// TE.chain(flow(
-//   europePmcResponse.decode,
-//   TE.fromEither,
-//   TE.mapLeft((e) => new Error(PR.failure(e).join('\n'))),
-// )),
-// TE.bimap(
-//   (error): 'unavailable' => {
-//     logger('error', 'Could not parse EuropePMC response', { error });
-//     return 'unavailable';
-//   },
-//   constructSearchResults,
-// ),
