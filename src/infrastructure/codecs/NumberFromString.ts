@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 
-export const NumberFromString = new t.Type<number, string, unknown>(
+export const NumberFromString = new t.Type(
   'NumberFromString',
   (u): u is number => typeof u === 'number',
   (u, c) => pipe(

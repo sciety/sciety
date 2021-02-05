@@ -51,9 +51,9 @@ export const createRenderPageHeader = <Err>(
 ): RenderPageHeader<Err> => (doi, userId) => pipe(
     doi,
     getArticleDetails,
-    TE.chain(flow(
+    TE.chainW(flow(
       // TODO: use sequenceS on an object of components
       render(renderTweetThis, renderSaveArticle)(doi, userId),
-      (rendered) => TE.rightTask<Err, HtmlFragment>(rendered),
+      TE.rightTask,
     )),
   );
