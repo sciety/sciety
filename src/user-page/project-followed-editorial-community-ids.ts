@@ -1,3 +1,4 @@
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { GetFollowedEditorialCommunityIds } from './get-followed-editorial-communities-from-ids';
@@ -16,17 +17,18 @@ const projectFollowedCommunities = (userId: UserId) => (events: ReadonlyArray<Do
       result.delete(event.editorialCommunityId.value);
     }
   });
-  return Array.from(result);
+
+  return pipe(
+    [...result],
+    RA.map((id) => new EditorialCommunityId(id)),
+  );
 };
 
 export const createProjectFollowedEditorialCommunityIds = (
   getAllEvents: GetAllEvents,
 ): GetFollowedEditorialCommunityIds => (
-  (userId) => (
-    pipe(
-      getAllEvents,
-      T.map(projectFollowedCommunities(userId)),
-      T.map((communities) => communities.map((id: string) => new EditorialCommunityId(id))),
-    )
+  (userId) => pipe(
+    getAllEvents,
+    T.map(projectFollowedCommunities(userId)),
   )
 );
