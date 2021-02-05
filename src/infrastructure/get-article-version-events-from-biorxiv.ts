@@ -11,15 +11,15 @@ import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 import { Json } from '../types/json';
 
-export type GetJson = (url: string) => Promise<Json>;
+type GetJson = (url: string) => Promise<Json>;
 
-export type GetArticleVersionEventsFromBiorxiv = (doi: Doi, server: ArticleServer) => T.Task<ReadonlyArray<{
+type GetArticleVersionEventsFromBiorxiv = (doi: Doi, server: ArticleServer) => T.Task<ReadonlyArray<{
   source: URL,
   occurredAt: Date,
   version: number,
 }>>;
 
-export const createGetArticleVersionEventsFromBiorxiv = (
+const getArticleVersionEventsFromBiorxiv = (
   getJson: GetJson,
   logger: Logger,
 ): GetArticleVersionEventsFromBiorxiv => (doi, server) => pipe(
@@ -45,3 +45,5 @@ export const createGetArticleVersionEventsFromBiorxiv = (
     },
   ),
 );
+
+export { getArticleVersionEventsFromBiorxiv, GetArticleVersionEventsFromBiorxiv, GetJson };

@@ -1,5 +1,5 @@
 import { URL } from 'url';
-import { createGetArticleVersionEventsFromBiorxiv, GetJson } from '../../src/infrastructure/get-article-version-events-from-biorxiv';
+import { getArticleVersionEventsFromBiorxiv, GetJson } from '../../src/infrastructure/get-article-version-events-from-biorxiv';
 import { Doi } from '../../src/types/doi';
 import { dummyLogger } from '../dummy-logger';
 
@@ -20,10 +20,8 @@ describe('get-article-version-events-from-biorxiv', () => {
             },
           ],
         }));
-
-        const getArticleVersionEventsFromBiorxiv = createGetArticleVersionEventsFromBiorxiv(getJson, dummyLogger);
-
-        const events = await getArticleVersionEventsFromBiorxiv(doi, 'biorxiv')();
+        const fetchVersions = getArticleVersionEventsFromBiorxiv(getJson, dummyLogger);
+        const events = await fetchVersions(doi, 'biorxiv')();
 
         expect(getJson).toHaveBeenCalledWith('https://api.biorxiv.org/details/biorxiv/10.1101/2020.09.02.278911');
         expect(events).toHaveLength(2);
@@ -55,10 +53,8 @@ describe('get-article-version-events-from-biorxiv', () => {
             },
           ],
         }));
-
-        const getArticleVersionEventsFromBiorxiv = createGetArticleVersionEventsFromBiorxiv(getJson, dummyLogger);
-
-        const events = await getArticleVersionEventsFromBiorxiv(doi, 'medrxiv')();
+        const fetchVersions = getArticleVersionEventsFromBiorxiv(getJson, dummyLogger);
+        const events = await fetchVersions(doi, 'medrxiv')();
 
         expect(getJson).toHaveBeenCalledWith('https://api.biorxiv.org/details/medrxiv/10.1101/2020.09.02.278911');
         expect(events).toHaveLength(2);
@@ -81,10 +77,8 @@ describe('get-article-version-events-from-biorxiv', () => {
       const getJson: GetJson = async () => {
         throw new Error('HTTP timeout');
       };
-
-      const getArticleVersionEventsFromBiorxiv = createGetArticleVersionEventsFromBiorxiv(getJson, dummyLogger);
-
-      const events = await getArticleVersionEventsFromBiorxiv(new Doi('10.1101/2020.09.02.278911'), 'biorxiv');
+      const fetchVersions = getArticleVersionEventsFromBiorxiv(getJson, dummyLogger);
+      const events = await fetchVersions(new Doi('10.1101/2020.09.02.278911'), 'biorxiv')();
 
       expect(events).toHaveLength(0);
     });
@@ -94,10 +88,8 @@ describe('get-article-version-events-from-biorxiv', () => {
     describe('where the fields are missing', () => {
       it('returns an empty list', async () => {
         const getJson: GetJson = async () => ({});
-
-        const getArticleVersionEventsFromBiorxiv = createGetArticleVersionEventsFromBiorxiv(getJson, dummyLogger);
-
-        const events = await getArticleVersionEventsFromBiorxiv(new Doi('10.1101/2020.09.02.278911'), 'biorxiv');
+        const fetchVersions = getArticleVersionEventsFromBiorxiv(getJson, dummyLogger);
+        const events = await fetchVersions(new Doi('10.1101/2020.09.02.278911'), 'biorxiv')();
 
         expect(events).toHaveLength(0);
       });
@@ -113,10 +105,8 @@ describe('get-article-version-events-from-biorxiv', () => {
             },
           ],
         });
-
-        const getArticleVersionEventsFromBiorxiv = createGetArticleVersionEventsFromBiorxiv(getJson, dummyLogger);
-
-        const events = await getArticleVersionEventsFromBiorxiv(new Doi('10.1101/2020.09.02.278911'), 'biorxiv');
+        const fetchVersions = getArticleVersionEventsFromBiorxiv(getJson, dummyLogger);
+        const events = await fetchVersions(new Doi('10.1101/2020.09.02.278911'), 'biorxiv')();
 
         expect(events).toHaveLength(0);
       });
@@ -132,10 +122,8 @@ describe('get-article-version-events-from-biorxiv', () => {
             },
           ],
         });
-
-        const getArticleVersionEventsFromBiorxiv = createGetArticleVersionEventsFromBiorxiv(getJson, dummyLogger);
-
-        const events = await getArticleVersionEventsFromBiorxiv(new Doi('10.1101/2020.09.02.278911'), 'biorxiv');
+        const fetchVersions = getArticleVersionEventsFromBiorxiv(getJson, dummyLogger);
+        const events = await fetchVersions(new Doi('10.1101/2020.09.02.278911'), 'biorxiv')();
 
         expect(events).toHaveLength(0);
       });
