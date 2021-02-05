@@ -3,7 +3,7 @@ import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { findReviewsForArticleDoi } from '../../src/infrastructure/find-reviews-for-article-doi';
 import { Doi } from '../../src/types/doi';
-import { EditorialCommunityReviewedArticleEvent } from '../../src/types/domain-events';
+import { editorialCommunityReviewedArticle, EditorialCommunityReviewedArticleEvent } from '../../src/types/domain-events';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 
 describe('find-reviews-for-article-doi', () => {
@@ -15,27 +15,9 @@ describe('find-reviews-for-article-doi', () => {
   const reviewId2 = new Doi('10.6666/2');
   const reviewId3 = new Doi('10.7777/3');
   const reviewEvents: Array<EditorialCommunityReviewedArticleEvent> = [
-    {
-      type: 'EditorialCommunityReviewedArticle',
-      articleId: article1,
-      reviewId: reviewId1,
-      editorialCommunityId: editorialCommunity1,
-      date: new Date('2020-05-19T00:00:00Z'),
-    },
-    {
-      type: 'EditorialCommunityReviewedArticle',
-      articleId: article2,
-      reviewId: reviewId2,
-      editorialCommunityId: editorialCommunity1,
-      date: new Date('2020-05-21T00:00:00Z'),
-    },
-    {
-      type: 'EditorialCommunityReviewedArticle',
-      articleId: article1,
-      reviewId: reviewId3,
-      editorialCommunityId: editorialCommunity2,
-      date: new Date('2020-05-20T00:00:00Z'),
-    },
+    editorialCommunityReviewedArticle(editorialCommunity1, article1, reviewId1, new Date('2020-05-19T00:00:00Z')),
+    editorialCommunityReviewedArticle(editorialCommunity1, article2, reviewId2, new Date('2020-05-21T00:00:00Z')),
+    editorialCommunityReviewedArticle(editorialCommunity2, article1, reviewId3, new Date('2020-05-20T00:00:00Z')),
   ];
 
   describe('findReviewsForArticleDoi', () => {
