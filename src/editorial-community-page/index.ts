@@ -10,13 +10,12 @@ import { createRenderDescription } from './render-description';
 import { createRenderFeed, RenderFeed } from './render-feed';
 import { createRenderFollowToggle, Follows } from './render-follow-toggle';
 import { createRenderFollowers } from './render-followers';
-import { createRenderPage, Page, RenderPage } from './render-page';
+import { createRenderPage, RenderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
 import { renderSummaryFeedList } from '../shared-components/render-summary-feed-list';
 import { EditorialCommunity } from '../types/editorial-community';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { toHtmlFragment } from '../types/html-fragment';
-import { RenderPageError } from '../types/render-page-error';
 import { User } from '../types/user';
 
 type FetchStaticFile = (filename: string) => T.Task<string>;
@@ -63,10 +62,10 @@ export const editorialCommunityPage = (ports: Ports): EditorialCommunityPage => 
       editorialCommunityId,
       ports.getEditorialCommunity,
       T.chain(O.fold(
-        () => TE.left<RenderPageError, Page>({
+        () => TE.left({
           type: 'not-found',
           message: toHtmlFragment(`Editorial community id '${editorialCommunityId.value}' not found`),
-        }),
+        } as const),
         (editorialCommunity) => renderPage(editorialCommunity, userId),
       )),
     );
