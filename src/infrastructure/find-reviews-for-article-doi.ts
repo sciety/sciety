@@ -13,9 +13,9 @@ export type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray
 }>>;
 
 export const findReviewsForArticleDoi = (
-  events: ReadonlyArray<DomainEvent>,
+  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
 ): FindReviewsForArticleDoi => (articleDoi) => pipe(
-  T.of(events),
+  getAllEvents,
   T.map(flow(
     RA.filter(isEditorialCommunityReviewedArticleEvent),
     RA.filter((event) => event.articleId.value === articleDoi.value),

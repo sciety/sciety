@@ -96,7 +96,7 @@ export const createInfrastructure = async (): Promise<Adapters> => {
     editorialCommunities,
     getEditorialCommunity: editorialCommunities.lookup,
     getAllEditorialCommunities: editorialCommunities.all,
-    findReviewsForArticleDoi: findReviewsForArticleDoi(events),
+    findReviewsForArticleDoi: findReviewsForArticleDoi(getAllEvents),
     getAllEvents,
     logger,
     commitEvents: createCommitEvents(events, pool, logger),

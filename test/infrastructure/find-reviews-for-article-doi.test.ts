@@ -3,7 +3,7 @@ import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { findReviewsForArticleDoi } from '../../src/infrastructure/find-reviews-for-article-doi';
 import { Doi } from '../../src/types/doi';
-import { editorialCommunityReviewedArticle, EditorialCommunityReviewedArticleEvent } from '../../src/types/domain-events';
+import { editorialCommunityReviewedArticle } from '../../src/types/domain-events';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 
 describe('find-reviews-for-article-doi', () => {
@@ -14,11 +14,11 @@ describe('find-reviews-for-article-doi', () => {
   const reviewId1 = new Doi('10.5555/1');
   const reviewId2 = new Doi('10.6666/2');
   const reviewId3 = new Doi('10.7777/3');
-  const reviewEvents: Array<EditorialCommunityReviewedArticleEvent> = [
+  const getAllEvents = T.of([
     editorialCommunityReviewedArticle(editorialCommunity1, article1, reviewId1, new Date('2020-05-19T00:00:00Z')),
     editorialCommunityReviewedArticle(editorialCommunity1, article2, reviewId2, new Date('2020-05-21T00:00:00Z')),
     editorialCommunityReviewedArticle(editorialCommunity2, article1, reviewId3, new Date('2020-05-20T00:00:00Z')),
-  ];
+  ]);
 
   describe('findReviewsForArticleDoi', () => {
     it.each([
@@ -28,7 +28,7 @@ describe('find-reviews-for-article-doi', () => {
     ])('finds the review references for article %s', async (articleDoi, expectedReviews) => {
       const actualReviews = await pipe(
         articleDoi,
-        findReviewsForArticleDoi(reviewEvents),
+        findReviewsForArticleDoi(getAllEvents),
         T.map(RA.map((reviewReference) => reviewReference.reviewId)),
       )();
 
