@@ -4,7 +4,6 @@ import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { DateFromISOString } from 'io-ts-types/DateFromISOString';
-import * as PR from 'io-ts/PathReporter';
 import { Logger } from './logger';
 import { Doi } from '../types/doi';
 import { Json } from '../types/json';
@@ -67,17 +66,23 @@ type GetFromUrl = <A>(codec: t.Decoder<Json, A>) => (url: string) => TE.TaskEith
 
 const getFromUrl = (getJson: GetJson, logger: Logger): GetFromUrl => (codec) => (url) => pipe(
   TE.tryCatch(async () => getJson(url), E.toError),
-  TE.chain(flow(
-    codec.decode,
-    TE.fromEither,
-    TE.mapLeft((e) => new Error(PR.failure(e).join('\n'))),
-  )),
   TE.mapLeft(
     (error): 'unavailable' => {
-      logger('error', 'Could not parse EuropePMC response', { error });
+      // TODO recognise not-found somehow
+      logger('error', 'Could not fetch', { error, url });
       return 'unavailable';
     },
   ),
+  TE.chainW(flow(
+    codec.decode,
+    TE.fromEither,
+    TE.mapLeft(
+      (error): 'unavailable' => {
+        logger('error', 'Could not parse response', { error, url });
+        return 'unavailable';
+      },
+    ),
+  )),
 );
 
 export const createSearchEuropePmc = (getJson: GetJson, logger: Logger): SearchEuropePmc => (query) => pipe(
