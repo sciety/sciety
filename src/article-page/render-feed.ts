@@ -41,7 +41,7 @@ export const createRenderFeed = (
 
   return (doi, server, userId) => pipe(
     getFeedItems(doi, server),
-    T.map(E.fromPredicate((items) => items.length > 0, constant<'no-content'>('no-content'))),
+    T.map(E.fromPredicate((items) => items.length > 0, constant('no-content' as const))),
     TE.chainW(TE.traverseArray((feedItem) => pipe(renderFeedItem(feedItem, userId), TE.rightTask))),
     TE.map((items) => `
       <section class="article-feed">

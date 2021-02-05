@@ -96,7 +96,7 @@ export const createRenderPage = (
     feed: pipe(
       articleDetails,
       T.map(E.fold(
-        constant<ArticleServer>('biorxiv'),
+        constant('biorxiv' as const),
         ({ server }) => server,
       )),
       T.chain((server) => renderFeed(doi, server, userId)),
