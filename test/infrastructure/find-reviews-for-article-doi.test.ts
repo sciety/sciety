@@ -1,3 +1,6 @@
+import * as RA from 'fp-ts/ReadonlyArray';
+import * as T from 'fp-ts/Task';
+import { pipe } from 'fp-ts/function';
 import { findReviewsForArticleDoi } from '../../src/infrastructure/find-reviews-for-article-doi';
 import { Doi } from '../../src/types/doi';
 import { EditorialCommunityReviewedArticleEvent } from '../../src/types/domain-events';
@@ -41,10 +44,11 @@ describe('find-reviews-for-article-doi', () => {
       [article2, [reviewId2]],
       [new Doi('10.0000/does-not-exist'), []],
     ])('finds the review references for article %s', async (articleDoi, expectedReviews) => {
-      const getReviews = findReviewsForArticleDoi(reviewEvents);
-      const actualReviews = (await getReviews(articleDoi)())
-        .map((reviewReference) => reviewReference.reviewId)
-        .sort();
+      const actualReviews = await pipe(
+        articleDoi,
+        findReviewsForArticleDoi(reviewEvents),
+        T.map(RA.map((reviewReference) => reviewReference.reviewId)),
+      )();
 
       expect(actualReviews).toStrictEqual(expectedReviews);
     });
