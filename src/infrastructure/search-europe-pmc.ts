@@ -1,5 +1,6 @@
 import { URLSearchParams } from 'url';
 import * as E from 'fp-ts/Either';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
@@ -73,10 +74,9 @@ const getFromUrl = (getJson: GetJson, logger: Logger): GetFromUrl => (codec) => 
       return 'unavailable';
     },
   ),
-  TE.chainW(flow(
-    codec.decode,
-    TE.fromEither,
-    TE.mapLeft(
+  T.map(flow(
+    E.chainW(codec.decode),
+    E.mapLeft(
       (error): 'unavailable' => {
         logger('error', 'Could not parse response', { error, url });
         return 'unavailable';
