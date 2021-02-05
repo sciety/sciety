@@ -1,3 +1,5 @@
+import * as Eq from 'fp-ts/Eq';
+
 const doiRegex = /^(?:doi:|(?:(?:https?:\/\/)?(?:dx\.)?doi\.org\/))?(10\.[0-9]{4,}(?:\.[1-9][0-9]*)*\/(?:[^%"#?\s])+)$/;
 
 export class Doi {
@@ -21,3 +23,5 @@ export class Doi {
     return `doi:${this.value}`;
   }
 }
+
+export const eqDoi = Eq.contramap((doi: Doi) => doi.value)(Eq.eqString);

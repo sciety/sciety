@@ -4,7 +4,7 @@ import * as T from 'fp-ts/Task';
 import * as B from 'fp-ts/boolean';
 import { constant, pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
-import { Doi } from '../types/doi';
+import { Doi, eqDoi } from '../types/doi';
 import {
   DomainEvent, isUserSavedArticleEvent, userSavedArticle, UserSavedArticleEvent,
 } from '../types/domain-events';
@@ -16,7 +16,7 @@ const validateCommand = O.fromPredicate((command): boolean => (
 ));
 
 const isMatchingSavedEvent = (userId: UserId, articleId: Doi) => (event: DomainEvent) => (
-  isUserSavedArticleEvent(event) && event.userId === userId && event.articleId.value === articleId.value
+  isUserSavedArticleEvent(event) && event.userId === userId && eqDoi.equals(event.articleId, articleId)
 );
 
 type Ports = {

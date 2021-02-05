@@ -1,7 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
-import { Doi } from '../types/doi';
+import { Doi, eqDoi } from '../types/doi';
 import { DomainEvent, isUserSavedArticleEvent } from '../types/domain-events';
 import { UserId } from '../types/user-id';
 
@@ -14,7 +14,7 @@ export const projectHasUserSavedArticle: ProjectHasUserSavedArticle = (getEvents
   T.map(
     flow(
       RA.filter(isUserSavedArticleEvent),
-      RA.some((event) => (event.userId === userId && event.articleId.value === doi.value)),
+      RA.some((event) => (event.userId === userId && eqDoi.equals(event.articleId, doi))),
     ),
   ),
 );
