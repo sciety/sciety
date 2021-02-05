@@ -14,8 +14,8 @@ import { createFetchDataciteReview } from '../../src/infrastructure/fetch-dataci
 import { FetchDataset } from '../../src/infrastructure/fetch-dataset';
 import { createFetchHypothesisAnnotation } from '../../src/infrastructure/fetch-hypothesis-annotation';
 import { createFetchReview } from '../../src/infrastructure/fetch-review';
+import { findReviewsForArticleDoi } from '../../src/infrastructure/find-reviews-for-article-doi';
 import { createEditorialCommunityRepository } from '../../src/infrastructure/in-memory-editorial-communities';
-import { createReviewProjections } from '../../src/infrastructure/review-projections';
 import { EditorialCommunityRepository } from '../../src/types/editorial-community-repository';
 import { FollowList } from '../../src/types/follow-list';
 import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
@@ -33,7 +33,6 @@ export const createTestServer = async (): Promise<TestServer> => {
   for (const editorialCommunity of bootstrapEditorialCommunities) {
     await editorialCommunities.add(editorialCommunity)();
   }
-  const reviewProjections = createReviewProjections([]);
   const fetchDataCiteDataset: FetchDataset = async () => (
     clownface({ dataset: datasetFactory(), term: namedNode('http://example.com/some-datacite-node') })
       .addOut(schema.datePublished, literal('2020-02-20', schema.Date))
@@ -61,7 +60,7 @@ export const createTestServer = async (): Promise<TestServer> => {
     editorialCommunities,
     getEditorialCommunity: editorialCommunities.lookup,
     getAllEditorialCommunities: async () => [],
-    ...reviewProjections,
+    findReviewsForArticleDoi: findReviewsForArticleDoi([]),
     getAllEvents: T.of([]),
     commitEvents: () => T.of(undefined),
     logger: dummyLogger,

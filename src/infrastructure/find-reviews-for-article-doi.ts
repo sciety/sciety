@@ -10,20 +10,14 @@ export type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray
   occurredAt: Date,
 }>>;
 
-type ReviewProjections = {
-  findReviewsForArticleDoi: FindReviewsForArticleDoi,
-};
-
-export const createReviewProjections = (
+export const findReviewsForArticleDoi = (
   events: ReadonlyArray<EditorialCommunityReviewedArticleEvent>,
-): ReviewProjections => ({
-  findReviewsForArticleDoi: (articleDoi) => T.of(
-    events
-      .filter((event) => event.articleId.value === articleDoi.value)
-      .map((event) => ({
-        reviewId: event.reviewId,
-        editorialCommunityId: event.editorialCommunityId,
-        occurredAt: event.date,
-      })),
-  ),
-});
+): FindReviewsForArticleDoi => (articleDoi) => T.of(
+  events
+    .filter((event) => event.articleId.value === articleDoi.value)
+    .map((event) => ({
+      reviewId: event.reviewId,
+      editorialCommunityId: event.editorialCommunityId,
+      occurredAt: event.date,
+    })),
+);

@@ -5,11 +5,11 @@ import { EventSourcedFollowListRepository } from './event-sourced-follow-list-re
 import { FetchCrossrefArticle } from './fetch-crossref-article';
 import { FetchReview } from './fetch-review';
 import { FetchStaticFile } from './fetch-static-file';
+import { FindReviewsForArticleDoi } from './find-reviews-for-article-doi';
 import { Follows } from './follows';
 import { GetArticleVersionEventsFromBiorxiv } from './get-article-version-events-from-biorxiv';
 import { GetTwitterUserDetails } from './get-twitter-user-details';
 import { Logger } from './logger';
-import { FindReviewsForArticleDoi } from './review-projections';
 import { SearchEuropePmc } from './search-europe-pmc';
 import { DomainEvent } from '../types/domain-events';
 import { EditorialCommunity } from '../types/editorial-community';

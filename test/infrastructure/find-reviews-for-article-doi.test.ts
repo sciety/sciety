@@ -1,9 +1,9 @@
-import { createReviewProjections } from '../../src/infrastructure/review-projections';
+import { findReviewsForArticleDoi } from '../../src/infrastructure/find-reviews-for-article-doi';
 import { Doi } from '../../src/types/doi';
 import { EditorialCommunityReviewedArticleEvent } from '../../src/types/domain-events';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 
-describe('review-projections', () => {
+describe('find-reviews-for-article-doi', () => {
   const article1 = new Doi('10.1000/1');
   const article2 = new Doi('10.99999/2');
   const editorialCommunity1 = new EditorialCommunityId('community-1');
@@ -41,7 +41,7 @@ describe('review-projections', () => {
       [article2, [reviewId2]],
       [new Doi('10.0000/does-not-exist'), []],
     ])('finds the review references for article %s', async (articleDoi, expectedReviews) => {
-      const getReviews = createReviewProjections(reviewEvents).findReviewsForArticleDoi;
+      const getReviews = findReviewsForArticleDoi(reviewEvents);
       const actualReviews = (await getReviews(articleDoi)())
         .map((reviewReference) => reviewReference.reviewId)
         .sort();

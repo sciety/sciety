@@ -12,6 +12,7 @@ import { createFetchDataset } from './fetch-dataset';
 import { createFetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
 import { createFetchReview } from './fetch-review';
 import { createFetchStaticFile } from './fetch-static-file';
+import { findReviewsForArticleDoi } from './find-reviews-for-article-doi';
 import { createFollows } from './follows';
 import { getArticleVersionEventsFromBiorxiv } from './get-article-version-events-from-biorxiv';
 import { getEventsFromDataFiles } from './get-events-from-data-files';
@@ -24,7 +25,6 @@ import {
   createJsonSerializer, createRTracerLogger, createStreamLogger, Logger,
 } from './logger';
 import { responseCache } from './response-cache';
-import { createReviewProjections } from './review-projections';
 import { createSearchEuropePmc } from './search-europe-pmc';
 import { bootstrapEditorialCommunities } from '../data/bootstrap-editorial-communities';
 import { isEditorialCommunityReviewedArticleEvent } from '../types/domain-events';
@@ -86,7 +86,6 @@ export const createInfrastructure = async (): Promise<Adapters> => {
     .concat(await getEventsFromDatabase(pool, logger));
   events.sort((a, b) => a.date.getTime() - b.date.getTime());
   const getAllEvents = T.of(events);
-  const reviewProjections = createReviewProjections(events.filter(isEditorialCommunityReviewedArticleEvent));
   const getFollowList = createEventSourceFollowListRepository(getAllEvents);
   const getTwitterResponse = createGetTwitterResponse(process.env.TWITTER_API_BEARER_TOKEN ?? '', logger);
 
@@ -98,7 +97,7 @@ export const createInfrastructure = async (): Promise<Adapters> => {
     editorialCommunities,
     getEditorialCommunity: editorialCommunities.lookup,
     getAllEditorialCommunities: editorialCommunities.all,
-    ...reviewProjections,
+    findReviewsForArticleDoi: findReviewsForArticleDoi(events.filter(isEditorialCommunityReviewedArticleEvent)),
     getAllEvents,
     logger,
     commitEvents: createCommitEvents(events, pool, logger),
