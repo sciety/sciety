@@ -50,15 +50,6 @@ const constructQueryParams = (query: string): URLSearchParams => (
 
 const constructSearchUrl = (queryParams: URLSearchParams): string => `https://www.ebi.ac.uk/europepmc/webservices/rest/search?${queryParams.toString()}`;
 
-const search = async (getJson: GetJson, query: string): Promise<Json> => (
-  pipe(
-    query,
-    constructQueryParams,
-    constructSearchUrl,
-    getJson,
-  )
-);
-
 const constructSearchResults = (data: EuropePmcResponse): SearchResults => {
   const items = data.resultList.result.map((item): SearchResult => ({
     doi: new Doi(item.doi),
@@ -72,18 +63,41 @@ const constructSearchResults = (data: EuropePmcResponse): SearchResults => {
   };
 };
 
-export const createSearchEuropePmc = (getJson: GetJson, logger: Logger): SearchEuropePmc => (query) => pipe(
-  TE.tryCatch(async () => search(getJson, query), E.toError),
+type FetchJSON = <A>(codec: t.Decoder<Json, A>) => (url: string) => TE.TaskEither<'unavailable', A>;
+
+const fetchJSON = (getJson: GetJson, logger: Logger): FetchJSON => (codec) => (url) => pipe(
+  TE.tryCatch(async () => getJson(url), E.toError),
   TE.chain(flow(
-    europePmcResponse.decode,
+    codec.decode,
     TE.fromEither,
     TE.mapLeft((e) => new Error(PR.failure(e).join('\n'))),
   )),
-  TE.bimap(
+  TE.mapLeft(
     (error): 'unavailable' => {
       logger('error', 'Could not parse EuropePMC response', { error });
       return 'unavailable';
     },
-    constructSearchResults,
   ),
 );
+
+export const createSearchEuropePmc = (getJson: GetJson, logger: Logger): SearchEuropePmc => (query) => pipe(
+  query,
+  constructQueryParams,
+  constructSearchUrl,
+  fetchJSON(getJson, logger)(europePmcResponse),
+  TE.map(constructSearchResults),
+);
+
+// TE.tryCatch(async () => search(getJson, query), E.toError),
+// TE.chain(flow(
+//   europePmcResponse.decode,
+//   TE.fromEither,
+//   TE.mapLeft((e) => new Error(PR.failure(e).join('\n'))),
+// )),
+// TE.bimap(
+//   (error): 'unavailable' => {
+//     logger('error', 'Could not parse EuropePMC response', { error });
+//     return 'unavailable';
+//   },
+//   constructSearchResults,
+// ),
