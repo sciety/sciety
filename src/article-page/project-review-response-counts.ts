@@ -1,9 +1,11 @@
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { CountReviewResponses } from './render-review-responses';
 import {
   DomainEvent,
-  UserFoundReviewHelpfulEvent, UserFoundReviewNotHelpfulEvent,
+  UserFoundReviewHelpfulEvent,
+  UserFoundReviewNotHelpfulEvent,
   UserRevokedFindingReviewHelpfulEvent,
   UserRevokedFindingReviewNotHelpfulEvent,
 } from '../types/domain-events';
@@ -12,23 +14,27 @@ import { ReviewId } from '../types/review-id';
 type GetEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 const projection = (reviewId: ReviewId) => (events: ReadonlyArray<DomainEvent>) => {
-  const helpfulCount = events
-    .filter((event): event is UserFoundReviewHelpfulEvent | UserRevokedFindingReviewHelpfulEvent => (
+  const helpfulCount = pipe(
+    events,
+    RA.filter((event): event is UserFoundReviewHelpfulEvent | UserRevokedFindingReviewHelpfulEvent => (
       event.type === 'UserFoundReviewHelpful' || event.type === 'UserRevokedFindingReviewHelpful'
-    ))
-    .filter((event) => event.reviewId.toString() === reviewId.toString())
-    .reduce((count, event) => (
+    )),
+    RA.filter((event) => event.reviewId.toString() === reviewId.toString()),
+    RA.reduce(0, (count, event) => (
       event.type === 'UserFoundReviewHelpful' ? count + 1 : count - 1
-    ), 0);
+    )),
+  );
 
-  const notHelpfulCount = events
-    .filter((event): event is UserFoundReviewNotHelpfulEvent | UserRevokedFindingReviewNotHelpfulEvent => (
+  const notHelpfulCount = pipe(
+    events,
+    RA.filter((event): event is UserFoundReviewNotHelpfulEvent | UserRevokedFindingReviewNotHelpfulEvent => (
       event.type === 'UserFoundReviewNotHelpful' || event.type === 'UserRevokedFindingReviewNotHelpful'
-    ))
-    .filter((event) => event.reviewId.toString() === reviewId.toString())
-    .reduce((count, event) => (
+    )),
+    RA.filter((event) => event.reviewId.toString() === reviewId.toString()),
+    RA.reduce(0, (count, event) => (
       event.type === 'UserFoundReviewNotHelpful' ? count + 1 : count - 1
-    ), 0);
+    )),
+  );
 
   return { helpfulCount, notHelpfulCount };
 };
