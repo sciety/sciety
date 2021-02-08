@@ -6,22 +6,22 @@ import { EditorialCommunityId } from '../types/editorial-community-id';
 import { HypothesisAnnotationId } from '../types/hypothesis-annotation-id';
 import { ReviewId } from '../types/review-id';
 
+const unserializeReviewId = (reviewId: string): ReviewId => {
+  const [, protocol, value] = /^(.+?):(.+)$/.exec(reviewId) ?? [];
+  switch (protocol) {
+    case 'doi':
+      return new Doi(value);
+    case 'hypothesis':
+      return new HypothesisAnnotationId(value);
+    default:
+      throw new Error(`Unable to unserialize ReviewId: "${reviewId}"`);
+  }
+};
+
 /* eslint-disable no-continue */
 
 export const getEventsFromDataFiles = (editorialCommunityIds: ReadonlyArray<string>): Array<DomainEvent> => {
   const parsedEvents: Array<DomainEvent> = [];
-
-  const unserializeReviewId = (reviewId: string): ReviewId => {
-    const [, protocol, value] = /^(.+?):(.+)$/.exec(reviewId) ?? [];
-    switch (protocol) {
-      case 'doi':
-        return new Doi(value);
-      case 'hypothesis':
-        return new HypothesisAnnotationId(value);
-      default:
-        throw new Error(`Unable to unserialize ReviewId: "${reviewId}"`);
-    }
-  };
 
   for (const csvFile of fs.readdirSync('./data/reviews')) {
     const editorialCommunityId = csvFile.replace('.csv', '');
