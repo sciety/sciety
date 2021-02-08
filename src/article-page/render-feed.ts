@@ -48,11 +48,14 @@ export const createRenderFeed = (
       if (process.env.EXPERIMENT_ENABLED === 'true' && doi.value === '10.1101/2021.01.29.21250653') {
         return RA.cons(toHtmlFragment(`
           <div class="article-feed__item_contents">
-            <img class="article-feed__item__avatar" src="/static/editorial-communities/ncrc.jpg" alt="">
+            <img class="article-feed__item__avatar" src="/static/editorial-communities/ncrc--62f9b0d0-8d43-4766-a52a-ce02af61bc6a.jpg" alt="">
             <div class="article-feed__item_body">
               <time datetime="2021-02-04" class="article-feed__item__date">Feb 4, 2021</time>
               <div class="article-feed__item__title">
-                Reviewed by NCRC
+                Reviewed by
+                <a href="/editorial-communities/62f9b0d0-8d43-4766-a52a-ce02af61bc6a">
+                  NCRC
+                </a>
               </div>
 
               <h3>Our take</h3>

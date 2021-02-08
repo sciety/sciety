@@ -72,6 +72,12 @@ if (process.env.EXPERIMENT_ENABLED === 'true') {
       avatarPath: '/static/editorial-communities/prelights--f97bd177-5cb6-4296-8573-078318755bf2.jpg',
       descriptionPath: 'prelights--f97bd177-5cb6-4296-8573-078318755bf2.md',
     },
+    {
+      id: new EditorialCommunityId('62f9b0d0-8d43-4766-a52a-ce02af61bc6a'),
+      name: 'NCRC',
+      avatarPath: '/static/editorial-communities/ncrc--62f9b0d0-8d43-4766-a52a-ce02af61bc6a.jpg',
+      descriptionPath: 'ncrc--62f9b0d0-8d43-4766-a52a-ce02af61bc6a.md',
+    },
   );
 }
 
