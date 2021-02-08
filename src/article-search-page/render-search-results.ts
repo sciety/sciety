@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { RenderSearchResult, SearchResult } from './render-search-result';
 import { templateListItems } from '../shared-components/list-items';
