@@ -46,7 +46,21 @@ export const createRenderFeed = (
     TE.chainW(TE.traverseArray((feedItem) => pipe(renderFeedItem(feedItem, userId), TE.rightTask))),
     TE.map((items) => {
       if (process.env.EXPERIMENT_ENABLED === 'true' && doi.value === '10.1101/2021.01.29.21250653') {
-        return RA.cons(toHtmlFragment('NCRC reviewed this article.'))(items);
+        return RA.cons(toHtmlFragment(`
+          <div class="article-feed__item_contents">
+            <img class="article-feed__item__avatar" src="/static/editorial-communities/ncrc.jpg" alt="">
+            <div class="article-feed__item_body">
+              <time datetime="2021-02-04" class="article-feed__item__date">Feb 4, 2021</time>
+              <div class="article-feed__item__title">
+                Reviewed by NCRC
+              </div>
+
+              <p>
+              This study provides convincing rationale to explore administering only one dose of mRNA vaccine to individuals who possess pre-existing SARS-CoV-2 immunity from previous infection. Antibody testing could be performed prior to vaccination for individuals whose infection history is unknown. This strategy could free up a vast number of vaccine doses, as well as limit discomfort from reactogenicity in those who have pre-existing immunity.
+              </p>
+            </div>
+          </div>
+        `))(items);
       }
       return items;
     }),
