@@ -1,5 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as A from 'fp-ts/ReadonlyArray';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { flow } from 'fp-ts/function';
 import { templateDate } from './date';
 import { templateListItems } from './list-items';
@@ -48,7 +49,7 @@ type RenderSummaryFeedList = (events: ReadonlyArray<FeedItem>) => O.Option<HtmlF
 
 export const renderSummaryFeedList: RenderSummaryFeedList = flow(
   A.map(renderSummaryFeedItem),
-  O.fromPredicate((es) => es.length > 0),
+  RNEA.fromReadonlyArray,
   O.map(flow(
     renderAsList,
     toHtmlFragment,

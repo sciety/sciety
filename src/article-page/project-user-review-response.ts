@@ -1,5 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { GetUserReviewResponse } from './render-review-responses';
@@ -29,7 +30,7 @@ const projectResponse = (getEvents: GetEvents) => (reviewId: ReviewId, userId: U
   ))),
   T.map(RA.filter((event) => event.userId === userId)),
   T.map(RA.filter(((event) => event.reviewId.toString() === reviewId.toString()))),
-  T.map(O.fromPredicate((events) => events.length > 0)),
+  T.map(RNEA.fromReadonlyArray),
   T.map(O.chain((ofInterest) => {
     const mostRecentEventType = ofInterest[ofInterest.length - 1].type;
     switch (mostRecentEventType) {
