@@ -39,7 +39,7 @@ const renderSummaryFeedItem: RenderSummaryFeedItem = flow(
   toHtmlFragment,
 );
 
-const renderAsList = (items: ReadonlyArray<HtmlFragment>): string => `
+const renderAsList = (items: RNEA.ReadonlyNonEmptyArray<HtmlFragment>): string => `
   <ol class="summary-feed-list" role="list">
     ${templateListItems(items, 'summary-feed-list__list_item')}
   </ol>
