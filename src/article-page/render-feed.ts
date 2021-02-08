@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import * as RA from 'fp-ts/ReadonlyArray';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, pipe } from 'fp-ts/function';
@@ -42,11 +42,12 @@ export const createRenderFeed = (
 
   return (doi, server, userId) => pipe(
     getFeedItems(doi, server),
-    T.map(E.fromPredicate((items) => items.length > 0, constant('no-content' as const))),
-    TE.chainW(TE.traverseArray((feedItem) => pipe(renderFeedItem(feedItem, userId), TE.rightTask))),
+    T.chain(T.traverseArray((feedItem) => renderFeedItem(feedItem, userId))),
+    T.map(RNEA.fromReadonlyArray),
+    T.map(E.fromOption(constant('no-content' as const))),
     TE.map((items) => {
       if (process.env.EXPERIMENT_ENABLED === 'true' && doi.value === '10.1101/2021.01.29.21250653') {
-        return RA.cons(toHtmlFragment(`
+        return RNEA.cons(toHtmlFragment(`
           <div class="article-feed__item_contents">
             <img class="article-feed__item__avatar" src="/static/editorial-communities/ncrc--62f9b0d0-8d43-4766-a52a-ce02af61bc6a.jpg" alt="">
             <div class="article-feed__item_body">
@@ -88,7 +89,7 @@ export const createRenderFeed = (
               </p>
             </div>
           </div>
-        `))(items);
+        `), items);
       }
       return items;
     }),
