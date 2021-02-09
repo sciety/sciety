@@ -5,14 +5,15 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
-import { identity } from 'io-ts';
+import {
+  constant, flow, identity, pipe,
+} from 'fp-ts/function';
 import type { NamedNode } from 'rdf-js';
 import { FetchDataset } from './fetch-dataset';
 import { Logger } from './logger';
 import { Review } from './review';
 import { Doi } from '../types/doi';
-import { toHtmlFragment } from '../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 export type FetchDataciteReview = (doi: Doi) => T.Task<Review>;
 
@@ -47,27 +48,37 @@ const hardcodedNCRCReview = toHtmlFragment(`
   </p>
 `);
 
+type FoundReview = {
+  fullText: HtmlFragment,
+  url: URL,
+};
+
 const fetchReviewContent = (
   fetchDataset: FetchDataset,
   logger: Logger,
   reviewIri: NamedNode,
-) => async (): Promise<Review> => {
-  const graph = await fetchDataset(reviewIri);
-  const fullText = graph.out(schema.description).value;
-
-  const review: Review = {
-    fullText: pipe(
+): TE.TaskEither<'unavailable', FoundReview> => pipe(
+  TE.tryCatch(
+    async () => fetchDataset(reviewIri),
+    constant('unavailable' as const), // TODO might be 'not-found'
+  ),
+  TE.chain(flow(
+    (graph) => graph.out(schema.description).value,
+    E.fromNullable('unavailable' as const),
+    E.map(toHtmlFragment),
+    E.map((fullText) => ({
       fullText,
-      O.fromNullable,
-      O.map(toHtmlFragment),
-    ),
-    url: new URL(reviewIri.value),
-  };
-  logger('debug', 'Retrieved review', { review });
-  return review;
-};
+      url: new URL(reviewIri.value),
+    })),
+    TE.fromEither,
+  )),
+  TE.map((review) => {
+    logger('debug', 'Retrieved review', { review });
+    return review;
+  }),
+);
 
-const onlyUrl = (url: string) => () => (
+const onlyUrl = (url: string): Review => (
   {
     fullText: O.none,
     url: new URL(url),
@@ -91,9 +102,12 @@ export const createFetchDataciteReview = (fetchDataset: FetchDataset, logger: Lo
       },
       namedNode,
       TE.right,
-      TE.chain((reviewIri) => TE.tryCatch(
+      TE.chain((reviewIri) => pipe(
         fetchReviewContent(fetchDataset, logger, reviewIri),
-        onlyUrl(reviewIri.value),
+        TE.bimap(
+          () => onlyUrl(reviewIri.value),
+          (review) => ({ ...review, fullText: O.some(review.fullText) }),
+        ),
       )),
       T.map(E.fold(identity, identity)),
     );
