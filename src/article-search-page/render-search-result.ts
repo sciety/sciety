@@ -29,8 +29,9 @@ const renderReviews = flow(
   toHtmlFragment,
 );
 
-const templatePostedDate = (date: Date): HtmlFragment => toHtmlFragment(
-  `<div class="search-results-list__item__date">Posted ${templateDate(date)}</div>`,
+const templatePostedDate = flow(
+  templateDate,
+  (date) => `<div class="search-results-list__item__date">Posted ${date}</div>`,
 );
 
 export const createRenderSearchResult = (
