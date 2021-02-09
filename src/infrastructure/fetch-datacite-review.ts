@@ -1,9 +1,13 @@
 import { URL } from 'url';
 import { namedNode } from '@rdfjs/data-model';
 import { schema } from '@tpluscode/rdf-ns-builders';
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { identity } from 'io-ts';
+import type { NamedNode } from 'rdf-js';
 import { FetchDataset } from './fetch-dataset';
 import { Logger } from './logger';
 import { Review } from './review';
@@ -43,36 +47,55 @@ const hardcodedNCRCReview = toHtmlFragment(`
   </p>
 `);
 
+const fetchReviewContent = (
+  fetchDataset: FetchDataset,
+  logger: Logger,
+  reviewIri: NamedNode,
+) => async (): Promise<Review> => {
+  const graph = await fetchDataset(reviewIri);
+  const fullText = graph.out(schema.description).value;
+
+  const review: Review = {
+    fullText: pipe(
+      fullText,
+      O.fromNullable,
+      O.map(toHtmlFragment),
+    ),
+    url: new URL(reviewIri.value),
+  };
+  logger('debug', 'Retrieved review', { review });
+  return review;
+};
+
+const onlyUrl = (url: string) => () => (
+  {
+    fullText: O.none,
+    url: new URL(url),
+  }
+);
+
 export const createFetchDataciteReview = (fetchDataset: FetchDataset, logger: Logger): FetchDataciteReview => (
-  (doi) => async () => {
+  (doi) => {
     if (process.env.EXPERIMENT_ENABLED === 'true' && doi.value === '10.1101/hardcoded-fake-ncrc-review-id') {
-      return {
+      return T.of({
         url: new URL('https://ncrc.jhsph.edu/research/robust-spike-antibody-responses-and-increased-reactogenicity-in-seropositive-individuals-after-a-single-dose-of-sars-cov-2-mrna-vaccine/'),
         fullText: O.some(hardcodedNCRCReview),
-      };
+      });
     }
-    const url = `https://doi.org/${doi.value}`;
-    const reviewIri = namedNode(url);
-    logger('debug', 'Fetching review from Datacite', { url });
-    try {
-      const graph = await fetchDataset(reviewIri);
-      const fullText = graph.out(schema.description).value;
-
-      const review: Review = {
-        fullText: pipe(
-          fullText,
-          O.fromNullable,
-          O.map(toHtmlFragment),
-        ),
-        url: new URL(url),
-      };
-      logger('debug', 'Retrieved review', { review });
-      return review;
-    } catch (error: unknown) {
-      return {
-        fullText: O.none,
-        url: new URL(url),
-      };
-    }
+    return pipe(
+      doi,
+      (d) => `https://doi.org/${d.value}`,
+      (url) => {
+        logger('debug', 'Fetching review from Datacite', { url });
+        return url;
+      },
+      namedNode,
+      TE.right,
+      TE.chain((reviewIri) => TE.tryCatch(
+        fetchReviewContent(fetchDataset, logger, reviewIri),
+        onlyUrl(reviewIri.value),
+      )),
+      T.map(E.fold(identity, identity)),
+    );
   }
 );
