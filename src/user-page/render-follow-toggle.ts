@@ -11,7 +11,7 @@ type RenderFollowToggle = (
   editorialCommunityId: EditorialCommunityId
 ) => T.Task<HtmlFragment>;
 
-export type Follows = (userId: UserId, editorialCommunityId: EditorialCommunityId) => T.Task<boolean>;
+type Follows = (userId: UserId, editorialCommunityId: EditorialCommunityId) => T.Task<boolean>;
 
 const renderFollowButton = (editorialCommunityId: EditorialCommunityId): string => `
   <form method="post" action="/follow">
@@ -27,7 +27,7 @@ const renderUnfollowButton = (editorialCommunityId: EditorialCommunityId): strin
   </form>
 `;
 
-export const createRenderFollowToggle = (follows: Follows): RenderFollowToggle => (
+const renderFollowToggle = (follows: Follows): RenderFollowToggle => (
   (userId, editorialCommunityId) => (
     pipe(
       userId,
@@ -45,3 +45,5 @@ export const createRenderFollowToggle = (follows: Follows): RenderFollowToggle =
     )
   )
 );
+
+export { renderFollowToggle, Follows };
