@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 import { toUserId } from '../../src/types/user-id';
@@ -10,11 +11,11 @@ describe('get-followed-editorial-communities-from-ids adapter', () => {
       new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002'),
       new EditorialCommunityId('74fd66e9-3b90-4b5a-a4ab-5be83db4c5de'),
     ]);
-    const getEditorialCommunity: GetEditorialCommunity = () => T.of({
+    const getEditorialCommunity: GetEditorialCommunity = () => T.of(O.some({
       id: new EditorialCommunityId('my-community'),
       name: 'Name',
       avatarPath: '/avatar.png',
-    });
+    }));
     const adapter = createGetFollowedEditorialCommunitiesFromIds(
       getFollowedEditorialCommunityIds,
       getEditorialCommunity,

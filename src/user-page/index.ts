@@ -46,7 +46,6 @@ export const userPage = (ports: Ports): UserPage => {
   const getEditorialCommunity: GetEditorialCommunity = (editorialCommunityId) => pipe(
     editorialCommunityId,
     ports.getEditorialCommunity,
-    T.map(O.getOrElseW(() => { throw new Error(`No such community ${editorialCommunityId.value}`); })),
   );
 
   const renderFollowToggle = createRenderFollowToggle(ports.follows);
