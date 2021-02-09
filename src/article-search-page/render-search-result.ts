@@ -17,13 +17,11 @@ export type GetReviewCount = (doi: Doi) => TE.TaskEither<unknown, number>;
 
 export type RenderSearchResult = (result: SearchResult) => T.Task<HtmlFragment>;
 
-const renderReviewCount: (reviewCount: number) => string = (reviewCount) => (
-  `
-    <div class="search-results-list__item__review-count">
-      Reviews: ${reviewCount}
-    </div>
-  `
-);
+const renderReviewCount = (reviewCount: number): string => `
+  <div class="search-results-list__item__review-count">
+    Reviews: ${reviewCount}
+  </div>
+`;
 
 const renderReviews = flow(
   O.filter((reviewCount: number) => reviewCount > 0),
