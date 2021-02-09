@@ -13,7 +13,6 @@ import { shouldNotBeCalled } from '../should-not-be-called';
 const reviewDoi = new Doi('10.5281/zenodo.3678325');
 
 const fetchedReview = {
-  publicationDate: O.some(new Date()),
   fullText: pipe('Very good', toHtmlFragment, O.some),
   url: new URL('https://example.com'),
 };

@@ -47,7 +47,6 @@ export const createFetchDataciteReview = (fetchDataset: FetchDataset, logger: Lo
             First concrete rationale for administering only one vaccine dose to those who already have some level of pre-existing SARS-CoV-2 immunity from previous infection.
           </p>
         `)),
-        publicationDate: O.some(new Date('2021-02-04')),
       };
     }
     const url = `https://doi.org/${doi.value}`;
@@ -69,7 +68,6 @@ export const createFetchDataciteReview = (fetchDataset: FetchDataset, logger: Lo
       return review;
     } catch (error: unknown) {
       return {
-        publicationDate: O.none,
         fullText: O.none,
         url: new URL(url),
       };
