@@ -5,6 +5,6 @@ import { EditorialCommunityId } from './editorial-community-id';
 
 export type EditorialCommunityRepository = {
   add(editorialCommunity: EditorialCommunity): T.Task<void>,
-  all: T.Task<Array<EditorialCommunity>>,
+  all: T.Task<ReadonlyArray<EditorialCommunity>>,
   lookup(id: EditorialCommunityId): T.Task<O.Option<EditorialCommunity>>,
 };

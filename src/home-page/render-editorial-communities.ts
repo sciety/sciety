@@ -10,7 +10,7 @@ import { UserId } from '../types/user-id';
 type RenderEditorialCommunities = (userId: O.Option<UserId>) => T.Task<HtmlFragment>;
 
 // TODO Make a ReadonlyNonEmptyArray
-export type GetAllEditorialCommunities = T.Task<Array<Community>>;
+export type GetAllEditorialCommunities = T.Task<ReadonlyArray<Community>>;
 
 const render = (links: RNEA.ReadonlyNonEmptyArray<HtmlFragment>): string => `
   <section>

@@ -18,7 +18,7 @@ import { EditorialCommunityRepository } from '../types/editorial-community-repos
 
 type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.Task<O.Option<EditorialCommunity>>;
 
-type GetAllEditorialCommunities = T.Task<Array<EditorialCommunity>>;
+type GetAllEditorialCommunities = T.Task<ReadonlyArray<EditorialCommunity>>;
 
 export type Adapters = {
   fetchArticle: FetchCrossrefArticle,
