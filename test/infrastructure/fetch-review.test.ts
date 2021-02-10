@@ -1,6 +1,7 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { FetchDataciteReview } from '../../src/infrastructure/fetch-datacite-review';
 import { FetchHypothesisAnnotation } from '../../src/infrastructure/fetch-hypothesis-annotation';
@@ -19,7 +20,11 @@ const fetchedReview = {
 
 describe('fetch-review', () => {
   it('returns a Datacite review when given a DOI', async () => {
-    const fetchDataciteReview: FetchDataciteReview = () => T.of(fetchedReview);
+    const foundReview = {
+      fullText: pipe('Very good', toHtmlFragment),
+      url: new URL('https://example.com'),
+    };
+    const fetchDataciteReview: FetchDataciteReview = () => TE.right(foundReview);
     const fetchReview = createFetchReview(fetchDataciteReview, shouldNotBeCalled);
     const review = await fetchReview(reviewDoi)();
 

@@ -2,20 +2,17 @@ import { URL } from 'url';
 import { namedNode } from '@rdfjs/data-model';
 import { schema } from '@tpluscode/rdf-ns-builders';
 import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import {
-  constant, flow, identity, pipe,
+  constant, flow, pipe,
 } from 'fp-ts/function';
 import type { NamedNode } from 'rdf-js';
 import { FetchDataset } from './fetch-dataset';
 import { Logger } from './logger';
-import { Review } from './review';
 import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
-export type FetchDataciteReview = (doi: Doi) => T.Task<Review>;
+export type FetchDataciteReview = (doi: Doi) => TE.TaskEither<'unavailable' | 'not-found', FoundReview>;
 
 const hardcodedNCRCReview = toHtmlFragment(`
   <h3>Our take</h3>
@@ -78,19 +75,12 @@ const fetchReviewContent = (
   }),
 );
 
-const onlyUrl = (url: string): Review => (
-  {
-    fullText: O.none,
-    url: new URL(url),
-  }
-);
-
 export const createFetchDataciteReview = (fetchDataset: FetchDataset, logger: Logger): FetchDataciteReview => (
   (doi) => {
     if (process.env.EXPERIMENT_ENABLED === 'true' && doi.value === '10.1101/hardcoded-fake-ncrc-review-id') {
-      return T.of({
+      return TE.right({
         url: new URL('https://ncrc.jhsph.edu/research/robust-spike-antibody-responses-and-increased-reactogenicity-in-seropositive-individuals-after-a-single-dose-of-sars-cov-2-mrna-vaccine/'),
-        fullText: O.some(hardcodedNCRCReview),
+        fullText: hardcodedNCRCReview,
       });
     }
     return pipe(
@@ -102,14 +92,7 @@ export const createFetchDataciteReview = (fetchDataset: FetchDataset, logger: Lo
       },
       namedNode,
       TE.right,
-      TE.chain((reviewIri) => pipe(
-        fetchReviewContent(fetchDataset, logger, reviewIri),
-        TE.bimap(
-          () => onlyUrl(reviewIri.value),
-          (review) => ({ ...review, fullText: O.some(review.fullText) }),
-        ),
-      )),
-      T.map(E.fold(identity, identity)),
+      TE.chain((reviewIri) => fetchReviewContent(fetchDataset, logger, reviewIri)),
     );
   }
 );
