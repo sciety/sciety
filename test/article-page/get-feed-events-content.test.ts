@@ -1,6 +1,6 @@
 import { URL } from 'url';
-import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import {
   Feed, GetEditorialCommunity, getFeedEventsContent, GetReview,
@@ -26,8 +26,8 @@ describe('get-feed-events-content', () => {
           occurredAt: new Date(),
         },
       ]);
-      const getReview: GetReview = () => T.of({
-        fullText: pipe('some text', toHtmlFragment, O.some),
+      const getReview: GetReview = () => TE.right({
+        fullText: pipe('some text', toHtmlFragment),
         url: new URL('http://example.com'),
       });
       const getEditorialCommunity: GetEditorialCommunity = () => T.of({
