@@ -1,10 +1,11 @@
+import { URL } from 'url';
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, pipe } from 'fp-ts/function';
+import { flow, identity, pipe } from 'fp-ts/function';
 import { ensureBiorxivDoi } from './ensure-biorxiv-doi';
 import { FindVersionsForArticleDoi, getArticleFeedEvents } from './get-article-feed-events';
-import { GetReview } from './get-feed-events-content';
 import { projectHasUserSavedArticle } from './project-has-user-saved-article';
 import { createProjectReviewResponseCounts } from './project-review-response-counts';
 import { createProjectUserReviewResponse } from './project-user-review-response';
@@ -21,7 +22,8 @@ import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 import { DomainEvent } from '../types/domain-events';
 import { EditorialCommunityId } from '../types/editorial-community-id';
-import { toHtmlFragment } from '../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { HypothesisAnnotationId } from '../types/hypothesis-annotation-id';
 import { ReviewId } from '../types/review-id';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { User } from '../types/user';
@@ -42,10 +44,15 @@ type ArticleDetails = {
 
 type GetArticleDetails = (doi: Doi) => TE.TaskEither<'not-found'|'unavailable', ArticleDetails>;
 
+type FetchReview = (id: ReviewId) => TE.TaskEither<'unavailable' | 'not-found', {
+  fullText: HtmlFragment,
+  url: URL,
+}>;
+
 type GetEvents = T.Task<ReadonlyArray<DomainEvent>>;
 type Ports = {
   fetchArticle: GetArticleDetails,
-  fetchReview: GetReview,
+  fetchReview: FetchReview,
   getEditorialCommunity: (editorialCommunityId: EditorialCommunityId) => T.Task<O.Option<{
     name: string,
     avatarPath: string,
@@ -85,7 +92,29 @@ export const articlePage = (ports: Ports): ArticlePage => {
     getArticleFeedEvents(
       ports.findReviewsForArticleDoi,
       ports.findVersionsForArticleDoi,
-      ports.fetchReview,
+      (reviewId) => {
+        let reviewUrl: URL;
+        if (reviewId instanceof Doi) {
+          reviewUrl = new URL(`https://doi.org/${reviewId.value}`);
+        } else if (reviewId instanceof HypothesisAnnotationId) {
+          reviewUrl = new URL(`https://hypothes.is/a/${reviewId.value}`);
+        }
+        return pipe(
+          reviewId,
+          ports.fetchReview,
+          TE.bimap(
+            () => ({
+              url: reviewUrl,
+              fullText: O.none,
+            }),
+            (review) => ({
+              ...review,
+              fullText: O.some(review.fullText),
+            }),
+          ),
+          T.map(E.fold(identity, identity)),
+        );
+      },
       ports.getEditorialCommunity,
     ),
     createRenderReviewFeedItem(
