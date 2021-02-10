@@ -83,7 +83,7 @@ const reviewToFeedItem = (
   T.map(({ editorialCommunity, review }) => O.some({
     type: 'review',
     id: feedEvent.reviewId,
-    source: review.url,
+    source: O.some(review.url),
     occurredAt: feedEvent.occurredAt,
     editorialCommunityId: feedEvent.editorialCommunityId,
     editorialCommunityName: editorialCommunity.name,

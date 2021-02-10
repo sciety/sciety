@@ -20,7 +20,7 @@ describe('render-review-feed-item', () => {
         await renderReviewFeedItem({
           type: 'review',
           id: new Doi('10.1111/12345678'),
-          source: new URL('http://example.com'),
+          source: O.some(new URL('http://example.com')),
           occurredAt: new Date(),
           editorialCommunityId: new EditorialCommunityId('community-1'),
           editorialCommunityName: 'Community 1',
@@ -57,7 +57,7 @@ describe('render-review-feed-item', () => {
         await renderReviewFeedItem({
           type: 'review',
           id: new Doi('10.1111/12345678'),
-          source: new URL(source),
+          source: O.some(new URL(source)),
           occurredAt: new Date(),
           editorialCommunityId: new EditorialCommunityId('community-1'),
           editorialCommunityName: 'Community 1',
@@ -95,7 +95,7 @@ describe('render-review-feed-item', () => {
         await renderReviewFeedItem({
           type: 'review',
           id: new Doi('10.1111/12345678'),
-          source: new URL(source),
+          source: O.some(new URL(source)),
           occurredAt: new Date(),
           editorialCommunityId: new EditorialCommunityId('community-1'),
           editorialCommunityName: 'Community 1',
