@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import {
-  $, click, closeBrowser, currentURL, goto, link, openBrowser,
+  $, click, closeBrowser, currentURL, goBack, goto, link, openBrowser,
 } from 'taiko';
 import { authenticateViaTwitter } from './utilities';
 
@@ -88,6 +88,14 @@ describe('authentication-and-redirect', () => {
       const result = await currentURL();
 
       expect(result).toContain('/editorial-communities/10360d97-bf52-4aef-b2fa-2f60d319edd7');
+    });
+
+    it('back button doesn\'t break authentication', async () => {
+      await goBack();
+
+      const result = await currentURL();
+
+      expect(result).not.toContain('/twitter/callback');
     });
   });
 });
