@@ -53,7 +53,7 @@ const inferredUrlFromReviewId = (reviewId: ReviewId): O.Option<URL> => {
   if (reviewId instanceof Doi) {
     return O.some(new URL(`https://doi.org/${reviewId.value}`));
   }
-
+  // TODO: extend case switch to return O.none for non-doi/hypothesis
   return O.some(new URL(`https://hypothes.is/a/${reviewId.value}`));
 };
 

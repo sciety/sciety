@@ -23,6 +23,7 @@ export const createFetchReview = (
     if (id instanceof Doi) {
       return fetchDataciteReview(id);
     }
+    // TODO: extend case switch to return ncrc review content from fetchDataciteReview
 
     return pipe(
       id,
