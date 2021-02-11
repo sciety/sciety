@@ -1,19 +1,10 @@
-import { sequenceS } from 'fp-ts/Apply';
-import * as O from 'fp-ts/Option';
-import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { RenderPageError } from '../types/render-page-error';
-import { UserId } from '../types/user-id';
 
-type Page = {
+export type Page = {
   title: string,
   content: HtmlFragment,
 };
-
-export type RenderPage = (userId: UserId, viewingUserId: O.Option<UserId>) => TE.TaskEither<RenderPageError, Page>;
-
-type Component = (userId: UserId, viewingUserId: O.Option<UserId>) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>;
 
 type Components = {
   header: HtmlFragment,
@@ -22,7 +13,7 @@ type Components = {
   savedArticlesList: HtmlFragment,
 };
 
-const template = ({
+export const renderPage = ({
   header, followList, savedArticlesList, userDisplayName,
 }: Components): Page => (
   {
@@ -39,7 +30,7 @@ const template = ({
   }
 );
 
-const renderErrorPage = (e: 'not-found' | 'unavailable'): RenderPageError => {
+export const renderErrorPage = (e: 'not-found' | 'unavailable'): RenderPageError => {
   if (e === 'not-found') {
     return {
       type: 'not-found',
@@ -51,21 +42,3 @@ const renderErrorPage = (e: 'not-found' | 'unavailable'): RenderPageError => {
     message: toHtmlFragment('User information unavailable'),
   };
 };
-
-type GetUserDisplayName = (userId: UserId) => TE.TaskEither<'not-found' | 'unavailable', string>;
-
-export const renderPage = (
-  renderHeader: Component,
-  renderFollowList: Component,
-  getUserDisplayName: GetUserDisplayName,
-  renderSavedArticles: Component,
-): RenderPage => (userId, viewingUserId) => pipe(
-  {
-    header: renderHeader(userId, viewingUserId),
-    followList: renderFollowList(userId, viewingUserId),
-    userDisplayName: pipe(userId, getUserDisplayName, TE.map(toHtmlFragment)),
-    savedArticlesList: renderSavedArticles(userId, viewingUserId),
-  },
-  sequenceS(TE.taskEither),
-  TE.bimap(renderErrorPage, template),
-);
