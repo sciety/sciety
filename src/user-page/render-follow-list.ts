@@ -11,7 +11,7 @@ import { UserId } from '../types/user-id';
 
 type RenderFollowList = (userId: UserId, viewingUserId: O.Option<UserId>) => TE.TaskEither<never, HtmlFragment>;
 
-export type GetFollowedEditorialCommunities = (userId: UserId) => T.Task<ReadonlyArray<{
+type GetFollowedEditorialCommunities = (userId: UserId) => T.Task<ReadonlyArray<{
   id: EditorialCommunityId,
   name: string,
   avatarPath: string,

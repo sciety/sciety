@@ -1,10 +1,10 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { fetchSavedArticles } from './fetch-saved-articles';
-import { GetEditorialCommunity, getFollowedEditorialCommunitiesFromIds } from './get-followed-editorial-communities-from-ids';
 import { GetAllEvents, projectFollowedEditorialCommunityIds } from './project-followed-editorial-community-ids';
 import { projectSavedArticleDois } from './project-saved-article-dois';
 import { renderFollowList } from './render-follow-list';
@@ -44,14 +44,10 @@ type Params = {
 type UserPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
 export const userPage = (ports: Ports): UserPage => {
-  const getEditorialCommunity: GetEditorialCommunity = (editorialCommunityId) => pipe(
-    editorialCommunityId,
-    ports.getEditorialCommunity,
-  );
-
-  const getFollowedEditorialCommunities = getFollowedEditorialCommunitiesFromIds(
+  const getFollowedEditorialCommunities = flow(
     projectFollowedEditorialCommunityIds(ports.getAllEvents),
-    getEditorialCommunity,
+    T.chain(T.traverseArray(ports.getEditorialCommunity)),
+    T.map(RA.compact),
   );
 
   const getTitle = flow(
