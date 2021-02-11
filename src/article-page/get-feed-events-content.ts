@@ -49,12 +49,12 @@ const articleVersionToFeedItem = (
   T.of(O.some({ ...feedEvent, server }))
 );
 
-const fallbackUrl = (reviewId: ReviewId): URL => {
+const inferredUrlFromReviewId = (reviewId: ReviewId): O.Option<URL> => {
   if (reviewId instanceof Doi) {
-    return new URL(`https://doi.org/${reviewId.value}`);
+    return O.some(new URL(`https://doi.org/${reviewId.value}`));
   }
 
-  return new URL(`https://hypothes.is/a/${reviewId.value}`);
+  return O.some(new URL(`https://hypothes.is/a/${reviewId.value}`));
 };
 
 const reviewToFeedItem = (
@@ -69,7 +69,7 @@ const reviewToFeedItem = (
       getReview,
       T.map(E.fold(
         () => ({
-          url: O.some(fallbackUrl(feedEvent.reviewId)),
+          url: inferredUrlFromReviewId(feedEvent.reviewId),
           fullText: O.none,
         }),
         (review) => ({
