@@ -7,3 +7,4 @@ updates:
       # Check for npm updates at 10am UTC
       time: "10:00"
     open-pull-requests-limit: 25
+    rebase-strategy: "disabled"
