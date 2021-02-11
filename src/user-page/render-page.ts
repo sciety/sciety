@@ -37,6 +37,19 @@ const template = (
   }
 );
 
+const renderErrorPage = (e: 'not-found' | 'unavailable'): RenderPageError => {
+  if (e === 'not-found') {
+    return {
+      type: 'not-found',
+      message: toHtmlFragment('User not found'),
+    };
+  }
+  return {
+    type: 'unavailable',
+    message: toHtmlFragment('User information unavailable'),
+  };
+};
+
 type GetUserDisplayName = (userId: UserId) => TE.TaskEither<'not-found' | 'unavailable', string>;
 
 export const renderPage = (
@@ -52,19 +65,5 @@ export const renderPage = (
     savedArticlesList: renderSavedArticles(userId, viewingUserId),
   },
   sequenceS(TE.taskEither),
-  TE.bimap(
-    (e) => {
-      if (e === 'not-found') {
-        return {
-          type: 'not-found',
-          message: toHtmlFragment('User not found'),
-        };
-      }
-      return {
-        type: 'unavailable',
-        message: toHtmlFragment('User information unavailable'),
-      };
-    },
-    template,
-  ),
+  TE.bimap(renderErrorPage, template),
 );
