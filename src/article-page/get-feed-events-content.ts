@@ -69,11 +69,12 @@ const reviewToFeedItem = (
       getReview,
       T.map(E.fold(
         () => ({
-          url: fallbackUrl(feedEvent.reviewId),
+          url: O.some(fallbackUrl(feedEvent.reviewId)),
           fullText: O.none,
         }),
         (review) => ({
           ...review,
+          url: O.some(review.url),
           fullText: O.some(review.fullText),
         }),
       )),
@@ -83,7 +84,7 @@ const reviewToFeedItem = (
   T.map(({ editorialCommunity, review }) => O.some({
     type: 'review',
     id: feedEvent.reviewId,
-    source: O.some(review.url),
+    source: review.url,
     occurredAt: feedEvent.occurredAt,
     editorialCommunityId: feedEvent.editorialCommunityId,
     editorialCommunityName: editorialCommunity.name,
