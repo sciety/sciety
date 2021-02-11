@@ -1,7 +1,7 @@
 import Router from '@koa/router';
 import * as TE from 'fp-ts/TaskEither';
 import { flow } from 'fp-ts/function';
-import { ParameterizedContext } from 'koa';
+import { Middleware } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import { authenticate } from './authenticate';
 import { catchErrors } from './catch-errors';
@@ -96,13 +96,17 @@ export const createRouter = (adapters: Adapters): Router => {
 
   // AUTHENTICATION
 
+  const logIn: Middleware = async (context, next) => {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    if (!context.session!.successRedirect) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      context.session!.successRedirect = context.request.headers.referer ?? '/';
+    }
+    await next();
+  };
+
   router.get('/log-in',
-    async (context: ParameterizedContext, next) => {
-      if (!context.session.successRedirect) {
-        context.session.successRedirect = context.request.headers.referer ?? '/';
-      }
-      await next();
-    },
+    logIn,
     authenticate);
 
   router.get('/log-out',
