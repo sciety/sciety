@@ -1,7 +1,7 @@
 import Router from '@koa/router';
 import * as TE from 'fp-ts/TaskEither';
 import { flow } from 'fp-ts/function';
-import { ParameterizedContext } from 'koa';
+import { Middleware, ParameterizedContext } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import { authenticate } from './authenticate';
 import { catchErrors } from './catch-errors';
@@ -108,6 +108,14 @@ export const createRouter = (adapters: Adapters): Router => {
   router.get('/log-out',
     logOut);
 
+  const onlyIfNotAuthenticated = (original: Middleware): Middleware => async (context, next) => {
+    if (!(context.state.user)) {
+      await original(context, next);
+    } else {
+      await next();
+    }
+  };
+
   // TODO set commands as an object on the session rather than individual properties
   router.get('/twitter/callback',
     catchErrors(
@@ -115,7 +123,7 @@ export const createRouter = (adapters: Adapters): Router => {
       'Detected Twitter callback error',
       'Something went wrong, please try again.',
     ),
-    authenticate,
+    onlyIfNotAuthenticated(authenticate),
     finishFollowCommand(adapters),
     finishUnfollowCommand(adapters),
     finishRespondCommand(adapters),
