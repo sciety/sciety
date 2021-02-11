@@ -44,7 +44,7 @@
     "xmldom": "^0.3.0"
   },
   "devDependencies": {
-    "@types/clownface": "^0.12.13",
+    "@types/clownface": "^1.2.0",
     "@types/http-errors": "^1.8.0",
     "@types/jest": "^26.0.20",
     "@types/jsdom": "^16.2.4",
