@@ -70,17 +70,22 @@ export const userPage = (ports: Ports): UserPage => {
 
     return pipe(
       {
-        header: renderHeader(ports.getUserDetails)(userId),
+        header: pipe(
+          userId,
+          ports.getUserDetails,
+          TE.map(renderHeader),
+        ),
         followList: renderFollowList(
           getFollowedEditorialCommunities,
           renderFollowedEditorialCommunity(renderFollowToggle, ports.follows),
         )(userId, viewingUserId),
-        savedArticlesList: flow(
+        savedArticlesList: pipe(
+          userId,
           projectSavedArticleDois(ports.getAllEvents),
           T.chain(fetchSavedArticles(getTitle)),
           T.map(renderSavedArticles),
           TE.rightTask,
-        )(userId),
+        ),
         userDisplayName: pipe(
           userId,
           getUserDisplayName(ports.getUserDetails),
