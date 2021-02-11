@@ -46,7 +46,7 @@
   "devDependencies": {
     "@types/clownface": "^0.12.13",
     "@types/http-errors": "^1.8.0",
-    "@types/jest": "^26.0.13",
+    "@types/jest": "^26.0.20",
     "@types/jsdom": "^16.2.4",
     "@types/koa": "^2.11.3",
     "@types/koa-bodyparser": "^4.3.0",
