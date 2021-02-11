@@ -5,7 +5,6 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { fetchSavedArticles } from './fetch-saved-articles';
 import { GetEditorialCommunity, getFollowedEditorialCommunitiesFromIds } from './get-followed-editorial-communities-from-ids';
-import { getUserDisplayName } from './get-user-display-name';
 import { GetAllEvents, projectFollowedEditorialCommunityIds } from './project-followed-editorial-community-ids';
 import { projectSavedArticleDois } from './project-saved-article-dois';
 import { renderFollowList } from './render-follow-list';
@@ -67,12 +66,12 @@ export const userPage = (ports: Ports): UserPage => {
       params.user,
       O.map((user) => user.id),
     );
+    const userDetails = ports.getUserDetails(userId);
 
     return pipe(
       {
         header: pipe(
-          userId,
-          ports.getUserDetails,
+          userDetails,
           TE.map(renderHeader),
         ),
         followList: renderFollowList(
@@ -87,8 +86,8 @@ export const userPage = (ports: Ports): UserPage => {
           TE.rightTask,
         ),
         userDisplayName: pipe(
-          userId,
-          getUserDisplayName(ports.getUserDetails),
+          userDetails,
+          TE.map(({ displayName }) => displayName),
           TE.map(toHtmlFragment),
         ),
       },
