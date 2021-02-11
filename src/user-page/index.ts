@@ -53,6 +53,12 @@ export const userPage = (ports: Ports): UserPage => {
     getEditorialCommunity,
   );
 
+  const getTitle = flow(
+    ports.fetchArticle,
+    T.map(O.fromEither),
+    T.map(O.map((article) => article.title)),
+  );
+
   return (params) => {
     const userId = toUserId(params.id ?? '');
     const viewingUserId = pipe(
@@ -69,11 +75,7 @@ export const userPage = (ports: Ports): UserPage => {
       getUserDisplayName(ports.getUserDetails),
       flow(
         projectSavedArticleDois(ports.getAllEvents),
-        T.chain(fetchSavedArticles(flow(
-          ports.fetchArticle,
-          T.map(O.fromEither),
-          T.map(O.map((article) => article.title)),
-        ))),
+        T.chain(fetchSavedArticles(getTitle)),
         T.map(renderSavedArticles),
         TE.rightTask,
       ),

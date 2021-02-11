@@ -15,22 +15,24 @@ export type RenderPage = (userId: UserId, viewingUserId: O.Option<UserId>) => TE
 
 type Component = (userId: UserId, viewingUserId: O.Option<UserId>) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>;
 
-const template = (
-  components: {
-    header: HtmlFragment,
-    followList: HtmlFragment,
-    userDisplayName: string,
-    savedArticlesList: HtmlFragment,
-  },
-): Page => (
+type Components = {
+  header: HtmlFragment,
+  followList: HtmlFragment,
+  userDisplayName: string,
+  savedArticlesList: HtmlFragment,
+};
+
+const template = ({
+  header, followList, savedArticlesList, userDisplayName,
+}: Components): Page => (
   {
-    title: `${components.userDisplayName}`,
+    title: `${userDisplayName}`,
     content: toHtmlFragment(`
       <div class="sciety-grid sciety-grid--user">
-        ${components.header}
+        ${header}
         <div class="user-page-contents">
-          ${components.followList}
-          ${components.savedArticlesList}
+          ${followList}
+          ${savedArticlesList}
         </div>
       </div>
     `),
