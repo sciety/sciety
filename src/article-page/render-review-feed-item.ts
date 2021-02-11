@@ -1,7 +1,7 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
-import { flow, pipe } from 'fp-ts/function';
+import { constant, flow, pipe } from 'fp-ts/function';
 import clip from 'text-clipper';
 import { RenderReviewResponses } from './render-review-responses';
 import { templateDate } from '../shared-components/date';
@@ -16,7 +16,7 @@ export type RenderReviewFeedItem = (review: ReviewFeedItem, userId: O.Option<Use
 export type ReviewFeedItem = {
   type: 'review',
   id: ReviewId,
-  source: URL,
+  source: O.Option<URL>,
   occurredAt: Date,
   editorialCommunityId: EditorialCommunityId,
   editorialCommunityName: string,
@@ -38,11 +38,15 @@ const eventMetadata = (review: ReviewFeedItem): HtmlFragment => toHtmlFragment(`
   </div>
 `);
 
-const sourceLink = (review: ReviewFeedItem): HtmlFragment => toHtmlFragment(`
-  <a href="${review.source.toString()}" class="article-feed__item__read_more article-call-to-action-link">
+const sourceLink = (review: ReviewFeedItem): O.Option<HtmlFragment> => pipe(
+  review.source,
+  O.map(
+    (source) => `<a href="${source.toString()}" class="article-feed__item__read_more article-call-to-action-link">
     Read the original source
-  </a>
-`);
+  </a>`,
+  ),
+  O.map(toHtmlFragment),
+);
 
 type RenderWithText = (
   teaserChars: number,
@@ -60,7 +64,7 @@ const renderWithText: RenderWithText = (teaserChars, review, fullText) => (respo
           ${eventMetadata(review)}
           <div>
             ${fullText}
-            ${sourceLink(review)}
+            ${pipe(review, sourceLink, O.getOrElse(constant('')))}
           </div>
         </div>
       </div>
@@ -78,7 +82,7 @@ const renderWithText: RenderWithText = (teaserChars, review, fullText) => (respo
         </div>
         <div data-full-text>
           ${fullText}
-          ${sourceLink(review)}
+          ${pipe(review, sourceLink, O.getOrElse(constant('')))}
         </div>
       </div>
     </div>
@@ -95,7 +99,7 @@ const render = (teaserChars: number, review: ReviewFeedItem) => (responses: Html
         <div class="article-feed__item_body">
           ${eventMetadata(review)}
           <div>
-            ${sourceLink(review)}
+            ${pipe(review, sourceLink, O.getOrElse(constant('')))}
           </div>
         </div>
       </div>

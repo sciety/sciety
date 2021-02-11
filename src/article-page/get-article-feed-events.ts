@@ -24,6 +24,7 @@ export type FindVersionsForArticleDoi = (doi: Doi, server: ArticleServer) => T.T
   version: number,
 }>>;
 
+// TODO: return a [Readonly]NonEmptyArray
 export const getArticleFeedEvents = (
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,

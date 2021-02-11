@@ -1,6 +1,8 @@
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
-import { Doi } from '../types/doi';
-import { EditorialCommunityReviewedArticleEvent } from '../types/domain-events';
+import { flow, pipe } from 'fp-ts/function';
+import { Doi, eqDoi } from '../types/doi';
+import { DomainEvent, isEditorialCommunityReviewedArticleEvent } from '../types/domain-events';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { ReviewId } from '../types/review-id';
 
@@ -11,13 +13,16 @@ export type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray
 }>>;
 
 export const findReviewsForArticleDoi = (
-  events: ReadonlyArray<EditorialCommunityReviewedArticleEvent>,
-): FindReviewsForArticleDoi => (articleDoi) => T.of(
-  events
-    .filter((event) => event.articleId.value === articleDoi.value)
-    .map((event) => ({
+  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
+): FindReviewsForArticleDoi => (articleDoi) => pipe(
+  getAllEvents,
+  T.map(flow(
+    RA.filter(isEditorialCommunityReviewedArticleEvent),
+    RA.filter((event) => eqDoi.equals(event.articleId, articleDoi)),
+    RA.map((event) => ({
       reviewId: event.reviewId,
       editorialCommunityId: event.editorialCommunityId,
       occurredAt: event.date,
     })),
+  )),
 );

@@ -17,52 +17,37 @@ export type GetReviewCount = (doi: Doi) => TE.TaskEither<unknown, number>;
 
 export type RenderSearchResult = (result: SearchResult) => T.Task<HtmlFragment>;
 
-const renderReviewCount: (reviewCount: number) => string = (reviewCount) => (
-  `
-    <div class="search-results-list__item__review-count">
-      Reviews: ${reviewCount}
-    </div>
-  `
-);
+const renderReviewCount = (reviewCount: number): string => `
+  <div class="search-results-list__item__review-count">
+    Reviews: ${reviewCount}
+  </div>
+`;
 
-const renderIfNecessary = flow(
-  O.fromPredicate((reviewCount: number) => reviewCount > 0),
+const renderReviews = flow(
+  O.filter((reviewCount: number) => reviewCount > 0),
   O.fold(() => '', renderReviewCount),
   toHtmlFragment,
 );
 
-const createRenderReviews = (
-  getReviewCount: GetReviewCount,
-) => (
-  async (doi: Doi): Promise<HtmlFragment> => (
-    pipe(
-      doi,
-      getReviewCount,
-      TE.fold(
-        () => T.of(toHtmlFragment('')),
-        (reviewCount) => T.of(renderIfNecessary(reviewCount)),
-      ),
-    )()
-  )
-);
-
-const templatePostedDate = (date: Date): HtmlFragment => toHtmlFragment(
-  `<div class="search-results-list__item__date">Posted ${templateDate(date)}</div>`,
+const templatePostedDate = flow(
+  templateDate,
+  (date) => `<div class="search-results-list__item__date">Posted ${date}</div>`,
 );
 
 export const createRenderSearchResult = (
   getReviewCount: GetReviewCount,
-): RenderSearchResult => {
-  const renderReviews = createRenderReviews(getReviewCount);
-
-  return (result) => async () => toHtmlFragment(`
+): RenderSearchResult => flow(
+  T.of,
+  T.bind('reviewCount', ({ doi }) => pipe(doi, getReviewCount, T.map(O.fromEither))),
+  T.map((result) => `
     <div>
       <a class="search-results-list__item__link" href="/articles/${result.doi.value}">${result.title}</a>
       <div>
         ${result.authors}
       </div>
       ${templatePostedDate(result.postedDate)}
-      ${await renderReviews(result.doi)}
+      ${renderReviews(result.reviewCount)}
     </div>
-  `);
-};
+  `),
+  T.map(toHtmlFragment),
+);

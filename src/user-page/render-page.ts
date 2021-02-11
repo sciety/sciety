@@ -37,12 +37,11 @@ const template = (
   }
 );
 
-type RenderFollowList = (userId: UserId, viewingUserId: O.Option<UserId>) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>;
 type GetUserDisplayName = (userId: UserId) => TE.TaskEither<'not-found' | 'unavailable', string>;
 
-export const createRenderPage = (
+export const renderPage = (
   renderHeader: Component,
-  renderFollowList: RenderFollowList,
+  renderFollowList: Component,
   getUserDisplayName: GetUserDisplayName,
   renderSavedArticles: Component,
 ): RenderPage => (userId, viewingUserId) => pipe(

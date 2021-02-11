@@ -1,32 +1,34 @@
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { GetFollowedEditorialCommunityIds } from './get-followed-editorial-communities-from-ids';
-import { DomainEvent } from '../types/domain-events';
-import { EditorialCommunityId } from '../types/editorial-community-id';
+import {
+  DomainEvent,
+  isUserFollowedEditorialCommunityEvent,
+  isUserUnfollowedEditorialCommunityEvent,
+  UserFollowedEditorialCommunityEvent,
+  UserUnfollowedEditorialCommunityEvent,
+} from '../types/domain-events';
+import { eqEditorialCommunityId } from '../types/editorial-community-id';
 import { UserId } from '../types/user-id';
 
 export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-const projectFollowedCommunities = (userId: UserId) => (events: ReadonlyArray<DomainEvent>) => {
-  const result = new Set<string>();
-  events.forEach((event) => {
-    if (event.type === 'UserFollowedEditorialCommunity' && event.userId === userId) {
-      result.add(event.editorialCommunityId.value);
-    } else if (event.type === 'UserUnfollowedEditorialCommunity' && event.userId === userId) {
-      result.delete(event.editorialCommunityId.value);
-    }
-  });
-  return Array.from(result);
-};
+const projectFollowedCommunities = (userId: UserId) => (events: ReadonlyArray<DomainEvent>) => pipe(
+  events,
+  RA.filter((event): event is UserFollowedEditorialCommunityEvent | UserUnfollowedEditorialCommunityEvent => (
+    isUserFollowedEditorialCommunityEvent(event) || isUserUnfollowedEditorialCommunityEvent(event)
+  )),
+  RA.filter((event) => event.userId === userId),
+  RA.map((event) => event.editorialCommunityId),
+  RA.uniq(eqEditorialCommunityId),
+);
 
-export const createProjectFollowedEditorialCommunityIds = (
+export const projectFollowedEditorialCommunityIds = (
   getAllEvents: GetAllEvents,
 ): GetFollowedEditorialCommunityIds => (
-  (userId) => (
-    pipe(
-      getAllEvents,
-      T.map(projectFollowedCommunities(userId)),
-      T.map((communities) => communities.map((id: string) => new EditorialCommunityId(id))),
-    )
+  (userId) => pipe(
+    getAllEvents,
+    T.map(projectFollowedCommunities(userId)),
   )
 );

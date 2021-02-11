@@ -11,7 +11,7 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { RenderPageError } from '../types/render-page-error';
 import { UserId } from '../types/user-id';
 
-export type Page = {
+type Page = {
   title: string,
   content: HtmlFragment,
 };

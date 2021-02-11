@@ -1,6 +1,8 @@
+import * as O from 'fp-ts/Option';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, pipe } from 'fp-ts/function';
+import { constant, flow, pipe } from 'fp-ts/function';
 import { RenderSearchResult, SearchResult } from './render-search-result';
 import { templateListItems } from '../shared-components/list-items';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -17,17 +19,19 @@ type SearchResults = {
   total: number,
 };
 
-const renderListIfNecessary = (articles: ReadonlyArray<HtmlFragment>): string => {
-  if (articles.length === 0) {
-    return '';
-  }
+type RenderListIfNecessary = (articles: ReadonlyArray<HtmlFragment>) => string;
 
-  return `
+const renderListIfNecessary: RenderListIfNecessary = flow(
+  RNEA.fromReadonlyArray,
+  O.fold(
+    constant(''),
+    (articles) => `
       <ul class="search-results-list" role="list">
         ${templateListItems(articles, 'search-results-list__item')}
       </ul>
-    `;
-};
+    `,
+  ),
+);
 
 const renderSearchResults = (renderSearchResult: RenderSearchResult) => (searchResults: SearchResults) => (
   pipe(

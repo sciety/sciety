@@ -27,7 +27,6 @@ import {
 import { responseCache } from './response-cache';
 import { createSearchEuropePmc } from './search-europe-pmc';
 import { bootstrapEditorialCommunities } from '../data/bootstrap-editorial-communities';
-import { isEditorialCommunityReviewedArticleEvent } from '../types/domain-events';
 import { EditorialCommunityRepository } from '../types/editorial-community-repository';
 import { Json } from '../types/json';
 
@@ -97,7 +96,7 @@ export const createInfrastructure = async (): Promise<Adapters> => {
     editorialCommunities,
     getEditorialCommunity: editorialCommunities.lookup,
     getAllEditorialCommunities: editorialCommunities.all,
-    findReviewsForArticleDoi: findReviewsForArticleDoi(events.filter(isEditorialCommunityReviewedArticleEvent)),
+    findReviewsForArticleDoi: findReviewsForArticleDoi(getAllEvents),
     getAllEvents,
     logger,
     commitEvents: createCommitEvents(events, pool, logger),

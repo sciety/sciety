@@ -7,14 +7,14 @@ import {
   EditorialCommunityReviewedArticleEvent,
   isEditorialCommunityReviewedArticleEvent,
 } from '../types/domain-events';
-import { EditorialCommunityId } from '../types/editorial-community-id';
+import { EditorialCommunityId, eqEditorialCommunityId } from '../types/editorial-community-id';
 
 type FeedEvent =
   EditorialCommunityReviewedArticleEvent;
 
 const wasCreatedBy = (editorialCommunityId: EditorialCommunityId) => (event: DomainEvent): event is FeedEvent => (
   (isEditorialCommunityReviewedArticleEvent(event)
-    && event.editorialCommunityId.value === editorialCommunityId.value)
+    && eqEditorialCommunityId.equals(event.editorialCommunityId, editorialCommunityId))
 );
 
 export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;

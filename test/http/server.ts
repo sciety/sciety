@@ -60,7 +60,7 @@ export const createTestServer = async (): Promise<TestServer> => {
     editorialCommunities,
     getEditorialCommunity: editorialCommunities.lookup,
     getAllEditorialCommunities: async () => [],
-    findReviewsForArticleDoi: findReviewsForArticleDoi([]),
+    findReviewsForArticleDoi: findReviewsForArticleDoi(T.of([])),
     getAllEvents: T.of([]),
     commitEvents: () => T.of(undefined),
     logger: dummyLogger,

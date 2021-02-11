@@ -1,9 +1,13 @@
 import { URLSearchParams } from 'url';
+import * as E from 'fp-ts/Either';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { constant, flow, pipe } from 'fp-ts/function';
+import * as t from 'io-ts';
+import { DateFromISOString } from 'io-ts-types/DateFromISOString';
 import { Logger } from './logger';
 import { Doi } from '../types/doi';
-import { Json, JsonCompatible } from '../types/json';
+import { Json } from '../types/json';
 
 export type GetJson = (uri: string) => Promise<Json>;
 
@@ -21,17 +25,21 @@ type SearchResults = {
 
 export type SearchEuropePmc = (query: string) => TE.TaskEither<'unavailable', SearchResults>;
 
-type EuropePmcQueryResponse = JsonCompatible<{
-  hitCount: number,
-  resultList: {
-    result: Array<{
-      doi: string,
-      title: string,
-      authorString: string,
-      firstPublicationDate: string,
-    }>,
-  },
-}>;
+const resultDetails = t.type({
+  doi: t.string,
+  title: t.string,
+  authorString: t.string,
+  firstPublicationDate: DateFromISOString,
+});
+
+const europePmcResponse = t.type({
+  hitCount: t.number,
+  resultList: t.type({
+    result: t.array(resultDetails),
+  }),
+});
+
+type EuropePmcResponse = t.TypeOf<typeof europePmcResponse>;
 
 const constructQueryParams = (query: string): URLSearchParams => (
   new URLSearchParams({
@@ -42,44 +50,48 @@ const constructQueryParams = (query: string): URLSearchParams => (
 
 const constructSearchUrl = (queryParams: URLSearchParams): string => `https://www.ebi.ac.uk/europepmc/webservices/rest/search?${queryParams.toString()}`;
 
-const logError = (logger: Logger) => (error: unknown): 'unavailable' => {
-  logger('error', 'Failed to search Europe PMC', { error });
-  return 'unavailable';
+const constructSearchResults = (data: EuropePmcResponse): SearchResults => {
+  const items = data.resultList.result.map((item): SearchResult => ({
+    doi: new Doi(item.doi),
+    title: item.title,
+    authors: item.authorString,
+    postedDate: new Date(item.firstPublicationDate),
+  }));
+  return {
+    items,
+    total: data.hitCount,
+  };
 };
 
-const search = async (getJson: GetJson, query: string): Promise<Json> => (
-  pipe(
-    query,
-    constructQueryParams,
-    constructSearchUrl,
-    getJson,
-  )
+type GetFromUrl = <A>(codec: t.Decoder<Json, A>) => (url: string) => TE.TaskEither<'not-found' | 'unavailable', A>;
+
+const getFromUrl = (getJson: GetJson, logger: Logger): GetFromUrl => (codec) => (url) => pipe(
+  TE.tryCatch(async () => getJson(url), E.toError),
+  TE.mapLeft(
+    (error): 'unavailable' => {
+      // TODO recognise not-found somehow
+      logger('error', 'Could not fetch', { error, url });
+      return 'unavailable';
+    },
+  ),
+  T.map(flow(
+    E.chainW(codec.decode),
+    E.mapLeft(
+      (error): 'unavailable' => {
+        logger('error', 'Could not parse response', { error, url });
+        return 'unavailable';
+      },
+    ),
+  )),
 );
 
-const constructSearchResults = (json: Json): TE.TaskEither<'unavailable', SearchResults> => {
-  try {
-    const data = json as EuropePmcQueryResponse;
-    const items = data.resultList.result.map((item): SearchResult => ({
-      doi: new Doi(item.doi),
-      title: item.title,
-      authors: item.authorString,
-      postedDate: new Date(item.firstPublicationDate),
-    }));
-
-    return TE.right({
-      items,
-      total: data.hitCount,
-    });
-  } catch (error: unknown) {
-    return TE.left('unavailable');
-  }
-};
-
-export const createSearchEuropePmc = (getJson: GetJson, logger: Logger): SearchEuropePmc => (
-  (query) => (
-    pipe(
-      TE.tryCatch(async () => search(getJson, query), logError(logger)),
-      TE.chain(constructSearchResults),
-    )
-  )
+export const createSearchEuropePmc = (getJson: GetJson, logger: Logger): SearchEuropePmc => (query) => pipe(
+  query,
+  constructQueryParams,
+  constructSearchUrl,
+  getFromUrl(getJson, logger)(europePmcResponse),
+  TE.bimap(
+    constant('unavailable'),
+    constructSearchResults,
+  ),
 );

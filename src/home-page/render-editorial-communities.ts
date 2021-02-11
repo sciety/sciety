@@ -1,6 +1,7 @@
 import * as O from 'fp-ts/Option';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
-import { pipe } from 'fp-ts/function';
+import { constant, pipe } from 'fp-ts/function';
 import { Community, RenderEditorialCommunity } from './render-editorial-community';
 import { templateListItems } from '../shared-components/list-items';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -8,9 +9,10 @@ import { UserId } from '../types/user-id';
 
 type RenderEditorialCommunities = (userId: O.Option<UserId>) => T.Task<HtmlFragment>;
 
-export type GetAllEditorialCommunities = T.Task<Array<Community>>;
+// TODO Make a ReadonlyNonEmptyArray
+export type GetAllEditorialCommunities = T.Task<ReadonlyArray<Community>>;
 
-const render = (links: ReadonlyArray<HtmlFragment>): string => `
+const render = (links: RNEA.ReadonlyNonEmptyArray<HtmlFragment>): string => `
   <section>
     <h2>
       Editorial communities
@@ -28,7 +30,8 @@ export const createRenderEditorialCommunities = (
   pipe(
     editorialCommunities,
     T.chain(T.traverseArray(renderEditorialCommunity(userId))),
-    T.map(render),
+    T.map(RNEA.fromReadonlyArray),
+    T.map(O.fold(constant(''), render)),
     T.map(toHtmlFragment),
   )
 );

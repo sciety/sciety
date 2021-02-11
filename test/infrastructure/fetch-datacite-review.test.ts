@@ -1,7 +1,7 @@
 import { literal } from '@rdfjs/data-model';
 import { schema } from '@tpluscode/rdf-ns-builders';
 import clownface from 'clownface';
-import * as O from 'fp-ts/Option';
+import * as E from 'fp-ts/Either';
 import datasetFactory from 'rdf-dataset-indexed';
 import { createFetchDataciteReview } from '../../src/infrastructure/fetch-datacite-review';
 import { FetchDataset, FetchDatasetError } from '../../src/infrastructure/fetch-dataset';
@@ -21,33 +21,33 @@ describe('fetch-datacite-review', () => {
       const fetchReview = createFetchDataciteReview(fetchDataset, dummyLogger);
       const review = await fetchReview(reviewDoi)();
 
-      expect(review).toMatchObject({
-        fullText: O.some('The full text'),
-      });
+      expect(review).toMatchObject(E.right({
+        fullText: 'The full text',
+      }));
     });
   });
 
   describe('when the review has no description', () => {
-    it('returns the review without a full text', async () => {
+    it('returns unavailable', async () => {
       const fetchDataset: FetchDataset = async (iri) => (
         clownface({ dataset: datasetFactory(), term: iri })
       );
       const fetchReview = createFetchDataciteReview(fetchDataset, dummyLogger);
       const review = await fetchReview(reviewDoi)();
 
-      expect(review.fullText).toBe(O.none);
+      expect(review).toStrictEqual(E.left('unavailable'));
     });
   });
 
   describe('when Datacite is unreachable', () => {
-    it('returns a review with the URL', async () => {
+    it('returns unavailable', async () => {
       const fetchDataset: FetchDataset = async () => {
         throw new FetchDatasetError('Something went wrong.');
       };
       const fetchReview = createFetchDataciteReview(fetchDataset, dummyLogger);
       const review = await fetchReview(reviewDoi)();
 
-      expect(review).toHaveProperty('url');
+      expect(review).toStrictEqual(E.left('unavailable'));
     });
   });
 });

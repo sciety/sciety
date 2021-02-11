@@ -11,8 +11,7 @@ export const createHandleArticleVersionErrors = (
     getFeedItems(doi, server),
     T.map(
       E.fromPredicate(
-        // TODO: use RA.some
-        (array) => array.some((feedItem) => feedItem.type === 'article-version'),
+        RA.some((feedItem) => feedItem.type === 'article-version'),
         (array) => RA.snoc(array, { type: 'article-version-error', server }),
       ),
     ),

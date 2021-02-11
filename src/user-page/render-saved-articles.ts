@@ -1,5 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { templateListItems } from '../shared-components/list-items';
 import { Doi } from '../types/doi';
@@ -25,7 +26,7 @@ const renderAsLink: RenderAsLink = flow(
 
 export const renderSavedArticles: RenderSavedArticles = flow(
   RA.map(renderAsLink),
-  O.fromPredicate((items) => items.length > 0),
+  RNEA.fromReadonlyArray,
   O.map((items) => templateListItems(items, 'saved-articles__item')),
   O.fold(
     () => '',

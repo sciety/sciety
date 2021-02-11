@@ -1,5 +1,6 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, pipe } from 'fp-ts/function';
@@ -41,8 +42,9 @@ export const createRenderFeed = (
 
   return (doi, server, userId) => pipe(
     getFeedItems(doi, server),
-    T.map(E.fromPredicate((items) => items.length > 0, constant('no-content' as const))),
-    TE.chainW(TE.traverseArray((feedItem) => pipe(renderFeedItem(feedItem, userId), TE.rightTask))),
+    T.chain(T.traverseArray((feedItem) => renderFeedItem(feedItem, userId))),
+    T.map(RNEA.fromReadonlyArray),
+    T.map(E.fromOption(constant('no-content' as const))),
     TE.map((items) => `
       <section class="article-feed">
         <h2>Feed</h2>

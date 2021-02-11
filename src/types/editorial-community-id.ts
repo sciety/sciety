@@ -1,3 +1,5 @@
+import * as Eq from 'fp-ts/Eq';
+
 export class EditorialCommunityId {
   readonly value: string;
 
@@ -9,3 +11,5 @@ export class EditorialCommunityId {
     return this.value;
   }
 }
+
+export const eqEditorialCommunityId = Eq.contramap((id: EditorialCommunityId) => id.value)(Eq.eqString);

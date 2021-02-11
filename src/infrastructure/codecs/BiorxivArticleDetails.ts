@@ -1,9 +1,9 @@
 import * as t from 'io-ts';
-import { DateFromString } from './DateFromString';
-import { NumberFromString } from './NumberFromString';
+import { DateFromISOString } from 'io-ts-types/DateFromISOString';
+import { NumberFromString } from 'io-ts-types/NumberFromString';
 
 const biorxivArticleVersion = t.type({
-  date: DateFromString,
+  date: DateFromISOString,
   version: NumberFromString,
 });
 

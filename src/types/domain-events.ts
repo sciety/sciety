@@ -23,9 +23,10 @@ export const editorialCommunityReviewedArticle = (
   editorialCommunityId: EditorialCommunityId,
   doi: Doi,
   reviewId: ReviewId,
+  date: Date = new Date(),
 ): EditorialCommunityReviewedArticleEvent => ({
   type: 'EditorialCommunityReviewedArticle',
-  date: new Date(),
+  date,
   editorialCommunityId,
   articleId: doi,
   reviewId,
