@@ -8,8 +8,8 @@ import { getUserDisplayName } from './get-user-display-name';
 import { GetAllEvents, projectFollowedEditorialCommunityIds } from './project-followed-editorial-community-ids';
 import { projectSavedArticleDois } from './project-saved-article-dois';
 import { renderFollowList } from './render-follow-list';
-import { Follows, renderFollowToggle } from './render-follow-toggle';
-import { renderFollowedEditorialCommunity } from './render-followed-editorial-community';
+import { renderFollowToggle } from './render-follow-toggle';
+import { Follows, renderFollowedEditorialCommunity } from './render-followed-editorial-community';
 import { renderHeader, UserDetails } from './render-header';
 import { renderPage, RenderPage } from './render-page';
 import { renderSavedArticles } from './render-saved-articles';
@@ -64,7 +64,7 @@ export const userPage = (ports: Ports): UserPage => {
       renderHeader(ports.getUserDetails),
       renderFollowList(
         getFollowedEditorialCommunities,
-        renderFollowedEditorialCommunity(renderFollowToggle(ports.follows)),
+        renderFollowedEditorialCommunity(renderFollowToggle, ports.follows),
       ),
       getUserDisplayName(ports.getUserDetails),
       flow(

@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
@@ -15,10 +15,7 @@ export type RenderFollowedEditorialCommunity = (userId: O.Option<UserId>) => (
   community: Community,
 ) => T.Task<HtmlFragment>;
 
-type RenderFollowToggle = (
-  userId: O.Option<UserId>,
-  editorialcommunityid: EditorialCommunityId,
-) => T.Task<HtmlFragment>;
+type RenderFollowToggle = (editorialcommunityid: EditorialCommunityId) => (isFollowing: boolean) => HtmlFragment;
 
 const render = (community: Community) => (toggle: HtmlFragment): string => `
   <img class="followed-communities__item_avatar" src="${community.avatarPath}" alt="">
@@ -26,10 +23,20 @@ const render = (community: Community) => (toggle: HtmlFragment): string => `
   ${toggle}
 `;
 
+export type Follows = (userId: UserId, editorialCommunityId: EditorialCommunityId) => T.Task<boolean>;
+
 export const renderFollowedEditorialCommunity = (
   renderFollowToggle: RenderFollowToggle,
+  follows: Follows,
 ): RenderFollowedEditorialCommunity => (userId) => (community) => pipe(
-  renderFollowToggle(userId, community.id),
-  T.map(render(community)),
-  T.map(toHtmlFragment),
+  userId,
+  O.fold(
+    () => T.of(false),
+    (u: UserId) => follows(u, community.id),
+  ),
+  T.map(flow(
+    renderFollowToggle(community.id),
+    render(community),
+    toHtmlFragment,
+  )),
 );
