@@ -11,7 +11,7 @@ type Community = {
   avatarPath: string,
 };
 
-export type RenderFollowedEditorialCommunity = (userId: O.Option<UserId>) => (
+type RenderFollowedEditorialCommunity = (userId: O.Option<UserId>) => (
   community: Community,
 ) => T.Task<HtmlFragment>;
 

@@ -44,12 +44,6 @@ type Params = {
 type UserPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
 export const userPage = (ports: Ports): UserPage => {
-  const getFollowedEditorialCommunities = flow(
-    projectFollowedEditorialCommunityIds(ports.getAllEvents),
-    T.chain(T.traverseArray(ports.getEditorialCommunity)),
-    T.map(RA.compact),
-  );
-
   const getTitle = flow(
     ports.fetchArticle,
     T.map(O.fromEither),
@@ -70,10 +64,15 @@ export const userPage = (ports: Ports): UserPage => {
           userDetails,
           TE.map(renderHeader),
         ),
-        followList: renderFollowList(
-          getFollowedEditorialCommunities,
-          renderFollowedEditorialCommunity(renderFollowToggle, ports.follows),
-        )(userId, viewingUserId),
+        followList: pipe(
+          userId,
+          projectFollowedEditorialCommunityIds(ports.getAllEvents),
+          T.chain(T.traverseArray(ports.getEditorialCommunity)),
+          T.map(RA.compact),
+          T.chain(T.traverseArray(renderFollowedEditorialCommunity(renderFollowToggle, ports.follows)(viewingUserId))),
+          T.map(renderFollowList),
+          TE.rightTask,
+        ),
         savedArticlesList: pipe(
           userId,
           projectSavedArticleDois(ports.getAllEvents),
