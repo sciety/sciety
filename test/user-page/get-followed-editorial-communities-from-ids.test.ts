@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 import { toUserId } from '../../src/types/user-id';
-import { createGetFollowedEditorialCommunitiesFromIds, GetEditorialCommunity, GetFollowedEditorialCommunityIds } from '../../src/user-page/get-followed-editorial-communities-from-ids';
+import { GetEditorialCommunity, getFollowedEditorialCommunitiesFromIds, GetFollowedEditorialCommunityIds } from '../../src/user-page/get-followed-editorial-communities-from-ids';
 
 describe('get-followed-editorial-communities-from-ids adapter', () => {
   it('provides a list of communities', async () => {
@@ -16,7 +16,7 @@ describe('get-followed-editorial-communities-from-ids adapter', () => {
       name: 'Name',
       avatarPath: '/avatar.png',
     }));
-    const adapter = createGetFollowedEditorialCommunitiesFromIds(
+    const adapter = getFollowedEditorialCommunitiesFromIds(
       getFollowedEditorialCommunityIds,
       getEditorialCommunity,
     );

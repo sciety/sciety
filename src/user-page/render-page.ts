@@ -39,7 +39,7 @@ const template = (
 
 type GetUserDisplayName = (userId: UserId) => TE.TaskEither<'not-found' | 'unavailable', string>;
 
-export const createRenderPage = (
+export const renderPage = (
   renderHeader: Component,
   renderFollowList: Component,
   getUserDisplayName: GetUserDisplayName,

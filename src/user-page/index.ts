@@ -3,15 +3,15 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { fetchSavedArticles } from './fetch-saved-articles';
-import { createGetFollowedEditorialCommunitiesFromIds, GetEditorialCommunity } from './get-followed-editorial-communities-from-ids';
+import { GetEditorialCommunity, getFollowedEditorialCommunitiesFromIds } from './get-followed-editorial-communities-from-ids';
 import { getUserDisplayName } from './get-user-display-name';
-import { createProjectFollowedEditorialCommunityIds, GetAllEvents } from './project-followed-editorial-community-ids';
+import { GetAllEvents, projectFollowedEditorialCommunityIds } from './project-followed-editorial-community-ids';
 import { projectSavedArticleDois } from './project-saved-article-dois';
-import { createRenderFollowList } from './render-follow-list';
+import { renderFollowList } from './render-follow-list';
 import { Follows, renderFollowToggle } from './render-follow-toggle';
-import { createRenderFollowedEditorialCommunity } from './render-followed-editorial-community';
-import { createRenderHeader, UserDetails } from './render-header';
-import { createRenderPage, RenderPage } from './render-page';
+import { renderFollowedEditorialCommunity } from './render-followed-editorial-community';
+import { renderHeader, UserDetails } from './render-header';
+import { renderPage, RenderPage } from './render-page';
 import { renderSavedArticles } from './render-saved-articles';
 import { Doi } from '../types/doi';
 import { EditorialCommunityId } from '../types/editorial-community-id';
@@ -48,31 +48,9 @@ export const userPage = (ports: Ports): UserPage => {
     ports.getEditorialCommunity,
   );
 
-  const renderFollowedEditorialCommunity = createRenderFollowedEditorialCommunity(renderFollowToggle(ports.follows));
-  const getFollowedEditorialCommunities = createGetFollowedEditorialCommunitiesFromIds(
-    createProjectFollowedEditorialCommunityIds(ports.getAllEvents),
+  const getFollowedEditorialCommunities = getFollowedEditorialCommunitiesFromIds(
+    projectFollowedEditorialCommunityIds(ports.getAllEvents),
     getEditorialCommunity,
-  );
-  const renderHeader = createRenderHeader(ports.getUserDetails);
-  const renderFollowList = createRenderFollowList(
-    getFollowedEditorialCommunities,
-    renderFollowedEditorialCommunity,
-  );
-
-  const renderPage = createRenderPage(
-    renderHeader,
-    renderFollowList,
-    getUserDisplayName(ports.getUserDetails),
-    flow(
-      projectSavedArticleDois(ports.getAllEvents),
-      T.chain(fetchSavedArticles(flow(
-        ports.fetchArticle,
-        T.map(O.fromEither),
-        T.map(O.map((article) => article.title)),
-      ))),
-      T.map(renderSavedArticles),
-      TE.rightTask,
-    ),
   );
 
   return (params) => {
@@ -82,6 +60,23 @@ export const userPage = (ports: Ports): UserPage => {
       O.map((user) => user.id),
     );
 
-    return renderPage(userId, viewingUserId);
+    return renderPage(
+      renderHeader(ports.getUserDetails),
+      renderFollowList(
+        getFollowedEditorialCommunities,
+        renderFollowedEditorialCommunity(renderFollowToggle(ports.follows)),
+      ),
+      getUserDisplayName(ports.getUserDetails),
+      flow(
+        projectSavedArticleDois(ports.getAllEvents),
+        T.chain(fetchSavedArticles(flow(
+          ports.fetchArticle,
+          T.map(O.fromEither),
+          T.map(O.map((article) => article.title)),
+        ))),
+        T.map(renderSavedArticles),
+        TE.rightTask,
+      ),
+    )(userId, viewingUserId);
   };
 };
