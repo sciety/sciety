@@ -14,7 +14,7 @@ export type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId)
   avatarPath: string,
 }>>;
 
-export const createGetFollowedEditorialCommunitiesFromIds = (
+export const getFollowedEditorialCommunitiesFromIds = (
   getFollowedEditorialCommunityIds: GetFollowedEditorialCommunityIds,
   getEditorialCommunity: GetEditorialCommunity,
 ): GetFollowedEditorialCommunities => (userId) => (

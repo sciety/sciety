@@ -24,7 +24,7 @@ const projectFollowedCommunities = (userId: UserId) => (events: ReadonlyArray<Do
   RA.uniq(eqEditorialCommunityId),
 );
 
-export const createProjectFollowedEditorialCommunityIds = (
+export const projectFollowedEditorialCommunityIds = (
   getAllEvents: GetAllEvents,
 ): GetFollowedEditorialCommunityIds => (
   (userId) => pipe(

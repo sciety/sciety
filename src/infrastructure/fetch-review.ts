@@ -3,14 +3,17 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { identity, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import { FetchDataciteReview } from './fetch-datacite-review';
 import { FetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
-import { Review } from './review';
 import { Doi } from '../types/doi';
+import { HtmlFragment } from '../types/html-fragment';
 import { ReviewId } from '../types/review-id';
 
-export type FetchReview = (id: ReviewId) => T.Task<Review>;
+export type FetchReview = (id: ReviewId) => TE.TaskEither<'unavailable' | 'not-found', {
+  fullText: HtmlFragment,
+  url: URL,
+}>;
 
 export const createFetchReview = (
   fetchDataciteReview: FetchDataciteReview,
@@ -18,24 +21,22 @@ export const createFetchReview = (
 ): FetchReview => (
   (id) => {
     if (id instanceof Doi) {
-      const reviewUrl = `https://doi.org/${id.value}`;
-      return pipe(
-        id,
-        fetchDataciteReview,
-        TE.bimap(
-          () => ({
-            url: new URL(reviewUrl),
-            fullText: O.none,
-          }),
-          (review) => ({
-            ...review,
-            fullText: O.some(review.fullText),
-          }),
-        ),
-        T.map(E.fold(identity, identity)),
-      );
+      return fetchDataciteReview(id);
     }
 
-    return fetchHypothesisAnnotation(id);
+    return pipe(
+      id,
+      fetchHypothesisAnnotation,
+      T.map((review) => pipe(
+        review.fullText,
+        O.fold(
+          () => E.left('unavailable' as const),
+          (fullText) => E.right({
+            ...review,
+            fullText,
+          }),
+        ),
+      )),
+    );
   }
 );

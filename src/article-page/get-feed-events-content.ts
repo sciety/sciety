@@ -1,8 +1,10 @@
 import { URL } from 'url';
 import { sequenceS } from 'fp-ts/Apply';
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { FeedItem, GetFeedItems } from './render-feed';
 import { ArticleServer } from '../types/article-server';
@@ -30,8 +32,8 @@ export type FeedEvent = ReviewEvent | ArticleVersionEvent;
 
 export type Feed = (articleDoi: Doi) => T.Task<ReadonlyArray<FeedEvent>>;
 
-export type GetReview = (id: ReviewId) => T.Task<{
-  fullText: O.Option<HtmlFragment>,
+export type GetReview = (id: ReviewId) => TE.TaskEither<unknown, {
+  fullText: HtmlFragment,
   url: URL,
 }>;
 
@@ -47,6 +49,14 @@ const articleVersionToFeedItem = (
   T.of(O.some({ ...feedEvent, server }))
 );
 
+const fallbackUrl = (reviewId: ReviewId): URL => {
+  if (reviewId instanceof Doi) {
+    return new URL(`https://doi.org/${reviewId.value}`);
+  }
+
+  return new URL(`https://hypothes.is/a/${reviewId.value}`);
+};
+
 const reviewToFeedItem = (
   getReview: GetReview,
   getEditorialCommunity: GetEditorialCommunity,
@@ -54,13 +64,26 @@ const reviewToFeedItem = (
 ): T.Task<O.Option<FeedItem>> => pipe(
   {
     editorialCommunity: getEditorialCommunity(feedEvent.editorialCommunityId),
-    review: getReview(feedEvent.reviewId),
+    review: pipe(
+      feedEvent.reviewId,
+      getReview,
+      T.map(E.fold(
+        () => ({
+          url: fallbackUrl(feedEvent.reviewId),
+          fullText: O.none,
+        }),
+        (review) => ({
+          ...review,
+          fullText: O.some(review.fullText),
+        }),
+      )),
+    ),
   },
   sequenceS(T.task),
   T.map(({ editorialCommunity, review }) => O.some({
     type: 'review',
     id: feedEvent.reviewId,
-    source: review.url,
+    source: O.some(review.url),
     occurredAt: feedEvent.occurredAt,
     editorialCommunityId: feedEvent.editorialCommunityId,
     editorialCommunityName: editorialCommunity.name,

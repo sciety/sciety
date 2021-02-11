@@ -30,7 +30,7 @@ describe('render-feed', () => {
           {
             type: 'review',
             id: new Doi('10.1111/12345678'),
-            source: new URL('http://example.com'),
+            source: O.some(new URL('http://example.com')),
             occurredAt: new Date(),
             editorialCommunityId: new EditorialCommunityId(''),
             editorialCommunityName: '',
