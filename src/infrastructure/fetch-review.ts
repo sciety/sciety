@@ -8,6 +8,8 @@ import { FetchDataciteReview, hardcodedNCRCReview } from './fetch-datacite-revie
 import { FetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
 import { Doi } from '../types/doi';
 import { HtmlFragment } from '../types/html-fragment';
+import { HypothesisAnnotationId } from '../types/hypothesis-annotation-id';
+import { NcrcId } from '../types/ncrc-id';
 import { ReviewId } from '../types/review-id';
 
 export type FetchReview = (id: ReviewId | NcrcId) => TE.TaskEither<'unavailable' | 'not-found', {
@@ -24,26 +26,26 @@ export const createFetchReview = (
       return fetchDataciteReview(id);
     }
 
-    if (id === '0c88338d-a401-40f9-8bf8-ef0a43be4548') {
-      return TE.right({
-        url: new URL('https://ncrc.jhsph.edu/research/robust-spike-antibody-responses-and-increased-reactogenicity-in-seropositive-individuals-after-a-single-dose-of-sars-cov-2-mrna-vaccine/'),
-        fullText: hardcodedNCRCReview,
-      });
+    if (id instanceof HypothesisAnnotationId) {
+      return pipe(
+        id,
+        fetchHypothesisAnnotation,
+        T.map((review) => pipe(
+          review.fullText,
+          O.fold(
+            () => E.left('unavailable' as const),
+            (fullText) => E.right({
+              ...review,
+              fullText,
+            }),
+          ),
+        )),
+      );
     }
 
-    return pipe(
-      id,
-      fetchHypothesisAnnotation,
-      T.map((review) => pipe(
-        review.fullText,
-        O.fold(
-          () => E.left('unavailable' as const),
-          (fullText) => E.right({
-            ...review,
-            fullText,
-          }),
-        ),
-      )),
-    );
+    return TE.right({
+      url: new URL('https://ncrc.jhsph.edu/research/robust-spike-antibody-responses-and-increased-reactogenicity-in-seropositive-individuals-after-a-single-dose-of-sars-cov-2-mrna-vaccine/'),
+      fullText: hardcodedNCRCReview,
+    });
   }
 );
