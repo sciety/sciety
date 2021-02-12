@@ -14,7 +14,7 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 export type FetchDataciteReview = (doi: Doi) => TE.TaskEither<'unavailable' | 'not-found', FoundReview>;
 
-const hardcodedNCRCReview = toHtmlFragment(`
+export const hardcodedNCRCReview = toHtmlFragment(`
   <h3>Our take</h3>
   <p>
     This study provides convincing rationale to explore administering only one dose of mRNA vaccine to individuals who possess pre-existing SARS-CoV-2 immunity from previous infection. Antibody testing could be performed prior to vaccination for individuals whose infection history is unknown. This strategy could free up a vast number of vaccine doses, as well as limit discomfort from reactogenicity in those who have pre-existing immunity.
