@@ -1,7 +1,4 @@
-import * as TE from 'fp-ts/TaskEither';
-import { flow } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-import { UserId } from '../types/user-id';
 
 export type UserDetails = {
   avatarUrl: string,
@@ -9,11 +6,7 @@ export type UserDetails = {
   handle: string,
 };
 
-type GetUserDetails<E> = (userId: UserId) => TE.TaskEither<E, UserDetails>;
-
-type RenderHeader<E> = (userId: UserId) => TE.TaskEither<E, HtmlFragment>;
-
-const headerTemplate = (ud: UserDetails): string => `
+export const renderHeader = (ud: UserDetails): HtmlFragment => toHtmlFragment(`
   <header class="page-header page-header--user">
     <img src="${ud.avatarUrl}" alt="" class="page-header__avatar">
     <h1>
@@ -23,10 +16,4 @@ const headerTemplate = (ud: UserDetails): string => `
       </div>
     </h1>
   </header>
-`;
-
-export const renderHeader = <E>(getUserDetails: GetUserDetails<E>): RenderHeader<E> => flow(
-  getUserDetails,
-  TE.map(headerTemplate),
-  TE.map(toHtmlFragment),
-);
+`);
