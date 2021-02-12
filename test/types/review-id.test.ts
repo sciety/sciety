@@ -10,8 +10,7 @@ describe('review-id', () => {
       const serialization = reviewId.toString();
       const deserialized = toReviewId(serialization);
 
-      expect(deserialized).toBeInstanceOf(Doi);
-      expect(deserialized.value).toBe(doiValue);
+      expect(deserialized).toStrictEqual(reviewId);
     });
   });
 
@@ -22,8 +21,7 @@ describe('review-id', () => {
       const serialization = reviewId.toString();
       const deserialized = toReviewId(serialization);
 
-      expect(deserialized).toBeInstanceOf(HypothesisAnnotationId);
-      expect(deserialized.value).toBe(hypothesisValue);
+      expect(deserialized).toStrictEqual(reviewId);
     });
   });
 });
