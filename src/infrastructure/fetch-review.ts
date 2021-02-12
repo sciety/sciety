@@ -9,10 +9,9 @@ import { FetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
 import { Doi } from '../types/doi';
 import { HtmlFragment } from '../types/html-fragment';
 import { HypothesisAnnotationId } from '../types/hypothesis-annotation-id';
-import { NcrcId } from '../types/ncrc-id';
 import { ReviewId } from '../types/review-id';
 
-export type FetchReview = (id: ReviewId | NcrcId) => TE.TaskEither<'unavailable' | 'not-found', {
+export type FetchReview = (id: ReviewId) => TE.TaskEither<'unavailable' | 'not-found', {
   fullText: HtmlFragment,
   url: URL,
 }>;

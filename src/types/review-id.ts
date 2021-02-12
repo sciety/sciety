@@ -1,7 +1,8 @@
 import { Doi } from './doi';
 import { HypothesisAnnotationId } from './hypothesis-annotation-id';
+import { NcrcId } from './ncrc-id';
 
-export type ReviewId = Doi | HypothesisAnnotationId;
+export type ReviewId = Doi | HypothesisAnnotationId | NcrcId;
 
 export const toReviewId = (serialization: string): ReviewId => {
   const [, protocol, value] = /^(.+?):(.+)$/.exec(serialization) ?? [];

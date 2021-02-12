@@ -12,7 +12,6 @@ import { Doi } from '../types/doi';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { HtmlFragment } from '../types/html-fragment';
 import { HypothesisAnnotationId } from '../types/hypothesis-annotation-id';
-import { NcrcId } from '../types/ncrc-id';
 import { ReviewId } from '../types/review-id';
 import { sanitise } from '../types/sanitised-html-fragment';
 
@@ -51,7 +50,7 @@ const articleVersionToFeedItem = (
   T.of(O.some({ ...feedEvent, server }))
 );
 
-const inferredUrlFromReviewId = (reviewId: ReviewId | NcrcId): O.Option<URL> => {
+const inferredUrlFromReviewId = (reviewId: ReviewId): O.Option<URL> => {
   if (reviewId instanceof Doi) {
     return O.some(new URL(`https://doi.org/${reviewId.value}`));
   }
