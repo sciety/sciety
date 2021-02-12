@@ -17,10 +17,7 @@ type SavedArticle = {
 const constructSavedArticle = (getArticleTitle: GetArticleTitle) => (doi: Doi) => pipe(
   doi,
   getArticleTitle,
-  T.map((title) => ({
-    doi,
-    title,
-  })),
+  T.map((title) => ({ doi, title })),
 );
 
 type FetchSavedArticles = (articles: ReadonlyArray<Doi>) => T.Task<ReadonlyArray<SavedArticle>>;

@@ -8,6 +8,7 @@ import { catchErrors } from './catch-errors';
 import { catchStaticFileErrors } from './catch-static-file-errors';
 import { loadStaticFile } from './load-static-file';
 import { logOut } from './log-out';
+import { onlyIfNotAuthenticated } from './only-if-authenticated';
 import { pageHandler } from './page-handler';
 import { ping } from './ping';
 import { redirectBack } from './redirect-back';
@@ -115,7 +116,7 @@ export const createRouter = (adapters: Adapters): Router => {
       'Detected Twitter callback error',
       'Something went wrong, please try again.',
     ),
-    authenticate,
+    onlyIfNotAuthenticated(authenticate),
     finishFollowCommand(adapters),
     finishUnfollowCommand(adapters),
     finishRespondCommand(adapters),
