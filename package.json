@@ -64,7 +64,7 @@
     "@types/rdfjs__parser-jsonld": "^1.2.2",
     "@types/rdfjs__parser-n3": "^1.1.2",
     "@types/rdfjs__sink-map": "^1.0.0",
-    "@types/sanitize-html": "^1.27.0",
+    "@types/sanitize-html": "^1.27.1",
     "@types/supertest": "^2.0.10",
     "@types/uuid": "^8.0.1",
     "@types/xmldom": "^0.1.30",
