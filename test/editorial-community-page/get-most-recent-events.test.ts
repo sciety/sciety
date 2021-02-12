@@ -11,9 +11,9 @@ describe('get-most-recent-events', () => {
 
   it('only returns events for the given editorial community', async () => {
     const allEvents: ReadonlyArray<DomainEvent> = [
-      editorialCommunityReviewedArticle(editorialCommunity2, new Doi('10.1101/123456'), toReviewId('reviewA')),
-      editorialCommunityReviewedArticle(editorialCommunity1, new Doi('10.1101/123456'), toReviewId('reviewB')),
-      editorialCommunityReviewedArticle(editorialCommunity2, new Doi('10.1101/123456'), toReviewId('reviewC')),
+      editorialCommunityReviewedArticle(editorialCommunity2, new Doi('10.1101/123456'), toReviewId('hypothesis:reviewA')),
+      editorialCommunityReviewedArticle(editorialCommunity1, new Doi('10.1101/123456'), toReviewId('hypothesis:reviewB')),
+      editorialCommunityReviewedArticle(editorialCommunity2, new Doi('10.1101/123456'), toReviewId('hypothesis:reviewC')),
     ];
     const getAllEvents: GetAllEvents = T.of(allEvents);
     const getMostRecentEvents = createGetMostRecentEvents(getAllEvents, 20);

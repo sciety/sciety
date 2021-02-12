@@ -3,20 +3,7 @@ import csvParseSync from 'csv-parse/lib/sync';
 import { Doi } from '../types/doi';
 import { DomainEvent, editorialCommunityJoined, editorialCommunityReviewedArticle } from '../types/domain-events';
 import { EditorialCommunityId } from '../types/editorial-community-id';
-import { HypothesisAnnotationId } from '../types/hypothesis-annotation-id';
-import { ReviewId } from '../types/review-id';
-
-const unserializeReviewId = (reviewId: string): ReviewId => {
-  const [, protocol, value] = /^(.+?):(.+)$/.exec(reviewId) ?? [];
-  switch (protocol) {
-    case 'doi':
-      return new Doi(value);
-    case 'hypothesis':
-      return new HypothesisAnnotationId(value);
-    default:
-      throw new Error(`Unable to unserialize ReviewId: "${reviewId}"`);
-  }
-};
+import { toReviewId } from '../types/review-id';
 
 /* eslint-disable no-continue */
 
@@ -33,7 +20,7 @@ export const getEventsFromDataFiles = (editorialCommunityIds: ReadonlyArray<stri
       .map(([date, articleDoi, reviewId]: [string, string, string]): DomainEvent => editorialCommunityReviewedArticle(
         new EditorialCommunityId(editorialCommunityId),
         new Doi(articleDoi),
-        unserializeReviewId(reviewId),
+        toReviewId(reviewId),
         new Date(date),
       )));
   }

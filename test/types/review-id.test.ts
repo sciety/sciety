@@ -24,4 +24,12 @@ describe('review-id', () => {
       expect(deserialized).toStrictEqual(reviewId);
     });
   });
+
+  describe('when is not of a recognised format', () => {
+    it('throws', () => {
+      const unrecognisedFormat = 'foo';
+
+      expect(() => toReviewId(unrecognisedFormat)).toThrow(`Unable to unserialize ReviewId: "${unrecognisedFormat}"`);
+    });
+  });
 });
