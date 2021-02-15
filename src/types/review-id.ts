@@ -1,8 +1,8 @@
 import { Doi } from './doi';
 import { HypothesisAnnotationId } from './hypothesis-annotation-id';
-import { NcrcId } from './ncrc-id';
+import * as NcrcId from './ncrc-id';
 
-export type ReviewId = Doi | HypothesisAnnotationId | NcrcId;
+export type ReviewId = Doi | HypothesisAnnotationId | NcrcId.NcrcId;
 
 export const toReviewId = (serialization: string): ReviewId => {
   const [, protocol, value] = /^(.+?):(.+)$/.exec(serialization) ?? [];
@@ -11,6 +11,8 @@ export const toReviewId = (serialization: string): ReviewId => {
       return new Doi(value);
     case 'hypothesis':
       return new HypothesisAnnotationId(value);
+    case 'ncrc':
+      return NcrcId.fromString(value);
     default:
       throw new Error(`Unable to unserialize ReviewId: "${serialization}"`);
   }
