@@ -15,3 +15,11 @@ export const toReviewId = (serialization: string): ReviewId => {
       throw new Error(`Unable to unserialize ReviewId: "${serialization}"`);
   }
 };
+
+export const toString = (id: ReviewId): string => {
+  if (id instanceof Doi || id instanceof HypothesisAnnotationId) {
+    return id.toString();
+  }
+  // NcrcId case
+  return `ncrc:${id.value}`;
+};
