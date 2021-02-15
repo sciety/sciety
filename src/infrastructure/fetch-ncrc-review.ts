@@ -42,12 +42,18 @@ type FoundReview = {
 
 type FetchNcrcReview = (id: NcrcId.NcrcId) => TE.TaskEither<'unavailable' | 'not-found', FoundReview>;
 
-export const fetchNcrcReview: FetchNcrcReview = flow(
+type GetNcrcReview = (id: NcrcId.NcrcId) => TE.TaskEither<'unavailable' | 'not-found', unknown>;
+
+const getNcrcReview: GetNcrcReview = flow(
   TE.right,
   TE.filterOrElse(
     (id) => NcrcId.eqNcrcId.equals(id, NcrcId.fromString('0c88338d-a401-40f9-8bf8-ef0a43be4548')),
     constant('not-found' as const),
   ),
+);
+
+export const fetchNcrcReview: FetchNcrcReview = flow(
+  getNcrcReview,
   TE.map(() => ({
     url: new URL('https://ncrc.jhsph.edu/research/robust-spike-antibody-responses-and-increased-reactogenicity-in-seropositive-individuals-after-a-single-dose-of-sars-cov-2-mrna-vaccine/'),
     fullText: hardcodedNCRCReview,
