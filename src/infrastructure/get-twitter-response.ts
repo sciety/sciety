@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Logger } from './logger';
+import { Json } from '../types/json';
 
 export type TwitterResponse = {
   data?: {
@@ -15,13 +16,14 @@ export type GetTwitterResponse = (url: string) => Promise<TwitterResponse>;
 export const createGetTwitterResponse = (twitterApiBearerToken: string, logger: Logger): GetTwitterResponse => (
   async (url) => {
     const startTime = new Date();
-    const { data } = await axios.get<TwitterResponse>(
+    return axios.get<Json>(
       url,
       { headers: { Authorization: `Bearer ${twitterApiBearerToken}` } },
-    ).finally(() => {
-      const durationInMs = new Date().getTime() - startTime.getTime();
-      logger('debug', 'Response time to fetch users from Twitter', { url, durationInMs });
-    });
-    return data;
+    )
+      .then((axiosResponse) => axiosResponse.data as TwitterResponse)
+      .finally(() => {
+        const durationInMs = new Date().getTime() - startTime.getTime();
+        logger('debug', 'Response time to fetch users from Twitter', { url, durationInMs });
+      });
   }
 );
