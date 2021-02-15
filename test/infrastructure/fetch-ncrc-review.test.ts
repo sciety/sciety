@@ -14,6 +14,12 @@ describe('fetch-ncrc-review', () => {
   });
 
   describe('when the review is not found', () => {
-    it.todo('returns not-found');
+    it('returns the review', async () => {
+      const id = NcrcId.fromString('11111111-1111-1111-1111-111111111111');
+
+      const result = await fetchNcrcReview(id)();
+
+      expect(result).toStrictEqual(E.left('not-found'));
+    });
   });
 });

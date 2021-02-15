@@ -1,7 +1,8 @@
 import { URL } from 'url';
 import * as TE from 'fp-ts/TaskEither';
+import { constant, flow } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-import { NcrcId } from '../types/ncrc-id';
+import * as NcrcId from '../types/ncrc-id';
 
 const hardcodedNCRCReview = toHtmlFragment(`
   <h3>Our take</h3>
@@ -39,9 +40,16 @@ type FoundReview = {
   url: URL,
 };
 
-type FetchNcrcReview = (id: NcrcId) => TE.TaskEither<'unavailable' | 'not-found', FoundReview>;
+type FetchNcrcReview = (id: NcrcId.NcrcId) => TE.TaskEither<'unavailable' | 'not-found', FoundReview>;
 
-export const fetchNcrcReview: FetchNcrcReview = () => TE.right({
-  url: new URL('https://ncrc.jhsph.edu/research/robust-spike-antibody-responses-and-increased-reactogenicity-in-seropositive-individuals-after-a-single-dose-of-sars-cov-2-mrna-vaccine/'),
-  fullText: hardcodedNCRCReview,
-});
+export const fetchNcrcReview: FetchNcrcReview = flow(
+  TE.right,
+  TE.filterOrElse(
+    (id) => NcrcId.eqNcrcId.equals(id, NcrcId.fromString('0c88338d-a401-40f9-8bf8-ef0a43be4548')),
+    constant('not-found' as const),
+  ),
+  TE.map(() => ({
+    url: new URL('https://ncrc.jhsph.edu/research/robust-spike-antibody-responses-and-increased-reactogenicity-in-seropositive-individuals-after-a-single-dose-of-sars-cov-2-mrna-vaccine/'),
+    fullText: hardcodedNCRCReview,
+  })),
+);
