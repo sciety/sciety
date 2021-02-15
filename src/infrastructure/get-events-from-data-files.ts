@@ -3,6 +3,7 @@ import csvParseSync from 'csv-parse/lib/sync';
 import { Doi } from '../types/doi';
 import { DomainEvent, editorialCommunityJoined, editorialCommunityReviewedArticle } from '../types/domain-events';
 import { EditorialCommunityId } from '../types/editorial-community-id';
+import * as NcrcId from '../types/ncrc-id';
 import { toReviewId } from '../types/review-id';
 
 /* eslint-disable no-continue */
@@ -35,7 +36,7 @@ export const getEventsFromDataFiles = (editorialCommunityIds: ReadonlyArray<stri
     parsedEvents.push(editorialCommunityReviewedArticle(
       new EditorialCommunityId('62f9b0d0-8d43-4766-a52a-ce02af61bc6a'),
       new Doi('10.1101/2021.01.29.21250653'),
-      new Doi('10.1101/hardcoded-fake-ncrc-review-id'),
+      NcrcId.fromString('0c88338d-a401-40f9-8bf8-ef0a43be4548'),
       new Date('2021-02-04'),
     ));
   }
