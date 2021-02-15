@@ -44,7 +44,7 @@ type FoundReview = {
 
 type FetchNcrcReview = (id: NcrcId.NcrcId) => TE.TaskEither<'unavailable' | 'not-found', FoundReview>;
 
-type GetNcrcReview = (id: NcrcId.NcrcId) => TE.TaskEither<'unavailable' | 'not-found', unknown>;
+type GetNcrcReview = (id: NcrcId.NcrcId) => TE.TaskEither<'unavailable' | 'not-found', { title: string }>;
 
 const getNcrcReview: GetNcrcReview = flow(
   TE.right,
@@ -52,14 +52,15 @@ const getNcrcReview: GetNcrcReview = flow(
     (id) => NcrcId.eqNcrcId.equals(id, NcrcId.fromString('0c88338d-a401-40f9-8bf8-ef0a43be4548')),
     constant('not-found' as const),
   ),
+  TE.map(() => ({ title })),
 );
 
 const slugify = (value: string): string => value.toLowerCase().replace(/\s/g, '-');
 
 export const fetchNcrcReview: FetchNcrcReview = flow(
   getNcrcReview,
-  TE.map(() => ({
-    url: new URL(`https://ncrc.jhsph.edu/research/${slugify(title)}/`),
+  TE.map((review) => ({
+    url: new URL(`https://ncrc.jhsph.edu/research/${slugify(review.title)}/`),
     fullText: hardcodedNCRCReview,
   })),
 );
