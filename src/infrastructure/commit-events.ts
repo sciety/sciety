@@ -7,6 +7,8 @@ import { Doi } from '../types/doi';
 import { DomainEvent, RuntimeGeneratedEvent } from '../types/domain-events';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { HypothesisAnnotationId } from '../types/hypothesis-annotation-id';
+import * as NcrcId from '../types/ncrc-id';
+import * as ReviewId from '../types/review-id';
 
 // TODO: should return a TaskEither
 export type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<void>;
@@ -20,8 +22,8 @@ const replacer = (key: string, value: unknown): unknown => {
     return value.value;
   }
 
-  if (value instanceof HypothesisAnnotationId || value instanceof Doi) {
-    return value.toString();
+  if (value instanceof HypothesisAnnotationId || value instanceof Doi || NcrcId.isNrcId(value)) {
+    return ReviewId.toString(value);
   }
 
   return value;
