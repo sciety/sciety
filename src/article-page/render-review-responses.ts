@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-import { ReviewId } from '../types/review-id';
+import { ReviewId, toString } from '../types/review-id';
 import { UserId } from '../types/user-id';
 
 export type RenderReviewResponses = (reviewId: ReviewId, userId: O.Option<UserId>) => T.Task<HtmlFragment>;
@@ -39,7 +39,7 @@ export const createRenderReviewResponses = (
       <div class="responses__actions">
         <div class="responses__action">
           <form method="post" action="/respond">
-            <input type="hidden" name="reviewid" value="${reviewId.toString()}">
+            <input type="hidden" name="reviewid" value="${toString(reviewId)}">
             ${helpfulButton}
           </form>
           ${helpfulCount}
@@ -47,7 +47,7 @@ export const createRenderReviewResponses = (
         </div>
         <div class="responses__action">
           <form method="post" action="/respond">
-            <input type="hidden" name="reviewid" value="${reviewId.toString()}">
+            <input type="hidden" name="reviewid" value="${toString(reviewId)}">
             ${notHelpfulButton}
           </form>
           ${notHelpfulCount}
