@@ -4,6 +4,8 @@ import { constant, flow } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import * as NcrcId from '../types/ncrc-id';
 
+const title = 'Robust spike antibody responses and increased reactogenicity in seropositive individuals after a single dose of SARS-CoV-2 mRNA vaccine';
+
 const hardcodedNCRCReview = toHtmlFragment(`
   <h3>Our take</h3>
   <p>
@@ -52,10 +54,12 @@ const getNcrcReview: GetNcrcReview = flow(
   ),
 );
 
+const slugify = (value: string): string => value.toLowerCase().replace(/\s/g, '-');
+
 export const fetchNcrcReview: FetchNcrcReview = flow(
   getNcrcReview,
   TE.map(() => ({
-    url: new URL('https://ncrc.jhsph.edu/research/robust-spike-antibody-responses-and-increased-reactogenicity-in-seropositive-individuals-after-a-single-dose-of-sars-cov-2-mrna-vaccine/'),
+    url: new URL(`https://ncrc.jhsph.edu/research/${slugify(title)}/`),
     fullText: hardcodedNCRCReview,
   })),
 );
