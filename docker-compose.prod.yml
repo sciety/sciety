@@ -8,4 +8,4 @@ services:
       EXPERIMENT_ENABLED: "false"
     image: ${IMAGE}:${IMAGE_TAG}
     volumes:
-      - './.gcp-ncrc-key.json:/app/.gcp-ncrc-key.json'
+      - './.gcp-ncrc-key.json:/var/run/secrets/.gcp-ncrc-key.json'

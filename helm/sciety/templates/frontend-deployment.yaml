@@ -65,7 +65,7 @@ spec:
               value: {{ .Values.twitterApiBearerToken }}
           volumeMounts:
             - name: gcp-ncrc-key
-              mountPath: "/app"
+              mountPath: "/var/run/secrets"
               readOnly: true
           ports:
             - name: http

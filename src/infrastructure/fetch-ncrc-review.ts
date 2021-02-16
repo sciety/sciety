@@ -48,7 +48,7 @@ type GetNcrcReview = (id: NcrcId.NcrcId) => TE.TaskEither<'unavailable' | 'not-f
 
 const getNcrcReview: GetNcrcReview = () => async () => {
   const auth = new google.auth.GoogleAuth({
-    keyFile: '.gcp-ncrc-key.json',
+    keyFile: '/var/run/secrets/.gcp-ncrc-key.json',
     scopes: ['https://www.googleapis.com/auth/cloud-platform', 'https://www.googleapis.com/auth/spreadsheets.readonly'],
   });
 
