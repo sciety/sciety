@@ -1,10 +1,12 @@
 import { URL } from 'url';
+import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow } from 'fp-ts/function';
+import { google } from 'googleapis';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import * as NcrcId from '../types/ncrc-id';
 
-const title = 'Robust spike antibody responses and increased reactogenicity in seropositive individuals after a single dose of SARS-CoV-2 mRNA vaccine';
+const hardcodedTitle = 'Robust spike antibody responses and increased reactogenicity in seropositive individuals after a single dose of SARS-CoV-2 mRNA vaccine';
 
 const hardcodedNCRCReview = toHtmlFragment(`
   <h3>Our take</h3>
@@ -52,7 +54,30 @@ const getNcrcReview: GetNcrcReview = flow(
     (id) => NcrcId.eqNcrcId.equals(id, NcrcId.fromString('0c88338d-a401-40f9-8bf8-ef0a43be4548')),
     constant('not-found' as const),
   ),
-  TE.map(() => ({ title })),
+  TE.chain(() => async () => {
+    const auth = new google.auth.GoogleAuth({
+      keyFile: '.gcp-ncrc-key.json',
+      scopes: ['https://www.googleapis.com/auth/cloud-platform', 'https://www.googleapis.com/auth/spreadsheets.readonly'],
+    });
+
+    google.options({
+      auth,
+    });
+
+    const sheets = google.sheets('v4');
+    try {
+      const res = await sheets.spreadsheets.values.get({
+        spreadsheetId: '1RJ_Neh1wwG6X0SkYZHjD-AEC9ykgAcya_8UCVNoE3SA',
+        range: 'Sheet1!A370:AF370',
+      });
+      const rows = res?.data?.values as ReadonlyArray<ReadonlyArray<string>>;
+      const row = rows[0];
+      const title = row[2];
+      return E.right({ title });
+    } catch {
+      return E.right({ title: hardcodedTitle });
+    }
+  }),
 );
 
 const slugify = (value: string): string => value.toLowerCase().replace(/\s/g, '-');
