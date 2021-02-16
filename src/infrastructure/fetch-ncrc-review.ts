@@ -1,10 +1,10 @@
 import { URL } from 'url';
-import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
-import { constant, flow } from 'fp-ts/function';
-import { google } from 'googleapis';
+import { constant, flow, pipe } from 'fp-ts/function';
+import { google, sheets_v4 } from 'googleapis';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import * as NcrcId from '../types/ncrc-id';
+import Sheets = sheets_v4.Sheets;
 
 const hardcodedNCRCReview = toHtmlFragment(`
   <h3>Our take</h3>
@@ -51,7 +51,7 @@ type FetchNcrcReview = (id: NcrcId.NcrcId) => TE.TaskEither<'unavailable' | 'not
 
 type GetNcrcReview = (id: NcrcId.NcrcId) => TE.TaskEither<'unavailable' | 'not-found', NcrcReview>;
 
-const getNcrcReview: GetNcrcReview = () => async () => {
+const getSheets = (): Sheets => {
   const auth = new google.auth.GoogleAuth({
     keyFile: '/var/run/secrets/.gcp-ncrc-key.json',
     scopes: ['https://www.googleapis.com/auth/cloud-platform', 'https://www.googleapis.com/auth/spreadsheets.readonly'],
@@ -61,21 +61,27 @@ const getNcrcReview: GetNcrcReview = () => async () => {
     auth,
   });
 
-  const sheets = google.sheets('v4');
-  try {
-    const res = await sheets.spreadsheets.values.get({
-      spreadsheetId: '1RJ_Neh1wwG6X0SkYZHjD-AEC9ykgAcya_8UCVNoE3SA',
-      range: 'Sheet1!A370:AF370',
-    });
-    const rows = res?.data?.values as ReadonlyArray<ReadonlyArray<string>>;
-    const row = rows[0];
-    const title = row[2];
-    const ourTake = row[8];
-    return E.right({ title, ourTake });
-  } catch {
-    return E.left('unavailable');
-  }
+  return google.sheets('v4');
 };
+
+const getNcrcReview: GetNcrcReview = () => pipe(
+  getSheets(),
+  TE.right,
+  TE.chain((sheets) => TE.tryCatch(
+    async () => {
+      const res = await sheets.spreadsheets.values.get({
+        spreadsheetId: '1RJ_Neh1wwG6X0SkYZHjD-AEC9ykgAcya_8UCVNoE3SA',
+        range: 'Sheet1!A370:AF370',
+      });
+      const rows = res?.data?.values as ReadonlyArray<ReadonlyArray<string>>;
+      const row = rows[0];
+      const title = row[2];
+      const ourTake = row[8];
+      return { title, ourTake };
+    },
+    constant('unavailable'),
+  )),
+);
 
 const slugify = (value: string): string => value.toLowerCase().replace(/\s/g, '-');
 
