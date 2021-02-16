@@ -26,4 +26,29 @@ describe('project-followed-editorial-community-ids', () => {
 
     expect(actual).toStrictEqual(expected);
   });
+
+  describe('when a community is followed', () => {
+    const community1 = new EditorialCommunityId('community-1');
+
+    it('lists that community', async () => {
+      const followed = await projectFollowedEditorialCommunityIds(T.of([
+        userFollowedEditorialCommunity(toUserId('someone'), community1),
+      ]))(toUserId('someone'))();
+
+      expect(followed).toStrictEqual([community1]);
+    });
+  });
+
+  describe('when a community is unfollowed', () => {
+    const community1 = new EditorialCommunityId('community-1');
+
+    it.skip('does not list that community', async () => {
+      const followed = await projectFollowedEditorialCommunityIds(T.of([
+        userFollowedEditorialCommunity(toUserId('someone'), community1),
+        userUnfollowedEditorialCommunity(toUserId('someone'), community1),
+      ]))(toUserId('someone'))();
+
+      expect(followed).toStrictEqual([]);
+    });
+  });
 });
