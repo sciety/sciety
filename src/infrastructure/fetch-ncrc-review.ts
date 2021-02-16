@@ -1,4 +1,6 @@
 import { URL } from 'url';
+import * as E from 'fp-ts/Either';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { google, sheets_v4 } from 'googleapis';
@@ -68,19 +70,19 @@ const getNcrcReview: GetNcrcReview = () => pipe(
   getSheets(),
   TE.right,
   TE.chain((sheets) => TE.tryCatch(
-    async () => {
-      const res = await sheets.spreadsheets.values.get({
-        spreadsheetId: '1RJ_Neh1wwG6X0SkYZHjD-AEC9ykgAcya_8UCVNoE3SA',
-        range: 'Sheet1!A370:AF370',
-      });
-      const rows = res?.data?.values as ReadonlyArray<ReadonlyArray<string>>;
-      const row = rows[0];
-      const title = row[2];
-      const ourTake = row[8];
-      return { title, ourTake };
-    },
-    constant('unavailable'),
+    async () => sheets.spreadsheets.values.get({
+      spreadsheetId: '1RJ_Neh1wwG6X0SkYZHjD-AEC9ykgAcya_8UCVNoE3SA',
+      range: 'Sheet1!A370:AF370',
+    }),
+    constant('unavailable' as const),
   )),
+  T.map(E.map((res) => {
+    const rows = res?.data?.values as ReadonlyArray<ReadonlyArray<string>>;
+    const row = rows[0];
+    const title = row[2];
+    const ourTake = row[8];
+    return { title, ourTake };
+  })),
 );
 
 const slugify = (value: string): string => value.toLowerCase().replace(/\s/g, '-');
