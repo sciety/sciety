@@ -75,7 +75,7 @@ spec:
             httpGet:
               path: /ping
               port: http
-        volumes:
+      volumes:
         - name: gcp-ncrc-key
           secret:
             secretName: ncrc-sheet-key
