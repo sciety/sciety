@@ -6,8 +6,6 @@ import { google } from 'googleapis';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import * as NcrcId from '../types/ncrc-id';
 
-const hardcodedTitle = 'Robust spike antibody responses and increased reactogenicity in seropositive individuals after a single dose of SARS-CoV-2 mRNA vaccine';
-
 const hardcodedNCRCReview = toHtmlFragment(`
   <h3>Our take</h3>
   <p>
@@ -48,44 +46,44 @@ type FetchNcrcReview = (id: NcrcId.NcrcId) => TE.TaskEither<'unavailable' | 'not
 
 type GetNcrcReview = (id: NcrcId.NcrcId) => TE.TaskEither<'unavailable' | 'not-found', { title: string }>;
 
-const getNcrcReview: GetNcrcReview = flow(
+const getNcrcReview: GetNcrcReview = () => async () => {
+  const auth = new google.auth.GoogleAuth({
+    keyFile: '.gcp-ncrc-key.json',
+    scopes: ['https://www.googleapis.com/auth/cloud-platform', 'https://www.googleapis.com/auth/spreadsheets.readonly'],
+  });
+
+  google.options({
+    auth,
+  });
+
+  const sheets = google.sheets('v4');
+  try {
+    const res = await sheets.spreadsheets.values.get({
+      spreadsheetId: '1RJ_Neh1wwG6X0SkYZHjD-AEC9ykgAcya_8UCVNoE3SA',
+      range: 'Sheet1!A370:AF370',
+    });
+    const rows = res?.data?.values as ReadonlyArray<ReadonlyArray<string>>;
+    const row = rows[0];
+    const title = row[2];
+    return E.right({ title });
+  } catch {
+    return E.left('unavailable');
+  }
+};
+
+const slugify = (value: string): string => value.toLowerCase().replace(/\s/g, '-');
+
+export const constructNcrcReview = (review: {title: string}): FoundReview => ({
+  url: new URL(`https://ncrc.jhsph.edu/research/${slugify(review.title)}/`),
+  fullText: hardcodedNCRCReview,
+});
+
+export const fetchNcrcReview: FetchNcrcReview = flow(
   TE.right,
   TE.filterOrElse(
     (id) => NcrcId.eqNcrcId.equals(id, NcrcId.fromString('0c88338d-a401-40f9-8bf8-ef0a43be4548')),
     constant('not-found' as const),
   ),
-  TE.chain(() => async () => {
-    const auth = new google.auth.GoogleAuth({
-      keyFile: '.gcp-ncrc-key.json',
-      scopes: ['https://www.googleapis.com/auth/cloud-platform', 'https://www.googleapis.com/auth/spreadsheets.readonly'],
-    });
-
-    google.options({
-      auth,
-    });
-
-    const sheets = google.sheets('v4');
-    try {
-      const res = await sheets.spreadsheets.values.get({
-        spreadsheetId: '1RJ_Neh1wwG6X0SkYZHjD-AEC9ykgAcya_8UCVNoE3SA',
-        range: 'Sheet1!A370:AF370',
-      });
-      const rows = res?.data?.values as ReadonlyArray<ReadonlyArray<string>>;
-      const row = rows[0];
-      const title = row[2];
-      return E.right({ title });
-    } catch {
-      return E.right({ title: hardcodedTitle });
-    }
-  }),
-);
-
-const slugify = (value: string): string => value.toLowerCase().replace(/\s/g, '-');
-
-export const fetchNcrcReview: FetchNcrcReview = flow(
-  getNcrcReview,
-  TE.map((review) => ({
-    url: new URL(`https://ncrc.jhsph.edu/research/${slugify(review.title)}/`),
-    fullText: hardcodedNCRCReview,
-  })),
+  TE.chain(getNcrcReview),
+  TE.map(constructNcrcReview),
 );
