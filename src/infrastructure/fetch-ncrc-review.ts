@@ -80,15 +80,15 @@ const getNcrcReview: GetNcrcReview = () => pipe(
     constant('unavailable' as const),
   )),
   T.map(E.chain(flow(
-    (res) => {
-      const rows = res?.data?.values as ReadonlyArray<ReadonlyArray<string>>;
-      const row = rows[0];
-      return {
+    (res) => res?.data?.values as ReadonlyArray<ReadonlyArray<string>>,
+    RA.lookup(0),
+    O.chain(flow(
+      (row) => ({
         title: RA.lookup(2)(row),
         ourTake: RA.lookup(8)(row),
-      };
-    },
-    sequenceS(O.option),
+      }),
+      sequenceS(O.option),
+    )),
     E.fromOption(constant('unavailable' as const)),
   ))),
 );
