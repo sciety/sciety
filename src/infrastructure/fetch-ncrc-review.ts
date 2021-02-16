@@ -1,5 +1,8 @@
 import { URL } from 'url';
+import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
@@ -76,13 +79,18 @@ const getNcrcReview: GetNcrcReview = () => pipe(
     }),
     constant('unavailable' as const),
   )),
-  T.map(E.map((res) => {
-    const rows = res?.data?.values as ReadonlyArray<ReadonlyArray<string>>;
-    const row = rows[0];
-    const title = row[2];
-    const ourTake = row[8];
-    return { title, ourTake };
-  })),
+  T.map(E.chain(flow(
+    (res) => {
+      const rows = res?.data?.values as ReadonlyArray<ReadonlyArray<string>>;
+      const row = rows[0];
+      return {
+        title: RA.lookup(2)(row),
+        ourTake: RA.lookup(8)(row),
+      };
+    },
+    sequenceS(O.option),
+    E.fromOption(constant('unavailable' as const)),
+  ))),
 );
 
 const slugify = (value: string): string => value.toLowerCase().replace(/\s/g, '-');
