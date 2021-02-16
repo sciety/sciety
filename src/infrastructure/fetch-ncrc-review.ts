@@ -37,6 +37,11 @@ const hardcodedNCRCReview = toHtmlFragment(`
   </p>
 `);
 
+type NcrcReview = {
+  title: string,
+  ourTake: string,
+};
+
 type FoundReview = {
   fullText: HtmlFragment,
   url: URL,
@@ -44,7 +49,7 @@ type FoundReview = {
 
 type FetchNcrcReview = (id: NcrcId.NcrcId) => TE.TaskEither<'unavailable' | 'not-found', FoundReview>;
 
-type GetNcrcReview = (id: NcrcId.NcrcId) => TE.TaskEither<'unavailable' | 'not-found', { title: string }>;
+type GetNcrcReview = (id: NcrcId.NcrcId) => TE.TaskEither<'unavailable' | 'not-found', NcrcReview>;
 
 const getNcrcReview: GetNcrcReview = () => async () => {
   const auth = new google.auth.GoogleAuth({
@@ -65,7 +70,8 @@ const getNcrcReview: GetNcrcReview = () => async () => {
     const rows = res?.data?.values as ReadonlyArray<ReadonlyArray<string>>;
     const row = rows[0];
     const title = row[2];
-    return E.right({ title });
+    const ourTake = row[8];
+    return E.right({ title, ourTake });
   } catch {
     return E.left('unavailable');
   }
@@ -73,9 +79,11 @@ const getNcrcReview: GetNcrcReview = () => async () => {
 
 const slugify = (value: string): string => value.toLowerCase().replace(/\s/g, '-');
 
-export const constructNcrcReview = (review: {title: string}): FoundReview => ({
+const constructFullText = (): HtmlFragment => hardcodedNCRCReview;
+
+export const constructNcrcReview = (review: NcrcReview): FoundReview => ({
   url: new URL(`https://ncrc.jhsph.edu/research/${slugify(review.title)}/`),
-  fullText: hardcodedNCRCReview,
+  fullText: constructFullText(),
 });
 
 export const fetchNcrcReview: FetchNcrcReview = flow(

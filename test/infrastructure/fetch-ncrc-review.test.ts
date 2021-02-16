@@ -5,6 +5,7 @@ describe('fetch-ncrc-review', () => {
     it('builds a url from a title', () => {
       const backendReview = {
         title: 'Foo Bar',
+        ourTake: 'Pretty good',
       };
       const result = constructNcrcReview(backendReview);
 
