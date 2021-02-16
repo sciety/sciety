@@ -17,7 +17,5 @@ describe('fetch-ncrc-review', () => {
 
       expect(result.url.toString()).toStrictEqual('https://ncrc.jhsph.edu/research/foo-bar/');
     });
-
-    it.todo('hardcodes a text');
   });
 });
