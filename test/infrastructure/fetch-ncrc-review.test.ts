@@ -1,7 +1,7 @@
 import { constructFoundReview, NcrcReview } from '../../src/infrastructure/fetch-ncrc-review';
 
 describe('fetch-ncrc-review', () => {
-  describe('construct-ncrc-review', () => {
+  describe('construct-found-review', () => {
     it('builds a url from a title', () => {
       const ncrcReview: NcrcReview = {
         title: 'Foo Bar',
