@@ -8,6 +8,7 @@
 /helm/
 /node_modules/
 /.env
+/.gcp-ncrc-key.json
 /.gitignore
 /LICENSE.md
 /Makefile

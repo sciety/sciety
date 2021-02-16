@@ -1,7 +1,7 @@
 import { google } from 'googleapis';
 
 const auth = new google.auth.GoogleAuth({
-  keyFile: '/home/giorgio/sciety-0b0fcd073bf7.json',
+  keyFile: '.gcp-ncrc-key.json',
   scopes: ['https://www.googleapis.com/auth/cloud-platform', 'https://www.googleapis.com/auth/spreadsheets.readonly'],
 });
 

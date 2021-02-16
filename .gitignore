@@ -7,6 +7,7 @@
 /backstop_data/html_report/
 /node_modules/
 /.env
+/.gcp-ncrc-key.json
 /helm/*/charts/
 /static/*.css
 /static/*.css.map
