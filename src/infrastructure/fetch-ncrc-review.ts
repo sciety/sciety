@@ -33,7 +33,7 @@ type GetNcrcReview = (id: NcrcId.NcrcId) => TE.TaskEither<'unavailable' | 'not-f
 
 const getSheets = (): Sheets => {
   const auth = new google.auth.GoogleAuth({
-    keyFile: '/var/run/secrets/.gcp-ncrc-key.json',
+    keyFile: '/var/run/secrets/app/.gcp-ncrc-key.json',
     scopes: ['https://www.googleapis.com/auth/cloud-platform', 'https://www.googleapis.com/auth/spreadsheets.readonly'],
   });
 
