@@ -1,5 +1,6 @@
 // https://api.biorxiv.org/details/biorxiv/10.1101/641381
 
+import sanitizeHtml from "sanitize-html";
 import { Doi } from "../../src/types/doi";
 import { SanitisedHtmlFragment } from "../../src/types/sanitised-html-fragment";
 
@@ -37,6 +38,7 @@ const externalArticleVersionPostedOnBiorxiv2 = {
 
 // curl -v https://api.crossref.org/works/10.1101/641381/transform -H "Accept: application/vnd.crossref.unixref+xml"
 // seems the record has been updated on 2021-01-05, despite no new versions being added on biorxiv; possibly citations-related
+// hence there can be many instanced of this event appearing across time
 const externalArticleIndexedByCrossref = `
   <doi_record owner="10.1101" timestamp="2021-01-05 21:55:09">
   ...
@@ -72,7 +74,39 @@ const externalArticleIndexedByCrossref = `
     ...
 `;
 
+// using PRC-terminology here, and trying to break off from the bioRxiv and Crossref Ubiquitous Languages
+// the Sensor produces minimal internal Domain Events from the external Domain Events
+const relevantDomainEvents = [
+  {
+    type: 'ArticlePublished',
+    title: sanitizeHtml(externalArticleVersionPostedOnBiorxiv1.title),
+    date: new Date(externalArticleVersionPostedOnBiorxiv1.date),
+    authors: externalArticleVersionPostedOnBiorxiv1.authors.split(';').map((author) => author.trim()),
+  },
+  {
+    type: 'ArticleDetailsUpdated', // terrible name for a CRUD-oriented event
+    authors: [
+      'Hiroaki Tachiwana',
+      'Mariko Dacher',
+      'Kazumitsu Maehara',
+      'Akihito Harada',
+      'Yasuyuki Ohkawa',
+      'Hiroshi Kimura',
+      'Hitoshi Kurumizaka',
+      'Noriko Saitoh',
+    ],
+    date: new Date('2019-05-18'), // estimated 1 day later than the previous event, due to Crossref indexing delay
+    // no title to update
+  },
+  // not really necessary for the page header
+  //{
+  //  type: 'ArticleNewVersionPublished',
+  //  date: new Date(externalArticleVersionPostedOnBiorxiv2.date),
+  //  version: 2,
+  //},
+];
 
+console.log(relevantDomainEvents);
 
 type PageHeaderViewModel = {
   doi: Doi,
