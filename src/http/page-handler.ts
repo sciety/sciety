@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { NOT_FOUND, OK, SERVICE_UNAVAILABLE } from 'http-status-codes';
+import { StatusCodes } from 'http-status-codes';
 import { renderErrorPage } from './render-error-page';
 import { applyStandardPageLayout, Page } from '../shared-components/apply-standard-page-layout';
 import { RenderPageError } from '../types/render-page-error';
@@ -57,11 +57,11 @@ export const pageHandler = (
       TE.fold(
         (error) => T.of({
           body: errorToWebPage(user, context.request.path)(error),
-          status: error.type === 'not-found' ? NOT_FOUND : SERVICE_UNAVAILABLE,
+          status: error.type === 'not-found' ? StatusCodes.NOT_FOUND : StatusCodes.SERVICE_UNAVAILABLE,
         }),
         (page) => T.of({
           body: pageToWebPage(user, context.request.path)(page),
-          status: OK,
+          status: StatusCodes.OK,
         }),
       ),
     )();
