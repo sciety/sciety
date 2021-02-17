@@ -15,7 +15,7 @@
     "axios": "^0.21.1",
     "axios-retry": "^3.1.9",
     "clownface": "^1.2.0",
-    "cls-rtracer": "^2.2.0",
+    "cls-rtracer": "^2.6.0",
     "csv-parse": "^4.15.1",
     "escape-goat": "^3.0.0",
     "fp-ts": "^2.9.5",
