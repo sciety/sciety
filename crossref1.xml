@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doi_records>
+  <doi_record owner="10.1101" timestamp="2021-01-05 21:55:09">
+    <crossref>
+      <posted_content type="preprint" language="en" metadata_distribution_opts="any">
+        <group_title>Biochemistry</group_title>
+        <contributors>
+          <person_name contributor_role="author" sequence="first">
+            <given_name>Hiroaki</given_name>
+            <surname>Tachiwana</surname>
+            <ORCID>http://orcid.org/0000-0001-9227-7653</ORCID>
+          </person_name>
+          <person_name contributor_role="author" sequence="additional">
+            <given_name>Mariko</given_name>
+            <surname>Dacher</surname>
+          </person_name>
+          <person_name contributor_role="author" sequence="additional">
+            <given_name>Kazumitsu</given_name>
+            <surname>Maehara</surname>
+          </person_name>
+          <person_name contributor_role="author" sequence="additional">
+            <given_name>Akihito</given_name>
+            <surname>Harada</surname>
+          </person_name>
+          <person_name contributor_role="author" sequence="additional">
+            <given_name>Yasuyuki</given_name>
+            <surname>Ohkawa</surname>
+          </person_name>
+          <person_name contributor_role="author" sequence="additional">
+            <given_name>Hiroshi</given_name>
+            <surname>Kimura</surname>
+          </person_name>
+          <person_name contributor_role="author" sequence="additional">
+            <given_name>Hitoshi</given_name>
+            <surname>Kurumizaka</surname>
+          </person_name>
+          <person_name contributor_role="author" sequence="additional">
+            <given_name>Noriko</given_name>
+            <surname>Saitoh</surname>
+          </person_name>
+        </contributors>
+        <titles>
+          <title>Chromatin structure-dependent histone incorporation revealed by a genome-wide deposition assay</title>
+        </titles>
+        <posted_date>
+          <month>05</month>
+          <day>17</day>
+          <year>2019</year>
+        </posted_date>
+        <acceptance_date>
+          <month>10</month>
+          <day>13</day>
+          <year>2019</year>
+        </acceptance_date>
+        <institution>
+          <institution_name>bioRxiv</institution_name>
+        </institution>
+        <item_number item_number_type="pisa">biorxiv;641381v2</item_number>
+        <abstract>
+          <title>Abstract</title>
+          <p>In eukaryotes, histone variant distribution within the genome is the key epigenetic feature. To understand how each histone variant is targeted to the genome, we developed a new method, in which epitope-tagged histone complexes are introduced into permeabilized cells and incorporated into their chromatin. We found that the incorporation of histones H2A and H2A.Z mainly occurred at less condensed chromatin (open), suggesting that the condensed chromatin (closed) is a barrier for histone incorporation. To overcome this barrier, H2A, but not H2A.Z, uses a replication-coupled deposition mechanism. This led to the recapitulation of the pre-existing chromatin structure: the genome-wide even distribution of H2A and the exclusion of H2A.Z from the closed chromatin. Intriguingly, an H2A.Z mutant with mutations in the developmentally essential region was incorporated into closed chromatin. Our study revealed that the combination of chromatin structure and DNA replication dictates the differential histone deposition for maintaining the epigenetic chromatin states.</p>
+        </abstract>
+        <doi_data>
+          <doi>10.1101/641381</doi>
+          <timestamp>2021010511093039000</timestamp>
+          <resource>http://biorxiv.org/lookup/doi/10.1101/641381</resource>
+          <collection property="crawler-based">
+            <item crawler="iParadigms">
+              <resource>https://syndication.highwire.org/content/doi/10.1101/641381</resource>
+            </item>
+          </collection>
+        </doi_data>
+        <citation_list>
+          <citation key="2021010511093039000_641381v2.1">
+            <doi>10.1083/jcb.111.3.807</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.2">
+            <doi>10.15252/embj.201694105</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.3">
+            <doi>10.1016/S1097-2765(02)00542-7</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.4">
+            <doi>10.1242/jcs.148189</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.5">
+            <doi>10.1038/nrm.2016.166</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.6">
+            <doi>10.1038/21436</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.7">
+            <doi provider="crossref">10.1038/s41467-018-05697-1</doi>
+            <unstructured_citation>Clément, C. , Orsi, G. A. , Gatto, A. , Boyarchuk, E. , Forest, A. , Hajj, B. , et al. (2018). High-resolution visualization of H3 variants during replication reveals their controlled recycling. Nature Communications, 1–17. http://doi.org/10.1038/s41467-018-05697-1</unstructured_citation>
+          </citation>
+          <citation key="2021010511093039000_641381v2.8">
+            <journal_title>Development (Cambridge, England)</journal_title>
+            <volume>127</volume>
+            <issue>11</issue>
+            <first_page>2283</first_page>
+            <cYear>2000</cYear>
+            <article_title>Histone macroH2A1 is concentrated in the inactive X chromosome of female preimplantation mouse embryos</article_title>
+          </citation>
+          <citation key="2021010511093039000_641381v2.9">
+            <doi>10.1186/gb-2010-11-10-218</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.10">
+            <journal_title>eLife</journal_title>
+            <volume>5</volume>
+            <first_page>e1002358</first_page>
+            <cYear>2016</cYear>
+            <article_title>Enhancer regions show high histone H3.3 turnover that changes during differentiation</article_title>
+          </citation>
+          <citation key="2021010511093039000_641381v2.11">
+            <doi>10.1101/gad.566910</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.12">
+            <doi>10.1016/j.cell.2009.02.040</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.13">
+            <doi>10.1038/nature11247</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.14">
+            <journal_title>Nature Methods</journal_title>
+            <volume>9</volume>
+            <issue>3</issue>
+            <first_page>215</first_page>
+            <cYear>2012</cYear>
+            <doi provider="crossref">10.1038/nmeth.1906</doi>
+            <article_title>ChromHMM: automating chromatin-state discovery and characterization</article_title>
+          </citation>
+          <citation key="2021010511093039000_641381v2.15">
+            <doi>10.1073/pnas.73.11.3966</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.16">
+            <doi>10.1016/j.cell.2004.08.011</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.17">
+            <doi>10.1016/j.cell.2010.01.003</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.18">
+            <doi>10.1073/pnas.0607870104</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.19">
+            <doi>10.1073/pnas.1504868112</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.20">
+            <doi>10.1107/S090744491302252X</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.21">
+            <doi>10.1111/j.1432-1033.1984.tb08305.x</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.22">
+            <doi>10.1021/bi00455a019</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.23">
+            <doi>10.1083/jcb.200701066</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.24">
+            <doi>10.1101/gad.1547707</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.25">
+            <doi>10.1083/jcb.200306104</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.26">
+            <doi>10.1016/j.molcel.2015.09.008</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.27">
+            <journal_title>Nature Methods</journal_title>
+            <volume>12</volume>
+            <issue>4</issue>
+            <first_page>357</first_page>
+            <cYear>2015</cYear>
+            <doi provider="crossref">10.1038/nmeth.3317</doi>
+            <article_title>HISAT: a fast spliced aligner with low memory requirements</article_title>
+          </citation>
+          <citation key="2021010511093039000_641381v2.28">
+            <doi>10.1083/jcb.153.7.1341</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.29">
+            <doi>10.1083/jcb.200608001</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.30">
+            <doi provider="crossref">10.1038/nsmb.3189</doi>
+            <unstructured_citation>Latrick, C. M. , Marek, M. , Ouararhni, K. , Papin, C. , Stoll, I. , Ignatyeva, M. , et al. (2016). Molecular basis and specificity of H2A.Z-H2B recognition and deposition by the histone chaperone YL1. Nature Structural &amp; Molecular Biology, 1–10. http://doi.org/10.1038/nsmb.3189</unstructured_citation>
+          </citation>
+          <citation key="2021010511093039000_641381v2.31">
+            <doi>10.1083/jcb.149.2.271</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.32">
+            <doi provider="crossref">10.1038/nsmb.3190</doi>
+            <unstructured_citation>Liang, X. , Shan, S. , Pan, L. , Zhao, J. , Ranjan, A. , Wang, F. , et al. (2016). Structural basis of H2A.Z recognition by SRCAP chromatin-remodeling subunit YL1. Nature Structural &amp; Molecular Biology, 1–9. http://doi.org/10.1038/nsmb.3190</unstructured_citation>
+          </citation>
+          <citation key="2021010511093039000_641381v2.33">
+            <doi>10.1021/bi00334a002</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.34">
+            <doi>10.1038/38444</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.35">
+            <doi>10.1186/s13072-015-0027-3</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.36">
+            <doi>10.1038/ng843</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.37">
+            <doi>10.1038/cr.2014.30</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.38">
+            <doi>10.1083/jcb.143.3.563</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.39">
+            <doi>10.1091/mbc.7.10.1559</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.40">
+            <doi>10.1128/MCB.20.4.1206-1218.2000</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.41">
+            <doi>10.1046/j.1365-2443.2000.00319.x</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.42">
+            <journal_title>Current Opinion in Chemical Biology</journal_title>
+            <volume>45</volume>
+            <first_page>35</first_page>
+            <cYear>2018</cYear>
+            <doi provider="crossref">10.1016/j.cbpa.2018.02.004</doi>
+            <article_title>Synthetic post-translational modification of histones</article_title>
+          </citation>
+          <citation key="2021010511093039000_641381v2.43">
+            <journal_title>Nature Communications</journal_title>
+            <volume>8</volume>
+            <issue>1</issue>
+            <first_page>1667</first_page>
+            <cYear>2017</cYear>
+            <doi provider="crossref">10.1038/s41467-017-01724-9</doi>
+            <article_title>DNA methylation signatures follow preformed chromatin compartments in cardiac myocytes</article_title>
+          </citation>
+          <citation key="2021010511093039000_641381v2.44">
+            <doi>10.1038/nature12922</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.45">
+            <doi>10.1006/excr.1993.1129</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.46">
+            <doi>10.1016/S0092-8674(00)80903-4</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.47">
+            <journal_title>American Journal of Human Genetics</journal_title>
+            <volume>31</volume>
+            <issue>2</issue>
+            <first_page>106</first_page>
+            <cYear>1979</cYear>
+            <article_title>Emil Heitz and the concept of heterochromatin: longitudinal chromosome differentiation was recognized fifty years ago</article_title>
+          </citation>
+          <citation key="2021010511093039000_641381v2.48">
+            <doi>10.1093/bioinformatics/btq033</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.49">
+            <doi>10.1016/j.cell.2005.10.002</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.50">
+            <doi>10.1093/nar/gku365</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.51">
+            <doi>10.1093/emboj/cdg160</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.52">
+            <doi>10.1016/j.cell.2010.01.004</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.53">
+            <doi>10.1016/S1097-2765(02)00526-9</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.54">
+            <doi>10.1016/j.molcel.2011.12.006</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.55">
+            <doi>10.1016/j.ceb.2016.03.022</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.56">
+            <doi>10.1091/mbc.E03-07-0487</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.57">
+            <doi>10.1038/nature14248</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.58">
+            <doi>10.1038/nbt.1754</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.59">
+            <doi>10.1016/j.yexcr.2006.01.013</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.60">
+            <doi>10.1186/1756-8935-8-3</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.61">
+            <doi>10.1128/MCB.00241-07</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.62">
+            <journal_title>Nature Methods</journal_title>
+            <volume>9</volume>
+            <issue>7</issue>
+            <first_page>671</first_page>
+            <cYear>2012</cYear>
+            <doi provider="crossref">10.1038/nmeth.2089</doi>
+            <article_title>NIH Image to ImageJ: 25 years of image analysis</article_title>
+          </citation>
+          <citation key="2021010511093039000_641381v2.63">
+            <doi>10.1016/S0092-8674(00)80661-3</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.64">
+            <journal_title>Methods in Molecular Biology (Clifton, N.J.)</journal_title>
+            <volume>1832</volume>
+            <first_page>131</first_page>
+            <cYear>2018</cYear>
+            <doi provider="crossref">10.1007/978-1-4939-8663-7_7</doi>
+            <article_title>. time-ChIP: A Method to Determine Long-Term Locus-Specific Nucleosome Inheritance</article_title>
+          </citation>
+          <citation key="2021010511093039000_641381v2.65">
+            <doi>10.1016/0092-8674(89)90398-X</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.66">
+            <doi>10.1101/gr.209601.116</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.67">
+            <doi>10.1073/pnas.80.3.815</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.68">
+            <journal_title>Nature Structural &amp; Molecular Biology</journal_title>
+            <volume>25</volume>
+            <issue>10</issue>
+            <first_page>958</first_page>
+            <cYear>2018</cYear>
+            <doi provider="crossref">10.1038/s41594-018-0134-5</doi>
+            <article_title>Transcription-associated histone pruning demarcates macroH2A chromatin domains</article_title>
+          </citation>
+          <citation key="2021010511093039000_641381v2.69">
+            <doi>10.1038/81971</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.70">
+            <doi>10.1073/pnas.1003064107</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.71">
+            <journal_title>Cell Reports</journal_title>
+            <volume>11</volume>
+            <issue>1</issue>
+            <first_page>22</first_page>
+            <cYear>2015</cYear>
+            <doi provider="crossref">10.1016/j.celrep.2015.03.013</doi>
+            <article_title>HJURP involvement in de novo CenH3(CENP-A) and CENP-C recruitment</article_title>
+          </citation>
+          <citation key="2021010511093039000_641381v2.72">
+            <doi>10.1093/nar/gkn060</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.73">
+            <doi>10.1016/S0092-8674(03)01064-X</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.74">
+            <doi>10.1186/1756-8935-7-33</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.75">
+            <doi>10.1038/990147</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.76">
+            <doi>10.1128/MCB.16.11.6149</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.77">
+            <doi>10.1128/MCB.21.19.6574-6584.2001</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.78">
+            <doi>10.1091/mbc.E04-12-1078</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.79">
+            <doi>10.1126/science.948749</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.80">
+            <doi>10.1128/MCB.17.7.4178</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.81">
+            <doi>10.1074/jbc.M703418200</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.82">
+            <doi>10.1016/0092-8674(82)90130-1</doi>
+          </citation>
+          <citation key="2021010511093039000_641381v2.83">
+            <journal_title>PLoS ONE</journal_title>
+            <volume>9</volume>
+            <issue>3</issue>
+            <first_page>e92689</first_page>
+            <cYear>2014</cYear>
+            <doi provider="crossref">10.1371/journal.pone.0092689</doi>
+            <article_title>Genome-wide analysis of the chromatin composition of histone H2A and H3 variants in mouse embryonic stem cells</article_title>
+          </citation>
+          <citation key="2021010511093039000_641381v2.84">
+            <doi>10.1038/nature07324</doi>
+          </citation>
+        </citation_list>
+      </posted_content>
+    </crossref>
+  </doi_record>
+</doi_records>

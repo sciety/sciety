@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doi_records>
+  <doi_record owner="10.1101" timestamp="2021-02-17 03:31:14">
+    <crossref>
+      <posted_content type="preprint" language="en" metadata_distribution_opts="any">
+        <group_title>Neuroscience</group_title>
+        <contributors>
+          <person_name contributor_role="author" sequence="first">
+            <given_name>Jung Won</given_name>
+            <surname>Bae</surname>
+            <ORCID>http://orcid.org/0000-0002-4489-6879</ORCID>
+          </person_name>
+          <person_name contributor_role="author" sequence="additional">
+            <given_name>Huijeong</given_name>
+            <surname>Jeong</surname>
+            <ORCID>http://orcid.org/0000-0003-1219-4191</ORCID>
+          </person_name>
+          <person_name contributor_role="author" sequence="additional">
+            <given_name>Chanmee</given_name>
+            <surname>Bae</surname>
+          </person_name>
+          <person_name contributor_role="author" sequence="additional">
+            <given_name>Hyeonsu</given_name>
+            <surname>Lee</surname>
+          </person_name>
+          <person_name contributor_role="author" sequence="additional">
+            <given_name>Se-Bum</given_name>
+            <surname>Paik</surname>
+          </person_name>
+          <person_name contributor_role="author" sequence="additional">
+            <given_name>Min Whan</given_name>
+            <surname>Jung</surname>
+            <ORCID>http://orcid.org/0000-0002-4145-600X</ORCID>
+          </person_name>
+        </contributors>
+        <titles>
+          <title>Parallel processing of working memory and temporal information by distinct types of cortical projection neurons</title>
+        </titles>
+        <posted_date>
+          <month>02</month>
+          <day>16</day>
+          <year>2021</year>
+        </posted_date>
+        <acceptance_date>
+          <month>02</month>
+          <day>16</day>
+          <year>2021</year>
+        </acceptance_date>
+        <institution>
+          <institution_name>bioRxiv</institution_name>
+        </institution>
+        <item_number item_number_type="pisa">biorxiv;2021.02.16.431447v1</item_number>
+        <abstract>
+          <p>It is unclear how different types of cortical projection neurons work together to support diverse cortical functions. We examined the discharge characteristics and inactivation effects of intratelencephalic (IT) and pyramidal tract (PT) neurons–two major types of cortical excitatory neurons that project to cortical and subcortical structures, respectively–in the medial prefrontal cortex of mice performing a delayed response task. We found that IT neurons, but not PT neurons, convey significant working memory–related signals. We also found that the inactivation of IT neurons, but not PT neurons, impairs behavioral performance. In contrast, PT neurons convey far more temporal information than IT neurons during the delay period. Our results indicate a division of labor between IT and PT projection neurons in the prefrontal cortex for the maintenance of working memory and for tracking the passage of time, respectively.</p>
+        </abstract>
+        <doi_data>
+          <doi>10.1101/2021.02.16.431447</doi>
+          <timestamp>2021021700300707000</timestamp>
+          <resource>http://biorxiv.org/lookup/doi/10.1101/2021.02.16.431447</resource>
+          <collection property="crawler-based">
+            <item crawler="iParadigms">
+              <resource>https://syndication.highwire.org/content/doi/10.1101/2021.02.16.431447</resource>
+            </item>
+          </collection>
+        </doi_data>
+      </posted_content>
+    </crossref>
+  </doi_record>
+</doi_records>

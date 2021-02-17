@@ -1,8 +1,8 @@
 // https://api.biorxiv.org/details/biorxiv/10.1101/641381
-
+// but should also try https://api.biorxiv.org/details/biorxiv/2018-08-21/2018-08-28/45 for bulk ingestion
 import sanitizeHtml from "sanitize-html";
 import { Doi } from "../../src/types/doi";
-import { SanitisedHtmlFragment } from "../../src/types/sanitised-html-fragment";
+import { HtmlFragment } from "../../src/types/html-fragment";
 
 const externalArticleVersionPostedOnBiorxiv1 = {
   "doi": "10.1101/641381",
@@ -78,13 +78,16 @@ const externalArticleIndexedByCrossref = `
 // the Sensor produces minimal internal Domain Events from the external Domain Events
 const relevantDomainEvents = [
   {
-    type: 'ArticlePublished',
-    title: sanitizeHtml(externalArticleVersionPostedOnBiorxiv1.title),
     date: new Date(externalArticleVersionPostedOnBiorxiv1.date),
+    type: 'ArticlePublished',
+    articleId: new Doi(externalArticleVersionPostedOnBiorxiv1.doi),
+    title: sanitizeHtml(externalArticleVersionPostedOnBiorxiv1.title),
     authors: externalArticleVersionPostedOnBiorxiv1.authors.split(';').map((author) => author.trim()),
   },
   {
+    date: new Date('2019-05-18'), // estimated 1 day later than the previous event, due to Crossref indexing delay
     type: 'ArticleDetailsUpdated', // terrible name for a CRUD-oriented event
+    articleId: new Doi(externalArticleVersionPostedOnBiorxiv1.doi),
     authors: [
       'Hiroaki Tachiwana',
       'Mariko Dacher',
@@ -95,7 +98,6 @@ const relevantDomainEvents = [
       'Hitoshi Kurumizaka',
       'Noriko Saitoh',
     ],
-    date: new Date('2019-05-18'), // estimated 1 day later than the previous event, due to Crossref indexing delay
     // no title to update
   },
   // not really necessary for the page header
@@ -109,9 +111,16 @@ const relevantDomainEvents = [
 console.log(relevantDomainEvents);
 
 type PageHeaderViewModel = {
-  doi: Doi,
-  title: SanitisedHtmlFragment,
+  id: Doi,
+  title: HtmlFragment,
   authors: Array<string>,
+}
+
+// a projection can now build this without external calls
+const pageHeaderViewModelExample: PageHeaderViewModel = {
+  id: relevantDomainEvents[0].articleId, 
+  title: relevantDomainEvents[0].title as HtmlFragment, // ignore unnecessary cast because of the type inference on relevantDomainEvents
+  authors: relevantDomainEvents[1].authors,
 }
 
 describe('render-page-header-with-events', () => {
@@ -120,3 +129,12 @@ describe('render-page-header-with-events', () => {
   it.todo('renders the article DOI according to CrossRef display guidelines');
   it.todo('renders the article authors');
 });
+
+// consequences:
+// 1. articles can appear several days earlier than Crossref indexing (or we can decide not to include them on some condition like lack of evaluations)
+// 2. articles authors change their form in the first few days from `Tachiwana, H.` to `Hiroaki Tachiwana` (if we want)
+// 3. articles authors and title can still change over time and versions (if we are worried about it)
+// 4. search page can have the same authors as article page
+// 5. in general pages show always the same title, no temporary `an article` title stand-in
+// 6. no external calls to cache (but data may still be missing for the projection)
+// 7. exercise: what happens if a user adds an article to a list, and the title changes due to a new version?
