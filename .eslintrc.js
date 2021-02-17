@@ -86,6 +86,7 @@ module.exports = {
       'LabeledStatement',
       'WithStatement',
     ]],
+    'no-underscore-dangle': 'off',
     'no-unreachable': 'error',
     'no-void': ['error', {
       allowAsStatement: true,

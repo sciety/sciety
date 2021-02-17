@@ -12,7 +12,6 @@ export const fromString = (value: string): NcrcId => ({
 
 export const isNrcId = (value: unknown): value is NcrcId => {
   if (typeof value === 'object' && value !== null && '_tag' in value) {
-    // eslint-disable-next-line no-underscore-dangle
     return (value as NcrcId)._tag === 'NcrcId';
   }
   return false;
