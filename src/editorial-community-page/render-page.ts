@@ -4,7 +4,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { isHttpError } from 'http-errors';
-import { NOT_FOUND } from 'http-status-codes';
+import { StatusCodes } from 'http-status-codes';
 import { EditorialCommunity } from '../types/editorial-community';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -71,7 +71,7 @@ export const createRenderPage = (
       );
     // TODO: push Results further down
     } catch (error: unknown) {
-      if (isHttpError(error) && error.status === NOT_FOUND) {
+      if (isHttpError(error) && error.status === StatusCodes.NOT_FOUND) {
         return TE.left({
           type: 'not-found',
           message: toHtmlFragment(`Editorial community id '${editorialCommunity.id.value}' not found`),

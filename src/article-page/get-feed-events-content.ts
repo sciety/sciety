@@ -11,6 +11,7 @@ import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { HtmlFragment } from '../types/html-fragment';
+import { HypothesisAnnotationId } from '../types/hypothesis-annotation-id';
 import { ReviewId } from '../types/review-id';
 import { sanitise } from '../types/sanitised-html-fragment';
 
@@ -49,12 +50,15 @@ const articleVersionToFeedItem = (
   T.of(O.some({ ...feedEvent, server }))
 );
 
-const fallbackUrl = (reviewId: ReviewId): URL => {
+const inferredUrlFromReviewId = (reviewId: ReviewId): O.Option<URL> => {
   if (reviewId instanceof Doi) {
-    return new URL(`https://doi.org/${reviewId.value}`);
+    return O.some(new URL(`https://doi.org/${reviewId.value}`));
+  }
+  if (reviewId instanceof HypothesisAnnotationId) {
+    return O.some(new URL(`https://hypothes.is/a/${reviewId.value}`));
   }
 
-  return new URL(`https://hypothes.is/a/${reviewId.value}`);
+  return O.none;
 };
 
 const reviewToFeedItem = (
@@ -69,11 +73,12 @@ const reviewToFeedItem = (
       getReview,
       T.map(E.fold(
         () => ({
-          url: fallbackUrl(feedEvent.reviewId),
+          url: inferredUrlFromReviewId(feedEvent.reviewId),
           fullText: O.none,
         }),
         (review) => ({
           ...review,
+          url: O.some(review.url),
           fullText: O.some(review.fullText),
         }),
       )),
@@ -83,7 +88,7 @@ const reviewToFeedItem = (
   T.map(({ editorialCommunity, review }) => O.some({
     type: 'review',
     id: feedEvent.reviewId,
-    source: O.some(review.url),
+    source: review.url,
     occurredAt: feedEvent.occurredAt,
     editorialCommunityId: feedEvent.editorialCommunityId,
     editorialCommunityName: editorialCommunity.name,

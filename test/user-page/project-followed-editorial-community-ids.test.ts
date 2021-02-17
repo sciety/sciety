@@ -1,65 +1,19 @@
 import * as T from 'fp-ts/Task';
+import { editorialCommunityJoined, userFollowedEditorialCommunity, userUnfollowedEditorialCommunity } from '../../src/types/domain-events';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
-import { generate } from '../../src/types/event-id';
 import { toUserId } from '../../src/types/user-id';
 import { GetAllEvents, projectFollowedEditorialCommunityIds } from '../../src/user-page/project-followed-editorial-community-ids';
 
 describe('project-followed-editorial-community-ids', () => {
   const getAllEvents: GetAllEvents = T.of([
-    {
-      id: generate(),
-      type: 'UserFollowedEditorialCommunity',
-      date: new Date(),
-      userId: toUserId('someone'),
-      editorialCommunityId: new EditorialCommunityId('316db7d9-88cc-4c26-b386-f067e0f56334'),
-    },
-    {
-      id: generate(),
-      type: 'UserFollowedEditorialCommunity',
-      date: new Date(),
-      userId: toUserId('someone'),
-      editorialCommunityId: new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002'),
-    },
-    {
-      id: generate(),
-      type: 'UserUnfollowedEditorialCommunity',
-      date: new Date(),
-      userId: toUserId('someone'),
-      editorialCommunityId: new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002'),
-    },
-    {
-      id: generate(),
-      type: 'UserFollowedEditorialCommunity',
-      date: new Date(),
-      userId: toUserId('someone'),
-      editorialCommunityId: new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002'),
-    },
-    {
-      id: generate(),
-      type: 'UserFollowedEditorialCommunity',
-      date: new Date(),
-      userId: toUserId('someone'),
-      editorialCommunityId: new EditorialCommunityId('74fd66e9-3b90-4b5a-a4ab-5be83db4c5de'),
-    },
-    {
-      type: 'EditorialCommunityJoined',
-      date: new Date(),
-      editorialCommunityId: new EditorialCommunityId('74fd66e9-3b90-4b5a-a4ab-5be83db4c5de'),
-    },
-    {
-      id: generate(),
-      type: 'UserFollowedEditorialCommunity',
-      date: new Date(),
-      userId: toUserId('someoneelse'),
-      editorialCommunityId: new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
-    },
-    {
-      id: generate(),
-      type: 'UserUnfollowedEditorialCommunity',
-      date: new Date(),
-      userId: toUserId('someoneelse'),
-      editorialCommunityId: new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002'),
-    },
+    userFollowedEditorialCommunity(toUserId('someone'), new EditorialCommunityId('316db7d9-88cc-4c26-b386-f067e0f56334')),
+    userFollowedEditorialCommunity(toUserId('someone'), new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002')),
+    userUnfollowedEditorialCommunity(toUserId('someone'), new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002')),
+    userFollowedEditorialCommunity(toUserId('someone'), new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002')),
+    userFollowedEditorialCommunity(toUserId('someone'), new EditorialCommunityId('74fd66e9-3b90-4b5a-a4ab-5be83db4c5de')),
+    editorialCommunityJoined(new EditorialCommunityId('74fd66e9-3b90-4b5a-a4ab-5be83db4c5de')),
+    userFollowedEditorialCommunity(toUserId('someoneelse'), new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0')),
+    userUnfollowedEditorialCommunity(toUserId('someoneelse'), new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002')),
   ]);
 
   it('returns a list', async () => {
@@ -71,5 +25,30 @@ describe('project-followed-editorial-community-ids', () => {
     ];
 
     expect(actual).toStrictEqual(expected);
+  });
+
+  describe('when a community is followed', () => {
+    const community1 = new EditorialCommunityId('community-1');
+
+    it('lists that community', async () => {
+      const followed = await projectFollowedEditorialCommunityIds(T.of([
+        userFollowedEditorialCommunity(toUserId('someone'), community1),
+      ]))(toUserId('someone'))();
+
+      expect(followed).toStrictEqual([community1]);
+    });
+  });
+
+  describe('when a community is unfollowed', () => {
+    const community1 = new EditorialCommunityId('community-1');
+
+    it.skip('does not list that community', async () => {
+      const followed = await projectFollowedEditorialCommunityIds(T.of([
+        userFollowedEditorialCommunity(toUserId('someone'), community1),
+        userUnfollowedEditorialCommunity(toUserId('someone'), community1),
+      ]))(toUserId('someone'))();
+
+      expect(followed).toStrictEqual([]);
+    });
   });
 });

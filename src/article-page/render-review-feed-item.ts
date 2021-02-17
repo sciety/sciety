@@ -7,7 +7,7 @@ import { RenderReviewResponses } from './render-review-responses';
 import { templateDate } from '../shared-components/date';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-import { ReviewId } from '../types/review-id';
+import { ReviewId, toString } from '../types/review-id';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { UserId } from '../types/user-id';
 
@@ -58,7 +58,7 @@ const renderWithText: RenderWithText = (teaserChars, review, fullText) => (respo
   const teaserText = clip(fullText, teaserChars);
   if (teaserText === fullText) {
     return `
-      <div class="article-feed__item_contents" id="${review.id.toString()}">
+      <div class="article-feed__item_contents" id="${toString(review.id)}">
         ${avatar(review)}
         <div class="article-feed__item_body">
           ${eventMetadata(review)}
@@ -73,7 +73,7 @@ const renderWithText: RenderWithText = (teaserChars, review, fullText) => (respo
   }
   // TODO: a review.id containing dodgy chars could break this
   return `
-    <div class="article-feed__item_contents" id="${review.id.toString()}">
+    <div class="article-feed__item_contents" id="${toString(review.id)}">
       ${avatar(review)}
       <div class="article-feed__item_body" data-behaviour="collapse_to_teaser">
         ${eventMetadata(review)}
@@ -94,7 +94,7 @@ const render = (teaserChars: number, review: ReviewFeedItem) => (responses: Html
   review.fullText,
   O.fold(
     () => `
-      <div class="article-feed__item_contents" id="${review.id.toString()}">
+      <div class="article-feed__item_contents" id="${toString(review.id)}">
         ${avatar(review)}
         <div class="article-feed__item_body">
           ${eventMetadata(review)}

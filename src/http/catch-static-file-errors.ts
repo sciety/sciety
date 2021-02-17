@@ -1,7 +1,7 @@
 import { Middleware } from '@koa/router';
 import * as O from 'fp-ts/Option';
 import { isHttpError } from 'http-errors';
-import { INTERNAL_SERVER_ERROR } from 'http-status-codes';
+import { StatusCodes } from 'http-status-codes';
 import { renderErrorPage } from './render-error-page';
 import { applyStandardPageLayout } from '../shared-components/apply-standard-page-layout';
 import { toHtmlFragment } from '../types/html-fragment';
@@ -18,7 +18,7 @@ export const catchStaticFileErrors = (logger: Logger): Middleware => async (cont
       pageMessage = 'File not found';
       context.response.status = 404;
     } else {
-      context.response.status = INTERNAL_SERVER_ERROR;
+      context.response.status = StatusCodes.INTERNAL_SERVER_ERROR;
     }
     context.response.body = applyStandardPageLayout(O.none)({
       title: 'Error | Sciety',

@@ -1,17 +1,7 @@
-import * as O from 'fp-ts/Option';
-import * as T from 'fp-ts/Task';
 import * as B from 'fp-ts/boolean';
-import { pipe } from 'fp-ts/function';
+import { flow } from 'fp-ts/function';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-import { UserId } from '../types/user-id';
-
-type RenderFollowToggle = (
-  userId: O.Option<UserId>,
-  editorialCommunityId: EditorialCommunityId
-) => T.Task<HtmlFragment>;
-
-type Follows = (userId: UserId, editorialCommunityId: EditorialCommunityId) => T.Task<boolean>;
 
 const renderFollowButton = (editorialCommunityId: EditorialCommunityId): string => `
   <form method="post" action="/follow">
@@ -27,23 +17,14 @@ const renderUnfollowButton = (editorialCommunityId: EditorialCommunityId): strin
   </form>
 `;
 
-const renderFollowToggle = (follows: Follows): RenderFollowToggle => (
-  (userId, editorialCommunityId) => (
-    pipe(
-      userId,
-      O.fold(
-        () => T.of(false),
-        (value: UserId) => follows(value, editorialCommunityId),
-      ),
-      T.map(
-        B.fold(
-          () => renderFollowButton(editorialCommunityId),
-          () => renderUnfollowButton(editorialCommunityId),
-        ),
-      ),
-      T.map(toHtmlFragment),
-    )
-  )
+type RenderFollowToggle = (editorialCommunityId: EditorialCommunityId) => (isFollowing: boolean) => HtmlFragment;
+
+const renderFollowToggle: RenderFollowToggle = (editorialCommunityId) => flow(
+  B.fold(
+    () => renderFollowButton(editorialCommunityId),
+    () => renderUnfollowButton(editorialCommunityId),
+  ),
+  toHtmlFragment,
 );
 
-export { renderFollowToggle, Follows };
+export { renderFollowToggle };

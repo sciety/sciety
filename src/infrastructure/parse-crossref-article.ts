@@ -80,7 +80,9 @@ export const getTitle = (doc: Document, doi: Doi, logger: Logger): SanitisedHtml
   let title = 'Unknown title';
   // TODO: the decision as to what to display on error should live with the rendering component
   if (titleElement) {
-    title = new XMLSerializer().serializeToString(titleElement);
+    title = new XMLSerializer()
+      .serializeToString(titleElement)
+      .replace(/^<title(?:.?)>([\s\S]*)<\/title>$/, '$1');
   } else {
     logger('warn', 'Did not find title', { doi });
   }

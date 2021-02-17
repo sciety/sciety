@@ -82,6 +82,18 @@ We use [Jest] to test the app. You can run it by executing:
 make test
 ```
 
+To run all the regression tests, execute:
+
+```shell
+make taiko
+```
+
+To run just one regression test file, execute:
+
+```shell
+make taiko TEST=[file-name].ts
+```
+
 ### Linting
 
 We lint the app with [ESLint]. You can run it by:

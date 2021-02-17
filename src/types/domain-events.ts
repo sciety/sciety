@@ -40,6 +40,15 @@ type EditorialCommunityJoinedEvent = Readonly<{
   editorialCommunityId: EditorialCommunityId,
 }>;
 
+export const editorialCommunityJoined = (
+  editorialCommunityId: EditorialCommunityId,
+  date: Date = new Date(),
+): EditorialCommunityJoinedEvent => ({
+  type: 'EditorialCommunityJoined',
+  date,
+  editorialCommunityId,
+});
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 export type UserFollowedEditorialCommunityEvent = Readonly<{

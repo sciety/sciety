@@ -6,7 +6,7 @@ import {
   commandHandler, CommitEvents, validateCommand,
 } from './command-handler';
 import { GetAllEvents } from './respond-helpful-command';
-import { toReviewId } from '../types/review-id';
+import { toReviewId, toString } from '../types/review-id';
 import { User } from '../types/user';
 
 type Ports = {
@@ -29,7 +29,7 @@ export const respondHandler = (ports: Ports): Middleware<{ user: User }> => asyn
     ),
   )();
 
-  context.redirect(`${referrer}#${reviewId.toString()}`);
+  context.redirect(`${referrer}#${toString(reviewId)}`);
 
   await next();
 };

@@ -1,6 +1,6 @@
 import { Middleware } from '@koa/router';
 import * as O from 'fp-ts/Option';
-import { INTERNAL_SERVER_ERROR } from 'http-status-codes';
+import { StatusCodes } from 'http-status-codes';
 import { renderErrorPage } from './render-error-page';
 import { applyStandardPageLayout } from '../shared-components/apply-standard-page-layout';
 import { toHtmlFragment } from '../types/html-fragment';
@@ -14,7 +14,7 @@ export const catchErrors = (logger: Logger, logMessage: string, pageMessage: str
     } catch (error: unknown) {
       logger('error', logMessage, { error });
 
-      context.response.status = INTERNAL_SERVER_ERROR;
+      context.response.status = StatusCodes.INTERNAL_SERVER_ERROR;
       context.response.body = applyStandardPageLayout(O.none)({
         title: 'Error | Sciety',
         content: renderErrorPage(toHtmlFragment(pageMessage)),
