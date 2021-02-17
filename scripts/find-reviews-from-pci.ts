@@ -31,7 +31,7 @@ type Recommendation = {
 
 const fetchPage = async (url: string): Promise<{ data: string }> => {
   try {
-    return axios.get(url);
+    return await axios.get(url);
   } catch (e: unknown) {
     process.stderr.write(`Could not fetch ${url}\n`);
     throw e;

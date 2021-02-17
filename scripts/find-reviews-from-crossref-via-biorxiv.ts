@@ -15,7 +15,7 @@ type BiorxivResponse = {
   }>,
 };
 
-type CrossrefResponse ={
+type CrossrefResponse = {
   message: {
     items: [
       {
@@ -25,7 +25,7 @@ type CrossrefResponse ={
             [number, number, number],
           ],
         },
-      }
+      },
     ],
   },
 };

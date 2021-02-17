@@ -1,3 +1,4 @@
+import * as Eq from 'fp-ts/Eq';
 import { Doi } from './doi';
 import { HypothesisAnnotationId } from './hypothesis-annotation-id';
 import * as NcrcId from './ncrc-id';
@@ -25,3 +26,7 @@ export const toString = (id: ReviewId): string => {
   // NcrcId case
   return `ncrc:${id.value}`;
 };
+
+const eq = Eq.contramap((id: ReviewId) => id.toString())(Eq.eqString);
+
+export const { equals } = eq;

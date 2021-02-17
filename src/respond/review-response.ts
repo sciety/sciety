@@ -6,7 +6,7 @@ import {
   UserRevokedFindingReviewHelpfulEvent,
   UserRevokedFindingReviewNotHelpfulEvent,
 } from '../types/domain-events';
-import { ReviewId } from '../types/review-id';
+import * as ReviewId from '../types/review-id';
 import { UserId } from '../types/user-id';
 
 export type ReviewResponse = 'none' | 'helpful' | 'not-helpful';
@@ -31,9 +31,9 @@ const filterEventType = (events: ReadonlyArray<DomainEvent>): ReadonlyArray<Inte
 
 const filterUserAndReview = (
   userId: UserId,
-  reviewId: ReviewId,
+  reviewId: ReviewId.ReviewId,
 ) => (events: ReadonlyArray<InterestingEvent>): ReadonlyArray<InterestingEvent> => (
-  events.filter((event) => event.userId === userId && event.reviewId.toString() === reviewId.toString())
+  events.filter((event) => event.userId === userId && ReviewId.equals(event.reviewId, reviewId))
 );
 
 const calculateCurrentState = (events: ReadonlyArray<InterestingEvent>): ReviewResponse => {
@@ -55,7 +55,7 @@ const calculateCurrentState = (events: ReadonlyArray<InterestingEvent>): ReviewR
   }
 };
 
-export const reviewResponse = (userId: UserId, reviewId: ReviewId): ReviewResponseType => flow(
+export const reviewResponse = (userId: UserId, reviewId: ReviewId.ReviewId): ReviewResponseType => flow(
   filterEventType,
   filterUserAndReview(userId, reviewId),
   calculateCurrentState,

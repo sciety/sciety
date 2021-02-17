@@ -4,13 +4,13 @@ import rdfFetch from '@rdfjs/fetch-lite';
 import JsonLdParser from '@rdfjs/parser-jsonld';
 import N3Parser from '@rdfjs/parser-n3';
 import SinkMap from '@rdfjs/sink-map';
-import clownface, { Clownface } from 'clownface';
+import clownface from 'clownface';
 import parseLinkHeader from 'parse-link-header';
 import datasetFactory from 'rdf-dataset-indexed';
 import type { DatasetCore, NamedNode, Stream } from 'rdf-js';
 import { Logger } from './logger';
 
-export type FetchDataset = (iri: NamedNode) => Promise<Clownface<NamedNode>>;
+export type FetchDataset = (iri: NamedNode) => Promise<clownface.GraphPointer<NamedNode>>;
 
 export class FetchDatasetError extends Error {
   toString(): string {
@@ -25,7 +25,7 @@ export const createFetchDataset = (logger: Logger, fetch = rdfFetch): FetchDatas
   parsers.set('text/turtle', new N3Parser());
   const fetchOptions = { factory, formats: { parsers } };
 
-  return async (iri: NamedNode): Promise<Clownface<NamedNode>> => {
+  return async (iri) => {
     logger('debug', 'Fetching dataset', { url: iri.value });
     const response = await fetch<DatasetCore>(iri.value, fetchOptions);
 

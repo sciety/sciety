@@ -11,12 +11,12 @@ import {
   UserRevokedFindingReviewHelpfulEvent,
   UserRevokedFindingReviewNotHelpfulEvent,
 } from '../types/domain-events';
-import { ReviewId } from '../types/review-id';
+import * as ReviewId from '../types/review-id';
 import { UserId } from '../types/user-id';
 
 type GetEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-const projectResponse = (getEvents: GetEvents) => (reviewId: ReviewId, userId: UserId): T.Task<O.Option<'helpful' | 'not-helpful'>> => pipe(
+const projectResponse = (getEvents: GetEvents) => (reviewId: ReviewId.ReviewId, userId: UserId): T.Task<O.Option<'helpful' | 'not-helpful'>> => pipe(
   getEvents,
   T.map(RA.filter((event): event is
     UserFoundReviewHelpfulEvent |
@@ -29,7 +29,7 @@ const projectResponse = (getEvents: GetEvents) => (reviewId: ReviewId, userId: U
     || event.type === 'UserRevokedFindingReviewNotHelpful'
   ))),
   T.map(RA.filter((event) => event.userId === userId)),
-  T.map(RA.filter(((event) => event.reviewId.toString() === reviewId.toString()))),
+  T.map(RA.filter((event) => ReviewId.equals(event.reviewId, reviewId))),
   T.map(RNEA.fromReadonlyArray),
   T.map(O.chain((ofInterest) => {
     const mostRecentEventType = ofInterest[ofInterest.length - 1].type;
