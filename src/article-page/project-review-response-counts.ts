@@ -9,17 +9,17 @@ import {
   UserRevokedFindingReviewHelpfulEvent,
   UserRevokedFindingReviewNotHelpfulEvent,
 } from '../types/domain-events';
-import { ReviewId } from '../types/review-id';
+import * as ReviewId from '../types/review-id';
 
 type GetEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-const projection = (reviewId: ReviewId) => (events: ReadonlyArray<DomainEvent>) => {
+const projection = (reviewId: ReviewId.ReviewId) => (events: ReadonlyArray<DomainEvent>) => {
   const helpfulCount = pipe(
     events,
     RA.filter((event): event is UserFoundReviewHelpfulEvent | UserRevokedFindingReviewHelpfulEvent => (
       event.type === 'UserFoundReviewHelpful' || event.type === 'UserRevokedFindingReviewHelpful'
     )),
-    RA.filter((event) => event.reviewId.toString() === reviewId.toString()),
+    RA.filter((event) => ReviewId.equals(event.reviewId, reviewId)),
     RA.reduce(0, (count, event) => (
       event.type === 'UserFoundReviewHelpful' ? count + 1 : count - 1
     )),
@@ -30,7 +30,7 @@ const projection = (reviewId: ReviewId) => (events: ReadonlyArray<DomainEvent>) 
     RA.filter((event): event is UserFoundReviewNotHelpfulEvent | UserRevokedFindingReviewNotHelpfulEvent => (
       event.type === 'UserFoundReviewNotHelpful' || event.type === 'UserRevokedFindingReviewNotHelpful'
     )),
-    RA.filter((event) => event.reviewId.toString() === reviewId.toString()),
+    RA.filter((event) => ReviewId.equals(event.reviewId, reviewId)),
     RA.reduce(0, (count, event) => (
       event.type === 'UserFoundReviewNotHelpful' ? count + 1 : count - 1
     )),
