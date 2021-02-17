@@ -1,5 +1,8 @@
 // https://api.biorxiv.org/details/biorxiv/10.1101/641381
 
+import { Doi } from "../../src/types/doi";
+import { SanitisedHtmlFragment } from "../../src/types/sanitised-html-fragment";
+
 const externalArticleVersionPostedOnBiorxiv1 = {
   "doi": "10.1101/641381",
   "title": "Chromatin structure-dependent histone incorporation revealed by a genome-wide deposition assay",
@@ -68,6 +71,14 @@ const externalArticleIndexedByCrossref = `
     </citation>
     ...
 `;
+
+
+
+type PageHeaderViewModel = {
+  doi: Doi,
+  title: SanitisedHtmlFragment,
+  authors: Array<string>,
+}
 
 describe('render-page-header-with-events', () => {
   it.todo('renders inside an header tag');
