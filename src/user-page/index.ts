@@ -33,7 +33,7 @@ type Ports = {
   getAllEvents: GetAllEvents,
   follows: Follows,
   getUserDetails: GetUserDetails,
-  fetchArticle: (doi: Doi) => TE.TaskEither<unknown, {title: HtmlFragment}>,
+  fetchArticle: (doi: Doi) => TE.TaskEither<unknown, { title: HtmlFragment }>,
 };
 
 type Params = {
