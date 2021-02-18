@@ -30,7 +30,7 @@ void (async (): Promise<void> => {
     TE.chain((sheets) => TE.tryCatch(
       async () => sheets.spreadsheets.values.get({
         spreadsheetId: '1RJ_Neh1wwG6X0SkYZHjD-AEC9ykgAcya_8UCVNoE3SA',
-        range: 'Sheet1!A370:S370',
+        range: 'Sheet1!A2:S',
       }),
       constant('unavailable' as const),
     )),
@@ -43,10 +43,12 @@ void (async (): Promise<void> => {
           date: RA.lookup(18)(row),
           link: RA.lookup(6)(row),
           id: RA.lookup(0)(row),
+          journal: RA.lookup(14)(row),
         }),
         sequenceS(O.option),
       ))),
       O.map(RA.compact),
+      O.map(RA.filter((row) => /(biorxiv|medrxiv)/i.test(row.journal))),
       E.fromOption(constant('unavailable' as const)),
     ))),
     T.map(E.fold(
