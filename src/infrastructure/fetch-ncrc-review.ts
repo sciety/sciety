@@ -46,7 +46,7 @@ const getSheets = (): Sheets => {
   return google.sheets('v4');
 };
 
-const getRowNumber: GetRowNumber = () => pipe(
+const getRowNumber: GetRowNumber = (id) => pipe(
   getSheets(),
   TE.right,
   TE.chain((sheets) => TE.tryCatch(
@@ -57,7 +57,17 @@ const getRowNumber: GetRowNumber = () => pipe(
     }),
     constant('unavailable' as const),
   )),
-  TE.map(() => 370),
+  T.map(E.chain(flow(
+    (res) => res?.data?.values,
+    O.fromNullable,
+    O.chain(RA.head),
+    E.fromOption(constant('unavailable' as const)),
+  ))),
+  T.map(E.chainW(flow(
+    RA.findIndex((uuid) => NcrcId.eqNcrcId.equals(NcrcId.fromString(uuid), id)),
+    O.map((n) => n + 1),
+    E.fromOption(constant('not-found' as const)),
+  ))),
 );
 
 const getNcrcReview: GetNcrcReview = (rowNumber) => pipe(
@@ -73,7 +83,7 @@ const getNcrcReview: GetNcrcReview = (rowNumber) => pipe(
   T.map(E.chain(flow(
     (res) => res?.data?.values,
     O.fromNullable,
-    O.chain(RA.lookup(0)),
+    O.chain(RA.head),
     // TODO: ensure that these are strings (codec?)
     O.chain(flow(
       (row) => ({
@@ -133,10 +143,6 @@ export const constructFoundReview = (review: NcrcReview): FoundReview => ({
 
 export const fetchNcrcReview: FetchNcrcReview = flow(
   TE.right,
-  TE.filterOrElse(
-    (id) => NcrcId.eqNcrcId.equals(id, NcrcId.fromString('0c88338d-a401-40f9-8bf8-ef0a43be4548')),
-    constant('not-found' as const),
-  ),
   TE.chain(getRowNumber),
   TE.chain(getNcrcReview),
   TE.map(constructFoundReview),
