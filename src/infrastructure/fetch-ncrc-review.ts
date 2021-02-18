@@ -70,6 +70,12 @@ const getRowNumber = (logger: Logger): GetRowNumber => (id) => pipe(
   T.map(E.chainW(flow(
     RA.findIndex((uuid) => NcrcId.eqNcrcId.equals(NcrcId.fromString(uuid), id)),
     O.map((n) => n + 1),
+    O.altW(() => {
+      logger('error', 'Cannot find NcrcId in NCRC sheet', {
+        ncrcId: id.value,
+      })
+      return O.none;
+    }),
     E.fromOption(constant('not-found' as const)),
   ))),
 );
