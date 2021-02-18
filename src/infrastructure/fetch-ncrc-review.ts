@@ -7,6 +7,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { google, sheets_v4 } from 'googleapis';
+import { Logger } from './logger';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import * as NcrcId from '../types/ncrc-id';
 import Sheets = sheets_v4.Sheets;
@@ -46,7 +47,7 @@ const getSheets = (): Sheets => {
   return google.sheets('v4');
 };
 
-const getRowNumber: GetRowNumber = (id) => pipe(
+const getRowNumber = (logger: Logger): GetRowNumber => (id) => pipe(
   getSheets(),
   TE.right,
   TE.chain((sheets) => TE.tryCatch(
@@ -55,7 +56,10 @@ const getRowNumber: GetRowNumber = (id) => pipe(
       range: 'Sheet1!A:A',
       majorDimension: 'COLUMNS',
     }),
-    constant('unavailable' as const),
+    (error) => {
+      logger('error', 'Error fetching Google sheet', { error });
+      return 'unavailable' as const;
+    },
   )),
   T.map(E.chain(flow(
     (res) => res?.data?.values,
@@ -141,9 +145,9 @@ export const constructFoundReview = (review: NcrcReview): FoundReview => ({
   fullText: constructFullText(review),
 });
 
-export const fetchNcrcReview: FetchNcrcReview = flow(
+export const fetchNcrcReview = (logger: Logger): FetchNcrcReview => flow(
   TE.right,
-  TE.chain(getRowNumber),
+  TE.chain(getRowNumber(logger)),
   TE.chain(getNcrcReview),
   TE.map(constructFoundReview),
 );

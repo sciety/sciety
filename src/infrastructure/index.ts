@@ -91,7 +91,11 @@ export const createInfrastructure = async (): Promise<Adapters> => {
 
   return {
     fetchArticle: createFetchCrossrefArticle(responseCache(getXmlFromCrossrefRestApi, logger), logger),
-    fetchReview: createFetchReview(fetchDataciteReview, fetchHypothesisAnnotation, fetchNcrcReview),
+    fetchReview: createFetchReview(
+      fetchDataciteReview,
+      fetchHypothesisAnnotation,
+      fetchNcrcReview(logger),
+    ),
     fetchStaticFile: createFetchStaticFile(logger),
     searchEuropePmc,
     editorialCommunities,
