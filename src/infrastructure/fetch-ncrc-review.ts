@@ -27,7 +27,7 @@ type FoundReview = {
   url: URL,
 };
 
-type FetchNcrcReview = (id: NcrcId.NcrcId) => TE.TaskEither<'unavailable' | 'not-found', FoundReview>;
+export type FetchNcrcReview = (id: NcrcId.NcrcId) => TE.TaskEither<'unavailable' | 'not-found', FoundReview>;
 
 type GetRowNumber = (id: NcrcId.NcrcId) => TE.TaskEither<'unavailable' | 'not-found', number>;
 

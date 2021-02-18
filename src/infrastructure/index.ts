@@ -10,6 +10,7 @@ import { createFetchCrossrefArticle } from './fetch-crossref-article';
 import { createFetchDataciteReview } from './fetch-datacite-review';
 import { createFetchDataset } from './fetch-dataset';
 import { createFetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
+import { fetchNcrcReview } from './fetch-ncrc-review';
 import { createFetchReview } from './fetch-review';
 import { createFetchStaticFile } from './fetch-static-file';
 import { findReviewsForArticleDoi } from './find-reviews-for-article-doi';
@@ -90,7 +91,7 @@ export const createInfrastructure = async (): Promise<Adapters> => {
 
   return {
     fetchArticle: createFetchCrossrefArticle(responseCache(getXmlFromCrossrefRestApi, logger), logger),
-    fetchReview: createFetchReview(fetchDataciteReview, fetchHypothesisAnnotation),
+    fetchReview: createFetchReview(fetchDataciteReview, fetchHypothesisAnnotation, fetchNcrcReview),
     fetchStaticFile: createFetchStaticFile(logger),
     searchEuropePmc,
     editorialCommunities,

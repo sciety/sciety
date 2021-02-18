@@ -6,7 +6,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { FetchDataciteReview } from './fetch-datacite-review';
 import { FetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
-import { fetchNcrcReview } from './fetch-ncrc-review';
+import { FetchNcrcReview } from './fetch-ncrc-review';
 import { Doi } from '../types/doi';
 import { HtmlFragment } from '../types/html-fragment';
 import { HypothesisAnnotationId } from '../types/hypothesis-annotation-id';
@@ -20,6 +20,7 @@ export type FetchReview = (id: ReviewId) => TE.TaskEither<'unavailable' | 'not-f
 export const createFetchReview = (
   fetchDataciteReview: FetchDataciteReview,
   fetchHypothesisAnnotation: FetchHypothesisAnnotation,
+  fetchNcrcReview: FetchNcrcReview,
 ): FetchReview => (
   (id) => {
     if (id instanceof Doi) {

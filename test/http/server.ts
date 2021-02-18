@@ -50,6 +50,7 @@ export const createTestServer = async (): Promise<TestServer> => {
   const fetchReview = createFetchReview(
     createFetchDataciteReview(fetchDataCiteDataset, dummyLogger),
     createFetchHypothesisAnnotation(shouldNotBeCalled, dummyLogger),
+    () => TE.left('unavailable'),
   );
 
   const adapters: Adapters = {
