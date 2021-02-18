@@ -1,12 +1,62 @@
+import { sequenceS } from 'fp-ts/Apply';
+import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
+import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
+import { constant, flow, pipe } from 'fp-ts/function';
+import { google, sheets_v4 } from 'googleapis';
+import Sheets = sheets_v4.Sheets;
+
+const getSheets = (): Sheets => {
+  const auth = new google.auth.GoogleAuth({
+    keyFile: '/var/run/secrets/app/.gcp-ncrc-key.json',
+    scopes: ['https://www.googleapis.com/auth/cloud-platform', 'https://www.googleapis.com/auth/spreadsheets.readonly'],
+  });
+
+  google.options({
+    auth,
+  });
+
+  return google.sheets('v4');
+};
+
 void (async (): Promise<void> => {
   process.stdout.write('Date,Article DOI,Review ID\n');
-  const ncrcReviews = [{
-    date: '2021-02-04',
-    link: 'https://medrxiv.org/cgi/content/short/2021.01.29.21250653',
-    id: '0c88338d-a401-40f9-8bf8-ef0a43be4548',
-  }];
-  ncrcReviews.forEach((ncrcReview) => {
-    const [,doiSuffix] = new RegExp('.*/([^/]*)$').exec(ncrcReview.link) ?? [];
-    process.stdout.write(`${ncrcReview.date},10.1101/${doiSuffix},ncrc:${ncrcReview.id}\n`);
-  });
+
+  await pipe(
+    getSheets(),
+    TE.right,
+    TE.chain((sheets) => TE.tryCatch(
+      async () => sheets.spreadsheets.values.get({
+        spreadsheetId: '1RJ_Neh1wwG6X0SkYZHjD-AEC9ykgAcya_8UCVNoE3SA',
+        range: 'Sheet1!A370:S370',
+      }),
+      constant('unavailable' as const),
+    )),
+    T.map(E.chain(flow(
+      (res) => res?.data?.values,
+      O.fromNullable,
+      O.chain(RA.head),
+      O.chain(flow(
+        RA.map(String),
+        (row) => ({
+          date: RA.lookup(18)(row),
+          link: RA.lookup(6)(row),
+          id: RA.lookup(0)(row),
+        }),
+        sequenceS(O.option),
+      )),
+      E.fromOption(constant('unavailable' as const)),
+    ))),
+    T.map(E.fold(
+      () => {
+        process.stderr.write('error');
+      },
+      (ncrcReview) => {
+        const [, doiSuffix] = new RegExp('.*/([^/]*)$').exec(ncrcReview.link) ?? [];
+        process.stdout.write(`${ncrcReview.date},10.1101/${doiSuffix},ncrc:${ncrcReview.id}\n`);
+      },
+    )),
+  )();
 })();
