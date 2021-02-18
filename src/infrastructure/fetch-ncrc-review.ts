@@ -46,7 +46,19 @@ const getSheets = (): Sheets => {
   return google.sheets('v4');
 };
 
-const getRowNumber: GetRowNumber = () => TE.right(370);
+const getRowNumber: GetRowNumber = () => pipe(
+  getSheets(),
+  TE.right,
+  TE.chain((sheets) => TE.tryCatch(
+    async () => sheets.spreadsheets.values.get({
+      spreadsheetId: '1RJ_Neh1wwG6X0SkYZHjD-AEC9ykgAcya_8UCVNoE3SA',
+      range: 'Sheet1!A:A',
+      majorDimension: 'COLUMNS',
+    }),
+    constant('unavailable' as const),
+  )),
+  TE.map(() => 370),
+);
 
 const getNcrcReview: GetNcrcReview = (rowNumber) => pipe(
   getSheets(),
