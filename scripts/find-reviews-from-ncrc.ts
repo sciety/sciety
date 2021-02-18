@@ -21,6 +21,17 @@ const getSheets = (): Sheets => {
   return google.sheets('v4');
 };
 
+const reviewFromRow = flow(
+  RA.map(String),
+  (row) => ({
+    date: RA.lookup(18)(row),
+    link: RA.lookup(6)(row),
+    id: RA.lookup(0)(row),
+    journal: RA.lookup(14)(row),
+  }),
+  sequenceS(O.option),
+);
+
 void (async (): Promise<void> => {
   process.stdout.write('Date,Article DOI,Review ID\n');
 
@@ -37,18 +48,11 @@ void (async (): Promise<void> => {
     T.map(E.chain(flow(
       (res) => res?.data?.values,
       O.fromNullable,
-      O.map(RA.map(flow(
-        RA.map(String),
-        (row) => ({
-          date: RA.lookup(18)(row),
-          link: RA.lookup(6)(row),
-          id: RA.lookup(0)(row),
-          journal: RA.lookup(14)(row),
-        }),
-        sequenceS(O.option),
-      ))),
-      O.map(RA.compact),
-      O.map(RA.filter((row) => /(biorxiv|medrxiv)/i.test(row.journal))),
+      O.map(flow(
+        RA.map(reviewFromRow),
+        RA.compact,
+        RA.filter((row) => /(biorxiv|medrxiv)/i.test(row.journal)),
+      )),
       E.fromOption(constant('unavailable' as const)),
     ))),
     T.map(E.fold(
