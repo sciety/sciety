@@ -61,10 +61,14 @@ const getRowNumber = (logger: Logger): GetRowNumber => (id) => pipe(
       return 'unavailable' as const;
     },
   )),
-  T.map(E.chain(flow(
-    (res) => res?.data?.values,
+  T.map(E.chain((res) => pipe(
+    res?.data?.values,
     O.fromNullable,
     O.chain(RA.head),
+    O.altW(() => {
+      logger('error', 'Empty response from Google sheet api', { res });
+      return O.none;
+    }),
     E.fromOption(constant('unavailable' as const)),
   ))),
   T.map(E.chainW(flow(
@@ -73,7 +77,7 @@ const getRowNumber = (logger: Logger): GetRowNumber => (id) => pipe(
     O.altW(() => {
       logger('error', 'Cannot find NcrcId in NCRC sheet', {
         ncrcId: id.value,
-      })
+      });
       return O.none;
     }),
     E.fromOption(constant('not-found' as const)),
@@ -93,10 +97,14 @@ const getNcrcReview = (logger: Logger): GetNcrcReview => (rowNumber) => pipe(
       return 'unavailable' as const;
     },
   )),
-  T.map(E.chain(flow(
-    (res) => res?.data?.values,
+  T.map(E.chain((res) => pipe(
+    res?.data?.values,
     O.fromNullable,
     O.chain(RA.head),
+    O.altW(() => {
+      logger('error', 'Empty response from Google sheet api', { res });
+      return O.none;
+    }),
     // TODO: ensure that these are strings (codec?)
     O.chain(flow(
       (row) => ({
