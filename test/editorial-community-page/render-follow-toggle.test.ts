@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { JSDOM } from 'jsdom';
-import { createRenderFollowToggle, Follows } from '../../src/editorial-community-page/render-follow-toggle';
+import { Follows, renderFollowToggle } from '../../src/editorial-community-page/render-follow-toggle';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 import { toUserId } from '../../src/types/user-id';
 
@@ -13,10 +13,9 @@ describe('render-follow-toggle', () => {
         const editorialCommunityId = new EditorialCommunityId('');
 
         const follows: Follows = () => T.of(true);
-        const renderFollowToggle = createRenderFollowToggle(follows);
 
         const rendered = JSDOM.fragment(
-          await renderFollowToggle(O.some(userId), editorialCommunityId)(),
+          await renderFollowToggle(follows)(O.some(userId), editorialCommunityId)(),
         );
 
         const button = rendered.querySelector('button');
@@ -32,9 +31,8 @@ describe('render-follow-toggle', () => {
         const editorialCommunityId = new EditorialCommunityId('');
 
         const follows: Follows = () => T.of(false);
-        const renderFollowToggle = createRenderFollowToggle(follows);
 
-        const rendered = JSDOM.fragment(await renderFollowToggle(O.some(userId), editorialCommunityId)());
+        const rendered = JSDOM.fragment(await renderFollowToggle(follows)(O.some(userId), editorialCommunityId)());
 
         const button = rendered.querySelector('button');
         const buttonText = button?.textContent;
@@ -49,9 +47,8 @@ describe('render-follow-toggle', () => {
       const editorialCommunityId = new EditorialCommunityId('');
 
       const follows: Follows = () => T.of(false);
-      const renderFollowToggle = createRenderFollowToggle(follows);
 
-      const rendered = JSDOM.fragment(await renderFollowToggle(O.none, editorialCommunityId)());
+      const rendered = JSDOM.fragment(await renderFollowToggle(follows)(O.none, editorialCommunityId)());
 
       const button = rendered.querySelector('button');
       const buttonText = button?.textContent;

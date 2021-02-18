@@ -4,13 +4,13 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { constructFeedItem, GetArticle } from './construct-feed-item';
 import { getDescription } from './get-description';
-import { createGetMostRecentEvents, GetAllEvents } from './get-most-recent-events';
-import { createProjectFollowerIds } from './project-follower-ids';
-import { createRenderDescription } from './render-description';
-import { createRenderFeed, RenderFeed } from './render-feed';
-import { createRenderFollowToggle, Follows } from './render-follow-toggle';
-import { createRenderFollowers } from './render-followers';
-import { createRenderPage, RenderPage } from './render-page';
+import { GetAllEvents, getMostRecentEvents } from './get-most-recent-events';
+import { projectFollowerIds } from './project-follower-ids';
+import { renderDescription } from './render-description';
+import { renderFeed, RenderFeed } from './render-feed';
+import { Follows, renderFollowToggle } from './render-follow-toggle';
+import { renderFollowers } from './render-followers';
+import { renderPage, RenderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
 import { renderSummaryFeedList } from '../shared-components/render-summary-feed-list';
 import { EditorialCommunity } from '../types/editorial-community';
@@ -30,11 +30,11 @@ type Ports = {
   follows: Follows,
 };
 
-const buildRenderFeed = (ports: Ports): RenderFeed => createRenderFeed(
-  createGetMostRecentEvents(ports.getAllEvents, 20),
+const buildRenderFeed = (ports: Ports): RenderFeed => renderFeed(
+  getMostRecentEvents(ports.getAllEvents, 20),
   constructFeedItem(ports.fetchArticle),
   renderSummaryFeedList,
-  createRenderFollowToggle(ports.follows),
+  renderFollowToggle(ports.follows),
 );
 
 export type Params = {
@@ -44,30 +44,26 @@ export type Params = {
 
 type EditorialCommunityPage = (params: Params) => ReturnType<RenderPage>;
 
-export const editorialCommunityPage = (ports: Ports): EditorialCommunityPage => {
-  const renderPage = createRenderPage(
-    renderPageHeader,
-    createRenderDescription(getDescription(ports.fetchStaticFile)),
-    buildRenderFeed(ports),
-    createRenderFollowers(createProjectFollowerIds(ports.getAllEvents)),
+export const editorialCommunityPage = (ports: Ports): EditorialCommunityPage => (params) => {
+  const editorialCommunityId = new EditorialCommunityId(params.id ?? '');
+  const userId = pipe(
+    params.user,
+    O.map((user) => user.id),
   );
-  return (params) => {
-    const editorialCommunityId = new EditorialCommunityId(params.id ?? '');
-    const userId = pipe(
-      params.user,
-      O.map((user) => user.id),
-    );
-
-    return pipe(
-      editorialCommunityId,
-      ports.getEditorialCommunity,
-      T.chain(O.fold(
-        () => TE.left({
-          type: 'not-found',
-          message: toHtmlFragment(`Editorial community id '${editorialCommunityId.value}' not found`),
-        } as const),
-        (editorialCommunity) => renderPage(editorialCommunity, userId),
-      )),
-    );
-  };
+  return pipe(
+    editorialCommunityId,
+    ports.getEditorialCommunity,
+    T.chain(O.fold(
+      () => TE.left({
+        type: 'not-found',
+        message: toHtmlFragment(`Editorial community id '${editorialCommunityId.value}' not found`),
+      } as const),
+      (editorialCommunity) => renderPage(
+        renderPageHeader,
+        renderDescription(getDescription(ports.fetchStaticFile)),
+        buildRenderFeed(ports),
+        renderFollowers(projectFollowerIds(ports.getAllEvents)),
+      )(editorialCommunity, userId),
+    )),
+  );
 };

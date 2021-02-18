@@ -1,5 +1,5 @@
 import * as T from 'fp-ts/Task';
-import { createProjectFollowerIds, GetAllEvents } from '../../src/editorial-community-page/project-follower-ids';
+import { GetAllEvents, projectFollowerIds } from '../../src/editorial-community-page/project-follower-ids';
 import { DomainEvent, UserFollowedEditorialCommunityEvent } from '../../src/types/domain-events';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 import { generate } from '../../src/types/event-id';
@@ -24,8 +24,7 @@ describe('project-follower-ids', () => {
       },
     ];
     const getAllEvents: GetAllEvents = T.of(events);
-    const projectFollowerIds = createProjectFollowerIds(getAllEvents);
-    const followerIds = await projectFollowerIds(new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'))();
+    const followerIds = await projectFollowerIds(getAllEvents)(new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'))();
 
     expect(followerIds).toHaveLength(2);
   });
@@ -41,8 +40,7 @@ describe('project-follower-ids', () => {
       },
     ];
     const getAllEvents: GetAllEvents = T.of(events);
-    const projectFollowerIds = createProjectFollowerIds(getAllEvents);
-    const followerIds = await projectFollowerIds(new EditorialCommunityId('other'))();
+    const followerIds = await projectFollowerIds(getAllEvents)(new EditorialCommunityId('other'))();
 
     expect(followerIds).toHaveLength(0);
   });
@@ -56,8 +54,7 @@ describe('project-follower-ids', () => {
       },
     ];
     const getAllEvents: GetAllEvents = T.of(events);
-    const projectFollowerIds = createProjectFollowerIds(getAllEvents);
-    const followerIds = await projectFollowerIds(new EditorialCommunityId('something'))();
+    const followerIds = await projectFollowerIds(getAllEvents)(new EditorialCommunityId('something'))();
 
     expect(followerIds).toHaveLength(0);
   });
@@ -82,8 +79,7 @@ describe('project-follower-ids', () => {
     ];
 
     const getAllEvents: GetAllEvents = T.of(events);
-    const projectFollowerIds = createProjectFollowerIds(getAllEvents);
-    const followerIds = await projectFollowerIds(new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'))();
+    const followerIds = await projectFollowerIds(getAllEvents)(new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'))();
 
     expect(followerIds).toHaveLength(0);
   });

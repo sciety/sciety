@@ -1,5 +1,5 @@
 import * as T from 'fp-ts/Task';
-import { createGetMostRecentEvents, GetAllEvents } from '../../src/editorial-community-page/get-most-recent-events';
+import { GetAllEvents, getMostRecentEvents } from '../../src/editorial-community-page/get-most-recent-events';
 import { Doi } from '../../src/types/doi';
 import { DomainEvent, editorialCommunityReviewedArticle } from '../../src/types/domain-events';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
@@ -16,8 +16,7 @@ describe('get-most-recent-events', () => {
       editorialCommunityReviewedArticle(editorialCommunity2, new Doi('10.1101/123456'), toReviewId('hypothesis:reviewC')),
     ];
     const getAllEvents: GetAllEvents = T.of(allEvents);
-    const getMostRecentEvents = createGetMostRecentEvents(getAllEvents, 20);
-    const feed = await getMostRecentEvents(editorialCommunity1)();
+    const feed = await getMostRecentEvents(getAllEvents, 20)(editorialCommunity1)();
 
     expect(feed).toHaveLength(1);
     expect(feed[0]).toStrictEqual(allEvents[1]);

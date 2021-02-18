@@ -47,7 +47,7 @@ const render = (components: Components): string => `
   </div>
 `;
 
-export const createRenderPage = (
+export const renderPage = (
   renderPageHeader: RenderPageHeader,
   renderDescription: RenderDescription,
   renderFeed: RenderFeed,

@@ -27,7 +27,7 @@ const renderUnfollowButton = (editorialCommunityId: EditorialCommunityId): strin
   </form>
 `;
 
-export const createRenderFollowToggle = (follows: Follows): RenderFollowToggle => (
+export const renderFollowToggle = (follows: Follows): RenderFollowToggle => (
   (userId, editorialCommunityId) => (
     pipe(
       userId,

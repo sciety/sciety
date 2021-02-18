@@ -7,7 +7,7 @@ type RenderDescription = (editorialCommunity: EditorialCommunity) => T.Task<Html
 
 export type GetEditorialCommunityDescription = (editorialCommunity: EditorialCommunity) => T.Task<string>;
 
-export const createRenderDescription = (
+export const renderDescription = (
   getEditorialCommunityDescription: GetEditorialCommunityDescription,
 ): RenderDescription => flow(
   getEditorialCommunityDescription,

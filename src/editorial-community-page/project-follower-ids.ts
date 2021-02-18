@@ -19,7 +19,7 @@ UserFollowedEditorialCommunityEvent |
 UserUnfollowedEditorialCommunityEvent) => isUserFollowedEditorialCommunityEvent(event)
   || isUserUnfollowedEditorialCommunityEvent(event);
 
-const projectFollowerIds = (editorialCommunityId: EditorialCommunityId) => (
+const projection = (editorialCommunityId: EditorialCommunityId) => (
   events: ReadonlyArray<DomainEvent>,
 ): ReadonlyArray<UserId> => (
   events.filter(isInterestingEvent)
@@ -35,9 +35,9 @@ const projectFollowerIds = (editorialCommunityId: EditorialCommunityId) => (
   )
 );
 
-export const createProjectFollowerIds = (getAllEvents: GetAllEvents): ProjectFollowerIds => (
+export const projectFollowerIds = (getAllEvents: GetAllEvents): ProjectFollowerIds => (
   (editorialCommunityId) => pipe(
     getAllEvents,
-    T.map(projectFollowerIds(editorialCommunityId)),
+    T.map(projection(editorialCommunityId)),
   )
 );

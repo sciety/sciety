@@ -2,7 +2,7 @@ import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
-import { createRenderFeed, GetEvents, RenderSummaryFeedList } from '../../src/editorial-community-page/render-feed';
+import { GetEvents, renderFeed, RenderSummaryFeedList } from '../../src/editorial-community-page/render-feed';
 import { RenderFollowToggle } from '../../src/editorial-community-page/render-follow-toggle';
 import { Doi } from '../../src/types/doi';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
@@ -25,7 +25,7 @@ describe('render feed', () => {
   describe('with community events', () => {
     it('returns a list of events', async () => {
       const renderSummaryFeedList: RenderSummaryFeedList = () => O.some(toHtmlFragment('a list'));
-      const renderFeed = createRenderFeed(
+      const component = renderFeed(
         stubGetEvents,
         () => () => T.of({
           avatar: '',
@@ -39,7 +39,7 @@ describe('render feed', () => {
         renderSummaryFeedList,
         stubRenderFollowToggle,
       );
-      const rendered = await renderFeed(community, aUserId)();
+      const rendered = await component(community, aUserId)();
 
       expect(rendered).toContain('a list');
     });
@@ -48,7 +48,7 @@ describe('render feed', () => {
   describe('without community events', () => {
     it('returns fallback text', async () => {
       const renderSummaryFeedList: RenderSummaryFeedList = () => O.none;
-      const renderFeed = createRenderFeed(
+      const component = renderFeed(
         stubGetEvents,
         () => () => T.of({
           avatar: '',
@@ -62,7 +62,7 @@ describe('render feed', () => {
         renderSummaryFeedList,
         stubRenderFollowToggle,
       );
-      const rendered = await renderFeed(community, aUserId)();
+      const rendered = await component(community, aUserId)();
 
       expect(rendered).toContain('community hasn’t evaluated');
     });
