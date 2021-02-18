@@ -88,12 +88,18 @@ find-prereview-reviews: build
 	$(DOCKER_COMPOSE) run -T app \
 		npx ts-node scripts/find-reviews-from-prereview > ./data/reviews/10360d97-bf52-4aef-b2fa-2f60d319edd7.csv
 
+find-ncrc-reviews: export TARGET = dev
+find-ncrc-reviews: build
+	$(DOCKER_COMPOSE) run -T app \
+		npx ts-node scripts/find-reviews-from-ncrc > ./data/reviews/62f9b0d0-8d43-4766-a52a-ce02af61bc6a.csv
+
 COMMUNITY_SCRIPTS := \
 	find-review-commons-reviews \
 	find-elife-reviews \
 	find-peerj-reviews \
 	find-pci-reviews \
-	find-prereview-reviews
+	find-prereview-reviews \
+	find-ncrc-reviews
 
 sort-event-data:
 	find data -type f | xargs -I % sort -g -o % %
