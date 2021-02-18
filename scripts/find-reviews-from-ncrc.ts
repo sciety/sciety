@@ -37,8 +37,7 @@ void (async (): Promise<void> => {
     T.map(E.chain(flow(
       (res) => res?.data?.values,
       O.fromNullable,
-      O.chain(RA.head),
-      O.chain(flow(
+      O.map(RA.map(flow(
         RA.map(String),
         (row) => ({
           date: RA.lookup(18)(row),
@@ -46,17 +45,18 @@ void (async (): Promise<void> => {
           id: RA.lookup(0)(row),
         }),
         sequenceS(O.option),
-      )),
+      ))),
+      O.map(RA.compact),
       E.fromOption(constant('unavailable' as const)),
     ))),
     T.map(E.fold(
       () => {
         process.stderr.write('error');
       },
-      (ncrcReview) => {
+      RA.map((ncrcReview) => {
         const [, doiSuffix] = new RegExp('.*/([^/]*)$').exec(ncrcReview.link) ?? [];
-        process.stdout.write(`${ncrcReview.date},10.1101/${doiSuffix},ncrc:${ncrcReview.id}\n`);
-      },
+        return process.stdout.write(`${ncrcReview.date},10.1101/${doiSuffix},ncrc:${ncrcReview.id}\n`);
+      }),
     )),
   )();
 })();
