@@ -29,7 +29,7 @@ type FoundReview = {
 
 type FetchNcrcReview = (id: NcrcId.NcrcId) => TE.TaskEither<'unavailable' | 'not-found', FoundReview>;
 
-type GetNcrcReview = (id: NcrcId.NcrcId) => TE.TaskEither<'unavailable' | 'not-found', NcrcReview>;
+type GetNcrcReview = (row: number) => TE.TaskEither<'unavailable' | 'not-found', NcrcReview>;
 
 const getSheets = (): Sheets => {
   const auth = new google.auth.GoogleAuth({
@@ -44,13 +44,13 @@ const getSheets = (): Sheets => {
   return google.sheets('v4');
 };
 
-const getNcrcReview: GetNcrcReview = () => pipe(
+const getNcrcReview: GetNcrcReview = (rowNumber) => pipe(
   getSheets(),
   TE.right,
   TE.chain((sheets) => TE.tryCatch(
     async () => sheets.spreadsheets.values.get({
       spreadsheetId: '1RJ_Neh1wwG6X0SkYZHjD-AEC9ykgAcya_8UCVNoE3SA',
-      range: 'Sheet1!A370:AF370',
+      range: `Sheet1!A${rowNumber}:AF${rowNumber}`,
     }),
     constant('unavailable' as const),
   )),
@@ -121,6 +121,7 @@ export const fetchNcrcReview: FetchNcrcReview = flow(
     (id) => NcrcId.eqNcrcId.equals(id, NcrcId.fromString('0c88338d-a401-40f9-8bf8-ef0a43be4548')),
     constant('not-found' as const),
   ),
+  TE.map(() => 370),
   TE.chain(getNcrcReview),
   TE.map(constructFoundReview),
 );
