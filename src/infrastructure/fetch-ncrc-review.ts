@@ -74,7 +74,7 @@ const getRowNumber = (logger: Logger): GetRowNumber => (id) => pipe(
   ))),
 );
 
-const getNcrcReview: GetNcrcReview = (rowNumber) => pipe(
+const getNcrcReview = (logger: Logger): GetNcrcReview => (rowNumber) => pipe(
   getSheets(),
   TE.right,
   TE.chain((sheets) => TE.tryCatch(
@@ -82,7 +82,10 @@ const getNcrcReview: GetNcrcReview = (rowNumber) => pipe(
       spreadsheetId: '1RJ_Neh1wwG6X0SkYZHjD-AEC9ykgAcya_8UCVNoE3SA',
       range: `Sheet1!A${rowNumber}:AF${rowNumber}`,
     }),
-    constant('unavailable' as const),
+    (error) => {
+      logger('error', 'Error fetching Google sheet', { error });
+      return 'unavailable' as const;
+    },
   )),
   T.map(E.chain(flow(
     (res) => res?.data?.values,
@@ -148,6 +151,6 @@ export const constructFoundReview = (review: NcrcReview): FoundReview => ({
 export const fetchNcrcReview = (logger: Logger): FetchNcrcReview => flow(
   TE.right,
   TE.chain(getRowNumber(logger)),
-  TE.chain(getNcrcReview),
+  TE.chain(getNcrcReview(logger)),
   TE.map(constructFoundReview),
 );
