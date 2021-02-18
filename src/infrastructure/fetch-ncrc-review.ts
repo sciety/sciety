@@ -29,6 +29,8 @@ type FoundReview = {
 
 type FetchNcrcReview = (id: NcrcId.NcrcId) => TE.TaskEither<'unavailable' | 'not-found', FoundReview>;
 
+type GetRowNumber = (id: NcrcId.NcrcId) => TE.TaskEither<'unavailable' | 'not-found', number>;
+
 type GetNcrcReview = (row: number) => TE.TaskEither<'unavailable' | 'not-found', NcrcReview>;
 
 const getSheets = (): Sheets => {
@@ -43,6 +45,8 @@ const getSheets = (): Sheets => {
 
   return google.sheets('v4');
 };
+
+const getRowNumber: GetRowNumber = () => TE.right(370);
 
 const getNcrcReview: GetNcrcReview = (rowNumber) => pipe(
   getSheets(),
@@ -121,7 +125,7 @@ export const fetchNcrcReview: FetchNcrcReview = flow(
     (id) => NcrcId.eqNcrcId.equals(id, NcrcId.fromString('0c88338d-a401-40f9-8bf8-ef0a43be4548')),
     constant('not-found' as const),
   ),
-  TE.map(() => 370),
+  TE.chain(getRowNumber),
   TE.chain(getNcrcReview),
   TE.map(constructFoundReview),
 );
