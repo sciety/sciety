@@ -21,23 +21,12 @@ import { getEventsFromDatabase } from './get-events-from-database';
 import { createGetTwitterResponse } from './get-twitter-response';
 import { createGetTwitterUserDetails } from './get-twitter-user-details';
 import { createGetXmlFromCrossrefRestApi } from './get-xml-from-crossref-rest-api';
-import { createEditorialCommunityRepository } from './in-memory-editorial-communities';
-import {
-  createJsonSerializer, createRTracerLogger, createStreamLogger, Logger,
-} from './logger';
+import { inMemoryEditorialCommunityRepository } from './in-memory-editorial-communities';
+import { createJsonSerializer, createRTracerLogger, createStreamLogger } from './logger';
 import { responseCache } from './response-cache';
 import { createSearchEuropePmc } from './search-europe-pmc';
 import { bootstrapEditorialCommunities } from '../data/bootstrap-editorial-communities';
-import { EditorialCommunityRepository } from '../types/editorial-community-repository';
 import { Json } from '../types/json';
-
-const populateEditorialCommunities = (logger: Logger): EditorialCommunityRepository => {
-  const repository = createEditorialCommunityRepository(logger);
-  for (const editorialCommunity of bootstrapEditorialCommunities) {
-    void repository.add(editorialCommunity)();
-  }
-  return repository;
-};
 
 export const createInfrastructure = async (): Promise<Adapters> => {
   const logger = createRTracerLogger(
@@ -68,7 +57,7 @@ export const createInfrastructure = async (): Promise<Adapters> => {
   const getXmlFromCrossrefRestApi = createGetXmlFromCrossrefRestApi(logger);
   const fetchDataset = createFetchDataset(logger);
   const searchEuropePmc = createSearchEuropePmc(getJsonWithRetries, logger);
-  const editorialCommunities = populateEditorialCommunities(logger);
+  const editorialCommunities = inMemoryEditorialCommunityRepository(logger, bootstrapEditorialCommunities);
   const pool = new Pool();
   await pool.query(`
     CREATE TABLE IF NOT EXISTS events (

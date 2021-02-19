@@ -15,7 +15,7 @@ import { FetchDataset } from '../../src/infrastructure/fetch-dataset';
 import { fetchHypothesisAnnotation } from '../../src/infrastructure/fetch-hypothesis-annotation';
 import { fetchReview } from '../../src/infrastructure/fetch-review';
 import { findReviewsForArticleDoi } from '../../src/infrastructure/find-reviews-for-article-doi';
-import { createEditorialCommunityRepository } from '../../src/infrastructure/in-memory-editorial-communities';
+import { inMemoryEditorialCommunityRepository } from '../../src/infrastructure/in-memory-editorial-communities';
 import { EditorialCommunityRepository } from '../../src/types/editorial-community-repository';
 import { FollowList } from '../../src/types/follow-list';
 import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
@@ -29,10 +29,7 @@ type TestServer = {
 };
 
 export const createTestServer = async (): Promise<TestServer> => {
-  const editorialCommunities = createEditorialCommunityRepository(dummyLogger);
-  for (const editorialCommunity of bootstrapEditorialCommunities) {
-    await editorialCommunities.add(editorialCommunity)();
-  }
+  const editorialCommunities = inMemoryEditorialCommunityRepository(dummyLogger, bootstrapEditorialCommunities);
   const fetchDataCiteDataset: FetchDataset = async () => (
     clownface({ dataset: datasetFactory(), term: namedNode('http://example.com/some-datacite-node') })
       .addOut(schema.datePublished, literal('2020-02-20', schema.Date))

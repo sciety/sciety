@@ -1,7 +1,8 @@
+import * as NEA from 'fp-ts/NonEmptyArray';
 import { EditorialCommunity } from '../types/editorial-community';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 
-const editorialCommunities: Array<EditorialCommunity> = [
+const editorialCommunities: NEA.NonEmptyArray<EditorialCommunity> = [
   {
     id: new EditorialCommunityId('10360d97-bf52-4aef-b2fa-2f60d319edd7'),
     name: 'PREreview',

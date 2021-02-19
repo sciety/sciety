@@ -1,5 +1,5 @@
 import * as O from 'fp-ts/Option';
-import { createEditorialCommunityRepository } from '../../src/infrastructure/in-memory-editorial-communities';
+import { inMemoryEditorialCommunityRepository } from '../../src/infrastructure/in-memory-editorial-communities';
 import { EditorialCommunity } from '../../src/types/editorial-community';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 import { EditorialCommunityRepository } from '../../src/types/editorial-community-repository';
@@ -17,8 +17,7 @@ describe('in-memory-editorial-communities', () => {
   };
 
   beforeEach(async () => {
-    repository = createEditorialCommunityRepository(dummyLogger);
-    await repository.add(community)();
+    repository = inMemoryEditorialCommunityRepository(dummyLogger, [community]);
   });
 
   describe('lookup', () => {
