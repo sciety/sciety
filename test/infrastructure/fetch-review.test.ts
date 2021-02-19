@@ -7,7 +7,7 @@ import { pipe } from 'fp-ts/function';
 import { FetchDataciteReview } from '../../src/infrastructure/fetch-datacite-review';
 import { FetchHypothesisAnnotation } from '../../src/infrastructure/fetch-hypothesis-annotation';
 import { FetchNcrcReview } from '../../src/infrastructure/fetch-ncrc-review';
-import { createFetchReview } from '../../src/infrastructure/fetch-review';
+import { fetchReview } from '../../src/infrastructure/fetch-review';
 import { Doi } from '../../src/types/doi';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { HypothesisAnnotationId } from '../../src/types/hypothesis-annotation-id';
@@ -24,8 +24,8 @@ const fetchedReview = {
 describe('fetch-review', () => {
   it('returns a Datacite review when given a DOI', async () => {
     const fetchDataciteReview: FetchDataciteReview = () => TE.right(fetchedReview);
-    const fetchReview = createFetchReview(fetchDataciteReview, shouldNotBeCalled, shouldNotBeCalled);
-    const review = await fetchReview(reviewDoi)();
+    const fetcher = fetchReview(fetchDataciteReview, shouldNotBeCalled, shouldNotBeCalled);
+    const review = await fetcher(reviewDoi)();
 
     expect(review).toStrictEqual(E.right(fetchedReview));
   });
@@ -35,16 +35,16 @@ describe('fetch-review', () => {
       fullText: pipe('Very good', toHtmlFragment, O.some),
       url: new URL('https://example.com'),
     });
-    const fetchReview = createFetchReview(shouldNotBeCalled, fetchHypothesisAnnotation, shouldNotBeCalled);
-    const review = await fetchReview(new HypothesisAnnotationId('fhAtGNVDEemkyCM-sRPpVQ'))();
+    const fetcher = fetchReview(shouldNotBeCalled, fetchHypothesisAnnotation, shouldNotBeCalled);
+    const review = await fetcher(new HypothesisAnnotationId('fhAtGNVDEemkyCM-sRPpVQ'))();
 
     expect(review).toStrictEqual(E.right(fetchedReview));
   });
 
   it('returns an Ncrc review when given a NcrcId', async () => {
     const fetchNcrcReview: FetchNcrcReview = () => TE.right(fetchedReview);
-    const fetchReview = createFetchReview(shouldNotBeCalled, shouldNotBeCalled, fetchNcrcReview);
-    const review = await fetchReview(NcrcId.fromString('foo'))();
+    const fetcher = fetchReview(shouldNotBeCalled, shouldNotBeCalled, fetchNcrcReview);
+    const review = await fetcher(NcrcId.fromString('foo'))();
 
     expect(review).toStrictEqual(E.right(fetchedReview));
   });

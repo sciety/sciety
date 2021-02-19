@@ -7,11 +7,11 @@ import { createBiorxivCache } from './biorxiv-cache';
 import { createCommitEvents } from './commit-events';
 import { createEventSourceFollowListRepository } from './event-sourced-follow-list-repository';
 import { createFetchCrossrefArticle } from './fetch-crossref-article';
-import { createFetchDataciteReview } from './fetch-datacite-review';
+import { fetchDataciteReview } from './fetch-datacite-review';
 import { createFetchDataset } from './fetch-dataset';
-import { createFetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
+import { fetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
 import { fetchNcrcReview } from './fetch-ncrc-review';
-import { createFetchReview } from './fetch-review';
+import { fetchReview } from './fetch-review';
 import { fetchStaticFile } from './fetch-static-file';
 import { findReviewsForArticleDoi } from './find-reviews-for-article-doi';
 import { createFollows } from './follows';
@@ -67,8 +67,6 @@ export const createInfrastructure = async (): Promise<Adapters> => {
 
   const getXmlFromCrossrefRestApi = createGetXmlFromCrossrefRestApi(logger);
   const fetchDataset = createFetchDataset(logger);
-  const fetchDataciteReview = createFetchDataciteReview(fetchDataset, logger);
-  const fetchHypothesisAnnotation = createFetchHypothesisAnnotation(getJson, logger);
   const searchEuropePmc = createSearchEuropePmc(getJsonWithRetries, logger);
   const editorialCommunities = populateEditorialCommunities(logger);
   const pool = new Pool();
@@ -91,9 +89,9 @@ export const createInfrastructure = async (): Promise<Adapters> => {
 
   return {
     fetchArticle: createFetchCrossrefArticle(responseCache(getXmlFromCrossrefRestApi, logger), logger),
-    fetchReview: createFetchReview(
-      fetchDataciteReview,
-      fetchHypothesisAnnotation,
+    fetchReview: fetchReview(
+      fetchDataciteReview(fetchDataset, logger),
+      fetchHypothesisAnnotation(getJson, logger),
       fetchNcrcReview(logger),
     ),
     fetchStaticFile: fetchStaticFile(logger),

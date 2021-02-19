@@ -3,7 +3,7 @@ import { schema } from '@tpluscode/rdf-ns-builders';
 import clownface from 'clownface';
 import * as E from 'fp-ts/Either';
 import datasetFactory from 'rdf-dataset-indexed';
-import { createFetchDataciteReview } from '../../src/infrastructure/fetch-datacite-review';
+import { fetchDataciteReview } from '../../src/infrastructure/fetch-datacite-review';
 import { FetchDataset, FetchDatasetError } from '../../src/infrastructure/fetch-dataset';
 import { Doi } from '../../src/types/doi';
 import { dummyLogger } from '../dummy-logger';
@@ -18,7 +18,7 @@ describe('fetch-datacite-review', () => {
           .addOut(schema.datePublished, literal('2020-02-20', schema.Date))
           .addOut(schema.description, 'The full text')
       );
-      const fetchReview = createFetchDataciteReview(fetchDataset, dummyLogger);
+      const fetchReview = fetchDataciteReview(fetchDataset, dummyLogger);
       const review = await fetchReview(reviewDoi)();
 
       expect(review).toMatchObject(E.right({
@@ -32,7 +32,7 @@ describe('fetch-datacite-review', () => {
       const fetchDataset: FetchDataset = async (iri) => (
         clownface({ dataset: datasetFactory(), term: iri })
       );
-      const fetchReview = createFetchDataciteReview(fetchDataset, dummyLogger);
+      const fetchReview = fetchDataciteReview(fetchDataset, dummyLogger);
       const review = await fetchReview(reviewDoi)();
 
       expect(review).toStrictEqual(E.left('unavailable'));
@@ -44,7 +44,7 @@ describe('fetch-datacite-review', () => {
       const fetchDataset: FetchDataset = async () => {
         throw new FetchDatasetError('Something went wrong.');
       };
-      const fetchReview = createFetchDataciteReview(fetchDataset, dummyLogger);
+      const fetchReview = fetchDataciteReview(fetchDataset, dummyLogger);
       const review = await fetchReview(reviewDoi)();
 
       expect(review).toStrictEqual(E.left('unavailable'));

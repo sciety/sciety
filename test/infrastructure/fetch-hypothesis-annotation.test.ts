@@ -1,7 +1,7 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { createFetchHypothesisAnnotation, GetJson } from '../../src/infrastructure/fetch-hypothesis-annotation';
+import { fetchHypothesisAnnotation, GetJson } from '../../src/infrastructure/fetch-hypothesis-annotation';
 import { Review } from '../../src/infrastructure/review';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { HypothesisAnnotationId } from '../../src/types/hypothesis-annotation-id';
@@ -19,8 +19,7 @@ describe('fetch-hypothesis-annotation', () => {
         incontext: 'https://www.example.com',
       },
     });
-    const fetchHypothesisAnnotation = createFetchHypothesisAnnotation(getJson, dummyLogger);
-    const review = await fetchHypothesisAnnotation(hypothesisAnnotationId)();
+    const review = await fetchHypothesisAnnotation(getJson, dummyLogger)(hypothesisAnnotationId)();
 
     const expected: Review = {
       fullText: pipe('<p>Very good</p>', toHtmlFragment, O.some),
@@ -42,8 +41,7 @@ describe('fetch-hypothesis-annotation', () => {
         incontext: 'https://www.example.com',
       },
     });
-    const fetchHypothesisAnnotation = createFetchHypothesisAnnotation(getJson, dummyLogger);
-    const review = await fetchHypothesisAnnotation(hypothesisAnnotationId)();
+    const review = await fetchHypothesisAnnotation(getJson, dummyLogger)(hypothesisAnnotationId)();
 
     expect(review.fullText).toStrictEqual(O.some(expect.stringContaining(expected)));
   });
@@ -57,8 +55,7 @@ describe('fetch-hypothesis-annotation', () => {
         incontext: 'https://www.example.com',
       },
     });
-    const fetchHypothesisAnnotation = createFetchHypothesisAnnotation(getJson, dummyLogger);
-    const review = await fetchHypothesisAnnotation(hypothesisAnnotationId)();
+    const review = await fetchHypothesisAnnotation(getJson, dummyLogger)(hypothesisAnnotationId)();
 
     expect(review.fullText).toStrictEqual(O.some(input));
   });

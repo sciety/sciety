@@ -44,7 +44,7 @@ const fetchReviewContent = (
   }),
 );
 
-export const createFetchDataciteReview = (fetchDataset: FetchDataset, logger: Logger): FetchDataciteReview => (
+export const fetchDataciteReview = (fetchDataset: FetchDataset, logger: Logger): FetchDataciteReview => (
   (doi) => pipe(
     doi,
     (d) => `https://doi.org/${d.value}`,

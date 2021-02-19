@@ -17,7 +17,7 @@ export type FetchReview = (id: ReviewId) => TE.TaskEither<'unavailable' | 'not-f
   url: URL,
 }>;
 
-export const createFetchReview = (
+export const fetchReview = (
   fetchDataciteReview: FetchDataciteReview,
   fetchHypothesisAnnotation: FetchHypothesisAnnotation,
   fetchNcrcReview: FetchNcrcReview,

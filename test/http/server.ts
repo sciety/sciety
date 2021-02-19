@@ -10,10 +10,10 @@ import { createRouter } from '../../src/http/router';
 import { createApplicationServer } from '../../src/http/server';
 import { Adapters } from '../../src/infrastructure/adapters';
 import { FetchCrossrefArticle } from '../../src/infrastructure/fetch-crossref-article';
-import { createFetchDataciteReview } from '../../src/infrastructure/fetch-datacite-review';
+import { fetchDataciteReview } from '../../src/infrastructure/fetch-datacite-review';
 import { FetchDataset } from '../../src/infrastructure/fetch-dataset';
-import { createFetchHypothesisAnnotation } from '../../src/infrastructure/fetch-hypothesis-annotation';
-import { createFetchReview } from '../../src/infrastructure/fetch-review';
+import { fetchHypothesisAnnotation } from '../../src/infrastructure/fetch-hypothesis-annotation';
+import { fetchReview } from '../../src/infrastructure/fetch-review';
 import { findReviewsForArticleDoi } from '../../src/infrastructure/find-reviews-for-article-doi';
 import { createEditorialCommunityRepository } from '../../src/infrastructure/in-memory-editorial-communities';
 import { EditorialCommunityRepository } from '../../src/types/editorial-community-repository';
@@ -47,15 +47,14 @@ export const createTestServer = async (): Promise<TestServer> => {
     publicationDate: new Date(),
     server: 'biorxiv',
   });
-  const fetchReview = createFetchReview(
-    createFetchDataciteReview(fetchDataCiteDataset, dummyLogger),
-    createFetchHypothesisAnnotation(shouldNotBeCalled, dummyLogger),
-    () => TE.left('unavailable'),
-  );
 
   const adapters: Adapters = {
     fetchArticle,
-    fetchReview,
+    fetchReview: fetchReview(
+      fetchDataciteReview(fetchDataCiteDataset, dummyLogger),
+      fetchHypothesisAnnotation(shouldNotBeCalled, dummyLogger),
+      () => TE.left('unavailable'),
+    ),
     fetchStaticFile: (filename: string) => T.of(`Contents of ${filename}`),
     searchEuropePmc: () => TE.right({ items: [], total: 0 }),
     editorialCommunities,
