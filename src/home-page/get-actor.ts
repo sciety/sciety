@@ -24,7 +24,7 @@ export const getActor = (getEditorialCommunity: GetEditorialCommunity): GetActor
     (community) => ({
       name: community.name,
       imageUrl: community.avatarPath,
-      url: `/editorial-communities/${id.value}`,
+      url: `/groups/${id.value}`,
     }),
   )),
 );

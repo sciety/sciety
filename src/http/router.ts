@@ -59,7 +59,7 @@ export const createRouter = (adapters: Adapters): Router => {
   router.get('/articles/:doi(.+)',
     pageHandler(articlePage(adapters)));
 
-  router.get('/editorial-communities/:id',
+  router.get('/groups/:id',
     pageHandler(editorialCommunityPage(adapters)));
 
   router.get('/privacy',

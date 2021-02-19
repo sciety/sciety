@@ -16,7 +16,7 @@ export type RenderEditorialCommunity = (userId: O.Option<UserId>) => (community:
 
 const render = (community: Community) => (toggle: HtmlFragment): string => `
   <div class="editorial-community">
-    <a href="/editorial-communities/${community.id.value}" class="editorial-community__link">
+    <a href="/groups/${community.id.value}" class="editorial-community__link">
       <img src="${community.avatarPath}" alt="" class="editorial-community__avatar">
       <div class="editorial-community__name">
         ${community.name}

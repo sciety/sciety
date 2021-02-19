@@ -37,7 +37,7 @@ const construct = (
   avatar: community.avatarPath,
   date: event.date,
   actorName: community.name,
-  actorUrl: `/editorial-communities/${community.id.value}`,
+  actorUrl: `/groups/${community.id.value}`,
   doi: event.articleId,
   title: pipe(
     article,

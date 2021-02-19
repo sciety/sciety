@@ -19,7 +19,7 @@ type RenderFollowToggle = (editorialcommunityid: EditorialCommunityId) => (isFol
 
 const render = (community: Community) => (toggle: HtmlFragment): string => `
   <img class="followed-communities__item_avatar" src="${community.avatarPath}" alt="">
-  <a class="followed-communities__item_link" href="/editorial-communities/${community.id.value}">${community.name}</a>
+  <a class="followed-communities__item_link" href="/groups/${community.id.value}">${community.name}</a>
   ${toggle}
 `;
 
