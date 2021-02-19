@@ -8,7 +8,7 @@ module.exports = {
     'ts-jest': {
       diagnostics: false,
       isolatedModules: true,
-      tsConfig: 'tsconfig.dev.json',
+      tsconfig: 'tsconfig.dev.json',
     },
   },
   roots: ['./src/', './test/'],
