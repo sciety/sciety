@@ -56,7 +56,7 @@ export const createTestServer = async (): Promise<TestServer> => {
     searchEuropePmc: () => TE.right({ items: [], total: 0 }),
     editorialCommunities,
     getEditorialCommunity: editorialCommunities.lookup,
-    getAllEditorialCommunities: async () => [],
+    getAllEditorialCommunities: editorialCommunities.all,
     findReviewsForArticleDoi: findReviewsForArticleDoi(T.of([])),
     getAllEvents: T.of([]),
     commitEvents: () => T.of(undefined),

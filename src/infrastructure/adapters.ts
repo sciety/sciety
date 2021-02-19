@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/Option';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import { CommitEvents } from './commit-events';
 import { EventSourcedFollowListRepository } from './event-sourced-follow-list-repository';
@@ -18,7 +19,7 @@ import { EditorialCommunityRepository } from '../types/editorial-community-repos
 
 type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.Task<O.Option<EditorialCommunity>>;
 
-type GetAllEditorialCommunities = T.Task<ReadonlyArray<EditorialCommunity>>;
+type GetAllEditorialCommunities = T.Task<RNEA.ReadonlyNonEmptyArray<EditorialCommunity>>;
 
 export type Adapters = {
   fetchArticle: FetchCrossrefArticle,

@@ -9,8 +9,7 @@ import { UserId } from '../types/user-id';
 
 type RenderEditorialCommunities = (userId: O.Option<UserId>) => T.Task<HtmlFragment>;
 
-// TODO Make a ReadonlyNonEmptyArray
-export type GetAllEditorialCommunities = T.Task<ReadonlyArray<Community>>;
+export type GetAllEditorialCommunities = T.Task<RNEA.ReadonlyNonEmptyArray<Community>>;
 
 const render = (links: RNEA.ReadonlyNonEmptyArray<HtmlFragment>): string => `
   <section>
@@ -30,7 +29,7 @@ export const createRenderEditorialCommunities = (
   pipe(
     editorialCommunities,
     T.chain(T.traverseArray(renderEditorialCommunity(userId))),
-    T.map(RNEA.fromReadonlyArray),
+    T.map(RNEA.fromReadonlyArray), // TODO shouldn't be needed, fp-ts types needs fixing
     T.map(O.fold(constant(''), render)),
     T.map(toHtmlFragment),
   )
