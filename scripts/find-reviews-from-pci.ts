@@ -6,15 +6,16 @@ import { DOMParser } from 'xmldom';
 type PciCommunity = {
   id: string,
   prefix: string,
+  url: string,
 };
 
 const pciCommunities: Array<PciCommunity> = [
-  { id: '74fd66e9-3b90-4b5a-a4ab-5be83db4c5de', prefix: 'zool' },
-  { id: '19b7464a-edbe-42e8-b7cc-04d1eb1f7332', prefix: 'evolbiol' },
-  { id: '32025f28-0506-480e-84a0-b47ef1e92ec5', prefix: 'ecology' },
-  { id: '4eebcec9-a4bb-44e1-bde3-2ae11e65daaa', prefix: 'animsci' },
-  { id: 'b90854bf-795c-42ba-8664-8257b9c68b0c', prefix: 'archaeo' },
-  { id: '7a9e97d1-c1fe-4ac2-9572-4ecfe28f9f84', prefix: 'paleo' },
+  { id: '74fd66e9-3b90-4b5a-a4ab-5be83db4c5de', prefix: 'zool', url: 'https://zool.peercommunityin.org/rss/rss4elife' },
+  { id: '19b7464a-edbe-42e8-b7cc-04d1eb1f7332', prefix: 'evolbiol', url: 'https://evolbiol.peercommunityin.org/public/rss4bioRxiv' },
+  { id: '32025f28-0506-480e-84a0-b47ef1e92ec5', prefix: 'ecology', url: 'https://ecology.peercommunityin.org/rss/rss4elife' },
+  { id: '4eebcec9-a4bb-44e1-bde3-2ae11e65daaa', prefix: 'animsci', url: 'https://animsci.peercommunityin.org/public/rss4bioRxiv' },
+  { id: 'b90854bf-795c-42ba-8664-8257b9c68b0c', prefix: 'archaeo', url: 'https://archaeo.peercommunityin.org/public/rss4bioRxiv' },
+  { id: '7a9e97d1-c1fe-4ac2-9572-4ecfe28f9f84', prefix: 'paleo', url: 'https://paleo.peercommunityin.org/public/rss4bioRxiv' },
 ];
 
 const parser = new DOMParser({
@@ -41,7 +42,7 @@ const fetchPage = async (url: string): Promise<{ data: string }> => {
 const findRecommendations = async (community: PciCommunity): Promise<Array<Recommendation>> => {
   const result = [];
 
-  const { data: feed } = await fetchPage(`https://${community.prefix}.peercommunityin.org/public/rss4bioRxiv`);
+  const { data: feed } = await fetchPage(community.url);
   const doc = parser.parseFromString(feed, 'text/xml');
 
   for (const link of Array.from(doc.getElementsByTagName('link'))) {
