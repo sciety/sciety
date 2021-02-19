@@ -8,7 +8,7 @@ The Publish, Review, Curate (PRC) model has been [advocated by funders](https://
 
 This community-driven technology effort is to produce an application that can support the changes in behaviour required to effect this change. The approach to building the software is to keep the cost of change low so that the application can quickly adapt to feedback and barriers to adoption, helping the researcher drive the technology to meet their needs.
 
-While the majority of people working on this application are funded by eLife and their generous funders, we are operating at a distance from the eLife journal so that other editorial communities, innovative journals and interested technologists can join on a more equal basis. eLife’s editorial community will be one of the first to use the application and this separation helps us support them in their endeavours to change behaviour in the same way we will with any other community.
+While the majority of people working on this application are funded by eLife and their generous funders, we are operating at a distance from the eLife journal so that other groups, innovative journals and interested technologists can join on a more equal basis. eLife’s editorial group will be one of the first to use the application and this separation helps us support them in their endeavours to change behaviour in the same way we will with any other group.
 
 Read more about:
 
@@ -24,7 +24,7 @@ Read more about:
 ## <a name="our-approach">Our approach</a>
 
 Using techniques popularised by [extreme programming](#beck) to concentrate on meeting your needs and to get feedback early, we are developing this application with a “working software first” approach. This means that you’ll see more of the application earlier, and some parts will be clearly labelled as a future feature that we’re asking for early feedback on.
-This means we can add new editorial communities quickly and respond to your feedback with changes to the application while you’re using it.
+This means we can add new groups quickly and respond to your feedback with changes to the application while you’re using it.
 
 We define an hypothesis to test and write software to help test that hypothesis with real users. In doing so we define the scope of the next iteration and clearly define parts that are to be deferred. This ensures everyone knows what is being implemented but can see areas left for future exploration.
 
@@ -32,20 +32,20 @@ We define an hypothesis to test and write software to help test that hypothesis 
 
 We’re currently focussing on improving the user experience for postdocs who regularly engage with preprints. We are exploring ways in which we might help readers discover and consume new content that is relevant to them outside of the realm of traditional journal publication.
 
-Talking to researchers about how they currently discover and consume content has led us to implement a number of features that emphasise the social networking aspect of scholarly communication, since the interests and recommendations of peers are highly influential. Application users can build a customisable feed of activity by following communities of editors and reviewers, and we plan to expand this functionality to include other kinds of events and entities in the future. Crucially, these activities should be as relevant to the user as possible, to help filter out what matters to them from the wealth of available content.
+Talking to researchers about how they currently discover and consume content has led us to implement a number of features that emphasise the social networking aspect of scholarly communication, since the interests and recommendations of peers are highly influential. Application users can build a customisable feed of activity by following groups of editors and reviewers, and we plan to expand this functionality to include other kinds of events and entities in the future. Crucially, these activities should be as relevant to the user as possible, to help filter out what matters to them from the wealth of available content.
 
-We assume that additional value indicators such as evaluations from different communities will help readers choose in which articles to invest their limited time, and we are working with a small number of editorial communities who have already provided us with reviews and other content. We want to find out if trust in the judgement of these communities is fostered not only by the transparent disclosure of that community’s review output, but also its editorial policies and review process in order to contextualise that output for researchers.
+We assume that additional value indicators such as evaluations from different groups will help readers choose in which articles to invest their limited time, and we are working with a small number of groups who have already provided us with reviews and other content. We want to find out if trust in the judgement of these groups is fostered not only by the transparent disclosure of that group’s review output, but also its editorial policies and review process in order to contextualise that output for researchers.
 
 ## <a name="implemented-scenarios">Scenarios currently implemented</a>
 
 These are the most recent scenarios represented on the application now:
 
-- The editorial community’s landing page outlines that community’s editorial policies and review process, shows a feed of their most recent activity.
-- Each community's landing page contains a list of current followers. 
-- Evaluations from editorial communities are automatically imported from each community's own platform(s) of choice.
+- The group’s landing page outlines that group’s editorial policies and review process, shows a feed of their most recent activity.
+- Each group's landing page contains a list of current followers.
+- Evaluations from groups are automatically imported from each group's own platform(s) of choice.
 - Users can search for bioRxiv content using the search box on the home page.
 - Article pages collect evaluation information such as reviews.
-- A user can log in using Twitter credentials and customize the homepage feed by selecting editorial communities to follow.
+- A user can log in using Twitter credentials and customize the homepage feed by selecting groups to follow.
 
 ## <a name="scope">Scope</a>
 
