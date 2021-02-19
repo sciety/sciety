@@ -1,6 +1,8 @@
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
+import { pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
 import { Adapters } from './adapters';
 import { createBiorxivCache } from './biorxiv-cache';
@@ -68,7 +70,7 @@ export const createInfrastructure = async (): Promise<Adapters> => {
       PRIMARY KEY (id)
     );
   `);
-  const editorialCommunityIds = bootstrapEditorialCommunities.map(({ id }) => id.value);
+  const editorialCommunityIds = pipe(bootstrapEditorialCommunities, RNEA.map(({ id }) => id.value));
   const events = getEventsFromDataFiles(editorialCommunityIds)
     .concat(await getEventsFromDatabase(pool, logger));
   events.sort((a, b) => a.date.getTime() - b.date.getTime());

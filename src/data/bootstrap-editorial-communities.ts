@@ -1,8 +1,8 @@
-import * as NEA from 'fp-ts/NonEmptyArray';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { EditorialCommunity } from '../types/editorial-community';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 
-const editorialCommunities: NEA.NonEmptyArray<EditorialCommunity> = [
+const editorialCommunities: RNEA.ReadonlyNonEmptyArray<EditorialCommunity> = [
   {
     id: new EditorialCommunityId('10360d97-bf52-4aef-b2fa-2f60d319edd7'),
     name: 'PREreview',
@@ -65,8 +65,10 @@ const editorialCommunities: NEA.NonEmptyArray<EditorialCommunity> = [
   },
 ];
 
+let experimentEditorialCommunities: ReadonlyArray<EditorialCommunity> = [];
+
 if (process.env.EXPERIMENT_ENABLED === 'true') {
-  editorialCommunities.push(
+  experimentEditorialCommunities = [
     {
       id: new EditorialCommunityId('f97bd177-5cb6-4296-8573-078318755bf2'),
       name: 'preLights',
@@ -79,7 +81,7 @@ if (process.env.EXPERIMENT_ENABLED === 'true') {
       avatarPath: '/static/editorial-communities/ncrc--62f9b0d0-8d43-4766-a52a-ce02af61bc6a.jpg',
       descriptionPath: 'ncrc--62f9b0d0-8d43-4766-a52a-ce02af61bc6a.md',
     },
-  );
+  ];
 }
 
-export const bootstrapEditorialCommunities = editorialCommunities;
+export const bootstrapEditorialCommunities = RNEA.concat(editorialCommunities, experimentEditorialCommunities);
