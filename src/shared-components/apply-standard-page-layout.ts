@@ -37,6 +37,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->`);
 }
 
+const fathom = process.env.FATHOM_SITE_ID ? `
+<script src="https://cdn.usefathom.com/script.js" data-site="${process.env.FATHOM_SITE_ID}" defer></script>
+` : '';
+
 const loggedInMenuItems = (user: User): HtmlFragment => toHtmlFragment(`
   <li class="site-header__nav_list_item">
     <a href="/users/${user.id}" class="site-header__nav_list_link">My profile</a>
@@ -92,6 +96,7 @@ export const applyStandardPageLayout = (user: O.Option<User>) => (page: Page): s
   <meta name="msapplication-TileColor" content="#cf4500">
   <meta name="msapplication-config" content="/static/images/favicons/generated/browserconfig.xml">
   <meta name="theme-color" content="#ffffff">
+  ${fathom}
 </head>
 <body>
   ${googleTagManagerNoScript}

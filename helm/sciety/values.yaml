@@ -5,6 +5,7 @@ images:
 allowSiteCrawlers: "false"
 crossrefApiBearerToken:
 experimentEnabled: "false"
+fathomSiteId: 
 googleTagManagerId:
 postgresqlSecretName: null
 appSecret: "not-a-secret-coming-from-helm-chart-defaults"

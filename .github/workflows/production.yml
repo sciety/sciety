@@ -29,6 +29,7 @@ jobs:
             --set images.frontend.tag=${IMAGE_TAG} \
             --set hostname=sciety.org \
             --set oldHostname=hive.review \
+            --set fathomSiteId='DBULFPXG' \
             --set googleTagManagerId='GTM-NX7CQB4&gtm_auth=UitQkYzjC4B-ccI61RXi9Q&gtm_preview=env-1&gtm_cookies_win=x' \
             --set crossrefApiBearerToken=${CROSSREF_API_BEARER_TOKEN} \
             --set appSecret=${APP_SECRET} \

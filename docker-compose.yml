@@ -11,6 +11,7 @@ services:
       APP_SECRET: "secret"
       CROSSREF_API_BEARER_TOKEN:
       EXPERIMENT_ENABLED: "true"
+      FATHOM_SITE_ID:
       GOOGLE_TAG_MANAGER_ID:
       LOG_LEVEL:
       PGUSER: user

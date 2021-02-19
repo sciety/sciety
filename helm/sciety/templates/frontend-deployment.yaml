@@ -30,6 +30,8 @@ spec:
               value: {{ .Values.crossrefApiBearerToken }}
             - name: EXPERIMENT_ENABLED
               value: "{{ .Values.experimentEnabled }}"
+            - name: FATHOM_SITE_ID
+              value: {{ .Values.fathomSiteId }}
             - name: GOOGLE_TAG_MANAGER_ID
               value: {{ .Values.googleTagManagerId }}
             - name: PGDATABASE
