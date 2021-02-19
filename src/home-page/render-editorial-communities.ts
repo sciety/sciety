@@ -14,7 +14,7 @@ export type GetAllEditorialCommunities = T.Task<RNEA.ReadonlyNonEmptyArray<Commu
 const render = (links: RNEA.ReadonlyNonEmptyArray<HtmlFragment>): string => `
   <section>
     <h2>
-      Editorial communities
+      Groups
     </h2>
     <ol class="editorial-community-list" role="list">
       ${templateListItems(links, 'editorial-community-list__item')}

@@ -12,7 +12,7 @@ export const renderPageHeader = (): RenderPageHeader => (
       </h1>
 
       <p>
-        Where research is evaluated and curated by the communities you trust.<br><a href="/about">Learn more about the platform.</a>
+        Where research is evaluated and curated by the groups you trust.<br><a href="/about">Learn more about the platform.</a>
       </p>
 
     </header>

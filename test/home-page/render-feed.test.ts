@@ -55,7 +55,7 @@ describe('render-feed', () => {
         );
         const rendered = await renderFeed(O.some(toUserId('1111')))();
 
-        expect(rendered).toContain('The communities you’re following haven’t evaluated any articles yet.');
+        expect(rendered).toContain('The groups you’re following haven’t evaluated any articles yet.');
       });
     });
 
@@ -69,7 +69,7 @@ describe('render-feed', () => {
         );
         const rendered = await renderFeed(O.some(toUserId('1111')))();
 
-        expect(rendered).toContain('Start following some communities');
+        expect(rendered).toContain('Start following some groups');
       });
     });
   });
