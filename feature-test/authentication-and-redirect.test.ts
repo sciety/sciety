@@ -44,14 +44,14 @@ describe('authentication-and-redirect', () => {
     });
 
     it('follow command from the editorial community page returns to the editorial community page', async () => {
-      await goto('localhost:8080/editorial-communities/4eebcec9-a4bb-44e1-bde3-2ae11e65daaa');
+      await goto('localhost:8080/groups/4eebcec9-a4bb-44e1-bde3-2ae11e65daaa');
       await click('Got it!');
       await click('Follow');
       await authenticateViaTwitter();
 
       const result = await currentURL();
 
-      expect(result).toContain('/editorial-communities/4eebcec9-a4bb-44e1-bde3-2ae11e65daaa');
+      expect(result).toContain('/groups/4eebcec9-a4bb-44e1-bde3-2ae11e65daaa');
     });
   });
 
@@ -82,12 +82,12 @@ describe('authentication-and-redirect', () => {
     });
 
     it('follow command from the editorial community page returns to the editorial community page', async () => {
-      await goto('localhost:8080/editorial-communities/10360d97-bf52-4aef-b2fa-2f60d319edd7');
+      await goto('localhost:8080/groups/10360d97-bf52-4aef-b2fa-2f60d319edd7');
       await click('Follow');
 
       const result = await currentURL();
 
-      expect(result).toContain('/editorial-communities/10360d97-bf52-4aef-b2fa-2f60d319edd7');
+      expect(result).toContain('/groups/10360d97-bf52-4aef-b2fa-2f60d319edd7');
     });
 
     it('back button doesn\'t break authentication', async () => {
