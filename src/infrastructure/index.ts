@@ -12,7 +12,7 @@ import { createFetchDataset } from './fetch-dataset';
 import { createFetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
 import { fetchNcrcReview } from './fetch-ncrc-review';
 import { createFetchReview } from './fetch-review';
-import { createFetchStaticFile } from './fetch-static-file';
+import { fetchStaticFile } from './fetch-static-file';
 import { findReviewsForArticleDoi } from './find-reviews-for-article-doi';
 import { createFollows } from './follows';
 import { getArticleVersionEventsFromBiorxiv } from './get-article-version-events-from-biorxiv';
@@ -96,7 +96,7 @@ export const createInfrastructure = async (): Promise<Adapters> => {
       fetchHypothesisAnnotation,
       fetchNcrcReview(logger),
     ),
-    fetchStaticFile: createFetchStaticFile(logger),
+    fetchStaticFile: fetchStaticFile(logger),
     searchEuropePmc,
     editorialCommunities,
     getEditorialCommunity: editorialCommunities.lookup,
