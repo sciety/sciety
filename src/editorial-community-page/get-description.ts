@@ -11,7 +11,7 @@ const convertMarkdownToHtml = (md: string): string => new Remarkable({ html: tru
 type GetDescription = (fetchStaticFile: FetchStaticFile) => (group: EditorialCommunity) => TE.TaskEither<never, string>;
 
 export const getDescription: GetDescription = (fetchStaticFile) => (group) => pipe(
-  `editorial-communities/${group.descriptionPath}`,
+  `groups/${group.descriptionPath}`,
   fetchStaticFile,
   T.map(convertMarkdownToHtml),
   TE.rightTask,
