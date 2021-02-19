@@ -1,10 +1,7 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { isHttpError } from 'http-errors';
-import { StatusCodes } from 'http-status-codes';
 import { EditorialCommunity } from '../types/editorial-community';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -23,9 +20,9 @@ export type RenderPage = (
 
 type RenderPageHeader = (editorialCommunity: EditorialCommunity) => HtmlFragment;
 
-type RenderDescription = (editorialCommunity: EditorialCommunity) => T.Task<HtmlFragment>;
+type RenderDescription = <F>(editorialCommunity: EditorialCommunity) => TE.TaskEither<F, HtmlFragment>;
 
-type RenderFeed = (editorialCommunity: EditorialCommunity, userId: O.Option<UserId>) => T.Task<HtmlFragment>;
+type RenderFeed = <F>(community: EditorialCommunity, userId: O.Option<UserId>) => TE.TaskEither<F, HtmlFragment>;
 
 type Components = {
   header: HtmlFragment,
@@ -47,41 +44,28 @@ const render = (components: Components): string => `
   </div>
 `;
 
+const renderErrorPage = (): RenderPageError => ({
+  type: 'unavailable',
+  message: toHtmlFragment('We couldn\'t retrieve this information. Please try again.'),
+});
+
+const asPage = (community: EditorialCommunity) => (components: Components): Page => ({
+  title: community.name,
+  content: pipe(components, render, toHtmlFragment),
+});
+
 export const renderPage = (
   renderPageHeader: RenderPageHeader,
   renderDescription: RenderDescription,
   renderFeed: RenderFeed,
-  renderFollowers: (editorialCommunityId: EditorialCommunityId) => T.Task<HtmlFragment>,
-): RenderPage => (
-  (editorialCommunity, userId) => {
-    try {
-      return pipe(
-        {
-          header: T.of(renderPageHeader(editorialCommunity)),
-          description: renderDescription(editorialCommunity),
-          followers: renderFollowers(editorialCommunity.id),
-          feed: renderFeed(editorialCommunity, userId),
-        },
-        sequenceS(T.task),
-        T.map((components) => ({
-          title: editorialCommunity.name,
-          content: pipe(components, render, toHtmlFragment),
-        })),
-        TE.rightTask,
-      );
-    // TODO: push Results further down
-    } catch (error: unknown) {
-      if (isHttpError(error) && error.status === StatusCodes.NOT_FOUND) {
-        return TE.left({
-          type: 'not-found',
-          message: toHtmlFragment(`Editorial community id '${editorialCommunity.id.value}' not found`),
-        });
-      }
-
-      return TE.left({
-        type: 'unavailable',
-        message: toHtmlFragment(`Editorial community id '${editorialCommunity.id.value}' unavailable`),
-      });
-    }
-  }
+  renderFollowers: <F>(editorialCommunityId: EditorialCommunityId) => TE.TaskEither<F, HtmlFragment>,
+): RenderPage => (editorialCommunity, userId) => pipe(
+  {
+    header: TE.right(renderPageHeader(editorialCommunity)),
+    description: renderDescription(editorialCommunity),
+    followers: renderFollowers(editorialCommunity.id),
+    feed: renderFeed(editorialCommunity, userId),
+  },
+  sequenceS(TE.taskEither),
+  TE.bimap(renderErrorPage, asPage(editorialCommunity)),
 );

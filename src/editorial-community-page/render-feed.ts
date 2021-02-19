@@ -1,6 +1,7 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { ConstructFeedItem, FeedEvent } from './construct-feed-item';
 import { RenderFollowToggle } from './render-follow-toggle';
@@ -11,7 +12,7 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
 export type RenderFeed = (editorialCommunity: EditorialCommunity, userId: O.Option<UserId>)
-=> T.Task<HtmlFragment>;
+=> TE.TaskEither<never, HtmlFragment>;
 
 export type GetEvents = (editorialCommunityId: EditorialCommunityId) => T.Task<ReadonlyArray<FeedEvent>>;
 
@@ -62,4 +63,5 @@ export const renderFeed = (
     renderAsSection,
     toHtmlFragment,
   )),
+  TE.rightTask,
 );

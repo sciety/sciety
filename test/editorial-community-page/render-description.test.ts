@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import { GetEditorialCommunityDescription, renderDescription } from '../../src/editorial-community-page/render-description';
 import { EditorialCommunity } from '../../src/types/editorial-community';
@@ -8,7 +9,7 @@ describe('render-description', () => {
       const getDescription: GetEditorialCommunityDescription = () => T.of('Something interesting');
       const rendered = await renderDescription(getDescription)({} as EditorialCommunity)();
 
-      expect(rendered).toStrictEqual(expect.stringContaining('Something interesting'));
+      expect(rendered).toStrictEqual(E.right(expect.stringContaining('Something interesting')));
     });
   });
 });
