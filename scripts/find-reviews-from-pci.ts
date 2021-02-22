@@ -49,8 +49,8 @@ const findRecommendations = async (community: PciCommunity): Promise<Array<Recom
     const url = link.getElementsByTagName('url')[0];
     const articleDoiString = link.getElementsByTagName('doi')[0]?.textContent ?? '';
 
-    const biorxivDoiRegex = /^\s*(?:doi:|(?:(?:https?:\/\/)?(?:dx\.)?doi\.org\/))?(10\.1101\/(?:[^%"#?\s])+)\s*$/;
-    const [, articleDoi] = biorxivDoiRegex.exec(articleDoiString) ?? [];
+    const bioAndmedrxivDoiRegex = /^\s*(?:doi:|(?:(?:https?:\/\/)?(?:dx\.)?doi\.org\/))?(10\.1101\/(?:[^%"#?\s])+)\s*$/;
+    const [, articleDoi] = bioAndmedrxivDoiRegex.exec(articleDoiString) ?? [];
 
     if (articleDoi) {
       const { data: html } = await fetchPage(url?.textContent ?? '');
@@ -59,26 +59,22 @@ const findRecommendations = async (community: PciCommunity): Promise<Array<Recom
       if (!source) {
         throw new Error(`Cannot find pci-recomOfSource element for ${articleDoi}`);
       }
-      if (source.toLowerCase().includes('biorxiv')) {
-        const date = document.querySelector('meta[name="citation_publication_date"]')?.getAttribute('content');
-        if (!date) {
-          throw new Error(`Unable to get citation publication date for ${articleDoi}`);
-        }
-        if (Number.isNaN(Date.parse(date))) {
-          throw new Error(`Unable to parse the citation publication date for ${articleDoi}: ${date}`);
-        }
-        const reviewDoi = document.querySelector('meta[name="citation_doi"]')?.getAttribute('content');
-        if (!reviewDoi) {
-          throw new Error(`Unable to get the review (citation) doi for ${articleDoi}`);
-        }
-        result.push({
-          date: new Date(date),
-          articleDoi,
-          reviewDoi,
-        });
-      } else {
-        process.stderr.write(`Skipped non-bioRxiv article ${articleDoi}\n`);
+      const date = document.querySelector('meta[name="citation_publication_date"]')?.getAttribute('content');
+      if (!date) {
+        throw new Error(`Unable to get citation publication date for ${articleDoi}`);
       }
+      if (Number.isNaN(Date.parse(date))) {
+        throw new Error(`Unable to parse the citation publication date for ${articleDoi}: ${date}`);
+      }
+      const reviewDoi = document.querySelector('meta[name="citation_doi"]')?.getAttribute('content');
+      if (!reviewDoi) {
+        throw new Error(`Unable to get the review (citation) doi for ${articleDoi}`);
+      }
+      result.push({
+        date: new Date(date),
+        articleDoi,
+        reviewDoi,
+      });
     }
   }
 
