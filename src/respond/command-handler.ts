@@ -25,12 +25,13 @@ export const validateCommand = O.fromPredicate((command): command is ValidComman
   command === 'respond-helpful' || command === 'revoke-response' || command === 'respond-not-helpful'
 ));
 
+type CommandHandler = (input: { command: ValidCommand, reviewId: ReviewId }) => T.Task<void>;
+
 export const commandHandler = (
   commitEvents: CommitEvents,
   getAllEvents: GetAllEvents,
   userId: UserId,
-  reviewId: ReviewId,
-) => (command: ValidCommand): T.Task<void> => (
+): CommandHandler => ({ command, reviewId }) => (
   pipe(
     getAllEvents,
     T.map(reviewResponse(userId, reviewId)),
