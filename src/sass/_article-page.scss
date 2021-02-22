@@ -141,6 +141,17 @@
   padding-bottom: functions.px-to-rem(14px);
 }
 
+.article-nav__link {
+  &:link,
+  &:visited {
+    color: #37474f;
+    &:hover,
+    &:active {
+      color: #e8521e;
+    }
+  }
+}
+
 .article-nav__item--active {
   border-bottom: 2px solid #e8521e;
 }

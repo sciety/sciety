@@ -56,8 +56,9 @@ const toErrorPage = (error: 'not-found' | 'unavailable'): RenderPageError => {
 };
 
 const render = (components: {
-  feed: string,
   articleDetails: ArticleDetails,
+  doi: Doi,
+  feed: string,
 }): Page => (
   {
     title: `${striptags(components.articleDetails.title)}`,
@@ -67,7 +68,7 @@ const render = (components: {
     <h1>${components.articleDetails.title}</h1>
   </header>
   <ul class="article-nav" role="list">
-    <li class="article-nav__item">Article</li>
+    <li class="article-nav__item"><a class="article-nav__link" href="/articles/meta/${components.doi.value}">Article</a></li>
     <li class="article-nav__item article-nav__item--active">Activity</li>
   </ul>
   <div class="main-content main-content--article">
@@ -90,6 +91,7 @@ export const renderActivityPage = (
   const articleDetails = getArticleDetails(doi);
   const components = {
     articleDetails,
+    doi: TE.right(doi),
     feed: pipe(
       articleDetails,
       T.map(E.fold(
