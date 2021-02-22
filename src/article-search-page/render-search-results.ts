@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -21,19 +22,15 @@ type SearchResults = {
 
 type RenderListIfNecessary = (articles: ReadonlyArray<HtmlFragment>) => string;
 
-const renderListIfNecessary = (query: string): RenderListIfNecessary => flow(
+const renderListIfNecessary: RenderListIfNecessary = flow(
   RNEA.fromReadonlyArray,
   O.fold(
     constant(''),
-    (articles) => {
-      const groupQueryResult = query === 'peerj' ? '<li class="search-results-list__item"><a href="/groups/53ed5364-a016-11ea-bb37-0242ac130002">PeerJ</a></li>' : '';
-      return `
-        <ul class="search-results-list" role="list">
-          ${groupQueryResult}
-          ${templateListItems(articles, 'search-results-list__item')}
-        </ul>
-      `;
-    },
+    (articles) => `
+      <ul class="search-results-list" role="list">
+        ${templateListItems(articles, 'search-results-list__item')}
+      </ul>
+    `,
   ),
 );
 
@@ -47,11 +44,19 @@ const renderSearchResults = (
   pipe(
     searchResults.items,
     T.traverseArray(renderSearchResult),
-    T.map(renderListIfNecessary(query)),
-    T.map((searchResultsList) => `
-      <p class="search-results__summary">Showing ${searchResults.items.length} of ${searchResults.total} results.</p>
-      ${searchResultsList}
-    `),
+    T.map(flow(
+      (items) => {
+        if (query === 'peerj') {
+          return RA.cons(toHtmlFragment('<a href="/groups/53ed5364-a016-11ea-bb37-0242ac130002">PeerJ</a>'))(items);
+        }
+        return items;
+      },
+      renderListIfNecessary,
+      (searchResultsList) => `
+        <p class="search-results__summary">Showing ${searchResults.items.length} of ${searchResults.total} results.</p>
+        ${searchResultsList}
+      `,
+    )),
   )
 );
 
