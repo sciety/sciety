@@ -4,7 +4,7 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
-import { RenderSearchResult, SearchResult } from './render-search-result';
+import { ArticleSearchResult, RenderSearchResult } from './render-search-result';
 import { templateListItems } from '../shared-components/list-items';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
@@ -13,7 +13,7 @@ export type FindArticles = (query: string) => TE.TaskEither<'unavailable', Searc
 export type RenderSearchResults = (query: string) => TE.TaskEither<'unavailable', HtmlFragment>;
 
 type SearchResults = {
-  items: Array<Omit<SearchResult, '_tag'>>,
+  items: Array<Omit<ArticleSearchResult, '_tag'>>,
   total: number,
 };
 

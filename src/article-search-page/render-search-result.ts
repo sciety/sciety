@@ -6,7 +6,7 @@ import { templateDate } from '../shared-components/date';
 import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
-export type SearchResult = {
+export type ArticleSearchResult = {
   _tag: 'Article',
   doi: Doi,
   title: string,
@@ -14,9 +14,15 @@ export type SearchResult = {
   postedDate: Date,
 };
 
-export type GetReviewCount = (doi: Doi) => TE.TaskEither<unknown, number>;
+type GroupSearchResult = {
+  _tag: 'Group',
+  link: string,
+  name: string,
+};
 
-export type RenderSearchResult = (result: SearchResult) => T.Task<HtmlFragment>;
+export type SearchResult = ArticleSearchResult | GroupSearchResult;
+
+export type GetReviewCount = (doi: Doi) => TE.TaskEither<unknown, number>;
 
 const renderReviewCount = (reviewCount: number): string => `
   <div class="search-results-list__item__review-count">
@@ -35,9 +41,11 @@ const templatePostedDate = flow(
   (date) => `<div class="search-results-list__item__date">Posted ${date}</div>`,
 );
 
-export const createRenderSearchResult = (
+type RenderArticleSearchResult = (result: ArticleSearchResult) => T.Task<HtmlFragment>;
+
+const renderArticleSearchResult = (
   getReviewCount: GetReviewCount,
-): RenderSearchResult => flow(
+): RenderArticleSearchResult => flow(
   T.of,
   T.bind('reviewCount', ({ doi }) => pipe(doi, getReviewCount, T.map(O.fromEither))),
   T.map((result) => `
@@ -52,3 +60,24 @@ export const createRenderSearchResult = (
   `),
   T.map(toHtmlFragment),
 );
+
+type RenderGroupSearchResult = (result: GroupSearchResult) => T.Task<HtmlFragment>;
+
+const renderGroupSearchResult: RenderGroupSearchResult = (result) => pipe(
+  `<a href="${result.link}">${result.name}</a>`,
+  toHtmlFragment,
+  T.of,
+);
+
+export type RenderSearchResult = (result: SearchResult) => T.Task<HtmlFragment>;
+
+export const createRenderSearchResult = (
+  getReviewCount: GetReviewCount,
+): RenderSearchResult => (result) => {
+  switch (result._tag) {
+    case 'Article':
+      return renderArticleSearchResult(getReviewCount)(result);
+    case 'Group':
+      return renderGroupSearchResult(result);
+  }
+};
