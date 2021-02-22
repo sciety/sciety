@@ -121,15 +121,16 @@
   margin-right: functions.px-to-rem(3px);
 }
 
-.article-nav {
-  @include list.basics();
+.article-tabs {
   @include typography.sizing(14px, 2.5);
   grid-column: 1/-1;
   border-bottom: 2px solid #cfd8dc;
   margin-bottom: baseline.increments(1.5);
 }
 
-.article-nav__item {
+// TODO: remove unneeded specificity once we remove semantic.ui
+.article-tabs__tab,
+.article-tabs__tab:last-child {
   width: functions.px-to-rem(120px);
   display: inline-block;
   margin-bottom: -2px;
@@ -141,10 +142,11 @@
   padding-bottom: functions.px-to-rem(14px);
 }
 
-.article-nav__link {
+.article-tabs__link {
   &:link,
   &:visited {
     color: #37474f;
+
     &:hover,
     &:active {
       color: #e8521e;
@@ -152,6 +154,7 @@
   }
 }
 
-.article-nav__item--active {
+.article-tabs__heading {
+  @include typography.sizing(14px, 2.5);
   border-bottom: 2px solid #e8521e;
 }

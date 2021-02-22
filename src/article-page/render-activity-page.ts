@@ -67,10 +67,10 @@ const render = (components: {
   <header class="page-header page-header--article">
     <h1>${components.articleDetails.title}</h1>
   </header>
-  <ul class="article-nav" role="list">
-    <li class="article-nav__item"><a class="article-nav__link" href="/articles/meta/${components.doi.value}">Article</a></li>
-    <li class="article-nav__item article-nav__item--active">Activity</li>
-  </ul>
+  <div class="article-tabs">
+    <a class="article-tabs__tab article-tabs__link" href="/articles/meta/${components.doi.value}">Article</a>
+    <h2 class="article-tabs__tab article-tabs__heading">Activity</h2>
+  </div>
   <div class="main-content main-content--article">
     ${components.feed}
   </div>
