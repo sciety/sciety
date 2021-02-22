@@ -78,7 +78,7 @@ export const createInfrastructure = (): TE.TaskEither<unknown, Adapters> => pipe
       const getXmlFromCrossrefRestApi = createGetXmlFromCrossrefRestApi(logger);
       const fetchDataset = createFetchDataset(logger);
       const searchEuropePmc = createSearchEuropePmc(getJsonWithRetries, logger);
-      const editorialCommunities = inMemoryEditorialCommunityRepository(logger, bootstrapEditorialCommunities);
+      const editorialCommunities = inMemoryEditorialCommunityRepository(bootstrapEditorialCommunities);
       const editorialCommunityIds = pipe(bootstrapEditorialCommunities, RNEA.map(({ id }) => id.value));
       const events = getEventsFromDataFiles(editorialCommunityIds)
         .concat(await getEventsFromDatabase(pool, logger));
