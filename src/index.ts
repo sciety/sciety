@@ -4,7 +4,7 @@ import { createApplicationServer } from './http/server';
 import { createInfrastructure } from './infrastructure';
 
 void (async (): Promise<void> => {
-  const adapters = await createInfrastructure();
+  const adapters = await createInfrastructure()();
 
   const router = createRouter(adapters);
 

@@ -30,7 +30,7 @@ import { responseCache } from './response-cache';
 import { createSearchEuropePmc } from './search-europe-pmc';
 import { bootstrapEditorialCommunities } from '../data/bootstrap-editorial-communities';
 
-export const createInfrastructure = async (): Promise<Adapters> => {
+export const createInfrastructure = (): T.Task<Adapters> => async () => {
   const logger = createRTracerLogger(
     createStreamLogger(
       process.stdout,
