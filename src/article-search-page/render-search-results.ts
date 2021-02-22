@@ -26,7 +26,7 @@ const renderListIfNecessary = (query: string): RenderListIfNecessary => flow(
   O.fold(
     constant(''),
     (articles) => {
-      const groupQueryResult = query === 'peerj' ? '<li class="search-results-list__item">PeerJ</li>' : '';
+      const groupQueryResult = query === 'peerj' ? '<li class="search-results-list__item"><a href="/groups/53ed5364-a016-11ea-bb37-0242ac130002">PeerJ</a></li>' : '';
       return `
         <ul class="search-results-list" role="list">
           ${groupQueryResult}
