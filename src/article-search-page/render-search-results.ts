@@ -21,23 +21,33 @@ type SearchResults = {
 
 type RenderListIfNecessary = (articles: ReadonlyArray<HtmlFragment>) => string;
 
-const renderListIfNecessary: RenderListIfNecessary = flow(
+const renderListIfNecessary = (query: string): RenderListIfNecessary => flow(
   RNEA.fromReadonlyArray,
   O.fold(
     constant(''),
-    (articles) => `
-      <ul class="search-results-list" role="list">
-        ${templateListItems(articles, 'search-results-list__item')}
-      </ul>
-    `,
+    (articles) => {
+      const groupQueryResult = query === 'peerj' ? '<li class="search-results-list__item">PeerJ</li>' : '';
+      return `
+        <ul class="search-results-list" role="list">
+          ${groupQueryResult}
+          ${templateListItems(articles, 'search-results-list__item')}
+        </ul>
+      `;
+    },
   ),
 );
 
-const renderSearchResults = (renderSearchResult: RenderSearchResult) => (searchResults: SearchResults) => (
+const renderSearchResults = (
+  renderSearchResult: RenderSearchResult,
+) => (
+  query:string,
+) => (
+  searchResults: SearchResults,
+) => (
   pipe(
     searchResults.items,
     T.traverseArray(renderSearchResult),
-    T.map(renderListIfNecessary),
+    T.map(renderListIfNecessary(query)),
     T.map((searchResultsList) => `
       <p class="search-results__summary">Showing ${searchResults.items.length} of ${searchResults.total} results.</p>
       ${searchResultsList}
@@ -53,7 +63,7 @@ export const createRenderSearchResults = (
   findArticles,
   TE.chainW(
     flow(
-      renderSearchResults(renderSearchResult),
+      renderSearchResults(renderSearchResult)(query),
       TE.rightTask,
     ),
   ),
