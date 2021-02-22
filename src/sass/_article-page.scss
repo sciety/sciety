@@ -124,9 +124,15 @@
 .article-nav {
   @include list.basics();
   grid-column: 1/-1;
+  border-bottom: 2px solid #CFD8DC;
 }
 
 .article-nav__item {
   width: functions.px-to-rem(120px);
   display: inline-block;
+  margin-bottom: -2px;
+}
+
+.article-nav__item--active {
+  border-bottom: 2px solid #E8521E;
 }

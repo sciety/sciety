@@ -68,7 +68,7 @@ const render = (components: {
   </header>
   <ul class="article-nav" role="list">
     <li class="article-nav__item">Article</li>
-    <li class="article-nav__item">Activity</li>
+    <li class="article-nav__item article-nav__item--active">Activity</li>
   </ul>
   <div class="main-content main-content--article">
     ${components.feed}
