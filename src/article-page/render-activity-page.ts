@@ -63,6 +63,9 @@ const render = (components: {
     title: `${striptags(components.articleDetails.title)}`,
     content: toHtmlFragment(`
 <article class="sciety-grid sciety-grid--article">
+  <header class="page-header page-header--article">
+    <h1>${components.articleDetails.title}</h1>
+  </header>
   <div class="main-content main-content--article">
     ${components.feed}
   </div>
