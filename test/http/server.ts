@@ -52,7 +52,7 @@ export const createTestServer = async (): Promise<TestServer> => {
       fetchHypothesisAnnotation(shouldNotBeCalled, dummyLogger),
       () => TE.left('unavailable'),
     ),
-    fetchStaticFile: (filename: string) => T.of(`Contents of ${filename}`),
+    fetchStaticFile: (filename: string) => TE.right(`Contents of ${filename}`),
     searchEuropePmc: () => TE.right({ items: [], total: 0 }),
     editorialCommunities,
     getEditorialCommunity: editorialCommunities.lookup,

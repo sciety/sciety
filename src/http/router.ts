@@ -44,7 +44,7 @@ export const createRouter = (adapters: Adapters): Router => {
     pageHandler(flow(homePage(adapters), TE.rightTask)));
 
   router.get('/about',
-    pageHandler(flow(aboutPage(adapters), TE.rightTask)));
+    pageHandler(aboutPage(adapters)));
 
   router.get('/users/:id(.+)',
     pageHandler(userPage(adapters)));

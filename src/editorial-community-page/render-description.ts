@@ -3,9 +3,9 @@ import { flow } from 'fp-ts/function';
 import { EditorialCommunity } from '../types/editorial-community';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
-type RenderDescription = (editorialCommunity: EditorialCommunity) => TE.TaskEither<never, HtmlFragment>;
+type RenderDescription = (editorialCommunity: EditorialCommunity) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>;
 
-export type GetEditorialCommunityDescription = (editorialCommunity: EditorialCommunity) => TE.TaskEither<never, string>;
+export type GetEditorialCommunityDescription = (editorialCommunity: EditorialCommunity) => TE.TaskEither<'not-found' | 'unavailable', string>;
 
 export const renderDescription = (
   getEditorialCommunityDescription: GetEditorialCommunityDescription,

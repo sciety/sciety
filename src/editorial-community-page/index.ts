@@ -18,7 +18,7 @@ import { EditorialCommunityId } from '../types/editorial-community-id';
 import { toHtmlFragment } from '../types/html-fragment';
 import { User } from '../types/user';
 
-type FetchStaticFile = (filename: string) => T.Task<string>;
+type FetchStaticFile = (filename: string) => TE.TaskEither<'not-found' | 'unavailable', string>;
 
 type FetchEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.Task<O.Option<EditorialCommunity>>;
 
