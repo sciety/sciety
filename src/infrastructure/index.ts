@@ -31,73 +31,81 @@ import { responseCache } from './response-cache';
 import { createSearchEuropePmc } from './search-europe-pmc';
 import { bootstrapEditorialCommunities } from '../data/bootstrap-editorial-communities';
 
-export const createInfrastructure = (): TE.TaskEither<unknown, Adapters> => TE.tryCatch(async () => {
-  const logger = createRTracerLogger(
-    createStreamLogger(
-      process.stdout,
-      createJsonSerializer(!!process.env.PRETTY_LOG),
-    ),
-  );
+export const createInfrastructure = (): TE.TaskEither<unknown, Adapters> => pipe(
+  TE.Do,
+  TE.bind('logger', () => pipe(
+    !!process.env.PRETTY_LOG,
+    createJsonSerializer,
+    (serializer) => createStreamLogger(process.stdout, serializer),
+    createRTracerLogger,
+    TE.right,
+  )),
+  TE.chain((adapters) => TE.tryCatch(
+    async () => {
+      const { logger } = adapters;
 
-  const getJson = async (uri: string): Promise<Json> => {
-    const response = await axios.get<Json>(uri);
-    return response.data;
-  };
+      const getJson = async (uri: string): Promise<Json> => {
+        const response = await axios.get<Json>(uri);
+        return response.data;
+      };
 
-  const retryingClient = axios.create();
-  axiosRetry(retryingClient, {
-    retryDelay: (count, error) => {
-      logger('debug', 'Retrying HTTP request', { count, error });
-      return 0;
+      const retryingClient = axios.create();
+      axiosRetry(retryingClient, {
+        retryDelay: (count, error) => {
+          logger('debug', 'Retrying HTTP request', { count, error });
+          return 0;
+        },
+        retries: 3,
+      });
+      const getJsonWithRetries = async (uri: string): Promise<Json> => {
+        const response = await retryingClient.get<Json>(uri);
+        return response.data;
+      };
+
+      const getXmlFromCrossrefRestApi = createGetXmlFromCrossrefRestApi(logger);
+      const fetchDataset = createFetchDataset(logger);
+      const searchEuropePmc = createSearchEuropePmc(getJsonWithRetries, logger);
+      const editorialCommunities = inMemoryEditorialCommunityRepository(logger, bootstrapEditorialCommunities);
+      const pool = new Pool();
+      await pool.query(`
+        CREATE TABLE IF NOT EXISTS events (
+          id uuid,
+          type varchar,
+          date timestamp,
+          payload jsonb,
+          PRIMARY KEY (id)
+        );
+      `);
+      const editorialCommunityIds = pipe(bootstrapEditorialCommunities, RNEA.map(({ id }) => id.value));
+      const events = getEventsFromDataFiles(editorialCommunityIds)
+        .concat(await getEventsFromDatabase(pool, logger));
+      events.sort((a, b) => a.date.getTime() - b.date.getTime());
+      const getAllEvents = T.of(events);
+      const getFollowList = createEventSourceFollowListRepository(getAllEvents);
+      const getTwitterResponse = createGetTwitterResponse(process.env.TWITTER_API_BEARER_TOKEN ?? '', logger);
+
+      return {
+        fetchArticle: createFetchCrossrefArticle(responseCache(getXmlFromCrossrefRestApi, logger), logger),
+        fetchReview: fetchReview(
+          fetchDataciteReview(fetchDataset, logger),
+          fetchHypothesisAnnotation(getJson, logger),
+          fetchNcrcReview(logger),
+        ),
+        fetchStaticFile: fetchStaticFile(logger),
+        searchEuropePmc,
+        editorialCommunities,
+        getEditorialCommunity: editorialCommunities.lookup,
+        getAllEditorialCommunities: editorialCommunities.all,
+        findReviewsForArticleDoi: findReviewsForArticleDoi(getAllEvents),
+        getAllEvents,
+        commitEvents: createCommitEvents(events, pool, logger),
+        getFollowList,
+        getUserDetails: createGetTwitterUserDetails(getTwitterResponse, logger),
+        follows: createFollows(getAllEvents),
+        findVersionsForArticleDoi: createBiorxivCache(getArticleVersionEventsFromBiorxiv(getJson, logger), logger),
+        ...adapters,
+      };
     },
-    retries: 3,
-  });
-  const getJsonWithRetries = async (uri: string): Promise<Json> => {
-    const response = await retryingClient.get<Json>(uri);
-    return response.data;
-  };
-
-  const getXmlFromCrossrefRestApi = createGetXmlFromCrossrefRestApi(logger);
-  const fetchDataset = createFetchDataset(logger);
-  const searchEuropePmc = createSearchEuropePmc(getJsonWithRetries, logger);
-  const editorialCommunities = inMemoryEditorialCommunityRepository(logger, bootstrapEditorialCommunities);
-  const pool = new Pool();
-  await pool.query(`
-    CREATE TABLE IF NOT EXISTS events (
-      id uuid,
-      type varchar,
-      date timestamp,
-      payload jsonb,
-      PRIMARY KEY (id)
-    );
-  `);
-  const editorialCommunityIds = pipe(bootstrapEditorialCommunities, RNEA.map(({ id }) => id.value));
-  const events = getEventsFromDataFiles(editorialCommunityIds)
-    .concat(await getEventsFromDatabase(pool, logger));
-  events.sort((a, b) => a.date.getTime() - b.date.getTime());
-  const getAllEvents = T.of(events);
-  const getFollowList = createEventSourceFollowListRepository(getAllEvents);
-  const getTwitterResponse = createGetTwitterResponse(process.env.TWITTER_API_BEARER_TOKEN ?? '', logger);
-
-  return {
-    fetchArticle: createFetchCrossrefArticle(responseCache(getXmlFromCrossrefRestApi, logger), logger),
-    fetchReview: fetchReview(
-      fetchDataciteReview(fetchDataset, logger),
-      fetchHypothesisAnnotation(getJson, logger),
-      fetchNcrcReview(logger),
-    ),
-    fetchStaticFile: fetchStaticFile(logger),
-    searchEuropePmc,
-    editorialCommunities,
-    getEditorialCommunity: editorialCommunities.lookup,
-    getAllEditorialCommunities: editorialCommunities.all,
-    findReviewsForArticleDoi: findReviewsForArticleDoi(getAllEvents),
-    getAllEvents,
-    logger,
-    commitEvents: createCommitEvents(events, pool, logger),
-    getFollowList,
-    getUserDetails: createGetTwitterUserDetails(getTwitterResponse, logger),
-    follows: createFollows(getAllEvents),
-    findVersionsForArticleDoi: createBiorxivCache(getArticleVersionEventsFromBiorxiv(getJson, logger), logger),
-  };
-}, identity);
+    identity,
+  )),
+);
