@@ -4,19 +4,17 @@ import * as T from 'fp-ts/Task';
 import * as B from 'fp-ts/boolean';
 import { constant, pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
-import { Doi, eqDoi } from '../types/doi';
+import * as Doi from '../types/doi';
 import {
   DomainEvent, isUserSavedArticleEvent, userSavedArticle, UserSavedArticleEvent,
 } from '../types/domain-events';
 import { User } from '../types/user';
 import { UserId } from '../types/user-id';
 
-const validateCommand = O.fromPredicate((command): boolean => (
-  command === 'save-article'
-));
+const isCommand = (command: string): command is 'save-article' => command === 'save-article';
 
-const isMatchingSavedEvent = (userId: UserId, articleId: Doi) => (event: DomainEvent) => (
-  isUserSavedArticleEvent(event) && event.userId === userId && eqDoi.equals(event.articleId, articleId)
+const isMatchingSavedEvent = (userId: UserId, articleId: Doi.Doi) => (event: DomainEvent) => (
+  isUserSavedArticleEvent(event) && event.userId === userId && Doi.eqDoi.equals(event.articleId, articleId)
 );
 
 type Ports = {
@@ -29,16 +27,16 @@ export const finishSaveArticleCommand = (
 ): Middleware => async (context, next) => {
   const user = context.state.user as User;
   await pipe(
-    context.session.command,
-    O.fromNullable,
-    O.chain(validateCommand),
+    O.Do,
+    O.bind('articleId', () => pipe(context.session.articleId, Doi.fromString)),
+    O.bind('command', () => pipe(context.session.command, O.fromNullable, O.filter(isCommand))),
     O.fold(
       () => T.of(undefined),
-      () => pipe(
+      ({ articleId }) => pipe(
         getAllEvents,
-        T.map(RA.some(isMatchingSavedEvent(user.id, new Doi(context.session.articleId)))),
+        T.map(RA.some(isMatchingSavedEvent(user.id, articleId))),
         T.map(B.fold(
-          () => [userSavedArticle(user.id, new Doi(context.session.articleId))],
+          () => [userSavedArticle(user.id, articleId)],
           constant([]),
         )),
         T.chain(commitEvents),
