@@ -4,10 +4,10 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
+import { Json } from 'io-ts-types';
 import { DateFromISOString } from 'io-ts-types/DateFromISOString';
 import { Logger } from './logger';
 import { Doi } from '../types/doi';
-import { Json } from '../types/json';
 
 export type GetJson = (uri: string) => Promise<Json>;
 

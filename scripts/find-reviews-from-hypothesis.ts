@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { JsonCompatible } from '../src/types/json';
 
 const publisherGroupId = process.argv[2];
 
@@ -9,10 +8,10 @@ type Row = {
   uri: string,
 };
 
-type HypothesisResponse = JsonCompatible<{
+type HypothesisResponse = {
   total: number,
   rows: Array<Row>,
-}>;
+};
 
 const processRow = (server: string) => (row: Row): void => {
   const doiRegex = '(10\\.[0-9]{4,}(?:\\.[1-9][0-9]*)*/(?:[^%"#?\\s])+)';

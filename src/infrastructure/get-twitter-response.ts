@@ -1,6 +1,6 @@
 import axios from 'axios';
+import { Json } from 'io-ts-types';
 import { Logger } from './logger';
-import { Json } from '../types/json';
 
 export type TwitterResponse = {
   data?: {

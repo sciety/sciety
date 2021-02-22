@@ -4,12 +4,12 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
+import { Json } from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
 import { BiorxivArticleDetails, BiorxivArticleVersion } from './codecs/BiorxivArticleDetails';
 import { Logger } from './logger';
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
-import { Json } from '../types/json';
 
 type GetJson = (url: string) => Promise<Json>;
 

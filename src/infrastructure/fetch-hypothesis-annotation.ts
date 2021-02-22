@@ -2,25 +2,25 @@ import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
+import { Json } from 'io-ts-types';
 import { Remarkable } from 'remarkable';
 import { linkify } from 'remarkable/linkify';
 import { Logger } from './logger';
 import { Review } from './review';
 import { toHtmlFragment } from '../types/html-fragment';
 import { HypothesisAnnotationId } from '../types/hypothesis-annotation-id';
-import { Json, JsonCompatible } from '../types/json';
 
 export type GetJson = (uri: string) => Promise<Json>;
 
 export type FetchHypothesisAnnotation = (id: HypothesisAnnotationId) => T.Task<Review>;
 
-type HypothesisResponse = JsonCompatible<{
+type HypothesisResponse = {
   created: string,
   text: string,
   links: {
     incontext: string,
   },
-}>;
+};
 
 export const fetchHypothesisAnnotation = (getJson: GetJson, logger: Logger): FetchHypothesisAnnotation => {
   const converter = new Remarkable({ html: true }).use(linkify);

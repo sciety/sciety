@@ -3,6 +3,7 @@ import axiosRetry from 'axios-retry';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
+import { Json } from 'io-ts-types';
 import { Pool } from 'pg';
 import { Adapters } from './adapters';
 import { createBiorxivCache } from './biorxiv-cache';
@@ -28,7 +29,6 @@ import { createJsonSerializer, createRTracerLogger, createStreamLogger } from '.
 import { responseCache } from './response-cache';
 import { createSearchEuropePmc } from './search-europe-pmc';
 import { bootstrapEditorialCommunities } from '../data/bootstrap-editorial-communities';
-import { Json } from '../types/json';
 
 export const createInfrastructure = async (): Promise<Adapters> => {
   const logger = createRTracerLogger(
