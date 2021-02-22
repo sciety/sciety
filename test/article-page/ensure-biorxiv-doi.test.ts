@@ -1,12 +1,12 @@
 import * as O from 'fp-ts/Option';
 import { ensureBiorxivDoi } from '../../src/article-page/ensure-biorxiv-doi';
-import { Doi } from '../../src/types/doi';
+import * as Doi from '../../src/types/doi';
 
 describe('ensure-biorxiv-doi', () => {
   it('returns a DOI when the input is valid', async () => {
     const input = '10.1101/111111';
 
-    expect(ensureBiorxivDoi(input)).toStrictEqual(O.some(new Doi(input)));
+    expect(ensureBiorxivDoi(input)).toStrictEqual(Doi.fromString(input));
   });
 
   it('returns nothing when the input is not a DOI', async () => {
