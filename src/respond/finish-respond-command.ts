@@ -3,7 +3,7 @@ import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
 import {
-  commandHandler, CommitEvents, GetAllEvents, validateCommand,
+  commandHandler, CommitEvents, GetAllEvents, toCommand,
 } from './command-handler';
 import { toReviewId } from '../types/review-id';
 
@@ -18,7 +18,7 @@ export const finishRespondCommand = (ports: Ports): Middleware => async (context
     // TODO: move userId, reviewId, command into a new type that gets constructed by a validator
     O.Do,
     O.bind('reviewId', () => O.tryCatch(() => pipe(context.session.reviewId, toReviewId))),
-    O.bind('command', () => pipe(context.session.command, validateCommand)),
+    O.bind('command', () => pipe(context.session.command, toCommand)),
     O.fold(
       () => T.of(undefined),
       flow(

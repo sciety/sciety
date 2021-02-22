@@ -1,6 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
+import { isString } from 'is-what';
 import { respondHelpful } from './respond-helpful-command';
 import { respondNotHelpful } from './respond-not-helpful-command';
 import { reviewResponse } from './review-response';
@@ -19,23 +20,28 @@ const commands = {
   'revoke-response': revokeResponse,
 };
 
-type ValidCommand = 'respond-helpful' | 'respond-not-helpful' | 'revoke-response';
+type Command = keyof typeof commands;
 
-export const validateCommand = O.fromPredicate((command): command is ValidCommand => (
-  command === 'respond-helpful' || command === 'revoke-response' || command === 'respond-not-helpful'
-));
+const isCommand = (command: string): command is Command => command in commands;
 
-type CommandHandler = (input: { command: ValidCommand, reviewId: ReviewId }) => T.Task<void>;
+export const toCommand = flow(
+  O.of,
+  O.filter(isString),
+  O.filter(isCommand),
+);
+
+type CommandHandler = (input: { command: Command, reviewId: ReviewId }) => T.Task<void>;
 
 export const commandHandler = (
   commitEvents: CommitEvents,
   getAllEvents: GetAllEvents,
   userId: UserId,
-): CommandHandler => ({ command, reviewId }) => (
-  pipe(
-    getAllEvents,
-    T.map(reviewResponse(userId, reviewId)),
-    T.map((currentResponse) => commands[command](currentResponse, userId, reviewId)),
-    T.chain(commitEvents),
-  )
+): CommandHandler => ({
+  command,
+  reviewId,
+}) => pipe(
+  getAllEvents,
+  T.map(reviewResponse(userId, reviewId)),
+  T.map((currentResponse) => commands[command](currentResponse, userId, reviewId)),
+  T.chain(commitEvents),
 );

@@ -2,7 +2,7 @@ import { Middleware } from '@koa/router';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { BadRequest } from 'http-errors';
-import { commandHandler, CommitEvents, validateCommand } from './command-handler';
+import { commandHandler, CommitEvents, toCommand } from './command-handler';
 import { GetAllEvents } from './respond-helpful-command';
 import { toReviewId, toString } from '../types/review-id';
 import { User } from '../types/user';
@@ -19,7 +19,7 @@ export const respondHandler = (ports: Ports): Middleware<{ user: User }> => asyn
   await pipe(
     O.Do,
     O.bind('reviewId', () => O.tryCatch(() => pipe(context.request.body.reviewid, toReviewId))),
-    O.bind('command', () => pipe(context.request.body.command, validateCommand)),
+    O.bind('command', () => pipe(context.request.body.command, toCommand)),
     O.fold(
       () => {
         throw new BadRequest();
