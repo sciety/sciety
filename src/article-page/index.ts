@@ -8,6 +8,7 @@ import { GetReview } from './get-feed-events-content';
 import { projectHasUserSavedArticle } from './project-has-user-saved-article';
 import { createProjectReviewResponseCounts } from './project-review-response-counts';
 import { createProjectUserReviewResponse } from './project-user-review-response';
+import { RenderActivityPage, renderActivityPage } from './render-activity-page';
 import { createRenderArticleAbstract } from './render-article-abstract';
 import { renderArticleVersionFeedItem } from './render-article-version-feed-item';
 import { createRenderFeed } from './render-feed';
@@ -67,6 +68,7 @@ const getUserId = (user: O.Option<User>): O.Option<UserId> => pipe(
 );
 
 type ArticlePage = (params: Params) => ReturnType<RenderPage>;
+type ActivityPage = (params: Params) => ReturnType<RenderActivityPage>;
 
 export const articlePage = (ports: Ports): ArticlePage => {
   const renderPageHeader = createRenderPageHeader(
@@ -116,4 +118,35 @@ export const articlePage = (ports: Ports): ArticlePage => {
   );
 };
 
-export const articleActivityPage = articlePage;
+export const articleActivityPage = (ports: Ports): ActivityPage => {
+  const countReviewResponses = createProjectReviewResponseCounts(ports.getAllEvents);
+  const renderFeed = createRenderFeed(
+    getArticleFeedEvents(
+      ports.findReviewsForArticleDoi,
+      ports.findVersionsForArticleDoi,
+      ports.fetchReview,
+      ports.getEditorialCommunity,
+    ),
+    createRenderReviewFeedItem(
+      150,
+      createRenderReviewResponses(
+        countReviewResponses,
+        createProjectUserReviewResponse(ports.getAllEvents),
+      ),
+    ),
+    renderArticleVersionFeedItem,
+  );
+  const renderPage = renderActivityPage(renderFeed, ports.fetchArticle);
+
+  return (params) => pipe(
+    params.doi ?? '',
+    ensureBiorxivDoi,
+    O.fold(
+      () => TE.left({
+        type: 'not-found',
+        message: toHtmlFragment(`${params.doi ?? 'Article'} not found`),
+      }),
+      (doi: Doi) => renderPage(doi, getUserId(params.user)),
+    ),
+  );
+};
