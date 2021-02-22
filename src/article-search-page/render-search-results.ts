@@ -44,22 +44,21 @@ const renderSearchResults = (
       (item) => ({ ...item, _tag: 'Article' as const }),
       renderSearchResult,
     )),
+    T.chain((items) => {
+      if (query === 'peerj') {
+        return pipe(
+          {
+            _tag: 'Group',
+            link: '/groups/53ed5364-a016-11ea-bb37-0242ac130002',
+            name: 'PeerJ',
+          },
+          renderSearchResult,
+          T.map((renderedSearchResult) => RA.cons(renderedSearchResult)(items)),
+        );
+      }
+      return T.of(items);
+    }),
     T.map(flow(
-      (items) => {
-        if (query === 'peerj') {
-          return pipe(
-            items,
-            RA.cons(pipe(
-              {
-                link: '/groups/53ed5364-a016-11ea-bb37-0242ac130002',
-                name: 'PeerJ',
-              },
-              (group) => toHtmlFragment(`<a href="${group.link}">${group.name}</a>`),
-            )),
-          );
-        }
-        return items;
-      },
       renderListIfNecessary,
       (searchResultsList) => `
         <p class="search-results__summary">Showing ${searchResults.items.length} of ${searchResults.total} results.</p>
