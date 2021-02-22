@@ -2,7 +2,8 @@ import axios from 'axios';
 import axiosRetry from 'axios-retry';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
-import { pipe } from 'fp-ts/function';
+import * as TE from 'fp-ts/TaskEither';
+import { identity, pipe } from 'fp-ts/function';
 import { Json } from 'io-ts-types';
 import { Pool } from 'pg';
 import { Adapters } from './adapters';
@@ -30,7 +31,7 @@ import { responseCache } from './response-cache';
 import { createSearchEuropePmc } from './search-europe-pmc';
 import { bootstrapEditorialCommunities } from '../data/bootstrap-editorial-communities';
 
-export const createInfrastructure = (): T.Task<Adapters> => async () => {
+export const createInfrastructure = (): TE.TaskEither<unknown, Adapters> => TE.tryCatch(async () => {
   const logger = createRTracerLogger(
     createStreamLogger(
       process.stdout,
@@ -99,4 +100,4 @@ export const createInfrastructure = (): T.Task<Adapters> => async () => {
     follows: createFollows(getAllEvents),
     findVersionsForArticleDoi: createBiorxivCache(getArticleVersionEventsFromBiorxiv(getJson, logger), logger),
   };
-};
+}, identity);

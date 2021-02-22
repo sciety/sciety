@@ -20,7 +20,7 @@ const terminusOptions = (logger: Logger): TerminusOptions => ({
 
 void pipe(
   TE.Do,
-  TE.bind('adapters', () => TE.tryCatch(async () => createInfrastructure()(), identity)),
+  TE.bind('adapters', createInfrastructure),
   TE.bindW('router', ({ adapters }) => pipe(adapters, createRouter, TE.right)),
   TE.chainW(({ adapters, router }) => pipe(
     E.tryCatch(() => createApplicationServer(router, adapters.logger), identity),
