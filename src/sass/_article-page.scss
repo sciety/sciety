@@ -124,7 +124,7 @@
 .article-nav {
   @include list.basics();
   grid-column: 1/-1;
-  border-bottom: 2px solid #CFD8DC;
+  border-bottom: 2px solid #cfd8dc;
 }
 
 .article-nav__item {
@@ -134,5 +134,5 @@
 }
 
 .article-nav__item--active {
-  border-bottom: 2px solid #E8521E;
+  border-bottom: 2px solid #e8521e;
 }
