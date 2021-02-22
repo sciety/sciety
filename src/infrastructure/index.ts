@@ -40,9 +40,22 @@ export const createInfrastructure = (): TE.TaskEither<unknown, Adapters> => pipe
     createRTracerLogger,
     TE.right,
   )),
+  TE.bind('pool', () => pipe(new Pool(), TE.right)),
+  TE.chainFirst(({ pool }) => TE.tryCatch(
+    async () => pool.query(`
+      CREATE TABLE IF NOT EXISTS events (
+        id uuid,
+        type varchar,
+        date timestamp,
+        payload jsonb,
+        PRIMARY KEY (id)
+      );
+    `),
+    identity,
+  )),
   TE.chain((adapters) => TE.tryCatch(
     async () => {
-      const { logger } = adapters;
+      const { logger, pool } = adapters;
 
       const getJson = async (uri: string): Promise<Json> => {
         const response = await axios.get<Json>(uri);
@@ -66,16 +79,6 @@ export const createInfrastructure = (): TE.TaskEither<unknown, Adapters> => pipe
       const fetchDataset = createFetchDataset(logger);
       const searchEuropePmc = createSearchEuropePmc(getJsonWithRetries, logger);
       const editorialCommunities = inMemoryEditorialCommunityRepository(logger, bootstrapEditorialCommunities);
-      const pool = new Pool();
-      await pool.query(`
-        CREATE TABLE IF NOT EXISTS events (
-          id uuid,
-          type varchar,
-          date timestamp,
-          payload jsonb,
-          PRIMARY KEY (id)
-        );
-      `);
       const editorialCommunityIds = pipe(bootstrapEditorialCommunities, RNEA.map(({ id }) => id.value));
       const events = getEventsFromDataFiles(editorialCommunityIds)
         .concat(await getEventsFromDatabase(pool, logger));
