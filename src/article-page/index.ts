@@ -115,3 +115,5 @@ export const articlePage = (ports: Ports): ArticlePage => {
     ),
   );
 };
+
+export const articleActivityPage = articlePage;

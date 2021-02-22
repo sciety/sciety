@@ -15,7 +15,7 @@ import { redirectBack } from './redirect-back';
 import { redirectAfterAuthenticating, requireAuthentication } from './require-authentication';
 import { robots } from './robots';
 import { aboutPage } from '../about-page';
-import { articlePage } from '../article-page';
+import { articleActivityPage, articlePage } from '../article-page';
 import { articleSearchPage } from '../article-search-page';
 import { editorialCommunityPage } from '../editorial-community-page';
 import { followHandler } from '../follow';
@@ -63,7 +63,7 @@ export const createRouter = (adapters: Adapters): Router => {
     pageHandler(articlePage(adapters)));
 
   router.get('/articles/activity/:doi(.+)',
-    pageHandler(articlePage(adapters)));
+    pageHandler(articleActivityPage(adapters)));
 
   router.get('/groups/:id',
     pageHandler(editorialCommunityPage(adapters)));
