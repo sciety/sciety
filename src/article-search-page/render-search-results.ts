@@ -47,7 +47,16 @@ const renderSearchResults = (
     T.map(flow(
       (items) => {
         if (query === 'peerj') {
-          return RA.cons(toHtmlFragment('<a href="/groups/53ed5364-a016-11ea-bb37-0242ac130002">PeerJ</a>'))(items);
+          return pipe(
+            items,
+            RA.cons(pipe(
+              {
+                link: '/groups/53ed5364-a016-11ea-bb37-0242ac130002',
+                name: 'PeerJ',
+              },
+              (group) => toHtmlFragment(`<a href="${group.link}">${group.name}</a>`),
+            )),
+          );
         }
         return items;
       },
