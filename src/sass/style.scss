@@ -376,6 +376,34 @@ a:visited {
   }
 }
 
+.sciety-grid--activity {
+  grid-auto-flow: unset;
+}
+
+.sciety-grid--activity > .page-header--article,
+.sciety-grid--activity > .main-content {
+  grid-column: 1 / -1;
+}
+
+@media screen and (min-width: 56.25em) {
+  .sciety-grid--activity > .main-content {
+    grid-column: 1 / 9;
+
+    &.main-content--article {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: auto auto;
+
+      // TODO: move to article-feed partial as part of layout refactor
+      .article-feed {
+        grid-column: 1 / 9;
+        grid-row: 2;
+      }
+    }
+  }
+}
+
 .u-call-to-action-link {
   font-family: Lato, sans-serif;
 }
