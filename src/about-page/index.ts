@@ -1,25 +1,18 @@
-import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { renderPage } from './render-page';
-import { HtmlFragment } from '../types/html-fragment';
+import { Page, renderErrorPage, renderPage } from './render-page';
+import { RenderPageError } from '../types/render-page-error';
 
-export type FetchStaticFile = (filename: string) => T.Task<string>;
+export type FetchStaticFile = (filename: string) => TE.TaskEither<'not-found' | 'unavailable', string>;
 
 type Ports = {
   fetchStaticFile: FetchStaticFile,
 };
 
-type AboutPage = () => T.Task<{
-  title: string,
-  content: HtmlFragment,
-}>;
+type AboutPage = () => TE.TaskEither<RenderPageError, Page>;
 
 export const aboutPage = (ports: Ports): AboutPage => () => pipe(
   'about.md',
   ports.fetchStaticFile,
-  T.map(renderPage),
-  T.map((html) => ({
-    title: 'About',
-    content: html,
-  })),
+  TE.bimap(renderErrorPage, renderPage),
 );

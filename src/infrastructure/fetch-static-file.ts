@@ -1,10 +1,11 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Logger } from './logger';
 
-export type FetchStaticFile = (filename: string) => T.Task<string>;
+export type FetchStaticFile = (filename: string) => TE.TaskEither<never, string>;
 
 export const fetchStaticFile = (logger: Logger): FetchStaticFile => (
   (filename) => {
@@ -15,6 +16,7 @@ export const fetchStaticFile = (logger: Logger): FetchStaticFile => (
       fs.readFile,
       T.of,
       T.map((text) => text.toString()),
+      TE.rightTask,
     );
   }
 );

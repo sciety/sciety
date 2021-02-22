@@ -20,9 +20,9 @@ export type RenderPage = (
 
 type RenderPageHeader = (editorialCommunity: EditorialCommunity) => HtmlFragment;
 
-type RenderDescription = <F>(editorialCommunity: EditorialCommunity) => TE.TaskEither<F, HtmlFragment>;
+type RenderDescription = (editorialCommunity: EditorialCommunity) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>;
 
-type RenderFeed = <F>(community: EditorialCommunity, userId: O.Option<UserId>) => TE.TaskEither<F, HtmlFragment>;
+type RenderFeed = (community: EditorialCommunity, userId: O.Option<UserId>) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>;
 
 type Components = {
   header: HtmlFragment,
@@ -58,7 +58,7 @@ export const renderPage = (
   renderPageHeader: RenderPageHeader,
   renderDescription: RenderDescription,
   renderFeed: RenderFeed,
-  renderFollowers: <F>(editorialCommunityId: EditorialCommunityId) => TE.TaskEither<F, HtmlFragment>,
+  renderFollowers: (editorialCommunityId: EditorialCommunityId) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>,
 ): RenderPage => (editorialCommunity, userId) => pipe(
   {
     header: TE.right(renderPageHeader(editorialCommunity)),
