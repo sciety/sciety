@@ -66,9 +66,9 @@ const render = (components: {
   <header class="page-header page-header--article">
     <h1>${components.articleDetails.title}</h1>
   </header>
-  <ul role="list">
-    <li>Article</li>
-    <li>Activity</li>
+  <ul class="article-nav" role="list">
+    <li class="article-nav__item">Article</li>
+    <li class="article-nav__item">Activity</li>
   </ul>
   <div class="main-content main-content--article">
     ${components.feed}
