@@ -7,6 +7,7 @@ import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 export type SearchResult = {
+  _tag: 'Article',
   doi: Doi,
   title: string,
   authors: string,

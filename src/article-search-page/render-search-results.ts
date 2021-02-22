@@ -8,15 +8,12 @@ import { RenderSearchResult, SearchResult } from './render-search-result';
 import { templateListItems } from '../shared-components/list-items';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
-export type FindArticles = (query: string) => TE.TaskEither<'unavailable', {
-  items: Array<SearchResult>,
-  total: number,
-}>;
+export type FindArticles = (query: string) => TE.TaskEither<'unavailable', SearchResults>;
 
 export type RenderSearchResults = (query: string) => TE.TaskEither<'unavailable', HtmlFragment>;
 
 type SearchResults = {
-  items: Array<SearchResult>,
+  items: Array<Omit<SearchResult, '_tag'>>,
   total: number,
 };
 
@@ -37,13 +34,16 @@ const renderListIfNecessary: RenderListIfNecessary = flow(
 const renderSearchResults = (
   renderSearchResult: RenderSearchResult,
 ) => (
-  query:string,
+  query: string,
 ) => (
   searchResults: SearchResults,
 ) => (
   pipe(
     searchResults.items,
-    T.traverseArray(renderSearchResult),
+    T.traverseArray(flow(
+      (item) => ({ ...item, _tag: 'Article' as const }),
+      renderSearchResult,
+    )),
     T.map(flow(
       (items) => {
         if (query === 'peerj') {

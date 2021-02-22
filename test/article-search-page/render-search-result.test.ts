@@ -7,6 +7,7 @@ import {
 import { Doi } from '../../src/types/doi';
 
 const searchResult: SearchResult = {
+  _tag: 'Article',
   doi: new Doi('10.1101/833392'),
   title: 'the title',
   authors: '1, 2, 3',
