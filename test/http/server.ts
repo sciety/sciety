@@ -29,7 +29,7 @@ type TestServer = {
 };
 
 export const createTestServer = async (): Promise<TestServer> => {
-  const editorialCommunities = inMemoryEditorialCommunityRepository(dummyLogger, bootstrapEditorialCommunities);
+  const editorialCommunities = inMemoryEditorialCommunityRepository(bootstrapEditorialCommunities);
   const fetchDataCiteDataset: FetchDataset = async () => (
     clownface({ dataset: datasetFactory(), term: namedNode('http://example.com/some-datacite-node') })
       .addOut(schema.datePublished, literal('2020-02-20', schema.Date))

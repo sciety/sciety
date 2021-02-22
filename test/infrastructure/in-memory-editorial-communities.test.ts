@@ -3,7 +3,6 @@ import { inMemoryEditorialCommunityRepository } from '../../src/infrastructure/i
 import { EditorialCommunity } from '../../src/types/editorial-community';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 import { EditorialCommunityRepository } from '../../src/types/editorial-community-repository';
-import { dummyLogger } from '../dummy-logger';
 
 const editorialCommunityId = new EditorialCommunityId('530812a5-838a-4fb2-95b6-eb4828f0d37c');
 
@@ -17,7 +16,7 @@ describe('in-memory-editorial-communities', () => {
   };
 
   beforeEach(async () => {
-    repository = inMemoryEditorialCommunityRepository(dummyLogger, [community]);
+    repository = inMemoryEditorialCommunityRepository([community]);
   });
 
   describe('lookup', () => {
