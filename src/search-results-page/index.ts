@@ -4,7 +4,6 @@ import { renderErrorPage, RenderPage, renderPage } from './render-page';
 import { ArticleSearchResult, renderSearchResult } from './render-search-result';
 import { renderSearchResults } from './render-search-results';
 import { FindReviewsForArticleDoi, search } from './search';
-import { toHtmlFragment } from '../types/html-fragment';
 
 type OriginalSearchResults = {
   items: ReadonlyArray<Omit<Omit<ArticleSearchResult, '_tag'>, 'reviewCount'>>,
@@ -33,6 +32,5 @@ export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) =
       TE.right,
     ),
   ),
-  TE.map(toHtmlFragment),
   TE.bimap(renderErrorPage, renderPage),
 );

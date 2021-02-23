@@ -4,7 +4,7 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { ArticleSearchResult, RenderSearchResult } from './render-search-result';
 import { templateListItems } from '../shared-components';
-import { HtmlFragment } from '../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 export type SearchResults = {
   items: ReadonlyArray<Omit<ArticleSearchResult, '_tag'>>,
@@ -31,7 +31,7 @@ export const renderSearchResults = (
   query: string,
 ) => (
   searchResults: SearchResults,
-): string => (
+): HtmlFragment => (
   pipe(
     searchResults.items,
     RA.map(flow(
@@ -52,12 +52,11 @@ export const renderSearchResults = (
       }
       return items;
     },
-    flow(
-      renderListIfNecessary,
-      (searchResultsList) => `
-        <p class="search-results__summary">Showing ${searchResults.items.length} of ${searchResults.total} results.</p>
-        ${searchResultsList}
-      `,
-    ),
+    renderListIfNecessary,
+    (searchResultsList) => `
+      <p class="search-results__summary">Showing ${searchResults.items.length} of ${searchResults.total} results.</p>
+      ${searchResultsList}
+    `,
+    toHtmlFragment,
   )
 );
