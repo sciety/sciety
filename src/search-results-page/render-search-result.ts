@@ -1,6 +1,5 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
-import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { templateDate } from '../shared-components/date';
 import { Doi } from '../types/doi';
@@ -23,8 +22,6 @@ type GroupSearchResult = {
 
 export type SearchResult = ArticleSearchResult | GroupSearchResult;
 
-export type GetReviewCount = (doi: Doi) => TE.TaskEither<unknown, number>;
-
 const renderReviewCount = (reviewCount: number): string => `
   <div class="search-results-list__item__review-count">
     Reviews: ${reviewCount}
@@ -44,11 +41,8 @@ const templatePostedDate = flow(
 
 type RenderArticleSearchResult = (result: ArticleSearchResult) => T.Task<HtmlFragment>;
 
-const renderArticleSearchResult = (
-  getReviewCount: GetReviewCount,
-): RenderArticleSearchResult => flow(
+const renderArticleSearchResult: RenderArticleSearchResult = flow(
   T.of,
-  T.bind('reviewCountOverride', ({ doi }) => pipe(doi, getReviewCount, T.map(O.fromEither))),
   T.map((result) => `
     <div>
       <a class="search-results-list__item__link" href="/articles/${result.doi.value}">${result.title}</a>
@@ -72,12 +66,10 @@ const renderGroupSearchResult: RenderGroupSearchResult = (result) => pipe(
 
 export type RenderSearchResult = (result: SearchResult) => T.Task<HtmlFragment>;
 
-export const createRenderSearchResult = (
-  getReviewCount: GetReviewCount,
-): RenderSearchResult => (result) => {
+export const renderSearchResult: RenderSearchResult = (result) => {
   switch (result._tag) {
     case 'Article':
-      return renderArticleSearchResult(getReviewCount)(result);
+      return renderArticleSearchResult(result);
     case 'Group':
       return renderGroupSearchResult(result);
   }
