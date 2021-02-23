@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import {
   createRenderSearchResult,
@@ -12,6 +13,7 @@ const searchResult: SearchResult = {
   title: 'the title',
   authors: '1, 2, 3',
   postedDate: new Date('2017-11-30'),
+  reviewCount: O.some(0),
 };
 
 const arbitraryReviewCount: GetReviewCount = () => TE.right(0);
@@ -45,7 +47,7 @@ describe('render-search-result component', () => {
     it('hides the number of reviews', async () => {
       const getReviewCount: GetReviewCount = () => TE.right(0);
 
-      const rendered = await createRenderSearchResult(getReviewCount)(searchResult);
+      const rendered = await createRenderSearchResult(getReviewCount)(searchResult)();
 
       expect(rendered).toStrictEqual(expect.not.stringContaining('Reviews'));
     });
@@ -55,7 +57,7 @@ describe('render-search-result component', () => {
     it('hides the number of reviews', async () => {
       const getReviewCount: GetReviewCount = () => TE.left('some error');
 
-      const rendered = await createRenderSearchResult(getReviewCount)(searchResult);
+      const rendered = await createRenderSearchResult(getReviewCount)(searchResult)();
 
       expect(rendered).toStrictEqual(expect.not.stringContaining('Reviews'));
     });

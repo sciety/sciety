@@ -12,6 +12,7 @@ export type ArticleSearchResult = {
   title: string,
   authors: string,
   postedDate: Date,
+  reviewCount: O.Option<number>,
 };
 
 type GroupSearchResult = {
@@ -47,7 +48,7 @@ const renderArticleSearchResult = (
   getReviewCount: GetReviewCount,
 ): RenderArticleSearchResult => flow(
   T.of,
-  T.bind('reviewCount', ({ doi }) => pipe(doi, getReviewCount, T.map(O.fromEither))),
+  T.bind('reviewCountOverride', ({ doi }) => pipe(doi, getReviewCount, T.map(O.fromEither))),
   T.map((result) => `
     <div>
       <a class="search-results-list__item__link" href="/articles/${result.doi.value}">${result.title}</a>
@@ -55,7 +56,7 @@ const renderArticleSearchResult = (
         ${result.authors}
       </div>
       ${templatePostedDate(result.postedDate)}
-      ${renderReviews(result.reviewCount)}
+      ${renderReviews(result.reviewCountOverride)}
     </div>
   `),
   T.map(toHtmlFragment),
