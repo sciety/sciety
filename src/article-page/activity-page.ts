@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, pipe } from 'fp-ts/function';
+import { constant, flow, pipe } from 'fp-ts/function';
 import { ensureBiorxivDoi } from './ensure-biorxiv-doi';
 import { FindVersionsForArticleDoi, getArticleFeedEvents } from './get-article-feed-events';
 import { GetReview } from './get-feed-events-content';
@@ -83,7 +83,6 @@ export const articleActivityPage = (ports: Ports): ActivityPage => {
     renderArticleVersionFeedItem,
   );
   const renderPage = renderActivityPage(
-    renderFeed,
     renderSaveArticle(projectHasUserSavedArticle(ports.getAllEvents)),
     renderTweetThis,
   );
@@ -101,11 +100,19 @@ export const articleActivityPage = (ports: Ports): ActivityPage => {
         TE.bindTo('doi'),
         TE.bind('userId', () => pipe(params.user, getUserId, TE.right)),
         TE.bind('articleDetails', ({ doi }) => pipe(doi, ports.fetchArticle)),
+        TE.bindW('feed', ({ articleDetails, doi, userId }) => pipe(
+          articleDetails.server,
+          (server) => renderFeed(doi, server, userId),
+          TE.orElse(flow(constant(''), TE.right)),
+          TE.map(toHtmlFragment),
+        )),
         TE.mapLeft(() => ({
           type: 'not-found' as const,
           message: toHtmlFragment(`${params.doi ?? 'Article'} not found`),
         })),
-        TE.chain(({ doi, userId, articleDetails }) => renderPage(doi, userId, articleDetails)),
+        TE.chain(({
+          doi, userId, articleDetails, feed,
+        }) => renderPage(doi, userId, articleDetails, feed)),
       ),
     ),
   );

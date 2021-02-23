@@ -2,7 +2,7 @@ import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { constant, flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import striptags from 'striptags';
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
@@ -29,11 +29,11 @@ type ArticleDetails = {
 type RenderTweetThis = (doi: Doi) => HtmlFragment;
 type RenderSaveArticle = (doi: Doi, userId: O.Option<UserId>) => T.Task<HtmlFragment>;
 
-type RenderFeed = (doi: Doi, server: ArticleServer, userId: O.Option<UserId>) => TE.TaskEither<'no-content', HtmlFragment>;
 export type RenderActivityPage = (
   doi: Doi,
   userId: O.Option<UserId>,
-  articleDetails: ArticleDetails
+  articleDetails: ArticleDetails,
+  feed: HtmlFragment,
 ) => TE.TaskEither<RenderPageError, Page>;
 
 const toErrorPage = (error: 'not-found' | 'unavailable'): RenderPageError => {
@@ -95,18 +95,13 @@ const render = (components: {
 );
 
 export const renderActivityPage = (
-  renderFeed: RenderFeed,
   renderSaveArticle: RenderSaveArticle,
   renderTweetThis: RenderTweetThis,
-): RenderActivityPage => (doi, userId, articleDetails) => {
+): RenderActivityPage => (doi, userId, articleDetails, feed) => {
   const components = {
     articleDetails: TE.right(articleDetails),
     doi: TE.right(doi),
-    feed: pipe(
-      articleDetails.server,
-      (server) => renderFeed(doi, server, userId),
-      TE.orElse(flow(constant(''), TE.right)),
-    ),
+    feed: TE.right(feed),
     saveArticle: pipe(
       renderSaveArticle(doi, userId),
       TE.rightTask,
