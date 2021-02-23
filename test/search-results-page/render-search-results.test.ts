@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
-import { RenderSearchResult } from '../../src/article-search-page/render-search-result';
-import { renderSearchResults } from '../../src/article-search-page/render-search-results';
+import { RenderSearchResult } from '../../src/search-results-page/render-search-result';
+import { renderSearchResults } from '../../src/search-results-page/render-search-results';
 import { Doi } from '../../src/types/doi';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { shouldNotBeCalled } from '../should-not-be-called';
