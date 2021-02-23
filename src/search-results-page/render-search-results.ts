@@ -4,7 +4,7 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { ArticleSearchResult, RenderSearchResult } from './render-search-result';
-import { templateListItems } from '../shared-components/list-items';
+import { templateListItems } from '../shared-components';
 import { HtmlFragment } from '../types/html-fragment';
 
 export type SearchResults = {
