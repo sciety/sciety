@@ -68,7 +68,7 @@ const render = (components: {
     <h1>${components.articleDetails.title}</h1>
   </header>
   <div class="article-tabs">
-    <a class="article-tabs__tab article-tabs__link" href="/articles/meta/${components.doi.value}">Article</a>
+    <a class="article-tabs__tab article-tabs__link" href="/articles/meta/${components.doi.value}" aria-label="Discover article information and abstract">Article</a>
     <h2 class="article-tabs__tab article-tabs__heading">Activity</h2>
   </div>
   <div class="main-content main-content--article">
