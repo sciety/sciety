@@ -1,7 +1,7 @@
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { createRenderPage, RenderPage } from './render-page';
+import { renderErrorPage, RenderPage, renderPage } from './render-page';
 import { createRenderSearchResult, GetReviewCount } from './render-search-result';
 import { createRenderSearchResults, FindArticles } from './render-search-results';
 import { Doi } from '../types/doi';
@@ -33,8 +33,9 @@ export const articleSearchPage = (ports: Ports): ArticleSearchPage => {
   const renderSearchResult = createRenderSearchResult(getReviewCount);
   const renderSearchResults = createRenderSearchResults(ports.searchEuropePmc, renderSearchResult);
 
-  const renderPage = createRenderPage(renderSearchResults);
-  return (params) => (
-    renderPage(params.query ?? '')
+  return (params) => pipe(
+    params.query ?? '', // TODO: use Option
+    renderSearchResults,
+    TE.bimap(renderErrorPage, renderPage),
   );
 };
