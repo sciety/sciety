@@ -25,14 +25,14 @@ type ArticleDetails = {
   server: ArticleServer,
 };
 
-export type RenderActivityPage = (
+export type RenderActivityPage = (components: {
   doi: Doi,
   userId: O.Option<UserId>,
   articleDetails: ArticleDetails,
   feed: HtmlFragment,
   saveArticle: HtmlFragment,
   tweetThis: HtmlFragment,
-) => TE.TaskEither<RenderPageError, Page>;
+}) => TE.TaskEither<RenderPageError, Page>;
 
 const toErrorPage = (error: 'not-found' | 'unavailable'): RenderPageError => {
   switch (error) {
@@ -92,14 +92,13 @@ const render = (components: {
   }
 );
 
-export const renderActivityPage = (): RenderActivityPage => (
+export const renderActivityPage = (): RenderActivityPage => ({
   doi,
-  userId,
   articleDetails,
   feed,
   saveArticle,
   tweetThis,
-) => {
+}) => {
   const components = {
     articleDetails: TE.right(articleDetails),
     doi: TE.right(doi),

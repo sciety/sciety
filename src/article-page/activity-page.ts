@@ -82,7 +82,6 @@ export const articleActivityPage = (ports: Ports): ActivityPage => {
     ),
     renderArticleVersionFeedItem,
   );
-  const renderPage = renderActivityPage();
 
   return (params) => pipe(
     params.doi ?? '',
@@ -116,9 +115,7 @@ export const articleActivityPage = (ports: Ports): ActivityPage => {
           type: 'not-found' as const,
           message: toHtmlFragment(`${params.doi ?? 'Article'} not found`),
         })),
-        TE.chain(({
-          doi, userId, articleDetails, feed, saveArticle, tweetThis,
-        }) => renderPage(doi, userId, articleDetails, feed, saveArticle, tweetThis)),
+        TE.chain(renderActivityPage()),
       ),
     ),
   );
