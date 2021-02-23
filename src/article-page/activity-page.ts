@@ -1,8 +1,7 @@
-import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { ensureBiorxivDoi } from './ensure-biorxiv-doi';
 import { FindVersionsForArticleDoi, getArticleFeedEvents } from './get-article-feed-events';
 import { GetReview } from './get-feed-events-content';
@@ -97,18 +96,16 @@ export const articleActivityPage = (ports: Ports): ActivityPage => {
         type: 'not-found',
         message: toHtmlFragment(`${params.doi ?? 'Article'} not found`),
       }),
-      (doi: Doi) => pipe(
-        {
-          doi: TE.right(doi),
-          userId: TE.right(getUserId(params.user)),
-          articleDetails: ports.fetchArticle(doi),
-        },
-        sequenceS(TE.taskEither),
+      flow(
+        TE.right,
+        TE.bindTo('doi'),
+        TE.bind('userId', () => pipe(params.user, getUserId, TE.right)),
+        TE.bind('articleDetails', ({ doi }) => pipe(doi, ports.fetchArticle)),
         TE.mapLeft(() => ({
           type: 'not-found' as const,
           message: toHtmlFragment(`${params.doi ?? 'Article'} not found`),
         })),
-        TE.chain(({ userId, articleDetails }) => renderPage(doi, userId, articleDetails)),
+        TE.chain(({ doi, userId, articleDetails }) => renderPage(doi, userId, articleDetails)),
       ),
     ),
   );
