@@ -1,4 +1,3 @@
-import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
@@ -50,30 +49,27 @@ export const search = (
   query,
   findArticles,
   TE.chainW(flow(
-    (searchResults) => ({
-      total: T.of(searchResults.total),
-      items: pipe(
-        searchResults.items,
-        T.traverseArray(flow(
-          (searchResult) => ({
-            searchResult: T.of(searchResult),
-            reviewCount: pipe(
-              searchResult.doi,
-              findReviewsForArticleDoi,
-              T.map((list) => list.length),
-              T.map(O.some), // TODO: should be O.fromPredicate
-            ),
-          }),
-          sequenceS(T.task),
-          T.map(({ searchResult, reviewCount }) => ({
-            _tag: 'Article' as const,
-            ...searchResult,
-            reviewCount,
-          })),
-        )),
-      ),
-    }),
-    sequenceS(T.task),
+    (searchResults) => pipe(
+      searchResults.items,
+      T.traverseArray((searchResult) => pipe(
+        searchResult,
+        ({ doi }) => pipe(
+          doi,
+          findReviewsForArticleDoi,
+          T.map((list) => list.length),
+          T.map(O.some), // TODO: should be O.fromPredicate
+        ),
+        T.map((reviewCount) => ({
+          _tag: 'Article' as const,
+          ...searchResult,
+          reviewCount,
+        })),
+      )),
+      T.map((items) => ({
+        total: searchResults.total,
+        items,
+      })),
+    ),
     TE.rightTask,
   )),
   TE.map(addPeerJHardcodedResult(query)),
