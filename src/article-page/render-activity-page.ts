@@ -29,6 +29,7 @@ type ArticleDetails = {
 
 type GetArticleDetails = (doi: Doi) => TE.TaskEither<'not-found' | 'unavailable', ArticleDetails>;
 
+type RenderTweetThis = (doi: Doi) => HtmlFragment;
 type RenderSaveArticle = (doi: Doi, userId: O.Option<UserId>) => T.Task<HtmlFragment>;
 
 type RenderFeed = (doi: Doi, server: ArticleServer, userId: O.Option<UserId>) => TE.TaskEither<'no-content', HtmlFragment>;
@@ -61,7 +62,8 @@ const render = (components: {
   articleDetails: ArticleDetails,
   doi: Doi,
   feed: string,
-  renderedSaveArticle: string,
+  saveArticle: string,
+  tweetThis: string,
 }): Page => (
   {
     title: `${striptags(components.articleDetails.title)}`,
@@ -70,7 +72,8 @@ const render = (components: {
   <header class="page-header page-header--article">
     <h1>${components.articleDetails.title}</h1>
     <div class="article-actions">
-      ${components.renderedSaveArticle}
+      ${components.tweetThis}
+      ${components.saveArticle}
     </div>
   </header>
   <div class="article-tabs">
@@ -94,6 +97,7 @@ export const renderActivityPage = (
   renderFeed: RenderFeed,
   getArticleDetails: GetArticleDetails,
   renderSaveArticle: RenderSaveArticle,
+  renderTweetThis: RenderTweetThis,
 ): RenderActivityPage => (doi, userId) => {
   const articleDetails = getArticleDetails(doi);
   const components = {
@@ -108,9 +112,14 @@ export const renderActivityPage = (
       T.chain((server) => renderFeed(doi, server, userId)),
       TE.orElse(flow(constant(''), TE.right)),
     ),
-    renderedSaveArticle: pipe(
+    saveArticle: pipe(
       renderSaveArticle(doi, userId),
       TE.rightTask,
+    ),
+    tweetThis: pipe(
+      doi,
+      renderTweetThis,
+      TE.right,
     ),
   };
 

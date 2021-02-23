@@ -142,6 +142,7 @@ export const articleActivityPage = (ports: Ports): ActivityPage => {
     renderFeed,
     ports.fetchArticle,
     renderSaveArticle(projectHasUserSavedArticle(ports.getAllEvents)),
+    renderTweetThis,
   );
 
   return (params) => pipe(
