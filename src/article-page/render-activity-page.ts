@@ -25,14 +25,13 @@ type ArticleDetails = {
   server: ArticleServer,
 };
 
-type RenderTweetThis = (doi: Doi) => HtmlFragment;
-
 export type RenderActivityPage = (
   doi: Doi,
   userId: O.Option<UserId>,
   articleDetails: ArticleDetails,
   feed: HtmlFragment,
   saveArticle: HtmlFragment,
+  tweetThis: HtmlFragment,
 ) => TE.TaskEither<RenderPageError, Page>;
 
 const toErrorPage = (error: 'not-found' | 'unavailable'): RenderPageError => {
@@ -93,19 +92,20 @@ const render = (components: {
   }
 );
 
-export const renderActivityPage = (
-  renderTweetThis: RenderTweetThis,
-): RenderActivityPage => (doi, userId, articleDetails, feed, saveArticle) => {
+export const renderActivityPage = (): RenderActivityPage => (
+  doi,
+  userId,
+  articleDetails,
+  feed,
+  saveArticle,
+  tweetThis,
+) => {
   const components = {
     articleDetails: TE.right(articleDetails),
     doi: TE.right(doi),
     feed: TE.right(feed),
     saveArticle: TE.right(saveArticle),
-    tweetThis: pipe(
-      doi,
-      renderTweetThis,
-      TE.right,
-    ),
+    tweetThis: TE.right(tweetThis),
   };
 
   return pipe(
