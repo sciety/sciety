@@ -56,6 +56,7 @@ const toErrorPage = (error: 'not-found' | 'unavailable'): RenderPageError => {
 const render = (components: {
   articleDetails: ArticleDetails,
   abstract: string,
+  doi: Doi,
   pageHeader: string,
 }): Page => (
   {
@@ -63,6 +64,11 @@ const render = (components: {
     content: toHtmlFragment(`
 <article class="sciety-grid sciety-grid--article">
   ${components.pageHeader}
+
+  <div class="article-tabs">
+    <h2 class="article-tabs__tab article-tabs__heading">Article</h2>
+    <a class="article-tabs__tab article-tabs__link" href="/articles/activity/${components.doi.value}" aria-label="Discover article activity">Activity</a>
+  </div>
 
   <div class="main-content main-content--article">
     ${components.abstract}
@@ -85,6 +91,7 @@ export const renderMetaPage = (
   const articleDetails = getArticleDetails(doi);
   const components = {
     articleDetails,
+    doi: TE.right(doi),
     abstract: renderAbstract(doi),
     pageHeader: renderPageHeader(doi, userId),
   };
