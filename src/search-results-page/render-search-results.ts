@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { constant, flow, pipe } from 'fp-ts/function';
-import { ArticleSearchResult, RenderSearchResult } from './render-search-result';
+import { ArticleSearchResult, RenderSearchResult, SearchResult } from './render-search-result';
 import { templateListItems } from '../shared-components';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
@@ -25,6 +25,22 @@ const renderListIfNecessary: RenderListIfNecessary = flow(
   ),
 );
 
+const addPeerJHardcodedResult = (
+  query: string,
+) => (
+  items: ReadonlyArray<SearchResult>,
+): ReadonlyArray<SearchResult> => {
+  if (query === 'peerj') {
+    const hardcodedSearchResult = {
+      _tag: 'Group' as const,
+      link: '/groups/53ed5364-a016-11ea-bb37-0242ac130002',
+      name: 'PeerJ',
+    };
+    return RA.cons<SearchResult>(hardcodedSearchResult)(items);
+  }
+  return items;
+};
+
 export const renderSearchResults = (
   renderSearchResult: RenderSearchResult,
 ) => (
@@ -34,24 +50,9 @@ export const renderSearchResults = (
 ): HtmlFragment => (
   pipe(
     searchResults.items,
-    RA.map(flow(
-      (item) => ({ ...item, _tag: 'Article' as const }),
-      renderSearchResult,
-    )),
-    (items) => {
-      if (query === 'peerj') {
-        return pipe(
-          {
-            _tag: 'Group',
-            link: '/groups/53ed5364-a016-11ea-bb37-0242ac130002',
-            name: 'PeerJ',
-          },
-          renderSearchResult,
-          (renderedSearchResult) => RA.cons(renderedSearchResult)(items),
-        );
-      }
-      return items;
-    },
+    RA.map((item) => ({ ...item, _tag: 'Article' as const })),
+    addPeerJHardcodedResult(query),
+    RA.map(renderSearchResult),
     renderListIfNecessary,
     (searchResultsList) => `
       <p class="search-results__summary">Showing ${searchResults.items.length} of ${searchResults.total} results.</p>
