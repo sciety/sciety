@@ -11,7 +11,7 @@ import { toHtmlFragment } from '../types/html-fragment';
 import { ReviewId } from '../types/review-id';
 
 type OriginalSearchResults = {
-  items: Array<Omit<Omit<ArticleSearchResult, '_tag'>, 'reviewCount'>>,
+  items: ReadonlyArray<Omit<Omit<ArticleSearchResult, '_tag'>, 'reviewCount'>>,
   total: number,
 };
 

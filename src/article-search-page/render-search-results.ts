@@ -8,7 +8,7 @@ import { templateListItems } from '../shared-components/list-items';
 import { HtmlFragment } from '../types/html-fragment';
 
 export type SearchResults = {
-  items: Array<Omit<ArticleSearchResult, '_tag'>>,
+  items: ReadonlyArray<Omit<ArticleSearchResult, '_tag'>>,
   total: number,
 };
 
