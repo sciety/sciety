@@ -6,6 +6,8 @@ import { flow, pipe } from 'fp-ts/function';
 import { ArticleSearchResult } from './render-search-result';
 import { SearchResults } from './render-search-results';
 import { Doi } from '../types/doi';
+import { EditorialCommunityId } from '../types/editorial-community-id';
+import { ReviewId } from '../types/review-id';
 
 type OriginalSearchResults = {
   items: ReadonlyArray<Omit<Omit<ArticleSearchResult, '_tag'>, 'reviewCount'>>,
@@ -14,11 +16,14 @@ type OriginalSearchResults = {
 
 type FindArticles = (query: string) => TE.TaskEither<'unavailable', OriginalSearchResults>;
 
-type GetReviewCount = (doi: Doi) => TE.TaskEither<unknown, number>;
+export type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
+  reviewId: ReviewId,
+  editorialCommunityId: EditorialCommunityId,
+}>>;
 
 type Search = (query: string) => TE.TaskEither<'unavailable', SearchResults>;
 
-export const search = (findArticles: FindArticles, getReviewCount: GetReviewCount): Search => flow(
+export const search = (findArticles: FindArticles, findReviewsForArticleDoi: FindReviewsForArticleDoi): Search => flow(
   findArticles,
   TE.chainW(flow(
     (searchResults) => ({
@@ -30,8 +35,9 @@ export const search = (findArticles: FindArticles, getReviewCount: GetReviewCoun
             searchResult: T.of(searchResult),
             reviewCount: pipe(
               searchResult.doi,
-              getReviewCount,
-              T.map(O.fromEither),
+              findReviewsForArticleDoi,
+              T.map((list) => list.length),
+              T.map(O.some), // TODO: should be O.fromPredicate
             ),
           }),
           sequenceS(T.task),

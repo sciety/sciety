@@ -4,11 +4,8 @@ import { flow, pipe } from 'fp-ts/function';
 import { renderErrorPage, RenderPage, renderPage } from './render-page';
 import { ArticleSearchResult, createRenderSearchResult, GetReviewCount } from './render-search-result';
 import { renderSearchResults } from './render-search-results';
-import { search } from './search';
-import { Doi } from '../types/doi';
-import { EditorialCommunityId } from '../types/editorial-community-id';
+import { FindReviewsForArticleDoi, search } from './search';
 import { toHtmlFragment } from '../types/html-fragment';
-import { ReviewId } from '../types/review-id';
 
 type OriginalSearchResults = {
   items: ReadonlyArray<Omit<Omit<ArticleSearchResult, '_tag'>, 'reviewCount'>>,
@@ -16,11 +13,6 @@ type OriginalSearchResults = {
 };
 
 type FindArticles = (query: string) => TE.TaskEither<'unavailable', OriginalSearchResults>;
-
-type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
-  reviewId: ReviewId,
-  editorialCommunityId: EditorialCommunityId,
-}>>;
 
 type Ports = {
   searchEuropePmc: FindArticles,
@@ -43,7 +35,7 @@ export const searchResultsPage = (ports: Ports): SearchResultsPage => {
 
   return (params) => pipe(
     params.query ?? '', // TODO: use Option
-    search(ports.searchEuropePmc, getReviewCount),
+    search(ports.searchEuropePmc, ports.findReviewsForArticleDoi),
     TE.chainW(
       flow(
         renderSearchResults(renderSearchResult)(params.query ?? ''),
