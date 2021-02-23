@@ -36,8 +36,14 @@ describe('render-search-result component', () => {
   describe('the article has reviews', () => {
     it('displays the number of reviews', async () => {
       const getReviewCount: GetReviewCount = () => TE.right(37);
-
-      const rendered = await createRenderSearchResult(getReviewCount)(searchResult)();
+      const rendered = await createRenderSearchResult(getReviewCount)({
+        _tag: 'Article',
+        doi: new Doi('10.1101/833392'),
+        title: 'the title',
+        authors: '1, 2, 3',
+        postedDate: new Date('2017-11-30'),
+        reviewCount: O.some(37),
+      })();
 
       expect(rendered).toStrictEqual(expect.stringMatching(/Reviews[\s\S]*?37/));
     });

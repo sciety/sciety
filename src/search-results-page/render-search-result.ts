@@ -56,7 +56,7 @@ const renderArticleSearchResult = (
         ${result.authors}
       </div>
       ${templatePostedDate(result.postedDate)}
-      ${renderReviews(result.reviewCountOverride)}
+      ${renderReviews(result.reviewCount)}
     </div>
   `),
   T.map(toHtmlFragment),
