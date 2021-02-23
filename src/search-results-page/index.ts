@@ -43,7 +43,7 @@ export const searchResultsPage = (ports: Ports): SearchResultsPage => {
 
   return (params) => pipe(
     params.query ?? '', // TODO: use Option
-    search(ports.searchEuropePmc),
+    search(ports.searchEuropePmc, getReviewCount),
     TE.chainW(
       flow(
         renderSearchResults(renderSearchResult)(params.query ?? ''),

@@ -5,6 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { ArticleSearchResult } from './render-search-result';
 import { SearchResults } from './render-search-results';
+import { Doi } from '../types/doi';
 
 type OriginalSearchResults = {
   items: ReadonlyArray<Omit<Omit<ArticleSearchResult, '_tag'>, 'reviewCount'>>,
@@ -13,9 +14,11 @@ type OriginalSearchResults = {
 
 type FindArticles = (query: string) => TE.TaskEither<'unavailable', OriginalSearchResults>;
 
+type GetReviewCount = (doi: Doi) => TE.TaskEither<unknown, number>;
+
 type Search = (query: string) => TE.TaskEither<'unavailable', SearchResults>;
 
-export const search = (findArticles: FindArticles): Search => flow(
+export const search = (findArticles: FindArticles, getReviewCount: GetReviewCount): Search => flow(
   findArticles,
   TE.chainW(flow(
     (searchResults) => ({
@@ -25,7 +28,11 @@ export const search = (findArticles: FindArticles): Search => flow(
         T.traverseArray(flow(
           (searchResult) => ({
             searchResult: T.of(searchResult),
-            reviewCount: T.of(O.some(0)),
+            reviewCount: pipe(
+              searchResult.doi,
+              getReviewCount,
+              T.map(O.fromEither),
+            ),
           }),
           sequenceS(T.task),
           T.map(({ searchResult, reviewCount }) => ({
