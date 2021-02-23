@@ -1,16 +1,8 @@
-import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
-
-type Page = {
-  content: HtmlFragment,
-};
 
 type ArticleDetails = {
   title: string,
-  abstract: SanitisedHtmlFragment, // TODO Use HtmlFragment as the HTML is stripped
-  server: ArticleServer,
 };
 
 export const renderActivityPage = (components: {
@@ -19,26 +11,21 @@ export const renderActivityPage = (components: {
   feed: string,
   saveArticle: string,
   tweetThis: string,
-}): Page => (
-  {
-    content: toHtmlFragment(`
-<article class="sciety-grid sciety-grid--activity">
-  <header class="page-header page-header--article">
-    <h1>${components.articleDetails.title}</h1>
-    <div class="article-actions">
-      ${components.tweetThis}
-      ${components.saveArticle}
+}): HtmlFragment => toHtmlFragment(`
+  <article class="sciety-grid sciety-grid--activity">
+    <header class="page-header page-header--article">
+      <h1>${components.articleDetails.title}</h1>
+      <div class="article-actions">
+        ${components.tweetThis}
+        ${components.saveArticle}
+      </div>
+    </header>
+    <div class="article-tabs">
+      <a class="article-tabs__tab article-tabs__link" href="/articles/meta/${components.doi.value}" aria-label="Discover article information and abstract">Article</a>
+      <h2 class="article-tabs__tab article-tabs__heading">Activity</h2>
     </div>
-  </header>
-  <div class="article-tabs">
-    <a class="article-tabs__tab article-tabs__link" href="/articles/meta/${components.doi.value}" aria-label="Discover article information and abstract">Article</a>
-    <h2 class="article-tabs__tab article-tabs__heading">Activity</h2>
-  </div>
-  <div class="main-content main-content--article">
-    ${components.feed}
-  </div>
-
-</article>
-    `),
-  }
-);
+    <div class="main-content main-content--article">
+      ${components.feed}
+    </div>
+  </article>
+`);

@@ -148,7 +148,7 @@ export const articleActivityPage = (ports: Ports): ActivityPage => {
         TE.bimap(
           toErrorPage,
           (components) => ({
-            ...renderActivityPage(components),
+            content: renderActivityPage(components),
             title: `${striptags(components.articleDetails.title)}`,
             openGraph: {
               title: striptags(components.articleDetails.title),
