@@ -16,7 +16,7 @@ const searchResult: SearchResult = {
 
 describe('render-search-result component', () => {
   it('displays title and authors', async () => {
-    const rendered = await renderSearchResult(searchResult)();
+    const rendered = renderSearchResult(searchResult);
 
     expect(rendered).toStrictEqual(expect.stringContaining(searchResult.doi.value));
     expect(rendered).toStrictEqual(expect.stringContaining(searchResult.title));
@@ -24,21 +24,21 @@ describe('render-search-result component', () => {
   });
 
   it('displays the posted date', async () => {
-    const rendered = await renderSearchResult(searchResult)();
+    const rendered = renderSearchResult(searchResult);
 
     expect(rendered).toStrictEqual(expect.stringMatching(/Posted[\s\S]*?Nov 30, 2017/));
   });
 
   describe('the article has reviews', () => {
     it('displays the number of reviews', async () => {
-      const rendered = await renderSearchResult({
+      const rendered = renderSearchResult({
         _tag: 'Article',
         doi: new Doi('10.1101/833392'),
         title: 'the title',
         authors: '1, 2, 3',
         postedDate: new Date('2017-11-30'),
         reviewCount: O.some(37),
-      })();
+      });
 
       expect(rendered).toStrictEqual(expect.stringMatching(/Reviews[\s\S]*?37/));
     });
@@ -46,7 +46,7 @@ describe('render-search-result component', () => {
 
   describe('the article has no reviews', () => {
     it('hides the number of reviews', async () => {
-      const rendered = await renderSearchResult(searchResult)();
+      const rendered = renderSearchResult(searchResult);
 
       expect(rendered).toStrictEqual(expect.not.stringContaining('Reviews'));
     });
@@ -54,7 +54,7 @@ describe('render-search-result component', () => {
 
   describe('can\'t retrive reviews', () => {
     it('hides the number of reviews', async () => {
-      const rendered = await renderSearchResult(searchResult)();
+      const rendered = renderSearchResult(searchResult);
 
       expect(rendered).toStrictEqual(expect.not.stringContaining('Reviews'));
     });

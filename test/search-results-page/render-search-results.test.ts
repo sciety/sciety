@@ -9,7 +9,7 @@ import { shouldNotBeCalled } from '../should-not-be-called';
 describe('render-search-results component', () => {
   describe('when there are results', () => {
     it('displays the number of results and a list', async () => {
-      const renderSearchResult: RenderSearchResult = () => T.of(toHtmlFragment(''));
+      const renderSearchResult: RenderSearchResult = () => toHtmlFragment('');
       const rendered = await renderSearchResults(renderSearchResult)('10.1101/833392')({
         total: 5,
         items: [

@@ -38,6 +38,7 @@ export const renderSearchResults = (
     T.traverseArray(flow(
       (item) => ({ ...item, _tag: 'Article' as const }),
       renderSearchResult,
+      T.of,
     )),
     T.chain((items) => {
       if (query === 'peerj') {
@@ -48,6 +49,7 @@ export const renderSearchResults = (
             name: 'PeerJ',
           },
           renderSearchResult,
+          T.of,
           T.map((renderedSearchResult) => RA.cons(renderedSearchResult)(items)),
         );
       }
