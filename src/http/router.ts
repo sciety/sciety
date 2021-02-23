@@ -28,7 +28,7 @@ import { finishRespondCommand } from '../respond/finish-respond-command';
 import { saveRespondCommand } from '../respond/save-respond-command';
 import { finishSaveArticleCommand } from '../save-article/finish-save-article-command';
 import { saveSaveArticleCommand } from '../save-article/save-save-article-command';
-import { articleSearchPage } from '../search-results-page';
+import { searchResultsPage } from '../search-results-page';
 import { termsPage } from '../terms-page';
 import { unfollowHandler } from '../unfollow';
 import { finishUnfollowCommand } from '../unfollow/finish-unfollow-command';
@@ -54,7 +54,7 @@ export const createRouter = (adapters: Adapters): Router => {
       context.response.set('X-Robots-Tag', 'noindex');
       await next();
     },
-    pageHandler(articleSearchPage(adapters)));
+    pageHandler(searchResultsPage(adapters)));
 
   router.get('/articles/:doi(.+)',
     pageHandler(articlePage(adapters)));

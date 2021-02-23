@@ -31,9 +31,9 @@ type Params = {
   query?: string,
 };
 
-type ArticleSearchPage = (params: Params) => ReturnType<RenderPage>;
+type SearchResultsPage = (params: Params) => ReturnType<RenderPage>;
 
-export const articleSearchPage = (ports: Ports): ArticleSearchPage => {
+export const searchResultsPage = (ports: Ports): SearchResultsPage => {
   const getReviewCount: GetReviewCount = (doi) => pipe(
     ports.findReviewsForArticleDoi(doi),
     T.map((list) => list.length),
