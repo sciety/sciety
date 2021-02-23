@@ -1,3 +1,4 @@
+import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -84,7 +85,6 @@ export const articleActivityPage = (ports: Ports): ActivityPage => {
   );
   const renderPage = renderActivityPage(
     renderFeed,
-    ports.fetchArticle,
     renderSaveArticle(projectHasUserSavedArticle(ports.getAllEvents)),
     renderTweetThis,
   );
@@ -97,7 +97,19 @@ export const articleActivityPage = (ports: Ports): ActivityPage => {
         type: 'not-found',
         message: toHtmlFragment(`${params.doi ?? 'Article'} not found`),
       }),
-      (doi: Doi) => renderPage(doi, getUserId(params.user)),
+      (doi: Doi) => pipe(
+        {
+          doi: TE.right(doi),
+          userId: TE.right(getUserId(params.user)),
+          articleDetails: ports.fetchArticle(doi),
+        },
+        sequenceS(TE.taskEither),
+        TE.mapLeft(() => ({
+          type: 'not-found' as const,
+          message: toHtmlFragment(`${params.doi ?? 'Article'} not found`),
+        })),
+        TE.chain(({ userId, articleDetails }) => renderPage(doi, userId, articleDetails)),
+      ),
     ),
   );
 };
