@@ -8,7 +8,7 @@ import { GetReview } from './get-feed-events-content';
 import { projectHasUserSavedArticle } from './project-has-user-saved-article';
 import { createProjectReviewResponseCounts } from './project-review-response-counts';
 import { createProjectUserReviewResponse } from './project-user-review-response';
-import { Page, renderActivityPage } from './render-activity-page';
+import { renderActivityPage } from './render-activity-page';
 import { renderArticleVersionFeedItem } from './render-article-version-feed-item';
 import { createRenderFeed } from './render-feed';
 import { createRenderReviewFeedItem } from './render-review-feed-item';
@@ -19,7 +19,7 @@ import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 import { DomainEvent } from '../types/domain-events';
 import { EditorialCommunityId } from '../types/editorial-community-id';
-import { toHtmlFragment } from '../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { RenderPageError } from '../types/render-page-error';
 import { ReviewId } from '../types/review-id';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
@@ -27,6 +27,15 @@ import { User } from '../types/user';
 import { UserId } from '../types/user-id';
 
 type ActivityPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
+
+type Page = {
+  title: string,
+  content: HtmlFragment,
+  openGraph: {
+    title: string,
+    description: string,
+  },
+};
 
 type Params = {
   doi?: string,

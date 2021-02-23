@@ -4,7 +4,7 @@ import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
-export type Page = {
+type Page = {
   title: string,
   content: HtmlFragment,
   openGraph: {
