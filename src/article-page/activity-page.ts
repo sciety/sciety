@@ -150,6 +150,10 @@ export const articleActivityPage = (ports: Ports): ActivityPage => {
           (components) => ({
             ...renderActivityPage(components),
             title: `${striptags(components.articleDetails.title)}`,
+            openGraph: {
+              title: striptags(components.articleDetails.title),
+              description: striptags(components.articleDetails.abstract),
+            },
           }),
         ),
       ),

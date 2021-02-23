@@ -1,4 +1,3 @@
-import striptags from 'striptags';
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -6,10 +5,6 @@ import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
 type Page = {
   content: HtmlFragment,
-  openGraph: {
-    title: string,
-    description: string,
-  },
 };
 
 type ArticleDetails = {
@@ -45,9 +40,5 @@ export const renderActivityPage = (components: {
 
 </article>
     `),
-    openGraph: {
-      title: striptags(components.articleDetails.title),
-      description: striptags(components.articleDetails.abstract),
-    },
   }
 );
