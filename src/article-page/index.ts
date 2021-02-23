@@ -12,6 +12,7 @@ import { RenderActivityPage, renderActivityPage } from './render-activity-page';
 import { createRenderArticleAbstract } from './render-article-abstract';
 import { renderArticleVersionFeedItem } from './render-article-version-feed-item';
 import { createRenderFeed } from './render-feed';
+import { renderMetaPage } from './render-meta-page';
 import { createRenderPage, RenderPage } from './render-page';
 import { createRenderPageHeader } from './render-page-header';
 import { createRenderReviewFeedItem } from './render-review-feed-item';
@@ -67,6 +68,7 @@ const getUserId = (user: O.Option<User>): O.Option<UserId> => pipe(
   O.map((u) => u.id),
 );
 
+// TODO: Should these be unified?
 type ArticlePage = (params: Params) => ReturnType<RenderPage>;
 type ActivityPage = (params: Params) => ReturnType<RenderActivityPage>;
 
@@ -138,6 +140,36 @@ export const articleActivityPage = (ports: Ports): ActivityPage => {
   );
   const renderPage = renderActivityPage(renderFeed, ports.fetchArticle);
 
+  return (params) => pipe(
+    params.doi ?? '',
+    ensureBiorxivDoi,
+    O.fold(
+      () => TE.left({
+        type: 'not-found',
+        message: toHtmlFragment(`${params.doi ?? 'Article'} not found`),
+      }),
+      (doi: Doi) => renderPage(doi, getUserId(params.user)),
+    ),
+  );
+};
+
+export const articleMetaPage = (ports: Ports): ArticlePage => {
+  const renderPageHeader = createRenderPageHeader(
+    ports.fetchArticle,
+    renderTweetThis,
+    renderSaveArticle(projectHasUserSavedArticle(ports.getAllEvents)),
+  );
+  const renderAbstract = createRenderArticleAbstract(
+    flow(
+      ports.fetchArticle,
+      TE.map((article) => article.abstract),
+    ),
+  );
+  const renderPage = renderMetaPage(
+    renderPageHeader,
+    renderAbstract,
+    ports.fetchArticle,
+  );
   return (params) => pipe(
     params.doi ?? '',
     ensureBiorxivDoi,
