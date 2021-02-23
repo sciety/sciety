@@ -5,7 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { ConstructFeedItem, FeedEvent } from './construct-feed-item';
 import { RenderFollowToggle } from './render-follow-toggle';
-import { FeedItem } from '../shared-components/render-summary-feed-list';
+import { FeedItem } from '../shared-components';
 import { EditorialCommunity } from '../types/editorial-community';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';

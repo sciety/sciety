@@ -12,7 +12,7 @@ import { createRenderFollowToggle } from './render-follow-toggle';
 import { renderPage, RenderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
 import { renderSearchForm } from './render-search-form';
-import { renderSummaryFeedList } from '../shared-components/render-summary-feed-list';
+import { renderSummaryFeedList } from '../shared-components';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { User } from '../types/user';
 import { UserId } from '../types/user-id';

@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { renderSummaryFeedList } from '../../src/shared-components/render-summary-feed-list';
+import { renderSummaryFeedList } from '../../src/shared-components';
 import { Doi } from '../../src/types/doi';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { sanitise } from '../../src/types/sanitised-html-fragment';

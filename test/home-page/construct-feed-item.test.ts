@@ -1,7 +1,7 @@
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constructFeedItem, GetActor, GetArticle } from '../../src/home-page/construct-feed-item';
-import { FeedItem } from '../../src/shared-components/render-summary-feed-list';
+import { FeedItem } from '../../src/shared-components';
 import { Doi } from '../../src/types/doi';
 import { EditorialCommunityReviewedArticleEvent } from '../../src/types/domain-events';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
