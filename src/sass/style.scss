@@ -367,6 +367,10 @@ a:visited {
         grid-column: 1 / 9;
       }
 
+      .article-authors {
+        grid-column: 1 / 9;
+      }
+
       // TODO: move to article-feed partial as part of layout refactor
       .article-feed {
         grid-column: 1 / 9;

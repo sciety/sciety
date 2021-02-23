@@ -22,6 +22,7 @@ type Page = {
 type ArticleDetails = {
   title: string,
   abstract: SanitisedHtmlFragment, // TODO Use HtmlFragment as the HTML is stripped
+  authors: Array<string>,
   server: ArticleServer,
 };
 
@@ -72,6 +73,12 @@ const render = (components: {
   </div>
 
   <div class="main-content main-content--article">
+    <section class="article-authors">
+      <h2>Authors</h2>
+      <ol aria-label="Authors of this article" class="article-author-list" role="list">
+        ${components.articleDetails.authors.map((author) => `<li>${author}</li>`).join('')}
+      </ol>
+    </section>
     ${components.abstract}
   </div>
 
