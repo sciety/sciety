@@ -1,5 +1,5 @@
 import * as TE from 'fp-ts/TaskEither';
-import { flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import { renderErrorPage, RenderPage, renderPage } from './render-page';
 import { ArticleSearchResult, renderSearchResult } from './render-search-result';
 import { renderSearchResults } from './render-search-results';
@@ -26,11 +26,6 @@ type SearchResultsPage = (params: Params) => ReturnType<RenderPage>;
 export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) => pipe(
   params.query ?? '', // TODO: use Option
   search(ports.searchEuropePmc, ports.findReviewsForArticleDoi),
-  TE.chainW(
-    flow(
-      renderSearchResults(renderSearchResult)(params.query ?? ''),
-      TE.right,
-    ),
-  ),
+  TE.map(renderSearchResults(renderSearchResult)(params.query ?? '')),
   TE.bimap(renderErrorPage, renderPage),
 );
