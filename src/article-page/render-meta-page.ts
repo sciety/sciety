@@ -73,12 +73,18 @@ const render = (components: {
   </div>
 
   <div class="main-content main-content--article">
-    <section class="article-authors">
+    <section class="article-meta">
       <h2>Authors</h2>
       <ol aria-label="Authors of this article" class="article-author-list" role="list">
         ${components.articleDetails.authors.map((author) => `<li>${author}</li>`).join('')}
       </ol>
+      <ul aria-label="Publication details" class="article-meta-data-list" role="list">
+        <li>
+          <a href="https://doi.org/${components.doi.value}">https://doi.org/${components.doi.value}</a>
+        </li>
+      </ul>
     </section>
+
     ${components.abstract}
   </div>
 
