@@ -154,11 +154,6 @@ export const articleActivityPage = (ports: Ports): ActivityPage => {
 };
 
 export const articleMetaPage = (ports: Ports): ArticlePage => {
-  const renderPageHeader = createRenderPageHeader(
-    ports.fetchArticle,
-    renderTweetThis,
-    renderSaveArticle(projectHasUserSavedArticle(ports.getAllEvents)),
-  );
   const renderAbstract = createRenderArticleAbstract(
     flow(
       ports.fetchArticle,
@@ -166,7 +161,6 @@ export const articleMetaPage = (ports: Ports): ArticlePage => {
     ),
   );
   const renderPage = renderMetaPage(
-    renderPageHeader,
     renderAbstract,
     ports.fetchArticle,
   );

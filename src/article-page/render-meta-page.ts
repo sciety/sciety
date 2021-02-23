@@ -57,13 +57,14 @@ const render = (components: {
   articleDetails: ArticleDetails,
   abstract: string,
   doi: Doi,
-  pageHeader: string,
 }): Page => (
   {
     title: `${striptags(components.articleDetails.title)}`,
     content: toHtmlFragment(`
 <article class="sciety-grid sciety-grid--article">
-  ${components.pageHeader}
+  <header class="page-header page-header--article">
+    <h1>${components.articleDetails.title}</h1>
+  </header>
 
   <div class="article-tabs">
     <h2 class="article-tabs__tab article-tabs__heading">Article</h2>
@@ -84,16 +85,14 @@ const render = (components: {
 );
 
 export const renderMetaPage = (
-  renderPageHeader: (doi: Doi, userId: O.Option<UserId>) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>,
   renderAbstract: RenderAbstract,
   getArticleDetails: GetArticleDetails,
-): RenderPage => (doi, userId) => {
+): RenderPage => (doi) => {
   const articleDetails = getArticleDetails(doi);
   const components = {
     articleDetails,
     doi: TE.right(doi),
     abstract: renderAbstract(doi),
-    pageHeader: renderPageHeader(doi, userId),
   };
 
   return pipe(
