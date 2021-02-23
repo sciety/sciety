@@ -1,11 +1,10 @@
-import * as A from 'fp-ts/Array';
-import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { renderErrorPage, RenderPage, renderPage } from './render-page';
 import { ArticleSearchResult, createRenderSearchResult, GetReviewCount } from './render-search-result';
 import { renderSearchResults } from './render-search-results';
+import { search } from './search';
 import { Doi } from '../types/doi';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { toHtmlFragment } from '../types/html-fragment';
@@ -44,17 +43,7 @@ export const articleSearchPage = (ports: Ports): ArticleSearchPage => {
 
   return (params) => pipe(
     params.query ?? '', // TODO: use Option
-    ports.searchEuropePmc,
-    TE.map((searchResults) => ({
-      ...searchResults,
-      items: pipe(
-        searchResults.items,
-        A.map((searchResult) => ({
-          ...searchResult,
-          reviewCount: O.some(0),
-        })),
-      ),
-    })),
+    search(ports.searchEuropePmc),
     TE.chainW(
       flow(
         renderSearchResults(renderSearchResult)(params.query ?? ''),

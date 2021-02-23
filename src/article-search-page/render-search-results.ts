@@ -7,7 +7,7 @@ import { ArticleSearchResult, RenderSearchResult } from './render-search-result'
 import { templateListItems } from '../shared-components/list-items';
 import { HtmlFragment } from '../types/html-fragment';
 
-type SearchResults = {
+export type SearchResults = {
   items: Array<Omit<ArticleSearchResult, '_tag'>>,
   total: number,
 };
