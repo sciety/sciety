@@ -42,6 +42,7 @@ export const search = (findArticles: FindArticles, findReviewsForArticleDoi: Fin
           }),
           sequenceS(T.task),
           T.map(({ searchResult, reviewCount }) => ({
+            _tag: 'Article' as const,
             ...searchResult,
             reviewCount,
           })),

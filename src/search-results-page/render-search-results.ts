@@ -7,7 +7,7 @@ import { templateListItems } from '../shared-components';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 export type SearchResults = {
-  items: ReadonlyArray<Omit<ArticleSearchResult, '_tag'>>,
+  items: ReadonlyArray<ArticleSearchResult>,
   total: number,
 };
 
@@ -50,7 +50,6 @@ export const renderSearchResults = (
 ): HtmlFragment => (
   pipe(
     searchResults.items,
-    RA.map((item) => ({ ...item, _tag: 'Article' as const })),
     addPeerJHardcodedResult(query),
     RA.map(renderSearchResult),
     renderListIfNecessary,

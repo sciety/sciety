@@ -13,6 +13,7 @@ describe('render-search-results component', () => {
         total: 5,
         items: [
           {
+            _tag: 'Article',
             doi: new Doi('10.1101/833392'),
             title: 'the title',
             authors: '1, 2, 3',
