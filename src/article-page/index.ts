@@ -168,6 +168,8 @@ export const articleMetaPage = (ports: Ports): ArticlePage => {
   const renderPage = renderMetaPage(
     renderAbstract,
     ports.fetchArticle,
+    renderSaveArticle(projectHasUserSavedArticle(ports.getAllEvents)),
+    renderTweetThis,
   );
   return (params) => pipe(
     params.doi ?? '',

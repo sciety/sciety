@@ -1,5 +1,6 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import striptags from 'striptags';
@@ -27,6 +28,8 @@ type ArticleDetails = {
 };
 
 type GetArticleDetails = (doi: Doi) => TE.TaskEither<'not-found' | 'unavailable', ArticleDetails>;
+type RenderTweetThis = (doi: Doi) => HtmlFragment;
+type RenderSaveArticle = (doi: Doi, userId: O.Option<UserId>) => T.Task<HtmlFragment>;
 
 type RenderAbstract = (doi: Doi) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>;
 type RenderPage = (doi: Doi, userId: O.Option<UserId>) => TE.TaskEither<RenderPageError, Page>;
@@ -58,6 +61,8 @@ const render = (components: {
   articleDetails: ArticleDetails,
   abstract: string,
   doi: Doi,
+  saveArticle: string,
+  tweetThis: string,
 }): Page => (
   {
     title: `${striptags(components.articleDetails.title)}`,
@@ -65,6 +70,10 @@ const render = (components: {
 <article class="sciety-grid sciety-grid--article">
   <header class="page-header page-header--article">
     <h1>${components.articleDetails.title}</h1>
+    <div class="article-actions">
+      ${components.tweetThis}
+      ${components.saveArticle}
+    </div>
   </header>
 
   <div class="article-tabs">
@@ -100,12 +109,23 @@ const render = (components: {
 export const renderMetaPage = (
   renderAbstract: RenderAbstract,
   getArticleDetails: GetArticleDetails,
-): RenderPage => (doi) => {
+  renderSaveArticle: RenderSaveArticle,
+  renderTweetThis: RenderTweetThis,
+): RenderPage => (doi, userId) => {
   const articleDetails = getArticleDetails(doi);
   const components = {
     articleDetails,
     doi: TE.right(doi),
     abstract: renderAbstract(doi),
+    saveArticle: pipe(
+      renderSaveArticle(doi, userId),
+      TE.rightTask,
+    ),
+    tweetThis: pipe(
+      doi,
+      renderTweetThis,
+      TE.right,
+    ),
   };
 
   return pipe(
