@@ -1,0 +1,1 @@
+export { templateDate } from './date';
