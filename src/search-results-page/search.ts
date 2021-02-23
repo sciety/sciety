@@ -27,17 +27,20 @@ type Search = (query: string) => TE.TaskEither<'unavailable', SearchResults>;
 const addPeerJHardcodedResult = (
   query: string,
 ) => (
-  items: ReadonlyArray<SearchResult>,
-): ReadonlyArray<SearchResult> => {
+  searchResults: SearchResults,
+): SearchResults => {
   if (query === 'peerj') {
     const hardcodedSearchResult = {
       _tag: 'Group' as const,
       link: '/groups/53ed5364-a016-11ea-bb37-0242ac130002',
       name: 'PeerJ',
     };
-    return RA.cons<SearchResult>(hardcodedSearchResult)(items);
+    return {
+      total: searchResults.total + 1,
+      items: RA.cons<SearchResult>(hardcodedSearchResult)(searchResults.items),
+    };
   }
-  return items;
+  return searchResults;
 };
 
 export const search = (
@@ -73,8 +76,5 @@ export const search = (
     sequenceS(T.task),
     TE.rightTask,
   )),
-  TE.map((searchResults) => ({
-    total: searchResults.total,
-    items: addPeerJHardcodedResult(query)(searchResults.items),
-  })),
+  TE.map(addPeerJHardcodedResult(query)),
 );
