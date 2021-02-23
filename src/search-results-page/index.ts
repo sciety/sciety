@@ -30,7 +30,7 @@ export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) =
   TE.chainW(
     flow(
       renderSearchResults(renderSearchResult)(params.query ?? ''),
-      TE.rightTask,
+      TE.right,
     ),
   ),
   TE.map(toHtmlFragment),
