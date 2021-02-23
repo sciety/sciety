@@ -8,7 +8,7 @@ import { GetReview } from './get-feed-events-content';
 import { projectHasUserSavedArticle } from './project-has-user-saved-article';
 import { createProjectReviewResponseCounts } from './project-review-response-counts';
 import { createProjectUserReviewResponse } from './project-user-review-response';
-import { RenderActivityPage, renderActivityPage } from './render-activity-page';
+import { Page, renderActivityPage } from './render-activity-page';
 import { renderArticleVersionFeedItem } from './render-article-version-feed-item';
 import { createRenderFeed } from './render-feed';
 import { createRenderReviewFeedItem } from './render-review-feed-item';
@@ -26,7 +26,7 @@ import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { User } from '../types/user';
 import { UserId } from '../types/user-id';
 
-type ActivityPage = (params: Params) => ReturnType<RenderActivityPage>;
+type ActivityPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
 type Params = {
   doi?: string,
@@ -135,8 +135,10 @@ export const articleActivityPage = (ports: Ports): ActivityPage => {
           renderTweetThis,
           TE.right,
         )),
-        TE.mapLeft(toErrorPage),
-        TE.chain(renderActivityPage()),
+        TE.bimap(
+          toErrorPage,
+          renderActivityPage,
+        ),
       ),
     ),
   );
