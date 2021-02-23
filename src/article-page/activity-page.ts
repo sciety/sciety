@@ -2,6 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
+import striptags from 'striptags';
 import { ensureBiorxivDoi } from './ensure-biorxiv-doi';
 import { FindVersionsForArticleDoi, getArticleFeedEvents } from './get-article-feed-events';
 import { GetReview } from './get-feed-events-content';
@@ -146,7 +147,10 @@ export const articleActivityPage = (ports: Ports): ActivityPage => {
         )),
         TE.bimap(
           toErrorPage,
-          renderActivityPage,
+          (components) => ({
+            ...renderActivityPage(components),
+            title: `${striptags(components.articleDetails.title)}`,
+          }),
         ),
       ),
     ),
