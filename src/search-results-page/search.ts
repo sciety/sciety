@@ -1,9 +1,10 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import { ArticleSearchResult } from './render-search-result';
+import { ArticleSearchResult, SearchResult } from './render-search-result';
 import { SearchResults } from './render-search-results';
 import { Doi } from '../types/doi';
 import { EditorialCommunityId } from '../types/editorial-community-id';
@@ -23,7 +24,27 @@ export type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray
 
 type Search = (query: string) => TE.TaskEither<'unavailable', SearchResults>;
 
-export const search = (findArticles: FindArticles, findReviewsForArticleDoi: FindReviewsForArticleDoi): Search => flow(
+const addPeerJHardcodedResult = (
+  query: string,
+) => (
+  items: ReadonlyArray<SearchResult>,
+): ReadonlyArray<SearchResult> => {
+  if (query === 'peerj') {
+    const hardcodedSearchResult = {
+      _tag: 'Group' as const,
+      link: '/groups/53ed5364-a016-11ea-bb37-0242ac130002',
+      name: 'PeerJ',
+    };
+    return RA.cons<SearchResult>(hardcodedSearchResult)(items);
+  }
+  return items;
+};
+
+export const search = (
+  findArticles: FindArticles,
+  findReviewsForArticleDoi: FindReviewsForArticleDoi,
+): Search => (query: string) => pipe(
+  query,
   findArticles,
   TE.chainW(flow(
     (searchResults) => ({
@@ -52,4 +73,8 @@ export const search = (findArticles: FindArticles, findReviewsForArticleDoi: Fin
     sequenceS(T.task),
     TE.rightTask,
   )),
+  TE.map((searchResults) => ({
+    total: searchResults.total,
+    items: addPeerJHardcodedResult(query)(searchResults.items),
+  })),
 );

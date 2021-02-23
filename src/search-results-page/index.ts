@@ -26,6 +26,6 @@ type SearchResultsPage = (params: Params) => ReturnType<RenderPage>;
 export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) => pipe(
   params.query ?? '', // TODO: use Option
   search(ports.searchEuropePmc, ports.findReviewsForArticleDoi),
-  TE.map(renderSearchResults(renderSearchResult)(params.query ?? '')),
+  TE.map(renderSearchResults(renderSearchResult)),
   TE.bimap(renderErrorPage, renderPage),
 );
