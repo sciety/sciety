@@ -1,12 +1,15 @@
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { renderErrorPage, RenderPage, renderPage } from './render-page';
 import { createRenderSearchResult, GetReviewCount } from './render-search-result';
-import { createRenderSearchResults, FindArticles } from './render-search-results';
+import { renderSearchResults, SearchResults } from './render-search-results';
 import { Doi } from '../types/doi';
 import { EditorialCommunityId } from '../types/editorial-community-id';
+import { toHtmlFragment } from '../types/html-fragment';
 import { ReviewId } from '../types/review-id';
+
+type FindArticles = (query: string) => TE.TaskEither<'unavailable', SearchResults>;
 
 type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
   reviewId: ReviewId,
@@ -31,11 +34,17 @@ export const articleSearchPage = (ports: Ports): ArticleSearchPage => {
     TE.rightTask,
   );
   const renderSearchResult = createRenderSearchResult(getReviewCount);
-  const renderSearchResults = createRenderSearchResults(ports.searchEuropePmc, renderSearchResult);
 
   return (params) => pipe(
     params.query ?? '', // TODO: use Option
-    renderSearchResults,
+    ports.searchEuropePmc,
+    TE.chainW(
+      flow(
+        renderSearchResults(renderSearchResult)(params.query ?? ''),
+        TE.rightTask,
+      ),
+    ),
+    TE.map(toHtmlFragment),
     TE.bimap(renderErrorPage, renderPage),
   );
 };

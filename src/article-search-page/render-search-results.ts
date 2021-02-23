@@ -2,17 +2,12 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
-import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { ArticleSearchResult, RenderSearchResult } from './render-search-result';
 import { templateListItems } from '../shared-components/list-items';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { HtmlFragment } from '../types/html-fragment';
 
-export type FindArticles = (query: string) => TE.TaskEither<'unavailable', SearchResults>;
-
-export type RenderSearchResults = (query: string) => TE.TaskEither<'unavailable', HtmlFragment>;
-
-type SearchResults = {
+export type SearchResults = {
   items: Array<Omit<ArticleSearchResult, '_tag'>>,
   total: number,
 };
@@ -31,13 +26,13 @@ const renderListIfNecessary: RenderListIfNecessary = flow(
   ),
 );
 
-const renderSearchResults = (
+export const renderSearchResults = (
   renderSearchResult: RenderSearchResult,
 ) => (
   query: string,
 ) => (
   searchResults: SearchResults,
-) => (
+): T.Task<string> => (
   pipe(
     searchResults.items,
     T.traverseArray(flow(
@@ -66,19 +61,4 @@ const renderSearchResults = (
       `,
     )),
   )
-);
-
-export const createRenderSearchResults = (
-  findArticles: FindArticles,
-  renderSearchResult: RenderSearchResult,
-): RenderSearchResults => (query) => pipe(
-  query,
-  findArticles,
-  TE.chainW(
-    flow(
-      renderSearchResults(renderSearchResult)(query),
-      TE.rightTask,
-    ),
-  ),
-  TE.map(toHtmlFragment),
 );
