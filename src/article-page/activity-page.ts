@@ -83,7 +83,6 @@ export const articleActivityPage = (ports: Ports): ActivityPage => {
     renderArticleVersionFeedItem,
   );
   const renderPage = renderActivityPage(
-    renderSaveArticle(projectHasUserSavedArticle(ports.getAllEvents)),
     renderTweetThis,
   );
 
@@ -106,13 +105,17 @@ export const articleActivityPage = (ports: Ports): ActivityPage => {
           TE.orElse(flow(constant(''), TE.right)),
           TE.map(toHtmlFragment),
         )),
+        TE.bindW('saveArticle', ({ doi, userId }) => pipe(
+          renderSaveArticle(projectHasUserSavedArticle(ports.getAllEvents))(doi, userId),
+          TE.rightTask,
+        )),
         TE.mapLeft(() => ({
           type: 'not-found' as const,
           message: toHtmlFragment(`${params.doi ?? 'Article'} not found`),
         })),
         TE.chain(({
-          doi, userId, articleDetails, feed,
-        }) => renderPage(doi, userId, articleDetails, feed)),
+          doi, userId, articleDetails, feed, saveArticle,
+        }) => renderPage(doi, userId, articleDetails, feed, saveArticle)),
       ),
     ),
   );
