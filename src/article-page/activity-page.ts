@@ -20,6 +20,7 @@ import { Doi } from '../types/doi';
 import { DomainEvent } from '../types/domain-events';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { toHtmlFragment } from '../types/html-fragment';
+import { RenderPageError } from '../types/render-page-error';
 import { ReviewId } from '../types/review-id';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { User } from '../types/user';
@@ -45,7 +46,7 @@ type ArticleDetails = {
   server: ArticleServer,
 };
 
-type GetArticleDetails = (doi: Doi) => TE.TaskEither<'not-found'|'unavailable', ArticleDetails>;
+type GetArticleDetails = (doi: Doi) => TE.TaskEither<'not-found' | 'unavailable', ArticleDetails>;
 
 type Ports = {
   fetchArticle: GetArticleDetails,
@@ -63,6 +64,29 @@ const getUserId = (user: O.Option<User>): O.Option<UserId> => pipe(
   user,
   O.map((u) => u.id),
 );
+
+const toErrorPage = (error: 'not-found' | 'unavailable'): RenderPageError => {
+  switch (error) {
+    case 'not-found':
+      return {
+        type: 'not-found',
+        message: toHtmlFragment(`
+          We’re having trouble finding this information.
+          Ensure you have the correct URL, or try refreshing the page.
+          You may need to come back later.
+        `),
+      };
+    case 'unavailable':
+      return {
+        type: 'unavailable',
+        message: toHtmlFragment(`
+          We’re having trouble finding this information.
+          Ensure you have the correct URL, or try refreshing the page.
+          You may need to come back later.
+        `),
+      };
+  }
+};
 
 export const articleActivityPage = (ports: Ports): ActivityPage => {
   const countReviewResponses = createProjectReviewResponseCounts(ports.getAllEvents);
@@ -111,10 +135,7 @@ export const articleActivityPage = (ports: Ports): ActivityPage => {
           renderTweetThis,
           TE.right,
         )),
-        TE.mapLeft(() => ({
-          type: 'not-found' as const,
-          message: toHtmlFragment(`${params.doi ?? 'Article'} not found`),
-        })),
+        TE.mapLeft(toErrorPage),
         TE.chain(renderActivityPage()),
       ),
     ),
