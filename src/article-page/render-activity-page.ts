@@ -29,6 +29,8 @@ type ArticleDetails = {
 
 type GetArticleDetails = (doi: Doi) => TE.TaskEither<'not-found' | 'unavailable', ArticleDetails>;
 
+type RenderSaveArticle = (doi: Doi, userId: O.Option<UserId>) => T.Task<HtmlFragment>;
+
 type RenderFeed = (doi: Doi, server: ArticleServer, userId: O.Option<UserId>) => TE.TaskEither<'no-content', HtmlFragment>;
 export type RenderActivityPage = (doi: Doi, userId: O.Option<UserId>) => TE.TaskEither<RenderPageError, Page>;
 
@@ -59,6 +61,7 @@ const render = (components: {
   articleDetails: ArticleDetails,
   doi: Doi,
   feed: string,
+  renderedSaveArticle: string,
 }): Page => (
   {
     title: `${striptags(components.articleDetails.title)}`,
@@ -66,6 +69,9 @@ const render = (components: {
 <article class="sciety-grid sciety-grid--activity">
   <header class="page-header page-header--article">
     <h1>${components.articleDetails.title}</h1>
+    <div class="article-actions">
+      ${components.renderedSaveArticle}
+    </div>
   </header>
   <div class="article-tabs">
     <a class="article-tabs__tab article-tabs__link" href="/articles/meta/${components.doi.value}" aria-label="Discover article information and abstract">Article</a>
@@ -87,6 +93,7 @@ const render = (components: {
 export const renderActivityPage = (
   renderFeed: RenderFeed,
   getArticleDetails: GetArticleDetails,
+  renderSaveArticle: RenderSaveArticle,
 ): RenderActivityPage => (doi, userId) => {
   const articleDetails = getArticleDetails(doi);
   const components = {
@@ -100,6 +107,10 @@ export const renderActivityPage = (
       )),
       T.chain((server) => renderFeed(doi, server, userId)),
       TE.orElse(flow(constant(''), TE.right)),
+    ),
+    renderedSaveArticle: pipe(
+      renderSaveArticle(doi, userId),
+      TE.rightTask,
     ),
   };
 

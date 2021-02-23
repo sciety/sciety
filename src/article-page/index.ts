@@ -138,7 +138,11 @@ export const articleActivityPage = (ports: Ports): ActivityPage => {
     ),
     renderArticleVersionFeedItem,
   );
-  const renderPage = renderActivityPage(renderFeed, ports.fetchArticle);
+  const renderPage = renderActivityPage(
+    renderFeed,
+    ports.fetchArticle,
+    renderSaveArticle(projectHasUserSavedArticle(ports.getAllEvents)),
+  );
 
   return (params) => pipe(
     params.doi ?? '',
