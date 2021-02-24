@@ -92,7 +92,7 @@ export const articleMetaPage = (ports: Ports): MetaPage => {
     TE.bimap(
       toErrorPage,
       (components) => ({
-        ...renderMetaPage(components),
+        content: renderMetaPage(components),
         title: striptags(components.articleDetails.title),
         openGraph: {
           title: striptags(components.articleDetails.title),

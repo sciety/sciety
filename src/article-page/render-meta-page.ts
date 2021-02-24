@@ -3,10 +3,6 @@ import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
-type Page = {
-  content: HtmlFragment,
-};
-
 type ArticleDetails = {
   title: string,
   abstract: SanitisedHtmlFragment, // TODO Use HtmlFragment as the HTML is stripped
@@ -20,9 +16,7 @@ export const renderMetaPage = (components: {
   doi: Doi,
   saveArticle: string,
   tweetThis: string,
-}): Page => (
-  {
-    content: toHtmlFragment(`
+}): HtmlFragment => toHtmlFragment(`
 <article class="sciety-grid sciety-grid--article">
   <header class="page-header page-header--article">
     <h1>${components.articleDetails.title}</h1>
@@ -54,6 +48,4 @@ export const renderMetaPage = (components: {
   </div>
 
 </article>
-    `),
-  }
-);
+    `);
