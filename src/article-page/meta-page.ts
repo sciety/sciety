@@ -4,7 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import striptags from 'striptags';
 import { projectHasUserSavedArticle } from './project-has-user-saved-article';
-import { createRenderArticleAbstract } from './render-article-abstract';
+import { renderAbstract } from './render-abstract';
 import { renderMetaPage } from './render-meta-page';
 import { renderSaveArticle } from './render-save-article';
 import { renderTweetThis } from './render-tweet-this';
@@ -67,38 +67,32 @@ const toErrorPage = (error: 'not-found' | 'unavailable'): RenderPageError => {
   }
 };
 
-export const articleMetaPage = (ports: Ports): MetaPage => {
-  // TODO: change to just a template
-  const renderAbstract = createRenderArticleAbstract(
-    flow(
-      ports.fetchArticle,
-      TE.map((article) => article.abstract),
-    ),
-  );
-  return flow(
+export const articleMetaPage = (ports: Ports): MetaPage => flow(
+  TE.right,
+  TE.bind('userId', ({ user }) => pipe(user, O.map((u) => u.id), TE.right)),
+  TE.bind('articleDetails', ({ doi }) => pipe(doi, ports.fetchArticle)),
+  TE.bindW('abstract', ({ doi, articleDetails }) => pipe(
+    renderAbstract(doi, articleDetails.abstract),
     TE.right,
-    TE.bind('userId', ({ user }) => pipe(user, O.map((u) => u.id), TE.right)),
-    TE.bind('articleDetails', ({ doi }) => pipe(doi, ports.fetchArticle)),
-    TE.bind('abstract', ({ doi }) => pipe(doi, renderAbstract)),
-    TE.bindW('saveArticle', ({ doi, userId }) => pipe(
-      renderSaveArticle(projectHasUserSavedArticle(ports.getAllEvents))(doi, userId),
-      TE.rightTask,
-    )),
-    TE.bindW('tweetThis', ({ doi }) => pipe(
-      doi,
-      renderTweetThis,
-      TE.right,
-    )),
-    TE.bimap(
-      toErrorPage,
-      (components) => ({
-        content: renderMetaPage(components),
+  )),
+  TE.bindW('saveArticle', ({ doi, userId }) => pipe(
+    renderSaveArticle(projectHasUserSavedArticle(ports.getAllEvents))(doi, userId),
+    TE.rightTask,
+  )),
+  TE.bindW('tweetThis', ({ doi }) => pipe(
+    doi,
+    renderTweetThis,
+    TE.right,
+  )),
+  TE.bimap(
+    toErrorPage,
+    (components) => ({
+      content: renderMetaPage(components),
+      title: striptags(components.articleDetails.title),
+      openGraph: {
         title: striptags(components.articleDetails.title),
-        openGraph: {
-          title: striptags(components.articleDetails.title),
-          description: striptags(components.articleDetails.abstract),
-        },
-      }),
-    ),
-  );
-};
+        description: striptags(components.articleDetails.abstract),
+      },
+    }),
+  ),
+);
