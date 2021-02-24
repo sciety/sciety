@@ -1,12 +1,9 @@
-import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
-import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import striptags from 'striptags';
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-import { RenderPageError } from '../types/render-page-error';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { UserId } from '../types/user-id';
 
@@ -33,30 +30,7 @@ type RenderPage = (
   articleDetails: ArticleDetails,
   saveArticle: HtmlFragment,
   tweetThis: HtmlFragment,
-) => TE.TaskEither<RenderPageError, Page>;
-
-const toErrorPage = (error: 'not-found' | 'unavailable'): RenderPageError => {
-  switch (error) {
-    case 'not-found':
-      return {
-        type: 'not-found',
-        message: toHtmlFragment(`
-            We’re having trouble finding this information.
-            Ensure you have the correct URL, or try refreshing the page.
-            You may need to come back later.
-          `),
-      };
-    case 'unavailable':
-      return {
-        type: 'unavailable',
-        message: toHtmlFragment(`
-            We’re having trouble finding this information.
-            Ensure you have the correct URL, or try refreshing the page.
-            You may need to come back later.
-          `),
-      };
-  }
-};
+) => Page;
 
 const render = (components: {
   articleDetails: ArticleDetails,
@@ -110,19 +84,15 @@ const render = (components: {
 export const renderMetaPage = (
 ): RenderPage => (doi, userId, abstract, articleDetails, saveArticle, tweetThis) => {
   const components = {
-    articleDetails: TE.right(articleDetails),
-    doi: TE.right(doi),
-    abstract: TE.right(abstract),
-    saveArticle: TE.right(saveArticle),
-    tweetThis: TE.right(tweetThis),
+    articleDetails,
+    doi,
+    abstract,
+    saveArticle,
+    tweetThis,
   };
 
   return pipe(
     components,
-    sequenceS(TE.taskEither),
-    TE.bimap(
-      toErrorPage,
-      render,
-    ),
+    render,
   );
 };

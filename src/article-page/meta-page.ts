@@ -89,9 +89,18 @@ export const articleMetaPage = (ports: Ports): MetaPage => {
       renderTweetThis,
       TE.right,
     )),
-    TE.mapLeft(toErrorPage),
-    TE.chain(({
-      doi, userId, abstract, articleDetails, saveArticle, tweetThis,
-    }) => renderPage(doi, userId, abstract, articleDetails, saveArticle, tweetThis)),
+    TE.bimap(
+      toErrorPage,
+      (
+        {
+          doi,
+          userId,
+          abstract,
+          articleDetails,
+          saveArticle,
+          tweetThis,
+        },
+      ) => renderPage(doi, userId, abstract, articleDetails, saveArticle, tweetThis),
+    ),
   );
 };
