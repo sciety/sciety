@@ -94,6 +94,10 @@ export const articleMetaPage = (ports: Ports): MetaPage => {
       (components) => ({
         ...renderMetaPage(components),
         title: striptags(components.articleDetails.title),
+        openGraph: {
+          title: striptags(components.articleDetails.title),
+          description: striptags(components.articleDetails.abstract),
+        },
       }),
     ),
   );
