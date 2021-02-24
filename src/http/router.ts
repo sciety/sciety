@@ -1,6 +1,7 @@
 import Router from '@koa/router';
 import * as TE from 'fp-ts/TaskEither';
 import { flow } from 'fp-ts/function';
+import { StatusCodes } from 'http-status-codes';
 import { ParameterizedContext } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import { authenticate } from './authenticate';
@@ -67,6 +68,14 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.get('/groups/:id',
     pageHandler(editorialCommunityPage(adapters)));
+
+  router.get('/editorial-communities/:id',
+    async (context, next) => {
+      context.status = StatusCodes.PERMANENT_REDIRECT;
+      context.redirect(`/groups/${context.params.id}`);
+
+      await next();
+    });
 
   router.get('/privacy',
     pageHandler(flow(privacyPage(), TE.rightTask)));
