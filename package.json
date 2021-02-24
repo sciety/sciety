@@ -22,7 +22,7 @@
     "googleapis": "^67.1.0",
     "http-errors": "^1.8.0",
     "http-status-codes": "^2.1.4",
-    "io-ts": "^2.2.14",
+    "io-ts": "^2.2.15",
     "io-ts-types": "^0.5.15",
     "is-what": "^3.14.1",
     "jsdom": "^16.4.0",
