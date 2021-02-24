@@ -2,6 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
+import striptags from 'striptags';
 import { projectHasUserSavedArticle } from './project-has-user-saved-article';
 import { createRenderArticleAbstract } from './render-article-abstract';
 import { renderMetaPage } from './render-meta-page';
@@ -90,7 +91,10 @@ export const articleMetaPage = (ports: Ports): MetaPage => {
     )),
     TE.bimap(
       toErrorPage,
-      renderMetaPage,
+      (components) => ({
+        ...renderMetaPage(components),
+        title: striptags(components.articleDetails.title),
+      }),
     ),
   );
 };

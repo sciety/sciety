@@ -5,7 +5,6 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
 type Page = {
-  title: string,
   content: HtmlFragment,
   openGraph: {
     title: string,
@@ -28,7 +27,6 @@ export const renderMetaPage = (components: {
   tweetThis: string,
 }): Page => (
   {
-    title: `${striptags(components.articleDetails.title)}`,
     content: toHtmlFragment(`
 <article class="sciety-grid sciety-grid--article">
   <header class="page-header page-header--article">
