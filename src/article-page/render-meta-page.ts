@@ -31,8 +31,7 @@ type GetArticleDetails = (doi: Doi) => TE.TaskEither<'not-found' | 'unavailable'
 type RenderTweetThis = (doi: Doi) => HtmlFragment;
 type RenderSaveArticle = (doi: Doi, userId: O.Option<UserId>) => T.Task<HtmlFragment>;
 
-type RenderAbstract = (doi: Doi) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>;
-type RenderPage = (doi: Doi, userId: O.Option<UserId>) => TE.TaskEither<RenderPageError, Page>;
+type RenderPage = (doi: Doi, userId: O.Option<UserId>, abstract: HtmlFragment) => TE.TaskEither<RenderPageError, Page>;
 
 const toErrorPage = (error: 'not-found' | 'unavailable'): RenderPageError => {
   switch (error) {
@@ -59,7 +58,7 @@ const toErrorPage = (error: 'not-found' | 'unavailable'): RenderPageError => {
 
 const render = (components: {
   articleDetails: ArticleDetails,
-  abstract: string,
+  abstract: HtmlFragment,
   doi: Doi,
   saveArticle: string,
   tweetThis: string,
@@ -107,16 +106,15 @@ const render = (components: {
 );
 
 export const renderMetaPage = (
-  renderAbstract: RenderAbstract,
   getArticleDetails: GetArticleDetails,
   renderSaveArticle: RenderSaveArticle,
   renderTweetThis: RenderTweetThis,
-): RenderPage => (doi, userId) => {
+): RenderPage => (doi, userId, abstract) => {
   const articleDetails = getArticleDetails(doi);
   const components = {
     articleDetails,
     doi: TE.right(doi),
-    abstract: renderAbstract(doi),
+    abstract: TE.right(abstract),
     saveArticle: pipe(
       renderSaveArticle(doi, userId),
       TE.rightTask,
