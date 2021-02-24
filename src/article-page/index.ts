@@ -11,7 +11,6 @@ import { createProjectUserReviewResponse } from './project-user-review-response'
 import { createRenderArticleAbstract } from './render-article-abstract';
 import { renderArticleVersionFeedItem } from './render-article-version-feed-item';
 import { createRenderFeed } from './render-feed';
-import { renderMetaPage } from './render-meta-page';
 import { createRenderPage, RenderPage } from './render-page';
 import { createRenderPageHeader } from './render-page-header';
 import { createRenderReviewFeedItem } from './render-review-feed-item';
@@ -119,29 +118,4 @@ export const articlePage = (ports: Ports): ArticlePage => {
 };
 
 export { articleActivityPage } from './activity-page';
-
-export const articleMetaPage = (ports: Ports): ArticlePage => {
-  const renderAbstract = createRenderArticleAbstract(
-    flow(
-      ports.fetchArticle,
-      TE.map((article) => article.abstract),
-    ),
-  );
-  const renderPage = renderMetaPage(
-    renderAbstract,
-    ports.fetchArticle,
-    renderSaveArticle(projectHasUserSavedArticle(ports.getAllEvents)),
-    renderTweetThis,
-  );
-  return (params) => pipe(
-    params.doi ?? '',
-    ensureBiorxivDoi,
-    O.fold(
-      () => TE.left({
-        type: 'not-found',
-        message: toHtmlFragment(`${params.doi ?? 'Article'} not found`),
-      }),
-      (doi: Doi) => renderPage(doi, getUserId(params.user)),
-    ),
-  );
-};
+export { articleMetaPage } from './meta-page';
