@@ -67,6 +67,7 @@ const toErrorPage = (error: 'not-found' | 'unavailable'): RenderPageError => {
 };
 
 export const articleMetaPage = (ports: Ports): MetaPage => {
+  // TODO: change to just a template
   const renderAbstract = createRenderArticleAbstract(
     flow(
       ports.fetchArticle,
@@ -74,15 +75,17 @@ export const articleMetaPage = (ports: Ports): MetaPage => {
     ),
   );
   const renderPage = renderMetaPage(
-    ports.fetchArticle,
     renderSaveArticle(projectHasUserSavedArticle(ports.getAllEvents)),
     renderTweetThis,
   );
   return flow(
     TE.right,
     TE.bind('userId', ({ user }) => pipe(user, O.map((u) => u.id), TE.right)),
+    TE.bind('articleDetails', ({ doi }) => pipe(doi, ports.fetchArticle)),
     TE.bind('abstract', ({ doi }) => pipe(doi, renderAbstract)),
     TE.mapLeft(toErrorPage),
-    TE.chain(({ doi, userId, abstract }) => renderPage(doi, userId, abstract)),
+    TE.chain(({
+      doi, userId, abstract, articleDetails,
+    }) => renderPage(doi, userId, abstract, articleDetails)),
   );
 };
