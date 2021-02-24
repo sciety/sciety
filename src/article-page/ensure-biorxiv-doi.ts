@@ -6,5 +6,5 @@ const biorxivPrefix = '10.1101';
 
 export const ensureBiorxivDoi = flow(
   Doi.fromString,
-  O.filter((doi) => doi.hasPrefix(biorxivPrefix)),
+  O.filter(Doi.hasPrefix(biorxivPrefix)),
 );

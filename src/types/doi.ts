@@ -27,4 +27,6 @@ export class Doi {
 
 export const fromString = (value: string): O.Option<Doi> => O.tryCatch(() => new Doi(value));
 
+export const hasPrefix = (prefix: string) => (doi: Doi): boolean => doi.hasPrefix(prefix);
+
 export const eqDoi = Eq.contramap((doi: Doi) => doi.value)(Eq.eqString);
