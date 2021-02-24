@@ -1,6 +1,5 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import striptags from 'striptags';
@@ -28,13 +27,13 @@ type ArticleDetails = {
 };
 
 type RenderTweetThis = (doi: Doi) => HtmlFragment;
-type RenderSaveArticle = (doi: Doi, userId: O.Option<UserId>) => T.Task<HtmlFragment>;
 
 type RenderPage = (
   doi: Doi,
   userId: O.Option<UserId>,
   abstract: HtmlFragment,
   articleDetails: ArticleDetails,
+  saveArticle: HtmlFragment,
 ) => TE.TaskEither<RenderPageError, Page>;
 
 const toErrorPage = (error: 'not-found' | 'unavailable'): RenderPageError => {
@@ -110,17 +109,13 @@ const render = (components: {
 );
 
 export const renderMetaPage = (
-  renderSaveArticle: RenderSaveArticle,
   renderTweetThis: RenderTweetThis,
-): RenderPage => (doi, userId, abstract, articleDetails) => {
+): RenderPage => (doi, userId, abstract, articleDetails, saveArticle) => {
   const components = {
     articleDetails: TE.right(articleDetails),
     doi: TE.right(doi),
     abstract: TE.right(abstract),
-    saveArticle: pipe(
-      renderSaveArticle(doi, userId),
-      TE.rightTask,
-    ),
+    saveArticle: TE.right(saveArticle),
     tweetThis: pipe(
       doi,
       renderTweetThis,

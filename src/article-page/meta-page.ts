@@ -74,18 +74,19 @@ export const articleMetaPage = (ports: Ports): MetaPage => {
       TE.map((article) => article.abstract),
     ),
   );
-  const renderPage = renderMetaPage(
-    renderSaveArticle(projectHasUserSavedArticle(ports.getAllEvents)),
-    renderTweetThis,
-  );
+  const renderPage = renderMetaPage(renderTweetThis);
   return flow(
     TE.right,
     TE.bind('userId', ({ user }) => pipe(user, O.map((u) => u.id), TE.right)),
     TE.bind('articleDetails', ({ doi }) => pipe(doi, ports.fetchArticle)),
     TE.bind('abstract', ({ doi }) => pipe(doi, renderAbstract)),
+    TE.bindW('saveArticle', ({ doi, userId }) => pipe(
+      renderSaveArticle(projectHasUserSavedArticle(ports.getAllEvents))(doi, userId),
+      TE.rightTask,
+    )),
     TE.mapLeft(toErrorPage),
     TE.chain(({
-      doi, userId, abstract, articleDetails,
-    }) => renderPage(doi, userId, abstract, articleDetails)),
+      doi, userId, abstract, articleDetails, saveArticle,
+    }) => renderPage(doi, userId, abstract, articleDetails, saveArticle)),
   );
 };
