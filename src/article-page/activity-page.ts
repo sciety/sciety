@@ -3,7 +3,9 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
 import striptags from 'striptags';
-import { FindVersionsForArticleDoi, getArticleFeedEvents } from './get-article-feed-events';
+import {
+  FindReviewsForArticleDoi, FindVersionsForArticleDoi, getArticleFeedEvents, GetEditorialCommunity,
+} from './get-article-feed-events';
 import { GetReview } from './get-feed-events-content';
 import { projectHasUserSavedArticle } from './project-has-user-saved-article';
 import { createProjectReviewResponseCounts } from './project-review-response-counts';
@@ -18,13 +20,10 @@ import { renderTweetThis } from './render-tweet-this';
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 import { DomainEvent } from '../types/domain-events';
-import { EditorialCommunityId } from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { RenderPageError } from '../types/render-page-error';
-import { ReviewId } from '../types/review-id';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { User } from '../types/user';
-import { UserId } from '../types/user-id';
 
 type ActivityPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
@@ -42,37 +41,21 @@ type Params = {
   user: O.Option<User>,
 };
 
-type FindReviewsForArticleDoi = (articleVersionDoi: Doi) => T.Task<ReadonlyArray<{
-  reviewId: ReviewId,
-  editorialCommunityId: EditorialCommunityId,
-  occurredAt: Date,
-}>>;
-
-type ArticleDetails = {
+type GetArticleDetails = (doi: Doi) => TE.TaskEither<'not-found' | 'unavailable', {
   title: SanitisedHtmlFragment,
   abstract: SanitisedHtmlFragment, // TODO Use HtmlFragment as the HTML is stripped
   authors: Array<string>,
   server: ArticleServer,
-};
-
-type GetArticleDetails = (doi: Doi) => TE.TaskEither<'not-found' | 'unavailable', ArticleDetails>;
+}>;
 
 type Ports = {
   fetchArticle: GetArticleDetails,
   fetchReview: GetReview,
-  getEditorialCommunity: (editorialCommunityId: EditorialCommunityId) => T.Task<O.Option<{
-    name: string,
-    avatarPath: string,
-  }>>,
+  getEditorialCommunity: GetEditorialCommunity,
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
 };
-
-const getUserId = (user: O.Option<User>): O.Option<UserId> => pipe(
-  user,
-  O.map((u) => u.id),
-);
 
 const toErrorPage = (error: 'not-found' | 'unavailable'): RenderPageError => {
   switch (error) {
@@ -118,7 +101,7 @@ export const articleActivityPage = (ports: Ports): ActivityPage => {
 
   return flow(
     TE.right,
-    TE.bind('userId', ({ user }) => pipe(user, getUserId, TE.right)),
+    TE.bind('userId', ({ user }) => pipe(user, O.map((u) => u.id), TE.right)),
     TE.bind('articleDetails', ({ doi }) => pipe(doi, ports.fetchArticle)),
     TE.bindW('feed', ({ articleDetails, doi, userId }) => pipe(
       articleDetails.server,

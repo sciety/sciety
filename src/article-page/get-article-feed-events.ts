@@ -12,7 +12,7 @@ import { Doi } from '../types/doi';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { ReviewId } from '../types/review-id';
 
-type FindReviewsForArticleDoi = (articleVersionDoi: Doi) => T.Task<ReadonlyArray<{
+export type FindReviewsForArticleDoi = (articleVersionDoi: Doi) => T.Task<ReadonlyArray<{
   reviewId: ReviewId,
   editorialCommunityId: EditorialCommunityId,
   occurredAt: Date,
@@ -24,15 +24,17 @@ export type FindVersionsForArticleDoi = (doi: Doi, server: ArticleServer) => T.T
   version: number,
 }>>;
 
+export type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.Task<O.Option<{
+  name: string,
+  avatarPath: string,
+}>>;
+
 // TODO: return a [Readonly]NonEmptyArray
 export const getArticleFeedEvents = (
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
   fetchReview: GetReview,
-  getEditorialCommunity: (editorialCommunityId: EditorialCommunityId) => T.Task<O.Option<{
-    name: string,
-    avatarPath: string,
-  }>>,
+  getEditorialCommunity: GetEditorialCommunity,
 ): GetFeedItems => (
   (doi, server) => async () => (
     // TODO: turn into pipe to remove nesting
