@@ -3,7 +3,6 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
 import striptags from 'striptags';
-import { ensureBiorxivDoi } from './ensure-biorxiv-doi';
 import { FindVersionsForArticleDoi, getArticleFeedEvents } from './get-article-feed-events';
 import { GetReview } from './get-feed-events-content';
 import { projectHasUserSavedArticle } from './project-has-user-saved-article';
@@ -39,7 +38,7 @@ type Page = {
 };
 
 type Params = {
-  doi?: string,
+  doi: Doi,
   user: O.Option<User>,
 };
 
@@ -117,46 +116,35 @@ export const articleActivityPage = (ports: Ports): ActivityPage => {
     renderArticleVersionFeedItem,
   );
 
-  return (params) => pipe(
-    params.doi ?? '',
-    ensureBiorxivDoi,
-    O.fold(
-      () => TE.left({
-        type: 'not-found',
-        message: toHtmlFragment(`${params.doi ?? 'Article'} not found`),
+  return flow(
+    TE.right,
+    TE.bind('userId', ({ user }) => pipe(user, getUserId, TE.right)),
+    TE.bind('articleDetails', ({ doi }) => pipe(doi, ports.fetchArticle)),
+    TE.bindW('feed', ({ articleDetails, doi, userId }) => pipe(
+      articleDetails.server,
+      (server) => renderFeed(doi, server, userId),
+      TE.orElse(flow(constant(''), TE.right)),
+      TE.map(toHtmlFragment),
+    )),
+    TE.bindW('saveArticle', ({ doi, userId }) => pipe(
+      renderSaveArticle(projectHasUserSavedArticle(ports.getAllEvents))(doi, userId),
+      TE.rightTask,
+    )),
+    TE.bindW('tweetThis', ({ doi }) => pipe(
+      doi,
+      renderTweetThis,
+      TE.right,
+    )),
+    TE.bimap(
+      toErrorPage,
+      (components) => ({
+        content: renderActivityPage(components),
+        title: `${striptags(components.articleDetails.title)}`,
+        openGraph: {
+          title: striptags(components.articleDetails.title),
+          description: striptags(components.articleDetails.abstract),
+        },
       }),
-      flow(
-        TE.right,
-        TE.bindTo('doi'),
-        TE.bind('userId', () => pipe(params.user, getUserId, TE.right)),
-        TE.bind('articleDetails', ({ doi }) => pipe(doi, ports.fetchArticle)),
-        TE.bindW('feed', ({ articleDetails, doi, userId }) => pipe(
-          articleDetails.server,
-          (server) => renderFeed(doi, server, userId),
-          TE.orElse(flow(constant(''), TE.right)),
-          TE.map(toHtmlFragment),
-        )),
-        TE.bindW('saveArticle', ({ doi, userId }) => pipe(
-          renderSaveArticle(projectHasUserSavedArticle(ports.getAllEvents))(doi, userId),
-          TE.rightTask,
-        )),
-        TE.bindW('tweetThis', ({ doi }) => pipe(
-          doi,
-          renderTweetThis,
-          TE.right,
-        )),
-        TE.bimap(
-          toErrorPage,
-          (components) => ({
-            content: renderActivityPage(components),
-            title: `${striptags(components.articleDetails.title)}`,
-            openGraph: {
-              title: striptags(components.articleDetails.title),
-              description: striptags(components.articleDetails.abstract),
-            },
-          }),
-        ),
-      ),
     ),
   );
 };

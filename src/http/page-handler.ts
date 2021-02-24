@@ -10,7 +10,7 @@ import { RenderPageError } from '../types/render-page-error';
 import { User } from '../types/user';
 
 // TODO: find better way of handling params of different pages
-type RenderPage = (params: {
+export type RenderPage = (params: {
   doi?: string,
   id?: string,
   query?: string,

@@ -1,6 +1,8 @@
 import Router from '@koa/router';
+import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import { flow } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { ParameterizedContext } from 'koa';
 import bodyParser from 'koa-bodyparser';
@@ -10,7 +12,7 @@ import { catchStaticFileErrors } from './catch-static-file-errors';
 import { loadStaticFile } from './load-static-file';
 import { logOut } from './log-out';
 import { onlyIfNotAuthenticated } from './only-if-authenticated';
-import { pageHandler } from './page-handler';
+import { pageHandler, RenderPage } from './page-handler';
 import { ping } from './ping';
 import { redirectBack } from './redirect-back';
 import { redirectAfterAuthenticating, requireAuthentication } from './require-authentication';
@@ -31,10 +33,30 @@ import { finishSaveArticleCommand } from '../save-article/finish-save-article-co
 import { saveSaveArticleCommand } from '../save-article/save-save-article-command';
 import { searchResultsPage } from '../search-results-page';
 import { termsPage } from '../terms-page';
+import * as Doi from '../types/doi';
+import { toHtmlFragment } from '../types/html-fragment';
 import { unfollowHandler } from '../unfollow';
 import { finishUnfollowCommand } from '../unfollow/finish-unfollow-command';
 import { saveUnfollowCommand } from '../unfollow/save-unfollow-command';
 import { userPage } from '../user-page';
+
+const biorxivPrefix = '10.1101';
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+const ensureBiorxivDoiParam = ({ doi, ...params }: Parameters<RenderPage>[0]) => pipe(
+  params,
+  O.some,
+  O.bind('doi', () => pipe(
+    doi,
+    O.fromNullable,
+    O.chain(Doi.fromString),
+    O.filter(Doi.hasPrefix(biorxivPrefix)),
+  )),
+  E.fromOption(() => ({
+    type: 'not-found' as const,
+    message: toHtmlFragment(`${doi ?? 'Article'} not found`),
+  })),
+);
 
 export const createRouter = (adapters: Adapters): Router => {
   const router = new Router();
@@ -64,7 +86,7 @@ export const createRouter = (adapters: Adapters): Router => {
     pageHandler(articleMetaPage(adapters)));
 
   router.get('/articles/activity/:doi(.+)',
-    pageHandler(articleActivityPage(adapters)));
+    pageHandler(flow(ensureBiorxivDoiParam, TE.fromEither, TE.chain(articleActivityPage(adapters)))));
 
   router.get('/groups/:id',
     pageHandler(editorialCommunityPage(adapters)));
