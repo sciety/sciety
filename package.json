@@ -23,7 +23,7 @@
     "http-errors": "^1.8.0",
     "http-status-codes": "^2.1.4",
     "io-ts": "^2.2.14",
-    "io-ts-types": "^0.5.14",
+    "io-ts-types": "^0.5.15",
     "is-what": "^3.14.1",
     "jsdom": "^16.4.0",
     "koa": "^2.13.1",
