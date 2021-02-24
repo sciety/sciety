@@ -2,7 +2,6 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import { ensureBiorxivDoi } from './ensure-biorxiv-doi';
 import { projectHasUserSavedArticle } from './project-has-user-saved-article';
 import { createRenderArticleAbstract } from './render-article-abstract';
 import { renderMetaPage } from './render-meta-page';
@@ -11,7 +10,7 @@ import { renderTweetThis } from './render-tweet-this';
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 import { DomainEvent } from '../types/domain-events';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { HtmlFragment } from '../types/html-fragment';
 import { RenderPageError } from '../types/render-page-error';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { User } from '../types/user';
@@ -29,7 +28,7 @@ type Page = {
 };
 
 type Params = {
-  doi?: string,
+  doi: Doi,
   user: O.Option<User>,
 };
 
@@ -63,15 +62,5 @@ export const articleMetaPage = (ports: Ports): MetaPage => {
     renderSaveArticle(projectHasUserSavedArticle(ports.getAllEvents)),
     renderTweetThis,
   );
-  return (params) => pipe(
-    params.doi ?? '',
-    ensureBiorxivDoi,
-    O.fold(
-      () => TE.left({
-        type: 'not-found',
-        message: toHtmlFragment(`${params.doi ?? 'Article'} not found`),
-      }),
-      (doi: Doi) => renderPage(doi, getUserId(params.user)),
-    ),
-  );
+  return ({ doi, user }) => renderPage(doi, getUserId(user));
 };

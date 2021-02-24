@@ -83,7 +83,7 @@ export const createRouter = (adapters: Adapters): Router => {
     pageHandler(articlePage(adapters)));
 
   router.get('/articles/meta/:doi(.+)',
-    pageHandler(articleMetaPage(adapters)));
+    pageHandler(flow(ensureBiorxivDoiParam, TE.fromEither, TE.chain(articleMetaPage(adapters)))));
 
   router.get('/articles/activity/:doi(.+)',
     pageHandler(flow(ensureBiorxivDoiParam, TE.fromEither, TE.chain(articleActivityPage(adapters)))));
