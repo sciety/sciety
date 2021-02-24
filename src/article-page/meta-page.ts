@@ -74,7 +74,7 @@ export const articleMetaPage = (ports: Ports): MetaPage => {
       TE.map((article) => article.abstract),
     ),
   );
-  const renderPage = renderMetaPage(renderTweetThis);
+  const renderPage = renderMetaPage();
   return flow(
     TE.right,
     TE.bind('userId', ({ user }) => pipe(user, O.map((u) => u.id), TE.right)),
@@ -84,9 +84,14 @@ export const articleMetaPage = (ports: Ports): MetaPage => {
       renderSaveArticle(projectHasUserSavedArticle(ports.getAllEvents))(doi, userId),
       TE.rightTask,
     )),
+    TE.bindW('tweetThis', ({ doi }) => pipe(
+      doi,
+      renderTweetThis,
+      TE.right,
+    )),
     TE.mapLeft(toErrorPage),
     TE.chain(({
-      doi, userId, abstract, articleDetails, saveArticle,
-    }) => renderPage(doi, userId, abstract, articleDetails, saveArticle)),
+      doi, userId, abstract, articleDetails, saveArticle, tweetThis,
+    }) => renderPage(doi, userId, abstract, articleDetails, saveArticle, tweetThis)),
   );
 };
