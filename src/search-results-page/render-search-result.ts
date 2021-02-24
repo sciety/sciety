@@ -1,8 +1,6 @@
 import * as O from 'fp-ts/Option';
-import * as T from 'fp-ts/Task';
-import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import { templateDate } from '../shared-components/date';
+import { templateDate } from '../shared-components';
 import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
@@ -12,6 +10,7 @@ export type ArticleSearchResult = {
   title: string,
   authors: string,
   postedDate: Date,
+  reviewCount: O.Option<number>,
 };
 
 type GroupSearchResult = {
@@ -21,8 +20,6 @@ type GroupSearchResult = {
 };
 
 export type SearchResult = ArticleSearchResult | GroupSearchResult;
-
-export type GetReviewCount = (doi: Doi) => TE.TaskEither<unknown, number>;
 
 const renderReviewCount = (reviewCount: number): string => `
   <div class="search-results-list__item__review-count">
@@ -41,14 +38,10 @@ const templatePostedDate = flow(
   (date) => `<div class="search-results-list__item__date">Posted ${date}</div>`,
 );
 
-type RenderArticleSearchResult = (result: ArticleSearchResult) => T.Task<HtmlFragment>;
+type RenderArticleSearchResult = (result: ArticleSearchResult) => HtmlFragment;
 
-const renderArticleSearchResult = (
-  getReviewCount: GetReviewCount,
-): RenderArticleSearchResult => flow(
-  T.of,
-  T.bind('reviewCount', ({ doi }) => pipe(doi, getReviewCount, T.map(O.fromEither))),
-  T.map((result) => `
+const renderArticleSearchResult: RenderArticleSearchResult = flow(
+  (result) => `
     <div>
       <a class="search-results-list__item__link" href="/articles/${result.doi.value}">${result.title}</a>
       <div>
@@ -57,26 +50,23 @@ const renderArticleSearchResult = (
       ${templatePostedDate(result.postedDate)}
       ${renderReviews(result.reviewCount)}
     </div>
-  `),
-  T.map(toHtmlFragment),
+  `,
+  toHtmlFragment,
 );
 
-type RenderGroupSearchResult = (result: GroupSearchResult) => T.Task<HtmlFragment>;
+type RenderGroupSearchResult = (result: GroupSearchResult) => HtmlFragment;
 
 const renderGroupSearchResult: RenderGroupSearchResult = (result) => pipe(
   `<a href="${result.link}">${result.name}</a>`,
   toHtmlFragment,
-  T.of,
 );
 
-export type RenderSearchResult = (result: SearchResult) => T.Task<HtmlFragment>;
+export type RenderSearchResult = (result: SearchResult) => HtmlFragment;
 
-export const createRenderSearchResult = (
-  getReviewCount: GetReviewCount,
-): RenderSearchResult => (result) => {
+export const renderSearchResult: RenderSearchResult = (result) => {
   switch (result._tag) {
     case 'Article':
-      return renderArticleSearchResult(getReviewCount)(result);
+      return renderArticleSearchResult(result);
     case 'Group':
       return renderGroupSearchResult(result);
   }

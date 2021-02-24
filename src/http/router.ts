@@ -15,8 +15,7 @@ import { redirectBack } from './redirect-back';
 import { redirectAfterAuthenticating, requireAuthentication } from './require-authentication';
 import { robots } from './robots';
 import { aboutPage } from '../about-page';
-import { articleActivityPage, articlePage } from '../article-page';
-import { articleSearchPage } from '../article-search-page';
+import { articleActivityPage, articleMetaPage, articlePage } from '../article-page';
 import { editorialCommunityPage } from '../editorial-community-page';
 import { followHandler } from '../follow';
 import { finishFollowCommand } from '../follow/finish-follow-command';
@@ -29,6 +28,7 @@ import { finishRespondCommand } from '../respond/finish-respond-command';
 import { saveRespondCommand } from '../respond/save-respond-command';
 import { finishSaveArticleCommand } from '../save-article/finish-save-article-command';
 import { saveSaveArticleCommand } from '../save-article/save-save-article-command';
+import { searchResultsPage } from '../search-results-page';
 import { termsPage } from '../terms-page';
 import { unfollowHandler } from '../unfollow';
 import { finishUnfollowCommand } from '../unfollow/finish-unfollow-command';
@@ -54,13 +54,13 @@ export const createRouter = (adapters: Adapters): Router => {
       context.response.set('X-Robots-Tag', 'noindex');
       await next();
     },
-    pageHandler(articleSearchPage(adapters)));
+    pageHandler(searchResultsPage(adapters)));
 
   router.get('/articles/:doi(.+)',
     pageHandler(articlePage(adapters)));
 
   router.get('/articles/meta/:doi(.+)',
-    pageHandler(articlePage(adapters)));
+    pageHandler(articleMetaPage(adapters)));
 
   router.get('/articles/activity/:doi(.+)',
     pageHandler(articleActivityPage(adapters)));

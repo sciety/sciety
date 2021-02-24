@@ -1,4 +1,4 @@
-import { templateDate } from '../../src/shared-components/date';
+import { templateDate } from '../../src/shared-components';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 
 describe('date template', () => {

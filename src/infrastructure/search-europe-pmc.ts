@@ -19,7 +19,7 @@ type SearchResult = {
 };
 
 type SearchResults = {
-  items: Array<SearchResult>,
+  items: ReadonlyArray<SearchResult>,
   total: number,
 };
 

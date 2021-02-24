@@ -1,6 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
 import { constructFeedItem, GetArticle } from '../../src/editorial-community-page/construct-feed-item';
-import { FeedItem } from '../../src/shared-components/render-summary-feed-list';
+import { FeedItem } from '../../src/shared-components';
 import { Doi } from '../../src/types/doi';
 import { EditorialCommunityReviewedArticleEvent } from '../../src/types/domain-events';
 import { EditorialCommunity } from '../../src/types/editorial-community';
