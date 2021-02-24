@@ -1,11 +1,8 @@
-import * as O from 'fp-ts/Option';
-import { pipe } from 'fp-ts/function';
 import striptags from 'striptags';
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
-import { UserId } from '../types/user-id';
 
 type Page = {
   title: string,
@@ -23,16 +20,7 @@ type ArticleDetails = {
   server: ArticleServer,
 };
 
-type RenderPage = (
-  doi: Doi,
-  userId: O.Option<UserId>,
-  abstract: HtmlFragment,
-  articleDetails: ArticleDetails,
-  saveArticle: HtmlFragment,
-  tweetThis: HtmlFragment,
-) => Page;
-
-const render = (components: {
+export const renderMetaPage = (components: {
   articleDetails: ArticleDetails,
   abstract: HtmlFragment,
   doi: Doi,
@@ -80,19 +68,3 @@ const render = (components: {
     },
   }
 );
-
-export const renderMetaPage = (
-): RenderPage => (doi, userId, abstract, articleDetails, saveArticle, tweetThis) => {
-  const components = {
-    articleDetails,
-    doi,
-    abstract,
-    saveArticle,
-    tweetThis,
-  };
-
-  return pipe(
-    components,
-    render,
-  );
-};

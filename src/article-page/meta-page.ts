@@ -74,7 +74,6 @@ export const articleMetaPage = (ports: Ports): MetaPage => {
       TE.map((article) => article.abstract),
     ),
   );
-  const renderPage = renderMetaPage();
   return flow(
     TE.right,
     TE.bind('userId', ({ user }) => pipe(user, O.map((u) => u.id), TE.right)),
@@ -91,16 +90,7 @@ export const articleMetaPage = (ports: Ports): MetaPage => {
     )),
     TE.bimap(
       toErrorPage,
-      (
-        {
-          doi,
-          userId,
-          abstract,
-          articleDetails,
-          saveArticle,
-          tweetThis,
-        },
-      ) => renderPage(doi, userId, abstract, articleDetails, saveArticle, tweetThis),
+      renderMetaPage,
     ),
   );
 };
