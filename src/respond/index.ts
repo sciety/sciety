@@ -1,7 +1,7 @@
 import { Middleware } from '@koa/router';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { BadRequest } from 'http-errors';
+import { StatusCodes } from 'http-status-codes';
 import { commandHandler, CommitEvents, toCommand } from './command-handler';
 import { GetAllEvents } from './respond-helpful-command';
 import { toReviewId, toString } from '../types/review-id';
@@ -21,9 +21,7 @@ export const respondHandler = (ports: Ports): Middleware<{ user: User }> => asyn
     O.bind('reviewId', () => O.tryCatch(() => pipe(context.request.body.reviewid, toReviewId))),
     O.bind('command', () => pipe(context.request.body.command, toCommand)),
     O.fold(
-      () => {
-        throw new BadRequest();
-      },
+      () => context.throw(StatusCodes.BAD_REQUEST),
       commandHandler(ports.commitEvents, ports.getAllEvents, user.id),
     ),
   )();

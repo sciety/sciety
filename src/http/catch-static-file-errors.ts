@@ -1,7 +1,7 @@
 import { Middleware } from '@koa/router';
 import * as O from 'fp-ts/Option';
-import { isHttpError } from 'http-errors';
 import { StatusCodes } from 'http-status-codes';
+import { HttpError } from 'koa';
 import { renderErrorPage } from './render-error-page';
 import { applyStandardPageLayout } from '../shared-components';
 import { toHtmlFragment } from '../types/html-fragment';
@@ -14,7 +14,7 @@ export const catchStaticFileErrors = (logger: Logger): Middleware => async (cont
   } catch (error: unknown) {
     logger('error', 'Static file could not be read', { error });
     let pageMessage = 'Something went wrong, please try again.';
-    if (isHttpError(error) && error.status === 404) {
+    if (error instanceof HttpError && error.status === 404) {
       pageMessage = 'File not found';
       context.response.status = 404;
     } else {
