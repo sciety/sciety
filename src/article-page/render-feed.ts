@@ -47,8 +47,6 @@ export const createRenderFeed = (
     T.map(E.fromOption(constant('no-content' as const))),
     TE.map((items) => `
       <section class="article-feed">
-        <h2>Feed</h2>
-
         <ol role="list" class="article-feed__list">
           ${templateListItems(items, 'article-feed__item')}
         </ol>
