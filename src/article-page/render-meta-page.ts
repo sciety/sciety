@@ -33,7 +33,7 @@ export const renderMetaPage = (components: {
 
   <div class="main-content main-content--article">
     <section class="article-meta">
-      <h2>Authors</h2>
+      <h3>Authors</h3>
       <ol aria-label="Authors of this article" class="article-author-list" role="list">
         ${components.articleDetails.authors.map((author) => `<li>${author}</li>`).join('')}
       </ol>
