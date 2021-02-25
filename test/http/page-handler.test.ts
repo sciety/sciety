@@ -6,7 +6,7 @@ describe('page-handler', () => {
   describe('article page', () => {
     it('sets the og meta tags to the article details', async () => {
       const { server } = await createTestServer();
-      const response: Response = await request(server).get('/articles/10.1101/646810');
+      const response: Response = await request(server).get('/articles/activity/10.1101/646810');
       const html = response.text;
       const rendered = JSDOM.fragment(html);
       const ogTitle = rendered.querySelector('meta[property="og:title"]')?.getAttribute('content');
@@ -20,7 +20,7 @@ describe('page-handler', () => {
   describe('article-page errors', () => {
     it('renders the description of an error', async () => {
       const { server } = await createTestServer();
-      const response: Response = await request(server).get('/articles/10.14234321/not-on-biorxiv');
+      const response: Response = await request(server).get('/articles/activity/10.14234321/not-on-biorxiv');
       const html = response.text;
       const rendered = JSDOM.fragment(html);
 

@@ -18,7 +18,7 @@ import { redirectBack } from './redirect-back';
 import { redirectAfterAuthenticating, requireAuthentication } from './require-authentication';
 import { robots } from './robots';
 import { aboutPage } from '../about-page';
-import { articleActivityPage, articleMetaPage, articlePage } from '../article-page';
+import { articleActivityPage, articleMetaPage } from '../article-page';
 import { editorialCommunityPage } from '../editorial-community-page';
 import { followHandler } from '../follow';
 import { finishFollowCommand } from '../follow/finish-follow-command';
@@ -80,7 +80,12 @@ export const createRouter = (adapters: Adapters): Router => {
     pageHandler(searchResultsPage(adapters)));
 
   router.get('/articles/:doi(.+)',
-    pageHandler(articlePage(adapters)));
+    async (context, next) => {
+      context.status = StatusCodes.PERMANENT_REDIRECT;
+      context.redirect(`/articles/activity/${context.params.doi}`);
+
+      await next();
+    });
 
   router.get('/articles/meta/:doi(.+)',
     pageHandler(flow(ensureBiorxivDoiParam, TE.fromEither, TE.chain(articleMetaPage(adapters)))));

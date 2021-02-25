@@ -29,7 +29,7 @@ describe('authentication-and-redirect', () => {
 
       const result = await currentURL();
 
-      expect(result).toContain('/articles/10.1101/2020.07.13.199174');
+      expect(result).toContain('/articles/activity/10.1101/2020.07.13.199174');
     });
 
     it('respond command returns to review fragment on the article page', async () => {
@@ -40,7 +40,7 @@ describe('authentication-and-redirect', () => {
 
       const result = await currentURL();
 
-      expect(result).toMatch(/\/articles\/10\.1101\/2020\.07\.13\.199174#(hypothesis|doi):/);
+      expect(result).toMatch(/\/articles\/activity\/10\.1101\/2020\.07\.13\.199174#(hypothesis|doi):/);
     });
 
     it('follow command from the editorial community page returns to the editorial community page', async () => {
@@ -69,7 +69,7 @@ describe('authentication-and-redirect', () => {
 
       const result = await currentURL();
 
-      expect(result).toContain('/articles/10.1101/2020.07.13.199174');
+      expect(result).toContain('/articles/activity/10.1101/2020.07.13.199174');
     });
 
     it('respond command returns to review fragment on the article page', async () => {
@@ -78,7 +78,7 @@ describe('authentication-and-redirect', () => {
 
       const result = await currentURL();
 
-      expect(result).toMatch(/\/articles\/10\.1101\/2020\.07\.13\.199174#(hypothesis|doi):/);
+      expect(result).toMatch(/\/articles\/activity\/10\.1101\/2020\.07\.13\.199174#(hypothesis|doi):/);
     });
 
     it('follow command from the editorial community page returns to the editorial community page', async () => {
