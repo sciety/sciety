@@ -1,5 +1,5 @@
 import * as T from 'fp-ts/Task';
-import { GetAllEvents, projectFollowerIds } from '../../src/editorial-community-page/project-follower-ids';
+import { projectFollowerIds } from '../../src/editorial-community-page/project-follower-ids';
 import { DomainEvent, UserFollowedEditorialCommunityEvent } from '../../src/types/domain-events';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 import { generate } from '../../src/types/event-id';
@@ -23,7 +23,7 @@ describe('project-follower-ids', () => {
         editorialCommunityId: new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
       },
     ];
-    const getAllEvents: GetAllEvents = T.of(events);
+    const getAllEvents = T.of(events);
     const followerIds = await projectFollowerIds(getAllEvents)(new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'))();
 
     expect(followerIds).toHaveLength(2);
@@ -39,7 +39,7 @@ describe('project-follower-ids', () => {
         editorialCommunityId: new EditorialCommunityId('something'),
       },
     ];
-    const getAllEvents: GetAllEvents = T.of(events);
+    const getAllEvents = T.of(events);
     const followerIds = await projectFollowerIds(getAllEvents)(new EditorialCommunityId('other'))();
 
     expect(followerIds).toHaveLength(0);
@@ -53,7 +53,7 @@ describe('project-follower-ids', () => {
         editorialCommunityId: new EditorialCommunityId('something'),
       },
     ];
-    const getAllEvents: GetAllEvents = T.of(events);
+    const getAllEvents = T.of(events);
     const followerIds = await projectFollowerIds(getAllEvents)(new EditorialCommunityId('something'))();
 
     expect(followerIds).toHaveLength(0);
@@ -78,7 +78,7 @@ describe('project-follower-ids', () => {
       },
     ];
 
-    const getAllEvents: GetAllEvents = T.of(events);
+    const getAllEvents = T.of(events);
     const followerIds = await projectFollowerIds(getAllEvents)(new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'))();
 
     expect(followerIds).toHaveLength(0);

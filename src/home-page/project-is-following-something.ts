@@ -5,7 +5,7 @@ import { IsFollowingSomething } from './render-feed';
 import { DomainEvent } from '../types/domain-events';
 import { UserId } from '../types/user-id';
 
-export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
+type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 const countFollowedCommunities = (userId: UserId) => (count: number, event: DomainEvent): number => {
   if (event.type === 'UserFollowedEditorialCommunity' && event.userId === userId) {

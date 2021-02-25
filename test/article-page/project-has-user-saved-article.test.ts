@@ -1,5 +1,5 @@
 import * as T from 'fp-ts/Task';
-import { GetEvents, projectHasUserSavedArticle } from '../../src/article-page/project-has-user-saved-article';
+import { projectHasUserSavedArticle } from '../../src/article-page/project-has-user-saved-article';
 import { Doi } from '../../src/types/doi';
 import { userSavedArticle } from '../../src/types/domain-events';
 import { toUserId } from '../../src/types/user-id';
@@ -7,7 +7,7 @@ import { toUserId } from '../../src/types/user-id';
 describe('project-has-user-saved-article', () => {
   describe('when the user has saved the article', () => {
     it('returns true', async () => {
-      const getEvents: GetEvents = T.of([
+      const getEvents = T.of([
         userSavedArticle(toUserId('this-user'), new Doi('10.1101/111111')),
       ]);
       const result = await projectHasUserSavedArticle(getEvents)(
@@ -21,7 +21,7 @@ describe('project-has-user-saved-article', () => {
 
   describe('when the user has not saved the article', () => {
     it('returns false', async () => {
-      const getEvents: GetEvents = T.of([]);
+      const getEvents = T.of([]);
       const result = await projectHasUserSavedArticle(getEvents)(
         new Doi('10.1101/some-doi'),
         toUserId('this-user'),
@@ -33,7 +33,7 @@ describe('project-has-user-saved-article', () => {
 
   describe('when the user has saved a different article', () => {
     it('returns false', async () => {
-      const getEvents: GetEvents = T.of([
+      const getEvents = T.of([
         userSavedArticle(toUserId('this-user'), new Doi('10.1101/111111')),
       ]);
       const result = await projectHasUserSavedArticle(getEvents)(
@@ -47,7 +47,7 @@ describe('project-has-user-saved-article', () => {
 
   describe('when a different user has saved this article', () => {
     it('returns false', async () => {
-      const getEvents: GetEvents = T.of([
+      const getEvents = T.of([
         userSavedArticle(toUserId('other-user'), new Doi('10.1101/111111')),
       ]);
       const result = await projectHasUserSavedArticle(getEvents)(

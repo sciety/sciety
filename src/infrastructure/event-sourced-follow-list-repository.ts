@@ -3,7 +3,7 @@ import { DomainEvent } from '../types/domain-events';
 import { FollowList } from '../types/follow-list';
 import { UserId } from '../types/user-id';
 
-export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
+type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 export type EventSourcedFollowListRepository = (userId: UserId) => Promise<FollowList>;
 

@@ -8,7 +8,7 @@ import { UserId } from '../types/user-id';
 
 export type Follows = (userId: UserId, editorialCommunityId: EditorialCommunityId) => T.Task<boolean>;
 
-export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
+type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 const isSignificantTo = (
   userId: UserId,

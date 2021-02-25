@@ -12,7 +12,7 @@ import { UserId } from '../types/user-id';
 
 type ProjectFollowerIds = (editorialCommunityId: EditorialCommunityId) => T.Task<ReadonlyArray<UserId>>;
 
-export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
+type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 const isInterestingEvent = (event: DomainEvent) : event is (
 UserFollowedEditorialCommunityEvent |

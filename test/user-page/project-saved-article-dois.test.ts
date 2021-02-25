@@ -2,7 +2,7 @@ import * as T from 'fp-ts/Task';
 import { Doi } from '../../src/types/doi';
 import { userSavedArticle } from '../../src/types/domain-events';
 import { toUserId } from '../../src/types/user-id';
-import { GetAllEvents, projectSavedArticleDois } from '../../src/user-page/project-saved-article-dois';
+import { projectSavedArticleDois } from '../../src/user-page/project-saved-article-dois';
 
 describe('project-saved-article-dois', () => {
   describe('when the user has saved articles', () => {
@@ -13,7 +13,7 @@ describe('project-saved-article-dois', () => {
         new Doi('10.1101/12345'),
       ];
 
-      const getAllEvents: GetAllEvents = T.of([
+      const getAllEvents = T.of([
         userSavedArticle(userId, new Doi('10.1101/12345')),
         userSavedArticle(userId, new Doi('10.1101/67890')),
       ]);
@@ -26,7 +26,7 @@ describe('project-saved-article-dois', () => {
 
   describe('when another user has saved articles and the current user has not', () => {
     it('returns an empty array', async () => {
-      const getAllEvents: GetAllEvents = T.of([
+      const getAllEvents = T.of([
         userSavedArticle(toUserId('another-user'), new Doi('10.1101/67890')),
       ]);
 
@@ -38,7 +38,7 @@ describe('project-saved-article-dois', () => {
 
   describe('when the user has not saved articles', () => {
     it('returns an empty array', async () => {
-      const getAllEvents: GetAllEvents = T.of([]);
+      const getAllEvents = T.of([]);
 
       const output = await projectSavedArticleDois(getAllEvents)(toUserId('some-user'))();
 

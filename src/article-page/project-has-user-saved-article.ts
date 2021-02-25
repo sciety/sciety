@@ -5,7 +5,7 @@ import { Doi, eqDoi } from '../types/doi';
 import { DomainEvent, isUserSavedArticleEvent } from '../types/domain-events';
 import { UserId } from '../types/user-id';
 
-export type GetEvents = T.Task<ReadonlyArray<DomainEvent>>;
+type GetEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 type ProjectHasUserSavedArticle = (getEvents: GetEvents) => (doi: Doi, userId: UserId) => T.Task<boolean>;
 
