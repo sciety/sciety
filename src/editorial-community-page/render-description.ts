@@ -5,7 +5,7 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 type RenderDescription = (editorialCommunity: EditorialCommunity) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>;
 
-export type GetEditorialCommunityDescription = (editorialCommunity: EditorialCommunity) => TE.TaskEither<'not-found' | 'unavailable', string>;
+type GetEditorialCommunityDescription = (editorialCommunity: EditorialCommunity) => TE.TaskEither<'not-found' | 'unavailable', string>;
 
 export const renderDescription = (
   getEditorialCommunityDescription: GetEditorialCommunityDescription,

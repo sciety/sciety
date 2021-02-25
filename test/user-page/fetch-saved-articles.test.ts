@@ -3,13 +3,13 @@ import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { Doi } from '../../src/types/doi';
 import { toHtmlFragment } from '../../src/types/html-fragment';
-import { fetchSavedArticles, GetArticleTitle } from '../../src/user-page/fetch-saved-articles';
+import { fetchSavedArticles } from '../../src/user-page/fetch-saved-articles';
 import { shouldNotBeCalled } from '../should-not-be-called';
 
 describe('fetch-get-saved-articles', () => {
   describe('when the user has saved articles', () => {
     it('returns doi and title for those articles', async () => {
-      const getArticle: GetArticleTitle = () => pipe(
+      const getArticle = () => pipe(
         'Gender, race and parenthood',
         toHtmlFragment,
         O.some,

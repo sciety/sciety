@@ -3,7 +3,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import {
-  Feed, GetEditorialCommunity, getFeedEventsContent, GetReview,
+  Feed, getFeedEventsContent, GetReview,
 } from '../../src/article-page/get-feed-events-content';
 import { Doi } from '../../src/types/doi';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
@@ -30,7 +30,7 @@ describe('get-feed-events-content', () => {
         fullText: pipe('some text', toHtmlFragment),
         url: new URL('http://example.com'),
       });
-      const getEditorialCommunity: GetEditorialCommunity = () => T.of({
+      const getEditorialCommunity = () => T.of({
         name: 'A Community',
         avatarPath: 'https://example.com/avatar',
       });

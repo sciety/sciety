@@ -5,7 +5,7 @@ import { Doi } from '../types/doi';
 import { HtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
-export type GetArticleTitle = (doi: Doi) => T.Task<O.Option<HtmlFragment>>;
+type GetArticleTitle = (doi: Doi) => T.Task<O.Option<HtmlFragment>>;
 
 export type GetSavedArticleDois = (userId: UserId) => T.Task<ReadonlyArray<Doi>>;
 

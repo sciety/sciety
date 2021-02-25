@@ -38,7 +38,7 @@ export type GetReview = (id: ReviewId) => TE.TaskEither<unknown, {
   url: URL,
 }>;
 
-export type GetEditorialCommunity = (id: EditorialCommunityId) => T.Task<{
+type GetEditorialCommunity = (id: EditorialCommunityId) => T.Task<{
   name: string,
   avatarPath: string,
 }>;

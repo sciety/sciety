@@ -1,6 +1,6 @@
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { constructFeedItem, GetActor, GetArticle } from '../../src/home-page/construct-feed-item';
+import { constructFeedItem, GetArticle } from '../../src/home-page/construct-feed-item';
 import { FeedItem } from '../../src/shared-components';
 import { Doi } from '../../src/types/doi';
 import { EditorialCommunityReviewedArticleEvent } from '../../src/types/domain-events';
@@ -11,7 +11,7 @@ describe('construct-feed-item', () => {
   const articleTitle = 'the title' as SanitisedHtmlFragment;
   const arbitraryActorId = new EditorialCommunityId('');
   const arbitraryArticleId = new Doi('10.5281/zenodo.3678326');
-  const dummyGetActor: GetActor = () => T.of({
+  const dummyGetActor = () => T.of({
     url: '',
     name: 'dummyActorName',
     imageUrl: '',

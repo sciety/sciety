@@ -1,5 +1,5 @@
 import * as T from 'fp-ts/Task';
-import { Follows, GetAllEvents, getMostRecentEvents } from '../../src/home-page/get-most-recent-events';
+import { GetAllEvents, getMostRecentEvents } from '../../src/home-page/get-most-recent-events';
 import { Doi } from '../../src/types/doi';
 import { DomainEvent } from '../../src/types/domain-events';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
@@ -33,7 +33,7 @@ describe('get-most-recent-events', () => {
       },
     ];
     const getAllEvents: GetAllEvents = T.of(initial);
-    const follows: Follows = () => T.of(true);
+    const follows = () => T.of(true);
     const getEvents = getMostRecentEvents(getAllEvents, follows, 20);
     const sortedEvents = await getEvents(toUserId('user-1'))();
 
@@ -47,7 +47,7 @@ describe('get-most-recent-events', () => {
     it('returns exactly those', async () => {
       const dummyEvents: ReadonlyArray<DomainEvent> = [dummyEvent, dummyEvent, dummyEvent];
       const getAllEvents: GetAllEvents = T.of(dummyEvents);
-      const follows: Follows = () => T.of(true);
+      const follows = () => T.of(true);
       const getEvents = getMostRecentEvents(getAllEvents, follows, 20);
       const events = await getEvents(toUserId('user-1'))();
 
@@ -60,7 +60,7 @@ describe('get-most-recent-events', () => {
       const dummyEvents: ReadonlyArray<DomainEvent> = [dummyEvent, dummyEvent, dummyEvent];
       const maxCount = 2;
       const getAllEvents: GetAllEvents = T.of(dummyEvents);
-      const follows: Follows = () => T.of(true);
+      const follows = () => T.of(true);
       const getEvents = getMostRecentEvents(getAllEvents, follows, maxCount);
       const events = await getEvents(toUserId('user-1'))();
 

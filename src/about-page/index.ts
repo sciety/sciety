@@ -4,7 +4,7 @@ import { renderErrorPage, renderPage } from './render-page';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 
-export type FetchStaticFile = (filename: string) => TE.TaskEither<'not-found' | 'unavailable', string>;
+type FetchStaticFile = (filename: string) => TE.TaskEither<'not-found' | 'unavailable', string>;
 
 type Ports = {
   fetchStaticFile: FetchStaticFile,

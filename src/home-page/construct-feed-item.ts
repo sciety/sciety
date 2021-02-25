@@ -57,7 +57,7 @@ const construct = ({ actor, article, event }: Inputs): FeedItem => ({
   verb: reviewedBy(actor),
 });
 
-export type GetActor = (id: EditorialCommunityId) => T.Task<Actor>;
+type GetActor = (id: EditorialCommunityId) => T.Task<Actor>;
 
 export type GetArticle = (id: Doi) => TE.TaskEither<unknown, Article>;
 
