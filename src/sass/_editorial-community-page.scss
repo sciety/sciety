@@ -1,4 +1,5 @@
 @use 'baseline';
+@use 'typography';
 
 .sciety-grid--editorial-community > .page-header--editorial-community {
   grid-column: 1 / -1;
@@ -23,4 +24,17 @@
     grid-column: 8 / -1;
   }
 
+}
+
+.page-header--editorial-community {
+  display: flex;
+  align-items: center;
+
+  .page-header__avatar {
+    width: 76px;
+    height: 76px;
+    flex: 0 0 76px;
+    margin-right: 1rem;
+    border-radius: 50%;
+  }
 }
