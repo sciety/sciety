@@ -29,9 +29,6 @@ module.exports = {
     }],
     '@typescript-eslint/brace-style': 'error',
     '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
-    '@typescript-eslint/explicit-function-return-type': ['error', {
-      allowExpressions: true,
-    }],
     '@typescript-eslint/member-delimiter-style': ['error', {
       multiline: {
         delimiter: 'comma',

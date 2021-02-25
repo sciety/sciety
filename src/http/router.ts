@@ -42,7 +42,6 @@ import { userPage } from '../user-page';
 
 const biorxivPrefix = '10.1101';
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const ensureBiorxivDoiParam = ({ doi, ...params }: Parameters<RenderPage>[0]) => pipe(
   params,
   O.some,
