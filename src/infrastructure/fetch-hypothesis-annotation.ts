@@ -10,7 +10,7 @@ import { Review } from './review';
 import { toHtmlFragment } from '../types/html-fragment';
 import { HypothesisAnnotationId } from '../types/hypothesis-annotation-id';
 
-export type GetJson = (uri: string) => Promise<Json>;
+type GetJson = (uri: string) => Promise<Json>;
 
 export type FetchHypothesisAnnotation = (id: HypothesisAnnotationId) => T.Task<Review>;
 

@@ -1,5 +1,6 @@
 import * as E from 'fp-ts/Either';
-import { createSearchEuropePmc, GetJson } from '../../src/infrastructure/search-europe-pmc';
+import { Json } from 'io-ts-types';
+import { createSearchEuropePmc } from '../../src/infrastructure/search-europe-pmc';
 import { Doi } from '../../src/types/doi';
 import { dummyLogger } from '../dummy-logger';
 
@@ -37,7 +38,8 @@ describe('search-europe-pmc adapter', () => {
   });
 
   it('constructs the Europe PMC query safely', async () => {
-    const getJson: GetJson = async () => ({
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const getJson = async (url: string): Promise<Json> => ({
       hitCount: 0,
       resultList: {
         result: [],

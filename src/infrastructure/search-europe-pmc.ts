@@ -9,7 +9,7 @@ import { DateFromISOString } from 'io-ts-types/DateFromISOString';
 import { Logger } from './logger';
 import { Doi } from '../types/doi';
 
-export type GetJson = (uri: string) => Promise<Json>;
+type GetJson = (uri: string) => Promise<Json>;
 
 type SearchResult = {
   doi: Doi,

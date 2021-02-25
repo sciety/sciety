@@ -1,5 +1,5 @@
 import * as E from 'fp-ts/Either';
-import { createFetchCrossrefArticle, GetXml } from '../../src/infrastructure/fetch-crossref-article';
+import { createFetchCrossrefArticle } from '../../src/infrastructure/fetch-crossref-article';
 import { Doi } from '../../src/types/doi';
 import { dummyLogger } from '../dummy-logger';
 
@@ -8,7 +8,7 @@ describe('fetch-crossref-article', () => {
 
   describe('the request fails', () => {
     it('returns an error result', async () => {
-      const getXml: GetXml = async () => {
+      const getXml = async (): Promise<never> => {
         throw new Error('HTTP timeout');
       };
       const result = await createFetchCrossrefArticle(getXml, dummyLogger)(doi)();
@@ -19,7 +19,7 @@ describe('fetch-crossref-article', () => {
 
   describe('crossref returns an invalid XML document', () => {
     it('throws an error', async () => {
-      const getXml: GetXml = async () => '';
+      const getXml = async (): Promise<string> => '';
       const result = await createFetchCrossrefArticle(getXml, dummyLogger)(doi)();
 
       expect(result).toStrictEqual(E.left('unavailable'));

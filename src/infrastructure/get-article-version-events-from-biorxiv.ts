@@ -46,4 +46,4 @@ const getArticleVersionEventsFromBiorxiv = (
   ),
 );
 
-export { getArticleVersionEventsFromBiorxiv, GetArticleVersionEventsFromBiorxiv, GetJson };
+export { getArticleVersionEventsFromBiorxiv, GetArticleVersionEventsFromBiorxiv };

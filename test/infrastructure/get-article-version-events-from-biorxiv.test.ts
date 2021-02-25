@@ -1,5 +1,6 @@
 import { URL } from 'url';
-import { getArticleVersionEventsFromBiorxiv, GetJson } from '../../src/infrastructure/get-article-version-events-from-biorxiv';
+import { Json } from 'io-ts-types';
+import { getArticleVersionEventsFromBiorxiv } from '../../src/infrastructure/get-article-version-events-from-biorxiv';
 import { Doi } from '../../src/types/doi';
 import { dummyLogger } from '../dummy-logger';
 
@@ -8,7 +9,7 @@ describe('get-article-version-events-from-biorxiv', () => {
     describe('when the server is biorxiv', () => {
       it('returns an article-version event for each article version', async () => {
         const doi = new Doi('10.1101/2020.09.02.278911');
-        const getJson: GetJson = jest.fn(async () => ({
+        const getJson = jest.fn(async () => ({
           collection: [
             {
               date: '2020-01-02',
@@ -41,7 +42,7 @@ describe('get-article-version-events-from-biorxiv', () => {
     describe('when the server is medrxiv', () => {
       it('returns an article-version event for each article version', async () => {
         const doi = new Doi('10.1101/2020.09.02.278911');
-        const getJson: GetJson = jest.fn(async () => ({
+        const getJson = jest.fn(async () => ({
           collection: [
             {
               date: '2020-01-02',
@@ -74,7 +75,7 @@ describe('get-article-version-events-from-biorxiv', () => {
 
   describe('when biorxiv is unavailable', () => {
     it('returns an empty list', async () => {
-      const getJson: GetJson = async () => {
+      const getJson = async (): Promise<never> => {
         throw new Error('HTTP timeout');
       };
       const fetchVersions = getArticleVersionEventsFromBiorxiv(getJson, dummyLogger);
@@ -87,7 +88,7 @@ describe('get-article-version-events-from-biorxiv', () => {
   describe('when biorxiv returns a corrupted response', () => {
     describe('where the fields are missing', () => {
       it('returns an empty list', async () => {
-        const getJson: GetJson = async () => ({});
+        const getJson = async (): Promise<Json> => ({});
         const fetchVersions = getArticleVersionEventsFromBiorxiv(getJson, dummyLogger);
         const events = await fetchVersions(new Doi('10.1101/2020.09.02.278911'), 'biorxiv')();
 
@@ -97,7 +98,7 @@ describe('get-article-version-events-from-biorxiv', () => {
 
     describe('where the date is corrupt', () => {
       it('returns an empty list', async () => {
-        const getJson: GetJson = async () => ({
+        const getJson = async (): Promise<Json> => ({
           collection: [
             {
               date: 'tree',
@@ -114,7 +115,7 @@ describe('get-article-version-events-from-biorxiv', () => {
 
     describe('where the version is not a number', () => {
       it('returns an empty list', async () => {
-        const getJson: GetJson = async () => ({
+        const getJson = async (): Promise<Json> => ({
           collection: [
             {
               date: '2020-01-01',
