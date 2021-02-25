@@ -42,6 +42,10 @@ export const fetchHypothesisAnnotation = (getJson: GetJson, logger: Logger): Fet
         };
         logger('debug', 'Retrieved review', { ...review, fullText: '[text]' });
         return review;
+      })
+      .catch((error) => {
+        logger('error', 'Failed to fetch hypothesis review', { uri, error });
+        throw (error);
       });
   };
 };
