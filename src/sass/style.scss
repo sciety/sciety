@@ -310,6 +310,7 @@ ul {
 a:link,
 a:visited {
   color: settings.$colour-primary;
+  text-decoration: none;
 
   &:hover,
   &:active {
