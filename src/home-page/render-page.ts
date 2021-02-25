@@ -15,7 +15,7 @@ const render = (components: {
   feed: string,
   searchForm: string,
   editorialCommunities: string,
-}): string => `
+}) => `
   <div class="sciety-grid sciety-grid--home">
     ${components.header}
     <div class="home-page-feed-container">

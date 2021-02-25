@@ -18,7 +18,7 @@ export type FeedItem = {
   verb: string,
 };
 
-const renderItem = (viewModel: FeedItem): string => `
+const renderItem = (viewModel: FeedItem) => `
   <div class="summary-feed-item">
     <img src="${viewModel.avatar}" alt="" class="summary-feed-item__avatar">
     <div>
@@ -32,22 +32,18 @@ const renderItem = (viewModel: FeedItem): string => `
   </div>
 `;
 
-type RenderSummaryFeedItem = (item: FeedItem) => HtmlFragment;
-
-const renderSummaryFeedItem: RenderSummaryFeedItem = flow(
+const renderSummaryFeedItem = flow(
   renderItem,
   toHtmlFragment,
 );
 
-const renderAsList = (items: RNEA.ReadonlyNonEmptyArray<HtmlFragment>): string => `
+const renderAsList = (items: RNEA.ReadonlyNonEmptyArray<HtmlFragment>) => `
   <ol class="summary-feed-list" role="list">
     ${templateListItems(items, 'summary-feed-list__list_item')}
   </ol>
 `;
 
-type RenderSummaryFeedList = (events: ReadonlyArray<FeedItem>) => O.Option<HtmlFragment>;
-
-export const renderSummaryFeedList: RenderSummaryFeedList = flow(
+export const renderSummaryFeedList = flow(
   A.map(renderSummaryFeedItem),
   RNEA.fromReadonlyArray,
   O.map(flow(

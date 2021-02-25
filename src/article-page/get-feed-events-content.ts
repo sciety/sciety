@@ -46,11 +46,11 @@ type GetEditorialCommunity = (id: EditorialCommunityId) => T.Task<{
 const articleVersionToFeedItem = (
   server: ArticleServer,
   feedEvent: ArticleVersionEvent,
-): T.Task<O.Option<FeedItem>> => (
+) => (
   T.of(O.some({ ...feedEvent, server }))
 );
 
-const inferredUrlFromReviewId = (reviewId: ReviewId): O.Option<URL> => {
+const inferredUrlFromReviewId = (reviewId: ReviewId) => {
   if (reviewId instanceof Doi) {
     return O.some(new URL(`https://doi.org/${reviewId.value}`));
   }
@@ -65,7 +65,7 @@ const reviewToFeedItem = (
   getReview: GetReview,
   getEditorialCommunity: GetEditorialCommunity,
   feedEvent: ReviewEvent,
-): T.Task<O.Option<FeedItem>> => pipe(
+) => pipe(
   {
     editorialCommunity: getEditorialCommunity(feedEvent.editorialCommunityId),
     review: pipe(
@@ -86,7 +86,7 @@ const reviewToFeedItem = (
   },
   sequenceS(T.task),
   T.map(({ editorialCommunity, review }) => O.some({
-    type: 'review',
+    type: 'review' as const,
     id: feedEvent.reviewId,
     source: review.url,
     occurredAt: feedEvent.occurredAt,

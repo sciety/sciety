@@ -1,24 +1,22 @@
 import { flow } from 'fp-ts/function';
 import { Doi } from '../types/doi';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { toHtmlFragment } from '../types/html-fragment';
 
-const constructLink = (doi: Doi): string => `
+const constructLink = (doi: Doi) => `
   https://sciety.org/articles/${doi.value}?utm_source=twitter&utm_medium=social&utm_campaign=tweet_button
 `;
 
-const constructTweetText = (link: string): string => `
+const constructTweetText = (link: string) => `
   Check out this great article I found on @ScietyHQ, where the community can evaluate and curate the latest research: ${link}
 `;
 
-const constructAnchor = (encodedTweetText: string): string => `
+const constructAnchor = (encodedTweetText: string) => `
   <a class="tweet-button" target="_blank" href="https://twitter.com/intent/tweet?text=${encodedTweetText}">
     <img class="tweet-button__icon" src="/static/images/twitter-logo.svg" alt=""> Tweet this
   </a>
 `;
 
-type RenderTweetThis = (doi: Doi) => HtmlFragment;
-
-export const renderTweetThis: RenderTweetThis = flow(
+export const renderTweetThis = flow(
   constructLink,
   constructTweetText,
   encodeURIComponent,

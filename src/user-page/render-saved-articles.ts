@@ -11,12 +11,8 @@ export type SavedArticle = {
   title: O.Option<HtmlFragment>,
 };
 
-type RenderAsLink = (savedArticle: SavedArticle) => HtmlFragment;
-
-type RenderSavedArticles = (savedArticles: ReadonlyArray<SavedArticle>) => HtmlFragment;
-
-const renderAsLink: RenderAsLink = flow(
-  (item) => ({
+const renderAsLink = flow(
+  (item: SavedArticle) => ({
     doi: item.doi,
     title: pipe(item.title, O.getOrElse(constant(toHtmlFragment('an article')))),
   }),
@@ -24,7 +20,7 @@ const renderAsLink: RenderAsLink = flow(
   toHtmlFragment,
 );
 
-export const renderSavedArticles: RenderSavedArticles = flow(
+export const renderSavedArticles = flow(
   RA.map(renderAsLink),
   RNEA.fromReadonlyArray,
   O.map((items) => templateListItems(items, 'saved-articles__item')),

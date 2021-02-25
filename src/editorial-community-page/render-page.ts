@@ -27,7 +27,7 @@ type Components = {
   followers: HtmlFragment,
 };
 
-const render = (components: Components): string => `
+const render = (components: Components) => `
   <div class="sciety-grid sciety-grid--editorial-community">
     ${components.header}
     <div class="editorial-community-page-description">
@@ -40,12 +40,12 @@ const render = (components: Components): string => `
   </div>
 `;
 
-const renderErrorPage = (): RenderPageError => ({
-  type: 'unavailable',
+const renderErrorPage = () => ({
+  type: 'unavailable' as const,
   message: toHtmlFragment('We couldn\'t retrieve this information. Please try again.'),
 });
 
-const asPage = (community: EditorialCommunity) => (components: Components): Page => ({
+const asPage = (community: EditorialCommunity) => (components: Components) => ({
   title: community.name,
   content: pipe(components, render, toHtmlFragment),
 });

@@ -21,7 +21,7 @@ UserUnfollowedEditorialCommunityEvent) => isUserFollowedEditorialCommunityEvent(
 
 const projection = (editorialCommunityId: EditorialCommunityId) => (
   events: ReadonlyArray<DomainEvent>,
-): ReadonlyArray<UserId> => (
+) => (
   events.filter(isInterestingEvent)
     .filter((event) => eqEditorialCommunityId.equals(event.editorialCommunityId, editorialCommunityId))
     .reduce<Array<UserId>>(

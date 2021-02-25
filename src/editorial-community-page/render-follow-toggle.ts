@@ -13,14 +13,14 @@ export type RenderFollowToggle = (
 
 export type Follows = (userId: UserId, editorialCommunityId: EditorialCommunityId) => T.Task<boolean>;
 
-const renderFollowButton = (editorialCommunityId: EditorialCommunityId): string => `
+const renderFollowButton = (editorialCommunityId: EditorialCommunityId) => `
   <form method="post" action="/follow" class="follow-toggle">
     <input type="hidden" name="editorialcommunityid" value="${editorialCommunityId.value}">
     <button type="submit" class="button button--primary button--small">Follow</button>
   </form>
 `;
 
-const renderUnfollowButton = (editorialCommunityId: EditorialCommunityId): string => `
+const renderUnfollowButton = (editorialCommunityId: EditorialCommunityId) => `
   <form method="post" action="/unfollow" class="follow-toggle">
     <input type="hidden" name="editorialcommunityid" value="${editorialCommunityId.value}">
     <button type="submit" class="button button--small">Unfollow</button>

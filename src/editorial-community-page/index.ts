@@ -7,7 +7,7 @@ import { getDescription } from './get-description';
 import { GetAllEvents, getMostRecentEvents } from './get-most-recent-events';
 import { projectFollowerIds } from './project-follower-ids';
 import { renderDescription } from './render-description';
-import { renderFeed, RenderFeed } from './render-feed';
+import { renderFeed } from './render-feed';
 import { Follows, renderFollowToggle } from './render-follow-toggle';
 import { renderFollowers } from './render-followers';
 import { renderPage, RenderPage } from './render-page';
@@ -30,7 +30,7 @@ type Ports = {
   follows: Follows,
 };
 
-const buildRenderFeed = (ports: Ports): RenderFeed => renderFeed(
+const buildRenderFeed = (ports: Ports) => renderFeed(
   getMostRecentEvents(ports.getAllEvents, 20),
   constructFeedItem(ports.fetchArticle),
   renderSummaryFeedList,

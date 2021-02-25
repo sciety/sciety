@@ -8,7 +8,7 @@ type RenderFollowers = (editorialCommunityId: EditorialCommunityId) => TE.TaskEi
 
 type GetFollowers<U> = (editorialCommunityId: EditorialCommunityId) => T.Task<ReadonlyArray<U>>;
 
-const renderFragment = (followerCount: number): string => `
+const renderFragment = (followerCount: number) => `
   <section class="followers">
     <h2>
       Followers

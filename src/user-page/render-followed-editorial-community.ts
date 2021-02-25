@@ -17,7 +17,7 @@ type RenderFollowedEditorialCommunity = (userId: O.Option<UserId>) => (
 
 type RenderFollowToggle = (editorialcommunityid: EditorialCommunityId) => (isFollowing: boolean) => HtmlFragment;
 
-const render = (community: Community) => (toggle: HtmlFragment): string => `
+const render = (community: Community) => (toggle: HtmlFragment) => `
   <img class="followed-communities__item_avatar" src="${community.avatarPath}" alt="">
   <a class="followed-communities__item_link" href="/groups/${community.id.value}">${community.name}</a>
   ${toggle}

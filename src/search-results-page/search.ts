@@ -27,7 +27,7 @@ const addPeerJHardcodedResult = (
   query: string,
 ) => (
   searchResults: SearchResults,
-): SearchResults => {
+) => {
   if (query === 'peerj') {
     const hardcodedSearchResult = {
       _tag: 'Group' as const,
@@ -45,7 +45,7 @@ const addPeerJHardcodedResult = (
 export const search = (
   findArticles: FindArticles,
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
-): Search => (query: string) => pipe(
+): Search => (query) => pipe(
   query,
   findArticles,
   TE.chainW(flow(

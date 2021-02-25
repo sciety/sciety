@@ -5,7 +5,7 @@ import { EditorialCommunity } from '../types/editorial-community';
 
 type FetchStaticFile = (filename: string) => TE.TaskEither<'not-found' | 'unavailable', string>;
 
-const convertMarkdownToHtml = (md: string): string => new Remarkable({ html: true }).render(md);
+const convertMarkdownToHtml = (md: string) => new Remarkable({ html: true }).render(md);
 
 type GetDescription = (fetchStaticFile: FetchStaticFile) => (group: EditorialCommunity) => TE.TaskEither<'not-found' | 'unavailable', string>;
 

@@ -14,7 +14,7 @@ export type Community = {
 
 export type RenderEditorialCommunity = (userId: O.Option<UserId>) => (community: Community) => T.Task<HtmlFragment>;
 
-const render = (community: Community) => (toggle: HtmlFragment): string => `
+const render = (community: Community) => (toggle: HtmlFragment) => `
   <div class="editorial-community">
     <a href="/groups/${community.id.value}" class="editorial-community__link">
       <img src="${community.avatarPath}" alt="" class="editorial-community__avatar">

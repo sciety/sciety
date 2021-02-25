@@ -31,13 +31,7 @@ type FoundReview = {
 
 export type FetchNcrcReview = (id: NcrcId.NcrcId) => TE.TaskEither<'unavailable' | 'not-found', FoundReview>;
 
-type GetRowNumber = (id: NcrcId.NcrcId) => TE.TaskEither<'unavailable' | 'not-found', number>;
-
-type GetNcrcReview = (row: number) => TE.TaskEither<'unavailable' | 'not-found', NcrcReview>;
-
-type QuerySheet = (params: Params$Resource$Spreadsheets$Values$Get) => TE.TaskEither<'unavailable', RNEA.ReadonlyNonEmptyArray<ReadonlyArray<string>>>;
-
-const querySheet = (logger: Logger): QuerySheet => (params) => {
+const querySheet = (logger: Logger) => (params: Params$Resource$Spreadsheets$Values$Get) => {
   const auth = new google.auth.GoogleAuth({
     keyFile: '/var/run/secrets/app/.gcp-ncrc-key.json',
     scopes: ['https://www.googleapis.com/auth/cloud-platform', 'https://www.googleapis.com/auth/spreadsheets.readonly'],
@@ -68,7 +62,7 @@ const querySheet = (logger: Logger): QuerySheet => (params) => {
   );
 };
 
-const getRowNumber = (logger: Logger): GetRowNumber => (id) => pipe(
+const getRowNumber = (logger: Logger) => (id: NcrcId.NcrcId) => pipe(
   querySheet(logger)({
     spreadsheetId: '1RJ_Neh1wwG6X0SkYZHjD-AEC9ykgAcya_8UCVNoE3SA',
     range: 'Sheet1!A:A',
@@ -88,7 +82,7 @@ const getRowNumber = (logger: Logger): GetRowNumber => (id) => pipe(
   ))),
 );
 
-const getNcrcReview = (logger: Logger): GetNcrcReview => (rowNumber) => pipe(
+const getNcrcReview = (logger: Logger) => (rowNumber: number) => pipe(
   querySheet(logger)({
     spreadsheetId: '1RJ_Neh1wwG6X0SkYZHjD-AEC9ykgAcya_8UCVNoE3SA',
     range: `Sheet1!A${rowNumber}:AF${rowNumber}`,
@@ -110,10 +104,10 @@ const getNcrcReview = (logger: Logger): GetNcrcReview => (rowNumber) => pipe(
   ))),
 );
 
-const slugify = (value: string): string => value.toLowerCase().replace(/\s/g, '-');
+const slugify = (value: string) => value.toLowerCase().replace(/\s/g, '-');
 
 // TODO: sanitise/escape the input
-const constructFullText = (review: NcrcReview): HtmlFragment => toHtmlFragment(`
+const constructFullText = (review: NcrcReview) => toHtmlFragment(`
   <h3>Our take</h3>
   <p>
     ${review.ourTake}
@@ -152,6 +146,6 @@ export const constructFoundReview = (review: NcrcReview): FoundReview => ({
 export const fetchNcrcReview = (logger: Logger): FetchNcrcReview => flow(
   TE.right,
   TE.chain(getRowNumber(logger)),
-  TE.chain(getNcrcReview(logger)),
+  TE.chainW(getNcrcReview(logger)),
   TE.map(constructFoundReview),
 );

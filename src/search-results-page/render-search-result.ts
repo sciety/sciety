@@ -21,7 +21,7 @@ type GroupSearchResult = {
 
 export type SearchResult = ArticleSearchResult | GroupSearchResult;
 
-const renderReviewCount = (reviewCount: number): string => `
+const renderReviewCount = (reviewCount: number) => `
   <div class="search-results-list__item__review-count">
     Reviews: ${reviewCount}
   </div>
@@ -38,10 +38,8 @@ const templatePostedDate = flow(
   (date) => `<div class="search-results-list__item__date">Posted ${date}</div>`,
 );
 
-type RenderArticleSearchResult = (result: ArticleSearchResult) => HtmlFragment;
-
-const renderArticleSearchResult: RenderArticleSearchResult = flow(
-  (result) => `
+const renderArticleSearchResult = flow(
+  (result: ArticleSearchResult) => `
     <div>
       <a class="search-results-list__item__link" href="/articles/activity/${result.doi.value}">${result.title}</a>
       <div>
@@ -54,9 +52,7 @@ const renderArticleSearchResult: RenderArticleSearchResult = flow(
   toHtmlFragment,
 );
 
-type RenderGroupSearchResult = (result: GroupSearchResult) => HtmlFragment;
-
-const renderGroupSearchResult: RenderGroupSearchResult = (result) => pipe(
+const renderGroupSearchResult = (result: GroupSearchResult) => pipe(
   `<a href="${result.link}">${result.name}</a>`,
   toHtmlFragment,
 );

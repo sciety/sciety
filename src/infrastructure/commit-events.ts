@@ -13,7 +13,7 @@ import * as ReviewId from '../types/review-id';
 // TODO: should return a TaskEither
 export type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<void>;
 
-const replacer = (key: string, value: unknown): unknown => {
+const replacer = (key: string, value: unknown) => {
   if (['date', 'id', 'type'].includes(key)) {
     return undefined;
   }

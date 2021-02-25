@@ -19,7 +19,7 @@ export type RenderPage = (params: {
   user: O.Option<User>,
 }) => TE.TaskEither<RenderPageError, Page>;
 
-const addScietySuffixIfNotHomepage = (requestPath: string) => (page: Page): Page => ({
+const addScietySuffixIfNotHomepage = (requestPath: string) => (page: Page) => ({
   ...page,
   title: requestPath === '/' ? page.title : `${page.title} | Sciety`,
 });
@@ -34,7 +34,7 @@ const errorToWebPage = (user: O.Option<User>, requestPath: string) => (error: Re
   applyStandardPageLayout(user),
 );
 
-const pageToWebPage = (user: O.Option<User>, requestPath: string) => (page: Page): string => pipe(
+const pageToWebPage = (user: O.Option<User>, requestPath: string) => (page: Page) => pipe(
   page,
   addScietySuffixIfNotHomepage(requestPath),
   applyStandardPageLayout(user),
@@ -43,7 +43,7 @@ const pageToWebPage = (user: O.Option<User>, requestPath: string) => (page: Page
 export const pageHandler = (
   renderPage: RenderPage,
 ): Middleware<{ user?: User }> => (
-  async (context, next): Promise<void> => {
+  async (context, next) => {
     const user = O.fromNullable(context.state.user);
     const params = {
       ...context.params,

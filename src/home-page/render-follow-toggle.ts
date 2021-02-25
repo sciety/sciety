@@ -14,9 +14,7 @@ export type RenderFollowToggle = (
 
 type Follows = (userId: UserId, editorialCommunityId: EditorialCommunityId) => T.Task<boolean>;
 
-type RenderButton = (editorialCommunityId: EditorialCommunityId, editorialCommunityName: string) => string;
-
-const renderFollowButton: RenderButton = (editorialCommunityId, editorialCommunityName) => `
+const renderFollowButton = (editorialCommunityId: EditorialCommunityId, editorialCommunityName: string) => `
   <form method="post" action="/follow">
     <input type="hidden" name="editorialcommunityid" value="${editorialCommunityId.value}" />
     <button type="submit" class="button button--primary button--small" aria-label="Follow ${editorialCommunityName}">
@@ -25,7 +23,7 @@ const renderFollowButton: RenderButton = (editorialCommunityId, editorialCommuni
   </form>
 `;
 
-const renderUnfollowButton: RenderButton = (editorialCommunityId, editorialCommunityName) => `
+const renderUnfollowButton = (editorialCommunityId: EditorialCommunityId, editorialCommunityName: string) => `
   <form method="post" action="/unfollow">
     <input type="hidden" name="editorialcommunityid" value="${editorialCommunityId.value}" />
     <button type="submit" class="button button--small" aria-label="Unfollow ${editorialCommunityName}">

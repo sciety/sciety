@@ -41,17 +41,17 @@ const europePmcResponse = t.type({
 
 type EuropePmcResponse = t.TypeOf<typeof europePmcResponse>;
 
-const constructQueryParams = (query: string): URLSearchParams => (
+const constructQueryParams = (query: string) => (
   new URLSearchParams({
     query: `${query} (PUBLISHER:"bioRxiv" OR PUBLISHER:"medRxiv") sort_date:y`,
     format: 'json',
     pageSize: '10',
   }));
 
-const constructSearchUrl = (queryParams: URLSearchParams): string => `https://www.ebi.ac.uk/europepmc/webservices/rest/search?${queryParams.toString()}`;
+const constructSearchUrl = (queryParams: URLSearchParams) => `https://www.ebi.ac.uk/europepmc/webservices/rest/search?${queryParams.toString()}`;
 
-const constructSearchResults = (data: EuropePmcResponse): SearchResults => {
-  const items = data.resultList.result.map((item): SearchResult => ({
+const constructSearchResults = (data: EuropePmcResponse) => {
+  const items = data.resultList.result.map((item) => ({
     doi: new Doi(item.doi),
     title: item.title,
     authors: item.authorString,
@@ -63,23 +63,21 @@ const constructSearchResults = (data: EuropePmcResponse): SearchResults => {
   };
 };
 
-type GetFromUrl = <A>(codec: t.Decoder<Json, A>) => (url: string) => TE.TaskEither<'not-found' | 'unavailable', A>;
-
-const getFromUrl = (getJson: GetJson, logger: Logger): GetFromUrl => (codec) => (url) => pipe(
+const getFromUrl = (getJson: GetJson, logger: Logger) => <A>(codec: t.Decoder<Json, A>) => (url: string) => pipe(
   TE.tryCatch(async () => getJson(url), E.toError),
   TE.mapLeft(
-    (error): 'unavailable' => {
+    (error) => {
       // TODO recognise not-found somehow
       logger('error', 'Could not fetch', { error, url });
-      return 'unavailable';
+      return 'unavailable' as const;
     },
   ),
   T.map(flow(
     E.chainW(codec.decode),
     E.mapLeft(
-      (error): 'unavailable' => {
+      (error) => {
         logger('error', 'Could not parse response', { error, url });
-        return 'unavailable';
+        return 'unavailable' as const;
       },
     ),
   )),

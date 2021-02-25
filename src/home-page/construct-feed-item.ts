@@ -11,7 +11,7 @@ import { sanitise, SanitisedHtmlFragment } from '../types/sanitised-html-fragmen
 
 type ConstructFeedItem = (event: EditorialCommunityReviewedArticleEvent) => T.Task<FeedItem>;
 
-const reviewedBy = (actor: Actor): string => (
+const reviewedBy = (actor: Actor) => (
   (actor.name === 'preLights') ? 'highlighted' : 'reviewed'
 );
 
@@ -41,7 +41,7 @@ type Inputs = {
   event: EditorialCommunityReviewedArticleEvent,
 };
 
-const construct = ({ actor, article, event }: Inputs): FeedItem => ({
+const construct = ({ actor, article, event }: Inputs) => ({
   avatar: actor.imageUrl,
   date: event.date,
   actorName: actor.name,

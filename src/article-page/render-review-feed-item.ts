@@ -24,11 +24,11 @@ export type ReviewFeedItem = {
   fullText: O.Option<SanitisedHtmlFragment>,
 };
 
-const avatar = (review: ReviewFeedItem): HtmlFragment => toHtmlFragment(`
+const avatar = (review: ReviewFeedItem) => toHtmlFragment(`
   <img class="article-feed__item__avatar" src="${review.editorialCommunityAvatar}" alt="">
 `);
 
-const eventMetadata = (review: ReviewFeedItem): HtmlFragment => toHtmlFragment(`
+const eventMetadata = (review: ReviewFeedItem) => toHtmlFragment(`
   ${templateDate(review.occurredAt, 'article-feed__item__date')}
   <div class="article-feed__item__title">
     ${(review.editorialCommunityId.value === 'f97bd177-5cb6-4296-8573-078318755bf2') ? 'Highlighted by' : 'Reviewed by'}
@@ -38,7 +38,7 @@ const eventMetadata = (review: ReviewFeedItem): HtmlFragment => toHtmlFragment(`
   </div>
 `);
 
-const sourceLink = (review: ReviewFeedItem): O.Option<HtmlFragment> => pipe(
+const sourceLink = (review: ReviewFeedItem) => pipe(
   review.source,
   O.map(
     (source) => `<a href="${source.toString()}" class="article-feed__item__read_more article-call-to-action-link">
@@ -48,13 +48,7 @@ const sourceLink = (review: ReviewFeedItem): O.Option<HtmlFragment> => pipe(
   O.map(toHtmlFragment),
 );
 
-type RenderWithText = (
-  teaserChars: number,
-  review: ReviewFeedItem,
-  fullText: string,
-) => (responses: HtmlFragment) => string;
-
-const renderWithText: RenderWithText = (teaserChars, review, fullText) => (responses) => {
+const renderWithText = (teaserChars: number, review: ReviewFeedItem, fullText: string) => (responses: HtmlFragment) => {
   const teaserText = clip(fullText, teaserChars);
   if (teaserText === fullText) {
     return `
@@ -90,7 +84,7 @@ const renderWithText: RenderWithText = (teaserChars, review, fullText) => (respo
   `;
 };
 
-const render = (teaserChars: number, review: ReviewFeedItem) => (responses: HtmlFragment): string => pipe(
+const render = (teaserChars: number, review: ReviewFeedItem) => (responses: HtmlFragment) => pipe(
   review.fullText,
   O.fold(
     () => `

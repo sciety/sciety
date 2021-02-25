@@ -3,14 +3,14 @@ import { flow } from 'fp-ts/function';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
-const renderFollowButton = (editorialCommunityId: EditorialCommunityId): string => `
+const renderFollowButton = (editorialCommunityId: EditorialCommunityId) => `
   <form method="post" action="/follow">
     <input type="hidden" name="editorialcommunityid" value="${editorialCommunityId.value}">
     <button type="submit" class="button button--primary button--small">Follow</button>
   </form>
 `;
 
-const renderUnfollowButton = (editorialCommunityId: EditorialCommunityId): string => `
+const renderUnfollowButton = (editorialCommunityId: EditorialCommunityId) => `
   <form method="post" action="/unfollow">
     <input type="hidden" name="editorialcommunityid" value="${editorialCommunityId.value}">
     <button type="submit" class="button button--small">Unfollow</button>

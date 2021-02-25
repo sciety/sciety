@@ -17,7 +17,7 @@ export const getEventsFromDataFiles = (editorialCommunityIds: ReadonlyArray<stri
     }
     const fileContents = fs.readFileSync(`./data/reviews/${csvFile}`);
     parsedEvents.push(...csvParseSync(fileContents, { fromLine: 2 })
-      .map(([date, articleDoi, reviewId]: [string, string, string]): DomainEvent => editorialCommunityReviewedArticle(
+      .map(([date, articleDoi, reviewId]: [string, string, string]) => editorialCommunityReviewedArticle(
         new EditorialCommunityId(editorialCommunityId),
         new Doi(articleDoi),
         toReviewId(reviewId),
@@ -27,7 +27,7 @@ export const getEventsFromDataFiles = (editorialCommunityIds: ReadonlyArray<stri
 
   const fileContents = fs.readFileSync('./data/editorial-community-joined.csv');
   parsedEvents.push(...csvParseSync(fileContents, { fromLine: 2 })
-    .map(([date, editorialCommunityId]: [string, string]): DomainEvent => editorialCommunityJoined(
+    .map(([date, editorialCommunityId]: [string, string]) => editorialCommunityJoined(
       new EditorialCommunityId(editorialCommunityId),
       new Date(date),
     )));

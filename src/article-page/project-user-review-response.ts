@@ -16,7 +16,7 @@ import { UserId } from '../types/user-id';
 
 type GetEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-const projectResponse = (getEvents: GetEvents) => (reviewId: ReviewId.ReviewId, userId: UserId): T.Task<O.Option<'helpful' | 'not-helpful'>> => pipe(
+const projectResponse = (getEvents: GetEvents) => (reviewId: ReviewId.ReviewId, userId: UserId) => pipe(
   getEvents,
   T.map(RA.filter((event): event is
     UserFoundReviewHelpfulEvent |
@@ -35,9 +35,9 @@ const projectResponse = (getEvents: GetEvents) => (reviewId: ReviewId.ReviewId, 
     const mostRecentEventType = ofInterest[ofInterest.length - 1].type;
     switch (mostRecentEventType) {
       case 'UserFoundReviewHelpful':
-        return O.some('helpful');
+        return O.some('helpful' as const);
       case 'UserFoundReviewNotHelpful':
-        return O.some('not-helpful');
+        return O.some('not-helpful' as const);
       default:
         return O.none;
     }

@@ -7,7 +7,7 @@ import { UserId } from '../types/user-id';
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-const countFollowedCommunities = (userId: UserId) => (count: number, event: DomainEvent): number => {
+const countFollowedCommunities = (userId: UserId) => (count: number, event: DomainEvent) => {
   if (event.type === 'UserFollowedEditorialCommunity' && event.userId === userId) {
     return count + 1;
   }

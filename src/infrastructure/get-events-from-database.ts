@@ -34,7 +34,7 @@ export const getEventsFromDatabase = async (pool: Pool, logger: Logger): Promise
 
   return rows.map(({
     id, type, date, payload,
-  }): DomainEvent => {
+  }) => {
     if (!isObject(payload)) {
       throw new Error('Payload is not an object');
     }

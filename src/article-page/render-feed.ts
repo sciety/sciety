@@ -29,7 +29,7 @@ export const createRenderFeed = (
   renderReviewFeedItem: RenderReviewFeedItem,
   renderArticleVersionFeedItem: RenderArticleVersionFeedItem,
 ): RenderFeed => {
-  const renderFeedItem = (feedItem: FeedItem, userId: O.Option<UserId>): T.Task<HtmlFragment> => {
+  const renderFeedItem = (feedItem: FeedItem, userId: O.Option<UserId>) => {
     switch (feedItem.type) {
       case 'article-version':
         return T.of(renderArticleVersionFeedItem(feedItem));

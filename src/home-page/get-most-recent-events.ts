@@ -17,7 +17,7 @@ export const getMostRecentEvents = (
   maxCount: number,
 ): GetEvents<EditorialCommunityReviewedArticleEvent> => (
   (userId) => async () => {
-    const isFollowedEvent = async (event: DomainEvent): Promise<boolean> => {
+    const isFollowedEvent = async (event: DomainEvent) => {
       if (!('editorialCommunityId' in event)) {
         return false;
       }

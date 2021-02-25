@@ -9,10 +9,10 @@ import { createInfrastructure } from './infrastructure';
 import { Logger } from './infrastructure/logger';
 
 const terminusOptions = (logger: Logger): TerminusOptions => ({
-  onShutdown: async (): Promise<void> => {
+  onShutdown: async () => {
     logger('debug', 'Shutting server down');
   },
-  onSignal: async (): Promise<void> => {
+  onSignal: async () => {
     logger('debug', 'Signal received');
   },
   signals: ['SIGINT', 'SIGTERM'],

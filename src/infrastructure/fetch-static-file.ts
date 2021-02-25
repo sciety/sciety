@@ -8,7 +8,7 @@ export type FetchStaticFile = (filename: string) => TE.TaskEither<'not-found' | 
 
 export const fetchStaticFile = (logger: Logger): FetchStaticFile => (
   (filename) => {
-    const fullPath: string = path.resolve(__dirname, '..', '..', 'static', filename);
+    const fullPath = path.resolve(__dirname, '..', '..', 'static', filename);
     logger('debug', 'Fetch static file', { filename, fullPath });
     return pipe(
       fullPath,

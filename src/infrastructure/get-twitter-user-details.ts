@@ -18,7 +18,7 @@ const handleOk = (
   userId: UserId,
 ) => (
   data: TwitterResponse,
-): TE.TaskEither<'not-found' | 'unavailable', TwitterUserDetails> => {
+) => {
   if (data.data) {
     logger('debug', 'Data from Twitter', { userId, data });
     return TE.right({
@@ -28,10 +28,10 @@ const handleOk = (
     });
   }
   logger('debug', 'Twitter user not found', { userId, data });
-  return TE.left('not-found');
+  return TE.left('not-found' as const);
 };
 
-const handleError = (logger: Logger, userId: UserId) => (error: unknown): 'not-found' | 'unavailable' => {
+const handleError = (logger: Logger, userId: UserId) => (error: unknown) => {
   const payload: Payload = { error, userId };
 
   if (isAxiosError(error) && error.response) {
@@ -57,6 +57,6 @@ export const createGetTwitterUserDetails = (
       async () => getTwitterResponse(`https://api.twitter.com/2/users/${userId}?user.fields=profile_image_url`),
       handleError(logger, userId),
     ),
-    TE.chain(handleOk(logger, userId)),
+    TE.chainW(handleOk(logger, userId)),
   )
 );

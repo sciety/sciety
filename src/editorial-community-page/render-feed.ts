@@ -11,7 +11,7 @@ import { EditorialCommunityId } from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
-export type RenderFeed = (editorialCommunity: EditorialCommunity, userId: O.Option<UserId>)
+type RenderFeed = (editorialCommunity: EditorialCommunity, userId: O.Option<UserId>)
 => TE.TaskEither<never, HtmlFragment>;
 
 export type GetEvents = (editorialCommunityId: EditorialCommunityId) => T.Task<ReadonlyArray<FeedEvent>>;
@@ -29,7 +29,7 @@ type ViewModel = {
   feed: HtmlFragment,
 };
 
-const renderAsSection = (viewModel: ViewModel): string => `
+const renderAsSection = (viewModel: ViewModel) => `
   <section>
     <h2>
       Feed

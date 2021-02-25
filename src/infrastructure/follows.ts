@@ -13,7 +13,7 @@ type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 const isSignificantTo = (
   userId: UserId,
   editorialCommunityId: EditorialCommunityId,
-) => (event: DomainEvent): boolean => (
+) => (event: DomainEvent) => (
   (event.type === 'UserFollowedEditorialCommunity'
     && eqEditorialCommunityId.equals(event.editorialCommunityId, editorialCommunityId)
     && event.userId === userId)

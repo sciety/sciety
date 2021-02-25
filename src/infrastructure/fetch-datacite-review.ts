@@ -23,7 +23,7 @@ const fetchReviewContent = (
   fetchDataset: FetchDataset,
   logger: Logger,
   reviewIri: NamedNode,
-): TE.TaskEither<'unavailable', FoundReview> => pipe(
+) => pipe(
   TE.tryCatch(
     async () => fetchDataset(reviewIri),
     constant('unavailable' as const), // TODO might be 'not-found'

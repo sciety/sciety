@@ -19,7 +19,7 @@ type InterestingEvent =
   | UserFoundReviewNotHelpfulEvent
   | UserRevokedFindingReviewNotHelpfulEvent;
 
-const filterEventType = (events: ReadonlyArray<DomainEvent>): ReadonlyArray<InterestingEvent> => (
+const filterEventType = (events: ReadonlyArray<DomainEvent>) => (
   events.filter(
     (event): event is InterestingEvent => (
       event.type === 'UserFoundReviewHelpful'
@@ -32,11 +32,11 @@ const filterEventType = (events: ReadonlyArray<DomainEvent>): ReadonlyArray<Inte
 const filterUserAndReview = (
   userId: UserId,
   reviewId: ReviewId.ReviewId,
-) => (events: ReadonlyArray<InterestingEvent>): ReadonlyArray<InterestingEvent> => (
+) => (events: ReadonlyArray<InterestingEvent>) => (
   events.filter((event) => event.userId === userId && ReviewId.equals(event.reviewId, reviewId))
 );
 
-const calculateCurrentState = (events: ReadonlyArray<InterestingEvent>): ReviewResponse => {
+const calculateCurrentState = (events: ReadonlyArray<InterestingEvent>) => {
   // TODO: fold if into switch
   if (events.length === 0) {
     return 'none';

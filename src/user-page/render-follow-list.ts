@@ -8,7 +8,7 @@ const followingNothing = `
   <p>They’re not following anything. When they do, they’ll be listed here.</p>
 `;
 
-const followListSection = (list: string): string => `
+const followListSection = (list: string) => `
   <section class="followed-communities">
     <h2>
       Following
@@ -17,7 +17,7 @@ const followListSection = (list: string): string => `
   </section>
 `;
 
-const renderList = (list: RNEA.ReadonlyNonEmptyArray<HtmlFragment>): string => (`
+const renderList = (list: RNEA.ReadonlyNonEmptyArray<HtmlFragment>) => (`
   <ol class="followed-communities__list" role="list">
     ${templateListItems(list, 'followed-communities__item')}
   </ol>

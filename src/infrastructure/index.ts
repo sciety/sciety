@@ -57,7 +57,7 @@ export const createInfrastructure = (): TE.TaskEither<unknown, Adapters> => pipe
     async () => {
       const { logger, pool } = adapters;
 
-      const getJson = async (uri: string): Promise<Json> => {
+      const getJson = async (uri: string) => {
         const response = await axios.get<Json>(uri);
         return response.data;
       };
@@ -70,7 +70,7 @@ export const createInfrastructure = (): TE.TaskEither<unknown, Adapters> => pipe
         },
         retries: 3,
       });
-      const getJsonWithRetries = async (uri: string): Promise<Json> => {
+      const getJsonWithRetries = async (uri: string) => {
         const response = await retryingClient.get<Json>(uri);
         return response.data;
       };

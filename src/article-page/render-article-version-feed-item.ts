@@ -13,7 +13,7 @@ export type ArticleVersionFeedItem = {
 
 export type RenderArticleVersionFeedItem = (feedItem: ArticleVersionFeedItem) => HtmlFragment;
 
-const renderBiorxivArticleVersionFeedItem: RenderArticleVersionFeedItem = (feedItem) => toHtmlFragment(`
+const renderBiorxivArticleVersionFeedItem = (feedItem: ArticleVersionFeedItem) => toHtmlFragment(`
   <div class="article-feed__item_contents">
     <img class="article-feed__item__avatar" src="/static/images/biorxiv.jpg" alt="">
     <div>
@@ -27,7 +27,7 @@ const renderBiorxivArticleVersionFeedItem: RenderArticleVersionFeedItem = (feedI
   </div>
 `);
 
-const renderMedrxivArticleVersionFeedItem: RenderArticleVersionFeedItem = (feedItem) => toHtmlFragment(`
+const renderMedrxivArticleVersionFeedItem = (feedItem: ArticleVersionFeedItem) => toHtmlFragment(`
   <div class="article-feed__item_contents">
     <img class="article-feed__item__avatar" src="/static/images/medrxiv.jpg" alt="">
     <div>

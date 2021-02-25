@@ -1,12 +1,9 @@
 import { flow } from 'fp-ts/function';
 import { Remarkable } from 'remarkable';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 
-type RenderPage = (markdown: string) => Page;
-
-const addPageWrapper = (html: string): string => `
+const addPageWrapper = (html: string) => `
   <div class="about-page-wrapper">
     <header class="page-header">
       <h1>
@@ -17,14 +14,14 @@ const addPageWrapper = (html: string): string => `
   </div>
 `;
 
-const convertMarkdownToHtml = (md: string): string => new Remarkable({ html: true }).render(md);
+const convertMarkdownToHtml = (md: string) => new Remarkable({ html: true }).render(md);
 
-const toPage = (html: HtmlFragment): Page => ({
+const toPage = (html: HtmlFragment) => ({
   title: 'About',
   content: html,
 });
 
-export const renderPage: RenderPage = flow(
+export const renderPage = flow(
   convertMarkdownToHtml,
   addPageWrapper,
   toHtmlFragment,

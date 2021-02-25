@@ -15,7 +15,7 @@ export type Payload = Record<string, unknown>;
 export type Logger = (level: LevelName, message: string, payload?: Payload) => void;
 
 export const createRTracerLogger = (logger: Logger): Logger => {
-  const withRequestId = (payload: Payload): Payload => pipe(
+  const withRequestId = (payload: Payload) => pipe(
     O.of(rTracer.id()),
     O.fold(
       constant(payload),
@@ -37,7 +37,7 @@ type Entry = {
 
 type Serializer = (entry: Entry) => string;
 
-const replaceError = (_key: string, value: unknown): unknown => {
+const replaceError = (_key: string, value: unknown) => {
   if (_key === 'Authorization' || _key === 'Crossref-Plus-API-Token') {
     return '--redacted--';
   }
@@ -53,7 +53,7 @@ export const createJsonSerializer = (prettyPrint = false): Serializer => (
   )
 );
 
-const getConfiguredLevel = (): Level => {
+const getConfiguredLevel = () => {
   const name = process.env.LOG_LEVEL ?? 'debug';
   if (name in Level) {
     return Level[name as LevelName];

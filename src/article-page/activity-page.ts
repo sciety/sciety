@@ -49,11 +49,11 @@ type Ports = {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
 };
 
-const toErrorPage = (error: 'not-found' | 'unavailable'): RenderPageError => {
+const toErrorPage = (error: 'not-found' | 'unavailable') => {
   switch (error) {
     case 'not-found':
       return {
-        type: 'not-found',
+        type: error,
         message: toHtmlFragment(`
           We’re having trouble finding this information.
           Ensure you have the correct URL, or try refreshing the page.
@@ -62,7 +62,7 @@ const toErrorPage = (error: 'not-found' | 'unavailable'): RenderPageError => {
       };
     case 'unavailable':
       return {
-        type: 'unavailable',
+        type: error,
         message: toHtmlFragment(`
           We’re having trouble finding this information.
           Ensure you have the correct URL, or try refreshing the page.

@@ -12,7 +12,7 @@ export type FeedEvent = EditorialCommunityReviewedArticleEvent;
 
 export type ConstructFeedItem = (community: EditorialCommunity) => (event: FeedEvent) => T.Task<FeedItem>;
 
-const reviewedBy = (community: EditorialCommunity): string => (
+const reviewedBy = (community: EditorialCommunity) => (
   (community.name === 'preLights') ? 'highlighted' : 'reviewed'
 );
 
@@ -33,7 +33,7 @@ type Article = {
 const construct = (
   community: EditorialCommunity,
   event: FeedEvent,
-) => (article: E.Either<unknown, Article>): FeedItem => ({
+) => (article: E.Either<unknown, Article>) => ({
   avatar: community.avatarPath,
   date: event.date,
   actorName: community.name,

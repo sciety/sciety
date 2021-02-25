@@ -11,7 +11,7 @@ type RenderEditorialCommunities = (userId: O.Option<UserId>) => T.Task<HtmlFragm
 
 export type GetAllEditorialCommunities = T.Task<RNEA.ReadonlyNonEmptyArray<Community>>;
 
-const render = (links: RNEA.ReadonlyNonEmptyArray<HtmlFragment>): string => `
+const render = (links: RNEA.ReadonlyNonEmptyArray<HtmlFragment>) => `
   <section>
     <h2>
       Groups

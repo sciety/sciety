@@ -41,7 +41,7 @@ const noEvaluationsYet = `
   </p>
 `;
 
-const renderAsSection = (contents: HtmlFragment): HtmlFragment => toHtmlFragment(`
+const renderAsSection = (contents: HtmlFragment) => toHtmlFragment(`
   <section>
     <h2>
       Feed

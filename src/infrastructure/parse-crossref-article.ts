@@ -2,12 +2,11 @@ import * as O from 'fp-ts/Option';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { XMLSerializer } from 'xmldom';
 import { Logger } from './logger';
-import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 import { toHtmlFragment } from '../types/html-fragment';
 import { sanitise, SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
-const getElement = (ancestor: Document | Element, qualifiedName: string): Element | null => (
+const getElement = (ancestor: Document | Element, qualifiedName: string) => (
   ancestor.getElementsByTagName(qualifiedName).item(0)
 );
 
@@ -43,7 +42,7 @@ export const getAbstract = (doc: Document, doi: Doi, logger: Logger): SanitisedH
 
   const abstract = new XMLSerializer().serializeToString(abstractElement);
 
-  const transformXmlToHtml = (xml: string): string => (
+  const transformXmlToHtml = (xml: string) => (
     xml
       .replace(/<abstract[^>]*>/, '')
       .replace(/<\/abstract>/, '')
@@ -59,7 +58,7 @@ export const getAbstract = (doc: Document, doi: Doi, logger: Logger): SanitisedH
       .replace(/<\/title>/g, '</h3>')
   );
 
-  const stripEmptySections = (html: string): string => (
+  const stripEmptySections = (html: string) => (
     html.replace(/<section>\s*<\/section>/g, '')
   );
 
@@ -109,10 +108,8 @@ export const getPublicationDate = (doc: Document): Date => {
   return new Date(`${year}-${month}-${day}`);
 };
 
-type GetServer = (doc: Document) => ArticleServer;
-
-export const getServer: GetServer = flow(
-  (doc) => {
+export const getServer = flow(
+  (doc: Document) => {
     const doiDataElement = getElement(doc, 'doi_data');
     const resourceElement = doiDataElement?.getElementsByTagName('resource')[0];
     return resourceElement?.textContent;
@@ -120,8 +117,8 @@ export const getServer: GetServer = flow(
   O.fromNullable,
   O.filter((resource) => resource.includes('://medrxiv.org')),
   O.fold(
-    constant('biorxiv'),
-    constant('medrxiv'),
+    constant('biorxiv' as const),
+    constant('medrxiv' as const),
   ),
 );
 
