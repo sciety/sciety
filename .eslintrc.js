@@ -56,6 +56,9 @@ module.exports = {
     'consistent-return': 'off',
     'default-case': 'off',
     'fp-ts/no-module-imports': 'off',
+    'import/no-useless-path-segments': ['error', {
+      noUselessIndex: true,
+    }],
     'import/order': ['error', {
       alphabetize: {
         order: 'asc',

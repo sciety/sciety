@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
-import { aboutPage, FetchStaticFile } from '../../src/about-page/index';
+import { aboutPage, FetchStaticFile } from '../../src/about-page';
 
 const fetchStaticFile: FetchStaticFile = (filename) => TE.right(`# Contents of ${filename}`);
 
