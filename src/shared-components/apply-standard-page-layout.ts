@@ -1,6 +1,7 @@
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { Page } from '../types/page';
 import { User } from '../types/user';
 
 let googleTagManager = '';
@@ -58,15 +59,6 @@ const loggedOutMenuItems = (): HtmlFragment => toHtmlFragment(`
 `);
 
 const isSecure = process.env.APP_ORIGIN !== undefined && process.env.APP_ORIGIN.startsWith('https:');
-
-export type Page = {
-  title: string,
-  content: HtmlFragment,
-  openGraph?: {
-    title: string,
-    description: string,
-  },
-};
 
 // TODO: return a more specific type e.g. HtmlDocument
 export const applyStandardPageLayout = (user: O.Option<User>) => (page: Page): string => `<!doctype html>
