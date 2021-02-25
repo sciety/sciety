@@ -1,6 +1,7 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { Page, renderErrorPage, renderPage } from './render-page';
+import { renderErrorPage, renderPage } from './render-page';
+import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 
 export type FetchStaticFile = (filename: string) => TE.TaskEither<'not-found' | 'unavailable', string>;

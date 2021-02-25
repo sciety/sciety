@@ -5,13 +5,9 @@ import { pipe } from 'fp-ts/function';
 import { EditorialCommunity } from '../types/editorial-community';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { UserId } from '../types/user-id';
-
-type Page = {
-  title: string,
-  content: HtmlFragment,
-};
 
 export type RenderPage = (
   editorialCommunity: EditorialCommunity,

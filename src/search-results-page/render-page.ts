@@ -1,11 +1,8 @@
 import * as TE from 'fp-ts/TaskEither';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 
-type Page = {
-  title: string,
-  content: HtmlFragment,
-};
 export type RenderPage = (query: string) => TE.TaskEither<RenderPageError, Page>;
 
 export const renderErrorPage = (error: 'unavailable'): RenderPageError => ({

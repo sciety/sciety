@@ -1,10 +1,6 @@
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
-
-export type Page = {
-  title: string,
-  content: HtmlFragment,
-};
 
 type Components = {
   header: HtmlFragment,

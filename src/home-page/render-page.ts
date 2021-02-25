@@ -2,13 +2,9 @@ import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { toHtmlFragment } from '../types/html-fragment';
+import { Page } from '../types/page';
 import { UserId } from '../types/user-id';
-
-type Page = {
-  title: string,
-  content: HtmlFragment,
-};
 
 export type RenderPage = (userId: O.Option<UserId>) => T.Task<Page>;
 

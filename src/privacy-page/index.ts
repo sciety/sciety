@@ -1,10 +1,8 @@
 import * as T from 'fp-ts/Task';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { toHtmlFragment } from '../types/html-fragment';
+import { Page } from '../types/page';
 
-type RenderPage = () => T.Task<{
-  title: string,
-  content: HtmlFragment,
-}>;
+type RenderPage = () => T.Task<Page>;
 
 export const privacyPage = (): RenderPage => () => T.of({
   title: 'Privacy notice',

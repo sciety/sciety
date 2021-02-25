@@ -20,21 +20,13 @@ import { renderTweetThis } from './render-tweet-this';
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 import { DomainEvent } from '../types/domain-events';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { toHtmlFragment } from '../types/html-fragment';
+import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { User } from '../types/user';
 
 type ActivityPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
-
-type Page = {
-  title: string,
-  content: HtmlFragment,
-  openGraph: {
-    title: string,
-    description: string,
-  },
-};
 
 type Params = {
   doi: Doi,
