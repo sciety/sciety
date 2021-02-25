@@ -20,7 +20,7 @@ const renderAsLink: RenderAsLink = flow(
     doi: item.doi,
     title: pipe(item.title, O.getOrElse(constant(toHtmlFragment('an article')))),
   }),
-  (item) => `<a href="/articles/${item.doi.value}" class="saved-articles__link">${item.title}</a>`,
+  (item) => `<a href="/articles/activity/${item.doi.value}" class="saved-articles__link">${item.title}</a>`,
   toHtmlFragment,
 );
 

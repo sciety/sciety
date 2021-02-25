@@ -43,7 +43,7 @@ type RenderArticleSearchResult = (result: ArticleSearchResult) => HtmlFragment;
 const renderArticleSearchResult: RenderArticleSearchResult = flow(
   (result) => `
     <div>
-      <a class="search-results-list__item__link" href="/articles/${result.doi.value}">${result.title}</a>
+      <a class="search-results-list__item__link" href="/articles/activity/${result.doi.value}">${result.title}</a>
       <div>
         ${result.authors}
       </div>

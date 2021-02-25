@@ -26,7 +26,7 @@ const renderItem = (viewModel: FeedItem): string => `
       <div class="summary-feed-item__title">
         <a href="${viewModel.actorUrl}" class="summary-feed-item__link">${viewModel.actorName}</a>
         ${viewModel.verb}
-        <a href="/articles/${viewModel.doi.value}" class="summary-feed-item__link">${viewModel.title}</a>
+        <a href="/articles/activity/${viewModel.doi.value}" class="summary-feed-item__link">${viewModel.title}</a>
       </div>
     </div>
   </div>
