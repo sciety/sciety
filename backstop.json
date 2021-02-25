@@ -33,14 +33,19 @@
       "referenceUrl": "https://sciety.org"
     },
     {
-      "label": "An article page",
-      "url": "https://staging.sciety.org/articles/10.1101/646810",
-      "referenceUrl": "https://sciety.org/articles/10.1101/646810"
+      "label": "An article meta page",
+      "url": "https://staging.sciety.org/articles/meta/10.1101/646810",
+      "referenceUrl": "https://sciety.org/articles/meta/10.1101/646810"
     },
     {
-      "label": "An article page (expanded reviews)",
-      "url": "https://staging.sciety.org/articles/10.1101/646810",
-      "referenceUrl": "https://sciety.org/articles/10.1101/646810",
+      "label": "An article activity page",
+      "url": "https://staging.sciety.org/articles/activity/10.1101/646810",
+      "referenceUrl": "https://sciety.org/articles/activity/10.1101/646810"
+    },
+    {
+      "label": "An article activity page (expanded reviews)",
+      "url": "https://staging.sciety.org/articles/activity/10.1101/646810",
+      "referenceUrl": "https://sciety.org/articles/activity/10.1101/646810",
       "clickSelector": ".article-feed__item-toggle"
     },
     {
