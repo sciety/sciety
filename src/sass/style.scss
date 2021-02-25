@@ -198,6 +198,12 @@ th {
 Styles that are independent of Semantic UI
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+*,
+::after,
+::before {
+  box-sizing: border-box;
+}
+
 .follower {
   display: flex;
   align-items: center;
