@@ -8,7 +8,6 @@ import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { DateFromISOString } from 'io-ts-types';
 import { DoiFromString } from './codecs/DoiFromString';
-import { Doi } from '../types/doi';
 import { DomainEvent, editorialCommunityReviewedArticle } from '../types/domain-events';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { toReviewId } from '../types/review-id';
