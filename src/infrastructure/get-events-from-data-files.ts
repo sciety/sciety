@@ -1,5 +1,6 @@
 import fs from 'fs';
 import csvParseSync from 'csv-parse/lib/sync';
+import * as TE from 'fp-ts/TaskEither';
 import { Doi } from '../types/doi';
 import { DomainEvent, editorialCommunityJoined, editorialCommunityReviewedArticle } from '../types/domain-events';
 import { EditorialCommunityId } from '../types/editorial-community-id';
@@ -7,7 +8,9 @@ import { toReviewId } from '../types/review-id';
 
 /* eslint-disable no-continue */
 
-export const getEventsFromDataFiles = (editorialCommunityIds: ReadonlyArray<string>): Array<DomainEvent> => {
+export const getEventsFromDataFiles = (
+  editorialCommunityIds: ReadonlyArray<string>,
+): TE.TaskEither<unknown, Array<DomainEvent>> => {
   const parsedEvents: Array<DomainEvent> = [];
 
   for (const csvFile of fs.readdirSync('./data/reviews')) {
@@ -31,5 +34,5 @@ export const getEventsFromDataFiles = (editorialCommunityIds: ReadonlyArray<stri
       new EditorialCommunityId(editorialCommunityId),
       new Date(date),
     )));
-  return parsedEvents;
+  return TE.right(parsedEvents);
 };

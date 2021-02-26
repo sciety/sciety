@@ -60,7 +60,6 @@ export const createInfrastructure = (): TE.TaskEither<unknown, Adapters> => pipe
     bootstrapEditorialCommunities,
     RNEA.map(({ id }) => id.value),
     getEventsFromDataFiles,
-    TE.right,
   )),
   TE.bindW('eventsFromDatabase', ({ pool, logger }) => pipe(
     async () => getEventsFromDatabase(pool, logger),
