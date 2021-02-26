@@ -6,8 +6,8 @@ import { constant, flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { Json } from 'io-ts-types';
 import { DateFromISOString } from 'io-ts-types/DateFromISOString';
-import { DoiFromString } from './codecs/DoiFromString';
 import { Logger } from './logger';
+import { DoiFromString } from '../types/codecs/DoiFromString';
 import { Doi } from '../types/doi';
 
 type GetJson = (uri: string) => Promise<Json>;

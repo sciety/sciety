@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
-import * as Doi from '../../types/doi';
+import * as Doi from '../doi';
 
 export const DoiFromString = new t.Type(
   'DoiFromString',
