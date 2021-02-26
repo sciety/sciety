@@ -1,7 +1,10 @@
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import * as t from 'io-ts';
+import { option } from 'io-ts-types/option';
 import { constructFeedItem, GetArticle } from './construct-feed-item';
 import { getDescription } from './get-description';
 import { GetAllEvents, getMostRecentEvents } from './get-most-recent-events';
@@ -10,13 +13,13 @@ import { renderDescription } from './render-description';
 import { renderFeed } from './render-feed';
 import { Follows, renderFollowToggle } from './render-follow-toggle';
 import { renderFollowers } from './render-followers';
-import { renderPage, RenderPage } from './render-page';
+import { renderErrorPage, renderPage, RenderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
 import { renderSummaryFeedList } from '../shared-components';
 import { EditorialCommunity } from '../types/editorial-community';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { toHtmlFragment } from '../types/html-fragment';
-import { User } from '../types/user';
+import { toUserId } from '../types/user-id';
 
 type FetchStaticFile = (filename: string) => TE.TaskEither<'not-found' | 'unavailable', string>;
 
@@ -37,33 +40,35 @@ const buildRenderFeed = (ports: Ports) => renderFeed(
   renderFollowToggle(ports.follows),
 );
 
-type Params = {
-  id?: string,
-  user: O.Option<User>,
-};
+const inputParams = t.type({
+  id: t.string, // TODO EditorialCommunityId
+  user: option(t.type({
+    id: t.string, // TODO: UserId
+  })),
+});
 
-type EditorialCommunityPage = (params: Params) => ReturnType<RenderPage>;
+export type Params = t.TypeOf<typeof inputParams>;
 
-export const editorialCommunityPage = (ports: Ports): EditorialCommunityPage => (params) => {
-  const editorialCommunityId = new EditorialCommunityId(params.id ?? '');
-  const userId = pipe(
-    params.user,
-    O.map((user) => user.id),
-  );
-  return pipe(
-    editorialCommunityId,
+type EditorialCommunityPage = (params: unknown) => ReturnType<RenderPage>;
+
+export const editorialCommunityPage = (ports: Ports): EditorialCommunityPage => (params) => pipe(
+  inputParams.decode(params),
+  E.mapLeft(renderErrorPage),
+  TE.fromEither,
+  TE.chain(({ id, user }) => pipe(
+    new EditorialCommunityId(id),
     ports.getEditorialCommunity,
     T.chain(O.fold(
       () => TE.left({
         type: 'not-found',
-        message: toHtmlFragment(`Editorial community id '${editorialCommunityId.value}' not found`),
+        message: toHtmlFragment(`Editorial community id '${id}' not found`),
       } as const),
       (editorialCommunity) => renderPage(
         renderPageHeader,
         renderDescription(getDescription(ports.fetchStaticFile)),
         buildRenderFeed(ports),
         renderFollowers(projectFollowerIds(ports.getAllEvents)),
-      )(editorialCommunity, userId),
+      )(editorialCommunity, pipe(user, O.map((u) => toUserId(u.id)))),
     )),
-  );
-};
+  )),
+);

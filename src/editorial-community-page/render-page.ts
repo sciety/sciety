@@ -40,7 +40,7 @@ const render = (components: Components) => `
   </div>
 `;
 
-const renderErrorPage = () => ({
+export const renderErrorPage = (): RenderPageError => ({
   type: 'unavailable' as const,
   message: toHtmlFragment('We couldn\'t retrieve this information. Please try again.'),
 });
