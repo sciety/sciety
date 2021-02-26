@@ -1,15 +1,5 @@
-import { v4, validate } from 'uuid';
+import { v4 } from 'uuid';
 
 export type EventId = string & { readonly EventId: unique symbol };
 
-const isEventId = (value: string): value is EventId => validate(value);
-
-export const toEventId = (value: string): EventId => {
-  if (!isEventId(value)) {
-    throw new Error(`'${value}' is not an event ID`);
-  }
-
-  return value;
-};
-
-export const generate = (): EventId => toEventId(v4());
+export const generate = (): EventId => v4() as EventId;
