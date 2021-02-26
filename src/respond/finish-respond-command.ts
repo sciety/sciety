@@ -5,7 +5,7 @@ import { Middleware } from 'koa';
 import {
   commandHandler, CommitEvents, GetAllEvents, toCommand,
 } from './command-handler';
-import { toReviewId } from '../types/review-id';
+import * as ReviewId from '../types/review-id';
 
 type Ports = {
   commitEvents: CommitEvents,
@@ -17,7 +17,7 @@ export const finishRespondCommand = (ports: Ports): Middleware => async (context
   await pipe(
     // TODO: move userId, reviewId, command into a new type that gets constructed by a validator
     O.Do,
-    O.bind('reviewId', () => O.tryCatch(() => pipe(context.session.reviewId, toReviewId))),
+    O.bind('reviewId', () => pipe(context.session.reviewId, ReviewId.fromString)),
     O.bind('command', () => pipe(context.session.command, toCommand)),
     O.fold(
       () => T.of(undefined),
