@@ -6,6 +6,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
+import * as tt from 'io-ts-types';
 import { Doi } from '../types/doi';
 import { DomainEvent, editorialCommunityReviewedArticle } from '../types/domain-events';
 import { EditorialCommunityId } from '../types/editorial-community-id';
@@ -14,7 +15,7 @@ import { toReviewId } from '../types/review-id';
 /* eslint-disable no-continue */
 
 const review = t.tuple([
-  t.string, // TODO Data
+  tt.DateFromISOString,
   t.string, // TODO Doi
   t.string, // TODO ReviewId
 ]);
@@ -39,7 +40,7 @@ export const getEventsFromDataFiles = (
           new EditorialCommunityId(editorialCommunityId),
           new Doi(articleDoi),
           toReviewId(reviewId),
-          new Date(date),
+          date,
         )),
       )),
     ));
