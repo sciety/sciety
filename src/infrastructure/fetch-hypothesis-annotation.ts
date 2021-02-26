@@ -1,11 +1,13 @@
 import { URL } from 'url';
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { constant, flow, pipe } from 'fp-ts/function';
 import { Json } from 'io-ts-types';
 import { Remarkable } from 'remarkable';
 import { linkify } from 'remarkable/linkify';
-import { HypothesisAnnotation } from './codecs/HypothesisAnnotation';
+import { hypothesisAnnotation, HypothesisAnnotation } from './codecs/HypothesisAnnotation';
 import { Logger } from './logger';
 import { Review } from './review';
 import { toHtmlFragment } from '../types/html-fragment';
@@ -17,16 +19,15 @@ export type FetchHypothesisAnnotation = (id: HypothesisAnnotationId) => TE.TaskE
 
 const converter = new Remarkable({ html: true }).use(linkify);
 
-const toReview = (logger: Logger) => (response: Json) => {
-  const data = response as HypothesisAnnotation;
+const toReview = (logger: Logger) => (response: HypothesisAnnotation) => {
   const review: Review = {
     fullText: pipe(
-      data.text,
+      response.text,
       O.fromNullable,
       O.map((text) => converter.render(text)),
       O.map(toHtmlFragment),
     ),
-    url: new URL(data.links.incontext),
+    url: new URL(response.links.incontext),
   };
   logger('debug', 'Retrieved review', { ...review, fullText: '[text]' });
   return review;
@@ -44,6 +45,10 @@ export const fetchHypothesisAnnotation = (getJson: GetJson, logger: Logger): Fet
         return 'unavailable' as const;
       },
     ),
+    T.map(E.chain(flow(
+      hypothesisAnnotation.decode,
+      E.mapLeft(constant('unavailable' as const)), // TODO: log errors
+    ))),
     TE.map(toReview(logger)),
   );
 };

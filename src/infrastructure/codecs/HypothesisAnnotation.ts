@@ -1,6 +1,6 @@
 import * as t from 'io-ts';
 
-const hypothesisAnnotation = t.type({
+export const hypothesisAnnotation = t.type({
   text: t.string, // TODO HtmlFragment
   links: t.type({
     incontext: t.string, // TODO URL
