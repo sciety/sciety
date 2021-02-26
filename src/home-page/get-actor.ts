@@ -11,19 +11,19 @@ type Actor = {
 
 type GetActor = (id: EditorialCommunityId) => T.Task<Actor>;
 
-type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.Task<O.Option<{
+export type GetGroup = (editorialCommunityId: EditorialCommunityId) => T.Task<O.Option<{
   name: string,
   avatarPath: string,
 }>>;
 
-export const getActor = (getEditorialCommunity: GetEditorialCommunity): GetActor => (id) => pipe(
+export const getActor = (getGroup: GetGroup): GetActor => (id) => pipe(
   id,
-  getEditorialCommunity,
+  getGroup,
   T.map(flow(
-    O.getOrElseW(() => { throw new Error(`No such community ${id.value}`); }),
-    (community) => ({
-      name: community.name,
-      imageUrl: community.avatarPath,
+    O.getOrElseW(() => { throw new Error(`No such group ${id.value}`); }),
+    (group) => ({
+      name: group.name,
+      imageUrl: group.avatarPath,
       url: `/groups/${id.value}`,
     }),
   )),

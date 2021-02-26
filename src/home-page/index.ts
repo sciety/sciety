@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
 import { constructFeedItem, GetArticle } from './construct-feed-item';
-import { getActor } from './get-actor';
+import { getActor, GetGroup } from './get-actor';
 import { GetAllEvents, getMostRecentEvents } from './get-most-recent-events';
 import { projectIsFollowingSomething } from './project-is-following-something';
 import { GetAllEditorialCommunities, renderEditorialCommunities } from './render-editorial-communities';
@@ -17,15 +17,10 @@ import { EditorialCommunityId } from '../types/editorial-community-id';
 import { User } from '../types/user';
 import { UserId } from '../types/user-id';
 
-type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.Task<O.Option<{
-  name: string,
-  avatarPath: string,
-}>>;
-
 type Ports = {
   fetchArticle: GetArticle,
   getAllEditorialCommunities: GetAllEditorialCommunities,
-  getEditorialCommunity: GetEditorialCommunity,
+  getEditorialCommunity: GetGroup,
   getAllEvents: GetAllEvents,
   follows: (userId: UserId, editorialCommunityId: EditorialCommunityId) => T.Task<boolean>,
 };
