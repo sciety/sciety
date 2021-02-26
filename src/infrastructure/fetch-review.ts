@@ -1,7 +1,5 @@
 import { URL } from 'url';
-import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { FetchDataciteReview } from './fetch-datacite-review';
@@ -31,11 +29,11 @@ export const fetchReview = (
       return pipe(
         id,
         fetchHypothesisAnnotation,
-        T.map((review) => pipe(
+        TE.chain((review) => pipe(
           review.fullText,
           O.fold(
-            () => E.left('unavailable' as const),
-            (fullText) => E.right({
+            () => TE.left('unavailable' as const),
+            (fullText) => TE.right({
               ...review,
               fullText,
             }),

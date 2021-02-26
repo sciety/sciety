@@ -1,4 +1,5 @@
 import { URL } from 'url';
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { Json } from 'io-ts-types';
@@ -27,7 +28,7 @@ describe('fetch-hypothesis-annotation', () => {
       url: new URL('https://www.example.com'),
     };
 
-    expect(review).toStrictEqual(expected);
+    expect(review).toStrictEqual(E.right(expected));
   });
 
   it.each([
@@ -44,7 +45,9 @@ describe('fetch-hypothesis-annotation', () => {
     });
     const review = await fetchHypothesisAnnotation(getJson, dummyLogger)(hypothesisAnnotationId)();
 
-    expect(review.fullText).toStrictEqual(O.some(expect.stringContaining(expected)));
+    expect(review).toStrictEqual(E.right(expect.objectContaining({
+      fullText: O.some(expect.stringContaining(expected)),
+    })));
   });
 
   it('leaves broken embedded HTML unchanged', async () => {
@@ -58,6 +61,8 @@ describe('fetch-hypothesis-annotation', () => {
     });
     const review = await fetchHypothesisAnnotation(getJson, dummyLogger)(hypothesisAnnotationId)();
 
-    expect(review.fullText).toStrictEqual(O.some(input));
+    expect(review).toStrictEqual(E.right(expect.objectContaining({
+      fullText: O.some(expect.stringContaining(input)),
+    })));
   });
 });

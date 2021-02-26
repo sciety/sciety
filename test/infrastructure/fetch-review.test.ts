@@ -31,7 +31,7 @@ describe('fetch-review', () => {
   });
 
   it('returns a Hypothes.is annotation when given a Hypothes.is id', async () => {
-    const fetchHypothesisAnnotation: FetchHypothesisAnnotation = () => T.of({
+    const fetchHypothesisAnnotation: FetchHypothesisAnnotation = () => TE.right({
       fullText: pipe('Very good', toHtmlFragment, O.some),
       url: new URL('https://example.com'),
     });
