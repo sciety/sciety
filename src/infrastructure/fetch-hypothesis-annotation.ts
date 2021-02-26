@@ -22,30 +22,33 @@ type HypothesisResponse = {
   },
 };
 
-export const fetchHypothesisAnnotation = (getJson: GetJson, logger: Logger): FetchHypothesisAnnotation => {
-  const converter = new Remarkable({ html: true }).use(linkify);
-  return (id) => async () => {
+const converter = new Remarkable({ html: true }).use(linkify);
+
+const toReview = (logger: Logger) => (response: Json) => {
+  const data = response as HypothesisResponse;
+  const review: Review = {
+    fullText: pipe(
+      data.text,
+      O.fromNullable,
+      O.map((text) => converter.render(text)),
+      O.map(toHtmlFragment),
+    ),
+    url: new URL(data.links.incontext),
+  };
+  logger('debug', 'Retrieved review', { ...review, fullText: '[text]' });
+  return review;
+};
+
+export const fetchHypothesisAnnotation = (getJson: GetJson, logger: Logger): FetchHypothesisAnnotation => (id) => (
+  async () => {
     const uri = `https://api.hypothes.is/api/annotations/${id.value}`;
 
     logger('debug', 'Fetching review from Hypothesis', { uri });
     return getJson(uri)
-      .then((response) => {
-        const data = response as HypothesisResponse;
-        const review: Review = {
-          fullText: pipe(
-            data.text,
-            O.fromNullable,
-            O.map((text) => converter.render(text)),
-            O.map(toHtmlFragment),
-          ),
-          url: new URL(data.links.incontext),
-        };
-        logger('debug', 'Retrieved review', { ...review, fullText: '[text]' });
-        return review;
-      })
+      .then(toReview(logger))
       .catch((error) => {
         logger('error', 'Failed to fetch hypothesis review', { uri, error });
         throw (error);
       });
-  };
-};
+  }
+);
