@@ -14,6 +14,16 @@
 }
 
 .article-feed__item {
+  border: 1px solid #cfd8dc;
+  border-radius: 6px;
+  background-color: #fff;
+
+  padding: baseline.increments(2) 1rem 0;
+
+  @media screen and (min-width: 46.25em) {
+    padding: baseline.increments(3) 1.5rem 0;
+  }
+
   margin-bottom: baseline.increments(6);
 
   &:last-child {
