@@ -15,11 +15,11 @@ import { Follows, renderFollowToggle } from './render-follow-toggle';
 import { renderFollowers } from './render-followers';
 import { renderErrorPage, renderPage, RenderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
+import { UserIdFromString } from '../infrastructure/codecs/UserIdFromString';
 import { renderSummaryFeedList } from '../shared-components';
 import { EditorialCommunity } from '../types/editorial-community';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { toHtmlFragment } from '../types/html-fragment';
-import { toUserId } from '../types/user-id';
 
 type FetchStaticFile = (filename: string) => TE.TaskEither<'not-found' | 'unavailable', string>;
 
@@ -43,7 +43,7 @@ const buildRenderFeed = (ports: Ports) => renderFeed(
 const inputParams = t.type({
   id: t.string, // TODO EditorialCommunityId
   user: option(t.type({
-    id: t.string, // TODO: UserId
+    id: UserIdFromString,
   })),
 });
 
@@ -66,7 +66,7 @@ export const editorialCommunityPage = (ports: Ports): EditorialCommunityPage => 
         renderDescription(getDescription(ports.fetchStaticFile)),
         buildRenderFeed(ports),
         renderFollowers(projectFollowerIds(ports.getAllEvents)),
-      )(editorialCommunity, pipe(user, O.map((u) => toUserId(u.id)))),
+      )(editorialCommunity, pipe(user, O.map((u) => u.id))),
     )),
   )),
 );

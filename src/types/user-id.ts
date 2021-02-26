@@ -1,6 +1,8 @@
+import * as O from 'fp-ts/Option';
+
 export type UserId = string & { readonly UserId: unique symbol };
 
-const isUserId = (value: string): value is UserId => value !== '';
+export const isUserId = (value: unknown): value is UserId => typeof value === 'string' && value !== '';
 
 export const toUserId = (value: string): UserId => {
   if (isUserId(value)) {
@@ -8,3 +10,7 @@ export const toUserId = (value: string): UserId => {
   }
   throw new Error();
 };
+
+export const fromString = (value: string): O.Option<UserId> => O.tryCatch(() => toUserId(value));
+
+export const toString = (userId: UserId): string => userId;
