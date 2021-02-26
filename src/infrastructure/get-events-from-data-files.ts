@@ -14,8 +14,6 @@ import { ReviewIdFromString } from './codecs/ReviewIdFromString';
 import { DomainEvent, editorialCommunityReviewedArticle } from '../types/domain-events';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 
-/* eslint-disable no-continue */
-
 const reviews = t.readonlyArray(t.tuple([
   DateFromISOString,
   DoiFromString,
