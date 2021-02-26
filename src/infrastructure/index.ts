@@ -58,7 +58,7 @@ export const createInfrastructure = (): TE.TaskEither<unknown, Adapters> => pipe
   )),
   TE.bindW('eventsFromDataFiles', () => pipe(
     bootstrapEditorialCommunities,
-    RNEA.map(({ id }) => id.value),
+    RNEA.map(({ id }) => id),
     getEventsFromDataFiles,
   )),
   TE.bindW('eventsFromDatabase', ({ pool, logger }) => pipe(

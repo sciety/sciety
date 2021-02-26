@@ -3,10 +3,11 @@ import fs from 'fs';
 import csvParseSync from 'csv-parse/lib/sync';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { taskify } from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { constant, flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { DateFromISOString } from 'io-ts-types';
 import { DoiFromString } from './codecs/DoiFromString';
@@ -21,11 +22,11 @@ const reviews = t.readonlyArray(t.tuple([
 ]));
 
 export const getEventsFromDataFiles = (
-  editorialCommunityIds: ReadonlyArray<string>,
-): TE.TaskEither<unknown, Array<DomainEvent>> => pipe(
+  editorialCommunityIds: RNEA.ReadonlyNonEmptyArray<EditorialCommunityId>,
+): TE.TaskEither<unknown, RNEA.ReadonlyNonEmptyArray<DomainEvent>> => pipe(
   editorialCommunityIds,
-  RA.map((editorialCommunityId) => pipe(
-    `./data/reviews/${editorialCommunityId}.csv`,
+  RNEA.map((editorialCommunityId) => pipe(
+    `./data/reviews/${editorialCommunityId.value}.csv`,
     taskify(fs.readFile),
     T.map(E.orElse(() => E.right(Buffer.from('')))), // TODO skip files that don't exist
     T.map(E.chainW((fileContents) => pipe(
@@ -33,7 +34,7 @@ export const getEventsFromDataFiles = (
       reviews.decode,
     ))),
     TE.map(RA.map(([date, articleDoi, reviewId]) => editorialCommunityReviewedArticle(
-      new EditorialCommunityId(editorialCommunityId),
+      editorialCommunityId,
       articleDoi,
       reviewId,
       date,
@@ -41,5 +42,8 @@ export const getEventsFromDataFiles = (
   )),
   TE.sequenceArray,
   TE.map(RA.flatten),
-  TE.map(RA.toArray),
+  T.map(E.chainW(flow(
+    RNEA.fromReadonlyArray,
+    E.fromOption(constant('No events found')),
+  ))),
 );
