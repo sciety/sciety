@@ -1,10 +1,12 @@
+import { Buffer } from 'buffer';
 import fs from 'fs';
 import csvParseSync from 'csv-parse/lib/sync';
-import * as A from 'fp-ts/Array';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, pipe } from 'fp-ts/function';
+import { taskify } from 'fp-ts/TaskEither';
+import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { DateFromISOString } from 'io-ts-types';
 import { DoiFromString } from './codecs/DoiFromString';
@@ -14,43 +16,32 @@ import { EditorialCommunityId } from '../types/editorial-community-id';
 
 /* eslint-disable no-continue */
 
-const review = t.tuple([
+const reviews = t.readonlyArray(t.tuple([
   DateFromISOString,
   DoiFromString,
   ReviewIdFromString,
-]);
+]));
 
 export const getEventsFromDataFiles = (
   editorialCommunityIds: ReadonlyArray<string>,
-): TE.TaskEither<unknown, Array<DomainEvent>> => {
-  const parsedEvents = [];
-
-  for (const csvFile of fs.readdirSync('./data/reviews')) {
-    const editorialCommunityId = csvFile.replace('.csv', '');
-    if (!editorialCommunityIds.includes(editorialCommunityId)) {
-      continue;
-    }
-    const fileContents = fs.readFileSync(`./data/reviews/${csvFile}`);
-
-    parsedEvents.push(pipe(
+): TE.TaskEither<unknown, Array<DomainEvent>> => pipe(
+  editorialCommunityIds,
+  RA.map((editorialCommunityId) => pipe(
+    `./data/reviews/${editorialCommunityId}.csv`,
+    taskify(fs.readFile),
+    T.map(E.orElse(() => E.right(Buffer.from('')))), // TODO skip files that don't exist
+    T.map(E.chainW((fileContents) => pipe(
       csvParseSync(fileContents, { fromLine: 2 }),
-      A.map(flow(
-        review.decode,
-        E.map(([date, articleDoi, reviewId]) => editorialCommunityReviewedArticle(
-          new EditorialCommunityId(editorialCommunityId),
-          articleDoi,
-          reviewId,
-          date,
-        )),
-      )),
-    ));
-  }
-
-  return pipe(
-    parsedEvents,
-    A.flatten,
-    E.sequenceArray,
-    E.map(RA.toArray),
-    TE.fromEither,
-  );
-};
+      reviews.decode,
+    ))),
+    TE.map(RA.map(([date, articleDoi, reviewId]) => editorialCommunityReviewedArticle(
+      new EditorialCommunityId(editorialCommunityId),
+      articleDoi,
+      reviewId,
+      date,
+    ))),
+  )),
+  TE.sequenceArray,
+  TE.map(RA.flatten),
+  TE.map(RA.toArray),
+);
