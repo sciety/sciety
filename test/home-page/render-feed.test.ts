@@ -4,7 +4,6 @@ import {
   GetEvents,
   IsFollowingSomething,
   renderFeed,
-  RenderSummaryFeedList,
 } from '../../src/home-page/render-feed';
 import { Doi } from '../../src/types/doi';
 import {
@@ -29,7 +28,7 @@ describe('render-feed', () => {
           ),
         ]);
         const dummyIsFollowingSomething: IsFollowingSomething = () => T.of(true);
-        const dummyRenderSummaryFeedList: RenderSummaryFeedList<EditorialCommunityReviewedArticleEvent> = () => T.of(O.some(toHtmlFragment('someNiceList')));
+        const dummyRenderSummaryFeedList = () => T.of(O.some(toHtmlFragment('someNiceList')));
         const render = renderFeed(
           dummyIsFollowingSomething,
           dummyGetEvents,
@@ -45,9 +44,7 @@ describe('render-feed', () => {
       it('returns a come back later text', async () => {
         const dummyIsFollowingSomething: IsFollowingSomething = () => T.of(true);
         const dummyGetEvents: GetEvents<EditorialCommunityReviewedArticleEvent> = () => T.of([]);
-        const stubRenderSummaryFeedList: RenderSummaryFeedList<EditorialCommunityReviewedArticleEvent> = (
-          () => T.of(O.none)
-        );
+        const stubRenderSummaryFeedList = () => T.of(O.none);
         const render = renderFeed(
           dummyIsFollowingSomething,
           dummyGetEvents,

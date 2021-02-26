@@ -16,7 +16,7 @@ type RenderFeed = (editorialCommunity: EditorialCommunity, userId: O.Option<User
 
 export type GetEvents = (editorialCommunityId: EditorialCommunityId) => T.Task<ReadonlyArray<FeedEvent>>;
 
-export type RenderSummaryFeedList = (events: ReadonlyArray<FeedItem>) => O.Option<HtmlFragment>;
+type RenderSummaryFeedList = (events: ReadonlyArray<FeedItem>) => O.Option<HtmlFragment>;
 
 const emptyFeed = `
   <p>

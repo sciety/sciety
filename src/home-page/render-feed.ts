@@ -12,7 +12,7 @@ export type IsFollowingSomething = (userId: UserId) => T.Task<boolean>;
 
 export type GetEvents<E> = (userId: UserId) => T.Task<ReadonlyArray<E>>;
 
-export type RenderSummaryFeedList<E> = (events: ReadonlyArray<E>) => T.Task<O.Option<string>>;
+type RenderSummaryFeedList<E> = (events: ReadonlyArray<E>) => T.Task<O.Option<string>>;
 
 const welcomeMessage = `
   <p>Welcome to Sciety.</p>

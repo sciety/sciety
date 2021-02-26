@@ -3,7 +3,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
-import { GetEvents, renderFeed, RenderSummaryFeedList } from '../../src/editorial-community-page/render-feed';
+import { GetEvents, renderFeed } from '../../src/editorial-community-page/render-feed';
 import { RenderFollowToggle } from '../../src/editorial-community-page/render-follow-toggle';
 import { Doi } from '../../src/types/doi';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
@@ -25,7 +25,7 @@ describe('render feed', () => {
 
   describe('with community events', () => {
     it('returns a list of events', async () => {
-      const renderSummaryFeedList: RenderSummaryFeedList = () => O.some(toHtmlFragment('a list'));
+      const renderSummaryFeedList = () => O.some(toHtmlFragment('a list'));
       const component = renderFeed(
         stubGetEvents,
         () => () => T.of({
@@ -48,7 +48,7 @@ describe('render feed', () => {
 
   describe('without community events', () => {
     it('returns fallback text', async () => {
-      const renderSummaryFeedList: RenderSummaryFeedList = () => O.none;
+      const renderSummaryFeedList = () => O.none;
       const component = renderFeed(
         stubGetEvents,
         () => () => T.of({
