@@ -1,6 +1,5 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
@@ -23,9 +22,8 @@ const toReview = (logger: Logger) => (response: HypothesisAnnotation) => {
   const review: Review = {
     fullText: pipe(
       response.text,
-      O.fromNullable,
-      O.map((text) => converter.render(text)),
-      O.map(toHtmlFragment),
+      (text) => converter.render(text),
+      toHtmlFragment,
     ),
     url: new URL(response.links.incontext),
   };

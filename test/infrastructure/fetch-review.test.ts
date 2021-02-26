@@ -1,6 +1,5 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { FetchDataciteReview } from '../../src/infrastructure/fetch-datacite-review';
@@ -30,10 +29,7 @@ describe('fetch-review', () => {
   });
 
   it('returns a Hypothes.is annotation when given a Hypothes.is id', async () => {
-    const fetchHypothesisAnnotation: FetchHypothesisAnnotation = () => TE.right({
-      fullText: pipe('Very good', toHtmlFragment, O.some),
-      url: new URL('https://example.com'),
-    });
+    const fetchHypothesisAnnotation: FetchHypothesisAnnotation = () => TE.right(fetchedReview);
     const fetcher = fetchReview(shouldNotBeCalled, fetchHypothesisAnnotation, shouldNotBeCalled);
     const review = await fetcher(new HypothesisAnnotationId('fhAtGNVDEemkyCM-sRPpVQ'))();
 

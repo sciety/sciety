@@ -1,7 +1,5 @@
 import { URL } from 'url';
-import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
 import { FetchDataciteReview } from './fetch-datacite-review';
 import { FetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
 import { FetchNcrcReview } from './fetch-ncrc-review';
@@ -26,20 +24,7 @@ export const fetchReview = (
     }
 
     if (id instanceof HypothesisAnnotationId) {
-      return pipe(
-        id,
-        fetchHypothesisAnnotation,
-        TE.chain((review) => pipe(
-          review.fullText,
-          O.fold(
-            () => TE.left('unavailable' as const),
-            (fullText) => TE.right({
-              ...review,
-              fullText,
-            }),
-          ),
-        )),
-      );
+      return fetchHypothesisAnnotation(id);
     }
 
     return fetchNcrcReview(id);

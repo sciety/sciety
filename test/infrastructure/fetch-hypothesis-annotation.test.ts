@@ -1,6 +1,5 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { Json } from 'io-ts-types';
 import { fetchHypothesisAnnotation } from '../../src/infrastructure/fetch-hypothesis-annotation';
@@ -24,7 +23,7 @@ describe('fetch-hypothesis-annotation', () => {
     const review = await fetchHypothesisAnnotation(getJson, dummyLogger)(hypothesisAnnotationId)();
 
     const expected: Review = {
-      fullText: pipe('<p>Very good</p>', toHtmlFragment, O.some),
+      fullText: pipe('<p>Very good</p>', toHtmlFragment),
       url: new URL('https://www.example.com'),
     };
 
@@ -46,7 +45,7 @@ describe('fetch-hypothesis-annotation', () => {
     const review = await fetchHypothesisAnnotation(getJson, dummyLogger)(hypothesisAnnotationId)();
 
     expect(review).toStrictEqual(E.right(expect.objectContaining({
-      fullText: O.some(expect.stringContaining(expected)),
+      fullText: expect.stringContaining(expected),
     })));
   });
 
@@ -62,7 +61,7 @@ describe('fetch-hypothesis-annotation', () => {
     const review = await fetchHypothesisAnnotation(getJson, dummyLogger)(hypothesisAnnotationId)();
 
     expect(review).toStrictEqual(E.right(expect.objectContaining({
-      fullText: O.some(expect.stringContaining(input)),
+      fullText: expect.stringContaining(input),
     })));
   });
 });
