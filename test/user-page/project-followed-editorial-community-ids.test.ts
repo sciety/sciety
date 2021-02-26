@@ -1,5 +1,6 @@
 import * as T from 'fp-ts/Task';
-import { editorialCommunityJoined, userFollowedEditorialCommunity, userUnfollowedEditorialCommunity } from '../../src/types/domain-events';
+import { Doi } from '../../src/types/doi';
+import { userFollowedEditorialCommunity, userSavedArticle, userUnfollowedEditorialCommunity } from '../../src/types/domain-events';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 import { toUserId } from '../../src/types/user-id';
 import { GetAllEvents, projectFollowedEditorialCommunityIds } from '../../src/user-page/project-followed-editorial-community-ids';
@@ -11,7 +12,7 @@ describe('project-followed-editorial-community-ids', () => {
     userUnfollowedEditorialCommunity(toUserId('someone'), new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002')),
     userFollowedEditorialCommunity(toUserId('someone'), new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002')),
     userFollowedEditorialCommunity(toUserId('someone'), new EditorialCommunityId('74fd66e9-3b90-4b5a-a4ab-5be83db4c5de')),
-    editorialCommunityJoined(new EditorialCommunityId('74fd66e9-3b90-4b5a-a4ab-5be83db4c5de')),
+    userSavedArticle(toUserId('someone'), new Doi('10.1101/111111')),
     userFollowedEditorialCommunity(toUserId('someoneelse'), new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0')),
     userUnfollowedEditorialCommunity(toUserId('someoneelse'), new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002')),
   ]);

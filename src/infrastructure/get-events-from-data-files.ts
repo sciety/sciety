@@ -2,7 +2,7 @@ import fs from 'fs';
 import csvParseSync from 'csv-parse/lib/sync';
 import * as TE from 'fp-ts/TaskEither';
 import { Doi } from '../types/doi';
-import { DomainEvent, editorialCommunityJoined, editorialCommunityReviewedArticle } from '../types/domain-events';
+import { DomainEvent, editorialCommunityReviewedArticle } from '../types/domain-events';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { toReviewId } from '../types/review-id';
 
@@ -28,11 +28,5 @@ export const getEventsFromDataFiles = (
       )));
   }
 
-  const fileContents = fs.readFileSync('./data/editorial-community-joined.csv');
-  parsedEvents.push(...csvParseSync(fileContents, { fromLine: 2 })
-    .map(([date, editorialCommunityId]: [string, string]) => editorialCommunityJoined(
-      new EditorialCommunityId(editorialCommunityId),
-      new Date(date),
-    )));
   return TE.right(parsedEvents);
 };

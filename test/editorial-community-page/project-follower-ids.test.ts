@@ -1,6 +1,7 @@
 import * as T from 'fp-ts/Task';
 import { projectFollowerIds } from '../../src/editorial-community-page/project-follower-ids';
-import { DomainEvent, UserFollowedEditorialCommunityEvent } from '../../src/types/domain-events';
+import { Doi } from '../../src/types/doi';
+import { DomainEvent, UserFollowedEditorialCommunityEvent, userSavedArticle } from '../../src/types/domain-events';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 import { generate } from '../../src/types/event-id';
 import { toUserId } from '../../src/types/user-id';
@@ -47,11 +48,7 @@ describe('project-follower-ids', () => {
 
   it('ignores other type of events', async () => {
     const events: ReadonlyArray<DomainEvent> = [
-      {
-        type: 'EditorialCommunityJoined',
-        date: new Date(),
-        editorialCommunityId: new EditorialCommunityId('something'),
-      },
+      userSavedArticle(toUserId('someone'), new Doi('10.1101/111111')),
     ];
     const getAllEvents = T.of(events);
     const followerIds = await projectFollowerIds(getAllEvents)(new EditorialCommunityId('something'))();

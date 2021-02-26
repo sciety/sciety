@@ -34,23 +34,6 @@ export const editorialCommunityReviewedArticle = (
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-type EditorialCommunityJoinedEvent = Readonly<{
-  type: 'EditorialCommunityJoined',
-  date: Date,
-  editorialCommunityId: EditorialCommunityId,
-}>;
-
-export const editorialCommunityJoined = (
-  editorialCommunityId: EditorialCommunityId,
-  date: Date = new Date(),
-): EditorialCommunityJoinedEvent => ({
-  type: 'EditorialCommunityJoined',
-  date,
-  editorialCommunityId,
-});
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 export type UserFollowedEditorialCommunityEvent = Readonly<{
   id: EventId,
   type: 'UserFollowedEditorialCommunity',
@@ -212,7 +195,6 @@ export const userSavedArticle = (userId: UserId, doi: Doi): UserSavedArticleEven
 
 export type DomainEvent =
   EditorialCommunityReviewedArticleEvent |
-  EditorialCommunityJoinedEvent |
   UserSavedArticleEvent |
   UserFollowedEditorialCommunityEvent |
   UserUnfollowedEditorialCommunityEvent |
