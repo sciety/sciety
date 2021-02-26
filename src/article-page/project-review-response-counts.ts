@@ -39,7 +39,7 @@ const projection = (reviewId: ReviewId.ReviewId) => (events: ReadonlyArray<Domai
   return { helpfulCount, notHelpfulCount };
 };
 
-export const createProjectReviewResponseCounts = (getEvents: GetEvents): CountReviewResponses => (reviewId) => pipe(
+export const projectReviewResponseCounts = (getEvents: GetEvents): CountReviewResponses => (reviewId) => pipe(
   getEvents,
   T.map(projection(reviewId)),
 );

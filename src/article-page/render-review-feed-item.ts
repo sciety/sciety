@@ -103,7 +103,7 @@ const render = (teaserChars: number, review: ReviewFeedItem) => (responses: Html
   ),
 );
 
-export const createRenderReviewFeedItem = (
+export const renderReviewFeedItem = (
   teaserChars: number,
   renderReviewResponses: RenderReviewResponses,
 ): RenderReviewFeedItem => (review, userId) => pipe(

@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
-import { createRenderReviewFeedItem } from '../../src/article-page/render-review-feed-item';
+import { renderReviewFeedItem } from '../../src/article-page/render-review-feed-item';
 import { Doi } from '../../src/types/doi';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 import { toHtmlFragment } from '../../src/types/html-fragment';
@@ -15,9 +15,8 @@ describe('render-review-feed-item', () => {
     const fullText = 'A very long review';
 
     beforeEach(async () => {
-      const renderReviewFeedItem = createRenderReviewFeedItem(6, () => T.of(toHtmlFragment('')));
       rendered = JSDOM.fragment(
-        await renderReviewFeedItem({
+        await renderReviewFeedItem(6, () => T.of(toHtmlFragment('')))({
           type: 'review',
           id: new Doi('10.1111/12345678'),
           source: O.some(new URL('http://example.com')),
@@ -51,10 +50,8 @@ describe('render-review-feed-item', () => {
     const source = 'http://example.com/source';
 
     beforeEach(async () => {
-      const renderReviewFeedItem = createRenderReviewFeedItem(12, () => T.of(toHtmlFragment('')));
-
       rendered = JSDOM.fragment(
-        await renderReviewFeedItem({
+        await renderReviewFeedItem(12, () => T.of(toHtmlFragment('')))({
           type: 'review',
           id: new Doi('10.1111/12345678'),
           source: O.some(new URL(source)),
@@ -89,10 +86,8 @@ describe('render-review-feed-item', () => {
     let rendered: DocumentFragment;
 
     beforeEach(async () => {
-      const renderReviewFeedItem = createRenderReviewFeedItem(6, () => T.of(toHtmlFragment('')));
-
       rendered = JSDOM.fragment(
-        await renderReviewFeedItem({
+        await renderReviewFeedItem(6, () => T.of(toHtmlFragment('')))({
           type: 'review',
           id: new Doi('10.1111/12345678'),
           source: O.some(new URL(source)),

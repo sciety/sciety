@@ -44,7 +44,7 @@ const projectResponse = (getEvents: GetEvents) => (reviewId: ReviewId.ReviewId, 
   })),
 );
 
-export const createProjectUserReviewResponse = (getEvents: GetEvents): GetUserReviewResponse => (
+export const projectUserReviewResponse = (getEvents: GetEvents): GetUserReviewResponse => (
   (reviewId, userId) => pipe(
     userId,
     O.fold(

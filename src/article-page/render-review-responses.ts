@@ -11,7 +11,7 @@ export type RenderReviewResponses = (reviewId: ReviewId, userId: O.Option<UserId
 export type CountReviewResponses = (reviewId: ReviewId) => T.Task<{ helpfulCount: number, notHelpfulCount: number }>;
 export type GetUserReviewResponse = (reviewId: ReviewId, userId: O.Option<UserId>) => T.Task<O.Option<'helpful' | 'not-helpful'>>;
 
-export const createRenderReviewResponses = (
+export const renderReviewResponses = (
   countReviewResponses: CountReviewResponses,
   getUserReviewResponse: GetUserReviewResponse,
 ): RenderReviewResponses => (

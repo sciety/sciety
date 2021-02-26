@@ -8,13 +8,13 @@ import {
 } from './get-article-feed-events';
 import { GetReview } from './get-feed-events-content';
 import { projectHasUserSavedArticle } from './project-has-user-saved-article';
-import { createProjectReviewResponseCounts } from './project-review-response-counts';
-import { createProjectUserReviewResponse } from './project-user-review-response';
+import { projectReviewResponseCounts } from './project-review-response-counts';
+import { projectUserReviewResponse } from './project-user-review-response';
 import { renderActivityPage } from './render-activity-page';
 import { renderArticleVersionFeedItem } from './render-article-version-feed-item';
 import { createRenderFeed } from './render-feed';
-import { createRenderReviewFeedItem } from './render-review-feed-item';
-import { createRenderReviewResponses } from './render-review-responses';
+import { renderReviewFeedItem } from './render-review-feed-item';
+import { renderReviewResponses } from './render-review-responses';
 import { renderSaveArticle } from './render-save-article';
 import { renderTweetThis } from './render-tweet-this';
 import { ArticleServer } from '../types/article-server';
@@ -73,7 +73,7 @@ const toErrorPage = (error: 'not-found' | 'unavailable') => {
 };
 
 export const articleActivityPage = (ports: Ports): ActivityPage => {
-  const countReviewResponses = createProjectReviewResponseCounts(ports.getAllEvents);
+  const countReviewResponses = projectReviewResponseCounts(ports.getAllEvents);
   const renderFeed = createRenderFeed(
     getArticleFeedEvents(
       ports.findReviewsForArticleDoi,
@@ -81,11 +81,11 @@ export const articleActivityPage = (ports: Ports): ActivityPage => {
       ports.fetchReview,
       ports.getEditorialCommunity,
     ),
-    createRenderReviewFeedItem(
+    renderReviewFeedItem(
       150,
-      createRenderReviewResponses(
+      renderReviewResponses(
         countReviewResponses,
-        createProjectUserReviewResponse(ports.getAllEvents),
+        projectUserReviewResponse(ports.getAllEvents),
       ),
     ),
     renderArticleVersionFeedItem,

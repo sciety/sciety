@@ -1,4 +1,4 @@
-import { createProjectReviewResponseCounts } from '../../src/article-page/project-review-response-counts';
+import { projectReviewResponseCounts } from '../../src/article-page/project-review-response-counts';
 import { Doi } from '../../src/types/doi';
 import { generate } from '../../src/types/event-id';
 import { toUserId } from '../../src/types/user-id';
@@ -8,8 +8,7 @@ describe('project-review-response-counts', () => {
     it('returns 0 `helpful` and 0 `not helpful`', async () => {
       const reviewId = new Doi('10.1234/5678');
 
-      const projectReviewResponseCounts = createProjectReviewResponseCounts(async () => []);
-      const projected = await projectReviewResponseCounts(reviewId)();
+      const projected = await projectReviewResponseCounts(async () => [])(reviewId)();
 
       expect(projected).toStrictEqual({ helpfulCount: 0, notHelpfulCount: 0 });
     });
@@ -20,7 +19,7 @@ describe('project-review-response-counts', () => {
       const reviewId = new Doi('10.1234/5678');
       const differentReviewId = new Doi('10.9999/9999');
 
-      const projectReviewResponseCounts = createProjectReviewResponseCounts(async () => [
+      const project = projectReviewResponseCounts(async () => [
         {
           type: 'UserFoundReviewHelpful',
           id: generate(),
@@ -29,7 +28,7 @@ describe('project-review-response-counts', () => {
           userId: toUserId('some-user'),
         },
       ]);
-      const projected = await projectReviewResponseCounts(reviewId)();
+      const projected = await project(reviewId)();
 
       expect(projected).toStrictEqual({ helpfulCount: 0, notHelpfulCount: 0 });
     });
@@ -42,7 +41,7 @@ describe('project-review-response-counts', () => {
       const userB = toUserId('B');
       const userC = toUserId('C');
 
-      const projectReviewResponseCounts = createProjectReviewResponseCounts(async () => [
+      const project = projectReviewResponseCounts(async () => [
         {
           type: 'UserFoundReviewHelpful',
           id: generate(),
@@ -65,7 +64,7 @@ describe('project-review-response-counts', () => {
           userId: userC,
         },
       ]);
-      const projected = await projectReviewResponseCounts(reviewId)();
+      const projected = await project(reviewId)();
 
       expect(projected).toStrictEqual({ helpfulCount: 3, notHelpfulCount: 0 });
     });
@@ -76,7 +75,7 @@ describe('project-review-response-counts', () => {
       const reviewId = new Doi('10.1234/5678');
       const userId = toUserId('some-user');
 
-      const projectReviewResponseCounts = createProjectReviewResponseCounts(async () => [
+      const project = projectReviewResponseCounts(async () => [
         {
           type: 'UserFoundReviewHelpful',
           id: generate(),
@@ -92,7 +91,7 @@ describe('project-review-response-counts', () => {
           userId,
         },
       ]);
-      const projected = await projectReviewResponseCounts(reviewId)();
+      const projected = await project(reviewId)();
 
       expect(projected).toStrictEqual({ helpfulCount: 0, notHelpfulCount: 0 });
     });
@@ -105,7 +104,7 @@ describe('project-review-response-counts', () => {
       const userB = toUserId('B');
       const userC = toUserId('C');
 
-      const projectReviewResponseCounts = createProjectReviewResponseCounts(async () => [
+      const project = projectReviewResponseCounts(async () => [
         {
           type: 'UserFoundReviewNotHelpful',
           id: generate(),
@@ -128,7 +127,7 @@ describe('project-review-response-counts', () => {
           userId: userC,
         },
       ]);
-      const projected = await projectReviewResponseCounts(reviewId)();
+      const projected = await project(reviewId)();
 
       expect(projected).toStrictEqual({ helpfulCount: 0, notHelpfulCount: 3 });
     });
@@ -139,7 +138,7 @@ describe('project-review-response-counts', () => {
       const reviewId = new Doi('10.1234/5678');
       const userId = toUserId('A');
 
-      const projectReviewResponseCounts = createProjectReviewResponseCounts(async () => [
+      const project = projectReviewResponseCounts(async () => [
         {
           type: 'UserFoundReviewHelpful',
           id: generate(),
@@ -169,7 +168,7 @@ describe('project-review-response-counts', () => {
           userId,
         },
       ]);
-      const projected = await projectReviewResponseCounts(reviewId)();
+      const projected = await project(reviewId)();
 
       expect(projected).toStrictEqual({ helpfulCount: 0, notHelpfulCount: 0 });
     });
