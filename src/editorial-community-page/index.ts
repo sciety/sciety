@@ -47,8 +47,6 @@ const inputParams = t.type({
   })),
 });
 
-export type Params = t.TypeOf<typeof inputParams>;
-
 type EditorialCommunityPage = (params: unknown) => ReturnType<RenderPage>;
 
 export const editorialCommunityPage = (ports: Ports): EditorialCommunityPage => (params) => pipe(
