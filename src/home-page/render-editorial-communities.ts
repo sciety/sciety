@@ -22,7 +22,7 @@ const render = (links: RNEA.ReadonlyNonEmptyArray<HtmlFragment>) => `
   </section>
 `;
 
-export const createRenderEditorialCommunities = (
+export const renderEditorialCommunities = (
   editorialCommunities: GetAllEditorialCommunities,
   renderEditorialCommunity: RenderEditorialCommunity,
 ): RenderEditorialCommunities => (userId) => (

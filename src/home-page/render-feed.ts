@@ -50,7 +50,7 @@ const renderAsSection = (contents: HtmlFragment) => toHtmlFragment(`
   </section>
 `);
 
-export const createRenderFeed = <E>(
+export const renderFeed = <E>(
   isFollowingSomething: IsFollowingSomething,
   getEvents: GetEvents<E>,
   renderSummaryFeedList: RenderSummaryFeedList<E>,

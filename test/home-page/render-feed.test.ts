@@ -1,9 +1,9 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import {
-  createRenderFeed,
   GetEvents,
   IsFollowingSomething,
+  renderFeed,
   RenderSummaryFeedList,
 } from '../../src/home-page/render-feed';
 import { Doi } from '../../src/types/doi';
@@ -30,12 +30,12 @@ describe('render-feed', () => {
         ]);
         const dummyIsFollowingSomething: IsFollowingSomething = () => T.of(true);
         const dummyRenderSummaryFeedList: RenderSummaryFeedList<EditorialCommunityReviewedArticleEvent> = () => T.of(O.some(toHtmlFragment('someNiceList')));
-        const renderFeed = createRenderFeed(
+        const render = renderFeed(
           dummyIsFollowingSomething,
           dummyGetEvents,
           dummyRenderSummaryFeedList,
         );
-        const rendered = await renderFeed(O.some(toUserId('1111')))();
+        const rendered = await render(O.some(toUserId('1111')))();
 
         expect(rendered).toStrictEqual(expect.stringContaining('someNiceList'));
       });
@@ -48,12 +48,12 @@ describe('render-feed', () => {
         const stubRenderSummaryFeedList: RenderSummaryFeedList<EditorialCommunityReviewedArticleEvent> = (
           () => T.of(O.none)
         );
-        const renderFeed = createRenderFeed(
+        const render = renderFeed(
           dummyIsFollowingSomething,
           dummyGetEvents,
           stubRenderSummaryFeedList,
         );
-        const rendered = await renderFeed(O.some(toUserId('1111')))();
+        const rendered = await render(O.some(toUserId('1111')))();
 
         expect(rendered).toContain('The groups you’re following haven’t evaluated any articles yet.');
       });
@@ -62,12 +62,12 @@ describe('render-feed', () => {
     describe('and is not following anything yet', () => {
       it('returns a follow-something text', async () => {
         const dummyIsFollowingSomething: IsFollowingSomething = () => T.of(false);
-        const renderFeed = createRenderFeed(
+        const render = renderFeed(
           dummyIsFollowingSomething,
           shouldNotBeCalled,
           shouldNotBeCalled,
         );
-        const rendered = await renderFeed(O.some(toUserId('1111')))();
+        const rendered = await render(O.some(toUserId('1111')))();
 
         expect(rendered).toContain('Start following some groups');
       });
@@ -76,12 +76,12 @@ describe('render-feed', () => {
 
   describe('when the user is not logged in', () => {
     it('invites them to log in', async () => {
-      const renderFeed = createRenderFeed(
+      const render = renderFeed(
         shouldNotBeCalled,
         shouldNotBeCalled,
         shouldNotBeCalled,
       );
-      const rendered = await renderFeed(O.none)();
+      const rendered = await render(O.none)();
 
       expect(rendered).toContain('Log in');
     });

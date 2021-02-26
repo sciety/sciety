@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
-import { createRenderEditorialCommunity } from '../../src/home-page/render-editorial-community';
+import { renderEditorialCommunity } from '../../src/home-page/render-editorial-community';
 import { EditorialCommunityId } from '../../src/types/editorial-community-id';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 
@@ -11,10 +11,10 @@ describe('render-editorial-community', () => {
       name: 'Editorial Community A',
       avatarPath: '',
     };
-    const renderEditorialCommunity = createRenderEditorialCommunity(
+    const render = renderEditorialCommunity(
       () => T.of(toHtmlFragment('')),
     );
-    const rendered = await renderEditorialCommunity(O.none)(community)();
+    const rendered = await render(O.none)(community)();
 
     expect(rendered).toContain('Editorial Community A');
   });

@@ -5,10 +5,10 @@ import { constructFeedItem, GetArticle } from './construct-feed-item';
 import { getActor } from './get-actor';
 import { GetAllEvents, getMostRecentEvents } from './get-most-recent-events';
 import { projectIsFollowingSomething } from './project-is-following-something';
-import { createRenderEditorialCommunities, GetAllEditorialCommunities } from './render-editorial-communities';
-import { createRenderEditorialCommunity } from './render-editorial-community';
-import { createRenderFeed } from './render-feed';
-import { createRenderFollowToggle } from './render-follow-toggle';
+import { GetAllEditorialCommunities, renderEditorialCommunities } from './render-editorial-communities';
+import { renderEditorialCommunity } from './render-editorial-community';
+import { renderFeed } from './render-feed';
+import { renderFollowToggle } from './render-follow-toggle';
 import { renderPage, RenderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
 import { renderSearchForm } from './render-search-form';
@@ -36,24 +36,23 @@ type Params = {
 
 type HomePage = (params: Params) => ReturnType<RenderPage>;
 
-export const homePage = (ports: Ports): HomePage => {
-  const renderFollowToggle = createRenderFollowToggle(ports.follows);
-  const renderEditorialCommunities = createRenderEditorialCommunities(
-    ports.getAllEditorialCommunities,
-    createRenderEditorialCommunity(renderFollowToggle),
-  );
-  const renderFeed = createRenderFeed(
-    projectIsFollowingSomething(ports.getAllEvents),
-    getMostRecentEvents(ports.getAllEvents, ports.follows, 20),
-    flow(
-      T.traverseArray(constructFeedItem(getActor(ports.getEditorialCommunity), ports.fetchArticle)),
-      T.map(renderSummaryFeedList),
+export const homePage = (ports: Ports): HomePage => (params) => pipe(
+  params.user,
+  O.map((user) => user.id),
+  renderPage(
+    renderPageHeader,
+    renderEditorialCommunities(
+      ports.getAllEditorialCommunities,
+      renderEditorialCommunity(renderFollowToggle(ports.follows)),
     ),
-  );
-
-  return (params) => pipe(
-    params.user,
-    O.map((user) => user.id),
-    renderPage(renderPageHeader, renderEditorialCommunities, renderSearchForm, renderFeed),
-  );
-};
+    renderSearchForm,
+    renderFeed(
+      projectIsFollowingSomething(ports.getAllEvents),
+      getMostRecentEvents(ports.getAllEvents, ports.follows, 20),
+      flow(
+        T.traverseArray(constructFeedItem(getActor(ports.getEditorialCommunity), ports.fetchArticle)),
+        T.map(renderSummaryFeedList),
+      ),
+    ),
+  ),
+);

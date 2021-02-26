@@ -28,7 +28,7 @@ const render = (community: Community) => (toggle: HtmlFragment) => `
   </div>
 `;
 
-export const createRenderEditorialCommunity = (
+export const renderEditorialCommunity = (
   renderFollowToggle: RenderFollowToggle,
 ): RenderEditorialCommunity => (userId) => (community) => pipe(
   renderFollowToggle(userId, community.id, community.name),
