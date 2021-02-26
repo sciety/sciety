@@ -5,6 +5,7 @@ import { pipe } from 'fp-ts/function';
 import { Json } from 'io-ts-types';
 import { Remarkable } from 'remarkable';
 import { linkify } from 'remarkable/linkify';
+import { HypothesisAnnotation } from './codecs/HypothesisAnnotation';
 import { Logger } from './logger';
 import { Review } from './review';
 import { toHtmlFragment } from '../types/html-fragment';
@@ -14,18 +15,10 @@ type GetJson = (uri: string) => Promise<Json>;
 
 export type FetchHypothesisAnnotation = (id: HypothesisAnnotationId) => TE.TaskEither<'unavailable', Review>;
 
-type HypothesisResponse = {
-  created: string,
-  text: string,
-  links: {
-    incontext: string,
-  },
-};
-
 const converter = new Remarkable({ html: true }).use(linkify);
 
 const toReview = (logger: Logger) => (response: Json) => {
-  const data = response as HypothesisResponse;
+  const data = response as HypothesisAnnotation;
   const review: Review = {
     fullText: pipe(
       data.text,
