@@ -2,8 +2,10 @@ import { Server } from 'http';
 import { literal, namedNode } from '@rdfjs/data-model';
 import { schema } from '@tpluscode/rdf-ns-builders';
 import clownface from 'clownface';
+import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
+import { pipe } from 'fp-ts/function';
 import datasetFactory from 'rdf-dataset-indexed';
 import { bootstrapEditorialCommunities } from '../../src/data/bootstrap-editorial-communities';
 import { createRouter } from '../../src/http/router';
@@ -72,9 +74,16 @@ export const createTestServer = async (): Promise<TestServer> => {
   };
 
   const router = createRouter(adapters);
+  const server = pipe(
+    createApplicationServer(router, dummyLogger),
+    E.getOrElseW((e) => {
+      throw new Error(e);
+    }),
+  );
+
   return {
     adapters,
-    server: createApplicationServer(router, dummyLogger),
+    server,
     editorialCommunities,
   };
 };

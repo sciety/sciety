@@ -2,7 +2,7 @@ import { createTerminus, TerminusOptions } from '@godaddy/terminus';
 import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { identity, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import { createRouter } from './http/router';
 import { createApplicationServer } from './http/server';
 import { createInfrastructure } from './infrastructure';
@@ -23,7 +23,7 @@ void pipe(
   TE.bind('adapters', createInfrastructure),
   TE.bindW('router', ({ adapters }) => pipe(adapters, createRouter, TE.right)),
   TE.chainW(({ adapters, router }) => pipe(
-    E.tryCatch(() => createApplicationServer(router, adapters.logger), identity),
+    createApplicationServer(router, adapters.logger),
     E.map((server) => createTerminus(server, terminusOptions(adapters.logger))),
     E.map((server) => server.on('listening', () => adapters.logger('debug', 'Server running'))),
     TE.fromEither,

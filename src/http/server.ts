@@ -1,6 +1,7 @@
 import { createServer, Server } from 'http';
 import Router from '@koa/router';
 import rTracer from 'cls-rtracer';
+import * as E from 'fp-ts/Either';
 import Koa from 'koa';
 import koaPassport from 'koa-passport';
 import koaSession from 'koa-session';
@@ -10,7 +11,7 @@ import { Logger } from '../infrastructure/logger';
 import { User } from '../types/user';
 import { toUserId } from '../types/user-id';
 
-export const createApplicationServer = (router: Router, logger: Logger): Server => {
+export const createApplicationServer = (router: Router, logger: Logger): E.Either<string, Server> => {
   const app = new Koa();
 
   app.use(rTracer.koaMiddleware());
@@ -52,12 +53,12 @@ export const createApplicationServer = (router: Router, logger: Logger): Server 
     'TWITTER_API_SECRET_KEY',
     'TWITTER_API_BEARER_TOKEN',
   ];
-  requiredEnvironmentVariables.forEach((variableName) => {
+  for (const variableName of requiredEnvironmentVariables) {
     if (!process.env[variableName]) {
       logger('error', `Missing ${variableName} environment variable`);
-      throw new Error(`Missing ${variableName} from environment variables`);
+      return E.left(`Missing ${variableName} from environment variables`);
     }
-  });
+  }
 
   const isSecure = process.env.APP_ORIGIN?.startsWith('https:');
   if (isSecure) {
@@ -133,5 +134,5 @@ export const createApplicationServer = (router: Router, logger: Logger): Server 
     });
   });
 
-  return server;
+  return E.right(server);
 };
