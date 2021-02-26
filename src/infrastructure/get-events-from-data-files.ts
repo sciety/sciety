@@ -8,16 +8,16 @@ import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { DateFromISOString } from 'io-ts-types';
 import { DoiFromString } from './codecs/DoiFromString';
+import { ReviewIdFromString } from './codecs/ReviewIdFromString';
 import { DomainEvent, editorialCommunityReviewedArticle } from '../types/domain-events';
 import { EditorialCommunityId } from '../types/editorial-community-id';
-import { toReviewId } from '../types/review-id';
 
 /* eslint-disable no-continue */
 
 const review = t.tuple([
   DateFromISOString,
   DoiFromString,
-  t.string, // TODO ReviewId
+  ReviewIdFromString,
 ]);
 
 export const getEventsFromDataFiles = (
@@ -39,7 +39,7 @@ export const getEventsFromDataFiles = (
         E.map(([date, articleDoi, reviewId]) => editorialCommunityReviewedArticle(
           new EditorialCommunityId(editorialCommunityId),
           articleDoi,
-          toReviewId(reviewId),
+          reviewId,
           date,
         )),
       )),
