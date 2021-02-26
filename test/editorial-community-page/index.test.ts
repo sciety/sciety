@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import { editorialCommunityPage, Params } from '../../src/editorial-community-page';
+import { editorialCommunityPage } from '../../src/editorial-community-page';
 import { createTestServer } from '../http/server';
 
 describe('create render page', () => {
@@ -8,8 +8,7 @@ describe('create render page', () => {
     it('throws a NotFound error', async () => {
       const { adapters } = await createTestServer();
       const renderPage = editorialCommunityPage(adapters);
-      const params: Params = { id: 'no-such-community', user: O.none };
-      const result = await renderPage(params)();
+      const result = await renderPage({ id: 'no-such-community', user: O.none })();
 
       expect(result).toStrictEqual(E.left(expect.objectContaining({ type: 'not-found' })));
     });

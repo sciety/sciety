@@ -6,7 +6,7 @@ import { templateListItems } from '../shared-components';
 import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
-export type SavedArticle = {
+type SavedArticle = {
   doi: Doi,
   title: O.Option<HtmlFragment>,
 };

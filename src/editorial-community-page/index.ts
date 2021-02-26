@@ -37,7 +37,7 @@ const buildRenderFeed = (ports: Ports) => renderFeed(
   renderFollowToggle(ports.follows),
 );
 
-export type Params = {
+type Params = {
   id?: string,
   user: O.Option<User>,
 };

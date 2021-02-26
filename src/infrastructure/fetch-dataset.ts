@@ -12,12 +12,6 @@ import { Logger } from './logger';
 
 export type FetchDataset = (iri: NamedNode) => Promise<clownface.GraphPointer<NamedNode>>;
 
-export class FetchDatasetError extends Error {
-  toString(): string {
-    return `FetchDatasetError: ${this.message}`;
-  }
-}
-
 export const createFetchDataset = (logger: Logger, fetch = rdfFetch): FetchDataset => {
   const factory = { dataset: datasetFactory };
   const parsers = new SinkMap<EventEmitter, Stream>();
@@ -30,7 +24,7 @@ export const createFetchDataset = (logger: Logger, fetch = rdfFetch): FetchDatas
     const response = await fetch<DatasetCore>(iri.value, fetchOptions);
 
     if (!response.ok) {
-      throw new FetchDatasetError(`Received a ${response.status} ${response.statusText} for ${response.url}`);
+      throw new Error(`Received a ${response.status} ${response.statusText} for ${response.url}`);
     }
 
     const links = parseLinkHeader(response.headers?.get('Link') ?? '');

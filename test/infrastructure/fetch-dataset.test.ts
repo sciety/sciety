@@ -6,7 +6,7 @@ import { namedNode } from '@rdfjs/data-model';
 import rdfFetch, { DatasetResponse } from '@rdfjs/fetch-lite';
 import datasetFactory from 'rdf-dataset-indexed';
 import type { DatasetCore } from 'rdf-js';
-import { createFetchDataset, FetchDatasetError } from '../../src/infrastructure/fetch-dataset';
+import { createFetchDataset } from '../../src/infrastructure/fetch-dataset';
 import { Doi } from '../../src/types/doi';
 import { dummyLogger } from '../dummy-logger';
 
@@ -62,7 +62,7 @@ describe('fetch-dataset', () => {
 
       const fetchDataset = createFetchDataset(dummyLogger, stubFetch);
 
-      await expect(fetchDataset(iri)).rejects.toStrictEqual(new FetchDatasetError(`Received a 404 Not Found for ${iri.value}`));
+      await expect(fetchDataset(iri)).rejects.toThrow(`Received a 404 Not Found for ${iri.value}`);
     });
   });
 });

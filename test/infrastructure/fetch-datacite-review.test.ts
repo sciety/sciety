@@ -4,7 +4,7 @@ import clownface from 'clownface';
 import * as E from 'fp-ts/Either';
 import datasetFactory from 'rdf-dataset-indexed';
 import { fetchDataciteReview } from '../../src/infrastructure/fetch-datacite-review';
-import { FetchDataset, FetchDatasetError } from '../../src/infrastructure/fetch-dataset';
+import { FetchDataset } from '../../src/infrastructure/fetch-dataset';
 import { Doi } from '../../src/types/doi';
 import { dummyLogger } from '../dummy-logger';
 
@@ -42,7 +42,7 @@ describe('fetch-datacite-review', () => {
   describe('when Datacite is unreachable', () => {
     it('returns unavailable', async () => {
       const fetchDataset: FetchDataset = async () => {
-        throw new FetchDatasetError('Something went wrong.');
+        throw new Error('Something went wrong.');
       };
       const fetchReview = fetchDataciteReview(fetchDataset, dummyLogger);
       const review = await fetchReview(reviewDoi)();
