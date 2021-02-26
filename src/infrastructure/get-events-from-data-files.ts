@@ -6,7 +6,8 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
-import * as tt from 'io-ts-types';
+import { DateFromISOString } from 'io-ts-types';
+import { DoiFromString } from './codecs/DoiFromString';
 import { Doi } from '../types/doi';
 import { DomainEvent, editorialCommunityReviewedArticle } from '../types/domain-events';
 import { EditorialCommunityId } from '../types/editorial-community-id';
@@ -15,8 +16,8 @@ import { toReviewId } from '../types/review-id';
 /* eslint-disable no-continue */
 
 const review = t.tuple([
-  tt.DateFromISOString,
-  t.string, // TODO Doi
+  DateFromISOString,
+  DoiFromString,
   t.string, // TODO ReviewId
 ]);
 
@@ -38,7 +39,7 @@ export const getEventsFromDataFiles = (
         review.decode,
         E.map(([date, articleDoi, reviewId]) => editorialCommunityReviewedArticle(
           new EditorialCommunityId(editorialCommunityId),
-          new Doi(articleDoi),
+          articleDoi,
           toReviewId(reviewId),
           date,
         )),
