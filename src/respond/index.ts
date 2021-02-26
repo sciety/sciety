@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { commandHandler, CommitEvents, toCommand } from './command-handler';
 import { GetAllEvents } from './respond-helpful-command';
-import { toReviewId, toString } from '../types/review-id';
+import * as ReviewId from '../types/review-id';
 import { User } from '../types/user';
 
 type Ports = {
@@ -18,7 +18,7 @@ export const respondHandler = (ports: Ports): Middleware<{ user: User }> => asyn
   const referrer = (context.request.headers.referer ?? '/') as string;
   await pipe(
     O.Do,
-    O.bind('reviewId', () => O.tryCatch(() => pipe(context.request.body.reviewid, toReviewId))),
+    O.bind('reviewId', () => pipe(context.request.body.reviewid, ReviewId.fromString)),
     O.bind('command', () => pipe(context.request.body.command, toCommand)),
     O.fold(
       () => context.throw(StatusCodes.BAD_REQUEST),
@@ -26,7 +26,7 @@ export const respondHandler = (ports: Ports): Middleware<{ user: User }> => asyn
     ),
   )();
 
-  context.redirect(`${referrer}#${toString(toReviewId(context.request.body.reviewid))}`); // TODO needs moving somewhere else
+  context.redirect(`${referrer}#${String(context.request.body.reviewid)}`); // TODO needs moving somewhere else
 
   await next();
 };
