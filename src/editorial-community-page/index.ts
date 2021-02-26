@@ -15,6 +15,7 @@ import { Follows, renderFollowToggle } from './render-follow-toggle';
 import { renderFollowers } from './render-followers';
 import { renderErrorPage, renderPage, RenderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
+import { EditorialCommunityIdFromString } from '../infrastructure/codecs/EditorialCommunityIdFromString';
 import { UserIdFromString } from '../infrastructure/codecs/UserIdFromString';
 import { renderSummaryFeedList } from '../shared-components';
 import { EditorialCommunity } from '../types/editorial-community';
@@ -41,7 +42,7 @@ const buildRenderFeed = (ports: Ports) => renderFeed(
 );
 
 const inputParams = t.type({
-  id: t.string, // TODO EditorialCommunityId
+  id: EditorialCommunityIdFromString,
   user: option(t.type({
     id: UserIdFromString,
   })),
@@ -54,12 +55,11 @@ export const editorialCommunityPage = (ports: Ports): EditorialCommunityPage => 
   E.mapLeft(renderErrorPage),
   TE.fromEither,
   TE.chain(({ id, user }) => pipe(
-    new EditorialCommunityId(id),
-    ports.getEditorialCommunity,
+    ports.getEditorialCommunity(id),
     T.chain(O.fold(
       () => TE.left({
         type: 'not-found',
-        message: toHtmlFragment(`Editorial community id '${id}' not found`),
+        message: toHtmlFragment(`Editorial community id '${id.value}' not found`),
       } as const),
       (editorialCommunity) => renderPage(
         renderPageHeader,
