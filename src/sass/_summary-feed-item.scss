@@ -8,7 +8,7 @@ $_avatar-border-width: 1px;
 .summary-feed-item {
   font-family: settings.$font-secondary;
 
-  @media screen and (min-width: 46.25em) {
+  @media screen and (min-width: settings.$breakpoint-narrow) {
     @supports (display: flex) {
       display: flex;
     }

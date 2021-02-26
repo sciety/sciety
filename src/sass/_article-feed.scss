@@ -24,7 +24,7 @@
     border-top-width: 0;
   }
 
-  @media screen and (min-width: 46.25em) {
+  @media screen and (min-width: settings.$breakpoint-narrow) {
     border-radius: 6px;
     padding: baseline.increments(3) 1.5rem 0;
 
@@ -45,7 +45,7 @@
 
 .article-feed__item_contents {
   margin-bottom: baseline.increments(3);
-  @media screen and (min-width: 46.25em) {
+  @media screen and (min-width: settings.$breakpoint-narrow) {
     display: flex;
     grid-column: 1 / 9;
   }
@@ -100,7 +100,7 @@ p.article-feed__item__title {
 }
 
 .responses {
-  @media screen and (min-width: 46.25em) {
+  @media screen and (min-width: settings.$breakpoint-narrow) {
     padding-left: functions.px-to-rem(71px);
   }
 }

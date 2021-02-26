@@ -126,7 +126,7 @@
   grid-column: 1/-1;
   border-bottom: 2px solid #cfd8dc;
 
-  @media screen and (min-width: 46.25em) {
+  @media screen and (min-width: settings.$breakpoint-narrow) {
     margin-bottom: baseline.increments(1.5);
   }
 }
