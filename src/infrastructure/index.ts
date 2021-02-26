@@ -1,5 +1,7 @@
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
+import * as A from 'fp-ts/Array';
+import * as Ord from 'fp-ts/Ord';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -30,6 +32,7 @@ import { createJsonSerializer, createRTracerLogger, createStreamLogger } from '.
 import { responseCache } from './response-cache';
 import { createSearchEuropePmc } from './search-europe-pmc';
 import { bootstrapEditorialCommunities } from '../data/bootstrap-editorial-communities';
+import { DomainEvent } from '../types/domain-events';
 
 export const createInfrastructure = (): TE.TaskEither<unknown, Adapters> => pipe(
   TE.Do,
@@ -53,9 +56,24 @@ export const createInfrastructure = (): TE.TaskEither<unknown, Adapters> => pipe
     `),
     identity,
   )),
+  TE.bindW('eventsFromDataFiles', () => pipe(
+    bootstrapEditorialCommunities,
+    RNEA.map(({ id }) => id.value),
+    getEventsFromDataFiles,
+    TE.right,
+  )),
+  TE.bindW('eventsFromDatabase', ({ pool, logger }) => pipe(
+    async () => getEventsFromDatabase(pool, logger),
+    TE.rightTask,
+  )),
+  TE.bindW('events', ({ eventsFromDataFiles, eventsFromDatabase }) => pipe(
+    eventsFromDataFiles.concat(eventsFromDatabase),
+    A.sort(Ord.contramap((event: DomainEvent) => event.date)(Ord.ordDate)),
+    TE.right,
+  )),
   TE.chain((adapters) => TE.tryCatch(
     async () => {
-      const { logger, pool } = adapters;
+      const { events, logger, pool } = adapters;
 
       const getJson = async (uri: string) => {
         const response = await axios.get<Json>(uri);
@@ -79,10 +97,6 @@ export const createInfrastructure = (): TE.TaskEither<unknown, Adapters> => pipe
       const fetchDataset = createFetchDataset(logger);
       const searchEuropePmc = createSearchEuropePmc(getJsonWithRetries, logger);
       const editorialCommunities = inMemoryEditorialCommunityRepository(bootstrapEditorialCommunities);
-      const editorialCommunityIds = pipe(bootstrapEditorialCommunities, RNEA.map(({ id }) => id.value));
-      const events = getEventsFromDataFiles(editorialCommunityIds)
-        .concat(await getEventsFromDatabase(pool, logger));
-      events.sort((a, b) => a.date.getTime() - b.date.getTime());
       const getAllEvents = T.of(events);
       const getFollowList = createEventSourceFollowListRepository(getAllEvents);
       const getTwitterResponse = createGetTwitterResponse(process.env.TWITTER_API_BEARER_TOKEN ?? '', logger);
