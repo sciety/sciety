@@ -12,7 +12,7 @@ import { projectReviewResponseCounts } from './project-review-response-counts';
 import { projectUserReviewResponse } from './project-user-review-response';
 import { renderActivityPage } from './render-activity-page';
 import { renderArticleVersionFeedItem } from './render-article-version-feed-item';
-import { createRenderFeed } from './render-feed';
+import { renderFeed as createRenderFeed } from './render-feed';
 import { renderReviewFeedItem } from './render-review-feed-item';
 import { renderReviewResponses } from './render-review-responses';
 import { renderSaveArticle } from './render-save-article';

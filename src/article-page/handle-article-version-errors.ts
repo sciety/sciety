@@ -4,7 +4,7 @@ import * as T from 'fp-ts/Task';
 import { identity, pipe } from 'fp-ts/function';
 import { GetFeedItems } from './render-feed';
 
-export const createHandleArticleVersionErrors = (
+export const handleArticleVersionErrors = (
   getFeedItems: GetFeedItems,
 ): GetFeedItems => (
   (doi, server) => pipe(

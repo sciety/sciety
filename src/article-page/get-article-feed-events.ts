@@ -4,7 +4,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
 import { getFeedEventsContent, GetReview } from './get-feed-events-content';
-import { createHandleArticleVersionErrors } from './handle-article-version-errors';
+import { handleArticleVersionErrors } from './handle-article-version-errors';
 import { mergeFeeds } from './merge-feeds';
 import { GetFeedItems } from './render-feed';
 import { ArticleServer } from '../types/article-server';
@@ -38,7 +38,7 @@ export const getArticleFeedEvents = (
 ): GetFeedItems => (
   (doi, server) => async () => (
     // TODO: turn into pipe to remove nesting
-    createHandleArticleVersionErrors(
+    handleArticleVersionErrors(
       getFeedEventsContent(
         mergeFeeds([
           () => pipe(

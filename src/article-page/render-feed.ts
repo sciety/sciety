@@ -24,7 +24,7 @@ export type FeedItem = ReviewFeedItem | ArticleVersionFeedItem | ArticleVersionE
 
 export type GetFeedItems = (doi: Doi, server: ArticleServer) => T.Task<ReadonlyArray<FeedItem>>;
 
-export const createRenderFeed = (
+export const renderFeed = (
   getFeedItems: GetFeedItems,
   renderReviewFeedItem: RenderReviewFeedItem,
   renderArticleVersionFeedItem: RenderArticleVersionFeedItem,
