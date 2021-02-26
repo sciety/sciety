@@ -6,6 +6,7 @@ import { constant, flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { Json } from 'io-ts-types';
 import { DateFromISOString } from 'io-ts-types/DateFromISOString';
+import { DoiFromString } from './codecs/DoiFromString';
 import { Logger } from './logger';
 import { Doi } from '../types/doi';
 
@@ -26,7 +27,7 @@ type SearchResults = {
 export type SearchEuropePmc = (query: string) => TE.TaskEither<'unavailable', SearchResults>;
 
 const resultDetails = t.type({
-  doi: t.string,
+  doi: DoiFromString,
   title: t.string,
   authorString: t.string,
   firstPublicationDate: DateFromISOString,
@@ -52,10 +53,10 @@ const constructSearchUrl = (queryParams: URLSearchParams) => `https://www.ebi.ac
 
 const constructSearchResults = (data: EuropePmcResponse) => {
   const items = data.resultList.result.map((item) => ({
-    doi: new Doi(item.doi),
+    doi: item.doi,
     title: item.title,
     authors: item.authorString,
-    postedDate: new Date(item.firstPublicationDate),
+    postedDate: item.firstPublicationDate,
   }));
   return {
     items,
