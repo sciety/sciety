@@ -78,6 +78,8 @@ p.article-feed__item__title {
 }
 
 .article-feed__item-toggle {
+  @include typography.sizing(14px, 2.5);
+  font-weight: normal;
   outline-width: 0;
   background: none;
   cursor: pointer;
