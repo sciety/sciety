@@ -17,7 +17,6 @@
 .article-feed__item {
   border: 1px solid #cfd8dc;
   background-color: #fff;
-  padding: baseline.increments(2) 1rem 0;
   margin-bottom: baseline.increments(1);
 
   &:first-child {
@@ -26,7 +25,6 @@
 
   @media screen and (min-width: settings.$breakpoint-narrow) {
     border-radius: 6px;
-    padding: baseline.increments(3) 1.5rem 0;
 
     &:first-child {
       border-top-width: 1px;
@@ -44,10 +42,12 @@
 }
 
 .article-feed__item_contents {
+  padding: baseline.increments(2) 1rem 0;
   margin-bottom: baseline.increments(3);
   @media screen and (min-width: settings.$breakpoint-narrow) {
     display: flex;
     grid-column: 1 / 9;
+    padding: baseline.increments(3) 1.5rem 0;
   }
 }
 
@@ -100,8 +100,9 @@ p.article-feed__item__title {
 }
 
 .responses {
+  padding: 0 1rem;
   @media screen and (min-width: settings.$breakpoint-narrow) {
-    padding-left: functions.px-to-rem(71px);
+    padding: 0 1.5rem 0 functions.px-to-rem(95px);
   }
 }
 
