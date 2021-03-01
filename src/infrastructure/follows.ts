@@ -22,7 +22,7 @@ const isSignificantTo = (
     && event.userId === userId)
 );
 
-export const createFollows = (getAllEvents: GetAllEvents): Follows => (
+export const follows = (getAllEvents: GetAllEvents): Follows => (
   (userId, editorialCommunityId) => (
     pipe(
       getAllEvents,

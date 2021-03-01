@@ -84,7 +84,7 @@ const getFromUrl = (getJson: GetJson, logger: Logger) => <A>(codec: t.Decoder<Js
   )),
 );
 
-export const createSearchEuropePmc = (getJson: GetJson, logger: Logger): SearchEuropePmc => (query) => pipe(
+export const searchEuropePmc = (getJson: GetJson, logger: Logger): SearchEuropePmc => (query) => pipe(
   query,
   constructQueryParams,
   constructSearchUrl,

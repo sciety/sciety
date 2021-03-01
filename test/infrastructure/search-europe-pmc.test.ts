@@ -1,12 +1,12 @@
 import * as E from 'fp-ts/Either';
 import { Json } from 'io-ts-types';
-import { createSearchEuropePmc } from '../../src/infrastructure/search-europe-pmc';
+import { searchEuropePmc } from '../../src/infrastructure/search-europe-pmc';
 import { Doi } from '../../src/types/doi';
 import { dummyLogger } from '../dummy-logger';
 
 describe('search-europe-pmc adapter', () => {
   it('converts Europe PMC search result into our Domain Model', async () => {
-    const adapter = createSearchEuropePmc(async () => ({
+    const adapter = searchEuropePmc(async () => ({
       hitCount: 1,
       resultList: {
         result: [
@@ -46,7 +46,7 @@ describe('search-europe-pmc adapter', () => {
       },
     });
     const spy = jest.fn(getJson);
-    const adapter = createSearchEuropePmc(spy, dummyLogger);
+    const adapter = searchEuropePmc(spy, dummyLogger);
 
     await adapter('Structural basis of αE&')();
 

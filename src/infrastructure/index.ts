@@ -12,7 +12,7 @@ import { Adapters } from './adapters';
 import { biorxivCache } from './biorxiv-cache';
 import { createCommitEvents } from './commit-events';
 import { createEventSourceFollowListRepository } from './event-sourced-follow-list-repository';
-import { createFetchCrossrefArticle } from './fetch-crossref-article';
+import { fetchCrossrefArticle } from './fetch-crossref-article';
 import { fetchDataciteReview } from './fetch-datacite-review';
 import { fetchDataset } from './fetch-dataset';
 import { fetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
@@ -20,17 +20,17 @@ import { fetchNcrcReview } from './fetch-ncrc-review';
 import { fetchReview } from './fetch-review';
 import { fetchStaticFile } from './fetch-static-file';
 import { findReviewsForArticleDoi } from './find-reviews-for-article-doi';
-import { createFollows } from './follows';
+import { follows } from './follows';
 import { getArticleVersionEventsFromBiorxiv } from './get-article-version-events-from-biorxiv';
 import { getEventsFromDataFiles } from './get-events-from-data-files';
 import { getEventsFromDatabase } from './get-events-from-database';
-import { createGetTwitterResponse } from './get-twitter-response';
-import { createGetTwitterUserDetails } from './get-twitter-user-details';
-import { createGetXmlFromCrossrefRestApi } from './get-xml-from-crossref-rest-api';
+import { getTwitterResponse } from './get-twitter-response';
+import { getTwitterUserDetails } from './get-twitter-user-details';
+import { getXmlFromCrossrefRestApi } from './get-xml-from-crossref-rest-api';
 import { inMemoryEditorialCommunityRepository } from './in-memory-editorial-communities';
 import { createJsonSerializer, createRTracerLogger, createStreamLogger } from './logger';
 import { responseCache } from './response-cache';
-import { createSearchEuropePmc } from './search-europe-pmc';
+import { searchEuropePmc } from './search-europe-pmc';
 import { bootstrapEditorialCommunities } from '../data/bootstrap-editorial-communities';
 import { DomainEvent } from '../types/domain-events';
 
@@ -92,22 +92,19 @@ export const createInfrastructure = (): TE.TaskEither<unknown, Adapters> => pipe
         return response.data;
       };
 
-      const getXmlFromCrossrefRestApi = createGetXmlFromCrossrefRestApi(logger);
-      const searchEuropePmc = createSearchEuropePmc(getJsonWithRetries, logger);
       const editorialCommunities = inMemoryEditorialCommunityRepository(bootstrapEditorialCommunities);
       const getAllEvents = T.of(events);
       const getFollowList = createEventSourceFollowListRepository(getAllEvents);
-      const getTwitterResponse = createGetTwitterResponse(process.env.TWITTER_API_BEARER_TOKEN ?? '', logger);
 
       return {
-        fetchArticle: createFetchCrossrefArticle(responseCache(getXmlFromCrossrefRestApi, logger), logger),
+        fetchArticle: fetchCrossrefArticle(responseCache(getXmlFromCrossrefRestApi(logger), logger), logger),
         fetchReview: fetchReview(
           fetchDataciteReview(fetchDataset(logger), logger),
           fetchHypothesisAnnotation(getJson, logger),
           fetchNcrcReview(logger),
         ),
         fetchStaticFile: fetchStaticFile(logger),
-        searchEuropePmc,
+        searchEuropePmc: searchEuropePmc(getJsonWithRetries, logger),
         editorialCommunities,
         getEditorialCommunity: editorialCommunities.lookup,
         getAllEditorialCommunities: editorialCommunities.all,
@@ -115,8 +112,11 @@ export const createInfrastructure = (): TE.TaskEither<unknown, Adapters> => pipe
         getAllEvents,
         commitEvents: createCommitEvents(events, pool, logger),
         getFollowList,
-        getUserDetails: createGetTwitterUserDetails(getTwitterResponse, logger),
-        follows: createFollows(getAllEvents),
+        getUserDetails: getTwitterUserDetails(
+          getTwitterResponse(process.env.TWITTER_API_BEARER_TOKEN ?? '', logger),
+          logger,
+        ),
+        follows: follows(getAllEvents),
         findVersionsForArticleDoi: biorxivCache(getArticleVersionEventsFromBiorxiv(getJson, logger), logger),
         ...adapters,
       };
