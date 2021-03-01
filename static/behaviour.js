@@ -10,7 +10,7 @@
     const fullText = itemBody.querySelector('[data-full-text]');
 
     const toggle = buildToggle();
-    itemBody.insertBefore(toggle, fullText);
+    itemBody.insertBefore(toggle, teaser);
 
     teaser.classList.remove('hidden');
     fullText.classList.add('hidden');
