@@ -52,25 +52,29 @@ const renderWithText = (teaserChars: number, review: ReviewFeedItem, fullText: s
   const teaserText = clip(fullText, teaserChars);
   if (teaserText === fullText) {
     return `
-      <div class="article-feed__item_contents" id="${toString(review.id)}">
-        ${avatar(review)}
-        <div class="article-feed__item_body">
+      <article class="article-feed__item_contents" id="${toString(review.id)}">
+        <header class="article-feed__item_header">
+          ${avatar(review)}
           ${eventMetadata(review)}
+        </header>
+        <div class="article-feed__item_body">
           <div>
             ${fullText}
             ${pipe(review, sourceLink, O.getOrElse(constant('')))}
           </div>
         </div>
-      </div>
+      </article>
       ${responses}
     `;
   }
   // TODO: a review.id containing dodgy chars could break this
   return `
-    <div class="article-feed__item_contents" id="${toString(review.id)}">
-      ${avatar(review)}
-      <div class="article-feed__item_body" data-behaviour="collapse_to_teaser">
+    <article class="article-feed__item_contents" id="${toString(review.id)}">
+      <header class="article-feed__item_header">
+        ${avatar(review)}
         ${eventMetadata(review)}
+      </header>
+      <div class="article-feed__item_body" data-behaviour="collapse_to_teaser">
         <div class="hidden" data-teaser>
           ${teaserText}
         </div>
@@ -79,7 +83,7 @@ const renderWithText = (teaserChars: number, review: ReviewFeedItem, fullText: s
           ${pipe(review, sourceLink, O.getOrElse(constant('')))}
         </div>
       </div>
-    </div>
+    </article>
     ${responses}
   `;
 };
@@ -88,15 +92,17 @@ const render = (teaserChars: number, review: ReviewFeedItem) => (responses: Html
   review.fullText,
   O.fold(
     () => `
-      <div class="article-feed__item_contents" id="${toString(review.id)}">
-        ${avatar(review)}
-        <div class="article-feed__item_body">
+      <article class="article-feed__item_contents" id="${toString(review.id)}">
+        <header class="article-feed__item_header">
+          ${avatar(review)}
           ${eventMetadata(review)}
+        </header>
+        <div class="article-feed__item_body">
           <div>
             ${pipe(review, sourceLink, O.getOrElse(constant('')))}
           </div>
         </div>
-      </div>
+      </article>
       ${responses}
     `,
     (fullText) => renderWithText(teaserChars, review, fullText)(responses),

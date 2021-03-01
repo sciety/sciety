@@ -45,10 +45,14 @@
   padding: baseline.increments(2) 1rem 0;
   margin-bottom: baseline.increments(3);
   @media screen and (min-width: settings.$breakpoint-narrow) {
-    display: flex;
     grid-column: 1 / 9;
     padding: baseline.increments(3) 1.5rem 0;
   }
+}
+
+.article-feed__item_header {
+  display: flex;
+  margin-bottom: baseline.increments(2);
 }
 
 .article-feed__item__avatar {
@@ -63,13 +67,13 @@
 .article-feed__item__date {
   font-family: Ubuntu, sans-serif;
   color: settings.$colour-grey-two;
+  margin-left: auto;
 }
 
 .article-feed__item__title,
 p.article-feed__item__title {
   @include typography.sizing($font-size: 24px, $line-height-in-increments: 3);
   font-family: Ubuntu, sans-serif;
-  margin-bottom: baseline.increments(2);
   padding-right: functions.px-to-rem(116px);
 }
 
@@ -79,6 +83,7 @@ p.article-feed__item__title {
   cursor: pointer;
   padding: functions.px-to-rem(7px) functions.px-to-rem(13px);
   width: functions.px-to-rem(107px);
+  margin-bottom: baseline.increments(2);
 }
 
 .article-feed__item__read_more {
