@@ -51,6 +51,7 @@
 }
 
 .article-feed__item_header {
+  @include typography.sizing($font-size: 14px, $line-height-in-increments: 2.5);
   display: flex;
   margin-bottom: baseline.increments(2);
 }
@@ -72,7 +73,6 @@
 
 .article-feed__item__title,
 p.article-feed__item__title {
-  @include typography.sizing($font-size: 14px, $line-height-in-increments: 2.5);
   font-family: Ubuntu, sans-serif;
   padding-right: functions.px-to-rem(116px);
 }
