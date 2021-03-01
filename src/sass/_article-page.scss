@@ -123,7 +123,6 @@
 
 .article-tabs {
   @include typography.sizing(14px, 2.5);
-  grid-column: 1/-1;
   border-bottom: 2px solid #cfd8dc;
 
   @media screen and (min-width: settings.$breakpoint-narrow) {
