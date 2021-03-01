@@ -10,7 +10,7 @@ export type GetFollowList = (userId: UserId) => Promise<FollowList>;
 
 type FollowCommand = (user: User, editorialCommunityId: EditorialCommunityId) => Promise<void>;
 
-export const createFollowCommand = (
+export const followCommand = (
   getFollowList: GetFollowList,
   commitEvents: CommitEvents,
 ): FollowCommand => (

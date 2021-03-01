@@ -1,5 +1,5 @@
 import { Middleware } from '@koa/router';
-import { CommitEvents, createFollowCommand, GetFollowList } from './follow-command';
+import { CommitEvents, followCommand, GetFollowList } from './follow-command';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 import { User } from '../types/user';
 
@@ -9,14 +9,14 @@ type Ports = {
 };
 
 export const followHandler = (ports: Ports): Middleware<{ user: User }> => {
-  const followCommand = createFollowCommand(
+  const command = followCommand(
     ports.getFollowList,
     ports.commitEvents,
   );
   return async (context, next) => {
     const editorialCommunityId = new EditorialCommunityId(context.request.body.editorialcommunityid);
     const { user } = context.state;
-    await followCommand(user, editorialCommunityId);
+    await command(user, editorialCommunityId);
 
     context.redirect('back');
 

@@ -1,5 +1,5 @@
 import { Middleware } from 'koa';
-import { CommitEvents, createUnfollowCommand, GetFollowList } from './unfollow-command';
+import { CommitEvents, GetFollowList, unfollowCommand } from './unfollow-command';
 import { EditorialCommunityId } from '../types/editorial-community-id';
 
 type Ports = {
@@ -8,7 +8,7 @@ type Ports = {
 };
 
 export const finishUnfollowCommand = (ports: Ports): Middleware => {
-  const unfollowCommand = createUnfollowCommand(
+  const command = unfollowCommand(
     ports.getFollowList,
     ports.commitEvents,
   );
@@ -16,7 +16,7 @@ export const finishUnfollowCommand = (ports: Ports): Middleware => {
     if (context.session.command === 'unfollow' && context.session.editorialCommunityId) {
       const editorialCommunityId = new EditorialCommunityId(context.session.editorialCommunityId);
       const { user } = context.state;
-      await unfollowCommand(user, editorialCommunityId);
+      await command(user, editorialCommunityId);
     }
 
     await next();
