@@ -390,12 +390,19 @@ a:visited {
 
 .sciety-grid--activity {
   grid-auto-flow: unset;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 .sciety-grid--activity > .page-header--article,
 .sciety-grid--activity > .article-tabs,
 .sciety-grid--activity > .main-content {
   grid-column: 1 / -1;
+}
+
+.sciety-grid--activity > .page-header--article {
+  margin-left: 1rem;
+  margin-right: 1rem;
 }
 
 @media screen and (min-width: 56.25em) {
