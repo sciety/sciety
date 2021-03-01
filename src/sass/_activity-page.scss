@@ -1,3 +1,8 @@
+@use 'baseline';
+
+$vertical-space-above-title--narrow: baseline.increments(2);
+$vertical-space-above-title--wide: baseline.increments(5);
+
 .activity-page__background--filler {
   background-color: rgb(233, 235, 240);
   width: 100vw;

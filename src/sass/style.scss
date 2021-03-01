@@ -414,6 +414,7 @@ a:visited {
 .sciety-grid--activity > .page-header--article {
   margin-left: 1rem;
   margin-right: 1rem;
+  padding-top: activity-page.$vertical-space-above-title--narrow;
 }
 
 @media screen and (min-width: 56.25em) {
@@ -421,6 +422,10 @@ a:visited {
   .sciety-grid--activity > .article-tabs,
   .sciety-grid--activity > .main-content {
     grid-column: 3/11;
+  }
+
+  .sciety-grid--activity > .page-header--article {
+    padding-top: activity-page.$vertical-space-above-title--wide;
   }
 
   .sciety-grid--activity > .main-content {
