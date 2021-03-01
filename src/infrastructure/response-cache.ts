@@ -3,7 +3,7 @@ import { Doi } from '../types/doi';
 
 type ResponseCache = Record<string, Promise<string>>;
 
-export type DownstreamFetcher = (doi: Doi, acceptHeader: string) => Promise<string>;
+type DownstreamFetcher = (doi: Doi, acceptHeader: string) => Promise<string>;
 
 export const responseCache = (
   downstreamFetcher: DownstreamFetcher,
