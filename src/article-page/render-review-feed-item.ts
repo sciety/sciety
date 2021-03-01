@@ -29,13 +29,13 @@ const avatar = (review: ReviewFeedItem) => toHtmlFragment(`
 `);
 
 const eventMetadata = (review: ReviewFeedItem) => toHtmlFragment(`
-  ${templateDate(review.occurredAt, 'article-feed__item__date')}
   <div class="article-feed__item__title">
     ${(review.editorialCommunityId.value === 'f97bd177-5cb6-4296-8573-078318755bf2') ? 'Highlighted by' : 'Reviewed by'}
     <a href="/groups/${review.editorialCommunityId.value}">
       ${review.editorialCommunityName}
     </a>
   </div>
+  ${templateDate(review.occurredAt, 'article-feed__item__date')}
 `);
 
 const sourceLink = (review: ReviewFeedItem) => pipe(
