@@ -78,7 +78,7 @@ export const createRouter = (adapters: Adapters): Router => {
     },
     pageHandler(searchResultsPage(adapters)));
 
-  router.get('/articles/:doi(10\..+)',
+  router.get('/articles/:doi(10\\..+)',
     async (context, next) => {
       context.status = StatusCodes.PERMANENT_REDIRECT;
       context.redirect(`/articles/activity/${context.params.doi}`);
