@@ -14,9 +14,9 @@ export const fetchStaticFile = (logger: Logger): FetchStaticFile => (
       fullPath,
       TE.taskify(fs.readFile),
       TE.bimap(
-        (error: NodeJS.ErrnoException) => {
+        (error) => {
           logger('error', 'Failed to fetch static file', { error });
-          return error.code === 'ENOENT' ? 'not-found' : 'unavailable' as const;
+          return error.code === 'ENOENT' ? 'not-found' : 'unavailable';
         },
         (text) => text.toString(),
       ),
