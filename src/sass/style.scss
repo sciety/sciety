@@ -16,6 +16,7 @@
 @use 'about-page';
 @use 'article-feed';
 @use 'article-page';
+@use 'activity-page';
 @use 'list';
 @use 'typography';
 
@@ -391,10 +392,9 @@ a:visited {
 
 .sciety-grid--activity {
   grid-auto-flow: unset;
-  margin-left: 0;
-  margin-right: 0;
+  margin-left: auto;
+  margin-right: auto;
   font-family: Ubuntu, sans-serif;
-  background-color: #e9ebf0;
 
   h1 {
     font-family: Ubuntu, sans-serif;
