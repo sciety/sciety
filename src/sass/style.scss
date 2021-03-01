@@ -397,6 +397,7 @@ a:visited {
   font-family: Ubuntu, sans-serif;
 
   h1 {
+    @include typography.sizing(20px, 3);
     font-family: Ubuntu, sans-serif;
   }
 
@@ -418,6 +419,10 @@ a:visited {
 }
 
 @media screen and (min-width: 56.25em) {
+  .sciety-grid--activity h1 {
+    @include typography.sizing(26px, 3.75);
+  }
+
   .sciety-grid--activity > .page-header--article,
   .sciety-grid--activity > .article-tabs,
   .sciety-grid--activity > .main-content {
