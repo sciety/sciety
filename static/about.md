@@ -71,6 +71,6 @@ The application is changing on a daily basis. To stay up to date, as well as let
 Addison-Wesley Professional, 2000.
 ISBN 0201616416.
 
-<a name="stern-oshea">Stern BM, O’Shea EK (2019)</a> A proposal for the future of scientific publishing in the life sciences. PLoS Biol 17(2): e3000116. <https://doi.org/10.1371/journal.pbio.3000116>
+<a name="stern-oshea">Stern BM, O’Shea EK (2019)</a> [A proposal for the future of scientific publishing in the life sciences](https://doi.org/10.1371/journal.pbio.3000116). PLoS Biol 17(2): e3000116.
 
-<a name="ost">Teresa Torres (2016)</a> Why This Opportunity Solution Tree is Changing the Way Product Teams Work. <https://www.producttalk.org/2016/08/opportunity-solution-tree/>
+<a name="ost">Teresa Torres (2016)</a> [Why This Opportunity Solution Tree is Changing the Way Product Teams Work](https://www.producttalk.org/2016/08/opportunity-solution-tree/).
