@@ -9,12 +9,12 @@ import { identity, pipe } from 'fp-ts/function';
 import { Json } from 'io-ts-types';
 import { Pool } from 'pg';
 import { Adapters } from './adapters';
-import { createBiorxivCache } from './biorxiv-cache';
+import { biorxivCache } from './biorxiv-cache';
 import { createCommitEvents } from './commit-events';
 import { createEventSourceFollowListRepository } from './event-sourced-follow-list-repository';
 import { createFetchCrossrefArticle } from './fetch-crossref-article';
 import { fetchDataciteReview } from './fetch-datacite-review';
-import { createFetchDataset } from './fetch-dataset';
+import { fetchDataset } from './fetch-dataset';
 import { fetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
 import { fetchNcrcReview } from './fetch-ncrc-review';
 import { fetchReview } from './fetch-review';
@@ -93,7 +93,6 @@ export const createInfrastructure = (): TE.TaskEither<unknown, Adapters> => pipe
       };
 
       const getXmlFromCrossrefRestApi = createGetXmlFromCrossrefRestApi(logger);
-      const fetchDataset = createFetchDataset(logger);
       const searchEuropePmc = createSearchEuropePmc(getJsonWithRetries, logger);
       const editorialCommunities = inMemoryEditorialCommunityRepository(bootstrapEditorialCommunities);
       const getAllEvents = T.of(events);
@@ -103,7 +102,7 @@ export const createInfrastructure = (): TE.TaskEither<unknown, Adapters> => pipe
       return {
         fetchArticle: createFetchCrossrefArticle(responseCache(getXmlFromCrossrefRestApi, logger), logger),
         fetchReview: fetchReview(
-          fetchDataciteReview(fetchDataset, logger),
+          fetchDataciteReview(fetchDataset(logger), logger),
           fetchHypothesisAnnotation(getJson, logger),
           fetchNcrcReview(logger),
         ),
@@ -118,7 +117,7 @@ export const createInfrastructure = (): TE.TaskEither<unknown, Adapters> => pipe
         getFollowList,
         getUserDetails: createGetTwitterUserDetails(getTwitterResponse, logger),
         follows: createFollows(getAllEvents),
-        findVersionsForArticleDoi: createBiorxivCache(getArticleVersionEventsFromBiorxiv(getJson, logger), logger),
+        findVersionsForArticleDoi: biorxivCache(getArticleVersionEventsFromBiorxiv(getJson, logger), logger),
         ...adapters,
       };
     },

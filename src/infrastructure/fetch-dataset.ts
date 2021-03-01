@@ -12,7 +12,7 @@ import { Logger } from './logger';
 
 export type FetchDataset = (iri: NamedNode) => Promise<clownface.GraphPointer<NamedNode>>;
 
-export const createFetchDataset = (logger: Logger, fetch = rdfFetch): FetchDataset => {
+export const fetchDataset = (logger: Logger, fetch = rdfFetch): FetchDataset => {
   const factory = { dataset: datasetFactory };
   const parsers = new SinkMap<EventEmitter, Stream>();
   parsers.set('application/vnd.codemeta.ld+json', new JsonLdParser());

@@ -6,7 +6,7 @@ import { namedNode } from '@rdfjs/data-model';
 import rdfFetch, { DatasetResponse } from '@rdfjs/fetch-lite';
 import datasetFactory from 'rdf-dataset-indexed';
 import type { DatasetCore } from 'rdf-js';
-import { createFetchDataset } from '../../src/infrastructure/fetch-dataset';
+import { fetchDataset } from '../../src/infrastructure/fetch-dataset';
 import { Doi } from '../../src/types/doi';
 import { dummyLogger } from '../dummy-logger';
 
@@ -25,9 +25,7 @@ describe('fetch-dataset', () => {
         ok: true,
         dataset: async (): Promise<DatasetCore> => cannedDataset,
       });
-
-      const fetchDataset = createFetchDataset(dummyLogger, stubFetch);
-      const dataset = await fetchDataset(iri);
+      const dataset = await fetchDataset(dummyLogger, stubFetch)(iri);
 
       expect(dataset.dataset).toBe(cannedDataset);
       expect(dataset.term).toStrictEqual(iri);
@@ -42,9 +40,7 @@ describe('fetch-dataset', () => {
         dataset: async (): Promise<DatasetCore> => cannedDataset,
         headers: new Headers({ Link: `<${usedIri.value}>; rel="canonical"` }),
       });
-
-      const fetchDataset = createFetchDataset(dummyLogger, stubFetch);
-      const dataset = await fetchDataset(iri);
+      const dataset = await fetchDataset(dummyLogger, stubFetch)(iri);
 
       expect(dataset.term).toStrictEqual(usedIri);
     });
@@ -60,9 +56,7 @@ describe('fetch-dataset', () => {
         url: iri.value,
       });
 
-      const fetchDataset = createFetchDataset(dummyLogger, stubFetch);
-
-      await expect(fetchDataset(iri)).rejects.toThrow(`Received a 404 Not Found for ${iri.value}`);
+      await expect(fetchDataset(dummyLogger, stubFetch)(iri)).rejects.toThrow(`Received a 404 Not Found for ${iri.value}`);
     });
   });
 });
