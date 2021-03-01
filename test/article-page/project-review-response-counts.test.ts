@@ -1,6 +1,11 @@
 import { projectReviewResponseCounts } from '../../src/article-page/project-review-response-counts';
 import { Doi } from '../../src/types/doi';
-import { generate } from '../../src/types/event-id';
+import {
+  userFoundReviewHelpful,
+  userFoundReviewNotHelpful,
+  userRevokedFindingReviewHelpful,
+  userRevokedFindingReviewNotHelpful,
+} from '../../src/types/domain-events';
 import { toUserId } from '../../src/types/user-id';
 
 describe('project-review-response-counts', () => {
@@ -20,13 +25,7 @@ describe('project-review-response-counts', () => {
       const differentReviewId = new Doi('10.9999/9999');
 
       const project = projectReviewResponseCounts(async () => [
-        {
-          type: 'UserFoundReviewHelpful',
-          id: generate(),
-          date: new Date(),
-          reviewId: differentReviewId,
-          userId: toUserId('some-user'),
-        },
+        userFoundReviewHelpful(toUserId('some-user'), differentReviewId),
       ]);
       const projected = await project(reviewId)();
 
@@ -42,27 +41,9 @@ describe('project-review-response-counts', () => {
       const userC = toUserId('C');
 
       const project = projectReviewResponseCounts(async () => [
-        {
-          type: 'UserFoundReviewHelpful',
-          id: generate(),
-          date: new Date(),
-          reviewId,
-          userId: userA,
-        },
-        {
-          type: 'UserFoundReviewHelpful',
-          id: generate(),
-          date: new Date(),
-          reviewId,
-          userId: userB,
-        },
-        {
-          type: 'UserFoundReviewHelpful',
-          id: generate(),
-          date: new Date(),
-          reviewId,
-          userId: userC,
-        },
+        userFoundReviewHelpful(userA, reviewId),
+        userFoundReviewHelpful(userB, reviewId),
+        userFoundReviewHelpful(userC, reviewId),
       ]);
       const projected = await project(reviewId)();
 
@@ -76,20 +57,8 @@ describe('project-review-response-counts', () => {
       const userId = toUserId('some-user');
 
       const project = projectReviewResponseCounts(async () => [
-        {
-          type: 'UserFoundReviewHelpful',
-          id: generate(),
-          date: new Date(),
-          reviewId,
-          userId,
-        },
-        {
-          type: 'UserRevokedFindingReviewHelpful',
-          id: generate(),
-          date: new Date(),
-          reviewId,
-          userId,
-        },
+        userFoundReviewHelpful(userId, reviewId),
+        userRevokedFindingReviewHelpful(userId, reviewId),
       ]);
       const projected = await project(reviewId)();
 
@@ -105,27 +74,9 @@ describe('project-review-response-counts', () => {
       const userC = toUserId('C');
 
       const project = projectReviewResponseCounts(async () => [
-        {
-          type: 'UserFoundReviewNotHelpful',
-          id: generate(),
-          date: new Date(),
-          reviewId,
-          userId: userA,
-        },
-        {
-          type: 'UserFoundReviewNotHelpful',
-          id: generate(),
-          date: new Date(),
-          reviewId,
-          userId: userB,
-        },
-        {
-          type: 'UserFoundReviewNotHelpful',
-          id: generate(),
-          date: new Date(),
-          reviewId,
-          userId: userC,
-        },
+        userFoundReviewNotHelpful(userA, reviewId),
+        userFoundReviewNotHelpful(userB, reviewId),
+        userFoundReviewNotHelpful(userC, reviewId),
       ]);
       const projected = await project(reviewId)();
 
@@ -139,34 +90,10 @@ describe('project-review-response-counts', () => {
       const userId = toUserId('A');
 
       const project = projectReviewResponseCounts(async () => [
-        {
-          type: 'UserFoundReviewHelpful',
-          id: generate(),
-          date: new Date(),
-          reviewId,
-          userId,
-        },
-        {
-          type: 'UserRevokedFindingReviewHelpful',
-          id: generate(),
-          date: new Date(),
-          reviewId,
-          userId,
-        },
-        {
-          type: 'UserFoundReviewNotHelpful',
-          id: generate(),
-          date: new Date(),
-          reviewId,
-          userId,
-        },
-        {
-          type: 'UserRevokedFindingReviewNotHelpful',
-          id: generate(),
-          date: new Date(),
-          reviewId,
-          userId,
-        },
+        userFoundReviewHelpful(userId, reviewId),
+        userRevokedFindingReviewHelpful(userId, reviewId),
+        userFoundReviewNotHelpful(userId, reviewId),
+        userRevokedFindingReviewNotHelpful(userId, reviewId),
       ]);
       const projected = await project(reviewId)();
 
