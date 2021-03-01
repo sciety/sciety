@@ -391,6 +391,7 @@ a:visited {
 }
 
 .sciety-grid--activity {
+  @include typography.sizing(14px, 2.5);
   grid-auto-flow: unset;
   margin-left: auto;
   margin-right: auto;
@@ -402,6 +403,7 @@ a:visited {
   }
 
   p {
+    @include typography.sizing(14px, 2.5);
     font-family: Ubuntu, sans-serif;
   }
 
