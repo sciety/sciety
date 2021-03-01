@@ -10,7 +10,7 @@ import { Json } from 'io-ts-types';
 import { Pool } from 'pg';
 import { Adapters } from './adapters';
 import { biorxivCache } from './biorxiv-cache';
-import { createCommitEvents } from './commit-events';
+import { commitEvents } from './commit-events';
 import { createEventSourceFollowListRepository } from './event-sourced-follow-list-repository';
 import { fetchCrossrefArticle } from './fetch-crossref-article';
 import { fetchDataciteReview } from './fetch-datacite-review';
@@ -28,7 +28,7 @@ import { getTwitterResponse } from './get-twitter-response';
 import { getTwitterUserDetails } from './get-twitter-user-details';
 import { getXmlFromCrossrefRestApi } from './get-xml-from-crossref-rest-api';
 import { inMemoryEditorialCommunityRepository } from './in-memory-editorial-communities';
-import { createJsonSerializer, createRTracerLogger, createStreamLogger } from './logger';
+import { jsonSerializer, rTracerLogger, streamLogger } from './logger';
 import { responseCache } from './response-cache';
 import { searchEuropePmc } from './search-europe-pmc';
 import { bootstrapEditorialCommunities } from '../data/bootstrap-editorial-communities';
@@ -38,9 +38,9 @@ export const createInfrastructure = (): TE.TaskEither<unknown, Adapters> => pipe
   TE.Do,
   TE.bind('logger', () => pipe(
     !!process.env.PRETTY_LOG,
-    createJsonSerializer,
-    (serializer) => createStreamLogger(process.stdout, serializer),
-    createRTracerLogger,
+    jsonSerializer,
+    (serializer) => streamLogger(process.stdout, serializer),
+    rTracerLogger,
     TE.right,
   )),
   TE.bind('pool', () => pipe(new Pool(), TE.right)),
@@ -110,7 +110,7 @@ export const createInfrastructure = (): TE.TaskEither<unknown, Adapters> => pipe
         getAllEditorialCommunities: editorialCommunities.all,
         findReviewsForArticleDoi: findReviewsForArticleDoi(getAllEvents),
         getAllEvents,
-        commitEvents: createCommitEvents(events, pool, logger),
+        commitEvents: commitEvents(events, pool, logger),
         getFollowList,
         getUserDetails: getTwitterUserDetails(
           getTwitterResponse(process.env.TWITTER_API_BEARER_TOKEN ?? '', logger),

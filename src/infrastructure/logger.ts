@@ -14,7 +14,7 @@ export type Payload = Record<string, unknown>;
 
 export type Logger = (level: LevelName, message: string, payload?: Payload) => void;
 
-export const createRTracerLogger = (logger: Logger): Logger => {
+export const rTracerLogger = (logger: Logger): Logger => {
   const withRequestId = (payload: Payload) => pipe(
     O.of(rTracer.id()),
     O.fold(
@@ -47,7 +47,7 @@ const replaceError = (_key: string, value: unknown) => {
   return value;
 };
 
-export const createJsonSerializer = (prettyPrint = false): Serializer => (
+export const jsonSerializer = (prettyPrint = false): Serializer => (
   (entry) => (
     JSON.stringify(entry, replaceError, prettyPrint ? 2 : undefined)
   )
@@ -62,7 +62,7 @@ const getConfiguredLevel = () => {
   return Level.debug;
 };
 
-export const createStreamLogger = (
+export const streamLogger = (
   stream: NodeJS.WritableStream,
   serializer: Serializer,
 ): Logger => {
