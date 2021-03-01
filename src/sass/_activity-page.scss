@@ -6,5 +6,5 @@ $vertical-space-above-title--wide: baseline.increments(5);
 .activity-page__background--filler {
   background-color: rgb(233, 235, 240);
   width: 100vw;
-  box-shadow: inset 0 6px 12px rgb(0 0 0 / 20%);
+  background-image: linear-gradient(180deg, rgb(207, 216, 220) 0, rgb(233, 235, 240) 8px);
 }
