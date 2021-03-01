@@ -393,6 +393,15 @@ a:visited {
   grid-auto-flow: unset;
   margin-left: 0;
   margin-right: 0;
+  font-family: Ubuntu, sans-serif;
+
+  h1 {
+    font-family: Ubuntu, sans-serif;
+  }
+
+  .article-tabs__tab {
+    font-family: Ubuntu, sans-serif;
+  }
 }
 
 .sciety-grid--activity > .page-header--article,
