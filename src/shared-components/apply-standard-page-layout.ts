@@ -112,7 +112,7 @@ export const applyStandardPageLayout = (user: O.Option<User>) => (page: Page): s
 
           ${O.fold(loggedOutMenuItems, loggedInMenuItems)(user)}
 
-          <li class="site-header__nav_list_item">
+          <li class="site-header__nav_list_item feedback-button">
             <a href="https://eepurl.com/g7qqcv" class="button">Give us feedback</a>
           </li>
 

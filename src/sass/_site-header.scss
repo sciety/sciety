@@ -78,3 +78,10 @@
     }
   }
 }
+
+.feedback-button {
+  @media screen and (max-width: settings.$breakpoint-narrow) {
+    display: none;
+  }
+}
+
