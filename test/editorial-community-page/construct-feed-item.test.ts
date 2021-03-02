@@ -2,7 +2,10 @@ import * as TE from 'fp-ts/TaskEither';
 import { constructFeedItem, GetArticle } from '../../src/editorial-community-page/construct-feed-item';
 import { FeedItem } from '../../src/shared-components';
 import { Doi } from '../../src/types/doi';
-import { EditorialCommunityReviewedArticleEvent } from '../../src/types/domain-events';
+import {
+  editorialCommunityReviewedArticle,
+  EditorialCommunityReviewedArticleEvent,
+} from '../../src/types/domain-events';
 import { EditorialCommunity } from '../../src/types/editorial-community';
 import { GroupId } from '../../src/types/editorial-community-id';
 import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
@@ -19,13 +22,7 @@ describe('construct-feed-item', () => {
   };
 
   describe('when given an EditorialCommunityReviewedArticleEvent', () => {
-    const event: EditorialCommunityReviewedArticleEvent = {
-      type: 'EditorialCommunityReviewedArticle',
-      date: new Date('2020-01-01'),
-      editorialCommunityId: arbitraryActorId,
-      articleId: arbitraryArticleId,
-      reviewId: new Doi('10.1234/5678'),
-    };
+    const event: EditorialCommunityReviewedArticleEvent = editorialCommunityReviewedArticle(arbitraryActorId, arbitraryArticleId, new Doi('10.1234/5478'), new Date('2020-01-01'));
     let feedItem: FeedItem;
 
     describe('and the article information can be retrieved', () => {
