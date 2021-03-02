@@ -1,5 +1,5 @@
 import * as T from 'fp-ts/Task';
-import { DomainEvent } from '../types/domain-events';
+import { DomainEvent, isUserFollowedEditorialCommunityEvent, isUserUnfollowedEditorialCommunityEvent } from '../types/domain-events';
 import { FollowList } from '../types/follow-list';
 import { UserId } from '../types/user-id';
 
@@ -12,9 +12,9 @@ export const createEventSourceFollowListRepository = (getAllEvents: GetAllEvents
     const result = new Set<string>();
 
     (await getAllEvents()).forEach((event) => {
-      if (event.type === 'UserFollowedEditorialCommunity' && event.userId === userId) {
+      if (isUserFollowedEditorialCommunityEvent(event) && event.userId === userId) {
         result.add(event.editorialCommunityId.value);
-      } else if (event.type === 'UserUnfollowedEditorialCommunity' && event.userId === userId) {
+      } else if (isUserUnfollowedEditorialCommunityEvent(event) && event.userId === userId) {
         result.delete(event.editorialCommunityId.value);
       }
     });

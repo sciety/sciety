@@ -1,6 +1,10 @@
-import { UserFollowedEditorialCommunityEvent, UserUnfollowedEditorialCommunityEvent } from './domain-events';
+import {
+  userFollowedEditorialCommunity,
+  UserFollowedEditorialCommunityEvent,
+  userUnfollowedEditorialCommunity,
+  UserUnfollowedEditorialCommunityEvent,
+} from './domain-events';
 import { EditorialCommunityId } from './editorial-community-id';
-import { generate } from './event-id';
 import { UserId } from './user-id';
 
 export class FollowList {
@@ -21,13 +25,7 @@ export class FollowList {
     this.items.push(editorialCommunityId.value);
 
     return [
-      {
-        id: generate(),
-        type: 'UserFollowedEditorialCommunity',
-        date: new Date(),
-        userId: this.userId,
-        editorialCommunityId,
-      },
+      userFollowedEditorialCommunity(this.userId, editorialCommunityId),
     ];
   }
 
@@ -39,13 +37,7 @@ export class FollowList {
     this.items = this.items.filter((item) => item !== editorialCommunityId.value);
 
     return [
-      {
-        id: generate(),
-        type: 'UserUnfollowedEditorialCommunity',
-        date: new Date(),
-        userId: this.userId,
-        editorialCommunityId,
-      },
+      userUnfollowedEditorialCommunity(this.userId, editorialCommunityId),
     ];
   }
 }

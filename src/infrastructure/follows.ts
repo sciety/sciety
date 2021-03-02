@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as A from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
-import { DomainEvent } from '../types/domain-events';
+import { DomainEvent, isUserFollowedEditorialCommunityEvent } from '../types/domain-events';
 import { EditorialCommunityId, eqEditorialCommunityId } from '../types/editorial-community-id';
 import { UserId } from '../types/user-id';
 
@@ -14,7 +14,7 @@ const isSignificantTo = (
   userId: UserId,
   editorialCommunityId: EditorialCommunityId,
 ) => (event: DomainEvent) => (
-  (event.type === 'UserFollowedEditorialCommunity'
+  (isUserFollowedEditorialCommunityEvent(event)
     && eqEditorialCommunityId.equals(event.editorialCommunityId, editorialCommunityId)
     && event.userId === userId)
   || (event.type === 'UserUnfollowedEditorialCommunity'
@@ -32,7 +32,7 @@ export const follows = (getAllEvents: GetAllEvents): Follows => (
           A.last,
           O.fold(
             () => false,
-            (event) => event.type === 'UserFollowedEditorialCommunity',
+            (event) => isUserFollowedEditorialCommunityEvent(event),
           ),
         ),
       ),
