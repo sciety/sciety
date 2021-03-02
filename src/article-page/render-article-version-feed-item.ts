@@ -15,29 +15,33 @@ export type RenderArticleVersionFeedItem = (feedItem: ArticleVersionFeedItem) =>
 
 const renderBiorxivArticleVersionFeedItem = (feedItem: ArticleVersionFeedItem) => toHtmlFragment(`
   <div class="article-feed__item_contents">
-    <img class="article-feed__item__avatar" src="/static/images/biorxiv.jpg" alt="">
-    <div>
-      ${templateDate(feedItem.occurredAt, 'article-feed__item__date')}
-      <p class="article-feed__item__title">
-        <a href="${feedItem.source.toString()}">
-          Version ${feedItem.version} published on bioRxiv
-        </a>
-      </p>
-    </div>
+    <header class="article-feed__item_header">
+      <img class="article-feed__item__avatar" src="/static/images/biorxiv.jpg" alt="">
+      <div class="article-feed__item__meta">
+        <div class="article-feed__item__title">
+          <a href="${feedItem.source.toString()}">
+            Version ${feedItem.version} published on bioRxiv
+          </a>
+        </div>
+        ${templateDate(feedItem.occurredAt, 'article-feed__item__date')}
+      </div>
+    </header>
   </div>
 `);
 
 const renderMedrxivArticleVersionFeedItem = (feedItem: ArticleVersionFeedItem) => toHtmlFragment(`
   <div class="article-feed__item_contents">
-    <img class="article-feed__item__avatar" src="/static/images/medrxiv.jpg" alt="">
-    <div>
-      ${templateDate(feedItem.occurredAt, 'article-feed__item__date')}
-      <p class="article-feed__item__title">
-        <a href="${feedItem.source.toString()}">
-          Version ${feedItem.version} published on medRxiv
-        </a>
-      </p>
-    </div>
+    <header class="article-feed__item_header">
+      <img class="article-feed__item__avatar" src="/static/images/medrxiv.jpg" alt="">
+      <div class="article-feed__item__meta">
+        <div class="article-feed__item__title">
+          <a href="${feedItem.source.toString()}">
+            Version ${feedItem.version} published on medRxiv
+          </a>
+        </div>
+        ${templateDate(feedItem.occurredAt, 'article-feed__item__date')}
+      </div>
+    </header>
   </div>
 `);
 
