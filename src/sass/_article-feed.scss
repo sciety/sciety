@@ -117,6 +117,8 @@ p.article-feed__item__title {
   @media screen and (min-width: settings.$breakpoint-narrow) {
     padding-left: functions.px-to-rem(24px);
     padding-right: functions.px-to-rem(24px);
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
   }
 }
 
