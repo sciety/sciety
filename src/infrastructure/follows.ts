@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as A from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
-import { DomainEvent, isUserFollowedEditorialCommunityEvent } from '../types/domain-events';
+import { DomainEvent, isUserFollowedEditorialCommunityEvent, isUserUnfollowedEditorialCommunityEvent } from '../types/domain-events';
 import { EditorialCommunityId, eqEditorialCommunityId } from '../types/editorial-community-id';
 import { UserId } from '../types/user-id';
 
@@ -17,7 +17,7 @@ const isSignificantTo = (
   (isUserFollowedEditorialCommunityEvent(event)
     && eqEditorialCommunityId.equals(event.editorialCommunityId, editorialCommunityId)
     && event.userId === userId)
-  || (event.type === 'UserUnfollowedEditorialCommunity'
+  || (isUserUnfollowedEditorialCommunityEvent(event)
     && eqEditorialCommunityId.equals(event.editorialCommunityId, editorialCommunityId)
     && event.userId === userId)
 );
