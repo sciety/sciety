@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import {
-  $, click, closeBrowser, goto, openBrowser, text, toRightOf,
+  $, click, closeBrowser, goto, openBrowser, text, within,
 } from 'taiko';
 import { authenticateViaTwitter } from './utilities';
 
@@ -18,7 +18,7 @@ describe('respond', () => {
       await click('Got it!');
       await click($('.article-feed__item:first-child button[value="respond-helpful"]'));
       await authenticateViaTwitter();
-      const result = await text('1', toRightOf($('.article-feed__item:first-child button[value="revoke-response"]'))).exists();
+      const result = await text('1', within($('.article-feed__item:first-child button[value="revoke-response"]'))).exists();
 
       expect(result).toBe(true);
     });
