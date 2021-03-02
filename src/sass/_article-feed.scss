@@ -16,6 +16,8 @@
 
 .article-feed__item {
   border: 1px solid #cfd8dc;
+  border-left-width: 0;
+  border-right-width: 0;
   background-color: #fff;
   margin-bottom: baseline.increments(1);
 
@@ -25,6 +27,8 @@
 
   @media screen and (min-width: settings.$breakpoint-narrow) {
     border-radius: 6px;
+    border-left-width: 1px;
+    border-right-width: 1px;
 
     &:first-child {
       border-top-width: 1px;
