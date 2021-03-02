@@ -107,11 +107,12 @@ p.article-feed__item__title {
 .responses {
   display: flex;
   align-items: center;
-  padding: 0 1rem;
+  padding: baseline.increments(1.5) functions.px-to-rem(16px);
   background-color: #eff2f3;
   border-top: 1px solid #cfd8dc;
   @media screen and (min-width: settings.$breakpoint-narrow) {
-    padding: 0 1.5rem;
+    padding-left: functions.px-to-rem(24px);
+    padding-right: functions.px-to-rem(24px);
   }
 }
 
