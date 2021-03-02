@@ -1,6 +1,6 @@
 import { Doi } from './doi';
-import { GroupId } from './editorial-community-id';
 import { EventId, generate } from './event-id';
+import { GroupId } from './group-id';
 import { ReviewId } from './review-id';
 import { UserId } from './user-id';
 

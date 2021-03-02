@@ -7,7 +7,7 @@ import {
   UserFollowedEditorialCommunityEvent,
   UserUnfollowedEditorialCommunityEvent,
 } from '../types/domain-events';
-import { eqGroupId, GroupId } from '../types/editorial-community-id';
+import { eqGroupId, GroupId } from '../types/group-id';
 import { UserId } from '../types/user-id';
 
 type ProjectFollowerIds = (editorialCommunityId: GroupId) => T.Task<ReadonlyArray<UserId>>;

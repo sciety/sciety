@@ -6,7 +6,7 @@ import {
   Feed, getFeedEventsContent, GetReview,
 } from '../../src/article-page/get-feed-events-content';
 import { Doi } from '../../src/types/doi';
-import { GroupId } from '../../src/types/editorial-community-id';
+import { GroupId } from '../../src/types/group-id';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 
 describe('get-feed-events-content', () => {

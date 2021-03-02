@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { renderEditorialCommunity } from '../../src/home-page/render-editorial-community';
-import { GroupId } from '../../src/types/editorial-community-id';
+import { GroupId } from '../../src/types/group-id';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 
 describe('render-editorial-community', () => {

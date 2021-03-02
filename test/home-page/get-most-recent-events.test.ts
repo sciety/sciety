@@ -2,7 +2,7 @@ import * as T from 'fp-ts/Task';
 import { GetAllEvents, getMostRecentEvents } from '../../src/home-page/get-most-recent-events';
 import { Doi } from '../../src/types/doi';
 import { DomainEvent, editorialCommunityReviewedArticle } from '../../src/types/domain-events';
-import { GroupId } from '../../src/types/editorial-community-id';
+import { GroupId } from '../../src/types/group-id';
 import { toUserId } from '../../src/types/user-id';
 
 describe('get-most-recent-events', () => {

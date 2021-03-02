@@ -1,11 +1,11 @@
 import * as TE from 'fp-ts/TaskEither';
 import { flow } from 'fp-ts/function';
-import { EditorialCommunity } from '../types/editorial-community';
+import { Group } from '../types/group';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
-type RenderDescription = (editorialCommunity: EditorialCommunity) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>;
+type RenderDescription = (editorialCommunity: Group) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>;
 
-type GetEditorialCommunityDescription = (editorialCommunity: EditorialCommunity) => TE.TaskEither<'not-found' | 'unavailable', string>;
+type GetEditorialCommunityDescription = (editorialCommunity: Group) => TE.TaskEither<'not-found' | 'unavailable', string>;
 
 export const renderDescription = (
   getEditorialCommunityDescription: GetEditorialCommunityDescription,

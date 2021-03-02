@@ -14,7 +14,7 @@ import { renderHeader, UserDetails } from './render-header';
 import { renderErrorPage, renderPage } from './render-page';
 import { renderSavedArticles } from './render-saved-articles';
 import { Doi } from '../types/doi';
-import { GroupId } from '../types/editorial-community-id';
+import { GroupId } from '../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';

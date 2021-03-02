@@ -1,8 +1,8 @@
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
-import { EditorialCommunity } from '../types/editorial-community';
-import { GroupId } from '../types/editorial-community-id';
+import { Group } from '../types/group';
+import { GroupId } from '../types/group-id';
 
-const editorialCommunities: RNEA.ReadonlyNonEmptyArray<EditorialCommunity> = [
+const editorialCommunities: RNEA.ReadonlyNonEmptyArray<Group> = [
   {
     id: new GroupId('10360d97-bf52-4aef-b2fa-2f60d319edd7'),
     name: 'PREreview',
@@ -65,7 +65,7 @@ const editorialCommunities: RNEA.ReadonlyNonEmptyArray<EditorialCommunity> = [
   },
 ];
 
-let experimentEditorialCommunities: ReadonlyArray<EditorialCommunity> = [];
+let experimentEditorialCommunities: ReadonlyArray<Group> = [];
 
 if (process.env.EXPERIMENT_ENABLED === 'true') {
   experimentEditorialCommunities = [

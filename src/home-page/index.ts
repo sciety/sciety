@@ -13,7 +13,7 @@ import { renderPage, RenderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
 import { renderSearchForm } from './render-search-form';
 import { renderSummaryFeedList } from '../shared-components';
-import { GroupId } from '../types/editorial-community-id';
+import { GroupId } from '../types/group-id';
 import { User } from '../types/user';
 import { UserId } from '../types/user-id';
 

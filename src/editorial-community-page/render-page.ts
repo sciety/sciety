@@ -2,23 +2,23 @@ import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { EditorialCommunity } from '../types/editorial-community';
-import { GroupId } from '../types/editorial-community-id';
+import { Group } from '../types/group';
+import { GroupId } from '../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { UserId } from '../types/user-id';
 
 export type RenderPage = (
-  editorialCommunity: EditorialCommunity,
+  group: Group,
   userId: O.Option<UserId>
 ) => TE.TaskEither<RenderPageError, Page>;
 
-type RenderPageHeader = (editorialCommunity: EditorialCommunity) => HtmlFragment;
+type RenderPageHeader = (group: Group) => HtmlFragment;
 
-type RenderDescription = (editorialCommunity: EditorialCommunity) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>;
+type RenderDescription = (group: Group) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>;
 
-type RenderFeed = (community: EditorialCommunity, userId: O.Option<UserId>) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>;
+type RenderFeed = (community: Group, userId: O.Option<UserId>) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>;
 
 type Components = {
   header: HtmlFragment,
@@ -45,7 +45,7 @@ export const renderErrorPage = (): RenderPageError => ({
   message: toHtmlFragment('We couldn\'t retrieve this information. Please try again.'),
 });
 
-const asPage = (community: EditorialCommunity) => (components: Components) => ({
+const asPage = (community: Group) => (components: Components) => ({
   title: community.name,
   content: pipe(components, render, toHtmlFragment),
 });
@@ -54,14 +54,14 @@ export const renderPage = (
   renderPageHeader: RenderPageHeader,
   renderDescription: RenderDescription,
   renderFeed: RenderFeed,
-  renderFollowers: (editorialCommunityId: GroupId) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>,
-): RenderPage => (editorialCommunity, userId) => pipe(
+  renderFollowers: (groupId: GroupId) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>,
+): RenderPage => (group, userId) => pipe(
   {
-    header: TE.right(renderPageHeader(editorialCommunity)),
-    description: renderDescription(editorialCommunity),
-    followers: renderFollowers(editorialCommunity.id),
-    feed: renderFeed(editorialCommunity, userId),
+    header: TE.right(renderPageHeader(group)),
+    description: renderDescription(group),
+    followers: renderFollowers(group.id),
+    feed: renderFeed(group, userId),
   },
   sequenceS(TE.taskEither),
-  TE.bimap(renderErrorPage, asPage(editorialCommunity)),
+  TE.bimap(renderErrorPage, asPage(group)),
 );

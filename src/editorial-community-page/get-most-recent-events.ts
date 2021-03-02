@@ -7,7 +7,7 @@ import {
   EditorialCommunityReviewedArticleEvent,
   isEditorialCommunityReviewedArticleEvent,
 } from '../types/domain-events';
-import { eqGroupId, GroupId } from '../types/editorial-community-id';
+import { eqGroupId, GroupId } from '../types/group-id';
 
 type FeedEvent =
   EditorialCommunityReviewedArticleEvent;

@@ -1,5 +1,5 @@
-import { GroupId } from '../../src/types/editorial-community-id';
 import { FollowList } from '../../src/types/follow-list';
+import { GroupId } from '../../src/types/group-id';
 import { toUserId } from '../../src/types/user-id';
 
 describe('follow-list', () => {

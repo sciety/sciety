@@ -6,7 +6,7 @@ import { flow, pipe } from 'fp-ts/function';
 import { ArticleSearchResult, SearchResult } from './render-search-result';
 import { SearchResults } from './render-search-results';
 import { Doi } from '../types/doi';
-import { GroupId } from '../types/editorial-community-id';
+import { GroupId } from '../types/group-id';
 import { ReviewId } from '../types/review-id';
 
 type OriginalSearchResults = {

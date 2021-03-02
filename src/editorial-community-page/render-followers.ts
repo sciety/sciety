@@ -1,7 +1,7 @@
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow } from 'fp-ts/function';
-import { GroupId } from '../types/editorial-community-id';
+import { GroupId } from '../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 type RenderFollowers = (editorialCommunityId: GroupId) => TE.TaskEither<never, HtmlFragment>;

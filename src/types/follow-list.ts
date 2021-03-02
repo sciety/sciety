@@ -4,7 +4,7 @@ import {
   userUnfollowedEditorialCommunity,
   UserUnfollowedEditorialCommunityEvent,
 } from './domain-events';
-import { GroupId } from './editorial-community-id';
+import { GroupId } from './group-id';
 import { UserId } from './user-id';
 
 export class FollowList {

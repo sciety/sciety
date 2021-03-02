@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import { renderFollowers } from '../../src/editorial-community-page/render-followers';
-import { GroupId } from '../../src/types/editorial-community-id';
+import { GroupId } from '../../src/types/group-id';
 
 describe('render-followers', () => {
   it('renders the follower count', async () => {

@@ -3,7 +3,7 @@ import * as T from 'fp-ts/Task';
 import { Feed } from '../../src/article-page/get-feed-events-content';
 import { mergeFeeds } from '../../src/article-page/merge-feeds';
 import { Doi } from '../../src/types/doi';
-import { GroupId } from '../../src/types/editorial-community-id';
+import { GroupId } from '../../src/types/group-id';
 
 describe('compose-feed-events', () => {
   it('merges feed event lists', async () => {

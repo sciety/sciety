@@ -3,7 +3,7 @@ import * as A from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
 import { DomainEvent, isUserFollowedEditorialCommunityEvent, isUserUnfollowedEditorialCommunityEvent } from '../types/domain-events';
-import { eqGroupId, GroupId } from '../types/editorial-community-id';
+import { eqGroupId, GroupId } from '../types/group-id';
 import { UserId } from '../types/user-id';
 
 export type Follows = (userId: UserId, editorialCommunityId: GroupId) => T.Task<boolean>;

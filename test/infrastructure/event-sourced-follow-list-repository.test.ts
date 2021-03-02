@@ -1,8 +1,8 @@
 import * as T from 'fp-ts/Task';
 import { createEventSourceFollowListRepository } from '../../src/infrastructure/event-sourced-follow-list-repository';
 import { userFollowedEditorialCommunity, userUnfollowedEditorialCommunity } from '../../src/types/domain-events';
-import { GroupId } from '../../src/types/editorial-community-id';
 import { FollowList } from '../../src/types/follow-list';
+import { GroupId } from '../../src/types/group-id';
 import { toUserId } from '../../src/types/user-id';
 
 const editorialCommunityId1 = new GroupId('ed1');

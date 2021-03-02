@@ -5,7 +5,7 @@ import { Pool } from 'pg';
 import { Logger } from './logger';
 import { Doi } from '../types/doi';
 import { DomainEvent, RuntimeGeneratedEvent } from '../types/domain-events';
-import { GroupId } from '../types/editorial-community-id';
+import { GroupId } from '../types/group-id';
 import { HypothesisAnnotationId } from '../types/hypothesis-annotation-id';
 import * as NcrcId from '../types/ncrc-id';
 import * as ReviewId from '../types/review-id';

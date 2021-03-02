@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { findReviewsForArticleDoi } from '../../src/infrastructure/find-reviews-for-article-doi';
 import { Doi } from '../../src/types/doi';
 import { editorialCommunityReviewedArticle } from '../../src/types/domain-events';
-import { GroupId } from '../../src/types/editorial-community-id';
+import { GroupId } from '../../src/types/group-id';
 
 describe('find-reviews-for-article-doi', () => {
   const article1 = new Doi('10.1000/1');

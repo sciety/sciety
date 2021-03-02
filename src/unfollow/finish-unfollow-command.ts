@@ -1,6 +1,6 @@
 import { Middleware } from 'koa';
 import { CommitEvents, GetFollowList, unfollowCommand } from './unfollow-command';
-import { GroupId } from '../types/editorial-community-id';
+import { GroupId } from '../types/group-id';
 
 type Ports = {
   commitEvents: CommitEvents,

@@ -10,7 +10,7 @@ import {
   editorialCommunityReviewedArticle,
   EditorialCommunityReviewedArticleEvent,
 } from '../../src/types/domain-events';
-import { GroupId } from '../../src/types/editorial-community-id';
+import { GroupId } from '../../src/types/group-id';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { toReviewId } from '../../src/types/review-id';
 import { toUserId } from '../../src/types/user-id';

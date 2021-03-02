@@ -6,12 +6,12 @@ import { constant, flow, pipe } from 'fp-ts/function';
 import { ConstructFeedItem, FeedEvent } from './construct-feed-item';
 import { RenderFollowToggle } from './render-follow-toggle';
 import { FeedItem } from '../shared-components';
-import { EditorialCommunity } from '../types/editorial-community';
-import { GroupId } from '../types/editorial-community-id';
+import { Group } from '../types/group';
+import { GroupId } from '../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
-type RenderFeed = (editorialCommunity: EditorialCommunity, userId: O.Option<UserId>)
+type RenderFeed = (editorialCommunity: Group, userId: O.Option<UserId>)
 => TE.TaskEither<never, HtmlFragment>;
 
 export type GetEvents = (editorialCommunityId: GroupId) => T.Task<ReadonlyArray<FeedEvent>>;

@@ -18,13 +18,13 @@ import { renderPageHeader } from './render-page-header';
 import { renderSummaryFeedList } from '../shared-components';
 import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
-import { EditorialCommunity } from '../types/editorial-community';
-import { GroupId } from '../types/editorial-community-id';
+import { Group } from '../types/group';
+import { GroupId } from '../types/group-id';
 import { toHtmlFragment } from '../types/html-fragment';
 
 type FetchStaticFile = (filename: string) => TE.TaskEither<'not-found' | 'unavailable', string>;
 
-type FetchEditorialCommunity = (editorialCommunityId: GroupId) => T.Task<O.Option<EditorialCommunity>>;
+type FetchEditorialCommunity = (editorialCommunityId: GroupId) => T.Task<O.Option<Group>>;
 
 type Ports = {
   fetchArticle: GetArticle,

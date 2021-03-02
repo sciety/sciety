@@ -1,7 +1,7 @@
 import * as T from 'fp-ts/Task';
 import { Doi } from '../../src/types/doi';
 import { userFollowedEditorialCommunity, userSavedArticle, userUnfollowedEditorialCommunity } from '../../src/types/domain-events';
-import { GroupId } from '../../src/types/editorial-community-id';
+import { GroupId } from '../../src/types/group-id';
 import { toUserId } from '../../src/types/user-id';
 import { GetAllEvents, projectFollowedGroupIds } from '../../src/user-page/project-followed-editorial-community-ids';
 

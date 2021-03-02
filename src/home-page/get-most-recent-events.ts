@@ -5,7 +5,7 @@ import {
   EditorialCommunityReviewedArticleEvent,
   isEditorialCommunityReviewedArticleEvent,
 } from '../types/domain-events';
-import { GroupId } from '../types/editorial-community-id';
+import { GroupId } from '../types/group-id';
 import { UserId } from '../types/user-id';
 
 export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;

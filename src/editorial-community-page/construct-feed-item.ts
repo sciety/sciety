@@ -4,15 +4,15 @@ import * as TE from 'fp-ts/TaskEither';
 import { constant, pipe } from 'fp-ts/function';
 import { Doi } from '../types/doi';
 import { EditorialCommunityReviewedArticleEvent } from '../types/domain-events';
-import { EditorialCommunity } from '../types/editorial-community';
+import { Group } from '../types/group';
 import { toHtmlFragment } from '../types/html-fragment';
 import { sanitise, SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
 export type FeedEvent = EditorialCommunityReviewedArticleEvent;
 
-export type ConstructFeedItem = (community: EditorialCommunity) => (event: FeedEvent) => T.Task<FeedItem>;
+export type ConstructFeedItem = (community: Group) => (event: FeedEvent) => T.Task<FeedItem>;
 
-const reviewedBy = (community: EditorialCommunity) => (
+const reviewedBy = (community: Group) => (
   (community.name === 'preLights') ? 'highlighted' : 'reviewed'
 );
 
@@ -31,7 +31,7 @@ type Article = {
 };
 
 const construct = (
-  community: EditorialCommunity,
+  community: Group,
   event: FeedEvent,
 ) => (article: E.Either<unknown, Article>) => ({
   avatar: community.avatarPath,
@@ -53,7 +53,7 @@ export type GetArticle = (id: Doi) => TE.TaskEither<unknown, Article>;
 
 export const constructFeedItem = (
   getArticle: GetArticle,
-): ConstructFeedItem => (community: EditorialCommunity) => (event) => pipe(
+): ConstructFeedItem => (community: Group) => (event) => pipe(
   event.articleId,
   getArticle,
   T.map(construct(community, event)),

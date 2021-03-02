@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/function';
 import { handleArticleVersionErrors } from '../../src/article-page/handle-article-version-errors';
 import { FeedItem, GetFeedItems } from '../../src/article-page/render-feed';
 import { Doi } from '../../src/types/doi';
-import { GroupId } from '../../src/types/editorial-community-id';
+import { GroupId } from '../../src/types/group-id';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
 

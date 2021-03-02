@@ -1,6 +1,6 @@
 import * as B from 'fp-ts/boolean';
 import { flow } from 'fp-ts/function';
-import { GroupId } from '../types/editorial-community-id';
+import { GroupId } from '../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 const renderFollowButton = (editorialCommunityId: GroupId) => `

@@ -3,8 +3,8 @@ import { Pool } from 'pg';
 import { Logger } from './logger';
 import { Doi } from '../types/doi';
 import { DomainEvent } from '../types/domain-events';
-import { GroupId } from '../types/editorial-community-id';
 import { EventId } from '../types/event-id';
+import { GroupId } from '../types/group-id';
 import { toReviewId } from '../types/review-id';
 import { toUserId } from '../types/user-id';
 

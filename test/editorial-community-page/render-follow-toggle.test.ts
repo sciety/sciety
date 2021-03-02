@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { JSDOM } from 'jsdom';
 import { Follows, renderFollowToggle } from '../../src/editorial-community-page/render-follow-toggle';
-import { GroupId } from '../../src/types/editorial-community-id';
+import { GroupId } from '../../src/types/group-id';
 import { toUserId } from '../../src/types/user-id';
 
 describe('render-follow-toggle', () => {

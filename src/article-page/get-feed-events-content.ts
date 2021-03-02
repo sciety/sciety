@@ -9,7 +9,7 @@ import { pipe } from 'fp-ts/function';
 import { FeedItem, GetFeedItems } from './render-feed';
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
-import { GroupId } from '../types/editorial-community-id';
+import { GroupId } from '../types/group-id';
 import { HtmlFragment } from '../types/html-fragment';
 import { HypothesisAnnotationId } from '../types/hypothesis-annotation-id';
 import { ReviewId } from '../types/review-id';

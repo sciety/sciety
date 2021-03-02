@@ -4,7 +4,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { renderFeed } from '../../src/article-page/render-feed';
 import { Doi } from '../../src/types/doi';
-import { GroupId } from '../../src/types/editorial-community-id';
+import { GroupId } from '../../src/types/group-id';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { shouldNotBeCalled } from '../should-not-be-called';
 
