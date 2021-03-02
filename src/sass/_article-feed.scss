@@ -129,6 +129,18 @@ p.article-feed__item__title {
   }
 }
 
+.article-feed__item__title {
+  color: #455a64;
+
+  a:link,
+  a:visited,
+  a:active,
+  a:hover {
+    color: #455a64;
+    font-weight: bold;
+  }
+}
+
 .responses__question {
   @include typography.sizing(14px, 1.75);
   padding-right: functions.px-to-rem(8px);
