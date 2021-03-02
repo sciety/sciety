@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import { renderReviewFeedItem } from '../../src/article-page/render-review-feed-item';
 import { Doi } from '../../src/types/doi';
-import { EditorialCommunityId } from '../../src/types/editorial-community-id';
+import { GroupId } from '../../src/types/editorial-community-id';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
 
@@ -21,7 +21,7 @@ describe('render-review-feed-item', () => {
           id: new Doi('10.1111/12345678'),
           source: O.some(new URL('http://example.com')),
           occurredAt: new Date(),
-          editorialCommunityId: new EditorialCommunityId('community-1'),
+          editorialCommunityId: new GroupId('community-1'),
           editorialCommunityName: 'Community 1',
           editorialCommunityAvatar: '/avatar',
           fullText: pipe(fullText, toHtmlFragment, sanitise, O.some),
@@ -56,7 +56,7 @@ describe('render-review-feed-item', () => {
           id: new Doi('10.1111/12345678'),
           source: O.some(new URL(source)),
           occurredAt: new Date(),
-          editorialCommunityId: new EditorialCommunityId('community-1'),
+          editorialCommunityId: new GroupId('community-1'),
           editorialCommunityName: 'Community 1',
           editorialCommunityAvatar: '/avatar',
           fullText: pipe(fullText, toHtmlFragment, sanitise, O.some),
@@ -92,7 +92,7 @@ describe('render-review-feed-item', () => {
           id: new Doi('10.1111/12345678'),
           source: O.some(new URL(source)),
           occurredAt: new Date(),
-          editorialCommunityId: new EditorialCommunityId('community-1'),
+          editorialCommunityId: new GroupId('community-1'),
           editorialCommunityName: 'Community 1',
           editorialCommunityAvatar: '/avatar',
           fullText: O.none,

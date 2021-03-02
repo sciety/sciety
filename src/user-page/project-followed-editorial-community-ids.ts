@@ -8,7 +8,7 @@ import {
   UserFollowedEditorialCommunityEvent,
   UserUnfollowedEditorialCommunityEvent,
 } from '../types/domain-events';
-import { EditorialCommunityId, eqEditorialCommunityId } from '../types/editorial-community-id';
+import { eqGroupId, GroupId } from '../types/editorial-community-id';
 import { UserId } from '../types/user-id';
 
 export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
@@ -20,14 +20,14 @@ const projectFollowedCommunities = (userId: UserId) => (events: ReadonlyArray<Do
   )),
   RA.filter((event) => event.userId === userId),
   RA.map((event) => event.editorialCommunityId),
-  RA.uniq(eqEditorialCommunityId),
+  RA.uniq(eqGroupId),
 );
 
-type ProjectFollowedEditorialCommunityIds = (userId: UserId) => T.Task<ReadonlyArray<EditorialCommunityId>>;
+type ProjectFollowedGroupIds = (userId: UserId) => T.Task<ReadonlyArray<GroupId>>;
 
-export const projectFollowedEditorialCommunityIds = (
+export const projectFollowedGroupIds = (
   getAllEvents: GetAllEvents,
-): ProjectFollowedEditorialCommunityIds => (userId) => pipe(
+): ProjectFollowedGroupIds => (userId) => pipe(
   getAllEvents,
   T.map(projectFollowedCommunities(userId)),
 );

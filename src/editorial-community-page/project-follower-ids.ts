@@ -7,10 +7,10 @@ import {
   UserFollowedEditorialCommunityEvent,
   UserUnfollowedEditorialCommunityEvent,
 } from '../types/domain-events';
-import { EditorialCommunityId, eqEditorialCommunityId } from '../types/editorial-community-id';
+import { eqGroupId, GroupId } from '../types/editorial-community-id';
 import { UserId } from '../types/user-id';
 
-type ProjectFollowerIds = (editorialCommunityId: EditorialCommunityId) => T.Task<ReadonlyArray<UserId>>;
+type ProjectFollowerIds = (editorialCommunityId: GroupId) => T.Task<ReadonlyArray<UserId>>;
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
@@ -19,11 +19,11 @@ UserFollowedEditorialCommunityEvent |
 UserUnfollowedEditorialCommunityEvent) => isUserFollowedEditorialCommunityEvent(event)
   || isUserUnfollowedEditorialCommunityEvent(event);
 
-const projection = (editorialCommunityId: EditorialCommunityId) => (
+const projection = (editorialCommunityId: GroupId) => (
   events: ReadonlyArray<DomainEvent>,
 ) => (
   events.filter(isInterestingEvent)
-    .filter((event) => eqEditorialCommunityId.equals(event.editorialCommunityId, editorialCommunityId))
+    .filter((event) => eqGroupId.equals(event.editorialCommunityId, editorialCommunityId))
     .reduce<Array<UserId>>(
     (userIds, event) => {
       if (isUserFollowedEditorialCommunityEvent(event)) {

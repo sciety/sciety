@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/function';
 import { handleArticleVersionErrors } from '../../src/article-page/handle-article-version-errors';
 import { FeedItem, GetFeedItems } from '../../src/article-page/render-feed';
 import { Doi } from '../../src/types/doi';
-import { EditorialCommunityId } from '../../src/types/editorial-community-id';
+import { GroupId } from '../../src/types/editorial-community-id';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
 
@@ -36,7 +36,7 @@ describe('handle-article-version-errors', () => {
           id: new Doi('10.1111/12345678'),
           occurredAt: new Date(),
           source: O.some(new URL('https://example.com')),
-          editorialCommunityId: new EditorialCommunityId('community-1'),
+          editorialCommunityId: new GroupId('community-1'),
           editorialCommunityName: 'OUR COMMUNITY',
           editorialCommunityAvatar: '/images/us.png',
           fullText: pipe('review-1', toHtmlFragment, sanitise, O.some),
@@ -46,7 +46,7 @@ describe('handle-article-version-errors', () => {
           id: new Doi('10.1111/12345679'),
           occurredAt: new Date(),
           source: O.some(new URL('https://example.com')),
-          editorialCommunityId: new EditorialCommunityId('community-1'),
+          editorialCommunityId: new GroupId('community-1'),
           editorialCommunityName: 'OUR COMMUNITY',
           editorialCommunityAvatar: '/images/us.png',
           fullText: pipe('review-2', toHtmlFragment, sanitise, O.some),

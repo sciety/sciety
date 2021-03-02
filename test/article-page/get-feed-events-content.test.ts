@@ -6,7 +6,7 @@ import {
   Feed, getFeedEventsContent, GetReview,
 } from '../../src/article-page/get-feed-events-content';
 import { Doi } from '../../src/types/doi';
-import { EditorialCommunityId } from '../../src/types/editorial-community-id';
+import { GroupId } from '../../src/types/editorial-community-id';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 
 describe('get-feed-events-content', () => {
@@ -15,13 +15,13 @@ describe('get-feed-events-content', () => {
       const getFeedEvents: Feed = () => T.of([
         {
           type: 'review',
-          editorialCommunityId: new EditorialCommunityId('communityId'),
+          editorialCommunityId: new GroupId('communityId'),
           reviewId: new Doi('10.1101/111111'),
           occurredAt: new Date(),
         },
         {
           type: 'review',
-          editorialCommunityId: new EditorialCommunityId('communityId'),
+          editorialCommunityId: new GroupId('communityId'),
           reviewId: new Doi('10.1101/222222'),
           occurredAt: new Date(),
         },

@@ -5,11 +5,11 @@ import {
   EditorialCommunityReviewedArticleEvent,
   isEditorialCommunityReviewedArticleEvent,
 } from '../types/domain-events';
-import { EditorialCommunityId } from '../types/editorial-community-id';
+import { GroupId } from '../types/editorial-community-id';
 import { UserId } from '../types/user-id';
 
 export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
-type Follows = (userId: UserId, editorialCommunityId: EditorialCommunityId) => T.Task<boolean>;
+type Follows = (userId: UserId, editorialCommunityId: GroupId) => T.Task<boolean>;
 
 export const getMostRecentEvents = (
   getAllEvents: GetAllEvents,

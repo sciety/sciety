@@ -1,10 +1,10 @@
 import * as O from 'fp-ts/Option';
 import { inMemoryEditorialCommunityRepository } from '../../src/infrastructure/in-memory-editorial-communities';
 import { EditorialCommunity } from '../../src/types/editorial-community';
-import { EditorialCommunityId } from '../../src/types/editorial-community-id';
+import { GroupId } from '../../src/types/editorial-community-id';
 import { EditorialCommunityRepository } from '../../src/types/editorial-community-repository';
 
-const editorialCommunityId = new EditorialCommunityId('530812a5-838a-4fb2-95b6-eb4828f0d37c');
+const editorialCommunityId = new GroupId('530812a5-838a-4fb2-95b6-eb4828f0d37c');
 
 describe('in-memory-editorial-communities', () => {
   let repository: EditorialCommunityRepository;
@@ -21,11 +21,11 @@ describe('in-memory-editorial-communities', () => {
 
   describe('lookup', () => {
     it('returns nothing when the editorial community does not exist', async () => {
-      expect((await repository.lookup(new EditorialCommunityId('no-such-thing'))())).toStrictEqual(O.none);
+      expect((await repository.lookup(new GroupId('no-such-thing'))())).toStrictEqual(O.none);
     });
 
     it('returns the editorial community when it does exist', async () => {
-      const actual = await repository.lookup(new EditorialCommunityId(editorialCommunityId.value))();
+      const actual = await repository.lookup(new GroupId(editorialCommunityId.value))();
 
       expect(actual).toStrictEqual(O.some(community));
     });

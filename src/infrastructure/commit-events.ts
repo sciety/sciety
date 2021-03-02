@@ -5,7 +5,7 @@ import { Pool } from 'pg';
 import { Logger } from './logger';
 import { Doi } from '../types/doi';
 import { DomainEvent, RuntimeGeneratedEvent } from '../types/domain-events';
-import { EditorialCommunityId } from '../types/editorial-community-id';
+import { GroupId } from '../types/editorial-community-id';
 import { HypothesisAnnotationId } from '../types/hypothesis-annotation-id';
 import * as NcrcId from '../types/ncrc-id';
 import * as ReviewId from '../types/review-id';
@@ -18,7 +18,7 @@ const replacer = (key: string, value: unknown) => {
     return undefined;
   }
 
-  if (value instanceof EditorialCommunityId) {
+  if (value instanceof GroupId) {
     return value.value;
   }
 

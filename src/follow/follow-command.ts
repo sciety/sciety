@@ -1,6 +1,6 @@
 import * as T from 'fp-ts/Task';
 import { UserFollowedEditorialCommunityEvent } from '../types/domain-events';
-import { EditorialCommunityId } from '../types/editorial-community-id';
+import { GroupId } from '../types/editorial-community-id';
 import { FollowList } from '../types/follow-list';
 import { User } from '../types/user';
 import { UserId } from '../types/user-id';
@@ -8,7 +8,7 @@ import { UserId } from '../types/user-id';
 export type CommitEvents = (events: ReadonlyArray<UserFollowedEditorialCommunityEvent>) => T.Task<void>;
 export type GetFollowList = (userId: UserId) => Promise<FollowList>;
 
-type FollowCommand = (user: User, editorialCommunityId: EditorialCommunityId) => Promise<void>;
+type FollowCommand = (user: User, editorialCommunityId: GroupId) => Promise<void>;
 
 export const followCommand = (
   getFollowList: GetFollowList,

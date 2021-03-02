@@ -3,12 +3,12 @@ import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
 import { Doi, eqDoi } from '../types/doi';
 import { DomainEvent, isEditorialCommunityReviewedArticleEvent } from '../types/domain-events';
-import { EditorialCommunityId } from '../types/editorial-community-id';
+import { GroupId } from '../types/editorial-community-id';
 import { ReviewId } from '../types/review-id';
 
 export type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
   reviewId: ReviewId,
-  editorialCommunityId: EditorialCommunityId,
+  editorialCommunityId: GroupId,
   occurredAt: Date,
 }>>;
 

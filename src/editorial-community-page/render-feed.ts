@@ -7,14 +7,14 @@ import { ConstructFeedItem, FeedEvent } from './construct-feed-item';
 import { RenderFollowToggle } from './render-follow-toggle';
 import { FeedItem } from '../shared-components';
 import { EditorialCommunity } from '../types/editorial-community';
-import { EditorialCommunityId } from '../types/editorial-community-id';
+import { GroupId } from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
 type RenderFeed = (editorialCommunity: EditorialCommunity, userId: O.Option<UserId>)
 => TE.TaskEither<never, HtmlFragment>;
 
-export type GetEvents = (editorialCommunityId: EditorialCommunityId) => T.Task<ReadonlyArray<FeedEvent>>;
+export type GetEvents = (editorialCommunityId: GroupId) => T.Task<ReadonlyArray<FeedEvent>>;
 
 type RenderSummaryFeedList = (events: ReadonlyArray<FeedItem>) => O.Option<HtmlFragment>;
 

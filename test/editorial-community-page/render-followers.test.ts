@@ -1,13 +1,13 @@
 import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import { renderFollowers } from '../../src/editorial-community-page/render-followers';
-import { EditorialCommunityId } from '../../src/types/editorial-community-id';
+import { GroupId } from '../../src/types/editorial-community-id';
 
 describe('render-followers', () => {
   it('renders the follower count', async () => {
     const rendered = await renderFollowers(
       () => T.of(['11111111', '22222222']),
-    )(new EditorialCommunityId('arbitrary id'))();
+    )(new GroupId('arbitrary id'))();
 
     expect(rendered).toStrictEqual(E.right(expect.stringContaining('2 users')));
   });

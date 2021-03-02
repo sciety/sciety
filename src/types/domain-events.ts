@@ -1,5 +1,5 @@
 import { Doi } from './doi';
-import { EditorialCommunityId } from './editorial-community-id';
+import { GroupId } from './editorial-community-id';
 import { EventId, generate } from './event-id';
 import { ReviewId } from './review-id';
 import { UserId } from './user-id';
@@ -9,7 +9,7 @@ import { UserId } from './user-id';
 export type EditorialCommunityReviewedArticleEvent = Readonly<{
   type: 'EditorialCommunityReviewedArticle',
   date: Date,
-  editorialCommunityId: EditorialCommunityId,
+  editorialCommunityId: GroupId,
   articleId: Doi,
   reviewId: ReviewId,
 }>;
@@ -20,7 +20,7 @@ event is EditorialCommunityReviewedArticleEvent => (
 );
 
 export const editorialCommunityReviewedArticle = (
-  editorialCommunityId: EditorialCommunityId,
+  editorialCommunityId: GroupId,
   doi: Doi,
   reviewId: ReviewId,
   date: Date = new Date(),
@@ -39,12 +39,12 @@ export type UserFollowedEditorialCommunityEvent = Readonly<{
   type: 'UserFollowedEditorialCommunity',
   date: Date,
   userId: UserId,
-  editorialCommunityId: EditorialCommunityId,
+  editorialCommunityId: GroupId,
 }>;
 
 export const userFollowedEditorialCommunity = (
   userId: UserId,
-  editorialCommunityId: EditorialCommunityId,
+  editorialCommunityId: GroupId,
 ): UserFollowedEditorialCommunityEvent => ({
   id: generate(),
   type: 'UserFollowedEditorialCommunity',
@@ -65,12 +65,12 @@ export type UserUnfollowedEditorialCommunityEvent = Readonly<{
   type: 'UserUnfollowedEditorialCommunity',
   date: Date,
   userId: UserId,
-  editorialCommunityId: EditorialCommunityId,
+  editorialCommunityId: GroupId,
 }>;
 
 export const userUnfollowedEditorialCommunity = (
   userId: UserId,
-  editorialCommunityId: EditorialCommunityId,
+  editorialCommunityId: GroupId,
 ): UserUnfollowedEditorialCommunityEvent => ({
   id: generate(),
   type: 'UserUnfollowedEditorialCommunity',

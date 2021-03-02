@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
-import { EditorialCommunityId } from '../types/editorial-community-id';
+import { GroupId } from '../types/editorial-community-id';
 
 type Actor = {
   url: string,
@@ -9,9 +9,9 @@ type Actor = {
   imageUrl: string,
 };
 
-type GetActor = (id: EditorialCommunityId) => T.Task<Actor>;
+type GetActor = (id: GroupId) => T.Task<Actor>;
 
-export type GetGroup = (editorialCommunityId: EditorialCommunityId) => T.Task<O.Option<{
+export type GetGroup = (editorialCommunityId: GroupId) => T.Task<O.Option<{
   name: string,
   avatarPath: string,
 }>>;

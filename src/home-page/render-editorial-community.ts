@@ -2,13 +2,13 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { RenderFollowToggle } from './render-follow-toggle';
-import { EditorialCommunityId } from '../types/editorial-community-id';
+import { GroupId } from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
 export type Community = {
   avatarPath: string,
-  id: EditorialCommunityId,
+  id: GroupId,
   name: string,
 };
 

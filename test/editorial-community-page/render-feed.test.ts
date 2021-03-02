@@ -6,17 +6,17 @@ import { pipe } from 'fp-ts/function';
 import { GetEvents, renderFeed } from '../../src/editorial-community-page/render-feed';
 import { RenderFollowToggle } from '../../src/editorial-community-page/render-follow-toggle';
 import { Doi } from '../../src/types/doi';
-import { EditorialCommunityId } from '../../src/types/editorial-community-id';
+import { GroupId } from '../../src/types/editorial-community-id';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
 
 describe('render feed', () => {
   const stubGetEvents: GetEvents = () => T.of([]);
   const stubRenderFollowToggle: RenderFollowToggle = () => T.of(toHtmlFragment(''));
-  const anEditorialCommunityId = new EditorialCommunityId('');
+  const anGroupId = new GroupId('');
   const aUserId = O.none;
   const community = {
-    id: anEditorialCommunityId,
+    id: anGroupId,
     name: 'name',
     avatar: new URL('http://example.com/image'),
     avatarPath: '',

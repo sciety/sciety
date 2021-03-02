@@ -1,10 +1,10 @@
-import { EditorialCommunityId } from '../../src/types/editorial-community-id';
+import { GroupId } from '../../src/types/editorial-community-id';
 import { FollowList } from '../../src/types/follow-list';
 import { toUserId } from '../../src/types/user-id';
 
 describe('follow-list', () => {
   const userId1 = toUserId('u1');
-  const editorialCommunity1Id = new EditorialCommunityId('id1');
+  const editorialCommunity1Id = new GroupId('id1');
 
   describe('follow', () => {
     describe('when the community to be followed is not currently followed', () => {
@@ -23,7 +23,7 @@ describe('follow-list', () => {
         const list = new FollowList(userId1);
 
         list.follow(editorialCommunity1Id);
-        const events = list.follow(new EditorialCommunityId(editorialCommunity1Id.value));
+        const events = list.follow(new GroupId(editorialCommunity1Id.value));
 
         expect(events).toHaveLength(0);
       });

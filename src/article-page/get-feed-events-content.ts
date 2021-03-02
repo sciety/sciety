@@ -9,7 +9,7 @@ import { pipe } from 'fp-ts/function';
 import { FeedItem, GetFeedItems } from './render-feed';
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
-import { EditorialCommunityId } from '../types/editorial-community-id';
+import { GroupId } from '../types/editorial-community-id';
 import { HtmlFragment } from '../types/html-fragment';
 import { HypothesisAnnotationId } from '../types/hypothesis-annotation-id';
 import { ReviewId } from '../types/review-id';
@@ -17,7 +17,7 @@ import { sanitise } from '../types/sanitised-html-fragment';
 
 type ReviewEvent = {
   type: 'review',
-  editorialCommunityId: EditorialCommunityId,
+  editorialCommunityId: GroupId,
   reviewId: ReviewId,
   occurredAt: Date,
 };
@@ -38,7 +38,7 @@ export type GetReview = (id: ReviewId) => TE.TaskEither<unknown, {
   url: URL,
 }>;
 
-type GetEditorialCommunity = (id: EditorialCommunityId) => T.Task<{
+type GetEditorialCommunity = (id: GroupId) => T.Task<{
   name: string,
   avatarPath: string,
 }>;

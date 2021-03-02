@@ -1,12 +1,12 @@
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow } from 'fp-ts/function';
-import { EditorialCommunityId } from '../types/editorial-community-id';
+import { GroupId } from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
-type RenderFollowers = (editorialCommunityId: EditorialCommunityId) => TE.TaskEither<never, HtmlFragment>;
+type RenderFollowers = (editorialCommunityId: GroupId) => TE.TaskEither<never, HtmlFragment>;
 
-type GetFollowers<U> = (editorialCommunityId: EditorialCommunityId) => T.Task<ReadonlyArray<U>>;
+type GetFollowers<U> = (editorialCommunityId: GroupId) => T.Task<ReadonlyArray<U>>;
 
 const renderFragment = (followerCount: number) => `
   <section class="followers">

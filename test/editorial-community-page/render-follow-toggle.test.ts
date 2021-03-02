@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { JSDOM } from 'jsdom';
 import { Follows, renderFollowToggle } from '../../src/editorial-community-page/render-follow-toggle';
-import { EditorialCommunityId } from '../../src/types/editorial-community-id';
+import { GroupId } from '../../src/types/editorial-community-id';
 import { toUserId } from '../../src/types/user-id';
 
 describe('render-follow-toggle', () => {
@@ -10,7 +10,7 @@ describe('render-follow-toggle', () => {
     describe('when the community is currently followed', () => {
       it('shows an unfollow button', async () => {
         const userId = toUserId('u1');
-        const editorialCommunityId = new EditorialCommunityId('');
+        const editorialCommunityId = new GroupId('');
 
         const follows: Follows = () => T.of(true);
 
@@ -28,7 +28,7 @@ describe('render-follow-toggle', () => {
     describe('when the community is not currently followed', () => {
       it('shows a follow button', async () => {
         const userId = toUserId('u1');
-        const editorialCommunityId = new EditorialCommunityId('');
+        const editorialCommunityId = new GroupId('');
 
         const follows: Follows = () => T.of(false);
 
@@ -44,7 +44,7 @@ describe('render-follow-toggle', () => {
 
   describe('the user is not logged in', () => {
     it('shows a follow button', async () => {
-      const editorialCommunityId = new EditorialCommunityId('');
+      const editorialCommunityId = new GroupId('');
 
       const follows: Follows = () => T.of(false);
 

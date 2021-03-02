@@ -9,12 +9,12 @@ import { mergeFeeds } from './merge-feeds';
 import { GetFeedItems } from './render-feed';
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
-import { EditorialCommunityId } from '../types/editorial-community-id';
+import { GroupId } from '../types/editorial-community-id';
 import { ReviewId } from '../types/review-id';
 
 export type FindReviewsForArticleDoi = (articleVersionDoi: Doi) => T.Task<ReadonlyArray<{
   reviewId: ReviewId,
-  editorialCommunityId: EditorialCommunityId,
+  editorialCommunityId: GroupId,
   occurredAt: Date,
 }>>;
 
@@ -24,7 +24,7 @@ export type FindVersionsForArticleDoi = (doi: Doi, server: ArticleServer) => T.T
   version: number,
 }>>;
 
-export type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.Task<O.Option<{
+export type GetEditorialCommunity = (editorialCommunityId: GroupId) => T.Task<O.Option<{
   name: string,
   avatarPath: string,
 }>>;

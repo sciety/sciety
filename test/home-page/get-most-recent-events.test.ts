@@ -2,11 +2,11 @@ import * as T from 'fp-ts/Task';
 import { GetAllEvents, getMostRecentEvents } from '../../src/home-page/get-most-recent-events';
 import { Doi } from '../../src/types/doi';
 import { DomainEvent } from '../../src/types/domain-events';
-import { EditorialCommunityId } from '../../src/types/editorial-community-id';
+import { GroupId } from '../../src/types/editorial-community-id';
 import { toUserId } from '../../src/types/user-id';
 
 describe('get-most-recent-events', () => {
-  const editorialCommunity1 = new EditorialCommunityId('a');
+  const editorialCommunity1 = new GroupId('a');
   const dummyEvent: DomainEvent = {
     type: 'EditorialCommunityReviewedArticle',
     date: new Date('2020-07-08'),

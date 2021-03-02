@@ -1,19 +1,19 @@
 import * as T from 'fp-ts/Task';
 import { follows } from '../../src/infrastructure/follows';
 import { userFollowedEditorialCommunity, userUnfollowedEditorialCommunity } from '../../src/types/domain-events';
-import { EditorialCommunityId } from '../../src/types/editorial-community-id';
+import { GroupId } from '../../src/types/editorial-community-id';
 import { toUserId } from '../../src/types/user-id';
 
 describe('follows', () => {
   const someone = toUserId('someone');
-  const editorialCommunity1 = new EditorialCommunityId('community-1');
-  const editorialCommunity2 = new EditorialCommunityId('community-2');
+  const editorialCommunity1 = new GroupId('community-1');
+  const editorialCommunity2 = new GroupId('community-2');
 
   describe('when there are no events', () => {
     const getAllEvents = T.of([]);
 
     it('is not following the community', async () => {
-      const result = await follows(getAllEvents)(someone, new EditorialCommunityId('community-1'))();
+      const result = await follows(getAllEvents)(someone, new GroupId('community-1'))();
 
       expect(result).toBe(false);
     });
@@ -25,7 +25,7 @@ describe('follows', () => {
     ]);
 
     it('is following the community', async () => {
-      const result = await follows(getAllEvents)(someone, new EditorialCommunityId('community-1'))();
+      const result = await follows(getAllEvents)(someone, new GroupId('community-1'))();
 
       expect(result).toBe(true);
     });
@@ -38,7 +38,7 @@ describe('follows', () => {
     ]);
 
     it('not following the community', async () => {
-      const result = await follows(getAllEvents)(someone, new EditorialCommunityId('community-1'))();
+      const result = await follows(getAllEvents)(someone, new GroupId('community-1'))();
 
       expect(result).toBe(false);
     });
@@ -51,7 +51,7 @@ describe('follows', () => {
     ]);
 
     it('not following the community', async () => {
-      const result = await follows(getAllEvents)(someone, new EditorialCommunityId('community-1'))();
+      const result = await follows(getAllEvents)(someone, new GroupId('community-1'))();
 
       expect(result).toBe(false);
     });
@@ -65,7 +65,7 @@ describe('follows', () => {
     ]);
 
     it('is following the community', async () => {
-      const result = await follows(getAllEvents)(someone, new EditorialCommunityId('community-1'))();
+      const result = await follows(getAllEvents)(someone, new GroupId('community-1'))();
 
       expect(result).toBe(true);
     });

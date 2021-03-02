@@ -5,7 +5,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { fetchSavedArticles } from './fetch-saved-articles';
-import { GetAllEvents, projectFollowedEditorialCommunityIds } from './project-followed-editorial-community-ids';
+import { GetAllEvents, projectFollowedGroupIds } from './project-followed-editorial-community-ids';
 import { projectSavedArticleDois } from './project-saved-article-dois';
 import { renderFollowList } from './render-follow-list';
 import { renderFollowToggle } from './render-follow-toggle';
@@ -14,15 +14,15 @@ import { renderHeader, UserDetails } from './render-header';
 import { renderErrorPage, renderPage } from './render-page';
 import { renderSavedArticles } from './render-saved-articles';
 import { Doi } from '../types/doi';
-import { EditorialCommunityId } from '../types/editorial-community-id';
+import { GroupId } from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { User } from '../types/user';
 import { toUserId, UserId } from '../types/user-id';
 
-type FetchEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.Task<O.Option<{
-  id: EditorialCommunityId,
+type FetchEditorialCommunity = (editorialCommunityId: GroupId) => T.Task<O.Option<{
+  id: GroupId,
   name: string,
   avatarPath: string,
 }>>;
@@ -67,7 +67,7 @@ export const userPage = (ports: Ports): UserPage => {
         ),
         followList: pipe(
           userId,
-          projectFollowedEditorialCommunityIds(ports.getAllEvents),
+          projectFollowedGroupIds(ports.getAllEvents),
           T.chain(T.traverseArray(ports.getEditorialCommunity)),
           T.map(RA.compact),
           T.chain(T.traverseArray(renderFollowedEditorialCommunity(renderFollowToggle, ports.follows)(viewingUserId))),

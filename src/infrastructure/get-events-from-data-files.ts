@@ -13,7 +13,7 @@ import { DateFromISOString } from 'io-ts-types';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { ReviewIdFromString } from '../types/codecs/ReviewIdFromString';
 import { DomainEvent, editorialCommunityReviewedArticle } from '../types/domain-events';
-import { EditorialCommunityId } from '../types/editorial-community-id';
+import { GroupId } from '../types/editorial-community-id';
 
 const reviews = t.readonlyArray(t.tuple([
   DateFromISOString,
@@ -22,7 +22,7 @@ const reviews = t.readonlyArray(t.tuple([
 ]));
 
 export const getEventsFromDataFiles = (
-  editorialCommunityIds: RNEA.ReadonlyNonEmptyArray<EditorialCommunityId>,
+  editorialCommunityIds: RNEA.ReadonlyNonEmptyArray<GroupId>,
 ): TE.TaskEither<unknown, RNEA.ReadonlyNonEmptyArray<DomainEvent>> => pipe(
   editorialCommunityIds,
   RNEA.map((editorialCommunityId) => pipe(

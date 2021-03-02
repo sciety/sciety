@@ -2,19 +2,19 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
-import { EditorialCommunityId } from '../types/editorial-community-id';
+import { GroupId } from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
 export type RenderFollowToggle = (
   userId: O.Option<UserId>,
-  editorialCommunityId: EditorialCommunityId,
+  editorialCommunityId: GroupId,
   editorialCommunityName: string,
 ) => T.Task<HtmlFragment>;
 
-type Follows = (userId: UserId, editorialCommunityId: EditorialCommunityId) => T.Task<boolean>;
+type Follows = (userId: UserId, editorialCommunityId: GroupId) => T.Task<boolean>;
 
-const renderFollowButton = (editorialCommunityId: EditorialCommunityId, editorialCommunityName: string) => `
+const renderFollowButton = (editorialCommunityId: GroupId, editorialCommunityName: string) => `
   <form method="post" action="/follow">
     <input type="hidden" name="editorialcommunityid" value="${editorialCommunityId.value}" />
     <button type="submit" class="button button--primary button--small" aria-label="Follow ${editorialCommunityName}">
@@ -23,7 +23,7 @@ const renderFollowButton = (editorialCommunityId: EditorialCommunityId, editoria
   </form>
 `;
 
-const renderUnfollowButton = (editorialCommunityId: EditorialCommunityId, editorialCommunityName: string) => `
+const renderUnfollowButton = (editorialCommunityId: GroupId, editorialCommunityName: string) => `
   <form method="post" action="/unfollow">
     <input type="hidden" name="editorialcommunityid" value="${editorialCommunityId.value}" />
     <button type="submit" class="button button--small" aria-label="Unfollow ${editorialCommunityName}">

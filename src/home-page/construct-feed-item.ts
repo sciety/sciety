@@ -5,7 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { constant, pipe } from 'fp-ts/function';
 import { Doi } from '../types/doi';
 import { EditorialCommunityReviewedArticleEvent } from '../types/domain-events';
-import { EditorialCommunityId } from '../types/editorial-community-id';
+import { GroupId } from '../types/editorial-community-id';
 import { toHtmlFragment } from '../types/html-fragment';
 import { sanitise, SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
@@ -57,7 +57,7 @@ const construct = ({ actor, article, event }: Inputs) => ({
   verb: reviewedBy(actor),
 });
 
-type GetActor = (id: EditorialCommunityId) => T.Task<Actor>;
+type GetActor = (id: GroupId) => T.Task<Actor>;
 
 export type GetArticle = (id: Doi) => TE.TaskEither<unknown, Article>;
 

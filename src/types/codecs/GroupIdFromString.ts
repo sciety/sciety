@@ -2,15 +2,15 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
-import * as EditorialCommunityId from '../editorial-community-id';
+import * as GroupId from '../editorial-community-id';
 
-export const EditorialCommunityIdFromString = new t.Type(
-  'EditorialCommunityIdFromString',
-  (u): u is EditorialCommunityId.EditorialCommunityId => u instanceof EditorialCommunityId.EditorialCommunityId,
+export const GroupIdFromString = new t.Type(
+  'GroupIdFromString',
+  (u): u is GroupId.GroupId => u instanceof GroupId.GroupId,
   (u, c) => pipe(
     t.string.validate(u, c),
     E.chain(flow(
-      EditorialCommunityId.fromString,
+      GroupId.fromString,
       O.fold(
         () => t.failure(u, c),
         t.success,

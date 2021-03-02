@@ -1,38 +1,38 @@
 import * as T from 'fp-ts/Task';
 import { Doi } from '../../src/types/doi';
 import { userFollowedEditorialCommunity, userSavedArticle, userUnfollowedEditorialCommunity } from '../../src/types/domain-events';
-import { EditorialCommunityId } from '../../src/types/editorial-community-id';
+import { GroupId } from '../../src/types/editorial-community-id';
 import { toUserId } from '../../src/types/user-id';
-import { GetAllEvents, projectFollowedEditorialCommunityIds } from '../../src/user-page/project-followed-editorial-community-ids';
+import { GetAllEvents, projectFollowedGroupIds } from '../../src/user-page/project-followed-editorial-community-ids';
 
 describe('project-followed-editorial-community-ids', () => {
   const getAllEvents: GetAllEvents = T.of([
-    userFollowedEditorialCommunity(toUserId('someone'), new EditorialCommunityId('316db7d9-88cc-4c26-b386-f067e0f56334')),
-    userFollowedEditorialCommunity(toUserId('someone'), new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002')),
-    userUnfollowedEditorialCommunity(toUserId('someone'), new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002')),
-    userFollowedEditorialCommunity(toUserId('someone'), new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002')),
-    userFollowedEditorialCommunity(toUserId('someone'), new EditorialCommunityId('74fd66e9-3b90-4b5a-a4ab-5be83db4c5de')),
+    userFollowedEditorialCommunity(toUserId('someone'), new GroupId('316db7d9-88cc-4c26-b386-f067e0f56334')),
+    userFollowedEditorialCommunity(toUserId('someone'), new GroupId('53ed5364-a016-11ea-bb37-0242ac130002')),
+    userUnfollowedEditorialCommunity(toUserId('someone'), new GroupId('53ed5364-a016-11ea-bb37-0242ac130002')),
+    userFollowedEditorialCommunity(toUserId('someone'), new GroupId('53ed5364-a016-11ea-bb37-0242ac130002')),
+    userFollowedEditorialCommunity(toUserId('someone'), new GroupId('74fd66e9-3b90-4b5a-a4ab-5be83db4c5de')),
     userSavedArticle(toUserId('someone'), new Doi('10.1101/111111')),
-    userFollowedEditorialCommunity(toUserId('someoneelse'), new EditorialCommunityId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0')),
-    userUnfollowedEditorialCommunity(toUserId('someoneelse'), new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002')),
+    userFollowedEditorialCommunity(toUserId('someoneelse'), new GroupId('b560187e-f2fb-4ff9-a861-a204f3fc0fb0')),
+    userUnfollowedEditorialCommunity(toUserId('someoneelse'), new GroupId('53ed5364-a016-11ea-bb37-0242ac130002')),
   ]);
 
   it('returns a list', async () => {
-    const actual = await projectFollowedEditorialCommunityIds(getAllEvents)(toUserId('someone'))();
+    const actual = await projectFollowedGroupIds(getAllEvents)(toUserId('someone'))();
     const expected = [
-      new EditorialCommunityId('316db7d9-88cc-4c26-b386-f067e0f56334'),
-      new EditorialCommunityId('53ed5364-a016-11ea-bb37-0242ac130002'),
-      new EditorialCommunityId('74fd66e9-3b90-4b5a-a4ab-5be83db4c5de'),
+      new GroupId('316db7d9-88cc-4c26-b386-f067e0f56334'),
+      new GroupId('53ed5364-a016-11ea-bb37-0242ac130002'),
+      new GroupId('74fd66e9-3b90-4b5a-a4ab-5be83db4c5de'),
     ];
 
     expect(actual).toStrictEqual(expected);
   });
 
   describe('when a community is followed', () => {
-    const community1 = new EditorialCommunityId('community-1');
+    const community1 = new GroupId('community-1');
 
     it('lists that community', async () => {
-      const followed = await projectFollowedEditorialCommunityIds(T.of([
+      const followed = await projectFollowedGroupIds(T.of([
         userFollowedEditorialCommunity(toUserId('someone'), community1),
       ]))(toUserId('someone'))();
 
@@ -41,10 +41,10 @@ describe('project-followed-editorial-community-ids', () => {
   });
 
   describe('when a community is unfollowed', () => {
-    const community1 = new EditorialCommunityId('community-1');
+    const community1 = new GroupId('community-1');
 
     it.skip('does not list that community', async () => {
-      const followed = await projectFollowedEditorialCommunityIds(T.of([
+      const followed = await projectFollowedGroupIds(T.of([
         userFollowedEditorialCommunity(toUserId('someone'), community1),
         userUnfollowedEditorialCommunity(toUserId('someone'), community1),
       ]))(toUserId('someone'))();

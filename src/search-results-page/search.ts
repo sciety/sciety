@@ -6,7 +6,7 @@ import { flow, pipe } from 'fp-ts/function';
 import { ArticleSearchResult, SearchResult } from './render-search-result';
 import { SearchResults } from './render-search-results';
 import { Doi } from '../types/doi';
-import { EditorialCommunityId } from '../types/editorial-community-id';
+import { GroupId } from '../types/editorial-community-id';
 import { ReviewId } from '../types/review-id';
 
 type OriginalSearchResults = {
@@ -18,7 +18,7 @@ type FindArticles = (query: string) => TE.TaskEither<'unavailable', OriginalSear
 
 export type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
   reviewId: ReviewId,
-  editorialCommunityId: EditorialCommunityId,
+  editorialCommunityId: GroupId,
 }>>;
 
 type Search = (query: string) => TE.TaskEither<'unavailable', SearchResults>;

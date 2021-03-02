@@ -4,7 +4,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { renderFeed } from '../../src/article-page/render-feed';
 import { Doi } from '../../src/types/doi';
-import { EditorialCommunityId } from '../../src/types/editorial-community-id';
+import { GroupId } from '../../src/types/editorial-community-id';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { shouldNotBeCalled } from '../should-not-be-called';
 
@@ -32,7 +32,7 @@ describe('render-feed', () => {
             id: new Doi('10.1111/12345678'),
             source: O.some(new URL('http://example.com')),
             occurredAt: new Date(),
-            editorialCommunityId: new EditorialCommunityId(''),
+            editorialCommunityId: new GroupId(''),
             editorialCommunityName: '',
             editorialCommunityAvatar: '/images/xyz.png',
             fullText: O.none,

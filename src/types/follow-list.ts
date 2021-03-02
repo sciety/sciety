@@ -4,7 +4,7 @@ import {
   userUnfollowedEditorialCommunity,
   UserUnfollowedEditorialCommunityEvent,
 } from './domain-events';
-import { EditorialCommunityId } from './editorial-community-id';
+import { GroupId } from './editorial-community-id';
 import { UserId } from './user-id';
 
 export class FollowList {
@@ -17,7 +17,7 @@ export class FollowList {
     this.items = items;
   }
 
-  follow(editorialCommunityId: EditorialCommunityId): ReadonlyArray<UserFollowedEditorialCommunityEvent> {
+  follow(editorialCommunityId: GroupId): ReadonlyArray<UserFollowedEditorialCommunityEvent> {
     if (this.items.includes(editorialCommunityId.value)) {
       return [];
     }
@@ -29,7 +29,7 @@ export class FollowList {
     ];
   }
 
-  unfollow(editorialCommunityId: EditorialCommunityId): ReadonlyArray<UserUnfollowedEditorialCommunityEvent> {
+  unfollow(editorialCommunityId: GroupId): ReadonlyArray<UserUnfollowedEditorialCommunityEvent> {
     if (!this.items.includes(editorialCommunityId.value)) {
       return [];
     }

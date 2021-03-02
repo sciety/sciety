@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { EditorialCommunity } from '../types/editorial-community';
-import { EditorialCommunityId } from '../types/editorial-community-id';
+import { GroupId } from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
@@ -54,7 +54,7 @@ export const renderPage = (
   renderPageHeader: RenderPageHeader,
   renderDescription: RenderDescription,
   renderFeed: RenderFeed,
-  renderFollowers: (editorialCommunityId: EditorialCommunityId) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>,
+  renderFollowers: (editorialCommunityId: GroupId) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>,
 ): RenderPage => (editorialCommunity, userId) => pipe(
   {
     header: TE.right(renderPageHeader(editorialCommunity)),

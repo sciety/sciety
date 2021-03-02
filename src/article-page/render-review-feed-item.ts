@@ -5,7 +5,7 @@ import { constant, flow, pipe } from 'fp-ts/function';
 import clip from 'text-clipper';
 import { RenderReviewResponses } from './render-review-responses';
 import { templateDate } from '../shared-components';
-import { EditorialCommunityId } from '../types/editorial-community-id';
+import { GroupId } from '../types/editorial-community-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { ReviewId, toString } from '../types/review-id';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
@@ -18,7 +18,7 @@ export type ReviewFeedItem = {
   id: ReviewId,
   source: O.Option<URL>,
   occurredAt: Date,
-  editorialCommunityId: EditorialCommunityId,
+  editorialCommunityId: GroupId,
   editorialCommunityName: string,
   editorialCommunityAvatar: string,
   fullText: O.Option<SanitisedHtmlFragment>,

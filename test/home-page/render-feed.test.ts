@@ -10,7 +10,7 @@ import {
   editorialCommunityReviewedArticle,
   EditorialCommunityReviewedArticleEvent,
 } from '../../src/types/domain-events';
-import { EditorialCommunityId } from '../../src/types/editorial-community-id';
+import { GroupId } from '../../src/types/editorial-community-id';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { toReviewId } from '../../src/types/review-id';
 import { toUserId } from '../../src/types/user-id';
@@ -22,7 +22,7 @@ describe('render-feed', () => {
       it('returns a list', async () => {
         const dummyGetEvents: GetEvents<EditorialCommunityReviewedArticleEvent> = () => T.of([
           editorialCommunityReviewedArticle(
-            new EditorialCommunityId('our-community'),
+            new GroupId('our-community'),
             new Doi('10.1101/111111'),
             toReviewId('doi:10.1101/222222'),
           ),

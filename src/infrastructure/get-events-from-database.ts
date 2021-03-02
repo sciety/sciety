@@ -3,7 +3,7 @@ import { Pool } from 'pg';
 import { Logger } from './logger';
 import { Doi } from '../types/doi';
 import { DomainEvent } from '../types/domain-events';
-import { EditorialCommunityId } from '../types/editorial-community-id';
+import { GroupId } from '../types/editorial-community-id';
 import { EventId } from '../types/event-id';
 import { toReviewId } from '../types/review-id';
 import { toUserId } from '../types/user-id';
@@ -45,7 +45,7 @@ export const getEventsFromDatabase = async (pool: Pool, logger: Logger): Promise
           type,
           date,
           userId: toUserId(ensureString(payload.userId)),
-          editorialCommunityId: new EditorialCommunityId(ensureString(payload.editorialCommunityId)),
+          editorialCommunityId: new GroupId(ensureString(payload.editorialCommunityId)),
         };
       }
       case 'UserUnfollowedEditorialCommunity': {
@@ -54,7 +54,7 @@ export const getEventsFromDatabase = async (pool: Pool, logger: Logger): Promise
           type,
           date,
           userId: toUserId(ensureString(payload.userId)),
-          editorialCommunityId: new EditorialCommunityId(ensureString(payload.editorialCommunityId)),
+          editorialCommunityId: new GroupId(ensureString(payload.editorialCommunityId)),
         };
       }
       case 'UserFoundReviewHelpful':

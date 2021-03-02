@@ -4,12 +4,12 @@ import { constructFeedItem, GetArticle } from '../../src/home-page/construct-fee
 import { FeedItem } from '../../src/shared-components';
 import { Doi } from '../../src/types/doi';
 import { EditorialCommunityReviewedArticleEvent } from '../../src/types/domain-events';
-import { EditorialCommunityId } from '../../src/types/editorial-community-id';
+import { GroupId } from '../../src/types/editorial-community-id';
 import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
 
 describe('construct-feed-item', () => {
   const articleTitle = 'the title' as SanitisedHtmlFragment;
-  const arbitraryActorId = new EditorialCommunityId('');
+  const arbitraryActorId = new GroupId('');
   const arbitraryArticleId = new Doi('10.5281/zenodo.3678326');
   const dummyGetActor = () => T.of({
     url: '',

@@ -16,15 +16,15 @@ import { renderFollowers } from './render-followers';
 import { renderErrorPage, renderPage, RenderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
 import { renderSummaryFeedList } from '../shared-components';
-import { EditorialCommunityIdFromString } from '../types/codecs/EditorialCommunityIdFromString';
+import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import { EditorialCommunity } from '../types/editorial-community';
-import { EditorialCommunityId } from '../types/editorial-community-id';
+import { GroupId } from '../types/editorial-community-id';
 import { toHtmlFragment } from '../types/html-fragment';
 
 type FetchStaticFile = (filename: string) => TE.TaskEither<'not-found' | 'unavailable', string>;
 
-type FetchEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.Task<O.Option<EditorialCommunity>>;
+type FetchEditorialCommunity = (editorialCommunityId: GroupId) => T.Task<O.Option<EditorialCommunity>>;
 
 type Ports = {
   fetchArticle: GetArticle,
@@ -42,7 +42,7 @@ const buildRenderFeed = (ports: Ports) => renderFeed(
 );
 
 const inputParams = t.type({
-  id: EditorialCommunityIdFromString,
+  id: GroupIdFromString,
   user: option(t.type({
     id: UserIdFromString,
   })),

@@ -4,13 +4,13 @@ import { pipe } from 'fp-ts/function';
 import { findReviewsForArticleDoi } from '../../src/infrastructure/find-reviews-for-article-doi';
 import { Doi } from '../../src/types/doi';
 import { editorialCommunityReviewedArticle } from '../../src/types/domain-events';
-import { EditorialCommunityId } from '../../src/types/editorial-community-id';
+import { GroupId } from '../../src/types/editorial-community-id';
 
 describe('find-reviews-for-article-doi', () => {
   const article1 = new Doi('10.1000/1');
   const article2 = new Doi('10.99999/2');
-  const editorialCommunity1 = new EditorialCommunityId('community-1');
-  const editorialCommunity2 = new EditorialCommunityId('community-2');
+  const editorialCommunity1 = new GroupId('community-1');
+  const editorialCommunity2 = new GroupId('community-2');
   const reviewId1 = new Doi('10.5555/1');
   const reviewId2 = new Doi('10.6666/2');
   const reviewId3 = new Doi('10.7777/3');

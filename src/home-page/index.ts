@@ -13,7 +13,7 @@ import { renderPage, RenderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
 import { renderSearchForm } from './render-search-form';
 import { renderSummaryFeedList } from '../shared-components';
-import { EditorialCommunityId } from '../types/editorial-community-id';
+import { GroupId } from '../types/editorial-community-id';
 import { User } from '../types/user';
 import { UserId } from '../types/user-id';
 
@@ -22,7 +22,7 @@ type Ports = {
   getAllEditorialCommunities: GetAllEditorialCommunities,
   getEditorialCommunity: GetGroup,
   getAllEvents: GetAllEvents,
-  follows: (userId: UserId, editorialCommunityId: EditorialCommunityId) => T.Task<boolean>,
+  follows: (userId: UserId, editorialCommunityId: GroupId) => T.Task<boolean>,
 };
 
 type Params = {

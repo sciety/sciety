@@ -3,14 +3,14 @@ import * as T from 'fp-ts/Task';
 import { Feed } from '../../src/article-page/get-feed-events-content';
 import { mergeFeeds } from '../../src/article-page/merge-feeds';
 import { Doi } from '../../src/types/doi';
-import { EditorialCommunityId } from '../../src/types/editorial-community-id';
+import { GroupId } from '../../src/types/editorial-community-id';
 
 describe('compose-feed-events', () => {
   it('merges feed event lists', async () => {
     const feed1: Feed = () => T.of([
       {
         type: 'review',
-        editorialCommunityId: new EditorialCommunityId('communityId'),
+        editorialCommunityId: new GroupId('communityId'),
         reviewId: new Doi('10.1234/5678'),
         occurredAt: new Date('2020-09-10'),
       },

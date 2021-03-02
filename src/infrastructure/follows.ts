@@ -3,22 +3,22 @@ import * as A from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
 import { DomainEvent, isUserFollowedEditorialCommunityEvent, isUserUnfollowedEditorialCommunityEvent } from '../types/domain-events';
-import { EditorialCommunityId, eqEditorialCommunityId } from '../types/editorial-community-id';
+import { eqGroupId, GroupId } from '../types/editorial-community-id';
 import { UserId } from '../types/user-id';
 
-export type Follows = (userId: UserId, editorialCommunityId: EditorialCommunityId) => T.Task<boolean>;
+export type Follows = (userId: UserId, editorialCommunityId: GroupId) => T.Task<boolean>;
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 const isSignificantTo = (
   userId: UserId,
-  editorialCommunityId: EditorialCommunityId,
+  editorialCommunityId: GroupId,
 ) => (event: DomainEvent) => (
   (isUserFollowedEditorialCommunityEvent(event)
-    && eqEditorialCommunityId.equals(event.editorialCommunityId, editorialCommunityId)
+    && eqGroupId.equals(event.editorialCommunityId, editorialCommunityId)
     && event.userId === userId)
   || (isUserUnfollowedEditorialCommunityEvent(event)
-    && eqEditorialCommunityId.equals(event.editorialCommunityId, editorialCommunityId)
+    && eqGroupId.equals(event.editorialCommunityId, editorialCommunityId)
     && event.userId === userId)
 );
 

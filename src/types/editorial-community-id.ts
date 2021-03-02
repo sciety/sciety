@@ -2,7 +2,7 @@ import * as Eq from 'fp-ts/Eq';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 
-export class EditorialCommunityId {
+export class GroupId {
   readonly value: string;
 
   constructor(input: string) {
@@ -14,8 +14,8 @@ export class EditorialCommunityId {
   }
 }
 
-export const fromString = (value: string): O.Option<EditorialCommunityId> => (
-  pipe(new EditorialCommunityId(value), O.some)
+export const fromString = (value: string): O.Option<GroupId> => (
+  pipe(new GroupId(value), O.some)
 );
 
-export const eqEditorialCommunityId = Eq.contramap((id: EditorialCommunityId) => id.value)(Eq.eqString);
+export const eqGroupId = Eq.contramap((id: GroupId) => id.value)(Eq.eqString);

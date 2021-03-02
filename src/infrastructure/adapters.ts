@@ -14,10 +14,10 @@ import { Logger } from './logger';
 import { SearchEuropePmc } from './search-europe-pmc';
 import { DomainEvent } from '../types/domain-events';
 import { EditorialCommunity } from '../types/editorial-community';
-import { EditorialCommunityId } from '../types/editorial-community-id';
+import { GroupId } from '../types/editorial-community-id';
 import { EditorialCommunityRepository } from '../types/editorial-community-repository';
 
-type GetEditorialCommunity = (editorialCommunityId: EditorialCommunityId) => T.Task<O.Option<EditorialCommunity>>;
+type GetEditorialCommunity = (editorialCommunityId: GroupId) => T.Task<O.Option<EditorialCommunity>>;
 
 type GetAllEditorialCommunities = T.Task<RNEA.ReadonlyNonEmptyArray<EditorialCommunity>>;
 

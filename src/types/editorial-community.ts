@@ -1,7 +1,7 @@
-import { EditorialCommunityId } from './editorial-community-id';
+import { GroupId } from './editorial-community-id';
 
 export type EditorialCommunity = {
-  id: EditorialCommunityId,
+  id: GroupId,
   name: string,
   avatarPath: string,
   descriptionPath: string,
