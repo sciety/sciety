@@ -106,6 +106,8 @@ p.article-feed__item__title {
 
 .responses {
   padding: 0 1rem;
+  background-color: #eff2f3;
+  border-top: 1px solid #cfd8dc;
   @media screen and (min-width: settings.$breakpoint-narrow) {
     padding: 0 1.5rem;
   }
@@ -129,5 +131,5 @@ p.article-feed__item__title {
 .responses__button {
   @include button.basics();
   padding-left: 0;
-  background-color: settings.$colour-white;
+  background-color: #eff2f3;
 }
