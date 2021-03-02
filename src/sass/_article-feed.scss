@@ -69,6 +69,7 @@
   font-family: Ubuntu, sans-serif;
   color: settings.$colour-grey-two;
   margin-left: auto;
+  flex-shrink: 0;
 }
 
 .article-feed__item__title,
