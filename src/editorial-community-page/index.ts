@@ -24,7 +24,7 @@ import { toHtmlFragment } from '../types/html-fragment';
 
 type FetchStaticFile = (filename: string) => TE.TaskEither<'not-found' | 'unavailable', string>;
 
-type FetchEditorialCommunity = (editorialCommunityId: GroupId) => T.Task<O.Option<Group>>;
+type FetchEditorialCommunity = (groupId: GroupId) => T.Task<O.Option<Group>>;
 
 type Ports = {
   fetchArticle: GetArticle,
@@ -48,9 +48,9 @@ const inputParams = t.type({
   })),
 });
 
-type EditorialCommunityPage = (params: unknown) => ReturnType<RenderPage>;
+type GroupPage = (params: unknown) => ReturnType<RenderPage>;
 
-export const editorialCommunityPage = (ports: Ports): EditorialCommunityPage => (params) => pipe(
+export const groupPage = (ports: Ports): GroupPage => (params) => pipe(
   inputParams.decode(params),
   E.mapLeft(renderErrorPage),
   TE.fromEither,
@@ -61,12 +61,12 @@ export const editorialCommunityPage = (ports: Ports): EditorialCommunityPage => 
         type: 'not-found',
         message: toHtmlFragment(`Editorial community id '${id.value}' not found`),
       } as const),
-      (editorialCommunity) => renderPage(
+      (group) => renderPage(
         renderPageHeader,
         renderDescription(getDescription(ports.fetchStaticFile)),
         buildRenderFeed(ports),
         renderFollowers(projectFollowerIds(ports.getAllEvents)),
-      )(editorialCommunity, pipe(user, O.map((u) => u.id))),
+      )(group, pipe(user, O.map((u) => u.id))),
     )),
   )),
 );

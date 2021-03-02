@@ -6,11 +6,11 @@ type Community = {
   avatarPath: string,
 };
 
-const render = (editorialCommunity: Community) => `
+const render = (group: Community) => `
   <header class="page-header page-header--group">
-    <img src="${editorialCommunity.avatarPath}" alt="" class="page-header__avatar">
+    <img src="${group.avatarPath}" alt="" class="page-header__avatar">
     <h1 class="page-header__title">
-      ${editorialCommunity.name}
+      ${group.name}
     </h1>
   </header>
 `;

@@ -19,7 +19,7 @@ import { redirectAfterAuthenticating, requireAuthentication } from './require-au
 import { robots } from './robots';
 import { aboutPage } from '../about-page';
 import { articleActivityPage, articleMetaPage } from '../article-page';
-import { editorialCommunityPage } from '../editorial-community-page';
+import { groupPage } from '../editorial-community-page';
 import { followHandler } from '../follow';
 import { finishFollowCommand } from '../follow/finish-follow-command';
 import { saveFollowCommand } from '../follow/save-follow-command';
@@ -93,7 +93,7 @@ export const createRouter = (adapters: Adapters): Router => {
     pageHandler(flow(ensureBiorxivDoiParam, TE.fromEither, TE.chain(articleActivityPage(adapters)))));
 
   router.get('/groups/:id',
-    pageHandler(editorialCommunityPage(adapters)));
+    pageHandler(groupPage(adapters)));
 
   router.get('/editorial-communities/:id',
     async (context, next) => {

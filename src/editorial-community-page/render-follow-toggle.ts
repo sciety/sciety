@@ -11,34 +11,34 @@ export type RenderFollowToggle = (
   editorialCommunityId: GroupId
 ) => T.Task<HtmlFragment>;
 
-export type Follows = (userId: UserId, editorialCommunityId: GroupId) => T.Task<boolean>;
+export type Follows = (userId: UserId, groupId: GroupId) => T.Task<boolean>;
 
-const renderFollowButton = (editorialCommunityId: GroupId) => `
+const renderFollowButton = (groupId: GroupId) => `
   <form method="post" action="/follow" class="follow-toggle">
-    <input type="hidden" name="editorialcommunityid" value="${editorialCommunityId.value}">
+    <input type="hidden" name="editorialcommunityid" value="${groupId.value}">
     <button type="submit" class="button button--primary button--small">Follow</button>
   </form>
 `;
 
-const renderUnfollowButton = (editorialCommunityId: GroupId) => `
+const renderUnfollowButton = (groupId: GroupId) => `
   <form method="post" action="/unfollow" class="follow-toggle">
-    <input type="hidden" name="editorialcommunityid" value="${editorialCommunityId.value}">
+    <input type="hidden" name="editorialcommunityid" value="${groupId.value}">
     <button type="submit" class="button button--small">Unfollow</button>
   </form>
 `;
 
 export const renderFollowToggle = (follows: Follows): RenderFollowToggle => (
-  (userId, editorialCommunityId) => (
+  (userId, groupId) => (
     pipe(
       userId,
       O.fold(
         () => T.of(false),
-        (value: UserId) => follows(value, editorialCommunityId),
+        (value: UserId) => follows(value, groupId),
       ),
       T.map(
         B.fold(
-          () => renderFollowButton(editorialCommunityId),
-          () => renderUnfollowButton(editorialCommunityId),
+          () => renderFollowButton(groupId),
+          () => renderUnfollowButton(groupId),
         ),
       ),
       T.map(toHtmlFragment),

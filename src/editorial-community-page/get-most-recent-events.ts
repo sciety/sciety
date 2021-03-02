@@ -12,20 +12,20 @@ import { eqGroupId, GroupId } from '../types/group-id';
 type FeedEvent =
   EditorialCommunityReviewedArticleEvent;
 
-const wasCreatedBy = (editorialCommunityId: GroupId) => (event: DomainEvent): event is FeedEvent => (
+const wasCreatedBy = (groupId: GroupId) => (event: DomainEvent): event is FeedEvent => (
   (isEditorialCommunityReviewedArticleEvent(event)
-    && eqGroupId.equals(event.editorialCommunityId, editorialCommunityId))
+    && eqGroupId.equals(event.editorialCommunityId, groupId))
 );
 
 export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 export const getMostRecentEvents = (getAllEvents: GetAllEvents, maxCount: number): GetEvents => (
-  (editorialCommunityId) => pipe(
+  (groupId) => pipe(
     getAllEvents,
     T.map(
       flow(
         A.reverse,
-        A.filter(wasCreatedBy(editorialCommunityId)),
+        A.filter(wasCreatedBy(groupId)),
         A.takeLeft(maxCount),
       ),
     ),

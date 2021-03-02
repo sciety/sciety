@@ -11,10 +11,10 @@ import { GroupId } from '../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
-type RenderFeed = (editorialCommunity: Group, userId: O.Option<UserId>)
+type RenderFeed = (group: Group, userId: O.Option<UserId>)
 => TE.TaskEither<never, HtmlFragment>;
 
-export type GetEvents = (editorialCommunityId: GroupId) => T.Task<ReadonlyArray<FeedEvent>>;
+export type GetEvents = (groupId: GroupId) => T.Task<ReadonlyArray<FeedEvent>>;
 
 type RenderSummaryFeedList = (events: ReadonlyArray<FeedItem>) => O.Option<HtmlFragment>;
 
@@ -44,13 +44,13 @@ export const renderFeed = (
   constructFeedItem: ConstructFeedItem,
   renderSummaryFeedList: RenderSummaryFeedList,
   renderFollowToggle: RenderFollowToggle,
-): RenderFeed => (editorialCommunity, userId) => pipe(
+): RenderFeed => (group, userId) => pipe(
   {
-    button: renderFollowToggle(userId, editorialCommunity.id),
+    button: renderFollowToggle(userId, group.id),
     feed: pipe(
-      editorialCommunity.id,
+      group.id,
       getEvents,
-      T.chain(T.traverseArray(constructFeedItem(editorialCommunity))),
+      T.chain(T.traverseArray(constructFeedItem(group))),
       T.map(flow(
         renderSummaryFeedList,
         O.getOrElse(constant(emptyFeed)),

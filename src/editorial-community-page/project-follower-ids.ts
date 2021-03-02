@@ -19,11 +19,11 @@ UserFollowedEditorialCommunityEvent |
 UserUnfollowedEditorialCommunityEvent) => isUserFollowedEditorialCommunityEvent(event)
   || isUserUnfollowedEditorialCommunityEvent(event);
 
-const projection = (editorialCommunityId: GroupId) => (
+const projection = (groupId: GroupId) => (
   events: ReadonlyArray<DomainEvent>,
 ) => (
   events.filter(isInterestingEvent)
-    .filter((event) => eqGroupId.equals(event.editorialCommunityId, editorialCommunityId))
+    .filter((event) => eqGroupId.equals(event.editorialCommunityId, groupId))
     .reduce<Array<UserId>>(
     (userIds, event) => {
       if (isUserFollowedEditorialCommunityEvent(event)) {
@@ -36,8 +36,8 @@ const projection = (editorialCommunityId: GroupId) => (
 );
 
 export const projectFollowerIds = (getAllEvents: GetAllEvents): ProjectFollowerIds => (
-  (editorialCommunityId) => pipe(
+  (groupId) => pipe(
     getAllEvents,
-    T.map(projection(editorialCommunityId)),
+    T.map(projection(groupId)),
   )
 );

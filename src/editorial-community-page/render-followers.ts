@@ -4,9 +4,9 @@ import { flow } from 'fp-ts/function';
 import { GroupId } from '../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
-type RenderFollowers = (editorialCommunityId: GroupId) => TE.TaskEither<never, HtmlFragment>;
+type RenderFollowers = (groupId: GroupId) => TE.TaskEither<never, HtmlFragment>;
 
-type GetFollowers<U> = (editorialCommunityId: GroupId) => T.Task<ReadonlyArray<U>>;
+type GetFollowers<U> = (groupId: GroupId) => T.Task<ReadonlyArray<U>>;
 
 const renderFragment = (followerCount: number) => `
   <section class="followers">
