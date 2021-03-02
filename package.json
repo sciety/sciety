@@ -104,7 +104,7 @@
     "lint:stylelint": "stylelint ${STYLELINT:-} \"src/sass/**/*.scss\" --cache --cache-location .stylelint/",
     "lint:typescript:dev": "tsc --noEmit --project tsconfig.dev.json",
     "lint:typescript:prod": "tsc --noEmit",
-    "lint:unused-exports": "ts-unused-exports tsconfig.dev.json --silent",
+    "lint:unused-exports": "ts-unused-exports tsconfig.dev.json --silent --ignoreTestFiles",
     "start": "node ./build/index.js",
     "start:dev:sass": "sass --watch --embed-sources src/sass:static",
     "start:dev:ts": "ts-node-dev --project tsconfig.dev.json --transpile-only --watch data ./src/index.ts",
