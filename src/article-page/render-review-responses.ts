@@ -35,7 +35,7 @@ export const renderReviewResponses = (
       : toHtmlFragment('<button type="submit" name="command" value="respond-not-helpful" aria-label="This evaluation is not helpful" class="responses__button"><img src="/static/images/thumb-down-outline.svg" alt=""></button>');
     return toHtmlFragment(`
     <div class="responses">
-      <div class="responses__question">Did you find this evaluation helpful?</div>
+      <div class="responses__question">Was this evaluation helpful?</div>
       <div class="responses__actions">
         <div class="responses__action">
           <form method="post" action="/respond">

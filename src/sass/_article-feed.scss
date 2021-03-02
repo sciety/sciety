@@ -105,6 +105,8 @@ p.article-feed__item__title {
 }
 
 .responses {
+  display: flex;
+  align-items: center;
   padding: 0 1rem;
   background-color: #eff2f3;
   border-top: 1px solid #cfd8dc;
@@ -114,7 +116,7 @@ p.article-feed__item__title {
 }
 
 .responses__question {
-  margin-bottom: baseline.increments(1);
+  padding-right: functions.px-to-rem(8px);
 }
 
 .responses__actions {
