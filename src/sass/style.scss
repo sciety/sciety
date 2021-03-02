@@ -424,7 +424,7 @@ a:visited {
   padding-top: activity-page.$vertical-space-above-title--narrow;
 }
 
-@media screen and (min-width: 56.25em) {
+@media screen and (min-width: settings.$breakpoint-narrow) {
   .sciety-grid--activity h1 {
     @include typography.sizing(26px, 3.75);
   }
