@@ -1,7 +1,7 @@
 import * as T from 'fp-ts/Task';
 import { GetAllEvents, getMostRecentEvents } from '../../src/home-page/get-most-recent-events';
 import { Doi } from '../../src/types/doi';
-import { DomainEvent } from '../../src/types/domain-events';
+import { DomainEvent, editorialCommunityReviewedArticle } from '../../src/types/domain-events';
 import { GroupId } from '../../src/types/editorial-community-id';
 import { toUserId } from '../../src/types/user-id';
 
@@ -17,20 +17,18 @@ describe('get-most-recent-events', () => {
 
   it('reverse the order into date descending', async () => {
     const initial: ReadonlyArray<DomainEvent> = [
-      {
-        type: 'EditorialCommunityReviewedArticle',
-        date: new Date('2020-07-08'),
-        editorialCommunityId: editorialCommunity1,
-        articleId: new Doi('10.1101/751099'),
-        reviewId: new Doi('10.1234/8765'),
-      },
-      {
-        type: 'EditorialCommunityReviewedArticle',
-        date: new Date('2020-07-09'),
-        editorialCommunityId: editorialCommunity1,
-        articleId: new Doi('10.1101/2020.01.22.915660'),
-        reviewId: new Doi('10.1234/5678'),
-      },
+      editorialCommunityReviewedArticle(
+        editorialCommunity1,
+        new Doi('10.1101/751099'),
+        new Doi('10.1234/5678'),
+        new Date('2020-07-08'),
+      ),
+      editorialCommunityReviewedArticle(
+        editorialCommunity1,
+        new Doi('10.1101/2020.01.22.915660'),
+        new Doi('10.1234/5678'),
+        new Date('2020-07-09'),
+      ),
     ];
     const getAllEvents: GetAllEvents = T.of(initial);
     const follows = () => T.of(true);
