@@ -3,7 +3,7 @@ import { GetAllEvents, getMostRecentEvents } from '../../src/home-page/get-most-
 import { Doi } from '../../src/types/doi';
 import { DomainEvent, editorialCommunityReviewedArticle } from '../../src/types/domain-events';
 import { GroupId } from '../../src/types/group-id';
-import { toUserId } from '../../src/types/user-id';
+import { toUserId, UserId } from '../../src/types/user-id';
 
 describe('get-most-recent-events', () => {
   const editorialCommunity1 = new GroupId('a');
@@ -33,7 +33,29 @@ describe('get-most-recent-events', () => {
     expect(sortedEvents[1]).toStrictEqual(initial[0]);
   });
 
-  it.todo('only returns events for the follow list');
+  it('only returns events for the follow list', async () => {
+    const initial: ReadonlyArray<DomainEvent> = [
+      editorialCommunityReviewedArticle(
+        editorialCommunity1,
+        new Doi('10.1101/751099'),
+        new Doi('10.1234/5678'),
+        new Date('2020-07-08'),
+      ),
+      editorialCommunityReviewedArticle(
+        new GroupId('b'),
+        new Doi('10.1101/2020.01.22.915660'),
+        new Doi('10.1234/5678'),
+        new Date('2020-07-09'),
+      ),
+    ];
+    const getAllEvents: GetAllEvents = T.of(initial);
+    const follows = (_userId: UserId, editorialCommunityId: GroupId) => T.of(editorialCommunityId.toString() === 'b');
+    const getEvents = getMostRecentEvents(getAllEvents, follows, 20);
+    const sortedEvents = await getEvents(toUserId('user-1'))();
+
+    expect(sortedEvents).toHaveLength(1);
+    expect(sortedEvents[0]).toStrictEqual(initial[1]);
+  });
 
   describe('when there\'s a small number of items', () => {
     it('returns exactly those', async () => {
