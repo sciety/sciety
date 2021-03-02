@@ -1,9 +1,9 @@
-import { constructFoundReview, NcrcReview } from '../../src/infrastructure/fetch-ncrc-review';
+import { constructNcrcReview } from '../../src/infrastructure/construct-ncrc-review';
 
 describe('fetch-ncrc-review', () => {
   describe('construct-found-review', () => {
     it('builds a url from a title', () => {
-      const ncrcReview: NcrcReview = {
+      const ncrcReview = {
         title: 'Foo Bar',
         ourTake: 'Pretty good',
         limitations: '',
@@ -13,7 +13,7 @@ describe('fetch-ncrc-review', () => {
         studyStrength: '',
         valueAdded: '',
       };
-      const result = constructFoundReview(ncrcReview);
+      const result = constructNcrcReview(ncrcReview);
 
       expect(result.url.toString()).toStrictEqual('https://ncrc.jhsph.edu/research/foo-bar/');
     });

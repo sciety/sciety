@@ -8,21 +8,11 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { google, sheets_v4 } from 'googleapis';
+import { constructNcrcReview } from './construct-ncrc-review';
 import { Logger } from './logger';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { HtmlFragment } from '../types/html-fragment';
 import * as NcrcId from '../types/ncrc-id';
 import Params$Resource$Spreadsheets$Values$Get = sheets_v4.Params$Resource$Spreadsheets$Values$Get;
-
-export type NcrcReview = {
-  title: string,
-  ourTake: string,
-  studyDesign: string,
-  studyPopulationSetting: string,
-  mainFindings: string,
-  studyStrength: string,
-  limitations: string,
-  valueAdded: string,
-};
 
 type FoundReview = {
   fullText: HtmlFragment,
@@ -104,48 +94,9 @@ const getNcrcReview = (logger: Logger) => (rowNumber: number) => pipe(
   ))),
 );
 
-const slugify = (value: string) => value.toLowerCase().replace(/\s/g, '-');
-
-// TODO: sanitise/escape the input
-const constructFullText = (review: NcrcReview) => toHtmlFragment(`
-  <h3>Our take</h3>
-  <p>
-    ${review.ourTake}
-  </p>
-  <h3>Study design</h3>
-  <p>
-    ${review.studyDesign}
-  </p>
-  <h3>Study population and setting</h3>
-  <p>
-    ${review.studyPopulationSetting}
-  </p>
-  <h3>Summary of main findings</h3>
-  <p>
-    ${review.mainFindings}
-  </p>
-  <h3>Study strengths</h3>
-  <p>
-    ${review.studyStrength}
-  </p>
-  <h3>Limitations</h3>
-  <p>
-    ${review.limitations}
-  </p>
-  <h3>Value added</h3>
-  <p>
-    ${review.valueAdded}
-  </p>
-`);
-
-export const constructFoundReview = (review: NcrcReview): FoundReview => ({
-  url: new URL(`https://ncrc.jhsph.edu/research/${slugify(review.title)}/`),
-  fullText: constructFullText(review),
-});
-
 export const fetchNcrcReview = (logger: Logger): FetchNcrcReview => flow(
   TE.right,
   TE.chain(getRowNumber(logger)),
   TE.chainW(getNcrcReview(logger)),
-  TE.map(constructFoundReview),
+  TE.map(constructNcrcReview),
 );
