@@ -25,14 +25,14 @@ export const renderReviewResponses = (
 
     // TODO: Move 'You said this evaluation is helpful' etc to visually hidden span before button.
     // TODO: Change the label when the other button is selected
-    const helpfulButton = saidHelpful
-      ? toHtmlFragment('<button type="submit" name="command" value="revoke-response" aria-label="You said this evaluation is helpful; press to undo." class="responses__button"><img src="/static/images/thumb-up-solid.svg" alt=""></button>')
+    const helpfulButton = (count: number): HtmlFragment => (saidHelpful
+      ? toHtmlFragment(`<button type="submit" name="command" value="revoke-response" aria-label="You said this evaluation is helpful; press to undo." class="responses__button">${count}<span class="visually-hidden"> people said this evaluation is helpful</span><img src="/static/images/thumb-up-solid.svg" alt=""></button>`)
       : toHtmlFragment(`<button type="submit" name="command" value="respond-helpful" aria-label="This evaluation is helpful" class="responses__button">
-      <img src="/static/images/thumb-up-outline.svg" alt="">
-      </button>`);
-    const notHelpfulButton = saidNotHelpful
-      ? toHtmlFragment('<button type="submit" name="command" value="revoke-response" aria-label="You said this evaluation is not helpful; press to undo." class="responses__button"><img src="/static/images/thumb-down-solid.svg" alt=""></button>')
-      : toHtmlFragment('<button type="submit" name="command" value="respond-not-helpful" aria-label="This evaluation is not helpful" class="responses__button"><img src="/static/images/thumb-down-outline.svg" alt=""></button>');
+      ${count}<span class="visually-hidden"> people said this evaluation is helpful</span><img src="/static/images/thumb-up-outline.svg" alt="">
+      </button>`));
+    const notHelpfulButton = (count: number): HtmlFragment => (saidNotHelpful
+      ? toHtmlFragment(`<button type="submit" name="command" value="revoke-response" aria-label="You said this evaluation is not helpful; press to undo." class="responses__button">${count}<span class="visually-hidden"> people said this evaluation is not helpful</span><img src="/static/images/thumb-down-solid.svg" alt=""></button>`)
+      : toHtmlFragment(`<button type="submit" name="command" value="respond-not-helpful" aria-label="This evaluation is not helpful" class="responses__button">${count}<span class="visually-hidden"> people said this evaluation is not helpful</span><img src="/static/images/thumb-down-outline.svg" alt=""></button>`));
     return toHtmlFragment(`
     <div class="responses">
       <div class="responses__question">Was this evaluation helpful?</div>
@@ -40,18 +40,14 @@ export const renderReviewResponses = (
         <div class="responses__action">
           <form method="post" action="/respond">
             <input type="hidden" name="reviewid" value="${toString(reviewId)}">
-            ${helpfulButton}
+            ${helpfulButton(helpfulCount)}
           </form>
-          ${helpfulCount}
-          <span class="visually-hidden">people said this evaluation is helpful</span>
         </div>
         <div class="responses__action">
           <form method="post" action="/respond">
             <input type="hidden" name="reviewid" value="${toString(reviewId)}">
-            ${notHelpfulButton}
+            ${notHelpfulButton(notHelpfulCount)}
           </form>
-          ${notHelpfulCount}
-          <span class="visually-hidden">people said this evaluation is not helpful</span>
         </div>
       </div>
     </div>

@@ -117,6 +117,7 @@ p.article-feed__item__title {
 }
 
 .responses__question {
+  @include typography.sizing(14px, 1.75);
   padding-right: functions.px-to-rem(8px);
 }
 
@@ -127,12 +128,19 @@ p.article-feed__item__title {
 
 .responses__action {
   display: flex;
-  margin-right: 1rem;
+  margin-right: 4px;
   align-items: center;
 }
 
 .responses__button {
   @include button.basics();
+  @include typography.sizing(14px, 1.75);
   padding-left: 0;
   background-color: #eff2f3;
+
+  img {
+    margin-left: 4px;
+    width: 15px;
+    height: 14px;
+  }
 }
