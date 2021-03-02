@@ -36,22 +36,22 @@
   }
 }
 
-.followed-communities {
+.followed-groups {
   margin-bottom: #{baseline.increments(6)};
 }
 
-.followed-communities__list {
+.followed-groups__list {
   padding-left: 0;
 }
 
-.followed-communities__item {
+.followed-groups__item {
   display: flex;
   align-items: center;
   margin-bottom: baseline.increments(1);
 }
 
-.followed-communities__item_link:link,
-.followed-communities__item_link:visited {
+.followed-groups__item_link:link,
+.followed-groups__item_link:visited {
   @include typography.subtle-link();
   font-family: settings.$font-secondary;
   flex: 1 1 auto;
@@ -62,7 +62,7 @@
 $_avatar-size: 47px;
 $_avatar-border-width: 1px;
 
-.followed-communities__item_avatar {
+.followed-groups__item_avatar {
   width: $_avatar-size;
   height: $_avatar-size;
   border: $_avatar-border-width solid settings.$colour-grey-one;

@@ -9,7 +9,7 @@ const followingNothing = `
 `;
 
 const followListSection = (list: string) => `
-  <section class="followed-communities">
+  <section class="followed-groups">
     <h2>
       Following
     </h2>
@@ -18,8 +18,8 @@ const followListSection = (list: string) => `
 `;
 
 const renderList = (list: RNEA.ReadonlyNonEmptyArray<HtmlFragment>) => (`
-  <ol class="followed-communities__list" role="list">
-    ${templateListItems(list, 'followed-communities__item')}
+  <ol class="followed-groups__list" role="list">
+    ${templateListItems(list, 'followed-groups__item')}
   </ol>
 `);
 

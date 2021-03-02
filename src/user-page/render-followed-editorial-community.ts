@@ -18,8 +18,8 @@ type RenderFollowedEditorialCommunity = (userId: O.Option<UserId>) => (
 type RenderFollowToggle = (editorialcommunityid: GroupId) => (isFollowing: boolean) => HtmlFragment;
 
 const render = (community: Community) => (toggle: HtmlFragment) => `
-  <img class="followed-communities__item_avatar" src="${community.avatarPath}" alt="">
-  <a class="followed-communities__item_link" href="/groups/${community.id.value}">${community.name}</a>
+  <img class="followed-groups__item_avatar" src="${community.avatarPath}" alt="">
+  <a class="followed-groups__item_link" href="/groups/${community.id.value}">${community.name}</a>
   ${toggle}
 `;
 
