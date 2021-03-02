@@ -15,14 +15,14 @@ export type Community = {
 export type RenderEditorialCommunity = (userId: O.Option<UserId>) => (community: Community) => T.Task<HtmlFragment>;
 
 const render = (community: Community) => (toggle: HtmlFragment) => `
-  <div class="editorial-community">
-    <a href="/groups/${community.id.value}" class="editorial-community__link">
-      <img src="${community.avatarPath}" alt="" class="editorial-community__avatar">
-      <div class="editorial-community__name">
+  <div class="group">
+    <a href="/groups/${community.id.value}" class="group__link">
+      <img src="${community.avatarPath}" alt="" class="group__avatar">
+      <div class="group__name">
         ${community.name}
       </div>
     </a>
-    <div class="editorial-community__toggle_wrapper">
+    <div class="group__toggle_wrapper">
       ${toggle}
     </div>
   </div>

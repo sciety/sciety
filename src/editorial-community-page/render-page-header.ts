@@ -7,7 +7,7 @@ type Community = {
 };
 
 const render = (editorialCommunity: Community) => `
-  <header class="page-header page-header--editorial-community">
+  <header class="page-header page-header--group">
     <img src="${editorialCommunity.avatarPath}" alt="" class="page-header__avatar">
     <h1 class="page-header__title">
       ${editorialCommunity.name}

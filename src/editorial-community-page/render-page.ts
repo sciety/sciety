@@ -28,12 +28,12 @@ type Components = {
 };
 
 const render = (components: Components) => `
-  <div class="sciety-grid sciety-grid--editorial-community">
+  <div class="sciety-grid sciety-grid--group">
     ${components.header}
-    <div class="editorial-community-page-description">
+    <div class="group-page-description">
     ${components.description}
     </div>
-    <div class="editorial-community-page-side-bar">
+    <div class="group-page-side-bar">
       ${components.followers}
       ${components.feed}
     </div>

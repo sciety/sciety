@@ -16,8 +16,8 @@ const render = (links: RNEA.ReadonlyNonEmptyArray<HtmlFragment>) => `
     <h2>
       Groups
     </h2>
-    <ol class="editorial-community-list" role="list">
-      ${templateListItems(links, 'editorial-community-list__item')}
+    <ol class="group-list" role="list">
+      ${templateListItems(links, 'group-list__item')}
     </ol>
   </section>
 `;
