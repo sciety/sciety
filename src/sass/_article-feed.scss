@@ -135,7 +135,9 @@ p.article-feed__item__title {
 .responses__button {
   @include button.basics();
   @include typography.sizing(14px, 1.75);
-  padding-left: 0;
+  padding-left: functions.px-to-rem(8px);
+  padding-top: functions.px-to-rem(5px);
+  padding-bottom: functions.px-to-rem(7px);
 
   border: 1px solid rgba(69, 90, 100, 0.8);
   border-radius: 5px;
