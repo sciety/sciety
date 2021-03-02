@@ -57,6 +57,7 @@
 .article-feed__item_header {
   @include typography.sizing($font-size: 14px, $line-height-in-increments: 2.5);
   display: flex;
+  align-items: center;
   margin-bottom: baseline.increments(2);
 }
 
@@ -69,10 +70,16 @@
   margin-right: 0.5rem;
 }
 
+.article-feed__item__meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+
 .article-feed__item__date {
   font-family: Ubuntu, sans-serif;
   color: settings.$colour-grey-two;
-  margin-left: auto;
   flex-shrink: 0;
 }
 
