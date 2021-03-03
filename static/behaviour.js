@@ -10,7 +10,8 @@
     const fullText = itemBody.querySelector('[data-full-text]');
 
     const more = buildToggle();
-    more.innerHTML = 'See more <span aria-hidden="true">+</span>';
+    more.innerHTML = 'More';
+    more.setAttribute('aria-label', 'Read more of this content');
     if(teaser.lastElementChild?.nodeName === 'P') {
       teaser.lastElementChild.appendChild(more);
     } else {
@@ -18,7 +19,8 @@
     }
 
     const less = buildToggle();
-    less.innerHTML = 'See less <span aria-hidden="true">\u2212</span>';
+    less.innerHTML = 'Less';
+    less.setAttribute('aria-hidden', 'true');
     const elementBeforeReadSource = fullText.querySelector('.article-feed__item__read_more')?.previousElementSibling;
     if(elementBeforeReadSource?.nodeName === 'P') {
       elementBeforeReadSource.appendChild(doc.createTextNode(' '));
