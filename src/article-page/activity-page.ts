@@ -82,7 +82,7 @@ export const articleActivityPage = (ports: Ports): ActivityPage => {
       ports.getEditorialCommunity,
     ),
     renderReviewFeedItem(
-      150,
+      850,
       renderReviewResponses(
         countReviewResponses,
         projectUserReviewResponse(ports.getAllEvents),
