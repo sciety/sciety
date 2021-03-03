@@ -1,4 +1,7 @@
+@use 'baseline';
+@use 'list';
 @use 'settings';
+@use 'typography';
 
 .sciety-grid--meta > .page-header--article,
 .sciety-grid--meta > .article-tabs,
@@ -32,3 +35,36 @@
     }
   }
 }
+
+.article-author-list {
+  @include list.basics();
+  font-family: settings.$font-secondary;
+  display: flow-root;
+}
+
+.article-author-list > li {
+  @include typography.sizing($font-size: settings.$base-font-measure, $line-height-in-increments: 3);
+  float: left;
+}
+
+.article-author-list > li::after {
+  content: ', \00a0';
+}
+
+.article-author-list > li:last-child::after {
+  content: '';
+}
+
+.article-meta-data-list {
+  @include list.basics();
+  font-family: settings.$font-secondary;
+}
+
+.article-meta-data-list > li {
+  @include typography.sizing($font-size: settings.$base-font-measure, $line-height-in-increments: 3);
+}
+
+.article-abstract {
+  margin-bottom: #{baseline.increments(6)};
+}
+
