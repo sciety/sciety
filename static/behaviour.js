@@ -9,26 +9,25 @@
     const teaser = itemBody.querySelector('[data-teaser]');
     const fullText = itemBody.querySelector('[data-full-text]');
 
-    const toggle = buildToggle();
-    itemBody.appendChild(toggle);
+    const more = buildToggle();
+    more.innerHTML = 'See more <span aria-hidden="true">+</span>';
+    teaser.appendChild(more);
+
+    const less = buildToggle();
+    less.innerHTML = 'See less <span aria-hidden="true">\u2212</span>';
+    fullText.appendChild(less);
 
     teaser.classList.remove('hidden');
     fullText.classList.add('hidden');
-    toggle.innerHTML = 'See more <span aria-hidden="true">+</span>';
-    itemBody.dataset.collapsed = '';
 
-    toggle.addEventListener('click', function (e) {
-      if (itemBody.dataset.collapsed !== undefined) {
-        teaser.classList.add('hidden');
-        fullText.classList.remove('hidden');
-        toggle.innerHTML = 'See less <span aria-hidden="true">\u2212</span>';
-        delete itemBody.dataset.collapsed;
-      } else {
-        teaser.classList.remove('hidden');
-        fullText.classList.add('hidden');
-        toggle.innerHTML = 'See more <span aria-hidden="true">+</span>';
-        itemBody.dataset.collapsed = '';
-      }
-    })
+    more.addEventListener('click', function (e) {
+      teaser.classList.add('hidden');
+      fullText.classList.remove('hidden');
+    });
+
+    less.addEventListener('click', function (e) {
+      teaser.classList.remove('hidden');
+      fullText.classList.add('hidden');
+    });
   });
 }(window.document));
