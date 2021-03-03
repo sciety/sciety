@@ -90,14 +90,15 @@ p.article-feed__item__title {
 }
 
 .article-feed__item-toggle {
-  @include typography.sizing(14px, 2.5);
-  font-weight: normal;
-  outline-width: 0;
+  font-weight: inherit;
   background: none;
   cursor: pointer;
-  padding: functions.px-to-rem(7px) functions.px-to-rem(13px);
-  width: functions.px-to-rem(107px);
-  margin-top: baseline.increments(2);
+  padding: 0;
+  border: 0;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: rgb(232, 82, 30);
 }
 
 .article-feed__item__read_more {
