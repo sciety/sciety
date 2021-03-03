@@ -46,7 +46,7 @@
       "label": "An article activity page (expanded reviews)",
       "url": "https://staging.sciety.org/articles/activity/10.1101/646810",
       "referenceUrl": "https://sciety.org/articles/activity/10.1101/646810",
-      "clickSelector": ".article-feed__item-toggle"
+      "clickSelector": ".activity-feed__item-toggle"
     },
     {
       "label": "Article search page",
