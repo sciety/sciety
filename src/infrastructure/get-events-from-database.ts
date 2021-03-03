@@ -1,4 +1,5 @@
-import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
+import { identity } from 'fp-ts/function';
 import { Json, JsonRecord } from 'io-ts-types';
 import { Pool } from 'pg';
 import { Logger } from './logger';
@@ -28,7 +29,10 @@ const ensureString = (value: Json): string => {
   return value;
 };
 
-export const getEventsFromDatabase = (pool: Pool, logger: Logger): T.Task<Array<DomainEvent>> => async () => {
+export const getEventsFromDatabase = (
+  pool: Pool,
+  logger: Logger,
+): TE.TaskEither<unknown, ReadonlyArray<DomainEvent>> => TE.tryCatch(async () => {
   const { rows } = await pool.query<EventRow>('SELECT * FROM events');
 
   logger('debug', 'Reading events from database', { count: rows.length });
@@ -84,4 +88,4 @@ export const getEventsFromDatabase = (pool: Pool, logger: Logger): T.Task<Array<
       }
     }
   });
-};
+}, identity);
