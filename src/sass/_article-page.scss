@@ -91,7 +91,7 @@
 
 .article-tabs {
   @include typography.sizing(14px, 2.5);
-  border-bottom: 2px solid #cfd8dc;
+  border-bottom: 2px solid settings.$colour-article-border;
 
   @media screen and (min-width: settings.$breakpoint-narrow) {
     margin-bottom: baseline.increments(1.5);
