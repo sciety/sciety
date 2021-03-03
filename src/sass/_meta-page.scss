@@ -1,10 +1,12 @@
+@use 'settings';
+
 .sciety-grid--meta > .page-header--article,
 .sciety-grid--meta > .article-tabs,
 .sciety-grid--meta > .main-content {
   grid-column: 1 / -1;
 }
 
-@media screen and (min-width: 56.25em) {
+@media screen and (min-width: settings.$breakpoint-narrow) {
   .sciety-grid.sciety-grid--meta > .main-content {
     grid-column: 1 / 9;
 
