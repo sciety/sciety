@@ -2,12 +2,13 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, identity, pipe } from 'fp-ts/function';
 import { Json, JsonRecord } from 'io-ts-types';
+import * as PR from 'io-ts/PathReporter';
 import { Pool } from 'pg';
+import { databaseEvent } from './codecs/DatabaseEvent';
 import { Logger } from './logger';
 import { Doi } from '../types/doi';
 import { DomainEvent } from '../types/domain-events';
 import { EventId } from '../types/event-id';
-import { GroupId } from '../types/group-id';
 import { toReviewId } from '../types/review-id';
 import { toUserId } from '../types/user-id';
 
@@ -40,30 +41,25 @@ export const getEventsFromDatabase = (
     (rows) => logger('debug', 'Reading events from database', { count: rows.length }),
     TE.right,
   )),
-  TE.chainW(TE.traverseArray(({
-    id, type, date, payload,
-  }) => {
+  TE.chainW(TE.traverseArray((row) => {
+    const {
+      id, type, date, payload,
+    } = row;
     if (!isObject(payload)) {
       return TE.left(new Error('Payload is not an object'));
     }
     switch (type) {
-      case 'UserFollowedEditorialCommunity': {
-        return TE.tryCatch(async () => ({
-          id,
-          type,
-          date,
-          userId: toUserId(ensureString(payload.userId)),
-          editorialCommunityId: new GroupId(ensureString(payload.editorialCommunityId)),
-        }), E.toError);
-      }
+      case 'UserFollowedEditorialCommunity':
       case 'UserUnfollowedEditorialCommunity': {
-        return TE.tryCatch(async () => ({
-          id,
-          type,
-          date,
-          userId: toUserId(ensureString(payload.userId)),
-          editorialCommunityId: new GroupId(ensureString(payload.editorialCommunityId)),
-        }), E.toError);
+        return pipe(
+          { ...row, date: row.date.toString() }, // TODO return a string from the database
+          databaseEvent.decode,
+          TE.fromEither,
+          TE.bimap(
+            (error) => new Error(PR.failure(error).join('\n')),
+            (event) => ({ ...event, ...event.payload }),
+          ),
+        );
       }
       case 'UserFoundReviewHelpful':
       case 'UserFoundReviewNotHelpful':
