@@ -73,5 +73,5 @@ $vertical-space-above-title--wide: baseline.increments(5);
 .activity-page__background--filler {
   background-color: settings.$colour-activity-page-background;
   width: 100vw;
-  background-image: linear-gradient(180deg, rgb(207, 216, 220) 0, settings.$colour-activity-page-background 8px);
+  background-image: linear-gradient(180deg, settings.$colour-article-border 0, settings.$colour-activity-page-background 8px);
 }
