@@ -26,7 +26,7 @@
   }
 
   @media screen and (min-width: settings.$breakpoint-narrow) {
-    border-radius: 6px;
+    border-radius: settings.$border-radius;
     border-left-width: 1px;
     border-right-width: 1px;
 
@@ -66,7 +66,7 @@
   width: $avatar-size;
   height: $avatar-size;
   border: 1px solid rgb(238, 238, 238);
-  border-radius: 4px;
+  border-radius: settings.$border-radius;
   flex: 0 0 $avatar-size;
   margin-right: functions.px-to-rem(8px);
 }
@@ -167,7 +167,7 @@ p.activity-feed__item__title {
   min-width: functions.px-to-rem(52px);
   padding: functions.px-to-rem(5px);
   border: 1px solid rgba(69, 90, 100, 0.8);
-  border-radius: 5px;
+  border-radius: settings.$border-radius;
   background-color: #607d8b;
   color: settings.$colour-white;
 
