@@ -1,5 +1,5 @@
 import * as TE from 'fp-ts/TaskEither';
-import { identity } from 'fp-ts/function';
+import { flow, identity, pipe } from 'fp-ts/function';
 import { Json, JsonRecord } from 'io-ts-types';
 import { Pool } from 'pg';
 import { Logger } from './logger';
@@ -32,12 +32,14 @@ const ensureString = (value: Json): string => {
 export const getEventsFromDatabase = (
   pool: Pool,
   logger: Logger,
-): TE.TaskEither<unknown, ReadonlyArray<DomainEvent>> => TE.tryCatch(async () => {
-  const { rows } = await pool.query<EventRow>('SELECT * FROM events');
-
-  logger('debug', 'Reading events from database', { count: rows.length });
-
-  return rows.map(({
+): TE.TaskEither<unknown, ReadonlyArray<DomainEvent>> => pipe(
+  TE.tryCatch(async () => pool.query<EventRow>('SELECT * FROM events'), identity),
+  TE.map(({ rows }) => rows),
+  TE.chainFirstW(flow(
+    (rows) => logger('debug', 'Reading events from database', { count: rows.length }),
+    TE.right,
+  )),
+  TE.chain((rows) => TE.tryCatch(async () => rows.map(({
     id, type, date, payload,
   }) => {
     if (!isObject(payload)) {
@@ -87,5 +89,6 @@ export const getEventsFromDatabase = (
         throw new Error(`Unknown event type ${type}`);
       }
     }
-  });
-}, identity);
+  }),
+  identity)),
+);
