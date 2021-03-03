@@ -15,7 +15,7 @@
 
     const less = buildToggle();
     less.innerHTML = 'See less <span aria-hidden="true">\u2212</span>';
-    fullText.appendChild(less);
+    fullText.insertBefore(less, fullText.querySelector('.article-feed__item__read_more'));
 
     teaser.classList.remove('hidden');
     fullText.classList.add('hidden');
