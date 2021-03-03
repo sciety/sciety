@@ -146,11 +146,14 @@ p.activity-feed__item__title {
   color: #455a64;
 
   a:link,
-  a:visited,
-  a:active,
-  a:hover {
-    color: #455a64;
+  a:visited {
+    color: inherit;
     font-weight: bold;
+
+    &:active,
+    &:hover {
+      color: inherit;
+    }
   }
 }
 
