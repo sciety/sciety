@@ -1,0 +1,32 @@
+.sciety-grid--article > .page-header--article,
+.sciety-grid--article > .article-tabs,
+.sciety-grid--article > .main-content {
+  grid-column: 1 / -1;
+}
+
+@media screen and (min-width: 56.25em) {
+  .sciety-grid.sciety-grid--article > .main-content {
+    grid-column: 1 / 9;
+
+    &.main-content--article {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: auto auto;
+
+      .article-abstract {
+        grid-column: 1 / 9;
+      }
+
+      .article-meta {
+        grid-column: 1 / 9;
+      }
+
+      // TODO: move to article-feed partial as part of layout refactor
+      .article-feed {
+        grid-column: 1 / 9;
+        grid-row: 2;
+      }
+    }
+  }
+}
