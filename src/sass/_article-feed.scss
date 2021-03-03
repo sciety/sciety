@@ -79,7 +79,7 @@
 
 .article-feed__item__date {
   font-family: Ubuntu, sans-serif;
-  color: settings.$colour-grey-two;
+  color: #607d8b;
   flex-shrink: 0;
 }
 
@@ -109,6 +109,7 @@ p.article-feed__item__title {
   position: relative;
   width: 100%;
   margin-right: 1.5rem;
+  color: #37474f;
 
   ol,
   ul {
@@ -145,6 +146,7 @@ p.article-feed__item__title {
 .responses__question {
   @include typography.sizing(14px, 1.75);
   padding-right: functions.px-to-rem(8px);
+  color: #37474f;
 }
 
 .responses__actions {
