@@ -46,11 +46,11 @@
 }
 
 .activity-feed__item_contents {
-  padding: baseline.increments(2) 1rem 0;
+  padding: baseline.increments(2) functions.px-to-rem(16px) 0;
   margin-bottom: baseline.increments(3);
   @media screen and (min-width: settings.$breakpoint-narrow) {
     grid-column: 1 / 9;
-    padding: baseline.increments(3) 1.5rem 0;
+    padding: baseline.increments(3) functions.px-to-rem(24px) 0;
   }
 }
 
@@ -62,12 +62,13 @@
 }
 
 .activity-feed__item__avatar {
-  width: 47px;
-  height: 47px;
+  $avatar-size: 47px;
+  width: $avatar-size;
+  height: $avatar-size;
   border: 1px solid rgb(238, 238, 238);
   border-radius: 4px;
-  flex: 0 0 47px;
-  margin-right: 0.5rem;
+  flex: 0 0 $avatar-size;
+  margin-right: functions.px-to-rem(8px);
 }
 
 .activity-feed__item__meta {
@@ -108,7 +109,7 @@ p.activity-feed__item__title {
 .activity-feed__item_body {
   position: relative;
   width: 100%;
-  margin-right: 1.5rem;
+  margin-right: functions.px-to-rem(24px);
   color: #37474f;
 
   ol,
