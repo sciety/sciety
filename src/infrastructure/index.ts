@@ -61,10 +61,7 @@ export const createInfrastructure = (): TE.TaskEither<unknown, Adapters> => pipe
     RNEA.map(({ id }) => id),
     getEventsFromDataFiles,
   )),
-  TE.bindW('eventsFromDatabase', ({ pool, logger }) => pipe(
-    async () => getEventsFromDatabase(pool, logger),
-    TE.rightTask,
-  )),
+  TE.bindW('eventsFromDatabase', ({ pool, logger }) => pipe(getEventsFromDatabase(pool, logger), TE.rightTask)),
   TE.bindW('events', ({ eventsFromDataFiles, eventsFromDatabase }) => pipe(
     eventsFromDataFiles.concat(eventsFromDatabase),
     A.sort(Ord.contramap((event: DomainEvent) => event.date)(Ord.ordDate)),

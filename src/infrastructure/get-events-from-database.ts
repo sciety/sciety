@@ -1,3 +1,4 @@
+import * as T from 'fp-ts/Task';
 import { Json, JsonRecord } from 'io-ts-types';
 import { Pool } from 'pg';
 import { Logger } from './logger';
@@ -27,7 +28,7 @@ const ensureString = (value: Json): string => {
   return value;
 };
 
-export const getEventsFromDatabase = async (pool: Pool, logger: Logger): Promise<Array<DomainEvent>> => {
+export const getEventsFromDatabase = (pool: Pool, logger: Logger): T.Task<Array<DomainEvent>> => async () => {
   const { rows } = await pool.query<EventRow>('SELECT * FROM events');
 
   logger('debug', 'Reading events from database', { count: rows.length });
