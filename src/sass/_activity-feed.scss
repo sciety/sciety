@@ -5,6 +5,8 @@
 @use 'settings';
 @use 'typography';
 
+$avatar-size: 36px;
+
 .activity-feed__list {
   @include list.basics();
   margin-top: 0;
@@ -59,13 +61,21 @@
   display: flex;
   align-items: center;
   margin-bottom: baseline.increments(2);
+
+  &::before {
+    content: '';
+    display: block;
+    width: $avatar-size;
+    height: $avatar-size;
+    background-color: rgba(0, 0, 0, 0.05);
+    position: absolute;
+    border-radius: settings.$border-radius;
+  }
 }
 
 .activity-feed__item__avatar {
-  $avatar-size: 47px;
   width: $avatar-size;
   height: $avatar-size;
-  border: 1px solid rgb(238, 238, 238);
   border-radius: settings.$border-radius;
   flex: 0 0 $avatar-size;
   margin-right: functions.px-to-rem(8px);
