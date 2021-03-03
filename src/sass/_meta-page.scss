@@ -1,11 +1,11 @@
-.sciety-grid--article > .page-header--article,
-.sciety-grid--article > .article-tabs,
-.sciety-grid--article > .main-content {
+.sciety-grid--meta > .page-header--article,
+.sciety-grid--meta > .article-tabs,
+.sciety-grid--meta > .main-content {
   grid-column: 1 / -1;
 }
 
 @media screen and (min-width: 56.25em) {
-  .sciety-grid.sciety-grid--article > .main-content {
+  .sciety-grid.sciety-grid--meta > .main-content {
     grid-column: 1 / 9;
 
     &.main-content--article {
