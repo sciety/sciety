@@ -61,8 +61,8 @@ $vertical-space-above-title--wide: baseline.increments(5);
       grid-template-columns: repeat(12, 1fr);
       grid-template-rows: auto auto;
 
-      // TODO: move to article-feed partial as part of layout refactor
-      .article-feed {
+      // TODO: move to activity-feed partial as part of layout refactor
+      .activity-feed {
         grid-column: 1 / -1;
         grid-row: 2;
       }

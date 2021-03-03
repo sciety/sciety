@@ -46,9 +46,9 @@ export const renderFeed = (
     T.map(RNEA.fromReadonlyArray),
     T.map(E.fromOption(constant('no-content' as const))),
     TE.map((items) => `
-      <section class="article-feed">
-        <ol role="list" class="article-feed__list">
-          ${templateListItems(items, 'article-feed__item')}
+      <section class="activity-feed">
+        <ol role="list" class="activity-feed__list">
+          ${templateListItems(items, 'activity-feed__item')}
         </ol>
       </section>
     `),

@@ -1,7 +1,7 @@
 (function(doc) {
   function buildToggle() {
     const button = doc.createElement('button');
-    button.classList.add('article-feed__item-toggle');
+    button.classList.add('activity-feed__item-toggle');
     return button;
   }
   const itemBodies = doc.querySelectorAll('[data-behaviour="collapse_to_teaser"]');
@@ -21,12 +21,12 @@
     const less = buildToggle();
     less.innerHTML = 'Less';
     less.setAttribute('aria-hidden', 'true');
-    const elementBeforeReadSource = fullText.querySelector('.article-feed__item__read_more')?.previousElementSibling;
+    const elementBeforeReadSource = fullText.querySelector('.activity-feed__item__read_more')?.previousElementSibling;
     if(elementBeforeReadSource?.nodeName === 'P') {
       elementBeforeReadSource.appendChild(doc.createTextNode(' '));
       elementBeforeReadSource.appendChild(less);
     } else {
-      fullText.insertBefore(less, fullText.querySelector('.article-feed__item__read_more'));
+      fullText.insertBefore(less, fullText.querySelector('.activity-feed__item__read_more'));
     }
 
     teaser.classList.remove('hidden');
