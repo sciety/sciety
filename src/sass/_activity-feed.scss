@@ -183,11 +183,11 @@ p.activity-feed__item__title {
   border-radius: settings.$border-radius;
   background-color: settings.$colour-activity-feed-teal-one;
   color: settings.$colour-white;
+}
 
-  img {
-    margin-left: 4px;
-    width: 15px;
-    height: 14px;
-    margin-bottom: -2px;
-  }
+.responses__button__icon {
+  margin-left: 4px;
+  width: 15px;
+  height: 14px;
+  margin-bottom: -2px;
 }
