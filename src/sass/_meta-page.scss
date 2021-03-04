@@ -64,6 +64,7 @@ $vertical-space-above-title--wide: baseline.increments(5);
   border-right-width: 0;
   background-color: settings.$colour-white;
   margin-bottom: baseline.increments(1);
+  color: settings.$colour-activity-page-text;
 
   padding: baseline.increments(2) functions.px-to-rem(16px);
   @media screen and (min-width: settings.$breakpoint-narrow) {
@@ -103,6 +104,7 @@ $vertical-space-above-title--wide: baseline.increments(5);
 .article-author-list > li {
   @include typography.sizing($font-size: settings.$base-font-measure, $line-height-in-increments: 3);
   float: left;
+  font-weight: bold;
 }
 
 .article-author-list > li::after {
