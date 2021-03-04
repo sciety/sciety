@@ -63,7 +63,7 @@ $vertical-space-above-title--wide: baseline.increments(5);
   border-left-width: 0;
   border-right-width: 0;
   background-color: settings.$colour-white;
-  margin-bottom: baseline.increments(1);
+  margin-bottom: baseline.increments(6);
   color: settings.$colour-activity-page-text;
 
   padding: baseline.increments(2) functions.px-to-rem(16px);
@@ -83,10 +83,6 @@ $vertical-space-above-title--wide: baseline.increments(5);
     &:first-child {
       border-top-width: 1px;
     }
-  }
-
-  &:last-child {
-    margin-bottom: 0;
   }
 
   h3 {
@@ -125,7 +121,7 @@ $vertical-space-above-title--wide: baseline.increments(5);
 }
 
 .article-abstract {
-  margin-bottom: #{baseline.increments(6)};
+  margin-bottom: baseline.increments(4);
 }
 
 .meta-page__background--filler {
