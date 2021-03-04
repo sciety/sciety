@@ -2,18 +2,18 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import { Json } from 'io-ts-types';
+import { JsonRecord } from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
 import { Pool } from 'pg';
-import { databaseEvents } from './codecs/DatabaseEvent';
 import { Logger } from './logger';
+import { domainEvents } from '../types/codecs/DomainEvent';
 import { RuntimeGeneratedEvent } from '../types/domain-events';
 
 type EventRow = {
   id: string,
   type: string,
   date: string,
-  payload: Json,
+  payload: JsonRecord,
 };
 
 export const getEventsFromDatabase = (
@@ -26,13 +26,10 @@ export const getEventsFromDatabase = (
     (rows) => logger('debug', 'Reading events from database', { count: rows.length }),
     TE.right,
   )),
+  TE.map(RA.map((row) => ({ ...row, ...row.payload }))),
   TE.chain(flow(
-    databaseEvents.decode,
+    domainEvents.decode,
     TE.fromEither,
     TE.mapLeft((errors) => new Error(PR.failure(errors).join('\n'))),
   )),
-  TE.map(
-    // TODO TypeScript can't flatten the type of the union of objects correctly
-    RA.map((event) => ({ ...event, ...event.payload }) as RuntimeGeneratedEvent),
-  ),
 );
