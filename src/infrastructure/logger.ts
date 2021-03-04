@@ -1,4 +1,6 @@
 import rTracer from 'cls-rtracer';
+import * as D from 'fp-ts/Date';
+import * as IO from 'fp-ts/IO';
 import * as O from 'fp-ts/Option';
 import { constant, pipe } from 'fp-ts/function';
 import { serializeError } from 'serialize-error';
@@ -13,6 +15,9 @@ type LevelName = keyof typeof Level;
 export type Payload = Record<string, unknown>;
 
 export type Logger = (level: LevelName, message: string, payload?: Payload) => void;
+export type LoggerIO = (entry: LogEntry) => IO.IO<void>;
+
+export type LogEntry = { timestamp: Date, level: LevelName, message: string, payload?: Payload };
 
 export const rTracerLogger = (logger: Logger): Logger => {
   const withRequestId = (payload: Payload) => pipe(
@@ -81,3 +86,19 @@ export const streamLogger = (
     stream.write(`${serializer(entry)}\n`);
   };
 };
+
+export const loggerIO = (logger: Logger): LoggerIO => (
+  (entry) => () => logger(entry.level, entry.message, entry.payload)
+);
+
+const logEntry = (level: LevelName) => (message: string) => (payload?: Payload): IO.IO<LogEntry> => pipe(
+  IO.Do,
+  IO.bind('timestamp', () => D.create),
+  IO.bind('level', () => pipe(level, IO.of)),
+  IO.bind('message', () => pipe(message, IO.of)),
+  IO.bind('payload', () => pipe(payload, IO.of)),
+);
+
+export const error = logEntry('error');
+export const info = logEntry('info');
+export const debug = logEntry('debug');

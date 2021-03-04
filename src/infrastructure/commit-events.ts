@@ -1,7 +1,8 @@
+import * as IO from 'fp-ts/IO';
 import * as T from 'fp-ts/Task';
 import { constVoid, flow } from 'fp-ts/function';
 import { Pool } from 'pg';
-import { Logger } from './logger';
+import * as L from './logger';
 import { domainEvent } from '../types/codecs/DomainEvent';
 import { DomainEvent, RuntimeGeneratedEvent } from '../types/domain-events';
 
@@ -11,7 +12,7 @@ export type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Ta
 export const commitEvents = (
   inMemoryEvents: Array<DomainEvent>,
   pool: Pool,
-  logger: Logger,
+  logger: L.LoggerIO,
 ): CommitEvents => flow(
   T.traverseArray(flow(
     T.of,
@@ -25,7 +26,12 @@ export const commitEvents = (
         values,
       ),
     )),
-    T.chainFirst(flow((event) => logger('info', 'Event committed', { event }), T.of)),
+    T.chainFirst(flow(
+      (event) => ({ event }),
+      L.info('Event committed'),
+      IO.chain(logger),
+      T.fromIO,
+    )),
     T.chainFirst(flow((event) => inMemoryEvents.push(event), T.of)),
   )),
   T.map(constVoid),

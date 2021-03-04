@@ -28,7 +28,9 @@ import { getTwitterResponse } from './get-twitter-response';
 import { getTwitterUserDetails } from './get-twitter-user-details';
 import { getXmlFromCrossrefRestApi } from './get-xml-from-crossref-rest-api';
 import { inMemoryEditorialCommunityRepository } from './in-memory-editorial-communities';
-import { jsonSerializer, rTracerLogger, streamLogger } from './logger';
+import {
+  jsonSerializer, loggerIO, rTracerLogger, streamLogger,
+} from './logger';
 import { responseCache } from './response-cache';
 import { searchEuropePmc } from './search-europe-pmc';
 import { bootstrapEditorialCommunities } from '../data/bootstrap-editorial-communities';
@@ -107,7 +109,7 @@ export const createInfrastructure = (): TE.TaskEither<unknown, Adapters> => pipe
         getAllEditorialCommunities: editorialCommunities.all,
         findReviewsForArticleDoi: findReviewsForArticleDoi(getAllEvents),
         getAllEvents,
-        commitEvents: commitEvents(events, pool, logger),
+        commitEvents: commitEvents(events, pool, loggerIO(logger)),
         getFollowList,
         getUserDetails: getTwitterUserDetails(
           getTwitterResponse(process.env.TWITTER_API_BEARER_TOKEN ?? '', logger),
