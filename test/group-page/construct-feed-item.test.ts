@@ -1,5 +1,5 @@
 import * as TE from 'fp-ts/TaskEither';
-import { constructFeedItem, GetArticle } from '../../src/editorial-community-page/construct-feed-item';
+import { constructFeedItem, GetArticle } from '../../src/group-page/construct-feed-item';
 import { FeedItem } from '../../src/shared-components';
 import { Doi } from '../../src/types/doi';
 import {

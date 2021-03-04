@@ -1,4 +1,4 @@
-import { renderPageHeader } from '../../src/editorial-community-page/render-page-header';
+import { renderPageHeader } from '../../src/group-page/render-page-header';
 
 describe('create render page', () => {
   describe('when the community exists', () => {

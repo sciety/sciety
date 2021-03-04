@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
-import { renderFollowers } from '../../src/editorial-community-page/render-followers';
+import { renderFollowers } from '../../src/group-page/render-followers';
 import { GroupId } from '../../src/types/group-id';
 
 describe('render-followers', () => {

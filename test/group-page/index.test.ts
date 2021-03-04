@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import { groupPage } from '../../src/editorial-community-page';
+import { groupPage } from '../../src/group-page';
 import { createTestServer } from '../http/server';
 
 describe('create render page', () => {

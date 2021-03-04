@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
-import { renderDescription } from '../../src/editorial-community-page/render-description';
+import { renderDescription } from '../../src/group-page/render-description';
 import { Group } from '../../src/types/group';
 
 describe('render-description', () => {
