@@ -1,6 +1,5 @@
-import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
-import { constVoid, pipe } from 'fp-ts/function';
+import { constVoid, flow } from 'fp-ts/function';
 import { Pool } from 'pg';
 import { Logger } from './logger';
 import { domainEvent } from '../types/codecs/DomainEvent';
@@ -13,23 +12,21 @@ export const commitEvents = (
   inMemoryEvents: Array<DomainEvent>,
   pool: Pool,
   logger: Logger,
-): CommitEvents => (
-  (events) => pipe(
-    events,
-    RA.map((event) => async () => {
-      const {
+): CommitEvents => flow(
+  T.traverseArray(flow(
+    T.of,
+    T.chainFirst(flow(
+      domainEvent.encode,
+      ({
         id, type, date, ...payload
-      } = domainEvent.encode(event);
-      await pool.query(
+      }) => [id, type, date, payload],
+      (values) => async () => pool.query(
         'INSERT INTO events (id, type, date, payload) VALUES ($1, $2, $3, $4);',
-        [id, type, date, payload],
-      );
-
-      inMemoryEvents.push(event);
-
-      logger('info', 'Event committed', { event });
-    }),
-    T.sequenceArray,
-    T.map(constVoid),
-  )
+        values,
+      ),
+    )),
+    T.chainFirst(flow((event) => logger('info', 'Event committed', { event }), T.of)),
+    T.chainFirst(flow((event) => inMemoryEvents.push(event), T.of)),
+  )),
+  T.map(constVoid),
 );
