@@ -62,7 +62,7 @@ const userSavedArticleEvent = t.type({
   articleId: DoiFromString,
 });
 
-const domainEvent = t.union([
+export const domainEvent = t.union([
   userFollowedEditorialCommunityEvent,
   userUnfollowedEditorialCommunityEvent,
   userFoundReviewHelpfulEvent,
