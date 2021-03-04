@@ -98,7 +98,7 @@ $vertical-space-above-title--wide: baseline.increments(5);
 }
 
 .article-author-list > li {
-  @include typography.sizing($font-size: settings.$base-font-measure, $line-height-in-increments: 3);
+  @include typography.sizing($font-size: 14px, $line-height-in-increments: 2.5);
   float: left;
   font-weight: bold;
 }
