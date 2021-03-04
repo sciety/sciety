@@ -5,6 +5,60 @@
 @use 'settings';
 @use 'typography';
 
+$vertical-space-above-title--narrow: baseline.increments(2);
+$vertical-space-above-title--wide: baseline.increments(5);
+
+.sciety-grid.sciety-grid--article {
+  @include typography.sizing(14px, 2.5);
+  grid-auto-flow: unset;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: Ubuntu, sans-serif;
+
+  h1 {
+    @include typography.sizing(20px, 3);
+    font-family: Ubuntu, sans-serif;
+  }
+
+  p {
+    @include typography.sizing(14px, 2.5);
+    font-family: Ubuntu, sans-serif;
+  }
+
+  .article-tabs__tab {
+    font-family: Ubuntu, sans-serif;
+  }
+}
+
+.sciety-grid--article > .page-header--article,
+.sciety-grid--article > .article-tabs,
+.sciety-grid--article > .main-content {
+  grid-column: 1 / -1;
+}
+
+.sciety-grid--article > .page-header--article {
+  margin-left: 1rem;
+  margin-right: 1rem;
+  padding-top: $vertical-space-above-title--narrow;
+  color: settings.$colour-activity-page-text;
+}
+
+@media screen and (min-width: settings.$breakpoint-narrow) {
+  .sciety-grid.sciety-grid--article h1 {
+    @include typography.sizing(26px, 3.75);
+  }
+
+  .sciety-grid--article > .page-header--article,
+  .sciety-grid--article > .article-tabs,
+  .sciety-grid--article > .main-content {
+    grid-column: 3/11;
+  }
+
+  .sciety-grid--article > .page-header--article {
+    padding-top: $vertical-space-above-title--wide;
+  }
+}
+
 .article-actions {
   display: flex;
   align-items: center;

@@ -13,7 +13,7 @@ export const renderActivityPage = (components: {
   tweetThis: string,
 }): HtmlFragment => toHtmlFragment(`
   <div class="activity-page__background--filler">
-    <article class="sciety-grid sciety-grid--activity">
+    <article class="sciety-grid sciety-grid--article">
       <header class="page-header page-header--article">
         <h1>${components.articleDetails.title}</h1>
         <div class="article-actions">

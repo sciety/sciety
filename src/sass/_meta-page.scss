@@ -4,60 +4,6 @@
 @use 'typography';
 @use 'functions';
 
-$vertical-space-above-title--narrow: baseline.increments(2);
-$vertical-space-above-title--wide: baseline.increments(5);
-
-.sciety-grid.sciety-grid--meta {
-  @include typography.sizing(14px, 2.5);
-  grid-auto-flow: unset;
-  margin-left: auto;
-  margin-right: auto;
-  font-family: Ubuntu, sans-serif;
-
-  h1 {
-    @include typography.sizing(20px, 3);
-    font-family: Ubuntu, sans-serif;
-  }
-
-  p {
-    @include typography.sizing(14px, 2.5);
-    font-family: Ubuntu, sans-serif;
-  }
-
-  .article-tabs__tab {
-    font-family: Ubuntu, sans-serif;
-  }
-}
-
-.sciety-grid--meta > .page-header--article,
-.sciety-grid--meta > .article-tabs,
-.sciety-grid--meta > .main-content {
-  grid-column: 1 / -1;
-}
-
-.sciety-grid--meta > .page-header--article {
-  margin-left: 1rem;
-  margin-right: 1rem;
-  padding-top: $vertical-space-above-title--narrow;
-  color: settings.$colour-activity-page-text;
-}
-
-@media screen and (min-width: settings.$breakpoint-narrow) {
-  .sciety-grid.sciety-grid--meta h1 {
-    @include typography.sizing(26px, 3.75);
-  }
-
-  .sciety-grid--meta > .page-header--article,
-  .sciety-grid--meta > .article-tabs,
-  .sciety-grid--meta > .main-content {
-    grid-column: 3/11;
-  }
-
-  .sciety-grid--meta > .page-header--article {
-    padding-top: $vertical-space-above-title--wide;
-  }
-}
-
 .main-content--meta {
   border: 1px solid settings.$colour-article-border;
   border-left-width: 0;
