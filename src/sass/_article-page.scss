@@ -5,10 +5,6 @@
 @use 'settings';
 @use 'typography';
 
-.article-call-to-action-link {
-  font-family: settings.$font-secondary;
-}
-
 .article-actions {
   display: flex;
   align-items: center;

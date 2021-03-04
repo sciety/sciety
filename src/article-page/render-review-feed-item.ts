@@ -43,7 +43,7 @@ const eventMetadata = (review: ReviewFeedItem) => toHtmlFragment(`
 const sourceLink = (review: ReviewFeedItem) => pipe(
   review.source,
   O.map(
-    (source) => `<a href="${source.toString()}" class="activity-feed__item__read_more article-call-to-action-link">
+    (source) => `<a href="${source.toString()}" class="activity-feed__item__read_more">
     Read the original source
   </a>`,
   ),
