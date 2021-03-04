@@ -1,18 +1,16 @@
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
 type ArticleDetails = {
   title: string,
-  abstract: SanitisedHtmlFragment, // TODO Use HtmlFragment as the HTML is stripped
+  abstract: HtmlFragment,
   authors: Array<string>,
   server: ArticleServer,
 };
 
 export const renderMetaPage = (components: {
   articleDetails: ArticleDetails,
-  abstract: HtmlFragment,
   doi: Doi,
   saveArticle: string,
   tweetThis: string,
@@ -44,7 +42,13 @@ export const renderMetaPage = (components: {
         </ul>
       </section>
 
-      ${components.abstract}
+      <section class="article-abstract" role="doc-abstract">
+        ${components.articleDetails.abstract}
+      </section>
+
+      <a href="https://doi.org/${components.doi.value}" class="full-article-button">
+        Read the full article
+      </a>
     </div>
 
   </article>

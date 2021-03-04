@@ -4,7 +4,6 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import striptags from 'striptags';
 import { projectHasUserSavedArticle } from './project-has-user-saved-article';
-import { renderAbstract } from './render-abstract';
 import { renderMetaPage } from './render-meta-page';
 import { renderSaveArticle } from './render-save-article';
 import { renderTweetThis } from './render-tweet-this';
@@ -63,10 +62,6 @@ export const articleMetaPage = (ports: Ports): MetaPage => flow(
   TE.right,
   TE.bind('userId', ({ user }) => pipe(user, O.map((u) => u.id), TE.right)),
   TE.bind('articleDetails', ({ doi }) => pipe(doi, ports.fetchArticle)),
-  TE.bindW('abstract', ({ doi, articleDetails }) => pipe(
-    renderAbstract(doi, articleDetails.abstract),
-    TE.right,
-  )),
   TE.bindW('saveArticle', ({ doi, userId }) => pipe(
     renderSaveArticle(projectHasUserSavedArticle(ports.getAllEvents))(doi, userId),
     TE.rightTask,
