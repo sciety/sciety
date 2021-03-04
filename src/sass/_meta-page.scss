@@ -137,7 +137,7 @@ $vertical-space-above-title--wide: baseline.increments(5);
 .full-article-button,
 .full-article-button:link,
 .full-article-button:visited {
-  @include typography.sizing(14px);
+  @include typography.sizing(14px, 14/8);
   border-radius: 5px;
   cursor: pointer;
   padding: functions.px-to-rem(8px);
