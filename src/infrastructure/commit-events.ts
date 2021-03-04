@@ -1,19 +1,23 @@
 import * as IO from 'fp-ts/IO';
+import * as RT from 'fp-ts/ReaderTask';
 import * as T from 'fp-ts/Task';
-import { constVoid, flow } from 'fp-ts/function';
+import { constVoid, flow, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
 import * as L from './logger';
 import { domainEvent } from '../types/codecs/DomainEvent';
 import { DomainEvent, RuntimeGeneratedEvent } from '../types/domain-events';
 
-// TODO: should return a TaskEither
-export type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<void>;
-
-export const commitEvents = (
+type Dependencies = {
   inMemoryEvents: Array<DomainEvent>,
   pool: Pool,
   logger: L.LoggerIO,
-): CommitEvents => flow(
+};
+
+// TODO: should return a TaskEither
+type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => RT.ReaderTask<Dependencies, void>;
+
+export const commitEvents: CommitEvents = (events) => ({ inMemoryEvents, pool, logger }) => pipe(
+  events,
   T.traverseArray(flow(
     T.of,
     T.chainFirst(flow(

@@ -109,7 +109,7 @@ export const createInfrastructure = (): TE.TaskEither<unknown, Adapters> => pipe
         getAllEditorialCommunities: editorialCommunities.all,
         findReviewsForArticleDoi: findReviewsForArticleDoi(getAllEvents),
         getAllEvents,
-        commitEvents: commitEvents(events, pool, loggerIO(logger)),
+        commitEvents: (...args) => commitEvents(...args)({ inMemoryEvents: events, pool, logger: loggerIO(logger) }),
         getFollowList,
         getUserDetails: getTwitterUserDetails(
           getTwitterResponse(process.env.TWITTER_API_BEARER_TOKEN ?? '', logger),

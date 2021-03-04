@@ -1,7 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
-import { CommitEvents } from './commit-events';
 import { EventSourcedFollowListRepository } from './event-sourced-follow-list-repository';
 import { FetchCrossrefArticle } from './fetch-crossref-article';
 import { FetchReview } from './fetch-review';
@@ -12,7 +11,7 @@ import { GetArticleVersionEventsFromBiorxiv } from './get-article-version-events
 import { GetTwitterUserDetails } from './get-twitter-user-details';
 import { Logger } from './logger';
 import { SearchEuropePmc } from './search-europe-pmc';
-import { DomainEvent } from '../types/domain-events';
+import { DomainEvent, RuntimeGeneratedEvent } from '../types/domain-events';
 import { EditorialCommunityRepository } from '../types/editorial-community-repository';
 import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
@@ -32,7 +31,7 @@ export type Adapters = {
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
   findVersionsForArticleDoi: GetArticleVersionEventsFromBiorxiv,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
-  commitEvents: CommitEvents,
+  commitEvents: (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<void>,
   getFollowList: EventSourcedFollowListRepository,
   getUserDetails: GetTwitterUserDetails,
   follows: Follows,
