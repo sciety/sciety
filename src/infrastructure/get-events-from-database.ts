@@ -7,30 +7,25 @@ import * as PR from 'io-ts/PathReporter';
 import { Pool } from 'pg';
 import { databaseEvents } from './codecs/DatabaseEvent';
 import { Logger } from './logger';
-import { DomainEvent, RuntimeGeneratedEvent } from '../types/domain-events';
-import { EventId } from '../types/event-id';
+import { RuntimeGeneratedEvent } from '../types/domain-events';
 
 type EventRow = {
-  id: EventId,
+  id: string,
   type: string,
-  date: Date,
+  date: string,
   payload: Json,
 };
 
 export const getEventsFromDatabase = (
   pool: Pool,
   logger: Logger,
-): TE.TaskEither<Error, ReadonlyArray<DomainEvent>> => pipe(
-  TE.tryCatch(async () => pool.query<EventRow>('SELECT * FROM events'), E.toError),
+): TE.TaskEither<Error, ReadonlyArray<RuntimeGeneratedEvent>> => pipe(
+  TE.tryCatch(async () => pool.query<EventRow>('SELECT id, type, date::text, payload FROM events'), E.toError),
   TE.map((result) => result.rows),
   TE.chainFirstW(flow(
     (rows) => logger('debug', 'Reading events from database', { count: rows.length }),
     TE.right,
   )),
-  TE.map(
-    // TODO return a string from the database
-    RA.map((row) => ({ ...row, date: row.date.toString() })),
-  ),
   TE.chain(flow(
     databaseEvents.decode,
     TE.fromEither,
