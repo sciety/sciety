@@ -30,7 +30,7 @@ export const renderMetaPage = (components: {
       <a class="article-tabs__tab article-tabs__link" href="/articles/activity/${components.doi.value}" aria-label="Discover article activity">Activity</a>
     </div>
 
-    <div class="main-content main-content--article">
+    <div class="main-content">
       <section class="article-meta">
         <ol aria-label="Authors of this article" class="article-author-list" role="list">
           ${components.articleDetails.authors.map((author) => `<li>${author}</li>`).join('')}

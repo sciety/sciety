@@ -54,20 +54,6 @@ $vertical-space-above-title--wide: baseline.increments(5);
   .sciety-grid--activity > .page-header--article {
     padding-top: $vertical-space-above-title--wide;
   }
-
-  .sciety-grid--activity > .main-content {
-    &.main-content--article {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      grid-template-rows: auto auto;
-
-      // TODO: move to activity-feed partial as part of layout refactor
-      .activity-feed {
-        grid-column: 1 / -1;
-        grid-row: 2;
-      }
-    }
-  }
 }
 
 .activity-page__background--filler {
