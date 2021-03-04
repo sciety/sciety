@@ -2,6 +2,7 @@
 @use 'list';
 @use 'settings';
 @use 'typography';
+@use 'functions';
 
 $vertical-space-above-title--narrow: baseline.increments(2);
 $vertical-space-above-title--wide: baseline.increments(5);
@@ -54,6 +55,42 @@ $vertical-space-above-title--wide: baseline.increments(5);
 
   .sciety-grid--meta > .page-header--article {
     padding-top: $vertical-space-above-title--wide;
+  }
+}
+
+.sciety-grid--meta .main-content--article {
+  border: 1px solid settings.$colour-article-border;
+  border-left-width: 0;
+  border-right-width: 0;
+  background-color: settings.$colour-white;
+  margin-bottom: baseline.increments(1);
+
+  padding: baseline.increments(2) functions.px-to-rem(16px);
+  @media screen and (min-width: settings.$breakpoint-narrow) {
+    padding: baseline.increments(3) functions.px-to-rem(24px);
+  }
+
+  &:first-child {
+    border-top-width: 0;
+  }
+
+  @media screen and (min-width: settings.$breakpoint-narrow) {
+    border-radius: settings.$border-radius;
+    border-left-width: 1px;
+    border-right-width: 1px;
+
+    &:first-child {
+      border-top-width: 1px;
+    }
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  h3 {
+    @include typography.sizing($font-size: settings.$base-font-measure, $line-height-in-increments: 3);
+    font-weight: bold;
   }
 }
 
