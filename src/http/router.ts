@@ -87,7 +87,7 @@ export const createRouter = (adapters: Adapters): Router => {
     });
 
   router.get('/articles/meta/:doi(.+)',
-    pageHandler(flow(ensureBiorxivDoiParam, TE.fromEither, TE.chain(articleMetaPage(adapters)))));
+    pageHandler(flow(ensureBiorxivDoiParam, TE.fromEither, TE.chain((args) => articleMetaPage(args)(adapters)))));
 
   router.get('/articles/activity/:doi(.+)',
     pageHandler(flow(ensureBiorxivDoiParam, TE.fromEither, TE.chain(articleActivityPage(adapters)))));
