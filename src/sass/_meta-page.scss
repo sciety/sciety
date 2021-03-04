@@ -116,8 +116,8 @@ $vertical-space-above-title--wide: baseline.increments(5);
   font-family: settings.$font-secondary;
 }
 
-.article-meta-data-list > li {
-  @include typography.sizing($font-size: settings.$base-font-measure, $line-height-in-increments: 3);
+.article-meta-data-list__link {
+  @include typography.sizing($font-size: 14px, $line-height-in-increments: 2.5);
 }
 
 .article-abstract {
