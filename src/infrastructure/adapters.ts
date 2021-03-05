@@ -1,10 +1,10 @@
 import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import { EventSourcedFollowListRepository } from './event-sourced-follow-list-repository';
 import { FetchCrossrefArticle } from './fetch-crossref-article';
 import { FetchReview } from './fetch-review';
-import { FetchStaticFile } from './fetch-static-file';
 import { FindReviewsForArticleDoi } from './find-reviews-for-article-doi';
 import { Follows } from './follows';
 import { GetArticleVersionEventsFromBiorxiv } from './get-article-version-events-from-biorxiv';
@@ -23,7 +23,7 @@ type GetAllEditorialCommunities = T.Task<RNEA.ReadonlyNonEmptyArray<Group>>;
 export type Adapters = {
   fetchArticle: FetchCrossrefArticle,
   fetchReview: FetchReview,
-  fetchStaticFile: FetchStaticFile,
+  fetchStaticFile: (filename: string) => TE.TaskEither<'not-found' | 'unavailable', string>,
   searchEuropePmc: SearchEuropePmc,
   editorialCommunities: EditorialCommunityRepository,
   getEditorialCommunity: GetEditorialCommunity,
