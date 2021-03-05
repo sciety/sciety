@@ -1,6 +1,7 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { renderErrorPage, renderPage } from './render-page';
+import { renderPage } from './render-page';
+import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 
@@ -17,7 +18,10 @@ export const aboutPage = (ports: Ports): AboutPage => () => pipe(
   ports.fetchStaticFile,
   TE.map(renderPage),
   TE.bimap(
-    renderErrorPage,
+    () => ({
+      type: 'unavailable',
+      message: toHtmlFragment('We couldn\'t find this information; please try again later.'),
+    }),
     (content) => ({
       title: 'About',
       content,

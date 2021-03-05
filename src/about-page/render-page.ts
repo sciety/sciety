@@ -1,7 +1,6 @@
 import { flow } from 'fp-ts/function';
 import { Remarkable } from 'remarkable';
 import { toHtmlFragment } from '../types/html-fragment';
-import { RenderPageError } from '../types/render-page-error';
 
 const addPageWrapper = (html: string) => `
   <div class="about-page-wrapper">
@@ -21,16 +20,3 @@ export const renderPage = flow(
   addPageWrapper,
   toHtmlFragment,
 );
-
-export const renderErrorPage = (e: 'not-found' | 'unavailable'): RenderPageError => {
-  if (e === 'not-found') {
-    return {
-      type: 'not-found',
-      message: toHtmlFragment('We couldn\'t find this information; please try again later.'),
-    };
-  }
-  return {
-    type: 'unavailable',
-    message: toHtmlFragment('We couldn\'t find this information; please try again later.'),
-  };
-};
