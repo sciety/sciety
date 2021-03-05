@@ -33,19 +33,10 @@ const projectNotHelpfulCount = (reviewId: ReviewId.ReviewId) => flow(
   )),
 );
 
-const projection = (reviewId: ReviewId.ReviewId) => (events: ReadonlyArray<DomainEvent>) => {
-  const helpfulCount = pipe(
-    events,
-    projectHelpfulCount(reviewId),
-  );
-
-  const notHelpfulCount = pipe(
-    events,
-    projectNotHelpfulCount(reviewId),
-  );
-
-  return { helpfulCount, notHelpfulCount };
-};
+const projection = (reviewId: ReviewId.ReviewId) => (events: ReadonlyArray<DomainEvent>) => ({
+  helpfulCount: pipe(events, projectHelpfulCount(reviewId)),
+  notHelpfulCount: pipe(events, projectNotHelpfulCount(reviewId)),
+});
 
 type ProjectReviewResponseCounts = (
   reviewId: ReviewId.ReviewId,
