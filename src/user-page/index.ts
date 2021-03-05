@@ -5,7 +5,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { fetchSavedArticles } from './fetch-saved-articles';
-import { GetAllEvents, projectFollowedGroupIds } from './project-followed-editorial-community-ids';
+import { GetAllEvents, projectFollowedGroupIds } from './project-followed-group-ids';
 import { projectSavedArticleDois } from './project-saved-article-dois';
 import { renderFollowList } from './render-follow-list';
 import { renderFollowToggle } from './render-follow-toggle';

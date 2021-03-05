@@ -5,7 +5,7 @@ import { GroupId } from '../../src/types/group-id';
 import { toUserId } from '../../src/types/user-id';
 import { GetAllEvents, projectFollowedGroupIds } from '../../src/user-page/project-followed-editorial-community-ids';
 
-describe('project-followed-editorial-community-ids', () => {
+describe('project-followed-group-ids', () => {
   const getAllEvents: GetAllEvents = T.of([
     userFollowedEditorialCommunity(toUserId('someone'), new GroupId('316db7d9-88cc-4c26-b386-f067e0f56334')),
     userFollowedEditorialCommunity(toUserId('someone'), new GroupId('53ed5364-a016-11ea-bb37-0242ac130002')),
@@ -43,7 +43,7 @@ describe('project-followed-editorial-community-ids', () => {
   describe('when a community is unfollowed', () => {
     const community1 = new GroupId('community-1');
 
-    it.skip('does not list that community', async () => {
+    it('does not list that community', async () => {
       const followed = await projectFollowedGroupIds(T.of([
         userFollowedEditorialCommunity(toUserId('someone'), community1),
         userUnfollowedEditorialCommunity(toUserId('someone'), community1),
