@@ -12,19 +12,6 @@
   font-family: settings.$font-secondary;
 }
 
-.search-results-list {
-  @include list.basics();
-}
-
-.search-results-list__item {
-  @include typography.sizing($font-size: settings.$base-font-measure, $line-height-in-increments: 3);
-  margin-bottom: baseline.increments(4);
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
 .search-results-list__item__link {
   font-weight: bold;
 

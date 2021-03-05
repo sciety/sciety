@@ -1,4 +1,7 @@
 @use 'baseline';
+@use 'card';
+@use 'functions';
+@use 'list';
 @use 'settings';
 @use 'typography';
 
@@ -19,5 +22,36 @@ $vertical-space-above-title--wide: baseline.increments(5);
 @media screen and (min-width: settings.$breakpoint-narrow) {
   .sciety-grid--search-results > .search-results {
     grid-column: 3/11;
+  }
+}
+
+.search-results-list {
+  @include list.basics();
+  margin-top: 0;
+}
+
+.search-results-list__item {
+  @include card.full-tab-card();
+  border-left-width: 0;
+  border-right-width: 0;
+  margin-bottom: baseline.increments(1);
+  padding: baseline.increments(2) functions.px-to-rem(16px);
+
+  &:first-child {
+    border-top-width: 0;
+  }
+
+  @media screen and (min-width: settings.$breakpoint-narrow) {
+    border-left-width: 1px;
+    border-right-width: 1px;
+    padding: baseline.increments(3) functions.px-to-rem(24px);
+
+    &:first-child {
+      border-top-width: 1px;
+    }
+  }
+
+  &:last-child {
+    margin-bottom: 0;
   }
 }
