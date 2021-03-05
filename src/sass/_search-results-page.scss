@@ -67,15 +67,15 @@ $vertical-space-above-title--wide: baseline.increments(5);
   @include typography.sizing(16px, 2.5);
   font-family: Ubuntu, sans-serif;
   font-weight: bold;
-  color: settings.$colour-activity-page-text;
+  color: settings.$colour-text-primary;
 
   &:link,
   &:visited {
-    color: settings.$colour-activity-page-text;
+    color: settings.$colour-text-primary;
 
     &:active,
     &:hover {
-      color: settings.$colour-activity-page-text;
+      color: settings.$colour-text-primary;
     }
   }
 }
