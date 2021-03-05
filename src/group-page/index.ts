@@ -38,6 +38,11 @@ const buildRenderFeed = (ports: Ports) => renderFeed(
   renderFollowToggle(ports.follows),
 );
 
+const notFoundResponse = () => ({
+  type: 'not-found',
+  message: toHtmlFragment('No such group. Please check and try again.'),
+} as const);
+
 const inputParams = t.type({
   id: GroupIdFromString,
   user: option(t.type({
@@ -53,17 +58,12 @@ export const groupPage = (ports: Ports): GroupPage => (params) => pipe(
   TE.fromEither,
   TE.chain(({ id, user }) => pipe(
     ports.getEditorialCommunity(id),
-    T.chain(O.fold(
-      () => TE.left({
-        type: 'not-found',
-        message: toHtmlFragment(`Editorial community id '${id.value}' not found`),
-      } as const),
-      (group) => renderPage(
-        renderPageHeader,
-        renderDescription(ports.fetchStaticFile),
-        buildRenderFeed(ports),
-        renderFollowers(projectFollowerIds(ports.getAllEvents)),
-      )(group, pipe(user, O.map((u) => u.id))),
-    )),
+    T.map(E.fromOption(notFoundResponse)),
+    TE.chain((group) => renderPage(
+      renderPageHeader,
+      renderDescription(ports.fetchStaticFile),
+      buildRenderFeed(ports),
+      renderFollowers(projectFollowerIds(ports.getAllEvents)),
+    )(group, pipe(user, O.map((u) => u.id)))),
   )),
 );
