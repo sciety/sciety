@@ -18,6 +18,4 @@ describe('render-editorial-community', () => {
 
     expect(rendered).toContain('Editorial Community A');
   });
-
-  it.todo('displays a follow toggle'); // TODO move this to render-toggle tests
 });
