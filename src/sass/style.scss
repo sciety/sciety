@@ -22,14 +22,9 @@
 @use 'list';
 @use 'typography';
 
-/* Sciety imports, not Semantic-UI */
 @import url('https://fonts.googleapis.com/css?family=Lato:ital,wght@0,400;0,700;1,400&subset=latin,latin-ext&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,400;0,700;1,400&display=swap');
-
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Styles that override Semantic UI
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 /*
 Prevent styling of <a> elements that aren't links
@@ -38,40 +33,6 @@ Prevent styling of <a> elements that aren't links
 a:not([href]) {
   color: inherit;
   text-decoration: inherit;
-}
-
-/*
-Make sure that links inside a .ui.menu that use <ol> or <ul> retain the intended styling
-*/
-
-.ui.menu > .item a:not(.ui) {
-  color: inherit;
-  text-decoration: inherit;
-}
-
-.ui.menu > .item a:hover:not(.ui) {
-  cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.03);
-  color: rgba(0, 0, 0, 0.95);
-}
-
-.ui.text.menu > .item a:hover:not(.ui) {
-  opacity: 1;
-  background-color: transparent;
-}
-
-.ui.menu:not(.vertical) .item > .button.button--primary {
-  color: rgb(255, 255, 255);
-  font-size: functions.px-to-rem(settings.$base-font-measure);
-  padding: functions.px-to-rem(13px) functions.px-to-rem(25px);
-}
-
-.ui.menu:not(.vertical) .item > .button.button--primary:hover {
-  background-color: settings.$colour-primary-hover;
-}
-
-.ui.items > .item > .content > a.header:hover {
-  color: settings.$colour-primary-hover;
 }
 
 /*
@@ -94,79 +55,8 @@ Use real subscript and superscript characters where possible
   }
 }
 
-/*
-Reset <fieldset> in a .ui.form
-*/
-
-.ui.form fieldset {
-  border-width: 0;
-  margin: 0;
-  padding: 0;
-}
-
-/*
-Make sure that .ui.list that use <ol> or <ul> don't have bullets or numbers without using .bulleted or .ordered
-*/
-
-ol.ui,
-ul.ui {
-  @include list.basics();
-}
-
-ol.ui.list:not(.bulleted):not(.ordered),
-ul.ui.list:not(.bulleted):not(.ordered) {
-  margin-left: 0;
-}
-
-ol.ui.list:not(.bulleted):not(.ordered) li::before,
-ul.ui.list:not(.bulleted):not(.ordered) li::before {
-  content: '';
-}
-
 p:last-child {
   margin-bottom: 1em;
-}
-
-/*
-Fix the vertical alignment in the event feed
-*/
-.ui.feed>.event>.content .date {
-  display: block;
-}
-
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Styles that supplement Semantic UI
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-
-/*
-Allow a form <legend> to be a .ui.header
-*/
-
-legend.ui.header {
-  display: block;
-  width: 100%;
-}
-
-/*
-Allow commas on the end of each .ui.list .item by adding .comma.separated
-*/
-
-.ui[class*='comma separated'].horizontal.list:not(.bulleted):not(.ordered) > .item {
-  margin-left: 0;
-}
-
-.ui[class*='comma separated'].horizontal.list:not(.bulleted):not(.ordered) > .item::before {
-  margin: 0;
-}
-
-.ui[class*='comma separated'].list > .item::after {
-  content: ',\0a0';
-  display: inline;
-  visibility: inherit;
-}
-
-.ui[class*='comma separated'].list > .item:last-child::after {
-  content: '.';
 }
 
 table {
@@ -196,10 +86,6 @@ th {
     padding-bottom: 0;
   }
 }
-
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Styles that are independent of Semantic UI
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 *,
 ::after,
