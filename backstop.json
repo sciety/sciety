@@ -25,12 +25,18 @@
       "label": "Homepage (with cookie banner)",
       "url": "https://staging.sciety.org",
       "referenceUrl": "https://sciety.org",
+      "removeSelectors": [
+        ".group-list"
+      ],
       "showCookieConsent": true
     },
     {
       "label": "Homepage",
       "url": "https://staging.sciety.org",
-      "referenceUrl": "https://sciety.org"
+      "referenceUrl": "https://sciety.org",
+      "removeSelectors": [
+        ".group-list"
+      ]
     },
     {
       "label": "An article meta page",
