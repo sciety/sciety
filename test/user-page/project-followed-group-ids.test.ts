@@ -3,7 +3,7 @@ import { Doi } from '../../src/types/doi';
 import { userFollowedEditorialCommunity, userSavedArticle, userUnfollowedEditorialCommunity } from '../../src/types/domain-events';
 import { GroupId } from '../../src/types/group-id';
 import { toUserId } from '../../src/types/user-id';
-import { GetAllEvents, projectFollowedGroupIds } from '../../src/user-page/project-followed-editorial-community-ids';
+import { GetAllEvents, projectFollowedGroupIds } from '../../src/user-page/project-followed-group-ids';
 
 describe('project-followed-group-ids', () => {
   const getAllEvents: GetAllEvents = T.of([
