@@ -1,0 +1,23 @@
+@use 'baseline';
+@use 'settings';
+@use 'typography';
+
+$vertical-space-above-title--narrow: baseline.increments(2);
+$vertical-space-above-title--wide: baseline.increments(5);
+
+.sciety-grid.sciety-grid--search-results {
+  @include typography.sizing(14px, 2.5);
+  grid-auto-flow: unset;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.sciety-grid--search-results > .search-results {
+  grid-column: 1 / -1;
+}
+
+@media screen and (min-width: settings.$breakpoint-narrow) {
+  .sciety-grid--search-results > .search-results {
+    grid-column: 3/11;
+  }
+}
