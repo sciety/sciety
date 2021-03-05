@@ -20,7 +20,7 @@ type RenderSummaryFeedList = (events: ReadonlyArray<FeedItem>) => O.Option<HtmlF
 
 const emptyFeed = `
   <p>
-    It looks like this community hasn’t evaluated any articles yet. Try coming back later!
+    It looks like this group hasn’t evaluated any articles yet. Try coming back later!
   </p>
 `;
 

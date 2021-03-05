@@ -10,10 +10,10 @@ import { sanitise, SanitisedHtmlFragment } from '../types/sanitised-html-fragmen
 
 export type FeedEvent = EditorialCommunityReviewedArticleEvent;
 
-export type ConstructFeedItem = (community: Group) => (event: FeedEvent) => T.Task<FeedItem>;
+export type ConstructFeedItem = (group: Group) => (event: FeedEvent) => T.Task<FeedItem>;
 
-const reviewedBy = (community: Group) => (
-  (community.name === 'preLights') ? 'highlighted' : 'reviewed'
+const reviewedBy = (group: Group) => (
+  (group.name === 'preLights') ? 'highlighted' : 'reviewed'
 );
 
 type FeedItem = {
@@ -31,13 +31,13 @@ type Article = {
 };
 
 const construct = (
-  community: Group,
+  group: Group,
   event: FeedEvent,
 ) => (article: E.Either<unknown, Article>) => ({
-  avatar: community.avatarPath,
+  avatar: group.avatarPath,
   date: event.date,
-  actorName: community.name,
-  actorUrl: `/groups/${community.id.value}`,
+  actorName: group.name,
+  actorUrl: `/groups/${group.id.value}`,
   doi: event.articleId,
   title: pipe(
     article,
@@ -46,15 +46,15 @@ const construct = (
       (a) => a.title,
     ),
   ),
-  verb: reviewedBy(community),
+  verb: reviewedBy(group),
 });
 
 export type GetArticle = (id: Doi) => TE.TaskEither<unknown, Article>;
 
 export const constructFeedItem = (
   getArticle: GetArticle,
-): ConstructFeedItem => (community: Group) => (event) => pipe(
+): ConstructFeedItem => (group: Group) => (event) => pipe(
   event.articleId,
   getArticle,
-  T.map(construct(community, event)),
+  T.map(construct(group, event)),
 );

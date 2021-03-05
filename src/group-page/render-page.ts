@@ -18,7 +18,7 @@ type RenderPageHeader = (group: Group) => HtmlFragment;
 
 type RenderDescription = (group: Group) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>;
 
-type RenderFeed = (community: Group, userId: O.Option<UserId>) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>;
+type RenderFeed = (group: Group, userId: O.Option<UserId>) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>;
 
 type Components = {
   header: HtmlFragment,
@@ -45,8 +45,8 @@ export const renderErrorPage = (): RenderPageError => ({
   message: toHtmlFragment('We couldn\'t retrieve this information. Please try again.'),
 });
 
-const asPage = (community: Group) => (components: Components) => ({
-  title: community.name,
+const asPage = (group: Group) => (components: Components) => ({
+  title: group.name,
   content: pipe(components, render, toHtmlFragment),
 });
 

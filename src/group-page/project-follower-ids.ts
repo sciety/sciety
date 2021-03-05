@@ -10,7 +10,7 @@ import {
 import { eqGroupId, GroupId } from '../types/group-id';
 import { UserId } from '../types/user-id';
 
-type ProjectFollowerIds = (editorialCommunityId: GroupId) => T.Task<ReadonlyArray<UserId>>;
+type ProjectFollowerIds = (groupId: GroupId) => T.Task<ReadonlyArray<UserId>>;
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 

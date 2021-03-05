@@ -14,7 +14,7 @@ const renderFragment = (followerCount: number) => `
       Followers
     </h2>
     <p>
-      ${followerCount} ${followerCount === 1 ? 'user is' : 'users are'} following this community.
+      ${followerCount} ${followerCount === 1 ? 'user is' : 'users are'} following this group.
     </p>
   </section>
 `;

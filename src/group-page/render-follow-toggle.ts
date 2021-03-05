@@ -8,7 +8,7 @@ import { UserId } from '../types/user-id';
 
 export type RenderFollowToggle = (
   userId: O.Option<UserId>,
-  editorialCommunityId: GroupId
+  groupId: GroupId
 ) => T.Task<HtmlFragment>;
 
 export type Follows = (userId: UserId, groupId: GroupId) => T.Task<boolean>;

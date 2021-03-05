@@ -15,7 +15,7 @@ describe('render feed', () => {
   const stubRenderFollowToggle: RenderFollowToggle = () => T.of(toHtmlFragment(''));
   const anGroupId = new GroupId('');
   const aUserId = O.none;
-  const community = {
+  const group = {
     id: anGroupId,
     name: 'name',
     avatar: new URL('http://example.com/image'),
@@ -23,7 +23,7 @@ describe('render feed', () => {
     descriptionPath: 'path',
   };
 
-  describe('with community events', () => {
+  describe('with group events', () => {
     it('returns a list of events', async () => {
       const renderSummaryFeedList = () => O.some(toHtmlFragment('a list'));
       const component = renderFeed(
@@ -40,13 +40,13 @@ describe('render feed', () => {
         renderSummaryFeedList,
         stubRenderFollowToggle,
       );
-      const rendered = await component(community, aUserId)();
+      const rendered = await component(group, aUserId)();
 
       expect(rendered).toStrictEqual(E.right(expect.stringContaining('a list')));
     });
   });
 
-  describe('without community events', () => {
+  describe('without group events', () => {
     it('returns fallback text', async () => {
       const renderSummaryFeedList = () => O.none;
       const component = renderFeed(
@@ -63,9 +63,9 @@ describe('render feed', () => {
         renderSummaryFeedList,
         stubRenderFollowToggle,
       );
-      const rendered = await component(community, aUserId)();
+      const rendered = await component(group, aUserId)();
 
-      expect(rendered).toStrictEqual(E.right(expect.stringContaining('community hasn’t evaluated')));
+      expect(rendered).toStrictEqual(E.right(expect.stringContaining('group hasn’t evaluated')));
     });
   });
 });
