@@ -27,8 +27,8 @@ describe('find-reviews-for-article-doi', () => {
       [new Doi('10.0000/does-not-exist'), []],
     ])('finds the review references for article %s', async (articleDoi, expectedReviews) => {
       const actualReviews = await pipe(
-        articleDoi,
-        findReviewsForArticleDoi(getAllEvents),
+        getAllEvents,
+        findReviewsForArticleDoi(articleDoi),
         T.map(RA.map((reviewReference) => reviewReference.reviewId)),
       )();
 

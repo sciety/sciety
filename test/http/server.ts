@@ -16,7 +16,6 @@ import { fetchDataciteReview } from '../../src/infrastructure/fetch-datacite-rev
 import { FetchDataset } from '../../src/infrastructure/fetch-dataset';
 import { fetchHypothesisAnnotation } from '../../src/infrastructure/fetch-hypothesis-annotation';
 import { fetchReview } from '../../src/infrastructure/fetch-review';
-import { findReviewsForArticleDoi } from '../../src/infrastructure/find-reviews-for-article-doi';
 import { inMemoryEditorialCommunityRepository } from '../../src/infrastructure/in-memory-editorial-communities';
 import { EditorialCommunityRepository } from '../../src/types/editorial-community-repository';
 import { FollowList } from '../../src/types/follow-list';
@@ -58,7 +57,7 @@ export const createTestServer = async (): Promise<TestServer> => {
     searchEuropePmc: () => TE.right({ items: [], total: 0 }),
     getEditorialCommunity: editorialCommunities.lookup,
     getAllEditorialCommunities: editorialCommunities.all,
-    findReviewsForArticleDoi: findReviewsForArticleDoi(T.of([])),
+    findReviewsForArticleDoi: () => T.of([]),
     getAllEvents: T.of([]),
     commitEvents: () => T.of(undefined),
     logger: dummyLogger,

@@ -5,15 +5,22 @@ import * as TE from 'fp-ts/TaskEither';
 import { EventSourcedFollowListRepository } from './event-sourced-follow-list-repository';
 import { FetchCrossrefArticle } from './fetch-crossref-article';
 import { FetchReview } from './fetch-review';
-import { FindReviewsForArticleDoi } from './find-reviews-for-article-doi';
 import { Follows } from './follows';
 import { GetArticleVersionEventsFromBiorxiv } from './get-article-version-events-from-biorxiv';
 import { GetTwitterUserDetails } from './get-twitter-user-details';
 import { Logger } from './logger';
 import { SearchEuropePmc } from './search-europe-pmc';
+import { Doi } from '../types/doi';
 import { DomainEvent, RuntimeGeneratedEvent } from '../types/domain-events';
 import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
+import { ReviewId } from '../types/review-id';
+
+type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
+  reviewId: ReviewId,
+  editorialCommunityId: GroupId,
+  occurredAt: Date,
+}>>;
 
 type GetEditorialCommunity = (editorialCommunityId: GroupId) => T.Task<O.Option<Group>>;
 

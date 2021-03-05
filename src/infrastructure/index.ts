@@ -106,7 +106,7 @@ export const createInfrastructure = (): TE.TaskEither<unknown, Adapters> => pipe
         searchEuropePmc: searchEuropePmc(getJsonWithRetries, logger),
         getEditorialCommunity: editorialCommunities.lookup,
         getAllEditorialCommunities: editorialCommunities.all,
-        findReviewsForArticleDoi: findReviewsForArticleDoi(getAllEvents),
+        findReviewsForArticleDoi: (...args) => findReviewsForArticleDoi(...args)(getAllEvents),
         getAllEvents,
         commitEvents: (...args) => commitEvents(...args)({ inMemoryEvents: events, pool, logger: loggerIO(logger) }),
         getFollowList,
