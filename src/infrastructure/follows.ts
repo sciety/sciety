@@ -1,12 +1,13 @@
 import * as O from 'fp-ts/Option';
+import * as RT from 'fp-ts/ReaderTask';
 import * as A from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
-import { flow, pipe } from 'fp-ts/function';
+import { flow } from 'fp-ts/function';
 import { DomainEvent, isUserFollowedEditorialCommunityEvent, isUserUnfollowedEditorialCommunityEvent } from '../types/domain-events';
 import { eqGroupId, GroupId } from '../types/group-id';
 import { UserId } from '../types/user-id';
 
-export type Follows = (userId: UserId, editorialCommunityId: GroupId) => T.Task<boolean>;
+type Follows = (userId: UserId, editorialCommunityId: GroupId) => RT.ReaderTask<GetAllEvents, boolean>;
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
@@ -22,20 +23,13 @@ const isSignificantTo = (
     && event.userId === userId)
 );
 
-export const follows = (getAllEvents: GetAllEvents): Follows => (
-  (userId, editorialCommunityId) => (
-    pipe(
-      getAllEvents,
-      T.map(
-        flow(
-          A.filter(isSignificantTo(userId, editorialCommunityId)),
-          A.last,
-          O.fold(
-            () => false,
-            (event) => isUserFollowedEditorialCommunityEvent(event),
-          ),
-        ),
-      ),
-    )
-  )
+export const follows: Follows = (userId, editorialCommunityId) => (
+  T.map(flow(
+    A.filter(isSignificantTo(userId, editorialCommunityId)),
+    A.last,
+    O.fold(
+      () => false,
+      (event) => isUserFollowedEditorialCommunityEvent(event),
+    ),
+  ))
 );

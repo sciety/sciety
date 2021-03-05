@@ -5,7 +5,6 @@ import * as TE from 'fp-ts/TaskEither';
 import { EventSourcedFollowListRepository } from './event-sourced-follow-list-repository';
 import { FetchCrossrefArticle } from './fetch-crossref-article';
 import { FetchReview } from './fetch-review';
-import { Follows } from './follows';
 import { GetArticleVersionEventsFromBiorxiv } from './get-article-version-events-from-biorxiv';
 import { GetTwitterUserDetails } from './get-twitter-user-details';
 import { Logger } from './logger';
@@ -15,6 +14,7 @@ import { DomainEvent, RuntimeGeneratedEvent } from '../types/domain-events';
 import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
 import { ReviewId } from '../types/review-id';
+import { UserId } from '../types/user-id';
 
 type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
   reviewId: ReviewId,
@@ -39,6 +39,6 @@ export type Adapters = {
   commitEvents: (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<void>,
   getFollowList: EventSourcedFollowListRepository,
   getUserDetails: GetTwitterUserDetails,
-  follows: Follows,
+  follows: (userId: UserId, editorialCommunityId: GroupId) => T.Task<boolean>,
   logger: Logger,
 };

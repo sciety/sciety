@@ -114,7 +114,7 @@ export const createInfrastructure = (): TE.TaskEither<unknown, Adapters> => pipe
           getTwitterResponse(process.env.TWITTER_API_BEARER_TOKEN ?? '', logger),
           logger,
         ),
-        follows: follows(getAllEvents),
+        follows: (...args) => follows(...args)(getAllEvents),
         findVersionsForArticleDoi: biorxivCache(getArticleVersionEventsFromBiorxiv(getJson, logger), logger),
         ...adapters,
       };
