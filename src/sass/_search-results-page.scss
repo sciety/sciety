@@ -10,11 +10,25 @@ $avatar-size: 32px;
 $vertical-space-above-title--narrow: baseline.increments(2);
 $vertical-space-above-title--wide: baseline.increments(5);
 
+.sciety-grid--search-results > .page-header--search-results {
+  grid-column: 1 / -1;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  padding-top: $vertical-space-above-title--narrow;
+  color: settings.$colour-text-primary;
+}
+
 .sciety-grid.sciety-grid--search-results {
   @include typography.sizing(14px, 2.5);
   grid-auto-flow: unset;
   margin-left: auto;
   margin-right: auto;
+  font-family: Ubuntu, sans-serif;
+
+  h1 {
+    @include typography.sizing(20px, 3);
+    font-family: Ubuntu, sans-serif;
+  }
 }
 
 .sciety-grid--search-results > .search-results {
@@ -22,9 +36,23 @@ $vertical-space-above-title--wide: baseline.increments(5);
 }
 
 @media screen and (min-width: settings.$breakpoint-narrow) {
+  .sciety-grid.sciety-grid--search-results h1 {
+    @include typography.sizing(26px, 3.75);
+  }
+
+  .sciety-grid--search-results > .page-header--search-results {
+    padding-top: $vertical-space-above-title--wide;
+  }
+
+  .sciety-grid--search-results > .page-header--search-results,
   .sciety-grid--search-results > .search-results {
     grid-column: 3/11;
   }
+}
+
+.search-results__summary {
+  margin-left: 1rem;
+  font-family: Ubuntu, sans-serif;
 }
 
 .search-results-list {
