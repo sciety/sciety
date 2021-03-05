@@ -1,5 +1,4 @@
 import { URL } from 'url';
-import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
@@ -8,6 +7,9 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { google, sheets_v4 } from 'googleapis';
+import * as t from 'io-ts';
+import * as tt from 'io-ts-types';
+import * as PR from 'io-ts/PathReporter';
 import { constructNcrcReview } from './construct-ncrc-review';
 import { Logger } from './logger';
 import { HtmlFragment } from '../types/html-fragment';
@@ -21,7 +23,55 @@ type FoundReview = {
 
 export type FetchNcrcReview = (id: NcrcId.NcrcId) => TE.TaskEither<'unavailable' | 'not-found', FoundReview>;
 
-const querySheet = (logger: Logger) => (params: Params$Resource$Spreadsheets$Values$Get) => {
+// https://github.com/gcanti/io-ts/issues/431
+type TupleFn = <TCodecs extends readonly [t.Mixed, ...Array<t.Mixed>]>(
+  codecs: TCodecs,
+  name?: string,
+) => t.TupleType<{
+  -readonly [K in keyof TCodecs]: TCodecs[K];
+}, {
+  [K in keyof TCodecs]: TCodecs[K] extends t.Mixed
+    ? t.TypeOf<TCodecs[K]>
+    : unknown;
+}, {
+  [K in keyof TCodecs]: TCodecs[K] extends t.Mixed
+    ? t.OutputOf<TCodecs[K]>
+    : unknown;
+}>;
+const tuple: TupleFn = t.tuple as never;
+
+const columnType = t.tuple([tt.readonlyNonEmptyArray(t.string)]); // TODO use a uuid
+
+const rowType = t.tuple([tuple([
+  t.unknown, // A uuid
+  t.unknown, // B title_journal
+  t.string, // C Title
+  t.unknown, // D Topic
+  t.unknown, // E First Author
+  t.unknown, // F Date Published
+  t.unknown, // G link
+  t.string, // H Our Take
+  t.string, // I value_added
+  t.string, // J study_population_setting
+  t.string, // K main_findings
+  t.string, // L study_strength
+  t.string, // M limitations
+  t.unknown, // N (hidden)
+  t.unknown, // O journal
+  t.unknown, // P cross_post
+  t.unknown, // Q edit_finished
+  t.unknown, // R reviewer
+  t.unknown, // S edit_date
+  t.unknown, // T final_take_wordcount
+  t.unknown, // U compendium_feature
+  t.string, // V Study_Design
+  t.unknown, // W Subtopic_Tag
+])]);
+
+const querySheet = (logger: Logger) => <A>(
+  params: Params$Resource$Spreadsheets$Values$Get,
+  decoder: t.Decoder<unknown, A>,
+) => {
   const auth = new google.auth.GoogleAuth({
     keyFile: '/var/run/secrets/app/.gcp-ncrc-key.json',
     scopes: ['https://www.googleapis.com/auth/cloud-platform', 'https://www.googleapis.com/auth/spreadsheets.readonly'],
@@ -41,13 +91,12 @@ const querySheet = (logger: Logger) => (params: Params$Resource$Spreadsheets$Val
     ),
     T.map(E.chain((res) => pipe(
       res?.data?.values,
-      O.fromNullable,
-      O.chain(RNEA.fromArray),
-      O.altW(() => {
-        logger('error', 'Empty response from Google sheet api', { res });
-        return O.none;
+      decoder.decode,
+      E.mapLeft(PR.failure),
+      E.mapLeft((errors) => {
+        logger('error', 'Invalid response from Google sheet api', { res, errors });
+        return 'unavailable' as const;
       }),
-      E.fromOption(constant('unavailable' as const)),
     ))),
   );
 };
@@ -55,9 +104,9 @@ const querySheet = (logger: Logger) => (params: Params$Resource$Spreadsheets$Val
 const getRowNumber = (logger: Logger) => (id: NcrcId.NcrcId) => pipe(
   querySheet(logger)({
     spreadsheetId: '1RJ_Neh1wwG6X0SkYZHjD-AEC9ykgAcya_8UCVNoE3SA',
-    range: 'Sheet1!A:A',
+    range: 'Sheet1!A:A', // TODO don't select the header
     majorDimension: 'COLUMNS',
-  }),
+  }, columnType),
   T.map(E.chainW(flow(
     RNEA.head,
     RA.findIndex((uuid) => NcrcId.eqNcrcId.equals(NcrcId.fromString(uuid), id)),
@@ -76,22 +125,20 @@ const getNcrcReview = (logger: Logger) => (rowNumber: number) => pipe(
   querySheet(logger)({
     spreadsheetId: '1RJ_Neh1wwG6X0SkYZHjD-AEC9ykgAcya_8UCVNoE3SA',
     range: `Sheet1!A${rowNumber}:AF${rowNumber}`,
-  }),
-  T.map(E.chain(flow(
+  }, rowType),
+  TE.map(flow(
     RNEA.head,
     (row) => ({
-      title: RA.lookup(2)(row),
-      ourTake: RA.lookup(7)(row),
-      studyDesign: RA.lookup(21)(row),
-      studyPopulationSetting: RA.lookup(9)(row),
-      mainFindings: RA.lookup(10)(row),
-      studyStrength: RA.lookup(11)(row),
-      limitations: RA.lookup(12)(row),
-      valueAdded: RA.lookup(8)(row),
+      title: row[2],
+      ourTake: row[7],
+      studyDesign: row[21],
+      studyPopulationSetting: row[9],
+      mainFindings: row[10],
+      studyStrength: row[11],
+      limitations: row[12],
+      valueAdded: row[8],
     }),
-    sequenceS(O.option),
-    E.fromOption(constant('unavailable' as const)),
-  ))),
+  )),
 );
 
 export const fetchNcrcReview = (logger: Logger): FetchNcrcReview => flow(
