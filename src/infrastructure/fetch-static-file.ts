@@ -7,12 +7,7 @@ import { Logger } from './logger';
 export type FetchStaticFile = (filename: string) => TE.TaskEither<'not-found' | 'unavailable', string>;
 
 export const fetchStaticFile = (logger: Logger): FetchStaticFile => flow(
-  (filename) => {
-    const fullPath = path.resolve(__dirname, '..', '..', 'static', filename);
-    logger('debug', 'Fetch static file', { filename, fullPath });
-
-    return fullPath;
-  },
+  (filename) => path.resolve(__dirname, '..', '..', 'static', filename),
   TE.taskify(fs.readFile),
   TE.bimap(
     (error) => {
