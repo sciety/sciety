@@ -14,7 +14,7 @@ enum Level {
 type LevelName = keyof typeof Level;
 export type Payload = Record<string, unknown>;
 
-export type Logger = (level: LevelName, message: string, payload?: Payload) => void;
+export type Logger = (level: LevelName, message: string, payload?: Payload, timestamp?: Date) => void;
 export type LoggerIO = (entry: LogEntry) => IO.IO<void>;
 
 export type LogEntry = { timestamp: Date, level: LevelName, message: string, payload?: Payload };
@@ -72,12 +72,12 @@ export const streamLogger = (
   serializer: Serializer,
 ): Logger => {
   const configuredLevel = getConfiguredLevel();
-  return (level, message, payload = {}) => {
+  return (level, message, payload = {}, date?) => {
     if (Level[level] > configuredLevel) {
       return;
     }
     const entry = {
-      timestamp: new Date(),
+      timestamp: date ?? new Date(),
       level,
       message,
       payload,
@@ -88,7 +88,7 @@ export const streamLogger = (
 };
 
 export const loggerIO = (logger: Logger): LoggerIO => (
-  (entry) => () => logger(entry.level, entry.message, entry.payload)
+  (entry) => () => logger(entry.level, entry.message, entry.payload, entry.timestamp)
 );
 
 const logEntry = (level: LevelName) => (message: string) => (payload?: Payload): IO.IO<LogEntry> => pipe(
