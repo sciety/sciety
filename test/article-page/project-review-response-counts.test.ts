@@ -13,7 +13,7 @@ describe('project-review-response-counts', () => {
     it('returns 0 `helpful` and 0 `not helpful`', async () => {
       const reviewId = new Doi('10.1234/5678');
 
-      const projected = await projectReviewResponseCounts(async () => [])(reviewId)();
+      const projected = await projectReviewResponseCounts(reviewId)(async () => [])();
 
       expect(projected).toStrictEqual({ helpfulCount: 0, notHelpfulCount: 0 });
     });
@@ -24,10 +24,9 @@ describe('project-review-response-counts', () => {
       const reviewId = new Doi('10.1234/5678');
       const differentReviewId = new Doi('10.9999/9999');
 
-      const project = projectReviewResponseCounts(async () => [
+      const projected = await projectReviewResponseCounts(reviewId)(async () => [
         userFoundReviewHelpful(toUserId('some-user'), differentReviewId),
-      ]);
-      const projected = await project(reviewId)();
+      ])();
 
       expect(projected).toStrictEqual({ helpfulCount: 0, notHelpfulCount: 0 });
     });
@@ -40,12 +39,11 @@ describe('project-review-response-counts', () => {
       const userB = toUserId('B');
       const userC = toUserId('C');
 
-      const project = projectReviewResponseCounts(async () => [
+      const projected = await projectReviewResponseCounts(reviewId)(async () => [
         userFoundReviewHelpful(userA, reviewId),
         userFoundReviewHelpful(userB, reviewId),
         userFoundReviewHelpful(userC, reviewId),
-      ]);
-      const projected = await project(reviewId)();
+      ])();
 
       expect(projected).toStrictEqual({ helpfulCount: 3, notHelpfulCount: 0 });
     });
@@ -56,11 +54,10 @@ describe('project-review-response-counts', () => {
       const reviewId = new Doi('10.1234/5678');
       const userId = toUserId('some-user');
 
-      const project = projectReviewResponseCounts(async () => [
+      const projected = await projectReviewResponseCounts(reviewId)(async () => [
         userFoundReviewHelpful(userId, reviewId),
         userRevokedFindingReviewHelpful(userId, reviewId),
-      ]);
-      const projected = await project(reviewId)();
+      ])();
 
       expect(projected).toStrictEqual({ helpfulCount: 0, notHelpfulCount: 0 });
     });
@@ -73,12 +70,11 @@ describe('project-review-response-counts', () => {
       const userB = toUserId('B');
       const userC = toUserId('C');
 
-      const project = projectReviewResponseCounts(async () => [
+      const projected = await projectReviewResponseCounts(reviewId)(async () => [
         userFoundReviewNotHelpful(userA, reviewId),
         userFoundReviewNotHelpful(userB, reviewId),
         userFoundReviewNotHelpful(userC, reviewId),
-      ]);
-      const projected = await project(reviewId)();
+      ])();
 
       expect(projected).toStrictEqual({ helpfulCount: 0, notHelpfulCount: 3 });
     });
@@ -89,13 +85,12 @@ describe('project-review-response-counts', () => {
       const reviewId = new Doi('10.1234/5678');
       const userId = toUserId('A');
 
-      const project = projectReviewResponseCounts(async () => [
+      const projected = await projectReviewResponseCounts(reviewId)(async () => [
         userFoundReviewHelpful(userId, reviewId),
         userRevokedFindingReviewHelpful(userId, reviewId),
         userFoundReviewNotHelpful(userId, reviewId),
         userRevokedFindingReviewNotHelpful(userId, reviewId),
-      ]);
-      const projected = await project(reviewId)();
+      ])();
 
       expect(projected).toStrictEqual({ helpfulCount: 0, notHelpfulCount: 0 });
     });

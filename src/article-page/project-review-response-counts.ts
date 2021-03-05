@@ -1,7 +1,7 @@
+import * as RT from 'fp-ts/ReaderTask';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
-import { CountReviewResponses } from './render-review-responses';
 import {
   DomainEvent,
   UserFoundReviewHelpfulEvent,
@@ -39,7 +39,10 @@ const projection = (reviewId: ReviewId.ReviewId) => (events: ReadonlyArray<Domai
   return { helpfulCount, notHelpfulCount };
 };
 
-export const projectReviewResponseCounts = (getEvents: GetEvents): CountReviewResponses => (reviewId) => pipe(
-  getEvents,
-  T.map(projection(reviewId)),
+type ProjectReviewResponseCounts = (
+  reviewId: ReviewId.ReviewId,
+) => RT.ReaderTask<GetEvents, { helpfulCount: number, notHelpfulCount: number }>;
+
+export const projectReviewResponseCounts: ProjectReviewResponseCounts = (reviewId) => (
+  T.map(projection(reviewId))
 );

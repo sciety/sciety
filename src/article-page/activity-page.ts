@@ -23,6 +23,7 @@ import { DomainEvent } from '../types/domain-events';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
+import { ReviewId } from '../types/review-id';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { User } from '../types/user';
 
@@ -73,7 +74,7 @@ const toErrorPage = (error: 'not-found' | 'unavailable') => {
 };
 
 export const articleActivityPage = (ports: Ports): ActivityPage => {
-  const countReviewResponses = projectReviewResponseCounts(ports.getAllEvents);
+  const countReviewResponses = (reviewId: ReviewId) => projectReviewResponseCounts(reviewId)(ports.getAllEvents);
   const renderFeed = createRenderFeed(
     getArticleFeedEvents(
       ports.findReviewsForArticleDoi,
