@@ -66,7 +66,7 @@ export const createRouter = (adapters: Adapters): Router => {
     pageHandler(flow(homePage(adapters), TE.rightTask)));
 
   router.get('/about',
-    pageHandler(aboutPage(adapters)));
+    pageHandler(() => aboutPage(adapters.fetchStaticFile)));
 
   router.get('/users/:id(.+)',
     pageHandler(userPage(adapters)));
