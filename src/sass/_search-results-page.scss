@@ -62,3 +62,20 @@ $vertical-space-above-title--wide: baseline.increments(5);
   background-image: linear-gradient(180deg, settings.$colour-furniture 0, settings.$colour-page-background 8px);
   padding-top: functions.px-to-rem(16px);
 }
+
+.search-results-list__item__link {
+  @include typography.sizing(16px, 2.5);
+  font-family: Ubuntu, sans-serif;
+  font-weight: bold;
+  color: settings.$colour-activity-page-text;
+
+  &:link,
+  &:visited {
+    color: settings.$colour-activity-page-text;
+
+    &:active,
+    &:hover {
+      color: settings.$colour-activity-page-text;
+    }
+  }
+}

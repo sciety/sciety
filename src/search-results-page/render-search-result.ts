@@ -53,7 +53,7 @@ const renderArticleSearchResult = flow(
 );
 
 const renderGroupSearchResult = (result: GroupSearchResult) => pipe(
-  `<a href="${result.link}">${result.name}</a>`,
+  `<a class="search-results-list__item__link" href="${result.link}">${result.name}</a>`,
   toHtmlFragment,
 );
 
