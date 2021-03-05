@@ -86,7 +86,7 @@ export const articleActivityPage = (ports: Ports): ActivityPage => {
       850,
       renderReviewResponses(
         countReviewResponses,
-        projectUserReviewResponse(ports.getAllEvents),
+        (...args) => projectUserReviewResponse(...args)(ports.getAllEvents),
       ),
     ),
     renderArticleVersionFeedItem,

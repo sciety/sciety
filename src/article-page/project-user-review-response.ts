@@ -1,9 +1,9 @@
 import * as O from 'fp-ts/Option';
+import * as RT from 'fp-ts/ReaderTask';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
-import { GetUserReviewResponse } from './render-review-responses';
 import {
   DomainEvent,
   UserFoundReviewHelpfulEvent,
@@ -44,12 +44,15 @@ const projectResponse = (getEvents: GetEvents) => (reviewId: ReviewId.ReviewId, 
   })),
 );
 
-export const projectUserReviewResponse = (getEvents: GetEvents): GetUserReviewResponse => (
-  (reviewId, userId) => pipe(
-    userId,
-    O.fold(
-      () => T.of(O.none),
-      (u) => projectResponse(getEvents)(reviewId, u),
-    ),
-  )
+type ProjectUserReviewResponse = (
+  reviewId: ReviewId.ReviewId,
+  userId: O.Option<UserId>,
+) => RT.ReaderTask<GetEvents, O.Option<'helpful' | 'not-helpful'>>;
+
+export const projectUserReviewResponse: ProjectUserReviewResponse = (reviewId, userId) => (getEvents) => pipe(
+  userId,
+  O.fold(
+    () => T.of(O.none),
+    (u) => projectResponse(getEvents)(reviewId, u),
+  ),
 );

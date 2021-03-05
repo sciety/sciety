@@ -9,7 +9,7 @@ export type RenderReviewResponses = (reviewId: ReviewId, userId: O.Option<UserId
 
 // TODO Try introducing a Counter type to prevent impossible numbers (e.g. -1, 2.5)
 type CountReviewResponses = (reviewId: ReviewId) => T.Task<{ helpfulCount: number, notHelpfulCount: number }>;
-export type GetUserReviewResponse = (reviewId: ReviewId, userId: O.Option<UserId>) => T.Task<O.Option<'helpful' | 'not-helpful'>>;
+type GetUserReviewResponse = (reviewId: ReviewId, userId: O.Option<UserId>) => T.Task<O.Option<'helpful' | 'not-helpful'>>;
 
 export const renderReviewResponses = (
   countReviewResponses: CountReviewResponses,
