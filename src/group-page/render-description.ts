@@ -1,22 +1,29 @@
 import * as TE from 'fp-ts/TaskEither';
-import { flow } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
+import { Remarkable } from 'remarkable';
 import { Group } from '../types/group';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 type RenderDescription = (group: Group) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>;
 
-type GetEditorialCommunityDescription = (group: Group) => TE.TaskEither<'not-found' | 'unavailable', string>;
+type FetchStaticFile = (filename: string) => TE.TaskEither<'not-found' | 'unavailable', string>;
+
+const convertMarkdownToHtml = (md: string) => new Remarkable({ html: true }).render(md);
+
+const renderAsSection = (desc: string) => `
+  <section>
+    ${desc}
+  </section>
+`;
 
 export const renderDescription = (
-  getEditorialCommunityDescription: GetEditorialCommunityDescription,
-): RenderDescription => flow(
-  getEditorialCommunityDescription,
+  fetchStaticFile: FetchStaticFile,
+): RenderDescription => (group) => pipe(
+  `groups/${group.descriptionPath}`,
+  fetchStaticFile,
   TE.map(flow(
-    (desc) => `
-      <section>
-        ${desc}
-      </section>
-    `,
+    convertMarkdownToHtml,
+    renderAsSection,
     toHtmlFragment,
   )),
 );

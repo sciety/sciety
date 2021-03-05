@@ -6,7 +6,6 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { option } from 'io-ts-types/option';
 import { constructFeedItem, GetArticle } from './construct-feed-item';
-import { getDescription } from './get-description';
 import { GetAllEvents, getMostRecentEvents } from './get-most-recent-events';
 import { projectFollowerIds } from './project-follower-ids';
 import { renderDescription } from './render-description';
@@ -63,7 +62,7 @@ export const groupPage = (ports: Ports): GroupPage => (params) => pipe(
       } as const),
       (group) => renderPage(
         renderPageHeader,
-        renderDescription(getDescription(ports.fetchStaticFile)),
+        renderDescription(ports.fetchStaticFile),
         buildRenderFeed(ports),
         renderFollowers(projectFollowerIds(ports.getAllEvents)),
       )(group, pipe(user, O.map((u) => u.id))),
