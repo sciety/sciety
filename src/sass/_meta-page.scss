@@ -66,7 +66,7 @@
 .full-article-button:link,
 .full-article-button:visited {
   @include typography.sizing(14px, 14/8);
-  border-radius: 5px;
+  border-radius: settings.$border-radius;
   cursor: pointer;
   padding: functions.px-to-rem(8px);
   font-weight: bold;
