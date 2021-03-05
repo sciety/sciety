@@ -15,5 +15,12 @@ type AboutPage = () => TE.TaskEither<RenderPageError, Page>;
 export const aboutPage = (ports: Ports): AboutPage => () => pipe(
   'about.md',
   ports.fetchStaticFile,
-  TE.bimap(renderErrorPage, renderPage),
+  TE.map(renderPage),
+  TE.bimap(
+    renderErrorPage,
+    (content) => ({
+      title: 'About',
+      content,
+    }),
+  ),
 );

@@ -1,6 +1,6 @@
 import { flow } from 'fp-ts/function';
 import { Remarkable } from 'remarkable';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { toHtmlFragment } from '../types/html-fragment';
 import { RenderPageError } from '../types/render-page-error';
 
 const addPageWrapper = (html: string) => `
@@ -16,16 +16,10 @@ const addPageWrapper = (html: string) => `
 
 const convertMarkdownToHtml = (md: string) => new Remarkable({ html: true }).render(md);
 
-const toPage = (html: HtmlFragment) => ({
-  title: 'About',
-  content: html,
-});
-
 export const renderPage = flow(
   convertMarkdownToHtml,
   addPageWrapper,
   toHtmlFragment,
-  toPage,
 );
 
 export const renderErrorPage = (e: 'not-found' | 'unavailable'): RenderPageError => {
