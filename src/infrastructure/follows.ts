@@ -23,13 +23,8 @@ const isSignificantTo = (
     && event.userId === userId)
 );
 
-export const follows: Follows = (userId, editorialCommunityId) => (
-  T.map(flow(
-    A.filter(isSignificantTo(userId, editorialCommunityId)),
-    A.last,
-    O.fold(
-      () => false,
-      (event) => isUserFollowedEditorialCommunityEvent(event),
-    ),
-  ))
-);
+export const follows: Follows = (userId, editorialCommunityId) => T.map(flow(
+  A.findLast(isSignificantTo(userId, editorialCommunityId)),
+  O.filter(isUserFollowedEditorialCommunityEvent),
+  O.isSome,
+));
