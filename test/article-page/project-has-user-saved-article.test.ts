@@ -10,10 +10,10 @@ describe('project-has-user-saved-article', () => {
       const getEvents = T.of([
         userSavedArticle(toUserId('this-user'), new Doi('10.1101/111111')),
       ]);
-      const result = await projectHasUserSavedArticle(getEvents)(
+      const result = await projectHasUserSavedArticle(
         new Doi('10.1101/111111'),
         toUserId('this-user'),
-      )();
+      )(getEvents)();
 
       expect(result).toBe(true);
     });
@@ -22,10 +22,10 @@ describe('project-has-user-saved-article', () => {
   describe('when the user has not saved the article', () => {
     it('returns false', async () => {
       const getEvents = T.of([]);
-      const result = await projectHasUserSavedArticle(getEvents)(
+      const result = await projectHasUserSavedArticle(
         new Doi('10.1101/some-doi'),
         toUserId('this-user'),
-      )();
+      )(getEvents)();
 
       expect(result).toBe(false);
     });
@@ -36,10 +36,10 @@ describe('project-has-user-saved-article', () => {
       const getEvents = T.of([
         userSavedArticle(toUserId('this-user'), new Doi('10.1101/111111')),
       ]);
-      const result = await projectHasUserSavedArticle(getEvents)(
+      const result = await projectHasUserSavedArticle(
         new Doi('10.1101/some-other-doi'),
         toUserId('this-user'),
-      )();
+      )(getEvents)();
 
       expect(result).toBe(false);
     });
@@ -50,10 +50,10 @@ describe('project-has-user-saved-article', () => {
       const getEvents = T.of([
         userSavedArticle(toUserId('other-user'), new Doi('10.1101/111111')),
       ]);
-      const result = await projectHasUserSavedArticle(getEvents)(
+      const result = await projectHasUserSavedArticle(
         new Doi('10.1101/111111'),
         toUserId('this-user'),
-      )();
+      )(getEvents)();
 
       expect(result).toBe(false);
     });
