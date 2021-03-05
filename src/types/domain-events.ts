@@ -1,3 +1,4 @@
+import * as Ord from 'fp-ts/Ord';
 import { Doi } from './doi';
 import { EventId, generate } from './event-id';
 import { GroupId } from './group-id';
@@ -211,3 +212,7 @@ export type RuntimeGeneratedEvent =
   UserFoundReviewNotHelpfulEvent |
   UserRevokedFindingReviewNotHelpfulEvent |
   UserSavedArticleEvent;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+export const byDate = Ord.contramap((event: DomainEvent) => event.date)(Ord.ordDate);
