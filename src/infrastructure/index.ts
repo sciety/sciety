@@ -1,6 +1,7 @@
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
 import * as A from 'fp-ts/Array';
+import * as I from 'fp-ts/Identity';
 import * as Ord from 'fp-ts/Ord';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
@@ -37,15 +38,15 @@ import { bootstrapEditorialCommunities } from '../data/bootstrap-editorial-commu
 import { DomainEvent } from '../types/domain-events';
 
 export const createInfrastructure = (): TE.TaskEither<unknown, Adapters> => pipe(
-  TE.Do,
-  TE.bind('logger', () => pipe(
+  I.Do,
+  I.bind('logger', () => pipe(
     !!process.env.PRETTY_LOG,
     jsonSerializer,
     (serializer) => streamLogger(process.stdout, serializer),
     rTracerLogger,
-    TE.right,
   )),
-  TE.bind('pool', () => pipe(new Pool(), TE.right)),
+  I.bind('pool', () => new Pool()),
+  TE.right,
   TE.chainFirst(({ pool }) => TE.tryCatch(
     async () => pool.query(`
       CREATE TABLE IF NOT EXISTS events (
