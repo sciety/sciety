@@ -6,7 +6,7 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 type RenderDescription = (group: Group) => TE.TaskEither<'not-found' | 'unavailable', HtmlFragment>;
 
-type FetchStaticFile = (filename: string) => TE.TaskEither<'not-found' | 'unavailable', string>;
+export type FetchStaticFile = (filename: string) => TE.TaskEither<'not-found' | 'unavailable', string>;
 
 const convertMarkdownToHtml = (md: string) => new Remarkable({ html: true }).render(md);
 

@@ -8,7 +8,7 @@ import { option } from 'io-ts-types/option';
 import { constructFeedItem, GetArticle } from './construct-feed-item';
 import { GetAllEvents, getMostRecentEvents } from './get-most-recent-events';
 import { projectFollowerIds } from './project-follower-ids';
-import { renderDescription } from './render-description';
+import { FetchStaticFile, renderDescription } from './render-description';
 import { renderFeed } from './render-feed';
 import { Follows, renderFollowToggle } from './render-follow-toggle';
 import { renderFollowers } from './render-followers';
@@ -20,8 +20,6 @@ import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
 import { toHtmlFragment } from '../types/html-fragment';
-
-type FetchStaticFile = (filename: string) => TE.TaskEither<'not-found' | 'unavailable', string>;
 
 type FetchEditorialCommunity = (groupId: GroupId) => T.Task<O.Option<Group>>;
 
