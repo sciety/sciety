@@ -102,7 +102,7 @@ export const articleActivityPage = (ports: Ports): ActivityPage => {
       TE.map(toHtmlFragment),
     )),
     TE.bindW('saveArticle', ({ doi, userId }) => pipe(
-      renderSaveArticle(projectHasUserSavedArticle(ports.getAllEvents))(doi, userId),
+      renderSaveArticle((...args) => projectHasUserSavedArticle(...args)(ports.getAllEvents))(doi, userId),
       TE.rightTask,
     )),
     TE.bindW('tweetThis', ({ doi }) => pipe(
