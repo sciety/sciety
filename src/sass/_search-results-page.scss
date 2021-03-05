@@ -5,6 +5,8 @@
 @use 'settings';
 @use 'typography';
 
+$avatar-size: 32px;
+
 $vertical-space-above-title--narrow: baseline.increments(2);
 $vertical-space-above-title--wide: baseline.increments(5);
 
@@ -36,6 +38,7 @@ $vertical-space-above-title--wide: baseline.increments(5);
   border-right-width: 0;
   margin-bottom: baseline.increments(1);
   padding: baseline.increments(2) functions.px-to-rem(16px);
+  display: flex;
 
   &:first-child {
     border-top-width: 0;
@@ -83,4 +86,12 @@ $vertical-space-above-title--wide: baseline.increments(5);
 
 .search-results-list__item__description {
   font-family: Ubuntu, sans-serif;
+}
+
+.search-results-list__item__avatar {
+  width: $avatar-size;
+  height: $avatar-size;
+  border-radius: settings.$border-radius;
+  flex: 0 0 $avatar-size;
+  margin-left: functions.px-to-rem(32px);
 }

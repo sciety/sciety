@@ -40,6 +40,7 @@ const addPeerJHardcodedResult = (
         toHtmlFragment,
         sanitise,
       ),
+      avatarPath: '/static/groups/peerj--53ed5364-a016-11ea-bb37-0242ac130002.jpg',
     };
     return {
       total: searchResults.total + 1,

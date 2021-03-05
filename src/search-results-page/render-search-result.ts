@@ -19,6 +19,7 @@ type GroupSearchResult = {
   link: string,
   name: string,
   description: SanitisedHtmlFragment,
+  avatarPath: string,
 };
 
 export type SearchResult = ArticleSearchResult | GroupSearchResult;
@@ -56,12 +57,13 @@ const renderArticleSearchResult = flow(
 
 const renderGroupSearchResult = (result: GroupSearchResult) => pipe(
   `
-  <div>
-    <a class="search-results-list__item__link" href="${result.link}">${result.name}</a>
-    <div class="search-results-list__item__description">
-      ${result.description}
+    <div>
+      <a class="search-results-list__item__link" href="${result.link}">${result.name}</a>
+      <div class="search-results-list__item__description">
+        ${result.description}
+      </div>
     </div>
-  </div>
+    <img class="search-results-list__item__avatar" src="${result.avatarPath}" />
   `,
   toHtmlFragment,
 );
