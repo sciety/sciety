@@ -61,7 +61,7 @@ $avatar-size: 36px;
     display: block;
     width: $avatar-size;
     height: $avatar-size;
-    background-color: settings.$colour-overlay;
+    background-color: settings.$colour-avatar-overlay;
     position: absolute;
     border-radius: settings.$border-radius;
   }
@@ -103,7 +103,7 @@ p.activity-feed__item__title {
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
-  color: settings.$colour-activity-feed-toggle;
+  color: settings.$colour-accent;
 }
 
 .activity-feed__item__read_more {
@@ -114,7 +114,7 @@ p.activity-feed__item__title {
   position: relative;
   width: 100%;
   margin-right: functions.px-to-rem(24px);
-  color: settings.$colour-activity-page-text;
+  color: settings.$colour-text-primary;
 
   ol,
   ul {
@@ -126,8 +126,8 @@ p.activity-feed__item__title {
   display: flex;
   align-items: center;
   padding: baseline.increments(1.5) functions.px-to-rem(16px);
-  background-color: settings.$colour-activity-feed-responses-background;
-  border-top: 1px solid settings.$colour-article-border;
+  background-color: settings.$colour-component-background;
+  border-top: 1px solid settings.$colour-furniture;
   @media screen and (min-width: settings.$breakpoint-narrow) {
     padding-left: functions.px-to-rem(24px);
     padding-right: functions.px-to-rem(24px);
@@ -154,7 +154,7 @@ p.activity-feed__item__title {
 .responses__question {
   @include typography.sizing(14px, 1.75);
   padding-right: functions.px-to-rem(8px);
-  color: settings.$colour-activity-page-text;
+  color: settings.$colour-text-primary;
 }
 
 .responses__actions {

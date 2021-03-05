@@ -2,9 +2,9 @@
 @use 'typography';
 
 @mixin full-tab-card () {
-  border: 1px solid settings.$colour-article-border;
+  border: 1px solid settings.$colour-furniture;
   background-color: settings.$colour-white;
-  color: settings.$colour-activity-page-text;
+  color: settings.$colour-text-primary;
 
   @media screen and (min-width: settings.$breakpoint-narrow) {
     border-radius: settings.$border-radius;
