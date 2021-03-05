@@ -5,30 +5,16 @@
 @use 'functions';
 
 .main-content--meta {
-  border: 1px solid settings.$colour-article-border;
-  border-left-width: 0;
-  border-right-width: 0;
+  border-bottom: 1px solid settings.$colour-article-border;
   background-color: settings.$colour-white;
   margin-bottom: baseline.increments(6);
   color: settings.$colour-activity-page-text;
-
   padding: baseline.increments(2) functions.px-to-rem(16px);
+
   @media screen and (min-width: settings.$breakpoint-narrow) {
     padding: baseline.increments(3) functions.px-to-rem(24px);
-  }
-
-  &:first-child {
-    border-top-width: 0;
-  }
-
-  @media screen and (min-width: settings.$breakpoint-narrow) {
     border-radius: settings.$border-radius;
-    border-left-width: 1px;
-    border-right-width: 1px;
-
-    &:first-child {
-      border-top-width: 1px;
-    }
+    border: 1px solid settings.$colour-article-border;
   }
 
   h3 {
