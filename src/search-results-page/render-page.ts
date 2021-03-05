@@ -13,10 +13,12 @@ export const renderErrorPage = (error: 'unavailable'): RenderPageError => ({
 export const renderPage = (searchResults: HtmlFragment): Page => ({
   title: 'Search results',
   content: toHtmlFragment(`
-    <div class="sciety-grid sciety-grid--search-results">
-      <section class="search-results">
-        ${searchResults}
-      </section>
+    <div class="search-results-page__background--filler">
+      <div class="sciety-grid sciety-grid--search-results">
+        <section class="search-results">
+          ${searchResults}
+        </section>
+      </div>
     </div>
   `),
 });
