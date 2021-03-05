@@ -12,7 +12,6 @@ import { GetTwitterUserDetails } from './get-twitter-user-details';
 import { Logger } from './logger';
 import { SearchEuropePmc } from './search-europe-pmc';
 import { DomainEvent, RuntimeGeneratedEvent } from '../types/domain-events';
-import { EditorialCommunityRepository } from '../types/editorial-community-repository';
 import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
 
@@ -25,7 +24,6 @@ export type Adapters = {
   fetchReview: FetchReview,
   fetchStaticFile: (filename: string) => TE.TaskEither<'not-found' | 'unavailable', string>,
   searchEuropePmc: SearchEuropePmc,
-  editorialCommunities: EditorialCommunityRepository,
   getEditorialCommunity: GetEditorialCommunity,
   getAllEditorialCommunities: GetAllEditorialCommunities,
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
