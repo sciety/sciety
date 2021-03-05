@@ -12,9 +12,7 @@
   }
 }
 
-// TODO: remove unneeded specificity once we remove semantic.ui
-.article-tabs__tab,
-.article-tabs__tab:last-child {
+.article-tabs__tab {
   width: functions.px-to-rem(120px);
   display: inline-block;
   margin-bottom: -2px;
