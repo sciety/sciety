@@ -1,25 +1,21 @@
 @use 'baseline';
+@use 'card';
+@use 'functions';
 @use 'list';
 @use 'settings';
 @use 'typography';
-@use 'functions';
 
 .main-content--meta {
-  border-bottom: 1px solid settings.$colour-article-border;
-  background-color: settings.$colour-white;
+  @include card.full-tab-card();
+  border-left-width: 0;
+  border-right-width: 0;
+  border-top-width: 0;
   margin-bottom: baseline.increments(6);
-  color: settings.$colour-activity-page-text;
   padding: baseline.increments(2) functions.px-to-rem(16px);
 
   @media screen and (min-width: settings.$breakpoint-narrow) {
     padding: baseline.increments(3) functions.px-to-rem(24px);
-    border-radius: settings.$border-radius;
-    border: 1px solid settings.$colour-article-border;
-  }
-
-  h3 {
-    @include typography.sizing($font-size: settings.$base-font-measure, $line-height-in-increments: 3);
-    font-weight: bold;
+    border-width: 1px;
   }
 }
 

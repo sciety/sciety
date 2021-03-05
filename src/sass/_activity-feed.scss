@@ -1,5 +1,6 @@
 @use 'baseline';
 @use 'button';
+@use 'card';
 @use 'functions';
 @use 'list';
 @use 'settings';
@@ -17,10 +18,9 @@ $avatar-size: 36px;
 }
 
 .activity-feed__item {
-  border: 1px solid settings.$colour-article-border;
+  @include card.full-tab-card();
   border-left-width: 0;
   border-right-width: 0;
-  background-color: settings.$colour-white;
   margin-bottom: baseline.increments(1);
 
   &:first-child {
@@ -28,7 +28,6 @@ $avatar-size: 36px;
   }
 
   @media screen and (min-width: settings.$breakpoint-narrow) {
-    border-radius: settings.$border-radius;
     border-left-width: 1px;
     border-right-width: 1px;
 
@@ -39,11 +38,6 @@ $avatar-size: 36px;
 
   &:last-child {
     margin-bottom: 0;
-  }
-
-  h3 {
-    @include typography.sizing($font-size: settings.$base-font-measure, $line-height-in-increments: 3);
-    font-weight: bold;
   }
 }
 

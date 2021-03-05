@@ -1,0 +1,17 @@
+@use 'settings';
+@use 'typography';
+
+@mixin full-tab-card () {
+  border: 1px solid settings.$colour-article-border;
+  background-color: settings.$colour-white;
+  color: settings.$colour-activity-page-text;
+
+  @media screen and (min-width: settings.$breakpoint-narrow) {
+    border-radius: settings.$border-radius;
+  }
+
+  h3 {
+    @include typography.sizing($font-size: settings.$base-font-measure, $line-height-in-increments: 3);
+    font-weight: bold;
+  }
+}
