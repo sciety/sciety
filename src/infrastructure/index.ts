@@ -102,7 +102,7 @@ export const createInfrastructure = (): TE.TaskEither<unknown, Adapters> => pipe
           fetchHypothesisAnnotation(getJson, logger),
           fetchNcrcReview(logger),
         ),
-        fetchStaticFile: (...args) => fetchStaticFile(...args)(logger),
+        fetchStaticFile: (...args) => fetchStaticFile(...args)(loggerIO(logger)),
         searchEuropePmc: searchEuropePmc(getJsonWithRetries, logger),
         editorialCommunities,
         getEditorialCommunity: editorialCommunities.lookup,
