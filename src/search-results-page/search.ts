@@ -7,7 +7,9 @@ import { ArticleSearchResult, SearchResult } from './render-search-result';
 import { SearchResults } from './render-search-results';
 import { Doi } from '../types/doi';
 import { GroupId } from '../types/group-id';
+import { toHtmlFragment } from '../types/html-fragment';
 import { ReviewId } from '../types/review-id';
+import { sanitise } from '../types/sanitised-html-fragment';
 
 type OriginalSearchResults = {
   items: ReadonlyArray<Omit<Omit<ArticleSearchResult, '_tag'>, 'reviewCount'>>,
@@ -33,6 +35,11 @@ const addPeerJHardcodedResult = (
       _tag: 'Group' as const,
       link: '/groups/53ed5364-a016-11ea-bb37-0242ac130002',
       name: 'PeerJ',
+      description: pipe(
+        'PeerJ is an open access publisher of 7 peer-reviewed journals, and an editorial community of over 2000 Academic Editors and Advisors, and tens of thousands of authors and reviewers.',
+        toHtmlFragment,
+        sanitise,
+      ),
     };
     return {
       total: searchResults.total + 1,

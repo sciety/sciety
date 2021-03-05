@@ -3,6 +3,7 @@ import { flow, pipe } from 'fp-ts/function';
 import { templateDate } from '../shared-components';
 import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
 export type ArticleSearchResult = {
   _tag: 'Article',
@@ -17,6 +18,7 @@ type GroupSearchResult = {
   _tag: 'Group',
   link: string,
   name: string,
+  description: SanitisedHtmlFragment,
 };
 
 export type SearchResult = ArticleSearchResult | GroupSearchResult;
@@ -53,7 +55,14 @@ const renderArticleSearchResult = flow(
 );
 
 const renderGroupSearchResult = (result: GroupSearchResult) => pipe(
-  `<a class="search-results-list__item__link" href="${result.link}">${result.name}</a>`,
+  `
+  <div>
+    <a class="search-results-list__item__link" href="${result.link}">${result.name}</a>
+    <div class="search-results-list__item__description">
+      ${result.description}
+    </div>
+  </div>
+  `,
   toHtmlFragment,
 );
 

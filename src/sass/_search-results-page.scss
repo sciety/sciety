@@ -68,6 +68,7 @@ $vertical-space-above-title--wide: baseline.increments(5);
   font-family: Ubuntu, sans-serif;
   font-weight: bold;
   color: settings.$colour-text-primary;
+  margin-bottom: baseline.increments(0.5);
 
   &:link,
   &:visited {
@@ -78,4 +79,8 @@ $vertical-space-above-title--wide: baseline.increments(5);
       color: settings.$colour-text-primary;
     }
   }
+}
+
+.search-results-list__item__description {
+  font-family: Ubuntu, sans-serif;
 }
