@@ -16,7 +16,7 @@ describe('project-follower-count', () => {
         userFollowedEditorialCommunity(toUserId('47998559'), myGroup),
         userFollowedEditorialCommunity(toUserId('23776533'), myGroup),
       ],
-      countFollowersOf(myGroup),
+      countFollowersOf(new GroupId('my-group')),
     )).toBe(2);
   });
 
@@ -34,7 +34,7 @@ describe('project-follower-count', () => {
       [
         userSavedArticle(aUserId, new Doi('10.1101/111111')),
       ],
-      countFollowersOf(myGroup),
+      countFollowersOf(new GroupId('my-group')),
     )).toBe(0);
   });
 
@@ -44,7 +44,7 @@ describe('project-follower-count', () => {
         userFollowedEditorialCommunity(aUserId, myGroup),
         userUnfollowedEditorialCommunity(aUserId, myGroup),
       ],
-      countFollowersOf(myGroup),
+      countFollowersOf(new GroupId('my-group')),
     )).toBe(0);
   });
 });

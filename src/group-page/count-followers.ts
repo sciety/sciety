@@ -1,38 +1,23 @@
-import { flow } from 'fp-ts/function';
+import * as RA from 'fp-ts/ReadonlyArray';
 import {
   DomainEvent,
   isUserFollowedEditorialCommunityEvent,
   isUserUnfollowedEditorialCommunityEvent,
-  UserFollowedEditorialCommunityEvent,
-  UserUnfollowedEditorialCommunityEvent,
 } from '../types/domain-events';
-import { eqGroupId, GroupId } from '../types/group-id';
-import { UserId } from '../types/user-id';
+import { GroupId } from '../types/group-id';
 
-const isInterestingEvent = (event: DomainEvent) : event is (
-UserFollowedEditorialCommunityEvent |
-UserUnfollowedEditorialCommunityEvent) => isUserFollowedEditorialCommunityEvent(event)
-  || isUserUnfollowedEditorialCommunityEvent(event);
+type Reducer = (groupId: GroupId) => (count: number, event: DomainEvent) => number;
 
-const projection = (groupId: GroupId) => (
-  events: ReadonlyArray<DomainEvent>,
-) => (
-  events.filter(isInterestingEvent)
-    .filter((event) => eqGroupId.equals(event.editorialCommunityId, groupId))
-    .reduce<Array<UserId>>(
-    (userIds, event) => {
-      if (isUserFollowedEditorialCommunityEvent(event)) {
-        return userIds.concat([event.userId]);
-      }
-      return userIds.filter((userId) => userId !== event.userId);
-    },
-    [],
-  )
-);
+const counter: Reducer = (groupId) => (count, event) => {
+  if (isUserFollowedEditorialCommunityEvent(event) && event.editorialCommunityId.value === groupId.value) {
+    return count + 1;
+  }
+  if (isUserUnfollowedEditorialCommunityEvent(event) && event.editorialCommunityId.value === groupId.value) {
+    return count - 1;
+  }
+  return count;
+};
 
 type CountFollowersOf = (groupId: GroupId) => (events: ReadonlyArray<DomainEvent>) => number;
 
-export const countFollowersOf: CountFollowersOf = (groupId) => flow(
-  projection(groupId),
-  (fs) => fs.length,
-);
+export const countFollowersOf: CountFollowersOf = (groupId) => RA.reduce(0, counter(groupId));
