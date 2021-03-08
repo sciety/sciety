@@ -6,7 +6,7 @@ import { GroupId } from '../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
-export type RenderFollowToggle = (
+type RenderFollowToggle = (
   userId: O.Option<UserId>,
   groupId: GroupId
 ) => T.Task<HtmlFragment>;

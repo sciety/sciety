@@ -1,3 +1,4 @@
+import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
@@ -12,7 +13,7 @@ import { FetchStaticFile, renderDescription } from './render-description';
 import { renderFeed } from './render-feed';
 import { Follows, renderFollowToggle } from './render-follow-toggle';
 import { renderFollowers } from './render-followers';
-import { renderErrorPage, renderPage, RenderPage } from './render-page';
+import { renderErrorPage, renderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
 import { renderSummaryFeedList } from '../shared-components';
 import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
@@ -20,6 +21,8 @@ import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
 import { toHtmlFragment } from '../types/html-fragment';
+import { Page } from '../types/page';
+import { RenderPageError } from '../types/render-page-error';
 
 type FetchEditorialCommunity = (groupId: GroupId) => T.Task<O.Option<Group>>;
 
@@ -49,7 +52,7 @@ const inputParams = t.type({
   })),
 });
 
-type GroupPage = (params: unknown) => ReturnType<RenderPage>;
+type GroupPage = (params: unknown) => TE.TaskEither<RenderPageError, Page>;
 
 export const groupPage = (ports: Ports): GroupPage => (params) => pipe(
   inputParams.decode(params),
@@ -58,12 +61,20 @@ export const groupPage = (ports: Ports): GroupPage => (params) => pipe(
   TE.chain(({ id, user }) => pipe(
     ports.getEditorialCommunity(id),
     T.map(E.fromOption(notFoundResponse)),
-    TE.chain((group) => renderPage(
-      renderPageHeader,
-      renderDescription(ports.fetchStaticFile),
-      buildRenderFeed(ports),
-      renderFollowers(projectFollowerIds(ports.getAllEvents)),
-      renderFollowToggle(ports.follows),
-    )(group, pipe(user, O.map((u) => u.id)))),
+    TE.chain((group) => pipe(
+      {
+        header: TE.right(renderPageHeader(group)),
+        description: renderDescription(ports.fetchStaticFile)(group),
+        followers: renderFollowers(projectFollowerIds(ports.getAllEvents))(group.id),
+        followButton: pipe(
+          renderFollowToggle(ports.follows)(pipe(user, O.map((u) => u.id)), group.id),
+          T.map(toHtmlFragment),
+          TE.rightTask,
+        ),
+        feed: buildRenderFeed(ports)(group, pipe(user, O.map((u) => u.id))),
+      },
+      sequenceS(TE.taskEither),
+      TE.bimap(renderErrorPage, renderPage(group)),
+    )),
   )),
 );
