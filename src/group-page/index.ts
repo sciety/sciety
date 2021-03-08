@@ -35,7 +35,6 @@ const buildRenderFeed = (ports: Ports) => renderFeed(
   getMostRecentEvents(ports.getAllEvents, 20),
   constructFeedItem(ports.fetchArticle),
   renderSummaryFeedList,
-  renderFollowToggle(ports.follows),
 );
 
 const notFoundResponse = () => ({
@@ -64,6 +63,7 @@ export const groupPage = (ports: Ports): GroupPage => (params) => pipe(
       renderDescription(ports.fetchStaticFile),
       buildRenderFeed(ports),
       renderFollowers(projectFollowerIds(ports.getAllEvents)),
+      renderFollowToggle(ports.follows),
     )(group, pipe(user, O.map((u) => u.id)))),
   )),
 );

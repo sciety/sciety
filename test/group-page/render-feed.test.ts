@@ -4,7 +4,6 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { GetEvents, renderFeed } from '../../src/group-page/render-feed';
-import { RenderFollowToggle } from '../../src/group-page/render-follow-toggle';
 import { Doi } from '../../src/types/doi';
 import { GroupId } from '../../src/types/group-id';
 import { toHtmlFragment } from '../../src/types/html-fragment';
@@ -12,7 +11,6 @@ import { sanitise } from '../../src/types/sanitised-html-fragment';
 
 describe('render feed', () => {
   const stubGetEvents: GetEvents = () => T.of([]);
-  const stubRenderFollowToggle: RenderFollowToggle = () => T.of(toHtmlFragment(''));
   const anGroupId = new GroupId('');
   const aUserId = O.none;
   const group = {
@@ -38,7 +36,6 @@ describe('render feed', () => {
           verb: 'reviewed',
         }),
         renderSummaryFeedList,
-        stubRenderFollowToggle,
       );
       const rendered = await component(group, aUserId)();
 
@@ -61,7 +58,6 @@ describe('render feed', () => {
           verb: 'reviewed',
         }),
         renderSummaryFeedList,
-        stubRenderFollowToggle,
       );
       const rendered = await component(group, aUserId)();
 

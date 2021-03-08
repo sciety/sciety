@@ -1,10 +1,8 @@
-import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { ConstructFeedItem, FeedEvent } from './construct-feed-item';
-import { RenderFollowToggle } from './render-follow-toggle';
 import { FeedItem } from '../shared-components';
 import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
@@ -24,38 +22,17 @@ const emptyFeed = `
   </p>
 `;
 
-type ViewModel = {
-  button: HtmlFragment,
-  feed: HtmlFragment,
-};
-
-const renderAsSection = (viewModel: ViewModel) => `
-  ${viewModel.button}
-  ${viewModel.feed}
-`;
-
 export const renderFeed = (
   getEvents: GetEvents,
   constructFeedItem: ConstructFeedItem,
   renderSummaryFeedList: RenderSummaryFeedList,
-  renderFollowToggle: RenderFollowToggle,
-): RenderFeed => (group, userId) => pipe(
-  {
-    button: renderFollowToggle(userId, group.id),
-    feed: pipe(
-      group.id,
-      getEvents,
-      T.chain(T.traverseArray(constructFeedItem(group))),
-      T.map(flow(
-        renderSummaryFeedList,
-        O.getOrElse(constant(emptyFeed)),
-        toHtmlFragment,
-      )),
-    ),
-  },
-  sequenceS(T.task),
+): RenderFeed => (group) => pipe(
+  group.id,
+  getEvents,
+  T.chain(T.traverseArray(constructFeedItem(group))),
   T.map(flow(
-    renderAsSection,
+    renderSummaryFeedList,
+    O.getOrElse(constant(emptyFeed)),
     toHtmlFragment,
   )),
   TE.rightTask,
