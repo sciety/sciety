@@ -20,7 +20,8 @@ type GroupSearchResult = {
   name: string,
   description: SanitisedHtmlFragment,
   avatarPath: string,
-  followers: number,
+  followerCount: number,
+  reviewCount: number,
 };
 
 export type SearchResult = ArticleSearchResult | GroupSearchResult;
@@ -64,7 +65,8 @@ const renderGroupSearchResult = (result: GroupSearchResult) => pipe(
         ${result.description}
       </div>
       <ul class="search-results-list__item__meta">
-        <li>${result.followers} Followers</li>
+        <li>${result.reviewCount} Reviews</li>
+        <li>${result.followerCount} Followers</li>
       </ul>
     </div>
     <img class="search-results-list__item__avatar" src="${result.avatarPath}" />

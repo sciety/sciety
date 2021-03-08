@@ -41,7 +41,8 @@ const addPeerJHardcodedResult = (
         sanitise,
       ),
       avatarPath: '/static/groups/peerj--53ed5364-a016-11ea-bb37-0242ac130002.jpg',
-      followers: 47,
+      followerCount: 47,
+      reviewCount: 835,
     };
     return {
       total: searchResults.total + 1,
