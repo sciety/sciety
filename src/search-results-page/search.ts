@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
-import { ArticleSearchResult, SearchResult } from './render-search-result';
+import { ArticleSearchResult } from './render-search-result';
 import { SearchResults } from './render-search-results';
 import { bootstrapEditorialCommunities } from '../data/bootstrap-editorial-communities';
 import { Doi } from '../types/doi';
@@ -36,29 +36,37 @@ const getDescription = (groupId: GroupId) => pipe(
   sanitise,
 );
 
+const constructGroupResult = () => ({
+  _tag: 'Group' as const,
+  link: '/groups/53ed5364-a016-11ea-bb37-0242ac130002',
+  name: 'PeerJ',
+  description: getDescription(new GroupId('53ed5364-a016-11ea-bb37-0242ac130002')),
+  avatarPath: '/static/groups/peerj--53ed5364-a016-11ea-bb37-0242ac130002.jpg',
+  followerCount: 47,
+  reviewCount: 835,
+});
+
+const findGroups = (query: string): ReadonlyArray<GroupId> => pipe(
+  query,
+  O.fromPredicate((q) => q === 'peerj'),
+  O.fold(
+    constant([]),
+    constant([new GroupId('53ed5364-a016-11ea-bb37-0242ac130002')]),
+  ),
+);
+
 const addGroupResults = (
   query: string,
 ) => (
   searchResults: SearchResults,
 ) => pipe(
   query,
-  O.fromPredicate((q) => q === 'peerj'),
-  O.map(() => [{
-    _tag: 'Group' as const,
-    link: '/groups/53ed5364-a016-11ea-bb37-0242ac130002',
-    name: 'PeerJ',
-    description: getDescription(new GroupId('53ed5364-a016-11ea-bb37-0242ac130002')),
-    avatarPath: '/static/groups/peerj--53ed5364-a016-11ea-bb37-0242ac130002.jpg',
-    followerCount: 47,
-    reviewCount: 835,
-  }]),
-  O.fold(
-    () => searchResults,
-    (hardcodedSearchResults) => ({
-      total: searchResults.total + 1,
-      items: RA.cons<SearchResult>(hardcodedSearchResults[0])(searchResults.items),
-    }),
-  ),
+  findGroups,
+  RA.map(constructGroupResult),
+  (hardcodedSearchResults) => ({
+    total: searchResults.total + hardcodedSearchResults.length,
+    items: [...hardcodedSearchResults, ...searchResults.items],
+  }),
 );
 
 export const search = (
