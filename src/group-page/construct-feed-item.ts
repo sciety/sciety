@@ -8,9 +8,9 @@ import { Group } from '../types/group';
 import { toHtmlFragment } from '../types/html-fragment';
 import { sanitise, SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
-export type FeedEvent = EditorialCommunityReviewedArticleEvent;
+type FeedEvent = EditorialCommunityReviewedArticleEvent;
 
-export type ConstructFeedItem = (group: Group) => (event: FeedEvent) => T.Task<FeedItem>;
+type ConstructFeedItem = (group: Group) => (event: FeedEvent) => T.Task<FeedItem>;
 
 const reviewedBy = (group: Group) => (
   (group.name === 'preLights') ? 'highlighted' : 'reviewed'

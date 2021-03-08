@@ -1,7 +1,6 @@
 import * as A from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
-import { GetEvents } from './render-feed';
 import {
   DomainEvent,
   EditorialCommunityReviewedArticleEvent,
@@ -18,6 +17,8 @@ const wasCreatedBy = (groupId: GroupId) => (event: DomainEvent): event is FeedEv
 );
 
 export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
+
+type GetEvents = (groupId: GroupId) => T.Task<ReadonlyArray<FeedEvent>>;
 
 export const getMostRecentEvents = (getAllEvents: GetAllEvents, maxCount: number): GetEvents => (
   (groupId) => pipe(

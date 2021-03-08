@@ -15,7 +15,6 @@ import { renderFollowToggle } from './render-follow-toggle';
 import { renderFollowers } from './render-followers';
 import { renderErrorPage, renderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
-import { renderSummaryFeedList } from '../shared-components';
 import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import { Group } from '../types/group';
@@ -84,12 +83,10 @@ export const groupPage = (ports: Ports): GroupPage => (params) => pipe(
           TE.rightTask,
         ),
         feed: pipe(
-          group,
-          renderFeed(
-            getMostRecentEvents(ports.getAllEvents, 20),
-            constructFeedItem(ports.fetchArticle),
-            renderSummaryFeedList,
-          ),
+          group.id,
+          getMostRecentEvents(ports.getAllEvents, 20),
+          T.chain(T.traverseArray(constructFeedItem(ports.fetchArticle)(group))),
+          T.map(renderFeed),
           TE.rightTask,
         ),
       },
