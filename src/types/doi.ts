@@ -1,5 +1,6 @@
 import * as Eq from 'fp-ts/Eq';
 import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
 
 const doiRegex = /^(?:doi:|(?:(?:https?:\/\/)?(?:dx\.)?doi\.org\/))?(10\.[0-9]{4,}(?:\.[1-9][0-9]*)*\/(?:[^%"#?\s])+)$/;
 
@@ -29,4 +30,7 @@ export const fromString = (value: string): O.Option<Doi> => O.tryCatch(() => new
 
 export const hasPrefix = (prefix: string) => (doi: Doi): boolean => doi.hasPrefix(prefix);
 
-export const eqDoi = Eq.contramap((doi: Doi) => doi.value)(Eq.eqString);
+export const eqDoi: Eq.Eq<Doi> = pipe(
+  Eq.eqString,
+  Eq.contramap((doi) => doi.value),
+);

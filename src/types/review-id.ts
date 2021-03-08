@@ -1,5 +1,6 @@
 import * as Eq from 'fp-ts/Eq';
 import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
 import { Doi } from './doi';
 import { HypothesisAnnotationId } from './hypothesis-annotation-id';
 import * as NcrcId from './ncrc-id';
@@ -34,6 +35,9 @@ export const isReviewId = (value: unknown): value is ReviewId => (
   value instanceof HypothesisAnnotationId || value instanceof Doi || NcrcId.isNrcId(value)
 );
 
-const eq = Eq.contramap((id: ReviewId) => id.toString())(Eq.eqString);
+const eq: Eq.Eq<ReviewId> = pipe(
+  Eq.eqString,
+  Eq.contramap(toString),
+);
 
 export const { equals } = eq;

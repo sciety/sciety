@@ -1,4 +1,5 @@
 import * as Eq from 'fp-ts/Eq';
+import { pipe } from 'fp-ts/function';
 
 export type NcrcId = {
   readonly _tag: 'NcrcId',
@@ -17,4 +18,7 @@ export const isNrcId = (value: unknown): value is NcrcId => {
   return false;
 };
 
-export const eqNcrcId = Eq.contramap((id: NcrcId) => id.value)(Eq.eqString);
+export const eqNcrcId: Eq.Eq<NcrcId> = pipe(
+  Eq.eqString,
+  Eq.contramap((id) => id.value),
+);

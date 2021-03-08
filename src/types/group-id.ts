@@ -18,4 +18,7 @@ export const fromString = (value: string): O.Option<GroupId> => (
   pipe(new GroupId(value), O.some)
 );
 
-export const eqGroupId = Eq.contramap((id: GroupId) => id.value)(Eq.eqString);
+export const eqGroupId: Eq.Eq<GroupId> = pipe(
+  Eq.eqString,
+  Eq.contramap((id) => id.value),
+);
