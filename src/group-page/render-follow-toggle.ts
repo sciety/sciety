@@ -1,17 +1,7 @@
-import * as O from 'fp-ts/Option';
-import * as T from 'fp-ts/Task';
 import * as B from 'fp-ts/boolean';
-import { pipe } from 'fp-ts/function';
+import { flow } from 'fp-ts/function';
 import { GroupId } from '../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-import { UserId } from '../types/user-id';
-
-type RenderFollowToggle = (
-  userId: O.Option<UserId>,
-  groupId: GroupId
-) => T.Task<HtmlFragment>;
-
-export type Follows = (userId: UserId, groupId: GroupId) => T.Task<boolean>;
 
 const renderFollowButton = (groupId: GroupId) => `
   <form method="post" action="/follow" class="follow-toggle">
@@ -27,21 +17,12 @@ const renderUnfollowButton = (groupId: GroupId) => `
   </form>
 `;
 
-export const renderFollowToggle = (follows: Follows): RenderFollowToggle => (
-  (userId, groupId) => (
-    pipe(
-      userId,
-      O.fold(
-        () => T.of(false),
-        (value: UserId) => follows(value, groupId),
-      ),
-      T.map(
-        B.fold(
-          () => renderFollowButton(groupId),
-          () => renderUnfollowButton(groupId),
-        ),
-      ),
-      T.map(toHtmlFragment),
-    )
-  )
+type RenderFollowToggle = (groupId: GroupId) => (isFollowing: boolean) => HtmlFragment;
+
+export const renderFollowToggle: RenderFollowToggle = (groupId) => flow(
+  B.fold(
+    () => renderFollowButton(groupId),
+    () => renderUnfollowButton(groupId),
+  ),
+  toHtmlFragment,
 );

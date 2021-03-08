@@ -11,7 +11,7 @@ import { GetAllEvents, getMostRecentEvents } from './get-most-recent-events';
 import { projectFollowerIds } from './project-follower-ids';
 import { FetchStaticFile, renderDescription } from './render-description';
 import { renderFeed } from './render-feed';
-import { Follows, renderFollowToggle } from './render-follow-toggle';
+import { renderFollowToggle } from './render-follow-toggle';
 import { renderFollowers } from './render-followers';
 import { renderErrorPage, renderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
@@ -23,6 +23,7 @@ import { GroupId } from '../types/group-id';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
+import { UserId } from '../types/user-id';
 
 type FetchEditorialCommunity = (groupId: GroupId) => T.Task<O.Option<Group>>;
 
@@ -31,7 +32,7 @@ type Ports = {
   fetchStaticFile: FetchStaticFile,
   getEditorialCommunity: FetchEditorialCommunity,
   getAllEvents: GetAllEvents,
-  follows: Follows,
+  follows: (userId: UserId, groupId: GroupId) => T.Task<boolean>,
 };
 
 const buildRenderFeed = (ports: Ports) => renderFeed(
@@ -67,8 +68,12 @@ export const groupPage = (ports: Ports): GroupPage => (params) => pipe(
         description: renderDescription(ports.fetchStaticFile)(group),
         followers: renderFollowers(projectFollowerIds(ports.getAllEvents))(group.id),
         followButton: pipe(
-          renderFollowToggle(ports.follows)(pipe(user, O.map((u) => u.id)), group.id),
-          T.map(toHtmlFragment),
+          user,
+          O.fold(
+            () => T.of(false),
+            (u) => ports.follows(u.id, group.id),
+          ),
+          T.map(renderFollowToggle(group.id)),
           TE.rightTask,
         ),
         feed: buildRenderFeed(ports)(group, pipe(user, O.map((u) => u.id))),
