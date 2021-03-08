@@ -35,12 +35,6 @@ type Ports = {
   follows: (userId: UserId, groupId: GroupId) => T.Task<boolean>,
 };
 
-const buildRenderFeed = (ports: Ports) => renderFeed(
-  getMostRecentEvents(ports.getAllEvents, 20),
-  constructFeedItem(ports.fetchArticle),
-  renderSummaryFeedList,
-);
-
 const notFoundResponse = () => ({
   type: 'not-found',
   message: toHtmlFragment('No such group. Please check and try again.'),
@@ -89,7 +83,14 @@ export const groupPage = (ports: Ports): GroupPage => (params) => pipe(
           T.map(renderFollowToggle(group.id)),
           TE.rightTask,
         ),
-        feed: buildRenderFeed(ports)(group, pipe(user, O.map((u) => u.id))),
+        feed: pipe(
+          group,
+          renderFeed(
+            getMostRecentEvents(ports.getAllEvents, 20),
+            constructFeedItem(ports.fetchArticle),
+            renderSummaryFeedList,
+          ),
+        ),
       },
       sequenceS(TE.taskEither),
       TE.bimap(renderErrorPage, renderPage(group)),

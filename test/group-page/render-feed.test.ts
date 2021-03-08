@@ -12,7 +12,6 @@ import { sanitise } from '../../src/types/sanitised-html-fragment';
 describe('render feed', () => {
   const stubGetEvents: GetEvents = () => T.of([]);
   const anGroupId = new GroupId('');
-  const aUserId = O.none;
   const group = {
     id: anGroupId,
     name: 'name',
@@ -37,7 +36,7 @@ describe('render feed', () => {
         }),
         renderSummaryFeedList,
       );
-      const rendered = await component(group, aUserId)();
+      const rendered = await component(group)();
 
       expect(rendered).toStrictEqual(E.right(expect.stringContaining('a list')));
     });
@@ -59,7 +58,7 @@ describe('render feed', () => {
         }),
         renderSummaryFeedList,
       );
-      const rendered = await component(group, aUserId)();
+      const rendered = await component(group)();
 
       expect(rendered).toStrictEqual(E.right(expect.stringContaining('group hasn’t evaluated')));
     });

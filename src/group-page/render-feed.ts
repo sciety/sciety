@@ -7,9 +7,8 @@ import { FeedItem } from '../shared-components';
 import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-import { UserId } from '../types/user-id';
 
-type RenderFeed = (group: Group, userId: O.Option<UserId>)
+type RenderFeed = (group: Group)
 => TE.TaskEither<never, HtmlFragment>;
 
 export type GetEvents = (groupId: GroupId) => T.Task<ReadonlyArray<FeedEvent>>;
