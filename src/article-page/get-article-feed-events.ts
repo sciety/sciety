@@ -24,7 +24,7 @@ export type FindVersionsForArticleDoi = (doi: Doi, server: ArticleServer) => T.T
   version: number,
 }>>;
 
-export type GetEditorialCommunity = (editorialCommunityId: GroupId) => T.Task<O.Option<{
+export type GetGroup = (groupId: GroupId) => T.Task<O.Option<{
   name: string,
   avatarPath: string,
 }>>;
@@ -34,7 +34,7 @@ export const getArticleFeedEvents = (
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
   fetchReview: GetReview,
-  getEditorialCommunity: GetEditorialCommunity,
+  getGroup: GetGroup,
 ): GetFeedItems => (
   (doi, server) => async () => (
     // TODO: turn into pipe to remove nesting
@@ -53,8 +53,8 @@ export const getArticleFeedEvents = (
         ]),
         fetchReview,
         flow(
-          getEditorialCommunity,
-          T.map(O.getOrElseW(() => { throw new Error('No such community'); })),
+          getGroup,
+          T.map(O.getOrElseW(() => { throw new Error('No such group'); })),
         ),
       ),
     )(doi, server)()

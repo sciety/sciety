@@ -104,7 +104,7 @@ export const createInfrastructure = (): TE.TaskEither<unknown, Adapters> => pipe
         ),
         fetchStaticFile: (...args) => fetchStaticFile(...args)(loggerIO(logger)),
         searchEuropePmc: searchEuropePmc(getJsonWithRetries, logger),
-        getEditorialCommunity: editorialCommunities.lookup,
+        getGroup: editorialCommunities.lookup,
         getAllEditorialCommunities: editorialCommunities.all,
         findReviewsForArticleDoi: (...args) => findReviewsForArticleDoi(...args)(getAllEvents),
         getAllEvents,

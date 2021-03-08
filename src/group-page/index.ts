@@ -25,12 +25,12 @@ import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { UserId } from '../types/user-id';
 
-type FetchEditorialCommunity = (groupId: GroupId) => T.Task<O.Option<Group>>;
+type FetchGroup = (groupId: GroupId) => T.Task<O.Option<Group>>;
 
 type Ports = {
   fetchArticle: GetArticle,
   fetchStaticFile: FetchStaticFile,
-  getEditorialCommunity: FetchEditorialCommunity,
+  getGroup: FetchGroup,
   getAllEvents: GetAllEvents,
   follows: (userId: UserId, groupId: GroupId) => T.Task<boolean>,
 };
@@ -60,7 +60,7 @@ export const groupPage = (ports: Ports): GroupPage => (params) => pipe(
   E.mapLeft(renderErrorPage),
   TE.fromEither,
   TE.chain(({ id, user }) => pipe(
-    ports.getEditorialCommunity(id),
+    ports.getGroup(id),
     T.map(E.fromOption(notFoundResponse)),
     TE.chain((group) => pipe(
       {

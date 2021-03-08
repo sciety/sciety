@@ -22,7 +22,7 @@ type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
   occurredAt: Date,
 }>>;
 
-type GetEditorialCommunity = (editorialCommunityId: GroupId) => T.Task<O.Option<Group>>;
+type GetGroup = (editorialCommunityId: GroupId) => T.Task<O.Option<Group>>;
 
 type GetAllEditorialCommunities = T.Task<RNEA.ReadonlyNonEmptyArray<Group>>;
 
@@ -31,7 +31,7 @@ export type Adapters = {
   fetchReview: FetchReview,
   fetchStaticFile: (filename: string) => TE.TaskEither<'not-found' | 'unavailable', string>,
   searchEuropePmc: SearchEuropePmc,
-  getEditorialCommunity: GetEditorialCommunity,
+  getGroup: GetGroup,
   getAllEditorialCommunities: GetAllEditorialCommunities,
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
   findVersionsForArticleDoi: GetArticleVersionEventsFromBiorxiv,

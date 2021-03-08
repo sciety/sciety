@@ -21,7 +21,7 @@ import { RenderPageError } from '../types/render-page-error';
 import { User } from '../types/user';
 import { toUserId, UserId } from '../types/user-id';
 
-type FetchEditorialCommunity = (editorialCommunityId: GroupId) => T.Task<O.Option<{
+type FetchGroup = (groupId: GroupId) => T.Task<O.Option<{
   id: GroupId,
   name: string,
   avatarPath: string,
@@ -30,7 +30,7 @@ type FetchEditorialCommunity = (editorialCommunityId: GroupId) => T.Task<O.Optio
 type GetUserDetails = (userId: UserId) => TE.TaskEither<'not-found' | 'unavailable', UserDetails>;
 
 type Ports = {
-  getEditorialCommunity: FetchEditorialCommunity,
+  getGroup: FetchGroup,
   getAllEvents: GetAllEvents,
   follows: Follows,
   getUserDetails: GetUserDetails,
@@ -68,7 +68,7 @@ export const userPage = (ports: Ports): UserPage => {
         followList: pipe(
           userId,
           projectFollowedGroupIds(ports.getAllEvents),
-          T.chain(T.traverseArray(ports.getEditorialCommunity)),
+          T.chain(T.traverseArray(ports.getGroup)),
           T.map(RA.compact),
           T.chain(T.traverseArray(renderFollowedEditorialCommunity(renderFollowToggle, ports.follows)(viewingUserId))),
           T.map(renderFollowList),

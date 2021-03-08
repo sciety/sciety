@@ -20,7 +20,7 @@ import { UserId } from '../types/user-id';
 type Ports = {
   fetchArticle: GetArticle,
   getAllEditorialCommunities: GetAllEditorialCommunities,
-  getEditorialCommunity: GetGroup,
+  getGroup: GetGroup,
   getAllEvents: GetAllEvents,
   follows: (userId: UserId, editorialCommunityId: GroupId) => T.Task<boolean>,
 };
@@ -45,7 +45,7 @@ export const homePage = (ports: Ports): HomePage => (params) => pipe(
       projectIsFollowingSomething(ports.getAllEvents),
       getMostRecentEvents(ports.getAllEvents, ports.follows, 20),
       flow(
-        T.traverseArray(constructFeedItem(getActor(ports.getEditorialCommunity), ports.fetchArticle)),
+        T.traverseArray(constructFeedItem(getActor(ports.getGroup), ports.fetchArticle)),
         T.map(renderSummaryFeedList),
       ),
     ),

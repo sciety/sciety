@@ -55,7 +55,7 @@ export const createTestServer = async (): Promise<TestServer> => {
     ),
     fetchStaticFile: (filename: string) => TE.right(`Contents of ${filename}`),
     searchEuropePmc: () => TE.right({ items: [], total: 0 }),
-    getEditorialCommunity: editorialCommunities.lookup,
+    getGroup: editorialCommunities.lookup,
     getAllEditorialCommunities: editorialCommunities.all,
     findReviewsForArticleDoi: () => T.of([]),
     getAllEvents: T.of([]),

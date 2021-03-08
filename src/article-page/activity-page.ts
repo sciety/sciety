@@ -4,7 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
 import striptags from 'striptags';
 import {
-  FindReviewsForArticleDoi, FindVersionsForArticleDoi, getArticleFeedEvents, GetEditorialCommunity,
+  FindReviewsForArticleDoi, FindVersionsForArticleDoi, getArticleFeedEvents, GetGroup,
 } from './get-article-feed-events';
 import { GetReview } from './get-feed-events-content';
 import { projectHasUserSavedArticle } from './project-has-user-saved-article';
@@ -44,7 +44,7 @@ type GetArticleDetails = (doi: Doi) => TE.TaskEither<'not-found' | 'unavailable'
 type Ports = {
   fetchArticle: GetArticleDetails,
   fetchReview: GetReview,
-  getEditorialCommunity: GetEditorialCommunity,
+  getGroup: GetGroup,
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
@@ -80,7 +80,7 @@ export const articleActivityPage = (ports: Ports): ActivityPage => {
       ports.findReviewsForArticleDoi,
       ports.findVersionsForArticleDoi,
       ports.fetchReview,
-      ports.getEditorialCommunity,
+      ports.getGroup,
     ),
     renderReviewFeedItem(
       850,
