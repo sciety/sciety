@@ -13,7 +13,7 @@ export const renderPage = ({
   header, followList, savedArticlesList, userDisplayName,
 }: Components): Page => (
   {
-    title: `${userDisplayName}`,
+    title: userDisplayName,
     content: toHtmlFragment(`
       <div class="sciety-grid sciety-grid--user">
         ${header}

@@ -115,7 +115,7 @@ export const articleActivityPage = (ports: Ports): ActivityPage => {
       toErrorPage,
       (components) => ({
         content: renderActivityPage(components),
-        title: `${striptags(components.articleDetails.title)}`,
+        title: striptags(components.articleDetails.title),
         openGraph: {
           title: striptags(components.articleDetails.title),
           description: striptags(components.articleDetails.abstract),
