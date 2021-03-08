@@ -36,28 +36,30 @@ const getDescription = (groupId: GroupId) => pipe(
   sanitise,
 );
 
-const addPeerJHardcodedResult = (
+const addGroupResults = (
   query: string,
 ) => (
   searchResults: SearchResults,
-) => {
-  if (query === 'peerj') {
-    const hardcodedSearchResult = {
-      _tag: 'Group' as const,
-      link: '/groups/53ed5364-a016-11ea-bb37-0242ac130002',
-      name: 'PeerJ',
-      description: getDescription(new GroupId('53ed5364-a016-11ea-bb37-0242ac130002')),
-      avatarPath: '/static/groups/peerj--53ed5364-a016-11ea-bb37-0242ac130002.jpg',
-      followerCount: 47,
-      reviewCount: 835,
-    };
-    return {
+) => pipe(
+  query,
+  O.fromPredicate((q) => q === 'peerj'),
+  O.map(() => [{
+    _tag: 'Group' as const,
+    link: '/groups/53ed5364-a016-11ea-bb37-0242ac130002',
+    name: 'PeerJ',
+    description: getDescription(new GroupId('53ed5364-a016-11ea-bb37-0242ac130002')),
+    avatarPath: '/static/groups/peerj--53ed5364-a016-11ea-bb37-0242ac130002.jpg',
+    followerCount: 47,
+    reviewCount: 835,
+  }]),
+  O.fold(
+    () => searchResults,
+    (hardcodedSearchResults) => ({
       total: searchResults.total + 1,
-      items: RA.cons<SearchResult>(hardcodedSearchResult)(searchResults.items),
-    };
-  }
-  return searchResults;
-};
+      items: RA.cons<SearchResult>(hardcodedSearchResults[0])(searchResults.items),
+    }),
+  ),
+);
 
 export const search = (
   findArticles: FindArticles,
@@ -89,5 +91,5 @@ export const search = (
     ),
     TE.rightTask,
   )),
-  TE.map(addPeerJHardcodedResult(query)),
+  TE.map(addGroupResults(query)),
 );
