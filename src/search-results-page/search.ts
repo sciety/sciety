@@ -26,6 +26,16 @@ export type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray
 
 type Search = (query: string) => TE.TaskEither<'unavailable', SearchResults>;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const getDescription = (groupId: GroupId) => pipe(
+  bootstrapEditorialCommunities,
+  RA.lookup(2),
+  O.chain(flow((group) => group.shortDescription, O.fromNullable)),
+  O.getOrElse(constant('')),
+  toHtmlFragment,
+  sanitise,
+);
+
 const addPeerJHardcodedResult = (
   query: string,
 ) => (
@@ -36,14 +46,7 @@ const addPeerJHardcodedResult = (
       _tag: 'Group' as const,
       link: '/groups/53ed5364-a016-11ea-bb37-0242ac130002',
       name: 'PeerJ',
-      description: pipe(
-        bootstrapEditorialCommunities,
-        RA.lookup(2),
-        O.chain(flow((group) => group.shortDescription, O.fromNullable)),
-        O.getOrElse(constant('')),
-        toHtmlFragment,
-        sanitise,
-      ),
+      description: getDescription(new GroupId('53ed5364-a016-11ea-bb37-0242ac130002')),
       avatarPath: '/static/groups/peerj--53ed5364-a016-11ea-bb37-0242ac130002.jpg',
       followerCount: 47,
       reviewCount: 835,
