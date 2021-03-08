@@ -4,9 +4,11 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
+import { countFollowersOf } from './count-followers';
 import { ArticleSearchResult } from './render-search-result';
 import { SearchResults } from './render-search-results';
 import { Doi } from '../types/doi';
+import { DomainEvent } from '../types/domain-events';
 import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
 import { toHtmlFragment } from '../types/html-fragment';
@@ -19,6 +21,7 @@ type OriginalSearchResults = {
 };
 
 export type GetGroup = (editorialCommunityId: GroupId) => T.Task<O.Option<Group>>;
+export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 type FindArticles = (query: string) => TE.TaskEither<'unavailable', OriginalSearchResults>;
 
 export type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
@@ -28,7 +31,7 @@ export type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray
 
 type Search = (query: string) => TE.TaskEither<'unavailable', SearchResults>;
 
-const constructGroupResult = (getGroup: GetGroup) => (groupId: GroupId) => pipe(
+const constructGroupResult = (getGroup: GetGroup, getAllEvents: GetAllEvents) => (groupId: GroupId) => pipe(
   groupId,
   getGroup,
   T.map(E.fromOption(() => 'not-found')),
@@ -37,9 +40,17 @@ const constructGroupResult = (getGroup: GetGroup) => (groupId: GroupId) => pipe(
     description: sanitise(toHtmlFragment(group.shortDescription ?? '')),
     _tag: 'Group' as const,
     link: '/groups/53ed5364-a016-11ea-bb37-0242ac130002',
-    followerCount: 47,
     reviewCount: 835,
   })),
+  TE.chainW((group) => pipe(
+    getAllEvents,
+    T.map(countFollowersOf(groupId)),
+    T.map((followerCount) => ({
+      ...group,
+      followerCount,
+    })),
+    T.map(E.right),
+  )),
 );
 
 const findGroups = (query: string): ReadonlyArray<GroupId> => pipe(
@@ -53,6 +64,7 @@ const findGroups = (query: string): ReadonlyArray<GroupId> => pipe(
 
 const addGroupResults = (
   getGroup: GetGroup,
+  getAllEvents: GetAllEvents,
 ) => (
   query: string,
 ) => (
@@ -60,7 +72,7 @@ const addGroupResults = (
 ): TE.TaskEither<never, SearchResults> => pipe(
   query,
   findGroups,
-  T.traverseArray(constructGroupResult(getGroup)),
+  T.traverseArray(constructGroupResult(getGroup, getAllEvents)),
   T.map(RA.separate),
   T.map(({ right }) => right),
   T.map((hardcodedSearchResults) => ({
@@ -74,6 +86,7 @@ export const search = (
   findArticles: FindArticles,
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
   getGroup: GetGroup,
+  getAllEvents: GetAllEvents,
 ): Search => (query) => pipe(
   query,
   findArticles,
@@ -101,5 +114,5 @@ export const search = (
     ),
     TE.rightTask,
   )),
-  TE.chainW(addGroupResults(getGroup)(query)),
+  TE.chainW(addGroupResults(getGroup, getAllEvents)(query)),
 );
