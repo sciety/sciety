@@ -4,8 +4,15 @@ import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { Feed, FeedEvent } from './get-feed-events-content';
 
-const byDate = Ord.contramap<Date, FeedEvent>((event) => event.occurredAt)(Ord.ordDate);
-const byDateDescending = Ord.getDualOrd(byDate);
+const byDate: Ord.Ord<FeedEvent> = pipe(
+  Ord.ordDate,
+  Ord.contramap((event) => event.occurredAt),
+);
+
+const byDateDescending: Ord.Ord<FeedEvent> = pipe(
+  byDate,
+  Ord.getDualOrd,
+);
 
 export const mergeFeeds = (feeds: Array<Feed>): Feed => (doi) => pipe(
   feeds,

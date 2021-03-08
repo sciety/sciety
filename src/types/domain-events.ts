@@ -1,4 +1,5 @@
 import * as Ord from 'fp-ts/Ord';
+import { pipe } from 'fp-ts/function';
 import { Doi } from './doi';
 import { EventId, generate } from './event-id';
 import { GroupId } from './group-id';
@@ -215,4 +216,7 @@ export type RuntimeGeneratedEvent =
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export const byDate = Ord.contramap((event: DomainEvent) => event.date)(Ord.ordDate);
+export const byDate: Ord.Ord<DomainEvent> = pipe(
+  Ord.ordDate,
+  Ord.contramap((event) => event.date),
+);
