@@ -10,12 +10,14 @@ export type RenderPage = (userId: O.Option<UserId>) => T.Task<Page>;
 
 type Component = (userId: O.Option<UserId>) => T.Task<string>;
 
-const render = (components: {
+type Components = {
   header: string,
   feed: string,
   searchForm: string,
   editorialCommunities: string,
-}) => `
+};
+
+const render = (components: Components) => `
   <div class="sciety-grid sciety-grid--home">
     ${components.header}
     <div class="home-page-feed-container">
@@ -28,28 +30,23 @@ const render = (components: {
   </div>
 `;
 
+const asPage = (components: Components): Page => ({
+  title: 'Sciety: where research is evaluated and curated by the communities you trust',
+  content: pipe(components, render, toHtmlFragment),
+});
+
 export const renderPage = (
   renderPageHeader: Component,
   renderEditorialCommunities: Component,
   renderSearchForm: Component,
   renderFeed: Component,
-): RenderPage => (userId) => {
-  const components = {
+): RenderPage => (userId) => pipe(
+  {
     header: renderPageHeader(userId),
     feed: renderFeed(userId),
     searchForm: renderSearchForm(userId),
     editorialCommunities: renderEditorialCommunities(userId),
-  };
-  return pipe(
-    {
-      title: T.of('Sciety: where research is evaluated and curated by the communities you trust'),
-      content: pipe(
-        components,
-        sequenceS(T.task),
-        T.map(render),
-        T.map(toHtmlFragment),
-      ),
-    },
-    sequenceS(T.task),
-  );
-};
+  },
+  sequenceS(T.task),
+  T.map(asPage),
+);
