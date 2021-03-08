@@ -65,8 +65,7 @@ const renderGroupSearchResult = (result: GroupSearchResult) => pipe(
         ${result.description}
       </div>
       <ul class="search-results-list__item__meta">
-        <li>${result.reviewCount} Reviews</li>
-        <li>${result.followerCount} Followers</li>
+        <li class="search-results-list__item__meta__item">${result.reviewCount} Reviews</li><li class="search-results-list__item__meta__item">${result.followerCount} Followers</li>
       </ul>
     </div>
     <img class="search-results-list__item__avatar" src="${result.avatarPath}" />

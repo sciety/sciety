@@ -131,4 +131,15 @@ $vertical-space-above-title--wide: baseline.increments(5);
   color: settings.$colour-text-secondary;
   font-family: Ubuntu, sans-serif;
   letter-spacing: 0.09px;
+  display: inline;
+
+  > :nth-child(n+2)::before {
+    content: '•';
+    margin-right: 0.25rem;
+  }
+}
+
+.search-results-list__item__meta__item {
+  display: inline;
+  margin-right: 0.25rem;
 }
