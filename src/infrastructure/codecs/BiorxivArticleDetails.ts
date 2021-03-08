@@ -9,6 +9,8 @@ const biorxivArticleVersion = t.type({
 
 export type BiorxivArticleVersion = t.TypeOf<typeof biorxivArticleVersion>;
 
-export const BiorxivArticleDetails = t.type({
+export const biorxivArticleDetails = t.type({
   collection: t.array(biorxivArticleVersion),
 });
+
+export type BiorxivArticleDetails = t.TypeOf<typeof biorxivArticleDetails>;
