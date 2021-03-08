@@ -35,7 +35,12 @@ const render = (components: Components) => `
     </div>
     <div class="group-page-side-bar">
       ${components.followers}
-      ${components.feed}
+      <section>
+        <h2>
+          Feed
+        </h2>
+        ${components.feed}
+      </section>
     </div>
   </div>
 `;

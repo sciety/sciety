@@ -30,13 +30,8 @@ type ViewModel = {
 };
 
 const renderAsSection = (viewModel: ViewModel) => `
-  <section>
-    <h2>
-      Feed
-    </h2>
-    ${viewModel.button}
-    ${viewModel.feed}
-  </section>
+  ${viewModel.button}
+  ${viewModel.feed}
 `;
 
 export const renderFeed = (
