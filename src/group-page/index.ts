@@ -64,7 +64,11 @@ export const groupPage = (ports: Ports): GroupPage => (params) => pipe(
     T.map(E.fromOption(notFoundResponse)),
     TE.chain((group) => pipe(
       {
-        header: TE.right(renderPageHeader(group)),
+        header: pipe(
+          group,
+          renderPageHeader,
+          TE.right,
+        ),
         description: renderDescription(ports.fetchStaticFile)(group),
         followers: renderFollowers(projectFollowerIds(ports.getAllEvents))(group.id),
         followButton: pipe(
