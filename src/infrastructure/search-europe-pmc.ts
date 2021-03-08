@@ -70,7 +70,9 @@ const constructSearchResults = (data: EuropePmcResponse) => {
   };
 };
 
-const getFromUrl = (getJson: GetJson, logger: Logger) => <A>(codec: t.Decoder<Json, A>) => (url: string) => pipe(
+type GetFromUrl = (url: string) => RTE.ReaderTaskEither<Dependencies, 'unavailable', EuropePmcResponse>;
+
+const getFromUrl: GetFromUrl = (url: string) => ({ getJson, logger }: Dependencies) => pipe(
   TE.tryCatch(async () => getJson(url), E.toError),
   TE.mapLeft(
     (error) => {
@@ -80,7 +82,7 @@ const getFromUrl = (getJson: GetJson, logger: Logger) => <A>(codec: t.Decoder<Js
     },
   ),
   T.map(flow(
-    E.chainW(codec.decode),
+    E.chainW(europePmcResponse.decode),
     E.mapLeft(
       (error) => {
         logger('error', 'Could not parse response', { error, url });
@@ -94,7 +96,7 @@ export const searchEuropePmc: SearchEuropePmc = (query) => ({ getJson, logger })
   query,
   constructQueryParams,
   constructSearchUrl,
-  getFromUrl(getJson, logger)(europePmcResponse),
+  (...args) => getFromUrl(...args)({ getJson, logger }),
   TE.bimap(
     constant('unavailable'),
     constructSearchResults,
