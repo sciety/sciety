@@ -7,8 +7,6 @@ const biorxivArticleVersion = t.type({
   version: NumberFromString,
 });
 
-export type BiorxivArticleVersion = t.TypeOf<typeof biorxivArticleVersion>;
-
 export const biorxivArticleDetails = t.type({
   collection: t.array(biorxivArticleVersion),
 });
