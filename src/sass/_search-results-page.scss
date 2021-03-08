@@ -143,3 +143,7 @@ $vertical-space-above-title--wide: baseline.increments(5);
   display: inline;
   margin-right: 0.25rem;
 }
+
+.search-results-list__item_container {
+  flex-grow: 1;
+}

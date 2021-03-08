@@ -14,6 +14,7 @@ const groups: RNEA.ReadonlyNonEmptyArray<Group> = [
     name: 'PeerJ',
     avatarPath: '/static/groups/peerj--53ed5364-a016-11ea-bb37-0242ac130002.jpg',
     descriptionPath: 'peerj--53ed5364-a016-11ea-bb37-0242ac130002.md',
+    shortDescription: 'PeerJ is an open access publisher of 7 peer-reviewed journals, and an editorial community of over 2000 Academic Editors and Advisors, and tens of thousands of authors and reviewers.',
   },
   {
     id: new GroupId('316db7d9-88cc-4c26-b386-f067e0f56334'),

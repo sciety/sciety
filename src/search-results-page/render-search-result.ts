@@ -59,7 +59,7 @@ const renderArticleSearchResult = flow(
 
 const renderGroupSearchResult = (result: GroupSearchResult) => pipe(
   `
-    <div>
+    <div class="search-results-list__item_container">
       <a class="search-results-list__item__link" href="${result.link}">${result.name}</a>
       <div class="search-results-list__item__description">
         ${result.description}

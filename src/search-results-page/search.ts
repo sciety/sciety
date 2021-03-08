@@ -2,9 +2,10 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, pipe } from 'fp-ts/function';
+import { constant, flow, pipe } from 'fp-ts/function';
 import { ArticleSearchResult, SearchResult } from './render-search-result';
 import { SearchResults } from './render-search-results';
+import { bootstrapEditorialCommunities } from '../data/bootstrap-editorial-communities';
 import { Doi } from '../types/doi';
 import { GroupId } from '../types/group-id';
 import { toHtmlFragment } from '../types/html-fragment';
@@ -36,7 +37,10 @@ const addPeerJHardcodedResult = (
       link: '/groups/53ed5364-a016-11ea-bb37-0242ac130002',
       name: 'PeerJ',
       description: pipe(
-        'PeerJ is an open access publisher of 7 peer-reviewed journals, and an editorial community of over 2000 Academic Editors and Advisors, and tens of thousands of authors and reviewers.',
+        bootstrapEditorialCommunities,
+        RA.lookup(2),
+        O.chain(flow((group) => group.shortDescription, O.fromNullable)),
+        O.getOrElse(constant('')),
         toHtmlFragment,
         sanitise,
       ),
