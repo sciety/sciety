@@ -18,7 +18,7 @@ type OriginalSearchResults = {
   total: number,
 };
 
-type GetGroup = (editorialCommunityId: GroupId) => T.Task<O.Option<Group>>;
+export type GetGroup = (editorialCommunityId: GroupId) => T.Task<O.Option<Group>>;
 type FindArticles = (query: string) => TE.TaskEither<'unavailable', OriginalSearchResults>;
 
 export type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
@@ -28,16 +28,7 @@ export type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray
 
 type Search = (query: string) => TE.TaskEither<'unavailable', SearchResults>;
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const getGroup: GetGroup = (groupId: GroupId) => T.of(O.some({
-  id: new GroupId('53ed5364-a016-11ea-bb37-0242ac130002'),
-  name: 'PeerJ',
-  avatarPath: '/static/groups/peerj--53ed5364-a016-11ea-bb37-0242ac130002.jpg',
-  descriptionPath: 'peerj--53ed5364-a016-11ea-bb37-0242ac130002.md',
-  shortDescription: 'PeerJ is an open access publisher of 7 peer-reviewed journals, and an editorial community of over 2000 Academic Editors and Advisors, and tens of thousands of authors and reviewers.',
-}));
-
-const constructGroupResult = (groupId: GroupId) => pipe(
+const constructGroupResult = (getGroup: GetGroup) => (groupId: GroupId) => pipe(
   groupId,
   getGroup,
   T.map(E.fromOption(() => 'not-found')),
@@ -61,13 +52,15 @@ const findGroups = (query: string): ReadonlyArray<GroupId> => pipe(
 );
 
 const addGroupResults = (
+  getGroup: GetGroup,
+) => (
   query: string,
 ) => (
   searchResults: SearchResults,
 ): TE.TaskEither<never, SearchResults> => pipe(
   query,
   findGroups,
-  T.traverseArray(constructGroupResult),
+  T.traverseArray(constructGroupResult(getGroup)),
   T.map(RA.separate),
   T.map(({ right }) => right),
   T.map((hardcodedSearchResults) => ({
@@ -80,6 +73,7 @@ const addGroupResults = (
 export const search = (
   findArticles: FindArticles,
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
+  getGroup: GetGroup,
 ): Search => (query) => pipe(
   query,
   findArticles,
@@ -107,5 +101,5 @@ export const search = (
     ),
     TE.rightTask,
   )),
-  TE.chainW(addGroupResults(query)),
+  TE.chainW(addGroupResults(getGroup)(query)),
 );

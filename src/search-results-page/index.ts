@@ -3,7 +3,7 @@ import { pipe } from 'fp-ts/function';
 import { renderErrorPage, RenderPage, renderPage } from './render-page';
 import { ArticleSearchResult, renderSearchResult } from './render-search-result';
 import { renderSearchResults } from './render-search-results';
-import { FindReviewsForArticleDoi, search } from './search';
+import { FindReviewsForArticleDoi, GetGroup, search } from './search';
 
 type OriginalSearchResults = {
   items: ReadonlyArray<Omit<Omit<ArticleSearchResult, '_tag'>, 'reviewCount'>>,
@@ -15,6 +15,7 @@ type FindArticles = (query: string) => TE.TaskEither<'unavailable', OriginalSear
 type Ports = {
   searchEuropePmc: FindArticles,
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
+  getGroup: GetGroup,
 };
 
 type Params = {
@@ -25,7 +26,7 @@ type SearchResultsPage = (params: Params) => ReturnType<RenderPage>;
 
 export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) => pipe(
   params.query ?? '', // TODO: use Option
-  search(ports.searchEuropePmc, ports.findReviewsForArticleDoi),
+  search(ports.searchEuropePmc, ports.findReviewsForArticleDoi, ports.getGroup),
   TE.map(renderSearchResults(renderSearchResult)),
   TE.bimap(renderErrorPage, renderPage),
 );
