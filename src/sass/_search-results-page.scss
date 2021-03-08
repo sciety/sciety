@@ -113,6 +113,7 @@ $vertical-space-above-title--wide: baseline.increments(5);
 }
 
 .search-results-list__item__description {
+  margin-bottom: baseline.increments(1);
   font-family: Ubuntu, sans-serif;
 }
 
@@ -122,4 +123,12 @@ $vertical-space-above-title--wide: baseline.increments(5);
   border-radius: settings.$border-radius;
   flex: 0 0 $avatar-size;
   margin-left: functions.px-to-rem(32px);
+}
+
+.search-results-list__item__meta {
+  @include list.basics();
+  @include typography.sizing(12px, 2.5);
+  color: settings.$colour-text-secondary;
+  font-family: Ubuntu, sans-serif;
+  letter-spacing: 0.09px;
 }
