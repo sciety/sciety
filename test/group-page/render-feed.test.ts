@@ -1,5 +1,4 @@
 import { URL } from 'url';
-import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
@@ -38,7 +37,7 @@ describe('render feed', () => {
       );
       const rendered = await component(group)();
 
-      expect(rendered).toStrictEqual(E.right(expect.stringContaining('a list')));
+      expect(rendered).toStrictEqual(expect.stringContaining('a list'));
     });
   });
 
@@ -60,7 +59,7 @@ describe('render feed', () => {
       );
       const rendered = await component(group)();
 
-      expect(rendered).toStrictEqual(E.right(expect.stringContaining('group hasn’t evaluated')));
+      expect(rendered).toStrictEqual(expect.stringContaining('group hasn’t evaluated'));
     });
   });
 });

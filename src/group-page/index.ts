@@ -90,6 +90,7 @@ export const groupPage = (ports: Ports): GroupPage => (params) => pipe(
             constructFeedItem(ports.fetchArticle),
             renderSummaryFeedList,
           ),
+          TE.rightTask,
         ),
       },
       sequenceS(TE.taskEither),

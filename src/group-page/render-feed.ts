@@ -1,6 +1,5 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
-import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { ConstructFeedItem, FeedEvent } from './construct-feed-item';
 import { FeedItem } from '../shared-components';
@@ -9,7 +8,7 @@ import { GroupId } from '../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 type RenderFeed = (group: Group)
-=> TE.TaskEither<never, HtmlFragment>;
+=> T.Task<HtmlFragment>;
 
 export type GetEvents = (groupId: GroupId) => T.Task<ReadonlyArray<FeedEvent>>;
 
@@ -34,5 +33,4 @@ export const renderFeed = (
     O.getOrElse(constant(emptyFeed)),
     toHtmlFragment,
   )),
-  TE.rightTask,
 );
