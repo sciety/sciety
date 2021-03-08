@@ -3,7 +3,7 @@ import * as E from 'fp-ts/Either';
 import * as RTE from 'fp-ts/ReaderTaskEither';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { constant, flow, pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { Json } from 'io-ts-types';
 import { DateFromISOString } from 'io-ts-types/DateFromISOString';
@@ -92,13 +92,9 @@ const getFromUrl: GetFromUrl = (url: string) => ({ getJson, logger }: Dependenci
   )),
 );
 
-export const searchEuropePmc: SearchEuropePmc = (query) => ({ getJson, logger }) => pipe(
-  query,
+export const searchEuropePmc: SearchEuropePmc = flow(
   constructQueryParams,
   constructSearchUrl,
-  (...args) => getFromUrl(...args)({ getJson, logger }),
-  TE.bimap(
-    constant('unavailable'),
-    constructSearchResults,
-  ),
+  getFromUrl,
+  RTE.map(constructSearchResults),
 );
