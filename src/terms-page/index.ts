@@ -1,10 +1,7 @@
-import * as T from 'fp-ts/Task';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 
-type RenderPage = () => T.Task<Page>;
-
-export const termsPage = (): RenderPage => () => T.of({
+export const termsPage: Page = {
   title: 'Terms and conditions',
   content: toHtmlFragment(`
     <div class="sciety-grid sciety-grid--simple">
@@ -28,4 +25,4 @@ export const termsPage = (): RenderPage => () => T.of({
       </p>
     </div>
   `),
-});
+};

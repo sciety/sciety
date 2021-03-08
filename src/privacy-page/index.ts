@@ -1,10 +1,7 @@
-import * as T from 'fp-ts/Task';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 
-type RenderPage = () => T.Task<Page>;
-
-export const privacyPage = (): RenderPage => () => T.of({
+export const privacyPage: Page = {
   title: 'Privacy notice',
   content: toHtmlFragment(`
     <div class="sciety-grid sciety-grid--simple">
@@ -44,4 +41,4 @@ export const privacyPage = (): RenderPage => () => T.of({
       </p>
     </div>
   `),
-});
+};

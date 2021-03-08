@@ -104,10 +104,10 @@ export const createRouter = (adapters: Adapters): Router => {
     });
 
   router.get('/privacy',
-    pageHandler(flow(privacyPage(), TE.rightTask)));
+    pageHandler(() => pipe(privacyPage, TE.right)));
 
   router.get('/terms',
-    pageHandler(flow(termsPage(), TE.rightTask)));
+    pageHandler(() => pipe(termsPage, TE.right)));
 
   // COMMANDS
 
