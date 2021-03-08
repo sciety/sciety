@@ -8,7 +8,7 @@ import { FetchReview } from './fetch-review';
 import { GetArticleVersionEventsFromBiorxiv } from './get-article-version-events-from-biorxiv';
 import { GetTwitterUserDetails } from './get-twitter-user-details';
 import { Logger } from './logger';
-import { SearchEuropePmc } from './search-europe-pmc';
+import { SearchResults } from './search-europe-pmc';
 import { Doi } from '../types/doi';
 import { DomainEvent, RuntimeGeneratedEvent } from '../types/domain-events';
 import { Group } from '../types/group';
@@ -30,7 +30,7 @@ export type Adapters = {
   fetchArticle: FetchCrossrefArticle,
   fetchReview: FetchReview,
   fetchStaticFile: (filename: string) => TE.TaskEither<'not-found' | 'unavailable', string>,
-  searchEuropePmc: SearchEuropePmc,
+  searchEuropePmc: (query: string) => TE.TaskEither<'unavailable', SearchResults>,
   getGroup: GetGroup,
   getAllEditorialCommunities: GetAllEditorialCommunities,
   findReviewsForArticleDoi: FindReviewsForArticleDoi,

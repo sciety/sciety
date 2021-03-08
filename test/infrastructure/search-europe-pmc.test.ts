@@ -6,21 +6,22 @@ import { dummyLogger } from '../dummy-logger';
 
 describe('search-europe-pmc adapter', () => {
   it('converts Europe PMC search result into our Domain Model', async () => {
-    const adapter = searchEuropePmc(async () => ({
-      hitCount: 1,
-      resultList: {
-        result: [
-          {
-            doi: '10.1111/1234',
-            title: 'Article title',
-            authorString: 'Author 1, Author 2',
-            firstPublicationDate: '2019-11-07',
-          },
-        ],
-      },
-    }), dummyLogger);
-
-    const results = await adapter('some query')();
+    const results = await searchEuropePmc('some query')({
+      getJson: async () => ({
+        hitCount: 1,
+        resultList: {
+          result: [
+            {
+              doi: '10.1111/1234',
+              title: 'Article title',
+              authorString: 'Author 1, Author 2',
+              firstPublicationDate: '2019-11-07',
+            },
+          ],
+        },
+      }),
+      logger: dummyLogger,
+    })();
 
     const expected = E.right({
       total: 1,
@@ -46,9 +47,8 @@ describe('search-europe-pmc adapter', () => {
       },
     });
     const spy = jest.fn(getJson);
-    const adapter = searchEuropePmc(spy, dummyLogger);
 
-    await adapter('Structural basis of αE&')();
+    await searchEuropePmc('Structural basis of αE&')({ getJson: spy, logger: dummyLogger })();
 
     expect(spy).toHaveBeenCalledTimes(1);
 

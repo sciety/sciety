@@ -103,7 +103,7 @@ export const createInfrastructure = (): TE.TaskEither<unknown, Adapters> => pipe
           fetchNcrcReview(logger),
         ),
         fetchStaticFile: (...args) => fetchStaticFile(...args)(loggerIO(logger)),
-        searchEuropePmc: searchEuropePmc(getJsonWithRetries, logger),
+        searchEuropePmc: (...args) => searchEuropePmc(...args)({ getJson: getJsonWithRetries, logger }),
         getGroup: editorialCommunities.lookup,
         getAllEditorialCommunities: editorialCommunities.all,
         findReviewsForArticleDoi: (...args) => findReviewsForArticleDoi(...args)(getAllEvents),

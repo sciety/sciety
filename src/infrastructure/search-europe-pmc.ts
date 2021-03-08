@@ -1,5 +1,6 @@
 import { URLSearchParams } from 'url';
 import * as E from 'fp-ts/Either';
+import * as RTE from 'fp-ts/ReaderTaskEither';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
@@ -19,12 +20,17 @@ type SearchResult = {
   postedDate: Date,
 };
 
-type SearchResults = {
+export type SearchResults = {
   items: ReadonlyArray<SearchResult>,
   total: number,
 };
 
-export type SearchEuropePmc = (query: string) => TE.TaskEither<'unavailable', SearchResults>;
+type Dependencies = {
+  getJson: GetJson,
+  logger: Logger,
+};
+
+type SearchEuropePmc = (query: string) => RTE.ReaderTaskEither<Dependencies, 'unavailable', SearchResults>;
 
 const resultDetails = t.type({
   doi: DoiFromString,
@@ -84,7 +90,7 @@ const getFromUrl = (getJson: GetJson, logger: Logger) => <A>(codec: t.Decoder<Js
   )),
 );
 
-export const searchEuropePmc = (getJson: GetJson, logger: Logger): SearchEuropePmc => (query) => pipe(
+export const searchEuropePmc: SearchEuropePmc = (query) => ({ getJson, logger }) => pipe(
   query,
   constructQueryParams,
   constructSearchUrl,
