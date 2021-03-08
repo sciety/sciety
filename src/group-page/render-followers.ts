@@ -6,7 +6,7 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 type RenderFollowers = (groupId: GroupId) => TE.TaskEither<never, HtmlFragment>;
 
-type GetFollowers<U> = (groupId: GroupId) => T.Task<ReadonlyArray<U>>;
+type GetFollowers = (groupId: GroupId) => T.Task<number>;
 
 const renderFragment = (followerCount: number) => `
   <section class="followers">
@@ -19,9 +19,8 @@ const renderFragment = (followerCount: number) => `
   </section>
 `;
 
-export const renderFollowers = <U>(getFollowers: GetFollowers<U>): RenderFollowers => flow(
+export const renderFollowers = (getFollowers: GetFollowers): RenderFollowers => flow(
   getFollowers,
-  T.map((followers) => followers.length),
   T.map(renderFragment),
   T.map(toHtmlFragment),
   TE.rightTask,

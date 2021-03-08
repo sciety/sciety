@@ -6,7 +6,7 @@ import { GroupId } from '../../src/types/group-id';
 describe('render-followers', () => {
   it('renders the follower count', async () => {
     const rendered = await renderFollowers(
-      () => T.of(['11111111', '22222222']),
+      () => T.of(2),
     )(new GroupId('arbitrary id'))();
 
     expect(rendered).toStrictEqual(E.right(expect.stringContaining('2 users')));

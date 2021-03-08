@@ -10,8 +10,6 @@ import {
 import { eqGroupId, GroupId } from '../types/group-id';
 import { UserId } from '../types/user-id';
 
-type ProjectFollowerIds = (groupId: GroupId) => T.Task<ReadonlyArray<UserId>>;
-
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 const isInterestingEvent = (event: DomainEvent) : event is (
@@ -35,9 +33,10 @@ const projection = (groupId: GroupId) => (
   )
 );
 
-export const projectFollowerIds = (getAllEvents: GetAllEvents): ProjectFollowerIds => (
-  (groupId) => pipe(
-    getAllEvents,
-    T.map(projection(groupId)),
-  )
+type ProjectFollowerCount = (groupId: GroupId) => T.Task<number>;
+
+export const projectFollowerCount = (getAllEvents: GetAllEvents): ProjectFollowerCount => (groupId) => pipe(
+  getAllEvents,
+  T.map(projection(groupId)),
+  T.map((fs) => fs.length),
 );

@@ -8,7 +8,7 @@ import * as t from 'io-ts';
 import { option } from 'io-ts-types/option';
 import { constructFeedItem, GetArticle } from './construct-feed-item';
 import { GetAllEvents, getMostRecentEvents } from './get-most-recent-events';
-import { projectFollowerIds } from './project-follower-ids';
+import { projectFollowerCount } from './project-follower-count';
 import { FetchStaticFile, renderDescription } from './render-description';
 import { renderFeed } from './render-feed';
 import { renderFollowToggle } from './render-follow-toggle';
@@ -74,7 +74,10 @@ export const groupPage = (ports: Ports): GroupPage => (params) => pipe(
           ports.fetchStaticFile,
           TE.map(renderDescription),
         ),
-        followers: renderFollowers(projectFollowerIds(ports.getAllEvents))(group.id),
+        followers: pipe(
+          group.id,
+          renderFollowers(projectFollowerCount(ports.getAllEvents)),
+        ),
         followButton: pipe(
           user,
           O.fold(
