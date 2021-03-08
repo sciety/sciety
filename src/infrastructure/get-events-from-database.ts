@@ -27,9 +27,8 @@ export const getEventsFromDatabase = (
     TE.right,
   )),
   TE.map(RA.map((row) => ({ ...row, ...row.payload }))),
-  TE.chain(flow(
+  TE.chainEitherK(flow(
     domainEvents.decode,
-    TE.fromEither,
-    TE.mapLeft((errors) => new Error(PR.failure(errors).join('\n'))),
+    E.mapLeft((errors) => new Error(PR.failure(errors).join('\n'))),
   )),
 );

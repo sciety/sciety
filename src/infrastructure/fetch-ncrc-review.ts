@@ -142,8 +142,7 @@ const getNcrcReview = (logger: Logger) => (rowNumber: number) => pipe(
 );
 
 export const fetchNcrcReview = (logger: Logger): FetchNcrcReview => flow(
-  TE.right,
-  TE.chain(getRowNumber(logger)),
+  getRowNumber(logger),
   TE.chainW(getNcrcReview(logger)),
   TE.map(constructNcrcReview),
 );

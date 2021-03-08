@@ -35,10 +35,9 @@ const makeRequest = (doi: Doi, server: ArticleServer) => ({ getJson, logger }: D
     async () => getJson(`https://api.biorxiv.org/details/${server}/${doi.value}`),
     E.toError,
   ),
-  TE.chain(flow(
+  TE.chainEitherK(flow(
     biorxivArticleDetails.decode,
-    TE.fromEither,
-    TE.mapLeft((e) => new Error(PR.failure(e).join('\n'))),
+    E.mapLeft((errors) => new Error(PR.failure(errors).join('\n'))),
   )),
   TE.swap,
   TE.chainFirstW(flow(

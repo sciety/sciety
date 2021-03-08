@@ -28,7 +28,7 @@ const fetchReviewContent = (
     async () => fetchDataset(reviewIri),
     constant('unavailable' as const), // TODO might be 'not-found'
   ),
-  TE.chain(flow(
+  TE.chainEitherK(flow(
     (graph) => graph.out(schema.description).value,
     E.fromNullable('unavailable' as const),
     E.map(toHtmlFragment),
@@ -36,7 +36,6 @@ const fetchReviewContent = (
       fullText,
       url: new URL(reviewIri.value),
     })),
-    TE.fromEither,
   )),
   TE.map((review) => {
     logger('debug', 'Retrieved review', { review });
@@ -53,7 +52,6 @@ export const fetchDataciteReview = (fetchDataset: FetchDataset, logger: Logger):
       return url;
     },
     namedNode,
-    TE.right,
-    TE.chain((reviewIri) => fetchReviewContent(fetchDataset, logger, reviewIri)),
+    (reviewIri) => fetchReviewContent(fetchDataset, logger, reviewIri),
   )
 );

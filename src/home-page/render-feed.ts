@@ -1,8 +1,10 @@
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as B from 'fp-ts/boolean';
-import { constant, pipe } from 'fp-ts/function';
+import { constant, flow, pipe } from 'fp-ts/function';
+import { identity } from 'io-ts';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
@@ -50,10 +52,10 @@ const renderAsSection = (contents: HtmlFragment) => toHtmlFragment(`
   </section>
 `);
 
-export const renderFeed = <E>(
+export const renderFeed = <Err>(
   isFollowingSomething: IsFollowingSomething,
-  getEvents: GetEvents<E>,
-  renderSummaryFeedList: RenderSummaryFeedList<E>,
+  getEvents: GetEvents<Err>,
+  renderSummaryFeedList: RenderSummaryFeedList<Err>,
 ): RenderFeed => (uid) => pipe(
     uid,
     TE.fromOption(constant(welcomeMessage)),
@@ -75,10 +77,9 @@ export const renderFeed = <E>(
         (summaryFeedList) => TE.right(summaryFeedList),
       ),
     ),
-    TE.fold(
-      (left) => T.of(left),
-      (right) => T.of(right),
-    ),
-    T.map(toHtmlFragment),
-    T.map(renderAsSection),
+    T.map(flow(
+      E.fold(identity, identity),
+      toHtmlFragment,
+      renderAsSection,
+    )),
   );

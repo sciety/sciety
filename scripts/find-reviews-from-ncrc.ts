@@ -45,7 +45,7 @@ void (async (): Promise<void> => {
       }),
       constant('unavailable' as const),
     )),
-    T.map(E.chain(flow(
+    TE.chainEitherK(flow(
       (res) => res?.data?.values,
       O.fromNullable,
       O.map(flow(
@@ -54,7 +54,7 @@ void (async (): Promise<void> => {
         RA.filter((row) => /(biorxiv|medrxiv)/i.test(row.journal)),
       )),
       E.fromOption(constant('unavailable' as const)),
-    ))),
+    )),
     T.map(E.fold(
       () => {
         process.stderr.write('error');
