@@ -76,7 +76,9 @@ export const groupPage = (ports: Ports): GroupPage => (params) => pipe(
         ),
         followers: pipe(
           group.id,
-          renderFollowers(projectFollowerCount(ports.getAllEvents)),
+          projectFollowerCount(ports.getAllEvents),
+          T.map(renderFollowers),
+          TE.rightTask,
         ),
         followButton: pipe(
           user,
