@@ -1,8 +1,8 @@
 import { URL } from 'url';
-import * as A from 'fp-ts/Array';
 import * as E from 'fp-ts/Either';
 import * as RT from 'fp-ts/ReaderTask';
 import * as RTE from 'fp-ts/ReaderTaskEither';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { Json } from 'io-ts-types';
@@ -50,7 +50,7 @@ const makeRequest = (doi: Doi, server: ArticleServer) => ({ getJson, logger }: D
 
 const mapResponse = (doi: Doi, server: ArticleServer) => flow(
   (response: BiorxivArticleDetails) => response.collection,
-  A.map(({ version, date }) => ({
+  RNEA.map(({ version, date }) => ({
     source: new URL(`https://www.${server}.org/content/${doi.value}v${version}`),
     occurredAt: date,
     version,
