@@ -21,8 +21,8 @@ describe('get-article-version-events-from-biorxiv', () => {
             },
           ],
         }));
-        const fetchVersions = getArticleVersionEventsFromBiorxiv(getJson, dummyLogger);
-        const events = await fetchVersions(doi, 'biorxiv')();
+
+        const events = await getArticleVersionEventsFromBiorxiv(doi, 'biorxiv')({ getJson, logger: dummyLogger })();
 
         expect(getJson).toHaveBeenCalledWith('https://api.biorxiv.org/details/biorxiv/10.1101/2020.09.02.278911');
         expect(events).toHaveLength(2);
@@ -54,8 +54,8 @@ describe('get-article-version-events-from-biorxiv', () => {
             },
           ],
         }));
-        const fetchVersions = getArticleVersionEventsFromBiorxiv(getJson, dummyLogger);
-        const events = await fetchVersions(doi, 'medrxiv')();
+
+        const events = await getArticleVersionEventsFromBiorxiv(doi, 'medrxiv')({ getJson, logger: dummyLogger })();
 
         expect(getJson).toHaveBeenCalledWith('https://api.biorxiv.org/details/medrxiv/10.1101/2020.09.02.278911');
         expect(events).toHaveLength(2);
@@ -78,8 +78,8 @@ describe('get-article-version-events-from-biorxiv', () => {
       const getJson = async (): Promise<never> => {
         throw new Error('HTTP timeout');
       };
-      const fetchVersions = getArticleVersionEventsFromBiorxiv(getJson, dummyLogger);
-      const events = await fetchVersions(new Doi('10.1101/2020.09.02.278911'), 'biorxiv')();
+
+      const events = await getArticleVersionEventsFromBiorxiv(new Doi('10.1101/2020.09.02.278911'), 'biorxiv')({ getJson, logger: dummyLogger })();
 
       expect(events).toHaveLength(0);
     });
@@ -89,8 +89,8 @@ describe('get-article-version-events-from-biorxiv', () => {
     describe('where the fields are missing', () => {
       it('returns an empty list', async () => {
         const getJson = async (): Promise<Json> => ({});
-        const fetchVersions = getArticleVersionEventsFromBiorxiv(getJson, dummyLogger);
-        const events = await fetchVersions(new Doi('10.1101/2020.09.02.278911'), 'biorxiv')();
+
+        const events = await getArticleVersionEventsFromBiorxiv(new Doi('10.1101/2020.09.02.278911'), 'biorxiv')({ getJson, logger: dummyLogger })();
 
         expect(events).toHaveLength(0);
       });
@@ -106,8 +106,8 @@ describe('get-article-version-events-from-biorxiv', () => {
             },
           ],
         });
-        const fetchVersions = getArticleVersionEventsFromBiorxiv(getJson, dummyLogger);
-        const events = await fetchVersions(new Doi('10.1101/2020.09.02.278911'), 'biorxiv')();
+
+        const events = await getArticleVersionEventsFromBiorxiv(new Doi('10.1101/2020.09.02.278911'), 'biorxiv')({ getJson, logger: dummyLogger })();
 
         expect(events).toHaveLength(0);
       });
@@ -123,8 +123,8 @@ describe('get-article-version-events-from-biorxiv', () => {
             },
           ],
         });
-        const fetchVersions = getArticleVersionEventsFromBiorxiv(getJson, dummyLogger);
-        const events = await fetchVersions(new Doi('10.1101/2020.09.02.278911'), 'biorxiv')();
+
+        const events = await getArticleVersionEventsFromBiorxiv(new Doi('10.1101/2020.09.02.278911'), 'biorxiv')({ getJson, logger: dummyLogger })();
 
         expect(events).toHaveLength(0);
       });

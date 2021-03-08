@@ -1,6 +1,7 @@
 import { URL } from 'url';
 import * as A from 'fp-ts/Array';
 import * as E from 'fp-ts/Either';
+import * as RT from 'fp-ts/ReaderTask';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
@@ -13,16 +14,26 @@ import { Doi } from '../types/doi';
 
 type GetJson = (url: string) => Promise<Json>;
 
-type GetArticleVersionEventsFromBiorxiv = (doi: Doi, server: ArticleServer) => T.Task<ReadonlyArray<{
+type Dependencies = {
+  getJson: GetJson,
+  logger: Logger,
+};
+
+type ArticleVersion = {
   source: URL,
   occurredAt: Date,
   version: number,
-}>>;
+};
 
-const getArticleVersionEventsFromBiorxiv = (
-  getJson: GetJson,
-  logger: Logger,
-): GetArticleVersionEventsFromBiorxiv => (doi, server) => pipe(
+type GetArticleVersionEventsFromBiorxiv = (
+  doi: Doi,
+  server: ArticleServer,
+) => RT.ReaderTask<Dependencies, ReadonlyArray<ArticleVersion>>;
+
+const getArticleVersionEventsFromBiorxiv: GetArticleVersionEventsFromBiorxiv = (
+  doi,
+  server,
+) => ({ getJson, logger }) => pipe(
   TE.tryCatch(
     async () => getJson(`https://api.biorxiv.org/details/${server}/${doi.value}`),
     E.toError,
@@ -46,4 +57,4 @@ const getArticleVersionEventsFromBiorxiv = (
   ),
 );
 
-export { getArticleVersionEventsFromBiorxiv, GetArticleVersionEventsFromBiorxiv };
+export { getArticleVersionEventsFromBiorxiv, ArticleVersion };

@@ -1,5 +1,10 @@
-import { GetArticleVersionEventsFromBiorxiv } from './get-article-version-events-from-biorxiv';
+import * as T from 'fp-ts/Task';
+import { ArticleVersion } from './get-article-version-events-from-biorxiv';
 import { Logger } from './logger';
+import { ArticleServer } from '../types/article-server';
+import { Doi } from '../types/doi';
+
+type GetArticleVersionEventsFromBiorxiv = (doi: Doi, server: ArticleServer) => T.Task<ReadonlyArray<ArticleVersion>>;
 
 type BiorxivCache = Record<string, ReturnType<ReturnType<GetArticleVersionEventsFromBiorxiv>>>;
 

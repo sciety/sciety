@@ -115,7 +115,10 @@ export const createInfrastructure = (): TE.TaskEither<unknown, Adapters> => pipe
           logger,
         ),
         follows: (...args) => follows(...args)(getAllEvents),
-        findVersionsForArticleDoi: biorxivCache(getArticleVersionEventsFromBiorxiv(getJson, logger), logger),
+        findVersionsForArticleDoi: biorxivCache(
+          (...args) => getArticleVersionEventsFromBiorxiv(...args)({ getJson, logger }),
+          logger,
+        ),
         ...adapters,
       };
     },

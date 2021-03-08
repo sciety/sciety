@@ -5,10 +5,11 @@ import * as TE from 'fp-ts/TaskEither';
 import { EventSourcedFollowListRepository } from './event-sourced-follow-list-repository';
 import { FetchCrossrefArticle } from './fetch-crossref-article';
 import { FetchReview } from './fetch-review';
-import { GetArticleVersionEventsFromBiorxiv } from './get-article-version-events-from-biorxiv';
+import { ArticleVersion } from './get-article-version-events-from-biorxiv';
 import { GetTwitterUserDetails } from './get-twitter-user-details';
 import { Logger } from './logger';
 import { SearchResults } from './search-europe-pmc';
+import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 import { DomainEvent, RuntimeGeneratedEvent } from '../types/domain-events';
 import { Group } from '../types/group';
@@ -34,7 +35,7 @@ export type Adapters = {
   getGroup: GetGroup,
   getAllEditorialCommunities: GetAllEditorialCommunities,
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
-  findVersionsForArticleDoi: GetArticleVersionEventsFromBiorxiv,
+  findVersionsForArticleDoi: (doi: Doi, server: ArticleServer) => T.Task<ReadonlyArray<ArticleVersion>>,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
   commitEvents: (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<void>,
   getFollowList: EventSourcedFollowListRepository,
