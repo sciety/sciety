@@ -69,7 +69,11 @@ export const groupPage = (ports: Ports): GroupPage => (params) => pipe(
           renderPageHeader,
           TE.right,
         ),
-        description: renderDescription(ports.fetchStaticFile)(group),
+        description: pipe(
+          `groups/${group.descriptionPath}`,
+          ports.fetchStaticFile,
+          TE.map(renderDescription),
+        ),
         followers: renderFollowers(projectFollowerIds(ports.getAllEvents))(group.id),
         followButton: pipe(
           user,
