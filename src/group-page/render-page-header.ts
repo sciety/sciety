@@ -1,12 +1,12 @@
 import { flow } from 'fp-ts/function';
 import { toHtmlFragment } from '../types/html-fragment';
 
-type Community = {
+type Group = {
   name: string,
   avatarPath: string,
 };
 
-const render = (group: Community) => `
+const render = (group: Group) => `
   <header class="page-header page-header--group">
     <img src="${group.avatarPath}" alt="" class="page-header__avatar">
     <h1 class="page-header__title">
