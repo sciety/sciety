@@ -3,12 +3,12 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { option } from 'io-ts-types/option';
 import { constructFeedItem, GetArticle } from './construct-feed-item';
+import { countFollowersOf } from './count-followers';
 import { GetAllEvents, getMostRecentEvents } from './get-most-recent-events';
-import { projectFollowerCount } from './project-follower-count';
 import { FetchStaticFile, renderDescription } from './render-description';
 import { renderFeed } from './render-feed';
 import { renderFollowToggle } from './render-follow-toggle';
@@ -68,10 +68,12 @@ export const groupPage = (ports: Ports): GroupPage => (params) => pipe(
           TE.map(renderDescription),
         ),
         followers: pipe(
-          group.id,
-          projectFollowerCount(ports.getAllEvents),
-          T.map(renderFollowers),
-          TE.rightTask,
+          ports.getAllEvents,
+          T.map(flow(
+            countFollowersOf(group.id),
+            renderFollowers,
+            E.right,
+          )),
         ),
         followButton: pipe(
           user,

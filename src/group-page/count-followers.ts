@@ -1,5 +1,4 @@
-import * as T from 'fp-ts/Task';
-import { pipe } from 'fp-ts/function';
+import { flow } from 'fp-ts/function';
 import {
   DomainEvent,
   isUserFollowedEditorialCommunityEvent,
@@ -9,8 +8,6 @@ import {
 } from '../types/domain-events';
 import { eqGroupId, GroupId } from '../types/group-id';
 import { UserId } from '../types/user-id';
-
-type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 const isInterestingEvent = (event: DomainEvent) : event is (
 UserFollowedEditorialCommunityEvent |
@@ -33,10 +30,9 @@ const projection = (groupId: GroupId) => (
   )
 );
 
-type ProjectFollowerCount = (groupId: GroupId) => T.Task<number>;
+type CountFollowersOf = (groupId: GroupId) => (events: ReadonlyArray<DomainEvent>) => number;
 
-export const projectFollowerCount = (getAllEvents: GetAllEvents): ProjectFollowerCount => (groupId) => pipe(
-  getAllEvents,
-  T.map(projection(groupId)),
-  T.map((fs) => fs.length),
+export const countFollowersOf: CountFollowersOf = (groupId) => flow(
+  projection(groupId),
+  (fs) => fs.length,
 );
