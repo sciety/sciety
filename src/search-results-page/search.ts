@@ -39,7 +39,6 @@ const constructGroupResult = (getGroup: GetGroup, getAllEvents: GetAllEvents) =>
     ...group,
     description: sanitise(toHtmlFragment(group.shortDescription ?? '')),
     _tag: 'Group' as const,
-    link: '/groups/53ed5364-a016-11ea-bb37-0242ac130002',
   })),
   TE.chainW((group) => pipe(
     getAllEvents,

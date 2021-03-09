@@ -2,6 +2,7 @@ import * as O from 'fp-ts/Option';
 import { flow, pipe } from 'fp-ts/function';
 import { templateDate } from '../shared-components';
 import { Doi } from '../types/doi';
+import { GroupId } from '../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
@@ -16,7 +17,7 @@ export type ArticleSearchResult = {
 
 type GroupSearchResult = {
   _tag: 'Group',
-  link: string,
+  id: GroupId,
   name: string,
   description: SanitisedHtmlFragment,
   avatarPath: string,
@@ -60,7 +61,7 @@ const renderArticleSearchResult = flow(
 const renderGroupSearchResult = (result: GroupSearchResult) => pipe(
   `
     <div class="search-results-list__item_container">
-      <a class="search-results-list__item__link" href="${result.link}">${result.name}</a>
+      <a class="search-results-list__item__link" href="/groups/${result.id.value}">${result.name}</a>
       <div class="search-results-list__item__description">
         ${result.description}
       </div>
