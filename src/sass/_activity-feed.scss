@@ -53,21 +53,12 @@
   display: flex;
   align-items: center;
   margin-bottom: baseline.increments(2);
-
-  &::before {
-    content: '';
-    display: block;
-    width: settings.$avatar-size;
-    height: settings.$avatar-size;
-    background-color: settings.$colour-avatar-overlay;
-    position: absolute;
-    border-radius: settings.$border-radius;
-  }
 }
 
 .activity-feed__item__avatar {
   width: settings.$avatar-size;
   height: settings.$avatar-size;
+  border: settings.$avatar-border;
   border-radius: settings.$border-radius;
   flex: 0 0 settings.$avatar-size;
   margin-right: functions.px-to-rem(8px);

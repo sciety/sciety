@@ -121,7 +121,7 @@ $vertical-space-above-title--wide: baseline.increments(5);
   border-radius: settings.$border-radius;
   flex: 0 0 settings.$avatar-size;
   margin-left: functions.px-to-rem(32px);
-  border: 3px settings.$colour-furniture solid;
+  border: settings.$avatar-border;
 }
 
 .search-results-list__item__meta {
