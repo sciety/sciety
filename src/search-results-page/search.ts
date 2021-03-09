@@ -49,10 +49,13 @@ const constructGroupResult = (getGroup: GetGroup, getAllEvents: GetAllEvents) =>
   )),
 );
 
-const findGroups = (query: string): ReadonlyArray<GroupId> => pipe(
+const findGroups = (query: string): T.Task<ReadonlyArray<GroupId>> => pipe(
   bootstrapEditorialCommunities,
-  RA.filter((group) => (group.name + group.shortDescription).toLowerCase().includes(query.toLowerCase())),
-  RA.map((group) => group.id),
+  T.traverseArray((group) => T.of(group)),
+  T.map(flow(
+    RA.filter((group) => (group.name + group.shortDescription).toLowerCase().includes(query.toLowerCase())),
+    RA.map((group) => group.id),
+  )),
 );
 
 const addGroupResults = (
@@ -65,7 +68,7 @@ const addGroupResults = (
 ): TE.TaskEither<never, SearchResults> => pipe(
   query,
   findGroups,
-  T.traverseArray(constructGroupResult(getGroup, getAllEvents)),
+  T.chain(T.traverseArray(constructGroupResult(getGroup, getAllEvents))),
   T.map(RA.separate),
   T.map(({ right }) => right),
   T.map((hardcodedSearchResults) => ({
