@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, pipe } from 'fp-ts/function';
+import { constant, flow, pipe } from 'fp-ts/function';
 import { projectGroupMeta } from './project-group-meta';
 import { ArticleSearchResult } from './render-search-result';
 import { SearchResults } from './render-search-results';
@@ -49,11 +49,29 @@ const constructGroupResult = (getGroup: GetGroup, getAllEvents: GetAllEvents) =>
   )),
 );
 
+type FetchStaticFile = (filename: string) => TE.TaskEither<'not-found' | 'unavailable', string>;
+
+const fetchStaticFile : FetchStaticFile = () => TE.right('');
+
+type SearchableGroupFields = Group & { description: string };
+
+const includesQuery = (query: string) => (group: SearchableGroupFields) => (
+  (group.name + (group.shortDescription ?? '') + group.description).toLowerCase().includes(query.toLowerCase())
+);
+
 const findGroups = (query: string): T.Task<ReadonlyArray<GroupId>> => pipe(
   bootstrapEditorialCommunities,
-  T.traverseArray((group) => T.of(group)),
+  T.traverseArray((group) => pipe(
+    group.descriptionPath,
+    fetchStaticFile,
+    T.map(E.getOrElse(constant(''))),
+    T.map((description) => ({
+      ...group,
+      description,
+    })),
+  )),
   T.map(flow(
-    RA.filter((group) => (group.name + group.shortDescription).toLowerCase().includes(query.toLowerCase())),
+    RA.filter(includesQuery(query)),
     RA.map((group) => group.id),
   )),
 );
