@@ -4,7 +4,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
-import { countFollowersOf } from './count-followers';
+import { projectGroupMeta } from './project-group-meta';
 import { ArticleSearchResult } from './render-search-result';
 import { SearchResults } from './render-search-results';
 import { Doi } from '../types/doi';
@@ -40,14 +40,13 @@ const constructGroupResult = (getGroup: GetGroup, getAllEvents: GetAllEvents) =>
     description: sanitise(toHtmlFragment(group.shortDescription ?? '')),
     _tag: 'Group' as const,
     link: '/groups/53ed5364-a016-11ea-bb37-0242ac130002',
-    reviewCount: 835,
   })),
   TE.chainW((group) => pipe(
     getAllEvents,
-    T.map(countFollowersOf(groupId)),
-    T.map((followerCount) => ({
+    T.map(projectGroupMeta(groupId)),
+    T.map((meta) => ({
       ...group,
-      followerCount,
+      ...meta,
     })),
     T.map(E.right),
   )),

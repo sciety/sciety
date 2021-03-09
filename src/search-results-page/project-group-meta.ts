@@ -8,7 +8,7 @@ import { GroupId } from '../types/group-id';
 
 type Reducer = (groupId: GroupId) => (count: number, event: DomainEvent) => number;
 
-const counter: Reducer = (groupId) => (count, event) => {
+const followerCounter: Reducer = (groupId) => (count, event) => {
   if (isUserFollowedEditorialCommunityEvent(event) && event.editorialCommunityId.value === groupId.value) {
     return count + 1;
   }
@@ -18,6 +18,12 @@ const counter: Reducer = (groupId) => (count, event) => {
   return count;
 };
 
-type CountFollowersOf = (groupId: GroupId) => (events: ReadonlyArray<DomainEvent>) => number;
+type ProjectGroupMeta = (groupId: GroupId) => (events: ReadonlyArray<DomainEvent>) => {
+  reviewCount: number,
+  followerCount: number,
+};
 
-export const countFollowersOf: CountFollowersOf = (groupId) => RA.reduce(0, counter(groupId));
+export const projectGroupMeta: ProjectGroupMeta = (groupId) => (events) => ({
+  reviewCount: 835,
+  followerCount: RA.reduce(0, followerCounter(groupId))(events),
+});
