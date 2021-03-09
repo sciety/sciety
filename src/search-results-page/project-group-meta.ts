@@ -1,10 +1,17 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import {
   DomainEvent,
+  isEditorialCommunityReviewedArticleEvent,
   isUserFollowedEditorialCommunityEvent,
   isUserUnfollowedEditorialCommunityEvent,
 } from '../types/domain-events';
+
 import { GroupId } from '../types/group-id';
+
+const reviewCounter = (groupId: GroupId, events: ReadonlyArray<DomainEvent>): number => events.filter(
+  (event) => isEditorialCommunityReviewedArticleEvent(event)
+    && event.editorialCommunityId.value === groupId.value,
+).length;
 
 type Reducer = (groupId: GroupId) => (count: number, event: DomainEvent) => number;
 
@@ -24,6 +31,6 @@ type ProjectGroupMeta = (groupId: GroupId) => (events: ReadonlyArray<DomainEvent
 };
 
 export const projectGroupMeta: ProjectGroupMeta = (groupId) => (events) => ({
-  reviewCount: 835,
+  reviewCount: reviewCounter(groupId, events),
   followerCount: RA.reduce(0, followerCounter(groupId))(events),
 });
