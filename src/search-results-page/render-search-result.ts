@@ -28,20 +28,15 @@ type GroupSearchResult = {
 export type SearchResult = ArticleSearchResult | GroupSearchResult;
 
 const renderReviewCount = (reviewCount: number) => `
-  <div class="search-results-list__item__review-count">
-    Reviews: ${reviewCount}
-  </div>
+  <li class="search-results-list__item__meta__item">
+    ${reviewCount} Reviews
+  </li>
 `;
 
 const renderReviews = flow(
   O.filter((reviewCount: number) => reviewCount > 0),
   O.fold(() => '', renderReviewCount),
   toHtmlFragment,
-);
-
-const templatePostedDate = flow(
-  templateDate,
-  (date) => `<div class="search-results-list__item__date">Posted ${date}</div>`,
 );
 
 const renderArticleSearchResult = flow(
@@ -51,8 +46,9 @@ const renderArticleSearchResult = flow(
       <div>
         ${result.authors}
       </div>
-      ${templatePostedDate(result.postedDate)}
-      ${renderReviews(result.reviewCount)}
+      <ul class="search-results-list__item__meta">
+        ${renderReviews(result.reviewCount)}<li class="search-results-list__item__meta__item">Posted ${templateDate(result.postedDate)}</li>
+      </ul>      
     </div>
   `,
   toHtmlFragment,

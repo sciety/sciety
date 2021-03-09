@@ -8,11 +8,3 @@
   @include typography.sizing($font-size: 14px, $line-height-in-increments: 3);
   margin-bottom: baseline.increments(0.5);
 }
-
-.search-results-list__item__review-count {
-  @include typography.sizing($font-size: 14px, $line-height-in-increments: 3);
-  display: inline-block;
-  background-color: settings.$colour-grey-one;
-  border-radius: 5px;
-  padding: 2px 12px;
-}

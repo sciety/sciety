@@ -40,7 +40,7 @@ describe('render-search-result component', () => {
         reviewCount: O.some(37),
       });
 
-      expect(rendered).toStrictEqual(expect.stringMatching(/Reviews[\s\S]*?37/));
+      expect(rendered).toStrictEqual(expect.stringMatching('37 Reviews'));
     });
   });
 
