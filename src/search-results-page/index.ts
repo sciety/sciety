@@ -4,6 +4,7 @@ import { renderErrorPage, RenderPage, renderPage } from './render-page';
 import { ArticleSearchResult, renderSearchResult } from './render-search-result';
 import { renderSearchResults } from './render-search-results';
 import {
+  FetchStaticFile,
   FindReviewsForArticleDoi, GetAllEvents, GetGroup, search,
 } from './search';
 
@@ -19,6 +20,7 @@ type Ports = {
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
   getGroup: GetGroup,
   getAllEvents: GetAllEvents,
+  fetchStaticFile: FetchStaticFile,
 };
 
 type Params = {
@@ -29,7 +31,13 @@ type SearchResultsPage = (params: Params) => ReturnType<RenderPage>;
 
 export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) => pipe(
   params.query ?? '', // TODO: use Option
-  search(ports.searchEuropePmc, ports.findReviewsForArticleDoi, ports.getGroup, ports.getAllEvents),
+  search(
+    ports.searchEuropePmc,
+    ports.findReviewsForArticleDoi,
+    ports.getGroup,
+    ports.getAllEvents,
+    ports.fetchStaticFile,
+  ),
   TE.map(renderSearchResults(renderSearchResult)),
   TE.bimap(renderErrorPage, renderPage),
 );

@@ -49,9 +49,7 @@ const constructGroupResult = (getGroup: GetGroup, getAllEvents: GetAllEvents) =>
   )),
 );
 
-type FetchStaticFile = (filename: string) => TE.TaskEither<'not-found' | 'unavailable', string>;
-
-const fetchStaticFile : FetchStaticFile = () => TE.right('');
+export type FetchStaticFile = (filename: string) => TE.TaskEither<'not-found' | 'unavailable', string>;
 
 type SearchableGroupFields = Group & { description: string };
 
@@ -59,10 +57,10 @@ const includesQuery = (query: string) => (group: SearchableGroupFields) => (
   (group.name + (group.shortDescription ?? '') + group.description).toLowerCase().includes(query.toLowerCase())
 );
 
-const findGroups = (query: string): T.Task<ReadonlyArray<GroupId>> => pipe(
+const findGroups = (fetchStaticFile: FetchStaticFile) => (query: string): T.Task<ReadonlyArray<GroupId>> => pipe(
   bootstrapEditorialCommunities,
   T.traverseArray((group) => pipe(
-    group.descriptionPath,
+    `groups/${group.descriptionPath}`,
     fetchStaticFile,
     T.map(E.getOrElse(constant(''))),
     T.map((description) => ({
@@ -84,13 +82,14 @@ const dropErrorResults = flow(
 const addGroupResults = (
   getGroup: GetGroup,
   getAllEvents: GetAllEvents,
+  fetchStaticFile: FetchStaticFile,
 ) => (
   query: string,
 ) => (
   searchResults: SearchResults,
 ): TE.TaskEither<never, SearchResults> => pipe(
   query,
-  findGroups,
+  findGroups(fetchStaticFile),
   T.chain(flow(
     T.traverseArray(constructGroupResult(getGroup, getAllEvents)),
     T.map(dropErrorResults),
@@ -107,6 +106,7 @@ export const search = (
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
   getGroup: GetGroup,
   getAllEvents: GetAllEvents,
+  fetchStaticFile: FetchStaticFile,
 ): Search => (query) => pipe(
   query,
   findArticles,
@@ -134,5 +134,5 @@ export const search = (
     ),
     TE.rightTask,
   )),
-  TE.chainW(addGroupResults(getGroup, getAllEvents)(query)),
+  TE.chainW(addGroupResults(getGroup, getAllEvents, fetchStaticFile)(query)),
 );
