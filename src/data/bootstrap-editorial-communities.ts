@@ -4,6 +4,12 @@ import { GroupId } from '../types/group-id';
 
 const groups: RNEA.ReadonlyNonEmptyArray<Group> = [
   {
+    id: new GroupId('62f9b0d0-8d43-4766-a52a-ce02af61bc6a'),
+    name: 'NCRC',
+    avatarPath: '/static/groups/ncrc--62f9b0d0-8d43-4766-a52a-ce02af61bc6a.jpg',
+    descriptionPath: 'ncrc--62f9b0d0-8d43-4766-a52a-ce02af61bc6a.md',
+  },
+  {
     id: new GroupId('10360d97-bf52-4aef-b2fa-2f60d319edd7'),
     name: 'PREreview',
     avatarPath: '/static/groups/prereview-community--10360d97-bf52-4aef-b2fa-2f60d319edd7.jpg',
@@ -66,18 +72,9 @@ const groups: RNEA.ReadonlyNonEmptyArray<Group> = [
   },
 ];
 
-let promotedPotentialGroups: ReadonlyArray<Group> = [];
 let downplayedPotentialGroups: ReadonlyArray<Group> = [];
 
 if (process.env.EXPERIMENT_ENABLED === 'true') {
-  promotedPotentialGroups = [
-    {
-      id: new GroupId('62f9b0d0-8d43-4766-a52a-ce02af61bc6a'),
-      name: 'NCRC',
-      avatarPath: '/static/groups/ncrc--62f9b0d0-8d43-4766-a52a-ce02af61bc6a.jpg',
-      descriptionPath: 'ncrc--62f9b0d0-8d43-4766-a52a-ce02af61bc6a.md',
-    },
-  ];
   downplayedPotentialGroups = [
     {
       id: new GroupId('f97bd177-5cb6-4296-8573-078318755bf2'),
@@ -88,7 +85,4 @@ if (process.env.EXPERIMENT_ENABLED === 'true') {
   ];
 }
 
-export const bootstrapEditorialCommunities = RNEA.concat(
-  promotedPotentialGroups,
-  RNEA.concat(groups, downplayedPotentialGroups),
-);
+export const bootstrapEditorialCommunities = RNEA.concat(groups, downplayedPotentialGroups);
