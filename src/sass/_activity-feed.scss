@@ -6,8 +6,6 @@
 @use 'settings';
 @use 'typography';
 
-$avatar-size: 36px;
-
 .activity-feed__list {
   @include list.basics();
   margin-top: 0;
@@ -59,8 +57,8 @@ $avatar-size: 36px;
   &::before {
     content: '';
     display: block;
-    width: $avatar-size;
-    height: $avatar-size;
+    width: settings.$avatar-size;
+    height: settings.$avatar-size;
     background-color: settings.$colour-avatar-overlay;
     position: absolute;
     border-radius: settings.$border-radius;
@@ -68,10 +66,10 @@ $avatar-size: 36px;
 }
 
 .activity-feed__item__avatar {
-  width: $avatar-size;
-  height: $avatar-size;
+  width: settings.$avatar-size;
+  height: settings.$avatar-size;
   border-radius: settings.$border-radius;
-  flex: 0 0 $avatar-size;
+  flex: 0 0 settings.$avatar-size;
   margin-right: functions.px-to-rem(8px);
 }
 

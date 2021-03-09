@@ -5,8 +5,6 @@
 @use 'settings';
 @use 'typography';
 
-$avatar-size: 32px;
-
 $vertical-space-above-title--narrow: baseline.increments(2);
 $vertical-space-above-title--wide: baseline.increments(5);
 
@@ -118,10 +116,10 @@ $vertical-space-above-title--wide: baseline.increments(5);
 }
 
 .search-results-list__item__avatar {
-  width: $avatar-size;
-  height: $avatar-size;
+  width: settings.$avatar-size;
+  height: settings.$avatar-size;
   border-radius: settings.$border-radius;
-  flex: 0 0 $avatar-size;
+  flex: 0 0 settings.$avatar-size;
   margin-left: functions.px-to-rem(32px);
   border: 3px settings.$colour-furniture solid;
 }
