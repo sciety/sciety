@@ -58,6 +58,11 @@ const findGroups = (query: string): T.Task<ReadonlyArray<GroupId>> => pipe(
   )),
 );
 
+const dropErrorResults = flow(
+  RA.separate,
+  ({ right }) => right,
+);
+
 const addGroupResults = (
   getGroup: GetGroup,
   getAllEvents: GetAllEvents,
@@ -68,9 +73,10 @@ const addGroupResults = (
 ): TE.TaskEither<never, SearchResults> => pipe(
   query,
   findGroups,
-  T.chain(T.traverseArray(constructGroupResult(getGroup, getAllEvents))),
-  T.map(RA.separate),
-  T.map(({ right }) => right),
+  T.chain(flow(
+    T.traverseArray(constructGroupResult(getGroup, getAllEvents)),
+    T.map(dropErrorResults),
+  )),
   T.map((hardcodedSearchResults) => ({
     total: searchResults.total + hardcodedSearchResults.length,
     items: [...hardcodedSearchResults, ...searchResults.items],
