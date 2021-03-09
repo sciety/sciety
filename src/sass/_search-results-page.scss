@@ -97,6 +97,7 @@ $vertical-space-above-title--wide: baseline.increments(5);
   font-family: Ubuntu, sans-serif;
   font-weight: bold;
   color: settings.$colour-text-primary;
+  display: block;
   margin-bottom: baseline.increments(0.5);
 
   &:link,

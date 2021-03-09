@@ -4,10 +4,6 @@
 @use 'settings';
 @use 'typography';
 
-.search-results {
-  font-family: settings.$font-secondary;
-}
-
 .search-results-list__item__date {
   @include typography.sizing($font-size: 14px, $line-height-in-increments: 3);
   margin-bottom: baseline.increments(0.5);
