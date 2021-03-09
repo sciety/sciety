@@ -3,10 +3,11 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { constant, flow, pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { projectGroupMeta } from './project-group-meta';
 import { ArticleSearchResult } from './render-search-result';
 import { SearchResults } from './render-search-results';
+import { bootstrapEditorialCommunities } from '../data/bootstrap-editorial-communities';
 import { Doi } from '../types/doi';
 import { DomainEvent } from '../types/domain-events';
 import { Group } from '../types/group';
@@ -49,12 +50,9 @@ const constructGroupResult = (getGroup: GetGroup, getAllEvents: GetAllEvents) =>
 );
 
 const findGroups = (query: string): ReadonlyArray<GroupId> => pipe(
-  query,
-  O.fromPredicate((q) => q === 'peerj'),
-  O.fold(
-    constant([]),
-    constant([new GroupId('53ed5364-a016-11ea-bb37-0242ac130002')]),
-  ),
+  bootstrapEditorialCommunities,
+  RA.filter((group) => (group.name + group.shortDescription).toLowerCase().includes(query.toLowerCase())),
+  RA.map((group) => group.id),
 );
 
 const addGroupResults = (
