@@ -35,17 +35,14 @@ const constructGroupResult = (getGroup: GetGroup, getAllEvents: GetAllEvents) =>
   groupId,
   getGroup,
   T.map(E.fromOption(() => 'not-found')),
-  TE.map((group) => ({
-    ...group,
-    description: sanitise(toHtmlFragment(group.shortDescription ?? '')),
-    _tag: 'Group' as const,
-  })),
   TE.chainW((group) => pipe(
     getAllEvents,
     T.map(projectGroupMeta(groupId)),
     T.map((meta) => ({
       ...group,
       ...meta,
+      _tag: 'Group' as const,
+      description: sanitise(toHtmlFragment(group.shortDescription ?? '')),
     })),
     T.map(E.right),
   )),
