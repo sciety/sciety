@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/Option';
+import * as RT from 'fp-ts/ReaderTask';
 import * as T from 'fp-ts/Task';
 import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
@@ -10,11 +11,9 @@ import { UserId } from '../types/user-id';
 
 type HasUserSavedArticle = (doi: Doi, userId: UserId) => T.Task<boolean>;
 
-type RenderSaveArticle = (doi: Doi, userId: O.Option<UserId>) => T.Task<HtmlFragment>;
+type RenderSaveArticle = (doi: Doi, userId: O.Option<UserId>) => RT.ReaderTask<HasUserSavedArticle, HtmlFragment>;
 
-export const renderSaveArticle = (
-  hasUserSavedArticle: HasUserSavedArticle,
-): RenderSaveArticle => (doi, userId) => pipe(
+export const renderSaveArticle: RenderSaveArticle = (doi, userId) => (hasUserSavedArticle) => pipe(
   userId,
   O.fold(
     () => T.of(renderSaveForm(doi)),

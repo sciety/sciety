@@ -9,8 +9,7 @@ describe('render-save-article', () => {
   describe('not logged in', () => {
     it('renders save-to-your-list-form', async () => {
       const projection = jest.fn().mockImplementation(constant(T.of(false)));
-      const render = renderSaveArticle(projection);
-      const rendered = await render(new Doi('10.1111/foobar'), O.none)();
+      const rendered = await renderSaveArticle(new Doi('10.1111/foobar'), O.none)(projection)();
 
       expect(rendered).toContain('Save to my list');
       expect(projection).not.toHaveBeenCalled();
@@ -20,8 +19,7 @@ describe('render-save-article', () => {
   describe('logged in and article is saved', () => {
     it('renders is-saved-link', async () => {
       const projection = constant(T.of(true));
-      const render = renderSaveArticle(projection);
-      const rendered = await render(new Doi('10.1111/foobar'), O.some(toUserId('user')))();
+      const rendered = await renderSaveArticle(new Doi('10.1111/foobar'), O.some(toUserId('user')))(projection)();
 
       expect(rendered).toContain('Saved to my list');
     });
@@ -30,8 +28,7 @@ describe('render-save-article', () => {
   describe('logged in and article is not saved', () => {
     it('renders save-to-your-list-form', async () => {
       const projection = constant(T.of(false));
-      const render = renderSaveArticle(projection);
-      const rendered = await render(new Doi('10.1111/foobar'), O.some(toUserId('user')))();
+      const rendered = await renderSaveArticle(new Doi('10.1111/foobar'), O.some(toUserId('user')))(projection)();
 
       expect(rendered).toContain('Save to my list');
     });

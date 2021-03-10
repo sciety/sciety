@@ -64,7 +64,7 @@ export const articleMetaPage: MetaPage = flow(
   RTE.bind('userId', ({ user }) => pipe(user, O.map((u) => u.id), RTE.right)),
   RTE.bind('articleDetails', ({ doi }) => (ports: Ports) => pipe(doi, ports.fetchArticle)),
   RTE.bindW('saveArticle', ({ doi, userId }) => (ports: Ports) => pipe(
-    renderSaveArticle((...args) => projectHasUserSavedArticle(...args)(ports.getAllEvents))(doi, userId),
+    renderSaveArticle(doi, userId)((...args) => projectHasUserSavedArticle(...args)(ports.getAllEvents)),
     TE.rightTask,
   )),
   RTE.bindW('tweetThis', ({ doi }) => pipe(
