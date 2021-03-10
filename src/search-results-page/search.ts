@@ -4,7 +4,6 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import { FetchStaticFile, findGroups } from './find-groups';
 import { ArticleSearchResult } from './render-search-result';
 import { SearchResults } from './render-search-results';
 import { Doi } from '../types/doi';
@@ -22,6 +21,7 @@ type OriginalSearchResults = {
 export type GetGroup = (editorialCommunityId: GroupId) => T.Task<O.Option<Group>>;
 export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 type FindArticles = (query: string) => TE.TaskEither<'unavailable', OriginalSearchResults>;
+type FindGroups = (query: string) => T.Task<ReadonlyArray<GroupId>>;
 type ProjectArticleMeta = (articleDoi: Doi) => T.Task<number>;
 type ProjectGroupMeta = (groupId: GroupId) => {
   reviewCount: number,
@@ -55,14 +55,14 @@ const dropErrorResults = flow(
 const addGroupResults = (
   getGroup: GetGroup,
   projectGroupMeta: ProjectGroupMeta,
-  fetchStaticFile: FetchStaticFile,
+  findGroups: FindGroups,
 ) => (
   query: string,
 ) => (
   searchResults: SearchResults,
 ): TE.TaskEither<never, SearchResults> => pipe(
   query,
-  findGroups(fetchStaticFile),
+  findGroups,
   T.chain(flow(
     T.traverseArray(constructGroupResult(getGroup, projectGroupMeta)),
     T.map(dropErrorResults),
@@ -76,8 +76,8 @@ const addGroupResults = (
 
 export const search = (
   findArticles: FindArticles,
+  findGroups: FindGroups,
   getGroup: GetGroup,
-  fetchStaticFile: FetchStaticFile,
   projectArticleMeta: ProjectArticleMeta,
   projectGroupMeta: ProjectGroupMeta,
 ): Search => (query) => pipe(
@@ -102,5 +102,5 @@ export const search = (
     ),
     TE.rightTask,
   )),
-  TE.chainW(addGroupResults(getGroup, projectGroupMeta, fetchStaticFile)(query)),
+  TE.chainW(addGroupResults(getGroup, projectGroupMeta, findGroups)(query)),
 );

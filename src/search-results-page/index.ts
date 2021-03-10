@@ -1,6 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { FetchStaticFile } from './find-groups';
+import { FetchStaticFile, findGroups } from './find-groups';
 import { FindReviewsForArticleDoi, projectArticleMeta } from './project-article-meta';
 import { projectGroupMeta } from './project-group-meta';
 import { renderErrorPage, RenderPage, renderPage } from './render-page';
@@ -36,8 +36,8 @@ export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) =
   TE.rightTask,
   TE.chain((events) => search(
     ports.searchEuropePmc,
+    findGroups(ports.fetchStaticFile),
     ports.getGroup,
-    ports.fetchStaticFile,
     projectArticleMeta(ports.findReviewsForArticleDoi),
     projectGroupMeta(events),
   )(params.query ?? '')),
