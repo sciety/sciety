@@ -4,7 +4,6 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
-import { projectGroupMeta } from './project-group-meta';
 import { ArticleSearchResult } from './render-search-result';
 import { SearchResults } from './render-search-results';
 import { bootstrapEditorialCommunities } from '../data/bootstrap-editorial-communities';
@@ -24,23 +23,27 @@ export type GetGroup = (editorialCommunityId: GroupId) => T.Task<O.Option<Group>
 export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 type FindArticles = (query: string) => TE.TaskEither<'unavailable', OriginalSearchResults>;
 type ProjectArticleMeta = (articleDoi: Doi) => T.Task<number>;
+type ProjectGroupMeta = (groupId: GroupId) => {
+  reviewCount: number,
+  followerCount: number,
+};
 
 type Search = (query: string) => TE.TaskEither<'unavailable', SearchResults>;
 
-const constructGroupResult = (getGroup: GetGroup, getAllEvents: GetAllEvents) => (groupId: GroupId) => pipe(
+const constructGroupResult = (getGroup: GetGroup, projectGroupMeta: ProjectGroupMeta) => (groupId: GroupId) => pipe(
   groupId,
   getGroup,
   T.map(E.fromOption(() => 'not-found')),
   TE.chainW((group) => pipe(
-    getAllEvents,
-    T.map(projectGroupMeta(groupId)),
-    T.map((meta) => ({
+    group.id,
+    projectGroupMeta,
+    (meta) => ({
       ...group,
       ...meta,
       _tag: 'Group' as const,
       description: sanitise(toHtmlFragment(group.shortDescription)),
-    })),
-    T.map(E.right),
+    }),
+    TE.right,
   )),
 );
 
@@ -90,7 +93,7 @@ const dropErrorResults = flow(
 
 const addGroupResults = (
   getGroup: GetGroup,
-  getAllEvents: GetAllEvents,
+  projectGroupMeta: ProjectGroupMeta,
   fetchStaticFile: FetchStaticFile,
 ) => (
   query: string,
@@ -100,7 +103,7 @@ const addGroupResults = (
   query,
   findGroups(fetchStaticFile),
   T.chain(flow(
-    T.traverseArray(constructGroupResult(getGroup, getAllEvents)),
+    T.traverseArray(constructGroupResult(getGroup, projectGroupMeta)),
     T.map(dropErrorResults),
   )),
   T.map((hardcodedSearchResults) => ({
@@ -113,9 +116,9 @@ const addGroupResults = (
 export const search = (
   findArticles: FindArticles,
   getGroup: GetGroup,
-  getAllEvents: GetAllEvents,
   fetchStaticFile: FetchStaticFile,
   projectArticleMeta: ProjectArticleMeta,
+  projectGroupMeta: ProjectGroupMeta,
 ): Search => (query) => pipe(
   query,
   findArticles,
@@ -138,5 +141,5 @@ export const search = (
     ),
     TE.rightTask,
   )),
-  TE.chainW(addGroupResults(getGroup, getAllEvents, fetchStaticFile)(query)),
+  TE.chainW(addGroupResults(getGroup, projectGroupMeta, fetchStaticFile)(query)),
 );

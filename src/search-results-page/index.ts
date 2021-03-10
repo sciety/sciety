@@ -1,6 +1,7 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { FindReviewsForArticleDoi, projectArticleMeta } from './project-article-meta';
+import { projectGroupMeta } from './project-group-meta';
 import { renderErrorPage, RenderPage, renderPage } from './render-page';
 import { ArticleSearchResult, renderSearchResult } from './render-search-result';
 import { renderSearchResults } from './render-search-results';
@@ -31,14 +32,15 @@ type Params = {
 type SearchResultsPage = (params: Params) => ReturnType<RenderPage>;
 
 export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) => pipe(
-  params.query ?? '', // TODO: use Option
-  search(
+  ports.getAllEvents,
+  TE.rightTask,
+  TE.chain((events) => search(
     ports.searchEuropePmc,
     ports.getGroup,
-    ports.getAllEvents,
     ports.fetchStaticFile,
     projectArticleMeta(ports.findReviewsForArticleDoi),
-  ),
+    projectGroupMeta(events),
+  )(params.query ?? '')),
   TE.map(renderSearchResults(renderSearchResult)),
   TE.bimap(renderErrorPage, renderPage),
 );

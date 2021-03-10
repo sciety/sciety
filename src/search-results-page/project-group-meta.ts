@@ -25,12 +25,12 @@ const followerCounter: Reducer = (groupId) => (count, event) => {
   return count;
 };
 
-type ProjectGroupMeta = (groupId: GroupId) => (events: ReadonlyArray<DomainEvent>) => {
+type ProjectGroupMeta = (events: ReadonlyArray<DomainEvent>) => (groupId: GroupId) => {
   reviewCount: number,
   followerCount: number,
 };
 
-export const projectGroupMeta: ProjectGroupMeta = (groupId) => (events) => ({
+export const projectGroupMeta: ProjectGroupMeta = (events) => (groupId) => ({
   reviewCount: reviewCounter(groupId, events),
   followerCount: RA.reduce(0, followerCounter(groupId))(events),
 });
