@@ -7,8 +7,8 @@ import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
 import {
   CountReviewResponses,
+  FetchReview,
   getFeedEventsContent,
-  GetReview,
   GetUserReviewResponse,
 } from './get-feed-events-content';
 import { handleArticleVersionErrors } from './handle-article-version-errors';
@@ -46,7 +46,7 @@ type GetArticleFeedEvents = (
 type Dependencies = {
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
-  fetchReview: GetReview,
+  fetchReview: FetchReview,
   getGroup: GetGroup,
   countReviewResponses: CountReviewResponses,
   getUserReviewResponse: GetUserReviewResponse,
@@ -73,8 +73,8 @@ export const getArticleFeedEvents: GetArticleFeedEvents = (doi, server, userId) 
     ),
   ]),
   T.chain((feedEvents) => getFeedEventsContent(feedEvents, server, userId)({
-    getReview: fetchReview,
-    getEditorialCommunity: flow(
+    fetchReview,
+    getGroup: flow(
       getGroup,
       T.map(O.getOrElseW(() => {
         throw new Error('No such group');

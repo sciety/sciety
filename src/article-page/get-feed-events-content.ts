@@ -33,7 +33,7 @@ type ArticleVersionEvent = {
 
 export type FeedEvent = ReviewEvent | ArticleVersionEvent;
 
-export type GetReview = (id: ReviewId) => TE.TaskEither<unknown, {
+export type FetchReview = (id: ReviewId) => TE.TaskEither<unknown, {
   fullText: HtmlFragment,
   url: URL,
 }>;
@@ -42,7 +42,7 @@ export type CountReviewResponses = (reviewId: ReviewId) => T.Task<{ helpfulCount
 
 export type GetUserReviewResponse = (reviewId: ReviewId, userId: O.Option<UserId>) => T.Task<O.Option<'helpful' | 'not-helpful'>>;
 
-type GetEditorialCommunity = (id: GroupId) => T.Task<{
+type GetGroup = (id: GroupId) => T.Task<{
   name: string,
   avatarPath: string,
 }>;
@@ -66,8 +66,8 @@ const inferredUrlFromReviewId = (reviewId: ReviewId) => {
 };
 
 const reviewToFeedItem = (
-  getReview: GetReview,
-  getEditorialCommunity: GetEditorialCommunity,
+  getReview: FetchReview,
+  getEditorialCommunity: GetGroup,
   countReviewResponses: CountReviewResponses,
   getUserReviewResponse: GetUserReviewResponse,
   feedEvent: ReviewEvent,
@@ -111,8 +111,8 @@ const reviewToFeedItem = (
 );
 
 type Dependencies = {
-  getReview: GetReview,
-  getEditorialCommunity: GetEditorialCommunity,
+  fetchReview: FetchReview,
+  getGroup: GetGroup,
   countReviewResponses: CountReviewResponses,
   getUserReviewResponse: GetUserReviewResponse,
 };
@@ -124,8 +124,8 @@ type GetFeedEventsContent = (
 ) => RT.ReaderTask<Dependencies, ReadonlyArray<FeedItem>>;
 
 export const getFeedEventsContent: GetFeedEventsContent = (feedEvents, server, userId) => ({
-  getReview,
-  getEditorialCommunity,
+  fetchReview,
+  getGroup,
   countReviewResponses,
   getUserReviewResponse,
 }) => {
@@ -135,7 +135,7 @@ export const getFeedEventsContent: GetFeedEventsContent = (feedEvents, server, u
         return articleVersionToFeedItem(server, feedEvent);
       case 'review':
         return reviewToFeedItem(
-          getReview, getEditorialCommunity, countReviewResponses, getUserReviewResponse, feedEvent, userId,
+          fetchReview, getGroup, countReviewResponses, getUserReviewResponse, feedEvent, userId,
         );
     }
   };

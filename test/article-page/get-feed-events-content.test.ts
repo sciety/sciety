@@ -6,8 +6,8 @@ import { pipe } from 'fp-ts/function';
 import {
   CountReviewResponses,
   FeedEvent,
+  FetchReview,
   getFeedEventsContent,
-  GetReview,
   GetUserReviewResponse,
 } from '../../src/article-page/get-feed-events-content';
 import { Doi } from '../../src/types/doi';
@@ -31,12 +31,12 @@ describe('get-feed-events-content', () => {
           occurredAt: new Date(),
         },
       ];
-      const getReview: GetReview = () => TE.right({
+      const fetchReview: FetchReview = () => TE.right({
         fullText: pipe('some text', toHtmlFragment),
         url: new URL('http://example.com'),
       });
-      const getEditorialCommunity = () => T.of({
-        name: 'A Community',
+      const getGroup = () => T.of({
+        name: 'A Group',
         avatarPath: 'https://example.com/avatar',
       });
       const countReviewResponses: CountReviewResponses = () => T.of({
@@ -46,7 +46,7 @@ describe('get-feed-events-content', () => {
       const getUserReviewResponse: GetUserReviewResponse = () => T.of(O.none);
 
       const viewModel = await getFeedEventsContent(feedEvents, 'biorxiv', O.none)({
-        getReview, getEditorialCommunity, countReviewResponses, getUserReviewResponse,
+        fetchReview, getGroup, countReviewResponses, getUserReviewResponse,
       })();
 
       expect(viewModel).toHaveLength(2);

@@ -10,7 +10,7 @@ import {
   getArticleFeedEvents,
   GetGroup,
 } from './get-article-feed-events';
-import { GetReview } from './get-feed-events-content';
+import { FetchReview } from './get-feed-events-content';
 import { projectHasUserSavedArticle } from './project-has-user-saved-article';
 import { projectReviewResponseCounts } from './project-review-response-counts';
 import { projectUserReviewResponse } from './project-user-review-response';
@@ -49,7 +49,7 @@ type GetArticleDetails = (doi: Doi) => TE.TaskEither<'not-found' | 'unavailable'
 
 type Ports = {
   fetchArticle: GetArticleDetails,
-  fetchReview: GetReview,
+  fetchReview: FetchReview,
   getGroup: GetGroup,
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
