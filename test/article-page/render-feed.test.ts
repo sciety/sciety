@@ -14,7 +14,6 @@ describe('render-feed', () => {
       const render = renderFeed(
         () => T.of([]),
         shouldNotBeCalled,
-        shouldNotBeCalled,
       );
 
       const rendered = await render(new Doi('10.1101/12345678'), 'biorxiv', O.none)();
@@ -54,7 +53,6 @@ describe('render-feed', () => {
             server: 'biorxiv',
           },
         ]),
-        () => toHtmlFragment(''),
         () => toHtmlFragment(''),
       );
 

@@ -11,7 +11,7 @@ export type ArticleVersionFeedItem = {
   server: ArticleServer,
 };
 
-export type RenderArticleVersionFeedItem = (feedItem: ArticleVersionFeedItem) => HtmlFragment;
+type RenderArticleVersionFeedItem = (feedItem: ArticleVersionFeedItem) => HtmlFragment;
 
 const renderBiorxivArticleVersionFeedItem = (feedItem: ArticleVersionFeedItem) => toHtmlFragment(`
   <div class="activity-feed__item_contents">

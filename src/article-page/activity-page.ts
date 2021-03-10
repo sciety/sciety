@@ -15,6 +15,10 @@ import { projectHasUserSavedArticle } from './project-has-user-saved-article';
 import { projectReviewResponseCounts } from './project-review-response-counts';
 import { projectUserReviewResponse } from './project-user-review-response';
 import { renderActivityPage } from './render-activity-page';
+import {
+  biorxivArticleVersionErrorFeedItem,
+  medrxivArticleVersionErrorFeedItem,
+} from './render-article-version-error-feed-item';
 import { renderArticleVersionFeedItem } from './render-article-version-feed-item';
 import { renderFeed as createRenderFeed } from './render-feed';
 import { renderReviewFeedItem } from './render-review-feed-item';
@@ -82,8 +86,16 @@ export const articleActivityPage: ActivityPage = (params) => (ports) => {
       countReviewResponses: (reviewId) => projectReviewResponseCounts(reviewId)(ports.getAllEvents),
       getUserReviewResponse: (reviewId, userId) => projectUserReviewResponse(reviewId, userId)(ports.getAllEvents),
     }),
-    renderReviewFeedItem(850),
-    renderArticleVersionFeedItem,
+    (feedItem) => {
+      switch (feedItem.type) {
+        case 'article-version':
+          return renderArticleVersionFeedItem(feedItem);
+        case 'article-version-error':
+          return feedItem.server === 'medrxiv' ? medrxivArticleVersionErrorFeedItem : biorxivArticleVersionErrorFeedItem;
+        case 'review':
+          return renderReviewFeedItem(850)(feedItem);
+      }
+    },
   );
 
   return pipe(

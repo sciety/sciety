@@ -4,12 +4,8 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
-import {
-  biorxivArticleVersionErrorFeedItem,
-  medrxivArticleVersionErrorFeedItem,
-} from './render-article-version-error-feed-item';
-import { ArticleVersionFeedItem, RenderArticleVersionFeedItem } from './render-article-version-feed-item';
-import { RenderReviewFeedItem, ReviewFeedItem } from './render-review-feed-item';
+import { ArticleVersionFeedItem } from './render-article-version-feed-item';
+import { ReviewFeedItem } from './render-review-feed-item';
 import { templateListItems } from '../shared-components';
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
@@ -28,23 +24,13 @@ export type GetFeedItems = (
   userId: O.Option<UserId>,
 ) => T.Task<ReadonlyArray<FeedItem>>;
 
+type RenderFeedItem = (feedItem: FeedItem) => HtmlFragment;
+
 export const renderFeed = (
   getFeedItems: GetFeedItems,
-  renderReviewFeedItem: RenderReviewFeedItem,
-  renderArticleVersionFeedItem: RenderArticleVersionFeedItem,
-): RenderFeed => {
-  const renderFeedItem = (feedItem: FeedItem) => {
-    switch (feedItem.type) {
-      case 'article-version':
-        return renderArticleVersionFeedItem(feedItem);
-      case 'article-version-error':
-        return feedItem.server === 'medrxiv' ? medrxivArticleVersionErrorFeedItem : biorxivArticleVersionErrorFeedItem;
-      case 'review':
-        return renderReviewFeedItem(feedItem);
-    }
-  };
-
-  return (doi, server, userId) => pipe(
+  renderFeedItem: RenderFeedItem,
+): RenderFeed => (
+  (doi, server, userId) => pipe(
     getFeedItems(doi, server, userId),
     T.map(RNEA.fromReadonlyArray),
     T.map(E.fromOption(constant('no-content' as const))),
@@ -59,5 +45,5 @@ export const renderFeed = (
       `,
       toHtmlFragment,
     )),
-  );
-};
+  )
+);

@@ -9,7 +9,7 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { ReviewId, toString } from '../types/review-id';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
-export type RenderReviewFeedItem = (review: ReviewFeedItem) => HtmlFragment;
+type RenderReviewFeedItem = (review: ReviewFeedItem) => HtmlFragment;
 
 export type ReviewFeedItem = {
   type: 'review',
