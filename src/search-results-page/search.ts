@@ -3,10 +3,10 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { constant, flow, pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
+import { FetchStaticFile, findGroups } from './find-groups';
 import { ArticleSearchResult } from './render-search-result';
 import { SearchResults } from './render-search-results';
-import { bootstrapEditorialCommunities } from '../data/bootstrap-editorial-communities';
 import { Doi } from '../types/doi';
 import { DomainEvent } from '../types/domain-events';
 import { Group } from '../types/group';
@@ -44,45 +44,6 @@ const constructGroupResult = (getGroup: GetGroup, projectGroupMeta: ProjectGroup
       description: sanitise(toHtmlFragment(group.shortDescription)),
     }),
     TE.right,
-  )),
-);
-
-export type FetchStaticFile = (filename: string) => TE.TaskEither<'not-found' | 'unavailable', string>;
-
-type SearchableGroupFields = Group & { description: string };
-
-const normalize = (string: string) => string.toLowerCase();
-
-const normalizedIncludes = (searchable: string, query: string) => pipe(
-  searchable,
-  normalize,
-  (normalized) => normalized.includes(query),
-);
-
-const includesQuery = (query: string) => (group: SearchableGroupFields) => pipe(
-  query,
-  normalize,
-  (normalizedQuery) => (
-    normalizedIncludes(group.name, normalizedQuery)
-    || normalizedIncludes(group.shortDescription, normalizedQuery)
-    || normalizedIncludes(group.description, normalizedQuery)
-  ),
-);
-
-const findGroups = (fetchStaticFile: FetchStaticFile) => (query: string): T.Task<ReadonlyArray<GroupId>> => pipe(
-  bootstrapEditorialCommunities,
-  T.traverseArray((group) => pipe(
-    `groups/${group.descriptionPath}`,
-    fetchStaticFile,
-    T.map(E.getOrElse(constant(''))),
-    T.map((description) => ({
-      ...group,
-      description,
-    })),
-  )),
-  T.map(flow(
-    RA.filter(includesQuery(query)),
-    RA.map((group) => group.id),
   )),
 );
 
