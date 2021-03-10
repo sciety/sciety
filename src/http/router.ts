@@ -90,7 +90,7 @@ export const createRouter = (adapters: Adapters): Router => {
     pageHandler(flow(ensureBiorxivDoiParam, TE.fromEither, TE.chain((args) => articleMetaPage(args)(adapters)))));
 
   router.get('/articles/activity/:doi(.+)',
-    pageHandler(flow(ensureBiorxivDoiParam, TE.fromEither, TE.chain(articleActivityPage(adapters)))));
+    pageHandler(flow(ensureBiorxivDoiParam, TE.fromEither, TE.chain((args) => articleActivityPage(args)(adapters)))));
 
   router.get('/groups/:id',
     pageHandler(groupPage(adapters)));

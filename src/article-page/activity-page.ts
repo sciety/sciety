@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/Option';
+import * as RTE from 'fp-ts/ReaderTaskEither';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
@@ -27,7 +28,7 @@ import { ReviewId } from '../types/review-id';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { User } from '../types/user';
 
-type ActivityPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
+type ActivityPage = (params: Params) => RTE.ReaderTaskEither<Ports, RenderPageError, Page>;
 
 type Params = {
   doi: Doi,
@@ -73,7 +74,7 @@ const toErrorPage = (error: 'not-found' | 'unavailable') => {
   }
 };
 
-export const articleActivityPage = (ports: Ports): ActivityPage => {
+export const articleActivityPage: ActivityPage = (params) => (ports) => {
   const countReviewResponses = (reviewId: ReviewId) => projectReviewResponseCounts(reviewId)(ports.getAllEvents);
   const renderFeed = createRenderFeed(
     getArticleFeedEvents(
@@ -92,7 +93,8 @@ export const articleActivityPage = (ports: Ports): ActivityPage => {
     renderArticleVersionFeedItem,
   );
 
-  return flow(
+  return pipe(
+    params,
     TE.right,
     TE.bind('userId', ({ user }) => pipe(user, O.map((u) => u.id), TE.right)),
     TE.bind('articleDetails', ({ doi }) => pipe(doi, ports.fetchArticle)),
