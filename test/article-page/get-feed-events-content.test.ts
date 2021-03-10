@@ -5,7 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import {
   CountReviewResponses,
-  Feed,
+  FeedEvent,
   getFeedEventsContent,
   GetReview,
   GetUserReviewResponse,
@@ -17,7 +17,7 @@ import { toHtmlFragment } from '../../src/types/html-fragment';
 describe('get-feed-events-content', () => {
   describe('when there are reviews', () => {
     it('creates a view model for the reviews', async () => {
-      const getFeedEvents: Feed = () => T.of([
+      const feedEvents: ReadonlyArray<FeedEvent> = [
         {
           type: 'review',
           editorialCommunityId: new GroupId('communityId'),
@@ -30,7 +30,7 @@ describe('get-feed-events-content', () => {
           reviewId: new Doi('10.1101/222222'),
           occurredAt: new Date(),
         },
-      ]);
+      ];
       const getReview: GetReview = () => TE.right({
         fullText: pipe('some text', toHtmlFragment),
         url: new URL('http://example.com'),
@@ -45,7 +45,7 @@ describe('get-feed-events-content', () => {
       });
       const getUserReviewResponse: GetUserReviewResponse = () => T.of(O.none);
 
-      const viewModel = await getFeedEventsContent(getFeedEvents, getReview, getEditorialCommunity, countReviewResponses, getUserReviewResponse)(new Doi('10.1101/123456'), 'biorxiv', O.none)();
+      const viewModel = await getFeedEventsContent(getReview, getEditorialCommunity, countReviewResponses, getUserReviewResponse)(feedEvents, 'biorxiv', O.none)();
 
       expect(viewModel).toHaveLength(2);
     });

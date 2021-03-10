@@ -2,7 +2,10 @@ import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
-import { Feed, FeedEvent } from './get-feed-events-content';
+import { FeedEvent } from './get-feed-events-content';
+import { Doi } from '../types/doi';
+
+type Feed = (articleDoi: Doi) => T.Task<ReadonlyArray<FeedEvent>>;
 
 const byDate: Ord.Ord<FeedEvent> = pipe(
   Ord.ordDate,

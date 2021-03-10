@@ -1,6 +1,5 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
-import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { handleArticleVersionErrors } from '../../src/article-page/handle-article-version-errors';
 import { FeedItem } from '../../src/article-page/render-feed';
@@ -11,7 +10,7 @@ import { sanitise } from '../../src/types/sanitised-html-fragment';
 
 describe('handle-article-version-errors', () => {
   describe('there are article version events', () => {
-    it('remains unchanged', async () => {
+    it('remains unchanged', () => {
       const inputItems: ReadonlyArray<FeedItem> = [
         {
           type: 'article-version',
@@ -21,15 +20,15 @@ describe('handle-article-version-errors', () => {
           server: 'biorxiv',
         },
       ];
-      const originalGetFeedItems = () => T.of(inputItems);
-      const feedItems = await handleArticleVersionErrors(originalGetFeedItems)(new Doi('10.1111/123456'), 'biorxiv', O.none)();
+
+      const feedItems = handleArticleVersionErrors(inputItems, 'biorxiv');
 
       expect(feedItems).toStrictEqual(inputItems);
     });
   });
 
   describe('there are no article version events', () => {
-    it('appends an error feed item', async () => {
+    it('appends an error feed item', () => {
       const inputItems: ReadonlyArray<FeedItem> = [
         {
           type: 'review',
@@ -62,8 +61,8 @@ describe('handle-article-version-errors', () => {
           current: O.none,
         },
       ];
-      const originalGetFeedItems = () => T.of(inputItems);
-      const feedItems = await handleArticleVersionErrors(originalGetFeedItems)(new Doi('10.1101/123456'), 'biorxiv', O.none)();
+
+      const feedItems = handleArticleVersionErrors(inputItems, 'biorxiv');
 
       expect(feedItems).toHaveLength(3);
       expect(feedItems[2].type).toBe('article-version-error');

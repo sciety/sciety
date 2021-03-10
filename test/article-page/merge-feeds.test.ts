@@ -1,21 +1,20 @@
 import { URL } from 'url';
 import * as T from 'fp-ts/Task';
-import { Feed } from '../../src/article-page/get-feed-events-content';
 import { mergeFeeds } from '../../src/article-page/merge-feeds';
 import { Doi } from '../../src/types/doi';
 import { GroupId } from '../../src/types/group-id';
 
 describe('compose-feed-events', () => {
   it('merges feed event lists', async () => {
-    const feed1: Feed = () => T.of([
+    const feed1 = () => T.of([
       {
         type: 'review',
         editorialCommunityId: new GroupId('communityId'),
         reviewId: new Doi('10.1234/5678'),
         occurredAt: new Date('2020-09-10'),
       },
-    ]);
-    const feed2: Feed = () => T.of([
+    ] as const);
+    const feed2 = () => T.of([
       {
         type: 'article-version',
         source: new URL('https://www.biorxiv.org/content/10.1101/2020.09.02.278911v2'),
@@ -28,7 +27,7 @@ describe('compose-feed-events', () => {
         occurredAt: new Date('2020-09-03'),
         version: 1,
       },
-    ]);
+    ] as const);
 
     const composite = mergeFeeds([feed1, feed2]);
 

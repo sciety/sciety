@@ -59,30 +59,27 @@ export const getArticleFeedEvents: GetArticleFeedEvents = (doi, server, userId) 
   getGroup,
   countReviewResponses,
   getUserReviewResponse,
-}) => (
-  async () => (
-    // TODO: turn into pipe to remove nesting
-    handleArticleVersionErrors(
-      getFeedEventsContent(
-        mergeFeeds([
-          () => pipe(
-            doi,
-            findReviewsForArticleDoi,
-            T.map(RA.map((review) => ({ type: 'review', ...review }))),
-          ),
-          () => pipe(
-            findVersionsForArticleDoi(doi, server),
-            T.map(RA.map((version) => ({ type: 'article-version', ...version }))),
-          ),
-        ]),
-        fetchReview,
-        flow(
-          getGroup,
-          T.map(O.getOrElseW(() => { throw new Error('No such group'); })),
-        ),
-        countReviewResponses,
-        getUserReviewResponse,
-      ),
-    )(doi, server, userId)()
-  )
+}) => pipe(
+  doi,
+  mergeFeeds([
+    () => pipe(
+      doi,
+      findReviewsForArticleDoi,
+      T.map(RA.map((review) => ({ type: 'review', ...review }))),
+    ),
+    () => pipe(
+      findVersionsForArticleDoi(doi, server),
+      T.map(RA.map((version) => ({ type: 'article-version', ...version }))),
+    ),
+  ]),
+  T.chain((feedEvents) => getFeedEventsContent(
+    fetchReview,
+    flow(
+      getGroup,
+      T.map(O.getOrElseW(() => { throw new Error('No such group'); })),
+    ),
+    countReviewResponses,
+    getUserReviewResponse,
+  )(feedEvents, server, userId)),
+  T.map((feedEvents) => handleArticleVersionErrors(feedEvents, server)),
 );

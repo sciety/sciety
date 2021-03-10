@@ -32,8 +32,6 @@ type ArticleVersionEvent = {
 
 export type FeedEvent = ReviewEvent | ArticleVersionEvent;
 
-export type Feed = (articleDoi: Doi) => T.Task<ReadonlyArray<FeedEvent>>;
-
 export type GetReview = (id: ReviewId) => TE.TaskEither<unknown, {
   fullText: HtmlFragment,
   url: URL,
@@ -112,19 +110,18 @@ const reviewToFeedItem = (
 );
 
 type GetFeedEventsContent = (
-  doi: Doi,
+  feedEvents: ReadonlyArray<FeedEvent>,
   server: ArticleServer,
   userId: O.Option<UserId>,
 ) => T.Task<ReadonlyArray<FeedItem>>;
 
 export const getFeedEventsContent = (
-  getFeedEvents: Feed,
   getReview: GetReview,
   getEditorialCommunity: GetEditorialCommunity,
   countReviewResponses: CountReviewResponses,
   getUserReviewResponse: GetUserReviewResponse,
 ): GetFeedEventsContent => (
-  (doi, server, userId) => {
+  (feedEvents, server, userId) => {
     const toFeedItem = (feedEvent: FeedEvent): T.Task<O.Option<FeedItem>> => {
       switch (feedEvent.type) {
         case 'article-version':
@@ -136,9 +133,8 @@ export const getFeedEventsContent = (
       }
     };
     return pipe(
-      doi,
-      getFeedEvents,
-      T.chain(T.traverseArray(toFeedItem)),
+      feedEvents,
+      T.traverseArray(toFeedItem),
       T.map(RA.compact),
     );
   }
