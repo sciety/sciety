@@ -24,7 +24,6 @@ import { DomainEvent } from '../types/domain-events';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
-import { ReviewId } from '../types/review-id';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { User } from '../types/user';
 
@@ -75,14 +74,16 @@ const toErrorPage = (error: 'not-found' | 'unavailable') => {
 };
 
 export const articleActivityPage: ActivityPage = (params) => (ports) => {
-  const countReviewResponses = (reviewId: ReviewId) => projectReviewResponseCounts(reviewId)(ports.getAllEvents);
   const renderFeed = createRenderFeed(
     (...args) => getArticleFeedEvents(...args)(ports),
     renderReviewFeedItem(
       850,
-      renderReviewResponses(
-        countReviewResponses,
-        (...args) => projectUserReviewResponse(...args)(ports.getAllEvents),
+      flow(
+        (reviewId, userId) => ({ reviewId, userId }),
+        T.of,
+        T.bind('counts', ({ reviewId }) => projectReviewResponseCounts(reviewId)(ports.getAllEvents)),
+        T.bind('current', ({ reviewId, userId }) => projectUserReviewResponse(reviewId, userId)(ports.getAllEvents)),
+        T.map(renderReviewResponses),
       ),
     ),
     renderArticleVersionFeedItem,

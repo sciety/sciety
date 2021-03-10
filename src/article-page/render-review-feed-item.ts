@@ -3,7 +3,6 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { constant, flow, pipe } from 'fp-ts/function';
 import clip from 'text-clipper';
-import { RenderReviewResponses } from './render-review-responses';
 import { templateDate } from '../shared-components';
 import { GroupId } from '../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -12,6 +11,8 @@ import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { UserId } from '../types/user-id';
 
 export type RenderReviewFeedItem = (review: ReviewFeedItem, userId: O.Option<UserId>) => T.Task<HtmlFragment>;
+
+type RenderReviewResponses = (reviewId: ReviewId, userId: O.Option<UserId>) => T.Task<HtmlFragment>;
 
 export type ReviewFeedItem = {
   type: 'review',
