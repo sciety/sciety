@@ -1,11 +1,12 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { FindReviewsForArticleDoi } from './project-article-meta';
 import { renderErrorPage, RenderPage, renderPage } from './render-page';
 import { ArticleSearchResult, renderSearchResult } from './render-search-result';
 import { renderSearchResults } from './render-search-results';
 import {
   FetchStaticFile,
-  FindReviewsForArticleDoi, GetAllEvents, GetGroup, search,
+  GetAllEvents, GetGroup, search,
 } from './search';
 
 type OriginalSearchResults = {
