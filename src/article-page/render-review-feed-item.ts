@@ -2,13 +2,14 @@ import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import { constant, flow, pipe } from 'fp-ts/function';
 import clip from 'text-clipper';
+import { renderReviewResponses } from './render-review-responses';
 import { templateDate } from '../shared-components';
 import { GroupId } from '../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { ReviewId, toString } from '../types/review-id';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
-export type RenderReviewFeedItem = (review: ReviewFeedItem, responses: HtmlFragment) => HtmlFragment;
+export type RenderReviewFeedItem = (review: ReviewFeedItem) => HtmlFragment;
 
 export type ReviewFeedItem = {
   type: 'review',
@@ -19,6 +20,8 @@ export type ReviewFeedItem = {
   editorialCommunityName: string,
   editorialCommunityAvatar: string,
   fullText: O.Option<SanitisedHtmlFragment>,
+  counts: { helpfulCount: number, notHelpfulCount: number },
+  current: O.Option<'helpful' | 'not-helpful'>,
 };
 
 const avatar = (review: ReviewFeedItem) => toHtmlFragment(`
@@ -111,6 +114,6 @@ const render = (teaserChars: number, review: ReviewFeedItem, responses: HtmlFrag
 export const renderReviewFeedItem = (
   teaserChars: number,
 ): RenderReviewFeedItem => flow(
-  (review, responses) => render(teaserChars, review, responses),
+  (review) => render(teaserChars, review, renderReviewResponses({ ...review, reviewId: review.id })),
   toHtmlFragment,
 );

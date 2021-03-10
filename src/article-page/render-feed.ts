@@ -14,7 +14,6 @@ import { templateListItems } from '../shared-components';
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-import { ReviewId } from '../types/review-id';
 import { UserId } from '../types/user-id';
 
 type RenderFeed = (doi: Doi, server: ArticleServer, userId: O.Option<UserId>) => TE.TaskEither<'no-content', HtmlFragment>;
@@ -23,33 +22,31 @@ type ArticleVersionErrorFeedItem = { type: 'article-version-error', server: Arti
 
 export type FeedItem = ReviewFeedItem | ArticleVersionFeedItem | ArticleVersionErrorFeedItem;
 
-export type GetFeedItems = (doi: Doi, server: ArticleServer) => T.Task<ReadonlyArray<FeedItem>>;
-
-type RenderReviewResponses = (reviewId: ReviewId, userId: O.Option<UserId>) => T.Task<HtmlFragment>;
+export type GetFeedItems = (
+  doi: Doi,
+  server: ArticleServer,
+  userId: O.Option<UserId>,
+) => T.Task<ReadonlyArray<FeedItem>>;
 
 export const renderFeed = (
   getFeedItems: GetFeedItems,
-  renderReviewResponses: RenderReviewResponses,
   renderReviewFeedItem: RenderReviewFeedItem,
   renderArticleVersionFeedItem: RenderArticleVersionFeedItem,
 ): RenderFeed => {
-  const renderFeedItem = (feedItem: FeedItem, userId: O.Option<UserId>) => {
+  const renderFeedItem = (feedItem: FeedItem) => {
     switch (feedItem.type) {
       case 'article-version':
         return T.of(renderArticleVersionFeedItem(feedItem));
       case 'article-version-error':
         return T.of(feedItem.server === 'medrxiv' ? medrxivArticleVersionErrorFeedItem : biorxivArticleVersionErrorFeedItem);
       case 'review':
-        return pipe(
-          renderReviewResponses(feedItem.id, userId),
-          T.map((responses) => renderReviewFeedItem(feedItem, responses)),
-        );
+        return T.of(renderReviewFeedItem(feedItem));
     }
   };
 
   return (doi, server, userId) => pipe(
-    getFeedItems(doi, server),
-    T.chain(T.traverseArray((feedItem) => renderFeedItem(feedItem, userId))),
+    getFeedItems(doi, server, userId),
+    T.chain(T.traverseArray((feedItem) => renderFeedItem(feedItem))),
     T.map(RNEA.fromReadonlyArray),
     T.map(E.fromOption(constant('no-content' as const))),
     TE.map((items) => `

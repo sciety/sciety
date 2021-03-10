@@ -7,8 +7,8 @@ import { GetFeedItems } from './render-feed';
 export const handleArticleVersionErrors = (
   getFeedItems: GetFeedItems,
 ): GetFeedItems => (
-  (doi, server) => pipe(
-    getFeedItems(doi, server),
+  (doi, server, userId) => pipe(
+    getFeedItems(doi, server, userId),
     T.map(
       E.fromPredicate(
         RA.some((feedItem) => feedItem.type === 'article-version'),

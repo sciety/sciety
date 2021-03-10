@@ -14,6 +14,7 @@ import { HtmlFragment } from '../types/html-fragment';
 import { HypothesisAnnotationId } from '../types/hypothesis-annotation-id';
 import { ReviewId } from '../types/review-id';
 import { sanitise } from '../types/sanitised-html-fragment';
+import { UserId } from '../types/user-id';
 
 type ReviewEvent = {
   type: 'review',
@@ -37,6 +38,10 @@ export type GetReview = (id: ReviewId) => TE.TaskEither<unknown, {
   fullText: HtmlFragment,
   url: URL,
 }>;
+
+export type CountReviewResponses = (reviewId: ReviewId) => T.Task<{ helpfulCount: number, notHelpfulCount: number }>;
+
+export type GetUserReviewResponse = (reviewId: ReviewId, userId: O.Option<UserId>) => T.Task<O.Option<'helpful' | 'not-helpful'>>;
 
 type GetEditorialCommunity = (id: GroupId) => T.Task<{
   name: string,
@@ -64,7 +69,10 @@ const inferredUrlFromReviewId = (reviewId: ReviewId) => {
 const reviewToFeedItem = (
   getReview: GetReview,
   getEditorialCommunity: GetEditorialCommunity,
+  countReviewResponses: CountReviewResponses,
+  getUserReviewResponse: GetUserReviewResponse,
   feedEvent: ReviewEvent,
+  userId: O.Option<UserId>,
 ) => pipe(
   {
     editorialCommunity: getEditorialCommunity(feedEvent.editorialCommunityId),
@@ -83,9 +91,13 @@ const reviewToFeedItem = (
         }),
       )),
     ),
+    reviewResponses: pipe(feedEvent.reviewId, countReviewResponses),
+    userReviewResponse: getUserReviewResponse(feedEvent.reviewId, userId),
   },
   sequenceS(T.task),
-  T.map(({ editorialCommunity, review }) => O.some({
+  T.map(({
+    editorialCommunity, review, reviewResponses, userReviewResponse,
+  }) => O.some({
     type: 'review' as const,
     id: feedEvent.reviewId,
     source: review.url,
@@ -94,6 +106,8 @@ const reviewToFeedItem = (
     editorialCommunityName: editorialCommunity.name,
     editorialCommunityAvatar: editorialCommunity.avatarPath,
     fullText: O.map(sanitise)(review.fullText),
+    counts: reviewResponses,
+    current: userReviewResponse,
   })),
 );
 
@@ -101,14 +115,18 @@ export const getFeedEventsContent = (
   getFeedEvents: Feed,
   getReview: GetReview,
   getEditorialCommunity: GetEditorialCommunity,
+  countReviewResponses: CountReviewResponses,
+  getUserReviewResponse: GetUserReviewResponse,
 ): GetFeedItems => (
-  (doi, server) => {
+  (doi, server, userId) => {
     const toFeedItem = (feedEvent: FeedEvent): T.Task<O.Option<FeedItem>> => {
       switch (feedEvent.type) {
         case 'article-version':
           return articleVersionToFeedItem(server, feedEvent);
         case 'review':
-          return reviewToFeedItem(getReview, getEditorialCommunity, feedEvent);
+          return reviewToFeedItem(
+            getReview, getEditorialCommunity, countReviewResponses, getUserReviewResponse, feedEvent, userId,
+          );
       }
     };
     return pipe(

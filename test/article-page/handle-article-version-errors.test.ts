@@ -22,7 +22,7 @@ describe('handle-article-version-errors', () => {
         },
       ];
       const originalGetFeedItems: GetFeedItems = () => T.of(inputItems);
-      const feedItems = await handleArticleVersionErrors(originalGetFeedItems)(new Doi('10.1111/123456'), 'biorxiv')();
+      const feedItems = await handleArticleVersionErrors(originalGetFeedItems)(new Doi('10.1111/123456'), 'biorxiv', O.none)();
 
       expect(feedItems).toStrictEqual(inputItems);
     });
@@ -40,6 +40,11 @@ describe('handle-article-version-errors', () => {
           editorialCommunityName: 'OUR COMMUNITY',
           editorialCommunityAvatar: '/images/us.png',
           fullText: pipe('review-1', toHtmlFragment, sanitise, O.some),
+          counts: {
+            helpfulCount: 0,
+            notHelpfulCount: 0,
+          },
+          current: O.none,
         },
         {
           type: 'review',
@@ -50,10 +55,15 @@ describe('handle-article-version-errors', () => {
           editorialCommunityName: 'OUR COMMUNITY',
           editorialCommunityAvatar: '/images/us.png',
           fullText: pipe('review-2', toHtmlFragment, sanitise, O.some),
+          counts: {
+            helpfulCount: 0,
+            notHelpfulCount: 0,
+          },
+          current: O.none,
         },
       ];
       const originalGetFeedItems: GetFeedItems = () => T.of(inputItems);
-      const feedItems = await handleArticleVersionErrors(originalGetFeedItems)(new Doi('10.1101/123456'), 'biorxiv')();
+      const feedItems = await handleArticleVersionErrors(originalGetFeedItems)(new Doi('10.1101/123456'), 'biorxiv', O.none)();
 
       expect(feedItems).toHaveLength(3);
       expect(feedItems[2].type).toBe('article-version-error');

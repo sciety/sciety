@@ -18,7 +18,6 @@ import { renderActivityPage } from './render-activity-page';
 import { renderArticleVersionFeedItem } from './render-article-version-feed-item';
 import { renderFeed as createRenderFeed } from './render-feed';
 import { renderReviewFeedItem } from './render-review-feed-item';
-import { renderReviewResponses } from './render-review-responses';
 import { renderSaveArticle } from './render-save-article';
 import { renderTweetThis } from './render-tweet-this';
 import { ArticleServer } from '../types/article-server';
@@ -78,14 +77,11 @@ const toErrorPage = (error: 'not-found' | 'unavailable') => {
 
 export const articleActivityPage: ActivityPage = (params) => (ports) => {
   const renderFeed = createRenderFeed(
-    (...args) => getArticleFeedEvents(...args)(ports),
-    flow(
-      (reviewId, userId) => ({ reviewId, userId }),
-      T.of,
-      T.bind('counts', ({ reviewId }) => projectReviewResponseCounts(reviewId)(ports.getAllEvents)),
-      T.bind('current', ({ reviewId, userId }) => projectUserReviewResponse(reviewId, userId)(ports.getAllEvents)),
-      T.map(renderReviewResponses),
-    ),
+    (...args) => getArticleFeedEvents(...args)({
+      ...ports,
+      countReviewResponses: (reviewId) => projectReviewResponseCounts(reviewId)(ports.getAllEvents),
+      getUserReviewResponse: (reviewId, userId) => projectUserReviewResponse(reviewId, userId)(ports.getAllEvents),
+    }),
     renderReviewFeedItem(850),
     renderArticleVersionFeedItem,
   );

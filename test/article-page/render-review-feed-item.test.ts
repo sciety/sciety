@@ -24,7 +24,12 @@ describe('render-review-feed-item', () => {
           editorialCommunityName: 'Community 1',
           editorialCommunityAvatar: '/avatar',
           fullText: pipe(fullText, toHtmlFragment, sanitise, O.some),
-        }, toHtmlFragment('')),
+          counts: {
+            helpfulCount: 0,
+            notHelpfulCount: 0,
+          },
+          current: O.none,
+        }),
       );
     });
 
@@ -59,7 +64,12 @@ describe('render-review-feed-item', () => {
           editorialCommunityName: 'Community 1',
           editorialCommunityAvatar: '/avatar',
           fullText: pipe(fullText, toHtmlFragment, sanitise, O.some),
-        }, toHtmlFragment('')),
+          counts: {
+            helpfulCount: 0,
+            notHelpfulCount: 0,
+          },
+          current: O.none,
+        }),
       );
     });
 
@@ -95,7 +105,12 @@ describe('render-review-feed-item', () => {
           editorialCommunityName: 'Community 1',
           editorialCommunityAvatar: '/avatar',
           fullText: O.none,
-        }, toHtmlFragment('')),
+          counts: {
+            helpfulCount: 0,
+            notHelpfulCount: 0,
+          },
+          current: O.none,
+        }),
       );
     });
 

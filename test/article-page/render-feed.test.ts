@@ -15,7 +15,6 @@ describe('render-feed', () => {
         () => T.of([]),
         shouldNotBeCalled,
         shouldNotBeCalled,
-        shouldNotBeCalled,
       );
 
       const rendered = await render(new Doi('10.1101/12345678'), 'biorxiv', O.none)();
@@ -37,6 +36,11 @@ describe('render-feed', () => {
             editorialCommunityName: '',
             editorialCommunityAvatar: '/images/xyz.png',
             fullText: O.none,
+            counts: {
+              helpfulCount: 0,
+              notHelpfulCount: 0,
+            },
+            current: O.none,
           },
           {
             type: 'article-version',
@@ -50,7 +54,6 @@ describe('render-feed', () => {
             server: 'biorxiv',
           },
         ]),
-        () => T.of(toHtmlFragment('')),
         () => toHtmlFragment(''),
         () => toHtmlFragment(''),
       );
