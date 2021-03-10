@@ -41,9 +41,9 @@ const renderReviews = flow(
 
 const renderArticleSearchResult = flow(
   (result: ArticleSearchResult) => `
-    <div>
+    <div class="search-results-list__item_container">
       <a class="search-results-list__item__link" href="/articles/activity/${result.doi.value}">${result.title}</a>
-      <div>
+      <div class="search-results-list__item__description">
         ${result.authors}
       </div>
       <ul class="search-results-list__item__meta">
