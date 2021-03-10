@@ -1,8 +1,9 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
-import { identity, pipe } from 'fp-ts/function';
+import { flow, identity, pipe } from 'fp-ts/function';
 import { FeedItem } from './render-feed';
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
@@ -14,17 +15,26 @@ type GetFeedItems = (
   userId: O.Option<UserId>,
 ) => T.Task<ReadonlyArray<FeedItem>>;
 
+type HandleArticleVersionErrors = (
+  doi: Doi,
+  server: ArticleServer,
+  userId: O.Option<UserId>,
+) => T.Task<RNEA.ReadonlyNonEmptyArray<FeedItem>>;
+
 export const handleArticleVersionErrors = (
   getFeedItems: GetFeedItems,
-): GetFeedItems => (
+): HandleArticleVersionErrors => (
   (doi, server, userId) => pipe(
     getFeedItems(doi, server, userId),
-    T.map(
+    T.map(flow(
       E.fromPredicate(
-        RA.some((feedItem) => feedItem.type === 'article-version'),
+        // TODO RA.some() should be able to confirm it's non-empty
+        (feedItems): feedItems is RNEA.ReadonlyNonEmptyArray<FeedItem> => (
+          feedItems.some((feedItem) => feedItem.type === 'article-version')
+        ),
         (array) => RA.snoc(array, { type: 'article-version-error', server }),
       ),
-    ),
-    T.map(E.fold(identity, identity)),
+      E.fold(identity, identity),
+    )),
   )
 );

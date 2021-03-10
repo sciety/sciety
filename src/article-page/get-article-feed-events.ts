@@ -2,6 +2,7 @@ import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import * as RT from 'fp-ts/ReaderTask';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
 import {
@@ -36,12 +37,11 @@ export type GetGroup = (groupId: GroupId) => T.Task<O.Option<{
   avatarPath: string,
 }>>;
 
-// TODO: return a ReadonlyNonEmptyArray
 type GetArticleFeedEvents = (
   doi: Doi,
   server: ArticleServer,
   userId: O.Option<UserId>,
-) => RT.ReaderTask<Dependencies, ReadonlyArray<FeedItem>>;
+) => RT.ReaderTask<Dependencies, RNEA.ReadonlyNonEmptyArray<FeedItem>>;
 
 type Dependencies = {
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
