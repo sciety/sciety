@@ -53,8 +53,22 @@ export type FetchStaticFile = (filename: string) => TE.TaskEither<'not-found' | 
 
 type SearchableGroupFields = Group & { description: string };
 
-const includesQuery = (query: string) => (group: SearchableGroupFields) => (
-  (group.name + (group.shortDescription) + group.description).toLowerCase().includes(query.toLowerCase())
+const normalize = (string: string) => string.toLowerCase();
+
+const normalizedIncludes = (searchable: string, query: string) => pipe(
+  searchable,
+  normalize,
+  (normalized) => normalized.includes(query),
+);
+
+const includesQuery = (query: string) => (group: SearchableGroupFields) => pipe(
+  query,
+  normalize,
+  (normalizedQuery) => (
+    normalizedIncludes(group.name, normalizedQuery)
+    || normalizedIncludes(group.shortDescription, normalizedQuery)
+    || normalizedIncludes(group.description, normalizedQuery)
+  ),
 );
 
 const findGroups = (fetchStaticFile: FetchStaticFile) => (query: string): T.Task<ReadonlyArray<GroupId>> => pipe(
