@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { constant, pipe } from 'fp-ts/function';
+import { constant, flow, pipe } from 'fp-ts/function';
 import {
   biorxivArticleVersionErrorFeedItem,
   medrxivArticleVersionErrorFeedItem,
@@ -36,26 +36,28 @@ export const renderFeed = (
   const renderFeedItem = (feedItem: FeedItem) => {
     switch (feedItem.type) {
       case 'article-version':
-        return T.of(renderArticleVersionFeedItem(feedItem));
+        return renderArticleVersionFeedItem(feedItem);
       case 'article-version-error':
-        return T.of(feedItem.server === 'medrxiv' ? medrxivArticleVersionErrorFeedItem : biorxivArticleVersionErrorFeedItem);
+        return feedItem.server === 'medrxiv' ? medrxivArticleVersionErrorFeedItem : biorxivArticleVersionErrorFeedItem;
       case 'review':
-        return T.of(renderReviewFeedItem(feedItem));
+        return renderReviewFeedItem(feedItem);
     }
   };
 
   return (doi, server, userId) => pipe(
     getFeedItems(doi, server, userId),
-    T.chain(T.traverseArray((feedItem) => renderFeedItem(feedItem))),
     T.map(RNEA.fromReadonlyArray),
     T.map(E.fromOption(constant('no-content' as const))),
-    TE.map((items) => `
-      <section class="activity-feed">
-        <ol role="list" class="activity-feed__list">
-          ${templateListItems(items, 'activity-feed__item')}
-        </ol>
-      </section>
-    `),
-    TE.map(toHtmlFragment),
+    TE.map(flow(
+      RNEA.map(renderFeedItem),
+      (items) => `
+        <section class="activity-feed">
+          <ol role="list" class="activity-feed__list">
+            ${templateListItems(items, 'activity-feed__item')}
+          </ol>
+        </section>
+      `,
+      toHtmlFragment,
+    )),
   );
 };
