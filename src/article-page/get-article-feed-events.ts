@@ -72,14 +72,16 @@ export const getArticleFeedEvents: GetArticleFeedEvents = (doi, server, userId) 
       T.map(RA.map((version) => ({ type: 'article-version', ...version }))),
     ),
   ]),
-  T.chain((feedEvents) => getFeedEventsContent(
-    fetchReview,
-    flow(
+  T.chain((feedEvents) => getFeedEventsContent(feedEvents, server, userId)({
+    getReview: fetchReview,
+    getEditorialCommunity: flow(
       getGroup,
-      T.map(O.getOrElseW(() => { throw new Error('No such group'); })),
+      T.map(O.getOrElseW(() => {
+        throw new Error('No such group');
+      })),
     ),
     countReviewResponses,
     getUserReviewResponse,
-  )(feedEvents, server, userId)),
+  })),
   T.map((feedEvents) => handleArticleVersionErrors(feedEvents, server)),
 );

@@ -2,6 +2,7 @@ import { URL } from 'url';
 import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import * as RT from 'fp-ts/ReaderTask';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -109,33 +110,38 @@ const reviewToFeedItem = (
   })),
 );
 
-type GetFeedEventsContent = (
-  feedEvents: ReadonlyArray<FeedEvent>,
-  server: ArticleServer,
-  userId: O.Option<UserId>,
-) => T.Task<ReadonlyArray<FeedItem>>;
-
-export const getFeedEventsContent = (
+type Dependencies = {
   getReview: GetReview,
   getEditorialCommunity: GetEditorialCommunity,
   countReviewResponses: CountReviewResponses,
   getUserReviewResponse: GetUserReviewResponse,
-): GetFeedEventsContent => (
-  (feedEvents, server, userId) => {
-    const toFeedItem = (feedEvent: FeedEvent): T.Task<O.Option<FeedItem>> => {
-      switch (feedEvent.type) {
-        case 'article-version':
-          return articleVersionToFeedItem(server, feedEvent);
-        case 'review':
-          return reviewToFeedItem(
-            getReview, getEditorialCommunity, countReviewResponses, getUserReviewResponse, feedEvent, userId,
-          );
-      }
-    };
-    return pipe(
-      feedEvents,
-      T.traverseArray(toFeedItem),
-      T.map(RA.compact),
-    );
-  }
-);
+};
+
+type GetFeedEventsContent = (
+  feedEvents: ReadonlyArray<FeedEvent>,
+  server: ArticleServer,
+  userId: O.Option<UserId>,
+) => RT.ReaderTask<Dependencies, ReadonlyArray<FeedItem>>;
+
+export const getFeedEventsContent: GetFeedEventsContent = (feedEvents, server, userId) => ({
+  getReview,
+  getEditorialCommunity,
+  countReviewResponses,
+  getUserReviewResponse,
+}) => {
+  const toFeedItem = (feedEvent: FeedEvent): T.Task<O.Option<FeedItem>> => {
+    switch (feedEvent.type) {
+      case 'article-version':
+        return articleVersionToFeedItem(server, feedEvent);
+      case 'review':
+        return reviewToFeedItem(
+          getReview, getEditorialCommunity, countReviewResponses, getUserReviewResponse, feedEvent, userId,
+        );
+    }
+  };
+  return pipe(
+    feedEvents,
+    T.traverseArray(toFeedItem),
+    T.map(RA.compact),
+  );
+};

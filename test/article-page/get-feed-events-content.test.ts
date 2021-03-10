@@ -45,7 +45,9 @@ describe('get-feed-events-content', () => {
       });
       const getUserReviewResponse: GetUserReviewResponse = () => T.of(O.none);
 
-      const viewModel = await getFeedEventsContent(getReview, getEditorialCommunity, countReviewResponses, getUserReviewResponse)(feedEvents, 'biorxiv', O.none)();
+      const viewModel = await getFeedEventsContent(feedEvents, 'biorxiv', O.none)({
+        getReview, getEditorialCommunity, countReviewResponses, getUserReviewResponse,
+      })();
 
       expect(viewModel).toHaveLength(2);
     });
