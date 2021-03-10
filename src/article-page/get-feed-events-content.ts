@@ -42,7 +42,7 @@ export type CountReviewResponses = (reviewId: ReviewId) => T.Task<{ helpfulCount
 
 export type GetUserReviewResponse = (reviewId: ReviewId, userId: O.Option<UserId>) => T.Task<O.Option<'helpful' | 'not-helpful'>>;
 
-type GetGroup = (id: GroupId) => T.Task<{
+export type GetGroup = (id: GroupId) => T.Task<{
   name: string,
   avatarPath: string,
 }>;

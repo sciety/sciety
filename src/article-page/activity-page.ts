@@ -2,14 +2,9 @@ import * as O from 'fp-ts/Option';
 import * as RTE from 'fp-ts/ReaderTaskEither';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import striptags from 'striptags';
-import {
-  FindReviewsForArticleDoi,
-  FindVersionsForArticleDoi,
-  getArticleFeedEvents,
-  GetGroup,
-} from './get-article-feed-events';
+import { FindReviewsForArticleDoi, FindVersionsForArticleDoi, getArticleFeedEvents } from './get-article-feed-events';
 import { FetchReview } from './get-feed-events-content';
 import { projectHasUserSavedArticle } from './project-has-user-saved-article';
 import { projectReviewResponseCounts } from './project-review-response-counts';
@@ -27,6 +22,7 @@ import { renderTweetThis } from './render-tweet-this';
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 import { DomainEvent } from '../types/domain-events';
+import { GroupId } from '../types/group-id';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
@@ -46,6 +42,11 @@ type GetArticleDetails = (doi: Doi) => TE.TaskEither<'not-found' | 'unavailable'
   authors: Array<string>,
   server: ArticleServer,
 }>;
+
+type GetGroup = (groupId: GroupId) => T.Task<O.Option<{
+  name: string,
+  avatarPath: string,
+}>>;
 
 type Ports = {
   fetchArticle: GetArticleDetails,
@@ -88,6 +89,12 @@ export const articleActivityPage: ActivityPage = (params) => (ports) => pipe(
     articleDetails.server,
     (server) => getArticleFeedEvents(doi, server, userId)({
       ...ports,
+      getGroup: flow(
+        ports.getGroup,
+        T.map(O.getOrElseW(() => {
+          throw new Error('No such group');
+        })),
+      ),
       countReviewResponses: (reviewId) => projectReviewResponseCounts(reviewId)(ports.getAllEvents),
       getUserReviewResponse: (reviewId) => projectUserReviewResponse(reviewId, userId)(ports.getAllEvents),
     }),

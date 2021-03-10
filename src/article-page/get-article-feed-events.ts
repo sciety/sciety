@@ -4,11 +4,12 @@ import * as RT from 'fp-ts/ReaderTask';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
-import { flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import {
   CountReviewResponses,
   FetchReview,
   getFeedEventsContent,
+  GetGroup,
   GetUserReviewResponse,
 } from './get-feed-events-content';
 import { handleArticleVersionErrors } from './handle-article-version-errors';
@@ -30,11 +31,6 @@ export type FindVersionsForArticleDoi = (doi: Doi, server: ArticleServer) => T.T
   source: URL,
   occurredAt: Date,
   version: number,
-}>>;
-
-export type GetGroup = (groupId: GroupId) => T.Task<O.Option<{
-  name: string,
-  avatarPath: string,
 }>>;
 
 type GetArticleFeedEvents = (
@@ -74,12 +70,7 @@ export const getArticleFeedEvents: GetArticleFeedEvents = (doi, server, userId) 
   ]),
   T.chain((feedEvents) => getFeedEventsContent(feedEvents, server, userId)({
     fetchReview,
-    getGroup: flow(
-      getGroup,
-      T.map(O.getOrElseW(() => {
-        throw new Error('No such group');
-      })),
-    ),
+    getGroup,
     countReviewResponses,
     getUserReviewResponse,
   })),
