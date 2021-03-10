@@ -1,4 +1,3 @@
-import * as O from 'fp-ts/Option';
 import { RenderSearchResult } from '../../src/search-results-page/render-search-result';
 import { renderSearchResults } from '../../src/search-results-page/render-search-results';
 import { Doi } from '../../src/types/doi';
@@ -18,7 +17,7 @@ describe('render-search-results component', () => {
             title: 'the title',
             authors: '1, 2, 3',
             postedDate: new Date('2017-11-30'),
-            reviewCount: O.some(0),
+            reviewCount: 0,
           },
         ],
       });

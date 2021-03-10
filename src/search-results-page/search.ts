@@ -119,7 +119,6 @@ export const search = (
           doi,
           findReviewsForArticleDoi,
           T.map((list) => list.length),
-          T.map(O.some), // TODO: should be O.fromPredicate
         ),
         T.map((reviewCount) => ({
           _tag: 'Article' as const,

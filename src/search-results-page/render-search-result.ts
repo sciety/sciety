@@ -1,4 +1,3 @@
-import * as O from 'fp-ts/Option';
 import { flow, pipe } from 'fp-ts/function';
 import { templateDate } from '../shared-components';
 import { Doi } from '../types/doi';
@@ -12,7 +11,7 @@ export type ArticleSearchResult = {
   title: string,
   authors: string,
   postedDate: Date,
-  reviewCount: O.Option<number>,
+  reviewCount: number,
 };
 
 type GroupSearchResult = {
@@ -27,18 +26,6 @@ type GroupSearchResult = {
 
 export type SearchResult = ArticleSearchResult | GroupSearchResult;
 
-const renderReviewCount = (reviewCount: number) => `
-  <li class="search-results-list__item__meta__item">
-    ${reviewCount} Reviews
-  </li>
-`;
-
-const renderReviews = flow(
-  O.filter((reviewCount: number) => reviewCount > 0),
-  O.fold(() => '', renderReviewCount),
-  toHtmlFragment,
-);
-
 const renderArticleSearchResult = flow(
   (result: ArticleSearchResult) => `
     <div class="search-results-list__item_container">
@@ -47,7 +34,7 @@ const renderArticleSearchResult = flow(
         ${result.authors}
       </div>
       <ul class="search-results-list__item__meta">
-        ${renderReviews(result.reviewCount)}<li class="search-results-list__item__meta__item">Posted ${templateDate(result.postedDate)}</li>
+        <li class="search-results-list__item__meta__item">${result.reviewCount} Reviews</li><li class="search-results-list__item__meta__item">Posted ${templateDate(result.postedDate)}</li>
       </ul>      
     </div>
   `,
