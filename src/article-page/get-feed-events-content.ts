@@ -6,7 +6,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { FeedItem, GetFeedItems } from './render-feed';
+import { FeedItem } from './render-feed';
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 import { GroupId } from '../types/group-id';
@@ -111,13 +111,19 @@ const reviewToFeedItem = (
   })),
 );
 
+type GetFeedEventsContent = (
+  doi: Doi,
+  server: ArticleServer,
+  userId: O.Option<UserId>,
+) => T.Task<ReadonlyArray<FeedItem>>;
+
 export const getFeedEventsContent = (
   getFeedEvents: Feed,
   getReview: GetReview,
   getEditorialCommunity: GetEditorialCommunity,
   countReviewResponses: CountReviewResponses,
   getUserReviewResponse: GetUserReviewResponse,
-): GetFeedItems => (
+): GetFeedEventsContent => (
   (doi, server, userId) => {
     const toFeedItem = (feedEvent: FeedEvent): T.Task<O.Option<FeedItem>> => {
       switch (feedEvent.type) {

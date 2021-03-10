@@ -20,7 +20,7 @@ import {
   medrxivArticleVersionErrorFeedItem,
 } from './render-article-version-error-feed-item';
 import { renderArticleVersionFeedItem } from './render-article-version-feed-item';
-import { renderFeed as createRenderFeed } from './render-feed';
+import { renderFeed } from './render-feed';
 import { renderReviewFeedItem } from './render-review-feed-item';
 import { renderSaveArticle } from './render-save-article';
 import { renderTweetThis } from './render-tweet-this';
@@ -79,55 +79,51 @@ const toErrorPage = (error: 'not-found' | 'unavailable') => {
   }
 };
 
-export const articleActivityPage: ActivityPage = (params) => (ports) => {
-  const renderFeed = createRenderFeed(
-    (...args) => getArticleFeedEvents(...args)({
+export const articleActivityPage: ActivityPage = (params) => (ports) => pipe(
+  params,
+  TE.right,
+  TE.bind('userId', ({ user }) => pipe(user, O.map((u) => u.id), TE.right)),
+  TE.bind('articleDetails', ({ doi }) => pipe(doi, ports.fetchArticle)),
+  TE.bindW('feed', ({ articleDetails, doi, userId }) => pipe(
+    articleDetails.server,
+    (server) => getArticleFeedEvents(doi, server, userId)({
       ...ports,
       countReviewResponses: (reviewId) => projectReviewResponseCounts(reviewId)(ports.getAllEvents),
-      getUserReviewResponse: (reviewId, userId) => projectUserReviewResponse(reviewId, userId)(ports.getAllEvents),
+      getUserReviewResponse: (reviewId) => projectUserReviewResponse(reviewId, userId)(ports.getAllEvents),
     }),
-    (feedItem) => {
-      switch (feedItem.type) {
-        case 'article-version':
-          return renderArticleVersionFeedItem(feedItem);
-        case 'article-version-error':
-          return feedItem.server === 'medrxiv' ? medrxivArticleVersionErrorFeedItem : biorxivArticleVersionErrorFeedItem;
-        case 'review':
-          return renderReviewFeedItem(850)(feedItem);
-      }
-    },
-  );
-
-  return pipe(
-    params,
+    T.map(renderFeed(
+      (feedItem) => {
+        switch (feedItem.type) {
+          case 'article-version':
+            return renderArticleVersionFeedItem(feedItem);
+          case 'article-version-error':
+            return feedItem.server === 'medrxiv' ? medrxivArticleVersionErrorFeedItem : biorxivArticleVersionErrorFeedItem;
+          case 'review':
+            return renderReviewFeedItem(850)(feedItem);
+        }
+      },
+    )),
+    TE.orElse(flow(constant(''), TE.right)),
+    TE.map(toHtmlFragment),
+  )),
+  TE.bindW('saveArticle', ({ doi, userId }) => pipe(
+    renderSaveArticle(doi, userId)((...args) => projectHasUserSavedArticle(...args)(ports.getAllEvents)),
+    TE.rightTask,
+  )),
+  TE.bindW('tweetThis', ({ doi }) => pipe(
+    doi,
+    renderTweetThis,
     TE.right,
-    TE.bind('userId', ({ user }) => pipe(user, O.map((u) => u.id), TE.right)),
-    TE.bind('articleDetails', ({ doi }) => pipe(doi, ports.fetchArticle)),
-    TE.bindW('feed', ({ articleDetails, doi, userId }) => pipe(
-      articleDetails.server,
-      (server) => renderFeed(doi, server, userId),
-      TE.orElse(flow(constant(''), TE.right)),
-      TE.map(toHtmlFragment),
-    )),
-    TE.bindW('saveArticle', ({ doi, userId }) => pipe(
-      renderSaveArticle(doi, userId)((...args) => projectHasUserSavedArticle(...args)(ports.getAllEvents)),
-      TE.rightTask,
-    )),
-    TE.bindW('tweetThis', ({ doi }) => pipe(
-      doi,
-      renderTweetThis,
-      TE.right,
-    )),
-    TE.bimap(
-      toErrorPage,
-      (components) => ({
-        content: renderActivityPage(components),
+  )),
+  TE.bimap(
+    toErrorPage,
+    (components) => ({
+      content: renderActivityPage(components),
+      title: striptags(components.articleDetails.title),
+      openGraph: {
         title: striptags(components.articleDetails.title),
-        openGraph: {
-          title: striptags(components.articleDetails.title),
-          description: striptags(components.articleDetails.abstract),
-        },
-      }),
-    ),
-  );
-};
+        description: striptags(components.articleDetails.abstract),
+      },
+    }),
+  ),
+);

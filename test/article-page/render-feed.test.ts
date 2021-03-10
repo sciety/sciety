@@ -1,7 +1,6 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import * as T from 'fp-ts/Task';
 import { renderFeed } from '../../src/article-page/render-feed';
 import { Doi } from '../../src/types/doi';
 import { GroupId } from '../../src/types/group-id';
@@ -10,53 +9,45 @@ import { shouldNotBeCalled } from '../should-not-be-called';
 
 describe('render-feed', () => {
   describe('when there are no feed items', () => {
-    it('displays nothing', async () => {
-      const render = renderFeed(
-        () => T.of([]),
-        shouldNotBeCalled,
-      );
-
-      const rendered = await render(new Doi('10.1101/12345678'), 'biorxiv', O.none)();
+    it('displays nothing', () => {
+      const rendered = renderFeed(shouldNotBeCalled)([]);
 
       expect(rendered).toStrictEqual(E.left('no-content'));
     });
   });
 
   describe('when there are feed items', () => {
-    it('returns a list', async () => {
-      const render = renderFeed(
-        () => T.of([
-          {
-            type: 'review',
-            id: new Doi('10.1111/12345678'),
-            source: O.some(new URL('http://example.com')),
-            occurredAt: new Date(),
-            editorialCommunityId: new GroupId(''),
-            editorialCommunityName: '',
-            editorialCommunityAvatar: '/images/xyz.png',
-            fullText: O.none,
-            counts: {
-              helpfulCount: 0,
-              notHelpfulCount: 0,
-            },
-            current: O.none,
+    it('returns a list', () => {
+      const feedItems = [
+        {
+          type: 'review',
+          id: new Doi('10.1111/12345678'),
+          source: O.some(new URL('http://example.com')),
+          occurredAt: new Date(),
+          editorialCommunityId: new GroupId(''),
+          editorialCommunityName: '',
+          editorialCommunityAvatar: '/images/xyz.png',
+          fullText: O.none,
+          counts: {
+            helpfulCount: 0,
+            notHelpfulCount: 0,
           },
-          {
-            type: 'article-version',
-            source: new URL('http://example.com'),
-            occurredAt: new Date(),
-            version: 1,
-            server: 'biorxiv',
-          },
-          {
-            type: 'article-version-error',
-            server: 'biorxiv',
-          },
-        ]),
-        () => toHtmlFragment(''),
-      );
+          current: O.none,
+        },
+        {
+          type: 'article-version',
+          source: new URL('http://example.com'),
+          occurredAt: new Date(),
+          version: 1,
+          server: 'biorxiv',
+        },
+        {
+          type: 'article-version-error',
+          server: 'biorxiv',
+        },
+      ] as const;
 
-      const rendered = await render(new Doi('10.1101/12345678'), 'biorxiv', O.none)();
+      const rendered = renderFeed(() => toHtmlFragment(''))(feedItems);
 
       expect(rendered).toStrictEqual(E.right(expect.stringContaining('<ol')));
     });

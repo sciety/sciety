@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { handleArticleVersionErrors } from '../../src/article-page/handle-article-version-errors';
-import { FeedItem, GetFeedItems } from '../../src/article-page/render-feed';
+import { FeedItem } from '../../src/article-page/render-feed';
 import { Doi } from '../../src/types/doi';
 import { GroupId } from '../../src/types/group-id';
 import { toHtmlFragment } from '../../src/types/html-fragment';
@@ -21,7 +21,7 @@ describe('handle-article-version-errors', () => {
           server: 'biorxiv',
         },
       ];
-      const originalGetFeedItems: GetFeedItems = () => T.of(inputItems);
+      const originalGetFeedItems = () => T.of(inputItems);
       const feedItems = await handleArticleVersionErrors(originalGetFeedItems)(new Doi('10.1111/123456'), 'biorxiv', O.none)();
 
       expect(feedItems).toStrictEqual(inputItems);
@@ -62,7 +62,7 @@ describe('handle-article-version-errors', () => {
           current: O.none,
         },
       ];
-      const originalGetFeedItems: GetFeedItems = () => T.of(inputItems);
+      const originalGetFeedItems = () => T.of(inputItems);
       const feedItems = await handleArticleVersionErrors(originalGetFeedItems)(new Doi('10.1101/123456'), 'biorxiv', O.none)();
 
       expect(feedItems).toHaveLength(3);
