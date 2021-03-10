@@ -1,6 +1,5 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
-import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import { renderReviewFeedItem } from '../../src/article-page/render-review-feed-item';
@@ -14,9 +13,9 @@ describe('render-review-feed-item', () => {
     let rendered: DocumentFragment;
     const fullText = 'A very long review';
 
-    beforeEach(async () => {
+    beforeEach(() => {
       rendered = JSDOM.fragment(
-        await renderReviewFeedItem(6, () => T.of(toHtmlFragment('')))({
+        renderReviewFeedItem(6)({
           type: 'review',
           id: new Doi('10.1111/12345678'),
           source: O.some(new URL('http://example.com')),
@@ -25,7 +24,7 @@ describe('render-review-feed-item', () => {
           editorialCommunityName: 'Community 1',
           editorialCommunityAvatar: '/avatar',
           fullText: pipe(fullText, toHtmlFragment, sanitise, O.some),
-        }, O.none)(),
+        }, toHtmlFragment('')),
       );
     });
 
@@ -49,9 +48,9 @@ describe('render-review-feed-item', () => {
     const fullText = 'tldr';
     const source = 'http://example.com/source';
 
-    beforeEach(async () => {
+    beforeEach(() => {
       rendered = JSDOM.fragment(
-        await renderReviewFeedItem(12, () => T.of(toHtmlFragment('')))({
+        renderReviewFeedItem(12)({
           type: 'review',
           id: new Doi('10.1111/12345678'),
           source: O.some(new URL(source)),
@@ -60,7 +59,7 @@ describe('render-review-feed-item', () => {
           editorialCommunityName: 'Community 1',
           editorialCommunityAvatar: '/avatar',
           fullText: pipe(fullText, toHtmlFragment, sanitise, O.some),
-        }, O.none)(),
+        }, toHtmlFragment('')),
       );
     });
 
@@ -85,9 +84,9 @@ describe('render-review-feed-item', () => {
     const source = 'http://example.com/source';
     let rendered: DocumentFragment;
 
-    beforeEach(async () => {
+    beforeEach(() => {
       rendered = JSDOM.fragment(
-        await renderReviewFeedItem(6, () => T.of(toHtmlFragment('')))({
+        renderReviewFeedItem(6)({
           type: 'review',
           id: new Doi('10.1111/12345678'),
           source: O.some(new URL(source)),
@@ -96,7 +95,7 @@ describe('render-review-feed-item', () => {
           editorialCommunityName: 'Community 1',
           editorialCommunityAvatar: '/avatar',
           fullText: O.none,
-        }, O.none)(),
+        }, toHtmlFragment('')),
       );
     });
 

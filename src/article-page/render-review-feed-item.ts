@@ -1,6 +1,5 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
-import * as T from 'fp-ts/Task';
 import { constant, flow, pipe } from 'fp-ts/function';
 import clip from 'text-clipper';
 import { templateDate } from '../shared-components';
@@ -8,11 +7,8 @@ import { GroupId } from '../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { ReviewId, toString } from '../types/review-id';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
-import { UserId } from '../types/user-id';
 
-export type RenderReviewFeedItem = (review: ReviewFeedItem, userId: O.Option<UserId>) => T.Task<HtmlFragment>;
-
-type RenderReviewResponses = (reviewId: ReviewId, userId: O.Option<UserId>) => T.Task<HtmlFragment>;
+export type RenderReviewFeedItem = (review: ReviewFeedItem, responses: HtmlFragment) => HtmlFragment;
 
 export type ReviewFeedItem = {
   type: 'review',
@@ -91,7 +87,7 @@ const renderWithText = (teaserChars: number, review: ReviewFeedItem, fullText: s
   `;
 };
 
-const render = (teaserChars: number, review: ReviewFeedItem) => (responses: HtmlFragment) => pipe(
+const render = (teaserChars: number, review: ReviewFeedItem, responses: HtmlFragment) => pipe(
   review.fullText,
   O.fold(
     () => `
@@ -114,12 +110,7 @@ const render = (teaserChars: number, review: ReviewFeedItem) => (responses: Html
 
 export const renderReviewFeedItem = (
   teaserChars: number,
-  renderReviewResponses: RenderReviewResponses,
-): RenderReviewFeedItem => (review, userId) => pipe(
-  renderReviewResponses(review.id, userId),
-  T.map(flow(
-    // TODO: remove the currying
-    render(teaserChars, review),
-    toHtmlFragment,
-  )),
+): RenderReviewFeedItem => flow(
+  (review, responses) => render(teaserChars, review, responses),
+  toHtmlFragment,
 );

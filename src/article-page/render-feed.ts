@@ -14,6 +14,7 @@ import { templateListItems } from '../shared-components';
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { ReviewId } from '../types/review-id';
 import { UserId } from '../types/user-id';
 
 type RenderFeed = (doi: Doi, server: ArticleServer, userId: O.Option<UserId>) => TE.TaskEither<'no-content', HtmlFragment>;
@@ -24,8 +25,11 @@ export type FeedItem = ReviewFeedItem | ArticleVersionFeedItem | ArticleVersionE
 
 export type GetFeedItems = (doi: Doi, server: ArticleServer) => T.Task<ReadonlyArray<FeedItem>>;
 
+type RenderReviewResponses = (reviewId: ReviewId, userId: O.Option<UserId>) => T.Task<HtmlFragment>;
+
 export const renderFeed = (
   getFeedItems: GetFeedItems,
+  renderReviewResponses: RenderReviewResponses,
   renderReviewFeedItem: RenderReviewFeedItem,
   renderArticleVersionFeedItem: RenderArticleVersionFeedItem,
 ): RenderFeed => {
@@ -36,7 +40,10 @@ export const renderFeed = (
       case 'article-version-error':
         return T.of(feedItem.server === 'medrxiv' ? medrxivArticleVersionErrorFeedItem : biorxivArticleVersionErrorFeedItem);
       case 'review':
-        return renderReviewFeedItem(feedItem, userId);
+        return pipe(
+          renderReviewResponses(feedItem.id, userId),
+          T.map((responses) => renderReviewFeedItem(feedItem, responses)),
+        );
     }
   };
 

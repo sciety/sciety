@@ -5,7 +5,10 @@ import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
 import striptags from 'striptags';
 import {
-  FindReviewsForArticleDoi, FindVersionsForArticleDoi, getArticleFeedEvents, GetGroup,
+  FindReviewsForArticleDoi,
+  FindVersionsForArticleDoi,
+  getArticleFeedEvents,
+  GetGroup,
 } from './get-article-feed-events';
 import { GetReview } from './get-feed-events-content';
 import { projectHasUserSavedArticle } from './project-has-user-saved-article';
@@ -76,16 +79,14 @@ const toErrorPage = (error: 'not-found' | 'unavailable') => {
 export const articleActivityPage: ActivityPage = (params) => (ports) => {
   const renderFeed = createRenderFeed(
     (...args) => getArticleFeedEvents(...args)(ports),
-    renderReviewFeedItem(
-      850,
-      flow(
-        (reviewId, userId) => ({ reviewId, userId }),
-        T.of,
-        T.bind('counts', ({ reviewId }) => projectReviewResponseCounts(reviewId)(ports.getAllEvents)),
-        T.bind('current', ({ reviewId, userId }) => projectUserReviewResponse(reviewId, userId)(ports.getAllEvents)),
-        T.map(renderReviewResponses),
-      ),
+    flow(
+      (reviewId, userId) => ({ reviewId, userId }),
+      T.of,
+      T.bind('counts', ({ reviewId }) => projectReviewResponseCounts(reviewId)(ports.getAllEvents)),
+      T.bind('current', ({ reviewId, userId }) => projectUserReviewResponse(reviewId, userId)(ports.getAllEvents)),
+      T.map(renderReviewResponses),
     ),
+    renderReviewFeedItem(850),
     renderArticleVersionFeedItem,
   );
 
