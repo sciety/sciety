@@ -77,12 +77,7 @@ const toErrorPage = (error: 'not-found' | 'unavailable') => {
 export const articleActivityPage: ActivityPage = (params) => (ports) => {
   const countReviewResponses = (reviewId: ReviewId) => projectReviewResponseCounts(reviewId)(ports.getAllEvents);
   const renderFeed = createRenderFeed(
-    getArticleFeedEvents(
-      ports.findReviewsForArticleDoi,
-      ports.findVersionsForArticleDoi,
-      ports.fetchReview,
-      ports.getGroup,
-    ),
+    (...args) => getArticleFeedEvents(...args)(ports),
     renderReviewFeedItem(
       850,
       renderReviewResponses(

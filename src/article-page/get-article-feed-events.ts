@@ -1,12 +1,13 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
+import * as RT from 'fp-ts/ReaderTask';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
 import { getFeedEventsContent, GetReview } from './get-feed-events-content';
 import { handleArticleVersionErrors } from './handle-article-version-errors';
 import { mergeFeeds } from './merge-feeds';
-import { GetFeedItems } from './render-feed';
+import { FeedItem } from './render-feed';
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 import { GroupId } from '../types/group-id';
@@ -29,14 +30,23 @@ export type GetGroup = (groupId: GroupId) => T.Task<O.Option<{
   avatarPath: string,
 }>>;
 
-// TODO: return a [Readonly]NonEmptyArray
-export const getArticleFeedEvents = (
+// TODO: return a ReadonlyNonEmptyArray
+type GetArticleFeedEvents = (doi: Doi, server: ArticleServer) => RT.ReaderTask<Dependencies, ReadonlyArray<FeedItem>>;
+
+type Dependencies = {
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
   fetchReview: GetReview,
   getGroup: GetGroup,
-): GetFeedItems => (
-  (doi, server) => async () => (
+};
+
+export const getArticleFeedEvents: GetArticleFeedEvents = (doi, server) => ({
+  findReviewsForArticleDoi,
+  findVersionsForArticleDoi,
+  fetchReview,
+  getGroup,
+}) => (
+  async () => (
     // TODO: turn into pipe to remove nesting
     handleArticleVersionErrors(
       getFeedEventsContent(
