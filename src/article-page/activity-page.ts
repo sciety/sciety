@@ -1,5 +1,7 @@
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RTE from 'fp-ts/ReaderTaskEither';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
@@ -91,20 +93,24 @@ export const articleActivityPage: ActivityPage = (params) => (ports) => pipe(
       countReviewResponses: (reviewId) => projectReviewResponseCounts(reviewId)(ports.getAllEvents),
       getUserReviewResponse: (reviewId) => projectUserReviewResponse(reviewId, userId)(ports.getAllEvents),
     }),
-    T.map(renderFeed(
-      (feedItem) => {
-        switch (feedItem.type) {
-          case 'article-version':
-            return renderArticleVersionFeedItem(feedItem);
-          case 'article-version-error':
-            return feedItem.server === 'medrxiv' ? medrxivArticleVersionErrorFeedItem : biorxivArticleVersionErrorFeedItem;
-          case 'review':
-            return renderReviewFeedItem(850)(feedItem);
-        }
-      },
+    T.map(flow(
+      RNEA.fromReadonlyArray,
+      O.map(renderFeed(
+        (feedItem) => {
+          switch (feedItem.type) {
+            case 'article-version':
+              return renderArticleVersionFeedItem(feedItem);
+            case 'article-version-error':
+              return feedItem.server === 'medrxiv' ? medrxivArticleVersionErrorFeedItem : biorxivArticleVersionErrorFeedItem;
+            case 'review':
+              return renderReviewFeedItem(850)(feedItem);
+          }
+        },
+      )),
+      O.getOrElse(constant('')),
+      toHtmlFragment,
+      E.right,
     )),
-    TE.orElse(flow(constant(''), TE.right)),
-    TE.map(toHtmlFragment),
   )),
   TE.bindW('saveArticle', ({ doi, userId }) => pipe(
     renderSaveArticle(doi, userId)((...args) => projectHasUserSavedArticle(...args)(ports.getAllEvents)),
