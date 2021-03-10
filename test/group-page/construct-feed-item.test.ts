@@ -18,6 +18,7 @@ describe('construct-feed-item', () => {
     id: new GroupId('my-community'),
     name: 'dummyActorName',
     descriptionPath: '',
+    shortDescription: '',
     avatarPath: '',
   };
 

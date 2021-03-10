@@ -12,6 +12,7 @@ describe('in-memory-editorial-communities', () => {
     id: editorialCommunityId,
     name: 'My pals',
     avatarPath: '',
+    shortDescription: '',
     descriptionPath: '/static/desc.md',
   };
 

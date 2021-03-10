@@ -5,5 +5,5 @@ export type Group = {
   name: string,
   avatarPath: string,
   descriptionPath: string,
-  shortDescription?: string,
+  shortDescription: string,
 };

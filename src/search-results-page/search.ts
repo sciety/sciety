@@ -43,7 +43,7 @@ const constructGroupResult = (getGroup: GetGroup, getAllEvents: GetAllEvents) =>
       ...group,
       ...meta,
       _tag: 'Group' as const,
-      description: sanitise(toHtmlFragment(group.shortDescription ?? '')),
+      description: sanitise(toHtmlFragment(group.shortDescription)),
     })),
     T.map(E.right),
   )),
@@ -54,7 +54,7 @@ export type FetchStaticFile = (filename: string) => TE.TaskEither<'not-found' | 
 type SearchableGroupFields = Group & { description: string };
 
 const includesQuery = (query: string) => (group: SearchableGroupFields) => (
-  (group.name + (group.shortDescription ?? '') + group.description).toLowerCase().includes(query.toLowerCase())
+  (group.name + (group.shortDescription) + group.description).toLowerCase().includes(query.toLowerCase())
 );
 
 const findGroups = (fetchStaticFile: FetchStaticFile) => (query: string): T.Task<ReadonlyArray<GroupId>> => pipe(
