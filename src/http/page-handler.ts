@@ -1,4 +1,4 @@
-import { Middleware, RouterContext } from '@koa/router';
+import { Middleware } from '@koa/router';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
@@ -12,13 +12,15 @@ import { RenderPageError } from '../types/render-page-error';
 import { User } from '../types/user';
 
 // TODO: find better way of handling params of different pages
-export type RenderPage = (params: {
+type Params = {
   doi?: string,
   id?: string,
   query?: string,
   flavour?: string,
   user: O.Option<User>,
-}) => TE.TaskEither<RenderPageError, Page>;
+};
+
+export type RenderPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
 const addScietySuffixIfNotHomepage = (requestPath: string) => (page: Page) => ({
   ...page,
@@ -51,33 +53,25 @@ const toWebPage = (user: O.Option<User>) => E.fold(
   pageToWebPage(user),
 );
 
-export const handlePage = (renderPage: RenderPage): HandlePage => (context) => {
-  const user = O.fromNullable(context.state.user);
-  const params = {
-    ...context.params,
-    ...context.query,
-    ...context.state,
-    user: O.fromNullable(context.state.user),
-  };
-
-  return pipe(
-    params,
-    renderPage,
-    TE.map(addScietySuffixIfNotHomepage(context.request.path)),
-    T.map(toWebPage(user)),
-  );
-};
-
-type HandlePage = (context: RouterContext) => T.Task<{
-  body: string,
-  status: StatusCodes,
-}>;
+type HandlePage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
 export const pageHandler = (
   handler: HandlePage,
 ): Middleware => (
   async (context, next) => {
-    const response = await handler(context)();
+    const params = {
+      ...context.params,
+      ...context.query,
+      ...context.state,
+      user: O.fromNullable(context.state.user),
+    } as Params;
+
+    const response = await pipe(
+      params,
+      handler,
+      TE.map(addScietySuffixIfNotHomepage(context.request.path)),
+      T.map(toWebPage(params.user)),
+    )();
 
     context.response.type = 'html';
     Object.assign(context.response, response);
