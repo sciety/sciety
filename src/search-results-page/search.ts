@@ -47,9 +47,14 @@ const constructGroupResult = (getGroup: GetGroup, projectGroupMeta: ProjectGroup
   )),
 );
 
-const dropErrorResults = flow(
-  RA.separate,
-  ({ right }) => right,
+const getGroupResults = (
+  getGroup: GetGroup,
+  projectGroupMeta: ProjectGroupMeta,
+  findGroups: FindGroups,
+) => flow(
+  findGroups,
+  T.chain(T.traverseArray(constructGroupResult(getGroup, projectGroupMeta))),
+  T.map(RA.rights),
 );
 
 const addGroupResults = (
@@ -62,14 +67,10 @@ const addGroupResults = (
   searchResults: SearchResults,
 ): TE.TaskEither<never, SearchResults> => pipe(
   query,
-  findGroups,
-  T.chain(flow(
-    T.traverseArray(constructGroupResult(getGroup, projectGroupMeta)),
-    T.map(dropErrorResults),
-  )),
-  T.map((hardcodedSearchResults) => ({
-    total: searchResults.total + hardcodedSearchResults.length,
-    items: [...hardcodedSearchResults, ...searchResults.items],
+  getGroupResults(getGroup, projectGroupMeta, findGroups),
+  T.map((groupSearchResults) => ({
+    total: searchResults.total + groupSearchResults.length,
+    items: [...groupSearchResults, ...searchResults.items],
   })),
   T.map(E.right),
 );
