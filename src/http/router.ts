@@ -12,7 +12,7 @@ import { catchStaticFileErrors } from './catch-static-file-errors';
 import { loadStaticFile } from './load-static-file';
 import { logOut } from './log-out';
 import { onlyIfNotAuthenticated } from './only-if-authenticated';
-import { pageHandler, RenderPage } from './page-handler';
+import { handlePage, pageHandler, RenderPage } from './page-handler';
 import { ping } from './ping';
 import { redirectBack } from './redirect-back';
 import { redirectAfterAuthenticating, requireAuthentication } from './require-authentication';
@@ -63,20 +63,20 @@ export const createRouter = (adapters: Adapters): Router => {
   // PAGES
 
   router.get('/',
-    pageHandler(flow(homePage(adapters), TE.rightTask)));
+    pageHandler(handlePage(flow(homePage(adapters), TE.rightTask))));
 
   router.get('/about',
-    pageHandler(() => aboutPage(adapters.fetchStaticFile)));
+    pageHandler(handlePage(() => aboutPage(adapters.fetchStaticFile))));
 
   router.get('/users/:id(.+)',
-    pageHandler(userPage(adapters)));
+    pageHandler(handlePage(userPage(adapters))));
 
   router.get('/articles',
     async (context, next) => {
       context.response.set('X-Robots-Tag', 'noindex');
       await next();
     },
-    pageHandler(searchResultsPage(adapters)));
+    pageHandler(handlePage(searchResultsPage(adapters))));
 
   router.get('/articles/:doi(10\\..+)',
     async (context, next) => {
@@ -87,13 +87,21 @@ export const createRouter = (adapters: Adapters): Router => {
     });
 
   router.get('/articles/meta/:doi(.+)',
-    pageHandler(flow(ensureBiorxivDoiParam, TE.fromEither, TE.chain((args) => articleMetaPage(args)(adapters)))));
+    pageHandler(handlePage(flow(
+      ensureBiorxivDoiParam,
+      TE.fromEither,
+      TE.chain((args) => articleMetaPage(args)(adapters)),
+    ))));
 
   router.get('/articles/activity/:doi(.+)',
-    pageHandler(flow(ensureBiorxivDoiParam, TE.fromEither, TE.chain((args) => articleActivityPage(args)(adapters)))));
+    pageHandler(handlePage(flow(
+      ensureBiorxivDoiParam,
+      TE.fromEither,
+      TE.chain((args) => articleActivityPage(args)(adapters)),
+    ))));
 
   router.get('/groups/:id',
-    pageHandler(groupPage(adapters)));
+    pageHandler(handlePage(groupPage(adapters))));
 
   router.get('/editorial-communities/:id',
     async (context, next) => {
@@ -104,10 +112,10 @@ export const createRouter = (adapters: Adapters): Router => {
     });
 
   router.get('/privacy',
-    pageHandler(() => pipe(privacyPage, TE.right)));
+    pageHandler(handlePage(() => pipe(privacyPage, TE.right))));
 
   router.get('/terms',
-    pageHandler(() => pipe(termsPage, TE.right)));
+    pageHandler(handlePage(() => pipe(termsPage, TE.right))));
 
   // COMMANDS
 

@@ -51,7 +51,7 @@ const toWebPage = (user: O.Option<User>) => E.fold(
   pageToWebPage(user),
 );
 
-const handlePage = (renderPage: RenderPage, context: RouterContext) => {
+export const handlePage = (renderPage: RenderPage): HandlePage => (context) => {
   const user = O.fromNullable(context.state.user);
   const params = {
     ...context.params,
@@ -68,11 +68,16 @@ const handlePage = (renderPage: RenderPage, context: RouterContext) => {
   );
 };
 
+type HandlePage = (context: RouterContext) => T.Task<{
+  body: string,
+  status: StatusCodes,
+}>;
+
 export const pageHandler = (
-  renderPage: RenderPage,
+  handler: HandlePage,
 ): Middleware => (
   async (context, next) => {
-    const response = await handlePage(renderPage, context)();
+    const response = await handler(context)();
 
     context.response.type = 'html';
     Object.assign(context.response, response);
