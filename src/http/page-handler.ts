@@ -25,13 +25,12 @@ const addScietySuffixIfNotHomepage = (requestPath: string) => (page: Page) => ({
   title: requestPath === '/' ? page.title : `${page.title} | Sciety`,
 });
 
-const errorToWebPage = (user: O.Option<User>, requestPath: string) => (error: RenderPageError) => pipe(
+const errorToWebPage = (user: O.Option<User>) => (error: RenderPageError) => pipe(
   renderErrorPage(error.message),
   (content) => ({
-    title: 'Error',
+    title: 'Error | Sciety',
     content,
   }),
-  addScietySuffixIfNotHomepage(requestPath),
   applyStandardPageLayout(user),
   (body) => ({
     body,
@@ -49,7 +48,7 @@ const pageToWebPage = (user: O.Option<User>, requestPath: string) => flow(
 );
 
 const toWebPage = (user: O.Option<User>, requestPath: string) => E.fold(
-  errorToWebPage(user, requestPath),
+  errorToWebPage(user),
   pageToWebPage(user, requestPath),
 );
 
