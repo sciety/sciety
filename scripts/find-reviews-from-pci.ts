@@ -66,7 +66,8 @@ const findRecommendations = async (community: PciCommunity): Promise<Array<Recom
       if (Number.isNaN(Date.parse(date))) {
         throw new Error(`Unable to parse the citation publication date for ${articleDoi}: ${date}`);
       }
-      const reviewDoi = document.querySelector('meta[name="citation_doi"]')?.getAttribute('content');
+      const reviewDoiMeta = document.querySelector('meta[name="citation_doi"]')?.getAttribute('content') ?? '';
+      const [, reviewDoi] = bioAndmedrxivDoiRegex.exec(reviewDoiMeta) ?? [];
       if (!reviewDoi) {
         throw new Error(`Unable to get the review (citation) doi for ${articleDoi}`);
       }
