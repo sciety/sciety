@@ -4,7 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import * as t from 'io-ts';
-import * as tt from 'io-ts-types/option';
+import * as tt from 'io-ts-types';
 import { ParameterizedContext } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import { authenticate } from './authenticate';
@@ -59,20 +59,20 @@ const ensureBiorxivDoiParam = <T extends { doi: Doi.Doi }>(params: T) => pipe(
 
 const articlePageParams = t.type({
   doi: DoiFromString,
-  user: tt.option(t.type({
+  user: tt.optionFromNullable(t.type({
     id: UserIdFromString,
   })),
 });
 
 const groupPageParams = t.type({
   id: GroupIdFromString,
-  user: tt.option(t.type({
+  user: tt.optionFromNullable(t.type({
     id: UserIdFromString,
   })),
 });
 
 const homePageParams = t.type({
-  user: tt.option(t.type({
+  user: tt.optionFromNullable(t.type({
     id: UserIdFromString,
   })),
 });
@@ -83,7 +83,7 @@ const searchResultsPageParams = t.type({
 
 const userPageParams = t.type({
   id: UserIdFromString,
-  user: tt.option(t.type({
+  user: tt.optionFromNullable(t.type({
     id: UserIdFromString,
   })),
 });

@@ -11,15 +11,6 @@ import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { User } from '../types/user';
 
-// TODO: replace with codecs
-type Params = {
-  doi?: string,
-  id?: string,
-  query?: string,
-  flavour?: string,
-  user: O.Option<User>,
-};
-
 const addScietySuffixIfNotHomepage = (requestPath: string) => (page: Page) => ({
   ...page,
   title: requestPath === '/' ? page.title : `${page.title} | Sciety`,
@@ -51,24 +42,21 @@ const toWebPage = (user: O.Option<User>) => E.fold(
   pageToWebPage(user),
 );
 
-type HandlePage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
+type HandlePage = (params: unknown) => TE.TaskEither<RenderPageError, Page>;
 
 export const pageHandler = (
   handler: HandlePage,
 ): Middleware => (
   async (context, next) => {
-    const params = {
-      ...context.params,
-      ...context.query,
-      ...context.state,
-      user: O.fromNullable(context.state.user),
-    } as Params;
-
     const response = await pipe(
-      params,
+      {
+        ...context.params,
+        ...context.query,
+        ...context.state,
+      },
       handler,
       TE.map(addScietySuffixIfNotHomepage(context.request.path)),
-      T.map(toWebPage(params.user)),
+      T.map(toWebPage(O.fromNullable(context.state.user))),
     )();
 
     context.response.type = 'html';
