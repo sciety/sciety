@@ -35,6 +35,7 @@ import { saveSaveArticleCommand } from '../save-article/save-save-article-comman
 import { searchResultsPage } from '../search-results-page';
 import { termsPage } from '../terms-page';
 import { DoiFromString } from '../types/codecs/DoiFromString';
+import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import * as Doi from '../types/doi';
 import { toHtmlFragment } from '../types/html-fragment';
@@ -58,6 +59,13 @@ const ensureBiorxivDoiParam = <T extends { doi: Doi.Doi }>(params: T) => pipe(
 
 const articlePageParams = t.type({
   doi: DoiFromString,
+  user: tt.option(t.type({
+    id: UserIdFromString,
+  })),
+});
+
+const groupPageParams = t.type({
+  id: GroupIdFromString,
   user: tt.option(t.type({
     id: UserIdFromString,
   })),
@@ -111,7 +119,12 @@ export const createRouter = (adapters: Adapters): Router => {
     )));
 
   router.get('/groups/:id',
-    pageHandler(groupPage(adapters)));
+    pageHandler(flow(
+      groupPageParams.decode,
+      E.mapLeft(toNotFound),
+      TE.fromEither,
+      TE.chain(groupPage(adapters)),
+    )));
 
   router.get('/editorial-communities/:id',
     async (context, next) => {
