@@ -19,7 +19,7 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { User } from '../types/user';
-import { toUserId, UserId } from '../types/user-id';
+import { UserId } from '../types/user-id';
 
 type FetchGroup = (groupId: GroupId) => T.Task<O.Option<{
   id: GroupId,
@@ -38,7 +38,7 @@ type Ports = {
 };
 
 type Params = {
-  id?: string,
+  id: UserId,
   user: O.Option<User>,
 };
 
@@ -52,12 +52,11 @@ export const userPage = (ports: Ports): UserPage => {
   );
 
   return (params) => {
-    const userId = toUserId(params.id ?? '');
     const viewingUserId = pipe(
       params.user,
       O.map((user) => user.id),
     );
-    const userDetails = ports.getUserDetails(userId);
+    const userDetails = ports.getUserDetails(params.id);
 
     return pipe(
       {
@@ -66,7 +65,7 @@ export const userPage = (ports: Ports): UserPage => {
           TE.map(renderHeader),
         ),
         followList: pipe(
-          userId,
+          params.id,
           projectFollowedGroupIds(ports.getAllEvents),
           T.chain(T.traverseArray(ports.getGroup)),
           T.map(RA.compact),
@@ -75,7 +74,7 @@ export const userPage = (ports: Ports): UserPage => {
           TE.rightTask,
         ),
         savedArticlesList: pipe(
-          userId,
+          params.id,
           projectSavedArticleDois(ports.getAllEvents),
           T.chain(fetchSavedArticles(getTitle)),
           T.map(renderSavedArticles),
