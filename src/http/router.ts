@@ -77,6 +77,10 @@ const homePageParams = t.type({
   })),
 });
 
+const searchResultsPageParams = t.type({
+  query: t.string,
+});
+
 const userPageParams = t.type({
   id: UserIdFromString,
   user: tt.option(t.type({
@@ -116,7 +120,12 @@ export const createRouter = (adapters: Adapters): Router => {
       context.response.set('X-Robots-Tag', 'noindex');
       await next();
     },
-    pageHandler(searchResultsPage(adapters)));
+    pageHandler(flow(
+      searchResultsPageParams.decode,
+      E.mapLeft(toNotFound),
+      TE.fromEither,
+      TE.chain(searchResultsPage(adapters)),
+    )));
 
   router.get('/articles/:doi(10\\..+)',
     async (context, next) => {

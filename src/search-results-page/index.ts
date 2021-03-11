@@ -27,7 +27,7 @@ type Ports = {
 };
 
 type Params = {
-  query?: string,
+  query: string,
 };
 
 type SearchResultsPage = (params: Params) => ReturnType<RenderPage>;
