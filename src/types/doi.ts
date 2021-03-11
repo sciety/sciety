@@ -2,7 +2,8 @@ import * as Eq from 'fp-ts/Eq';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 
-const doiRegex = /^(?:doi:|(?:(?:https?:\/\/)?(?:dx\.)?doi\.org\/))?(10\.[0-9]{4,}(?:\.[1-9][0-9]*)*\/(?:[^%"#?\s])+)$/;
+// TODO choose one or the other
+const doiRegex = /^(?:doi:)?(10\.[0-9]{4,}(?:\.[1-9][0-9]*)*\/(?:[^%"#?\s])+)$/;
 
 export class Doi {
   readonly value: string;
