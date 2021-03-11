@@ -9,6 +9,7 @@ import { renderSearchResults } from './render-search-results';
 import {
   GetAllEvents, GetGroup, search,
 } from './search';
+import { bootstrapEditorialCommunities } from '../data/bootstrap-editorial-communities';
 
 type OriginalSearchResults = {
   items: ReadonlyArray<Omit<Omit<ArticleSearchResult, '_tag'>, 'reviewCount'>>,
@@ -36,7 +37,7 @@ export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) =
   TE.rightTask,
   TE.chain((events) => search(
     ports.searchEuropePmc,
-    findGroups(ports.fetchStaticFile),
+    findGroups(ports.fetchStaticFile, bootstrapEditorialCommunities),
     ports.getGroup,
     projectArticleMeta(ports.findReviewsForArticleDoi),
     projectGroupMeta(events),

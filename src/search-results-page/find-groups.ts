@@ -1,9 +1,9 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
-import { bootstrapEditorialCommunities } from '../data/bootstrap-editorial-communities';
 import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
 
@@ -29,9 +29,12 @@ const includesQuery = (query: string) => (group: SearchableGroupFields) => pipe(
   ),
 );
 
-type FindGroups = (fetchStaticFile: FetchStaticFile) => (query: string) => T.Task<ReadonlyArray<GroupId>>;
-export const findGroups: FindGroups = (fetchStaticFile) => (query) => pipe(
-  bootstrapEditorialCommunities,
+type FindGroups = (
+  fetchStaticFile: FetchStaticFile,
+  groups: RNEA.ReadonlyNonEmptyArray<Group>
+) => (query: string) => T.Task<ReadonlyArray<GroupId>>;
+export const findGroups: FindGroups = (fetchStaticFile, groups) => (query) => pipe(
+  groups,
   T.traverseArray((group) => pipe(
     `groups/${group.descriptionPath}`,
     fetchStaticFile,
