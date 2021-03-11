@@ -38,8 +38,7 @@ const errorToWebPage = (user: O.Option<User>) => (error: RenderPageError) => pip
   }),
 );
 
-const pageToWebPage = (user: O.Option<User>, requestPath: string) => flow(
-  addScietySuffixIfNotHomepage(requestPath),
+const pageToWebPage = (user: O.Option<User>) => flow(
   applyStandardPageLayout(user),
   (body) => ({
     body,
@@ -47,9 +46,9 @@ const pageToWebPage = (user: O.Option<User>, requestPath: string) => flow(
   }),
 );
 
-const toWebPage = (user: O.Option<User>, requestPath: string) => E.fold(
+const toWebPage = (user: O.Option<User>) => E.fold(
   errorToWebPage(user),
-  pageToWebPage(user, requestPath),
+  pageToWebPage(user),
 );
 
 const handlePage = (renderPage: RenderPage, context: RouterContext) => {
@@ -64,7 +63,8 @@ const handlePage = (renderPage: RenderPage, context: RouterContext) => {
   return pipe(
     params,
     renderPage,
-    T.map(toWebPage(user, context.request.path)),
+    TE.map(addScietySuffixIfNotHomepage(context.request.path)),
+    T.map(toWebPage(user)),
   );
 };
 
