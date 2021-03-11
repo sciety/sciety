@@ -1,8 +1,9 @@
-import { Middleware } from '@koa/router';
+import { Middleware, RouterContext } from '@koa/router';
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { renderErrorPage } from './render-error-page';
 import { applyStandardPageLayout } from '../shared-components';
@@ -25,47 +26,54 @@ const addScietySuffixIfNotHomepage = (requestPath: string) => (page: Page) => ({
 });
 
 const errorToWebPage = (user: O.Option<User>, requestPath: string) => (error: RenderPageError) => pipe(
-  error,
-  (e) => ({
+  renderErrorPage(error.message),
+  (content) => ({
     title: 'Error',
-    content: renderErrorPage(e.message),
+    content,
   }),
   addScietySuffixIfNotHomepage(requestPath),
   applyStandardPageLayout(user),
+  (body) => ({
+    body,
+    status: error.type === 'not-found' ? StatusCodes.NOT_FOUND : StatusCodes.SERVICE_UNAVAILABLE,
+  }),
 );
 
-const pageToWebPage = (user: O.Option<User>, requestPath: string) => (page: Page) => pipe(
-  page,
+const pageToWebPage = (user: O.Option<User>, requestPath: string) => flow(
   addScietySuffixIfNotHomepage(requestPath),
   applyStandardPageLayout(user),
+  (body) => ({
+    body,
+    status: StatusCodes.OK,
+  }),
 );
+
+const toWebPage = (user: O.Option<User>, requestPath: string) => E.fold(
+  errorToWebPage(user, requestPath),
+  pageToWebPage(user, requestPath),
+);
+
+const handlePage = (renderPage: RenderPage, context: RouterContext) => {
+  const user = O.fromNullable(context.state.user);
+  const params = {
+    ...context.params,
+    ...context.query,
+    ...context.state,
+    user: O.fromNullable(context.state.user),
+  };
+
+  return pipe(
+    params,
+    renderPage,
+    T.map(toWebPage(user, context.request.path)),
+  );
+};
 
 export const pageHandler = (
   renderPage: RenderPage,
-): Middleware<{ user?: User }> => (
+): Middleware => (
   async (context, next) => {
-    const user = O.fromNullable(context.state.user);
-    const params = {
-      ...context.params,
-      ...context.query,
-      ...context.state,
-      user,
-    };
-
-    const response = await pipe(
-      params,
-      renderPage,
-      TE.fold(
-        (error) => T.of({
-          body: errorToWebPage(user, context.request.path)(error),
-          status: error.type === 'not-found' ? StatusCodes.NOT_FOUND : StatusCodes.SERVICE_UNAVAILABLE,
-        }),
-        (page) => T.of({
-          body: pageToWebPage(user, context.request.path)(page),
-          status: StatusCodes.OK,
-        }),
-      ),
-    )();
+    const response = await handlePage(renderPage, context)();
 
     context.response.type = 'html';
     Object.assign(context.response, response);
