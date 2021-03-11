@@ -56,18 +56,17 @@ export const getArticleFeedEvents: GetArticleFeedEvents = (doi, server, userId) 
   countReviewResponses,
   getUserReviewResponse,
 }) => pipe(
-  doi,
-  mergeFeeds([
-    () => pipe(
-      doi,
-      findReviewsForArticleDoi,
-      T.map(RA.map((review) => ({ type: 'review', ...review }))),
+  [
+    pipe(
+      findReviewsForArticleDoi(doi),
+      T.map(RA.map((review) => ({ type: 'review', ...review } as const))),
     ),
-    () => pipe(
+    pipe(
       findVersionsForArticleDoi(doi, server),
-      T.map(RA.map((version) => ({ type: 'article-version', ...version }))),
+      T.map(RA.map((version) => ({ type: 'article-version', ...version } as const))),
     ),
-  ]),
+  ],
+  mergeFeeds,
   T.chain((feedEvents) => getFeedEventsContent(feedEvents, server, userId)({
     fetchReview,
     getGroup,
