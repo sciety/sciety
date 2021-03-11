@@ -26,7 +26,7 @@ describe('page-handler', () => {
 
       const errorMessage = rendered.querySelector('main p')?.textContent;
 
-      expect(errorMessage).toStrictEqual(expect.stringContaining('10.14234321/not-on-biorxiv not found'));
+      expect(errorMessage).toStrictEqual(expect.stringContaining('Page not found'));
     });
   });
 });

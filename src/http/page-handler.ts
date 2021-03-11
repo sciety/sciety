@@ -11,7 +11,7 @@ import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { User } from '../types/user';
 
-// TODO: find better way of handling params of different pages
+// TODO: replace with codecs
 type Params = {
   doi?: string,
   id?: string,
@@ -19,8 +19,6 @@ type Params = {
   flavour?: string,
   user: O.Option<User>,
 };
-
-export type RenderPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
 const addScietySuffixIfNotHomepage = (requestPath: string) => (page: Page) => ({
   ...page,
