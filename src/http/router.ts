@@ -71,13 +71,27 @@ const groupPageParams = t.type({
   })),
 });
 
+const homePageParams = t.type({
+  user: tt.option(t.type({
+    id: UserIdFromString,
+  })),
+});
+
 export const createRouter = (adapters: Adapters): Router => {
   const router = new Router();
 
   // PAGES
 
   router.get('/',
-    pageHandler(flow(homePage(adapters), TE.rightTask)));
+    pageHandler(flow(
+      homePageParams.decode,
+      E.mapLeft(toNotFound),
+      TE.fromEither,
+      TE.chainW(flow(
+        homePage(adapters),
+        TE.rightTask,
+      )),
+    )));
 
   router.get('/about',
     pageHandler(() => aboutPage(adapters.fetchStaticFile)));
