@@ -1,3 +1,4 @@
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
@@ -5,7 +6,7 @@ import { FetchStaticFile, findGroups } from './find-groups';
 import { projectGroupMeta } from './project-group-meta';
 import { renderErrorPage, RenderPage, renderPage } from './render-page';
 import { ArticleSearchResult, renderSearchResult } from './render-search-result';
-import { renderSearchResults } from './render-search-results';
+import { renderSearchResults, SearchResults } from './render-search-results';
 import {
   addGroupResults,
   FindReviewsForArticleDoi,
@@ -34,17 +35,25 @@ type Params = {
 
 type SearchResultsPage = (params: Params) => ReturnType<RenderPage>;
 
+const selectSubsetToDisplay = (count: number) => (searchResults: SearchResults) => ({
+  ...searchResults,
+  items: pipe(
+    searchResults.items,
+    RA.takeLeft(count),
+  ),
+});
+
 /* Solution sketch:
 
 pipe(
-  query,
   {
-    groups: findMatchingGroups(query),
-    articles: findMatchingArticles(query),
+    query: params.query,
+    groups: findMatchingGroups(ports.fetchStaticFile, bootstrapEditorialCommunities, 10)(params.query),
+    articles: ports.searchEuropePmc(params.query, 10),
   },
   sequenceS(TE.taskEither),
-  TE.map(selectSubsetToDisplay),
-  TE.chain(fetchExtraDetails),
+  TE.map(selectSubsetToDisplay(10)),
+  TE.chain(fetchExtraDetails(ports)),
   TE.bimap(renderErrorPage, renderPage),
 )
 
@@ -69,6 +78,7 @@ export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) =
     projectGroupMeta(ports.getAllEvents),
     findGroups(ports.fetchStaticFile, bootstrapEditorialCommunities),
   )(params.query)),
+  TE.map(selectSubsetToDisplay(10)),
   TE.map((searchResults) => renderSearchResults(renderSearchResult)(params.query, searchResults)),
   TE.bimap(renderErrorPage, renderPage(params.query)),
 );
