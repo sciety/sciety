@@ -85,14 +85,17 @@ pipe(
 */
 
 export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) => pipe(
-  params.query,
-  ports.searchEuropePmc,
+  {
+    query: TE.right(params.query),
+    articles: ports.searchEuropePmc(params.query),
+  },
+  sequenceS(TE.taskEither),
   TE.chainW(flow(
-    (searchResults) => pipe(
-      searchResults.items,
+    (state) => pipe(
+      state.articles.items,
       T.traverseArray(toArticleViewModel(ports.findReviewsForArticleDoi)),
       T.map((items) => ({
-        total: searchResults.total,
+        total: state.articles.total,
         items,
       })),
     ),
