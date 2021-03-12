@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { ArticleSearchResult, GroupSearchResult } from './render-search-result';
+import { ArticleViewModel, GroupSearchResult } from './render-search-result';
 import { Doi } from '../types/doi';
 import { DomainEvent } from '../types/domain-events';
 import { Group } from '../types/group';
@@ -12,7 +12,12 @@ import { toHtmlFragment } from '../types/html-fragment';
 import { ReviewId } from '../types/review-id';
 import { sanitise } from '../types/sanitised-html-fragment';
 
-type MatchedArticle = Omit<Omit<ArticleSearchResult, '_tag'>, 'reviewCount'>;
+export type MatchedArticle = {
+  doi: Doi,
+  title: string,
+  authors: string,
+  postedDate: Date,
+};
 
 export type GetGroup = (editorialCommunityId: GroupId) => T.Task<O.Option<Group>>;
 export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
@@ -45,7 +50,7 @@ export type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray
 
 export const toArticleViewModel = (
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
-) => (matchedArticle: MatchedArticle): T.Task<ArticleSearchResult> => pipe(
+) => (matchedArticle: MatchedArticle): T.Task<ArticleViewModel> => pipe(
   matchedArticle.doi,
   findReviewsForArticleDoi,
   T.map((reviews) => ({

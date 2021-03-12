@@ -5,7 +5,7 @@ import { GroupId } from '../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
-export type ArticleSearchResult = {
+export type ArticleViewModel = {
   _tag: 'Article',
   doi: Doi,
   title: string,
@@ -24,10 +24,10 @@ export type GroupSearchResult = {
   reviewCount: number,
 };
 
-export type SearchResult = ArticleSearchResult | GroupSearchResult;
+export type SearchResult = ArticleViewModel | GroupSearchResult;
 
 const renderArticleSearchResult = flow(
-  (result: ArticleSearchResult) => `
+  (result: ArticleViewModel) => `
     <div class="search-results-list__item_container">
       <a class="search-results-list__item__link" href="/articles/activity/${result.doi.value}">${result.title}</a>
       <div class="search-results-list__item__description">
@@ -35,7 +35,7 @@ const renderArticleSearchResult = flow(
       </div>
       <ul class="search-results-list__item__meta">
         <li class="search-results-list__item__meta__item">${result.reviewCount} Evaluations</li><li class="search-results-list__item__meta__item">Posted ${templateDate(result.postedDate)}</li>
-      </ul>      
+      </ul>
     </div>
   `,
   toHtmlFragment,

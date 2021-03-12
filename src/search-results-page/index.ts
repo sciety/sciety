@@ -6,21 +6,21 @@ import { flow, pipe } from 'fp-ts/function';
 import { FetchStaticFile, findGroups } from './find-groups';
 import { projectGroupMeta } from './project-group-meta';
 import { renderErrorPage, RenderPage, renderPage } from './render-page';
-import { ArticleSearchResult, renderSearchResult, SearchResult } from './render-search-result';
+import { renderSearchResult, SearchResult } from './render-search-result';
 import { renderSearchResults, SearchResults } from './render-search-results';
 import {
   constructGroupResult,
   FindReviewsForArticleDoi,
-  GetAllEvents, GetGroup, toArticleViewModel,
+  GetAllEvents, GetGroup, MatchedArticle, toArticleViewModel,
 } from './search';
 import { bootstrapEditorialCommunities } from '../data/bootstrap-editorial-communities';
 
-type OriginalSearchResults = {
-  items: ReadonlyArray<Omit<Omit<ArticleSearchResult, '_tag'>, 'reviewCount'>>,
+type ArticleSearchResults = {
+  items: ReadonlyArray<MatchedArticle>,
   total: number,
 };
 
-type FindArticles = (query: string) => TE.TaskEither<'unavailable', OriginalSearchResults>;
+type FindArticles = (query: string) => TE.TaskEither<'unavailable', ArticleSearchResults>;
 
 type Ports = {
   searchEuropePmc: FindArticles,
