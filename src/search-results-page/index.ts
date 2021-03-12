@@ -1,3 +1,4 @@
+import { sequenceS } from 'fp-ts/Apply';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -5,7 +6,7 @@ import { flow, pipe } from 'fp-ts/function';
 import { FetchStaticFile, findGroups } from './find-groups';
 import { projectGroupMeta } from './project-group-meta';
 import { renderErrorPage, RenderPage, renderPage } from './render-page';
-import { ArticleSearchResult, renderSearchResult } from './render-search-result';
+import { ArticleSearchResult, renderSearchResult, SearchResult } from './render-search-result';
 import { renderSearchResults, SearchResults } from './render-search-results';
 import {
   addGroupResults,
@@ -43,6 +44,25 @@ const selectSubsetToDisplay = (count: number) => (searchResults: SearchResults) 
   ),
 });
 
+const fetchExtra = (ports: Ports) => (item: SearchResult): T.Task<SearchResult> => {
+  if (item._tag === 'Article') {
+    return toArticleViewModel(ports.findReviewsForArticleDoi)(item);
+  }
+  return T.of(item);
+};
+
+const fetchExtraDetails = (ports: Ports) => (searchResults: SearchResults) => pipe(
+  {
+    total: T.of(searchResults.total),
+    items: pipe(
+      searchResults.items,
+      T.traverseArray(fetchExtra(ports)),
+    ),
+  },
+  sequenceS(T.task),
+  TE.rightTask,
+);
+
 /* Solution sketch:
 
 pipe(
@@ -79,6 +99,7 @@ export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) =
     findGroups(ports.fetchStaticFile, bootstrapEditorialCommunities),
   )(params.query)),
   TE.map(selectSubsetToDisplay(10)),
-  TE.map((searchResults) => renderSearchResults(renderSearchResult)(params.query, searchResults)),
+  TE.chainW(fetchExtraDetails(ports)),
+  TE.map(renderSearchResults(renderSearchResult)(params.query)),
   TE.bimap(renderErrorPage, renderPage(params.query)),
 );

@@ -29,6 +29,7 @@ export const renderSearchResults = (
   renderSearchResult: RenderSearchResult,
 ) => (
   query: string,
+) => (
   searchResults: SearchResults,
 ): HtmlFragment => (
   pipe(
