@@ -36,6 +36,12 @@ $vertical-space-above-title--wide: baseline.increments(5);
   }
 }
 
+.search-form {
+  grid-column: 1 / -1;
+  margin-left: 1rem;
+  margin-bottom: baseline.increments(1.5);
+}
+
 .sciety-grid--search-results > .search-results {
   grid-column: 1 / -1;
 }
@@ -46,6 +52,7 @@ $vertical-space-above-title--wide: baseline.increments(5);
   }
 
   .sciety-grid--search-results > .page-header--search-results,
+  .search-form,
   .sciety-grid--search-results > .search-results {
     grid-column: 3/11;
   }
