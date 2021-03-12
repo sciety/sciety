@@ -49,15 +49,14 @@ pipe(
 */
 
 export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) => pipe(
-  ports.getAllEvents,
-  TE.rightTask,
-  TE.chain((events) => search(
+  params.query,
+  search(
     ports.searchEuropePmc,
     findGroups(ports.fetchStaticFile, bootstrapEditorialCommunities),
     ports.getGroup,
     ports.findReviewsForArticleDoi,
-    projectGroupMeta(events),
-  )(params.query)),
+    projectGroupMeta(ports.getAllEvents),
+  ),
   TE.map(renderSearchResults(renderSearchResult)),
   TE.bimap(renderErrorPage, renderPage(params.query)),
 );

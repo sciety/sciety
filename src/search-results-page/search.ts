@@ -25,10 +25,10 @@ export type GetGroup = (editorialCommunityId: GroupId) => T.Task<O.Option<Group>
 export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 type FindArticles = (query: string) => TE.TaskEither<'unavailable', OriginalSearchResults>;
 type FindGroups = (query: string) => T.Task<ReadonlyArray<GroupId>>;
-type ProjectGroupMeta = (groupId: GroupId) => {
+type ProjectGroupMeta = (groupId: GroupId) => T.Task<{
   reviewCount: number,
   followerCount: number,
-};
+}>;
 
 type Search = (query: string) => TE.TaskEither<'unavailable', SearchResults>;
 
@@ -39,13 +39,13 @@ const constructGroupResult = (getGroup: GetGroup, projectGroupMeta: ProjectGroup
   TE.chainW((group) => pipe(
     group.id,
     projectGroupMeta,
-    (meta) => ({
+    T.map((meta) => ({
       ...group,
       ...meta,
       _tag: 'Group' as const,
       description: sanitise(toHtmlFragment(group.shortDescription)),
-    }),
-    TE.right,
+    })),
+    TE.rightTask,
   )),
 );
 
