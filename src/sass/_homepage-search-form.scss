@@ -4,20 +4,20 @@
 @use 'functions';
 @use 'typography';
 
-.search-form {
+.homepage-search-form {
   margin-bottom: #{baseline.increments(6)};
 }
 
-.search-form__inputs {
+.homepage-search-form__inputs {
   display: flex;
 }
 
-.search-form__input::placeholder {
+.homepage-search-form__input::placeholder {
   @include typography.sizing($font-size: settings.$base-font-measure, $line-height-in-increments: 3);
   color: settings.$colour-grey-one;
 }
 
-.search-form__input {
+.homepage-search-form__input {
   border: settings.$border-width solid settings.$colour-grey-one;
   border-right-color: transparent;
   border-top-left-radius: 5px;
@@ -28,13 +28,13 @@
   width: 100%;
 }
 
-.search-form__input:focus {
+.homepage-search-form__input:focus {
   border-color: settings.$colour-primary;
   border-right-color: transparent;
   outline: none;
 }
 
-.search-form__button {
+.homepage-search-form__button {
   border: settings.$border-width solid settings.$colour-ui-default;
   border-radius: 0 5px 5px 0;
   cursor: pointer;
@@ -54,13 +54,13 @@
   }
 }
 
-.search-form__icon {
+.homepage-search-form__icon {
   fill: settings.$colour-ui-default;
 }
 
-.search-form__button:hover,
-.search-form__button:active {
-  .search-form__icon {
+.homepage-search-form__button:hover,
+.homepage-search-form__button:active {
+  .homepage-search-form__icon {
     fill: settings.$colour-white;
   }
 }
