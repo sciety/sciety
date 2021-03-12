@@ -13,8 +13,10 @@ import { GroupId } from '../types/group-id';
 import { toHtmlFragment } from '../types/html-fragment';
 import { sanitise } from '../types/sanitised-html-fragment';
 
+type MatchedArticle = Omit<Omit<ArticleSearchResult, '_tag'>, 'reviewCount'>;
+
 type OriginalSearchResults = {
-  items: ReadonlyArray<Omit<Omit<ArticleSearchResult, '_tag'>, 'reviewCount'>>,
+  items: ReadonlyArray<MatchedArticle>,
   total: number,
 };
 
@@ -75,6 +77,16 @@ const addGroupResults = (
   T.map(E.right),
 );
 
+const toArticleResult = (projectArticleMeta: ProjectArticleMeta) => (searchResult: MatchedArticle) => pipe(
+  searchResult,
+  ({ doi }) => projectArticleMeta(doi),
+  T.map((reviewCount) => ({
+    _tag: 'Article' as const,
+    ...searchResult,
+    reviewCount,
+  })),
+);
+
 export const search = (
   findArticles: FindArticles,
   findGroups: FindGroups,
@@ -87,15 +99,7 @@ export const search = (
   TE.chainW(flow(
     (searchResults) => pipe(
       searchResults.items,
-      T.traverseArray((searchResult) => pipe(
-        searchResult,
-        ({ doi }) => projectArticleMeta(doi),
-        T.map((reviewCount) => ({
-          _tag: 'Article' as const,
-          ...searchResult,
-          reviewCount,
-        })),
-      )),
+      T.traverseArray(toArticleResult(projectArticleMeta)),
       T.map((items) => ({
         total: searchResults.total,
         items,
