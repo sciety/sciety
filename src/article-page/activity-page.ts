@@ -80,12 +80,11 @@ const toErrorPage = (error: 'not-found' | 'unavailable') => {
   }
 };
 
-export const articleActivityPage: ActivityPage = (params) => (ports) => pipe(
-  params,
-  TE.right,
-  TE.bind('userId', ({ user }) => pipe(user, O.map((u) => u.id), TE.right)),
-  TE.bind('articleDetails', ({ doi }) => pipe(doi, ports.fetchArticle)),
-  TE.bindW('feed', ({ articleDetails, doi, userId }) => pipe(
+export const articleActivityPage: ActivityPage = flow(
+  RTE.right,
+  RTE.bind('userId', ({ user }) => pipe(user, O.map((u) => u.id), RTE.right)),
+  RTE.bind('articleDetails', ({ doi }) => (ports: Ports) => pipe(doi, ports.fetchArticle)),
+  RTE.bindW('feed', ({ articleDetails, doi, userId }) => (ports: Ports) => pipe(
     articleDetails.server,
     (server) => getArticleFeedEvents(doi, server, userId)({
       ...ports,
@@ -112,21 +111,21 @@ export const articleActivityPage: ActivityPage = (params) => (ports) => pipe(
     )),
     TE.rightTask,
   )),
-  TE.bindW('hasUserSavedArticle', ({ doi, userId }) => pipe(
+  RTE.bindW('hasUserSavedArticle', ({ doi, userId }) => (ports: Ports) => pipe(
     userId,
     O.fold(constant(T.of(false)), (u) => projectHasUserSavedArticle(doi, u)(ports.getAllEvents)),
     TE.rightTask,
   )),
-  TE.bindW('saveArticle', ({ doi, userId, hasUserSavedArticle }) => pipe(
+  RTE.bindW('saveArticle', ({ doi, userId, hasUserSavedArticle }) => pipe(
     renderSaveArticle(doi, userId, hasUserSavedArticle),
-    TE.right,
+    RTE.right,
   )),
-  TE.bindW('tweetThis', ({ doi }) => pipe(
+  RTE.bindW('tweetThis', ({ doi }) => pipe(
     doi,
     renderTweetThis,
-    TE.right,
+    RTE.right,
   )),
-  TE.bimap(
+  RTE.bimap(
     toErrorPage,
     (components) => ({
       content: renderActivityPage(components),
