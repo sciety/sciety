@@ -8,6 +8,7 @@
 $vertical-space-above-title--narrow: baseline.increments(2);
 $vertical-space-above-title--wide: baseline.increments(5);
 $search-form-text-inline-padding: 12px;
+$search-form-inline-margin: settings.$base-font-measure;
 
 .sciety-grid--search-results > .page-header--search-results {
   grid-column: 1 / -1;
@@ -39,8 +40,8 @@ $search-form-text-inline-padding: 12px;
 
 .search-form {
   grid-column: 1 / -1;
-  margin-left: 1rem;
-  margin-right: 1rem;
+  margin-left: functions.px-to-rem($search-form-inline-margin);
+  margin-right: functions.px-to-rem($search-form-inline-margin);
   margin-bottom: baseline.increments(1.5);
 }
 
@@ -66,7 +67,7 @@ $search-form-text-inline-padding: 12px;
 }
 
 .search-results__summary {
-  margin-left: functions.px-to-rem(16px + $search-form-text-inline-padding + settings.$border-width);
+  margin-left: functions.px-to-rem($search-form-inline-margin + $search-form-text-inline-padding + settings.$border-width);
   font-family: Ubuntu, sans-serif;
 }
 
