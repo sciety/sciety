@@ -1,13 +1,15 @@
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { FetchStaticFile, findGroups } from './find-groups';
 import { projectGroupMeta } from './project-group-meta';
 import { renderErrorPage, RenderPage, renderPage } from './render-page';
 import { ArticleSearchResult, renderSearchResult } from './render-search-result';
 import { renderSearchResults } from './render-search-results';
 import {
+  addGroupResults,
   FindReviewsForArticleDoi,
-  GetAllEvents, GetGroup, search,
+  GetAllEvents, GetGroup, toArticleViewModel,
 } from './search';
 import { bootstrapEditorialCommunities } from '../data/bootstrap-editorial-communities';
 
@@ -50,13 +52,23 @@ pipe(
 
 export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) => pipe(
   params.query,
-  search(
-    ports.searchEuropePmc,
-    findGroups(ports.fetchStaticFile, bootstrapEditorialCommunities),
+  ports.searchEuropePmc,
+  TE.chainW(flow(
+    (searchResults) => pipe(
+      searchResults.items,
+      T.traverseArray(toArticleViewModel(ports.findReviewsForArticleDoi)),
+      T.map((items) => ({
+        total: searchResults.total,
+        items,
+      })),
+    ),
+    TE.rightTask,
+  )),
+  TE.chainW(addGroupResults(
     ports.getGroup,
-    ports.findReviewsForArticleDoi,
     projectGroupMeta(ports.getAllEvents),
-  ),
+    findGroups(ports.fetchStaticFile, bootstrapEditorialCommunities),
+  )(params.query)),
   TE.map((searchResults) => renderSearchResults(renderSearchResult)(params.query, searchResults)),
   TE.bimap(renderErrorPage, renderPage(params.query)),
 );

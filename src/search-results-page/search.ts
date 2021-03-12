@@ -16,21 +16,13 @@ import { sanitise } from '../types/sanitised-html-fragment';
 
 type MatchedArticle = Omit<Omit<ArticleSearchResult, '_tag'>, 'reviewCount'>;
 
-type OriginalSearchResults = {
-  items: ReadonlyArray<MatchedArticle>,
-  total: number,
-};
-
 export type GetGroup = (editorialCommunityId: GroupId) => T.Task<O.Option<Group>>;
 export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
-type FindArticles = (query: string) => TE.TaskEither<'unavailable', OriginalSearchResults>;
 type FindGroups = (query: string) => T.Task<ReadonlyArray<GroupId>>;
 type ProjectGroupMeta = (groupId: GroupId) => T.Task<{
   reviewCount: number,
   followerCount: number,
 }>;
-
-type Search = (query: string) => TE.TaskEither<'unavailable', SearchResults>;
 
 const constructGroupResult = (getGroup: GetGroup, projectGroupMeta: ProjectGroupMeta) => (groupId: GroupId) => pipe(
   groupId,
@@ -59,7 +51,7 @@ const getGroupResults = (
   T.map(RA.rights),
 );
 
-const addGroupResults = (
+export const addGroupResults = (
   getGroup: GetGroup,
   projectGroupMeta: ProjectGroupMeta,
   findGroups: FindGroups,
@@ -82,9 +74,9 @@ export type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray
   editorialCommunityId: GroupId,
 }>>;
 
-const toArticleViewModel = (
+export const toArticleViewModel = (
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
-) => (matchedArticle: MatchedArticle) => pipe(
+) => (matchedArticle: MatchedArticle): T.Task<ArticleSearchResult> => pipe(
   matchedArticle.doi,
   findReviewsForArticleDoi,
   T.map((reviews) => ({
@@ -92,27 +84,4 @@ const toArticleViewModel = (
     ...matchedArticle,
     reviewCount: reviews.length,
   })),
-);
-
-export const search = (
-  findArticles: FindArticles,
-  findGroups: FindGroups,
-  getGroup: GetGroup,
-  findReviewsForArticleDoi: FindReviewsForArticleDoi,
-  projectGroupMeta: ProjectGroupMeta,
-): Search => (query) => pipe(
-  query,
-  findArticles,
-  TE.chainW(flow(
-    (searchResults) => pipe(
-      searchResults.items,
-      T.traverseArray(toArticleViewModel(findReviewsForArticleDoi)),
-      T.map((items) => ({
-        total: searchResults.total,
-        items,
-      })),
-    ),
-    TE.rightTask,
-  )),
-  TE.chainW(addGroupResults(getGroup, projectGroupMeta, findGroups)(query)),
 );
