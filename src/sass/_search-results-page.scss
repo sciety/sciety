@@ -44,14 +44,13 @@ $vertical-space-above-title--wide: baseline.increments(5);
 }
 
 .search-form__text {
+  @include typography.sizing(14px, 1.75);
   border: settings.$border-width solid settings.$colour-furniture;
   border-radius: settings.$border-radius;
   height: baseline.increments(6);
   width: 100%;
   padding: 17px 12px;
-  font-size: 14px;
   font-family: Ubuntu, sans-serif;
-  line-height: 1;
   letter-spacing: 0.1px;
   color: settings.$colour-text-primary;
 }
