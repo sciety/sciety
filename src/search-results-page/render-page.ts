@@ -22,8 +22,8 @@ export const renderPage = (query: string) => (searchResults: HtmlFragment): Page
           <label for="searchText" class="visually-hidden">Search term</label>
           <input id="searchText" name="query" placeholder="Discover new evaluations…" class="search-form__text">
           <div>
-            <button type="submit">Search</button>
-            <button type="reset">Reset</button>
+            <button type="submit" class="visually-hidden">Search</button>
+            <button type="reset" class="visually-hidden">Reset</button>
           </div>
         </form>
         <section class="search-results">
