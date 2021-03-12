@@ -8,7 +8,7 @@ describe('render-search-results component', () => {
   describe('when there are results', () => {
     it('displays the number of results and a list', async () => {
       const renderSearchResult: RenderSearchResult = () => toHtmlFragment('');
-      const rendered = renderSearchResults(renderSearchResult)({
+      const rendered = renderSearchResults(renderSearchResult)('some query', {
         total: 5,
         items: [
           {
@@ -30,7 +30,7 @@ describe('render-search-results component', () => {
   describe('when there are no results', () => {
     it('doesn\'t display any list', async () => {
       const renderSearchResult = shouldNotBeCalled;
-      const rendered = renderSearchResults(renderSearchResult)({
+      const rendered = renderSearchResults(renderSearchResult)('some query', {
         total: 0,
         items: [],
       });

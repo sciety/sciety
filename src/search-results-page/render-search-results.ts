@@ -1,3 +1,4 @@
+import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
@@ -27,6 +28,7 @@ const renderListIfNecessary = (articles: ReadonlyArray<HtmlFragment>) => pipe(
 export const renderSearchResults = (
   renderSearchResult: RenderSearchResult,
 ) => (
+  query: string,
   searchResults: SearchResults,
 ): HtmlFragment => (
   pipe(
@@ -34,7 +36,7 @@ export const renderSearchResults = (
     RA.map(renderSearchResult),
     renderListIfNecessary,
     (searchResultsList) => `
-      <p class="search-results__summary">Showing ${searchResults.items.length} of ${searchResults.total} results.</p>
+      <p class="search-results__summary">Showing ${searchResults.items.length} of ${searchResults.total} results for <span class="search-results__query">${htmlEscape(query)}</span></p>
       ${searchResultsList}
     `,
     toHtmlFragment,

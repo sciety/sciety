@@ -56,6 +56,10 @@ $vertical-space-above-title--wide: baseline.increments(5);
   font-family: Ubuntu, sans-serif;
 }
 
+.search-results__query {
+  font-weight: bold;
+}
+
 .search-results-list {
   @include list.basics();
   margin-top: 0;
