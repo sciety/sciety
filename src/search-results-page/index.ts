@@ -32,17 +32,21 @@ type Params = {
 
 type SearchResultsPage = (params: Params) => ReturnType<RenderPage>;
 
-// Solution sketch:
-//
-// query
-// {
-//   groups: findMatchingGroups
-//   articles: findMatchingArticles
-// }
-// selectSubsetToDisplay
-// fetchExtraGroupDetails
-// fethExtraArticleDetails
-// renderPage
+/* Solution sketch:
+
+pipe(
+  query,
+  {
+    groups: findMatchingGroups(query),
+    articles: findMatchingArticles(query),
+  },
+  sequenceS(TE.taskEither),
+  TE.map(selectSubsetToDisplay),
+  TE.chain(fetchExtraDetails),
+  TE.bimap(renderErrorPage, renderPage),
+)
+
+*/
 
 export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) => pipe(
   ports.getAllEvents,
