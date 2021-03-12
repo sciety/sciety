@@ -41,10 +41,6 @@ $vertical-space-above-title--wide: baseline.increments(5);
 }
 
 @media screen and (min-width: settings.$breakpoint-narrow) {
-  .sciety-grid.sciety-grid--search-results h1 {
-    @include typography.sizing(26px, 3.75);
-  }
-
   .sciety-grid--search-results > .page-header--search-results {
     padding-top: $vertical-space-above-title--wide;
   }
