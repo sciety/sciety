@@ -88,6 +88,10 @@ export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) =
   {
     query: TE.right(params.query),
     articles: ports.searchEuropePmc(params.query),
+    groups: pipe(
+      findGroups(ports.fetchStaticFile, bootstrapEditorialCommunities)(params.query),
+      TE.rightTask,
+    ),
   },
   sequenceS(TE.taskEither),
   TE.chainW(flow(
