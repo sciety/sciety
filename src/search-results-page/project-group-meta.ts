@@ -1,36 +1,46 @@
 import * as RA from 'fp-ts/ReadonlyArray';
+import { pipe } from 'fp-ts/function';
 import {
   DomainEvent,
   isEditorialCommunityReviewedArticleEvent,
   isUserFollowedEditorialCommunityEvent,
   isUserUnfollowedEditorialCommunityEvent,
 } from '../types/domain-events';
-
 import { GroupId } from '../types/group-id';
 
-const reviewCounter = (groupId: GroupId, events: ReadonlyArray<DomainEvent>): number => events.filter(
-  (event) => isEditorialCommunityReviewedArticleEvent(event)
-    && event.editorialCommunityId.value === groupId.value,
-).length;
-
-type Reducer = (groupId: GroupId) => (count: number, event: DomainEvent) => number;
-
-const followerCounter: Reducer = (groupId) => (count, event) => {
+const reducer = (groupId: GroupId) => (meta: GroupMeta, event: DomainEvent) => {
   if (isUserFollowedEditorialCommunityEvent(event) && event.editorialCommunityId.value === groupId.value) {
-    return count + 1;
+    return {
+      ...meta,
+      followerCount: meta.followerCount + 1,
+    };
   }
   if (isUserUnfollowedEditorialCommunityEvent(event) && event.editorialCommunityId.value === groupId.value) {
-    return count - 1;
+    return {
+      ...meta,
+      followerCount: meta.followerCount - 1,
+    };
   }
-  return count;
+  if (isEditorialCommunityReviewedArticleEvent(event) && event.editorialCommunityId.value === groupId.value) {
+    return {
+      ...meta,
+      reviewCount: meta.reviewCount + 1,
+    };
+  }
+  return meta;
 };
 
-type ProjectGroupMeta = (events: ReadonlyArray<DomainEvent>) => (groupId: GroupId) => {
+type GroupMeta = {
   reviewCount: number,
   followerCount: number,
 };
 
-export const projectGroupMeta: ProjectGroupMeta = (events) => (groupId) => ({
-  reviewCount: reviewCounter(groupId, events),
-  followerCount: RA.reduce(0, followerCounter(groupId))(events),
-});
+type ProjectGroupMeta = (events: ReadonlyArray<DomainEvent>) => (groupId: GroupId) => GroupMeta;
+
+export const projectGroupMeta: ProjectGroupMeta = (events) => (groupId) => pipe(
+  events,
+  RA.reduce({
+    reviewCount: 0,
+    followerCount: 0,
+  }, reducer(groupId)),
+);
