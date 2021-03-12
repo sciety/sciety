@@ -3,7 +3,6 @@ import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RT from 'fp-ts/ReaderTask';
-import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -51,7 +50,7 @@ const articleVersionToFeedItem = (
   server: ArticleServer,
   feedEvent: ArticleVersionEvent,
 ) => (
-  T.of(O.some({ ...feedEvent, server }))
+  T.of({ ...feedEvent, server })
 );
 
 const inferredUrlFromReviewId = (reviewId: ReviewId) => {
@@ -96,7 +95,7 @@ const reviewToFeedItem = (
   sequenceS(T.task),
   T.map(({
     editorialCommunity, review, reviewResponses, userReviewResponse,
-  }) => O.some({
+  }) => ({
     type: 'review' as const,
     id: feedEvent.reviewId,
     source: review.url,
@@ -129,7 +128,7 @@ export const getFeedEventsContent: GetFeedEventsContent = (feedEvents, server, u
   countReviewResponses,
   getUserReviewResponse,
 }) => {
-  const toFeedItem = (feedEvent: FeedEvent): T.Task<O.Option<FeedItem>> => {
+  const toFeedItem = (feedEvent: FeedEvent): T.Task<FeedItem> => {
     switch (feedEvent.type) {
       case 'article-version':
         return articleVersionToFeedItem(server, feedEvent);
@@ -142,6 +141,5 @@ export const getFeedEventsContent: GetFeedEventsContent = (feedEvents, server, u
   return pipe(
     feedEvents,
     T.traverseArray(toFeedItem),
-    T.map(RA.compact),
   );
 };
