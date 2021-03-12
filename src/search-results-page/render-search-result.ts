@@ -14,7 +14,7 @@ export type ArticleSearchResult = {
   reviewCount: number,
 };
 
-type GroupSearchResult = {
+export type GroupSearchResult = {
   _tag: 'Group',
   id: GroupId,
   name: string,

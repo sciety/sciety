@@ -1,11 +1,9 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { ArticleSearchResult } from './render-search-result';
-import { SearchResults } from './render-search-results';
+import { ArticleSearchResult, GroupSearchResult } from './render-search-result';
 import { Doi } from '../types/doi';
 import { DomainEvent } from '../types/domain-events';
 import { Group } from '../types/group';
@@ -18,16 +16,15 @@ type MatchedArticle = Omit<Omit<ArticleSearchResult, '_tag'>, 'reviewCount'>;
 
 export type GetGroup = (editorialCommunityId: GroupId) => T.Task<O.Option<Group>>;
 export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
-type FindGroups = (query: string) => T.Task<ReadonlyArray<GroupId>>;
 type ProjectGroupMeta = (groupId: GroupId) => T.Task<{
   reviewCount: number,
   followerCount: number,
 }>;
 
-const constructGroupResult = (getGroup: GetGroup, projectGroupMeta: ProjectGroupMeta) => (groupId: GroupId) => pipe(
+export const constructGroupResult = (getGroup: GetGroup, projectGroupMeta: ProjectGroupMeta) => (groupId: GroupId): TE.TaskEither<'not-found', GroupSearchResult> => pipe(
   groupId,
   getGroup,
-  T.map(E.fromOption(() => 'not-found')),
+  T.map(E.fromOption(() => 'not-found' as const)),
   TE.chainW((group) => pipe(
     group.id,
     projectGroupMeta,
@@ -39,26 +36,6 @@ const constructGroupResult = (getGroup: GetGroup, projectGroupMeta: ProjectGroup
     })),
     TE.rightTask,
   )),
-);
-
-export const addGroupResults = (
-  getGroup: GetGroup,
-  projectGroupMeta: ProjectGroupMeta,
-  findGroups: FindGroups,
-) => (
-  query: string,
-) => (
-  searchResults: SearchResults,
-): TE.TaskEither<never, SearchResults> => pipe(
-  query,
-  findGroups,
-  T.chain(T.traverseArray(constructGroupResult(getGroup, projectGroupMeta))),
-  T.map(RA.rights),
-  T.map((groupSearchResults) => ({
-    total: searchResults.total + groupSearchResults.length,
-    items: [...groupSearchResults, ...searchResults.items],
-  })),
-  TE.rightTask,
 );
 
 export type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{

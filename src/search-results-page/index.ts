@@ -9,7 +9,7 @@ import { renderErrorPage, RenderPage, renderPage } from './render-page';
 import { ArticleSearchResult, renderSearchResult, SearchResult } from './render-search-result';
 import { renderSearchResults, SearchResults } from './render-search-results';
 import {
-  addGroupResults,
+  constructGroupResult,
   FindReviewsForArticleDoi,
   GetAllEvents, GetGroup, toArticleViewModel,
 } from './search';
@@ -98,11 +98,17 @@ export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) =
     ),
     TE.rightTask,
   )),
-  TE.chainW(addGroupResults(
-    ports.getGroup,
-    projectGroupMeta(ports.getAllEvents),
+  TE.chainW((searchResults) => pipe(
+    params.query,
     findGroups(ports.fetchStaticFile, bootstrapEditorialCommunities),
-  )(params.query)),
+    T.chain(T.traverseArray(constructGroupResult(ports.getGroup, projectGroupMeta(ports.getAllEvents)))),
+    T.map(RA.rights),
+    T.map((groupSearchResults) => ({
+      total: searchResults.total + groupSearchResults.length,
+      items: [...groupSearchResults, ...searchResults.items],
+    })),
+    TE.rightTask,
+  )),
   TE.map(selectSubsetToDisplay(10)),
   TE.chainW(fetchExtraDetails(ports)),
   TE.map(renderSearchResults(renderSearchResult)(params.query)),
