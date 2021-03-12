@@ -39,7 +39,15 @@ $vertical-space-above-title--wide: baseline.increments(5);
 .search-form {
   grid-column: 1 / -1;
   margin-left: 1rem;
+  margin-right: 1rem;
   margin-bottom: baseline.increments(1.5);
+}
+
+.search-form__text {
+  border: 1px solid settings.$colour-furniture;
+  border-radius: settings.$border-radius;
+  height: baseline.increments(6);
+  width: 100%;
 }
 
 .sciety-grid--search-results > .search-results {
@@ -55,6 +63,11 @@ $vertical-space-above-title--wide: baseline.increments(5);
   .search-form,
   .sciety-grid--search-results > .search-results {
     grid-column: 3/11;
+  }
+
+  .search-form {
+    margin-left: 0;
+    margin-right: 0;
   }
 }
 

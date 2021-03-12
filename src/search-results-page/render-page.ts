@@ -19,8 +19,8 @@ export const renderPage = (query: string) => (searchResults: HtmlFragment): Page
           <h1 class="page-heading--search">Search sciety</h1>
         </header>
         <form action="/articles" method="get" class="search-form">
-          <label for="searchText">Search term</label>
-          <input id="searchText" name="query">
+          <label for="searchText" class="visually-hidden">Search term</label>
+          <input id="searchText" name="query" class="search-form__text">
           <div>
             <button type="submit">Search</button>
             <button type="reset">Reset</button>
