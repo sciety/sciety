@@ -1,6 +1,5 @@
 import * as O from 'fp-ts/Option';
-import * as B from 'fp-ts/boolean';
-import { pipe } from 'fp-ts/function';
+import { constant, pipe } from 'fp-ts/function';
 import { renderSaveForm } from './render-save-form';
 import { renderSavedLink } from './render-saved-link';
 import { Doi } from '../types/doi';
@@ -12,14 +11,9 @@ type RenderSaveArticle = (doi: Doi, userId: O.Option<UserId>, hasUserSavedArticl
 
 export const renderSaveArticle: RenderSaveArticle = (doi, userId, hasUserSavedArticle) => pipe(
   userId,
+  O.filter(constant(hasUserSavedArticle)),
   O.fold(
     () => renderSaveForm(doi),
-    (u) => pipe(
-      hasUserSavedArticle,
-      B.fold(
-        () => renderSaveForm(doi),
-        () => renderSavedLink(u),
-      ),
-    ),
+    (u) => renderSavedLink(u),
   ),
 );
