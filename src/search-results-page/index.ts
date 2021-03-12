@@ -44,11 +44,15 @@ const selectSubsetToDisplay = (count: number) => (searchResults: SearchResults) 
   ),
 });
 
-const fetchExtra = (ports: Ports) => (item: SearchResult): T.Task<SearchResult> => {
+const fetchExtra = (ports: Ports) => (item: SearchResult): TE.TaskEither<'unavailable' | 'not-found', SearchResult> => {
   if (item._tag === 'Article') {
-    return toArticleViewModel(ports.findReviewsForArticleDoi)(item);
+    return pipe(
+      item,
+      toArticleViewModel(ports.findReviewsForArticleDoi), // TODO: Find reviewsForArticleDoi should return a TaskEither
+      TE.rightTask,
+    );
   }
-  return T.of(item);
+  return TE.right(item);
 };
 
 const fetchExtraDetails = (ports: Ports) => (searchResults: SearchResults) => pipe(
@@ -57,6 +61,7 @@ const fetchExtraDetails = (ports: Ports) => (searchResults: SearchResults) => pi
     items: pipe(
       searchResults.items,
       T.traverseArray(fetchExtra(ports)),
+      T.map(RA.rights),
     ),
   },
   sequenceS(T.task),
