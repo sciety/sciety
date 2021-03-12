@@ -1,12 +1,12 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { FetchStaticFile, findGroups } from './find-groups';
-import { FindReviewsForArticleDoi, projectArticleMeta } from './project-article-meta';
 import { projectGroupMeta } from './project-group-meta';
 import { renderErrorPage, RenderPage, renderPage } from './render-page';
 import { ArticleSearchResult, renderSearchResult } from './render-search-result';
 import { renderSearchResults } from './render-search-results';
 import {
+  FindReviewsForArticleDoi,
   GetAllEvents, GetGroup, search,
 } from './search';
 import { bootstrapEditorialCommunities } from '../data/bootstrap-editorial-communities';
@@ -55,7 +55,7 @@ export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) =
     ports.searchEuropePmc,
     findGroups(ports.fetchStaticFile, bootstrapEditorialCommunities),
     ports.getGroup,
-    projectArticleMeta(ports.findReviewsForArticleDoi),
+    ports.findReviewsForArticleDoi,
     projectGroupMeta(events),
   )(params.query)),
   TE.map(renderSearchResults(renderSearchResult)),
