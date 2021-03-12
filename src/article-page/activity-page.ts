@@ -1,4 +1,6 @@
 import * as O from 'fp-ts/Option';
+import * as R from 'fp-ts/Reader';
+import * as RT from 'fp-ts/ReaderTask';
 import * as RTE from 'fp-ts/ReaderTaskEither';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -111,10 +113,14 @@ export const articleActivityPage: ActivityPage = flow(
     )),
     TE.rightTask,
   )),
-  RTE.bindW('hasUserSavedArticle', ({ doi, userId }) => (ports: Ports) => pipe(
+  RTE.bindW('hasUserSavedArticle', ({ doi, userId }) => pipe(
     userId,
-    O.fold(constant(T.of(false)), (u) => projectHasUserSavedArticle(doi, u)(ports.getAllEvents)),
-    TE.rightTask,
+    O.fold(
+      constant(RT.of(false)),
+      (u) => projectHasUserSavedArticle(doi, u),
+    ),
+    RTE.rightReaderTask,
+    R.local((ports: Ports) => ports.getAllEvents),
   )),
   RTE.bindW('saveArticle', ({ doi, userId, hasUserSavedArticle }) => pipe(
     renderSaveArticle(doi, userId, hasUserSavedArticle),
