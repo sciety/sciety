@@ -6,7 +6,7 @@ import { flow, pipe } from 'fp-ts/function';
 import { FetchStaticFile, findGroups } from './find-groups';
 import { projectGroupMeta } from './project-group-meta';
 import { renderErrorPage, RenderPage, renderPage } from './render-page';
-import { renderSearchResult, SearchResult } from './render-search-result';
+import { ItemViewModel, renderSearchResult } from './render-search-result';
 import { renderSearchResults, SearchResults } from './render-search-results';
 import {
   constructGroupResult,
@@ -44,7 +44,7 @@ const selectSubsetToDisplay = (count: number) => (searchResults: SearchResults) 
   ),
 });
 
-const fetchExtra = (ports: Ports) => (item: SearchResult): TE.TaskEither<'unavailable' | 'not-found', SearchResult> => {
+const fetchExtra = (ports: Ports) => (item: ItemViewModel): TE.TaskEither<'unavailable' | 'not-found', ItemViewModel> => {
   if (item._tag === 'Article') {
     return pipe(
       item,

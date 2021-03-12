@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { ArticleViewModel, GroupSearchResult } from './render-search-result';
+import { ArticleViewModel, GroupViewModel } from './render-search-result';
 import { Doi } from '../types/doi';
 import { DomainEvent } from '../types/domain-events';
 import { Group } from '../types/group';
@@ -26,7 +26,7 @@ type ProjectGroupMeta = (groupId: GroupId) => T.Task<{
   followerCount: number,
 }>;
 
-export const constructGroupResult = (getGroup: GetGroup, projectGroupMeta: ProjectGroupMeta) => (groupId: GroupId): TE.TaskEither<'not-found', GroupSearchResult> => pipe(
+export const constructGroupResult = (getGroup: GetGroup, projectGroupMeta: ProjectGroupMeta) => (groupId: GroupId): TE.TaskEither<'not-found', GroupViewModel> => pipe(
   groupId,
   getGroup,
   T.map(E.fromOption(() => 'not-found' as const)),

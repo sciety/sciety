@@ -1,10 +1,10 @@
 import {
+  ItemViewModel,
   renderSearchResult,
-  SearchResult,
 } from '../../src/search-results-page/render-search-result';
 import { Doi } from '../../src/types/doi';
 
-const searchResult: SearchResult = {
+const searchResult: ItemViewModel = {
   _tag: 'Article',
   doi: new Doi('10.1101/833392'),
   title: 'the title',

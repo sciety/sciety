@@ -14,7 +14,7 @@ export type ArticleViewModel = {
   reviewCount: number,
 };
 
-export type GroupSearchResult = {
+export type GroupViewModel = {
   _tag: 'Group',
   id: GroupId,
   name: string,
@@ -24,7 +24,7 @@ export type GroupSearchResult = {
   reviewCount: number,
 };
 
-export type SearchResult = ArticleViewModel | GroupSearchResult;
+export type ItemViewModel = ArticleViewModel | GroupViewModel;
 
 const renderArticleSearchResult = flow(
   (result: ArticleViewModel) => `
@@ -41,7 +41,7 @@ const renderArticleSearchResult = flow(
   toHtmlFragment,
 );
 
-const renderGroupSearchResult = (result: GroupSearchResult) => pipe(
+const renderGroupSearchResult = (result: GroupViewModel) => pipe(
   `
     <div class="search-results-list__item_container">
       <a class="search-results-list__item__link" href="/groups/${result.id.value}">${result.name}</a>
@@ -57,7 +57,7 @@ const renderGroupSearchResult = (result: GroupSearchResult) => pipe(
   toHtmlFragment,
 );
 
-export type RenderSearchResult = (result: SearchResult) => HtmlFragment;
+export type RenderSearchResult = (result: ItemViewModel) => HtmlFragment;
 
 export const renderSearchResult: RenderSearchResult = (result) => {
   switch (result._tag) {

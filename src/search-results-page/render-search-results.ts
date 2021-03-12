@@ -3,12 +3,12 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { constant, pipe } from 'fp-ts/function';
-import { RenderSearchResult, SearchResult } from './render-search-result';
+import { ItemViewModel, RenderSearchResult } from './render-search-result';
 import { templateListItems } from '../shared-components';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 export type SearchResults = {
-  items: ReadonlyArray<SearchResult>,
+  items: ReadonlyArray<ItemViewModel>,
   total: number,
 };
 
