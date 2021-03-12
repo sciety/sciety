@@ -16,7 +16,7 @@ export const renderPage = (searchResults: HtmlFragment): Page => ({
     <div class="search-results-page__background--filler">
       <div class="sciety-grid sciety-grid--search-results">
         <header class="page-header page-header--search-results">
-          <h1>Search results</h1>
+          <h1 class="page-heading--search">Search sciety</h1>
         </header>
         <section class="search-results">
           ${searchResults}
