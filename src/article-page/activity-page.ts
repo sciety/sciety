@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as RTE from 'fp-ts/ReaderTaskEither';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, pipe } from 'fp-ts/function';
+import { constant, flow, pipe } from 'fp-ts/function';
 import striptags from 'striptags';
 import { FindReviewsForArticleDoi, FindVersionsForArticleDoi, getArticleFeedEvents } from './get-article-feed-events';
 import { FetchReview } from './get-feed-events-content';
@@ -112,9 +112,14 @@ export const articleActivityPage: ActivityPage = (params) => (ports) => pipe(
     )),
     TE.rightTask,
   )),
-  TE.bindW('saveArticle', ({ doi, userId }) => pipe(
-    renderSaveArticle(doi, userId)((...args) => projectHasUserSavedArticle(...args)(ports.getAllEvents)),
+  TE.bindW('hasUserSavedArticle', ({ doi, userId }) => pipe(
+    userId,
+    O.fold(constant(T.of(false)), (u) => projectHasUserSavedArticle(doi, u)(ports.getAllEvents)),
     TE.rightTask,
+  )),
+  TE.bindW('saveArticle', ({ doi, userId, hasUserSavedArticle }) => pipe(
+    renderSaveArticle(doi, userId, hasUserSavedArticle),
+    TE.right,
   )),
   TE.bindW('tweetThis', ({ doi }) => pipe(
     doi,
