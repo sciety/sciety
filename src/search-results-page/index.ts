@@ -59,5 +59,5 @@ export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) =
     projectGroupMeta(events),
   )(params.query)),
   TE.map(renderSearchResults(renderSearchResult)),
-  TE.bimap(renderErrorPage, renderPage),
+  TE.bimap(renderErrorPage, renderPage(params.query)),
 );

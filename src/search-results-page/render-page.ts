@@ -10,8 +10,8 @@ export const renderErrorPage = (error: 'unavailable'): RenderPageError => ({
   message: toHtmlFragment('We\'re having trouble searching for you, please come back later.'),
 });
 
-export const renderPage = (searchResults: HtmlFragment): Page => ({
-  title: 'Search results',
+export const renderPage = (query: string) => (searchResults: HtmlFragment): Page => ({
+  title: `Search results for ${query}`,
   content: toHtmlFragment(`
     <div class="search-results-page__background--filler">
       <div class="sciety-grid sciety-grid--search-results">
