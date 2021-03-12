@@ -60,7 +60,7 @@
 
 // TODO: extract to avatar mixin
 $_avatar-size: 47px;
-$_avatar-border-width: 1px;
+$_avatar-border-width: settings.$border-width;
 
 .followed-groups__item_avatar {
   width: $_avatar-size;

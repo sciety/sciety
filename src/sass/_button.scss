@@ -29,7 +29,7 @@
   font-weight: bold;
   background-color: settings.$colour-white;
   color: settings.$colour-ui-default;
-  border: 1px solid currentColor;
+  border: settings.$border-width solid currentColor;
 
   &:hover,
   &:active {

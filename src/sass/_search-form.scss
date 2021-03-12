@@ -18,7 +18,7 @@
 }
 
 .search-form__input {
-  border: 1px solid settings.$colour-grey-one;
+  border: settings.$border-width solid settings.$colour-grey-one;
   border-right-color: transparent;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
@@ -35,7 +35,7 @@
 }
 
 .search-form__button {
-  border: 1px solid settings.$colour-ui-default;
+  border: settings.$border-width solid settings.$colour-ui-default;
   border-radius: 0 5px 5px 0;
   cursor: pointer;
 

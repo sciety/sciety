@@ -26,11 +26,11 @@
   }
 
   @media screen and (min-width: settings.$breakpoint-narrow) {
-    border-left-width: 1px;
-    border-right-width: 1px;
+    border-left-width: settings.$border-width;
+    border-right-width: settings.$border-width;
 
     &:first-child {
-      border-top-width: 1px;
+      border-top-width: settings.$border-width;
     }
   }
 
@@ -116,7 +116,7 @@ p.activity-feed__item__title {
   align-items: center;
   padding: baseline.increments(1.5) functions.px-to-rem(16px);
   background-color: settings.$colour-component-background;
-  border-top: 1px solid settings.$colour-furniture;
+  border-top: settings.$border-width solid settings.$colour-furniture;
   @media screen and (min-width: settings.$breakpoint-narrow) {
     padding-left: functions.px-to-rem(24px);
     padding-right: functions.px-to-rem(24px);
@@ -162,7 +162,7 @@ p.activity-feed__item__title {
   @include typography.sizing(14px, 1.75);
   min-width: functions.px-to-rem(52px);
   padding: functions.px-to-rem(5px);
-  border: 1px solid settings.$colour-brand;
+  border: settings.$border-width solid settings.$colour-brand;
   border-radius: settings.$border-radius;
   background-color: settings.$colour-brand;
   color: settings.$colour-white;

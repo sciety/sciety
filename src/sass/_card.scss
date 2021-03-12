@@ -2,7 +2,7 @@
 @use 'typography';
 
 @mixin full-tab-card () {
-  border: 1px solid settings.$colour-furniture;
+  border: settings.$border-width solid settings.$colour-furniture;
   background-color: settings.$colour-white;
   color: settings.$colour-text-primary;
 

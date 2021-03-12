@@ -3,7 +3,7 @@
 @use 'typography';
 
 $_avatar-size: 47px;
-$_avatar-border-width: 1px;
+$_avatar-border-width: settings.$border-width;
 
 .summary-feed-item {
   font-family: settings.$font-secondary;
