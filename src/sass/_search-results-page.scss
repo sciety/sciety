@@ -12,8 +12,12 @@ $search-form-inline-margin: settings.$base-font-measure;
 
 .sciety-grid--search-results > .page-header--search-results {
   grid-column: 1 / -1;
-  margin: 0 1rem;
   color: settings.$colour-text-primary;
+  margin: 0 1rem;
+
+  @media screen and (min-width: settings.$breakpoint-narrow) {
+    margin: 0;
+  }
 }
 
 .page-heading--search {
