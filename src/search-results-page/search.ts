@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import { ArticleSearchResult } from './render-search-result';
 import { SearchResults } from './render-search-results';
 import { Doi } from '../types/doi';
@@ -41,16 +41,6 @@ const constructGroupResult = (getGroup: GetGroup, projectGroupMeta: ProjectGroup
   )),
 );
 
-const getGroupResults = (
-  getGroup: GetGroup,
-  projectGroupMeta: ProjectGroupMeta,
-  findGroups: FindGroups,
-) => flow(
-  findGroups,
-  T.chain(T.traverseArray(constructGroupResult(getGroup, projectGroupMeta))),
-  T.map(RA.rights),
-);
-
 export const addGroupResults = (
   getGroup: GetGroup,
   projectGroupMeta: ProjectGroupMeta,
@@ -61,12 +51,14 @@ export const addGroupResults = (
   searchResults: SearchResults,
 ): TE.TaskEither<never, SearchResults> => pipe(
   query,
-  getGroupResults(getGroup, projectGroupMeta, findGroups),
+  findGroups,
+  T.chain(T.traverseArray(constructGroupResult(getGroup, projectGroupMeta))),
+  T.map(RA.rights),
   T.map((groupSearchResults) => ({
     total: searchResults.total + groupSearchResults.length,
     items: [...groupSearchResults, ...searchResults.items],
   })),
-  T.map(E.right),
+  TE.rightTask,
 );
 
 export type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
