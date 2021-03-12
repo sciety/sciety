@@ -65,6 +65,11 @@ $vertical-space-above-title--wide: baseline.increments(5);
   grid-column: 1 / -1;
 }
 
+.search-results__summary {
+  margin-left: functions.px-to-rem(16px + 12px + 1px);
+  font-family: Ubuntu, sans-serif;
+}
+
 @media screen and (min-width: settings.$breakpoint-narrow) {
   .page-heading--search {
     padding-top: $vertical-space-above-title--wide;
@@ -80,11 +85,10 @@ $vertical-space-above-title--wide: baseline.increments(5);
     margin-left: 0;
     margin-right: 0;
   }
-}
 
-.search-results__summary {
-  margin-left: 1rem;
-  font-family: Ubuntu, sans-serif;
+  .search-results__summary {
+    margin-left: functions.px-to-rem(12px + 1px);
+  }
 }
 
 .search-results__query {
