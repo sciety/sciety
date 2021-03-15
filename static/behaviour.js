@@ -13,6 +13,7 @@
     more.innerHTML = 'More';
     more.setAttribute('aria-label', 'Read more of this content');
     if(teaser.lastElementChild?.nodeName === 'P') {
+      teaser.lastElementChild.appendChild(doc.createTextNode(' '));
       teaser.lastElementChild.appendChild(more);
     } else {
       teaser.appendChild(more);
