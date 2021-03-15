@@ -32,8 +32,8 @@ export const reviewPreviewPage: ReviewPreviewPage = ({id}) => (ports) => pipe(
     source: O.none,
     occurredAt: new Date(),
     editorialCommunityId: new GroupId(''),
-    editorialCommunityAvatar: '',
-    editorialCommunityName: '',
+    editorialCommunityAvatar: '/static/images/sciety-logo.jpg',
+    editorialCommunityName: 'Some Group',
     fullText: pipe(review.fullText, sanitise, O.some),
     counts: { helpfulCount: 0, notHelpfulCount: 0 },
     current: O.none,
@@ -56,7 +56,7 @@ export const reviewPreviewPage: ReviewPreviewPage = ({id}) => (ports) => pipe(
               <h1>Review preview of ${id}</h1>
             </header>
             <div class="article-tabs">
-              <a class="article-tabs__tab article-tabs__link" href="/articles/meta/10.1101/2020.05.14.096784" aria-label="Discover article information and abstract">Article</a>
+              <div class="article-tabs__tab article-tabs__link">Article</div>
               <h2 class="article-tabs__tab article-tabs__heading">Activity</h2>
             </div>
             <div class="main-content">
