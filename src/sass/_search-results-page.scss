@@ -138,16 +138,15 @@ $clear-button-inline-size: 48px;
     border-left-width: settings.$border-width;
     border-right-width: settings.$border-width;
     padding: baseline.increments(3) functions.px-to-rem(24px);
-
-    &:first-child {
-      border-top-width: settings.$border-width;
-    }
   }
 
   &:first-child {
     border-top-width: 0;
-  }
 
+    @include breakpoints.from-narrow {
+      border-top-width: settings.$border-width;
+    }
+  }
 
   &:last-child {
     margin-bottom: 0;
