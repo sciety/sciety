@@ -47,6 +47,7 @@ $search-form-inline-margin: settings.$base-font-measure;
   margin-left: functions.px-to-rem($search-form-inline-margin);
   margin-right: functions.px-to-rem($search-form-inline-margin);
   margin-bottom: baseline.increments(1.5);
+  position: relative;
 }
 
 .search-form__text {
@@ -64,6 +65,16 @@ $search-form-inline-margin: settings.$base-font-measure;
 .search-form__text::placeholder {
   color: inherit;
   opacity: 0.6;
+}
+
+.search-form__clear {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: transparent;
+  border-width: 0;
+  cursor: pointer;
 }
 
 .sciety-grid--search-results > .search-results {
