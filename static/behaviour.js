@@ -1,4 +1,5 @@
 (function(doc) {
+  // for activity page
   function buildToggle() {
     const button = doc.createElement('button');
     button.classList.add('activity-feed__item-toggle');
@@ -43,4 +44,13 @@
       fullText.classList.add('hidden');
     });
   });
+
+  // for search results page
+  const clearSearchText = doc.getElementById('clearSearchText');
+  if (clearSearchText) {
+    clearSearchText.setAttribute('aria-label', 'Clear search text');
+    clearSearchText.addEventListener('click', function (e) {
+      doc.getElementById('searchText').setAttribute('value', '');
+    });
+  }
 }(window.document));
