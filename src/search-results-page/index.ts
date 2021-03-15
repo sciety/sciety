@@ -55,9 +55,24 @@ pipe(
 export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) => pipe(
   {
     query: TE.right(params.query),
-    articles: ports.searchEuropePmc(params.query),
+    articles: pipe(
+      params.query,
+      ports.searchEuropePmc,
+      TE.map((results) => ({
+        ...results,
+        items: results.items.map((article) => ({
+          _tag: 'Article' as const,
+          ...article,
+        })),
+      })),
+    ),
     groups: pipe(
-      findGroups(ports.fetchStaticFile, bootstrapEditorialCommunities)(params.query),
+      params.query,
+      findGroups(ports.fetchStaticFile, bootstrapEditorialCommunities),
+      T.map(RA.map((group) => ({
+        _tag: 'Group' as const,
+        ...group,
+      }))),
       TE.rightTask,
     ),
   },
@@ -67,14 +82,8 @@ export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) =
     availableMatches: state.groups.length + state.articles.total,
     itemsToDisplay: pipe(
       [
-        ...state.groups.map((group) => ({
-          _tag: 'Group' as const,
-          ...group,
-        })),
-        ...state.articles.items.map((article) => ({
-          _tag: 'Article' as const,
-          ...article,
-        })),
+        ...state.groups,
+        ...state.articles.items,
       ],
       RA.takeLeft(10),
     ),
