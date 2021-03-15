@@ -1,0 +1,5 @@
+@use 'settings';
+
+@mixin from-narrow() {
+  @media screen and (min-width: settings.$breakpoint-narrow) { @content; }
+}

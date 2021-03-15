@@ -1,4 +1,5 @@
 @use 'baseline';
+@use 'breakpoints';
 @use 'card';
 @use 'functions';
 @use 'list';
@@ -16,7 +17,7 @@ $clear-button-inline-size: 48px;
   color: settings.$colour-text-primary;
   margin: 0 1rem;
 
-  @media screen and (min-width: settings.$breakpoint-narrow) {
+  @include breakpoints.from-narrow {
     margin: 0;
   }
 }
@@ -97,7 +98,7 @@ $clear-button-inline-size: 48px;
   font-family: Ubuntu, sans-serif;
 }
 
-@media screen and (min-width: settings.$breakpoint-narrow) {
+@include breakpoints.from-narrow {
   .page-heading--search {
     padding-top: $vertical-space-above-title--wide;
   }
@@ -135,11 +136,7 @@ $clear-button-inline-size: 48px;
   padding: baseline.increments(2) functions.px-to-rem(16px);
   display: flex;
 
-  &:first-child {
-    border-top-width: 0;
-  }
-
-  @media screen and (min-width: settings.$breakpoint-narrow) {
+  @include breakpoints.from-narrow {
     border-left-width: settings.$border-width;
     border-right-width: settings.$border-width;
     padding: baseline.increments(3) functions.px-to-rem(24px);
@@ -148,6 +145,11 @@ $clear-button-inline-size: 48px;
       border-top-width: settings.$border-width;
     }
   }
+
+  &:first-child {
+    border-top-width: 0;
+  }
+
 
   &:last-child {
     margin-bottom: 0;
