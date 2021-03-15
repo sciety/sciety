@@ -9,6 +9,7 @@ $vertical-space-above-title--narrow: baseline.increments(2);
 $vertical-space-above-title--wide: baseline.increments(5);
 $search-form-text-inline-padding: 12px;
 $search-form-inline-margin: settings.$base-font-measure;
+$clear-button-inline-size: 48px;
 
 .sciety-grid--search-results > .page-header--search-results {
   grid-column: 1 / -1;
@@ -59,7 +60,7 @@ $search-form-inline-margin: settings.$base-font-measure;
   padding-top: baseline.increments(17/8);
   padding-bottom: baseline.increments(17/8);
   padding-left: functions.px-to-rem($search-form-text-inline-padding);
-  padding-right: 48px;
+  padding-right: functions.px-to-rem($clear-button-inline-size);
   font-family: Ubuntu, sans-serif;
   letter-spacing: 0.1px;
   color: settings.$colour-text-primary;
@@ -75,9 +76,16 @@ $search-form-inline-margin: settings.$base-font-measure;
   right: 0;
   top: 0;
   bottom: 0;
+  padding: 0;
   background-color: transparent;
   border-width: 0;
   cursor: pointer;
+  width: functions.px-to-rem($clear-button-inline-size);
+}
+
+.search-form__clear_icon {
+  display: block;
+  margin: 0 auto;
 }
 
 .sciety-grid--search-results > .search-results {
