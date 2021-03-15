@@ -49,8 +49,29 @@ export const reviewPreviewPage: ReviewPreviewPage = ({id}) => (ports) => pipe(
       `),
     }),
     (reviewCard) => ({
-      content: reviewCard,
-      title: `Review preview for ${id}`,
+      content: toHtmlFragment(`
+        <div class="activity-page__background--filler">
+          <article class="sciety-grid sciety-grid--article">
+            <header class="page-header page-header--article">
+              <h1>Review preview of ${id}</h1>
+            </header>
+            <div class="article-tabs">
+              <a class="article-tabs__tab article-tabs__link" href="/articles/meta/10.1101/2020.05.14.096784" aria-label="Discover article information and abstract">Article</a>
+              <h2 class="article-tabs__tab article-tabs__heading">Activity</h2>
+            </div>
+            <div class="main-content">
+              <section class="activity-feed">
+                <ol role="list" class="activity-feed__list">
+                  <li class="activity-feed__item">
+                    ${reviewCard}
+                  </li>
+                </ol>
+              </section>
+            </div>
+          </article>
+        </div>
+      `),
+      title: `Review preview of ${id}`,
     }),
   ),
 );
