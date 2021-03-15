@@ -1,3 +1,4 @@
+import { htmlEscape } from 'escape-goat';
 import * as TE from 'fp-ts/TaskEither';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
@@ -20,7 +21,7 @@ export const renderPage = (query: string) => (searchResults: HtmlFragment): Page
         </header>
         <form action="/articles" method="get" class="search-form">
           <label for="searchText" class="visually-hidden">Search term</label>
-          <input id="searchText" name="query" placeholder="Discover new evaluations…" class="search-form__text">
+          ${htmlEscape`<input value="${query}" id="searchText" name="query" placeholder="Discover new evaluations…" class="search-form__text">`}
           <div>
             <button type="submit" class="visually-hidden">Search</button>
             <button type="reset" class="visually-hidden">Reset</button>
