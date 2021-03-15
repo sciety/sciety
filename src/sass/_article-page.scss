@@ -1,4 +1,5 @@
 @use 'baseline';
+@use 'breakpoints';
 @use 'button';
 @use 'functions';
 @use 'list';
@@ -43,7 +44,7 @@ $vertical-space-above-title--wide: baseline.increments(5);
   color: settings.$colour-text-primary;
 }
 
-@media screen and (min-width: settings.$breakpoint-narrow) {
+@include breakpoints.from-narrow {
   .sciety-grid.sciety-grid--article h1 {
     @include typography.sizing(26px, 3.75);
   }

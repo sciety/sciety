@@ -1,4 +1,5 @@
 @use 'baseline';
+@use 'breakpoints';
 @use 'functions';
 @use 'list';
 @use 'settings';
@@ -65,7 +66,7 @@
     margin-left: auto;
     padding-right: 0;
 
-    @media screen and (min-width: settings.$breakpoint-narrow) {
+    @include breakpoints.from-narrow {
       padding-right: 1.5rem;
     }
   }
@@ -99,7 +100,7 @@
 }
 
 .feedback-button {
-  @media screen and (max-width: settings.$breakpoint-narrow) {
+  @include breakpoints.from-narrow {
     display: none;
   }
 }
