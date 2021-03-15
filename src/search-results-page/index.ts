@@ -40,18 +40,9 @@ type Params = {
 
 type Matches = {
   query: string,
-  groups: ReadonlyArray<{
-    _tag: 'Group',
-    id: GroupId,
-  }>,
+  groups: ReadonlyArray<GroupItem>,
   articles: {
-    items: ReadonlyArray<{
-      _tag: 'Article',
-      doi: Doi,
-      title: string,
-      authors: string,
-      postedDate: Date,
-    }>,
+    items: ReadonlyArray<ArticleItem>,
     total: number,
   },
 };
@@ -85,22 +76,6 @@ const selectSubsetToDisplay = (limit: number) => (state: Matches): LimitedSet =>
 });
 
 type SearchResultsPage = (params: Params) => ReturnType<RenderPage>;
-
-/* Solution sketch:
-
-pipe(
-  {
-    query: params.query,
-    groups: findMatchingGroups(ports.fetchStaticFile, bootstrapEditorialCommunities, 10)(params.query),
-    articles: findMatchingArticles(params.query, 10),
-  },
-  sequenceS(TE.taskEither),
-  TE.map(selectSubsetToDisplay(10)),
-  TE.chain(fetchExtraDetails(ports)),
-  TE.bimap(renderErrorPage, renderPage),
-)
-
-*/
 
 const fetchItemDetails = (ports: Ports) => (item: GroupItem | ArticleItem): TE.TaskEither<'not-found', GroupViewModel | ArticleViewModel> => {
   if (item._tag === 'Article') {
@@ -136,7 +111,7 @@ type FindMatchingGroups = (
 }>>;
 
 const findMatchingGroups: FindMatchingGroups = (fetchStaticFile, allGroups) => flow(
-  findGroups(fetchStaticFile, allGroups),
+  findGroups(fetchStaticFile, allGroups), // TODO: should only ask for 10 of n
   T.map(RA.map((groupId) => ({
     _tag: 'Group' as const,
     id: groupId,
