@@ -73,6 +73,7 @@ module.exports = {
     'jest/no-disabled-tests': 'off',
     'jest/no-hooks': 'off',
     'jest/prefer-expect-assertions': 'off',
+    'jest/unbound-method': 'off',
     'max-len': ['error', 120, 2, {
       ignoreComments: false,
       ignoreRegExpLiterals: true,
