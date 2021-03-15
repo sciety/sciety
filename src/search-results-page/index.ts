@@ -94,6 +94,10 @@ export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) =
     ),
   },
   sequenceS(TE.taskEither),
+  TE.map((state) => ({
+    ...state,
+    availableMatches: state.groups.length + state.articles.total,
+  })),
   TE.chainW(flow(
     (state) => pipe(
       state.articles.items,
