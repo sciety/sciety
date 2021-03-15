@@ -19,38 +19,14 @@ import { Doi } from '../types/doi';
 import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
 
-type ArticleSearchResults = {
-  items: ReadonlyArray<MatchedArticle>,
-  total: number,
-};
-
-type FindArticles = (query: string) => TE.TaskEither<'unavailable', ArticleSearchResults>;
-
-type Ports = {
-  searchEuropePmc: FindArticles,
-  findReviewsForArticleDoi: FindReviewsForArticleDoi,
-  getGroup: GetGroup,
-  getAllEvents: GetAllEvents,
-  fetchStaticFile: FetchStaticFile,
-};
-
-type Params = {
-  query: string,
-};
-
-type Matches = {
-  query: string,
-  groups: ReadonlyArray<GroupItem>,
-  articles: {
-    items: ReadonlyArray<ArticleItem>,
-    total: number,
-  },
-};
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 type GroupItem = {
   _tag: 'Group',
   id: GroupId,
 };
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 type ArticleItem = {
   _tag: 'Article',
@@ -60,10 +36,15 @@ type ArticleItem = {
   postedDate: Date,
 };
 
-type LimitedSet = {
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+type Matches = {
   query: string,
-  availableMatches: number,
-  itemsToDisplay: ReadonlyArray<GroupItem | ArticleItem>,
+  groups: ReadonlyArray<GroupItem>,
+  articles: {
+    items: ReadonlyArray<ArticleItem>,
+    total: number,
+  },
 };
 
 const selectSubsetToDisplay = (limit: number) => (state: Matches): LimitedSet => ({
@@ -75,7 +56,7 @@ const selectSubsetToDisplay = (limit: number) => (state: Matches): LimitedSet =>
   ),
 });
 
-type SearchResultsPage = (params: Params) => ReturnType<RenderPage>;
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 const fetchItemDetails = (ports: Ports) => (item: GroupItem | ArticleItem): TE.TaskEither<'not-found', GroupViewModel | ArticleViewModel> => {
   if (item._tag === 'Article') {
@@ -92,6 +73,12 @@ const fetchItemDetails = (ports: Ports) => (item: GroupItem | ArticleItem): TE.T
   );
 };
 
+type LimitedSet = {
+  query: string,
+  availableMatches: number,
+  itemsToDisplay: ReadonlyArray<GroupItem | ArticleItem>,
+};
+
 const fetchExtraDetails = (ports: Ports) => (state: LimitedSet): TE.TaskEither<never, SearchResults> => pipe(
   state.itemsToDisplay,
   T.traverseArray(fetchItemDetails(ports)),
@@ -102,6 +89,8 @@ const fetchExtraDetails = (ports: Ports) => (state: LimitedSet): TE.TaskEither<n
   })),
   TE.rightTask,
 );
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 type FindMatchingGroups = (
   fsf: FetchStaticFile, b: RNEA.ReadonlyNonEmptyArray<Group>,
@@ -119,6 +108,8 @@ const findMatchingGroups: FindMatchingGroups = (fetchStaticFile, allGroups) => f
   TE.rightTask,
 );
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 const findMatchingArticles = (findArticles: FindArticles) => flow(
   findArticles,
   TE.map((results) => ({
@@ -129,6 +120,27 @@ const findMatchingArticles = (findArticles: FindArticles) => flow(
     })),
   })),
 );
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+type FindArticles = (query: string) => TE.TaskEither<'unavailable', {
+  items: ReadonlyArray<MatchedArticle>,
+  total: number,
+}>;
+
+type Ports = {
+  searchEuropePmc: FindArticles,
+  findReviewsForArticleDoi: FindReviewsForArticleDoi,
+  getGroup: GetGroup,
+  getAllEvents: GetAllEvents,
+  fetchStaticFile: FetchStaticFile,
+};
+
+type Params = {
+  query: string,
+};
+
+type SearchResultsPage = (params: Params) => ReturnType<RenderPage>;
 
 export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) => pipe(
   {
