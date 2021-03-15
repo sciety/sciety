@@ -111,6 +111,33 @@ export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) =
       RA.takeLeft(10),
     ),
   })),
+  TE.chainW((state) => pipe(
+    ({
+      query: T.of(state.query),
+      availableMatches: T.of(state.availableMatches),
+      articles: T.of(state.articles),
+      itemsToDisplay: pipe(
+        state.itemsToDisplay,
+        T.traverseArray((item) => {
+          if (item._tag === 'Article') {
+            return pipe(
+              item,
+              // TODO: Find reviewsForArticleDoi should return a TaskEither
+              toArticleViewModel(ports.findReviewsForArticleDoi),
+              (f) => TE.rightTask<'not-found', ItemViewModel>(f),
+            );
+          }
+          return pipe(
+            item,
+            constructGroupResult(ports.getGroup, projectGroupMeta(ports.getAllEvents)),
+          );
+        }),
+        T.map(RA.rights),
+      ),
+    }),
+    sequenceS(T.task),
+    TE.rightTask,
+  )),
   TE.chainW(flow(
     (state) => pipe(
       state.articles.items,
