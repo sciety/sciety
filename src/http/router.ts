@@ -32,6 +32,7 @@ import { finishRespondCommand } from '../respond/finish-respond-command';
 import { saveRespondCommand } from '../respond/save-respond-command';
 import { finishSaveArticleCommand } from '../save-article/finish-save-article-command';
 import { saveSaveArticleCommand } from '../save-article/save-save-article-command';
+import { searchPage } from '../search-page';
 import { searchResultsPage } from '../search-results-page';
 import { termsPage } from '../terms-page';
 import { DoiFromString } from '../types/codecs/DoiFromString';
@@ -126,6 +127,9 @@ export const createRouter = (adapters: Adapters): Router => {
       TE.fromEither,
       TE.chain(searchResultsPage(adapters)),
     )));
+
+  router.get('/search',
+    pageHandler(() => pipe(searchPage, TE.right)));
 
   router.get('/articles/:doi(10\\..+)',
     async (context, next) => {
