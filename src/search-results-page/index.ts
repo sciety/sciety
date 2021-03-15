@@ -14,6 +14,8 @@ import {
   GetAllEvents, GetGroup, MatchedArticle, toArticleViewModel,
 } from './search';
 import { bootstrapEditorialCommunities } from '../data/bootstrap-editorial-communities';
+import { Doi } from '../types/doi';
+import { GroupId } from '../types/group-id';
 
 type ArticleSearchResults = {
   items: ReadonlyArray<MatchedArticle>,
@@ -33,6 +35,48 @@ type Ports = {
 type Params = {
   query: string,
 };
+
+type Matches = {
+  query: string,
+  groups: ReadonlyArray<{
+    _tag: 'Group',
+    id: GroupId,
+  }>,
+  articles: {
+    items: ReadonlyArray<{
+      _tag: 'Article',
+      doi: Doi,
+      title: string,
+      authors: string,
+      postedDate: Date,
+    }>,
+    total: number,
+  },
+};
+
+type LimitedSet = {
+  query: string,
+  availableMatches: number,
+  itemsToDisplay: ReadonlyArray<{
+    _tag: 'Group',
+    id: GroupId,
+  } | {
+    _tag: 'Article',
+    doi: Doi,
+    title: string,
+    authors: string,
+    postedDate: Date,
+  }>,
+};
+
+const selectSubsetToDisplay = (limit: number) => (state: Matches): LimitedSet => ({
+  ...state,
+  availableMatches: state.groups.length + state.articles.total,
+  itemsToDisplay: pipe(
+    [...state.groups, ...state.articles.items],
+    RA.takeLeft(limit),
+  ),
+});
 
 type SearchResultsPage = (params: Params) => ReturnType<RenderPage>;
 
@@ -69,30 +113,19 @@ export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) =
     groups: pipe(
       params.query,
       findGroups(ports.fetchStaticFile, bootstrapEditorialCommunities),
-      T.map(RA.map((group) => ({
+      T.map(RA.map((groupId) => ({
         _tag: 'Group' as const,
-        ...group,
+        id: groupId,
       }))),
       TE.rightTask,
     ),
   },
   sequenceS(TE.taskEither),
-  TE.map((state) => ({
-    ...state,
-    availableMatches: state.groups.length + state.articles.total,
-    itemsToDisplay: pipe(
-      [
-        ...state.groups,
-        ...state.articles.items,
-      ],
-      RA.takeLeft(10),
-    ),
-  })),
+  TE.map(selectSubsetToDisplay(10)),
   TE.chainW((state) => pipe(
     ({
       query: T.of(state.query),
       availableMatches: T.of(state.availableMatches),
-      articles: T.of(state.articles),
       itemsToDisplay: pipe(
         state.itemsToDisplay,
         T.traverseArray((item) => {
@@ -105,7 +138,7 @@ export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) =
             );
           }
           return pipe(
-            item,
+            item.id,
             constructGroupResult(ports.getGroup, projectGroupMeta(ports.getAllEvents)),
           );
         }),
