@@ -7,7 +7,6 @@ import { FetchStaticFile, findGroups } from './find-groups';
 import { projectGroupMeta } from './project-group-meta';
 import { renderErrorPage, RenderPage, renderPage } from './render-page';
 import { ItemViewModel } from './render-search-result';
-import { renderSearchResults } from './render-search-results';
 import {
   constructGroupResult,
   FindReviewsForArticleDoi,
@@ -148,6 +147,5 @@ export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) =
     sequenceS(T.task),
     TE.rightTask,
   )),
-  TE.map(renderSearchResults),
-  TE.bimap(renderErrorPage, renderPage(params.query)),
+  TE.bimap(renderErrorPage, renderPage),
 );

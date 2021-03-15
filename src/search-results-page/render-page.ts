@@ -1,6 +1,7 @@
 import { htmlEscape } from 'escape-goat';
 import * as TE from 'fp-ts/TaskEither';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { renderSearchResults, SearchResults } from './render-search-results';
+import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 
@@ -11,8 +12,8 @@ export const renderErrorPage = (error: 'unavailable'): RenderPageError => ({
   message: toHtmlFragment('We\'re having trouble searching for you, please come back later.'),
 });
 
-export const renderPage = (query: string) => (searchResults: HtmlFragment): Page => ({
-  title: `Search results for ${query}`,
+export const renderPage = (searchResults: SearchResults): Page => ({
+  title: `Search results for ${searchResults.query}`,
   content: toHtmlFragment(`
     <div class="search-results-page__background--filler">
       <div class="sciety-grid sciety-grid--search-results">
@@ -21,14 +22,14 @@ export const renderPage = (query: string) => (searchResults: HtmlFragment): Page
         </header>
         <form action="/articles" method="get" class="search-form">
           <label for="searchText" class="visually-hidden">Search term</label>
-          ${htmlEscape`<input value="${query}" id="searchText" name="query" placeholder="Discover new evaluations…" class="search-form__text">`}
+          ${htmlEscape`<input value="${searchResults.query}" id="searchText" name="query" placeholder="Discover new evaluations…" class="search-form__text">`}
           <button type="reset" id="clearSearchText" class="search-form__clear visually-hidden">
             <img src="/static/images/clear-search-text-icon.svg" class="search-form__clear_icon" alt="">
           </button>
           <button type="submit" class="visually-hidden">Search</button>
         </form>
         <section class="search-results">
-          ${searchResults}
+          ${renderSearchResults(searchResults)}
         </section>
       </div>
     </div>

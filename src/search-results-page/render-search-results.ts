@@ -7,7 +7,7 @@ import { ItemViewModel, renderSearchResult } from './render-search-result';
 import { templateListItems } from '../shared-components';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
-type SearchResults = {
+export type SearchResults = {
   query: string,
   itemsToDisplay: ReadonlyArray<ItemViewModel>,
   availableMatches: number,
