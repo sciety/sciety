@@ -6,7 +6,7 @@ import { pipe } from 'fp-ts/function';
 import { FetchStaticFile, findGroups } from './find-groups';
 import { projectGroupMeta } from './project-group-meta';
 import { renderErrorPage, RenderPage, renderPage } from './render-page';
-import { ItemViewModel } from './render-search-result';
+import { ArticleViewModel, GroupViewModel, ItemViewModel } from './render-search-result';
 import { SearchResults } from './render-search-results';
 import {
   constructGroupResult,
@@ -54,19 +54,23 @@ type Matches = {
   },
 };
 
+type GroupItem = {
+  _tag: 'Group',
+  id: GroupId,
+};
+
+type ArticleItem = {
+  _tag: 'Article',
+  doi: Doi,
+  title: string,
+  authors: string,
+  postedDate: Date,
+};
+
 type LimitedSet = {
   query: string,
   availableMatches: number,
-  itemsToDisplay: ReadonlyArray<{
-    _tag: 'Group',
-    id: GroupId,
-  } | {
-    _tag: 'Article',
-    doi: Doi,
-    title: string,
-    authors: string,
-    postedDate: Date,
-  }>,
+  itemsToDisplay: ReadonlyArray<GroupItem | ArticleItem>,
 };
 
 const selectSubsetToDisplay = (limit: number) => (state: Matches): LimitedSet => ({
@@ -96,26 +100,28 @@ pipe(
 
 */
 
+const fetchItemDetails = (ports: Ports) => (item: GroupItem | ArticleItem): TE.TaskEither<'not-found', GroupViewModel | ArticleViewModel> => {
+  if (item._tag === 'Article') {
+    return pipe(
+      item,
+      // TODO: Find reviewsForArticleDoi should return a TaskEither
+      toArticleViewModel(ports.findReviewsForArticleDoi),
+      (f) => TE.rightTask<'not-found', ItemViewModel>(f),
+    );
+  }
+  return pipe(
+    item.id,
+    constructGroupResult(ports.getGroup, projectGroupMeta(ports.getAllEvents)),
+  );
+};
+
 const fetchExtraDetails = (ports: Ports) => (state: LimitedSet): TE.TaskEither<never, SearchResults> => pipe(
   {
     query: T.of(state.query),
     availableMatches: T.of(state.availableMatches),
     itemsToDisplay: pipe(
       state.itemsToDisplay,
-      T.traverseArray((item) => {
-        if (item._tag === 'Article') {
-          return pipe(
-            item,
-            // TODO: Find reviewsForArticleDoi should return a TaskEither
-            toArticleViewModel(ports.findReviewsForArticleDoi),
-            (f) => TE.rightTask<'not-found', ItemViewModel>(f),
-          );
-        }
-        return pipe(
-          item.id,
-          constructGroupResult(ports.getGroup, projectGroupMeta(ports.getAllEvents)),
-        );
-      }),
+      T.traverseArray(fetchItemDetails(ports)),
       T.map(RA.rights),
     ),
   },
