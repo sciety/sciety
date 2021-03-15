@@ -23,6 +23,7 @@ export const renderPage = (query: string) => (searchResults: HtmlFragment): Page
           <label for="searchText" class="visually-hidden">Search term</label>
           ${htmlEscape`<input value="${query}" id="searchText" name="query" placeholder="Discover new evaluations…" class="search-form__text">`}
           <button type="submit" class="visually-hidden">Search</button>
+          <button type="reset" class="visually-hidden">Reset</button>
         </form>
         <section class="search-results">
           ${searchResults}
