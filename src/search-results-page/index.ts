@@ -1,8 +1,9 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { FetchStaticFile, findGroups } from './find-groups';
 import { projectGroupMeta } from './project-group-meta';
 import { renderErrorPage, RenderPage, renderPage } from './render-page';
@@ -15,6 +16,7 @@ import {
 } from './search';
 import { bootstrapEditorialCommunities } from '../data/bootstrap-editorial-communities';
 import { Doi } from '../types/doi';
+import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
 
 type ArticleSearchResults = {
@@ -90,7 +92,7 @@ pipe(
   {
     query: params.query,
     groups: findMatchingGroups(ports.fetchStaticFile, bootstrapEditorialCommunities, 10)(params.query),
-    articles: ports.searchEuropePmc(params.query, 10),
+    articles: findMatchingArticles(params.query, 10),
   },
   sequenceS(TE.taskEither),
   TE.map(selectSubsetToDisplay(10)),
@@ -126,6 +128,22 @@ const fetchExtraDetails = (ports: Ports) => (state: LimitedSet): TE.TaskEither<n
   TE.rightTask,
 );
 
+type FindMatchingGroups = (
+  fsf: FetchStaticFile, b: RNEA.ReadonlyNonEmptyArray<Group>,
+) => (q: string) => TE.TaskEither<never, ReadonlyArray<{
+  _tag: 'Group',
+  id: GroupId,
+}>>;
+
+const findMatchingGroups: FindMatchingGroups = (fetchStaticFile, allGroups) => flow(
+  findGroups(fetchStaticFile, allGroups),
+  T.map(RA.map((groupId) => ({
+    _tag: 'Group' as const,
+    id: groupId,
+  }))),
+  TE.rightTask,
+);
+
 export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) => pipe(
   {
     query: TE.right(params.query),
@@ -140,15 +158,7 @@ export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) =
         })),
       })),
     ),
-    groups: pipe(
-      params.query,
-      findGroups(ports.fetchStaticFile, bootstrapEditorialCommunities),
-      T.map(RA.map((groupId) => ({
-        _tag: 'Group' as const,
-        id: groupId,
-      }))),
-      TE.rightTask,
-    ),
+    groups: findMatchingGroups(ports.fetchStaticFile, bootstrapEditorialCommunities)(params.query),
   },
   sequenceS(TE.taskEither),
   TE.map(selectSubsetToDisplay(10)),
