@@ -61,10 +61,29 @@
   flex-shrink: 0;
   font-family: settings.$font-secondary;
 
-  &:last-child {
+  &:nth-last-child(2) {
     margin-left: auto;
     padding-right: 0;
+
+    @media screen and (min-width: settings.$breakpoint-narrow) {
+      padding-right: 1.5rem;
+    }
   }
+
+  &:last-child {
+    padding-right: 0;
+  }
+}
+
+.site-header__nav_list_item--search,
+.site-header__nav_list_item--search a {
+  display: flex;
+  align-items: center;
+}
+
+.site-header__nav_list__search_icon {
+  width: functions.px-to-rem(28px);
+  height: functions.px-to-rem(28px);
 }
 
 .site-header__nav_list_link {
