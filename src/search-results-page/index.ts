@@ -116,16 +116,13 @@ const fetchItemDetails = (ports: Ports) => (item: GroupItem | ArticleItem): TE.T
 };
 
 const fetchExtraDetails = (ports: Ports) => (state: LimitedSet): TE.TaskEither<never, SearchResults> => pipe(
-  {
-    query: T.of(state.query),
-    availableMatches: T.of(state.availableMatches),
-    itemsToDisplay: pipe(
-      state.itemsToDisplay,
-      T.traverseArray(fetchItemDetails(ports)),
-      T.map(RA.rights),
-    ),
-  },
-  sequenceS(T.task),
+  state.itemsToDisplay,
+  T.traverseArray(fetchItemDetails(ports)),
+  T.map(RA.rights),
+  T.map((itemsToDisplay) => ({
+    ...state,
+    itemsToDisplay,
+  })),
   TE.rightTask,
 );
 
