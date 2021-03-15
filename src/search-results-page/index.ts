@@ -7,6 +7,7 @@ import { FetchStaticFile, findGroups } from './find-groups';
 import { projectGroupMeta } from './project-group-meta';
 import { renderErrorPage, RenderPage, renderPage } from './render-page';
 import { ItemViewModel } from './render-search-result';
+import { SearchResults } from './render-search-results';
 import {
   constructGroupResult,
   FindReviewsForArticleDoi,
@@ -95,6 +96,33 @@ pipe(
 
 */
 
+const fetchExtraDetails = (ports: Ports) => (state: LimitedSet): TE.TaskEither<never, SearchResults> => pipe(
+  {
+    query: T.of(state.query),
+    availableMatches: T.of(state.availableMatches),
+    itemsToDisplay: pipe(
+      state.itemsToDisplay,
+      T.traverseArray((item) => {
+        if (item._tag === 'Article') {
+          return pipe(
+            item,
+            // TODO: Find reviewsForArticleDoi should return a TaskEither
+            toArticleViewModel(ports.findReviewsForArticleDoi),
+            (f) => TE.rightTask<'not-found', ItemViewModel>(f),
+          );
+        }
+        return pipe(
+          item.id,
+          constructGroupResult(ports.getGroup, projectGroupMeta(ports.getAllEvents)),
+        );
+      }),
+      T.map(RA.rights),
+    ),
+  },
+  sequenceS(T.task),
+  TE.rightTask,
+);
+
 export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) => pipe(
   {
     query: TE.right(params.query),
@@ -121,31 +149,6 @@ export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) =
   },
   sequenceS(TE.taskEither),
   TE.map(selectSubsetToDisplay(10)),
-  TE.chainW((state) => pipe(
-    ({
-      query: T.of(state.query),
-      availableMatches: T.of(state.availableMatches),
-      itemsToDisplay: pipe(
-        state.itemsToDisplay,
-        T.traverseArray((item) => {
-          if (item._tag === 'Article') {
-            return pipe(
-              item,
-              // TODO: Find reviewsForArticleDoi should return a TaskEither
-              toArticleViewModel(ports.findReviewsForArticleDoi),
-              (f) => TE.rightTask<'not-found', ItemViewModel>(f),
-            );
-          }
-          return pipe(
-            item.id,
-            constructGroupResult(ports.getGroup, projectGroupMeta(ports.getAllEvents)),
-          );
-        }),
-        T.map(RA.rights),
-      ),
-    }),
-    sequenceS(T.task),
-    TE.rightTask,
-  )),
+  TE.chainW(fetchExtraDetails(ports)),
   TE.bimap(renderErrorPage, renderPage),
 );
