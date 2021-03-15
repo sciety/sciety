@@ -97,6 +97,19 @@ export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) =
   TE.map((state) => ({
     ...state,
     availableMatches: state.groups.length + state.articles.total,
+    itemsToDisplay: pipe(
+      [
+        ...state.groups.map((group) => ({
+          _tag: 'Group' as const,
+          ...group,
+        })),
+        ...state.articles.items.map((article) => ({
+          _tag: 'Article' as const,
+          ...article,
+        })),
+      ],
+      RA.takeLeft(10),
+    ),
   })),
   TE.chainW(flow(
     (state) => pipe(
