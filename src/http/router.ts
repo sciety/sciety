@@ -168,7 +168,7 @@ export const createRouter = (adapters: Adapters): Router => {
       reviewPreviewParams.decode,
       E.mapLeft(toNotFound),
       TE.fromEither,
-      TE.chain((args) => reviewPreviewPage(args)),
+      TE.chain((args) => reviewPreviewPage(args)(adapters)),
     )));
 
   router.get('/groups/:id',

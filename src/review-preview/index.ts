@@ -10,17 +10,23 @@ import { ReviewId } from '../types/review-id';
 import { GroupId } from '../types/group-id';
 import sanitize from 'sanitize-html';
 import { sanitise } from '../types/sanitised-html-fragment';
+import { FetchReview } from '../article-page/get-feed-events-content';
 
-type ReviewPreviewPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
+type ReviewPreviewPage = (params: Params) => (ports: Ports) => TE.TaskEither<RenderPageError, Page>;
 
 type Params = {
   id: ReviewId,
 };
 
-export const reviewPreviewPage: ReviewPreviewPage = ({id}) => pipe(
+type Ports = {
+  fetchReview: FetchReview,
+};
+
+export const reviewPreviewPage: ReviewPreviewPage = ({id}) => (ports) => pipe(
   id,
   TE.right,
-  TE.map((reviewId): ReviewFeedItem => ({
+  TE.chain(ports.fetchReview),
+  TE.map((review): ReviewFeedItem => ({
     id,
     type: 'review',
     source: O.none,
@@ -28,7 +34,7 @@ export const reviewPreviewPage: ReviewPreviewPage = ({id}) => pipe(
     editorialCommunityId: new GroupId(''),
     editorialCommunityAvatar: '',
     editorialCommunityName: '',
-    fullText: O.none, //sanitise(toHtmlFragment('')),
+    fullText: pipe(review.fullText, sanitise, O.some),
     counts: { helpfulCount: 0, notHelpfulCount: 0 },
     current: O.none,
   })),
