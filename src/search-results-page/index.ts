@@ -106,6 +106,6 @@ export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) =
     sequenceS(T.task),
     TE.rightTask,
   )),
-  TE.map(renderSearchResults(renderSearchResult)(params.query)),
+  TE.map(renderSearchResults(renderSearchResult)),
   TE.bimap(renderErrorPage, renderPage(params.query)),
 );
