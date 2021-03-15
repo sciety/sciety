@@ -1,3 +1,4 @@
+import { ReviewIdFromString } from './../types/codecs/ReviewIdFromString';
 import Router from '@koa/router';
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
@@ -44,6 +45,7 @@ import { unfollowHandler } from '../unfollow';
 import { finishUnfollowCommand } from '../unfollow/finish-unfollow-command';
 import { saveUnfollowCommand } from '../unfollow/save-unfollow-command';
 import { userPage } from '../user-page';
+import { reviewPreviewPage } from '../review-preview';
 
 const biorxivPrefix = '10.1101';
 
@@ -64,6 +66,10 @@ const articlePageParams = t.type({
     id: UserIdFromString,
   })),
 });
+
+const reviewPreviewParams = t.type({
+  id: ReviewIdFromString,
+})
 
 const groupPageParams = t.type({
   id: GroupIdFromString,
@@ -155,6 +161,14 @@ export const createRouter = (adapters: Adapters): Router => {
       E.chain(ensureBiorxivDoiParam),
       TE.fromEither,
       TE.chain((args) => articleActivityPage(args)(adapters)),
+    )));
+
+  router.get('/review-preview/:id(.+)',
+    pageHandler(flow(
+      reviewPreviewParams.decode,
+      E.mapLeft(toNotFound),
+      TE.fromEither,
+      TE.chain((args) => reviewPreviewPage(args)),
     )));
 
   router.get('/groups/:id',
