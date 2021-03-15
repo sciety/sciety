@@ -1,14 +1,10 @@
 import { pipe } from 'fp-ts/function';
-import { RenderSearchResult } from '../../src/search-results-page/render-search-result';
 import { renderSearchResults } from '../../src/search-results-page/render-search-results';
 import { Doi } from '../../src/types/doi';
-import { toHtmlFragment } from '../../src/types/html-fragment';
-import { shouldNotBeCalled } from '../should-not-be-called';
 
 describe('render-search-results component', () => {
   describe('when there are results', () => {
     it('displays the number of results and a list', async () => {
-      const renderSearchResult: RenderSearchResult = () => toHtmlFragment('');
       const rendered = pipe(
         {
           query: 'something',
@@ -24,7 +20,7 @@ describe('render-search-results component', () => {
             },
           ],
         },
-        renderSearchResults(renderSearchResult),
+        renderSearchResults,
       );
 
       expect(rendered).toStrictEqual(expect.stringContaining('5 results'));
@@ -34,14 +30,13 @@ describe('render-search-results component', () => {
 
   describe('when there are no results', () => {
     it('doesn\'t display any list', async () => {
-      const renderSearchResult = shouldNotBeCalled;
       const rendered = pipe(
         {
           query: 'something',
           availableMatches: 0,
           itemsToDisplay: [],
         },
-        renderSearchResults(renderSearchResult),
+        renderSearchResults,
       );
 
       expect(rendered).toStrictEqual(expect.stringContaining('0 results'));

@@ -57,7 +57,7 @@ const renderGroupSearchResult = (result: GroupViewModel) => pipe(
   toHtmlFragment,
 );
 
-export type RenderSearchResult = (result: ItemViewModel) => HtmlFragment;
+type RenderSearchResult = (result: ItemViewModel) => HtmlFragment;
 
 export const renderSearchResult: RenderSearchResult = (result) => {
   switch (result._tag) {

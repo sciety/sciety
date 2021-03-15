@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { constant, pipe } from 'fp-ts/function';
-import { ItemViewModel, RenderSearchResult } from './render-search-result';
+import { ItemViewModel, renderSearchResult } from './render-search-result';
 import { templateListItems } from '../shared-components';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
@@ -26,9 +26,9 @@ const renderListIfNecessary = (articles: ReadonlyArray<HtmlFragment>) => pipe(
   ),
 );
 
-type RenderSearchResults = (r: RenderSearchResult) => (rs: SearchResults) => HtmlFragment;
+type RenderSearchResults = (rs: SearchResults) => HtmlFragment;
 
-export const renderSearchResults: RenderSearchResults = (renderSearchResult) => (searchResults) => pipe(
+export const renderSearchResults: RenderSearchResults = (searchResults) => pipe(
   searchResults.itemsToDisplay,
   RA.map(renderSearchResult),
   renderListIfNecessary,

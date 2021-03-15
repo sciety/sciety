@@ -6,7 +6,7 @@ import { pipe } from 'fp-ts/function';
 import { FetchStaticFile, findGroups } from './find-groups';
 import { projectGroupMeta } from './project-group-meta';
 import { renderErrorPage, RenderPage, renderPage } from './render-page';
-import { ItemViewModel, renderSearchResult } from './render-search-result';
+import { ItemViewModel } from './render-search-result';
 import { renderSearchResults } from './render-search-results';
 import {
   constructGroupResult,
@@ -148,6 +148,6 @@ export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) =
     sequenceS(T.task),
     TE.rightTask,
   )),
-  TE.map(renderSearchResults(renderSearchResult)),
+  TE.map(renderSearchResults),
   TE.bimap(renderErrorPage, renderPage(params.query)),
 );
