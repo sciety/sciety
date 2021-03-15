@@ -144,20 +144,21 @@ const findMatchingGroups: FindMatchingGroups = (fetchStaticFile, allGroups) => f
   TE.rightTask,
 );
 
+const findMatchingArticles = (findArticles: FindArticles) => flow(
+  findArticles,
+  TE.map((results) => ({
+    ...results,
+    items: results.items.map((article) => ({
+      _tag: 'Article' as const,
+      ...article,
+    })),
+  })),
+);
+
 export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) => pipe(
   {
     query: TE.right(params.query),
-    articles: pipe(
-      params.query,
-      ports.searchEuropePmc,
-      TE.map((results) => ({
-        ...results,
-        items: results.items.map((article) => ({
-          _tag: 'Article' as const,
-          ...article,
-        })),
-      })),
-    ),
+    articles: findMatchingArticles(ports.searchEuropePmc)(params.query),
     groups: findMatchingGroups(ports.fetchStaticFile, bootstrapEditorialCommunities)(params.query),
   },
   sequenceS(TE.taskEither),
