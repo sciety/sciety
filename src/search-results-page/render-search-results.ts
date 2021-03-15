@@ -7,9 +7,9 @@ import { ItemViewModel, RenderSearchResult } from './render-search-result';
 import { templateListItems } from '../shared-components';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
-export type SearchResults = {
-  items: ReadonlyArray<ItemViewModel>,
-  total: number,
+type SearchResults = {
+  itemsToDisplay: ReadonlyArray<ItemViewModel>,
+  availableMatches: number,
 };
 
 const renderListIfNecessary = (articles: ReadonlyArray<HtmlFragment>) => pipe(
@@ -33,11 +33,11 @@ export const renderSearchResults = (
   searchResults: SearchResults,
 ): HtmlFragment => (
   pipe(
-    searchResults.items,
+    searchResults.itemsToDisplay,
     RA.map(renderSearchResult),
     renderListIfNecessary,
     (searchResultsList) => `
-      <p class="search-results__summary">Showing ${searchResults.items.length} of ${searchResults.total} results for <span class="search-results__query">${htmlEscape(query)}</span></p>
+      <p class="search-results__summary">Showing ${searchResults.itemsToDisplay.length} of ${searchResults.availableMatches} results for <span class="search-results__query">${htmlEscape(query)}</span></p>
       ${searchResultsList}
     `,
     toHtmlFragment,

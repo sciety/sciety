@@ -9,8 +9,8 @@ describe('render-search-results component', () => {
     it('displays the number of results and a list', async () => {
       const renderSearchResult: RenderSearchResult = () => toHtmlFragment('');
       const rendered = renderSearchResults(renderSearchResult)('some query')({
-        total: 5,
-        items: [
+        availableMatches: 5,
+        itemsToDisplay: [
           {
             _tag: 'Article',
             doi: new Doi('10.1101/833392'),
@@ -31,8 +31,8 @@ describe('render-search-results component', () => {
     it('doesn\'t display any list', async () => {
       const renderSearchResult = shouldNotBeCalled;
       const rendered = renderSearchResults(renderSearchResult)('some query')({
-        total: 0,
-        items: [],
+        availableMatches: 0,
+        itemsToDisplay: [],
       });
 
       expect(rendered).toStrictEqual(expect.stringContaining('0 results'));
