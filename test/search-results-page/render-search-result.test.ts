@@ -38,6 +38,6 @@ describe('render-search-result component', () => {
       reviewCount: 37,
     });
 
-    expect(rendered).toStrictEqual(expect.stringMatching('37 Evaluations'));
+    expect(rendered).toStrictEqual(expect.stringMatching('37 evaluations'));
   });
 });
