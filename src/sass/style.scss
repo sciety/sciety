@@ -87,6 +87,11 @@ th {
   }
 }
 
+address {
+  margin-bottom: #{baseline.increments(2)};
+  font-style: normal;
+}
+
 *,
 ::after,
 ::before {

@@ -70,7 +70,7 @@ export const legalPage: Page = {
         number FC030576 and branch number BR015634 at the address:
       </p>
 
-      <address class="site-footer__address">
+      <address>
         eLife Sciences Publications, Ltd<br>
         Westbrook Centre, Milton Road<br>
         Cambridge CB4 1YG<br>
