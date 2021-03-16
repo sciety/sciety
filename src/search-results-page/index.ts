@@ -4,8 +4,10 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, pipe } from 'fp-ts/function';
-import { ArticleItem, GroupItem, MatchedArticle } from './data-types';
+import { pipe } from 'fp-ts/function';
+import { ArticleItem, GroupItem } from './data-types';
+import { FindArticles, findMatchingArticles } from './find-matching-articles';
+import { FindGroups, findMatchingGroups } from './find-matching-groups';
 import { renderErrorPage, RenderPage, renderPage } from './render-page';
 import { ArticleViewModel, GroupViewModel } from './render-search-result';
 import { SearchResults } from './render-search-results';
@@ -100,39 +102,6 @@ const fetchExtraDetails = (ports: Ports) => (state: LimitedSet): TE.TaskEither<n
     itemsToDisplay,
   })),
   TE.rightTask,
-);
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-type FindGroups = (q: string) => T.Task<ReadonlyArray<GroupId>>;
-
-type FindMatchingGroups = (fg: FindGroups) => (q: string) => TE.TaskEither<never, ReadonlyArray<GroupItem>>;
-
-const findMatchingGroups: FindMatchingGroups = (findGroups) => flow(
-  findGroups, // TODO: should only ask for 10 of n; should return a TE
-  T.map(RA.map((groupId) => ({
-    _tag: 'Group' as const,
-    id: groupId,
-  }))),
-  TE.rightTask,
-);
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-type FindArticles = (query: string) => TE.TaskEither<'unavailable', {
-  items: ReadonlyArray<MatchedArticle>,
-  total: number,
-}>;
-
-const findMatchingArticles = (findArticles: FindArticles) => flow(
-  findArticles,
-  TE.map((results) => ({
-    ...results,
-    items: results.items.map((article) => ({
-      _tag: 'Article' as const,
-      ...article,
-    })),
-  })),
 );
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
