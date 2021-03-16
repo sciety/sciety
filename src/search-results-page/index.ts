@@ -5,6 +5,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
+import { ArticleItem, GroupItem, MatchedArticle } from './data-types';
 import { renderErrorPage, RenderPage, renderPage } from './render-page';
 import { ArticleViewModel, GroupViewModel, ItemViewModel } from './render-search-result';
 import { SearchResults } from './render-search-results';
@@ -16,23 +17,6 @@ import { GroupId } from '../types/group-id';
 import { toHtmlFragment } from '../types/html-fragment';
 import { ReviewId } from '../types/review-id';
 import { sanitise } from '../types/sanitised-html-fragment';
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-type GroupItem = {
-  _tag: 'Group',
-  id: GroupId,
-};
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-type ArticleItem = {
-  _tag: 'Article',
-  doi: Doi,
-  title: string,
-  authors: string,
-  postedDate: Date,
-};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -55,13 +39,6 @@ const selectSubsetToDisplay = (limit: number) => (state: Matches): LimitedSet =>
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-type MatchedArticle = {
-  doi: Doi,
-  title: string,
-  authors: string,
-  postedDate: Date,
-};
 
 type GetGroup = (editorialCommunityId: GroupId) => T.Task<O.Option<Group>>;
 
@@ -137,6 +114,11 @@ const findMatchingGroups: FindMatchingGroups = (findGroups) => flow(
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+type FindArticles = (query: string) => TE.TaskEither<'unavailable', {
+  items: ReadonlyArray<MatchedArticle>,
+  total: number,
+}>;
+
 const findMatchingArticles = (findArticles: FindArticles) => flow(
   findArticles,
   TE.map((results) => ({
@@ -149,11 +131,6 @@ const findMatchingArticles = (findArticles: FindArticles) => flow(
 );
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-type FindArticles = (query: string) => TE.TaskEither<'unavailable', {
-  items: ReadonlyArray<MatchedArticle>,
-  total: number,
-}>;
 
 type Ports = {
   findGroups: FindGroups,
