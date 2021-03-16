@@ -60,27 +60,29 @@ const populateArticleViewModel = (findReviewsForArticleDoi: FindReviewsForArticl
 
 );
 
+const populateGroupViewModel = (getGroup: GetGroup, getAllEvents: GetAllEvents) => (item:GroupItem) => pipe(
+  item.id,
+  getGroup,
+  T.map(E.fromOption(() => 'not-found' as const)),
+  TE.chainW((group) => pipe(
+    getAllEvents,
+    T.map(RA.reduce({ reviewCount: 0, followerCount: 0 }, updateGroupMeta(group.id))),
+    T.map((meta) => ({
+      _tag: 'Group' as const,
+      ...group,
+      ...meta,
+      description: sanitise(toHtmlFragment(group.shortDescription)),
+    })),
+    TE.rightTask,
+  )),
+);
+
 const fetchItemDetails = (ports: Ports) => (item: GroupItem | ArticleItem): TE.TaskEither<'not-found', GroupViewModel | ArticleViewModel> => {
   if (item._tag === 'Article') {
     return populateArticleViewModel(ports.findReviewsForArticleDoi)(item);
   }
 
-  return pipe(
-    item.id,
-    ports.getGroup,
-    T.map(E.fromOption(() => 'not-found' as const)),
-    TE.chainW((group) => pipe(
-      ports.getAllEvents,
-      T.map(RA.reduce({ reviewCount: 0, followerCount: 0 }, updateGroupMeta(group.id))),
-      T.map((meta) => ({
-        ...group,
-        ...meta,
-        _tag: 'Group' as const,
-        description: sanitise(toHtmlFragment(group.shortDescription)),
-      })),
-      TE.rightTask,
-    )),
-  );
+  return populateGroupViewModel(ports.getGroup, ports.getAllEvents)(item);
 };
 
 type LimitedSet = {
