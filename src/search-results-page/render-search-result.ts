@@ -49,7 +49,7 @@ const renderGroupSearchResult = (result: GroupViewModel) => pipe(
         ${result.description}
       </div>
       <ul class="search-results-list__item__meta">
-        <li class="search-results-list__item__meta__item">${result.reviewCount} evaluations</li><li class="search-results-list__item__meta__item">${result.followerCount} Followers</li>
+        <li class="search-results-list__item__meta__item">${result.reviewCount} evaluations</li><li class="search-results-list__item__meta__item">${result.followerCount} followers</li>
       </ul>
     </div>
     <img class="search-results-list__item__avatar" src="${result.avatarPath}" />
