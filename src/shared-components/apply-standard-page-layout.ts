@@ -112,6 +112,12 @@ export const applyStandardPageLayout = (user: O.Option<User>) => (page: Page): s
 
           ${O.fold(loggedOutMenuItems, loggedInMenuItems)(user)}
 
+          <li class="site-header__nav_list_item site-header__nav_list_item--search">
+            <a href="/search" class="site-header__nav_list_link">
+              <img src="/static/images/search-icon.svg" alt="Search" class="site-header__nav_list__search_icon">
+            </a>
+          </li>
+
           <li class="site-header__nav_list_item feedback-button">
             <a href="https://eepurl.com/g7qqcv" class="button">Give us feedback</a>
           </li>
@@ -127,36 +133,10 @@ export const applyStandardPageLayout = (user: O.Option<User>) => (page: Page): s
   </main>
 
   <footer class="site-footer">
-    <p class="site-footer__strapline">Sciety is operated by a team based within eLife Sciences Publications Limited. It is steered by all of its communities, readers and authors.</p>
-
-
-    <div class="site-footer__container">
-      <div class="site-footer__details">
-        <ul class="site-footer__links_list" role="list">
-          <li><a href="/terms">Terms and conditions</a></li>
-          <li><a href="/privacy">Privacy notice</a></li>
-        </ul>
-
-        <small class="site-footer__company_information">
-          eLife Sciences Publications, Ltd is a limited liability non-profit non-stock corporation incorporated
-          in the State of Delaware, USA, with company number 5030732, and is registered in the UK with company
-          number FC030576 and branch number BR015634 at the address:
-        </small>
-
-        <address class="site-footer__address">
-          eLife Sciences Publications, Ltd<br>
-          Westbrook Centre, Milton Road<br>
-          Cambridge CB4 1YG<br>
-          UK
-        </address>
-      </div>
-    </div>
-
-    <small class="site-footer__copyright">
-      © 2020 eLife Sciences Publications Ltd. Subject to a Creative Commons Attribution license, except where otherwise
-      noted.
+    <small class="site-footer__small_print">
+      © 2021 eLife Sciences Publications Ltd.
+      <a class="site-footer__link" href="/legal">Legal information</a>
     </small>
-
   </footer>
 
   <script src="/static/behaviour.js"></script>

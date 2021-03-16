@@ -30,15 +30,12 @@ export const getAbstract = (doc: Document, doi: Doi, logger: Logger): SanitisedH
     abstractElement.removeChild(titleElement);
   }
 
-  const titles = abstractElement.getElementsByTagName('title');
-  for (let i = 0; i < titles.length; i += 1) {
-    const title = titles.item(i);
-    if (title) {
-      if (title.textContent === 'Graphical abstract') {
-        abstractElement.removeChild(title);
-      }
+  const titles = Array.from(abstractElement.getElementsByTagName('title'));
+  titles.forEach((title) => {
+    if (title.textContent === 'Graphical abstract') {
+      abstractElement.removeChild(title);
     }
-  }
+  });
 
   const abstract = new XMLSerializer().serializeToString(abstractElement);
 
@@ -122,7 +119,7 @@ export const getServer = flow(
   ),
 );
 
-export const getAuthors = (doc: Document, doi: Doi, logger: Logger): Array<string> => {
+export const getAuthors = (doc: Document, doi: Doi, logger: Logger): ReadonlyArray<string> => {
   const contributorsElement = getElement(doc, 'contributors');
 
   if (!contributorsElement || typeof contributorsElement?.textContent !== 'string') {

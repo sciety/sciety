@@ -7,7 +7,7 @@ import { constant, flow, pipe } from 'fp-ts/function';
 import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
 
-export type FetchStaticFile = (filename: string) => TE.TaskEither<'not-found' | 'unavailable', string>;
+type FetchStaticFile = (filename: string) => TE.TaskEither<'not-found' | 'unavailable', string>;
 
 type SearchableGroupFields = Group & { description: string };
 
@@ -33,6 +33,7 @@ type FindGroups = (
   fetchStaticFile: FetchStaticFile,
   groups: RNEA.ReadonlyNonEmptyArray<Group>
 ) => (query: string) => T.Task<ReadonlyArray<GroupId>>;
+
 export const findGroups: FindGroups = (fetchStaticFile, groups) => (query) => pipe(
   groups,
   T.traverseArray((group) => pipe(

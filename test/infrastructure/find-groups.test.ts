@@ -1,5 +1,5 @@
 import * as TE from 'fp-ts/TaskEither';
-import { findGroups } from '../../src/search-results-page/find-groups';
+import { findGroups } from '../../src/infrastructure/find-groups';
 import { GroupId } from '../../src/types/group-id';
 
 type Group = {

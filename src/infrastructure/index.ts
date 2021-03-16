@@ -19,6 +19,7 @@ import { fetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
 import { fetchNcrcReview } from './fetch-ncrc-review';
 import { fetchReview } from './fetch-review';
 import { fetchStaticFile } from './fetch-static-file';
+import { findGroups } from './find-groups';
 import { findReviewsForArticleDoi } from './find-reviews-for-article-doi';
 import { follows } from './follows';
 import { getArticleVersionEventsFromBiorxiv } from './get-article-version-events-from-biorxiv';
@@ -94,6 +95,7 @@ export const createInfrastructure = (): TE.TaskEither<unknown, Adapters> => pipe
       const editorialCommunities = inMemoryEditorialCommunityRepository(bootstrapEditorialCommunities);
       const getAllEvents = T.of(events);
       const getFollowList = createEventSourceFollowListRepository(getAllEvents);
+      const fetchFile = (f: string) => fetchStaticFile(f)(loggerIO(logger));
 
       return {
         fetchArticle: fetchCrossrefArticle(responseCache(getXmlFromCrossrefRestApi(logger), logger), logger),
@@ -102,7 +104,8 @@ export const createInfrastructure = (): TE.TaskEither<unknown, Adapters> => pipe
           fetchHypothesisAnnotation(getJson, logger),
           fetchNcrcReview(logger),
         ),
-        fetchStaticFile: (...args) => fetchStaticFile(...args)(loggerIO(logger)),
+        fetchStaticFile: fetchFile,
+        findGroups: findGroups(fetchFile, bootstrapEditorialCommunities),
         searchEuropePmc: (...args) => searchEuropePmc(...args)({ getJson: getJsonWithRetries, logger }),
         getGroup: editorialCommunities.lookup,
         getAllEditorialCommunities: editorialCommunities.all,

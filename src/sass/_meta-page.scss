@@ -1,4 +1,5 @@
 @use 'baseline';
+@use 'breakpoints';
 @use 'card';
 @use 'functions';
 @use 'list';
@@ -13,7 +14,7 @@
   margin-bottom: baseline.increments(6);
   padding: baseline.increments(2) functions.px-to-rem(16px);
 
-  @media screen and (min-width: settings.$breakpoint-narrow) {
+  @include breakpoints.from-narrow {
     padding: baseline.increments(3) functions.px-to-rem(24px);
     border-width: settings.$border-width;
   }

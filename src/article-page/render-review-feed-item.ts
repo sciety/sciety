@@ -51,7 +51,7 @@ const sourceLink = (review: ReviewFeedItem) => pipe(
 );
 
 const renderWithText = (teaserChars: number, review: ReviewFeedItem, fullText: string) => (responses: HtmlFragment) => {
-  const teaserText = clip(fullText, teaserChars);
+  const teaserText = clip(fullText, teaserChars, { html: true });
   if (teaserText === fullText) {
     return `
       <article class="activity-feed__item_contents" id="${toString(review.id)}">

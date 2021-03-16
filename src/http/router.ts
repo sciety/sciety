@@ -26,14 +26,14 @@ import { saveFollowCommand } from '../follow/save-follow-command';
 import { groupPage } from '../group-page';
 import { homePage } from '../home-page';
 import { Adapters } from '../infrastructure/adapters';
-import { privacyPage } from '../privacy-page';
+import { legalPage } from '../legal-page';
 import { respondHandler } from '../respond';
 import { finishRespondCommand } from '../respond/finish-respond-command';
 import { saveRespondCommand } from '../respond/save-respond-command';
 import { finishSaveArticleCommand } from '../save-article/finish-save-article-command';
 import { saveSaveArticleCommand } from '../save-article/save-save-article-command';
+import { searchPage } from '../search-page';
 import { searchResultsPage } from '../search-results-page';
-import { termsPage } from '../terms-page';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
@@ -127,6 +127,9 @@ export const createRouter = (adapters: Adapters): Router => {
       TE.chain(searchResultsPage(adapters)),
     )));
 
+  router.get('/search',
+    pageHandler(() => pipe(searchPage, TE.right)));
+
   router.get('/articles/:doi(10\\..+)',
     async (context, next) => {
       context.status = StatusCodes.PERMANENT_REDIRECT;
@@ -169,11 +172,12 @@ export const createRouter = (adapters: Adapters): Router => {
       await next();
     });
 
-  router.get('/privacy',
-    pageHandler(() => pipe(privacyPage, TE.right)));
+  router.redirect('/privacy', '/legal', StatusCodes.PERMANENT_REDIRECT);
 
-  router.get('/terms',
-    pageHandler(() => pipe(termsPage, TE.right)));
+  router.redirect('/terms', '/legal', StatusCodes.PERMANENT_REDIRECT);
+
+  router.get('/legal',
+    pageHandler(() => pipe(legalPage, TE.right)));
 
   // COMMANDS
 

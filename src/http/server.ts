@@ -53,12 +53,13 @@ export const createApplicationServer = (router: Router, logger: Logger): E.Eithe
     'TWITTER_API_SECRET_KEY',
     'TWITTER_API_BEARER_TOKEN',
   ];
-  for (const variableName of requiredEnvironmentVariables) {
+
+  requiredEnvironmentVariables.forEach((variableName) => {
     if (!process.env[variableName]) {
       logger('error', `Missing ${variableName} environment variable`);
       return E.left(`Missing ${variableName} from environment variables`);
     }
-  }
+  });
 
   const isSecure = process.env.APP_ORIGIN?.startsWith('https:');
   if (isSecure) {

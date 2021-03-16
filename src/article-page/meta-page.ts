@@ -27,7 +27,7 @@ type Params = {
 type GetArticleDetails = (doi: Doi) => TE.TaskEither<'not-found' | 'unavailable', {
   title: SanitisedHtmlFragment,
   abstract: SanitisedHtmlFragment, // TODO Use HtmlFragment as the HTML is stripped
-  authors: Array<string>,
+  authors: ReadonlyArray<string>,
   server: ArticleServer,
 }>;
 

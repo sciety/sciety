@@ -1,4 +1,5 @@
 @use 'baseline';
+@use 'breakpoints';
 @use 'settings';
 @use 'typography';
 
@@ -8,7 +9,7 @@ $_avatar-border-width: settings.$border-width;
 .summary-feed-item {
   font-family: settings.$font-secondary;
 
-  @media screen and (min-width: settings.$breakpoint-narrow) {
+  @include breakpoints.from-narrow {
     @supports (display: flex) {
       display: flex;
     }

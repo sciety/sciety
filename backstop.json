@@ -71,14 +71,9 @@
       "referenceUrl": "https://sciety.org/about"
     },
     {
-      "label": "Privacy",
-      "url": "https://staging.sciety.org/privacy",
-      "referenceUrl": "https://sciety.org/privacy"
-    },
-    {
-      "label": "Terms and conditions",
-      "url": "https://staging.sciety.org/terms",
-      "referenceUrl": "https://sciety.org/terms"
+      "label": "Legal information",
+      "url": "https://staging.sciety.org/legal",
+      "referenceUrl": "https://sciety.org/legal"
     }
   ],
   "paths": {
