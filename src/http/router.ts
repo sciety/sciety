@@ -26,6 +26,7 @@ import { saveFollowCommand } from '../follow/save-follow-command';
 import { groupPage } from '../group-page';
 import { homePage } from '../home-page';
 import { Adapters } from '../infrastructure/adapters';
+import { legalPage } from '../legal-page';
 import { privacyPage } from '../privacy-page';
 import { respondHandler } from '../respond';
 import { finishRespondCommand } from '../respond/finish-respond-command';
@@ -178,6 +179,9 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.get('/terms',
     pageHandler(() => pipe(termsPage, TE.right)));
+
+  router.get('/legal',
+    pageHandler(() => pipe(legalPage, TE.right)));
 
   // COMMANDS
 
