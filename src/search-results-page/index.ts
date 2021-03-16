@@ -1,5 +1,6 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -8,13 +9,12 @@ import { projectGroupMeta } from './project-group-meta';
 import { renderErrorPage, RenderPage, renderPage } from './render-page';
 import { ArticleViewModel, GroupViewModel, ItemViewModel } from './render-search-result';
 import { SearchResults } from './render-search-results';
-import {
-  FindReviewsForArticleDoi,
-  GetAllEvents, GetGroup, MatchedArticle, toArticleViewModel,
-} from './search';
 import { Doi } from '../types/doi';
+import { DomainEvent } from '../types/domain-events';
+import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
 import { toHtmlFragment } from '../types/html-fragment';
+import { ReviewId } from '../types/review-id';
 import { sanitise } from '../types/sanitised-html-fragment';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -56,12 +56,31 @@ const selectSubsetToDisplay = (limit: number) => (state: Matches): LimitedSet =>
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+type MatchedArticle = {
+  doi: Doi,
+  title: string,
+  authors: string,
+  postedDate: Date,
+};
+
+type GetGroup = (editorialCommunityId: GroupId) => T.Task<O.Option<Group>>;
+
+type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
+
+type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
+  reviewId: ReviewId,
+  editorialCommunityId: GroupId,
+}>>;
+
 const fetchItemDetails = (ports: Ports) => (item: GroupItem | ArticleItem): TE.TaskEither<'not-found', GroupViewModel | ArticleViewModel> => {
   if (item._tag === 'Article') {
     return pipe(
-      item,
-      // TODO: Find reviewsForArticleDoi should return a TaskEither
-      toArticleViewModel(ports.findReviewsForArticleDoi),
+      item.doi,
+      ports.findReviewsForArticleDoi, // TODO: Find reviewsForArticleDoi should return a TaskEither
+      T.map((reviews) => ({
+        ...item,
+        reviewCount: reviews.length,
+      })),
       (f) => TE.rightTask<'not-found', ItemViewModel>(f),
     );
   }
