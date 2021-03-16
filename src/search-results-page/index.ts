@@ -1,4 +1,5 @@
 import { sequenceS } from 'fp-ts/Apply';
+import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -8,12 +9,13 @@ import { renderErrorPage, RenderPage, renderPage } from './render-page';
 import { ArticleViewModel, GroupViewModel, ItemViewModel } from './render-search-result';
 import { SearchResults } from './render-search-results';
 import {
-  constructGroupResult,
   FindReviewsForArticleDoi,
   GetAllEvents, GetGroup, MatchedArticle, toArticleViewModel,
 } from './search';
 import { Doi } from '../types/doi';
 import { GroupId } from '../types/group-id';
+import { toHtmlFragment } from '../types/html-fragment';
+import { sanitise } from '../types/sanitised-html-fragment';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -63,9 +65,22 @@ const fetchItemDetails = (ports: Ports) => (item: GroupItem | ArticleItem): TE.T
       (f) => TE.rightTask<'not-found', ItemViewModel>(f),
     );
   }
+
   return pipe(
     item.id,
-    constructGroupResult(ports.getGroup, projectGroupMeta(ports.getAllEvents)),
+    ports.getGroup,
+    T.map(E.fromOption(() => 'not-found' as const)),
+    TE.chainW((group) => pipe(
+      group.id,
+      projectGroupMeta(ports.getAllEvents),
+      T.map((meta) => ({
+        ...group,
+        ...meta,
+        _tag: 'Group' as const,
+        description: sanitise(toHtmlFragment(group.shortDescription)),
+      })),
+      TE.rightTask,
+    )),
   );
 };
 
