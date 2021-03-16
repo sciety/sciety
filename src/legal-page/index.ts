@@ -14,16 +14,19 @@ export const legalPage: Page = {
         This website is operated by eLife Sciences Publications, Ltd under their terms and conditions as
         set out at <a href="https://elifesciences.org/terms">elifesciences.org/terms</a> unless otherwise stated through amendments below.
       </p>
+      <p>
+        Content is subject to a Creative Commons Attribution license, except where otherwise noted.
+      </p>
       <h3>
         Exceptions to ownership
       </h3>
       <p>
-        Unless otherwise indicated the Editorial Community names, logos and trademarks are owned by
+        Unless otherwise indicated the Group names, logos and trademarks are owned by
         their respective owners and not by eLife or its licensors.
         The article content is created by the authors stated on the article page and is not owned by
         eLife or its licensors, and is subject to the licence terms shown against it.
-        Evaluation content is created by the Editorial Community named alongside the evaluation content
-        and is not owned by eLife or its licensors, and is subject to the licence terms shown on the Editorial Community's page.
+        Evaluation content is created by the Group named alongside the evaluation content
+        and is not owned by eLife or its licensors, and is subject to the licence terms shown on the Group's page.
       </p>
 
       <h2>Privacy notice</h2>
