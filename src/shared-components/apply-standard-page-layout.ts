@@ -158,9 +158,10 @@ export const applyStandardPageLayout = (user: O.Option<User>) => (page: Page): s
       </div>
     </div>
 
-    <small class="site-footer__copyright">
+    <small class="site-footer__small_print">
       © 2020 eLife Sciences Publications Ltd. Subject to a Creative Commons Attribution license, except where otherwise
       noted.
+      <a class="site-footer__link" href="/legal">Legal information</a>
     </small>
 
   </footer>
