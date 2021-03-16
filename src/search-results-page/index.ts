@@ -7,7 +7,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { ArticleItem, GroupItem, MatchedArticle } from './data-types';
 import { renderErrorPage, RenderPage, renderPage } from './render-page';
-import { ArticleViewModel, GroupViewModel, ItemViewModel } from './render-search-result';
+import { ArticleViewModel, GroupViewModel } from './render-search-result';
 import { SearchResults } from './render-search-results';
 import { updateGroupMeta } from './update-group-meta';
 import { Doi } from '../types/doi';
@@ -49,17 +49,20 @@ type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
   editorialCommunityId: GroupId,
 }>>;
 
+const populateArticleViewModel = (findReviewsForArticleDoi: FindReviewsForArticleDoi) => (item: ArticleItem): TE.TaskEither<'not-found', ArticleViewModel> => pipe(
+  item.doi,
+  findReviewsForArticleDoi, // TODO: Find reviewsForArticleDoi should return a TaskEither
+  T.map((reviews) => ({
+    ...item,
+    reviewCount: reviews.length,
+  })),
+  (f) => TE.rightTask<'not-found', ArticleViewModel>(f),
+
+);
+
 const fetchItemDetails = (ports: Ports) => (item: GroupItem | ArticleItem): TE.TaskEither<'not-found', GroupViewModel | ArticleViewModel> => {
   if (item._tag === 'Article') {
-    return pipe(
-      item.doi,
-      ports.findReviewsForArticleDoi, // TODO: Find reviewsForArticleDoi should return a TaskEither
-      T.map((reviews) => ({
-        ...item,
-        reviewCount: reviews.length,
-      })),
-      (f) => TE.rightTask<'not-found', ItemViewModel>(f),
-    );
+    return populateArticleViewModel(ports.findReviewsForArticleDoi)(item);
   }
 
   return pipe(
