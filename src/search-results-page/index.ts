@@ -1,10 +1,8 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import { FetchStaticFile, findGroups } from './find-groups';
 import { projectGroupMeta } from './project-group-meta';
 import { renderErrorPage, RenderPage, renderPage } from './render-page';
 import { ArticleViewModel, GroupViewModel, ItemViewModel } from './render-search-result';
@@ -14,9 +12,7 @@ import {
   FindReviewsForArticleDoi,
   GetAllEvents, GetGroup, MatchedArticle, toArticleViewModel,
 } from './search';
-import { bootstrapEditorialCommunities } from '../data/bootstrap-editorial-communities';
 import { Doi } from '../types/doi';
-import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -92,15 +88,12 @@ const fetchExtraDetails = (ports: Ports) => (state: LimitedSet): TE.TaskEither<n
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-type FindMatchingGroups = (
-  fsf: FetchStaticFile, b: RNEA.ReadonlyNonEmptyArray<Group>,
-) => (q: string) => TE.TaskEither<never, ReadonlyArray<{
-  _tag: 'Group',
-  id: GroupId,
-}>>;
+type FindGroups = (q: string) => T.Task<ReadonlyArray<GroupId>>;
 
-const findMatchingGroups: FindMatchingGroups = (fetchStaticFile, allGroups) => flow(
-  findGroups(fetchStaticFile, allGroups), // TODO: should only ask for 10 of n
+type FindMatchingGroups = (fg: FindGroups) => (q: string) => TE.TaskEither<never, ReadonlyArray<GroupItem>>;
+
+const findMatchingGroups: FindMatchingGroups = (findGroups) => flow(
+  findGroups, // TODO: should only ask for 10 of n; should return a TE
   T.map(RA.map((groupId) => ({
     _tag: 'Group' as const,
     id: groupId,
@@ -129,11 +122,11 @@ type FindArticles = (query: string) => TE.TaskEither<'unavailable', {
 }>;
 
 type Ports = {
-  searchEuropePmc: FindArticles,
+  findGroups: FindGroups,
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
-  getGroup: GetGroup,
   getAllEvents: GetAllEvents,
-  fetchStaticFile: FetchStaticFile,
+  getGroup: GetGroup,
+  searchEuropePmc: FindArticles,
 };
 
 type Params = {
@@ -146,7 +139,7 @@ export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) =
   {
     query: TE.right(params.query),
     articles: findMatchingArticles(ports.searchEuropePmc)(params.query),
-    groups: findMatchingGroups(ports.fetchStaticFile, bootstrapEditorialCommunities)(params.query),
+    groups: findMatchingGroups(ports.findGroups)(params.query),
   },
   sequenceS(TE.taskEither),
   TE.map(selectSubsetToDisplay(10)),

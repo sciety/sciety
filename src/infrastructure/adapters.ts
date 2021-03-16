@@ -28,18 +28,19 @@ type GetGroup = (editorialCommunityId: GroupId) => T.Task<O.Option<Group>>;
 type GetAllEditorialCommunities = T.Task<RNEA.ReadonlyNonEmptyArray<Group>>;
 
 export type Adapters = {
+  commitEvents: (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<void>,
   fetchArticle: FetchCrossrefArticle,
   fetchReview: FetchReview,
   fetchStaticFile: (filename: string) => TE.TaskEither<'not-found' | 'unavailable', string>,
-  searchEuropePmc: (query: string) => TE.TaskEither<'unavailable', SearchResults>,
-  getGroup: GetGroup,
-  getAllEditorialCommunities: GetAllEditorialCommunities,
+  findGroups: (query: string) => T.Task<ReadonlyArray<GroupId>>,
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
   findVersionsForArticleDoi: (doi: Doi, server: ArticleServer) => T.Task<ReadonlyArray<ArticleVersion>>,
-  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
-  commitEvents: (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<void>,
-  getFollowList: EventSourcedFollowListRepository,
-  getUserDetails: GetTwitterUserDetails,
   follows: (userId: UserId, editorialCommunityId: GroupId) => T.Task<boolean>,
+  getAllEditorialCommunities: GetAllEditorialCommunities,
+  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
+  getFollowList: EventSourcedFollowListRepository,
+  getGroup: GetGroup,
+  getUserDetails: GetTwitterUserDetails,
   logger: Logger,
+  searchEuropePmc: (query: string) => TE.TaskEither<'unavailable', SearchResults>,
 };
