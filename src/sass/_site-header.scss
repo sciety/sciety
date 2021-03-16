@@ -100,8 +100,10 @@
 }
 
 .feedback-button {
+  display: none;
+
   @include breakpoints.from-narrow {
-    display: none;
+    display: unset;
   }
 }
 
