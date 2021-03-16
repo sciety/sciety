@@ -15,7 +15,7 @@ export type FetchCrossrefArticle = (doi: Doi) => T.Task<E.Either<
 FetchCrossrefArticleError,
 {
   abstract: SanitisedHtmlFragment,
-  authors: Array<string>,
+  authors: ReadonlyArray<string>,
   doi: Doi,
   title: SanitisedHtmlFragment,
   publicationDate: Date,

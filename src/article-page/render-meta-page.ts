@@ -5,7 +5,7 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 type ArticleDetails = {
   title: string,
   abstract: HtmlFragment,
-  authors: Array<string>,
+  authors: ReadonlyArray<string>,
   server: ArticleServer,
 };
 

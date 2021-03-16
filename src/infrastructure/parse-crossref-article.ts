@@ -119,7 +119,7 @@ export const getServer = flow(
   ),
 );
 
-export const getAuthors = (doc: Document, doi: Doi, logger: Logger): Array<string> => {
+export const getAuthors = (doc: Document, doi: Doi, logger: Logger): ReadonlyArray<string> => {
   const contributorsElement = getElement(doc, 'contributors');
 
   if (!contributorsElement || typeof contributorsElement?.textContent !== 'string') {
