@@ -58,6 +58,20 @@ export const legalPage: Page = {
       <p>
         Although most changes are likely to be minor, eLife may change its Privacy Notice from time to time, and at our sole discretion. We encourage visitors to check this page frequently for any changes to its Privacy Notice. First published October 19, 2020.
       </p>
+
+      <h2>Company information</h2>
+      <p>
+        eLife Sciences Publications, Ltd is a limited liability non-profit non-stock corporation incorporated
+        in the State of Delaware, USA, with company number 5030732, and is registered in the UK with company
+        number FC030576 and branch number BR015634 at the address:
+      </p>
+
+      <address class="site-footer__address">
+        eLife Sciences Publications, Ltd<br>
+        Westbrook Centre, Milton Road<br>
+        Cambridge CB4 1YG<br>
+        UK
+      </address>
     </div>
   `),
 };
