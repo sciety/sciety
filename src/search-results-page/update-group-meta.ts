@@ -1,6 +1,3 @@
-import * as RA from 'fp-ts/ReadonlyArray';
-import * as T from 'fp-ts/Task';
-import { pipe } from 'fp-ts/function';
 import {
   DomainEvent,
   isEditorialCommunityReviewedArticleEvent,
@@ -9,9 +6,12 @@ import {
 } from '../types/domain-events';
 import { GroupId } from '../types/group-id';
 
-type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
+type GroupMeta = {
+  reviewCount: number,
+  followerCount: number,
+};
 
-const reducer = (groupId: GroupId) => (meta: GroupMeta, event: DomainEvent) => {
+export const updateGroupMeta = (groupId: GroupId) => (meta: GroupMeta, event: DomainEvent): GroupMeta => {
   if (isUserFollowedEditorialCommunityEvent(event) && event.editorialCommunityId.value === groupId.value) {
     return {
       ...meta,
@@ -32,18 +32,3 @@ const reducer = (groupId: GroupId) => (meta: GroupMeta, event: DomainEvent) => {
   }
   return meta;
 };
-
-type GroupMeta = {
-  reviewCount: number,
-  followerCount: number,
-};
-
-type ProjectGroupMeta = (getAllEvents: GetAllEvents) => (groupId: GroupId) => T.Task<GroupMeta>;
-
-export const projectGroupMeta: ProjectGroupMeta = (getAllEvents) => (groupId) => pipe(
-  getAllEvents,
-  T.map(RA.reduce({
-    reviewCount: 0,
-    followerCount: 0,
-  }, reducer(groupId))),
-);

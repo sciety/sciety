@@ -5,10 +5,10 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import { projectGroupMeta } from './project-group-meta';
 import { renderErrorPage, RenderPage, renderPage } from './render-page';
 import { ArticleViewModel, GroupViewModel, ItemViewModel } from './render-search-result';
 import { SearchResults } from './render-search-results';
+import { updateGroupMeta } from './update-group-meta';
 import { Doi } from '../types/doi';
 import { DomainEvent } from '../types/domain-events';
 import { Group } from '../types/group';
@@ -90,8 +90,8 @@ const fetchItemDetails = (ports: Ports) => (item: GroupItem | ArticleItem): TE.T
     ports.getGroup,
     T.map(E.fromOption(() => 'not-found' as const)),
     TE.chainW((group) => pipe(
-      group.id,
-      projectGroupMeta(ports.getAllEvents),
+      ports.getAllEvents,
+      T.map(RA.reduce({ reviewCount: 0, followerCount: 0 }, updateGroupMeta(group.id))),
       T.map((meta) => ({
         ...group,
         ...meta,
