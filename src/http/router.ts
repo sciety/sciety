@@ -27,7 +27,6 @@ import { groupPage } from '../group-page';
 import { homePage } from '../home-page';
 import { Adapters } from '../infrastructure/adapters';
 import { legalPage } from '../legal-page';
-import { privacyPage } from '../privacy-page';
 import { respondHandler } from '../respond';
 import { finishRespondCommand } from '../respond/finish-respond-command';
 import { saveRespondCommand } from '../respond/save-respond-command';
@@ -35,7 +34,6 @@ import { finishSaveArticleCommand } from '../save-article/finish-save-article-co
 import { saveSaveArticleCommand } from '../save-article/save-save-article-command';
 import { searchPage } from '../search-page';
 import { searchResultsPage } from '../search-results-page';
-import { termsPage } from '../terms-page';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
@@ -175,10 +173,20 @@ export const createRouter = (adapters: Adapters): Router => {
     });
 
   router.get('/privacy',
-    pageHandler(() => pipe(privacyPage, TE.right)));
+    async (context, next) => {
+      context.status = StatusCodes.PERMANENT_REDIRECT;
+      context.redirect('/legal');
+
+      await next();
+    });
 
   router.get('/terms',
-    pageHandler(() => pipe(termsPage, TE.right)));
+    async (context, next) => {
+      context.status = StatusCodes.PERMANENT_REDIRECT;
+      context.redirect('/legal');
+
+      await next();
+    });
 
   router.get('/legal',
     pageHandler(() => pipe(legalPage, TE.right)));
