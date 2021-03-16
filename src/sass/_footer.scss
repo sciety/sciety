@@ -10,10 +10,6 @@
   flex-shrink: 0;
   font-family: settings.$font-secondary;
   margin-top: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
   color: settings.$colour-white;
 
   a:link,
@@ -25,51 +21,6 @@
       color: currentColor;
     }
   }
-}
-
-.site-footer__strapline {
-  background-color: color.change(settings.$colour-teal, $alpha: 0.8);
-  font-family: settings.$font-secondary;
-  text-align: center;
-  padding: baseline.increments(3) 1rem;
-  width: 100%;
-  margin-bottom: 0;
-}
-
-.site-footer__container {
-  background-color: color.change(settings.$colour-teal, $alpha: 0.9);
-  width: 100%;
-  margin: 0;
-  padding-top: baseline.increments(3);
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-
-.site-footer__details {
-  max-width: functions.px-to-rem(settings.$max-site-width);
-
-  @media screen and (min-width: 48.75em) {
-    display: flex;
-    justify-content: space-between;
-    margin: 0 auto;
-  }
-}
-
-.site-footer__details > * {
-  @include typography.sizing($font-size: 12px, $line-height-in-increments: 3);
-  @media screen and (min-width: 48.75em) {
-    max-width: 33%;
-  }
-}
-
-.site-footer__links_list {
-  @include list.basics();
-  margin-bottom: #{baseline.increments(2)};
-}
-
-.site-footer__company_information {
-  display: block;
-  margin-bottom: #{baseline.increments(2)};
 }
 
 .site-footer__address {
