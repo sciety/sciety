@@ -172,21 +172,9 @@ export const createRouter = (adapters: Adapters): Router => {
       await next();
     });
 
-  router.get('/privacy',
-    async (context, next) => {
-      context.status = StatusCodes.PERMANENT_REDIRECT;
-      context.redirect('/legal');
+  router.redirect('/privacy', '/legal', StatusCodes.PERMANENT_REDIRECT);
 
-      await next();
-    });
-
-  router.get('/terms',
-    async (context, next) => {
-      context.status = StatusCodes.PERMANENT_REDIRECT;
-      context.redirect('/legal');
-
-      await next();
-    });
+  router.redirect('/terms', '/legal', StatusCodes.PERMANENT_REDIRECT);
 
   router.get('/legal',
     pageHandler(() => pipe(legalPage, TE.right)));
