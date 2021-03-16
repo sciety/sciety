@@ -15,7 +15,7 @@ export const legalPage: Page = {
         set out at <a href="https://elifesciences.org/terms">elifesciences.org/terms</a> unless otherwise stated through amendments below.
       </p>
       <h3>
-        Exceptions to Ownership
+        Exceptions to ownership
       </h3>
       <p>
         Unless otherwise indicated the Editorial Community names, logos and trademarks are owned by
