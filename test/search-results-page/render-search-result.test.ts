@@ -28,7 +28,7 @@ describe('render-search-result component', () => {
     expect(rendered).toStrictEqual(expect.stringMatching(/Posted[\s\S]*?Nov 30, 2017/));
   });
 
-  it('displays the number of reviews', async () => {
+  it('displays the number of evaluations', async () => {
     const rendered = renderSearchResult({
       _tag: 'Article',
       doi: new Doi('10.1101/833392'),
@@ -39,5 +39,18 @@ describe('render-search-result component', () => {
     });
 
     expect(rendered).toStrictEqual(expect.stringMatching('37 evaluations'));
+  });
+
+  it('displays the correct pluralisation for 1 evaluations', async () => {
+    const rendered = renderSearchResult({
+      _tag: 'Article',
+      doi: new Doi('10.1101/833392'),
+      title: 'the title',
+      authors: '1, 2, 3',
+      postedDate: new Date('2017-11-30'),
+      reviewCount: 1,
+    });
+
+    expect(rendered).toStrictEqual(expect.stringMatching('1 evaluation'));
   });
 });

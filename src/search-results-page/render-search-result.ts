@@ -26,6 +26,16 @@ export type GroupViewModel = {
 
 export type ItemViewModel = ArticleViewModel | GroupViewModel;
 
+const renderFollowerCount = (followerCount: number): HtmlFragment => pipe(
+  `${followerCount} ${followerCount === 1 ? 'follower' : 'followers'}`,
+  toHtmlFragment,
+);
+
+const renderEvaluationCount = (evaluationCount: number): HtmlFragment => pipe(
+  `${evaluationCount} ${evaluationCount === 1 ? 'evaluation' : 'evaluations'}`,
+  toHtmlFragment,
+);
+
 const renderArticleSearchResult = flow(
   (result: ArticleViewModel) => `
     <div class="search-results-list__item_container">
@@ -34,7 +44,7 @@ const renderArticleSearchResult = flow(
         ${result.authors}
       </div>
       <ul class="search-results-list__item__meta">
-        <li class="search-results-list__item__meta__item">${result.reviewCount} evaluations</li><li class="search-results-list__item__meta__item">Posted ${templateDate(result.postedDate)}</li>
+        <li class="search-results-list__item__meta__item">${renderEvaluationCount(result.reviewCount)}</li><li class="search-results-list__item__meta__item">Posted ${templateDate(result.postedDate)}</li>
       </ul>
     </div>
   `,
@@ -49,7 +59,7 @@ const renderGroupSearchResult = (result: GroupViewModel) => pipe(
         ${result.description}
       </div>
       <ul class="search-results-list__item__meta">
-        <li class="search-results-list__item__meta__item">${result.reviewCount} evaluations</li><li class="search-results-list__item__meta__item">${result.followerCount} followers</li>
+        <li class="search-results-list__item__meta__item">${renderEvaluationCount(result.reviewCount)}</li><li class="search-results-list__item__meta__item">${renderFollowerCount(result.followerCount)}</li>
       </ul>
     </div>
     <img class="search-results-list__item__avatar" src="${result.avatarPath}" />
