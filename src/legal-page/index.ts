@@ -61,6 +61,10 @@ export const legalPage: Page = {
 
       <h2>Company information</h2>
       <p>
+        Sciety is operated by a team based within eLife Sciences Publications Limited. It is steered by all of its communities, readers and authors.
+      </p>
+
+      <p>
         eLife Sciences Publications, Ltd is a limited liability non-profit non-stock corporation incorporated
         in the State of Delaware, USA, with company number 5030732, and is registered in the UK with company
         number FC030576 and branch number BR015634 at the address:
