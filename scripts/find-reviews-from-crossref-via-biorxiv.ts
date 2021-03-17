@@ -1,3 +1,4 @@
+/* eslint-disable no-loops/no-loops */
 import axios from 'axios';
 
 const publisherDoiPrefix = process.argv[2];

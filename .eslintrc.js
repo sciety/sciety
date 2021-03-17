@@ -20,6 +20,7 @@ module.exports = {
     'jest',
     'jest-formatting',
     'node',
+    'no-loops',
     'unused-imports',
   ],
   root: true,
@@ -82,6 +83,7 @@ module.exports = {
       ignoreUrls: true,
     }],
     'no-await-in-loop': 'off',
+    'no-loops/no-loops': 2,
     'no-restricted-syntax': ['error', ...[
       'ForInStatement',
       'LabeledStatement',

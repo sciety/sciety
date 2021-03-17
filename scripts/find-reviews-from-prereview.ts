@@ -44,6 +44,7 @@ void (async (): Promise<void> => {
 
   let currentPage = 1;
   let totalPages = NaN;
+  // eslint-disable-next-line no-loops/no-loops
   do {
     const { data } = await axios.post<PrereviewSearchResponse>(
       'https://www.prereview.org/data/preprints/search',

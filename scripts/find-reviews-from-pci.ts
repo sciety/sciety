@@ -45,6 +45,7 @@ const findRecommendations = async (community: PciCommunity): Promise<Array<Recom
   const { data: feed } = await fetchPage(community.url);
   const doc = parser.parseFromString(feed, 'text/xml');
 
+  // eslint-disable-next-line no-loops/no-loops
   for (const link of Array.from(doc.getElementsByTagName('link'))) {
     const url = link.getElementsByTagName('url')[0];
     const articleDoiString = link.getElementsByTagName('doi')[0]?.textContent ?? '';

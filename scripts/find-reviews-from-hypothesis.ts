@@ -33,6 +33,7 @@ const processServer = async (server: string): Promise<void> => {
 
   const numRequestsNeeded = Math.ceil(firstPage.total / perPage);
 
+  // eslint-disable-next-line no-loops/no-loops
   for (let i = 1; i < numRequestsNeeded; i += 1) {
     const { data } = await axios.get<HypothesisResponse>(`https://api.hypothes.is/api/search?group=${publisherGroupId}&uri.parts=${server}&limit=${perPage}&offset=${perPage * i}`);
     data.rows.forEach(processRow(server));
