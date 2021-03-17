@@ -5,12 +5,18 @@
 @use 'settings';
 @use 'typography';
 
+$_site-header-height: 62px;
+
 .site-header {
   flex-grow: 0;
   flex-shrink: 0;
   margin-bottom: #{baseline.increments(8)};
   display: flex;
   justify-content: center;
+
+  @media screen and (min-width: functions.px-to-rem(690px)) {
+    height: functions.px-to-rem($_site-header-height);
+  }
 }
 
 .site-header__wrapper {
@@ -24,6 +30,7 @@
   @media screen and (min-width: functions.px-to-rem(690px)) {
     @supports (display: flex) {
       display: flex;
+      align-items: center;
     }
   }
 }
@@ -33,7 +40,7 @@
   display: block;
 
   @media screen and (min-width: functions.px-to-rem(690px)) {
-    padding-top: functions.px-to-rem(14px);
+    padding-top: 0;
     display: inline;
     flex: 0 0 150px;
     margin-right: functions.px-to-rem(50px);
@@ -41,6 +48,7 @@
 }
 
 .site-header__logo {
+  display: block;
   max-width: 150px;
 }
 
@@ -54,6 +62,10 @@
   justify-content: flex-start;
   margin-top: baseline.increments(2);
   margin-bottom: 0;
+
+  @media screen and (min-width: functions.px-to-rem(690px)) {
+    margin-top: 0;
+  }
 }
 
 .site-header__nav_list_item {
