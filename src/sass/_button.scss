@@ -1,5 +1,6 @@
-@use 'settings';
+@use 'baseline';
 @use 'functions';
+@use 'settings';
 @use 'typography';
 
 @mixin basics () {
@@ -58,11 +59,11 @@
 
 // NEW DESIGNS (Spring 2021)
 
-.site-header__nav_list_link_button {
+@mixin button-new {
   @include typography.sizing(14px, 1.75);
   font-weight: bold;
   border-radius: settings.$border-radius;
-  padding: 9px 12px;
+  padding: baseline.increments(1.125) functions.px-to-rem(12px);
   letter-spacing: 0.1px;
 
   &:link,
