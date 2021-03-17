@@ -1,0 +1,6 @@
+@mixin flex() {
+  @supports (display: flex) {
+    display: flex;
+    @content;
+  }
+}
