@@ -16,7 +16,7 @@ $_logo-width: 110px;
   display: flex;
   justify-content: center;
   padding-bottom: baseline.increments(1);
-  font-family: Ubuntu, sans-serif;
+  font-family: settings.$font-family;
   color: settings.$colour-text-primary;
 
   @include breakpoints.from-narrow() {
