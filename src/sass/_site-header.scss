@@ -5,16 +5,18 @@
 @use 'settings';
 @use 'typography';
 
-$_site-header-height: 62px;
+$_top-nav-shadow-height: 9px;
+$_site-header-height: 62px + $_top-nav-shadow-height;
 
 .site-header {
   flex-grow: 0;
   flex-shrink: 0;
   display: flex;
   justify-content: center;
-  margin-bottom: baseline.increments(2);
+  padding-bottom: baseline.increments(2);
 
   @media screen and (min-width: functions.px-to-rem(690px)) {
+    background-image: linear-gradient(0deg, rgb(233, 235, 240) 0, rgb(207, 216, 220) $_top-nav-shadow-height - 1, #fff $_top-nav-shadow-height);
     height: functions.px-to-rem($_site-header-height);
   }
 }
