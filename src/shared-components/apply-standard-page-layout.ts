@@ -1,5 +1,6 @@
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
+import { constant } from 'fp-ts/function';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { User } from '../types/user';
@@ -42,17 +43,19 @@ const fathom = process.env.FATHOM_SITE_ID ? `
 <script src="https://cdn.usefathom.com/script.js" data-site="${process.env.FATHOM_SITE_ID}" defer></script>
 ` : '';
 
-const loggedInMenuItems = (user: User) => toHtmlFragment(`
+const myProfileMenuItem = (user: User) => toHtmlFragment(`
   <li class="site-header__nav_list_item">
     <a href="/users/${user.id}" class="site-header__nav_list_link">My profile</a>
   </li>
+`);
 
+const logOutMenuItem = () => toHtmlFragment(`
   <li class="site-header__nav_list_item">
     <a href="/log-out" class="site-header__nav_list_link">Log out</a>
   </li>
 `);
 
-const loggedOutMenuItems = () => toHtmlFragment(`
+const logInMenuItem = () => toHtmlFragment(`
   <li class="site-header__nav_list_item">
     <a href="/log-in" class="site-header__nav_list_link">Log in</a>
   </li>
@@ -110,13 +113,15 @@ export const applyStandardPageLayout = (user: O.Option<User>) => (page: Page): s
             <a href="/about" class="site-header__nav_list_link">About</a>
           </li>
 
-          ${O.fold(loggedOutMenuItems, loggedInMenuItems)(user)}
+          ${O.fold(constant(''), myProfileMenuItem)(user)}
 
           <li class="site-header__nav_list_item site-header__nav_list_item--search">
             <a href="/search" class="site-header__nav_list_link">
               <img src="/static/images/search-icon.svg" alt="Search" class="site-header__nav_list__search_icon">
             </a>
           </li>
+
+          ${O.fold(logInMenuItem, logOutMenuItem)(user)}
         </ul>
 
       </nav>
