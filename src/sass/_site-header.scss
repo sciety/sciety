@@ -14,6 +14,8 @@ $_site-header-height: 62px + $_top-nav-shadow-height;
   display: flex;
   justify-content: center;
   padding-bottom: baseline.increments(2);
+  font-family: Ubuntu, sans-serif;
+  color: settings.$colour-text-primary;
 
   @media screen and (min-width: functions.px-to-rem(690px)) {
     background-image: linear-gradient(0deg, rgb(233, 235, 240) 0, rgb(207, 216, 220) $_top-nav-shadow-height - 1, #fff $_top-nav-shadow-height);
@@ -74,7 +76,6 @@ $_site-header-height: 62px + $_top-nav-shadow-height;
   @include typography.sizing($font-size: 18px, $line-height-in-increments: 5);
   padding-right: 1.5rem;
   flex-shrink: 0;
-  font-family: settings.$font-secondary;
 
   &:nth-last-child(2) {
     margin-left: auto;
