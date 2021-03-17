@@ -73,14 +73,14 @@
 }
 
 .activity-feed__item__date {
-  font-family: Ubuntu, sans-serif;
+  font-family: settings.$font-family;
   color: settings.$colour-text-secondary;
   flex-shrink: 0;
 }
 
 .activity-feed__item__title,
 p.activity-feed__item__title {
-  font-family: Ubuntu, sans-serif;
+  font-family: settings.$font-family;
   padding-right: functions.px-to-rem(8px);
 }
 

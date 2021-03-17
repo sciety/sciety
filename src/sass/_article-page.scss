@@ -14,20 +14,20 @@ $_vertical-space-above-title--wide: baseline.increments(5);
   grid-auto-flow: unset;
   margin-left: auto;
   margin-right: auto;
-  font-family: Ubuntu, sans-serif;
+  font-family: settings.$font-family;
 
   h1 {
     @include typography.sizing(20px, 3);
-    font-family: Ubuntu, sans-serif;
+    font-family: settings.$font-family;
   }
 
   p {
     @include typography.sizing(14px, 2.5);
-    font-family: Ubuntu, sans-serif;
+    font-family: settings.$font-family;
   }
 
   .article-tabs__tab {
-    font-family: Ubuntu, sans-serif;
+    font-family: settings.$font-family;
   }
 }
 
