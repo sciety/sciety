@@ -11,7 +11,7 @@ PORT := 8080
 export IMAGE
 export IMAGE_TAG
 
-.PHONY: backstop build clean* dev find-* install lint* prod release test* update-event-data
+.PHONY: backstop build clean* dev find-* git-lfs install lint* prod release test* update-event-data
 
 dev: export TARGET = dev
 dev: .env install build
@@ -50,12 +50,15 @@ backstop: node_modules
 build:
 	$(DOCKER_COMPOSE) build app
 
-install: node_modules
+install: node_modules git-lfs
 
 node_modules: export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD = true
 node_modules: package.json package-lock.json
 	npm install
 	touch node_modules
+
+git-lfs:
+	git lfs install
 
 clean:
 	rm -rf .eslint .jest build node_modules

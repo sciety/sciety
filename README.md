@@ -32,6 +32,7 @@ Development
 - [Docker Compose]
 - [GNU Make]
 - [Node.js]
+- [Git LFS]
 
 </details>
 
@@ -166,6 +167,7 @@ We released this software under the [MIT license][license]. Copyright © 2020 [e
 [Docker Compose]: https://docs.docker.com/compose/
 [eLife]: https://elifesciences.org/
 [ESLint]: https://eslint.org/
+[Git LFS]: https://git-lfs.github.com/
 [GNU Make]: https://www.gnu.org/software/make/
 [Jest]: https://jestjs.io/
 [License]: LICENSE.md
