@@ -157,7 +157,6 @@ $clear-button-inline-size: 48px;
   background-color: settings.$colour-page-background;
   width: 100vw;
   min-height: 52vh; // TODO remove hack
-  background-image: linear-gradient(180deg, settings.$colour-furniture 0, settings.$colour-page-background 8px);
 }
 
 .search-results-list__item__link {
