@@ -10,9 +10,9 @@ $_site-header-height: 62px;
 .site-header {
   flex-grow: 0;
   flex-shrink: 0;
-  margin-bottom: #{baseline.increments(8)};
   display: flex;
   justify-content: center;
+  margin-bottom: baseline.increments(2);
 
   @media screen and (min-width: functions.px-to-rem(690px)) {
     height: functions.px-to-rem($_site-header-height);
