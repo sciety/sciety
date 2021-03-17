@@ -1,5 +1,6 @@
 @use 'settings';
 @use 'functions';
+@use 'typography';
 
 @mixin basics () {
   border-width: 0;
@@ -53,4 +54,26 @@
   background-color: settings.$colour-grey-one;
   color: settings.$colour-ui-default;
   border-color: currentColor;
+}
+
+// NEW DESIGNS (Spring 2021)
+
+.site-header__nav_list_link_button {
+  @include typography.sizing(14px, 1.75);
+  font-weight: bold;
+  border-radius: settings.$border-radius;
+  padding: 9px 12px;
+  letter-spacing: 0.1px;
+
+  &:link,
+  &:visited {
+    background-color: settings.$colour-accent;
+    color: settings.$colour-white;
+
+    &:hover,
+    &:active {
+      background-color: settings.$colour-accent;
+      color: settings.$colour-white;
+    }
+  }
 }
