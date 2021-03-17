@@ -14,7 +14,7 @@ $_site-header-height: 62px + $_top-nav-shadow-height;
   flex-shrink: 0;
   display: flex;
   justify-content: center;
-  padding-bottom: baseline.increments(2);
+  padding-bottom: baseline.increments(1);
   font-family: Ubuntu, sans-serif;
   color: settings.$colour-text-primary;
 
@@ -74,9 +74,11 @@ $_site-header-height: 62px + $_top-nav-shadow-height;
 }
 
 .site-header__nav_list_item {
-  @include typography.sizing($font-size: 18px, $line-height-in-increments: 5);
+  @include typography.sizing(14px, 1.75);
   padding-right: 1.5rem;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
 
   &:nth-last-child(2) {
     margin-left: auto;
@@ -102,11 +104,11 @@ $_site-header-height: 62px + $_top-nav-shadow-height;
 .site-header__nav_list_link {
   &:link,
   &:visited {
-    color: settings.$colour-ui-default;
+    color: settings.$colour-text-primary;
 
     &:hover,
     &:active {
-      color: settings.$colour-primary;
+      color: settings.$colour-accent;
     }
   }
 }
