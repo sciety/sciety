@@ -8,6 +8,7 @@
 
 $_top-nav-shadow-height: 9px;
 $_site-header-height: 62px + $_top-nav-shadow-height;
+$_logo-width: 110px;
 
 .site-header {
   flex-grow: 0;
@@ -47,14 +48,14 @@ $_site-header-height: 62px + $_top-nav-shadow-height;
   @include breakpoints.from-narrow() {
     padding-top: 0;
     display: inline;
-    flex: 0 0 150px;
-    margin-right: functions.px-to-rem(50px);
+    flex: 0 0 $_logo-width;
+    margin-right: functions.px-to-rem(36px);
   }
 }
 
 .site-header__logo {
   display: block;
-  max-width: 150px;
+  max-width: $_logo-width;
 }
 
 .site-header__nav {
