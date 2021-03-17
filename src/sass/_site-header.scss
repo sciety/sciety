@@ -98,12 +98,3 @@
     }
   }
 }
-
-.feedback-button {
-  display: none;
-
-  @include breakpoints.from-narrow {
-    display: unset;
-  }
-}
-

@@ -117,11 +117,6 @@ export const applyStandardPageLayout = (user: O.Option<User>) => (page: Page): s
               <img src="/static/images/search-icon.svg" alt="Search" class="site-header__nav_list__search_icon">
             </a>
           </li>
-
-          <li class="site-header__nav_list_item feedback-button">
-            <a href="https://eepurl.com/g7qqcv" class="button">Give us feedback</a>
-          </li>
-
         </ul>
 
       </nav>
