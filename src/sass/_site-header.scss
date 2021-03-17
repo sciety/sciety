@@ -9,6 +9,7 @@
 $_top-nav-shadow-height: 9px;
 $_site-header-height: 62px + $_top-nav-shadow-height;
 $_logo-width: 110px;
+$_search-icon-size: functions.px-to-rem(28px);
 
 .site-header {
   flex-grow: 0;
@@ -95,8 +96,8 @@ $_logo-width: 110px;
 }
 
 .site-header__nav_list__search_icon {
-  width: functions.px-to-rem(28px);
-  height: functions.px-to-rem(28px);
+  width: $_search-icon-size;
+  height: $_search-icon-size;
 }
 
 .site-header__nav_list_link {
