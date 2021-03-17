@@ -6,8 +6,8 @@
 @use 'settings';
 @use 'typography';
 
-$vertical-space-above-title--narrow: baseline.increments(2);
-$vertical-space-above-title--wide: baseline.increments(5);
+$_vertical-space-above-title--narrow: baseline.increments(2);
+$_vertical-space-above-title--wide: baseline.increments(5);
 
 .sciety-grid.sciety-grid--article {
   @include typography.sizing(14px, 2.5);
@@ -40,7 +40,7 @@ $vertical-space-above-title--wide: baseline.increments(5);
 .sciety-grid--article > .page-header--article {
   margin-left: 1rem;
   margin-right: 1rem;
-  padding-top: $vertical-space-above-title--narrow;
+  padding-top: $_vertical-space-above-title--narrow;
   color: settings.$colour-text-primary;
 }
 
@@ -56,7 +56,7 @@ $vertical-space-above-title--wide: baseline.increments(5);
   }
 
   .sciety-grid--article > .page-header--article {
-    padding-top: $vertical-space-above-title--wide;
+    padding-top: $_vertical-space-above-title--wide;
   }
 }
 

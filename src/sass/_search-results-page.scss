@@ -6,11 +6,11 @@
 @use 'settings';
 @use 'typography';
 
-$vertical-space-above-title--narrow: baseline.increments(2);
-$vertical-space-above-title--wide: baseline.increments(5);
-$search-form-text-inline-padding: 12px;
-$search-form-inline-margin: settings.$base-font-measure;
-$clear-button-inline-size: 48px;
+$_vertical-space-above-title--narrow: baseline.increments(2);
+$_vertical-space-above-title--wide: baseline.increments(5);
+$_search-form-text-inline-padding: 12px;
+$_search-form-inline-margin: settings.$base-font-measure;
+$_clear-button-inline-size: 48px;
 
 .sciety-grid--search-results > .page-header--search-results {
   grid-column: 1 / -1;
@@ -28,11 +28,11 @@ $clear-button-inline-size: 48px;
   font-family: Ubuntu, sans-serif;
   font-weight: bold;
   letter-spacing: 0.14px;
-  padding-top: $vertical-space-above-title--narrow;
+  padding-top: $_vertical-space-above-title--narrow;
   margin-bottom: baseline.increments(1.5);
 
   @include breakpoints.from-narrow {
-    padding-top: $vertical-space-above-title--wide;
+    padding-top: $_vertical-space-above-title--wide;
   }
 }
 
@@ -51,8 +51,8 @@ $clear-button-inline-size: 48px;
 
 .search-form {
   grid-column: 1 / -1;
-  margin-left: functions.px-to-rem($search-form-inline-margin);
-  margin-right: functions.px-to-rem($search-form-inline-margin);
+  margin-left: functions.px-to-rem($_search-form-inline-margin);
+  margin-right: functions.px-to-rem($_search-form-inline-margin);
   margin-bottom: baseline.increments(1.5);
   position: relative;
 
@@ -71,8 +71,8 @@ $clear-button-inline-size: 48px;
   width: 100%;
   padding-top: baseline.increments(17/8);
   padding-bottom: baseline.increments(17/8);
-  padding-left: functions.px-to-rem($search-form-text-inline-padding);
-  padding-right: functions.px-to-rem($clear-button-inline-size);
+  padding-left: functions.px-to-rem($_search-form-text-inline-padding);
+  padding-right: functions.px-to-rem($_clear-button-inline-size);
   font-family: Ubuntu, sans-serif;
   letter-spacing: 0.1px;
   color: settings.$colour-text-primary;
@@ -92,7 +92,7 @@ $clear-button-inline-size: 48px;
   background-color: transparent;
   border-width: 0;
   cursor: pointer;
-  width: functions.px-to-rem($clear-button-inline-size);
+  width: functions.px-to-rem($_clear-button-inline-size);
 }
 
 .search-form__clear_icon {
@@ -109,11 +109,11 @@ $clear-button-inline-size: 48px;
 }
 
 .search-results__summary {
-  margin-left: functions.px-to-rem($search-form-inline-margin + $search-form-text-inline-padding + settings.$border-width);
+  margin-left: functions.px-to-rem($_search-form-inline-margin + $_search-form-text-inline-padding + settings.$border-width);
   font-family: Ubuntu, sans-serif;
 
   @include breakpoints.from-narrow {
-    margin-left: functions.px-to-rem($search-form-text-inline-padding + settings.$border-width);
+    margin-left: functions.px-to-rem($_search-form-text-inline-padding + settings.$border-width);
   }
 }
 
