@@ -26,8 +26,6 @@ $_logo-width: 110px;
 }
 
 .site-header__wrapper {
-  // TODO: move to top level as private member & use instead of 690 below x 2
-  $logo-breakpoint: 690;
   margin-left: 1rem;
   margin-right: 1rem;
   max-width: functions.px-to-rem(settings.$max-site-width);
