@@ -1,8 +1,7 @@
 @use 'baseline';
-@use 'breakpoints';
 @use 'button';
+@use 'breakpoints';
 @use 'functions';
-@use 'layout';
 @use 'list';
 @use 'settings';
 @use 'typography';
@@ -33,7 +32,8 @@ $_logo-width: 110px;
   flex-grow: 1;
 
   @include breakpoints.from-narrow() {
-    @include layout.flex() {
+    @supports (display: flex) {
+      display: flex;
       align-items: center;
     }
   }
