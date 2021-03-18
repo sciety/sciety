@@ -92,9 +92,8 @@ find-peerj-reviews: build
 
 find-pci-reviews: export TARGET = dev
 find-pci-reviews: build
-	echo "Skipping PCI due to broken APIs #535"
-	#$(DOCKER_COMPOSE) run -T app \
-	#	npx ts-node scripts/find-reviews-from-pci
+	$(DOCKER_COMPOSE) run -T app \
+	npx ts-node scripts/find-reviews-from-pci
 
 find-prereview-reviews: export TARGET = dev
 find-prereview-reviews: build
