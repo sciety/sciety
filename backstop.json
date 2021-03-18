@@ -48,8 +48,12 @@
       "clickSelector": ".activity-feed__item-toggle"
     },
     {
-      "label": "Article search page",
+      "label": "Article search",
       "url": "http://sciety_app/articles?query=elephant+shark"
+    },
+    {
+      "label": "Group search",
+      "url": "http://sciety_app/articles?query=peer+community+in+archaeology"
     },
     {
       "label": "ScietyHQ user page",
