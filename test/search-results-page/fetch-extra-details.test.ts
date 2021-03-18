@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { fetchExtraDetails } from '../../src/search-results-page/fetch-extra-details';
 import { Doi } from '../../src/types/doi';
@@ -47,7 +48,41 @@ describe('fetch-extra-details', () => {
 
   describe('given a found group', () => {
     describe('when the details can be fetched', () => {
-      it.todo('returns a correct view model');
+      it('returns a correct view model', async () => {
+        const ports = {
+          findReviewsForArticleDoi: shouldNotBeCalled,
+          getAllEvents: T.of([]),
+          getGroup: () => T.of(O.some({
+            id: new GroupId('my-group'),
+            name: '',
+            avatarPath: '',
+            descriptionPath: '',
+            shortDescription: '',
+          })),
+        };
+        const matches = {
+          query: '',
+          availableMatches: 5,
+          itemsToDisplay: [
+            {
+              _tag: 'Group' as const,
+              id: new GroupId('my-group'),
+            },
+          ],
+        };
+        const viewModel = await fetchExtraDetails(ports)(matches)();
+
+        expect(viewModel).toStrictEqual(E.right({
+          query: '',
+          availableMatches: 5,
+          itemsToDisplay: [
+            expect.objectContaining({
+              reviewCount: 0,
+              followerCount: 0,
+            }),
+          ],
+        }));
+      });
     });
 
     describe('when the details cannot be fetched', () => {
