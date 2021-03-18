@@ -11,10 +11,12 @@ import { renderErrorPage, RenderPage, renderPage } from './render-page';
 import { selectSubsetToDisplay } from './select-subset-to-display';
 import { GroupId } from '../types/group-id';
 
-type FindArticles = (query: string) => TE.TaskEither<'unavailable', {
+type ArticleResults = {
   items: ReadonlyArray<MatchedArticle>,
   total: number,
-}>;
+};
+
+type FindArticles = (query: string) => TE.TaskEither<'unavailable', ArticleResults>;
 
 type FindGroups = (q: string) => T.Task<ReadonlyArray<GroupId>>;
 
@@ -25,6 +27,19 @@ type Ports = {
   getGroup: GetGroup,
   searchEuropePmc: FindArticles,
 };
+
+const tagAsArticles = (results: ArticleResults) => ({
+  ...results,
+  items: results.items.map((article) => ({
+    _tag: 'Article' as const,
+    ...article,
+  })),
+});
+
+const tagAsGroups = RA.map((groupId: GroupId) => ({
+  _tag: 'Group' as const,
+  id: groupId,
+}));
 
 type Params = {
   query: string,
@@ -38,21 +53,12 @@ export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) =
     articles: pipe(
       params.query,
       ports.searchEuropePmc,
-      TE.map((results) => ({
-        ...results,
-        items: results.items.map((article) => ({
-          _tag: 'Article' as const,
-          ...article,
-        })),
-      })),
+      TE.map(tagAsArticles),
     ),
     groups: pipe(
       params.query,
       ports.findGroups, // TODO: should only ask for 10 of n; should return a TE
-      T.map(RA.map((groupId) => ({
-        _tag: 'Group' as const,
-        id: groupId,
-      }))),
+      T.map(tagAsGroups),
       TE.rightTask,
     ),
   },
