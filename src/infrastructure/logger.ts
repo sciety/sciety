@@ -58,20 +58,12 @@ export const jsonSerializer = (prettyPrint = false): Serializer => (
   )
 );
 
-const getConfiguredLevel = () => {
-  const name = process.env.LOG_LEVEL ?? 'debug';
-  if (name in Level) {
-    return Level[name as LevelName];
-  }
-
-  return Level.debug;
-};
-
 export const streamLogger = (
   stream: NodeJS.WritableStream,
   serializer: Serializer,
+  logLevelName: string,
 ): Logger => {
-  const configuredLevel = getConfiguredLevel();
+  const configuredLevel = Level[logLevelName as LevelName] ?? Level.debug;
   return (level, message, payload = {}, date?) => {
     if (Level[level] > configuredLevel) {
       return;

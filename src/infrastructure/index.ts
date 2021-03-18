@@ -42,7 +42,7 @@ export const createInfrastructure = (): TE.TaskEither<unknown, Adapters> => pipe
   I.bind('logger', () => pipe(
     !!process.env.PRETTY_LOG,
     jsonSerializer,
-    (serializer) => streamLogger(process.stdout, serializer),
+    (serializer) => streamLogger(process.stdout, serializer, process.env.LOG_LEVEL ?? 'debug'),
     rTracerLogger,
   )),
   I.bind('pool', () => new Pool()),
