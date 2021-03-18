@@ -38,12 +38,19 @@ import { searchEuropePmc } from './search-europe-pmc';
 import { bootstrapEditorialCommunities } from '../data/bootstrap-editorial-communities';
 import * as DomainEvent from '../types/domain-events';
 
-export const createInfrastructure = (): TE.TaskEither<unknown, Adapters> => pipe(
+type Dependencies = {
+  prettyLog: boolean,
+  logLevel: string, // TODO: Make this a level name
+  crossrefApiBearerToken: O.Option<string>,
+  twitterApiBearerToken: string,
+};
+
+export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<unknown, Adapters> => pipe(
   I.Do,
   I.bind('logger', () => pipe(
-    !!process.env.PRETTY_LOG,
+    dependencies.prettyLog,
     jsonSerializer,
-    (serializer) => streamLogger(process.stdout, serializer, process.env.LOG_LEVEL ?? 'debug'),
+    (serializer) => streamLogger(process.stdout, serializer, dependencies.logLevel),
     rTracerLogger,
   )),
   I.bind('pool', () => new Pool()),
@@ -101,7 +108,7 @@ export const createInfrastructure = (): TE.TaskEither<unknown, Adapters> => pipe
       return {
         fetchArticle: fetchCrossrefArticle(responseCache(getXmlFromCrossrefRestApi(
           logger,
-          O.fromNullable(process.env.CROSSREF_API_BEARER_TOKEN),
+          dependencies.crossrefApiBearerToken,
         ), logger), logger),
         fetchReview: fetchReview(
           fetchDataciteReview(fetchDataset(logger), logger),
@@ -118,7 +125,7 @@ export const createInfrastructure = (): TE.TaskEither<unknown, Adapters> => pipe
         commitEvents: (...args) => commitEvents(...args)({ inMemoryEvents: events, pool, logger: loggerIO(logger) }),
         getFollowList,
         getUserDetails: getTwitterUserDetails(
-          getTwitterResponse(process.env.TWITTER_API_BEARER_TOKEN ?? '', logger),
+          getTwitterResponse(dependencies.twitterApiBearerToken, logger),
           logger,
         ),
         follows: (...args) => follows(...args)(getAllEvents),
