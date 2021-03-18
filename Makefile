@@ -140,7 +140,7 @@ taiko: clean-db
 	npx jest ${TEST} --testTimeout=300000 --bail --roots ./feature-test/
 	${DOCKER_COMPOSE} down
 
-regression: taiko backstop-test
+regression: taiko
 
 render-sanitised-markdown: node_modules
 	npx ts-node --transpile-only ./scripts/hypothesis-review-render-testbed.ts
