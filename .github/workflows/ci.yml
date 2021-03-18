@@ -22,6 +22,13 @@ jobs:
         with:
           lfs: true
 
+      - name: NPM Cache
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-
+
       - name: Build Docker images
         run: |
           make IMAGE_TAG=${IMAGE_TAG} TARGET=prod build
