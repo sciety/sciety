@@ -22,6 +22,10 @@
   "onReadyScript": "puppet/onReady.js",
   "scenarios": [
     {
+      "label": "Local",
+      "url": "http://sciety_app"
+    },
+    {
       "label": "Homepage (with cookie banner)",
       "url": "https://staging.sciety.org",
       "referenceUrl": "https://sciety.org",
@@ -88,6 +92,7 @@
   "engineOptions": {
     "args": ["--no-sandbox"]
   },
+  "dockerCommandTemplate": "docker run --rm -i --network sciety_default --mount type=bind,source=\"{cwd}\",target=/src backstopjs/backstopjs:{version} {backstopCommand} {args}",
   "asyncCaptureLimit": 5,
   "asyncCompareLimit": 50,
   "debug": false,
