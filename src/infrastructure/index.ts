@@ -2,6 +2,7 @@ import axios from 'axios';
 import axiosRetry from 'axios-retry';
 import * as A from 'fp-ts/Array';
 import * as I from 'fp-ts/Identity';
+import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -98,7 +99,10 @@ export const createInfrastructure = (): TE.TaskEither<unknown, Adapters> => pipe
       const fetchFile = (f: string) => fetchStaticFile(f)(loggerIO(logger));
 
       return {
-        fetchArticle: fetchCrossrefArticle(responseCache(getXmlFromCrossrefRestApi(logger), logger), logger),
+        fetchArticle: fetchCrossrefArticle(responseCache(getXmlFromCrossrefRestApi(
+          logger,
+          O.fromNullable(process.env.CROSSREF_API_BEARER_TOKEN),
+        ), logger), logger),
         fetchReview: fetchReview(
           fetchDataciteReview(fetchDataset(logger), logger),
           fetchHypothesisAnnotation(getJson, logger),

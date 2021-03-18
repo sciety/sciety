@@ -1,6 +1,7 @@
 import { URL } from 'url';
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
+import * as O from 'fp-ts/Option';
 import { Logger } from './logger';
 import { Doi } from '../types/doi';
 
@@ -8,6 +9,7 @@ type GetXmlFromCrossrefRestApi = (doi: Doi, acceptHeader: string) => Promise<str
 
 export const getXmlFromCrossrefRestApi = (
   logger: Logger,
+  crossrefApiBearerToken: O.Option<string>,
 ): GetXmlFromCrossrefRestApi => {
   const client = axios.create();
   axiosRetry(client, { retries: 3 });
@@ -19,8 +21,8 @@ export const getXmlFromCrossrefRestApi = (
       Accept: acceptHeader,
       'User-Agent': 'Sciety (https://sciety.org; mailto:team@sciety.org)',
     };
-    if (process.env.CROSSREF_API_BEARER_TOKEN) {
-      headers['Crossref-Plus-API-Token'] = `Bearer ${process.env.CROSSREF_API_BEARER_TOKEN}`;
+    if (O.isSome(crossrefApiBearerToken)) {
+      headers['Crossref-Plus-API-Token'] = `Bearer ${crossrefApiBearerToken.value}`;
     }
     const startTime = new Date();
     try {
