@@ -53,9 +53,6 @@ backstop-test: node_modules clean-db build
 	npx backstop --docker test
 	${DOCKER_COMPOSE} down
 
-backstop-reference: node_modules
-	npx backstop --docker reference > /tmp/backstop_reference.log
-
 backstop-approve: node_modules
 	npx backstop approve
 
