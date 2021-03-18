@@ -42,6 +42,10 @@ jobs:
       - name: Backstop test
         run: |
           make IMAGE_TAG=${IMAGE_TAG} backstop-test
+        env:
+          TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
+          TWITTER_API_SECRET_KEY: ${{ secrets.TWITTER_API_SECRET_KEY }}
+          TWITTER_API_BEARER_TOKEN: ${{ secrets.TWITTER_API_BEARER_TOKEN }}
 
       - name: Push Image to Docker Hub
         if: github.ref == 'refs/heads/main'
