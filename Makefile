@@ -43,8 +43,12 @@ test\:coverage: export TARGET = dev
 test\:coverage: build
 	${DOCKER_COMPOSE} run --rm app npm run test:coverage
 
-backstop-test: node_modules
+backstop-test: export TARGET = dev
+backstop-test: node_modules clean-db build
+	${DOCKER_COMPOSE} up -d
+	scripts/wait-for-healthy.sh
 	npx backstop --docker test > /tmp/backstop_test.log
+	${DOCKER_COMPOSE} down
 
 backstop-reference: node_modules
 	npx backstop --docker reference > /tmp/backstop_reference.log
