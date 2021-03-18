@@ -33,6 +33,8 @@ jobs:
         run: |
           make IMAGE_TAG=${IMAGE_TAG} TARGET=prod build
           make IMAGE_TAG=${IMAGE_TAG} TARGET=dev build
+        env:
+          DOCKER_BUILDKIT: 1
 
       - name: Lint
         run: |
