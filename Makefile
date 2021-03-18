@@ -11,7 +11,7 @@ PORT := 8080
 export IMAGE
 export IMAGE_TAG
 
-.PHONY: backstop build clean* dev find-* git-lfs install lint* prod release test* update-event-data
+.PHONY: backstop* build clean* dev find-* git-lfs install lint* prod release test* update-event-data
 
 dev: export TARGET = dev
 dev: .env install build
@@ -43,9 +43,11 @@ test\:coverage: export TARGET = dev
 test\:coverage: build
 	${DOCKER_COMPOSE} run --rm app npm run test:coverage
 
-backstop: node_modules
-	npx backstop --docker reference > /tmp/backstop_reference.log
+backstop-test: node_modules
 	npx backstop --docker test > /tmp/backstop_test.log
+
+backstop-reference: node_modules
+	npx backstop --docker reference > /tmp/backstop_reference.log
 
 build:
 	$(DOCKER_COMPOSE) build app
