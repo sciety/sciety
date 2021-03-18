@@ -47,6 +47,10 @@ backstop-test: export TARGET = dev
 backstop-test: node_modules clean-db build
 	${DOCKER_COMPOSE} up -d
 	scripts/wait-for-healthy.sh
+	${DOCKER_COMPOSE} exec db psql -c "copy events from '/data/backstop.csv' with CSV" sciety user
+	${DOCKER_COMPOSE} down
+	${DOCKER_COMPOSE} up -d
+	scripts/wait-for-healthy.sh
 	npx backstop --docker test
 	${DOCKER_COMPOSE} down
 

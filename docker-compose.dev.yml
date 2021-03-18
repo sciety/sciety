@@ -17,3 +17,7 @@ services:
       - './static:/app/static'
       - './test:/app/test'
       - './feature-test:/app/feature-test'
+
+  db:
+    volumes:
+      - './data/backstop.csv:/data/backstop.csv'
