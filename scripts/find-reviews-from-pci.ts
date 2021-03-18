@@ -11,11 +11,11 @@ type PciCommunity = {
 
 const pciCommunities: Array<PciCommunity> = [
   { id: '74fd66e9-3b90-4b5a-a4ab-5be83db4c5de', prefix: 'zool', url: 'https://zool.peercommunityin.org/rss/rss4elife' },
-  { id: '19b7464a-edbe-42e8-b7cc-04d1eb1f7332', prefix: 'evolbiol', url: 'https://evolbiol.peercommunityin.org/public/rss4bioRxiv' },
+  { id: '19b7464a-edbe-42e8-b7cc-04d1eb1f7332', prefix: 'evolbiol', url: 'https://evolbiol.peercommunityin.org/rss/rss4elife' },
   { id: '32025f28-0506-480e-84a0-b47ef1e92ec5', prefix: 'ecology', url: 'https://ecology.peercommunityin.org/rss/rss4elife' },
-  { id: '4eebcec9-a4bb-44e1-bde3-2ae11e65daaa', prefix: 'animsci', url: 'https://animsci.peercommunityin.org/public/rss4bioRxiv' },
-  { id: 'b90854bf-795c-42ba-8664-8257b9c68b0c', prefix: 'archaeo', url: 'https://archaeo.peercommunityin.org/public/rss4bioRxiv' },
-  { id: '7a9e97d1-c1fe-4ac2-9572-4ecfe28f9f84', prefix: 'paleo', url: 'https://paleo.peercommunityin.org/public/rss4bioRxiv' },
+  { id: '4eebcec9-a4bb-44e1-bde3-2ae11e65daaa', prefix: 'animsci', url: 'https://animsci.peercommunityin.org/rss/rss4elife' },
+  { id: 'b90854bf-795c-42ba-8664-8257b9c68b0c', prefix: 'archaeo', url: 'https://archaeo.peercommunityin.org/rss/rss4elife' },
+  { id: '7a9e97d1-c1fe-4ac2-9572-4ecfe28f9f84', prefix: 'paleo', url: 'https://paleo.peercommunityin.org/rss/rss4elife' },
 ];
 
 const parser = new DOMParser({
