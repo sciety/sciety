@@ -28,17 +28,11 @@
     {
       "label": "Homepage (with cookie banner)",
       "url": "http://sciety_app",
-      "removeSelectors": [
-        ".group-list"
-      ],
       "showCookieConsent": true
     },
     {
       "label": "Homepage",
-      "url": "http://sciety_app",
-      "removeSelectors": [
-        ".group-list"
-      ]
+      "url": "http://sciety_app"
     },
     {
       "label": "An article meta page",
@@ -59,8 +53,7 @@
     },
     {
       "label": "ScietyHQ user page",
-      "url": "http://sciety_app/users/1295307136415735808",
-      "removeSelectors": [".saved-articles"]
+      "url": "http://sciety_app/users/1295307136415735808"
     },
     {
       "label": "About",
