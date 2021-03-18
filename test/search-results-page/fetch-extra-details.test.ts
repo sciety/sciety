@@ -86,7 +86,30 @@ describe('fetch-extra-details', () => {
     });
 
     describe('when the details cannot be fetched', () => {
-      it.todo('removes the group from the list');
+      it('removes the group from the list', async () => {
+        const ports = {
+          findReviewsForArticleDoi: shouldNotBeCalled,
+          getAllEvents: shouldNotBeCalled,
+          getGroup: () => T.of(O.none),
+        };
+        const matches = {
+          query: '',
+          availableMatches: 5,
+          itemsToDisplay: [
+            {
+              _tag: 'Group' as const,
+              id: new GroupId('my-group'),
+            },
+          ],
+        };
+        const viewModel = await fetchExtraDetails(ports)(matches)();
+
+        expect(viewModel).toStrictEqual(E.right({
+          query: '',
+          availableMatches: 5,
+          itemsToDisplay: [],
+        }));
+      });
     });
   });
 });
