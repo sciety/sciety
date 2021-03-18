@@ -47,7 +47,7 @@ backstop-test: export TARGET = dev
 backstop-test: node_modules clean-db build
 	${DOCKER_COMPOSE} up -d
 	scripts/wait-for-healthy.sh
-	npx backstop --docker test > /tmp/backstop_test.log
+	npx backstop --docker test
 	${DOCKER_COMPOSE} down
 
 backstop-reference: node_modules
