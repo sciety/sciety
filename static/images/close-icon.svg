@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>2AE30D59-BE29-44B7-A3EF-28623A05255C</title>
+    <g id="Designs" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="component-states" transform="translate(-801.000000, -126.000000)">
+            <g id="menu" transform="translate(801.000000, 86.000000)">
+                <g id="menu-no-js-close" transform="translate(0.000000, 40.000000)">
+                    <rect id="Rectangle" fill="#FFFFFF" x="0" y="0" width="30" height="30"></rect>
+                    <path d="M3.6862915,13.5857864 L26.3137085,13.5857864 C27.0947571,13.5857864 27.7279221,14.2189514 27.7279221,15 C27.7279221,15.7810486 27.0947571,16.4142136 26.3137085,16.4142136 L3.6862915,16.4142136 C2.90524292,16.4142136 2.27207794,15.7810486 2.27207794,15 C2.27207794,14.2189514 2.90524292,13.5857864 3.6862915,13.5857864 Z" id="Rectangle" fill="#34434A" transform="translate(15.000000, 15.000000) rotate(45.000000) translate(-15.000000, -15.000000) "></path>
+                    <path d="M15,2.27207794 C15.7810486,2.27207794 16.4142136,2.90524292 16.4142136,3.6862915 L16.4142136,26.3137085 C16.4142136,27.0947571 15.7810486,27.7279221 15,27.7279221 C14.2189514,27.7279221 13.5857864,27.0947571 13.5857864,26.3137085 L13.5857864,3.6862915 C13.5857864,2.90524292 14.2189514,2.27207794 15,2.27207794 Z" id="Rectangle" fill="#34434A" transform="translate(15.000000, 15.000000) rotate(45.000000) translate(-15.000000, -15.000000) "></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

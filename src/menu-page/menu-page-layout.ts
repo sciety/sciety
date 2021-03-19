@@ -94,7 +94,7 @@ export const menuPageLayout = (user: O.Option<User>, referer: O.Option<string>) 
       <nav class="site-header__nav">
         <ul class="site-header__nav_list" role="list">
           <li class="site-header__nav_list_item">
-            ${htmlEscape`<a href="${O.getOrElse(constant('/'))(referer)}">x</a>`}
+            ${htmlEscape`<a href="${O.getOrElse(constant('/'))(referer)}"><img src="/static/images/close-icon.svg" alt=""></a>`}
           </li>
           <li class="site-header__nav_list_item site-header__nav_list_item--search">
             <a href="/search" class="site-header__nav_list_link">
