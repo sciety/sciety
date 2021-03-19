@@ -1,5 +1,7 @@
+import { applyStandardPageLayout } from './../shared-components/apply-standard-page-layout';
 import Router from '@koa/router';
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
@@ -105,13 +107,15 @@ export const createRouter = (adapters: Adapters): Router => {
     )));
 
   router.get('/navigation', async (context, next) => {
-    context.response.body = `
-<div>
-  <h1>Navigation</h1>
-  <a href="/">Home</a>
-  <a href="/about">About</a>
-</div>
-`;
+    context.response.body = applyStandardPageLayout(O.fromNullable(context.state.user))({
+      title: 'Navigation',
+      content: toHtmlFragment(`
+        <div>
+          <h1>Navigation</h1>
+          <a href="/">Home</a>
+          <a href="/about">About</a>
+        </div>
+    `)});
 
     await next();
   });
