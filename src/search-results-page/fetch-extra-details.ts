@@ -52,7 +52,7 @@ const populateGroupViewModel = (getGroup: GetGroup, getAllEvents: GetAllEvents) 
       _tag: 'Group' as const,
       ...group,
       ...meta,
-      description: sanitise(toHtmlFragment(group.shortDescription)),
+      description: pipe(group.shortDescription, toHtmlFragment, sanitise),
     })),
     TE.rightTask,
   )),
@@ -61,9 +61,9 @@ const populateGroupViewModel = (getGroup: GetGroup, getAllEvents: GetAllEvents) 
 const fetchItemDetails = (ports: Ports) => (item: GroupItem | ArticleItem): TE.TaskEither<'not-found', ItemViewModel> => {
   switch (item._tag) {
     case 'Article':
-      return populateArticleViewModel(ports.findReviewsForArticleDoi)(item);
+      return pipe(item, populateArticleViewModel(ports.findReviewsForArticleDoi));
     case 'Group':
-      return populateGroupViewModel(ports.getGroup, ports.getAllEvents)(item);
+      return pipe(item, populateGroupViewModel(ports.getGroup, ports.getAllEvents));
   }
 };
 
