@@ -1,5 +1,6 @@
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
+import { constant } from 'fp-ts/function';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { User } from '../types/user';
@@ -57,7 +58,7 @@ const logInMenuItem = () => toHtmlFragment(`
 const isSecure = process.env.APP_ORIGIN !== undefined && process.env.APP_ORIGIN.startsWith('https:');
 
 // TODO: return a more specific type e.g. HtmlDocument
-export const menuPageLayout = (user: O.Option<User>) => (page: Page): string => `<!doctype html>
+export const menuPageLayout = (user: O.Option<User>, referer: O.Option<string>) => (page: Page): string => `<!doctype html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
 <head>
   <meta charset="utf-8">
@@ -93,7 +94,7 @@ export const menuPageLayout = (user: O.Option<User>) => (page: Page): string => 
       <nav class="site-header__nav">
         <ul class="site-header__nav_list" role="list">
           <li class="site-header__nav_list_item">
-            x
+            ${htmlEscape`<a href="${O.getOrElse(constant('/'))(referer)}">x</a>`}
           </li>
           <li class="site-header__nav_list_item site-header__nav_list_item--search">
             <a href="/search" class="site-header__nav_list_link">
