@@ -132,13 +132,6 @@ export const menuPageLayout = (user: O.Option<User>) => (page: Page): string => 
     ${page.content}
   </main>
 
-  <footer class="site-footer">
-    <small class="site-footer__small_print">
-      © 2021 eLife Sciences Publications Ltd.
-      <a class="site-footer__link" href="/legal">Legal information</a>
-    </small>
-  </footer>
-
   <script src="/static/behaviour.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.js"></script>
   ${googleTagManager}
