@@ -1,6 +1,5 @@
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
-import { constant } from 'fp-ts/function';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { User } from '../types/user';
@@ -42,12 +41,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 const fathom = process.env.FATHOM_SITE_ID ? `
 <script src="https://cdn.usefathom.com/script.js" data-site="${process.env.FATHOM_SITE_ID}" defer></script>
 ` : '';
-
-const myProfileMenuItem = (user: User) => toHtmlFragment(`
-  <li class="site-header__nav_list_item">
-    <a href="/users/${user.id}" class="site-header__nav_list_link">My profile</a>
-  </li>
-`);
 
 const logOutMenuItem = () => toHtmlFragment(`
   <li class="site-header__nav_list_item">
