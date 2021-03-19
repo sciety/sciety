@@ -38,8 +38,7 @@ const populateArticleViewModel = (findReviewsForArticleDoi: FindReviewsForArticl
     ...item,
     reviewCount: reviews.length,
   })),
-  (f) => TE.rightTask<'not-found', ArticleViewModel>(f),
-
+  TE.rightTask,
 );
 
 const populateGroupViewModel = (getGroup: GetGroup, getAllEvents: GetAllEvents) => (item:GroupItem) => pipe(
