@@ -41,7 +41,7 @@ const populateArticleViewModel = (findReviewsForArticleDoi: FindReviewsForArticl
   TE.rightTask,
 );
 
-const populateGroupViewModel = (getGroup: GetGroup, getAllEvents: GetAllEvents) => (item:GroupItem) => pipe(
+const populateGroupViewModel = (getGroup: GetGroup, getAllEvents: GetAllEvents) => (item: GroupItem) => pipe(
   item.id,
   getGroup,
   T.map(E.fromOption(() => 'not-found' as const)),

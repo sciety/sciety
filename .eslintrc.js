@@ -51,6 +51,7 @@ module.exports = {
     '@typescript-eslint/promise-function-async': 'error',
     '@typescript-eslint/restrict-template-expressions': 'error',
     '@typescript-eslint/switch-exhaustiveness-check': 'error',
+    '@typescript-eslint/type-annotation-spacing': 'error',
     'consistent-return': 'off',
     'default-case': 'off',
     'fp-ts/no-module-imports': 'off',
