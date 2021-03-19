@@ -47,6 +47,7 @@ jobs:
           .github/smoke-test.sh
 
       - name: Backstop test
+        if: github.ref == 'refs/heads/main'
         run: |
           make IMAGE_TAG=${IMAGE_TAG} backstop-test
         env:
