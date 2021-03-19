@@ -97,33 +97,18 @@ export const menuPageLayout = (user: O.Option<User>) => (page: Page): string => 
   ${googleTagManagerNoScript}
   <header class="site-header">
     <div class="site-header__wrapper">
-      <a href="/" class="site-header__logo_link">
-        <img src="/static/images/sciety-logo-full-colour.svg" alt="Sciety" class="site-header__logo">
-      </a>
-
       <nav class="site-header__nav">
-
         <ul class="site-header__nav_list" role="list">
-
           <li class="site-header__nav_list_item">
-            <a href="/" class="site-header__nav_list_link">Home</a>
+            x
           </li>
-
-          <li class="site-header__nav_list_item">
-            <a href="/about" class="site-header__nav_list_link">About</a>
-          </li>
-
-          ${O.fold(constant(''), myProfileMenuItem)(user)}
-
           <li class="site-header__nav_list_item site-header__nav_list_item--search">
             <a href="/search" class="site-header__nav_list_link">
               <img src="/static/images/search-icon.svg" alt="Search" class="site-header__nav_list__search_icon">
             </a>
           </li>
-
           ${O.fold(logInMenuItem, logOutMenuItem)(user)}
         </ul>
-
       </nav>
     </div>
   </header>
