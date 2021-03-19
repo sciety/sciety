@@ -59,11 +59,12 @@ const populateGroupViewModel = (getGroup: GetGroup, getAllEvents: GetAllEvents) 
 );
 
 const fetchItemDetails = (ports: Ports) => (item: GroupItem | ArticleItem): TE.TaskEither<'not-found', ItemViewModel> => {
-  if (item._tag === 'Article') {
-    return populateArticleViewModel(ports.findReviewsForArticleDoi)(item);
+  switch (item._tag) {
+    case 'Article':
+      return populateArticleViewModel(ports.findReviewsForArticleDoi)(item);
+    case 'Group':
+      return populateGroupViewModel(ports.getGroup, ports.getAllEvents)(item);
   }
-
-  return populateGroupViewModel(ports.getGroup, ports.getAllEvents)(item);
 };
 
 export type LimitedSet = {
