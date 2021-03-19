@@ -6,13 +6,10 @@ export type GroupItem = {
   id: GroupId,
 };
 
-export type MatchedArticle = {
+export type ArticleItem = {
+  _tag: 'Article',
   doi: Doi,
   title: string,
   authors: string,
   postedDate: Date,
-};
-
-export type ArticleItem = MatchedArticle & {
-  _tag: 'Article',
 };

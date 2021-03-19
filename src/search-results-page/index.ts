@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import { MatchedArticle } from './data-types';
+import { ArticleItem } from './data-types';
 import {
   fetchExtraDetails, FindReviewsForArticleDoi, GetAllEvents, GetGroup,
 } from './fetch-extra-details';
@@ -12,7 +12,7 @@ import { selectSubsetToDisplay } from './select-subset-to-display';
 import { GroupId } from '../types/group-id';
 
 type ArticleResults = {
-  items: ReadonlyArray<MatchedArticle>,
+  items: ReadonlyArray<Omit<ArticleItem, '_tag'>>,
   total: number,
 };
 
