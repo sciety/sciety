@@ -1,4 +1,3 @@
-import { applyStandardPageLayout } from './../shared-components/apply-standard-page-layout';
 import Router from '@koa/router';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
@@ -36,6 +35,7 @@ import { finishSaveArticleCommand } from '../save-article/finish-save-article-co
 import { saveSaveArticleCommand } from '../save-article/save-save-article-command';
 import { searchPage } from '../search-page';
 import { searchResultsPage } from '../search-results-page';
+import { applyStandardPageLayout } from '../shared-components/apply-standard-page-layout';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
@@ -45,6 +45,7 @@ import { unfollowHandler } from '../unfollow';
 import { finishUnfollowCommand } from '../unfollow/finish-unfollow-command';
 import { saveUnfollowCommand } from '../unfollow/save-unfollow-command';
 import { userPage } from '../user-page';
+import { menuPage } from '../menu-page/menu-page';
 
 const biorxivPrefix = '10.1101';
 
@@ -106,16 +107,8 @@ export const createRouter = (adapters: Adapters): Router => {
       )),
     )));
 
-  router.get('/navigation', async (context, next) => {
-    context.response.body = applyStandardPageLayout(O.fromNullable(context.state.user))({
-      title: 'Navigation',
-      content: toHtmlFragment(`
-        <div>
-          <h1>Navigation</h1>
-          <a href="/">Home</a>
-          <a href="/about">About</a>
-        </div>
-    `)});
+  router.get('/menu', async (context, next) => {
+    context.response.body = applyStandardPageLayout(O.fromNullable(context.state.user))(menuPage);
 
     await next();
   });
