@@ -29,6 +29,7 @@ import { homePage } from '../home-page';
 import { Adapters } from '../infrastructure/adapters';
 import { legalPage } from '../legal-page';
 import { menuPage } from '../menu-page/menu-page';
+import { menuPageLayout } from '../menu-page/menu-page-layout';
 import { respondHandler } from '../respond';
 import { finishRespondCommand } from '../respond/finish-respond-command';
 import { saveRespondCommand } from '../respond/save-respond-command';
@@ -36,7 +37,6 @@ import { finishSaveArticleCommand } from '../save-article/finish-save-article-co
 import { saveSaveArticleCommand } from '../save-article/save-save-article-command';
 import { searchPage } from '../search-page';
 import { searchResultsPage } from '../search-results-page';
-import { applyStandardPageLayout } from '../shared-components/apply-standard-page-layout';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
@@ -108,7 +108,7 @@ export const createRouter = (adapters: Adapters): Router => {
     )));
 
   router.get('/menu', async (context, next) => {
-    context.response.body = applyStandardPageLayout(O.fromNullable(context.state.user))(menuPage);
+    context.response.body = menuPageLayout(O.fromNullable(context.state.user))(menuPage);
 
     await next();
   });
