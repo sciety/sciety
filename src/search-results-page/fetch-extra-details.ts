@@ -5,7 +5,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { ArticleItem, GroupItem } from './data-types';
-import { ArticleViewModel, GroupViewModel } from './render-search-result';
+import { ArticleViewModel, ItemViewModel } from './render-search-result';
 import { SearchResults } from './render-search-results';
 import { updateGroupMeta } from './update-group-meta';
 import { Doi } from '../types/doi';
@@ -58,7 +58,7 @@ const populateGroupViewModel = (getGroup: GetGroup, getAllEvents: GetAllEvents) 
   )),
 );
 
-const fetchItemDetails = (ports: Ports) => (item: GroupItem | ArticleItem): TE.TaskEither<'not-found', GroupViewModel | ArticleViewModel> => {
+const fetchItemDetails = (ports: Ports) => (item: GroupItem | ArticleItem): TE.TaskEither<'not-found', ItemViewModel> => {
   if (item._tag === 'Article') {
     return populateArticleViewModel(ports.findReviewsForArticleDoi)(item);
   }

@@ -14,7 +14,7 @@ export type ArticleViewModel = {
   reviewCount: number,
 };
 
-export type GroupViewModel = {
+type GroupViewModel = {
   _tag: 'Group',
   id: GroupId,
   name: string,
