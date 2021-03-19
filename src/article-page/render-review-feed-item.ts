@@ -16,24 +16,24 @@ export type ReviewFeedItem = {
   id: ReviewId,
   source: O.Option<URL>,
   occurredAt: Date,
-  editorialCommunityId: GroupId,
-  editorialCommunityName: string,
-  editorialCommunityAvatar: string,
+  groupId: GroupId,
+  groupName: string,
+  groupAvatar: string,
   fullText: O.Option<SanitisedHtmlFragment>,
   counts: { helpfulCount: number, notHelpfulCount: number },
   current: O.Option<'helpful' | 'not-helpful'>,
 };
 
 const avatar = (review: ReviewFeedItem) => toHtmlFragment(`
-  <img class="activity-feed__item__avatar" src="${review.editorialCommunityAvatar}" alt="">
+  <img class="activity-feed__item__avatar" src="${review.groupAvatar}" alt="">
 `);
 
 const eventMetadata = (review: ReviewFeedItem) => toHtmlFragment(`
   <div class="activity-feed__item__meta">
     <div class="activity-feed__item__title">
-      ${(review.editorialCommunityId.value === 'f97bd177-5cb6-4296-8573-078318755bf2') ? 'Highlighted by' : 'Reviewed by'}
-      <a href="/groups/${review.editorialCommunityId.value}">
-        ${review.editorialCommunityName}
+      ${(review.groupId.value === 'f97bd177-5cb6-4296-8573-078318755bf2') ? 'Highlighted by' : 'Reviewed by'}
+      <a href="/groups/${review.groupId.value}">
+        ${review.groupName}
       </a>
     </div>
     ${templateDate(review.occurredAt, 'activity-feed__item__date')}

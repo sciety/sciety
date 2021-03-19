@@ -13,9 +13,9 @@ describe('render-feed', () => {
         id: new Doi('10.1111/12345678'),
         source: O.some(new URL('http://example.com')),
         occurredAt: new Date(),
-        editorialCommunityId: new GroupId(''),
-        editorialCommunityName: '',
-        editorialCommunityAvatar: '/images/xyz.png',
+        groupId: new GroupId(''),
+        groupName: '',
+        groupAvatar: '/images/xyz.png',
         fullText: O.none,
         counts: {
           helpfulCount: 0,
