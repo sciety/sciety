@@ -5,7 +5,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { ArticleItem, GroupItem } from './data-types';
-import { ArticleViewModel, ItemViewModel } from './render-search-result';
+import { ItemViewModel } from './render-search-result';
 import { SearchResults } from './render-search-results';
 import { updateGroupMeta } from './update-group-meta';
 import { Doi } from '../types/doi';
@@ -31,7 +31,7 @@ export type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray
   editorialCommunityId: GroupId,
 }>>;
 
-const populateArticleViewModel = (findReviewsForArticleDoi: FindReviewsForArticleDoi) => (item: ArticleItem): TE.TaskEither<'not-found', ArticleViewModel> => pipe(
+const populateArticleViewModel = (findReviewsForArticleDoi: FindReviewsForArticleDoi) => (item: ArticleItem) => pipe(
   item.doi,
   findReviewsForArticleDoi, // TODO: Find reviewsForArticleDoi should return a TaskEither
   T.map((reviews) => ({

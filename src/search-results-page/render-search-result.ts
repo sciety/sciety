@@ -5,7 +5,7 @@ import { GroupId } from '../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
-export type ArticleViewModel = {
+type ArticleViewModel = {
   _tag: 'Article',
   doi: Doi,
   title: string,
