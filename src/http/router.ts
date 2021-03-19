@@ -104,6 +104,18 @@ export const createRouter = (adapters: Adapters): Router => {
       )),
     )));
 
+  router.get('/navigation', async (context, next) => {
+    context.response.body = `
+<div>
+  <h1>Navigation</h1>
+  <a href="/">Home</a>
+  <a href="/about">About</a>
+</div>
+`;
+
+    await next();
+  });
+
   router.get('/about',
     pageHandler(() => aboutPage(adapters.fetchStaticFile)));
 
