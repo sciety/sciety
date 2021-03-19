@@ -72,7 +72,7 @@ export type LimitedSet = {
   itemsToDisplay: ReadonlyArray<GroupItem | ArticleItem>,
 };
 
-export const fetchExtraDetails = (ports: Ports) => (state: LimitedSet): TE.TaskEither<never, SearchResults> => pipe(
+export const fetchExtraDetails = (ports: Ports) => (state: LimitedSet): T.Task<SearchResults> => pipe(
   state.itemsToDisplay,
   T.traverseArray(fetchItemDetails(ports)),
   T.map(RA.rights),
@@ -80,5 +80,4 @@ export const fetchExtraDetails = (ports: Ports) => (state: LimitedSet): TE.TaskE
     ...state,
     itemsToDisplay,
   })),
-  TE.rightTask,
 );

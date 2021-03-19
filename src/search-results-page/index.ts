@@ -2,7 +2,7 @@ import { sequenceS } from 'fp-ts/Apply';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { MatchedArticle } from './data-types';
 import {
   fetchExtraDetails, FindReviewsForArticleDoi, GetAllEvents, GetGroup,
@@ -64,6 +64,6 @@ export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) =
   },
   sequenceS(TE.taskEither),
   TE.map(selectSubsetToDisplay(10)),
-  TE.chainW(fetchExtraDetails(ports)),
+  TE.chainW(flow(fetchExtraDetails(ports), TE.rightTask)),
   TE.bimap(renderErrorPage, renderPage),
 );

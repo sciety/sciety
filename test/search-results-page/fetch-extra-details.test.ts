@@ -1,4 +1,3 @@
-import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { fetchExtraDetails } from '../../src/search-results-page/fetch-extra-details';
@@ -34,7 +33,7 @@ describe('fetch-extra-details', () => {
       };
       const viewModel = await fetchExtraDetails(ports)(matches)();
 
-      expect(viewModel).toStrictEqual(E.right({
+      expect(viewModel).toStrictEqual({
         query: '',
         availableMatches: 5,
         itemsToDisplay: [
@@ -42,7 +41,7 @@ describe('fetch-extra-details', () => {
             reviewCount: 1,
           }),
         ],
-      }));
+      });
     });
   });
 
@@ -72,7 +71,7 @@ describe('fetch-extra-details', () => {
         };
         const viewModel = await fetchExtraDetails(ports)(matches)();
 
-        expect(viewModel).toStrictEqual(E.right({
+        expect(viewModel).toStrictEqual({
           query: '',
           availableMatches: 5,
           itemsToDisplay: [
@@ -81,7 +80,7 @@ describe('fetch-extra-details', () => {
               followerCount: 0,
             }),
           ],
-        }));
+        });
       });
     });
 
@@ -104,11 +103,11 @@ describe('fetch-extra-details', () => {
         };
         const viewModel = await fetchExtraDetails(ports)(matches)();
 
-        expect(viewModel).toStrictEqual(E.right({
+        expect(viewModel).toStrictEqual({
           query: '',
           availableMatches: 5,
           itemsToDisplay: [],
-        }));
+        });
       });
     });
   });
