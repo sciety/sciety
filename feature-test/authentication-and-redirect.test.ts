@@ -43,7 +43,7 @@ describe('authentication-and-redirect', () => {
       expect(result).toMatch(/\/articles\/activity\/10\.1101\/2020\.07\.13\.199174#(hypothesis|doi):/);
     });
 
-    it('follow command from the editorial community page returns to the editorial community page', async () => {
+    it('follow command from the group page returns to the group page', async () => {
       await goto('localhost:8080/groups/4eebcec9-a4bb-44e1-bde3-2ae11e65daaa');
       await click('Got it!');
       await click('Follow');
@@ -81,7 +81,7 @@ describe('authentication-and-redirect', () => {
       expect(result).toMatch(/\/articles\/activity\/10\.1101\/2020\.07\.13\.199174#(hypothesis|doi):/);
     });
 
-    it('follow command from the editorial community page returns to the editorial community page', async () => {
+    it('follow command from the group page returns to the group page', async () => {
       await goto('localhost:8080/groups/10360d97-bf52-4aef-b2fa-2f60d319edd7');
       await click('Follow');
 
