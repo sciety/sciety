@@ -28,6 +28,7 @@ import { groupPage } from '../group-page';
 import { homePage } from '../home-page';
 import { Adapters } from '../infrastructure/adapters';
 import { legalPage } from '../legal-page';
+import { menuPage } from '../menu-page/menu-page';
 import { respondHandler } from '../respond';
 import { finishRespondCommand } from '../respond/finish-respond-command';
 import { saveRespondCommand } from '../respond/save-respond-command';
@@ -45,7 +46,6 @@ import { unfollowHandler } from '../unfollow';
 import { finishUnfollowCommand } from '../unfollow/finish-unfollow-command';
 import { saveUnfollowCommand } from '../unfollow/save-unfollow-command';
 import { userPage } from '../user-page';
-import { menuPage } from '../menu-page/menu-page';
 
 const biorxivPrefix = '10.1101';
 
