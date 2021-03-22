@@ -1,3 +1,4 @@
+@use 'button';
 @use 'settings';
 @use 'typography';
 
@@ -6,7 +7,9 @@
   background-color: settings.$colour-text-primary;
   width: 100%;
   font-family: settings.$font-family;
+}
 
+.navigation-menu__links {
   a:link {
     @include typography.sizing(14px, 1.75);
     font-weight: bold;
@@ -51,10 +54,23 @@
   @include typography.sizing(12px, 2);
   letter-spacing: 0.09px;
 
-  a:link {
+  a:link,
+  a:visited {
     @include typography.sizing(12px, 2);
+    color: settings.$colour-white;
+    background-color: settings.$colour-text-primary;
     font-weight: normal;
     letter-spacing: 0.09px;
     text-decoration: underline;
+
+    a:hover,
+    a:active {
+      color: inherit;
+      background-color: inherit;
+    }
   }
+}
+
+.navigation-menu__feedback_button {
+  @include button.button-new();
 }
