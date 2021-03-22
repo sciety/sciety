@@ -4,6 +4,7 @@
 @use 'functions';
 @use 'list';
 @use 'settings';
+@use 'states';
 @use 'typography';
 
 $_top-nav-shadow-height: 9px;
@@ -28,6 +29,10 @@ $_search-icon-size: functions.px-to-rem(28px);
       height: functions.px-to-rem($_site-header-height);
       padding-top: 0;
     }
+  }
+
+  a {
+    @include states.focus();
   }
 }
 
