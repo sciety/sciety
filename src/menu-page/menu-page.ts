@@ -3,7 +3,7 @@ import { toHtmlFragment } from '../types/html-fragment';
 export const menuPage = {
   title: 'Menu',
   content: toHtmlFragment(`
-  <nav id="fly-out-menu" class="fly-out-menu">
+  <nav id="fly-out-menu" class="navigation-menu">
     <h1 class="menu-title">Menu</h1>
     <ul role="list" class="fly-out-menu-list">
       <li><a href="/">Home</a></li>

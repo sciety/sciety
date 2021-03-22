@@ -1,4 +1,24 @@
-.fly-out-close {
+@use 'settings';
+
+.navigation-menu {
+  color: settings.$colour-white;
+  background-color: settings.$colour-text-primary;
+  width: 100%;
+
+  a:link,
+  a:visited {
+    color: settings.$colour-white;
+    background-color: settings.$colour-text-primary;
+
+    a:hover,
+    a:active {
+      color: inherit;
+      background-color: inherit;
+    }
+  }
+}
+
+.site-header__close_nav {
   &::before {
     border: 0;
     clip: rect(0 0 0 0);
