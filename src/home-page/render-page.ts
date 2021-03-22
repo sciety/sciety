@@ -13,7 +13,6 @@ type Component = (userId: O.Option<UserId>) => T.Task<string>;
 type Components = {
   header: string,
   feed: string,
-  searchForm: string,
   editorialCommunities: string,
 };
 
@@ -24,7 +23,6 @@ const render = (components: Components) => `
       ${components.feed}
     </div>
     <div class="home-page-side-bar">
-      ${components.searchForm}
       ${components.editorialCommunities}
     </div>
   </div>
@@ -38,13 +36,11 @@ const asPage = (components: Components): Page => ({
 export const renderPage = (
   renderPageHeader: Component,
   renderEditorialCommunities: Component,
-  renderSearchForm: Component,
   renderFeed: Component,
 ): RenderPage => (userId) => pipe(
   {
     header: renderPageHeader(userId),
     feed: renderFeed(userId),
-    searchForm: renderSearchForm(userId),
     editorialCommunities: renderEditorialCommunities(userId),
   },
   sequenceS(T.task),
