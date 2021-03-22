@@ -6,8 +6,8 @@ export const menuPage = {
   <nav class="navigation-menu">
     <h1 class="navigation-menu__title">Menu</h1>
     <ul role="list" class="navigation-menu__links">
-      <li><a href="/">Home</a></li>
-      <li><a href="/about">About</a></li>
+      <li><a href="/" class="navigation-menu__link navigation-menu__link--home"><span>Home</span></a></li>
+      <li><a href="/about" class="navigation-menu__link navigation-menu__link--about"><span>About</span></a></li>
     </ul>
     <footer>
       <a href="#feedback" class="navigation-menu__feedback_button">Feedback</a>
