@@ -1,6 +1,5 @@
 import fs from 'fs';
 import axios from 'axios';
-import { JSDOM } from 'jsdom';
 import { DOMParser } from 'xmldom';
 
 type PciCommunity = {
@@ -47,31 +46,14 @@ const findRecommendations = async (community: PciCommunity): Promise<Array<Recom
 
   // eslint-disable-next-line no-loops/no-loops
   for (const link of Array.from(doc.getElementsByTagName('link'))) {
-    const url = link.getElementsByTagName('url')[0];
-    const articleDoiString = link.getElementsByTagName('doi')[0]?.textContent ?? '';
+    const articleDoiString = link.getElementsByTagName('doi')[1]?.textContent ?? '';
+    const reviewDoi = link.getElementsByTagName('doi')[0]?.textContent ?? '';
+    const date = link.getElementsByTagName('date')[0]?.textContent ?? '';
 
     const bioAndmedrxivDoiRegex = /^\s*(?:doi:|(?:(?:https?:\/\/)?(?:dx\.)?doi\.org\/))?(10\.1101\/(?:[^%"#?\s])+)\s*$/;
     const [, articleDoi] = bioAndmedrxivDoiRegex.exec(articleDoiString) ?? [];
 
     if (articleDoi) {
-      const { data: html } = await fetchPage(url?.textContent ?? '');
-      const { document } = new JSDOM(html).window;
-      const source = document.querySelector('.pci-recomOfSource')?.textContent;
-      if (!source) {
-        throw new Error(`Cannot find pci-recomOfSource element for ${articleDoi}`);
-      }
-      const date = document.querySelector('meta[name="citation_publication_date"]')?.getAttribute('content');
-      if (!date) {
-        throw new Error(`Unable to get citation publication date for ${articleDoi}`);
-      }
-      if (Number.isNaN(Date.parse(date))) {
-        throw new Error(`Unable to parse the citation publication date for ${articleDoi}: ${date}`);
-      }
-      const reviewDoiMeta = document.querySelector('meta[name="citation_doi"]')?.getAttribute('content') ?? '';
-      const [, reviewDoi] = bioAndmedrxivDoiRegex.exec(reviewDoiMeta) ?? [];
-      if (!reviewDoi) {
-        throw new Error(`Unable to get the review (citation) doi for ${articleDoi}`);
-      }
       result.push({
         date: new Date(date),
         articleDoi,
