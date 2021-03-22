@@ -35,7 +35,7 @@ void pipe(
     TE.fromEither,
   )),
   T.map(E.fold(
-    (error) => pipe(process.stderr.write(`Unable to start:\n${String(error)}\n`), process.exit(1)),
+    (error) => pipe(process.stderr.write(`Unable to start:\n${JSON.stringify(error, null, 2)}\n`), process.exit(1)),
     (server) => server.listen(80),
   )),
 )();
