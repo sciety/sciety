@@ -14,6 +14,8 @@
   padding-top: baseline.increments(2);
   padding-left: functions.px-to-rem(16px);
   padding-right: functions.px-to-rem(16px);
+  display: flex;
+  flex-direction: column;
 }
 
 .navigation-menu__links {
@@ -99,4 +101,9 @@
 
 .navigation-menu__feedback_button {
   @include button.button-new();
+}
+
+.navigation-menu__footer {
+  margin-top: auto;
+  margin-bottom: baseline.increments(3);
 }
