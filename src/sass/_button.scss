@@ -63,7 +63,8 @@
   @include typography.sizing(14px, 1.75);
   font-weight: bold;
   border-radius: settings.$border-radius;
-  padding: baseline.increments(1.125) functions.px-to-rem(12px);
+  border: settings.$border-width solid settings.$colour-accent;
+  padding: baseline.increments(1) functions.px-to-rem(12px - settings.$border-width);
   letter-spacing: 0.1px;
 
   &:link,
@@ -71,10 +72,21 @@
     background-color: settings.$colour-accent;
     color: settings.$colour-white;
 
-    &:hover,
     &:active {
+      border-color: settings.$colour-accent-hover;
       background-color: settings.$colour-accent;
       color: settings.$colour-white;
+    }
+
+    &:hover {
+      border-color: settings.$colour-accent-hover;
+      background-color: settings.$colour-accent-hover;
+      color: settings.$colour-white;
+    }
+
+    &:focus {
+      outline-width: 0;
+      box-shadow: 0 0 0 settings.$focus-width settings.$colour-focus;
     }
   }
 }
