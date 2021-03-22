@@ -7,7 +7,7 @@ const searchIconSvg = toHtmlFragment('<svg class="homepage-search-form__icon" xm
 
 export const renderSearchForm = (): RenderFindArticle => T.of(toHtmlFragment(`
   <section class="homepage-search-form">
-    <form method="get" action="/articles">
+    <form method="get" action="/search">
 
       <h3>
         Search bioRxiv and medRxiv
