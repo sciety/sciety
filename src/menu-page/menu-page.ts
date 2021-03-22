@@ -4,7 +4,7 @@ export const menuPage = {
   title: 'Menu',
   content: toHtmlFragment(`
   <nav class="navigation-menu">
-    <h1>Menu</h1>
+    <h1 class="navigation-menu__title">Menu</h1>
     <ul role="list">
       <li><a href="/">Home</a></li>
       <li><a href="/about">About</a></li>

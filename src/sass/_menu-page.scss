@@ -1,4 +1,5 @@
 @use 'settings';
+@use 'typography';
 
 .navigation-menu {
   color: settings.$colour-white;
@@ -16,6 +17,13 @@
       background-color: inherit;
     }
   }
+}
+
+.navigation-menu__title {
+  @include typography.sizing(20px, 3);
+  font-weight: bold;
+  letter-spacing: 0.14px;
+  font-family: settings.$font-family;
 }
 
 .site-header__close_nav {
