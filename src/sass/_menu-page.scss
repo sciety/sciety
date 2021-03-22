@@ -5,9 +5,13 @@
   color: settings.$colour-white;
   background-color: settings.$colour-text-primary;
   width: 100%;
+  font-family: settings.$font-family;
 
   a:link,
   a:visited {
+    @include typography.sizing(14px, 1.75);
+    font-weight: bold;
+    letter-spacing: 0.1px;
     color: settings.$colour-white;
     background-color: settings.$colour-text-primary;
 
@@ -23,7 +27,6 @@
   @include typography.sizing(20px, 3);
   font-weight: bold;
   letter-spacing: 0.14px;
-  font-family: settings.$font-family;
 }
 
 .site-header__close_nav {
