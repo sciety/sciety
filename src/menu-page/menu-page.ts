@@ -11,7 +11,7 @@ export const menuPage = {
     </ul>
     <footer>
       <a href="#feedback" class="button button--feedback">Feedback</a>
-      <small>
+      <small class="navigation-menu__small_print">
         &copy; 2021 eLife Sciences Publications Ltd.
         <a href="/legal">Legal information</a>
       </small>

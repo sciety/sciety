@@ -7,11 +7,14 @@
   width: 100%;
   font-family: settings.$font-family;
 
-  a:link,
-  a:visited {
+  a:link {
     @include typography.sizing(14px, 1.75);
     font-weight: bold;
     letter-spacing: 0.1px;
+  }
+
+  a:link,
+  a:visited {
     color: settings.$colour-white;
     background-color: settings.$colour-text-primary;
 
@@ -41,5 +44,17 @@
     width: 1px;
     user-select: none;
     content: 'Close the following menu';
+  }
+}
+
+.navigation-menu__small_print {
+  @include typography.sizing(12px, 2);
+  letter-spacing: 0.09px;
+
+  a:link {
+    @include typography.sizing(12px, 2);
+    font-weight: normal;
+    letter-spacing: 0.09px;
+    text-decoration: underline;
   }
 }
