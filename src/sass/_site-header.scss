@@ -21,8 +21,13 @@ $_search-icon-size: functions.px-to-rem(28px);
   color: settings.$colour-text-primary;
 
   @include breakpoints.from-narrow() {
-    background-image: linear-gradient(0deg, rgb(233, 235, 240) 0, rgb(207, 216, 220) $_top-nav-shadow-height - 1, #fff $_top-nav-shadow-height);
-    height: functions.px-to-rem($_site-header-height);
+    padding-top: baseline.increments(1);
+
+    &:not(.site-header--menu) {
+      background-image: linear-gradient(0deg, rgb(233, 235, 240) 0, rgb(207, 216, 220) $_top-nav-shadow-height - 1, #fff $_top-nav-shadow-height);
+      height: functions.px-to-rem($_site-header-height);
+      padding-top: 0;
+    }
   }
 }
 

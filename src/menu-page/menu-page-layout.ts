@@ -89,7 +89,7 @@ export const menuPageLayout = (user: O.Option<User>, referer: O.Option<string>) 
 </head>
 <body>
   ${googleTagManagerNoScript}
-  <header class="site-header">
+  <header class="site-header site-header--menu">
     <div class="site-header__wrapper">
       <nav class="site-header__nav">
         <ul class="site-header__nav_list" role="list">
