@@ -1,0 +1,8 @@
+@use 'settings';
+
+@mixin focus() {
+  &:focus {
+    outline-width: 0;
+    box-shadow: 0 0 0 settings.$focus-width settings.$colour-focus;
+  }
+}

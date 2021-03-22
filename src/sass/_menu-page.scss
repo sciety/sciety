@@ -1,5 +1,6 @@
 @use 'button';
 @use 'settings';
+@use 'states';
 @use 'typography';
 
 .navigation-menu {
@@ -36,6 +37,8 @@
 }
 
 .site-header__close_nav {
+  @include states.focus();
+
   &::before {
     border: 0;
     clip: rect(0 0 0 0);

@@ -1,6 +1,7 @@
 @use 'baseline';
 @use 'functions';
 @use 'settings';
+@use 'states';
 @use 'typography';
 
 @mixin basics () {
@@ -83,10 +84,9 @@
       background-color: settings.$colour-accent-hover;
       color: settings.$colour-white;
     }
+  }
 
-    &:focus {
-      outline-width: 0;
-      box-shadow: 0 0 0 settings.$focus-width settings.$colour-focus;
-    }
+  &:link {
+    @include states.focus();
   }
 }
