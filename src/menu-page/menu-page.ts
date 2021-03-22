@@ -10,7 +10,7 @@ export const menuPage = {
       <li><a href="/about" class="navigation-menu__link navigation-menu__link--about"><span>About</span></a></li>
     </ul>
     <footer class="navigation-menu__footer">
-      <a href="#feedback" class="navigation-menu__feedback_button">Feedback</a>
+      <a href="https://eepurl.com/g7qqcv" class="navigation-menu__feedback_button">Feedback</a>
       <small class="navigation-menu__small_print">
         &copy; 2021 eLife Sciences Publications Ltd.
         <a href="/legal">Legal information</a>
