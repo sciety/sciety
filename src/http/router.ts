@@ -143,7 +143,18 @@ export const createRouter = (adapters: Adapters): Router => {
     )));
 
   router.get('/search',
-    pageHandler(() => pipe(searchPage, TE.right)));
+    async (context, next) => {
+      context.response.set('X-Robots-Tag', 'noindex');
+      await next();
+    },
+    pageHandler(flow(
+      searchResultsPageParams.decode,
+      TE.fromEither,
+      TE.fold(
+        () => TE.right(searchPage),
+        searchResultsPage(adapters),
+      ),
+    )));
 
   router.get('/articles/:doi(10\\..+)',
     async (context, next) => {
