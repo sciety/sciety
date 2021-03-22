@@ -2,6 +2,21 @@ import fs from 'fs';
 import axios from 'axios';
 import { DOMParser } from 'xmldom';
 
+/*
+pipe(
+  groups,
+  RA.map(
+    flow(
+      fetch feed
+      T.Map flow(
+        xml-to-json (xml-js),
+        decode feed,
+        E.map flow(array links => array options<reviews>, compact, fs.writeFileSync),
+        E.mapLeft log error,
+      )
+    )
+*/
+
 type PciCommunity = {
   id: string,
   prefix: string,
