@@ -132,15 +132,11 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.get('/articles',
     async (context, next) => {
-      context.response.set('X-Robots-Tag', 'noindex');
+      context.status = StatusCodes.PERMANENT_REDIRECT;
+      context.redirect('/search');
+
       await next();
-    },
-    pageHandler(flow(
-      searchResultsPageParams.decode,
-      E.mapLeft(toNotFound),
-      TE.fromEither,
-      TE.chain(searchResultsPage(adapters)),
-    )));
+    });
 
   router.get('/search',
     async (context, next) => {
