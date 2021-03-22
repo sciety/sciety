@@ -81,6 +81,8 @@
 .navigation-menu__small_print {
   @include typography.sizing(12px, 2);
   letter-spacing: 0.09px;
+  display: flex;
+  flex-direction: column;
 
   a:link,
   a:visited {
@@ -101,9 +103,11 @@
 
 .navigation-menu__feedback_button {
   @include button.button-new();
+  display: inline-block;
+  margin-bottom: baseline.increments(3);
 }
 
 .navigation-menu__footer {
   margin-top: auto;
-  margin-bottom: baseline.increments(3);
+  margin-bottom: baseline.increments(2);
 }
