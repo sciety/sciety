@@ -43,17 +43,17 @@
 .navigation-menu__link {
   display: flex;
   align-items: center;
-  min-height: baseline.increments(3);
+  min-height: baseline.increments(5);
   background-size: functions.px-to-rem(24px);
   padding-left: functions.px-to-rem(36px);
 }
 
 .navigation-menu__link--home {
-  background: 0 0 url('/static/images/home.svg') no-repeat;
+  background: 0 baseline.increments(1) url('/static/images/home.svg') no-repeat;
 }
 
 .navigation-menu__link--about {
-  background: 0 0 url('/static/images/info.svg') no-repeat;
+  background: 0 baseline.increments(1) url('/static/images/info.svg') no-repeat;
 }
 
 .navigation-menu__title {
