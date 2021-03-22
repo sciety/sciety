@@ -47,13 +47,14 @@ const findRecommendations = async (community: PciCommunity): Promise<Array<Recom
   // eslint-disable-next-line no-loops/no-loops
   for (const link of Array.from(doc.getElementsByTagName('link'))) {
     const articleDoiString = link.getElementsByTagName('doi')[1]?.textContent ?? '';
-    const reviewDoi = link.getElementsByTagName('doi')[0]?.textContent ?? '';
+    const reviewDoiString = link.getElementsByTagName('doi')[0]?.textContent ?? '';
     const date = link.getElementsByTagName('date')[0]?.textContent ?? '';
 
     const bioAndmedrxivDoiRegex = /^\s*(?:doi:|(?:(?:https?:\/\/)?(?:dx\.)?doi\.org\/))?(10\.1101\/(?:[^%"#?\s])+)\s*$/;
     const [, articleDoi] = bioAndmedrxivDoiRegex.exec(articleDoiString) ?? [];
 
     if (articleDoi) {
+      const reviewDoi = reviewDoiString.replace('https://doi.org/', '').replace('http://dx.doi.org/', '');
       result.push({
         date: new Date(date),
         articleDoi,
