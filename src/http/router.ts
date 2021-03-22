@@ -96,7 +96,8 @@ export const createRouter = (adapters: Adapters): Router => {
 
   // PAGES
 
-  router.get('/',
+  router.get(
+    '/',
     pageHandler(flow(
       homePageParams.decode,
       E.mapLeft(toNotFound),
@@ -105,40 +106,51 @@ export const createRouter = (adapters: Adapters): Router => {
         homePage(adapters),
         TE.rightTask,
       )),
-    )));
+    )),
+  );
 
-  router.get('/menu', async (context, next) => {
-    context.response.body = pipe(
-      menuPage,
-      menuPageLayout(
-        O.fromNullable(context.state.user),
-        O.fromNullable(context.request.header.referer),
-      ),
-    );
+  router.get(
+    '/menu',
+    async (context, next) => {
+      context.response.body = pipe(
+        menuPage,
+        menuPageLayout(
+          O.fromNullable(context.state.user),
+          O.fromNullable(context.request.header.referer),
+        ),
+      );
 
-    await next();
-  });
+      await next();
+    },
+  );
 
-  router.get('/about',
-    pageHandler(() => aboutPage(adapters.fetchStaticFile)));
+  router.get(
+    '/about',
+    pageHandler(() => aboutPage(adapters.fetchStaticFile)),
+  );
 
-  router.get('/users/:id(.+)',
+  router.get(
+    '/users/:id(.+)',
     pageHandler(flow(
       userPageParams.decode,
       E.mapLeft(toNotFound),
       TE.fromEither,
       TE.chain(userPage(adapters)),
-    )));
+    )),
+  );
 
-  router.get('/articles',
+  router.get(
+    '/articles',
     async (context, next) => {
       context.status = StatusCodes.PERMANENT_REDIRECT;
       context.redirect('/search');
 
       await next();
-    });
+    },
+  );
 
-  router.get('/search',
+  router.get(
+    '/search',
     async (context, next) => {
       context.response.set('X-Robots-Tag', 'noindex');
       await next();
@@ -150,100 +162,123 @@ export const createRouter = (adapters: Adapters): Router => {
         () => TE.right(searchPage),
         searchResultsPage(adapters),
       ),
-    )));
+    )),
+  );
 
-  router.get('/articles/:doi(10\\..+)',
+  router.get(
+    '/articles/:doi(10\\..+)',
     async (context, next) => {
       context.status = StatusCodes.PERMANENT_REDIRECT;
       context.redirect(`/articles/activity/${context.params.doi}`);
 
       await next();
-    });
+    },
+  );
 
-  router.get('/articles/meta/:doi(.+)',
+  router.get(
+    '/articles/meta/:doi(.+)',
     pageHandler(flow(
       articlePageParams.decode,
       E.mapLeft(toNotFound),
       E.chain(ensureBiorxivDoiParam),
       TE.fromEither,
       TE.chain((args) => articleMetaPage(args)(adapters)),
-    )));
+    )),
+  );
 
-  router.get('/articles/activity/:doi(.+)',
+  router.get(
+    '/articles/activity/:doi(.+)',
     pageHandler(flow(
       articlePageParams.decode,
       E.mapLeft(toNotFound),
       E.chain(ensureBiorxivDoiParam),
       TE.fromEither,
       TE.chain((args) => articleActivityPage(args)(adapters)),
-    )));
+    )),
+  );
 
-  router.get('/groups/:id',
+  router.get(
+    '/groups/:id',
     pageHandler(flow(
       groupPageParams.decode,
       E.mapLeft(toNotFound),
       TE.fromEither,
       TE.chain(groupPage(adapters)),
-    )));
+    )),
+  );
 
-  router.get('/editorial-communities/:id',
+  router.get(
+    '/editorial-communities/:id',
     async (context, next) => {
       context.status = StatusCodes.PERMANENT_REDIRECT;
       context.redirect(`/groups/${context.params.id}`);
 
       await next();
-    });
+    },
+  );
 
   router.redirect('/privacy', '/legal', StatusCodes.PERMANENT_REDIRECT);
 
   router.redirect('/terms', '/legal', StatusCodes.PERMANENT_REDIRECT);
 
-  router.get('/legal',
-    pageHandler(() => pipe(legalPage, TE.right)));
+  router.get(
+    '/legal',
+    pageHandler(() => pipe(legalPage, TE.right)),
+  );
 
   // COMMANDS
 
-  router.post('/follow',
+  router.post(
+    '/follow',
     bodyParser({ enableTypes: ['form'] }),
     saveFollowCommand(),
     requireAuthentication,
-    followHandler(adapters));
+    followHandler(adapters),
+  );
 
-  router.post('/unfollow',
+  router.post(
+    '/unfollow',
     bodyParser({ enableTypes: ['form'] }),
     saveUnfollowCommand(),
     requireAuthentication,
-    unfollowHandler(adapters));
+    unfollowHandler(adapters),
+  );
 
-  router.post('/respond',
+  router.post(
+    '/respond',
     bodyParser({ enableTypes: ['form'] }),
     saveRespondCommand,
     requireAuthentication,
-    respondHandler(adapters));
+    respondHandler(adapters),
+  );
 
-  router.post('/save-article',
+  router.post(
+    '/save-article',
     bodyParser({ enableTypes: ['form'] }),
     saveSaveArticleCommand,
     requireAuthentication,
     finishSaveArticleCommand(adapters),
-    redirectBack);
+    redirectBack,
+  );
 
   // AUTHENTICATION
 
-  router.get('/log-in',
+  router.get(
+    '/log-in',
     async (context: ParameterizedContext, next) => {
       if (!context.session.successRedirect) {
         context.session.successRedirect = context.request.headers.referer ?? '/';
       }
       await next();
     },
-    authenticate);
+    authenticate,
+  );
 
-  router.get('/log-out',
-    logOut);
+  router.get('/log-out', logOut);
 
   // TODO set commands as an object on the session rather than individual properties
-  router.get('/twitter/callback',
+  router.get(
+    '/twitter/callback',
     catchErrors(
       adapters.logger,
       'Detected Twitter callback error',
@@ -254,19 +289,20 @@ export const createRouter = (adapters: Adapters): Router => {
     finishUnfollowCommand(adapters),
     finishRespondCommand(adapters),
     finishSaveArticleCommand(adapters),
-    redirectAfterAuthenticating());
+    redirectAfterAuthenticating(),
+  );
 
   // MISC
 
-  router.get('/ping',
-    ping());
+  router.get('/ping', ping());
 
-  router.get('/robots.txt',
-    robots());
+  router.get('/robots.txt', robots());
 
-  router.get('/static/:file(.+)',
+  router.get(
+    '/static/:file(.+)',
     catchStaticFileErrors(adapters.logger),
-    loadStaticFile);
+    loadStaticFile,
+  );
 
   return router;
 };
