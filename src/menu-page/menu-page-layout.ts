@@ -98,7 +98,8 @@ export const menuPageLayout = (user: O.Option<User>, referer: O.Option<string>) 
     ${page.content}
   </main>
 
-  <nav class="site-header__nav">
+  <nav class="site-header__nav" aria-describedby="application-utilities">
+    <div id="application-utilities" hidden>Sciety application utilities</div>
     <ul class="site-header__nav_list" role="list">
       <li class="site-header__nav_list_item site-header__nav_list_item--search">
         <a href="/search">
