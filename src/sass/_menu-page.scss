@@ -6,6 +6,9 @@
 @use 'states';
 @use 'typography';
 
+$_icon-size: 24px;
+$_icon-inline-padding: 12px;
+
 .menu-page-container {
   flex-grow: 1;
   height: 100vh;
@@ -51,8 +54,10 @@
   align-items: center;
   min-height: baseline.increments(5);
   max-width: functions.px-to-rem(300px);
-  background-size: functions.px-to-rem(24px);
-  padding-left: functions.px-to-rem(48px);
+  background-size: functions.px-to-rem($_icon-size);
+  background-repeat: no-repeat;
+  background-position: functions.px-to-rem($_icon-inline-padding) baseline.increments(1);
+  padding-left: functions.px-to-rem($_icon-inline-padding * 2 + $_icon-size);
   border-radius: settings.$border-radius;
   font-weight: bold;
   letter-spacing: 0.1px;
@@ -70,11 +75,11 @@
 }
 
 .navigation-menu__link--home {
-  background: 12px baseline.increments(1) url('/static/images/home.svg') no-repeat;
+  background-image: url('/static/images/home.svg');
 }
 
 .navigation-menu__link--about {
-  background: 12px baseline.increments(1) url('/static/images/info.svg') no-repeat;
+  background-image: url('/static/images/info.svg');
 }
 
 .navigation-menu__title {
