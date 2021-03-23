@@ -21,32 +21,29 @@
 .navigation-menu__links {
   @include list.basics();
 
-  a:link {
-    @include typography.sizing(14px, 1.75);
-    font-weight: bold;
-    letter-spacing: 0.1px;
-  }
-
-  a:link,
-  a:visited {
-    color: settings.$colour-white;
-    background-color: settings.$colour-text-primary;
-
-    a:hover,
-    a:active {
-      color: inherit;
-      background-color: inherit;
-    }
-  }
 }
 
 .navigation-menu__link {
+  @include typography.sizing(14px, 1.75);
   display: flex;
   align-items: center;
   min-height: baseline.increments(5);
   max-width: functions.px-to-rem(300px);
   background-size: functions.px-to-rem(24px);
   padding-left: functions.px-to-rem(36px);
+  font-weight: bold;
+  letter-spacing: 0.1px;
+
+  &:link,
+  &:visited {
+    color: settings.$colour-white;
+
+    &:hover,
+    &:active {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: inherit;
+    }
+  }
 }
 
 .navigation-menu__link--home {
