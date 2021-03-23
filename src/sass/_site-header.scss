@@ -69,6 +69,7 @@ $_search-icon-size: functions.px-to-rem(28px);
 
 .site-header__nav {
   flex-grow: 1;
+  align-self: center;
 }
 
 .site-header__nav_list {
