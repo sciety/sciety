@@ -1,7 +1,6 @@
 import { URLSearchParams } from 'url';
 import * as E from 'fp-ts/Either';
 import * as RTE from 'fp-ts/ReaderTaskEither';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
@@ -81,14 +80,12 @@ const getFromUrl: GetFromUrl = (url: string) => ({ getJson, logger }: Dependenci
       return 'unavailable' as const;
     },
   ),
-  T.map(flow(
-    E.chainW(europePmcResponse.decode),
-    E.mapLeft(
-      (error) => {
-        logger('error', 'Could not parse response', { error, url });
-        return 'unavailable' as const;
-      },
-    ),
+  TE.chainEitherKW(flow(
+    europePmcResponse.decode,
+    E.mapLeft((error) => {
+      logger('error', 'Could not parse response', { error, url });
+      return 'unavailable' as const;
+    }),
   )),
 );
 

@@ -28,11 +28,10 @@ void pipe(
     twitterApiBearerToken: process.env.TWITTER_API_BEARER_TOKEN ?? '',
   }))),
   TE.bindW('router', ({ adapters }) => pipe(adapters, createRouter, TE.right)),
-  TE.chainW(({ adapters, router }) => pipe(
+  TE.chainEitherKW(({ adapters, router }) => pipe(
     createApplicationServer(router, adapters.logger),
     E.map((server) => createTerminus(server, terminusOptions(adapters.logger))),
     E.map((server) => server.on('listening', () => adapters.logger('debug', 'Server running'))),
-    TE.fromEither,
   )),
   T.map(E.fold(
     (error) => pipe(process.stderr.write(`Unable to start:\n${JSON.stringify(error, null, 2)}\n`), process.exit(1)),
