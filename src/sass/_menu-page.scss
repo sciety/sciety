@@ -44,6 +44,7 @@
   display: flex;
   align-items: center;
   min-height: baseline.increments(5);
+  max-width: functions.px-to-rem(300px);
   background-size: functions.px-to-rem(24px);
   padding-left: functions.px-to-rem(36px);
 }
