@@ -1,0 +1,179 @@
+@use 'settings';
+@use 'baseline';
+@use 'states';
+@use 'typography';
+
+html {
+  font-size: unset;
+}
+
+body {
+  margin: 0;
+  // TODO: this isn't necessarily the color we want, but we are making explicit
+  // what semantic ui sets
+  color: rgba(0, 0, 0, 0.87);
+}
+
+body,
+p {
+  @include typography.sizing($font-size: settings.$base-font-measure, $line-height-in-increments: 3);
+  font-family: 'Noto Serif', serif;
+}
+
+main {
+  margin-bottom: baseline.increments(6);
+}
+
+p {
+  @include typography.sizing($font-size: settings.$base-font-measure, $line-height-in-increments: 3);
+  margin-top: 0;
+  margin-bottom: #{baseline.increments(3)};
+  font-weight: 400;
+}
+
+h1 {
+  @include typography.sizing($font-size: 38px, $line-height-in-increments: 5.7);
+  font-family: Lato, sans-serif;
+  margin-top: 0;
+  margin-bottom: #{baseline.increments(2)};
+  font-weight: 400;
+}
+
+h2 {
+  @include typography.sizing($font-size: 30px, $line-height-in-increments: 4.5);
+  font-family: Lato, sans-serif;
+  margin-top: 0;
+  margin-bottom: #{baseline.increments(2)};
+  font-weight: 400;
+}
+
+h3 {
+  @include typography.sizing($font-size: 26px, $line-height-in-increments: 4);
+  font-family: Lato, sans-serif;
+  margin-top: 0;
+  margin-bottom: #{baseline.increments(2)};
+  font-weight: 400;
+}
+
+h4 {
+  @include typography.sizing($font-size: 22px, $line-height-in-increments: 3.3);
+  font-family: Lato, sans-serif;
+  margin-top: 0;
+  margin-bottom: #{baseline.increments(2)};
+  font-weight: 400;
+}
+
+h5 {
+  @include typography.sizing($font-size: 18px, $line-height-in-increments: 2.7);
+  font-family: Lato, sans-serif;
+  margin-top: 0;
+  margin-bottom: #{baseline.increments(2)};
+  font-weight: 400;
+}
+
+h6 {
+  @include typography.sizing(settings.$base-font-measure, $line-height-in-increments: 2.4);
+  font-family: Lato, sans-serif;
+  margin-top: 0;
+  margin-bottom: #{baseline.increments(2)};
+  font-weight: 400;
+}
+
+blockquote {
+  border-left: 8px solid settings.$colour-grey-one;
+  margin-left: 1.5rem;
+  padding-left: 1rem;
+}
+
+ul {
+  margin-top: 0;
+}
+
+a:link,
+a:visited {
+  color: settings.$colour-primary;
+  text-decoration: none;
+
+  &:hover,
+  &:active {
+    color: settings.$colour-primary-hover;
+  }
+}
+
+a,
+button {
+  @include states.focus();
+}
+
+/*
+Prevent styling of <a> elements that aren't links
+*/
+
+a:not([href]) {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+/*
+Use real subscript and superscript characters where possible
+*/
+
+@supports (font-variant-position: sub) {
+  sub {
+    font-size: inherit;
+    font-variant-position: sub;
+    position: static;
+  }
+}
+
+@supports (font-variant-position: super) {
+  sup {
+    font-size: inherit;
+    font-variant-position: super;
+    position: static;
+  }
+}
+
+p:last-child {
+  margin-bottom: 1em;
+}
+
+table {
+  border-top: settings.$border-width solid settings.$colour-grey-two;
+  border-bottom: settings.$border-width solid settings.$colour-grey-two;
+  margin-bottom: baseline.increments(3);
+}
+
+td,
+th {
+  padding: baseline.increments(0.5) 0.25rem;
+  vertical-align: top;
+
+  &:first-child {
+    padding-left: 0;
+  }
+
+  &:last-child {
+    padding-right: 0;
+  }
+
+  tr:first-child & {
+    padding-top: 0;
+  }
+
+  tr:last-child & {
+    padding-bottom: 0;
+  }
+}
+
+address {
+  margin-bottom: #{baseline.increments(2)};
+  font-style: normal;
+}
+
+*,
+::after,
+::before {
+  box-sizing: border-box;
+}
+
