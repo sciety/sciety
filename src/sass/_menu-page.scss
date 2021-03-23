@@ -56,7 +56,7 @@ $_icon-inline-padding: 12px;
   max-width: functions.px-to-rem(300px);
   background-size: functions.px-to-rem($_icon-size);
   background-repeat: no-repeat;
-  background-position: functions.px-to-rem($_icon-inline-padding) baseline.increments(1);
+  background-position: functions.px-to-rem($_icon-inline-padding) center;
   padding-left: functions.px-to-rem($_icon-inline-padding * 2 + $_icon-size);
   border-radius: settings.$border-radius;
   font-weight: bold;
