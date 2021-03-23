@@ -1,6 +1,5 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { Json } from 'io-ts-types';
@@ -44,13 +43,13 @@ export const fetchHypothesisAnnotation = (getJson: GetJson, logger: Logger): Fet
         return 'unavailable' as const; // TODO: could be not-found
       },
     ),
-    T.map(E.chain(flow(
+    TE.chainEitherK(flow(
       hypothesisAnnotation.decode,
       E.mapLeft((error) => {
         logger('error', 'Invalid response from hypothes.is', { uri, errors: PR.failure(error) });
         return 'unavailable' as const;
       }),
-    ))),
+    )),
     TE.map(toReview(logger)),
   );
 };

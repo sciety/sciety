@@ -3,7 +3,6 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { google, sheets_v4 } from 'googleapis';
@@ -89,7 +88,7 @@ const querySheet = (logger: Logger) => <A>(
         return 'unavailable' as const;
       },
     ),
-    T.map(E.chain((res) => pipe(
+    TE.chainEitherKW((res) => pipe(
       res?.data?.values,
       decoder.decode,
       E.mapLeft(PR.failure),
@@ -97,7 +96,7 @@ const querySheet = (logger: Logger) => <A>(
         logger('error', 'Invalid response from Google sheet api', { res, errors });
         return 'unavailable' as const;
       }),
-    ))),
+    )),
   );
 };
 
@@ -107,7 +106,7 @@ const getRowNumber = (logger: Logger) => (id: NcrcId.NcrcId) => pipe(
     range: 'Sheet1!A:A', // TODO don't select the header
     majorDimension: 'COLUMNS',
   }, columnType),
-  T.map(E.chainW(flow(
+  TE.chainEitherKW(flow(
     RNEA.head,
     RA.findIndex((uuid) => NcrcId.eqNcrcId.equals(NcrcId.fromString(uuid), id)),
     O.map((n) => n + 1),
@@ -118,7 +117,7 @@ const getRowNumber = (logger: Logger) => (id: NcrcId.NcrcId) => pipe(
       return O.none;
     }),
     E.fromOption(constant('not-found' as const)),
-  ))),
+  )),
 );
 
 const getNcrcReview = (logger: Logger) => (rowNumber: number) => pipe(
