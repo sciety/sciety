@@ -24,6 +24,7 @@
 .menu-page-main-content {
   order: 3;
   grid-column: 1 / -1;
+  margin-bottom: 0; // TODO remove when global <main> has no margin-bottom
 }
 
 .navigation-menu {
