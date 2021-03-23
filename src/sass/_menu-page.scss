@@ -83,6 +83,10 @@
 
 .site-header__close_nav {
   align-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: functions.px-to-rem(22px);
 
   &::before {
     border: 0;
