@@ -52,7 +52,8 @@
   min-height: baseline.increments(5);
   max-width: functions.px-to-rem(300px);
   background-size: functions.px-to-rem(24px);
-  padding-left: functions.px-to-rem(36px);
+  padding-left: functions.px-to-rem(48px);
+  border-radius: settings.$border-radius;
   font-weight: bold;
   letter-spacing: 0.1px;
 
@@ -69,11 +70,11 @@
 }
 
 .navigation-menu__link--home {
-  background: 0 baseline.increments(1) url('/static/images/home.svg') no-repeat;
+  background: 12px baseline.increments(1) url('/static/images/home.svg') no-repeat;
 }
 
 .navigation-menu__link--about {
-  background: 0 baseline.increments(1) url('/static/images/info.svg') no-repeat;
+  background: 12px baseline.increments(1) url('/static/images/info.svg') no-repeat;
 }
 
 .navigation-menu__title {
