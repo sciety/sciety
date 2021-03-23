@@ -37,7 +37,6 @@ $_icon-inline-padding: 12px;
   width: 100%;
   font-family: settings.$font-family;
   padding-top: baseline.increments(2);
-  padding-left: functions.px-to-rem(16px);
   padding-right: functions.px-to-rem(16px);
   display: flex;
   flex-direction: column;
@@ -45,7 +44,7 @@ $_icon-inline-padding: 12px;
 
 .navigation-menu__links {
   @include list.basics();
-
+  padding-left: functions.px-to-rem(16px);
 }
 
 .navigation-menu__link {
@@ -86,6 +85,7 @@ $_icon-inline-padding: 12px;
   @include typography.sizing(20px, 3);
   font-weight: bold;
   letter-spacing: 0.14px;
+  padding-left: functions.px-to-rem(26px);
   margin-bottom: baseline.increments(2.5);
 }
 
@@ -143,4 +143,5 @@ $_icon-inline-padding: 12px;
 .navigation-menu__footer {
   margin-top: auto;
   margin-bottom: baseline.increments(2);
+  padding-left: functions.px-to-rem(26px);
 }
