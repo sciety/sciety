@@ -25,7 +25,7 @@ export const getEventsFromDataFiles = (
   editorialCommunityIds: RNEA.ReadonlyNonEmptyArray<GroupId>,
 ): TE.TaskEither<unknown, RNEA.ReadonlyNonEmptyArray<DomainEvent>> => pipe(
   editorialCommunityIds,
-  RNEA.map((editorialCommunityId) => pipe(
+  TE.traverseArray((editorialCommunityId) => pipe(
     `./data/reviews/${editorialCommunityId.value}.csv`,
     taskify(fs.readFile),
     T.map(E.orElse(() => E.right(Buffer.from('')))), // TODO skip files that don't exist
@@ -40,7 +40,6 @@ export const getEventsFromDataFiles = (
       date,
     ))),
   )),
-  TE.sequenceArray,
   TE.map(RA.flatten),
   TE.chainEitherKW(flow(
     RNEA.fromReadonlyArray,
