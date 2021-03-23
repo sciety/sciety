@@ -1,5 +1,3 @@
-import * as O from 'fp-ts/Option';
-import * as A from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { flow } from 'fp-ts/function';
 import { templateDate } from './date';
@@ -44,10 +42,7 @@ const renderAsList = (items: RNEA.ReadonlyNonEmptyArray<HtmlFragment>) => `
 `;
 
 export const renderSummaryFeedList = flow(
-  A.map(renderSummaryFeedItem),
-  RNEA.fromReadonlyArray,
-  O.map(flow(
-    renderAsList,
-    toHtmlFragment,
-  )),
+  RNEA.map(renderSummaryFeedItem),
+  renderAsList,
+  toHtmlFragment,
 );

@@ -1,5 +1,6 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as B from 'fp-ts/boolean';
@@ -14,7 +15,7 @@ export type IsFollowingSomething = (userId: UserId) => T.Task<boolean>;
 
 export type GetEvents<E> = (userId: UserId) => T.Task<ReadonlyArray<E>>;
 
-type RenderSummaryFeedList<E> = (events: ReadonlyArray<E>) => T.Task<O.Option<string>>;
+type RenderSummaryFeedList<E> = (events: RNEA.ReadonlyNonEmptyArray<E>) => T.Task<string>;
 
 const welcomeMessage = `
   <p>Welcome to Sciety.</p>
@@ -69,14 +70,12 @@ export const renderFeed = <Err>(
         ),
       ),
     )),
-    TE.chain((u) => TE.rightTask(getEvents(u))),
-    TE.chain((events) => TE.rightTask(renderSummaryFeedList(events))),
-    TE.chain(
-      O.fold(
-        constant(TE.left(noEvaluationsYet)),
-        (summaryFeedList) => TE.right(summaryFeedList),
-      ),
-    ),
+    TE.chainW(flow(getEvents, TE.rightTask)),
+    TE.chainEitherKW(flow(
+      RNEA.fromReadonlyArray,
+      E.fromOption(constant(noEvaluationsYet)),
+    )),
+    TE.chainW(flow(renderSummaryFeedList, TE.rightTask)),
     T.map(flow(
       E.fold(identity, identity),
       toHtmlFragment,

@@ -28,7 +28,7 @@ describe('render-feed', () => {
           ),
         ]);
         const dummyIsFollowingSomething: IsFollowingSomething = () => T.of(true);
-        const dummyRenderSummaryFeedList = () => T.of(O.some(toHtmlFragment('someNiceList')));
+        const dummyRenderSummaryFeedList = () => T.of(toHtmlFragment('someNiceList'));
         const render = renderFeed(
           dummyIsFollowingSomething,
           dummyGetEvents,
@@ -44,11 +44,10 @@ describe('render-feed', () => {
       it('returns a come back later text', async () => {
         const dummyIsFollowingSomething: IsFollowingSomething = () => T.of(true);
         const dummyGetEvents: GetEvents<EditorialCommunityReviewedArticleEvent> = () => T.of([]);
-        const stubRenderSummaryFeedList = () => T.of(O.none);
         const render = renderFeed(
           dummyIsFollowingSomething,
           dummyGetEvents,
-          stubRenderSummaryFeedList,
+          shouldNotBeCalled,
         );
         const rendered = await render(O.some(toUserId('1111')))();
 

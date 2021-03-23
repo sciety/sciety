@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/Option';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { constant, flow } from 'fp-ts/function';
 import { FeedItem, renderSummaryFeedList } from '../shared-components';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -12,7 +13,8 @@ const emptyFeed = `
 type RenderFeed = (events: ReadonlyArray<FeedItem>) => HtmlFragment;
 
 export const renderFeed: RenderFeed = flow(
-  renderSummaryFeedList,
+  RNEA.fromReadonlyArray,
+  O.map(renderSummaryFeedList),
   O.getOrElse(constant(emptyFeed)),
   toHtmlFragment,
 );
