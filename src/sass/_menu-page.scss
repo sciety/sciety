@@ -8,6 +8,7 @@
 
 .menu-page-container {
   flex-grow: 1;
+  height: 100vh;
   display: grid;
   grid-template-columns: functions.px-to-rem(30px) 1fr;
   grid-template-rows: 60px auto;
