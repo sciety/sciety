@@ -21,6 +21,7 @@
 @use 'search-results-page';
 @use 'list';
 @use 'typography';
+@use 'states';
 
 @import url('https://fonts.googleapis.com/css?family=Lato:ital,wght@0,400;0,700;1,400&subset=latin,latin-ext&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap');
@@ -217,6 +218,11 @@ a:visited {
   &:active {
     color: settings.$colour-primary-hover;
   }
+}
+
+a,
+button {
+  @include states.focus();
 }
 
 .feed__image {
