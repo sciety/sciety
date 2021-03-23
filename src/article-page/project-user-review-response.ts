@@ -3,7 +3,7 @@ import * as RT from 'fp-ts/ReaderTask';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import {
   DomainEvent,
   UserFoundReviewHelpfulEvent,
@@ -31,17 +31,19 @@ const projectResponse = (getEvents: GetEvents) => (reviewId: ReviewId.ReviewId, 
   T.map(RA.filter((event) => event.userId === userId)),
   T.map(RA.filter((event) => ReviewId.equals(event.reviewId, reviewId))),
   T.map(RNEA.fromReadonlyArray),
-  T.map(O.chain((ofInterest) => {
-    const mostRecentEventType = ofInterest[ofInterest.length - 1].type;
-    switch (mostRecentEventType) {
-      case 'UserFoundReviewHelpful':
-        return O.some('helpful' as const);
-      case 'UserFoundReviewNotHelpful':
-        return O.some('not-helpful' as const);
-      default:
-        return O.none;
-    }
-  })),
+  T.map(O.chain(flow(
+    RNEA.last,
+    (mostRecentEvent) => {
+      switch (mostRecentEvent.type) {
+        case 'UserFoundReviewHelpful':
+          return O.some('helpful' as const);
+        case 'UserFoundReviewNotHelpful':
+          return O.some('not-helpful' as const);
+        default:
+          return O.none;
+      }
+    },
+  ))),
 );
 
 type ProjectUserReviewResponse = (
