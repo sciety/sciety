@@ -83,11 +83,11 @@ $_search-icon-size: functions.px-to-rem(28px);
   margin-top: baseline.increments(2);
   margin-bottom: 0;
 
-  .menu-page-container & {
+  @include breakpoints.from-narrow() {
     margin-top: 0;
   }
 
-  @include breakpoints.from-narrow() {
+  .menu-page-container & {
     margin-top: 0;
   }
 }
