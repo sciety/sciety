@@ -89,27 +89,27 @@ export const menuPageLayout = (user: O.Option<User>, referer: O.Option<string>) 
 </head>
 <body>
   ${googleTagManagerNoScript}
-  <header class="site-header site-header--menu">
-    <div class="site-header__wrapper">
-      <nav class="site-header__nav">
-        <ul class="site-header__nav_list" role="list">
-          <li class="site-header__nav_list_item">
-            ${htmlEscape`<a href="${O.getOrElse(constant('/'))(referer)}" class="site-header__close_nav"><img src="/static/images/close-icon.svg" alt=""></a>`}
-          </li>
-          <li class="site-header__nav_list_item site-header__nav_list_item--search">
-            <a href="/search">
-              <img src="/static/images/search-icon.svg" alt="Search" class="site-header__nav_list__search_icon">
-            </a>
-          </li>
-          ${O.fold(logInMenuItem, logOutMenuItem)(user)}
-        </ul>
-      </nav>
-    </div>
-  </header>
 
-  <main>
+<div class="menu-page-container">
+
+  ${htmlEscape`<a href="${O.getOrElse(constant('/'))(referer)}" class="site-header__close_nav"><img src="/static/images/close-icon.svg" alt=""></a>`}
+
+  <main class="menu-page-main-content">
     ${page.content}
   </main>
+
+  <nav class="site-header__nav">
+    <ul class="site-header__nav_list" role="list">
+      <li class="site-header__nav_list_item site-header__nav_list_item--search">
+        <a href="/search">
+          <img src="/static/images/search-icon.svg" alt="Search" class="site-header__nav_list__search_icon">
+        </a>
+      </li>
+      ${O.fold(logInMenuItem, logOutMenuItem)(user)}
+    </ul>
+  </nav>
+
+</div>
 
   <script src="/static/behaviour.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.js"></script>

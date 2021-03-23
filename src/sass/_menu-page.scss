@@ -6,6 +6,26 @@
 @use 'states';
 @use 'typography';
 
+.menu-page-container {
+  flex-grow: 1;
+  display: grid;
+  grid-template-columns: functions.px-to-rem(30px) 1fr;
+  grid-template-rows: 60px auto;
+}
+
+.site-header__close_nav {
+  order: 1;
+}
+
+.site-header__nav {
+  order: 2;
+}
+
+.menu-page-main-content {
+  order: 3;
+  grid-column: 1 / -1;
+}
+
 .navigation-menu {
   color: settings.$colour-white;
   background-color: settings.$colour-text-primary;
