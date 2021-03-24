@@ -48,30 +48,20 @@ type Dependencies = {
   getUserReviewResponse: GetUserReviewResponse,
 };
 
-export const getArticleFeedEvents: GetArticleFeedEvents = (doi, server, userId) => ({
-  findReviewsForArticleDoi,
-  findVersionsForArticleDoi,
-  fetchReview,
-  getGroup,
-  countReviewResponses,
-  getUserReviewResponse,
-}) => pipe(
+export const getArticleFeedEvents: GetArticleFeedEvents = (doi, server, userId) => pipe(
   [
     pipe(
-      findReviewsForArticleDoi(doi),
-      T.map(RA.map((review) => ({ type: 'review', ...review } as const))),
+      RT.asks((deps: Dependencies) => deps.findReviewsForArticleDoi),
+      RT.chainTaskK((findReviewsForArticleDoi) => findReviewsForArticleDoi(doi)),
+      RT.map(RA.map((review) => ({ type: 'review', ...review } as const))),
     ),
     pipe(
-      findVersionsForArticleDoi(doi, server),
-      T.map(RA.map((version) => ({ type: 'article-version', ...version } as const))),
+      RT.asks((deps: Dependencies) => deps.findVersionsForArticleDoi),
+      RT.chainTaskK((findVersionsForArticleDoi) => findVersionsForArticleDoi(doi, server)),
+      RT.map(RA.map((version) => ({ type: 'article-version', ...version } as const))),
     ),
-  ],
+  ] as const,
   mergeFeeds,
-  T.chain((feedEvents) => getFeedEventsContent(feedEvents, server, userId)({
-    fetchReview,
-    getGroup,
-    countReviewResponses,
-    getUserReviewResponse,
-  })),
-  T.map((feedEvents) => handleArticleVersionErrors(feedEvents, server)),
+  RT.chain((feedEvents) => getFeedEventsContent(feedEvents, server, userId)),
+  RT.map((feedEvents) => handleArticleVersionErrors(feedEvents, server)),
 );

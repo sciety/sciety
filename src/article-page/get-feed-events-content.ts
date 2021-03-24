@@ -116,11 +116,11 @@ type Dependencies = {
   getUserReviewResponse: GetUserReviewResponse,
 };
 
-type GetFeedEventsContent = (
+type GetFeedEventsContent = <R extends Dependencies>(
   feedEvents: ReadonlyArray<FeedEvent>,
   server: ArticleServer,
   userId: O.Option<UserId>,
-) => RT.ReaderTask<Dependencies, ReadonlyArray<FeedItem>>;
+) => RT.ReaderTask<R, ReadonlyArray<FeedItem>>;
 
 export const getFeedEventsContent: GetFeedEventsContent = (feedEvents, server, userId) => ({
   fetchReview,
