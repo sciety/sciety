@@ -2,12 +2,12 @@
 
 @mixin focus() {
   &:focus-visible {
-    outline-width: 0;
+    outline-style: none;
     box-shadow: 0 0 0 settings.$focus-width settings.$colour-focus;
   }
 
   &:focus {
-    outline-width: 0;
+    outline-style: none;
     box-shadow: 0 0 0 settings.$focus-width settings.$colour-focus;
 
     &:not(:focus-visible) {

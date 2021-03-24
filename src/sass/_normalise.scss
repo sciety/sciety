@@ -100,8 +100,9 @@ a:visited {
   }
 }
 
-a,
-button {
+a[href],
+button,
+input {
   @include states.focus();
 }
 
