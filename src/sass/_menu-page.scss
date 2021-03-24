@@ -148,6 +148,10 @@ $_menu-link-max-width: 300px;
   height: $_search-icon-size;
 }
 
+.menu-page__nav_list_link_button {
+  @include button.button-new();
+}
+
 .navigation-menu__small_print {
   @include typography.sizing(12px, 2);
   letter-spacing: 0.09px;
