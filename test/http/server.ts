@@ -3,6 +3,7 @@ import { literal, namedNode } from '@rdfjs/data-model';
 import { schema } from '@tpluscode/rdf-ns-builders';
 import clownface from 'clownface';
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -69,7 +70,7 @@ export const createTestServer = async (): Promise<TestServer> => {
       handle: '',
     }),
     follows: () => T.of(false),
-    findVersionsForArticleDoi: () => T.of([]),
+    findVersionsForArticleDoi: () => T.of(O.none),
   };
 
   const router = createRouter(adapters);

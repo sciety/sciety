@@ -23,6 +23,11 @@ type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
   occurredAt: Date,
 }>>;
 
+type FindVersionsForArticleDoi = (
+  doi: Doi,
+  server: ArticleServer,
+) => T.Task<O.Option<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>>;
+
 type GetGroup = (editorialCommunityId: GroupId) => T.Task<O.Option<Group>>;
 
 type GetAllEditorialCommunities = T.Task<RNEA.ReadonlyNonEmptyArray<Group>>;
@@ -34,7 +39,7 @@ export type Adapters = {
   fetchStaticFile: (filename: string) => TE.TaskEither<'not-found' | 'unavailable', string>,
   findGroups: (query: string) => T.Task<ReadonlyArray<GroupId>>,
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
-  findVersionsForArticleDoi: (doi: Doi, server: ArticleServer) => T.Task<ReadonlyArray<ArticleVersion>>,
+  findVersionsForArticleDoi: FindVersionsForArticleDoi,
   follows: (userId: UserId, editorialCommunityId: GroupId) => T.Task<boolean>,
   getAllEditorialCommunities: GetAllEditorialCommunities,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,

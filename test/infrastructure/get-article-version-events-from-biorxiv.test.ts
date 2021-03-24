@@ -1,4 +1,7 @@
 import { URL } from 'url';
+import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
+import { pipe } from 'fp-ts/function';
 import { Json } from 'io-ts-types';
 import { getArticleVersionEventsFromBiorxiv } from '../../src/infrastructure/get-article-version-events-from-biorxiv';
 import { Doi } from '../../src/types/doi';
@@ -22,7 +25,10 @@ describe('get-article-version-events-from-biorxiv', () => {
           ],
         }));
 
-        const events = await getArticleVersionEventsFromBiorxiv(doi, 'biorxiv')({ getJson, logger: dummyLogger })();
+        const events = await pipe(
+          getArticleVersionEventsFromBiorxiv(doi, 'biorxiv')({ getJson, logger: dummyLogger }),
+          T.map(O.getOrElseW(() => [])),
+        )();
 
         expect(getJson).toHaveBeenCalledWith('https://api.biorxiv.org/details/biorxiv/10.1101/2020.09.02.278911');
         expect(events).toHaveLength(2);
@@ -55,7 +61,10 @@ describe('get-article-version-events-from-biorxiv', () => {
           ],
         }));
 
-        const events = await getArticleVersionEventsFromBiorxiv(doi, 'medrxiv')({ getJson, logger: dummyLogger })();
+        const events = await pipe(
+          getArticleVersionEventsFromBiorxiv(doi, 'medrxiv')({ getJson, logger: dummyLogger }),
+          T.map(O.getOrElseW(() => [])),
+        )();
 
         expect(getJson).toHaveBeenCalledWith('https://api.biorxiv.org/details/medrxiv/10.1101/2020.09.02.278911');
         expect(events).toHaveLength(2);
@@ -74,30 +83,30 @@ describe('get-article-version-events-from-biorxiv', () => {
   });
 
   describe('when biorxiv is unavailable', () => {
-    it('returns an empty list', async () => {
+    it('returns a none', async () => {
       const getJson = async (): Promise<never> => {
         throw new Error('HTTP timeout');
       };
 
       const events = await getArticleVersionEventsFromBiorxiv(new Doi('10.1101/2020.09.02.278911'), 'biorxiv')({ getJson, logger: dummyLogger })();
 
-      expect(events).toHaveLength(0);
+      expect(events).toStrictEqual(O.none);
     });
   });
 
   describe('when biorxiv returns a corrupted response', () => {
     describe('where the fields are missing', () => {
-      it('returns an empty list', async () => {
+      it('returns a none', async () => {
         const getJson = async (): Promise<Json> => ({});
 
         const events = await getArticleVersionEventsFromBiorxiv(new Doi('10.1101/2020.09.02.278911'), 'biorxiv')({ getJson, logger: dummyLogger })();
 
-        expect(events).toHaveLength(0);
+        expect(events).toStrictEqual(O.none);
       });
     });
 
     describe('where the date is corrupt', () => {
-      it('returns an empty list', async () => {
+      it('returns a none', async () => {
         const getJson = async (): Promise<Json> => ({
           collection: [
             {
@@ -109,12 +118,12 @@ describe('get-article-version-events-from-biorxiv', () => {
 
         const events = await getArticleVersionEventsFromBiorxiv(new Doi('10.1101/2020.09.02.278911'), 'biorxiv')({ getJson, logger: dummyLogger })();
 
-        expect(events).toHaveLength(0);
+        expect(events).toStrictEqual(O.none);
       });
     });
 
     describe('where the version is not a number', () => {
-      it('returns an empty list', async () => {
+      it('returns a none', async () => {
         const getJson = async (): Promise<Json> => ({
           collection: [
             {
@@ -126,7 +135,7 @@ describe('get-article-version-events-from-biorxiv', () => {
 
         const events = await getArticleVersionEventsFromBiorxiv(new Doi('10.1101/2020.09.02.278911'), 'biorxiv')({ getJson, logger: dummyLogger })();
 
-        expect(events).toHaveLength(0);
+        expect(events).toStrictEqual(O.none);
       });
     });
   });

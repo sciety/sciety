@@ -1,5 +1,6 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as RT from 'fp-ts/ReaderTask';
 import * as RTE from 'fp-ts/ReaderTaskEither';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
@@ -28,7 +29,7 @@ type ArticleVersion = {
 type GetArticleVersionEventsFromBiorxiv = (
   doi: Doi,
   server: ArticleServer,
-) => RT.ReaderTask<Dependencies, ReadonlyArray<ArticleVersion>>;
+) => RT.ReaderTask<Dependencies, O.Option<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>>;
 
 const makeRequest = (doi: Doi, server: ArticleServer) => ({ getJson, logger }: Dependencies) => pipe(
   TE.tryCatch(
@@ -59,7 +60,7 @@ const mapResponse = (doi: Doi, server: ArticleServer) => flow(
 const getArticleVersionEventsFromBiorxiv: GetArticleVersionEventsFromBiorxiv = (doi, server) => pipe(
   makeRequest(doi, server),
   RTE.map(mapResponse(doi, server)),
-  RTE.getOrElseW(() => RT.of([])),
+  RT.map(O.fromEither),
 );
 
 export { getArticleVersionEventsFromBiorxiv, ArticleVersion };

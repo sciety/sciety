@@ -1,10 +1,15 @@
+import * as O from 'fp-ts/Option';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import { ArticleVersion } from './get-article-version-events-from-biorxiv';
 import { Logger } from './logger';
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 
-type GetArticleVersionEventsFromBiorxiv = (doi: Doi, server: ArticleServer) => T.Task<ReadonlyArray<ArticleVersion>>;
+type GetArticleVersionEventsFromBiorxiv = (
+  doi: Doi,
+  server: ArticleServer
+) => T.Task<O.Option<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>>;
 
 type BiorxivCache = Record<string, ReturnType<ReturnType<GetArticleVersionEventsFromBiorxiv>>>;
 
@@ -23,7 +28,7 @@ export const biorxivCache = (
     logger('debug', 'bioRxiv cache miss', { doi });
     const promise = getArticleVersionEventsFromBiorxiv(doi, server)();
     void promise.then((result) => {
-      if (result.length === 0) {
+      if (O.isNone(result)) {
         delete cache[doi.value];
       }
     });

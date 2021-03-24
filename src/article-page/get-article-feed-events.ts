@@ -27,7 +27,10 @@ export type FindReviewsForArticleDoi = (articleVersionDoi: Doi) => T.Task<Readon
   occurredAt: Date,
 }>>;
 
-type FindVersionsForArticleDoi = (doi: Doi, server: ArticleServer) => T.Task<O.Option<RNEA.ReadonlyNonEmptyArray<{
+export type FindVersionsForArticleDoi = (
+  doi: Doi,
+  server: ArticleServer
+) => T.Task<O.Option<RNEA.ReadonlyNonEmptyArray<{
   source: URL,
   occurredAt: Date,
   version: number,
