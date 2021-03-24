@@ -4,7 +4,7 @@ import * as RT from 'fp-ts/ReaderTask';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import {
   CountReviewResponses,
   FetchReview,
@@ -27,11 +27,11 @@ export type FindReviewsForArticleDoi = (articleVersionDoi: Doi) => T.Task<Readon
   occurredAt: Date,
 }>>;
 
-export type FindVersionsForArticleDoi = (doi: Doi, server: ArticleServer) => T.Task<ReadonlyArray<{
+type FindVersionsForArticleDoi = (doi: Doi, server: ArticleServer) => T.Task<O.Option<RNEA.ReadonlyNonEmptyArray<{
   source: URL,
   occurredAt: Date,
   version: number,
-}>>;
+}>>>;
 
 type GetArticleFeedEvents = (
   doi: Doi,
@@ -57,8 +57,13 @@ export const getArticleFeedEvents: GetArticleFeedEvents = (doi, server, userId) 
     ),
     pipe(
       RT.asks((deps: Dependencies) => deps.findVersionsForArticleDoi),
-      RT.chainTaskK((findVersionsForArticleDoi) => findVersionsForArticleDoi(doi, server)),
-      RT.map(RA.map((version) => ({ type: 'article-version', ...version } as const))),
+      RT.chainTaskK(flow(
+        (findVersionsForArticleDoi) => findVersionsForArticleDoi(doi, server),
+        T.map(flow(
+          O.map(RNEA.map((version) => ({ type: 'article-version', ...version } as const))),
+          O.getOrElseW(() => []),
+        )),
+      )),
     ),
   ] as const,
   mergeFeeds,

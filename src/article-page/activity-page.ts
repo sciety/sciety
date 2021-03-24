@@ -1,12 +1,14 @@
+import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import * as R from 'fp-ts/Reader';
 import * as RT from 'fp-ts/ReaderTask';
 import * as RTE from 'fp-ts/ReaderTaskEither';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
 import striptags from 'striptags';
-import { FindReviewsForArticleDoi, FindVersionsForArticleDoi, getArticleFeedEvents } from './get-article-feed-events';
+import { FindReviewsForArticleDoi, getArticleFeedEvents } from './get-article-feed-events';
 import { FetchReview } from './get-feed-events-content';
 import { projectHasUserSavedArticle } from './project-has-user-saved-article';
 import { projectReviewResponseCounts } from './project-review-response-counts';
@@ -48,6 +50,12 @@ type GetArticleDetails = (doi: Doi) => TE.TaskEither<'not-found' | 'unavailable'
 type GetGroup = (groupId: GroupId) => T.Task<O.Option<{
   name: string,
   avatarPath: string,
+}>>;
+
+type FindVersionsForArticleDoi = (doi: Doi, server: ArticleServer) => T.Task<ReadonlyArray<{
+  source: URL,
+  occurredAt: Date,
+  version: number,
 }>>;
 
 type Ports = {
@@ -98,6 +106,10 @@ export const articleActivityPage: ActivityPage = flow(
       ),
       countReviewResponses: (reviewId) => projectReviewResponseCounts(reviewId)(ports.getAllEvents),
       getUserReviewResponse: (reviewId) => projectUserReviewResponse(reviewId, userId)(ports.getAllEvents),
+      findVersionsForArticleDoi: flow(
+        ports.findVersionsForArticleDoi,
+        T.map(RNEA.fromReadonlyArray),
+      ),
     }),
     T.map(renderFeed(
       (feedItem) => {
