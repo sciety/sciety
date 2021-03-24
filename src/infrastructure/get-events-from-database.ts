@@ -26,8 +26,8 @@ export const getEventsFromDatabase = (
     (rows) => logger('debug', 'Reading events from database', { count: rows.length }),
     TE.right,
   )),
-  TE.map(RA.map((row) => ({ ...row, ...row.payload }))),
   TE.chainEitherK(flow(
+    RA.map((row) => ({ ...row, ...row.payload })),
     domainEvents.decode,
     E.mapLeft((errors) => new Error(PR.failure(errors).join('\n'))),
   )),

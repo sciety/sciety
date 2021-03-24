@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
-import { constant, pipe } from 'fp-ts/function';
+import { constant, flow, pipe } from 'fp-ts/function';
 import { Community, RenderEditorialCommunity } from './render-editorial-community';
 import { templateListItems } from '../shared-components';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -29,8 +29,10 @@ export const renderEditorialCommunities = (
   pipe(
     editorialCommunities,
     T.chain(T.traverseArray(renderEditorialCommunity(userId))),
-    T.map(RNEA.fromReadonlyArray), // TODO shouldn't be needed, fp-ts types needs fixing
-    T.map(O.fold(constant(''), render)),
-    T.map(toHtmlFragment),
+    T.map(flow(
+      RNEA.fromReadonlyArray, // TODO shouldn't be needed, fp-ts types needs fixing
+      O.fold(constant(''), render),
+      toHtmlFragment,
+    )),
   )
 );

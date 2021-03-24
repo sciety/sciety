@@ -18,32 +18,34 @@ type GetEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 const projectResponse = (getEvents: GetEvents) => (reviewId: ReviewId.ReviewId, userId: UserId) => pipe(
   getEvents,
-  T.map(RA.filter((event): event is
-    UserFoundReviewHelpfulEvent |
-    UserRevokedFindingReviewHelpfulEvent |
-    UserRevokedFindingReviewNotHelpfulEvent |
-    UserFoundReviewNotHelpfulEvent => (
-    event.type === 'UserFoundReviewHelpful'
-    || event.type === 'UserRevokedFindingReviewHelpful'
-    || event.type === 'UserFoundReviewNotHelpful'
-    || event.type === 'UserRevokedFindingReviewNotHelpful'
-  ))),
-  T.map(RA.filter((event) => event.userId === userId)),
-  T.map(RA.filter((event) => ReviewId.equals(event.reviewId, reviewId))),
-  T.map(RNEA.fromReadonlyArray),
-  T.map(O.chain(flow(
-    RNEA.last,
-    (mostRecentEvent) => {
-      switch (mostRecentEvent.type) {
-        case 'UserFoundReviewHelpful':
-          return O.some('helpful' as const);
-        case 'UserFoundReviewNotHelpful':
-          return O.some('not-helpful' as const);
-        default:
-          return O.none;
-      }
-    },
-  ))),
+  T.map(flow(
+    RA.filter((event): event is
+      UserFoundReviewHelpfulEvent |
+      UserRevokedFindingReviewHelpfulEvent |
+      UserRevokedFindingReviewNotHelpfulEvent |
+      UserFoundReviewNotHelpfulEvent => (
+      event.type === 'UserFoundReviewHelpful'
+      || event.type === 'UserRevokedFindingReviewHelpful'
+      || event.type === 'UserFoundReviewNotHelpful'
+      || event.type === 'UserRevokedFindingReviewNotHelpful'
+    )),
+    RA.filter((event) => event.userId === userId),
+    RA.filter((event) => ReviewId.equals(event.reviewId, reviewId)),
+    RNEA.fromReadonlyArray,
+    O.chain(flow(
+      RNEA.last,
+      (mostRecentEvent) => {
+        switch (mostRecentEvent.type) {
+          case 'UserFoundReviewHelpful':
+            return O.some('helpful' as const);
+          case 'UserFoundReviewNotHelpful':
+            return O.some('not-helpful' as const);
+          default:
+            return O.none;
+        }
+      },
+    )),
+  )),
 );
 
 type ProjectUserReviewResponse = (

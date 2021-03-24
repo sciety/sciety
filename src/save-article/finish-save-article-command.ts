@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as B from 'fp-ts/boolean';
-import { constant, pipe } from 'fp-ts/function';
+import { constant, flow, pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
 import * as Doi from '../types/doi';
 import {
@@ -34,12 +34,14 @@ export const finishSaveArticleCommand = (
       () => T.of(undefined),
       ({ articleId }) => pipe(
         getAllEvents,
-        T.map(RA.some(isMatchingSavedEvent(user.id, articleId))),
-        T.map(B.fold(
-          () => [userSavedArticle(user.id, articleId)],
-          constant([]),
+        T.chain(flow(
+          RA.some(isMatchingSavedEvent(user.id, articleId)),
+          B.fold(
+            () => [userSavedArticle(user.id, articleId)],
+            constant([]),
+          ),
+          commitEvents,
         )),
-        T.chain(commitEvents),
         T.map(() => {
           delete context.session.command;
           delete context.session.articleId;

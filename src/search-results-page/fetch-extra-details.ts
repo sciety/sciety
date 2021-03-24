@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { ArticleItem, GroupItem } from './data-types';
 import { ItemViewModel } from './render-search-result';
 import { SearchResults } from './render-search-results';
@@ -76,9 +76,11 @@ export type LimitedSet = {
 export const fetchExtraDetails = (ports: Ports) => (state: LimitedSet): T.Task<SearchResults> => pipe(
   state.itemsToDisplay,
   T.traverseArray(fetchItemDetails(ports)),
-  T.map(RA.rights),
-  T.map((itemsToDisplay) => ({
-    ...state,
-    itemsToDisplay,
-  })),
+  T.map(flow(
+    RA.rights,
+    (itemsToDisplay) => ({
+      ...state,
+      itemsToDisplay,
+    }),
+  )),
 );

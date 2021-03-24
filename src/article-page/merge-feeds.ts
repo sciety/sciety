@@ -21,6 +21,8 @@ const byDateDescending: Ord.Ord<FeedEvent> = pipe(
 
 export const mergeFeeds: MergeFeeds = flow(
   T.sequenceArray,
-  T.map(RA.flatten),
-  T.map(RA.sort(byDateDescending)),
+  T.map(flow(
+    RA.flatten,
+    RA.sort(byDateDescending),
+  )),
 );

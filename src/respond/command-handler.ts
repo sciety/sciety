@@ -41,7 +41,9 @@ export const commandHandler = (
   reviewId,
 }) => pipe(
   getAllEvents,
-  T.map(reviewResponse(userId, reviewId)),
-  T.map((currentResponse) => commands[command](currentResponse, userId, reviewId)),
-  T.chain(commitEvents),
+  T.chain(flow(
+    reviewResponse(userId, reviewId),
+    (currentResponse) => commands[command](currentResponse, userId, reviewId),
+    commitEvents,
+  )),
 );

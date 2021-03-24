@@ -40,8 +40,8 @@ export const getEventsFromDataFiles = (
       date,
     ))),
   )),
-  TE.map(RA.flatten),
   TE.chainEitherKW(flow(
+    RA.flatten,
     RNEA.fromReadonlyArray,
     E.fromOption(constant('No events found')),
   )),

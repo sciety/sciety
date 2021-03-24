@@ -1,6 +1,6 @@
 import * as A from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { IsFollowingSomething } from './render-feed';
 import { DomainEvent, isUserFollowedEditorialCommunityEvent, isUserUnfollowedEditorialCommunityEvent } from '../types/domain-events';
 import { UserId } from '../types/user-id';
@@ -19,6 +19,8 @@ const countFollowedCommunities = (userId: UserId) => (count: number, event: Doma
 
 export const projectIsFollowingSomething = (getAllEvents: GetAllEvents): IsFollowingSomething => (userId) => pipe(
   getAllEvents,
-  T.map(A.reduce(0, countFollowedCommunities(userId))),
-  T.map((count) => count > 0),
+  T.map(flow(
+    A.reduce(0, countFollowedCommunities(userId)),
+    (count) => count > 0,
+  )),
 );

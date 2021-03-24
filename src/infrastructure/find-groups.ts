@@ -39,11 +39,13 @@ export const findGroups: FindGroups = (fetchStaticFile, groups) => (query) => pi
   T.traverseArray((group) => pipe(
     `groups/${group.descriptionPath}`,
     fetchStaticFile,
-    T.map(E.getOrElse(constant(''))),
-    T.map((description) => ({
-      ...group,
-      description,
-    })),
+    T.map(flow(
+      E.getOrElse(constant('')),
+      (description) => ({
+        ...group,
+        description,
+      }),
+    )),
   )),
   T.map(flow(
     RA.filter(includesQuery(query)),

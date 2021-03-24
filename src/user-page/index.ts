@@ -47,8 +47,10 @@ type UserPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 export const userPage = (ports: Ports): UserPage => {
   const getTitle = flow(
     ports.fetchArticle,
-    T.map(O.fromEither),
-    T.map(O.map((article) => article.title)),
+    T.map(flow(
+      O.fromEither,
+      O.map((article) => article.title),
+    )),
   );
 
   return (params) => {
@@ -68,8 +70,10 @@ export const userPage = (ports: Ports): UserPage => {
           params.id,
           projectFollowedGroupIds(ports.getAllEvents),
           T.chain(T.traverseArray(ports.getGroup)),
-          T.map(RA.compact),
-          T.chain(T.traverseArray(renderFollowedEditorialCommunity(renderFollowToggle, ports.follows)(viewingUserId))),
+          T.chain(flow(
+            RA.compact,
+            T.traverseArray(renderFollowedEditorialCommunity(renderFollowToggle, ports.follows)(viewingUserId)),
+          )),
           T.map(renderFollowList),
           TE.rightTask,
         ),
@@ -82,8 +86,10 @@ export const userPage = (ports: Ports): UserPage => {
         ),
         userDisplayName: pipe(
           userDetails,
-          TE.map(({ displayName }) => displayName),
-          TE.map(toHtmlFragment),
+          TE.map(flow(
+            ({ displayName }) => displayName,
+            toHtmlFragment,
+          )),
         ),
       },
       sequenceS(TE.taskEither),

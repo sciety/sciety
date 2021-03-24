@@ -77,8 +77,10 @@ export const groupPage = (ports: Ports): GroupPage => ({ id, user }) => pipe(
       ),
       feed: pipe(
         ports.getAllEvents,
-        T.map(getMostRecentEvents(group.id, 20)),
-        T.chain(T.traverseArray(constructFeedItem(ports.fetchArticle)(group))),
+        T.chain(flow(
+          getMostRecentEvents(group.id, 20),
+          T.traverseArray(constructFeedItem(ports.fetchArticle)(group)),
+        )),
         T.map(renderFeed),
         TE.rightTask,
       ),

@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { RenderFollowToggle } from './render-follow-toggle';
 import { GroupId } from '../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -32,6 +32,8 @@ export const renderEditorialCommunity = (
   renderFollowToggle: RenderFollowToggle,
 ): RenderEditorialCommunity => (userId) => (community) => pipe(
   renderFollowToggle(userId, community.id, community.name),
-  T.map(render(community)),
-  T.map(toHtmlFragment),
+  T.map(flow(
+    render(community),
+    toHtmlFragment,
+  )),
 );

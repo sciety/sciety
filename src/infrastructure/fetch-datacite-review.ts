@@ -31,11 +31,13 @@ const fetchReviewContent = (
   TE.chainEitherK(flow(
     (graph) => graph.out(schema.description).value,
     E.fromNullable('unavailable' as const),
-    E.map(toHtmlFragment),
-    E.map((fullText) => ({
-      fullText,
-      url: new URL(reviewIri.value),
-    })),
+    E.map(flow(
+      toHtmlFragment,
+      (fullText) => ({
+        fullText,
+        url: new URL(reviewIri.value),
+      }),
+    )),
   )),
   TE.map((review) => {
     logger('debug', 'Retrieved review', { review });

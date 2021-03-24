@@ -3,7 +3,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { createRouter } from './http/router';
 import { createApplicationServer } from './http/server';
 import { createInfrastructure } from './infrastructure';
@@ -30,8 +30,10 @@ void pipe(
   TE.bindW('router', ({ adapters }) => pipe(adapters, createRouter, TE.right)),
   TE.chainEitherKW(({ adapters, router }) => pipe(
     createApplicationServer(router, adapters.logger),
-    E.map((server) => createTerminus(server, terminusOptions(adapters.logger))),
-    E.map((server) => server.on('listening', () => adapters.logger('debug', 'Server running'))),
+    E.map(flow(
+      (server) => createTerminus(server, terminusOptions(adapters.logger)),
+      (server) => server.on('listening', () => adapters.logger('debug', 'Server running')),
+    )),
   )),
   T.map(E.fold(
     (error) => pipe(process.stderr.write(`Unable to start:\n${JSON.stringify(error, null, 2)}\n`), process.exit(1)),

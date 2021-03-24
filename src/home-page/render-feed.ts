@@ -70,10 +70,10 @@ export const renderFeed = <Err>(
         ),
       ),
     )),
-    TE.chainW(flow(getEvents, TE.rightTask)),
-    TE.chainEitherKW(flow(
-      RNEA.fromReadonlyArray,
-      E.fromOption(constant(noEvaluationsYet)),
+    TE.chainW(flow(
+      getEvents,
+      T.map(RNEA.fromReadonlyArray),
+      T.chain(TE.fromOption(constant(noEvaluationsYet))),
     )),
     TE.chainW(flow(renderSummaryFeedList, TE.rightTask)),
     T.map(flow(

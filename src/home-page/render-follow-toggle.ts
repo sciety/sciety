@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as B from 'fp-ts/boolean';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { GroupId } from '../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
@@ -40,13 +40,13 @@ export const renderFollowToggle = (follows: Follows): RenderFollowToggle => (
         () => T.of(false),
         (value: UserId) => follows(value, editorialCommunityId),
       ),
-      T.map(
+      T.map(flow(
         B.fold(
           () => renderFollowButton(editorialCommunityId, editorialCommunityName),
           () => renderUnfollowButton(editorialCommunityId, editorialCommunityName),
         ),
-      ),
-      T.map(toHtmlFragment),
+        toHtmlFragment,
+      )),
     )
   )
 );
