@@ -1,6 +1,7 @@
 @use 'baseline';
 @use 'button';
 @use 'functions';
+@use 'layout';
 @use 'list';
 @use 'settings';
 @use 'states';
@@ -97,15 +98,7 @@ $_icon-inline-padding: 12px;
   margin-left: functions.px-to-rem(22px);
 
   &::before {
-    border: 0;
-    clip: rect(0 0 0 0);
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    width: 1px;
-    user-select: none;
+    @include layout.visually-hidden();
     content: 'Close the following menu';
   }
 }
