@@ -120,8 +120,8 @@ const getRowNumber = (logger: Logger) => (id: NcrcId.NcrcId) => pipe(
   )),
 );
 
-const getNcrcReview = (logger: Logger) => (rowNumber: number) => pipe(
-  querySheet(logger)({
+const getNcrcReview = (logger: Logger) => flow(
+  (rowNumber: number) => querySheet(logger)({
     spreadsheetId: '1RJ_Neh1wwG6X0SkYZHjD-AEC9ykgAcya_8UCVNoE3SA',
     range: `Sheet1!A${rowNumber}:AF${rowNumber}`,
   }, rowType),

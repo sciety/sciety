@@ -40,8 +40,8 @@ const eventMetadata = (review: ReviewFeedItem) => toHtmlFragment(`
   </div>
 `);
 
-const sourceLink = (review: ReviewFeedItem) => pipe(
-  review.source,
+const sourceLink = flow(
+  (review: ReviewFeedItem) => review.source,
   O.map(flow(
     (source) => `
       <a href="${source.toString()}" class="activity-feed__item__read_more">

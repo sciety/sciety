@@ -32,8 +32,8 @@ type Params = {
 
 type HomePage = (params: Params) => ReturnType<RenderPage>;
 
-export const homePage = (ports: Ports): HomePage => (params) => pipe(
-  params.user,
+export const homePage = (ports: Ports): HomePage => flow(
+  (params) => params.user,
   O.map((user) => user.id),
   renderPage(
     renderPageHeader,

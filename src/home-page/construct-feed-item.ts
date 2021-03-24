@@ -2,7 +2,7 @@ import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { constant, pipe } from 'fp-ts/function';
+import { constant, flow, pipe } from 'fp-ts/function';
 import { Doi } from '../types/doi';
 import { EditorialCommunityReviewedArticleEvent } from '../types/domain-events';
 import { GroupId } from '../types/group-id';
@@ -64,12 +64,12 @@ export type GetArticle = (id: Doi) => TE.TaskEither<unknown, Article>;
 export const constructFeedItem = (
   getActor: GetActor,
   getArticle: GetArticle,
-): ConstructFeedItem => (event) => pipe(
-  {
+): ConstructFeedItem => flow(
+  (event) => ({
     actor: getActor(event.editorialCommunityId),
     article: getArticle(event.articleId),
     event: T.of(event),
-  },
+  }),
   sequenceS(T.task),
   T.map(construct),
 );

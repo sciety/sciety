@@ -51,8 +51,8 @@ const renderArticleSearchResult = flow(
   toHtmlFragment,
 );
 
-const renderGroupSearchResult = (result: GroupViewModel) => pipe(
-  `
+const renderGroupSearchResult = flow(
+  (result: GroupViewModel) => `
     <div class="search-results-list__item_container">
       <a class="search-results-list__item__link" href="/groups/${result.id.value}">${result.name}</a>
       <div class="search-results-list__item__description">

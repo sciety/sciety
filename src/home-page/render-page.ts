@@ -1,7 +1,7 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { UserId } from '../types/user-id';
@@ -37,12 +37,12 @@ export const renderPage = (
   renderPageHeader: Component,
   renderEditorialCommunities: Component,
   renderFeed: Component,
-): RenderPage => (userId) => pipe(
-  {
+): RenderPage => flow(
+  (userId) => ({
     header: renderPageHeader(userId),
     feed: renderFeed(userId),
     editorialCommunities: renderEditorialCommunities(userId),
-  },
+  }),
   sequenceS(T.task),
   T.map(asPage),
 );

@@ -47,8 +47,8 @@ type Params = {
 
 type SearchResultsPage = (params: Params) => ReturnType<RenderPage>;
 
-export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) => pipe(
-  {
+export const searchResultsPage = (ports: Ports): SearchResultsPage => flow(
+  (params) => pipe({
     query: TE.right(params.query),
     articles: pipe(
       params.query,
@@ -61,7 +61,7 @@ export const searchResultsPage = (ports: Ports): SearchResultsPage => (params) =
       T.map(tagAsGroups),
       TE.rightTask,
     ),
-  },
+  }),
   sequenceS(TE.taskEither),
   TE.map(selectSubsetToDisplay(10)),
   TE.chainW(flow(fetchExtraDetails(ports), TE.rightTask)),

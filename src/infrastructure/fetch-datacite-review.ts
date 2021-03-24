@@ -45,15 +45,12 @@ const fetchReviewContent = (
   }),
 );
 
-export const fetchDataciteReview = (fetchDataset: FetchDataset, logger: Logger): FetchDataciteReview => (
-  (doi) => pipe(
-    doi,
-    (d) => `https://doi.org/${d.value}`,
-    (url) => {
-      logger('debug', 'Fetching review from Datacite', { url });
-      return url;
-    },
-    namedNode,
-    (reviewIri) => fetchReviewContent(fetchDataset, logger, reviewIri),
-  )
+export const fetchDataciteReview = (fetchDataset: FetchDataset, logger: Logger): FetchDataciteReview => flow(
+  (doi) => `https://doi.org/${doi.value}`,
+  (url) => {
+    logger('debug', 'Fetching review from Datacite', { url });
+    return url;
+  },
+  namedNode,
+  (reviewIri) => fetchReviewContent(fetchDataset, logger, reviewIri),
 );

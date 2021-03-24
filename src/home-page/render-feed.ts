@@ -57,8 +57,7 @@ export const renderFeed = <Err>(
   isFollowingSomething: IsFollowingSomething,
   getEvents: GetEvents<Err>,
   renderSummaryFeedList: RenderSummaryFeedList<Err>,
-): RenderFeed => (uid) => pipe(
-    uid,
+): RenderFeed => flow(
     TE.fromOption(constant(welcomeMessage)),
     TE.chainFirst((u) => pipe(
       u,

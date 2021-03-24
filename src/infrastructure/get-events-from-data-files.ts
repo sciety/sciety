@@ -29,8 +29,8 @@ export const getEventsFromDataFiles = (
     `./data/reviews/${editorialCommunityId.value}.csv`,
     taskify(fs.readFile),
     T.map(E.orElse(() => E.right(Buffer.from('')))), // TODO skip files that don't exist
-    TE.chainEitherKW((fileContents) => pipe(
-      csvParseSync(fileContents, { fromLine: 2 }),
+    TE.chainEitherKW(flow(
+      (fileContents) => csvParseSync(fileContents, { fromLine: 2 }) as unknown,
       reviews.decode,
     )),
     TE.map(RA.map(([date, articleDoi, reviewId]) => editorialCommunityReviewedArticle(
