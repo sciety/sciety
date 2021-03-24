@@ -72,10 +72,6 @@ $_search-icon-size: functions.px-to-rem(28px);
   align-self: center;
 }
 
-.menu-page-container > .site-header__nav {
-  margin-right: functions.px-to-rem(8px);
-}
-
 .site-header__nav_list {
   @include list.basics();
   display: flex;

@@ -10,6 +10,7 @@
 $_icon-size: 24px;
 $_icon-inline-padding: 12px;
 $_site-header-nav-height: 60px;
+$_site-header-inline-end-margin: 8px;
 $_navigation-menu-inline-padding: 16px;
 $_navigation-menu-text-inline-padding: 26px; // TODO: bad name
 $_menu-link-max-width: 300px;
@@ -105,6 +106,10 @@ $_menu-link-max-width: 300px;
     @include layout.visually-hidden();
     content: 'Close the following menu';
   }
+}
+
+.menu-page-container > .site-header__nav {
+  margin-right: functions.px-to-rem($_site-header-inline-end-margin);
 }
 
 .navigation-menu__small_print {
