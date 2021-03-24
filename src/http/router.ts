@@ -119,6 +119,7 @@ export const createRouter = (adapters: Adapters): Router => {
           O.fromNullable(context.request.header.referer),
         ),
       );
+      context.set('Vary', 'Referer');
 
       await next();
     },
