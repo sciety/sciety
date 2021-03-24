@@ -27,7 +27,7 @@ $_menu-link-max-width: 300px;
   order: 1;
 }
 
-.site-header__nav {
+.menu-page__nav {
   order: 2;
 }
 
@@ -108,7 +108,7 @@ $_menu-link-max-width: 300px;
   }
 }
 
-.menu-page-container > .site-header__nav {
+.menu-page__nav {
   margin-right: functions.px-to-rem($_site-header-inline-end-margin);
 }
 
