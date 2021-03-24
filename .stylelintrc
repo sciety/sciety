@@ -1,10 +1,36 @@
 {
   "extends": "stylelint-config-sass-guidelines",
   "rules": {
+    "at-rule-disallowed-list": ["extend"],
     "order/properties-alphabetical-order": null,
     "selector-class-pattern": null,
     "selector-no-qualifying-type": null,
     "selector-max-compound-selectors": null,
-    "max-nesting-depth": 3
+    "max-nesting-depth": 3,
+    "order/order": [
+      [
+        "custom-properties",
+        "dollar-variables",
+        {
+          "type": "at-rule",
+          "name": "include",
+          "hasBlock": false
+        },
+        "declarations",
+        {
+          "type": "at-rule",
+          "hasBlock": true
+        },
+        {
+          "type": "rule",
+          "selector": "/^&:\\w/"
+        },
+        {
+          "type": "rule",
+          "selector": "/^&::\\w/"
+        },
+        "rules"
+      ]
+    ]
   }
 }
