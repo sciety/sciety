@@ -112,6 +112,8 @@ $_menu-link-max-width: 300px;
 
 .menu-page__nav {
   margin-right: functions.px-to-rem($_site-header-inline-end-margin);
+  flex-grow: 1;
+  align-self: center;
 }
 
 .menu-page__nav_list {
