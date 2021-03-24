@@ -89,10 +89,13 @@ ul {
   margin-top: 0;
 }
 
+a:link {
+  text-decoration: none;
+}
+
 a:link,
 a:visited {
   color: settings.$colour-primary;
-  text-decoration: none;
 
   &:hover,
   &:active {

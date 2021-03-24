@@ -161,14 +161,17 @@ $_menu-link-max-width: 300px;
   flex-direction: column;
   align-items: flex-start;
 
-  a:link,
-  a:visited {
+  a:link {
     @include typography.sizing(12px, 2);
-    color: settings.$colour-white;
-    background-color: settings.$colour-text-primary;
     font-weight: normal;
     letter-spacing: 0.09px;
     text-decoration: underline;
+  }
+
+  a:link,
+  a:visited {
+    color: settings.$colour-white;
+    background-color: settings.$colour-text-primary;
 
     a:hover,
     a:active {
