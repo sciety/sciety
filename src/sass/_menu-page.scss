@@ -1,4 +1,5 @@
 @use 'baseline';
+@use 'breakpoints';
 @use 'button';
 @use 'functions';
 @use 'layout';
@@ -110,6 +111,13 @@ $_menu-link-max-width: 300px;
 
 .menu-page__nav {
   margin-right: functions.px-to-rem($_site-header-inline-end-margin);
+}
+
+.menu-page__nav_list {
+  @include list.basics();
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 0;
 }
 
 .navigation-menu__small_print {
