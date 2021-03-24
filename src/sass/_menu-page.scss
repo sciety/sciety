@@ -9,13 +9,17 @@
 
 $_icon-size: 24px;
 $_icon-inline-padding: 12px;
+$_site-header-nav-height: 60px;
+$_navigation-menu-inline-padding: 16px;
+$_navigation-menu-text-inline-padding: 26px; // TODO: bad name
+$_menu-link-max-width: 300px;
 
 .menu-page-container {
   flex-grow: 1;
   height: 100vh;
   display: grid;
   grid-template-columns: auto 1fr;
-  grid-template-rows: 60px auto;
+  grid-template-rows: $_site-header-nav-height auto;
 }
 
 .site-header__close_nav {
@@ -38,14 +42,14 @@ $_icon-inline-padding: 12px;
   width: 100%;
   font-family: settings.$font-family;
   padding-top: baseline.increments(2);
-  padding-right: functions.px-to-rem(16px);
   display: flex;
   flex-direction: column;
 }
 
 .navigation-menu__links {
   @include list.basics();
-  padding-left: functions.px-to-rem(16px);
+  padding-right: functions.px-to-rem($_navigation-menu-inline-padding);
+  padding-left: functions.px-to-rem($_navigation-menu-inline-padding);
 }
 
 .navigation-menu__link {
@@ -53,7 +57,7 @@ $_icon-inline-padding: 12px;
   display: flex;
   align-items: center;
   min-height: baseline.increments(5);
-  max-width: functions.px-to-rem(300px);
+  max-width: functions.px-to-rem($_menu-link-max-width);
   background-size: functions.px-to-rem($_icon-size);
   background-repeat: no-repeat;
   background-position: functions.px-to-rem($_icon-inline-padding) center;
@@ -68,7 +72,7 @@ $_icon-inline-padding: 12px;
 
     &:hover,
     &:active {
-      background-color: rgba(255, 255, 255, 0.1);
+      background-color: settings.$colour-navigation-menu-hover;
       color: inherit;
     }
   }
@@ -86,7 +90,7 @@ $_icon-inline-padding: 12px;
   @include typography.sizing(20px, 3);
   font-weight: bold;
   letter-spacing: 0.14px;
-  padding-left: functions.px-to-rem(26px);
+  padding-left: functions.px-to-rem($_navigation-menu-text-inline-padding);
   margin-bottom: baseline.increments(2.5);
 }
 
@@ -95,7 +99,7 @@ $_icon-inline-padding: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: functions.px-to-rem(22px);
+  margin-left: functions.px-to-rem($_navigation-menu-text-inline-padding - 4px);
 
   &::before {
     @include layout.visually-hidden();
@@ -136,5 +140,5 @@ $_icon-inline-padding: 12px;
 .navigation-menu__footer {
   margin-top: auto;
   margin-bottom: baseline.increments(2);
-  padding-left: functions.px-to-rem(26px);
+  padding-left: functions.px-to-rem($_navigation-menu-text-inline-padding);
 }
