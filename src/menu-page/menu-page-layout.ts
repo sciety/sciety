@@ -44,13 +44,13 @@ const fathom = process.env.FATHOM_SITE_ID ? `
 ` : '';
 
 const logOutMenuItem = () => toHtmlFragment(`
-  <li class="site-header__nav_list_item">
+  <li class="menu-page__nav_list_item">
     <a href="/log-out" class="site-header__nav_list_link_button">Log out</a>
   </li>
 `);
 
 const logInMenuItem = () => toHtmlFragment(`
-  <li class="site-header__nav_list_item">
+  <li class="menu-page__nav_list_item">
     <a href="/log-in" class="site-header__nav_list_link_button">Log in</a>
   </li>
 `);
