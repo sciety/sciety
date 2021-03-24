@@ -23,7 +23,7 @@ $_menu-link-max-width: 300px;
   grid-template-rows: $_site-header-nav-height auto;
 }
 
-.site-header__close_nav {
+.menu-page__close_nav {
   order: 1;
 }
 
@@ -95,7 +95,7 @@ $_menu-link-max-width: 300px;
   margin-bottom: baseline.increments(2.5);
 }
 
-.site-header__close_nav {
+.menu-page__close_nav {
   align-self: center;
   display: flex;
   align-items: center;

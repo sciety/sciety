@@ -92,7 +92,7 @@ export const menuPageLayout = (user: O.Option<User>, referer: O.Option<string>) 
 
 <div class="menu-page-container">
 
-  ${htmlEscape`<a href="${O.getOrElse(constant('/'))(referer)}" class="site-header__close_nav"><img src="/static/images/close-icon.svg" alt=""></a>`}
+  ${htmlEscape`<a href="${O.getOrElse(constant('/'))(referer)}" class="menu-page__close_nav"><img src="/static/images/close-icon.svg" alt=""></a>`}
 
   <main class="menu-page-main-content">
     ${page.content}
