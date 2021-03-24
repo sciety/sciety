@@ -103,7 +103,7 @@ export const menuPageLayout = (user: O.Option<User>, referer: O.Option<string>) 
     <ul class="menu-page__nav_list" role="list">
       <li class="menu-page__nav_list_item menu-page__nav_list_item--search">
         <a href="/search">
-          <img src="/static/images/search-icon.svg" alt="Search" class="site-header__nav_list__search_icon">
+          <img src="/static/images/search-icon.svg" alt="Search" class="menu-page__nav_list__search_icon">
         </a>
       </li>
       ${O.fold(logInMenuItem, logOutMenuItem)(user)}

@@ -8,8 +8,9 @@
 @use 'states';
 @use 'typography';
 
-$_icon-size: 24px;
-$_icon-inline-padding: 12px;
+$_navigation-menu-icon-size: 24px;
+$_navigation-menu-icon-inline-padding: 12px;
+$_search-icon-size: functions.px-to-rem(28px);
 $_site-header-nav-height: 60px;
 $_site-header-inline-end-margin: 8px;
 $_navigation-menu-inline-padding: 16px;
@@ -60,10 +61,10 @@ $_menu-link-max-width: 300px;
   align-items: center;
   min-height: baseline.increments(5);
   max-width: functions.px-to-rem($_menu-link-max-width);
-  background-size: functions.px-to-rem($_icon-size);
+  background-size: functions.px-to-rem($_navigation-menu-icon-size);
   background-repeat: no-repeat;
-  background-position: functions.px-to-rem($_icon-inline-padding) center;
-  padding-left: functions.px-to-rem($_icon-inline-padding * 2 + $_icon-size);
+  background-position: functions.px-to-rem($_navigation-menu-icon-inline-padding) center;
+  padding-left: functions.px-to-rem($_navigation-menu-icon-inline-padding * 2 + $_navigation-menu-icon-size);
   border-radius: settings.$border-radius;
   font-weight: bold;
   letter-spacing: 0.1px;
@@ -140,6 +141,11 @@ $_menu-link-max-width: 300px;
 .menu-page__nav_list_item--search a {
   display: flex;
   align-items: center;
+}
+
+.menu-page__nav_list__search_icon {
+  width: $_search-icon-size;
+  height: $_search-icon-size;
 }
 
 .navigation-menu__small_print {
