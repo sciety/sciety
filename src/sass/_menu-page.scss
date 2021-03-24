@@ -120,6 +120,28 @@ $_menu-link-max-width: 300px;
   margin-bottom: 0;
 }
 
+.menu-page__nav_list_item {
+  @include typography.sizing(14px, 1.75);
+  padding-right: 1.5rem;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+
+  &:nth-last-child(2) {
+    margin-left: auto;
+  }
+
+  &:last-child {
+    padding-right: 0;
+  }
+}
+
+.menu-page__nav_list_item--search,
+.menu-page__nav_list_item--search a {
+  display: flex;
+  align-items: center;
+}
+
 .navigation-menu__small_print {
   @include typography.sizing(12px, 2);
   letter-spacing: 0.09px;
