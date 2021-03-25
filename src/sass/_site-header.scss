@@ -2,6 +2,7 @@
 @use 'button';
 @use 'breakpoints';
 @use 'functions';
+@use 'layout';
 @use 'list';
 @use 'settings';
 @use 'states';
@@ -58,6 +59,13 @@ $_search-icon-size: functions.px-to-rem(28px);
     display: inline;
     flex: 0 0 $_logo-width;
     margin-right: functions.px-to-rem(36px);
+  }
+}
+
+.site-header__menu_link {
+  &::before {
+    @include layout.visually-hidden();
+    content: 'Open the menu';
   }
 }
 

@@ -106,7 +106,7 @@ export const applyStandardPageLayout = (user: O.Option<User>) => (page: Page): s
         <ul class="site-header__nav_list" role="list">
           <li class="site-header__nav_list_item site-header__nav_list_item--only-narrow">
             <a href="/menu" class="site-header__menu_link">
-              <img src="/static/images/menu-icon.svg" alt="Menu" />
+              <img src="/static/images/menu-icon.svg" alt="" />
             </a>
           </li>
 
