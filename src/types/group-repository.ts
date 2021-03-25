@@ -4,7 +4,7 @@ import * as T from 'fp-ts/Task';
 import { Group } from './group';
 import { GroupId } from './group-id';
 
-export type EditorialCommunityRepository = {
+export type GroupRepository = {
   all: T.Task<RNEA.ReadonlyNonEmptyArray<Group>>,
   lookup(id: GroupId): T.Task<O.Option<Group>>,
 };

@@ -17,9 +17,9 @@ import { fetchDataciteReview } from '../../src/infrastructure/fetch-datacite-rev
 import { FetchDataset } from '../../src/infrastructure/fetch-dataset';
 import { fetchHypothesisAnnotation } from '../../src/infrastructure/fetch-hypothesis-annotation';
 import { fetchReview } from '../../src/infrastructure/fetch-review';
-import { inMemoryEditorialCommunityRepository } from '../../src/infrastructure/in-memory-editorial-communities';
-import { EditorialCommunityRepository } from '../../src/types/editorial-community-repository';
+import { inMemoryGroupRepository } from '../../src/infrastructure/in-memory-groups';
 import { FollowList } from '../../src/types/follow-list';
+import { GroupRepository } from '../../src/types/group-repository';
 import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
 import { dummyLogger } from '../dummy-logger';
 import { shouldNotBeCalled } from '../should-not-be-called';
@@ -27,11 +27,11 @@ import { shouldNotBeCalled } from '../should-not-be-called';
 type TestServer = {
   adapters: Adapters,
   server: Server,
-  editorialCommunities: EditorialCommunityRepository,
+  editorialCommunities: GroupRepository,
 };
 
 export const createTestServer = async (): Promise<TestServer> => {
-  const editorialCommunities = inMemoryEditorialCommunityRepository(bootstrapEditorialCommunities);
+  const editorialCommunities = inMemoryGroupRepository(bootstrapEditorialCommunities);
   const fetchDataCiteDataset: FetchDataset = async () => (
     clownface({ dataset: datasetFactory(), term: namedNode('http://example.com/some-datacite-node') })
       .addOut(schema.datePublished, literal('2020-02-20', schema.Date))

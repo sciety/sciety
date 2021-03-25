@@ -29,7 +29,7 @@ import { getEventsFromDatabase } from './get-events-from-database';
 import { getTwitterResponse } from './get-twitter-response';
 import { getTwitterUserDetails } from './get-twitter-user-details';
 import { getXmlFromCrossrefRestApi } from './get-xml-from-crossref-rest-api';
-import { inMemoryEditorialCommunityRepository } from './in-memory-editorial-communities';
+import { inMemoryGroupRepository } from './in-memory-groups';
 import {
   jsonSerializer, loggerIO, rTracerLogger, streamLogger,
 } from './logger';
@@ -100,7 +100,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         return response.data;
       };
 
-      const editorialCommunities = inMemoryEditorialCommunityRepository(bootstrapEditorialCommunities);
+      const editorialCommunities = inMemoryGroupRepository(bootstrapEditorialCommunities);
       const getAllEvents = T.of(events);
       const getFollowList = createEventSourceFollowListRepository(getAllEvents);
       const fetchFile = (f: string) => fetchStaticFile(f)(loggerIO(logger));

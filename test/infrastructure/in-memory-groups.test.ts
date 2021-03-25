@@ -1,13 +1,13 @@
 import * as O from 'fp-ts/Option';
-import { inMemoryEditorialCommunityRepository } from '../../src/infrastructure/in-memory-editorial-communities';
-import { EditorialCommunityRepository } from '../../src/types/editorial-community-repository';
+import { inMemoryGroupRepository } from '../../src/infrastructure/in-memory-groups';
 import { Group } from '../../src/types/group';
 import { GroupId } from '../../src/types/group-id';
+import { GroupRepository } from '../../src/types/group-repository';
 
 const editorialCommunityId = new GroupId('530812a5-838a-4fb2-95b6-eb4828f0d37c');
 
 describe('in-memory-editorial-communities', () => {
-  let repository: EditorialCommunityRepository;
+  let repository: GroupRepository;
   const community: Group = {
     id: editorialCommunityId,
     name: 'My pals',
@@ -17,7 +17,7 @@ describe('in-memory-editorial-communities', () => {
   };
 
   beforeEach(async () => {
-    repository = inMemoryEditorialCommunityRepository([community]);
+    repository = inMemoryGroupRepository([community]);
   });
 
   describe('lookup', () => {
