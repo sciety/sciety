@@ -1,6 +1,25 @@
+@use 'breakpoints';
+@use 'functions';
+@use 'settings';
+
 .page-container {
   min-height: 100vh;
   display: grid;
   grid-template-rows: auto 1fr auto;
+
+  @include breakpoints.from-narrow() {
+    grid-template-columns: functions.px-to-rem(260px) 1fr;
+  }
+}
+
+.flyout-menu {
+  display: none;
+  background-color: settings.$colour-text-primary;
+
+  @include breakpoints.from-narrow() {
+    display: unset;
+    grid-column: 1/1;
+    grid-row: 1/-1;
+  }
 }
 

@@ -96,6 +96,7 @@ export const applyStandardPageLayout = (user: O.Option<User>) => (page: Page): s
 <body>
   ${googleTagManagerNoScript}
   <div class="page-container">
+    <div class="flyout-menu"></div>
     <header class="site-header">
       <div class="site-header__wrapper">
         <a href="/" class="site-header__logo_link">
