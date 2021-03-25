@@ -11,7 +11,7 @@ type Group = {
   avatarPath: string,
 };
 
-type RenderFollowedEditorialCommunity = (userId: O.Option<UserId>) => (
+type RenderFollowedGroup = (userId: O.Option<UserId>) => (
   group: Group,
 ) => T.Task<HtmlFragment>;
 
@@ -25,10 +25,10 @@ const render = (group: Group) => (toggle: HtmlFragment) => `
 
 export type Follows = (u: UserId, g: GroupId) => T.Task<boolean>;
 
-export const renderFollowedEditorialCommunity = (
+export const renderFollowedGroup = (
   renderFollowToggle: RenderFollowToggle,
   follows: Follows,
-): RenderFollowedEditorialCommunity => (userId) => (group) => pipe(
+): RenderFollowedGroup => (userId) => (group) => pipe(
   userId,
   O.fold(
     () => T.of(false),

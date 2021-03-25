@@ -9,7 +9,7 @@ import { GetAllEvents, projectFollowedGroupIds } from './project-followed-group-
 import { projectSavedArticleDois } from './project-saved-article-dois';
 import { renderFollowList } from './render-follow-list';
 import { renderFollowToggle } from './render-follow-toggle';
-import { Follows, renderFollowedEditorialCommunity } from './render-followed-editorial-community';
+import { Follows, renderFollowedGroup } from './render-followed-group';
 import { renderHeader, UserDetails } from './render-header';
 import { renderErrorPage, renderPage } from './render-page';
 import { renderSavedArticles } from './render-saved-articles';
@@ -72,7 +72,7 @@ export const userPage = (ports: Ports): UserPage => {
           T.chain(T.traverseArray(ports.getGroup)),
           T.chain(flow(
             RA.compact,
-            T.traverseArray(renderFollowedEditorialCommunity(renderFollowToggle, ports.follows)(viewingUserId)),
+            T.traverseArray(renderFollowedGroup(renderFollowToggle, ports.follows)(viewingUserId)),
           )),
           T.map(renderFollowList),
           TE.rightTask,

@@ -6,20 +6,20 @@ import { GroupId } from '../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
-export type Community = {
+export type Group = {
   avatarPath: string,
   id: GroupId,
   name: string,
 };
 
-export type RenderEditorialCommunity = (userId: O.Option<UserId>) => (community: Community) => T.Task<HtmlFragment>;
+export type RenderGroup = (userId: O.Option<UserId>) => (group: Group) => T.Task<HtmlFragment>;
 
-const render = (community: Community) => (toggle: HtmlFragment) => `
+const render = (group: Group) => (toggle: HtmlFragment) => `
   <div class="group">
-    <a href="/groups/${community.id.value}" class="group__link">
-      <img src="${community.avatarPath}" alt="" class="group__avatar">
+    <a href="/groups/${group.id.value}" class="group__link">
+      <img src="${group.avatarPath}" alt="" class="group__avatar">
       <div class="group__name">
-        ${community.name}
+        ${group.name}
       </div>
     </a>
     <div class="group__toggle_wrapper">
@@ -28,12 +28,12 @@ const render = (community: Community) => (toggle: HtmlFragment) => `
   </div>
 `;
 
-export const renderEditorialCommunity = (
+export const renderGroup = (
   renderFollowToggle: RenderFollowToggle,
-): RenderEditorialCommunity => (userId) => (community) => pipe(
-  renderFollowToggle(userId, community.id, community.name),
+): RenderGroup => (userId) => (group) => pipe(
+  renderFollowToggle(userId, group.id, group.name),
   T.map(flow(
-    render(community),
+    render(group),
     toHtmlFragment,
   )),
 );

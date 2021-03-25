@@ -2,14 +2,14 @@ import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import { constant, flow, pipe } from 'fp-ts/function';
-import { Community, RenderEditorialCommunity } from './render-editorial-community';
+import { Group, RenderGroup } from './render-group';
 import { templateListItems } from '../shared-components';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
-type RenderEditorialCommunities = (userId: O.Option<UserId>) => T.Task<HtmlFragment>;
+type RenderGroups = (userId: O.Option<UserId>) => T.Task<HtmlFragment>;
 
-export type GetAllEditorialCommunities = T.Task<RNEA.ReadonlyNonEmptyArray<Community>>;
+export type GetAllGroups = T.Task<RNEA.ReadonlyNonEmptyArray<Group>>;
 
 const render = (links: RNEA.ReadonlyNonEmptyArray<HtmlFragment>) => `
   <section>
@@ -22,13 +22,13 @@ const render = (links: RNEA.ReadonlyNonEmptyArray<HtmlFragment>) => `
   </section>
 `;
 
-export const renderEditorialCommunities = (
-  editorialCommunities: GetAllEditorialCommunities,
-  renderEditorialCommunity: RenderEditorialCommunity,
-): RenderEditorialCommunities => (userId) => (
+export const renderGroups = (
+  editorialCommunities: GetAllGroups,
+  renderGroup: RenderGroup,
+): RenderGroups => (userId) => (
   pipe(
     editorialCommunities,
-    T.chain(T.traverseArray(renderEditorialCommunity(userId))),
+    T.chain(T.traverseArray(renderGroup(userId))),
     T.map(flow(
       RNEA.fromReadonlyArray, // TODO shouldn't be needed, fp-ts types needs fixing
       O.fold(constant(''), render),

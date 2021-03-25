@@ -6,10 +6,10 @@ import { constructFeedItem, GetArticle } from './construct-feed-item';
 import { getActor, GetGroup } from './get-actor';
 import { GetAllEvents, getMostRecentEvents } from './get-most-recent-events';
 import { projectIsFollowingSomething } from './project-is-following-something';
-import { GetAllEditorialCommunities, renderEditorialCommunities } from './render-editorial-communities';
-import { renderEditorialCommunity } from './render-editorial-community';
 import { renderFeed } from './render-feed';
 import { renderFollowToggle } from './render-follow-toggle';
+import { renderGroup } from './render-group';
+import { GetAllGroups, renderGroups } from './render-groups';
 import { renderPage, RenderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
 import { renderSummaryFeedList } from '../shared-components';
@@ -20,7 +20,7 @@ import { UserId } from '../types/user-id';
 
 type Ports = {
   fetchArticle: GetArticle,
-  getAllEditorialCommunities: GetAllEditorialCommunities,
+  getAllEditorialCommunities: GetAllGroups,
   getGroup: GetGroup,
   getAllEvents: GetAllEvents,
   follows: (u: UserId, g: GroupId) => T.Task<boolean>,
@@ -37,9 +37,9 @@ export const homePage = (ports: Ports): HomePage => flow(
   O.map((user) => user.id),
   renderPage(
     renderPageHeader,
-    renderEditorialCommunities(
+    renderGroups(
       ports.getAllEditorialCommunities,
-      renderEditorialCommunity(renderFollowToggle(ports.follows)),
+      renderGroup(renderFollowToggle(ports.follows)),
     ),
     renderFeed(
       projectIsFollowingSomething(ports.getAllEvents),
