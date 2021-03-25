@@ -66,14 +66,14 @@ const inferredUrlFromReviewId = (reviewId: ReviewId) => {
 
 const reviewToFeedItem = (
   getReview: FetchReview,
-  getEditorialCommunity: GetGroup,
+  getGroup: GetGroup,
   countReviewResponses: CountReviewResponses,
   getUserReviewResponse: GetUserReviewResponse,
   feedEvent: ReviewEvent,
   userId: O.Option<UserId>,
 ) => pipe(
   {
-    editorialCommunity: getEditorialCommunity(feedEvent.editorialCommunityId),
+    editorialCommunity: getGroup(feedEvent.editorialCommunityId),
     review: pipe(
       feedEvent.reviewId,
       getReview,
