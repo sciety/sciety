@@ -170,13 +170,11 @@ $_menu-link-max-width: 300px;
 
   a:link,
   a:visited {
-    color: settings.$colour-white;
-    background-color: settings.$colour-text-primary;
+    color: inherit;
 
     a:hover,
     a:active {
       color: inherit;
-      background-color: inherit;
     }
   }
 }
