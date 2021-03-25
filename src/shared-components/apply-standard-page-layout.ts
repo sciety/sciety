@@ -44,7 +44,7 @@ const fathom = process.env.FATHOM_SITE_ID ? `
 ` : '';
 
 const myProfileMenuItem = (user: User) => toHtmlFragment(`
-  <li class="site-header__nav_list_item">
+  <li class="site-header__nav_list_item site-header__nav_list_item--only-wide">
     <a href="/users/${user.id}" class="site-header__nav_list_link">My profile</a>
   </li>
 `);
@@ -101,19 +101,20 @@ export const applyStandardPageLayout = (user: O.Option<User>) => (page: Page): s
         <img src="/static/images/sciety-logo-full-colour.svg" alt="Sciety" class="site-header__logo">
       </a>
 
-      <a href="/menu" class="site-header__menu_link">
-        <img src="/static/images/menu-icon.svg" alt="Menu" />
-      </a>
-
       <nav class="site-header__nav">
 
         <ul class="site-header__nav_list" role="list">
+          <li class="site-header__nav_list_item site-header__nav_list_item--only-narrow">
+            <a href="/menu" class="site-header__menu_link">
+              <img src="/static/images/menu-icon.svg" alt="Menu" />
+            </a>
+          </li>
 
-          <li class="site-header__nav_list_item">
+          <li class="site-header__nav_list_item site-header__nav_list_item--only-wide">
             <a href="/" class="site-header__nav_list_link">Home</a>
           </li>
 
-          <li class="site-header__nav_list_item">
+          <li class="site-header__nav_list_item site-header__nav_list_item--only-wide">
             <a href="/about" class="site-header__nav_list_link">About</a>
           </li>
 

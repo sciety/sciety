@@ -61,10 +61,6 @@ $_search-icon-size: functions.px-to-rem(28px);
   }
 }
 
-.site-header__menu_link {
-  display: none;
-}
-
 .site-header__logo {
   display: block;
   max-width: $_logo-width;
@@ -104,6 +100,22 @@ $_search-icon-size: functions.px-to-rem(28px);
 
   &:last-child {
     padding-right: 0;
+  }
+}
+
+.site-header__nav_list_item--only-wide {
+  display: none;
+
+  @include breakpoints.from-narrow() {
+    display: flex;
+  }
+}
+
+.site-header__nav_list_item--only-narrow {
+  display: flex;
+
+  @include breakpoints.from-narrow() {
+    display: none;
   }
 }
 
