@@ -9,7 +9,8 @@ import { GroupId } from '../types/group-id';
 import { UserId } from '../types/user-id';
 
 export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
-type Follows = (userId: UserId, editorialCommunityId: GroupId) => T.Task<boolean>;
+
+type Follows = (u: UserId, g: GroupId) => T.Task<boolean>;
 
 export const getMostRecentEvents = (
   getAllEvents: GetAllEvents,

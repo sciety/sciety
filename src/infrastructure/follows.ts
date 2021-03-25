@@ -7,24 +7,24 @@ import { DomainEvent, isUserFollowedEditorialCommunityEvent, isUserUnfollowedEdi
 import { eqGroupId, GroupId } from '../types/group-id';
 import { UserId } from '../types/user-id';
 
-type Follows = (userId: UserId, editorialCommunityId: GroupId) => RT.ReaderTask<GetAllEvents, boolean>;
+type Follows = (u: UserId, g: GroupId) => RT.ReaderTask<GetAllEvents, boolean>;
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 const isSignificantTo = (
   userId: UserId,
-  editorialCommunityId: GroupId,
+  groupId: GroupId,
 ) => (event: DomainEvent) => (
   (isUserFollowedEditorialCommunityEvent(event)
-    && eqGroupId.equals(event.editorialCommunityId, editorialCommunityId)
+    && eqGroupId.equals(event.editorialCommunityId, groupId)
     && event.userId === userId)
   || (isUserUnfollowedEditorialCommunityEvent(event)
-    && eqGroupId.equals(event.editorialCommunityId, editorialCommunityId)
+    && eqGroupId.equals(event.editorialCommunityId, groupId)
     && event.userId === userId)
 );
 
-export const follows: Follows = (userId, editorialCommunityId) => T.map(flow(
-  A.findLast(isSignificantTo(userId, editorialCommunityId)),
+export const follows: Follows = (userId, groupId) => T.map(flow(
+  A.findLast(isSignificantTo(userId, groupId)),
   O.filter(isUserFollowedEditorialCommunityEvent),
   O.isSome,
 ));

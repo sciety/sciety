@@ -8,24 +8,24 @@ import { UserId } from '../types/user-id';
 
 export type RenderFollowToggle = (
   userId: O.Option<UserId>,
-  editorialCommunityId: GroupId,
+  groupId: GroupId,
   editorialCommunityName: string,
 ) => T.Task<HtmlFragment>;
 
-type Follows = (userId: UserId, editorialCommunityId: GroupId) => T.Task<boolean>;
+type Follows = (u: UserId, g: GroupId) => T.Task<boolean>;
 
-const renderFollowButton = (editorialCommunityId: GroupId, editorialCommunityName: string) => `
+const renderFollowButton = (groupId: GroupId, editorialCommunityName: string) => `
   <form method="post" action="/follow">
-    <input type="hidden" name="editorialcommunityid" value="${editorialCommunityId.value}" />
+    <input type="hidden" name="groupId" value="${groupId.value}" />
     <button type="submit" class="button button--primary button--small" aria-label="Follow ${editorialCommunityName}">
       Follow
     </button>
   </form>
 `;
 
-const renderUnfollowButton = (editorialCommunityId: GroupId, editorialCommunityName: string) => `
+const renderUnfollowButton = (groupId: GroupId, editorialCommunityName: string) => `
   <form method="post" action="/unfollow">
-    <input type="hidden" name="editorialcommunityid" value="${editorialCommunityId.value}" />
+    <input type="hidden" name="groupId" value="${groupId.value}" />
     <button type="submit" class="button button--small" aria-label="Unfollow ${editorialCommunityName}">
       Unfollow
     </button>
@@ -33,17 +33,17 @@ const renderUnfollowButton = (editorialCommunityId: GroupId, editorialCommunityN
 `;
 
 export const renderFollowToggle = (follows: Follows): RenderFollowToggle => (
-  (userId, editorialCommunityId, editorialCommunityName) => (
+  (userId, groupId, editorialCommunityName) => (
     pipe(
       userId,
       O.fold(
         () => T.of(false),
-        (value: UserId) => follows(value, editorialCommunityId),
+        (value: UserId) => follows(value, groupId),
       ),
       T.map(flow(
         B.fold(
-          () => renderFollowButton(editorialCommunityId, editorialCommunityName),
-          () => renderUnfollowButton(editorialCommunityId, editorialCommunityName),
+          () => renderFollowButton(groupId, editorialCommunityName),
+          () => renderUnfollowButton(groupId, editorialCommunityName),
         ),
         toHtmlFragment,
       )),

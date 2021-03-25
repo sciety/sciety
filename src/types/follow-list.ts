@@ -17,27 +17,27 @@ export class FollowList {
     this.items = items;
   }
 
-  follow(editorialCommunityId: GroupId): ReadonlyArray<UserFollowedEditorialCommunityEvent> {
-    if (this.items.includes(editorialCommunityId.value)) {
+  follow(groupId: GroupId): ReadonlyArray<UserFollowedEditorialCommunityEvent> {
+    if (this.items.includes(groupId.value)) {
       return [];
     }
 
-    this.items.push(editorialCommunityId.value);
+    this.items.push(groupId.value);
 
     return [
-      userFollowedEditorialCommunity(this.userId, editorialCommunityId),
+      userFollowedEditorialCommunity(this.userId, groupId),
     ];
   }
 
-  unfollow(editorialCommunityId: GroupId): ReadonlyArray<UserUnfollowedEditorialCommunityEvent> {
-    if (!this.items.includes(editorialCommunityId.value)) {
+  unfollow(groupId: GroupId): ReadonlyArray<UserUnfollowedEditorialCommunityEvent> {
+    if (!this.items.includes(groupId.value)) {
       return [];
     }
 
-    this.items = this.items.filter((item) => item !== editorialCommunityId.value);
+    this.items = this.items.filter((item) => item !== groupId.value);
 
     return [
-      userUnfollowedEditorialCommunity(this.userId, editorialCommunityId),
+      userUnfollowedEditorialCommunity(this.userId, groupId),
     ];
   }
 }

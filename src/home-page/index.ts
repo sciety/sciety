@@ -23,7 +23,7 @@ type Ports = {
   getAllEditorialCommunities: GetAllEditorialCommunities,
   getGroup: GetGroup,
   getAllEvents: GetAllEvents,
-  follows: (userId: UserId, editorialCommunityId: GroupId) => T.Task<boolean>,
+  follows: (u: UserId, g: GroupId) => T.Task<boolean>,
 };
 
 type Params = {

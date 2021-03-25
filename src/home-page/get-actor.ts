@@ -11,7 +11,7 @@ type Actor = {
 
 type GetActor = (id: GroupId) => T.Task<Actor>;
 
-export type GetGroup = (editorialCommunityId: GroupId) => T.Task<O.Option<{
+export type GetGroup = (id: GroupId) => T.Task<O.Option<{
   name: string,
   avatarPath: string,
 }>>;

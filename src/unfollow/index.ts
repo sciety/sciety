@@ -14,9 +14,9 @@ export const unfollowHandler = (ports: Ports): Middleware<{ user: User }> => {
     ports.commitEvents,
   );
   return async (context, next) => {
-    const editorialCommunityId = new GroupId(context.request.body.editorialcommunityid);
+    const groupId = new GroupId(context.request.body.editorialcommunityid);
     const { user } = context.state;
-    await command(user, editorialCommunityId);
+    await command(user, groupId);
 
     context.redirect('back');
 
