@@ -4,6 +4,7 @@
 @use 'normalise';
 @use 'layout';
 
+@use 'standard-page-layout';
 @use 'group';
 @use 'summary-feed-list';
 @use 'summary-feed-item';
@@ -48,6 +49,10 @@
 }
 
 body {
+  min-height: 100vh;
+}
+
+.page-container {
   min-height: 100vh;
   display: grid;
   grid-template-rows: auto 1fr auto;

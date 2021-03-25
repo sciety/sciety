@@ -95,52 +95,54 @@ export const applyStandardPageLayout = (user: O.Option<User>) => (page: Page): s
 </head>
 <body>
   ${googleTagManagerNoScript}
-  <header class="site-header">
-    <div class="site-header__wrapper">
-      <a href="/" class="site-header__logo_link">
-        <img src="/static/images/sciety-logo-full-colour.svg" alt="Sciety" class="site-header__logo">
-      </a>
+  <div class="page-container">
+    <header class="site-header">
+      <div class="site-header__wrapper">
+        <a href="/" class="site-header__logo_link">
+          <img src="/static/images/sciety-logo-full-colour.svg" alt="Sciety" class="site-header__logo">
+        </a>
 
-      <a href="/menu" class="site-header__menu_link">
-        <img src="/static/images/menu-icon.svg" alt="" />
-      </a>
+        <a href="/menu" class="site-header__menu_link">
+          <img src="/static/images/menu-icon.svg" alt="" />
+        </a>
 
-      <nav class="site-header__nav">
+        <nav class="site-header__nav">
 
-        <ul class="site-header__nav_list" role="list">
-          <li class="site-header__nav_list_item site-header__nav_list_item--only-wide">
-            <a href="/" class="site-header__nav_list_link">Home</a>
-          </li>
+          <ul class="site-header__nav_list" role="list">
+            <li class="site-header__nav_list_item site-header__nav_list_item--only-wide">
+              <a href="/" class="site-header__nav_list_link">Home</a>
+            </li>
 
-          <li class="site-header__nav_list_item site-header__nav_list_item--only-wide">
-            <a href="/about" class="site-header__nav_list_link">About</a>
-          </li>
+            <li class="site-header__nav_list_item site-header__nav_list_item--only-wide">
+              <a href="/about" class="site-header__nav_list_link">About</a>
+            </li>
 
-          ${O.fold(constant(''), myProfileMenuItem)(user)}
+            ${O.fold(constant(''), myProfileMenuItem)(user)}
 
-          <li class="site-header__nav_list_item site-header__nav_list_item--search">
-            <a href="/search" class="site-header__nav_list_link">
-              <img src="/static/images/search-icon.svg" alt="Search" class="site-header__nav_list__search_icon">
-            </a>
-          </li>
+            <li class="site-header__nav_list_item site-header__nav_list_item--search">
+              <a href="/search" class="site-header__nav_list_link">
+                <img src="/static/images/search-icon.svg" alt="Search" class="site-header__nav_list__search_icon">
+              </a>
+            </li>
 
-          ${O.fold(logInMenuItem, logOutMenuItem)(user)}
-        </ul>
+            ${O.fold(logInMenuItem, logOutMenuItem)(user)}
+          </ul>
 
-      </nav>
-    </div>
-  </header>
+        </nav>
+      </div>
+    </header>
 
-  <main>
-    ${page.content}
-  </main>
+    <main>
+      ${page.content}
+    </main>
 
-  <footer class="site-footer">
-    <small class="site-footer__small_print">
-      © 2021 eLife Sciences Publications Ltd.
-      <a class="site-footer__link" href="/legal">Legal information</a>
-    </small>
-  </footer>
+    <footer class="site-footer">
+      <small class="site-footer__small_print">
+        © 2021 eLife Sciences Publications Ltd.
+        <a class="site-footer__link" href="/legal">Legal information</a>
+      </small>
+    </footer>
+  </div>
 
   <script src="/static/behaviour.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.js"></script>
