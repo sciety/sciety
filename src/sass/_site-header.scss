@@ -51,8 +51,7 @@ $_search-icon-size: functions.px-to-rem(28px);
 }
 
 .site-header__logo_link {
-  padding-top: baseline.increments(1);
-  display: block;
+  display: none;
 
   @include breakpoints.from-narrow() {
     padding-top: 0;
