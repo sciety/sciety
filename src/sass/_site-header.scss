@@ -61,6 +61,10 @@ $_search-icon-size: functions.px-to-rem(28px);
   }
 }
 
+.site-header__menu_link {
+  display: none;
+}
+
 .site-header__logo {
   display: block;
   max-width: $_logo-width;

@@ -101,6 +101,10 @@ export const applyStandardPageLayout = (user: O.Option<User>) => (page: Page): s
         <img src="/static/images/sciety-logo-full-colour.svg" alt="Sciety" class="site-header__logo">
       </a>
 
+      <a href="/menu" class="site-header__menu_link">
+        <img src="/static/images/menu-icon.svg" alt="Menu" />
+      </a>
+
       <nav class="site-header__nav">
 
         <ul class="site-header__nav_list" role="list">
