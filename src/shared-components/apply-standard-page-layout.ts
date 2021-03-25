@@ -44,8 +44,8 @@ const fathom = process.env.FATHOM_SITE_ID ? `
 ` : '';
 
 const myProfileMenuItem = (user: User) => toHtmlFragment(`
-  <li class="site-header__nav_list_item site-header__nav_list_item--only-wide">
-    <a href="/users/${user.id}" class="site-header__nav_list_link">My profile</a>
+  <li>
+    <a href="/users/${user.id}" class="flyout-menu__link">My profile</a>
   </li>
 `);
 
@@ -96,7 +96,13 @@ export const applyStandardPageLayout = (user: O.Option<User>) => (page: Page): s
 <body>
   ${googleTagManagerNoScript}
   <div class="page-container">
-    <div class="flyout-menu"></div>
+    <div class="flyout-menu">
+      <ul role="list" class="flyout-menu__links">
+        <li><a href="/" class="flyout-menu__link flyout-menu__link--home"><span>Home</span></a></li>
+        <li><a href="/about" class="flyout-menu__link flyout-menu__link--about"><span>About</span></a></li>
+        ${O.fold(constant(''), myProfileMenuItem)(user)}
+      </ul>
+    </div>
     <header class="site-header">
       <div class="site-header__wrapper">
         <a href="/" class="site-header__logo_link">
@@ -110,16 +116,6 @@ export const applyStandardPageLayout = (user: O.Option<User>) => (page: Page): s
         <nav class="site-header__nav">
 
           <ul class="site-header__nav_list" role="list">
-            <li class="site-header__nav_list_item site-header__nav_list_item--only-wide">
-              <a href="/" class="site-header__nav_list_link">Home</a>
-            </li>
-
-            <li class="site-header__nav_list_item site-header__nav_list_item--only-wide">
-              <a href="/about" class="site-header__nav_list_link">About</a>
-            </li>
-
-            ${O.fold(constant(''), myProfileMenuItem)(user)}
-
             <li class="site-header__nav_list_item site-header__nav_list_item--search">
               <a href="/search" class="site-header__nav_list_link">
                 <img src="/static/images/search-icon.svg" alt="Search" class="site-header__nav_list__search_icon">

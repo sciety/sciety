@@ -1,6 +1,14 @@
+@use 'baseline';
 @use 'breakpoints';
 @use 'functions';
+@use 'list';
 @use 'settings';
+@use 'typography';
+
+$_flyout-menu-icon-size: 24px;
+$_flyout-menu-icon-inline-padding: 12px;
+$_flyout-menu-inline-padding: 16px;
+$_flyout-menu-text-inline-padding: 26px; // TODO: bad name
 
 .page-container {
   min-height: 100vh;
@@ -15,11 +23,55 @@
 .flyout-menu {
   display: none;
   background-color: settings.$colour-text-primary;
+  color: settings.$colour-white;
+  width: 100%;
+  font-family: settings.$font-family;
+  padding-top: baseline.increments(2);
 
   @include breakpoints.from-narrow() {
-    display: unset;
+    display: flex;
+    flex-direction: column;
     grid-column: 1/1;
     grid-row: 1/-1;
   }
+}
+
+.flyout-menu__links {
+  @include list.basics();
+  padding-right: functions.px-to-rem($_flyout-menu-inline-padding);
+  padding-left: functions.px-to-rem($_flyout-menu-inline-padding);
+}
+
+.flyout-menu__link {
+  @include typography.sizing(14px, 1.75);
+  display: flex;
+  align-items: center;
+  min-height: baseline.increments(5);
+  background-size: functions.px-to-rem($_flyout-menu-icon-size);
+  background-repeat: no-repeat;
+  background-position: functions.px-to-rem($_flyout-menu-icon-inline-padding) center;
+  padding-left: functions.px-to-rem($_flyout-menu-icon-inline-padding * 2 + $_flyout-menu-icon-size);
+  border-radius: settings.$border-radius;
+  font-weight: bold;
+  letter-spacing: 0.1px;
+
+  &:link,
+  &:visited {
+    color: settings.$colour-white;
+
+    &:hover,
+    &:active {
+      background-color: settings.$colour-navigation-menu-hover;
+      color: inherit;
+    }
+  }
+}
+
+.flyout-menu__link--home {
+  background-image: url('/static/images/home.svg');
+}
+
+.flyout-menu__link--about {
+  background-image: url('/static/images/info.svg');
 }
 
