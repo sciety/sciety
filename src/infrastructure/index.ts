@@ -119,7 +119,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         findGroups: findGroups(fetchFile, bootstrapGroups),
         searchEuropePmc: (...args) => searchEuropePmc(...args)({ getJson: getJsonWithRetries, logger }),
         getGroup: groups.lookup,
-        getAllEditorialCommunities: groups.all,
+        getAllGroups: groups.all,
         findReviewsForArticleDoi: (...args) => findReviewsForArticleDoi(...args)(getAllEvents),
         getAllEvents,
         commitEvents: (...args) => commitEvents(...args)({ inMemoryEvents: events, pool, logger: loggerIO(logger) }),

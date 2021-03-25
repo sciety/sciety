@@ -30,7 +30,7 @@ type FindVersionsForArticleDoi = (
 
 type GetGroup = (editorialCommunityId: GroupId) => T.Task<O.Option<Group>>;
 
-type GetAllEditorialCommunities = T.Task<RNEA.ReadonlyNonEmptyArray<Group>>;
+type GetAllGroups = T.Task<RNEA.ReadonlyNonEmptyArray<Group>>;
 
 export type Adapters = {
   commitEvents: (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<void>,
@@ -41,7 +41,7 @@ export type Adapters = {
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
   follows: (userId: UserId, editorialCommunityId: GroupId) => T.Task<boolean>,
-  getAllEditorialCommunities: GetAllEditorialCommunities,
+  getAllGroups: GetAllGroups,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
   getFollowList: EventSourcedFollowListRepository,
   getGroup: GetGroup,

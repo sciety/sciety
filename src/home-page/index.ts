@@ -20,7 +20,7 @@ import { UserId } from '../types/user-id';
 
 type Ports = {
   fetchArticle: GetArticle,
-  getAllEditorialCommunities: GetAllGroups,
+  getAllGroups: GetAllGroups,
   getGroup: GetGroup,
   getAllEvents: GetAllEvents,
   follows: (u: UserId, g: GroupId) => T.Task<boolean>,
@@ -38,7 +38,7 @@ export const homePage = (ports: Ports): HomePage => flow(
   renderPage(
     renderPageHeader,
     renderGroups(
-      ports.getAllEditorialCommunities,
+      ports.getAllGroups,
       renderGroup(renderFollowToggle(ports.follows)),
     ),
     renderFeed(
