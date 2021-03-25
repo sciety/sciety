@@ -49,13 +49,11 @@
 
 body {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
 }
 
 main {
-  flex-grow: 1;
-  flex-shrink: 0;
   display: flex;
   justify-content: center;
 }

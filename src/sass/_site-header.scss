@@ -14,8 +14,6 @@ $_logo-width: 110px;
 $_search-icon-size: functions.px-to-rem(28px);
 
 .site-header {
-  flex-grow: 0;
-  flex-shrink: 0;
   display: flex;
   justify-content: center;
   padding-bottom: baseline.increments(1);

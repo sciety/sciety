@@ -156,7 +156,6 @@ $_clear-button-inline-size: 48px;
 .search-results-page__background--filler {
   background-color: settings.$colour-page-background;
   width: 100vw;
-  min-height: 52vh; // TODO remove hack
 }
 
 .search-results-list__item__link {

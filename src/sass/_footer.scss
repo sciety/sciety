@@ -6,8 +6,6 @@
 @use 'typography';
 
 .site-footer {
-  flex-grow: 1;
-  flex-shrink: 0;
   font-family: settings.$font-secondary;
   margin-top: auto;
   color: settings.$colour-white;
