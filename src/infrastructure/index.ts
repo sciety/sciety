@@ -35,7 +35,7 @@ import {
 } from './logger';
 import { responseCache } from './response-cache';
 import { searchEuropePmc } from './search-europe-pmc';
-import { bootstrapEditorialCommunities } from '../data/bootstrap-editorial-communities';
+import { bootstrapGroups } from '../data/bootstrap-groups';
 import * as DomainEvent from '../types/domain-events';
 
 type Dependencies = {
@@ -68,7 +68,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
     identity,
   )),
   TE.bindW('eventsFromDataFiles', () => pipe(
-    bootstrapEditorialCommunities,
+    bootstrapGroups,
     RNEA.map(({ id }) => id),
     getEventsFromDataFiles,
   )),
@@ -100,7 +100,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         return response.data;
       };
 
-      const editorialCommunities = inMemoryGroupRepository(bootstrapEditorialCommunities);
+      const groups = inMemoryGroupRepository(bootstrapGroups);
       const getAllEvents = T.of(events);
       const getFollowList = createEventSourceFollowListRepository(getAllEvents);
       const fetchFile = (f: string) => fetchStaticFile(f)(loggerIO(logger));
@@ -116,10 +116,10 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
           fetchNcrcReview(logger),
         ),
         fetchStaticFile: fetchFile,
-        findGroups: findGroups(fetchFile, bootstrapEditorialCommunities),
+        findGroups: findGroups(fetchFile, bootstrapGroups),
         searchEuropePmc: (...args) => searchEuropePmc(...args)({ getJson: getJsonWithRetries, logger }),
-        getGroup: editorialCommunities.lookup,
-        getAllEditorialCommunities: editorialCommunities.all,
+        getGroup: groups.lookup,
+        getAllEditorialCommunities: groups.all,
         findReviewsForArticleDoi: (...args) => findReviewsForArticleDoi(...args)(getAllEvents),
         getAllEvents,
         commitEvents: (...args) => commitEvents(...args)({ inMemoryEvents: events, pool, logger: loggerIO(logger) }),

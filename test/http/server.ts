@@ -8,7 +8,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import datasetFactory from 'rdf-dataset-indexed';
-import { bootstrapEditorialCommunities } from '../../src/data/bootstrap-editorial-communities';
+import { bootstrapGroups } from '../../src/data/bootstrap-groups';
 import { createRouter } from '../../src/http/router';
 import { createApplicationServer } from '../../src/http/server';
 import { Adapters } from '../../src/infrastructure/adapters';
@@ -31,7 +31,7 @@ type TestServer = {
 };
 
 export const createTestServer = async (): Promise<TestServer> => {
-  const editorialCommunities = inMemoryGroupRepository(bootstrapEditorialCommunities);
+  const editorialCommunities = inMemoryGroupRepository(bootstrapGroups);
   const fetchDataCiteDataset: FetchDataset = async () => (
     clownface({ dataset: datasetFactory(), term: namedNode('http://example.com/some-datacite-node') })
       .addOut(schema.datePublished, literal('2020-02-20', schema.Date))

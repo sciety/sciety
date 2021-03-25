@@ -96,4 +96,4 @@ if (process.env.EXPERIMENT_ENABLED === 'true') {
   ];
 }
 
-export const bootstrapEditorialCommunities = RNEA.concat(groups, downplayedPotentialGroups);
+export const bootstrapGroups = RNEA.concat(groups, downplayedPotentialGroups);
