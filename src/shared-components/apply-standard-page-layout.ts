@@ -102,6 +102,12 @@ export const applyStandardPageLayout = (user: O.Option<User>) => (page: Page): s
         <li><a href="/about" class="flyout-menu__link flyout-menu__link--about"><span>About</span></a></li>
         ${O.fold(constant(''), myProfileMenuItem)(user)}
       </ul>
+      <footer class="flyout-menu__footer">
+        <small class="flyout-menu__small_print">
+          © 2021 eLife Sciences Publications Ltd.
+          <a href="/legal">Legal information</a>
+        </small>
+      </footer>
     </div>
     <header class="site-header">
       <div class="site-header__wrapper">
@@ -132,13 +138,6 @@ export const applyStandardPageLayout = (user: O.Option<User>) => (page: Page): s
     <main>
       ${page.content}
     </main>
-
-    <footer class="site-footer">
-      <small class="site-footer__small_print">
-        © 2021 eLife Sciences Publications Ltd.
-        <a class="site-footer__link" href="/legal">Legal information</a>
-      </small>
-    </footer>
   </div>
 
   <script src="/static/behaviour.js"></script>

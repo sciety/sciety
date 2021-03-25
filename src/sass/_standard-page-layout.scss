@@ -75,3 +75,33 @@ $_flyout-menu-text-inline-padding: 26px; // TODO: bad name
   background-image: url('/static/images/info.svg');
 }
 
+.flyout-menu__small_print {
+  @include typography.sizing(12px, 2);
+  letter-spacing: 0.09px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  a:link {
+    @include typography.sizing(12px, 2);
+    font-weight: normal;
+    letter-spacing: 0.09px;
+    text-decoration: underline;
+  }
+
+  a:link,
+  a:visited {
+    color: inherit;
+
+    a:hover,
+    a:active {
+      color: inherit;
+    }
+  }
+}
+
+.flyout-menu__footer {
+  margin-top: auto;
+  margin-bottom: baseline.increments(2);
+  padding-left: functions.px-to-rem($_flyout-menu-text-inline-padding);
+}
