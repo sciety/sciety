@@ -6,7 +6,7 @@ import { User } from '../types/user';
 
 const myProfileMenuItem = (user: User) => toHtmlFragment(`
   <li>
-    <a href="/users/${user.id}" class="flyout-menu__link">My profile</a>
+    <a href="/users/${user.id}" class="site-menu__link">My profile</a>
   </li>
 `);
 

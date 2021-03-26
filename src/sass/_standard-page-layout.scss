@@ -50,13 +50,13 @@ $_menu-link-max-width: 300px;
   display: block;
 }
 
-.flyout-menu__links {
+.site-menu__links {
   @include list.basics();
   margin-right: functions.px-to-rem($_flyout-menu-inline-padding);
   margin-left: functions.px-to-rem($_flyout-menu-inline-padding);
 }
 
-.flyout-menu__link {
+.site-menu__link {
   @include typography.sizing(14px, 1.75);
   display: flex;
   align-items: center;
@@ -82,11 +82,11 @@ $_menu-link-max-width: 300px;
   }
 }
 
-.flyout-menu__link--home {
+.site-menu__link--home {
   background-image: url('/static/images/home.svg');
 }
 
-.flyout-menu__link--about {
+.site-menu__link--about {
   background-image: url('/static/images/info.svg');
 }
 
