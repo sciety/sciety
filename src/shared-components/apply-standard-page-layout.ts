@@ -61,6 +61,14 @@ const logInMenuItem = () => toHtmlFragment(`
   </li>
 `);
 
+const menuItems = (user: O.Option<User>) => `
+  <ul role="list" class="flyout-menu__links">
+    <li><a href="/" class="flyout-menu__link flyout-menu__link--home"><span>Home</span></a></li>
+    <li><a href="/about" class="flyout-menu__link flyout-menu__link--about"><span>About</span></a></li>
+    ${O.fold(constant(''), myProfileMenuItem)(user)}
+  </ul>
+`;
+
 const isSecure = process.env.APP_ORIGIN !== undefined && process.env.APP_ORIGIN.startsWith('https:');
 
 // TODO: return a more specific type e.g. HtmlDocument
@@ -97,15 +105,12 @@ export const applyStandardPageLayout = (user: O.Option<User>) => (page: Page): s
   ${googleTagManagerNoScript}
   <div class="page-container">
     <div class="flyout-menu">
-        <a href="/" class="flyout-menu__logo_link" aria-hidden="true">
-          <img src="/static/images/sciety-logo-white-text.svg " alt="Sciety" class="flyout-menu__logo">
-        </a>
+      <a href="/" class="flyout-menu__logo_link" aria-hidden="true">
+        <img src="/static/images/sciety-logo-white-text.svg " alt="Sciety" class="flyout-menu__logo">
+      </a>
 
-      <ul role="list" class="flyout-menu__links">
-        <li><a href="/" class="flyout-menu__link flyout-menu__link--home"><span>Home</span></a></li>
-        <li><a href="/about" class="flyout-menu__link flyout-menu__link--about"><span>About</span></a></li>
-        ${O.fold(constant(''), myProfileMenuItem)(user)}
-      </ul>
+      ${menuItems(user)}
+
       <footer class="flyout-menu__footer">
         <a href="https://eepurl.com/g7qqcv" class="flyout-menu__feedback_button">Feedback</a>
         <small class="flyout-menu__small_print">
