@@ -9,16 +9,16 @@ import { UserId } from '../types/user-id';
 export type CommitEvents = (events: ReadonlyArray<UserFollowedEditorialCommunityEvent>) => T.Task<void>;
 export type GetFollowList = (userId: UserId) => T.Task<FollowList>;
 
-type FollowCommand = (user: User, editorialCommunityId: GroupId) => T.Task<void>;
+type FollowCommand = (user: User, groupId: GroupId) => T.Task<void>;
 
 export const followCommand = (
   getFollowList: GetFollowList,
   commitEvents: CommitEvents,
 ): FollowCommand => (
-  (user, editorialCommunityId) => pipe(
+  (user, groupId) => pipe(
     user.id,
     getFollowList,
-    T.map((followList) => followList.follow(editorialCommunityId)),
+    T.map((followList) => followList.follow(groupId)),
     T.chain(commitEvents),
   )
 );

@@ -9,14 +9,14 @@ import { UserId } from '../types/user-id';
 export type CommitEvents = (events: ReadonlyArray<UserUnfollowedEditorialCommunityEvent>) => T.Task<void>;
 export type GetFollowList = (userId: UserId) => T.Task<FollowList>;
 
-type UnfollowCommand = (user: User, editorialCommunityId: GroupId) => T.Task<void>;
+type UnfollowCommand = (user: User, groupId: GroupId) => T.Task<void>;
 
 export const unfollowCommand = (
   getFollowList: GetFollowList,
   commitEvents: CommitEvents,
-): UnfollowCommand => (user, editorialCommunityId) => pipe(
+): UnfollowCommand => (user, groupId) => pipe(
   user.id,
   getFollowList,
-  T.map((followList) => followList.unfollow(editorialCommunityId)),
+  T.map((followList) => followList.unfollow(groupId)),
   T.chain(commitEvents),
 );
