@@ -9,7 +9,7 @@
 $_flyout-menu-icon-size: 24px;
 $_flyout-menu-icon-inline-padding: 12px;
 $_flyout-menu-inline-padding: 16px;
-$_flyout-menu-text-inline-padding: 26px; // TODO: bad name
+$_flyout-menu-text-inline-padding: 16px; // TODO: bad name
 
 .page-container {
   min-height: 100vh;
@@ -48,8 +48,8 @@ $_flyout-menu-text-inline-padding: 26px; // TODO: bad name
 
 .flyout-menu__links {
   @include list.basics();
-  padding-right: functions.px-to-rem($_flyout-menu-inline-padding);
-  padding-left: functions.px-to-rem($_flyout-menu-inline-padding);
+  margin-right: functions.px-to-rem($_flyout-menu-inline-padding);
+  margin-left: functions.px-to-rem($_flyout-menu-inline-padding);
 }
 
 .flyout-menu__link {
@@ -119,5 +119,6 @@ $_flyout-menu-text-inline-padding: 26px; // TODO: bad name
 .flyout-menu__footer {
   margin-top: auto;
   margin-bottom: baseline.increments(2);
-  padding-left: functions.px-to-rem($_flyout-menu-text-inline-padding);
+  margin-left: functions.px-to-rem($_flyout-menu-text-inline-padding);
+  margin-right: functions.px-to-rem($_flyout-menu-text-inline-padding);
 }
