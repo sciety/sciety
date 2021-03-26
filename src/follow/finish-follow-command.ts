@@ -24,7 +24,7 @@ export const finishFollowCommand = (ports: Ports): Middleware => {
           () => context.throw(StatusCodes.BAD_REQUEST),
           async (groupId) => {
             const { user } = context.state;
-            return command(user, groupId);
+            return command(user, groupId)();
           },
         ),
       );

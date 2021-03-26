@@ -25,7 +25,7 @@ export const followHandler = (ports: Ports): Middleware<{ user: User }> => {
         async (groupId) => {
           const { user } = context.state;
           context.redirect('back');
-          return command(user, groupId);
+          return command(user, groupId)();
         },
       ),
     );
