@@ -49,46 +49,6 @@ $_menu-link-max-width: 300px;
   flex-direction: column;
 }
 
-.navigation-menu__links {
-  @include list.basics();
-  padding-right: functions.px-to-rem($_navigation-menu-inline-padding);
-  padding-left: functions.px-to-rem($_navigation-menu-inline-padding);
-}
-
-.navigation-menu__link {
-  @include typography.sizing(14px, 1.75);
-  display: flex;
-  align-items: center;
-  min-height: baseline.increments(5);
-  max-width: functions.px-to-rem($_menu-link-max-width);
-  background-size: functions.px-to-rem($_navigation-menu-icon-size);
-  background-repeat: no-repeat;
-  background-position: functions.px-to-rem($_navigation-menu-icon-inline-padding) center;
-  padding-left: functions.px-to-rem($_navigation-menu-icon-inline-padding * 2 + $_navigation-menu-icon-size);
-  border-radius: settings.$border-radius;
-  font-weight: bold;
-  letter-spacing: 0.1px;
-
-  &:link,
-  &:visited {
-    color: settings.$colour-white;
-
-    &:hover,
-    &:active {
-      background-color: settings.$colour-navigation-menu-hover;
-      color: inherit;
-    }
-  }
-}
-
-.navigation-menu__link--home {
-  background-image: url('/static/images/home.svg');
-}
-
-.navigation-menu__link--about {
-  background-image: url('/static/images/info.svg');
-}
-
 .navigation-menu__title {
   @include typography.sizing(20px, 3);
   font-weight: bold;
