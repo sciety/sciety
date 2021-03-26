@@ -1,6 +1,9 @@
+import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
+import { StatusCodes } from 'http-status-codes';
 import { Middleware } from 'koa';
 import { CommitEvents, GetFollowList, unfollowCommand } from './unfollow-command';
-import { GroupId } from '../types/group-id';
+import * as GroupId from '../types/group-id';
 
 type Ports = {
   commitEvents: CommitEvents,
@@ -13,10 +16,18 @@ export const finishUnfollowCommand = (ports: Ports): Middleware => {
     ports.commitEvents,
   );
   return async (context, next) => {
-    if (context.session.command === 'unfollow' && context.session.editorialCommunityId) {
-      const editorialCommunityId = new GroupId(context.session.editorialCommunityId);
-      const { user } = context.state;
-      await command(user, editorialCommunityId);
+    if (context.session.command === 'unfollow') {
+      await pipe(
+        context.session.editorialCommunityId,
+        GroupId.fromString,
+        O.fold(
+          () => context.throw(StatusCodes.BAD_REQUEST),
+          async (groupId) => {
+            const { user } = context.state;
+            await command(user, groupId);
+          },
+        ),
+      );
     }
 
     await next();
