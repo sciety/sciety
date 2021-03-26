@@ -17,9 +17,7 @@ export class GroupId {
   }
 }
 
-export const fromString = (value: string): O.Option<GroupId> => (
-  pipe(new GroupId(value), O.some)
-);
+export const fromString = (value: string): O.Option<GroupId> => (O.tryCatch(() => new GroupId(value)));
 
 export const eqGroupId: Eq.Eq<GroupId> = pipe(
   Eq.eqString,
