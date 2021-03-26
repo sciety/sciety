@@ -1,0 +1,51 @@
+@use 'settings';
+@use 'functions';
+@use 'baseline';
+@use 'typography';
+@use 'list';
+
+$_site-menu-icon-size: 24px;
+$_site-menu-icon-inline-padding: 12px;
+$_site-menu-inline-padding: 16px;
+$_site-menu-text-inline-padding: 16px; // TODO: bad name
+$_site-menu-link-max-width: 300px;
+
+.site-menu__links {
+  @include list.basics();
+  margin-right: functions.px-to-rem($_site-menu-inline-padding);
+  margin-left: functions.px-to-rem($_site-menu-inline-padding);
+}
+
+.site-menu__link {
+  @include typography.sizing(14px, 1.75);
+  display: flex;
+  align-items: center;
+  min-height: baseline.increments(5);
+  max-width: functions.px-to-rem($_site-menu-link-max-width);
+  background-size: functions.px-to-rem($_site-menu-icon-size);
+  background-repeat: no-repeat;
+  background-position: functions.px-to-rem($_site-menu-icon-inline-padding) center;
+  padding-left: functions.px-to-rem($_site-menu-icon-inline-padding * 2 + $_site-menu-icon-size);
+  border-radius: settings.$border-radius;
+  font-weight: bold;
+  letter-spacing: 0.1px;
+
+  &:link,
+  &:visited {
+    color: settings.$colour-white;
+
+    &:hover,
+    &:active {
+      background-color: settings.$colour-navigation-menu-hover;
+      color: inherit;
+    }
+  }
+}
+
+.site-menu__link--home {
+  background-image: url('/static/images/home.svg');
+}
+
+.site-menu__link--about {
+  background-image: url('/static/images/info.svg');
+}
