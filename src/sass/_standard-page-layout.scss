@@ -9,6 +9,7 @@ $_flyout-menu-icon-size: 24px;
 $_flyout-menu-icon-inline-padding: 12px;
 $_flyout-menu-inline-padding: 16px;
 $_flyout-menu-text-inline-padding: 26px; // TODO: bad name
+$_logo-width: 110px;
 
 .page-container {
   min-height: 100vh;
@@ -34,6 +35,17 @@ $_flyout-menu-text-inline-padding: 26px; // TODO: bad name
     grid-column: 1/1;
     grid-row: 1/-1;
   }
+}
+
+.flyout-menu__logo_link {
+  padding-top: 0;
+  margin-left: 27px;
+  margin-bottom: 2rem;
+}
+
+.flyout-menu__logo {
+  display: block;
+  max-width: $_logo-width;
 }
 
 .flyout-menu__links {

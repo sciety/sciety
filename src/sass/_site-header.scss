@@ -10,7 +10,6 @@
 
 $_top-nav-shadow-height: 9px;
 $_site-header-height: 62px + $_top-nav-shadow-height;
-$_logo-width: 110px;
 $_search-icon-size: functions.px-to-rem(28px);
 
 .site-header {
@@ -52,17 +51,6 @@ $_search-icon-size: functions.px-to-rem(28px);
   }
 }
 
-.site-header__logo_link {
-  display: none;
-
-  @include breakpoints.from-narrow() {
-    padding-top: 0;
-    display: inline;
-    flex: 0 0 $_logo-width;
-    margin-right: functions.px-to-rem(36px);
-  }
-}
-
 .site-header__menu_link {
   display: flex;
 
@@ -75,11 +63,6 @@ $_search-icon-size: functions.px-to-rem(28px);
     content: 'Open the menu';
   }
 
-}
-
-.site-header__logo {
-  display: block;
-  max-width: $_logo-width;
 }
 
 .site-header__nav {

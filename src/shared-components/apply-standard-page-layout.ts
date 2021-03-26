@@ -97,6 +97,10 @@ export const applyStandardPageLayout = (user: O.Option<User>) => (page: Page): s
   ${googleTagManagerNoScript}
   <div class="page-container">
     <div class="flyout-menu">
+        <a href="/" class="flyout-menu__logo_link" aria-hidden="true">
+          <img src="/static/images/sciety-logo-white-text.svg " alt="Sciety" class="flyout-menu__logo">
+        </a>
+
       <ul role="list" class="flyout-menu__links">
         <li><a href="/" class="flyout-menu__link flyout-menu__link--home"><span>Home</span></a></li>
         <li><a href="/about" class="flyout-menu__link flyout-menu__link--about"><span>About</span></a></li>
@@ -111,10 +115,6 @@ export const applyStandardPageLayout = (user: O.Option<User>) => (page: Page): s
     </div>
     <header class="site-header">
       <div class="site-header__wrapper">
-        <a href="/" class="site-header__logo_link">
-          <img src="/static/images/sciety-logo-full-colour.svg" alt="Sciety" class="site-header__logo">
-        </a>
-
         <a href="/menu" class="site-header__menu_link">
           <img src="/static/images/menu-icon.svg" alt="" />
         </a>
