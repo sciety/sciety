@@ -6,6 +6,9 @@ export class GroupId {
   readonly value: string;
 
   constructor(input: string) {
+    if (!input || input.length === 0) {
+      throw new Error(`'${input}' is not a GroupId`);
+    }
     this.value = input;
   }
 

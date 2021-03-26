@@ -9,7 +9,7 @@ import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
 
 describe('construct-feed-item', () => {
   const articleTitle = 'the title' as SanitisedHtmlFragment;
-  const arbitraryActorId = new GroupId('');
+  const arbitraryActorId = new GroupId('1234');
   const arbitraryArticleId = new Doi('10.5281/zenodo.3678326');
   const dummyGetActor = () => T.of({
     url: '',

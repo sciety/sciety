@@ -13,7 +13,7 @@ describe('render-feed', () => {
         id: new Doi('10.1111/12345678'),
         source: O.some(new URL('http://example.com')),
         occurredAt: new Date(),
-        groupId: new GroupId(''),
+        groupId: new GroupId('1234'),
         groupName: '',
         groupAvatar: '/images/xyz.png',
         fullText: O.none,
