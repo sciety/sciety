@@ -158,8 +158,7 @@ export const createRouter = (adapters: Adapters): Router => {
     },
     pageHandler(flow(
       searchResultsPageParams.decode,
-      TE.fromEither,
-      TE.fold(
+      E.fold(
         () => TE.right(searchPage),
         searchResultsPage(adapters),
       ),
