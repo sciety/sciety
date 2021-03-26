@@ -2,7 +2,7 @@ import Router from '@koa/router';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, pipe } from 'fp-ts/function';
+import { constant, flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
@@ -57,7 +57,7 @@ const toNotFound = () => ({
 // TODO move into the codecs
 const ensureBiorxivDoiParam = <T extends { doi: Doi.Doi }>(params: T) => pipe(
   params,
-  E.fromPredicate(({ doi }) => pipe(doi, Doi.hasPrefix(biorxivPrefix)), toNotFound),
+  E.fromPredicate(({ doi }) => pipe(doi, Doi.hasPrefix(biorxivPrefix)), constant('Not a bioRxiv DOI')),
 );
 
 const articlePageParams = t.type({
@@ -180,8 +180,8 @@ export const createRouter = (adapters: Adapters): Router => {
     '/articles/meta/:doi(.+)',
     pageHandler(flow(
       articlePageParams.decode,
+      E.chainW(ensureBiorxivDoiParam),
       E.mapLeft(toNotFound),
-      E.chain(ensureBiorxivDoiParam),
       TE.fromEither,
       TE.chain((args) => articleMetaPage(args)(adapters)),
     )),
@@ -191,8 +191,8 @@ export const createRouter = (adapters: Adapters): Router => {
     '/articles/activity/:doi(.+)',
     pageHandler(flow(
       articlePageParams.decode,
+      E.chainW(ensureBiorxivDoiParam),
       E.mapLeft(toNotFound),
-      E.chain(ensureBiorxivDoiParam),
       TE.fromEither,
       TE.chain((args) => articleActivityPage(args)(adapters)),
     )),
