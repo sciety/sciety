@@ -10,6 +10,7 @@ $_flyout-menu-icon-size: 24px;
 $_flyout-menu-icon-inline-padding: 12px;
 $_flyout-menu-inline-padding: 16px;
 $_flyout-menu-text-inline-padding: 16px; // TODO: bad name
+$_menu-link-max-width: 300px;
 
 .page-container {
   min-height: 100vh;
@@ -60,6 +61,7 @@ $_flyout-menu-text-inline-padding: 16px; // TODO: bad name
   display: flex;
   align-items: center;
   min-height: baseline.increments(5);
+  max-width: functions.px-to-rem($_menu-link-max-width);
   background-size: functions.px-to-rem($_flyout-menu-icon-size);
   background-repeat: no-repeat;
   background-position: functions.px-to-rem($_flyout-menu-icon-inline-padding) center;
