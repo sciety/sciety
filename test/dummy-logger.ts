@@ -1,5 +1,7 @@
-import { Logger } from '../src/infrastructure/logger';
+import * as L from '../src/infrastructure/logger';
 
-const loggerStub: Logger = () => {};
+const loggerStub: L.Logger = () => {};
 
 export const dummyLogger = Object.assign(loggerStub, { bindToRequestId: () => loggerStub });
+
+export const dummyLoggerIO = L.loggerIO(dummyLogger);

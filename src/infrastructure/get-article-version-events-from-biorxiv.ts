@@ -1,5 +1,6 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
+import * as IO from 'fp-ts/IO';
 import * as O from 'fp-ts/Option';
 import * as RT from 'fp-ts/ReaderTask';
 import * as RTE from 'fp-ts/ReaderTaskEither';
@@ -9,7 +10,7 @@ import { flow, pipe } from 'fp-ts/function';
 import { Json } from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
 import { biorxivArticleDetails, BiorxivArticleDetails } from './codecs/BiorxivArticleDetails';
-import { Logger } from './logger';
+import * as L from './logger';
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 
@@ -17,7 +18,7 @@ type GetJson = (url: string) => Promise<Json>;
 
 type Dependencies = {
   getJson: GetJson,
-  logger: Logger,
+  logger: L.LoggerIO,
 };
 
 type ArticleVersion = {
@@ -42,8 +43,10 @@ const makeRequest = (doi: Doi, server: ArticleServer) => ({ getJson, logger }: D
   )),
   TE.swap,
   TE.chainFirstW(flow(
-    (error) => logger('error', 'Failed to retrieve article versions', { doi, message: error.message }),
-    TE.right,
+    (error) => ({ doi, message: error.message }),
+    L.error('Failed to retrieve article versions'),
+    IO.chain(logger),
+    TE.rightIO,
   )),
   TE.swap,
 );
