@@ -107,6 +107,7 @@ export const applyStandardPageLayout = (user: O.Option<User>) => (page: Page): s
         ${O.fold(constant(''), myProfileMenuItem)(user)}
       </ul>
       <footer class="flyout-menu__footer">
+        <a href="https://eepurl.com/g7qqcv" class="flyout-menu__feedback_button">Feedback</a>
         <small class="flyout-menu__small_print">
           © 2021 eLife Sciences Publications Ltd.
           <a href="/legal">Legal information</a>

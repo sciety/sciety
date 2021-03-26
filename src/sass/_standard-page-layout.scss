@@ -1,4 +1,5 @@
 @use 'baseline';
+@use 'button';
 @use 'breakpoints';
 @use 'functions';
 @use 'list';
@@ -82,6 +83,12 @@ $_flyout-menu-text-inline-padding: 26px; // TODO: bad name
 
 .flyout-menu__link--about {
   background-image: url('/static/images/info.svg');
+}
+
+.flyout-menu__feedback_button {
+  @include button.button-new();
+  display: inline-block;
+  margin-bottom: baseline.increments(3);
 }
 
 .flyout-menu__small_print {
