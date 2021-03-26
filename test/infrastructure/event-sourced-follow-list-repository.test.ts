@@ -17,7 +17,7 @@ describe('event-sourced-follow-list-repository', () => {
     ]);
     const repository = createEventSourceFollowListRepository(getAllEvents);
 
-    const actual = await repository(userId1);
+    const actual = await repository(userId1)();
     const expected = new FollowList(userId1, [editorialCommunityId1.value]);
 
     expect(actual).toStrictEqual(expected);
@@ -30,7 +30,7 @@ describe('event-sourced-follow-list-repository', () => {
     ]);
     const repository = createEventSourceFollowListRepository(getAllEvents);
 
-    const actual = await repository(userId1);
+    const actual = await repository(userId1)();
     const expected = new FollowList(userId1, []);
 
     expect(actual).toStrictEqual(expected);
@@ -43,7 +43,7 @@ describe('event-sourced-follow-list-repository', () => {
     ]);
     const repository = createEventSourceFollowListRepository(getAllEvents);
 
-    const actual = await repository(userId1);
+    const actual = await repository(userId1)();
     const expected = new FollowList(userId1, [editorialCommunityId1.value]);
 
     expect(actual).toStrictEqual(expected);
@@ -56,7 +56,7 @@ describe('event-sourced-follow-list-repository', () => {
     ]);
     const repository = createEventSourceFollowListRepository(getAllEvents);
 
-    const actual = await repository(userId1);
+    const actual = await repository(userId1)();
     const expected = new FollowList(userId1, [editorialCommunityId1.value]);
 
     expect(actual).toStrictEqual(expected);

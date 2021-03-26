@@ -6,7 +6,7 @@ import { User } from '../types/user';
 import { UserId } from '../types/user-id';
 
 export type CommitEvents = (events: ReadonlyArray<UserUnfollowedEditorialCommunityEvent>) => T.Task<void>;
-export type GetFollowList = (userId: UserId) => Promise<FollowList>;
+export type GetFollowList = (userId: UserId) => T.Task<FollowList>;
 
 type UnfollowCommand = (user: User, editorialCommunityId: GroupId) => Promise<void>;
 
@@ -15,7 +15,7 @@ export const unfollowCommand = (
   commitEvents: CommitEvents,
 ): UnfollowCommand => (
   async (user, editorialCommunityId) => {
-    const followList = await getFollowList(user.id);
+    const followList = await getFollowList(user.id)();
     const events = followList.unfollow(editorialCommunityId);
     await commitEvents(events)();
   }

@@ -5,10 +5,10 @@ import { UserId } from '../types/user-id';
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-export type EventSourcedFollowListRepository = (userId: UserId) => Promise<FollowList>;
+export type EventSourcedFollowListRepository = (userId: UserId) => T.Task<FollowList>;
 
 export const createEventSourceFollowListRepository = (getAllEvents: GetAllEvents): EventSourcedFollowListRepository => (
-  async (userId) => {
+  (userId) => async () => {
     const result = new Set<string>();
 
     (await getAllEvents()).forEach((event) => {

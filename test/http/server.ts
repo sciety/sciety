@@ -61,7 +61,7 @@ export const createTestServer = async (): Promise<TestServer> => {
     getAllEvents: T.of([]),
     commitEvents: () => T.of(undefined),
     logger: dummyLogger,
-    getFollowList: async (userId) => new FollowList(userId),
+    getFollowList: (userId) => T.of(new FollowList(userId)),
     getUserDetails: () => TE.right({
       avatarUrl: '',
       displayName: '',
