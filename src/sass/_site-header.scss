@@ -14,10 +14,14 @@ $_search-icon-size: functions.px-to-rem(28px);
 
 .site-header {
   display: flex;
+  position: sticky;
+  top: 0;
+  z-index: 2;
   justify-content: center;
   padding-bottom: baseline.increments(1);
   font-family: settings.$font-family;
   color: settings.$colour-text-primary;
+  background-color: settings.$colour-white;
 
   @include breakpoints.from-narrow() {
     padding-top: baseline.increments(1);

@@ -23,9 +23,12 @@ $_flyout-menu-text-inline-padding: 16px; // TODO: bad name
 
 .flyout-menu {
   display: none;
+  position: sticky;
+  top: 0;
   background-color: settings.$colour-text-primary;
   color: settings.$colour-white;
   width: 100%;
+  height: 100vh;
   font-family: settings.$font-family;
   padding-top: baseline.increments(19/8);
 
