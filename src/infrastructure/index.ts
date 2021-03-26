@@ -72,7 +72,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
     RNEA.map(({ id }) => id),
     getEventsFromDataFiles,
   )),
-  TE.bindW('eventsFromDatabase', ({ pool, logger }) => getEventsFromDatabase(pool, logger)),
+  TE.bindW('eventsFromDatabase', ({ pool, logger }) => getEventsFromDatabase(pool, loggerIO(logger))),
   TE.bindW('events', ({ eventsFromDataFiles, eventsFromDatabase }) => pipe(
     eventsFromDataFiles.concat(eventsFromDatabase),
     A.sort(DomainEvent.byDate),

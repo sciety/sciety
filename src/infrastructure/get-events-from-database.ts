@@ -1,11 +1,12 @@
 import * as E from 'fp-ts/Either';
+import * as IO from 'fp-ts/IO';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { JsonRecord } from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
 import { Pool } from 'pg';
-import { Logger } from './logger';
+import * as L from './logger';
 import { domainEvents } from '../types/codecs/DomainEvent';
 import { RuntimeGeneratedEvent } from '../types/domain-events';
 
@@ -18,13 +19,15 @@ type EventRow = {
 
 export const getEventsFromDatabase = (
   pool: Pool,
-  logger: Logger,
+  logger: L.LoggerIO,
 ): TE.TaskEither<Error, ReadonlyArray<RuntimeGeneratedEvent>> => pipe(
   TE.tryCatch(async () => pool.query<EventRow>('SELECT id, type, date::text, payload FROM events'), E.toError),
   TE.map((result) => result.rows),
   TE.chainFirstW(flow(
-    (rows) => logger('debug', 'Reading events from database', { count: rows.length }),
-    TE.right,
+    (rows) => ({ count: rows.length }),
+    L.debug('Reading events from database'),
+    IO.chain(logger),
+    TE.rightIO,
   )),
   TE.chainEitherK(flow(
     RA.map((row) => ({ ...row, ...row.payload })),
