@@ -1,6 +1,6 @@
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
-import { menuFooter, menuItems } from './menu-items';
+import { menuItems } from './menu-items';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { User } from '../types/user';
@@ -96,8 +96,14 @@ export const applyStandardPageLayout = (user: O.Option<User>) => (page: Page): s
       </a>
 
       ${menuItems(user)}
-      ${menuFooter}
 
+      <footer class="flyout-menu__footer">
+        <a href="https://eepurl.com/g7qqcv" class="flyout-menu__feedback_button">Feedback</a>
+        <small class="flyout-menu__small_print">
+          © 2021 eLife Sciences Publications Ltd.
+          <a href="/legal">Legal information</a>
+        </small>
+      </footer>
     </div>
     <header class="site-header">
       <div class="site-header__wrapper">
