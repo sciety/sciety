@@ -24,7 +24,7 @@ export const finishUnfollowCommand = (ports: Ports): Middleware => {
           () => context.throw(StatusCodes.BAD_REQUEST),
           async (groupId) => {
             const { user } = context.state;
-            await command(user, groupId);
+            return command(user, groupId)();
           },
         ),
       );
