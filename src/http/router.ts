@@ -113,7 +113,7 @@ export const createRouter = (adapters: Adapters): Router => {
     '/menu',
     async (context, next) => {
       context.response.body = pipe(
-        menuPage,
+        menuPage(O.fromNullable(context.state.user)),
         menuPageLayout(
           O.fromNullable(context.state.user),
           O.fromNullable(context.request.header.referer),
