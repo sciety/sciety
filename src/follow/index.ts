@@ -1,6 +1,9 @@
 import { Middleware } from '@koa/router';
+import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
+import { StatusCodes } from 'http-status-codes';
 import { CommitEvents, followCommand, GetFollowList } from './follow-command';
-import { GroupId } from '../types/group-id';
+import * as GroupId from '../types/group-id';
 import { User } from '../types/user';
 
 type Ports = {
@@ -14,11 +17,18 @@ export const followHandler = (ports: Ports): Middleware<{ user: User }> => {
     ports.commitEvents,
   );
   return async (context, next) => {
-    const groupId = new GroupId(context.request.body.editorialcommunityid);
-    const { user } = context.state;
-    await command(user, groupId);
-
-    context.redirect('back');
+    await pipe(
+      context.request.body.editorialcommunityid,
+      GroupId.fromString,
+      O.fold(
+        () => context.throw(StatusCodes.BAD_REQUEST),
+        async (groupId) => {
+          const { user } = context.state;
+          context.redirect('back');
+          return command(user, groupId);
+        },
+      ),
+    );
 
     await next();
   };
