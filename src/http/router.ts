@@ -231,6 +231,11 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.post(
     '/follow',
+    catchErrors(
+      adapters.logger,
+      'Problem with /follow',
+      'Something went wrong; we\'re looking into it.',
+    ),
     bodyParser({ enableTypes: ['form'] }),
     saveFollowCommand(),
     requireAuthentication,
