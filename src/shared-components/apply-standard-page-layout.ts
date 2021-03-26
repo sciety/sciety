@@ -1,6 +1,6 @@
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
-import { constant } from 'fp-ts/function';
+import { menuItems } from './menu-items';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { User } from '../types/user';
@@ -43,12 +43,6 @@ const fathom = process.env.FATHOM_SITE_ID ? `
 <script src="https://cdn.usefathom.com/script.js" data-site="${process.env.FATHOM_SITE_ID}" defer></script>
 ` : '';
 
-const myProfileMenuItem = (user: User) => toHtmlFragment(`
-  <li>
-    <a href="/users/${user.id}" class="flyout-menu__link">My profile</a>
-  </li>
-`);
-
 const logOutMenuItem = () => toHtmlFragment(`
   <li class="site-header__nav_list_item">
     <a href="/log-out" class="site-header__nav_list_link_button">Log out</a>
@@ -60,14 +54,6 @@ const logInMenuItem = () => toHtmlFragment(`
     <a href="/log-in" class="site-header__nav_list_link_button">Log in</a>
   </li>
 `);
-
-const menuItems = (user: O.Option<User>) => `
-  <ul role="list" class="flyout-menu__links">
-    <li><a href="/" class="flyout-menu__link flyout-menu__link--home"><span>Home</span></a></li>
-    <li><a href="/about" class="flyout-menu__link flyout-menu__link--about"><span>About</span></a></li>
-    ${O.fold(constant(''), myProfileMenuItem)(user)}
-  </ul>
-`;
 
 const isSecure = process.env.APP_ORIGIN !== undefined && process.env.APP_ORIGIN.startsWith('https:');
 
