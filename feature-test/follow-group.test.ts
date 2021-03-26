@@ -31,7 +31,15 @@ describe('follow a group', () => {
     });
 
     describe('from the group page', () => {
-      it.todo('adds the group to my profile page');
+      it('adds the group to my profile page', async () => {
+        await goto('localhost:8080');
+        await click('PeerJ');
+        await click('Follow');
+        await click('My profile');
+        const groupExists = await text('PeerJ', within($('.followed-groups'))).exists();
+
+        expect(groupExists).toBe(true);
+      });
     });
 
     describe('from the profile of another user', () => {
