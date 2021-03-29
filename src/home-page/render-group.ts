@@ -12,6 +12,8 @@ export type Group = {
   name: string,
 };
 
+type Follows = (u: UserId, g: GroupId) => T.Task<boolean>;
+
 export type RenderGroup = (userId: O.Option<UserId>) => (group: Group) => T.Task<HtmlFragment>;
 
 const render = (group: Group) => (toggle: HtmlFragment) => `
@@ -30,8 +32,14 @@ const render = (group: Group) => (toggle: HtmlFragment) => `
 
 export const renderGroup = (
   renderFollowToggle: RenderFollowToggle,
+  follows: Follows,
 ): RenderGroup => (userId) => (group) => pipe(
-  renderFollowToggle(userId, group.id, group.name),
+  userId,
+  O.fold(
+    () => T.of(false),
+    (value: UserId) => follows(value, group.id),
+  ),
+  T.map(renderFollowToggle(group.id, group.name)),
   T.map(flow(
     render(group),
     toHtmlFragment,

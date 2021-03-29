@@ -1,52 +1,37 @@
-import * as O from 'fp-ts/Option';
-import * as T from 'fp-ts/Task';
 import * as B from 'fp-ts/boolean';
-import { flow, pipe } from 'fp-ts/function';
+import { flow } from 'fp-ts/function';
 import { GroupId } from '../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-import { UserId } from '../types/user-id';
 
 export type RenderFollowToggle = (
-  userId: O.Option<UserId>,
   groupId: GroupId,
   editorialCommunityName: string,
-) => T.Task<HtmlFragment>;
+) => (
+  isFollowing: boolean
+) => HtmlFragment;
 
-type Follows = (u: UserId, g: GroupId) => T.Task<boolean>;
-
-const renderFollowButton = (groupId: GroupId, editorialCommunityName: string) => `
+const renderFollowButton = (groupId: GroupId, groupName: string) => `
   <form method="post" action="/follow">
     <input type="hidden" name="editorialcommunityid" value="${groupId.value}" />
-    <button type="submit" class="button button--primary button--small" aria-label="Follow ${editorialCommunityName}">
+    <button type="submit" class="button button--primary button--small" aria-label="Follow ${groupName}">
       Follow
     </button>
   </form>
 `;
 
-const renderUnfollowButton = (groupId: GroupId, editorialCommunityName: string) => `
+const renderUnfollowButton = (groupId: GroupId, groupName: string) => `
   <form method="post" action="/unfollow">
     <input type="hidden" name="editorialcommunityid" value="${groupId.value}" />
-    <button type="submit" class="button button--small" aria-label="Unfollow ${editorialCommunityName}">
+    <button type="submit" class="button button--small" aria-label="Unfollow ${groupName}">
       Unfollow
     </button>
   </form>
 `;
 
-export const renderFollowToggle = (follows: Follows): RenderFollowToggle => (
-  (userId, groupId, editorialCommunityName) => (
-    pipe(
-      userId,
-      O.fold(
-        () => T.of(false),
-        (value: UserId) => follows(value, groupId),
-      ),
-      T.map(flow(
-        B.fold(
-          () => renderFollowButton(groupId, editorialCommunityName),
-          () => renderUnfollowButton(groupId, editorialCommunityName),
-        ),
-        toHtmlFragment,
-      )),
-    )
-  )
+export const renderFollowToggle: RenderFollowToggle = (groupId, groupName) => flow(
+  B.fold(
+    () => renderFollowButton(groupId, groupName),
+    () => renderUnfollowButton(groupId, groupName),
+  ),
+  toHtmlFragment,
 );

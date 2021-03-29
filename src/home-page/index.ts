@@ -39,7 +39,7 @@ export const homePage = (ports: Ports): HomePage => flow(
     renderPageHeader,
     renderGroups(
       ports.getAllGroups,
-      renderGroup(renderFollowToggle(ports.follows)),
+      renderGroup(renderFollowToggle, ports.follows),
     ),
     renderFeed(
       projectIsFollowingSomething(ports.getAllEvents),

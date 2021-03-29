@@ -12,7 +12,8 @@ describe('render-editorial-community', () => {
       avatarPath: '',
     };
     const render = renderGroup(
-      () => T.of(toHtmlFragment('')),
+      () => () => toHtmlFragment(''),
+      () => T.of(false),
     );
     const rendered = await render(O.none)(community)();
 
