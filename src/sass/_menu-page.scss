@@ -8,9 +8,7 @@
 @use 'states';
 @use 'typography';
 
-$_search-icon-size: functions.px-to-rem(28px);
 $_site-header-nav-height: 60px;
-$_site-header-inline-end-margin: 8px;
 
 $_menu-page-upper-inline-spacing: 26px;
 
@@ -65,48 +63,4 @@ $_menu-page-upper-inline-spacing: 26px;
     @include layout.visually-hidden();
     content: 'Close the following menu';
   }
-}
-
-.menu-page__nav {
-  margin-right: functions.px-to-rem($_site-header-inline-end-margin);
-  flex-grow: 1;
-  align-self: center;
-}
-
-.menu-page__nav_list {
-  @include list.basics();
-  display: flex;
-  justify-content: flex-start;
-  margin-bottom: 0;
-}
-
-.menu-page__nav_list_item {
-  @include typography.sizing(14px, 1.75);
-  padding-right: 1.5rem;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-
-  &:nth-last-child(2) {
-    margin-left: auto;
-  }
-
-  &:last-child {
-    padding-right: 0;
-  }
-}
-
-.menu-page__nav_list_item--search,
-.menu-page__nav_list_item--search a {
-  display: flex;
-  align-items: center;
-}
-
-.menu-page__nav_list__search_icon {
-  width: $_search-icon-size;
-  height: $_search-icon-size;
-}
-
-.menu-page__nav_list_link_button {
-  @include button.button-new();
 }
