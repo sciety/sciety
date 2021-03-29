@@ -72,7 +72,7 @@ export const groupPage = (ports: Ports): GroupPage => ({ id, user }) => pipe(
           () => T.of(false),
           (u) => ports.follows(u.id, group.id),
         ),
-        T.map(renderFollowToggle(group.id)),
+        T.map(renderFollowToggle(group.id, group.name)),
         TE.rightTask,
       ),
       feed: pipe(
