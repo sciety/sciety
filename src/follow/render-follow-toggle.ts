@@ -1,9 +1,8 @@
 import * as B from 'fp-ts/boolean';
 import { flow } from 'fp-ts/function';
+import { groupProperty } from './follow-handler';
 import { GroupId } from '../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-
-const groupProperty = 'editorialcommunityid';
 
 const renderFollowButton = (groupId: GroupId, groupName: string) => `
   <form method="post" action="/follow">

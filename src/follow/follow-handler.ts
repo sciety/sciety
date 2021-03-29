@@ -6,6 +6,8 @@ import { CommitEvents, followCommand, GetFollowList } from './follow-command';
 import * as GroupId from '../types/group-id';
 import { User } from '../types/user';
 
+export const groupProperty = 'editorialcommunityid';
+
 type Ports = {
   commitEvents: CommitEvents,
   getFollowList: GetFollowList,
@@ -18,7 +20,7 @@ export const followHandler = (ports: Ports): Middleware<{ user: User }> => {
   );
   return async (context, next) => {
     await pipe(
-      context.request.body.editorialcommunityid,
+      context.request.body[groupProperty],
       GroupId.fromString,
       O.fold(
         () => context.throw(StatusCodes.BAD_REQUEST),
