@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import {
-  $, button, click, closeBrowser, goto, openBrowser, text, within,
+  $, click, closeBrowser, goto, openBrowser, text, within,
 } from 'taiko';
 import { authenticateViaTwitter } from './utilities';
 
@@ -19,17 +19,6 @@ describe('follow a group', () => {
       await authenticateViaTwitter();
     });
 
-    describe('from the home page', () => {
-      it('adds the group to my profile page', async () => {
-        await goto('localhost:8080');
-        await click(button({ 'aria-label': 'Follow NCRC' }));
-        await click('My profile');
-        const groupExists = await text('NCRC', within($('.followed-groups'))).exists();
-
-        expect(groupExists).toBe(true);
-      });
-    });
-
     describe('from the group page', () => {
       it('adds the group to my profile page', async () => {
         await goto('localhost:8080');
@@ -40,10 +29,6 @@ describe('follow a group', () => {
 
         expect(groupExists).toBe(true);
       });
-    });
-
-    describe('from the profile of another user', () => {
-      it.todo('adds the group to my profile page');
     });
   });
 });
