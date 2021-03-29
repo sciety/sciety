@@ -1,6 +1,7 @@
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { siteMenuFooter, siteMenuItems } from './site-menu';
+import { utilityBar } from './utility-bar';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { User } from '../types/user';
@@ -42,18 +43,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 const fathom = process.env.FATHOM_SITE_ID ? `
 <script src="https://cdn.usefathom.com/script.js" data-site="${process.env.FATHOM_SITE_ID}" defer></script>
 ` : '';
-
-const logOutMenuItem = () => toHtmlFragment(`
-  <li class="site-header__nav_list_item">
-    <a href="/log-out" class="site-header__nav_list_link_button">Log out</a>
-  </li>
-`);
-
-const logInMenuItem = () => toHtmlFragment(`
-  <li class="site-header__nav_list_item">
-    <a href="/log-in" class="site-header__nav_list_link_button">Log in</a>
-  </li>
-`);
 
 const isSecure = process.env.APP_ORIGIN !== undefined && process.env.APP_ORIGIN.startsWith('https:');
 
@@ -105,19 +94,7 @@ export const applyStandardPageLayout = (user: O.Option<User>) => (page: Page): s
           <img src="/static/images/menu-icon.svg" alt="" />
         </a>
 
-        <nav class="site-header__nav">
-
-          <ul class="site-header__nav_list" role="list">
-            <li class="site-header__nav_list_item site-header__nav_list_item--search">
-              <a href="/search" class="site-header__nav_list_link">
-                <img src="/static/images/search-icon.svg" alt="Search" class="site-header__nav_list__search_icon">
-              </a>
-            </li>
-
-            ${O.fold(logInMenuItem, logOutMenuItem)(user)}
-          </ul>
-
-        </nav>
+        ${utilityBar(user)}
       </div>
     </header>
 
