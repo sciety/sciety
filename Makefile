@@ -3,6 +3,7 @@ TARGET := dev
 endif
 
 DOCKER_COMPOSE = docker-compose --file docker-compose.yml --file docker-compose.$(TARGET).yml
+BUILDX_BUILDER := sciety
 DATA_VOLUME := $(shell pwd)
 IMAGE := sciety/sciety
 IMAGE_TAG := local
@@ -10,8 +11,10 @@ PORT := 8080
 
 export IMAGE
 export IMAGE_TAG
+export COMPOSE_DOCKER_CLI_BUILD=1
+export DOCKER_BUILDKIT=1
 
-.PHONY: backstop* build clean* dev find-* git-lfs install lint* prod release test* update-event-data
+.PHONY: backstop* build builder clean* dev find-* git-lfs install lint* prod release test* update-event-data
 
 dev: export TARGET = dev
 dev: .env install build
@@ -56,12 +59,23 @@ backstop-test: node_modules clean-db build
 backstop-approve: node_modules
 	npx backstop approve
 
-build:
-	$(DOCKER_COMPOSE) build app
+builder:
+	docker buildx inspect ${BUILDX_BUILDER} || docker buildx create --name ${BUILDX_BUILDER}
+
+build: builder
+	docker buildx build \
+		--target ${TARGET} \
+		--builder ${BUILDX_BUILDER} \
+		--cache-from type=local,src=.docker \
+		--cache-to type=local,dest=.docker \
+		--tag "${IMAGE}:${IMAGE_TAG}$(if $(filter-out ${TARGET},prod),-${TARGET})" \
+		--load \
+		.
 
 install: node_modules git-lfs
 
 node_modules: export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD = true
+node_modules: export TAIKO_SKIP_CHROMIUM_DOWNLOAD = true
 node_modules: package.json package-lock.json
 	npm install
 	touch node_modules
@@ -70,7 +84,8 @@ git-lfs:
 	git lfs install
 
 clean:
-	rm -rf .eslint .jest build node_modules
+	rm -rf .docker .eslint .jest .stylelint build node_modules
+	docker buildx rm ${BUILDX_BUILDER}
 
 clean-db:
 	$(DOCKER_COMPOSE) down
