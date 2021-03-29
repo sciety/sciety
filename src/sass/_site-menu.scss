@@ -5,16 +5,15 @@
 @use 'typography';
 @use 'list';
 
-$_site-menu-icon-size: 24px;
-$_site-menu-icon-inline-padding: 12px;
-$_site-menu-inline-padding: 16px;
-$_site-menu-text-inline-padding: 16px; // TODO: bad name
-$_site-menu-link-max-width: 300px;
+$_icon-size: 24px;
+$_icon-inline-offset: 12px;
+$_inline-spacing: 16px;
+$_link-max-width: 300px;
 
 .site-menu__links {
   @include list.basics();
-  margin-right: functions.px-to-rem($_site-menu-inline-padding);
-  margin-left: functions.px-to-rem($_site-menu-inline-padding);
+  margin-right: functions.px-to-rem($_inline-spacing);
+  margin-left: functions.px-to-rem($_inline-spacing);
 }
 
 .site-menu__link {
@@ -22,11 +21,11 @@ $_site-menu-link-max-width: 300px;
   display: flex;
   align-items: center;
   min-height: baseline.increments(5);
-  max-width: functions.px-to-rem($_site-menu-link-max-width);
-  background-size: functions.px-to-rem($_site-menu-icon-size);
+  max-width: functions.px-to-rem($_link-max-width);
+  background-size: functions.px-to-rem($_icon-size);
   background-repeat: no-repeat;
-  background-position: functions.px-to-rem($_site-menu-icon-inline-padding) center;
-  padding-left: functions.px-to-rem($_site-menu-icon-inline-padding * 2 + $_site-menu-icon-size);
+  background-position: functions.px-to-rem($_icon-inline-offset) center;
+  padding-left: functions.px-to-rem($_icon-inline-offset * 2 + $_icon-size);
   border-radius: settings.$border-radius;
   font-weight: bold;
   letter-spacing: 0.1px;
@@ -58,8 +57,8 @@ $_site-menu-link-max-width: 300px;
 .site-menu__footer {
   margin-top: auto;
   margin-bottom: baseline.increments(2);
-  margin-left: functions.px-to-rem($_site-menu-text-inline-padding);
-  margin-right: functions.px-to-rem($_site-menu-text-inline-padding);
+  margin-left: functions.px-to-rem($_inline-spacing);
+  margin-right: functions.px-to-rem($_inline-spacing);
 }
 
 .site-menu__feedback_button {

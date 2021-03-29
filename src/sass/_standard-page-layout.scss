@@ -8,8 +8,8 @@
 
 $_drawer-icon-size: 24px;
 $_drawer-icon-inline-padding: 12px;
+$_drawer-width: 260px;
 $_drawer-inline-padding: 16px;
-$_menu-link-max-width: 300px;
 
 .page-container {
   min-height: 100vh;
@@ -17,7 +17,7 @@ $_menu-link-max-width: 300px;
   grid-template-rows: auto 1fr auto;
 
   @include breakpoints.from-narrow() {
-    grid-template-columns: functions.px-to-rem(260px) 1fr;
+    grid-template-columns: functions.px-to-rem($_drawer-width) 1fr;
   }
 }
 
