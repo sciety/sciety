@@ -3,9 +3,11 @@ import { flow } from 'fp-ts/function';
 import { GroupId } from '../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
+const groupProperty = 'editorialcommunityid';
+
 const renderFollowButton = (groupId: GroupId, groupName: string) => `
   <form method="post" action="/follow">
-    <input type="hidden" name="editorialcommunityid" value="${groupId.value}" />
+    <input type="hidden" name="${groupProperty}" value="${groupId.value}" />
     <button type="submit" class="button button--primary button--small" aria-label="Follow ${groupName}">
       Follow
     </button>
