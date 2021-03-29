@@ -4,14 +4,14 @@ import { GroupId } from '../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 const renderFollowButton = (groupId: GroupId) => `
-  <form method="post" action="/follow" class="follow-toggle">
+  <form method="post" action="/follow">
     <input type="hidden" name="editorialcommunityid" value="${groupId.value}">
     <button type="submit" class="button button--primary button--small">Follow</button>
   </form>
 `;
 
 const renderUnfollowButton = (groupId: GroupId) => `
-  <form method="post" action="/unfollow" class="follow-toggle">
+  <form method="post" action="/unfollow">
     <input type="hidden" name="editorialcommunityid" value="${groupId.value}">
     <button type="submit" class="button button--small">Unfollow</button>
   </form>
