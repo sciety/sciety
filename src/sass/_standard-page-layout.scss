@@ -6,9 +6,9 @@
 @use 'settings';
 @use 'typography';
 
-$_flyout-menu-icon-size: 24px;
-$_flyout-menu-icon-inline-padding: 12px;
-$_flyout-menu-inline-padding: 16px;
+$_drawer-icon-size: 24px;
+$_drawer-icon-inline-padding: 12px;
+$_drawer-inline-padding: 16px;
 $_menu-link-max-width: 300px;
 
 .page-container {
@@ -21,7 +21,7 @@ $_menu-link-max-width: 300px;
   }
 }
 
-.flyout-menu {
+.drawer {
   display: none;
   position: sticky;
   top: 0;
@@ -40,11 +40,11 @@ $_menu-link-max-width: 300px;
   }
 }
 
-.flyout-menu__logo_link {
+.drawer__logo_link {
   margin-left: functions.px-to-rem(27px);
   margin-bottom: baseline.increments(4.5);
 }
 
-.flyout-menu__logo {
+.drawer__logo {
   display: block;
 }

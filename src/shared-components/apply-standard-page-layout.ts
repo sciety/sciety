@@ -90,9 +90,9 @@ export const applyStandardPageLayout = (user: O.Option<User>) => (page: Page): s
 <body>
   ${googleTagManagerNoScript}
   <div class="page-container">
-    <div class="flyout-menu">
-      <a href="/" class="flyout-menu__logo_link" aria-hidden="true">
-        <img src="/static/images/sciety-logo-white-text.svg " alt="Sciety" class="flyout-menu__logo">
+    <div class="drawer">
+      <a href="/" class="drawer__logo_link" aria-hidden="true">
+        <img src="/static/images/sciety-logo-white-text.svg " alt="Sciety" class="drawer__logo">
       </a>
 
       ${siteMenuItems(user)}
