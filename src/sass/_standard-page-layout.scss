@@ -9,7 +9,6 @@
 $_flyout-menu-icon-size: 24px;
 $_flyout-menu-icon-inline-padding: 12px;
 $_flyout-menu-inline-padding: 16px;
-$_flyout-menu-text-inline-padding: 16px; // TODO: bad name
 $_menu-link-max-width: 300px;
 
 .page-container {
@@ -48,42 +47,4 @@ $_menu-link-max-width: 300px;
 
 .flyout-menu__logo {
   display: block;
-}
-
-.flyout-menu__feedback_button {
-  @include button.button-new();
-  display: inline-block;
-  margin-bottom: baseline.increments(3);
-}
-
-.flyout-menu__small_print {
-  @include typography.sizing(12px, 2);
-  letter-spacing: 0.09px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-
-  a:link {
-    @include typography.sizing(12px, 2);
-    font-weight: normal;
-    letter-spacing: 0.09px;
-    text-decoration: underline;
-  }
-
-  a:link,
-  a:visited {
-    color: inherit;
-
-    a:hover,
-    a:active {
-      color: inherit;
-    }
-  }
-}
-
-.flyout-menu__footer {
-  margin-top: auto;
-  margin-bottom: baseline.increments(2);
-  margin-left: functions.px-to-rem($_flyout-menu-text-inline-padding);
-  margin-right: functions.px-to-rem($_flyout-menu-text-inline-padding);
 }

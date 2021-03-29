@@ -1,6 +1,6 @@
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
-import { menuFooter, menuItems } from './menu-items';
+import { siteMenuFooter, siteMenuItems } from './site-menu';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { User } from '../types/user';
@@ -95,8 +95,8 @@ export const applyStandardPageLayout = (user: O.Option<User>) => (page: Page): s
         <img src="/static/images/sciety-logo-white-text.svg " alt="Sciety" class="flyout-menu__logo">
       </a>
 
-      ${menuItems(user)}
-      ${menuFooter}
+      ${siteMenuItems(user)}
+      ${siteMenuFooter}
 
     </div>
     <header class="site-header">

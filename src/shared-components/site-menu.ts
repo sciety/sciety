@@ -8,7 +8,7 @@ const myProfileMenuItem = (user: User) => toHtmlFragment(`
   <li><a href="/users/${user.id}" class="site-menu__link site-menu__link--profile"><span>My profile</span></a></li>
 `);
 
-export const menuItems = (user: O.Option<User>): HtmlFragment => toHtmlFragment(`
+export const siteMenuItems = (user: O.Option<User>): HtmlFragment => toHtmlFragment(`
   <ul role="list" class="site-menu__links">
     <li><a href="/" class="site-menu__link site-menu__link--home"><span>Home</span></a></li>
     <li><a href="/about" class="site-menu__link site-menu__link--about"><span>About</span></a></li>
@@ -16,10 +16,10 @@ export const menuItems = (user: O.Option<User>): HtmlFragment => toHtmlFragment(
   </ul>
 `);
 
-export const menuFooter = toHtmlFragment(`
-  <footer class="flyout-menu__footer">
-    <a href="https://eepurl.com/g7qqcv" class="flyout-menu__feedback_button">Feedback</a>
-    <small class="flyout-menu__small_print">
+export const siteMenuFooter = toHtmlFragment(`
+  <footer class="site-menu__footer">
+    <a href="https://eepurl.com/g7qqcv" class="site-menu__feedback_button">Feedback</a>
+    <small class="site-menu__small_print">
       © 2021 eLife Sciences Publications Ltd.
       <a href="/legal">Legal information</a>
     </small>

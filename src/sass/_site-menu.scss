@@ -1,6 +1,7 @@
 @use 'settings';
 @use 'functions';
 @use 'baseline';
+@use 'button';
 @use 'typography';
 @use 'list';
 
@@ -52,4 +53,42 @@ $_site-menu-link-max-width: 300px;
 
 .site-menu__link--profile {
   background-image: url('/static/images/profile.svg');
+}
+
+.site-menu__footer {
+  margin-top: auto;
+  margin-bottom: baseline.increments(2);
+  margin-left: functions.px-to-rem($_site-menu-text-inline-padding);
+  margin-right: functions.px-to-rem($_site-menu-text-inline-padding);
+}
+
+.site-menu__feedback_button {
+  @include button.button-new();
+  display: inline-block;
+  margin-bottom: baseline.increments(3);
+}
+
+.site-menu__small_print {
+  @include typography.sizing(12px, 2);
+  letter-spacing: 0.09px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  a:link {
+    @include typography.sizing(12px, 2);
+    font-weight: normal;
+    letter-spacing: 0.09px;
+    text-decoration: underline;
+  }
+
+  a:link,
+  a:visited {
+    color: inherit;
+
+    a:hover,
+    a:active {
+      color: inherit;
+    }
+  }
 }
