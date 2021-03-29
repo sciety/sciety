@@ -6,7 +6,7 @@ import { CommitEvents, followCommand, GetFollowList } from './follow-command';
 import * as GroupId from '../types/group-id';
 import { User } from '../types/user';
 
-export const groupProperty = 'editorialcommunityid';
+export const groupProperty = 'groupid';
 
 type Ports = {
   commitEvents: CommitEvents,
