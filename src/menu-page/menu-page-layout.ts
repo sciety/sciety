@@ -1,9 +1,9 @@
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { constant } from 'fp-ts/function';
+import { siteMenuFooter, siteMenuItems } from '../shared-components/site-menu';
 import { utilityBar } from '../shared-components/utility-bar';
 import { toHtmlFragment } from '../types/html-fragment';
-import { Page } from '../types/page';
 import { User } from '../types/user';
 
 let googleTagManager = '';
@@ -47,21 +47,21 @@ const fathom = process.env.FATHOM_SITE_ID ? `
 const isSecure = process.env.APP_ORIGIN !== undefined && process.env.APP_ORIGIN.startsWith('https:');
 
 // TODO: return a more specific type e.g. HtmlDocument
-export const menuPageLayout = (user: O.Option<User>, referer: O.Option<string>) => (page: Page): string => `<!doctype html>
+export const menuPageLayout = (user: O.Option<User>, referer: O.Option<string>): string => `<!doctype html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>
-    ${htmlEscape(page.title)}
+    Menu | Sciety
   </title>
   <link rel="stylesheet" href="/static/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.css">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@scietyHQ">
   <meta property="og:site_name" content="Sciety">
-  <meta property="og:title" content="${htmlEscape(page.openGraph ? page.openGraph.title : 'Sciety')}">
-  <meta property="og:description" content="${htmlEscape(page.openGraph ? page.openGraph.description : 'Where research is evaluated and curated by the communities you trust')}">
+  <meta property="og:title" content="Menu | Sciety">
+  <meta property="og:description" content="Where research is evaluated and curated by the communities you trust">
   <meta property="og:image" content="${process.env.APP_ORIGIN ?? ''}/static/images/sciety-twitter-profile.png">
   <link rel="icon" type="image/svg+xml" href="/static/images/favicons/favicon.svg">
 
@@ -84,7 +84,11 @@ export const menuPageLayout = (user: O.Option<User>, referer: O.Option<string>) 
   ${htmlEscape`<a href="${O.getOrElse(constant('/'))(referer)}" class="menu-page__close_nav"><img src="/static/images/close-icon.svg" alt=""></a>`}
 
   <main class="menu-page-main-content">
-    ${page.content}
+    <nav class="navigation-menu">
+      <h1 class="navigation-menu__title">Menu</h1>
+      ${siteMenuItems(user)}
+      ${siteMenuFooter}
+    </nav>
   </main>
 
   ${utilityBar(user)}
