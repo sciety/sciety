@@ -1,5 +1,5 @@
 import { JSDOM } from 'jsdom';
-import { renderFollowToggle } from '../../src/group-page/render-follow-toggle';
+import { renderFollowToggle } from '../../src/follow/render-follow-toggle';
 import { GroupId } from '../../src/types/group-id';
 
 describe('render-follow-toggle', () => {
