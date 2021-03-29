@@ -1,7 +1,9 @@
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { constant } from 'fp-ts/function';
-import { cookieConsent, fathom, googleTagManager, googleTagManagerNoScript } from '../shared-components/analytics';
+import {
+  cookieConsent, fathom, googleTagManager, googleTagManagerNoScript,
+} from '../shared-components/analytics';
 import { siteMenuFooter, siteMenuItems } from '../shared-components/site-menu';
 import { utilityBar } from '../shared-components/utility-bar';
 import { User } from '../types/user';
