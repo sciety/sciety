@@ -1,12 +1,11 @@
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
-import { fathom, googleTagManager, googleTagManagerNoScript } from './analytics';
+import { cookieConsent, fathom, googleTagManager, googleTagManagerNoScript } from './analytics';
 import { siteMenuFooter, siteMenuItems } from './site-menu';
 import { utilityBar } from './utility-bar';
 import { Page } from '../types/page';
 import { User } from '../types/user';
 
-const isSecure = process.env.APP_ORIGIN !== undefined && process.env.APP_ORIGIN.startsWith('https:');
 
 // TODO: return a more specific type e.g. HtmlDocument
 export const applyStandardPageLayout = (user: O.Option<User>) => (page: Page): string => `<!doctype html>
@@ -66,40 +65,9 @@ export const applyStandardPageLayout = (user: O.Option<User>) => (page: Page): s
   </div>
 
   <script src="/static/behaviour.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.js"></script>
-  ${googleTagManager()}
-  <script>
-    function onConsent() {
-        if (!this.hasConsented()) {
-          return;
-        }
-        ${process.env.GOOGLE_TAG_MANAGER_ID ? `
-          gtag('consent', 'update', {
-            'ad_storage': 'denied',
-            'analytics_storage': 'granted'
-          });
-        ` : ''}
-    }
 
-    window.cookieconsent.hasTransition = false;
-    window.cookieconsent.initialise({
-      content: {
-        message: 'This site uses cookies to deliver its services and analyse traffic. By using this site, you agree to its use of cookies.',
-        href: '/privacy',
-        target: '_self'
-      },
-      onInitialise: onConsent,
-      onStatusChange: onConsent,
-      palette: {
-        popup: {
-          background: 'rgb(0, 0, 0, 0.8)',
-        }
-      },
-      cookie: {
-        secure: ${isSecure ? 'true' : 'false'}
-      },
-    });
-  </script>
+  ${googleTagManager()}
+  ${cookieConsent()}
 </body>
 </html>
 `;
