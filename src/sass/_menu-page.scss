@@ -38,7 +38,7 @@ $_menu-page-upper-inline-spacing: 26px;
 
 .navigation-menu {
   color: settings.$colour-white;
-  background-color: settings.$colour-text-primary;
+  background-color: settings.$colour-navigation-menu-background;
   width: 100%;
   font-family: settings.$font-family;
   padding-top: baseline.increments(2);
