@@ -5,7 +5,7 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { User } from '../types/user';
 
 const myProfileMenuItem = (user: User) => toHtmlFragment(`
-  <li><a href="/users/${user.id}" class="site-menu__link"><span>My profile</span></a></li>
+  <li><a href="/users/${user.id}" class="site-menu__link site-menu__link--profile"><span>My profile</span></a></li>
 `);
 
 export const menuItems = (user: O.Option<User>): HtmlFragment => toHtmlFragment(`
