@@ -15,3 +15,13 @@ export const menuItems = (user: O.Option<User>): HtmlFragment => toHtmlFragment(
     ${O.fold(constant(''), myProfileMenuItem)(user)}
   </ul>
 `);
+
+export const menuFooter = toHtmlFragment(`
+  <footer class="flyout-menu__footer">
+    <a href="https://eepurl.com/g7qqcv" class="flyout-menu__feedback_button">Feedback</a>
+    <small class="flyout-menu__small_print">
+      © 2021 eLife Sciences Publications Ltd.
+      <a href="/legal">Legal information</a>
+    </small>
+  </footer>
+`);
