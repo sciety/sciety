@@ -1,50 +1,10 @@
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { constant } from 'fp-ts/function';
+import { cookieConsent, fathom, googleTagManager, googleTagManagerNoScript } from '../shared-components/analytics';
 import { siteMenuFooter, siteMenuItems } from '../shared-components/site-menu';
 import { utilityBar } from '../shared-components/utility-bar';
-import { toHtmlFragment } from '../types/html-fragment';
 import { User } from '../types/user';
-
-let googleTagManager = '';
-let googleTagManagerNoScript = '';
-if (process.env.GOOGLE_TAG_MANAGER_ID) {
-  googleTagManager = `
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-
-    gtag('consent', 'default', {
-      'ad_storage': 'denied',
-      'analytics_storage': 'denied'
-    });
-    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','${process.env.GOOGLE_TAG_MANAGER_ID}');
-  </script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', '${process.env.GOOGLE_TAG_MANAGER_ID}');
-  </script>
-`;
-
-  googleTagManagerNoScript = toHtmlFragment(`
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=${process.env.GOOGLE_TAG_MANAGER_ID}"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->`);
-}
-
-const fathom = process.env.FATHOM_SITE_ID ? `
-<script src="https://cdn.usefathom.com/script.js" data-site="${process.env.FATHOM_SITE_ID}" defer></script>
-` : '';
-
-const isSecure = process.env.APP_ORIGIN !== undefined && process.env.APP_ORIGIN.startsWith('https:');
 
 // TODO: return a more specific type e.g. HtmlDocument
 export const menuPageLayout = (user: O.Option<User>, referer: O.Option<string>): string => `<!doctype html>
@@ -74,10 +34,10 @@ export const menuPageLayout = (user: O.Option<User>, referer: O.Option<string>):
   <meta name="msapplication-TileColor" content="#cf4500">
   <meta name="msapplication-config" content="/static/images/favicons/generated/browserconfig.xml">
   <meta name="theme-color" content="#ffffff">
-  ${fathom}
+  ${fathom()}
 </head>
 <body>
-  ${googleTagManagerNoScript}
+  ${googleTagManagerNoScript()}
 
 <div class="menu-page-container">
 
@@ -96,40 +56,10 @@ export const menuPageLayout = (user: O.Option<User>, referer: O.Option<string>):
 </div>
 
   <script src="/static/behaviour.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.js"></script>
-  ${googleTagManager}
-  <script>
-    function onConsent() {
-        if (!this.hasConsented()) {
-          return;
-        }
-        ${process.env.GOOGLE_TAG_MANAGER_ID ? `
-          gtag('consent', 'update', {
-            'ad_storage': 'denied',
-            'analytics_storage': 'granted'
-          });
-        ` : ''}
-    }
 
-    window.cookieconsent.hasTransition = false;
-    window.cookieconsent.initialise({
-      content: {
-        message: 'This site uses cookies to deliver its services and analyse traffic. By using this site, you agree to its use of cookies.',
-        href: '/privacy',
-        target: '_self'
-      },
-      onInitialise: onConsent,
-      onStatusChange: onConsent,
-      palette: {
-        popup: {
-          background: 'rgb(0, 0, 0, 0.8)',
-        }
-      },
-      cookie: {
-        secure: ${isSecure ? 'true' : 'false'}
-      },
-    });
-  </script>
+  ${googleTagManager()}
+  ${cookieConsent()}
+
 </body>
 </html>
 `;
