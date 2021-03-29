@@ -21,9 +21,11 @@ import { redirectAfterAuthenticating, requireAuthentication } from './require-au
 import { robots } from './robots';
 import { aboutPage } from '../about-page';
 import { articleActivityPage, articleMetaPage } from '../article-page';
-import { followHandler } from '../follow';
+import { followHandler, unfollowHandler } from '../follow';
 import { finishFollowCommand } from '../follow/finish-follow-command';
+import { finishUnfollowCommand } from '../follow/finish-unfollow-command';
 import { saveFollowCommand } from '../follow/save-follow-command';
+import { saveUnfollowCommand } from '../follow/save-unfollow-command';
 import { groupPage } from '../group-page';
 import { homePage } from '../home-page';
 import { Adapters } from '../infrastructure/adapters';
@@ -41,9 +43,7 @@ import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import * as Doi from '../types/doi';
 import { toHtmlFragment } from '../types/html-fragment';
-import { unfollowHandler } from '../unfollow';
-import { finishUnfollowCommand } from '../unfollow/finish-unfollow-command';
-import { saveUnfollowCommand } from '../unfollow/save-unfollow-command';
+
 import { userPage } from '../user-page';
 
 const biorxivPrefix = '10.1101';
