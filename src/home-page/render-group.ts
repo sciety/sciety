@@ -1,7 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
-import { RenderFollowToggle } from './render-follow-toggle';
 import { GroupId } from '../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
@@ -13,6 +12,8 @@ export type Group = {
 };
 
 type Follows = (u: UserId, g: GroupId) => T.Task<boolean>;
+
+type RenderFollowToggle = (g: GroupId, groupName: string) => (isFollowing: boolean) => HtmlFragment;
 
 export type RenderGroup = (userId: O.Option<UserId>) => (group: Group) => T.Task<HtmlFragment>;
 
