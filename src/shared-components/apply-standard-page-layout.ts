@@ -1,11 +1,12 @@
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
-import { cookieConsent, fathom, googleTagManager, googleTagManagerNoScript } from './analytics';
+import {
+  cookieConsent, fathom, googleTagManager, googleTagManagerNoScript,
+} from './analytics';
 import { siteMenuFooter, siteMenuItems } from './site-menu';
 import { utilityBar } from './utility-bar';
 import { Page } from '../types/page';
 import { User } from '../types/user';
-
 
 // TODO: return a more specific type e.g. HtmlDocument
 export const applyStandardPageLayout = (user: O.Option<User>) => (page: Page): string => `<!doctype html>
