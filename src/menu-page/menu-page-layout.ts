@@ -1,6 +1,7 @@
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { constant } from 'fp-ts/function';
+import { utilityBar } from '../shared-components/utility-bar';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { User } from '../types/user';
@@ -42,18 +43,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 const fathom = process.env.FATHOM_SITE_ID ? `
 <script src="https://cdn.usefathom.com/script.js" data-site="${process.env.FATHOM_SITE_ID}" defer></script>
 ` : '';
-
-const logOutMenuItem = () => toHtmlFragment(`
-  <li class="menu-page__nav_list_item">
-    <a href="/log-out" class="menu-page__nav_list_link_button">Log out</a>
-  </li>
-`);
-
-const logInMenuItem = () => toHtmlFragment(`
-  <li class="menu-page__nav_list_item">
-    <a href="/log-in" class="menu-page__nav_list_link_button">Log in</a>
-  </li>
-`);
 
 const isSecure = process.env.APP_ORIGIN !== undefined && process.env.APP_ORIGIN.startsWith('https:');
 
@@ -98,17 +87,7 @@ export const menuPageLayout = (user: O.Option<User>, referer: O.Option<string>) 
     ${page.content}
   </main>
 
-  <nav class="menu-page__nav" aria-describedby="application-utilities">
-    <div id="application-utilities" hidden>Sciety application utilities</div>
-    <ul class="menu-page__nav_list" role="list">
-      <li class="menu-page__nav_list_item menu-page__nav_list_item--search">
-        <a href="/search">
-          <img src="/static/images/search-icon.svg" alt="Search" class="menu-page__nav_list__search_icon">
-        </a>
-      </li>
-      ${O.fold(logInMenuItem, logOutMenuItem)(user)}
-    </ul>
-  </nav>
+  ${utilityBar(user)}
 
 </div>
 
