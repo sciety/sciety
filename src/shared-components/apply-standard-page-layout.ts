@@ -90,7 +90,7 @@ export const applyStandardPageLayout = (user: O.Option<User>) => (page: Page): s
 <body>
   ${googleTagManagerNoScript}
   <div class="page-container">
-    <div class="drawer">
+    <nav class="drawer">
       <a href="/" class="drawer__logo_link" aria-hidden="true">
         <img src="/static/images/sciety-logo-white-text.svg " alt="Sciety" class="drawer__logo">
       </a>
@@ -98,7 +98,7 @@ export const applyStandardPageLayout = (user: O.Option<User>) => (page: Page): s
       ${siteMenuItems(user)}
       ${siteMenuFooter}
 
-    </div>
+    </nav>
     <header class="site-header">
       <div class="site-header__wrapper">
         <a href="/menu" class="site-header__menu_link">
