@@ -6,15 +6,16 @@ import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
+import { DoiFromString } from '../src/types/codecs/DoiFromString';
 import { Doi } from '../src/types/doi';
 import * as ReviewId from '../src/types/review-id';
 
 const preReviewResponse = t.type({
   data: t.readonlyArray(t.type({
-    handle: t.string,
+    handle: t.union([DoiFromString, t.string]),
     fullReviews: t.readonlyArray(t.type({
-      createdAt: t.string,
-      doi: tt.optionFromNullable(t.string),
+      createdAt: tt.DateFromISOString,
+      doi: tt.optionFromNullable(DoiFromString),
     })),
   })),
 });
