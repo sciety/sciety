@@ -1,5 +1,6 @@
 import * as O from 'fp-ts/Option';
-import { pipe } from 'fp-ts/function';
+import { identity, pipe } from 'fp-ts/function';
+import { StatusCodes } from 'http-status-codes';
 import { Middleware } from 'koa';
 import { sessionGroupProperty } from './finish-follow-command';
 import { groupProperty } from './follow-handler';
@@ -17,6 +18,10 @@ export const saveFollowCommand = (): Middleware => (
         context.session[sessionGroupProperty] = groupId.toString();
         return O.some('ok');
       }),
+      O.fold(
+        () => context.throw(StatusCodes.BAD_REQUEST),
+        identity,
+      ),
     );
 
     await next();
