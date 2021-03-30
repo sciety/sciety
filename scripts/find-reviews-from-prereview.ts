@@ -6,6 +6,8 @@ import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
+import { Doi } from '../src/types/doi';
+import { ReviewId } from '../src/types/review-id';
 
 const preReviewResponse = t.type({
   data: t.readonlyArray(t.type({
@@ -15,6 +17,18 @@ const preReviewResponse = t.type({
       doi: tt.optionFromNullable(t.string),
     })),
   })),
+});
+
+type Review = {
+  date: Date,
+  articleDoi: Doi,
+  reviewId: ReviewId,
+};
+
+const toReview = (): Review => ({
+  date: new Date(),
+  articleDoi: new Doi('10.1101/380238'),
+  reviewId: new Doi('10.5281/zenodo.3662409'),
 });
 
 void pipe(
@@ -32,11 +46,11 @@ void pipe(
   )),
   TE.map(flow(
     ({ data }) => data,
-    RA.map((preprint) => preprint.handle),
+    RA.map(toReview),
   )),
   TE.bimap(
     (error) => process.stderr.write(error),
-    (data) => process.stdout.write(JSON.stringify(data, undefined, 2)),
+    (reviews) => process.stdout.write(JSON.stringify(reviews, undefined, 2)),
   ),
   TE.fold(
     () => process.exit(1),
