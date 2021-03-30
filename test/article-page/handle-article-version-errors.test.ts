@@ -35,8 +35,8 @@ describe('handle-article-version-errors', () => {
           id: new Doi('10.1111/12345678'),
           occurredAt: new Date(),
           source: O.some(new URL('https://example.com')),
-          groupId: new GroupId('community-1'),
-          groupName: 'OUR COMMUNITY',
+          groupId: new GroupId('group-1'),
+          groupName: 'OUR GROUP',
           groupAvatar: '/images/us.png',
           fullText: pipe('review-1', toHtmlFragment, sanitise, O.some),
           counts: {
@@ -50,8 +50,8 @@ describe('handle-article-version-errors', () => {
           id: new Doi('10.1111/12345679'),
           occurredAt: new Date(),
           source: O.some(new URL('https://example.com')),
-          groupId: new GroupId('community-1'),
-          groupName: 'OUR COMMUNITY',
+          groupId: new GroupId('group-1'),
+          groupName: 'OUR GROUP',
           groupAvatar: '/images/us.png',
           fullText: pipe('review-2', toHtmlFragment, sanitise, O.some),
           counts: {

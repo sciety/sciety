@@ -60,14 +60,14 @@ describe('project-is-following-something', () => {
     });
   });
 
-  describe('when a second community has both follow and unfollow events and the first has only follow event', () => {
+  describe('when a second group has both follow and unfollow events and the first has only follow event', () => {
     const someone = toUserId('someone');
-    const editorialCommunity1 = new GroupId('community-1');
-    const editorialCommunity2 = new GroupId('community-2');
+    const group1 = new GroupId('group-1');
+    const group2 = new GroupId('group-2');
     const getAllEvents = T.of([
-      userFollowedEditorialCommunity(someone, editorialCommunity2),
-      userFollowedEditorialCommunity(someone, editorialCommunity1),
-      userUnfollowedEditorialCommunity(someone, editorialCommunity2),
+      userFollowedEditorialCommunity(someone, group2),
+      userFollowedEditorialCommunity(someone, group1),
+      userUnfollowedEditorialCommunity(someone, group2),
     ]);
 
     it('is following something', async () => {

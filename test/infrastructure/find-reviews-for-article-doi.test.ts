@@ -9,15 +9,15 @@ import { GroupId } from '../../src/types/group-id';
 describe('find-reviews-for-article-doi', () => {
   const article1 = new Doi('10.1000/1');
   const article2 = new Doi('10.99999/2');
-  const editorialCommunity1 = new GroupId('community-1');
-  const editorialCommunity2 = new GroupId('community-2');
+  const group1 = new GroupId('group-1');
+  const group2 = new GroupId('group-2');
   const reviewId1 = new Doi('10.5555/1');
   const reviewId2 = new Doi('10.6666/2');
   const reviewId3 = new Doi('10.7777/3');
   const getAllEvents = T.of([
-    editorialCommunityReviewedArticle(editorialCommunity1, article1, reviewId1, new Date('2020-05-19T00:00:00Z')),
-    editorialCommunityReviewedArticle(editorialCommunity1, article2, reviewId2, new Date('2020-05-21T00:00:00Z')),
-    editorialCommunityReviewedArticle(editorialCommunity2, article1, reviewId3, new Date('2020-05-20T00:00:00Z')),
+    editorialCommunityReviewedArticle(group1, article1, reviewId1, new Date('2020-05-19T00:00:00Z')),
+    editorialCommunityReviewedArticle(group1, article2, reviewId2, new Date('2020-05-21T00:00:00Z')),
+    editorialCommunityReviewedArticle(group2, article1, reviewId3, new Date('2020-05-20T00:00:00Z')),
   ]);
 
   describe('findReviewsForArticleDoi', () => {

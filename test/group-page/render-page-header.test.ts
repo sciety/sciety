@@ -1,14 +1,14 @@
 import { renderPageHeader } from '../../src/group-page/render-page-header';
 
 describe('create render page', () => {
-  describe('when the community exists', () => {
-    it('renders the community name', async () => {
+  describe('when the group exists', () => {
+    it('renders the group name', async () => {
       const rendered = renderPageHeader({
-        name: 'My Community',
+        name: 'My group',
         avatarPath: '/images/xyz.png',
       });
 
-      expect(rendered).toStrictEqual(expect.stringContaining('My Community'));
+      expect(rendered).toStrictEqual(expect.stringContaining('My group'));
     });
   });
 });

@@ -3,7 +3,7 @@ import { renderFollowToggle } from '../../src/follow/render-follow-toggle';
 import { GroupId } from '../../src/types/group-id';
 
 describe('render-follow-toggle', () => {
-  describe('when the community is currently followed', () => {
+  describe('when the group is currently followed', () => {
     const groupId = new GroupId('1234');
     const rendered = JSDOM.fragment(
       renderFollowToggle(groupId, 'My Group')(true),
@@ -23,7 +23,7 @@ describe('render-follow-toggle', () => {
     });
   });
 
-  describe('when the community is not currently followed', () => {
+  describe('when the group is not currently followed', () => {
     const groupId = new GroupId('1234');
     const rendered = JSDOM.fragment(renderFollowToggle(groupId, 'My Group')(false));
     const button = rendered.querySelector('button');

@@ -20,8 +20,8 @@ describe('render-review-feed-item', () => {
           id: new Doi('10.1111/12345678'),
           source: O.some(new URL('http://example.com')),
           occurredAt: new Date(),
-          groupId: new GroupId('community-1'),
-          groupName: 'Community 1',
+          groupId: new GroupId('group-1'),
+          groupName: 'group 1',
           groupAvatar: '/avatar',
           fullText: pipe(fullText, toHtmlFragment, sanitise, O.some),
           counts: {
@@ -60,8 +60,8 @@ describe('render-review-feed-item', () => {
           id: new Doi('10.1111/12345678'),
           source: O.some(new URL(source)),
           occurredAt: new Date(),
-          groupId: new GroupId('community-1'),
-          groupName: 'Community 1',
+          groupId: new GroupId('group-1'),
+          groupName: 'group 1',
           groupAvatar: '/avatar',
           fullText: pipe(fullText, toHtmlFragment, sanitise, O.some),
           counts: {
@@ -101,8 +101,8 @@ describe('render-review-feed-item', () => {
           id: new Doi('10.1111/12345678'),
           source: O.some(new URL(source)),
           occurredAt: new Date(),
-          groupId: new GroupId('community-1'),
-          groupName: 'Community 1',
+          groupId: new GroupId('group-1'),
+          groupName: 'group 1',
           groupAvatar: '/avatar',
           fullText: O.none,
           counts: {
