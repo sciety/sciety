@@ -27,6 +27,8 @@ export class Doi {
   }
 }
 
+export const isDoi = (value: unknown): value is Doi => value instanceof Doi;
+
 export const fromString = (value: string): O.Option<Doi> => O.tryCatch(() => new Doi(value));
 
 export const hasPrefix = (prefix: string) => (doi: Doi): boolean => doi.hasPrefix(prefix);

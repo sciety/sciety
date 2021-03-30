@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
@@ -7,7 +8,7 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
 import { DoiFromString } from '../src/types/codecs/DoiFromString';
-import { Doi } from '../src/types/doi';
+import { Doi, isDoi } from '../src/types/doi';
 import * as ReviewId from '../src/types/review-id';
 
 const preReviewPreprint = t.type({
@@ -30,22 +31,30 @@ type Review = {
   reviewId: ReviewId.ReviewId,
 };
 
-const toReviews = (preprint: PreReviewPreprint): ReadonlyArray<Review> => {
-  if (!(preprint.handle instanceof Doi)) {
-    return [];
-  }
-
-  return [{
-    date: new Date(),
-    articleDoi: preprint.handle,
-    reviewId: new Doi('10.5281/zenodo.3662409'),
-  }];
+type Preprint = {
+  handle: Doi,
+  fullReviews: ReadonlyArray<{
+    createdAt: Date,
+    doi: O.Option<Doi>,
+  }>,
 };
+
+const toPreprint = O.fromPredicate(
+  (
+    preprint: PreReviewPreprint,
+  ): preprint is PreReviewPreprint & { handle: Doi } => isDoi(preprint.handle),
+);
+
+const toReviews = (preprint: Preprint): ReadonlyArray<Review> => [{
+  date: new Date(),
+  articleDoi: preprint.handle,
+  reviewId: new Doi('10.5281/zenodo.3662409'),
+}];
 
 void pipe(
   TE.tryCatch(
     async () => axios.get<unknown>(
-      'https://www.prereview.org/api/v2/preprints?limit=10',
+      'https://www.prereview.org/api/v2/preprints?limit=100',
       { headers: { Accept: 'application/json' } },
     ),
     String,
@@ -57,6 +66,8 @@ void pipe(
   )),
   TE.map(flow(
     ({ data }) => data,
+    RA.map(toPreprint),
+    RA.compact,
     RA.chain(toReviews),
     RA.map(({ date, articleDoi, reviewId }) => `${date.toISOString()},${articleDoi.value},${ReviewId.toString(reviewId)}`),
   )),
