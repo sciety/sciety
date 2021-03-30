@@ -7,7 +7,7 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
 import { Doi } from '../src/types/doi';
-import { ReviewId } from '../src/types/review-id';
+import * as ReviewId from '../src/types/review-id';
 
 const preReviewResponse = t.type({
   data: t.readonlyArray(t.type({
@@ -22,7 +22,7 @@ const preReviewResponse = t.type({
 type Review = {
   date: Date,
   articleDoi: Doi,
-  reviewId: ReviewId,
+  reviewId: ReviewId.ReviewId,
 };
 
 const toReview = (): Review => ({
@@ -47,10 +47,15 @@ void pipe(
   TE.map(flow(
     ({ data }) => data,
     RA.map(toReview),
+    RA.map(({ date, articleDoi, reviewId }) => `${date.toISOString()},${articleDoi.value},${ReviewId.toString(reviewId)}`),
   )),
   TE.bimap(
     (error) => process.stderr.write(error),
-    (reviews) => process.stdout.write(JSON.stringify(reviews, undefined, 2)),
+    (reviews) => {
+      process.stdout.write('Date,Article DOI,Review ID\n');
+      process.stdout.write(reviews.join('\n'));
+      process.stdout.write('\n');
+    },
   ),
   TE.fold(
     () => process.exit(1),
