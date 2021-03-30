@@ -9,7 +9,7 @@ import { ReviewId } from '../types/review-id';
 
 type FindReviewsForArticleDoi = (articleDoi: Doi) => RT.ReaderTask<GetAllEvents, ReadonlyArray<{
   reviewId: ReviewId,
-  editorialCommunityId: GroupId,
+  groupId: GroupId,
   occurredAt: Date,
 }>>;
 
@@ -21,7 +21,7 @@ export const findReviewsForArticleDoi: FindReviewsForArticleDoi = (articleDoi) =
     RA.filter((event) => eqDoi.equals(event.articleId, articleDoi)),
     RA.map((event) => ({
       reviewId: event.reviewId,
-      editorialCommunityId: event.editorialCommunityId,
+      groupId: event.editorialCommunityId,
       occurredAt: event.date,
     })),
   ))

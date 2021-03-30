@@ -19,7 +19,7 @@ import { UserId } from '../types/user-id';
 
 type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
   reviewId: ReviewId,
-  editorialCommunityId: GroupId,
+  groupId: GroupId,
   occurredAt: Date,
 }>>;
 

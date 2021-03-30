@@ -9,7 +9,7 @@ describe('merge-feeds', () => {
     const feed1 = RT.of([
       {
         type: 'review',
-        editorialCommunityId: new GroupId('groupId'),
+        groupId: new GroupId('groupId'),
         reviewId: new Doi('10.1234/5678'),
         occurredAt: new Date('2020-09-10'),
       },

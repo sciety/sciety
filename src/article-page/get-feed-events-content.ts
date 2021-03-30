@@ -18,7 +18,7 @@ import { UserId } from '../types/user-id';
 
 type ReviewEvent = {
   type: 'review',
-  editorialCommunityId: GroupId,
+  groupId: GroupId,
   reviewId: ReviewId,
   occurredAt: Date,
 };
@@ -73,7 +73,7 @@ const reviewToFeedItem = (
   userId: O.Option<UserId>,
 ) => pipe(
   {
-    group: getGroup(feedEvent.editorialCommunityId),
+    group: getGroup(feedEvent.groupId),
     review: pipe(
       feedEvent.reviewId,
       getReview,
@@ -100,7 +100,7 @@ const reviewToFeedItem = (
     id: feedEvent.reviewId,
     source: review.url,
     occurredAt: feedEvent.occurredAt,
-    groupId: feedEvent.editorialCommunityId,
+    groupId: feedEvent.groupId,
     groupName: group.name,
     groupAvatar: group.avatarPath,
     fullText: O.map(sanitise)(review.fullText),

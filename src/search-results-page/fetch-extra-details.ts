@@ -28,7 +28,7 @@ export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 export type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
   reviewId: ReviewId,
-  editorialCommunityId: GroupId,
+  groupId: GroupId,
 }>>;
 
 const populateArticleViewModel = (findReviewsForArticleDoi: FindReviewsForArticleDoi) => (item: ArticleItem) => pipe(
