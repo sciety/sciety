@@ -97,9 +97,8 @@ find-pci-reviews: build
 
 find-prereview-reviews: export TARGET = dev
 find-prereview-reviews: build
-	echo "Skipping preReview due to broken API #514"
-	#$(DOCKER_COMPOSE) run -T app \
-	#	npx ts-node scripts/find-reviews-from-prereview > ./data/reviews/10360d97-bf52-4aef-b2fa-2f60d319edd7.csv
+	$(DOCKER_COMPOSE) run -T app \
+		npx ts-node scripts/find-reviews-from-prereview # > ./data/reviews/10360d97-bf52-4aef-b2fa-2f60d319edd7.csv
 
 find-ncrc-reviews: export TARGET = dev
 find-ncrc-reviews: build .gcp-ncrc-key.json
