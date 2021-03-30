@@ -15,7 +15,7 @@ type RenderFollowedGroup = (userId: O.Option<UserId>) => (
   group: Group,
 ) => T.Task<HtmlFragment>;
 
-type RenderFollowToggle = (g: GroupId) => (isFollowing: boolean) => HtmlFragment;
+type RenderFollowToggle = (g: GroupId, groupName: string) => (isFollowing: boolean) => HtmlFragment;
 
 const render = (group: Group) => (toggle: HtmlFragment) => `
   <img class="followed-groups__item_avatar" src="${group.avatarPath}" alt="">
@@ -35,7 +35,7 @@ export const renderFollowedGroup = (
     (u: UserId) => follows(u, group.id),
   ),
   T.map(flow(
-    renderFollowToggle(group.id),
+    renderFollowToggle(group.id, group.name),
     render(group),
     toHtmlFragment,
   )),

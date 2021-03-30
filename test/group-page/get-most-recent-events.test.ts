@@ -8,7 +8,7 @@ describe('get-most-recent-events', () => {
   const group1 = new GroupId('1');
   const group2 = new GroupId('2');
 
-  it('only returns events for the given editorial community', async () => {
+  it('only returns events for the given editorial group', async () => {
     const allEvents = [
       editorialCommunityReviewedArticle(group2, new Doi('10.1101/123456'), toReviewId('hypothesis:reviewA')),
       editorialCommunityReviewedArticle(group1, new Doi('10.1101/123456'), toReviewId('hypothesis:reviewB')),

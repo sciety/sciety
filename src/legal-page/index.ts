@@ -49,7 +49,7 @@ export const legalPage: Page = {
       </p>
 
       <p>
-        When you log in to your Twitter account through our site (for example to store your feed preferences) that interaction is directly with Twitter Inc. We only receive from Twitter a user name and user identifier. Your Twitter user identifier is associated with items that you follow on the site (communities, people, papers and evaluation events) and used to publicly display events that you follow on your user page. In addition, your user name is displayed on the community page of any community that you follow.
+        When you log in to your Twitter account through our site (for example to store your feed preferences) that interaction is directly with Twitter Inc. We only receive from Twitter a user name and user identifier. Your Twitter user identifier is associated with items that you follow on the site (groups, people, papers and evaluation events) and used to publicly display events that you follow on your user page.
       </p>
 
       <h3>
@@ -64,7 +64,7 @@ export const legalPage: Page = {
 
       <h2>Company information</h2>
       <p>
-        Sciety is operated by a team based within eLife Sciences Publications Limited. It is steered by all of its communities, readers and authors.
+        Sciety is operated by a team based within eLife Sciences Publications Limited. It is steered by all of its groups, readers and authors.
       </p>
 
       <p>

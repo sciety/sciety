@@ -6,19 +6,19 @@ import { GroupId } from '../../src/types/group-id';
 import { toUserId, UserId } from '../../src/types/user-id';
 
 describe('get-most-recent-events', () => {
-  const editorialCommunity1 = new GroupId('a');
-  const dummyEvent: DomainEvent = editorialCommunityReviewedArticle(editorialCommunity1, new Doi('10.1101/751099'), new Doi('10.1234/8765'), new Date('2020-07-08'));
+  const groupId1 = new GroupId('a');
+  const dummyEvent: DomainEvent = editorialCommunityReviewedArticle(groupId1, new Doi('10.1101/751099'), new Doi('10.1234/8765'), new Date('2020-07-08'));
 
   it('reverse the order into date descending', async () => {
     const initial: ReadonlyArray<DomainEvent> = [
       editorialCommunityReviewedArticle(
-        editorialCommunity1,
+        groupId1,
         new Doi('10.1101/751099'),
         new Doi('10.1234/5678'),
         new Date('2020-07-08'),
       ),
       editorialCommunityReviewedArticle(
-        editorialCommunity1,
+        groupId1,
         new Doi('10.1101/2020.01.22.915660'),
         new Doi('10.1234/5678'),
         new Date('2020-07-09'),
@@ -36,7 +36,7 @@ describe('get-most-recent-events', () => {
   it('only returns events for the follow list', async () => {
     const initial: ReadonlyArray<DomainEvent> = [
       editorialCommunityReviewedArticle(
-        editorialCommunity1,
+        groupId1,
         new Doi('10.1101/751099'),
         new Doi('10.1234/5678'),
         new Date('2020-07-08'),
@@ -49,7 +49,7 @@ describe('get-most-recent-events', () => {
       ),
     ];
     const getAllEvents: GetAllEvents = T.of(initial);
-    const follows = (_userId: UserId, editorialCommunityId: GroupId) => T.of(editorialCommunityId.toString() === 'b');
+    const follows = (_userId: UserId, groupId: GroupId) => T.of(groupId.toString() === 'b');
     const getEvents = getMostRecentEvents(getAllEvents, follows, 20);
     const sortedEvents = await getEvents(toUserId('user-1'))();
 

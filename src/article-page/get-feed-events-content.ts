@@ -18,7 +18,7 @@ import { UserId } from '../types/user-id';
 
 type ReviewEvent = {
   type: 'review',
-  editorialCommunityId: GroupId,
+  groupId: GroupId,
   reviewId: ReviewId,
   occurredAt: Date,
 };
@@ -73,7 +73,7 @@ const reviewToFeedItem = (
   userId: O.Option<UserId>,
 ) => pipe(
   {
-    editorialCommunity: getGroup(feedEvent.editorialCommunityId),
+    group: getGroup(feedEvent.groupId),
     review: pipe(
       feedEvent.reviewId,
       getReview,
@@ -94,15 +94,15 @@ const reviewToFeedItem = (
   },
   sequenceS(T.task),
   T.map(({
-    editorialCommunity, review, reviewResponses, userReviewResponse,
+    group, review, reviewResponses, userReviewResponse,
   }) => ({
     type: 'review' as const,
     id: feedEvent.reviewId,
     source: review.url,
     occurredAt: feedEvent.occurredAt,
-    groupId: feedEvent.editorialCommunityId,
-    groupName: editorialCommunity.name,
-    groupAvatar: editorialCommunity.avatarPath,
+    groupId: feedEvent.groupId,
+    groupName: group.name,
+    groupAvatar: group.avatarPath,
     fullText: O.map(sanitise)(review.fullText),
     counts: reviewResponses,
     current: userReviewResponse,

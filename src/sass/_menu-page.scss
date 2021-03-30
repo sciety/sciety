@@ -8,14 +8,9 @@
 @use 'states';
 @use 'typography';
 
-$_navigation-menu-icon-size: 24px;
-$_navigation-menu-icon-inline-padding: 12px;
-$_search-icon-size: functions.px-to-rem(28px);
 $_site-header-nav-height: 60px;
-$_site-header-inline-end-margin: 8px;
-$_navigation-menu-inline-padding: 16px;
-$_navigation-menu-text-inline-padding: 26px; // TODO: bad name
-$_menu-link-max-width: 300px;
+
+$_menu-page-upper-inline-spacing: 26px;
 
 .menu-page-container {
   flex-grow: 1;
@@ -41,7 +36,7 @@ $_menu-link-max-width: 300px;
 
 .navigation-menu {
   color: settings.$colour-white;
-  background-color: settings.$colour-text-primary;
+  background-color: settings.$colour-navigation-menu-background;
   width: 100%;
   font-family: settings.$font-family;
   padding-top: baseline.increments(2);
@@ -53,7 +48,7 @@ $_menu-link-max-width: 300px;
   @include typography.sizing(20px, 3);
   font-weight: bold;
   letter-spacing: 0.14px;
-  padding-left: functions.px-to-rem($_navigation-menu-text-inline-padding);
+  padding-left: functions.px-to-rem($_menu-page-upper-inline-spacing);
   margin-bottom: baseline.increments(2.5);
 }
 
@@ -62,54 +57,10 @@ $_menu-link-max-width: 300px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: functions.px-to-rem($_navigation-menu-text-inline-padding - 4px);
+  margin-left: functions.px-to-rem($_menu-page-upper-inline-spacing - 4px);
 
   &::before {
     @include layout.visually-hidden();
     content: 'Close the following menu';
   }
-}
-
-.menu-page__nav {
-  margin-right: functions.px-to-rem($_site-header-inline-end-margin);
-  flex-grow: 1;
-  align-self: center;
-}
-
-.menu-page__nav_list {
-  @include list.basics();
-  display: flex;
-  justify-content: flex-start;
-  margin-bottom: 0;
-}
-
-.menu-page__nav_list_item {
-  @include typography.sizing(14px, 1.75);
-  padding-right: 1.5rem;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-
-  &:nth-last-child(2) {
-    margin-left: auto;
-  }
-
-  &:last-child {
-    padding-right: 0;
-  }
-}
-
-.menu-page__nav_list_item--search,
-.menu-page__nav_list_item--search a {
-  display: flex;
-  align-items: center;
-}
-
-.menu-page__nav_list__search_icon {
-  width: $_search-icon-size;
-  height: $_search-icon-size;
-}
-
-.menu-page__nav_list_link_button {
-  @include button.button-new();
 }

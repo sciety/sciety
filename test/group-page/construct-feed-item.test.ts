@@ -6,7 +6,6 @@ import {
   editorialCommunityReviewedArticle,
   EditorialCommunityReviewedArticleEvent,
 } from '../../src/types/domain-events';
-import { Group } from '../../src/types/group';
 import { GroupId } from '../../src/types/group-id';
 import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
 
@@ -14,8 +13,8 @@ describe('construct-feed-item', () => {
   const articleTitle = 'the title' as SanitisedHtmlFragment;
   const arbitraryActorId = new GroupId('1234');
   const arbitraryArticleId = new Doi('10.5281/zenodo.3678326');
-  const community: Group = {
-    id: new GroupId('my-community'),
+  const group = {
+    id: new GroupId('my-group'),
     name: 'dummyActorName',
     descriptionPath: '',
     shortDescription: '',
@@ -31,7 +30,7 @@ describe('construct-feed-item', () => {
         const getArticle: GetArticle = () => TE.right({
           title: articleTitle,
         });
-        feedItem = await constructFeedItem(getArticle)(community)(event)();
+        feedItem = await constructFeedItem(getArticle)(group)(event)();
       });
 
       it('displays the article title', async () => {
@@ -54,7 +53,7 @@ describe('construct-feed-item', () => {
     describe('and the article information cannot be retrieved', () => {
       beforeEach(async () => {
         const getArticle: GetArticle = () => TE.left('something-bad');
-        feedItem = await constructFeedItem(getArticle)(community)(event)();
+        feedItem = await constructFeedItem(getArticle)(group)(event)();
       });
 
       it('displays a generic article title', async () => {

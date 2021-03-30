@@ -24,7 +24,9 @@ const render = (components: Components) => `
         <h2>
           Feed
         </h2>
-        ${components.followButton}
+        <div class="group-page-side-bar--follow-toggle">
+          ${components.followButton}
+        </div>
         ${components.feed}
       </section>
     </div>

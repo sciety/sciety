@@ -20,13 +20,13 @@ describe('get-feed-events-content', () => {
       const feedEvents: ReadonlyArray<FeedEvent> = [
         {
           type: 'review',
-          editorialCommunityId: new GroupId('communityId'),
+          groupId: new GroupId('groupId'),
           reviewId: new Doi('10.1101/111111'),
           occurredAt: new Date(),
         },
         {
           type: 'review',
-          editorialCommunityId: new GroupId('communityId'),
+          groupId: new GroupId('groupId'),
           reviewId: new Doi('10.1101/222222'),
           occurredAt: new Date(),
         },

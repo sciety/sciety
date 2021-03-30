@@ -1,0 +1,52 @@
+@use 'functions';
+@use 'list';
+@use 'button';
+@use 'typography';
+
+$_search-icon-size: functions.px-to-rem(28px);
+$_site-header-nav-height: 60px;
+$_site-header-inline-end-margin: 8px;
+
+.utility-bar {
+  margin-right: functions.px-to-rem($_site-header-inline-end-margin);
+  flex-grow: 1;
+  align-self: center;
+}
+
+.utility-bar__list {
+  @include list.basics();
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 0;
+}
+
+.utility-bar__list_item {
+  @include typography.sizing(14px, 1.75);
+  padding-right: 1.5rem;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+
+  &:nth-last-child(2) {
+    margin-left: auto;
+  }
+
+  &:last-child {
+    padding-right: 0;
+  }
+}
+
+.utility-bar__list_item--search,
+.utility-bar__list_item--search a {
+  display: flex;
+  align-items: center;
+}
+
+.utility-bar__list__search_icon {
+  width: $_search-icon-size;
+  height: $_search-icon-size;
+}
+
+.utility-bar__list_link_button {
+  @include button.button-new();
+}

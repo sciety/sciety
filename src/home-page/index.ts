@@ -7,11 +7,11 @@ import { getActor, GetGroup } from './get-actor';
 import { GetAllEvents, getMostRecentEvents } from './get-most-recent-events';
 import { projectIsFollowingSomething } from './project-is-following-something';
 import { renderFeed } from './render-feed';
-import { renderFollowToggle } from './render-follow-toggle';
 import { renderGroup } from './render-group';
 import { GetAllGroups, renderGroups } from './render-groups';
 import { renderPage, RenderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
+import { renderFollowToggle } from '../follow/render-follow-toggle';
 import { renderSummaryFeedList } from '../shared-components';
 import { GroupId } from '../types/group-id';
 import { toHtmlFragment } from '../types/html-fragment';
@@ -39,7 +39,7 @@ export const homePage = (ports: Ports): HomePage => flow(
     renderPageHeader,
     renderGroups(
       ports.getAllGroups,
-      renderGroup(renderFollowToggle(ports.follows)),
+      renderGroup(renderFollowToggle, ports.follows),
     ),
     renderFeed(
       projectIsFollowingSomething(ports.getAllEvents),

@@ -14,6 +14,10 @@
   grid-column: 1 / -1;
 }
 
+.group-page-side-bar--follow-toggle {
+  margin-bottom: #{baseline.increments(3)};
+}
+
 @media screen and (min-width: 56.25em) {
   .sciety-grid--group > .group-page-description {
     grid-column: 1 / 7;

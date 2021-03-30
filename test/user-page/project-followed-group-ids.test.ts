@@ -28,25 +28,25 @@ describe('project-followed-group-ids', () => {
     expect(actual).toStrictEqual(expected);
   });
 
-  describe('when a community is followed', () => {
-    const community1 = new GroupId('community-1');
+  describe('when a group is followed', () => {
+    const group1 = new GroupId('group-1');
 
-    it('lists that community', async () => {
+    it('lists that group', async () => {
       const followed = await projectFollowedGroupIds(T.of([
-        userFollowedEditorialCommunity(toUserId('someone'), community1),
+        userFollowedEditorialCommunity(toUserId('someone'), group1),
       ]))(toUserId('someone'))();
 
-      expect(followed).toStrictEqual([community1]);
+      expect(followed).toStrictEqual([group1]);
     });
   });
 
-  describe('when a community is unfollowed', () => {
-    const community1 = new GroupId('community-1');
+  describe('when a group is unfollowed', () => {
+    const group1 = new GroupId('group-1');
 
-    it('does not list that community', async () => {
+    it('does not list that group', async () => {
       const followed = await projectFollowedGroupIds(T.of([
-        userFollowedEditorialCommunity(toUserId('someone'), community1),
-        userUnfollowedEditorialCommunity(toUserId('someone'), community1),
+        userFollowedEditorialCommunity(toUserId('someone'), group1),
+        userUnfollowedEditorialCommunity(toUserId('someone'), group1),
       ]))(toUserId('someone'))();
 
       expect(followed).toStrictEqual([]);

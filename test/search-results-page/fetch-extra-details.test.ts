@@ -12,7 +12,7 @@ describe('fetch-extra-details', () => {
         findReviewsForArticleDoi: () => T.of([
           {
             reviewId: new Doi('10.1101/111111'),
-            editorialCommunityId: new GroupId('my-group'),
+            groupId: new GroupId('my-group'),
           },
         ]),
         getAllEvents: shouldNotBeCalled,

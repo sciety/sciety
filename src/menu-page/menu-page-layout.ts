@@ -1,78 +1,29 @@
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { constant } from 'fp-ts/function';
-import { toHtmlFragment } from '../types/html-fragment';
-import { Page } from '../types/page';
+import {
+  cookieConsent, fathom, googleTagManager, googleTagManagerNoScript,
+} from '../shared-components/analytics';
+import { siteMenuFooter, siteMenuItems } from '../shared-components/site-menu';
+import { utilityBar } from '../shared-components/utility-bar';
 import { User } from '../types/user';
 
-let googleTagManager = '';
-let googleTagManagerNoScript = '';
-if (process.env.GOOGLE_TAG_MANAGER_ID) {
-  googleTagManager = `
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-
-    gtag('consent', 'default', {
-      'ad_storage': 'denied',
-      'analytics_storage': 'denied'
-    });
-    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','${process.env.GOOGLE_TAG_MANAGER_ID}');
-  </script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', '${process.env.GOOGLE_TAG_MANAGER_ID}');
-  </script>
-`;
-
-  googleTagManagerNoScript = toHtmlFragment(`
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=${process.env.GOOGLE_TAG_MANAGER_ID}"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->`);
-}
-
-const fathom = process.env.FATHOM_SITE_ID ? `
-<script src="https://cdn.usefathom.com/script.js" data-site="${process.env.FATHOM_SITE_ID}" defer></script>
-` : '';
-
-const logOutMenuItem = () => toHtmlFragment(`
-  <li class="menu-page__nav_list_item">
-    <a href="/log-out" class="menu-page__nav_list_link_button">Log out</a>
-  </li>
-`);
-
-const logInMenuItem = () => toHtmlFragment(`
-  <li class="menu-page__nav_list_item">
-    <a href="/log-in" class="menu-page__nav_list_link_button">Log in</a>
-  </li>
-`);
-
-const isSecure = process.env.APP_ORIGIN !== undefined && process.env.APP_ORIGIN.startsWith('https:');
-
 // TODO: return a more specific type e.g. HtmlDocument
-export const menuPageLayout = (user: O.Option<User>, referer: O.Option<string>) => (page: Page): string => `<!doctype html>
+export const menuPageLayout = (user: O.Option<User>, referer: O.Option<string>): string => `<!doctype html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>
-    ${htmlEscape(page.title)}
+    Menu | Sciety
   </title>
   <link rel="stylesheet" href="/static/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.css">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@scietyHQ">
   <meta property="og:site_name" content="Sciety">
-  <meta property="og:title" content="${htmlEscape(page.openGraph ? page.openGraph.title : 'Sciety')}">
-  <meta property="og:description" content="${htmlEscape(page.openGraph ? page.openGraph.description : 'Where research is evaluated and curated by the communities you trust')}">
+  <meta property="og:title" content="Menu | Sciety">
+  <meta property="og:description" content="Where research is evaluated and curated by the communities you trust">
   <meta property="og:image" content="${process.env.APP_ORIGIN ?? ''}/static/images/sciety-twitter-profile.png">
   <link rel="icon" type="image/svg+xml" href="/static/images/favicons/favicon.svg">
 
@@ -85,68 +36,32 @@ export const menuPageLayout = (user: O.Option<User>, referer: O.Option<string>) 
   <meta name="msapplication-TileColor" content="#cf4500">
   <meta name="msapplication-config" content="/static/images/favicons/generated/browserconfig.xml">
   <meta name="theme-color" content="#ffffff">
-  ${fathom}
+  ${fathom()}
 </head>
 <body>
-  ${googleTagManagerNoScript}
+  ${googleTagManagerNoScript()}
 
 <div class="menu-page-container">
 
   ${htmlEscape`<a href="${O.getOrElse(constant('/'))(referer)}" class="menu-page__close_nav"><img src="/static/images/close-icon.svg" alt=""></a>`}
 
   <main class="menu-page-main-content">
-    ${page.content}
+    <nav class="navigation-menu">
+      <h1 class="navigation-menu__title">Menu</h1>
+      ${siteMenuItems(user)}
+      ${siteMenuFooter}
+    </nav>
   </main>
 
-  <nav class="menu-page__nav" aria-describedby="application-utilities">
-    <div id="application-utilities" hidden>Sciety application utilities</div>
-    <ul class="menu-page__nav_list" role="list">
-      <li class="menu-page__nav_list_item menu-page__nav_list_item--search">
-        <a href="/search">
-          <img src="/static/images/search-icon.svg" alt="Search" class="menu-page__nav_list__search_icon">
-        </a>
-      </li>
-      ${O.fold(logInMenuItem, logOutMenuItem)(user)}
-    </ul>
-  </nav>
+  ${utilityBar(user)}
 
 </div>
 
   <script src="/static/behaviour.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.js"></script>
-  ${googleTagManager}
-  <script>
-    function onConsent() {
-        if (!this.hasConsented()) {
-          return;
-        }
-        ${process.env.GOOGLE_TAG_MANAGER_ID ? `
-          gtag('consent', 'update', {
-            'ad_storage': 'denied',
-            'analytics_storage': 'granted'
-          });
-        ` : ''}
-    }
 
-    window.cookieconsent.hasTransition = false;
-    window.cookieconsent.initialise({
-      content: {
-        message: 'This site uses cookies to deliver its services and analyse traffic. By using this site, you agree to its use of cookies.',
-        href: '/privacy',
-        target: '_self'
-      },
-      onInitialise: onConsent,
-      onStatusChange: onConsent,
-      palette: {
-        popup: {
-          background: 'rgb(0, 0, 0, 0.8)',
-        }
-      },
-      cookie: {
-        secure: ${isSecure ? 'true' : 'false'}
-      },
-    });
-  </script>
+  ${googleTagManager()}
+  ${cookieConsent()}
+
 </body>
 </html>
 `;

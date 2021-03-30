@@ -22,13 +22,13 @@ type Ports = {
   getGroup: GetGroup,
 };
 
-export type GetGroup = (editorialCommunityId: GroupId) => T.Task<O.Option<Group>>;
+export type GetGroup = (groupId: GroupId) => T.Task<O.Option<Group>>;
 
 export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 export type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
   reviewId: ReviewId,
-  editorialCommunityId: GroupId,
+  groupId: GroupId,
 }>>;
 
 const populateArticleViewModel = (findReviewsForArticleDoi: FindReviewsForArticleDoi) => (item: ArticleItem) => pipe(

@@ -22,7 +22,7 @@ describe('render-feed', () => {
       it('returns a list', async () => {
         const dummyGetEvents: GetEvents<EditorialCommunityReviewedArticleEvent> = () => T.of([
           editorialCommunityReviewedArticle(
-            new GroupId('our-community'),
+            new GroupId('our-group'),
             new Doi('10.1101/111111'),
             toReviewId('doi:10.1101/222222'),
           ),

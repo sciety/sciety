@@ -9,10 +9,10 @@ import { countFollowersOf } from './count-followers';
 import { GetAllEvents, getMostRecentEvents } from './get-most-recent-events';
 import { FetchStaticFile, renderDescription } from './render-description';
 import { renderFeed } from './render-feed';
-import { renderFollowToggle } from './render-follow-toggle';
 import { renderFollowers } from './render-followers';
 import { renderErrorPage, renderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
+import { renderFollowToggle } from '../follow/render-follow-toggle';
 import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
 import { toHtmlFragment } from '../types/html-fragment';
@@ -72,7 +72,7 @@ export const groupPage = (ports: Ports): GroupPage => ({ id, user }) => pipe(
           () => T.of(false),
           (u) => ports.follows(u.id, group.id),
         ),
-        T.map(renderFollowToggle(group.id)),
+        T.map(renderFollowToggle(group.id, group.name)),
         TE.rightTask,
       ),
       feed: pipe(

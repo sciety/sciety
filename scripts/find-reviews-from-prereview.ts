@@ -1,70 +1,59 @@
 import axios from 'axios';
-import * as O from 'fp-ts/Option';
+import * as E from 'fp-ts/Either';
+import * as RA from 'fp-ts/ReadonlyArray';
+import * as TE from 'fp-ts/TaskEither';
+import { flow, pipe } from 'fp-ts/function';
+import * as t from 'io-ts';
+import * as tt from 'io-ts-types';
+import * as PR from 'io-ts/PathReporter';
+import { Doi } from '../src/types/doi';
+import { ReviewId } from '../src/types/review-id';
 
-type PrereviewSearchResponse = {
-  results: ReadonlyArray<PrereviewSearchResult>,
-  totalpages: number,
+const preReviewResponse = t.type({
+  data: t.readonlyArray(t.type({
+    handle: t.string,
+    fullReviews: t.readonlyArray(t.type({
+      createdAt: t.string,
+      doi: tt.optionFromNullable(t.string),
+    })),
+  })),
+});
+
+type Review = {
+  date: Date,
+  articleDoi: Doi,
+  reviewId: ReviewId,
 };
 
-type PrereviewSearchResult = {
-  id: string,
-  n_prereviews: number,
-  source: string,
-};
+const toReview = (): Review => ({
+  date: new Date(),
+  articleDoi: new Doi('10.1101/380238'),
+  reviewId: new Doi('10.5281/zenodo.3662409'),
+});
 
-type PrereviewPreprint = {
-  prereviews: Array<Prereview>,
-};
-
-type Prereview = {
-  date_created: string,
-  doi: string|null,
-};
-
-const biorxivPrefix = /^doi\/10\.1101\//;
-
-const formatRow = (preprintId: string, prereview: Prereview): O.Option<string> => {
-  if (prereview.doi) {
-    const reviewDate = new Date(prereview.date_created);
-    const articleDoi = preprintId.replace(/^doi\//, '');
-    const reviewId = `doi:${prereview.doi}`;
-    return O.some(`${reviewDate.toISOString()},${articleDoi},${reviewId}`);
-  }
-
-  return O.none;
-};
-
-const fetchPrereviews = async (article: PrereviewSearchResult): Promise<ReadonlyArray<Prereview>> => {
-  const { data } = await axios.get<PrereviewPreprint>(`https://www.prereview.org/data/preprints/${article.id}`);
-  return data.prereviews;
-};
-
-void (async (): Promise<void> => {
-  process.stdout.write('Date,Article DOI,Review ID\n');
-
-  let currentPage = 1;
-  let totalPages = NaN;
-  // eslint-disable-next-line no-loops/no-loops
-  do {
-    const { data } = await axios.post<PrereviewSearchResponse>(
-      'https://www.prereview.org/data/preprints/search',
-      { query: { string: null, page: currentPage } },
+void pipe(
+  TE.tryCatch(
+    async () => axios.get<unknown>(
+      'https://www.prereview.org/api/v2/preprints?limit=10',
       { headers: { Accept: 'application/json' } },
-    );
-    await Promise.all(
-      data.results
-        .filter((searchResult) => searchResult.n_prereviews > 0)
-        .filter((searchResult) => searchResult.id.match(biorxivPrefix))
-        // TODO: not sure it excludes every medRxiv result,
-        // as some of these values are just `Crossref`
-        .filter((searchResult) => !searchResult.source.startsWith('https://www.medrxiv.org/'))
-        .map(async (searchResult) => {
-          (await fetchPrereviews(searchResult))
-            .map((prereview) => formatRow(searchResult.id, prereview))
-            .forEach(O.map((value) => process.stdout.write(`${value}\n`)));
-        }),
-    );
-    currentPage += 1;
-    totalPages = data.totalpages;
-  } while (currentPage <= totalPages);
-})();
+    ),
+    String,
+  ),
+  TE.map((response) => response.data),
+  TE.chainEitherK(flow(
+    preReviewResponse.decode,
+    E.mapLeft((errors) => PR.failure(errors).join('\n')),
+  )),
+  TE.map(flow(
+    ({ data }) => data,
+    RA.map(toReview),
+  )),
+  TE.bimap(
+    (error) => process.stderr.write(error),
+    (reviews) => process.stdout.write(JSON.stringify(reviews, undefined, 2)),
+  ),
+  TE.fold(
+    () => process.exit(1),
+    () => process.exit(0),
+  ),
+)();

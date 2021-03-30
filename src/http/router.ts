@@ -21,14 +21,18 @@ import { redirectAfterAuthenticating, requireAuthentication } from './require-au
 import { robots } from './robots';
 import { aboutPage } from '../about-page';
 import { articleActivityPage, articleMetaPage } from '../article-page';
-import { followHandler } from '../follow';
-import { finishFollowCommand } from '../follow/finish-follow-command';
-import { saveFollowCommand } from '../follow/save-follow-command';
+import {
+  finishFollowCommand,
+  finishUnfollowCommand,
+  followHandler,
+  saveFollowCommand,
+  saveUnfollowCommand,
+  unfollowHandler,
+} from '../follow';
 import { groupPage } from '../group-page';
 import { homePage } from '../home-page';
 import { Adapters } from '../infrastructure/adapters';
 import { legalPage } from '../legal-page';
-import { menuPage } from '../menu-page/menu-page';
 import { menuPageLayout } from '../menu-page/menu-page-layout';
 import { respondHandler } from '../respond';
 import { finishRespondCommand } from '../respond/finish-respond-command';
@@ -42,9 +46,7 @@ import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import * as Doi from '../types/doi';
 import { toHtmlFragment } from '../types/html-fragment';
-import { unfollowHandler } from '../unfollow';
-import { finishUnfollowCommand } from '../unfollow/finish-unfollow-command';
-import { saveUnfollowCommand } from '../unfollow/save-unfollow-command';
+
 import { userPage } from '../user-page';
 
 const biorxivPrefix = '10.1101';
@@ -112,12 +114,9 @@ export const createRouter = (adapters: Adapters): Router => {
   router.get(
     '/menu',
     async (context, next) => {
-      context.response.body = pipe(
-        menuPage(O.fromNullable(context.state.user)),
-        menuPageLayout(
-          O.fromNullable(context.state.user),
-          O.fromNullable(context.request.header.referer),
-        ),
+      context.response.body = menuPageLayout(
+        O.fromNullable(context.state.user),
+        O.fromNullable(context.request.header.referer),
       );
       context.set('Vary', 'Referer');
 
