@@ -22,7 +22,7 @@ type Ports = {
   getGroup: GetGroup,
 };
 
-export type GetGroup = (editorialCommunityId: GroupId) => T.Task<O.Option<Group>>;
+export type GetGroup = (groupId: GroupId) => T.Task<O.Option<Group>>;
 
 export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 

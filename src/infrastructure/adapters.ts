@@ -28,7 +28,7 @@ type FindVersionsForArticleDoi = (
   server: ArticleServer,
 ) => T.Task<O.Option<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>>;
 
-type GetGroup = (editorialCommunityId: GroupId) => T.Task<O.Option<Group>>;
+type GetGroup = (groupId: GroupId) => T.Task<O.Option<Group>>;
 
 type GetAllGroups = T.Task<RNEA.ReadonlyNonEmptyArray<Group>>;
 
@@ -40,7 +40,7 @@ export type Adapters = {
   findGroups: (query: string) => T.Task<ReadonlyArray<GroupId>>,
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
-  follows: (userId: UserId, editorialCommunityId: GroupId) => T.Task<boolean>,
+  follows: (userId: UserId, groupId: GroupId) => T.Task<boolean>,
   getAllGroups: GetAllGroups,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
   getFollowList: EventSourcedFollowListRepository,
