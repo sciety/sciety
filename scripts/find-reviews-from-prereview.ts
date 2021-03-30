@@ -26,11 +26,11 @@ type Review = {
   reviewId: ReviewId.ReviewId,
 };
 
-const toReview = (): Review => ({
+const toReviews = (): ReadonlyArray<Review> => [{
   date: new Date(),
   articleDoi: new Doi('10.1101/380238'),
   reviewId: new Doi('10.5281/zenodo.3662409'),
-});
+}];
 
 void pipe(
   TE.tryCatch(
@@ -47,7 +47,7 @@ void pipe(
   )),
   TE.map(flow(
     ({ data }) => data,
-    RA.map(toReview),
+    RA.chain(toReviews),
     RA.map(({ date, articleDoi, reviewId }) => `${date.toISOString()},${articleDoi.value},${ReviewId.toString(reviewId)}`),
   )),
   TE.bimap(
