@@ -70,7 +70,7 @@ git-lfs:
 	git lfs install
 
 clean:
-	rm -rf .eslint .jest build node_modules
+	rm -rf .eslint .jest .stylelint build node_modules static/style.css static/style.css.map
 
 clean-db:
 	$(DOCKER_COMPOSE) down
