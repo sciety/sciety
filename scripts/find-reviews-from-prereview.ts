@@ -10,15 +10,19 @@ import { DoiFromString } from '../src/types/codecs/DoiFromString';
 import { Doi } from '../src/types/doi';
 import * as ReviewId from '../src/types/review-id';
 
-const preReviewResponse = t.type({
-  data: t.readonlyArray(t.type({
-    handle: t.union([DoiFromString, t.string]),
-    fullReviews: t.readonlyArray(t.type({
-      createdAt: tt.DateFromISOString,
-      doi: tt.optionFromNullable(DoiFromString),
-    })),
+const preReviewPreprint = t.type({
+  handle: t.union([DoiFromString, t.string]),
+  fullReviews: t.readonlyArray(t.type({
+    createdAt: tt.DateFromISOString,
+    doi: tt.optionFromNullable(DoiFromString),
   })),
 });
+
+const preReviewResponse = t.type({
+  data: t.readonlyArray(preReviewPreprint),
+});
+
+type PreReviewPreprint = t.TypeOf<typeof preReviewPreprint>;
 
 type Review = {
   date: Date,
@@ -26,11 +30,17 @@ type Review = {
   reviewId: ReviewId.ReviewId,
 };
 
-const toReviews = (): ReadonlyArray<Review> => [{
-  date: new Date(),
-  articleDoi: new Doi('10.1101/380238'),
-  reviewId: new Doi('10.5281/zenodo.3662409'),
-}];
+const toReviews = (preprint: PreReviewPreprint): ReadonlyArray<Review> => {
+  if (!(preprint.handle instanceof Doi)) {
+    return [];
+  }
+
+  return [{
+    date: new Date(),
+    articleDoi: preprint.handle,
+    reviewId: new Doi('10.5281/zenodo.3662409'),
+  }];
+};
 
 void pipe(
   TE.tryCatch(
