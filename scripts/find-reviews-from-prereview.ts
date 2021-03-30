@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as E from 'fp-ts/Either';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
@@ -29,9 +30,13 @@ void pipe(
     preReviewResponse.decode,
     E.mapLeft((errors) => PR.failure(errors).join('\n')),
   )),
+  TE.map(flow(
+    ({ data }) => data,
+    RA.map((preprint) => preprint.handle),
+  )),
   TE.bimap(
     (error) => process.stderr.write(error),
-    ({ data }) => process.stdout.write(JSON.stringify(data, undefined, 2)),
+    (data) => process.stdout.write(JSON.stringify(data, undefined, 2)),
   ),
   TE.fold(
     () => process.exit(1),
