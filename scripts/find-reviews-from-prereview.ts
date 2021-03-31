@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
@@ -35,13 +36,20 @@ type Preprint = {
   handle: Doi,
   fullReviews: ReadonlyArray<{
     createdAt: Date,
-    doi: O.Option<Doi>,
+    doi: Doi,
   }>,
 };
 
 const toPreprint = flow(
   (preprint: PreReviewPreprint) => O.some(preprint),
   O.filter((preprint): preprint is PreReviewPreprint & { handle: Doi } => isDoi(preprint.handle)),
+  O.map((preprint): Preprint => pipe(
+    preprint.fullReviews,
+    RA.map((review) => ({ createdAt: O.some(review.createdAt), doi: review.doi })),
+    RA.map(sequenceS(O.option)),
+    RA.compact,
+    (fullReviews) => ({ handle: preprint.handle, fullReviews }),
+  )),
 );
 
 const toReviews = (preprint: Preprint): ReadonlyArray<Review> => [{
