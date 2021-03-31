@@ -42,7 +42,7 @@ type Preprint = {
 const toPreprint = O.fromPredicate(
   (
     preprint: PreReviewPreprint,
-  ): preprint is PreReviewPreprint & { handle: Doi } => isDoi(preprint.handle),
+  ): preprint is Preprint => isDoi(preprint.handle),
 );
 
 const toReviews = (preprint: Preprint): ReadonlyArray<Review> => [{
