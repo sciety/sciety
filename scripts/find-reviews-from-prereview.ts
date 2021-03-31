@@ -40,9 +40,12 @@ type Preprint = {
   }>,
 };
 
+const biorxivPrefix = '10.1101';
+
 const toPreprint = flow(
   (preprint: PreReviewPreprint) => O.some(preprint),
   O.filter((preprint): preprint is PreReviewPreprint & { handle: Doi } => isDoi(preprint.handle)),
+  O.filter((preprint) => preprint.handle.hasPrefix(biorxivPrefix)),
   O.map((preprint): Preprint => pipe(
     preprint.fullReviews,
     RA.map((review) => ({ createdAt: O.some(review.createdAt), doi: review.doi })),
