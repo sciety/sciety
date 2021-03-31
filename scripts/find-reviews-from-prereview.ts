@@ -39,10 +39,9 @@ type Preprint = {
   }>,
 };
 
-const toPreprint = O.fromPredicate(
-  (
-    preprint: PreReviewPreprint,
-  ): preprint is Preprint => isDoi(preprint.handle),
+const toPreprint = flow(
+  (preprint: PreReviewPreprint) => O.some(preprint),
+  O.filter((preprint): preprint is PreReviewPreprint & { handle: Doi } => isDoi(preprint.handle)),
 );
 
 const toReviews = (preprint: Preprint): ReadonlyArray<Review> => [{
