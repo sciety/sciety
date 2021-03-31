@@ -63,7 +63,7 @@ const toReviews = (preprint: Preprint): ReadonlyArray<Review> => pipe(
 void pipe(
   TE.tryCatch(
     async () => axios.get<unknown>(
-      'https://www.prereview.org/api/v2/preprints?limit=100',
+      'https://www.prereview.org/api/v2/preprints',
       { headers: { Accept: 'application/json' } },
     ),
     String,
