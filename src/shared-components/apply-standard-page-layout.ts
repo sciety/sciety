@@ -60,7 +60,7 @@ export const applyStandardPageLayout = (user: O.Option<User>) => (page: Page): s
       </div>
     </header>
 
-    <main>
+    <main class="page-content">
       ${page.content}
     </main>
   </div>

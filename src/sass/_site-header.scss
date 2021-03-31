@@ -24,6 +24,7 @@ $_search-icon-size: functions.px-to-rem(28px);
   background-color: settings.$colour-white;
 
   @include breakpoints.from-narrow() {
+    grid-column: 2/4;
     padding-top: baseline.increments(1);
 
     &:not(.site-header--menu) {
