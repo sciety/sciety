@@ -56,7 +56,7 @@ export const applyStandardPageLayout = (user: O.Option<User>) => (page: Page): s
           <img src="/static/images/menu-icon.svg" alt="" />
         </a>
 
-        ${utilityBar(user)}
+        ${utilityBar(user, 'utility-bar--standard-page')}
       </div>
     </header>
 

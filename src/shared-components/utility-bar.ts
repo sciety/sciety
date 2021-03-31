@@ -14,8 +14,8 @@ const logOutMenuItem = () => toHtmlFragment(`
   </li>
 `);
 
-export const utilityBar = (user: O.Option<User>): HtmlFragment => toHtmlFragment(`
-  <nav class="menu-page__nav utility-bar" aria-describedby="application-utilities">
+export const utilityBar = (user: O.Option<User>, cssClass: string): HtmlFragment => toHtmlFragment(`
+  <nav class="utility-bar ${cssClass}" aria-describedby="application-utilities">
       <div id="application-utilities" hidden>Sciety application utilities</div>
       <ul class="utility-bar__list" role="list">
         <li class="utility-bar__list_item utility-bar__list_item--search">

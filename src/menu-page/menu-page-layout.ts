@@ -53,7 +53,7 @@ export const menuPageLayout = (user: O.Option<User>, referer: O.Option<string>):
     </nav>
   </main>
 
-  ${utilityBar(user)}
+  ${utilityBar(user, 'utility-bar--menu-page')}
 
 </div>
 
