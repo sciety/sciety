@@ -52,11 +52,10 @@ const toPreprint = flow(
   )),
 );
 
-const toReviews = (preprint: Preprint): ReadonlyArray<Review> => [{
-  date: new Date(),
-  articleDoi: preprint.handle,
-  reviewId: new Doi('10.5281/zenodo.3662409'),
-}];
+const toReviews = (preprint: Preprint): ReadonlyArray<Review> => pipe(
+  preprint.fullReviews,
+  RA.map(({ doi, createdAt }) => ({ date: createdAt, articleDoi: preprint.handle, reviewId: doi })),
+);
 
 void pipe(
   TE.tryCatch(
