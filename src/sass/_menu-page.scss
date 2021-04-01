@@ -8,8 +8,6 @@
 @use 'states';
 @use 'typography';
 
-$_site-header-nav-height: 60px;
-
 $_menu-page-upper-inline-spacing: 26px;
 
 .menu-page-container {
@@ -17,7 +15,7 @@ $_menu-page-upper-inline-spacing: 26px;
   height: 100vh;
   display: grid;
   grid-template-columns: auto 1fr;
-  grid-template-rows: $_site-header-nav-height auto;
+  grid-template-rows: settings.$site-header-height auto;
 }
 
 .menu-page__close_nav {

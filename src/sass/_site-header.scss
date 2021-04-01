@@ -9,7 +9,7 @@
 @use 'typography';
 
 $_top-nav-shadow-height: 9px;
-$_site-header-height: 62px + $_top-nav-shadow-height;
+$_site-header-height: settings.$site-header-height + $_top-nav-shadow-height;
 $_search-icon-size: functions.px-to-rem(28px);
 
 .site-header {
