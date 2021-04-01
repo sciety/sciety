@@ -18,7 +18,7 @@ $_drawer-inline-padding: 16px;
   grid-template-rows: auto 1fr;
 
   @include breakpoints.from-narrow() {
-    grid-template-columns: functions.px-to-rem($_drawer-width) functions.px-to-rem(62px) 1fr;
+    grid-template-columns: functions.px-to-rem($_drawer-width) 1fr;
   }
 }
 
@@ -52,6 +52,6 @@ $_drawer-inline-padding: 16px;
 
 .page-content {
   @include breakpoints.from-narrow() {
-    grid-column: 2/4;
+    grid-column: 2;
   }
 }
