@@ -34,7 +34,6 @@ describe('authentication-and-redirect', () => {
 
     it('respond command returns to review fragment on the article page', async () => {
       await goto('localhost:8080/articles/10.1101/2020.07.13.199174');
-      await click('Got it!');
       await click($('.activity-feed__item:first-child button[value="respond-helpful"]'));
       await authenticateViaTwitter();
 
@@ -45,7 +44,6 @@ describe('authentication-and-redirect', () => {
 
     it('follow command from the group page returns to the group page', async () => {
       await goto('localhost:8080/groups/4eebcec9-a4bb-44e1-bde3-2ae11e65daaa');
-      await click('Got it!');
       await click('Follow');
       await authenticateViaTwitter();
 
@@ -58,7 +56,6 @@ describe('authentication-and-redirect', () => {
   describe('logged in', () => {
     beforeEach(async () => {
       await goto('localhost:8080/');
-      await click('Got it!');
       await click('Log in');
       await authenticateViaTwitter();
     });

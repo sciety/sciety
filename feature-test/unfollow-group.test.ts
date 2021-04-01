@@ -15,7 +15,6 @@ describe('unfollow a group', () => {
   describe('when logged in', () => {
     beforeEach(async () => {
       await goto('localhost:8080/');
-      await click('Got it!');
       await click('Log in');
       await authenticateViaTwitter();
     });
