@@ -44,6 +44,7 @@ test\:coverage: build
 	${DOCKER_COMPOSE} run --rm app npm run test:coverage
 
 backstop-test: export TARGET = dev
+backstop-test: export GOOGLE_TAG_MANAGER_ID = fakedToMakeBackstopRenderTheCookieBanner
 backstop-test: node_modules clean-db build
 	${DOCKER_COMPOSE} up -d
 	scripts/wait-for-healthy.sh
