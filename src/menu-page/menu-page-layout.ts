@@ -53,7 +53,9 @@ export const menuPageLayout = (user: O.Option<User>, referer: O.Option<string>):
     </nav>
   </main>
 
-  ${utilityBar(user, 'utility-bar--menu-page')}
+  <header class="menu-page-header">
+    ${utilityBar(user, 'utility-bar--menu-page')}
+  </header>
 
 </div>
 
