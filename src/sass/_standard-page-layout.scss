@@ -42,6 +42,7 @@ $_drawer-inline-padding: 16px;
 }
 
 .drawer__logo_link {
+  align-self: flex-start;
   margin-left: functions.px-to-rem($_drawer-logo-left-spacing);
   margin-bottom: baseline.increments(4.5);
 }
