@@ -56,7 +56,7 @@ $_menu-page-upper-inline-spacing: 26px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: functions.px-to-rem($_menu-page-upper-inline-spacing - 4px);
+  margin-left: functions.px-to-rem(settings.$menu-icons-left-spacing);
 
   &::before {
     @include layout.visually-hidden();

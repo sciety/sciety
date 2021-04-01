@@ -40,7 +40,7 @@ $_search-icon-size: functions.px-to-rem(28px);
 }
 
 .site-header__wrapper {
-  margin-left: 1rem;
+  margin-left: functions.px-to-rem(settings.$menu-icons-left-spacing);
   margin-top: baseline.increments(2);
   max-width: functions.px-to-rem(settings.$max-site-width);
   flex-grow: 1;
