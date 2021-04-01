@@ -53,12 +53,6 @@ body {
   min-height: 100vh;
 }
 
-.page-container {
-  min-height: 100vh;
-  display: grid;
-  grid-template-rows: auto 1fr;
-}
-
 main {
   display: flex;
   justify-content: center;

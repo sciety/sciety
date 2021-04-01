@@ -27,10 +27,6 @@ $_search-icon-size: functions.px-to-rem(28px);
     grid-column: 2/4;
   }
 
-  a {
-    @include states.focus();
-  }
-
   &:not(.site-header--menu) {
     background-image: linear-gradient(0deg, rgb(233, 235, 240) 0, rgb(207, 216, 220) $_top-nav-shadow-height - 1, #fff $_top-nav-shadow-height);
     height: functions.px-to-rem($_site-header-height);

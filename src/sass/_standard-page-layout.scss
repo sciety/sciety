@@ -6,6 +6,7 @@
 @use 'settings';
 @use 'typography';
 
+$_drawer-logo-left-spacing: 27px;
 $_drawer-icon-size: 24px;
 $_drawer-icon-inline-padding: 12px;
 $_drawer-width: 260px;
@@ -14,7 +15,7 @@ $_drawer-inline-padding: 16px;
 .page-container {
   min-height: 100vh;
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto 1fr;
 
   @include breakpoints.from-narrow() {
     grid-template-columns: functions.px-to-rem($_drawer-width) functions.px-to-rem(62px) 1fr;
@@ -41,7 +42,7 @@ $_drawer-inline-padding: 16px;
 }
 
 .drawer__logo_link {
-  margin-left: functions.px-to-rem(27px);
+  margin-left: functions.px-to-rem($_drawer-logo-left-spacing);
   margin-bottom: baseline.increments(4.5);
 }
 
