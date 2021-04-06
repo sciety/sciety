@@ -18,10 +18,6 @@
         },
         "declarations",
         {
-          "type": "at-rule",
-          "hasBlock": true
-        },
-        {
           "type": "rule",
           "selector": "/^&:\\w/"
         },
