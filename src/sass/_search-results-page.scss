@@ -33,6 +33,11 @@ $_clear-button-inline-size: 48px;
 
   @include breakpoints.from-narrow {
     padding-top: $_vertical-space-above-title--wide;
+
+    margin-left: functions.px-to-rem($_search-form-text-inline-padding + settings.$border-width);
+    @supports(display: grid) {
+      margin-left: unset;
+    }
   }
 }
 
