@@ -23,7 +23,18 @@
 .article-author-list {
   @include list.basics();
   font-family: settings.$font-secondary;
-  display: flow-root;
+
+  + * {
+    clear: left;
+  }
+
+  @supports (display: flow-root) {
+    display: flow-root;
+
+    + * {
+      clear: unset;
+    }
+  }
 }
 
 .article-author-list > li {
