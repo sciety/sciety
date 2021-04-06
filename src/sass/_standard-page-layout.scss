@@ -14,7 +14,9 @@ $_drawer-inline-padding: 16px;
 
 .page-container {
   min-height: 100vh;
-  display: grid;
+  @supports (display: grid) {
+    display: grid;
+  }
   grid-template-rows: auto 1fr;
 
   @include breakpoints.from-narrow() {
@@ -23,6 +25,12 @@ $_drawer-inline-padding: 16px;
 }
 
 .drawer {
+  max-width: 300px;
+  float: left;
+  @supports (display: grid) {
+    max-width: none;
+    float: none;
+  }
   display: none;
   position: sticky;
   top: 0;
