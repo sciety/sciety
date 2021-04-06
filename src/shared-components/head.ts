@@ -7,7 +7,7 @@ export const head = (title: string, openGraph?: { title: string, description: st
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>
-    ${htmlEscape(title)}
+    ${htmlEscape(title.startsWith('Sciety') ? title : `${title} | Sciety`)}
   </title>
   <link rel="stylesheet" href="/static/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.css">

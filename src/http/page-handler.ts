@@ -11,15 +11,10 @@ import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { User } from '../types/user';
 
-const addScietySuffixIfNotHomepage = (requestPath: string) => (page: Page) => ({
-  ...page,
-  title: requestPath === '/' ? page.title : `${page.title} | Sciety`,
-});
-
 const errorToWebPage = (user: O.Option<User>) => (error: RenderPageError) => pipe(
   renderErrorPage(error.message),
   (content) => ({
-    title: 'Error | Sciety',
+    title: 'Error',
     content,
   }),
   applyStandardPageLayout(user),
@@ -55,7 +50,6 @@ export const pageHandler = (
         ...context.state,
       },
       handler,
-      TE.map(addScietySuffixIfNotHomepage(context.request.path)),
       T.map(toWebPage(O.fromNullable(context.state.user))),
     )();
 

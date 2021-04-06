@@ -16,7 +16,7 @@ export const catchErrors = (logger: Logger, logMessage: string, pageMessage: str
 
       context.response.status = StatusCodes.INTERNAL_SERVER_ERROR;
       context.response.body = applyStandardPageLayout(O.none)({
-        title: 'Error | Sciety',
+        title: 'Error',
         content: renderErrorPage(toHtmlFragment(pageMessage)),
       });
     }

@@ -13,7 +13,7 @@ export const routeNotFound: Middleware<{ user: User | undefined }> = async (cont
     context.status = StatusCodes.NOT_FOUND;
     context.body = pipe(
       {
-        title: 'Page not found | Sciety',
+        title: 'Page not found',
         content: renderErrorPage(toHtmlFragment('Page not found.')),
       },
       applyStandardPageLayout(user),

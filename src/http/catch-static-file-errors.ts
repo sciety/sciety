@@ -21,7 +21,7 @@ export const catchStaticFileErrors = (logger: Logger): Middleware => async (cont
       context.response.status = StatusCodes.INTERNAL_SERVER_ERROR;
     }
     context.response.body = applyStandardPageLayout(O.none)({
-      title: 'Error | Sciety',
+      title: 'Error',
       content: renderErrorPage(toHtmlFragment(pageMessage)),
     });
   }
