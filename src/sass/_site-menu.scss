@@ -18,7 +18,10 @@ $_link-max-width: 300px;
 
 .site-menu__link {
   @include typography.sizing(14px, 1.75);
-  display: flex;
+  display: block;
+  @supports (display: flex) {
+    display: flex;
+  }
   align-items: center;
   min-height: baseline.increments(5);
   max-width: functions.px-to-rem($_link-max-width);
@@ -39,6 +42,14 @@ $_link-max-width: 300px;
       background-color: settings.$colour-navigation-menu-hover;
       color: inherit;
     }
+  }
+}
+
+.site-menu__link_text {
+  display: inline-block;
+  padding-top: ((5 * settings.$base-line-increment) - functions.px-to-rem(14px)) / 2;
+  @supports (display: flex) {
+    padding-top: 0;
   }
 }
 
