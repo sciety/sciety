@@ -30,7 +30,7 @@ $_search-icon-size: functions.px-to-rem(28px);
 
   @include breakpoints.from-narrow() {
     grid-column: 2;
-    width: calc(100% - 300px); // Drawer width is 300px
+    width: calc(100% - #{settings.$drawer-width});
 
     @supports (display: flex) {
       width: unset;
@@ -45,7 +45,7 @@ $_search-icon-size: functions.px-to-rem(28px);
 
 .site-header__inner {
   margin-left: functions.px-to-rem(settings.$menu-icons-left-spacing);
-  padding-top: 15px;
+  padding-top: (functions.px-to-rem(settings.$site-header-height) - $_search-icon-size) / 2;
   flex-grow: 1;
 
   @supports (display: flex) {

@@ -9,7 +9,6 @@
 $_drawer-logo-left-spacing: 27px;
 $_drawer-icon-size: 24px;
 $_drawer-icon-inline-padding: 12px;
-$_drawer-width: 260px;
 $_drawer-inline-padding: 16px;
 
 .page-container {
@@ -20,12 +19,12 @@ $_drawer-inline-padding: 16px;
   grid-template-rows: auto 1fr;
 
   @include breakpoints.from-narrow() {
-    grid-template-columns: functions.px-to-rem($_drawer-width) 1fr;
+    grid-template-columns: functions.px-to-rem(settings.$drawer-width) 1fr;
   }
 }
 
 .drawer {
-  max-width: 300px;
+  max-width: settings.$drawer-width;
   float: left;
   @supports (display: grid) {
     max-width: none;
@@ -61,7 +60,7 @@ $_drawer-inline-padding: 16px;
 
 .page-content {
   display: block;
-  margin-left: 300px;
+  margin-left: settings.$drawer-width;
 
   @supports (display: flex) {
     display: flex;
