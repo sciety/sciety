@@ -34,6 +34,11 @@ $_menu-page-upper-inline-spacing: 26px;
 }
 
 .menu-page-main-content {
+  @supports (display: flex) {
+    display: flex;
+    justify-content: center;
+  }
+
   order: 3;
   grid-column: 1 / -1;
   margin-bottom: 0; // TODO remove when global <main> has no margin-bottom
