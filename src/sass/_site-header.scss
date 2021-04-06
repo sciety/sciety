@@ -22,9 +22,19 @@ $_search-icon-size: functions.px-to-rem(28px);
   font-family: settings.$font-family;
   color: settings.$colour-text-primary;
   background-color: settings.$colour-white;
+  width: 100%;
+
+  @supports (display: flex) {
+    width: unset;
+  }
 
   @include breakpoints.from-narrow() {
     grid-column: 2;
+    width: calc(100% - 300px); // Drawer width is 300px
+
+    @supports (display: flex) {
+      width: unset;
+    }
   }
 
   &:not(.site-header--menu) {
@@ -36,16 +46,23 @@ $_search-icon-size: functions.px-to-rem(28px);
 .site-header__inner {
   margin-left: functions.px-to-rem(settings.$menu-icons-left-spacing);
   max-width: functions.px-to-rem(settings.$max-site-width);
+  padding-top: 15px;
   flex-grow: 1;
 
   @supports (display: flex) {
     display: flex;
     align-items: center;
+    padding-top: 0;
   }
 }
 
 .site-header__menu_link {
-  display: flex;
+  display: inline-block;
+  float: left;
+  @supports (display: flex) {
+    display: flex;
+    float: none;
+  }
 
   @include breakpoints.from-narrow() {
     display: none;

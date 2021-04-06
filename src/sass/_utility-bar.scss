@@ -11,6 +11,10 @@ $_site-header-inline-end-margin: 8px;
   margin-right: functions.px-to-rem($_site-header-inline-end-margin);
   flex-grow: 1;
   align-self: center;
+  float: right;
+  @supports (display: flex) {
+    float: none;
+  }
 }
 
 .utility-bar__list {
