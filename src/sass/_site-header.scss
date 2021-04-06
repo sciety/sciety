@@ -45,11 +45,11 @@ $_search-icon-size: functions.px-to-rem(28px);
 
 .site-header__inner {
   margin-left: functions.px-to-rem(settings.$menu-icons-left-spacing);
-  max-width: functions.px-to-rem(settings.$max-site-width);
   padding-top: 15px;
   flex-grow: 1;
 
   @supports (display: flex) {
+    max-width: functions.px-to-rem(settings.$max-site-width);
     display: flex;
     align-items: center;
     padding-top: 0;
