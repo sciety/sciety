@@ -33,7 +33,7 @@ $_search-icon-size: functions.px-to-rem(28px);
   }
 }
 
-.site-header__wrapper {
+.site-header__inner {
   margin-left: functions.px-to-rem(settings.$menu-icons-left-spacing);
   max-width: functions.px-to-rem(settings.$max-site-width);
   flex-grow: 1;

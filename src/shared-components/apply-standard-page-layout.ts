@@ -51,7 +51,7 @@ export const applyStandardPageLayout = (user: O.Option<User>) => (page: Page): s
 
     </nav>
     <header class="site-header">
-      <div class="site-header__wrapper">
+      <div class="site-header__inner">
         <a href="/menu" class="site-header__menu_link">
           <img src="/static/images/menu-icon.svg" alt="" />
         </a>
