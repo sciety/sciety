@@ -13,7 +13,9 @@ $_menu-page-upper-inline-spacing: 26px;
 .menu-page-container {
   flex-grow: 1;
   height: 100vh;
-  display: grid;
+  @supports(display: grid) {
+    display: grid;
+  }
   grid-template-columns: auto 1fr;
   grid-template-rows: settings.$site-header-height auto;
 }
@@ -39,7 +41,9 @@ $_menu-page-upper-inline-spacing: 26px;
   width: 100%;
   font-family: settings.$font-family;
   padding-top: baseline.increments(2);
-  display: flex;
+  @supports(display: flex) {
+    display: flex;
+  }
   flex-direction: column;
 }
 
@@ -53,7 +57,9 @@ $_menu-page-upper-inline-spacing: 26px;
 
 .menu-page__close_nav {
   align-self: center;
-  display: flex;
+  @supports(display: flex) {
+    display: flex;
+  }
   align-items: center;
   justify-content: center;
   margin-left: functions.px-to-rem(settings.$menu-icons-left-spacing);
