@@ -9,11 +9,13 @@ describe('fetch-extra-details', () => {
   describe('given a found article', () => {
     it('returns a correct view model', async () => {
       const latestVersionDate = new Date();
+      const latestActivityDate = new Date();
       const ports = {
         findReviewsForArticleDoi: () => T.of([
           {
             reviewId: new Doi('10.1101/111111'),
             groupId: new GroupId('my-group'),
+            occurredAt: latestActivityDate,
           },
         ]),
         getAllEvents: shouldNotBeCalled,
@@ -43,7 +45,7 @@ describe('fetch-extra-details', () => {
           expect.objectContaining({
             reviewCount: 1,
             latestVersionDate: O.some(latestVersionDate),
-            latestActivityDate: O.none,
+            latestActivityDate: O.some(latestActivityDate),
           }),
         ],
       });
