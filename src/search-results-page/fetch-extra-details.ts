@@ -36,6 +36,7 @@ const populateArticleViewModel = (findReviewsForArticleDoi: FindReviewsForArticl
   findReviewsForArticleDoi, // TODO: Find reviewsForArticleDoi should return a TaskEither
   T.map((reviews) => ({
     ...item,
+    latestVersionDate: O.none,
     reviewCount: reviews.length,
   })),
   TE.rightTask,

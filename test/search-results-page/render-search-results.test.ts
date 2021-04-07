@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { renderSearchResults } from '../../src/search-results-page/render-search-results';
 import { Doi } from '../../src/types/doi';
@@ -16,6 +17,7 @@ describe('render-search-results component', () => {
               title: 'the title',
               authors: '1, 2, 3',
               postedDate: new Date('2017-11-30'),
+              latestVersionDate: O.none,
               reviewCount: 0,
             },
           ],

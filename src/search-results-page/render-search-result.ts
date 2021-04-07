@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import { flow, pipe } from 'fp-ts/function';
 import { templateDate } from '../shared-components';
 import { Doi } from '../types/doi';
@@ -11,6 +12,7 @@ type ArticleViewModel = {
   title: string,
   authors: string,
   postedDate: Date,
+  latestVersionDate: O.Option<Date>,
   reviewCount: number,
 };
 
@@ -36,6 +38,14 @@ const renderEvaluationCount = (evaluationCount: number): HtmlFragment => pipe(
   toHtmlFragment,
 );
 
+const renderArticleVersionDate = (result: ArticleViewModel) => pipe(
+  result.latestVersionDate,
+  O.fold(
+    () => `Posted ${templateDate(result.postedDate)}`,
+    (latestVersionDate) => `Latest version ${templateDate(latestVersionDate)}`,
+  ),
+);
+
 const renderArticleSearchResult = flow(
   (result: ArticleViewModel) => `
     <div class="search-results-list__item_container">
@@ -44,7 +54,7 @@ const renderArticleSearchResult = flow(
         ${result.authors}
       </div>
       <ul class="search-results-list__item__meta">
-        <li class="search-results-list__item__meta__item">${renderEvaluationCount(result.reviewCount)}</li><li class="search-results-list__item__meta__item">Posted ${templateDate(result.postedDate)}</li>
+        <li class="search-results-list__item__meta__item">${renderEvaluationCount(result.reviewCount)}</li><li class="search-results-list__item__meta__item">${renderArticleVersionDate(result)}</li>
       </ul>
     </div>
   `,

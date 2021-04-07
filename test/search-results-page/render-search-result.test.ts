@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import {
   ItemViewModel,
   renderSearchResult,
@@ -10,6 +11,7 @@ const searchResult: ItemViewModel = {
   title: 'the title',
   authors: '1, 2, 3',
   postedDate: new Date('2017-11-30'),
+  latestVersionDate: O.none,
   reviewCount: 0,
 };
 
@@ -35,6 +37,7 @@ describe('render-search-result component', () => {
       title: 'the title',
       authors: '1, 2, 3',
       postedDate: new Date('2017-11-30'),
+      latestVersionDate: O.none,
       reviewCount: 37,
     });
 
@@ -48,6 +51,7 @@ describe('render-search-result component', () => {
       title: 'the title',
       authors: '1, 2, 3',
       postedDate: new Date('2017-11-30'),
+      latestVersionDate: O.none,
       reviewCount: 1,
     });
 
