@@ -1,5 +1,5 @@
 import * as O from 'fp-ts/Option';
-import { flow, pipe } from 'fp-ts/function';
+import { constant, flow, pipe } from 'fp-ts/function';
 import { templateDate } from '../shared-components';
 import { Doi } from '../types/doi';
 import { GroupId } from '../types/group-id';
@@ -13,6 +13,7 @@ type ArticleViewModel = {
   authors: string,
   postedDate: Date,
   latestVersionDate: O.Option<Date>,
+  latestActivityDate: O.Option<Date>,
   reviewCount: number,
 };
 
@@ -46,6 +47,11 @@ const renderArticleVersionDate = (result: ArticleViewModel) => pipe(
   ),
 );
 
+const renderArticleActivityDateMetaItem = O.fold(
+  constant(''),
+  (date: Date) => `<li class="search-results-list__item__meta__item">Latest activity ${templateDate(date)}</li>`,
+);
+
 const renderArticleSearchResult = flow(
   (result: ArticleViewModel) => `
     <div class="search-results-list__item_container">
@@ -54,7 +60,7 @@ const renderArticleSearchResult = flow(
         ${result.authors}
       </div>
       <ul class="search-results-list__item__meta">
-        <li class="search-results-list__item__meta__item">${renderEvaluationCount(result.reviewCount)}</li><li class="search-results-list__item__meta__item">${renderArticleVersionDate(result)}</li>
+        <li class="search-results-list__item__meta__item">${renderEvaluationCount(result.reviewCount)}</li><li class="search-results-list__item__meta__item">${renderArticleVersionDate(result)}</li>${renderArticleActivityDateMetaItem(result.latestActivityDate)}
       </ul>
     </div>
   `,

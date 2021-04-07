@@ -18,6 +18,7 @@ describe('render-search-results component', () => {
               authors: '1, 2, 3',
               postedDate: new Date('2017-11-30'),
               latestVersionDate: O.none,
+              latestActivityDate: O.none,
               reviewCount: 0,
             },
           ],

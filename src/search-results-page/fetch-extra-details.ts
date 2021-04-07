@@ -46,6 +46,7 @@ const populateArticleViewModel = (
   T.map(({ reviews, latestVersionDate }) => ({
     ...item,
     latestVersionDate,
+    latestActivityDate: O.none,
     reviewCount: reviews.length,
   })),
   TE.rightTask,

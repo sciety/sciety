@@ -43,6 +43,7 @@ describe('fetch-extra-details', () => {
           expect.objectContaining({
             reviewCount: 1,
             latestVersionDate: O.some(latestVersionDate),
+            latestActivityDate: O.none,
           }),
         ],
       });
