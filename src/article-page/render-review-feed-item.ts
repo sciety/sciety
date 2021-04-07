@@ -31,7 +31,6 @@ const avatar = (review: ReviewFeedItem) => toHtmlFragment(`
 const eventMetadata = (review: ReviewFeedItem) => toHtmlFragment(`
   <div class="activity-feed__item__meta">
     <div class="activity-feed__item__title">
-      ${(review.groupId.value === 'f97bd177-5cb6-4296-8573-078318755bf2') ? 'Highlighted by' : 'Reviewed by'}
       <a href="/groups/${review.groupId.value}">
         ${review.groupName}
       </a>
