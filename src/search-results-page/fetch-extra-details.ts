@@ -32,6 +32,7 @@ export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 export type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
   reviewId: ReviewId,
   groupId: GroupId,
+  occurredAt: Date,
 }>>;
 
 type GetLatestArticleVersionDate = (articleDoi: Doi, server: ArticleServer) => T.Task<O.Option<Date>>;
@@ -46,7 +47,7 @@ const populateArticleViewModel = (
   T.map(({ reviews, latestVersionDate }) => ({
     ...item,
     latestVersionDate,
-    latestActivityDate: O.none,
+    latestActivityDate: pipe(reviews, RA.last, O.map(({ occurredAt }) => occurredAt)),
     reviewCount: reviews.length,
   })),
   TE.rightTask,
