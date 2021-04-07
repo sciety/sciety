@@ -16,6 +16,9 @@ describe('search-europe-pmc adapter', () => {
               title: 'Article title',
               authorString: 'Author 1, Author 2',
               firstPublicationDate: '2019-11-07',
+              bookOrReportDetails: {
+                publisher: 'bioRxiv',
+              },
             },
           ],
         },
@@ -28,6 +31,7 @@ describe('search-europe-pmc adapter', () => {
       items: [
         {
           doi: new Doi('10.1111/1234'),
+          server: 'biorxiv',
           title: 'Article title',
           authors: 'Author 1, Author 2',
           postedDate: new Date('2019-11-07'),

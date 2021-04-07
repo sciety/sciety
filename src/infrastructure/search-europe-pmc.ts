@@ -7,6 +7,7 @@ import * as t from 'io-ts';
 import { Json } from 'io-ts-types';
 import { DateFromISOString } from 'io-ts-types/DateFromISOString';
 import { Logger } from './logger';
+import { ArticleServer } from '../types/article-server';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { Doi } from '../types/doi';
 
@@ -14,6 +15,7 @@ type GetJson = (uri: string) => Promise<Json>;
 
 type SearchResult = {
   doi: Doi,
+  server: ArticleServer,
   title: string,
   authors: string,
   postedDate: Date,
@@ -36,6 +38,9 @@ const resultDetails = t.type({
   title: t.string,
   authorString: t.string,
   firstPublicationDate: DateFromISOString,
+  bookOrReportDetails: t.type({
+    publisher: t.union([t.literal('bioRxiv'), t.literal('medRxiv')]),
+  }),
 });
 
 const europePmcResponse = t.type({
@@ -59,6 +64,7 @@ const constructSearchUrl = (queryParams: URLSearchParams) => `https://www.ebi.ac
 const constructSearchResults = (data: EuropePmcResponse) => {
   const items = data.resultList.result.map((item) => ({
     doi: item.doi,
+    server: item.bookOrReportDetails.publisher === 'bioRxiv' ? 'biorxiv' as const : 'medrxiv' as const,
     title: item.title,
     authors: item.authorString,
     postedDate: item.firstPublicationDate,

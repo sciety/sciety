@@ -27,6 +27,7 @@ describe('fetch-extra-details', () => {
           {
             _tag: 'Article' as const,
             doi: new Doi('10.1101/222222'),
+            server: 'biorxiv' as const,
             title: '',
             authors: '',
             postedDate: new Date(),

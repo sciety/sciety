@@ -16,6 +16,7 @@ describe('select-subset-to-display', () => {
       const article = {
         _tag: 'Article' as const,
         doi: new Doi('10.1101/1234'),
+        server: 'biorxiv' as const,
         title: '',
         authors: '',
         postedDate: new Date(),

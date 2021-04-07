@@ -3,11 +3,12 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, pipe } from 'fp-ts/function';
+import { flow, pipe, tupled } from 'fp-ts/function';
 import { ArticleItem, GroupItem } from './data-types';
 import { ItemViewModel } from './render-search-result';
 import { SearchResults } from './render-search-results';
 import { updateGroupMeta } from './update-group-meta';
+import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 import { DomainEvent } from '../types/domain-events';
 import { Group } from '../types/group';
@@ -33,7 +34,7 @@ export type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray
   groupId: GroupId,
 }>>;
 
-type GetLatestArticleVersionDate = (articleDoi: Doi) => T.Task<O.Option<Date>>;
+type GetLatestArticleVersionDate = (articleDoi: Doi, server: ArticleServer) => T.Task<O.Option<Date>>;
 
 const populateArticleViewModel = (
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
@@ -41,7 +42,7 @@ const populateArticleViewModel = (
 ) => (item: ArticleItem) => pipe(
   T.Do,
   T.apS('reviews', pipe(item.doi, findReviewsForArticleDoi)),
-  T.apS('latestVersionDate', pipe(item.doi, getLatestArticleVersionDate)),
+  T.apS('latestVersionDate', pipe([item.doi, item.server], tupled(getLatestArticleVersionDate))),
   T.map(({ reviews, latestVersionDate }) => ({
     ...item,
     latestVersionDate,
