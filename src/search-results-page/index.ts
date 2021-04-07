@@ -1,15 +1,18 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, pipe } from 'fp-ts/function';
+import { flow, pipe, tupled } from 'fp-ts/function';
 import { ArticleItem } from './data-types';
 import {
   fetchExtraDetails, FindReviewsForArticleDoi, GetAllEvents, GetGroup,
 } from './fetch-extra-details';
 import { renderErrorPage, RenderPage, renderPage } from './render-page';
 import { selectSubsetToDisplay } from './select-subset-to-display';
+import { ArticleServer } from '../types/article-server';
+import { Doi } from '../types/doi';
 import { GroupId } from '../types/group-id';
 
 type ArticleResults = {
@@ -21,9 +24,15 @@ type FindArticles = (query: string) => TE.TaskEither<'unavailable', ArticleResul
 
 type FindGroups = (q: string) => T.Task<ReadonlyArray<GroupId>>;
 
+type FindVersionsForArticleDoi = (
+  doi: Doi,
+  server: ArticleServer,
+) => T.Task<O.Option<RNEA.ReadonlyNonEmptyArray<{ occurredAt: Date }>>>;
+
 type Ports = {
   findGroups: FindGroups,
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
+  findVersionsForArticleDoi: FindVersionsForArticleDoi,
   getAllEvents: GetAllEvents,
   getGroup: GetGroup,
   searchEuropePmc: FindArticles,
@@ -65,6 +74,16 @@ export const searchResultsPage = (ports: Ports): SearchResultsPage => flow(
   }),
   sequenceS(TE.taskEither),
   TE.map(selectSubsetToDisplay(10)),
-  TE.chainW(flow(fetchExtraDetails({ ...ports, getLatestArticleVersionDate: () => T.of(O.none) }), TE.rightTask)),
+  TE.chainW(flow(fetchExtraDetails({
+    ...ports,
+    getLatestArticleVersionDate: (doi, server) => pipe(
+      [doi, server],
+      tupled(ports.findVersionsForArticleDoi),
+      T.map(O.map(flow(
+        RNEA.last,
+        (version) => version.occurredAt,
+      ))),
+    ),
+  }), TE.rightTask)),
   TE.bimap(renderErrorPage, renderPage),
 );
