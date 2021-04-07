@@ -26,17 +26,23 @@ export type GetGroup = (groupId: GroupId) => T.Task<O.Option<Group>>;
 
 export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
+// TODO: Find reviewsForArticleDoi should return a TaskEither
 export type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
   reviewId: ReviewId,
   groupId: GroupId,
 }>>;
 
+type GetLatestArticleVersionDate = (articleDoi: Doi) => T.Task<O.Option<Date>>;
+
+const getLatestArticleVersionDate: GetLatestArticleVersionDate = () => T.of(O.none);
+
 const populateArticleViewModel = (findReviewsForArticleDoi: FindReviewsForArticleDoi) => (item: ArticleItem) => pipe(
-  item.doi,
-  findReviewsForArticleDoi, // TODO: Find reviewsForArticleDoi should return a TaskEither
-  T.map((reviews) => ({
+  T.Do,
+  T.apS('reviews', pipe(item.doi, findReviewsForArticleDoi)),
+  T.apS('latestVersionDate', pipe(item.doi, getLatestArticleVersionDate)),
+  T.map(({ reviews, latestVersionDate }) => ({
     ...item,
-    latestVersionDate: O.none,
+    latestVersionDate,
     reviewCount: reviews.length,
   })),
   TE.rightTask,
