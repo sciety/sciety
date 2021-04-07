@@ -24,12 +24,6 @@ describe('render-search-result component', () => {
     expect(rendered).toStrictEqual(expect.stringContaining(searchResult.authors));
   });
 
-  it('displays the posted date', async () => {
-    const rendered = renderSearchResult(searchResult);
-
-    expect(rendered).toStrictEqual(expect.stringMatching(/Posted[\s\S]*?Nov 30, 2017/));
-  });
-
   it('displays the number of evaluations', async () => {
     const rendered = renderSearchResult({
       _tag: 'Article',
@@ -56,5 +50,21 @@ describe('render-search-result component', () => {
     });
 
     expect(rendered).toStrictEqual(expect.stringMatching('1 evaluation'));
+  });
+
+  describe('when there is a latest version date', () => {
+    it('displays the posted date', async () => {
+      const rendered = renderSearchResult({ ...searchResult, latestVersionDate: O.some(new Date('2020-06-07')) });
+
+      expect(rendered).toStrictEqual(expect.stringMatching(/Latest version[\s\S]*?Jun 7, 2020/));
+    });
+  });
+
+  describe('when there is not a latest version date', () => {
+    it('displays the posted date', async () => {
+      const rendered = renderSearchResult({ ...searchResult, latestVersionDate: O.none });
+
+      expect(rendered).toStrictEqual(expect.stringMatching(/Posted[\s\S]*?Nov 30, 2017/));
+    });
   });
 });
