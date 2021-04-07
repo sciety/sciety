@@ -34,9 +34,12 @@ export type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray
 
 type GetLatestArticleVersionDate = (articleDoi: Doi) => T.Task<O.Option<Date>>;
 
-const getLatestArticleVersionDate: GetLatestArticleVersionDate = () => T.of(O.none);
+const hardcodedGetLatestArticleVersionDate: GetLatestArticleVersionDate = () => T.of(O.none);
 
-const populateArticleViewModel = (findReviewsForArticleDoi: FindReviewsForArticleDoi) => (item: ArticleItem) => pipe(
+const populateArticleViewModel = (
+  findReviewsForArticleDoi: FindReviewsForArticleDoi,
+  getLatestArticleVersionDate: GetLatestArticleVersionDate,
+) => (item: ArticleItem) => pipe(
   T.Do,
   T.apS('reviews', pipe(item.doi, findReviewsForArticleDoi)),
   T.apS('latestVersionDate', pipe(item.doi, getLatestArticleVersionDate)),
@@ -68,7 +71,7 @@ const populateGroupViewModel = (getGroup: GetGroup, getAllEvents: GetAllEvents) 
 const fetchItemDetails = (ports: Ports) => (item: GroupItem | ArticleItem): TE.TaskEither<'not-found', ItemViewModel> => {
   switch (item._tag) {
     case 'Article':
-      return pipe(item, populateArticleViewModel(ports.findReviewsForArticleDoi));
+      return pipe(item, populateArticleViewModel(ports.findReviewsForArticleDoi, hardcodedGetLatestArticleVersionDate));
     case 'Group':
       return pipe(item, populateGroupViewModel(ports.getGroup, ports.getAllEvents));
   }
