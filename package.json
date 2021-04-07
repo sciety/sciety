@@ -19,7 +19,7 @@
     "csv-parse": "^4.15.3",
     "escape-goat": "^3.0.0",
     "fp-ts": "^2.9.5",
-    "googleapis": "^68.0.0",
+    "googleapis": "^70.0.0",
     "http-status-codes": "^2.1.4",
     "io-ts": "^2.2.16",
     "io-ts-types": "^0.5.16",
