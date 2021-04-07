@@ -8,6 +8,7 @@ import { shouldNotBeCalled } from '../should-not-be-called';
 describe('fetch-extra-details', () => {
   describe('given a found article', () => {
     it('returns a correct view model', async () => {
+      const latestVersionDate = new Date();
       const ports = {
         findReviewsForArticleDoi: () => T.of([
           {
@@ -17,6 +18,7 @@ describe('fetch-extra-details', () => {
         ]),
         getAllEvents: shouldNotBeCalled,
         getGroup: shouldNotBeCalled,
+        getLatestArticleVersionDate: () => T.of(O.some(latestVersionDate)),
       };
       const matches = {
         query: '',
@@ -39,6 +41,7 @@ describe('fetch-extra-details', () => {
         itemsToDisplay: [
           expect.objectContaining({
             reviewCount: 1,
+            latestVersionDate: O.some(latestVersionDate),
           }),
         ],
       });
@@ -58,6 +61,7 @@ describe('fetch-extra-details', () => {
             descriptionPath: '',
             shortDescription: '',
           })),
+          getLatestArticleVersionDate: shouldNotBeCalled,
         };
         const matches = {
           query: '',
@@ -90,6 +94,7 @@ describe('fetch-extra-details', () => {
           findReviewsForArticleDoi: shouldNotBeCalled,
           getAllEvents: shouldNotBeCalled,
           getGroup: () => T.of(O.none),
+          getLatestArticleVersionDate: shouldNotBeCalled,
         };
         const matches = {
           query: '',

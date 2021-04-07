@@ -20,6 +20,7 @@ type Ports = {
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
   getAllEvents: GetAllEvents,
   getGroup: GetGroup,
+  getLatestArticleVersionDate: GetLatestArticleVersionDate,
 };
 
 export type GetGroup = (groupId: GroupId) => T.Task<O.Option<Group>>;
@@ -33,8 +34,6 @@ export type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray
 }>>;
 
 type GetLatestArticleVersionDate = (articleDoi: Doi) => T.Task<O.Option<Date>>;
-
-const hardcodedGetLatestArticleVersionDate: GetLatestArticleVersionDate = () => T.of(O.none);
 
 const populateArticleViewModel = (
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
@@ -71,7 +70,7 @@ const populateGroupViewModel = (getGroup: GetGroup, getAllEvents: GetAllEvents) 
 const fetchItemDetails = (ports: Ports) => (item: GroupItem | ArticleItem): TE.TaskEither<'not-found', ItemViewModel> => {
   switch (item._tag) {
     case 'Article':
-      return pipe(item, populateArticleViewModel(ports.findReviewsForArticleDoi, hardcodedGetLatestArticleVersionDate));
+      return pipe(item, populateArticleViewModel(ports.findReviewsForArticleDoi, ports.getLatestArticleVersionDate));
     case 'Group':
       return pipe(item, populateGroupViewModel(ports.getGroup, ports.getAllEvents));
   }
