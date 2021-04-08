@@ -197,7 +197,7 @@ $_clear-button-inline-size: 48px;
 }
 
 .search-results-list__item__meta {
-  @include typography.sizing(12px, 2.5);
+  @include typography.sizing(12px, 1.1 * 12px / 8px);
   color: settings.$colour-text-secondary;
   font-family: settings.$font-family;
   letter-spacing: 0.09px;
