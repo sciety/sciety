@@ -32,12 +32,14 @@ export type ItemViewModel = ArticleViewModel | GroupViewModel;
 const wrapInSpan = (text: string) => toHtmlFragment(`<span>${text}</span>`);
 
 const renderFollowerCount = (followerCount: number): HtmlFragment => pipe(
-  `${followerCount} ${followerCount === 1 ? 'follower' : 'followers'}`,
+  followerCount === 1,
+  (singular) => `${followerCount} ${singular ? 'follower' : 'followers'}`,
   wrapInSpan,
 );
 
 const renderEvaluationCount = (evaluationCount: number): HtmlFragment => pipe(
-  `${evaluationCount} ${evaluationCount === 1 ? 'evaluation' : 'evaluations'}`,
+  evaluationCount === 1,
+  (singular) => `${evaluationCount} ${singular ? 'evaluation' : 'evaluations'}`,
   wrapInSpan,
 );
 
