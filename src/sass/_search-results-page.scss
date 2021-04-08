@@ -19,7 +19,7 @@ $_clear-button-inline-size: 48px;
 
   @include breakpoints.from-narrow {
     margin: 0;
-    grid-column: 3/11;
+    grid-column: 3 / 11;
   }
 }
 
@@ -62,7 +62,7 @@ $_clear-button-inline-size: 48px;
   position: relative;
 
   @include breakpoints.from-narrow {
-    grid-column: 3/11;
+    grid-column: 3 / 11;
     margin-left: 0;
     margin-right: 0;
   }
@@ -109,7 +109,7 @@ $_clear-button-inline-size: 48px;
   grid-column: 1 / -1;
 
   @include breakpoints.from-narrow {
-    grid-column: 3/11;
+    grid-column: 3 / 11;
   }
 }
 
