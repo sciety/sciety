@@ -29,16 +29,16 @@ type GroupViewModel = {
 
 export type ItemViewModel = ArticleViewModel | GroupViewModel;
 
+const wrapInSpan = (text: string) => toHtmlFragment(`<span>${text}</span>`);
+
 const renderFollowerCount = (followerCount: number): HtmlFragment => pipe(
   `${followerCount} ${followerCount === 1 ? 'follower' : 'followers'}`,
-  (text) => `<span>${text}</span>`,
-  toHtmlFragment,
+  wrapInSpan,
 );
 
 const renderEvaluationCount = (evaluationCount: number): HtmlFragment => pipe(
   `${evaluationCount} ${evaluationCount === 1 ? 'evaluation' : 'evaluations'}`,
-  (text) => `<span>${text}</span>`,
-  toHtmlFragment,
+  wrapInSpan,
 );
 
 const renderArticleVersionDate = (result: ArticleViewModel): HtmlFragment => pipe(
@@ -47,16 +47,15 @@ const renderArticleVersionDate = (result: ArticleViewModel): HtmlFragment => pip
     () => `Posted ${templateDate(result.postedDate)}`,
     (latestVersionDate) => `Latest version ${templateDate(latestVersionDate)}`,
   ),
-  (text) => `<span>${text}</span>`,
-  toHtmlFragment,
+  wrapInSpan,
 );
 
-const renderArticleActivityDateMetaItem = flow(
-  O.fold(
-    constant(''),
-    (date: Date) => `<span>Latest activity ${templateDate(date)}</span>`,
+const renderArticleActivityDateMetaItem = O.fold(
+  constant(toHtmlFragment('')),
+  (date: Date) => pipe(
+    `Latest activity ${templateDate(date)}`,
+    wrapInSpan,
   ),
-  toHtmlFragment,
 );
 
 const renderArticleSearchResult = flow(
