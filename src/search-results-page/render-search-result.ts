@@ -31,25 +31,32 @@ export type ItemViewModel = ArticleViewModel | GroupViewModel;
 
 const renderFollowerCount = (followerCount: number): HtmlFragment => pipe(
   `${followerCount} ${followerCount === 1 ? 'follower' : 'followers'}`,
+  (text) => `<span>${text}</span>`,
   toHtmlFragment,
 );
 
 const renderEvaluationCount = (evaluationCount: number): HtmlFragment => pipe(
   `${evaluationCount} ${evaluationCount === 1 ? 'evaluation' : 'evaluations'}`,
+  (text) => `<span>${text}</span>`,
   toHtmlFragment,
 );
 
-const renderArticleVersionDate = (result: ArticleViewModel) => pipe(
+const renderArticleVersionDate = (result: ArticleViewModel): HtmlFragment => pipe(
   result.latestVersionDate,
   O.fold(
     () => `Posted ${templateDate(result.postedDate)}`,
     (latestVersionDate) => `Latest version ${templateDate(latestVersionDate)}`,
   ),
+  (text) => `<span>${text}</span>`,
+  toHtmlFragment,
 );
 
-const renderArticleActivityDateMetaItem = O.fold(
-  constant(''),
-  (date: Date) => `<span>Latest activity ${templateDate(date)}</span>`,
+const renderArticleActivityDateMetaItem = flow(
+  O.fold(
+    constant(''),
+    (date: Date) => `<span>Latest activity ${templateDate(date)}</span>`,
+  ),
+  toHtmlFragment,
 );
 
 const renderArticleSearchResult = flow(
@@ -60,7 +67,7 @@ const renderArticleSearchResult = flow(
         ${result.authors}
       </div>
       <span class="search-results-list__item__meta">
-        <span>${renderEvaluationCount(result.reviewCount)}</span><span>${renderArticleVersionDate(result)}</span>${renderArticleActivityDateMetaItem(result.latestActivityDate)}
+        ${renderEvaluationCount(result.reviewCount)}${renderArticleVersionDate(result)}${renderArticleActivityDateMetaItem(result.latestActivityDate)}
       </span>
     </div>
   `,
@@ -75,7 +82,7 @@ const renderGroupSearchResult = flow(
         ${result.description}
       </div>
       <span class="search-results-list__item__meta">
-        <span>${renderEvaluationCount(result.reviewCount)}</span><span>${renderFollowerCount(result.followerCount)}</span>
+        ${renderEvaluationCount(result.reviewCount)}${renderFollowerCount(result.followerCount)}
       </span>
     </div>
     <img class="search-results-list__item__avatar" src="${result.avatarPath}" alt="" />
