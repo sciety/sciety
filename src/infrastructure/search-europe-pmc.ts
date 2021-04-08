@@ -33,13 +33,15 @@ type Dependencies = {
 
 type SearchEuropePmc = (query: string) => RTE.ReaderTaskEither<Dependencies, 'unavailable', SearchResults>;
 
+const europePmcPublisher = t.union([t.literal('bioRxiv'), t.literal('medRxiv')]);
+
 const resultDetails = t.type({
   doi: DoiFromString,
   title: t.string,
   authorString: t.string,
   firstPublicationDate: DateFromISOString,
   bookOrReportDetails: t.type({
-    publisher: t.union([t.literal('bioRxiv'), t.literal('medRxiv')]),
+    publisher: europePmcPublisher,
   }),
 });
 
@@ -52,6 +54,8 @@ const europePmcResponse = t.type({
 
 type EuropePmcResponse = t.TypeOf<typeof europePmcResponse>;
 
+type EuropePmcPublisher = t.TypeOf<typeof europePmcPublisher>;
+
 const constructQueryParams = (query: string) => (
   new URLSearchParams({
     query: `${query} (PUBLISHER:"bioRxiv" OR PUBLISHER:"medRxiv") sort_date:y`,
@@ -61,10 +65,19 @@ const constructQueryParams = (query: string) => (
 
 const constructSearchUrl = (queryParams: URLSearchParams) => `https://www.ebi.ac.uk/europepmc/webservices/rest/search?${queryParams.toString()}`;
 
+const translatePublisherToServer = (publisher: EuropePmcPublisher): ArticleServer => {
+  switch (publisher) {
+    case 'bioRxiv':
+      return 'biorxiv';
+    case 'medRxiv':
+      return 'medrxiv';
+  }
+};
+
 const constructSearchResults = (data: EuropePmcResponse) => {
   const items = data.resultList.result.map((item) => ({
     doi: item.doi,
-    server: item.bookOrReportDetails.publisher === 'bioRxiv' ? 'biorxiv' as const : 'medrxiv' as const,
+    server: translatePublisherToServer(item.bookOrReportDetails.publisher),
     title: item.title,
     authors: item.authorString,
     postedDate: item.firstPublicationDate,
