@@ -35,6 +35,13 @@ export type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray
   occurredAt: Date,
 }>>;
 
+type GetLatestActivityDate = (reviews: ReadonlyArray<{ occurredAt: Date }>) => O.Option<Date>;
+
+const getLatestActivityDate: GetLatestActivityDate = flow(
+  RA.last,
+  O.map(({ occurredAt }) => occurredAt),
+);
+
 type GetLatestArticleVersionDate = (articleDoi: Doi, server: ArticleServer) => T.Task<O.Option<Date>>;
 
 const populateArticleViewModel = (
@@ -44,7 +51,7 @@ const populateArticleViewModel = (
   T.Do,
   T.apS('reviews', pipe(item.doi, findReviewsForArticleDoi)),
   T.apS('latestVersionDate', pipe([item.doi, item.server], tupled(getLatestArticleVersionDate))),
-  T.bind('latestActivityDate', ({ reviews }) => pipe(reviews, RA.last, O.map(({ occurredAt }) => occurredAt), T.of)),
+  T.bind('latestActivityDate', ({ reviews }) => pipe(reviews, getLatestActivityDate, T.of)),
   T.bind('reviewCount', ({ reviews }) => pipe(reviews.length, T.of)),
   T.map(({ latestVersionDate, latestActivityDate, reviewCount }) => ({
     ...item,
