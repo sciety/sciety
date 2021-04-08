@@ -49,7 +49,7 @@ const renderArticleVersionDate = (result: ArticleViewModel) => pipe(
 
 const renderArticleActivityDateMetaItem = O.fold(
   constant(''),
-  (date: Date) => `<li class="search-results-list__item__meta__item">Latest activity ${templateDate(date)}</li>`,
+  (date: Date) => `<span>Latest activity ${templateDate(date)}</span>`,
 );
 
 const renderArticleSearchResult = flow(
@@ -59,9 +59,9 @@ const renderArticleSearchResult = flow(
       <div class="search-results-list__item__description">
         ${result.authors}
       </div>
-      <ul class="search-results-list__item__meta">
-        <li class="search-results-list__item__meta__item">${renderEvaluationCount(result.reviewCount)}</li><li class="search-results-list__item__meta__item">${renderArticleVersionDate(result)}</li>${renderArticleActivityDateMetaItem(result.latestActivityDate)}
-      </ul>
+      <span class="search-results-list__item__meta">
+        <span>${renderEvaluationCount(result.reviewCount)}</span><span>${renderArticleVersionDate(result)}</span>${renderArticleActivityDateMetaItem(result.latestActivityDate)}
+      </span>
     </div>
   `,
   toHtmlFragment,
@@ -74,11 +74,11 @@ const renderGroupSearchResult = flow(
       <div class="search-results-list__item__description">
         ${result.description}
       </div>
-      <ul class="search-results-list__item__meta">
-        <li class="search-results-list__item__meta__item">${renderEvaluationCount(result.reviewCount)}</li><li class="search-results-list__item__meta__item">${renderFollowerCount(result.followerCount)}</li>
-      </ul>
+      <span class="search-results-list__item__meta">
+        <span>${renderEvaluationCount(result.reviewCount)}</span><span>${renderFollowerCount(result.followerCount)}</span>
+      </span>
     </div>
-    <img class="search-results-list__item__avatar" src="${result.avatarPath}" />
+    <img class="search-results-list__item__avatar" src="${result.avatarPath}" alt="" />
   `,
   toHtmlFragment,
 );

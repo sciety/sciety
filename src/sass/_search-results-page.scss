@@ -197,22 +197,19 @@ $_clear-button-inline-size: 48px;
 }
 
 .search-results-list__item__meta {
-  @include list.basics();
   @include typography.sizing(12px, 2.5);
   color: settings.$colour-text-secondary;
   font-family: settings.$font-family;
   letter-spacing: 0.09px;
-  display: inline;
+
+  > * {
+    margin-right: 0.25rem;
+  }
 
   > :nth-child(n+2)::before {
     content: '•';
     margin-right: 0.25rem;
   }
-}
-
-.search-results-list__item__meta__item {
-  display: inline;
-  margin-right: 0.25rem;
 }
 
 .search-results-list__item_container {
