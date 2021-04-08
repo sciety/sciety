@@ -1,5 +1,5 @@
 import * as E from 'fp-ts/Either';
-import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import { DOMParser } from 'xmldom';
 import { Logger } from './logger';
 import {
@@ -11,7 +11,7 @@ import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
 type FetchCrossrefArticleError = 'not-found' | 'unavailable';
 
-export type FetchCrossrefArticle = (doi: Doi) => T.Task<E.Either<
+export type FetchCrossrefArticle = (doi: Doi) => TE.TaskEither<
 FetchCrossrefArticleError,
 {
   abstract: SanitisedHtmlFragment,
@@ -21,7 +21,7 @@ FetchCrossrefArticleError,
   publicationDate: Date,
   server: ArticleServer,
 }
->>;
+>;
 
 type GetXml = (doi: Doi, acceptHeader: string) => Promise<string>;
 
