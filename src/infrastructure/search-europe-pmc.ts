@@ -6,6 +6,7 @@ import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { Json } from 'io-ts-types';
 import { DateFromISOString } from 'io-ts-types/DateFromISOString';
+import * as PR from 'io-ts/PathReporter';
 import { Logger } from './logger';
 import { ArticleServer } from '../types/article-server';
 import { DoiFromString } from '../types/codecs/DoiFromString';
@@ -101,8 +102,8 @@ const getFromUrl: GetFromUrl = (url: string) => ({ getJson, logger }: Dependenci
   ),
   TE.chainEitherKW(flow(
     europePmcResponse.decode,
-    E.mapLeft((error) => {
-      logger('error', 'Could not parse response', { error, url });
+    E.mapLeft((errors) => {
+      logger('error', 'Could not parse response', { errors: PR.failure(errors), url });
       return 'unavailable' as const;
     }),
   )),

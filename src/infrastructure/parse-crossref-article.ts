@@ -131,9 +131,7 @@ const personAuthor = (person: Element): string => {
   return `${givenName} ${surname}`;
 };
 
-const organisationAuthor = (organisation: Element): string => {
-  return organisation.textContent ?? 'Unknown organization';
-};
+const organisationAuthor = (organisation: Element): string => organisation.textContent ?? 'Unknown organization';
 
 export const getAuthors = (doc: Document, doi: Doi, logger: Logger): ReadonlyArray<string> => {
   const contributorsElement = getElement(doc, 'contributors');
