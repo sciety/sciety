@@ -127,17 +127,27 @@ export const getAuthors = (doc: Document, doi: Doi, logger: Logger): ReadonlyArr
     return [];
   }
 
-  return Array.from(contributorsElement.getElementsByTagName('person_name'))
-    .filter((person) => person.getAttribute('contributor_role') === 'author')
-    .map((person) => {
-      const givenName = person.getElementsByTagName('given_name')[0]?.textContent;
-      // TODO: the decision as to what to display on error should live with th rendering component
-      const surname = person.getElementsByTagName('surname')[0].textContent ?? 'Unknown author';
+  return Array.from(contributorsElement.childNodes)
+    .filter((node): node is Element => node.nodeType === node.ELEMENT_NODE)
+    .filter((contributor) => contributor.getAttribute('contributor_role') === 'author')
+    .map((contributor) => {
+      if (contributor.tagName === 'person_name') {
+        const givenName = contributor.getElementsByTagName('given_name')[0]?.textContent;
+        // TODO: the decision as to what to display on error should live with th rendering component
+        const surname = contributor.getElementsByTagName('surname')[0].textContent ?? 'Unknown person';
 
-      if (!givenName) {
-        return surname;
+        if (!givenName) {
+          return surname;
+        }
+
+        return `${givenName} ${surname}`;
       }
 
-      return `${givenName} ${surname}`;
+      if (contributor.tagName === 'organization') {
+        return contributor.textContent ?? 'Unknown organization';
+      }
+
+      logger('error', 'Cannot parse author contributor', { doi, contributorTagName: contributor.tagName });
+      return 'Unknown author';
     });
 };
