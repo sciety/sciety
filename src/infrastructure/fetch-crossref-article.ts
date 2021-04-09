@@ -4,7 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { DOMParser } from 'xmldom';
 import { Logger } from './logger';
 import {
-  getAbstract, getAuthors, getPublicationDate, getServer, getTitle,
+  getAbstract, getAuthors, getServer, getTitle,
 } from './parse-crossref-article';
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
@@ -19,7 +19,6 @@ FetchCrossrefArticleError,
   authors: ReadonlyArray<string>,
   doi: Doi,
   title: SanitisedHtmlFragment,
-  publicationDate: Date,
   server: ArticleServer,
 }
 >;
@@ -62,16 +61,9 @@ export const fetchCrossrefArticle = (getXml: GetXml, logger: Logger): FetchCross
     try {
       const doc = parser.parseFromString(response, 'text/xml');
       const authors = getAuthors(doc, doi, logger);
-      const publicationDate = getPublicationDate(doc);
 
       if (O.isNone(authors)) {
         logger('error', 'Unable to find authors', { doi, response });
-
-        return E.left('unavailable');
-      }
-
-      if (O.isNone(publicationDate)) {
-        logger('error', 'Unable to parse date', { doi, response });
 
         return E.left('unavailable');
       }
@@ -81,7 +73,6 @@ export const fetchCrossrefArticle = (getXml: GetXml, logger: Logger): FetchCross
         authors: authors.value,
         doi,
         title: getTitle(doc, doi, logger),
-        publicationDate: publicationDate.value,
         server: getServer(doc),
       });
     } catch (error: unknown) {

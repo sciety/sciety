@@ -90,21 +90,6 @@ export const getTitle = (doc: Document, doi: Doi, logger: Logger): SanitisedHtml
   );
 };
 
-export const getPublicationDate = (doc: Document): O.Option<Date> => {
-  const postedDateElement = getElement(doc, 'posted_date');
-
-  const postedDateYear = postedDateElement?.getElementsByTagName('year')[0];
-  const year = postedDateYear?.textContent ?? '1970';
-
-  const postedDateMonth = postedDateElement?.getElementsByTagName('month')[0];
-  const month = postedDateMonth?.textContent ?? '01';
-
-  const postedDateDay = postedDateElement?.getElementsByTagName('day')[0];
-  const day = postedDateDay?.textContent ?? '01';
-
-  return O.some(new Date(`${year}-${month}-${day}`));
-};
-
 export const getServer = flow(
   (doc: Document) => {
     const doiDataElement = getElement(doc, 'doi_data');

@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { DOMParser } from 'xmldom';
 import {
-  getAbstract, getAuthors, getPublicationDate, getServer, getTitle,
+  getAbstract, getAuthors, getServer, getTitle,
 } from '../../src/infrastructure/parse-crossref-article';
 import { Doi } from '../../src/types/doi';
 import { dummyLogger } from '../dummy-logger';
@@ -186,22 +186,6 @@ describe('parse-crossref-article', () => {
       expect(abstract).toStrictEqual(expect.stringContaining('<section>'));
       expect(abstract).toStrictEqual(expect.stringContaining('Lorem ipsum'));
       expect(abstract).toStrictEqual(expect.stringContaining('</section>'));
-    });
-  });
-
-  describe('parsing the publication date', () => {
-    it('extracts the date', async () => {
-      const response = crossrefResponseWith(`
-        <posted_date>
-          <month>03</month>
-          <day>22</day>
-          <year>2020</year>
-        </posted_date>`);
-
-      const doc = parser.parseFromString(response, 'text/xml');
-      const publicationDate = getPublicationDate(doc);
-
-      expect(publicationDate).toStrictEqual(O.some(new Date('2020-03-22')));
     });
   });
 
