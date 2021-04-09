@@ -291,6 +291,23 @@ describe('parse-crossref-article', () => {
 
       expect(authors).toStrictEqual(['Eesha Ross']);
     });
+
+    it.skip('includes organisational authors', () => {
+      const response = crossrefResponseWith(`
+      <contributors>
+        <organization contributor_role="author" sequence="first">SEQC2 Oncopanel Sequencing Working Group</organization>
+        <person_name contributor_role="author" sequence="additional">
+          <given_name>Yifan</given_name>
+          <surname>Zhang</surname>
+          <ORCID>http://orcid.org/0000-0002-3677-6973</ORCID>
+        </person_name>
+      </contributors>
+    `);
+      const doc = parser.parseFromString(response, 'text/xml');
+      const authors = getAuthors(doc, doi, dummyLogger);
+
+      expect(authors).toStrictEqual(['SEQC2 Oncopanel Sequencing Working Group', 'Yifan Zhang']);
+    });
   });
 
   describe('parsing the title', () => {
