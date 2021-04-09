@@ -119,6 +119,22 @@ export const getServer = flow(
   ),
 );
 
+const personAuthor = (person: Element): string => {
+  const givenName = person.getElementsByTagName('given_name')[0]?.textContent;
+  // TODO: the decision as to what to display on error should live with th rendering component
+  const surname = person.getElementsByTagName('surname')[0].textContent ?? 'Unknown person';
+
+  if (!givenName) {
+    return surname;
+  }
+
+  return `${givenName} ${surname}`;
+};
+
+const organisationAuthor = (organisation: Element): string => {
+  return organisation.textContent ?? 'Unknown organization';
+};
+
 export const getAuthors = (doc: Document, doi: Doi, logger: Logger): ReadonlyArray<string> => {
   const contributorsElement = getElement(doc, 'contributors');
 
@@ -131,20 +147,11 @@ export const getAuthors = (doc: Document, doi: Doi, logger: Logger): ReadonlyArr
     .filter((node): node is Element => node.nodeType === node.ELEMENT_NODE)
     .filter((contributor) => contributor.getAttribute('contributor_role') === 'author')
     .map((contributor) => {
-      if (contributor.tagName === 'person_name') {
-        const givenName = contributor.getElementsByTagName('given_name')[0]?.textContent;
-        // TODO: the decision as to what to display on error should live with th rendering component
-        const surname = contributor.getElementsByTagName('surname')[0].textContent ?? 'Unknown person';
-
-        if (!givenName) {
-          return surname;
-        }
-
-        return `${givenName} ${surname}`;
-      }
-
-      if (contributor.tagName === 'organization') {
-        return contributor.textContent ?? 'Unknown organization';
+      switch (contributor.tagName) {
+        case 'person_name':
+          return personAuthor(contributor);
+        case 'organization':
+          return organisationAuthor(contributor);
       }
 
       logger('error', 'Cannot parse author contributor', { doi, contributorTagName: contributor.tagName });
