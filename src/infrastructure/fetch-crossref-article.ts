@@ -62,9 +62,16 @@ export const fetchCrossrefArticle = (getXml: GetXml, logger: Logger): FetchCross
     try {
       const doc = parser.parseFromString(response, 'text/xml');
       const authors = getAuthors(doc, doi, logger);
+      const publicationDate = getPublicationDate(doc);
 
       if (O.isNone(authors)) {
         logger('error', 'Unable to find authors', { doi, response });
+
+        return E.left('unavailable');
+      }
+
+      if (O.isNone(publicationDate)) {
+        logger('error', 'Unable to parse date', { doi, response });
 
         return E.left('unavailable');
       }
@@ -74,7 +81,7 @@ export const fetchCrossrefArticle = (getXml: GetXml, logger: Logger): FetchCross
         authors: authors.value,
         doi,
         title: getTitle(doc, doi, logger),
-        publicationDate: getPublicationDate(doc),
+        publicationDate: publicationDate.value,
         server: getServer(doc),
       });
     } catch (error: unknown) {

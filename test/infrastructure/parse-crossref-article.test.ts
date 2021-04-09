@@ -201,7 +201,7 @@ describe('parse-crossref-article', () => {
       const doc = parser.parseFromString(response, 'text/xml');
       const publicationDate = getPublicationDate(doc);
 
-      expect(publicationDate).toStrictEqual(new Date('2020-03-22'));
+      expect(publicationDate).toStrictEqual(O.some(new Date('2020-03-22')));
     });
   });
 
