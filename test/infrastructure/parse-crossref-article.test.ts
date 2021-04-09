@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import { DOMParser } from 'xmldom';
 import {
   getAbstract, getAuthors, getPublicationDate, getServer, getTitle,
@@ -240,7 +241,7 @@ describe('parse-crossref-article', () => {
       const doc = parser.parseFromString(response, 'text/xml');
       const authors = getAuthors(doc, doi, dummyLogger);
 
-      expect(authors).toHaveLength(0);
+      expect(authors).toStrictEqual(O.some([]));
     });
 
     it('extracts authors from the XML response', async () => {
@@ -258,7 +259,7 @@ describe('parse-crossref-article', () => {
       const doc = parser.parseFromString(response, 'text/xml');
       const authors = getAuthors(doc, doi, dummyLogger);
 
-      expect(authors).toStrictEqual(['Eesha Ross', 'Fergus Fountain']);
+      expect(authors).toStrictEqual(O.some(['Eesha Ross', 'Fergus Fountain']));
     });
 
     it('handles a person without a given_name', async () => {
@@ -271,7 +272,7 @@ describe('parse-crossref-article', () => {
       const doc = parser.parseFromString(response, 'text/xml');
       const authors = getAuthors(doc, doi, dummyLogger);
 
-      expect(authors).toStrictEqual(['Ross']);
+      expect(authors).toStrictEqual(O.some(['Ross']));
     });
 
     it('only includes authors', async () => {
@@ -289,7 +290,7 @@ describe('parse-crossref-article', () => {
       const doc = parser.parseFromString(response, 'text/xml');
       const authors = getAuthors(doc, doi, dummyLogger);
 
-      expect(authors).toStrictEqual(['Eesha Ross']);
+      expect(authors).toStrictEqual(O.some(['Eesha Ross']));
     });
 
     it('includes organisational authors', () => {
@@ -306,7 +307,11 @@ describe('parse-crossref-article', () => {
       const doc = parser.parseFromString(response, 'text/xml');
       const authors = getAuthors(doc, doi, dummyLogger);
 
-      expect(authors).toStrictEqual(['SEQC2 Oncopanel Sequencing Working Group', 'Yifan Zhang']);
+      expect(authors).toStrictEqual(O.some(['SEQC2 Oncopanel Sequencing Working Group', 'Yifan Zhang']));
+    });
+
+    describe('when there is unexpected XML', () => {
+      it.todo('return none');
     });
   });
 

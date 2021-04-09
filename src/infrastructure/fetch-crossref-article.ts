@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { DOMParser } from 'xmldom';
 import { Logger } from './logger';
@@ -60,9 +61,17 @@ export const fetchCrossrefArticle = (getXml: GetXml, logger: Logger): FetchCross
 
     try {
       const doc = parser.parseFromString(response, 'text/xml');
+      const authors = getAuthors(doc, doi, logger);
+
+      if (O.isNone(authors)) {
+        logger('error', 'Unable to find authors', { doi, response });
+
+        return E.left('unavailable');
+      }
+
       return E.right({
         abstract: getAbstract(doc, doi, logger),
-        authors: getAuthors(doc, doi, logger),
+        authors: authors.value,
         doi,
         title: getTitle(doc, doi, logger),
         publicationDate: getPublicationDate(doc),

@@ -119,29 +119,32 @@ export const getServer = flow(
   ),
 );
 
-const personAuthor = (person: Element): string => {
+const personAuthor = (person: Element) => {
   const givenName = person.getElementsByTagName('given_name')[0]?.textContent;
-  // TODO: the decision as to what to display on error should live with th rendering component
-  const surname = person.getElementsByTagName('surname')[0].textContent ?? 'Unknown person';
+  const surname = person.getElementsByTagName('surname')[0].textContent;
 
-  if (!givenName) {
-    return surname;
+  if (!surname) {
+    return O.none;
   }
 
-  return `${givenName} ${surname}`;
+  if (!givenName) {
+    return O.some(surname);
+  }
+
+  return O.some(`${givenName} ${surname}`);
 };
 
-const organisationAuthor = (organisation: Element): string => organisation.textContent ?? 'Unknown organization';
+const organisationAuthor = (organisation: Element) => O.fromNullable(organisation.textContent);
 
-export const getAuthors = (doc: Document, doi: Doi, logger: Logger): ReadonlyArray<string> => {
+export const getAuthors = (doc: Document, doi: Doi, logger: Logger): O.Option<ReadonlyArray<string>> => {
   const contributorsElement = getElement(doc, 'contributors');
 
   if (!contributorsElement || typeof contributorsElement?.textContent !== 'string') {
     logger('debug', 'Did not find contributors', { doi });
-    return [];
+    return O.some([]);
   }
 
-  return Array.from(contributorsElement.childNodes)
+  const authors = Array.from(contributorsElement.childNodes)
     .filter((node): node is Element => node.nodeType === node.ELEMENT_NODE)
     .filter((contributor) => contributor.getAttribute('contributor_role') === 'author')
     .map((contributor) => {
@@ -152,7 +155,8 @@ export const getAuthors = (doc: Document, doi: Doi, logger: Logger): ReadonlyArr
           return organisationAuthor(contributor);
       }
 
-      logger('error', 'Cannot parse author contributor', { doi, contributorTagName: contributor.tagName });
-      return 'Unknown author';
+      return O.none;
     });
+
+  return pipe(authors, O.sequenceArray);
 };
