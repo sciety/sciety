@@ -106,7 +106,7 @@ export const getServer = flow(
 
 const personAuthor = (person: Element) => {
   const givenName = person.getElementsByTagName('given_name')[0]?.textContent;
-  const surname = person.getElementsByTagName('surname')[0].textContent;
+  const surname = person.getElementsByTagName('surname')[0]?.textContent;
 
   if (!surname) {
     return O.none;
