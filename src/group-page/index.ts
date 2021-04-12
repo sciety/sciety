@@ -19,6 +19,7 @@ import { GroupId } from '../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
+import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { User } from '../types/user';
 import { UserId } from '../types/user-id';
 
@@ -93,12 +94,11 @@ const hardcodedArticleList = `<ul class="search-results-list" role="list">
 
 type ArticleViewModel = {
   doi: Doi,
-  title: string,
-  authors: string,
-  postedDate: Date,
-  latestVersionDate: O.Option<Date>,
-  latestActivityDate: O.Option<Date>,
-  reviewCount: number,
+  title: SanitisedHtmlFragment,
+  authors: ReadonlyArray<SanitisedHtmlFragment>,
+  latestVersionDate: Date,
+  latestActivityDate: Date,
+  evaluationCount: number,
 };
 
 const renderRecentGroupActivity: (
