@@ -1,6 +1,7 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
@@ -12,13 +13,15 @@ import { renderFeed } from './render-feed';
 import { renderFollowers } from './render-followers';
 import { renderErrorPage, renderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
-import { renderRecentGroupActivity } from './renderRecentGroupActivity';
+import { ArticleViewModel, renderRecentGroupActivity } from './renderRecentGroupActivity';
 import { renderFollowToggle } from '../follow/render-follow-toggle';
+import { Doi } from '../types/doi';
 import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
+import { sanitise } from '../types/sanitised-html-fragment';
 import { User } from '../types/user';
 import { UserId } from '../types/user-id';
 
@@ -54,8 +57,43 @@ const constructFeed = (ports: Ports, group: Group) => pipe(
   TE.rightTask,
 );
 
+const hardCodedViewModels: ReadonlyArray<ArticleViewModel> = [
+  {
+    doi: new Doi('10.1101/2020.09.15.286153'),
+    title: pipe('Accuracy of predicting chemical body composition of growing pigs using dual-energy X-ray absorptiometry', toHtmlFragment, sanitise),
+    authors: pipe(['Kasper C', 'Schlegel P', 'Ruiz-Ascacibar I', 'Stoll P', 'Bee G'], RA.map(flow(toHtmlFragment, sanitise))),
+    latestVersionDate: new Date('2020-12-14'),
+    latestActivityDate: new Date('2020-12-15'),
+    evaluationCount: 1,
+  },
+  {
+    doi: new Doi('10.1101/2019.12.20.884056'),
+    title: pipe('Determining insulin sensitivity from glucose tolerance tests in Iberian and Landrace pigs', toHtmlFragment, sanitise),
+    authors: pipe(['Rodríguez-López J', 'Lachica M', 'González-Valero L', 'Fernández-Fígares I'], RA.map(flow(toHtmlFragment, sanitise))),
+    latestVersionDate: new Date('2020-10-14'),
+    latestActivityDate: new Date('2021-03-10'),
+    evaluationCount: 4,
+  },
+  {
+    doi: new Doi('10.1101/760082'),
+    title: pipe('Effects of feeding treatment on growth rate and performance of primiparous Holstein dairy heifers', toHtmlFragment, sanitise),
+    authors: pipe(['Le Cozler Y', 'Jurquet J', 'Bedere N'], RA.map(flow(toHtmlFragment, sanitise))),
+    latestVersionDate: new Date('2019-12-05'),
+    latestActivityDate: new Date('2019-12-05'),
+    evaluationCount: 1,
+  },
+  {
+    doi: new Doi('10.1101/661249'),
+    title: pipe('Lactation curve model with explicit representation of perturbations as a phenotyping tool for dairy livestock precision farming', toHtmlFragment, sanitise),
+    authors: pipe(['Ahmed BA', 'Laurence P', 'Pierre G', 'Olivier M'], RA.map(flow(toHtmlFragment, sanitise))),
+    latestVersionDate: new Date('2019-08-27'),
+    latestActivityDate: new Date('2019-12-05'),
+    evaluationCount: 1,
+  },
+];
+
 const constructRecentGroupActivity = () => pipe(
-  [],
+  hardCodedViewModels,
   renderRecentGroupActivity,
   TE.right,
 );
