@@ -13,9 +13,10 @@ import { renderFollowers } from './render-followers';
 import { renderErrorPage, renderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
 import { renderFollowToggle } from '../follow/render-follow-toggle';
+import { Doi } from '../types/doi';
 import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
-import { toHtmlFragment } from '../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { User } from '../types/user';
@@ -90,6 +91,36 @@ const hardcodedArticleList = `<ul class="search-results-list" role="list">
   </li>
 </ul>`;
 
+type ArticleViewModel = {
+  doi: Doi,
+  title: string,
+  authors: string,
+  postedDate: Date,
+  latestVersionDate: O.Option<Date>,
+  latestActivityDate: O.Option<Date>,
+  reviewCount: number,
+};
+
+const renderRecentGroupActivity: (
+  items: ReadonlyArray<ArticleViewModel>
+) => HtmlFragment = () => toHtmlFragment(hardcodedArticleList);
+
+const constructFeed = (ports: Ports, group: Group) => pipe(
+  ports.getAllEvents,
+  T.chain(flow(
+    getMostRecentEvents(group.id, 20),
+    T.traverseArray(constructFeedItem(ports.fetchArticle)(group)),
+  )),
+  T.map(renderFeed),
+  TE.rightTask,
+);
+
+const constructRecentGroupActivity = () => pipe(
+  [],
+  renderRecentGroupActivity,
+  TE.right,
+);
+
 export const groupPage = (ports: Ports): GroupPage => ({ id, user }) => pipe(
   ports.getGroup(id),
   T.map(E.fromOption(notFoundResponse)),
@@ -122,15 +153,9 @@ export const groupPage = (ports: Ports): GroupPage => ({ id, user }) => pipe(
         T.map(renderFollowToggle(group.id, group.name)),
         TE.rightTask,
       ),
-      feed: group.id.value !== '4eebcec9-a4bb-44e1-bde3-2ae11e65daaa' ? pipe(
-        ports.getAllEvents,
-        T.chain(flow(
-          getMostRecentEvents(group.id, 20),
-          T.traverseArray(constructFeedItem(ports.fetchArticle)(group)),
-        )),
-        T.map(renderFeed),
-        TE.rightTask,
-      ) : TE.right(hardcodedArticleList),
+      feed: group.id.value === '4eebcec9-a4bb-44e1-bde3-2ae11e65daaa'
+        ? constructRecentGroupActivity()
+        : constructFeed(ports, group),
     },
     sequenceS(TE.taskEither),
     TE.bimap(renderErrorPage, renderPage(group)),
