@@ -1,4 +1,5 @@
 @use 'baseline';
+@use 'breakpoints';
 @use 'settings';
 @use 'typography';
 
@@ -9,7 +10,7 @@
     grid-column: 1 / -1;
   }
 
-  @media screen and (min-width: 56.25em) {
+  @include breakpoints.from-narrow {
     > .group-page-description {
       grid-column: 1 / 7;
     }
