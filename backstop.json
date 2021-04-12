@@ -64,6 +64,11 @@
       "url": "http://sciety_app/users/1295307136415735808"
     },
     {
+      "label": "Group page",
+      "url": "http://sciety_app/groups/74fd66e9-3b90-4b5a-a4ab-5be83db4c5de",
+      "hideSelectors": ["iframe"]
+    },
+    {
       "label": "About",
       "url": "http://sciety_app/about"
     },
