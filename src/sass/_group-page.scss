@@ -2,8 +2,22 @@
 @use 'settings';
 @use 'typography';
 
-.sciety-grid--group > .page-header--group {
-  grid-column: 1 / -1;
+.sciety-grid--group {
+  margin: 0 auto;
+
+  > .page-header--group {
+    grid-column: 1 / -1;
+  }
+
+  @media screen and (min-width: 56.25em) {
+    > .group-page-description {
+      grid-column: 1 / 7;
+    }
+
+    > .group-page-side-bar {
+      grid-column: 8 / -1;
+    }
+  }
 }
 
 .group-page-description {
@@ -22,17 +36,6 @@
 
 .group-page-side-bar--follow-toggle {
   margin-bottom: #{baseline.increments(3)};
-}
-
-@media screen and (min-width: 56.25em) {
-  .sciety-grid--group > .group-page-description {
-    grid-column: 1 / 7;
-  }
-
-  .sciety-grid--group > .group-page-side-bar {
-    grid-column: 8 / -1;
-  }
-
 }
 
 .page-header--group {

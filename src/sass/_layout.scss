@@ -1,3 +1,6 @@
+@use 'settings';
+@use 'functions';
+
 @mixin visually-hidden() {
   border: 0;
   clip: rect(0 0 0 0);
@@ -12,4 +15,20 @@
 
 .visually-hidden {
   @include visually-hidden();
+}
+
+@supports (display: grid) {
+  .sciety-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-column-gap: 20px;
+    grid-auto-rows: min-content;
+    grid-auto-flow: column;
+  }
+}
+
+.sciety-grid {
+  max-width: functions.px-to-rem(settings.$max-site-width);
+  margin: 0 1rem;
+  flex-grow: 1;
 }

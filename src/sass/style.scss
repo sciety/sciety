@@ -59,22 +59,6 @@ body {
   width: 80%;
 }
 
-@supports (display: grid) {
-  .sciety-grid {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    grid-column-gap: 20px;
-    grid-auto-rows: min-content;
-    grid-auto-flow: column;
-  }
-}
-
-.sciety-grid {
-  max-width: functions.px-to-rem(settings.$max-site-width);
-  margin: 0 1rem;
-  flex-grow: 1;
-}
-
 .sciety-grid--simple > * {
   grid-column: 1 / -1;
 }
