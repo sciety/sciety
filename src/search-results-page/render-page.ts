@@ -15,7 +15,7 @@ export const renderErrorPage = (error: 'unavailable'): RenderPageError => ({
 export const renderPage = (searchResults: SearchResults): Page => ({
   title: `Search results for ${searchResults.query}`,
   content: toHtmlFragment(`
-    <div class="search-results-page__background--filler">
+    <div class="page-content__background">
       <div class="sciety-grid sciety-grid--search-results">
         <header class="page-header page-header--search-results">
           <h1 class="page-heading--search">Search Sciety</h1>

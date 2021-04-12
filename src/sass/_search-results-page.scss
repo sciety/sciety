@@ -158,11 +158,6 @@ $_clear-button-inline-size: 48px;
   }
 }
 
-.search-results-page__background--filler {
-  background-color: settings.$colour-page-background;
-  width: 100%;
-}
-
 .search-results-list__item__link {
   @include typography.sizing(16px, 2.5);
   font-family: settings.$font-family;

@@ -4,7 +4,7 @@ import { Page } from '../types/page';
 export const searchPage: Page = {
   title: 'Search',
   content: toHtmlFragment(`
-    <div class="search-results-page__background--filler">
+    <div class="page-content__background">
       <div class="sciety-grid sciety-grid--search-results">
         <header class="page-header page-header--search-results">
           <h1 class="page-heading--search">Search Sciety</h1>

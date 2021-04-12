@@ -1,8 +1,0 @@
-@use 'baseline';
-@use 'settings';
-@use 'typography';
-
-.activity-page__background--filler {
-  background-color: settings.$colour-page-background;
-  width: 100%;
-}

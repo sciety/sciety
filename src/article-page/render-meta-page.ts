@@ -15,7 +15,7 @@ export const renderMetaPage = (components: {
   saveArticle: string,
   tweetThis: string,
 }): HtmlFragment => toHtmlFragment(`
-<div class="meta-page__background--filler">
+<div class="page-content__background">
   <article class="sciety-grid sciety-grid--article">
     <header class="page-header page-header--article">
       <h1>${components.articleDetails.title}</h1>
