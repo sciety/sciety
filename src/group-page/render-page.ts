@@ -13,22 +13,24 @@ type Components = {
 };
 
 const render = (components: Components) => `
-  <div class="sciety-grid sciety-grid--group">
-    ${components.header}
-    <div class="group-page-description">
-    ${components.description}
-    </div>
-    <div class="group-page-side-bar">
-      ${components.followers}
-      <section>
-        <h2>
-          Feed
-        </h2>
-        <div class="group-page-side-bar--follow-toggle">
-          ${components.followButton}
-        </div>
-        ${components.feed}
-      </section>
+  <div class="page-content__background">
+    <div class="sciety-grid sciety-grid--group">
+      ${components.header}
+      <div class="group-page-description">
+      ${components.description}
+      </div>
+      <div class="group-page-side-bar">
+        ${components.followers}
+        <section>
+          <h2>
+            Feed
+          </h2>
+          <div class="group-page-side-bar--follow-toggle">
+            ${components.followButton}
+          </div>
+          ${components.feed}
+        </section>
+      </div>
     </div>
   </div>
 `;

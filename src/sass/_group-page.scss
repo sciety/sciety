@@ -1,4 +1,5 @@
 @use 'baseline';
+@use 'settings';
 @use 'typography';
 
 .sciety-grid--group > .page-header--group {
@@ -8,10 +9,15 @@
 .group-page-description {
   grid-column: 1 / -1;
   margin-bottom: baseline.increments(4);
+  padding: 1rem;
+  background-color: settings.$colour-white;
 }
 
 .group-page-side-bar {
   grid-column: 1 / -1;
+  margin-bottom: baseline.increments(4);
+  padding: 1rem;
+  background-color: settings.$colour-white;
 }
 
 .group-page-side-bar--follow-toggle {
@@ -21,7 +27,6 @@
 @media screen and (min-width: 56.25em) {
   .sciety-grid--group > .group-page-description {
     grid-column: 1 / 7;
-    margin-bottom: 0;
   }
 
   .sciety-grid--group > .group-page-side-bar {
