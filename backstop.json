@@ -22,10 +22,6 @@
   "onReadyScript": "puppet/onReady.js",
   "scenarios": [
     {
-      "label": "Local",
-      "url": "http://sciety_app"
-    },
-    {
       "label": "Homepage (with cookie banner)",
       "url": "http://sciety_app",
       "showCookieConsent": true
