@@ -28,7 +28,7 @@ $_search-icon-size: functions.px-to-rem(28px);
     width: unset;
   }
 
-  @include breakpoints.from-narrow() {
+  @include breakpoints.not-narrow() {
     grid-column: 2;
     width: calc(100% - #{settings.$drawer-width});
 
@@ -64,7 +64,7 @@ $_search-icon-size: functions.px-to-rem(28px);
     float: none;
   }
 
-  @include breakpoints.from-narrow() {
+  @include breakpoints.not-narrow() {
     display: none;
   }
 

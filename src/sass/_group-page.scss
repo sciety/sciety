@@ -10,7 +10,7 @@
     grid-column: 1 / -1;
   }
 
-  @include breakpoints.from-narrow {
+  @include breakpoints.not-narrow {
     > .group-page-description {
       grid-column: 1 / 7;
     }

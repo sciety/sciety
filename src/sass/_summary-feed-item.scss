@@ -9,7 +9,7 @@ $_avatar-border-width: settings.$border-width;
 .summary-feed-item {
   font-family: settings.$font-secondary;
 
-  @include breakpoints.from-narrow {
+  @include breakpoints.not-narrow {
     @supports (display: flex) {
       display: flex;
     }

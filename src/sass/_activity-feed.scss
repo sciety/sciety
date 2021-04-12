@@ -22,14 +22,14 @@
   border-right-width: 0;
   margin-bottom: baseline.increments(1);
 
-  @include breakpoints.from-narrow {
+  @include breakpoints.not-narrow {
     border-left-width: settings.$border-width;
     border-right-width: settings.$border-width;
   }
 
   &:first-child {
     border-top-width: 0;
-    @include breakpoints.from-narrow {
+    @include breakpoints.not-narrow {
       border-top-width: settings.$border-width;
     }
   }
@@ -43,7 +43,7 @@
 .activity-feed__item_contents {
   padding: baseline.increments(2) functions.px-to-rem(16px) 0;
   margin-bottom: baseline.increments(3);
-  @include breakpoints.from-narrow {
+  @include breakpoints.not-narrow {
     grid-column: 1 / 9;
     padding: baseline.increments(3) functions.px-to-rem(24px) 0;
   }
@@ -118,7 +118,7 @@ p.activity-feed__item__title {
   padding: baseline.increments(1.5) functions.px-to-rem(16px);
   background-color: settings.$colour-component-background;
   border-top: settings.$border-width solid settings.$colour-furniture;
-  @include breakpoints.from-narrow {
+  @include breakpoints.not-narrow {
     padding-left: functions.px-to-rem(24px);
     padding-right: functions.px-to-rem(24px);
     border-bottom-left-radius: 5px;

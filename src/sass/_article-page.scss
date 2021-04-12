@@ -44,7 +44,7 @@ $_vertical-space-above-title--wide: baseline.increments(5);
   color: settings.$colour-text-primary;
 }
 
-@include breakpoints.from-narrow {
+@include breakpoints.not-narrow {
   .sciety-grid.sciety-grid--article h1 {
     @include typography.sizing(26px, 3.75);
   }

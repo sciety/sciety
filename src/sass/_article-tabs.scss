@@ -8,7 +8,7 @@
   @include typography.sizing(14px, 2.5);
   border-bottom: 2px solid settings.$colour-furniture;
 
-  @include breakpoints.from-narrow {
+  @include breakpoints.not-narrow {
     margin-bottom: baseline.increments(1.5);
   }
 }

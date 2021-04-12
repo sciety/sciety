@@ -17,7 +17,7 @@ $_clear-button-inline-size: 48px;
   color: settings.$colour-text-primary;
   margin: 0 1rem;
 
-  @include breakpoints.from-narrow {
+  @include breakpoints.not-narrow {
     margin: 0;
     grid-column: 3 / 11;
   }
@@ -31,7 +31,7 @@ $_clear-button-inline-size: 48px;
   padding-top: $_vertical-space-above-title--narrow;
   margin-bottom: baseline.increments(1.5);
 
-  @include breakpoints.from-narrow {
+  @include breakpoints.not-narrow {
     padding-top: $_vertical-space-above-title--wide;
 
     margin-left: functions.px-to-rem($_search-form-text-inline-padding + settings.$border-width);
@@ -61,7 +61,7 @@ $_clear-button-inline-size: 48px;
   margin-bottom: baseline.increments(1.5);
   position: relative;
 
-  @include breakpoints.from-narrow {
+  @include breakpoints.not-narrow {
     grid-column: 3 / 11;
     margin-left: 0;
     margin-right: 0;
@@ -108,7 +108,7 @@ $_clear-button-inline-size: 48px;
 .sciety-grid--search-results > .search-results {
   grid-column: 1 / -1;
 
-  @include breakpoints.from-narrow {
+  @include breakpoints.not-narrow {
     grid-column: 3 / 11;
   }
 }
@@ -117,7 +117,7 @@ $_clear-button-inline-size: 48px;
   margin-left: functions.px-to-rem($_search-form-inline-margin + $_search-form-text-inline-padding + settings.$border-width);
   font-family: settings.$font-family;
 
-  @include breakpoints.from-narrow {
+  @include breakpoints.not-narrow {
     margin-left: functions.px-to-rem($_search-form-text-inline-padding + settings.$border-width);
   }
 }
@@ -139,7 +139,7 @@ $_clear-button-inline-size: 48px;
   padding: baseline.increments(2) functions.px-to-rem(16px);
   display: flex;
 
-  @include breakpoints.from-narrow {
+  @include breakpoints.not-narrow {
     border-left-width: settings.$border-width;
     border-right-width: settings.$border-width;
     padding: baseline.increments(3) functions.px-to-rem(24px);
@@ -148,7 +148,7 @@ $_clear-button-inline-size: 48px;
   &:first-child {
     border-top-width: 0;
 
-    @include breakpoints.from-narrow {
+    @include breakpoints.not-narrow {
       border-top-width: settings.$border-width;
     }
   }

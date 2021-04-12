@@ -14,7 +14,7 @@
   margin-bottom: baseline.increments(6);
   padding: baseline.increments(2) functions.px-to-rem(16px);
 
-  @include breakpoints.from-narrow {
+  @include breakpoints.not-narrow {
     padding: baseline.increments(3) functions.px-to-rem(24px);
     border-width: settings.$border-width;
   }

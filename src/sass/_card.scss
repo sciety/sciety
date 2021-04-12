@@ -7,7 +7,7 @@
   background-color: settings.$colour-white;
   color: settings.$colour-text-primary;
 
-  @include breakpoints.from-narrow {
+  @include breakpoints.not-narrow {
     border-radius: settings.$border-radius;
   }
 
