@@ -13,12 +13,16 @@ const renderEvaluationCount = (evaluationCount: number): HtmlFragment => pipe(
   wrapInSpan,
 );
 
+const renderAuthors = (authors: ReadonlyArray<SanitisedHtmlFragment>) => `
+    <div class="group-activity-list__item__description">
+      ${authors.join(', ')}.
+    </div>
+`;
+
 const renderActivity = (model: ArticleViewModel): HtmlFragment => toHtmlFragment(`
   <div class="group-activity-list__item_container">
     <a class="group-activity-list__item__link" href="/articles/activity/${model.doi.value}">${model.title}</a>
-    <div class="group-activity-list__item__description">
-      ${model.authors.join(', ')}.
-    </div>
+    ${renderAuthors(model.authors)}
     <span class="group-activity-list__item__meta">
       ${renderEvaluationCount(model.evaluationCount)}<span>Latest version ${templateDate(model.latestVersionDate)}</span><span>Latest activity ${templateDate(model.latestActivityDate)}</span>
     </span>
