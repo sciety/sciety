@@ -43,7 +43,7 @@ const renderActivity = (model: ArticleViewModel): HtmlFragment => toHtmlFragment
   </article>
 `);
 
-export type ArticleViewModel = {
+type ArticleViewModel = {
   doi: Doi,
   title: SanitisedHtmlFragment,
   authors: ReadonlyArray<SanitisedHtmlFragment>,
