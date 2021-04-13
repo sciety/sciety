@@ -13,17 +13,17 @@ const renderEvaluationCount = (evaluationCount: number): HtmlFragment => pipe(
   wrapInSpan,
 );
 
-const renderActivity = (model: ArticleViewModel): HtmlFragment => toHtmlFragment(`<li class="search-results-list__item">
-    <div class="search-results-list__item_container">
-      <a class="search-results-list__item__link" href="/articles/activity/${model.doi.value}">${model.title}</a>
-      <div class="search-results-list__item__description">
-        ${model.authors.join(', ')}.
-      </div>
-      <span class="search-results-list__item__meta">
-        ${renderEvaluationCount(model.evaluationCount)}<span>Latest version ${templateDate(model.latestVersionDate)}</span><span>Latest activity ${templateDate(model.latestActivityDate)}</span>
-      </span>
+const renderActivity = (model: ArticleViewModel): HtmlFragment => toHtmlFragment(`
+  <div class="search-results-list__item_container">
+    <a class="search-results-list__item__link" href="/articles/activity/${model.doi.value}">${model.title}</a>
+    <div class="search-results-list__item__description">
+      ${model.authors.join(', ')}.
     </div>
-  </li>`);
+    <span class="search-results-list__item__meta">
+      ${renderEvaluationCount(model.evaluationCount)}<span>Latest version ${templateDate(model.latestVersionDate)}</span><span>Latest activity ${templateDate(model.latestActivityDate)}</span>
+    </span>
+  </div>
+`);
 
 export type ArticleViewModel = {
   doi: Doi,
@@ -38,6 +38,7 @@ export const renderRecentGroupActivity: (
   items: ReadonlyArray<ArticleViewModel>
 ) => HtmlFragment = flow(
   RA.map(renderActivity),
+  RA.map((activity) => `<li class="search-results-list__item">${activity}</li>`),
   (renderedActivities) => (
     `<ul class="search-results-list" role="list">${renderedActivities.join('')}</ul>`
   ),
