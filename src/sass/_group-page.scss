@@ -79,14 +79,6 @@
     padding: baseline.increments(3) functions.px-to-rem(24px);
   }
 
-  &:first-child {
-    border-top-width: 0;
-
-    @include breakpoints.not-narrow {
-      border-top-width: settings.$border-width;
-    }
-  }
-
   &:last-child {
     margin-bottom: 0;
   }
