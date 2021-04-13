@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import {
-  click, closeBrowser, goto, openBrowser, text,
+  click, closeBrowser, goto, openBrowser, screenshot, text,
 } from 'taiko';
 import { authenticateViaTwitter } from './utilities';
 
@@ -10,7 +10,10 @@ describe('save-article', () => {
     await openBrowser();
   });
 
-  afterEach(closeBrowser);
+  afterEach(async () => {
+    await screenshot({ path: `./feature-test/screenshots/${expect.getState().currentTestName}.png` });
+    await closeBrowser();
+  });
 
   describe('when not logged in', () => {
     it('saves the article to the list', async () => {

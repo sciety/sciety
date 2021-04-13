@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import {
-  $, click, closeBrowser, currentURL, goBack, goto, link, openBrowser,
+  $, click, closeBrowser, currentURL, goBack, goto, link, openBrowser, screenshot,
 } from 'taiko';
 import { authenticateViaTwitter } from './utilities';
 
@@ -10,7 +10,10 @@ describe('authentication-and-redirect', () => {
     await openBrowser();
   });
 
-  afterEach(closeBrowser);
+  afterEach(async () => {
+    await screenshot({ path: `./feature-test/screenshots/${expect.getState().currentTestName}.png` });
+    await closeBrowser();
+  });
 
   it('log in works', async () => {
     await goto('localhost:8080');

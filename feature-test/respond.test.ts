@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import {
-  $, click, closeBrowser, goto, openBrowser, text, within,
+  $, click, closeBrowser, goto, openBrowser, screenshot, text, within,
 } from 'taiko';
 import { authenticateViaTwitter } from './utilities';
 
@@ -10,7 +10,10 @@ describe('respond', () => {
     await openBrowser();
   });
 
-  afterEach(closeBrowser);
+  afterEach(async () => {
+    await screenshot({ path: `./feature-test/screenshots/${expect.getState().currentTestName}.png` });
+    await closeBrowser();
+  });
 
   describe('when not logged in', () => {
     it('authenticates via twitter, returns and displays increased response count', async () => {
