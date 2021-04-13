@@ -92,7 +92,7 @@
   }
 }
 
-.group-activity-list__item__link {
+.group-activity-list__card_link {
   @include typography.sizing(16px, 2.5);
   font-family: settings.$font-family;
   font-weight: bold;
@@ -111,21 +111,12 @@
   }
 }
 
-.group-activity-list__item__description {
+.group-activity-list__card_authors {
   margin-bottom: baseline.increments(1);
   font-family: settings.$font-family;
 }
 
-.group-activity-list__item__avatar {
-  width: settings.$avatar-size;
-  height: settings.$avatar-size;
-  border-radius: settings.$border-radius;
-  flex: 0 0 settings.$avatar-size;
-  margin-left: functions.px-to-rem(32px);
-  border: settings.$avatar-border;
-}
-
-.group-activity-list__item__meta {
+.group-activity-list__card_meta {
   @include typography.sizing(12px, 1.1 * 12px / 8px);
   color: settings.$colour-text-secondary;
   font-family: settings.$font-family;
@@ -141,6 +132,6 @@
   }
 }
 
-.group-activity-list__item_container {
+.group-activity-list__card {
   flex-grow: 1;
 }

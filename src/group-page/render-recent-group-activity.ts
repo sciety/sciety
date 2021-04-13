@@ -20,7 +20,7 @@ const renderAuthors = flow(
   O.fold(
     constant(''),
     (authors) => `
-      <div class="group-activity-list__item__description">
+      <div class="group-activity-list__card_authors">
         ${authors.join(', ')}.
       </div>
     `,
@@ -28,13 +28,13 @@ const renderAuthors = flow(
 );
 
 const renderActivity = (model: ArticleViewModel): HtmlFragment => toHtmlFragment(`
-  <div class="group-activity-list__item_container">
-    <a class="group-activity-list__item__link" href="/articles/activity/${model.doi.value}">${model.title}</a>
+  <article class="group-activity-list__card">
+    <a class="group-activity-list__card_link" href="/articles/activity/${model.doi.value}">${model.title}</a>
     ${renderAuthors(model.authors)}
-    <span class="group-activity-list__item__meta">
+    <span class="group-activity-list__card_meta">
       ${renderEvaluationCount(model.evaluationCount)}<span>Latest version ${templateDate(model.latestVersionDate)}</span><span>Latest activity ${templateDate(model.latestActivityDate)}</span>
     </span>
-  </div>
+  </article>
 `);
 
 export type ArticleViewModel = {
