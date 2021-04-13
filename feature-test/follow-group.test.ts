@@ -1,8 +1,8 @@
 import dotenv from 'dotenv';
 import {
-  $, click, closeBrowser, goto, openBrowser, screenshot, text, within,
+  $, click, goto, openBrowser, text, within,
 } from 'taiko';
-import { authenticateViaTwitter } from './utilities';
+import { authenticateViaTwitter, screenshotTeardown } from './utilities';
 
 describe('follow a group', () => {
   beforeEach(async () => {
@@ -10,10 +10,7 @@ describe('follow a group', () => {
     await openBrowser();
   });
 
-  afterEach(async () => {
-    await screenshot({ path: `./feature-test/screenshots/${expect.getState().currentTestName}.png` });
-    await closeBrowser();
-  });
+  afterEach(screenshotTeardown);
 
   describe('when logged in', () => {
     beforeEach(async () => {

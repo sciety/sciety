@@ -1,5 +1,5 @@
 import {
-  click, into, textBox, write,
+  click, closeBrowser, into, screenshot, textBox, write,
 } from 'taiko';
 
 export const authenticateViaTwitter = async (): Promise<void> => {
@@ -10,4 +10,9 @@ export const authenticateViaTwitter = async (): Promise<void> => {
   } else {
     throw new Error('Missing TAIKO_TWITTER_USERNAME and/or TAIKO_TWITTER_PASSWORD env vars');
   }
+};
+
+export const screenshotTeardown = async (): Promise<void> => {
+  await screenshot({ path: `./feature-test/screenshots/${expect.getState().currentTestName}.png` });
+  await closeBrowser();
 };

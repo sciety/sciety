@@ -1,7 +1,8 @@
 import dotenv from 'dotenv';
 import {
-  $, closeBrowser, goto, openBrowser, screenshot,
+  $, goto, openBrowser,
 } from 'taiko';
+import { screenshotTeardown } from './utilities';
 
 describe('legacy redirects', () => {
   beforeEach(async () => {
@@ -9,10 +10,7 @@ describe('legacy redirects', () => {
     await openBrowser();
   });
 
-  afterEach(async () => {
-    await screenshot({ path: `./feature-test/screenshots/${expect.getState().currentTestName}.png` });
-    await closeBrowser();
-  });
+  afterEach(screenshotTeardown);
 
   describe('search on articles', () => {
     it('redirects to the search page', async () => {
