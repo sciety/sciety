@@ -10,9 +10,4 @@
   @include breakpoints.not-narrow {
     border-radius: settings.$border-radius;
   }
-
-  h3 {
-    @include typography.sizing($font-size: settings.$base-font-measure, $line-height-in-increments: 3);
-    font-weight: bold;
-  }
 }
