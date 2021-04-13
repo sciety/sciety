@@ -14,17 +14,21 @@ const renderEvaluationCount = (evaluationCount: number): HtmlFragment => pipe(
   (singular) => `${evaluationCount} ${singular ? 'evaluation' : 'evaluations'}`,
   wrapInSpan,
 );
-
-const renderAuthors = flow(
+type RenderAuthors = (authors: ReadonlyArray<SanitisedHtmlFragment>) => HtmlFragment;
+const renderAuthors: RenderAuthors = flow(
   RNEA.fromReadonlyArray,
   O.fold(
     constant(''),
-    (authors) => `
-      <div class="group-activity-list__card_authors">
-        ${authors.join(', ')}.
-      </div>
+    flow(
+      RNEA.map((author) => `<li class="group-activity-list__card_author">${author}</li>`),
+      (authors) => `
+      <ol class="group-activity-list__card_authors" role="list">
+        ${authors.join('\n')}
+      </ol>
     `,
+    ),
   ),
+  toHtmlFragment,
 );
 
 const renderActivity = (model: ArticleViewModel): HtmlFragment => toHtmlFragment(`
