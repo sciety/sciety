@@ -1,7 +1,11 @@
-@use 'baseline';
-@use 'breakpoints';
 @use 'settings';
+@use 'functions';
+@use 'baseline';
 @use 'typography';
+@use 'breakpoints';
+
+@use 'card';
+@use 'list';
 
 .sciety-grid--group {
   margin: 0 auto;
@@ -54,4 +58,89 @@
   .page-header__title {
     margin-bottom: 0;
   }
+}
+
+.group-activity-list {
+  @include list.basics();
+  margin-top: 0;
+}
+
+.group-activity-list__item {
+  @include card.full-tab-card();
+  border-left-width: 0;
+  border-right-width: 0;
+  margin-bottom: baseline.increments(1);
+  padding: baseline.increments(2) functions.px-to-rem(16px);
+  display: flex;
+
+  @include breakpoints.not-narrow {
+    border-left-width: settings.$border-width;
+    border-right-width: settings.$border-width;
+    padding: baseline.increments(3) functions.px-to-rem(24px);
+  }
+
+  &:first-child {
+    border-top-width: 0;
+
+    @include breakpoints.not-narrow {
+      border-top-width: settings.$border-width;
+    }
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.group-activity-list__item__link {
+  @include typography.sizing(16px, 2.5);
+  font-family: settings.$font-family;
+  font-weight: bold;
+  color: settings.$colour-text-primary;
+  display: block;
+  margin-bottom: baseline.increments(0.5);
+
+  &:link,
+  &:visited {
+    color: settings.$colour-text-primary;
+
+    &:active,
+    &:hover {
+      color: settings.$colour-text-primary;
+    }
+  }
+}
+
+.group-activity-list__item__description {
+  margin-bottom: baseline.increments(1);
+  font-family: settings.$font-family;
+}
+
+.group-activity-list__item__avatar {
+  width: settings.$avatar-size;
+  height: settings.$avatar-size;
+  border-radius: settings.$border-radius;
+  flex: 0 0 settings.$avatar-size;
+  margin-left: functions.px-to-rem(32px);
+  border: settings.$avatar-border;
+}
+
+.group-activity-list__item__meta {
+  @include typography.sizing(12px, 1.1 * 12px / 8px);
+  color: settings.$colour-text-secondary;
+  font-family: settings.$font-family;
+  letter-spacing: 0.09px;
+
+  > * {
+    margin-right: 0.25rem;
+  }
+
+  > :nth-child(n+2)::before {
+    content: '•';
+    margin-right: 0.25rem;
+  }
+}
+
+.group-activity-list__item_container {
+  flex-grow: 1;
 }
