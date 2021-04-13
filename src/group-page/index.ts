@@ -13,7 +13,7 @@ import { renderFeed } from './render-feed';
 import { renderFollowers } from './render-followers';
 import { renderErrorPage, renderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
-import { ArticleViewModel, renderRecentGroupActivity } from './renderRecentGroupActivity';
+import { ArticleViewModel, renderRecentGroupActivity } from './render-recent-group-activity';
 import { renderFollowToggle } from '../follow/render-follow-toggle';
 import { Doi } from '../types/doi';
 import { Group } from '../types/group';
