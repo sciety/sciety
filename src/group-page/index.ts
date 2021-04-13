@@ -85,7 +85,7 @@ const hardCodedViewModels: ReadonlyArray<ArticleViewModel> = [
   {
     doi: new Doi('10.1101/661249'),
     title: pipe('Lactation curve model with explicit representation of perturbations as a phenotyping tool for dairy livestock precision farming', toHtmlFragment, sanitise),
-    authors: pipe(['Ahmed BA', 'Laurence P', 'Pierre G', 'Olivier M'], RA.map(flow(toHtmlFragment, sanitise))),
+    authors: pipe([], RA.map(flow(toHtmlFragment, sanitise))),
     latestVersionDate: new Date('2019-08-27'),
     latestActivityDate: new Date('2019-12-05'),
     evaluationCount: 1,

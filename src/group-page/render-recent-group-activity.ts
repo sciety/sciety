@@ -1,5 +1,7 @@
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { flow, pipe } from 'fp-ts/function';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
+import { constant, flow, pipe } from 'fp-ts/function';
 import { templateDate } from '../shared-components';
 import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -13,11 +15,17 @@ const renderEvaluationCount = (evaluationCount: number): HtmlFragment => pipe(
   wrapInSpan,
 );
 
-const renderAuthors = (authors: ReadonlyArray<SanitisedHtmlFragment>) => `
-    <div class="group-activity-list__item__description">
-      ${authors.join(', ')}.
-    </div>
-`;
+const renderAuthors = flow(
+  RNEA.fromReadonlyArray,
+  O.fold(
+    constant(''),
+    (authors) => `
+      <div class="group-activity-list__item__description">
+        ${authors.join(', ')}.
+      </div>
+    `,
+  ),
+);
 
 const renderActivity = (model: ArticleViewModel): HtmlFragment => toHtmlFragment(`
   <div class="group-activity-list__item_container">
