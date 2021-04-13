@@ -22,10 +22,10 @@ describe('unfollow a group', () => {
     describe('from the home page', () => {
       it('removes the group to my profile page', async () => {
         await goto('localhost:8080');
-        await click(button({ 'aria-label': 'Follow PeerJ' }));
-        await click(button({ 'aria-label': 'Unfollow PeerJ' }));
+        await click(button({ 'aria-label': 'Follow NCRC' }));
+        await click(button({ 'aria-label': 'Unfollow NCRC' }));
         await click('My profile');
-        const groupExists = await text('PeerJ', within($('.followed-groups'))).exists();
+        const groupExists = await text('NCRC', within($('.followed-groups'))).exists();
 
         expect(groupExists).toBe(false);
       });
