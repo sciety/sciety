@@ -1,13 +1,13 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import * as IO from 'fp-ts/IO';
+import { Json } from 'fp-ts/Json';
 import * as O from 'fp-ts/Option';
 import * as RT from 'fp-ts/ReaderTask';
 import * as RTE from 'fp-ts/ReaderTaskEither';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import { Json } from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
 import { biorxivArticleDetails, BiorxivArticleDetails } from './codecs/BiorxivArticleDetails';
 import * as L from './logger';

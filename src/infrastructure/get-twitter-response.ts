@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Json } from 'io-ts-types';
+import { Json } from 'fp-ts/Json';
 import { Logger } from './logger';
 
 export type TwitterResponse = {

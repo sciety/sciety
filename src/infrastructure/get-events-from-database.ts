@@ -1,9 +1,9 @@
 import * as E from 'fp-ts/Either';
 import * as IO from 'fp-ts/IO';
+import { JsonRecord } from 'fp-ts/Json';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import { JsonRecord } from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
 import { Pool } from 'pg';
 import * as L from './logger';

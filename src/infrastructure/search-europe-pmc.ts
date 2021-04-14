@@ -1,10 +1,10 @@
 import { URLSearchParams } from 'url';
 import * as E from 'fp-ts/Either';
+import { Json } from 'fp-ts/Json';
 import * as RTE from 'fp-ts/ReaderTaskEither';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
-import { Json } from 'io-ts-types';
 import { DateFromISOString } from 'io-ts-types/DateFromISOString';
 import * as PR from 'io-ts/PathReporter';
 import { Logger } from './logger';

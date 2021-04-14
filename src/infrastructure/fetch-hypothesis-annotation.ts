@@ -1,8 +1,8 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
+import { Json } from 'fp-ts/Json';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import { Json } from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
 import { Remarkable } from 'remarkable';
 import { linkify } from 'remarkable/linkify';
