@@ -52,8 +52,9 @@ export const fetchArticleDetails: FetchArticleDetails = (getLatestArticleVersion
     RA.findFirst((articleDetails) => articleDetails.doi.value === doi.value),
     T.of,
   )),
-  TO.bind('latestVersionDate', () => pipe(
-    [doi, 'biorxiv'],
+  TO.bind('server', () => TO.some('biorxiv' as const)),
+  TO.bind('latestVersionDate', ({ server }) => pipe(
+    [doi, server],
     tupled(getLatestArticleVersionDate),
   )),
   TO.map(({ hardcodedDetails, latestVersionDate }) => ({ ...hardcodedDetails, latestVersionDate })),
