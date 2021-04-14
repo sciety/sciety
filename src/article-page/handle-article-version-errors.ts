@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
-import { identity, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import { FeedItem } from './render-feed';
 import { ArticleServer } from '../types/article-server';
 
@@ -19,5 +19,5 @@ export const handleArticleVersionErrors: HandleArticleVersionErrors = (items, se
     ),
     (array) => RA.snoc(array, { type: 'article-version-error', server }),
   ),
-  E.fold(identity, identity),
+  E.toUnion,
 );

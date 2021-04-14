@@ -1,11 +1,9 @@
-import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as B from 'fp-ts/boolean';
 import { constant, flow, pipe } from 'fp-ts/function';
-import { identity } from 'io-ts';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
@@ -75,8 +73,8 @@ export const renderFeed = <Err>(
       T.chain(TE.fromOption(constant(noEvaluationsYet))),
     )),
     TE.chainW(flow(renderSummaryFeedList, TE.rightTask)),
+    TE.toUnion,
     T.map(flow(
-      E.fold(identity, identity),
       toHtmlFragment,
       renderAsSection,
     )),
