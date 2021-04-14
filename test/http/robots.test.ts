@@ -1,4 +1,4 @@
-import { OK } from 'http-status-codes';
+import { StatusCodes } from 'http-status-codes';
 import request, { Response } from 'supertest';
 import { createTestServer } from './server';
 
@@ -11,7 +11,7 @@ describe('robots handler', () => {
   });
 
   it('returns a successful response', async () => {
-    expect(response.status).toBe(OK);
+    expect(response.status).toBe(StatusCodes.OK);
   });
 
   it('is plain text', async () => {

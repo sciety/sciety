@@ -1,4 +1,4 @@
-import { NOT_FOUND } from 'http-status-codes';
+import { StatusCodes } from 'http-status-codes';
 import request from 'supertest';
 import { createTestServer } from './server';
 
@@ -7,7 +7,7 @@ describe('route-not-found', () => {
     const { server } = await createTestServer();
     const response = await request(server).get('/route-that-definitely-doesnt-exist-ever');
 
-    expect(response.status).toBe(NOT_FOUND);
+    expect(response.status).toBe(StatusCodes.NOT_FOUND);
     expect(response.text).toContain('Oops!');
   });
 });
