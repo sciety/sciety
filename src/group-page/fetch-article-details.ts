@@ -1,16 +1,16 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
-import { flow, identity, pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { Doi } from '../types/doi';
 import { toHtmlFragment } from '../types/html-fragment';
 import { sanitise, SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
-type FetchArticleDetails = (doi: Doi) => T.Task<{
+type FetchArticleDetails = (doi: Doi) => T.Task<O.Option<{
   title: SanitisedHtmlFragment,
   authors: ReadonlyArray<SanitisedHtmlFragment>,
   latestVersionDate: Date,
-}>;
+}>>;
 
 const hardcodedArticleDetails = [
   {
@@ -42,9 +42,5 @@ const hardcodedArticleDetails = [
 export const fetchArticleDetails: FetchArticleDetails = (doi) => pipe(
   hardcodedArticleDetails,
   RA.findFirst((articleDetails) => articleDetails.doi.value === doi.value),
-  O.fold(
-    () => { throw new Error('Missing hardcoded data'); },
-    identity,
-  ),
   T.of,
 );

@@ -84,12 +84,16 @@ const constructRecentGroupActivity = () => pipe(
   T.traverseArray((evaluatedArticle) => pipe(
     evaluatedArticle.doi,
     fetchArticleDetails,
-    T.map((articleDetails) => ({
+    T.map(O.map((articleDetails) => ({
       ...evaluatedArticle,
       ...articleDetails,
-    })),
+    }))),
   )),
-  T.map(renderRecentGroupActivity),
+  T.map(O.sequenceArray),
+  T.map(O.fold(
+    () => { throw new Error('Missing hardcoded data'); },
+    renderRecentGroupActivity,
+  )),
   TE.rightTask,
 );
 
