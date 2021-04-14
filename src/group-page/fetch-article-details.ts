@@ -14,11 +14,11 @@ export type FindVersionsForArticleDoi = (
   server: ArticleServer,
 ) => T.Task<O.Option<RNEA.ReadonlyNonEmptyArray<{ occurredAt: Date }>>>;
 
-type GetServer = (doi: Doi) => TO.TaskOption<ArticleServer>;
+type GetArticle = (doi: Doi) => TO.TaskOption<{ title: SanitisedHtmlFragment, server: ArticleServer }>;
 
 type FetchArticleDetails = (
   getLatestArticleVersionDate: GetLatestArticleVersionDate,
-  getServer: GetServer,
+  getArticle: GetArticle,
 ) => (doi: Doi) => TO.TaskOption<{
   title: SanitisedHtmlFragment,
   authors: ReadonlyArray<SanitisedHtmlFragment>,
@@ -28,39 +28,39 @@ type FetchArticleDetails = (
 const hardcodedArticleDetails = [
   {
     doi: new Doi('10.1101/2020.09.15.286153'),
-    title: pipe('Accuracy of predicting chemical body composition of growing pigs using dual-energy X-ray absorptiometry', toHtmlFragment, sanitise),
     authors: pipe(['Kasper C', 'Schlegel P', 'Ruiz-Ascacibar I', 'Stoll P', 'Bee G'], RA.map(flow(toHtmlFragment, sanitise))),
   },
   {
     doi: new Doi('10.1101/2019.12.20.884056'),
-    title: pipe('Determining insulin sensitivity from glucose tolerance tests in Iberian and Landrace pigs', toHtmlFragment, sanitise),
     authors: pipe(['Rodríguez-López J', 'Lachica M', 'González-Valero L', 'Fernández-Fígares I'], RA.map(flow(toHtmlFragment, sanitise))),
   },
   {
     doi: new Doi('10.1101/760082'),
-    title: pipe('Effects of feeding treatment on growth rate and performance of primiparous Holstein dairy heifers', toHtmlFragment, sanitise),
     authors: pipe(['Le Cozler Y', 'Jurquet J', 'Bedere N'], RA.map(flow(toHtmlFragment, sanitise))),
   },
   {
     doi: new Doi('10.1101/661249'),
-    title: pipe('Lactation curve model with explicit representation of perturbations as a phenotyping tool for dairy livestock precision farming', toHtmlFragment, sanitise),
     authors: pipe(['Ahmed BA', 'Laurence P', 'Pierre G', 'Olivier M'], RA.map(flow(toHtmlFragment, sanitise))),
   },
 ];
 
 type GetLatestArticleVersionDate = (articleDoi: Doi, server: ArticleServer) => T.Task<O.Option<Date>>;
 
-export const fetchArticleDetails: FetchArticleDetails = (getLatestArticleVersionDate, getServer) => (doi) => pipe(
+export const fetchArticleDetails: FetchArticleDetails = (getLatestArticleVersionDate, getArticle) => (doi) => pipe(
   TO.Do,
   TO.bind('hardcodedDetails', () => pipe(
     hardcodedArticleDetails,
     RA.findFirst((articleDetails) => articleDetails.doi.value === doi.value),
     T.of,
   )),
-  TO.bind('server', () => getServer(doi)),
-  TO.bind('latestVersionDate', ({ server }) => pipe(
-    [doi, server],
+  TO.bind('article', () => getArticle(doi)),
+  TO.bind('latestVersionDate', ({ article }) => pipe(
+    [doi, article.server],
     tupled(getLatestArticleVersionDate),
   )),
-  TO.map(({ hardcodedDetails, latestVersionDate }) => ({ ...hardcodedDetails, latestVersionDate })),
+  TO.map(({ hardcodedDetails, latestVersionDate, article }) => ({
+    ...hardcodedDetails,
+    title: article.title,
+    latestVersionDate,
+  })),
 );

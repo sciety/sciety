@@ -7,7 +7,12 @@ import { Doi } from '../../src/types/doi';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
 
-const getServer = () => TO.some('biorxiv' as const);
+const titleText = 'Accuracy of predicting chemical body composition of growing pigs using dual-energy X-ray absorptiometry';
+
+const getArticle = () => TO.some({
+  title: sanitise(toHtmlFragment(titleText)),
+  server: 'biorxiv' as const,
+});
 
 describe('fetch-article-details', () => {
   describe('latest version date', () => {
@@ -15,7 +20,7 @@ describe('fetch-article-details', () => {
       const doi = new Doi('10.1101/2020.09.15.286153');
       const latestDate = new Date('2020-12-14');
       const latestVersionDate = pipe(
-        await fetchArticleDetails(() => TO.some(latestDate), getServer)(doi)(),
+        await fetchArticleDetails(() => TO.some(latestDate), getArticle)(doi)(),
         O.map((article) => article.latestVersionDate),
       );
       const expected = O.some(latestDate);
@@ -28,11 +33,11 @@ describe('fetch-article-details', () => {
     it('returns the title for a doi', async () => {
       const doi = new Doi('10.1101/2020.09.15.286153');
       const title = pipe(
-        await fetchArticleDetails(() => TO.some(new Date()), getServer)(doi)(),
+        await fetchArticleDetails(() => TO.some(new Date()), getArticle)(doi)(),
         O.map((article) => article.title),
       );
       const expected = pipe(
-        'Accuracy of predicting chemical body composition of growing pigs using dual-energy X-ray absorptiometry',
+        titleText,
         toHtmlFragment,
         sanitise,
         O.some,
@@ -46,7 +51,7 @@ describe('fetch-article-details', () => {
     it('returns the authors for a doi', async () => {
       const doi = new Doi('10.1101/2020.09.15.286153');
       const authors = pipe(
-        await fetchArticleDetails(() => TO.some(new Date()), getServer)(doi)(),
+        await fetchArticleDetails(() => TO.some(new Date()), getArticle)(doi)(),
         O.map((article) => article.authors),
       );
       const expected = pipe(

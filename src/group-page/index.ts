@@ -166,7 +166,6 @@ export const groupPage = (ports: Ports): GroupPage => ({ id, user }) => pipe(
               doi,
               ports.fetchArticle,
               T.map(O.fromEither),
-              TO.map(({ server }) => server),
             ),
           ),
         )
