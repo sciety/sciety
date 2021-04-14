@@ -92,7 +92,7 @@ const hardCodedActivities = [
 
 type GetLatestArticleVersionDate = (
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
-) => (articleDoi: Doi, server: ArticleServer) => T.Task<O.Option<Date>>;
+) => (articleDoi: Doi, server: ArticleServer) => TO.TaskOption<Date>;
 
 const getLatestArticleVersionDate: GetLatestArticleVersionDate = (findVersionsForArticleDoi) => (doi, server) => pipe(
   [doi, server],
