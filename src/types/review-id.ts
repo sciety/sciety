@@ -1,6 +1,7 @@
 import * as Eq from 'fp-ts/Eq';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
+import * as S from 'fp-ts/string';
 import { Doi } from './doi';
 import { HypothesisAnnotationId } from './hypothesis-annotation-id';
 import * as NcrcId from './ncrc-id';
@@ -36,7 +37,7 @@ export const isReviewId = (value: unknown): value is ReviewId => (
 );
 
 const eq: Eq.Eq<ReviewId> = pipe(
-  Eq.eqString,
+  S.Eq,
   Eq.contramap(toString),
 );
 

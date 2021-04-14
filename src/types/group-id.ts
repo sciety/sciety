@@ -1,6 +1,7 @@
 import * as Eq from 'fp-ts/Eq';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
+import * as S from 'fp-ts/string';
 
 export class GroupId {
   readonly value: string;
@@ -20,6 +21,6 @@ export class GroupId {
 export const fromString = (value: string): O.Option<GroupId> => (O.tryCatch(() => new GroupId(value)));
 
 export const eqGroupId: Eq.Eq<GroupId> = pipe(
-  Eq.eqString,
+  S.Eq,
   Eq.contramap((id) => id.value),
 );
