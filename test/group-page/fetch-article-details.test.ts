@@ -1,5 +1,6 @@
 import * as O from 'fp-ts/Option';
-import { pipe } from 'fp-ts/function';
+import * as RA from 'fp-ts/ReadonlyArray';
+import { flow, pipe } from 'fp-ts/function';
 import { fetchArticleDetails } from '../../src/group-page/fetch-article-details';
 import { Doi } from '../../src/types/doi';
 import { toHtmlFragment } from '../../src/types/html-fragment';
@@ -34,6 +35,23 @@ describe('fetch-article-details', () => {
       );
 
       expect(title).toStrictEqual(expected);
+    });
+  });
+
+  describe('authors', () => {
+    it('returns the authors for a doi', async () => {
+      const doi = new Doi('10.1101/2020.09.15.286153');
+      const authors = pipe(
+        await fetchArticleDetails(doi)(),
+        O.map((article) => article.authors),
+      );
+      const expected = pipe(
+        ['Kasper C', 'Schlegel P', 'Ruiz-Ascacibar I', 'Stoll P', 'Bee G'],
+        RA.map(flow(toHtmlFragment, sanitise)),
+        O.some,
+      );
+
+      expect(authors).toStrictEqual(expected);
     });
   });
 });
