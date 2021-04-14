@@ -1,4 +1,3 @@
-import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
@@ -47,16 +46,15 @@ const hardcodedArticleDetails = [
 type GetLatestArticleVersionDate = (articleDoi: Doi, server: ArticleServer) => T.Task<O.Option<Date>>;
 
 export const fetchArticleDetails: FetchArticleDetails = (getLatestArticleVersionDate) => (doi) => pipe(
-  T.Do,
-  T.bind('hardcodedDetails', () => pipe(
+  TO.Do,
+  TO.bind('hardcodedDetails', () => pipe(
     hardcodedArticleDetails,
     RA.findFirst((articleDetails) => articleDetails.doi.value === doi.value),
     T.of,
   )),
-  T.bind('latestVersionDate', () => pipe(
+  TO.bind('latestVersionDate', () => pipe(
     [doi, 'biorxiv'],
     tupled(getLatestArticleVersionDate),
   )),
-  T.map(sequenceS(O.option)),
-  T.map(O.map(({ hardcodedDetails, latestVersionDate }) => ({ ...hardcodedDetails, latestVersionDate }))),
+  TO.map(({ hardcodedDetails, latestVersionDate }) => ({ ...hardcodedDetails, latestVersionDate })),
 );
