@@ -6,7 +6,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe, tupled } from 'fp-ts/function';
-import { constructFeedItem, GetArticle } from './construct-feed-item';
+import { constructFeedItem } from './construct-feed-item';
 import { countFollowersOf } from './count-followers';
 import { fetchArticleDetails, FindVersionsForArticleDoi } from './fetch-article-details';
 import { GetAllEvents, getMostRecentEvents } from './get-most-recent-events';
@@ -29,6 +29,12 @@ import { User } from '../types/user';
 import { UserId } from '../types/user-id';
 
 type FetchGroup = (groupId: GroupId) => TO.TaskOption<Group>;
+
+type Article = {
+  title: SanitisedHtmlFragment,
+  server: ArticleServer,
+};
+type GetArticle = (id: Doi) => TE.TaskEither<unknown, Article>;
 
 type Ports = {
   fetchArticle: GetArticle,
@@ -85,7 +91,7 @@ const hardCodedActivities = [
 ];
 
 type GetLatestArticleVersionDate = (
-  findVersionsForArticleDoi: FindVersionsForArticleDoi
+  findVersionsForArticleDoi: FindVersionsForArticleDoi,
 ) => (articleDoi: Doi, server: ArticleServer) => T.Task<O.Option<Date>>;
 
 const getLatestArticleVersionDate: GetLatestArticleVersionDate = (findVersionsForArticleDoi) => (doi, server) => pipe(
@@ -154,7 +160,15 @@ export const groupPage = (ports: Ports): GroupPage => ({ id, user }) => pipe(
       ),
       feed: group.id.value === '4eebcec9-a4bb-44e1-bde3-2ae11e65daaa'
         ? constructRecentGroupActivity(
-          fetchArticleDetails(getLatestArticleVersionDate(ports.findVersionsForArticleDoi)),
+          fetchArticleDetails(
+            getLatestArticleVersionDate(ports.findVersionsForArticleDoi),
+            (doi: Doi) => pipe(
+              doi,
+              ports.fetchArticle,
+              T.map(O.fromEither),
+              TO.map(({ server }) => server),
+            ),
+          ),
         )
         : constructFeed(ports, group),
     },

@@ -1,5 +1,5 @@
 import * as TE from 'fp-ts/TaskEither';
-import { constructFeedItem, GetArticle } from '../../src/group-page/construct-feed-item';
+import { constructFeedItem } from '../../src/group-page/construct-feed-item';
 import { FeedItem } from '../../src/shared-components';
 import { Doi } from '../../src/types/doi';
 import {
@@ -27,7 +27,7 @@ describe('construct-feed-item', () => {
 
     describe('and the article information can be retrieved', () => {
       beforeEach(async () => {
-        const getArticle: GetArticle = () => TE.right({
+        const getArticle = () => TE.right({
           title: articleTitle,
         });
         feedItem = await constructFeedItem(getArticle)(group)(event)();
@@ -52,7 +52,7 @@ describe('construct-feed-item', () => {
 
     describe('and the article information cannot be retrieved', () => {
       beforeEach(async () => {
-        const getArticle: GetArticle = () => TE.left('something-bad');
+        const getArticle = () => TE.left('something-bad');
         feedItem = await constructFeedItem(getArticle)(group)(event)();
       });
 

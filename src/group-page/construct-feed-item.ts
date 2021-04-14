@@ -49,7 +49,7 @@ const construct = (
   verb: reviewedBy(group),
 });
 
-export type GetArticle = (id: Doi) => TE.TaskEither<unknown, Article>;
+type GetArticle = (id: Doi) => TE.TaskEither<unknown, Article>;
 
 export const constructFeedItem = (
   getArticle: GetArticle,

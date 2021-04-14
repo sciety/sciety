@@ -14,7 +14,12 @@ export type FindVersionsForArticleDoi = (
   server: ArticleServer,
 ) => T.Task<O.Option<RNEA.ReadonlyNonEmptyArray<{ occurredAt: Date }>>>;
 
-type FetchArticleDetails = (getLatestArticleVersionDate: GetLatestArticleVersionDate) => (doi: Doi) => TO.TaskOption<{
+type GetServer = (doi: Doi) => TO.TaskOption<ArticleServer>;
+
+type FetchArticleDetails = (
+  getLatestArticleVersionDate: GetLatestArticleVersionDate,
+  getServer: GetServer,
+) => (doi: Doi) => TO.TaskOption<{
   title: SanitisedHtmlFragment,
   authors: ReadonlyArray<SanitisedHtmlFragment>,
   latestVersionDate: Date,
@@ -45,14 +50,14 @@ const hardcodedArticleDetails = [
 
 type GetLatestArticleVersionDate = (articleDoi: Doi, server: ArticleServer) => T.Task<O.Option<Date>>;
 
-export const fetchArticleDetails: FetchArticleDetails = (getLatestArticleVersionDate) => (doi) => pipe(
+export const fetchArticleDetails: FetchArticleDetails = (getLatestArticleVersionDate, getServer) => (doi) => pipe(
   TO.Do,
   TO.bind('hardcodedDetails', () => pipe(
     hardcodedArticleDetails,
     RA.findFirst((articleDetails) => articleDetails.doi.value === doi.value),
     T.of,
   )),
-  TO.bind('server', () => TO.some('biorxiv' as const)),
+  TO.bind('server', () => getServer(doi)),
   TO.bind('latestVersionDate', ({ server }) => pipe(
     [doi, server],
     tupled(getLatestArticleVersionDate),
