@@ -13,10 +13,7 @@ type HandleArticleVersionErrors = (
 export const handleArticleVersionErrors: HandleArticleVersionErrors = (items, server) => pipe(
   items,
   E.fromPredicate(
-    // TODO RA.some() should be able to confirm it's non-empty
-    (feedItems): feedItems is RNEA.ReadonlyNonEmptyArray<FeedItem> => (
-      feedItems.some((feedItem) => feedItem.type === 'article-version')
-    ),
+    RA.some((feedItem) => feedItem.type === 'article-version'),
     (array) => RA.snoc(array, { type: 'article-version-error', server }),
   ),
   E.toUnion,
