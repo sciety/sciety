@@ -5,7 +5,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
-import { flow, pipe } from 'fp-ts/function';
+import { constant, flow, pipe } from 'fp-ts/function';
 import {
   CountReviewResponses,
   FetchReview,
@@ -63,10 +63,10 @@ export const getArticleFeedEvents: GetArticleFeedEvents = (doi, server, userId) 
       RT.asks((deps: Dependencies) => deps.findVersionsForArticleDoi),
       RT.chainTaskK(flow(
         (findVersionsForArticleDoi) => findVersionsForArticleDoi(doi, server),
-        T.map(flow(
-          O.map(RNEA.map((version) => ({ type: 'article-version', ...version } as const))),
-          O.getOrElseW(() => []),
-        )),
+        TO.matchW(
+          constant([]),
+          RNEA.map((version) => ({ type: 'article-version', ...version } as const)),
+        ),
       )),
     ),
   ] as const,

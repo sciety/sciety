@@ -76,31 +76,39 @@ const renderCookieConsentScripts = (isSecure: boolean) => `
 export const cookieConsent = (): HtmlFragment => pipe(
   process.env.GOOGLE_TAG_MANAGER_ID,
   O.fromNullable,
-  O.map(() => renderCookieConsentScripts(globalIsSecure)),
-  O.getOrElse(constant('')),
+  O.fold(
+    constant(''),
+    () => renderCookieConsentScripts(globalIsSecure),
+  ),
   toHtmlFragment,
 );
 
 export const googleTagManager = (): HtmlFragment => pipe(
   process.env.GOOGLE_TAG_MANAGER_ID,
   O.fromNullable,
-  O.map(renderTagManagerScript),
-  O.getOrElse(constant('')),
+  O.fold(
+    constant(''),
+    renderTagManagerScript,
+  ),
   toHtmlFragment,
 );
 
 export const googleTagManagerNoScript = (): HtmlFragment => pipe(
   process.env.GOOGLE_TAG_MANAGER_ID,
   O.fromNullable,
-  O.map(renderTagManagerNoScript),
-  O.getOrElse(constant('')),
+  O.fold(
+    constant(''),
+    renderTagManagerNoScript,
+  ),
   toHtmlFragment,
 );
 
 export const fathom = (): HtmlFragment => pipe(
   process.env.FATHOM_SITE_ID,
   O.fromNullable,
-  O.map(renderFathomScript),
-  O.getOrElse(constant('')),
+  O.fold(
+    constant(''),
+    renderFathomScript,
+  ),
   toHtmlFragment,
 );

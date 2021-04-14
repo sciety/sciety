@@ -14,7 +14,9 @@ type RenderFeed = (events: ReadonlyArray<FeedItem>) => HtmlFragment;
 
 export const renderFeed: RenderFeed = flow(
   RNEA.fromReadonlyArray,
-  O.map(renderSummaryFeedList),
-  O.getOrElse(constant(emptyFeed)),
+  O.fold(
+    constant(emptyFeed),
+    renderSummaryFeedList,
+  ),
   toHtmlFragment,
 );
