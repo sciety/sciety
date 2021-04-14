@@ -67,7 +67,7 @@ const populateGroupViewModel = (getGroup: GetGroup, getAllEvents: GetAllEvents) 
   (item: GroupItem) => item.id,
   getGroup,
   T.map(E.fromOption(() => 'not-found' as const)),
-  TE.chainW((group) => pipe(
+  TE.chainTaskK((group) => pipe(
     getAllEvents,
     T.map(RA.reduce({ reviewCount: 0, followerCount: 0 }, updateGroupMeta(group.id))),
     T.map((meta) => ({
@@ -76,7 +76,6 @@ const populateGroupViewModel = (getGroup: GetGroup, getAllEvents: GetAllEvents) 
       ...meta,
       description: pipe(group.shortDescription, toHtmlFragment, sanitise),
     })),
-    TE.rightTask,
   )),
 );
 

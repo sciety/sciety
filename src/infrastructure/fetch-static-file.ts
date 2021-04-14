@@ -12,11 +12,10 @@ export const fetchStaticFile: FetchStaticFile = (filename) => (logger) => pipe(
   path.resolve(__dirname, '..', '..', 'static', filename),
   TE.taskify(fs.readFile),
   TE.swap,
-  TE.chainFirst(flow(
+  TE.chainFirstIOK(flow(
     (error) => ({ error }),
     L.error('Failed to read file'),
     IO.chain(logger),
-    TE.fromIO,
   )),
   TE.swap,
   TE.bimap(

@@ -30,13 +30,12 @@ export const commitEvents: CommitEvents = (events) => ({ inMemoryEvents, pool, l
         values,
       ),
     )),
-    T.chainFirst(flow(
+    T.chainFirstIOK(flow(
       (event) => ({ event }),
       L.info('Event committed'),
       IO.chain(logger),
-      T.fromIO,
     )),
-    T.chainFirst(flow((event) => inMemoryEvents.push(event), T.of)),
+    T.chainFirstIOK(flow((event) => inMemoryEvents.push(event), IO.of)),
   )),
   T.map(constVoid),
 );

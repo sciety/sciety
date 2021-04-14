@@ -42,11 +42,10 @@ const makeRequest = (doi: Doi, server: ArticleServer) => ({ getJson, logger }: D
     E.mapLeft((errors) => new Error(PR.failure(errors).join('\n'))),
   )),
   TE.swap,
-  TE.chainFirstW(flow(
+  TE.chainFirstIOK(flow(
     (error) => ({ doi, message: error.message }),
     L.error('Failed to retrieve article versions'),
     IO.chain(logger),
-    TE.rightIO,
   )),
   TE.swap,
 );

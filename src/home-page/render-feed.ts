@@ -72,7 +72,7 @@ export const renderFeed = <Err>(
       T.map(RNEA.fromReadonlyArray),
       T.chain(TE.fromOption(constant(noEvaluationsYet))),
     )),
-    TE.chainW(flow(renderSummaryFeedList, TE.rightTask)),
+    TE.chainTaskK(renderSummaryFeedList),
     TE.toUnion,
     T.map(flow(
       toHtmlFragment,

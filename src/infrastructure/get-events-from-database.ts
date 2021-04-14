@@ -23,11 +23,10 @@ export const getEventsFromDatabase = (
 ): TE.TaskEither<Error, ReadonlyArray<RuntimeGeneratedEvent>> => pipe(
   TE.tryCatch(async () => pool.query<EventRow>('SELECT id, type, date::text, payload FROM events'), E.toError),
   TE.map((result) => result.rows),
-  TE.chainFirstW(flow(
+  TE.chainFirstIOK(flow(
     (rows) => ({ count: rows.length }),
     L.debug('Reading events from database'),
     IO.chain(logger),
-    TE.rightIO,
   )),
   TE.chainEitherK(flow(
     RA.map((row) => ({ ...row, ...row.payload })),

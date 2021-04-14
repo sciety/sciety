@@ -74,7 +74,7 @@ export const searchResultsPage = (ports: Ports): SearchResultsPage => flow(
   }),
   sequenceS(TE.taskEither),
   TE.map(selectSubsetToDisplay(10)),
-  TE.chainW(flow(fetchExtraDetails({
+  TE.chainTaskK(fetchExtraDetails({
     ...ports,
     getLatestArticleVersionDate: (doi, server) => pipe(
       [doi, server],
@@ -84,6 +84,6 @@ export const searchResultsPage = (ports: Ports): SearchResultsPage => flow(
         (version) => version.occurredAt,
       )),
     ),
-  }), TE.rightTask)),
+  })),
   TE.bimap(renderErrorPage, renderPage),
 );
