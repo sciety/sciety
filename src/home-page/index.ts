@@ -1,6 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
+import * as TO from 'fp-ts/TaskOption';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { constructFeedItem, GetArticle } from './construct-feed-item';
 import { getActor, GetGroup } from './get-actor';
@@ -47,7 +48,7 @@ export const homePage = (ports: Ports): HomePage => flow(
       flow(
         T.traverseArray(constructFeedItem(getActor(ports.getGroup), ports.fetchArticle)),
         T.map(RNEA.fromReadonlyArray), // TODO shouldn't be needed, fp-ts types needs fixing
-        T.map(O.fold(constant(pipe('', toHtmlFragment)), renderSummaryFeedList)),
+        TO.match(constant(pipe('', toHtmlFragment)), renderSummaryFeedList),
       ),
     ),
   ),

@@ -113,10 +113,10 @@ const constructRecentGroupActivity = (getArticleDetails: GetArticleDetails) => p
       ...articleDetails,
     })),
   )),
-  T.map(O.fold(
+  TO.match(
     () => { throw new Error('Missing hardcoded data'); },
     renderRecentGroupActivity,
-  )),
+  ),
   TE.rightTask,
 );
 

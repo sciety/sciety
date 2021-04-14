@@ -1,7 +1,6 @@
 import { createTerminus, TerminusOptions } from '@godaddy/terminus';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { createRouter } from './http/router';
@@ -35,8 +34,8 @@ void pipe(
       (server) => server.on('listening', () => adapters.logger('debug', 'Server running')),
     )),
   )),
-  T.map(E.fold(
+  TE.match(
     (error) => pipe(process.stderr.write(`Unable to start:\n${JSON.stringify(error, null, 2)}\n`), process.exit(1)),
     (server) => server.listen(80),
-  )),
+  ),
 )();

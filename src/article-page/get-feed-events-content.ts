@@ -1,6 +1,5 @@
 import { URL } from 'url';
 import { sequenceS } from 'fp-ts/Apply';
-import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RT from 'fp-ts/ReaderTask';
 import * as T from 'fp-ts/Task';
@@ -78,7 +77,7 @@ const reviewToFeedItem = (
     review: pipe(
       feedEvent.reviewId,
       getReview,
-      T.map(E.fold(
+      TE.match(
         () => ({
           url: inferredUrlFromReviewId(feedEvent.reviewId),
           fullText: O.none,
@@ -88,7 +87,7 @@ const reviewToFeedItem = (
           url: O.some(review.url),
           fullText: O.some(review.fullText),
         }),
-      )),
+      ),
     ),
     reviewResponses: pipe(feedEvent.reviewId, countReviewResponses),
     userReviewResponse: getUserReviewResponse(feedEvent.reviewId, userId),
