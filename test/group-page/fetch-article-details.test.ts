@@ -2,8 +2,8 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { fetchArticleDetails } from '../../src/group-page/fetch-article-details';
 import { Doi } from '../../src/types/doi';
-import { toHtmlFragment } from "../../src/types/html-fragment";
-import { sanitise } from "../../src/types/sanitised-html-fragment";
+import { toHtmlFragment } from '../../src/types/html-fragment';
+import { sanitise } from '../../src/types/sanitised-html-fragment';
 
 describe('fetch-article-details', () => {
   describe('latest version date', () => {
