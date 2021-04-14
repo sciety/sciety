@@ -32,6 +32,7 @@ type FetchGroup = (groupId: GroupId) => TO.TaskOption<Group>;
 
 type Article = {
   title: SanitisedHtmlFragment,
+  authors: ReadonlyArray<SanitisedHtmlFragment>,
   server: ArticleServer,
 };
 type GetArticle = (id: Doi) => TE.TaskEither<unknown, Article>;

@@ -14,7 +14,11 @@ export type FindVersionsForArticleDoi = (
   server: ArticleServer,
 ) => T.Task<O.Option<RNEA.ReadonlyNonEmptyArray<{ occurredAt: Date }>>>;
 
-type GetArticle = (doi: Doi) => TO.TaskOption<{ title: SanitisedHtmlFragment, server: ArticleServer }>;
+type GetArticle = (doi: Doi) => TO.TaskOption<{
+  title: SanitisedHtmlFragment,
+  authors: ReadonlyArray<SanitisedHtmlFragment>,
+  server: ArticleServer,
+}>;
 
 type FetchArticleDetails = (
   getLatestArticleVersionDate: GetLatestArticleVersionDate,
@@ -28,19 +32,15 @@ type FetchArticleDetails = (
 const hardcodedArticleDetails = [
   {
     doi: new Doi('10.1101/2020.09.15.286153'),
-    authors: pipe(['Kasper C', 'Schlegel P', 'Ruiz-Ascacibar I', 'Stoll P', 'Bee G'], RA.map(flow(toHtmlFragment, sanitise))),
   },
   {
     doi: new Doi('10.1101/2019.12.20.884056'),
-    authors: pipe(['Rodríguez-López J', 'Lachica M', 'González-Valero L', 'Fernández-Fígares I'], RA.map(flow(toHtmlFragment, sanitise))),
   },
   {
     doi: new Doi('10.1101/760082'),
-    authors: pipe(['Le Cozler Y', 'Jurquet J', 'Bedere N'], RA.map(flow(toHtmlFragment, sanitise))),
   },
   {
     doi: new Doi('10.1101/661249'),
-    authors: pipe(['Ahmed BA', 'Laurence P', 'Pierre G', 'Olivier M'], RA.map(flow(toHtmlFragment, sanitise))),
   },
 ];
 
@@ -61,6 +61,7 @@ export const fetchArticleDetails: FetchArticleDetails = (getLatestArticleVersion
   TO.map(({ hardcodedDetails, latestVersionDate, article }) => ({
     ...hardcodedDetails,
     title: article.title,
+    authors: article.authors,
     latestVersionDate,
   })),
 );
