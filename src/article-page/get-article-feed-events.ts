@@ -4,6 +4,7 @@ import * as RT from 'fp-ts/ReaderTask';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
+import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe } from 'fp-ts/function';
 import {
   CountReviewResponses,
@@ -30,11 +31,11 @@ export type FindReviewsForArticleDoi = (articleVersionDoi: Doi) => T.Task<Readon
 export type FindVersionsForArticleDoi = (
   doi: Doi,
   server: ArticleServer
-) => T.Task<O.Option<RNEA.ReadonlyNonEmptyArray<{
+) => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<{
   source: URL,
   occurredAt: Date,
   version: number,
-}>>>;
+}>>;
 
 type GetArticleFeedEvents = (
   doi: Doi,

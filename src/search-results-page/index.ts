@@ -1,9 +1,9 @@
 import { sequenceS } from 'fp-ts/Apply';
-import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
+import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe, tupled } from 'fp-ts/function';
 import { ArticleItem } from './data-types';
 import {
@@ -27,7 +27,7 @@ type FindGroups = (q: string) => T.Task<ReadonlyArray<GroupId>>;
 type FindVersionsForArticleDoi = (
   doi: Doi,
   server: ArticleServer,
-) => T.Task<O.Option<RNEA.ReadonlyNonEmptyArray<{ occurredAt: Date }>>>;
+) => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<{ occurredAt: Date }>>;
 
 type Ports = {
   findGroups: FindGroups,
@@ -79,10 +79,10 @@ export const searchResultsPage = (ports: Ports): SearchResultsPage => flow(
     getLatestArticleVersionDate: (doi, server) => pipe(
       [doi, server],
       tupled(ports.findVersionsForArticleDoi),
-      T.map(O.map(flow(
+      TO.map(flow(
         RNEA.last,
         (version) => version.occurredAt,
-      ))),
+      )),
     ),
   }), TE.rightTask)),
   TE.bimap(renderErrorPage, renderPage),

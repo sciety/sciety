@@ -1,16 +1,16 @@
-import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
+import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe } from 'fp-ts/function';
 import { Doi } from '../types/doi';
 import { toHtmlFragment } from '../types/html-fragment';
 import { sanitise, SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
-type FetchArticleDetails = (doi: Doi) => T.Task<O.Option<{
+type FetchArticleDetails = (doi: Doi) => TO.TaskOption<{
   title: SanitisedHtmlFragment,
   authors: ReadonlyArray<SanitisedHtmlFragment>,
   latestVersionDate: Date,
-}>>;
+}>;
 
 const hardcodedArticleDetails = [
   {

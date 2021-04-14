@@ -3,6 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
+import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe } from 'fp-ts/function';
 import { fetchSavedArticles } from './fetch-saved-articles';
 import { GetAllEvents, projectFollowedGroupIds } from './project-followed-group-ids';
@@ -21,11 +22,11 @@ import { RenderPageError } from '../types/render-page-error';
 import { User } from '../types/user';
 import { UserId } from '../types/user-id';
 
-type FetchGroup = (groupId: GroupId) => T.Task<O.Option<{
+type FetchGroup = (groupId: GroupId) => TO.TaskOption<{
   id: GroupId,
   name: string,
   avatarPath: string,
-}>>;
+}>;
 
 type GetUserDetails = (userId: UserId) => TE.TaskEither<'not-found' | 'unavailable', UserDetails>;
 

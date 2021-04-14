@@ -1,7 +1,7 @@
-import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
+import * as TO from 'fp-ts/TaskOption';
 import { EventSourcedFollowListRepository } from './event-sourced-follow-list-repository';
 import { FetchCrossrefArticle } from './fetch-crossref-article';
 import { FetchReview } from './fetch-review';
@@ -26,9 +26,9 @@ type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
 type FindVersionsForArticleDoi = (
   doi: Doi,
   server: ArticleServer,
-) => T.Task<O.Option<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>>;
+) => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>;
 
-type GetGroup = (groupId: GroupId) => T.Task<O.Option<Group>>;
+type GetGroup = (groupId: GroupId) => TO.TaskOption<Group>;
 
 type GetAllGroups = T.Task<RNEA.ReadonlyNonEmptyArray<Group>>;
 

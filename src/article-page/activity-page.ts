@@ -4,6 +4,7 @@ import * as RT from 'fp-ts/ReaderTask';
 import * as RTE from 'fp-ts/ReaderTaskEither';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
+import * as TO from 'fp-ts/TaskOption';
 import { constant, flow, pipe } from 'fp-ts/function';
 import striptags from 'striptags';
 import { FindReviewsForArticleDoi, FindVersionsForArticleDoi, getArticleFeedEvents } from './get-article-feed-events';
@@ -45,10 +46,10 @@ type GetArticleDetails = (doi: Doi) => TE.TaskEither<'not-found' | 'unavailable'
   server: ArticleServer,
 }>;
 
-type GetGroup = (groupId: GroupId) => T.Task<O.Option<{
+type GetGroup = (groupId: GroupId) => TO.TaskOption<{
   name: string,
   avatarPath: string,
-}>>;
+}>;
 
 type Ports = {
   fetchArticle: GetArticleDetails,
@@ -92,9 +93,9 @@ export const articleActivityPage: ActivityPage = flow(
       ...ports,
       getGroup: flow(
         ports.getGroup,
-        T.map(O.getOrElseW(() => {
+        TO.getOrElse(() => {
           throw new Error('No such group');
-        })),
+        }),
       ),
       countReviewResponses: (reviewId) => projectReviewResponseCounts(reviewId)(ports.getAllEvents),
       getUserReviewResponse: (reviewId) => projectUserReviewResponse(reviewId, userId)(ports.getAllEvents),

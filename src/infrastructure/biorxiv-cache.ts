@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
-import * as T from 'fp-ts/Task';
+import * as TO from 'fp-ts/TaskOption';
 import { ArticleVersion } from './get-article-version-events-from-biorxiv';
 import { Logger } from './logger';
 import { ArticleServer } from '../types/article-server';
@@ -9,7 +9,7 @@ import { Doi } from '../types/doi';
 type GetArticleVersionEventsFromBiorxiv = (
   doi: Doi,
   server: ArticleServer
-) => T.Task<O.Option<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>>;
+) => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>;
 
 type BiorxivCache = Record<string, ReturnType<ReturnType<GetArticleVersionEventsFromBiorxiv>>>;
 

@@ -3,6 +3,7 @@ import * as RT from 'fp-ts/ReaderTask';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
+import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe } from 'fp-ts/function';
 import {
   DomainEvent,
@@ -56,7 +57,7 @@ type ProjectUserReviewResponse = (
 export const projectUserReviewResponse: ProjectUserReviewResponse = (reviewId, userId) => (getEvents) => pipe(
   userId,
   O.fold(
-    () => T.of(O.none),
+    () => TO.none,
     (u) => projectResponse(getEvents)(reviewId, u),
   ),
 );

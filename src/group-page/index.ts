@@ -3,6 +3,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
+import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe } from 'fp-ts/function';
 import { constructFeedItem, GetArticle } from './construct-feed-item';
 import { countFollowersOf } from './count-followers';
@@ -24,7 +25,7 @@ import { RenderPageError } from '../types/render-page-error';
 import { User } from '../types/user';
 import { UserId } from '../types/user-id';
 
-type FetchGroup = (groupId: GroupId) => T.Task<O.Option<Group>>;
+type FetchGroup = (groupId: GroupId) => TO.TaskOption<Group>;
 
 type Ports = {
   fetchArticle: GetArticle,
@@ -81,15 +82,14 @@ const hardCodedActivities = [
 
 const constructRecentGroupActivity = () => pipe(
   hardCodedActivities,
-  T.traverseArray((evaluatedArticle) => pipe(
+  TO.traverseArray((evaluatedArticle) => pipe(
     evaluatedArticle.doi,
     fetchArticleDetails,
-    T.map(O.map((articleDetails) => ({
+    TO.map((articleDetails) => ({
       ...evaluatedArticle,
       ...articleDetails,
-    }))),
+    })),
   )),
-  T.map(O.sequenceArray),
   T.map(O.fold(
     () => { throw new Error('Missing hardcoded data'); },
     renderRecentGroupActivity,

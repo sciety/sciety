@@ -3,6 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
+import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe, tupled } from 'fp-ts/function';
 import { ArticleItem, GroupItem } from './data-types';
 import { ItemViewModel } from './render-search-result';
@@ -24,7 +25,7 @@ type Ports = {
   getLatestArticleVersionDate: GetLatestArticleVersionDate,
 };
 
-export type GetGroup = (groupId: GroupId) => T.Task<O.Option<Group>>;
+export type GetGroup = (groupId: GroupId) => TO.TaskOption<Group>;
 
 export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
@@ -42,7 +43,7 @@ const getLatestActivityDate: GetLatestActivityDate = flow(
   O.map(({ occurredAt }) => occurredAt),
 );
 
-type GetLatestArticleVersionDate = (articleDoi: Doi, server: ArticleServer) => T.Task<O.Option<Date>>;
+type GetLatestArticleVersionDate = (articleDoi: Doi, server: ArticleServer) => TO.TaskOption<Date>;
 
 const populateArticleViewModel = (
   findReviewsForArticleDoi: FindReviewsForArticleDoi,

@@ -5,6 +5,7 @@ import * as O from 'fp-ts/Option';
 import * as RT from 'fp-ts/ReaderTask';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
+import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { FeedItem } from './render-feed';
 import { ArticleServer } from '../types/article-server';
@@ -39,7 +40,7 @@ export type FetchReview = (id: ReviewId) => TE.TaskEither<unknown, {
 
 export type CountReviewResponses = (reviewId: ReviewId) => T.Task<{ helpfulCount: number, notHelpfulCount: number }>;
 
-export type GetUserReviewResponse = (reviewId: ReviewId, userId: O.Option<UserId>) => T.Task<O.Option<'helpful' | 'not-helpful'>>;
+export type GetUserReviewResponse = (reviewId: ReviewId, userId: O.Option<UserId>) => TO.TaskOption<'helpful' | 'not-helpful'>;
 
 export type GetGroup = (id: GroupId) => T.Task<{
   name: string,
