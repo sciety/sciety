@@ -29,16 +29,37 @@ type FetchArticleDetails = (
   latestVersionDate: Date,
 }>;
 
+const hardcodedArticleDetails = [
+  {
+    doi: new Doi('10.1101/2020.09.15.286153'),
+  },
+  {
+    doi: new Doi('10.1101/2019.12.20.884056'),
+  },
+  {
+    doi: new Doi('10.1101/760082'),
+  },
+  {
+    doi: new Doi('10.1101/661249'),
+  },
+];
+
 type GetLatestArticleVersionDate = (articleDoi: Doi, server: ArticleServer) => T.Task<O.Option<Date>>;
 
 export const fetchArticleDetails: FetchArticleDetails = (getLatestArticleVersionDate, getArticle) => (doi) => pipe(
   TO.Do,
+  TO.bind('hardcodedDetails', () => pipe(
+    hardcodedArticleDetails,
+    RA.findFirst((articleDetails) => articleDetails.doi.value === doi.value),
+    T.of,
+  )),
   TO.bind('article', () => getArticle(doi)),
   TO.bind('latestVersionDate', ({ article }) => pipe(
     [doi, article.server],
     tupled(getLatestArticleVersionDate),
   )),
-  TO.map(({ latestVersionDate, article }) => ({
+  TO.map(({ hardcodedDetails, latestVersionDate, article }) => ({
+    ...hardcodedDetails,
     title: article.title,
     authors: article.authors,
     latestVersionDate,
