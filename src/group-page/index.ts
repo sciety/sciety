@@ -1,13 +1,14 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
-import { flow, pipe } from 'fp-ts/function';
+import { flow, pipe, tupled } from 'fp-ts/function';
 import { constructFeedItem, GetArticle } from './construct-feed-item';
 import { countFollowersOf } from './count-followers';
-import { fetchArticleDetails } from './fetch-article-details';
+import { fetchArticleDetails, FindVersionsForArticleDoi } from './fetch-article-details';
 import { GetAllEvents, getMostRecentEvents } from './get-most-recent-events';
 import { FetchStaticFile, renderDescription } from './render-description';
 import { renderFeed } from './render-feed';
@@ -16,12 +17,14 @@ import { renderErrorPage, renderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
 import { renderRecentGroupActivity } from './render-recent-group-activity';
 import { renderFollowToggle } from '../follow/render-follow-toggle';
+import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
+import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { User } from '../types/user';
 import { UserId } from '../types/user-id';
 
@@ -33,6 +36,7 @@ type Ports = {
   getGroup: FetchGroup,
   getAllEvents: GetAllEvents,
   follows: (userId: UserId, groupId: GroupId) => T.Task<boolean>,
+  findVersionsForArticleDoi: FindVersionsForArticleDoi,
 };
 
 type Params = {
@@ -80,11 +84,30 @@ const hardCodedActivities = [
   },
 ];
 
-const constructRecentGroupActivity = () => pipe(
+type GetLatestArticleVersionDate = (
+  findVersionsForArticleDoi: FindVersionsForArticleDoi
+) => (articleDoi: Doi, server: ArticleServer) => T.Task<O.Option<Date>>;
+
+const getLatestArticleVersionDate: GetLatestArticleVersionDate = (findVersionsForArticleDoi) => (doi, server) => pipe(
+  [doi, server],
+  tupled(findVersionsForArticleDoi),
+  T.map(O.map(flow(
+    RNEA.last,
+    (version) => version.occurredAt,
+  ))),
+);
+
+type GetArticleDetails = (doi: Doi) => T.Task<O.Option<{
+  title: SanitisedHtmlFragment,
+  authors: ReadonlyArray<SanitisedHtmlFragment>,
+  latestVersionDate: Date,
+}>>;
+
+const constructRecentGroupActivity = (getArticleDetails: GetArticleDetails) => pipe(
   hardCodedActivities,
   TO.traverseArray((evaluatedArticle) => pipe(
     evaluatedArticle.doi,
-    fetchArticleDetails,
+    getArticleDetails,
     TO.map((articleDetails) => ({
       ...evaluatedArticle,
       ...articleDetails,
@@ -130,7 +153,9 @@ export const groupPage = (ports: Ports): GroupPage => ({ id, user }) => pipe(
         TE.rightTask,
       ),
       feed: group.id.value === '4eebcec9-a4bb-44e1-bde3-2ae11e65daaa'
-        ? constructRecentGroupActivity()
+        ? constructRecentGroupActivity(
+          fetchArticleDetails(getLatestArticleVersionDate(ports.findVersionsForArticleDoi)),
+        )
         : constructFeed(ports, group),
     },
     sequenceS(TE.taskEither),
