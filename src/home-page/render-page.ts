@@ -43,6 +43,6 @@ export const renderPage = (
     feed: renderFeed(userId),
     editorialCommunities: renderEditorialCommunities(userId),
   }),
-  sequenceS(T.task),
+  sequenceS(T.ApplyPar),
   T.map(asPage),
 );

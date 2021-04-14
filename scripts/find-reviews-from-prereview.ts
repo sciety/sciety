@@ -49,7 +49,7 @@ const toPreprint = flow(
   O.map((preprint): Preprint => pipe(
     preprint.fullReviews,
     RA.map((review) => ({ createdAt: O.some(review.createdAt), doi: review.doi })),
-    RA.map(sequenceS(O.option)),
+    RA.map(sequenceS(O.Apply)),
     RA.compact,
     (fullReviews) => ({ handle: preprint.handle, fullReviews }),
   )),

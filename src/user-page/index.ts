@@ -93,7 +93,7 @@ export const userPage = (ports: Ports): UserPage => {
           )),
         ),
       },
-      sequenceS(TE.taskEither),
+      sequenceS(TE.ApplyPar),
       TE.bimap(renderErrorPage, renderPage),
     );
   };

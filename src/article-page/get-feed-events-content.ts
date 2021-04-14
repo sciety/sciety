@@ -93,7 +93,7 @@ const reviewToFeedItem = (
     reviewResponses: pipe(feedEvent.reviewId, countReviewResponses),
     userReviewResponse: getUserReviewResponse(feedEvent.reviewId, userId),
   },
-  sequenceS(T.task),
+  sequenceS(T.ApplyPar),
   T.map(({
     group, review, reviewResponses, userReviewResponse,
   }) => ({

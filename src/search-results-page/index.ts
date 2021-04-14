@@ -72,7 +72,7 @@ export const searchResultsPage = (ports: Ports): SearchResultsPage => flow(
       TE.rightTask,
     ),
   }),
-  sequenceS(TE.taskEither),
+  sequenceS(TE.ApplyPar),
   TE.map(selectSubsetToDisplay(10)),
   TE.chainTaskK(fetchExtraDetails({
     ...ports,

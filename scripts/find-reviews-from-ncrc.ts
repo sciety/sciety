@@ -29,7 +29,7 @@ const reviewFromRow = flow(
     id: RA.lookup(0)(row),
     journal: RA.lookup(14)(row),
   }),
-  sequenceS(O.option),
+  sequenceS(O.Apply),
 );
 
 void (async (): Promise<void> => {

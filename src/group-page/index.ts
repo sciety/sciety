@@ -158,7 +158,7 @@ export const groupPage = (ports: Ports): GroupPage => ({ id, user }) => pipe(
         )
         : constructFeed(ports, group),
     },
-    sequenceS(TE.taskEither),
+    sequenceS(TE.ApplyPar),
     TE.bimap(renderErrorPage, renderPage(group)),
   )),
 );

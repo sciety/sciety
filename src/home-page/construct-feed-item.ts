@@ -70,6 +70,6 @@ export const constructFeedItem = (
     article: getArticle(event.articleId),
     event: T.of(event),
   }),
-  sequenceS(T.task),
+  sequenceS(T.ApplyPar),
   T.map(construct),
 );
