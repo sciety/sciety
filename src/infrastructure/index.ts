@@ -47,13 +47,13 @@ type Dependencies = {
 
 export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<unknown, Adapters> => pipe(
   I.Do,
-  I.bind('logger', () => pipe(
+  I.apS('logger', pipe(
     dependencies.prettyLog,
     jsonSerializer,
     (serializer) => streamLogger(process.stdout, serializer, dependencies.logLevel),
     rTracerLogger,
   )),
-  I.bind('pool', () => new Pool()),
+  I.apS('pool', new Pool()),
   TE.right,
   TE.chainFirst(({ pool }) => TE.tryCatch(
     async () => pool.query(`
@@ -67,12 +67,12 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
     `),
     identity,
   )),
-  TE.bindW('eventsFromDataFiles', () => pipe(
+  TE.bindW('eventsFromDatabase', ({ pool, logger }) => getEventsFromDatabase(pool, loggerIO(logger))),
+  TE.apSW('eventsFromDataFiles', pipe(
     bootstrapGroups,
     RNEA.map(({ id }) => id),
     getEventsFromDataFiles,
   )),
-  TE.bindW('eventsFromDatabase', ({ pool, logger }) => getEventsFromDatabase(pool, loggerIO(logger))),
   TE.bindW('events', ({ eventsFromDataFiles, eventsFromDatabase }) => pipe(
     eventsFromDataFiles.concat(eventsFromDatabase),
     A.sort(DomainEvent.byDate),

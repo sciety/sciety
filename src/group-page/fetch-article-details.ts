@@ -48,12 +48,12 @@ type GetLatestArticleVersionDate = (articleDoi: Doi, server: ArticleServer) => T
 
 export const fetchArticleDetails: FetchArticleDetails = (getLatestArticleVersionDate, getArticle) => (doi) => pipe(
   TO.Do,
-  TO.bind('hardcodedDetails', () => pipe(
+  TO.apS('hardcodedDetails', pipe(
     hardcodedArticleDetails,
     RA.findFirst((articleDetails) => articleDetails.doi.value === doi.value),
     T.of,
   )),
-  TO.bind('article', () => getArticle(doi)),
+  TO.apS('article', getArticle(doi)),
   TO.bind('latestVersionDate', ({ article }) => pipe(
     [doi, article.server],
     tupled(getLatestArticleVersionDate),

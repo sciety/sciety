@@ -85,10 +85,10 @@ export const loggerIO = (logger: Logger): LoggerIO => (
 
 const logEntry = (level: LevelName) => (message: string) => (payload?: Payload): IO.IO<LogEntry> => pipe(
   IO.Do,
-  IO.bind('timestamp', () => D.create),
-  IO.bind('level', () => pipe(level, IO.of)),
-  IO.bind('message', () => pipe(message, IO.of)),
-  IO.bind('payload', () => pipe(payload, IO.of)),
+  IO.apS('timestamp', D.create),
+  IO.apS('level', pipe(level, IO.of)),
+  IO.apS('message', pipe(message, IO.of)),
+  IO.apS('payload', pipe(payload, IO.of)),
 );
 
 export const error = logEntry('error');

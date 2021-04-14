@@ -18,8 +18,8 @@ export const respondHandler = (ports: Ports): Middleware<{ user: User }> => asyn
   const referrer = (context.request.headers.referer ?? '/') as string;
   await pipe(
     O.Do,
-    O.bind('reviewId', () => pipe(context.request.body.reviewid, ReviewId.fromString)),
-    O.bind('command', () => pipe(context.request.body.command, toCommand)),
+    O.apS('reviewId', pipe(context.request.body.reviewid, ReviewId.fromString)),
+    O.apS('command', pipe(context.request.body.command, toCommand)),
     O.fold(
       () => context.throw(StatusCodes.BAD_REQUEST),
       commandHandler(ports.commitEvents, ports.getAllEvents, user.id),

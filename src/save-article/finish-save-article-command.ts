@@ -28,8 +28,8 @@ export const finishSaveArticleCommand = (
   const user = context.state.user as User;
   await pipe(
     O.Do,
-    O.bind('articleId', () => pipe(context.session.articleId, Doi.fromString)),
-    O.bind('command', () => pipe(context.session.command, O.fromNullable, O.filter(isCommand))),
+    O.apS('articleId', pipe(context.session.articleId, Doi.fromString)),
+    O.apS('command', pipe(context.session.command, O.fromNullable, O.filter(isCommand))),
     O.fold(
       () => T.of(undefined),
       ({ articleId }) => pipe(

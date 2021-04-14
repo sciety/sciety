@@ -20,12 +20,12 @@ const terminusOptions = (logger: Logger): TerminusOptions => ({
 
 void pipe(
   TE.Do,
-  TE.bind('adapters', () => (createInfrastructure({
+  TE.apS('adapters', createInfrastructure({
     crossrefApiBearerToken: O.fromNullable(process.env.CROSSREF_API_BEARER_TOKEN),
     logLevel: process.env.LOG_LEVEL ?? 'debug',
     prettyLog: !!process.env.PRETTY_LOG,
     twitterApiBearerToken: process.env.TWITTER_API_BEARER_TOKEN ?? '',
-  }))),
+  })),
   TE.bindW('router', ({ adapters }) => pipe(adapters, createRouter, TE.right)),
   TE.chainEitherKW(({ adapters, router }) => pipe(
     createApplicationServer(router, adapters.logger),
