@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { Doi, eqDoi } from '../types/doi';
 import { editorialCommunityReviewedArticle } from '../types/domain-events';
-import { GroupId } from '../types/group-id';
+import { GroupId, eqGroupId } from '../types/group-id';
 
 type ArticleActivity = { doi: Doi, latestActivityDate: Date, evaluationCount: number };
 
@@ -34,6 +34,24 @@ const hardCodedEvents = [
     new Doi('10.24072/pci.animsci.100005'),
     new Date('2020-12-15T00:00:00.000Z'),
   ),
+  editorialCommunityReviewedArticle(
+    new GroupId('53ed5364-a016-11ea-bb37-0242ac130002'),
+    new Doi('10.1101/2019.12.20.884056'),
+    new Doi('10.7287/peerj.11014v0.1/reviews/1'),
+    new Date('2021-03-10T00:00:00.000Z'),
+  ),
+  editorialCommunityReviewedArticle(
+    new GroupId('53ed5364-a016-11ea-bb37-0242ac130002'),
+    new Doi('10.1101/2019.12.20.884056'),
+    new Doi('10.7287/peerj.11014v0.1/reviews/2'),
+    new Date('2021-03-10T00:00:00.000Z'),
+  ),
+  editorialCommunityReviewedArticle(
+    new GroupId('53ed5364-a016-11ea-bb37-0242ac130002'),
+    new Doi('10.1101/2019.12.20.884056'),
+    new Doi('10.7287/peerj.11014v0.2/reviews/2'),
+    new Date('2021-03-10T00:00:00.000Z'),
+  ),
 ];
 
 const allGroupActivities = [
@@ -59,8 +77,9 @@ const allGroupActivities = [
   },
 ];
 
-export const groupActivities: GroupActivities = () => pipe(
+export const groupActivities: GroupActivities = (groupId) => pipe(
   hardCodedEvents,
+  RA.filter((event) => eqGroupId.equals(event.editorialCommunityId, groupId)),
   RA.map((event) => event.articleId),
   RA.map((doi) => pipe(allGroupActivities, RA.findFirst((activity) => eqDoi.equals(activity.doi, doi)))),
   RA.reverse,
