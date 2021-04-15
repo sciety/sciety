@@ -21,7 +21,7 @@ export const followHandler = (ports: Ports): Middleware<{ user: User }> => {
   return async (context, next) => {
     await pipe(
       context.request.body[groupProperty],
-      GroupId.fromString,
+      GroupId.fromNullable,
       O.fold(
         () => context.throw(StatusCodes.BAD_REQUEST),
         async (groupId) => {

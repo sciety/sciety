@@ -21,7 +21,7 @@ export const finishFollowCommand = (ports: Ports): Middleware => {
     if (context.session.command === 'follow') {
       await pipe(
         context.session[sessionGroupProperty],
-        GroupId.fromString,
+        GroupId.fromNullable,
         O.fold(
           () => context.throw(StatusCodes.BAD_REQUEST),
           async (groupId) => {

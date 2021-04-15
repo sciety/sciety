@@ -19,7 +19,7 @@ export const unfollowHandler = (ports: Ports): Middleware<{ user: User }> => {
   return async (context, next) => {
     await pipe(
       context.request.body.editorialcommunityid,
-      GroupId.fromString,
+      GroupId.fromNullable,
       O.fold(
         () => context.throw(StatusCodes.BAD_REQUEST),
         async (groupId) => {

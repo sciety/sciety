@@ -19,7 +19,7 @@ export const finishUnfollowCommand = (ports: Ports): Middleware => {
     if (context.session.command === 'unfollow') {
       await pipe(
         context.session.editorialCommunityId,
-        GroupId.fromString,
+        GroupId.fromNullable,
         O.fold(
           () => context.throw(StatusCodes.BAD_REQUEST),
           async (groupId) => {
