@@ -53,4 +53,36 @@ describe('group-activities', () => {
       );
     });
   });
+
+  describe('when only a single group has evaluated an article more than once', () => {
+    it.todo('has a single entry for the article');
+
+    it.todo('has an evaluation count of the number of evaluations');
+
+    it.todo('has a latest activity date of the latest evaluation');
+  });
+
+  describe('when multiple groups have evaluated an article', () => {
+    it.todo('has an evaluation count of the number of evaluations by all groups');
+
+    it.todo('has a latest activity date of the latest evaluation by any group');
+  });
+
+  describe('when the group has evaluated multiple articles', () => {
+    it.todo('returns the most recently evaluated articles first');
+
+    it.todo('limits the number of entries to 10');
+  });
+
+  describe('when another group evaluates an article previously evaluated by this group', () => {
+    it.todo('orders by the evaluation date of this group');
+  });
+
+  describe('when the group has not evaluated any articles', () => {
+    it.todo('returns an empty list');
+  });
+
+  describe('when the group does not exist', () => {
+    it.todo('returns a None');
+  });
 });
