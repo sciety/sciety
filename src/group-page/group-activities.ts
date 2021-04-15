@@ -1,12 +1,42 @@
 import * as O from 'fp-ts/Option';
-import { Doi } from '../types/doi';
+import * as RA from 'fp-ts/ReadonlyArray';
+import { pipe } from 'fp-ts/function';
+import { Doi, eqDoi } from '../types/doi';
+import { editorialCommunityReviewedArticle } from '../types/domain-events';
 import { GroupId } from '../types/group-id';
 
 type ArticleActivity = { doi: Doi, latestActivityDate: Date, evaluationCount: number };
 
 type GroupActivities = (groupId: GroupId) => O.Option<ReadonlyArray<ArticleActivity>>;
 
-export const groupActivities: GroupActivities = () => O.some([
+const hardCodedEvents = [
+  editorialCommunityReviewedArticle(
+    new GroupId('4eebcec9-a4bb-44e1-bde3-2ae11e65daaa'),
+    new Doi('10.1101/661249'),
+    new Doi('10.24072/pci.animsci.100001'),
+    new Date('2019-09-06T00:00:00.000Z'),
+  ),
+  editorialCommunityReviewedArticle(
+    new GroupId('4eebcec9-a4bb-44e1-bde3-2ae11e65daaa'),
+    new Doi('10.1101/760082'),
+    new Doi('10.24072/pci.animsci.100002'),
+    new Date('2019-12-05T00:00:00.000Z'),
+  ),
+  editorialCommunityReviewedArticle(
+    new GroupId('4eebcec9-a4bb-44e1-bde3-2ae11e65daaa'),
+    new Doi('10.1101/2019.12.20.884056'),
+    new Doi('10.24072/pci.animsci.100004'),
+    new Date('2020-10-14T00:00:00.000Z'),
+  ),
+  editorialCommunityReviewedArticle(
+    new GroupId('4eebcec9-a4bb-44e1-bde3-2ae11e65daaa'),
+    new Doi('10.1101/2020.09.15.286153'),
+    new Doi('10.24072/pci.animsci.100005'),
+    new Date('2020-12-15T00:00:00.000Z'),
+  ),
+];
+
+const allGroupActivities = [
   {
     doi: new Doi('10.1101/2020.09.15.286153'),
     latestActivityDate: new Date('2020-12-15'),
@@ -27,4 +57,12 @@ export const groupActivities: GroupActivities = () => O.some([
     latestActivityDate: new Date('2019-12-05'),
     evaluationCount: 1,
   },
-]);
+];
+
+export const groupActivities: GroupActivities = () => pipe(
+  hardCodedEvents,
+  RA.map((event) => event.articleId),
+  RA.map((doi) => pipe(allGroupActivities, RA.findFirst((activity) => eqDoi.equals(activity.doi, doi)))),
+  RA.reverse,
+  O.sequenceArray,
+);
