@@ -1,7 +1,6 @@
 import * as O from 'fp-ts/Option';
-import * as RA from 'fp-ts/ReadonlyArray';
 import * as TO from 'fp-ts/TaskOption';
-import { flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import { fetchArticleDetails } from '../../src/group-page/fetch-article-details';
 import { Doi } from '../../src/types/doi';
 import { toHtmlFragment } from '../../src/types/html-fragment';
@@ -12,6 +11,7 @@ const titleText = 'Accuracy of predicting chemical body composition of growing p
 const getArticle = () => TO.some({
   title: sanitise(toHtmlFragment(titleText)),
   server: 'biorxiv' as const,
+  authors: ['Kasper C', 'Schlegel P', 'Ruiz-Ascacibar I', 'Stoll P', 'Bee G'],
 });
 
 describe('fetch-article-details', () => {
@@ -56,7 +56,6 @@ describe('fetch-article-details', () => {
       );
       const expected = pipe(
         ['Kasper C', 'Schlegel P', 'Ruiz-Ascacibar I', 'Stoll P', 'Bee G'],
-        RA.map(flow(toHtmlFragment, sanitise)),
         O.some,
       );
 

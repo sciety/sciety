@@ -33,6 +33,7 @@ type FetchGroup = (groupId: GroupId) => TO.TaskOption<Group>;
 type Article = {
   title: SanitisedHtmlFragment,
   server: ArticleServer,
+  authors: ReadonlyArray<string>,
 };
 type GetArticle = (id: Doi) => TE.TaskEither<unknown, Article>;
 
@@ -105,7 +106,7 @@ const getLatestArticleVersionDate: GetLatestArticleVersionDate = (findVersionsFo
 
 type GetArticleDetails = (doi: Doi) => T.Task<O.Option<{
   title: SanitisedHtmlFragment,
-  authors: ReadonlyArray<SanitisedHtmlFragment>,
+  authors: ReadonlyArray<string>,
   latestVersionDate: Date,
 }>>;
 

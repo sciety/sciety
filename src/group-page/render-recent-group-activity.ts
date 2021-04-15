@@ -1,3 +1,4 @@
+import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
@@ -14,13 +15,13 @@ const renderEvaluationCount = (evaluationCount: number): HtmlFragment => pipe(
   (singular) => `${evaluationCount} ${singular ? 'evaluation' : 'evaluations'}`,
   wrapInSpan,
 );
-type RenderAuthors = (authors: ReadonlyArray<SanitisedHtmlFragment>) => HtmlFragment;
+type RenderAuthors = (authors: ReadonlyArray<string>) => HtmlFragment;
 const renderAuthors: RenderAuthors = flow(
   RNEA.fromReadonlyArray,
   O.fold(
     constant(''),
     flow(
-      RNEA.map((author) => `<li class="group-activity-list__card_author">${author}</li>`),
+      RNEA.map((author) => `<li class="group-activity-list__card_author">${htmlEscape(author)}</li>`),
       (authors) => `
       <ol class="group-activity-list__card_authors" role="list">
         ${authors.join('\n')}
@@ -46,7 +47,7 @@ const renderActivity = (model: ArticleViewModel): HtmlFragment => toHtmlFragment
 type ArticleViewModel = {
   doi: Doi,
   title: SanitisedHtmlFragment,
-  authors: ReadonlyArray<SanitisedHtmlFragment>,
+  authors: ReadonlyArray<string>,
   latestVersionDate: Date,
   latestActivityDate: Date,
   evaluationCount: number,
