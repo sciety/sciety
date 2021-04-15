@@ -34,7 +34,7 @@
     "newtype-ts": "^0.3.4",
     "parse-link-header": "^1.0.1",
     "passport-twitter": "^1.0.4",
-    "pg": "^8.5.1",
+    "pg": "^8.6.0",
     "rdf-dataset-indexed": "^0.4.0",
     "remarkable": "^2.0.1",
     "sanitize-html": "^2.3.3",
