@@ -34,9 +34,10 @@ export const saveFollowCommand: Middleware = async (context, next) => {
     TO.chain(isCurrentGroup),
     TO.fold(
       () => T.of(context.throw(StatusCodes.BAD_REQUEST)),
-      flow(saveCommandAndGroupIdToSession(context), T.of),
+      flow(
+        saveCommandAndGroupIdToSession(context),
+        () => next,
+      ),
     ),
   )();
-
-  await next();
 };
