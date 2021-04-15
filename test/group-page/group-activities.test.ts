@@ -40,5 +40,17 @@ describe('group-activities', () => {
         ])),
       );
     });
+
+    it('latest activity date matches event date', () => {
+      const activities = groupActivities(events)(groupId);
+
+      expect(activities).toStrictEqual(
+        O.some(expect.arrayContaining([
+          expect.objectContaining({
+            latestActivityDate: new Date('2020-12-15T00:00:00.000Z'),
+          }),
+        ])),
+      );
+    });
   });
 });
