@@ -8,9 +8,11 @@ import { eqGroupId, GroupId } from '../types/group-id';
 
 type ArticleActivity = { doi: Doi, latestActivityDate: Date, evaluationCount: number };
 
-type GroupActivities = (groupId: GroupId) => O.Option<ReadonlyArray<ArticleActivity>>;
+type GroupActivities = (events: ReadonlyArray<DomainEvent>) => (groupId: GroupId) => (
+  O.Option<ReadonlyArray<ArticleActivity>>
+);
 
-const hardCodedEvents: ReadonlyArray<DomainEvent> = [
+export const hardCodedEvents: ReadonlyArray<DomainEvent> = [
   editorialCommunityReviewedArticle(
     new GroupId('4eebcec9-a4bb-44e1-bde3-2ae11e65daaa'),
     new Doi('10.1101/661249'),
@@ -78,8 +80,8 @@ const allGroupActivities = [
   },
 ];
 
-export const groupActivities: GroupActivities = (groupId) => pipe(
-  hardCodedEvents,
+export const groupActivities: GroupActivities = (events) => (groupId) => pipe(
+  events,
   RA.filter(isEditorialCommunityReviewedArticleEvent),
   RA.filter((event) => eqGroupId.equals(event.editorialCommunityId, groupId)),
   RA.map((event) => event.articleId),

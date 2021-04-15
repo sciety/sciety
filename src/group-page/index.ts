@@ -10,7 +10,7 @@ import { constructFeedItem } from './construct-feed-item';
 import { countFollowersOf } from './count-followers';
 import { fetchArticleDetails, FindVersionsForArticleDoi } from './fetch-article-details';
 import { GetAllEvents, getMostRecentEvents } from './get-most-recent-events';
-import { groupActivities } from './group-activities';
+import { groupActivities, hardCodedEvents } from './group-activities';
 import { FetchStaticFile, renderDescription } from './render-description';
 import { renderFeed } from './render-feed';
 import { renderFollowers } from './render-followers';
@@ -89,7 +89,7 @@ type GetArticleDetails = (doi: Doi) => T.Task<O.Option<{
 }>>;
 
 const constructRecentGroupActivity = (getArticleDetails: GetArticleDetails) => flow(
-  groupActivities,
+  groupActivities(hardCodedEvents),
   TO.fromOption,
   TO.chain(TO.traverseArray((evaluatedArticle) => pipe(
     evaluatedArticle.doi,
