@@ -246,6 +246,20 @@ describe('parse-crossref-article', () => {
       expect(authors).toStrictEqual(O.some(['Eesha Ross', 'Fergus Fountain']));
     });
 
+    it('strips XML from the author names', async () => {
+      const response = crossrefResponseWith(`
+        <contributors>
+          <person_name contributor_role="author" sequence="first">
+            <given_name><scp>Fergus</scp></given_name>
+            <surname>Fo<scp>untain</scp></surname>
+          </person_name>
+        </contributors>`);
+      const doc = parser.parseFromString(response, 'text/xml');
+      const authors = getAuthors(doc, doi, dummyLogger);
+
+      expect(authors).toStrictEqual(O.some(['Fergus Fountain']));
+    });
+
     it('handles a person without a given_name', async () => {
       const response = crossrefResponseWith(`
         <contributors>
@@ -315,6 +329,9 @@ describe('parse-crossref-article', () => {
     });
   });
 
+  // TODO: these assertions appear to expect a string, but should expect a SanitisedHtmlFragment
+  // There is coupling between these expectations and the way the SanitisedHtmlFragment type
+  // has been defined.
   describe('parsing the title', () => {
     it('extracts a title from the XML response', async () => {
       const response = crossrefResponseWith(`
