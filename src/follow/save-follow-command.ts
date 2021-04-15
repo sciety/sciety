@@ -1,4 +1,5 @@
-import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
+import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import {
@@ -6,28 +7,36 @@ import {
 } from 'koa';
 import { sessionGroupProperty } from './finish-follow-command';
 import { groupProperty } from './follow-handler';
+import { Group } from '../types/group';
 import * as GroupId from '../types/group-id';
 
 type Context = ParameterizedContext<DefaultState, DefaultContext>;
 
 // TODO: this side-effect could be captured differently
-const saveCommandAndGroupIdToSession = (context: Context) => (groupId: GroupId.GroupId): void => {
+const saveCommandAndGroupIdToSession = (context: Context) => (group: Group): void => {
   context.session.command = 'follow';
-  context.session[sessionGroupProperty] = groupId.toString();
+  context.session[sessionGroupProperty] = group.id.toString();
 };
 
-const groupExists = () => true;
+const isCurrentGroup = (groupId: GroupId.GroupId) => TO.some({
+  id: groupId,
+  name: '',
+  avatarPath: '',
+  descriptionPath: '',
+  shortDescription: '',
+});
 
 export const saveFollowCommand: Middleware = async (context, next) => {
-  pipe(
+  await pipe(
     context.request.body[groupProperty],
     GroupId.fromNullable,
-    O.filter(groupExists),
-    O.fold(
-      () => context.throw(StatusCodes.BAD_REQUEST),
-      saveCommandAndGroupIdToSession(context),
+    T.of,
+    TO.chain(isCurrentGroup),
+    TO.fold(
+      () => T.of(context.throw(StatusCodes.BAD_REQUEST)),
+      (g) => T.of(saveCommandAndGroupIdToSession(context)(g)),
     ),
-  );
+  )();
 
   await next();
 };
