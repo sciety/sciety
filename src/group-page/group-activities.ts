@@ -1,6 +1,12 @@
+import * as O from 'fp-ts/Option';
 import { Doi } from '../types/doi';
+import { GroupId } from '../types/group-id';
 
-export const hardCodedActivities = [
+type ArticleActivity = { doi: Doi, latestActivityDate: Date, evaluationCount: number };
+
+type GroupActivities = (groupId: GroupId) => O.Option<ReadonlyArray<ArticleActivity>>;
+
+export const groupActivities: GroupActivities = () => O.some([
   {
     doi: new Doi('10.1101/2020.09.15.286153'),
     latestActivityDate: new Date('2020-12-15'),
@@ -21,4 +27,4 @@ export const hardCodedActivities = [
     latestActivityDate: new Date('2019-12-05'),
     evaluationCount: 1,
   },
-];
+]);

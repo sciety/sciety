@@ -10,7 +10,7 @@ import { constructFeedItem } from './construct-feed-item';
 import { countFollowersOf } from './count-followers';
 import { fetchArticleDetails, FindVersionsForArticleDoi } from './fetch-article-details';
 import { GetAllEvents, getMostRecentEvents } from './get-most-recent-events';
-import { hardCodedActivities } from './hard-coded-activities';
+import { groupActivities } from './group-activities';
 import { FetchStaticFile, renderDescription } from './render-description';
 import { renderFeed } from './render-feed';
 import { renderFollowers } from './render-followers';
@@ -88,16 +88,17 @@ type GetArticleDetails = (doi: Doi) => T.Task<O.Option<{
   latestVersionDate: Date,
 }>>;
 
-const constructRecentGroupActivity = (getArticleDetails: GetArticleDetails) => pipe(
-  hardCodedActivities,
-  TO.traverseArray((evaluatedArticle) => pipe(
+const constructRecentGroupActivity = (getArticleDetails: GetArticleDetails) => flow(
+  groupActivities,
+  TO.fromOption,
+  TO.chain(TO.traverseArray((evaluatedArticle) => pipe(
     evaluatedArticle.doi,
     getArticleDetails,
     TO.map((articleDetails) => ({
       ...evaluatedArticle,
       ...articleDetails,
     })),
-  )),
+  ))),
   TO.match(
     () => { throw new Error('Missing hardcoded data'); },
     renderRecentGroupActivity,
@@ -147,7 +148,7 @@ export const groupPage = (ports: Ports): GroupPage => ({ id, user }) => pipe(
               T.map(O.fromEither),
             ),
           ),
-        )
+        )(group.id)
         : constructFeed(ports, group),
     },
     sequenceS(TE.ApplyPar),
