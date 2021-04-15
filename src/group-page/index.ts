@@ -10,6 +10,7 @@ import { constructFeedItem } from './construct-feed-item';
 import { countFollowersOf } from './count-followers';
 import { fetchArticleDetails, FindVersionsForArticleDoi } from './fetch-article-details';
 import { GetAllEvents, getMostRecentEvents } from './get-most-recent-events';
+import { hardCodedActivities } from './hard-coded-activities';
 import { FetchStaticFile, renderDescription } from './render-description';
 import { renderFeed } from './render-feed';
 import { renderFollowers } from './render-followers';
@@ -67,29 +68,6 @@ const constructFeed = (ports: Ports, group: Group) => pipe(
   T.map(renderFeed),
   TE.rightTask,
 );
-
-const hardCodedActivities = [
-  {
-    doi: new Doi('10.1101/2020.09.15.286153'),
-    latestActivityDate: new Date('2020-12-15'),
-    evaluationCount: 1,
-  },
-  {
-    doi: new Doi('10.1101/2019.12.20.884056'),
-    latestActivityDate: new Date('2021-03-10'),
-    evaluationCount: 4,
-  },
-  {
-    doi: new Doi('10.1101/760082'),
-    latestActivityDate: new Date('2019-12-05'),
-    evaluationCount: 1,
-  },
-  {
-    doi: new Doi('10.1101/661249'),
-    latestActivityDate: new Date('2019-12-05'),
-    evaluationCount: 1,
-  },
-];
 
 type GetLatestArticleVersionDate = (
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
