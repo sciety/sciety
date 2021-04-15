@@ -20,7 +20,7 @@ export class GroupId {
 
 export const fromString = (value: string): O.Option<GroupId> => (O.tryCatch(() => new GroupId(value)));
 
-export const fromNullable = (value?: string): O.Option<GroupId> => pipe(
+export const fromNullable = (value?: string | null): O.Option<GroupId> => pipe(
   value,
   O.fromNullable,
   O.chain(fromString),
