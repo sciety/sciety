@@ -2,14 +2,15 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { Doi, eqDoi } from '../types/doi';
-import { editorialCommunityReviewedArticle } from '../types/domain-events';
+import { DomainEvent, editorialCommunityReviewedArticle, isEditorialCommunityReviewedArticleEvent } from '../types/domain-events';
+
 import { eqGroupId, GroupId } from '../types/group-id';
 
 type ArticleActivity = { doi: Doi, latestActivityDate: Date, evaluationCount: number };
 
 type GroupActivities = (groupId: GroupId) => O.Option<ReadonlyArray<ArticleActivity>>;
 
-const hardCodedEvents = [
+const hardCodedEvents: ReadonlyArray<DomainEvent> = [
   editorialCommunityReviewedArticle(
     new GroupId('4eebcec9-a4bb-44e1-bde3-2ae11e65daaa'),
     new Doi('10.1101/661249'),
@@ -79,6 +80,7 @@ const allGroupActivities = [
 
 export const groupActivities: GroupActivities = (groupId) => pipe(
   hardCodedEvents,
+  RA.filter(isEditorialCommunityReviewedArticleEvent),
   RA.filter((event) => eqGroupId.equals(event.editorialCommunityId, groupId)),
   RA.map((event) => event.articleId),
   RA.map((doi) => pipe(allGroupActivities, RA.findFirst((activity) => eqDoi.equals(activity.doi, doi)))),
