@@ -16,18 +16,16 @@ const saveCommandAndGroupIdToSession = (context: Context) => (groupId: GroupId.G
   context.session[sessionGroupProperty] = groupId.toString();
 };
 
-export const saveFollowCommand = (): Middleware => (
-  async (context, next) => {
-    pipe(
-      context.request.body[groupProperty],
-      O.fromNullable,
-      O.chain(GroupId.fromString),
-      O.fold(
-        () => context.throw(StatusCodes.BAD_REQUEST),
-        saveCommandAndGroupIdToSession(context),
-      ),
-    );
+export const saveFollowCommand: Middleware = async (context, next) => {
+  pipe(
+    context.request.body[groupProperty],
+    O.fromNullable,
+    O.chain(GroupId.fromString),
+    O.fold(
+      () => context.throw(StatusCodes.BAD_REQUEST),
+      saveCommandAndGroupIdToSession(context),
+    ),
+  );
 
-    await next();
-  }
-);
+  await next();
+};
