@@ -16,10 +16,13 @@ const saveCommandAndGroupIdToSession = (context: Context) => (groupId: GroupId.G
   context.session[sessionGroupProperty] = groupId.toString();
 };
 
+const groupExists = () => true;
+
 export const saveFollowCommand: Middleware = async (context, next) => {
   pipe(
     context.request.body[groupProperty],
     GroupId.fromNullable,
+    O.filter(groupExists),
     O.fold(
       () => context.throw(StatusCodes.BAD_REQUEST),
       saveCommandAndGroupIdToSession(context),
