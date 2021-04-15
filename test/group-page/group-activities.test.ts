@@ -6,7 +6,7 @@ import { GroupId } from '../../src/types/group-id';
 describe('group-activities', () => {
   describe('when a group has evaluated an article', () => {
     it('includes the article', async () => {
-      const activities = groupActivities(new GroupId('1234'));
+      const activities = groupActivities(new GroupId('4eebcec9-a4bb-44e1-bde3-2ae11e65daaa'));
 
       expect(activities).toStrictEqual(
         O.some(expect.arrayContaining([
