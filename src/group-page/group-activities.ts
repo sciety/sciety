@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { Doi, eqDoi } from '../types/doi';
 import { editorialCommunityReviewedArticle } from '../types/domain-events';
-import { GroupId, eqGroupId } from '../types/group-id';
+import { eqGroupId, GroupId } from '../types/group-id';
 
 type ArticleActivity = { doi: Doi, latestActivityDate: Date, evaluationCount: number };
 
