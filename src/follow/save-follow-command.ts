@@ -19,8 +19,7 @@ const saveCommandAndGroupIdToSession = (context: Context) => (groupId: GroupId.G
 export const saveFollowCommand: Middleware = async (context, next) => {
   pipe(
     context.request.body[groupProperty],
-    O.fromNullable,
-    O.chain(GroupId.fromString),
+    GroupId.fromNullable,
     O.fold(
       () => context.throw(StatusCodes.BAD_REQUEST),
       saveCommandAndGroupIdToSession(context),

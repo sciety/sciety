@@ -7,7 +7,7 @@ export class GroupId {
   readonly value: string;
 
   constructor(input: string) {
-    if (!input || input.length === 0) {
+    if (input.length === 0) {
       throw new Error(`'${input}' is not a GroupId`);
     }
     this.value = input;
@@ -19,6 +19,12 @@ export class GroupId {
 }
 
 export const fromString = (value: string): O.Option<GroupId> => (O.tryCatch(() => new GroupId(value)));
+
+export const fromNullable = (value?: string): O.Option<GroupId> => pipe(
+  value,
+  O.fromNullable,
+  O.chain(fromString),
+);
 
 export const eqGroupId: Eq.Eq<GroupId> = pipe(
   S.Eq,
