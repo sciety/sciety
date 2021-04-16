@@ -197,7 +197,22 @@ describe('group-activities', () => {
   });
 
   describe('when the group has not evaluated any articles', () => {
-    it.todo('returns an empty list');
+    it('returns an empty list', () => {
+      const thisGroupId = new GroupId('4eebcec9-a4bb-44e1-bde3-2ae11e65daaa');
+      const anotherGroupId = new GroupId('53ed5364-a016-11ea-bb37-0242ac130002');
+      const events = [
+        editorialCommunityReviewedArticle(
+          anotherGroupId,
+          new Doi('10.1101/2019.12.20.884056'),
+          new Doi('10.7287/peerj.11014v0.1/reviews/1'),
+          new Date('2021-03-10T00:00:00.000Z'),
+        ),
+      ];
+
+      const activities = groupActivities(events)(thisGroupId);
+
+      expect(activities).toStrictEqual(O.some([]));
+    });
   });
 
   describe('when the group does not exist', () => {
