@@ -5,7 +5,6 @@ import { Doi, eqDoi } from '../types/doi';
 import {
   DomainEvent,
   editorialCommunityReviewedArticle,
-  EditorialCommunityReviewedArticleEvent,
   isEditorialCommunityReviewedArticleEvent,
 } from '../types/domain-events';
 
@@ -85,16 +84,17 @@ const allGroupActivities = [
   },
 ];
 
+type Activity = { groupId: GroupId, articleId: Doi };
 export const groupActivities: GroupActivities = (events) => (groupId) => pipe(
   events,
-  RA.reduce(RA.empty, (state: ReadonlyArray<EditorialCommunityReviewedArticleEvent>, event) => {
+  RA.reduce(RA.empty, (state: ReadonlyArray<Activity>, event) => {
     if (isEditorialCommunityReviewedArticleEvent(event)) {
-      return RA.fromArray([...state, event]);
+      return RA.fromArray([...state, { groupId: event.editorialCommunityId, articleId: event.articleId }]);
     }
     return state;
   }),
-  RA.filter((event) => eqGroupId.equals(event.editorialCommunityId, groupId)),
-  RA.map((event) => event.articleId),
+  RA.filter((activity) => eqGroupId.equals(activity.groupId, groupId)),
+  RA.map((activity) => activity.articleId),
   RA.map((doi) => pipe(allGroupActivities, RA.findFirst((activity) => eqDoi.equals(activity.doi, doi)))),
   RA.reverse,
   O.sequenceArray,
