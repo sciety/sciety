@@ -54,12 +54,61 @@ describe('group-activities', () => {
     });
   });
 
-  describe('when only a single group has evaluated an article more than once', () => {
-    it.todo('has a single entry for the article');
+  // Un-skip when removing hard-coding
+  describe.skip('when only a single group has evaluated an article more than once', () => {
+    const groupId = new GroupId('53ed5364-a016-11ea-bb37-0242ac130002');
+    const articleId = new Doi('10.1101/2019.12.20.884056');
+    const latestActivityDate = new Date('2020-01-01');
+    const events = [
+      editorialCommunityReviewedArticle(
+        groupId,
+        articleId,
+        new Doi('10.1101/123456'),
+        new Date('1980-01-01'),
+      ),
+      editorialCommunityReviewedArticle(
+        groupId,
+        articleId,
+        new Doi('10.1101/scorpion'),
+        latestActivityDate,
+      ),
+    ];
 
-    it.todo('has an evaluation count of the number of evaluations');
+    it('has a single entry for the article', () => {
+      const activities = groupActivities(events)(groupId);
 
-    it.todo('has a latest activity date of the latest evaluation');
+      expect(activities).toStrictEqual(
+        O.some([
+          expect.objectContaining({
+            doi: articleId,
+          }),
+        ]),
+      );
+    });
+
+    it('has an evaluation count of the number of evaluations', () => {
+      const activities = groupActivities(events)(groupId);
+
+      expect(activities).toStrictEqual(
+        O.some([
+          expect.objectContaining({
+            evaluationCount: 2,
+          }),
+        ]),
+      );
+    });
+
+    it('has a latest activity date of the latest evaluation', () => {
+      const activities = groupActivities(events)(groupId);
+
+      expect(activities).toStrictEqual(
+        O.some([
+          expect.objectContaining({
+            latestActivityDate,
+          }),
+        ]),
+      );
+    });
   });
 
   describe('when multiple groups have evaluated an article', () => {
