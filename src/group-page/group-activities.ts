@@ -82,10 +82,12 @@ const allGroupActivities = [
 
 export const groupActivities: GroupActivities = (events) => (groupId) => pipe(
   events,
+  RA.reduce(RA.empty, (state: ReadonlyArray<DomainEvent>, event) => RA.fromArray([...state, event])),
   RA.filter(isEditorialCommunityReviewedArticleEvent),
   RA.filter((event) => eqGroupId.equals(event.editorialCommunityId, groupId)),
   RA.map((event) => event.articleId),
   RA.map((doi) => pipe(allGroupActivities, RA.findFirst((activity) => eqDoi.equals(activity.doi, doi)))),
+
   RA.reverse,
   O.sequenceArray,
 );
