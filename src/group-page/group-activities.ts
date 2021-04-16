@@ -75,7 +75,7 @@ const allGroupActivities = [
   },
   {
     doi: new Doi('10.1101/661249'),
-    latestActivityDate: new Date('2019-12-05'),
+    latestActivityDate: new Date('2019-09-06'),
     evaluationCount: 1,
   },
 ];

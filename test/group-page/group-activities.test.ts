@@ -119,7 +119,37 @@ describe('group-activities', () => {
   });
 
   describe('when the group has evaluated multiple articles', () => {
-    it.todo('returns the most recently evaluated articles first');
+    it('returns the most recently evaluated articles first', () => {
+      const groupId = new GroupId('4eebcec9-a4bb-44e1-bde3-2ae11e65daaa');
+      const earlierDate = new Date('2019-09-06T00:00:00.000Z');
+      const laterDate = new Date('2019-12-05T00:00:00.000Z');
+      const events = [
+        editorialCommunityReviewedArticle(
+          groupId,
+          new Doi('10.1101/661249'),
+          new Doi('10.24072/pci.animsci.100001'),
+          earlierDate,
+        ),
+        editorialCommunityReviewedArticle(
+          groupId,
+          new Doi('10.1101/760082'),
+          new Doi('10.24072/pci.animsci.100002'),
+          laterDate,
+        ),
+      ];
+      const activities = groupActivities(events)(groupId);
+
+      expect(activities).toStrictEqual(
+        O.some([
+          expect.objectContaining({
+            latestActivityDate: laterDate,
+          }),
+          expect.objectContaining({
+            latestActivityDate: earlierDate,
+          }),
+        ]),
+      );
+    });
 
     it.todo('limits the number of entries to 10');
   });
