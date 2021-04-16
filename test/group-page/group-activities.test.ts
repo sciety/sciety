@@ -63,36 +63,36 @@ describe('group-activities', () => {
   });
 
   describe('when multiple groups have evaluated an article', () => {
-    it('has an evaluation count of the number of evaluations by all groups', () => {
-      const articleId = new Doi('10.1101/2019.12.20.884056');
-      const groupId = new GroupId('4eebcec9-a4bb-44e1-bde3-2ae11e65daaa');
-      const events = [
-        editorialCommunityReviewedArticle(
-          groupId,
-          articleId,
-          new Doi('10.24072/pci.animsci.100004'),
-          new Date('2020-10-14T00:00:00.000Z'),
-        ),
-        editorialCommunityReviewedArticle(
-          new GroupId('53ed5364-a016-11ea-bb37-0242ac130002'),
-          articleId,
-          new Doi('10.7287/peerj.11014v0.1/reviews/1'),
-          new Date('2021-03-10T00:00:00.000Z'),
-        ),
-        editorialCommunityReviewedArticle(
-          new GroupId('53ed5364-a016-11ea-bb37-0242ac130002'),
-          articleId,
-          new Doi('10.7287/peerj.11014v0.1/reviews/2'),
-          new Date('2021-03-10T00:00:00.000Z'),
-        ),
-        editorialCommunityReviewedArticle(
-          new GroupId('53ed5364-a016-11ea-bb37-0242ac130002'),
-          articleId,
-          new Doi('10.7287/peerj.11014v0.2/reviews/2'),
-          new Date('2021-03-10T00:00:00.000Z'),
-        ),
-      ];
+    const groupId = new GroupId('4eebcec9-a4bb-44e1-bde3-2ae11e65daaa');
+    const articleId = new Doi('10.1101/2019.12.20.884056');
+    const events = [
+      editorialCommunityReviewedArticle(
+        groupId,
+        articleId,
+        new Doi('10.24072/pci.animsci.100004'),
+        new Date('2020-10-14T00:00:00.000Z'),
+      ),
+      editorialCommunityReviewedArticle(
+        new GroupId('53ed5364-a016-11ea-bb37-0242ac130002'),
+        articleId,
+        new Doi('10.7287/peerj.11014v0.1/reviews/1'),
+        new Date('2021-03-10T00:00:00.000Z'),
+      ),
+      editorialCommunityReviewedArticle(
+        new GroupId('53ed5364-a016-11ea-bb37-0242ac130002'),
+        articleId,
+        new Doi('10.7287/peerj.11014v0.1/reviews/2'),
+        new Date('2021-03-10T00:00:00.000Z'),
+      ),
+      editorialCommunityReviewedArticle(
+        new GroupId('53ed5364-a016-11ea-bb37-0242ac130002'),
+        articleId,
+        new Doi('10.7287/peerj.11014v0.2/reviews/2'),
+        new Date('2021-03-10T00:00:00.000Z'),
+      ),
+    ];
 
+    it('has an evaluation count of the number of evaluations by all groups', () => {
       const activities = groupActivities(events)(groupId);
 
       expect(activities).toStrictEqual(
@@ -105,7 +105,17 @@ describe('group-activities', () => {
       );
     });
 
-    it.todo('has a latest activity date of the latest evaluation by any group');
+    it('has a latest activity date of the latest evaluation by any group', () => {
+      const activities = groupActivities(events)(groupId);
+
+      expect(activities).toStrictEqual(
+        O.some(expect.arrayContaining([
+          expect.objectContaining({
+            latestActivityDate: new Date('2021-03-10T00:00:00.000Z'),
+          }),
+        ])),
+      );
+    });
   });
 
   describe('when the group has evaluated multiple articles', () => {
