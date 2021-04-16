@@ -21,11 +21,11 @@ describe('group-activities', () => {
       const activities = groupActivities(events)(groupId);
 
       expect(activities).toStrictEqual(
-        O.some(expect.arrayContaining([
+        O.some([
           expect.objectContaining({
             doi: articleId,
           }),
-        ])),
+        ]),
       );
     });
 
@@ -33,11 +33,11 @@ describe('group-activities', () => {
       const activities = groupActivities(events)(groupId);
 
       expect(activities).toStrictEqual(
-        O.some(expect.arrayContaining([
+        O.some([
           expect.objectContaining({
             evaluationCount: 1,
           }),
-        ])),
+        ]),
       );
     });
 
@@ -45,11 +45,11 @@ describe('group-activities', () => {
       const activities = groupActivities(events)(groupId);
 
       expect(activities).toStrictEqual(
-        O.some(expect.arrayContaining([
+        O.some([
           expect.objectContaining({
             latestActivityDate: new Date('2020-12-15T00:00:00.000Z'),
           }),
-        ])),
+        ]),
       );
     });
   });
@@ -96,12 +96,12 @@ describe('group-activities', () => {
       const activities = groupActivities(events)(groupId);
 
       expect(activities).toStrictEqual(
-        O.some(expect.arrayContaining([
+        O.some([
           expect.objectContaining({
             doi: articleId,
             evaluationCount: 4,
           }),
-        ])),
+        ]),
       );
     });
 
@@ -109,11 +109,11 @@ describe('group-activities', () => {
       const activities = groupActivities(events)(groupId);
 
       expect(activities).toStrictEqual(
-        O.some(expect.arrayContaining([
+        O.some([
           expect.objectContaining({
             latestActivityDate: new Date('2021-03-10T00:00:00.000Z'),
           }),
-        ])),
+        ]),
       );
     });
   });
