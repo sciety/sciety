@@ -2,7 +2,12 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { Doi, eqDoi } from '../types/doi';
-import { DomainEvent, editorialCommunityReviewedArticle, isEditorialCommunityReviewedArticleEvent } from '../types/domain-events';
+import {
+  DomainEvent,
+  editorialCommunityReviewedArticle,
+  EditorialCommunityReviewedArticleEvent,
+  isEditorialCommunityReviewedArticleEvent,
+} from '../types/domain-events';
 
 import { eqGroupId, GroupId } from '../types/group-id';
 
@@ -82,12 +87,15 @@ const allGroupActivities = [
 
 export const groupActivities: GroupActivities = (events) => (groupId) => pipe(
   events,
-  RA.reduce(RA.empty, (state: ReadonlyArray<DomainEvent>, event) => RA.fromArray([...state, event])),
-  RA.filter(isEditorialCommunityReviewedArticleEvent),
+  RA.reduce(RA.empty, (state: ReadonlyArray<EditorialCommunityReviewedArticleEvent>, event) => {
+    if (isEditorialCommunityReviewedArticleEvent(event)) {
+      return RA.fromArray([...state, event]);
+    }
+    return state;
+  }),
   RA.filter((event) => eqGroupId.equals(event.editorialCommunityId, groupId)),
   RA.map((event) => event.articleId),
   RA.map((doi) => pipe(allGroupActivities, RA.findFirst((activity) => eqDoi.equals(activity.doi, doi)))),
-
   RA.reverse,
   O.sequenceArray,
 );
