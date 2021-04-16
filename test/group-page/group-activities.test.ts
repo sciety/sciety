@@ -155,7 +155,45 @@ describe('group-activities', () => {
   });
 
   describe('when another group evaluates an article previously evaluated by this group', () => {
-    it.todo('orders by the evaluation date of this group');
+    it('orders by the evaluation date of this group', () => {
+      const thisGroupId = new GroupId('4eebcec9-a4bb-44e1-bde3-2ae11e65daaa');
+      const anotherGroupId = new GroupId('53ed5364-a016-11ea-bb37-0242ac130002');
+      const articleMostRecentlyReviewedByThisGroup = new Doi('10.1101/2020.09.15.286153');
+      const articleThatWasMoreRecentlyReviewedButByAnotherGroup = new Doi('10.1101/2019.12.20.884056');
+      const events = [
+        editorialCommunityReviewedArticle(
+          thisGroupId,
+          articleThatWasMoreRecentlyReviewedButByAnotherGroup,
+          new Doi('10.24072/pci.animsci.100004'),
+          new Date('1980-01-01'),
+        ),
+        editorialCommunityReviewedArticle(
+          thisGroupId,
+          articleMostRecentlyReviewedByThisGroup,
+          new Doi('10.24072/pci.animsci.100005'),
+          new Date('2000-01-01'),
+        ),
+        editorialCommunityReviewedArticle(
+          anotherGroupId,
+          articleThatWasMoreRecentlyReviewedButByAnotherGroup,
+          new Doi('10.7287/peerj.11014v0.1/reviews/1'),
+          new Date('2020-01-01'),
+        ),
+      ];
+
+      const activities = groupActivities(events)(thisGroupId);
+
+      expect(activities).toStrictEqual(
+        O.some([
+          expect.objectContaining({
+            doi: articleMostRecentlyReviewedByThisGroup,
+          }),
+          expect.objectContaining({
+            doi: articleThatWasMoreRecentlyReviewedButByAnotherGroup,
+          }),
+        ]),
+      );
+    });
   });
 
   describe('when the group has not evaluated any articles', () => {
