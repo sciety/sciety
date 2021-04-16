@@ -17,7 +17,7 @@ describe('group-activities', () => {
       ),
     ];
 
-    it('includes the article', () => {
+    it('includes the article DOI', () => {
       const activities = groupActivities(events)(groupId);
 
       expect(activities).toStrictEqual(
