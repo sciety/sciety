@@ -17,7 +17,7 @@
     "clownface": "^1.2.0",
     "cls-rtracer": "^2.6.0",
     "csv-parse": "^4.15.4",
-    "escape-goat": "^3.0.0",
+    "escape-goat": "^4.0.0",
     "fp-ts": "^2.10.2",
     "googleapis": "^71.0.0",
     "http-status-codes": "^2.1.4",
