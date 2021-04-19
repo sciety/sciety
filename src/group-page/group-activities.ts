@@ -1,4 +1,3 @@
-import * as I from 'fp-ts/Identity';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RM from 'fp-ts/ReadonlyMap';
@@ -89,7 +88,7 @@ const allGroupActivities: AllGroupActivities = flow(
 
 type Activity = { groupId: GroupId, articleId: Doi };
 
-const dois = (events: ReadonlyArray<DomainEvent>, groupId: GroupId): ReadonlyArray<Doi> => pipe(
+const groupReviewedDois = (events: ReadonlyArray<DomainEvent>, groupId: GroupId): ReadonlyArray<Doi> => pipe(
   events,
   RA.reduce(RA.empty, (state: ReadonlyArray<Activity>, event) => pipe(
     event,
@@ -103,7 +102,10 @@ const dois = (events: ReadonlyArray<DomainEvent>, groupId: GroupId): ReadonlyArr
   RA.map((activity) => activity.articleId),
 );
 
-const join = (dois: ReadonlyArray<Doi>, activities: ReadonlyMap<Doi, { latestActivityDate: Date, evaluationCount: number}>) => pipe(
+const join = (
+  dois: ReadonlyArray<Doi>,
+  activities: ReadonlyMap<Doi, { latestActivityDate: Date, evaluationCount: number }>,
+) => pipe(
   dois,
   RA.map((doi) => pipe(
     activities,
@@ -114,7 +116,7 @@ const join = (dois: ReadonlyArray<Doi>, activities: ReadonlyMap<Doi, { latestAct
 
 export const groupActivities: GroupActivities = (events) => (groupId) => pipe(
   join(
-    dois(events, groupId),
+    groupReviewedDois(events, groupId),
     allGroupActivities(events),
   ),
   RA.reverse,
