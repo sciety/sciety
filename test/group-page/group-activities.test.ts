@@ -214,8 +214,7 @@ describe('group-activities', () => {
       );
     });
 
-    // TODO unskip when applying limit to return
-    it.skip('limits the number of entries to 10', () => {
+    it('limits the number of entries to 10', () => {
       const events = generateNEventsForGroup(15, groupId);
       const activities = groupActivities(events)(groupId);
 

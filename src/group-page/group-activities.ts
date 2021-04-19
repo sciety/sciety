@@ -69,4 +69,5 @@ export const groupActivities: GroupActivities = (events) => (groupId) => pipe(
     )),
   ),
   O.sequenceArray,
+  O.map(RA.takeLeft(10)),
 );
