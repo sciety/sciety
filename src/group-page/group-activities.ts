@@ -62,10 +62,12 @@ export const hardCodedEvents: ReadonlyArray<DomainEvent> = [
   ),
 ];
 
-const allGroupActivities: ReadonlyMap<Doi, {
+type AllGroupActivities = (events: ReadonlyArray<DomainEvent>) => ReadonlyMap<Doi, {
   latestActivityDate: Date,
   evaluationCount: number,
-}> = new Map([[
+}>;
+
+const allGroupActivities: AllGroupActivities = () => new Map([[
   new Doi('10.1101/2020.09.15.286153'),
   {
     latestActivityDate: new Date('2020-12-15'),
@@ -108,11 +110,18 @@ export const groupActivities: GroupActivities = (events) => (groupId) => pipe(
   )),
   RA.filter((activity) => eqGroupId.equals(activity.groupId, groupId)),
   RA.map((activity) => activity.articleId),
-  RA.map((doi) => pipe(
+  (dois) => pipe(
+    events,
     allGroupActivities,
-    RM.lookup(eqDoi)(doi),
-    O.map((activityDetails) => ({ ...activityDetails, doi })),
-  )),
+    (activities) => pipe(
+      dois,
+      RA.map((doi) => pipe(
+        activities,
+        RM.lookup(eqDoi)(doi),
+        O.map((activityDetails) => ({ ...activityDetails, doi })),
+      )),
+    ),
+  ),
   RA.reverse,
   O.sequenceArray,
 );
