@@ -12,8 +12,10 @@ import * as GroupId from '../types/group-id';
 
 type Context = ParameterizedContext<DefaultState, DefaultContext>;
 
+type ToExistingGroup = (groupId: GroupId.GroupId) => TO.TaskOption<Group>;
+
 type Ports = {
-  getGroup: (groupId: GroupId.GroupId) => TO.TaskOption<Group>,
+  getGroup: ToExistingGroup,
 };
 
 // TODO: this side-effect could be captured differently
@@ -22,12 +24,12 @@ const saveCommandAndGroupIdToSession = (context: Context) => (group: Group): voi
   context.session[sessionGroupProperty] = group.id.toString();
 };
 
-export const saveFollowCommand = (ports: Ports): Middleware => async (context, next) => {
+export const saveFollowCommand = ({ getGroup: toExistingGroup }: Ports): Middleware => async (context, next) => {
   await pipe(
     context.request.body[groupProperty],
     GroupId.fromNullable,
     TO.fromOption,
-    TO.chain(ports.getGroup),
+    TO.chain(toExistingGroup),
     TO.fold(
       () => T.of(context.throw(StatusCodes.BAD_REQUEST)),
       flow(
