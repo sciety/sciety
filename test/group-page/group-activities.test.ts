@@ -1,8 +1,22 @@
 import * as O from 'fp-ts/Option';
+import { constant, pipe } from 'fp-ts/function';
 import { groupActivities } from '../../src/group-page/group-activities';
 import { Doi } from '../../src/types/doi';
-import { editorialCommunityReviewedArticle } from '../../src/types/domain-events';
+import {
+  editorialCommunityReviewedArticle,
+  EditorialCommunityReviewedArticleEvent,
+} from '../../src/types/domain-events';
 import { GroupId } from '../../src/types/group-id';
+
+const generateNEventsForGroup = (
+  numberOfEvents: number,
+  groupId: GroupId,
+): ReadonlyArray<EditorialCommunityReviewedArticleEvent> => (
+  [...Array(numberOfEvents).keys()].map((i) => (editorialCommunityReviewedArticle(
+    groupId,
+    new Doi(`10.1101/${i}`),
+    new Doi(`10.1101/evaluation${i}`),
+  ))));
 
 describe('group-activities', () => {
   describe('when only a single group has evaluated an article once', () => {
@@ -167,8 +181,9 @@ describe('group-activities', () => {
   });
 
   describe('when the group has evaluated multiple articles', () => {
+    const groupId = new GroupId('4eebcec9-a4bb-44e1-bde3-2ae11e65daaa');
+
     it('returns the most recently evaluated articles first', () => {
-      const groupId = new GroupId('4eebcec9-a4bb-44e1-bde3-2ae11e65daaa');
       const earlierDate = new Date('2019-09-06T00:00:00.000Z');
       const laterDate = new Date('2019-12-05T00:00:00.000Z');
       const events = [
@@ -199,7 +214,15 @@ describe('group-activities', () => {
       );
     });
 
-    it.todo('limits the number of entries to 10');
+    // TODO unskip when applying limit to return
+    it.skip('limits the number of entries to 10', () => {
+      const events = generateNEventsForGroup(15, groupId);
+      const activities = groupActivities(events)(groupId);
+
+      const result = pipe(activities, O.getOrElseW(constant([])));
+
+      expect(result).toHaveLength(10);
+    });
   });
 
   describe('when another group evaluates an article previously evaluated by this group', () => {
