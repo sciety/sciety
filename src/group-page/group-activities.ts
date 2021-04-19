@@ -113,10 +113,10 @@ const join = (dois: ReadonlyArray<Doi>, activities: ReadonlyMap<Doi, { latestAct
 );
 
 export const groupActivities: GroupActivities = (events) => (groupId) => pipe(
-  I.Do,
-  I.bind('dois', () => dois(events, groupId)),
-  I.bind('activities', () => pipe(events, allGroupActivities)),
-  ({ activities, dois }) => join(dois, activities),
+  join(
+    dois(events, groupId),
+    allGroupActivities(events),
+  ),
   RA.reverse,
   O.sequenceArray,
 );
