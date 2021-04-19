@@ -1,3 +1,4 @@
+import * as I from 'fp-ts/Identity';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RM from 'fp-ts/ReadonlyMap';
@@ -99,28 +100,28 @@ const allGroupActivities: AllGroupActivities = () => new Map([[
 type Activity = { groupId: GroupId, articleId: Doi };
 
 export const groupActivities: GroupActivities = (events) => (groupId) => pipe(
-  events,
-  RA.reduce(RA.empty, (state: ReadonlyArray<Activity>, event) => pipe(
-    event,
-    O.fromPredicate(isEditorialCommunityReviewedArticleEvent),
-    O.fold(
-      constant(state),
-      ({ editorialCommunityId, articleId }) => RA.fromArray([...state, { groupId: editorialCommunityId, articleId }]),
-    ),
-  )),
-  RA.filter((activity) => eqGroupId.equals(activity.groupId, groupId)),
-  RA.map((activity) => activity.articleId),
-  (dois) => pipe(
+  I.Do,
+  I.bind('dois', () => pipe(
     events,
-    allGroupActivities,
-    (activities) => pipe(
-      dois,
-      RA.map((doi) => pipe(
-        activities,
-        RM.lookup(eqDoi)(doi),
-        O.map((activityDetails) => ({ ...activityDetails, doi })),
-      )),
-    ),
+    RA.reduce(RA.empty, (state: ReadonlyArray<Activity>, event) => pipe(
+      event,
+      O.fromPredicate(isEditorialCommunityReviewedArticleEvent),
+      O.fold(
+        constant(state),
+        ({ editorialCommunityId, articleId }) => RA.fromArray([...state, { groupId: editorialCommunityId, articleId }]),
+      ),
+    )),
+    RA.filter((activity) => eqGroupId.equals(activity.groupId, groupId)),
+    RA.map((activity) => activity.articleId),
+  )),
+  I.bind('activities', () => pipe(events, allGroupActivities)),
+  ({ activities, dois }) => pipe(
+    dois,
+    RA.map((doi) => pipe(
+      activities,
+      RM.lookup(eqDoi)(doi),
+      O.map((activityDetails) => ({ ...activityDetails, doi })),
+    )),
   ),
   RA.reverse,
   O.sequenceArray,
