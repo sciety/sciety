@@ -10,7 +10,7 @@ import { constructFeedItem } from './construct-feed-item';
 import { countFollowersOf } from './count-followers';
 import { fetchArticleDetails, FindVersionsForArticleDoi } from './fetch-article-details';
 import { GetAllEvents, getMostRecentEvents } from './get-most-recent-events';
-import { groupActivities, hardCodedEvents } from './group-activities';
+import { groupActivities } from './group-activities';
 import { FetchStaticFile, renderDescription } from './render-description';
 import { renderFeed } from './render-feed';
 import { renderFollowers } from './render-followers';
@@ -88,9 +88,12 @@ type GetArticleDetails = (doi: Doi) => T.Task<O.Option<{
   latestVersionDate: Date,
 }>>;
 
-const constructRecentGroupActivity = (getArticleDetails: GetArticleDetails) => flow(
-  groupActivities(hardCodedEvents),
-  TO.fromOption,
+const constructRecentGroupActivity = (
+  getArticleDetails: GetArticleDetails,
+  getAllEvents: GetAllEvents,
+) => (groupId: GroupId) => pipe(
+  getAllEvents,
+  T.map((events) => groupActivities(events)(groupId)),
   TO.chain(TO.traverseArray((evaluatedArticle) => pipe(
     evaluatedArticle.doi,
     getArticleDetails,
@@ -148,6 +151,7 @@ export const groupPage = (ports: Ports): GroupPage => ({ id, user }) => pipe(
               T.map(O.fromEither),
             ),
           ),
+          ports.getAllEvents,
         )(group.id)
         : constructFeed(ports, group),
     },
