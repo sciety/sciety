@@ -1,7 +1,5 @@
-import * as O from 'fp-ts/Option';
-import { identity, pipe } from 'fp-ts/function';
-import { StatusCodes } from 'http-status-codes';
-import { Middleware } from 'koa';
+import * as TO from 'fp-ts/TaskOption';
+import { pipe } from 'fp-ts/function';
 import { CommitEvents, followCommand, GetFollowList } from './follow-command';
 import * as GroupId from '../types/group-id';
 import { User } from '../types/user';
@@ -13,14 +11,9 @@ type Ports = {
   getFollowList: GetFollowList,
 };
 
-export const finishFollowCommand = (ports: Ports) => (g: string, user: User): Middleware => async (context) => {
-  await pipe(
-    g,
-    GroupId.fromNullable,
-    O.map(async (groupId) => followCommand(ports.getFollowList, ports.commitEvents)(user, groupId)()),
-    O.fold(
-      () => context.throw(StatusCodes.BAD_REQUEST),
-      identity,
-    ),
-  );
-};
+export const finishFollowCommand = (ports: Ports) => (g: string, user: User): TO.TaskOption<void> => pipe(
+  g,
+  GroupId.fromNullable,
+  TO.fromOption,
+  TO.chainTaskK((groupId) => followCommand(ports.getFollowList, ports.commitEvents)(user, groupId)),
+);
