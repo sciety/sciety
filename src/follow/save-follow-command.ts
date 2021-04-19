@@ -12,26 +12,22 @@ import * as GroupId from '../types/group-id';
 
 type Context = ParameterizedContext<DefaultState, DefaultContext>;
 
+type Ports = {
+  getGroup: (groupId: GroupId.GroupId) => TO.TaskOption<Group>,
+};
+
 // TODO: this side-effect could be captured differently
 const saveCommandAndGroupIdToSession = (context: Context) => (group: Group): void => {
   context.session.command = 'follow';
   context.session[sessionGroupProperty] = group.id.toString();
 };
 
-const isCurrentGroup = (groupId: GroupId.GroupId) => TO.some({
-  id: groupId,
-  name: '',
-  avatarPath: '',
-  descriptionPath: '',
-  shortDescription: '',
-});
-
-export const saveFollowCommand: Middleware = async (context, next) => {
+export const saveFollowCommand = (ports: Ports): Middleware => async (context, next) => {
   await pipe(
     context.request.body[groupProperty],
     GroupId.fromNullable,
     TO.fromOption,
-    TO.chain(isCurrentGroup),
+    TO.chain(ports.getGroup),
     TO.fold(
       () => T.of(context.throw(StatusCodes.BAD_REQUEST)),
       flow(

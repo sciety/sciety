@@ -232,7 +232,7 @@ export const createRouter = (adapters: Adapters): Router => {
       'Something went wrong; we\'re looking into it.',
     ),
     bodyParser({ enableTypes: ['form'] }),
-    saveFollowCommand,
+    saveFollowCommand(adapters),
     requireAuthentication,
     followHandler(adapters),
   );
