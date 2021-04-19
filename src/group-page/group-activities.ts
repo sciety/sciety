@@ -89,21 +89,23 @@ const allGroupActivities: AllGroupActivities = flow(
 
 type Activity = { groupId: GroupId, articleId: Doi };
 
+const dois = (events: ReadonlyArray<DomainEvent>, groupId: GroupId): ReadonlyArray<Doi> => pipe(
+  events,
+  RA.reduce(RA.empty, (state: ReadonlyArray<Activity>, event) => pipe(
+    event,
+    O.fromPredicate(isEditorialCommunityReviewedArticleEvent),
+    O.fold(
+      constant(state),
+      ({ editorialCommunityId, articleId }) => RA.fromArray([...state, { groupId: editorialCommunityId, articleId }]),
+    ),
+  )),
+  RA.filter((activity) => eqGroupId.equals(activity.groupId, groupId)),
+  RA.map((activity) => activity.articleId),
+);
+
 export const groupActivities: GroupActivities = (events) => (groupId) => pipe(
   I.Do,
-  I.bind('dois', () => pipe(
-    events,
-    RA.reduce(RA.empty, (state: ReadonlyArray<Activity>, event) => pipe(
-      event,
-      O.fromPredicate(isEditorialCommunityReviewedArticleEvent),
-      O.fold(
-        constant(state),
-        ({ editorialCommunityId, articleId }) => RA.fromArray([...state, { groupId: editorialCommunityId, articleId }]),
-      ),
-    )),
-    RA.filter((activity) => eqGroupId.equals(activity.groupId, groupId)),
-    RA.map((activity) => activity.articleId),
-  )),
+  I.bind('dois', () => dois(events, groupId)),
   I.bind('activities', () => pipe(events, allGroupActivities)),
   ({ activities, dois }) => pipe(
     dois,
