@@ -11,6 +11,7 @@ import bodyParser from 'koa-bodyparser';
 import { authenticate } from './authenticate';
 import { catchErrors } from './catch-errors';
 import { catchStaticFileErrors } from './catch-static-file-errors';
+import { finishCommand } from './finish-command';
 import { loadStaticFile } from './load-static-file';
 import { logOut } from './log-out';
 import { onlyIfNotAuthenticated } from './only-if-authenticated';
@@ -286,6 +287,7 @@ export const createRouter = (adapters: Adapters): Router => {
       'Something went wrong, please try again.',
     ),
     onlyIfNotAuthenticated(authenticate),
+    finishCommand,
     finishFollowCommand(adapters),
     finishUnfollowCommand(adapters),
     finishRespondCommand(adapters),
