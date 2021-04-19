@@ -1,5 +1,5 @@
 import * as O from 'fp-ts/Option';
-import { pipe } from 'fp-ts/function';
+import { identity, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { Middleware } from 'koa';
 import { CommitEvents, followCommand, GetFollowList } from './follow-command';
@@ -16,12 +16,13 @@ export const finishFollowCommand = (ports: Ports) => (g: string): Middleware => 
   await pipe(
     g,
     GroupId.fromNullable,
+    O.map(async (groupId) => {
+      const { user } = context.state;
+      return followCommand(ports.getFollowList, ports.commitEvents)(user, groupId)();
+    }),
     O.fold(
       () => context.throw(StatusCodes.BAD_REQUEST),
-      async (groupId) => {
-        const { user } = context.state;
-        return followCommand(ports.getFollowList, ports.commitEvents)(user, groupId)();
-      },
+      identity,
     ),
   );
 };
