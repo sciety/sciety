@@ -103,6 +103,8 @@ export const groupActivities: GroupActivities = (events) => (groupId) => pipe(
     )),
     RA.filter((activity) => eqGroupId.equals(activity.groupId, groupId)),
     RA.map((activity) => activity.articleId),
+    RA.reverse,
+    RA.uniq(eqDoi),
   )),
   I.bind('activities', () => pipe(events, allGroupActivities)),
   ({ activities, dois }) => pipe(
@@ -113,6 +115,5 @@ export const groupActivities: GroupActivities = (events) => (groupId) => pipe(
       O.map((activityDetails) => ({ ...activityDetails, doi })),
     )),
   ),
-  RA.reverse,
   O.sequenceArray,
 );

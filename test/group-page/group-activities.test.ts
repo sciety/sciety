@@ -54,8 +54,7 @@ describe('group-activities', () => {
     });
   });
 
-  // Un-skip when removing hard-coding
-  describe.skip('when only a single group has evaluated an article more than once', () => {
+  describe('when only a single group has evaluated an article more than once', () => {
     const groupId = new GroupId('53ed5364-a016-11ea-bb37-0242ac130002');
     const articleId = new Doi('10.1101/2019.12.20.884056');
     const latestActivityDate = new Date('2020-01-01');
