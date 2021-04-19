@@ -23,7 +23,6 @@ import { robots } from './robots';
 import { aboutPage } from '../about-page';
 import { articleActivityPage, articleMetaPage } from '../article-page';
 import {
-  finishFollowCommand,
   finishUnfollowCommand,
   followHandler,
   saveFollowCommand,
@@ -287,8 +286,7 @@ export const createRouter = (adapters: Adapters): Router => {
       'Something went wrong, please try again.',
     ),
     onlyIfNotAuthenticated(authenticate),
-    finishCommand,
-    finishFollowCommand(adapters),
+    finishCommand(adapters),
     finishUnfollowCommand(adapters),
     finishRespondCommand(adapters),
     finishSaveArticleCommand(adapters),

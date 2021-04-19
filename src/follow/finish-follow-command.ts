@@ -12,29 +12,19 @@ type Ports = {
   getFollowList: GetFollowList,
 };
 
-export const finishFollowCommand = (ports: Ports): Middleware => {
-  const command = followCommand(
-    ports.getFollowList,
-    ports.commitEvents,
+export const finishFollowCommand = (ports: Ports): Middleware => async (context) => {
+  const command = followCommand(ports.getFollowList, ports.commitEvents);
+  await pipe(
+    context.session[sessionGroupProperty],
+    GroupId.fromNullable,
+    O.fold(
+      () => context.throw(StatusCodes.BAD_REQUEST),
+      async (groupId) => {
+        const { user } = context.state;
+        return command(user, groupId)();
+      },
+    ),
   );
-  return async (context, next) => {
-    if (context.session.command === 'follow') {
-      await pipe(
-        context.session[sessionGroupProperty],
-        GroupId.fromNullable,
-        O.fold(
-          () => context.throw(StatusCodes.BAD_REQUEST),
-          async (groupId) => {
-            const { user } = context.state;
-            return command(user, groupId)();
-          },
-        ),
-      );
-
-      delete context.session.command;
-      delete context.session.editorialCommunityId;
-    }
-
-    await next();
-  };
+  delete context.session.command;
+  delete context.session.editorialCommunityId;
 };
