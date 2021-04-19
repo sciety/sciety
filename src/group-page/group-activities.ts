@@ -103,18 +103,20 @@ const dois = (events: ReadonlyArray<DomainEvent>, groupId: GroupId): ReadonlyArr
   RA.map((activity) => activity.articleId),
 );
 
+const join = (dois: ReadonlyArray<Doi>, activities: ReadonlyMap<Doi, { latestActivityDate: Date, evaluationCount: number}>) => pipe(
+  dois,
+  RA.map((doi) => pipe(
+    activities,
+    RM.lookup(eqDoi)(doi),
+    O.map((activityDetails) => ({ ...activityDetails, doi })),
+  )),
+);
+
 export const groupActivities: GroupActivities = (events) => (groupId) => pipe(
   I.Do,
   I.bind('dois', () => dois(events, groupId)),
   I.bind('activities', () => pipe(events, allGroupActivities)),
-  ({ activities, dois }) => pipe(
-    dois,
-    RA.map((doi) => pipe(
-      activities,
-      RM.lookup(eqDoi)(doi),
-      O.map((activityDetails) => ({ ...activityDetails, doi })),
-    )),
-  ),
+  ({ activities, dois }) => join(dois, activities),
   RA.reverse,
   O.sequenceArray,
 );
