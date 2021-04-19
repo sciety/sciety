@@ -52,6 +52,7 @@ jobs:
         run: |
           make IMAGE_TAG=${IMAGE_TAG} backstop-test
         env:
+          CROSSREF_API_BEARER_TOKEN: ${{ secrets.CROSSREF_API_BEARER_TOKEN }}
           TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
           TWITTER_API_SECRET_KEY: ${{ secrets.TWITTER_API_SECRET_KEY }}
           TWITTER_API_BEARER_TOKEN: ${{ secrets.TWITTER_API_BEARER_TOKEN }}
