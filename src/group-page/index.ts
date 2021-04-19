@@ -5,7 +5,7 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
-import { flow, pipe, tupled } from 'fp-ts/function';
+import { constant, flow, pipe, tupled } from 'fp-ts/function';
 import { constructFeedItem } from './construct-feed-item';
 import { countFollowersOf } from './count-followers';
 import { fetchArticleDetails, FindVersionsForArticleDoi } from './fetch-article-details';
@@ -103,7 +103,7 @@ const constructRecentGroupActivity = (
     })),
   ))),
   TO.match(
-    () => { throw new Error('Missing hardcoded data'); },
+    constant('<p>We couldn\'t find this information; please try again later.</p>'),
     renderRecentGroupActivity,
   ),
   TE.rightTask,
