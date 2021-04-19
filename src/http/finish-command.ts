@@ -5,7 +5,7 @@ import { Adapters } from '../infrastructure/adapters';
 
 export const finishCommand = (adapters: Adapters): Middleware => async (context, next) => {
   if (context.session.command === 'follow') {
-    await finishFollowCommand(adapters)(context.session[sessionGroupProperty])(context, next);
+    await finishFollowCommand(adapters)(context.session[sessionGroupProperty], context.state.user)(context, next);
     delete context.session.command;
     delete context.session[sessionGroupProperty];
   }
