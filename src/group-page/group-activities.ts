@@ -1,5 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as RM from 'fp-ts/ReadonlyMap';
 import { constant, pipe } from 'fp-ts/function';
 import { Doi, eqDoi } from '../types/doi';
 import {
@@ -61,30 +62,40 @@ export const hardCodedEvents: ReadonlyArray<DomainEvent> = [
   ),
 ];
 
-const allGroupActivities = [
+const allGroupActivities: ReadonlyMap<Doi, {
+  latestActivityDate: Date,
+  evaluationCount: number,
+}> = new Map([[
+  new Doi('10.1101/2020.09.15.286153'),
   {
-    doi: new Doi('10.1101/2020.09.15.286153'),
     latestActivityDate: new Date('2020-12-15'),
     evaluationCount: 1,
   },
+],
+[
+  new Doi('10.1101/2019.12.20.884056'),
   {
-    doi: new Doi('10.1101/2019.12.20.884056'),
     latestActivityDate: new Date('2021-03-10'),
     evaluationCount: 4,
   },
+],
+[
+  new Doi('10.1101/760082'),
   {
-    doi: new Doi('10.1101/760082'),
     latestActivityDate: new Date('2019-12-05'),
     evaluationCount: 1,
   },
+],
+[
+  new Doi('10.1101/661249'),
   {
-    doi: new Doi('10.1101/661249'),
     latestActivityDate: new Date('2019-09-06'),
     evaluationCount: 1,
   },
-];
+]]);
 
 type Activity = { groupId: GroupId, articleId: Doi };
+
 export const groupActivities: GroupActivities = (events) => (groupId) => pipe(
   events,
   RA.reduce(RA.empty, (state: ReadonlyArray<Activity>, event) => pipe(
@@ -97,7 +108,11 @@ export const groupActivities: GroupActivities = (events) => (groupId) => pipe(
   )),
   RA.filter((activity) => eqGroupId.equals(activity.groupId, groupId)),
   RA.map((activity) => activity.articleId),
-  RA.map((doi) => pipe(allGroupActivities, RA.findFirst((activity) => eqDoi.equals(activity.doi, doi)))),
+  RA.map((doi) => pipe(
+    allGroupActivities,
+    RM.lookup(eqDoi)(doi),
+    O.map((activityDetails) => ({ ...activityDetails, doi })),
+  )),
   RA.reverse,
   O.sequenceArray,
 );
