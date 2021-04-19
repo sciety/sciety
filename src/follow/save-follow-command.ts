@@ -1,6 +1,6 @@
 import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
-import { flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import {
   DefaultContext, DefaultState, Middleware, ParameterizedContext,
@@ -30,12 +30,10 @@ export const saveFollowCommand = ({ getGroup: toExistingGroup }: Ports): Middlew
     GroupId.fromNullable,
     TO.fromOption,
     TO.chain(toExistingGroup),
+    TO.map(saveCommandAndGroupIdToSession(context)),
     TO.fold(
       () => T.of(context.throw(StatusCodes.BAD_REQUEST)),
-      flow(
-        saveCommandAndGroupIdToSession(context),
-        () => next,
-      ),
+      () => next,
     ),
   )();
 };
