@@ -11,6 +11,7 @@ import bodyParser from 'koa-bodyparser';
 import { authenticate } from './authenticate';
 import { catchErrors } from './catch-errors';
 import { catchStaticFileErrors } from './catch-static-file-errors';
+import { executeIfAuthenticated } from './execute-if-authenticated';
 import { finishCommand } from './finish-command';
 import { loadStaticFile } from './load-static-file';
 import { logOut } from './log-out';
@@ -226,12 +227,13 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.post(
     '/follow',
+    bodyParser({ enableTypes: ['form'] }),
+    executeIfAuthenticated(),
     catchErrors(
       adapters.logger,
       'Problem with /follow',
       'Something went wrong; we\'re looking into it.',
     ),
-    bodyParser({ enableTypes: ['form'] }),
     saveFollowCommand(adapters),
     requireAuthentication,
     followHandler(adapters),

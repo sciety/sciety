@@ -17,6 +17,7 @@ export const followCommand = (
 ): FollowCommand => (
   (user, groupId) => pipe(
     user.id,
+
     getFollowList,
     T.map((followList) => followList.follow(groupId)),
     T.chain(commitEvents),
