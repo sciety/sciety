@@ -85,7 +85,7 @@ const constructRecentGroupActivity = (
 ) => (groupId: GroupId) => pipe(
   getAllEvents,
   T.map((events) => groupActivities(events)(groupId)),
-  TO.chain(TO.traverseArray((evaluatedArticle) => pipe(
+  T.chain(TO.traverseArray((evaluatedArticle) => pipe(
     evaluatedArticle.doi,
     getArticleDetails,
     TO.map((articleDetails) => ({

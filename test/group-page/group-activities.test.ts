@@ -1,5 +1,3 @@
-import * as O from 'fp-ts/Option';
-import { constant, pipe } from 'fp-ts/function';
 import { groupActivities } from '../../src/group-page/group-activities';
 import { Doi } from '../../src/types/doi';
 import {
@@ -34,37 +32,31 @@ describe('group-activities', () => {
     it('includes the article DOI', () => {
       const activities = groupActivities(events)(groupId);
 
-      expect(activities).toStrictEqual(
-        O.some([
-          expect.objectContaining({
-            doi: articleId,
-          }),
-        ]),
-      );
+      expect(activities).toStrictEqual([
+        expect.objectContaining({
+          doi: articleId,
+        }),
+      ]);
     });
 
     it('has an evaluation count of 1', () => {
       const activities = groupActivities(events)(groupId);
 
-      expect(activities).toStrictEqual(
-        O.some([
-          expect.objectContaining({
-            evaluationCount: 1,
-          }),
-        ]),
-      );
+      expect(activities).toStrictEqual([
+        expect.objectContaining({
+          evaluationCount: 1,
+        }),
+      ]);
     });
 
     it('latest activity date matches event date', () => {
       const activities = groupActivities(events)(groupId);
 
-      expect(activities).toStrictEqual(
-        O.some([
-          expect.objectContaining({
-            latestActivityDate: new Date('2020-12-15T00:00:00.000Z'),
-          }),
-        ]),
-      );
+      expect(activities).toStrictEqual([
+        expect.objectContaining({
+          latestActivityDate: new Date('2020-12-15T00:00:00.000Z'),
+        }),
+      ]);
     });
   });
 
@@ -90,37 +82,31 @@ describe('group-activities', () => {
     it('has a single entry for the article', () => {
       const activities = groupActivities(events)(groupId);
 
-      expect(activities).toStrictEqual(
-        O.some([
-          expect.objectContaining({
-            doi: articleId,
-          }),
-        ]),
-      );
+      expect(activities).toStrictEqual([
+        expect.objectContaining({
+          doi: articleId,
+        }),
+      ]);
     });
 
     it('has an evaluation count of the number of evaluations', () => {
       const activities = groupActivities(events)(groupId);
 
-      expect(activities).toStrictEqual(
-        O.some([
-          expect.objectContaining({
-            evaluationCount: 2,
-          }),
-        ]),
-      );
+      expect(activities).toStrictEqual([
+        expect.objectContaining({
+          evaluationCount: 2,
+        }),
+      ]);
     });
 
     it('has a latest activity date of the latest evaluation', () => {
       const activities = groupActivities(events)(groupId);
 
-      expect(activities).toStrictEqual(
-        O.some([
-          expect.objectContaining({
-            latestActivityDate,
-          }),
-        ]),
-      );
+      expect(activities).toStrictEqual([
+        expect.objectContaining({
+          latestActivityDate,
+        }),
+      ]);
     });
   });
 
@@ -157,26 +143,22 @@ describe('group-activities', () => {
     it('has an evaluation count of the number of evaluations by all groups', () => {
       const activities = groupActivities(events)(groupId);
 
-      expect(activities).toStrictEqual(
-        O.some([
-          expect.objectContaining({
-            doi: articleId,
-            evaluationCount: 4,
-          }),
-        ]),
-      );
+      expect(activities).toStrictEqual([
+        expect.objectContaining({
+          doi: articleId,
+          evaluationCount: 4,
+        }),
+      ]);
     });
 
     it('has a latest activity date of the latest evaluation by any group', () => {
       const activities = groupActivities(events)(groupId);
 
-      expect(activities).toStrictEqual(
-        O.some([
-          expect.objectContaining({
-            latestActivityDate: new Date('2021-03-10T00:00:00.000Z'),
-          }),
-        ]),
-      );
+      expect(activities).toStrictEqual([
+        expect.objectContaining({
+          latestActivityDate: new Date('2021-03-10T00:00:00.000Z'),
+        }),
+      ]);
     });
   });
 
@@ -202,25 +184,21 @@ describe('group-activities', () => {
       ];
       const activities = groupActivities(events)(groupId);
 
-      expect(activities).toStrictEqual(
-        O.some([
-          expect.objectContaining({
-            latestActivityDate: laterDate,
-          }),
-          expect.objectContaining({
-            latestActivityDate: earlierDate,
-          }),
-        ]),
-      );
+      expect(activities).toStrictEqual([
+        expect.objectContaining({
+          latestActivityDate: laterDate,
+        }),
+        expect.objectContaining({
+          latestActivityDate: earlierDate,
+        }),
+      ]);
     });
 
     it('limits the number of entries to 10', () => {
       const events = generateNEventsForGroup(15, groupId);
       const activities = groupActivities(events)(groupId);
 
-      const result = pipe(activities, O.getOrElseW(constant([])));
-
-      expect(result).toHaveLength(10);
+      expect(activities).toHaveLength(10);
     });
   });
 
@@ -253,16 +231,14 @@ describe('group-activities', () => {
 
       const activities = groupActivities(events)(thisGroupId);
 
-      expect(activities).toStrictEqual(
-        O.some([
-          expect.objectContaining({
-            doi: articleMostRecentlyReviewedByThisGroup,
-          }),
-          expect.objectContaining({
-            doi: articleThatWasMoreRecentlyReviewedButByAnotherGroup,
-          }),
-        ]),
-      );
+      expect(activities).toStrictEqual([
+        expect.objectContaining({
+          doi: articleMostRecentlyReviewedByThisGroup,
+        }),
+        expect.objectContaining({
+          doi: articleThatWasMoreRecentlyReviewedButByAnotherGroup,
+        }),
+      ]);
     });
   });
 
@@ -281,11 +257,7 @@ describe('group-activities', () => {
 
       const activities = groupActivities(events)(thisGroupId);
 
-      expect(activities).toStrictEqual(O.some([]));
+      expect(activities).toStrictEqual([]);
     });
-  });
-
-  describe('when the group does not exist', () => {
-    it.todo('returns a None');
   });
 });

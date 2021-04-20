@@ -12,9 +12,7 @@ import { eqGroupId, GroupId } from '../types/group-id';
 
 type ArticleActivity = { doi: Doi, latestActivityDate: Date, evaluationCount: number };
 
-type GroupActivities = (events: ReadonlyArray<DomainEvent>) => (groupId: GroupId) => (
-  O.Option<ReadonlyArray<ArticleActivity>>
-);
+type GroupActivities = (events: ReadonlyArray<DomainEvent>) => (groupId: GroupId) => ReadonlyArray<ArticleActivity>;
 
 type AllGroupActivities = (events: ReadonlyArray<DomainEvent>) => ReadonlyMap<Doi, {
   latestActivityDate: Date,
@@ -70,4 +68,5 @@ export const groupActivities: GroupActivities = (events) => (groupId) => pipe(
   ),
   O.sequenceArray,
   O.map(RA.takeLeft(10)),
+  O.getOrElseW(() => []),
 );
