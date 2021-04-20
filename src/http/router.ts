@@ -26,7 +26,6 @@ import { articleActivityPage, articleMetaPage } from '../article-page';
 import {
   finishUnfollowCommand,
   followHandler,
-  saveFollowCommand,
   saveUnfollowCommand,
   unfollowHandler,
 } from '../follow';
@@ -229,7 +228,6 @@ export const createRouter = (adapters: Adapters): Router => {
     '/follow',
     bodyParser({ enableTypes: ['form'] }),
     executeIfAuthenticated(adapters),
-    saveFollowCommand(adapters),
     requireAuthentication,
     followHandler(adapters),
   );
