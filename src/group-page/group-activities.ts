@@ -40,32 +40,37 @@ const allGroupActivities: AllGroupActivities = flow(
 
 type Activity = { groupId: GroupId, articleId: Doi };
 
+const doisEvaluatedByGroup = (events: ReadonlyArray<DomainEvent>, groupId: GroupId) => pipe(
+  events,
+  RA.reduce(RA.empty, (state: ReadonlyArray<Activity>, event) => pipe(
+    event,
+    O.fromPredicate(isEditorialCommunityReviewedArticleEvent),
+    O.fold(
+      constant(state),
+      ({ editorialCommunityId, articleId }) => RA.fromArray([...state, { groupId: editorialCommunityId, articleId }]),
+    ),
+  )),
+  RA.filter((activity) => eqGroupId.equals(activity.groupId, groupId)),
+  RA.map((activity) => activity.articleId),
+  RA.reverse,
+  RA.uniq(eqDoi),
+);
+
+type ActivityDetails = { evaluationCount: number, latestActivityDate: Date };
+const addActivitiesDetailsToDois = (dois: ReadonlyArray<Doi>, activities: ReadonlyMap<Doi, ActivityDetails>) => pipe(
+  dois,
+  RA.map((doi) => pipe(
+    activities,
+    RM.lookup(eqDoi)(doi),
+    O.map((activityDetails) => ({ ...activityDetails, doi })),
+  )),
+);
+
 export const groupActivities: GroupActivities = (events) => (groupId) => pipe(
   I.Do,
-  I.apS('dois', pipe(
-    events,
-    RA.reduce(RA.empty, (state: ReadonlyArray<Activity>, event) => pipe(
-      event,
-      O.fromPredicate(isEditorialCommunityReviewedArticleEvent),
-      O.fold(
-        constant(state),
-        ({ editorialCommunityId, articleId }) => RA.fromArray([...state, { groupId: editorialCommunityId, articleId }]),
-      ),
-    )),
-    RA.filter((activity) => eqGroupId.equals(activity.groupId, groupId)),
-    RA.map((activity) => activity.articleId),
-    RA.reverse,
-    RA.uniq(eqDoi),
-  )),
+  I.apS('dois', doisEvaluatedByGroup(events, groupId)),
   I.apS('activities', pipe(events, allGroupActivities)),
-  ({ activities, dois }) => pipe(
-    dois,
-    RA.map((doi) => pipe(
-      activities,
-      RM.lookup(eqDoi)(doi),
-      O.map((activityDetails) => ({ ...activityDetails, doi })),
-    )),
-  ),
+  ({ activities, dois }) => addActivitiesDetailsToDois(dois, activities),
   O.sequenceArray,
   O.map(RA.takeLeft(10)),
   O.getOrElseW(() => []),
