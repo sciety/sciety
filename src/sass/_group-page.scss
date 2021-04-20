@@ -125,7 +125,7 @@
 }
 
 .group-activity-list__card_meta {
-  @include typography.sizing(12px, 1.1 * 12px / 8px);
+  @include typography.sizing(12px, 2.5);
   color: settings.$colour-text-secondary;
   font-family: settings.$font-family;
   letter-spacing: 0.09px;

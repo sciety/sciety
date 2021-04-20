@@ -38,9 +38,9 @@ const renderActivity = (model: ArticleViewModel): HtmlFragment => toHtmlFragment
       <a class="group-activity-list__card_link" href="/articles/activity/${model.doi.value}">${model.title}</a>
     </h3>
     ${renderAuthors(model.authors)}
-    <span class="group-activity-list__card_meta">
+    <div class="group-activity-list__card_meta">
       ${renderEvaluationCount(model.evaluationCount)}<span>Latest version ${templateDate(model.latestVersionDate)}</span><span>Latest activity ${templateDate(model.latestActivityDate)}</span>
-    </span>
+    </div>
   </article>
 `);
 
