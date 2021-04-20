@@ -10,7 +10,6 @@ import {
 } from 'fp-ts/function';
 import { countFollowersOf } from './count-followers';
 import { fetchArticleDetails, FindVersionsForArticleDoi } from './fetch-article-details';
-import { GetAllEvents } from './get-most-recent-events';
 import { groupActivities } from './group-activities';
 import { FetchStaticFile, renderDescription } from './render-description';
 import { renderFollowers } from './render-followers';
@@ -20,6 +19,7 @@ import { renderRecentGroupActivity } from './render-recent-group-activity';
 import { renderFollowToggle } from '../follow/render-follow-toggle';
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
+import { DomainEvent } from '../types/domain-events';
 import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
 import { toHtmlFragment } from '../types/html-fragment';
@@ -37,6 +37,7 @@ type Article = {
   authors: ReadonlyArray<string>,
 };
 type GetArticle = (id: Doi) => TE.TaskEither<unknown, Article>;
+type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 type Ports = {
   fetchArticle: GetArticle,
