@@ -1,6 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { GetTwitterResponse, TwitterResponse } from './get-twitter-response';
+import { GetTwitterResponse } from './get-twitter-response';
 import { isAxiosError } from './is-axios-error';
 import { Logger, Payload } from './logger';
 import { UserId } from '../types/user-id';
@@ -9,6 +9,15 @@ type TwitterUserDetails = {
   avatarUrl: string,
   displayName: string,
   handle: string,
+};
+
+type TwitterResponse = {
+  data?: {
+    name: string,
+    profile_image_url: string,
+    username: string,
+  },
+  errors?: unknown,
 };
 
 export type GetTwitterUserDetails = (userId: UserId) => TE.TaskEither<'not-found' | 'unavailable', TwitterUserDetails>;
@@ -57,6 +66,7 @@ export const getTwitterUserDetails = (
       async () => getTwitterResponse(`https://api.twitter.com/2/users/${userId}?user.fields=profile_image_url`),
       handleError(logger, userId),
     ),
+    TE.map((data) => data as TwitterResponse),
     TE.chainW(handleOk(logger, userId)),
   )
 );
