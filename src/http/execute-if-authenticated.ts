@@ -32,9 +32,9 @@ const saveCommandAndGroupIdToSession = (context: Context) => (group: Group): voi
   context.session[sessionGroupProperty] = group.id.toString();
 };
 
-export const executeIfAuthenticated = ({ 
+export const executeIfAuthenticated = ({
   getGroup: toExistingGroup,
-  logger
+  logger,
 }: Ports): Middleware => async (context, next) => {
   try {
     await pipe(
