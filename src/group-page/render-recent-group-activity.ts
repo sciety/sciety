@@ -53,13 +53,25 @@ type ArticleViewModel = {
   evaluationCount: number,
 };
 
+const noActivity = `
+  <p>
+    It looks like this group hasn’t evaluated any articles yet. Try coming back later!
+  </p>
+`;
+
 export const renderRecentGroupActivity: (
   items: ReadonlyArray<ArticleViewModel>
 ) => HtmlFragment = flow(
-  RA.map(renderActivity),
-  RA.map((activity) => `<li class="group-activity-list__item">${activity}</li>`),
-  (renderedActivities) => (
-    `<ul class="group-activity-list" role="list">${renderedActivities.join('')}</ul>`
+  RNEA.fromReadonlyArray,
+  O.match(
+    constant(noActivity),
+    flow(
+      RA.map(renderActivity),
+      RA.map((activity) => `<li class="group-activity-list__item">${activity}</li>`),
+      (renderedActivities) => (
+        `<ul class="group-activity-list" role="list">${renderedActivities.join('')}</ul>`
+      ),
+    ),
   ),
   toHtmlFragment,
 );
