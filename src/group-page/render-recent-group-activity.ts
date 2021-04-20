@@ -23,7 +23,7 @@ const renderAuthors: RenderAuthors = flow(
     flow(
       RNEA.map((author) => `<li class="group-activity-list__card_author">${htmlEscape(author)}</li>`),
       (authors) => `
-      <ol class="group-activity-list__card_authors" role="list">
+      <ol class="group-activity-list__card_authors" role="list" aria-describedby="group-activity-list-authors">
         ${authors.join('\n')}
       </ol>
     `,
@@ -39,7 +39,7 @@ const renderActivity = (model: ArticleViewModel): HtmlFragment => toHtmlFragment
     </h3>
     ${renderAuthors(model.authors)}
     <div class="group-activity-list__card_meta">
-      ${renderEvaluationCount(model.evaluationCount)}<span>Latest version ${templateDate(model.latestVersionDate)}</span><span>Latest activity ${templateDate(model.latestActivityDate)}</span>
+      <span class="visually-hidden">This article has </span>${renderEvaluationCount(model.evaluationCount)}<span>Latest version ${templateDate(model.latestVersionDate)}</span><span>Latest activity ${templateDate(model.latestActivityDate)}</span>
     </div>
   </article>
 `);
@@ -69,7 +69,8 @@ export const renderRecentGroupActivity: (
       RA.map(renderActivity),
       RA.map((activity) => `<li class="group-activity-list__item">${activity}</li>`),
       (renderedActivities) => (
-        `<ul class="group-activity-list" role="list">${renderedActivities.join('')}</ul>`
+        `<div class="hidden" id="group-activity-list-authors">This article's authors</div>
+         <ul class="group-activity-list" role="list">${renderedActivities.join('')}</ul>`
       ),
     ),
   ),
