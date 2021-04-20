@@ -23,7 +23,7 @@ const render = (components: Components) => `
         ${components.followers}
         <section>
           <h2>
-            Feed
+            Recent Activity
           </h2>
           <div class="group-page-side-bar--follow-toggle">
             ${components.followButton}
