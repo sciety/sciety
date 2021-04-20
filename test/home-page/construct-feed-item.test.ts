@@ -1,11 +1,20 @@
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constructFeedItem, GetArticle } from '../../src/home-page/construct-feed-item';
-import { FeedItem } from '../../src/shared-components';
 import { Doi } from '../../src/types/doi';
 import { EditorialCommunityReviewedArticleEvent } from '../../src/types/domain-events';
 import { GroupId } from '../../src/types/group-id';
 import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
+
+type FeedItem = {
+  avatar: string,
+  date: Date,
+  actorName: string,
+  actorUrl: string,
+  doi: Doi,
+  title: SanitisedHtmlFragment,
+  verb: string,
+};
 
 describe('construct-feed-item', () => {
   const articleTitle = 'the title' as SanitisedHtmlFragment;

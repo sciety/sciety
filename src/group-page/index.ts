@@ -8,13 +8,11 @@ import * as TO from 'fp-ts/TaskOption';
 import {
   constant, flow, pipe, tupled,
 } from 'fp-ts/function';
-import { constructFeedItem } from './construct-feed-item';
 import { countFollowersOf } from './count-followers';
 import { fetchArticleDetails, FindVersionsForArticleDoi } from './fetch-article-details';
-import { GetAllEvents, getMostRecentEvents } from './get-most-recent-events';
+import { GetAllEvents } from './get-most-recent-events';
 import { groupActivities } from './group-activities';
 import { FetchStaticFile, renderDescription } from './render-description';
-import { renderFeed } from './render-feed';
 import { renderFollowers } from './render-followers';
 import { renderErrorPage, renderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
@@ -60,16 +58,6 @@ const notFoundResponse = () => ({
 } as const);
 
 type GroupPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
-
-const constructFeed = (ports: Ports, group: Group) => pipe(
-  ports.getAllEvents,
-  T.chain(flow(
-    getMostRecentEvents(group.id, 20),
-    T.traverseArray(constructFeedItem(ports.fetchArticle)(group)),
-  )),
-  T.map(renderFeed),
-  TE.rightTask,
-);
 
 type GetLatestArticleVersionDate = (
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
@@ -143,19 +131,17 @@ export const groupPage = (ports: Ports): GroupPage => ({ id, user }) => pipe(
         T.map(renderFollowToggle(group.id, group.name)),
         TE.rightTask,
       ),
-      feed: group.id.value === '4eebcec9-a4bb-44e1-bde3-2ae11e65daaa'
-        ? constructRecentGroupActivity(
-          fetchArticleDetails(
-            getLatestArticleVersionDate(ports.findVersionsForArticleDoi),
-            (doi: Doi) => pipe(
-              doi,
-              ports.fetchArticle,
-              T.map(O.fromEither),
-            ),
+      feed: constructRecentGroupActivity(
+        fetchArticleDetails(
+          getLatestArticleVersionDate(ports.findVersionsForArticleDoi),
+          (doi: Doi) => pipe(
+            doi,
+            ports.fetchArticle,
+            T.map(O.fromEither),
           ),
-          ports.getAllEvents,
-        )(group.id)
-        : constructFeed(ports, group),
+        ),
+        ports.getAllEvents,
+      )(group.id),
     },
     sequenceS(TE.ApplyPar),
     TE.bimap(renderErrorPage, renderPage(group)),

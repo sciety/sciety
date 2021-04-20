@@ -6,7 +6,7 @@ import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
-export type FeedItem = {
+type FeedItem = {
   avatar: string,
   date: Date,
   actorName: string,
