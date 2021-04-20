@@ -42,7 +42,7 @@ type Activity = { groupId: GroupId, articleId: Doi };
 
 export const groupActivities: GroupActivities = (events) => (groupId) => pipe(
   I.Do,
-  I.bind('dois', () => pipe(
+  I.apS('dois', pipe(
     events,
     RA.reduce(RA.empty, (state: ReadonlyArray<Activity>, event) => pipe(
       event,
@@ -57,7 +57,7 @@ export const groupActivities: GroupActivities = (events) => (groupId) => pipe(
     RA.reverse,
     RA.uniq(eqDoi),
   )),
-  I.bind('activities', () => pipe(events, allGroupActivities)),
+  I.apS('activities', pipe(events, allGroupActivities)),
   ({ activities, dois }) => pipe(
     dois,
     RA.map((doi) => pipe(
