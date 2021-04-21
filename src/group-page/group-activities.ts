@@ -54,7 +54,7 @@ const updateActivity = (
   combineActivityDetails,
 );
 
-const eventToActivity = (
+const addEventToActivities = (
   groupId: GroupId,
 ) => (
   activities: ReadonlyMap<Doi, ActivityDetails>,
@@ -63,7 +63,7 @@ const eventToActivity = (
   activities,
   RM.lookup(eqDoi)(event.articleId),
   updateActivity(event, groupId),
-  (newActivity: ActivityDetails) => RM.upsertAt(eqDoi)(event.articleId, newActivity)(activities),
+  (activity) => pipe(activities, RM.upsertAt(eqDoi)(event.articleId, activity)),
 );
 
 const byLatestActivityDateByGroupDesc: Ord.Ord<ArticleActivity & { latestActivityByGroup: Date }> = pipe(
@@ -85,7 +85,7 @@ const groupHasEvaluatedArticle = <T extends { latestActivityByGroup: O.Option<Da
 export const groupActivities: GroupActivities = (events) => (groupId) => pipe(
   events,
   RA.filter(isEditorialCommunityReviewedArticleEvent),
-  RA.reduce(RM.empty, eventToActivity(groupId)),
+  RA.reduce(RM.empty, addEventToActivities(groupId)),
   RM.filterMapWithIndex(flow(
     (doi, activityDetails) => ({ ...activityDetails, doi }),
     groupHasEvaluatedArticle,
