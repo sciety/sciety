@@ -20,9 +20,15 @@ type ActivityDetails = {
   evaluationCount: number,
 };
 
-type AllGroupActivities = (events: ReadonlyArray<DomainEvent>) => ReadonlyMap<Doi, ActivityDetails>;
+type AllGroupActivities = (
+  groupId: GroupId
+) => (
+  events: ReadonlyArray<DomainEvent>
+) => ReadonlyMap<Doi, ActivityDetails>;
 
 const updateActivities = (
+  groupId: GroupId,
+) => (
   activities: ReadonlyMap<Doi, ActivityDetails>,
   event: EditorialCommunityReviewedArticleEvent,
 ) => pipe(
@@ -31,15 +37,19 @@ const updateActivities = (
   O.getOrElseW(() => ({ latestActivityByGroup: O.none, evaluationCount: 0 })),
   (oldActivity) => ({
     latestActivityDate: event.date,
-    latestActivityByGroup: O.none,
+    latestActivityByGroup: pipe(
+      event.date,
+      O.fromPredicate(() => eqGroupId.equals(event.editorialCommunityId, groupId)),
+      O.alt(() => oldActivity.latestActivityByGroup),
+    ),
     evaluationCount: oldActivity.evaluationCount + 1,
   }),
   (newActivity: ActivityDetails) => RM.upsertAt(eqDoi)(event.articleId, newActivity)(activities),
 );
 
-const allGroupActivities: AllGroupActivities = flow(
+const allGroupActivities: AllGroupActivities = (groupId) => flow(
   RA.filter(isEditorialCommunityReviewedArticleEvent),
-  RA.reduce(RM.empty, updateActivities),
+  RA.reduce(RM.empty, updateActivities(groupId)),
 );
 
 type Activity = { groupId: GroupId, articleId: Doi };
@@ -72,7 +82,7 @@ const addActivitiesDetailsToDois = (dois: ReadonlyArray<Doi>, activities: Readon
 export const groupActivities: GroupActivities = (events) => (groupId) => pipe(
   I.Do,
   I.apS('dois', doisEvaluatedByGroup(events, groupId)),
-  I.apS('activities', pipe(events, allGroupActivities)),
+  I.apS('activities', pipe(events, allGroupActivities(groupId))),
   ({ activities, dois }) => addActivitiesDetailsToDois(dois, activities),
   O.sequenceArray,
   O.map(RA.takeLeft(10)),
