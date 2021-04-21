@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RM from 'fp-ts/ReadonlyMap';
-import { flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import { Doi, eqDoi } from '../types/doi';
 import {
   DomainEvent, EditorialCommunityReviewedArticleEvent,
