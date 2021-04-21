@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RM from 'fp-ts/ReadonlyMap';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { Doi, eqDoi } from '../types/doi';
 import {
   DomainEvent, EditorialCommunityReviewedArticleEvent,
@@ -50,17 +50,21 @@ const byLatestActivityDateByGroupDesc: Ord.Ord<ArticleActivity & { latestActivit
   ),
 );
 
+const groupHasEvaluatedArticle = <T extends { latestActivityByGroup: O.Option<Date> }>(articleActivities: T) => pipe(
+  articleActivities.latestActivityByGroup,
+  O.map((latestActivityByGroup) => ({
+    ...articleActivities,
+    latestActivityByGroup,
+  })),
+);
+
 export const groupActivities: GroupActivities = (events) => (groupId) => pipe(
   events,
   RA.filter(isEditorialCommunityReviewedArticleEvent),
   RA.reduce(RM.empty, updateActivities(groupId)),
-  RM.filterMapWithIndex((doi, activityDetails) => pipe(
-    activityDetails.latestActivityByGroup,
-    O.map((latestActivityByGroup) => ({
-      ...activityDetails,
-      doi,
-      latestActivityByGroup,
-    })),
+  RM.filterMapWithIndex(flow(
+    (doi, activityDetails) => ({ ...activityDetails, doi }),
+    groupHasEvaluatedArticle,
   )),
   RM.values(byLatestActivityDateByGroupDesc),
   RA.takeLeft(10),
