@@ -21,12 +21,6 @@ type ActivityDetails = {
   evaluationCount: number,
 };
 
-type AllGroupActivities = (
-  groupId: GroupId
-) => (
-  events: ReadonlyArray<DomainEvent>
-) => ReadonlyMap<Doi, ActivityDetails>;
-
 const updateActivities = (
   groupId: GroupId,
 ) => (
@@ -48,14 +42,18 @@ const updateActivities = (
   (newActivity: ActivityDetails) => RM.upsertAt(eqDoi)(event.articleId, newActivity)(activities),
 );
 
-const allGroupActivities: AllGroupActivities = (groupId) => flow(
-  RA.filter(isEditorialCommunityReviewedArticleEvent),
-  RA.reduce(RM.empty, updateActivities(groupId)),
+const byLatestActivityDateByGroupDesc: Ord.Ord<ArticleActivity & { latestActivityByGroup: Date }> = pipe(
+  D.Ord,
+  Ord.reverse,
+  Ord.contramap(
+    (activityDetails) => (activityDetails.latestActivityByGroup),
+  ),
 );
 
 export const groupActivities: GroupActivities = (events) => (groupId) => pipe(
   events,
-  allGroupActivities(groupId),
+  RA.filter(isEditorialCommunityReviewedArticleEvent),
+  RA.reduce(RM.empty, updateActivities(groupId)),
   RM.filterMapWithIndex((doi, activityDetails) => pipe(
     activityDetails.latestActivityByGroup,
     O.map((latestActivityByGroup) => ({
@@ -64,12 +62,6 @@ export const groupActivities: GroupActivities = (events) => (groupId) => pipe(
       latestActivityByGroup,
     })),
   )),
-  RM.values(pipe(
-    D.Ord,
-    Ord.reverse,
-    Ord.contramap(
-      <T extends { latestActivityByGroup: Date }>(activityDetails: T) => (activityDetails.latestActivityByGroup),
-    ),
-  )),
+  RM.values(byLatestActivityDateByGroupDesc),
   RA.takeLeft(10),
 );
