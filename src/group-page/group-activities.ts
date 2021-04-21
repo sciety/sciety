@@ -5,7 +5,7 @@ import * as RM from 'fp-ts/ReadonlyMap';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { Doi, eqDoi } from '../types/doi';
 import {
-  DomainEvent,
+  DomainEvent, EditorialCommunityReviewedArticleEvent,
   isEditorialCommunityReviewedArticleEvent,
 } from '../types/domain-events';
 import { eqGroupId, GroupId } from '../types/group-id';
@@ -22,24 +22,24 @@ type ActivityDetails = {
 
 type AllGroupActivities = (events: ReadonlyArray<DomainEvent>) => ReadonlyMap<Doi, ActivityDetails>;
 
+const updateActivities = (
+  activities: ReadonlyMap<Doi, ActivityDetails>,
+  event: EditorialCommunityReviewedArticleEvent,
+) => pipe(
+  activities,
+  RM.lookup(eqDoi)(event.articleId),
+  O.getOrElseW(() => ({ latestActivityByGroup: O.none, evaluationCount: 0 })),
+  (oldActivity) => ({
+    latestActivityDate: event.date,
+    latestActivityByGroup: O.none,
+    evaluationCount: oldActivity.evaluationCount + 1,
+  }),
+  (newActivity: ActivityDetails) => RM.upsertAt(eqDoi)(event.articleId, newActivity)(activities),
+);
+
 const allGroupActivities: AllGroupActivities = flow(
   RA.filter(isEditorialCommunityReviewedArticleEvent),
-  RA.reduce(
-    RM.empty,
-    (activities: ReadonlyMap<Doi, ActivityDetails>, event) => pipe(
-      activities,
-      RM.lookup(eqDoi)(event.articleId),
-      O.fold(
-        () => ({ latestActivityDate: event.date, latestActivityByGroup: O.none, evaluationCount: 1 }),
-        (oldActivity) => ({
-          latestActivityDate: event.date,
-          latestActivityByGroup: O.none,
-          evaluationCount: oldActivity.evaluationCount + 1,
-        }),
-      ),
-      (newActivity: ActivityDetails) => RM.upsertAt(eqDoi)(event.articleId, newActivity)(activities),
-    ),
-  ),
+  RA.reduce(RM.empty, updateActivities),
 );
 
 type Activity = { groupId: GroupId, articleId: Doi };
