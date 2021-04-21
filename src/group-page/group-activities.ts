@@ -21,14 +21,12 @@ type ActivityDetails = {
   evaluationCount: number,
 };
 
-const updateActivities = (
-  groupId: GroupId,
-) => (
-  activities: ReadonlyMap<Doi, ActivityDetails>,
+const updateActivity = (
   event: EditorialCommunityReviewedArticleEvent,
-) => pipe(
-  activities,
-  RM.lookup(eqDoi)(event.articleId),
+  groupId: GroupId,
+): (
+  activity: O.Option<ActivityDetails>
+  ) => ActivityDetails => flow(
   O.getOrElseW(() => ({ latestActivityByGroup: O.none, evaluationCount: 0 })),
   (oldActivity) => ({
     latestActivityDate: event.date,
@@ -39,6 +37,17 @@ const updateActivities = (
     ),
     evaluationCount: oldActivity.evaluationCount + 1,
   }),
+);
+
+const eventToActivity = (
+  groupId: GroupId,
+) => (
+  activities: ReadonlyMap<Doi, ActivityDetails>,
+  event: EditorialCommunityReviewedArticleEvent,
+) => pipe(
+  activities,
+  RM.lookup(eqDoi)(event.articleId),
+  updateActivity(event, groupId),
   (newActivity: ActivityDetails) => RM.upsertAt(eqDoi)(event.articleId, newActivity)(activities),
 );
 
@@ -61,7 +70,7 @@ const groupHasEvaluatedArticle = <T extends { latestActivityByGroup: O.Option<Da
 export const groupActivities: GroupActivities = (events) => (groupId) => pipe(
   events,
   RA.filter(isEditorialCommunityReviewedArticleEvent),
-  RA.reduce(RM.empty, updateActivities(groupId)),
+  RA.reduce(RM.empty, eventToActivity(groupId)),
   RM.filterMapWithIndex(flow(
     (doi, activityDetails) => ({ ...activityDetails, doi }),
     groupHasEvaluatedArticle,
