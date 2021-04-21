@@ -14,26 +14,30 @@ type ArticleActivity = { doi: Doi, latestActivityDate: Date, evaluationCount: nu
 
 type GroupActivities = (events: ReadonlyArray<DomainEvent>) => (groupId: GroupId) => ReadonlyArray<ArticleActivity>;
 
-type AllGroupActivities = (events: ReadonlyArray<DomainEvent>) => ReadonlyMap<Doi, {
+type ActivityDetails = {
   latestActivityDate: Date,
+  latestActivityByGroup: O.Option<Date>,
   evaluationCount: number,
-}>;
+};
+
+type AllGroupActivities = (events: ReadonlyArray<DomainEvent>) => ReadonlyMap<Doi, ActivityDetails>;
 
 const allGroupActivities: AllGroupActivities = flow(
   RA.filter(isEditorialCommunityReviewedArticleEvent),
   RA.reduce(
     RM.empty,
-    (activities: ReadonlyMap<Doi, { latestActivityDate: Date, evaluationCount: number }>, event) => pipe(
+    (activities: ReadonlyMap<Doi, ActivityDetails>, event) => pipe(
       activities,
       RM.lookup(eqDoi)(event.articleId),
       O.fold(
-        () => ({ latestActivityDate: event.date, evaluationCount: 1 }),
+        () => ({ latestActivityDate: event.date, latestActivityByGroup: O.none, evaluationCount: 1 }),
         (oldActivity) => ({
           latestActivityDate: event.date,
+          latestActivityByGroup: O.none,
           evaluationCount: oldActivity.evaluationCount + 1,
         }),
       ),
-      (newActivity) => RM.upsertAt(eqDoi)(event.articleId, newActivity)(activities),
+      (newActivity: ActivityDetails) => RM.upsertAt(eqDoi)(event.articleId, newActivity)(activities),
     ),
   ),
 );
@@ -56,7 +60,6 @@ const doisEvaluatedByGroup = (events: ReadonlyArray<DomainEvent>, groupId: Group
   RA.uniq(eqDoi),
 );
 
-type ActivityDetails = { evaluationCount: number, latestActivityDate: Date };
 const addActivitiesDetailsToDois = (dois: ReadonlyArray<Doi>, activities: ReadonlyMap<Doi, ActivityDetails>) => pipe(
   dois,
   RA.map((doi) => pipe(
