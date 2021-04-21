@@ -3,7 +3,9 @@ import * as O from 'fp-ts/Option';
 import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RM from 'fp-ts/ReadonlyMap';
+import * as S from 'fp-ts/Semigroup';
 import { flow, pipe } from 'fp-ts/function';
+import * as N from 'fp-ts/number';
 import { Doi, eqDoi } from '../types/doi';
 import {
   DomainEvent, EditorialCommunityReviewedArticleEvent,
@@ -21,22 +23,35 @@ type ActivityDetails = {
   evaluationCount: number,
 };
 
+const semigroupActivityDetails: S.Semigroup<ActivityDetails> = S.struct({
+  latestActivityDate: S.max(D.Ord),
+  latestActivityByGroup: O.getMonoid(S.max(D.Ord)),
+  evaluationCount: N.SemigroupSum,
+});
+
+const eventToActivityDetails = (
+  event: EditorialCommunityReviewedArticleEvent,
+  groupId: GroupId,
+): ActivityDetails => ({
+  latestActivityDate: event.date,
+  latestActivityByGroup: pipe(
+    event.date,
+    O.fromPredicate(() => eqGroupId.equals(event.editorialCommunityId, groupId)),
+  ),
+  evaluationCount: 1,
+});
+
+const combineActivityDetails = (a: ActivityDetails) => O.fold(
+  () => a,
+  (b: ActivityDetails) => semigroupActivityDetails.concat(a, b),
+);
+
 const updateActivity = (
   event: EditorialCommunityReviewedArticleEvent,
   groupId: GroupId,
-): (
-  activity: O.Option<ActivityDetails>
-  ) => ActivityDetails => flow(
-  O.getOrElseW(() => ({ latestActivityByGroup: O.none, evaluationCount: 0 })),
-  (oldActivity) => ({
-    latestActivityDate: event.date,
-    latestActivityByGroup: pipe(
-      event.date,
-      O.fromPredicate(() => eqGroupId.equals(event.editorialCommunityId, groupId)),
-      O.alt(() => oldActivity.latestActivityByGroup),
-    ),
-    evaluationCount: oldActivity.evaluationCount + 1,
-  }),
+) => pipe(
+  eventToActivityDetails(event, groupId),
+  combineActivityDetails,
 );
 
 const eventToActivity = (
