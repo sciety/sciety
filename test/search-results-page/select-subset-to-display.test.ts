@@ -18,7 +18,7 @@ describe('select-subset-to-display', () => {
         doi: new Doi('10.1101/1234'),
         server: 'biorxiv' as const,
         title: '',
-        authors: '',
+        authors: [],
         postedDate: new Date(),
       };
       const state = {

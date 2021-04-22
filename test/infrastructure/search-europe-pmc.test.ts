@@ -38,7 +38,10 @@ describe('search-europe-pmc adapter', () => {
           doi: new Doi('10.1111/1234'),
           server: 'biorxiv',
           title: 'Article title',
-          authors: 'Author 1, Author 2.',
+          authors: [
+            'Author 1',
+            'Author 2',
+          ],
           postedDate: new Date('2019-11-07'),
         },
       ],
@@ -77,7 +80,10 @@ describe('search-europe-pmc adapter', () => {
       total: 1,
       items: [
         expect.objectContaining({
-          authors: 'Full Name, Collective Name.',
+          authors: [
+            'Full Name',
+            'Collective Name',
+          ],
         }),
       ],
     });

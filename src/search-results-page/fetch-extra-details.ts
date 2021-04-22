@@ -56,6 +56,7 @@ const populateArticleViewModel = (
   T.bind('reviewCount', ({ reviews }) => pipe(reviews.length, T.of)),
   T.map(({ latestVersionDate, latestActivityDate, reviewCount }) => ({
     ...item,
+    authors: `${item.authors.join(', ')}.`,
     latestVersionDate,
     latestActivityDate,
     reviewCount,

@@ -36,7 +36,7 @@ describe('fetch-extra-details', () => {
             doi: new Doi('10.1101/222222'),
             server: 'biorxiv' as const,
             title: '',
-            authors: '',
+            authors: [],
             postedDate: new Date(),
           },
         ],

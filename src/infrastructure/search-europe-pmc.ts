@@ -19,7 +19,7 @@ type SearchResult = {
   doi: Doi,
   server: ArticleServer,
   title: string,
-  authors: string,
+  authors: ReadonlyArray<string>,
   postedDate: Date,
 };
 
@@ -92,7 +92,6 @@ const constructSearchResults = (data: EuropePmcResponse) => {
     authors: pipe(
       item.authorList.author,
       RA.map((author) => ('fullName' in author ? author.fullName : author.collectiveName)),
-      (authors) => `${authors.join(', ')}.`,
     ),
     postedDate: item.firstPublicationDate,
   }));

@@ -12,6 +12,6 @@ export type ArticleItem = {
   doi: Doi,
   server: ArticleServer,
   title: string,
-  authors: string,
+  authors: ReadonlyArray<string>,
   postedDate: Date,
 };
