@@ -79,6 +79,10 @@ type GetArticleDetails = (doi: Doi) => T.Task<O.Option<{
   latestVersionDate: Date,
 }>>;
 
+const noInformationFound = '<p>We couldn\'t find this information; please try again later.</p>';
+
+const noActivity = '<p>It looks like this group hasn’t evaluated any articles yet. Try coming back later!</p>';
+
 const constructRecentGroupActivity = (
   getArticleDetails: GetArticleDetails,
   getAllEvents: GetAllEvents,
@@ -93,11 +97,10 @@ const constructRecentGroupActivity = (
       ...articleDetails,
     })),
   ))),
-  TO.match(
-    constant('<p>We couldn\'t find this information; please try again later.</p>'),
-    renderRecentGroupActivity,
-  ),
-  TE.rightTask,
+  T.map(E.fromOption(constant(noInformationFound))),
+  TE.chainOptionK(constant(noActivity))(RNEA.fromReadonlyArray),
+  TE.map(renderRecentGroupActivity),
+  TE.toUnion,
 );
 
 export const groupPage = (ports: Ports): GroupPage => ({ id, user }) => pipe(
@@ -132,17 +135,21 @@ export const groupPage = (ports: Ports): GroupPage => ({ id, user }) => pipe(
         T.map(renderFollowToggle(group.id, group.name)),
         TE.rightTask,
       ),
-      feed: constructRecentGroupActivity(
-        fetchArticleDetails(
-          getLatestArticleVersionDate(ports.findVersionsForArticleDoi),
-          (doi: Doi) => pipe(
-            doi,
-            ports.fetchArticle,
-            T.map(O.fromEither),
+      feed: pipe(
+        group.id,
+        constructRecentGroupActivity(
+          fetchArticleDetails(
+            getLatestArticleVersionDate(ports.findVersionsForArticleDoi),
+            (doi: Doi) => pipe(
+              doi,
+              ports.fetchArticle,
+              T.map(O.fromEither),
+            ),
           ),
+          ports.getAllEvents,
         ),
-        ports.getAllEvents,
-      )(group.id),
+        TE.rightTask,
+      ),
     },
     sequenceS(TE.ApplyPar),
     TE.bimap(renderErrorPage, renderPage(group)),
