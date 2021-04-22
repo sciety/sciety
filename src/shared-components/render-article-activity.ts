@@ -11,7 +11,7 @@ type ArticleViewModel = {
   doi: Doi,
   title: SanitisedHtmlFragment,
   authors: ReadonlyArray<string>,
-  latestVersionDate: Date,
+  latestVersionDate: O.Option<Date>,
   latestActivityDate: Date,
   evaluationCount: number,
 };
@@ -56,7 +56,7 @@ export const renderArticleActivity = (model: ArticleViewModel): HtmlFragment => 
     </h3>
     ${renderAuthors(model.authors)}
     <div class="group-activity-list__card_meta">
-      <span class="visually-hidden">This article has </span>${renderEvaluationCount(model.evaluationCount)}${renderArticleVersionDate(O.some(model.latestVersionDate))}<span>Latest activity ${templateDate(model.latestActivityDate)}</span>
+      <span class="visually-hidden">This article has </span>${renderEvaluationCount(model.evaluationCount)}${renderArticleVersionDate(model.latestVersionDate)}<span>Latest activity ${templateDate(model.latestActivityDate)}</span>
     </div>
   </article>
 `);

@@ -103,7 +103,13 @@ const constructRecentGroupActivity = (
   T.chain(TO.traverseArray(addArticleDetails(getArticleDetails))),
   T.map(E.fromOption(constant(noInformationFound))),
   TE.chainOptionK(constant(noActivity))(RNEA.fromReadonlyArray),
-  TE.map(renderRecentGroupActivity),
+  TE.map(flow(
+    RNEA.map((articleViewModel) => ({
+      ...articleViewModel,
+      latestVersionDate: O.some(articleViewModel.latestVersionDate),
+    })),
+    renderRecentGroupActivity,
+  )),
   TE.toUnion,
 );
 
