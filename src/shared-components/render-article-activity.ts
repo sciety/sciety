@@ -40,6 +40,15 @@ const renderAuthors: RenderAuthors = flow(
   toHtmlFragment,
 );
 
+const renderArticleVersionDate = O.fold(
+  constant(''),
+  flow(
+    templateDate,
+    (date) => `Latest version ${date}`,
+    wrapInSpan,
+  ),
+);
+
 export const renderArticleActivity = (model: ArticleViewModel): HtmlFragment => toHtmlFragment(`
   <article class="group-activity-list__card">
     <h3 class="group-activity-list__card_title">
@@ -47,7 +56,7 @@ export const renderArticleActivity = (model: ArticleViewModel): HtmlFragment => 
     </h3>
     ${renderAuthors(model.authors)}
     <div class="group-activity-list__card_meta">
-      <span class="visually-hidden">This article has </span>${renderEvaluationCount(model.evaluationCount)}<span>Latest version ${templateDate(model.latestVersionDate)}</span><span>Latest activity ${templateDate(model.latestActivityDate)}</span>
+      <span class="visually-hidden">This article has </span>${renderEvaluationCount(model.evaluationCount)}${renderArticleVersionDate(O.some(model.latestVersionDate))}<span>Latest activity ${templateDate(model.latestActivityDate)}</span>
     </div>
   </article>
 `);
