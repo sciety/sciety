@@ -19,10 +19,11 @@ describe('fetch-article-details', () => {
     it('returns the latest version date for a doi', async () => {
       const doi = new Doi('10.1101/2020.09.15.286153');
       const latestDate = new Date('2020-12-14');
-      const latestVersionDate = pipe(
-        await fetchArticleDetails(() => TO.some(latestDate), getArticle)(doi)(),
-        O.map((article) => article.latestVersionDate),
-      );
+      const latestVersionDate = await pipe(
+        doi,
+        fetchArticleDetails(() => TO.some(latestDate), getArticle),
+        TO.map((article) => article.latestVersionDate),
+      )();
       const expected = O.some(latestDate);
 
       expect(latestVersionDate).toStrictEqual(expected);
@@ -32,10 +33,11 @@ describe('fetch-article-details', () => {
   describe('title', () => {
     it('returns the title for a doi', async () => {
       const doi = new Doi('10.1101/2020.09.15.286153');
-      const title = pipe(
-        await fetchArticleDetails(() => TO.some(new Date()), getArticle)(doi)(),
-        O.map((article) => article.title),
-      );
+      const title = await pipe(
+        doi,
+        fetchArticleDetails(() => TO.some(new Date()), getArticle),
+        TO.map((article) => article.title),
+      )();
       const expected = pipe(
         titleText,
         toHtmlFragment,
@@ -50,10 +52,11 @@ describe('fetch-article-details', () => {
   describe('authors', () => {
     it('returns the authors for a doi', async () => {
       const doi = new Doi('10.1101/2020.09.15.286153');
-      const authors = pipe(
-        await fetchArticleDetails(() => TO.some(new Date()), getArticle)(doi)(),
-        O.map((article) => article.authors),
-      );
+      const authors = await pipe(
+        doi,
+        fetchArticleDetails(() => TO.some(new Date()), getArticle),
+        TO.map((article) => article.authors),
+      )();
       const expected = pipe(
         ['Kasper C', 'Schlegel P', 'Ruiz-Ascacibar I', 'Stoll P', 'Bee G'],
         O.some,
