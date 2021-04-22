@@ -140,11 +140,7 @@ export const groupPage = (ports: Ports): GroupPage => ({ id, user }) => pipe(
         constructRecentGroupActivity(
           fetchArticleDetails(
             getLatestArticleVersionDate(ports.findVersionsForArticleDoi),
-            (doi: Doi) => pipe(
-              doi,
-              ports.fetchArticle,
-              T.map(O.fromEither),
-            ),
+            flow(ports.fetchArticle, T.map(O.fromEither)),
           ),
           ports.getAllEvents,
         ),
