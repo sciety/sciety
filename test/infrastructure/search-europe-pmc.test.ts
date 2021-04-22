@@ -15,6 +15,12 @@ describe('search-europe-pmc adapter', () => {
               doi: '10.1111/1234',
               title: 'Article title',
               authorString: 'Author 1, Author 2',
+              authorList: {
+                author: [
+                  { fullName: 'Author 1' },
+                  { fullName: 'Author 2' },
+                ],
+              },
               firstPublicationDate: '2019-11-07',
               bookOrReportDetails: {
                 publisher: 'bioRxiv',

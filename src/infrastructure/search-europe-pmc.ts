@@ -36,10 +36,18 @@ type SearchEuropePmc = (query: string) => RTE.ReaderTaskEither<Dependencies, 'un
 
 const europePmcPublisher = t.union([t.literal('bioRxiv'), t.literal('medRxiv')]);
 
+const author = t.union([
+  t.type({ fullName: t.string }),
+  t.type({ collectiveName: t.string }),
+]);
+
 const resultDetails = t.type({
   doi: DoiFromString,
   title: t.string,
   authorString: t.string,
+  authorList: t.type({
+    author: t.readonlyArray(author),
+  }),
   firstPublicationDate: DateFromISOString,
   bookOrReportDetails: t.type({
     publisher: europePmcPublisher,
@@ -62,6 +70,7 @@ const constructQueryParams = (query: string) => (
     query: `${query} (PUBLISHER:"bioRxiv" OR PUBLISHER:"medRxiv") sort_date:y`,
     format: 'json',
     pageSize: '10',
+    resultType: 'core',
   }));
 
 const constructSearchUrl = (queryParams: URLSearchParams) => `https://www.ebi.ac.uk/europepmc/webservices/rest/search?${queryParams.toString()}`;
