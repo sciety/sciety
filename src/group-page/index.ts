@@ -83,20 +83,24 @@ const noInformationFound = '<p>We couldn\'t find this information; please try ag
 
 const noActivity = '<p>It looks like this group hasn’t evaluated any articles yet. Try coming back later!</p>';
 
+const addArticleDetails = (
+  getArticleDetails: GetArticleDetails,
+) => <A extends { doi: Doi }>(evaluatedArticle: A) => pipe(
+  evaluatedArticle.doi,
+  getArticleDetails,
+  TO.map((articleDetails) => ({
+    ...evaluatedArticle,
+    ...articleDetails,
+  })),
+);
+
 const constructRecentGroupActivity = (
   getArticleDetails: GetArticleDetails,
   getAllEvents: GetAllEvents,
 ) => (groupId: GroupId) => pipe(
   getAllEvents,
   T.map((events) => groupActivities(events)(groupId)),
-  T.chain(TO.traverseArray((evaluatedArticle) => pipe(
-    evaluatedArticle.doi,
-    getArticleDetails,
-    TO.map((articleDetails) => ({
-      ...evaluatedArticle,
-      ...articleDetails,
-    })),
-  ))),
+  T.chain(TO.traverseArray(addArticleDetails(getArticleDetails))),
   T.map(E.fromOption(constant(noInformationFound))),
   TE.chainOptionK(constant(noActivity))(RNEA.fromReadonlyArray),
   TE.map(renderRecentGroupActivity),
