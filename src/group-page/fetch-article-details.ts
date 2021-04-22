@@ -30,15 +30,10 @@ type FetchArticleDetails = (
 type GetLatestArticleVersionDate = (articleDoi: Doi, server: ArticleServer) => TO.TaskOption<Date>;
 
 export const fetchArticleDetails: FetchArticleDetails = (getLatestArticleVersionDate, getArticle) => (doi) => pipe(
-  TO.Do,
-  TO.apS('article', getArticle(doi)),
-  TO.bind('latestVersionDate', ({ article }) => pipe(
-    [doi, article.server],
+  doi,
+  getArticle,
+  TO.bind('latestVersionDate', ({ server }) => pipe(
+    [doi, server],
     tupled(getLatestArticleVersionDate),
   )),
-  TO.map(({ latestVersionDate, article }) => ({
-    title: article.title,
-    authors: article.authors,
-    latestVersionDate,
-  })),
 );
