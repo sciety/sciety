@@ -107,6 +107,7 @@ const constructRecentGroupActivity = (
     RNEA.map((articleViewModel) => ({
       ...articleViewModel,
       latestVersionDate: O.some(articleViewModel.latestVersionDate),
+      latestActivityDate: O.some(articleViewModel.latestActivityDate),
     })),
     renderRecentGroupActivity,
   )),
