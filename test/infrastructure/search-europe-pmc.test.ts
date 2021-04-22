@@ -14,7 +14,6 @@ describe('search-europe-pmc adapter', () => {
             {
               doi: '10.1111/1234',
               title: 'Article title',
-              authorString: 'Author 1, Author 2',
               authorList: {
                 author: [
                   { fullName: 'Author 1' },
@@ -39,9 +38,47 @@ describe('search-europe-pmc adapter', () => {
           doi: new Doi('10.1111/1234'),
           server: 'biorxiv',
           title: 'Article title',
-          authors: 'Author 1, Author 2',
+          authors: 'Author 1, Author 2.',
           postedDate: new Date('2019-11-07'),
         },
+      ],
+    });
+
+    expect(results).toStrictEqual(expected);
+  });
+
+  it('handles collective name and full name authors', async () => {
+    const results = await searchEuropePmc('some query')({
+      getJson: async () => ({
+        hitCount: 1,
+        resultList: {
+          result: [
+            {
+              doi: '10.1111/1234',
+              title: 'Article title',
+              authorList: {
+                author: [
+                  { fullName: 'Full Name' },
+                  { collectiveName: 'Collective Name' },
+                ] as const,
+              },
+              firstPublicationDate: '2019-11-07',
+              bookOrReportDetails: {
+                publisher: 'bioRxiv',
+              },
+            },
+          ],
+        },
+      }),
+      logger: dummyLogger,
+    })();
+
+    const expected = E.right({
+      total: 1,
+      items: [
+        expect.objectContaining({
+          authors: 'Full Name, Collective Name.',
+        }),
       ],
     });
 

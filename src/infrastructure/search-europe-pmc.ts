@@ -2,6 +2,7 @@ import { URLSearchParams } from 'url';
 import * as E from 'fp-ts/Either';
 import { Json } from 'fp-ts/Json';
 import * as RTE from 'fp-ts/ReaderTaskEither';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
@@ -36,7 +37,7 @@ type SearchEuropePmc = (query: string) => RTE.ReaderTaskEither<Dependencies, 'un
 
 const europePmcPublisher = t.union([t.literal('bioRxiv'), t.literal('medRxiv')]);
 
-const author = t.union([
+const europePmcAuthor = t.union([
   t.type({ fullName: t.string }),
   t.type({ collectiveName: t.string }),
 ]);
@@ -44,9 +45,8 @@ const author = t.union([
 const resultDetails = t.type({
   doi: DoiFromString,
   title: t.string,
-  authorString: t.string,
   authorList: t.type({
-    author: t.readonlyArray(author),
+    author: t.readonlyArray(europePmcAuthor),
   }),
   firstPublicationDate: DateFromISOString,
   bookOrReportDetails: t.type({
@@ -89,7 +89,11 @@ const constructSearchResults = (data: EuropePmcResponse) => {
     doi: item.doi,
     server: translatePublisherToServer(item.bookOrReportDetails.publisher),
     title: item.title,
-    authors: item.authorString,
+    authors: pipe(
+      item.authorList.author,
+      RA.map((author) => ('fullName' in author ? author.fullName : author.collectiveName)),
+      (authors) => `${authors.join(', ')}.`,
+    ),
     postedDate: item.firstPublicationDate,
   }));
   return {
