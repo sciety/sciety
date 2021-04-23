@@ -77,15 +77,10 @@ const populateGroupViewModel = (getGroup: GetGroup, getAllEvents: GetAllEvents) 
     })),
   )),
 );
-
-const fetchItemDetails = (ports: Ports) => (item: GroupItem | ArticleItem): TE.TaskEither<'not-found', ItemViewModel> => {
-  switch (item._tag) {
-    case 'Article':
-      return pipe(item, populateArticleViewModel(ports.findReviewsForArticleDoi, ports.getLatestArticleVersionDate));
-    case 'Group':
-      return pipe(item, populateGroupViewModel(ports.getGroup, ports.getAllEvents));
-  }
-};
+const fetchItemDetails = (ports: Ports) => (item: ArticleItem | GroupItem): TE.TaskEither<'not-found', ItemViewModel> => (
+  'title' in item
+    ? pipe(item, populateArticleViewModel(ports.findReviewsForArticleDoi, ports.getLatestArticleVersionDate))
+    : pipe(item, populateGroupViewModel(ports.getGroup, ports.getAllEvents)));
 
 export type LimitedSet = {
   query: string,

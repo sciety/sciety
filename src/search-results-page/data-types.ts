@@ -4,12 +4,10 @@ import { GroupId } from '../types/group-id';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
 export type GroupItem = {
-  _tag: 'Group',
   id: GroupId,
 };
 
 export type ArticleItem = {
-  _tag: 'Article',
   doi: Doi,
   server: ArticleServer,
   title: SanitisedHtmlFragment,
