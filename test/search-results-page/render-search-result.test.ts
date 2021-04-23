@@ -1,19 +1,22 @@
 import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
 import {
   ItemViewModel,
   renderSearchResult,
 } from '../../src/search-results-page/render-search-result';
 import { Doi } from '../../src/types/doi';
+import { toHtmlFragment } from '../../src/types/html-fragment';
+import { sanitise } from '../../src/types/sanitised-html-fragment';
 
 const searchResult: ItemViewModel = {
   _tag: 'Article',
   doi: new Doi('10.1101/833392'),
-  title: 'the title',
-  authors: '1, 2, 3',
+  title: pipe('the title', toHtmlFragment, sanitise),
+  authors: ['1', '2', '3'],
   postedDate: new Date('2017-11-30'),
   latestVersionDate: O.none,
   latestActivityDate: O.none,
-  reviewCount: 0,
+  evaluationCount: 0,
 };
 
 describe('render-search-result component', () => {
@@ -22,7 +25,7 @@ describe('render-search-result component', () => {
 
     expect(rendered).toStrictEqual(expect.stringContaining(searchResult.doi.value));
     expect(rendered).toStrictEqual(expect.stringContaining(searchResult.title));
-    expect(rendered).toStrictEqual(expect.stringContaining(searchResult.authors));
+    expect(rendered).toStrictEqual(expect.stringContaining('1, 2, 3'));
   });
 
   describe('when there are evaluations', () => {
@@ -30,12 +33,12 @@ describe('render-search-result component', () => {
       const rendered = renderSearchResult({
         _tag: 'Article',
         doi: new Doi('10.1101/833392'),
-        title: 'the title',
-        authors: '1, 2, 3',
+        title: pipe('the title', toHtmlFragment, sanitise),
+        authors: ['1', '2', '3'],
         postedDate: new Date('2017-11-30'),
         latestVersionDate: O.none,
         latestActivityDate: O.none,
-        reviewCount: 37,
+        evaluationCount: 37,
       });
 
       expect(rendered).toStrictEqual(expect.stringMatching('37 evaluations'));
@@ -51,12 +54,12 @@ describe('render-search-result component', () => {
       const rendered = renderSearchResult({
         _tag: 'Article',
         doi: new Doi('10.1101/833392'),
-        title: 'the title',
-        authors: '1, 2, 3',
+        title: pipe('the title', toHtmlFragment, sanitise),
+        authors: ['1', '2', '3'],
         postedDate: new Date('2017-11-30'),
         latestVersionDate: O.none,
         latestActivityDate: O.none,
-        reviewCount: 1,
+        evaluationCount: 1,
       });
 
       expect(rendered).toStrictEqual(expect.stringMatching('1 evaluation'));

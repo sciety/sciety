@@ -1,8 +1,11 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
+import { pipe } from 'fp-ts/function';
 import { fetchExtraDetails } from '../../src/search-results-page/fetch-extra-details';
 import { Doi } from '../../src/types/doi';
 import { GroupId } from '../../src/types/group-id';
+import { toHtmlFragment } from '../../src/types/html-fragment';
+import { sanitise } from '../../src/types/sanitised-html-fragment';
 import { shouldNotBeCalled } from '../should-not-be-called';
 
 describe('fetch-extra-details', () => {
@@ -35,7 +38,7 @@ describe('fetch-extra-details', () => {
             _tag: 'Article' as const,
             doi: new Doi('10.1101/222222'),
             server: 'biorxiv' as const,
-            title: '',
+            title: pipe('', toHtmlFragment, sanitise),
             authors: [],
             postedDate: new Date(),
           },
@@ -48,7 +51,7 @@ describe('fetch-extra-details', () => {
         availableMatches: 5,
         itemsToDisplay: [
           expect.objectContaining({
-            reviewCount: 2,
+            evaluationCount: 2,
             latestVersionDate: O.some(latestVersionDate),
             latestActivityDate: O.some(latestActivityDate),
           }),

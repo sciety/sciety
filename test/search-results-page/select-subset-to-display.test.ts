@@ -1,6 +1,9 @@
+import { pipe } from 'fp-ts/function';
 import { selectSubsetToDisplay } from '../../src/search-results-page/select-subset-to-display';
 import { Doi } from '../../src/types/doi';
 import { GroupId } from '../../src/types/group-id';
+import { toHtmlFragment } from '../../src/types/html-fragment';
+import { sanitise } from '../../src/types/sanitised-html-fragment';
 
 describe('select-subset-to-display', () => {
   describe('prioritizing groups over articles', () => {
@@ -17,8 +20,8 @@ describe('select-subset-to-display', () => {
         _tag: 'Article' as const,
         doi: new Doi('10.1101/1234'),
         server: 'biorxiv' as const,
-        title: '',
-        authors: [],
+        title: pipe('', toHtmlFragment, sanitise),
+        authors: [''],
         postedDate: new Date(),
       };
       const state = {

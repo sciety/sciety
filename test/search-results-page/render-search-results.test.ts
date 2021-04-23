@@ -2,6 +2,8 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { renderSearchResults } from '../../src/search-results-page/render-search-results';
 import { Doi } from '../../src/types/doi';
+import { toHtmlFragment } from '../../src/types/html-fragment';
+import { sanitise } from '../../src/types/sanitised-html-fragment';
 
 describe('render-search-results component', () => {
   describe('when there are results', () => {
@@ -14,12 +16,12 @@ describe('render-search-results component', () => {
             {
               _tag: 'Article',
               doi: new Doi('10.1101/833392'),
-              title: 'the title',
-              authors: '1, 2, 3',
+              title: pipe('the title', toHtmlFragment, sanitise),
+              authors: ['1', '2', '3'],
               postedDate: new Date('2017-11-30'),
               latestVersionDate: O.none,
               latestActivityDate: O.none,
-              reviewCount: 0,
+              evaluationCount: 0,
             },
           ],
         },

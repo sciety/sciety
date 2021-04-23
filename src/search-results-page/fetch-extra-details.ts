@@ -53,13 +53,12 @@ const populateArticleViewModel = (
   T.apS('reviews', pipe(item.doi, findReviewsForArticleDoi)),
   T.apS('latestVersionDate', pipe([item.doi, item.server], tupled(getLatestArticleVersionDate))),
   T.bind('latestActivityDate', ({ reviews }) => pipe(reviews, getLatestActivityDate, T.of)),
-  T.bind('reviewCount', ({ reviews }) => pipe(reviews.length, T.of)),
-  T.map(({ latestVersionDate, latestActivityDate, reviewCount }) => ({
+  T.bind('evaluationCount', ({ reviews }) => pipe(reviews.length, T.of)),
+  T.map(({ latestVersionDate, latestActivityDate, evaluationCount }) => ({
     ...item,
-    authors: `${item.authors.join(', ')}.`,
     latestVersionDate,
     latestActivityDate,
-    reviewCount,
+    evaluationCount,
   })),
   TE.rightTask,
 );

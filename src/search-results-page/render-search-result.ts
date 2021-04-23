@@ -9,12 +9,12 @@ import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 type ArticleViewModel = {
   _tag: 'Article',
   doi: Doi,
-  title: string,
-  authors: string,
+  title: SanitisedHtmlFragment,
+  authors: ReadonlyArray<string>,
   postedDate: Date,
   latestVersionDate: O.Option<Date>,
   latestActivityDate: O.Option<Date>,
-  reviewCount: number,
+  evaluationCount: number,
 };
 
 type GroupViewModel = {
@@ -65,10 +65,10 @@ const renderArticleSearchResult = flow(
     <div class="search-results-list__item_container">
       <a class="search-results-list__item__link" href="/articles/activity/${result.doi.value}">${result.title}</a>
       <div class="search-results-list__item__description">
-        ${result.authors}
+        ${result.authors.join(', ')}.
       </div>
       <span class="search-results-list__item__meta">
-        ${renderEvaluationCount(result.reviewCount)}${renderArticleVersionDate(result)}${renderArticleActivityDateMetaItem(result.latestActivityDate)}
+        ${renderEvaluationCount(result.evaluationCount)}${renderArticleVersionDate(result)}${renderArticleActivityDateMetaItem(result.latestActivityDate)}
       </span>
     </div>
   `,

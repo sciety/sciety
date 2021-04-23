@@ -12,13 +12,15 @@ import { Logger } from './logger';
 import { ArticleServer } from '../types/article-server';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { Doi } from '../types/doi';
+import { toHtmlFragment } from '../types/html-fragment';
+import { sanitise, SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
 type GetJson = (uri: string) => Promise<Json>;
 
 type SearchResult = {
   doi: Doi,
   server: ArticleServer,
-  title: string,
+  title: SanitisedHtmlFragment,
   authors: ReadonlyArray<string>,
   postedDate: Date,
 };
@@ -88,7 +90,7 @@ const constructSearchResults = (data: EuropePmcResponse) => {
   const items = data.resultList.result.map((item) => ({
     doi: item.doi,
     server: translatePublisherToServer(item.bookOrReportDetails.publisher),
-    title: item.title,
+    title: pipe(item.title, toHtmlFragment, sanitise),
     authors: pipe(
       item.authorList.author,
       RA.map((author) => ('fullName' in author ? author.fullName : author.collectiveName)),
