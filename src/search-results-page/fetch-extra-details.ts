@@ -5,7 +5,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe, tupled } from 'fp-ts/function';
-import { ArticleItem, GroupItem } from './data-types';
+import { ArticleItem, GroupItem, isArticleItem } from './data-types';
 import { ItemViewModel, SearchResults } from './render-search-results';
 import { updateGroupMeta } from './update-group-meta';
 import { ArticleServer } from '../types/article-server';
@@ -77,7 +77,7 @@ const populateGroupViewModel = (getGroup: GetGroup, getAllEvents: GetAllEvents) 
   )),
 );
 const fetchItemDetails = (ports: Ports) => (item: ArticleItem | GroupItem): TE.TaskEither<'not-found', ItemViewModel> => (
-  'title' in item
+  isArticleItem(item)
     ? pipe(item, populateArticleViewModel(ports.findReviewsForArticleDoi, ports.getLatestArticleVersionDate))
     : pipe(item, populateGroupViewModel(ports.getGroup, ports.getAllEvents)));
 

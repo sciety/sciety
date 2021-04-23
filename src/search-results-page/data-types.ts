@@ -14,3 +14,5 @@ export type ArticleItem = {
   authors: ReadonlyArray<string>,
   postedDate: Date,
 };
+
+export const isArticleItem = (item: ArticleItem | GroupItem): item is ArticleItem => 'doi' in item;
