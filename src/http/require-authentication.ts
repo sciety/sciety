@@ -6,7 +6,7 @@ type State = {
   targetFragmentId?: string,
 };
 
-const constructRedirectUrl = (context: ParameterizedContext<State>) => {
+export const constructRedirectUrl = (context: ParameterizedContext<State>): string => {
   const result = context.request.headers.referer ?? '/';
   if (context.state.targetFragmentId) {
     return `${result}#${context.state.targetFragmentId}`;

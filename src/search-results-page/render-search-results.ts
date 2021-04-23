@@ -3,9 +3,13 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { constant, pipe } from 'fp-ts/function';
-import { ItemViewModel, renderSearchResult } from './render-search-result';
-import { templateListItems } from '../shared-components';
+import { GroupViewModel, renderGroupSearchResult } from './render-group-search-result';
+import { ArticleViewModel, renderArticleActivity, templateListItems } from '../shared-components';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+
+export type ItemViewModel = ArticleViewModel | GroupViewModel;
+
+const isArticleViewModel = (viewModel: ItemViewModel): viewModel is ArticleViewModel => 'doi' in viewModel;
 
 export type SearchResults = {
   query: string,
@@ -19,6 +23,7 @@ const renderListIfNecessary = (articles: ReadonlyArray<HtmlFragment>) => pipe(
   O.fold(
     constant(''),
     (a) => `
+      <div class="hidden" id="group-activity-list-authors">This article's authors</div>
       <ul class="search-results-list" role="list">
         ${templateListItems(a, 'search-results-list__item')}
       </ul>
@@ -26,8 +31,11 @@ const renderListIfNecessary = (articles: ReadonlyArray<HtmlFragment>) => pipe(
   ),
 );
 
-type RenderSearchResults = (rs: SearchResults) => HtmlFragment;
+const renderSearchResult = (viewModel: ItemViewModel) => (
+  isArticleViewModel(viewModel) ? renderArticleActivity(viewModel) : renderGroupSearchResult(viewModel)
+);
 
+type RenderSearchResults = (rs: SearchResults) => HtmlFragment;
 export const renderSearchResults: RenderSearchResults = (searchResults) => pipe(
   searchResults.itemsToDisplay,
   RA.map(renderSearchResult),

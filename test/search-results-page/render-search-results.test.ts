@@ -18,7 +18,6 @@ describe('render-search-results component', () => {
               doi: new Doi('10.1101/833392'),
               title: pipe('the title', toHtmlFragment, sanitise),
               authors: ['1', '2', '3'],
-              postedDate: new Date('2017-11-30'),
               latestVersionDate: O.none,
               latestActivityDate: O.none,
               evaluationCount: 0,

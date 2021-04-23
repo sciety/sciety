@@ -5,9 +5,8 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe, tupled } from 'fp-ts/function';
-import { ArticleItem, GroupItem } from './data-types';
-import { ItemViewModel } from './render-search-result';
-import { SearchResults } from './render-search-results';
+import { ArticleItem, GroupItem, isArticleItem } from './data-types';
+import { ItemViewModel, SearchResults } from './render-search-results';
 import { updateGroupMeta } from './update-group-meta';
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
@@ -71,22 +70,16 @@ const populateGroupViewModel = (getGroup: GetGroup, getAllEvents: GetAllEvents) 
     getAllEvents,
     T.map(RA.reduce({ reviewCount: 0, followerCount: 0 }, updateGroupMeta(group.id))),
     T.map((meta) => ({
-      _tag: 'Group' as const,
       ...group,
       ...meta,
       description: pipe(group.shortDescription, toHtmlFragment, sanitise),
     })),
   )),
 );
-
-const fetchItemDetails = (ports: Ports) => (item: GroupItem | ArticleItem): TE.TaskEither<'not-found', ItemViewModel> => {
-  switch (item._tag) {
-    case 'Article':
-      return pipe(item, populateArticleViewModel(ports.findReviewsForArticleDoi, ports.getLatestArticleVersionDate));
-    case 'Group':
-      return pipe(item, populateGroupViewModel(ports.getGroup, ports.getAllEvents));
-  }
-};
+const fetchItemDetails = (ports: Ports) => (item: ArticleItem | GroupItem): TE.TaskEither<'not-found', ItemViewModel> => (
+  isArticleItem(item)
+    ? pipe(item, populateArticleViewModel(ports.findReviewsForArticleDoi, ports.getLatestArticleVersionDate))
+    : pipe(item, populateGroupViewModel(ports.getGroup, ports.getAllEvents)));
 
 export type LimitedSet = {
   query: string,
