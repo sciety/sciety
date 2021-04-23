@@ -23,12 +23,7 @@ import { redirectAfterAuthenticating, requireAuthentication } from './require-au
 import { robots } from './robots';
 import { aboutPage } from '../about-page';
 import { articleActivityPage, articleMetaPage } from '../article-page';
-import {
-  finishUnfollowCommand,
-  followHandler,
-  saveUnfollowCommand,
-  unfollowHandler,
-} from '../follow';
+import { finishUnfollowCommand, saveUnfollowCommand, unfollowHandler } from '../follow';
 import { groupPage } from '../group-page';
 import { homePage } from '../home-page';
 import { Adapters } from '../infrastructure/adapters';
@@ -228,7 +223,6 @@ export const createRouter = (adapters: Adapters): Router => {
     '/follow',
     bodyParser({ enableTypes: ['form'] }),
     executeIfAuthenticated(adapters),
-    followHandler(adapters),
   );
 
   router.post(

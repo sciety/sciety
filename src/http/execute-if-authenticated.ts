@@ -1,5 +1,4 @@
 import * as O from 'fp-ts/Option';
-
 import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
@@ -10,6 +9,7 @@ import {
 import { renderErrorPage } from './render-error-page';
 import { constructRedirectUrl } from './require-authentication';
 import { sessionGroupProperty } from '../follow/finish-follow-command';
+import { CommitEvents, followCommand, GetFollowList } from '../follow/follow-command';
 import { groupProperty } from '../follow/follow-handler';
 import { applyStandardPageLayout } from '../shared-components';
 import { Group } from '../types/group';
@@ -25,6 +25,8 @@ type ToExistingGroup = (groupId: GroupId.GroupId) => TO.TaskOption<Group>;
 type Ports = {
   logger: Logger,
   getGroup: ToExistingGroup,
+  commitEvents: CommitEvents,
+  getFollowList: GetFollowList,
 };
 
 // TODO: this side-effect could be captured differently
@@ -35,6 +37,8 @@ const saveCommandAndGroupIdToSession = (context: Context) => (group: Group): voi
 
 export const executeIfAuthenticated = ({
   getGroup: toExistingGroup,
+  commitEvents,
+  getFollowList,
   logger,
 }: Ports): Middleware => async (context, next) => {
   try {
@@ -53,7 +57,21 @@ export const executeIfAuthenticated = ({
             return T.of(undefined);
           }
 
-          return next;
+          return pipe(
+            context.request.body[groupProperty],
+            GroupId.fromNullable,
+            O.fold(
+              () => context.throw(StatusCodes.BAD_REQUEST),
+              (groupId) => {
+                const { user } = context.state;
+                context.redirect('back');
+                return pipe(
+                  followCommand(getFollowList, commitEvents)(user, groupId),
+                  T.chain(() => next),
+                );
+              },
+            ),
+          );
         },
       ),
     )();
