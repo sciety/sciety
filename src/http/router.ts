@@ -228,7 +228,6 @@ export const createRouter = (adapters: Adapters): Router => {
     '/follow',
     bodyParser({ enableTypes: ['form'] }),
     executeIfAuthenticated(adapters),
-    requireAuthentication,
     followHandler(adapters),
   );
 

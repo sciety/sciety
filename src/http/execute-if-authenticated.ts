@@ -8,6 +8,7 @@ import {
   DefaultContext, DefaultState, Middleware, ParameterizedContext,
 } from 'koa';
 import { renderErrorPage } from './render-error-page';
+import { constructRedirectUrl } from './require-authentication';
 import { sessionGroupProperty } from '../follow/finish-follow-command';
 import { groupProperty } from '../follow/follow-handler';
 import { applyStandardPageLayout } from '../shared-components';
@@ -45,7 +46,15 @@ export const executeIfAuthenticated = ({
       TO.map(saveCommandAndGroupIdToSession(context)),
       TO.fold(
         () => T.of(context.throw(StatusCodes.BAD_REQUEST)),
-        () => next,
+        () => {
+          if (!(context.state.user)) {
+            context.session.successRedirect = constructRedirectUrl(context);
+            context.redirect('/log-in');
+            return T.of(undefined);
+          }
+
+          return next;
+        },
       ),
     )();
   } catch (error: unknown) {
