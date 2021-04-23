@@ -41,47 +41,55 @@ export const executeIfAuthenticated = ({
   getFollowList,
   logger,
 }: Ports): Middleware => async (context, next) => {
-  try {
-    await pipe(
-      context.request.body[groupProperty],
-      GroupId.fromNullable,
-      TO.fromOption,
-      TO.chain(toExistingGroup),
-      TO.map(saveCommandAndGroupIdToSession(context)),
-      TO.fold(
-        () => T.of(context.throw(StatusCodes.BAD_REQUEST)),
-        () => {
-          if (!(context.state.user)) {
-            context.session.successRedirect = constructRedirectUrl(context);
-            context.redirect('/log-in');
-            return T.of(undefined);
-          }
+  await pipe(
+    context.request.body[groupProperty],
+    GroupId.fromNullable,
+    TO.fromOption,
+    TO.chain(toExistingGroup),
+    TO.map(saveCommandAndGroupIdToSession(context)),
+    TO.fold(
+      () => {
+        logger('error', 'Problem with /follow', { error: StatusCodes.BAD_REQUEST });
 
-          return pipe(
-            context.request.body[groupProperty],
-            GroupId.fromNullable,
-            O.fold(
-              () => context.throw(StatusCodes.BAD_REQUEST),
-              (groupId) => {
-                const { user } = context.state;
-                context.redirect('back');
-                return pipe(
-                  followCommand(getFollowList, commitEvents)(user, groupId),
-                  T.chain(() => next),
-                );
-              },
-            ),
-          );
-        },
-      ),
-    )();
-  } catch (error: unknown) {
-    logger('error', 'Problem with /follow', { error });
+        context.response.status = StatusCodes.INTERNAL_SERVER_ERROR;
+        context.response.body = applyStandardPageLayout(O.none)({
+          title: 'Error',
+          content: renderErrorPage(toHtmlFragment('Something went wrong; we\'re looking into it.')),
+        });
+        return T.of(undefined);
+      },
+      () => {
+        if (!(context.state.user)) {
+          context.session.successRedirect = constructRedirectUrl(context);
+          context.redirect('/log-in');
+          return T.of(undefined);
+        }
 
-    context.response.status = StatusCodes.INTERNAL_SERVER_ERROR;
-    context.response.body = applyStandardPageLayout(O.none)({
-      title: 'Error',
-      content: renderErrorPage(toHtmlFragment('Something went wrong; we\'re looking into it.')),
-    });
-  }
+        return pipe(
+          context.request.body[groupProperty],
+          GroupId.fromNullable,
+          O.fold(
+            () => {
+              logger('error', 'Problem with /follow', { error: StatusCodes.BAD_REQUEST });
+
+              context.response.status = StatusCodes.INTERNAL_SERVER_ERROR;
+              context.response.body = applyStandardPageLayout(O.none)({
+                title: 'Error',
+                content: renderErrorPage(toHtmlFragment('Something went wrong; we\'re looking into it.')),
+              });
+              return T.of(undefined);
+            },
+            (groupId) => {
+              const { user } = context.state;
+              context.redirect('back');
+              return pipe(
+                followCommand(getFollowList, commitEvents)(user, groupId),
+                T.chain(() => next),
+              );
+            },
+          ),
+        );
+      },
+    ),
+  )();
 };
