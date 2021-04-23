@@ -30,9 +30,10 @@ type Ports = {
 };
 
 // TODO: this side-effect could be captured differently
-const saveCommandAndGroupIdToSession = (context: Context) => (group: Group): void => {
+const saveCommandAndGroupIdToSession = (context: Context) => (group: Group): GroupId.GroupId => {
   context.session.command = 'follow';
   context.session[sessionGroupProperty] = group.id.toString();
+  return group.id;
 };
 
 export const executeIfAuthenticated = ({
@@ -58,36 +59,17 @@ export const executeIfAuthenticated = ({
         });
         return T.of(undefined);
       },
-      () => {
+      (groupId) => {
         if (!(context.state.user)) {
           context.session.successRedirect = constructRedirectUrl(context);
           context.redirect('/log-in');
           return T.of(undefined);
         }
-
+        const { user } = context.state;
+        context.redirect('back');
         return pipe(
-          context.request.body[groupProperty],
-          GroupId.fromNullable,
-          O.fold(
-            () => {
-              logger('error', 'Problem with /follow', { error: StatusCodes.BAD_REQUEST });
-
-              context.response.status = StatusCodes.INTERNAL_SERVER_ERROR;
-              context.response.body = applyStandardPageLayout(O.none)({
-                title: 'Error',
-                content: renderErrorPage(toHtmlFragment('Something went wrong; we\'re looking into it.')),
-              });
-              return T.of(undefined);
-            },
-            (groupId) => {
-              const { user } = context.state;
-              context.redirect('back');
-              return pipe(
-                followCommand(getFollowList, commitEvents)(user, groupId),
-                T.chain(() => next),
-              );
-            },
-          ),
+          followCommand(getFollowList, commitEvents)(user, groupId),
+          T.chain(() => next),
         );
       },
     ),
