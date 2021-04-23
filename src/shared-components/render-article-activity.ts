@@ -7,7 +7,7 @@ import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
-type ArticleViewModel = {
+export type ArticleViewModel = {
   doi: Doi,
   title: SanitisedHtmlFragment,
   authors: ReadonlyArray<string>,

@@ -1,22 +1,8 @@
-import * as O from 'fp-ts/Option';
 import { GroupViewModel, renderGroupSearchResult } from './render-group-search-result';
-import { renderArticleActivity } from '../shared-components';
-import { Doi } from '../types/doi';
+import { ArticleViewModel, renderArticleActivity } from '../shared-components';
 import { HtmlFragment } from '../types/html-fragment';
-import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
-type ArticleViewModel = {
-  _tag: 'Article',
-  doi: Doi,
-  title: SanitisedHtmlFragment,
-  authors: ReadonlyArray<string>,
-  postedDate: Date,
-  latestVersionDate: O.Option<Date>,
-  latestActivityDate: O.Option<Date>,
-  evaluationCount: number,
-};
-
-export type ItemViewModel = ArticleViewModel | GroupViewModel;
+export type ItemViewModel = ArticleViewModel & { _tag: 'Article' } | GroupViewModel & { _tag: 'Group' };
 
 type RenderSearchResult = (result: ItemViewModel) => HtmlFragment;
 

@@ -4,7 +4,6 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
 export type GroupViewModel = {
-  _tag: 'Group',
   id: GroupId,
   name: string,
   description: SanitisedHtmlFragment,
