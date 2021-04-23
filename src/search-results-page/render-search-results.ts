@@ -9,6 +9,8 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 export type ItemViewModel = ArticleViewModel | GroupViewModel;
 
+const isArticleViewModel = (viewModel: ItemViewModel): viewModel is ArticleViewModel => 'doi' in viewModel;
+
 export type SearchResults = {
   query: string,
   itemsToDisplay: ReadonlyArray<ItemViewModel>,
@@ -29,7 +31,9 @@ const renderListIfNecessary = (articles: ReadonlyArray<HtmlFragment>) => pipe(
   ),
 );
 
-const renderSearchResult = (viewModel: ItemViewModel) => ('title' in viewModel ? renderArticleActivity(viewModel) : renderGroupSearchResult(viewModel));
+const renderSearchResult = (viewModel: ItemViewModel) => (
+  isArticleViewModel(viewModel) ? renderArticleActivity(viewModel) : renderGroupSearchResult(viewModel)
+);
 
 type RenderSearchResults = (rs: SearchResults) => HtmlFragment;
 export const renderSearchResults: RenderSearchResults = (searchResults) => pipe(
