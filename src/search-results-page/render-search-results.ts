@@ -19,6 +19,7 @@ const renderListIfNecessary = (articles: ReadonlyArray<HtmlFragment>) => pipe(
   O.fold(
     constant(''),
     (a) => `
+      <div class="hidden" id="group-activity-list-authors">This article's authors</div>
       <ul class="search-results-list" role="list">
         ${templateListItems(a, 'search-results-list__item')}
       </ul>

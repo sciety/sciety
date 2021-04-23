@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
-import { constant, flow, pipe } from 'fp-ts/function';
-import { templateDate } from '../shared-components';
+import { flow, pipe } from 'fp-ts/function';
+import { renderArticleActivity } from '../shared-components';
 import { Doi } from '../types/doi';
 import { GroupId } from '../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -43,40 +43,6 @@ const renderEvaluationCount = (evaluationCount: number): HtmlFragment => pipe(
   wrapInSpan,
 );
 
-const renderArticleVersionDate = (result: ArticleViewModel): HtmlFragment => pipe(
-  result.latestVersionDate,
-  O.fold(
-    () => `Posted ${templateDate(result.postedDate)}`,
-    (latestVersionDate) => `Latest version ${templateDate(latestVersionDate)}`,
-  ),
-  wrapInSpan,
-);
-
-const renderArticleActivityDateMetaItem = O.fold(
-  constant(toHtmlFragment('')),
-  (date: Date) => pipe(
-    `Latest activity ${templateDate(date)}`,
-    wrapInSpan,
-  ),
-);
-
-const renderArticleSearchResult = flow(
-  (result: ArticleViewModel) => `
-    <div class="search-results-list__item_container">
-      <div class="search-results-list__item_body">
-        <a class="search-results-list__item__link" href="/articles/activity/${result.doi.value}">${result.title}</a>
-        <div class="search-results-list__item__description">
-          ${result.authors.join(', ')}.
-        </div>
-        <span class="search-results-list__item__meta">
-          ${renderEvaluationCount(result.evaluationCount)}${renderArticleVersionDate(result)}${renderArticleActivityDateMetaItem(result.latestActivityDate)}
-        </span>
-      </div>
-    </div>
-  `,
-  toHtmlFragment,
-);
-
 const renderGroupSearchResult = flow(
   (result: GroupViewModel) => `
     <div class="search-results-list__item_container">
@@ -100,7 +66,7 @@ type RenderSearchResult = (result: ItemViewModel) => HtmlFragment;
 export const renderSearchResult: RenderSearchResult = (result) => {
   switch (result._tag) {
     case 'Article':
-      return renderArticleSearchResult(result);
+      return renderArticleActivity(result);
     case 'Group':
       return renderGroupSearchResult(result);
   }
