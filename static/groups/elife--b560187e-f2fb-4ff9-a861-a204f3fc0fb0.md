@@ -4,9 +4,11 @@ eLife is a selective journal that publishes promising research in all areas of b
 
 ## Peer review model
 
-eLife’s editorial process emphasises the production of clear, transparent public reviews of papers already posted as preprints, to transform unrefereed author manuscripts into refereed preprints.
+eLife’s editorial process produces two outputs: i) an assessment by peers designed to be posted alongside a preprint for the benefit of readers; ii) detailed feedback on the manuscript for the authors, including requests for revisions and suggestions for improvement. 
 
-Authors who proceed with a revised submission are expected to agree to have the public reviews posted to a preprint server. For articles that are rejected after peer review, authors maintain control over when public reviews are posted, and can delay having the public reviews posted until their work has been accepted for publication by another journal.
+The assessment by peers includes an evaluation summary that captures the major conclusions of the review, and public reviews from each of the peer reviewers that outlines the strengths and weaknesses of the manuscript.
+
+eLife’s Sciety feed includes peer reviews for preprints reviewed by the journal. Some of these preprints go on to be revised and published in eLife, while others will be published in other journals. Authors have the option to delay having the public reviews posted until their work has been accepted for publication by another journal.
 
 Read more [about eLife](https://elifesciences.org/about).
 
