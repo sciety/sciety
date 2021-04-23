@@ -70,7 +70,6 @@ const populateGroupViewModel = (getGroup: GetGroup, getAllEvents: GetAllEvents) 
     getAllEvents,
     T.map(RA.reduce({ reviewCount: 0, followerCount: 0 }, updateGroupMeta(group.id))),
     T.map((meta) => ({
-      _tag: 'Group' as const,
       ...group,
       ...meta,
       description: pipe(group.shortDescription, toHtmlFragment, sanitise),

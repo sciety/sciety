@@ -16,7 +16,7 @@ import { Doi } from '../types/doi';
 import { GroupId } from '../types/group-id';
 
 type ArticleResults = {
-  items: ReadonlyArray<Omit<ArticleItem, '_tag'>>,
+  items: ReadonlyArray<ArticleItem>,
   total: number,
 };
 
@@ -38,19 +38,6 @@ type Ports = {
   searchEuropePmc: FindArticles,
 };
 
-const tagAsArticles = (results: ArticleResults) => ({
-  ...results,
-  items: results.items.map((article) => ({
-    _tag: 'Article' as const,
-    ...article,
-  })),
-});
-
-const tagAsGroups = RA.map((groupId: GroupId) => ({
-  _tag: 'Group' as const,
-  id: groupId,
-}));
-
 type Params = {
   query: string,
 };
@@ -63,12 +50,11 @@ export const searchResultsPage = (ports: Ports): SearchResultsPage => flow(
     articles: pipe(
       params.query,
       ports.searchEuropePmc,
-      TE.map(tagAsArticles),
     ),
     groups: pipe(
       params.query,
       ports.findGroups, // TODO: should only ask for 10 of n; should return a TE
-      T.map(tagAsGroups),
+      T.map(RA.map((groupId) => ({ id: groupId }))),
       TE.rightTask,
     ),
   }),
