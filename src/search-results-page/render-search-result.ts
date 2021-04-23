@@ -63,13 +63,15 @@ const renderArticleActivityDateMetaItem = O.fold(
 const renderArticleSearchResult = flow(
   (result: ArticleViewModel) => `
     <div class="search-results-list__item_container">
-      <a class="search-results-list__item__link" href="/articles/activity/${result.doi.value}">${result.title}</a>
-      <div class="search-results-list__item__description">
-        ${result.authors.join(', ')}.
+      <div class="search-results-list__item_body">
+        <a class="search-results-list__item__link" href="/articles/activity/${result.doi.value}">${result.title}</a>
+        <div class="search-results-list__item__description">
+          ${result.authors.join(', ')}.
+        </div>
+        <span class="search-results-list__item__meta">
+          ${renderEvaluationCount(result.evaluationCount)}${renderArticleVersionDate(result)}${renderArticleActivityDateMetaItem(result.latestActivityDate)}
+        </span>
       </div>
-      <span class="search-results-list__item__meta">
-        ${renderEvaluationCount(result.evaluationCount)}${renderArticleVersionDate(result)}${renderArticleActivityDateMetaItem(result.latestActivityDate)}
-      </span>
     </div>
   `,
   toHtmlFragment,
@@ -78,15 +80,17 @@ const renderArticleSearchResult = flow(
 const renderGroupSearchResult = flow(
   (result: GroupViewModel) => `
     <div class="search-results-list__item_container">
-      <a class="search-results-list__item__link" href="/groups/${result.id.value}">${result.name}</a>
-      <div class="search-results-list__item__description">
-        ${result.description}
+      <div class="search-results-list__item_body">
+        <a class="search-results-list__item__link" href="/groups/${result.id.value}">${result.name}</a>
+        <div class="search-results-list__item__description">
+          ${result.description}
+        </div>
+        <span class="search-results-list__item__meta">
+          ${renderEvaluationCount(result.reviewCount)}${renderFollowerCount(result.followerCount)}
+        </span>      
       </div>
-      <span class="search-results-list__item__meta">
-        ${renderEvaluationCount(result.reviewCount)}${renderFollowerCount(result.followerCount)}
-      </span>
+      <img class="search-results-list__item__avatar" src="${result.avatarPath}" alt="" />
     </div>
-    <img class="search-results-list__item__avatar" src="${result.avatarPath}" alt="" />
   `,
   toHtmlFragment,
 );
