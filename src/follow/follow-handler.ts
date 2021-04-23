@@ -13,25 +13,19 @@ type Ports = {
   getFollowList: GetFollowList,
 };
 
-export const followHandler = (ports: Ports): Middleware<{ user: User }> => {
-  const command = followCommand(
-    ports.getFollowList,
-    ports.commitEvents,
+export const followHandler = (ports: Ports): Middleware<{ user: User }> => async (context, next) => {
+  await pipe(
+    context.request.body[groupProperty],
+    GroupId.fromNullable,
+    O.fold(
+      () => context.throw(StatusCodes.BAD_REQUEST),
+      async (groupId) => {
+        const { user } = context.state;
+        context.redirect('back');
+        return followCommand(ports.getFollowList, ports.commitEvents)(user, groupId)();
+      },
+    ),
   );
-  return async (context, next) => {
-    await pipe(
-      context.request.body[groupProperty],
-      GroupId.fromNullable,
-      O.fold(
-        () => context.throw(StatusCodes.BAD_REQUEST),
-        async (groupId) => {
-          const { user } = context.state;
-          context.redirect('back');
-          return command(user, groupId)();
-        },
-      ),
-    );
 
-    await next();
-  };
+  await next();
 };
