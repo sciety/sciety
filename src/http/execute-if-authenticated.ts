@@ -3,9 +3,7 @@ import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
-import {
-  DefaultContext, DefaultState, Middleware, ParameterizedContext,
-} from 'koa';
+import { Middleware } from 'koa';
 import { renderErrorPage } from './render-error-page';
 import { constructRedirectUrl } from './require-authentication';
 import { sessionGroupProperty } from '../follow/finish-follow-command';
@@ -16,8 +14,6 @@ import { Group } from '../types/group';
 import * as GroupId from '../types/group-id';
 import { toHtmlFragment } from '../types/html-fragment';
 
-type Context = ParameterizedContext<DefaultState, DefaultContext>;
-
 type Logger = (level: 'error', message: string, payload: Record<string, unknown>) => void;
 
 type ToExistingGroup = (groupId: GroupId.GroupId) => TO.TaskOption<Group>;
@@ -27,13 +23,6 @@ type Ports = {
   getGroup: ToExistingGroup,
   commitEvents: CommitEvents,
   getFollowList: GetFollowList,
-};
-
-// TODO: this side-effect could be captured differently
-const saveCommandAndGroupIdToSession = (context: Context) => (group: Group): GroupId.GroupId => {
-  context.session.command = 'follow';
-  context.session[sessionGroupProperty] = group.id.toString();
-  return group.id;
 };
 
 export const executeIfAuthenticated = ({
@@ -47,7 +36,11 @@ export const executeIfAuthenticated = ({
     GroupId.fromNullable,
     TO.fromOption,
     TO.chain(toExistingGroup),
-    TO.map(saveCommandAndGroupIdToSession(context)),
+    TO.map((group) => {
+      context.session.command = 'follow';
+      context.session[sessionGroupProperty] = group.id.toString();
+      return group.id;
+    }),
     TO.fold(
       () => {
         logger('error', 'Problem with /follow', { error: StatusCodes.BAD_REQUEST });
