@@ -4,7 +4,6 @@
 @use 'typography';
 @use 'breakpoints';
 
-@use 'card';
 @use 'list';
 
 .sciety-grid--group {
@@ -70,78 +69,5 @@
 
   &:last-child {
     margin-bottom: 0;
-  }
-}
-
-.group-activity-list__card {
-  background-color: settings.$colour-white;
-  color: settings.$colour-text-primary;
-  padding: baseline.increments(2) functions.px-to-rem(16px);
-
-  border: settings.$border-width solid settings.$colour-furniture;
-  border-left-width: 0;
-  border-right-width: 0;
-
-  @include breakpoints.not-narrow {
-    border-radius: settings.$border-radius;
-    border-left-width: settings.$border-width;
-    border-right-width: settings.$border-width;
-    padding: baseline.increments(3) functions.px-to-rem(24px);
-  }
-}
-
-.group-activity-list__card_title {
-  @include typography.sizing(16px, 2.5);
-  font-family: settings.$font-family;
-  font-weight: bold;
-  margin-bottom: baseline.increments(0.5);
-}
-
-.group-activity-list__card_link {
-  color: settings.$colour-text-primary;
-
-  &:link,
-  &:visited {
-    color: settings.$colour-text-primary;
-
-    &:active,
-    &:hover {
-      color: settings.$colour-text-primary;
-    }
-  }
-}
-
-.group-activity-list__card_authors {
-  @include list.basics();
-  @include typography.sizing(14px, 2.5);
-  margin-bottom: baseline.increments(1);
-  font-family: settings.$font-family;
-}
-
-.group-activity-list__card_author {
-  display: inline;
-
-  &::after {
-    content: ', ';
-  }
-
-  &:last-child::after {
-    content: '.';
-  }
-}
-
-.group-activity-list__card_meta {
-  @include typography.sizing(12px, 2.5);
-  color: settings.$colour-text-secondary;
-  font-family: settings.$font-family;
-  letter-spacing: 0.09px;
-
-  > * {
-    margin-right: 0.25rem;
-  }
-
-  > :nth-child(n+3)::before {
-    content: '•';
-    margin-right: 0.25rem;
   }
 }
