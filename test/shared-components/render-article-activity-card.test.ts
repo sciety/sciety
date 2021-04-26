@@ -133,15 +133,39 @@ describe('render-article-activity-card', () => {
 
   describe('evaluations', () => {
     describe('when there are > 1 evaluations', () => {
-      it.todo('displays the evaluation count pluralised');
+      it('displays the evaluation count pluralised', () => {
+        const articleViewModel = generateArticleViewModel({ evaluationCount: 42 });
+
+        const rendered = JSDOM.fragment(renderArticleActivityCard(articleViewModel));
+        const spans = rendered.querySelectorAll('span');
+        const evaluationsSpan = Array.from(spans).find((element) => element.textContent?.includes('evaluation'));
+
+        expect(evaluationsSpan?.textContent).toStrictEqual('42 evaluations');
+      });
     });
 
     describe('when there is 1 evaluation', () => {
-      it.todo('displays the evaluation count singular');
+      it('displays the evaluation count singular', () => {
+        const articleViewModel = generateArticleViewModel({ evaluationCount: 1 });
+
+        const rendered = JSDOM.fragment(renderArticleActivityCard(articleViewModel));
+        const spans = rendered.querySelectorAll('span');
+        const evaluationsSpan = Array.from(spans).find((element) => element.textContent?.includes('evaluation'));
+
+        expect(evaluationsSpan?.textContent).toStrictEqual('1 evaluation');
+      });
     });
 
     describe('when there are 0 evaluations', () => {
-      it.todo('displays the evaluation count pluralised');
+      it('displays the evaluation count pluralised', () => {
+        const articleViewModel = generateArticleViewModel({ evaluationCount: 0 });
+
+        const rendered = JSDOM.fragment(renderArticleActivityCard(articleViewModel));
+        const spans = rendered.querySelectorAll('span');
+        const evaluationsSpan = Array.from(spans).find((element) => element.textContent?.includes('evaluation'));
+
+        expect(evaluationsSpan?.textContent).toStrictEqual('0 evaluations');
+      });
     });
   });
 });
