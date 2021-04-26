@@ -36,6 +36,9 @@ export const executeIfAuthenticated = ({
     GroupId.fromNullable,
     TO.fromOption,
     TO.chain(toExistingGroup),
+    TO.map((group) => ({
+      groupId: group.id,
+    })),
     TO.fold(
       () => {
         logger('error', 'Problem with /follow', { error: StatusCodes.BAD_REQUEST });
@@ -47,10 +50,10 @@ export const executeIfAuthenticated = ({
         });
         return T.of(undefined);
       },
-      (group) => {
+      (params) => {
         if (!(context.state.user)) {
           context.session.command = 'follow';
-          context.session[sessionGroupProperty] = group.id.toString();
+          context.session[sessionGroupProperty] = params.groupId.toString();
           context.session.successRedirect = constructRedirectUrl(context);
           context.redirect('/log-in');
           return T.of(undefined);
@@ -58,7 +61,7 @@ export const executeIfAuthenticated = ({
         const { user } = context.state;
         context.redirect('back');
         return pipe(
-          followCommand(getFollowList, commitEvents)(user, group.id),
+          followCommand(getFollowList, commitEvents)(user, params.groupId),
           T.chain(() => next),
         );
       },
