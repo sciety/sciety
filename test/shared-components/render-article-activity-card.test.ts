@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import { ArticleViewModel, renderArticleActivityCard } from '../../src/shared-components/render-article-activity-card';
 import { Doi } from '../../src/types/doi';
@@ -21,6 +22,13 @@ const generateArticleViewModel = ({
   evaluationCount,
 });
 
+const getSpans = (articleViewModel: ArticleViewModel) => pipe(
+  articleViewModel,
+  renderArticleActivityCard,
+  JSDOM.fragment,
+  (rendered) => rendered.querySelectorAll('span'),
+);
+
 describe('render-article-activity-card', () => {
   it('links the article title to the article page', () => {
     const articleViewModel = generateArticleViewModel({
@@ -41,9 +49,7 @@ describe('render-article-activity-card', () => {
     describe('when a latest version date is supplied', () => {
       it('displays the date', () => {
         const articleViewModel = generateArticleViewModel({ latestVersionDate: O.some(new Date('1971-01-01')) });
-
-        const rendered = JSDOM.fragment(renderArticleActivityCard(articleViewModel));
-        const spans = rendered.querySelectorAll('span');
+        const spans = getSpans(articleViewModel);
         const versionSpan = Array.from(spans).find(isLatestVersionSpan);
 
         expect(versionSpan?.textContent).toStrictEqual('Latest version Jan 1, 1971');
@@ -53,9 +59,7 @@ describe('render-article-activity-card', () => {
     describe('when a latest version date is not supplied', () => {
       it('displays nothing', () => {
         const articleViewModel = generateArticleViewModel({ latestVersionDate: O.none });
-
-        const rendered = JSDOM.fragment(renderArticleActivityCard(articleViewModel));
-        const spans = rendered.querySelectorAll('span');
+        const spans = getSpans(articleViewModel);
         const isLatestVersionPresent = Array.from(spans).some(isLatestVersionSpan);
 
         expect(isLatestVersionPresent).toBeFalsy();
@@ -69,9 +73,7 @@ describe('render-article-activity-card', () => {
     describe('when a latest activity date is supplied', () => {
       it('displays the date', () => {
         const articleViewModel = generateArticleViewModel({ latestActivityDate: O.some(new Date('1971-01-01')) });
-
-        const rendered = JSDOM.fragment(renderArticleActivityCard(articleViewModel));
-        const spans = rendered.querySelectorAll('span');
+        const spans = getSpans(articleViewModel);
         const latestActivitySpan = Array.from(spans).find(isLatestActivitySpan);
 
         expect(latestActivitySpan?.textContent).toStrictEqual('Latest activity Jan 1, 1971');
@@ -81,9 +83,7 @@ describe('render-article-activity-card', () => {
     describe('when a latest activity date is not supplied', () => {
       it('displays nothing', () => {
         const articleViewModel = generateArticleViewModel({ latestActivityDate: O.none });
-
-        const rendered = JSDOM.fragment(renderArticleActivityCard(articleViewModel));
-        const spans = rendered.querySelectorAll('span');
+        const spans = getSpans(articleViewModel);
         const isLatestActivityPresent = Array.from(spans).some(isLatestActivitySpan);
 
         expect(isLatestActivityPresent).toBeFalsy();
@@ -132,13 +132,13 @@ describe('render-article-activity-card', () => {
   });
 
   describe('evaluations', () => {
+    const isEvaluationSpan = (element: HTMLSpanElement) => element.textContent?.includes('evaluation');
+
     describe('when there are > 1 evaluations', () => {
       it('displays the evaluation count pluralised', () => {
         const articleViewModel = generateArticleViewModel({ evaluationCount: 42 });
-
-        const rendered = JSDOM.fragment(renderArticleActivityCard(articleViewModel));
-        const spans = rendered.querySelectorAll('span');
-        const evaluationsSpan = Array.from(spans).find((element) => element.textContent?.includes('evaluation'));
+        const spans = getSpans(articleViewModel);
+        const evaluationsSpan = Array.from(spans).find(isEvaluationSpan);
 
         expect(evaluationsSpan?.textContent).toStrictEqual('42 evaluations');
       });
@@ -147,10 +147,8 @@ describe('render-article-activity-card', () => {
     describe('when there is 1 evaluation', () => {
       it('displays the evaluation count singular', () => {
         const articleViewModel = generateArticleViewModel({ evaluationCount: 1 });
-
-        const rendered = JSDOM.fragment(renderArticleActivityCard(articleViewModel));
-        const spans = rendered.querySelectorAll('span');
-        const evaluationsSpan = Array.from(spans).find((element) => element.textContent?.includes('evaluation'));
+        const spans = getSpans(articleViewModel);
+        const evaluationsSpan = Array.from(spans).find(isEvaluationSpan);
 
         expect(evaluationsSpan?.textContent).toStrictEqual('1 evaluation');
       });
@@ -159,10 +157,8 @@ describe('render-article-activity-card', () => {
     describe('when there are 0 evaluations', () => {
       it('displays the evaluation count pluralised', () => {
         const articleViewModel = generateArticleViewModel({ evaluationCount: 0 });
-
-        const rendered = JSDOM.fragment(renderArticleActivityCard(articleViewModel));
-        const spans = rendered.querySelectorAll('span');
-        const evaluationsSpan = Array.from(spans).find((element) => element.textContent?.includes('evaluation'));
+        const spans = getSpans(articleViewModel);
+        const evaluationsSpan = Array.from(spans).find(isEvaluationSpan);
 
         expect(evaluationsSpan?.textContent).toStrictEqual('0 evaluations');
       });
