@@ -5,16 +5,28 @@ import { Doi } from '../../src/types/doi';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
 
+const generateArticleViewModel = ({
+  doi = new Doi('10.1101/1111'),
+  title = sanitise(toHtmlFragment('default title')),
+  authors = [],
+  latestActivityDate = O.some(new Date()),
+  latestVersionDate = O.some(new Date()),
+  evaluationCount = 0,
+}): ArticleViewModel => ({
+  doi,
+  title,
+  authors,
+  latestActivityDate,
+  latestVersionDate,
+  evaluationCount,
+});
+
 describe('render-article-activity-card', () => {
   it('links the article title to the article page', () => {
-    const articleViewModel: ArticleViewModel = {
+    const articleViewModel = generateArticleViewModel({
       doi: new Doi('10.1101/1234'),
       title: sanitise(toHtmlFragment('The article title')),
-      authors: [],
-      latestActivityDate: O.none,
-      latestVersionDate: O.none,
-      evaluationCount: 0,
-    };
+    });
 
     const rendered = JSDOM.fragment(renderArticleActivityCard(articleViewModel));
     const link = rendered.querySelector('a');
@@ -26,14 +38,7 @@ describe('render-article-activity-card', () => {
   describe('latest version', () => {
     describe('when a latest version date is supplied', () => {
       it('displays the date', () => {
-        const articleViewModel: ArticleViewModel = {
-          doi: new Doi('10.1101/1234'),
-          title: sanitise(toHtmlFragment('The article title')),
-          authors: [],
-          latestActivityDate: O.none,
-          latestVersionDate: O.some(new Date('1971-01-01')),
-          evaluationCount: 0,
-        };
+        const articleViewModel = generateArticleViewModel({ latestVersionDate: O.some(new Date('1971-01-01')) });
 
         const rendered = JSDOM.fragment(renderArticleActivityCard(articleViewModel));
         const spans = rendered.querySelectorAll('span');
@@ -45,14 +50,7 @@ describe('render-article-activity-card', () => {
 
     describe('when a latest version date is not supplied', () => {
       it('displays nothing', () => {
-        const articleViewModel: ArticleViewModel = {
-          doi: new Doi('10.1101/1234'),
-          title: sanitise(toHtmlFragment('The article title')),
-          authors: [],
-          latestActivityDate: O.none,
-          latestVersionDate: O.none,
-          evaluationCount: 0,
-        };
+        const articleViewModel = generateArticleViewModel({ latestVersionDate: O.none });
 
         const rendered = JSDOM.fragment(renderArticleActivityCard(articleViewModel));
         const spans = rendered.querySelectorAll('span');
@@ -66,14 +64,7 @@ describe('render-article-activity-card', () => {
   describe('latest activity', () => {
     describe('when a latest activity date is supplied', () => {
       it('displays the date', () => {
-        const articleViewModel: ArticleViewModel = {
-          doi: new Doi('10.1101/1234'),
-          title: sanitise(toHtmlFragment('The article title')),
-          authors: [],
-          latestActivityDate: O.some(new Date('1971-01-01')),
-          latestVersionDate: O.none,
-          evaluationCount: 0,
-        };
+        const articleViewModel = generateArticleViewModel({ latestActivityDate: O.some(new Date('1971-01-01')) });
 
         const rendered = JSDOM.fragment(renderArticleActivityCard(articleViewModel));
         const spans = rendered.querySelectorAll('span');
@@ -85,14 +76,7 @@ describe('render-article-activity-card', () => {
 
     describe('when a latest activity date is not supplied', () => {
       it('displays nothing', () => {
-        const articleViewModel: ArticleViewModel = {
-          doi: new Doi('10.1101/1234'),
-          title: sanitise(toHtmlFragment('The article title')),
-          authors: [],
-          latestActivityDate: O.none,
-          latestVersionDate: O.none,
-          evaluationCount: 0,
-        };
+        const articleViewModel = generateArticleViewModel({ latestActivityDate: O.none });
 
         const rendered = JSDOM.fragment(renderArticleActivityCard(articleViewModel));
         const spans = rendered.querySelectorAll('span');
