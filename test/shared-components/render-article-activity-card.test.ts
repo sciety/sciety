@@ -36,13 +36,15 @@ describe('render-article-activity-card', () => {
   });
 
   describe('latest version', () => {
+    const isLatestVersionSpan = (span: HTMLSpanElement) => span.textContent?.includes('Latest version');
+
     describe('when a latest version date is supplied', () => {
       it('displays the date', () => {
         const articleViewModel = generateArticleViewModel({ latestVersionDate: O.some(new Date('1971-01-01')) });
 
         const rendered = JSDOM.fragment(renderArticleActivityCard(articleViewModel));
         const spans = rendered.querySelectorAll('span');
-        const versionSpan = Array.from(spans).find((span) => span.textContent?.includes('Latest version'));
+        const versionSpan = Array.from(spans).find(isLatestVersionSpan);
 
         expect(versionSpan?.textContent).toStrictEqual('Latest version Jan 1, 1971');
       });
@@ -54,7 +56,7 @@ describe('render-article-activity-card', () => {
 
         const rendered = JSDOM.fragment(renderArticleActivityCard(articleViewModel));
         const spans = rendered.querySelectorAll('span');
-        const isLatestVersionPresent = Array.from(spans).some((span) => span.textContent?.includes('Latest version'));
+        const isLatestVersionPresent = Array.from(spans).some(isLatestVersionSpan);
 
         expect(isLatestVersionPresent).toBeFalsy();
       });
@@ -62,13 +64,15 @@ describe('render-article-activity-card', () => {
   });
 
   describe('latest activity', () => {
+    const isLatestActivitySpan = (span: HTMLSpanElement) => span.textContent?.includes('Latest activity');
+
     describe('when a latest activity date is supplied', () => {
       it('displays the date', () => {
         const articleViewModel = generateArticleViewModel({ latestActivityDate: O.some(new Date('1971-01-01')) });
 
         const rendered = JSDOM.fragment(renderArticleActivityCard(articleViewModel));
         const spans = rendered.querySelectorAll('span');
-        const latestActivitySpan = Array.from(spans).find((span) => span.textContent?.includes('Latest activity'));
+        const latestActivitySpan = Array.from(spans).find(isLatestActivitySpan);
 
         expect(latestActivitySpan?.textContent).toStrictEqual('Latest activity Jan 1, 1971');
       });
@@ -80,7 +84,7 @@ describe('render-article-activity-card', () => {
 
         const rendered = JSDOM.fragment(renderArticleActivityCard(articleViewModel));
         const spans = rendered.querySelectorAll('span');
-        const isLatestActivityPresent = Array.from(spans).some((span) => span.textContent?.includes('Latest activity'));
+        const isLatestActivityPresent = Array.from(spans).some(isLatestActivitySpan);
 
         expect(isLatestActivityPresent).toBeFalsy();
       });
