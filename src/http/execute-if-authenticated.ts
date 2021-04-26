@@ -25,6 +25,20 @@ type Ports = {
   getFollowList: GetFollowList,
 };
 
+type Params = {
+  [groupProperty]: string | null | undefined,
+};
+
+const validate = (toExistingGroup: ToExistingGroup) => (requestBody: Params) => pipe(
+  requestBody[groupProperty],
+  GroupId.fromNullable,
+  TO.fromOption,
+  TO.chain(toExistingGroup),
+  TO.map((group) => ({
+    groupId: group.id,
+  })),
+);
+
 export const executeIfAuthenticated = ({
   getGroup: toExistingGroup,
   commitEvents,
@@ -32,13 +46,7 @@ export const executeIfAuthenticated = ({
   logger,
 }: Ports): Middleware => async (context, next) => {
   await pipe(
-    context.request.body[groupProperty],
-    GroupId.fromNullable,
-    TO.fromOption,
-    TO.chain(toExistingGroup),
-    TO.map((group) => ({
-      groupId: group.id,
-    })),
+    validate(toExistingGroup)(context.request.body),
     TO.fold(
       () => {
         logger('error', 'Problem with /follow', { error: StatusCodes.BAD_REQUEST });
