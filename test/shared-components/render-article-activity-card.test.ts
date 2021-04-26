@@ -1,5 +1,27 @@
+import * as O from 'fp-ts/Option';
+import { JSDOM } from 'jsdom';
+import { ArticleViewModel, renderArticleActivityCard } from '../../src/shared-components/render-article-activity-card';
+import { Doi } from '../../src/types/doi';
+import { toHtmlFragment } from '../../src/types/html-fragment';
+import { sanitise } from '../../src/types/sanitised-html-fragment';
+
 describe('render-article-activity-card', () => {
-  it.todo('links the article title to the article page');
+  it('links the article title to the article page', () => {
+    const articleViewModel: ArticleViewModel = {
+      doi: new Doi('10.1101/1234'),
+      title: sanitise(toHtmlFragment('The article title')),
+      authors: [],
+      latestActivityDate: O.none,
+      latestVersionDate: O.none,
+      evaluationCount: 0,
+    };
+
+    const rendered = JSDOM.fragment(renderArticleActivityCard(articleViewModel));
+    const link = rendered.querySelector('a');
+
+    expect(link?.getAttribute('href')).toStrictEqual('/articles/activity/10.1101/1234');
+    expect(link?.textContent).toStrictEqual('The article title');
+  });
 
   describe('latest version', () => {
     describe('when a latest version date is supplied', () => {
