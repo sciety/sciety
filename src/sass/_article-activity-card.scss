@@ -40,15 +40,8 @@
 }
 
 .article-activity-card__author {
+  @include list.author-separator-terminator();
   display: inline;
-
-  &::after {
-    content: ',\00a0';
-  }
-
-  &:last-child::after {
-    content: '.';
-  }
 }
 
 .article-activity-card__meta {

@@ -32,17 +32,10 @@
 }
 
 .article-author-list > li {
+  @include list.author-separator-terminator();
   @include typography.sizing($font-size: 14px, $line-height-in-increments: 2.5);
   float: left;
   font-weight: bold;
-}
-
-.article-author-list > li::after {
-  content: ',\00a0';
-}
-
-.article-author-list > li:last-child::after {
-  content: '.';
 }
 
 .article-meta-data-list {
