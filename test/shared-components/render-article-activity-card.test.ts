@@ -92,16 +92,24 @@ describe('render-article-activity-card', () => {
   });
 
   describe('authors', () => {
+    const authorListSelector = '.article-activity-card__authors';
+    const authorListItemSelector = 'li.article-activity-card__author';
+
     describe('when the authors list is not empty', () => {
-      it.todo('the authors are in an ordered list');
+      const articleViewModel = generateArticleViewModel({
+        authors: ['Doe J', 'Foo A'],
+      });
+
+      it('the authors are in an ordered list', () => {
+        const rendered = JSDOM.fragment(renderArticleActivityCard(articleViewModel));
+        const authors = rendered.querySelector(authorListSelector);
+
+        expect(authors?.tagName).toStrictEqual('OL');
+      });
 
       it('displays the authors as a list', () => {
-        const articleViewModel = generateArticleViewModel({
-          authors: ['Doe J', 'Foo A'],
-        });
-
         const rendered = JSDOM.fragment(renderArticleActivityCard(articleViewModel));
-        const authors = rendered.querySelectorAll('li.article-activity-card__author');
+        const authors = rendered.querySelectorAll(authorListItemSelector);
         const authorFullNames = Array.from(authors).map((element) => element.textContent);
 
         expect(authorFullNames).toStrictEqual([
@@ -116,7 +124,7 @@ describe('render-article-activity-card', () => {
         const articleViewModel = generateArticleViewModel({ authors: [] });
 
         const rendered = JSDOM.fragment(renderArticleActivityCard(articleViewModel));
-        const authors = rendered.querySelector('.article-activity-card__authors');
+        const authors = rendered.querySelector(authorListSelector);
 
         expect(authors).toBeNull();
       });
