@@ -22,6 +22,8 @@
 
   margin-bottom: baseline.increments(1);
 
+  // TODO: needed due to .responses background color
+  // being incompatible with padding coming from card.basics()
   padding: unset;
 
   @include breakpoints.not-narrow {
