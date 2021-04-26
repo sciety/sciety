@@ -7,16 +7,12 @@
 @use 'typography';
 
 .main-content--meta {
-  @include card.full-tab-card();
-  border-left-width: 0;
-  border-right-width: 0;
+  @include card.basics();
   border-top-width: 0;
   margin-bottom: baseline.increments(6);
-  padding: baseline.increments(2) functions.px-to-rem(16px);
 
   @include breakpoints.not-narrow {
-    padding: baseline.increments(3) functions.px-to-rem(24px);
-    border-width: settings.$border-width;
+    border-top-width: settings.$border-width;
   }
 }
 
