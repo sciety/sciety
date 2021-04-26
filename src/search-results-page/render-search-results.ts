@@ -4,7 +4,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { constant, pipe } from 'fp-ts/function';
 import { GroupViewModel, renderGroupSearchResult } from './render-group-search-result';
-import { ArticleViewModel, renderArticleActivity, templateListItems } from '../shared-components';
+import { ArticleViewModel, renderArticleActivityCard, templateListItems } from '../shared-components';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 export type ItemViewModel = ArticleViewModel | GroupViewModel;
@@ -32,7 +32,7 @@ const renderListIfNecessary = (articles: ReadonlyArray<HtmlFragment>) => pipe(
 );
 
 const renderSearchResult = (viewModel: ItemViewModel) => (
-  isArticleViewModel(viewModel) ? renderArticleActivity(viewModel) : renderGroupSearchResult(viewModel)
+  isArticleViewModel(viewModel) ? renderArticleActivityCard(viewModel) : renderGroupSearchResult(viewModel)
 );
 
 type RenderSearchResults = (rs: SearchResults) => HtmlFragment;

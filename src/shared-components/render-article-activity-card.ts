@@ -58,7 +58,7 @@ const renderArticleLatestActivityDate = O.fold(
   ),
 );
 
-export const renderArticleActivity = (model: ArticleViewModel): HtmlFragment => toHtmlFragment(`
+export const renderArticleActivityCard = (model: ArticleViewModel): HtmlFragment => toHtmlFragment(`
   <article class="article-activity-card">
     <h3 class="article-activity-card__title">
       <a class="article-activity-card__link" href="/articles/activity/${model.doi.value}">${model.title}</a>
