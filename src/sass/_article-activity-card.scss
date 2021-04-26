@@ -1,26 +1,14 @@
 @use 'settings';
 @use 'functions';
 @use 'baseline';
+@use 'card';
 @use 'typography';
 @use 'breakpoints';
 
 @use 'list';
 
 .article-activity-card {
-  background-color: settings.$colour-white;
-  color: settings.$colour-text-primary;
-  padding: baseline.increments(2) functions.px-to-rem(16px);
-
-  border: settings.$border-width solid settings.$colour-furniture;
-  border-left-width: 0;
-  border-right-width: 0;
-
-  @include breakpoints.not-narrow {
-    border-radius: settings.$border-radius;
-    border-left-width: settings.$border-width;
-    border-right-width: settings.$border-width;
-    padding: baseline.increments(3) functions.px-to-rem(24px);
-  }
+  @include card.basics();
 }
 
 .article-activity-card__title {
