@@ -36,7 +36,7 @@ const renderAuthors: RenderAuthors = (authors, authorListId) => pipe(
       (authorListItems) => `
       <div class="hidden" id="${authorListId}">This article's authors</div>
       <ol class="article-activity-card__authors" role="list" aria-describedby="${authorListId}">
-        ${authorListItems.join('\n')}
+        ${authorListItems.join('')}
       </ol>
     `,
     ),

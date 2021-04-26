@@ -43,7 +43,7 @@
   display: inline;
 
   &::after {
-    content: ', ';
+    content: ',\00a0';
   }
 
   &:last-child::after {
