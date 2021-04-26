@@ -4,16 +4,6 @@
 @use 'settings';
 @use 'typography';
 
-@mixin full-tab-card () {
-  border: settings.$border-width solid settings.$colour-furniture;
-  background-color: settings.$colour-white;
-  color: settings.$colour-text-primary;
-
-  @include breakpoints.not-narrow {
-    border-radius: settings.$border-radius;
-  }
-}
-
 @mixin basics () {
   background-color: settings.$colour-white;
   color: settings.$colour-text-primary;

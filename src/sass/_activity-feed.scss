@@ -17,14 +17,14 @@
 }
 
 .activity-feed__item {
-  @include card.full-tab-card();
-  border-left-width: 0;
-  border-right-width: 0;
+  @include card.basics();
+
   margin-bottom: baseline.increments(1);
 
+  padding: unset;
+
   @include breakpoints.not-narrow {
-    border-left-width: settings.$border-width;
-    border-right-width: settings.$border-width;
+    padding: unset;
   }
 
   &:first-child {
