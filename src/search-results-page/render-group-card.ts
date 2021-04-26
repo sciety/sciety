@@ -26,19 +26,19 @@ const renderEvaluationCount = (evaluationCount: number): HtmlFragment => pipe(
   wrapInSpan,
 );
 
-export const renderGroupSearchResult = flow(
+export const renderGroupCard = flow(
   (result: GroupViewModel) => `
-    <div class="search-results-list__item_container">
-      <div class="search-results-list__item_body">
-        <a class="search-results-list__item__link" href="/groups/${result.id.value}">${result.name}</a>
-        <div class="search-results-list__item__description">
+    <div class="group-card">
+      <div class="group-card__body">
+        <a class="group-card__link" href="/groups/${result.id.value}">${result.name}</a>
+        <div class="group-card__description">
           ${result.description}
         </div>
-        <span class="search-results-list__item__meta">
+        <span class="group-card__meta">
           ${renderEvaluationCount(result.reviewCount)}${renderFollowerCount(result.followerCount)}
         </span>      
       </div>
-      <img class="search-results-list__item__avatar" src="${result.avatarPath}" alt="" />
+      <img class="group-card__avatar" src="${result.avatarPath}" alt="" />
     </div>
   `,
   toHtmlFragment,

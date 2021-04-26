@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { constant, pipe } from 'fp-ts/function';
-import { GroupViewModel, renderGroupSearchResult } from './render-group-search-result';
+import { GroupViewModel, renderGroupCard } from './render-group-card';
 import { ArticleViewModel, renderArticleActivityCard, templateListItems } from '../shared-components';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
@@ -31,7 +31,7 @@ const renderListIfNecessary = (articles: ReadonlyArray<HtmlFragment>) => pipe(
 );
 
 const renderSearchResult = (viewModel: ItemViewModel) => (
-  isArticleViewModel(viewModel) ? renderArticleActivityCard(viewModel) : renderGroupSearchResult(viewModel)
+  isArticleViewModel(viewModel) ? renderArticleActivityCard(viewModel) : renderGroupCard(viewModel)
 );
 
 type RenderSearchResults = (rs: SearchResults) => HtmlFragment;
