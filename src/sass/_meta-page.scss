@@ -1,5 +1,6 @@
 @use 'baseline';
 @use 'breakpoints';
+@use 'article-tabs';
 @use 'card';
 @use 'functions';
 @use 'list';
@@ -8,12 +9,9 @@
 
 .main-content--meta {
   @include card.basics();
-  border-top-width: 0;
-  margin-bottom: baseline.increments(6);
+  @include article-tabs.hide-top-border-touching-tabs();
 
-  @include breakpoints.not-narrow {
-    border-top-width: settings.$border-width;
-  }
+  margin-bottom: baseline.increments(6);
 }
 
 .article-author-list {

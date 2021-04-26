@@ -1,6 +1,7 @@
 @use 'baseline';
 @use 'breakpoints';
 @use 'button';
+@use 'article-tabs';
 @use 'card';
 @use 'functions';
 @use 'list';
@@ -28,10 +29,7 @@
   }
 
   &:first-child {
-    border-top-width: 0;
-    @include breakpoints.not-narrow {
-      border-top-width: settings.$border-width;
-    }
+    @include article-tabs.hide-top-border-touching-tabs();
   }
 
 

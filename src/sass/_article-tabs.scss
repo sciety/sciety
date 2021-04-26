@@ -4,6 +4,13 @@
 @use 'settings';
 @use 'typography';
 
+@mixin hide-top-border-touching-tabs() {
+  border-top-width: 0;
+  @include breakpoints.not-narrow {
+    border-top-width: settings.$border-width;
+  }
+}
+
 .article-tabs {
   @include typography.sizing(14px, 2.5);
   border-bottom: 2px solid settings.$colour-furniture;
