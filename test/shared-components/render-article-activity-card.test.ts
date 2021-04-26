@@ -65,11 +65,41 @@ describe('render-article-activity-card', () => {
 
   describe('latest activity', () => {
     describe('when a latest activity date is supplied', () => {
-      it.todo('displays the date');
+      it('displays the date', () => {
+        const articleViewModel: ArticleViewModel = {
+          doi: new Doi('10.1101/1234'),
+          title: sanitise(toHtmlFragment('The article title')),
+          authors: [],
+          latestActivityDate: O.some(new Date('1971-01-01')),
+          latestVersionDate: O.none,
+          evaluationCount: 0,
+        };
+
+        const rendered = JSDOM.fragment(renderArticleActivityCard(articleViewModel));
+        const spans = rendered.querySelectorAll('span');
+        const latestActivitySpan = Array.from(spans).find((span) => span.textContent?.includes('Latest activity'));
+
+        expect(latestActivitySpan?.textContent).toStrictEqual('Latest activity Jan 1, 1971');
+      });
     });
 
     describe('when a latest activity date is not supplied', () => {
-      it.todo('displays nothing');
+      it('displays nothing', () => {
+        const articleViewModel: ArticleViewModel = {
+          doi: new Doi('10.1101/1234'),
+          title: sanitise(toHtmlFragment('The article title')),
+          authors: [],
+          latestActivityDate: O.none,
+          latestVersionDate: O.none,
+          evaluationCount: 0,
+        };
+
+        const rendered = JSDOM.fragment(renderArticleActivityCard(articleViewModel));
+        const spans = rendered.querySelectorAll('span');
+        const isLatestActivityPresent = Array.from(spans).some((span) => span.textContent?.includes('Latest activity'));
+
+        expect(isLatestActivityPresent).toBeFalsy();
+      });
     });
   });
 
