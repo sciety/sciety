@@ -25,7 +25,22 @@ describe('render-article-activity-card', () => {
 
   describe('latest version', () => {
     describe('when a latest version date is supplied', () => {
-      it.todo('displays the date');
+      it('displays the date', () => {
+        const articleViewModel: ArticleViewModel = {
+          doi: new Doi('10.1101/1234'),
+          title: sanitise(toHtmlFragment('The article title')),
+          authors: [],
+          latestActivityDate: O.none,
+          latestVersionDate: O.some(new Date('1971-01-01')),
+          evaluationCount: 0,
+        };
+
+        const rendered = JSDOM.fragment(renderArticleActivityCard(articleViewModel));
+        const spans = rendered.querySelectorAll('span');
+        const versionSpan = Array.from(spans).find((span) => span.textContent?.includes('Latest version'));
+
+        expect(versionSpan?.textContent).toStrictEqual('Latest version Jan 1, 1971');
+      });
     });
 
     describe('when a latest version date is not supplied', () => {
