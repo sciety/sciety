@@ -8,7 +8,7 @@ import { sanitise } from '../../src/types/sanitised-html-fragment';
 const generateArticleViewModel = ({
   doi = new Doi('10.1101/1111'),
   title = sanitise(toHtmlFragment('default title')),
-  authors = [],
+  authors = ['Smith J'],
   latestActivityDate = O.some(new Date()),
   latestVersionDate = O.some(new Date()),
   evaluationCount = 0,
@@ -93,11 +93,33 @@ describe('render-article-activity-card', () => {
 
   describe('authors', () => {
     describe('when the authors list is not empty', () => {
-      it.todo('displays the authors as a list');
+      it.todo('the authors are in an ordered list');
+
+      it('displays the authors as a list', () => {
+        const articleViewModel = generateArticleViewModel({
+          authors: ['Doe J', 'Foo A'],
+        });
+
+        const rendered = JSDOM.fragment(renderArticleActivityCard(articleViewModel));
+        const authors = rendered.querySelectorAll('li.article-activity-card__author');
+        const authorFullNames = Array.from(authors).map((element) => element.textContent);
+
+        expect(authorFullNames).toStrictEqual([
+          'Doe J',
+          'Foo A',
+        ]);
+      });
     });
 
     describe('when the authors list is empty', () => {
-      it.todo('displays nothing');
+      it('displays nothing', () => {
+        const articleViewModel = generateArticleViewModel({ authors: [] });
+
+        const rendered = JSDOM.fragment(renderArticleActivityCard(articleViewModel));
+        const authors = rendered.querySelector('.article-activity-card__authors');
+
+        expect(authors).toBeNull();
+      });
     });
   });
 
