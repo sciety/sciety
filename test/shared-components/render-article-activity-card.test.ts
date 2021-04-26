@@ -44,7 +44,22 @@ describe('render-article-activity-card', () => {
     });
 
     describe('when a latest version date is not supplied', () => {
-      it.todo('displays nothing');
+      it('displays nothing', () => {
+        const articleViewModel: ArticleViewModel = {
+          doi: new Doi('10.1101/1234'),
+          title: sanitise(toHtmlFragment('The article title')),
+          authors: [],
+          latestActivityDate: O.none,
+          latestVersionDate: O.none,
+          evaluationCount: 0,
+        };
+
+        const rendered = JSDOM.fragment(renderArticleActivityCard(articleViewModel));
+        const spans = rendered.querySelectorAll('span');
+        const isLatestVersionPresent = Array.from(spans).some((span) => span.textContent?.includes('Latest version'));
+
+        expect(isLatestVersionPresent).toBeFalsy();
+      });
     });
   });
 
