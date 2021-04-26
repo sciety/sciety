@@ -48,9 +48,13 @@ describe('render-article-activity-card', () => {
 
     describe('when a latest version date is supplied', () => {
       it('displays the date', () => {
-        const articleViewModel = generateArticleViewModel({ latestVersionDate: O.some(new Date('1971-01-01')) });
-        const spans = getSpans(articleViewModel);
-        const versionSpan = Array.from(spans).find(isLatestVersionSpan);
+        const versionSpan = pipe(
+          { latestVersionDate: O.some(new Date('1971-01-01')) },
+          generateArticleViewModel,
+          getSpans,
+          Array.from,
+          (array: Array<HTMLSpanElement>) => array.find(isLatestVersionSpan),
+        );
 
         expect(versionSpan?.textContent).toStrictEqual('Latest version Jan 1, 1971');
       });
@@ -58,9 +62,13 @@ describe('render-article-activity-card', () => {
 
     describe('when a latest version date is not supplied', () => {
       it('displays nothing', () => {
-        const articleViewModel = generateArticleViewModel({ latestVersionDate: O.none });
-        const spans = getSpans(articleViewModel);
-        const isLatestVersionPresent = Array.from(spans).some(isLatestVersionSpan);
+        const isLatestVersionPresent = pipe(
+          { latestVersionDate: O.none },
+          generateArticleViewModel,
+          getSpans,
+          Array.from,
+          (array: Array<HTMLSpanElement>) => array.some(isLatestVersionSpan),
+        );
 
         expect(isLatestVersionPresent).toBeFalsy();
       });
@@ -72,9 +80,13 @@ describe('render-article-activity-card', () => {
 
     describe('when a latest activity date is supplied', () => {
       it('displays the date', () => {
-        const articleViewModel = generateArticleViewModel({ latestActivityDate: O.some(new Date('1971-01-01')) });
-        const spans = getSpans(articleViewModel);
-        const latestActivitySpan = Array.from(spans).find(isLatestActivitySpan);
+        const latestActivitySpan = pipe(
+          { latestActivityDate: O.some(new Date('1971-01-01')) },
+          generateArticleViewModel,
+          getSpans,
+          Array.from,
+          (array: Array<HTMLSpanElement>) => array.find(isLatestActivitySpan),
+        );
 
         expect(latestActivitySpan?.textContent).toStrictEqual('Latest activity Jan 1, 1971');
       });
@@ -82,9 +94,13 @@ describe('render-article-activity-card', () => {
 
     describe('when a latest activity date is not supplied', () => {
       it('displays nothing', () => {
-        const articleViewModel = generateArticleViewModel({ latestActivityDate: O.none });
-        const spans = getSpans(articleViewModel);
-        const isLatestActivityPresent = Array.from(spans).some(isLatestActivitySpan);
+        const isLatestActivityPresent = pipe(
+          { latestActivityDate: O.none },
+          generateArticleViewModel,
+          getSpans,
+          Array.from,
+          (array: Array<HTMLSpanElement>) => array.some(isLatestActivitySpan),
+        );
 
         expect(isLatestActivityPresent).toBeFalsy();
       });
@@ -136,9 +152,13 @@ describe('render-article-activity-card', () => {
 
     describe('when there are > 1 evaluations', () => {
       it('displays the evaluation count pluralised', () => {
-        const articleViewModel = generateArticleViewModel({ evaluationCount: 42 });
-        const spans = getSpans(articleViewModel);
-        const evaluationsSpan = Array.from(spans).find(isEvaluationSpan);
+        const evaluationsSpan = pipe(
+          { evaluationCount: 42 },
+          generateArticleViewModel,
+          getSpans,
+          Array.from,
+          (array: Array<HTMLSpanElement>) => array.find(isEvaluationSpan),
+        );
 
         expect(evaluationsSpan?.textContent).toStrictEqual('42 evaluations');
       });
@@ -146,9 +166,13 @@ describe('render-article-activity-card', () => {
 
     describe('when there is 1 evaluation', () => {
       it('displays the evaluation count singular', () => {
-        const articleViewModel = generateArticleViewModel({ evaluationCount: 1 });
-        const spans = getSpans(articleViewModel);
-        const evaluationsSpan = Array.from(spans).find(isEvaluationSpan);
+        const evaluationsSpan = pipe(
+          { evaluationCount: 1 },
+          generateArticleViewModel,
+          getSpans,
+          Array.from,
+          (array: Array<HTMLSpanElement>) => array.find(isEvaluationSpan),
+        );
 
         expect(evaluationsSpan?.textContent).toStrictEqual('1 evaluation');
       });
@@ -156,9 +180,13 @@ describe('render-article-activity-card', () => {
 
     describe('when there are 0 evaluations', () => {
       it('displays the evaluation count pluralised', () => {
-        const articleViewModel = generateArticleViewModel({ evaluationCount: 0 });
-        const spans = getSpans(articleViewModel);
-        const evaluationsSpan = Array.from(spans).find(isEvaluationSpan);
+        const evaluationsSpan = pipe(
+          { evaluationCount: 0 },
+          generateArticleViewModel,
+          getSpans,
+          Array.from,
+          (array: Array<HTMLSpanElement>) => array.find(isEvaluationSpan),
+        );
 
         expect(evaluationsSpan?.textContent).toStrictEqual('0 evaluations');
       });
