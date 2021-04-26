@@ -17,11 +17,13 @@ export type ArticleViewModel = {
 };
 
 const wrapInSpan = (text: string) => toHtmlFragment(`<span>${text}</span>`);
+
 const renderEvaluationCount = (evaluationCount: number): HtmlFragment => pipe(
   evaluationCount === 1,
   (singular) => `${evaluationCount} ${singular ? 'evaluation' : 'evaluations'}`,
   wrapInSpan,
 );
+
 type RenderAuthors = (authors: ReadonlyArray<string>, authorListId: string) => HtmlFragment;
 
 const renderAuthors: RenderAuthors = (authors, authorListId) => pipe(
