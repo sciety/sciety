@@ -3,11 +3,13 @@ import axiosRetry from 'axios-retry';
 import { Json } from 'fp-ts/Json';
 import { Logger } from './logger';
 
-export const getJsonResponse = async (uri: string): Promise<{ data: Json }> => (
+export const getJsonResponse = async (uri: string): Promise<AxiosResponse<Json>> => (
   axios.get<Json>(uri)
 );
 
-type GetJsonWithRetriesAndLogging = (logger: Logger, retryLimit: number) => (uri: string) => Promise<{ data: Json }>;
+type GetJsonWithRetriesAndLogging = (logger: Logger, retryLimit: number)
+=> (uri: string)
+=> Promise<AxiosResponse<Json>>;
 
 export const getJsonWithRetriesAndLogging: GetJsonWithRetriesAndLogging = (logger, retryLimit) => async (uri) => {
   const retryingClient = axios.create();
