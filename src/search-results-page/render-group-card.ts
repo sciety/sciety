@@ -1,3 +1,4 @@
+import { htmlEscape } from 'escape-goat';
 import { flow, pipe } from 'fp-ts/function';
 import { GroupId } from '../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -30,7 +31,7 @@ export const renderGroupCard = flow(
   (result: GroupViewModel) => `
     <div class="group-card">
       <div class="group-card__body">
-        <a class="group-card__link" href="/groups/${result.id.value}">${result.name}</a>
+        <a class="group-card__link" href="/groups/${result.id.value}">${htmlEscape(result.name)}</a>
         <div class="group-card__description">
           ${result.description}
         </div>

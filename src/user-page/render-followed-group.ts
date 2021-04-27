@@ -1,3 +1,4 @@
+import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
@@ -19,7 +20,7 @@ type RenderFollowToggle = (g: GroupId, groupName: string) => (isFollowing: boole
 
 const render = (group: Group) => (toggle: HtmlFragment) => `
   <img class="followed-groups__item_avatar" src="${group.avatarPath}" alt="">
-  <a class="followed-groups__item_link" href="/groups/${group.id.value}">${group.name}</a>
+  <a class="followed-groups__item_link" href="/groups/${group.id.value}">${htmlEscape(group.name)}</a>
   ${toggle}
 `;
 
