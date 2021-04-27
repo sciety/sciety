@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import axiosRetry from 'axios-retry';
 import { Json } from 'fp-ts/Json';
 import { Logger } from './logger';
@@ -19,4 +19,18 @@ export const getJsonWithRetriesAndLogging: GetJsonWithRetriesAndLogging = (logge
     retries: retryLimit,
   });
   return retryingClient.get<Json>(uri);
+};
+
+type Gswhradl = (l: Logger, r: number) => (uri: string, h: Record<string, string>) => Promise<AxiosResponse<string>>;
+
+export const getStringWithHeadersRetriesAndDurationLogging: Gswhradl = (logger, retryLimit) => async (uri, headers) => {
+  const client = axios.create();
+  axiosRetry(client, { retries: retryLimit });
+  const startTime = new Date();
+  try {
+    return await client.get<string>(uri.toString(), { headers });
+  } finally {
+    const durationInMs = new Date().getTime() - startTime.getTime();
+    logger('debug', 'Response time to fetch article from Crossref', { uri, durationInMs });
+  }
 };
