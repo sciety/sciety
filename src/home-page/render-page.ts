@@ -10,6 +10,7 @@ export type RenderPage = (userId: O.Option<UserId>) => T.Task<Page>;
 
 type Component = (userId: O.Option<UserId>) => T.Task<string>;
 
+// TODO: should all be HtmlFragment
 type Components = {
   header: string,
   feed: string,

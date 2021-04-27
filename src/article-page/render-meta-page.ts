@@ -2,6 +2,7 @@ import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
+// TODO: title should be HtmlFragment and sanitized outside of here
 type ArticleDetails = {
   title: string,
   abstract: HtmlFragment,
@@ -9,6 +10,7 @@ type ArticleDetails = {
   server: ArticleServer,
 };
 
+// TODO: replace string with HtmlFragment
 export const renderMetaPage = (components: {
   articleDetails: ArticleDetails,
   doi: Doi,

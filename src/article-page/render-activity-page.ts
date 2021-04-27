@@ -1,10 +1,12 @@
 import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
+// TODO: title should be HtmlFragment and sanitized outside of here
 type ArticleDetails = {
   title: string,
 };
 
+// TODO: replace string with HtmlFragment
 export const renderActivityPage = (components: {
   articleDetails: ArticleDetails,
   doi: Doi,

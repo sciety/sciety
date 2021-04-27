@@ -4,6 +4,7 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 
+// TODO: feed should be HtmlFragment
 type Components = {
   header: HtmlFragment,
   description: HtmlFragment,
