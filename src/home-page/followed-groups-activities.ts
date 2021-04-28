@@ -4,7 +4,8 @@ import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RM from 'fp-ts/ReadonlyMap';
 import * as S from 'fp-ts/Semigroup';
-import { flow, pipe } from 'fp-ts/function';
+import * as B from 'fp-ts/boolean';
+import { pipe } from 'fp-ts/function';
 import * as N from 'fp-ts/number';
 import { Doi, eqDoi } from '../types/doi';
 import {
@@ -21,13 +22,13 @@ type FollowedGroupsActivities = (
 
 type ActivityDetails = {
   latestActivityDate: Date,
-  latestActivityByGroup: O.Option<Date>,
+  evaluatedByFollowedGroup: boolean,
   evaluationCount: number,
 };
 
 const semigroupActivityDetails: S.Semigroup<ActivityDetails> = S.struct({
   latestActivityDate: S.max(D.Ord),
-  latestActivityByGroup: O.getMonoid(S.max(D.Ord)),
+  evaluatedByFollowedGroup: B.MonoidAny,
   evaluationCount: N.SemigroupSum,
 });
 
@@ -36,10 +37,7 @@ const eventToActivityDetails = (
   groupIds: ReadonlyArray<GroupId>,
 ): ActivityDetails => ({
   latestActivityDate: event.date,
-  latestActivityByGroup: pipe(
-    event.date,
-    O.fromPredicate(() => groupIds.includes(event.editorialCommunityId)),
-  ),
+  evaluatedByFollowedGroup: groupIds.includes(event.editorialCommunityId),
   evaluationCount: 1,
 });
 
@@ -68,7 +66,7 @@ const addEventToActivities = (
   (activity) => pipe(activities, RM.upsertAt(eqDoi)(event.articleId, activity)),
 );
 
-const byLatestActivityDateByGroupDesc: Ord.Ord<ArticleActivity & { latestActivityByGroup: Date }> = pipe(
+const byLatestActivityDateByGroupDesc: Ord.Ord<ArticleActivity> = pipe(
   D.Ord,
   Ord.reverse,
   Ord.contramap(
@@ -76,23 +74,14 @@ const byLatestActivityDateByGroupDesc: Ord.Ord<ArticleActivity & { latestActivit
   ),
 );
 
-const groupHasEvaluatedArticle = <T extends { latestActivityByGroup: O.Option<Date> }>(articleActivities: T) => pipe(
-  articleActivities.latestActivityByGroup,
-  O.map((latestActivityByGroup) => ({
-    ...articleActivities,
-    latestActivityByGroup,
-  })),
-);
-
 // ts-unused-exports:disable-next-line
 export const followedGroupsActivities: FollowedGroupsActivities = (events) => (groupIds) => pipe(
   events,
   RA.filter(isEditorialCommunityReviewedArticleEvent),
   RA.reduce(RM.empty, addEventToActivities(groupIds)),
-  RM.filterMapWithIndex(flow(
-    (doi, activityDetails) => ({ ...activityDetails, doi }),
-    groupHasEvaluatedArticle,
-  )),
+  RM.filterMapWithIndex((doi, activityDetails) => (activityDetails.evaluatedByFollowedGroup
+    ? O.some({ doi, ...activityDetails })
+    : O.none)),
   RM.values(byLatestActivityDateByGroupDesc),
   RA.takeLeft(20),
 );
