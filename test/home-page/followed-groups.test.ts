@@ -7,7 +7,7 @@ describe('followed-groups', () => {
   const userId = toUserId('user');
 
   describe('there are no follow events', () => {
-    it.skip('returns an empty array', () => {
+    it('returns an empty array', () => {
       const groupIds = followedGroups([])(userId);
 
       expect(groupIds).toStrictEqual([]);
@@ -15,7 +15,7 @@ describe('followed-groups', () => {
   });
 
   describe('there is a single follow event for the user', () => {
-    it.skip('returns the group id', () => {
+    it('returns the group id', () => {
       const groupId = new GroupId('group');
       const events = [userFollowedEditorialCommunity(userId, groupId)];
       const groupIds = followedGroups(events)(userId);
@@ -25,7 +25,7 @@ describe('followed-groups', () => {
   });
 
   describe('there is a single follow event and a single unfollow event for the user', () => {
-    it.skip('returns an empty array', () => {
+    it('returns an empty array', () => {
       const groupId = new GroupId('group');
       const events = [
         userFollowedEditorialCommunity(userId, groupId),
@@ -38,7 +38,7 @@ describe('followed-groups', () => {
   });
 
   describe('there are 2 follow events for different groups for the user', () => {
-    it.skip('returns the group ids', () => {
+    it('returns the group ids', () => {
       const groupId1 = new GroupId('group1');
       const groupId2 = new GroupId('group2');
       const events = [
@@ -52,7 +52,7 @@ describe('followed-groups', () => {
   });
 
   describe('there are 2 follow events and 1 unfollow events for the user', () => {
-    it.skip('returns the group ids of the still followed group', () => {
+    it('returns the group ids of the still followed group', () => {
       const groupId1 = new GroupId('group1');
       const groupId2 = new GroupId('group1');
       const events = [
@@ -67,7 +67,7 @@ describe('followed-groups', () => {
   });
 
   describe('there is only a follow event for another user', () => {
-    it.skip('returns an empty array', () => {
+    it('returns an empty array', () => {
       const groupId = new GroupId('group');
       const events = [
         userFollowedEditorialCommunity(toUserId('other-user'), groupId),
@@ -79,7 +79,7 @@ describe('followed-groups', () => {
   });
 
   describe('there is a single follow event for the user, and a follow and unfollow event for another user', () => {
-    it.skip('returns an empty array', () => {
+    it('returns an empty array', () => {
       const groupId = new GroupId('group');
       const otherUserId = toUserId('other-user');
       const events = [
@@ -89,7 +89,7 @@ describe('followed-groups', () => {
       ];
       const groupIds = followedGroups(events)(userId);
 
-      expect(groupIds).toStrictEqual([]);
+      expect(groupIds).toStrictEqual([groupId]);
     });
   });
 });
