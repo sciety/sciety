@@ -11,7 +11,7 @@ PORT := 8080
 export IMAGE
 export IMAGE_TAG
 
-.PHONY: backstop* build clean* dev find-* git-lfs install lint* prod release test* update-event-data
+.PHONY: backstop* build clean* dev find-* git-lfs install lint* prod release stop test* update-event-data
 
 dev: export TARGET = dev
 dev: .env install build
@@ -73,7 +73,9 @@ git-lfs:
 clean:
 	rm -rf .eslint .jest .stylelint build node_modules static/style.css static/style.css.map
 
-clean-db:
+clean-db: stop
+
+stop:
 	$(DOCKER_COMPOSE) down
 
 find-review-commons-reviews: export TARGET = dev

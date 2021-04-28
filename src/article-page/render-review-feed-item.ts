@@ -1,4 +1,5 @@
 import { URL } from 'url';
+import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { constant, flow, pipe } from 'fp-ts/function';
 import clip from 'text-clipper';
@@ -32,7 +33,7 @@ const eventMetadata = (review: ReviewFeedItem) => toHtmlFragment(`
   <div class="activity-feed__item__meta">
     <div class="activity-feed__item__title">
       <a href="/groups/${review.groupId.value}">
-        ${review.groupName}
+        ${htmlEscape(review.groupName)}
       </a>
     </div>
     ${templateDate(review.occurredAt, 'activity-feed__item__date')}

@@ -2,24 +2,25 @@
 @use 'functions';
 @use 'baseline';
 @use 'card';
-@use 'typography';
 @use 'breakpoints';
+@use 'typography';
 
-@use 'list';
-
-.article-activity-card {
+.group-card {
   @include card.basics();
+  display: flex;
 }
 
-.article-activity-card__title {
+.group-card__body {
+  flex-grow: 1;
+}
+
+.group-card__link {
   @include typography.sizing(16px, 2.5);
   font-family: settings.$font-family;
   font-weight: bold;
-  margin-bottom: baseline.increments(0.5);
-}
-
-.article-activity-card__link {
   color: settings.$colour-text-primary;
+  display: block;
+  margin-bottom: baseline.increments(0.5);
 
   &:link,
   &:visited {
@@ -32,20 +33,22 @@
   }
 }
 
-.article-activity-card__authors {
-  @include list.basics();
-  @include typography.sizing(14px, 2.5);
+.group-card__description {
   margin-bottom: baseline.increments(1);
   font-family: settings.$font-family;
 }
 
-.article-activity-card__author {
-  @include list.author-separator-terminator();
-  display: inline;
+.group-card__avatar {
+  width: settings.$avatar-size;
+  height: settings.$avatar-size;
+  border-radius: settings.$border-radius;
+  flex: 0 0 settings.$avatar-size;
+  margin-left: functions.px-to-rem(32px);
+  border: settings.$avatar-border;
 }
 
-.article-activity-card__meta {
-  @include typography.sizing(12px, 2.5);
+.group-card__meta {
+  @include typography.sizing(12px, 1.1 * 12px / 8px);
   color: settings.$colour-text-secondary;
   font-family: settings.$font-family;
   letter-spacing: 0.09px;
@@ -54,7 +57,7 @@
     margin-right: 0.25rem;
   }
 
-  > :nth-child(n+3)::before {
+  > :nth-child(n+2)::before {
     content: '•';
     margin-right: 0.25rem;
   }

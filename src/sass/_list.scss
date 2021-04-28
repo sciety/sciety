@@ -2,3 +2,13 @@
   list-style: none;
   padding-left: 0;
 }
+
+@mixin author-separator-terminator() {
+  &::after {
+    content: ',\00a0';
+  }
+
+  &:last-child::after {
+    content: '.';
+  }
+}

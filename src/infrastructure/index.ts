@@ -1,8 +1,5 @@
-import axios from 'axios';
-import axiosRetry from 'axios-retry';
 import * as A from 'fp-ts/Array';
 import * as I from 'fp-ts/Identity';
-import { Json } from 'fp-ts/Json';
 import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
@@ -20,6 +17,7 @@ import { fetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
 import { fetchNcrcReview } from './fetch-ncrc-review';
 import { fetchReview } from './fetch-review';
 import { fetchStaticFile } from './fetch-static-file';
+import { getJsonResponse, getJsonWithRetriesAndLogging } from './fetchers';
 import { findGroups } from './find-groups';
 import { findReviewsForArticleDoi } from './find-reviews-for-article-doi';
 import { follows } from './follows';
@@ -83,20 +81,12 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       const { events, logger, pool } = adapters;
 
       const getJson = async (uri: string) => {
-        const response = await axios.get<Json>(uri);
+        const response = await getJsonResponse(uri);
         return response.data;
       };
 
-      const retryingClient = axios.create();
-      axiosRetry(retryingClient, {
-        retryDelay: (count, error) => {
-          logger('debug', 'Retrying HTTP request', { count, error });
-          return 0;
-        },
-        retries: 3,
-      });
       const getJsonWithRetries = async (uri: string) => {
-        const response = await retryingClient.get<Json>(uri);
+        const response = await getJsonWithRetriesAndLogging(logger, 3)(uri);
         return response.data;
       };
 

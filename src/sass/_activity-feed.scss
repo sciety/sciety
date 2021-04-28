@@ -1,6 +1,7 @@
 @use 'baseline';
 @use 'breakpoints';
 @use 'button';
+@use 'article-tabs';
 @use 'card';
 @use 'functions';
 @use 'list';
@@ -17,21 +18,20 @@
 }
 
 .activity-feed__item {
-  @include card.full-tab-card();
-  border-left-width: 0;
-  border-right-width: 0;
+  @include card.basics();
+
   margin-bottom: baseline.increments(1);
 
+  // TODO: needed due to .responses background color
+  // being incompatible with padding coming from card.basics()
+  padding: unset;
+
   @include breakpoints.not-narrow {
-    border-left-width: settings.$border-width;
-    border-right-width: settings.$border-width;
+    padding: unset;
   }
 
   &:first-child {
-    border-top-width: 0;
-    @include breakpoints.not-narrow {
-      border-top-width: settings.$border-width;
-    }
+    @include article-tabs.hide-top-border-touching-tabs();
   }
 
 

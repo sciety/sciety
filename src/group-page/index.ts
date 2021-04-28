@@ -9,7 +9,6 @@ import {
   constant, flow, pipe, tupled,
 } from 'fp-ts/function';
 import { countFollowersOf } from './count-followers';
-import { fetchArticleDetails, FindVersionsForArticleDoi } from './fetch-article-details';
 import { groupActivities } from './group-activities';
 import { FetchStaticFile, renderDescription } from './render-description';
 import { renderFollowers } from './render-followers';
@@ -17,6 +16,7 @@ import { renderErrorPage, renderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
 import { renderRecentGroupActivity } from './render-recent-group-activity';
 import { renderFollowToggle } from '../follow/render-follow-toggle';
+import { fetchArticleDetails, FindVersionsForArticleDoi } from '../shared-components/fetch-article-details';
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 import { DomainEvent } from '../types/domain-events';

@@ -25,6 +25,20 @@ type Ports = {
   getFollowList: GetFollowList,
 };
 
+type Params = {
+  [groupProperty]: string | null | undefined,
+};
+
+const validate = (toExistingGroup: ToExistingGroup) => (requestBody: Params) => pipe(
+  requestBody[groupProperty],
+  GroupId.fromNullable,
+  TO.fromOption,
+  TO.chain(toExistingGroup),
+  TO.map((group) => ({
+    groupId: group.id,
+  })),
+);
+
 export const executeIfAuthenticated = ({
   getGroup: toExistingGroup,
   commitEvents,
@@ -32,15 +46,7 @@ export const executeIfAuthenticated = ({
   logger,
 }: Ports): Middleware => async (context, next) => {
   await pipe(
-    context.request.body[groupProperty],
-    GroupId.fromNullable,
-    TO.fromOption,
-    TO.chain(toExistingGroup),
-    TO.map((group) => {
-      context.session.command = 'follow';
-      context.session[sessionGroupProperty] = group.id.toString();
-      return group.id;
-    }),
+    validate(toExistingGroup)(context.request.body),
     TO.fold(
       () => {
         logger('error', 'Problem with /follow', { error: StatusCodes.BAD_REQUEST });
@@ -52,8 +58,10 @@ export const executeIfAuthenticated = ({
         });
         return T.of(undefined);
       },
-      (groupId) => {
+      (params) => {
         if (!(context.state.user)) {
+          context.session.command = 'follow';
+          context.session[sessionGroupProperty] = params.groupId.toString();
           context.session.successRedirect = constructRedirectUrl(context);
           context.redirect('/log-in');
           return T.of(undefined);
@@ -61,7 +69,7 @@ export const executeIfAuthenticated = ({
         const { user } = context.state;
         context.redirect('back');
         return pipe(
-          followCommand(getFollowList, commitEvents)(user, groupId),
+          followCommand(getFollowList, commitEvents)(user, params.groupId),
           T.chain(() => next),
         );
       },

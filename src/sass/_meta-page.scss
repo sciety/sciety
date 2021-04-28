@@ -1,5 +1,6 @@
 @use 'baseline';
 @use 'breakpoints';
+@use 'article-tabs';
 @use 'card';
 @use 'functions';
 @use 'list';
@@ -7,17 +8,10 @@
 @use 'typography';
 
 .main-content--meta {
-  @include card.full-tab-card();
-  border-left-width: 0;
-  border-right-width: 0;
-  border-top-width: 0;
-  margin-bottom: baseline.increments(6);
-  padding: baseline.increments(2) functions.px-to-rem(16px);
+  @include card.basics();
+  @include article-tabs.hide-top-border-touching-tabs();
 
-  @include breakpoints.not-narrow {
-    padding: baseline.increments(3) functions.px-to-rem(24px);
-    border-width: settings.$border-width;
-  }
+  margin-bottom: baseline.increments(6);
 }
 
 .article-author-list {
@@ -38,17 +32,10 @@
 }
 
 .article-author-list > li {
+  @include list.author-separator-terminator();
   @include typography.sizing($font-size: 14px, $line-height-in-increments: 2.5);
   float: left;
   font-weight: bold;
-}
-
-.article-author-list > li::after {
-  content: ', \00a0';
-}
-
-.article-author-list > li:last-child::after {
-  content: '';
 }
 
 .article-meta-data-list {

@@ -1,3 +1,4 @@
+import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
@@ -22,7 +23,7 @@ const render = (group: Group) => (toggle: HtmlFragment) => `
     <a href="/groups/${group.id.value}" class="group__link">
       <img src="${group.avatarPath}" alt="" class="group__avatar">
       <div class="group__name">
-        ${group.name}
+        ${htmlEscape(group.name)}
       </div>
     </a>
     <div class="group__toggle_wrapper">

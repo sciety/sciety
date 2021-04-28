@@ -17,22 +17,26 @@ export type ArticleViewModel = {
 };
 
 const wrapInSpan = (text: string) => toHtmlFragment(`<span>${text}</span>`);
+
 const renderEvaluationCount = (evaluationCount: number): HtmlFragment => pipe(
   evaluationCount === 1,
   (singular) => `${evaluationCount} ${singular ? 'evaluation' : 'evaluations'}`,
   wrapInSpan,
 );
-type RenderAuthors = (authors: ReadonlyArray<string>) => HtmlFragment;
 
-const renderAuthors: RenderAuthors = flow(
+type RenderAuthors = (authors: ReadonlyArray<string>, authorListId: string) => HtmlFragment;
+
+const renderAuthors: RenderAuthors = (authors, authorListId) => pipe(
+  authors,
   RNEA.fromReadonlyArray,
   O.fold(
     constant(''),
     flow(
       RNEA.map((author) => `<li class="article-activity-card__author">${htmlEscape(author)}</li>`),
-      (authors) => `
-      <ol class="article-activity-card__authors" role="list" aria-describedby="group-activity-list-authors">
-        ${authors.join('\n')}
+      (authorListItems) => `
+      <div class="hidden" id="${authorListId}">This article's authors</div>
+      <ol class="article-activity-card__authors" role="list" aria-describedby="${authorListId}">
+        ${authorListItems.join('')}
       </ol>
     `,
     ),
@@ -58,12 +62,12 @@ const renderArticleLatestActivityDate = O.fold(
   ),
 );
 
-export const renderArticleActivity = (model: ArticleViewModel): HtmlFragment => toHtmlFragment(`
+export const renderArticleActivityCard = (model: ArticleViewModel): HtmlFragment => toHtmlFragment(`
   <article class="article-activity-card">
     <h3 class="article-activity-card__title">
       <a class="article-activity-card__link" href="/articles/activity/${model.doi.value}">${model.title}</a>
     </h3>
-    ${renderAuthors(model.authors)}
+    ${renderAuthors(model.authors, `article-activity-card-author-list-${model.doi.value}`)}
     <div class="article-activity-card__meta">
       <span class="visually-hidden">This article has </span>${renderEvaluationCount(model.evaluationCount)}${renderArticleVersionDate(model.latestVersionDate)}${renderArticleLatestActivityDate(model.latestActivityDate)}
     </div>
