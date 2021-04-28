@@ -35,17 +35,17 @@ const eventToActivityDetails = (
 const mostRecentDate = (a: Date, b: Date) => (a.getTime() > b.getTime() ? a : b);
 
 const mergeActivities = (
-  event: EditorialCommunityReviewedArticleEvent,
-  groupIds: ReadonlyArray<GroupId>,
-) => (existingActivityDate: ActivityDetails): ActivityDetails => pipe(
-  eventToActivityDetails(event, groupIds),
-  (newActivityDetails: ActivityDetails): ActivityDetails => ({
-    evaluatedByFollowedGroup:
-      newActivityDetails.evaluatedByFollowedGroup || existingActivityDate.evaluatedByFollowedGroup,
-    evaluationCount: existingActivityDate.evaluationCount + 1,
-    latestActivityDate: mostRecentDate(existingActivityDate.latestActivityDate, newActivityDetails.latestActivityDate),
-  }),
-);
+  existingActivityDetails: ActivityDetails,
+  newActivityDetails: ActivityDetails,
+): ActivityDetails => ({
+  latestActivityDate: mostRecentDate(
+    existingActivityDetails.latestActivityDate,
+    newActivityDetails.latestActivityDate,
+  ),
+  evaluatedByFollowedGroup:
+      existingActivityDetails.evaluatedByFollowedGroup || newActivityDetails.evaluatedByFollowedGroup,
+  evaluationCount: existingActivityDetails.evaluationCount + newActivityDetails.evaluationCount,
+});
 
 const addEventToActivities = (
   groupIds: ReadonlyArray<GroupId>,
@@ -57,7 +57,7 @@ const addEventToActivities = (
   RM.lookup(eqDoi)(event.articleId),
   O.fold(
     () => eventToActivityDetails(event, groupIds),
-    mergeActivities(event, groupIds),
+    (existingActivityDetails) => mergeActivities(existingActivityDetails, eventToActivityDetails(event, groupIds)),
   ),
   (activity) => pipe(activities, RM.upsertAt(eqDoi)(event.articleId, activity)),
 );
