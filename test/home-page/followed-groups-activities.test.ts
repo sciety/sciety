@@ -16,7 +16,7 @@ const generateNEventsForGroup = (
     new Doi(`10.1101/evaluation${i}`),
   ))));
 
-describe.skip('followed-groups-activities', () => {
+describe('followed-groups-activities', () => {
   describe('when only a single group has evaluated an article once', () => {
     const articleId = new Doi('10.1101/2020.09.15.286153');
     const groupId = new GroupId('4eebcec9-a4bb-44e1-bde3-2ae11e65daaa');
@@ -237,10 +237,10 @@ describe.skip('followed-groups-activities', () => {
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
-          doi: articleMostRecentlyReviewedByTheFollowedGroup,
+          doi: articleThatWasMoreRecentlyReviewedButByTheUnfollowedGroup,
         }),
         expect.objectContaining({
-          doi: articleThatWasMoreRecentlyReviewedButByTheUnfollowedGroup,
+          doi: articleMostRecentlyReviewedByTheFollowedGroup,
         }),
       ]);
     });
