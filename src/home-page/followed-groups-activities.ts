@@ -3,10 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RM from 'fp-ts/ReadonlyMap';
-import * as S from 'fp-ts/Semigroup';
-import * as B from 'fp-ts/boolean';
 import { flow, pipe } from 'fp-ts/function';
-import * as N from 'fp-ts/number';
 import { Doi, eqDoi } from '../types/doi';
 import {
   DomainEvent, EditorialCommunityReviewedArticleEvent,
@@ -26,12 +23,6 @@ type ActivityDetails = {
   evaluationCount: number,
 };
 
-const semigroupActivityDetails: S.Semigroup<ActivityDetails> = S.struct({
-  latestActivityDate: S.max(D.Ord),
-  evaluatedByFollowedGroup: B.MonoidAny,
-  evaluationCount: N.SemigroupSum,
-});
-
 const eventToActivityDetails = (
   event: EditorialCommunityReviewedArticleEvent,
   groupIds: ReadonlyArray<GroupId>,
@@ -41,10 +32,20 @@ const eventToActivityDetails = (
   evaluationCount: 1,
 });
 
+const mostRecentDate = (a: Date, b: Date) => (a.getTime() > b.getTime() ? a : b);
+
 const mergeActivities = (
   event: EditorialCommunityReviewedArticleEvent,
   groupIds: ReadonlyArray<GroupId>,
-) => (b: ActivityDetails) => semigroupActivityDetails.concat(eventToActivityDetails(event, groupIds), b);
+) => (existingActivityDate: ActivityDetails): ActivityDetails => pipe(
+  eventToActivityDetails(event, groupIds),
+  (newActivityDetails: ActivityDetails): ActivityDetails => ({
+    evaluatedByFollowedGroup:
+      newActivityDetails.evaluatedByFollowedGroup || existingActivityDate.evaluatedByFollowedGroup,
+    evaluationCount: existingActivityDate.evaluationCount + 1,
+    latestActivityDate: mostRecentDate(existingActivityDate.latestActivityDate, newActivityDetails.latestActivityDate),
+  }),
+);
 
 const addEventToActivities = (
   groupIds: ReadonlyArray<GroupId>,
