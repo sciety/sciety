@@ -61,7 +61,22 @@ describe('followed-groups-activities', () => {
   });
 
   describe('when only a not followed group has evaluated an article', () => {
-    it.todo('it does not include the article DOI');
+    it('does not include the article DOI', () => {
+      const followedGroupId = new GroupId('4eebcec9-a4bb-44e1-bde3-2ae11e65daaa');
+      const notFollowedGroupId = new GroupId('53ed5364-a016-11ea-bb37-0242ac130002');
+      const events = [
+        editorialCommunityReviewedArticle(
+          notFollowedGroupId,
+          new Doi('10.1101/2019.12.20.884056'),
+          new Doi('10.7287/peerj.11014v0.1/reviews/1'),
+          new Date('2021-03-10T00:00:00.000Z'),
+        ),
+      ];
+
+      const activities = followedGroupsActivities(events)([followedGroupId]);
+
+      expect(activities).toStrictEqual([]);
+    });
   });
 
   describe('when only a single group has evaluated an article more than once', () => {
@@ -243,25 +258,6 @@ describe('followed-groups-activities', () => {
           doi: articleMostRecentlyReviewedByTheFollowedGroup,
         }),
       ]);
-    });
-  });
-
-  describe('when the followed groups have not evaluated any articles', () => {
-    it('returns an empty list', () => {
-      const thisGroupId = new GroupId('4eebcec9-a4bb-44e1-bde3-2ae11e65daaa');
-      const anotherGroupId = new GroupId('53ed5364-a016-11ea-bb37-0242ac130002');
-      const events = [
-        editorialCommunityReviewedArticle(
-          anotherGroupId,
-          new Doi('10.1101/2019.12.20.884056'),
-          new Doi('10.7287/peerj.11014v0.1/reviews/1'),
-          new Date('2021-03-10T00:00:00.000Z'),
-        ),
-      ];
-
-      const activities = followedGroupsActivities(events)([thisGroupId]);
-
-      expect(activities).toStrictEqual([]);
     });
   });
 });
