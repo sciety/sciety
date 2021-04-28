@@ -62,7 +62,7 @@ const addEventToActivities = (
   (activity) => pipe(activities, RM.upsertAt(eqDoi)(event.articleId, activity)),
 );
 
-const byLatestActivityDateByGroupDesc: Ord.Ord<ArticleActivity> = pipe(
+const byLatestActivityDateDesc: Ord.Ord<ArticleActivity> = pipe(
   D.Ord,
   Ord.reverse,
   Ord.contramap(
@@ -79,6 +79,6 @@ export const followedGroupsActivities: FollowedGroupsActivities = (events) => (g
     (doi, activityDetails) => O.some({ doi, ...activityDetails }),
     O.filter((activityDetails) => activityDetails.evaluatedByFollowedGroup),
   )),
-  RM.values(byLatestActivityDateByGroupDesc),
+  RM.values(byLatestActivityDateDesc),
   RA.takeLeft(20),
 );
