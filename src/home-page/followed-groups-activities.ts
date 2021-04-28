@@ -41,18 +41,10 @@ const eventToActivityDetails = (
   evaluationCount: 1,
 });
 
-const combineActivityDetails = (a: ActivityDetails) => O.fold(
-  () => a,
-  (b: ActivityDetails) => semigroupActivityDetails.concat(a, b),
-);
-
-const updateActivity = (
+const mergeActivities = (
   event: EditorialCommunityReviewedArticleEvent,
   groupIds: ReadonlyArray<GroupId>,
-) => pipe(
-  eventToActivityDetails(event, groupIds),
-  combineActivityDetails,
-);
+) => (b: ActivityDetails) => semigroupActivityDetails.concat(eventToActivityDetails(event, groupIds), b);
 
 const addEventToActivities = (
   groupIds: ReadonlyArray<GroupId>,
@@ -62,7 +54,10 @@ const addEventToActivities = (
 ) => pipe(
   activities,
   RM.lookup(eqDoi)(event.articleId),
-  updateActivity(event, groupIds),
+  O.fold(
+    () => eventToActivityDetails(event, groupIds),
+    mergeActivities(event, groupIds),
+  ),
   (activity) => pipe(activities, RM.upsertAt(eqDoi)(event.articleId, activity)),
 );
 
