@@ -13,11 +13,11 @@ describe('followed-groups', () => {
 
   describe('there are 4 follow events for different groups for the user', () => {
     it.todo('returns the group ids');
-  })
+  });
 
   describe('there are 4 follow events and 2 unfollow events for the user', () => {
     it.todo('returns the group ids of the still followed groups');
-  })
+  });
 
   describe('there is only a follow event for another user', () => {
     it.todo('returns an empty array');
