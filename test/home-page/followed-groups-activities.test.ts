@@ -1,26 +1,267 @@
-describe('followed-groups-activities', () => {
-  describe('acceptance criteria', () => {
-    describe('following groups that have no evaluations', () => {
-      // The groups you’re following haven’t evaluated any articles yet.
-      // You can have a look for other groups of interest, or try coming back later!
-      it.todo('displays the calls to action to follow other groups or return later');
+import { followedGroupsActivities } from '../../src/home-page/followed-groups-activities';
+import { Doi } from '../../src/types/doi';
+import {
+  editorialCommunityReviewedArticle,
+  EditorialCommunityReviewedArticleEvent,
+} from '../../src/types/domain-events';
+import { GroupId } from '../../src/types/group-id';
+
+const generateNEventsForGroup = (
+  numberOfEvents: number,
+  groupId: GroupId,
+): ReadonlyArray<EditorialCommunityReviewedArticleEvent> => (
+  [...Array(numberOfEvents).keys()].map((i) => (editorialCommunityReviewedArticle(
+    groupId,
+    new Doi(`10.1101/${i}`),
+    new Doi(`10.1101/evaluation${i}`),
+  ))));
+
+describe.skip('followed-groups-activities', () => {
+  describe('when only a single group has evaluated an article once', () => {
+    const articleId = new Doi('10.1101/2020.09.15.286153');
+    const groupId = new GroupId('4eebcec9-a4bb-44e1-bde3-2ae11e65daaa');
+    const events = [
+      editorialCommunityReviewedArticle(
+        groupId,
+        articleId,
+        new Doi('10.24072/pci.animsci.100005'),
+        new Date('2020-12-15T00:00:00.000Z'),
+      ),
+    ];
+
+    it('includes the article DOI', () => {
+      const activities = followedGroupsActivities(events)([groupId]);
+
+      expect(activities).toStrictEqual([
+        expect.objectContaining({
+          doi: articleId,
+        }),
+      ]);
     });
 
-    // Your feed is empty! Start following some groups to see their most recent evaluations right here.
-    describe('not following any groups', () => {
-      it.todo('displays call to action to follow groups');
+    it('has an evaluation count of 1', () => {
+      const activities = followedGroupsActivities(events)([groupId]);
+
+      expect(activities).toStrictEqual([
+        expect.objectContaining({
+          evaluationCount: 1,
+        }),
+      ]);
     });
 
-    describe('following groups with evaluations', () => {
-      it.todo('display a maximum of 20 articles');
+    it('latest activity date matches event date', () => {
+      const activities = followedGroupsActivities(events)([groupId]);
 
-      it.todo('displays the articles in order of latest activity in descending order');
+      expect(activities).toStrictEqual([
+        expect.objectContaining({
+          latestActivityDate: new Date('2020-12-15T00:00:00.000Z'),
+        }),
+      ]);
+    });
+  });
 
-      it.todo('latest activity is based off of activity by any group');
+  describe('when only a not followed group has evaluated an article', () => {
+    it.todo('it does not include the article DOI');
+  });
 
-      it.todo('displayed articles have to have been evaluated by a followed group');
+  describe('when only a single group has evaluated an article more than once', () => {
+    const groupId = new GroupId('53ed5364-a016-11ea-bb37-0242ac130002');
+    const articleId = new Doi('10.1101/2019.12.20.884056');
+    const latestActivityDate = new Date('2020-01-01');
+    const events = [
+      editorialCommunityReviewedArticle(
+        groupId,
+        articleId,
+        new Doi('10.1101/123456'),
+        new Date('1980-01-01'),
+      ),
+      editorialCommunityReviewedArticle(
+        groupId,
+        articleId,
+        new Doi('10.1101/scorpion'),
+        latestActivityDate,
+      ),
+    ];
 
-      it.todo('each article is only displayed once');
+    it('has a single entry for the article', () => {
+      const activities = followedGroupsActivities(events)([groupId]);
+
+      expect(activities).toStrictEqual([
+        expect.objectContaining({
+          doi: articleId,
+        }),
+      ]);
+    });
+
+    it('has an evaluation count of the number of evaluations', () => {
+      const activities = followedGroupsActivities(events)([groupId]);
+
+      expect(activities).toStrictEqual([
+        expect.objectContaining({
+          evaluationCount: 2,
+        }),
+      ]);
+    });
+
+    it('has a latest activity date of the latest evaluation', () => {
+      const activities = followedGroupsActivities(events)([groupId]);
+
+      expect(activities).toStrictEqual([
+        expect.objectContaining({
+          latestActivityDate,
+        }),
+      ]);
+    });
+  });
+
+  describe('when multiple groups have evaluated an article', () => {
+    const groupId = new GroupId('4eebcec9-a4bb-44e1-bde3-2ae11e65daaa');
+    const articleId = new Doi('10.1101/2019.12.20.884056');
+    const events = [
+      editorialCommunityReviewedArticle(
+        groupId,
+        articleId,
+        new Doi('10.24072/pci.animsci.100004'),
+        new Date('2020-10-14T00:00:00.000Z'),
+      ),
+      editorialCommunityReviewedArticle(
+        new GroupId('53ed5364-a016-11ea-bb37-0242ac130002'),
+        articleId,
+        new Doi('10.7287/peerj.11014v0.1/reviews/1'),
+        new Date('2021-03-10T00:00:00.000Z'),
+      ),
+      editorialCommunityReviewedArticle(
+        new GroupId('53ed5364-a016-11ea-bb37-0242ac130002'),
+        articleId,
+        new Doi('10.7287/peerj.11014v0.1/reviews/2'),
+        new Date('2021-03-10T00:00:00.000Z'),
+      ),
+      editorialCommunityReviewedArticle(
+        new GroupId('53ed5364-a016-11ea-bb37-0242ac130002'),
+        articleId,
+        new Doi('10.7287/peerj.11014v0.2/reviews/2'),
+        new Date('2021-03-10T00:00:00.000Z'),
+      ),
+    ];
+
+    it('has an evaluation count of the number of evaluations by all groups', () => {
+      const activities = followedGroupsActivities(events)([groupId]);
+
+      expect(activities).toStrictEqual([
+        expect.objectContaining({
+          doi: articleId,
+          evaluationCount: 4,
+        }),
+      ]);
+    });
+
+    it('has a latest activity date of the latest evaluation by any group', () => {
+      const activities = followedGroupsActivities(events)([groupId]);
+
+      expect(activities).toStrictEqual([
+        expect.objectContaining({
+          latestActivityDate: new Date('2021-03-10T00:00:00.000Z'),
+        }),
+      ]);
+    });
+  });
+
+  describe('when one of the groups has evaluated multiple articles', () => {
+    const groupId = new GroupId('4eebcec9-a4bb-44e1-bde3-2ae11e65daaa');
+
+    it('returns the most recently evaluated articles first', () => {
+      const earlierDate = new Date('2019-09-06T00:00:00.000Z');
+      const laterDate = new Date('2019-12-05T00:00:00.000Z');
+      const events = [
+        editorialCommunityReviewedArticle(
+          groupId,
+          new Doi('10.1101/661249'),
+          new Doi('10.24072/pci.animsci.100001'),
+          earlierDate,
+        ),
+        editorialCommunityReviewedArticle(
+          groupId,
+          new Doi('10.1101/760082'),
+          new Doi('10.24072/pci.animsci.100002'),
+          laterDate,
+        ),
+      ];
+      const activities = followedGroupsActivities(events)([groupId]);
+
+      expect(activities).toStrictEqual([
+        expect.objectContaining({
+          latestActivityDate: laterDate,
+        }),
+        expect.objectContaining({
+          latestActivityDate: earlierDate,
+        }),
+      ]);
+    });
+
+    it('limits the number of entries to 20', () => {
+      const events = generateNEventsForGroup(25, groupId);
+      const activities = followedGroupsActivities(events)([groupId]);
+
+      expect(activities).toHaveLength(20);
+    });
+  });
+
+  describe('when another not followed group evaluates an article previously evaluated by a followed group', () => {
+    it('orders by the latest activity date by any group', () => {
+      const followedGroupId = new GroupId('4eebcec9-a4bb-44e1-bde3-2ae11e65daaa');
+      const notFollowedGroupId = new GroupId('53ed5364-a016-11ea-bb37-0242ac130002');
+      const articleMostRecentlyReviewedByTheFollowedGroup = new Doi('10.1101/2020.09.15.286153');
+      const articleThatWasMoreRecentlyReviewedButByTheUnfollowedGroup = new Doi('10.1101/2019.12.20.884056');
+      const events = [
+        editorialCommunityReviewedArticle(
+          followedGroupId,
+          articleThatWasMoreRecentlyReviewedButByTheUnfollowedGroup,
+          new Doi('10.24072/pci.animsci.100004'),
+          new Date('1980-01-01'),
+        ),
+        editorialCommunityReviewedArticle(
+          followedGroupId,
+          articleMostRecentlyReviewedByTheFollowedGroup,
+          new Doi('10.24072/pci.animsci.100005'),
+          new Date('2000-01-01'),
+        ),
+        editorialCommunityReviewedArticle(
+          notFollowedGroupId,
+          articleThatWasMoreRecentlyReviewedButByTheUnfollowedGroup,
+          new Doi('10.7287/peerj.11014v0.1/reviews/1'),
+          new Date('2020-01-01'),
+        ),
+      ];
+
+      const activities = followedGroupsActivities(events)([followedGroupId]);
+
+      expect(activities).toStrictEqual([
+        expect.objectContaining({
+          doi: articleMostRecentlyReviewedByTheFollowedGroup,
+        }),
+        expect.objectContaining({
+          doi: articleThatWasMoreRecentlyReviewedButByTheUnfollowedGroup,
+        }),
+      ]);
+    });
+  });
+
+  describe('when the followed groups have not evaluated any articles', () => {
+    it('returns an empty list', () => {
+      const thisGroupId = new GroupId('4eebcec9-a4bb-44e1-bde3-2ae11e65daaa');
+      const anotherGroupId = new GroupId('53ed5364-a016-11ea-bb37-0242ac130002');
+      const events = [
+        editorialCommunityReviewedArticle(
+          anotherGroupId,
+          new Doi('10.1101/2019.12.20.884056'),
+          new Doi('10.7287/peerj.11014v0.1/reviews/1'),
+          new Date('2021-03-10T00:00:00.000Z'),
+        ),
+      ];
+
+      const activities = followedGroupsActivities(events)([thisGroupId]);
+
+      expect(activities).toStrictEqual([]);
     });
   });
 });
