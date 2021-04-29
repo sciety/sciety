@@ -20,6 +20,12 @@ export type Ports = {
   follows: (u: UserId, g: GroupId) => T.Task<boolean>,
 };
 
+const renderEventSummaries = (ports: Ports) => flow(
+  T.traverseArray(constructFeedItem(getActor(ports.getGroup), ports.fetchArticle)),
+  T.map(RNEA.fromReadonlyArray), // TODO shouldn't be needed, fp-ts types needs fixing
+  TO.match(constant(pipe('', toHtmlFragment)), renderSummaryFeedList),
+);
+
 type YourFeed = (ports: Ports) => (
   userId: O.Option<UserId>,
 ) => T.Task<HtmlFragment>;
@@ -27,9 +33,5 @@ type YourFeed = (ports: Ports) => (
 export const yourFeed: YourFeed = (ports) => (userId) => renderFeed(
   projectIsFollowingSomething(ports.getAllEvents),
   getMostRecentEvents(ports.getAllEvents, ports.follows, 20),
-  flow(
-    T.traverseArray(constructFeedItem(getActor(ports.getGroup), ports.fetchArticle)),
-    T.map(RNEA.fromReadonlyArray), // TODO shouldn't be needed, fp-ts types needs fixing
-    TO.match(constant(pipe('', toHtmlFragment)), renderSummaryFeedList),
-  ),
+  renderEventSummaries(ports),
 )(userId, []);
