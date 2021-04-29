@@ -1,10 +1,10 @@
-import { followedGroupsActivities } from '../../src/home-page/followed-groups-activities';
-import { Doi } from '../../src/types/doi';
+import { followedGroupsActivities } from '../../../src/home-page/your-feed/followed-groups-activities';
+import { Doi } from '../../../src/types/doi';
 import {
   editorialCommunityReviewedArticle,
   EditorialCommunityReviewedArticleEvent,
-} from '../../src/types/domain-events';
-import { GroupId } from '../../src/types/group-id';
+} from '../../../src/types/domain-events';
+import { GroupId } from '../../../src/types/group-id';
 
 const generateNEventsForGroup = (
   numberOfEvents: number,

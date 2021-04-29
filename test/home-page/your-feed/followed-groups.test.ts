@@ -1,7 +1,7 @@
-import { followedGroups } from '../../src/home-page/followed-groups';
-import { userFollowedEditorialCommunity, userUnfollowedEditorialCommunity } from '../../src/types/domain-events';
-import { GroupId } from '../../src/types/group-id';
-import { toUserId } from '../../src/types/user-id';
+import { followedGroups } from '../../../src/home-page/your-feed/followed-groups';
+import { userFollowedEditorialCommunity, userUnfollowedEditorialCommunity } from '../../../src/types/domain-events';
+import { GroupId } from '../../../src/types/group-id';
+import { toUserId } from '../../../src/types/user-id';
 
 describe('followed-groups', () => {
   const userId = toUserId('user');

@@ -4,9 +4,9 @@ import {
   DomainEvent,
   isUserFollowedEditorialCommunityEvent,
   isUserUnfollowedEditorialCommunityEvent, UserFollowedEditorialCommunityEvent, UserUnfollowedEditorialCommunityEvent,
-} from '../types/domain-events';
-import { GroupId } from '../types/group-id';
-import { UserId } from '../types/user-id';
+} from '../../types/domain-events';
+import { GroupId } from '../../types/group-id';
+import { UserId } from '../../types/user-id';
 
 type FollowedGroups = (events: ReadonlyArray<DomainEvent>) => (userId: UserId) => ReadonlyArray<GroupId>;
 type FollowOrUnfollowEvent = UserFollowedEditorialCommunityEvent | UserUnfollowedEditorialCommunityEvent;
