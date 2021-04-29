@@ -45,24 +45,6 @@ describe('render-feed', () => {
         expect(rendered).toStrictEqual(expect.stringContaining('someNiceList'));
       });
     });
-
-    describe('and is not following anything yet', () => {
-      it('returns a follow-something text', async () => {
-        const articleViewModels: ReadonlyArray<ArticleViewModel> = [];
-        const dummyIsFollowingSomething: IsFollowingSomething = () => T.of(false);
-        const render = renderFeed(
-          dummyIsFollowingSomething,
-          shouldNotBeCalled,
-          shouldNotBeCalled,
-        );
-        const rendered = await render(
-          O.some(toUserId('1111')),
-          articleViewModels,
-        )();
-
-        expect(rendered).toContain('Start following some groups');
-      });
-    });
   });
 
   describe('when the user is not logged in', () => {

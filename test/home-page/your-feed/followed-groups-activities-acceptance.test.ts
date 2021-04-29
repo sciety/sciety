@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
-import { noEvaluationsYet } from '../../../src/home-page/your-feed/render-feed';
+import { followSomething, noEvaluationsYet } from '../../../src/home-page/your-feed/render-feed';
 import { yourFeed } from '../../../src/home-page/your-feed/your-feed';
 import { userFollowedEditorialCommunity } from '../../../src/types/domain-events';
 import { GroupId } from '../../../src/types/group-id';
@@ -26,7 +26,18 @@ describe('followed-groups-activities-acceptance', () => {
 
   // Your feed is empty! Start following some groups to see their most recent evaluations right here.
   describe('not following any groups', () => {
-    it.todo('displays call to action to follow groups');
+    it('displays call to action to follow groups', async () => {
+      const userId = toUserId('alice');
+      const adapters = {
+        fetchArticle: shouldNotBeCalled,
+        getGroup: shouldNotBeCalled,
+        getAllEvents: T.of([]),
+        follows: () => T.of(false),
+      };
+      const html = await yourFeed(adapters)(O.some(userId))();
+
+      expect(html).toContain(followSomething);
+    });
   });
 
   describe('following groups with evaluations', () => {
