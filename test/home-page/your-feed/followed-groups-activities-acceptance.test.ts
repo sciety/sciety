@@ -1,10 +1,14 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
+import * as TO from 'fp-ts/TaskOption';
 import { followSomething, noEvaluationsYet, welcomeMessage } from '../../../src/home-page/your-feed/render-feed';
-
 import { yourFeed } from '../../../src/home-page/your-feed/your-feed';
-import { userFollowedEditorialCommunity } from '../../../src/types/domain-events';
+import { Doi } from '../../../src/types/doi';
+import { editorialCommunityReviewedArticle, userFollowedEditorialCommunity } from '../../../src/types/domain-events';
 import { GroupId } from '../../../src/types/group-id';
+import { toHtmlFragment } from '../../../src/types/html-fragment';
+import { sanitise } from '../../../src/types/sanitised-html-fragment';
 import { toUserId } from '../../../src/types/user-id';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 
@@ -64,7 +68,30 @@ describe('followed-groups-activities-acceptance', () => {
 
       it.todo('latest activity is based off of activity by any group');
 
-      it.todo('displayed articles have to have been evaluated by a followed group');
+      it('displayed articles have to have been evaluated by a followed group', async () => {
+        const userId = toUserId('alice');
+        const groupId = new GroupId('NCRC');
+        const adapters = {
+          fetchArticle: () => TE.right({
+            title: sanitise(toHtmlFragment('My article title')),
+          }),
+          getGroup: () => TO.some({
+            id: groupId,
+            name: 'NCRC',
+            avatarPath: '',
+            descriptionPath: '',
+            shortDescription: '',
+          }),
+          getAllEvents: T.of([
+            userFollowedEditorialCommunity(userId, groupId),
+            editorialCommunityReviewedArticle(groupId, new Doi('10.1101/111111'), new Doi('10.1101/222222')),
+          ]),
+          follows: () => T.of(true),
+        };
+        const html = await yourFeed(adapters)(O.some(userId))();
+
+        expect(html).toContain('My article title');
+      });
 
       it.todo('each article is only displayed once');
 
