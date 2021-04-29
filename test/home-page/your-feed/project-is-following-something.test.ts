@@ -1,8 +1,8 @@
 import * as T from 'fp-ts/Task';
-import { projectIsFollowingSomething } from '../../src/home-page/project-is-following-something';
-import { userFollowedEditorialCommunity, userUnfollowedEditorialCommunity } from '../../src/types/domain-events';
-import { GroupId } from '../../src/types/group-id';
-import { toUserId } from '../../src/types/user-id';
+import { projectIsFollowingSomething } from '../../../src/home-page/your-feed/project-is-following-something';
+import { userFollowedEditorialCommunity, userUnfollowedEditorialCommunity } from '../../../src/types/domain-events';
+import { GroupId } from '../../../src/types/group-id';
+import { toUserId } from '../../../src/types/user-id';
 
 describe('project-is-following-something', () => {
   describe('when there are no events', () => {

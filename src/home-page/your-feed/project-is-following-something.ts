@@ -1,9 +1,13 @@
 import * as A from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
-import { IsFollowingSomething } from './your-feed/render-feed';
-import { DomainEvent, isUserFollowedEditorialCommunityEvent, isUserUnfollowedEditorialCommunityEvent } from '../types/domain-events';
-import { UserId } from '../types/user-id';
+import { IsFollowingSomething } from './render-feed';
+import {
+  DomainEvent,
+  isUserFollowedEditorialCommunityEvent,
+  isUserUnfollowedEditorialCommunityEvent,
+} from '../../types/domain-events';
+import { UserId } from '../../types/user-id';
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
