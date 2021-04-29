@@ -4,18 +4,18 @@ import {
   GetEvents,
   IsFollowingSomething,
   renderFeed,
-} from '../../src/home-page/render-feed';
-import { ArticleViewModel } from '../../src/shared-components';
-import { Doi } from '../../src/types/doi';
+} from '../../../src/home-page/your-feed/render-feed';
+import { ArticleViewModel } from '../../../src/shared-components';
+import { Doi } from '../../../src/types/doi';
 import {
   editorialCommunityReviewedArticle,
   EditorialCommunityReviewedArticleEvent,
-} from '../../src/types/domain-events';
-import { GroupId } from '../../src/types/group-id';
-import { toHtmlFragment } from '../../src/types/html-fragment';
-import { toReviewId } from '../../src/types/review-id';
-import { toUserId } from '../../src/types/user-id';
-import { shouldNotBeCalled } from '../should-not-be-called';
+} from '../../../src/types/domain-events';
+import { GroupId } from '../../../src/types/group-id';
+import { toHtmlFragment } from '../../../src/types/html-fragment';
+import { toReviewId } from '../../../src/types/review-id';
+import { toUserId } from '../../../src/types/user-id';
+import { shouldNotBeCalled } from '../../should-not-be-called';
 
 describe('render-feed', () => {
   describe('when the user is logged in', () => {

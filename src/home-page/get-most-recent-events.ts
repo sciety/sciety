@@ -1,5 +1,5 @@
 import * as T from 'fp-ts/Task';
-import { GetEvents } from './render-feed';
+import { GetEvents } from './your-feed/render-feed';
 import {
   DomainEvent,
   EditorialCommunityReviewedArticleEvent,
