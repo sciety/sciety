@@ -46,25 +46,6 @@ describe('render-feed', () => {
       });
     });
 
-    describe('and has an empty feed', () => {
-      it('returns a come back later text', async () => {
-        const articleViewModels: ReadonlyArray<ArticleViewModel> = [];
-        const dummyIsFollowingSomething: IsFollowingSomething = () => T.of(true);
-        const dummyGetEvents: GetEvents<EditorialCommunityReviewedArticleEvent> = () => T.of([]);
-        const render = renderFeed(
-          dummyIsFollowingSomething,
-          dummyGetEvents,
-          shouldNotBeCalled,
-        );
-        const rendered = await render(
-          O.some(toUserId('1111')),
-          articleViewModels,
-        )();
-
-        expect(rendered).toContain('The groups you’re following haven’t evaluated any articles yet.');
-      });
-    });
-
     describe('and is not following anything yet', () => {
       it('returns a follow-something text', async () => {
         const articleViewModels: ReadonlyArray<ArticleViewModel> = [];

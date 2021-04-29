@@ -39,7 +39,8 @@ const followSomething = `
   <img src="/static/images/feed-screenshot.png" alt="Screenshot of a feed" class="feed__image">
 `;
 
-const noEvaluationsYet = `
+// ts-unused-exports:disable-next-line
+export const noEvaluationsYet = `
   <p>
     The groups you’re following haven’t evaluated any articles yet.
     You can have a look for other groups of interest, or try coming back later!

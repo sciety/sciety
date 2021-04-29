@@ -1,8 +1,27 @@
+import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
+import { noEvaluationsYet } from '../../../src/home-page/your-feed/render-feed';
+import { yourFeed } from '../../../src/home-page/your-feed/your-feed';
+import { userFollowedEditorialCommunity } from '../../../src/types/domain-events';
+import { GroupId } from '../../../src/types/group-id';
+import { toUserId } from '../../../src/types/user-id';
+import { shouldNotBeCalled } from '../../should-not-be-called';
+
 describe('followed-groups-activities-acceptance', () => {
   describe('following groups that have no evaluations', () => {
-    // The groups you’re following haven’t evaluated any articles yet.
-    // You can have a look for other groups of interest, or try coming back later!
-    it.todo('displays the calls to action to follow other groups or return later');
+    it('displays the calls to action to follow other groups or return later', async () => {
+      const userId = toUserId('alice');
+      const adapters = {
+        fetchArticle: shouldNotBeCalled,
+        getGroup: shouldNotBeCalled,
+        getAllEvents: T.of([userFollowedEditorialCommunity(userId, new GroupId('NCRC'))]),
+        follows: () => T.of(true),
+      };
+
+      const html = await yourFeed(adapters)(O.some(userId))();
+
+      expect(html).toContain(noEvaluationsYet);
+    });
   });
 
   // Your feed is empty! Start following some groups to see their most recent evaluations right here.
