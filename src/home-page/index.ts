@@ -29,7 +29,7 @@ export const homePage = (ports: Ports): HomePage => flow(
   O.map((user) => user.id),
   (userId) => ({
     header: renderPageHeader(),
-    feed: yourFeed(ports)(userId, []),
+    feed: yourFeed(ports)(userId),
     editorialCommunities: renderGroups(
       ports.getAllGroups,
       renderGroup(renderFollowToggle, ports.follows),
