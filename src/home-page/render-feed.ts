@@ -4,10 +4,14 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as B from 'fp-ts/boolean';
 import { constant, flow, pipe } from 'fp-ts/function';
+import { ArticleViewModel } from '../shared-components';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
-type RenderFeed = (userId: O.Option<UserId>) => T.Task<HtmlFragment>;
+export type RenderFeed = (
+  userId: O.Option<UserId>,
+  articleViewModels: ReadonlyArray<ArticleViewModel>
+) => T.Task<HtmlFragment>;
 
 export type IsFollowingSomething = (userId: UserId) => T.Task<boolean>;
 
