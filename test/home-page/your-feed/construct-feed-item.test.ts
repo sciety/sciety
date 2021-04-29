@@ -1,10 +1,10 @@
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { constructFeedItem, GetArticle } from '../../src/home-page/construct-feed-item';
-import { Doi } from '../../src/types/doi';
-import { EditorialCommunityReviewedArticleEvent } from '../../src/types/domain-events';
-import { GroupId } from '../../src/types/group-id';
-import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
+import { constructFeedItem, GetArticle } from '../../../src/home-page/your-feed/construct-feed-item';
+import { Doi } from '../../../src/types/doi';
+import { EditorialCommunityReviewedArticleEvent } from '../../../src/types/domain-events';
+import { GroupId } from '../../../src/types/group-id';
+import { SanitisedHtmlFragment } from '../../../src/types/sanitised-html-fragment';
 
 describe('construct-feed-item', () => {
   const articleTitle = 'the title' as SanitisedHtmlFragment;

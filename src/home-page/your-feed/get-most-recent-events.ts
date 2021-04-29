@@ -1,12 +1,12 @@
 import * as T from 'fp-ts/Task';
-import { GetEvents } from './your-feed/render-feed';
+import { GetEvents } from './render-feed';
 import {
   DomainEvent,
   EditorialCommunityReviewedArticleEvent,
   isEditorialCommunityReviewedArticleEvent,
-} from '../types/domain-events';
-import { GroupId } from '../types/group-id';
-import { UserId } from '../types/user-id';
+} from '../../types/domain-events';
+import { GroupId } from '../../types/group-id';
+import { UserId } from '../../types/user-id';
 
 export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 

@@ -1,7 +1,7 @@
 import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
-import { GroupId } from '../types/group-id';
+import { GroupId } from '../../types/group-id';
 
 type Actor = {
   url: string,

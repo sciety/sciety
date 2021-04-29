@@ -3,11 +3,11 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
-import { Doi } from '../types/doi';
-import { EditorialCommunityReviewedArticleEvent } from '../types/domain-events';
-import { GroupId } from '../types/group-id';
-import { toHtmlFragment } from '../types/html-fragment';
-import { sanitise, SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
+import { Doi } from '../../types/doi';
+import { EditorialCommunityReviewedArticleEvent } from '../../types/domain-events';
+import { GroupId } from '../../types/group-id';
+import { toHtmlFragment } from '../../types/html-fragment';
+import { sanitise, SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 
 type ConstructFeedItem = (event: EditorialCommunityReviewedArticleEvent) => T.Task<FeedItem>;
 
