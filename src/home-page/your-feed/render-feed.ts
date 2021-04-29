@@ -19,7 +19,8 @@ export type GetEvents<E> = (userId: UserId) => T.Task<ReadonlyArray<E>>;
 
 type RenderSummaryFeedList<E> = (events: RNEA.ReadonlyNonEmptyArray<E>) => T.Task<string>;
 
-const welcomeMessage = `
+// ts-unused-exports:disable-next-line
+export const welcomeMessage = `
   <p>Welcome to Sciety.</p>
   <p>
     Follow research as it develops and stay up to date with the next big thing,

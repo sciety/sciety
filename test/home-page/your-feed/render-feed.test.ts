@@ -15,7 +15,6 @@ import { GroupId } from '../../../src/types/group-id';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { toReviewId } from '../../../src/types/review-id';
 import { toUserId } from '../../../src/types/user-id';
-import { shouldNotBeCalled } from '../../should-not-be-called';
 
 describe('render-feed', () => {
   describe('when the user is logged in', () => {
@@ -44,23 +43,6 @@ describe('render-feed', () => {
 
         expect(rendered).toStrictEqual(expect.stringContaining('someNiceList'));
       });
-    });
-  });
-
-  describe('when the user is not logged in', () => {
-    it('invites them to log in', async () => {
-      const articleViewModels: ReadonlyArray<ArticleViewModel> = [];
-      const render = renderFeed(
-        shouldNotBeCalled,
-        shouldNotBeCalled,
-        shouldNotBeCalled,
-      );
-      const rendered = await render(
-        O.none,
-        articleViewModels,
-      )();
-
-      expect(rendered).toContain('Log in');
     });
   });
 });
