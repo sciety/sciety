@@ -35,20 +35,22 @@ type Params = {
 
 type HomePage = (params: Params) => T.Task<Page>;
 
+const yourFeed = (ports: Ports) => renderFeed(
+  projectIsFollowingSomething(ports.getAllEvents),
+  getMostRecentEvents(ports.getAllEvents, ports.follows, 20),
+  flow(
+    T.traverseArray(constructFeedItem(getActor(ports.getGroup), ports.fetchArticle)),
+    T.map(RNEA.fromReadonlyArray), // TODO shouldn't be needed, fp-ts types needs fixing
+    TO.match(constant(pipe('', toHtmlFragment)), renderSummaryFeedList),
+  ),
+);
+
 export const homePage = (ports: Ports): HomePage => flow(
   (params) => params.user,
   O.map((user) => user.id),
   (userId) => ({
     header: renderPageHeader(),
-    feed: renderFeed(
-      projectIsFollowingSomething(ports.getAllEvents),
-      getMostRecentEvents(ports.getAllEvents, ports.follows, 20),
-      flow(
-        T.traverseArray(constructFeedItem(getActor(ports.getGroup), ports.fetchArticle)),
-        T.map(RNEA.fromReadonlyArray), // TODO shouldn't be needed, fp-ts types needs fixing
-        TO.match(constant(pipe('', toHtmlFragment)), renderSummaryFeedList),
-      ),
-    )(userId, []),
+    feed: yourFeed(ports)(userId, []),
     editorialCommunities: renderGroups(
       ports.getAllGroups,
       renderGroup(renderFollowToggle, ports.follows),
