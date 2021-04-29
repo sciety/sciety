@@ -6,7 +6,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import {
-  constant, flow, pipe, tupled,
+  constant, flow, pipe,
 } from 'fp-ts/function';
 import { countFollowersOf } from './count-followers';
 import { groupActivities } from './group-activities';
@@ -16,7 +16,8 @@ import { renderErrorPage, renderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
 import { renderRecentGroupActivity } from './render-recent-group-activity';
 import { renderFollowToggle } from '../follow/render-follow-toggle';
-import { fetchArticleDetails, FindVersionsForArticleDoi } from '../shared-components/fetch-article-details';
+import { fetchArticleDetails } from '../shared-components/fetch-article-details';
+import { FindVersionsForArticleDoi, getLatestArticleVersionDate } from '../shared-components/get-latest-article-version-date';
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 import { DomainEvent } from '../types/domain-events';
@@ -59,19 +60,6 @@ const notFoundResponse = () => ({
 } as const);
 
 type GroupPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
-
-type GetLatestArticleVersionDate = (
-  findVersionsForArticleDoi: FindVersionsForArticleDoi,
-) => (articleDoi: Doi, server: ArticleServer) => TO.TaskOption<Date>;
-
-const getLatestArticleVersionDate: GetLatestArticleVersionDate = (findVersionsForArticleDoi) => (doi, server) => pipe(
-  [doi, server],
-  tupled(findVersionsForArticleDoi),
-  T.map(O.map(flow(
-    RNEA.last,
-    (version) => version.occurredAt,
-  ))),
-);
 
 type GetArticleDetails = (doi: Doi) => T.Task<O.Option<{
   title: SanitisedHtmlFragment,
