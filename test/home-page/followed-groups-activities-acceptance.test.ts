@@ -20,5 +20,13 @@ describe('followed-groups-activities-acceptance', () => {
     it.todo('displayed articles have to have been evaluated by a followed group');
 
     it.todo('each article is only displayed once');
+
+    describe('when details of an article cannot be fetched', () => {
+      it.todo('display the other 19 articles only');
+    });
+
+    describe('when details of all articles cannot be fetched', () => {
+      it.todo('display only an error message');
+    });
   });
 });
