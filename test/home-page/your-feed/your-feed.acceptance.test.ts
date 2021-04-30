@@ -14,7 +14,7 @@ import { sanitise } from '../../../src/types/sanitised-html-fragment';
 import { toUserId } from '../../../src/types/user-id';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 
-describe('followed-groups-activities-acceptance', () => {
+describe('your-feed acceptance', () => {
   describe('there is no logged in user', () => {
     it('displays a welcome message', async () => {
       const adapters = {
