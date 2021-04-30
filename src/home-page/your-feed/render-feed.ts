@@ -49,6 +49,13 @@ export const noEvaluationsYet = `
   </p>
 `;
 
+// ts-unused-exports:disable-next-line
+export const troubleFetchingTryAgain = `
+  <p>
+    We're having trouble accessing this content right now. Please try again later.
+  </p>
+`;
+
 const renderAsSection = (contents: HtmlFragment) => toHtmlFragment(`
   <section>
     <h2>
