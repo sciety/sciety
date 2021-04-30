@@ -1,19 +1,17 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
-import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe } from 'fp-ts/function';
 import { fetchSavedArticles } from './fetch-saved-articles';
-import { GetAllEvents, projectFollowedGroupIds } from './project-followed-group-ids';
+import { followList } from './follow-list/follow-list';
+import { GetAllEvents } from './project-followed-group-ids';
 import { projectSavedArticleDois } from './project-saved-article-dois';
-import { renderFollowList } from './render-follow-list';
-import { Follows, renderFollowedGroup } from './render-followed-group';
+import { Follows } from './render-followed-group';
 import { renderHeader, UserDetails } from './render-header';
 import { renderErrorPage, renderPage } from './render-page';
 import { renderSavedArticles } from './render-saved-articles';
-import { renderFollowToggle } from '../follow/render-follow-toggle';
 import { Doi } from '../types/doi';
 import { GroupId } from '../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -67,17 +65,7 @@ export const userPage = (ports: Ports): UserPage => {
           userDetails,
           TE.map(renderHeader),
         ),
-        followList: pipe(
-          params.id,
-          projectFollowedGroupIds(ports.getAllEvents),
-          T.chain(T.traverseArray(ports.getGroup)),
-          T.chain(flow(
-            RA.compact,
-            T.traverseArray(renderFollowedGroup(renderFollowToggle, ports.follows)(viewingUserId)),
-          )),
-          T.map(renderFollowList),
-          TE.rightTask,
-        ),
+        followList: followList(ports)(params.id, viewingUserId),
         savedArticlesList: pipe(
           params.id,
           projectSavedArticleDois(ports.getAllEvents),
