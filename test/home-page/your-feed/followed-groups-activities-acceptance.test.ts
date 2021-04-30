@@ -62,6 +62,31 @@ describe('followed-groups-activities-acceptance', () => {
     });
 
     describe('following groups with evaluations', () => {
+      it.skip('displays content in the form of article cards', async () => {
+        const userId = toUserId('alice');
+        const groupId = new GroupId('NCRC');
+        const adapters = {
+          fetchArticle: () => TE.right({
+            title: sanitise(toHtmlFragment('My article title')),
+          }),
+          getGroup: () => TO.some({
+            id: groupId,
+            name: 'NCRC',
+            avatarPath: '',
+            descriptionPath: '',
+            shortDescription: '',
+          }),
+          getAllEvents: T.of([
+            userFollowedEditorialCommunity(userId, groupId),
+            editorialCommunityReviewedArticle(groupId, new Doi('10.1101/111111'), new Doi('10.1101/222222')),
+          ]),
+          follows: () => T.of(true),
+        };
+        const html = await yourFeed(adapters)(O.some(userId))();
+
+        expect(html).toContain('class="article-activity-card"');
+      });
+
       it.todo('display a maximum of 20 articles');
 
       it.todo('displays the articles in order of latest activity in descending order');
