@@ -7,6 +7,7 @@ import * as TO from 'fp-ts/TaskOption';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { constructFeedItem, GetArticle } from './construct-feed-item';
 import { followedGroups } from './followed-groups';
+import { followedGroupsActivities } from './followed-groups-activities';
 import { getActor, GetGroup } from './get-actor';
 import { GetAllEvents, getMostRecentEvents } from './get-most-recent-events';
 import {
@@ -53,12 +54,19 @@ export const yourFeed: YourFeed = (ports) => (userId) => pipe(
     T.map((events) => followedGroups(events)(uId)),
     T.map(RNEA.fromReadonlyArray),
     T.map(E.fromOption(constant(followSomething))),
+    TE.map((groups) => ({ uId, groups })),
+  )),
+  TE.chain(({ uId, groups }) => pipe(
+    ports.getAllEvents,
+    T.map((events) => followedGroupsActivities(events)(groups)),
+    T.map(RNEA.fromReadonlyArray),
+    T.map(E.fromOption(constant(noEvaluationsYet))),
     TE.map(() => uId),
   )),
   TE.chainW(flow(
     getMostRecentEvents(ports.getAllEvents, ports.follows, 20),
     T.map(RNEA.fromReadonlyArray),
-    T.chain(TE.fromOption(constant(noEvaluationsYet))),
+    T.chain(TE.fromOption(constant(noEvaluationsYet))), // TODO: this is unreachable code
   )),
   TE.chainTaskK(renderEventSummaries(ports)),
   TE.toUnion,
