@@ -18,7 +18,7 @@ type FetchGroup = (groupId: GroupId) => TO.TaskOption<{
   avatarPath: string,
 }>;
 
-type Ports = {
+export type Ports = {
   follows: Follows,
   getAllEvents: GetAllEvents,
   getGroup: FetchGroup,

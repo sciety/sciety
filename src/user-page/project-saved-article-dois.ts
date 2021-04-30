@@ -4,7 +4,7 @@ import { flow, pipe } from 'fp-ts/function';
 import { GetSavedArticleDois } from './fetch-saved-articles';
 import { DomainEvent, isUserSavedArticleEvent } from '../types/domain-events';
 
-type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
+export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 export const projectSavedArticleDois = (getAllEvents: GetAllEvents): GetSavedArticleDois => (userId) => pipe(
   getAllEvents,
