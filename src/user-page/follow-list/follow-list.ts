@@ -7,7 +7,6 @@ import { flow, pipe } from 'fp-ts/function';
 import { GetAllEvents, projectFollowedGroupIds } from './project-followed-group-ids';
 import { renderFollowList } from './render-follow-list';
 import { Follows, renderFollowedGroup } from './render-followed-group';
-import { renderFollowToggle } from '../../follow/render-follow-toggle';
 import { GroupId } from '../../types/group-id';
 import { HtmlFragment } from '../../types/html-fragment';
 import { UserId } from '../../types/user-id';
@@ -33,7 +32,7 @@ export const followList: FollowList = (ports) => (userId, viewingUserId) => pipe
   T.chain(T.traverseArray(ports.getGroup)),
   T.chain(flow(
     RA.compact,
-    T.traverseArray(renderFollowedGroup(renderFollowToggle, ports.follows)(viewingUserId)),
+    T.traverseArray(renderFollowedGroup(ports.follows)(viewingUserId)),
   )),
   T.map(renderFollowList),
   TE.rightTask,
