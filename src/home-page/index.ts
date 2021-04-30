@@ -28,7 +28,7 @@ export const homePage = (ports: Ports): HomePage => flow(
   (params) => params.user,
   O.map((user) => user.id),
   (userId) => ({
-    header: renderPageHeader(),
+    header: T.of(renderPageHeader()),
     feed: yourFeed(ports)(userId),
     editorialCommunities: renderGroups(
       ports.getAllGroups,
