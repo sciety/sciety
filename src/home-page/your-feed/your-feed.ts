@@ -1,14 +1,14 @@
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
-import * as B from 'fp-ts/boolean';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { constructFeedItem, GetArticle } from './construct-feed-item';
+import { followedGroups } from './followed-groups';
 import { getActor, GetGroup } from './get-actor';
 import { GetAllEvents, getMostRecentEvents } from './get-most-recent-events';
-import { projectIsFollowingSomething } from './project-is-following-something';
 import {
   followSomething,
   noEvaluationsYet,
@@ -48,15 +48,12 @@ type YourFeed = (ports: Ports) => (
 export const yourFeed: YourFeed = (ports) => (userId) => pipe(
   userId,
   TE.fromOption(constant(welcomeMessage)),
-  TE.chainFirst((u) => pipe(
-    u,
-    projectIsFollowingSomething(ports.getAllEvents),
-    T.chain(
-      B.fold(
-        constant(TE.left(followSomething)),
-        () => TE.right(u),
-      ),
-    ),
+  TE.chain((uId) => pipe(
+    ports.getAllEvents,
+    T.map((events) => followedGroups(events)(uId)),
+    T.map(RNEA.fromReadonlyArray),
+    T.map(E.fromOption(constant(followSomething))),
+    TE.map(() => uId),
   )),
   TE.chainW(flow(
     getMostRecentEvents(ports.getAllEvents, ports.follows, 20),
