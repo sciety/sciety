@@ -1,10 +1,10 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
-import { ArticleViewModel, renderArticleActivityCard } from '../../src/shared-components/render-article-activity-card';
-import { Doi } from '../../src/types/doi';
-import { toHtmlFragment } from '../../src/types/html-fragment';
-import { sanitise } from '../../src/types/sanitised-html-fragment';
+import { ArticleViewModel, renderArticleActivityCard } from '../../../src/shared-components/article-activity-card/render-article-activity-card';
+import { Doi } from '../../../src/types/doi';
+import { toHtmlFragment } from '../../../src/types/html-fragment';
+import { sanitise } from '../../../src/types/sanitised-html-fragment';
 
 const generateArticleViewModel = ({
   doi = new Doi('10.1101/1111'),

@@ -2,10 +2,10 @@ import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { constant, flow, pipe } from 'fp-ts/function';
-import { templateDate } from './date';
-import { Doi } from '../types/doi';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
+import { Doi } from '../../types/doi';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
+import { templateDate } from '../date';
 
 export type ArticleViewModel = {
   doi: Doi,

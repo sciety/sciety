@@ -1,8 +1,8 @@
 import * as TO from 'fp-ts/TaskOption';
 import { pipe, tupled } from 'fp-ts/function';
-import { ArticleServer } from '../types/article-server';
-import { Doi } from '../types/doi';
-import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
+import { ArticleServer } from '../../types/article-server';
+import { Doi } from '../../types/doi';
+import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 
 type GetArticle = (doi: Doi) => TO.TaskOption<{
   title: SanitisedHtmlFragment,

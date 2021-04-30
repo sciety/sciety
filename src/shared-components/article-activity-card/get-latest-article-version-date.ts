@@ -3,8 +3,8 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe, tupled } from 'fp-ts/function';
-import { ArticleServer } from '../types/article-server';
-import { Doi } from '../types/doi';
+import { ArticleServer } from '../../types/article-server';
+import { Doi } from '../../types/doi';
 
 export type FindVersionsForArticleDoi = (
   doi: Doi,
