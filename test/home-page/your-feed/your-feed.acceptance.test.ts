@@ -5,7 +5,7 @@ import * as TO from 'fp-ts/TaskOption';
 import { JSDOM } from 'jsdom';
 import {
   followSomething, noEvaluationsYet, troubleFetchingTryAgain, welcomeMessage,
-} from '../../../src/home-page/your-feed/render-feed';
+} from '../../../src/home-page/your-feed/static-messages';
 import { yourFeed } from '../../../src/home-page/your-feed/your-feed';
 import { Doi, eqDoi } from '../../../src/types/doi';
 import { editorialCommunityReviewedArticle, userFollowedEditorialCommunity } from '../../../src/types/domain-events';

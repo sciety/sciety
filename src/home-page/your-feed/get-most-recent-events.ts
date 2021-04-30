@@ -1,5 +1,4 @@
 import * as T from 'fp-ts/Task';
-import { GetEvents } from './render-feed';
 import {
   DomainEvent,
   EditorialCommunityReviewedArticleEvent,
@@ -9,6 +8,8 @@ import { GroupId } from '../../types/group-id';
 import { UserId } from '../../types/user-id';
 
 export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
+
+type GetEvents<E> = (userId: UserId) => T.Task<ReadonlyArray<E>>;
 
 type Follows = (u: UserId, g: GroupId) => T.Task<boolean>;
 

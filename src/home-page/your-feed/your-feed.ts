@@ -1,13 +1,19 @@
 import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
+import * as B from 'fp-ts/boolean';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { constructFeedItem, GetArticle } from './construct-feed-item';
 import { getActor, GetGroup } from './get-actor';
 import { GetAllEvents, getMostRecentEvents } from './get-most-recent-events';
 import { projectIsFollowingSomething } from './project-is-following-something';
-import { renderFeed } from './render-feed';
+import {
+  followSomething,
+  noEvaluationsYet,
+  welcomeMessage,
+} from './static-messages';
 import { renderSummaryFeedList } from '../../shared-components';
 import { GroupId } from '../../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
@@ -26,12 +32,41 @@ const renderEventSummaries = (ports: Ports) => flow(
   TO.match(constant(pipe('', toHtmlFragment)), renderSummaryFeedList),
 );
 
+const renderAsSection = (contents: HtmlFragment): HtmlFragment => toHtmlFragment(`
+  <section>
+    <h2>
+      Feed
+    </h2>
+    ${contents}
+  </section>
+`);
+
 type YourFeed = (ports: Ports) => (
   userId: O.Option<UserId>,
 ) => T.Task<HtmlFragment>;
 
-export const yourFeed: YourFeed = (ports) => (userId) => renderFeed(
-  projectIsFollowingSomething(ports.getAllEvents),
-  getMostRecentEvents(ports.getAllEvents, ports.follows, 20),
-  renderEventSummaries(ports),
-)(userId, []);
+export const yourFeed: YourFeed = (ports) => (userId) => pipe(
+  userId,
+  TE.fromOption(constant(welcomeMessage)),
+  TE.chainFirst((u) => pipe(
+    u,
+    projectIsFollowingSomething(ports.getAllEvents),
+    T.chain(
+      B.fold(
+        constant(TE.left(followSomething)),
+        () => TE.right(u),
+      ),
+    ),
+  )),
+  TE.chainW(flow(
+    getMostRecentEvents(ports.getAllEvents, ports.follows, 20),
+    T.map(RNEA.fromReadonlyArray),
+    T.chain(TE.fromOption(constant(noEvaluationsYet))),
+  )),
+  TE.chainTaskK(renderEventSummaries(ports)),
+  TE.toUnion,
+  T.map(flow(
+    toHtmlFragment,
+    renderAsSection,
+  )),
+);
