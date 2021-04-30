@@ -1,8 +1,8 @@
 import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { constant, flow } from 'fp-ts/function';
-import { templateListItems } from '../shared-components';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { templateListItems } from '../../shared-components';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 const followingNothing = `
   <p>They’re not following anything. When they do, they’ll be listed here.</p>

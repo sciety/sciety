@@ -2,9 +2,9 @@ import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
-import { GroupId } from '../types/group-id';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-import { UserId } from '../types/user-id';
+import { GroupId } from '../../types/group-id';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { UserId } from '../../types/user-id';
 
 type Group = {
   id: GroupId,

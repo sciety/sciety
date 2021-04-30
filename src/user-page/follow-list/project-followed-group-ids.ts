@@ -1,9 +1,9 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
-import { DomainEvent } from '../types/domain-events';
-import { GroupId } from '../types/group-id';
-import { UserId } from '../types/user-id';
+import { DomainEvent } from '../../types/domain-events';
+import { GroupId } from '../../types/group-id';
+import { UserId } from '../../types/user-id';
 
 export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 

@@ -4,13 +4,13 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe } from 'fp-ts/function';
+import { GetAllEvents, projectFollowedGroupIds } from './project-followed-group-ids';
+import { renderFollowList } from './render-follow-list';
+import { Follows, renderFollowedGroup } from './render-followed-group';
 import { renderFollowToggle } from '../../follow/render-follow-toggle';
 import { GroupId } from '../../types/group-id';
 import { HtmlFragment } from '../../types/html-fragment';
 import { UserId } from '../../types/user-id';
-import { GetAllEvents, projectFollowedGroupIds } from '../project-followed-group-ids';
-import { renderFollowList } from '../render-follow-list';
-import { Follows, renderFollowedGroup } from '../render-followed-group';
 
 type FetchGroup = (groupId: GroupId) => TO.TaskOption<{
   id: GroupId,
