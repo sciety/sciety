@@ -27,9 +27,10 @@ describe('followed-groups', () => {
   describe('there is a single follow event and a single unfollow event for the user', () => {
     it('returns an empty array', () => {
       const groupId = new GroupId('group');
+      const sameGroupId = new GroupId('group');
       const events = [
         userFollowedEditorialCommunity(userId, groupId),
-        userUnfollowedEditorialCommunity(userId, groupId),
+        userUnfollowedEditorialCommunity(userId, sameGroupId),
       ];
       const groupIds = followedGroups(events)(userId);
 
