@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
-import { flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import { GetAllEvents, projectFollowedGroupIds } from './project-followed-group-ids';
 import { renderFollowList } from './render-follow-list';
 import { Follows, renderFollowedGroup } from './render-followed-group';
@@ -30,10 +30,8 @@ export const followList: FollowList = (ports) => (userId, viewingUserId) => pipe
   userId,
   projectFollowedGroupIds(ports.getAllEvents),
   T.chain(T.traverseArray(ports.getGroup)),
-  T.chain(flow(
-    RA.compact,
-    T.traverseArray(renderFollowedGroup(ports.follows)(viewingUserId)),
-  )),
+  T.map(RA.compact),
+  T.chain(T.traverseArray(renderFollowedGroup(ports.follows)(viewingUserId))),
   T.map(renderFollowList),
   TE.rightTask,
 );
