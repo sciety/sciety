@@ -55,7 +55,7 @@ describe('followed-groups', () => {
   describe('there are 2 follow events and 1 unfollow events for the user', () => {
     it('returns the group ids of the still followed group', () => {
       const groupId1 = new GroupId('group1');
-      const groupId2 = new GroupId('group1');
+      const groupId2 = new GroupId('group2');
       const events = [
         userFollowedEditorialCommunity(userId, groupId1),
         userFollowedEditorialCommunity(userId, groupId2),
