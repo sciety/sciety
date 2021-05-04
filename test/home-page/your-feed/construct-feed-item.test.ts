@@ -1,6 +1,6 @@
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { constructFeedItem, GetArticle } from '../../../src/home-page/your-feed/construct-feed-item';
+import { constructFeedItem } from '../../../src/home-page/your-feed/construct-feed-item';
 import { Doi } from '../../../src/types/doi';
 import { EditorialCommunityReviewedArticleEvent } from '../../../src/types/domain-events';
 import { GroupId } from '../../../src/types/group-id';
@@ -26,7 +26,7 @@ describe('construct-feed-item', () => {
     };
 
     describe('and the article information can be retrieved', () => {
-      const getArticle: GetArticle = () => TE.right({
+      const getArticle = () => TE.right({
         title: articleTitle,
       });
 
@@ -56,7 +56,7 @@ describe('construct-feed-item', () => {
     });
 
     describe('and the article information cannot be retrieved', () => {
-      const getArticle: GetArticle = () => TE.left('something-bad');
+      const getArticle = () => TE.left('something-bad');
 
       it('displays a generic article title', async () => {
         const feedItem = await constructFeedItem(dummyGetActor, getArticle)(event)();
