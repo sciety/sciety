@@ -1,43 +1,8 @@
-import { URL } from 'url';
-import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
-import { renderReviewFeedItem, ReviewFeedItem } from '../../src/article-page/render-review-feed-item';
-import { GroupId } from '../../src/types/group-id';
-import { toHtmlFragment } from '../../src/types/html-fragment';
-import { sanitise } from '../../src/types/sanitised-html-fragment';
+import * as RFI from './review-feed-item-helpers';
+import { renderReviewFeedItem } from '../../src/article-page/render-review-feed-item';
 import * as t from '../helpers';
-
-const arbitraryReviewFeedItem = (): ReviewFeedItem => ({
-  type: 'review',
-  id: t.arbitraryDoi(),
-  source: O.some(new URL(t.arbitraryUri())),
-  occurredAt: new Date(),
-  groupId: new GroupId('group-1'),
-  groupName: 'group 1',
-  groupAvatar: '/avatar',
-  fullText: pipe(t.arbitraryString(), toHtmlFragment, sanitise, O.some),
-  counts: {
-    helpfulCount: 0,
-    notHelpfulCount: 0,
-  },
-  current: O.none,
-});
-
-const withFullText = (fullText: string) => (rfi: ReviewFeedItem): ReviewFeedItem => ({
-  ...rfi,
-  fullText: pipe(fullText, toHtmlFragment, sanitise, O.some),
-});
-
-const withNoFullText = (rfi: ReviewFeedItem): ReviewFeedItem => ({
-  ...rfi,
-  fullText: O.none,
-});
-
-const withSource = (uri: string) => (rfi: ReviewFeedItem): ReviewFeedItem => ({
-  ...rfi,
-  source: O.some(new URL(uri)),
-});
 
 describe('render-review-feed-item', () => {
   describe('when the review has long full text', () => {
@@ -45,8 +10,8 @@ describe('render-review-feed-item', () => {
     const teaserLength = 6;
     const fullText = t.arbitraryTextLongerThan(teaserLength);
     const item = pipe(
-      arbitraryReviewFeedItem(),
-      withFullText(fullText),
+      RFI.arbitrary(),
+      RFI.withFullText(fullText),
     );
 
     beforeEach(() => {
@@ -76,9 +41,9 @@ describe('render-review-feed-item', () => {
     const fullText = 'tldr';
     const source = 'http://example.com/source';
     const item = pipe(
-      arbitraryReviewFeedItem(),
-      withFullText(fullText),
-      withSource(source),
+      RFI.arbitrary(),
+      RFI.withFullText(fullText),
+      RFI.withSource(source),
     );
     let rendered: DocumentFragment;
 
@@ -111,9 +76,9 @@ describe('render-review-feed-item', () => {
     const source = 'http://example.com/source';
     let rendered: DocumentFragment;
     const item = pipe(
-      arbitraryReviewFeedItem(),
-      withNoFullText,
-      withSource(source),
+      RFI.arbitrary(),
+      RFI.withNoFullText,
+      RFI.withSource(source),
     );
 
     beforeEach(() => {
