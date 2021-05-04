@@ -1,11 +1,21 @@
 import * as O from 'fp-ts/Option';
+import * as TO from 'fp-ts/TaskOption';
 import { populateArticleViewModelsSkippingFailures } from '../../../src/home-page/your-feed/populate-article-view-models';
 import { ArticleActivity } from '../../../src/types/article-activity';
 import { Doi } from '../../../src/types/doi';
+import { toHtmlFragment } from '../../../src/types/html-fragment';
+import { sanitise } from '../../../src/types/sanitised-html-fragment';
 
 describe('populate-article-view-models', () => {
   describe('no failures', () => {
     it.skip('returns article view models by adding article metadata and version dates', async () => {
+      const getArticleDetails = () => TO.some(
+        {
+          title: sanitise(toHtmlFragment('')),
+          authors: [],
+          latestVersionDate: new Date(),
+        },
+      );
       const activities: ReadonlyArray<ArticleActivity> = [
         {
           doi: new Doi('10.1101/11111'),
@@ -18,7 +28,7 @@ describe('populate-article-view-models', () => {
           latestActivityDate: new Date(),
         },
       ];
-      const results = await populateArticleViewModelsSkippingFailures(activities)();
+      const results = await populateArticleViewModelsSkippingFailures(getArticleDetails)(activities)();
 
       expect(results).toHaveLength(2);
       expect(results[0]).toStrictEqual(expect.objectContaining({ latestVersionDate: O.some(new Date('2021-01-01')) }));

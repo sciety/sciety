@@ -59,7 +59,7 @@ const construct = ({ actor, article, event }: Inputs) => ({
 
 type GetActor = (id: GroupId) => T.Task<Actor>;
 
-export type GetArticle = (id: Doi) => TE.TaskEither<unknown, Article>;
+type GetArticle = (id: Doi) => TE.TaskEither<unknown, Article>;
 
 export const constructFeedItem = (
   getActor: GetActor,

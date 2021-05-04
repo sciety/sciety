@@ -23,6 +23,7 @@ describe('your-feed acceptance', () => {
         getGroup: shouldNotBeCalled,
         getAllEvents: shouldNotBeCalled,
         follows: shouldNotBeCalled,
+        findVersionsForArticleDoi: shouldNotBeCalled,
       };
 
       const html = await yourFeed(adapters)(O.none)();
@@ -41,6 +42,7 @@ describe('your-feed acceptance', () => {
           getGroup: shouldNotBeCalled,
           getAllEvents: T.of([userFollowedEditorialCommunity(userId, new GroupId('NCRC'))]),
           follows: () => T.of(true),
+          findVersionsForArticleDoi: shouldNotBeCalled,
         };
 
         const html = await yourFeed(adapters)(O.some(userId))();
@@ -57,6 +59,7 @@ describe('your-feed acceptance', () => {
           getGroup: shouldNotBeCalled,
           getAllEvents: T.of([]),
           follows: () => T.of(false),
+          findVersionsForArticleDoi: shouldNotBeCalled,
         };
         const html = await yourFeed(adapters)(O.some(userId))();
 
@@ -70,6 +73,8 @@ describe('your-feed acceptance', () => {
         const adapters = {
           fetchArticle: () => TE.right({
             title: sanitise(toHtmlFragment('My article title')),
+            authors: [],
+            server: 'biorxiv' as const,
           }),
           getGroup: () => TO.some({
             id: groupId,
@@ -83,6 +88,7 @@ describe('your-feed acceptance', () => {
             editorialCommunityReviewedArticle(groupId, new Doi('10.1101/111111'), new Doi('10.1101/222222')),
           ]),
           follows: () => T.of(true),
+          findVersionsForArticleDoi: shouldNotBeCalled,
         };
         const html = await yourFeed(adapters)(O.some(userId))();
 
@@ -100,6 +106,8 @@ describe('your-feed acceptance', () => {
         const adapters = {
           fetchArticle: () => TE.right({
             title: sanitise(toHtmlFragment('My article title')),
+            authors: [],
+            server: 'biorxiv' as const,
           }),
           getGroup: () => TO.some({
             id: groupId,
@@ -113,6 +121,7 @@ describe('your-feed acceptance', () => {
             editorialCommunityReviewedArticle(groupId, new Doi('10.1101/111111'), new Doi('10.1101/222222')),
           ]),
           follows: () => T.of(true),
+          findVersionsForArticleDoi: shouldNotBeCalled,
         };
         const html = await yourFeed(adapters)(O.some(userId))();
 
@@ -131,6 +140,8 @@ describe('your-feed acceptance', () => {
                 ? TE.left('unavailable' as const)
                 : TE.right({
                   title: sanitise(toHtmlFragment('My article title')),
+                  authors: [],
+                  server: 'biorxiv' as const,
                 })),
             getGroup: () => TO.some({
               id: groupId,
@@ -145,6 +156,7 @@ describe('your-feed acceptance', () => {
               editorialCommunityReviewedArticle(groupId, new Doi('10.1101/success'), new Doi('10.1101/222222')),
             ]),
             follows: () => T.of(true),
+            findVersionsForArticleDoi: shouldNotBeCalled,
           };
 
           const html = await yourFeed(adapters)(O.some(userId))();
@@ -172,6 +184,7 @@ describe('your-feed acceptance', () => {
               editorialCommunityReviewedArticle(groupId, new Doi('10.1101/111111'), new Doi('10.1101/222222')),
             ]),
             follows: () => T.of(true),
+            findVersionsForArticleDoi: shouldNotBeCalled,
           };
           const html = await yourFeed(adapters)(O.some(userId))();
 

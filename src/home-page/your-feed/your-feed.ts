@@ -5,7 +5,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { constant, flow, pipe } from 'fp-ts/function';
-import { constructFeedItem, GetArticle } from './construct-feed-item';
+import { constructFeedItem } from './construct-feed-item';
 import { followedGroups } from './followed-groups';
 import { followedGroupsActivities } from './followed-groups-activities';
 import { getActor, GetGroup } from './get-actor';
@@ -17,15 +17,27 @@ import {
   welcomeMessage,
 } from './static-messages';
 import { renderSummaryFeedList } from '../../shared-components';
+import { fetchArticleDetails } from '../../shared-components/article-card/fetch-article-details';
+import { FindVersionsForArticleDoi, getLatestArticleVersionDate } from '../../shared-components/article-card/get-latest-article-version-date';
+import { ArticleServer } from '../../types/article-server';
+import { Doi } from '../../types/doi';
 import { GroupId } from '../../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { UserId } from '../../types/user-id';
+
+type GetArticle = (doi: Doi) => TE.TaskEither<unknown, {
+  title: SanitisedHtmlFragment,
+  server: ArticleServer,
+  authors: ReadonlyArray<string>,
+}>;
 
 export type Ports = {
   fetchArticle: GetArticle,
   getGroup: GetGroup,
   getAllEvents: GetAllEvents,
   follows: (u: UserId, g: GroupId) => T.Task<boolean>,
+  findVersionsForArticleDoi: FindVersionsForArticleDoi,
 };
 
 const renderEventSummaries = (ports: Ports) => flow(
@@ -62,7 +74,12 @@ export const yourFeed: YourFeed = (ports) => (userId) => pipe(
     T.map((events) => followedGroupsActivities(events)(groups)),
     T.map(RNEA.fromReadonlyArray),
     T.map(E.fromOption(constant(noEvaluationsYet))),
-    TE.chainTaskK(populateArticleViewModelsSkippingFailures),
+    TE.chainTaskK(populateArticleViewModelsSkippingFailures(
+      fetchArticleDetails(
+        getLatestArticleVersionDate(ports.findVersionsForArticleDoi),
+        flow(ports.fetchArticle, T.map(O.fromEither)),
+      ),
+    )),
     TE.map(() => uId),
   )),
   TE.chainW(flow(
