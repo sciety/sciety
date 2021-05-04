@@ -32,11 +32,6 @@ const arbitraryReviewFeedItem = (): ReviewFeedItem => ({
   current: O.none,
 });
 
-const withArticleId = (articleId: Doi) => (rfi: ReviewFeedItem): ReviewFeedItem => ({
-  ...rfi,
-  id: articleId,
-});
-
 const withFullText = (fullText: string) => (rfi: ReviewFeedItem): ReviewFeedItem => ({
   ...rfi,
   fullText: pipe(fullText, toHtmlFragment, sanitise, O.some),
@@ -57,13 +52,14 @@ describe('render-review-feed-item', () => {
     let rendered: DocumentFragment;
     const teaserLength = 6;
     const fullText = arbitraryTextLongerThan(teaserLength);
-    const articleId = arbitraryDoi();
+    const item = pipe(
+      arbitraryReviewFeedItem(),
+      withFullText(fullText),
+    );
 
     beforeEach(() => {
       rendered = pipe(
-        arbitraryReviewFeedItem(),
-        withArticleId(articleId),
-        withFullText(fullText),
+        item,
         renderReviewFeedItem(teaserLength),
         JSDOM.fragment,
       );
@@ -80,22 +76,23 @@ describe('render-review-feed-item', () => {
     });
 
     it('renders an id tag with the correct value', async () => {
-      expect(rendered.getElementById(`doi:${articleId.value}`)).not.toBeNull();
+      expect(rendered.getElementById(`doi:${item.id.value}`)).not.toBeNull();
     });
   });
 
   describe('when the review has short full text', () => {
-    let rendered: DocumentFragment;
     const fullText = 'tldr';
     const source = 'http://example.com/source';
-    const articleId = arbitraryDoi();
+    const item = pipe(
+      arbitraryReviewFeedItem(),
+      withFullText(fullText),
+      withSource(source),
+    );
+    let rendered: DocumentFragment;
 
     beforeEach(() => {
       rendered = pipe(
-        arbitraryReviewFeedItem(),
-        withArticleId(articleId),
-        withFullText(fullText),
-        withSource(source),
+        item,
         renderReviewFeedItem(12),
         JSDOM.fragment,
       );
@@ -114,19 +111,22 @@ describe('render-review-feed-item', () => {
     });
 
     it('renders an id tag with the correct value', async () => {
-      expect(rendered.getElementById(`doi:${articleId.value}`)).not.toBeNull();
+      expect(rendered.getElementById(`doi:${item.id.value}`)).not.toBeNull();
     });
   });
 
   describe('when the review has no full text', () => {
     const source = 'http://example.com/source';
     let rendered: DocumentFragment;
-    const articleId = arbitraryDoi();
+    const item = pipe(
+      arbitraryReviewFeedItem(),
+      withNoFullText,
+      withSource(source),
+    );
 
     beforeEach(() => {
       rendered = pipe(
         arbitraryReviewFeedItem(),
-        withArticleId(articleId),
         withSource(source),
         withNoFullText,
         renderReviewFeedItem(6),
@@ -143,7 +143,7 @@ describe('render-review-feed-item', () => {
     });
 
     it('renders an id tag with the correct value', async () => {
-      expect(rendered.getElementById(`doi:${articleId.value}`)).not.toBeNull();
+      expect(rendered.getElementById(`doi:${item.id.value}`)).not.toBeNull();
     });
   });
 });
