@@ -16,9 +16,9 @@ const arbitraryUri = () => 'http://something.com/example';
 
 const arbitraryTextLongerThan = (min: number) => 'xy '.repeat(min);
 
-const arbitraryReviewFeedItem = (articleId: Doi): ReviewFeedItem => ({
+const arbitraryReviewFeedItem = (): ReviewFeedItem => ({
   type: 'review',
-  id: articleId,
+  id: arbitraryDoi(),
   source: O.some(new URL(arbitraryUri())),
   occurredAt: new Date(),
   groupId: new GroupId('group-1'),
@@ -30,6 +30,11 @@ const arbitraryReviewFeedItem = (articleId: Doi): ReviewFeedItem => ({
     notHelpfulCount: 0,
   },
   current: O.none,
+});
+
+const withArticleId = (articleId: Doi) => (rfi: ReviewFeedItem): ReviewFeedItem => ({
+  ...rfi,
+  id: articleId,
 });
 
 const withFullText = (fullText: string) => (rfi: ReviewFeedItem): ReviewFeedItem => ({
@@ -56,7 +61,8 @@ describe('render-review-feed-item', () => {
 
     beforeEach(() => {
       rendered = pipe(
-        arbitraryReviewFeedItem(articleId),
+        arbitraryReviewFeedItem(),
+        withArticleId(articleId),
         withFullText(fullText),
         renderReviewFeedItem(teaserLength),
         JSDOM.fragment,
@@ -86,7 +92,8 @@ describe('render-review-feed-item', () => {
 
     beforeEach(() => {
       rendered = pipe(
-        arbitraryReviewFeedItem(articleId),
+        arbitraryReviewFeedItem(),
+        withArticleId(articleId),
         withFullText(fullText),
         withSource(source),
         renderReviewFeedItem(12),
@@ -118,7 +125,8 @@ describe('render-review-feed-item', () => {
 
     beforeEach(() => {
       rendered = pipe(
-        arbitraryReviewFeedItem(articleId),
+        arbitraryReviewFeedItem(),
+        withArticleId(articleId),
         withSource(source),
         withNoFullText,
         renderReviewFeedItem(6),
