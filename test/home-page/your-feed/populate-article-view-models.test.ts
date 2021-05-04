@@ -1,6 +1,29 @@
+import * as O from 'fp-ts/Option';
+import { populateArticleViewModelsSkippingFailures } from '../../../src/home-page/your-feed/populate-article-view-models';
+import { ArticleActivity } from '../../../src/types/article-activity';
+import { Doi } from '../../../src/types/doi';
+
 describe('populate-article-view-models', () => {
   describe('no failures', () => {
-    it.todo('returns a single article view model by adding article metadata and a version date');
+    it.skip('returns article view models by adding article metadata and version dates', async () => {
+      const activities: ReadonlyArray<ArticleActivity> = [
+        {
+          doi: new Doi('10.1101/11111'),
+          evaluationCount: 1,
+          latestActivityDate: new Date(),
+        },
+        {
+          doi: new Doi('10.1101/22222'),
+          evaluationCount: 1,
+          latestActivityDate: new Date(),
+        },
+      ];
+      const results = await populateArticleViewModelsSkippingFailures(activities)();
+
+      expect(results).toHaveLength(2);
+      expect(results[0]).toStrictEqual(expect.objectContaining({ latestVersionDate: O.some(new Date('2021-01-01')) }));
+      expect(results[1]).toStrictEqual(expect.objectContaining({ latestVersionDate: O.some(new Date('1921-01-01')) }));
+    });
   });
 
   describe('version date failing', () => {
