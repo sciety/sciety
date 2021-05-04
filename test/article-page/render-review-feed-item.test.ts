@@ -126,9 +126,7 @@ describe('render-review-feed-item', () => {
 
     beforeEach(() => {
       rendered = pipe(
-        arbitraryReviewFeedItem(),
-        withSource(source),
-        withNoFullText,
+        item,
         renderReviewFeedItem(6),
         JSDOM.fragment,
       );
