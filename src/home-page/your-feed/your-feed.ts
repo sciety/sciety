@@ -10,27 +10,17 @@ import { followedGroups } from './followed-groups';
 import { followedGroupsActivities } from './followed-groups-activities';
 import { getActor, GetGroup } from './get-actor';
 import { GetAllEvents, getMostRecentEvents } from './get-most-recent-events';
-import { populateArticleViewModelsSkippingFailures } from './populate-article-view-models';
+import { GetArticle, populateArticleViewModelsSkippingFailures } from './populate-article-view-models';
 import {
   followSomething,
   noEvaluationsYet,
   welcomeMessage,
 } from './static-messages';
 import { renderSummaryFeedList } from '../../shared-components';
-import { fetchArticleDetails } from '../../shared-components/article-card/fetch-article-details';
-import { FindVersionsForArticleDoi, getLatestArticleVersionDate } from '../../shared-components/article-card/get-latest-article-version-date';
-import { ArticleServer } from '../../types/article-server';
-import { Doi } from '../../types/doi';
+import { FindVersionsForArticleDoi } from '../../shared-components/article-card/get-latest-article-version-date';
 import { GroupId } from '../../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
-import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { UserId } from '../../types/user-id';
-
-type GetArticle = (doi: Doi) => TE.TaskEither<unknown, {
-  title: SanitisedHtmlFragment,
-  server: ArticleServer,
-  authors: ReadonlyArray<string>,
-}>;
 
 export type Ports = {
   fetchArticle: GetArticle,
@@ -75,10 +65,8 @@ export const yourFeed: YourFeed = (ports) => (userId) => pipe(
     T.map(RNEA.fromReadonlyArray),
     T.map(E.fromOption(constant(noEvaluationsYet))),
     TE.chainTaskK(populateArticleViewModelsSkippingFailures(
-      fetchArticleDetails(
-        getLatestArticleVersionDate(ports.findVersionsForArticleDoi),
-        flow(ports.fetchArticle, T.map(O.fromEither)),
-      ),
+      ports.fetchArticle,
+      ports.findVersionsForArticleDoi,
     )),
     TE.map(() => uId),
   )),

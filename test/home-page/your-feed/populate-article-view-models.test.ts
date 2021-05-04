@@ -1,4 +1,6 @@
 import * as O from 'fp-ts/Option';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
+import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { populateArticleViewModelsSkippingFailures } from '../../../src/home-page/your-feed/populate-article-view-models';
 import { ArticleActivity } from '../../../src/types/article-activity';
@@ -9,13 +11,18 @@ import { sanitise } from '../../../src/types/sanitised-html-fragment';
 describe('populate-article-view-models', () => {
   describe('no failures', () => {
     it.skip('returns article view models by adding article metadata and version dates', async () => {
-      const getArticleDetails = () => TO.some(
+      const getArticle = () => TE.right(
         {
           title: sanitise(toHtmlFragment('')),
           authors: [],
-          latestVersionDate: new Date(),
+          server: 'biorxiv' as const,
         },
       );
+      const findVersionsForArticleDoi = () => TO.some([
+        {
+          occurredAt: new Date(),
+        },
+      ] as RNEA.ReadonlyNonEmptyArray<{ occurredAt: Date }>);
       const activities: ReadonlyArray<ArticleActivity> = [
         {
           doi: new Doi('10.1101/11111'),
@@ -28,7 +35,10 @@ describe('populate-article-view-models', () => {
           latestActivityDate: new Date(),
         },
       ];
-      const results = await populateArticleViewModelsSkippingFailures(getArticleDetails)(activities)();
+      const results = await populateArticleViewModelsSkippingFailures(
+        getArticle,
+        findVersionsForArticleDoi,
+      )(activities)();
 
       expect(results).toHaveLength(2);
       expect(results[0]).toStrictEqual(expect.objectContaining({ latestVersionDate: O.some(new Date('2021-01-01')) }));
