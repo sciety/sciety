@@ -12,12 +12,14 @@ const arbitraryDoi = () => new Doi('10.1101/arbitrary.doi.1');
 
 const arbitraryString = () => 'Lorem ipsum';
 
+const arbitraryUri = () => 'http://something.com/example';
+
 const arbitraryTextLongerThan = (min: number) => 'xy '.repeat(min);
 
-const arbitraryReviewFeedItem = (articleId: Doi, source = 'http://example.com'): ReviewFeedItem => ({
+const arbitraryReviewFeedItem = (articleId: Doi): ReviewFeedItem => ({
   type: 'review',
   id: articleId,
-  source: O.some(new URL(source)),
+  source: O.some(new URL(arbitraryUri())),
   occurredAt: new Date(),
   groupId: new GroupId('group-1'),
   groupName: 'group 1',
@@ -33,6 +35,11 @@ const arbitraryReviewFeedItem = (articleId: Doi, source = 'http://example.com'):
 const withFullText = (fullText: string) => (rfi: ReviewFeedItem): ReviewFeedItem => ({
   ...rfi,
   fullText: pipe(fullText, toHtmlFragment, sanitise, O.some),
+});
+
+const withSource = (uri: string) => (rfi: ReviewFeedItem): ReviewFeedItem => ({
+  ...rfi,
+  source: O.some(new URL(uri)),
 });
 
 describe('render-review-feed-item', () => {
@@ -74,8 +81,9 @@ describe('render-review-feed-item', () => {
 
     beforeEach(() => {
       rendered = pipe(
-        arbitraryReviewFeedItem(articleId, source),
+        arbitraryReviewFeedItem(articleId),
         withFullText(fullText),
+        withSource(source),
         renderReviewFeedItem(12),
         JSDOM.fragment,
       );
