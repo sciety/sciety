@@ -9,16 +9,18 @@ import { toHtmlFragment } from '../../src/types/html-fragment';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
 
 const arbitraryDoi = () => new Doi('10.1101/arbitrary.doi.1');
+const arbitraryTextLongerThan = (min: number) => 'xy '.repeat(min);
 
 describe('render-review-feed-item', () => {
   describe('when the review has long full text', () => {
     let rendered: DocumentFragment;
-    const fullText = 'A very long review';
+    const teaserLength = 6;
+    const fullText = arbitraryTextLongerThan(teaserLength);
     const articleId = arbitraryDoi();
 
     beforeEach(() => {
       rendered = JSDOM.fragment(
-        renderReviewFeedItem(6)({
+        renderReviewFeedItem(teaserLength)({
           type: 'review',
           id: articleId,
           source: O.some(new URL('http://example.com')),
@@ -43,7 +45,7 @@ describe('render-review-feed-item', () => {
 
       expect(toggleableContent).not.toBeNull();
       expect(fullTextWrapper?.textContent).toStrictEqual(expect.stringContaining(fullText));
-      expect(teaserWrapper?.textContent).toStrictEqual(expect.stringContaining('A …'));
+      expect(teaserWrapper?.textContent).toStrictEqual(expect.stringContaining('…'));
     });
 
     it('renders an id tag with the correct value', async () => {
