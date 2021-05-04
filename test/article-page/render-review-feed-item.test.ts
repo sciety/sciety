@@ -19,8 +19,8 @@ describe('render-review-feed-item', () => {
     const articleId = arbitraryDoi();
 
     beforeEach(() => {
-      rendered = JSDOM.fragment(
-        renderReviewFeedItem(teaserLength)({
+      rendered = pipe(
+        {
           type: 'review',
           id: articleId,
           source: O.some(new URL('http://example.com')),
@@ -34,7 +34,9 @@ describe('render-review-feed-item', () => {
             notHelpfulCount: 0,
           },
           current: O.none,
-        }),
+        },
+        renderReviewFeedItem(teaserLength),
+        JSDOM.fragment,
       );
     });
 
@@ -60,8 +62,8 @@ describe('render-review-feed-item', () => {
     const articleId = arbitraryDoi();
 
     beforeEach(() => {
-      rendered = JSDOM.fragment(
-        renderReviewFeedItem(12)({
+      rendered = pipe(
+        {
           type: 'review',
           id: articleId,
           source: O.some(new URL(source)),
@@ -75,7 +77,9 @@ describe('render-review-feed-item', () => {
             notHelpfulCount: 0,
           },
           current: O.none,
-        }),
+        },
+        renderReviewFeedItem(12),
+        JSDOM.fragment,
       );
     });
 
@@ -102,8 +106,8 @@ describe('render-review-feed-item', () => {
     const articleId = arbitraryDoi();
 
     beforeEach(() => {
-      rendered = JSDOM.fragment(
-        renderReviewFeedItem(6)({
+      rendered = pipe(
+        {
           type: 'review',
           id: articleId,
           source: O.some(new URL(source)),
@@ -117,7 +121,9 @@ describe('render-review-feed-item', () => {
             notHelpfulCount: 0,
           },
           current: O.none,
-        }),
+        },
+        renderReviewFeedItem(6),
+        JSDOM.fragment,
       );
     });
 
