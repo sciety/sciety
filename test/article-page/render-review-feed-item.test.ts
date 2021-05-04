@@ -3,28 +3,20 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import { renderReviewFeedItem, ReviewFeedItem } from '../../src/article-page/render-review-feed-item';
-import { Doi } from '../../src/types/doi';
 import { GroupId } from '../../src/types/group-id';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
-
-const arbitraryDoi = () => new Doi('10.1101/arbitrary.doi.1');
-
-const arbitraryString = () => 'Lorem ipsum';
-
-const arbitraryUri = () => 'http://something.com/example';
-
-const arbitraryTextLongerThan = (min: number) => 'xy '.repeat(min);
+import * as t from '../helpers';
 
 const arbitraryReviewFeedItem = (): ReviewFeedItem => ({
   type: 'review',
-  id: arbitraryDoi(),
-  source: O.some(new URL(arbitraryUri())),
+  id: t.arbitraryDoi(),
+  source: O.some(new URL(t.arbitraryUri())),
   occurredAt: new Date(),
   groupId: new GroupId('group-1'),
   groupName: 'group 1',
   groupAvatar: '/avatar',
-  fullText: pipe(arbitraryString(), toHtmlFragment, sanitise, O.some),
+  fullText: pipe(t.arbitraryString(), toHtmlFragment, sanitise, O.some),
   counts: {
     helpfulCount: 0,
     notHelpfulCount: 0,
@@ -51,7 +43,7 @@ describe('render-review-feed-item', () => {
   describe('when the review has long full text', () => {
     let rendered: DocumentFragment;
     const teaserLength = 6;
-    const fullText = arbitraryTextLongerThan(teaserLength);
+    const fullText = t.arbitraryTextLongerThan(teaserLength);
     const item = pipe(
       arbitraryReviewFeedItem(),
       withFullText(fullText),
