@@ -37,6 +37,11 @@ const withFullText = (fullText: string) => (rfi: ReviewFeedItem): ReviewFeedItem
   fullText: pipe(fullText, toHtmlFragment, sanitise, O.some),
 });
 
+const withNoFullText = (rfi: ReviewFeedItem): ReviewFeedItem => ({
+  ...rfi,
+  fullText: O.none,
+});
+
 const withSource = (uri: string) => (rfi: ReviewFeedItem): ReviewFeedItem => ({
   ...rfi,
   source: O.some(new URL(uri)),
@@ -113,21 +118,9 @@ describe('render-review-feed-item', () => {
 
     beforeEach(() => {
       rendered = pipe(
-        {
-          type: 'review',
-          id: articleId,
-          source: O.some(new URL(source)),
-          occurredAt: new Date(),
-          groupId: new GroupId('group-1'),
-          groupName: 'group 1',
-          groupAvatar: '/avatar',
-          fullText: O.none,
-          counts: {
-            helpfulCount: 0,
-            notHelpfulCount: 0,
-          },
-          current: O.none,
-        },
+        arbitraryReviewFeedItem(articleId),
+        withSource(source),
+        withNoFullText,
         renderReviewFeedItem(6),
         JSDOM.fragment,
       );
