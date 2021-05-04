@@ -4,14 +4,13 @@ import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RM from 'fp-ts/ReadonlyMap';
 import { flow, pipe } from 'fp-ts/function';
+import { ArticleActivity } from '../../types/article-activity';
 import { Doi, eqDoi } from '../../types/doi';
 import {
   DomainEvent, EditorialCommunityReviewedArticleEvent,
   isEditorialCommunityReviewedArticleEvent,
 } from '../../types/domain-events';
 import { GroupId } from '../../types/group-id';
-
-type ArticleActivity = { doi: Doi, latestActivityDate: Date, evaluationCount: number };
 
 type FollowedGroupsActivities = (
   events: ReadonlyArray<DomainEvent>
