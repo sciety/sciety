@@ -1,6 +1,8 @@
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
+import { flow } from 'fp-ts/function';
 import { ArticleViewModel } from '../../shared-components';
 import { ArticleActivity } from '../../types/article-activity';
 import { toHtmlFragment } from '../../types/html-fragment';
@@ -23,4 +25,8 @@ type PopulateArticleViewModelsSkippingFailures = (
   activities: ReadonlyArray<ArticleActivity>
 ) => T.Task<ReadonlyArray<ArticleViewModel>>;
 
-export const populateArticleViewModelsSkippingFailures: PopulateArticleViewModelsSkippingFailures = () => T.of([]);
+export const populateArticleViewModelsSkippingFailures: PopulateArticleViewModelsSkippingFailures = flow(
+  RA.map(populateArticleViewModel),
+  T.sequenceArray,
+  T.map(RA.compact),
+);
