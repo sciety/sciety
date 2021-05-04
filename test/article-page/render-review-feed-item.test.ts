@@ -9,8 +9,12 @@ import { toHtmlFragment } from '../../src/types/html-fragment';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
 
 const arbitraryDoi = () => new Doi('10.1101/arbitrary.doi.1');
+
+const arbitraryString = () => 'Lorem ipsum';
+
 const arbitraryTextLongerThan = (min: number) => 'xy '.repeat(min);
-const arbitraryReviewFeedItem = (articleId: Doi, fullText: string, source = 'http://example.com'): ReviewFeedItem => ({
+
+const arbitraryReviewFeedItem = (articleId: Doi, source = 'http://example.com'): ReviewFeedItem => ({
   type: 'review',
   id: articleId,
   source: O.some(new URL(source)),
@@ -18,12 +22,17 @@ const arbitraryReviewFeedItem = (articleId: Doi, fullText: string, source = 'htt
   groupId: new GroupId('group-1'),
   groupName: 'group 1',
   groupAvatar: '/avatar',
-  fullText: pipe(fullText, toHtmlFragment, sanitise, O.some),
+  fullText: pipe(arbitraryString(), toHtmlFragment, sanitise, O.some),
   counts: {
     helpfulCount: 0,
     notHelpfulCount: 0,
   },
   current: O.none,
+});
+
+const withFullText = (fullText: string) => (rfi: ReviewFeedItem): ReviewFeedItem => ({
+  ...rfi,
+  fullText: pipe(fullText, toHtmlFragment, sanitise, O.some),
 });
 
 describe('render-review-feed-item', () => {
@@ -35,7 +44,8 @@ describe('render-review-feed-item', () => {
 
     beforeEach(() => {
       rendered = pipe(
-        arbitraryReviewFeedItem(articleId, fullText),
+        arbitraryReviewFeedItem(articleId),
+        withFullText(fullText),
         renderReviewFeedItem(teaserLength),
         JSDOM.fragment,
       );
@@ -64,7 +74,8 @@ describe('render-review-feed-item', () => {
 
     beforeEach(() => {
       rendered = pipe(
-        arbitraryReviewFeedItem(articleId, fullText, source),
+        arbitraryReviewFeedItem(articleId, source),
+        withFullText(fullText),
         renderReviewFeedItem(12),
         JSDOM.fragment,
       );
