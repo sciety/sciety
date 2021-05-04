@@ -90,7 +90,7 @@
     "stylelint": "^13.13.0",
     "stylelint-config-sass-guidelines": "^8.0.0",
     "supertest": "^6.1.3",
-    "taiko": "^1.2.4",
+    "taiko": "^1.2.5",
     "ts-jest": "^26.5.5",
     "ts-node-dev": "^1.1.6",
     "ts-unused-exports": "^7.0.3",
