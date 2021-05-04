@@ -86,7 +86,7 @@ describe('your-feed acceptance', () => {
         };
         const html = await yourFeed(adapters)(O.some(userId))();
 
-        expect(html).toContain('class="article-activity-card"');
+        expect(html).toContain('class="article-card"');
       });
 
       it.todo('display a maximum of 20 articles');
@@ -149,7 +149,7 @@ describe('your-feed acceptance', () => {
 
           const html = await yourFeed(adapters)(O.some(userId))();
           const fragment = JSDOM.fragment(html);
-          const cards = Array.from(fragment.querySelectorAll('.article-activity-card'));
+          const cards = Array.from(fragment.querySelectorAll('.article-card'));
 
           expect(cards).toHaveLength(1);
         });

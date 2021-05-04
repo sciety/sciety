@@ -7,18 +7,18 @@
 
 @use 'list';
 
-.article-activity-card {
+.article-card {
   @include card.basics();
 }
 
-.article-activity-card__title {
+.article-card__title {
   @include typography.sizing(16px, 2.5);
   font-family: settings.$font-family;
   font-weight: bold;
   margin-bottom: baseline.increments(0.5);
 }
 
-.article-activity-card__link {
+.article-card__link {
   color: settings.$colour-text-primary;
 
   &:link,
@@ -32,19 +32,19 @@
   }
 }
 
-.article-activity-card__authors {
+.article-card__authors {
   @include list.basics();
   @include typography.sizing(14px, 2.5);
   margin-bottom: baseline.increments(1);
   font-family: settings.$font-family;
 }
 
-.article-activity-card__author {
+.article-card__author {
   @include list.author-separator-terminator();
   display: inline;
 }
 
-.article-activity-card__meta {
+.article-card__meta {
   @include typography.sizing(12px, 2.5);
   color: settings.$colour-text-secondary;
   font-family: settings.$font-family;
