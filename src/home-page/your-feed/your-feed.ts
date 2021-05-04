@@ -10,16 +10,15 @@ import { followedGroups } from './followed-groups';
 import { followedGroupsActivities } from './followed-groups-activities';
 import { getActor, GetGroup } from './get-actor';
 import { GetAllEvents, getMostRecentEvents } from './get-most-recent-events';
+import { populateArticleViewModelsSkippingFailures } from './populate-article-view-models';
 import {
   followSomething,
   noEvaluationsYet,
   welcomeMessage,
 } from './static-messages';
-import { ArticleViewModel, renderSummaryFeedList } from '../../shared-components';
-import { ArticleActivity } from '../../types/article-activity';
+import { renderSummaryFeedList } from '../../shared-components';
 import { GroupId } from '../../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
-import { sanitise } from '../../types/sanitised-html-fragment';
 import { UserId } from '../../types/user-id';
 
 export type Ports = {
@@ -34,22 +33,6 @@ const renderEventSummaries = (ports: Ports) => flow(
   T.map(RNEA.fromReadonlyArray), // TODO shouldn't be needed, fp-ts types needs fixing
   TO.match(constant(pipe('', toHtmlFragment)), renderSummaryFeedList),
 );
-
-type PopulateArticleViewModel = (articleActivity: ArticleActivity) => TO.TaskOption<ArticleViewModel>;
-const populateArticleViewModel: PopulateArticleViewModel = (articleActivity) => TO.some(
-  {
-    ...articleActivity,
-    latestVersionDate: O.none,
-    latestActivityDate: O.some(articleActivity.latestActivityDate),
-    authors: [],
-    title: sanitise(toHtmlFragment('')),
-  },
-);
-
-type PopulateArticleViewModelsSkippingFailures = (
-  populateArticleViewModel: PopulateArticleViewModel
-) => (activities: ReadonlyArray<ArticleActivity>) => T.Task<ReadonlyArray<ArticleViewModel>>;
-const populateArticleViewModelsSkippingFailures: PopulateArticleViewModelsSkippingFailures = () => () => T.of([]);
 
 const renderAsSection = (contents: HtmlFragment): HtmlFragment => toHtmlFragment(`
   <section>
@@ -79,7 +62,7 @@ export const yourFeed: YourFeed = (ports) => (userId) => pipe(
     T.map((events) => followedGroupsActivities(events)(groups)),
     T.map(RNEA.fromReadonlyArray),
     T.map(E.fromOption(constant(noEvaluationsYet))),
-    TE.chainTaskK(populateArticleViewModelsSkippingFailures(populateArticleViewModel)),
+    TE.chainTaskK(populateArticleViewModelsSkippingFailures),
     TE.map(() => uId),
   )),
   TE.chainW(flow(
