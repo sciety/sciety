@@ -2,7 +2,7 @@ import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
-import { renderReviewFeedItem } from '../../src/article-page/render-review-feed-item';
+import { renderReviewFeedItem, ReviewFeedItem } from '../../src/article-page/render-review-feed-item';
 import { Doi } from '../../src/types/doi';
 import { GroupId } from '../../src/types/group-id';
 import { toHtmlFragment } from '../../src/types/html-fragment';
@@ -10,6 +10,21 @@ import { sanitise } from '../../src/types/sanitised-html-fragment';
 
 const arbitraryDoi = () => new Doi('10.1101/arbitrary.doi.1');
 const arbitraryTextLongerThan = (min: number) => 'xy '.repeat(min);
+const arbitraryReviewFeedItem = (articleId: Doi, fullText: string, source = 'http://example.com'): ReviewFeedItem => ({
+  type: 'review',
+  id: articleId,
+  source: O.some(new URL(source)),
+  occurredAt: new Date(),
+  groupId: new GroupId('group-1'),
+  groupName: 'group 1',
+  groupAvatar: '/avatar',
+  fullText: pipe(fullText, toHtmlFragment, sanitise, O.some),
+  counts: {
+    helpfulCount: 0,
+    notHelpfulCount: 0,
+  },
+  current: O.none,
+});
 
 describe('render-review-feed-item', () => {
   describe('when the review has long full text', () => {
@@ -20,21 +35,7 @@ describe('render-review-feed-item', () => {
 
     beforeEach(() => {
       rendered = pipe(
-        {
-          type: 'review',
-          id: articleId,
-          source: O.some(new URL('http://example.com')),
-          occurredAt: new Date(),
-          groupId: new GroupId('group-1'),
-          groupName: 'group 1',
-          groupAvatar: '/avatar',
-          fullText: pipe(fullText, toHtmlFragment, sanitise, O.some),
-          counts: {
-            helpfulCount: 0,
-            notHelpfulCount: 0,
-          },
-          current: O.none,
-        },
+        arbitraryReviewFeedItem(articleId, fullText),
         renderReviewFeedItem(teaserLength),
         JSDOM.fragment,
       );
@@ -63,21 +64,7 @@ describe('render-review-feed-item', () => {
 
     beforeEach(() => {
       rendered = pipe(
-        {
-          type: 'review',
-          id: articleId,
-          source: O.some(new URL(source)),
-          occurredAt: new Date(),
-          groupId: new GroupId('group-1'),
-          groupName: 'group 1',
-          groupAvatar: '/avatar',
-          fullText: pipe(fullText, toHtmlFragment, sanitise, O.some),
-          counts: {
-            helpfulCount: 0,
-            notHelpfulCount: 0,
-          },
-          current: O.none,
-        },
+        arbitraryReviewFeedItem(articleId, fullText, source),
         renderReviewFeedItem(12),
         JSDOM.fragment,
       );
