@@ -8,16 +8,19 @@ import { GroupId } from '../../src/types/group-id';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
 
+const arbitraryDoi = () => new Doi('10.1101/arbitrary.doi.1');
+
 describe('render-review-feed-item', () => {
   describe('when the review has long full text', () => {
     let rendered: DocumentFragment;
     const fullText = 'A very long review';
+    const articleId = arbitraryDoi();
 
     beforeEach(() => {
       rendered = JSDOM.fragment(
         renderReviewFeedItem(6)({
           type: 'review',
-          id: new Doi('10.1111/12345678'),
+          id: articleId,
           source: O.some(new URL('http://example.com')),
           occurredAt: new Date(),
           groupId: new GroupId('group-1'),
@@ -44,7 +47,7 @@ describe('render-review-feed-item', () => {
     });
 
     it('renders an id tag with the correct value', async () => {
-      expect(rendered.getElementById('doi:10.1111/12345678')).not.toBeNull();
+      expect(rendered.getElementById(`doi:${articleId.value}`)).not.toBeNull();
     });
   });
 
@@ -52,12 +55,13 @@ describe('render-review-feed-item', () => {
     let rendered: DocumentFragment;
     const fullText = 'tldr';
     const source = 'http://example.com/source';
+    const articleId = arbitraryDoi();
 
     beforeEach(() => {
       rendered = JSDOM.fragment(
         renderReviewFeedItem(12)({
           type: 'review',
-          id: new Doi('10.1111/12345678'),
+          id: articleId,
           source: O.some(new URL(source)),
           occurredAt: new Date(),
           groupId: new GroupId('group-1'),
@@ -86,19 +90,20 @@ describe('render-review-feed-item', () => {
     });
 
     it('renders an id tag with the correct value', async () => {
-      expect(rendered.getElementById('doi:10.1111/12345678')).not.toBeNull();
+      expect(rendered.getElementById(`doi:${articleId.value}`)).not.toBeNull();
     });
   });
 
   describe('when the review has no full text', () => {
     const source = 'http://example.com/source';
     let rendered: DocumentFragment;
+    const articleId = arbitraryDoi();
 
     beforeEach(() => {
       rendered = JSDOM.fragment(
         renderReviewFeedItem(6)({
           type: 'review',
-          id: new Doi('10.1111/12345678'),
+          id: articleId,
           source: O.some(new URL(source)),
           occurredAt: new Date(),
           groupId: new GroupId('group-1'),
@@ -123,7 +128,7 @@ describe('render-review-feed-item', () => {
     });
 
     it('renders an id tag with the correct value', async () => {
-      expect(rendered.getElementById('doi:10.1111/12345678')).not.toBeNull();
+      expect(rendered.getElementById(`doi:${articleId.value}`)).not.toBeNull();
     });
   });
 });
