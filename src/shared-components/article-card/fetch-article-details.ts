@@ -28,6 +28,6 @@ export const fetchArticleDetails: FetchArticleDetails = (getLatestArticleVersion
   getArticle,
   TO.bind('latestVersionDate', ({ server }) => pipe(
     getLatestArticleVersionDate(doi, server),
-    T.chain(TO.some),
+    T.map(O.some),
   )),
 );
