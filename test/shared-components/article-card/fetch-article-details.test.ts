@@ -33,7 +33,20 @@ describe('fetch-article-details', () => {
       );
     });
 
-    it.todo('returns an O.none for the latest version date when it fails');
+    it('returns an O.none for the latest version date when it fails', async () => {
+      const articleDetails = await pipe(
+        new Doi('10.1101/2020.09.15.286153'),
+        fetchArticleDetails(() => TO.none, getArticle),
+      )();
+
+      expect(articleDetails).toStrictEqual(
+        O.some(
+          expect.objectContaining({
+            latestVersionDate: O.none,
+          }),
+        ),
+      );
+    });
   });
 
   describe('getArticleDetails', () => {
