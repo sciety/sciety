@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/Option';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
@@ -121,7 +122,11 @@ describe('your-feed acceptance', () => {
             editorialCommunityReviewedArticle(groupId, new Doi('10.1101/111111'), new Doi('10.1101/222222')),
           ]),
           follows: () => T.of(true),
-          findVersionsForArticleDoi: shouldNotBeCalled,
+          findVersionsForArticleDoi: () => TO.some([
+            {
+              occurredAt: new Date(),
+            },
+          ] as RNEA.ReadonlyNonEmptyArray<{ occurredAt: Date }>),
         };
         const html = await yourFeed(adapters)(O.some(userId))();
 

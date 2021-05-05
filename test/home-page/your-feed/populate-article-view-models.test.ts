@@ -4,13 +4,13 @@ import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { populateArticleViewModelsSkippingFailures } from '../../../src/home-page/your-feed/populate-article-view-models';
 import { ArticleActivity } from '../../../src/types/article-activity';
-import { Doi } from '../../../src/types/doi';
+import { Doi, eqDoi } from '../../../src/types/doi';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { sanitise } from '../../../src/types/sanitised-html-fragment';
 
 describe('populate-article-view-models', () => {
   describe('no failures', () => {
-    it.skip('returns article view models by adding article metadata and version dates', async () => {
+    it('returns article view models by adding article metadata and version dates', async () => {
       const getArticle = () => TE.right(
         {
           title: sanitise(toHtmlFragment('')),
@@ -18,9 +18,9 @@ describe('populate-article-view-models', () => {
           server: 'biorxiv' as const,
         },
       );
-      const findVersionsForArticleDoi = () => TO.some([
+      const findVersionsForArticleDoi = (doi: Doi) => TO.some([
         {
-          occurredAt: new Date(),
+          occurredAt: eqDoi.equals(doi, new Doi('10.1101/11111')) ? new Date('2021-01-01') : new Date('1921-01-01'),
         },
       ] as RNEA.ReadonlyNonEmptyArray<{ occurredAt: Date }>);
       const activities: ReadonlyArray<ArticleActivity> = [

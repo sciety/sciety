@@ -3,30 +3,36 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
-import { flow } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { ArticleViewModel } from '../../shared-components';
-import { FindVersionsForArticleDoi } from '../../shared-components/article-card/get-latest-article-version-date';
+import { fetchArticleDetails } from '../../shared-components/article-card/fetch-article-details';
+import {
+  FindVersionsForArticleDoi,
+  getLatestArticleVersionDate,
+} from '../../shared-components/article-card/get-latest-article-version-date';
 import { ArticleActivity } from '../../types/article-activity';
 import { ArticleServer } from '../../types/article-server';
 import { Doi } from '../../types/doi';
-import { toHtmlFragment } from '../../types/html-fragment';
-import { sanitise, SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
+import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 
 type PopulateArticleViewModel = (articleActivity: ArticleActivity) => TO.TaskOption<ArticleViewModel>;
 
 const populateArticleViewModel = (
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   getArticle: GetArticle,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
-): PopulateArticleViewModel => (articleActivity) => TO.some(
-  {
+): PopulateArticleViewModel => (articleActivity) => pipe(
+  articleActivity.doi,
+  fetchArticleDetails(
+    getLatestArticleVersionDate(findVersionsForArticleDoi),
+    flow(getArticle, T.map(O.fromEither)),
+  ),
+  TO.map((articleDetails) => ({
     ...articleActivity,
-    latestVersionDate: O.none,
+    latestVersionDate: O.some(articleDetails.latestVersionDate),
     latestActivityDate: O.some(articleActivity.latestActivityDate),
-    authors: [],
-    title: sanitise(toHtmlFragment('')),
-  },
+    authors: articleDetails.authors,
+    title: articleDetails.title,
+  })),
 );
 
 export type GetArticle = (doi: Doi) => TE.TaskEither<unknown, {
