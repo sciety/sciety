@@ -47,7 +47,6 @@ describe('populate-article-view-models', () => {
   });
 
   describe('version date failing', () => {
-    // double check this with product
     it.todo('returns an article view model without a version date');
   });
 
@@ -58,6 +57,7 @@ describe('populate-article-view-models', () => {
   });
 
   describe('all articles failing', () => {
-    it.todo('decide later');
+    // We're having trouble accessing this content right now. Please try again later.
+    it.todo('display error message');
   });
 });
