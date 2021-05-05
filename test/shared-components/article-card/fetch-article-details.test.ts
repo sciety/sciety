@@ -36,39 +36,43 @@ describe('fetch-article-details', () => {
     it.todo('returns an O.none for the latest version date when it fails');
   });
 
-  describe('title', () => {
-    it('returns the title for a doi', async () => {
-      const doi = new Doi('10.1101/2020.09.15.286153');
-      const title = await pipe(
-        doi,
-        fetchArticleDetails(() => TO.some(new Date()), getArticle),
-        TO.map((article) => article.title),
-      )();
-      const expected = pipe(
-        titleText,
-        toHtmlFragment,
-        sanitise,
-        O.some,
-      );
+  describe('getArticleDetails', () => {
+    it.todo('returns O.none when getArticleDetails fails');
 
-      expect(title).toStrictEqual(expected);
+    describe('title', () => {
+      it('returns the title for a doi', async () => {
+        const doi = new Doi('10.1101/2020.09.15.286153');
+        const title = await pipe(
+          doi,
+          fetchArticleDetails(() => TO.some(new Date()), getArticle),
+          TO.map((article) => article.title),
+        )();
+        const expected = pipe(
+          titleText,
+          toHtmlFragment,
+          sanitise,
+          O.some,
+        );
+
+        expect(title).toStrictEqual(expected);
+      });
     });
-  });
 
-  describe('authors', () => {
-    it('returns the authors for a doi', async () => {
-      const doi = new Doi('10.1101/2020.09.15.286153');
-      const authors = await pipe(
-        doi,
-        fetchArticleDetails(() => TO.some(new Date()), getArticle),
-        TO.map((article) => article.authors),
-      )();
-      const expected = pipe(
-        ['Kasper C', 'Schlegel P', 'Ruiz-Ascacibar I', 'Stoll P', 'Bee G'],
-        O.some,
-      );
+    describe('authors', () => {
+      it('returns the authors for a doi', async () => {
+        const doi = new Doi('10.1101/2020.09.15.286153');
+        const authors = await pipe(
+          doi,
+          fetchArticleDetails(() => TO.some(new Date()), getArticle),
+          TO.map((article) => article.authors),
+        )();
+        const expected = pipe(
+          ['Kasper C', 'Schlegel P', 'Ruiz-Ascacibar I', 'Stoll P', 'Bee G'],
+          O.some,
+        );
 
-      expect(authors).toStrictEqual(expected);
+        expect(authors).toStrictEqual(expected);
+      });
     });
   });
 });
