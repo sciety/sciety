@@ -26,8 +26,11 @@ type GetLatestArticleVersionDate = (articleDoi: Doi, server: ArticleServer) => T
 export const fetchArticleDetails: FetchArticleDetails = (getLatestArticleVersionDate, getArticle) => (doi) => pipe(
   doi,
   getArticle,
-  TO.bind('latestVersionDate', ({ server }) => pipe(
-    getLatestArticleVersionDate(doi, server),
-    T.map(O.some),
+  TO.chainTaskK((article) => pipe(
+    getLatestArticleVersionDate(doi, article.server),
+    T.map((date) => ({
+      ...article,
+      latestVersionDate: date,
+    })),
   )),
 );
