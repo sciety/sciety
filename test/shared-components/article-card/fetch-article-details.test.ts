@@ -49,8 +49,15 @@ describe('fetch-article-details', () => {
     });
   });
 
-  describe('getArticleDetails', () => {
-    it.todo('returns O.none when getArticleDetails fails');
+  describe('getArticle', () => {
+    it('returns O.none when getArticle fails', async () => {
+      const articleDetails = await fetchArticleDetails(
+        () => TO.some(new Date()),
+        () => TO.none,
+      )(new Doi('10.1101/2020.09.15.286153'))();
+
+      expect(articleDetails).toStrictEqual(O.none);
+    });
 
     describe('title', () => {
       it('returns the title for a doi', async () => {
