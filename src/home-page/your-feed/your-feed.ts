@@ -17,7 +17,11 @@ import {
   welcomeMessage,
 } from './static-messages';
 import { renderSummaryFeedList } from '../../shared-components';
-import { FindVersionsForArticleDoi } from '../../shared-components/article-card/get-latest-article-version-date';
+import { fetchArticleDetails } from '../../shared-components/article-card/fetch-article-details';
+import {
+  FindVersionsForArticleDoi,
+  getLatestArticleVersionDate,
+} from '../../shared-components/article-card/get-latest-article-version-date';
 import { GroupId } from '../../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { UserId } from '../../types/user-id';
@@ -65,8 +69,10 @@ export const yourFeed: YourFeed = (ports) => (userId) => pipe(
     T.map(RNEA.fromReadonlyArray),
     T.map(E.fromOption(constant(noEvaluationsYet))),
     TE.chainTaskK(populateArticleViewModelsSkippingFailures(
-      ports.fetchArticle,
-      ports.findVersionsForArticleDoi,
+      fetchArticleDetails(
+        getLatestArticleVersionDate(ports.findVersionsForArticleDoi),
+        flow(ports.fetchArticle, T.map(O.fromEither)),
+      ),
     )),
     TE.map(() => uId),
   )),

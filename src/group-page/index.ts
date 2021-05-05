@@ -64,7 +64,7 @@ type GroupPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 type GetArticleDetails = (doi: Doi) => T.Task<O.Option<{
   title: SanitisedHtmlFragment,
   authors: ReadonlyArray<string>,
-  latestVersionDate: Date,
+  latestVersionDate: O.Option<Date>,
 }>>;
 
 const noInformationFound = '<p>We couldn\'t find this information; please try again later.</p>';
@@ -94,7 +94,7 @@ const constructRecentGroupActivity = (
   TE.map(flow(
     RNEA.map((articleViewModel) => ({
       ...articleViewModel,
-      latestVersionDate: O.some(articleViewModel.latestVersionDate),
+      latestVersionDate: articleViewModel.latestVersionDate,
       latestActivityDate: O.some(articleViewModel.latestActivityDate),
     })),
     renderRecentGroupActivity,

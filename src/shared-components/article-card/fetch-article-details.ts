@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe, tupled } from 'fp-ts/function';
 import { ArticleServer } from '../../types/article-server';
@@ -16,7 +17,7 @@ type FetchArticleDetails = (
 ) => (doi: Doi) => TO.TaskOption<{
   title: SanitisedHtmlFragment,
   authors: ReadonlyArray<string>,
-  latestVersionDate: Date,
+  latestVersionDate: O.Option<Date>,
 }>;
 
 type GetLatestArticleVersionDate = (articleDoi: Doi, server: ArticleServer) => TO.TaskOption<Date>;
@@ -27,5 +28,6 @@ export const fetchArticleDetails: FetchArticleDetails = (getLatestArticleVersion
   TO.bind('latestVersionDate', ({ server }) => pipe(
     [doi, server],
     tupled(getLatestArticleVersionDate),
+    TO.map(O.some),
   )),
 );

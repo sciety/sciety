@@ -19,15 +19,21 @@ describe('fetch-article-details', () => {
     it('returns the latest version date for a doi', async () => {
       const doi = new Doi('10.1101/2020.09.15.286153');
       const latestDate = new Date('2020-12-14');
-      const latestVersionDate = await pipe(
+      const articleDetails = await pipe(
         doi,
         fetchArticleDetails(() => TO.some(latestDate), getArticle),
-        TO.map((article) => article.latestVersionDate),
       )();
-      const expected = O.some(latestDate);
 
-      expect(latestVersionDate).toStrictEqual(expected);
+      expect(articleDetails).toStrictEqual(
+        O.some(
+          expect.objectContaining({
+            latestVersionDate: O.some(latestDate),
+          }),
+        ),
+      );
     });
+
+    it.todo('returns an O.none for the latest version date when it fails');
   });
 
   describe('title', () => {
