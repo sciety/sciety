@@ -62,7 +62,33 @@ describe('populate-article-view-models', () => {
   });
 
   describe('only one of two articles failing, on article title and authors', () => {
-    it.todo('only returns view models for the not failing articles');
+    it('only returns view models for the not failing articles', async () => {
+      const successDoi = new Doi('10.1101/123456');
+      const activities: ReadonlyArray<ArticleActivity> = [
+        {
+          doi: successDoi,
+          evaluationCount: 1,
+          latestActivityDate: new Date(),
+        },
+        {
+          doi: new Doi('10.1101/987654'),
+          evaluationCount: 1,
+          latestActivityDate: new Date(),
+        },
+      ];
+      const fetchArticleDetails = (doi: Doi) => (eqDoi.equals(doi, successDoi)
+        ? TO.of({
+          title: sanitise(toHtmlFragment('')),
+          authors: [],
+          latestVersionDate: O.none,
+        })
+        : TO.none);
+
+      const results = await populateArticleViewModelsSkippingFailures(fetchArticleDetails)(activities)();
+
+      expect(results).toHaveLength(1);
+      expect(results[0]).toStrictEqual(expect.objectContaining({ doi: successDoi }));
+    });
 
     it.todo('does not return an article view model for the failing article');
   });
