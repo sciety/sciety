@@ -1,19 +1,19 @@
 import * as T from 'fp-ts/Task';
 import { follows } from '../../src/infrastructure/follows';
 import { userFollowedEditorialCommunity, userUnfollowedEditorialCommunity } from '../../src/types/domain-events';
-import { GroupId } from '../../src/types/group-id';
 import { toUserId } from '../../src/types/user-id';
+import { groupIdFromString } from '../types/group-id.helper';
 
 describe('follows', () => {
   const someone = toUserId('someone');
-  const group1 = new GroupId('group-1');
-  const group2 = new GroupId('group-2');
+  const group1 = groupIdFromString('group-1');
+  const group2 = groupIdFromString('group-2');
 
   describe('when there are no events', () => {
     const getAllEvents = T.of([]);
 
     it('is not following the group', async () => {
-      const result = await follows(someone, new GroupId('group-1'))(getAllEvents)();
+      const result = await follows(someone, groupIdFromString('group-1'))(getAllEvents)();
 
       expect(result).toBe(false);
     });
@@ -25,7 +25,7 @@ describe('follows', () => {
     ]);
 
     it('is following the group', async () => {
-      const result = await follows(someone, new GroupId('group-1'))(getAllEvents)();
+      const result = await follows(someone, groupIdFromString('group-1'))(getAllEvents)();
 
       expect(result).toBe(true);
     });
@@ -38,7 +38,7 @@ describe('follows', () => {
     ]);
 
     it('not following the group', async () => {
-      const result = await follows(someone, new GroupId('group-1'))(getAllEvents)();
+      const result = await follows(someone, groupIdFromString('group-1'))(getAllEvents)();
 
       expect(result).toBe(false);
     });
@@ -51,7 +51,7 @@ describe('follows', () => {
     ]);
 
     it('not following the group', async () => {
-      const result = await follows(someone, new GroupId('group-1'))(getAllEvents)();
+      const result = await follows(someone, groupIdFromString('group-1'))(getAllEvents)();
 
       expect(result).toBe(false);
     });
@@ -65,7 +65,7 @@ describe('follows', () => {
     ]);
 
     it('is following the group', async () => {
-      const result = await follows(someone, new GroupId('group-1'))(getAllEvents)();
+      const result = await follows(someone, groupIdFromString('group-1'))(getAllEvents)();
 
       expect(result).toBe(true);
     });

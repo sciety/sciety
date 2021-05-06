@@ -5,11 +5,11 @@ import {
   userFollowedEditorialCommunity, userSavedArticle,
   userUnfollowedEditorialCommunity,
 } from '../../src/types/domain-events';
-import { GroupId } from '../../src/types/group-id';
 import { toUserId } from '../../src/types/user-id';
+import { arbitraryGroupId } from '../types/group-id.helper';
 
 describe('update-group-meta', () => {
-  const groupId = new GroupId('123');
+  const groupId = arbitraryGroupId();
   const initial = { followerCount: 41, reviewCount: 27 };
 
   it('updates the meta when passed a UserFollowedEditorialCommunityEvent', () => {

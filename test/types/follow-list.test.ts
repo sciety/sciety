@@ -1,10 +1,11 @@
+import { groupIdFromString } from './group-id.helper';
 import { FollowList } from '../../src/types/follow-list';
-import { GroupId } from '../../src/types/group-id';
 import { toUserId } from '../../src/types/user-id';
 
 describe('follow-list', () => {
   const userId1 = toUserId('u1');
-  const group1Id = new GroupId('id1');
+  const id = 'id1';
+  const group1Id = groupIdFromString(id);
 
   describe('follow', () => {
     describe('when the group to be followed is not currently followed', () => {
@@ -23,7 +24,7 @@ describe('follow-list', () => {
         const list = new FollowList(userId1);
 
         list.follow(group1Id);
-        const events = list.follow(new GroupId(group1Id.value));
+        const events = list.follow(groupIdFromString(id));
 
         expect(events).toHaveLength(0);
       });

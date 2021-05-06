@@ -12,7 +12,6 @@ import { feedTitle, GetAllEvents, yourFeed } from '../../../src/home-page/your-f
 import { FindVersionsForArticleDoi } from '../../../src/shared-components/article-card/get-latest-article-version-date';
 import { Doi, eqDoi } from '../../../src/types/doi';
 import { editorialCommunityReviewedArticle, userFollowedEditorialCommunity } from '../../../src/types/domain-events';
-import { GroupId } from '../../../src/types/group-id';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { sanitise } from '../../../src/types/sanitised-html-fragment';
 import { toUserId } from '../../../src/types/user-id';
@@ -54,7 +53,7 @@ describe('your-feed acceptance', () => {
     describe('following groups that have no evaluations', () => {
       it('displays the calls to action to follow other groups or return later', async () => {
         const adapters = getAdaptors({
-          getAllEvents: T.of([userFollowedEditorialCommunity(userId, new GroupId('NCRC'))]),
+          getAllEvents: T.of([userFollowedEditorialCommunity(userId, arbitraryGroupId())]),
         });
 
         const html = await yourFeed(adapters)(O.some(userId))();

@@ -2,10 +2,10 @@ import { pipe } from 'fp-ts/function';
 import { countFollowersOf } from '../../src/group-page/count-followers';
 import { Doi } from '../../src/types/doi';
 import { userFollowedEditorialCommunity, userSavedArticle, userUnfollowedEditorialCommunity } from '../../src/types/domain-events';
-import { GroupId } from '../../src/types/group-id';
 import { toUserId } from '../../src/types/user-id';
+import { arbitraryGroupId, groupIdFromString } from '../types/group-id.helper';
 
-const myGroup = new GroupId('my-group');
+const myGroup = groupIdFromString('my-group');
 
 const aUserId = toUserId('12345678');
 
@@ -16,14 +16,14 @@ describe('project-follower-count', () => {
         userFollowedEditorialCommunity(toUserId('47998559'), myGroup),
         userFollowedEditorialCommunity(toUserId('23776533'), myGroup),
       ],
-      countFollowersOf(new GroupId('my-group')),
+      countFollowersOf(groupIdFromString('my-group')),
     )).toBe(2);
   });
 
   it('ignores events from other communities', async () => {
     expect(pipe(
       [
-        userFollowedEditorialCommunity(aUserId, new GroupId('a-different-group')),
+        userFollowedEditorialCommunity(aUserId, arbitraryGroupId()),
       ],
       countFollowersOf(myGroup),
     )).toBe(0);
@@ -34,7 +34,7 @@ describe('project-follower-count', () => {
       [
         userSavedArticle(aUserId, new Doi('10.1101/111111')),
       ],
-      countFollowersOf(new GroupId('my-group')),
+      countFollowersOf(groupIdFromString('my-group')),
     )).toBe(0);
   });
 
@@ -44,7 +44,7 @@ describe('project-follower-count', () => {
         userFollowedEditorialCommunity(aUserId, myGroup),
         userUnfollowedEditorialCommunity(aUserId, myGroup),
       ],
-      countFollowersOf(new GroupId('my-group')),
+      countFollowersOf(groupIdFromString('my-group')),
     )).toBe(0);
   });
 });
