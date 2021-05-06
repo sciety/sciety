@@ -8,7 +8,7 @@ import { GetArticle } from '../../../src/home-page/your-feed/populate-article-vi
 import {
   followSomething, noEvaluationsYet, troubleFetchingTryAgain, welcomeMessage,
 } from '../../../src/home-page/your-feed/static-messages';
-import { GetAllEvents, yourFeed } from '../../../src/home-page/your-feed/your-feed';
+import { feedTitle, GetAllEvents, yourFeed } from '../../../src/home-page/your-feed/your-feed';
 import { FindVersionsForArticleDoi } from '../../../src/shared-components/article-card/get-latest-article-version-date';
 import { Doi, eqDoi } from '../../../src/types/doi';
 import { editorialCommunityReviewedArticle, userFollowedEditorialCommunity } from '../../../src/types/domain-events';
@@ -36,6 +36,12 @@ const getAdaptors = ({
 });
 
 describe('your-feed acceptance', () => {
+  it('displays the feed title', async () => {
+    const html = await yourFeed(getAdaptors({}))(O.none)();
+
+    expect(html).toContain(feedTitle);
+  });
+
   describe('there is no logged in user', () => {
     it('displays a welcome message', async () => {
       const html = await yourFeed(getAdaptors({}))(O.none)();

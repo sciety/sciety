@@ -34,10 +34,13 @@ export type Ports = {
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
 };
 
+// ts-unused-exports:disable-next-line
+export const feedTitle = 'Recent activity by groups you follow';
+
 const renderAsSection = (contents: HtmlFragment): HtmlFragment => toHtmlFragment(`
   <section>
     <h2>
-      Feed
+      ${feedTitle}
     </h2>
     ${contents}
   </section>
