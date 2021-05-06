@@ -9,8 +9,7 @@
 @use 'typography';
 
 .activity-feed__list {
-  @include list.basics();
-  margin-top: 0;
+  @include card.card-list();
 
   p:last-child {
     margin-bottom: 0;
@@ -19,8 +18,7 @@
 
 .activity-feed__item {
   @include card.basics();
-
-  margin-bottom: baseline.increments(1);
+  @include card.card-list-item();
 
   // TODO: needed due to .responses background color
   // being incompatible with padding coming from card.basics()
@@ -32,11 +30,6 @@
 
   &:first-child {
     @include article-tabs.hide-top-border-touching-tabs();
-  }
-
-
-  &:last-child {
-    margin-bottom: 0;
   }
 }
 

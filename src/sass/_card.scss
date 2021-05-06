@@ -1,6 +1,7 @@
 @use 'baseline';
 @use 'breakpoints';
 @use 'functions';
+@use 'list';
 @use 'settings';
 @use 'typography';
 
@@ -18,5 +19,18 @@
     border-left-width: settings.$border-width;
     border-right-width: settings.$border-width;
     padding: baseline.increments(3) functions.px-to-rem(24px);
+  }
+}
+
+@mixin card-list () {
+  @include list.basics();
+  margin-top: 0;
+}
+
+@mixin card-list-item () {
+  margin-bottom: baseline.increments(1);
+
+  &:last-child {
+    margin-bottom: 0;
   }
 }

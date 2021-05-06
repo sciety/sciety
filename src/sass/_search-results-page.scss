@@ -127,14 +127,9 @@ $_clear-button-inline-size: 48px;
 }
 
 .search-results-list {
-  @include list.basics();
-  margin-top: 0;
+  @include card.card-list();
 }
 
 .search-results-list__item {
-  margin-bottom: baseline.increments(1);
-
-  &:last-child {
-    margin-bottom: 0;
-  }
+  @include card.card-list-item();
 }
