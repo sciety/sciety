@@ -33,7 +33,7 @@ export type Ports = {
 };
 
 // ts-unused-exports:disable-next-line
-export const feedTitle = 'Recent activity by groups you follow';
+export const feedTitle = 'Recently evaluated by groups you follow';
 
 const renderAsSection = (contents: HtmlFragment): HtmlFragment => toHtmlFragment(`
   <section>
