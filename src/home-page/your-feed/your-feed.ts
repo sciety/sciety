@@ -20,7 +20,6 @@ import {
   getLatestArticleVersionDate,
 } from '../../shared-components/article-card/get-latest-article-version-date';
 import { DomainEvent } from '../../types/domain-events';
-import { GroupId } from '../../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { UserId } from '../../types/user-id';
 
@@ -30,7 +29,6 @@ export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 export type Ports = {
   fetchArticle: GetArticle,
   getAllEvents: GetAllEvents,
-  follows: (u: UserId, g: GroupId) => T.Task<boolean>,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
 };
 

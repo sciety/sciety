@@ -15,23 +15,20 @@ import { editorialCommunityReviewedArticle, userFollowedEditorialCommunity } fro
 import { GroupId } from '../../../src/types/group-id';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { sanitise } from '../../../src/types/sanitised-html-fragment';
-import { toUserId, UserId } from '../../../src/types/user-id';
+import { toUserId } from '../../../src/types/user-id';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 
 const getAdaptors = ({
   fetchArticle = shouldNotBeCalled,
   getAllEvents = shouldNotBeCalled,
-  follows = shouldNotBeCalled,
   findVersionsForArticleDoi = shouldNotBeCalled,
 }: {
   fetchArticle?: GetArticle,
   getAllEvents?: GetAllEvents,
-  follows?: (u: UserId, g: GroupId) => T.Task<boolean>,
   findVersionsForArticleDoi?: FindVersionsForArticleDoi,
 }) => ({
   fetchArticle,
   getAllEvents,
-  follows,
   findVersionsForArticleDoi,
 });
 
@@ -57,7 +54,6 @@ describe('your-feed acceptance', () => {
       it('displays the calls to action to follow other groups or return later', async () => {
         const adapters = getAdaptors({
           getAllEvents: T.of([userFollowedEditorialCommunity(userId, new GroupId('NCRC'))]),
-          follows: () => T.of(true),
         });
 
         const html = await yourFeed(adapters)(O.some(userId))();
@@ -71,7 +67,6 @@ describe('your-feed acceptance', () => {
       it('displays call to action to follow groups', async () => {
         const adapters = getAdaptors({
           getAllEvents: T.of([]),
-          follows: () => T.of(false),
         });
         const html = await yourFeed(adapters)(O.some(userId))();
 
@@ -92,7 +87,6 @@ describe('your-feed acceptance', () => {
             userFollowedEditorialCommunity(userId, groupId),
             editorialCommunityReviewedArticle(groupId, new Doi('10.1101/111111'), new Doi('10.1101/222222')),
           ]),
-          follows: () => T.of(true),
           findVersionsForArticleDoi: () => TO.some([
             {
               occurredAt: new Date(),
@@ -122,7 +116,6 @@ describe('your-feed acceptance', () => {
             userFollowedEditorialCommunity(userId, groupId),
             editorialCommunityReviewedArticle(groupId, new Doi('10.1101/111111'), new Doi('10.1101/222222')),
           ]),
-          follows: () => T.of(true),
           findVersionsForArticleDoi: () => TO.some([
             {
               occurredAt: new Date(),
@@ -154,7 +147,6 @@ describe('your-feed acceptance', () => {
               editorialCommunityReviewedArticle(groupId, failingDoi, new Doi('10.1101/111111')),
               editorialCommunityReviewedArticle(groupId, new Doi('10.1101/success'), new Doi('10.1101/222222')),
             ]),
-            follows: () => T.of(true),
             findVersionsForArticleDoi: () => TO.some([
               {
                 occurredAt: new Date(),
@@ -179,7 +171,6 @@ describe('your-feed acceptance', () => {
               userFollowedEditorialCommunity(userId, groupId),
               editorialCommunityReviewedArticle(groupId, new Doi('10.1101/111111'), new Doi('10.1101/222222')),
             ]),
-            follows: () => T.of(true),
           });
           const html = await yourFeed(adapters)(O.some(userId))();
 
