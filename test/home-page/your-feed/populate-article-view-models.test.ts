@@ -98,9 +98,4 @@ describe('populate-article-view-models', () => {
       expect(results[0]).not.toStrictEqual(expect.objectContaining({ doi: failingDoi }));
     });
   });
-
-  describe('all articles failing', () => {
-    // We're having trouble accessing this content right now. Please try again later.
-    it.todo('display error message');
-  });
 });

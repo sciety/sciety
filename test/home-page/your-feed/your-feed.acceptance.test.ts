@@ -98,11 +98,16 @@ describe('your-feed acceptance', () => {
         expect(html).toContain('class="article-card"');
       });
 
+      /*
+      Not implementing, pending further discussion on testing architecture
+      */
       it.todo('display a maximum of 20 articles');
 
       it.todo('displays the articles in order of latest activity in descending order');
 
       it.todo('latest activity is based off of activity by any group');
+
+      it.todo('each article is only displayed once');
 
       it('displayed articles have to have been evaluated by a followed group', async () => {
         const groupId = new GroupId('NCRC');
@@ -126,8 +131,6 @@ describe('your-feed acceptance', () => {
 
         expect(html).toContain('My article title');
       });
-
-      it.todo('each article is only displayed once');
 
       describe('when details of an article cannot be fetched', () => {
         it('only displays the successfully fetched articles', async () => {
