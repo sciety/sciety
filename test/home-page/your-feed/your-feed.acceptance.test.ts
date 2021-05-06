@@ -17,7 +17,7 @@ import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { sanitise } from '../../../src/types/sanitised-html-fragment';
 import { toUserId } from '../../../src/types/user-id';
 import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryGroupId } from "../../types/group-id.helper";
+import { arbitraryGroupId } from '../../types/group-id.helper';
 
 const getAdaptors = ({
   fetchArticle = shouldNotBeCalled,
