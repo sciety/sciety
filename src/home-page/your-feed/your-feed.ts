@@ -10,7 +10,7 @@ import { followedGroupsActivities } from './followed-groups-activities';
 import { GetArticle, populateArticleViewModelsSkippingFailures } from './populate-article-view-models';
 import {
   followSomething,
-  noEvaluationsYet,
+  noEvaluationsYet, troubleFetchingTryAgain,
   welcomeMessage,
 } from './static-messages';
 import { renderArticleCard } from '../../shared-components';
@@ -70,6 +70,10 @@ export const yourFeed: YourFeed = (ports) => (userId) => pipe(
       ),
     )),
   )),
+  T.map(E.chain(flow(
+    RNEA.fromReadonlyArray,
+    E.fromOption(constant(troubleFetchingTryAgain)),
+  ))),
   TE.map(RA.map(renderArticleCard)),
   TE.map(RA.map((activity) => `<li class="group-activity-list__item">${activity}</li>`)),
   TE.map((renderedActivities) => `

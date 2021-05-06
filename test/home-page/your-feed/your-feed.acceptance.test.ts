@@ -163,7 +163,7 @@ describe('your-feed acceptance', () => {
       });
 
       describe('when details of all articles cannot be fetched', () => {
-        it.skip('display only an error message', async () => {
+        it('display only an error message', async () => {
           const groupId = new GroupId('NCRC');
           const adapters = getAdaptors({
             fetchArticle: () => TE.left('unavailable' as const),
