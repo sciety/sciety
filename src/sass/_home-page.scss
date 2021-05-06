@@ -34,9 +34,9 @@
 }
 
 .your-feed__list {
-  @include card.card-list();
+  @include card.list();
 }
 
 .your-feed__list_item {
-  @include card.card-list-item();
+  @include card.list-item();
 }

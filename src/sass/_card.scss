@@ -22,12 +22,12 @@
   }
 }
 
-@mixin card-list () {
+@mixin list() {
   @include list.basics();
   margin-top: 0;
 }
 
-@mixin card-list-item () {
+@mixin list-item() {
   margin-bottom: baseline.increments(1);
 
   &:last-child {

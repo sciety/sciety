@@ -127,9 +127,9 @@ $_clear-button-inline-size: 48px;
 }
 
 .search-results-list {
-  @include card.card-list();
+  @include card.list();
 }
 
 .search-results-list__item {
-  @include card.card-list-item();
+  @include card.list-item();
 }

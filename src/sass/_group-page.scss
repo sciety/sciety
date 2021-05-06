@@ -61,9 +61,9 @@
 }
 
 .group-activity-list {
-  @include card.card-list();
+  @include card.list();
 }
 
 .group-activity-list__item {
-  @include card.card-list-item();
+  @include card.list-item();
 }
