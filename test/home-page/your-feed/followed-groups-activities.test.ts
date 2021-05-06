@@ -19,10 +19,10 @@ const generateNEventsForGroup = (
 describe('followed-groups-activities', () => {
   describe('when only a single group has evaluated an article once', () => {
     const articleId = new Doi('10.1101/2020.09.15.286153');
-    const groupId = new GroupId('4eebcec9-a4bb-44e1-bde3-2ae11e65daaa');
+    const groupId = '4eebcec9-a4bb-44e1-bde3-2ae11e65daaa';
     const events = [
       editorialCommunityReviewedArticle(
-        groupId,
+        new GroupId(groupId),
         articleId,
         new Doi('10.24072/pci.animsci.100005'),
         new Date('2020-12-15T00:00:00.000Z'),
@@ -30,7 +30,7 @@ describe('followed-groups-activities', () => {
     ];
 
     it('includes the article DOI', () => {
-      const activities = followedGroupsActivities(events)([groupId]);
+      const activities = followedGroupsActivities(events)([new GroupId(groupId)]);
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
@@ -40,7 +40,7 @@ describe('followed-groups-activities', () => {
     });
 
     it('has an evaluation count of 1', () => {
-      const activities = followedGroupsActivities(events)([groupId]);
+      const activities = followedGroupsActivities(events)([new GroupId(groupId)]);
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
@@ -50,7 +50,7 @@ describe('followed-groups-activities', () => {
     });
 
     it('latest activity date matches event date', () => {
-      const activities = followedGroupsActivities(events)([groupId]);
+      const activities = followedGroupsActivities(events)([new GroupId(groupId)]);
 
       expect(activities).toStrictEqual([
         expect.objectContaining({

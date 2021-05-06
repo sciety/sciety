@@ -27,7 +27,7 @@ const eventToActivityDetails = (
   groupIds: ReadonlyArray<GroupId>,
 ): ActivityDetails => ({
   latestActivityDate: event.date,
-  evaluatedByFollowedGroup: groupIds.includes(event.editorialCommunityId),
+  evaluatedByFollowedGroup: groupIds.map((groupId) => groupId.value).includes(event.editorialCommunityId.value),
   evaluationCount: 1,
 });
 
