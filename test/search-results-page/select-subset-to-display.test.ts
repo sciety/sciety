@@ -1,20 +1,20 @@
 import { pipe } from 'fp-ts/function';
 import { selectSubsetToDisplay } from '../../src/search-results-page/select-subset-to-display';
 import { Doi } from '../../src/types/doi';
-import { GroupId } from '../../src/types/group-id';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
+import { arbitraryGroupId } from '../types/group-id.helper';
 
 describe('select-subset-to-display', () => {
   describe('prioritizing groups over articles', () => {
     it('returns 2 groups and 0 articles when given a limit of 2, and 2 of each', () => {
       const group1 = {
         _tag: 'Group' as const,
-        id: new GroupId('1'),
+        id: arbitraryGroupId(),
       };
       const group2 = {
         _tag: 'Group' as const,
-        id: new GroupId('2'),
+        id: arbitraryGroupId(),
       };
       const article = {
         _tag: 'Article' as const,

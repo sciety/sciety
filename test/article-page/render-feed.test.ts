@@ -2,8 +2,8 @@ import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import { renderFeed } from '../../src/article-page/render-feed';
 import { Doi } from '../../src/types/doi';
-import { GroupId } from '../../src/types/group-id';
 import { toHtmlFragment } from '../../src/types/html-fragment';
+import { arbitraryGroupId } from '../types/group-id.helper';
 
 describe('render-feed', () => {
   it('returns a list', () => {
@@ -13,7 +13,7 @@ describe('render-feed', () => {
         id: new Doi('10.1111/12345678'),
         source: O.some(new URL('http://example.com')),
         occurredAt: new Date(),
-        groupId: new GroupId('1234'),
+        groupId: arbitraryGroupId(),
         groupName: '',
         groupAvatar: '/images/xyz.png',
         fullText: O.none,

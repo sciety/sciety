@@ -111,7 +111,7 @@ describe('your-feed acceptance', () => {
       it.todo('each article is only displayed once');
 
       it('displayed articles have to have been evaluated by a followed group', async () => {
-        const groupId = new GroupId('NCRC');
+        const groupId = arbitraryGroupId();
         const adapters = {
           fetchArticle: () => TE.right({
             title: sanitise(toHtmlFragment('My article title')),
@@ -135,7 +135,7 @@ describe('your-feed acceptance', () => {
 
       describe('when details of an article cannot be fetched', () => {
         it('only displays the successfully fetched articles', async () => {
-          const groupId = new GroupId('NCRC');
+          const groupId = arbitraryGroupId();
           const failingDoi = new Doi('10.1101/failing');
           const adapters = getAdaptors({
             fetchArticle: (doi: Doi) => (
@@ -168,7 +168,7 @@ describe('your-feed acceptance', () => {
 
       describe('when details of all articles cannot be fetched', () => {
         it('display only an error message', async () => {
-          const groupId = new GroupId('NCRC');
+          const groupId = arbitraryGroupId();
           const adapters = getAdaptors({
             fetchArticle: () => TE.left('unavailable' as const),
             getAllEvents: T.of([

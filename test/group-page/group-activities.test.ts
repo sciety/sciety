@@ -5,6 +5,7 @@ import {
   EditorialCommunityReviewedArticleEvent,
 } from '../../src/types/domain-events';
 import { GroupId } from '../../src/types/group-id';
+import { arbitraryGroupId } from '../types/group-id.helper';
 
 const generateNEventsForGroup = (
   numberOfEvents: number,
@@ -19,7 +20,7 @@ const generateNEventsForGroup = (
 describe('group-activities', () => {
   describe('when only a single group has evaluated an article once', () => {
     const articleId = new Doi('10.1101/2020.09.15.286153');
-    const groupId = new GroupId('4eebcec9-a4bb-44e1-bde3-2ae11e65daaa');
+    const groupId = arbitraryGroupId();
     const events = [
       editorialCommunityReviewedArticle(
         groupId,
@@ -61,7 +62,7 @@ describe('group-activities', () => {
   });
 
   describe('when only a single group has evaluated an article more than once', () => {
-    const groupId = new GroupId('53ed5364-a016-11ea-bb37-0242ac130002');
+    const groupId = arbitraryGroupId();
     const articleId = new Doi('10.1101/2019.12.20.884056');
     const latestActivityDate = new Date('2020-01-01');
     const events = [
@@ -111,7 +112,8 @@ describe('group-activities', () => {
   });
 
   describe('when multiple groups have evaluated an article', () => {
-    const groupId = new GroupId('4eebcec9-a4bb-44e1-bde3-2ae11e65daaa');
+    const groupId = arbitraryGroupId();
+    const otherGroupId = arbitraryGroupId();
     const articleId = new Doi('10.1101/2019.12.20.884056');
     const events = [
       editorialCommunityReviewedArticle(
@@ -121,19 +123,19 @@ describe('group-activities', () => {
         new Date('2020-10-14T00:00:00.000Z'),
       ),
       editorialCommunityReviewedArticle(
-        new GroupId('53ed5364-a016-11ea-bb37-0242ac130002'),
+        otherGroupId,
         articleId,
         new Doi('10.7287/peerj.11014v0.1/reviews/1'),
         new Date('2021-03-10T00:00:00.000Z'),
       ),
       editorialCommunityReviewedArticle(
-        new GroupId('53ed5364-a016-11ea-bb37-0242ac130002'),
+        otherGroupId,
         articleId,
         new Doi('10.7287/peerj.11014v0.1/reviews/2'),
         new Date('2021-03-10T00:00:00.000Z'),
       ),
       editorialCommunityReviewedArticle(
-        new GroupId('53ed5364-a016-11ea-bb37-0242ac130002'),
+        otherGroupId,
         articleId,
         new Doi('10.7287/peerj.11014v0.2/reviews/2'),
         new Date('2021-03-10T00:00:00.000Z'),
@@ -163,7 +165,7 @@ describe('group-activities', () => {
   });
 
   describe('when the group has evaluated multiple articles', () => {
-    const groupId = new GroupId('4eebcec9-a4bb-44e1-bde3-2ae11e65daaa');
+    const groupId = arbitraryGroupId();
 
     it('returns the most recently evaluated articles first', () => {
       const earlierDate = new Date('2019-09-06T00:00:00.000Z');
@@ -204,8 +206,8 @@ describe('group-activities', () => {
 
   describe('when another group evaluates an article previously evaluated by this group', () => {
     it('orders by the evaluation date of this group', () => {
-      const thisGroupId = new GroupId('4eebcec9-a4bb-44e1-bde3-2ae11e65daaa');
-      const anotherGroupId = new GroupId('53ed5364-a016-11ea-bb37-0242ac130002');
+      const thisGroupId = arbitraryGroupId();
+      const anotherGroupId = arbitraryGroupId();
       const articleMostRecentlyReviewedByThisGroup = new Doi('10.1101/2020.09.15.286153');
       const articleThatWasMoreRecentlyReviewedButByAnotherGroup = new Doi('10.1101/2019.12.20.884056');
       const events = [
@@ -244,8 +246,8 @@ describe('group-activities', () => {
 
   describe('when the group has not evaluated any articles', () => {
     it('returns an empty list', () => {
-      const thisGroupId = new GroupId('4eebcec9-a4bb-44e1-bde3-2ae11e65daaa');
-      const anotherGroupId = new GroupId('53ed5364-a016-11ea-bb37-0242ac130002');
+      const thisGroupId = arbitraryGroupId();
+      const anotherGroupId = arbitraryGroupId();
       const events = [
         editorialCommunityReviewedArticle(
           anotherGroupId,

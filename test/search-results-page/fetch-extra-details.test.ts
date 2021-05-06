@@ -3,10 +3,10 @@ import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { fetchExtraDetails } from '../../src/search-results-page/fetch-extra-details';
 import { Doi } from '../../src/types/doi';
-import { GroupId } from '../../src/types/group-id';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
 import { shouldNotBeCalled } from '../should-not-be-called';
+import { arbitraryGroupId } from '../types/group-id.helper';
 
 describe('fetch-extra-details', () => {
   describe('given a found article', () => {
@@ -17,12 +17,12 @@ describe('fetch-extra-details', () => {
         findReviewsForArticleDoi: () => T.of([
           {
             reviewId: new Doi('10.1101/111111'),
-            groupId: new GroupId('my-group'),
+            groupId: arbitraryGroupId(),
             occurredAt: new Date('2021-01-01'),
           },
           {
             reviewId: new Doi('10.1101/222222'),
-            groupId: new GroupId('another-group'),
+            groupId: arbitraryGroupId(),
             occurredAt: latestActivityDate,
           },
         ]),
@@ -63,11 +63,12 @@ describe('fetch-extra-details', () => {
   describe('given a found group', () => {
     describe('when the details can be fetched', () => {
       it('returns a correct view model', async () => {
+        const groupId = arbitraryGroupId();
         const ports = {
           findReviewsForArticleDoi: shouldNotBeCalled,
           getAllEvents: T.of([]),
           getGroup: () => T.of(O.some({
-            id: new GroupId('my-group'),
+            id: groupId,
             name: '',
             avatarPath: '',
             descriptionPath: '',
@@ -81,7 +82,7 @@ describe('fetch-extra-details', () => {
           itemsToDisplay: [
             {
               _tag: 'Group' as const,
-              id: new GroupId('my-group'),
+              id: groupId,
             },
           ],
         };
@@ -114,7 +115,7 @@ describe('fetch-extra-details', () => {
           itemsToDisplay: [
             {
               _tag: 'Group' as const,
-              id: new GroupId('my-group'),
+              id: arbitraryGroupId(),
             },
           ],
         };

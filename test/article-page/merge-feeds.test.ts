@@ -2,14 +2,14 @@ import { URL } from 'url';
 import * as RT from 'fp-ts/ReaderTask';
 import { mergeFeeds } from '../../src/article-page/merge-feeds';
 import { Doi } from '../../src/types/doi';
-import { GroupId } from '../../src/types/group-id';
+import { arbitraryGroupId } from '../types/group-id.helper';
 
 describe('merge-feeds', () => {
   it('merges feed event lists', async () => {
     const feed1 = RT.of([
       {
         type: 'review',
-        groupId: new GroupId('groupId'),
+        groupId: arbitraryGroupId(),
         reviewId: new Doi('10.1234/5678'),
         occurredAt: new Date('2020-09-10'),
       },

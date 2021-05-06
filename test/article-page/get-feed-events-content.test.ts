@@ -11,22 +11,23 @@ import {
   GetUserReviewResponse,
 } from '../../src/article-page/get-feed-events-content';
 import { Doi } from '../../src/types/doi';
-import { GroupId } from '../../src/types/group-id';
 import { toHtmlFragment } from '../../src/types/html-fragment';
+import { arbitraryGroupId } from '../types/group-id.helper';
 
 describe('get-feed-events-content', () => {
   describe('when there are reviews', () => {
     it('creates a view model for the reviews', async () => {
+      const groupId = arbitraryGroupId();
       const feedEvents: ReadonlyArray<FeedEvent> = [
         {
           type: 'review',
-          groupId: new GroupId('groupId'),
+          groupId,
           reviewId: new Doi('10.1101/111111'),
           occurredAt: new Date(),
         },
         {
           type: 'review',
-          groupId: new GroupId('groupId'),
+          groupId,
           reviewId: new Doi('10.1101/222222'),
           occurredAt: new Date(),
         },

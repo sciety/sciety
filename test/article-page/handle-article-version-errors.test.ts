@@ -4,9 +4,9 @@ import { pipe } from 'fp-ts/function';
 import { handleArticleVersionErrors } from '../../src/article-page/handle-article-version-errors';
 import { FeedItem } from '../../src/article-page/render-feed';
 import { Doi } from '../../src/types/doi';
-import { GroupId } from '../../src/types/group-id';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
+import { arbitraryGroupId } from '../types/group-id.helper';
 
 describe('handle-article-version-errors', () => {
   describe('there are article version events', () => {
@@ -29,13 +29,14 @@ describe('handle-article-version-errors', () => {
 
   describe('there are no article version events', () => {
     it('appends an error feed item', () => {
+      const groupId = arbitraryGroupId();
       const inputItems: ReadonlyArray<FeedItem> = [
         {
           type: 'review',
           id: new Doi('10.1111/12345678'),
           occurredAt: new Date(),
           source: O.some(new URL('https://example.com')),
-          groupId: new GroupId('group-1'),
+          groupId,
           groupName: 'OUR GROUP',
           groupAvatar: '/images/us.png',
           fullText: pipe('review-1', toHtmlFragment, sanitise, O.some),
@@ -50,7 +51,7 @@ describe('handle-article-version-errors', () => {
           id: new Doi('10.1111/12345679'),
           occurredAt: new Date(),
           source: O.some(new URL('https://example.com')),
-          groupId: new GroupId('group-1'),
+          groupId,
           groupName: 'OUR GROUP',
           groupAvatar: '/images/us.png',
           fullText: pipe('review-2', toHtmlFragment, sanitise, O.some),

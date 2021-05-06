@@ -2,11 +2,11 @@ import * as T from 'fp-ts/Task';
 import { createEventSourceFollowListRepository } from '../../src/infrastructure/event-sourced-follow-list-repository';
 import { userFollowedEditorialCommunity, userUnfollowedEditorialCommunity } from '../../src/types/domain-events';
 import { FollowList } from '../../src/types/follow-list';
-import { GroupId } from '../../src/types/group-id';
 import { toUserId } from '../../src/types/user-id';
+import { arbitraryGroupId } from '../types/group-id.helper';
 
-const groupId1 = new GroupId('ed1');
-const groupId2 = new GroupId('ed2');
+const groupId1 = arbitraryGroupId();
+const groupId2 = arbitraryGroupId();
 const userId1 = toUserId('u1');
 const userId2 = toUserId('u2');
 

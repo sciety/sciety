@@ -2,17 +2,17 @@ import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { ReviewFeedItem } from '../../src/article-page/render-review-feed-item';
-import { GroupId } from '../../src/types/group-id';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
 import * as t from '../helpers';
+import { arbitraryGroupId } from '../types/group-id.helper';
 
 export const arbitrary = (): ReviewFeedItem => ({
   type: 'review',
   id: t.arbitraryDoi(),
   source: O.some(new URL(t.arbitraryUri())),
   occurredAt: new Date(),
-  groupId: new GroupId('group-1'),
+  groupId: arbitraryGroupId(),
   groupName: 'group 1',
   groupAvatar: '/avatar',
   fullText: pipe(t.arbitraryString(), toHtmlFragment, sanitise, O.some),

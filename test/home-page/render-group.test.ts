@@ -1,13 +1,13 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { renderGroup } from '../../src/home-page/render-group';
-import { GroupId } from '../../src/types/group-id';
 import { toHtmlFragment } from '../../src/types/html-fragment';
+import { arbitraryGroupId } from '../types/group-id.helper';
 
 describe('render-group', () => {
   it('renders the name of the group', async () => {
     const group = {
-      id: new GroupId('A'),
+      id: arbitraryGroupId(),
       name: 'Group A',
       avatarPath: '',
     };
