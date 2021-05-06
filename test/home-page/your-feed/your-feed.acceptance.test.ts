@@ -17,6 +17,7 @@ import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { sanitise } from '../../../src/types/sanitised-html-fragment';
 import { toUserId } from '../../../src/types/user-id';
 import { shouldNotBeCalled } from '../../should-not-be-called';
+import { arbitraryGroupId } from "../../types/group-id.helper";
 
 const getAdaptors = ({
   fetchArticle = shouldNotBeCalled,
@@ -76,7 +77,7 @@ describe('your-feed acceptance', () => {
 
     describe('following groups with evaluations', () => {
       it('displays content in the form of article cards', async () => {
-        const groupId = new GroupId('NCRC');
+        const groupId = arbitraryGroupId();
         const adapters = getAdaptors({
           fetchArticle: () => TE.right({
             title: sanitise(toHtmlFragment('My article title')),
