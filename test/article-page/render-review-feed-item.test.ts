@@ -1,6 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
-import * as RFI from './review-feed-item-helpers';
+import * as RFI from './review-feed-item.helper';
 import { renderReviewFeedItem } from '../../src/article-page/render-review-feed-item';
 import * as t from '../helpers';
 
