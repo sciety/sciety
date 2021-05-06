@@ -137,7 +137,7 @@ describe('your-feed acceptance', () => {
       it.todo('each article is only displayed once');
 
       describe('when details of an article cannot be fetched', () => {
-        it.skip('only displays the successfully fetched articles', async () => {
+        it('only displays the successfully fetched articles', async () => {
           const groupId = new GroupId('NCRC');
           const failingDoi = new Doi('10.1101/failing');
           const adapters = getAdaptors({
@@ -155,6 +155,11 @@ describe('your-feed acceptance', () => {
               editorialCommunityReviewedArticle(groupId, new Doi('10.1101/success'), new Doi('10.1101/222222')),
             ]),
             follows: () => T.of(true),
+            findVersionsForArticleDoi: () => TO.some([
+              {
+                occurredAt: new Date(),
+              },
+            ] as RNEA.ReadonlyNonEmptyArray<{ occurredAt: Date }>),
           });
 
           const html = await yourFeed(adapters)(O.some(userId))();
