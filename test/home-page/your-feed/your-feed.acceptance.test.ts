@@ -4,13 +4,11 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { JSDOM } from 'jsdom';
-import { GetGroup } from '../../../src/home-page/your-feed/get-actor';
-import { GetAllEvents } from '../../../src/home-page/your-feed/get-most-recent-events';
 import { GetArticle } from '../../../src/home-page/your-feed/populate-article-view-models';
 import {
   followSomething, noEvaluationsYet, troubleFetchingTryAgain, welcomeMessage,
 } from '../../../src/home-page/your-feed/static-messages';
-import { yourFeed } from '../../../src/home-page/your-feed/your-feed';
+import { GetAllEvents, yourFeed } from '../../../src/home-page/your-feed/your-feed';
 import { FindVersionsForArticleDoi } from '../../../src/shared-components/article-card/get-latest-article-version-date';
 import { Doi, eqDoi } from '../../../src/types/doi';
 import { editorialCommunityReviewedArticle, userFollowedEditorialCommunity } from '../../../src/types/domain-events';
@@ -22,19 +20,16 @@ import { shouldNotBeCalled } from '../../should-not-be-called';
 
 const getAdaptors = ({
   fetchArticle = shouldNotBeCalled,
-  getGroup = shouldNotBeCalled,
   getAllEvents = shouldNotBeCalled,
   follows = shouldNotBeCalled,
   findVersionsForArticleDoi = shouldNotBeCalled,
 }: {
   fetchArticle?: GetArticle,
-  getGroup?: GetGroup,
   getAllEvents?: GetAllEvents,
   follows?: (u: UserId, g: GroupId) => T.Task<boolean>,
   findVersionsForArticleDoi?: FindVersionsForArticleDoi,
 }) => ({
   fetchArticle,
-  getGroup,
   getAllEvents,
   follows,
   findVersionsForArticleDoi,
@@ -79,7 +74,7 @@ describe('your-feed acceptance', () => {
     });
 
     describe('following groups with evaluations', () => {
-      it.skip('displays content in the form of article cards', async () => {
+      it('displays content in the form of article cards', async () => {
         const groupId = new GroupId('NCRC');
         const adapters = getAdaptors({
           fetchArticle: () => TE.right({
@@ -87,18 +82,16 @@ describe('your-feed acceptance', () => {
             authors: [],
             server: 'biorxiv' as const,
           }),
-          getGroup: () => TO.some({
-            id: groupId,
-            name: 'NCRC',
-            avatarPath: '',
-            descriptionPath: '',
-            shortDescription: '',
-          }),
           getAllEvents: T.of([
             userFollowedEditorialCommunity(userId, groupId),
             editorialCommunityReviewedArticle(groupId, new Doi('10.1101/111111'), new Doi('10.1101/222222')),
           ]),
           follows: () => T.of(true),
+          findVersionsForArticleDoi: () => TO.some([
+            {
+              occurredAt: new Date(),
+            },
+          ] as RNEA.ReadonlyNonEmptyArray<{ occurredAt: Date }>),
         });
         const html = await yourFeed(adapters)(O.some(userId))();
 
@@ -118,13 +111,6 @@ describe('your-feed acceptance', () => {
             title: sanitise(toHtmlFragment('My article title')),
             authors: [],
             server: 'biorxiv' as const,
-          }),
-          getGroup: () => TO.some({
-            id: groupId,
-            name: 'NCRC',
-            avatarPath: '',
-            descriptionPath: '',
-            shortDescription: '',
           }),
           getAllEvents: T.of([
             userFollowedEditorialCommunity(userId, groupId),
@@ -157,13 +143,6 @@ describe('your-feed acceptance', () => {
                   authors: [],
                   server: 'biorxiv' as const,
                 })),
-            getGroup: () => TO.some({
-              id: groupId,
-              name: 'NCRC',
-              avatarPath: '',
-              descriptionPath: '',
-              shortDescription: '',
-            }),
             getAllEvents: T.of([
               userFollowedEditorialCommunity(userId, groupId),
               editorialCommunityReviewedArticle(groupId, failingDoi, new Doi('10.1101/111111')),
@@ -185,13 +164,6 @@ describe('your-feed acceptance', () => {
           const groupId = new GroupId('NCRC');
           const adapters = getAdaptors({
             fetchArticle: () => TE.left('unavailable' as const),
-            getGroup: () => TO.some({
-              id: groupId,
-              name: 'NCRC',
-              avatarPath: '',
-              descriptionPath: '',
-              shortDescription: '',
-            }),
             getAllEvents: T.of([
               userFollowedEditorialCommunity(userId, groupId),
               editorialCommunityReviewedArticle(groupId, new Doi('10.1101/111111'), new Doi('10.1101/222222')),
