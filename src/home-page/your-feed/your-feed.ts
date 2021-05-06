@@ -75,9 +75,9 @@ export const yourFeed: YourFeed = (ports) => (userId) => pipe(
     E.fromOption(constant(troubleFetchingTryAgain)),
   ))),
   TE.map(RA.map(renderArticleCard)),
-  TE.map(RA.map((activity) => `<li class="group-activity-list__item">${activity}</li>`)),
+  TE.map(RA.map((activity) => `<li class="your-feed__list_item">${activity}</li>`)),
   TE.map((renderedActivities) => `
-    <ul class="group-activity-list" role="list">${renderedActivities.join('')}</ul>
+    <ul class="your-feed__list" role="list">${renderedActivities.join('')}</ul>
   `),
   TE.toUnion,
   T.map(flow(
