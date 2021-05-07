@@ -44,6 +44,13 @@ const renderAsSection = (contents: HtmlFragment): HtmlFragment => toHtmlFragment
   </section>
 `);
 
+const getFollowedGroups = (ports: Ports) => (uid: UserId) => pipe(
+  ports.getAllEvents,
+  T.map((events) => followedGroups(events)(uid)),
+  T.map(RNEA.fromReadonlyArray),
+  T.map(E.fromOption(constant('no-groups-followed'))),
+);
+
 type YourFeed = (ports: Ports) => (
   userId: O.Option<UserId>,
 ) => T.Task<HtmlFragment>;
@@ -51,11 +58,9 @@ type YourFeed = (ports: Ports) => (
 export const yourFeed: YourFeed = (ports) => (userId) => pipe(
   userId,
   TE.fromOption(constant(welcomeMessage)),
-  TE.chain((uId) => pipe(
-    ports.getAllEvents,
-    T.map((events) => followedGroups(events)(uId)),
-    T.map(RNEA.fromReadonlyArray),
-    T.map(E.fromOption(constant(followSomething))),
+  TE.chain(flow(
+    getFollowedGroups(ports),
+    TE.mapLeft(constant(followSomething)),
   )),
   TE.chain((groups) => pipe(
     ports.getAllEvents,
