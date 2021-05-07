@@ -190,7 +190,7 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.get(
     '/groups',
-    pageHandler(groupsPage),
+    pageHandler(groupsPage(adapters)),
   );
 
   router.get(
