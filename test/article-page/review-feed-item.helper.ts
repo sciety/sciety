@@ -5,11 +5,12 @@ import { ReviewFeedItem } from '../../src/article-page/render-review-feed-item';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
 import * as t from '../helpers';
+import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 
 export const arbitrary = (): ReviewFeedItem => ({
   type: 'review',
-  id: t.arbitraryDoi(),
+  id: arbitraryDoi(),
   source: O.some(new URL(t.arbitraryUri())),
   occurredAt: new Date(),
   groupId: arbitraryGroupId(),
