@@ -56,9 +56,8 @@ export const yourFeed: YourFeed = (ports) => (userId) => pipe(
     T.map((events) => followedGroups(events)(uId)),
     T.map(RNEA.fromReadonlyArray),
     T.map(E.fromOption(constant(followSomething))),
-    TE.map((groups) => ({ uId, groups })), // TODO: remove uid (look at all shims)
   )),
-  TE.chain(({ groups }) => pipe(
+  TE.chain((groups) => pipe(
     ports.getAllEvents,
     T.map((events) => followedGroupsActivities(events)(groups)),
     T.map(RNEA.fromReadonlyArray),
