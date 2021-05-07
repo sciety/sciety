@@ -108,12 +108,18 @@ find-ncrc-reviews: build .gcp-ncrc-key.json
 	$(DOCKER_COMPOSE) run -T app \
 		npx ts-node scripts/find-reviews-from-ncrc > ./data/reviews/62f9b0d0-8d43-4766-a52a-ce02af61bc6a.csv
 
+find-screenit-reviews: export TARGET = dev
+find-screenit-reviews: build
+	$(DOCKER_COMPOSE) run -T app \
+		npx ts-node scripts/find-reviews-from-hypothesis-user sciscore > ./data/reviews/8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65.csv
+
 COMMUNITY_SCRIPTS := \
 	find-review-commons-reviews \
 	find-elife-reviews \
 	find-peerj-reviews \
 	find-pci-reviews \
 	find-prereview-reviews \
+	find-screenit-reviews \
 	find-ncrc-reviews
 
 sort-event-data:
