@@ -69,7 +69,6 @@ const byLatestActivityDateDesc: Ord.Ord<ArticleActivity> = pipe(
   ),
 );
 
-// ts-unused-exports:disable-next-line
 export const followedGroupsActivities: FollowedGroupsActivities = (events) => (groupIds) => pipe(
   events,
   RA.filter(isEditorialCommunityReviewedArticleEvent),

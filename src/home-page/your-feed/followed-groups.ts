@@ -36,7 +36,6 @@ const isFollowOrUnfollowEventForUser = (userId: UserId) => (event: DomainEvent):
   && event.userId === userId
 );
 
-// ts-unused-exports:disable-next-line
 export const followedGroups: FollowedGroups = (events) => (userId) => pipe(
   events,
   RA.filter(isFollowOrUnfollowEventForUser(userId)),
