@@ -1,6 +1,5 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -70,6 +69,12 @@ const constructArticleViewModels = (ports: Ports) => flow(
   T.map(E.fromOption(constant('all-articles-failed'))),
 );
 
+const renderArticleCardList = flow(
+  RNEA.map(renderArticleCard),
+  RNEA.map((card) => `<li class="your-feed__list_item">${card}</li>`),
+  (cards) => `<ul class="your-feed__list" role="list">${cards.join('')}</ul>`,
+);
+
 type YourFeed = (ports: Ports) => (
   userId: O.Option<UserId>,
 ) => T.Task<HtmlFragment>;
@@ -88,11 +93,7 @@ export const yourFeed: YourFeed = (ports) => flow(
     constructArticleViewModels(ports),
     TE.mapLeft(constant(troubleFetchingTryAgain)),
   )),
-  TE.map(RA.map(renderArticleCard)),
-  TE.map(RA.map((activity) => `<li class="your-feed__list_item">${activity}</li>`)),
-  TE.map((renderedActivities) => `
-    <ul class="your-feed__list" role="list">${renderedActivities.join('')}</ul>
-  `),
+  TE.map(renderArticleCardList),
   TE.toUnion,
   T.map(flow(
     toHtmlFragment,
