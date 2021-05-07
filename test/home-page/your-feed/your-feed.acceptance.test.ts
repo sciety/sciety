@@ -14,6 +14,7 @@ import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { sanitise } from '../../../src/types/sanitised-html-fragment';
 import { toUserId } from '../../../src/types/user-id';
 import { shouldNotBeCalled } from '../../should-not-be-called';
+import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 
 describe('your-feed acceptance', () => {
@@ -88,7 +89,7 @@ describe('your-feed acceptance', () => {
           findVersionsForArticleDoi: arbitraryVersions,
           getAllEvents: T.of([
             userFollowedEditorialCommunity(userId, groupId),
-            editorialCommunityReviewedArticle(groupId, new Doi('10.1101/111111'), new Doi('10.1101/222222')),
+            editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryDoi()),
           ]),
         };
         const html = await yourFeed(adapters)(O.some(userId))();
@@ -118,7 +119,7 @@ describe('your-feed acceptance', () => {
           findVersionsForArticleDoi: arbitraryVersions,
           getAllEvents: T.of([
             userFollowedEditorialCommunity(userId, groupId),
-            editorialCommunityReviewedArticle(groupId, new Doi('10.1101/111111'), new Doi('10.1101/222222')),
+            editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryDoi()),
           ]),
         };
         const html = await yourFeed(adapters)(O.some(userId))();
@@ -142,8 +143,8 @@ describe('your-feed acceptance', () => {
             findVersionsForArticleDoi: arbitraryVersions,
             getAllEvents: T.of([
               userFollowedEditorialCommunity(userId, groupId),
-              editorialCommunityReviewedArticle(groupId, failingDoi, new Doi('10.1101/111111')),
-              editorialCommunityReviewedArticle(groupId, new Doi('10.1101/success'), new Doi('10.1101/222222')),
+              editorialCommunityReviewedArticle(groupId, failingDoi, arbitraryDoi()),
+              editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryDoi()),
             ]),
           };
 
@@ -163,7 +164,7 @@ describe('your-feed acceptance', () => {
             findVersionsForArticleDoi: shouldNotBeCalled,
             getAllEvents: T.of([
               userFollowedEditorialCommunity(userId, groupId),
-              editorialCommunityReviewedArticle(groupId, new Doi('10.1101/111111'), new Doi('10.1101/222222')),
+              editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryDoi()),
             ]),
           };
           const html = await yourFeed(adapters)(O.some(userId))();
