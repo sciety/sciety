@@ -65,6 +65,10 @@
       "hideSelectors": ["iframe"]
     },
     {
+      "label": "Groups page",
+      "url": "http://sciety_app/groups"
+    },
+    {
       "label": "About",
       "url": "http://sciety_app/about"
     },
