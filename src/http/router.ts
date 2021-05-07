@@ -189,6 +189,11 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   router.get(
+    '/groups',
+    pageHandler(() => aboutPage(adapters.fetchStaticFile)),
+  );
+
+  router.get(
     '/groups/:id',
     pageHandler(flow(
       groupPageParams.decode,
