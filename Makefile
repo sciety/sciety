@@ -113,6 +113,7 @@ COMMUNITY_SCRIPTS := \
 	find-elife-reviews \
 	find-peerj-reviews \
 	find-pci-reviews \
+	find-prereview-reviews \
 	find-ncrc-reviews
 
 sort-event-data:
