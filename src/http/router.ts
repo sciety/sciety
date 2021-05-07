@@ -190,7 +190,16 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.get(
     '/groups',
-    pageHandler(() => aboutPage(adapters.fetchStaticFile)),
+    pageHandler(() => TE.right(
+      {
+        title: 'Groups',
+        content: toHtmlFragment('Groups'),
+        openGraph: {
+          title: 'Groups',
+          description: 'Groups',
+        },
+      },
+    )),
   );
 
   router.get(
