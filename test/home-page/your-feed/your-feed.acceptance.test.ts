@@ -71,6 +71,12 @@ describe('your-feed acceptance', () => {
     });
 
     describe('following groups with evaluations', () => {
+      const arbitraryVersions = () => TO.some([
+        {
+          occurredAt: new Date(),
+        },
+      ] as RNEA.ReadonlyNonEmptyArray<{ occurredAt: Date }>);
+
       it('displays content in the form of article cards', async () => {
         const groupId = arbitraryGroupId();
         const adapters = {
@@ -79,11 +85,7 @@ describe('your-feed acceptance', () => {
             authors: [],
             server: 'biorxiv' as const,
           }),
-          findVersionsForArticleDoi: () => TO.some([
-            {
-              occurredAt: new Date(),
-            },
-          ] as RNEA.ReadonlyNonEmptyArray<{ occurredAt: Date }>),
+          findVersionsForArticleDoi: arbitraryVersions,
           getAllEvents: T.of([
             userFollowedEditorialCommunity(userId, groupId),
             editorialCommunityReviewedArticle(groupId, new Doi('10.1101/111111'), new Doi('10.1101/222222')),
@@ -113,11 +115,7 @@ describe('your-feed acceptance', () => {
             authors: [],
             server: 'biorxiv' as const,
           }),
-          findVersionsForArticleDoi: () => TO.some([
-            {
-              occurredAt: new Date(),
-            },
-          ] as RNEA.ReadonlyNonEmptyArray<{ occurredAt: Date }>),
+          findVersionsForArticleDoi: arbitraryVersions,
           getAllEvents: T.of([
             userFollowedEditorialCommunity(userId, groupId),
             editorialCommunityReviewedArticle(groupId, new Doi('10.1101/111111'), new Doi('10.1101/222222')),
@@ -141,11 +139,7 @@ describe('your-feed acceptance', () => {
                   authors: [],
                   server: 'biorxiv' as const,
                 })),
-            findVersionsForArticleDoi: () => TO.some([
-              {
-                occurredAt: new Date(),
-              },
-            ] as RNEA.ReadonlyNonEmptyArray<{ occurredAt: Date }>),
+            findVersionsForArticleDoi: arbitraryVersions,
             getAllEvents: T.of([
               userFollowedEditorialCommunity(userId, groupId),
               editorialCommunityReviewedArticle(groupId, failingDoi, new Doi('10.1101/111111')),
