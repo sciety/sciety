@@ -20,6 +20,7 @@ import {
   getLatestArticleVersionDate,
 } from '../../shared-components/article-card/get-latest-article-version-date';
 import { DomainEvent } from '../../types/domain-events';
+import { GroupId } from '../../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { UserId } from '../../types/user-id';
 
@@ -51,6 +52,13 @@ const getFollowedGroups = (ports: Ports) => (uid: UserId) => pipe(
   T.map(E.fromOption(constant('no-groups-followed'))),
 );
 
+const getEvaluatedArticles = (ports: Ports) => (groups: ReadonlyArray<GroupId>) => pipe(
+  ports.getAllEvents,
+  T.map((events) => followedGroupsActivities(events)(groups)),
+  T.map(RNEA.fromReadonlyArray),
+  T.map(E.fromOption(constant('no-groups-evaluated'))),
+);
+
 type YourFeed = (ports: Ports) => (
   userId: O.Option<UserId>,
 ) => T.Task<HtmlFragment>;
@@ -62,11 +70,9 @@ export const yourFeed: YourFeed = (ports) => (userId) => pipe(
     getFollowedGroups(ports),
     TE.mapLeft(constant(followSomething)),
   )),
-  TE.chain((groups) => pipe(
-    ports.getAllEvents,
-    T.map((events) => followedGroupsActivities(events)(groups)),
-    T.map(RNEA.fromReadonlyArray),
-    T.map(E.fromOption(constant(noEvaluationsYet))),
+  TE.chain(flow(
+    getEvaluatedArticles(ports),
+    TE.mapLeft(constant(noEvaluationsYet)),
   )),
   TE.chain(flow(
     populateArticleViewModelsSkippingFailures(
