@@ -14,15 +14,16 @@ type HypothesisResponse = {
 };
 
 const processRow = (server: string) => (row: Row): void => {
-  const doiRegex = '(10\\.[0-9]{4,}(?:\\.[1-9][0-9]*)*/(?:[^%"#?\\s])+)';
+  // const doiRegex = '(10\\.[0-9]{4,}(?:\\.[1-9][0-9]*)*/(?:[^%"#?\\s])+)';
+  const shortRegex = '((?:[^%"#?\\s])+)';
   // TODO bioRxiv/medRxiv content is available at multiple URL patterns:
   // curl "https://api.hypothes.is/api/search?uri.parts=biorxiv&limit=100" | jq --raw-output ".rows[].target[].source"
-  const matches = new RegExp(`https://www.${server}.org/cgi/content/${doiRegex}$`).exec(row.uri);
+  const matches = new RegExp(`https?://(?:www.)?${server}.org/cgi/content/(?:10.1101|short)/${shortRegex}$`).exec(row.uri);
   if (matches === null) {
     process.stderr.write(`Cannot parse a DOI out of '${row.uri}'\n`);
   } else {
     const doi = matches[1];
-    process.stdout.write(`${row.created},${doi},hypothesis:${row.id}\n`);
+    process.stdout.write(`${row.created},10.1101/${doi},hypothesis:${row.id}\n`);
   }
 };
 
