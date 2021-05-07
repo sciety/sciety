@@ -19,17 +19,9 @@
   grid-column: 1 / -1;
 }
 
-.home-page-side-bar {
-  grid-column: 1 / -1;
-}
-
 @media screen and (min-width: 56.25em) {
   .sciety-grid--home > .home-page-feed-container {
     grid-column: 1 / 9;
-  }
-
-  .sciety-grid--home > .home-page-side-bar {
-    grid-column: 10 / -1;
   }
 }
 

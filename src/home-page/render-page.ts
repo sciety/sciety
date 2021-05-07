@@ -6,7 +6,6 @@ import { Page } from '../types/page';
 type Components = {
   header: string,
   feed: string,
-  editorialCommunities: string,
 };
 
 const render = (components: Components) => `
@@ -14,9 +13,6 @@ const render = (components: Components) => `
     ${components.header}
     <div class="home-page-feed-container">
       ${components.feed}
-    </div>
-    <div class="home-page-side-bar">
-      ${components.editorialCommunities}
     </div>
   </div>
 `;
