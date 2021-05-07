@@ -12,10 +12,10 @@ type RenderGroups = (userId: O.Option<UserId>) => T.Task<HtmlFragment>;
 export type GetAllGroups = T.Task<RNEA.ReadonlyNonEmptyArray<Group>>;
 
 const render = (links: RNEA.ReadonlyNonEmptyArray<HtmlFragment>) => `
-  <section>
-    <h2>
+  <section class="groups-page">
+    <h1>
       Groups
-    </h2>
+    </h1>
     <ol class="group-list" role="list">
       ${templateListItems(links, 'group-list__item')}
     </ol>
