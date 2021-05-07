@@ -63,8 +63,7 @@ type YourFeed = (ports: Ports) => (
   userId: O.Option<UserId>,
 ) => T.Task<HtmlFragment>;
 
-export const yourFeed: YourFeed = (ports) => (userId) => pipe(
-  userId,
+export const yourFeed: YourFeed = (ports) => flow(
   TE.fromOption(constant(welcomeMessage)),
   TE.chain(flow(
     getFollowedGroups(ports),
