@@ -59,6 +59,17 @@ const getEvaluatedArticles = (ports: Ports) => (groups: ReadonlyArray<GroupId>) 
   T.map(E.fromOption(constant('no-groups-evaluated'))),
 );
 
+const constructArticleViewModels = (ports: Ports) => flow(
+  populateArticleViewModelsSkippingFailures(
+    fetchArticleDetails(
+      getLatestArticleVersionDate(ports.findVersionsForArticleDoi),
+      flow(ports.fetchArticle, T.map(O.fromEither)),
+    ),
+  ),
+  T.map(RNEA.fromReadonlyArray),
+  T.map(E.fromOption(constant('all-articles-failed'))),
+);
+
 type YourFeed = (ports: Ports) => (
   userId: O.Option<UserId>,
 ) => T.Task<HtmlFragment>;
@@ -74,14 +85,8 @@ export const yourFeed: YourFeed = (ports) => flow(
     TE.mapLeft(constant(noEvaluationsYet)),
   )),
   TE.chain(flow(
-    populateArticleViewModelsSkippingFailures(
-      fetchArticleDetails(
-        getLatestArticleVersionDate(ports.findVersionsForArticleDoi),
-        flow(ports.fetchArticle, T.map(O.fromEither)),
-      ),
-    ),
-    T.map(RNEA.fromReadonlyArray),
-    T.map(E.fromOption(constant(troubleFetchingTryAgain))),
+    constructArticleViewModels(ports),
+    TE.mapLeft(constant(troubleFetchingTryAgain)),
   )),
   TE.map(RA.map(renderArticleCard)),
   TE.map(RA.map((activity) => `<li class="your-feed__list_item">${activity}</li>`)),
