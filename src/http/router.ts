@@ -25,6 +25,7 @@ import { aboutPage } from '../about-page';
 import { articleActivityPage, articleMetaPage } from '../article-page';
 import { finishUnfollowCommand, saveUnfollowCommand, unfollowHandler } from '../follow';
 import { groupPage } from '../group-page';
+import { groupsPage } from '../groups-page';
 import { homePage } from '../home-page';
 import { Adapters } from '../infrastructure/adapters';
 import { legalPage } from '../legal-page';
@@ -41,7 +42,6 @@ import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import * as Doi from '../types/doi';
 import { toHtmlFragment } from '../types/html-fragment';
-
 import { userPage } from '../user-page';
 
 const biorxivPrefix = '10.1101';
@@ -190,16 +190,7 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.get(
     '/groups',
-    pageHandler(() => TE.right(
-      {
-        title: 'Groups',
-        content: toHtmlFragment('Groups'),
-        openGraph: {
-          title: 'Groups',
-          description: 'Groups',
-        },
-      },
-    )),
+    pageHandler(groupsPage),
   );
 
   router.get(
