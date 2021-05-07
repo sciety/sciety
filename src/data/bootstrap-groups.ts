@@ -79,14 +79,7 @@ const groups: RNEA.ReadonlyNonEmptyArray<Group> = [
     avatarPath: '/static/groups/pci-paleontology--7a9e97d1-c1fe-4ac2-9572-4ecfe28f9f84.jpg',
     descriptionPath: 'pci-paleontology--7a9e97d1-c1fe-4ac2-9572-4ecfe28f9f84.md',
     shortDescription: 'Peer Community in Paleontology (PCI Paleo) is a community of researchers working in Paleontology who peer review and recommend research articles publicly available from open archives (such as PaleorXiv or bioRxiv). Papers recommended by PCI Paleo are finalized, peer-reviewed articles that can be used and cited, like any other article published in a conventional journal.',
-  },
-  {
-    id: new GroupId('8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65'),
-    name: 'ScreenIT',
-    avatarPath: '/static/groups/screenit--8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65.jpg',
-    descriptionPath: 'screenit--8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65.md',
-    shortDescription: 'ScreenIT',
-  },
+  }
 ];
 
 let downplayedPotentialGroups: ReadonlyArray<Group> = [];
@@ -99,6 +92,13 @@ if (process.env.EXPERIMENT_ENABLED === 'true') {
       avatarPath: '/static/groups/prelights--f97bd177-5cb6-4296-8573-078318755bf2.jpg',
       descriptionPath: 'prelights--f97bd177-5cb6-4296-8573-078318755bf2.md',
       shortDescription: 'preLights is a community initiative supported by The Company of Biologists.',
+    },
+    {
+      id: new GroupId('8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65'),
+      name: 'ScreenIT',
+      avatarPath: '/static/groups/screenit--8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65.jpg',
+      descriptionPath: 'screenit--8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65.md',
+      shortDescription: 'ScreenIT',
     },
   ];
 }
