@@ -78,7 +78,7 @@
     "eslint-plugin-fp-ts": "^0.2.1",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jest": "^24.3.6",
-    "eslint-plugin-jest-formatting": "^2.0.1",
+    "eslint-plugin-jest-formatting": "^3.0.0",
     "eslint-plugin-no-loops": "^0.3.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-unused-imports": "^1.1.1",
