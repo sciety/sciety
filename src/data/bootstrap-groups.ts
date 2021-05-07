@@ -79,7 +79,7 @@ const groups: RNEA.ReadonlyNonEmptyArray<Group> = [
     avatarPath: '/static/groups/pci-paleontology--7a9e97d1-c1fe-4ac2-9572-4ecfe28f9f84.jpg',
     descriptionPath: 'pci-paleontology--7a9e97d1-c1fe-4ac2-9572-4ecfe28f9f84.md',
     shortDescription: 'Peer Community in Paleontology (PCI Paleo) is a community of researchers working in Paleontology who peer review and recommend research articles publicly available from open archives (such as PaleorXiv or bioRxiv). Papers recommended by PCI Paleo are finalized, peer-reviewed articles that can be used and cited, like any other article published in a conventional journal.',
-  }
+  },
 ];
 
 let downplayedPotentialGroups: ReadonlyArray<Group> = [];
