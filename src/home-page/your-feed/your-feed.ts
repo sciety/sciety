@@ -23,8 +23,7 @@ import { GroupId } from '../../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { UserId } from '../../types/user-id';
 
-// ts-unused-exports:disable-next-line
-export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
+type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 export type Ports = {
   fetchArticle: GetArticle,

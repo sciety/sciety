@@ -4,12 +4,10 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { JSDOM } from 'jsdom';
-import { GetArticle } from '../../../src/home-page/your-feed/populate-article-view-models';
 import {
   followSomething, noEvaluationsYet, troubleFetchingTryAgain, welcomeMessage,
 } from '../../../src/home-page/your-feed/static-messages';
-import { feedTitle, GetAllEvents, yourFeed } from '../../../src/home-page/your-feed/your-feed';
-import { FindVersionsForArticleDoi } from '../../../src/shared-components/article-card/get-latest-article-version-date';
+import { feedTitle, yourFeed } from '../../../src/home-page/your-feed/your-feed';
 import { Doi, eqDoi } from '../../../src/types/doi';
 import { editorialCommunityReviewedArticle, userFollowedEditorialCommunity } from '../../../src/types/domain-events';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
@@ -18,30 +16,24 @@ import { toUserId } from '../../../src/types/user-id';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 
-const getAdaptors = ({
-  fetchArticle = shouldNotBeCalled,
-  getAllEvents = shouldNotBeCalled,
-  findVersionsForArticleDoi = shouldNotBeCalled,
-}: {
-  fetchArticle?: GetArticle,
-  getAllEvents?: GetAllEvents,
-  findVersionsForArticleDoi?: FindVersionsForArticleDoi,
-}) => ({
-  fetchArticle,
-  getAllEvents,
-  findVersionsForArticleDoi,
-});
-
 describe('your-feed acceptance', () => {
   it('displays the feed title', async () => {
-    const html = await yourFeed(getAdaptors({}))(O.none)();
+    const html = await yourFeed({
+      fetchArticle: shouldNotBeCalled,
+      findVersionsForArticleDoi: shouldNotBeCalled,
+      getAllEvents: shouldNotBeCalled,
+    })(O.none)();
 
     expect(html).toContain(feedTitle);
   });
 
   describe('there is no logged in user', () => {
     it('displays a welcome message', async () => {
-      const html = await yourFeed(getAdaptors({}))(O.none)();
+      const html = await yourFeed({
+        fetchArticle: shouldNotBeCalled,
+        findVersionsForArticleDoi: shouldNotBeCalled,
+        getAllEvents: shouldNotBeCalled,
+      })(O.none)();
 
       expect(html).toContain(welcomeMessage);
     });
@@ -52,9 +44,11 @@ describe('your-feed acceptance', () => {
 
     describe('following groups that have no evaluations', () => {
       it('displays the calls to action to follow other groups or return later', async () => {
-        const adapters = getAdaptors({
+        const adapters = {
+          fetchArticle: shouldNotBeCalled,
+          findVersionsForArticleDoi: shouldNotBeCalled,
           getAllEvents: T.of([userFollowedEditorialCommunity(userId, arbitraryGroupId())]),
-        });
+        };
 
         const html = await yourFeed(adapters)(O.some(userId))();
 
@@ -65,9 +59,11 @@ describe('your-feed acceptance', () => {
     // Your feed is empty! Start following some groups to see their most recent evaluations right here.
     describe('not following any groups', () => {
       it('displays call to action to follow groups', async () => {
-        const adapters = getAdaptors({
+        const adapters = {
+          fetchArticle: shouldNotBeCalled,
+          findVersionsForArticleDoi: shouldNotBeCalled,
           getAllEvents: T.of([]),
-        });
+        };
         const html = await yourFeed(adapters)(O.some(userId))();
 
         expect(html).toContain(followSomething);
@@ -77,22 +73,22 @@ describe('your-feed acceptance', () => {
     describe('following groups with evaluations', () => {
       it('displays content in the form of article cards', async () => {
         const groupId = arbitraryGroupId();
-        const adapters = getAdaptors({
+        const adapters = {
           fetchArticle: () => TE.right({
             title: sanitise(toHtmlFragment('My article title')),
             authors: [],
             server: 'biorxiv' as const,
           }),
-          getAllEvents: T.of([
-            userFollowedEditorialCommunity(userId, groupId),
-            editorialCommunityReviewedArticle(groupId, new Doi('10.1101/111111'), new Doi('10.1101/222222')),
-          ]),
           findVersionsForArticleDoi: () => TO.some([
             {
               occurredAt: new Date(),
             },
           ] as RNEA.ReadonlyNonEmptyArray<{ occurredAt: Date }>),
-        });
+          getAllEvents: T.of([
+            userFollowedEditorialCommunity(userId, groupId),
+            editorialCommunityReviewedArticle(groupId, new Doi('10.1101/111111'), new Doi('10.1101/222222')),
+          ]),
+        };
         const html = await yourFeed(adapters)(O.some(userId))();
 
         expect(html).toContain('class="article-card"');
@@ -117,15 +113,15 @@ describe('your-feed acceptance', () => {
             authors: [],
             server: 'biorxiv' as const,
           }),
-          getAllEvents: T.of([
-            userFollowedEditorialCommunity(userId, groupId),
-            editorialCommunityReviewedArticle(groupId, new Doi('10.1101/111111'), new Doi('10.1101/222222')),
-          ]),
           findVersionsForArticleDoi: () => TO.some([
             {
               occurredAt: new Date(),
             },
           ] as RNEA.ReadonlyNonEmptyArray<{ occurredAt: Date }>),
+          getAllEvents: T.of([
+            userFollowedEditorialCommunity(userId, groupId),
+            editorialCommunityReviewedArticle(groupId, new Doi('10.1101/111111'), new Doi('10.1101/222222')),
+          ]),
         };
         const html = await yourFeed(adapters)(O.some(userId))();
 
@@ -136,7 +132,7 @@ describe('your-feed acceptance', () => {
         it('only displays the successfully fetched articles', async () => {
           const groupId = arbitraryGroupId();
           const failingDoi = new Doi('10.1101/failing');
-          const adapters = getAdaptors({
+          const adapters = {
             fetchArticle: (doi: Doi) => (
               eqDoi.equals(doi, failingDoi)
                 ? TE.left('unavailable' as const)
@@ -145,17 +141,17 @@ describe('your-feed acceptance', () => {
                   authors: [],
                   server: 'biorxiv' as const,
                 })),
-            getAllEvents: T.of([
-              userFollowedEditorialCommunity(userId, groupId),
-              editorialCommunityReviewedArticle(groupId, failingDoi, new Doi('10.1101/111111')),
-              editorialCommunityReviewedArticle(groupId, new Doi('10.1101/success'), new Doi('10.1101/222222')),
-            ]),
             findVersionsForArticleDoi: () => TO.some([
               {
                 occurredAt: new Date(),
               },
             ] as RNEA.ReadonlyNonEmptyArray<{ occurredAt: Date }>),
-          });
+            getAllEvents: T.of([
+              userFollowedEditorialCommunity(userId, groupId),
+              editorialCommunityReviewedArticle(groupId, failingDoi, new Doi('10.1101/111111')),
+              editorialCommunityReviewedArticle(groupId, new Doi('10.1101/success'), new Doi('10.1101/222222')),
+            ]),
+          };
 
           const html = await yourFeed(adapters)(O.some(userId))();
           const fragment = JSDOM.fragment(html);
@@ -168,13 +164,14 @@ describe('your-feed acceptance', () => {
       describe('when details of all articles cannot be fetched', () => {
         it('display only an error message', async () => {
           const groupId = arbitraryGroupId();
-          const adapters = getAdaptors({
+          const adapters = {
             fetchArticle: () => TE.left('unavailable' as const),
+            findVersionsForArticleDoi: shouldNotBeCalled,
             getAllEvents: T.of([
               userFollowedEditorialCommunity(userId, groupId),
               editorialCommunityReviewedArticle(groupId, new Doi('10.1101/111111'), new Doi('10.1101/222222')),
             ]),
-          });
+          };
           const html = await yourFeed(adapters)(O.some(userId))();
 
           expect(html).toContain(troubleFetchingTryAgain);
