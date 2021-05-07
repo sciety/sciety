@@ -62,17 +62,17 @@ export const yourFeed: YourFeed = (ports) => (userId) => pipe(
     T.map((events) => followedGroupsActivities(events)(groups)),
     T.map(RNEA.fromReadonlyArray),
     T.map(E.fromOption(constant(noEvaluationsYet))),
-    TE.chainTaskK(populateArticleViewModelsSkippingFailures(
+  )),
+  TE.chain(flow(
+    populateArticleViewModelsSkippingFailures(
       fetchArticleDetails(
         getLatestArticleVersionDate(ports.findVersionsForArticleDoi),
         flow(ports.fetchArticle, T.map(O.fromEither)),
       ),
-    )),
+    ),
+    T.map(RNEA.fromReadonlyArray),
+    T.map(E.fromOption(constant(troubleFetchingTryAgain))),
   )),
-  T.map(E.chain(flow(
-    RNEA.fromReadonlyArray,
-    E.fromOption(constant(troubleFetchingTryAgain)),
-  ))),
   TE.map(RA.map(renderArticleCard)),
   TE.map(RA.map((activity) => `<li class="your-feed__list_item">${activity}</li>`)),
   TE.map((renderedActivities) => `
