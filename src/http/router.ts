@@ -71,6 +71,12 @@ const groupPageParams = t.type({
   })),
 });
 
+const groupsPageParams = t.type({
+  user: tt.optionFromNullable(t.type({
+    id: UserIdFromString,
+  })),
+});
+
 const homePageParams = t.type({
   user: tt.optionFromNullable(t.type({
     id: UserIdFromString,
@@ -190,7 +196,12 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.get(
     '/groups',
-    pageHandler(groupsPage(adapters)),
+    pageHandler(flow(
+      groupsPageParams.decode,
+      E.mapLeft(toNotFound),
+      TE.fromEither,
+      TE.chainW(groupsPage(adapters)),
+    )),
   );
 
   router.get(

@@ -19,9 +19,9 @@ describe('unfollow a group', () => {
       await authenticateViaTwitter();
     });
 
-    describe('from the home page', () => {
-      it('removes the group to my profile page', async () => {
-        await goto('localhost:8080');
+    describe('from the groups page', () => {
+      it('removes the group from my profile page', async () => {
+        await goto('localhost:8080/groups');
         await click(button({ 'aria-label': 'Follow NCRC' }));
         await click(button({ 'aria-label': 'Unfollow NCRC' }));
         await click('My profile');
