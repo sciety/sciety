@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
-import { renderGroup } from '../../src/home-page/render-group';
+import { renderGroup } from '../../src/groups-page/render-group';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { arbitraryGroupId } from '../types/group-id.helper';
 
