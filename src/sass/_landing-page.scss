@@ -4,6 +4,16 @@
 .landing-page {
   margin: 1rem 1rem 0;
   display: flex;
+
+  @media screen and (min-width: 46.25em) {
+    margin: 200px 3rem 0;
+  }
+}
+
+.landing-page__content {
+  @media screen and (min-width: 46.25em) {
+    margin-top: 60px;
+  }
 }
 
 .landing-page__content * {
