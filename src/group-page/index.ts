@@ -6,7 +6,7 @@ import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe } from 'fp-ts/function';
 import { countFollowersOf } from './count-followers';
-import { recentActivity, RecentActivityPorts } from './recent-activity/recent-activity';
+import { recentActivity, Ports as RecentActivityPorts } from './recent-activity';
 import { FetchStaticFile, renderDescription } from './render-description';
 import { renderFollowers } from './render-followers';
 import { renderErrorPage, renderPage } from './render-page';

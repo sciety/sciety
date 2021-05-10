@@ -22,13 +22,13 @@ type GetArticle = (id: Doi) => TE.TaskEither<unknown, Article>;
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-export type RecentActivityPorts = {
+export type Ports = {
   fetchArticle: GetArticle,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
   getAllEvents: GetAllEvents,
 };
 
-type RecentActivity = (ports: RecentActivityPorts) => (group: Group) => TE.TaskEither<never, string | HtmlFragment>;
+type RecentActivity = (ports: Ports) => (group: Group) => TE.TaskEither<never, string | HtmlFragment>;
 
 export const recentActivity: RecentActivity = (ports) => (group) => pipe(
   group.id,
