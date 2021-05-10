@@ -4,9 +4,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
-import {
-  flow, pipe,
-} from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { countFollowersOf } from './count-followers';
 import { constructRecentGroupActivity } from './recent-activity/construct-recent-group-activity';
 import { FetchStaticFile, renderDescription } from './render-description';
@@ -21,12 +19,32 @@ import { Doi } from '../types/doi';
 import { DomainEvent } from '../types/domain-events';
 import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
-import { toHtmlFragment } from '../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { User } from '../types/user';
 import { UserId } from '../types/user-id';
+
+type RecentActivityPorts = {
+  fetchArticle: GetArticle,
+  findVersionsForArticleDoi: FindVersionsForArticleDoi,
+  getAllEvents: GetAllEvents,
+};
+
+type RecentActivity = (ports: RecentActivityPorts) => (group: Group) => TE.TaskEither<never, string | HtmlFragment>;
+
+const recentActivity: RecentActivity = (ports) => (group) => pipe(
+  group.id,
+  constructRecentGroupActivity(
+    fetchArticleDetails(
+      getLatestArticleVersionDate(ports.findVersionsForArticleDoi),
+      flow(ports.fetchArticle, T.map(O.fromEither)),
+    ),
+    ports.getAllEvents,
+  ),
+  TE.rightTask,
+);
 
 type FetchGroup = (groupId: GroupId) => TO.TaskOption<Group>;
 
@@ -38,13 +56,11 @@ type Article = {
 type GetArticle = (id: Doi) => TE.TaskEither<unknown, Article>;
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-type Ports = {
-  fetchArticle: GetArticle,
+type Ports = RecentActivityPorts & {
   fetchStaticFile: FetchStaticFile,
   getGroup: FetchGroup,
   getAllEvents: GetAllEvents,
   follows: (userId: UserId, groupId: GroupId) => T.Task<boolean>,
-  findVersionsForArticleDoi: FindVersionsForArticleDoi,
 };
 
 type Params = {
@@ -91,17 +107,7 @@ export const groupPage = (ports: Ports): GroupPage => ({ id, user }) => pipe(
         T.map(renderFollowToggle(group.id, group.name)),
         TE.rightTask,
       ),
-      feed: pipe(
-        group.id,
-        constructRecentGroupActivity(
-          fetchArticleDetails(
-            getLatestArticleVersionDate(ports.findVersionsForArticleDoi),
-            flow(ports.fetchArticle, T.map(O.fromEither)),
-          ),
-          ports.getAllEvents,
-        ),
-        TE.rightTask,
-      ),
+      feed: recentActivity(ports)(group),
     },
     sequenceS(TE.ApplyPar),
     TE.bimap(renderErrorPage, renderPage(group)),
