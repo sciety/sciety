@@ -6,11 +6,11 @@ type Components = {
   header: HtmlFragment,
   followList: HtmlFragment,
   userDisplayName: string,
-  savedArticlesList: HtmlFragment,
+  savedArticles: HtmlFragment,
 };
 
 export const renderPage = ({
-  header, followList, savedArticlesList, userDisplayName,
+  header, followList, savedArticles, userDisplayName,
 }: Components): Page => (
   {
     title: userDisplayName,
@@ -19,7 +19,7 @@ export const renderPage = ({
         ${header}
         <div class="user-page-contents">
           ${followList}
-          ${savedArticlesList}
+          ${savedArticles}
         </div>
       </div>
     `),

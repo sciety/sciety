@@ -39,7 +39,7 @@ export const userPage = (ports: Ports): UserPage => (params) => {
         TE.map(renderHeader),
       ),
       followList: followList(ports)(params.id, viewingUserId),
-      savedArticlesList: savedArticles(ports)(params.id),
+      savedArticles: savedArticles(ports)(params.id),
       userDisplayName: pipe(
         userDetails,
         TE.map(flow(
