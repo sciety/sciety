@@ -7,7 +7,7 @@ describe('render-page', () => {
       const rendered = renderPage({
         header: toHtmlFragment(''),
         followList: toHtmlFragment(''),
-        savedArticlesList: toHtmlFragment(''),
+        savedArticles: toHtmlFragment(''),
         userDisplayName: 'someone',
       });
 
