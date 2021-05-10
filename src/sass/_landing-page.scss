@@ -1,18 +1,21 @@
 @use 'settings';
 @use 'typography';
 
+$_image-visibility-breakpoint: 60.25em;
+
 .landing-page {
   margin: 1rem 1rem 0;
   display: flex;
 
-  @media screen and (min-width: 46.25em) {
+  @media screen and (min-width: $_image-visibility-breakpoint) {
     margin: 200px 3rem 0;
   }
 }
 
 .landing-page__content {
-  @media screen and (min-width: 46.25em) {
+  @media screen and (min-width: $_image-visibility-breakpoint) {
     margin-top: 60px;
+    padding-right: 2rem;
   }
 }
 
@@ -29,10 +32,11 @@
 .landing-page__image {
   display: none;
 
-  @media screen and (min-width: 46.25em) {
+  @media screen and (min-width: $_image-visibility-breakpoint) {
     @supports(display: flex) {
       display: block;
     }
     width: 100%;
+    max-width: 690px; // magic number to align with login button
   }
 }
