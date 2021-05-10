@@ -1,16 +1,24 @@
 @use 'settings';
 @use 'typography';
 
-.landing-page-content {
+.landing-page {
   margin: 1rem 1rem 0;
 }
 
-.landing-page-content * {
+.landing-page__content * {
   color: settings.$colour-text-primary;
   font-family: settings.$font-family;
 }
 
-.landing-page-content h1 {
+.landing-page__content h1 {
   @include typography.sizing(26px, 3.75);
   font-weight: bold;
+}
+
+.landing-page__image {
+  display: none;
+
+  @media screen and (min-width: 46.25em) {
+    display: block;
+  }
 }
