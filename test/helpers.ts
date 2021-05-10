@@ -5,7 +5,7 @@ export const arbitraryNumber = (min: number, max: number): number => (
   Math.floor(Math.random() * (max - min + 1) + min)
 );
 
-export const arbitraryWord = (length: number): string => (
+export const arbitraryWord = (length: number = arbitraryNumber(3, 15)): string => (
   [...Array(length)].map(() => Math.random().toString(36)[2]).join('')
 );
 
