@@ -7,7 +7,7 @@ import { UserId } from '../../types/user-id';
 
 export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-const projectFollowedCommunities = (userId: UserId) => (events: ReadonlyArray<DomainEvent>) => {
+const calculateFollowedGroups = (userId: UserId) => (events: ReadonlyArray<DomainEvent>) => {
   const result = new Set<string>();
   events.forEach((event) => {
     if (event.type === 'UserFollowedEditorialCommunity' && event.userId === userId) {
@@ -28,5 +28,5 @@ export const projectFollowedGroupIds = (
   getAllEvents: GetAllEvents,
 ): ProjectFollowedGroupIds => (userId) => pipe(
   getAllEvents,
-  T.map(projectFollowedCommunities(userId)),
+  T.map(calculateFollowedGroups(userId)),
 );
