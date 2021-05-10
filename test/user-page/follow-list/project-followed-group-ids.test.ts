@@ -2,56 +2,94 @@ import * as T from 'fp-ts/Task';
 import { userFollowedEditorialCommunity, userSavedArticle, userUnfollowedEditorialCommunity } from '../../../src/types/domain-events';
 import { projectFollowedGroupIds } from '../../../src/user-page/follow-list/project-followed-group-ids';
 import { arbitraryDoi } from '../../types/doi.helper';
-import { arbitraryGroupId, groupIdFromString } from '../../types/group-id.helper';
+import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
 const importantUser = arbitraryUserId();
 
 describe('project-followed-group-ids', () => {
-  const getAllEvents = T.of([
-    userFollowedEditorialCommunity(importantUser, groupIdFromString('316db7d9-88cc-4c26-b386-f067e0f56334')),
-    userFollowedEditorialCommunity(importantUser, groupIdFromString('53ed5364-a016-11ea-bb37-0242ac130002')),
-    userUnfollowedEditorialCommunity(importantUser, groupIdFromString('53ed5364-a016-11ea-bb37-0242ac130002')),
-    userFollowedEditorialCommunity(importantUser, groupIdFromString('53ed5364-a016-11ea-bb37-0242ac130002')),
-    userFollowedEditorialCommunity(importantUser, groupIdFromString('74fd66e9-3b90-4b5a-a4ab-5be83db4c5de')),
-    userSavedArticle(importantUser, arbitraryDoi()),
-    userFollowedEditorialCommunity(arbitraryUserId(), groupIdFromString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0')),
-    userUnfollowedEditorialCommunity(arbitraryUserId(), groupIdFromString('53ed5364-a016-11ea-bb37-0242ac130002')),
-  ]);
-
-  it('returns a list', async () => {
-    const actual = await projectFollowedGroupIds(getAllEvents)(importantUser)();
-    const expected = [
-      groupIdFromString('316db7d9-88cc-4c26-b386-f067e0f56334'),
-      groupIdFromString('53ed5364-a016-11ea-bb37-0242ac130002'),
-      groupIdFromString('74fd66e9-3b90-4b5a-a4ab-5be83db4c5de'),
-    ];
-
-    expect(actual).toStrictEqual(expected);
-  });
-
   describe('when a group is followed', () => {
     const group1 = arbitraryGroupId();
+    const getAllEvents = T.of([
+      userFollowedEditorialCommunity(importantUser, group1),
+    ]);
 
     it('lists that group', async () => {
-      const followed = await projectFollowedGroupIds(T.of([
-        userFollowedEditorialCommunity(importantUser, group1),
-      ]))(importantUser)();
+      const followed = await projectFollowedGroupIds(getAllEvents)(importantUser)();
 
       expect(followed).toStrictEqual([group1]);
     });
   });
 
+  describe('when multiple groups are followed', () => {
+    const group1 = arbitraryGroupId();
+    const group2 = arbitraryGroupId();
+    const group3 = arbitraryGroupId();
+    const getAllEvents = T.of([
+      userFollowedEditorialCommunity(importantUser, group1),
+      userFollowedEditorialCommunity(importantUser, group2),
+      userFollowedEditorialCommunity(importantUser, group3),
+    ]);
+
+    it('returns a list', async () => {
+      const followed = await projectFollowedGroupIds(getAllEvents)(importantUser)();
+
+      expect(followed).toStrictEqual([group1, group2, group3]);
+    });
+  });
+
   describe('when a group is unfollowed', () => {
     const group1 = arbitraryGroupId();
+    const getAllEvents = T.of([
+      userFollowedEditorialCommunity(importantUser, group1),
+      userUnfollowedEditorialCommunity(importantUser, group1),
+    ]);
 
     it('does not list that group', async () => {
-      const followed = await projectFollowedGroupIds(T.of([
-        userFollowedEditorialCommunity(importantUser, group1),
-        userUnfollowedEditorialCommunity(importantUser, group1),
-      ]))(importantUser)();
+      const followed = await projectFollowedGroupIds(getAllEvents)(importantUser)();
 
       expect(followed).toStrictEqual([]);
+    });
+  });
+
+  describe('when a group is unfollowed and followed again', () => {
+    const group1 = arbitraryGroupId();
+    const getAllEvents = T.of([
+      userFollowedEditorialCommunity(importantUser, group1),
+      userUnfollowedEditorialCommunity(importantUser, group1),
+      userFollowedEditorialCommunity(importantUser, group1),
+    ]);
+
+    it('lists that group', async () => {
+      const followed = await projectFollowedGroupIds(getAllEvents)(importantUser)();
+
+      expect(followed).toStrictEqual([group1]);
+    });
+  });
+
+  describe('when a different user has followed a group', () => {
+    const group1 = arbitraryGroupId();
+    const getAllEvents = T.of([
+      userFollowedEditorialCommunity(arbitraryUserId(), group1),
+    ]);
+
+    it('is ignored', async () => {
+      const followed = await projectFollowedGroupIds(getAllEvents)(importantUser)();
+
+      expect(followed).toStrictEqual([]);
+    });
+  });
+
+  describe('when other events have occurred', () => {
+    const group1 = arbitraryGroupId();
+
+    it('they are ignored', async () => {
+      const followed = await projectFollowedGroupIds(T.of([
+        userFollowedEditorialCommunity(importantUser, group1),
+        userSavedArticle(importantUser, arbitraryDoi()),
+      ]))(importantUser)();
+
+      expect(followed).toStrictEqual([group1]);
     });
   });
 });
