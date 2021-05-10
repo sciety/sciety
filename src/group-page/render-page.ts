@@ -4,11 +4,11 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 
-// TODO: feed should be HtmlFragment
+// TODO: recentActivity should be HtmlFragment
 type Components = {
   header: HtmlFragment,
   description: HtmlFragment,
-  feed: string,
+  recentActivity: string,
   followers: HtmlFragment,
   followButton: HtmlFragment,
 };
@@ -29,7 +29,7 @@ const render = (components: Components) => `
           <div class="group-page-side-bar--follow-toggle">
             ${components.followButton}
           </div>
-          ${components.feed}
+          ${components.recentActivity}
         </section>
       </div>
     </div>
