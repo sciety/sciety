@@ -1,47 +1,34 @@
-import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { JSDOM } from 'jsdom';
 import {
-  followSomething, noEvaluationsYet, troubleFetchingTryAgain, welcomeMessage,
+  followSomething, noEvaluationsYet, troubleFetchingTryAgain,
 } from '../../../src/home-page/your-feed/static-messages';
 import { feedTitle, yourFeed } from '../../../src/home-page/your-feed/your-feed';
 import { Doi, eqDoi } from '../../../src/types/doi';
 import { editorialCommunityReviewedArticle, userFollowedEditorialCommunity } from '../../../src/types/domain-events';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { sanitise } from '../../../src/types/sanitised-html-fragment';
-import { toUserId } from '../../../src/types/user-id';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
+import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('your-feed acceptance', () => {
   it('displays the feed title', async () => {
     const html = await yourFeed({
       fetchArticle: shouldNotBeCalled,
       findVersionsForArticleDoi: shouldNotBeCalled,
-      getAllEvents: shouldNotBeCalled,
-    })(O.none)();
+      getAllEvents: T.of([]),
+    })(arbitraryUserId())();
 
     expect(html).toContain(feedTitle);
   });
 
-  describe('there is no logged in user', () => {
-    it('displays a welcome message', async () => {
-      const html = await yourFeed({
-        fetchArticle: shouldNotBeCalled,
-        findVersionsForArticleDoi: shouldNotBeCalled,
-        getAllEvents: shouldNotBeCalled,
-      })(O.none)();
-
-      expect(html).toContain(welcomeMessage);
-    });
-  });
-
   describe('there is a logged in user', () => {
-    const userId = toUserId('alice');
+    const userId = arbitraryUserId();
 
     describe('following groups that have no evaluations', () => {
       it('displays the calls to action to follow other groups or return later', async () => {
@@ -51,7 +38,7 @@ describe('your-feed acceptance', () => {
           getAllEvents: T.of([userFollowedEditorialCommunity(userId, arbitraryGroupId())]),
         };
 
-        const html = await yourFeed(adapters)(O.some(userId))();
+        const html = await yourFeed(adapters)(userId)();
 
         expect(html).toContain(noEvaluationsYet);
       });
@@ -65,7 +52,7 @@ describe('your-feed acceptance', () => {
           findVersionsForArticleDoi: shouldNotBeCalled,
           getAllEvents: T.of([]),
         };
-        const html = await yourFeed(adapters)(O.some(userId))();
+        const html = await yourFeed(adapters)(userId)();
 
         expect(html).toContain(followSomething);
       });
@@ -92,7 +79,7 @@ describe('your-feed acceptance', () => {
             editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryDoi()),
           ]),
         };
-        const html = await yourFeed(adapters)(O.some(userId))();
+        const html = await yourFeed(adapters)(userId)();
 
         expect(html).toContain('class="article-card"');
       });
@@ -122,7 +109,7 @@ describe('your-feed acceptance', () => {
             editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryDoi()),
           ]),
         };
-        const html = await yourFeed(adapters)(O.some(userId))();
+        const html = await yourFeed(adapters)(userId)();
 
         expect(html).toContain('My article title');
       });
@@ -148,7 +135,7 @@ describe('your-feed acceptance', () => {
             ]),
           };
 
-          const html = await yourFeed(adapters)(O.some(userId))();
+          const html = await yourFeed(adapters)(userId)();
           const fragment = JSDOM.fragment(html);
           const cards = Array.from(fragment.querySelectorAll('.article-card'));
 
@@ -167,7 +154,7 @@ describe('your-feed acceptance', () => {
               editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryDoi()),
             ]),
           };
-          const html = await yourFeed(adapters)(O.some(userId))();
+          const html = await yourFeed(adapters)(userId)();
 
           expect(html).toContain(troubleFetchingTryAgain);
         });

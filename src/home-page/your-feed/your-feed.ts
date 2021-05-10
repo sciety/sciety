@@ -9,8 +9,8 @@ import { followedGroupsActivities } from './followed-groups-activities';
 import { GetArticle, populateArticleViewModelsSkippingFailures } from './populate-article-view-models';
 import {
   followSomething,
-  noEvaluationsYet, troubleFetchingTryAgain,
-  welcomeMessage,
+  noEvaluationsYet,
+  troubleFetchingTryAgain,
 } from './static-messages';
 import { renderArticleCard } from '../../shared-components';
 import { fetchArticleDetails } from '../../shared-components/article-card/fetch-article-details';
@@ -75,11 +75,11 @@ const renderArticleCardList = flow(
 );
 
 type YourFeed = (ports: Ports) => (
-  userId: O.Option<UserId>,
+  userId: UserId,
 ) => T.Task<HtmlFragment>;
 
 export const yourFeed: YourFeed = (ports) => flow(
-  TE.fromOption(constant(welcomeMessage)),
+  TE.right,
   TE.chain(flow(
     getFollowedGroups(ports),
     TE.mapLeft(constant(followSomething)),
