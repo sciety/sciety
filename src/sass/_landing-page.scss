@@ -1,0 +1,12 @@
+@use 'settings';
+@use 'typography';
+
+.landing-page-content * {
+  color: settings.$colour-text-primary;
+  font-family: settings.$font-family;
+}
+
+.landing-page-content h1 {
+  @include typography.sizing(26px, 3.75);
+  font-weight: bold;
+}

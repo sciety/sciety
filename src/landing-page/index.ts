@@ -1,7 +1,7 @@
 import { toHtmlFragment } from '../types/html-fragment';
 
 const content = toHtmlFragment(`
-<div>
+<div class="landing-page-content">
   <h1>
     The home of public preprint evaluation
   </h1>    
