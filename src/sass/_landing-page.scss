@@ -3,6 +3,7 @@
 
 .landing-page {
   margin: 1rem 1rem 0;
+  display: flex;
 }
 
 .landing-page__content * {
@@ -20,5 +21,6 @@
 
   @media screen and (min-width: 46.25em) {
     display: block;
+    width: 100%;
   }
 }
