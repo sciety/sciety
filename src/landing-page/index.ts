@@ -4,15 +4,15 @@ const content = toHtmlFragment(`
 <div class="landing-page">
 
   <div class="landing-page__content">
-    <h1>
+    <h1 class="landing-page__content__title">
       The home of public preprint evaluation
     </h1>
-    <p>
+    <p class="landing-page__content__byline">
       Open evaluation and curation together in one place.
       <br>
       Let Sciety help you navigate the preprint landscape.
     </p>
-    <p>Follow the journey through <a href="/blog">our blog</a>.</p>
+    <p class="landing-page__content__byline">Follow the journey through <a href="/blog">our blog</a>.</p>
   </div>
 
   <picture>

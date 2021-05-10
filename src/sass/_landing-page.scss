@@ -19,12 +19,13 @@ $_image-visibility-breakpoint: 60.25em;
   }
 }
 
-.landing-page__content * {
+.landing-page__content__title,
+.landing-page__content__byline {
   color: settings.$colour-text-primary;
   font-family: settings.$font-family;
 }
 
-.landing-page__content h1 {
+.landing-page__content__title {
   @include typography.sizing(26px, 3.75);
   font-weight: bold;
 }
