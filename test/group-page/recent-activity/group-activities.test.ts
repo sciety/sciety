@@ -1,12 +1,12 @@
-import { groupActivities } from '../../src/group-page/group-activities';
-import { Doi } from '../../src/types/doi';
+import { groupActivities } from '../../../src/group-page/recent-activity/group-activities';
+import { Doi } from '../../../src/types/doi';
 import {
   editorialCommunityReviewedArticle,
   EditorialCommunityReviewedArticleEvent,
-} from '../../src/types/domain-events';
-import { GroupId } from '../../src/types/group-id';
-import { arbitraryDoi } from '../types/doi.helper';
-import { arbitraryGroupId } from '../types/group-id.helper';
+} from '../../../src/types/domain-events';
+import { GroupId } from '../../../src/types/group-id';
+import { arbitraryDoi } from '../../types/doi.helper';
+import { arbitraryGroupId } from '../../types/group-id.helper';
 
 const generateNEventsForGroup = (
   numberOfEvents: number,

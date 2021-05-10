@@ -5,13 +5,13 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { constant, flow, pipe } from 'fp-ts/function';
+import { groupActivities } from './group-activities';
+import { renderRecentGroupActivity } from './render-recent-group-activity';
 import { Doi } from '../../types/doi';
 import { DomainEvent } from '../../types/domain-events';
 import { GroupId } from '../../types/group-id';
 import { HtmlFragment } from '../../types/html-fragment';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
-import { groupActivities } from '../group-activities';
-import { renderRecentGroupActivity } from '../render-recent-group-activity';
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 

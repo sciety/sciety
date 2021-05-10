@@ -6,13 +6,13 @@ import * as RM from 'fp-ts/ReadonlyMap';
 import * as S from 'fp-ts/Semigroup';
 import { flow, pipe } from 'fp-ts/function';
 import * as N from 'fp-ts/number';
-import { ArticleActivity } from '../types/article-activity';
-import { Doi, eqDoi } from '../types/doi';
+import { ArticleActivity } from '../../types/article-activity';
+import { Doi, eqDoi } from '../../types/doi';
 import {
   DomainEvent, EditorialCommunityReviewedArticleEvent,
   isEditorialCommunityReviewedArticleEvent,
-} from '../types/domain-events';
-import { eqGroupId, GroupId } from '../types/group-id';
+} from '../../types/domain-events';
+import { eqGroupId, GroupId } from '../../types/group-id';
 
 type GroupActivities = (events: ReadonlyArray<DomainEvent>) => (groupId: GroupId) => ReadonlyArray<ArticleActivity>;
 
