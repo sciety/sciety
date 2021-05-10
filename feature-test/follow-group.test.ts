@@ -21,7 +21,7 @@ describe('follow a group', () => {
 
     describe('from the group page', () => {
       it('adds the group to my profile page', async () => {
-        await goto('localhost:8080');
+        await goto('localhost:8080/groups');
         await click('PeerJ');
         await click('Follow');
         await click('My profile');
