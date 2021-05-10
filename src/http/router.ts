@@ -1,6 +1,7 @@
 import Router from '@koa/router';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
@@ -28,6 +29,7 @@ import { groupPage } from '../group-page';
 import { groupsPage } from '../groups-page';
 import { homePage } from '../home-page';
 import { Adapters } from '../infrastructure/adapters';
+import { landingPage } from '../landing-page';
 import { legalPage } from '../legal-page';
 import { menuPageLayout } from '../menu-page/menu-page-layout';
 import { respondHandler } from '../respond';
@@ -108,7 +110,7 @@ export const createRouter = (adapters: Adapters): Router => {
       TE.chainTaskK((params) => pipe(
         params.user,
         O.fold(
-          () => homePage(adapters)(params),
+          () => T.of(landingPage),
           () => homePage(adapters)(params),
         ),
       )),
