@@ -8,6 +8,7 @@ import { GroupId } from '../../../src/types/group-id';
 import { arbitraryDate } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
+import { arbitraryReviewId } from '../../types/review-id.helper';
 
 const generateNEventsForGroup = (
   numberOfEvents: number,
@@ -28,7 +29,7 @@ describe('group-activities', () => {
       editorialCommunityReviewedArticle(
         groupId,
         articleId,
-        new Doi('10.24072/pci.animsci.100005'),
+        arbitraryReviewId(),
         date,
       ),
     ];
@@ -72,13 +73,13 @@ describe('group-activities', () => {
       editorialCommunityReviewedArticle(
         groupId,
         articleId,
-        new Doi('10.1101/123456'),
+        arbitraryReviewId(),
         new Date('1980-01-01'),
       ),
       editorialCommunityReviewedArticle(
         groupId,
         articleId,
-        new Doi('10.1101/scorpion'),
+        arbitraryReviewId(),
         latestActivityDate,
       ),
     ];
@@ -123,25 +124,25 @@ describe('group-activities', () => {
       editorialCommunityReviewedArticle(
         groupId,
         articleId,
-        new Doi('10.24072/pci.animsci.100004'),
+        arbitraryReviewId(),
         new Date('2020-10-14T00:00:00.000Z'),
       ),
       editorialCommunityReviewedArticle(
         otherGroupId,
         articleId,
-        new Doi('10.7287/peerj.11014v0.1/reviews/1'),
+        arbitraryReviewId(),
         mostRecentActivityDate,
       ),
       editorialCommunityReviewedArticle(
         otherGroupId,
         articleId,
-        new Doi('10.7287/peerj.11014v0.1/reviews/2'),
+        arbitraryReviewId(),
         mostRecentActivityDate,
       ),
       editorialCommunityReviewedArticle(
         otherGroupId,
         articleId,
-        new Doi('10.7287/peerj.11014v0.2/reviews/2'),
+        arbitraryReviewId(),
         mostRecentActivityDate,
       ),
     ];
@@ -178,13 +179,13 @@ describe('group-activities', () => {
         editorialCommunityReviewedArticle(
           groupId,
           arbitraryDoi(),
-          new Doi('10.24072/pci.animsci.100001'),
+          arbitraryReviewId(),
           earlierDate,
         ),
         editorialCommunityReviewedArticle(
           groupId,
           arbitraryDoi(),
-          new Doi('10.24072/pci.animsci.100002'),
+          arbitraryReviewId(),
           laterDate,
         ),
       ];
@@ -218,19 +219,19 @@ describe('group-activities', () => {
         editorialCommunityReviewedArticle(
           thisGroupId,
           articleThatWasMoreRecentlyReviewedButByAnotherGroup,
-          new Doi('10.24072/pci.animsci.100004'),
+          arbitraryReviewId(),
           new Date('1980-01-01'),
         ),
         editorialCommunityReviewedArticle(
           thisGroupId,
           articleMostRecentlyReviewedByThisGroup,
-          new Doi('10.24072/pci.animsci.100005'),
+          arbitraryReviewId(),
           new Date('2000-01-01'),
         ),
         editorialCommunityReviewedArticle(
           anotherGroupId,
           articleThatWasMoreRecentlyReviewedButByAnotherGroup,
-          new Doi('10.7287/peerj.11014v0.1/reviews/1'),
+          arbitraryReviewId(),
           new Date('2020-01-01'),
         ),
       ];
@@ -256,7 +257,7 @@ describe('group-activities', () => {
         editorialCommunityReviewedArticle(
           anotherGroupId,
           arbitraryDoi(),
-          new Doi('10.7287/peerj.11014v0.1/reviews/1'),
+          arbitraryReviewId(),
           arbitraryDate(),
         ),
       ];
