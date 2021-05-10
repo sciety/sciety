@@ -32,7 +32,7 @@ export const groupsPage = (ports: Ports): GroupsPage => flow(
     title: 'Groups',
     content,
     openGraph: {
-      title: 'Groups',
+      title: 'Sciety Groups',
       description: 'Groups',
     },
   })),
