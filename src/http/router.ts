@@ -111,7 +111,7 @@ export const createRouter = (adapters: Adapters): Router => {
         params.user,
         O.fold(
           () => T.of(landingPage),
-          () => homePage(adapters)(params),
+          (user) => homePage(adapters)({ userId: user.id }),
         ),
       )),
     )),
