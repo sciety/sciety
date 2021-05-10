@@ -5,6 +5,7 @@ import {
   EditorialCommunityReviewedArticleEvent,
 } from '../../../src/types/domain-events';
 import { GroupId } from '../../../src/types/group-id';
+import { arbitraryDate } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 
@@ -22,12 +23,13 @@ describe('group-activities', () => {
   describe('when only a single group has evaluated an article once', () => {
     const articleId = arbitraryDoi();
     const groupId = arbitraryGroupId();
+    const date = arbitraryDate();
     const events = [
       editorialCommunityReviewedArticle(
         groupId,
         articleId,
         new Doi('10.24072/pci.animsci.100005'),
-        new Date('2020-12-15T00:00:00.000Z'),
+        date,
       ),
     ];
 
@@ -56,7 +58,7 @@ describe('group-activities', () => {
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
-          latestActivityDate: new Date('2020-12-15T00:00:00.000Z'),
+          latestActivityDate: date,
         }),
       ]);
     });
@@ -116,6 +118,7 @@ describe('group-activities', () => {
     const groupId = arbitraryGroupId();
     const otherGroupId = arbitraryGroupId();
     const articleId = new Doi('10.1101/2019.12.20.884056');
+    const mostRecentActivityDate = new Date('2021-03-10T00:00:00.000Z');
     const events = [
       editorialCommunityReviewedArticle(
         groupId,
@@ -127,19 +130,19 @@ describe('group-activities', () => {
         otherGroupId,
         articleId,
         new Doi('10.7287/peerj.11014v0.1/reviews/1'),
-        new Date('2021-03-10T00:00:00.000Z'),
+        mostRecentActivityDate,
       ),
       editorialCommunityReviewedArticle(
         otherGroupId,
         articleId,
         new Doi('10.7287/peerj.11014v0.1/reviews/2'),
-        new Date('2021-03-10T00:00:00.000Z'),
+        mostRecentActivityDate,
       ),
       editorialCommunityReviewedArticle(
         otherGroupId,
         articleId,
         new Doi('10.7287/peerj.11014v0.2/reviews/2'),
-        new Date('2021-03-10T00:00:00.000Z'),
+        mostRecentActivityDate,
       ),
     ];
 
@@ -159,7 +162,7 @@ describe('group-activities', () => {
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
-          latestActivityDate: new Date('2021-03-10T00:00:00.000Z'),
+          latestActivityDate: mostRecentActivityDate,
         }),
       ]);
     });
@@ -254,7 +257,7 @@ describe('group-activities', () => {
           anotherGroupId,
           new Doi('10.1101/2019.12.20.884056'),
           new Doi('10.7287/peerj.11014v0.1/reviews/1'),
-          new Date('2021-03-10T00:00:00.000Z'),
+          arbitraryDate(),
         ),
       ];
 

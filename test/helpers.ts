@@ -18,3 +18,7 @@ export const arbitraryString = (): string => pipe(
 export const arbitraryUri = (): string => 'http://something.com/example';
 
 export const arbitraryTextLongerThan = (min: number): string => 'xy '.repeat(min);
+
+export const arbitraryDate = (): Date => (
+  new Date(`${arbitraryNumber(2000, 2021)}-${arbitraryNumber(1, 12)}-${arbitraryNumber(1, 28)}`)
+);
