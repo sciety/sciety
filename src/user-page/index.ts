@@ -5,7 +5,7 @@ import { flow, pipe } from 'fp-ts/function';
 import { followList, Ports as FollowListPorts } from './follow-list';
 import { renderHeader, UserDetails } from './render-header';
 import { renderErrorPage, renderPage } from './render-page';
-import { savedArticles, Ports as SavedArticlesPorts } from './saved-articles/saved-articles';
+import { savedArticles, Ports as SavedArticlesPorts } from './saved-articles';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
