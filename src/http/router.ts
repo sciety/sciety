@@ -105,7 +105,13 @@ export const createRouter = (adapters: Adapters): Router => {
       homePageParams.decode,
       E.mapLeft(toNotFound),
       TE.fromEither,
-      TE.chainTaskK(homePage(adapters)),
+      TE.chainTaskK((params) => pipe(
+        params.user,
+        O.fold(
+          () => homePage(adapters)(params),
+          () => homePage(adapters)(params),
+        ),
+      )),
     )),
   );
 
