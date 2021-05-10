@@ -1,6 +1,10 @@
 @use 'settings';
 @use 'typography';
 
+.landing-page-content {
+  margin: 1rem 1rem 0;
+}
+
 .landing-page-content * {
   color: settings.$colour-text-primary;
   font-family: settings.$font-family;
