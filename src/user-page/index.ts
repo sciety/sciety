@@ -1,42 +1,16 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import { fetchSavedArticles } from './fetch-saved-articles';
 import { followList, Ports as FollowListPorts } from './follow-list';
-import { GetAllEvents, projectSavedArticleDois } from './project-saved-article-dois';
 import { renderHeader, UserDetails } from './render-header';
 import { renderErrorPage, renderPage } from './render-page';
-import { renderSavedArticles } from './render-saved-articles';
-import { Doi } from '../types/doi';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { savedArticles, Ports as SavedArticlesPorts } from './saved-articles/saved-articles';
+import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { User } from '../types/user';
 import { UserId } from '../types/user-id';
-
-type FetchArticle = (doi: Doi) => TE.TaskEither<unknown, { title: HtmlFragment }>;
-
-const getTitle = (fetchArticle: FetchArticle) => flow(
-  fetchArticle,
-  T.map(flow(
-    O.fromEither,
-    O.map((article) => article.title),
-  )),
-);
-
-type SavedArticlesPorts = {
-  getAllEvents: GetAllEvents,
-  fetchArticle: FetchArticle,
-};
-
-const savedArticles = (ports: SavedArticlesPorts) => flow(
-  projectSavedArticleDois(ports.getAllEvents),
-  T.chain(fetchSavedArticles(getTitle(ports.fetchArticle))),
-  T.map(renderSavedArticles),
-  TE.rightTask,
-);
 
 type GetUserDetails = (userId: UserId) => TE.TaskEither<'not-found' | 'unavailable', UserDetails>;
 
