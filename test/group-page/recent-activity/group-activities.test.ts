@@ -66,7 +66,7 @@ describe('group-activities', () => {
 
   describe('when only a single group has evaluated an article more than once', () => {
     const groupId = arbitraryGroupId();
-    const articleId = new Doi('10.1101/2019.12.20.884056');
+    const articleId = arbitraryDoi();
     const latestActivityDate = new Date('2020-01-01');
     const events = [
       editorialCommunityReviewedArticle(
@@ -117,7 +117,7 @@ describe('group-activities', () => {
   describe('when multiple groups have evaluated an article', () => {
     const groupId = arbitraryGroupId();
     const otherGroupId = arbitraryGroupId();
-    const articleId = new Doi('10.1101/2019.12.20.884056');
+    const articleId = arbitraryDoi();
     const mostRecentActivityDate = new Date('2021-03-10T00:00:00.000Z');
     const events = [
       editorialCommunityReviewedArticle(
@@ -177,13 +177,13 @@ describe('group-activities', () => {
       const events = [
         editorialCommunityReviewedArticle(
           groupId,
-          new Doi('10.1101/661249'),
+          arbitraryDoi(),
           new Doi('10.24072/pci.animsci.100001'),
           earlierDate,
         ),
         editorialCommunityReviewedArticle(
           groupId,
-          new Doi('10.1101/760082'),
+          arbitraryDoi(),
           new Doi('10.24072/pci.animsci.100002'),
           laterDate,
         ),
@@ -212,8 +212,8 @@ describe('group-activities', () => {
     it('orders by the evaluation date of this group', () => {
       const thisGroupId = arbitraryGroupId();
       const anotherGroupId = arbitraryGroupId();
-      const articleMostRecentlyReviewedByThisGroup = new Doi('10.1101/2020.09.15.286153');
-      const articleThatWasMoreRecentlyReviewedButByAnotherGroup = new Doi('10.1101/2019.12.20.884056');
+      const articleMostRecentlyReviewedByThisGroup = arbitraryDoi();
+      const articleThatWasMoreRecentlyReviewedButByAnotherGroup = arbitraryDoi();
       const events = [
         editorialCommunityReviewedArticle(
           thisGroupId,
@@ -255,7 +255,7 @@ describe('group-activities', () => {
       const events = [
         editorialCommunityReviewedArticle(
           anotherGroupId,
-          new Doi('10.1101/2019.12.20.884056'),
+          arbitraryDoi(),
           new Doi('10.7287/peerj.11014v0.1/reviews/1'),
           arbitraryDate(),
         ),
