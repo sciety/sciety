@@ -28,7 +28,7 @@ export type Ports = {
   getAllEvents: GetAllEvents,
 };
 
-type RecentActivity = (ports: Ports) => (group: Group) => TE.TaskEither<never, string | HtmlFragment>;
+type RecentActivity = (ports: Ports) => (group: Group) => TE.TaskEither<never, HtmlFragment>;
 
 export const recentActivity: RecentActivity = (ports) => (group) => pipe(
   group.id,

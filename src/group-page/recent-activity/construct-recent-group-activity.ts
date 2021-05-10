@@ -10,7 +10,7 @@ import { renderRecentGroupActivity } from './render-recent-group-activity';
 import { Doi } from '../../types/doi';
 import { DomainEvent } from '../../types/domain-events';
 import { GroupId } from '../../types/group-id';
-import { HtmlFragment } from '../../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
@@ -21,9 +21,17 @@ type GetArticleDetails = (doi: Doi) => T.Task<O.Option<{
   latestVersionDate: O.Option<Date>,
 }>>;
 
-const noInformationFound = '<p>We couldn\'t find this information; please try again later.</p>';
+const noInformationFound = pipe(
+  '<p>We couldn\'t find this information; please try again later.</p>',
+  toHtmlFragment,
+  constant,
+);
 
-const noActivity = '<p>It looks like this group hasn’t evaluated any articles yet. Try coming back later!</p>';
+const noActivity = pipe(
+  '<p>It looks like this group hasn’t evaluated any articles yet. Try coming back later!</p>',
+  toHtmlFragment,
+  constant,
+);
 
 const addArticleDetails = (
   getArticleDetails: GetArticleDetails,
@@ -39,12 +47,12 @@ const addArticleDetails = (
 export const constructRecentGroupActivity = (
   getArticleDetails: GetArticleDetails,
   getAllEvents: GetAllEvents,
-) => (groupId: GroupId): T.Task<string | HtmlFragment> => pipe(
+) => (groupId: GroupId): T.Task<HtmlFragment> => pipe(
   getAllEvents,
   T.map((events) => groupActivities(events)(groupId)),
   T.chain(TO.traverseArray(addArticleDetails(getArticleDetails))),
-  T.map(E.fromOption(constant(noInformationFound))),
-  TE.chainOptionK(constant(noActivity))(RNEA.fromReadonlyArray),
+  T.map(E.fromOption(noInformationFound)),
+  TE.chainOptionK(noActivity)(RNEA.fromReadonlyArray),
   TE.map(flow(
     RNEA.map((articleViewModel) => ({
       ...articleViewModel,
