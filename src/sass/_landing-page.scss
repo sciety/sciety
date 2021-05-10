@@ -20,7 +20,9 @@
   display: none;
 
   @media screen and (min-width: 46.25em) {
-    display: block;
+    @supports(display: flex) {
+      display: block;
+    }
     width: 100%;
   }
 }
