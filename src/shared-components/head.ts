@@ -15,7 +15,7 @@ export const head = (title: string, openGraph?: { title: string, description: st
   <meta name="twitter:site" content="@scietyHQ">
   <meta property="og:site_name" content="Sciety">
   <meta property="og:title" content="${htmlEscape(openGraph ? openGraph.title : 'Sciety')}">
-  <meta property="og:description" content="${htmlEscape(openGraph ? openGraph.description : 'Where research is evaluated and curated by the communities you trust')}">
+  <meta property="og:description" content="${htmlEscape(openGraph ? openGraph.description : 'Let Sciety help you navigate the preprint landscape.')}">
   <meta property="og:image" content="${process.env.APP_ORIGIN ?? ''}/static/images/sciety-twitter-profile.png">
   <link rel="icon" type="image/svg+xml" href="/static/images/favicons/favicon.svg">
 
