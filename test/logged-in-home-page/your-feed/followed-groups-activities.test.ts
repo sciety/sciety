@@ -1,4 +1,4 @@
-import { followedGroupsActivities } from '../../../src/home-page/your-feed/followed-groups-activities';
+import { followedGroupsActivities } from '../../../src/logged-in-home-page/your-feed/followed-groups-activities';
 import { Doi } from '../../../src/types/doi';
 import {
   editorialCommunityReviewedArticle,

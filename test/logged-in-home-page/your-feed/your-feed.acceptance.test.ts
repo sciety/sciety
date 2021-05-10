@@ -5,8 +5,8 @@ import * as TO from 'fp-ts/TaskOption';
 import { JSDOM } from 'jsdom';
 import {
   followSomething, noEvaluationsYet, troubleFetchingTryAgain,
-} from '../../../src/home-page/your-feed/static-messages';
-import { feedTitle, yourFeed } from '../../../src/home-page/your-feed/your-feed';
+} from '../../../src/logged-in-home-page/your-feed/static-messages';
+import { feedTitle, yourFeed } from '../../../src/logged-in-home-page/your-feed/your-feed';
 import { Doi, eqDoi } from '../../../src/types/doi';
 import { editorialCommunityReviewedArticle, userFollowedEditorialCommunity } from '../../../src/types/domain-events';
 import { toHtmlFragment } from '../../../src/types/html-fragment';

@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as TO from 'fp-ts/TaskOption';
-import { populateArticleViewModelsSkippingFailures } from '../../../src/home-page/your-feed/populate-article-view-models';
+import { populateArticleViewModelsSkippingFailures } from '../../../src/logged-in-home-page/your-feed/populate-article-view-models';
 import { ArticleActivity } from '../../../src/types/article-activity';
 import { Doi, eqDoi } from '../../../src/types/doi';
 import { toHtmlFragment } from '../../../src/types/html-fragment';

@@ -13,7 +13,7 @@ type Params = {
 
 type HomePage = (params: Params) => T.Task<Page>;
 
-export const homePage = (ports: Ports): HomePage => flow(
+export const loggedInHomePage = (ports: Ports): HomePage => flow(
   ({ userId }) => ({
     header: T.of(renderPageHeader()),
     feed: yourFeed(ports)(userId),

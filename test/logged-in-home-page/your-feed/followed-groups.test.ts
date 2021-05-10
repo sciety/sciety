@@ -1,4 +1,4 @@
-import { followedGroups } from '../../../src/home-page/your-feed/followed-groups';
+import { followedGroups } from '../../../src/logged-in-home-page/your-feed/followed-groups';
 import { userFollowedEditorialCommunity, userUnfollowedEditorialCommunity } from '../../../src/types/domain-events';
 import { toUserId } from '../../../src/types/user-id';
 import { arbitraryGroupId, groupIdFromString } from '../../types/group-id.helper';

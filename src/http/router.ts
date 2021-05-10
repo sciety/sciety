@@ -27,10 +27,10 @@ import { articleActivityPage, articleMetaPage } from '../article-page';
 import { finishUnfollowCommand, saveUnfollowCommand, unfollowHandler } from '../follow';
 import { groupPage } from '../group-page';
 import { groupsPage } from '../groups-page';
-import { homePage } from '../home-page';
 import { Adapters } from '../infrastructure/adapters';
 import { landingPage } from '../landing-page';
 import { legalPage } from '../legal-page';
+import { loggedInHomePage } from '../logged-in-home-page';
 import { menuPageLayout } from '../menu-page/menu-page-layout';
 import { respondHandler } from '../respond';
 import { finishRespondCommand } from '../respond/finish-respond-command';
@@ -111,7 +111,7 @@ export const createRouter = (adapters: Adapters): Router => {
         params.user,
         O.fold(
           () => T.of(landingPage),
-          (user) => homePage(adapters)({ userId: user.id }),
+          (user) => loggedInHomePage(adapters)({ userId: user.id }),
         ),
       )),
     )),
