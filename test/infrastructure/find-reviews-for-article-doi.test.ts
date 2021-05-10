@@ -4,11 +4,12 @@ import { pipe } from 'fp-ts/function';
 import { findReviewsForArticleDoi } from '../../src/infrastructure/find-reviews-for-article-doi';
 import { Doi } from '../../src/types/doi';
 import { editorialCommunityReviewedArticle } from '../../src/types/domain-events';
+import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 
 describe('find-reviews-for-article-doi', () => {
-  const article1 = new Doi('10.1000/1');
-  const article2 = new Doi('10.99999/2');
+  const article1 = arbitraryDoi();
+  const article2 = arbitraryDoi();
   const group1 = arbitraryGroupId();
   const group2 = arbitraryGroupId();
   const reviewId1 = new Doi('10.5555/1');
@@ -24,7 +25,7 @@ describe('find-reviews-for-article-doi', () => {
     it.each([
       [article1, [reviewId1, reviewId3]],
       [article2, [reviewId2]],
-      [new Doi('10.0000/does-not-exist'), []],
+      [arbitraryDoi(), []],
     ])('finds the review references for article %s', async (articleDoi, expectedReviews) => {
       const actualReviews = await pipe(
         getAllEvents,

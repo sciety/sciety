@@ -1,8 +1,8 @@
 import { pipe } from 'fp-ts/function';
 import { selectSubsetToDisplay } from '../../src/search-results-page/select-subset-to-display';
-import { Doi } from '../../src/types/doi';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
+import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 
 describe('select-subset-to-display', () => {
@@ -18,7 +18,7 @@ describe('select-subset-to-display', () => {
       };
       const article = {
         _tag: 'Article' as const,
-        doi: new Doi('10.1101/1234'),
+        doi: arbitraryDoi(),
         server: 'biorxiv' as const,
         title: pipe('', toHtmlFragment, sanitise),
         authors: [''],

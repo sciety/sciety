@@ -1,10 +1,10 @@
 import * as E from 'fp-ts/Either';
 import { fetchCrossrefArticle } from '../../src/infrastructure/fetch-crossref-article';
-import { Doi } from '../../src/types/doi';
 import { dummyLogger } from '../dummy-logger';
+import { arbitraryDoi } from '../types/doi.helper';
 
 describe('fetch-crossref-article', () => {
-  const doi = new Doi('10.1101/339747');
+  const doi = arbitraryDoi();
 
   describe('the request fails', () => {
     it('returns an error result', async () => {

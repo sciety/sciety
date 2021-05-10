@@ -2,16 +2,16 @@ import { RouterContext } from '@koa/router';
 import * as T from 'fp-ts/Task';
 import { ParameterizedContext } from 'koa';
 import { finishSaveArticleCommand } from '../../src/save-article/finish-save-article-command';
-import { Doi } from '../../src/types/doi';
 import { userSavedArticle } from '../../src/types/domain-events';
 import { User } from '../../src/types/user';
 import { toUserId } from '../../src/types/user-id';
+import { arbitraryDoi } from '../types/doi.helper';
 
 describe('finish-save-article-command', () => {
   describe('when the user has not already saved the article', () => {
     it('commits a UserSavedArticle event', async () => {
       const userId = toUserId('user-id');
-      const articleId = new Doi('10.1234/5678');
+      const articleId = arbitraryDoi();
       const context = ({
         session: {
           command: 'save-article',
@@ -40,7 +40,7 @@ describe('finish-save-article-command', () => {
   describe('when the user has already saved the article', () => {
     it('does not commit any events', async () => {
       const userId = toUserId('user-id');
-      const articleId = new Doi('10.1234/5678');
+      const articleId = arbitraryDoi();
       const context = ({
         session: {
           command: 'save-article',
@@ -67,7 +67,7 @@ describe('finish-save-article-command', () => {
   describe('after saving', () => {
     it('deletes session parameters', async () => {
       const userId = toUserId('user-id');
-      const articleId = new Doi('10.1234/5678');
+      const articleId = arbitraryDoi();
       const context = ({
         session: {
           command: 'save-article',

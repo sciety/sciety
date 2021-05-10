@@ -3,8 +3,8 @@ import { DOMParser } from 'xmldom';
 import {
   getAbstract, getAuthors, getServer, getTitle,
 } from '../../src/infrastructure/parse-crossref-article';
-import { Doi } from '../../src/types/doi';
 import { dummyLogger } from '../dummy-logger';
+import { arbitraryDoi } from '../types/doi.helper';
 
 const crossrefResponseWith = (content: string): string => `
   <?xml version="1.0" encoding="UTF-8"?>
@@ -25,7 +25,7 @@ describe('parse-crossref-article', () => {
       throw msg;
     },
   });
-  const doi = new Doi('10.1101/339747');
+  const doi = arbitraryDoi();
 
   describe('parsing the abstract', () => {
     it('extracts the abstract text from the XML response', async () => {

@@ -5,6 +5,7 @@ import {
   EditorialCommunityReviewedArticleEvent,
 } from '../../../src/types/domain-events';
 import { GroupId } from '../../../src/types/group-id';
+import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId, groupIdFromString } from '../../types/group-id.helper';
 
 const generateNEventsForGroup = (
@@ -19,13 +20,13 @@ const generateNEventsForGroup = (
 
 describe('followed-groups-activities', () => {
   describe('when only a single group has evaluated an article once', () => {
-    const articleId = new Doi('10.1101/2020.09.15.286153');
+    const articleId = arbitraryDoi();
     const groupId = '4eebcec9-a4bb-44e1-bde3-2ae11e65daaa';
     const events = [
       editorialCommunityReviewedArticle(
         groupIdFromString(groupId),
         articleId,
-        new Doi('10.24072/pci.animsci.100005'),
+        arbitraryDoi(),
         new Date('2020-12-15T00:00:00.000Z'),
       ),
     ];

@@ -3,6 +3,7 @@ import { projectHasUserSavedArticle } from '../../src/article-page/project-has-u
 import { Doi } from '../../src/types/doi';
 import { userSavedArticle } from '../../src/types/domain-events';
 import { toUserId } from '../../src/types/user-id';
+import { arbitraryDoi } from '../types/doi.helper';
 
 describe('project-has-user-saved-article', () => {
   describe('when the user has saved the article', () => {
@@ -23,7 +24,7 @@ describe('project-has-user-saved-article', () => {
     it('returns false', async () => {
       const getEvents = T.of([]);
       const result = await projectHasUserSavedArticle(
-        new Doi('10.1101/some-doi'),
+        arbitraryDoi(),
         toUserId('this-user'),
       )(getEvents)();
 
@@ -34,10 +35,10 @@ describe('project-has-user-saved-article', () => {
   describe('when the user has saved a different article', () => {
     it('returns false', async () => {
       const getEvents = T.of([
-        userSavedArticle(toUserId('this-user'), new Doi('10.1101/111111')),
+        userSavedArticle(toUserId('this-user'), arbitraryDoi()),
       ]);
       const result = await projectHasUserSavedArticle(
-        new Doi('10.1101/some-other-doi'),
+        arbitraryDoi(),
         toUserId('this-user'),
       )(getEvents)();
 

@@ -5,6 +5,7 @@ import { ArticleActivity } from '../../../src/types/article-activity';
 import { Doi, eqDoi } from '../../../src/types/doi';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { sanitise } from '../../../src/types/sanitised-html-fragment';
+import { arbitraryDoi } from '../../types/doi.helper';
 
 describe('populate-article-view-models', () => {
   describe('no failures', () => {
@@ -16,7 +17,7 @@ describe('populate-article-view-models', () => {
           latestActivityDate: new Date(),
         },
         {
-          doi: new Doi('10.1101/22222'),
+          doi: arbitraryDoi(),
           evaluationCount: 1,
           latestActivityDate: new Date(),
         },
@@ -41,7 +42,7 @@ describe('populate-article-view-models', () => {
     it('returns an article view model without a version date', async () => {
       const activities: ReadonlyArray<ArticleActivity> = [
         {
-          doi: new Doi('10.1101/11111'),
+          doi: arbitraryDoi(),
           evaluationCount: 1,
           latestActivityDate: new Date(),
         },
@@ -62,8 +63,8 @@ describe('populate-article-view-models', () => {
   });
 
   describe('only one of two articles failing, on article title and authors', () => {
-    const successDoi = new Doi('10.1101/123456');
-    const failingDoi = new Doi('10.1101/987654');
+    const successDoi = arbitraryDoi();
+    const failingDoi = arbitraryDoi();
     const activities: ReadonlyArray<ArticleActivity> = [
       {
         doi: successDoi,

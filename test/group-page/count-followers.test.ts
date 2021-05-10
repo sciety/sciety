@@ -1,8 +1,8 @@
 import { pipe } from 'fp-ts/function';
 import { countFollowersOf } from '../../src/group-page/count-followers';
-import { Doi } from '../../src/types/doi';
 import { userFollowedEditorialCommunity, userSavedArticle, userUnfollowedEditorialCommunity } from '../../src/types/domain-events';
 import { toUserId } from '../../src/types/user-id';
+import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId, groupIdFromString } from '../types/group-id.helper';
 
 const myGroup = groupIdFromString('my-group');
@@ -32,7 +32,7 @@ describe('project-follower-count', () => {
   it('ignores other type of events', async () => {
     expect(pipe(
       [
-        userSavedArticle(aUserId, new Doi('10.1101/111111')),
+        userSavedArticle(aUserId, arbitraryDoi()),
       ],
       countFollowersOf(groupIdFromString('my-group')),
     )).toBe(0);

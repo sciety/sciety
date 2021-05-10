@@ -2,6 +2,7 @@
 import { responseCache } from '../../src/infrastructure/response-cache';
 import { Doi } from '../../src/types/doi';
 import { dummyLogger } from '../dummy-logger';
+import { arbitraryDoi } from '../types/doi.helper';
 
 describe('article-cache', () => {
   describe('when the required response is not in the cache', () => {
@@ -9,7 +10,7 @@ describe('article-cache', () => {
       const downstreamFetcher = async () => 'a-string';
       const spy = jest.fn(downstreamFetcher);
       const articleCache = responseCache(spy, dummyLogger);
-      await articleCache(new Doi('10.1101/111111'), '');
+      await articleCache(arbitraryDoi(), '');
 
       expect(spy).toHaveBeenCalledTimes(1);
     });
@@ -17,7 +18,7 @@ describe('article-cache', () => {
     it('returns the response', async () => {
       const articleCache = responseCache(async () => ('a-string'), dummyLogger);
 
-      const actual = await articleCache(new Doi('10.1101/111111'), '');
+      const actual = await articleCache(arbitraryDoi(), '');
 
       expect(actual).toBe('a-string');
     });

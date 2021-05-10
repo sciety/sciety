@@ -1,8 +1,8 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import { renderFeed } from '../../src/article-page/render-feed';
-import { Doi } from '../../src/types/doi';
 import { toHtmlFragment } from '../../src/types/html-fragment';
+import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 
 describe('render-feed', () => {
@@ -10,7 +10,7 @@ describe('render-feed', () => {
     const feedItems = [
       {
         type: 'review',
-        id: new Doi('10.1111/12345678'),
+        id: arbitraryDoi(),
         source: O.some(new URL('http://example.com')),
         occurredAt: new Date(),
         groupId: arbitraryGroupId(),

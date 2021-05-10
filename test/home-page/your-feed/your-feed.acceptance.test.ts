@@ -130,7 +130,7 @@ describe('your-feed acceptance', () => {
       describe('when details of an article cannot be fetched', () => {
         it('only displays the successfully fetched articles', async () => {
           const groupId = arbitraryGroupId();
-          const failingDoi = new Doi('10.1101/failing');
+          const failingDoi = arbitraryDoi();
           const adapters = {
             fetchArticle: (doi: Doi) => (
               eqDoi.equals(doi, failingDoi)

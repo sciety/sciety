@@ -3,9 +3,9 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { handleArticleVersionErrors } from '../../src/article-page/handle-article-version-errors';
 import { FeedItem } from '../../src/article-page/render-feed';
-import { Doi } from '../../src/types/doi';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
+import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 
 describe('handle-article-version-errors', () => {
@@ -33,7 +33,7 @@ describe('handle-article-version-errors', () => {
       const inputItems: ReadonlyArray<FeedItem> = [
         {
           type: 'review',
-          id: new Doi('10.1111/12345678'),
+          id: arbitraryDoi(),
           occurredAt: new Date(),
           source: O.some(new URL('https://example.com')),
           groupId,
@@ -48,7 +48,7 @@ describe('handle-article-version-errors', () => {
         },
         {
           type: 'review',
-          id: new Doi('10.1111/12345679'),
+          id: arbitraryDoi(),
           occurredAt: new Date(),
           source: O.some(new URL('https://example.com')),
           groupId,

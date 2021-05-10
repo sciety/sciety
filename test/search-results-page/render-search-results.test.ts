@@ -1,9 +1,9 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { renderSearchResults } from '../../src/search-results-page/render-search-results';
-import { Doi } from '../../src/types/doi';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
+import { arbitraryDoi } from '../types/doi.helper';
 
 describe('render-search-results component', () => {
   describe('when there are results', () => {
@@ -15,7 +15,7 @@ describe('render-search-results component', () => {
           itemsToDisplay: [
             {
               _tag: 'Article',
-              doi: new Doi('10.1101/833392'),
+              doi: arbitraryDoi(),
               title: pipe('the title', toHtmlFragment, sanitise),
               authors: ['1', '2', '3'],
               latestVersionDate: O.none,

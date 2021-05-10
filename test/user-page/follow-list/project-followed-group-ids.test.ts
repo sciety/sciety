@@ -1,8 +1,8 @@
 import * as T from 'fp-ts/Task';
-import { Doi } from '../../../src/types/doi';
 import { userFollowedEditorialCommunity, userSavedArticle, userUnfollowedEditorialCommunity } from '../../../src/types/domain-events';
 import { toUserId } from '../../../src/types/user-id';
 import { GetAllEvents, projectFollowedGroupIds } from '../../../src/user-page/follow-list/project-followed-group-ids';
+import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId, groupIdFromString } from '../../types/group-id.helper';
 
 describe('project-followed-group-ids', () => {
@@ -12,7 +12,7 @@ describe('project-followed-group-ids', () => {
     userUnfollowedEditorialCommunity(toUserId('someone'), groupIdFromString('53ed5364-a016-11ea-bb37-0242ac130002')),
     userFollowedEditorialCommunity(toUserId('someone'), groupIdFromString('53ed5364-a016-11ea-bb37-0242ac130002')),
     userFollowedEditorialCommunity(toUserId('someone'), groupIdFromString('74fd66e9-3b90-4b5a-a4ab-5be83db4c5de')),
-    userSavedArticle(toUserId('someone'), new Doi('10.1101/111111')),
+    userSavedArticle(toUserId('someone'), arbitraryDoi()),
     userFollowedEditorialCommunity(toUserId('someoneelse'), groupIdFromString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0')),
     userUnfollowedEditorialCommunity(toUserId('someoneelse'), groupIdFromString('53ed5364-a016-11ea-bb37-0242ac130002')),
   ]);

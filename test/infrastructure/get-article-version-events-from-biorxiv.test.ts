@@ -6,6 +6,7 @@ import { Json } from 'io-ts-types';
 import { getArticleVersionEventsFromBiorxiv } from '../../src/infrastructure/get-article-version-events-from-biorxiv';
 import { Doi } from '../../src/types/doi';
 import { dummyLoggerIO } from '../dummy-logger';
+import { arbitraryDoi } from '../types/doi.helper';
 
 describe('get-article-version-events-from-biorxiv', () => {
   describe('when biorxiv is available', () => {
@@ -116,7 +117,7 @@ describe('get-article-version-events-from-biorxiv', () => {
           ],
         });
 
-        const events = await getArticleVersionEventsFromBiorxiv(new Doi('10.1101/2020.09.02.278911'), 'biorxiv')({ getJson, logger: dummyLoggerIO })();
+        const events = await getArticleVersionEventsFromBiorxiv(arbitraryDoi(), 'biorxiv')({ getJson, logger: dummyLoggerIO })();
 
         expect(events).toStrictEqual(O.none);
       });

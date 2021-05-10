@@ -5,6 +5,7 @@ import {
   EditorialCommunityReviewedArticleEvent,
 } from '../../src/types/domain-events';
 import { GroupId } from '../../src/types/group-id';
+import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 
 const generateNEventsForGroup = (
@@ -19,7 +20,7 @@ const generateNEventsForGroup = (
 
 describe('group-activities', () => {
   describe('when only a single group has evaluated an article once', () => {
-    const articleId = new Doi('10.1101/2020.09.15.286153');
+    const articleId = arbitraryDoi();
     const groupId = arbitraryGroupId();
     const events = [
       editorialCommunityReviewedArticle(
