@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
-import { toHtmlFragment } from '../../src/types/html-fragment';
-import { renderSavedArticles } from '../../src/user-page/render-saved-articles';
-import { arbitraryDoi } from '../types/doi.helper';
+import { toHtmlFragment } from '../../../src/types/html-fragment';
+import { renderSavedArticles } from '../../../src/user-page/saved-articles/render-saved-articles';
+import { arbitraryDoi } from '../../types/doi.helper';
 
 describe('render-saved-articles', () => {
   describe('when there are saved articles', () => {

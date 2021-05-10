@@ -1,10 +1,10 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
-import { Doi } from '../../src/types/doi';
-import { toHtmlFragment } from '../../src/types/html-fragment';
-import { fetchSavedArticles } from '../../src/user-page/fetch-saved-articles';
-import { shouldNotBeCalled } from '../should-not-be-called';
+import { Doi } from '../../../src/types/doi';
+import { toHtmlFragment } from '../../../src/types/html-fragment';
+import { fetchSavedArticles } from '../../../src/user-page/saved-articles/fetch-saved-articles';
+import { shouldNotBeCalled } from '../../should-not-be-called';
 
 describe('fetch-get-saved-articles', () => {
   describe('when the user has saved articles', () => {

@@ -2,7 +2,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
 import { GetSavedArticleDois } from './fetch-saved-articles';
-import { DomainEvent, isUserSavedArticleEvent } from '../types/domain-events';
+import { DomainEvent, isUserSavedArticleEvent } from '../../types/domain-events';
 
 export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 

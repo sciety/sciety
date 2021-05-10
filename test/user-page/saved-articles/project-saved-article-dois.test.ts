@@ -1,9 +1,9 @@
 import * as T from 'fp-ts/Task';
-import { Doi } from '../../src/types/doi';
-import { userSavedArticle } from '../../src/types/domain-events';
-import { toUserId } from '../../src/types/user-id';
-import { projectSavedArticleDois } from '../../src/user-page/project-saved-article-dois';
-import { arbitraryDoi } from '../types/doi.helper';
+import { Doi } from '../../../src/types/doi';
+import { userSavedArticle } from '../../../src/types/domain-events';
+import { toUserId } from '../../../src/types/user-id';
+import { projectSavedArticleDois } from '../../../src/user-page/saved-articles/project-saved-article-dois';
+import { arbitraryDoi } from '../../types/doi.helper';
 
 describe('project-saved-article-dois', () => {
   describe('when the user has saved articles', () => {
