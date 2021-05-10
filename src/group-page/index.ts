@@ -1,20 +1,18 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import {
-  constant, flow, pipe,
+  flow, pipe,
 } from 'fp-ts/function';
 import { countFollowersOf } from './count-followers';
-import { groupActivities } from './group-activities';
+import { constructRecentGroupActivity } from './recent-activity/construct-recent-group-activity';
 import { FetchStaticFile, renderDescription } from './render-description';
 import { renderFollowers } from './render-followers';
 import { renderErrorPage, renderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
-import { renderRecentGroupActivity } from './render-recent-group-activity';
 import { renderFollowToggle } from '../follow/render-follow-toggle';
 import { fetchArticleDetails } from '../shared-components/article-card/fetch-article-details';
 import { FindVersionsForArticleDoi, getLatestArticleVersionDate } from '../shared-components/article-card/get-latest-article-version-date';
@@ -60,47 +58,6 @@ const notFoundResponse = () => ({
 } as const);
 
 type GroupPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
-
-type GetArticleDetails = (doi: Doi) => T.Task<O.Option<{
-  title: SanitisedHtmlFragment,
-  authors: ReadonlyArray<string>,
-  latestVersionDate: O.Option<Date>,
-}>>;
-
-const noInformationFound = '<p>We couldn\'t find this information; please try again later.</p>';
-
-const noActivity = '<p>It looks like this group hasn’t evaluated any articles yet. Try coming back later!</p>';
-
-const addArticleDetails = (
-  getArticleDetails: GetArticleDetails,
-) => <A extends { doi: Doi }>(evaluatedArticle: A) => pipe(
-  evaluatedArticle.doi,
-  getArticleDetails,
-  TO.map((articleDetails) => ({
-    ...evaluatedArticle,
-    ...articleDetails,
-  })),
-);
-
-const constructRecentGroupActivity = (
-  getArticleDetails: GetArticleDetails,
-  getAllEvents: GetAllEvents,
-) => (groupId: GroupId) => pipe(
-  getAllEvents,
-  T.map((events) => groupActivities(events)(groupId)),
-  T.chain(TO.traverseArray(addArticleDetails(getArticleDetails))),
-  T.map(E.fromOption(constant(noInformationFound))),
-  TE.chainOptionK(constant(noActivity))(RNEA.fromReadonlyArray),
-  TE.map(flow(
-    RNEA.map((articleViewModel) => ({
-      ...articleViewModel,
-      latestVersionDate: articleViewModel.latestVersionDate,
-      latestActivityDate: O.some(articleViewModel.latestActivityDate),
-    })),
-    renderRecentGroupActivity,
-  )),
-  TE.toUnion,
-);
 
 export const groupPage = (ports: Ports): GroupPage => ({ id, user }) => pipe(
   ports.getGroup(id),
