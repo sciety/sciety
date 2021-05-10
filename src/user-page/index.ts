@@ -26,12 +26,22 @@ const getTitle = (fetchArticle: FetchArticle) => flow(
   )),
 );
 
+type SavedArticlesPorts = {
+  getAllEvents: GetAllEvents,
+  fetchArticle: FetchArticle,
+};
+
+const savedArticles = (ports: SavedArticlesPorts) => flow(
+  projectSavedArticleDois(ports.getAllEvents),
+  T.chain(fetchSavedArticles(getTitle(ports.fetchArticle))),
+  T.map(renderSavedArticles),
+  TE.rightTask,
+);
+
 type GetUserDetails = (userId: UserId) => TE.TaskEither<'not-found' | 'unavailable', UserDetails>;
 
-type Ports = FollowListPorts & {
-  getAllEvents: GetAllEvents,
+type Ports = FollowListPorts & SavedArticlesPorts & {
   getUserDetails: GetUserDetails,
-  fetchArticle: FetchArticle,
 };
 
 type Params = {
@@ -55,13 +65,7 @@ export const userPage = (ports: Ports): UserPage => (params) => {
         TE.map(renderHeader),
       ),
       followList: followList(ports)(params.id, viewingUserId),
-      savedArticlesList: pipe(
-        params.id,
-        projectSavedArticleDois(ports.getAllEvents),
-        T.chain(fetchSavedArticles(getTitle(ports.fetchArticle))),
-        T.map(renderSavedArticles),
-        TE.rightTask,
-      ),
+      savedArticlesList: savedArticles(ports)(params.id),
       userDisplayName: pipe(
         userDetails,
         TE.map(flow(
