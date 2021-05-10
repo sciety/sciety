@@ -1,5 +1,13 @@
-import { Doi } from '../../src/types/doi';
+import { arbitraryDoi } from './doi.helper';
+import { arbitraryHypothesisAnnotationId } from './hypothesis-annotation-id.helper';
+import { arbitraryNcrcId } from './ncrc-id.helper';
 import { ReviewId } from '../../src/types/review-id';
-import { arbitraryWord } from '../helpers';
+import { arbitraryNumber } from '../helpers';
 
-export const arbitraryReviewId = (): ReviewId => new Doi(`10.1101/${arbitraryWord(8)}`);
+const constructors = [
+  arbitraryDoi,
+  arbitraryHypothesisAnnotationId,
+  arbitraryNcrcId,
+];
+
+export const arbitraryReviewId = (): ReviewId => constructors[arbitraryNumber(0, 2)]();

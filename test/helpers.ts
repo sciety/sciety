@@ -1,7 +1,7 @@
 import * as A from 'fp-ts/Array';
 import { pipe } from 'fp-ts/function';
 
-const arbitraryNumber = (min: number, max: number): number => (
+export const arbitraryNumber = (min: number, max: number): number => (
   Math.floor(Math.random() * (max - min + 1) + min)
 );
 
