@@ -11,6 +11,6 @@ const content = toHtmlFragment(`
 `);
 
 export const landingPage = {
-  title: 'Sciety',
+  title: 'The home of public preprint evaluation',
   content,
 };
