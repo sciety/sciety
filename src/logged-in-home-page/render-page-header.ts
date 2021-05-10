@@ -1,7 +1,7 @@
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 export const renderPageHeader = (): HtmlFragment => toHtmlFragment(`
-  <header class="home-page-header">
+  <header class="logged-in-home-page-header">
     <h1>
       Welcome to Sciety
     </h1>

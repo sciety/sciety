@@ -1,26 +1,26 @@
 @use 'baseline';
 @use 'card';
 
-.sciety-grid--home {
+.sciety-grid--logged-in-home-page {
   margin-left: 1rem;
   margin-right: 1rem;
 
-  > .home-page-header {
+  > .logged-in-home-page-header {
     grid-column: 1 / -1;
   }
 }
 
-.home-page-header {
+.logged-in-home-page-header {
   text-align: center;
   margin-bottom: #{baseline.increments(7)};
 }
 
-.home-page-feed-container {
+.logged-in-home-page-feed-container {
   grid-column: 1 / -1;
 }
 
 @media screen and (min-width: 56.25em) {
-  .sciety-grid--home > .home-page-feed-container {
+  .sciety-grid--logged-in-home-page > .logged-in-home-page-feed-container {
     grid-column: 1 / 9;
   }
 }

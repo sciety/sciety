@@ -9,9 +9,9 @@ type Components = {
 };
 
 const render = (components: Components) => `
-  <div class="sciety-grid sciety-grid--home">
+  <div class="sciety-grid sciety-grid--logged-in-home-page">
     ${components.header}
-    <div class="home-page-feed-container">
+    <div class="logged-in-home-page-feed-container">
       ${components.feed}
     </div>
   </div>
