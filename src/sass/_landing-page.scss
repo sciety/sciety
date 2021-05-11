@@ -76,4 +76,15 @@ $_image-visibility-breakpoint: 60.25em;
   text-align: center;
   padding-top: 13px;
   padding-bottom: 13px;
+
+  &:link,
+  &:visited {
+    background-color: settings.$colour-white;
+    color: settings.$colour-accent;
+
+    &:active {
+      background-color: settings.$colour-white;
+      color: settings.$colour-accent;
+    }
+  }
 }
