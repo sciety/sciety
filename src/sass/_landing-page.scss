@@ -2,6 +2,7 @@
 @use 'functions';
 @use 'settings';
 @use 'typography';
+@use 'baseline';
 
 $_image-visibility-breakpoint: 60.25em;
 
@@ -59,8 +60,14 @@ $_image-visibility-breakpoint: 60.25em;
 }
 
 .landing-page-calls-to-action {
+  background-color: settings.$colour-component-background;
   padding-left: 1rem;
   padding-right: 1rem;
+  padding-top: baseline.increments(5);
+  padding-bottom: baseline.increments(6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   @media screen and (min-width: $_image-visibility-breakpoint) {
     padding-left: 3rem;
