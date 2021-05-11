@@ -61,10 +61,7 @@ $_image-visibility-breakpoint: 60.25em;
 
 .landing-page-calls-to-action {
   background-color: settings.$colour-component-background;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  padding-top: baseline.increments(5);
-  padding-bottom: baseline.increments(6);
+  padding: baseline.increments(5) 1rem baseline.increments(3);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -86,13 +83,20 @@ $_image-visibility-breakpoint: 60.25em;
   letter-spacing: 0.17px;
 }
 
+.landing-page-call-to-action__text {
+  margin-bottom: baseline.increments(5);
+}
+
+.landing-page-calls-to-action__buttons {
+  text-align: center;
+}
+
 .landing-page-calls-to-action__login_button {
   @include button.button-new();
   display: inline-block;
   text-align: center;
   width: functions.px-to-rem(192px);
-  margin-right: 1.5rem;
-  margin-bottom: 1rem;
+  margin: 0 0.75rem 1.5rem;
   padding-top: 13px;
   padding-bottom: 13px;
 }
@@ -102,6 +106,7 @@ $_image-visibility-breakpoint: 60.25em;
   display: inline-block;
   width: functions.px-to-rem(192px);
   text-align: center;
+  margin: 0 0.75rem 1.5rem;
   padding-top: 13px;
   padding-bottom: 13px;
 

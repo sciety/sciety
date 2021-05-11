@@ -24,8 +24,8 @@ const content = toHtmlFragment(`
 
   <div class="landing-page-calls-to-action">
     <h2 class="landing-page-calls-to-action__title">Get started with Sciety</h2>
-    <p>Follow your first group, save interesting articles and keep up to date with the latest trends.</p>
-    <div>
+    <p class="landing-page-call-to-action__text">Follow your first group, save interesting articles and keep up to date with the latest trends.</p>
+    <div class="landing-page-calls-to-action__buttons">
       <a class="landing-page-calls-to-action__login_button" href="/log-in">Log in</a>
       <a class="landing-page-calls-to-action__subscribe_button" href="https://blog.sciety.org/subscribe">Subscribe for updates</a>
     </div>
