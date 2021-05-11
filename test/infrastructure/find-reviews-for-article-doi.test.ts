@@ -1,8 +1,10 @@
+import { performance } from 'perf_hooks';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { findReviewsForArticleDoi } from '../../src/infrastructure/find-reviews-for-article-doi';
 import { editorialCommunityReviewedArticle } from '../../src/types/domain-events';
+import { arbitraryDate } from '../helpers';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
@@ -34,6 +36,28 @@ describe('find-reviews-for-article-doi', () => {
       )();
 
       expect(actualReviews).toStrictEqual(expectedReviews);
+    });
+  });
+
+  describe('given a large set of events', () => {
+    const numberOfEvents = 55000;
+
+    const events = (
+      [...Array(numberOfEvents)].map(() => editorialCommunityReviewedArticle(
+        arbitraryGroupId(),
+        arbitraryDoi(),
+        arbitraryReviewId(),
+        arbitraryDate(),
+      ))
+    );
+
+    it('performs acceptably', async () => {
+      const startTime = performance.now();
+      await findReviewsForArticleDoi(arbitraryDoi())(T.of(events))();
+      const endTime = performance.now();
+      const runtime = endTime - startTime;
+
+      expect(runtime).toBeLessThan(50);
     });
   });
 });
