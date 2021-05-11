@@ -91,24 +91,22 @@ $_image-visibility-breakpoint: 60.25em;
   text-align: center;
 }
 
-.landing-page-calls-to-action__login_button {
+@mixin landing-page-button() {
   @include button.button-new();
   display: inline-block;
-  text-align: center;
   width: functions.px-to-rem(192px);
+  text-align: center;
   margin: 0 0.75rem 1.5rem;
   padding-top: 13px;
   padding-bottom: 13px;
 }
 
+.landing-page-calls-to-action__login_button {
+  @include landing-page-button();
+}
+
 .landing-page-calls-to-action__subscribe_button {
-  @include button.button-new();
-  display: inline-block;
-  width: functions.px-to-rem(192px);
-  text-align: center;
-  margin: 0 0.75rem 1.5rem;
-  padding-top: 13px;
-  padding-bottom: 13px;
+  @include landing-page-button();
 
   &:link,
   &:visited {
