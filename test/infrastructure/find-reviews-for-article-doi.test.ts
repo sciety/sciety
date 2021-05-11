@@ -39,7 +39,7 @@ describe('find-reviews-for-article-doi', () => {
     });
   });
 
-  describe('given a large set of events', () => {
+  describe('given a large set of evaluation events', () => {
     const numberOfEvents = 55000;
 
     const events = (
@@ -55,9 +55,8 @@ describe('find-reviews-for-article-doi', () => {
       const startTime = performance.now();
       await findReviewsForArticleDoi(arbitraryDoi())(T.of(events))();
       const endTime = performance.now();
-      const runtime = endTime - startTime;
 
-      expect(runtime).toBeLessThan(50);
+      expect(endTime - startTime).toBeLessThan(50);
     });
   });
 });

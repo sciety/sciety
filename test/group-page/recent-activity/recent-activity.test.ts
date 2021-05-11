@@ -20,7 +20,7 @@ const events = (
 );
 
 describe('recent-activity', () => {
-  describe('given a large set of events', () => {
+  describe('given a large set of evaluation events', () => {
     it('performs acceptably', async () => {
       const ports = {
         fetchArticle: shouldNotBeCalled,
@@ -37,9 +37,8 @@ describe('recent-activity', () => {
       const startTime = performance.now();
       await recentActivity(ports)(group)();
       const endTime = performance.now();
-      const runtime = endTime - startTime;
 
-      expect(runtime).toBeLessThan(1000);
+      expect(endTime - startTime).toBeLessThan(1000);
     });
   });
 });
