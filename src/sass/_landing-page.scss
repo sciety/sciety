@@ -5,32 +5,35 @@ $_image-visibility-breakpoint: 60.25em;
 
 .landing-page {
   margin: 1rem 1rem 0;
-  display: flex;
 
   @media screen and (min-width: $_image-visibility-breakpoint) {
     margin: 200px 3rem 0;
   }
 }
 
-.landing-page__content {
+.landing-page-hero {
+  display: flex;
+}
+
+.landing-page-hero__content {
   @media screen and (min-width: $_image-visibility-breakpoint) {
     margin-top: 60px;
     padding-right: 2rem;
   }
 }
 
-.landing-page__content__title,
-.landing-page__content__byline {
+.landing-page-hero__content__title,
+.landing-page-hero__content__byline {
   color: settings.$colour-text-primary;
   font-family: settings.$font-family;
 }
 
-.landing-page__content__title {
+.landing-page-hero__content__title {
   @include typography.sizing(26px, 3.75);
   font-weight: bold;
 }
 
-.landing-page__image {
+.landing-page-hero__image {
   display: none;
 
   @media screen and (min-width: $_image-visibility-breakpoint) {
