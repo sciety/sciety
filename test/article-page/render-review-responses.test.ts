@@ -3,8 +3,8 @@ import { renderReviewResponses } from '../../src/article-page/render-review-resp
 import { arbitraryReviewId } from '../types/review-id.helper';
 
 describe('render-review-responses', () => {
-  it('displays the response counts by type', async () => {
-    const rendered = await renderReviewResponses({
+  it('displays the response counts by type', () => {
+    const rendered = renderReviewResponses({
       reviewId: arbitraryReviewId(),
       counts: {
         helpfulCount: 35,
@@ -27,12 +27,12 @@ describe('render-review-responses', () => {
       current: O.none,
     });
 
-    it('displays an off `helpful` button', async () => {
-      expect(await rendered).toStrictEqual(expect.stringContaining('thumb-up-outline'));
+    it('displays an off `helpful` button', () => {
+      expect(rendered).toStrictEqual(expect.stringContaining('thumb-up-outline'));
     });
 
-    it('displays an off `not helpful` button', async () => {
-      expect(await rendered).toStrictEqual(expect.stringContaining('thumb-down-outline'));
+    it('displays an off `not helpful` button', () => {
+      expect(rendered).toStrictEqual(expect.stringContaining('thumb-down-outline'));
     });
   });
 
@@ -46,12 +46,12 @@ describe('render-review-responses', () => {
       current: O.some('helpful'),
     });
 
-    it('displays an on `helpful` button', async () => {
-      expect(await rendered).toStrictEqual(expect.stringContaining('thumb-up-solid'));
+    it('displays an on `helpful` button', () => {
+      expect(rendered).toStrictEqual(expect.stringContaining('thumb-up-solid'));
     });
 
-    it('displays an off `not helpful` button', async () => {
-      expect(await rendered).toStrictEqual(expect.stringContaining('thumb-down-outline'));
+    it('displays an off `not helpful` button', () => {
+      expect(rendered).toStrictEqual(expect.stringContaining('thumb-down-outline'));
     });
   });
 
@@ -65,12 +65,12 @@ describe('render-review-responses', () => {
       current: O.some('not-helpful'),
     });
 
-    it('displays an on `not helpful` button', async () => {
-      expect(await rendered).toStrictEqual(expect.stringContaining('thumb-down-solid'));
+    it('displays an on `not helpful` button', () => {
+      expect(rendered).toStrictEqual(expect.stringContaining('thumb-down-solid'));
     });
 
-    it('displays an off `helpful` button', async () => {
-      expect(await rendered).toStrictEqual(expect.stringContaining('thumb-up-outline'));
+    it('displays an off `helpful` button', () => {
+      expect(rendered).toStrictEqual(expect.stringContaining('thumb-up-outline'));
     });
   });
 });
