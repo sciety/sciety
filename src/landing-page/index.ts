@@ -25,8 +25,8 @@ const content = toHtmlFragment(`
   <div class="landing-page-calls-to-action">
     <h2 class="landing-page-calls-to-action__title">Get started with Sciety</h2>
     <p>Follow your first group, save interesting articles and keep up to date with the latest trends.</p>
-    <a href="/log-in">Log in</a><br />
-    <a href="https://blog.sciety.org/subscribe">Subscribe for updates</a>
+    <a class="landing-page-calls-to-action__login_button" href="/log-in">Log in</a>
+    <a class="landing-page-calls-to-action__subscribe_button" href="https://blog.sciety.org/subscribe">Subscribe for updates</a>
   </div>
 </div>
 `);
