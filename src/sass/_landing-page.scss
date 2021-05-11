@@ -6,15 +6,25 @@
 $_image-visibility-breakpoint: 60.25em;
 
 .landing-page {
-  margin: 1rem 1rem 0;
+  margin-top: 1rem;
+  flex-grow: 1;
 
   @media screen and (min-width: $_image-visibility-breakpoint) {
-    margin: 200px 3rem 0;
+    margin-top: 200px;
   }
 }
 
 .landing-page-hero {
   display: flex;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  justify-content: center;
+  max-width: functions.px-to-rem(1300px); // Magic number
+
+  @media screen and (min-width: $_image-visibility-breakpoint) {
+    margin-left: 3rem;
+    margin-right: 3rem;
+  }
 }
 
 .landing-page-hero__content {
@@ -45,6 +55,16 @@ $_image-visibility-breakpoint: 60.25em;
     }
     width: 100%;
     max-width: 690px; // magic number to align with login button
+  }
+}
+
+.landing-page-calls-to-action {
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+  @media screen and (min-width: $_image-visibility-breakpoint) {
+    padding-left: 3rem;
+    padding-right: 3rem;
   }
 }
 
