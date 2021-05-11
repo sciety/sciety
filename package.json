@@ -30,7 +30,7 @@
     "koa-passport": "^4.1.4",
     "koa-send": "^5.0.1",
     "koa-session": "^6.2.0",
-    "monocle-ts": "^2.3.9",
+    "monocle-ts": "^2.3.10",
     "newtype-ts": "^0.3.4",
     "parse-link-header": "^1.0.1",
     "passport-twitter": "^1.0.4",
