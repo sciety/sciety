@@ -1,5 +1,4 @@
 import { projectReviewResponseCounts } from '../../src/article-page/project-review-response-counts';
-import { Doi } from '../../src/types/doi';
 import {
   userFoundReviewHelpful,
   userFoundReviewNotHelpful,
@@ -7,11 +6,12 @@ import {
   userRevokedFindingReviewNotHelpful,
 } from '../../src/types/domain-events';
 import { toUserId } from '../../src/types/user-id';
+import { arbitraryReviewId } from '../types/review-id.helper';
 
 describe('project-review-response-counts', () => {
   describe('given no events', () => {
     it('returns 0 `helpful` and 0 `not helpful`', async () => {
-      const reviewId = new Doi('10.1234/5678');
+      const reviewId = arbitraryReviewId();
 
       const projected = await projectReviewResponseCounts(reviewId)(async () => [])();
 
@@ -21,8 +21,8 @@ describe('project-review-response-counts', () => {
 
   describe('given a user responded to a different review', () => {
     it('returns 0 `helpful` and 0 `not helpful`', async () => {
-      const reviewId = new Doi('10.1234/5678');
-      const differentReviewId = new Doi('10.9999/9999');
+      const reviewId = arbitraryReviewId();
+      const differentReviewId = arbitraryReviewId();
 
       const projected = await projectReviewResponseCounts(reviewId)(async () => [
         userFoundReviewHelpful(toUserId('some-user'), differentReviewId),
@@ -34,7 +34,7 @@ describe('project-review-response-counts', () => {
 
   describe('given N different users responded helpful events', () => {
     it('returns N `helpful` and 0 `not helpful`', async () => {
-      const reviewId = new Doi('10.1234/5678');
+      const reviewId = arbitraryReviewId();
       const userA = toUserId('A');
       const userB = toUserId('B');
       const userC = toUserId('C');
@@ -51,7 +51,7 @@ describe('project-review-response-counts', () => {
 
   describe('given a single user responded helpful and revoked the helpful response', () => {
     it('returns 0 `helpful` and 0 `not helpful`', async () => {
-      const reviewId = new Doi('10.1234/5678');
+      const reviewId = arbitraryReviewId();
       const userId = toUserId('some-user');
 
       const projected = await projectReviewResponseCounts(reviewId)(async () => [
@@ -65,7 +65,7 @@ describe('project-review-response-counts', () => {
 
   describe('given N different users responded not helpful events', () => {
     it('returns 0 `helpful` and N `not helpful`', async () => {
-      const reviewId = new Doi('10.1234/5678');
+      const reviewId = arbitraryReviewId();
       const userA = toUserId('A');
       const userB = toUserId('B');
       const userC = toUserId('C');
@@ -82,7 +82,7 @@ describe('project-review-response-counts', () => {
 
   describe('given a single user responded: helpful, revoke helpful, not helpful, revoke not helpful', () => {
     it('returns 0 `helpful` and 0 `not helpful`', async () => {
-      const reviewId = new Doi('10.1234/5678');
+      const reviewId = arbitraryReviewId();
       const userId = toUserId('A');
 
       const projected = await projectReviewResponseCounts(reviewId)(async () => [

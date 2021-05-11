@@ -8,13 +8,14 @@ import {
   userRevokedFindingReviewNotHelpful,
 } from '../../src/types/domain-events';
 import { toUserId } from '../../src/types/user-id';
+import { arbitraryReviewId } from '../types/review-id.helper';
 
 describe('project-user-review-response', () => {
   describe('no response events', () => {
     it('returns nothing', async () => {
       const events = async () => [];
 
-      const userResponse = await projectUserReviewResponse(new Doi('10.1111/123456'), O.some(toUserId('someone')))(events)();
+      const userResponse = await projectUserReviewResponse(arbitraryReviewId(), O.some(toUserId('someone')))(events)();
 
       expect(userResponse).toStrictEqual(O.none);
     });
@@ -47,7 +48,7 @@ describe('project-user-review-response', () => {
   describe('one helpful response event for another review from the same user', () => {
     it('returns nothing', async () => {
       const events = async () => [
-        userFoundReviewHelpful(toUserId('user'), new Doi('10.1111/987654')),
+        userFoundReviewHelpful(toUserId('user'), arbitraryReviewId()),
       ];
 
       const userResponse = await projectUserReviewResponse(new Doi('10.1111/123456'), O.some(toUserId('user')))(events)();
@@ -71,7 +72,7 @@ describe('project-user-review-response', () => {
   describe('one revoked helpful response', () => {
     it('returns no-response', async () => {
       const userId = toUserId('some-user');
-      const reviewId = new Doi('10.1111/123456');
+      const reviewId = arbitraryReviewId();
       const events = async () => [
         userFoundReviewHelpful(userId, reviewId),
         userRevokedFindingReviewHelpful(userId, reviewId),
@@ -86,8 +87,8 @@ describe('project-user-review-response', () => {
   describe('one revoked helpful response on a different review', () => {
     it('doesn\'t change the state of the current review', async () => {
       const userId = toUserId('some-user');
-      const reviewId = new Doi('10.1111/123456');
-      const otherReviewId = new Doi('10.1111/987654');
+      const reviewId = arbitraryReviewId();
+      const otherReviewId = arbitraryReviewId();
       const events = async () => [
         userFoundReviewHelpful(userId, reviewId),
         userFoundReviewHelpful(userId, otherReviewId),

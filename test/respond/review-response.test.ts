@@ -1,5 +1,4 @@
 import { reviewResponse } from '../../src/respond/review-response';
-import { Doi } from '../../src/types/doi';
 import {
   userFoundReviewHelpful,
   userFoundReviewNotHelpful,
@@ -7,15 +6,16 @@ import {
   userRevokedFindingReviewNotHelpful,
 } from '../../src/types/domain-events';
 import { toUserId } from '../../src/types/user-id';
+import { arbitraryReviewId } from '../types/review-id.helper';
 
 describe('review-response', () => {
   const userId = toUserId('currentUser');
-  const reviewId = new Doi('10.1101/currentReview');
+  const reviewId = arbitraryReviewId();
 
   it.each([
     ['no events', [], 'none'],
     ['event for other review', [
-      userFoundReviewHelpful(userId, new Doi('10.1101/otherReview')),
+      userFoundReviewHelpful(userId, arbitraryReviewId()),
     ], 'none'],
     ['helpful', [
       userFoundReviewHelpful(userId, reviewId),

@@ -7,6 +7,7 @@ import {
 import { GroupId } from '../../../src/types/group-id';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId, groupIdFromString } from '../../types/group-id.helper';
+import { arbitraryReviewId } from '../../types/review-id.helper';
 
 const generateNEventsForGroup = (
   numberOfEvents: number,
@@ -69,8 +70,8 @@ describe('followed-groups-activities', () => {
       const events = [
         editorialCommunityReviewedArticle(
           notFollowedGroupId,
-          new Doi('10.1101/2019.12.20.884056'),
-          new Doi('10.7287/peerj.11014v0.1/reviews/1'),
+          arbitraryDoi(),
+          arbitraryReviewId(),
           new Date('2021-03-10T00:00:00.000Z'),
         ),
       ];
@@ -83,19 +84,19 @@ describe('followed-groups-activities', () => {
 
   describe('when only a single group has evaluated an article more than once', () => {
     const groupId = arbitraryGroupId();
-    const articleId = new Doi('10.1101/2019.12.20.884056');
+    const articleId = arbitraryDoi();
     const latestActivityDate = new Date('2020-01-01');
     const events = [
       editorialCommunityReviewedArticle(
         groupId,
         articleId,
-        new Doi('10.1101/123456'),
+        arbitraryReviewId(),
         new Date('1980-01-01'),
       ),
       editorialCommunityReviewedArticle(
         groupId,
         articleId,
-        new Doi('10.1101/scorpion'),
+        arbitraryReviewId(),
         latestActivityDate,
       ),
     ];
@@ -134,30 +135,30 @@ describe('followed-groups-activities', () => {
   describe('when multiple groups have evaluated an article', () => {
     const groupId = arbitraryGroupId();
     const otherGroupId = arbitraryGroupId();
-    const articleId = new Doi('10.1101/2019.12.20.884056');
+    const articleId = arbitraryDoi();
     const events = [
       editorialCommunityReviewedArticle(
         groupId,
         articleId,
-        new Doi('10.24072/pci.animsci.100004'),
+        arbitraryReviewId(),
         new Date('2020-10-14T00:00:00.000Z'),
       ),
       editorialCommunityReviewedArticle(
         otherGroupId,
         articleId,
-        new Doi('10.7287/peerj.11014v0.1/reviews/1'),
+        arbitraryReviewId(),
         new Date('2021-03-10T00:00:00.000Z'),
       ),
       editorialCommunityReviewedArticle(
         otherGroupId,
         articleId,
-        new Doi('10.7287/peerj.11014v0.1/reviews/2'),
+        arbitraryReviewId(),
         new Date('2021-03-10T00:00:00.000Z'),
       ),
       editorialCommunityReviewedArticle(
         otherGroupId,
         articleId,
-        new Doi('10.7287/peerj.11014v0.2/reviews/2'),
+        arbitraryReviewId(),
         new Date('2021-03-10T00:00:00.000Z'),
       ),
     ];
@@ -193,14 +194,14 @@ describe('followed-groups-activities', () => {
       const events = [
         editorialCommunityReviewedArticle(
           groupId,
-          new Doi('10.1101/661249'),
-          new Doi('10.24072/pci.animsci.100001'),
+          arbitraryDoi(),
+          arbitraryReviewId(),
           earlierDate,
         ),
         editorialCommunityReviewedArticle(
           groupId,
-          new Doi('10.1101/760082'),
-          new Doi('10.24072/pci.animsci.100002'),
+          arbitraryDoi(),
+          arbitraryReviewId(),
           laterDate,
         ),
       ];
@@ -228,25 +229,25 @@ describe('followed-groups-activities', () => {
     it('orders by the latest activity date by any group', () => {
       const followedGroupId = arbitraryGroupId();
       const notFollowedGroupId = arbitraryGroupId();
-      const articleMostRecentlyReviewedByTheFollowedGroup = new Doi('10.1101/2020.09.15.286153');
-      const articleThatWasMoreRecentlyReviewedButByTheUnfollowedGroup = new Doi('10.1101/2019.12.20.884056');
+      const articleMostRecentlyReviewedByTheFollowedGroup = arbitraryDoi();
+      const articleThatWasMoreRecentlyReviewedButByTheUnfollowedGroup = arbitraryDoi();
       const events = [
         editorialCommunityReviewedArticle(
           followedGroupId,
           articleThatWasMoreRecentlyReviewedButByTheUnfollowedGroup,
-          new Doi('10.24072/pci.animsci.100004'),
+          arbitraryReviewId(),
           new Date('1980-01-01'),
         ),
         editorialCommunityReviewedArticle(
           followedGroupId,
           articleMostRecentlyReviewedByTheFollowedGroup,
-          new Doi('10.24072/pci.animsci.100005'),
+          arbitraryReviewId(),
           new Date('2000-01-01'),
         ),
         editorialCommunityReviewedArticle(
           notFollowedGroupId,
           articleThatWasMoreRecentlyReviewedButByTheUnfollowedGroup,
-          new Doi('10.7287/peerj.11014v0.1/reviews/1'),
+          arbitraryReviewId(),
           new Date('2020-01-01'),
         ),
       ];

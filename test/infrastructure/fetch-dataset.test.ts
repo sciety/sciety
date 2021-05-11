@@ -7,10 +7,10 @@ import rdfFetch, { DatasetResponse } from '@rdfjs/fetch-lite';
 import datasetFactory from 'rdf-dataset-indexed';
 import type { DatasetCore } from 'rdf-js';
 import { fetchDataset } from '../../src/infrastructure/fetch-dataset';
-import { Doi } from '../../src/types/doi';
 import { dummyLogger } from '../dummy-logger';
+import { arbitraryReviewId } from '../types/review-id.helper';
 
-const reviewDoi = new Doi('10.5281/zenodo.3678325');
+const reviewDoi = arbitraryReviewId();
 
 const createStubFetch = (response: Partial<DatasetResponse<DatasetCore>>): typeof rdfFetch => (
   async () => response as DatasetResponse<DatasetCore>

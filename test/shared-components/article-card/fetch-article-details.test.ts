@@ -2,9 +2,9 @@ import * as O from 'fp-ts/Option';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { fetchArticleDetails } from '../../../src/shared-components/article-card/fetch-article-details';
-import { Doi } from '../../../src/types/doi';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { sanitise } from '../../../src/types/sanitised-html-fragment';
+import { arbitraryDoi } from '../../types/doi.helper';
 
 const titleText = 'Accuracy of predicting chemical body composition of growing pigs using dual-energy X-ray absorptiometry';
 
@@ -17,7 +17,7 @@ const getArticle = () => TO.some({
 describe('fetch-article-details', () => {
   describe('latest version date', () => {
     it('returns the latest version date for a doi', async () => {
-      const doi = new Doi('10.1101/2020.09.15.286153');
+      const doi = arbitraryDoi();
       const latestDate = new Date('2020-12-14');
       const articleDetails = await pipe(
         doi,
@@ -35,7 +35,7 @@ describe('fetch-article-details', () => {
 
     it('returns an O.none for the latest version date when it fails', async () => {
       const articleDetails = await pipe(
-        new Doi('10.1101/2020.09.15.286153'),
+        arbitraryDoi(),
         fetchArticleDetails(() => TO.none, getArticle),
       )();
 
@@ -54,14 +54,14 @@ describe('fetch-article-details', () => {
       const articleDetails = await fetchArticleDetails(
         () => TO.some(new Date()),
         () => TO.none,
-      )(new Doi('10.1101/2020.09.15.286153'))();
+      )(arbitraryDoi())();
 
       expect(articleDetails).toStrictEqual(O.none);
     });
 
     describe('title', () => {
       it('returns the title for a doi', async () => {
-        const doi = new Doi('10.1101/2020.09.15.286153');
+        const doi = arbitraryDoi();
         const title = await pipe(
           doi,
           fetchArticleDetails(() => TO.some(new Date()), getArticle),
@@ -80,7 +80,7 @@ describe('fetch-article-details', () => {
 
     describe('authors', () => {
       it('returns the authors for a doi', async () => {
-        const doi = new Doi('10.1101/2020.09.15.286153');
+        const doi = arbitraryDoi();
         const authors = await pipe(
           doi,
           fetchArticleDetails(() => TO.some(new Date()), getArticle),

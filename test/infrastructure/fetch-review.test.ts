@@ -6,13 +6,13 @@ import { FetchDataciteReview } from '../../src/infrastructure/fetch-datacite-rev
 import { FetchHypothesisAnnotation } from '../../src/infrastructure/fetch-hypothesis-annotation';
 import { FetchNcrcReview } from '../../src/infrastructure/fetch-ncrc-review';
 import { fetchReview } from '../../src/infrastructure/fetch-review';
-import { Doi } from '../../src/types/doi';
 import { toHtmlFragment } from '../../src/types/html-fragment';
-import { HypothesisAnnotationId } from '../../src/types/hypothesis-annotation-id';
-import * as NcrcId from '../../src/types/ncrc-id';
 import { shouldNotBeCalled } from '../should-not-be-called';
+import { arbitraryDoi } from '../types/doi.helper';
+import { arbitraryHypothesisAnnotationId } from '../types/hypothesis-annotation-id.helper';
+import { arbitraryNcrcId } from '../types/ncrc-id.helper';
 
-const reviewDoi = new Doi('10.5281/zenodo.3678325');
+const reviewDoi = arbitraryDoi();
 
 const fetchedReview = {
   fullText: pipe('Very good', toHtmlFragment),
@@ -31,7 +31,7 @@ describe('fetch-review', () => {
   it('returns a Hypothes.is annotation when given a Hypothes.is id', async () => {
     const fetchHypothesisAnnotation: FetchHypothesisAnnotation = () => TE.right(fetchedReview);
     const fetcher = fetchReview(shouldNotBeCalled, fetchHypothesisAnnotation, shouldNotBeCalled);
-    const review = await fetcher(new HypothesisAnnotationId('fhAtGNVDEemkyCM-sRPpVQ'))();
+    const review = await fetcher(arbitraryHypothesisAnnotationId())();
 
     expect(review).toStrictEqual(E.right(fetchedReview));
   });
@@ -39,7 +39,7 @@ describe('fetch-review', () => {
   it('returns an Ncrc review when given a NcrcId', async () => {
     const fetchNcrcReview: FetchNcrcReview = () => TE.right(fetchedReview);
     const fetcher = fetchReview(shouldNotBeCalled, shouldNotBeCalled, fetchNcrcReview);
-    const review = await fetcher(NcrcId.fromString('foo'))();
+    const review = await fetcher(arbitraryNcrcId())();
 
     expect(review).toStrictEqual(E.right(fetchedReview));
   });

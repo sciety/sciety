@@ -7,6 +7,7 @@ import { toHtmlFragment } from '../../src/types/html-fragment';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryGroupId } from '../types/group-id.helper';
+import { arbitraryReviewId } from '../types/review-id.helper';
 
 describe('fetch-extra-details', () => {
   describe('given a found article', () => {
@@ -16,7 +17,7 @@ describe('fetch-extra-details', () => {
       const ports = {
         findReviewsForArticleDoi: () => T.of([
           {
-            reviewId: new Doi('10.1101/111111'),
+            reviewId: arbitraryReviewId(),
             groupId: arbitraryGroupId(),
             occurredAt: new Date('2021-01-01'),
           },

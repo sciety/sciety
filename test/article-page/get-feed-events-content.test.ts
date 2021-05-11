@@ -10,9 +10,9 @@ import {
   getFeedEventsContent,
   GetUserReviewResponse,
 } from '../../src/article-page/get-feed-events-content';
-import { Doi } from '../../src/types/doi';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { arbitraryGroupId } from '../types/group-id.helper';
+import { arbitraryReviewId } from '../types/review-id.helper';
 
 describe('get-feed-events-content', () => {
   describe('when there are reviews', () => {
@@ -22,13 +22,13 @@ describe('get-feed-events-content', () => {
         {
           type: 'review',
           groupId,
-          reviewId: new Doi('10.1101/111111'),
+          reviewId: arbitraryReviewId(),
           occurredAt: new Date(),
         },
         {
           type: 'review',
           groupId,
-          reviewId: new Doi('10.1101/222222'),
+          reviewId: arbitraryReviewId(),
           occurredAt: new Date(),
         },
       ];

@@ -1,9 +1,9 @@
 import { respondNotHelpful } from '../../src/respond/respond-not-helpful-command';
-import { Doi } from '../../src/types/doi';
 import { toUserId } from '../../src/types/user-id';
+import { arbitraryReviewId } from '../types/review-id.helper';
 
 const userId = toUserId('someone');
-const reviewId = new Doi('10.1234/5678');
+const reviewId = arbitraryReviewId();
 
 describe('respond-not-helpful-command', () => {
   describe('no-response-state for this review and user', () => {

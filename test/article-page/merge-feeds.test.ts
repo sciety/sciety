@@ -1,8 +1,8 @@
 import { URL } from 'url';
 import * as RT from 'fp-ts/ReaderTask';
 import { mergeFeeds } from '../../src/article-page/merge-feeds';
-import { Doi } from '../../src/types/doi';
 import { arbitraryGroupId } from '../types/group-id.helper';
+import { arbitraryReviewId } from '../types/review-id.helper';
 
 describe('merge-feeds', () => {
   it('merges feed event lists', async () => {
@@ -10,7 +10,7 @@ describe('merge-feeds', () => {
       {
         type: 'review',
         groupId: arbitraryGroupId(),
-        reviewId: new Doi('10.1234/5678'),
+        reviewId: arbitraryReviewId(),
         occurredAt: new Date('2020-09-10'),
       },
     ] as const);

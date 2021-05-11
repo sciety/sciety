@@ -5,10 +5,10 @@ import * as E from 'fp-ts/Either';
 import datasetFactory from 'rdf-dataset-indexed';
 import { fetchDataciteReview } from '../../src/infrastructure/fetch-datacite-review';
 import { FetchDataset } from '../../src/infrastructure/fetch-dataset';
-import { Doi } from '../../src/types/doi';
 import { dummyLogger } from '../dummy-logger';
+import { arbitraryDoi } from '../types/doi.helper';
 
-const reviewDoi = new Doi('10.5281/zenodo.3678325');
+const reviewDoi = arbitraryDoi();
 
 describe('fetch-datacite-review', () => {
   describe('when the response contains Datacite data', () => {
