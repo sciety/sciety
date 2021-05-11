@@ -29,8 +29,9 @@ $_image-visibility-breakpoint: 60.25em;
 }
 
 .landing-page-hero__content__title {
-  @include typography.sizing(26px, 3.75);
+  @include typography.sizing(36px, 5.25);
   font-weight: bold;
+  letter-spacing: 0.26px;
 }
 
 .landing-page-hero__image {
@@ -43,4 +44,15 @@ $_image-visibility-breakpoint: 60.25em;
     width: 100%;
     max-width: 690px; // magic number to align with login button
   }
+}
+
+.landing-page-calls-to-action * {
+  color: settings.$colour-text-primary;
+  font-family: settings.$font-family;
+}
+
+.landing-page-calls-to-action__title {
+  @include typography.sizing(24px, 3.5);
+  font-weight: bold;
+  letter-spacing: 0.17px;
 }
