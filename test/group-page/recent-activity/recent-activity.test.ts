@@ -1,9 +1,23 @@
 import { performance } from 'perf_hooks';
 import * as T from 'fp-ts/Task';
 import { recentActivity } from '../../../src/group-page/recent-activity/recent-activity';
-import { arbitraryWord } from '../../helpers';
+import { editorialCommunityReviewedArticle } from '../../../src/types/domain-events';
+import { arbitraryDate, arbitraryWord } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
+import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
+import { arbitraryReviewId } from '../../types/review-id.helper';
+
+const numberOfEvents = 1000;
+
+const events = (
+  [...Array(numberOfEvents)].map(() => editorialCommunityReviewedArticle(
+    arbitraryGroupId(),
+    arbitraryDoi(),
+    arbitraryReviewId(),
+    arbitraryDate(),
+  ))
+);
 
 describe('recent-activity', () => {
   describe('given a large set of events', () => {
@@ -11,7 +25,7 @@ describe('recent-activity', () => {
       const ports = {
         fetchArticle: shouldNotBeCalled,
         findVersionsForArticleDoi: shouldNotBeCalled,
-        getAllEvents: T.of([]),
+        getAllEvents: T.of(events),
       };
       const group = {
         id: arbitraryGroupId(),
