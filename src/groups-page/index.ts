@@ -33,7 +33,7 @@ export const groupsPage = (ports: Ports): GroupsPage => flow(
     content,
     openGraph: {
       title: 'Sciety Groups',
-      description: 'Groups',
+      description: 'Content creators helping you decide which preprints to read and trust.',
     },
   })),
   TE.rightTask,
