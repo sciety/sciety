@@ -5,32 +5,31 @@
 @use 'baseline';
 
 $_image-visibility-breakpoint: 60.25em;
+$_page-gutter--narrow: 1rem;
+$_page-gutter--wide: 3rem;
 
 .landing-page {
-  margin-top: 1rem;
+  margin-top: baseline.increments(2);
   flex-grow: 1;
-
-  @media screen and (min-width: $_image-visibility-breakpoint) {
-    margin-top: 200px;
-  }
 }
 
 .landing-page-hero {
   display: flex;
-  margin-left: 1rem;
-  margin-right: 1rem;
+  margin-left: $_page-gutter--narrow;
+  margin-right: $_page-gutter--narrow;
   justify-content: center;
-  max-width: functions.px-to-rem(1300px); // Magic number
+  max-width: functions.px-to-rem(1300px); // Prevent image stretching beyond app bar login button
 
   @media screen and (min-width: $_image-visibility-breakpoint) {
-    margin-left: 3rem;
-    margin-right: 3rem;
+    margin-left: $_page-gutter--wide;
+    margin-right: $_page-gutter--wide;
+    margin-top: baseline.increments(25); // Breathing space above image
   }
 }
 
 .landing-page-hero__content {
   @media screen and (min-width: $_image-visibility-breakpoint) {
-    margin-top: 60px;
+    margin-top: baseline.increments(7.5); // Offset content from top of image
     padding-right: 2rem;
   }
 }
@@ -55,20 +54,20 @@ $_image-visibility-breakpoint: 60.25em;
       display: block;
     }
     width: 100%;
-    max-width: 690px; // magic number to align with login button
+    max-width: 690px; // Prevent image stretching beyond app bar login button
   }
 }
 
 .landing-page-calls-to-action {
   background-color: settings.$colour-component-background;
-  padding: baseline.increments(5) 1rem baseline.increments(3);
+  padding: baseline.increments(5) $_page-gutter--narrow baseline.increments(3);
   display: flex;
   flex-direction: column;
   align-items: center;
 
   @media screen and (min-width: $_image-visibility-breakpoint) {
-    padding-left: 3rem;
-    padding-right: 3rem;
+    padding-left: $_page-gutter--wide;
+    padding-right: $_page-gutter--wide;
   }
 }
 
@@ -96,9 +95,9 @@ $_image-visibility-breakpoint: 60.25em;
   display: inline-block;
   width: functions.px-to-rem(192px);
   text-align: center;
-  margin: 0 0.75rem 1.5rem;
-  padding-top: 13px;
-  padding-bottom: 13px;
+  margin: 0 0.75rem baseline.increments(3);
+  padding-top: baseline.increments(1.625);
+  padding-bottom: baseline.increments(1.625);
 }
 
 .landing-page-calls-to-action__login_button {
