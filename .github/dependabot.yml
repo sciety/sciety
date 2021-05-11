@@ -6,3 +6,9 @@ updates:
       interval: "daily"
     open-pull-requests-limit: 25
     rebase-strategy: "disabled"
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 25
+    rebase-strategy: "disabled"
