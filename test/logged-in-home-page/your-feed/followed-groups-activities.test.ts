@@ -1,3 +1,4 @@
+import { performance } from 'perf_hooks';
 import { followedGroupsActivities } from '../../../src/logged-in-home-page/your-feed/followed-groups-activities';
 import { Doi } from '../../../src/types/doi';
 import {
@@ -5,6 +6,7 @@ import {
   EditorialCommunityReviewedArticleEvent,
 } from '../../../src/types/domain-events';
 import { GroupId } from '../../../src/types/group-id';
+import { arbitraryDate } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId, groupIdFromString } from '../../types/group-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
@@ -262,6 +264,27 @@ describe('followed-groups-activities', () => {
           doi: articleMostRecentlyReviewedByTheFollowedGroup,
         }),
       ]);
+    });
+  });
+
+  describe('given a large set of evaluation events', () => {
+    const numberOfEvents = 1000;
+
+    const events = (
+      [...Array(numberOfEvents)].map(() => editorialCommunityReviewedArticle(
+        arbitraryGroupId(),
+        arbitraryDoi(),
+        arbitraryReviewId(),
+        arbitraryDate(),
+      ))
+    );
+
+    it('performs acceptably', () => {
+      const startTime = performance.now();
+      followedGroupsActivities(events)([arbitraryGroupId()]);
+      const endTime = performance.now();
+
+      expect(endTime - startTime).toBeLessThan(1000);
     });
   });
 });
