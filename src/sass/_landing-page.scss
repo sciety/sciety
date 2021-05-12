@@ -45,6 +45,11 @@ $_page-gutter--wide: 3rem;
   }
 }
 
+.landing-page-hero__search_text {
+  @include typography.sizing(14px, 1.75);
+  width: functions.px-to-rem(268px); // To match text length above it: "Follow the journey through our blog."
+}
+
 .landing-page-hero__content {
   @media screen and (min-width: $_image-visibility-breakpoint) {
     margin-top: baseline.increments(7.5); // Offset content from top of image
