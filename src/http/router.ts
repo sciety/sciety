@@ -238,6 +238,8 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.redirect('/blog', 'https://blog.sciety.org', StatusCodes.PERMANENT_REDIRECT);
 
+  router.redirect('/feedback', 'https://blog.sciety.org/feedback', StatusCodes.PERMANENT_REDIRECT);
+
   router.get(
     '/legal',
     pageHandler(() => pipe(legalPage, TE.right)),

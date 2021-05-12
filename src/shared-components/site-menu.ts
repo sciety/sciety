@@ -20,7 +20,7 @@ export const siteMenuItems = (user: O.Option<User>): HtmlFragment => toHtmlFragm
 
 export const siteMenuFooter = toHtmlFragment(`
   <footer class="site-menu__footer">
-    <a href="https://eepurl.com/g7qqcv" class="site-menu__feedback_button">Feedback</a>
+    <a href="/feedback" class="site-menu__feedback_button">Feedback</a>
     <small class="site-menu__small_print">
       © 2021 eLife Sciences Publications Ltd.
       <a href="/legal">Legal information</a>
