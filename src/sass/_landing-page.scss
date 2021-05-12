@@ -17,6 +17,7 @@ $_page-gutter--wide: 3rem;
   display: flex;
   margin-left: $_page-gutter--narrow;
   margin-right: $_page-gutter--narrow;
+  margin-bottom: baseline.increments(5);
   justify-content: center;
   max-width: functions.px-to-rem(1300px); // Prevent image stretching beyond app bar login button
 
@@ -61,8 +62,7 @@ $_page-gutter--wide: 3rem;
 .landing-page-personas {
   padding-left: $_page-gutter--narrow;
   padding-right: $_page-gutter--narrow;
-  padding-top: baseline.increments(5);
-  padding-bottom: baseline.increments(6);
+  margin-bottom: baseline.increments(12);
   text-align: center;
 
   @media screen and (min-width: $_image-visibility-breakpoint) {
@@ -86,6 +86,10 @@ $_page-gutter--wide: 3rem;
 
 .landing-page-personas__persona {
   margin-bottom: baseline.increments(6);
+
+  @media screen and (min-width: $_image-visibility-breakpoint) {
+    margin-bottom: 0;
+  }
 }
 
 .landing-page-personas__image {
