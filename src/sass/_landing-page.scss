@@ -69,6 +69,19 @@ $_page-gutter--wide: 3rem;
   }
 }
 
+.landing-page-personas__content {
+  @media screen and (min-width: $_image-visibility-breakpoint) {
+    @supports (display: flex) {
+      display: flex;
+      justify-content: center;
+    }
+
+    :first-child {
+      margin-right: 4rem;
+    }
+  }
+}
+
 .landing-page-personas__image {
   width: 100%;
   max-width: 468px;
