@@ -61,6 +61,8 @@ $_page-gutter--wide: 3rem;
 .landing-page-personas {
   padding-left: $_page-gutter--narrow;
   padding-right: $_page-gutter--narrow;
+  padding-top: baseline.increments(5);
+  padding-bottom: baseline.increments(6);
   text-align: center;
 
   @media screen and (min-width: $_image-visibility-breakpoint) {
@@ -82,9 +84,14 @@ $_page-gutter--wide: 3rem;
   }
 }
 
+.landing-page-personas__persona {
+  margin-bottom: baseline.increments(6);
+}
+
 .landing-page-personas__image {
   width: 100%;
   max-width: 468px;
+  margin-bottom: baseline.increments(1);
 }
 
 .landing-page-personas * {
@@ -96,6 +103,7 @@ $_page-gutter--wide: 3rem;
   @include typography.sizing(24px, 3.5);
   font-weight: bold;
   letter-spacing: 0.17px;
+  margin-bottom: baseline.increments(2.5);
 }
 
 .landing-page-calls-to-action {
