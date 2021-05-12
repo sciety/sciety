@@ -3,7 +3,7 @@ import { toHtmlFragment } from '../types/html-fragment';
 const content = toHtmlFragment(`
 <div class="landing-page">
 
-  <div class="landing-page-hero">
+  <section class="landing-page-hero">
     <div class="landing-page-hero__content">
       <h1 class="landing-page-hero__content__title">
         The home of public preprint evaluation
@@ -20,9 +20,9 @@ const content = toHtmlFragment(`
       <source srcset="/static/images/landing-page-illustration.svg" media="(min-width: 60.25em)">
       <img src="data:" alt="" class="landing-page-hero__image">
     </picture>
-  </div>
+  </section>
 
-  <div class="landing-page-personas">
+  <section class="landing-page-personas">
     <h2 class="landing-page-personas__title">Where effort meets impact</h2>
     <div class="landing-page-personas__content">
       <div class="landing-page-personas__persona">
@@ -34,16 +34,16 @@ const content = toHtmlFragment(`
         <p>Share your group's insights to grow your readership and keep the community informed.</p>
       </div>
     </div>
-  </div>
+  </section>
 
-  <div class="landing-page-calls-to-action">
+  <section class="landing-page-calls-to-action">
     <h2 class="landing-page-calls-to-action__title">Get started with Sciety</h2>
     <p class="landing-page-call-to-action__text">Follow your first group, save interesting articles and keep up to date with the latest trends.</p>
     <div class="landing-page-calls-to-action__buttons">
       <a class="landing-page-calls-to-action__login_button" href="/log-in">Log in</a>
       <a class="landing-page-calls-to-action__subscribe_button" href="https://blog.sciety.org/subscribe">Subscribe for updates</a>
     </div>
-  </div>
+  </section>
 </div>
 `);
 
