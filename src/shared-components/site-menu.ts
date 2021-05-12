@@ -12,6 +12,7 @@ export const siteMenuItems = (user: O.Option<User>): HtmlFragment => toHtmlFragm
   <ul role="list" class="site-menu__links">
     <li><a href="/" class="site-menu__link site-menu__link--home"><span class="site-menu__link_text">Home</span></a></li>
     <li><a href="/groups" class="site-menu__link site-menu__link--groups"><span class="site-menu__link_text">Groups</span></a></li>
+    <li><a href="/blog" class="site-menu__link site-menu__link--blog"><span class="site-menu__link_text">Blog</span></a></li>
     <li><a href="/about" class="site-menu__link site-menu__link--about"><span class="site-menu__link_text">About</span></a></li>
     ${O.fold(constant(''), myProfileMenuItem)(user)}
   </ul>
