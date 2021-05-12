@@ -15,15 +15,15 @@ $_page-gutter--wide: 3rem;
 
 .landing-page-hero {
   display: flex;
-  margin-left: $_page-gutter--narrow;
-  margin-right: $_page-gutter--narrow;
+  padding-left: $_page-gutter--narrow;
+  padding-right: $_page-gutter--narrow;
   margin-bottom: baseline.increments(5);
   justify-content: center;
   max-width: functions.px-to-rem(1300px); // Prevent image stretching beyond app bar login button
 
   @media screen and (min-width: $_image-visibility-breakpoint) {
-    margin-left: $_page-gutter--wide;
-    margin-right: $_page-gutter--wide;
+    padding-left: $_page-gutter--wide;
+    padding-right: $_page-gutter--wide;
     margin-top: baseline.increments(25); // Breathing space above image
   }
 }
@@ -55,7 +55,7 @@ $_page-gutter--wide: 3rem;
       display: block;
     }
     width: 100%;
-    max-width: 690px; // Prevent image stretching beyond app bar login button
+    max-width: functions.px-to-rem(690px) + (2 * $_page-gutter--wide); // Prevent image stretching beyond app bar login button
   }
 }
 
