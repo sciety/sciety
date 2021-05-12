@@ -88,10 +88,6 @@ $_page-gutter--wide: 3rem;
       display: flex;
       justify-content: center;
     }
-
-    :first-child {
-      margin-right: 4rem;
-    }
   }
 }
 
@@ -100,6 +96,10 @@ $_page-gutter--wide: 3rem;
 
   @media screen and (min-width: $_image-visibility-breakpoint) {
     margin-bottom: 0;
+
+    &:first-child {
+      margin-right: 4rem;
+    }
   }
 }
 
