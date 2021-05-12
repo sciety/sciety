@@ -83,7 +83,7 @@ $_link-min-height: baseline.increments(5);
 }
 
 .site-menu__feedback_button {
-  @include button.button-new();
+  @include button.button-link-new();
   display: inline-block;
   margin-bottom: baseline.increments(3);
 }
