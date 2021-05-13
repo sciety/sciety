@@ -57,6 +57,7 @@ $_search-form-text-inline-padding: 12px;
   letter-spacing: 0.1px;
   color: settings.$colour-text-primary;
   display: flex;
+  background-color: settings.$colour-landing-page-search;
 }
 
 .landing-page-hero__search_text {
@@ -69,6 +70,7 @@ $_search-form-text-inline-padding: 12px;
   padding-bottom: baseline.increments(17/8);
   padding-left: functions.px-to-rem($_search-form-text-inline-padding);
   padding-right: functions.px-to-rem($_search-form-text-inline-padding);
+  background-color: inherit;
 }
 
 .landing-page-hero__search_button {
