@@ -3,6 +3,8 @@
 @use 'settings';
 @use 'typography';
 @use 'baseline';
+@use 'list';
+@use 'card';
 
 $_image-visibility-breakpoint: 60.25em;
 $_page-gutter--narrow: 1rem;
@@ -106,6 +108,31 @@ $_search-button-width: functions.px-to-rem(70px);
     width: 100%;
     max-width: functions.px-to-rem(690px) + (2 * $_page-gutter--wide); // Prevent image stretching beyond app bar login button
   }
+}
+
+.landing-page-recently-evaluated {
+  @include container-horizontal-spacing();
+  margin-bottom: baseline.increments(12);
+}
+
+.landing-page-recently-evaluated * {
+  color: settings.$colour-text-primary;
+  font-family: settings.$font-family;
+}
+
+.landing-page-recently-evaluated__title {
+  @include typography.sizing(24px, 3.5);
+  font-weight: bold;
+  letter-spacing: 0.17px;
+  margin-bottom: baseline.increments(2.5);
+}
+
+.landing-page-recently-evaluated__articles {
+  @include list.basics();
+}
+
+.landing-page-recently-evaluated__articles li {
+  @include card.list-item;
 }
 
 .landing-page-personas {
