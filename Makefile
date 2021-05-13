@@ -118,6 +118,7 @@ COMMUNITY_SCRIPTS := \
 	find-elife-reviews \
 	find-peerj-reviews \
 	find-pci-reviews \
+	find-screenit-reviews \
 	find-prereview-reviews \
 	find-ncrc-reviews
 
