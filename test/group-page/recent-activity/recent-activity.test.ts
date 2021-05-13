@@ -8,7 +8,7 @@ import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 
-const numberOfEvents = 1000;
+const numberOfEvents = 15000;
 
 const events = (
   [...Array(numberOfEvents)].map(() => editorialCommunityReviewedArticle(
@@ -38,7 +38,7 @@ describe('recent-activity', () => {
       await recentActivity(ports)(group)();
       const endTime = performance.now();
 
-      expect(endTime - startTime).toBeLessThan(1000);
+      expect(endTime - startTime).toBeLessThan(300);
     });
   });
 });

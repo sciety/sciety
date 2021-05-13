@@ -7,7 +7,7 @@ import * as S from 'fp-ts/Semigroup';
 import { flow, pipe } from 'fp-ts/function';
 import * as N from 'fp-ts/number';
 import { ArticleActivity } from '../../types/article-activity';
-import { Doi, eqDoi } from '../../types/doi';
+import { Doi } from '../../types/doi';
 import {
   DomainEvent, EditorialCommunityReviewedArticleEvent,
   isEditorialCommunityReviewedArticleEvent,
@@ -56,13 +56,13 @@ const updateActivity = (
 const addEventToActivities = (
   groupId: GroupId,
 ) => (
-  activities: ReadonlyMap<Doi, ActivityDetails>,
+  activities: Map<string, ActivityDetails>,
   event: EditorialCommunityReviewedArticleEvent,
 ) => pipe(
-  activities,
-  RM.lookup(eqDoi)(event.articleId),
+  activities.get(event.articleId.value),
+  O.fromNullable,
   updateActivity(event, groupId),
-  (activity) => pipe(activities, RM.upsertAt(eqDoi)(event.articleId, activity)),
+  (activity) => activities.set(event.articleId.value, activity),
 );
 
 const byLatestActivityDateByGroupDesc: Ord.Ord<ArticleActivity & { latestActivityByGroup: Date }> = pipe(
@@ -84,9 +84,9 @@ const groupHasEvaluatedArticle = <T extends { latestActivityByGroup: O.Option<Da
 export const groupActivities: GroupActivities = (events) => (groupId) => pipe(
   events,
   RA.filter(isEditorialCommunityReviewedArticleEvent),
-  RA.reduce(RM.empty, addEventToActivities(groupId)),
+  RA.reduce(new Map(), addEventToActivities(groupId)),
   RM.filterMapWithIndex(flow(
-    (doi, activityDetails) => ({ ...activityDetails, doi }),
+    (key, activityDetails) => ({ ...activityDetails, doi: new Doi(key) }),
     groupHasEvaluatedArticle,
   )),
   RM.values(byLatestActivityDateByGroupDesc),
