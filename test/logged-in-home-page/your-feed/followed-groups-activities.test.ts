@@ -268,7 +268,7 @@ describe('followed-groups-activities', () => {
   });
 
   describe('given a large set of evaluation events', () => {
-    const numberOfEvents = 1000;
+    const numberOfEvents = 15000;
 
     const events = (
       [...Array(numberOfEvents)].map(() => editorialCommunityReviewedArticle(
@@ -284,7 +284,7 @@ describe('followed-groups-activities', () => {
       followedGroupsActivities(events)([arbitraryGroupId()]);
       const endTime = performance.now();
 
-      expect(endTime - startTime).toBeLessThan(1000);
+      expect(endTime - startTime).toBeLessThan(100);
     });
   });
 });

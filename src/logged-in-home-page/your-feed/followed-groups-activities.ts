@@ -5,7 +5,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as RM from 'fp-ts/ReadonlyMap';
 import { flow, pipe } from 'fp-ts/function';
 import { ArticleActivity } from '../../types/article-activity';
-import { Doi, eqDoi } from '../../types/doi';
+import { Doi } from '../../types/doi';
 import {
   DomainEvent, EditorialCommunityReviewedArticleEvent,
   isEditorialCommunityReviewedArticleEvent,
@@ -49,16 +49,16 @@ const mergeActivities = (
 const addEventToActivities = (
   groupIds: ReadonlyArray<GroupId>,
 ) => (
-  activities: ReadonlyMap<Doi, ActivityDetails>,
+  activities: Map<string, ActivityDetails>,
   event: EditorialCommunityReviewedArticleEvent,
 ) => pipe(
-  activities,
-  RM.lookup(eqDoi)(event.articleId),
+  activities.get(event.articleId.value),
+  O.fromNullable,
   O.fold(
     () => eventToActivityDetails(event, groupIds),
     (existingActivityDetails) => mergeActivities(existingActivityDetails, eventToActivityDetails(event, groupIds)),
   ),
-  (activity) => pipe(activities, RM.upsertAt(eqDoi)(event.articleId, activity)),
+  (activity) => activities.set(event.articleId.value, activity),
 );
 
 const byLatestActivityDateDesc: Ord.Ord<ArticleActivity> = pipe(
@@ -72,9 +72,9 @@ const byLatestActivityDateDesc: Ord.Ord<ArticleActivity> = pipe(
 export const followedGroupsActivities: FollowedGroupsActivities = (events) => (groupIds) => pipe(
   events,
   RA.filter(isEditorialCommunityReviewedArticleEvent),
-  RA.reduce(RM.empty, addEventToActivities(groupIds)),
+  RA.reduce(new Map(), addEventToActivities(groupIds)),
   RM.filterMapWithIndex(flow(
-    (doi, activityDetails) => O.some({ doi, ...activityDetails }),
+    (key, activityDetails) => O.some({ doi: new Doi(key), ...activityDetails }),
     O.filter((activityDetails) => activityDetails.evaluatedByFollowedGroup),
   )),
   RM.values(byLatestActivityDateDesc),
