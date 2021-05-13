@@ -152,9 +152,23 @@ $_search-button-width: functions.px-to-rem(70px);
   text-align: center;
 }
 
+.landing-page-card {
+  display: flex;
+  flex-direction: column;
+}
+
 .landing-page-card__group {
   display: flex;
   align-items: center;
+  order: 1;
+}
+
+.landing-page-card__title {
+  order: 2;
+}
+
+.landing-page-card__meta {
+  order: 3;
 }
 
 .landing-page-card__avatar.landing-page-card__avatar {
