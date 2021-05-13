@@ -152,6 +152,14 @@ $_search-button-width: functions.px-to-rem(70px);
   text-align: center;
 }
 
+.landing-page-card__avatar.landing-page-card__avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  border: 3px #cfd8dc solid;
+  margin-left: 0;
+}
+
 .landing-page-personas {
   @include container-horizontal-spacing();
   margin-bottom: baseline.increments(12);
