@@ -152,11 +152,18 @@ $_search-button-width: functions.px-to-rem(70px);
   text-align: center;
 }
 
+.landing-page-card__group {
+  display: flex;
+  align-items: center;
+}
+
 .landing-page-card__avatar.landing-page-card__avatar {
   width: 36px;
   height: 36px;
   border-radius: 6px;
   border: 3px #cfd8dc solid;
+  flex: 0 0 36px;
+  margin-right: functions.px-to-rem(8px);
   margin-left: 0;
 }
 
