@@ -14,7 +14,7 @@ const content = toHtmlFragment(`
         Let Sciety help you navigate the preprint landscape.
       </p>
       <p class="landing-page-hero__content__byline">Follow the journey through <a href="/blog">our blog</a>.</p>
-      <form action="/search" method="get">
+      <form class="landing-page-hero__search_form" action="/search" method="get">
         <label for="searchText" class="visually-hidden">Search term</label>
         <input id="searchText" name="query" placeholder="Search for a topic of interest" class="landing-page-hero__search_text">
         <button type="reset" class="visually-hidden">Reset</button>
