@@ -34,7 +34,7 @@ const content = toHtmlFragment(`
       <li>
         <article class="article-card">
           <h3 class="article-card__title">
-            <a class="article-card__link" href="/articles/activity/10.1101/2021.01.10.426076">Single-cell RNA-seq analysis reveals penaeid shrimp hemocyte subpopulations and cell differentiation process</a>
+            <a class="article-card__link" href="/articles/activity/10.1101/2021.01.10.426076?utm_source=landingpage&utm_medium=banner&utm_campaign=recently-evaluated-1">Single-cell RNA-seq analysis reveals penaeid shrimp hemocyte subpopulations and cell differentiation process</a>
           </h3>
           <p>Evaluated by <a href="/groups/b560187e-f2fb-4ff9-a861-a204f3fc0fb0">eLife</a>.</p>
           <div class="article-card__meta">
@@ -45,7 +45,7 @@ const content = toHtmlFragment(`
       <li>
         <article class="article-card">
           <h3 class="article-card__title">
-            <a class="article-card__link" href="/articles/activity/10.1101/2021.02.20.20248421">Nosocomial outbreak of SARS-CoV-2 in a “non-COVID-19” hospital ward: virus genome sequencing as a key tool to understand cryptic transmission</a>
+            <a class="article-card__link" href="/articles/activity/10.1101/2021.02.20.20248421?utm_source=landingpage&utm_medium=banner&utm_campaign=recently-evaluated-2">Nosocomial outbreak of SARS-CoV-2 in a “non-COVID-19” hospital ward: virus genome sequencing as a key tool to understand cryptic transmission</a>
           </h3>
           <p>Evaluated by <a href="/groups/62f9b0d0-8d43-4766-a52a-ce02af61bc6a">NCRC</a>.</p>
           <div class="article-card__meta">
@@ -56,7 +56,7 @@ const content = toHtmlFragment(`
       <li>
         <article class="article-card">
           <h3 class="article-card__title">
-            <a class="article-card__link" href="/articles/activity/10.1101/2021.04.12.439490">Design, Synthesis and Evaluation of WD-repeat containing protein 5 (WDR5) degraders</a>
+            <a class="article-card__link" href="/articles/activity/10.1101/2021.04.12.439490?utm_source=landingpage&utm_medium=banner&utm_campaign=recently-evaluated-3">Design, Synthesis and Evaluation of WD-repeat containing protein 5 (WDR5) degraders</a>
           </h3>
           <p>Evaluated by <a href="/groups/10360d97-bf52-4aef-b2fa-2f60d319edd7">PREreview</a>.</p>
           <div class="article-card__meta">
