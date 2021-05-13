@@ -8,6 +8,7 @@
 @use 'card';
 
 $_image-visibility-breakpoint: 60.25em;
+$_landing-page-card-breakpoint: 77em;
 $_page-gutter--narrow: 1rem;
 $_page-gutter--wide: 3rem;
 $_search-form-gutter: 4px;
@@ -142,10 +143,26 @@ $_search-button-width: functions.px-to-rem(70px);
 
 .landing-page-recently-evaluated__articles {
   @include list.basics();
+
+  @media screen and (min-width: $_landing-page-card-breakpoint) {
+    display: flex;
+    justify-content: space-evenly;
+  }
 }
 
 .landing-page-recently-evaluated__articles li {
   @include card.list-item;
+
+  @media screen and (min-width: $_landing-page-card-breakpoint) {
+    flex: 1 0 functions.px-to-rem(308px); // Magic
+    max-width: 384px;
+    margin-bottom: 0;
+    margin-right: functions.px-to-rem(24px);
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
 }
 
 .landing-page-recently-evaluated__call_to_action {
@@ -155,6 +172,10 @@ $_search-button-width: functions.px-to-rem(70px);
 .landing-page-card {
   display: flex;
   flex-direction: column;
+
+  @media screen and (min-width: $_image-visibility-breakpoint) {
+    height: 100%;
+  }
 }
 
 .landing-page-card__group {
