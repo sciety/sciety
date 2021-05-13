@@ -116,7 +116,7 @@ find-screenit-reviews: build
 find-prelights-reviews: export TARGET = dev
 find-prelights-reviews: build
 	$(DOCKER_COMPOSE) run -T app \
-		npx ts-node scripts/find-reviews-from-prelights 
+		npx ts-node scripts/find-reviews-from-prelights
 
 COMMUNITY_SCRIPTS := \
 	find-review-commons-reviews \

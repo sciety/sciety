@@ -1,4 +1,5 @@
 import axios from 'axios';
+import parser from 'fast-xml-parser';
 import { pipe } from 'fp-ts/function';
 
 const key = process.env.PRELIGHTS_FEED_KEY ?? '';
@@ -11,6 +12,7 @@ void (async (): Promise<void> => {
       },
     }),
     (response) => response.data,
+    (responseBody) => parser.parse(responseBody) as JSON,
     JSON.stringify,
     (str) => process.stdout.write(str),
   );
