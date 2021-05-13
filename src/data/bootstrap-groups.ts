@@ -11,6 +11,13 @@ const groups: RNEA.ReadonlyNonEmptyArray<Group> = [
     shortDescription: 'The 2019 Novel Coronavirus Research Compendium (NCRC) is a centralized, publicly available resource that rapidly curates and reviews the emerging scientific evidence about SARS-CoV-2 and COVID-19. Our goal is to provide accurate, relevant information for global public health action by clinicians, public health practitioners, and policy makers.',
   },
   {
+    id: Gid.fromValidatedString('8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65'),
+    name: 'ScreenIT',
+    avatarPath: '/static/groups/screenit--8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65.jpg',
+    descriptionPath: 'screenit--8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65.md',
+    shortDescription: 'ScreenIT',
+  },
+  {
     id: Gid.fromValidatedString('10360d97-bf52-4aef-b2fa-2f60d319edd7'),
     name: 'PREreview',
     avatarPath: '/static/groups/prereview-community--10360d97-bf52-4aef-b2fa-2f60d319edd7.jpg',
@@ -92,13 +99,6 @@ if (process.env.EXPERIMENT_ENABLED === 'true') {
       avatarPath: '/static/groups/prelights--f97bd177-5cb6-4296-8573-078318755bf2.jpg',
       descriptionPath: 'prelights--f97bd177-5cb6-4296-8573-078318755bf2.md',
       shortDescription: 'preLights is a community initiative supported by The Company of Biologists.',
-    },
-    {
-      id: Gid.fromValidatedString('8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65'),
-      name: 'ScreenIT',
-      avatarPath: '/static/groups/screenit--8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65.jpg',
-      descriptionPath: 'screenit--8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65.md',
-      shortDescription: 'ScreenIT',
     },
   ];
 }
