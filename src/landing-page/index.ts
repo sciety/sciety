@@ -17,8 +17,8 @@ const content = toHtmlFragment(`
       <form class="landing-page-hero__search_form" action="/search" method="get">
         <label for="searchText" class="visually-hidden">Search term</label>
         <input id="searchText" name="query" placeholder="Search for a topic of interest" class="landing-page-hero__search_text">
-        <button type="reset" class="visually-hidden">Reset</button>
         <button type="submit" class="landing-page-hero__search_button">Search</button>
+        <button type="reset" class="visually-hidden">Reset</button>
       </form>
     </div>
 
