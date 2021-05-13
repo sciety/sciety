@@ -100,6 +100,13 @@ if (process.env.EXPERIMENT_ENABLED === 'true') {
       descriptionPath: 'prelights--f97bd177-5cb6-4296-8573-078318755bf2.md',
       shortDescription: 'preLights is a community initiative supported by The Company of Biologists.',
     },
+    {
+      id: Gid.fromValidatedString('5142a5bc-6b18-42b1-9a8d-7342d7d17e94'),
+      name: 'Rapid Reviews COVID-19',
+      avatarPath: '/static/groups/rapid-reviews-covid-19--5142a5bc-6b18-42b1-9a8d-7342d7d17e94.png',
+      descriptionPath: 'rapid-reviews-covid-19--5142a5bc-6b18-42b1-9a8d-7342d7d17e94.md',
+      shortDescription: 'Rapid Reviews: COVID-19 is an open-access overlay journal that seeks to accelerate peer review of COVID-19-related research and prevent the dissemination of false or misleading scientific news.',
+    },
   ];
 }
 
