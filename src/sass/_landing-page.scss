@@ -46,8 +46,6 @@ $_page-gutter--wide: 3rem;
 }
 
 $_search-form-text-inline-padding: 12px;
-$_search-form-inline-margin: settings.$base-font-measure;
-$_clear-button-inline-size: 48px;
 
 .landing-page-hero__search_form {
   @include typography.sizing(14px, 1.75);
@@ -70,7 +68,7 @@ $_clear-button-inline-size: 48px;
   padding-top: baseline.increments(17/8);
   padding-bottom: baseline.increments(17/8);
   padding-left: functions.px-to-rem($_search-form-text-inline-padding);
-  padding-right: functions.px-to-rem($_clear-button-inline-size);
+  padding-right: functions.px-to-rem($_search-form-text-inline-padding);
 }
 
 .landing-page-hero__search_button {
