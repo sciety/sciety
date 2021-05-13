@@ -36,7 +36,7 @@ const content = toHtmlFragment(`
           <h3 class="article-card__title">
             <a class="article-card__link" href="/articles/activity/10.1101/2021.01.10.426076">Single-cell RNA-seq analysis reveals penaeid shrimp hemocyte subpopulations and cell differentiation process</a>
           </h3>
-          
+          <p>Evaluated by <a href="/groups/b560187e-f2fb-4ff9-a861-a204f3fc0fb0">eLife</a>.</p>
           <div class="article-card__meta">
             <time datetime="2021-05-12">May 12, 2021</time>
           </div>
@@ -47,7 +47,7 @@ const content = toHtmlFragment(`
           <h3 class="article-card__title">
             <a class="article-card__link" href="/articles/activity/10.1101/2021.02.20.20248421">Nosocomial outbreak of SARS-CoV-2 in a “non-COVID-19” hospital ward: virus genome sequencing as a key tool to understand cryptic transmission</a>
           </h3>
-          
+          <p>Evaluated by <a href="/groups/62f9b0d0-8d43-4766-a52a-ce02af61bc6a">NCRC</a>.</p>
           <div class="article-card__meta">
             <time datetime="2021-04-22">Apr 22, 2021</time>
           </div>
@@ -58,7 +58,7 @@ const content = toHtmlFragment(`
           <h3 class="article-card__title">
             <a class="article-card__link" href="/articles/activity/10.1101/2021.04.12.439490">Design, Synthesis and Evaluation of WD-repeat containing protein 5 (WDR5) degraders</a>
           </h3>
-          
+          <p>Evaluated by <a href="/groups/10360d97-bf52-4aef-b2fa-2f60d319edd7">PREreview</a>.</p>
           <div class="article-card__meta">
             <time datetime="2021-05-10">May 10, 2021</time>
           </div>
