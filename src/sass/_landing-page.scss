@@ -7,6 +7,8 @@
 $_image-visibility-breakpoint: 60.25em;
 $_page-gutter--narrow: 1rem;
 $_page-gutter--wide: 3rem;
+$_search-form-gutter: 4px;
+$_search-button-width: functions.px-to-rem(70px);
 
 @mixin container-horizontal-spacing() {
   padding-left: $_page-gutter--narrow;
@@ -47,7 +49,7 @@ $_page-gutter--wide: 3rem;
 
 .landing-page-hero__search_form {
   width: 100%;
-  max-width: functions.px-to-rem(400px);
+  max-width: functions.px-to-rem(400px); // limit form width to match width of preceding copy
   position: relative;
 }
 
@@ -59,8 +61,8 @@ $_page-gutter--wide: 3rem;
   border-radius: settings.$border-radius;
   padding-top: baseline.increments(17/8);
   padding-bottom: baseline.increments(17/8);
-  padding-left: functions.px-to-rem(4px);
-  padding-right: functions.px-to-rem(80px);
+  padding-left: functions.px-to-rem($_search-form-gutter);
+  padding-right: $_search-button-width + 2 * functions.px-to-rem($_search-form-gutter);
   letter-spacing: 0.1px;
   color: settings.$colour-text-primary;
   background-color: settings.$colour-landing-page-search;
@@ -69,9 +71,10 @@ $_page-gutter--wide: 3rem;
 .landing-page-hero__search_button {
   @include button.button-new();
   position: absolute;
-  top: 4px;
-  bottom: 4px;
-  right: 4px;
+  top: $_search-form-gutter;
+  bottom: $_search-form-gutter;
+  right: $_search-form-gutter;
+  width: $_search-button-width;
 }
 
 .landing-page-hero__content {
