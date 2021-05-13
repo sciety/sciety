@@ -65,6 +65,7 @@ const content = toHtmlFragment(`
         </article>
       </li>
     </ul>
+    <a href="/groups" class="landing-page-calls-to-action__subscribe_button">Discover more groups</a>
   </section>
 
   <section class="landing-page-personas">
