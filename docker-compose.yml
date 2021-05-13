@@ -18,6 +18,7 @@ services:
       PGHOST: db
       PGPASSWORD: secret
       PGDATABASE: sciety
+      PRELIGHTS_FEED_KEY:
       TWITTER_API_KEY: '${TWITTER_API_KEY:-twitter-api-key}'
       TWITTER_API_SECRET_KEY: '${TWITTER_API_SECRET_KEY:-twitter-api-secret-key}'
       TWITTER_API_BEARER_TOKEN: '${TWITTER_API_BEARER_TOKEN:-twitter-api-bearer-token}'

@@ -113,6 +113,11 @@ find-screenit-reviews: build
 	$(DOCKER_COMPOSE) run -T app \
 		npx ts-node scripts/find-reviews-from-hypothesis-user sciscore > ./data/reviews/8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65.csv
 
+find-prelights-reviews: export TARGET = dev
+find-prelights-reviews: build
+	$(DOCKER_COMPOSE) run -T app \
+		npx ts-node scripts/find-reviews-from-prelights 
+
 COMMUNITY_SCRIPTS := \
 	find-review-commons-reviews \
 	find-elife-reviews \
