@@ -1,3 +1,4 @@
+@use 'breakpoints';
 @use 'button';
 @use 'functions';
 @use 'settings';
@@ -40,7 +41,6 @@ $_search-button-width: functions.px-to-rem(70px);
 .landing-page-hero {
   @include container-horizontal-spacing();
   display: flex;
-  margin-bottom: baseline.increments(5);
   justify-content: center;
   max-width: functions.px-to-rem(1300px); // Prevent image stretching beyond app bar login button
 
@@ -53,6 +53,7 @@ $_search-button-width: functions.px-to-rem(70px);
   width: 100%;
   max-width: functions.px-to-rem(400px); // limit form width to match width of preceding copy
   position: relative;
+  margin-bottom: baseline.increments(4);
 }
 
 .landing-page-hero__search_text {
@@ -111,8 +112,19 @@ $_search-button-width: functions.px-to-rem(70px);
 }
 
 .landing-page-recently-evaluated {
-  @include container-horizontal-spacing();
   margin-bottom: baseline.increments(12);
+  padding-top: baseline.increments(5);
+  background-color: settings.$colour-component-background;
+
+  @include breakpoints.not-narrow {
+    padding-left: $_page-gutter--narrow;
+    padding-right: $_page-gutter--narrow;
+  }
+
+  @media screen and (min-width: $_image-visibility-breakpoint) {
+    padding-left: $_page-gutter--wide;
+    padding-right: $_page-gutter--wide;
+  }
 }
 
 .landing-page-recently-evaluated * {
