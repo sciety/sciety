@@ -137,6 +137,7 @@ $_search-button-width: functions.px-to-rem(70px);
   font-weight: bold;
   letter-spacing: 0.17px;
   margin-bottom: baseline.increments(2.5);
+  text-align: center;
 }
 
 .landing-page-recently-evaluated__articles {
@@ -145,6 +146,10 @@ $_search-button-width: functions.px-to-rem(70px);
 
 .landing-page-recently-evaluated__articles li {
   @include card.list-item;
+}
+
+.landing-page-recently-evaluated__call_to_action {
+  text-align: center;
 }
 
 .landing-page-personas {
@@ -228,7 +233,7 @@ $_search-button-width: functions.px-to-rem(70px);
   @include landing-page-button();
 }
 
-.landing-page-calls-to-action__subscribe_button {
+.landing-page__secondary_button {
   @include landing-page-button();
 
   &:link,
