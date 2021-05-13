@@ -182,6 +182,7 @@ $_search-button-width: functions.px-to-rem(70px);
   display: flex;
   align-items: center;
   order: 1;
+  margin-bottom: baseline.increments(2);
 }
 
 .landing-page-card__title {
@@ -190,6 +191,10 @@ $_search-button-width: functions.px-to-rem(70px);
 
 .landing-page-card__meta {
   order: 3;
+
+  @media screen and (min-width: $_landing-page-card-breakpoint) {
+    margin-top: auto;
+  }
 }
 
 .landing-page-card__avatar.landing-page-card__avatar {
