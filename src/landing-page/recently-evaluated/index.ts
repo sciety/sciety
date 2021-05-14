@@ -42,15 +42,15 @@ const card3: Card = {
 };
 
 const renderCard = (card: Card) => `
-  <article class="article-card landing-page-card">
-    <h3 class="article-card__title landing-page-card__title">
+  <article class="landing-page-card">
+    <h3 class="landing-page-card__title">
       <a class="article-card__link" href="/articles/activity/${card.articleId}?utm_source=landingpage&utm_medium=banner&utm_campaign=${card.campaign}">${card.articleTitle}</a>
     </h3>
     <p class="landing-page-card__group">
       <img class="group-card__avatar landing-page-card__avatar" src="${card.avatarPath}" alt="" />
       <span>Evaluated by <a href="/groups/${card.groupId}">${card.groupName}</a></span>
     </p>
-    <div class="article-card__meta landing-page-card__meta">
+    <div class="landing-page-card__meta">
       ${templateDate(card.date)}
     </div>
   </article>
