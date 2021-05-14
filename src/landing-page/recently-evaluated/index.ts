@@ -8,6 +8,7 @@ type Card = {
   groupId: string,
   groupName: string,
   avatarPath: string,
+  campaign: string,
 };
 
 const card1: Card = {
@@ -17,6 +18,7 @@ const card1: Card = {
   groupId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
   groupName: 'eLife',
   avatarPath: '/static/groups/elife--b560187e-f2fb-4ff9-a861-a204f3fc0fb0.png',
+  campaign: 'recently-evaluated-1',
 };
 
 const card2: Card = {
@@ -26,6 +28,7 @@ const card2: Card = {
   groupId: '62f9b0d0-8d43-4766-a52a-ce02af61bc6a',
   groupName: 'NCRC',
   avatarPath: '/static/groups/ncrc--62f9b0d0-8d43-4766-a52a-ce02af61bc6a.jpg',
+  campaign: 'recently-evaluated-2',
 };
 
 const card3: Card = {
@@ -35,12 +38,13 @@ const card3: Card = {
   groupId: '10360d97-bf52-4aef-b2fa-2f60d319edd7',
   groupName: 'PREreview',
   avatarPath: '/static/groups/prereview-community--10360d97-bf52-4aef-b2fa-2f60d319edd7.jpg',
+  campaign: 'recently-evaluated-3',
 };
 
 const renderCard1 = (card: Card) => `
   <article class="article-card landing-page-card">
     <h3 class="article-card__title landing-page-card__title">
-      <a class="article-card__link" href="/articles/activity/${card.articleId}?utm_source=landingpage&utm_medium=banner&utm_campaign=recently-evaluated-1">${card.articleTitle}</a>
+      <a class="article-card__link" href="/articles/activity/${card.articleId}?utm_source=landingpage&utm_medium=banner&utm_campaign=${card.campaign}">${card.articleTitle}</a>
     </h3>
     <p class="landing-page-card__group">
       <img class="group-card__avatar landing-page-card__avatar" src="${card.avatarPath}" alt="" />
@@ -55,7 +59,7 @@ const renderCard1 = (card: Card) => `
 const renderCard2 = (card: Card) => `
   <article class="article-card landing-page-card">
     <h3 class="article-card__title landing-page-card__title">
-      <a class="article-card__link" href="/articles/activity/${card.articleId}?utm_source=landingpage&utm_medium=banner&utm_campaign=recently-evaluated-2">${card.articleTitle}</a>
+      <a class="article-card__link" href="/articles/activity/${card.articleId}?utm_source=landingpage&utm_medium=banner&utm_campaign=${card.campaign}">${card.articleTitle}</a>
     </h3>
     <p class="landing-page-card__group">
       <img class="group-card__avatar landing-page-card__avatar" src="${card.avatarPath}" alt="" />
@@ -70,7 +74,7 @@ const renderCard2 = (card: Card) => `
 const renderCard3 = (card: Card) => `
   <article class="article-card landing-page-card">
     <h3 class="article-card__title landing-page-card__title">
-      <a class="article-card__link" href="/articles/activity/${card.articleId}?utm_source=landingpage&utm_medium=banner&utm_campaign=recently-evaluated-3">${card.articleTitle}</a>
+      <a class="article-card__link" href="/articles/activity/${card.articleId}?utm_source=landingpage&utm_medium=banner&utm_campaign=${card.campaign}">${card.articleTitle}</a>
     </h3>
     <p class="landing-page-card__group">
       <img class="group-card__avatar landing-page-card__avatar" src="${card.avatarPath}" alt="" />
