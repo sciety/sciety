@@ -145,8 +145,10 @@ $_search-button-width: functions.px-to-rem(70px);
   @include list.basics();
 
   @media screen and (min-width: $_landing-page-card-breakpoint) {
-    display: flex;
-    justify-content: space-evenly;
+    @supports (display: flex) {
+      display: flex;
+      justify-content: space-evenly;
+    }
   }
 }
 
@@ -154,13 +156,15 @@ $_search-button-width: functions.px-to-rem(70px);
   @include card.list-item;
 
   @media screen and (min-width: $_landing-page-card-breakpoint) {
-    flex: 1 0 functions.px-to-rem(308px); // minimum desired card width
-    max-width: 384px; // maximum desired card width
-    margin-bottom: 0;
-    margin-right: functions.px-to-rem(24px);
+    @supports (display: flex) {
+      flex: 1 0 functions.px-to-rem(308px); // minimum desired card width
+      max-width: 384px; // maximum desired card width
+      margin-bottom: 0;
+      margin-right: functions.px-to-rem(24px);
 
-    &:last-child {
-      margin-right: 0;
+      &:last-child {
+        margin-right: 0;
+      }
     }
   }
 }
@@ -175,7 +179,9 @@ $_search-button-width: functions.px-to-rem(70px);
   flex-direction: column;
 
   @media screen and (min-width: $_image-visibility-breakpoint) {
-    height: 100%;
+    @supports (display: flex) {
+      height: 100%;
+    }
   }
 }
 
