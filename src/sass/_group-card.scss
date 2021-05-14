@@ -14,10 +14,12 @@
   flex-grow: 1;
 }
 
-.group-card__link {
+.group-card__title {
   @include card.title();
+}
+
+.group-card__link {
   @include card.link();
-  display: block;
 }
 
 .group-card__description {

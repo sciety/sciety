@@ -31,7 +31,9 @@ export const renderGroupCard = flow(
   (result: GroupViewModel) => `
     <div class="group-card">
       <div class="group-card__body">
-        <a class="group-card__link" href="/groups/${result.id.value}">${htmlEscape(result.name)}</a>
+        <h3 class="group-card__title">
+          <a class="group-card__link" href="/groups/${result.id.value}">${htmlEscape(result.name)}</a>
+        </h3>
         <div class="group-card__description">
           ${result.description}
         </div>
