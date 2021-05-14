@@ -1,4 +1,5 @@
 import { toHtmlFragment } from '../../types/html-fragment';
+import { templateDate } from '../../shared-components/date';
 
 export const recentlyEvaluated = toHtmlFragment(`
   <section class="landing-page-recently-evaluated">
@@ -14,7 +15,7 @@ export const recentlyEvaluated = toHtmlFragment(`
             <span>Evaluated by <a href="/groups/b560187e-f2fb-4ff9-a861-a204f3fc0fb0">eLife</a></span>
           </p>
           <div class="article-card__meta landing-page-card__meta">
-            <time datetime="2021-05-12">May 12, 2021</time>
+            ${templateDate(new Date('2021-05-12'))}
           </div>
         </article>
       </li>
@@ -28,7 +29,7 @@ export const recentlyEvaluated = toHtmlFragment(`
             <span>Evaluated by <a href="/groups/62f9b0d0-8d43-4766-a52a-ce02af61bc6a">NCRC</a></span>
           </p>
           <div class="article-card__meta landing-page-card__meta">
-            <time datetime="2021-04-22">Apr 22, 2021</time>
+            ${templateDate(new Date('2021-04-22'))}
           </div>
         </article>
       </li>
@@ -42,7 +43,7 @@ export const recentlyEvaluated = toHtmlFragment(`
             <span>Evaluated by <a href="/groups/10360d97-bf52-4aef-b2fa-2f60d319edd7">PREreview</a></span>
           </p>
           <div class="article-card__meta landing-page-card__meta">
-            <time datetime="2021-05-10">May 10, 2021</time>
+            ${templateDate(new Date('2021-05-10'))}
           </div>
         </article>
       </li>
