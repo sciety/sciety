@@ -196,10 +196,7 @@ $_search-button-width: functions.px-to-rem(70px);
 }
 
 .landing-page-card__meta {
-  @include typography.sizing(12px, 2.5);
-  color: settings.$colour-text-secondary;
-  font-family: settings.$font-family;
-  letter-spacing: 0.09px;
+  @include card.meta();
   order: 3;
 
   @media screen and (min-width: $_landing-page-card-breakpoint) {

@@ -32,10 +32,7 @@
 }
 
 .article-card__meta {
-  @include typography.sizing(12px, 2.5);
-  color: settings.$colour-text-secondary;
-  font-family: settings.$font-family;
-  letter-spacing: 0.09px;
+  @include card.meta();
 
   > * {
     margin-right: 0.25rem;
