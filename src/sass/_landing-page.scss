@@ -154,8 +154,8 @@ $_search-button-width: functions.px-to-rem(70px);
   @include card.list-item;
 
   @media screen and (min-width: $_landing-page-card-breakpoint) {
-    flex: 1 0 functions.px-to-rem(308px); // Magic
-    max-width: 384px;
+    flex: 1 0 functions.px-to-rem(308px); // minimum desired card width
+    max-width: 384px; // maximum desired card width
     margin-bottom: 0;
     margin-right: functions.px-to-rem(24px);
 
@@ -197,12 +197,14 @@ $_search-button-width: functions.px-to-rem(70px);
   }
 }
 
+$_landing-page-card-avatar-size: 36px;
+
 .landing-page-card__avatar.landing-page-card__avatar {
-  width: 36px;
-  height: 36px;
+  width: $_landing-page-card-avatar-size;
+  height: $_landing-page-card-avatar-size;
   border-radius: 6px;
   border: 3px #cfd8dc solid;
-  flex: 0 0 36px;
+  flex: 0 0 $_landing-page-card-avatar-size;
   margin-right: functions.px-to-rem(8px);
   margin-left: 0;
 }
