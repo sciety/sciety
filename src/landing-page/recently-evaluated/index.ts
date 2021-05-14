@@ -41,37 +41,7 @@ const card3: Card = {
   campaign: 'recently-evaluated-3',
 };
 
-const renderCard1 = (card: Card) => `
-  <article class="article-card landing-page-card">
-    <h3 class="article-card__title landing-page-card__title">
-      <a class="article-card__link" href="/articles/activity/${card.articleId}?utm_source=landingpage&utm_medium=banner&utm_campaign=${card.campaign}">${card.articleTitle}</a>
-    </h3>
-    <p class="landing-page-card__group">
-      <img class="group-card__avatar landing-page-card__avatar" src="${card.avatarPath}" alt="" />
-      <span>Evaluated by <a href="/groups/${card.groupId}">${card.groupName}</a></span>
-    </p>
-    <div class="article-card__meta landing-page-card__meta">
-      ${templateDate(card.date)}
-    </div>
-  </article>
-`;
-
-const renderCard2 = (card: Card) => `
-  <article class="article-card landing-page-card">
-    <h3 class="article-card__title landing-page-card__title">
-      <a class="article-card__link" href="/articles/activity/${card.articleId}?utm_source=landingpage&utm_medium=banner&utm_campaign=${card.campaign}">${card.articleTitle}</a>
-    </h3>
-    <p class="landing-page-card__group">
-      <img class="group-card__avatar landing-page-card__avatar" src="${card.avatarPath}" alt="" />
-      <span>Evaluated by <a href="/groups/${card.groupId}">${card.groupName}</a></span>
-    </p>
-    <div class="article-card__meta landing-page-card__meta">
-      ${templateDate(card.date)}
-    </div>
-  </article>
-`;
-
-const renderCard3 = (card: Card) => `
+const renderCard = (card: Card) => `
   <article class="article-card landing-page-card">
     <h3 class="article-card__title landing-page-card__title">
       <a class="article-card__link" href="/articles/activity/${card.articleId}?utm_source=landingpage&utm_medium=banner&utm_campaign=${card.campaign}">${card.articleTitle}</a>
@@ -91,13 +61,13 @@ export const recentlyEvaluated = toHtmlFragment(`
     <h2 class="landing-page-recently-evaluated__title">Recently evaluated by groups on Sciety</h2>
     <ul class="landing-page-recently-evaluated__articles">
       <li>
-        ${renderCard1(card1)}
+        ${renderCard(card1)}
       </li>
       <li>
-        ${renderCard2(card2)}
+        ${renderCard(card2)}
       </li>
       <li>
-        ${renderCard3(card3)}
+        ${renderCard(card3)}
       </li>
     </ul>
     <div class="landing-page-recently-evaluated__call_to_action">
