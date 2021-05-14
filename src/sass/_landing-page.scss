@@ -210,8 +210,6 @@ $_search-button-width: functions.px-to-rem(70px);
   }
 }
 
-$_landing-page-card-avatar-size: 36px;
-
 .landing-page-card__avatar {
   @include card.group-avatar();
   margin-right: functions.px-to-rem(8px);
