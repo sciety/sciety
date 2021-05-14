@@ -22,6 +22,13 @@
   }
 }
 
+@mixin title() {
+  @include typography.sizing(16px, 2.5);
+  font-family: settings.$font-family;
+  font-weight: bold;
+  margin-bottom: baseline.increments(0.5);
+}
+
 @mixin list() {
   @include list.basics();
   margin-top: 0;
