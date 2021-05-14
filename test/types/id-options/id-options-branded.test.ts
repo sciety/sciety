@@ -1,5 +1,3 @@
-/* eslint-disable max-classes-per-file */
-
 describe('id-options', () => {
   describe('prefixed branded string', () => {
     it.todo('runtime discrimination');
