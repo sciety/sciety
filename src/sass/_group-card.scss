@@ -39,12 +39,8 @@
 }
 
 .group-card__avatar {
-  width: settings.$avatar-size;
-  height: settings.$avatar-size;
-  border-radius: settings.$border-radius;
-  flex: 0 0 settings.$avatar-size;
+  @include card.group-avatar();
   margin-left: functions.px-to-rem(32px);
-  border: settings.$avatar-border;
 }
 
 .group-card__meta {

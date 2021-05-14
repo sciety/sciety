@@ -62,3 +62,11 @@
     margin-bottom: 0;
   }
 }
+
+@mixin group-avatar() {
+  width: settings.$avatar-size;
+  height: settings.$avatar-size;
+  border-radius: settings.$border-radius;
+  border: settings.$avatar-border;
+  flex: 0 0 settings.$avatar-size;
+}

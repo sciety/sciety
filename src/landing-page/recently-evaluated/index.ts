@@ -47,7 +47,7 @@ const renderCard = (card: Card) => `
       <a class="landing-page-card__link" href="/articles/activity/${card.articleId}?utm_source=landingpage&utm_medium=banner&utm_campaign=${card.campaign}">${card.articleTitle}</a>
     </h3>
     <p class="landing-page-card__group">
-      <img class="group-card__avatar landing-page-card__avatar" src="${card.avatarPath}" alt="" />
+      <img class="landing-page-card__avatar" src="${card.avatarPath}" alt="" />
       <span>Evaluated by <a href="/groups/${card.groupId}">${card.groupName}</a></span>
     </p>
     <div class="landing-page-card__meta">

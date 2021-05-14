@@ -206,14 +206,9 @@ $_search-button-width: functions.px-to-rem(70px);
 
 $_landing-page-card-avatar-size: 36px;
 
-.landing-page-card__avatar.landing-page-card__avatar {
-  width: $_landing-page-card-avatar-size;
-  height: $_landing-page-card-avatar-size;
-  border-radius: 6px;
-  border: 3px #cfd8dc solid;
-  flex: 0 0 $_landing-page-card-avatar-size;
+.landing-page-card__avatar {
+  @include card.group-avatar();
   margin-right: functions.px-to-rem(8px);
-  margin-left: 0;
 }
 
 .landing-page-personas {
