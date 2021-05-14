@@ -16,17 +16,7 @@
 }
 
 .article-card__link {
-  color: settings.$colour-text-primary;
-
-  &:link,
-  &:visited {
-    color: settings.$colour-text-primary;
-
-    &:active,
-    &:hover {
-      color: settings.$colour-text-primary;
-    }
-  }
+  @include card.link();
 }
 
 .article-card__authors {

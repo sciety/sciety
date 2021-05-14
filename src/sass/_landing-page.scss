@@ -191,6 +191,10 @@ $_search-button-width: functions.px-to-rem(70px);
   order: 2;
 }
 
+.landing-page-card__link {
+  @include card.link();
+}
+
 .landing-page-card__meta {
   @include typography.sizing(12px, 2.5);
   color: settings.$colour-text-secondary;
