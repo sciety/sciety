@@ -16,17 +16,12 @@ export const landingPageLayout = (user: O.Option<User>) => (page: Page): string 
   ${googleTagManagerNoScript()}
   <div class="page-container">
     <nav class="drawer">
-      <a href="/" class="drawer__logo_link" aria-hidden="true">
-        <img src="/static/images/sciety-logo-white-text.svg " alt="Sciety" class="drawer__logo">
-      </a>
-
       ${siteMenuItems(user)}
-
     </nav>
     <header class="site-header">
       <div class="site-header__inner">
-        <a href="/menu" class="site-header__menu_link">
-          <img src="/static/images/menu-icon.svg" alt="" />
+        <a href="/">
+          <img src="/static/images/sciety-logo-blue-text.svg" alt="Sciety">
         </a>
 
         ${utilityBar(user)}
