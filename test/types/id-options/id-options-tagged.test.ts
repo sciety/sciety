@@ -14,6 +14,8 @@ describe('id-options', () => {
     it('equality', () => {
       expect(a === b).toBe(false); //                               compiler error
       expect(a.toString() === b.toString()).toBe(true); //          !!
+      // TODO: try Object.is
+      // TODO: try ==
       expect(a === A.fromString('a')).toBe(false); //               :-(
       expect(a === A.fromString('x')).toBe(false);
       expect(a === B.fromString('a')).toBe(false);
@@ -23,7 +25,17 @@ describe('id-options', () => {
       expect(A.eqA.equals(a, b)).toBe(false); //                    compiler error
     });
 
-    it.todo('use in Map keys');
+    it('use in Map keys', () => {
+      const map = new Map<A.A, B.B>();
+      map.set(a, b);
+
+      expect(map.get(a)).toBe(b);
+      expect(map.get(a)).toStrictEqual(b);
+      expect(map.get(A.fromString('a'))).toBe(undefined); //        :-(
+
+      expect(map.has(a)).toBe(true);
+      expect(map.has(A.fromString('a'))).toBe(false); //            :-(
+    });
 
     it.todo('use in Set');
 
