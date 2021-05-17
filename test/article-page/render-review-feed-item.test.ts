@@ -2,6 +2,7 @@ import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import * as RFI from './review-feed-item.helper';
 import { renderReviewFeedItem } from '../../src/article-page/render-review-feed-item';
+import * as RI from '../../src/types/review-id';
 import * as t from '../helpers';
 
 describe('render-review-feed-item', () => {
@@ -33,7 +34,7 @@ describe('render-review-feed-item', () => {
     });
 
     it('renders an id tag with the correct value', async () => {
-      expect(rendered.getElementById(`doi:${item.id.value}`)).not.toBeNull();
+      expect(rendered.getElementById(RI.toString(item.id))).not.toBeNull();
     });
   });
 
@@ -68,7 +69,7 @@ describe('render-review-feed-item', () => {
     });
 
     it('renders an id tag with the correct value', async () => {
-      expect(rendered.getElementById(`doi:${item.id.value}`)).not.toBeNull();
+      expect(rendered.getElementById(RI.toString(item.id))).not.toBeNull();
     });
   });
 
@@ -98,7 +99,7 @@ describe('render-review-feed-item', () => {
     });
 
     it('renders an id tag with the correct value', async () => {
-      expect(rendered.getElementById(`doi:${item.id.value}`)).not.toBeNull();
+      expect(rendered.getElementById(RI.toString(item.id))).not.toBeNull();
     });
   });
 });
