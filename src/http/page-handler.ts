@@ -24,24 +24,22 @@ const errorToWebPage = (user: O.Option<User>) => (error: RenderPageError) => pip
   }),
 );
 
-type PageLayout = (user: O.Option<User>) => (page: Page) => string;
-
-const pageToWebPage = (pageLayout: PageLayout) => (user: O.Option<User>) => flow(
-  pageLayout(user),
+const pageToWebPage = (user: O.Option<User>) => flow(
+  applyStandardPageLayout(user),
   (body) => ({
     body,
     status: StatusCodes.OK,
   }),
 );
 
-const toWebPage = (pageLayout: PageLayout) => (user: O.Option<User>) => E.fold(
+const toWebPage = (user: O.Option<User>) => E.fold(
   errorToWebPage(user),
-  pageToWebPage(pageLayout)(user),
+  pageToWebPage(user),
 );
 
 type HandlePage = (params: unknown) => TE.TaskEither<RenderPageError, Page>;
 
-const genericPageHandler = (pageLayout: PageLayout) => (
+export const pageHandler = (
   handler: HandlePage,
 ): Middleware => (
   async (context, next) => {
@@ -52,7 +50,7 @@ const genericPageHandler = (pageLayout: PageLayout) => (
         ...context.state,
       },
       handler,
-      T.map(toWebPage(pageLayout)(O.fromNullable(context.state.user))),
+      T.map(toWebPage(O.fromNullable(context.state.user))),
     )();
 
     context.response.type = 'html';
@@ -61,5 +59,3 @@ const genericPageHandler = (pageLayout: PageLayout) => (
     await next();
   }
 );
-
-export const pageHandler = genericPageHandler(applyStandardPageLayout);
