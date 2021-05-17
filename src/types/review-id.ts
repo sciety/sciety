@@ -28,6 +28,7 @@ export const toString = (id: ReviewId): string => {
   if (id instanceof Doi || id instanceof HypothesisAnnotationId) {
     return id.toString();
   }
+
   // NcrcId case
   return `ncrc:${id.value}`;
 };
