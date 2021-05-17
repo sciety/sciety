@@ -1,42 +1,8 @@
-/* eslint-disable max-classes-per-file */
-import * as Eq from 'fp-ts/Eq';
-import { pipe } from 'fp-ts/function';
-import * as S from 'fp-ts/string';
+import { A } from './a-class';
+import { B } from './b-class';
 
 describe('id-options', () => {
   describe('class', () => {
-    class A {
-      private readonly value: string;
-
-      public static fromString = (s: string) => new A(s);
-
-      public static isA = (x: unknown) => x instanceof A;
-
-      public static eqA: Eq.Eq<A> = pipe(S.Eq, Eq.contramap((a) => a.toString()));
-
-      private constructor(x: string) {
-        this.value = x;
-      }
-
-      toString(): string {
-        return this.value;
-      }
-    }
-
-    class B {
-      private readonly value: string;
-
-      public static fromString = (s: string) => new B(s);
-
-      private constructor(x: string) {
-        this.value = x;
-      }
-
-      toString(): string {
-        return this.value;
-      }
-    }
-
     const a: A = A.fromString('a');
     const b: B = B.fromString('b');
 
