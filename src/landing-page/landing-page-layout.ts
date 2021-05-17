@@ -3,7 +3,7 @@ import {
   cookieConsent, googleTagManager, googleTagManagerNoScript,
 } from '../shared-components/analytics';
 import { head } from '../shared-components/head';
-import { siteMenuFooter, siteMenuItems } from '../shared-components/site-menu';
+import { siteMenuItems } from '../shared-components/site-menu';
 import { utilityBar } from '../shared-components/utility-bar';
 import { Page } from '../types/page';
 import { User } from '../types/user';
