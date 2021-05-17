@@ -14,9 +14,7 @@ $_page-gutter--wide: 3rem;
 $_search-form-gutter: 4px;
 $_search-button-width: functions.px-to-rem(70px);
 
-$_search-icon-size: functions.px-to-rem(28px);
-$_site-header-nav-height: 60px;
-$_site-header-inline-end-margin: 8px;
+$_header-height-in-px: 60px;
 
 @mixin container-horizontal-spacing() {
   padding-left: $_page-gutter--narrow;
@@ -41,6 +39,18 @@ $_site-header-inline-end-margin: 8px;
 .landing-page {
   margin-top: baseline.increments(2);
   flex-grow: 1;
+}
+
+.landing-page-header {
+  display: flex;
+  justify-content: space-between;
+  padding: functions.px-to-rem(12px);
+  align-content: center;
+  height: functions.px-to-rem($_header-height-in-px);
+}
+
+.landing-page-header__login_button {
+  @include button.button-link-new();
 }
 
 .landing-page-hero {
@@ -339,22 +349,4 @@ $_site-header-inline-end-margin: 8px;
 .landing-page-footer__small_print {
   display: block;
   text-align: center;
-}
-
-
-.landing-page-utility-bar {
-  margin-right: functions.px-to-rem($_site-header-inline-end-margin);
-  display: flex;
-  flex-grow: 1;
-  align-self: center;
-  float: right;
-  @supports (display: flex) {
-    float: none;
-  }
-}
-
-.landing-page-utility-bar__list_link_button {
-  @include button.button-link-new();
-  margin-left: auto;
-  margin-right: 1.375rem;
 }

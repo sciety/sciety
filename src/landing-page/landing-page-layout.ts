@@ -10,17 +10,9 @@ export const landingPageLayout = (page: Page): string => `<!doctype html>
 <body>
   ${googleTagManagerNoScript()}
   <div>
-    <header class="site-header">
-      <div class="site-header__inner">
-        <a href="/">
-          <img src="/static/images/sciety-logo-blue-text.svg" alt="Sciety">
-        </a>
-
-        <nav class="landing-page-utility-bar" aria-describedby="application-utilities">
-          <div id="application-utilities" class="hidden">Sciety application utilities</div>
-          <a href="/log-in" class="landing-page-utility-bar__list_link_button">Log in</a>
-        </nav>
-      </div>
+    <header class="landing-page-header">
+      <img src="/static/images/sciety-logo-blue-text.svg" alt="Sciety logo">
+      <a href="/log-in" class="landing-page-header__login_button">Log in</a>
     </header>
 
     <main class="page-content">
