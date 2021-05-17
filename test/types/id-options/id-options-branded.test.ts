@@ -43,7 +43,20 @@ describe('id-options', () => {
       expect(map.size).toBe(1);
     });
 
-    it.todo('use in Set');
+    it('use in Set', () => {
+      const set = new Set<A.A>();
+      set.add(a);
+
+      expect(set.has(a)).toBe(true);
+      expect(set.has(A.fromString('a'))).toBe(true);
+
+      expect(set.size).toBe(1);
+      set.add(a);
+      expect(set.size).toBe(1);
+
+      set.add(A.fromString('a'));
+      expect(set.size).toBe(1);
+    });
 
     it.todo('performance');
 
