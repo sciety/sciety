@@ -1,3 +1,4 @@
+/* eslint-disable jest-formatting/padding-around-all */
 import * as A from './a-tagged';
 import * as B from './b-tagged';
 
@@ -31,10 +32,17 @@ describe('id-options', () => {
 
       expect(map.get(a)).toBe(b);
       expect(map.get(a)).toStrictEqual(b);
-      expect(map.get(A.fromString('a'))).toBe(undefined); //        :-(
+      expect(map.get(A.fromString('a'))).toBeUndefined(); //        :-(
 
       expect(map.has(a)).toBe(true);
       expect(map.has(A.fromString('a'))).toBe(false); //            :-(
+
+      expect(map.size).toBe(1);
+      map.set(a, B.fromString('b2'));
+      expect(map.size).toBe(1);
+
+      map.set(A.fromString('a'), b);
+      expect(map.size).toBe(2); //                                  :-(
     });
 
     it.todo('use in Set');
