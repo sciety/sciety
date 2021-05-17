@@ -8,7 +8,7 @@ import * as NcrcId from './ncrc-id';
 
 export type ReviewId = Doi | HypothesisAnnotationId | NcrcId.NcrcId;
 
-export const toReviewId = (serialization: string): ReviewId => {
+const toReviewId = (serialization: string): ReviewId => {
   const [, protocol, value] = /^(.+?):(.+)$/.exec(serialization) ?? [];
   switch (protocol) {
     case 'doi':
