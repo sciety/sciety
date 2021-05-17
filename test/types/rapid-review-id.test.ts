@@ -1,3 +1,5 @@
+import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
 import * as NI from '../../src/types/ncrc-id';
 import * as RRI from '../../src/types/rapid-review-id';
 import { arbitraryNumber } from '../helpers';
@@ -58,5 +60,27 @@ describe('rapid-review-id', () => {
     expect(set.size).toBe(1);
   });
 
-  it.todo('serialization / deserialization');
+  describe('serialization / deserialization', () => {
+    it('happy path', () => {
+      expect(pipe(
+        a,
+        RRI.serialize,
+        RRI.deserialize,
+      )).toStrictEqual(O.some(a));
+    });
+
+    it('wrong prefix', () => {
+      expect(pipe(
+        'ncrc:123',
+        RRI.deserialize,
+      )).toStrictEqual(O.none);
+    });
+
+    it('not a string', () => {
+      expect(pipe(
+        undefined,
+        RRI.deserialize,
+      )).toStrictEqual(O.none);
+    });
+  });
 });
