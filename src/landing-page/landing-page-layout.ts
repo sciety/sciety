@@ -18,16 +18,7 @@ export const landingPageLayout = (page: Page): string => `<!doctype html>
 
         <nav class="landing-page-utility-bar" aria-describedby="application-utilities">
           <div id="application-utilities" class="hidden">Sciety application utilities</div>
-          <ul class="landing-page-utility-bar__list" role="list">
-            <li class="landing-page-utility-bar__list_item landing-page-utility-bar__list_item--search">
-              <a href="/search">
-                <img src="/static/images/search-icon.svg" alt="Search" class="landing-page-utility-bar__list__search_icon">
-              </a>
-            </li>
-            <li class="landing-page-utility-bar__list_item">
-              <a href="/log-in" class="landing-page-utility-bar__list_link_button">Log in</a>
-            </li>
-          </ul>
+          <a href="/log-in" class="landing-page-utility-bar__list_link_button">Log in</a>
         </nav>
       </div>
     </header>
