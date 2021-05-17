@@ -310,3 +310,10 @@ $_search-button-width: functions.px-to-rem(70px);
     }
   }
 }
+
+.landing-page-footer {
+  grid-column: 2 / -1;
+  justify-self: center;
+  font-family: settings.$font-family;
+  margin-bottom: baseline.increments(1.5);
+}

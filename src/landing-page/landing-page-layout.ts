@@ -21,7 +21,6 @@ export const landingPageLayout = (user: O.Option<User>) => (page: Page): string 
       </a>
 
       ${siteMenuItems(user)}
-      ${siteMenuFooter}
 
     </nav>
     <header class="site-header">
@@ -37,6 +36,13 @@ export const landingPageLayout = (user: O.Option<User>) => (page: Page): string 
     <main class="page-content">
       ${page.content}
     </main>
+
+    <footer class="landing-page-footer">
+      <small>
+        © 2021 eLife Sciences Publications Ltd.
+        <a href="/legal">Legal information</a>
+      </small>
+    </footer>
   </div>
 
   <script src="/static/behaviour.js"></script>
