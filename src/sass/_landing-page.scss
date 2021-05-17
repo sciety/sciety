@@ -349,4 +349,6 @@ $_header-height-in-px: 60px;
 .landing-page-footer__small_print {
   display: block;
   text-align: center;
+  padding-left: functions.px-to-rem(12px);
+  padding-right: functions.px-to-rem(12px);
 }
