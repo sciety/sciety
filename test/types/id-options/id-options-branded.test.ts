@@ -1,3 +1,4 @@
+/* eslint-disable jest-formatting/padding-around-all */
 import * as A from './a-branded';
 import * as B from './b-branded';
 
@@ -19,7 +20,24 @@ describe('id-options', () => {
       expect(a === B.fromString('a')).toBe(false);
     });
 
-    it.todo('use in Map keys');
+    it('use in Map keys', () => {
+      const map = new Map<A.A, B.B>();
+      map.set(a, b);
+
+      expect(map.get(a)).toBe(b);
+      expect(map.get(a)).toStrictEqual(b);
+      expect(map.get(A.fromString('a'))).toBe(b);
+
+      expect(map.has(a)).toBe(true);
+      expect(map.has(A.fromString('a'))).toBe(true);
+
+      expect(map.size).toBe(1);
+      map.set(a, B.fromString('b2'));
+      expect(map.size).toBe(1);
+
+      map.set(A.fromString('a'), b);
+      expect(map.size).toBe(1);
+    });
 
     it.todo('use in Set');
 

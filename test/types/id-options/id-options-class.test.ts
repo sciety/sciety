@@ -1,3 +1,4 @@
+/* eslint-disable jest-formatting/padding-around-all */
 import { A } from './a-class';
 import { B } from './b-class';
 
@@ -23,7 +24,24 @@ describe('id-options', () => {
       expect(A.eqA.equals(a, b)).toBe(false); //                    compiler error
     });
 
-    it.todo('use in Map keys');
+    it('use in Map keys', () => {
+      const map = new Map<A, B>();
+      map.set(a, b);
+
+      expect(map.get(a)).toBe(b);
+      expect(map.get(a)).toStrictEqual(b);
+      expect(map.get(A.fromString('a'))).toBeUndefined(); //        :-(
+
+      expect(map.has(a)).toBe(true);
+      expect(map.has(A.fromString('a'))).toBe(false); //            :-(
+
+      expect(map.size).toBe(1);
+      map.set(a, B.fromString('b2'));
+      expect(map.size).toBe(1);
+
+      map.set(A.fromString('a'), b);
+      expect(map.size).toBe(2); //                                  :-(
+    });
 
     it.todo('use in Set');
 
