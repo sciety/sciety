@@ -8,9 +8,9 @@ import datasetFactory from 'rdf-dataset-indexed';
 import type { DatasetCore } from 'rdf-js';
 import { fetchDataset } from '../../src/infrastructure/fetch-dataset';
 import { dummyLogger } from '../dummy-logger';
-import { arbitraryReviewId } from '../types/review-id.helper';
+import { arbitraryDoi } from '../types/doi.helper';
 
-const reviewDoi = arbitraryReviewId();
+const reviewDoi = arbitraryDoi();
 
 const createStubFetch = (response: Partial<DatasetResponse<DatasetCore>>): typeof rdfFetch => (
   async () => response as DatasetResponse<DatasetCore>
