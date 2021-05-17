@@ -29,6 +29,7 @@ import { groupPage } from '../group-page';
 import { groupsPage } from '../groups-page';
 import { Adapters } from '../infrastructure/adapters';
 import { landingPage } from '../landing-page';
+import { landingPageLayout } from '../landing-page/landing-page-layout';
 import { legalPage } from '../legal-page';
 import { loggedInHomePage } from '../logged-in-home-page';
 import { menuPageLayout } from '../menu-page/menu-page-layout';
@@ -113,7 +114,7 @@ export const createRouter = (adapters: Adapters): Router => {
         TE.chainTaskK((params) => pipe(
           params.user,
           O.fold(
-            () => T.of(applyStandardPageLayout(O.none)(landingPage)),
+            () => T.of(landingPageLayout(O.none)(landingPage)),
             (user) => pipe(
               loggedInHomePage(adapters)({ userId: user.id }),
               T.map((page) => applyStandardPageLayout(O.some(user))(page)),
