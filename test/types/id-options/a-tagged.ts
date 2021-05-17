@@ -1,3 +1,7 @@
+import * as Eq from 'fp-ts/Eq';
+import { pipe } from 'fp-ts/function';
+import * as S from 'fp-ts/string';
+
 export type A = {
   readonly _type: 'A',
   readonly value: string,
@@ -14,3 +18,8 @@ export const isA = (x: unknown): x is A => {
   }
   return false;
 };
+
+export const eqA: Eq.Eq<A> = pipe(
+  S.Eq,
+  Eq.contramap((id) => id.value),
+);

@@ -15,6 +15,8 @@ describe('id-options', () => {
       expect(a === b).toBe(false); //                               compiler error
       expect(a.toString() === b.toString()).toBe(false);
       expect(a === A.fromString('a')).toBe(false);
+      expect(a === A.fromString('x')).toBe(false);
+      expect(a === B.fromString('a')).toBe(false);
       expect(A.eqA.equals(a, a)).toBe(true);
       expect(A.eqA.equals(a, A.fromString('a'))).toBe(true);
       expect(A.eqA.equals(a, A.fromString('b'))).toBe(false);
