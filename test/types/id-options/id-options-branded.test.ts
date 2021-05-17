@@ -1,4 +1,5 @@
 /* eslint-disable jest-formatting/padding-around-all */
+/* eslint-disable eqeqeq */
 import * as A from './a-branded';
 import * as B from './b-branded';
 
@@ -18,6 +19,9 @@ describe('id-options', () => {
       expect(a === A.fromString('a')).toBe(true);
       expect(a === A.fromString('x')).toBe(false);
       expect(a === B.fromString('a')).toBe(false);
+      expect(a == A.fromString('a')).toBe(true);
+      expect(a == A.fromString('x')).toBe(false);
+      expect(a == B.fromString('a')).toBe(false);
     });
 
     it('use in Map keys', () => {

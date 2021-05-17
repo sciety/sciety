@@ -1,4 +1,5 @@
 /* eslint-disable jest-formatting/padding-around-all */
+/* eslint-disable eqeqeq */
 import * as A from './a-tagged';
 import * as B from './b-tagged';
 
@@ -15,11 +16,12 @@ describe('id-options', () => {
     it('equality', () => {
       expect(a === b).toBe(false); //                               compiler error
       expect(a.toString() === b.toString()).toBe(true); //          !!
-      // TODO: try Object.is
-      // TODO: try ==
       expect(a === A.fromString('a')).toBe(false); //               :-(
       expect(a === A.fromString('x')).toBe(false);
       expect(a === B.fromString('a')).toBe(false);
+      expect(a == A.fromString('a')).toBe(false); //               :-(
+      expect(a == A.fromString('x')).toBe(false);
+      expect(a == B.fromString('a')).toBe(false);
       expect(A.eqA.equals(a, a)).toBe(true);
       expect(A.eqA.equals(a, A.fromString('a'))).toBe(true);
       expect(A.eqA.equals(a, A.fromString('b'))).toBe(false);

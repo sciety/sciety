@@ -1,4 +1,5 @@
 /* eslint-disable jest-formatting/padding-around-all */
+/* eslint-disable eqeqeq */
 import { A } from './a-class';
 import { B } from './b-class';
 
@@ -18,6 +19,9 @@ describe('id-options', () => {
       expect(a === A.fromString('a')).toBe(false);
       expect(a === A.fromString('x')).toBe(false);
       expect(a === B.fromString('a')).toBe(false);
+      expect(a == A.fromString('a')).toBe(false);
+      expect(a == A.fromString('x')).toBe(false);
+      expect(a == B.fromString('a')).toBe(false);
       expect(A.eqA.equals(a, a)).toBe(true);
       expect(A.eqA.equals(a, A.fromString('a'))).toBe(true);
       expect(A.eqA.equals(a, A.fromString('b'))).toBe(false);
