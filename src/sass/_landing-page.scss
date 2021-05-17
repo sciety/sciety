@@ -317,3 +317,17 @@ $_search-button-width: functions.px-to-rem(70px);
   font-family: settings.$font-family;
   margin-bottom: baseline.increments(1.5);
 }
+
+.landing-page-footer__links {
+  @include list.basics();
+  display: flex;
+  justify-content: center;
+}
+
+.landing-page-footer__link {
+  margin-right: 1rem;
+
+  &:last-child {
+    margin-right: 0;
+  }
+}

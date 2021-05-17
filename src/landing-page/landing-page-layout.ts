@@ -38,6 +38,11 @@ export const landingPageLayout = (user: O.Option<User>) => (page: Page): string 
     </main>
 
     <footer class="landing-page-footer">
+      <ul class="landing-page-footer__links" role="list">
+        <li class="landing-page-footer__link"><a href="/about">About</a></li>
+        <li class="landing-page-footer__link"><a href="/feedback">Feedback</a></li>
+        <li class="landing-page-footer__link"><a href="/blog">Blog</a></li>
+      </ul>
       <small>
         © 2021 eLife Sciences Publications Ltd.
         <a href="/legal">Legal information</a>
