@@ -8,9 +8,13 @@ describe('id-options', () => {
     class A {
       private readonly value: string;
 
+      public static fromString = (s: string) => new A(s);
+
+      public static isA = (x: unknown) => x instanceof A;
+
       public static eqA: Eq.Eq<A> = pipe(S.Eq, Eq.contramap((a) => a.toString()));
 
-      constructor(x: string) {
+      private constructor(x: string) {
         this.value = x;
       }
 
@@ -18,13 +22,13 @@ describe('id-options', () => {
         return this.value;
       }
     }
-
-    const isA = (x: unknown) => x instanceof A;
 
     class B {
       private readonly value: string;
 
-      constructor(x: string) {
+      public static fromString = (s: string) => new B(s);
+
+      private constructor(x: string) {
         this.value = x;
       }
 
@@ -33,21 +37,21 @@ describe('id-options', () => {
       }
     }
 
-    const a: A = new A('a');
-    const b: B = new B('b');
+    const a: A = A.fromString('a');
+    const b: B = B.fromString('b');
 
     it('runtime discrimination', () => {
-      expect(isA(a)).toBe(true);
-      expect(isA(b)).toBe(false);
+      expect(A.isA(a)).toBe(true);
+      expect(A.isA(b)).toBe(false);
     });
 
     it('equality', () => {
       expect(a === b).toBe(false); //                               compiler error
       expect(a.toString() === b.toString()).toBe(false);
-      expect(a === new A('a')).toBe(false);
+      expect(a === A.fromString('a')).toBe(false);
       expect(A.eqA.equals(a, a)).toBe(true);
-      expect(A.eqA.equals(a, new A('a'))).toBe(true);
-      expect(A.eqA.equals(a, new A('b'))).toBe(false);
+      expect(A.eqA.equals(a, A.fromString('a'))).toBe(true);
+      expect(A.eqA.equals(a, A.fromString('b'))).toBe(false);
       expect(A.eqA.equals(a, b)).toBe(false); //                    compiler error
     });
 
