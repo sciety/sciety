@@ -8,8 +8,8 @@ describe('rapid-review-id', () => {
   it('runtime discrimination', () => {
     const b: NI.NcrcId = NI.fromString('b');
 
-    expect(RRI.isRapidReviewId(a)).toBe(true);
-    expect(RRI.isRapidReviewId(b)).toBe(false);
+    expect(RRI.has(a)).toBe(true);
+    expect(RRI.has(b)).toBe(false);
   });
 
   it('equality', () => {
