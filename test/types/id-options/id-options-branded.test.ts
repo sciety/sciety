@@ -11,7 +11,13 @@ describe('id-options', () => {
       expect(A.isA(b)).toBe(false);
     });
 
-    it.todo('equality');
+    it('equality', () => {
+      expect(a === b).toBe(false); //                               compiler error
+      expect(a.toString() === b.toString()).toBe(false);
+      expect(a === A.fromString('a')).toBe(true);
+      expect(a === A.fromString('x')).toBe(false);
+      expect(a === B.fromString('a')).toBe(false);
+    });
 
     it.todo('use in Map keys');
 
