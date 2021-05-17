@@ -11,7 +11,16 @@ import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { User } from '../types/user';
 
-const errorToWebPage = (user: O.Option<User>) => (error: RenderPageError) => pipe(
+type ErrorToWebPage = (
+  user: O.Option<User>
+) => (
+  error: RenderPageError
+) => {
+  body: string,
+  status: StatusCodes.NOT_FOUND | StatusCodes.SERVICE_UNAVAILABLE,
+};
+
+export const errorToWebPage: ErrorToWebPage = (user) => (error) => pipe(
   renderErrorPage(error.message),
   (content) => ({
     title: 'Error',

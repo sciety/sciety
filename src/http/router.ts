@@ -17,7 +17,7 @@ import { finishCommand } from './finish-command';
 import { loadStaticFile } from './load-static-file';
 import { logOut } from './log-out';
 import { onlyIfNotAuthenticated } from './only-if-authenticated';
-import { pageHandler } from './page-handler';
+import { errorToWebPage, pageHandler } from './page-handler';
 import { ping } from './ping';
 import { redirectBack } from './redirect-back';
 import { redirectAfterAuthenticating, requireAuthentication } from './require-authentication';
@@ -39,6 +39,7 @@ import { finishSaveArticleCommand } from '../save-article/finish-save-article-co
 import { saveSaveArticleCommand } from '../save-article/save-save-article-command';
 import { searchPage } from '../search-page';
 import { searchResultsPage } from '../search-results-page';
+import { applyStandardPageLayout } from '../shared-components';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
@@ -103,18 +104,35 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.get(
     '/',
-    pageHandler(flow(
-      homePageParams.decode,
-      E.mapLeft(toNotFound),
-      TE.fromEither,
-      TE.chainTaskK((params) => pipe(
-        params.user,
-        O.fold(
-          () => T.of(landingPage),
-          (user) => loggedInHomePage(adapters)({ userId: user.id }),
+    async (context, next) => {
+      const response = await pipe(
+        context.state,
+        homePageParams.decode,
+        E.mapLeft(toNotFound),
+        TE.fromEither,
+        TE.chainTaskK((params) => pipe(
+          params.user,
+          O.fold(
+            () => T.of(applyStandardPageLayout(O.none)(landingPage)),
+            (user) => pipe(
+              loggedInHomePage(adapters)({ userId: user.id }),
+              T.map((page) => applyStandardPageLayout(O.some(user))(page)),
+            ),
+          ),
+        )),
+        TE.match(
+          errorToWebPage(O.fromNullable(context.state.user)),
+          (body) => ({
+            body,
+            status: StatusCodes.OK,
+          }),
         ),
-      )),
-    )),
+      )();
+
+      context.response.type = 'html';
+      Object.assign(context.response, response);
+      await next();
+    },
   );
 
   router.get(
