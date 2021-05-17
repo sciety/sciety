@@ -14,10 +14,7 @@ export const landingPageLayout = (user: O.Option<User>) => (page: Page): string 
   ${head(page.title, page.openGraph)}
 <body>
   ${googleTagManagerNoScript()}
-  <div class="page-container">
-    <nav class="drawer">
-      ${siteMenuItems(user)}
-    </nav>
+  <div>
     <header class="site-header">
       <div class="site-header__inner">
         <a href="/">
@@ -38,7 +35,7 @@ export const landingPageLayout = (user: O.Option<User>) => (page: Page): string 
         <li class="landing-page-footer__link"><a href="/feedback">Feedback</a></li>
         <li class="landing-page-footer__link"><a href="/blog">Blog</a></li>
       </ul>
-      <small>
+      <small class="landing-page-footer__small_print">
         © 2021 eLife Sciences Publications Ltd.
         <a href="/legal">Legal information</a>
       </small>
