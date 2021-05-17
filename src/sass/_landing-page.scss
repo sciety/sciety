@@ -57,7 +57,6 @@ $_header-height-in-px: 60px;
   @include container-horizontal-spacing();
   display: flex;
   justify-content: center;
-  max-width: functions.px-to-rem(1300px); // Prevent image stretching beyond app bar login button
 
   @media screen and (min-width: $_image-visibility-breakpoint) {
     margin-top: baseline.increments(25); // Breathing space above image
