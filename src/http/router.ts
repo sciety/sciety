@@ -114,7 +114,7 @@ export const createRouter = (adapters: Adapters): Router => {
         TE.chainTaskK((params) => pipe(
           params.user,
           O.fold(
-            () => T.of(landingPageLayout(O.none)(landingPage)),
+            () => T.of(landingPageLayout(landingPage)),
             (user) => pipe(
               loggedInHomePage(adapters)({ userId: user.id }),
               T.map((page) => applyStandardPageLayout(O.some(user))(page)),

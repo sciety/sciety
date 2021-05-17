@@ -1,14 +1,10 @@
-import * as O from 'fp-ts/Option';
 import {
   cookieConsent, googleTagManager, googleTagManagerNoScript,
 } from '../shared-components/analytics';
 import { head } from '../shared-components/head';
-import { utilityBar } from '../shared-components/utility-bar';
 import { Page } from '../types/page';
-import { User } from '../types/user';
 
-// TODO: return a more specific type e.g. HtmlDocument
-export const landingPageLayout = (user: O.Option<User>) => (page: Page): string => `<!doctype html>
+export const landingPageLayout = (page: Page): string => `<!doctype html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
   ${head(page.title, page.openGraph)}
 <body>
@@ -20,7 +16,19 @@ export const landingPageLayout = (user: O.Option<User>) => (page: Page): string 
           <img src="/static/images/sciety-logo-blue-text.svg" alt="Sciety">
         </a>
 
-        ${utilityBar(user)}
+        <nav class="utility-bar" aria-describedby="application-utilities">
+          <div id="application-utilities" class="hidden">Sciety application utilities</div>
+          <ul class="utility-bar__list" role="list">
+            <li class="utility-bar__list_item utility-bar__list_item--search">
+              <a href="/search">
+                <img src="/static/images/search-icon.svg" alt="Search" class="utility-bar__list__search_icon">
+              </a>
+            </li>
+            <li class="utility-bar__list_item">
+              <a href="/log-in" class="utility-bar__list_link_button">Log in</a>
+            </li>
+          </ul>
+        </nav>
       </div>
     </header>
 
