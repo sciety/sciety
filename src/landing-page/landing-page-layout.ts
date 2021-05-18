@@ -24,6 +24,7 @@ export const landingPageLayout = (page: Page): string => `<!doctype html>
         <li class="landing-page-footer__link"><a href="/about">About</a></li>
         <li class="landing-page-footer__link"><a href="/feedback">Feedback</a></li>
         <li class="landing-page-footer__link"><a href="/blog">Blog</a></li>
+        <li class="landing-page-footer__link"><a href="https://twitter.com/scietyHQ">Follow us</a></li>
       </ul>
       <small class="landing-page-footer__small_print">
         © 2021 eLife Sciences Publications Ltd.
