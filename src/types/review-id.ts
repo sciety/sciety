@@ -24,7 +24,7 @@ const toReviewId = (serialization: string): ReviewId => {
 
 export const deserialize = (value: string): O.Option<ReviewId> => O.tryCatch(() => toReviewId(value));
 
-export const toString = (id: ReviewId): string => {
+export const serialize = (id: ReviewId): string => {
   if (id instanceof Doi || id instanceof HypothesisAnnotationId) {
     return id.toString();
   }
@@ -39,7 +39,7 @@ export const isReviewId = (value: unknown): value is ReviewId => (
 
 const eq: Eq.Eq<ReviewId> = pipe(
   S.Eq,
-  Eq.contramap(toString),
+  Eq.contramap(serialize),
 );
 
 export const { equals } = eq;

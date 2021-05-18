@@ -10,7 +10,7 @@ import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
 import { DoiFromString } from '../src/types/codecs/DoiFromString';
 import { Doi, isDoi } from '../src/types/doi';
-import * as ReviewId from '../src/types/review-id';
+import * as RI from '../src/types/review-id';
 
 const preReviewPreprint = t.type({
   handle: t.union([DoiFromString, t.string]),
@@ -29,7 +29,7 @@ type PreReviewPreprint = t.TypeOf<typeof preReviewPreprint>;
 type Review = {
   date: Date,
   articleDoi: Doi,
-  reviewId: ReviewId.ReviewId,
+  reviewId: RI.ReviewId,
 };
 
 type Preprint = {
@@ -78,7 +78,7 @@ void pipe(
     RA.map(toPreprint),
     RA.compact,
     RA.chain(toReviews),
-    RA.map(({ date, articleDoi, reviewId }) => `${date.toISOString()},${articleDoi.value},${ReviewId.toString(reviewId)}`),
+    RA.map(({ date, articleDoi, reviewId }) => `${date.toISOString()},${articleDoi.value},${RI.serialize(reviewId)}`),
   )),
   TE.bimap(
     (error) => process.stderr.write(error),

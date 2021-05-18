@@ -12,7 +12,7 @@ describe('review-id', () => {
 
       expect(pipe(
         reviewId,
-        RI.toString,
+        RI.serialize,
         RI.deserialize,
       )).toStrictEqual(O.some(reviewId));
     });
@@ -24,7 +24,7 @@ describe('review-id', () => {
 
       expect(pipe(
         reviewId,
-        RI.toString,
+        RI.serialize,
         RI.deserialize,
       )).toStrictEqual(O.some(reviewId));
     });
@@ -36,7 +36,7 @@ describe('review-id', () => {
 
       expect(pipe(
         reviewId,
-        RI.toString,
+        RI.serialize,
         RI.deserialize,
       )).toStrictEqual(O.some(reviewId));
     });

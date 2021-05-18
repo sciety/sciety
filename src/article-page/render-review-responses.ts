@@ -1,10 +1,10 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-import { ReviewId, toString } from '../types/review-id';
+import * as RI from '../types/review-id';
 
 // TODO Try introducing a Counter type to prevent impossible numbers (e.g. -1, 2.5)
-type RenderReviewResponses = (params: { reviewId: ReviewId, counts: { helpfulCount: number, notHelpfulCount: number }, current: O.Option<'helpful' | 'not-helpful'> }) => HtmlFragment;
+type RenderReviewResponses = (params: { reviewId: RI.ReviewId, counts: { helpfulCount: number, notHelpfulCount: number }, current: O.Option<'helpful' | 'not-helpful'> }) => HtmlFragment;
 
 export const renderReviewResponses: RenderReviewResponses = ({
   reviewId, counts: { helpfulCount, notHelpfulCount }, current,
@@ -28,13 +28,13 @@ export const renderReviewResponses: RenderReviewResponses = ({
       <div class="responses__actions">
         <div class="responses__action">
           <form method="post" action="/respond">
-            <input type="hidden" name="reviewid" value="${toString(reviewId)}">
+            <input type="hidden" name="reviewid" value="${RI.serialize(reviewId)}">
             ${helpfulButton(helpfulCount)}
           </form>
         </div>
         <div class="responses__action">
           <form method="post" action="/respond">
-            <input type="hidden" name="reviewid" value="${toString(reviewId)}">
+            <input type="hidden" name="reviewid" value="${RI.serialize(reviewId)}">
             ${notHelpfulButton(notHelpfulCount)}
           </form>
         </div>

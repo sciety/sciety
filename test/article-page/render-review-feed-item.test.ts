@@ -34,7 +34,7 @@ describe('render-review-feed-item', () => {
     });
 
     it('renders an id tag with the correct value', async () => {
-      expect(rendered.getElementById(RI.toString(item.id))).not.toBeNull();
+      expect(rendered.getElementById(RI.serialize(item.id))).not.toBeNull();
     });
   });
 
@@ -69,7 +69,7 @@ describe('render-review-feed-item', () => {
     });
 
     it('renders an id tag with the correct value', async () => {
-      expect(rendered.getElementById(RI.toString(item.id))).not.toBeNull();
+      expect(rendered.getElementById(RI.serialize(item.id))).not.toBeNull();
     });
   });
 
@@ -99,7 +99,7 @@ describe('render-review-feed-item', () => {
     });
 
     it('renders an id tag with the correct value', async () => {
-      expect(rendered.getElementById(RI.toString(item.id))).not.toBeNull();
+      expect(rendered.getElementById(RI.serialize(item.id))).not.toBeNull();
     });
   });
 });

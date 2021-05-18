@@ -7,14 +7,14 @@ import { renderReviewResponses } from './render-review-responses';
 import { templateDate } from '../shared-components';
 import { GroupId } from '../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-import { ReviewId, toString } from '../types/review-id';
+import * as RI from '../types/review-id';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
 type RenderReviewFeedItem = (review: ReviewFeedItem) => HtmlFragment;
 
 export type ReviewFeedItem = {
   type: 'review',
-  id: ReviewId,
+  id: RI.ReviewId,
   source: O.Option<URL>,
   occurredAt: Date,
   groupId: GroupId,
@@ -56,7 +56,7 @@ const renderWithText = (teaserChars: number, review: ReviewFeedItem, fullText: s
   const teaserText = clip(fullText, teaserChars, { html: true });
   if (teaserText === fullText) {
     return `
-      <article class="activity-feed__item_contents" id="${toString(review.id)}">
+      <article class="activity-feed__item_contents" id="${RI.serialize(review.id)}">
         <header class="activity-feed__item_header">
           ${avatar(review)}
           ${eventMetadata(review)}
@@ -73,7 +73,7 @@ const renderWithText = (teaserChars: number, review: ReviewFeedItem, fullText: s
   }
   // TODO: a review.id containing dodgy chars could break this
   return `
-    <article class="activity-feed__item_contents" id="${toString(review.id)}">
+    <article class="activity-feed__item_contents" id="${RI.serialize(review.id)}">
       <header class="activity-feed__item_header">
         ${avatar(review)}
         ${eventMetadata(review)}
@@ -96,7 +96,7 @@ const render = (teaserChars: number, review: ReviewFeedItem, responses: HtmlFrag
   review.fullText,
   O.fold(
     () => `
-      <article class="activity-feed__item_contents" id="${toString(review.id)}">
+      <article class="activity-feed__item_contents" id="${RI.serialize(review.id)}">
         <header class="activity-feed__item_header">
           ${avatar(review)}
           ${eventMetadata(review)}
