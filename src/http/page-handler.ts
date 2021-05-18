@@ -20,7 +20,7 @@ type ErrorToWebPage = (
   status: StatusCodes.NOT_FOUND | StatusCodes.SERVICE_UNAVAILABLE,
 };
 
-export const errorToWebPage: ErrorToWebPage = (user) => (error) => pipe(
+export const toErrorResponse: ErrorToWebPage = (user) => (error) => pipe(
   renderErrorPage(error.message),
   (content) => ({
     title: 'Error',
@@ -33,7 +33,7 @@ export const errorToWebPage: ErrorToWebPage = (user) => (error) => pipe(
   }),
 );
 
-const pageToWebPage = (user: O.Option<User>) => flow(
+const pageToSuccessResponse = (user: O.Option<User>) => flow(
   applyStandardPageLayout(user),
   (body) => ({
     body,
@@ -42,8 +42,8 @@ const pageToWebPage = (user: O.Option<User>) => flow(
 );
 
 const toWebPage = (user: O.Option<User>) => E.fold(
-  errorToWebPage(user),
-  pageToWebPage(user),
+  toErrorResponse(user),
+  pageToSuccessResponse(user),
 );
 
 type HandlePage = (params: unknown) => TE.TaskEither<RenderPageError, Page>;

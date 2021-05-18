@@ -17,7 +17,7 @@ import { finishCommand } from './finish-command';
 import { loadStaticFile } from './load-static-file';
 import { logOut } from './log-out';
 import { onlyIfNotAuthenticated } from './only-if-authenticated';
-import { errorToWebPage, pageHandler } from './page-handler';
+import { pageHandler, toErrorResponse } from './page-handler';
 import { ping } from './ping';
 import { redirectBack } from './redirect-back';
 import { redirectAfterAuthenticating, requireAuthentication } from './require-authentication';
@@ -107,6 +107,11 @@ export const createRouter = (adapters: Adapters): Router => {
     TE.fromEither,
   );
 
+  const toSuccessResponse = (body: string) => ({
+    body,
+    status: StatusCodes.OK,
+  });
+
   // PAGES
 
   router.get(
@@ -124,11 +129,8 @@ export const createRouter = (adapters: Adapters): Router => {
           ),
         )),
         TE.match(
-          errorToWebPage(O.fromNullable(context.state.user)),
-          (body) => ({
-            body,
-            status: StatusCodes.OK,
-          }),
+          toErrorResponse(O.fromNullable(context.state.user)),
+          toSuccessResponse,
         ),
       )();
 
