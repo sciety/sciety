@@ -12,12 +12,12 @@ import {
   UserRevokedFindingReviewHelpfulEvent,
   UserRevokedFindingReviewNotHelpfulEvent,
 } from '../types/domain-events';
-import * as ReviewId from '../types/review-id';
+import * as RI from '../types/review-id';
 import { UserId } from '../types/user-id';
 
 type GetEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-const projectResponse = (getEvents: GetEvents) => (reviewId: ReviewId.ReviewId, userId: UserId) => pipe(
+const projectResponse = (getEvents: GetEvents) => (reviewId: RI.ReviewId, userId: UserId) => pipe(
   getEvents,
   T.map(flow(
     RA.filter((event): event is
@@ -31,7 +31,7 @@ const projectResponse = (getEvents: GetEvents) => (reviewId: ReviewId.ReviewId, 
       || event.type === 'UserRevokedFindingReviewNotHelpful'
     )),
     RA.filter((event) => event.userId === userId),
-    RA.filter((event) => ReviewId.equals(event.reviewId, reviewId)),
+    RA.filter((event) => RI.equals(event.reviewId, reviewId)),
     RNEA.fromReadonlyArray,
     O.chain(flow(
       RNEA.last,
@@ -50,7 +50,7 @@ const projectResponse = (getEvents: GetEvents) => (reviewId: ReviewId.ReviewId, 
 );
 
 type ProjectUserReviewResponse = (
-  reviewId: ReviewId.ReviewId,
+  reviewId: RI.ReviewId,
   userId: O.Option<UserId>,
 ) => RT.ReaderTask<GetEvents, O.Option<'helpful' | 'not-helpful'>>;
 

@@ -4,7 +4,8 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { constant, pipe } from 'fp-ts/function';
 import { GroupViewModel, renderGroupCard } from './render-group-card';
-import { ArticleViewModel, renderArticleCard, templateListItems } from '../shared-components';
+import { ArticleViewModel, renderArticleCard } from '../shared-components/article-card';
+import { templateListItems } from '../shared-components/list-items';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 export type ItemViewModel = ArticleViewModel | GroupViewModel;

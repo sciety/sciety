@@ -12,7 +12,7 @@ import {
   noEvaluationsYet,
   troubleFetchingTryAgain,
 } from './static-messages';
-import { renderArticleCard } from '../../shared-components';
+import { renderArticleCard } from '../../shared-components/article-card';
 import { fetchArticleDetails } from '../../shared-components/article-card/fetch-article-details';
 import {
   FindVersionsForArticleDoi,

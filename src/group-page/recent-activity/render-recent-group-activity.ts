@@ -1,6 +1,6 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { flow } from 'fp-ts/function';
-import { renderArticleCard } from '../../shared-components';
+import { renderArticleCard } from '../../shared-components/article-card';
 import { toHtmlFragment } from '../../types/html-fragment';
 
 export const renderRecentGroupActivity = flow(

@@ -4,7 +4,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe } from 'fp-ts/function';
-import { ArticleViewModel } from '../../shared-components';
+import { ArticleViewModel } from '../../shared-components/article-card';
 import { ArticleActivity } from '../../types/article-activity';
 import { ArticleServer } from '../../types/article-server';
 import { Doi } from '../../types/doi';
