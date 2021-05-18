@@ -9,7 +9,7 @@ import { constructRedirectUrl } from './require-authentication';
 import { sessionGroupProperty } from '../follow/finish-follow-command';
 import { CommitEvents, followCommand, GetFollowList } from '../follow/follow-command';
 import { groupProperty } from '../follow/follow-handler';
-import { applyStandardPageLayout } from '../shared-components';
+import { applyStandardPageLayout } from '../shared-components/apply-standard-page-layout';
 import { Group } from '../types/group';
 import * as GroupId from '../types/group-id';
 import { toHtmlFragment } from '../types/html-fragment';

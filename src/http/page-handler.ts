@@ -6,7 +6,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { renderErrorPage } from './render-error-page';
-import { applyStandardPageLayout } from '../shared-components';
+import { applyStandardPageLayout } from '../shared-components/apply-standard-page-layout';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { User } from '../types/user';

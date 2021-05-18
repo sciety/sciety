@@ -5,7 +5,7 @@ import { renderErrorPage } from './render-error-page';
 import { finishFollowCommand } from '../follow';
 import { sessionGroupProperty } from '../follow/finish-follow-command';
 import { Adapters } from '../infrastructure/adapters';
-import { applyStandardPageLayout } from '../shared-components';
+import { applyStandardPageLayout } from '../shared-components/apply-standard-page-layout';
 import { toHtmlFragment } from '../types/html-fragment';
 
 export const finishCommand = (adapters: Adapters): Middleware => async (context, next) => {

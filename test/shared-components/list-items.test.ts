@@ -1,6 +1,6 @@
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { pipe } from 'fp-ts/function';
-import { templateListItems } from '../../src/shared-components';
+import { templateListItems } from '../../src/shared-components/list-items';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 
 describe('list-items template', () => {

@@ -40,7 +40,7 @@ import { finishSaveArticleCommand } from '../save-article/finish-save-article-co
 import { saveSaveArticleCommand } from '../save-article/save-save-article-command';
 import { searchPage } from '../search-page';
 import { searchResultsPage } from '../search-results-page';
-import { applyStandardPageLayout } from '../shared-components';
+import { applyStandardPageLayout } from '../shared-components/apply-standard-page-layout';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';

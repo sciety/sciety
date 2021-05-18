@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { renderErrorPage } from './render-error-page';
-import { applyStandardPageLayout } from '../shared-components';
+import { applyStandardPageLayout } from '../shared-components/apply-standard-page-layout';
 import { toHtmlFragment } from '../types/html-fragment';
 import { User } from '../types/user';
 

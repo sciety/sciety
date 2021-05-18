@@ -2,7 +2,7 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { flow } from 'fp-ts/function';
 import { ArticleVersionFeedItem } from './render-article-version-feed-item';
 import { ReviewFeedItem } from './render-review-feed-item';
-import { templateListItems } from '../shared-components';
+import { templateListItems } from '../shared-components/list-items';
 import { ArticleServer } from '../types/article-server';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 

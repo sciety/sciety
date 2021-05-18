@@ -3,7 +3,7 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { Group, RenderGroup } from './render-group';
-import { templateListItems } from '../shared-components';
+import { templateListItems } from '../shared-components/list-items';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 

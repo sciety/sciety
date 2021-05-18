@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { constant, flow } from 'fp-ts/function';
-import { templateListItems } from '../../shared-components';
+import { templateListItems } from '../../shared-components/list-items';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 const followingNothing = `

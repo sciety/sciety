@@ -1,5 +1,5 @@
 import { URL } from 'url';
-import { templateDate } from '../shared-components';
+import { templateDate } from '../shared-components/date';
 import { ArticleServer } from '../types/article-server';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
