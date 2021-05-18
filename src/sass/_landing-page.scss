@@ -216,7 +216,7 @@ $_section-top-padding: baseline.increments(5);
 
   @media screen and (min-width: $_landing-page-breakpoint) {
     @supports (display: flex) {
-      flex: 1 0 functions.px-to-rem(308px); // minimum desired card width
+      flex: 1 0;
       max-width: 384px; // maximum desired card width
       margin-bottom: 0;
       margin-right: functions.px-to-rem(24px);
