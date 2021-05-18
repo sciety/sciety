@@ -7,8 +7,7 @@
 @use 'list';
 @use 'card';
 
-$_image-visibility-breakpoint: 60.25em;
-$_landing-page-card-breakpoint: 77em;
+$_landing-page-breakpoint: 60.25em;
 $_page-gutter--narrow: 1rem;
 $_page-gutter--wide: 3rem;
 $_search-form-gutter: 4px;
@@ -22,7 +21,7 @@ $_section-top-padding: baseline.increments(5);
   padding-left: $_page-gutter--narrow;
   padding-right: $_page-gutter--narrow;
 
-  @media screen and (min-width: $_image-visibility-breakpoint) {
+  @media screen and (min-width: $_landing-page-breakpoint) {
     padding-left: $_page-gutter--wide;
     padding-right: $_page-gutter--wide;
   }
@@ -64,7 +63,7 @@ $_section-top-padding: baseline.increments(5);
   display: flex;
   justify-content: center;
 
-  @media screen and (min-width: $_image-visibility-breakpoint) {
+  @media screen and (min-width: $_landing-page-breakpoint) {
     margin-top: baseline.increments(25); // Breathing space above image
   }
 }
@@ -101,7 +100,7 @@ $_section-top-padding: baseline.increments(5);
 }
 
 .landing-page-hero__content {
-  @media screen and (min-width: $_image-visibility-breakpoint) {
+  @media screen and (min-width: $_landing-page-breakpoint) {
     margin-top: baseline.increments(7.5); // Offset content from top of image
     padding-right: 2rem;
   }
@@ -122,7 +121,7 @@ $_section-top-padding: baseline.increments(5);
 .landing-page-hero__image {
   display: none;
 
-  @media screen and (min-width: $_image-visibility-breakpoint) {
+  @media screen and (min-width: $_landing-page-breakpoint) {
     @supports(display: flex) {
       display: block;
     }
@@ -141,7 +140,7 @@ $_section-top-padding: baseline.increments(5);
     padding-right: $_page-gutter--narrow;
   }
 
-  @media screen and (min-width: $_image-visibility-breakpoint) {
+  @media screen and (min-width: $_landing-page-breakpoint) {
     padding-left: $_page-gutter--wide;
     padding-right: $_page-gutter--wide;
   }
@@ -169,7 +168,7 @@ $_section-top-padding: baseline.increments(5);
   padding-bottom: baseline.increments(5);
   margin-bottom: 0;
 
-  @media screen and (min-width: $_landing-page-card-breakpoint) {
+  @media screen and (min-width: $_landing-page-breakpoint) {
     @supports (display: flex) {
       display: flex;
       justify-content: space-evenly;
@@ -180,7 +179,7 @@ $_section-top-padding: baseline.increments(5);
 .landing-page-recently-evaluated__articles li {
   @include card.list-item;
 
-  @media screen and (min-width: $_landing-page-card-breakpoint) {
+  @media screen and (min-width: $_landing-page-breakpoint) {
     @supports (display: flex) {
       flex: 1 0 functions.px-to-rem(308px); // minimum desired card width
       max-width: 384px; // maximum desired card width
@@ -203,7 +202,7 @@ $_section-top-padding: baseline.increments(5);
   display: flex;
   flex-direction: column;
 
-  @media screen and (min-width: $_image-visibility-breakpoint) {
+  @media screen and (min-width: $_landing-page-breakpoint) {
     @supports (display: flex) {
       height: 100%;
     }
@@ -230,7 +229,7 @@ $_section-top-padding: baseline.increments(5);
   @include card.meta();
   order: 3;
 
-  @media screen and (min-width: $_landing-page-card-breakpoint) {
+  @media screen and (min-width: $_landing-page-breakpoint) {
     margin-top: auto;
   }
 }
@@ -248,7 +247,7 @@ $_section-top-padding: baseline.increments(5);
 }
 
 .landing-page-personas__content {
-  @media screen and (min-width: $_image-visibility-breakpoint) {
+  @media screen and (min-width: $_landing-page-breakpoint) {
     @supports (display: flex) {
       display: flex;
       justify-content: center;
@@ -260,7 +259,7 @@ $_section-top-padding: baseline.increments(5);
 .landing-page-personas__persona {
   margin-bottom: baseline.increments(6);
 
-  @media screen and (min-width: $_image-visibility-breakpoint) {
+  @media screen and (min-width: $_landing-page-breakpoint) {
     margin-bottom: 0;
 
     &:first-child {
