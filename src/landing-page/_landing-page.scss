@@ -1,12 +1,12 @@
-@use 'breakpoints';
-@use 'button';
-@use 'layout';
-@use 'functions';
-@use 'settings';
-@use 'typography';
-@use 'baseline';
-@use 'list';
-@use 'card';
+@use '../sass/breakpoints';
+@use '../sass/button';
+@use '../sass/layout';
+@use '../sass/functions';
+@use '../sass/settings';
+@use '../sass/typography';
+@use '../sass/baseline';
+@use '../sass/list';
+@use '../sass/card';
 
 $_landing-page-breakpoint: 60.25em;
 $_page-gutter--narrow: 1rem;
