@@ -8,5 +8,6 @@ export const callsToAction = toHtmlFragment(`
       <a class="landing-page-calls-to-action__login_button" href="/log-in">Log in</a>
       <a class="landing-page__secondary_button" href="https://blog.sciety.org/subscribe">Subscribe for updates</a>
     </div>
+    <p class="landing-page-calls-to-action__byline">Follow the journey through <a href="/blog">our blog</a>.</p>
   </section>
 `);

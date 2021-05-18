@@ -321,10 +321,15 @@ $_section-top-padding: baseline.increments(5);
 
 .landing-page-calls-to-action__buttons {
   text-align: center;
+  margin-bottom: baseline.increments(5);
 }
 
 .landing-page-calls-to-action__login_button {
   @include landing-page-button();
+}
+
+.landing-page-calls-to-action__byline {
+  margin-bottom: 0;
 }
 
 .landing-page__secondary_button {
