@@ -7,14 +7,10 @@ import { Ports, yourFeed } from './your-feed';
 import { Page } from '../types/page';
 import { UserId } from '../types/user-id';
 
-type Params = {
-  userId: UserId,
-};
-
-type HomePage = (params: Params) => T.Task<Page>;
+type HomePage = (userId: UserId) => T.Task<Page>;
 
 export const loggedInHomePage = (ports: Ports): HomePage => flow(
-  ({ userId }) => ({
+  (userId) => ({
     header: T.of(renderPageHeader()),
     feed: yourFeed(ports)(userId),
   }),
