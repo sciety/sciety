@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { commandHandler, CommitEvents, toCommand } from './command-handler';
 import { GetAllEvents } from './respond-helpful-command';
-import * as ReviewId from '../types/review-id';
+import * as RI from '../types/review-id';
 import { User } from '../types/user';
 
 type Ports = {
@@ -18,7 +18,7 @@ export const respondHandler = (ports: Ports): Middleware<{ user: User }> => asyn
   const referrer = (context.request.headers.referer ?? '/') as string;
   await pipe(
     O.Do,
-    O.apS('reviewId', pipe(context.request.body.reviewid, ReviewId.fromString)),
+    O.apS('reviewId', pipe(context.request.body.reviewid, RI.deserialize)),
     O.apS('command', pipe(context.request.body.command, toCommand)),
     O.fold(
       () => context.throw(StatusCodes.BAD_REQUEST),

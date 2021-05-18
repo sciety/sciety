@@ -13,7 +13,7 @@ describe('review-id', () => {
       expect(pipe(
         reviewId,
         RI.toString,
-        RI.fromString,
+        RI.deserialize,
       )).toStrictEqual(O.some(reviewId));
     });
   });
@@ -25,7 +25,7 @@ describe('review-id', () => {
       expect(pipe(
         reviewId,
         RI.toString,
-        RI.fromString,
+        RI.deserialize,
       )).toStrictEqual(O.some(reviewId));
     });
   });
@@ -37,7 +37,7 @@ describe('review-id', () => {
       expect(pipe(
         reviewId,
         RI.toString,
-        RI.fromString,
+        RI.deserialize,
       )).toStrictEqual(O.some(reviewId));
     });
   });
@@ -46,7 +46,7 @@ describe('review-id', () => {
     it('returns a none', () => {
       const unrecognisedFormat = 'foo';
 
-      expect(RI.fromString(unrecognisedFormat)).toStrictEqual(O.none);
+      expect(RI.deserialize(unrecognisedFormat)).toStrictEqual(O.none);
     });
   });
 });

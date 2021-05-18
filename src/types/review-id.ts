@@ -22,7 +22,7 @@ const toReviewId = (serialization: string): ReviewId => {
   }
 };
 
-export const fromString = (value: string): O.Option<ReviewId> => O.tryCatch(() => toReviewId(value));
+export const deserialize = (value: string): O.Option<ReviewId> => O.tryCatch(() => toReviewId(value));
 
 export const toString = (id: ReviewId): string => {
   if (id instanceof Doi || id instanceof HypothesisAnnotationId) {
