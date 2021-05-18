@@ -48,9 +48,11 @@ $_section-top-padding: baseline.increments(5);
 }
 
 .landing-page-header {
+  @include container-horizontal-spacing();
+  padding-top: functions.px-to-rem(12px);
+  padding-bottom: functions.px-to-rem(12px);
   display: flex;
   justify-content: space-between;
-  padding: functions.px-to-rem(12px);
   align-content: center;
   height: functions.px-to-rem($_header-height-in-px);
 }
