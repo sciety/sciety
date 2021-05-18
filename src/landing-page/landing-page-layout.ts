@@ -15,7 +15,7 @@ export const landingPageLayout = (page: Page): string => `<!doctype html>
       <a href="/log-in" class="landing-page-header__login_button">Log in</a>
     </header>
 
-    <main class="page-content">
+    <main>
       ${page.content}
     </main>
 
