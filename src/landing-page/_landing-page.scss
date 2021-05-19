@@ -9,10 +9,6 @@
 @use '../sass/card';
 
 $_landing-page-breakpoint: 60.25em;
-$_search-form-gutter: 4px;
-$_search-button-width: functions.px-to-rem(70px);
-
-$_header-height-in-px: 60px;
 
 $_section-top-padding: baseline.increments(5);
 
@@ -47,6 +43,8 @@ $_page-gutter--large: 3rem;
   margin-top: baseline.increments(2);
   flex-grow: 1;
 }
+
+$_header-height-in-px: 60px;
 
 .landing-page-header {
   @include container-horizontal-spacing();
@@ -93,6 +91,9 @@ $_page-gutter--large: 3rem;
 .landing-page-header__login_button {
   @include button.button-link-new();
 }
+
+$_search-form-gutter: 4px;
+$_search-button-width: functions.px-to-rem(70px);
 
 .landing-page-hero {
   @include container-horizontal-spacing();
