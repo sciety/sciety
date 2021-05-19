@@ -1,10 +1,4 @@
 @use '../sass/baseline';
-@use 'common';
-@use 'landing-page-layout';
-@use 'hero';
-@use 'recently-evaluated';
-@use 'personas';
-@use 'calls-to-action';
 
 .landing-page {
   margin-top: baseline.increments(2);
