@@ -7,6 +7,7 @@
 @use '../sass/list';
 @use '../sass/card';
 @use 'common';
+@use 'hero/hero';
 
 .landing-page {
   margin-top: baseline.increments(2);
@@ -59,80 +60,6 @@ $_header-height-in-px: 60px;
 
 .landing-page-header__login_button {
   @include button.button-link-new();
-}
-
-$_search-form-gutter: 4px;
-$_search-button-width: functions.px-to-rem(70px);
-
-.landing-page-hero {
-  @include common.container-horizontal-spacing();
-  display: flex;
-  justify-content: center;
-
-  @media screen and (min-width: common.$landing-page-breakpoint) {
-    margin-top: baseline.increments(25); // Breathing space above image
-  }
-}
-
-.landing-page-hero__search_form {
-  width: 100%;
-  max-width: functions.px-to-rem(400px); // limit form width to match width of preceding copy
-  position: relative;
-  margin-bottom: baseline.increments(4);
-}
-
-.landing-page-hero__search_text {
-  @include typography.sizing(14px, 1.75);
-  width: 100%;
-  height: baseline.increments(6);
-  border: settings.$border-width solid settings.$colour-furniture;
-  border-radius: settings.$border-radius;
-  padding-top: baseline.increments(17/8);
-  padding-bottom: baseline.increments(17/8);
-  padding-left: functions.px-to-rem($_search-form-gutter);
-  padding-right: $_search-button-width + 2 * functions.px-to-rem($_search-form-gutter);
-  letter-spacing: 0.1px;
-  color: settings.$colour-text-primary;
-  background-color: settings.$colour-landing-page-search;
-}
-
-.landing-page-hero__search_button {
-  @include button.button-new();
-  position: absolute;
-  top: $_search-form-gutter;
-  bottom: $_search-form-gutter;
-  right: $_search-form-gutter;
-  width: $_search-button-width;
-}
-
-.landing-page-hero__content {
-  @media screen and (min-width: common.$landing-page-breakpoint) {
-    margin-top: baseline.increments(7.5); // Offset content from top of image
-    padding-right: 2rem;
-  }
-}
-
-.landing-page-hero__content__title,
-.landing-page-hero__content__byline {
-  color: settings.$colour-text-primary;
-  font-family: settings.$font-family;
-}
-
-.landing-page-hero__content__title {
-  @include typography.sizing(36px, 5.25);
-  font-weight: bold;
-  letter-spacing: 0.26px;
-}
-
-.landing-page-hero__image {
-  display: none;
-
-  @media screen and (min-width: common.$landing-page-breakpoint) {
-    @supports(display: flex) {
-      display: block;
-    }
-    width: 100%;
-  }
 }
 
 .landing-page-recently-evaluated {
