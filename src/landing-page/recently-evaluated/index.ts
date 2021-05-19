@@ -71,7 +71,7 @@ export const recentlyEvaluated = toHtmlFragment(`
       </li>
     </ul>
     <div class="landing-page-recently-evaluated__call_to_action">
-      <a href="/groups" class="landing-page__secondary_button">Discover more groups</a>
+      <a href="/groups" class="landing-page-recently-evaluated__button">Discover more groups</a>
     </div>
   </section>
 `);

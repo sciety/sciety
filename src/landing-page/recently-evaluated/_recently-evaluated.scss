@@ -70,6 +70,10 @@
   text-align: center;
 }
 
+.landing-page-recently-evaluated__button {
+  @include common.secondary-button();
+}
+
 .landing-page-card {
   @include card.basics();
   display: flex;

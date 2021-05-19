@@ -1,4 +1,8 @@
+@use '../sass/functions';
+@use '../sass/settings';
+
 @use '../sass/baseline';
+@use '../sass/button';
 
 $landing-page-breakpoint: 60.25em;
 
@@ -14,5 +18,34 @@ $_page-gutter--large: 3rem;
   @media screen and (min-width: $landing-page-breakpoint) {
     padding-left: $_page-gutter--large;
     padding-right: $_page-gutter--large;
+  }
+}
+
+@mixin primary-button() {
+  @include button.button-link-new();
+  display: inline-block;
+  width: functions.px-to-rem(192px);
+  text-align: center;
+  padding-top: baseline.increments(1.625);
+  padding-bottom: baseline.increments(1.625);
+  margin: 0 0.75rem baseline.increments(3);
+
+  @media screen and (min-width: 30.25em) {
+    margin-bottom: 0;
+  }
+}
+
+@mixin secondary-button() {
+  @include primary-button();
+
+  &:link,
+  &:visited {
+    background-color: settings.$colour-white;
+    color: settings.$colour-accent;
+
+    &:active {
+      background-color: settings.$colour-white;
+      color: settings.$colour-accent;
+    }
   }
 }
