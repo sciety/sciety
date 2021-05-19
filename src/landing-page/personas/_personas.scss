@@ -1,0 +1,51 @@
+@use '../../sass/settings';
+@use '../../sass/baseline';
+@use '../../sass/typography';
+@use '../common';
+
+.landing-page-personas {
+  @include common.container-horizontal-spacing();
+  margin-bottom: baseline.increments(6);
+  text-align: center;
+  padding-top: common.$section-top-padding;
+}
+
+.landing-page-personas__content {
+  @media screen and (min-width: common.$landing-page-breakpoint) {
+    @supports (display: flex) {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+    }
+  }
+}
+
+.landing-page-personas__persona {
+  margin-bottom: baseline.increments(6);
+
+  @media screen and (min-width: common.$landing-page-breakpoint) {
+    margin-bottom: 0;
+
+    &:first-child {
+      margin-right: 4rem;
+    }
+  }
+}
+
+.landing-page-personas__image {
+  width: 100%;
+  max-width: 468px;
+  margin-bottom: baseline.increments(1);
+}
+
+.landing-page-personas * {
+  color: settings.$colour-text-primary;
+  font-family: settings.$font-family;
+}
+
+.landing-page-personas__title {
+  @include typography.sizing(24px, 3.5);
+  font-weight: bold;
+  letter-spacing: 0.17px;
+  margin-bottom: baseline.increments(2.5);
+}
