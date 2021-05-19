@@ -1,0 +1,80 @@
+@use '../../sass/settings';
+@use '../../sass/functions';
+@use '../../sass/baseline';
+@use '../../sass/typography';
+@use '../../sass/button';
+@use '../common';
+
+@mixin call-to-action-button() {
+  @include button.button-link-new();
+  display: inline-block;
+  width: functions.px-to-rem(192px);
+  text-align: center;
+  padding-top: baseline.increments(1.625);
+  padding-bottom: baseline.increments(1.625);
+  margin: 0 0.75rem baseline.increments(3);
+
+  @media screen and (min-width: 30.25em) {
+    margin-bottom: 0;
+  }
+}
+
+.landing-page-calls-to-action {
+  @include common.container-horizontal-spacing();
+  padding-top: common.$section-top-padding;
+  padding-bottom: baseline.increments(3);
+  background-color: settings.$colour-component-background;
+
+  @supports (display: flex) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  @media screen and (min-width: 30.25em) {
+    padding-bottom: baseline.increments(6);
+  }
+}
+
+.landing-page-calls-to-action * {
+  color: settings.$colour-text-primary;
+  font-family: settings.$font-family;
+}
+
+.landing-page-calls-to-action__title {
+  @include typography.sizing(24px, 3.5);
+  font-weight: bold;
+  letter-spacing: 0.17px;
+}
+
+.landing-page-call-to-action__text {
+  margin-bottom: baseline.increments(5);
+}
+
+.landing-page-calls-to-action__buttons {
+  text-align: center;
+  margin-bottom: baseline.increments(5);
+}
+
+.landing-page-calls-to-action__login_button {
+  @include call-to-action-button();
+}
+
+.landing-page-calls-to-action__byline {
+  margin-bottom: 0;
+}
+
+.landing-page__secondary_button {
+  @include call-to-action-button();
+
+  &:link,
+  &:visited {
+    background-color: settings.$colour-white;
+    color: settings.$colour-accent;
+
+    &:active {
+      background-color: settings.$colour-white;
+      color: settings.$colour-accent;
+    }
+  }
+}
