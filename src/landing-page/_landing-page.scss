@@ -9,8 +9,6 @@
 @use '../sass/card';
 
 $_landing-page-breakpoint: 60.25em;
-$_page-gutter--narrow: 1rem;
-$_page-gutter--wide: 3rem;
 $_search-form-gutter: 4px;
 $_search-button-width: functions.px-to-rem(70px);
 
@@ -18,13 +16,16 @@ $_header-height-in-px: 60px;
 
 $_section-top-padding: baseline.increments(5);
 
+$_page-gutter--small: 1rem;
+$_page-gutter--large: 3rem;
+
 @mixin container-horizontal-spacing() {
-  padding-left: $_page-gutter--narrow;
-  padding-right: $_page-gutter--narrow;
+  padding-left: $_page-gutter--small;
+  padding-right: $_page-gutter--small;
 
   @media screen and (min-width: $_landing-page-breakpoint) {
-    padding-left: $_page-gutter--wide;
-    padding-right: $_page-gutter--wide;
+    padding-left: $_page-gutter--large;
+    padding-right: $_page-gutter--large;
   }
 }
 
@@ -161,7 +162,6 @@ $_section-top-padding: baseline.increments(5);
       display: block;
     }
     width: 100%;
-    max-width: functions.px-to-rem(690px) + (2 * $_page-gutter--wide); // Prevent image stretching beyond app bar login button
   }
 }
 
@@ -171,13 +171,7 @@ $_section-top-padding: baseline.increments(5);
   padding-bottom: baseline.increments(3);
 
   @include breakpoints.not-narrow {
-    padding-left: $_page-gutter--narrow;
-    padding-right: $_page-gutter--narrow;
-  }
-
-  @media screen and (min-width: $_landing-page-breakpoint) {
-    padding-left: $_page-gutter--wide;
-    padding-right: $_page-gutter--wide;
+    @include container-horizontal-spacing();
   }
 
   @media screen and (min-width: 30.25em) {
