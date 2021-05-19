@@ -1,12 +1,6 @@
-@use '../sass/breakpoints';
-@use '../sass/button';
-@use '../sass/functions';
-@use '../sass/settings';
-@use '../sass/typography';
 @use '../sass/baseline';
-@use '../sass/list';
-@use '../sass/card';
 @use 'common';
+@use 'landing-page-layout';
 @use 'hero';
 @use 'recently-evaluated';
 @use 'personas';
@@ -15,80 +9,4 @@
 .landing-page {
   margin-top: baseline.increments(2);
   flex-grow: 1;
-}
-
-$_header-height-in-px: 60px;
-
-.landing-page-header {
-  @include common.container-horizontal-spacing();
-  padding-top: functions.px-to-rem(12px);
-  padding-bottom: functions.px-to-rem(12px);
-  display: flex;
-  justify-content: space-between;
-  align-content: center;
-  height: functions.px-to-rem($_header-height-in-px);
-}
-
-.landing-page-header__follow_link {
-  @include typography.sizing(14px, 1.75);
-  font-family: settings.$font-family;
-  font-weight: bold;
-  margin-right: 1.5rem;
-  display: inline-flex;
-  align-items: center;
-  margin-left: auto;
-
-  &:link,
-  &:visited {
-    color: settings.$colour-text-primary;
-
-    &:hover,
-    &:active {
-      color: settings.$colour-text-primary;
-    }
-  }
-}
-
-.landing-page-header__follow_link_text {
-  display: none;
-
-  @include breakpoints.not-narrow() {
-    display: unset;
-  }
-}
-
-.landing-page-header__follow_icon {
-  margin-left: 0.5rem;
-}
-
-.landing-page-header__login_button {
-  @include button.button-link-new();
-}
-
-.landing-page-footer {
-  grid-column: 2 / -1;
-  justify-self: center;
-  font-family: settings.$font-family;
-  margin-bottom: baseline.increments(1.5);
-}
-
-.landing-page-footer__links {
-  @include list.basics();
-  display: flex;
-  justify-content: center;
-}
-
-.landing-page-footer__link {
-  margin-right: 1rem;
-
-  &:last-child {
-    margin-right: 0;
-  }
-}
-
-.landing-page-footer__small_print {
-  display: block;
-  text-align: center;
-  padding-left: functions.px-to-rem(12px);
-  padding-right: functions.px-to-rem(12px);
 }
