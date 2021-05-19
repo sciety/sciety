@@ -1,0 +1,113 @@
+@use '../../sass/settings';
+@use '../../sass/functions';
+
+@use '../../sass/baseline';
+@use '../../sass/typography';
+@use '../../sass/breakpoints';
+@use '../../sass/list';
+@use '../../sass/card';
+
+@use '../common';
+
+.landing-page-recently-evaluated {
+  background-color: settings.$colour-component-background;
+  padding-top: common.$section-top-padding;
+  padding-bottom: baseline.increments(3);
+
+  @include breakpoints.not-narrow {
+    @include common.container-horizontal-spacing();
+  }
+
+  @media screen and (min-width: 30.25em) {
+    padding-bottom: baseline.increments(6);
+  }
+}
+
+.landing-page-recently-evaluated * {
+  color: settings.$colour-text-primary;
+  font-family: settings.$font-family;
+}
+
+.landing-page-recently-evaluated__title {
+  @include typography.sizing(24px, 3.5);
+  font-weight: bold;
+  letter-spacing: 0.17px;
+  margin-bottom: baseline.increments(2.5);
+  text-align: center;
+}
+
+.landing-page-recently-evaluated__articles {
+  @include list.basics();
+  padding-bottom: baseline.increments(5);
+  margin-bottom: 0;
+
+  @media screen and (min-width: common.$landing-page-breakpoint) {
+    @supports (display: flex) {
+      display: flex;
+      justify-content: space-evenly;
+    }
+  }
+}
+
+.landing-page-recently-evaluated__articles li {
+  @include card.list-item;
+
+  @media screen and (min-width: common.$landing-page-breakpoint) {
+    @supports (display: flex) {
+      flex: 1 0;
+      max-width: 384px; // maximum desired card width
+      margin-bottom: 0;
+      margin-right: functions.px-to-rem(24px);
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+.landing-page-recently-evaluated__call_to_action {
+  text-align: center;
+}
+
+.landing-page-card {
+  @include card.basics();
+  display: flex;
+  flex-direction: column;
+
+  @media screen and (min-width: common.$landing-page-breakpoint) {
+    @supports (display: flex) {
+      height: 100%;
+    }
+  }
+}
+
+.landing-page-card__group {
+  display: flex;
+  align-items: center;
+  margin-bottom: baseline.increments(2);
+  order: 1;
+}
+
+.landing-page-card__title {
+  @include card.title();
+  order: 2;
+}
+
+.landing-page-card__link {
+  @include card.link();
+}
+
+.landing-page-card__meta {
+  @include card.meta();
+  order: 3;
+
+  @media screen and (min-width: common.$landing-page-breakpoint) {
+    margin-top: auto;
+  }
+}
+
+.landing-page-card__avatar {
+  @include card.group-avatar();
+  margin-right: functions.px-to-rem(8px);
+}
