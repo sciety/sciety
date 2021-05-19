@@ -1,0 +1,18 @@
+@use '../sass/baseline';
+
+$landing-page-breakpoint: 60.25em;
+
+$section-top-padding: baseline.increments(5);
+
+$_page-gutter--small: 1rem;
+$_page-gutter--large: 3rem;
+
+@mixin container-horizontal-spacing() {
+  padding-left: $_page-gutter--small;
+  padding-right: $_page-gutter--small;
+
+  @media screen and (min-width: $landing-page-breakpoint) {
+    padding-left: $_page-gutter--large;
+    padding-right: $_page-gutter--large;
+  }
+}

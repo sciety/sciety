@@ -1,29 +1,12 @@
 @use '../sass/breakpoints';
 @use '../sass/button';
-@use '../sass/layout';
 @use '../sass/functions';
 @use '../sass/settings';
 @use '../sass/typography';
 @use '../sass/baseline';
 @use '../sass/list';
 @use '../sass/card';
-
-$_landing-page-breakpoint: 60.25em;
-
-$_section-top-padding: baseline.increments(5);
-
-$_page-gutter--small: 1rem;
-$_page-gutter--large: 3rem;
-
-@mixin container-horizontal-spacing() {
-  padding-left: $_page-gutter--small;
-  padding-right: $_page-gutter--small;
-
-  @media screen and (min-width: $_landing-page-breakpoint) {
-    padding-left: $_page-gutter--large;
-    padding-right: $_page-gutter--large;
-  }
-}
+@use 'common';
 
 .landing-page {
   margin-top: baseline.increments(2);
@@ -33,7 +16,7 @@ $_page-gutter--large: 3rem;
 $_header-height-in-px: 60px;
 
 .landing-page-header {
-  @include container-horizontal-spacing();
+  @include common.container-horizontal-spacing();
   padding-top: functions.px-to-rem(12px);
   padding-bottom: functions.px-to-rem(12px);
   display: flex;
@@ -82,11 +65,11 @@ $_search-form-gutter: 4px;
 $_search-button-width: functions.px-to-rem(70px);
 
 .landing-page-hero {
-  @include container-horizontal-spacing();
+  @include common.container-horizontal-spacing();
   display: flex;
   justify-content: center;
 
-  @media screen and (min-width: $_landing-page-breakpoint) {
+  @media screen and (min-width: common.$landing-page-breakpoint) {
     margin-top: baseline.increments(25); // Breathing space above image
   }
 }
@@ -123,7 +106,7 @@ $_search-button-width: functions.px-to-rem(70px);
 }
 
 .landing-page-hero__content {
-  @media screen and (min-width: $_landing-page-breakpoint) {
+  @media screen and (min-width: common.$landing-page-breakpoint) {
     margin-top: baseline.increments(7.5); // Offset content from top of image
     padding-right: 2rem;
   }
@@ -144,7 +127,7 @@ $_search-button-width: functions.px-to-rem(70px);
 .landing-page-hero__image {
   display: none;
 
-  @media screen and (min-width: $_landing-page-breakpoint) {
+  @media screen and (min-width: common.$landing-page-breakpoint) {
     @supports(display: flex) {
       display: block;
     }
@@ -154,11 +137,11 @@ $_search-button-width: functions.px-to-rem(70px);
 
 .landing-page-recently-evaluated {
   background-color: settings.$colour-component-background;
-  padding-top: $_section-top-padding;
+  padding-top: common.$section-top-padding;
   padding-bottom: baseline.increments(3);
 
   @include breakpoints.not-narrow {
-    @include container-horizontal-spacing();
+    @include common.container-horizontal-spacing();
   }
 
   @media screen and (min-width: 30.25em) {
@@ -184,7 +167,7 @@ $_search-button-width: functions.px-to-rem(70px);
   padding-bottom: baseline.increments(5);
   margin-bottom: 0;
 
-  @media screen and (min-width: $_landing-page-breakpoint) {
+  @media screen and (min-width: common.$landing-page-breakpoint) {
     @supports (display: flex) {
       display: flex;
       justify-content: space-evenly;
@@ -195,7 +178,7 @@ $_search-button-width: functions.px-to-rem(70px);
 .landing-page-recently-evaluated__articles li {
   @include card.list-item;
 
-  @media screen and (min-width: $_landing-page-breakpoint) {
+  @media screen and (min-width: common.$landing-page-breakpoint) {
     @supports (display: flex) {
       flex: 1 0;
       max-width: 384px; // maximum desired card width
@@ -218,7 +201,7 @@ $_search-button-width: functions.px-to-rem(70px);
   display: flex;
   flex-direction: column;
 
-  @media screen and (min-width: $_landing-page-breakpoint) {
+  @media screen and (min-width: common.$landing-page-breakpoint) {
     @supports (display: flex) {
       height: 100%;
     }
@@ -245,7 +228,7 @@ $_search-button-width: functions.px-to-rem(70px);
   @include card.meta();
   order: 3;
 
-  @media screen and (min-width: $_landing-page-breakpoint) {
+  @media screen and (min-width: common.$landing-page-breakpoint) {
     margin-top: auto;
   }
 }
@@ -256,14 +239,14 @@ $_search-button-width: functions.px-to-rem(70px);
 }
 
 .landing-page-personas {
-  @include container-horizontal-spacing();
+  @include common.container-horizontal-spacing();
   margin-bottom: baseline.increments(6);
   text-align: center;
-  padding-top: $_section-top-padding;
+  padding-top: common.$section-top-padding;
 }
 
 .landing-page-personas__content {
-  @media screen and (min-width: $_landing-page-breakpoint) {
+  @media screen and (min-width: common.$landing-page-breakpoint) {
     @supports (display: flex) {
       display: flex;
       justify-content: center;
@@ -275,7 +258,7 @@ $_search-button-width: functions.px-to-rem(70px);
 .landing-page-personas__persona {
   margin-bottom: baseline.increments(6);
 
-  @media screen and (min-width: $_landing-page-breakpoint) {
+  @media screen and (min-width: common.$landing-page-breakpoint) {
     margin-bottom: 0;
 
     &:first-child {
@@ -317,8 +300,8 @@ $_search-button-width: functions.px-to-rem(70px);
 }
 
 .landing-page-calls-to-action {
-  @include container-horizontal-spacing();
-  padding-top: $_section-top-padding;
+  @include common.container-horizontal-spacing();
+  padding-top: common.$section-top-padding;
   padding-bottom: baseline.increments(3);
   background-color: settings.$colour-component-background;
 
