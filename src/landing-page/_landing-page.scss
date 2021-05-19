@@ -25,20 +25,6 @@ $_page-gutter--large: 3rem;
   }
 }
 
-@mixin landing-page-button() {
-  @include button.button-link-new();
-  display: inline-block;
-  width: functions.px-to-rem(192px);
-  text-align: center;
-  padding-top: baseline.increments(1.625);
-  padding-bottom: baseline.increments(1.625);
-  margin: 0 0.75rem baseline.increments(3);
-
-  @media screen and (min-width: 30.25em) {
-    margin-bottom: 0;
-  }
-}
-
 .landing-page {
   margin-top: baseline.increments(2);
   flex-grow: 1;
@@ -316,6 +302,20 @@ $_search-button-width: functions.px-to-rem(70px);
   margin-bottom: baseline.increments(2.5);
 }
 
+@mixin call-to-action-button() {
+  @include button.button-link-new();
+  display: inline-block;
+  width: functions.px-to-rem(192px);
+  text-align: center;
+  padding-top: baseline.increments(1.625);
+  padding-bottom: baseline.increments(1.625);
+  margin: 0 0.75rem baseline.increments(3);
+
+  @media screen and (min-width: 30.25em) {
+    margin-bottom: 0;
+  }
+}
+
 .landing-page-calls-to-action {
   @include container-horizontal-spacing();
   padding-top: $_section-top-padding;
@@ -354,7 +354,7 @@ $_search-button-width: functions.px-to-rem(70px);
 }
 
 .landing-page-calls-to-action__login_button {
-  @include landing-page-button();
+  @include call-to-action-button();
 }
 
 .landing-page-calls-to-action__byline {
@@ -362,7 +362,7 @@ $_search-button-width: functions.px-to-rem(70px);
 }
 
 .landing-page__secondary_button {
-  @include landing-page-button();
+  @include call-to-action-button();
 
   &:link,
   &:visited {
