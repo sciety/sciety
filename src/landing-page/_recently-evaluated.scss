@@ -1,13 +1,13 @@
-@use '../../sass/settings';
-@use '../../sass/functions';
+@use '../sass/settings';
+@use '../sass/functions';
 
-@use '../../sass/baseline';
-@use '../../sass/typography';
-@use '../../sass/breakpoints';
-@use '../../sass/list';
-@use '../../sass/card';
+@use '../sass/baseline';
+@use '../sass/typography';
+@use '../sass/breakpoints';
+@use '../sass/list';
+@use '../sass/card';
 
-@use '../common';
+@use 'common';
 
 .landing-page-recently-evaluated {
   background-color: settings.$colour-component-background;

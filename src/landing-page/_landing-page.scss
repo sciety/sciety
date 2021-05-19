@@ -7,10 +7,10 @@
 @use '../sass/list';
 @use '../sass/card';
 @use 'common';
-@use 'hero/hero';
-@use 'recently-evaluated/recently-evaluated';
-@use 'personas/personas';
-@use 'calls-to-action/calls-to-action';
+@use 'hero';
+@use 'recently-evaluated';
+@use 'personas';
+@use 'calls-to-action';
 
 .landing-page {
   margin-top: baseline.increments(2);

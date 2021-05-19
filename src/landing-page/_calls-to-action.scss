@@ -1,8 +1,8 @@
-@use '../../sass/settings';
-@use '../../sass/functions';
-@use '../../sass/baseline';
-@use '../../sass/typography';
-@use '../common';
+@use '../sass/settings';
+@use '../sass/functions';
+@use '../sass/baseline';
+@use '../sass/typography';
+@use 'common';
 
 .landing-page-calls-to-action {
   @include common.container-horizontal-spacing();

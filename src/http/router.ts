@@ -28,7 +28,7 @@ import { finishUnfollowCommand, saveUnfollowCommand, unfollowHandler } from '../
 import { groupPage } from '../group-page';
 import { groupsPage } from '../groups-page';
 import { Adapters } from '../infrastructure/adapters';
-import { landingPage } from '../landing-page';
+import { landingPage } from '../landing-page/landing-page';
 import { landingPageLayout } from '../landing-page/landing-page-layout';
 import { legalPage } from '../legal-page';
 import { loggedInHomePage } from '../logged-in-home-page';

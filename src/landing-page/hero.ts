@@ -1,4 +1,4 @@
-import { toHtmlFragment } from '../../types/html-fragment';
+import { toHtmlFragment } from '../types/html-fragment';
 
 export const hero = toHtmlFragment(`
   <section class="landing-page-hero">

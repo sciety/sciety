@@ -1,5 +1,5 @@
-import { templateDate } from '../../shared-components/date';
-import { toHtmlFragment } from '../../types/html-fragment';
+import { templateDate } from '../shared-components/date';
+import { toHtmlFragment } from '../types/html-fragment';
 
 type Card = {
   articleId: string,
