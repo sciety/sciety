@@ -23,13 +23,10 @@
 
 .landing-page-calls-to-action * {
   color: settings.$colour-text-primary;
-  font-family: settings.$font-family;
 }
 
 .landing-page-calls-to-action__title {
-  @include typography.sizing(24px, 3.5);
-  font-weight: bold;
-  letter-spacing: 0.17px;
+  @include typography.section();
 }
 
 .landing-page-call-to-action__text {

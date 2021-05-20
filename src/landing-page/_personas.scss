@@ -10,6 +10,11 @@
   padding-top: common.$section-top-padding;
 }
 
+.landing-page-personas__title {
+  @include typography.section();
+  margin-bottom: baseline.increments(2.5);
+}
+
 .landing-page-personas__content {
   @media screen and (min-width: common.$landing-page-breakpoint) {
     @supports (display: flex) {
@@ -44,12 +49,4 @@
 
 .landing-page-personas * {
   color: settings.$colour-text-primary;
-  font-family: settings.$font-family;
-}
-
-.landing-page-personas__title {
-  @include typography.sizing(24px, 3.5);
-  font-weight: bold;
-  letter-spacing: 0.17px;
-  margin-bottom: baseline.increments(2.5);
 }

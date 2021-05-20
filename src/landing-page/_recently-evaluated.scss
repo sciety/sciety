@@ -29,9 +29,7 @@
 }
 
 .landing-page-recently-evaluated__title {
-  @include typography.sizing(24px, 3.5);
-  font-weight: bold;
-  letter-spacing: 0.17px;
+  @include typography.section();
   margin-bottom: baseline.increments(2.5);
   text-align: center;
 }
