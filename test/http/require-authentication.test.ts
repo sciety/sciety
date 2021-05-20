@@ -1,5 +1,5 @@
 import { ParameterizedContext } from 'koa';
-import { requireAuthentication } from '../../src/http/require-authentication';
+import { annotateWithTwitterSuccess, requireAuthentication } from '../../src/http/require-authentication';
 
 describe('require-authentication', () => {
   describe('createRequireAuthentication', () => {
@@ -20,6 +20,28 @@ describe('require-authentication', () => {
       await requireAuthentication(context, async () => {});
 
       expect(context.session.successRedirect).toBe('/foo#bar');
+    });
+  });
+
+  describe('annotateWithTwitterSuccess', () => {
+    describe('when there is no pre-existing query parameter', () => {
+      it('adds the twitter login parameter', () => {
+        const result = annotateWithTwitterSuccess('/foo');
+
+        expect(result).toStrictEqual('/foo?login_success=twitter');
+      });
+    });
+
+    describe('when there is a pre-existing query parameter', () => {
+      it('adds the twitter login parameter', () => {
+        const result = annotateWithTwitterSuccess('/foo?q=37');
+
+        expect(result).toStrictEqual('/foo?q=37&login_success=twitter');
+      });
+    });
+
+    describe('when there is a pre-existing login_success query parameter', () => {
+      it.todo('adds the twitter login parameter only once');
     });
   });
 });

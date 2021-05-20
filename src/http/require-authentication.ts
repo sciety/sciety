@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import { Middleware, ParameterizedContext } from 'koa';
 import { User } from '../types/user';
 
@@ -24,11 +25,16 @@ export const requireAuthentication: Middleware<State> = async (context, next) =>
   await next();
 };
 
+// ts-unused-exports:disable-next-line
+export const annotateWithTwitterSuccess = (url: string): string => (
+  url.indexOf('?') > -1 ? `${url}&login_success=twitter` : `${url}?login_success=twitter`
+);
+
 export const redirectAfterAuthenticating = (): Middleware => (
   async (context, next) => {
     const successRedirect = context.session.successRedirect || '/';
+    context.redirect(annotateWithTwitterSuccess(successRedirect));
     delete context.session.successRedirect;
-    context.redirect(successRedirect);
 
     await next();
   }
