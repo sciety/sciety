@@ -1,7 +1,5 @@
 import * as O from 'fp-ts/Option';
-import {
-  cookieConsent, googleTagManagerNoScript,
-} from './analytics';
+import { googleTagManagerNoScript } from './analytics';
 import { head } from './head';
 import { siteMenuFooter, siteMenuItems } from './site-menu';
 import { utilityBar } from './utility-bar';
@@ -40,8 +38,6 @@ export const applyStandardPageLayout = (user: O.Option<User>) => (page: Page): s
   </div>
 
   <script src="/static/behaviour.js"></script>
-
-  ${cookieConsent()}
 </body>
 </html>
 `;
