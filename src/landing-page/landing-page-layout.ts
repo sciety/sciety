@@ -1,13 +1,13 @@
 import * as O from 'fp-ts/Option';
 import {
-  cookieConsent, googleTagManager, googleTagManagerNoScript,
+  cookieConsent, googleTagManagerNoScript,
 } from '../shared-components/analytics';
 import { head } from '../shared-components/head';
 import { Page } from '../types/page';
 
 export const landingPageLayout = (page: Page): string => `<!doctype html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
-  ${head(page.title, page.openGraph)}
+  ${head(O.none, page.title, page.openGraph)}
 <body>
   ${googleTagManagerNoScript()}
   <div>
@@ -37,7 +37,6 @@ export const landingPageLayout = (page: Page): string => `<!doctype html>
 
   <script src="/static/behaviour.js"></script>
 
-  ${googleTagManager(O.none)}
   ${cookieConsent()}
 </body>
 </html>

@@ -1,8 +1,15 @@
 import { htmlEscape } from 'escape-goat';
-import { fathom } from './analytics';
+import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
+import { fathom, googleTagManager } from './analytics';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { User } from '../types/user';
 
-export const head = (title: string, openGraph?: { title: string, description: string }): HtmlFragment => toHtmlFragment(`
+export const head = (
+  user: O.Option<User>,
+  title: string,
+  openGraph?: { title: string, description: string },
+): HtmlFragment => toHtmlFragment(`
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,5 +36,7 @@ export const head = (title: string, openGraph?: { title: string, description: st
   <meta name="msapplication-config" content="/static/images/favicons/generated/browserconfig.xml">
   <meta name="theme-color" content="#ffffff">
   ${fathom()}
+
+  ${googleTagManager(pipe(user, O.map((u) => u.id)))}
 </head>
 `);

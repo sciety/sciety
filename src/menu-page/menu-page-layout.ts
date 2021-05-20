@@ -1,8 +1,8 @@
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
-import { constant, pipe } from 'fp-ts/function';
+import { constant } from 'fp-ts/function';
 import {
-  cookieConsent, googleTagManager, googleTagManagerNoScript,
+  cookieConsent, googleTagManagerNoScript,
 } from '../shared-components/analytics';
 import { head } from '../shared-components/head';
 import { siteMenuFooter, siteMenuItems } from '../shared-components/site-menu';
@@ -12,7 +12,7 @@ import { User } from '../types/user';
 // TODO: return a more specific type e.g. HtmlDocument
 export const menuPageLayout = (user: O.Option<User>, referer: O.Option<string>): string => `<!doctype html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
-  ${head('Menu')}
+  ${head(user, 'Menu')}
 <body>
   ${googleTagManagerNoScript()}
 
@@ -36,7 +36,6 @@ export const menuPageLayout = (user: O.Option<User>, referer: O.Option<string>):
 
   <script src="/static/behaviour.js"></script>
 
-  ${googleTagManager(pipe(user, O.map((u) => u.id)))}
   ${cookieConsent()}
 
 </body>
