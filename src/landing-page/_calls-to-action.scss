@@ -33,6 +33,7 @@
 }
 
 .landing-page-call-to-action__text {
+  @include typography.body-1();
   margin-bottom: baseline.increments(5);
 }
 
@@ -50,5 +51,6 @@
 }
 
 .landing-page-calls-to-action__byline {
+  @include typography.body-1();
   margin-bottom: 0;
 }

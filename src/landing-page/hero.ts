@@ -3,15 +3,15 @@ import { toHtmlFragment } from '../types/html-fragment';
 export const hero = toHtmlFragment(`
   <section class="landing-page-hero">
     <div class="landing-page-hero__content">
-      <h1 class="landing-page-hero__content__title">
+      <h1 class="landing-page-hero__content_title">
         The home of public preprint evaluation
       </h1>
-      <p class="landing-page-hero__content__byline">
+      <p class="landing-page-hero__content_byline">
         Open evaluation and curation together in one place.
         <br>
         Let Sciety help you navigate the preprint landscape.
       </p>
-      <p class="landing-page-hero__content__byline">Follow the journey through <a href="/blog">our blog</a>.</p>
+      <p class="landing-page-hero__content_byline">Follow the journey through <a href="/blog">our blog</a>.</p>
       <form class="landing-page-hero__search_form" action="/search" method="get">
         <label for="searchText" class="visually-hidden">Search term</label>
         <input id="searchText" name="query" placeholder="Search for a topic of interest" class="landing-page-hero__search_text">

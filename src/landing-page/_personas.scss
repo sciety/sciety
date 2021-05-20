@@ -20,7 +20,7 @@
   }
 }
 
-.landing-page-personas__persona {
+.landing-page-persona {
   margin-bottom: baseline.increments(6);
 
   @media screen and (min-width: common.$landing-page-breakpoint) {
@@ -32,10 +32,14 @@
   }
 }
 
-.landing-page-personas__image {
+.landing-page-persona__image {
   width: 100%;
   max-width: 468px;
   margin-bottom: baseline.increments(1);
+}
+
+.landing-page-persona__text {
+  @include typography.body-1();
 }
 
 .landing-page-personas * {

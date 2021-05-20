@@ -55,3 +55,9 @@
   line-height: 1.2;
   font-weight: bold;
 }
+
+@mixin body-1 () {
+  font-family: settings.$font-family;
+  font-size: functions.px-to-rem(16px);
+  line-height: 1.4;
+}

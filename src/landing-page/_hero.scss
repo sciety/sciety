@@ -59,14 +59,17 @@ $_search-button-width: functions.px-to-rem(70px);
   }
 }
 
-.landing-page-hero__content__title,
-.landing-page-hero__content__byline {
+.landing-page-hero__content_title,
+.landing-page-hero__content_byline {
   color: settings.$colour-text-primary;
-  font-family: settings.$font-family;
 }
 
-.landing-page-hero__content__title {
+.landing-page-hero__content_title {
   @include typography.headline();
+}
+
+.landing-page-hero__content_byline {
+  @include typography.body-1();
 }
 
 .landing-page-hero__image {
