@@ -1,6 +1,6 @@
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
-import { constant } from 'fp-ts/function';
+import { constant, pipe } from 'fp-ts/function';
 import {
   cookieConsent, googleTagManager, googleTagManagerNoScript,
 } from '../shared-components/analytics';
@@ -36,7 +36,7 @@ export const menuPageLayout = (user: O.Option<User>, referer: O.Option<string>):
 
   <script src="/static/behaviour.js"></script>
 
-  ${googleTagManager()}
+  ${googleTagManager(pipe(user, O.map((u) => u.id)))}
   ${cookieConsent()}
 
 </body>

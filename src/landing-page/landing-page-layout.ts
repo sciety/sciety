@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import {
   cookieConsent, googleTagManager, googleTagManagerNoScript,
 } from '../shared-components/analytics';
@@ -36,7 +37,7 @@ export const landingPageLayout = (page: Page): string => `<!doctype html>
 
   <script src="/static/behaviour.js"></script>
 
-  ${googleTagManager()}
+  ${googleTagManager(O.none)}
   ${cookieConsent()}
 </body>
 </html>

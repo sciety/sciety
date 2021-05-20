@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
 import {
   cookieConsent, googleTagManager, googleTagManagerNoScript,
 } from './analytics';
@@ -41,7 +42,7 @@ export const applyStandardPageLayout = (user: O.Option<User>) => (page: Page): s
 
   <script src="/static/behaviour.js"></script>
 
-  ${googleTagManager()}
+  ${googleTagManager(pipe(user, O.map((u) => u.id)))}
   ${cookieConsent()}
 </body>
 </html>

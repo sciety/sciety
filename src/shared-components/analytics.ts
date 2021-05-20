@@ -1,8 +1,21 @@
 import * as O from 'fp-ts/Option';
 import { constant, pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { UserId } from '../types/user-id';
 
-const renderTagManagerScript = (tagManagerId: string) => `
+const renderPageLoadedByLoggedInUserEvent = O.fold(
+  constant(''),
+  (userId: UserId) => `
+    gtag({
+      'event' : 'page_loaded_by_logged_in_user',
+      'user' : {
+        'id' : '${userId}',
+      }
+    });
+  `,
+);
+
+const renderTagManagerScript = (userId: O.Option<UserId>) => (tagManagerId: string) => `
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
@@ -23,6 +36,9 @@ const renderTagManagerScript = (tagManagerId: string) => `
     gtag('js', new Date());
 
     gtag('config', '${tagManagerId}');
+
+    ${renderPageLoadedByLoggedInUserEvent(userId)}
+
   </script>
 `;
 
@@ -83,12 +99,12 @@ export const cookieConsent = (): HtmlFragment => pipe(
   toHtmlFragment,
 );
 
-export const googleTagManager = (): HtmlFragment => pipe(
+export const googleTagManager = (userId: O.Option<UserId>): HtmlFragment => pipe(
   process.env.GOOGLE_TAG_MANAGER_ID,
   O.fromNullable,
   O.fold(
     constant(''),
-    renderTagManagerScript,
+    renderTagManagerScript(userId),
   ),
   toHtmlFragment,
 );
