@@ -85,6 +85,7 @@
 }
 
 .landing-page-card__group {
+  @include typography.body-1();
   display: flex;
   align-items: center;
   margin-bottom: baseline.increments(2);

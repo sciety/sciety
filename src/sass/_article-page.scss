@@ -16,11 +16,6 @@ $_vertical-space-above-title--wide: baseline.increments(5);
   margin-right: auto;
   font-family: settings.$font-family;
 
-  p {
-    @include typography.sizing(14px, 2.5);
-    font-family: settings.$font-family;
-  }
-
   .article-tabs__tab {
     font-family: settings.$font-family;
   }

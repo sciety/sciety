@@ -25,10 +25,9 @@ main {
 }
 
 p {
-  @include typography.sizing($font-size: settings.$base-font-measure, $line-height-in-increments: 3);
+  @include typography.body-2();
   margin-top: 0;
   margin-bottom: #{baseline.increments(3)};
-  font-weight: 400;
 }
 
 h1 {
@@ -87,6 +86,10 @@ blockquote {
 
 ul {
   margin-top: 0;
+}
+
+li {
+  @include typography.body-2();
 }
 
 a:link {
@@ -171,8 +174,9 @@ th {
 }
 
 address {
-  margin-bottom: #{baseline.increments(2)};
+  @include typography.body-2();
   font-style: normal;
+  margin-bottom: #{baseline.increments(2)};
 }
 
 *,

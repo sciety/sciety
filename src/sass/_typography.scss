@@ -68,3 +68,9 @@
   font-size: functions.px-to-rem(16px);
   line-height: 1.4;
 }
+
+@mixin body-2 () {
+  font-family: settings.$font-family;
+  font-size: functions.px-to-rem(14px);
+  line-height: 1.4;
+}
