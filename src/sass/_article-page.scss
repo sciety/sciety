@@ -16,11 +16,6 @@ $_vertical-space-above-title--wide: baseline.increments(5);
   margin-right: auto;
   font-family: settings.$font-family;
 
-  h1 {
-    @include typography.sizing(20px, 3);
-    font-family: settings.$font-family;
-  }
-
   p {
     @include typography.sizing(14px, 2.5);
     font-family: settings.$font-family;
@@ -42,13 +37,13 @@ $_vertical-space-above-title--wide: baseline.increments(5);
   margin-right: 1rem;
   padding-top: $_vertical-space-above-title--narrow;
   color: settings.$colour-text-primary;
+
+  .page-header__title {
+    @include typography.title-1();
+  }
 }
 
 @include breakpoints.not-narrow {
-  .sciety-grid.sciety-grid--article h1 {
-    @include typography.sizing(26px, 3.75);
-  }
-
   .sciety-grid--article > .page-header--article,
   .sciety-grid--article > .article-tabs,
   .sciety-grid--article > .main-content {

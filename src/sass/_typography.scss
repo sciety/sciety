@@ -1,6 +1,7 @@
 @use 'baseline';
 @use 'functions';
 @use 'settings';
+@use 'breakpoints';
 
 @mixin sizing ($font-size, $line-height-in-increments: 3) {
   $font-size-in-rem: functions.px-to-rem($font-size);
@@ -16,5 +17,16 @@
   &:hover,
   &:active {
     color: settings.$colour-primary;
+  }
+}
+
+@mixin title-1 () {
+  font-family: settings.$font-family;
+  font-size: functions.px-to-rem(20px);
+  line-height: 1.2;
+  font-weight: bold;
+
+  @include breakpoints.not-narrow() {
+    font-size: functions.px-to-rem(26px);
   }
 }

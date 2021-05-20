@@ -17,7 +17,7 @@ export const renderActivityPage = (components: {
   <div class="page-content__background">
     <article class="sciety-grid sciety-grid--article">
       <header class="page-header page-header--article">
-        <h1>${components.articleDetails.title}</h1>
+        <h1 class="page-header__title" >${components.articleDetails.title}</h1>
         <div class="article-actions">
           ${components.tweetThis}
           ${components.saveArticle}
