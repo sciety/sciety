@@ -25,30 +25,29 @@ type Params = {
 
 type UserPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
-export const userPage = (ports: Ports): UserPage => (params) => {
-  const viewingUserId = pipe(
-    params.user,
-    O.map((user) => user.id),
-  );
-  const userDetails = ports.getUserDetails(params.id);
-
-  return pipe(
-    {
-      header: pipe(
-        userDetails,
-        TE.map(renderHeader),
-      ),
-      followList: followList(ports)(params.id, viewingUserId),
-      savedArticles: savedArticles(ports)(params.id),
-      userDisplayName: pipe(
-        userDetails,
-        TE.map(flow(
-          ({ displayName }) => displayName,
-          toHtmlFragment,
-        )),
-      ),
-    },
-    sequenceS(TE.ApplyPar),
-    TE.bimap(renderErrorPage, renderPage),
-  );
-};
+export const userPage = (ports: Ports): UserPage => (params) => pipe(
+  {
+    viewingUserId: pipe(
+      params.user,
+      O.map((user) => user.id),
+    ),
+    userDetails: ports.getUserDetails(params.id),
+  },
+  (deps) => ({
+    header: pipe(
+      deps.userDetails,
+      TE.map(renderHeader),
+    ),
+    followList: followList(ports)(params.id, deps.viewingUserId),
+    savedArticles: savedArticles(ports)(params.id),
+    userDisplayName: pipe(
+      deps.userDetails,
+      TE.map(flow(
+        ({ displayName }) => displayName,
+        toHtmlFragment,
+      )),
+    ),
+  }),
+  sequenceS(TE.ApplyPar),
+  TE.bimap(renderErrorPage, renderPage),
+);
