@@ -6,7 +6,7 @@ const key = process.env.PRELIGHTS_FEED_KEY ?? '';
 
 void (async (): Promise<void> => {
   pipe(
-    await axios.get<string>(`https://stage-pph.velocityred.com/feed/sciety/?key=${key}`, {
+    await axios.get<string>(`https://prelights.biologists.com/feed/sciety/?key=${key}`, {
       headers: {
         'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)',
       },
