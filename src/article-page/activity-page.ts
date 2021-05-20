@@ -20,7 +20,7 @@ import {
 import { renderArticleVersionFeedItem } from './render-article-version-feed-item';
 import { renderFeed } from './render-feed';
 import { renderReviewFeedItem } from './render-review-feed-item';
-import { renderSaveArticle } from './render-save-article';
+import { oldRenderSaveArticle } from './render-save-article';
 import { renderTweetThis } from './render-tweet-this';
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
@@ -124,7 +124,7 @@ export const articleActivityPage: ActivityPage = flow(
     R.local((ports: Ports) => ports.getAllEvents),
   )),
   RTE.bindW('saveArticle', ({ doi, userId, hasUserSavedArticle }) => pipe(
-    renderSaveArticle(doi, userId, hasUserSavedArticle),
+    oldRenderSaveArticle(doi, userId, hasUserSavedArticle),
     RTE.right,
   )),
   RTE.bindW('tweetThis', ({ doi }) => pipe(

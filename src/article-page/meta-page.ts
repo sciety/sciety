@@ -1,7 +1,9 @@
+import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { constant, flow, pipe } from 'fp-ts/function';
+import * as TO from 'fp-ts/TaskOption';
+import { pipe } from 'fp-ts/function';
 import striptags from 'striptags';
 import { projectHasUserSavedArticle } from './project-has-user-saved-article';
 import { renderMetaPage } from './render-meta-page';
@@ -58,23 +60,31 @@ const toErrorPage = (error: 'not-found' | 'unavailable') => {
   }
 };
 
-export const articleMetaPage = (ports: Ports): MetaPage => flow(
-  TE.right,
-  TE.bind('userId', ({ user }) => pipe(user, O.map((u) => u.id), TE.right)),
-  TE.bind('articleDetails', ({ doi }) => pipe(doi, ports.fetchArticle)),
-  TE.bindW('hasUserSavedArticle', ({ doi, userId }) => pipe(
-    userId,
-    O.fold(constant(T.of(false)), (u) => projectHasUserSavedArticle(doi, u)(ports.getAllEvents)),
-    TE.rightTask,
-  )),
-  TE.bindW('saveArticle', ({ doi, userId, hasUserSavedArticle }) => pipe(
-    renderSaveArticle(doi, userId, hasUserSavedArticle),
-    TE.right,
-  )),
-  TE.bindW('tweetThis', ({ doi }) => pipe(
-    doi,
-    renderTweetThis,
-    TE.right,
+export const articleMetaPage = (ports: Ports): MetaPage => (params) => pipe(
+  {
+    doi: TE.right(params.doi),
+    articleDetails: ports.fetchArticle(params.doi),
+    userArticleSaveState: pipe(
+      params.user,
+      TO.fromOption,
+      TO.chainTaskK((user) => pipe(
+        {
+          userId: T.of(user.id),
+          hasSavedArticle: projectHasUserSavedArticle(params.doi, user.id)(ports.getAllEvents),
+        },
+        sequenceS(T.ApplyPar),
+      )),
+      TE.rightTask,
+    ),
+  },
+  sequenceS(TE.ApplyPar),
+  TE.map((deps) => pipe(
+    {
+      doi: deps.doi,
+      articleDetails: deps.articleDetails,
+      saveArticle: renderSaveArticle(deps.doi)(deps.userArticleSaveState),
+      tweetThis: renderTweetThis(deps.doi),
+    },
   )),
   TE.bimap(
     toErrorPage,
