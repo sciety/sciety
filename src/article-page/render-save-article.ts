@@ -18,7 +18,7 @@ export const oldRenderSaveArticle: OldRenderSaveArticle = (doi, userId, hasUserS
   ),
 );
 
-type ArticleSaveState = {
+export type ArticleSaveState = {
   userId: UserId,
   hasSavedArticle: boolean,
 };

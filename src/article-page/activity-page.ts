@@ -118,7 +118,7 @@ export const articleActivityPage: ActivityPage = flow(
     userId,
     O.fold(
       constant(RT.of(false)),
-      (u) => projectHasUserSavedArticle(doi, u),
+      (u) => pipe(projectHasUserSavedArticle(doi, u), RT.map((uss) => uss.hasSavedArticle)),
     ),
     RTE.rightReaderTask,
     R.local((ports: Ports) => ports.getAllEvents),

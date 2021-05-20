@@ -66,14 +66,9 @@ export const articleMetaPage = (ports: Ports): MetaPage => (params) => pipe(
     articleDetails: ports.fetchArticle(params.doi),
     userArticleSaveState: pipe(
       params.user,
+      O.map((u) => u.id),
       TO.fromOption,
-      TO.chainTaskK((user) => pipe(
-        {
-          userId: T.of(user.id),
-          hasSavedArticle: projectHasUserSavedArticle(params.doi, user.id)(ports.getAllEvents),
-        },
-        sequenceS(T.ApplyPar),
-      )),
+      TO.chainTaskK((userId) => projectHasUserSavedArticle(params.doi, userId)(ports.getAllEvents)),
       TE.rightTask,
     ),
   },

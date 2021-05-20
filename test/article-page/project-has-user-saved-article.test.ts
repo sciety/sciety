@@ -16,7 +16,7 @@ describe('project-has-user-saved-article', () => {
         toUserId('this-user'),
       )(getEvents)();
 
-      expect(result).toBe(true);
+      expect(result).toStrictEqual(expect.objectContaining({ hasSavedArticle: true }));
     });
   });
 
@@ -28,7 +28,7 @@ describe('project-has-user-saved-article', () => {
         toUserId('this-user'),
       )(getEvents)();
 
-      expect(result).toBe(false);
+      expect(result).toStrictEqual(expect.objectContaining({ hasSavedArticle: false }));
     });
   });
 
@@ -42,7 +42,7 @@ describe('project-has-user-saved-article', () => {
         toUserId('this-user'),
       )(getEvents)();
 
-      expect(result).toBe(false);
+      expect(result).toStrictEqual(expect.objectContaining({ hasSavedArticle: false }));
     });
   });
 
@@ -56,7 +56,7 @@ describe('project-has-user-saved-article', () => {
         toUserId('this-user'),
       )(getEvents)();
 
-      expect(result).toBe(false);
+      expect(result).toStrictEqual(expect.objectContaining({ hasSavedArticle: false }));
     });
   });
 });
