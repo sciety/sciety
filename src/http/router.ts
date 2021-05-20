@@ -214,7 +214,7 @@ export const createRouter = (adapters: Adapters): Router => {
       E.chainW(ensureBiorxivDoiParam),
       E.mapLeft(toNotFound),
       TE.fromEither,
-      TE.chain((args) => articleMetaPage(args)(adapters)),
+      TE.chain((args) => articleMetaPage(adapters)(args)),
     )),
   );
 

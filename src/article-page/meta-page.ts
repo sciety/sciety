@@ -1,5 +1,4 @@
 import * as O from 'fp-ts/Option';
-import * as RTE from 'fp-ts/ReaderTaskEither';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
@@ -17,7 +16,7 @@ import { RenderPageError } from '../types/render-page-error';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { User } from '../types/user';
 
-type MetaPage = (params: Params) => RTE.ReaderTaskEither<Ports, RenderPageError, Page>;
+type MetaPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
 type Params = {
   doi: Doi,
@@ -59,25 +58,25 @@ const toErrorPage = (error: 'not-found' | 'unavailable') => {
   }
 };
 
-export const articleMetaPage: MetaPage = flow(
-  RTE.right,
-  RTE.bind('userId', ({ user }) => pipe(user, O.map((u) => u.id), RTE.right)),
-  RTE.bind('articleDetails', ({ doi }) => (ports: Ports) => pipe(doi, ports.fetchArticle)),
-  RTE.bindW('hasUserSavedArticle', ({ doi, userId }) => (ports: Ports) => pipe(
+export const articleMetaPage = (ports: Ports): MetaPage => flow(
+  TE.right,
+  TE.bind('userId', ({ user }) => pipe(user, O.map((u) => u.id), TE.right)),
+  TE.bind('articleDetails', ({ doi }) => pipe(doi, ports.fetchArticle)),
+  TE.bindW('hasUserSavedArticle', ({ doi, userId }) => pipe(
     userId,
     O.fold(constant(T.of(false)), (u) => projectHasUserSavedArticle(doi, u)(ports.getAllEvents)),
     TE.rightTask,
   )),
-  RTE.bindW('saveArticle', ({ doi, userId, hasUserSavedArticle }) => pipe(
+  TE.bindW('saveArticle', ({ doi, userId, hasUserSavedArticle }) => pipe(
     renderSaveArticle(doi, userId, hasUserSavedArticle),
-    RTE.right,
+    TE.right,
   )),
-  RTE.bindW('tweetThis', ({ doi }) => pipe(
+  TE.bindW('tweetThis', ({ doi }) => pipe(
     doi,
     renderTweetThis,
-    RTE.right,
+    TE.right,
   )),
-  RTE.bimap(
+  TE.bimap(
     toErrorPage,
     (components) => ({
       content: renderMetaPage(components),
