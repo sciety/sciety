@@ -57,9 +57,7 @@ $_menu-page-upper-inline-spacing: 26px;
 }
 
 .navigation-menu__title {
-  @include typography.sizing(20px, 3);
-  font-weight: bold;
-  letter-spacing: 0.14px;
+  @include typography.page-label();
   padding-left: functions.px-to-rem($_menu-page-upper-inline-spacing);
   margin-bottom: baseline.increments(2.5);
 }

@@ -24,10 +24,7 @@ $_clear-button-inline-size: 48px;
 }
 
 .page-heading--search {
-  @include typography.sizing(20px, 3);
-  font-family: settings.$font-family;
-  font-weight: bold;
-  letter-spacing: 0.14px;
+  @include typography.page-label();
   padding-top: $_vertical-space-above-title--narrow;
   margin-bottom: baseline.increments(1.5);
 
