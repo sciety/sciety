@@ -1,5 +1,10 @@
 @use 'baseline';
+@use 'typography';
 
 .page-header {
   margin-bottom: #{baseline.increments(6)};
+}
+
+.page-header__title {
+  @include typography.title-1();
 }

@@ -37,10 +37,6 @@ $_vertical-space-above-title--wide: baseline.increments(5);
   margin-right: 1rem;
   padding-top: $_vertical-space-above-title--narrow;
   color: settings.$colour-text-primary;
-
-  .page-header__title {
-    @include typography.title-1();
-  }
 }
 
 @include breakpoints.not-narrow {
