@@ -26,11 +26,12 @@ export const requireAuthentication: Middleware<State> = async (context, next) =>
 
 // ts-unused-exports:disable-next-line
 export const annotateWithTwitterSuccess = (url: string): string => {
-  if (url.includes('login_success=twitter')) {
+  const param = 'login_success=twitter';
+  if (url.includes(param)) {
     return url;
   }
-
-  return url.indexOf('?') > -1 ? `${url}&login_success=twitter` : `${url}?login_success=twitter`;
+  const joinChar = url.indexOf('?') > -1 ? '&' : '?';
+  return `${url}${joinChar}${param}`;
 };
 
 export const redirectAfterAuthenticating = (): Middleware => (
