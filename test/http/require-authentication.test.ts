@@ -41,7 +41,11 @@ describe('require-authentication', () => {
     });
 
     describe('when there is a pre-existing login_success query parameter', () => {
-      it.todo('adds the twitter login parameter only once');
+      it('adds the twitter login parameter only once', () => {
+        const result = annotateWithTwitterSuccess('/foo?q=37&login_success=twitter');
+
+        expect(result).toStrictEqual('/foo?q=37&login_success=twitter');
+      });
     });
   });
 });
