@@ -1,5 +1,7 @@
 import * as O from 'fp-ts/Option';
-import { googleTagManagerNoScript } from '../shared-components/analytics';
+import {
+  cookieConsent, googleTagManagerNoScript,
+} from '../shared-components/analytics';
 import { head } from '../shared-components/head';
 import { Page } from '../types/page';
 
@@ -34,6 +36,8 @@ export const landingPageLayout = (page: Page): string => `<!doctype html>
   </div>
 
   <script src="/static/behaviour.js"></script>
+
+  ${cookieConsent()}
 </body>
 </html>
 `;

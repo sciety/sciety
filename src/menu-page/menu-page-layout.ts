@@ -1,7 +1,9 @@
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { constant } from 'fp-ts/function';
-import { googleTagManagerNoScript } from '../shared-components/analytics';
+import {
+  cookieConsent, googleTagManagerNoScript,
+} from '../shared-components/analytics';
 import { head } from '../shared-components/head';
 import { siteMenuFooter, siteMenuItems } from '../shared-components/site-menu';
 import { utilityBar } from '../shared-components/utility-bar';
@@ -33,6 +35,8 @@ export const menuPageLayout = (user: O.Option<User>, referer: O.Option<string>):
 </div>
 
   <script src="/static/behaviour.js"></script>
+
+  ${cookieConsent()}
 
 </body>
 </html>
