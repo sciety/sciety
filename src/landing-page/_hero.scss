@@ -66,9 +66,7 @@ $_search-button-width: functions.px-to-rem(70px);
 }
 
 .landing-page-hero__content__title {
-  @include typography.sizing(36px, 5.25);
-  font-weight: bold;
-  letter-spacing: 0.26px;
+  @include typography.headline();
 }
 
 .landing-page-hero__image {

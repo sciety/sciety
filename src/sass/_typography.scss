@@ -20,6 +20,17 @@
   }
 }
 
+@mixin headline() {
+  font-family: settings.$font-family;
+  font-size: functions.px-to-rem(32px);
+  line-height: 1.2;
+  font-weight: bold;
+
+  @include breakpoints.not-narrow() {
+    font-size: functions.px-to-rem(36px);
+  }
+}
+
 @mixin title-1 () {
   font-family: settings.$font-family;
   font-size: functions.px-to-rem(20px);
