@@ -4,7 +4,6 @@
 
 .group-list {
   @include list.basics();
-  font-family: Lato, sans-serif;
   margin-top: 0;
   margin-bottom: 0;
   display: grid;
@@ -82,7 +81,4 @@
 
 .group__name {
   margin-bottom: baseline.increments(3);
-  font-size: 1rem;
-  font-family: settings.$font-secondary;
-  line-height: 1.5;
 }
