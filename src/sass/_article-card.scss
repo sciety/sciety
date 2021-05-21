@@ -23,7 +23,6 @@
   @include list.basics();
   @include typography.sizing(14px, 2.5);
   margin-bottom: baseline.increments(1);
-  font-family: settings.$font-family;
 }
 
 .article-card__author {

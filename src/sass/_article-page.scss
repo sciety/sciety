@@ -14,11 +14,6 @@ $_vertical-space-above-title--wide: baseline.increments(5);
   grid-auto-flow: unset;
   margin-left: auto;
   margin-right: auto;
-  font-family: settings.$font-family;
-
-  .article-tabs__tab {
-    font-family: settings.$font-family;
-  }
 }
 
 .sciety-grid--article > .page-header--article,
@@ -111,7 +106,6 @@ $_vertical-space-above-title--wide: baseline.increments(5);
   @include typography.sizing($font-size: 14px, $line-height-in-increments: 3);
   display: flex;
   align-items: center;
-  font-family: settings.$font-secondary;
 }
 
 .saved-to-list:link,
