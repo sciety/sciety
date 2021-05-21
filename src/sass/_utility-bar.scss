@@ -25,7 +25,7 @@ $_site-header-inline-end-margin: 8px;
 }
 
 .utility-bar__list_item {
-  @include typography.sizing(14px, 1.75);
+  @include typography.button();
   padding-right: 1.5rem;
   flex-shrink: 0;
   display: flex;

@@ -19,7 +19,7 @@ $_link-min-height: baseline.increments(5);
 }
 
 .site-menu__link {
-  @include typography.sizing($_link-text-font-size, 1.75);
+  @include typography.button();
   display: block;
   @supports (display: flex) {
     display: flex;
