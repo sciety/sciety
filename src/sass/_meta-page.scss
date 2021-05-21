@@ -54,11 +54,10 @@
 .full-article-button,
 .full-article-button:link,
 .full-article-button:visited {
-  @include typography.sizing(14px, 14/8);
+  @include typography.button();
   border-radius: settings.$border-radius;
   cursor: pointer;
   padding: functions.px-to-rem(8px);
-  font-weight: bold;
   display: block;
   text-align: center;
   color: settings.$colour-text-primary;
