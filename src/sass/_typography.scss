@@ -88,3 +88,10 @@
   font-weight: bold;
   line-height: 1.2;
 }
+
+@mixin heading-2 () {
+  font-family: settings.$font-family;
+  font-size: functions.px-to-rem(30px);
+  font-weight: bold;
+  line-height: 1.2;
+}
