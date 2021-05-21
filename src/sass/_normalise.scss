@@ -49,27 +49,21 @@ h3 {
 }
 
 h4 {
-  @include typography.sizing($font-size: 22px, $line-height-in-increments: 3.3);
-  font-family: Lato, sans-serif;
+  @include typography.heading-4();
   margin-top: 0;
   margin-bottom: #{baseline.increments(2)};
-  font-weight: 400;
 }
 
 h5 {
-  @include typography.sizing($font-size: 18px, $line-height-in-increments: 2.7);
-  font-family: Lato, sans-serif;
+  @include typography.heading-5();
   margin-top: 0;
   margin-bottom: #{baseline.increments(2)};
-  font-weight: 400;
 }
 
 h6 {
-  @include typography.sizing(settings.$base-font-measure, $line-height-in-increments: 2.4);
-  font-family: Lato, sans-serif;
+  @include typography.heading-6();
   margin-top: 0;
   margin-bottom: #{baseline.increments(2)};
-  font-weight: 400;
 }
 
 blockquote {

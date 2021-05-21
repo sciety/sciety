@@ -102,3 +102,24 @@
   font-weight: bold;
   line-height: 1.2;
 }
+
+@mixin heading-4 () {
+  font-family: settings.$font-family;
+  font-size: functions.px-to-rem(22px);
+  font-weight: bold;
+  line-height: 1.2;
+}
+
+@mixin heading-5 () {
+  font-family: settings.$font-family;
+  font-size: functions.px-to-rem(18px);
+  font-weight: bold;
+  line-height: 1.2;
+}
+
+@mixin heading-6 () {
+  font-family: settings.$font-family;
+  font-size: functions.px-to-rem(14px);
+  font-weight: bold;
+  line-height: 1.2;
+}
