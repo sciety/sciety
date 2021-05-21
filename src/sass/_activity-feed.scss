@@ -43,7 +43,6 @@
 }
 
 .activity-feed__item_header {
-  @include typography.sizing($font-size: 14px, $line-height-in-increments: 2.5);
   display: flex;
   align-items: center;
   margin-bottom: baseline.increments(2);
@@ -66,14 +65,12 @@
 }
 
 .activity-feed__item__date {
-  font-family: settings.$font-family;
   color: settings.$colour-text-secondary;
   flex-shrink: 0;
 }
 
 .activity-feed__item__title,
 p.activity-feed__item__title {
-  font-family: settings.$font-family;
   padding-right: functions.px-to-rem(8px);
 }
 
@@ -83,9 +80,6 @@ p.activity-feed__item__title {
   cursor: pointer;
   padding: 0;
   border: 0;
-  font-family: inherit;
-  font-size: inherit;
-  line-height: inherit;
   color: settings.$colour-accent;
 }
 
