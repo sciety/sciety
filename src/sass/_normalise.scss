@@ -8,16 +8,13 @@ html {
 }
 
 body {
+  font-family: settings.$font-family;
+  font-size: settings.$base-font-measure;
+  line-height: 1.5;
   margin: 0;
   // TODO: this isn't necessarily the color we want, but we are making explicit
   // what semantic ui sets
   color: rgba(0, 0, 0, 0.87);
-}
-
-body,
-p {
-  @include typography.sizing($font-size: settings.$base-font-measure, $line-height-in-increments: 3);
-  font-family: 'Noto Serif', serif;
 }
 
 main {
