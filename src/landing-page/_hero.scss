@@ -29,7 +29,6 @@ $_search-button-width: functions.px-to-rem(70px);
 }
 
 .landing-page-hero__search_text {
-  @include typography.sizing(14px, 1.75);
   width: 100%;
   height: baseline.increments(6);
   border: settings.$border-width solid settings.$colour-furniture;
