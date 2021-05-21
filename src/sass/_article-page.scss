@@ -10,7 +10,6 @@ $_vertical-space-above-title--narrow: baseline.increments(2);
 $_vertical-space-above-title--wide: baseline.increments(5);
 
 .sciety-grid.sciety-grid--article {
-  @include typography.sizing(14px, 2.5);
   grid-auto-flow: unset;
   margin-left: auto;
   margin-right: auto;
@@ -103,7 +102,7 @@ $_vertical-space-above-title--wide: baseline.increments(5);
 }
 
 .saved-to-list {
-  @include typography.sizing($font-size: 14px, $line-height-in-increments: 3);
+  @include typography.button();
   display: flex;
   align-items: center;
 }
