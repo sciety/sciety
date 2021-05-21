@@ -1,0 +1,5 @@
+@use '../sass/button';
+
+.follow-button {
+  @include button.button-new();
+}
