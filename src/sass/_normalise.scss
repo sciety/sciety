@@ -43,11 +43,9 @@ h2 {
 }
 
 h3 {
-  @include typography.sizing($font-size: 26px, $line-height-in-increments: 4);
-  font-family: Lato, sans-serif;
+  @include typography.heading-3();
   margin-top: 0;
   margin-bottom: #{baseline.increments(2)};
-  font-weight: 400;
 }
 
 h4 {
