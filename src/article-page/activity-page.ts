@@ -1,8 +1,9 @@
+import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
-import { constant, flow, pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import striptags from 'striptags';
 import { FindReviewsForArticleDoi, FindVersionsForArticleDoi, getArticleFeedEvents } from './get-article-feed-events';
 import { FetchReview } from './get-feed-events-content';
@@ -10,14 +11,12 @@ import { projectHasUserSavedArticle } from './project-has-user-saved-article';
 import { projectReviewResponseCounts } from './project-review-response-counts';
 import { projectUserReviewResponse } from './project-user-review-response';
 import { renderActivityPage } from './render-activity-page';
-import {
-  biorxivArticleVersionErrorFeedItem,
-  medrxivArticleVersionErrorFeedItem,
-} from './render-article-version-error-feed-item';
+
+import { biorxivArticleVersionErrorFeedItem, medrxivArticleVersionErrorFeedItem } from './render-article-version-error-feed-item';
 import { renderArticleVersionFeedItem } from './render-article-version-feed-item';
 import { renderFeed } from './render-feed';
 import { renderReviewFeedItem } from './render-review-feed-item';
-import { oldRenderSaveArticle } from './render-save-article';
+import { renderSaveArticle } from './render-save-article';
 import { renderTweetThis } from './render-tweet-this';
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
@@ -80,10 +79,20 @@ const toErrorPage = (error: 'not-found' | 'unavailable') => {
   }
 };
 
-export const articleActivityPage = (ports: Ports): ActivityPage => flow(
-  TE.right,
-  TE.bind('userId', ({ user }) => pipe(user, O.map((u) => u.id), TE.right)),
-  TE.bind('articleDetails', ({ doi }) => pipe(doi, ports.fetchArticle)),
+export const articleActivityPage = (ports: Ports): ActivityPage => (params) => pipe(
+  {
+    doi: TE.right(params.doi),
+    userId: TE.right(pipe(params.user, O.map((u) => u.id))),
+    articleDetails: ports.fetchArticle(params.doi),
+    userArticleSaveState: pipe(
+      params.user,
+      O.map((u) => u.id),
+      TO.fromOption,
+      TO.chainTaskK((userId) => projectHasUserSavedArticle(params.doi, userId)(ports.getAllEvents)),
+      TE.rightTask,
+    ),
+  },
+  sequenceS(TE.ApplyPar),
   TE.bindW('feed', ({ articleDetails, doi, userId }) => pipe(
     articleDetails.server,
     (server) => getArticleFeedEvents(doi, server, userId)({
@@ -111,23 +120,13 @@ export const articleActivityPage = (ports: Ports): ActivityPage => flow(
     )),
     TE.rightTask,
   )),
-  TE.bindW('hasUserSavedArticle', ({ doi, userId }) => pipe(
-    userId,
-    O.fold(
-      constant(T.of(false)),
-      (u) => pipe(projectHasUserSavedArticle(doi, u)(ports.getAllEvents), T.map((uss) => uss.hasSavedArticle)),
-    ),
-    TE.rightTask,
-  )),
-  TE.bindW('saveArticle', ({ doi, userId, hasUserSavedArticle }) => pipe(
-    oldRenderSaveArticle(doi, userId, hasUserSavedArticle),
-    TE.right,
-  )),
-  TE.bindW('tweetThis', ({ doi }) => pipe(
-    doi,
-    renderTweetThis,
-    TE.right,
-  )),
+  TE.map((deps) => ({
+    articleDetails: deps.articleDetails,
+    doi: deps.doi,
+    feed: deps.feed,
+    saveArticle: renderSaveArticle(deps.doi)(deps.userArticleSaveState),
+    tweetThis: renderTweetThis(deps.doi),
+  })),
   TE.bimap(
     toErrorPage,
     (components) => ({
