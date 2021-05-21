@@ -31,11 +31,9 @@ p {
 }
 
 h1 {
-  @include typography.sizing($font-size: 38px, $line-height-in-increments: 5.7);
-  font-family: Lato, sans-serif;
+  @include typography.heading-1();
   margin-top: 0;
   margin-bottom: #{baseline.increments(2)};
-  font-weight: 400;
 }
 
 h2 {
