@@ -36,7 +36,6 @@ $_drawer-inline-padding: 16px;
   color: settings.$colour-white;
   width: 100%;
   height: 100vh;
-  font-family: settings.$font-family;
   padding-top: baseline.increments(19/8);
 
   @include breakpoints.not-narrow() {

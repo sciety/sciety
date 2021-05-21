@@ -43,12 +43,6 @@ $_clear-button-inline-size: 48px;
   grid-auto-flow: unset;
   margin-left: auto;
   margin-right: auto;
-  font-family: settings.$font-family;
-
-  h1 {
-    @include typography.sizing(20px, 3);
-    font-family: settings.$font-family;
-  }
 }
 
 .search-form {
@@ -75,7 +69,6 @@ $_clear-button-inline-size: 48px;
   padding-bottom: baseline.increments(17/8);
   padding-left: functions.px-to-rem($_search-form-text-inline-padding);
   padding-right: functions.px-to-rem($_clear-button-inline-size);
-  font-family: settings.$font-family;
   color: settings.$colour-text-primary;
 }
 
@@ -111,7 +104,6 @@ $_clear-button-inline-size: 48px;
 
 .search-results__summary {
   margin-left: functions.px-to-rem($_search-form-inline-margin + $_search-form-text-inline-padding + settings.$border-width);
-  font-family: settings.$font-family;
 
   @include breakpoints.not-narrow {
     margin-left: functions.px-to-rem($_search-form-text-inline-padding + settings.$border-width);

@@ -21,7 +21,7 @@
   }
 
   .page-header__handle {
-    @include typography.sizing($font-size: 26px, $line-height-in-increments: 3.9);
+    @include typography.page-label();
     color: rgb(102, 102, 102);
   }
 }
@@ -53,7 +53,6 @@
 .followed-groups__item_link:link,
 .followed-groups__item_link:visited {
   @include typography.subtle-link();
-  font-family: settings.$font-secondary;
   flex: 1 1 auto;
   padding-right: functions.px-to-rem(6px);
 }
@@ -73,7 +72,6 @@ $_avatar-border-width: settings.$border-width;
 
 .saved-articles {
   @include list.basics();
-  font-family: settings.$font-secondary;
 }
 
 .saved-articles__item {

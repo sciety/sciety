@@ -7,7 +7,6 @@ $_avatar-size: 47px;
 $_avatar-border-width: settings.$border-width;
 
 .summary-feed-item {
-  font-family: settings.$font-secondary;
 
   @include breakpoints.not-narrow {
     @supports (display: flex) {

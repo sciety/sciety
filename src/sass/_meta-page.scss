@@ -16,7 +16,6 @@
 
 .article-author-list {
   @include list.basics();
-  font-family: settings.$font-secondary;
 
   + * {
     clear: left;
