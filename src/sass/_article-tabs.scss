@@ -12,7 +12,7 @@
 }
 
 .article-tabs {
-  @include typography.sizing(14px, 2.5);
+  @include typography.button();
   border-bottom: 2px solid settings.$colour-furniture;
 
   @include breakpoints.not-narrow {
@@ -44,6 +44,6 @@
 }
 
 .article-tabs__heading {
-  @include typography.sizing(14px, 2.5);
+  @include typography.button();
   border-bottom: 2px solid settings.$colour-accent;
 }
