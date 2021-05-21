@@ -32,7 +32,6 @@
 
 .article-author-list > li {
   @include list.author-separator-terminator();
-  @include typography.sizing($font-size: 14px, $line-height-in-increments: 2.5);
   float: left;
   font-weight: bold;
 }
@@ -40,10 +39,6 @@
 .article-meta-data-list {
   @include list.basics();
   font-family: settings.$font-secondary;
-}
-
-.article-meta-data-list__link {
-  @include typography.sizing($font-size: 14px, $line-height-in-increments: 2.5);
 }
 
 .article-abstract {
