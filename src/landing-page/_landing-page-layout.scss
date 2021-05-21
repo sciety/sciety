@@ -20,9 +20,7 @@ $_header-height-in-px: 60px;
 }
 
 .landing-page-header__follow_link {
-  @include typography.sizing(14px, 1.75);
-  font-family: settings.$font-family;
-  font-weight: bold;
+  @include typography.button();
   margin-right: 1.5rem;
   display: inline-flex;
   align-items: center;
@@ -58,7 +56,6 @@ $_header-height-in-px: 60px;
 .landing-page-footer {
   grid-column: 2 / -1;
   justify-self: center;
-  font-family: settings.$font-family;
   margin-bottom: baseline.increments(1.5);
 }
 
