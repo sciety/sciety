@@ -82,6 +82,12 @@
   line-height: 1;
 }
 
+@mixin details () {
+  font-family: settings.$font-family;
+  font-size: functions.px-to-rem(12px);
+  line-height: 1.2;
+}
+
 @mixin heading-1 () {
   font-family: settings.$font-family;
   font-size: functions.px-to-rem(34px);

@@ -93,7 +93,8 @@
 }
 
 .landing-page-card__title {
-  @include card.title();
+  @include typography.title-2();
+  margin-bottom: baseline.increments(2);
   order: 2;
 }
 

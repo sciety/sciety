@@ -42,9 +42,8 @@
 }
 
 @mixin meta() {
-  @include typography.sizing(12px, 2.5);
+  @include typography.details();
   color: settings.$colour-text-secondary;
-  font-family: settings.$font-family;
 }
 
 @mixin list() {
