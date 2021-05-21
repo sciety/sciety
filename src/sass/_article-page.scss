@@ -53,8 +53,7 @@ $_vertical-space-above-title--wide: baseline.increments(5);
 
 .tweet-button {
   @include button.basics();
-  @include typography.sizing($font-size: 14px, $line-height-in-increments: 3);
-  font-family: settings.$font-secondary;
+  @include typography.button();
   display: inline-flex;
   align-items: center;
   padding-right: functions.px-to-rem(5px);
@@ -86,8 +85,6 @@ $_vertical-space-above-title--wide: baseline.increments(5);
 
 .save-article-button {
   @include button.basics();
-  @include typography.sizing($font-size: 14px, $line-height-in-increments: 3);
-  font-family: settings.$font-secondary;
   display: inline-flex;
   align-items: center;
   margin-right: 2em;

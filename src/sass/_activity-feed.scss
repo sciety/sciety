@@ -158,7 +158,6 @@ p.activity-feed__item__title {
 
 .responses__button {
   @include button.basics();
-  @include typography.sizing(14px, 1.75);
   min-width: functions.px-to-rem(52px);
   padding: functions.px-to-rem(5px);
   border: settings.$border-width solid settings.$colour-brand;
