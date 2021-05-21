@@ -1,7 +1,4 @@
 import * as O from 'fp-ts/Option';
-import * as R from 'fp-ts/Reader';
-import * as RT from 'fp-ts/ReaderTask';
-import * as RTE from 'fp-ts/ReaderTaskEither';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
@@ -32,7 +29,7 @@ import { RenderPageError } from '../types/render-page-error';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { User } from '../types/user';
 
-type ActivityPage = (params: Params) => RTE.ReaderTaskEither<Ports, RenderPageError, Page>;
+type ActivityPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
 type Params = {
   doi: Doi,
@@ -83,11 +80,11 @@ const toErrorPage = (error: 'not-found' | 'unavailable') => {
   }
 };
 
-export const articleActivityPage: ActivityPage = flow(
-  RTE.right,
-  RTE.bind('userId', ({ user }) => pipe(user, O.map((u) => u.id), RTE.right)),
-  RTE.bind('articleDetails', ({ doi }) => (ports: Ports) => pipe(doi, ports.fetchArticle)),
-  RTE.bindW('feed', ({ articleDetails, doi, userId }) => (ports: Ports) => pipe(
+export const articleActivityPage = (ports: Ports): ActivityPage => flow(
+  TE.right,
+  TE.bind('userId', ({ user }) => pipe(user, O.map((u) => u.id), TE.right)),
+  TE.bind('articleDetails', ({ doi }) => pipe(doi, ports.fetchArticle)),
+  TE.bindW('feed', ({ articleDetails, doi, userId }) => pipe(
     articleDetails.server,
     (server) => getArticleFeedEvents(doi, server, userId)({
       ...ports,
@@ -114,25 +111,24 @@ export const articleActivityPage: ActivityPage = flow(
     )),
     TE.rightTask,
   )),
-  RTE.bindW('hasUserSavedArticle', ({ doi, userId }) => pipe(
+  TE.bindW('hasUserSavedArticle', ({ doi, userId }) => pipe(
     userId,
     O.fold(
-      constant(RT.of(false)),
-      (u) => pipe(projectHasUserSavedArticle(doi, u), RT.map((uss) => uss.hasSavedArticle)),
+      constant(T.of(false)),
+      (u) => pipe(projectHasUserSavedArticle(doi, u)(ports.getAllEvents), T.map((uss) => uss.hasSavedArticle)),
     ),
-    RTE.rightReaderTask,
-    R.local((ports: Ports) => ports.getAllEvents),
+    TE.rightTask,
   )),
-  RTE.bindW('saveArticle', ({ doi, userId, hasUserSavedArticle }) => pipe(
+  TE.bindW('saveArticle', ({ doi, userId, hasUserSavedArticle }) => pipe(
     oldRenderSaveArticle(doi, userId, hasUserSavedArticle),
-    RTE.right,
+    TE.right,
   )),
-  RTE.bindW('tweetThis', ({ doi }) => pipe(
+  TE.bindW('tweetThis', ({ doi }) => pipe(
     doi,
     renderTweetThis,
-    RTE.right,
+    TE.right,
   )),
-  RTE.bimap(
+  TE.bimap(
     toErrorPage,
     (components) => ({
       content: renderActivityPage(components),
