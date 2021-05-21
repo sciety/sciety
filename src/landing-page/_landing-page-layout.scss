@@ -52,7 +52,7 @@ $_header-height-in-px: 60px;
 }
 
 .landing-page-header__login_button {
-  @include button.button-link-new();
+  @include button.button-link();
 }
 
 .landing-page-footer {

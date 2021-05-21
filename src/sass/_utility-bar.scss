@@ -52,5 +52,5 @@ $_site-header-inline-end-margin: 8px;
 }
 
 .utility-bar__list_link_button {
-  @include button.button-link-new();
+  @include button.button-link();
 }

@@ -22,7 +22,7 @@ $_page-gutter--large: 3rem;
 }
 
 @mixin primary-button() {
-  @include button.button-link-new();
+  @include button.button-link();
   display: inline-block;
   width: functions.px-to-rem(192px);
   text-align: center;

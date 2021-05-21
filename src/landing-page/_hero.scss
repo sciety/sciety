@@ -43,7 +43,7 @@ $_search-button-width: functions.px-to-rem(70px);
 }
 
 .landing-page-hero__search_button {
-  @include button.button-new();
+  @include button.button();
   position: absolute;
   top: $_search-form-gutter;
   bottom: $_search-form-gutter;

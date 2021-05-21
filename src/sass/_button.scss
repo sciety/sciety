@@ -10,56 +10,7 @@
   cursor: pointer;
 }
 
-@mixin primary-colour {
-  color: settings.$colour-white;
-  background-color: settings.$colour-primary;
-
-  &:hover,
-  &:active {
-    color: settings.$colour-white;
-    background-color: settings.$colour-primary-hover;
-  }
-}
-
-.button,
-.button:link,
-.button:visited {
-  @include basics();
-  font-size: functions.px-to-rem(settings.$base-font-measure);
-  font-family: Lato, sans-serif;
-  padding: functions.px-to-rem(13px) functions.px-to-rem(25px);
-  font-weight: bold;
-  background-color: settings.$colour-white;
-  color: settings.$colour-ui-default;
-  border: settings.$border-width solid currentColor;
-
-  &:hover,
-  &:active {
-    background-color: settings.$colour-primary;
-    color: settings.$colour-white;
-    border-color: settings.$colour-primary;
-  }
-}
-
-.button--small {
-  font-size: functions.px-to-rem(12px);
-  padding: functions.px-to-rem(9px) functions.px-to-rem(18px);
-}
-
-.button--primary {
-  @include primary-colour();
-}
-
-.button--secondary:hover,
-.button--secondary:active {
-  background-color: settings.$colour-grey-one;
-  color: settings.$colour-ui-default;
-  border-color: currentColor;
-}
-
-// NEW DESIGNS (Spring 2021)
-
-@mixin button-link-new {
+@mixin button-link {
   @include typography.button();
   border-radius: settings.$border-radius;
   border: settings.$border-width solid settings.$colour-accent;
@@ -88,7 +39,7 @@
   }
 }
 
-@mixin button-new {
+@mixin button {
   @include typography.button();
   @include states.focus();
   border-radius: settings.$border-radius;
@@ -105,8 +56,8 @@
   }
 }
 
-@mixin button-new-secondary() {
-  @include button-new();
+@mixin button-secondary() {
+  @include button();
 
   background-color: settings.$colour-white;
   color: settings.$colour-accent;
