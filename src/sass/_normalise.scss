@@ -112,6 +112,10 @@ input {
   @include states.focus();
 }
 
+button {
+  @include typography.button();
+}
+
 /*
 Prevent styling of <a> elements that aren't links
 */
