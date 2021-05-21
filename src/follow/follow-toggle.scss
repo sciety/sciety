@@ -3,3 +3,7 @@
 .follow-button {
   @include button.button-new();
 }
+
+.unfollow-button {
+  @include button.button-new-secondary();
+}

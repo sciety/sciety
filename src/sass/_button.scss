@@ -104,3 +104,10 @@
     color: settings.$colour-white;
   }
 }
+
+@mixin button-new-secondary() {
+  @include button-new();
+
+  background-color: settings.$colour-white;
+  color: settings.$colour-accent;
+}
