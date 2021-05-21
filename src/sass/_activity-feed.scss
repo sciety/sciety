@@ -134,7 +134,6 @@ p.activity-feed__item__title {
 }
 
 .responses__question {
-  @include typography.sizing(14px, 1.75);
   padding-right: functions.px-to-rem(8px);
   color: settings.$colour-text-primary;
 }
