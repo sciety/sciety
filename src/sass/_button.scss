@@ -67,7 +67,6 @@
   border-radius: settings.$border-radius;
   border: settings.$border-width solid settings.$colour-accent;
   padding: baseline.increments(1) functions.px-to-rem(12px - settings.$border-width);
-  letter-spacing: 0.1px;
 
   &:link,
   &:visited {
@@ -100,7 +99,6 @@
   border-radius: settings.$border-radius;
   border: settings.$border-width solid settings.$colour-accent;
   padding: baseline.increments(1) functions.px-to-rem(12px - settings.$border-width);
-  letter-spacing: 0.1px;
 
   background-color: settings.$colour-accent;
   color: settings.$colour-white;

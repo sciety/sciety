@@ -76,7 +76,6 @@ $_clear-button-inline-size: 48px;
   padding-left: functions.px-to-rem($_search-form-text-inline-padding);
   padding-right: functions.px-to-rem($_clear-button-inline-size);
   font-family: settings.$font-family;
-  letter-spacing: 0.1px;
   color: settings.$colour-text-primary;
 }
 

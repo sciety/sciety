@@ -38,7 +38,6 @@ $_search-button-width: functions.px-to-rem(70px);
   padding-bottom: baseline.increments(17/8);
   padding-left: functions.px-to-rem($_search-form-gutter);
   padding-right: $_search-button-width + 2 * functions.px-to-rem($_search-form-gutter);
-  letter-spacing: 0.1px;
   color: settings.$colour-text-primary;
   background-color: settings.$colour-landing-page-search;
 }

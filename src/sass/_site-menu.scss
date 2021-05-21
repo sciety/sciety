@@ -33,7 +33,6 @@ $_link-min-height: baseline.increments(5);
   padding-left: functions.px-to-rem($_icon-inline-offset * 2 + $_icon-size);
   border-radius: settings.$border-radius;
   font-weight: bold;
-  letter-spacing: 0.1px;
 
   &:link,
   &:visited {
@@ -90,7 +89,6 @@ $_link-min-height: baseline.increments(5);
 
 .site-menu__small_print {
   @include typography.sizing(12px, 2);
-  letter-spacing: 0.09px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -98,7 +96,6 @@ $_link-min-height: baseline.increments(5);
   a:link {
     @include typography.sizing(12px, 2);
     font-weight: normal;
-    letter-spacing: 0.09px;
     text-decoration: underline;
   }
 
