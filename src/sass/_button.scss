@@ -61,9 +61,7 @@
 // NEW DESIGNS (Spring 2021)
 
 @mixin button-link-new {
-  @include typography.sizing(14px, 1.75);
-  font-family: settings.$font-family;
-  font-weight: bold;
+  @include typography.button();
   border-radius: settings.$border-radius;
   border: settings.$border-width solid settings.$colour-accent;
   padding: baseline.increments(1) functions.px-to-rem(12px - settings.$border-width);
@@ -92,10 +90,8 @@
 }
 
 @mixin button-new {
+  @include typography.button();
   @include states.focus();
-  @include typography.sizing(14px, 1.75);
-  font-family: settings.$font-family;
-  font-weight: bold;
   border-radius: settings.$border-radius;
   border: settings.$border-width solid settings.$colour-accent;
   padding: baseline.increments(1) functions.px-to-rem(12px - settings.$border-width);
