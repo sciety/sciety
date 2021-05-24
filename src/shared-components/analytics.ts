@@ -44,52 +44,6 @@ const renderFathomScript = (fathomId: string) => `
   <script src="https://cdn.usefathom.com/script.js" data-site="${fathomId}" defer></script>
 `;
 
-const globalIsSecure = process.env.APP_ORIGIN !== undefined && process.env.APP_ORIGIN.startsWith('https:'); // TODO: get into pipe?
-
-const renderCookieConsentScripts = (isSecure: boolean) => `
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.js"></script>
-  <script>
-    function onConsent() {
-        if (!this.hasConsented()) {
-          return;
-        }
-          gtag('consent', 'update', {
-            'ad_storage': 'denied',
-            'analytics_storage': 'granted'
-          });
-    }
-
-    window.cookieconsent.hasTransition = false;
-    window.cookieconsent.initialise({
-      content: {
-        message: 'This site uses cookies to deliver its services and analyse traffic. By using this site, you agree to its use of cookies.',
-        href: '/privacy',
-        target: '_self'
-      },
-      onInitialise: onConsent,
-      onStatusChange: onConsent,
-      palette: {
-        popup: {
-          background: 'rgba(0, 0, 0, 0.8)',
-        }
-      },
-      cookie: {
-        secure: ${isSecure ? 'true' : 'false'}
-      },
-    });
-  </script>
-`;
-
-export const cookieConsent = (): HtmlFragment => pipe(
-  process.env.GOOGLE_TAG_MANAGER_ID,
-  O.fromNullable,
-  O.fold(
-    constant(''),
-    () => renderCookieConsentScripts(globalIsSecure),
-  ),
-  toHtmlFragment,
-);
-
 export const googleTagManager = (userId: O.Option<UserId>): HtmlFragment => pipe(
   process.env.GOOGLE_TAG_MANAGER_ID,
   O.fromNullable,
