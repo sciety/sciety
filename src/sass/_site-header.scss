@@ -1,3 +1,5 @@
+@use "sass:math";
+
 @use 'baseline';
 @use 'breakpoints';
 @use 'functions';
@@ -43,7 +45,7 @@ $_search-icon-size: functions.px-to-rem(28px);
 
 .site-header__inner {
   margin-left: functions.px-to-rem(settings.$menu-icons-left-spacing);
-  padding-top: (functions.px-to-rem(settings.$site-header-height) - $_search-icon-size) / 2;
+  padding-top: math.div(functions.px-to-rem(settings.$site-header-height) - $_search-icon-size, 2);
   flex-grow: 1;
 
   @supports (display: flex) {

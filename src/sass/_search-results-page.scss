@@ -1,3 +1,5 @@
+@use "sass:math";
+
 @use 'baseline';
 @use 'breakpoints';
 @use 'card';
@@ -63,8 +65,8 @@ $_clear-button-inline-size: 48px;
   border-radius: settings.$border-radius;
   height: baseline.increments(6);
   width: 100%;
-  padding-top: baseline.increments(17/8);
-  padding-bottom: baseline.increments(17/8);
+  padding-top: baseline.increments(math.div(17, 8));
+  padding-bottom: baseline.increments(math.div(17, 8));
   padding-left: functions.px-to-rem($_search-form-text-inline-padding);
   padding-right: functions.px-to-rem($_clear-button-inline-size);
   color: settings.$colour-text-primary;

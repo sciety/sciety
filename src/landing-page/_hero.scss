@@ -1,3 +1,5 @@
+@use "sass:math";
+
 @use '../sass/settings';
 @use '../sass/functions';
 
@@ -33,8 +35,8 @@ $_search-button-width: functions.px-to-rem(70px);
   height: baseline.increments(6);
   border: settings.$border-width solid settings.$colour-furniture;
   border-radius: settings.$border-radius;
-  padding-top: baseline.increments(17/8);
-  padding-bottom: baseline.increments(17/8);
+  padding-top: baseline.increments(math.div(17, 8));
+  padding-bottom: baseline.increments(math.div(17, 8));
   padding-left: functions.px-to-rem($_search-form-gutter);
   padding-right: $_search-button-width + 2 * functions.px-to-rem($_search-form-gutter);
   color: settings.$colour-text-primary;
