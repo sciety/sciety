@@ -38,7 +38,7 @@ describe('recent-activity', () => {
       await recentActivity(ports)(group)();
       const endTime = performance.now();
 
-      expect(endTime - startTime).toBeLessThan(300);
+      expect(endTime - startTime).toBeLessThan(350);
     });
   });
 });
