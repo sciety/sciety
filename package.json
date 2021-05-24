@@ -108,7 +108,7 @@
     "lint:typescript:prod": "tsc --noEmit",
     "lint:unused-exports": "ts-unused-exports tsconfig.dev.json --silent --ignoreTestFiles",
     "start": "node ./build/index.js",
-    "start:dev:sass": "rm -f static/style.css static/style.css.map && sass --watch --embed-sources src/sass/style.scss:static/style.css",
+    "start:dev:sass": "rm -f static/style.css static/style.css.map && sass --watch --embed-sources --load-path=src src/sass/style.scss:static/style.css",
     "start:dev:ts": "ts-node-dev --project tsconfig.dev.json --transpile-only --watch data ./src/index.ts",
     "start:dev": "run-p --print-label start:dev:**",
     "test": "jest --colors",
