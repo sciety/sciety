@@ -16,7 +16,7 @@ const renderPageLoadedByLoggedInUserEvent = O.fold(
 );
 
 const renderTagManagerScript = (userId: O.Option<UserId>) => (tagManagerId: string) => `
-  <script>
+  <script data-cookieconsent="ignore">
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
 

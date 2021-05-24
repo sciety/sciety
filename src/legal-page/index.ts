@@ -62,6 +62,12 @@ export const legalPage: Page = {
         Although most changes are likely to be minor, eLife may change its Privacy Notice from time to time, and at our sole discretion. We encourage visitors to check this page frequently for any changes to its Privacy Notice. First published October 19, 2020.
       </p>
 
+      <h2>Cookie declaration</h2>
+      <noscript>
+        <p>You do not have Javascript enabled, so we do not use tracking cookies.</p>
+      </noscript>
+      <script id="CookieDeclaration" src="https://consent.cookiebot.com/56f22051-f915-4cf1-9552-7d8f64d81152/cd.js" type="text/javascript" async></script>
+
       <h2>Company information</h2>
       <p>
         Sciety is operated by a team based within eLife Sciences Publications Limited. It is steered by all of its groups, readers and authors.

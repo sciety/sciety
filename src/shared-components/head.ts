@@ -34,8 +34,9 @@ export const head = (
   <meta name="msapplication-TileColor" content="#cf4500">
   <meta name="msapplication-config" content="/static/images/favicons/generated/browserconfig.xml">
   <meta name="theme-color" content="#ffffff">
-  ${fathom()}
 
   ${googleTagManager(pipe(user, O.map((u) => u.id)))}
+  <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="56f22051-f915-4cf1-9552-7d8f64d81152" data-blockingmode="auto" type="text/javascript"></script>
+  ${fathom()}
 </head>
 `);
