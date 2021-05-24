@@ -69,11 +69,12 @@ export const googleTagManagerNoScript = (): HtmlFragment => pipe(
 );
 
 export const cookieBot: HtmlFragment = pipe(
-  process.env.GOOGLE_TAG_MANAGER_ID,
+  process.env.DISABLE_COOKIEBOT,
   O.fromNullable,
+  O.filter((disableCookieBot) => disableCookieBot === 'true'),
   O.fold(
-    constant(''),
     constant(renderCookieBotScript),
+    constant(''),
   ),
   toHtmlFragment,
 );

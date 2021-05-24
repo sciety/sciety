@@ -10,6 +10,7 @@ services:
       APP_ORIGIN: "http://localhost:8080"
       APP_SECRET: "secret"
       CROSSREF_API_BEARER_TOKEN:
+      DISABLE_COOKIEBOT: '${DISABLE_COOKIEBOT}'
       EXPERIMENT_ENABLED: "true"
       FATHOM_SITE_ID:
       GOOGLE_TAG_MANAGER_ID:

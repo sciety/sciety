@@ -44,6 +44,7 @@ test\:coverage: build
 	${DOCKER_COMPOSE} run --rm app npm run test:coverage
 
 backstop-test: export TARGET = dev
+backstop-test: export DISABLE_COOKIEBOT = true
 backstop-test: node_modules clean-db build
 	${DOCKER_COMPOSE} up -d
 	scripts/wait-for-healthy.sh
