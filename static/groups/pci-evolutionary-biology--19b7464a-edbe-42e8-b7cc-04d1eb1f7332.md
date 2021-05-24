@@ -14,7 +14,10 @@ Peer Community in Evolutionary Biology (PCI Evol Biol) has been launched in Janu
 
 ### How it works
 <iframe width="370" height="200" src="https://www.youtube.com/embed/4PZhpnc8wwo" frameborder="0" allowfullscreen=""></iframe>
-<p class="cookieconsent-optout-marketing">Please <a href="javascript:Cookiebot.renew()">accept marketing-cookies</a> to watch this video.</p>
+<p class="cookieconsent-optout-marketing">
+  YouTube requires you to <a href="javascript:Cookiebot.renew()">accept marketing-cookies</a> to watch this video here.
+  Alternatively, you can <a href="https://www.youtube.com/v/4PZhpnc8wwo">watch the video on YouTube</a>.
+</p>
 
 ## Peer review model
 
