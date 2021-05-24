@@ -17,7 +17,6 @@ export const head = (
     ${htmlEscape(title.startsWith('Sciety') ? title : `${title} | Sciety`)}
   </title>
   <link rel="stylesheet" href="/static/style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.css">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@scietyHQ">
   <meta property="og:site_name" content="Sciety">
