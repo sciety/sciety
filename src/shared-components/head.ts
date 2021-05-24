@@ -1,7 +1,7 @@
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { fathom, googleTagManager } from './analytics';
+import { cookieBot, fathom, googleTagManager } from './analytics';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { User } from '../types/user';
 
@@ -36,7 +36,7 @@ export const head = (
   <meta name="theme-color" content="#ffffff">
 
   ${googleTagManager(pipe(user, O.map((u) => u.id)))}
-  <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="56f22051-f915-4cf1-9552-7d8f64d81152" data-blockingmode="auto" type="text/javascript"></script>
+  ${cookieBot}
   ${fathom()}
 </head>
 `);

@@ -40,6 +40,10 @@ const renderTagManagerNoScript = (tagManagerId: string) => `
   <!-- End Google Tag Manager (noscript) -->
 `;
 
+const renderCookieBotScript = `
+  <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="56f22051-f915-4cf1-9552-7d8f64d81152" data-blockingmode="auto"></script>
+`;
+
 const renderFathomScript = (fathomId: string) => `
   <script src="https://cdn.usefathom.com/script.js" data-site="${fathomId}" defer></script>
 `;
@@ -60,6 +64,16 @@ export const googleTagManagerNoScript = (): HtmlFragment => pipe(
   O.fold(
     constant(''),
     renderTagManagerNoScript,
+  ),
+  toHtmlFragment,
+);
+
+export const cookieBot: HtmlFragment = pipe(
+  process.env.GOOGLE_TAG_MANAGER_ID,
+  O.fromNullable,
+  O.fold(
+    constant(''),
+    constant(renderCookieBotScript),
   ),
   toHtmlFragment,
 );
