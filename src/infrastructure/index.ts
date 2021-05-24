@@ -43,6 +43,12 @@ type Dependencies = {
   twitterApiBearerToken: string,
 };
 
+const log = <A>(msg: string) => (a: A): A => {
+  // eslint-disable-next-line no-console
+  console.log('info', msg);
+  return a;
+};
+
 export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<unknown, Adapters> => pipe(
   I.Do,
   I.apS('logger', pipe(
@@ -66,16 +72,19 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
     identity,
   )),
   TE.bindW('eventsFromDatabase', ({ pool, logger }) => getEventsFromDatabase(pool, loggerIO(logger))),
+  TE.map(log('>>>>> 1')),
   TE.apSW('eventsFromDataFiles', pipe(
     bootstrapGroups,
     RNEA.map(({ id }) => id),
     getEventsFromDataFiles,
   )),
+  TE.map(log('>>>>> 2')),
   TE.bindW('events', ({ eventsFromDataFiles, eventsFromDatabase }) => pipe(
     eventsFromDataFiles.concat(eventsFromDatabase),
     A.sort(DomainEvent.byDate),
     TE.right,
   )),
+  TE.map(log('>>>>> 3')),
   TE.chain((adapters) => TE.tryCatch(
     async () => {
       const { events, logger, pool } = adapters;
