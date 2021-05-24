@@ -6,7 +6,7 @@ import { flow, pipe } from 'fp-ts/function';
 import { createRouter } from './http/router';
 import { createApplicationServer } from './http/server';
 import { createInfrastructure } from './infrastructure';
-import { Logger } from './infrastructure/logger';
+import { Logger, replaceError } from './infrastructure/logger';
 
 const terminusOptions = (logger: Logger): TerminusOptions => ({
   onShutdown: async () => {
@@ -35,7 +35,11 @@ void pipe(
     )),
   )),
   TE.match(
-    (error) => pipe(process.stderr.write(`Unable to start:\n${JSON.stringify(error, null, 2)}\n`), process.exit(1)),
+    (error) => {
+      process.stderr.write(`Unable to start:\n${JSON.stringify(error, null, 2)}\n`);
+      process.stderr.write(`Error object: ${JSON.stringify(error, replaceError, 2)}\n`);
+      return process.exit(1);
+    },
     (server) => server.listen(80),
   ),
 )();
