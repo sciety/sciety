@@ -4,6 +4,7 @@ Peer Community in Archaeology (PCI Archaeology) has been launched in March 2019.
 
 ### How it works
 <iframe width="370" height="200" src="https://www.youtube.com/embed/4PZhpnc8wwo" frameborder="0" allowfullscreen=""></iframe>
+<p class="cookieconsent-optout-marketing">Please <a href="javascript:Cookiebot.renew()">accept marketing-cookies</a> to watch this video.</p>
 
 ## Peer review model
 
