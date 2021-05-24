@@ -36,7 +36,7 @@ export const head = (
   <meta name="theme-color" content="#ffffff">
 
   ${googleTagManager(pipe(user, O.map((u) => u.id)))}
-  ${cookieBot}
+  ${cookieBot()}
   ${fathom()}
 </head>
 `);
