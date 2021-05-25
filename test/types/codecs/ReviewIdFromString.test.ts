@@ -3,7 +3,7 @@ import { pipe } from 'fp-ts/function';
 import { ReviewIdFromString } from '../../../src/types/codecs/ReviewIdFromString';
 import { arbitraryHypothesisAnnotationId } from '../hypothesis-annotation-id.helper';
 
-describe('ReviewIdFromString', () => {
+describe('codec ReviewIdFromString', () => {
   describe('given a hypothesis id', () => {
     it('encodes and decodes back to the same value', () => {
       const id = arbitraryHypothesisAnnotationId();
@@ -16,4 +16,3 @@ describe('ReviewIdFromString', () => {
     });
   });
 });
-
