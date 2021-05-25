@@ -1,4 +1,5 @@
 import { sequenceS } from 'fp-ts/Apply';
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
@@ -38,15 +39,18 @@ type Ports = {
   searchEuropePmc: FindArticles,
 };
 
+// TODO: this type should be derived from the codec
 type Params = {
   query: string,
+  category: O.Option<string>,
 };
 
 type SearchResultsPage = (params: Params) => ReturnType<RenderPage>;
 
 export const searchResultsPage = (ports: Ports): SearchResultsPage => flow(
-  (params) => pipe({
+  (params) => ({
     query: TE.right(params.query),
+    category: TE.right(params.category),
     articles: pipe(
       params.query,
       ports.searchEuropePmc,

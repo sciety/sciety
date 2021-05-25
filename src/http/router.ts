@@ -88,6 +88,7 @@ const homePageParams = t.type({
 
 const searchResultsPageParams = t.type({
   query: t.string,
+  category: tt.optionFromNullable(t.string),
 });
 
 const userPageParams = t.type({
