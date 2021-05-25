@@ -75,9 +75,38 @@ describe('select-subset-to-display', () => {
 
       expect(result.itemsToDisplay).toStrictEqual([article]);
     });
+
+    it.todo('shows the correct count of matches');
   });
 
   describe('given the category of "groups"', () => {
-    it.todo('returns only groups when given articles and groups');
+    it('returns only groups when given articles and groups', () => {
+      const group = {
+        _tag: 'Group' as const,
+        id: arbitraryGroupId(),
+      };
+      const article = {
+        _tag: 'Article' as const,
+        doi: arbitraryDoi(),
+        server: 'biorxiv' as const,
+        title: pipe('', toHtmlFragment, sanitise),
+        authors: [''],
+        postedDate: new Date(),
+      };
+      const state = {
+        query: '',
+        category: O.some('groups'),
+        groups: [group],
+        articles: {
+          items: [article],
+          total: 1,
+        },
+      };
+      const result = selectSubsetToDisplay(2)(state);
+
+      expect(result.itemsToDisplay).toStrictEqual([group]);
+    });
+
+    it.todo('shows the correct count of matches');
   });
 });
