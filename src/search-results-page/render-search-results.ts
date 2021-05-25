@@ -35,16 +35,28 @@ const renderSearchResult = (viewModel: ItemViewModel) => (
   isArticleViewModel(viewModel) ? renderArticleCard(viewModel) : renderGroupCard(viewModel)
 );
 
+const categoryMenu = (searchResults: SearchResults) => `
+  <p class="search-results__category-menu">
+    Showing ${searchResults.itemsToDisplay.length} of ${searchResults.availableMatches} results for
+    <span class="search-results__query">${htmlEscape(searchResults.query)}</span>
+  </p>
+`;
+
+const summary = (searchResults: SearchResults) => `
+  <p class="search-results__summary">
+    Showing ${searchResults.itemsToDisplay.length} of ${searchResults.availableMatches} results for
+    <span class="search-results__query">${htmlEscape(searchResults.query)}</span>
+  </p>
+`;
+
 type RenderSearchResults = (rs: SearchResults) => HtmlFragment;
+
 export const renderSearchResults: RenderSearchResults = (searchResults) => pipe(
   searchResults.itemsToDisplay,
   RA.map(renderSearchResult),
   renderListIfNecessary,
   (searchResultsList) => `
-    <p class="search-results__summary">
-      Showing ${searchResults.itemsToDisplay.length} of ${searchResults.availableMatches} results for
-      <span class="search-results__query">${htmlEscape(searchResults.query)}</span>
-    </p>
+    ${process.env.EXPERIMENT_ENABLED === 'true' ? categoryMenu(searchResults) : summary(searchResults)}
     ${searchResultsList}
   `,
   toHtmlFragment,
