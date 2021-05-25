@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { selectSubsetToDisplay } from '../../src/search-results-page/select-subset-to-display';
 import { toHtmlFragment } from '../../src/types/html-fragment';
@@ -27,6 +28,7 @@ describe('select-subset-to-display', () => {
         };
         const state = {
           query: '',
+          category: O.none,
           groups: [group1, group2],
           articles: {
             items: [article, article],
@@ -47,7 +49,7 @@ describe('select-subset-to-display', () => {
   });
 
   describe('given the category of "articles"', () => {
-    it.skip('returns only articles when given articles and groups', () => {
+    it('returns only articles when given articles and groups', () => {
       const group = {
         _tag: 'Group' as const,
         id: arbitraryGroupId(),
@@ -62,7 +64,7 @@ describe('select-subset-to-display', () => {
       };
       const state = {
         query: '',
-        category: 'articles',
+        category: O.some('articles'),
         groups: [group],
         articles: {
           items: [article],

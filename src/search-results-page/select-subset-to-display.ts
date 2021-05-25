@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { ArticleItem, GroupItem } from './data-types';
@@ -5,6 +6,7 @@ import { LimitedSet } from './fetch-extra-details';
 
 type Matches = {
   query: string,
+  category: O.Option<string>,
   groups: ReadonlyArray<GroupItem>,
   articles: {
     items: ReadonlyArray<ArticleItem>,
@@ -16,7 +18,11 @@ export const selectSubsetToDisplay = (limit: number) => (state: Matches): Limite
   ...state,
   availableMatches: state.groups.length + state.articles.total,
   itemsToDisplay: pipe(
-    [...state.groups, ...state.articles.items],
+    state.category,
+    O.fold(
+      () => [...state.groups, ...state.articles.items],
+      () => [...state.articles.items],
+    ),
     RA.takeLeft(limit),
   ),
 });
