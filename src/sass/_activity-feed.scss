@@ -105,7 +105,7 @@ p.activity-feed__item__title {
 }
 
 .responses {
-  display: none;
+  display: flex;
   align-items: center;
   padding: baseline.increments(1.5) functions.px-to-rem(16px);
   background-color: settings.$colour-component-background;
