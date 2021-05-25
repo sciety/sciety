@@ -17,5 +17,5 @@ export const ReviewIdFromString = new t.Type(
       ),
     )),
   ),
-  RI.toString,
+  RI.serialize,
 );
