@@ -21,7 +21,7 @@ export const selectSubsetToDisplay = (limit: number) => (state: Matches): Limite
     state.category,
     O.fold(
       () => [...state.groups, ...state.articles.items],
-      (category) => (category === 'groups') ? [...state.groups] : [...state.articles.items],
+      (category) => ((category === 'groups') ? [...state.groups] : [...state.articles.items]),
     ),
     RA.takeLeft(limit),
   ),
