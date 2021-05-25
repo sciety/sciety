@@ -36,7 +36,7 @@ const renderSearchResult = (viewModel: ItemViewModel) => (
 );
 
 const categoryMenu = (searchResults: SearchResults) => `
-  <p class="search-results__category-menu">
+  <p class="search-results__summary">
     Showing ${searchResults.itemsToDisplay.length} of ${searchResults.availableMatches} results for
     <span class="search-results__query">${htmlEscape(searchResults.query)}</span>
   </p>
