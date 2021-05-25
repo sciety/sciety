@@ -7,12 +7,12 @@ import * as RI from '../review-id';
 export const ReviewIdFromString = new t.Type(
   'ReviewIdFromString',
   RI.isReviewId,
-  (u, c) => pipe(
-    t.string.validate(u, c),
+  (input, context) => pipe(
+    t.string.validate(input, context),
     E.chain(flow(
       RI.deserialize,
       O.fold(
-        () => t.failure(u, c),
+        () => t.failure(input, context),
         t.success,
       ),
     )),
