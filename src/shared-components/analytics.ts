@@ -3,6 +3,21 @@ import { constant, pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 
+const renderCookieBotScript = `
+  <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="56f22051-f915-4cf1-9552-7d8f64d81152" data-blockingmode="auto"></script>
+`;
+
+const cookieBot = (): HtmlFragment => pipe(
+  process.env.DISABLE_COOKIEBOT,
+  O.fromNullable,
+  O.filter((disableCookieBot) => disableCookieBot === 'true'),
+  O.fold(
+    constant(renderCookieBotScript),
+    constant(''),
+  ),
+  toHtmlFragment,
+);
+
 const renderPageLoadedByLoggedInUserEvent = O.fold(
   constant(''),
   (userId: UserId) => `
@@ -22,8 +37,15 @@ const renderTagManagerScript = (userId: O.Option<UserId>) => (tagManagerId: stri
 
     gtag('consent', 'default', {
       'ad_storage': 'denied',
-      'analytics_storage': 'denied'
+      'analytics_storage': 'denied',
+      'wait_for_update': 500,
     });
+    gtag("set", "ads_data_redaction", true);
+  </script>
+
+  ${cookieBot()}
+
+  <script data-cookieconsent="ignore">
     (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -38,10 +60,6 @@ const renderTagManagerNoScript = (tagManagerId: string) => `
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=${tagManagerId}"
   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
-`;
-
-const renderCookieBotScript = `
-  <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="56f22051-f915-4cf1-9552-7d8f64d81152" data-blockingmode="auto"></script>
 `;
 
 const renderFathomScript = (fathomId: string) => `
@@ -64,17 +82,6 @@ export const googleTagManagerNoScript = (): HtmlFragment => pipe(
   O.fold(
     constant(''),
     renderTagManagerNoScript,
-  ),
-  toHtmlFragment,
-);
-
-export const cookieBot = (): HtmlFragment => pipe(
-  process.env.DISABLE_COOKIEBOT,
-  O.fromNullable,
-  O.filter((disableCookieBot) => disableCookieBot === 'true'),
-  O.fold(
-    constant(renderCookieBotScript),
-    constant(''),
   ),
   toHtmlFragment,
 );

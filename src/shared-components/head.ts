@@ -1,7 +1,7 @@
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { cookieBot, fathom, googleTagManager } from './analytics';
+import { fathom, googleTagManager } from './analytics';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { User } from '../types/user';
 
@@ -36,7 +36,6 @@ export const head = (
   <meta name="theme-color" content="#ffffff">
 
   ${googleTagManager(pipe(user, O.map((u) => u.id)))}
-  ${cookieBot()}
   ${fathom()}
 </head>
 `);
