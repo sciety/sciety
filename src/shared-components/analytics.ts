@@ -6,7 +6,7 @@ import { UserId } from '../types/user-id';
 const renderPageLoadedByLoggedInUserEvent = O.fold(
   constant(''),
   (userId: UserId) => `
-    gtag({
+    dataLayer.push({
       'event' : 'page_loaded_by_logged_in_user',
       'user' : {
         'id' : '${userId}',
