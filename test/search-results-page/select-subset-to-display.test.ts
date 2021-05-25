@@ -47,7 +47,32 @@ describe('select-subset-to-display', () => {
   });
 
   describe('given the category of "articles"', () => {
-    it.todo('returns only articles when given articles and groups');
+    it.skip('returns only articles when given articles and groups', () => {
+      const group = {
+        _tag: 'Group' as const,
+        id: arbitraryGroupId(),
+      };
+      const article = {
+        _tag: 'Article' as const,
+        doi: arbitraryDoi(),
+        server: 'biorxiv' as const,
+        title: pipe('', toHtmlFragment, sanitise),
+        authors: [''],
+        postedDate: new Date(),
+      };
+      const state = {
+        query: '',
+        category: 'articles',
+        groups: [group],
+        articles: {
+          items: [article],
+          total: 1,
+        },
+      };
+      const result = selectSubsetToDisplay(2)(state);
+
+      expect(result.itemsToDisplay).toStrictEqual([article]);
+    });
   });
 
   describe('given the category of "groups"', () => {
