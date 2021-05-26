@@ -15,7 +15,7 @@ const groups: RNEA.ReadonlyNonEmptyArray<Group> = [
     name: 'ScreenIT',
     avatarPath: '/static/groups/screenit--8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65.jpg',
     descriptionPath: 'screenit--8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65.md',
-    shortDescription: 'The Automated Screening Working Groups is a group of software engineers and biologists passionate about improving scientific manuscripts on a large scale. Our members have created tools that check for common problems in scientific manuscripts, including information needed to improve transparency and reproducibility. We have combined our tools into a single pipeline, called ScreenIT. We're currently using our tools to screen COVID preprints.',
+    shortDescription: 'The Automated Screening Working Groups is a group of software engineers and biologists passionate about improving scientific manuscripts on a large scale. Our members have created tools that check for common problems in scientific manuscripts, including information needed to improve transparency and reproducibility. We have combined our tools into a single pipeline, called ScreenIT. We\'re currently using our tools to screen COVID preprints.',
   },
   {
     id: Gid.fromValidatedString('10360d97-bf52-4aef-b2fa-2f60d319edd7'),
