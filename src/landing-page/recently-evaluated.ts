@@ -40,7 +40,7 @@ const card3: Card = {
 const renderCard = (card: Card) => `
   <article class="landing-page-card">
     <h3 class="landing-page-card__title">
-      <a class="landing-page-card__link" href="/articles/activity/${card.articleId}?utm_source=internal&utm_medium=banner&utm_campaign=landingpage&utm_content=${card.articleId}">${card.articleTitle}</a>
+      <a class="landing-page-card__link" href="/articles/activity/${card.articleId}">${card.articleTitle}</a>
     </h3>
     <p class="landing-page-card__group">
       <img class="landing-page-card__avatar" src="${card.avatarPath}" alt="" />
