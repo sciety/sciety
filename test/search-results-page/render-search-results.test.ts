@@ -33,7 +33,7 @@ describe('render-search-results component', () => {
         renderSearchResults,
       );
 
-      expect(rendered).toStrictEqual(expect.stringContaining(`All articles (${availableArticleMatches})`));
+      expect(rendered).toStrictEqual(expect.stringContaining(`Articles (${availableArticleMatches})`));
       expect(rendered).toStrictEqual(expect.stringContaining(`Groups (${availableGroupMatches})`));
     });
   });
