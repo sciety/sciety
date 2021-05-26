@@ -88,7 +88,12 @@ const homePageParams = t.type({
 
 const searchResultsPageParams = t.type({
   query: t.string,
-  category: tt.optionFromNullable(t.string),
+  category: tt.optionFromNullable(
+    t.union([
+      t.literal('groups'),
+      t.literal('articles'),
+    ]),
+  ),
 });
 
 const userPageParams = t.type({

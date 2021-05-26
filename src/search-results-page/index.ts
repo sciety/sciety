@@ -42,7 +42,7 @@ type Ports = {
 // TODO: this type should be derived from the codec
 type Params = {
   query: string,
-  category: O.Option<string>,
+  category: O.Option<'groups' | 'articles'>,
 };
 
 type SearchResultsPage = (params: Params) => ReturnType<RenderPage>;
