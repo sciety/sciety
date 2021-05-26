@@ -4,20 +4,9 @@
 @use 'settings';
 @use 'typography';
 
-@mixin hide-top-border-touching-tabs() {
-  border-top-width: 0;
-  @include breakpoints.not-narrow {
-    border-top-width: settings.$border-width;
-  }
-}
-
 .article-tabs {
   @include typography.button();
-  border-bottom: 2px solid settings.$colour-furniture;
-
-  @include breakpoints.not-narrow {
-    margin-bottom: baseline.increments(1.5);
-  }
+  border-bottom: 2px solid transparent;
 }
 
 .article-tabs__tab {

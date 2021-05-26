@@ -9,7 +9,6 @@
 
 .main-content--meta {
   @include card.basics();
-  @include article-tabs.hide-top-border-touching-tabs();
 
   margin-bottom: baseline.increments(6);
 }

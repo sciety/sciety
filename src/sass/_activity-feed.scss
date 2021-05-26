@@ -27,10 +27,6 @@
   @include breakpoints.not-narrow {
     padding: unset;
   }
-
-  &:first-child {
-    @include article-tabs.hide-top-border-touching-tabs();
-  }
 }
 
 .activity-feed__item_contents {
