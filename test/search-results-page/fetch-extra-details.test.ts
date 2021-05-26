@@ -34,6 +34,8 @@ describe('fetch-extra-details', () => {
       const matches = {
         query: '',
         availableMatches: 5,
+        availableArticleMatches: 5,
+        availableGroupMatches: 0,
         itemsToDisplay: [
           {
             _tag: 'Article' as const,
@@ -50,6 +52,8 @@ describe('fetch-extra-details', () => {
       expect(viewModel).toStrictEqual({
         query: '',
         availableMatches: 5,
+        availableArticleMatches: 5,
+        availableGroupMatches: 0,
         itemsToDisplay: [
           expect.objectContaining({
             evaluationCount: 2,
@@ -80,6 +84,8 @@ describe('fetch-extra-details', () => {
         const matches = {
           query: '',
           availableMatches: 5,
+          availableArticleMatches: 0,
+          availableGroupMatches: 5,
           itemsToDisplay: [
             {
               _tag: 'Group' as const,
@@ -92,6 +98,8 @@ describe('fetch-extra-details', () => {
         expect(viewModel).toStrictEqual({
           query: '',
           availableMatches: 5,
+          availableArticleMatches: 0,
+          availableGroupMatches: 5,
           itemsToDisplay: [
             expect.objectContaining({
               reviewCount: 0,
@@ -112,7 +120,9 @@ describe('fetch-extra-details', () => {
         };
         const matches = {
           query: '',
-          availableMatches: 5,
+          availableMatches: 0,
+          availableArticleMatches: 0,
+          availableGroupMatches: 0,
           itemsToDisplay: [
             {
               _tag: 'Group' as const,
@@ -124,7 +134,9 @@ describe('fetch-extra-details', () => {
 
         expect(viewModel).toStrictEqual({
           query: '',
-          availableMatches: 5,
+          availableMatches: 0,
+          availableArticleMatches: 0,
+          availableGroupMatches: 0,
           itemsToDisplay: [],
         });
       });

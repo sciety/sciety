@@ -84,6 +84,8 @@ const fetchItemDetails = (ports: Ports) => (item: ArticleItem | GroupItem): TE.T
 export type LimitedSet = {
   query: string,
   availableMatches: number,
+  availableArticleMatches: number,
+  availableGroupMatches: number,
   itemsToDisplay: ReadonlyArray<GroupItem | ArticleItem>,
 };
 

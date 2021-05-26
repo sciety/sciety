@@ -16,6 +16,8 @@ export type SearchResults = {
   query: string,
   itemsToDisplay: ReadonlyArray<ItemViewModel>,
   availableMatches: number,
+  availableArticleMatches: number,
+  availableGroupMatches: number,
 };
 
 const renderListIfNecessary = (articles: ReadonlyArray<HtmlFragment>) => pipe(
@@ -39,9 +41,9 @@ const categoryMenu = (searchResults: SearchResults) => `
   <h3 class="visually-hidden">Search result categories</h3>
   <ul class="search-results__categories" aria-role="list">
     <li>
-      <a href="/search?query=${htmlEscape(searchResults.query)}&category=articles">All articles</a>
+      <a href="/search?query=${htmlEscape(searchResults.query)}&category=articles">All articles (${searchResults.availableArticleMatches})</a>
     <li>
-      <a href="/search?query=${htmlEscape(searchResults.query)}&category=groups">Groups</a>
+      <a href="/search?query=${htmlEscape(searchResults.query)}&category=groups">Groups (${searchResults.availableGroupMatches})</a>
     </li>
   </ul>
 `;
