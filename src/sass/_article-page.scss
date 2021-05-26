@@ -22,8 +22,7 @@ $_vertical-space-above-title--wide: baseline.increments(5);
 }
 
 .sciety-grid--article > .page-header--article {
-  margin-left: 1rem;
-  margin-right: 1rem;
+  margin: 0 1rem baseline.increments(3);
   padding-top: $_vertical-space-above-title--narrow;
   color: settings.$colour-text-primary;
 }
