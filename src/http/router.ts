@@ -38,7 +38,7 @@ import { saveRespondCommand } from '../respond/save-respond-command';
 import { finishSaveArticleCommand } from '../save-article/finish-save-article-command';
 import { saveSaveArticleCommand } from '../save-article/save-save-article-command';
 import { searchPage } from '../search-page';
-import { searchResultsPage } from '../search-results-page';
+import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../search-results-page';
 import { applyStandardPageLayout } from '../shared-components/apply-standard-page-layout';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
@@ -84,16 +84,6 @@ const homePageParams = t.type({
   user: tt.optionFromNullable(t.type({
     id: UserIdFromString,
   })),
-});
-
-const searchResultsPageParams = t.type({
-  query: t.string,
-  category: tt.optionFromNullable(
-    t.union([
-      t.literal('groups'),
-      t.literal('articles'),
-    ]),
-  ),
 });
 
 const userPageParams = t.type({

@@ -1,11 +1,12 @@
 import { sequenceS } from 'fp-ts/Apply';
-import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe, tupled } from 'fp-ts/function';
+import * as t from 'io-ts';
+import * as tt from 'io-ts-types';
 import { ArticleItem } from './data-types';
 import {
   fetchExtraDetails, FindReviewsForArticleDoi, GetAllEvents, GetGroup,
@@ -39,11 +40,17 @@ type Ports = {
   searchEuropePmc: FindArticles,
 };
 
-// TODO: this type should be derived from the codec
-type Params = {
-  query: string,
-  category: O.Option<'groups' | 'articles'>,
-};
+export const paramsCodec = t.type({
+  query: t.string,
+  category: tt.optionFromNullable(
+    t.union([
+      t.literal('groups'),
+      t.literal('articles'),
+    ]),
+  ),
+});
+
+type Params = t.TypeOf<typeof paramsCodec>;
 
 type SearchResultsPage = (params: Params) => ReturnType<RenderPage>;
 
