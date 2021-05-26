@@ -12,6 +12,18 @@ export const renderErrorPage = (error: 'unavailable'): RenderPageError => ({
   message: toHtmlFragment('We\'re having trouble searching for you, please come back later.'),
 });
 
+const renderSearchForm = (searchResults: SearchResults) => `
+  <form action="/search" method="get" class="search-form">
+    <input type="hidden" name="category" value="articles">
+    <label for="searchText" class="visually-hidden">Search term</label>
+    ${htmlEscape`<input value="${searchResults.query}" id="searchText" name="query" placeholder="Find articles and evaluating groups…" class="search-form__text">`}
+    <button type="reset" id="clearSearchText" class="search-form__clear visually-hidden">
+      <img src="/static/images/clear-search-text-icon.svg" class="search-form__clear_icon" alt="">
+    </button>
+    <button type="submit" class="visually-hidden">Search</button>
+  </form>
+`;
+
 export const renderPage = (searchResults: SearchResults): Page => ({
   title: `Search results for ${searchResults.query}`,
   content: toHtmlFragment(`
@@ -20,15 +32,7 @@ export const renderPage = (searchResults: SearchResults): Page => ({
         <header class="page-header page-header--search-results">
           <h1 class="page-heading--search">Search Sciety</h1>
         </header>
-        <form action="/search" method="get" class="search-form">
-          <input type="hidden" name="category" value="articles">
-          <label for="searchText" class="visually-hidden">Search term</label>
-          ${htmlEscape`<input value="${searchResults.query}" id="searchText" name="query" placeholder="Find articles and evaluating groups…" class="search-form__text">`}
-          <button type="reset" id="clearSearchText" class="search-form__clear visually-hidden">
-            <img src="/static/images/clear-search-text-icon.svg" class="search-form__clear_icon" alt="">
-          </button>
-          <button type="submit" class="visually-hidden">Search</button>
-        </form>
+        ${renderSearchForm(searchResults)}
         <section class="search-results">
           ${renderSearchResults(searchResults)}
         </section>
