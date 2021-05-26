@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { ArticleItem, GroupItem } from './data-types';
 import { LimitedSet } from './fetch-extra-details';
 
-type Matches = {
+export type Matches = {
   query: string,
   category: O.Option<string>,
   groups: ReadonlyArray<GroupItem>,
