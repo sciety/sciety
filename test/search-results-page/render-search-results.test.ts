@@ -23,6 +23,7 @@ describe('render-search-results component', () => {
       const rendered = pipe(
         {
           query: 'something',
+          category: 'articles',
           availableMatches: 5,
           availableArticleMatches,
           availableGroupMatches,
@@ -43,6 +44,7 @@ describe('render-search-results component', () => {
       const rendered = pipe(
         {
           query: 'something',
+          category: 'articles',
           availableMatches: 0,
           availableArticleMatches: 0,
           availableGroupMatches: 0,

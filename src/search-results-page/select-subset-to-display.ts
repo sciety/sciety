@@ -16,6 +16,13 @@ type Matches = {
 
 export const selectSubsetToDisplay = (limit: number) => (state: Matches): LimitedSet => ({
   ...state,
+  category: pipe(
+    state.category,
+    O.fold(
+      () => 'articles',
+      (category) => category,
+    ),
+  ),
   availableMatches: state.groups.length + state.articles.total,
   availableArticleMatches: state.articles.total,
   availableGroupMatches: state.groups.length,

@@ -33,6 +33,7 @@ describe('fetch-extra-details', () => {
       };
       const matches = {
         query: '',
+        category: 'articles',
         availableMatches: 5,
         availableArticleMatches: 5,
         availableGroupMatches: 0,
@@ -51,6 +52,7 @@ describe('fetch-extra-details', () => {
 
       expect(viewModel).toStrictEqual({
         query: '',
+        category: 'articles',
         availableMatches: 5,
         availableArticleMatches: 5,
         availableGroupMatches: 0,
@@ -83,6 +85,7 @@ describe('fetch-extra-details', () => {
         };
         const matches = {
           query: '',
+          category: 'groups',
           availableMatches: 5,
           availableArticleMatches: 0,
           availableGroupMatches: 5,
@@ -97,6 +100,7 @@ describe('fetch-extra-details', () => {
 
         expect(viewModel).toStrictEqual({
           query: '',
+          category: 'groups',
           availableMatches: 5,
           availableArticleMatches: 0,
           availableGroupMatches: 5,
@@ -120,6 +124,7 @@ describe('fetch-extra-details', () => {
         };
         const matches = {
           query: '',
+          category: 'groups',
           availableMatches: 0,
           availableArticleMatches: 0,
           availableGroupMatches: 0,
@@ -134,6 +139,7 @@ describe('fetch-extra-details', () => {
 
         expect(viewModel).toStrictEqual({
           query: '',
+          category: 'groups',
           availableMatches: 0,
           availableArticleMatches: 0,
           availableGroupMatches: 0,

@@ -14,6 +14,7 @@ const isArticleViewModel = (viewModel: ItemViewModel): viewModel is ArticleViewM
 
 export type SearchResults = {
   query: string,
+  category: string,
   itemsToDisplay: ReadonlyArray<ItemViewModel>,
   availableMatches: number,
   availableArticleMatches: number,
@@ -37,15 +38,21 @@ const renderSearchResult = (viewModel: ItemViewModel) => (
   isArticleViewModel(viewModel) ? renderArticleCard(viewModel) : renderGroupCard(viewModel)
 );
 
+const menuWithGroupsActive = (searchResults: SearchResults) => `
+  <a href="/search?query=${htmlEscape(searchResults.query)}&category=articles" class="article-tabs__tab article-tabs__link">Articles (${searchResults.availableArticleMatches})</a>
+  <h2 class="article-tabs__tab article-tabs__heading">Groups (${searchResults.availableGroupMatches})</h2>
+`;
+
+const menuWithArticlesActive = (searchResults: SearchResults) => `
+  <h2 class="article-tabs__tab article-tabs__heading">Articles (${searchResults.availableArticleMatches})</h2>
+  <a href="/search?query=${htmlEscape(searchResults.query)}&category=groups" class="article-tabs__tab article-tabs__link">Groups (${searchResults.availableGroupMatches})</a>
+`;
+
 const categoryMenu = (searchResults: SearchResults) => `
   <h3 class="visually-hidden">Search result categories</h3>
-  <ul class="search-results__categories" aria-role="list">
-    <li>
-      <a href="/search?query=${htmlEscape(searchResults.query)}&category=articles">Articles (${searchResults.availableArticleMatches})</a>
-    <li>
-      <a href="/search?query=${htmlEscape(searchResults.query)}&category=groups">Groups (${searchResults.availableGroupMatches})</a>
-    </li>
-  </ul>
+  <div class="article-tabs">
+    ${searchResults.category === 'groups' ? menuWithGroupsActive(searchResults) : menuWithArticlesActive(searchResults)}
+  </div>
 `;
 
 const summary = (searchResults: SearchResults) => `
