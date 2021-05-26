@@ -12,15 +12,14 @@
 .article-tabs__tab {
   @include typography.button();
   line-height: math.div(20px, 14px);
-  width: functions.px-to-rem(120px);
+  min-width: functions.px-to-rem(120px);
   display: inline-block;
   margin-bottom: -2px;
   text-align: center;
   text-transform: uppercase;
   font-weight: bold;
   color: #37474f;
-  padding-top: functions.px-to-rem(13px);
-  padding-bottom: functions.px-to-rem(15px);
+  padding: functions.px-to-rem(13px) 1rem functions.px-to-rem(15px);
 }
 
 .article-tabs__link {
