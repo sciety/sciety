@@ -102,18 +102,6 @@ $_clear-button-inline-size: 48px;
   }
 }
 
-.search-results__summary {
-  margin-left: functions.px-to-rem($_search-form-inline-margin + $_search-form-text-inline-padding + settings.$border-width);
-
-  @include breakpoints.not-narrow {
-    margin-left: functions.px-to-rem($_search-form-text-inline-padding + settings.$border-width);
-  }
-}
-
-.search-results__query {
-  font-weight: bold;
-}
-
 .search-results-list {
   @include card.list();
 }
