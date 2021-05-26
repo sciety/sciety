@@ -13,6 +13,7 @@ export const hero = toHtmlFragment(`
       </p>
       <p class="landing-page-hero__content_byline">Follow the journey through <a href="/blog">our blog</a>.</p>
       <form class="landing-page-hero__search_form" action="/search" method="get">
+        <input type="hidden" name="category" value="articles">
         <label for="searchText" class="visually-hidden">Search term</label>
         <input id="searchText" name="query" placeholder="Search for a topic of interest" class="landing-page-hero__search_text">
         <button type="submit" class="landing-page-hero__search_button">Search</button>

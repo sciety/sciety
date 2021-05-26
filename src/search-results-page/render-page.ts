@@ -21,6 +21,7 @@ export const renderPage = (searchResults: SearchResults): Page => ({
           <h1 class="page-heading--search">Search Sciety</h1>
         </header>
         <form action="/search" method="get" class="search-form">
+          <input type="hidden" name="category" value="articles">
           <label for="searchText" class="visually-hidden">Search term</label>
           ${htmlEscape`<input value="${searchResults.query}" id="searchText" name="query" placeholder="Find articles and evaluating groups…" class="search-form__text">`}
           <button type="reset" id="clearSearchText" class="search-form__clear visually-hidden">
