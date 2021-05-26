@@ -36,10 +36,14 @@ const renderSearchResult = (viewModel: ItemViewModel) => (
 );
 
 const categoryMenu = (searchResults: SearchResults) => `
-  <p class="search-results__summary">
-    Showing ${searchResults.itemsToDisplay.length} of ${searchResults.availableMatches} results for
-    <span class="search-results__query">${htmlEscape(searchResults.query)}</span>
-  </p>
+  <h3 class="visually-hidden">Search result categories</h3>
+  <ul class="search-results__categories" aria-role="list">
+    <li>
+      <a href="/search?query=${htmlEscape(searchResults.query)}&category=articles">All articles</a>
+    <li>
+      <a href="/search?query=${htmlEscape(searchResults.query)}&category=groups">Groups</a>
+    </li>
+  </ul>
 `;
 
 const summary = (searchResults: SearchResults) => `
