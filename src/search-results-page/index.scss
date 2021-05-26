@@ -50,7 +50,7 @@ $_clear-button-inline-size: 48px;
   grid-column: 1 / -1;
   margin-left: functions.px-to-rem($_search-form-inline-margin);
   margin-right: functions.px-to-rem($_search-form-inline-margin);
-  margin-bottom: baseline.increments(1.5);
+  margin-bottom: baseline.increments(3);
   position: relative;
 
   @include breakpoints.not-narrow {
