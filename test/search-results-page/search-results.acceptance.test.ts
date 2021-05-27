@@ -1,6 +1,43 @@
+import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
+import * as TO from 'fp-ts/TaskOption';
+import { pipe } from 'fp-ts/function';
+import { JSDOM } from 'jsdom';
+import { searchResultsPage } from '../../src/search-results-page';
+import { arbitraryString } from '../helpers';
+
 describe('search-results-page acceptance', () => {
   describe('given a query', () => {
-    it.todo('displays the query inside the search form');
+    it('displays the query inside the search form', async () => {
+      const query = arbitraryString();
+      const params = {
+        query,
+        category: O.none,
+      };
+      const ports = {
+        findGroups: () => T.of([]),
+        searchEuropePmc: () => TE.right({ items: [], total: 0 }),
+        findReviewsForArticleDoi: () => T.of([]),
+        findVersionsForArticleDoi: () => TO.none,
+        getAllEvents: T.of([]),
+        getGroup: () => TO.none,
+      };
+      const rendered = await pipe(
+        params,
+        searchResultsPage(ports),
+        (foo) => foo,
+        TE.match(
+          (errorPage) => errorPage.message,
+          (page) => page.content,
+        ),
+        T.map(JSDOM.fragment),
+      )();
+
+      const value = rendered.querySelector('#searchText')?.getAttribute('value');
+
+      expect(value).toBe(query);
+    });
 
     it.todo('displays the number of matching articles');
 
