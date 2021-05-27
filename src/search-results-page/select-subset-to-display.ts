@@ -1,5 +1,4 @@
 import * as RA from 'fp-ts/ReadonlyArray';
-import { pipe } from 'fp-ts/function';
 import { ArticleItem, GroupItem } from './data-types';
 import { LimitedSet } from './fetch-extra-details';
 
@@ -17,10 +16,7 @@ export const selectSubsetToDisplay = (limit: number) => (state: Matches): Limite
   ...state,
   availableArticleMatches: state.articles.total,
   availableGroupMatches: state.groups.length,
-  itemsToDisplay: pipe(
-    state.category,
-    (category) => ((category === 'groups')
-      ? RA.takeLeft(limit)(state.groups)
-      : RA.takeLeft(limit)(state.articles.items)),
-  ),
+  itemsToDisplay: (state.category === 'groups')
+    ? RA.takeLeft(limit)(state.groups)
+    : RA.takeLeft(limit)(state.articles.items),
 });
