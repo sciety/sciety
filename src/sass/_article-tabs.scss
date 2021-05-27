@@ -1,7 +1,7 @@
 @use 'tabs';
 
 .article-tabs-container {
-  @include tabs.tabs;
+  @include tabs.container;
 }
 
 .article-tab {
@@ -9,9 +9,9 @@
 }
 
 .article-tab--link {
-  @include tabs.tabs-link();
+  @include tabs.tab-link();
 }
 
 .article-tab--heading {
-  @include tabs.tabs-heading();
+  @include tabs.tab-heading();
 }

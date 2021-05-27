@@ -6,7 +6,7 @@
 @use 'breakpoints';
 @use 'typography';
 
-@mixin tabs() {
+@mixin container() {
   border-bottom: 2px solid transparent;
 }
 
@@ -23,7 +23,7 @@
   padding: functions.px-to-rem(13px) 1rem functions.px-to-rem(15px);
 }
 
-@mixin tabs-link() {
+@mixin tab-link() {
   &:link,
   &:visited {
     color: settings.$colour-text-primary;
@@ -35,6 +35,6 @@
   }
 }
 
-@mixin tabs-heading {
+@mixin tab-heading {
   border-bottom: 2px solid settings.$colour-accent;
 }
