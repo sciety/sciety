@@ -1,6 +1,7 @@
 import { htmlEscape } from 'escape-goat';
+import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
-export const renderSearchForm = (query: string) => `
+export const renderSearchForm = (query: string): HtmlFragment => toHtmlFragment(`
   <form action="/search" method="get" class="search-form">
     <input type="hidden" name="category" value="articles">
     <label for="searchText" class="visually-hidden">Search term</label>
@@ -10,4 +11,4 @@ export const renderSearchForm = (query: string) => `
     </button>
     <button type="submit" class="visually-hidden">Search</button>
   </form>
-`;
+`);
