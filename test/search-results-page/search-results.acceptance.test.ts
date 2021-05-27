@@ -48,7 +48,12 @@ describe('search-results-page acceptance', () => {
       expect(value).toContain('Articles (0');
     });
 
-    it.todo('displays the number of matching groups');
+    it('displays the number of matching groups', async () => {
+      const rendered = await renderPage(ports, params)();
+      const value = rendered.querySelector('.search-results-tab--link')?.innerHTML;
+
+      expect(value).toContain('Groups (0');
+    });
 
     describe('with no category provided', () => {
       it.todo('defaults to "articles" category');
