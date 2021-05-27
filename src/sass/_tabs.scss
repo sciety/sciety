@@ -1,0 +1,40 @@
+@use 'sass:math';
+@use 'settings';
+@use 'functions';
+
+@use 'baseline';
+@use 'breakpoints';
+@use 'typography';
+
+@mixin tabs() {
+  border-bottom: 2px solid transparent;
+}
+
+@mixin tab() {
+  @include typography.button();
+  line-height: math.div(20px, 14px);
+  min-width: functions.px-to-rem(120px);
+  display: inline-block;
+  margin-bottom: -2px;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #37474f;
+  padding: functions.px-to-rem(13px) 1rem functions.px-to-rem(15px);
+}
+
+@mixin tabs-link() {
+  &:link,
+  &:visited {
+    color: settings.$colour-text-primary;
+
+    &:hover,
+    &:active {
+      color: settings.$colour-accent;
+    }
+  }
+}
+
+@mixin tabs-heading {
+  border-bottom: 2px solid settings.$colour-accent;
+}

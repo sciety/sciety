@@ -1,39 +1,17 @@
-@use 'sass:math';
-@use 'baseline';
-@use 'breakpoints';
-@use 'functions';
-@use 'settings';
-@use 'typography';
+@use 'tabs';
 
 .article-tabs {
-  border-bottom: 2px solid transparent;
+  @include tabs.tabs;
 }
 
 .article-tabs__tab {
-  @include typography.button();
-  line-height: math.div(20px, 14px);
-  min-width: functions.px-to-rem(120px);
-  display: inline-block;
-  margin-bottom: -2px;
-  text-align: center;
-  text-transform: uppercase;
-  font-weight: bold;
-  color: #37474f;
-  padding: functions.px-to-rem(13px) 1rem functions.px-to-rem(15px);
+  @include tabs.tab();
 }
 
 .article-tabs__link {
-  &:link,
-  &:visited {
-    color: settings.$colour-text-primary;
-
-    &:hover,
-    &:active {
-      color: settings.$colour-accent;
-    }
-  }
+  @include tabs.tabs-link();
 }
 
 .article-tabs__heading {
-  border-bottom: 2px solid settings.$colour-accent;
+  @include tabs.tabs-heading();
 }
