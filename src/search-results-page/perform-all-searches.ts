@@ -4,7 +4,6 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
-import * as tt from 'io-ts-types';
 import { ArticleItem } from './data-types';
 import { Matches } from './select-subset-to-display';
 import { GroupId } from '../types/group-id';
@@ -25,12 +24,10 @@ export type Ports = {
 
 export const paramsCodec = t.type({
   query: t.string,
-  category: tt.optionFromNullable(
-    t.union([
-      t.literal('groups'),
-      t.literal('articles'),
-    ]),
-  ),
+  category: t.union([
+    t.literal('groups'),
+    t.literal('articles'),
+  ]),
 });
 
 export type Params = t.TypeOf<typeof paramsCodec>;

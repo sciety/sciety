@@ -1,4 +1,3 @@
-import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { selectSubsetToDisplay } from '../../src/search-results-page/select-subset-to-display';
 import { toHtmlFragment } from '../../src/types/html-fragment';
@@ -22,39 +21,12 @@ const arbitraryGroupItem = () => ({
 });
 
 describe('select-subset-to-display', () => {
-  describe('given no category', () => {
-    describe('prioritizes groups over articles', () => {
-      it('returns 2 groups and 0 articles when given a limit of 2, and 2 of each', () => {
-        const groupItem1 = arbitraryGroupItem();
-        const groupItem2 = arbitraryGroupItem();
-        const state = {
-          query: '',
-          category: O.none,
-          groups: [groupItem1, groupItem2],
-          articles: {
-            items: [arbitraryArticleItem(), arbitraryArticleItem()],
-            total: 2,
-          },
-        };
-        const result = selectSubsetToDisplay(2)(state);
-
-        expect(result.itemsToDisplay).toStrictEqual([groupItem1, groupItem2]);
-      });
-    });
-
-    describe('length limit', () => { });
-
-    describe('total calculation', () => { });
-
-    describe('maintaining order of results', () => { });
-  });
-
   describe('given the category of "articles"', () => {
     it('returns only articles when given articles and groups', () => {
       const articleItem = arbitraryArticleItem();
       const state = {
         query: '',
-        category: O.some('articles'),
+        category: 'articles',
         groups: [arbitraryGroupItem()],
         articles: {
           items: [articleItem],
@@ -74,7 +46,7 @@ describe('select-subset-to-display', () => {
       const groupItem = arbitraryGroupItem();
       const state = {
         query: '',
-        category: O.some('groups'),
+        category: 'groups',
         groups: [groupItem],
         articles: {
           items: [arbitraryArticleItem()],

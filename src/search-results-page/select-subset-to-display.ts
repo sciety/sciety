@@ -6,7 +6,7 @@ import { LimitedSet } from './fetch-extra-details';
 
 export type Matches = {
   query: string,
-  category: O.Option<string>,
+  category: string,
   groups: ReadonlyArray<GroupItem>,
   articles: {
     items: ReadonlyArray<ArticleItem>,
@@ -27,10 +27,7 @@ export const selectSubsetToDisplay = (limit: number) => (state: Matches): Limite
   availableGroupMatches: state.groups.length,
   itemsToDisplay: pipe(
     state.category,
-    O.fold(
-      () => [...state.groups, ...state.articles.items],
-      (category) => ((category === 'groups') ? [...state.groups] : [...state.articles.items]),
-    ),
+    (category) => ((category === 'groups') ? [...state.groups] : [...state.articles.items]),
     RA.takeLeft(limit),
   ),
 });
