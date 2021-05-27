@@ -7,6 +7,8 @@
 @use '../sass/list';
 @use '../sass/settings';
 @use '../sass/typography';
+@use '../sass/tabs';
+
 
 $_vertical-space-above-title--narrow: baseline.increments(2);
 $_vertical-space-above-title--wide: baseline.increments(5);
@@ -100,6 +102,22 @@ $_clear-button-inline-size: 48px;
   @include breakpoints.not-narrow {
     grid-column: 3 / 11;
   }
+}
+
+.search-results-tabs {
+  @include tabs.tabs;
+}
+
+.search-results-tabs__tab {
+  @include tabs.tab();
+}
+
+.search-results-tabs__link {
+  @include tabs.tabs-link();
+}
+
+.search-results-tabs__heading {
+  @include tabs.tabs-heading();
 }
 
 .search-results-list {
