@@ -41,11 +41,11 @@ const renderSearchResult = (viewModel: ItemViewModel) => (
 
 const menuWithGroupsActive = (searchResults: SearchResults) => `
   <a href="/search?query=${htmlEscape(searchResults.query)}&category=articles" class="article-tabs__tab article-tabs__link" aria-label="Discover matching articles (${searchResults.availableArticleMatches} search results)">Articles (${searchResults.availableArticleMatches})</a>
-  <h2 class="article-tabs__tab article-tabs__heading"><span class="visually-hidden">Currently showing </span>Groups (${searchResults.availableGroupMatches}<span class="visually-hidden"> search results</span>)</h2>
+  <h3 class="article-tabs__tab article-tabs__heading"><span class="visually-hidden">Currently showing </span>Groups (${searchResults.availableGroupMatches}<span class="visually-hidden"> search results</span>)</h3>
 `;
 
 const menuWithArticlesActive = (searchResults: SearchResults) => `
-  <h2 class="article-tabs__tab article-tabs__heading"><span class="visually-hidden">Currently showing </span>Articles (${searchResults.availableArticleMatches}<span class="visually-hidden"> search results</span>)</h2>
+  <h3 class="article-tabs__tab article-tabs__heading"><span class="visually-hidden">Currently showing </span>Articles (${searchResults.availableArticleMatches}<span class="visually-hidden"> search results</span>)</h3>
   <a href="/search?query=${htmlEscape(searchResults.query)}&category=groups" class="article-tabs__tab article-tabs__link" aria-label="Discover matching groups (${searchResults.availableGroupMatches} search results)">Groups (${searchResults.availableGroupMatches}<span class="visually-hidden"> search results</span>)</a>
 `;
 
