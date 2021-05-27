@@ -104,19 +104,19 @@ $_clear-button-inline-size: 48px;
   }
 }
 
-.search-results-tabs {
+.search-results-tabs-container {
   @include tabs.tabs;
 }
 
-.search-results-tabs__tab {
+.search-results-tab {
   @include tabs.tab();
 }
 
-.search-results-tabs__link {
+.search-results-tab--link {
   @include tabs.tabs-link();
 }
 
-.search-results-tabs__heading {
+.search-results-tab--heading {
   @include tabs.tabs-heading();
 }
 

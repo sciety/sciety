@@ -1,17 +1,17 @@
 @use 'tabs';
 
-.article-tabs {
+.article-tabs-container {
   @include tabs.tabs;
 }
 
-.article-tabs__tab {
+.article-tab {
   @include tabs.tab();
 }
 
-.article-tabs__link {
+.article-tab--link {
   @include tabs.tabs-link();
 }
 
-.article-tabs__heading {
+.article-tab--heading {
   @include tabs.tabs-heading();
 }

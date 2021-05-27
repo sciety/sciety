@@ -27,9 +27,9 @@ export const renderMetaPage = (components: {
       </div>
     </header>
 
-    <div class="article-tabs">
-      <h2 class="article-tabs__tab article-tabs__heading">Article</h2>
-      <a class="article-tabs__tab article-tabs__link" href="/articles/activity/${components.doi.value}" aria-label="Discover article activity">Activity</a>
+    <div class="article-tabs-container">
+      <h2 class="article-tab article-tab--heading">Article</h2>
+      <a class="article-tab article-tab--link" href="/articles/activity/${components.doi.value}" aria-label="Discover article activity">Activity</a>
     </div>
 
     <div class="main-content main-content--meta">
