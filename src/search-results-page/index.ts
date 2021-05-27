@@ -16,7 +16,7 @@ type FindVersionsForArticleDoi = (
   server: ArticleServer,
 ) => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<{ occurredAt: Date }>>;
 
-export type Ports = PerformAllSearchesPorts & {
+type Ports = PerformAllSearchesPorts & {
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
   getAllEvents: GetAllEvents,

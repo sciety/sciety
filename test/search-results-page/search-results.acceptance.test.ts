@@ -4,9 +4,18 @@ import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
-import { Ports, searchResultsPage } from '../../src/search-results-page';
-import { Params } from '../../src/search-results-page/perform-all-searches';
+import { searchResultsPage } from '../../src/search-results-page';
+import { FindReviewsForArticleDoi, GetAllEvents, GetGroup } from '../../src/search-results-page/fetch-extra-details';
+import { Params, Ports as PerformAllSearchesPorts } from '../../src/search-results-page/perform-all-searches';
+import { FindVersionsForArticleDoi } from '../../src/shared-components/article-card/get-latest-article-version-date';
 import { arbitraryString } from '../helpers';
+
+type Ports = PerformAllSearchesPorts & {
+  findReviewsForArticleDoi: FindReviewsForArticleDoi,
+  findVersionsForArticleDoi: FindVersionsForArticleDoi,
+  getAllEvents: GetAllEvents,
+  getGroup: GetGroup,
+};
 
 const renderPage = (ports: Ports, params: Params) => pipe(
   params,
