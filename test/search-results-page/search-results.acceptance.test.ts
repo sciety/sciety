@@ -4,64 +4,45 @@ import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
-import { searchResultsPage } from '../../src/search-results-page';
+import { Ports, searchResultsPage } from '../../src/search-results-page';
+import { Params } from '../../src/search-results-page/perform-all-searches';
 import { arbitraryString } from '../helpers';
+
+const renderPage = (ports: Ports, params: Params) => pipe(
+  params,
+  searchResultsPage(ports),
+  TE.match(
+    (errorPage) => errorPage.message,
+    (page) => page.content,
+  ),
+  T.map(JSDOM.fragment),
+);
 
 describe('search-results-page acceptance', () => {
   describe('given a query', () => {
-    it('displays the query inside the search form', async () => {
-      const query = arbitraryString();
-      const params = {
-        query,
-        category: O.none,
-      };
-      const ports = {
-        findGroups: () => T.of([]),
-        searchEuropePmc: () => TE.right({ items: [], total: 0 }),
-        findReviewsForArticleDoi: () => T.of([]),
-        findVersionsForArticleDoi: () => TO.none,
-        getAllEvents: T.of([]),
-        getGroup: () => TO.none,
-      };
-      const rendered = await pipe(
-        params,
-        searchResultsPage(ports),
-        TE.match(
-          (errorPage) => errorPage.message,
-          (page) => page.content,
-        ),
-        T.map(JSDOM.fragment),
-      )();
+    const query = arbitraryString();
+    const params = {
+      query,
+      category: O.none,
+    };
+    const ports = {
+      findGroups: () => T.of([]),
+      searchEuropePmc: () => TE.right({ items: [], total: 0 }),
+      findReviewsForArticleDoi: () => T.of([]),
+      findVersionsForArticleDoi: () => TO.none,
+      getAllEvents: T.of([]),
+      getGroup: () => TO.none,
+    };
 
+    it('displays the query inside the search form', async () => {
+      const rendered = await renderPage(ports, params)();
       const value = rendered.querySelector('#searchText')?.getAttribute('value');
 
       expect(value).toBe(query);
     });
 
     it('displays the number of matching articles', async () => {
-      const query = arbitraryString();
-      const params = {
-        query,
-        category: O.none,
-      };
-      const ports = {
-        findGroups: () => T.of([]),
-        searchEuropePmc: () => TE.right({ items: [], total: 0 }),
-        findReviewsForArticleDoi: () => T.of([]),
-        findVersionsForArticleDoi: () => TO.none,
-        getAllEvents: T.of([]),
-        getGroup: () => TO.none,
-      };
-      const rendered = await pipe(
-        params,
-        searchResultsPage(ports),
-        TE.match(
-          (errorPage) => errorPage.message,
-          (page) => page.content,
-        ),
-        T.map(JSDOM.fragment),
-      )();
-
+      const rendered = await renderPage(ports, params)();
       const value = rendered.querySelector('.search-results-tab--heading')?.innerHTML;
 
       expect(value).toContain('Articles (0');
