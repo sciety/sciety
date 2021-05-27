@@ -26,7 +26,6 @@ describe('search-results-page acceptance', () => {
       const rendered = await pipe(
         params,
         searchResultsPage(ports),
-        (foo) => foo,
         TE.match(
           (errorPage) => errorPage.message,
           (page) => page.content,
@@ -39,7 +38,34 @@ describe('search-results-page acceptance', () => {
       expect(value).toBe(query);
     });
 
-    it.todo('displays the number of matching articles');
+    it('displays the number of matching articles', async () => {
+      const query = arbitraryString();
+      const params = {
+        query,
+        category: O.none,
+      };
+      const ports = {
+        findGroups: () => T.of([]),
+        searchEuropePmc: () => TE.right({ items: [], total: 0 }),
+        findReviewsForArticleDoi: () => T.of([]),
+        findVersionsForArticleDoi: () => TO.none,
+        getAllEvents: T.of([]),
+        getGroup: () => TO.none,
+      };
+      const rendered = await pipe(
+        params,
+        searchResultsPage(ports),
+        TE.match(
+          (errorPage) => errorPage.message,
+          (page) => page.content,
+        ),
+        T.map(JSDOM.fragment),
+      )();
+
+      const value = rendered.querySelector('.search-results-tab--heading')?.innerHTML;
+
+      expect(value).toContain('Articles (0');
+    });
 
     it.todo('displays the number of matching groups');
 
