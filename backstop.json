@@ -48,7 +48,7 @@
     },
     {
       "label": "Group search",
-      "url": "http://sciety_app/search?query=peer+community+in+archaeology"
+      "url": "http://sciety_app/search?query=peer+community+in+archaeology&category=groups"
     },
     {
       "label": "ScietyHQ user page",

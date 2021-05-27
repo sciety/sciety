@@ -1,9 +1,11 @@
 import { sequenceS } from 'fp-ts/Apply';
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { constant, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
+import * as tt from 'io-ts-types';
 import { ArticleItem } from './data-types';
 import { Matches } from './select-subset-to-display';
 import { GroupId } from '../types/group-id';
@@ -24,10 +26,12 @@ export type Ports = {
 
 export const paramsCodec = t.type({
   query: t.string,
-  category: t.union([
-    t.literal('groups'),
-    t.literal('articles'),
-  ]),
+  category: tt.optionFromNullable(
+    t.union([
+      t.literal('groups'),
+      t.literal('articles'),
+    ]),
+  ),
 });
 
 export type Params = t.TypeOf<typeof paramsCodec>;
@@ -35,7 +39,7 @@ export type Params = t.TypeOf<typeof paramsCodec>;
 export const performAllSearches = (ports: Ports) => (params: Params): TE.TaskEither<'unavailable', Matches> => pipe(
   {
     query: TE.right(params.query),
-    category: TE.right(params.category),
+    category: TE.right(O.getOrElse(constant('articles'))(params.category)),
     articles: pipe(
       params.query,
       ports.searchEuropePmc,
