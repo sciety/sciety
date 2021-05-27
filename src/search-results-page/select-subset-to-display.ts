@@ -23,7 +23,6 @@ export const selectSubsetToDisplay = (limit: number) => (state: Matches): Limite
       (category) => category,
     ),
   ),
-  availableMatches: state.groups.length + state.articles.total,
   availableArticleMatches: state.articles.total,
   availableGroupMatches: state.groups.length,
   itemsToDisplay: pipe(

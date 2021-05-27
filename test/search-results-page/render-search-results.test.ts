@@ -24,7 +24,6 @@ describe('render-search-results component', () => {
         {
           query: 'something',
           category: 'articles',
-          availableMatches: 5,
           availableArticleMatches,
           availableGroupMatches,
           itemsToDisplay: [
@@ -45,7 +44,6 @@ describe('render-search-results component', () => {
         {
           query: 'something',
           category: 'articles',
-          availableMatches: 0,
           availableArticleMatches: 0,
           availableGroupMatches: 0,
           itemsToDisplay: [],

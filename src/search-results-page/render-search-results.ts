@@ -16,7 +16,6 @@ export type SearchResults = {
   query: string,
   category: string,
   itemsToDisplay: ReadonlyArray<ItemViewModel>,
-  availableMatches: number,
   availableArticleMatches: number,
   availableGroupMatches: number,
 };
