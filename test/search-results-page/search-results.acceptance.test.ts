@@ -1,13 +1,13 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import { searchResultsPage } from '../../src/search-results-page';
 import { Page } from '../../src/types/page';
 import { RenderPageError } from '../../src/types/render-page-error';
 import { arbitraryString } from '../helpers';
+import { shouldNotBeCalled } from '../should-not-be-called';
 
 const contentOf = (page: TE.TaskEither<RenderPageError, Page>) => pipe(
   page,
@@ -25,19 +25,19 @@ describe('search-results-page acceptance', () => {
       query,
       category: O.none,
     };
-    const ports = {
+    const adaptors = {
       findGroups: () => T.of([]),
       searchEuropePmc: () => TE.right({ items: [], total: 0 }),
-      findReviewsForArticleDoi: () => T.of([]),
-      findVersionsForArticleDoi: () => TO.none,
-      getAllEvents: T.of([]),
-      getGroup: () => TO.none,
+      findReviewsForArticleDoi: shouldNotBeCalled,
+      findVersionsForArticleDoi: shouldNotBeCalled,
+      getAllEvents: shouldNotBeCalled,
+      getGroup: () => shouldNotBeCalled,
     };
 
     it('displays the query inside the search form', async () => {
       const page = pipe(
         params,
-        searchResultsPage(ports),
+        searchResultsPage(adaptors),
       );
       const rendered = await contentOf(page)();
       const value = rendered.querySelector('#searchText')?.getAttribute('value');
@@ -48,7 +48,7 @@ describe('search-results-page acceptance', () => {
     it('displays the number of matching articles', async () => {
       const page = pipe(
         params,
-        searchResultsPage(ports),
+        searchResultsPage(adaptors),
       );
       const rendered = await contentOf(page)();
       const tabHtml = rendered.querySelector('.search-results-tab--heading')?.innerHTML;
@@ -59,7 +59,7 @@ describe('search-results-page acceptance', () => {
     it('displays the number of matching groups', async () => {
       const page = pipe(
         params,
-        searchResultsPage(ports),
+        searchResultsPage(adaptors),
       );
       const rendered = await contentOf(page)();
       const tabHtml = rendered.querySelector('.search-results-tab--link')?.innerHTML;
