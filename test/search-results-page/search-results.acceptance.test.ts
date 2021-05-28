@@ -9,7 +9,7 @@ import { toHtmlFragment } from '../../src/types/html-fragment';
 import { Page } from '../../src/types/page';
 import { RenderPageError } from '../../src/types/render-page-error';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
-import { arbitraryDate, arbitraryString } from '../helpers';
+import { arbitraryDate, arbitraryNumber, arbitraryString } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
@@ -37,6 +37,7 @@ describe('search-results-page acceptance', () => {
     const query = arbitraryString();
     const params = {
       query,
+      pageSize: arbitraryNumber(5, 10),
       category: O.none,
     };
 
@@ -88,7 +89,11 @@ describe('search-results-page acceptance', () => {
     describe('with no category provided', () => {
       it('defaults to "articles" category', async () => {
         const page = pipe(
-          { query: arbitraryString(), category: O.none },
+          {
+            query: arbitraryString(),
+            pageSize: arbitraryNumber(5, 10),
+            category: O.none,
+          },
           searchResultsPage({
             ...dummyAdapters,
             findGroups: () => T.of([]),
@@ -117,7 +122,11 @@ describe('search-results-page acceptance', () => {
         it.skip('displays the first n articles if more than n matching articles', async () => {
           const n = 2;
           const page = pipe(
-            { query: arbitraryString(), category: O.some('articles' as const) },
+            {
+              query: arbitraryString(),
+              pageSize: n,
+              category: O.some('articles' as const),
+            },
             searchResultsPage({
               ...dummyAdapters,
               findGroups: () => T.of([]),
@@ -141,7 +150,11 @@ describe('search-results-page acceptance', () => {
 
         it('only displays article results', async () => {
           const page = pipe(
-            { query: arbitraryString(), category: O.some('articles' as const) },
+            {
+              query: arbitraryString(),
+              pageSize: arbitraryNumber(5, 10),
+              category: O.some('articles' as const),
+            },
             searchResultsPage({
               ...dummyAdapters,
               findGroups: () => T.of([arbitraryGroupId()]),
@@ -156,7 +169,11 @@ describe('search-results-page acceptance', () => {
 
         it('displays "Articles" as the active tab', async () => {
           const page = pipe(
-            { query: arbitraryString(), category: O.some('articles' as const) },
+            {
+              query: arbitraryString(),
+              pageSize: arbitraryNumber(5, 10),
+              category: O.some('articles' as const),
+            },
             searchResultsPage({
               ...dummyAdapters,
               findGroups: () => T.of([arbitraryGroupId()]),
@@ -171,7 +188,11 @@ describe('search-results-page acceptance', () => {
 
         it('displays "Groups" as a link tab', async () => {
           const page = pipe(
-            { query: arbitraryString(), category: O.some('articles' as const) },
+            {
+              query: arbitraryString(),
+              pageSize: arbitraryNumber(5, 10),
+              category: O.some('articles' as const),
+            },
             searchResultsPage({
               ...dummyAdapters,
               findGroups: () => T.of([arbitraryGroupId()]),

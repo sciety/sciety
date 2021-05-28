@@ -34,7 +34,9 @@ export const paramsCodec = t.type({
   ),
 });
 
-export type Params = t.TypeOf<typeof paramsCodec>;
+export type Params = t.TypeOf<typeof paramsCodec> & {
+  pageSize: number,
+};
 
 export const performAllSearches = (ports: Ports) => (params: Params): TE.TaskEither<'unavailable', Matches> => pipe(
   {

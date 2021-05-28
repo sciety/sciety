@@ -186,6 +186,10 @@ export const createRouter = (adapters: Adapters): Router => {
     },
     pageHandler(flow(
       searchResultsPageParams.decode,
+      E.map((params) => ({
+        ...params,
+        pageSize: 20,
+      })),
       E.fold(
         () => TE.right(searchPage),
         searchResultsPage(adapters),
