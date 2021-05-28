@@ -104,7 +104,7 @@ describe('search-results-page acceptance', () => {
       describe('with "articles" as category', () => {
         it('only displays article results', async () => {
           const page = pipe(
-            { query: arbitraryString(), category: O.some('articles') },
+            { query: arbitraryString(), category: O.some('articles' as const) },
             searchResultsPage({
               ...dummyAdapters,
               findGroups: () => T.of([arbitraryGroupId()]),
