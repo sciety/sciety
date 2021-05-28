@@ -29,7 +29,7 @@ type SearchResultsPage = (params: Params) => ReturnType<RenderPage>;
 
 export const searchResultsPage = (ports: Ports): SearchResultsPage => flow(
   performAllSearches(ports),
-  TE.map(selectSubsetToDisplay(10)),
+  TE.map(selectSubsetToDisplay),
   TE.chainTaskK(fetchExtraDetails({
     ...ports,
     getLatestArticleVersionDate: (doi, server) => pipe(

@@ -41,6 +41,7 @@ export type Params = t.TypeOf<typeof paramsCodec> & {
 export const performAllSearches = (ports: Ports) => (params: Params): TE.TaskEither<'unavailable', Matches> => pipe(
   {
     query: TE.right(params.query),
+    pageSize: TE.right(params.pageSize),
     category: TE.right(O.getOrElse(constant('articles'))(params.category)),
     articles: pipe(
       params.query,

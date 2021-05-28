@@ -119,7 +119,7 @@ describe('search-results-page acceptance', () => {
 
         it.todo('when there are fewer than n article results displays all');
 
-        it.skip('displays the first n articles if more than n matching articles', async () => {
+        it('displays the first n articles if more than n matching articles', async () => {
           const n = 2;
           const page = pipe(
             {

@@ -26,6 +26,7 @@ describe('select-subset-to-display', () => {
       const articleItem = arbitraryArticleItem();
       const state = {
         query: '',
+        pageSize: 2,
         category: 'articles',
         groups: [arbitraryGroupItem()],
         articles: {
@@ -33,7 +34,7 @@ describe('select-subset-to-display', () => {
           total: 1,
         },
       };
-      const result = selectSubsetToDisplay(2)(state);
+      const result = selectSubsetToDisplay(state);
 
       expect(result.itemsToDisplay).toStrictEqual([articleItem]);
     });
@@ -46,6 +47,7 @@ describe('select-subset-to-display', () => {
       const groupItem = arbitraryGroupItem();
       const state = {
         query: '',
+        pageSize: 2,
         category: 'groups',
         groups: [groupItem],
         articles: {
@@ -53,7 +55,7 @@ describe('select-subset-to-display', () => {
           total: 1,
         },
       };
-      const result = selectSubsetToDisplay(2)(state);
+      const result = selectSubsetToDisplay(state);
 
       expect(result.itemsToDisplay).toStrictEqual([groupItem]);
     });

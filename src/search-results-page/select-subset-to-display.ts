@@ -4,6 +4,7 @@ import { LimitedSet } from './fetch-extra-details';
 
 export type Matches = {
   query: string,
+  pageSize: number,
   category: string,
   groups: ReadonlyArray<GroupItem>,
   articles: {
@@ -12,11 +13,11 @@ export type Matches = {
   },
 };
 
-export const selectSubsetToDisplay = (limit: number) => (state: Matches): LimitedSet => ({
+export const selectSubsetToDisplay = (state: Matches): LimitedSet => ({
   ...state,
   availableArticleMatches: state.articles.total,
   availableGroupMatches: state.groups.length,
   itemsToDisplay: (state.category === 'groups')
-    ? RA.takeLeft(limit)(state.groups)
-    : RA.takeLeft(limit)(state.articles.items),
+    ? RA.takeLeft(state.pageSize)(state.groups)
+    : RA.takeLeft(state.pageSize)(state.articles.items),
 });
