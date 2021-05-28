@@ -17,10 +17,6 @@ $_search-button-width: functions.px-to-rem(70px);
   @include common.container-horizontal-spacing();
   display: flex;
   justify-content: center;
-
-  @media screen and (min-width: common.$landing-page-breakpoint) {
-    margin-top: baseline.increments(25); // Breathing space above image
-  }
 }
 
 .landing-page-hero__search_form {
