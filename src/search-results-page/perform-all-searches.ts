@@ -15,7 +15,7 @@ type ArticleResults = {
   total: number,
 };
 
-type FindArticles = (query: string) => TE.TaskEither<'unavailable', ArticleResults>;
+type FindArticles = (pageSize: number) => (query: string) => TE.TaskEither<'unavailable', ArticleResults>;
 
 type FindGroups = (q: string) => T.Task<ReadonlyArray<GroupId>>;
 
@@ -44,7 +44,7 @@ export const performAllSearches = (ports: Ports) => (params: Params): TE.TaskEit
     category: TE.right(O.getOrElse(constant('articles'))(params.category)),
     articles: pipe(
       params.query,
-      ports.searchEuropePmc,
+      ports.searchEuropePmc(params.pageSize),
     ),
     groups: pipe(
       params.query,

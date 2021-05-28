@@ -6,7 +6,7 @@ import { dummyLogger } from '../dummy-logger';
 
 describe('search-europe-pmc adapter', () => {
   it('converts Europe PMC search result into our Domain Model', async () => {
-    const results = await searchEuropePmc('some query')({
+    const results = await searchEuropePmc(10)('some query')({
       getJson: async () => ({
         hitCount: 1,
         resultList: {
@@ -51,7 +51,7 @@ describe('search-europe-pmc adapter', () => {
   });
 
   it('handles collective name and full name authors', async () => {
-    const results = await searchEuropePmc('some query')({
+    const results = await searchEuropePmc(10)('some query')({
       getJson: async () => ({
         hitCount: 1,
         resultList: {
@@ -101,7 +101,7 @@ describe('search-europe-pmc adapter', () => {
     });
     const spy = jest.fn(getJson);
 
-    await searchEuropePmc('Structural basis of αE&')({ getJson: spy, logger: dummyLogger })();
+    await searchEuropePmc(10)('Structural basis of αE&')({ getJson: spy, logger: dummyLogger })();
 
     expect(spy).toHaveBeenCalledTimes(1);
 

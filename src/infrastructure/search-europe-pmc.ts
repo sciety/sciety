@@ -35,8 +35,6 @@ type Dependencies = {
   logger: Logger,
 };
 
-type SearchEuropePmc = (query: string) => RTE.ReaderTaskEither<Dependencies, 'unavailable', SearchResults>;
-
 const europePmcPublisher = t.union([t.literal('bioRxiv'), t.literal('medRxiv')]);
 
 const europePmcAuthor = t.union([
@@ -67,11 +65,11 @@ type EuropePmcResponse = t.TypeOf<typeof europePmcResponse>;
 
 type EuropePmcPublisher = t.TypeOf<typeof europePmcPublisher>;
 
-const constructQueryParams = (query: string) => (
+const constructQueryParams = (pageSize: number) => (query: string) => (
   new URLSearchParams({
     query: `${query} (PUBLISHER:"bioRxiv" OR PUBLISHER:"medRxiv") sort_date:y`,
     format: 'json',
-    pageSize: '10',
+    pageSize: pageSize.toString(),
     resultType: 'core',
   }));
 
@@ -123,8 +121,12 @@ const getFromUrl: GetFromUrl = (url: string) => ({ getJson, logger }: Dependenci
   )),
 );
 
-export const searchEuropePmc: SearchEuropePmc = flow(
-  constructQueryParams,
+type SearchEuropePmc = (pageSize: number)
+=> (query: string)
+=> RTE.ReaderTaskEither<Dependencies, 'unavailable', SearchResults>;
+
+export const searchEuropePmc: SearchEuropePmc = (pageSize) => flow(
+  constructQueryParams(pageSize),
   constructSearchUrl,
   getFromUrl,
   RTE.map(constructSearchResults),

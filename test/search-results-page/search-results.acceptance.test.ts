@@ -47,7 +47,7 @@ describe('search-results-page acceptance', () => {
         searchResultsPage({
           ...dummyAdapters,
           findGroups: () => T.of([]),
-          searchEuropePmc: () => TE.right({ items: [], total: 0 }),
+          searchEuropePmc: () => () => TE.right({ items: [], total: 0 }),
         }),
       );
       const rendered = await contentOf(page)();
@@ -62,7 +62,7 @@ describe('search-results-page acceptance', () => {
         searchResultsPage({
           ...dummyAdapters,
           findGroups: () => T.of([]),
-          searchEuropePmc: () => TE.right({ items: [], total: 0 }),
+          searchEuropePmc: () => () => TE.right({ items: [], total: 0 }),
         }),
       );
       const rendered = await contentOf(page)();
@@ -77,7 +77,7 @@ describe('search-results-page acceptance', () => {
         searchResultsPage({
           ...dummyAdapters,
           findGroups: () => T.of([]),
-          searchEuropePmc: () => TE.right({ items: [], total: 0 }),
+          searchEuropePmc: () => () => TE.right({ items: [], total: 0 }),
         }),
       );
       const rendered = await contentOf(page)();
@@ -97,7 +97,7 @@ describe('search-results-page acceptance', () => {
           searchResultsPage({
             ...dummyAdapters,
             findGroups: () => T.of([]),
-            searchEuropePmc: () => TE.right({ items: [], total: 0 }),
+            searchEuropePmc: () => () => TE.right({ items: [], total: 0 }),
           }),
         );
         const rendered = await contentOf(page)();
@@ -130,7 +130,7 @@ describe('search-results-page acceptance', () => {
             searchResultsPage({
               ...dummyAdapters,
               findGroups: () => T.of([]),
-              searchEuropePmc: () => TE.right({
+              searchEuropePmc: () => () => TE.right({
                 items: [
                   arbitraryArticleItem(),
                   arbitraryArticleItem(),
@@ -158,7 +158,7 @@ describe('search-results-page acceptance', () => {
             searchResultsPage({
               ...dummyAdapters,
               findGroups: () => T.of([arbitraryGroupId()]),
-              searchEuropePmc: () => TE.right({ items: [], total: 0 }),
+              searchEuropePmc: () => () => TE.right({ items: [], total: 0 }),
             }),
           );
           const rendered = await contentOf(page)();
@@ -177,7 +177,7 @@ describe('search-results-page acceptance', () => {
             searchResultsPage({
               ...dummyAdapters,
               findGroups: () => T.of([arbitraryGroupId()]),
-              searchEuropePmc: () => TE.right({ items: [], total: 0 }),
+              searchEuropePmc: () => () => TE.right({ items: [], total: 0 }),
             }),
           );
           const rendered = await contentOf(page)();
@@ -196,7 +196,7 @@ describe('search-results-page acceptance', () => {
             searchResultsPage({
               ...dummyAdapters,
               findGroups: () => T.of([arbitraryGroupId()]),
-              searchEuropePmc: () => TE.right({ items: [], total: 0 }),
+              searchEuropePmc: () => () => TE.right({ items: [], total: 0 }),
             }),
           );
           const rendered = await contentOf(page)();
