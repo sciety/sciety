@@ -8,6 +8,16 @@ import { Page } from '../../src/types/page';
 import { RenderPageError } from '../../src/types/render-page-error';
 import { arbitraryString } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
+import { arbitraryGroupId } from '../types/group-id.helper';
+
+const dummyAdapters = {
+  findGroups: shouldNotBeCalled,
+  searchEuropePmc: shouldNotBeCalled,
+  findReviewsForArticleDoi: shouldNotBeCalled,
+  findVersionsForArticleDoi: shouldNotBeCalled,
+  getAllEvents: shouldNotBeCalled,
+  getGroup: () => shouldNotBeCalled,
+};
 
 const contentOf = (page: TE.TaskEither<RenderPageError, Page>) => pipe(
   page,
@@ -25,19 +35,15 @@ describe('search-results-page acceptance', () => {
       query,
       category: O.none,
     };
-    const adaptors = {
-      findGroups: () => T.of([]),
-      searchEuropePmc: () => TE.right({ items: [], total: 0 }),
-      findReviewsForArticleDoi: shouldNotBeCalled,
-      findVersionsForArticleDoi: shouldNotBeCalled,
-      getAllEvents: shouldNotBeCalled,
-      getGroup: () => shouldNotBeCalled,
-    };
 
     it('displays the query inside the search form', async () => {
       const page = pipe(
         params,
-        searchResultsPage(adaptors),
+        searchResultsPage({
+          ...dummyAdapters,
+          findGroups: () => T.of([]),
+          searchEuropePmc: () => TE.right({ items: [], total: 0 }),
+        }),
       );
       const rendered = await contentOf(page)();
       const value = rendered.querySelector('#searchText')?.getAttribute('value');
@@ -48,7 +54,11 @@ describe('search-results-page acceptance', () => {
     it('displays the number of matching articles', async () => {
       const page = pipe(
         params,
-        searchResultsPage(adaptors),
+        searchResultsPage({
+          ...dummyAdapters,
+          findGroups: () => T.of([]),
+          searchEuropePmc: () => TE.right({ items: [], total: 0 }),
+        }),
       );
       const rendered = await contentOf(page)();
       const tabHtml = rendered.querySelector('.search-results-tab--heading')?.innerHTML;
@@ -59,7 +69,11 @@ describe('search-results-page acceptance', () => {
     it('displays the number of matching groups', async () => {
       const page = pipe(
         params,
-        searchResultsPage(adaptors),
+        searchResultsPage({
+          ...dummyAdapters,
+          findGroups: () => T.of([]),
+          searchEuropePmc: () => TE.right({ items: [], total: 0 }),
+        }),
       );
       const rendered = await contentOf(page)();
       const tabHtml = rendered.querySelector('.search-results-tab--link')?.innerHTML;
@@ -71,7 +85,11 @@ describe('search-results-page acceptance', () => {
       it('defaults to "articles" category', async () => {
         const page = pipe(
           { query: arbitraryString(), category: O.none },
-          searchResultsPage(adaptors),
+          searchResultsPage({
+            ...dummyAdapters,
+            findGroups: () => T.of([]),
+            searchEuropePmc: () => TE.right({ items: [], total: 0 }),
+          }),
         );
         const rendered = await contentOf(page)();
         const tabHeading = rendered.querySelector('.search-results-tab--heading')?.innerHTML;
@@ -84,7 +102,20 @@ describe('search-results-page acceptance', () => {
       it.todo('displays a maximum of ten results');
 
       describe('with "articles" as category', () => {
-        it.todo('only displays article results');
+        it('only displays article results', async () => {
+          const page = pipe(
+            { query: arbitraryString(), category: O.some('articles') },
+            searchResultsPage({
+              ...dummyAdapters,
+              findGroups: () => T.of([arbitraryGroupId()]),
+              searchEuropePmc: () => TE.right({ items: [], total: 0 }),
+            }),
+          );
+          const rendered = await contentOf(page)();
+          const groupCards = rendered.querySelectorAll('.group-card');
+
+          expect(groupCards).toHaveLength(0);
+        });
 
         it.todo('displays "Articles" as the active tab');
 
