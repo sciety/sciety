@@ -260,7 +260,47 @@ describe('search-results-page acceptance', () => {
     });
 
     describe('when there are no results', () => {
-      it.todo('displays no result cards');
+      describe('with "articles" as category', () => {
+        it('displays no result cards', async () => {
+          const page = pipe(
+            {
+              query: arbitraryString(),
+              pageSize: arbitraryNumber(5, 20),
+              category: O.some('groups' as const),
+            },
+            searchResultsPage({
+              ...dummyAdapters,
+              findGroups: () => T.of([]),
+              searchEuropePmc: () => () => TE.right({ items: [], total: 0 }),
+            }),
+          );
+          const rendered = await contentOf(page)();
+          const articleCards = rendered.querySelectorAll('.article-card');
+
+          expect(articleCards).toHaveLength(0);
+        });
+      });
+
+      describe('with "groups" as category', () => {
+        it('displays no result cards', async () => {
+          const page = pipe(
+            {
+              query: arbitraryString(),
+              pageSize: arbitraryNumber(5, 20),
+              category: O.some('groups' as const),
+            },
+            searchResultsPage({
+              ...dummyAdapters,
+              findGroups: () => T.of([]),
+              searchEuropePmc: () => () => TE.right({ items: [], total: 0 }),
+            }),
+          );
+          const rendered = await contentOf(page)();
+          const groupCards = rendered.querySelectorAll('.group-card');
+
+          expect(groupCards).toHaveLength(0);
+        });
+      });
     });
   });
 });
