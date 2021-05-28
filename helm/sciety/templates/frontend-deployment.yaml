@@ -34,6 +34,8 @@ spec:
               value: {{ .Values.fathomSiteId }}
             - name: GOOGLE_TAG_MANAGER_ID
               value: {{ .Values.googleTagManagerId }}
+            - name: INTERCOM_APP_ID
+              value: {{ .Values.intercomAppId }}
             - name: PGDATABASE
               valueFrom:
                 secretKeyRef:

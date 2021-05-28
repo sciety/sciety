@@ -84,6 +84,7 @@ jobs:
             --set twitterApiBearerToken=${TWITTER_API_BEARER_TOKEN} \
             --set postgresqlSecretName=hive-staging-rds-postgres \
             --set googleTagManagerId='GTM-NX7CQB4&gtm_auth=tr7n0_xarXwUvEK3s5TIbg&gtm_preview=env-19&gtm_cookies_win=x' \
+            --set intercomAppId=j1i1ayq1 \
             --wait \
             helm/sciety
         env:
