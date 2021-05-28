@@ -68,7 +68,16 @@ describe('search-results-page acceptance', () => {
     });
 
     describe('with no category provided', () => {
-      it.todo('defaults to "articles" category');
+      it('defaults to "articles" category', async () => {
+        const page = pipe(
+          { query: arbitraryString(), category: O.none },
+          searchResultsPage(adaptors),
+        );
+        const rendered = await contentOf(page)();
+        const tabHeading = rendered.querySelector('.search-results-tab--heading')?.innerHTML;
+
+        expect(tabHeading).toContain('Articles');
+      });
     });
 
     describe('when there are results', () => {
