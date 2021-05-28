@@ -1,13 +1,17 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
+import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import { searchResultsPage } from '../../src/search-results-page';
+import { toHtmlFragment } from '../../src/types/html-fragment';
 import { Page } from '../../src/types/page';
 import { RenderPageError } from '../../src/types/render-page-error';
-import { arbitraryString } from '../helpers';
+import { sanitise } from '../../src/types/sanitised-html-fragment';
+import { arbitraryDate, arbitraryString } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
+import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 
 const dummyAdapters = {
@@ -99,9 +103,42 @@ describe('search-results-page acceptance', () => {
     });
 
     describe('when there are results', () => {
-      it.todo('displays a maximum of ten results');
-
       describe('with "articles" as category', () => {
+        const arbitraryArticleItem = () => ({
+          doi: arbitraryDoi(),
+          server: 'biorxiv' as const,
+          title: pipe(arbitraryString(), toHtmlFragment, sanitise),
+          authors: [arbitraryString()],
+          postedDate: arbitraryDate(),
+        });
+
+        it.todo('when there are fewer than n article results displays all');
+
+        it.skip('displays the first n articles if more than n matching articles', async () => {
+          const n = 2;
+          const page = pipe(
+            { query: arbitraryString(), category: O.some('articles' as const) },
+            searchResultsPage({
+              ...dummyAdapters,
+              findGroups: () => T.of([]),
+              searchEuropePmc: () => TE.right({
+                items: [
+                  arbitraryArticleItem(),
+                  arbitraryArticleItem(),
+                  arbitraryArticleItem(),
+                ],
+                total: 3,
+              }),
+              findReviewsForArticleDoi: () => T.of([]),
+              findVersionsForArticleDoi: () => TO.none,
+            }),
+          );
+          const rendered = await contentOf(page)();
+          const articleCards = rendered.querySelectorAll('.article-card');
+
+          expect(articleCards).toHaveLength(n);
+        });
+
         it('only displays article results', async () => {
           const page = pipe(
             { query: arbitraryString(), category: O.some('articles' as const) },
@@ -157,6 +194,8 @@ describe('search-results-page acceptance', () => {
       });
 
       describe('with "groups" as category', () => {
+        it.todo('displays all matching groups regardless of limit on articles');
+
         it.todo('only displays groups results');
 
         it.todo('displays "Groups" as the active tab');
