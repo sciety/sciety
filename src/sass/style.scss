@@ -34,23 +34,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,400;0,700;1,400&display=swap');
 
-.follower {
-  display: flex;
-  align-items: center;
-  max-width: 250px;
-}
-
-.follower__avatar {
-  border-radius: 50%;
-  margin-right: 8px;
-  flex: 0 0 40px;
-}
-
-.follower__handle {
-  padding-top: 2px;
-  color: rgb(0, 0, 0);
-}
-
 body {
   min-height: 100vh;
 }
