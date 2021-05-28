@@ -5,24 +5,15 @@ import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import { searchResultsPage } from '../../src/search-results-page';
-import { FindReviewsForArticleDoi, GetAllEvents, GetGroup } from '../../src/search-results-page/fetch-extra-details';
-import { Params, Ports as PerformAllSearchesPorts } from '../../src/search-results-page/perform-all-searches';
-import { FindVersionsForArticleDoi } from '../../src/shared-components/article-card/get-latest-article-version-date';
+import { Page } from '../../src/types/page';
+import { RenderPageError } from '../../src/types/render-page-error';
 import { arbitraryString } from '../helpers';
 
-type Ports = PerformAllSearchesPorts & {
-  findReviewsForArticleDoi: FindReviewsForArticleDoi,
-  findVersionsForArticleDoi: FindVersionsForArticleDoi,
-  getAllEvents: GetAllEvents,
-  getGroup: GetGroup,
-};
-
-const renderPage = (ports: Ports, params: Params) => pipe(
-  params,
-  searchResultsPage(ports),
+const contentOf = (page: TE.TaskEither<RenderPageError, Page>) => pipe(
+  page,
   TE.match(
     (errorPage) => errorPage.message,
-    (page) => page.content,
+    (p) => p.content,
   ),
   T.map(JSDOM.fragment),
 );
@@ -44,24 +35,36 @@ describe('search-results-page acceptance', () => {
     };
 
     it('displays the query inside the search form', async () => {
-      const rendered = await renderPage(ports, params)();
+      const page = pipe(
+        params,
+        searchResultsPage(ports),
+      );
+      const rendered = await contentOf(page)();
       const value = rendered.querySelector('#searchText')?.getAttribute('value');
 
       expect(value).toBe(query);
     });
 
     it('displays the number of matching articles', async () => {
-      const rendered = await renderPage(ports, params)();
-      const value = rendered.querySelector('.search-results-tab--heading')?.innerHTML;
+      const page = pipe(
+        params,
+        searchResultsPage(ports),
+      );
+      const rendered = await contentOf(page)();
+      const tabHtml = rendered.querySelector('.search-results-tab--heading')?.innerHTML;
 
-      expect(value).toContain('Articles (0');
+      expect(tabHtml).toContain('Articles (0');
     });
 
     it('displays the number of matching groups', async () => {
-      const rendered = await renderPage(ports, params)();
-      const value = rendered.querySelector('.search-results-tab--link')?.innerHTML;
+      const page = pipe(
+        params,
+        searchResultsPage(ports),
+      );
+      const rendered = await contentOf(page)();
+      const tabHtml = rendered.querySelector('.search-results-tab--link')?.innerHTML;
 
-      expect(value).toContain('Groups (0');
+      expect(tabHtml).toContain('Groups (0');
     });
 
     describe('with no category provided', () => {
