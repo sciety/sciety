@@ -117,9 +117,35 @@ describe('search-results-page acceptance', () => {
           expect(groupCards).toHaveLength(0);
         });
 
-        it.todo('displays "Articles" as the active tab');
+        it('displays "Articles" as the active tab', async () => {
+          const page = pipe(
+            { query: arbitraryString(), category: O.some('articles' as const) },
+            searchResultsPage({
+              ...dummyAdapters,
+              findGroups: () => T.of([arbitraryGroupId()]),
+              searchEuropePmc: () => TE.right({ items: [], total: 0 }),
+            }),
+          );
+          const rendered = await contentOf(page)();
+          const tabHtml = rendered.querySelector('.search-results-tab--heading')?.innerHTML;
 
-        it.todo('displays "Groups" as a link tab');
+          expect(tabHtml).toContain('Articles');
+        });
+
+        it('displays "Groups" as a link tab', async () => {
+          const page = pipe(
+            { query: arbitraryString(), category: O.some('articles' as const) },
+            searchResultsPage({
+              ...dummyAdapters,
+              findGroups: () => T.of([arbitraryGroupId()]),
+              searchEuropePmc: () => TE.right({ items: [], total: 0 }),
+            }),
+          );
+          const rendered = await contentOf(page)();
+          const tabHtml = rendered.querySelector('.search-results-tab--link')?.innerHTML;
+
+          expect(tabHtml).toContain('Groups');
+        });
 
         describe('when extra details of an article cannot be fetched', () => {
           it.todo('display the article without extra details');
