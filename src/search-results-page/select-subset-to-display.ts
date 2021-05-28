@@ -18,6 +18,6 @@ export const selectSubsetToDisplay = (state: Matches): LimitedSet => ({
   availableArticleMatches: state.articles.total,
   availableGroupMatches: state.groups.length,
   itemsToDisplay: (state.category === 'groups')
-    ? RA.takeLeft(state.pageSize)(state.groups)
+    ? state.groups
     : RA.takeLeft(state.pageSize)(state.articles.items),
 });

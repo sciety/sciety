@@ -13,6 +13,7 @@ import { arbitraryDate, arbitraryNumber, arbitraryString } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
+import { arbitraryGroup } from '../types/group.helper';
 
 const dummyAdapters = {
   findGroups: shouldNotBeCalled,
@@ -215,7 +216,32 @@ describe('search-results-page acceptance', () => {
       });
 
       describe('with "groups" as category', () => {
-        it.todo('displays all matching groups regardless of limit on articles');
+        it('displays all matching groups regardless of limit on articles', async () => {
+          const n = 2;
+          const matchedGroups = [
+            arbitraryGroupId(),
+            arbitraryGroupId(),
+            arbitraryGroupId(),
+          ];
+          const page = pipe(
+            {
+              query: arbitraryString(),
+              pageSize: n,
+              category: O.some('groups' as const),
+            },
+            searchResultsPage({
+              ...dummyAdapters,
+              findGroups: () => T.of(matchedGroups),
+              searchEuropePmc: () => () => TE.right({ items: [], total: 0 }),
+              getGroup: () => TO.some(arbitraryGroup()),
+              getAllEvents: T.of([]),
+            }),
+          );
+          const rendered = await contentOf(page)();
+          const groupCards = rendered.querySelectorAll('.group-card');
+
+          expect(groupCards).toHaveLength(matchedGroups.length);
+        });
 
         it.todo('only displays groups results');
 
