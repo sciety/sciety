@@ -7,10 +7,12 @@ import { dummyLogger } from '../dummy-logger';
 import { arbitraryString, arbitraryWord } from '../helpers';
 
 describe('search-europe-pmc adapter', () => {
-  it('converts Europe PMC search result into our Domain Model', async () => {
+  it('converts Europe PMC search result into our view model', async () => {
+    const nextCursor = arbitraryWord();
     const results = await searchEuropePmc(10)('some query', O.none)({
       getJson: async () => ({
         hitCount: 1,
+        nextCursorMark: nextCursor,
         resultList: {
           result: [
             {
@@ -47,6 +49,7 @@ describe('search-europe-pmc adapter', () => {
           postedDate: new Date('2019-11-07'),
         },
       ],
+      nextCursor,
     });
 
     expect(results).toStrictEqual(expected);
@@ -56,6 +59,7 @@ describe('search-europe-pmc adapter', () => {
     const results = await searchEuropePmc(10)('some query', O.none)({
       getJson: async () => ({
         hitCount: 1,
+        nextCursorMark: arbitraryWord(),
         resultList: {
           result: [
             {
@@ -78,8 +82,7 @@ describe('search-europe-pmc adapter', () => {
       logger: dummyLogger,
     })();
 
-    const expected = E.right({
-      total: 1,
+    const expected = E.right(expect.objectContaining({
       items: [
         expect.objectContaining({
           authors: [
@@ -88,7 +91,7 @@ describe('search-europe-pmc adapter', () => {
           ],
         }),
       ],
-    });
+    }));
 
     expect(results).toStrictEqual(expected);
   });

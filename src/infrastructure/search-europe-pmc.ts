@@ -31,6 +31,7 @@ type SearchResult = {
 export type SearchResults = {
   items: ReadonlyArray<SearchResult>,
   total: number,
+  nextCursor: string,
 };
 
 type Dependencies = {
@@ -59,6 +60,7 @@ const resultDetails = t.type({
 
 const europePmcResponse = t.type({
   hitCount: t.number,
+  nextCursorMark: t.string,
   resultList: t.type({
     result: t.array(resultDetails),
   }),
@@ -102,6 +104,7 @@ const constructSearchResults = (data: EuropePmcResponse) => {
   return {
     items,
     total: data.hitCount,
+    nextCursor: data.nextCursorMark,
   };
 };
 

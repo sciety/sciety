@@ -21,6 +21,7 @@ import { inMemoryGroupRepository } from '../../src/infrastructure/in-memory-grou
 import { FollowList } from '../../src/types/follow-list';
 import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
 import { dummyLogger } from '../dummy-logger';
+import { arbitraryWord } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 
 type TestServer = {
@@ -54,7 +55,7 @@ export const createTestServer = async (): Promise<TestServer> => {
     ),
     fetchStaticFile: (filename: string) => TE.right(`Contents of ${filename}`),
     findGroups: () => T.of([]),
-    searchEuropePmc: () => () => TE.right({ items: [], total: 0 }),
+    searchEuropePmc: () => () => TE.right({ items: [], total: 0, nextCursor: arbitraryWord() }),
     getGroup: groups.lookup,
     getAllGroups: groups.all,
     findReviewsForArticleDoi: () => T.of([]),
