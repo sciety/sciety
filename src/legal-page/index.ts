@@ -52,6 +52,11 @@ export const legalPage: Page = {
         When you log in to your Twitter account through our site (for example to store your feed preferences) that interaction is directly with Twitter Inc. We only receive from Twitter a user name and user identifier. Your Twitter user identifier is associated with items that you follow on the site (groups, people, papers and evaluation events) and used to publicly display events that you follow on your user page.
       </p>
 
+      <p>
+        Sciety uses an analytics service called Intercom to help improve our application. In particular, we provide a limited amount of your information to Intercom, Inc. (“Intercom”) and utilise Intercom to collect data for analytics purposes when you visit our website or use our product.
+        As a data processor acting on our behalf, Intercom analyzes your use of our application and tracks our relationship by way of cookies and similar technologies so that we can improve our service to you. For more information on Intercom's use of cookies, please visit <a href="https://www.intercom.com/terms-and-policies#cookie-policy">https://www.intercom.com/terms-and-policies#cookie-policy</a>. We may also use Intercom as a medium for communications, either through email, or through messages within our application. As part of our service agreements, Intercom collects publicly available contact and social information related to you, such as your email address, gender, company, job title, photos, website URLs, social network handles and physical addresses, to enhance your user experience. For more information on the privacy practices of Intercom, please visit <a href="https://www.intercom.com/terms-and-policies#privacy">https://www.intercom.com/terms-and-policies#privacy</a>. Intercom’s services are governed by Intercom’s terms of use which can be found at <a href="https://www.intercom.com/terms-and-policies#terms">https://www.intercom.com/terms-and-policies#terms</a>. If you would like to opt out of having this information collected by or submitted to Intercom, please contact us.
+      </p>
+
       <h3>
         Privacy notice changes
       </h3>
@@ -60,6 +65,10 @@ export const legalPage: Page = {
       </h4>
       <p>
         Although most changes are likely to be minor, eLife may change its Privacy Notice from time to time, and at our sole discretion. We encourage visitors to check this page frequently for any changes to its Privacy Notice. First published October 19, 2020.
+      </p>
+
+      <p>
+        1st June 2021: added Intercom information to Sciety privacy policy.
       </p>
 
       <h2>Cookie declaration</h2>
