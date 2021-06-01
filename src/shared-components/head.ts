@@ -1,7 +1,7 @@
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { fathom, googleTagManager, intercom } from './analytics';
+import { fathom, googleTagManager } from './analytics';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { User } from '../types/user';
 
@@ -37,6 +37,5 @@ export const head = (
 
   ${googleTagManager(pipe(user, O.map((u) => u.id)))}
   ${fathom()}
-  ${intercom()}
 </head>
 `);
