@@ -178,6 +178,35 @@ describe('search-results-page acceptance', () => {
           expect(nextLink).not.toBeNull();
         });
 
+        it.skip('passes the cursor to searchEuropePmc', async () => {
+          const n = 2;
+          const searchEuropePmcMock = jest.fn();
+          const cursor = arbitraryString();
+          const page = pipe(
+            {
+              query,
+              pageSize: n,
+              category: O.some('articles' as const),
+              cursor,
+            },
+            searchResultsPage({
+              ...dummyAdapters,
+              findGroups: () => T.of([]),
+              searchEuropePmc: () => searchEuropePmcMock.mockImplementation(() => TE.right({
+                items: [
+                  arbitraryArticleItem(),
+                ],
+                total: 3,
+              })),
+              findReviewsForArticleDoi: () => T.of([]),
+              findVersionsForArticleDoi: () => TO.none,
+            }),
+          );
+          await contentOf(page)();
+
+          expect(searchEuropePmcMock).toHaveBeenCalledWith(query, cursor);
+        });
+
         it('only displays article results', async () => {
           const page = pipe(
             {

@@ -15,7 +15,7 @@ type ArticleResults = {
   total: number,
 };
 
-type FindArticles = (pageSize: number) => (query: string) => TE.TaskEither<'unavailable', ArticleResults>;
+type FindArticles = (pageSize: number) => (query: string, cursor?: string) => TE.TaskEither<'unavailable', ArticleResults>;
 
 type FindGroups = (q: string) => T.Task<ReadonlyArray<GroupId>>;
 
