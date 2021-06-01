@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -47,5 +48,5 @@ export type Adapters = {
   getGroup: GetGroup,
   getUserDetails: GetTwitterUserDetails,
   logger: Logger,
-  searchEuropePmc: (pageSize: number) => (query: string) => TE.TaskEither<'unavailable', SearchResults>,
+  searchEuropePmc: (pageSize: number) => (query: string, cursor: O.Option<string>) => TE.TaskEither<'unavailable', SearchResults>,
 };

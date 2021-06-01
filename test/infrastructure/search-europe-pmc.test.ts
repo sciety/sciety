@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import { Json } from 'io-ts-types';
 import { searchEuropePmc } from '../../src/infrastructure/search-europe-pmc';
 import { Doi } from '../../src/types/doi';
@@ -6,7 +7,7 @@ import { dummyLogger } from '../dummy-logger';
 
 describe('search-europe-pmc adapter', () => {
   it('converts Europe PMC search result into our Domain Model', async () => {
-    const results = await searchEuropePmc(10)('some query')({
+    const results = await searchEuropePmc(10)('some query', O.none)({
       getJson: async () => ({
         hitCount: 1,
         resultList: {
@@ -51,7 +52,7 @@ describe('search-europe-pmc adapter', () => {
   });
 
   it('handles collective name and full name authors', async () => {
-    const results = await searchEuropePmc(10)('some query')({
+    const results = await searchEuropePmc(10)('some query', O.none)({
       getJson: async () => ({
         hitCount: 1,
         resultList: {
@@ -101,7 +102,7 @@ describe('search-europe-pmc adapter', () => {
     });
     const spy = jest.fn(getJson);
 
-    await searchEuropePmc(10)('Structural basis of αE&')({ getJson: spy, logger: dummyLogger })();
+    await searchEuropePmc(10)('Structural basis of αE&', O.none)({ getJson: spy, logger: dummyLogger })();
 
     expect(spy).toHaveBeenCalledTimes(1);
 
@@ -110,4 +111,6 @@ describe('search-europe-pmc adapter', () => {
     // Tests special character encoding, biorxiv publisher or medrxiv publisher, sort date, and parameter order.
     expect(uri).toContain('?query=Structural+basis+of+%CE%B1E%26+%28PUBLISHER%3A%22bioRxiv%22+OR+PUBLISHER%3A%22medRxiv%22%29+sort_date%3Ay&');
   });
+
+  it.todo('passes the cursorMark query parameter');
 });

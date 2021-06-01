@@ -1,6 +1,7 @@
 import { URLSearchParams } from 'url';
 import * as E from 'fp-ts/Either';
 import { Json } from 'fp-ts/Json';
+import * as O from 'fp-ts/Option';
 import * as RTE from 'fp-ts/ReaderTaskEither';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
@@ -122,7 +123,7 @@ const getFromUrl: GetFromUrl = (url: string) => ({ getJson, logger }: Dependenci
 );
 
 type SearchEuropePmc = (pageSize: number)
-=> (query: string)
+=> (query: string, cursor: O.Option<string>)
 => RTE.ReaderTaskEither<Dependencies, 'unavailable', SearchResults>;
 
 export const searchEuropePmc: SearchEuropePmc = (pageSize) => flow(
