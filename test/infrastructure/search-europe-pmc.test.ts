@@ -4,6 +4,7 @@ import { Json } from 'io-ts-types';
 import { searchEuropePmc } from '../../src/infrastructure/search-europe-pmc';
 import { Doi } from '../../src/types/doi';
 import { dummyLogger } from '../dummy-logger';
+import { arbitraryString, arbitraryWord } from '../helpers';
 
 describe('search-europe-pmc adapter', () => {
   it('converts Europe PMC search result into our Domain Model', async () => {
@@ -112,5 +113,19 @@ describe('search-europe-pmc adapter', () => {
     expect(uri).toContain('?query=Structural+basis+of+%CE%B1E%26+%28PUBLISHER%3A%22bioRxiv%22+OR+PUBLISHER%3A%22medRxiv%22%29+sort_date%3Ay&');
   });
 
-  it.todo('passes the cursorMark query parameter');
+  it('passes the cursorMark query parameter', async () => {
+    const getJson = async (): Promise<Json> => ({
+      hitCount: 0,
+      resultList: {
+        result: [],
+      },
+    });
+
+    const cursor = arbitraryWord();
+    const spy = jest.fn(getJson);
+
+    await searchEuropePmc(10)(arbitraryString(), O.some(cursor))({ getJson: spy, logger: dummyLogger })();
+
+    expect(spy).toHaveBeenCalledWith(expect.stringContaining(`cursorMark=${cursor}`));
+  });
 });

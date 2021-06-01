@@ -5,7 +5,9 @@ import * as O from 'fp-ts/Option';
 import * as RTE from 'fp-ts/ReaderTaskEither';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, pipe } from 'fp-ts/function';
+import {
+  constant, flow, pipe, tupled,
+} from 'fp-ts/function';
 import * as t from 'io-ts';
 import { DateFromISOString } from 'io-ts-types/DateFromISOString';
 import * as PR from 'io-ts/PathReporter';
@@ -66,12 +68,13 @@ type EuropePmcResponse = t.TypeOf<typeof europePmcResponse>;
 
 type EuropePmcPublisher = t.TypeOf<typeof europePmcPublisher>;
 
-const constructQueryParams = (pageSize: number) => (query: string) => (
+const constructQueryParams = (pageSize: number) => (query: string, cursor: O.Option<string>) => (
   new URLSearchParams({
     query: `${query} (PUBLISHER:"bioRxiv" OR PUBLISHER:"medRxiv") sort_date:y`,
     format: 'json',
     pageSize: pageSize.toString(),
     resultType: 'core',
+    cursorMark: O.getOrElse(constant('*'))(cursor),
   }));
 
 const constructSearchUrl = (queryParams: URLSearchParams) => `https://www.ebi.ac.uk/europepmc/webservices/rest/search?${queryParams.toString()}`;
@@ -126,8 +129,9 @@ type SearchEuropePmc = (pageSize: number)
 => (query: string, cursor: O.Option<string>)
 => RTE.ReaderTaskEither<Dependencies, 'unavailable', SearchResults>;
 
-export const searchEuropePmc: SearchEuropePmc = (pageSize) => flow(
-  constructQueryParams(pageSize),
+export const searchEuropePmc: SearchEuropePmc = (pageSize) => (query, cursor) => pipe(
+  [query, cursor],
+  tupled(constructQueryParams(pageSize)),
   constructSearchUrl,
   getFromUrl,
   RTE.map(constructSearchResults),
