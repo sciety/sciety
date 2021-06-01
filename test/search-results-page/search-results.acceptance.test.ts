@@ -149,6 +149,35 @@ describe('search-results-page acceptance', () => {
           expect(articleCards).toHaveLength(n);
         });
 
+        it.skip('displays the next link if there are more than n matching articles', async () => {
+          const n = 2;
+          const page = pipe(
+            {
+              query: arbitraryString(),
+              pageSize: n,
+              category: O.some('articles' as const),
+            },
+            searchResultsPage({
+              ...dummyAdapters,
+              findGroups: () => T.of([]),
+              searchEuropePmc: () => () => TE.right({
+                items: [
+                  arbitraryArticleItem(),
+                  arbitraryArticleItem(),
+                  arbitraryArticleItem(),
+                ],
+                total: 3,
+              }),
+              findReviewsForArticleDoi: () => T.of([]),
+              findVersionsForArticleDoi: () => TO.none,
+            }),
+          );
+          const rendered = await contentOf(page)();
+          const nextLink = rendered.querySelector('.search-results__next-link');
+
+          expect(nextLink).not.toBeNull();
+        });
+
         it('only displays article results', async () => {
           const page = pipe(
             {
