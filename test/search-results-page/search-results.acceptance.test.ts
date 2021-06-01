@@ -40,6 +40,7 @@ describe('search-results-page acceptance', () => {
       query,
       pageSize: arbitraryNumber(5, 10),
       category: O.none,
+      cursor: O.none,
     };
 
     it('displays the query inside the search form', async () => {
@@ -94,6 +95,7 @@ describe('search-results-page acceptance', () => {
             query: arbitraryString(),
             pageSize: arbitraryNumber(5, 10),
             category: O.none,
+            cursor: O.none,
           },
           searchResultsPage({
             ...dummyAdapters,
@@ -127,6 +129,7 @@ describe('search-results-page acceptance', () => {
               query: arbitraryString(),
               pageSize: n,
               category: O.some('articles' as const),
+              cursor: O.none,
             },
             searchResultsPage({
               ...dummyAdapters,
@@ -156,6 +159,7 @@ describe('search-results-page acceptance', () => {
               query: arbitraryString(),
               pageSize: n,
               category: O.some('articles' as const),
+              cursor: O.none,
             },
             searchResultsPage({
               ...dummyAdapters,
@@ -178,10 +182,10 @@ describe('search-results-page acceptance', () => {
           expect(nextLink).not.toBeNull();
         });
 
-        it.skip('passes the cursor to searchEuropePmc', async () => {
+        it('passes the cursor to searchEuropePmc', async () => {
           const n = 2;
           const searchEuropePmcMock = jest.fn();
-          const cursor = arbitraryString();
+          const cursor = O.some(arbitraryString());
           const page = pipe(
             {
               query,
@@ -213,6 +217,7 @@ describe('search-results-page acceptance', () => {
               query: arbitraryString(),
               pageSize: arbitraryNumber(5, 10),
               category: O.some('articles' as const),
+              cursor: O.none,
             },
             searchResultsPage({
               ...dummyAdapters,
@@ -232,6 +237,7 @@ describe('search-results-page acceptance', () => {
               query: arbitraryString(),
               pageSize: arbitraryNumber(5, 10),
               category: O.some('articles' as const),
+              cursor: O.none,
             },
             searchResultsPage({
               ...dummyAdapters,
@@ -251,6 +257,7 @@ describe('search-results-page acceptance', () => {
               query: arbitraryString(),
               pageSize: arbitraryNumber(5, 10),
               category: O.some('articles' as const),
+              cursor: O.none,
             },
             searchResultsPage({
               ...dummyAdapters,
@@ -286,6 +293,7 @@ describe('search-results-page acceptance', () => {
               query: arbitraryString(),
               pageSize: n,
               category: O.some('groups' as const),
+              cursor: O.none,
             },
             searchResultsPage({
               ...dummyAdapters,
@@ -325,6 +333,7 @@ describe('search-results-page acceptance', () => {
               query: arbitraryString(),
               pageSize: arbitraryNumber(5, 20),
               category: O.some('groups' as const),
+              cursor: O.none,
             },
             searchResultsPage({
               ...dummyAdapters,
@@ -346,6 +355,7 @@ describe('search-results-page acceptance', () => {
               query: arbitraryString(),
               pageSize: arbitraryNumber(5, 20),
               category: O.some('groups' as const),
+              cursor: O.none,
             },
             searchResultsPage({
               ...dummyAdapters,

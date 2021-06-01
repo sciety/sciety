@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { constant, pipe } from 'fp-ts/function';
+import { constant, pipe, tupled } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { ArticleItem } from './data-types';
@@ -15,7 +15,7 @@ type ArticleResults = {
   total: number,
 };
 
-type FindArticles = (pageSize: number) => (query: string, cursor?: string) => TE.TaskEither<'unavailable', ArticleResults>;
+type FindArticles = (pageSize: number) => (query: string, cursor: O.Option<string>) => TE.TaskEither<'unavailable', ArticleResults>;
 
 type FindGroups = (q: string) => T.Task<ReadonlyArray<GroupId>>;
 
@@ -32,6 +32,7 @@ export const paramsCodec = t.type({
       t.literal('articles'),
     ]),
   ),
+  cursor: tt.optionFromNullable(t.string),
 });
 
 export type Params = t.TypeOf<typeof paramsCodec> & {
@@ -44,8 +45,8 @@ export const performAllSearches = (ports: Ports) => (params: Params): TE.TaskEit
     pageSize: TE.right(params.pageSize),
     category: TE.right(O.getOrElse(constant('articles'))(params.category)),
     articles: pipe(
-      params.query,
-      ports.searchEuropePmc(params.pageSize),
+      [params.query, params.cursor],
+      tupled(ports.searchEuropePmc(params.pageSize)),
     ),
     groups: pipe(
       params.query,
