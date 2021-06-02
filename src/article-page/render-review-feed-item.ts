@@ -5,6 +5,7 @@ import { constant, flow, pipe } from 'fp-ts/function';
 import clip from 'text-clipper';
 import { renderReviewResponses } from './render-review-responses';
 import { templateDate } from '../shared-components/date';
+import { ReviewIdFromString as RIcodec } from '../types/codecs/ReviewIdFromString';
 import { GroupId } from '../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import * as RI from '../types/review-id';
@@ -56,7 +57,7 @@ const renderWithText = (teaserChars: number, review: ReviewFeedItem, fullText: s
   const teaserText = clip(fullText, teaserChars, { html: true });
   if (teaserText === fullText) {
     return `
-      <article class="activity-feed__item_contents" id="${RI.serialize(review.id)}">
+      <article class="activity-feed__item_contents" id="${RIcodec.encode(review.id)}">
         <header class="activity-feed__item_header">
           ${avatar(review)}
           ${eventMetadata(review)}
