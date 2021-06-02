@@ -27,6 +27,6 @@ export const fetchReview = (
       return fetchHypothesisAnnotation(id.value);
     }
 
-    return fetchNcrcReview(id);
+    return fetchNcrcReview(id.value);
   }
 );

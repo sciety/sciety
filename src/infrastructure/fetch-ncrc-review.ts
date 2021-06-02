@@ -12,15 +12,12 @@ import * as PR from 'io-ts/PathReporter';
 import { constructNcrcReview } from './construct-ncrc-review';
 import { Logger } from './logger';
 import { HtmlFragment } from '../types/html-fragment';
-import * as NcrcId from '../types/ncrc-id';
 import Params$Resource$Spreadsheets$Values$Get = sheets_v4.Params$Resource$Spreadsheets$Values$Get;
 
 type FoundReview = {
   fullText: HtmlFragment,
   url: URL,
 };
-
-export type FetchNcrcReview = (id: NcrcId.NcrcId) => TE.TaskEither<'unavailable' | 'not-found', FoundReview>;
 
 // https://github.com/gcanti/io-ts/issues/431
 type TupleFn = <TCodecs extends readonly [t.Mixed, ...Array<t.Mixed>]>(
@@ -100,7 +97,7 @@ const querySheet = (logger: Logger) => <A>(
   );
 };
 
-const getRowNumber = (logger: Logger) => (id: NcrcId.NcrcId) => pipe(
+const getRowNumber = (logger: Logger) => (key: string) => pipe(
   querySheet(logger)({
     spreadsheetId: '1RJ_Neh1wwG6X0SkYZHjD-AEC9ykgAcya_8UCVNoE3SA',
     range: 'Sheet1!A:A', // TODO don't select the header
@@ -108,11 +105,11 @@ const getRowNumber = (logger: Logger) => (id: NcrcId.NcrcId) => pipe(
   }, columnType),
   TE.chainEitherKW(flow(
     RNEA.head,
-    RA.findIndex((uuid) => NcrcId.eqNcrcId.equals(NcrcId.fromString(uuid), id)),
+    RA.findIndex((uuid) => uuid === key),
     O.map((n) => n + 1),
     O.altW(() => {
       logger('error', 'Cannot find NcrcId in NCRC sheet', {
-        ncrcId: id.value,
+        ncrcId: key,
       });
       return O.none;
     }),
@@ -139,6 +136,8 @@ const getNcrcReview = (logger: Logger) => flow(
     }),
   )),
 );
+
+export type FetchNcrcReview = (key: string) => TE.TaskEither<'unavailable' | 'not-found', FoundReview>;
 
 export const fetchNcrcReview = (logger: Logger): FetchNcrcReview => flow(
   getRowNumber(logger),
