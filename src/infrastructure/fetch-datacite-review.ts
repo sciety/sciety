@@ -9,10 +9,7 @@ import {
 import type { NamedNode } from 'rdf-js';
 import { FetchDataset } from './fetch-dataset';
 import { Logger } from './logger';
-import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-
-export type FetchDataciteReview = (doi: Doi) => TE.TaskEither<'unavailable' | 'not-found', FoundReview>;
 
 type FoundReview = {
   fullText: HtmlFragment,
@@ -45,8 +42,10 @@ const fetchReviewContent = (
   }),
 );
 
+export type FetchDataciteReview = (key: string) => TE.TaskEither<'unavailable' | 'not-found', FoundReview>;
+
 export const fetchDataciteReview = (fetchDataset: FetchDataset, logger: Logger): FetchDataciteReview => flow(
-  (doi) => `https://doi.org/${doi.value}`,
+  (key) => `https://doi.org/${key}`,
   (url) => {
     logger('debug', 'Fetching review from Datacite', { url });
     return url;

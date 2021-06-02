@@ -20,7 +20,7 @@ export const fetchReview = (
 ): FetchReview => (
   (id) => {
     if (id instanceof Doi) {
-      return fetchDataciteReview(id);
+      return fetchDataciteReview(id.value);
     }
 
     if (id instanceof HypothesisAnnotationId) {

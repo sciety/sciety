@@ -6,9 +6,9 @@ import datasetFactory from 'rdf-dataset-indexed';
 import { fetchDataciteReview } from '../../src/infrastructure/fetch-datacite-review';
 import { FetchDataset } from '../../src/infrastructure/fetch-dataset';
 import { dummyLogger } from '../dummy-logger';
-import { arbitraryDoi } from '../types/doi.helper';
+import { arbitraryWord } from '../helpers';
 
-const reviewDoi = arbitraryDoi();
+const reviewDoi = arbitraryWord();
 
 describe('fetch-datacite-review', () => {
   describe('when the response contains Datacite data', () => {
