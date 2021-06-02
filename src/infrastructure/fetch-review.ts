@@ -24,7 +24,7 @@ export const fetchReview = (
     }
 
     if (id instanceof HypothesisAnnotationId) {
-      return fetchHypothesisAnnotation(id);
+      return fetchHypothesisAnnotation(id.value);
     }
 
     return fetchNcrcReview(id);

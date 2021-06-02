@@ -5,11 +5,11 @@ import { Json } from 'io-ts-types';
 import { fetchHypothesisAnnotation } from '../../src/infrastructure/fetch-hypothesis-annotation';
 import { Review } from '../../src/infrastructure/review';
 import { toHtmlFragment } from '../../src/types/html-fragment';
-import { HypothesisAnnotationId } from '../../src/types/hypothesis-annotation-id';
 import { dummyLogger } from '../dummy-logger';
+import { arbitraryWord } from '../helpers';
 
 const date = '2019-09-12T09:55:46.146050+00:00';
-const hypothesisAnnotationId = new HypothesisAnnotationId('fhAtGNVDEemkyCM-sRPpVQ');
+const key = arbitraryWord();
 
 describe('fetch-hypothesis-annotation', () => {
   it('returns the review', async () => {
@@ -20,7 +20,7 @@ describe('fetch-hypothesis-annotation', () => {
         incontext: 'https://www.example.com',
       },
     });
-    const review = await fetchHypothesisAnnotation(getJson, dummyLogger)(hypothesisAnnotationId)();
+    const review = await fetchHypothesisAnnotation(getJson, dummyLogger)(key)();
 
     const expected: Review = {
       fullText: pipe('<p>Very good</p>', toHtmlFragment),
@@ -42,7 +42,7 @@ describe('fetch-hypothesis-annotation', () => {
         incontext: 'https://www.example.com',
       },
     });
-    const review = await fetchHypothesisAnnotation(getJson, dummyLogger)(hypothesisAnnotationId)();
+    const review = await fetchHypothesisAnnotation(getJson, dummyLogger)(key)();
 
     expect(review).toStrictEqual(E.right(expect.objectContaining({
       fullText: expect.stringContaining(expected),
@@ -58,7 +58,7 @@ describe('fetch-hypothesis-annotation', () => {
         incontext: 'https://www.example.com',
       },
     });
-    const review = await fetchHypothesisAnnotation(getJson, dummyLogger)(hypothesisAnnotationId)();
+    const review = await fetchHypothesisAnnotation(getJson, dummyLogger)(key)();
 
     expect(review).toStrictEqual(E.right(expect.objectContaining({
       fullText: expect.stringContaining(input),

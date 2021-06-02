@@ -10,11 +10,8 @@ import { hypothesisAnnotation, HypothesisAnnotation } from './codecs/HypothesisA
 import { Logger } from './logger';
 import { Review } from './review';
 import { toHtmlFragment } from '../types/html-fragment';
-import { HypothesisAnnotationId } from '../types/hypothesis-annotation-id';
 
 type GetJson = (uri: string) => Promise<Json>;
-
-export type FetchHypothesisAnnotation = (id: HypothesisAnnotationId) => TE.TaskEither<'unavailable', Review>;
 
 const converter = new Remarkable({ html: true }).use(linkify);
 
@@ -31,9 +28,10 @@ const toReview = (logger: Logger) => (response: HypothesisAnnotation) => {
   return review;
 };
 
-export const fetchHypothesisAnnotation = (getJson: GetJson, logger: Logger): FetchHypothesisAnnotation => (id) => {
-  const uri = `https://api.hypothes.is/api/annotations/${id.value}`;
+export type FetchHypothesisAnnotation = (key: string) => TE.TaskEither<'unavailable', Review>;
 
+export const fetchHypothesisAnnotation = (getJson: GetJson, logger: Logger): FetchHypothesisAnnotation => (key) => {
+  const uri = `https://api.hypothes.is/api/annotations/${key}`;
   logger('debug', 'Fetching review from Hypothesis', { uri });
   return pipe(
     TE.tryCatch(
