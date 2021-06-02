@@ -1,5 +1,7 @@
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
+import { ReviewIdFromString as RIcodec } from '../../src/types/codecs/ReviewIdFromString';
 import * as DOI from '../../src/types/doi';
 import { HypothesisAnnotationId } from '../../src/types/hypothesis-annotation-id';
 import * as NcrcId from '../../src/types/ncrc-id';
@@ -9,28 +11,31 @@ import { arbitraryWord } from '../helpers';
 describe('review-id', () => {
   describe('when is a DOI', () => {
     const key = `10.1101/${arbitraryWord()}`;
-    const reviewId = DOI.fromString(key);
+    const reviewId = pipe(
+      DOI.fromString(key),
+      O.getOrElseW(() => { throw new Error('cannot happen'); }),
+    );
 
     it('can be serialized and deserialized', () => {
       expect(pipe(
         reviewId,
-        O.map(RI.serialize),
-        O.map(RI.deserialize),
-      )).toStrictEqual(O.some(reviewId));
+        RIcodec.encode,
+        RIcodec.decode,
+      )).toStrictEqual(E.right(reviewId));
     });
 
     it('identifies the service as doi', () => {
       expect(pipe(
         reviewId,
-        O.map(RI.service),
-      )).toStrictEqual(O.some('doi'));
+        RI.service,
+      )).toStrictEqual('doi');
     });
 
     it('allows the key to be extracted', () => {
       expect(pipe(
         reviewId,
-        O.map(RI.key),
-      )).toStrictEqual(O.some(key));
+        RI.key,
+      )).toStrictEqual(key);
     });
   });
 
@@ -41,9 +46,9 @@ describe('review-id', () => {
     it('can be serialized and deserialized', () => {
       expect(pipe(
         reviewId,
-        RI.serialize,
-        RI.deserialize,
-      )).toStrictEqual(O.some(reviewId));
+        RIcodec.encode,
+        RIcodec.decode,
+      )).toStrictEqual(E.right(reviewId));
     });
 
     it('identifies the service as hypothesis', () => {
@@ -68,9 +73,9 @@ describe('review-id', () => {
     it('can be serialized and deserialized', () => {
       expect(pipe(
         reviewId,
-        RI.serialize,
-        RI.deserialize,
-      )).toStrictEqual(O.some(reviewId));
+        RIcodec.encode,
+        RIcodec.decode,
+      )).toStrictEqual(E.right(reviewId));
     });
 
     it('identifies the service as ncrc', () => {
@@ -92,7 +97,7 @@ describe('review-id', () => {
     it('cannot be deserialized', () => {
       const unrecognisedFormat = 'foo';
 
-      expect(RI.deserialize(unrecognisedFormat)).toStrictEqual(O.none);
+      expect(RIcodec.decode(unrecognisedFormat)._tag).toStrictEqual('Left');
     });
   });
 });

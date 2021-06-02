@@ -74,7 +74,7 @@ const renderWithText = (teaserChars: number, review: ReviewFeedItem, fullText: s
   }
   // TODO: a review.id containing dodgy chars could break this
   return `
-    <article class="activity-feed__item_contents" id="${RI.serialize(review.id)}">
+    <article class="activity-feed__item_contents" id="${RIcodec.encode(review.id)}">
       <header class="activity-feed__item_header">
         ${avatar(review)}
         ${eventMetadata(review)}
@@ -97,7 +97,7 @@ const render = (teaserChars: number, review: ReviewFeedItem, responses: HtmlFrag
   review.fullText,
   O.fold(
     () => `
-      <article class="activity-feed__item_contents" id="${RI.serialize(review.id)}">
+      <article class="activity-feed__item_contents" id="${RIcodec.encode(review.id)}">
         <header class="activity-feed__item_header">
           ${avatar(review)}
           ${eventMetadata(review)}
