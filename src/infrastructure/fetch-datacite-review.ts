@@ -7,8 +7,8 @@ import {
   constant, flow, pipe,
 } from 'fp-ts/function';
 import type { NamedNode } from 'rdf-js';
-import { Evaluation } from './evaluation';
 import { FetchDataset } from './fetch-dataset';
+import { EvaluationFetcher } from './fetch-review';
 import { Logger } from './logger';
 import { toHtmlFragment } from '../types/html-fragment';
 
@@ -38,9 +38,7 @@ const fetchReviewContent = (
   }),
 );
 
-export type FetchDataciteReview = (key: string) => TE.TaskEither<'unavailable' | 'not-found', Evaluation>;
-
-export const fetchDataciteReview = (fetchDataset: FetchDataset, logger: Logger): FetchDataciteReview => flow(
+export const fetchDataciteReview = (fetchDataset: FetchDataset, logger: Logger): EvaluationFetcher => flow(
   (key) => `https://doi.org/${key}`,
   (url) => {
     logger('debug', 'Fetching evaluation from Datacite', { url });

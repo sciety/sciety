@@ -1,18 +1,17 @@
 import * as TE from 'fp-ts/TaskEither';
 import { Evaluation } from './evaluation';
-import { FetchDataciteReview } from './fetch-datacite-review';
-import { FetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
-import { FetchNcrcReview } from './fetch-ncrc-review';
 import { Doi } from '../types/doi';
 import { HypothesisAnnotationId } from '../types/hypothesis-annotation-id';
 import { ReviewId } from '../types/review-id';
 
 export type FetchReview = (id: ReviewId) => TE.TaskEither<'unavailable' | 'not-found', Evaluation>;
 
+export type EvaluationFetcher = (key: string) => ReturnType<FetchReview>;
+
 export const fetchReview = (
-  fetchDataciteReview: FetchDataciteReview,
-  fetchHypothesisAnnotation: FetchHypothesisAnnotation,
-  fetchNcrcReview: FetchNcrcReview,
+  fetchDataciteReview: EvaluationFetcher,
+  fetchHypothesisAnnotation: EvaluationFetcher,
+  fetchNcrcReview: EvaluationFetcher,
 ): FetchReview => (
   (id) => {
     if (id instanceof Doi) {

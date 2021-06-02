@@ -9,7 +9,7 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
 import { constructNcrcReview } from './construct-ncrc-review';
-import { Evaluation } from './evaluation';
+import { EvaluationFetcher } from './fetch-review';
 import { Logger } from './logger';
 import Params$Resource$Spreadsheets$Values$Get = sheets_v4.Params$Resource$Spreadsheets$Values$Get;
 
@@ -131,9 +131,7 @@ const getNcrcReview = (logger: Logger) => flow(
   )),
 );
 
-export type FetchNcrcReview = (key: string) => TE.TaskEither<'unavailable' | 'not-found', Evaluation>;
-
-export const fetchNcrcReview = (logger: Logger): FetchNcrcReview => flow(
+export const fetchNcrcReview = (logger: Logger): EvaluationFetcher => flow(
   getRowNumber(logger),
   TE.chainW(getNcrcReview(logger)),
   TE.map(constructNcrcReview),
