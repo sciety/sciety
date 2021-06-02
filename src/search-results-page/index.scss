@@ -8,7 +8,7 @@
 @use '../sass/settings';
 @use '../sass/typography';
 @use '../sass/tabs';
-
+@use 'next-link';
 
 $_vertical-space-above-title--narrow: baseline.increments(2);
 $_vertical-space-above-title--wide: baseline.increments(5);

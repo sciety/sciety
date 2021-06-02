@@ -1,0 +1,5 @@
+@use '../sass/button';
+
+.search-results__next_link {
+  @include button.button-link-secondary();
+}

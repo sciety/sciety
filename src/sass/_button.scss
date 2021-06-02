@@ -62,3 +62,28 @@
   background-color: settings.$colour-white;
   color: settings.$colour-accent;
 }
+
+@mixin button-link-secondary() {
+  @include button-link();
+
+  background-color: settings.$colour-white;
+  color: settings.$colour-accent;
+
+  &:link,
+  &:visited {
+    background-color: settings.$colour-white;
+    color: settings.$colour-accent;
+
+    &:active {
+      border-color: settings.$colour-accent-hover;
+      color: settings.$colour-accent;
+      background-color: settings.$colour-white;
+    }
+
+    &:hover {
+      border-color: settings.$colour-accent-hover;
+      background-color: settings.$colour-accent-hover;
+      color: settings.$colour-white;
+    }
+  }
+}
