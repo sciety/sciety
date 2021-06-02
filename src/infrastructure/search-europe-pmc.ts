@@ -90,7 +90,7 @@ const translatePublisherToServer = (publisher: EuropePmcPublisher): ArticleServe
   }
 };
 
-const constructSearchResults = (data: EuropePmcResponse) => {
+const constructSearchResults = (pageSize: number) => (data: EuropePmcResponse) => {
   const items = data.resultList.result.map((item) => ({
     doi: item.doi,
     server: translatePublisherToServer(item.bookOrReportDetails.publisher),
@@ -101,7 +101,7 @@ const constructSearchResults = (data: EuropePmcResponse) => {
     ),
     postedDate: item.firstPublicationDate,
   }));
-  const nextCursor = data.resultList.result.length === 0 ? O.none : O.some(data.nextCursorMark);
+  const nextCursor = data.resultList.result.length < pageSize ? O.none : O.some(data.nextCursorMark);
   return {
     items,
     total: data.hitCount,
@@ -138,5 +138,5 @@ export const searchEuropePmc: SearchEuropePmc = (pageSize) => (query, cursor) =>
   tupled(constructQueryParams(pageSize)),
   constructSearchUrl,
   getFromUrl,
-  RTE.map(constructSearchResults),
+  RTE.map(constructSearchResults(pageSize)),
 );

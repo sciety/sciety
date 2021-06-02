@@ -9,9 +9,9 @@ import { arbitraryNumber, arbitraryString, arbitraryWord } from '../helpers';
 describe('search-europe-pmc adapter', () => {
   it('converts Europe PMC search result into our view model', async () => {
     const nextCursor = arbitraryWord();
-    const results = await searchEuropePmc(10)('some query', O.none)({
+    const results = await searchEuropePmc(2)('some query', O.none)({
       getJson: async () => ({
-        hitCount: 1,
+        hitCount: 3,
         nextCursorMark: nextCursor,
         resultList: {
           result: [
@@ -29,6 +29,20 @@ describe('search-europe-pmc adapter', () => {
                 publisher: 'bioRxiv',
               },
             },
+            {
+              doi: '10.1111/4321',
+              title: 'Another Article title',
+              authorList: {
+                author: [
+                  { fullName: 'Author 3' },
+                  { fullName: 'Author 4' },
+                ],
+              },
+              firstPublicationDate: '2012-04-11',
+              bookOrReportDetails: {
+                publisher: 'bioRxiv',
+              },
+            },
           ],
         },
       }),
@@ -36,7 +50,7 @@ describe('search-europe-pmc adapter', () => {
     })();
 
     const expected = E.right({
-      total: 1,
+      total: 3,
       items: [
         {
           doi: new Doi('10.1111/1234'),
@@ -47,6 +61,16 @@ describe('search-europe-pmc adapter', () => {
             'Author 2',
           ],
           postedDate: new Date('2019-11-07'),
+        },
+        {
+          doi: new Doi('10.1111/4321'),
+          server: 'biorxiv',
+          title: 'Another Article title',
+          authors: [
+            'Author 3',
+            'Author 4',
+          ],
+          postedDate: new Date('2012-04-11'),
         },
       ],
       nextCursor: O.some(nextCursor),
@@ -154,7 +178,33 @@ describe('search-europe-pmc adapter', () => {
     });
 
     describe('when there are less results than the page size', () => {
-      it.todo('nextCursor should be none');
+      it('nextCursor should be none', async () => {
+        const nextCursor = arbitraryWord();
+        const results = await searchEuropePmc(10)('some query', O.none)({
+          getJson: async () => ({
+            hitCount: arbitraryNumber(0, 100),
+            nextCursorMark: nextCursor,
+            resultList: {
+              result: [{
+                doi: '10.1111/1234',
+                title: 'Article title',
+                authorList: {
+                  author: [],
+                },
+                firstPublicationDate: '2019-11-07',
+                bookOrReportDetails: {
+                  publisher: 'bioRxiv',
+                },
+              }],
+            },
+          }),
+          logger: dummyLogger,
+        })();
+
+        expect(results).toStrictEqual(E.right(expect.objectContaining({
+          nextCursor: O.none,
+        })));
+      });
     });
 
     describe('when result count equals page size', () => {
