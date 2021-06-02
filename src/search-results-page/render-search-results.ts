@@ -18,9 +18,21 @@ export type SearchResults = {
   itemsToDisplay: ReadonlyArray<ItemViewModel>,
   availableArticleMatches: number,
   availableGroupMatches: number,
+  nextCursor: O.Option<string>,
 };
 
-const renderListIfNecessary = (articles: ReadonlyArray<HtmlFragment>) => pipe(
+const renderNextLink = (category: string, query: string) => (nextCursor: string): HtmlFragment => toHtmlFragment(`
+  <a href="/search?category=${category}&query=${query}&cursor=${nextCursor}" class="search-results__next_link">Next</a>
+`);
+
+const renderListIfNecessary = (
+  category: string,
+  query: string,
+) => (
+  nextCursor: O.Option<string>,
+) => (
+  articles: ReadonlyArray<HtmlFragment>,
+) => pipe(
   articles,
   RNEA.fromReadonlyArray,
   O.fold(
@@ -30,6 +42,7 @@ const renderListIfNecessary = (articles: ReadonlyArray<HtmlFragment>) => pipe(
       <ul class="search-results-list" role="list">
         ${templateListItems(a, 'search-results-list__item')}
       </ul>
+      ${pipe(nextCursor, O.map(renderNextLink(category, query)), O.getOrElse(constant('')))}
     `,
   ),
 );
@@ -60,7 +73,7 @@ type RenderSearchResults = (rs: SearchResults) => HtmlFragment;
 export const renderSearchResults: RenderSearchResults = (searchResults) => pipe(
   searchResults.itemsToDisplay,
   RA.map(renderSearchResult),
-  renderListIfNecessary,
+  renderListIfNecessary(searchResults.category, searchResults.query)(searchResults.nextCursor),
   (searchResultsList) => `
     ${categoryMenu(searchResults)}
     ${searchResultsList}

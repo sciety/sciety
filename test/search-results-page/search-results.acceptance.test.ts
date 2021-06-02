@@ -181,7 +181,7 @@ describe('search-results-page acceptance', () => {
             }),
           );
           const rendered = await contentOf(page)();
-          const nextLink = rendered.querySelector('.search-results__next-link');
+          const nextLink = rendered.querySelector('.search-results__next_link');
 
           expect(nextLink).not.toBeNull();
         });
