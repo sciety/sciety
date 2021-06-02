@@ -7,14 +7,10 @@ import {
   constant, flow, pipe,
 } from 'fp-ts/function';
 import type { NamedNode } from 'rdf-js';
+import { Evaluation } from './evaluation';
 import { FetchDataset } from './fetch-dataset';
 import { Logger } from './logger';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-
-type FoundReview = {
-  fullText: HtmlFragment,
-  url: URL,
-};
+import { toHtmlFragment } from '../types/html-fragment';
 
 const fetchReviewContent = (
   fetchDataset: FetchDataset,
@@ -36,18 +32,18 @@ const fetchReviewContent = (
       }),
     )),
   )),
-  TE.map((review) => {
-    logger('debug', 'Retrieved review', { review });
-    return review;
+  TE.map((evaluation) => {
+    logger('debug', 'Retrieved evaluation', { evaluation });
+    return evaluation;
   }),
 );
 
-export type FetchDataciteReview = (key: string) => TE.TaskEither<'unavailable' | 'not-found', FoundReview>;
+export type FetchDataciteReview = (key: string) => TE.TaskEither<'unavailable' | 'not-found', Evaluation>;
 
 export const fetchDataciteReview = (fetchDataset: FetchDataset, logger: Logger): FetchDataciteReview => flow(
   (key) => `https://doi.org/${key}`,
   (url) => {
-    logger('debug', 'Fetching review from Datacite', { url });
+    logger('debug', 'Fetching evaluation from Datacite', { url });
     return url;
   },
   namedNode,

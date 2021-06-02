@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
@@ -10,14 +9,9 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
 import { constructNcrcReview } from './construct-ncrc-review';
+import { Evaluation } from './evaluation';
 import { Logger } from './logger';
-import { HtmlFragment } from '../types/html-fragment';
 import Params$Resource$Spreadsheets$Values$Get = sheets_v4.Params$Resource$Spreadsheets$Values$Get;
-
-type FoundReview = {
-  fullText: HtmlFragment,
-  url: URL,
-};
 
 // https://github.com/gcanti/io-ts/issues/431
 type TupleFn = <TCodecs extends readonly [t.Mixed, ...Array<t.Mixed>]>(
@@ -137,7 +131,7 @@ const getNcrcReview = (logger: Logger) => flow(
   )),
 );
 
-export type FetchNcrcReview = (key: string) => TE.TaskEither<'unavailable' | 'not-found', FoundReview>;
+export type FetchNcrcReview = (key: string) => TE.TaskEither<'unavailable' | 'not-found', Evaluation>;
 
 export const fetchNcrcReview = (logger: Logger): FetchNcrcReview => flow(
   getRowNumber(logger),

@@ -1,17 +1,13 @@
-import { URL } from 'url';
 import * as TE from 'fp-ts/TaskEither';
+import { Evaluation } from './evaluation';
 import { FetchDataciteReview } from './fetch-datacite-review';
 import { FetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
 import { FetchNcrcReview } from './fetch-ncrc-review';
 import { Doi } from '../types/doi';
-import { HtmlFragment } from '../types/html-fragment';
 import { HypothesisAnnotationId } from '../types/hypothesis-annotation-id';
 import { ReviewId } from '../types/review-id';
 
-export type FetchReview = (id: ReviewId) => TE.TaskEither<'unavailable' | 'not-found', {
-  fullText: HtmlFragment,
-  url: URL,
-}>;
+export type FetchReview = (id: ReviewId) => TE.TaskEither<'unavailable' | 'not-found', Evaluation>;
 
 export const fetchReview = (
   fetchDataciteReview: FetchDataciteReview,

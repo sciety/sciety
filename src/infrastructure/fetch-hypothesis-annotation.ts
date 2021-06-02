@@ -7,8 +7,8 @@ import * as PR from 'io-ts/PathReporter';
 import { Remarkable } from 'remarkable';
 import { linkify } from 'remarkable/linkify';
 import { hypothesisAnnotation, HypothesisAnnotation } from './codecs/HypothesisAnnotation';
+import { Evaluation } from './evaluation';
 import { Logger } from './logger';
-import { Review } from './review';
 import { toHtmlFragment } from '../types/html-fragment';
 
 type GetJson = (uri: string) => Promise<Json>;
@@ -16,7 +16,7 @@ type GetJson = (uri: string) => Promise<Json>;
 const converter = new Remarkable({ html: true }).use(linkify);
 
 const toReview = (logger: Logger) => (response: HypothesisAnnotation) => {
-  const review: Review = {
+  const evaluation: Evaluation = {
     fullText: pipe(
       response.text,
       (text) => converter.render(text),
@@ -24,20 +24,20 @@ const toReview = (logger: Logger) => (response: HypothesisAnnotation) => {
     ),
     url: new URL(response.links.incontext),
   };
-  logger('debug', 'Retrieved review', { ...review, fullText: '[text]' });
-  return review;
+  logger('debug', 'Retrieved evaluation', { ...evaluation, fullText: '[text]' });
+  return evaluation;
 };
 
-export type FetchHypothesisAnnotation = (key: string) => TE.TaskEither<'unavailable', Review>;
+export type FetchHypothesisAnnotation = (key: string) => TE.TaskEither<'unavailable', Evaluation>;
 
 export const fetchHypothesisAnnotation = (getJson: GetJson, logger: Logger): FetchHypothesisAnnotation => (key) => {
   const uri = `https://api.hypothes.is/api/annotations/${key}`;
-  logger('debug', 'Fetching review from Hypothesis', { uri });
+  logger('debug', 'Fetching evaluation from Hypothesis', { uri });
   return pipe(
     TE.tryCatch(
       async () => getJson(uri),
       (error) => {
-        logger('error', 'Failed to fetch hypothesis review', { uri, error });
+        logger('error', 'Failed to fetch hypothesis evaluation', { uri, error });
         return 'unavailable' as const; // TODO: could be not-found
       },
     ),

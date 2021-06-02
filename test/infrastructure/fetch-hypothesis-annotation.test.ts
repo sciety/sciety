@@ -3,7 +3,6 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { Json } from 'io-ts-types';
 import { fetchHypothesisAnnotation } from '../../src/infrastructure/fetch-hypothesis-annotation';
-import { Review } from '../../src/infrastructure/review';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryWord } from '../helpers';
@@ -12,7 +11,7 @@ const date = '2019-09-12T09:55:46.146050+00:00';
 const key = arbitraryWord();
 
 describe('fetch-hypothesis-annotation', () => {
-  it('returns the review', async () => {
+  it('returns the evaluation', async () => {
     const getJson = async (): Promise<Json> => ({
       created: date,
       text: '<p>Very good</p>',
@@ -20,14 +19,14 @@ describe('fetch-hypothesis-annotation', () => {
         incontext: 'https://www.example.com',
       },
     });
-    const review = await fetchHypothesisAnnotation(getJson, dummyLogger)(key)();
+    const evaluation = await fetchHypothesisAnnotation(getJson, dummyLogger)(key)();
 
-    const expected: Review = {
+    const expected = {
       fullText: pipe('<p>Very good</p>', toHtmlFragment),
       url: new URL('https://www.example.com'),
     };
 
-    expect(review).toStrictEqual(E.right(expected));
+    expect(evaluation).toStrictEqual(E.right(expected));
   });
 
   it.each([
@@ -42,9 +41,9 @@ describe('fetch-hypothesis-annotation', () => {
         incontext: 'https://www.example.com',
       },
     });
-    const review = await fetchHypothesisAnnotation(getJson, dummyLogger)(key)();
+    const evaluation = await fetchHypothesisAnnotation(getJson, dummyLogger)(key)();
 
-    expect(review).toStrictEqual(E.right(expect.objectContaining({
+    expect(evaluation).toStrictEqual(E.right(expect.objectContaining({
       fullText: expect.stringContaining(expected),
     })));
   });
@@ -58,9 +57,9 @@ describe('fetch-hypothesis-annotation', () => {
         incontext: 'https://www.example.com',
       },
     });
-    const review = await fetchHypothesisAnnotation(getJson, dummyLogger)(key)();
+    const evaluation = await fetchHypothesisAnnotation(getJson, dummyLogger)(key)();
 
-    expect(review).toStrictEqual(E.right(expect.objectContaining({
+    expect(evaluation).toStrictEqual(E.right(expect.objectContaining({
       fullText: expect.stringContaining(input),
     })));
   });

@@ -1,10 +1,10 @@
 import { URL } from 'url';
 import * as TE from 'fp-ts/TaskEither';
-import { Review } from './review';
+import { Evaluation } from './evaluation';
 import { toHtmlFragment } from '../types/html-fragment';
 import { RapidReviewDoi } from '../types/rapid-review-doi';
 
-type FetchRapidReview = (reviewId: RapidReviewDoi) => TE.TaskEither<never, Review>;
+type FetchRapidReview = (reviewId: RapidReviewDoi) => TE.TaskEither<never, Evaluation>;
 
 // ts-unused-exports:disable-next-line
 export const fetchRapidReview: FetchRapidReview = () => TE.right({
