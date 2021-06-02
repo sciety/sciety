@@ -22,5 +22,5 @@ export const selectSubsetToDisplay = (state: Matches): LimitedSet => ({
   itemsToDisplay: (state.category === 'groups')
     ? state.groups
     : RA.takeLeft(state.pageSize)(state.articles.items),
-  nextCursor: O.none,
+  nextCursor: (state.category === 'groups') ? O.none : state.articles.nextCursor,
 });
