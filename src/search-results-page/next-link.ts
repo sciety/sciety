@@ -4,7 +4,9 @@ import { constant, pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 const renderNextLink = (category: string, query: string) => (nextCursor: string): HtmlFragment => toHtmlFragment(`
-  <a href="/search?query=${htmlEscape(query)}&category=${category}&cursor=${htmlEscape(nextCursor)}" class="search-results__next_link">Next</a>
+  <div class="search-results__link_container">
+    <a href="/search?query=${htmlEscape(query)}&category=${category}&cursor=${htmlEscape(nextCursor)}" class="search-results__next_link">Next</a>
+  </div>
 `);
 
 type SearchParameters = {

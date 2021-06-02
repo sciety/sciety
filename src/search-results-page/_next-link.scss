@@ -1,5 +1,9 @@
 @use '../sass/button';
 
+.search-results__link_container {
+  text-align: center;
+}
+
 .search-results__next_link {
   @include button.button-link-secondary();
   display: inline-block;
