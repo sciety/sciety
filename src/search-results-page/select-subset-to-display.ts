@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { ArticleItem, GroupItem } from './data-types';
 import { LimitedSet } from './fetch-extra-details';
@@ -21,4 +22,5 @@ export const selectSubsetToDisplay = (state: Matches): LimitedSet => ({
   itemsToDisplay: (state.category === 'groups')
     ? state.groups
     : RA.takeLeft(state.pageSize)(state.articles.items),
+  nextCursor: O.none,
 });

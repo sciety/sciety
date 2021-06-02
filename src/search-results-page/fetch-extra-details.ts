@@ -85,6 +85,7 @@ export type LimitedSet = {
   availableArticleMatches: number,
   availableGroupMatches: number,
   itemsToDisplay: ReadonlyArray<GroupItem | ArticleItem>,
+  nextCursor: O.Option<string>,
 };
 
 export const fetchExtraDetails = (ports: Ports) => (state: LimitedSet): T.Task<SearchResults> => pipe(

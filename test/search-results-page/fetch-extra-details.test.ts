@@ -46,6 +46,7 @@ describe('fetch-extra-details', () => {
             postedDate: new Date(),
           },
         ],
+        nextCursor: O.none,
       };
       const viewModel = await fetchExtraDetails(ports)(matches)();
 
@@ -93,6 +94,7 @@ describe('fetch-extra-details', () => {
               id: groupId,
             },
           ],
+          nextCursor: O.none,
         };
         const viewModel = await fetchExtraDetails(ports)(matches)();
 
@@ -131,6 +133,7 @@ describe('fetch-extra-details', () => {
               id: arbitraryGroupId(),
             },
           ],
+          nextCursor: O.none,
         };
         const viewModel = await fetchExtraDetails(ports)(matches)();
 

@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { selectSubsetToDisplay } from '../../src/search-results-page/select-subset-to-display';
 import { toHtmlFragment } from '../../src/types/html-fragment';
@@ -41,6 +42,18 @@ describe('select-subset-to-display', () => {
     });
 
     it.todo('shows the correct count of matches');
+
+    describe('when there are no results', () => {
+      it.todo('nextCursor should be none');
+    });
+
+    describe('when there are less results than the page size', () => {
+      it.todo('nextCursor should be none');
+    });
+
+    describe('when result count equals page size', () => {
+      it.todo('nextCursor should be some');
+    });
   });
 
   describe('given the category of "groups"', () => {
@@ -63,5 +76,22 @@ describe('select-subset-to-display', () => {
     });
 
     it.todo('shows the correct count of matches');
+
+    it('nextCursor should be none', () => {
+      const state = {
+        query: '',
+        pageSize: 2,
+        category: 'groups',
+        groups: [arbitraryGroupItem()],
+        articles: {
+          items: [],
+          total: 0,
+          nextCursor: arbitraryWord(),
+        },
+      };
+      const result = selectSubsetToDisplay(state);
+
+      expect(result.nextCursor).toStrictEqual(O.none);
+    });
   });
 });
