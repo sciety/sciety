@@ -14,7 +14,6 @@ import { DomainEvent } from '../types/domain-events';
 import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
 import { toHtmlFragment } from '../types/html-fragment';
-import { ReviewId } from '../types/review-id';
 import { sanitise } from '../types/sanitised-html-fragment';
 
 type Ports = {
@@ -30,7 +29,6 @@ export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 // TODO: Find reviewsForArticleDoi should return a TaskEither
 export type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
-  reviewId: ReviewId,
   groupId: GroupId,
   occurredAt: Date,
 }>>;
