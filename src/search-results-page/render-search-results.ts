@@ -25,12 +25,7 @@ const renderNextLink = (category: string, query: string) => (nextCursor: string)
   <a href="/search?category=${category}&query=${query}&cursor=${nextCursor}" class="search-results__next_link">Next</a>
 `);
 
-const renderListIfNecessary = (
-  category: string,
-  query: string,
-) => (
-  nextCursor: O.Option<string>,
-) => (
+const renderListIfNecessary = (nextLink: HtmlFragment) => (
   articles: ReadonlyArray<HtmlFragment>,
 ) => pipe(
   articles,
@@ -42,7 +37,7 @@ const renderListIfNecessary = (
       <ul class="search-results-list" role="list">
         ${templateListItems(a, 'search-results-list__item')}
       </ul>
-      ${pipe(nextCursor, O.map(renderNextLink(category, query)), O.getOrElse(constant('')))}
+      ${nextLink}    
     `,
   ),
 );
@@ -73,7 +68,12 @@ type RenderSearchResults = (rs: SearchResults) => HtmlFragment;
 export const renderSearchResults: RenderSearchResults = (searchResults) => pipe(
   searchResults.itemsToDisplay,
   RA.map(renderSearchResult),
-  renderListIfNecessary(searchResults.category, searchResults.query)(searchResults.nextCursor),
+  renderListIfNecessary(pipe(
+    searchResults.nextCursor,
+    O.map(renderNextLink(searchResults.category, searchResults.query)),
+    O.getOrElse(constant('')),
+    toHtmlFragment,
+  )),
   (searchResultsList) => `
     ${categoryMenu(searchResults)}
     ${searchResultsList}
