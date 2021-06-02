@@ -42,18 +42,6 @@ describe('select-subset-to-display', () => {
     });
 
     it.todo('shows the correct count of matches');
-
-    describe('when there are no results', () => {
-      it.todo('nextCursor should be none');
-    });
-
-    describe('when there are less results than the page size', () => {
-      it.todo('nextCursor should be none');
-    });
-
-    describe('when result count equals page size', () => {
-      it.todo('nextCursor should be some');
-    });
   });
 
   describe('given the category of "groups"', () => {

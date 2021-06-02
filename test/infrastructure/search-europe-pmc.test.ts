@@ -131,4 +131,18 @@ describe('search-europe-pmc adapter', () => {
 
     expect(spy).toHaveBeenCalledWith(expect.stringContaining(`cursorMark=${cursor}`));
   });
+
+  describe('nextCursor', () => {
+    describe('when there are no results', () => {
+      it.todo('nextCursor should be none');
+    });
+
+    describe('when there are less results than the page size', () => {
+      it.todo('nextCursor should be none');
+    });
+
+    describe('when result count equals page size', () => {
+      it.todo('nextCursor should be some');
+    });
+  });
 });
