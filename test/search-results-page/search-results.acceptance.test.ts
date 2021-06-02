@@ -205,6 +205,7 @@ describe('search-results-page acceptance', () => {
                   arbitraryArticleItem(),
                 ],
                 total: 3,
+                nextCursor: O.some(arbitraryWord()),
               })),
               findReviewsForArticleDoi: () => T.of([]),
               findVersionsForArticleDoi: () => TO.none,

@@ -96,7 +96,6 @@ export const fetchExtraDetails = (ports: Ports) => (state: LimitedSet): T.Task<S
     (itemsToDisplay) => ({
       ...state,
       itemsToDisplay,
-      nextCursor: O.none,
     }),
   )),
 );
