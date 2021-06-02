@@ -43,6 +43,8 @@ export const service = (id: ReviewId): string => {
   return 'ncrc';
 };
 
+export const key = (id: ReviewId): string => id.value;
+
 export const isReviewId = (value: unknown): value is ReviewId => (
   value instanceof HypothesisAnnotationId || value instanceof Doi || NcrcId.isNrcId(value)
 );
