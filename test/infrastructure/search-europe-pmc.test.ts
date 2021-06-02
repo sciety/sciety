@@ -4,7 +4,7 @@ import { Json } from 'io-ts-types';
 import { searchEuropePmc } from '../../src/infrastructure/search-europe-pmc';
 import { Doi } from '../../src/types/doi';
 import { dummyLogger } from '../dummy-logger';
-import { arbitraryString, arbitraryWord } from '../helpers';
+import { arbitraryNumber, arbitraryString, arbitraryWord } from '../helpers';
 
 describe('search-europe-pmc adapter', () => {
   it('converts Europe PMC search result into our view model', async () => {
@@ -134,7 +134,23 @@ describe('search-europe-pmc adapter', () => {
 
   describe('nextCursor', () => {
     describe('when there are no results', () => {
-      it.todo('nextCursor should be none');
+      it('nextCursor should be none', async () => {
+        const nextCursor = arbitraryWord();
+        const results = await searchEuropePmc(10)('some query', O.none)({
+          getJson: async () => ({
+            hitCount: arbitraryNumber(0, 100),
+            nextCursorMark: nextCursor,
+            resultList: {
+              result: [],
+            },
+          }),
+          logger: dummyLogger,
+        })();
+
+        expect(results).toStrictEqual(E.right(expect.objectContaining({
+          nextCursor: O.none,
+        })));
+      });
     });
 
     describe('when there are less results than the page size', () => {

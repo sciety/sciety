@@ -101,10 +101,11 @@ const constructSearchResults = (data: EuropePmcResponse) => {
     ),
     postedDate: item.firstPublicationDate,
   }));
+  const nextCursor = data.resultList.result.length === 0 ? O.none : O.some(data.nextCursorMark);
   return {
     items,
     total: data.hitCount,
-    nextCursor: O.some(data.nextCursorMark),
+    nextCursor,
   };
 };
 
