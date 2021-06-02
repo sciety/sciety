@@ -7,43 +7,64 @@ import * as RI from '../../src/types/review-id';
 
 describe('review-id', () => {
   describe('when is a DOI', () => {
-    it('can be serialized and deserialized', () => {
-      const reviewId = arbitraryDoi();
+    const reviewId = arbitraryDoi();
 
+    it('can be serialized and deserialized', () => {
       expect(pipe(
         reviewId,
         RI.serialize,
         RI.deserialize,
       )).toStrictEqual(O.some(reviewId));
+    });
+
+    it('identifies the service as doi', () => {
+      expect(pipe(
+        reviewId,
+        RI.service,
+      )).toStrictEqual('doi');
     });
   });
 
   describe('when is a Hypothesis annotation id', () => {
-    it('can be serialized and deserialized', () => {
-      const reviewId = arbitraryHypothesisAnnotationId();
+    const reviewId = arbitraryHypothesisAnnotationId();
 
+    it('can be serialized and deserialized', () => {
       expect(pipe(
         reviewId,
         RI.serialize,
         RI.deserialize,
       )).toStrictEqual(O.some(reviewId));
+    });
+
+    it('identifies the service as hypothesis', () => {
+      expect(pipe(
+        reviewId,
+        RI.service,
+      )).toStrictEqual('hypothesis');
     });
   });
 
   describe('when is an NCRC id', () => {
-    it('can be serialized and deserialized', () => {
-      const reviewId = arbitraryNcrcId();
+    const reviewId = arbitraryNcrcId();
 
+    it('can be serialized and deserialized', () => {
       expect(pipe(
         reviewId,
         RI.serialize,
         RI.deserialize,
       )).toStrictEqual(O.some(reviewId));
     });
+
+    it('identifies the service as ncrc', () => {
+      expect(pipe(
+        reviewId,
+        RI.service,
+      )).toStrictEqual('ncrc');
+    });
   });
 
   describe('when is not of a recognised format', () => {
-    it('returns a none', () => {
+    it('cannot be deserialized', () => {
       const unrecognisedFormat = 'foo';
 
       expect(RI.deserialize(unrecognisedFormat)).toStrictEqual(O.none);

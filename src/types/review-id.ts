@@ -33,6 +33,16 @@ export const serialize = (id: ReviewId): string => {
   return `ncrc:${id.value}`;
 };
 
+export const service = (id: ReviewId): string => {
+  if (id instanceof Doi) {
+    return 'doi';
+  }
+  if (id instanceof HypothesisAnnotationId) {
+    return 'hypothesis';
+  }
+  return 'ncrc';
+};
+
 export const isReviewId = (value: unknown): value is ReviewId => (
   value instanceof HypothesisAnnotationId || value instanceof Doi || NcrcId.isNrcId(value)
 );
