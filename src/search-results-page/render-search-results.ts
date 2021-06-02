@@ -22,7 +22,7 @@ export type SearchResults = {
 };
 
 const renderNextLink = (category: string, query: string) => (nextCursor: string): HtmlFragment => toHtmlFragment(`
-  <a href="/search?category=${category}&query=${query}&cursor=${nextCursor}" class="search-results__next_link">Next</a>
+  <a href="/search?query=${htmlEscape(query)}&category=${category}&cursor=${htmlEscape(nextCursor)}" class="search-results__next_link">Next</a>
 `);
 
 const renderListIfNecessary = (nextLink: HtmlFragment) => (
