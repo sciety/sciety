@@ -9,7 +9,9 @@ import { toHtmlFragment } from '../../src/types/html-fragment';
 import { Page } from '../../src/types/page';
 import { RenderPageError } from '../../src/types/render-page-error';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
-import { arbitraryDate, arbitraryNumber, arbitraryString } from '../helpers';
+import {
+  arbitraryDate, arbitraryNumber, arbitraryString, arbitraryWord,
+} from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
@@ -49,7 +51,7 @@ describe('search-results-page acceptance', () => {
         searchResultsPage({
           ...dummyAdapters,
           findGroups: () => T.of([]),
-          searchEuropePmc: () => () => TE.right({ items: [], total: 0 }),
+          searchEuropePmc: () => () => TE.right({ items: [], total: 0, nextCursor: arbitraryWord() }),
         }),
       );
       const rendered = await contentOf(page)();
@@ -64,7 +66,7 @@ describe('search-results-page acceptance', () => {
         searchResultsPage({
           ...dummyAdapters,
           findGroups: () => T.of([]),
-          searchEuropePmc: () => () => TE.right({ items: [], total: 0 }),
+          searchEuropePmc: () => () => TE.right({ items: [], total: 0, nextCursor: arbitraryWord() }),
         }),
       );
       const rendered = await contentOf(page)();
@@ -79,7 +81,7 @@ describe('search-results-page acceptance', () => {
         searchResultsPage({
           ...dummyAdapters,
           findGroups: () => T.of([]),
-          searchEuropePmc: () => () => TE.right({ items: [], total: 0 }),
+          searchEuropePmc: () => () => TE.right({ items: [], total: 0, nextCursor: arbitraryWord() }),
         }),
       );
       const rendered = await contentOf(page)();
@@ -100,7 +102,7 @@ describe('search-results-page acceptance', () => {
           searchResultsPage({
             ...dummyAdapters,
             findGroups: () => T.of([]),
-            searchEuropePmc: () => () => TE.right({ items: [], total: 0 }),
+            searchEuropePmc: () => () => TE.right({ items: [], total: 0, nextCursor: arbitraryWord() }),
           }),
         );
         const rendered = await contentOf(page)();
@@ -141,6 +143,7 @@ describe('search-results-page acceptance', () => {
                   arbitraryArticleItem(),
                 ],
                 total: 3,
+                nextCursor: arbitraryWord(),
               }),
               findReviewsForArticleDoi: () => T.of([]),
               findVersionsForArticleDoi: () => TO.none,
@@ -171,6 +174,7 @@ describe('search-results-page acceptance', () => {
                   arbitraryArticleItem(),
                 ],
                 total: 3,
+                nextCursor: arbitraryWord(),
               }),
               findReviewsForArticleDoi: () => T.of([]),
               findVersionsForArticleDoi: () => TO.none,
@@ -222,7 +226,7 @@ describe('search-results-page acceptance', () => {
             searchResultsPage({
               ...dummyAdapters,
               findGroups: () => T.of([arbitraryGroupId()]),
-              searchEuropePmc: () => () => TE.right({ items: [], total: 0 }),
+              searchEuropePmc: () => () => TE.right({ items: [], total: 0, nextCursor: arbitraryWord() }),
             }),
           );
           const rendered = await contentOf(page)();
@@ -242,7 +246,7 @@ describe('search-results-page acceptance', () => {
             searchResultsPage({
               ...dummyAdapters,
               findGroups: () => T.of([arbitraryGroupId()]),
-              searchEuropePmc: () => () => TE.right({ items: [], total: 0 }),
+              searchEuropePmc: () => () => TE.right({ items: [], total: 0, nextCursor: arbitraryWord() }),
             }),
           );
           const rendered = await contentOf(page)();
@@ -262,7 +266,7 @@ describe('search-results-page acceptance', () => {
             searchResultsPage({
               ...dummyAdapters,
               findGroups: () => T.of([arbitraryGroupId()]),
-              searchEuropePmc: () => () => TE.right({ items: [], total: 0 }),
+              searchEuropePmc: () => () => TE.right({ items: [], total: 0, nextCursor: arbitraryWord() }),
             }),
           );
           const rendered = await contentOf(page)();
@@ -298,7 +302,7 @@ describe('search-results-page acceptance', () => {
             searchResultsPage({
               ...dummyAdapters,
               findGroups: () => T.of(matchedGroups),
-              searchEuropePmc: () => () => TE.right({ items: [], total: 0 }),
+              searchEuropePmc: () => () => TE.right({ items: [], total: 0, nextCursor: arbitraryWord() }),
               getGroup: () => TO.some(arbitraryGroup()),
               getAllEvents: T.of([]),
             }),
@@ -338,7 +342,7 @@ describe('search-results-page acceptance', () => {
             searchResultsPage({
               ...dummyAdapters,
               findGroups: () => T.of([]),
-              searchEuropePmc: () => () => TE.right({ items: [], total: 0 }),
+              searchEuropePmc: () => () => TE.right({ items: [], total: 0, nextCursor: arbitraryWord() }),
             }),
           );
           const rendered = await contentOf(page)();
@@ -360,7 +364,7 @@ describe('search-results-page acceptance', () => {
             searchResultsPage({
               ...dummyAdapters,
               findGroups: () => T.of([]),
-              searchEuropePmc: () => () => TE.right({ items: [], total: 0 }),
+              searchEuropePmc: () => () => TE.right({ items: [], total: 0, nextCursor: arbitraryWord() }),
             }),
           );
           const rendered = await contentOf(page)();

@@ -13,6 +13,7 @@ import { GroupId } from '../types/group-id';
 type ArticleResults = {
   items: ReadonlyArray<ArticleItem>,
   total: number,
+  nextCursor: string,
 };
 
 type FindArticles = (pageSize: number) => (query: string, cursor: O.Option<string>) => TE.TaskEither<'unavailable', ArticleResults>;
