@@ -8,11 +8,10 @@ import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { FeedItem } from './render-feed';
 import { ArticleServer } from '../types/article-server';
-import { Doi } from '../types/doi';
 import { GroupId } from '../types/group-id';
 import { HtmlFragment } from '../types/html-fragment';
-import { HypothesisAnnotationId } from '../types/hypothesis-annotation-id';
 import { ReviewId } from '../types/review-id';
+import * as RI from '../types/review-id';
 import { sanitise } from '../types/sanitised-html-fragment';
 import { UserId } from '../types/user-id';
 
@@ -53,17 +52,6 @@ const articleVersionToFeedItem = (
   T.of({ ...feedEvent, server })
 );
 
-const inferredUrlFromReviewId = (reviewId: ReviewId) => {
-  if (reviewId instanceof Doi) {
-    return O.some(new URL(`https://doi.org/${reviewId.value}`));
-  }
-  if (reviewId instanceof HypothesisAnnotationId) {
-    return O.some(new URL(`https://hypothes.is/a/${reviewId.value}`));
-  }
-
-  return O.none;
-};
-
 const reviewToFeedItem = (
   getReview: FetchReview,
   getGroup: GetGroup,
@@ -79,7 +67,7 @@ const reviewToFeedItem = (
       getReview,
       TE.match(
         () => ({
-          url: inferredUrlFromReviewId(feedEvent.reviewId),
+          url: RI.inferredUrl(feedEvent.reviewId),
           fullText: O.none,
         }),
         (review) => ({

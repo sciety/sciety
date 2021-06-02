@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import * as Eq from 'fp-ts/Eq';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
@@ -41,6 +42,16 @@ export const service = (id: ReviewId): string => {
     return 'hypothesis';
   }
   return 'ncrc';
+};
+
+export const inferredUrl = (id: ReviewId): O.Option<URL> => {
+  if (id instanceof Doi) {
+    return O.some(new URL(`https://doi.org/${id.value}`));
+  }
+  if (id instanceof HypothesisAnnotationId) {
+    return O.some(new URL(`https://hypothes.is/a/${id.value}`));
+  }
+  return O.none;
 };
 
 export const key = (id: ReviewId): string => id.value;
