@@ -22,7 +22,7 @@ export type SearchResults = {
   nextCursor: O.Option<string>,
 };
 
-const renderListIfNecessary = (paginationLink: HtmlFragment) => (
+const renderListIfNecessary = (
   articles: ReadonlyArray<HtmlFragment>,
 ) => pipe(
   articles,
@@ -34,7 +34,6 @@ const renderListIfNecessary = (paginationLink: HtmlFragment) => (
       <ul class="search-results-list" role="list">
         ${templateListItems(a, 'search-results-list__item')}
       </ul>
-      ${paginationLink}    
     `,
   ),
 );
@@ -65,10 +64,11 @@ type RenderSearchResults = (rs: SearchResults) => HtmlFragment;
 export const renderSearchResults: RenderSearchResults = (searchResults) => pipe(
   searchResults.itemsToDisplay,
   RA.map(renderSearchResult),
-  renderListIfNecessary(nextLink(searchResults)),
+  renderListIfNecessary,
   (searchResultsList) => `
     ${categoryMenu(searchResults)}
     ${searchResultsList}
+    ${nextLink(searchResults)}
   `,
   toHtmlFragment,
 );
