@@ -4,13 +4,18 @@
 
 import { namedNode } from '@rdfjs/data-model';
 import rdfFetch, { DatasetResponse } from '@rdfjs/fetch-lite';
+import { pipe } from 'fp-ts/function';
 import datasetFactory from 'rdf-dataset-indexed';
 import type { DatasetCore } from 'rdf-js';
 import { fetchDataset } from '../../src/infrastructure/fetch-dataset';
+import * as RI from '../../src/types/review-id';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryDoi } from '../types/doi.helper';
 
-const reviewDoi = arbitraryDoi();
+const reviewDoi = pipe(
+  arbitraryDoi(),
+  RI.key,
+);
 
 const createStubFetch = (response: Partial<DatasetResponse<DatasetCore>>): typeof rdfFetch => (
   async () => response as DatasetResponse<DatasetCore>
@@ -19,7 +24,7 @@ const createStubFetch = (response: Partial<DatasetResponse<DatasetCore>>): typeo
 describe('fetch-dataset', () => {
   describe('dataset found', () => {
     it('fetches a dataset for an IRI', async () => {
-      const iri = namedNode(`https://doi.org/${reviewDoi.value}`);
+      const iri = namedNode(`https://doi.org/${reviewDoi}`);
       const cannedDataset = datasetFactory([]);
       const stubFetch = createStubFetch({
         ok: true,
@@ -32,8 +37,8 @@ describe('fetch-dataset', () => {
     });
 
     it('fetches a dataset that uses a different IRI', async () => {
-      const iri = namedNode(`https://doi.org/${reviewDoi.value}`);
-      const usedIri = namedNode(`http://dx.doi.org/${reviewDoi.value}`);
+      const iri = namedNode(`https://doi.org/${reviewDoi}`);
+      const usedIri = namedNode(`http://dx.doi.org/${reviewDoi}`);
       const cannedDataset = datasetFactory([]);
       const stubFetch = createStubFetch({
         ok: true,

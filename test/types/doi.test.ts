@@ -1,11 +1,16 @@
+import { pipe } from 'fp-ts/function';
 import { Doi } from '../../src/types/doi';
+import * as RI from '../../src/types/review-id';
 
 describe('doi', () => {
   it.each([
     '10.5281/zenodo.3678326',
-    'doi:10.5281/zenodo.3678326',
+    'doi:10.5281/zenodo.3678326', // TODO: is this ever needed?
   ])('accepts valid DOI syntax', (doiSyntaxExample) => {
-    expect(new Doi(doiSyntaxExample).value).toStrictEqual('10.5281/zenodo.3678326');
+    expect(pipe(
+      new Doi(doiSyntaxExample),
+      RI.key,
+    )).toStrictEqual('10.5281/zenodo.3678326');
   });
 
   it('has a prefix', () => {

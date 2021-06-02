@@ -2,6 +2,7 @@ import { RouterContext } from '@koa/router';
 import * as T from 'fp-ts/Task';
 import { ParameterizedContext } from 'koa';
 import { finishSaveArticleCommand } from '../../src/save-article/finish-save-article-command';
+import { ReviewIdFromString as RIcodec } from '../../src/types/codecs/ReviewIdFromString';
 import { userSavedArticle } from '../../src/types/domain-events';
 import { User } from '../../src/types/user';
 import { toUserId } from '../../src/types/user-id';
@@ -15,7 +16,7 @@ describe('finish-save-article-command', () => {
       const context = ({
         session: {
           command: 'save-article',
-          articleId: articleId.value,
+          articleId: RIcodec.encode(articleId),
         },
         state: {
           user: {
@@ -44,7 +45,7 @@ describe('finish-save-article-command', () => {
       const context = ({
         session: {
           command: 'save-article',
-          articleId: articleId.value,
+          articleId: RIcodec.encode(articleId),
         },
         state: {
           user: {
@@ -71,7 +72,7 @@ describe('finish-save-article-command', () => {
       const context = ({
         session: {
           command: 'save-article',
-          articleId: articleId.value,
+          articleId: RIcodec.encode(articleId),
         },
         state: {
           user: {
