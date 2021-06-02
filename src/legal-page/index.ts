@@ -53,8 +53,12 @@ export const legalPage: Page = {
       </p>
 
       <p>
-        Sciety uses an analytics service called Intercom to help improve our application. In particular, we provide a limited amount of your information to Intercom, Inc. (“Intercom”) and utilise Intercom to collect data for analytics purposes when you visit our website or use our product.
+        Sciety uses an analytics service called Intercom to help improve our application. In particular, we provide a limited amount of your information (such as email address if you enter this into the chat field when asked) to Intercom, Inc. (“Intercom”) and utilise Intercom to collect data for analytics purposes when you visit our website or use our product.
         As a data processor acting on our behalf, Intercom analyzes your use of our application and tracks our relationship by way of cookies and similar technologies so that we can improve our service to you. For more information on Intercom's use of cookies, please visit <a href="https://www.intercom.com/terms-and-policies#cookie-policy">https://www.intercom.com/terms-and-policies#cookie-policy</a>. We may also use Intercom as a medium for communications, either through email, or through messages within our application. As part of our service agreements, Intercom collects publicly available contact and social information related to you, such as your email address, gender, company, job title, photos, website URLs, social network handles and physical addresses, to enhance your user experience. For more information on the privacy practices of Intercom, please visit <a href="https://www.intercom.com/terms-and-policies#privacy">https://www.intercom.com/terms-and-policies#privacy</a>. Intercom’s services are governed by Intercom’s terms of use which can be found at <a href="https://www.intercom.com/terms-and-policies#terms">https://www.intercom.com/terms-and-policies#terms</a>. If you would like to opt out of having this information collected by or submitted to Intercom, please contact us.
+      </p>
+
+      <p>
+        Sciety makes use of a user behaviour analytics tool called Clarity from Microsoft that generates heatmaps and simulations of user scrolling and clicks by recording anonymous cursor movement data. As a data processor acting on our behalf, Microsoft analyzes your use of our application and tracks your visit between pages using cookies and similar technologies so that we can improve our service to you. For more information on Clarity please visit their Frequently Asked Questions <a href="https://docs.microsoft.com/en-us/clarity/faq">https://docs.microsoft.com/en-us/clarity/faq</a>, for more information on how Microsoft uses cookies please visit their privacy statement <a href="https://privacy.microsoft.com/privacystatement">https://privacy.microsoft.com/privacystatement</a> and for information on Microsoft's terms of use for Clarity please visit their Terms of use <a href="https://clarity.microsoft.com/terms">https://clarity.microsoft.com/terms</a>. If you would like to opt out of having this information collected by or submitted to Microsoft, please contact us.
       </p>
 
       <h3>
@@ -69,6 +73,10 @@ export const legalPage: Page = {
 
       <p>
         1st June 2021: added Intercom information to Sciety privacy policy.
+      </p>
+
+      <p>
+        2nd June 2021: added Microsoft Clarity information to Sciety privacy policy.
       </p>
 
       <h2>Cookie declaration</h2>
