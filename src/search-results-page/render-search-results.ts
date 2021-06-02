@@ -3,6 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { constant, pipe } from 'fp-ts/function';
+import { nextLink } from './next-link';
 import { GroupViewModel, renderGroupCard } from './render-group-card';
 import { ArticleViewModel, renderArticleCard } from '../shared-components/article-card';
 import { templateListItems } from '../shared-components/list-items';
@@ -21,11 +22,7 @@ export type SearchResults = {
   nextCursor: O.Option<string>,
 };
 
-const renderNextLink = (category: string, query: string) => (nextCursor: string): HtmlFragment => toHtmlFragment(`
-  <a href="/search?query=${htmlEscape(query)}&category=${category}&cursor=${htmlEscape(nextCursor)}" class="search-results__next_link">Next</a>
-`);
-
-const renderListIfNecessary = (nextLink: HtmlFragment) => (
+const renderListIfNecessary = (paginationLink: HtmlFragment) => (
   articles: ReadonlyArray<HtmlFragment>,
 ) => pipe(
   articles,
@@ -37,7 +34,7 @@ const renderListIfNecessary = (nextLink: HtmlFragment) => (
       <ul class="search-results-list" role="list">
         ${templateListItems(a, 'search-results-list__item')}
       </ul>
-      ${nextLink}    
+      ${paginationLink}    
     `,
   ),
 );
@@ -68,12 +65,7 @@ type RenderSearchResults = (rs: SearchResults) => HtmlFragment;
 export const renderSearchResults: RenderSearchResults = (searchResults) => pipe(
   searchResults.itemsToDisplay,
   RA.map(renderSearchResult),
-  renderListIfNecessary(pipe(
-    searchResults.nextCursor,
-    O.map(renderNextLink(searchResults.category, searchResults.query)),
-    O.getOrElse(constant('')),
-    toHtmlFragment,
-  )),
+  renderListIfNecessary(nextLink(searchResults)),
   (searchResultsList) => `
     ${categoryMenu(searchResults)}
     ${searchResultsList}
