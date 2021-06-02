@@ -61,6 +61,7 @@ describe('fetch-extra-details', () => {
             latestActivityDate: O.some(latestActivityDate),
           }),
         ],
+        nextCursor: O.none,
       });
     });
   });
@@ -106,6 +107,7 @@ describe('fetch-extra-details', () => {
               followerCount: 0,
             }),
           ],
+          nextCursor: O.none,
         });
       });
     });
@@ -132,13 +134,13 @@ describe('fetch-extra-details', () => {
         };
         const viewModel = await fetchExtraDetails(ports)(matches)();
 
-        expect(viewModel).toStrictEqual({
+        expect(viewModel).toStrictEqual(expect.objectContaining({
           query: '',
           category: 'groups',
           availableArticleMatches: 0,
           availableGroupMatches: 0,
           itemsToDisplay: [],
-        });
+        }));
       });
     });
   });
