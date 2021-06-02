@@ -2,4 +2,6 @@
 
 .search-results__next_link {
   @include button.button-link-secondary();
+  display: inline-block;
+  margin-bottom: 1.5rem;
 }

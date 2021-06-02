@@ -122,6 +122,7 @@ $_clear-button-inline-size: 48px;
 
 .search-results-list {
   @include card.list();
+  margin-bottom: 1.5rem;
 }
 
 .search-results-list__item {
