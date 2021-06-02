@@ -11,6 +11,7 @@ services:
       - './.jest:/app/.jest'
       - './.stylelint:/app/.stylelint'
       - './build:/app/build'
+      - './coverage:/app/coverage'
       - './data:/app/data'
       - './scripts:/app/scripts'
       - './src:/app/src'
