@@ -49,7 +49,7 @@ describe('search-europe-pmc adapter', () => {
           postedDate: new Date('2019-11-07'),
         },
       ],
-      nextCursor,
+      nextCursor: O.some(nextCursor),
     });
 
     expect(results).toStrictEqual(expected);

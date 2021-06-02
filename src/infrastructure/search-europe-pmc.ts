@@ -31,7 +31,7 @@ type SearchResult = {
 export type SearchResults = {
   items: ReadonlyArray<SearchResult>,
   total: number,
-  nextCursor: string,
+  nextCursor: O.Option<string>,
 };
 
 type Dependencies = {
@@ -104,7 +104,7 @@ const constructSearchResults = (data: EuropePmcResponse) => {
   return {
     items,
     total: data.hitCount,
-    nextCursor: data.nextCursorMark,
+    nextCursor: O.some(data.nextCursorMark),
   };
 };
 

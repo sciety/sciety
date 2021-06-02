@@ -33,7 +33,7 @@ describe('select-subset-to-display', () => {
         articles: {
           items: [articleItem],
           total: 1,
-          nextCursor: arbitraryWord(),
+          nextCursor: O.some(arbitraryWord()),
         },
       };
       const result = selectSubsetToDisplay(state);
@@ -55,7 +55,7 @@ describe('select-subset-to-display', () => {
         articles: {
           items: [arbitraryArticleItem()],
           total: 1,
-          nextCursor: arbitraryWord(),
+          nextCursor: O.some(arbitraryWord()),
         },
       };
       const result = selectSubsetToDisplay(state);
@@ -74,7 +74,7 @@ describe('select-subset-to-display', () => {
         articles: {
           items: [],
           total: 0,
-          nextCursor: arbitraryWord(),
+          nextCursor: O.some(arbitraryWord()),
         },
       };
       const result = selectSubsetToDisplay(state);

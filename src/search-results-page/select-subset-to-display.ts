@@ -11,7 +11,7 @@ export type Matches = {
   articles: {
     items: ReadonlyArray<ArticleItem>,
     total: number,
-    nextCursor: string,
+    nextCursor: O.Option<string>,
   },
 };
 
