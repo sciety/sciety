@@ -2,7 +2,7 @@ import { pipe } from 'fp-ts/function';
 import { selectSubsetToDisplay } from '../../src/search-results-page/select-subset-to-display';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
-import { arbitraryDate, arbitraryString } from '../helpers';
+import { arbitraryDate, arbitraryString, arbitraryWord } from '../helpers';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 
@@ -32,6 +32,7 @@ describe('select-subset-to-display', () => {
         articles: {
           items: [articleItem],
           total: 1,
+          nextCursor: arbitraryWord(),
         },
       };
       const result = selectSubsetToDisplay(state);
@@ -53,6 +54,7 @@ describe('select-subset-to-display', () => {
         articles: {
           items: [arbitraryArticleItem()],
           total: 1,
+          nextCursor: arbitraryWord(),
         },
       };
       const result = selectSubsetToDisplay(state);

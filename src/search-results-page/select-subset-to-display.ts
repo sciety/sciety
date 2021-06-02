@@ -10,6 +10,7 @@ export type Matches = {
   articles: {
     items: ReadonlyArray<ArticleItem>,
     total: number,
+    nextCursor: string,
   },
 };
 
