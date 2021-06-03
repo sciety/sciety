@@ -39,7 +39,7 @@ export const renderMetaPage = (components: {
         </ol>
         <ul aria-label="Publication details" class="article-meta-data-list" role="list">
           <li>
-            <a href="https://doi.org/${components.doi.value}">https://doi.org/${components.doi.value}</a>
+            <a href="https://doi.org/${components.doi.value}" target="_blank">https://doi.org/${components.doi.value}</a>
           </li>
         </ul>
       </section>
@@ -48,7 +48,7 @@ export const renderMetaPage = (components: {
         ${components.articleDetails.abstract}
       </section>
 
-      <a href="https://doi.org/${components.doi.value}" class="full-article-button">
+      <a href="https://doi.org/${components.doi.value}" class="full-article-button" target="_blank">
         Read the full article
       </a>
     </div>
