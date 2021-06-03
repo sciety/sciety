@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { pipe } from 'fp-ts/function';
 import { FeedItem } from './render-feed';
-import { ArticleServer } from '../types/article-server';
+import { ArticleServer } from '../../types/article-server';
 
 type HandleArticleVersionErrors = (
   feedItems: ReadonlyArray<FeedItem>,

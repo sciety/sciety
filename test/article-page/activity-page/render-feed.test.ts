@@ -1,9 +1,9 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
-import { renderFeed } from '../../src/article-page/render-feed';
-import { toHtmlFragment } from '../../src/types/html-fragment';
-import { arbitraryDoi } from '../types/doi.helper';
-import { arbitraryGroupId } from '../types/group-id.helper';
+import { renderFeed } from '../../../src/article-page/activity-page/render-feed';
+import { toHtmlFragment } from '../../../src/types/html-fragment';
+import { arbitraryDoi } from '../../types/doi.helper';
+import { arbitraryGroupId } from '../../types/group-id.helper';
 
 describe('render-feed', () => {
   it('returns a list', () => {

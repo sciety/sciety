@@ -1,8 +1,8 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { ReviewIdFromString as RIcodec } from '../types/codecs/ReviewIdFromString';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-import * as RI from '../types/review-id';
+import { ReviewIdFromString as RIcodec } from '../../types/codecs/ReviewIdFromString';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import * as RI from '../../types/review-id';
 
 // TODO Try introducing a Counter type to prevent impossible numbers (e.g. -1, 2.5)
 type RenderReviewResponses = (params: { reviewId: RI.ReviewId, counts: { helpfulCount: number, notHelpfulCount: number }, current: O.Option<'helpful' | 'not-helpful'> }) => HtmlFragment;

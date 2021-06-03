@@ -11,9 +11,9 @@ import {
   UserFoundReviewNotHelpfulEvent,
   UserRevokedFindingReviewHelpfulEvent,
   UserRevokedFindingReviewNotHelpfulEvent,
-} from '../types/domain-events';
-import * as RI from '../types/review-id';
-import { UserId } from '../types/user-id';
+} from '../../types/domain-events';
+import * as RI from '../../types/review-id';
+import { UserId } from '../../types/user-id';
 
 type GetEvents = T.Task<ReadonlyArray<DomainEvent>>;
 

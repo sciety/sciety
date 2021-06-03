@@ -1,4 +1,4 @@
-import { toHtmlFragment } from '../types/html-fragment';
+import { toHtmlFragment } from '../../types/html-fragment';
 
 export const biorxivArticleVersionErrorFeedItem = toHtmlFragment(`
   <div class="activity-feed__item_contents">

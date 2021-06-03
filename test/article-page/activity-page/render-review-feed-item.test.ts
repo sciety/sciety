@@ -1,9 +1,9 @@
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import * as RFI from './review-feed-item.helper';
-import { renderReviewFeedItem } from '../../src/article-page/render-review-feed-item';
-import { ReviewIdFromString as RIcodec } from '../../src/types/codecs/ReviewIdFromString';
-import * as t from '../helpers';
+import { renderReviewFeedItem } from '../../../src/article-page/activity-page/render-review-feed-item';
+import { ReviewIdFromString as RIcodec } from '../../../src/types/codecs/ReviewIdFromString';
+import * as t from '../../helpers';
 
 describe('render-review-feed-item', () => {
   describe('when the review has long full text', () => {

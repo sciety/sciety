@@ -4,12 +4,12 @@ import * as O from 'fp-ts/Option';
 import { constant, flow, pipe } from 'fp-ts/function';
 import clip from 'text-clipper';
 import { renderReviewResponses } from './render-review-responses';
-import { templateDate } from '../shared-components/date';
-import { ReviewIdFromString as RIcodec } from '../types/codecs/ReviewIdFromString';
-import { GroupId } from '../types/group-id';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-import * as RI from '../types/review-id';
-import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
+import { templateDate } from '../../shared-components/date';
+import { ReviewIdFromString as RIcodec } from '../../types/codecs/ReviewIdFromString';
+import { GroupId } from '../../types/group-id';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import * as RI from '../../types/review-id';
+import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 
 type RenderReviewFeedItem = (review: ReviewFeedItem) => HtmlFragment;
 

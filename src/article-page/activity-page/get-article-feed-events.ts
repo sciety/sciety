@@ -16,11 +16,11 @@ import {
 import { handleArticleVersionErrors } from './handle-article-version-errors';
 import { mergeFeeds } from './merge-feeds';
 import { FeedItem } from './render-feed';
-import { ArticleServer } from '../types/article-server';
-import { Doi } from '../types/doi';
-import { GroupId } from '../types/group-id';
-import { ReviewId } from '../types/review-id';
-import { UserId } from '../types/user-id';
+import { ArticleServer } from '../../types/article-server';
+import { Doi } from '../../types/doi';
+import { GroupId } from '../../types/group-id';
+import { ReviewId } from '../../types/review-id';
+import { UserId } from '../../types/user-id';
 
 export type FindReviewsForArticleDoi = (articleVersionDoi: Doi) => T.Task<ReadonlyArray<{
   reviewId: ReviewId,

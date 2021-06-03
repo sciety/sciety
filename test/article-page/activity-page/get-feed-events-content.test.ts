@@ -9,10 +9,10 @@ import {
   FetchReview,
   getFeedEventsContent,
   GetUserReviewResponse,
-} from '../../src/article-page/get-feed-events-content';
-import { toHtmlFragment } from '../../src/types/html-fragment';
-import { arbitraryGroupId } from '../types/group-id.helper';
-import { arbitraryReviewId } from '../types/review-id.helper';
+} from '../../../src/article-page/activity-page/get-feed-events-content';
+import { toHtmlFragment } from '../../../src/types/html-fragment';
+import { arbitraryGroupId } from '../../types/group-id.helper';
+import { arbitraryReviewId } from '../../types/review-id.helper';
 
 describe('get-feed-events-content', () => {
   describe('when there are reviews', () => {

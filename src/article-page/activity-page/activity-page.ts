@@ -9,7 +9,6 @@ import { constant, flow, pipe } from 'fp-ts/function';
 import striptags from 'striptags';
 import { FindReviewsForArticleDoi, FindVersionsForArticleDoi, getArticleFeedEvents } from './get-article-feed-events';
 import { FetchReview } from './get-feed-events-content';
-import { projectHasUserSavedArticle } from './project-has-user-saved-article';
 import { projectReviewResponseCounts } from './project-review-response-counts';
 import { projectUserReviewResponse } from './project-user-review-response';
 import { renderActivityPage } from './render-activity-page';
@@ -20,17 +19,18 @@ import {
 import { renderArticleVersionFeedItem } from './render-article-version-feed-item';
 import { renderFeed } from './render-feed';
 import { renderReviewFeedItem } from './render-review-feed-item';
-import { renderSaveArticle } from './render-save-article';
-import { renderTweetThis } from './render-tweet-this';
-import { ArticleServer } from '../types/article-server';
-import { Doi } from '../types/doi';
-import { DomainEvent } from '../types/domain-events';
-import { GroupId } from '../types/group-id';
-import { toHtmlFragment } from '../types/html-fragment';
-import { Page } from '../types/page';
-import { RenderPageError } from '../types/render-page-error';
-import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
-import { User } from '../types/user';
+import { ArticleServer } from '../../types/article-server';
+import { Doi } from '../../types/doi';
+import { DomainEvent } from '../../types/domain-events';
+import { GroupId } from '../../types/group-id';
+import { toHtmlFragment } from '../../types/html-fragment';
+import { Page } from '../../types/page';
+import { RenderPageError } from '../../types/render-page-error';
+import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
+import { User } from '../../types/user';
+import { projectHasUserSavedArticle } from '../project-has-user-saved-article';
+import { renderSaveArticle } from '../render-save-article';
+import { renderTweetThis } from '../render-tweet-this';
 
 type ActivityPage = (params: Params) => RTE.ReaderTaskEither<Ports, RenderPageError, Page>;
 

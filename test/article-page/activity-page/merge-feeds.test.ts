@@ -1,8 +1,8 @@
 import { URL } from 'url';
 import * as RT from 'fp-ts/ReaderTask';
-import { mergeFeeds } from '../../src/article-page/merge-feeds';
-import { arbitraryGroupId } from '../types/group-id.helper';
-import { arbitraryReviewId } from '../types/review-id.helper';
+import { mergeFeeds } from '../../../src/article-page/activity-page/merge-feeds';
+import { arbitraryGroupId } from '../../types/group-id.helper';
+import { arbitraryReviewId } from '../../types/review-id.helper';
 
 describe('merge-feeds', () => {
   it('merges feed event lists', async () => {

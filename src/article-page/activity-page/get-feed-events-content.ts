@@ -7,13 +7,13 @@ import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { FeedItem } from './render-feed';
-import { ArticleServer } from '../types/article-server';
-import { GroupId } from '../types/group-id';
-import { HtmlFragment } from '../types/html-fragment';
-import { ReviewId } from '../types/review-id';
-import * as RI from '../types/review-id';
-import { sanitise } from '../types/sanitised-html-fragment';
-import { UserId } from '../types/user-id';
+import { ArticleServer } from '../../types/article-server';
+import { GroupId } from '../../types/group-id';
+import { HtmlFragment } from '../../types/html-fragment';
+import { ReviewId } from '../../types/review-id';
+import * as RI from '../../types/review-id';
+import { sanitise } from '../../types/sanitised-html-fragment';
+import { UserId } from '../../types/user-id';
 
 type ReviewEvent = {
   type: 'review',

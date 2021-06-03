@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
-import { renderReviewResponses } from '../../src/article-page/render-review-responses';
-import { arbitraryReviewId } from '../types/review-id.helper';
+import { renderReviewResponses } from '../../../src/article-page/activity-page/render-review-responses';
+import { arbitraryReviewId } from '../../types/review-id.helper';
 
 describe('render-review-responses', () => {
   it('displays the response counts by type', () => {

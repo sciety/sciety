@@ -1,12 +1,12 @@
-import { projectReviewResponseCounts } from '../../src/article-page/project-review-response-counts';
+import { projectReviewResponseCounts } from '../../../src/article-page/activity-page/project-review-response-counts';
 import {
   userFoundReviewHelpful,
   userFoundReviewNotHelpful,
   userRevokedFindingReviewHelpful,
   userRevokedFindingReviewNotHelpful,
-} from '../../src/types/domain-events';
-import { toUserId } from '../../src/types/user-id';
-import { arbitraryReviewId } from '../types/review-id.helper';
+} from '../../../src/types/domain-events';
+import { toUserId } from '../../../src/types/user-id';
+import { arbitraryReviewId } from '../../types/review-id.helper';
 
 describe('project-review-response-counts', () => {
   describe('given no events', () => {

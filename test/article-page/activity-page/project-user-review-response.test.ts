@@ -1,14 +1,14 @@
 import * as O from 'fp-ts/Option';
-import { projectUserReviewResponse } from '../../src/article-page/project-user-review-response';
-import { Doi } from '../../src/types/doi';
+import { projectUserReviewResponse } from '../../../src/article-page/activity-page/project-user-review-response';
+import { Doi } from '../../../src/types/doi';
 import {
   userFoundReviewHelpful,
   userFoundReviewNotHelpful,
   userRevokedFindingReviewHelpful,
   userRevokedFindingReviewNotHelpful,
-} from '../../src/types/domain-events';
-import { toUserId } from '../../src/types/user-id';
-import { arbitraryReviewId } from '../types/review-id.helper';
+} from '../../../src/types/domain-events';
+import { toUserId } from '../../../src/types/user-id';
+import { arbitraryReviewId } from '../../types/review-id.helper';
 
 describe('project-user-review-response', () => {
   describe('no response events', () => {

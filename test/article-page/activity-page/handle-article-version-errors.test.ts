@@ -1,12 +1,12 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { handleArticleVersionErrors } from '../../src/article-page/handle-article-version-errors';
-import { FeedItem } from '../../src/article-page/render-feed';
-import { toHtmlFragment } from '../../src/types/html-fragment';
-import { sanitise } from '../../src/types/sanitised-html-fragment';
-import { arbitraryDoi } from '../types/doi.helper';
-import { arbitraryGroupId } from '../types/group-id.helper';
+import { handleArticleVersionErrors } from '../../../src/article-page/activity-page/handle-article-version-errors';
+import { FeedItem } from '../../../src/article-page/activity-page/render-feed';
+import { toHtmlFragment } from '../../../src/types/html-fragment';
+import { sanitise } from '../../../src/types/sanitised-html-fragment';
+import { arbitraryDoi } from '../../types/doi.helper';
+import { arbitraryGroupId } from '../../types/group-id.helper';
 
 describe('handle-article-version-errors', () => {
   describe('there are article version events', () => {
