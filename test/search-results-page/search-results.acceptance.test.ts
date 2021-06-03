@@ -316,9 +316,45 @@ describe('search-results-page acceptance', () => {
 
         it.todo('only displays groups results');
 
-        it.todo('displays "Groups" as the active tab');
+        it('displays "Groups" as the active tab', async () => {
+          const page = pipe(
+            {
+              query: arbitraryString(),
+              pageSize: arbitraryNumber(2, 20),
+              category: O.some('groups' as const),
+              cursor: O.none,
+            },
+            searchResultsPage({
+              ...dummyAdapters,
+              findGroups: () => T.of([]),
+              searchEuropePmc: () => () => TE.right({ items: [], total: 0, nextCursor: O.some(arbitraryWord()) }),
+            }),
+          );
+          const rendered = await contentOf(page)();
+          const tabHtml = rendered.querySelector('.search-results-tab--heading')?.innerHTML;
 
-        it.todo('displays "Articles" as a link tab');
+          expect(tabHtml).toContain('Groups');
+        });
+
+        it('displays "Articles" as a link tab', async () => {
+          const page = pipe(
+            {
+              query: arbitraryString(),
+              pageSize: arbitraryNumber(2, 20),
+              category: O.some('groups' as const),
+              cursor: O.none,
+            },
+            searchResultsPage({
+              ...dummyAdapters,
+              findGroups: () => T.of([]),
+              searchEuropePmc: () => () => TE.right({ items: [], total: 0, nextCursor: O.some(arbitraryWord()) }),
+            }),
+          );
+          const rendered = await contentOf(page)();
+          const tabHtml = rendered.querySelector('.search-results-tab--link')?.innerHTML;
+
+          expect(tabHtml).toContain('Articles');
+        });
 
         describe('when details of a group cannot be fetched', () => {
           it.todo('only displays the successfully fetched groups');
