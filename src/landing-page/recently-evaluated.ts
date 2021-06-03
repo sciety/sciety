@@ -20,21 +20,21 @@ const card1: Card = {
 };
 
 const card2: Card = {
-  articleId: '10.1101/2021.02.20.20248421',
-  articleTitle: 'Nosocomial outbreak of SARS-CoV-2 in a “non-COVID-19” hospital ward: virus genome sequencing as a key tool to understand cryptic transmission',
-  date: new Date('2021-04-22'),
-  groupId: '62f9b0d0-8d43-4766-a52a-ce02af61bc6a',
-  groupName: 'NCRC',
-  avatarPath: '/static/groups/ncrc--62f9b0d0-8d43-4766-a52a-ce02af61bc6a.jpg',
+  articleId: '10.1101/2021.05.25.21257828',
+  articleTitle: 'Correlation of the commercial anti-SARS-CoV-2 receptor binding domain antibody test with the chemiluminescent reduction neutralizing test and possible detection of antibodies to emerging variants',
+  date: new Date('2021-05-29'),
+  groupId: '8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65',
+  groupName: 'ScreenIT',
+  avatarPath: '/static/groups/screenit--8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65.jpg',
 };
 
 const card3: Card = {
-  articleId: '10.1101/2021.04.12.439490',
-  articleTitle: 'Design, Synthesis and Evaluation of WD-repeat containing protein 5 (WDR5) degraders',
-  date: new Date('2021-05-10'),
-  groupId: '10360d97-bf52-4aef-b2fa-2f60d319edd7',
-  groupName: 'PREreview',
-  avatarPath: '/static/groups/prereview-community--10360d97-bf52-4aef-b2fa-2f60d319edd7.jpg',
+  articleId: '10.1101/2021.05.13.21256639',
+  articleTitle: 'Efficacy of the NVX-CoV2373 Covid-19 Vaccine Against the B.1.1.7 Variant',
+  date: new Date('2021-05-28'),
+  groupId: '62f9b0d0-8d43-4766-a52a-ce02af61bc6a',
+  groupName: 'NCRC',
+  avatarPath: '/static/groups/ncrc--62f9b0d0-8d43-4766-a52a-ce02af61bc6a.jpg',
 };
 
 const renderCard = (card: Card) => `
