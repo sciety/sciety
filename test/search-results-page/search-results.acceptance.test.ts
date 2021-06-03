@@ -126,7 +126,6 @@ describe('search-results-page acceptance', () => {
                 items: [
                   arbitraryArticleItem(),
                   arbitraryArticleItem(),
-                  arbitraryArticleItem(),
                 ],
                 total: 3,
                 nextCursor: O.some(arbitraryWord()),
