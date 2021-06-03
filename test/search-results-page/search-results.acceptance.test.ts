@@ -338,7 +338,25 @@ describe('search-results-page acceptance', () => {
           expect(groupCards).toHaveLength(matchedGroups.length);
         });
 
-        it.todo('only displays groups results');
+        it('only displays groups results', async () => {
+          const page = pipe(
+            {
+              query: arbitraryString(),
+              pageSize: arbitraryNumber(2, 20),
+              category: O.some('groups' as const),
+              cursor: O.none,
+            },
+            searchResultsPage({
+              ...dummyAdapters,
+              findGroups: () => T.of([]),
+              searchEuropePmc: () => () => TE.right({ items: [], total: 0, nextCursor: O.some(arbitraryWord()) }),
+            }),
+          );
+          const rendered = await contentOf(page)();
+          const articleCards = rendered.querySelectorAll('.article-card');
+
+          expect(articleCards).toHaveLength(0);
+        });
 
         it('displays "Groups" as the active tab', async () => {
           const page = pipe(
