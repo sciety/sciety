@@ -7,8 +7,8 @@ describe('meta page acceptance criteria', () => {
   it('allows the full article and evaluations to be viewed side by side on desktop', async () => {
     const html = renderMetaPage({
       doi: arbitraryDoi(),
-      saveArticle: '',
-      tweetThis: '',
+      saveArticle: arbitraryHtmlFragment(),
+      tweetThis: arbitraryHtmlFragment(),
       articleDetails: {
         title: arbitraryWord(),
         authors: [],

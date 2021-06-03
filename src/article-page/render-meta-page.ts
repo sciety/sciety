@@ -10,12 +10,11 @@ type ArticleDetails = {
   server: ArticleServer,
 };
 
-// TODO: replace string with HtmlFragment
 export const renderMetaPage = (components: {
   articleDetails: ArticleDetails,
   doi: Doi,
-  saveArticle: string,
-  tweetThis: string,
+  saveArticle: HtmlFragment,
+  tweetThis: HtmlFragment,
 }): HtmlFragment => toHtmlFragment(`
 <div class="page-content__background">
   <article class="sciety-grid sciety-grid--article">
