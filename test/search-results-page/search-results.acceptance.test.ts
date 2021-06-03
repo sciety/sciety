@@ -155,7 +155,7 @@ describe('search-results-page acceptance', () => {
           expect(articleCards).toHaveLength(n);
         });
 
-        it.skip('displays the next link if there are more than n matching articles', async () => {
+        it('displays the next link if there are more than n matching articles', async () => {
           const n = 2;
           const page = pipe(
             {
