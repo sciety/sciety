@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 import { GroupId } from '../types/group-id';
@@ -16,3 +17,9 @@ export type ArticleItem = {
 };
 
 export const isArticleItem = (item: ArticleItem | GroupItem): item is ArticleItem => 'doi' in item;
+
+export type ArticleResults = {
+  items: ReadonlyArray<ArticleItem>,
+  total: number,
+  nextCursor: O.Option<string>,
+};

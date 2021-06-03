@@ -1,5 +1,5 @@
 import * as O from 'fp-ts/Option';
-import { ArticleItem, GroupItem } from './data-types';
+import { ArticleResults, GroupItem } from './data-types';
 import { LimitedSet } from './fetch-extra-details';
 
 export type Matches = {
@@ -7,11 +7,7 @@ export type Matches = {
   pageSize: number,
   category: string,
   groups: ReadonlyArray<GroupItem>,
-  articles: {
-    items: ReadonlyArray<ArticleItem>,
-    total: number,
-    nextCursor: O.Option<string>,
-  },
+  articles: ArticleResults,
 };
 
 export const selectSubsetToDisplay = (state: Matches): LimitedSet => ({

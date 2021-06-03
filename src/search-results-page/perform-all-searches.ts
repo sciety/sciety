@@ -6,15 +6,9 @@ import * as TE from 'fp-ts/TaskEither';
 import { constant, pipe, tupled } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { ArticleItem } from './data-types';
+import { ArticleResults } from './data-types';
 import { Matches } from './select-subset-to-display';
 import { GroupId } from '../types/group-id';
-
-type ArticleResults = {
-  items: ReadonlyArray<ArticleItem>,
-  total: number,
-  nextCursor: O.Option<string>,
-};
 
 type FindArticles = (pageSize: number) => (query: string, cursor: O.Option<string>) => TE.TaskEither<'unavailable', ArticleResults>;
 
