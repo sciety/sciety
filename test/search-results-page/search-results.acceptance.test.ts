@@ -122,8 +122,6 @@ describe('search-results-page acceptance', () => {
           postedDate: arbitraryDate(),
         });
 
-        it.todo('when there are fewer than n article results displays all');
-
         it('displays the first n articles if more than n matching articles', async () => {
           const n = 2;
           const page = pipe(
@@ -281,7 +279,9 @@ describe('search-results-page acceptance', () => {
         });
 
         describe('when the search for all articles fails', () => {
-          it.todo('display an error message');
+          it.todo('displays the article tab with an error message');
+
+          it.todo('links to the Groups tab');
         });
       });
 
