@@ -397,14 +397,6 @@ describe('search-results-page acceptance', () => {
 
           expect(tabHtml).toContain('Articles');
         });
-
-        describe('when details of a group cannot be fetched', () => {
-          it.todo('only displays the successfully fetched groups');
-        });
-
-        describe('when details of all groups cannot be fetched', () => {
-          it.todo('display no result cards');
-        });
       });
     });
 
