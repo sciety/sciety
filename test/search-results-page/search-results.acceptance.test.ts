@@ -18,12 +18,17 @@ import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryGroup } from '../types/group.helper';
 
 const dummyAdapters = {
-  findGroups: shouldNotBeCalled,
-  searchEuropePmc: shouldNotBeCalled,
+  findGroups: () => T.of([]),
+  searchEuropePmc: () => () => TE.right({
+    items: [],
+    total: 0,
+    nextCursor: O.none,
+  }),
   findReviewsForArticleDoi: shouldNotBeCalled,
   findVersionsForArticleDoi: shouldNotBeCalled,
   getAllEvents: shouldNotBeCalled,
   getGroup: () => shouldNotBeCalled,
+
 };
 
 const contentOf = (page: TE.TaskEither<RenderPageError, Page>) => pipe(
@@ -48,11 +53,7 @@ describe('search-results-page acceptance', () => {
     it('displays the query inside the search form', async () => {
       const page = pipe(
         params,
-        searchResultsPage({
-          ...dummyAdapters,
-          findGroups: () => T.of([]),
-          searchEuropePmc: () => () => TE.right({ items: [], total: 0, nextCursor: O.some(arbitraryWord()) }),
-        }),
+        searchResultsPage(dummyAdapters),
       );
       const rendered = await contentOf(page)();
       const value = rendered.querySelector('#searchText')?.getAttribute('value');
@@ -63,11 +64,7 @@ describe('search-results-page acceptance', () => {
     it('displays the number of matching articles', async () => {
       const page = pipe(
         params,
-        searchResultsPage({
-          ...dummyAdapters,
-          findGroups: () => T.of([]),
-          searchEuropePmc: () => () => TE.right({ items: [], total: 0, nextCursor: O.some(arbitraryWord()) }),
-        }),
+        searchResultsPage(dummyAdapters),
       );
       const rendered = await contentOf(page)();
       const tabHtml = rendered.querySelector('.search-results-tab--heading')?.innerHTML;
@@ -78,11 +75,7 @@ describe('search-results-page acceptance', () => {
     it('displays the number of matching groups', async () => {
       const page = pipe(
         params,
-        searchResultsPage({
-          ...dummyAdapters,
-          findGroups: () => T.of([]),
-          searchEuropePmc: () => () => TE.right({ items: [], total: 0, nextCursor: O.some(arbitraryWord()) }),
-        }),
+        searchResultsPage(dummyAdapters),
       );
       const rendered = await contentOf(page)();
       const tabHtml = rendered.querySelector('.search-results-tab--link')?.innerHTML;
@@ -99,11 +92,7 @@ describe('search-results-page acceptance', () => {
             category: O.none,
             cursor: O.none,
           },
-          searchResultsPage({
-            ...dummyAdapters,
-            findGroups: () => T.of([]),
-            searchEuropePmc: () => () => TE.right({ items: [], total: 0, nextCursor: O.some(arbitraryWord()) }),
-          }),
+          searchResultsPage(dummyAdapters),
         );
         const rendered = await contentOf(page)();
         const tabHeading = rendered.querySelector('.search-results-tab--heading')?.innerHTML;
@@ -133,7 +122,6 @@ describe('search-results-page acceptance', () => {
             },
             searchResultsPage({
               ...dummyAdapters,
-              findGroups: () => T.of([]),
               searchEuropePmc: () => () => TE.right({
                 items: [
                   arbitraryArticleItem(),
@@ -164,7 +152,6 @@ describe('search-results-page acceptance', () => {
             },
             searchResultsPage({
               ...dummyAdapters,
-              findGroups: () => T.of([]),
               searchEuropePmc: () => () => TE.right({
                 items: [
                   arbitraryArticleItem(),
@@ -197,7 +184,6 @@ describe('search-results-page acceptance', () => {
             },
             searchResultsPage({
               ...dummyAdapters,
-              findGroups: () => T.of([]),
               searchEuropePmc: () => searchEuropePmcMock.mockImplementation(() => TE.right({
                 items: [
                   arbitraryArticleItem(),
@@ -225,7 +211,6 @@ describe('search-results-page acceptance', () => {
             searchResultsPage({
               ...dummyAdapters,
               findGroups: () => T.of([arbitraryGroupId()]),
-              searchEuropePmc: () => () => TE.right({ items: [], total: 0, nextCursor: O.some(arbitraryWord()) }),
             }),
           );
           const rendered = await contentOf(page)();
@@ -245,7 +230,6 @@ describe('search-results-page acceptance', () => {
             searchResultsPage({
               ...dummyAdapters,
               findGroups: () => T.of([arbitraryGroupId()]),
-              searchEuropePmc: () => () => TE.right({ items: [], total: 0, nextCursor: O.some(arbitraryWord()) }),
             }),
           );
           const rendered = await contentOf(page)();
@@ -265,7 +249,6 @@ describe('search-results-page acceptance', () => {
             searchResultsPage({
               ...dummyAdapters,
               findGroups: () => T.of([arbitraryGroupId()]),
-              searchEuropePmc: () => () => TE.right({ items: [], total: 0, nextCursor: O.some(arbitraryWord()) }),
             }),
           );
           const rendered = await contentOf(page)();
@@ -285,7 +268,6 @@ describe('search-results-page acceptance', () => {
               },
               searchResultsPage({
                 ...dummyAdapters,
-                findGroups: () => T.of([]),
                 searchEuropePmc: () => () => TE.right({
                   items: [arbitraryArticleItem()],
                   total: 1,
@@ -327,7 +309,6 @@ describe('search-results-page acceptance', () => {
             searchResultsPage({
               ...dummyAdapters,
               findGroups: () => T.of(matchedGroups),
-              searchEuropePmc: () => () => TE.right({ items: [], total: 0, nextCursor: O.some(arbitraryWord()) }),
               getGroup: () => TO.some(arbitraryGroup()),
               getAllEvents: T.of([]),
             }),
@@ -346,11 +327,7 @@ describe('search-results-page acceptance', () => {
               category: O.some('groups' as const),
               cursor: O.none,
             },
-            searchResultsPage({
-              ...dummyAdapters,
-              findGroups: () => T.of([]),
-              searchEuropePmc: () => () => TE.right({ items: [], total: 0, nextCursor: O.some(arbitraryWord()) }),
-            }),
+            searchResultsPage(dummyAdapters),
           );
           const rendered = await contentOf(page)();
           const articleCards = rendered.querySelectorAll('.article-card');
@@ -366,11 +343,7 @@ describe('search-results-page acceptance', () => {
               category: O.some('groups' as const),
               cursor: O.none,
             },
-            searchResultsPage({
-              ...dummyAdapters,
-              findGroups: () => T.of([]),
-              searchEuropePmc: () => () => TE.right({ items: [], total: 0, nextCursor: O.some(arbitraryWord()) }),
-            }),
+            searchResultsPage(dummyAdapters),
           );
           const rendered = await contentOf(page)();
           const tabHtml = rendered.querySelector('.search-results-tab--heading')?.innerHTML;
@@ -386,11 +359,7 @@ describe('search-results-page acceptance', () => {
               category: O.some('groups' as const),
               cursor: O.none,
             },
-            searchResultsPage({
-              ...dummyAdapters,
-              findGroups: () => T.of([]),
-              searchEuropePmc: () => () => TE.right({ items: [], total: 0, nextCursor: O.some(arbitraryWord()) }),
-            }),
+            searchResultsPage(dummyAdapters),
           );
           const rendered = await contentOf(page)();
           const tabHtml = rendered.querySelector('.search-results-tab--link')?.innerHTML;
@@ -410,11 +379,7 @@ describe('search-results-page acceptance', () => {
               category: O.some('groups' as const),
               cursor: O.none,
             },
-            searchResultsPage({
-              ...dummyAdapters,
-              findGroups: () => T.of([]),
-              searchEuropePmc: () => () => TE.right({ items: [], total: 0, nextCursor: O.some(arbitraryWord()) }),
-            }),
+            searchResultsPage(dummyAdapters),
           );
           const rendered = await contentOf(page)();
           const articleCards = rendered.querySelectorAll('.article-card');
@@ -432,11 +397,7 @@ describe('search-results-page acceptance', () => {
               category: O.some('groups' as const),
               cursor: O.none,
             },
-            searchResultsPage({
-              ...dummyAdapters,
-              findGroups: () => T.of([]),
-              searchEuropePmc: () => () => TE.right({ items: [], total: 0, nextCursor: O.some(arbitraryWord()) }),
-            }),
+            searchResultsPage(dummyAdapters),
           );
           const rendered = await contentOf(page)();
           const groupCards = rendered.querySelectorAll('.group-card');
