@@ -1,11 +1,10 @@
 import { JSDOM } from 'jsdom';
 import { renderMetaPage } from '../../src/article-page/render-meta-page';
-import { toHtmlFragment } from '../../src/types/html-fragment';
-import { arbitraryString, arbitraryWord } from '../helpers';
+import { arbitraryHtmlFragment, arbitraryWord } from '../helpers';
 import { arbitraryDoi } from '../types/doi.helper';
 
 describe('meta page acceptance criteria', () => {
-  it('its possible to see the article and evaluations side by side', async () => {
+  it('allows the full article and evaluations to be viewed side by side on desktop', async () => {
     const html = renderMetaPage({
       doi: arbitraryDoi(),
       saveArticle: '',
@@ -14,7 +13,7 @@ describe('meta page acceptance criteria', () => {
         title: arbitraryWord(),
         authors: [],
         server: 'biorxiv',
-        abstract: toHtmlFragment(arbitraryString()),
+        abstract: arbitraryHtmlFragment(),
       },
     });
 
