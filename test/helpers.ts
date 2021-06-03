@@ -1,6 +1,7 @@
 import * as A from 'fp-ts/Array';
 import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../src/types/html-fragment';
+import { sanitise, SanitisedHtmlFragment } from '../src/types/sanitised-html-fragment';
 
 export const arbitraryNumber = (min: number, max: number): number => (
   Math.floor(Math.random() * (max - min + 1) + min)
@@ -19,6 +20,11 @@ export const arbitraryString = (): string => pipe(
 export const arbitraryHtmlFragment = (): HtmlFragment => pipe(
   arbitraryString(),
   toHtmlFragment,
+);
+
+export const arbitrarySanitisedHtmlFragment = (): SanitisedHtmlFragment => pipe(
+  arbitraryHtmlFragment(),
+  sanitise,
 );
 
 export const arbitraryUri = (): string => 'http://something.com/example';
