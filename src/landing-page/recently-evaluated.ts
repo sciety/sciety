@@ -11,12 +11,12 @@ type Card = {
 };
 
 const card1: Card = {
-  articleId: '10.1101/2021.01.10.426076',
-  articleTitle: 'Single-cell RNA-seq analysis reveals penaeid shrimp hemocyte subpopulations and cell differentiation process',
-  date: new Date('2021-05-12'),
-  groupId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
-  groupName: 'eLife',
-  avatarPath: '/static/groups/elife--b560187e-f2fb-4ff9-a861-a204f3fc0fb0.png',
+  articleId: '10.1101/2021.01.18.427171',
+  articleTitle: 'Python-Microscope: High performance control of arbitrarily complex and scalable bespoke microscopes',
+  date: new Date('2021-05-06'),
+  groupId: '316db7d9-88cc-4c26-b386-f067e0f56334',
+  groupName: 'Review Commons',
+  avatarPath: '/static/groups/review-commons--316db7d9-88cc-4c26-b386-f067e0f56334.jpg',
 };
 
 const card2: Card = {
