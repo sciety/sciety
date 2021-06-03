@@ -275,7 +275,31 @@ describe('search-results-page acceptance', () => {
         });
 
         describe('when extra details of an article cannot be fetched', () => {
-          it.todo('display the article without extra details');
+          it('display the article without extra details', async () => {
+            const page = pipe(
+              {
+                query: arbitraryString(),
+                pageSize: arbitraryNumber(5, 10),
+                category: O.some('articles' as const),
+                cursor: O.none,
+              },
+              searchResultsPage({
+                ...dummyAdapters,
+                findGroups: () => T.of([]),
+                searchEuropePmc: () => () => TE.right({
+                  items: [arbitraryArticleItem()],
+                  total: 1,
+                  nextCursor: O.none,
+                }),
+                findReviewsForArticleDoi: () => T.of([]),
+                findVersionsForArticleDoi: () => TO.none,
+              }),
+            );
+            const rendered = await contentOf(page)();
+            const articleCard = rendered.querySelectorAll('.article-card')[0];
+
+            expect(articleCard).not.toContain('Latest version');
+          });
         });
 
         describe('when the search for all articles fails', () => {
