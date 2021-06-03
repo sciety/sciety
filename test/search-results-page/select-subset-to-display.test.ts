@@ -3,7 +3,7 @@ import { pipe } from 'fp-ts/function';
 import { selectSubsetToDisplay } from '../../src/search-results-page/select-subset-to-display';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
-import { arbitraryDate, arbitraryString, arbitraryWord } from '../helpers';
+import { arbitraryDate, arbitraryNumber, arbitraryString, arbitraryWord } from '../helpers';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 
@@ -40,8 +40,6 @@ describe('select-subset-to-display', () => {
 
       expect(result.itemsToDisplay).toStrictEqual([articleItem]);
     });
-
-    it.todo('shows the correct count of matches');
   });
 
   describe('given the category of "groups"', () => {
@@ -63,8 +61,6 @@ describe('select-subset-to-display', () => {
       expect(result.itemsToDisplay).toStrictEqual([groupItem]);
     });
 
-    it.todo('shows the correct count of matches');
-
     it('nextCursor should be none', () => {
       const state = {
         query: '',
@@ -81,5 +77,24 @@ describe('select-subset-to-display', () => {
 
       expect(result.nextCursor).toStrictEqual(O.none);
     });
+  });
+
+  it('returns the correct numbers of available matches for each category', () => {
+    const numberOfMatchingArticles = arbitraryNumber(2, 1000);
+    const state = {
+      query: '',
+      pageSize: 2,
+      category: 'articles',
+      groups: [arbitraryGroupItem()],
+      articles: {
+        items: [arbitraryArticleItem()],
+        total: numberOfMatchingArticles,
+        nextCursor: O.some(arbitraryWord()),
+      },
+    };
+    const result = selectSubsetToDisplay(state);
+
+    expect(result.availableGroupMatches).toStrictEqual(1);
+    expect(result.availableArticleMatches).toStrictEqual(numberOfMatchingArticles);
   });
 });
