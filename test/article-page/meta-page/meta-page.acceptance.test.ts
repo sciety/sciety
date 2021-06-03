@@ -1,7 +1,7 @@
 import { JSDOM } from 'jsdom';
-import { renderMetaPage } from '../../src/article-page/render-meta-page';
-import { arbitraryHtmlFragment, arbitraryWord } from '../helpers';
-import { arbitraryDoi } from '../types/doi.helper';
+import { renderMetaPage } from '../../../src/article-page/meta-page/render-meta-page';
+import { arbitraryHtmlFragment, arbitraryWord } from '../../helpers';
+import { arbitraryDoi } from '../../types/doi.helper';
 
 describe('meta page acceptance criteria', () => {
   it('allows the full article and evaluations to be viewed side by side on desktop', async () => {
