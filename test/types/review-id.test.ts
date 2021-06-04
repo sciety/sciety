@@ -6,7 +6,7 @@ import * as DOI from '../../src/types/doi';
 import { HypothesisAnnotationId } from '../../src/types/hypothesis-annotation-id';
 import * as NcrcId from '../../src/types/ncrc-id';
 import * as RI from '../../src/types/review-id';
-import { arbitraryWord } from '../helpers';
+import { arbitraryUri, arbitraryWord } from '../helpers';
 
 describe('review-id', () => {
   describe('when is a DOI', () => {
@@ -90,6 +90,35 @@ describe('review-id', () => {
         reviewId,
         RI.key,
       )).toStrictEqual(key);
+    });
+  });
+
+  describe('when is a preLights guid', () => {
+    const key = arbitraryUri();
+    const ingestedReviewId = `prelights:${key.toString()}`;
+
+    it('identifies the service as prelights', () => {
+      expect(pipe(
+        ingestedReviewId,
+        RIcodec.decode,
+        E.map(RI.service),
+      )).toStrictEqual(E.right('prelights'));
+    });
+
+    it('allows the key to be extracted', () => {
+      expect(pipe(
+        ingestedReviewId,
+        RIcodec.decode,
+        E.map(RI.key),
+      )).toStrictEqual(E.right(key));
+    });
+
+    it('encodes to the original string', () => {
+      expect(pipe(
+        ingestedReviewId,
+        RIcodec.decode,
+        E.map(RIcodec.encode),
+      )).toStrictEqual(E.right(ingestedReviewId));
     });
   });
 

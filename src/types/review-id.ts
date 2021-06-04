@@ -7,7 +7,9 @@ import { Doi } from './doi';
 import { HypothesisAnnotationId } from './hypothesis-annotation-id';
 import * as NcrcId from './ncrc-id';
 
-export type ReviewId = Doi | HypothesisAnnotationId | NcrcId.NcrcId;
+type ServiceBasedReviewId = string & { readonly ServiceBasedReviewId: unique symbol };
+
+export type ReviewId = Doi | HypothesisAnnotationId | NcrcId.NcrcId | ServiceBasedReviewId;
 
 const toReviewId = (serialization: string): ReviewId => {
   const [, protocol, value] = /^(.+?):(.+)$/.exec(serialization) ?? [];
@@ -18,6 +20,8 @@ const toReviewId = (serialization: string): ReviewId => {
       return new HypothesisAnnotationId(value);
     case 'ncrc':
       return NcrcId.fromString(value);
+    case 'prelights':
+      return serialization as unknown as ServiceBasedReviewId;
     default:
       throw new Error(`Unable to unserialize ReviewId: "${serialization}"`);
   }
@@ -30,8 +34,11 @@ export const serialize = (id: ReviewId): string => {
     return id.toString();
   }
 
-  // NcrcId case
-  return `ncrc:${id.value}`;
+  if (NcrcId.isNrcId(id)) {
+    return `ncrc:${id.value}`;
+  }
+
+  return id;
 };
 
 export const service = (id: ReviewId): string => {
@@ -41,7 +48,10 @@ export const service = (id: ReviewId): string => {
   if (id instanceof HypothesisAnnotationId) {
     return 'hypothesis';
   }
-  return 'ncrc';
+  if (NcrcId.isNrcId(id)) {
+    return 'ncrc';
+  }
+  return 'prelights';
 };
 
 export const inferredUrl = (id: ReviewId): O.Option<URL> => {
@@ -54,7 +64,18 @@ export const inferredUrl = (id: ReviewId): O.Option<URL> => {
   return O.none;
 };
 
-export const key = (id: ReviewId): string => id.value;
+export const key = (id: ReviewId): string => {
+  if (id instanceof Doi) {
+    return id.value;
+  }
+  if (id instanceof HypothesisAnnotationId) {
+    return id.value;
+  }
+  if (NcrcId.isNrcId(id)) {
+    return id.value;
+  }
+  return id.replace(/^prelights:/, '');
+};
 
 export const isReviewId = (value: unknown): value is ReviewId => (
   value instanceof HypothesisAnnotationId || value instanceof Doi || NcrcId.isNrcId(value)
