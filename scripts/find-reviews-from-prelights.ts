@@ -30,7 +30,12 @@ const prelightsFeedCodec = t.type({
 const toDoi = (url: string) => {
   const doiRegex = '(10\\.[0-9]{4,}(?:\\.[1-9][0-9]*)*/(?:[^%"#?\\s])+)';
   const matches = new RegExp(`https?://(?:www.)?biorxiv.org/content/${doiRegex}v[0-9]+$`).exec(url);
-  return matches === null ? E.left(`cannot parse url to DOI: ${url}`) : E.right(matches[1]);
+  if (matches === null) {
+    const msg = `Cannot parse url to DOI: ${url}\n`;
+    process.stderr.write(msg);
+    return E.left(msg);
+  }
+  return E.right(matches[1]);
 };
 
 void (async (): Promise<void> => {
@@ -45,14 +50,15 @@ void (async (): Promise<void> => {
     prelightsFeedCodec.decode,
     E.map((feed) => pipe(
       feed.rss.channel.item,
-      RA.map((item) => ({
-        date: item.pubDate.toISOString(),
-        articleDoi: pipe(
-          toDoi(item.preprints.preprint.preprinturl),
-          E.fold(identity, identity),
-        ),
-        evaluationLocator: `prelights:${item.guid.replace('&#038;', '&')}`,
-      })),
+      RA.map((item) => pipe(
+        toDoi(item.preprints.preprint.preprinturl),
+        E.map((articleDoi) => ({
+          date: item.pubDate.toISOString(),
+          articleDoi,
+          evaluationLocator: `prelights:${item.guid.replace('&#038;', '&')}`,
+        })),
+      )),
+      RA.rights,
     )),
     E.bimap(
       (errors) => process.stderr.write(PR.failure(errors).join('\n')),
