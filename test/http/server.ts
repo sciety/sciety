@@ -52,6 +52,7 @@ export const createTestServer = async (): Promise<TestServer> => {
       fetchDataciteReview(fetchDataCiteDataset, dummyLogger),
       fetchHypothesisAnnotation(shouldNotBeCalled, dummyLogger),
       () => TE.left('unavailable'),
+      () => TE.left('unavailable'),
     ),
     fetchStaticFile: (filename: string) => TE.right(`Contents of ${filename}`),
     findGroups: () => T.of([]),
