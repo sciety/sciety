@@ -25,6 +25,7 @@ import { follows } from './follows';
 import { getArticleVersionEventsFromBiorxiv } from './get-article-version-events-from-biorxiv';
 import { getEventsFromDataFiles } from './get-events-from-data-files';
 import { getEventsFromDatabase } from './get-events-from-database';
+import { getHtml } from './get-html';
 import { getTwitterResponse } from './get-twitter-response';
 import { getTwitterUserDetails } from './get-twitter-user-details';
 import { getXmlFromCrossrefRestApi } from './get-xml-from-crossref-rest-api';
@@ -105,7 +106,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
           fetchDataciteReview(fetchDataset(logger), logger),
           fetchHypothesisAnnotation(getJson, logger),
           fetchNcrcReview(logger),
-          fetchPrelightsHighlight,
+          fetchPrelightsHighlight(getHtml),
         ),
         fetchStaticFile: fetchFile,
         findGroups: findGroups(fetchFile, bootstrapGroups),
