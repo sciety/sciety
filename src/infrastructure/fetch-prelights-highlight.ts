@@ -12,7 +12,7 @@ export const fetchPrelightsHighlight = (getHtml: GetHtml): EvaluationFetcher => 
   getHtml(key),
   TE.map(flow(
     (doc) => new JSDOM(doc),
-    (dom) => dom.window.document.querySelectorAll('meta[property="og:description"]')[2],
+    (dom) => dom.window.document.querySelector('meta[property="og:description"]:not([content=""])'),
     (meta) => meta?.getAttribute('content'),
     O.fromNullable,
     O.getOrElse(constant('')),

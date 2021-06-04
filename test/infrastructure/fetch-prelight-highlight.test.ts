@@ -32,10 +32,15 @@ describe('fetch-prelight-highlight', () => {
     expect(evaluationUrl).toStrictEqual(E.right(guid.toString()));
   });
 
-  it('returns the summary of the prelight', async () => {
+  const ogDescription = arbitraryString();
+
+  it.each([
+    [['', '', ogDescription]],
+    [[ogDescription]],
+    [[ogDescription, arbitraryString()]],
+  ])('returns the summary of the prelight', async (descriptions) => {
     const guid = new URL(arbitraryUri());
-    const ogDescription = arbitraryString();
-    const getHtml = () => TE.right(makeDoc(['', '', ogDescription]));
+    const getHtml = () => TE.right(makeDoc(descriptions));
     const fullText = await pipe(
       fetchPrelightsHighlight(getHtml)(guid.toString()),
       TE.map((evaluation) => evaluation.fullText.toString()),
