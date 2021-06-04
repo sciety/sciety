@@ -16,4 +16,15 @@ describe('fetch-prelight-highlight', () => {
 
     expect(evaluationUrl).toStrictEqual(E.right(guid.toString()));
   });
+
+  it('returns the summary of the prelight', async () => {
+    const guid = new URL(arbitraryUri());
+
+    const fullText = await pipe(
+      fetchPrelightsHighlight(guid.toString()),
+      TE.map((evaluation) => evaluation.fullText.toString()),
+    )();
+
+    expect(fullText).toStrictEqual(E.right('All endothelial roads lead to “Rome”: understanding the cell plasticity of cardiac blood vessels'));
+  });
 });
