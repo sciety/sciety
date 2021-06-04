@@ -2,7 +2,9 @@ import axios from 'axios';
 import parser from 'fast-xml-parser';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { constant, flow, pipe } from 'fp-ts/function';
+import {
+  constant, identity, pipe,
+} from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
@@ -15,10 +17,21 @@ const prelightsFeedCodec = t.type({
       item: t.array(t.type({
         pubDate: tt.DateFromISOString,
         guid: t.string,
+        preprints: t.type({
+          preprint: t.type({
+            preprinturl: t.string,
+          }),
+        }),
       })),
     }),
   }),
 });
+
+const toDoi = (url: string) => {
+  const doiRegex = '(10\\.[0-9]{4,}(?:\\.[1-9][0-9]*)*/(?:[^%"#?\\s])+)';
+  const matches = new RegExp(`https?://(?:www.)?biorxiv.org/content/${doiRegex}v[0-9]+$`).exec(url);
+  return matches === null ? E.left(`cannot parse url to DOI: ${url}`) : E.right(matches[1]);
+};
 
 void (async (): Promise<void> => {
   pipe(
@@ -30,18 +43,20 @@ void (async (): Promise<void> => {
     (response) => response.data,
     (responseBody) => parser.parse(responseBody) as JSON,
     prelightsFeedCodec.decode,
+    E.map((feed) => pipe(
+      feed.rss.channel.item,
+      RA.map((item) => ({
+        date: item.pubDate.toISOString(),
+        articleDoi: pipe(
+          toDoi(item.preprints.preprint.preprinturl),
+          E.fold(identity, identity),
+        ),
+        evaluationLocator: `prelights:${item.guid.replace('&#038;', '&')}`,
+      })),
+    )),
     E.bimap(
       (errors) => process.stderr.write(PR.failure(errors).join('\n')),
-      (feed) => pipe(
-        feed.rss.channel.item,
-        RA.map(flow(
-          (item) => ({
-            date: item.pubDate.toISOString(),
-            evaluationLocator: `prelights:${item.guid.replace('&#038;', '&')}`,
-          }),
-          ({ date, evaluationLocator }) => process.stdout.write(`${date},${evaluationLocator}\n`),
-        )),
-      ),
+      RA.map(({ date, articleDoi, evaluationLocator }) => process.stdout.write(`${date},${articleDoi},${evaluationLocator}\n`)),
     ),
     E.fold(constant(1), constant(0)),
     (exitStatus) => process.exit(exitStatus),
