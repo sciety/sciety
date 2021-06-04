@@ -1,7 +1,7 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import { constant, pipe } from 'fp-ts/function';
+import { constant, flow, pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import { EvaluationFetcher } from './fetch-review';
 import { toHtmlFragment } from '../types/html-fragment';
@@ -133,14 +133,18 @@ const html = (`
 </html>
     `);
 
-export const fetchPrelightsHighlight: EvaluationFetcher = (key: string) => TE.right({
-  url: new URL(key),
-  fullText: pipe(
-    new JSDOM(html),
+export const fetchPrelightsHighlight: EvaluationFetcher = (key: string) => pipe(
+  TE.right(html),
+  TE.map(flow(
+    (doc) => new JSDOM(doc),
     (dom) => dom.window.document.querySelectorAll('meta[property="og:description"]')[2],
     (meta) => meta?.getAttribute('content'),
     O.fromNullable,
     O.getOrElse(constant('')),
     toHtmlFragment,
-  ),
-});
+  )),
+  TE.map((text) => ({
+    url: new URL(key),
+    fullText: text,
+  })),
+);
