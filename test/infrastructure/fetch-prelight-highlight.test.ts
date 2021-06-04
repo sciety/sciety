@@ -48,4 +48,14 @@ describe('fetch-prelight-highlight', () => {
 
     expect(fullText).toStrictEqual(E.right(ogDescription));
   });
+
+  describe('cant find fullText', () => {
+    it('returns unavailable', async () => {
+      const guid = new URL(arbitraryUri());
+      const getHtml = () => TE.right(makeDoc([]));
+      const fullText = await fetchPrelightsHighlight(getHtml)(guid.toString())();
+
+      expect(fullText).toStrictEqual(E.left('unavailable' as const));
+    });
+  });
 });
