@@ -113,6 +113,16 @@ describe('review-id', () => {
       )).toStrictEqual(E.right(key));
     });
 
+    it('infers the original URL', () => {
+      expect(pipe(
+        ingestedReviewId,
+        RIcodec.decode,
+        O.fromEither,
+        O.chain(RI.inferredUrl),
+        O.map((url) => url.toString()),
+      )).toStrictEqual(O.some(key));
+    });
+
     it('encodes to the original string', () => {
       expect(pipe(
         ingestedReviewId,

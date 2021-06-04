@@ -61,7 +61,10 @@ export const inferredUrl = (id: ReviewId): O.Option<URL> => {
   if (id instanceof HypothesisAnnotationId) {
     return O.some(new URL(`https://hypothes.is/a/${id.value}`));
   }
-  return O.none;
+  if (NcrcId.isNrcId(id)) {
+    return O.none;
+  }
+  return O.some(new URL(key(id)));
 };
 
 export const key = (id: ReviewId): string => {
