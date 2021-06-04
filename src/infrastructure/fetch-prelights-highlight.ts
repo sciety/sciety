@@ -6,7 +6,7 @@ import { JSDOM } from 'jsdom';
 import { EvaluationFetcher } from './fetch-review';
 import { toHtmlFragment } from '../types/html-fragment';
 
-const html = new JSDOM(`
+const html = (`
     <!doctype html>
 <!--[if IE 7 ]> <html class="no-js ie7" lang="en"> <![endif]-->
 <!--[if IE 8 ]> <html class="no-js ie8" lang="en"> <![endif]-->
@@ -136,7 +136,8 @@ const html = new JSDOM(`
 export const fetchPrelightsHighlight: EvaluationFetcher = (key: string) => TE.right({
   url: new URL(key),
   fullText: pipe(
-    html.window.document.querySelectorAll('meta[property="og:description"]')[2],
+    new JSDOM(html),
+    (dom) => dom.window.document.querySelectorAll('meta[property="og:description"]')[2],
     (meta) => meta?.getAttribute('content'),
     O.fromNullable,
     O.getOrElse(constant('')),
