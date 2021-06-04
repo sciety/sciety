@@ -59,7 +59,7 @@
     "@types/parse-link-header": "^1.0.0",
     "@types/passport-twitter": "^1.0.36",
     "@types/pg": "^8.6.0",
-    "@types/rdf-dataset-indexed": "^0.4.5",
+    "@types/rdf-dataset-indexed": "^0.4.6",
     "@types/rdf-js": "^4.0.1",
     "@types/rdfjs__fetch-lite": "^2.0.2",
     "@types/rdfjs__parser-jsonld": "^1.2.3",
