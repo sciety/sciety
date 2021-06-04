@@ -54,19 +54,6 @@ export const service = (id: ReviewId): string => {
   return 'prelights';
 };
 
-export const inferredUrl = (id: ReviewId): O.Option<URL> => {
-  if (id instanceof Doi) {
-    return O.some(new URL(`https://doi.org/${id.value}`));
-  }
-  if (id instanceof HypothesisAnnotationId) {
-    return O.some(new URL(`https://hypothes.is/a/${id.value}`));
-  }
-  if (NcrcId.isNrcId(id)) {
-    return O.none;
-  }
-  return O.some(new URL(key(id)));
-};
-
 export const key = (id: ReviewId): string => {
   if (id instanceof Doi) {
     return id.value;
@@ -78,6 +65,19 @@ export const key = (id: ReviewId): string => {
     return id.value;
   }
   return id.replace(/^prelights:/, '');
+};
+
+export const inferredUrl = (id: ReviewId): O.Option<URL> => {
+  if (id instanceof Doi) {
+    return O.some(new URL(`https://doi.org/${id.value}`));
+  }
+  if (id instanceof HypothesisAnnotationId) {
+    return O.some(new URL(`https://hypothes.is/a/${id.value}`));
+  }
+  if (NcrcId.isNrcId(id)) {
+    return O.none;
+  }
+  return O.some(new URL(key(id)));
 };
 
 export const isReviewId = (value: unknown): value is ReviewId => (
