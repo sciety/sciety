@@ -2,9 +2,7 @@ import axios from 'axios';
 import parser from 'fast-xml-parser';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
-import {
-  constant, identity, pipe,
-} from 'fp-ts/function';
+import { constant, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
