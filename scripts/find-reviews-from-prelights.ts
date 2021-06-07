@@ -15,14 +15,14 @@ const prelightsFeedCodec = t.type({
       item: t.array(t.type({
         pubDate: tt.DateFromISOString,
         guid: t.string,
-        preprints: t.union([t.type({
-          preprint: t.type({
+        preprints: t.type({
+          preprint: t.union([t.type({
             preprinturl: t.string,
           }),
+          t.array(t.type({
+            preprinturl: t.string,
+          }))]),
         }),
-        t.array(t.type({
-          preprinturl: t.string,
-        }))]),
       })),
     }),
   }),
@@ -47,7 +47,7 @@ type Prelight = {
 
 void (async (): Promise<void> => {
   pipe(
-    await axios.get<string>(`https://prelights.biologists.com/feed/sciety/?key=${key}`, {
+    await axios.get<string>(`https://prelights.biologists.com/feed/sciety/?key=${key}&hours=48`, {
       headers: {
         'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)',
       },
@@ -58,8 +58,8 @@ void (async (): Promise<void> => {
     E.map((feed) => pipe(
       feed.rss.channel.item,
       RA.chain((item): Array<Prelight> => {
-        if (item.preprints instanceof Array) {
-          return item.preprints.map((preprintItem) => ({
+        if (item.preprints.preprint instanceof Array) {
+          return item.preprints.preprint.map((preprintItem) => ({
             ...item,
             preprintUrl: preprintItem.preprinturl,
           }));
