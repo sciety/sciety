@@ -22,6 +22,8 @@ const toReviewId = (serialization: string): ReviewId => {
       return NcrcId.fromString(value);
     case 'prelights':
       return serialization as unknown as ServiceBasedReviewId;
+    case 'rapidreviews':
+      return serialization as unknown as ServiceBasedReviewId;
     default:
       throw new Error(`Unable to unserialize ReviewId: "${serialization}"`);
   }
@@ -51,7 +53,7 @@ export const service = (id: ReviewId): string => {
   if (NcrcId.isNrcId(id)) {
     return 'ncrc';
   }
-  return 'prelights';
+  return id.split(':')[0];
 };
 
 export const key = (id: ReviewId): string => {
@@ -64,7 +66,7 @@ export const key = (id: ReviewId): string => {
   if (NcrcId.isNrcId(id)) {
     return id.value;
   }
-  return id.replace(/^prelights:/, '');
+  return id.slice(id.indexOf(':') + 1);
 };
 
 export const inferredUrl = (id: ReviewId): O.Option<URL> => {

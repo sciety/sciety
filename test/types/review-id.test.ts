@@ -93,6 +93,45 @@ describe('review-id', () => {
     });
   });
 
+  describe('when is a rapidreviews doi', () => {
+    const key = arbitraryUri();
+    const ingestedReviewId = `rapidreviews:${key.toString()}`;
+
+    it('identifies the service as rapidreviews', () => {
+      expect(pipe(
+        ingestedReviewId,
+        RIcodec.decode,
+        E.map(RI.service),
+      )).toStrictEqual(E.right('rapidreviews'));
+    });
+
+    it('allows the key to be extracted', () => {
+      expect(pipe(
+        ingestedReviewId,
+        RIcodec.decode,
+        E.map(RI.key),
+      )).toStrictEqual(E.right(key));
+    });
+
+    it('infers the original URL', () => {
+      expect(pipe(
+        ingestedReviewId,
+        RIcodec.decode,
+        O.fromEither,
+        O.chain(RI.inferredUrl),
+        O.map((url) => url.toString()),
+      )).toStrictEqual(O.some(key));
+    });
+
+    it('encodes to the original string', () => {
+      expect(pipe(
+        ingestedReviewId,
+        RIcodec.decode,
+        E.map(RIcodec.encode),
+      )).toStrictEqual(E.right(ingestedReviewId));
+    });
+  });
+
   describe('when is a preLights guid', () => {
     const key = arbitraryUri();
     const ingestedReviewId = `prelights:${key.toString()}`;
