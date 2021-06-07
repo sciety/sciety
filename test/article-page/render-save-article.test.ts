@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { renderSaveArticle } from '../../src/article-page/render-save-article';
-import { toUserId } from '../../src/types/user-id';
 import { arbitraryDoi } from '../types/doi.helper';
+import { arbitraryUserId } from '../types/user-id.helper';
 
 describe('render-save-article', () => {
   describe('not logged in', () => {
@@ -14,7 +14,7 @@ describe('render-save-article', () => {
 
   describe('logged in and article is saved', () => {
     it('renders is-saved-link', async () => {
-      const rendered = renderSaveArticle(arbitraryDoi(), O.some(toUserId('user')), true);
+      const rendered = renderSaveArticle(arbitraryDoi(), O.some(arbitraryUserId()), true);
 
       expect(rendered).toContain('Saved to my list');
     });
@@ -22,7 +22,7 @@ describe('render-save-article', () => {
 
   describe('logged in and article is not saved', () => {
     it('renders save-to-your-list-form', () => {
-      const rendered = renderSaveArticle(arbitraryDoi(), O.some(toUserId('user')), false);
+      const rendered = renderSaveArticle(arbitraryDoi(), O.some(arbitraryUserId()), false);
 
       expect(rendered).toContain('Save to my list');
     });

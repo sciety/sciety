@@ -5,13 +5,13 @@ import { finishSaveArticleCommand } from '../../src/save-article/finish-save-art
 import { ReviewIdFromString as RIcodec } from '../../src/types/codecs/ReviewIdFromString';
 import { userSavedArticle } from '../../src/types/domain-events';
 import { User } from '../../src/types/user';
-import { toUserId } from '../../src/types/user-id';
 import { arbitraryDoi } from '../types/doi.helper';
+import { arbitraryUserId } from '../types/user-id.helper';
 
 describe('finish-save-article-command', () => {
   describe('when the user has not already saved the article', () => {
     it('commits a UserSavedArticle event', async () => {
-      const userId = toUserId('user-id');
+      const userId = arbitraryUserId();
       const articleId = arbitraryDoi();
       const context = ({
         session: {
@@ -40,7 +40,7 @@ describe('finish-save-article-command', () => {
 
   describe('when the user has already saved the article', () => {
     it('does not commit any events', async () => {
-      const userId = toUserId('user-id');
+      const userId = arbitraryUserId();
       const articleId = arbitraryDoi();
       const context = ({
         session: {
@@ -67,7 +67,7 @@ describe('finish-save-article-command', () => {
 
   describe('after saving', () => {
     it('deletes session parameters', async () => {
-      const userId = toUserId('user-id');
+      const userId = arbitraryUserId();
       const articleId = arbitraryDoi();
       const context = ({
         session: {

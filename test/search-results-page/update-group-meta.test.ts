@@ -4,23 +4,23 @@ import {
   userFollowedEditorialCommunity, userSavedArticle,
   userUnfollowedEditorialCommunity,
 } from '../../src/types/domain-events';
-import { toUserId } from '../../src/types/user-id';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
+import { arbitraryUserId } from '../types/user-id.helper';
 
 describe('update-group-meta', () => {
   const groupId = arbitraryGroupId();
   const initial = { followerCount: 41, reviewCount: 27 };
 
   it('updates the meta when passed a UserFollowedEditorialCommunityEvent', () => {
-    const event = userFollowedEditorialCommunity(toUserId('123456'), groupId);
+    const event = userFollowedEditorialCommunity(arbitraryUserId(), groupId);
     const result = updateGroupMeta(groupId)(initial, event);
 
     expect(result).toStrictEqual({ followerCount: 42, reviewCount: 27 });
   });
 
   it('updates the meta when passed a UserUnfollowedEditorialCommunityEvent', () => {
-    const event = userUnfollowedEditorialCommunity(toUserId('123456'), groupId);
+    const event = userUnfollowedEditorialCommunity(arbitraryUserId(), groupId);
     const result = updateGroupMeta(groupId)(initial, event);
 
     expect(result).toStrictEqual({ followerCount: 40, reviewCount: 27 });
@@ -34,7 +34,7 @@ describe('update-group-meta', () => {
   });
 
   it('does not update the meta when passed any other domain event', () => {
-    const event = userSavedArticle(toUserId('123'), arbitraryDoi());
+    const event = userSavedArticle(arbitraryUserId(), arbitraryDoi());
     const result = updateGroupMeta(groupId)(initial, event);
 
     expect(result).toStrictEqual({ followerCount: 41, reviewCount: 27 });

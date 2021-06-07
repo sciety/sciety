@@ -1,11 +1,11 @@
 import * as T from 'fp-ts/Task';
 import { follows } from '../../src/infrastructure/follows';
 import { userFollowedEditorialCommunity, userUnfollowedEditorialCommunity } from '../../src/types/domain-events';
-import { toUserId } from '../../src/types/user-id';
 import { groupIdFromString } from '../types/group-id.helper';
+import { arbitraryUserId } from '../types/user-id.helper';
 
 describe('follows', () => {
-  const someone = toUserId('someone');
+  const someone = arbitraryUserId();
   const group1 = groupIdFromString('group-1');
   const group2 = groupIdFromString('group-2');
 
@@ -45,7 +45,7 @@ describe('follows', () => {
   });
 
   describe('when another user has a follow event', () => {
-    const someoneElse = toUserId('someoneelse');
+    const someoneElse = arbitraryUserId();
     const getAllEvents = T.of([
       userFollowedEditorialCommunity(someoneElse, group1),
     ]);

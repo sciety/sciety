@@ -3,7 +3,7 @@ import * as T from 'fp-ts/Task';
 import { ParameterizedContext } from 'koa';
 import { respondHandler } from '../../src/respond';
 import { User } from '../../src/types/user';
-import { toUserId } from '../../src/types/user-id';
+import { arbitraryUserId } from '../types/user-id.helper';
 
 describe('index', () => {
   it('redirects to review anchor on referer', async () => {
@@ -19,7 +19,7 @@ describe('index', () => {
       },
       state: {
         user: {
-          id: toUserId('my-user'),
+          id: arbitraryUserId(),
         },
       },
       redirect: jest.fn(),

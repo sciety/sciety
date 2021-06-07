@@ -2,13 +2,13 @@ import * as T from 'fp-ts/Task';
 import { createEventSourceFollowListRepository } from '../../src/infrastructure/event-sourced-follow-list-repository';
 import { userFollowedEditorialCommunity, userUnfollowedEditorialCommunity } from '../../src/types/domain-events';
 import { FollowList } from '../../src/types/follow-list';
-import { toUserId } from '../../src/types/user-id';
 import { arbitraryGroupId } from '../types/group-id.helper';
+import { arbitraryUserId } from '../types/user-id.helper';
 
 const groupId1 = arbitraryGroupId();
 const groupId2 = arbitraryGroupId();
-const userId1 = toUserId('u1');
-const userId2 = toUserId('u2');
+const userId1 = arbitraryUserId();
+const userId2 = arbitraryUserId();
 
 describe('event-sourced-follow-list-repository', () => {
   it('builds a follow list from events', async () => {

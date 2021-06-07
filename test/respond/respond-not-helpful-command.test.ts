@@ -1,8 +1,8 @@
 import { respondNotHelpful } from '../../src/respond/respond-not-helpful-command';
-import { toUserId } from '../../src/types/user-id';
 import { arbitraryReviewId } from '../types/review-id.helper';
+import { arbitraryUserId } from '../types/user-id.helper';
 
-const userId = toUserId('someone');
+const userId = arbitraryUserId();
 const reviewId = arbitraryReviewId();
 
 describe('respond-not-helpful-command', () => {

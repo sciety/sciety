@@ -1,8 +1,8 @@
 import * as E from 'fp-ts/Either';
 import { GetTwitterResponse } from '../../src/infrastructure/get-twitter-response';
 import { getTwitterUserDetails } from '../../src/infrastructure/get-twitter-user-details';
-import { toUserId } from '../../src/types/user-id';
 import { dummyLogger } from '../dummy-logger';
+import { arbitraryUserId } from '../types/user-id.helper';
 
 describe('get-twitter-user-details', () => {
   it('returns the details for the user', async () => {
@@ -13,7 +13,7 @@ describe('get-twitter-user-details', () => {
         username: 'arbitrary_twitter_handle',
       },
     });
-    const result = getTwitterUserDetails(getTwitterResponse, dummyLogger)(toUserId('12345'));
+    const result = getTwitterUserDetails(getTwitterResponse, dummyLogger)(arbitraryUserId());
     const expected = {
       avatarUrl: 'http://example.com',
       displayName: 'John Smith',
@@ -36,7 +36,7 @@ describe('get-twitter-user-details', () => {
         },
       ],
     });
-    const result = getTwitterUserDetails(getTwitterResponse, dummyLogger)(toUserId('12345'));
+    const result = getTwitterUserDetails(getTwitterResponse, dummyLogger)(arbitraryUserId());
 
     expect(await result()).toStrictEqual(E.left('not-found'));
   });
@@ -52,7 +52,7 @@ describe('get-twitter-user-details', () => {
       }
       throw new InvalidTwitterIdError();
     };
-    const result = getTwitterUserDetails(getTwitterResponse, dummyLogger)(toUserId('123456abcdef'));
+    const result = getTwitterUserDetails(getTwitterResponse, dummyLogger)(arbitraryUserId());
 
     expect(await result()).toStrictEqual(E.left('not-found'));
   });
@@ -61,7 +61,7 @@ describe('get-twitter-user-details', () => {
     const getTwitterResponse: GetTwitterResponse = async () => {
       throw new Error('Twitter API Unavailable');
     };
-    const result = getTwitterUserDetails(getTwitterResponse, dummyLogger)(toUserId('12345'));
+    const result = getTwitterUserDetails(getTwitterResponse, dummyLogger)(arbitraryUserId());
 
     expect(await result()).toStrictEqual(E.left('unavailable'));
   });

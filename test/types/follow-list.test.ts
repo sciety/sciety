@@ -1,9 +1,9 @@
 import { groupIdFromString } from './group-id.helper';
+import { arbitraryUserId } from './user-id.helper';
 import { FollowList } from '../../src/types/follow-list';
-import { toUserId } from '../../src/types/user-id';
 
 describe('follow-list', () => {
-  const userId1 = toUserId('u1');
+  const userId1 = arbitraryUserId();
   const id = 'id1';
   const group1Id = groupIdFromString(id);
 

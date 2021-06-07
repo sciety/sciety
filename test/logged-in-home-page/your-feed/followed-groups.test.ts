@@ -1,10 +1,10 @@
 import { followedGroups } from '../../../src/logged-in-home-page/your-feed/followed-groups';
 import { userFollowedEditorialCommunity, userUnfollowedEditorialCommunity } from '../../../src/types/domain-events';
-import { toUserId } from '../../../src/types/user-id';
 import { arbitraryGroupId, groupIdFromString } from '../../types/group-id.helper';
+import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('followed-groups', () => {
-  const userId = toUserId('user');
+  const userId = arbitraryUserId();
 
   describe('there are no follow events', () => {
     it('returns an empty array', () => {
@@ -71,7 +71,7 @@ describe('followed-groups', () => {
     it('returns an empty array', () => {
       const groupId = arbitraryGroupId();
       const events = [
-        userFollowedEditorialCommunity(toUserId('other-user'), groupId),
+        userFollowedEditorialCommunity(arbitraryUserId(), groupId),
       ];
       const groupIds = followedGroups(events)(userId);
 
@@ -82,7 +82,7 @@ describe('followed-groups', () => {
   describe('there is a single follow event for the user, and a follow and unfollow event for another user', () => {
     it('returns an empty array', () => {
       const groupId = arbitraryGroupId();
-      const otherUserId = toUserId('other-user');
+      const otherUserId = arbitraryUserId();
       const events = [
         userFollowedEditorialCommunity(userId, groupId),
         userFollowedEditorialCommunity(otherUserId, groupId),

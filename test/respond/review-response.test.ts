@@ -5,11 +5,11 @@ import {
   userRevokedFindingReviewHelpful,
   userRevokedFindingReviewNotHelpful,
 } from '../../src/types/domain-events';
-import { toUserId } from '../../src/types/user-id';
 import { arbitraryReviewId } from '../types/review-id.helper';
+import { arbitraryUserId } from '../types/user-id.helper';
 
 describe('review-response', () => {
-  const userId = toUserId('currentUser');
+  const userId = arbitraryUserId();
   const reviewId = arbitraryReviewId();
 
   it.each([
@@ -24,10 +24,10 @@ describe('review-response', () => {
       userFoundReviewNotHelpful(userId, reviewId),
     ], 'not-helpful'],
     ['helpful event from other user', [
-      userFoundReviewHelpful(toUserId('otherUser'), reviewId),
+      userFoundReviewHelpful(arbitraryUserId(), reviewId),
     ], 'none'],
     ['not-helpful event from other user', [
-      userFoundReviewNotHelpful(toUserId('otherUser'), reviewId),
+      userFoundReviewNotHelpful(arbitraryUserId(), reviewId),
     ], 'none'],
     ['helpful, revoked helpful', [
       userFoundReviewHelpful(userId, reviewId),

@@ -2,18 +2,19 @@ import * as T from 'fp-ts/Task';
 import { projectHasUserSavedArticle } from '../../src/article-page/project-has-user-saved-article';
 import { Doi } from '../../src/types/doi';
 import { userSavedArticle } from '../../src/types/domain-events';
-import { toUserId } from '../../src/types/user-id';
 import { arbitraryDoi } from '../types/doi.helper';
+import { arbitraryUserId } from '../types/user-id.helper';
 
 describe('project-has-user-saved-article', () => {
   describe('when the user has saved the article', () => {
     it('returns true', async () => {
+      const userId = arbitraryUserId();
       const getEvents = T.of([
-        userSavedArticle(toUserId('this-user'), new Doi('10.1101/111111')),
+        userSavedArticle(userId, new Doi('10.1101/111111')),
       ]);
       const result = await projectHasUserSavedArticle(
         new Doi('10.1101/111111'),
-        toUserId('this-user'),
+        userId,
       )(getEvents)();
 
       expect(result).toBe(true);
@@ -25,7 +26,7 @@ describe('project-has-user-saved-article', () => {
       const getEvents = T.of([]);
       const result = await projectHasUserSavedArticle(
         arbitraryDoi(),
-        toUserId('this-user'),
+        arbitraryUserId(),
       )(getEvents)();
 
       expect(result).toBe(false);
@@ -34,12 +35,13 @@ describe('project-has-user-saved-article', () => {
 
   describe('when the user has saved a different article', () => {
     it('returns false', async () => {
+      const userId = arbitraryUserId();
       const getEvents = T.of([
-        userSavedArticle(toUserId('this-user'), arbitraryDoi()),
+        userSavedArticle(userId, arbitraryDoi()),
       ]);
       const result = await projectHasUserSavedArticle(
         arbitraryDoi(),
-        toUserId('this-user'),
+        userId,
       )(getEvents)();
 
       expect(result).toBe(false);
@@ -49,11 +51,11 @@ describe('project-has-user-saved-article', () => {
   describe('when a different user has saved this article', () => {
     it('returns false', async () => {
       const getEvents = T.of([
-        userSavedArticle(toUserId('other-user'), new Doi('10.1101/111111')),
+        userSavedArticle(arbitraryUserId(), new Doi('10.1101/111111')),
       ]);
       const result = await projectHasUserSavedArticle(
         new Doi('10.1101/111111'),
-        toUserId('this-user'),
+        arbitraryUserId(),
       )(getEvents)();
 
       expect(result).toBe(false);

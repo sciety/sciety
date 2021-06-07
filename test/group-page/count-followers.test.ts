@@ -1,20 +1,20 @@
 import { pipe } from 'fp-ts/function';
 import { countFollowersOf } from '../../src/group-page/count-followers';
 import { userFollowedEditorialCommunity, userSavedArticle, userUnfollowedEditorialCommunity } from '../../src/types/domain-events';
-import { toUserId } from '../../src/types/user-id';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId, groupIdFromString } from '../types/group-id.helper';
+import { arbitraryUserId } from '../types/user-id.helper';
 
 const myGroup = groupIdFromString('my-group');
 
-const aUserId = toUserId('12345678');
+const aUserId = arbitraryUserId();
 
 describe('project-follower-count', () => {
   it('projects a count of followers based on follow events', async () => {
     expect(pipe(
       [
-        userFollowedEditorialCommunity(toUserId('47998559'), myGroup),
-        userFollowedEditorialCommunity(toUserId('23776533'), myGroup),
+        userFollowedEditorialCommunity(arbitraryUserId(), myGroup),
+        userFollowedEditorialCommunity(arbitraryUserId(), myGroup),
       ],
       countFollowersOf(groupIdFromString('my-group')),
     )).toBe(2);
