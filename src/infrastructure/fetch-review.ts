@@ -11,12 +11,14 @@ export const fetchReview = (
   fetchHypothesisAnnotation: EvaluationFetcher,
   fetchNcrcReview: EvaluationFetcher,
   fetchPrelightsHighlight: EvaluationFetcher,
+  fetchRapidReview: EvaluationFetcher,
 ): FetchReview => (id) => {
   const fetchers = new Map<string, EvaluationFetcher>();
   fetchers.set('doi', fetchDataciteReview);
   fetchers.set('hypothesis', fetchHypothesisAnnotation);
   fetchers.set('ncrc', fetchNcrcReview);
   fetchers.set('prelights', fetchPrelightsHighlight);
+  fetchers.set('rapidreviews', fetchRapidReview);
 
   const f = fetchers.get(RI.service(id));
   if (f) {

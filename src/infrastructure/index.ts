@@ -16,6 +16,7 @@ import { fetchDataset } from './fetch-dataset';
 import { fetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
 import { fetchNcrcReview } from './fetch-ncrc-review';
 import { fetchPrelightsHighlight } from './fetch-prelights-highlight';
+import { fetchRapidReview } from './fetch-rapid-review';
 import { fetchReview } from './fetch-review';
 import { fetchStaticFile } from './fetch-static-file';
 import { getJsonResponse, getJsonWithRetriesAndLogging } from './fetchers';
@@ -107,6 +108,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
           fetchHypothesisAnnotation(getJson, logger),
           fetchNcrcReview(logger),
           fetchPrelightsHighlight(getHtml(logger)),
+          fetchRapidReview,
         ),
         fetchStaticFile: fetchFile,
         findGroups: findGroups(fetchFile, bootstrapGroups),
