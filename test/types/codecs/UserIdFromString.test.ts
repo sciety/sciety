@@ -13,4 +13,17 @@ describe('codec UserIdFromString', () => {
       UserIdFromString.decode,
     )).toStrictEqual(E.right(id));
   });
+
+  it.each([
+    43,
+    null,
+    undefined,
+    '',
+  ])('cannot decode an invalid UserId', (input) => {
+    expect(pipe(
+      input,
+      UserIdFromString.decode,
+      E.isLeft,
+    )).toBe(true);
+  });
 });
