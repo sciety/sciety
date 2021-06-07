@@ -3,24 +3,13 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 
-export class GroupId {
-  readonly value: string;
+export type GroupId = string & { readonly GroupId: unique symbol };
 
-  constructor(input: string) {
-    if (input.length === 0) {
-      throw new Error(`'${input}' is not a GroupId`);
-    }
-    this.value = input;
-  }
+export const isGroupId = (value: unknown): value is GroupId => typeof value === 'string' && value !== '';
 
-  toString(): string {
-    return this.value;
-  }
-}
+export const fromString = (value: string): O.Option<GroupId> => O.some(value as GroupId);
 
-export const fromString = (value: string): O.Option<GroupId> => (O.tryCatch(() => new GroupId(value)));
-
-export const fromValidatedString = (value: string): GroupId => new GroupId(value);
+export const fromValidatedString = (value: string): GroupId => value as GroupId;
 
 export const fromNullable = (value?: string | null): O.Option<GroupId> => pipe(
   value,
@@ -28,7 +17,4 @@ export const fromNullable = (value?: string | null): O.Option<GroupId> => pipe(
   O.chain(fromString),
 );
 
-export const eqGroupId: Eq.Eq<GroupId> = pipe(
-  S.Eq,
-  Eq.contramap((id) => id.value),
-);
+export const eqGroupId: Eq.Eq<GroupId> = S.Eq;

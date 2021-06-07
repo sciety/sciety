@@ -11,9 +11,9 @@ const calculateFollowedGroups = (userId: UserId) => (events: ReadonlyArray<Domai
   const result = new Set<string>();
   events.forEach((event) => {
     if (event.type === 'UserFollowedEditorialCommunity' && event.userId === userId) {
-      result.add(event.editorialCommunityId.value);
+      result.add(event.editorialCommunityId);
     } else if (event.type === 'UserUnfollowedEditorialCommunity' && event.userId === userId) {
-      result.delete(event.editorialCommunityId.value);
+      result.delete(event.editorialCommunityId);
     }
   });
   return pipe(

@@ -32,14 +32,14 @@ export const renderGroupCard = flow(
     <div class="group-card">
       <div class="group-card__body">
         <h3 class="group-card__title">
-          <a class="group-card__link" href="/groups/${result.id.value}">${htmlEscape(result.name)}</a>
+          <a class="group-card__link" href="/groups/${result.id}">${htmlEscape(result.name)}</a>
         </h3>
         <div class="group-card__description">
           ${result.description}
         </div>
         <span class="group-card__meta">
           ${renderEvaluationCount(result.reviewCount)}${renderFollowerCount(result.followerCount)}
-        </span>      
+        </span>
       </div>
       <img class="group-card__avatar" src="${result.avatarPath}" alt="" />
     </div>

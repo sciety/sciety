@@ -10,7 +10,7 @@ export type GroupViewModel = Group & {
 
 const render = (group: GroupViewModel) => (toggle: HtmlFragment) => `
   <img class="followed-groups__item_avatar" src="${group.avatarPath}" alt="">
-  <a class="followed-groups__item_link" href="/groups/${group.id.value}">${htmlEscape(group.name)}</a>
+  <a class="followed-groups__item_link" href="/groups/${group.id}">${htmlEscape(group.name)}</a>
   ${toggle}
 `;
 

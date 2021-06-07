@@ -12,19 +12,19 @@ type GroupMeta = {
 };
 
 export const updateGroupMeta = (groupId: GroupId) => (meta: GroupMeta, event: DomainEvent): GroupMeta => {
-  if (isUserFollowedEditorialCommunityEvent(event) && event.editorialCommunityId.value === groupId.value) {
+  if (isUserFollowedEditorialCommunityEvent(event) && event.editorialCommunityId === groupId) {
     return {
       ...meta,
       followerCount: meta.followerCount + 1,
     };
   }
-  if (isUserUnfollowedEditorialCommunityEvent(event) && event.editorialCommunityId.value === groupId.value) {
+  if (isUserUnfollowedEditorialCommunityEvent(event) && event.editorialCommunityId === groupId) {
     return {
       ...meta,
       followerCount: meta.followerCount - 1,
     };
   }
-  if (isEditorialCommunityReviewedArticleEvent(event) && event.editorialCommunityId.value === groupId.value) {
+  if (isEditorialCommunityReviewedArticleEvent(event) && event.editorialCommunityId === groupId) {
     return {
       ...meta,
       reviewCount: meta.reviewCount + 1,

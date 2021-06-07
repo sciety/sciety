@@ -18,7 +18,7 @@ describe('event-sourced-follow-list-repository', () => {
     const repository = createEventSourceFollowListRepository(getAllEvents);
 
     const actual = await repository(userId1)();
-    const expected = new FollowList(userId1, [groupId1.value]);
+    const expected = new FollowList(userId1, [groupId1]);
 
     expect(actual).toStrictEqual(expected);
   });
@@ -44,7 +44,7 @@ describe('event-sourced-follow-list-repository', () => {
     const repository = createEventSourceFollowListRepository(getAllEvents);
 
     const actual = await repository(userId1)();
-    const expected = new FollowList(userId1, [groupId1.value]);
+    const expected = new FollowList(userId1, [groupId1]);
 
     expect(actual).toStrictEqual(expected);
   });
@@ -57,7 +57,7 @@ describe('event-sourced-follow-list-repository', () => {
     const repository = createEventSourceFollowListRepository(getAllEvents);
 
     const actual = await repository(userId1)();
-    const expected = new FollowList(userId1, [groupId1.value]);
+    const expected = new FollowList(userId1, [groupId1]);
 
     expect(actual).toStrictEqual(expected);
   });

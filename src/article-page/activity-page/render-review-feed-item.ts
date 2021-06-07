@@ -33,7 +33,7 @@ const avatar = (review: ReviewFeedItem) => toHtmlFragment(`
 const eventMetadata = (review: ReviewFeedItem) => toHtmlFragment(`
   <div class="activity-feed__item__meta">
     <div class="activity-feed__item__title">
-      <a href="/groups/${review.groupId.value}">
+      <a href="/groups/${review.groupId}">
         ${htmlEscape(review.groupName)}
       </a>
     </div>

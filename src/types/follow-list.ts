@@ -18,11 +18,11 @@ export class FollowList {
   }
 
   follow(groupId: GroupId): ReadonlyArray<UserFollowedEditorialCommunityEvent> {
-    if (this.items.includes(groupId.value)) {
+    if (this.items.includes(groupId)) {
       return [];
     }
 
-    this.items.push(groupId.value);
+    this.items.push(groupId);
 
     return [
       userFollowedEditorialCommunity(this.userId, groupId),
@@ -30,11 +30,11 @@ export class FollowList {
   }
 
   unfollow(groupId: GroupId): ReadonlyArray<UserUnfollowedEditorialCommunityEvent> {
-    if (!this.items.includes(groupId.value)) {
+    if (!this.items.includes(groupId)) {
       return [];
     }
 
-    this.items = this.items.filter((item) => item !== groupId.value);
+    this.items = this.items.filter((item) => item !== groupId);
 
     return [
       userUnfollowedEditorialCommunity(this.userId, groupId),

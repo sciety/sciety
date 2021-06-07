@@ -26,7 +26,7 @@ export const getEventsFromDataFiles = (
 ): TE.TaskEither<unknown, RNEA.ReadonlyNonEmptyArray<DomainEvent>> => pipe(
   groupIds,
   TE.traverseArray((groupId) => pipe(
-    `./data/reviews/${groupId.value}.csv`,
+    `./data/reviews/${groupId}.csv`,
     taskify(fs.readFile),
     T.map(E.orElse(() => E.right(Buffer.from('')))), // TODO skip files that don't exist
     TE.chainEitherKW(flow(

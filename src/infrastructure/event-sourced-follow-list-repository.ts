@@ -13,9 +13,9 @@ export const createEventSourceFollowListRepository = (getAllEvents: GetAllEvents
 
     (await getAllEvents()).forEach((event) => {
       if (isUserFollowedEditorialCommunityEvent(event) && event.userId === userId) {
-        result.add(event.editorialCommunityId.value);
+        result.add(event.editorialCommunityId);
       } else if (isUserUnfollowedEditorialCommunityEvent(event) && event.userId === userId) {
-        result.delete(event.editorialCommunityId.value);
+        result.delete(event.editorialCommunityId);
       }
     });
 

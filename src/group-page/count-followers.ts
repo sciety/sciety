@@ -9,10 +9,10 @@ import { GroupId } from '../types/group-id';
 type Reducer = (groupId: GroupId) => (count: number, event: DomainEvent) => number;
 
 const counter: Reducer = (groupId) => (count, event) => {
-  if (isUserFollowedEditorialCommunityEvent(event) && event.editorialCommunityId.value === groupId.value) {
+  if (isUserFollowedEditorialCommunityEvent(event) && event.editorialCommunityId === groupId) {
     return count + 1;
   }
-  if (isUserUnfollowedEditorialCommunityEvent(event) && event.editorialCommunityId.value === groupId.value) {
+  if (isUserUnfollowedEditorialCommunityEvent(event) && event.editorialCommunityId === groupId) {
     return count - 1;
   }
   return count;

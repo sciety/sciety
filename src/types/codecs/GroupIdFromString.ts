@@ -6,7 +6,7 @@ import * as GroupId from '../group-id';
 
 export const GroupIdFromString = new t.Type(
   'GroupIdFromString',
-  (u): u is GroupId.GroupId => u instanceof GroupId.GroupId,
+  GroupId.isGroupId,
   (u, c) => pipe(
     t.string.validate(u, c),
     E.chain(flow(

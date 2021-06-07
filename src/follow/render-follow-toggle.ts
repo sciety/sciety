@@ -6,7 +6,7 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 const renderFollowButton = (groupId: GroupId, groupName: string) => `
   <form method="post" action="/follow">
-    <input type="hidden" name="${groupProperty}" value="${groupId.value}" />
+    <input type="hidden" name="${groupProperty}" value="${groupId}" />
     <button type="submit" class="follow-button" aria-label="Follow ${groupName}">
       Follow
     </button>
@@ -15,7 +15,7 @@ const renderFollowButton = (groupId: GroupId, groupName: string) => `
 
 const renderUnfollowButton = (groupId: GroupId, groupName: string) => `
   <form method="post" action="/unfollow">
-    <input type="hidden" name="editorialcommunityid" value="${groupId.value}" />
+    <input type="hidden" name="editorialcommunityid" value="${groupId}" />
     <button type="submit" class="unfollow-button" aria-label="Unfollow ${groupName}">
       Unfollow
     </button>

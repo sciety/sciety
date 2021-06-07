@@ -20,7 +20,7 @@ export type RenderGroup = (userId: O.Option<UserId>) => (group: Group) => T.Task
 
 const render = (group: Group) => (toggle: HtmlFragment) => `
   <div class="group">
-    <a href="/groups/${group.id.value}" class="group__link">
+    <a href="/groups/${group.id}" class="group__link">
       <img src="${group.avatarPath}" alt="" class="group__avatar">
       <div class="group__name">
         ${htmlEscape(group.name)}
