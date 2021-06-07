@@ -127,7 +127,8 @@ COMMUNITY_SCRIPTS := \
 	find-pci-reviews \
 	find-screenit-reviews \
 	find-prereview-reviews \
-	find-ncrc-reviews
+	find-ncrc-reviews \
+	find-prelights-reviews
 
 sort-event-data:
 	find data -type f | xargs -I % sort -g -o % %
