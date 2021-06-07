@@ -116,7 +116,9 @@ find-screenit-reviews: build
 find-prelights-reviews: export TARGET = dev
 find-prelights-reviews: build
 	$(DOCKER_COMPOSE) run -T app \
-		npx ts-node scripts/find-reviews-from-prelights
+		npx ts-node scripts/find-reviews-from-prelights >> ./data/reviews/f97bd177-5cb6-4296-8573-078318755bf2.csv
+		cat ./data/reviews/f97bd177-5cb6-4296-8573-078318755bf2.csv | sort -g | uniq > /tmp/prelights.csv
+		mv /tmp/prelights.csv ./data/reviews/f97bd177-5cb6-4296-8573-078318755bf2.csv
 
 COMMUNITY_SCRIPTS := \
 	find-review-commons-reviews \
