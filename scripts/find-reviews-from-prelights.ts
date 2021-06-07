@@ -47,7 +47,7 @@ type Prelight = {
 
 void (async (): Promise<void> => {
   pipe(
-    await axios.get<string>(`https://prelights.biologists.com/feed/sciety/?key=${key}&hours=48`, {
+    await axios.get<string>(`https://prelights.biologists.com/feed/sciety/?key=${key}&hours=120`, {
       headers: {
         'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)',
       },
