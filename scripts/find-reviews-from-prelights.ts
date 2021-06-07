@@ -15,11 +15,14 @@ const prelightsFeedCodec = t.type({
       item: t.array(t.type({
         pubDate: tt.DateFromISOString,
         guid: t.string,
-        preprints: t.type({
+        preprints: t.union([t.type({
           preprint: t.type({
             preprinturl: t.string,
           }),
         }),
+        t.array(t.type({
+          preprinturl: t.string,
+        }))]),
       })),
     }),
   }),
@@ -36,9 +39,15 @@ const toDoi = (url: string) => {
   return E.right(matches[1]);
 };
 
+type Prelight = {
+  guid: string,
+  pubDate: Date,
+  preprintUrl: string,
+};
+
 void (async (): Promise<void> => {
   pipe(
-    await axios.get<string>(`https://prelights.biologists.com/feed/sciety/?key=${key}&hours=48`, {
+    await axios.get<string>(`https://prelights.biologists.com/feed/sciety/?key=${key}`, {
       headers: {
         'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)',
       },
@@ -48,8 +57,20 @@ void (async (): Promise<void> => {
     prelightsFeedCodec.decode,
     E.map((feed) => pipe(
       feed.rss.channel.item,
+      RA.chain((item): Array<Prelight> => {
+        if (item.preprints instanceof Array) {
+          return item.preprints.map((preprintItem) => ({
+            ...item,
+            preprintUrl: preprintItem.preprinturl,
+          }));
+        }
+        return [{
+          ...item,
+          preprintUrl: item.preprints.preprint.preprinturl,
+        }];
+      }),
       RA.map((item) => pipe(
-        toDoi(item.preprints.preprint.preprinturl),
+        toDoi(item.preprintUrl),
         E.map((articleDoi) => ({
           date: item.pubDate.toISOString(),
           articleDoi,
