@@ -3,7 +3,6 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { Group } from '../types/group';
-import { eqGroupId } from '../types/group-id';
 import { GroupRepository } from '../types/group-repository';
 
 export const inMemoryGroupRepository = (
@@ -13,6 +12,6 @@ export const inMemoryGroupRepository = (
 
   lookup: (id) => pipe(
     T.of(data),
-    T.map(RA.findFirst((ec) => eqGroupId.equals(ec.id, id))),
+    T.map(RA.findFirst((ec) => ec.id === id)),
   ),
 });

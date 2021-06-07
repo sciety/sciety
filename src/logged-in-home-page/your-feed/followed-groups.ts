@@ -5,7 +5,7 @@ import {
   isUserFollowedEditorialCommunityEvent,
   isUserUnfollowedEditorialCommunityEvent, UserFollowedEditorialCommunityEvent, UserUnfollowedEditorialCommunityEvent,
 } from '../../types/domain-events';
-import { eqGroupId, GroupId } from '../../types/group-id';
+import { GroupId } from '../../types/group-id';
 import { UserId } from '../../types/user-id';
 
 type FollowedGroups = (events: ReadonlyArray<DomainEvent>) => (userId: UserId) => ReadonlyArray<GroupId>;
@@ -23,7 +23,7 @@ const reduceFollowOrUnfollowEventToGroupIds = (
       case 'UserUnfollowedEditorialCommunity':
         return pipe(
           state,
-          RA.filter((existing) => !eqGroupId.equals(existing, groupId)),
+          RA.filter((existing) => existing !== groupId),
         );
     }
   },

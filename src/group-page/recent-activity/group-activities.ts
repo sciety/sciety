@@ -12,7 +12,7 @@ import {
   DomainEvent, EditorialCommunityReviewedArticleEvent,
   isEditorialCommunityReviewedArticleEvent,
 } from '../../types/domain-events';
-import { eqGroupId, GroupId } from '../../types/group-id';
+import { GroupId } from '../../types/group-id';
 
 type GroupActivities = (events: ReadonlyArray<DomainEvent>) => (groupId: GroupId) => ReadonlyArray<ArticleActivity>;
 
@@ -35,7 +35,7 @@ const eventToActivityDetails = (
   latestActivityDate: event.date,
   latestActivityByGroup: pipe(
     event.date,
-    O.fromPredicate(() => eqGroupId.equals(event.editorialCommunityId, groupId)),
+    O.fromPredicate(() => event.editorialCommunityId === groupId),
   ),
   evaluationCount: 1,
 });

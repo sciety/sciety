@@ -4,7 +4,7 @@ import * as A from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { flow } from 'fp-ts/function';
 import { DomainEvent, isUserFollowedEditorialCommunityEvent, isUserUnfollowedEditorialCommunityEvent } from '../types/domain-events';
-import { eqGroupId, GroupId } from '../types/group-id';
+import { GroupId } from '../types/group-id';
 import { UserId } from '../types/user-id';
 
 type Follows = (u: UserId, g: GroupId) => RT.ReaderTask<GetAllEvents, boolean>;
@@ -16,10 +16,10 @@ const isSignificantTo = (
   groupId: GroupId,
 ) => (event: DomainEvent) => (
   (isUserFollowedEditorialCommunityEvent(event)
-    && eqGroupId.equals(event.editorialCommunityId, groupId)
+    && event.editorialCommunityId === groupId
     && event.userId === userId)
   || (isUserUnfollowedEditorialCommunityEvent(event)
-    && eqGroupId.equals(event.editorialCommunityId, groupId)
+    && event.editorialCommunityId === groupId
     && event.userId === userId)
 );
 

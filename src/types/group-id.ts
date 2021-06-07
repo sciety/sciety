@@ -1,7 +1,5 @@
-import * as Eq from 'fp-ts/Eq';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import * as S from 'fp-ts/string';
 
 export type GroupId = string & { readonly GroupId: unique symbol };
 
@@ -16,5 +14,3 @@ export const fromNullable = (value?: string | null): O.Option<GroupId> => pipe(
   O.fromNullable,
   O.chain(fromString),
 );
-
-export const eqGroupId: Eq.Eq<GroupId> = S.Eq;
