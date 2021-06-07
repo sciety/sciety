@@ -25,7 +25,7 @@ import { robots } from './robots';
 import { aboutPage } from '../about-page';
 import { articleActivityPage, articleMetaPage } from '../article-page';
 import { finishUnfollowCommand, saveUnfollowCommand, unfollowHandler } from '../follow';
-import { groupPage } from '../group-page';
+import { groupPage, paramsCodec as groupPageParams } from '../group-page';
 import { groupsPage } from '../groups-page';
 import { Adapters } from '../infrastructure/adapters';
 import { landingPage, landingPageLayout } from '../landing-page';
@@ -41,7 +41,6 @@ import { searchPage } from '../search-page';
 import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../search-results-page';
 import { applyStandardPageLayout } from '../shared-components/apply-standard-page-layout';
 import { DoiFromString } from '../types/codecs/DoiFromString';
-import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import * as Doi from '../types/doi';
 import { toHtmlFragment } from '../types/html-fragment';
@@ -62,13 +61,6 @@ const ensureBiorxivDoiParam = <T extends { doi: Doi.Doi }>(params: T) => pipe(
 
 const articlePageParams = t.type({
   doi: DoiFromString,
-  user: tt.optionFromNullable(t.type({
-    id: UserIdFromString,
-  })),
-});
-
-const groupPageParams = t.type({
-  id: GroupIdFromString,
   user: tt.optionFromNullable(t.type({
     id: UserIdFromString,
   })),

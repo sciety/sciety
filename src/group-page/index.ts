@@ -5,6 +5,8 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe } from 'fp-ts/function';
+import * as t from 'io-ts';
+import * as tt from 'io-ts-types';
 import { countFollowersOf } from './count-followers';
 import { recentActivity, Ports as RecentActivityPorts } from './recent-activity';
 import { FetchStaticFile, renderDescription } from './render-description';
@@ -12,13 +14,14 @@ import { renderFollowers } from './render-followers';
 import { renderErrorPage, renderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
 import { renderFollowToggle } from '../follow/render-follow-toggle';
+import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
+import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import { DomainEvent } from '../types/domain-events';
 import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
-import { User } from '../types/user';
 import { UserId } from '../types/user-id';
 
 type FetchGroup = (groupId: GroupId) => TO.TaskOption<Group>;
@@ -32,10 +35,14 @@ type Ports = RecentActivityPorts & {
   follows: (userId: UserId, groupId: GroupId) => T.Task<boolean>,
 };
 
-type Params = {
-  id: GroupId,
-  user: O.Option<User>,
-};
+export const paramsCodec = t.type({
+  id: GroupIdFromString,
+  user: tt.optionFromNullable(t.type({
+    id: UserIdFromString,
+  })),
+});
+
+type Params = t.TypeOf<typeof paramsCodec>;
 
 const notFoundResponse = () => ({
   type: 'not-found',
