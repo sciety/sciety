@@ -12,5 +12,3 @@ export const toUserId = (value: string): UserId => {
 };
 
 export const fromString = (value: string): O.Option<UserId> => O.tryCatch(() => toUserId(value));
-
-export const toString = (userId: UserId): string => userId;
