@@ -4,7 +4,7 @@ module.exports = {
     '**/*.ts',
   ],
   coverageDirectory: './coverage',
-  coverageReporters: ['lcov', 'text'],
+  coverageReporters: ['json', 'lcov', 'text'],
   globals: {
     'ts-jest': {
       diagnostics: false,

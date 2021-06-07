@@ -42,6 +42,7 @@ test: build
 test\:coverage: export TARGET = dev
 test\:coverage: build
 	${DOCKER_COMPOSE} run --rm app npm run test:coverage
+	sed -i -e 's/\/app\/src/src/g' coverage/coverage-final.json
 
 backstop-test: export TARGET = dev
 backstop-test: export DISABLE_COOKIEBOT = true
