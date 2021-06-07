@@ -46,7 +46,7 @@ describe('fetch-prelight-highlight', () => {
       TE.map((evaluation) => evaluation.fullText.toString()),
     )();
 
-    expect(fullText).toStrictEqual(E.right(ogDescription));
+    expect(fullText).toStrictEqual(E.right(expect.stringContaining(ogDescription)));
   });
 
   describe('cant find fullText', () => {

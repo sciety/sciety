@@ -17,6 +17,7 @@ export const fetchPrelightsHighlight = (getHtml: GetHtml): EvaluationFetcher => 
     (meta) => meta?.getAttribute('content'),
     O.fromNullable,
     E.fromOption(constant('unavailable' as const)),
+    E.map((text) => `<h3>Excerpt</h3><p>${text}</p>`),
     E.map(toHtmlFragment),
   )),
   TE.map((text) => ({
