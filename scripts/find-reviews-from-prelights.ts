@@ -29,7 +29,7 @@ const toDoi = (url: string) => {
   const doiRegex = '(10\\.[0-9]{4,}(?:\\.[1-9][0-9]*)*/(?:[^%"#?\\s])+)';
   const matches = new RegExp(`https?://(?:www.)?biorxiv.org/content/${doiRegex}v[0-9]+$`).exec(url);
   if (matches === null) {
-    const msg = `Cannot parse url to DOI: ${url}\n`;
+    const msg = `WARNING: Cannot parse url to DOI: ${url}\n`;
     process.stderr.write(msg);
     return E.left(msg);
   }
