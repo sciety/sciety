@@ -5,11 +5,14 @@ import { fetchExtraDetails } from '../../src/search-results-page/fetch-extra-det
 import { Doi } from '../../src/types/doi';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
+import { arbitraryNumber } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 
 describe('fetch-extra-details', () => {
+  const numberOfPages = arbitraryNumber(0, 10);
+
   describe('given a found article', () => {
     it('returns a correct view model', async () => {
       const latestVersionDate = new Date();
@@ -31,6 +34,7 @@ describe('fetch-extra-details', () => {
         getGroup: shouldNotBeCalled,
         getLatestArticleVersionDate: () => T.of(O.some(latestVersionDate)),
       };
+
       const matches = {
         query: '',
         category: 'articles',
@@ -47,6 +51,7 @@ describe('fetch-extra-details', () => {
           },
         ],
         nextCursor: O.none,
+        numberOfPages,
       };
       const viewModel = await fetchExtraDetails(ports)(matches)();
 
@@ -63,6 +68,7 @@ describe('fetch-extra-details', () => {
           }),
         ],
         nextCursor: O.none,
+        numberOfPages,
       });
     });
   });
@@ -95,6 +101,7 @@ describe('fetch-extra-details', () => {
             },
           ],
           nextCursor: O.none,
+          numberOfPages,
         };
         const viewModel = await fetchExtraDetails(ports)(matches)();
 
@@ -110,6 +117,7 @@ describe('fetch-extra-details', () => {
             }),
           ],
           nextCursor: O.none,
+          numberOfPages,
         });
       });
     });
@@ -134,6 +142,7 @@ describe('fetch-extra-details', () => {
             },
           ],
           nextCursor: O.none,
+          numberOfPages,
         };
         const viewModel = await fetchExtraDetails(ports)(matches)();
 
@@ -143,6 +152,7 @@ describe('fetch-extra-details', () => {
           availableArticleMatches: 0,
           availableGroupMatches: 0,
           itemsToDisplay: [],
+          numberOfPages,
         }));
       });
     });

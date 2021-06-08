@@ -18,4 +18,5 @@ export const selectSubsetToDisplay = (state: Matches): LimitedSet => ({
     ? state.groups
     : state.articles.items,
   nextCursor: (state.category === 'groups') ? O.none : state.articles.nextCursor,
+  numberOfPages: Math.round(state.articles.total / state.pageSize),
 });

@@ -20,17 +20,21 @@ export type SearchResults = {
   availableArticleMatches: number,
   availableGroupMatches: number,
   nextCursor: O.Option<string>,
+  numberOfPages: number,
 };
 
-const renderListIfNecessary = (
-  articles: ReadonlyArray<HtmlFragment>,
-) => pipe(
-  articles,
+type PageOfResults = {
+  itemsToDisplay: ReadonlyArray<HtmlFragment>,
+  numberOfPages: number,
+};
+
+const renderListIfNecessary = (page: PageOfResults) => pipe(
+  page.itemsToDisplay,
   RNEA.fromReadonlyArray,
   O.fold(
     constant(''),
     (a) => `
-      <h3 class="visually-hidden search-results__page_count">Page 1 of search results</h3>
+      <h3 class="visually-hidden search-results__page_count">Page 1 of ${page.numberOfPages}</h3>
       <ul class="search-results-list" role="list">
         ${templateListItems(a, 'search-results-list__item')}
       </ul>
@@ -62,8 +66,13 @@ const categoryMenu = (searchResults: SearchResults) => `
 type RenderSearchResults = (rs: SearchResults) => HtmlFragment;
 
 export const renderSearchResults: RenderSearchResults = (searchResults) => pipe(
-  searchResults.itemsToDisplay,
-  RA.map(renderSearchResult),
+  {
+    itemsToDisplay: pipe(
+      searchResults.itemsToDisplay,
+      RA.map(renderSearchResult),
+    ),
+    numberOfPages: searchResults.numberOfPages,
+  },
   renderListIfNecessary,
   (searchResultsList) => `
     ${categoryMenu(searchResults)}

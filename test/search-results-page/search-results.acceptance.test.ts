@@ -169,7 +169,33 @@ describe('search-results-page acceptance', () => {
 
         it.todo('displays page number on second page');
 
-        it.todo('displays total number of pages');
+        it('displays total number of pages', async () => {
+          const page = pipe(
+            {
+              query: arbitraryString(),
+              pageSize: 2,
+              category: O.some('articles' as const),
+              cursor: O.none,
+            },
+            searchResultsPage({
+              ...dummyAdapters,
+              searchEuropePmc: () => () => TE.right({
+                items: [
+                  arbitraryArticleItem(),
+                  arbitraryArticleItem(),
+                ],
+                total: 9,
+                nextCursor: O.some(arbitraryWord()),
+              }),
+              findReviewsForArticleDoi: () => T.of([]),
+              findVersionsForArticleDoi: () => TO.none,
+            }),
+          );
+          const rendered = await contentOf(page)();
+          const pageCount = rendered.querySelector('.search-results__page_count')?.textContent;
+
+          expect(pageCount).toContain(' of 5');
+        });
 
         it('displays the next link if there are more than n matching articles', async () => {
           const n = 2;
