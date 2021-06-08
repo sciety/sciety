@@ -127,6 +127,10 @@ $_clear-button-inline-size: 48px;
   margin-bottom: 1rem;
   margin-left: functions.px-to-rem($_inline-margin);
 
+  @include breakpoints.not-narrow() {
+    margin-left: 0;
+  }
+
 }
 
 .search-results-list {
