@@ -204,7 +204,7 @@ describe('search-results-page acceptance', () => {
           const page = pipe(
             {
               query: arbitraryString(),
-              pageSize: 2,
+              pageSize: 3,
               category: O.some('articles' as const),
               cursor: O.none,
               page: O.none,
@@ -215,8 +215,9 @@ describe('search-results-page acceptance', () => {
                 items: [
                   arbitraryArticleItem(),
                   arbitraryArticleItem(),
+                  arbitraryArticleItem(),
                 ],
-                total: 9,
+                total: 4,
                 nextCursor: O.some(arbitraryWord()),
               }),
               findReviewsForArticleDoi: () => T.of([]),
@@ -226,7 +227,7 @@ describe('search-results-page acceptance', () => {
           const rendered = await contentOf(page)();
           const pageCount = rendered.querySelector('.search-results__page_count')?.textContent;
 
-          expect(pageCount).toContain(' of 5');
+          expect(pageCount).toContain(' of 2');
         });
 
         it('displays the next link if there are more than n matching articles', async () => {
