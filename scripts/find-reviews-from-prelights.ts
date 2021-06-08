@@ -14,6 +14,7 @@ const prelightsFeedCodec = t.type({
     channel: t.type({
       item: t.array(t.type({
         pubDate: tt.DateFromISOString,
+        category: t.string,
         guid: t.string,
         preprints: t.type({
           preprint: t.union([t.type({
@@ -57,6 +58,7 @@ void (async (): Promise<void> => {
     prelightsFeedCodec.decode,
     E.map((feed) => pipe(
       feed.rss.channel.item,
+      RA.filter((item) => item.category.includes('highlight')),
       RA.chain((item): Array<Prelight> => {
         if (item.preprints.preprint instanceof Array) {
           return item.preprints.preprint.map((preprintItem) => ({
