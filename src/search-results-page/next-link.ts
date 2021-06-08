@@ -9,18 +9,18 @@ const renderNextLink = (category: string, query: string, nextPageNumber: number)
   </div>
 `);
 
-type SearchParameters = {
+export type SearchParameters = {
   query: string,
   category: string,
   nextCursor: O.Option<string>,
-  nextPageNumber: number,
+  pageNumber: number,
 };
 
 export const nextLink = ({
-  category, query, nextCursor, nextPageNumber,
+  category, query, nextCursor, pageNumber,
 }: SearchParameters): HtmlFragment => pipe(
   nextCursor,
-  O.map(renderNextLink(category, query, nextPageNumber)),
+  O.map(renderNextLink(category, query, pageNumber)),
   O.getOrElse(constant('')),
   toHtmlFragment,
 );

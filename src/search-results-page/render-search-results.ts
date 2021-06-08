@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { constant, pipe } from 'fp-ts/function';
-import { nextLink } from './next-link';
+import { nextLink, SearchParameters } from './next-link';
 import { GroupViewModel, renderGroupCard } from './render-group-card';
 import { ArticleViewModel, renderArticleCard } from '../shared-components/article-card';
 import { templateListItems } from '../shared-components/list-items';
@@ -12,27 +12,31 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 export type ItemViewModel = ArticleViewModel | GroupViewModel;
 
 const isArticleViewModel = (viewModel: ItemViewModel): viewModel is ArticleViewModel => 'doi' in viewModel;
-
-export type SearchResults = {
-  query: string,
-  category: string,
+// export type SearchResults = {
+//   query: string,
+//   category: string,
+//   itemsToDisplay: ReadonlyArray<ItemViewModel>,
+//   availableArticleMatches: number,
+//   availableGroupMatches: number,
+//   pageNumber: number,
+//   nextCursor: O.Option<string>,
+//   numberOfPages: number,
+// };
+export type SearchResults = SearchParameters & Tabs & {
   itemsToDisplay: ReadonlyArray<ItemViewModel>,
-  availableArticleMatches: number,
-  availableGroupMatches: number,
   pageNumber: number,
-  nextCursor: O.Option<string>,
   numberOfPages: number,
 };
 
 type PageOfResults = {
-  itemsToDisplay: ReadonlyArray<HtmlFragment>,
+  cardsToDisplay: ReadonlyArray<HtmlFragment>,
   pageNumber: number,
   numberOfPages: number,
   category: string,
 };
 
 const renderListIfNecessary = (page: PageOfResults) => pipe(
-  page.itemsToDisplay,
+  page.cardsToDisplay,
   RNEA.fromReadonlyArray,
   O.fold(
     constant(''),
@@ -49,20 +53,27 @@ const renderSearchResult = (viewModel: ItemViewModel) => (
   isArticleViewModel(viewModel) ? renderArticleCard(viewModel) : renderGroupCard(viewModel)
 );
 
-const menuWithGroupsActive = (searchResults: SearchResults) => `
-  <a href="/search?query=${htmlEscape(searchResults.query)}&category=articles" class="search-results-tab search-results-tab--link" aria-label="Discover matching articles (${searchResults.availableArticleMatches} search results)">Articles (${searchResults.availableArticleMatches})</a>
-  <h3 class="search-results-tab search-results-tab--heading"><span class="visually-hidden">Currently showing </span>Groups (${searchResults.availableGroupMatches}<span class="visually-hidden"> search results</span>)</h3>
+type Tabs = {
+  query: string,
+  availableArticleMatches: number,
+  availableGroupMatches: number,
+  category: string,
+};
+
+const tabsWithGroupsActive = (tabs: Tabs) => `
+  <a href="/search?query=${htmlEscape(tabs.query)}&category=articles" class="search-results-tab search-results-tab--link" aria-label="Discover matching articles (${tabs.availableArticleMatches} search results)">Articles (${tabs.availableArticleMatches})</a>
+  <h3 class="search-results-tab search-results-tab--heading"><span class="visually-hidden">Currently showing </span>Groups (${tabs.availableGroupMatches}<span class="visually-hidden"> search results</span>)</h3>
 `;
 
-const menuWithArticlesActive = (searchResults: SearchResults) => `
-  <h3 class="search-results-tab search-results-tab--heading"><span class="visually-hidden">Currently showing </span>Articles (${searchResults.availableArticleMatches}<span class="visually-hidden"> search results</span>)</h3>
-  <a href="/search?query=${htmlEscape(searchResults.query)}&category=groups" class="search-results-tab search-results-tab--link" aria-label="Discover matching groups (${searchResults.availableGroupMatches} search results)">Groups (${searchResults.availableGroupMatches}<span class="visually-hidden"> search results</span>)</a>
+const tabsWithArticlesActive = (tabs: Tabs) => `
+  <h3 class="search-results-tab search-results-tab--heading"><span class="visually-hidden">Currently showing </span>Articles (${tabs.availableArticleMatches}<span class="visually-hidden"> search results</span>)</h3>
+  <a href="/search?query=${htmlEscape(tabs.query)}&category=groups" class="search-results-tab search-results-tab--link" aria-label="Discover matching groups (${tabs.availableGroupMatches} search results)">Groups (${tabs.availableGroupMatches}<span class="visually-hidden"> search results</span>)</a>
 `;
 
-const categoryMenu = (searchResults: SearchResults) => `
+const categoryTabs = (tabs: Tabs) => `
   <h2 class="visually-hidden">Search result categories</h2>
   <div class="search-results-tabs-container">
-    ${searchResults.category === 'groups' ? menuWithGroupsActive(searchResults) : menuWithArticlesActive(searchResults)}
+    ${tabs.category === 'groups' ? tabsWithGroupsActive(tabs) : tabsWithArticlesActive(tabs)}
   </div>
 `;
 
@@ -70,7 +81,7 @@ type RenderSearchResults = (rs: SearchResults) => HtmlFragment;
 
 export const renderSearchResults: RenderSearchResults = (searchResults) => pipe(
   {
-    itemsToDisplay: pipe(
+    cardsToDisplay: pipe(
       searchResults.itemsToDisplay,
       RA.map(renderSearchResult),
     ),
@@ -80,9 +91,9 @@ export const renderSearchResults: RenderSearchResults = (searchResults) => pipe(
   },
   renderListIfNecessary,
   (searchResultsList) => `
-    ${categoryMenu(searchResults)}
+    ${categoryTabs(searchResults)}
     ${searchResultsList}
-    ${nextLink({ ...searchResults, nextPageNumber: searchResults.pageNumber + 1 })}
+    ${nextLink({ ...searchResults, pageNumber: searchResults.pageNumber + 1 })}
   `,
   toHtmlFragment,
 );
