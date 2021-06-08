@@ -83,7 +83,13 @@ void (async (): Promise<void> => {
     )),
     E.bimap(
       (errors) => process.stderr.write(PR.failure(errors).join('\n')),
-      RA.map(({ date, articleDoi, evaluationLocator }) => process.stdout.write(`${date},${articleDoi},${evaluationLocator}\n`)),
+      (evaluations) => {
+        process.stdout.write('Date,Article DOI,Review ID\n');
+        pipe(
+          evaluations,
+          RA.map(({ date, articleDoi, evaluationLocator }) => process.stdout.write(`${date},${articleDoi},${evaluationLocator}\n`)),
+        );
+      },
     ),
     E.fold(constant(1), constant(0)),
     (exitStatus) => process.exit(exitStatus),
