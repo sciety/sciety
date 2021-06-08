@@ -375,6 +375,27 @@ describe('search-results-page acceptance', () => {
           expect(groupCards).toHaveLength(matchedGroups.length);
         });
 
+        it('doesnt display page count', async () => {
+          const page = pipe(
+            {
+              query: arbitraryString(),
+              pageSize: 1,
+              category: O.some('groups' as const),
+              cursor: O.none,
+            },
+            searchResultsPage({
+              ...dummyAdapters,
+              findGroups: () => T.of([arbitraryGroupId()]),
+              getGroup: () => TO.some(arbitraryGroup()),
+              getAllEvents: T.of([]),
+            }),
+          );
+          const rendered = await contentOf(page)();
+          const pageCount = rendered.querySelector('.search-results__page_count');
+
+          expect(pageCount).toBeNull();
+        });
+
         it('only displays groups results', async () => {
           const page = pipe(
             {

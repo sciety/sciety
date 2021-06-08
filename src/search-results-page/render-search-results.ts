@@ -26,6 +26,7 @@ export type SearchResults = {
 type PageOfResults = {
   itemsToDisplay: ReadonlyArray<HtmlFragment>,
   numberOfPages: number,
+  category: string,
 };
 
 const renderListIfNecessary = (page: PageOfResults) => pipe(
@@ -34,7 +35,7 @@ const renderListIfNecessary = (page: PageOfResults) => pipe(
   O.fold(
     constant(''),
     (a) => `
-      <h3 class="visually-hidden search-results__page_count">Page 1 of ${page.numberOfPages}</h3>
+      ${page.category === 'articles' ? `<h3 class="visually-hidden search-results__page_count">Page 1 of ${page.numberOfPages}</h3>` : ''}
       <ul class="search-results-list" role="list">
         ${templateListItems(a, 'search-results-list__item')}
       </ul>
@@ -72,6 +73,7 @@ export const renderSearchResults: RenderSearchResults = (searchResults) => pipe(
       RA.map(renderSearchResult),
     ),
     numberOfPages: searchResults.numberOfPages,
+    category: searchResults.category,
   },
   renderListIfNecessary,
   (searchResultsList) => `
