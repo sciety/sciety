@@ -162,7 +162,7 @@ describe('search-results-page acceptance', () => {
             }),
           );
           const rendered = await contentOf(page)();
-          const pageCount = rendered.querySelector('.search-results__page_count').textContent;
+          const pageCount = rendered.querySelector('.search-results__page_count')?.textContent;
 
           expect(pageCount).toContain(' 1 of ');
         });
