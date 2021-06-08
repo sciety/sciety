@@ -28,7 +28,7 @@ export const paramsCodec = t.type({
     ]),
   ),
   cursor: tt.optionFromNullable(t.string),
-  page: tt.optionFromNullable(t.number),
+  page: tt.optionFromNullable(tt.NumberFromString),
 });
 
 export type Params = t.TypeOf<typeof paramsCodec> & {

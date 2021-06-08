@@ -120,6 +120,12 @@ $_clear-button-inline-size: 48px;
   @include tabs.tab-heading();
 }
 
+.search-results__page_count {
+  @include typography.details();
+  color: settings.$colour-text-primary;
+  margin: 1rem 0;
+}
+
 .search-results-list {
   @include card.list();
   margin-bottom: 1.5rem;
