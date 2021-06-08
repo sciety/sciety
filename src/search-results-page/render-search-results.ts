@@ -30,7 +30,7 @@ const renderListIfNecessary = (
   O.fold(
     constant(''),
     (a) => `
-      <h3 class="visually-hidden">Page 1 of search results</h3>
+      <h3 class="visually-hidden search-results__page_count">Page 1 of search results</h3>
       <ul class="search-results-list" role="list">
         ${templateListItems(a, 'search-results-list__item')}
       </ul>

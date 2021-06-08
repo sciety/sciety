@@ -140,6 +140,37 @@ describe('search-results-page acceptance', () => {
           expect(articleCards).toHaveLength(n);
         });
 
+        it('displays page number on first page', async () => {
+          const page = pipe(
+            {
+              query: arbitraryString(),
+              pageSize: 1,
+              category: O.some('articles' as const),
+              cursor: O.none,
+            },
+            searchResultsPage({
+              ...dummyAdapters,
+              searchEuropePmc: () => () => TE.right({
+                items: [
+                  arbitraryArticleItem(),
+                ],
+                total: arbitraryNumber(2, 50),
+                nextCursor: O.some(arbitraryWord()),
+              }),
+              findReviewsForArticleDoi: () => T.of([]),
+              findVersionsForArticleDoi: () => TO.none,
+            }),
+          );
+          const rendered = await contentOf(page)();
+          const pageCount = rendered.querySelector('.search-results__page_count').textContent;
+
+          expect(pageCount).toContain(' 1 of ');
+        });
+
+        it.todo('displays page number on second page');
+
+        it.todo('displays total number of pages');
+
         it('displays the next link if there are more than n matching articles', async () => {
           const n = 2;
           const page = pipe(
