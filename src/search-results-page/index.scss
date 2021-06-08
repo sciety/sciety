@@ -13,7 +13,7 @@
 $_vertical-space-above-title--narrow: baseline.increments(2);
 $_vertical-space-above-title--wide: baseline.increments(5);
 $_search-form-text-inline-padding: 12px;
-$_search-form-inline-margin: settings.$base-font-measure;
+$_inline-margin: settings.$base-font-measure;
 $_clear-button-inline-size: 48px;
 
 .sciety-grid--search-results > .page-header--search-results {
@@ -50,8 +50,8 @@ $_clear-button-inline-size: 48px;
 
 .search-form {
   grid-column: 1 / -1;
-  margin-left: functions.px-to-rem($_search-form-inline-margin);
-  margin-right: functions.px-to-rem($_search-form-inline-margin);
+  margin-left: functions.px-to-rem($_inline-margin);
+  margin-right: functions.px-to-rem($_inline-margin);
   margin-bottom: baseline.increments(3);
   position: relative;
 
@@ -123,7 +123,10 @@ $_clear-button-inline-size: 48px;
 .search-results__page_count {
   @include typography.details();
   color: settings.$colour-text-primary;
-  margin: 1rem 0;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  margin-left: functions.px-to-rem($_inline-margin);
+
 }
 
 .search-results-list {
