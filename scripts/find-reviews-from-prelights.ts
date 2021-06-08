@@ -29,6 +29,8 @@ const prelightsFeedCodec = t.type({
   }),
 });
 
+type Feed = t.TypeOf<typeof prelightsFeedCodec>;
+
 const toDoi = (url: string) => {
   const doiRegex = '(10\\.[0-9]{4,}(?:\\.[1-9][0-9]*)*/(?:[^%"#?\\s])+)';
   const matches = new RegExp(`https?://(?:www.)?biorxiv.org/content/${doiRegex}v[0-9]+$`).exec(url);
@@ -46,6 +48,32 @@ type Prelight = {
   preprintUrl: string,
 };
 
+const extractPrelights = (feed: Feed) => pipe(
+  feed.rss.channel.item,
+  RA.filter((item) => item.category.includes('highlight')),
+  RA.chain((item): Array<Prelight> => {
+    if (item.preprints.preprint instanceof Array) {
+      return item.preprints.preprint.map((preprintItem) => ({
+        ...item,
+        preprintUrl: preprintItem.preprinturl,
+      }));
+    }
+    return [{
+      ...item,
+      preprintUrl: item.preprints.preprint.preprinturl,
+    }];
+  }),
+  RA.map((item) => pipe(
+    toDoi(item.preprintUrl),
+    E.map((articleDoi) => ({
+      date: item.pubDate.toISOString(),
+      articleDoi,
+      evaluationLocator: `prelights:${item.guid.replace('&#038;', '&')}`,
+    })),
+  )),
+  RA.rights,
+);
+
 void (async (): Promise<void> => {
   pipe(
     await axios.get<string>(`https://prelights.biologists.com/feed/sciety/?key=${key}&hours=120`, {
@@ -56,31 +84,7 @@ void (async (): Promise<void> => {
     (response) => response.data,
     (responseBody) => parser.parse(responseBody) as JSON,
     prelightsFeedCodec.decode,
-    E.map((feed) => pipe(
-      feed.rss.channel.item,
-      RA.filter((item) => item.category.includes('highlight')),
-      RA.chain((item): Array<Prelight> => {
-        if (item.preprints.preprint instanceof Array) {
-          return item.preprints.preprint.map((preprintItem) => ({
-            ...item,
-            preprintUrl: preprintItem.preprinturl,
-          }));
-        }
-        return [{
-          ...item,
-          preprintUrl: item.preprints.preprint.preprinturl,
-        }];
-      }),
-      RA.map((item) => pipe(
-        toDoi(item.preprintUrl),
-        E.map((articleDoi) => ({
-          date: item.pubDate.toISOString(),
-          articleDoi,
-          evaluationLocator: `prelights:${item.guid.replace('&#038;', '&')}`,
-        })),
-      )),
-      RA.rights,
-    )),
+    E.map(extractPrelights),
     E.bimap(
       (errors) => process.stderr.write(PR.failure(errors).join('\n')),
       (evaluations) => {
