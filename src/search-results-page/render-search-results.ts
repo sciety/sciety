@@ -82,7 +82,7 @@ export const renderSearchResults: RenderSearchResults = (searchResults) => pipe(
   (searchResultsList) => `
     ${categoryMenu(searchResults)}
     ${searchResultsList}
-    ${nextLink(searchResults)}
+    ${nextLink({ ...searchResults, nextPageNumber: searchResults.pageNumber + 1 })}
   `,
   toHtmlFragment,
 );

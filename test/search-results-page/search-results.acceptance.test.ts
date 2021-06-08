@@ -260,6 +260,32 @@ describe('search-results-page acceptance', () => {
           expect(nextLink).not.toBeNull();
         });
 
+        it('next link contains the next page number as a query param', async () => {
+          const page = pipe(
+            {
+              query: arbitraryString(),
+              pageSize: 1,
+              category: O.some('articles' as const),
+              cursor: O.none,
+              page: O.none,
+            },
+            searchResultsPage({
+              ...dummyAdapters,
+              searchEuropePmc: () => () => TE.right({
+                items: [arbitraryArticleItem()],
+                total: arbitraryNumber(5, 10),
+                nextCursor: O.some(arbitraryWord()),
+              }),
+              findReviewsForArticleDoi: () => T.of([]),
+              findVersionsForArticleDoi: () => TO.none,
+            }),
+          );
+          const rendered = await contentOf(page)();
+          const nextLinkHref = rendered.querySelector('.search-results__next_link')?.getAttribute('href');
+
+          expect(nextLinkHref).toContain('page=2');
+        });
+
         it('passes the cursor to searchEuropePmc', async () => {
           const n = 2;
           const searchEuropePmcMock = jest.fn();
