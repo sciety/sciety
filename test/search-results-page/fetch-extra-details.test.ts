@@ -15,6 +15,7 @@ describe('fetch-extra-details', () => {
 
   describe('given a found article', () => {
     it('returns a correct view model', async () => {
+      const pageNumber = arbitraryNumber(2, 5);
       const latestVersionDate = new Date();
       const latestActivityDate = new Date('2021-01-02');
       const ports = {
@@ -51,6 +52,7 @@ describe('fetch-extra-details', () => {
           },
         ],
         nextCursor: O.none,
+        pageNumber,
         numberOfPages,
       };
       const viewModel = await fetchExtraDetails(ports)(matches)();
@@ -68,6 +70,7 @@ describe('fetch-extra-details', () => {
           }),
         ],
         nextCursor: O.none,
+        pageNumber,
         numberOfPages,
       });
     });
@@ -76,6 +79,7 @@ describe('fetch-extra-details', () => {
   describe('given a found group', () => {
     describe('when the details can be fetched', () => {
       it('returns a correct view model', async () => {
+        const pageNumber = arbitraryNumber(2, 5);
         const groupId = arbitraryGroupId();
         const ports = {
           findReviewsForArticleDoi: shouldNotBeCalled,
@@ -101,6 +105,7 @@ describe('fetch-extra-details', () => {
             },
           ],
           nextCursor: O.none,
+          pageNumber,
           numberOfPages,
         };
         const viewModel = await fetchExtraDetails(ports)(matches)();
@@ -117,6 +122,7 @@ describe('fetch-extra-details', () => {
             }),
           ],
           nextCursor: O.none,
+          pageNumber,
           numberOfPages,
         });
       });
@@ -124,6 +130,7 @@ describe('fetch-extra-details', () => {
 
     describe('when the details cannot be fetched', () => {
       it('removes the group from the list', async () => {
+        const pageNumber = arbitraryNumber(2, 5);
         const ports = {
           findReviewsForArticleDoi: shouldNotBeCalled,
           getAllEvents: shouldNotBeCalled,
@@ -142,6 +149,7 @@ describe('fetch-extra-details', () => {
             },
           ],
           nextCursor: O.none,
+          pageNumber,
           numberOfPages,
         };
         const viewModel = await fetchExtraDetails(ports)(matches)();
@@ -152,6 +160,7 @@ describe('fetch-extra-details', () => {
           availableArticleMatches: 0,
           availableGroupMatches: 0,
           itemsToDisplay: [],
+          pageNumber,
           numberOfPages,
         }));
       });

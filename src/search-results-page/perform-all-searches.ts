@@ -28,6 +28,7 @@ export const paramsCodec = t.type({
     ]),
   ),
   cursor: tt.optionFromNullable(t.string),
+  page: tt.optionFromNullable(t.number),
 });
 
 export type Params = t.TypeOf<typeof paramsCodec> & {
@@ -38,6 +39,7 @@ export const performAllSearches = (ports: Ports) => (params: Params): TE.TaskEit
   {
     query: TE.right(params.query),
     pageSize: TE.right(params.pageSize),
+    pageNumber: TE.right(params.page),
     category: TE.right(O.getOrElse(constant('articles'))(params.category)),
     articles: pipe(
       [params.query, params.cursor],

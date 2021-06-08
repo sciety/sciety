@@ -30,6 +30,7 @@ describe('select-subset-to-display', () => {
       const state = {
         query: '',
         pageSize: 2,
+        pageNumber: O.none,
         category: 'articles',
         groups: [arbitraryGroupItem()],
         articles: {
@@ -50,6 +51,7 @@ describe('select-subset-to-display', () => {
       const state = {
         query: '',
         pageSize: 2,
+        pageNumber: O.none,
         category: 'groups',
         groups: [groupItem],
         articles: {
@@ -67,6 +69,7 @@ describe('select-subset-to-display', () => {
       const state = {
         query: '',
         pageSize: 2,
+        pageNumber: O.none,
         category: 'groups',
         groups: [arbitraryGroupItem()],
         articles: {
@@ -86,6 +89,7 @@ describe('select-subset-to-display', () => {
     const state = {
       query: '',
       pageSize: 2,
+      pageNumber: O.none,
       category: 'articles',
       groups: [arbitraryGroupItem()],
       articles: {

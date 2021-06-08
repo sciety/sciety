@@ -86,6 +86,7 @@ export type LimitedSet = {
   availableGroupMatches: number,
   itemsToDisplay: ReadonlyArray<GroupItem | ArticleItem>,
   nextCursor: O.Option<string>,
+  pageNumber: number,
   numberOfPages: number,
 };
 

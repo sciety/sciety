@@ -48,6 +48,7 @@ describe('search-results-page acceptance', () => {
       pageSize: arbitraryNumber(5, 10),
       category: O.none,
       cursor: O.none,
+      page: O.none,
     };
 
     it('displays the query inside the search form', async () => {
@@ -91,6 +92,7 @@ describe('search-results-page acceptance', () => {
             pageSize: arbitraryNumber(5, 10),
             category: O.none,
             cursor: O.none,
+            page: O.none,
           },
           searchResultsPage(dummyAdapters),
         );
@@ -119,6 +121,7 @@ describe('search-results-page acceptance', () => {
               pageSize: n,
               category: O.some('articles' as const),
               cursor: O.none,
+              page: O.none,
             },
             searchResultsPage({
               ...dummyAdapters,
@@ -147,6 +150,7 @@ describe('search-results-page acceptance', () => {
               pageSize: 1,
               category: O.some('articles' as const),
               cursor: O.none,
+              page: O.none,
             },
             searchResultsPage({
               ...dummyAdapters,
@@ -167,7 +171,34 @@ describe('search-results-page acceptance', () => {
           expect(pageCount).toContain(' 1 of ');
         });
 
-        it.todo('displays page number on second page');
+        it('displays page number on second page', async () => {
+          const pageNumber = arbitraryNumber(2, 10);
+          const page = pipe(
+            {
+              query: arbitraryString(),
+              pageSize: 1,
+              category: O.some('articles' as const),
+              cursor: O.some(arbitraryString()),
+              page: O.some(pageNumber),
+            },
+            searchResultsPage({
+              ...dummyAdapters,
+              searchEuropePmc: () => () => TE.right({
+                items: [
+                  arbitraryArticleItem(),
+                ],
+                total: arbitraryNumber(2, 50),
+                nextCursor: O.some(arbitraryWord()),
+              }),
+              findReviewsForArticleDoi: () => T.of([]),
+              findVersionsForArticleDoi: () => TO.none,
+            }),
+          );
+          const rendered = await contentOf(page)();
+          const pageCount = rendered.querySelector('.search-results__page_count')?.textContent;
+
+          expect(pageCount).toContain(` ${pageNumber} of `);
+        });
 
         it('displays total number of pages', async () => {
           const page = pipe(
@@ -176,6 +207,7 @@ describe('search-results-page acceptance', () => {
               pageSize: 2,
               category: O.some('articles' as const),
               cursor: O.none,
+              page: O.none,
             },
             searchResultsPage({
               ...dummyAdapters,
@@ -205,6 +237,7 @@ describe('search-results-page acceptance', () => {
               pageSize: n,
               category: O.some('articles' as const),
               cursor: O.none,
+              page: O.none,
             },
             searchResultsPage({
               ...dummyAdapters,
@@ -237,6 +270,7 @@ describe('search-results-page acceptance', () => {
               pageSize: n,
               category: O.some('articles' as const),
               cursor,
+              page: O.none,
             },
             searchResultsPage({
               ...dummyAdapters,
@@ -263,6 +297,7 @@ describe('search-results-page acceptance', () => {
               pageSize: arbitraryNumber(5, 10),
               category: O.some('articles' as const),
               cursor: O.none,
+              page: O.none,
             },
             searchResultsPage({
               ...dummyAdapters,
@@ -282,6 +317,7 @@ describe('search-results-page acceptance', () => {
               pageSize: arbitraryNumber(5, 10),
               category: O.some('articles' as const),
               cursor: O.none,
+              page: O.none,
             },
             searchResultsPage({
               ...dummyAdapters,
@@ -301,6 +337,7 @@ describe('search-results-page acceptance', () => {
               pageSize: arbitraryNumber(5, 10),
               category: O.some('articles' as const),
               cursor: O.none,
+              page: O.none,
             },
             searchResultsPage({
               ...dummyAdapters,
@@ -321,6 +358,7 @@ describe('search-results-page acceptance', () => {
                 pageSize: arbitraryNumber(5, 10),
                 category: O.some('articles' as const),
                 cursor: O.none,
+                page: O.none,
               },
               searchResultsPage({
                 ...dummyAdapters,
@@ -361,6 +399,7 @@ describe('search-results-page acceptance', () => {
               pageSize: n,
               category: O.some('groups' as const),
               cursor: O.none,
+              page: O.none,
             },
             searchResultsPage({
               ...dummyAdapters,
@@ -382,6 +421,7 @@ describe('search-results-page acceptance', () => {
               pageSize: 1,
               category: O.some('groups' as const),
               cursor: O.none,
+              page: O.none,
             },
             searchResultsPage({
               ...dummyAdapters,
@@ -403,6 +443,7 @@ describe('search-results-page acceptance', () => {
               pageSize: arbitraryNumber(2, 20),
               category: O.some('groups' as const),
               cursor: O.none,
+              page: O.none,
             },
             searchResultsPage(dummyAdapters),
           );
@@ -419,6 +460,7 @@ describe('search-results-page acceptance', () => {
               pageSize: arbitraryNumber(2, 20),
               category: O.some('groups' as const),
               cursor: O.none,
+              page: O.none,
             },
             searchResultsPage(dummyAdapters),
           );
@@ -435,6 +477,7 @@ describe('search-results-page acceptance', () => {
               pageSize: arbitraryNumber(2, 20),
               category: O.some('groups' as const),
               cursor: O.none,
+              page: O.none,
             },
             searchResultsPage(dummyAdapters),
           );
@@ -455,6 +498,7 @@ describe('search-results-page acceptance', () => {
               pageSize: arbitraryNumber(5, 20),
               category: O.some('groups' as const),
               cursor: O.none,
+              page: O.none,
             },
             searchResultsPage(dummyAdapters),
           );
@@ -473,6 +517,7 @@ describe('search-results-page acceptance', () => {
               pageSize: arbitraryNumber(5, 20),
               category: O.some('groups' as const),
               cursor: O.none,
+              page: O.none,
             },
             searchResultsPage(dummyAdapters),
           );

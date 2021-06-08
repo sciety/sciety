@@ -4,6 +4,7 @@ import { LimitedSet } from './fetch-extra-details';
 
 export type Matches = {
   query: string,
+  pageNumber: O.Option<number>,
   pageSize: number,
   category: string,
   groups: ReadonlyArray<GroupItem>,
@@ -18,5 +19,6 @@ export const selectSubsetToDisplay = (state: Matches): LimitedSet => ({
     ? state.groups
     : state.articles.items,
   nextCursor: (state.category === 'groups') ? O.none : state.articles.nextCursor,
+  pageNumber: O.getOrElse(() => 1)(state.pageNumber),
   numberOfPages: Math.round(state.articles.total / state.pageSize),
 });
