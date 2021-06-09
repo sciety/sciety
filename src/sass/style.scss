@@ -17,6 +17,7 @@
 @use 'article-page';
 @use '../landing-page';
 @use '../follow/follow-toggle';
+@use '../http/error-page';
 @use 'article-tabs';
 @use 'activity-feed';
 @use 'menu-page';
@@ -47,10 +48,6 @@ body {
 
 .sciety-grid--simple > * {
   grid-column: 1 / -1;
-}
-
-.u-call-to-action-link {
-  font-family: Lato, sans-serif;
 }
 
 .hidden {

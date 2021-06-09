@@ -9,7 +9,7 @@ export type RenderPage = (query: string) => TE.TaskEither<RenderPageError, Page>
 
 export const renderErrorPage = (error: 'unavailable'): RenderPageError => ({
   type: error,
-  message: toHtmlFragment('We\'re having trouble searching for you, please come back later.'),
+  message: toHtmlFragment('We\'re having trouble accessing search right now, please try again later.'),
 });
 
 export const renderPage = (searchResults: SearchResults): Page => ({

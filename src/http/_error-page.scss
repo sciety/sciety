@@ -1,0 +1,11 @@
+@use '../sass/settings';
+
+.error-page {
+  background-color: settings.$colour-page-background;
+  color: settings.$colour-text-primary;
+  width: 100%;
+  text-align: center;
+  padding-top: 2.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
