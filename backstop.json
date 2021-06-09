@@ -47,6 +47,10 @@
       "url": "http://sciety_app/search?query=elephant+shark"
     },
     {
+      "label": "Article search results page error",
+      "url": "http://sciety_app/search?query=covid&category=articles&cursor=fake"
+    },
+    {
       "label": "Group search",
       "url": "http://sciety_app/search?query=peer+community+in+archaeology&category=groups"
     },
