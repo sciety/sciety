@@ -1,4 +1,5 @@
 import { URL } from 'url';
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
@@ -11,13 +12,13 @@ type GetHtml = (url: string) => TE.TaskEither<'unavailable', string>;
 export const fetchRapidReview = (getHtml: GetHtml): EvaluationFetcher => (key) => pipe(
   key,
   getHtml,
-  TE.map(flow(
+  TE.chainEitherKW(flow(
     (doc) => new JSDOM(doc),
     (dom) => dom.window.document.querySelector('meta[name=description]'),
     (meta) => meta?.getAttribute('content'),
     O.fromNullable,
-    O.getOrElse(constant('')),
-    toHtmlFragment,
+    E.fromOption(constant('not-found' as const)),
+    E.map(toHtmlFragment),
   )),
   TE.map((fullText) => ({
     fullText,
