@@ -42,11 +42,11 @@ const renderListIfNecessary = (page: PageOfResults) => pipe(
     constant(''),
     (a) => `
       ${page.category === 'articles'
-        ? `<h3 class="search-results__page_count">
+    ? `<h3 class="search-results__page_count">
             Showing page ${page.pageNumber} of ${page.numberOfPages}<span class="visually-hidden"> pages of search results</span>
           </h3>`
-        : ''
-      }
+    : ''
+}
       <ul class="search-results-list" role="list">
         ${templateListItems(a, 'search-results-list__item')}
       </ul>
