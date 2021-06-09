@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -406,6 +407,26 @@ describe('search-results-page acceptance', () => {
         });
 
         describe('when the search for all articles fails', () => {
+          it('currently displays an error page instead of the page', async () => {
+            const page = await pipe(
+              {
+                query: arbitraryString(),
+                pageSize: arbitraryNumber(5, 10),
+                category: O.some('articles' as const),
+                cursor: O.none,
+                page: O.none,
+              },
+              searchResultsPage({
+                ...dummyAdapters,
+                searchEuropePmc: () => () => TE.left('unavailable'),
+              }),
+            )();
+
+            expect(page).toStrictEqual(E.left(expect.objectContaining({
+              message: "We're having trouble accessing search right now, please try again later.",
+            })));
+          });
+
           it.todo('displays the article tab with an error message');
 
           it.todo('links to the Groups tab');
