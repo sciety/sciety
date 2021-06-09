@@ -108,7 +108,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
           fetchHypothesisAnnotation(getJson, logger),
           fetchNcrcReview(logger),
           fetchPrelightsHighlight(getHtml(logger)),
-          fetchRapidReview,
+          fetchRapidReview(getHtml(logger)),
         ),
         fetchStaticFile: fetchFile,
         findGroups: findGroups(fetchFile, bootstrapGroups),
