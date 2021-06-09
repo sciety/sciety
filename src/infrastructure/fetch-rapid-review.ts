@@ -14,10 +14,17 @@ export const fetchRapidReview = (getHtml: GetHtml): EvaluationFetcher => (key) =
   getHtml,
   TE.chainEitherKW(flow(
     (doc) => new JSDOM(doc),
-    (dom) => dom.window.document.querySelector('meta[name=description]'),
-    (meta) => meta?.getAttribute('content'),
-    O.fromNullable,
-    E.fromOption(constant('not-found' as const)),
+    (dom) => ({
+      creator: O.fromNullable(dom.window.document.querySelector('meta[name="dc.creator"]')?.getAttribute('content')),
+      title: O.fromNullable(dom.window.document.querySelector('meta[name="dc.title"]')?.getAttribute('content')),
+      description: O.fromNullable(dom.window.document.querySelector('meta[name=description]')?.getAttribute('content')),
+    }),
+    ({ description, creator, title }) => `
+      ${pipe(creator, O.fold(constant(''), (txt) => `<h3>${txt}</h3>`))}
+      ${pipe(title, O.fold(constant(''), (txt) => `<p>${txt}</p>`))}
+      ${pipe(description, O.fold(constant(''), (txt) => `<p>${txt}</p>`))}
+    `,
+    E.right,
     E.map(toHtmlFragment),
   )),
   TE.map((fullText) => ({

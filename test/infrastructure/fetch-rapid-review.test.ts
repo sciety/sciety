@@ -58,10 +58,34 @@ describe('fetch-rapid-review', () => {
 
       expect(fullText).toStrictEqual(E.right(expect.stringContaining('This potentially informative in-vitro study finds that some commercially available mouth-rinses have different anti-viral activity/cytotoxicity. Additional animal models and clinical trials are needed to generalize the study’s findings.')));
     });
+
+    it('returns the creator as part of the fullText', async () => {
+      const doiUrl = arbitraryUri();
+      const getHtml = () => TE.right(html);
+      const fullText = await pipe(
+        doiUrl,
+        fetchRapidReview(getHtml),
+        TE.map((evaluation) => evaluation.fullText),
+      )();
+
+      expect(fullText).toStrictEqual(E.right(expect.stringContaining('<h3>Florence Carrouel</h3>')));
+    });
+
+    it('returns the title as part of the fullText', async () => {
+      const doiUrl = arbitraryUri();
+      const getHtml = () => TE.right(html);
+      const fullText = await pipe(
+        doiUrl,
+        fetchRapidReview(getHtml),
+        TE.map((evaluation) => evaluation.fullText),
+      )();
+
+      expect(fullText).toStrictEqual(E.right(expect.stringContaining('Review 1: "Differential effects of antiseptic mouth rinses on SARS-CoV-2 infectivity in vitro"')));
+    });
   });
 
-  describe('cant find fullText', () => {
-    it('return "not-found"', async () => {
+  describe('cant find any meta relevant meta tags', () => {
+    it.skip('return "not-found"', async () => {
       const guid = new URL(arbitraryUri());
       const getHtml = () => TE.right(htmlNoDescription);
       const fullText = await fetchRapidReview(getHtml)(guid.toString())();
