@@ -22,7 +22,7 @@ describe('fetch-rapid-review', () => {
       TE.map((evaluation) => evaluation.fullText),
     )();
 
-    expect(fullText).toStrictEqual(E.right(expect.stringContaining('The authors make a convincing argument for re-envisioning US public health, employment and anti-discrimination laws around social solidarity, and a compelling case for further scholarship that considers the public health implications of employment law.')));
+    expect(fullText).toStrictEqual(E.right(expect.stringContaining('This potentially informative in-vitro study finds that some commercially available mouth-rinses have different anti-viral activity/cytotoxicity. Additional animal models and clinical trials are needed to generalize the study’s findings.')));
   });
 
   describe('cant find fullText', () => {
