@@ -3,7 +3,7 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { fetchRapidReview } from '../../src/infrastructure/fetch-rapid-review';
-import { arbitraryUri } from '../helpers';
+import { arbitraryString, arbitraryUri } from '../helpers';
 
 const htmlResponseContainingReview = `
 <!DOCTYPE html>
@@ -73,7 +73,30 @@ describe('fetch-rapid-review', () => {
   });
 
   describe('when fetching summary', () => {
-    it.todo('returns the description as part of the fullText');
+    const description = arbitraryString();
+    const htmlResponseContainingSummary = `
+      <!DOCTYPE html>
+      <html lang="en" data-reactroot="">
+      <head>
+          <meta name="dc.title" content="${arbitraryString()}">
+          <meta name="dc.creator" content="${arbitraryString()}">
+          <meta name="dc.creator" content="${arbitraryString()}">
+          <meta name="description" content="${description}">
+      </head>
+      </html>
+    `;
+
+    it('returns the description as part of the fullText', async () => {
+      const doiUrl = arbitraryUri();
+      const getHtml = () => TE.right(htmlResponseContainingSummary);
+      const fullText = await pipe(
+        doiUrl,
+        fetchRapidReview(getHtml),
+        TE.map((evaluation) => evaluation.fullText),
+      )();
+
+      expect(fullText).toStrictEqual(E.right(expect.stringContaining(description)));
+    });
 
     describe('cant find the description meta tag', () => {
       it.todo('returns "not-found"');
