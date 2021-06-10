@@ -4,6 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { fetchRapidReview } from '../../src/infrastructure/fetch-rapid-review';
 import { HtmlFragment } from '../../src/types/html-fragment';
+import { dummyLogger } from '../dummy-logger';
 import { arbitraryString, arbitraryUri } from '../helpers';
 
 const htmlResponseContainingReview = `
@@ -27,7 +28,7 @@ const toFullText = (html: string): TE.TaskEither<'not-found' | 'unavailable', Ht
   const getHtml = () => TE.right(html);
   return pipe(
     doiUrl,
-    fetchRapidReview(getHtml),
+    fetchRapidReview(dummyLogger, getHtml),
     TE.map((evaluation) => evaluation.fullText),
   );
 };
@@ -38,7 +39,7 @@ describe('fetch-rapid-review', () => {
     const getHtml = () => TE.right(htmlResponseContainingReview);
     const evaluationUrl = await pipe(
       doiUrl,
-      fetchRapidReview(getHtml),
+      fetchRapidReview(dummyLogger, getHtml),
       TE.map((evaluation) => evaluation.url.toString()),
     )();
 
@@ -132,7 +133,7 @@ describe('fetch-rapid-review', () => {
     it('return "unavailable"', async () => {
       const guid = new URL(arbitraryUri());
       const getHtml = () => TE.left('unavailable' as const);
-      const fullText = await fetchRapidReview(getHtml)(guid.toString())();
+      const fullText = await fetchRapidReview(dummyLogger, getHtml)(guid.toString())();
 
       expect(fullText).toStrictEqual(E.left('unavailable' as const));
     });

@@ -5,18 +5,25 @@ import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import { EvaluationFetcher } from './fetch-review';
+import { Logger } from './logger';
 import { toHtmlFragment } from '../types/html-fragment';
 
 type GetHtml = (url: string) => TE.TaskEither<'unavailable', string>;
 
-const summary = (doc: Document) => pipe(
+const summary = (logger: Logger) => (doc: Document) => pipe(
   doc.querySelector('meta[name=description]')?.getAttribute('content'),
   O.fromNullable,
   E.fromOption(constant('not-found' as const)),
-  E.map((description) => `
-    <h3>Strength of evidence</h3>
-    <p>${description}</p>
-  `),
+  E.bimap(
+    (err) => {
+      logger('error', 'Rapid-review summary has no description');
+      return err;
+    },
+    (description) => `
+      <h3>Strength of evidence</h3>
+      <p>${description}</p>
+    `,
+  ),
 );
 
 const review = (doc: Document) => pipe(
@@ -33,23 +40,24 @@ const review = (doc: Document) => pipe(
   E.right,
 );
 
-const extractEvaluation = (doc: Document) => {
+const extractEvaluation = (logger: Logger) => (doc: Document) => {
   switch (doc.querySelectorAll('meta[name="dc.creator"]').length) {
     case 0:
+      logger('error', 'Rapid-Review evaluation has no creators');
       return E.left('unavailable' as const);
     case 1:
       return review(doc);
     default:
-      return summary(doc);
+      return summary(logger)(doc);
   }
 };
 
-export const fetchRapidReview = (getHtml: GetHtml): EvaluationFetcher => (key) => pipe(
+export const fetchRapidReview = (logger: Logger, getHtml: GetHtml): EvaluationFetcher => (key) => pipe(
   key,
   getHtml,
   TE.chainEitherKW(flow(
     (html) => new JSDOM(html).window.document,
-    extractEvaluation,
+    extractEvaluation(logger),
     E.map(toHtmlFragment),
   )),
   TE.map((fullText) => ({
