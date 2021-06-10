@@ -33,14 +33,23 @@ const review = (doc: Document) => pipe(
   E.right,
 );
 
+const extractEvaluation = (doc: Document) => {
+  switch (doc.querySelectorAll('meta[name="dc.creator"]').length) {
+    case 0:
+      return E.left('unavailable' as const);
+    case 1:
+      return review(doc);
+    default:
+      return summary(doc);
+  }
+};
+
 export const fetchRapidReview = (getHtml: GetHtml): EvaluationFetcher => (key) => pipe(
   key,
   getHtml,
   TE.chainEitherKW(flow(
     (html) => new JSDOM(html).window.document,
-    (doc) => (doc.querySelectorAll('meta[name="dc.creator"]').length > 1
-      ? summary(doc)
-      : review(doc)),
+    extractEvaluation,
     E.map(toHtmlFragment),
   )),
   TE.map((fullText) => ({

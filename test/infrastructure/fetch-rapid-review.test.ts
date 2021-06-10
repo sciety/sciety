@@ -111,7 +111,21 @@ describe('fetch-rapid-review', () => {
   });
 
   describe('when we dont know what kind of evaluation it is', () => {
-    it.todo('returns "unavailable"');
+    const htmlResponseWithNoCreators = `
+      <!DOCTYPE html>
+      <html lang="en" data-reactroot="">
+      <head>
+          <meta name="dc.title" content="${arbitraryString()}">
+      </head>
+      </html>
+    `;
+
+    it('returns "unavailable"', async () => {
+      expect(await pipe(
+        htmlResponseWithNoCreators,
+        toFullText,
+      )()).toStrictEqual(E.left('unavailable'));
+    });
   });
 
   describe('getHtml fails', () => {
