@@ -3,9 +3,24 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { constant, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
+import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
 
-const rapidReviewCodec = t.type({});
+const rapidReviewCodec = t.type({
+  message: t.type({
+    items: t.array(t.type({
+      DOI: t.string,
+      created: t.type({
+        'date-time': tt.DateFromISOString,
+      }),
+      relation: t.type({
+        'is-review-of': t.array(t.type({
+          id: t.string,
+        })),
+      }),
+    })),
+  }),
+});
 
 void (async (): Promise<void> => {
   pipe(
