@@ -47,71 +47,52 @@ describe('fetch-rapid-review', () => {
 
   describe('when fetching review', () => {
     describe('with one author', () => {
-      it('returns the description as part of the fullText', async () => {
-        const description = arbitraryString();
+      const title = arbitraryString();
+      const creator = arbitraryString();
+      const description = arbitraryString();
 
-        expect(await pipe(
-          rapidReviewResponseWith([
-            ['dc.title', `Review ${arbitraryString()}`],
-            ['dc.creator', arbitraryString()],
-            ['description', description],
-          ]),
-          toFullText,
-        )()).toStrictEqual(E.right(expect.stringContaining(description)));
+      const fullText = pipe(
+        rapidReviewResponseWith([
+          ['dc.title', `Review ${title}&quot;Hello&quot;`],
+          ['dc.creator', creator],
+          ['description', description],
+        ]),
+        toFullText,
+      );
+
+      it('returns the description as part of the fullText', async () => {
+        expect(await fullText()).toStrictEqual(E.right(expect.stringContaining(description)));
       });
 
       it('returns the creator as part of the fullText', async () => {
-        const creator = arbitraryString();
-
-        expect(await pipe(
-          rapidReviewResponseWith([
-            ['dc.title', `Review ${arbitraryString()}`],
-            ['dc.creator', creator],
-          ]),
-          toFullText,
-        )()).toStrictEqual(E.right(expect.stringContaining(`<h3>${creator}</h3>`)));
+        expect(await fullText()).toStrictEqual(E.right(expect.stringContaining(`<h3>${creator}</h3>`)));
       });
 
       it('returns the title as part of the fullText', async () => {
-        const title = arbitraryString();
-
-        expect(await pipe(
-          rapidReviewResponseWith([
-            ['dc.title', `Review ${title}&quot;Hello&quot;`],
-            ['dc.creator', arbitraryString()],
-          ]),
-          toFullText,
-        )()).toStrictEqual(E.right(expect.stringContaining(`${title}"Hello"`)));
+        expect(await fullText()).toStrictEqual(E.right(expect.stringContaining(`${title}"Hello"`)));
       });
     });
 
     describe('with more than one author', () => {
-      it('returns a review', async () => {
-        const title = arbitraryString();
+      const title = arbitraryString();
+      const creator = arbitraryString();
+      const creatorTwo = arbitraryString();
 
-        expect(await pipe(
-          rapidReviewResponseWith([
-            ['dc.title', `Review ${title}`],
-            ['dc.creator', arbitraryString()],
-            ['dc.creator', arbitraryString()],
-            ['description', arbitraryString()],
-          ]),
-          toFullText,
-        )()).toStrictEqual(E.right(expect.stringContaining(`Review ${title}`)));
+      const fullText = pipe(
+        rapidReviewResponseWith([
+          ['dc.title', `Review ${title}`],
+          ['dc.creator', creator],
+          ['dc.creator', creatorTwo],
+        ]),
+        toFullText,
+      );
+
+      it('returns a review', async () => {
+        expect(await fullText()).toStrictEqual(E.right(expect.stringContaining(`Review ${title}`)));
       });
 
       it('returns the creators as part of the fullText', async () => {
-        const creator = arbitraryString();
-        const creatorTwo = arbitraryString();
-
-        expect(await pipe(
-          rapidReviewResponseWith([
-            ['dc.title', `Review ${arbitraryString()}`],
-            ['dc.creator', creator],
-            ['dc.creator', creatorTwo],
-          ]),
-          toFullText,
-        )()).toStrictEqual(E.right(expect.stringContaining(`<h3>${creator}, ${creatorTwo}</h3>`)));
+        expect(await fullText()).toStrictEqual(E.right(expect.stringContaining(`<h3>${creator}, ${creatorTwo}</h3>`)));
       });
     });
   });
