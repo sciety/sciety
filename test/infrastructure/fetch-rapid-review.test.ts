@@ -102,6 +102,10 @@ describe('fetch-rapid-review', () => {
     });
   });
 
+  describe('when we dont know what kind of evaluation it is', () => {
+    it.todo('returns "unavailable"');
+  });
+
   describe('getHtml fails', () => {
     it('return "unavailable"', async () => {
       const guid = new URL(arbitraryUri());
