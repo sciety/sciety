@@ -46,7 +46,7 @@ describe('fetch-rapid-review', () => {
     expect(evaluationUrl).toStrictEqual(E.right(doiUrl));
   });
 
-  describe('fullText', () => {
+  describe('when fetching review', () => {
     it('returns the description as part of the fullText', async () => {
       const doiUrl = arbitraryUri();
       const getHtml = () => TE.right(html);
@@ -82,15 +82,23 @@ describe('fetch-rapid-review', () => {
 
       expect(fullText).toStrictEqual(E.right(expect.stringContaining('Review 1: "Differential effects of antiseptic mouth rinses on SARS-CoV-2 infectivity in vitro"')));
     });
+
+    describe('cant find any relevant meta tags', () => {
+      it.skip('return "not-found"', async () => {
+        const guid = new URL(arbitraryUri());
+        const getHtml = () => TE.right(htmlNoDescription);
+        const fullText = await fetchRapidReview(getHtml)(guid.toString())();
+
+        expect(fullText).toStrictEqual(E.left('not-found' as const));
+      });
+    });
   });
 
-  describe('cant find any meta relevant meta tags', () => {
-    it.skip('return "not-found"', async () => {
-      const guid = new URL(arbitraryUri());
-      const getHtml = () => TE.right(htmlNoDescription);
-      const fullText = await fetchRapidReview(getHtml)(guid.toString())();
+  describe('when fetching summary', () => {
+    it.todo('returns the description as part of the fullText');
 
-      expect(fullText).toStrictEqual(E.left('not-found' as const));
+    describe('cant find the description meta tag', () => {
+      it.todo('returns "not-found"');
     });
   });
 
