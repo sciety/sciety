@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/function';
 import { fetchRapidReview } from '../../src/infrastructure/fetch-rapid-review';
 import { arbitraryUri } from '../helpers';
 
-const html = `
+const htmlResponseContainingReview = `
 <!DOCTYPE html>
 <html lang="en" data-reactroot="">
 <head>
@@ -21,22 +21,10 @@ const html = `
 </html>
 `;
 
-const htmlNoDescription = `
-<!DOCTYPE html>
-<html lang="en" data-reactroot="">
-<head>
-    <meta property="og:description"
-          content="This potentially informative in-vitro study finds that some commercially available mouth-rinses have different anti-viral activity/cytotoxicity. Additional animal models and clinical trials are needed to generalize the study’s findings."/>
-    <meta name="twitter:description"
-          content="This potentially informative in-vitro study finds that some commercially available mouth-rinses have different anti-viral activity/cytotoxicity. Additional animal models and clinical trials are needed to generalize the study’s findings."/>
-</head>
-</html>
-`;
-
 describe('fetch-rapid-review', () => {
   it('given an arbitrary URL the result contains the same URL', async () => {
     const doiUrl = arbitraryUri();
-    const getHtml = () => TE.right(html);
+    const getHtml = () => TE.right(htmlResponseContainingReview);
     const evaluationUrl = await pipe(
       doiUrl,
       fetchRapidReview(getHtml),
@@ -49,7 +37,7 @@ describe('fetch-rapid-review', () => {
   describe('when fetching review', () => {
     it('returns the description as part of the fullText', async () => {
       const doiUrl = arbitraryUri();
-      const getHtml = () => TE.right(html);
+      const getHtml = () => TE.right(htmlResponseContainingReview);
       const fullText = await pipe(
         doiUrl,
         fetchRapidReview(getHtml),
@@ -61,7 +49,7 @@ describe('fetch-rapid-review', () => {
 
     it('returns the creator as part of the fullText', async () => {
       const doiUrl = arbitraryUri();
-      const getHtml = () => TE.right(html);
+      const getHtml = () => TE.right(htmlResponseContainingReview);
       const fullText = await pipe(
         doiUrl,
         fetchRapidReview(getHtml),
@@ -73,7 +61,7 @@ describe('fetch-rapid-review', () => {
 
     it('returns the title as part of the fullText', async () => {
       const doiUrl = arbitraryUri();
-      const getHtml = () => TE.right(html);
+      const getHtml = () => TE.right(htmlResponseContainingReview);
       const fullText = await pipe(
         doiUrl,
         fetchRapidReview(getHtml),
@@ -81,16 +69,6 @@ describe('fetch-rapid-review', () => {
       )();
 
       expect(fullText).toStrictEqual(E.right(expect.stringContaining('Review 1: "Differential effects of antiseptic mouth rinses on SARS-CoV-2 infectivity in vitro"')));
-    });
-
-    describe('cant find any relevant meta tags', () => {
-      it.skip('return "not-found"', async () => {
-        const guid = new URL(arbitraryUri());
-        const getHtml = () => TE.right(htmlNoDescription);
-        const fullText = await fetchRapidReview(getHtml)(guid.toString())();
-
-        expect(fullText).toStrictEqual(E.left('not-found' as const));
-      });
     });
   });
 
