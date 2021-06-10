@@ -83,7 +83,7 @@ describe('fetch-rapid-review', () => {
     });
 
     describe('with more than one author', () => {
-      it.skip('returns a review', async () => {
+      it('returns a review', async () => {
         const title = arbitraryString();
 
         expect(await pipe(
@@ -117,6 +117,7 @@ describe('fetch-rapid-review', () => {
       it('returns "not-found"', async () => {
         expect(await pipe(
           rapidReviewResponseWith([
+            ['dc.title', `Reviews of ${arbitraryString()}`],
             ['dc.creator', arbitraryString()],
             ['dc.creator', arbitraryString()],
           ]),

@@ -41,14 +41,15 @@ const review = (doc: Document) => pipe(
 );
 
 const extractEvaluation = (logger: Logger) => (doc: Document) => {
+  if (doc.querySelector('meta[name="dc.title"]')?.getAttribute('content')?.startsWith('Reviews of ')) {
+    return summary(logger)(doc);
+  }
   switch (doc.querySelectorAll('meta[name="dc.creator"]').length) {
     case 0:
       logger('error', 'Rapid-Review evaluation has no creators');
       return E.left('unavailable' as const);
-    case 1:
-      return review(doc);
     default:
-      return summary(logger)(doc);
+      return review(doc);
   }
 };
 
