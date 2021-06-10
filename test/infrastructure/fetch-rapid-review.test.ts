@@ -7,20 +7,13 @@ import { HtmlFragment } from '../../src/types/html-fragment';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryString, arbitraryUri } from '../helpers';
 
-const htmlResponseContainingReview = `
-<!DOCTYPE html>
-<html lang="en" data-reactroot="">
-<head>
-    <meta name="dc.title" content="Review 1: &quot;Differential effects of antiseptic mouth rinses on SARS-CoV-2 infectivity in vitro&quot;">
-    <meta name="dc.creator" content="Florence Carrouel">
-    <meta name="description"
-          content="This potentially informative in-vitro study finds that some commercially available mouth-rinses have different anti-viral activity/cytotoxicity. Additional animal models and clinical trials are needed to generalize the study’s findings."/>
-    <meta property="og:description"
-          content="This potentially informative in-vitro study finds that some commercially available mouth-rinses have different anti-viral activity/cytotoxicity. Additional animal models and clinical trials are needed to generalize the study’s findings."/>
-    <meta name="twitter:description"
-          content="This potentially informative in-vitro study finds that some commercially available mouth-rinses have different anti-viral activity/cytotoxicity. Additional animal models and clinical trials are needed to generalize the study’s findings."/>
-</head>
-</html>
+const rapidReviewResponseWith = (metaTags: ReadonlyArray<[string, string]>) => `
+  <!DOCTYPE html>
+  <html lang="en" data-reactroot="">
+  <head>
+      ${metaTags.map(([name, value]) => `<meta name="${name}" content="${value}">`).join('\n')}
+  </head>
+  </html>
 `;
 
 const toFullText = (html: string): TE.TaskEither<'not-found' | 'unavailable', HtmlFragment> => {
@@ -36,7 +29,12 @@ const toFullText = (html: string): TE.TaskEither<'not-found' | 'unavailable', Ht
 describe('fetch-rapid-review', () => {
   it('given an arbitrary URL the result contains the same URL', async () => {
     const doiUrl = arbitraryUri();
-    const getHtml = () => TE.right(htmlResponseContainingReview);
+    const getHtml = () => pipe(
+      rapidReviewResponseWith([
+        ['dc.creator', arbitraryString()],
+      ]),
+      TE.right,
+    );
     const evaluationUrl = await pipe(
       doiUrl,
       fetchRapidReview(dummyLogger, getHtml),
@@ -48,63 +46,62 @@ describe('fetch-rapid-review', () => {
 
   describe('when fetching review', () => {
     it('returns the description as part of the fullText', async () => {
+      const description = arbitraryString();
+
       expect(await pipe(
-        htmlResponseContainingReview,
+        rapidReviewResponseWith([
+          ['dc.creator', arbitraryString()],
+          ['description', description],
+        ]),
         toFullText,
-      )()).toStrictEqual(E.right(expect.stringContaining('This potentially informative in-vitro study finds that some commercially available mouth-rinses have different anti-viral activity/cytotoxicity. Additional animal models and clinical trials are needed to generalize the study’s findings.')));
+      )()).toStrictEqual(E.right(expect.stringContaining(description)));
     });
 
     it('returns the creator as part of the fullText', async () => {
+      const creator = arbitraryString();
+
       expect(await pipe(
-        htmlResponseContainingReview,
+        rapidReviewResponseWith([
+          ['dc.creator', creator],
+        ]),
         toFullText,
-      )()).toStrictEqual(E.right(expect.stringContaining('<h3>Florence Carrouel</h3>')));
+      )()).toStrictEqual(E.right(expect.stringContaining(`<h3>${creator}</h3>`)));
     });
 
     it('returns the title as part of the fullText', async () => {
+      const title = arbitraryString();
+
       expect(await pipe(
-        htmlResponseContainingReview,
+        rapidReviewResponseWith([
+          ['dc.title', `${title}&quot;Hello&quot;`],
+          ['dc.creator', arbitraryString()],
+        ]),
         toFullText,
-      )()).toStrictEqual(E.right(expect.stringContaining('Review 1: "Differential effects of antiseptic mouth rinses on SARS-CoV-2 infectivity in vitro"')));
+      )()).toStrictEqual(E.right(expect.stringContaining(`${title}"Hello"`)));
     });
   });
 
   describe('when fetching summary', () => {
-    const description = arbitraryString();
-    const htmlResponseContainingSummary = `
-      <!DOCTYPE html>
-      <html lang="en" data-reactroot="">
-      <head>
-          <meta name="dc.title" content="${arbitraryString()}">
-          <meta name="dc.creator" content="${arbitraryString()}">
-          <meta name="dc.creator" content="${arbitraryString()}">
-          <meta name="description" content="${description}">
-      </head>
-      </html>
-    `;
-
     it('returns the description as part of the fullText', async () => {
+      const description = arbitraryString();
+
       expect(await pipe(
-        htmlResponseContainingSummary,
+        rapidReviewResponseWith([
+          ['dc.creator', arbitraryString()],
+          ['dc.creator', arbitraryString()],
+          ['description', description],
+        ]),
         toFullText,
       )()).toStrictEqual(E.right(expect.stringContaining(description)));
     });
 
     describe('cant find the description meta tag', () => {
-      const htmlResponseContainingSummaryMissingDescription = `
-        <!DOCTYPE html>
-        <html lang="en" data-reactroot="">
-        <head>
-            <meta name="dc.title" content="${arbitraryString()}">
-            <meta name="dc.creator" content="${arbitraryString()}">
-            <meta name="dc.creator" content="${arbitraryString()}">
-        </head>
-        </html>
-      `;
-
       it('returns "not-found"', async () => {
         expect(await pipe(
-          htmlResponseContainingSummaryMissingDescription,
+          rapidReviewResponseWith([
+            ['dc.creator', arbitraryString()],
+            ['dc.creator', arbitraryString()],
+          ]),
           toFullText,
         )()).toStrictEqual(E.left('not-found'));
       });
@@ -112,18 +109,11 @@ describe('fetch-rapid-review', () => {
   });
 
   describe('when we dont know what kind of evaluation it is', () => {
-    const htmlResponseWithNoCreators = `
-      <!DOCTYPE html>
-      <html lang="en" data-reactroot="">
-      <head>
-          <meta name="dc.title" content="${arbitraryString()}">
-      </head>
-      </html>
-    `;
-
     it('returns "unavailable"', async () => {
       expect(await pipe(
-        htmlResponseWithNoCreators,
+        rapidReviewResponseWith([
+          ['dc.title', arbitraryString()],
+        ]),
         toFullText,
       )()).toStrictEqual(E.left('unavailable'));
     });
