@@ -31,6 +31,7 @@ describe('fetch-rapid-review', () => {
     const doiUrl = arbitraryUri();
     const getHtml = () => pipe(
       rapidReviewResponseWith([
+        ['dc.title', `Review ${arbitraryString()}`],
         ['dc.creator', arbitraryString()],
       ]),
       TE.right,
@@ -51,6 +52,7 @@ describe('fetch-rapid-review', () => {
 
         expect(await pipe(
           rapidReviewResponseWith([
+            ['dc.title', `Review ${arbitraryString()}`],
             ['dc.creator', arbitraryString()],
             ['description', description],
           ]),
@@ -63,6 +65,7 @@ describe('fetch-rapid-review', () => {
 
         expect(await pipe(
           rapidReviewResponseWith([
+            ['dc.title', `Review ${arbitraryString()}`],
             ['dc.creator', creator],
           ]),
           toFullText,
@@ -74,7 +77,7 @@ describe('fetch-rapid-review', () => {
 
         expect(await pipe(
           rapidReviewResponseWith([
-            ['dc.title', `${title}&quot;Hello&quot;`],
+            ['dc.title', `Review ${title}&quot;Hello&quot;`],
             ['dc.creator', arbitraryString()],
           ]),
           toFullText,
@@ -88,13 +91,13 @@ describe('fetch-rapid-review', () => {
 
         expect(await pipe(
           rapidReviewResponseWith([
-            ['dc.title', `Review 1: ${title}`],
+            ['dc.title', `Review ${title}`],
             ['dc.creator', arbitraryString()],
             ['dc.creator', arbitraryString()],
             ['description', arbitraryString()],
           ]),
           toFullText,
-        )()).toStrictEqual(E.right(expect.stringContaining(`Review 1: ${title}`)));
+        )()).toStrictEqual(E.right(expect.stringContaining(`Review ${title}`)));
       });
     });
   });
@@ -105,7 +108,7 @@ describe('fetch-rapid-review', () => {
 
       expect(await pipe(
         rapidReviewResponseWith([
-          ['dc.creator', arbitraryString()],
+          ['dc.title', `Reviews of ${arbitraryString()}`],
           ['dc.creator', arbitraryString()],
           ['description', description],
         ]),
@@ -119,22 +122,10 @@ describe('fetch-rapid-review', () => {
           rapidReviewResponseWith([
             ['dc.title', `Reviews of ${arbitraryString()}`],
             ['dc.creator', arbitraryString()],
-            ['dc.creator', arbitraryString()],
           ]),
           toFullText,
         )()).toStrictEqual(E.left('not-found'));
       });
-    });
-  });
-
-  describe('when we dont know what kind of evaluation it is', () => {
-    it('returns "unavailable"', async () => {
-      expect(await pipe(
-        rapidReviewResponseWith([
-          ['dc.title', arbitraryString()],
-        ]),
-        toFullText,
-      )()).toStrictEqual(E.left('unavailable'));
     });
   });
 
