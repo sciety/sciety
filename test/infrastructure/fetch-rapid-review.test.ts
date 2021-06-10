@@ -3,6 +3,7 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { fetchRapidReview } from '../../src/infrastructure/fetch-rapid-review';
+import { HtmlFragment } from '../../src/types/html-fragment';
 import { arbitraryString, arbitraryUri } from '../helpers';
 
 const htmlResponseContainingReview = `
@@ -21,6 +22,16 @@ const htmlResponseContainingReview = `
 </html>
 `;
 
+const toFullText = (html: string): TE.TaskEither<'not-found' | 'unavailable', HtmlFragment> => {
+  const doiUrl = arbitraryUri();
+  const getHtml = () => TE.right(html);
+  return pipe(
+    doiUrl,
+    fetchRapidReview(getHtml),
+    TE.map((evaluation) => evaluation.fullText),
+  );
+};
+
 describe('fetch-rapid-review', () => {
   it('given an arbitrary URL the result contains the same URL', async () => {
     const doiUrl = arbitraryUri();
@@ -36,39 +47,24 @@ describe('fetch-rapid-review', () => {
 
   describe('when fetching review', () => {
     it('returns the description as part of the fullText', async () => {
-      const doiUrl = arbitraryUri();
-      const getHtml = () => TE.right(htmlResponseContainingReview);
-      const fullText = await pipe(
-        doiUrl,
-        fetchRapidReview(getHtml),
-        TE.map((evaluation) => evaluation.fullText),
-      )();
-
-      expect(fullText).toStrictEqual(E.right(expect.stringContaining('This potentially informative in-vitro study finds that some commercially available mouth-rinses have different anti-viral activity/cytotoxicity. Additional animal models and clinical trials are needed to generalize the study’s findings.')));
+      expect(await pipe(
+        htmlResponseContainingReview,
+        toFullText,
+      )()).toStrictEqual(E.right(expect.stringContaining('This potentially informative in-vitro study finds that some commercially available mouth-rinses have different anti-viral activity/cytotoxicity. Additional animal models and clinical trials are needed to generalize the study’s findings.')));
     });
 
     it('returns the creator as part of the fullText', async () => {
-      const doiUrl = arbitraryUri();
-      const getHtml = () => TE.right(htmlResponseContainingReview);
-      const fullText = await pipe(
-        doiUrl,
-        fetchRapidReview(getHtml),
-        TE.map((evaluation) => evaluation.fullText),
-      )();
-
-      expect(fullText).toStrictEqual(E.right(expect.stringContaining('<h3>Florence Carrouel</h3>')));
+      expect(await pipe(
+        htmlResponseContainingReview,
+        toFullText,
+      )()).toStrictEqual(E.right(expect.stringContaining('<h3>Florence Carrouel</h3>')));
     });
 
     it('returns the title as part of the fullText', async () => {
-      const doiUrl = arbitraryUri();
-      const getHtml = () => TE.right(htmlResponseContainingReview);
-      const fullText = await pipe(
-        doiUrl,
-        fetchRapidReview(getHtml),
-        TE.map((evaluation) => evaluation.fullText),
-      )();
-
-      expect(fullText).toStrictEqual(E.right(expect.stringContaining('Review 1: "Differential effects of antiseptic mouth rinses on SARS-CoV-2 infectivity in vitro"')));
+      expect(await pipe(
+        htmlResponseContainingReview,
+        toFullText,
+      )()).toStrictEqual(E.right(expect.stringContaining('Review 1: "Differential effects of antiseptic mouth rinses on SARS-CoV-2 infectivity in vitro"')));
     });
   });
 
@@ -87,15 +83,10 @@ describe('fetch-rapid-review', () => {
     `;
 
     it('returns the description as part of the fullText', async () => {
-      const doiUrl = arbitraryUri();
-      const getHtml = () => TE.right(htmlResponseContainingSummary);
-      const fullText = await pipe(
-        doiUrl,
-        fetchRapidReview(getHtml),
-        TE.map((evaluation) => evaluation.fullText),
-      )();
-
-      expect(fullText).toStrictEqual(E.right(expect.stringContaining(description)));
+      expect(await pipe(
+        htmlResponseContainingSummary,
+        toFullText,
+      )()).toStrictEqual(E.right(expect.stringContaining(description)));
     });
 
     describe('cant find the description meta tag', () => {
