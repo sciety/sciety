@@ -28,7 +28,7 @@ const summary = (logger: Logger) => (doc: Document) => pipe(
 
 const review = (doc: Document) => pipe(
   {
-    creator: O.fromNullable(doc.querySelector('meta[name="dc.creator"]')?.getAttribute('content')),
+    creator: O.fromNullable(Array.from(doc.querySelectorAll('meta[name="dc.creator"]')).map((creatorNode) => creatorNode.getAttribute('content')).join(', ')),
     title: O.fromNullable(doc.querySelector('meta[name="dc.title"]')?.getAttribute('content')),
     description: O.fromNullable(doc.querySelector('meta[name=description]')?.getAttribute('content')),
   },

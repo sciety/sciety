@@ -99,6 +99,20 @@ describe('fetch-rapid-review', () => {
           toFullText,
         )()).toStrictEqual(E.right(expect.stringContaining(`Review ${title}`)));
       });
+
+      it('returns the creators as part of the fullText', async () => {
+        const creator = arbitraryString();
+        const creatorTwo = arbitraryString();
+
+        expect(await pipe(
+          rapidReviewResponseWith([
+            ['dc.title', `Review ${arbitraryString()}`],
+            ['dc.creator', creator],
+            ['dc.creator', creatorTwo],
+          ]),
+          toFullText,
+        )()).toStrictEqual(E.right(expect.stringContaining(`<h3>${creator}, ${creatorTwo}</h3>`)));
+      });
     });
   });
 
