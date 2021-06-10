@@ -90,7 +90,23 @@ describe('fetch-rapid-review', () => {
     });
 
     describe('cant find the description meta tag', () => {
-      it.todo('returns "not-found"');
+      const htmlResponseContainingSummaryMissingDescription = `
+        <!DOCTYPE html>
+        <html lang="en" data-reactroot="">
+        <head>
+            <meta name="dc.title" content="${arbitraryString()}">
+            <meta name="dc.creator" content="${arbitraryString()}">
+            <meta name="dc.creator" content="${arbitraryString()}">
+        </head>
+        </html>
+      `;
+
+      it('returns "not-found"', async () => {
+        expect(await pipe(
+          htmlResponseContainingSummaryMissingDescription,
+          toFullText,
+        )()).toStrictEqual(E.left('not-found'));
+      });
     });
   });
 
