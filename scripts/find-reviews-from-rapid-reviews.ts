@@ -9,7 +9,7 @@ import * as PR from 'io-ts/PathReporter';
 const rapidReviewCodec = t.type({
   message: t.type({
     items: t.array(t.type({
-      DOI: t.string,
+      URL: t.string,
       created: t.type({
         'date-time': tt.DateFromISOString,
       }),
@@ -22,6 +22,15 @@ const rapidReviewCodec = t.type({
   }),
 });
 
+const extractEvaluations = (data: t.TypeOf<typeof rapidReviewCodec>) => pipe(
+  data.message.items.map((item) => ({
+    date: item.created['date-time'].toISOString(),
+    articleDoi: item.relation['is-review-of'][0].id,
+    evaluationLocator: `rapidreviews:${item.URL}`,
+  })),
+  RA.filter(({ articleDoi }) => articleDoi.startsWith('10.1101/')),
+);
+
 void (async (): Promise<void> => {
   pipe(
     await axios.get<JSON>('https://api.crossref.org/prefixes/10.1162/works?filter=type:peer-review', {
@@ -31,23 +40,7 @@ void (async (): Promise<void> => {
     }),
     (response) => response.data,
     rapidReviewCodec.decode,
-    E.map(() => [
-      {
-        date: '2021-01-30T10:06:04Z',
-        articleDoi: '10.1101/2020.12.01.405662',
-        evaluationLocator: 'rapidreviews:https://doi.org/10.1162/2e3983f5.602c0e93',
-      },
-      {
-        date: '2021-01-30T10:06:04Z',
-        articleDoi: '10.1101/2020.12.01.405662',
-        evaluationLocator: 'rapidreviews:https://doi.org/10.1162/2e3983f5.85aec587',
-      },
-      {
-        date: '2021-01-30T10:06:04Z',
-        articleDoi: '10.1101/2020.12.01.405662',
-        evaluationLocator: 'rapidreviews:https://doi.org/10.1162/2e3983f5.e898fa45',
-      },
-    ]),
+    E.map(extractEvaluations),
     E.bimap(
       (errors) => process.stderr.write(PR.failure(errors).join('\n')),
       (evaluations) => {
