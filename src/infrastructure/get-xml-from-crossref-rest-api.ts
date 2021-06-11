@@ -19,7 +19,7 @@ export const getXmlFromCrossrefRestApi = (
   if (O.isSome(crossrefApiBearerToken)) {
     headers['Crossref-Plus-API-Token'] = `Bearer ${crossrefApiBearerToken.value}`;
   }
-  const response = await getStringWithHeadersRetriesAndDurationLogging(logger, 3)(url.toString(), headers);
+  const response = await getStringWithHeadersRetriesAndDurationLogging(logger)(url.toString(), headers);
   if (response.data.length === 0) {
     throw new Error('Empty response from Crossref');
   }
