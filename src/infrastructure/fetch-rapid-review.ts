@@ -39,11 +39,11 @@ const review = (doc: Document) => pipe(
   E.right,
 );
 
-const extractEvaluation = (doc: Document) => (): [E.Either<'unavailable' | 'not-found', string>, LogMessages] => {
+const extractEvaluation = (doc: Document): () => [E.Either<'unavailable' | 'not-found', string>, LogMessages] => {
   if (doc.querySelector('meta[name="dc.title"]')?.getAttribute('content')?.startsWith('Reviews of ')) {
-    return summary(doc)();
+    return summary(doc);
   }
-  return [review(doc), []];
+  return () => [review(doc), []];
 };
 
 export const fetchRapidReview = (logger: Logger, getHtml: GetHtml): EvaluationFetcher => (key) => pipe(
