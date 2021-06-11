@@ -4,8 +4,6 @@ One of the missions of RR:C19 is to accelerate peer review of COVID-19-related r
 An underlying value of RR:C19 is transparency and reliability. Each review is published online and assigned a DOI, making the work fully citable and claimable on reviewers’ ORCID and Publons accounts. Our standard practice is to publish the reviewers’ full names and affiliations, although we will allow reviewers to publish their review anonymously, upon request.
 RR:C19 assesses manuscripts with the same level of rigour as found for top journals. Assessments include how well the paper’s conclusions are substantiated by the research, graded on the RR:C19 Strength of Evidence Scale, with supporting comments.
 
-For more information, see [https://rapidreviewscovid19.mitpress.mit.edu/guidelines](https://rapidreviewscovid19.mitpress.mit.edu/guidelines)
-
 ## Peer review model
 
 - **Strong**: The main study claims are very well-justified by the data and analytic methods used. There is little room for doubt that the study produced has very similar results and conclusions as compared with the hypothetical ideal study. The study’s main claims should be considered conclusive and actionable without reservation.
@@ -21,6 +19,8 @@ For more information, see [https://rapidreviewscovid19.mitpress.mit.edu/guidelin
 ## People
 
 We are prototyping a new type of peer curation network consisting of graduate students and field specialists. This cohort identifies relevant pre-print content for peer review, assisted by a new Natural Language Processing tool developed by COVIDScholar, an initiative of UC Berkeley and Lawrence Berkeley National Lab.
+
+For more information, see [https://rapidreviewscovid19.mitpress.mit.edu/guidelines](https://rapidreviewscovid19.mitpress.mit.edu/guidelines)
 
 ## License
 Content is licensed under the [Creative Commons CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) unless otherwise specified.
