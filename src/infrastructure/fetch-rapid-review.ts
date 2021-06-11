@@ -16,7 +16,6 @@ const summary = (logger: Logger) => (doc: Document): E.Either<['not-found', stri
   E.fromOption(constant('not-found' as const)),
   E.bimap(
     (err) => {
-      logger('error', 'Rapid-review summary has no description');
       return [err, 'Rapid-review summary has no description'];
     },
     (description) => `
@@ -44,7 +43,10 @@ const extractEvaluation = (logger: Logger) => (doc: Document) => {
   if (doc.querySelector('meta[name="dc.title"]')?.getAttribute('content')?.startsWith('Reviews of ')) {
     return pipe(
       summary(logger)(doc),
-      E.mapLeft((error) => error[0]),
+      E.mapLeft((error) => {
+        logger('error', error[1]);
+        return error[0];
+      }),
     );
   }
   return review(doc);
