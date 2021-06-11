@@ -10,14 +10,14 @@ import { toHtmlFragment } from '../types/html-fragment';
 
 type GetHtml = (url: string) => TE.TaskEither<'unavailable', string>;
 
-const summary = (logger: Logger) => (doc: Document): E.Either<'not-found', string> => pipe(
+const summary = (logger: Logger) => (doc: Document): E.Either<['not-found', string], string> => pipe(
   doc.querySelector('meta[name=description]')?.getAttribute('content'),
   O.fromNullable,
   E.fromOption(constant('not-found' as const)),
   E.bimap(
     (err) => {
       logger('error', 'Rapid-review summary has no description');
-      return err;
+      return [err, 'Rapid-review summary has no description'];
     },
     (description) => `
       <h3>Strength of evidence</h3>
@@ -42,7 +42,10 @@ const review = (doc: Document) => pipe(
 
 const extractEvaluation = (logger: Logger) => (doc: Document) => {
   if (doc.querySelector('meta[name="dc.title"]')?.getAttribute('content')?.startsWith('Reviews of ')) {
-    return summary(logger)(doc);
+    return pipe(
+      summary(logger)(doc),
+      E.mapLeft((error) => error[0]),
+    );
   }
   return review(doc);
 };
