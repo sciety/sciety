@@ -1,6 +1,7 @@
 import axios from 'axios';
-import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import { constant, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
@@ -31,17 +32,20 @@ const extractEvaluations = (data: t.TypeOf<typeof rapidReviewCodec>) => pipe(
   RA.filter(({ articleDoi }) => articleDoi.startsWith('10.1101/')),
 );
 
+const getJson = (url: string): T.Task<JSON> => async () => axios.get<JSON>(url, {
+  headers: {
+    'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)',
+  },
+})
+  .then((response) => response.data);
+
 void (async (): Promise<void> => {
-  pipe(
-    await axios.get<JSON>('https://api.crossref.org/prefixes/10.1162/works?filter=type:peer-review', {
-      headers: {
-        'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)',
-      },
-    }),
-    (response) => response.data,
-    rapidReviewCodec.decode,
-    E.map(extractEvaluations),
-    E.bimap(
+  await pipe(
+    'https://api.crossref.org/prefixes/10.1162/works?filter=type:peer-review',
+    getJson,
+    T.map(rapidReviewCodec.decode),
+    TE.map(extractEvaluations),
+    TE.bimap(
       (errors) => process.stderr.write(PR.failure(errors).join('\n')),
       (evaluations) => {
         process.stdout.write('Date,Article DOI,Review ID\n');
@@ -51,7 +55,7 @@ void (async (): Promise<void> => {
         );
       },
     ),
-    E.fold(constant(1), constant(0)),
-    (exitStatus) => process.exit(exitStatus),
-  );
+    TE.match(constant(1), constant(0)),
+    T.map((exitStatus) => process.exit(exitStatus)),
+  )();
 })();
