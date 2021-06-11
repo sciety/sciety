@@ -39,7 +39,7 @@ const review = (doc: Document) => pipe(
   E.right,
 );
 
-const extractEvaluation = (logger: Logger) => (doc: Document) => (): [E.Either<'unavailable' | 'not-found', string>, LogMessages] => {
+const extractEvaluation = (doc: Document) => (): [E.Either<'unavailable' | 'not-found', string>, LogMessages] => {
   if (doc.querySelector('meta[name="dc.title"]')?.getAttribute('content')?.startsWith('Reviews of ')) {
     return summary(doc)();
   }
@@ -51,7 +51,7 @@ export const fetchRapidReview = (logger: Logger, getHtml: GetHtml): EvaluationFe
   getHtml,
   TE.chainEitherKW(flow(
     (html) => new JSDOM(html).window.document,
-    extractEvaluation(logger),
+    extractEvaluation,
     (errorWriter) => {
       const [value, logMessages] = errorWriter();
       logMessages.forEach((logMessage) => logger('error', logMessage));
