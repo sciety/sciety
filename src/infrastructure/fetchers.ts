@@ -4,7 +4,7 @@ import { Logger } from './logger';
 
 type Gswhradl = (l: Logger) => (uri: string, h: Record<string, string>) => Promise<AxiosResponse<string>>;
 
-export const getStringWithHeadersRetriesAndDurationLogging: Gswhradl = (logger) => async (uri, headers = {}) => {
+export const fetchString: Gswhradl = (logger) => async (uri, headers = {}) => {
   const startTime = new Date();
   try {
     return await axios.get<string>(uri.toString(), { headers });
@@ -16,7 +16,7 @@ export const getStringWithHeadersRetriesAndDurationLogging: Gswhradl = (logger) 
 
 type Gjwhadl = (l: Logger) => (uri: string, h?: Record<string, string>) => Promise<AxiosResponse<Json>>;
 
-export const getJsonWithHeadersAndDurationLogging: Gjwhadl = (logger) => async (uri, headers = {}) => {
+export const fetchJson: Gjwhadl = (logger) => async (uri, headers = {}) => {
   const startTime = new Date();
   return axios.get<Json>(uri, { headers })
     .finally(() => {
