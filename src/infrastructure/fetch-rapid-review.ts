@@ -12,16 +12,16 @@ type GetHtml = (url: string) => TE.TaskEither<'unavailable', string>;
 
 type LogMessages = ReadonlyArray<string>;
 
-const summary = (doc: Document): E.Either<() => ['not-found', LogMessages], string> => pipe(
+const summary = (doc: Document) => (): [E.Either<'not-found', string>, LogMessages] => pipe(
   doc.querySelector('meta[name=description]')?.getAttribute('content'),
   O.fromNullable,
   E.fromOption(constant('not-found' as const)),
-  E.bimap(
-    (err) => () => [err, ['Rapid-review summary has no description']],
-    (description) => `
+  E.fold(
+    (err) => [E.left(err), ['Rapid-review summary has no description']],
+    (description) => [E.right(`
       <h3>Strength of evidence</h3>
       <p>${description}</p>
-    `,
+    `), []],
   ),
 );
 
@@ -39,14 +39,11 @@ const review = (doc: Document) => pipe(
   E.right,
 );
 
-const extractEvaluation = (logger: Logger) => (doc: Document): E.Either<() => ['unavailable' | 'not-found', LogMessages], string> => {
+const extractEvaluation = (logger: Logger) => (doc: Document) => (): [E.Either<'unavailable' | 'not-found', string>, LogMessages] => {
   if (doc.querySelector('meta[name="dc.title"]')?.getAttribute('content')?.startsWith('Reviews of ')) {
-    return summary(doc);
+    return summary(doc)();
   }
-  return pipe(
-    review(doc),
-    E.mapLeft((error) => () => [error, []]),
-  );
+  return [review(doc), []];
 };
 
 export const fetchRapidReview = (logger: Logger, getHtml: GetHtml): EvaluationFetcher => (key) => pipe(
@@ -55,11 +52,11 @@ export const fetchRapidReview = (logger: Logger, getHtml: GetHtml): EvaluationFe
   TE.chainEitherKW(flow(
     (html) => new JSDOM(html).window.document,
     extractEvaluation(logger),
-    E.mapLeft((errorWriter) => {
+    (errorWriter) => {
       const [value, logMessages] = errorWriter();
       logMessages.forEach((logMessage) => logger('error', logMessage));
       return value;
-    }),
+    },
     E.map(toHtmlFragment),
   )),
   TE.map((fullText) => ({
