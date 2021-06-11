@@ -2,9 +2,9 @@ import axios, { AxiosResponse } from 'axios';
 import { Json } from 'fp-ts/Json';
 import { Logger } from './logger';
 
-type Gswhradl = (l: Logger) => (uri: string, h: Record<string, string>) => Promise<AxiosResponse<string>>;
-
-export const fetchString: Gswhradl = (logger) => async (uri, headers = {}) => {
+export const fetchString = (
+  logger: Logger,
+) => async (uri: string, headers: Record<string, string> = {}): Promise<AxiosResponse<string>> => {
   const startTime = new Date();
   try {
     return await axios.get<string>(uri.toString(), { headers });
@@ -14,9 +14,9 @@ export const fetchString: Gswhradl = (logger) => async (uri, headers = {}) => {
   }
 };
 
-type Gjwhadl = (l: Logger) => (uri: string, h?: Record<string, string>) => Promise<AxiosResponse<Json>>;
-
-export const fetchJson: Gjwhadl = (logger) => async (uri, headers = {}) => {
+export const fetchJson = (
+  logger: Logger,
+) => async (uri: string, headers: Record<string, string> = {}): Promise<AxiosResponse<Json>> => {
   const startTime = new Date();
   return axios.get<Json>(uri, { headers })
     .finally(() => {
