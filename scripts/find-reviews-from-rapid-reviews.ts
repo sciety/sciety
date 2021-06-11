@@ -7,6 +7,12 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
 
+const resultsTotal = t.type({
+  message: t.type({
+    'total-results': t.number,
+  }),
+});
+
 const rapidReviewCodec = t.type({
   message: t.type({
     items: t.array(t.type({
@@ -44,20 +50,27 @@ const getJson = (url: string): TE.TaskEither<Array<t.ValidationError>, JSON> => 
 
 const pageSize = 100;
 
-const generatePageUrls = (numberOfEvaluations: number) => (
+const constructUrls = (numberOfEvaluations: number) => (
   Array.from(Array(Math.ceil(numberOfEvaluations / pageSize)).keys())
     .map((i) => `https://api.crossref.org/prefixes/10.1162/works?filter=type:peer-review&rows=${pageSize}&offset=${pageSize * i}`)
 );
 
+const generatePageUrls = pipe(
+  'https://api.crossref.org/prefixes/10.1162/works?filter=type:peer-review&rows=1&offset=0',
+  getJson,
+  TE.chainEitherK(resultsTotal.decode),
+  TE.map((obj) => obj.message['total-results']),
+  TE.map(constructUrls),
+);
+
 void (async (): Promise<void> => {
   await pipe(
-    419,
     generatePageUrls,
-    TE.traverseArray(flow(
+    TE.chain(TE.traverseArray(flow(
       getJson,
       TE.chainEitherK(rapidReviewCodec.decode),
       TE.map(extractEvaluations),
-    )),
+    ))),
     TE.map(RA.flatten),
     TE.bimap(
       (errors) => process.stderr.write(PR.failure(errors).join('\n')),
