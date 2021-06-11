@@ -1,6 +1,7 @@
 import { URL } from 'url';
 import * as Eq from 'fp-ts/Eq';
 import * as O from 'fp-ts/Option';
+import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import { Doi } from './doi';
@@ -69,18 +70,19 @@ export const key = (id: ReviewId): string => {
   return id.slice(id.indexOf(':') + 1);
 };
 
-export const inferredUrl = (id: ReviewId): O.Option<URL> => {
-  if (id instanceof Doi) {
-    return O.some(new URL(`https://doi.org/${id.value}`));
-  }
-  if (id instanceof HypothesisAnnotationId) {
-    return O.some(new URL(`https://hypothes.is/a/${id.value}`));
-  }
-  if (NcrcId.isNrcId(id)) {
-    return O.none;
-  }
-  return O.some(new URL(key(id)));
-};
+const urlTemplates = ({
+  doi: (id: ReviewId) => `https://doi.org/${key(id)}`,
+  hypothesis: (id: ReviewId) => `https://hypothes.is/a/${key(id)}`,
+  prelights: (id: ReviewId) => key(id),
+  rapidreviews: (id: ReviewId) => key(id),
+});
+
+export const inferredUrl = (id: ReviewId): O.Option<URL> => pipe(
+  urlTemplates,
+  R.lookup(service(id)),
+  O.map((template) => template(id)),
+  O.map((u) => new URL(u)),
+);
 
 export const isReviewId = (value: unknown): value is ReviewId => (
   value instanceof HypothesisAnnotationId || value instanceof Doi || NcrcId.isNrcId(value)
