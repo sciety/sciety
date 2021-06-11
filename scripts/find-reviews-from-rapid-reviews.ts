@@ -32,18 +32,21 @@ const extractEvaluations = (data: t.TypeOf<typeof rapidReviewCodec>) => pipe(
   RA.filter(({ articleDoi }) => articleDoi.startsWith('10.1101/')),
 );
 
-const getJson = (url: string): T.Task<JSON> => async () => axios.get<JSON>(url, {
-  headers: {
-    'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)',
-  },
-})
-  .then((response) => response.data);
+const getJson = (url: string): TE.TaskEither<Array<t.ValidationError>, JSON> => pipe(
+  TE.tryCatch(async () => axios.get<JSON>(url, {
+    headers: {
+      'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)',
+    },
+  }),
+  (e) => { process.stderr.write(`${JSON.stringify(e)}\n`); return []; }),
+  TE.map((response) => response.data),
+);
 
 void (async (): Promise<void> => {
   await pipe(
     'https://api.crossref.org/prefixes/10.1162/works?filter=type:peer-review',
     getJson,
-    T.map(rapidReviewCodec.decode),
+    TE.chainEitherKW(rapidReviewCodec.decode),
     TE.map(extractEvaluations),
     TE.bimap(
       (errors) => process.stderr.write(PR.failure(errors).join('\n')),
