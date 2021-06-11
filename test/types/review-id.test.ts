@@ -3,7 +3,6 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { ReviewIdFromString as RIcodec } from '../../src/types/codecs/ReviewIdFromString';
 import * as DOI from '../../src/types/doi';
-import { HypothesisAnnotationId } from '../../src/types/hypothesis-annotation-id';
 import * as NcrcId from '../../src/types/ncrc-id';
 import * as RI from '../../src/types/review-id';
 import { arbitraryUri, arbitraryWord } from '../helpers';
@@ -41,28 +40,22 @@ describe('review-id', () => {
 
   describe('when is a Hypothesis annotation id', () => {
     const key = arbitraryWord(12);
-    const reviewId = new HypothesisAnnotationId(key);
-
-    it('can be serialized and deserialized', () => {
-      expect(pipe(
-        reviewId,
-        RIcodec.encode,
-        RIcodec.decode,
-      )).toStrictEqual(E.right(reviewId));
-    });
+    const ingestedReviewId = `hypothesis:${key}`;
 
     it('identifies the service as hypothesis', () => {
       expect(pipe(
-        reviewId,
-        RI.service,
-      )).toStrictEqual('hypothesis');
+        ingestedReviewId,
+        RIcodec.decode,
+        E.map(RI.service),
+      )).toStrictEqual(E.right('hypothesis'));
     });
 
     it('allows the key to be extracted', () => {
       expect(pipe(
-        reviewId,
-        RI.key,
-      )).toStrictEqual(key);
+        ingestedReviewId,
+        RIcodec.decode,
+        E.map(RI.key),
+      )).toStrictEqual(E.right(key));
     });
   });
 

@@ -1,6 +1,6 @@
-import { HypothesisAnnotationId } from '../../src/types/hypothesis-annotation-id';
+import { ReviewId } from '../../src/types/review-id';
 import { arbitraryWord } from '../helpers';
 
-export const arbitraryHypothesisAnnotationId = (): HypothesisAnnotationId => (
-  new HypothesisAnnotationId(arbitraryWord(12))
+export const arbitraryHypothesisAnnotationId = (): ReviewId => (
+  `hypothesis:${arbitraryWord(20)}` as ReviewId
 );

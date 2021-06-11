@@ -5,12 +5,11 @@ import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import { Doi } from './doi';
-import { HypothesisAnnotationId } from './hypothesis-annotation-id';
 import * as NcrcId from './ncrc-id';
 
 type ServiceBasedReviewId = string & { readonly ServiceBasedReviewId: unique symbol };
 
-export type ReviewId = Doi | HypothesisAnnotationId | NcrcId.NcrcId | ServiceBasedReviewId;
+export type ReviewId = Doi | NcrcId.NcrcId | ServiceBasedReviewId;
 
 const toReviewId = (serialization: string): ReviewId => {
   const [, protocol, value] = /^(.+?):(.+)$/.exec(serialization) ?? [];
@@ -18,7 +17,7 @@ const toReviewId = (serialization: string): ReviewId => {
     case 'doi':
       return new Doi(value);
     case 'hypothesis':
-      return new HypothesisAnnotationId(value);
+      return serialization as unknown as ServiceBasedReviewId;
     case 'ncrc':
       return NcrcId.fromString(value);
     case 'prelights':
@@ -33,7 +32,7 @@ const toReviewId = (serialization: string): ReviewId => {
 export const deserialize = (value: string): O.Option<ReviewId> => O.tryCatch(() => toReviewId(value));
 
 export const serialize = (id: ReviewId): string => {
-  if (id instanceof Doi || id instanceof HypothesisAnnotationId) {
+  if (id instanceof Doi) {
     return id.toString();
   }
 
@@ -48,9 +47,6 @@ export const service = (id: ReviewId): string => {
   if (id instanceof Doi) {
     return 'doi';
   }
-  if (id instanceof HypothesisAnnotationId) {
-    return 'hypothesis';
-  }
   if (NcrcId.isNrcId(id)) {
     return 'ncrc';
   }
@@ -59,9 +55,6 @@ export const service = (id: ReviewId): string => {
 
 export const key = (id: ReviewId): string => {
   if (id instanceof Doi) {
-    return id.value;
-  }
-  if (id instanceof HypothesisAnnotationId) {
     return id.value;
   }
   if (NcrcId.isNrcId(id)) {
@@ -85,7 +78,7 @@ export const inferredUrl = (id: ReviewId): O.Option<URL> => pipe(
 );
 
 export const isReviewId = (value: unknown): value is ReviewId => (
-  value instanceof HypothesisAnnotationId || value instanceof Doi || NcrcId.isNrcId(value)
+  value instanceof Doi || NcrcId.isNrcId(value)
 );
 
 const eq: Eq.Eq<ReviewId> = pipe(
