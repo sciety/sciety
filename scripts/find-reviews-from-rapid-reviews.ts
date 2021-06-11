@@ -42,12 +42,17 @@ const getJson = (url: string): TE.TaskEither<Array<t.ValidationError>, JSON> => 
   TE.map((response) => response.data),
 );
 
+const pageSize = 100;
+
+const generatePageUrls = (numberOfEvaluations: number) => (
+  Array.from(Array(Math.ceil(numberOfEvaluations / pageSize)).keys())
+    .map((i) => `https://api.crossref.org/prefixes/10.1162/works?filter=type:peer-review&rows=${pageSize}&offset=${pageSize * i}`)
+);
+
 void (async (): Promise<void> => {
   await pipe(
-    [
-      'https://api.crossref.org/prefixes/10.1162/works?filter=type:peer-review&rows=100',
-      'https://api.crossref.org/prefixes/10.1162/works?filter=type:peer-review&rows=100&offset=100',
-    ],
+    419,
+    generatePageUrls,
     TE.traverseArray(flow(
       getJson,
       TE.chainEitherK(rapidReviewCodec.decode),
