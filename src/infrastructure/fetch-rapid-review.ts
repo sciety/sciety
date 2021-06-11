@@ -39,18 +39,14 @@ const review = (doc: Document) => pipe(
   E.right,
 );
 
-const extractEvaluation = (logger: Logger) => (doc: Document) => {
+const extractEvaluation = (logger: Logger) => (doc: Document): E.Either<() => ['unavailable' | 'not-found', LogMessages], string> => {
   if (doc.querySelector('meta[name="dc.title"]')?.getAttribute('content')?.startsWith('Reviews of ')) {
-    return pipe(
-      summary(doc),
-      E.mapLeft((errorWriter) => {
-        const [value, logMessages] = errorWriter();
-        logMessages.forEach((logMessage) => logger('error', logMessage));
-        return value;
-      }),
-    );
+    return summary(doc);
   }
-  return review(doc);
+  return pipe(
+    review(doc),
+    E.mapLeft((error) => () => [error, []]),
+  );
 };
 
 export const fetchRapidReview = (logger: Logger, getHtml: GetHtml): EvaluationFetcher => (key) => pipe(
@@ -59,6 +55,11 @@ export const fetchRapidReview = (logger: Logger, getHtml: GetHtml): EvaluationFe
   TE.chainEitherKW(flow(
     (html) => new JSDOM(html).window.document,
     extractEvaluation(logger),
+    E.mapLeft((errorWriter) => {
+      const [value, logMessages] = errorWriter();
+      logMessages.forEach((logMessage) => logger('error', logMessage));
+      return value;
+    }),
     E.map(toHtmlFragment),
   )),
   TE.map((fullText) => ({
