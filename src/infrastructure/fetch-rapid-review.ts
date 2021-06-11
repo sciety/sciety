@@ -10,14 +10,14 @@ import { toHtmlFragment } from '../types/html-fragment';
 
 type GetHtml = (url: string) => TE.TaskEither<'unavailable', string>;
 
-type LogMessage = string;
+type LogMessages = ReadonlyArray<string>;
 
-const summary = (doc: Document): E.Either<() => ['not-found', LogMessage], string> => pipe(
+const summary = (doc: Document): E.Either<() => ['not-found', LogMessages], string> => pipe(
   doc.querySelector('meta[name=description]')?.getAttribute('content'),
   O.fromNullable,
   E.fromOption(constant('not-found' as const)),
   E.bimap(
-    (err) => () => [err, 'Rapid-review summary has no description'],
+    (err) => () => [err, ['Rapid-review summary has no description']],
     (description) => `
       <h3>Strength of evidence</h3>
       <p>${description}</p>
@@ -44,8 +44,8 @@ const extractEvaluation = (logger: Logger) => (doc: Document) => {
     return pipe(
       summary(doc),
       E.mapLeft((errorWriter) => {
-        const [value, logMessage] = errorWriter();
-        logger('error', logMessage);
+        const [value, logMessages] = errorWriter();
+        logMessages.forEach((logMessage) => logger('error', logMessage));
         return value;
       }),
     );
