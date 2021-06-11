@@ -3,7 +3,6 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { ReviewIdFromString as RIcodec } from '../../src/types/codecs/ReviewIdFromString';
 import * as DOI from '../../src/types/doi';
-import * as NcrcId from '../../src/types/ncrc-id';
 import * as RI from '../../src/types/review-id';
 import { arbitraryUri, arbitraryWord } from '../helpers';
 
@@ -61,28 +60,22 @@ describe('review-id', () => {
 
   describe('when is an NCRC id', () => {
     const key = arbitraryWord(16);
-    const reviewId = NcrcId.fromString(key);
-
-    it('can be serialized and deserialized', () => {
-      expect(pipe(
-        reviewId,
-        RIcodec.encode,
-        RIcodec.decode,
-      )).toStrictEqual(E.right(reviewId));
-    });
+    const ingestedReviewId = `ncrc:${key}`;
 
     it('identifies the service as ncrc', () => {
       expect(pipe(
-        reviewId,
-        RI.service,
-      )).toStrictEqual('ncrc');
+        ingestedReviewId,
+        RIcodec.decode,
+        E.map(RI.service),
+      )).toStrictEqual(E.right('ncrc'));
     });
 
     it('allows the key to be extracted', () => {
       expect(pipe(
-        reviewId,
-        RI.key,
-      )).toStrictEqual(key);
+        ingestedReviewId,
+        RIcodec.decode,
+        E.map(RI.key),
+      )).toStrictEqual(E.right(key));
     });
   });
 

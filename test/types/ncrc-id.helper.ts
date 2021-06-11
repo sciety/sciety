@@ -1,4 +1,6 @@
 import { v4 } from 'uuid';
-import * as N from '../../src/types/ncrc-id';
+import { ReviewId } from '../../src/types/review-id';
 
-export const arbitraryNcrcId = (): N.NcrcId => N.fromString(v4());
+export const arbitraryNcrcId = (): ReviewId => (
+  `ncrc:${v4()}` as ReviewId
+);

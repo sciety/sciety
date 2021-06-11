@@ -5,11 +5,10 @@ import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import { Doi } from './doi';
-import * as NcrcId from './ncrc-id';
 
 type ServiceBasedReviewId = string & { readonly ServiceBasedReviewId: unique symbol };
 
-export type ReviewId = Doi | NcrcId.NcrcId | ServiceBasedReviewId;
+export type ReviewId = Doi | ServiceBasedReviewId;
 
 const toReviewId = (serialization: string): ReviewId => {
   const [, protocol, value] = /^(.+?):(.+)$/.exec(serialization) ?? [];
@@ -19,7 +18,7 @@ const toReviewId = (serialization: string): ReviewId => {
     case 'hypothesis':
       return serialization as unknown as ServiceBasedReviewId;
     case 'ncrc':
-      return NcrcId.fromString(value);
+      return serialization as unknown as ServiceBasedReviewId;
     case 'prelights':
       return serialization as unknown as ServiceBasedReviewId;
     case 'rapidreviews':
@@ -36,10 +35,6 @@ export const serialize = (id: ReviewId): string => {
     return id.toString();
   }
 
-  if (NcrcId.isNrcId(id)) {
-    return `ncrc:${id.value}`;
-  }
-
   return id;
 };
 
@@ -47,9 +42,7 @@ export const service = (id: ReviewId): string => {
   if (id instanceof Doi) {
     return 'doi';
   }
-  if (NcrcId.isNrcId(id)) {
-    return 'ncrc';
-  }
+
   return id.split(':')[0];
 };
 
@@ -57,9 +50,7 @@ export const key = (id: ReviewId): string => {
   if (id instanceof Doi) {
     return id.value;
   }
-  if (NcrcId.isNrcId(id)) {
-    return id.value;
-  }
+
   return id.slice(id.indexOf(':') + 1);
 };
 
@@ -78,7 +69,7 @@ export const inferredUrl = (id: ReviewId): O.Option<URL> => pipe(
 );
 
 export const isReviewId = (value: unknown): value is ReviewId => (
-  value instanceof Doi || NcrcId.isNrcId(value)
+  value instanceof Doi
 );
 
 const eq: Eq.Eq<ReviewId> = pipe(
