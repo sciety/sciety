@@ -2,10 +2,6 @@ import axios, { AxiosResponse } from 'axios';
 import { Json } from 'fp-ts/Json';
 import { Logger } from './logger';
 
-export const getJsonResponse = async (uri: string): Promise<AxiosResponse<Json>> => (
-  axios.get<Json>(uri)
-);
-
 type Gswhradl = (l: Logger) => (uri: string, h: Record<string, string>) => Promise<AxiosResponse<string>>;
 
 export const getStringWithHeadersRetriesAndDurationLogging: Gswhradl = (logger) => async (uri, headers = {}) => {
@@ -18,7 +14,7 @@ export const getStringWithHeadersRetriesAndDurationLogging: Gswhradl = (logger) 
   }
 };
 
-type Gjwhadl = (l: Logger) => (uri: string, h: Record<string, string>) => Promise<AxiosResponse<Json>>;
+type Gjwhadl = (l: Logger) => (uri: string, h?: Record<string, string>) => Promise<AxiosResponse<Json>>;
 
 export const getJsonWithHeadersAndDurationLogging: Gjwhadl = (logger) => async (uri, headers = {}) => {
   const startTime = new Date();

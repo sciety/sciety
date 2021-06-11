@@ -19,7 +19,7 @@ import { fetchPrelightsHighlight } from './fetch-prelights-highlight';
 import { fetchRapidReview } from './fetch-rapid-review';
 import { fetchReview } from './fetch-review';
 import { fetchStaticFile } from './fetch-static-file';
-import { getJsonResponse } from './fetchers';
+import { getJsonWithHeadersAndDurationLogging } from './fetchers';
 import { findGroups } from './find-groups';
 import { findReviewsForArticleDoi } from './find-reviews-for-article-doi';
 import { follows } from './follows';
@@ -84,12 +84,12 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       const { events, logger, pool } = adapters;
 
       const getJson = async (uri: string) => {
-        const response = await getJsonResponse(uri);
+        const response = await getJsonWithHeadersAndDurationLogging(logger)(uri);
         return response.data;
       };
 
       const getJsonWithRetries = async (uri: string) => {
-        const response = await getJsonResponse(uri);
+        const response = await getJsonWithHeadersAndDurationLogging(logger)(uri);
         return response.data;
       };
 
