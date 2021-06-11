@@ -44,7 +44,10 @@ const getJson = (url: string): TE.TaskEither<Array<t.ValidationError>, JSON> => 
 
 void (async (): Promise<void> => {
   await pipe(
-    ['https://api.crossref.org/prefixes/10.1162/works?filter=type:peer-review'],
+    [
+      'https://api.crossref.org/prefixes/10.1162/works?filter=type:peer-review&rows=100',
+      'https://api.crossref.org/prefixes/10.1162/works?filter=type:peer-review&rows=100&offset=100',
+    ],
     TE.traverseArray(flow(
       getJson,
       TE.chainEitherK(rapidReviewCodec.decode),
