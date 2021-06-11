@@ -2,7 +2,7 @@ import axios from 'axios';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { constant, pipe } from 'fp-ts/function';
+import { constant, flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
@@ -44,10 +44,13 @@ const getJson = (url: string): TE.TaskEither<Array<t.ValidationError>, JSON> => 
 
 void (async (): Promise<void> => {
   await pipe(
-    'https://api.crossref.org/prefixes/10.1162/works?filter=type:peer-review',
-    getJson,
-    TE.chainEitherKW(rapidReviewCodec.decode),
-    TE.map(extractEvaluations),
+    ['https://api.crossref.org/prefixes/10.1162/works?filter=type:peer-review'],
+    TE.traverseArray(flow(
+      getJson,
+      TE.chainEitherK(rapidReviewCodec.decode),
+      TE.map(extractEvaluations),
+    )),
+    TE.map(RA.flatten),
     TE.bimap(
       (errors) => process.stderr.write(PR.failure(errors).join('\n')),
       (evaluations) => {
