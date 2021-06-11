@@ -10,7 +10,7 @@ import { toHtmlFragment } from '../types/html-fragment';
 
 type GetHtml = (url: string) => TE.TaskEither<'unavailable', string>;
 
-const summary = (logger: Logger) => (doc: Document) => pipe(
+const summary = (logger: Logger) => (doc: Document): E.Either<'not-found', string> => pipe(
   doc.querySelector('meta[name=description]')?.getAttribute('content'),
   O.fromNullable,
   E.fromOption(constant('not-found' as const)),
