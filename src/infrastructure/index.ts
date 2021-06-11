@@ -89,7 +89,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       };
 
       const getJsonWithRetries = async (uri: string) => {
-        const response = await getJsonWithRetriesAndLogging(logger, 3)(uri);
+        const response = await getJsonResponse(uri);
         return response.data;
       };
 

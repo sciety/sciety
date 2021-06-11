@@ -7,22 +7,6 @@ export const getJsonResponse = async (uri: string): Promise<AxiosResponse<Json>>
   axios.get<Json>(uri)
 );
 
-type GetJsonWithRetriesAndLogging = (logger: Logger, retryLimit: number)
-=> (uri: string)
-=> Promise<AxiosResponse<Json>>;
-
-export const getJsonWithRetriesAndLogging: GetJsonWithRetriesAndLogging = (logger, retryLimit) => async (uri) => {
-  const retryingClient = axios.create();
-  axiosRetry(retryingClient, {
-    retryDelay: (count, error) => {
-      logger('debug', 'Retrying HTTP request', { count, error });
-      return 0;
-    },
-    retries: retryLimit,
-  });
-  return retryingClient.get<Json>(uri);
-};
-
 type Gswhradl = (l: Logger, r: number) => (uri: string, h: Record<string, string>) => Promise<AxiosResponse<string>>;
 
 export const getStringWithHeadersRetriesAndDurationLogging: Gswhradl = (logger, retryLimit) => async (uri, headers) => {
