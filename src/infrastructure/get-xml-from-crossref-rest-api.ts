@@ -1,6 +1,6 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
-import { fetchString } from './fetchers';
+import { fetchData } from './fetchers';
 import { Logger } from './logger';
 import { Doi } from '../types/doi';
 
@@ -19,7 +19,7 @@ export const getXmlFromCrossrefRestApi = (
   if (O.isSome(crossrefApiBearerToken)) {
     headers['Crossref-Plus-API-Token'] = `Bearer ${crossrefApiBearerToken.value}`;
   }
-  const response = await fetchString(logger)(url.toString(), headers);
+  const response = await fetchData(logger)<string>(url.toString(), headers);
   if (response.data.length === 0) {
     throw new Error('Empty response from Crossref');
   }
