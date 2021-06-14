@@ -7,11 +7,19 @@ import * as S from 'fp-ts/string';
 
 export type ReviewId = string & { readonly ReviewId: unique symbol };
 
+const extractService = (candidate: string) => {
+  const [, service] = /^(.+?):(.+)$/.exec(candidate) ?? [];
+  return service;
+};
+
 const supportedServices = ['doi', 'hypothesis', 'ncrc', 'prelights', 'rapidreviews'];
 
+export const isReviewId = (candidate: unknown): candidate is ReviewId => (
+  typeof candidate === 'string' && supportedServices.includes(extractService(candidate))
+);
+
 const toReviewId = (serialization: string): ReviewId => {
-  const [, service] = /^(.+?):(.+)$/.exec(serialization) ?? [];
-  if (supportedServices.includes(service)) {
+  if (isReviewId(serialization)) {
     return serialization as unknown as ReviewId;
   }
 
@@ -38,10 +46,6 @@ export const inferredUrl = (id: ReviewId): O.Option<URL> => pipe(
   R.lookup(service(id)),
   O.map((template) => template(id)),
   O.map((u) => new URL(u)),
-);
-
-export const isReviewId = (value: unknown): value is ReviewId => (
-  true
 );
 
 const eq: Eq.Eq<ReviewId> = pipe(
