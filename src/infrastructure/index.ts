@@ -18,7 +18,7 @@ import { fetchHypothesisAnnotation } from './fetch-hypothesis-annotation';
 import { fetchNcrcReview } from './fetch-ncrc-review';
 import { fetchPrelightsHighlight } from './fetch-prelights-highlight';
 import { fetchRapidReview } from './fetch-rapid-review';
-import { fetchReview } from './fetch-review';
+import { EvaluationFetcher, fetchReview } from './fetch-review';
 import { fetchStaticFile } from './fetch-static-file';
 import { fetchData } from './fetchers';
 import { findGroups } from './find-groups';
@@ -93,19 +93,19 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       const getAllEvents = T.of(events);
       const getFollowList = createEventSourceFollowListRepository(getAllEvents);
       const fetchFile = (f: string) => fetchStaticFile(f)(loggerIO(logger));
+      const fetchers = new Map<string, EvaluationFetcher>();
+      fetchers.set('doi', fetchDataciteReview(fetchDataset(logger), logger));
+      fetchers.set('hypothesis', fetchHypothesisAnnotation(getJson, logger));
+      fetchers.set('ncrc', fetchNcrcReview(logger));
+      fetchers.set('prelights', fetchPrelightsHighlight(getHtml(logger)));
+      fetchers.set('rapidreviews', fetchRapidReview(logger, getHtml(logger)));
 
       return {
         fetchArticle: fetchCrossrefArticle(responseCache(getXmlFromCrossrefRestApi(
           logger,
           dependencies.crossrefApiBearerToken,
         ), logger), logger),
-        fetchReview: fetchReview(
-          fetchDataciteReview(fetchDataset(logger), logger),
-          fetchHypothesisAnnotation(getJson, logger),
-          fetchNcrcReview(logger),
-          fetchPrelightsHighlight(getHtml(logger)),
-          fetchRapidReview(logger, getHtml(logger)),
-        ),
+        fetchReview: fetchReview(fetchers),
         fetchStaticFile: fetchFile,
         findGroups: findGroups(fetchFile, bootstrapGroups),
         searchEuropePmc: (...params) => (...args) => (

@@ -6,23 +6,10 @@ export type FetchReview = (id: RI.ReviewId) => TE.TaskEither<'unavailable' | 'no
 
 export type EvaluationFetcher = (key: string) => ReturnType<FetchReview>;
 
-export const fetchReview = (
-  fetchDataciteReview: EvaluationFetcher,
-  fetchHypothesisAnnotation: EvaluationFetcher,
-  fetchNcrcReview: EvaluationFetcher,
-  fetchPrelightsHighlight: EvaluationFetcher,
-  fetchRapidReview: EvaluationFetcher,
-): FetchReview => (id) => {
-  const fetchers = new Map<string, EvaluationFetcher>();
-  fetchers.set('doi', fetchDataciteReview);
-  fetchers.set('hypothesis', fetchHypothesisAnnotation);
-  fetchers.set('ncrc', fetchNcrcReview);
-  fetchers.set('prelights', fetchPrelightsHighlight);
-  fetchers.set('rapidreviews', fetchRapidReview);
-
-  const f = fetchers.get(RI.service(id));
-  if (f) {
-    return f(RI.key(id));
+export const fetchReview = (fetchers: Map<string, EvaluationFetcher>): FetchReview => (id) => {
+  const fetcher = fetchers.get(RI.service(id));
+  if (fetcher) {
+    return fetcher(RI.key(id));
   }
   return TE.left('not-found');
 };
