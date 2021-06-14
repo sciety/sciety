@@ -5,26 +5,17 @@ import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 
-type ServiceBasedReviewId = string & { readonly ServiceBasedReviewId: unique symbol };
+export type ReviewId = string & { readonly ReviewId: unique symbol };
 
-export type ReviewId = ServiceBasedReviewId;
+const supportedServices = ['doi', 'hypothesis', 'ncrc', 'prelights', 'rapidreviews'];
 
 const toReviewId = (serialization: string): ReviewId => {
-  const [, protocol] = /^(.+?):(.+)$/.exec(serialization) ?? [];
-  switch (protocol) {
-    case 'doi':
-      return serialization as unknown as ServiceBasedReviewId;
-    case 'hypothesis':
-      return serialization as unknown as ServiceBasedReviewId;
-    case 'ncrc':
-      return serialization as unknown as ServiceBasedReviewId;
-    case 'prelights':
-      return serialization as unknown as ServiceBasedReviewId;
-    case 'rapidreviews':
-      return serialization as unknown as ServiceBasedReviewId;
-    default:
-      throw new Error(`Unable to unserialize ReviewId: "${serialization}"`);
+  const [, service] = /^(.+?):(.+)$/.exec(serialization) ?? [];
+  if (supportedServices.includes(service)) {
+    return serialization as unknown as ReviewId;
   }
+
+  throw new Error(`Unable to unserialize ReviewId: "${serialization}"`);
 };
 
 export const deserialize = (value: string): O.Option<ReviewId> => O.tryCatch(() => toReviewId(value));
