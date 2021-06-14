@@ -1,9 +1,9 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { arbitraryNcrcId } from './ncrc-id.helper';
+import { arbitraryReviewId } from './review-id.helper';
 import * as RI from '../../src/types/review-id';
-import { ReviewId, reviewIdCodec } from '../../src/types/review-id';
+import { reviewIdCodec } from '../../src/types/review-id';
 import { arbitraryUri, arbitraryWord } from '../helpers';
 
 describe('review-id', () => {
@@ -157,9 +157,9 @@ describe('review-id', () => {
   });
 
   describe('codec ReviewIdFromString', () => {
-    it.each([
-      [arbitraryNcrcId()],
-    ])('encodes and decodes back to the same value %s', (id: ReviewId) => {
+    it('encodes and decodes back to the same value %s', () => {
+      const id = arbitraryReviewId();
+
       expect(pipe(
         id,
         reviewIdCodec.encode,
