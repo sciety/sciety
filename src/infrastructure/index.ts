@@ -1,5 +1,6 @@
 import * as A from 'fp-ts/Array';
 import * as I from 'fp-ts/Identity';
+import { Json } from 'fp-ts/Json';
 import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
@@ -84,7 +85,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       const { events, logger, pool } = adapters;
 
       const getJson = async (uri: string) => {
-        const response = await fetchJson(logger)(uri);
+        const response = await fetchJson(logger)<Json>(uri);
         return response.data;
       };
 

@@ -1,5 +1,4 @@
 import axios, { AxiosResponse } from 'axios';
-import { Json } from 'fp-ts/Json';
 import { Logger } from './logger';
 
 export const fetchString = (
@@ -16,9 +15,9 @@ export const fetchString = (
 
 export const fetchJson = (
   logger: Logger,
-) => async (uri: string, headers: Record<string, string> = {}): Promise<AxiosResponse<Json>> => {
+) => async <D>(uri: string, headers: Record<string, string> = {}): Promise<AxiosResponse<D>> => {
   const startTime = new Date();
-  return axios.get<Json>(uri, { headers })
+  return axios.get<D>(uri, { headers })
     .finally(() => {
       const durationInMs = new Date().getTime() - startTime.getTime();
       logger('debug', 'Response time', { uri, durationInMs });

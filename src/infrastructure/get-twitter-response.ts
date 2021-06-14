@@ -8,6 +8,6 @@ export const getTwitterResponse = (
   twitterApiBearerToken: string,
   logger: Logger,
 ): GetTwitterResponse => async (url) => (
-  fetchJson(logger)(url, { Authorization: `Bearer ${twitterApiBearerToken}` })
+  fetchJson(logger)<Json>(url, { Authorization: `Bearer ${twitterApiBearerToken}` })
     .then((response) => response.data)
 );
