@@ -2,28 +2,35 @@ import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { EvaluationFetcher, fetchReview } from '../../src/infrastructure/fetch-review';
-import { ReviewId } from '../../src/types/review-id';
-import { arbitraryHtmlFragment, arbitraryUri, arbitraryWord } from '../helpers';
+import * as RI from '../../src/types/review-id';
+import { arbitraryHtmlFragment, arbitraryUri } from '../helpers';
+import { arbitraryReviewId } from '../types/review-id.helper';
 
 describe('fetch-review', () => {
   describe('when a service is supported', () => {
     it('returns the fetched evaluation', async () => {
-      const serviceName = arbitraryWord();
+      const reviewId = arbitraryReviewId();
       const evaluation = {
         fullText: arbitraryHtmlFragment(),
         url: new URL(arbitraryUri()),
       };
       const fetchers = new Map<string, EvaluationFetcher>();
-      fetchers.set(serviceName, () => TE.right(evaluation));
+      fetchers.set(RI.service(reviewId), () => TE.right(evaluation));
 
-      const id = `${serviceName}:${arbitraryWord()}` as ReviewId;
-      const result = await fetchReview(fetchers)(id)();
+      const result = await fetchReview(fetchers)(reviewId)();
 
       expect(result).toStrictEqual(E.right(evaluation));
     });
   });
 
   describe('when a service is not supported', () => {
-    it.todo('returns not found');
+    it('returns not found', async () => {
+      const fetchers = new Map<string, EvaluationFetcher>();
+
+      const id = arbitraryReviewId();
+      const result = await fetchReview(fetchers)(id)();
+
+      expect(result).toStrictEqual(E.left('not-found'));
+    });
   });
 });
