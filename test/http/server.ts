@@ -16,7 +16,7 @@ import { FetchCrossrefArticle } from '../../src/infrastructure/fetch-crossref-ar
 import { fetchDataciteReview } from '../../src/infrastructure/fetch-datacite-review';
 import { FetchDataset } from '../../src/infrastructure/fetch-dataset';
 import { fetchHypothesisAnnotation } from '../../src/infrastructure/fetch-hypothesis-annotation';
-import { EvaluationFetcher, fetchReview } from '../../src/infrastructure/fetch-review';
+import { fetchReview } from '../../src/infrastructure/fetch-review';
 import { inMemoryGroupRepository } from '../../src/infrastructure/in-memory-groups';
 import { FollowList } from '../../src/types/follow-list';
 import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
@@ -46,12 +46,13 @@ export const createTestServer = async (): Promise<TestServer> => {
     server: 'biorxiv',
   });
 
-  const fetchers = new Map<string, EvaluationFetcher>();
-  fetchers.set('doi', fetchDataciteReview(fetchDataCiteDataset, dummyLogger));
-  fetchers.set('hypothesis', fetchHypothesisAnnotation(shouldNotBeCalled, dummyLogger));
-  fetchers.set('ncrc', () => TE.left('unavailable'));
-  fetchers.set('prelights', () => TE.left('unavailable'));
-  fetchers.set('rapidreviews', () => TE.left('unavailable'));
+  const fetchers = {
+    doi: fetchDataciteReview(fetchDataCiteDataset, dummyLogger),
+    hypothesis: fetchHypothesisAnnotation(shouldNotBeCalled, dummyLogger),
+    ncrc: () => TE.left('unavailable' as const),
+    prelights: () => TE.left('unavailable' as const),
+    rapidreviews: () => TE.left('unavailable' as const),
+  };
 
   const adapters: Adapters = {
     fetchArticle,
