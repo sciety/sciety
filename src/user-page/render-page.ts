@@ -18,8 +18,8 @@ export const renderPage = ({
       <div class="sciety-grid sciety-grid--user">
         ${header}
         <div class="user-page-contents">
-          ${followList}
           ${savedArticles}
+          ${followList}
         </div>
       </div>
     `),
