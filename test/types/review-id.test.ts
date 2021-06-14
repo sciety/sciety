@@ -1,8 +1,9 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { ReviewIdFromString as RIcodec } from '../../src/types/codecs/ReviewIdFromString';
+import { arbitraryNcrcId } from './ncrc-id.helper';
 import * as RI from '../../src/types/review-id';
+import { ReviewId, reviewIdCodec } from '../../src/types/review-id';
 import { arbitraryUri, arbitraryWord } from '../helpers';
 
 describe('review-id', () => {
@@ -13,7 +14,7 @@ describe('review-id', () => {
     it('identifies the service as doi', () => {
       expect(pipe(
         ingestedReviewId,
-        RIcodec.decode,
+        RI.reviewIdCodec.decode,
         E.map(RI.service),
       )).toStrictEqual(E.right('doi'));
     });
@@ -21,7 +22,7 @@ describe('review-id', () => {
     it('allows the key to be extracted', () => {
       expect(pipe(
         ingestedReviewId,
-        RIcodec.decode,
+        RI.reviewIdCodec.decode,
         E.map(RI.key),
       )).toStrictEqual(E.right(key));
     });
@@ -34,7 +35,7 @@ describe('review-id', () => {
     it('identifies the service as hypothesis', () => {
       expect(pipe(
         ingestedReviewId,
-        RIcodec.decode,
+        RI.reviewIdCodec.decode,
         E.map(RI.service),
       )).toStrictEqual(E.right('hypothesis'));
     });
@@ -42,7 +43,7 @@ describe('review-id', () => {
     it('allows the key to be extracted', () => {
       expect(pipe(
         ingestedReviewId,
-        RIcodec.decode,
+        RI.reviewIdCodec.decode,
         E.map(RI.key),
       )).toStrictEqual(E.right(key));
     });
@@ -55,7 +56,7 @@ describe('review-id', () => {
     it('identifies the service as ncrc', () => {
       expect(pipe(
         ingestedReviewId,
-        RIcodec.decode,
+        RI.reviewIdCodec.decode,
         E.map(RI.service),
       )).toStrictEqual(E.right('ncrc'));
     });
@@ -63,7 +64,7 @@ describe('review-id', () => {
     it('allows the key to be extracted', () => {
       expect(pipe(
         ingestedReviewId,
-        RIcodec.decode,
+        RI.reviewIdCodec.decode,
         E.map(RI.key),
       )).toStrictEqual(E.right(key));
     });
@@ -76,7 +77,7 @@ describe('review-id', () => {
     it('identifies the service as rapidreviews', () => {
       expect(pipe(
         ingestedReviewId,
-        RIcodec.decode,
+        RI.reviewIdCodec.decode,
         E.map(RI.service),
       )).toStrictEqual(E.right('rapidreviews'));
     });
@@ -84,7 +85,7 @@ describe('review-id', () => {
     it('allows the key to be extracted', () => {
       expect(pipe(
         ingestedReviewId,
-        RIcodec.decode,
+        RI.reviewIdCodec.decode,
         E.map(RI.key),
       )).toStrictEqual(E.right(key));
     });
@@ -92,7 +93,7 @@ describe('review-id', () => {
     it('infers the original URL', () => {
       expect(pipe(
         ingestedReviewId,
-        RIcodec.decode,
+        RI.reviewIdCodec.decode,
         O.fromEither,
         O.chain(RI.inferredUrl),
         O.map((url) => url.toString()),
@@ -102,8 +103,8 @@ describe('review-id', () => {
     it('encodes to the original string', () => {
       expect(pipe(
         ingestedReviewId,
-        RIcodec.decode,
-        E.map(RIcodec.encode),
+        RI.reviewIdCodec.decode,
+        E.map(RI.reviewIdCodec.encode),
       )).toStrictEqual(E.right(ingestedReviewId));
     });
   });
@@ -115,7 +116,7 @@ describe('review-id', () => {
     it('identifies the service as prelights', () => {
       expect(pipe(
         ingestedReviewId,
-        RIcodec.decode,
+        RI.reviewIdCodec.decode,
         E.map(RI.service),
       )).toStrictEqual(E.right('prelights'));
     });
@@ -123,7 +124,7 @@ describe('review-id', () => {
     it('allows the key to be extracted', () => {
       expect(pipe(
         ingestedReviewId,
-        RIcodec.decode,
+        RI.reviewIdCodec.decode,
         E.map(RI.key),
       )).toStrictEqual(E.right(key));
     });
@@ -131,7 +132,7 @@ describe('review-id', () => {
     it('infers the original URL', () => {
       expect(pipe(
         ingestedReviewId,
-        RIcodec.decode,
+        RI.reviewIdCodec.decode,
         O.fromEither,
         O.chain(RI.inferredUrl),
         O.map((url) => url.toString()),
@@ -141,8 +142,8 @@ describe('review-id', () => {
     it('encodes to the original string', () => {
       expect(pipe(
         ingestedReviewId,
-        RIcodec.decode,
-        E.map(RIcodec.encode),
+        RI.reviewIdCodec.decode,
+        E.map(RI.reviewIdCodec.encode),
       )).toStrictEqual(E.right(ingestedReviewId));
     });
   });
@@ -151,7 +152,19 @@ describe('review-id', () => {
     it('cannot be deserialized', () => {
       const unrecognisedFormat = 'foo';
 
-      expect(RIcodec.decode(unrecognisedFormat)._tag).toStrictEqual('Left');
+      expect(RI.reviewIdCodec.decode(unrecognisedFormat)._tag).toStrictEqual('Left');
+    });
+  });
+
+  describe('codec ReviewIdFromString', () => {
+    it.each([
+      [arbitraryNcrcId()],
+    ])('encodes and decodes back to the same value %s', (id: ReviewId) => {
+      expect(pipe(
+        id,
+        reviewIdCodec.encode,
+        reviewIdCodec.decode,
+      )).toStrictEqual(E.right(id));
     });
   });
 });

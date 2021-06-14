@@ -2,7 +2,7 @@ import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import * as RFI from './review-feed-item.helper';
 import { renderReviewFeedItem } from '../../../src/article-page/activity-page/render-review-feed-item';
-import { ReviewIdFromString as RIcodec } from '../../../src/types/codecs/ReviewIdFromString';
+import { reviewIdCodec } from '../../../src/types/review-id';
 import * as t from '../../helpers';
 
 describe('render-review-feed-item', () => {
@@ -34,7 +34,7 @@ describe('render-review-feed-item', () => {
     });
 
     it('renders an id tag with the correct value', async () => {
-      expect(rendered.getElementById(RIcodec.encode(item.id))).not.toBeNull();
+      expect(rendered.getElementById(reviewIdCodec.encode(item.id))).not.toBeNull();
     });
   });
 
@@ -69,7 +69,7 @@ describe('render-review-feed-item', () => {
     });
 
     it('renders an id tag with the correct value', async () => {
-      expect(rendered.getElementById(RIcodec.encode(item.id))).not.toBeNull();
+      expect(rendered.getElementById(reviewIdCodec.encode(item.id))).not.toBeNull();
     });
   });
 
@@ -99,7 +99,7 @@ describe('render-review-feed-item', () => {
     });
 
     it('renders an id tag with the correct value', async () => {
-      expect(rendered.getElementById(RIcodec.encode(item.id))).not.toBeNull();
+      expect(rendered.getElementById(reviewIdCodec.encode(item.id))).not.toBeNull();
     });
   });
 });

@@ -3,8 +3,8 @@ import { DateFromISOString } from 'io-ts-types/DateFromISOString';
 import { DoiFromString } from './DoiFromString';
 import { EventIdFromString } from './EventIdFromString';
 import { GroupIdFromString } from './GroupIdFromString';
-import { ReviewIdFromString } from './ReviewIdFromString';
 import { UserIdFromString } from './UserIdFromString';
+import { reviewIdCodec } from '../review-id';
 
 const userFollowedEditorialCommunityEvent = t.type({
   id: EventIdFromString,
@@ -27,7 +27,7 @@ const userFoundReviewHelpfulEvent = t.type({
   type: t.literal('UserFoundReviewHelpful'),
   date: DateFromISOString,
   userId: UserIdFromString,
-  reviewId: ReviewIdFromString,
+  reviewId: reviewIdCodec,
 });
 
 const userFoundReviewNotHelpfulEvent = t.type({
@@ -35,7 +35,7 @@ const userFoundReviewNotHelpfulEvent = t.type({
   type: t.literal('UserFoundReviewNotHelpful'),
   date: DateFromISOString,
   userId: UserIdFromString,
-  reviewId: ReviewIdFromString,
+  reviewId: reviewIdCodec,
 });
 
 const userRevokedFindingReviewHelpfulEvent = t.type({
@@ -43,7 +43,7 @@ const userRevokedFindingReviewHelpfulEvent = t.type({
   type: t.literal('UserRevokedFindingReviewHelpful'),
   date: DateFromISOString,
   userId: UserIdFromString,
-  reviewId: ReviewIdFromString,
+  reviewId: reviewIdCodec,
 });
 
 const userRevokedFindingReviewNotHelpfulEvent = t.type({
@@ -51,7 +51,7 @@ const userRevokedFindingReviewNotHelpfulEvent = t.type({
   type: t.literal('UserRevokedFindingReviewNotHelpful'),
   date: DateFromISOString,
   userId: UserIdFromString,
-  reviewId: ReviewIdFromString,
+  reviewId: reviewIdCodec,
 });
 
 const userSavedArticleEvent = t.type({

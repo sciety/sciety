@@ -1,9 +1,11 @@
 import { URL } from 'url';
+import * as E from 'fp-ts/Either';
 import * as Eq from 'fp-ts/Eq';
 import * as O from 'fp-ts/Option';
 import * as R from 'fp-ts/Record';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
+import * as t from 'io-ts';
 
 export type ReviewId = string & { readonly ReviewId: unique symbol };
 
@@ -54,3 +56,19 @@ const eq: Eq.Eq<ReviewId> = pipe(
 );
 
 export const { equals } = eq;
+
+export const reviewIdCodec = new t.Type(
+  'reviewIdCodec',
+  isReviewId,
+  (input, context) => pipe(
+    t.string.validate(input, context),
+    E.chain(flow(
+      deserialize,
+      O.fold(
+        () => t.failure(input, context),
+        t.success,
+      ),
+    )),
+  ),
+  serialize,
+);
