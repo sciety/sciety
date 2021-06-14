@@ -11,6 +11,7 @@ import * as PR from 'io-ts/PathReporter';
 import { DoiFromString } from '../src/types/codecs/DoiFromString';
 import { Doi, isDoi } from '../src/types/doi';
 import * as RI from '../src/types/review-id';
+import { ReviewId } from '../src/types/review-id';
 
 const preReviewPreprint = t.type({
   handle: t.union([DoiFromString, t.string]),
@@ -57,7 +58,7 @@ const toPreprint = flow(
 
 const toReviews = (preprint: Preprint): ReadonlyArray<Review> => pipe(
   preprint.fullReviews,
-  RA.map(({ doi, createdAt }) => ({ date: createdAt, articleDoi: preprint.handle, reviewId: doi })),
+  RA.map(({ doi, createdAt }) => ({ date: createdAt, articleDoi: preprint.handle, reviewId: `doi:${doi.value}` as unknown as ReviewId })),
 );
 
 void pipe(

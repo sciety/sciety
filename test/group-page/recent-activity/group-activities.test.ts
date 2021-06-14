@@ -17,7 +17,7 @@ const generateNEventsForGroup = (
   [...Array(numberOfEvents).keys()].map((i) => (editorialCommunityReviewedArticle(
     groupId,
     new Doi(`10.1101/${i}`),
-    new Doi(`10.1101/evaluation${i}`),
+    arbitraryReviewId(),
   ))));
 
 describe('group-activities', () => {

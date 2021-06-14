@@ -6,11 +6,11 @@ import { fetchReview } from '../../src/infrastructure/fetch-review';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { arbitraryString } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
-import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryHypothesisAnnotationId } from '../types/hypothesis-annotation-id.helper';
 import { arbitraryNcrcId } from '../types/ncrc-id.helper';
+import { arbitraryReviewDoi } from '../types/review-doi.helper';
 
-const reviewDoi = arbitraryDoi();
+const reviewDoi = arbitraryReviewDoi();
 
 const fetchedEvaluation = {
   fullText: pipe(arbitraryString(), toHtmlFragment),

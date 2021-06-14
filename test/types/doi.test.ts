@@ -1,6 +1,5 @@
 import { pipe } from 'fp-ts/function';
 import { Doi } from '../../src/types/doi';
-import * as RI from '../../src/types/review-id';
 
 describe('doi', () => {
   it.each([
@@ -9,7 +8,7 @@ describe('doi', () => {
   ])('accepts valid DOI syntax', (doiSyntaxExample) => {
     expect(pipe(
       new Doi(doiSyntaxExample),
-      RI.key,
+      (doi) => doi.value,
     )).toStrictEqual('10.5281/zenodo.3678326');
   });
 

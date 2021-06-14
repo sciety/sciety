@@ -4,18 +4,13 @@
 
 import { namedNode } from '@rdfjs/data-model';
 import rdfFetch, { DatasetResponse } from '@rdfjs/fetch-lite';
-import { pipe } from 'fp-ts/function';
 import datasetFactory from 'rdf-dataset-indexed';
 import type { DatasetCore } from 'rdf-js';
 import { fetchDataset } from '../../src/infrastructure/fetch-dataset';
-import * as RI from '../../src/types/review-id';
 import { dummyLogger } from '../dummy-logger';
-import { arbitraryDoi } from '../types/doi.helper';
+import { arbitraryWord } from '../helpers';
 
-const reviewDoi = pipe(
-  arbitraryDoi(),
-  RI.key,
-);
+const reviewDoi = arbitraryWord();
 
 const createStubFetch = (response: Partial<DatasetResponse<DatasetCore>>): typeof rdfFetch => (
   async () => response as DatasetResponse<DatasetCore>

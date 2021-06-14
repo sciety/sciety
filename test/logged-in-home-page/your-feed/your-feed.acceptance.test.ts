@@ -14,6 +14,7 @@ import { sanitise } from '../../../src/types/sanitised-html-fragment';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
+import { arbitraryReviewId } from '../../types/review-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('your-feed acceptance', () => {
@@ -76,7 +77,7 @@ describe('your-feed acceptance', () => {
           findVersionsForArticleDoi: arbitraryVersions,
           getAllEvents: T.of([
             userFollowedEditorialCommunity(userId, groupId),
-            editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryDoi()),
+            editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
           ]),
         };
         const html = await yourFeed(adapters)(userId)();
@@ -106,7 +107,7 @@ describe('your-feed acceptance', () => {
           findVersionsForArticleDoi: arbitraryVersions,
           getAllEvents: T.of([
             userFollowedEditorialCommunity(userId, groupId),
-            editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryDoi()),
+            editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
           ]),
         };
         const html = await yourFeed(adapters)(userId)();
@@ -130,8 +131,8 @@ describe('your-feed acceptance', () => {
             findVersionsForArticleDoi: arbitraryVersions,
             getAllEvents: T.of([
               userFollowedEditorialCommunity(userId, groupId),
-              editorialCommunityReviewedArticle(groupId, failingDoi, arbitraryDoi()),
-              editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryDoi()),
+              editorialCommunityReviewedArticle(groupId, failingDoi, arbitraryReviewId()),
+              editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
             ]),
           };
 
@@ -151,7 +152,7 @@ describe('your-feed acceptance', () => {
             findVersionsForArticleDoi: shouldNotBeCalled,
             getAllEvents: T.of([
               userFollowedEditorialCommunity(userId, groupId),
-              editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryDoi()),
+              editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
             ]),
           };
           const html = await yourFeed(adapters)(userId)();

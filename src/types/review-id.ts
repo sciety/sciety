@@ -4,17 +4,16 @@ import * as O from 'fp-ts/Option';
 import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
-import { Doi } from './doi';
 
 type ServiceBasedReviewId = string & { readonly ServiceBasedReviewId: unique symbol };
 
-export type ReviewId = Doi | ServiceBasedReviewId;
+export type ReviewId = ServiceBasedReviewId;
 
 const toReviewId = (serialization: string): ReviewId => {
-  const [, protocol, value] = /^(.+?):(.+)$/.exec(serialization) ?? [];
+  const [, protocol] = /^(.+?):(.+)$/.exec(serialization) ?? [];
   switch (protocol) {
     case 'doi':
-      return new Doi(value);
+      return serialization as unknown as ServiceBasedReviewId;
     case 'hypothesis':
       return serialization as unknown as ServiceBasedReviewId;
     case 'ncrc':
@@ -30,29 +29,11 @@ const toReviewId = (serialization: string): ReviewId => {
 
 export const deserialize = (value: string): O.Option<ReviewId> => O.tryCatch(() => toReviewId(value));
 
-export const serialize = (id: ReviewId): string => {
-  if (id instanceof Doi) {
-    return id.toString();
-  }
+export const serialize = (id: ReviewId): string => id;
 
-  return id;
-};
+export const service = (id: ReviewId): string => id.split(':')[0];
 
-export const service = (id: ReviewId): string => {
-  if (id instanceof Doi) {
-    return 'doi';
-  }
-
-  return id.split(':')[0];
-};
-
-export const key = (id: ReviewId): string => {
-  if (id instanceof Doi) {
-    return id.value;
-  }
-
-  return id.slice(id.indexOf(':') + 1);
-};
+export const key = (id: ReviewId): string => id.slice(id.indexOf(':') + 1);
 
 const urlTemplates = ({
   doi: (id: ReviewId) => `https://doi.org/${key(id)}`,
@@ -69,7 +50,7 @@ export const inferredUrl = (id: ReviewId): O.Option<URL> => pipe(
 );
 
 export const isReviewId = (value: unknown): value is ReviewId => (
-  value instanceof Doi
+  true
 );
 
 const eq: Eq.Eq<ReviewId> = pipe(
