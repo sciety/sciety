@@ -2,15 +2,15 @@ import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import { renderFeed } from '../../../src/article-page/activity-page/render-feed';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
-import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
+import { arbitraryReviewId } from '../../types/review-id.helper';
 
 describe('render-feed', () => {
   it('returns a list', () => {
     const feedItems = [
       {
         type: 'review',
-        id: arbitraryDoi(),
+        id: arbitraryReviewId(),
         source: O.some(new URL('http://example.com')),
         occurredAt: new Date(),
         groupId: arbitraryGroupId(),

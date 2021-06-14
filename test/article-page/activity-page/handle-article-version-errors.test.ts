@@ -5,8 +5,8 @@ import { handleArticleVersionErrors } from '../../../src/article-page/activity-p
 import { FeedItem } from '../../../src/article-page/activity-page/render-feed';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { sanitise } from '../../../src/types/sanitised-html-fragment';
-import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
+import { arbitraryReviewId } from '../../types/review-id.helper';
 
 describe('handle-article-version-errors', () => {
   describe('there are article version events', () => {
@@ -33,7 +33,7 @@ describe('handle-article-version-errors', () => {
       const inputItems: ReadonlyArray<FeedItem> = [
         {
           type: 'review',
-          id: arbitraryDoi(),
+          id: arbitraryReviewId(),
           occurredAt: new Date(),
           source: O.some(new URL('https://example.com')),
           groupId,
@@ -48,7 +48,7 @@ describe('handle-article-version-errors', () => {
         },
         {
           type: 'review',
-          id: arbitraryDoi(),
+          id: arbitraryReviewId(),
           occurredAt: new Date(),
           source: O.some(new URL('https://example.com')),
           groupId,

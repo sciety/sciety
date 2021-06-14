@@ -6,6 +6,7 @@ import {
 } from '../../src/types/domain-events';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
+import { arbitraryReviewId } from '../types/review-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
 describe('update-group-meta', () => {
@@ -27,7 +28,7 @@ describe('update-group-meta', () => {
   });
 
   it('updates the meta when passed a EditorialCommunityReviewedArticle', () => {
-    const event = editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryDoi());
+    const event = editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryReviewId());
     const result = updateGroupMeta(groupId)(initial, event);
 
     expect(result).toStrictEqual({ followerCount: 41, reviewCount: 28 });
