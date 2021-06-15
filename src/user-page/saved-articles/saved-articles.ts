@@ -4,6 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow } from 'fp-ts/function';
 import { GetAllEvents, projectSavedArticleDois } from './project-saved-article-dois';
 import { renderSavedArticles } from './render-saved-articles';
+import { ArticleServer } from '../../types/article-server';
 import { Doi } from '../../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { UserId } from '../../types/user-id';
