@@ -14,7 +14,7 @@ export const renderSavedArticles = flow(
     () => '',
     (list) => `
         <section id="saved-articles">
-          <h2>Saved articles</h2>
+          <h2 class="saved-articles__header">Saved articles</h2>
           <ol class="saved-articles" role="list">
             ${list}
           </ol>

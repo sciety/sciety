@@ -5,6 +5,11 @@
 @use 'typography';
 @use 'breakpoints';
 
+.sciety-grid.sciety-grid--user {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .sciety-grid--user > .page-header--user {
   grid-column: 1 / -1;
 
@@ -13,9 +18,13 @@
   }
 }
 
+$_inline-margin: 1rem;
+
 .page-header--user {
   display: flex;
   align-items: center;
+  margin-left: $_inline-margin;
+  margin-right: $_inline-margin;
 
   .page-header__avatar {
     width: 48px;
@@ -40,6 +49,8 @@
 }
 
 .followed-groups {
+  margin-left: $_inline-margin;
+  margin-right: $_inline-margin;
   margin-bottom: #{baseline.increments(6)};
 }
 
@@ -75,6 +86,11 @@ $_avatar-border-width: settings.$border-width;
 
 .saved-articles {
   @include list.basics();
+}
+
+.saved-articles__header {
+  margin-left: $_inline-margin;
+  margin-right: $_inline-margin;
 }
 
 .saved-articles__item {
