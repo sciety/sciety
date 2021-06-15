@@ -59,10 +59,7 @@
 }
 
 @mixin page-label () {
-  font-family: settings.$font-family;
   font-size: functions.px-to-rem(20px);
-  line-height: 1.2;
-  font-weight: bold;
 }
 
 @mixin body-1 () {
