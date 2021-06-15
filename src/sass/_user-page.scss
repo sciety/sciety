@@ -3,9 +3,14 @@
 @use 'list';
 @use 'settings';
 @use 'typography';
+@use 'breakpoints';
 
 .sciety-grid--user > .page-header--user {
   grid-column: 1 / -1;
+
+  @include breakpoints.not-narrow {
+    grid-column: 3 / 11;
+  }
 }
 
 .page-header--user {
@@ -28,11 +33,9 @@
 
 .user-page-contents {
   grid-column: 1 / -1;
-}
 
-@media screen and (min-width: 56.25em) {
-  .sciety-grid--user > .user-page-contents {
-    grid-column: 1 / 8;
+  @include breakpoints.not-narrow {
+    grid-column: 3 / 11;
   }
 }
 
