@@ -2,22 +2,12 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { flow } from 'fp-ts/function';
+import { renderArticleCard } from '../../shared-components/article-card';
 import { templateListItems } from '../../shared-components/list-items';
-import { Doi } from '../../types/doi';
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
-
-type SavedArticle = {
-  doi: Doi,
-  title: HtmlFragment,
-};
-
-const renderAsLink = flow(
-  (item: SavedArticle) => `<a href="/articles/activity/${item.doi.value}" class="saved-articles__link">${item.title}</a>`,
-  toHtmlFragment,
-);
+import { toHtmlFragment } from '../../types/html-fragment';
 
 export const renderSavedArticles = flow(
-  RA.map(renderAsLink),
+  RA.map(renderArticleCard),
   RNEA.fromReadonlyArray,
   O.map((items) => templateListItems(items, 'saved-articles__item')),
   O.fold(
