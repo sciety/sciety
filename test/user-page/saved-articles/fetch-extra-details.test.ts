@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/Option';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { Doi } from '../../../src/types/doi';
@@ -26,7 +27,7 @@ describe('fetch-extra-details', () => {
             occurredAt: latestActivityDate,
           },
         ]),
-        getLatestArticleVersionDate: () => T.of(O.some(latestVersionDate)),
+        findVersionsForArticleDoi: () => T.of(RNEA.fromReadonlyArray([{ occurredAt: latestVersionDate }])),
       };
 
       const article = {

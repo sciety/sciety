@@ -3,6 +3,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { userSavedArticle } from '../../src/types/domain-events';
 import { savedArticles } from '../../src/user-page/saved-articles/saved-articles';
+import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
@@ -18,6 +19,8 @@ describe('saved-articles acceptance', () => {
           ),
         ]),
         fetchArticle: () => TE.left('unavailabe'),
+        findReviewsForArticleDoi: shouldNotBeCalled,
+        findVersionsForArticleDoi: shouldNotBeCalled,
       };
       const component = await savedArticles(adapters)(userId)();
 
