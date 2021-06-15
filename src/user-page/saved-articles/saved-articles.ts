@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow } from 'fp-ts/function';
-import { populateArticleViewModel, Ports as PopulateArticleViewModelPorts } from './fetch-extra-details';
+import { populateArticleViewModel, Ports as PopulateArticleViewModelPorts } from './populate-article-view-model';
 import { GetAllEvents, projectSavedArticleDois } from './project-saved-article-dois';
 import { renderSavedArticles } from './render-saved-articles';
 import { ArticleServer } from '../../types/article-server';
