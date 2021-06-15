@@ -8,7 +8,7 @@ import { Doi } from '../../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { UserId } from '../../types/user-id';
 
-type FetchArticle = (doi: Doi) => TE.TaskEither<unknown, { doi: Doi, title: HtmlFragment }>;
+type FetchArticle = (doi: Doi) => TE.TaskEither<unknown, { doi: Doi, server: ArticleServer, title: HtmlFragment }>;
 
 export type Ports = {
   getAllEvents: GetAllEvents,
