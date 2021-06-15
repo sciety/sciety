@@ -5,6 +5,8 @@
 @use 'typography';
 @use 'breakpoints';
 
+$_inline-margin: 1rem;
+
 .sciety-grid.sciety-grid--user {
   margin-left: auto;
   margin-right: auto;
@@ -18,13 +20,16 @@
   }
 }
 
-$_inline-margin: 1rem;
-
 .page-header--user {
   display: flex;
   align-items: center;
   margin-left: $_inline-margin;
   margin-right: $_inline-margin;
+
+  @include breakpoints.not-narrow {
+    margin-left: 0;
+    margin-right: 0;
+  }
 
   .page-header__avatar {
     width: 48px;
@@ -52,6 +57,11 @@ $_inline-margin: 1rem;
   margin-left: $_inline-margin;
   margin-right: $_inline-margin;
   margin-bottom: #{baseline.increments(6)};
+
+  @include breakpoints.not-narrow {
+    margin-left: 0;
+    margin-right: 0;
+  }
 }
 
 .followed-groups__list {
@@ -91,6 +101,11 @@ $_avatar-border-width: settings.$border-width;
 .saved-articles__header {
   margin-left: $_inline-margin;
   margin-right: $_inline-margin;
+
+  @include breakpoints.not-narrow {
+    margin-left: 0;
+    margin-right: 0;
+  }
 }
 
 .saved-articles__item {
