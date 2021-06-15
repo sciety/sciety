@@ -8,7 +8,7 @@ import { arbitraryUserId } from '../types/user-id.helper';
 
 describe('saved-articles acceptance', () => {
   describe('article details unavailable for any article', () => {
-    it.skip('displays a single error message', async () => {
+    it('displays a single error message', async () => {
       const userId = arbitraryUserId();
       const adapters = {
         getAllEvents: T.of([

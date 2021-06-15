@@ -16,9 +16,8 @@ describe('fetch-get-saved-articles', () => {
       const title = pipe(
         arbitraryString(),
         toHtmlFragment,
-        O.some,
       );
-      const getArticle = () => T.of(title);
+      const getArticle = () => T.of(O.some(title));
       const savedArticles = await pipe(
         fetchSavedArticles(getArticle)([articleId]),
         TE.getOrElse(() => { throw new Error('Cannot happen'); }),

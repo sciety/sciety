@@ -1,4 +1,3 @@
-import * as O from 'fp-ts/Option';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { renderSavedArticles } from '../../../src/user-page/saved-articles/render-saved-articles';
 import { arbitraryString } from '../../helpers';
@@ -10,7 +9,7 @@ describe('render-saved-articles', () => {
       const savedArticles = [
         {
           doi: arbitraryDoi(),
-          title: O.some(toHtmlFragment(arbitraryString())),
+          title: toHtmlFragment(arbitraryString()),
         },
       ];
       const rendered = renderSavedArticles(savedArticles);

@@ -1,4 +1,4 @@
-import * as O from 'fp-ts/Option';
+import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
@@ -13,18 +13,18 @@ export type GetSavedArticleDois = (userId: UserId) => T.Task<ReadonlyArray<Doi>>
 
 type SavedArticle = {
   doi: Doi,
-  title: O.Option<HtmlFragment>,
+  title: HtmlFragment,
 };
 
 const constructSavedArticle = (getArticleTitle: GetArticleTitle) => (doi: Doi) => pipe(
   doi,
   getArticleTitle,
-  T.map((title) => ({ doi, title })),
+  TO.map((title) => ({ doi, title })),
 );
 
-type FetchSavedArticles = (articles: ReadonlyArray<Doi>) => TE.TaskEither<never, ReadonlyArray<SavedArticle>>;
+type FetchSavedArticles = (articles: ReadonlyArray<Doi>) => TE.TaskEither<'unavailable', ReadonlyArray<SavedArticle>>;
 
 export const fetchSavedArticles = (getArticleTitle: GetArticleTitle): FetchSavedArticles => flow(
-  T.traverseArray(constructSavedArticle(getArticleTitle)),
-  TE.rightTask,
+  TO.traverseArray(constructSavedArticle(getArticleTitle)),
+  T.map(E.fromOption(() => 'unavailable' as const)),
 );
