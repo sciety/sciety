@@ -15,11 +15,13 @@ export const renderPage = ({
   {
     title: userDisplayName,
     content: toHtmlFragment(`
-      <div class="sciety-grid sciety-grid--user">
-        ${header}
-        <div class="user-page-contents">
-          ${savedArticles}
-          ${followList}
+      <div class="page-content__background">
+        <div class="sciety-grid sciety-grid--user">
+          ${header}
+          <div class="user-page-contents">
+            ${savedArticles}
+            ${followList}
+          </div>
         </div>
       </div>
     `),
