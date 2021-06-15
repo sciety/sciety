@@ -41,7 +41,6 @@ $_inline-margin: 1rem;
 
   .page-header__handle {
     @include typography.page-label();
-    color: rgb(102, 102, 102);
   }
 }
 
