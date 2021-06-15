@@ -37,7 +37,6 @@
 
 .article-meta-data-list {
   @include list.basics();
-  font-family: settings.$font-secondary;
 }
 
 .article-abstract {
