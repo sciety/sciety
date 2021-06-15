@@ -1,5 +1,7 @@
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { fetchSavedArticles } from '../../../src/user-page/saved-articles/fetch-saved-articles';
@@ -17,7 +19,10 @@ describe('fetch-get-saved-articles', () => {
         O.some,
       );
       const getArticle = () => T.of(title);
-      const savedArticles = await fetchSavedArticles(getArticle)([articleId])();
+      const savedArticles = await pipe(
+        fetchSavedArticles(getArticle)([articleId]),
+        TE.getOrElse(() => { throw new Error('Cannot happen'); }),
+      )();
 
       expect(savedArticles[0]).toMatchObject({
         doi: articleId,
@@ -30,7 +35,7 @@ describe('fetch-get-saved-articles', () => {
     it('returns an empty array', async () => {
       const savedArticles = await fetchSavedArticles(shouldNotBeCalled)([])();
 
-      expect(savedArticles).toHaveLength(0);
+      expect(savedArticles).toStrictEqual(E.right([]));
     });
   });
 });
