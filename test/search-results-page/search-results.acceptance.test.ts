@@ -10,9 +10,7 @@ import { toHtmlFragment } from '../../src/types/html-fragment';
 import { Page } from '../../src/types/page';
 import { RenderPageError } from '../../src/types/render-page-error';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
-import {
-  arbitraryDate, arbitraryNumber, arbitraryString, arbitraryWord,
-} from '../helpers';
+import { arbitraryNumber, arbitraryString, arbitraryWord } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
@@ -111,7 +109,6 @@ describe('search-results-page acceptance', () => {
           server: 'biorxiv' as const,
           title: pipe(arbitraryString(), toHtmlFragment, sanitise),
           authors: [arbitraryString()],
-          postedDate: arbitraryDate(),
         });
 
         it('displays the first n articles if more than n matching articles', async () => {

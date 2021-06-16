@@ -13,7 +13,6 @@ export type ArticleItem = {
   server: ArticleServer,
   title: SanitisedHtmlFragment,
   authors: ReadonlyArray<string>,
-  postedDate: Date,
 };
 
 export const isArticleItem = (item: ArticleItem | GroupItem): item is ArticleItem => 'doi' in item;

@@ -9,7 +9,6 @@ import {
   constant, flow, pipe, tupled,
 } from 'fp-ts/function';
 import * as t from 'io-ts';
-import { DateFromISOString } from 'io-ts-types/DateFromISOString';
 import * as PR from 'io-ts/PathReporter';
 import { Logger } from './logger';
 import { ArticleServer } from '../types/article-server';
@@ -25,7 +24,6 @@ type SearchResult = {
   server: ArticleServer,
   title: SanitisedHtmlFragment,
   authors: ReadonlyArray<string>,
-  postedDate: Date,
 };
 
 export type SearchResults = {
@@ -52,7 +50,6 @@ const resultDetails = t.type({
   authorList: t.type({
     author: t.readonlyArray(europePmcAuthor),
   }),
-  firstPublicationDate: DateFromISOString,
   bookOrReportDetails: t.type({
     publisher: europePmcPublisher,
   }),
@@ -99,7 +96,6 @@ const constructSearchResults = (pageSize: number) => (data: EuropePmcResponse) =
       item.authorList.author,
       RA.map((author) => ('fullName' in author ? author.fullName : author.collectiveName)),
     ),
-    postedDate: item.firstPublicationDate,
   }));
   const nextCursor = data.resultList.result.length < pageSize ? O.none : O.some(data.nextCursorMark);
   return {

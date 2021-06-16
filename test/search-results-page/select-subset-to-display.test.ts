@@ -3,9 +3,7 @@ import { pipe } from 'fp-ts/function';
 import { selectSubsetToDisplay } from '../../src/search-results-page/select-subset-to-display';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
-import {
-  arbitraryDate, arbitraryNumber, arbitraryString, arbitraryWord,
-} from '../helpers';
+import { arbitraryNumber, arbitraryString, arbitraryWord } from '../helpers';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 
@@ -15,7 +13,6 @@ const arbitraryArticleItem = () => ({
   server: 'biorxiv' as const,
   title: pipe(arbitraryString(), toHtmlFragment, sanitise),
   authors: [arbitraryString()],
-  postedDate: arbitraryDate(),
 });
 
 const arbitraryGroupItem = () => ({

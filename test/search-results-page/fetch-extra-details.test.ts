@@ -48,7 +48,6 @@ describe('fetch-extra-details', () => {
             server: 'biorxiv' as const,
             title: pipe('', toHtmlFragment, sanitise),
             authors: [],
-            postedDate: new Date(),
           },
         ],
         nextCursor: O.none,

@@ -24,7 +24,6 @@ describe('search-europe-pmc adapter', () => {
                   { fullName: 'Author 2' },
                 ],
               },
-              firstPublicationDate: '2019-11-07',
               bookOrReportDetails: {
                 publisher: 'bioRxiv',
               },
@@ -38,7 +37,6 @@ describe('search-europe-pmc adapter', () => {
                   { fullName: 'Author 4' },
                 ],
               },
-              firstPublicationDate: '2012-04-11',
               bookOrReportDetails: {
                 publisher: 'bioRxiv',
               },
@@ -60,7 +58,6 @@ describe('search-europe-pmc adapter', () => {
             'Author 1',
             'Author 2',
           ],
-          postedDate: new Date('2019-11-07'),
         },
         {
           doi: new Doi('10.1111/4321'),
@@ -70,7 +67,6 @@ describe('search-europe-pmc adapter', () => {
             'Author 3',
             'Author 4',
           ],
-          postedDate: new Date('2012-04-11'),
         },
       ],
       nextCursor: O.some(nextCursor),
@@ -95,7 +91,6 @@ describe('search-europe-pmc adapter', () => {
                   { collectiveName: 'Collective Name' },
                 ] as const,
               },
-              firstPublicationDate: '2019-11-07',
               bookOrReportDetails: {
                 publisher: 'bioRxiv',
               },
@@ -191,7 +186,6 @@ describe('search-europe-pmc adapter', () => {
                 authorList: {
                   author: [],
                 },
-                firstPublicationDate: '2019-11-07',
                 bookOrReportDetails: {
                   publisher: 'bioRxiv',
                 },
@@ -225,7 +219,6 @@ describe('search-europe-pmc adapter', () => {
                       { fullName: 'Author 2' },
                     ],
                   },
-                  firstPublicationDate: '2019-11-07',
                   bookOrReportDetails: {
                     publisher: 'bioRxiv',
                   },
@@ -239,7 +232,6 @@ describe('search-europe-pmc adapter', () => {
                       { fullName: 'Author 4' },
                     ],
                   },
-                  firstPublicationDate: '2012-04-11',
                   bookOrReportDetails: {
                     publisher: 'bioRxiv',
                   },
