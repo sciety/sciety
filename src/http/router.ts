@@ -45,6 +45,7 @@ import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import * as Doi from '../types/doi';
 import { toHtmlFragment } from '../types/html-fragment';
 import { userPage } from '../user-page';
+import { savedArticlesPage } from '../user-page/saved-articles-page/saved-articles-page';
 
 const biorxivPrefix = '10.1101';
 
@@ -166,10 +167,7 @@ export const createRouter = (adapters: Adapters): Router => {
       userPageParams.decode,
       E.mapLeft(toNotFound),
       TE.fromEither,
-      TE.chain(() => TE.right({
-        title: 'User\'s saved articles',
-        content: toHtmlFragment(''),
-      })),
+      TE.chain(savedArticlesPage),
     )),
   );
 
