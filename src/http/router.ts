@@ -161,6 +161,19 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   router.get(
+    '/users/:id/saved-articles',
+    pageHandler(flow(
+      userPageParams.decode,
+      E.mapLeft(toNotFound),
+      TE.fromEither,
+      TE.chain(() => TE.right({
+        title: 'User\'s saved articles',
+        content: toHtmlFragment(''),
+      })),
+    )),
+  );
+
+  router.get(
     '/articles',
     async (context, next) => {
       context.status = StatusCodes.PERMANENT_REDIRECT;
