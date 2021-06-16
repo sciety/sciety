@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
-import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
+import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { Doi } from '../../../src/types/doi';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
@@ -26,7 +26,7 @@ describe('populate-article-view-model', () => {
           occurredAt: latestActivityDate,
         },
       ]),
-      findVersionsForArticleDoi: () => T.of(RNEA.fromReadonlyArray([{ occurredAt: latestVersionDate }])),
+      getLatestArticleVersionDate: () => TO.some(latestVersionDate),
     };
 
     const article = {
