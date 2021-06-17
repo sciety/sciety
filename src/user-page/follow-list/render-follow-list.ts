@@ -5,7 +5,7 @@ import { templateListItems } from '../../shared-components/list-items';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 const followingNothing = `
-  <p>They’re not following anything. When they do, they’ll be listed here.</p>
+  <p class="followed-groups__no_groups">They’re not following anything. When they do, they’ll be listed here.</p>
 `;
 
 const followListSection = (list: string) => `
