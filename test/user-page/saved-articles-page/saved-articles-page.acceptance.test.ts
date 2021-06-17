@@ -117,7 +117,31 @@ describe('saved-articles-page', () => {
   describe('when the user has no saved articles', () => {
     it.todo('shows a count of 0 in the tab');
 
-    it.todo('shows no list of article cards');
+    it('shows no list of article cards', async () => {
+      const userId = arbitraryUserId();
+      const ports = {
+        getUserDetails: () => TE.right({
+          avatarUrl: arbitraryUri(),
+          displayName: arbitraryString(),
+          handle: arbitraryWord(),
+        }),
+        getAllEvents: T.of([]),
+        fetchArticle: shouldNotBeCalled,
+        findReviewsForArticleDoi: shouldNotBeCalled,
+        findVersionsForArticleDoi: shouldNotBeCalled,
+      };
+      const params = { id: userId };
+
+      const page = await pipe(
+        params,
+        savedArticlesPage(ports),
+        contentOf,
+        T.map(JSDOM.fragment),
+      )();
+      const articleCards = page.querySelectorAll('.article-card');
+
+      expect(articleCards).toHaveLength(0);
+    });
 
     it.todo('shows a message saying that the user has no saved articles');
   });
