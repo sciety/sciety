@@ -6,7 +6,7 @@ import { JSDOM } from 'jsdom';
 import { userSavedArticle } from '../../../src/types/domain-events';
 import { Page } from '../../../src/types/page';
 import { RenderPageError } from '../../../src/types/render-page-error';
-import { noArticlesMessage, savedArticlesPage } from '../../../src/user-page/saved-articles-page/saved-articles-page';
+import { savedArticlesPage } from '../../../src/user-page/saved-articles-page/saved-articles-page';
 
 import {
   arbitrarySanitisedHtmlFragment,
@@ -150,7 +150,9 @@ describe('saved-articles-page', () => {
     });
 
     it('shows a message saying that the user has no saved articles', () => {
-      expect(page.textContent).toContain(noArticlesMessage);
+      const message = page.querySelector('.saved-articles__no_articles');
+
+      expect(message).toBeDefined();
     });
   });
 });

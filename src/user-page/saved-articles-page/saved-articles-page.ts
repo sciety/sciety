@@ -9,9 +9,6 @@ import { renderHeader, UserDetails } from '../render-header';
 import { renderErrorPage } from '../render-page';
 import { savedArticles, Ports as SavedArticlesPorts } from '../saved-articles';
 
-// ts-unused-exports:disable-next-line
-export { noArticlesMessage } from '../saved-articles/render-saved-articles';
-
 type GetUserDetails = (userId: UserId) => TE.TaskEither<'not-found' | 'unavailable', UserDetails>;
 
 type Ports = SavedArticlesPorts & {

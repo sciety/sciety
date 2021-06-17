@@ -116,6 +116,10 @@ $_avatar-border-width: settings.$border-width;
   }
 }
 
+.saved-articles__no_articles {
+  padding-top: baseline.increments(2);
+}
+
 .saved-articles__item {
   margin-bottom: baseline.increments(2);
 }

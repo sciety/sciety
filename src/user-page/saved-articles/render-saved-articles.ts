@@ -6,17 +6,14 @@ import { renderArticleCard } from '../../shared-components/article-card';
 import { templateListItems } from '../../shared-components/list-items';
 import { toHtmlFragment } from '../../types/html-fragment';
 
-// ts-unused-exports:disable-next-line
-export const noArticlesMessage = 'This user has no saved articles.';
-
 export const renderSavedArticles = flow(
   RA.map(renderArticleCard),
   RNEA.fromReadonlyArray,
   O.map((items) => templateListItems(items, 'saved-articles__item')),
   O.fold(
     () => `
-      <p>
-      ${noArticlesMessage}
+      <p class="saved-articles__no_articles">
+      This user has no saved articles.
       </p>
     `,
     (list) => `
