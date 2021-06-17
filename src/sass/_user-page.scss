@@ -127,6 +127,11 @@ $_avatar-border-width: settings.$border-width;
 
 .user-page-tabs-container {
   @include tabs.container;
+  grid-column: 1 / -1;
+
+  @include breakpoints.not-narrow {
+    grid-column: 3 / 11;
+  }
 }
 
 .user-page-tab {
@@ -139,4 +144,8 @@ $_avatar-border-width: settings.$border-width;
 
 .user-page-tab--heading {
   @include tabs.tab-heading();
+}
+
+.main-content--user .saved-articles__header {
+  display: none;
 }
