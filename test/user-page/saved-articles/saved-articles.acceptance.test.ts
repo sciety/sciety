@@ -18,7 +18,7 @@ describe('saved-articles acceptance', () => {
             arbitraryDoi(),
           ),
         ]),
-        fetchArticle: () => TE.left('unavailabe'),
+        fetchArticle: () => TE.left('unavailable'),
         findReviewsForArticleDoi: shouldNotBeCalled,
         findVersionsForArticleDoi: shouldNotBeCalled,
       };

@@ -1,12 +1,16 @@
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
+import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import { Page } from '../../../src/types/page';
 import { RenderPageError } from '../../../src/types/render-page-error';
 import { savedArticlesPage } from '../../../src/user-page/saved-articles-page/saved-articles-page';
-import { arbitraryString, arbitraryUri, arbitraryWord } from '../../helpers';
+import { arbitrarySanitisedHtmlFragment, arbitraryString, arbitraryUri, arbitraryWord } from '../../helpers';
 import { arbitraryUserId } from '../../types/user-id.helper';
+import {shouldNotBeCalled} from '../../should-not-be-called';
+import {userSavedArticle} from '../../../src/types/domain-events';
+import {arbitraryDoi} from '../../types/doi.helper';
 
 const contentOf = (page: TE.TaskEither<RenderPageError, Page>) => pipe(
   page,
@@ -27,6 +31,10 @@ describe('saved-articles-page', () => {
         displayName,
         handle,
       }),
+      getAllEvents: T.of([]),
+      fetchArticle: shouldNotBeCalled,
+      findReviewsForArticleDoi: shouldNotBeCalled,
+      findVersionsForArticleDoi: shouldNotBeCalled,
     };
     const params = { id: arbitraryUserId() };
 
@@ -40,15 +48,28 @@ describe('saved-articles-page', () => {
   describe('when the user has saved articles', () => {
     it.todo('shows the count in the tab');
 
-    it.skip('shows the articles as a list of cards', async () => {
+    it('shows the articles as a list of cards', async () => {
+      const userId = arbitraryUserId();
       const ports = {
         getUserDetails: () => TE.right({
           avatarUrl: arbitraryUri(),
           displayName: arbitraryString(),
           handle: arbitraryWord(),
         }),
+        getAllEvents: T.of([
+          userSavedArticle(userId, arbitraryDoi()),
+          userSavedArticle(userId, arbitraryDoi()),
+        ]),
+        fetchArticle: () => TE.right({
+          doi: arbitraryDoi(),
+          server: 'biorxiv' as const,
+          title: arbitrarySanitisedHtmlFragment(),
+          authors: [],
+        }),
+        findReviewsForArticleDoi: () => T.of([]),
+        findVersionsForArticleDoi: () => TO.none,
       };
-      const params = { id: arbitraryUserId() };
+      const params = { id: userId };
 
       const page = await pipe(
         params,
