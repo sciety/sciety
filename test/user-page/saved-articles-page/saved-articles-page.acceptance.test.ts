@@ -1,10 +1,12 @@
-import { arbitraryUserId } from './../../types/user-id.helper';
-import { pipe } from 'fp-ts/lib/function';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
+import { pipe } from 'fp-ts/function';
+import { JSDOM } from 'jsdom';
 import { Page } from '../../../src/types/page';
 import { RenderPageError } from '../../../src/types/render-page-error';
 import { savedArticlesPage } from '../../../src/user-page/saved-articles-page/saved-articles-page';
 import { arbitraryString, arbitraryUri, arbitraryWord } from '../../helpers';
+import { arbitraryUserId } from '../../types/user-id.helper';
 
 const contentOf = (page: TE.TaskEither<RenderPageError, Page>) => pipe(
   page,
@@ -25,7 +27,7 @@ describe('saved-articles-page', () => {
         displayName,
         handle,
       }),
-    }
+    };
     const params = { id: arbitraryUserId() };
 
     const pageHtml = await contentOf(savedArticlesPage(ports)(params))();
@@ -38,7 +40,26 @@ describe('saved-articles-page', () => {
   describe('when the user has saved articles', () => {
     it.todo('shows the count in the tab');
 
-    it.todo('shows the articles as a list of cards');
+    it.skip('shows the articles as a list of cards', async () => {
+      const ports = {
+        getUserDetails: () => TE.right({
+          avatarUrl: arbitraryUri(),
+          displayName: arbitraryString(),
+          handle: arbitraryWord(),
+        }),
+      };
+      const params = { id: arbitraryUserId() };
+
+      const page = await pipe(
+        params,
+        savedArticlesPage(ports),
+        contentOf,
+        T.map(JSDOM.fragment),
+      )();
+      const articleCards = page.querySelectorAll('.article-card');
+
+      expect(articleCards).toHaveLength(2);
+    });
   });
 
   describe('when the user has no saved articles', () => {
