@@ -9,6 +9,9 @@ import { renderHeader, UserDetails } from '../render-header';
 import { renderErrorPage } from '../render-page';
 import { savedArticles, Ports as SavedArticlesPorts } from '../saved-articles';
 
+// ts-unused-exports:disable-next-line
+export { noArticlesMessage } from '../saved-articles/render-saved-articles';
+
 type GetUserDetails = (userId: UserId) => TE.TaskEither<'not-found' | 'unavailable', UserDetails>;
 
 type Ports = SavedArticlesPorts & {
@@ -27,8 +30,6 @@ type Tabs = {
   availableGroupMatches: number,
   category: string,
 };
-
-export const noArticlesMessage = 'This user has no saved articles.';
 
 const tabsWithGroupsActive = (tabs: Tabs) => `
   <a href="/users/${tabs.userId}/saved-articles" class="user-page-tab user-page-tab--link">Saved articles </a>
@@ -54,6 +55,12 @@ export const savedArticlesPage = (ports: Ports): SavedArticlesPage => (params) =
       TE.map(renderHeader),
     ),
     savedArticles: savedArticles(ports)(params.id),
+    tabs: TE.right(categoryTabs({
+      userId: params.id,
+      availableArticleMatches: 0,
+      availableGroupMatches: 0,
+      category: 'saved-articles',
+    })),
   },
   sequenceS(TE.ApplyPar),
   TE.bimap(
@@ -65,12 +72,7 @@ export const savedArticlesPage = (ports: Ports): SavedArticlesPage => (params) =
           <article class="sciety-grid sciety-grid--user">
             ${components.header}
 
-            ${categoryTabs({
-              userId: params.id,
-              availableArticleMatches: 0,
-              availableGroupMatches: 0,
-              category: 'saved-articles',
-            })}
+            ${components.tabs}
             <div class="main-content main-content--user">
               ${components.savedArticles}
             </div>

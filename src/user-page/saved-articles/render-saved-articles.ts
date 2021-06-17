@@ -5,7 +5,9 @@ import { flow } from 'fp-ts/function';
 import { renderArticleCard } from '../../shared-components/article-card';
 import { templateListItems } from '../../shared-components/list-items';
 import { toHtmlFragment } from '../../types/html-fragment';
-import { noArticlesMessage } from '../saved-articles-page/saved-articles-page';
+
+// ts-unused-exports:disable-next-line
+export const noArticlesMessage = 'This user has no saved articles.';
 
 export const renderSavedArticles = flow(
   RA.map(renderArticleCard),
