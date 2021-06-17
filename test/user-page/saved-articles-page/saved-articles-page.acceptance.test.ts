@@ -3,14 +3,19 @@ import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
+import { userSavedArticle } from '../../../src/types/domain-events';
 import { Page } from '../../../src/types/page';
 import { RenderPageError } from '../../../src/types/render-page-error';
 import { savedArticlesPage } from '../../../src/user-page/saved-articles-page/saved-articles-page';
-import { arbitrarySanitisedHtmlFragment, arbitraryString, arbitraryUri, arbitraryWord } from '../../helpers';
+import {
+  arbitrarySanitisedHtmlFragment,
+  arbitraryString,
+  arbitraryUri,
+  arbitraryWord,
+} from '../../helpers';
+import { shouldNotBeCalled } from '../../should-not-be-called';
+import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
-import {shouldNotBeCalled} from '../../should-not-be-called';
-import {userSavedArticle} from '../../../src/types/domain-events';
-import {arbitraryDoi} from '../../types/doi.helper';
 
 const contentOf = (page: TE.TaskEither<RenderPageError, Page>) => pipe(
   page,
