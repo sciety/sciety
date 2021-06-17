@@ -19,7 +19,7 @@ const contentOf = (page: TE.TaskEither<RenderPageError, Page>) => pipe(
 );
 
 describe('followed-groups-page', () => {
-  it.skip('shows groups as the active tab', async () => {
+  it('shows groups as the active tab', async () => {
     const ports = {
       follows: shouldNotBeCalled,
       getGroup: shouldNotBeCalled,

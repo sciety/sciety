@@ -150,6 +150,7 @@ $_avatar-border-width: settings.$border-width;
   @include tabs.tab-heading();
 }
 
-.main-content--user .saved-articles__header {
+.main-content--user .saved-articles__header,
+.main-content--user .followed-groups h2 {
   display: none;
 }
