@@ -29,13 +29,13 @@ type Tabs = {
 };
 
 const tabsWithGroupsActive = (tabs: Tabs) => `
-  <a href="/users/${tabs.userId}/saved-articles" class="user-page-tab user-page-tab--link" aria-label="Discover matching articles (${tabs.availableArticleMatches} search results)">Saved articles (${tabs.availableArticleMatches})</a>
-  <h3 class="user-page-tab user-page-tab--heading"><span class="visually-hidden">Currently showing </span>Groups (${tabs.availableGroupMatches}<span class="visually-hidden"> search results</span>)</h3>
+  <a href="/users/${tabs.userId}/saved-articles" class="user-page-tab user-page-tab--link">Saved articles </a>
+  <h3 class="user-page-tab user-page-tab--heading"><span class="visually-hidden">Currently showing </span>Followed groups</h3>
 `;
 
 const tabsWithArticlesActive = (tabs: Tabs) => `
-  <h3 class="user-page-tab user-page-tab--heading"><span class="visually-hidden">Currently showing </span>Saved articles (${tabs.availableArticleMatches}<span class="visually-hidden"> search results</span>)</h3>
-  <a href="/users/${tabs.userId}" class="user-page-tab user-page-tab--link" aria-label="Discover matching groups (${tabs.availableGroupMatches} search results)">Groups (${tabs.availableGroupMatches}<span class="visually-hidden"> search results</span>)</a>
+  <h3 class="user-page-tab user-page-tab--heading"><span class="visually-hidden">Currently showing </span>Saved articles</h3>
+  <a href="/users/${tabs.userId}" class="user-page-tab user-page-tab--link">Followed groups</a>
 `;
 
 const categoryTabs = (tabs: Tabs) => `
