@@ -4,6 +4,7 @@
 @use 'settings';
 @use 'typography';
 @use 'breakpoints';
+@use 'tabs';
 
 $_inline-margin: 1rem;
 
@@ -122,4 +123,20 @@ $_avatar-border-width: settings.$border-width;
 .saved-articles__link:link,
 .saved-articles__link:visited {
   @include typography.subtle-link();
+}
+
+.user-page-tabs-container {
+  @include tabs.container;
+}
+
+.user-page-tab {
+  @include tabs.tab();
+}
+
+.user-page-tab--link {
+  @include tabs.tab-link();
+}
+
+.user-page-tab--heading {
+  @include tabs.tab-heading();
 }

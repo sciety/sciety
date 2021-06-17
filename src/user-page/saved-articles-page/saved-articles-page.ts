@@ -21,6 +21,30 @@ type Params = {
 
 type SavedArticlesPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
+type Tabs = {
+  userId: UserId,
+  availableArticleMatches: number,
+  availableGroupMatches: number,
+  category: string,
+};
+
+const tabsWithGroupsActive = (tabs: Tabs) => `
+  <a href="/users/${tabs.userId}/saved-articles" class="user-page-tab user-page-tab--link" aria-label="Discover matching articles (${tabs.availableArticleMatches} search results)">Saved articles (${tabs.availableArticleMatches})</a>
+  <h3 class="user-page-tab user-page-tab--heading"><span class="visually-hidden">Currently showing </span>Groups (${tabs.availableGroupMatches}<span class="visually-hidden"> search results</span>)</h3>
+`;
+
+const tabsWithArticlesActive = (tabs: Tabs) => `
+  <h3 class="user-page-tab user-page-tab--heading"><span class="visually-hidden">Currently showing </span>Saved articles (${tabs.availableArticleMatches}<span class="visually-hidden"> search results</span>)</h3>
+  <a href="/users/${tabs.userId}" class="user-page-tab user-page-tab--link" aria-label="Discover matching groups (${tabs.availableGroupMatches} search results)">Groups (${tabs.availableGroupMatches}<span class="visually-hidden"> search results</span>)</a>
+`;
+
+const categoryTabs = (tabs: Tabs) => `
+  <h2 class="visually-hidden">Search result categories</h2>
+  <div class="user-page-tabs-container">
+    ${tabs.category === 'groups' ? tabsWithGroupsActive(tabs) : tabsWithArticlesActive(tabs)}
+  </div>
+`;
+
 export const savedArticlesPage = (ports: Ports): SavedArticlesPage => (params) => pipe(
   {
     header: pipe(
@@ -39,6 +63,12 @@ export const savedArticlesPage = (ports: Ports): SavedArticlesPage => (params) =
           <article class="sciety-grid sciety-grid--user">
             ${components.header}
 
+            ${categoryTabs({
+        userId: params.id,
+        availableArticleMatches: 0,
+        availableGroupMatches: 0,
+        category: 'saved-articles',
+      })}
             <div class="main-content main-content--user">
               ${components.savedArticles}
             </div>

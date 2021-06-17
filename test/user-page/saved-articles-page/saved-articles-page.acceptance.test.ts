@@ -50,6 +50,32 @@ describe('saved-articles-page', () => {
     expect(pageHtml).toContain(handle);
   });
 
+  it('shows articles as the active tab', async () => {
+    const ports = {
+      getUserDetails: () => TE.right({
+        avatarUrl: arbitraryUri(),
+        displayName: arbitraryString(),
+        handle: arbitraryWord(),
+      }),
+      getAllEvents: T.of([]),
+      fetchArticle: shouldNotBeCalled,
+      findReviewsForArticleDoi: shouldNotBeCalled,
+      findVersionsForArticleDoi: shouldNotBeCalled,
+    };
+    const params = { id: arbitraryUserId() };
+    const page = await pipe(
+      params,
+      savedArticlesPage(ports),
+      contentOf,
+      T.map(JSDOM.fragment),
+    )();
+    const tabHeading = page.querySelector('.user-page-tab--heading')?.innerHTML;
+
+    expect(tabHeading).toContain('Saved articles');
+  });
+
+  it.todo('shows the groups tab as the inactive tab');
+
   describe('when the user has saved articles', () => {
     it.todo('shows the count in the tab');
 
