@@ -35,8 +35,16 @@ export const savedArticlesPage = (ports: Ports): SavedArticlesPage => (params) =
     (components) => ({
       title: 'User\'s saved articles',
       content: toHtmlFragment(`
-        ${components.header}
-        ${components.savedArticles}
+        <div class="page-content__background">
+          <article class="sciety-grid sciety-grid--user">
+            ${components.header}
+
+            <div class="main-content main-content--user">
+              ${components.savedArticles}
+            </div>
+
+          </article>
+        </div>
       `),
     }),
   ),

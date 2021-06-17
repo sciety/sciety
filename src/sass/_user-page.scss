@@ -20,6 +20,14 @@ $_inline-margin: 1rem;
   }
 }
 
+.main-content--user {
+  grid-column: 1 / -1;
+
+  @include breakpoints.not-narrow {
+    grid-column: 3 / 11;
+  }
+}
+
 .page-header--user {
   display: flex;
   align-items: center;
