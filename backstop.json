@@ -59,6 +59,14 @@
       "url": "http://sciety_app/users/1295307136415735808"
     },
     {
+      "label": "ScietyHQ user page saved articles",
+      "url": "http://sciety_app/users/1295307136415735808/saved-articles"
+    },
+    {
+      "label": "ScietyHQ user page followed groups",
+      "url": "http://sciety_app/users/1295307136415735808/followed-groups"
+    },
+    {
       "label": "Group page",
       "url": "http://sciety_app/groups/74fd66e9-3b90-4b5a-a4ab-5be83db4c5de",
       "hideSelectors": ["iframe"]
