@@ -28,6 +28,8 @@ type Tabs = {
   category: string,
 };
 
+export const noArticlesMessage = 'This user has no saved articles.';
+
 const tabsWithGroupsActive = (tabs: Tabs) => `
   <a href="/users/${tabs.userId}/saved-articles" class="user-page-tab user-page-tab--link">Saved articles </a>
   <h3 class="user-page-tab user-page-tab--heading"><span class="visually-hidden">Currently showing </span>Followed groups</h3>
@@ -64,11 +66,11 @@ export const savedArticlesPage = (ports: Ports): SavedArticlesPage => (params) =
             ${components.header}
 
             ${categoryTabs({
-        userId: params.id,
-        availableArticleMatches: 0,
-        availableGroupMatches: 0,
-        category: 'saved-articles',
-      })}
+              userId: params.id,
+              availableArticleMatches: 0,
+              availableGroupMatches: 0,
+              category: 'saved-articles',
+            })}
             <div class="main-content main-content--user">
               ${components.savedArticles}
             </div>

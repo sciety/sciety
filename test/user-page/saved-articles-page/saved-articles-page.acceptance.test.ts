@@ -6,7 +6,7 @@ import { JSDOM } from 'jsdom';
 import { userSavedArticle } from '../../../src/types/domain-events';
 import { Page } from '../../../src/types/page';
 import { RenderPageError } from '../../../src/types/render-page-error';
-import { savedArticlesPage } from '../../../src/user-page/saved-articles-page/saved-articles-page';
+import { noArticlesMessage, savedArticlesPage } from '../../../src/user-page/saved-articles-page/saved-articles-page';
 import {
   arbitrarySanitisedHtmlFragment,
   arbitraryString,
@@ -115,9 +115,9 @@ describe('saved-articles-page', () => {
   });
 
   describe('when the user has no saved articles', () => {
-    it.todo('shows a count of 0 in the tab');
+    let page: DocumentFragment;
 
-    it('shows no list of article cards', async () => {
+    beforeAll(async () => {
       const userId = arbitraryUserId();
       const ports = {
         getUserDetails: () => TE.right({
@@ -132,17 +132,24 @@ describe('saved-articles-page', () => {
       };
       const params = { id: userId };
 
-      const page = await pipe(
+      page = await pipe(
         params,
         savedArticlesPage(ports),
         contentOf,
         T.map(JSDOM.fragment),
       )();
+    });
+
+    it.todo('shows a count of 0 in the tab');
+
+    it('shows no list of article cards', () => {
       const articleCards = page.querySelectorAll('.article-card');
 
       expect(articleCards).toHaveLength(0);
     });
 
-    it.todo('shows a message saying that the user has no saved articles');
+    it('shows a message saying that the user has no saved articles', () => {
+      expect(page.textContent).toContain(noArticlesMessage);
+    });
   });
 });
