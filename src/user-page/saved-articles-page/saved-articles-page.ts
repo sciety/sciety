@@ -26,7 +26,7 @@ export const savedArticlesPage = (ports: Ports): SavedArticlesPage => (params) =
     renderErrorPage,
     (header) => ({
       title: 'User\'s saved articles',
-      content: toHtmlFragment(`${header}`),
+      content: toHtmlFragment(header),
     }),
   ),
 );
