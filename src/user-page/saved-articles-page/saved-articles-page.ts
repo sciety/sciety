@@ -35,7 +35,7 @@ const tabsWithGroupsActive = (tabs: Tabs) => `
 
 const tabsWithArticlesActive = (tabs: Tabs) => `
   <h3 class="user-page-tab user-page-tab--heading"><span class="visually-hidden">Currently showing </span>Saved articles</h3>
-  <a href="/users/${tabs.userId}" class="user-page-tab user-page-tab--link">Followed groups</a>
+  <a href="/users/${tabs.userId}/followed-groups" class="user-page-tab user-page-tab--link">Followed groups</a>
 `;
 
 const categoryTabs = (tabs: Tabs) => `
