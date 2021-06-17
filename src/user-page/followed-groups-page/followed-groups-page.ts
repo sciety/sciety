@@ -10,7 +10,7 @@ import { UserId } from '../../types/user-id';
 import { followList, Ports as FollowListPorts } from '../follow-list';
 import { renderHeader, UserDetails } from '../render-header';
 import { renderErrorPage, renderPage } from '../render-page';
-import { savedArticles, Ports as SavedArticlesPorts } from '../saved-articles';
+import { Ports as SavedArticlesPorts } from '../saved-articles';
 
 type GetUserDetails = (userId: UserId) => TE.TaskEither<'not-found' | 'unavailable', UserDetails>;
 
@@ -39,7 +39,7 @@ export const followedGroupsPage = (ports: Ports): UserPage => (params) => {
         TE.map(renderHeader),
       ),
       followList: followList(ports)(params.id, viewingUserId),
-      savedArticles: savedArticles(ports)(params.id),
+      savedArticles: TE.right(toHtmlFragment('')),
       userDisplayName: pipe(
         userDetails,
         TE.map(flow(
