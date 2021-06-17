@@ -11,11 +11,32 @@ const groups: RNEA.ReadonlyNonEmptyArray<Group> = [
     shortDescription: 'The 2019 Novel Coronavirus Research Compendium (NCRC) is a centralized, publicly available resource that rapidly curates and reviews the emerging scientific evidence about SARS-CoV-2 and COVID-19. Our goal is to provide accurate, relevant information for global public health action by clinicians, public health practitioners, and policy makers.',
   },
   {
+    id: Gid.fromValidatedString('5142a5bc-6b18-42b1-9a8d-7342d7d17e94'),
+    name: 'Rapid Reviews COVID-19',
+    avatarPath: '/static/groups/rapid-reviews-covid-19--5142a5bc-6b18-42b1-9a8d-7342d7d17e94.png',
+    descriptionPath: 'rapid-reviews-covid-19--5142a5bc-6b18-42b1-9a8d-7342d7d17e94.md',
+    shortDescription: 'Rapid Reviews: COVID-19 is an open-access overlay journal that seeks to accelerate peer review of COVID-19-related research and prevent the dissemination of false or misleading scientific news.',
+  },
+  {
+    id: Gid.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
+    name: 'eLife',
+    avatarPath: '/static/groups/elife--b560187e-f2fb-4ff9-a861-a204f3fc0fb0.png',
+    descriptionPath: 'elife--b560187e-f2fb-4ff9-a861-a204f3fc0fb0.md',
+    shortDescription: 'eLife is a selective journal that publishes promising research in all areas of biology and medicine.',
+  },
+  {
     id: Gid.fromValidatedString('8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65'),
     name: 'ScreenIT',
     avatarPath: '/static/groups/screenit--8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65.png',
     descriptionPath: 'screenit--8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65.md',
     shortDescription: 'The Automated Screening Working Groups is a group of software engineers and biologists passionate about improving scientific manuscripts on a large scale. Our members have created tools that check for common problems in scientific manuscripts, including information needed to improve transparency and reproducibility. We have combined our tools into a single pipeline, called ScreenIT. We\'re currently using our tools to screen COVID preprints.',
+  },
+  {
+    id: Gid.fromValidatedString('f97bd177-5cb6-4296-8573-078318755bf2'),
+    name: 'preLights',
+    avatarPath: '/static/groups/prelights--f97bd177-5cb6-4296-8573-078318755bf2.jpg',
+    descriptionPath: 'prelights--f97bd177-5cb6-4296-8573-078318755bf2.md',
+    shortDescription: 'preLights is a community initiative supported by The Company of Biologists.',
   },
   {
     id: Gid.fromValidatedString('10360d97-bf52-4aef-b2fa-2f60d319edd7'),
@@ -37,13 +58,6 @@ const groups: RNEA.ReadonlyNonEmptyArray<Group> = [
     avatarPath: '/static/groups/review-commons--316db7d9-88cc-4c26-b386-f067e0f56334.jpg',
     descriptionPath: 'review-commons--316db7d9-88cc-4c26-b386-f067e0f56334.md',
     shortDescription: 'Review Commons is a platform for high-quality journal-independent peer-review in the life sciences.',
-  },
-  {
-    id: Gid.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
-    name: 'eLife',
-    avatarPath: '/static/groups/elife--b560187e-f2fb-4ff9-a861-a204f3fc0fb0.png',
-    descriptionPath: 'elife--b560187e-f2fb-4ff9-a861-a204f3fc0fb0.md',
-    shortDescription: 'eLife is a selective journal that publishes promising research in all areas of biology and medicine.',
   },
   {
     id: Gid.fromValidatedString('74fd66e9-3b90-4b5a-a4ab-5be83db4c5de'),
@@ -86,20 +100,6 @@ const groups: RNEA.ReadonlyNonEmptyArray<Group> = [
     avatarPath: '/static/groups/pci-paleontology--7a9e97d1-c1fe-4ac2-9572-4ecfe28f9f84.jpg',
     descriptionPath: 'pci-paleontology--7a9e97d1-c1fe-4ac2-9572-4ecfe28f9f84.md',
     shortDescription: 'Peer Community in Paleontology (PCI Paleo) is a community of researchers working in Paleontology who peer review and recommend research articles publicly available from open archives (such as PaleorXiv or bioRxiv). Papers recommended by PCI Paleo are finalized, peer-reviewed articles that can be used and cited, like any other article published in a conventional journal.',
-  },
-  {
-    id: Gid.fromValidatedString('f97bd177-5cb6-4296-8573-078318755bf2'),
-    name: 'preLights',
-    avatarPath: '/static/groups/prelights--f97bd177-5cb6-4296-8573-078318755bf2.jpg',
-    descriptionPath: 'prelights--f97bd177-5cb6-4296-8573-078318755bf2.md',
-    shortDescription: 'preLights is a community initiative supported by The Company of Biologists.',
-  },
-  {
-    id: Gid.fromValidatedString('5142a5bc-6b18-42b1-9a8d-7342d7d17e94'),
-    name: 'Rapid Reviews COVID-19',
-    avatarPath: '/static/groups/rapid-reviews-covid-19--5142a5bc-6b18-42b1-9a8d-7342d7d17e94.png',
-    descriptionPath: 'rapid-reviews-covid-19--5142a5bc-6b18-42b1-9a8d-7342d7d17e94.md',
-    shortDescription: 'Rapid Reviews: COVID-19 is an open-access overlay journal that seeks to accelerate peer review of COVID-19-related research and prevent the dissemination of false or misleading scientific news.',
   },
 ];
 
