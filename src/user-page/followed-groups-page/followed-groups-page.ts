@@ -10,11 +10,10 @@ import { UserId } from '../../types/user-id';
 import { followList, Ports as FollowListPorts } from '../follow-list';
 import { renderHeader, UserDetails } from '../render-header';
 import { renderErrorPage, renderPage } from '../render-page';
-import { Ports as SavedArticlesPorts } from '../saved-articles';
 
 type GetUserDetails = (userId: UserId) => TE.TaskEither<'not-found' | 'unavailable', UserDetails>;
 
-type Ports = FollowListPorts & SavedArticlesPorts & {
+type Ports = FollowListPorts & {
   getUserDetails: GetUserDetails,
 };
 
