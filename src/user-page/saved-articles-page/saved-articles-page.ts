@@ -79,6 +79,7 @@ export const savedArticlesPage = (ports: Ports): SavedArticlesPage => (params) =
             </ul>
             <section role="tabpanel" id="content" aria-labelledby="active-tab">
               <div class="main-content main-content--user">
+                <h2 class="visually-hidden">Saved articles</h2>
                 ${components.savedArticles}
               </div>
             </section>
