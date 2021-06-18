@@ -24,7 +24,6 @@ export const renderSavedArticles = flow(
   ),
   (html) => `
       <section id="saved-articles">
-        <h2 class="saved-articles__header">Saved articles</h2>
         ${html}
       </section>
   `,

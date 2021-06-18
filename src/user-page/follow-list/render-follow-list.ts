@@ -10,9 +10,6 @@ const followingNothing = `
 
 const followListSection = (list: string) => `
   <section class="followed-groups">
-    <h2>
-      Following
-    </h2>
     ${list}
   </section>
 `;
