@@ -5,6 +5,7 @@
 @use 'typography';
 @use 'breakpoints';
 @use 'tabs';
+@use 'card';
 
 $_inline-margin: 1rem;
 
@@ -125,7 +126,7 @@ $_avatar-border-width: settings.$border-width;
 }
 
 .saved-articles__item {
-  margin-bottom: baseline.increments(2);
+  @include card.list-item();
 }
 
 .saved-articles__link:link,
