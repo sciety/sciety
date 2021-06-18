@@ -11,30 +11,30 @@ type Card = {
 };
 
 const card1: Card = {
-  articleId: '10.1101/2021.01.18.427171',
-  articleTitle: 'Python-Microscope: High performance control of arbitrarily complex and scalable bespoke microscopes',
-  date: new Date('2021-05-06'),
-  groupId: '316db7d9-88cc-4c26-b386-f067e0f56334',
-  groupName: 'Review Commons',
-  avatarPath: '/static/groups/review-commons--316db7d9-88cc-4c26-b386-f067e0f56334.jpg',
-};
-
-const card2: Card = {
-  articleId: '10.1101/2021.05.25.21257828',
-  articleTitle: 'Correlation of the commercial anti-SARS-CoV-2 receptor binding domain antibody test with the chemiluminescent reduction neutralizing test and possible detection of antibodies to emerging variants',
-  date: new Date('2021-05-29'),
-  groupId: '8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65',
-  groupName: 'ScreenIT',
-  avatarPath: '/static/groups/screenit--8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65.jpg',
-};
-
-const card3: Card = {
-  articleId: '10.1101/2021.05.13.21256639',
-  articleTitle: 'Efficacy of the NVX-CoV2373 Covid-19 Vaccine Against the B.1.1.7 Variant',
-  date: new Date('2021-05-28'),
+  articleId: '10.1101/2021.04.06.21254882',
+  articleTitle: 'Evidence for increased breakthrough rates of SARS-CoV-2 variants of concern in BNT162b2 mRNA vaccinated individuals',
+  date: new Date('2021-04-22'),
   groupId: '62f9b0d0-8d43-4766-a52a-ce02af61bc6a',
   groupName: 'NCRC',
   avatarPath: '/static/groups/ncrc--62f9b0d0-8d43-4766-a52a-ce02af61bc6a.jpg',
+};
+
+const card2: Card = {
+  articleId: '10.1101/2020.07.04.187583',
+  articleTitle: 'Gender, race and parenthood impact academic productivity during the COVID-19 pandemic: from survey to action',
+  date: new Date('2020-09-28'),
+  groupId: '10360d97-bf52-4aef-b2fa-2f60d319edd7',
+  groupName: 'PREreview',
+  avatarPath: '/static/groups/prereview-community--10360d97-bf52-4aef-b2fa-2f60d319edd7.jpg',
+};
+
+const card3: Card = {
+  articleId: '10.1101/2021.04.30.442087',
+  articleTitle: 'Diverse mechanisms for epigenetic imprinting in mammals',
+  date: new Date('2021-06-18'),
+  groupId: 'f97bd177-5cb6-4296-8573-078318755bf2',
+  groupName: 'prelights',
+  avatarPath: '/static/groups/prelights--f97bd177-5cb6-4296-8573-078318755bf2.jpg',
 };
 
 const renderCard = (card: Card) => `
