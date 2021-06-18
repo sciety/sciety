@@ -2,12 +2,12 @@ import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
+import { followList, Ports as FollowListPorts } from './follow-list';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
 import { User } from '../../types/user';
 import { UserId } from '../../types/user-id';
-import { followList, Ports as FollowListPorts } from '../follow-list';
 import { renderHeader, UserDetails } from '../render-header';
 import { renderErrorPage } from '../render-page';
 
