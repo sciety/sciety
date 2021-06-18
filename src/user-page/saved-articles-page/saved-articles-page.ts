@@ -6,8 +6,8 @@ import { toHtmlFragment } from '../../types/html-fragment';
 import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
 import { UserId } from '../../types/user-id';
+import { renderErrorPage } from '../render-error-page';
 import { renderHeader, UserDetails } from '../render-header';
-import { renderErrorPage } from '../render-page';
 
 type GetUserDetails = (userId: UserId) => TE.TaskEither<'not-found' | 'unavailable', UserDetails>;
 
