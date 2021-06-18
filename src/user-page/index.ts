@@ -25,6 +25,7 @@ type Params = {
 
 type UserPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
+// ts-unused-exports:disable-next-line
 export const userPage = (ports: Ports): UserPage => (params) => {
   const viewingUserId = pipe(
     params.user,
