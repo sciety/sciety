@@ -4,6 +4,7 @@
 @use 'settings';
 @use 'typography';
 @use 'breakpoints';
+@use 'layout';
 @use 'tabs';
 @use 'card';
 
@@ -35,6 +36,7 @@ $_inline-margin: 1rem;
 }
 
 .page-header--user {
+  @include layout.page-header-top-space();
   display: flex;
   align-items: center;
   margin: 0 $_inline-margin baseline.increments(3);
