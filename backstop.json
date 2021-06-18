@@ -55,10 +55,6 @@
       "url": "http://sciety_app/search?query=peer+community+in+archaeology&category=groups"
     },
     {
-      "label": "ScietyHQ user page",
-      "url": "http://sciety_app/users/1295307136415735808"
-    },
-    {
       "label": "ScietyHQ user page saved articles",
       "url": "http://sciety_app/users/1295307136415735808/saved-articles"
     },

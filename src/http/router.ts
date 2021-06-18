@@ -154,12 +154,12 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.get(
     '/users/:id(.+)',
-    pageHandler(flow(
-      userPageParams.decode,
-      E.mapLeft(toNotFound),
-      TE.fromEither,
-      TE.chain(userPage(adapters)),
-    )),
+    async (context, next) => {
+      context.status = StatusCodes.TEMPORARY_REDIRECT;
+      context.redirect(`/users/${context.params.id}/saved-articles`);
+
+      await next();
+    },
   );
 
   router.get(
