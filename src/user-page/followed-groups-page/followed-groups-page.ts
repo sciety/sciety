@@ -36,7 +36,7 @@ const tabsWithGroupsActive = (tabs: Tabs) => `
 `;
 
 const categoryTabs = (tabs: Tabs) => `
-  <h2 class="visually-hidden">Search result categories</h2>
+  <h2 class="visually-hidden">Things this user finds useful</h2>
   <div class="user-page-tabs-container">
     ${tabsWithGroupsActive(tabs)}
   </div>
