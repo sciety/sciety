@@ -4,19 +4,19 @@
 @use '../sass/breakpoints';
 @use '../sass/card';
 @use '../sass/functions';
+@use '../sass/layout';
 @use '../sass/list';
 @use '../sass/settings';
 @use '../sass/typography';
 @use '../sass/tabs';
 @use 'next-link';
 
-$_vertical-space-above-title--narrow: baseline.increments(2);
-$_vertical-space-above-title--wide: baseline.increments(5);
 $_search-form-text-inline-padding: 12px;
 $_inline-margin: settings.$base-font-measure;
 $_clear-button-inline-size: 48px;
 
 .sciety-grid--search-results > .page-header--search-results {
+  @include layout.page-header-top-space();
   grid-column: 1 / -1;
   color: settings.$colour-text-primary;
   margin: 0 1rem;
@@ -29,12 +29,9 @@ $_clear-button-inline-size: 48px;
 
 .page-heading--search {
   @include typography.page-label();
-  padding-top: $_vertical-space-above-title--narrow;
   margin-bottom: baseline.increments(1.5);
 
   @include breakpoints.not-narrow {
-    padding-top: $_vertical-space-above-title--wide;
-
     margin-left: functions.px-to-rem($_search-form-text-inline-padding + settings.$border-width);
     @supports(display: grid) {
       margin-left: unset;

@@ -1,5 +1,7 @@
 @use 'settings';
 @use 'functions';
+@use 'baseline';
+@use 'breakpoints';
 
 @mixin visually-hidden() {
   border: 0;
@@ -31,4 +33,12 @@
   max-width: functions.px-to-rem(settings.$max-site-width);
   margin: 0 1rem;
   flex-grow: 1;
+}
+
+@mixin page-header-top-space() {
+  padding-top: baseline.increments(2);
+
+  @include breakpoints.not-narrow {
+    padding-top: baseline.increments(5);
+  }
 }

@@ -2,12 +2,10 @@
 @use 'breakpoints';
 @use 'button';
 @use 'functions';
+@use 'layout';
 @use 'list';
 @use 'settings';
 @use 'typography';
-
-$_vertical-space-above-title--narrow: baseline.increments(2);
-$_vertical-space-above-title--wide: baseline.increments(5);
 
 .sciety-grid.sciety-grid--article {
   grid-auto-flow: unset;
@@ -22,8 +20,8 @@ $_vertical-space-above-title--wide: baseline.increments(5);
 }
 
 .sciety-grid--article > .page-header--article {
+  @include layout.page-header-top-space();
   margin: 0 1rem baseline.increments(3);
-  padding-top: $_vertical-space-above-title--narrow;
   color: settings.$colour-text-primary;
 }
 
@@ -32,10 +30,6 @@ $_vertical-space-above-title--wide: baseline.increments(5);
   .sciety-grid--article > .article-tabs-container,
   .sciety-grid--article > .main-content {
     grid-column: 3 / 11;
-  }
-
-  .sciety-grid--article > .page-header--article {
-    padding-top: $_vertical-space-above-title--wide;
   }
 }
 
