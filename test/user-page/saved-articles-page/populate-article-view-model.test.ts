@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/function';
 import { Doi } from '../../../src/types/doi';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { sanitise } from '../../../src/types/sanitised-html-fragment';
-import { populateArticleViewModel } from '../../../src/user-page/saved-articles/populate-article-view-model';
+import { populateArticleViewModel } from '../../../src/user-page/saved-articles-page/populate-article-view-model';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 

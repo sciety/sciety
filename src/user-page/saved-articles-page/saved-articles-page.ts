@@ -1,13 +1,13 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { savedArticles, Ports as SavedArticlesPorts } from './saved-articles';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
 import { UserId } from '../../types/user-id';
 import { renderHeader, UserDetails } from '../render-header';
 import { renderErrorPage } from '../render-page';
-import { savedArticles, Ports as SavedArticlesPorts } from '../saved-articles';
 
 type GetUserDetails = (userId: UserId) => TE.TaskEither<'not-found' | 'unavailable', UserDetails>;
 
