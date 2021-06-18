@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import {
-  $, goto, openBrowser,
+  $, goto, openBrowser, text, within,
 } from 'taiko';
 import { screenshotTeardown } from './utilities';
 
@@ -18,6 +18,15 @@ describe('legacy redirects', () => {
       const result = await $('.search-form').exists();
 
       expect(result).toBe(true);
+    });
+  });
+
+  describe('user page', () => {
+    it.skip('redirects to the saved-articles tab', async () => {
+      await goto('localhost:8080/users/1295307136415735808');
+      const isSavedArticlesTab = await text('Saved articles', within($('h3.user-page-tab--heading'))).exists();
+
+      expect(isSavedArticlesTab).toBe(true);
     });
   });
 });
