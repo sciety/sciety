@@ -37,8 +37,7 @@ $_inline-margin: 1rem;
 .page-header--user {
   display: flex;
   align-items: center;
-  margin-left: $_inline-margin;
-  margin-right: $_inline-margin;
+  margin: 0 $_inline-margin baseline.increments(3);
 
   @include breakpoints.not-narrow {
     margin-left: 0;
@@ -51,6 +50,10 @@ $_inline-margin: 1rem;
     flex: 0 0 48px;
     margin-right: 1rem;
     border-radius: 50%;
+  }
+
+  h1 {
+    margin-bottom: 0;
   }
 
   .page-header__handle {
