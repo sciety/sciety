@@ -44,7 +44,6 @@ import { DoiFromString } from '../types/codecs/DoiFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import * as Doi from '../types/doi';
 import { toHtmlFragment } from '../types/html-fragment';
-import { userPage } from '../user-page';
 import { followedGroupsPage } from '../user-page/followed-groups-page/followed-groups-page';
 import { savedArticlesPage } from '../user-page/saved-articles-page/saved-articles-page';
 
