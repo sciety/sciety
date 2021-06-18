@@ -8,6 +8,10 @@
 
 $_inline-margin: 1rem;
 
+@mixin wide-columns() {
+  grid-column: 2 / 12; // local change, should maybe be rolled out across all sciety-grid use after larger discusssion
+}
+
 .sciety-grid.sciety-grid--user {
   margin-left: auto;
   margin-right: auto;
@@ -17,7 +21,7 @@ $_inline-margin: 1rem;
   grid-column: 1 / -1;
 
   @include breakpoints.not-narrow {
-    grid-column: 3 / 11;
+    @include wide-columns();
   }
 }
 
@@ -25,7 +29,7 @@ $_inline-margin: 1rem;
   grid-column: 1 / -1;
 
   @include breakpoints.not-narrow {
-    grid-column: 3 / 11;
+    @include wide-columns();
   }
 }
 
@@ -57,7 +61,7 @@ $_inline-margin: 1rem;
   grid-column: 1 / -1;
 
   @include breakpoints.not-narrow {
-    grid-column: 3 / 11;
+    @include wide-columns();
   }
 }
 
@@ -134,7 +138,7 @@ $_avatar-border-width: settings.$border-width;
   grid-column: 1 / -1;
 
   @include breakpoints.not-narrow {
-    grid-column: 3 / 11;
+    @include wide-columns();
   }
 }
 
