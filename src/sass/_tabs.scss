@@ -5,6 +5,7 @@
 @use 'baseline';
 @use 'breakpoints';
 @use 'typography';
+@use 'list';
 
 @mixin container() {
   border-bottom: 2px solid transparent;
@@ -37,4 +38,21 @@
 
 @mixin tab-heading {
   border-bottom: 2px solid settings.$colour-accent;
+}
+
+.tab-list {
+  @include container();
+  @include list.basics();
+}
+
+.tab {
+  @include tab();
+
+  > a {
+    @include tab-link();
+  }
+}
+
+.tab--active {
+  @include tab-heading();
 }

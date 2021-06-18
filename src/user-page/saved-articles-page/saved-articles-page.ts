@@ -69,20 +69,20 @@ export const savedArticlesPage = (ports: Ports): SavedArticlesPage => (params) =
           <article class="sciety-grid sciety-grid--user">
             ${components.header}
 
-            <ul role="tablist">
-              <li role="presentation">
-                <a role="tab" href="#content" id="active-tab" aria-selected="true">Saved articles</a>
-              </li>
-              <li role="presentation">
-                <a role="tab" href="/users/${params.id}/followed-groups">Followed groups</a>
-              </li>
-            </ul>
-            <section role="tabpanel" id="content" aria-labelledby="active-tab">
-              <div class="main-content main-content--user">
-                <h2 class="visually-hidden">Saved articles</h2>
-                ${components.savedArticles}
-              </div>
-            </section>
+            <div class="main-content main-content--user">
+              <ul class="tab-list" role="tablist">
+                <li class="tab tab--active" role="presentation">
+                  <a role="tab" href="#content" id="active-tab" aria-selected="true">Saved articles</a>
+                </li>
+                <li class="tab" role="presentation">
+                  <a role="tab" href="/users/${params.id}/followed-groups">Followed groups</a>
+                </li>
+              </ul>
+                <section role="tabpanel" id="content" aria-labelledby="active-tab">
+                    <h2 class="visually-hidden">Saved articles</h2>
+                    ${components.savedArticles}
+                </section>
+            </div>
 
           </article>
         </div>
