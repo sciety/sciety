@@ -36,28 +36,14 @@ type Ports = {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
 };
 
-const toErrorPage = (error: 'not-found' | 'unavailable') => {
-  switch (error) {
-    case 'not-found':
-      return {
-        type: error,
-        message: toHtmlFragment(`
-          We’re having trouble finding this information.
-          Ensure you have the correct URL, or try refreshing the page.
-          You may need to come back later.
-        `),
-      };
-    case 'unavailable':
-      return {
-        type: error,
-        message: toHtmlFragment(`
-          We’re having trouble finding this information.
-          Ensure you have the correct URL, or try refreshing the page.
-          You may need to come back later.
-        `),
-      };
-  }
-};
+const toErrorPage = (error: 'not-found' | 'unavailable') => ({
+  type: error,
+  message: toHtmlFragment(`
+    We’re having trouble finding this information.
+    Ensure you have the correct URL, or try refreshing the page.
+    You may need to come back later.
+  `),
+});
 
 export const articleMetaPage: MetaPage = flow(
   RTE.right,
