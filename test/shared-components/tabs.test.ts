@@ -27,6 +27,13 @@ describe('tabs', () => {
     expect(inactiveTab?.getAttribute('href')).toStrictEqual(inactiveTabTarget);
   });
 
+  it('shows the correct label for inactive tab', () => {
+    const rendered = JSDOM.fragment(tabs(arbitraryHtmlFragment(), arbitraryUri(), arbitraryString()));
+    const inactiveTab = rendered.querySelector('[role="tab"]:not([aria-selected=true])');
+
+    expect(inactiveTab?.textContent).toStrictEqual('Followed groups');
+  });
+
   it.todo('orders tabs independently of active state');
 
   it('shows the content in the tab panel', () => {
