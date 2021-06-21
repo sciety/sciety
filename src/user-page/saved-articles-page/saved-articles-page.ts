@@ -29,7 +29,18 @@ export const savedArticlesPage = (ports: Ports): SavedArticlesPage => (params) =
       ports.getUserDetails(params.id),
       TE.map(renderHeader),
     ),
-    savedArticles: savedArticles(ports)(params.id),
+    tabs: pipe(
+      savedArticles(ports)(params.id),
+      TE.map((activeTabPanelContents) => tabs(
+        activeTabPanelContents,
+        [
+          { label: 'Saved articles', url: `/users/${params.id}/saved-articles` },
+          { label: 'Followed groups', url: `/users/${params.id}/followed-groups` },
+        ],
+        true,
+      )),
+
+    ),
   },
   sequenceS(TE.ApplyPar),
   TE.bimap(
@@ -42,14 +53,7 @@ export const savedArticlesPage = (ports: Ports): SavedArticlesPage => (params) =
             ${components.header}
 
             <div class="main-content main-content--user">
-              ${tabs(
-        components.savedArticles,
-        [
-          { label: 'Saved articles', url: `/users/${params.id}/saved-articles` },
-          { label: 'Followed groups', url: `/users/${params.id}/followed-groups` },
-        ],
-        true,
-      )}
+              ${components.tabs}
             </div>
 
           </article>
