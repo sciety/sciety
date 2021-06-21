@@ -1,6 +1,6 @@
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
-type Tab = {
+export type Tab = {
   label: string,
   uri: string,
 };

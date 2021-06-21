@@ -1,20 +1,28 @@
 import { JSDOM } from 'jsdom';
-import { tabs } from '../../src/shared-components/tabs';
-import { arbitraryHtmlFragment, arbitraryString, arbitraryUri } from '../helpers';
+import { Tab, tabs } from '../../src/shared-components/tabs';
+import {
+  arbitraryHtmlFragment, arbitraryNumber, arbitraryString, arbitraryUri,
+} from '../helpers';
+
+const arbitraryBoolean = () => !!arbitraryNumber(0, 1);
 
 describe('tabs', () => {
-  it('shows an active tab label', () => {
-    const tabLabel = arbitraryString();
+  it.skip('shows an active tab label', () => {
+    const tabList: [Tab, Tab] = [
+      { label: arbitraryString(), uri: arbitraryUri() },
+      { label: arbitraryString(), uri: arbitraryUri() },
+    ];
+    const isFirstTabActive = arbitraryBoolean();
     const rendered = JSDOM.fragment(
       tabs(
         arbitraryHtmlFragment(),
-        [{ label: tabLabel, uri: arbitraryUri() }, { label: arbitraryString(), uri: arbitraryUri() }],
-        true,
+        tabList,
+        isFirstTabActive,
       ),
     );
     const activeTab = rendered.querySelector('[role=tab][aria-selected=true]');
 
-    expect(activeTab?.textContent).toStrictEqual(tabLabel);
+    expect(activeTab?.textContent).toStrictEqual(tabList[isFirstTabActive ? 0 : 1].label);
   });
 
   it('active tab is not a link', () => {
@@ -59,7 +67,7 @@ describe('tabs', () => {
     expect(inactiveTab?.textContent).toStrictEqual(inactiveTabLabel);
   });
 
-  it.skip('orders tabs independently of active state', () => {
+  it('orders tabs independently of active state', () => {
     const tabLabelOne = arbitraryString();
     const tabLabelTwo = arbitraryString();
     const rendered = JSDOM.fragment(
