@@ -1,13 +1,14 @@
 import { JSDOM } from 'jsdom';
 import { tabs } from '../../src/shared-components/tabs';
-import { arbitraryHtmlFragment, arbitraryUri } from '../helpers';
+import { arbitraryHtmlFragment, arbitraryString, arbitraryUri } from '../helpers';
 
 describe('tabs', () => {
   it('shows an active tab label', () => {
-    const rendered = JSDOM.fragment(tabs(arbitraryHtmlFragment(), arbitraryUri()));
+    const tabLabel = arbitraryString();
+    const rendered = JSDOM.fragment(tabs(arbitraryHtmlFragment(), arbitraryUri(), tabLabel));
     const activeTab = rendered.querySelector('[role=tab][aria-selected=true]');
 
-    expect(activeTab?.textContent).toStrictEqual('Saved articles');
+    expect(activeTab?.textContent).toStrictEqual(tabLabel);
   });
 
   it.todo('active tab is not a link');
@@ -18,7 +19,7 @@ describe('tabs', () => {
 
   it('shows the content in the tab panel', () => {
     const content = arbitraryHtmlFragment();
-    const rendered = JSDOM.fragment(tabs(content, arbitraryUri()));
+    const rendered = JSDOM.fragment(tabs(content, arbitraryUri(), arbitraryString()));
     const tabPanelContent = rendered.querySelector('[role="tabpanel"]');
 
     expect(tabPanelContent?.innerHTML.trim()).toStrictEqual(content);
