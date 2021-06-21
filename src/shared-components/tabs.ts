@@ -3,7 +3,7 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 // ts-unused-exports:disable-next-line
 export type Tab = {
   label: string,
-  uri: string,
+  url: string,
 };
 
 type Tabs = (
@@ -20,7 +20,7 @@ const activeTab = (tab: Tab) => `
 
 const inactiveTab = (tab: Tab) => `
   <li class="tab" role="presentation">
-    <a role="tab" href="${tab.uri}">${tab.label}</a>
+    <a role="tab" href="${tab.url}">${tab.label}</a>
   </li>
 `;
 

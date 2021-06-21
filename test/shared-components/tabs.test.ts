@@ -18,8 +18,8 @@ const eachTabActiveOnce: EachTabActiveOnce = [
 ];
 
 const arbitraryTabList: [Tab, Tab] = [
-  { label: arbitraryString(), uri: arbitraryUri() },
-  { label: arbitraryString(), uri: arbitraryUri() },
+  { label: arbitraryString(), url: arbitraryUri() },
+  { label: arbitraryString(), url: arbitraryUri() },
 ];
 
 describe('tabs', () => {
@@ -40,7 +40,7 @@ describe('tabs', () => {
     const rendered = JSDOM.fragment(
       tabs(
         arbitraryHtmlFragment(),
-        [{ label: arbitraryString(), uri: arbitraryUri() }, { label: arbitraryString(), uri: arbitraryUri() }],
+        [{ label: arbitraryString(), url: arbitraryUri() }, { label: arbitraryString(), url: arbitraryUri() }],
         arbitraryBoolean(),
       ),
     );
@@ -60,7 +60,7 @@ describe('tabs', () => {
     const inactiveTab = rendered.querySelector('[role="tab"]:not([aria-selected="true"])');
 
     expect(inactiveTab?.tagName).toStrictEqual('A');
-    expect(inactiveTab?.getAttribute('href')).toStrictEqual(arbitraryTabList[inactiveTabIndex].uri);
+    expect(inactiveTab?.getAttribute('href')).toStrictEqual(arbitraryTabList[inactiveTabIndex].url);
   });
 
   it.each(eachTabActiveOnce)('shows the correct label for inactive tab: %s', ({ isFirstTabActive, inactiveTabIndex }) => {
