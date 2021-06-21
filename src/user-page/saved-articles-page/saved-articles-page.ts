@@ -2,7 +2,8 @@ import { sequenceS } from 'fp-ts/Apply';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { savedArticles, Ports as SavedArticlesPorts } from './saved-articles';
-import { toHtmlFragment } from '../../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+
 import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
 import { UserId } from '../../types/user-id';
@@ -45,6 +46,20 @@ const categoryTabs = (tabs: Tabs) => `
   </div>
 `;
 
+const tabs = (activeTabPanelContents: HtmlFragment, inactiveTabTarget: string) => `
+  <ul class="tab-list" role="tablist">
+    <li class="tab tab--active" role="presentation">
+      <span role="tab" id="active-tab" aria-selected="true">Saved articles</span>
+    </li>
+    <li class="tab" role="presentation">
+      <a role="tab" href="${inactiveTabTarget}">Followed groups</a>
+    </li>
+  </ul>
+  <section role="tabpanel" aria-labelledby="active-tab">
+    ${activeTabPanelContents}
+  </section>
+`;
+
 export const savedArticlesPage = (ports: Ports): SavedArticlesPage => (params) => pipe(
   {
     header: pipe(
@@ -70,17 +85,10 @@ export const savedArticlesPage = (ports: Ports): SavedArticlesPage => (params) =
             ${components.header}
 
             <div class="main-content main-content--user">
-              <ul class="tab-list" role="tablist">
-                <li class="tab tab--active" role="presentation">
-                  <span role="tab" id="active-tab" aria-selected="true">Saved articles</span>
-                </li>
-                <li class="tab" role="presentation">
-                  <a role="tab" href="/users/${params.id}/followed-groups">Followed groups</a>
-                </li>
-              </ul>
-                <section role="tabpanel" aria-labelledby="active-tab">
-                    ${components.savedArticles}
-                </section>
+              ${tabs(
+        components.savedArticles,
+        `/users/${params.id}/followed-groups`,
+      )}
             </div>
 
           </article>
