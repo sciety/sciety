@@ -1,6 +1,13 @@
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
-export const tabs = (activeTabPanelContents: HtmlFragment, inactiveTabTarget: string, activeTabLabel: string, inactiveTabLabel: string): HtmlFragment => toHtmlFragment(`
+type Tabs = (
+  activeTabPanelContents: HtmlFragment,
+  inactiveTabTarget: string,
+  activeTabLabel: string,
+  inactiveTabLabel: string
+) => HtmlFragment;
+
+export const tabs: Tabs = (activeTabPanelContents, inactiveTabTarget, activeTabLabel, inactiveTabLabel) => toHtmlFragment(`
   <ul class="tab-list" role="tablist">
     <li class="tab tab--active" role="presentation">
       <span role="tab" id="active-tab" aria-selected="true">${activeTabLabel}</span>
