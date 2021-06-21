@@ -6,7 +6,7 @@ import {
 
 const arbitraryBoolean = () => !!arbitraryNumber(0, 1);
 
-const eachTabActiveOnce = [[true], [false]];
+const eachTabActiveOnce: ReadonlyArray<[boolean, number, number]> = [[true, 0, 1], [false, 1, 0]];
 
 const arbitraryTabList: [Tab, Tab] = [
   { label: arbitraryString(), uri: arbitraryUri() },
@@ -14,7 +14,7 @@ const arbitraryTabList: [Tab, Tab] = [
 ];
 
 describe('tabs', () => {
-  it.each(eachTabActiveOnce)('shows an active tab label, isFirstTabActive: %s', (isFirstTabActive) => {
+  it.each(eachTabActiveOnce)('shows an active tab label, isFirstTabActive: %s', (isFirstTabActive, activeTabIndex) => {
     const rendered = JSDOM.fragment(
       tabs(
         arbitraryHtmlFragment(),
@@ -24,7 +24,7 @@ describe('tabs', () => {
     );
     const activeTab = rendered.querySelector('[role="tab"][aria-selected="true"]');
 
-    expect(activeTab?.textContent).toStrictEqual(arbitraryTabList[isFirstTabActive ? 0 : 1].label);
+    expect(activeTab?.textContent).toStrictEqual(arbitraryTabList[activeTabIndex].label);
   });
 
   it('active tab is not a link', () => {
@@ -40,7 +40,7 @@ describe('tabs', () => {
     expect(activeTab?.tagName).not.toStrictEqual('A');
   });
 
-  it.each(eachTabActiveOnce)('shows inactive tab as link, isFirstTabActive: %s', (isFirstTabActive) => {
+  it.each(eachTabActiveOnce)('shows inactive tab as link, isFirstTabActive: %s', (isFirstTabActive, _, inactiveTabIndex) => {
     const rendered = JSDOM.fragment(
       tabs(
         arbitraryHtmlFragment(),
@@ -51,10 +51,10 @@ describe('tabs', () => {
     const inactiveTab = rendered.querySelector('[role="tab"]:not([aria-selected="true"])');
 
     expect(inactiveTab?.tagName).toStrictEqual('A');
-    expect(inactiveTab?.getAttribute('href')).toStrictEqual(arbitraryTabList[isFirstTabActive ? 1 : 0].uri);
+    expect(inactiveTab?.getAttribute('href')).toStrictEqual(arbitraryTabList[inactiveTabIndex].uri);
   });
 
-  it.each(eachTabActiveOnce)('shows the correct label for inactive tab, isFirstTabActive: %s', (isFirstTabActive) => {
+  it.each(eachTabActiveOnce)('shows the correct label for inactive tab, isFirstTabActive: %s', (isFirstTabActive, _, inactiveTabIndex) => {
     const rendered = JSDOM.fragment(
       tabs(
         arbitraryHtmlFragment(),
@@ -64,7 +64,7 @@ describe('tabs', () => {
     );
     const inactiveTab = rendered.querySelector('[role="tab"]:not([aria-selected="true"])');
 
-    expect(inactiveTab?.textContent).toStrictEqual(arbitraryTabList[isFirstTabActive ? 1 : 0].label);
+    expect(inactiveTab?.textContent).toStrictEqual(arbitraryTabList[inactiveTabIndex].label);
   });
 
   it('orders tabs independently of active state', () => {
