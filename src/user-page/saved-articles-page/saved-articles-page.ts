@@ -44,9 +44,11 @@ export const savedArticlesPage = (ports: Ports): SavedArticlesPage => (params) =
             <div class="main-content main-content--user">
               ${tabs(
         components.savedArticles,
-        `/users/${params.id}/followed-groups`,
-        'Saved articles',
-        'Followed groups',
+        [
+          { label: 'Saved articles', uri: `/users/${params.id}/saved-articles` },
+          { label: 'Followed groups', uri: `/users/${params.id}/followed-groups` },
+        ],
+        true,
       )}
             </div>
 
