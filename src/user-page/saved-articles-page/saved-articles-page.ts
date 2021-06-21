@@ -3,7 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { savedArticles, Ports as SavedArticlesPorts } from './saved-articles';
 import { tabs } from '../../shared-components/tabs';
-import { toHtmlFragment } from '../../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
@@ -20,6 +20,27 @@ type Ports = SavedArticlesPorts & {
 type Params = {
   id: UserId,
 };
+
+type Components = {
+  header: HtmlFragment,
+  tabs: HtmlFragment,
+};
+
+const renderPage = (components: Components) => ({
+  title: 'User\'s saved articles',
+  content: toHtmlFragment(`
+    <div class="page-content__background">
+      <article class="sciety-grid sciety-grid--user">
+        ${components.header}
+
+        <div class="main-content main-content--user">
+          ${components.tabs}
+        </div>
+
+      </article>
+    </div>
+  `),
+});
 
 type SavedArticlesPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
@@ -43,22 +64,5 @@ export const savedArticlesPage = (ports: Ports): SavedArticlesPage => (params) =
     ),
   },
   sequenceS(TE.ApplyPar),
-  TE.bimap(
-    renderErrorPage,
-    (components) => ({
-      title: 'User\'s saved articles',
-      content: toHtmlFragment(`
-        <div class="page-content__background">
-          <article class="sciety-grid sciety-grid--user">
-            ${components.header}
-
-            <div class="main-content main-content--user">
-              ${components.tabs}
-            </div>
-
-          </article>
-        </div>
-      `),
-    }),
-  ),
+  TE.bimap(renderErrorPage, renderPage),
 );

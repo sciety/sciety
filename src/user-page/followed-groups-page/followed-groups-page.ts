@@ -23,12 +23,10 @@ type Params = {
   user: O.Option<User>,
 };
 
-type UserPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
-
 type Components = {
   header: HtmlFragment,
+  tabs: HtmlFragment,
   userDisplayName: string,
-  tabs: string,
 };
 
 const renderPage = (components: Components) => (
@@ -48,7 +46,9 @@ const renderPage = (components: Components) => (
   }
 );
 
-export const followedGroupsPage = (ports: Ports): UserPage => (params) => {
+type FollowedGroupsPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
+
+export const followedGroupsPage = (ports: Ports): FollowedGroupsPage => (params) => {
   const viewingUserId = pipe(
     params.user,
     O.map((user) => user.id),
