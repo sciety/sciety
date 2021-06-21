@@ -77,9 +77,8 @@ export const savedArticlesPage = (ports: Ports): SavedArticlesPage => (params) =
                 <li class="tab" role="presentation">
                   <a role="tab" href="/users/${params.id}/followed-groups">Followed groups</a>
                 </li>
-              </ul>
+              </ul>                                 ƒ
                 <section role="tabpanel" aria-labelledby="active-tab">
-                    <h2 class="visually-hidden">Saved articles</h2>
                     ${components.savedArticles}
                 </section>
             </div>
