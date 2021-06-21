@@ -3,6 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { followList, Ports as FollowListPorts } from './follow-list';
+import { tabs } from '../../shared-components/tabs';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
@@ -24,43 +25,22 @@ type Params = {
 
 type UserPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
-type Tabs = {
-  userId: UserId,
-  availableArticleMatches: number,
-  availableGroupMatches: number,
-};
-
-const tabsWithGroupsActive = (tabs: Tabs) => `
-  <a href="/users/${tabs.userId}/saved-articles" class="user-page-tab user-page-tab--link">Saved articles </a>
-  <h3 class="user-page-tab user-page-tab--heading"><span class="visually-hidden">Currently showing </span>Followed groups</h3>
-`;
-
-const categoryTabs = (tabs: Tabs) => `
-  <h2 class="visually-hidden">Things this user finds useful</h2>
-  <div class="user-page-tabs-container">
-    ${tabsWithGroupsActive(tabs)}
-  </div>
-`;
-
 type Components = {
   header: HtmlFragment,
-  followedGroups: HtmlFragment,
   userDisplayName: string,
   tabs: string,
 };
 
-const renderPage = ({
-  header, followedGroups, userDisplayName, tabs,
-}: Components) => (
+const renderPage = (components: Components) => (
   {
-    title: userDisplayName,
+    title: components.userDisplayName,
     content: toHtmlFragment(`
       <div class="page-content__background">
         <div class="sciety-grid sciety-grid--user">
-          ${header}
-          ${tabs}
+          ${components.header}
+
           <div class="main-content main-content--user">
-            ${followedGroups}
+            ${components.tabs}
           </div>
         </div>
       </div>
@@ -81,7 +61,6 @@ export const followedGroupsPage = (ports: Ports): UserPage => (params) => {
         userDetails,
         TE.map(renderHeader),
       ),
-      followedGroups: followList(ports)(params.id, viewingUserId),
       userDisplayName: pipe(
         userDetails,
         TE.map(flow(
@@ -89,11 +68,17 @@ export const followedGroupsPage = (ports: Ports): UserPage => (params) => {
           toHtmlFragment,
         )),
       ),
-      tabs: TE.right(categoryTabs({
-        userId: params.id,
-        availableArticleMatches: 0,
-        availableGroupMatches: 0,
-      })),
+      tabs: pipe(
+        followList(ports)(params.id, viewingUserId),
+        TE.map((activeTabPanelContents) => tabs(
+          activeTabPanelContents,
+          [
+            { label: 'Saved articles', url: `/users/${params.id}/saved-articles` },
+            { label: 'Followed groups', url: `/users/${params.id}/followed-groups` },
+          ],
+          false,
+        )),
+      ),
     },
     sequenceS(TE.ApplyPar),
     TE.bimap(renderErrorPage, renderPage),

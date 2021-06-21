@@ -37,7 +37,7 @@ describe('followed-groups-page', () => {
       contentOf,
       T.map(JSDOM.fragment),
     )();
-    const tabHeading = page.querySelector('.user-page-tab--heading')?.innerHTML;
+    const tabHeading = page.querySelector('.tab--active')?.innerHTML;
 
     expect(tabHeading).toContain('Followed groups');
   });
