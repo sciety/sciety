@@ -78,7 +78,7 @@ describe('tabs', () => {
     const tabElements = rendered.querySelectorAll('[role="tab"]');
     const tabLabels = Array.from(tabElements).map((tab) => tab.textContent);
 
-    expect(tabLabels).toStrictEqual([arbitraryTabList[0].label, arbitraryTabList[0].label]);
+    expect(tabLabels).toStrictEqual([arbitraryTabList[0].label, arbitraryTabList[1].label]);
   });
 
   it('shows the content in the tab panel', () => {
