@@ -72,13 +72,13 @@ export const savedArticlesPage = (ports: Ports): SavedArticlesPage => (params) =
             <div class="main-content main-content--user">
               <ul class="tab-list" role="tablist">
                 <li class="tab tab--active" role="presentation">
-                  <a role="tab" href="#content" id="active-tab" aria-selected="true">Saved articles</a>
+                  <span role="tab" id="active-tab" aria-selected="true">Saved articles</span>
                 </li>
                 <li class="tab" role="presentation">
                   <a role="tab" href="/users/${params.id}/followed-groups">Followed groups</a>
                 </li>
               </ul>
-                <section role="tabpanel" id="content" aria-labelledby="active-tab">
+                <section role="tabpanel" aria-labelledby="active-tab">
                     <h2 class="visually-hidden">Saved articles</h2>
                     ${components.savedArticles}
                 </section>
