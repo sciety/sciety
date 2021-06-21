@@ -15,7 +15,7 @@ describe('tabs', () => {
     const rendered = JSDOM.fragment(tabs(arbitraryHtmlFragment(), arbitraryUri(), arbitraryString()));
     const activeTab = rendered.querySelector('[role=tab][aria-selected=true]');
 
-    expect(activeTab.tagName).not.toStrictEqual('A');
+    expect(activeTab?.tagName).not.toStrictEqual('A');
   });
 
   it.todo('shows inactive tab as link');
