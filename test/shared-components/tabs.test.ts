@@ -1,18 +1,18 @@
 import { JSDOM } from 'jsdom';
 import { Tab, tabs } from '../../src/shared-components/tabs';
 import {
-  arbitraryHtmlFragment, arbitraryNumber, arbitraryString, arbitraryUri,
+  arbitraryHtmlFragment, arbitraryString, arbitraryUri,
 } from '../helpers';
 
-const arbitraryBoolean = () => !!arbitraryNumber(0, 1);
-
 describe('tabs', () => {
-  it.skip('shows an active tab label', () => {
+  it.each([
+    [true],
+    [false],
+  ])('shows an active tab label, isFirstTabActive: %s', (isFirstTabActive) => {
     const tabList: [Tab, Tab] = [
       { label: arbitraryString(), uri: arbitraryUri() },
       { label: arbitraryString(), uri: arbitraryUri() },
     ];
-    const isFirstTabActive = arbitraryBoolean();
     const rendered = JSDOM.fragment(
       tabs(
         arbitraryHtmlFragment(),
