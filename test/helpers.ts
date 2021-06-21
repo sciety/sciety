@@ -27,7 +27,7 @@ export const arbitrarySanitisedHtmlFragment = (): SanitisedHtmlFragment => pipe(
   sanitise,
 );
 
-export const arbitraryUri = (): string => 'http://something.com/example';
+export const arbitraryUri = (): string => `http://example.com/${arbitraryWord()}`;
 
 export const arbitraryTextLongerThan = (min: number): string => 'xy '.repeat(min);
 
