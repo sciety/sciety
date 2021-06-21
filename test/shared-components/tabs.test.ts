@@ -19,10 +19,12 @@ describe('tabs', () => {
   });
 
   it('shows inactive tab as link', () => {
-    const rendered = JSDOM.fragment(tabs(arbitraryHtmlFragment(), arbitraryUri(), arbitraryString()));
+    const inactiveTabTarget = arbitraryUri();
+    const rendered = JSDOM.fragment(tabs(arbitraryHtmlFragment(), inactiveTabTarget, arbitraryString()));
     const inactiveTab = rendered.querySelector('[role="tab"]:not([aria-selected=true])');
 
     expect(inactiveTab?.tagName).toStrictEqual('A');
+    expect(inactiveTab?.getAttribute('href')).toStrictEqual(inactiveTabTarget);
   });
 
   it.todo('orders tabs independently of active state');
