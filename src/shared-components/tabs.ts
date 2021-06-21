@@ -1,12 +1,12 @@
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
-export const tabs = (activeTabPanelContents: HtmlFragment, inactiveTabTarget: string, tabLabel: string): HtmlFragment => toHtmlFragment(`
+export const tabs = (activeTabPanelContents: HtmlFragment, inactiveTabTarget: string, activeTabLabel: string, inactiveTabLabel: string): HtmlFragment => toHtmlFragment(`
   <ul class="tab-list" role="tablist">
     <li class="tab tab--active" role="presentation">
-      <span role="tab" id="active-tab" aria-selected="true">${tabLabel}</span>
+      <span role="tab" id="active-tab" aria-selected="true">${activeTabLabel}</span>
     </li>
     <li class="tab" role="presentation">
-      <a role="tab" href="${inactiveTabTarget}">Followed groups</a>
+      <a role="tab" href="${inactiveTabTarget}">${inactiveTabLabel}</a>
     </li>
   </ul>
   <section role="tabpanel" aria-labelledby="active-tab">

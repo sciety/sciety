@@ -46,6 +46,7 @@ export const savedArticlesPage = (ports: Ports): SavedArticlesPage => (params) =
         components.savedArticles,
         `/users/${params.id}/followed-groups`,
         'Saved articles',
+        'Followed groups',
       )}
             </div>
 
