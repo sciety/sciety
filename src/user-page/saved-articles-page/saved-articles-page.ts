@@ -2,7 +2,8 @@ import { sequenceS } from 'fp-ts/Apply';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { savedArticles, Ports as SavedArticlesPorts } from './saved-articles';
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { tabs } from '../../shared-components/tabs';
+import { toHtmlFragment } from '../../types/html-fragment';
 
 import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
@@ -21,20 +22,6 @@ type Params = {
 };
 
 type SavedArticlesPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
-
-const tabs = (activeTabPanelContents: HtmlFragment, inactiveTabTarget: string) => `
-  <ul class="tab-list" role="tablist">
-    <li class="tab tab--active" role="presentation">
-      <span role="tab" id="active-tab" aria-selected="true">Saved articles</span>
-    </li>
-    <li class="tab" role="presentation">
-      <a role="tab" href="${inactiveTabTarget}">Followed groups</a>
-    </li>
-  </ul>
-  <section role="tabpanel" aria-labelledby="active-tab">
-    ${activeTabPanelContents}
-  </section>
-`;
 
 export const savedArticlesPage = (ports: Ports): SavedArticlesPage => (params) => pipe(
   {
