@@ -6,7 +6,16 @@ import {
 
 const arbitraryBoolean = () => !!arbitraryNumber(0, 1);
 
-const eachTabActiveOnce: ReadonlyArray<[boolean, number, number]> = [[true, 0, 1], [false, 1, 0]];
+type EachTabActiveOnce = ReadonlyArray<[{
+  isFirstTabActive: boolean,
+  activeTabIndex: number,
+  inactiveTabIndex: number,
+}]>;
+
+const eachTabActiveOnce: EachTabActiveOnce = [
+  [{ isFirstTabActive: true, activeTabIndex: 0, inactiveTabIndex: 1 }],
+  [{ isFirstTabActive: false, activeTabIndex: 1, inactiveTabIndex: 0 }],
+];
 
 const arbitraryTabList: [Tab, Tab] = [
   { label: arbitraryString(), uri: arbitraryUri() },
@@ -14,7 +23,7 @@ const arbitraryTabList: [Tab, Tab] = [
 ];
 
 describe('tabs', () => {
-  it.each(eachTabActiveOnce)('shows an active tab label, isFirstTabActive: %s', (isFirstTabActive, activeTabIndex) => {
+  it.each(eachTabActiveOnce)('shows an active tab label: %s', ({ isFirstTabActive, activeTabIndex }) => {
     const rendered = JSDOM.fragment(
       tabs(
         arbitraryHtmlFragment(),
@@ -40,7 +49,7 @@ describe('tabs', () => {
     expect(activeTab?.tagName).not.toStrictEqual('A');
   });
 
-  it.each(eachTabActiveOnce)('shows inactive tab as link, isFirstTabActive: %s', (isFirstTabActive, _, inactiveTabIndex) => {
+  it.each(eachTabActiveOnce)('shows inactive tab as link: %s', ({ isFirstTabActive, inactiveTabIndex }) => {
     const rendered = JSDOM.fragment(
       tabs(
         arbitraryHtmlFragment(),
@@ -54,7 +63,7 @@ describe('tabs', () => {
     expect(inactiveTab?.getAttribute('href')).toStrictEqual(arbitraryTabList[inactiveTabIndex].uri);
   });
 
-  it.each(eachTabActiveOnce)('shows the correct label for inactive tab, isFirstTabActive: %s', (isFirstTabActive, _, inactiveTabIndex) => {
+  it.each(eachTabActiveOnce)('shows the correct label for inactive tab: %s', ({ isFirstTabActive, inactiveTabIndex }) => {
     const rendered = JSDOM.fragment(
       tabs(
         arbitraryHtmlFragment(),
