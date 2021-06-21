@@ -22,30 +22,6 @@ type Params = {
 
 type SavedArticlesPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
-type Tabs = {
-  userId: UserId,
-  availableArticleMatches: number,
-  availableGroupMatches: number,
-  category: string,
-};
-
-const tabsWithGroupsActive = (tabs: Tabs) => `
-  <a href="/users/${tabs.userId}/saved-articles" class="user-page-tab user-page-tab--link">Saved articles </a>
-  <h3 class="user-page-tab user-page-tab--heading"><span class="visually-hidden">Currently showing </span>Followed groups</h3>
-`;
-
-const tabsWithArticlesActive = (tabs: Tabs) => `
-  <h3 class="user-page-tab user-page-tab--heading"><span class="visually-hidden">Currently showing </span>Saved articles</h3>
-  <a href="/users/${tabs.userId}/followed-groups" class="user-page-tab user-page-tab--link">Followed groups</a>
-`;
-
-const categoryTabs = (tabs: Tabs) => `
-  <h2 class="visually-hidden">Things this user finds useful</h2>
-  <div class="user-page-tabs-container">
-    ${tabs.category === 'groups' ? tabsWithGroupsActive(tabs) : tabsWithArticlesActive(tabs)}
-  </div>
-`;
-
 const tabs = (activeTabPanelContents: HtmlFragment, inactiveTabTarget: string) => `
   <ul class="tab-list" role="tablist">
     <li class="tab tab--active" role="presentation">
@@ -67,12 +43,6 @@ export const savedArticlesPage = (ports: Ports): SavedArticlesPage => (params) =
       TE.map(renderHeader),
     ),
     savedArticles: savedArticles(ports)(params.id),
-    tabs: TE.right(categoryTabs({
-      userId: params.id,
-      availableArticleMatches: 0,
-      availableGroupMatches: 0,
-      category: 'saved-articles',
-    })),
   },
   sequenceS(TE.ApplyPar),
   TE.bimap(
