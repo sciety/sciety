@@ -1,28 +1,30 @@
 import { JSDOM } from 'jsdom';
 import { Tab, tabs } from '../../src/shared-components/tabs';
 import {
-  arbitraryHtmlFragment, arbitraryString, arbitraryUri,
+  arbitraryHtmlFragment, arbitraryNumber, arbitraryString, arbitraryUri,
 } from '../helpers';
 
+const arbitraryBoolean = () => !!arbitraryNumber(0, 1);
+
+const eachTabActiveOnce = [[true], [false]];
+
+const arbitraryTabList: [Tab, Tab] = [
+  { label: arbitraryString(), uri: arbitraryUri() },
+  { label: arbitraryString(), uri: arbitraryUri() },
+];
+
 describe('tabs', () => {
-  it.each([
-    [true],
-    [false],
-  ])('shows an active tab label, isFirstTabActive: %s', (isFirstTabActive) => {
-    const tabList: [Tab, Tab] = [
-      { label: arbitraryString(), uri: arbitraryUri() },
-      { label: arbitraryString(), uri: arbitraryUri() },
-    ];
+  it.each(eachTabActiveOnce)('shows an active tab label, isFirstTabActive: %s', (isFirstTabActive) => {
     const rendered = JSDOM.fragment(
       tabs(
         arbitraryHtmlFragment(),
-        tabList,
+        arbitraryTabList,
         isFirstTabActive,
       ),
     );
-    const activeTab = rendered.querySelector('[role=tab][aria-selected=true]');
+    const activeTab = rendered.querySelector('[role="tab"][aria-selected="true"]');
 
-    expect(activeTab?.textContent).toStrictEqual(tabList[isFirstTabActive ? 0 : 1].label);
+    expect(activeTab?.textContent).toStrictEqual(arbitraryTabList[isFirstTabActive ? 0 : 1].label);
   });
 
   it('active tab is not a link', () => {
@@ -30,57 +32,53 @@ describe('tabs', () => {
       tabs(
         arbitraryHtmlFragment(),
         [{ label: arbitraryString(), uri: arbitraryUri() }, { label: arbitraryString(), uri: arbitraryUri() }],
-        true,
+        arbitraryBoolean(),
       ),
     );
-    const activeTab = rendered.querySelector('[role=tab][aria-selected=true]');
+    const activeTab = rendered.querySelector('[role="tab"][aria-selected="true"]');
 
     expect(activeTab?.tagName).not.toStrictEqual('A');
   });
 
-  it('shows inactive tab as link', () => {
-    const inactiveTabTarget = arbitraryUri();
+  it.each(eachTabActiveOnce)('shows inactive tab as link, isFirstTabActive: %s', (isFirstTabActive) => {
     const rendered = JSDOM.fragment(
       tabs(
         arbitraryHtmlFragment(),
-        [{ label: arbitraryString(), uri: arbitraryUri() }, { label: arbitraryString(), uri: inactiveTabTarget }],
-        true,
+        arbitraryTabList,
+        isFirstTabActive,
       ),
     );
-    const inactiveTab = rendered.querySelector('[role="tab"]:not([aria-selected=true])');
+    const inactiveTab = rendered.querySelector('[role="tab"]:not([aria-selected="true"])');
 
     expect(inactiveTab?.tagName).toStrictEqual('A');
-    expect(inactiveTab?.getAttribute('href')).toStrictEqual(inactiveTabTarget);
+    expect(inactiveTab?.getAttribute('href')).toStrictEqual(arbitraryTabList[isFirstTabActive ? 1 : 0].uri);
   });
 
-  it('shows the correct label for inactive tab', () => {
-    const inactiveTabLabel = arbitraryString();
+  it.each(eachTabActiveOnce)('shows the correct label for inactive tab, isFirstTabActive: %s', (isFirstTabActive) => {
     const rendered = JSDOM.fragment(
       tabs(
         arbitraryHtmlFragment(),
-        [{ label: arbitraryString(), uri: arbitraryUri() }, { label: inactiveTabLabel, uri: arbitraryUri() }],
-        true,
+        arbitraryTabList,
+        isFirstTabActive,
       ),
     );
-    const inactiveTab = rendered.querySelector('[role="tab"]:not([aria-selected=true])');
+    const inactiveTab = rendered.querySelector('[role="tab"]:not([aria-selected="true"])');
 
-    expect(inactiveTab?.textContent).toStrictEqual(inactiveTabLabel);
+    expect(inactiveTab?.textContent).toStrictEqual(arbitraryTabList[isFirstTabActive ? 1 : 0].label);
   });
 
   it('orders tabs independently of active state', () => {
-    const tabLabelOne = arbitraryString();
-    const tabLabelTwo = arbitraryString();
     const rendered = JSDOM.fragment(
       tabs(
         arbitraryHtmlFragment(),
-        [{ label: tabLabelOne, uri: arbitraryUri() }, { label: tabLabelTwo, uri: arbitraryUri() }],
-        true,
+        arbitraryTabList,
+        arbitraryBoolean(),
       ),
     );
     const tabElements = rendered.querySelectorAll('[role="tab"]');
     const tabLabels = Array.from(tabElements).map((tab) => tab.textContent);
 
-    expect(tabLabels).toStrictEqual([tabLabelOne, tabLabelTwo]);
+    expect(tabLabels).toStrictEqual([arbitraryTabList[0].label, arbitraryTabList[0].label]);
   });
 
   it('shows the content in the tab panel', () => {
@@ -88,8 +86,8 @@ describe('tabs', () => {
     const rendered = JSDOM.fragment(
       tabs(
         content,
-        [{ label: arbitraryString(), uri: arbitraryUri() }, { label: arbitraryString(), uri: arbitraryUri() }],
-        true,
+        arbitraryTabList,
+        arbitraryBoolean(),
       ),
     );
     const tabPanelContent = rendered.querySelector('[role="tabpanel"]');
