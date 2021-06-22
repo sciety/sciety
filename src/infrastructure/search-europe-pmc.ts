@@ -10,6 +10,7 @@ import {
 } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as PR from 'io-ts/PathReporter';
+import { match } from 'ts-pattern';
 import { Logger } from './logger';
 import { ArticleServer } from '../types/article-server';
 import { DoiFromString } from '../types/codecs/DoiFromString';
@@ -78,14 +79,10 @@ const constructQueryParams = (pageSize: number) => (query: string, cursor: O.Opt
 
 const constructSearchUrl = (queryParams: URLSearchParams) => `https://www.ebi.ac.uk/europepmc/webservices/rest/search?${queryParams.toString()}`;
 
-const translatePublisherToServer = (publisher: EuropePmcPublisher): ArticleServer => {
-  switch (publisher) {
-    case 'bioRxiv':
-      return 'biorxiv';
-    case 'medRxiv':
-      return 'medrxiv';
-  }
-};
+const translatePublisherToServer = (publisher: EuropePmcPublisher) => match(publisher)
+  .with('bioRxiv', constant('biorxiv' as const))
+  .with('medRxiv', constant('medrxiv' as const))
+  .exhaustive();
 
 const constructSearchResults = (pageSize: number) => (data: EuropePmcResponse) => {
   const items = data.resultList.result.map((item) => ({
