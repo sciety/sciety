@@ -46,7 +46,7 @@ export const savedArticlesPage = (ports: Ports): SavedArticlesPage => (params) =
       savedArticles(ports)(params.id),
       TE.map((activeTabPanelContents) => userPageTabs(
         activeTabPanelContents,
-        true,
+        0,
       )),
 
     ),

@@ -52,7 +52,7 @@ export const followedGroupsPage = (ports: Ports): FollowedGroupsPage => (params)
       followList(ports)(params.id, viewingUserId),
       TE.map((activeTabPanelContents) => userPageTabs(
         activeTabPanelContents,
-        false,
+        1,
       )),
     ),
   }),

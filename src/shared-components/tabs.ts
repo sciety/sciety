@@ -7,7 +7,7 @@ export type Tab = {
 
 type Tabs = (tabList: [Tab, Tab]) => (
   activeTabPanelContents: HtmlFragment,
-  isFirstTabActive: boolean,
+  selectedTabIndex: 0 | 1,
 ) => HtmlFragment;
 
 const activeTab = (tab: Tab) => `
@@ -22,10 +22,10 @@ const inactiveTab = (tab: Tab) => `
   </li>
 `;
 
-export const tabs: Tabs = (tabList) => (activeTabPanelContents, isFirstTabActive) => toHtmlFragment(`
+export const tabs: Tabs = (tabList) => (activeTabPanelContents, selectedTabIndex) => toHtmlFragment(`
   <ul class="tab-list" role="tablist">
-    ${isFirstTabActive ? activeTab(tabList[0]) : inactiveTab(tabList[0])}
-    ${isFirstTabActive ? inactiveTab(tabList[1]) : activeTab(tabList[1])}
+    ${selectedTabIndex === 0 ? activeTab(tabList[0]) : inactiveTab(tabList[0])}
+    ${selectedTabIndex === 0 ? inactiveTab(tabList[1]) : activeTab(tabList[1])}
   </ul>
   <section role="tabpanel" aria-labelledby="active-tab">
     ${activeTabPanelContents}
