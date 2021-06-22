@@ -1,4 +1,7 @@
-import { flow } from 'fp-ts/function';
+import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
+import { flow, pipe } from 'fp-ts/function';
+import { match } from 'ts-pattern';
 import {
   DomainEvent,
   UserFoundReviewHelpfulEvent,
@@ -36,24 +39,19 @@ const filterUserAndReview = (
   events.filter((event) => event.userId === userId && ReviewId.equals(event.reviewId, reviewId))
 );
 
-const calculateCurrentState = (events: ReadonlyArray<InterestingEvent>) => {
-  // TODO: fold if into switch
-  if (events.length === 0) {
-    return 'none';
-  }
-  const typeOfMostRecentEvent = events[events.length - 1].type;
-
-  switch (typeOfMostRecentEvent) {
-    case 'UserRevokedFindingReviewHelpful':
-      return 'none';
-    case 'UserRevokedFindingReviewNotHelpful':
-      return 'none';
-    case 'UserFoundReviewHelpful':
-      return 'helpful';
-    case 'UserFoundReviewNotHelpful':
-      return 'not-helpful';
-  }
-};
+const calculateCurrentState = (events: ReadonlyArray<InterestingEvent>) => pipe(
+  events,
+  RA.last,
+  O.fold(
+    () => 'none' as const,
+    (mostRecentEvent) => match(mostRecentEvent.type)
+      .with('UserFoundReviewHelpful', () => 'helpful' as const)
+      .with('UserFoundReviewNotHelpful', () => 'not-helpful' as const)
+      .with('UserRevokedFindingReviewHelpful', () => 'none' as const)
+      .with('UserRevokedFindingReviewNotHelpful', () => 'none' as const)
+      .exhaustive(),
+  ),
+);
 
 export const reviewResponse = (userId: UserId, reviewId: ReviewId.ReviewId): ReviewResponseType => flow(
   filterEventType,
