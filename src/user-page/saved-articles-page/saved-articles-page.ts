@@ -11,6 +11,7 @@ import { UserId } from '../../types/user-id';
 import { renderErrorPage } from '../render-error-page';
 import { renderHeader, UserDetails } from '../render-header';
 import { renderPage } from '../render-page';
+import { tabList } from '../tab-list';
 
 type GetUserDetails = (userId: UserId) => TE.TaskEither<'not-found' | 'unavailable', UserDetails>;
 
@@ -42,10 +43,7 @@ export const savedArticlesPage = (ports: Ports): SavedArticlesPage => (params) =
       savedArticles(ports)(params.id),
       TE.map((activeTabPanelContents) => tabs(
         activeTabPanelContents,
-        [
-          { label: 'Saved articles', url: `/users/${params.id}/saved-articles` },
-          { label: 'Followed groups', url: `/users/${params.id}/followed-groups` },
-        ],
+        tabList(params.id),
         true,
       )),
 

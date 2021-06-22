@@ -1,6 +1,5 @@
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
-// ts-unused-exports:disable-next-line
 export type Tab = {
   label: string,
   url: string,
