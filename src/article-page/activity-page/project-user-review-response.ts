@@ -5,6 +5,7 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe } from 'fp-ts/function';
+import { match } from 'ts-pattern';
 import {
   DomainEvent,
   UserFoundReviewHelpfulEvent,
@@ -35,16 +36,10 @@ const projectResponse = (getEvents: GetEvents) => (reviewId: RI.ReviewId, userId
     RNEA.fromReadonlyArray,
     O.chain(flow(
       RNEA.last,
-      (mostRecentEvent) => {
-        switch (mostRecentEvent.type) {
-          case 'UserFoundReviewHelpful':
-            return O.some('helpful' as const);
-          case 'UserFoundReviewNotHelpful':
-            return O.some('not-helpful' as const);
-          default:
-            return O.none;
-        }
-      },
+      (mostRecentEvent) => match(mostRecentEvent.type)
+        .with('UserFoundReviewHelpful', () => O.some('helpful' as const))
+        .with('UserFoundReviewNotHelpful', () => O.some('not-helpful' as const))
+        .otherwise(() => O.none),
     )),
   )),
 );
