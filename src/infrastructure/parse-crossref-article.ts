@@ -152,16 +152,24 @@ const crossrefCodec = t.type({
       crossref: t.type({
         posted_content: t.type({
           contributors: t.type({
-            person_name: t.array(t.type({
-              given_name: t.string,
-              surname: t.string,
-            })),
+            person_name: t.union([
+              t.array(t.type({
+                given_name: t.string,
+                surname: t.string,
+              })),
+              t.type({
+                given_name: t.string,
+                surname: t.string,
+              }),
+            ]),
           }),
         }),
       }),
     }),
   }),
 });
+
+const renderAuthor = (author: { given_name: string, surname: string }) => `${sanitise(toHtmlFragment((author.given_name)))} ${sanitise(toHtmlFragment((author.surname)))}`;
 
 export const getAuthorsJson = (doc: JSON, doi: Doi, logger: Logger): O.Option<ReadonlyArray<string>> => pipe(
   doc,
@@ -174,8 +182,8 @@ export const getAuthorsJson = (doc: JSON, doi: Doi, logger: Logger): O.Option<Re
       return O.some([]);
     },
     (response) => pipe(
-      response.doi_records.doi_record.crossref.posted_content.contributors.person_name,
-      RA.map((author) => `${author.given_name} ${author.surname}`),
+      [response.doi_records.doi_record.crossref.posted_content.contributors.person_name].flat(),
+      RA.map(renderAuthor),
       O.some,
     ),
   ),
