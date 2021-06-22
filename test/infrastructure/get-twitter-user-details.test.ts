@@ -1,7 +1,11 @@
 import * as E from 'fp-ts/Either';
+import * as T from 'fp-ts/Task';
+import { flow, identity, pipe } from 'fp-ts/function';
 import { GetTwitterResponse } from '../../src/infrastructure/get-twitter-response';
 import { getTwitterUserDetails } from '../../src/infrastructure/get-twitter-user-details';
+import * as DE from '../../src/types/data-error';
 import { dummyLogger } from '../dummy-logger';
+import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryUserId } from '../types/user-id.helper';
 
 describe('get-twitter-user-details', () => {
@@ -52,17 +56,37 @@ describe('get-twitter-user-details', () => {
       }
       throw new InvalidTwitterIdError();
     };
-    const result = getTwitterUserDetails(getTwitterResponse, dummyLogger)(arbitraryUserId());
+    const result = await pipe(
+      arbitraryUserId(),
+      getTwitterUserDetails(getTwitterResponse, dummyLogger),
+      T.map(flow(
+        E.matchW(
+          identity,
+          shouldNotBeCalled,
+        ),
+        DE.isNotFound,
+      )),
+    )();
 
-    expect(await result()).toStrictEqual(E.left('not-found'));
+    expect(result).toBe(true);
   });
 
   it('returns unavailable if the Twitter API is unavailable', async () => {
     const getTwitterResponse: GetTwitterResponse = async () => {
       throw new Error('Twitter API Unavailable');
     };
-    const result = getTwitterUserDetails(getTwitterResponse, dummyLogger)(arbitraryUserId());
+    const result = await pipe(
+      arbitraryUserId(),
+      getTwitterUserDetails(getTwitterResponse, dummyLogger),
+      T.map(flow(
+        E.matchW(
+          identity,
+          shouldNotBeCalled,
+        ),
+        DE.isUnavailable,
+      )),
+    )();
 
-    expect(await result()).toStrictEqual(E.left('unavailable'));
+    expect(result).toBe(true);
   });
 });

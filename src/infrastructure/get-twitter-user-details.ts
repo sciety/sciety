@@ -3,6 +3,7 @@ import { pipe } from 'fp-ts/function';
 import { GetTwitterResponse } from './get-twitter-response';
 import { isAxiosError } from './is-axios-error';
 import { Logger, Payload } from './logger';
+import * as DE from '../types/data-error';
 import { UserId } from '../types/user-id';
 
 type TwitterUserDetails = {
@@ -20,7 +21,7 @@ type TwitterResponse = {
   errors?: unknown,
 };
 
-export type GetTwitterUserDetails = (userId: UserId) => TE.TaskEither<'not-found' | 'unavailable', TwitterUserDetails>;
+export type GetTwitterUserDetails = (userId: UserId) => TE.TaskEither<DE.DataError, TwitterUserDetails>;
 
 const handleOk = (
   logger: Logger,
@@ -37,7 +38,7 @@ const handleOk = (
     });
   }
   logger('debug', 'Twitter user not found', { userId, data });
-  return TE.left('not-found' as const);
+  return TE.left(DE.notFound);
 };
 
 const handleError = (logger: Logger, userId: UserId) => (error: unknown) => {
@@ -49,12 +50,12 @@ const handleError = (logger: Logger, userId: UserId) => (error: unknown) => {
 
     if (error.response.status === 400) {
       logger('debug', 'Twitter user not found', payload);
-      return 'not-found';
+      return DE.notFound;
     }
   }
 
   logger('error', 'Request to Twitter API for user details failed', payload);
-  return 'unavailable';
+  return DE.unavailable;
 };
 
 export const getTwitterUserDetails = (
