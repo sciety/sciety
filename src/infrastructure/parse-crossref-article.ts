@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { match } from 'ts-pattern';
 import { XMLSerializer } from 'xmldom';
@@ -130,13 +131,14 @@ export const getAuthors = (doc: Document, doi: Doi, logger: Logger): O.Option<Re
     return O.some([]);
   }
 
-  const authors = Array.from(contributorsElement.childNodes)
-    .filter((node): node is Element => node.nodeType === node.ELEMENT_NODE)
-    .filter((contributor) => contributor.getAttribute('contributor_role') === 'author')
-    .map((contributor) => match(contributor)
+  return pipe(
+    Array.from(contributorsElement.childNodes),
+    RA.filter((node): node is Element => node.nodeType === node.ELEMENT_NODE),
+    RA.filter((contributor) => contributor.getAttribute('contributor_role') === 'author'),
+    RA.map((contributor) => match(contributor)
       .when((c) => c.tagName === 'person_name', personAuthor)
       .when((c) => c.tagName === 'organization', organisationAuthor)
-      .otherwise(() => O.none));
-
-  return pipe(authors, O.sequenceArray);
+      .otherwise(() => O.none)),
+    O.sequenceArray,
+  );
 };
