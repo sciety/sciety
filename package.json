@@ -42,6 +42,7 @@
     "serialize-error": "^8.1.0",
     "striptags": "^3.1.1",
     "text-clipper": "^2.1.0",
+    "ts-pattern": "^3.1.7",
     "uuid": "^8.3.2",
     "xmldom": "^0.6.0"
   },
