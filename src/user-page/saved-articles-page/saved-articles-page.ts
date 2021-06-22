@@ -1,6 +1,6 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { savedArticles, Ports as SavedArticlesPorts } from './saved-articles';
 import { tabs } from '../../shared-components/tabs';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
@@ -24,10 +24,11 @@ type Params = {
 type Components = {
   header: HtmlFragment,
   tabs: HtmlFragment,
+  userDisplayName: string,
 };
 
 const renderPage = (components: Components) => ({
-  title: 'User\'s saved articles',
+  title: components.userDisplayName,
   content: toHtmlFragment(`
     <div class="page-content__background">
       <article class="sciety-grid sciety-grid--user">
@@ -49,6 +50,13 @@ export const savedArticlesPage = (ports: Ports): SavedArticlesPage => (params) =
     header: pipe(
       ports.getUserDetails(params.id),
       TE.map(renderHeader),
+    ),
+    userDisplayName: pipe(
+      ports.getUserDetails(params.id),
+      TE.map(flow(
+        ({ displayName }) => displayName,
+        toHtmlFragment,
+      )),
     ),
     tabs: pipe(
       savedArticles(ports)(params.id),

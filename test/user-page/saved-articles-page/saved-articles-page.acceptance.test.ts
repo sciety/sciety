@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
@@ -76,6 +77,28 @@ describe('saved-articles-page', () => {
   });
 
   it.todo('shows the groups tab as the inactive tab');
+
+  it('uses the user displayname as page title', async () => {
+    const userDisplayName = arbitraryString();
+    const ports = {
+      getUserDetails: () => TE.right({
+        avatarUrl: arbitraryUri(),
+        displayName: userDisplayName,
+        handle: arbitraryWord(),
+      }),
+      getAllEvents: T.of([]),
+      fetchArticle: shouldNotBeCalled,
+      findReviewsForArticleDoi: shouldNotBeCalled,
+      findVersionsForArticleDoi: shouldNotBeCalled,
+    };
+    const params = { id: arbitraryUserId() };
+    const page = await pipe(
+      params,
+      savedArticlesPage(ports),
+    )();
+
+    expect(page).toStrictEqual(E.right(expect.objectContaining({ title: userDisplayName })));
+  });
 
   describe('when the user has saved articles', () => {
     it.todo('shows the count in the tab');
