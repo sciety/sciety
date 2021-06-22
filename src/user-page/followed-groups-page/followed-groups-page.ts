@@ -27,35 +27,35 @@ type Params = {
 
 type FollowedGroupsPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
-export const followedGroupsPage = (ports: Ports): FollowedGroupsPage => (params) => {
-  const viewingUserId = pipe(
-    params.user,
-    O.map((user) => user.id),
-  );
-  const userDetails = ports.getUserDetails(params.id);
-
-  return pipe(
-    {
-      header: pipe(
-        userDetails,
-        TE.map(renderHeader),
-      ),
-      userDisplayName: pipe(
-        userDetails,
-        TE.map(flow(
-          ({ displayName }) => displayName,
-          toHtmlFragment,
-        )),
-      ),
-      tabs: pipe(
-        followList(ports)(params.id, viewingUserId),
-        TE.map((activeTabPanelContents) => tabs(tabList(params.id))(
-          activeTabPanelContents,
-          false,
-        )),
-      ),
-    },
-    sequenceS(TE.ApplyPar),
-    TE.bimap(renderErrorPage, renderPage),
-  );
-};
+export const followedGroupsPage = (ports: Ports): FollowedGroupsPage => (params) => pipe(
+  {
+    userPageTabs: tabs(tabList(params.id)),
+    userDetails: ports.getUserDetails(params.id),
+    viewingUserId: pipe(
+      params.user,
+      O.map((user) => user.id),
+    ),
+  },
+  ({ userPageTabs, userDetails, viewingUserId }) => ({
+    header: pipe(
+      userDetails,
+      TE.map(renderHeader),
+    ),
+    userDisplayName: pipe(
+      userDetails,
+      TE.map(flow(
+        ({ displayName }) => displayName,
+        toHtmlFragment,
+      )),
+    ),
+    tabs: pipe(
+      followList(ports)(params.id, viewingUserId),
+      TE.map((activeTabPanelContents) => userPageTabs(
+        activeTabPanelContents,
+        false,
+      )),
+    ),
+  }),
+  sequenceS(TE.ApplyPar),
+  TE.bimap(renderErrorPage, renderPage),
+);

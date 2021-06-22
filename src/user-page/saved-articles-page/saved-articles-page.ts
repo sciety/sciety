@@ -26,8 +26,11 @@ type Params = {
 type SavedArticlesPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
 export const savedArticlesPage = (ports: Ports): SavedArticlesPage => (params) => pipe(
-  ports.getUserDetails(params.id),
-  (userDetails) => ({
+  {
+    userPageTabs: tabs(tabList(params.id)),
+    userDetails: ports.getUserDetails(params.id),
+  },
+  ({ userPageTabs, userDetails }) => ({
     header: pipe(
       userDetails,
       TE.map(renderHeader),
@@ -41,7 +44,7 @@ export const savedArticlesPage = (ports: Ports): SavedArticlesPage => (params) =
     ),
     tabs: pipe(
       savedArticles(ports)(params.id),
-      TE.map((activeTabPanelContents) => tabs(tabList(params.id))(
+      TE.map((activeTabPanelContents) => userPageTabs(
         activeTabPanelContents,
         true,
       )),
