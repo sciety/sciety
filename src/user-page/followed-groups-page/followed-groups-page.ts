@@ -4,13 +4,14 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { followList, Ports as FollowListPorts } from './follow-list';
 import { tabs } from '../../shared-components/tabs';
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { toHtmlFragment } from '../../types/html-fragment';
 import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
 import { User } from '../../types/user';
 import { UserId } from '../../types/user-id';
 import { renderErrorPage } from '../render-error-page';
 import { renderHeader, UserDetails } from '../render-header';
+import { renderPage } from '../render-page';
 
 type GetUserDetails = (userId: UserId) => TE.TaskEither<'not-found' | 'unavailable', UserDetails>;
 
@@ -22,29 +23,6 @@ type Params = {
   id: UserId,
   user: O.Option<User>,
 };
-
-type Components = {
-  header: HtmlFragment,
-  tabs: HtmlFragment,
-  userDisplayName: string,
-};
-
-const renderPage = (components: Components) => (
-  {
-    title: components.userDisplayName,
-    content: toHtmlFragment(`
-      <div class="page-content__background">
-        <div class="sciety-grid sciety-grid--user">
-          ${components.header}
-
-          <div class="main-content main-content--user">
-            ${components.tabs}
-          </div>
-        </div>
-      </div>
-    `),
-  }
-);
 
 type FollowedGroupsPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
