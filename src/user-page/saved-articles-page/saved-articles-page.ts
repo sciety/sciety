@@ -46,13 +46,14 @@ const renderPage = (components: Components) => ({
 type SavedArticlesPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
 export const savedArticlesPage = (ports: Ports): SavedArticlesPage => (params) => pipe(
-  {
+  ports.getUserDetails(params.id),
+  (userDetails) => ({
     header: pipe(
-      ports.getUserDetails(params.id),
+      userDetails,
       TE.map(renderHeader),
     ),
     userDisplayName: pipe(
-      ports.getUserDetails(params.id),
+      userDetails,
       TE.map(flow(
         ({ displayName }) => displayName,
         toHtmlFragment,
@@ -70,7 +71,7 @@ export const savedArticlesPage = (ports: Ports): SavedArticlesPage => (params) =
       )),
 
     ),
-  },
+  }),
   sequenceS(TE.ApplyPar),
   TE.bimap(renderErrorPage, renderPage),
 );
