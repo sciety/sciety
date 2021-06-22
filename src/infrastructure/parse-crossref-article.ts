@@ -1,5 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { constant, flow, pipe } from 'fp-ts/function';
+import { match } from 'ts-pattern';
 import { XMLSerializer } from 'xmldom';
 import { Logger } from './logger';
 import { Doi } from '../types/doi';
@@ -132,16 +133,10 @@ export const getAuthors = (doc: Document, doi: Doi, logger: Logger): O.Option<Re
   const authors = Array.from(contributorsElement.childNodes)
     .filter((node): node is Element => node.nodeType === node.ELEMENT_NODE)
     .filter((contributor) => contributor.getAttribute('contributor_role') === 'author')
-    .map((contributor) => {
-      switch (contributor.tagName) {
-        case 'person_name':
-          return personAuthor(contributor);
-        case 'organization':
-          return organisationAuthor(contributor);
-      }
-
-      return O.none;
-    });
+    .map((contributor) => match(contributor)
+      .when((c) => c.tagName === 'person_name', personAuthor)
+      .when((c) => c.tagName === 'organization', organisationAuthor)
+      .otherwise(() => O.none));
 
   return pipe(authors, O.sequenceArray);
 };
