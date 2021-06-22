@@ -1,6 +1,9 @@
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { constant, flow, pipe } from 'fp-ts/function';
+import * as t from 'io-ts';
+import * as PR from 'io-ts/PathReporter';
 import { match } from 'ts-pattern';
 import { XMLSerializer } from 'xmldom';
 import { Logger } from './logger';
@@ -143,7 +146,37 @@ export const getAuthors = (doc: Document, doi: Doi, logger: Logger): O.Option<Re
   );
 };
 
-export const getAuthorsJson = (doc: JSON, doi: Doi, logger: Logger): O.Option<ReadonlyArray<string>> => {
-  logger('debug', 'Did not find contributors', { doi });
-  return O.some([]);
-};
+const crossrefCodec = t.type({
+  doi_records: t.type({
+    doi_record: t.type({
+      crossref: t.type({
+        posted_content: t.type({
+          contributors: t.type({
+            person_name: t.array(t.type({
+              given_name: t.string,
+              surname: t.string,
+            })),
+          }),
+        }),
+      }),
+    }),
+  }),
+});
+
+export const getAuthorsJson = (doc: JSON, doi: Doi, logger: Logger): O.Option<ReadonlyArray<string>> => pipe(
+  doc,
+  (foo) => { console.log(JSON.stringify(foo, null, 2)); return foo; },
+  crossrefCodec.decode,
+  E.fold(
+    (errors) => {
+      console.log(PR.failure(errors).join('\n'));
+      logger('debug', 'Did not find contributors', { doi });
+      return O.some([]);
+    },
+    (response) => pipe(
+      response.doi_records.doi_record.crossref.posted_content.contributors.person_name,
+      RA.map((author) => `${author.given_name} ${author.surname}`),
+      O.some,
+    ),
+  ),
+);
