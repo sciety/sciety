@@ -7,6 +7,7 @@ import { nextLink, SearchParameters } from './next-link';
 import { GroupViewModel, renderGroupCard } from './render-group-card';
 import { ArticleViewModel, renderArticleCard } from '../shared-components/article-card';
 import { templateListItems } from '../shared-components/list-items';
+import { tabs } from '../shared-components/tabs';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 export type ItemViewModel = ArticleViewModel | GroupViewModel;
@@ -65,23 +66,6 @@ type Tabs = {
   category: string,
 };
 
-const tabsWithGroupsActive = (tabs: Tabs) => `
-  <a href="/search?query=${htmlEscape(tabs.query)}&category=articles" class="search-results-tab search-results-tab--link" aria-label="Discover matching articles (${tabs.availableArticleMatches} search results)">Articles (${tabs.availableArticleMatches})</a>
-  <h3 class="search-results-tab search-results-tab--heading"><span class="visually-hidden">Currently showing </span>Groups (${tabs.availableGroupMatches}<span class="visually-hidden"> search results</span>)</h3>
-`;
-
-const tabsWithArticlesActive = (tabs: Tabs) => `
-  <h3 class="search-results-tab search-results-tab--heading"><span class="visually-hidden">Currently showing </span>Articles (${tabs.availableArticleMatches}<span class="visually-hidden"> search results</span>)</h3>
-  <a href="/search?query=${htmlEscape(tabs.query)}&category=groups" class="search-results-tab search-results-tab--link" aria-label="Discover matching groups (${tabs.availableGroupMatches} search results)">Groups (${tabs.availableGroupMatches}<span class="visually-hidden"> search results</span>)</a>
-`;
-
-const categoryTabs = (tabs: Tabs) => `
-  <h2 class="visually-hidden">Search result categories</h2>
-  <div class="search-results-tabs-container">
-    ${tabs.category === 'groups' ? tabsWithGroupsActive(tabs) : tabsWithArticlesActive(tabs)}
-  </div>
-`;
-
 type RenderSearchResults = (rs: SearchResults) => HtmlFragment;
 
 export const renderSearchResults: RenderSearchResults = (searchResults) => pipe(
@@ -95,9 +79,20 @@ export const renderSearchResults: RenderSearchResults = (searchResults) => pipe(
     category: searchResults.category,
   },
   renderListIfNecessary,
-  (searchResultsList) => `
-    ${categoryTabs(searchResults)}
-    ${searchResultsList}
+  (searchResultsList) => tabs(
+    [
+      {
+        label: `Articles (${searchResults.availableArticleMatches}<span class="visually-hidden"> search results</span>)`,
+        url: `/search?query=${htmlEscape(searchResults.query)}&category=articles`,
+      },
+      {
+        label: `Groups (${searchResults.availableGroupMatches}<span class="visually-hidden"> search results</span>)`,
+        url: `/search?query=${htmlEscape(searchResults.query)}&category=groups`,
+      },
+    ],
+  )(toHtmlFragment(searchResultsList), searchResults.category === 'groups' ? 1 : 0),
+  (renderedTabs) => `
+    ${renderedTabs}
     ${nextLink({ ...searchResults, pageNumber: searchResults.pageNumber + 1 })}
   `,
   toHtmlFragment,

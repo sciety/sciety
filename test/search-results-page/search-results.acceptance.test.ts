@@ -67,7 +67,7 @@ describe('search-results-page acceptance', () => {
         searchResultsPage(dummyAdapters),
       );
       const rendered = await contentOf(page)();
-      const tabHtml = rendered.querySelector('.search-results-tab--heading')?.innerHTML;
+      const tabHtml = rendered.querySelector('.tab--active')?.innerHTML;
 
       expect(tabHtml).toContain('Articles (0');
     });
@@ -78,7 +78,7 @@ describe('search-results-page acceptance', () => {
         searchResultsPage(dummyAdapters),
       );
       const rendered = await contentOf(page)();
-      const tabHtml = rendered.querySelector('.search-results-tab--link')?.innerHTML;
+      const tabHtml = rendered.querySelector('.tab:not(.tab--active)')?.innerHTML;
 
       expect(tabHtml).toContain('Groups (0');
     });
@@ -96,7 +96,7 @@ describe('search-results-page acceptance', () => {
           searchResultsPage(dummyAdapters),
         );
         const rendered = await contentOf(page)();
-        const tabHeading = rendered.querySelector('.search-results-tab--heading')?.innerHTML;
+        const tabHeading = rendered.querySelector('.tab--active')?.innerHTML;
 
         expect(tabHeading).toContain('Articles');
       });
@@ -350,7 +350,7 @@ describe('search-results-page acceptance', () => {
             }),
           );
           const rendered = await contentOf(page)();
-          const tabHtml = rendered.querySelector('.search-results-tab--heading')?.innerHTML;
+          const tabHtml = rendered.querySelector('.tab--active')?.innerHTML;
 
           expect(tabHtml).toContain('Articles');
         });
@@ -370,7 +370,7 @@ describe('search-results-page acceptance', () => {
             }),
           );
           const rendered = await contentOf(page)();
-          const tabHtml = rendered.querySelector('.search-results-tab--link')?.innerHTML;
+          const tabHtml = rendered.querySelector('.tab:not(.tab--active)')?.innerHTML;
 
           expect(tabHtml).toContain('Groups');
         });
@@ -510,7 +510,7 @@ describe('search-results-page acceptance', () => {
             searchResultsPage(dummyAdapters),
           );
           const rendered = await contentOf(page)();
-          const tabHtml = rendered.querySelector('.search-results-tab--heading')?.innerHTML;
+          const tabHtml = rendered.querySelector('.tab--active')?.innerHTML;
 
           expect(tabHtml).toContain('Groups');
         });
@@ -527,7 +527,7 @@ describe('search-results-page acceptance', () => {
             searchResultsPage(dummyAdapters),
           );
           const rendered = await contentOf(page)();
-          const tabHtml = rendered.querySelector('.search-results-tab--link')?.innerHTML;
+          const tabHtml = rendered.querySelector('.tab:not(.tab--active)')?.innerHTML;
 
           expect(tabHtml).toContain('Articles');
         });
