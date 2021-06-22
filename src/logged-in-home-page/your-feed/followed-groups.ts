@@ -1,5 +1,6 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
+import { match } from 'ts-pattern';
 import {
   DomainEvent,
   isUserFollowedEditorialCommunityEvent,
@@ -16,17 +17,10 @@ const reduceFollowOrUnfollowEventToGroupIds = (
   event: FollowOrUnfollowEvent,
 ): ReadonlyArray<GroupId> => pipe(
   event.editorialCommunityId,
-  (groupId) => {
-    switch (event.type) {
-      case 'UserFollowedEditorialCommunity':
-        return [...state, groupId];
-      case 'UserUnfollowedEditorialCommunity':
-        return pipe(
-          state,
-          RA.filter((existing) => existing !== groupId),
-        );
-    }
-  },
+  (groupId) => match(event.type)
+    .with('UserFollowedEditorialCommunity', () => [...state, groupId])
+    .with('UserUnfollowedEditorialCommunity', () => pipe(state, RA.filter((existing) => existing !== groupId)))
+    .exhaustive(),
 );
 
 const isFollowOrUnfollowEventForUser = (userId: UserId) => (event: DomainEvent): event is FollowOrUnfollowEvent => (
