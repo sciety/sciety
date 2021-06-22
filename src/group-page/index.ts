@@ -16,6 +16,7 @@ import { renderPageHeader } from './render-page-header';
 import { renderFollowToggle } from '../follow/render-follow-toggle';
 import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
+import * as DE from '../types/data-error';
 import { DomainEvent } from '../types/domain-events';
 import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
@@ -45,7 +46,7 @@ export const paramsCodec = t.type({
 type Params = t.TypeOf<typeof paramsCodec>;
 
 const notFoundResponse = () => ({
-  type: 'not-found',
+  type: DE.notFound,
   message: toHtmlFragment('No such group. Please check and try again.'),
 } as const);
 
