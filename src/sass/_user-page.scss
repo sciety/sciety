@@ -84,6 +84,7 @@ $_inline-margin: 1rem;
 
 .followed-groups__list {
   padding-left: 0;
+  margin-top: 0;
 }
 
 .followed-groups__item {
@@ -114,6 +115,7 @@ $_avatar-border-width: settings.$border-width;
 
 .saved-articles {
   @include list.basics();
+  margin-top: 0;
 }
 
 .saved-articles__header {
