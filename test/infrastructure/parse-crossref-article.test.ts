@@ -261,6 +261,19 @@ describe('parse-crossref-article', () => {
 
       expect(authors).toStrictEqual(O.some(['Fergus Fountain']));
     });
+
+    it('handles a person without a given_name', async () => {
+      const response = crossrefResponseWith(`
+        <contributors>
+          <person_name contributor_role="author" sequence="first">
+            <surname>Ross</surname>
+          </person_name>
+        </contributors>`);
+      const doc = parserToJson.parse(response, { stopNodes: ['given_name', 'surname'] }) as JSON;
+      const authors = getAuthorsJson(doc, doi, dummyLogger);
+
+      expect(authors).toStrictEqual(O.some(['Ross']));
+    });
   });
 
   describe('parsing the authors', () => {
