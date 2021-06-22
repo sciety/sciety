@@ -1,6 +1,7 @@
+import * as DE from './data-error';
 import { HtmlFragment } from './html-fragment';
 
 export type RenderPageError = {
-  type: 'not-found' | 'unavailable',
+  type: DE.DataError,
   message: HtmlFragment,
 };
