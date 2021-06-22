@@ -25,9 +25,8 @@ const arbitraryTabList: [Tab, Tab] = [
 describe('tabs', () => {
   it.each(eachTabActiveOnce)('shows an active tab label: %s', ({ isFirstTabActive, activeTabIndex }) => {
     const rendered = JSDOM.fragment(
-      tabs(
+      tabs(arbitraryTabList)(
         arbitraryHtmlFragment(),
-        arbitraryTabList,
         isFirstTabActive,
       ),
     );
@@ -38,9 +37,8 @@ describe('tabs', () => {
 
   it('active tab is not a link', () => {
     const rendered = JSDOM.fragment(
-      tabs(
+      tabs(arbitraryTabList)(
         arbitraryHtmlFragment(),
-        [{ label: arbitraryString(), url: arbitraryUri() }, { label: arbitraryString(), url: arbitraryUri() }],
         arbitraryBoolean(),
       ),
     );
@@ -51,9 +49,8 @@ describe('tabs', () => {
 
   it.each(eachTabActiveOnce)('shows inactive tab as link: %s', ({ isFirstTabActive, inactiveTabIndex }) => {
     const rendered = JSDOM.fragment(
-      tabs(
+      tabs(arbitraryTabList)(
         arbitraryHtmlFragment(),
-        arbitraryTabList,
         isFirstTabActive,
       ),
     );
@@ -65,9 +62,8 @@ describe('tabs', () => {
 
   it.each(eachTabActiveOnce)('shows the correct label for inactive tab: %s', ({ isFirstTabActive, inactiveTabIndex }) => {
     const rendered = JSDOM.fragment(
-      tabs(
+      tabs(arbitraryTabList)(
         arbitraryHtmlFragment(),
-        arbitraryTabList,
         isFirstTabActive,
       ),
     );
@@ -78,9 +74,8 @@ describe('tabs', () => {
 
   it('orders tabs independently of active state', () => {
     const rendered = JSDOM.fragment(
-      tabs(
+      tabs(arbitraryTabList)(
         arbitraryHtmlFragment(),
-        arbitraryTabList,
         arbitraryBoolean(),
       ),
     );
@@ -93,9 +88,8 @@ describe('tabs', () => {
   it('shows the content in the tab panel', () => {
     const content = arbitraryHtmlFragment();
     const rendered = JSDOM.fragment(
-      tabs(
+      tabs(arbitraryTabList)(
         content,
-        arbitraryTabList,
         arbitraryBoolean(),
       ),
     );

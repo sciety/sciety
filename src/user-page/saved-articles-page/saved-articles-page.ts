@@ -41,9 +41,8 @@ export const savedArticlesPage = (ports: Ports): SavedArticlesPage => (params) =
     ),
     tabs: pipe(
       savedArticles(ports)(params.id),
-      TE.map((activeTabPanelContents) => tabs(
+      TE.map((activeTabPanelContents) => tabs(tabList(params.id))(
         activeTabPanelContents,
-        tabList(params.id),
         true,
       )),
 

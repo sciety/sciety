@@ -5,9 +5,8 @@ export type Tab = {
   url: string,
 };
 
-type Tabs = (
+type Tabs = (tabList: [Tab, Tab]) => (
   activeTabPanelContents: HtmlFragment,
-  tabList: [Tab, Tab],
   isFirstTabActive: boolean,
 ) => HtmlFragment;
 
@@ -23,7 +22,7 @@ const inactiveTab = (tab: Tab) => `
   </li>
 `;
 
-export const tabs: Tabs = (activeTabPanelContents, tabList, isFirstTabActive) => toHtmlFragment(`
+export const tabs: Tabs = (tabList) => (activeTabPanelContents, isFirstTabActive) => toHtmlFragment(`
   <ul class="tab-list" role="tablist">
     ${isFirstTabActive ? activeTab(tabList[0]) : inactiveTab(tabList[0])}
     ${isFirstTabActive ? inactiveTab(tabList[1]) : activeTab(tabList[1])}

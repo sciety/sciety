@@ -49,9 +49,8 @@ export const followedGroupsPage = (ports: Ports): FollowedGroupsPage => (params)
       ),
       tabs: pipe(
         followList(ports)(params.id, viewingUserId),
-        TE.map((activeTabPanelContents) => tabs(
+        TE.map((activeTabPanelContents) => tabs(tabList(params.id))(
           activeTabPanelContents,
-          tabList(params.id),
           false,
         )),
       ),
