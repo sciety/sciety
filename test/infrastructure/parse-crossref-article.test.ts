@@ -1,7 +1,9 @@
+// eslint-disable-next-line import/no-named-default
+import { default as parserToJson } from 'fast-xml-parser';
 import * as O from 'fp-ts/Option';
 import { DOMParser } from 'xmldom';
 import {
-  getAbstract, getAuthors, getServer, getTitle,
+  getAbstract, getAuthors, getAuthorsJson, getServer, getTitle,
 } from '../../src/infrastructure/parse-crossref-article';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryDoi } from '../types/doi.helper';
@@ -216,6 +218,16 @@ describe('parse-crossref-article', () => {
 
         expect(server).toBe('biorxiv');
       });
+    });
+  });
+
+  describe('parsing the authors from JSON', () => {
+    it('extracts no authors from the XML response when there are no contributors', async () => {
+      const response = crossrefResponseWith('');
+      const doc = parserToJson.parse(response) as JSON;
+      const authors = getAuthorsJson(doc, doi, dummyLogger);
+
+      expect(authors).toStrictEqual(O.some([]));
     });
   });
 

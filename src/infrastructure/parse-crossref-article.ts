@@ -142,3 +142,8 @@ export const getAuthors = (doc: Document, doi: Doi, logger: Logger): O.Option<Re
     O.sequenceArray,
   );
 };
+
+export const getAuthorsJson = (doc: JSON, doi: Doi, logger: Logger): O.Option<ReadonlyArray<string>> => {
+  logger('debug', 'Did not find contributors', { doi });
+  return O.some([]);
+};
