@@ -7,6 +7,7 @@ import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { constant, flow, pipe } from 'fp-ts/function';
 import striptags from 'striptags';
+import { match } from 'ts-pattern';
 import { FindReviewsForArticleDoi, FindVersionsForArticleDoi, getArticleFeedEvents } from './get-article-feed-events';
 import { FetchReview } from './get-feed-events-content';
 import { projectReviewResponseCounts } from './project-review-response-counts';
@@ -87,16 +88,12 @@ export const articleActivityPage: ActivityPage = flow(
       getUserReviewResponse: (reviewId) => projectUserReviewResponse(reviewId, userId)(ports.getAllEvents),
     }),
     T.map(renderFeed(
-      (feedItem) => {
-        switch (feedItem.type) {
-          case 'article-version':
-            return renderArticleVersionFeedItem(feedItem);
-          case 'article-version-error':
-            return feedItem.server === 'medrxiv' ? medrxivArticleVersionErrorFeedItem : biorxivArticleVersionErrorFeedItem;
-          case 'review':
-            return renderReviewFeedItem(850)(feedItem);
-        }
-      },
+      (feedItem) => match(feedItem)
+        .with({ type: 'review' }, renderReviewFeedItem(850))
+        .with({ type: 'article-version' }, renderArticleVersionFeedItem)
+        .with({ type: 'article-version-error', server: 'biorxiv' }, () => biorxivArticleVersionErrorFeedItem)
+        .with({ type: 'article-version-error', server: 'medrxiv' }, () => medrxivArticleVersionErrorFeedItem)
+        .exhaustive(),
     )),
     TE.rightTask,
   )),
