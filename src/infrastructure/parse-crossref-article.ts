@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { constant, flow, pipe } from 'fp-ts/function';
-import { __, match } from 'ts-pattern';
+import { match } from 'ts-pattern';
 import { XMLSerializer } from 'xmldom';
 import { Logger } from './logger';
 import { Doi } from '../types/doi';
@@ -106,16 +106,20 @@ export const getServer = flow(
   ),
 );
 
-const personAuthor = (person: Element) => pipe(
-  {
-    givenName: person.getElementsByTagName('given_name')[0]?.textContent,
-    surname: person.getElementsByTagName('surname')[0]?.textContent,
-  },
-  (author) => match(author)
-    .with({ givenName: null, surname: __.string }, (a) => O.some(a.surname))
-    .with({ givenName: __.string, surname: __.string }, (a) => O.some(`${a.givenName} ${a.surname}`))
-    .otherwise(() => O.none),
-);
+const personAuthor = (person: Element) => {
+  const givenName = person.getElementsByTagName('given_name')[0]?.textContent;
+  const surname = person.getElementsByTagName('surname')[0]?.textContent;
+
+  if (!surname) {
+    return O.none;
+  }
+
+  if (!givenName) {
+    return O.some(surname);
+  }
+
+  return O.some(`${givenName} ${surname}`);
+};
 
 const organisationAuthor = (organisation: Element) => O.fromNullable(organisation.textContent);
 
