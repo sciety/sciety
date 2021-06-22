@@ -242,7 +242,7 @@ describe('parse-crossref-article', () => {
             <surname>Fountain</surname>
           </person_name>
         </contributors>`);
-      const doc = parserToJson.parse(response) as JSON;
+      const doc = parserToJson.parse(response, { stopNodes: ['given_name', 'surname'], ignoreAttributes: false }) as JSON;
       const authors = getAuthorsJson(doc, doi, dummyLogger);
 
       expect(authors).toStrictEqual(O.some(['Eesha Ross', 'Fergus Fountain']));
@@ -256,7 +256,7 @@ describe('parse-crossref-article', () => {
             <surname>Fo<scp>untain</scp></surname>
           </person_name>
         </contributors>`);
-      const doc = parserToJson.parse(response, { stopNodes: ['given_name', 'surname'] }) as JSON;
+      const doc = parserToJson.parse(response, { stopNodes: ['given_name', 'surname'], ignoreAttributes: false }) as JSON;
       const authors = getAuthorsJson(doc, doi, dummyLogger);
 
       expect(authors).toStrictEqual(O.some(['Fergus Fountain']));
@@ -269,10 +269,28 @@ describe('parse-crossref-article', () => {
             <surname>Ross</surname>
           </person_name>
         </contributors>`);
-      const doc = parserToJson.parse(response, { stopNodes: ['given_name', 'surname'] }) as JSON;
+      const doc = parserToJson.parse(response, { stopNodes: ['given_name', 'surname'], ignoreAttributes: false }) as JSON;
       const authors = getAuthorsJson(doc, doi, dummyLogger);
 
       expect(authors).toStrictEqual(O.some(['Ross']));
+    });
+
+    it('only includes authors', async () => {
+      const response = crossrefResponseWith(`
+        <contributors>
+          <person_name contributor_role="author" sequence="first">
+            <given_name>Eesha</given_name>
+            <surname>Ross</surname>
+          </person_name>
+          <person_name contributor_role="reviewer" sequence="additional">
+            <given_name>Fergus</given_name>
+            <surname>Fountain</surname>
+          </person_name>
+        </contributors>`);
+      const doc = parserToJson.parse(response, { stopNodes: ['given_name', 'surname'], ignoreAttributes: false }) as JSON;
+      const authors = getAuthorsJson(doc, doi, dummyLogger);
+
+      expect(authors).toStrictEqual(O.some(['Eesha Ross']));
     });
   });
 

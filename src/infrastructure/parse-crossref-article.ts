@@ -158,10 +158,12 @@ const crossrefCodec = t.type({
               t.array(t.type({
                 given_name: tt.optionFromNullable(t.string),
                 surname: tt.optionFromNullable(t.string),
+                '@_contributor_role': tt.optionFromNullable(t.string),
               })),
               t.type({
                 given_name: tt.optionFromNullable(t.string),
                 surname: tt.optionFromNullable(t.string),
+                '@_contributor_role': tt.optionFromNullable(t.string),
               }),
             ]),
           }),
@@ -184,6 +186,7 @@ export const getAuthorsJson = (doc: JSON, doi: Doi, logger: Logger): O.Option<Re
     (response) => pipe(
       [response.doi_records.doi_record.crossref.posted_content.contributors.person_name].flat(),
       RA.map(R.map(O.getOrElseW(() => null))),
+      RA.filter((author) => author['@_contributor_role'] === 'author'),
       RA.map((author) => pipe(
         match(author)
           .with({ given_name: __.string, surname: __.string }, (a) => O.some(`${a.given_name} ${a.surname}`))
