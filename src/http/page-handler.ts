@@ -7,6 +7,7 @@ import { flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { renderErrorPage } from './render-error-page';
 import { applyStandardPageLayout } from '../shared-components/apply-standard-page-layout';
+import * as DE from '../types/data-error';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { User } from '../types/user';
@@ -29,7 +30,13 @@ export const toErrorResponse: ErrorToWebPage = (user) => (error) => pipe(
   applyStandardPageLayout(user),
   (body) => ({
     body,
-    status: error.type === 'not-found' ? StatusCodes.NOT_FOUND : StatusCodes.SERVICE_UNAVAILABLE,
+    status: pipe(
+      error.type,
+      DE.fold({
+        notFound: () => StatusCodes.NOT_FOUND,
+        unavailable: () => StatusCodes.SERVICE_UNAVAILABLE,
+      }),
+    ),
   }),
 );
 
