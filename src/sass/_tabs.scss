@@ -43,6 +43,7 @@
 .tab-list {
   @include container();
   @include list.basics();
+  margin-bottom: 0;
 }
 
 .tab {
