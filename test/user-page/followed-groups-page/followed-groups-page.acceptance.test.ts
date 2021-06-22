@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -43,4 +44,25 @@ describe('followed-groups-page', () => {
   });
 
   it.todo('shows the articles tab as the inactive tab');
+
+  it('uses the user displayname as page title', async () => {
+    const userDisplayName = arbitraryString();
+    const ports = {
+      follows: shouldNotBeCalled,
+      getGroup: shouldNotBeCalled,
+      getUserDetails: () => TE.right({
+        avatarUrl: arbitraryUri(),
+        displayName: userDisplayName,
+        handle: arbitraryWord(),
+      }),
+      getAllEvents: T.of([]),
+    };
+    const params = { id: arbitraryUserId(), user: O.none };
+    const page = await pipe(
+      params,
+      followedGroupsPage(ports),
+    )();
+
+    expect(page).toStrictEqual(E.right(expect.objectContaining({ title: userDisplayName })));
+  });
 });
