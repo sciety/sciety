@@ -1,7 +1,7 @@
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 export type Tab = {
-  label: string,
+  label: HtmlFragment,
   url: string,
 };
 

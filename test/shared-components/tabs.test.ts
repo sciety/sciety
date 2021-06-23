@@ -1,7 +1,7 @@
 import { JSDOM } from 'jsdom';
 import { Tab, tabs } from '../../src/shared-components/tabs';
 import {
-  arbitraryHtmlFragment, arbitraryNumber, arbitraryString, arbitraryUri,
+  arbitraryHtmlFragment, arbitraryNumber, arbitraryUri,
 } from '../helpers';
 
 type EachTabActiveOnce = ReadonlyArray<[{
@@ -15,8 +15,8 @@ const eachTabActiveOnce: EachTabActiveOnce = [
 ];
 
 const arbitraryTabList: [Tab, Tab] = [
-  { label: arbitraryString(), url: arbitraryUri() },
-  { label: arbitraryString(), url: arbitraryUri() },
+  { label: arbitraryHtmlFragment(), url: arbitraryUri() },
+  { label: arbitraryHtmlFragment(), url: arbitraryUri() },
 ];
 
 describe('tabs', () => {

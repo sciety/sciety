@@ -75,11 +75,11 @@ type Tabs = {
 const pageTabs = (searchResults: SearchResults) => tabs({
   tabList: [
     {
-      label: `Articles (${searchResults.availableArticleMatches}<span class="visually-hidden"> search results</span>)`,
+      label: toHtmlFragment(`Articles (${searchResults.availableArticleMatches}<span class="visually-hidden"> search results</span>)`),
       url: `/search?query=${htmlEscape(searchResults.query)}&category=articles`,
     },
     {
-      label: `Groups (${searchResults.availableGroupMatches}<span class="visually-hidden"> search results</span>)`,
+      label: toHtmlFragment(`Groups (${searchResults.availableGroupMatches}<span class="visually-hidden"> search results</span>)`),
       url: `/search?query=${htmlEscape(searchResults.query)}&category=groups`,
     },
   ],
