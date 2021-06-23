@@ -72,6 +72,19 @@ type Tabs = {
   category: string,
 };
 
+const searchResultsPageTabs = (searchResults: SearchResults) => tabs(
+  [
+    {
+      label: `Articles (${searchResults.availableArticleMatches}<span class="visually-hidden"> search results</span>)`,
+      url: `/search?query=${htmlEscape(searchResults.query)}&category=articles`,
+    },
+    {
+      label: `Groups (${searchResults.availableGroupMatches}<span class="visually-hidden"> search results</span>)`,
+      url: `/search?query=${htmlEscape(searchResults.query)}&category=groups`,
+    },
+  ],
+);
+
 type RenderSearchResults = (rs: SearchResults) => HtmlFragment;
 
 export const renderSearchResults: RenderSearchResults = (searchResults) => pipe(
@@ -86,17 +99,6 @@ export const renderSearchResults: RenderSearchResults = (searchResults) => pipe(
   },
   searchResultsList,
   pagination(searchResults),
-  (activeTabPanelContents) => tabs(
-    [
-      {
-        label: `Articles (${searchResults.availableArticleMatches}<span class="visually-hidden"> search results</span>)`,
-        url: `/search?query=${htmlEscape(searchResults.query)}&category=articles`,
-      },
-      {
-        label: `Groups (${searchResults.availableGroupMatches}<span class="visually-hidden"> search results</span>)`,
-        url: `/search?query=${htmlEscape(searchResults.query)}&category=groups`,
-      },
-    ],
-  )(activeTabPanelContents, searchResults.category === 'groups' ? 1 : 0),
+  (activeTabPanelContents) => searchResultsPageTabs(searchResults)(activeTabPanelContents, searchResults.category === 'groups' ? 1 : 0),
   toHtmlFragment,
 );
