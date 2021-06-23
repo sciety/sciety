@@ -5,9 +5,11 @@ export type Tab = {
   url: string,
 };
 
-type Tabs = (tabList: [Tab, Tab]) => (
-  activeTabPanelContents: HtmlFragment,
+type Tabs = (
+  tabList: [Tab, Tab],
   selectedTabIndex: 0 | 1,
+) => (
+  activeTabPanelContents: HtmlFragment,
 ) => HtmlFragment;
 
 const activeTab = (tab: Tab) => `
@@ -22,7 +24,7 @@ const inactiveTab = (tab: Tab) => `
   </li>
 `;
 
-export const tabs: Tabs = (tabList) => (activeTabPanelContents, selectedTabIndex) => toHtmlFragment(`
+export const tabs: Tabs = (tabList, selectedTabIndex) => (activeTabPanelContents) => toHtmlFragment(`
   <ul class="tab-list" role="tablist">
     ${selectedTabIndex === 0 ? activeTab(tabList[0]) : inactiveTab(tabList[0])}
     ${selectedTabIndex === 0 ? inactiveTab(tabList[1]) : activeTab(tabList[1])}

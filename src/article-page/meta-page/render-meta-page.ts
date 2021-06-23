@@ -39,7 +39,7 @@ export const renderMetaPage = (components: {
       </a>
   `,
   toHtmlFragment,
-  (tabContent) => tabs(
+  tabs(
     [
       {
         label: '<span class="visually-hidden">Discover information and abstract about this </span>Article',
@@ -50,7 +50,8 @@ export const renderMetaPage = (components: {
         url: `/articles/activity/${components.doi.value}`,
       },
     ],
-  )(tabContent, 0),
+    0,
+  ),
   (mainContent) => toHtmlFragment(`
 <div class="page-content__background">
   <article class="sciety-grid sciety-grid--article">

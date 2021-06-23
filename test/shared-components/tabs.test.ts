@@ -22,9 +22,11 @@ const arbitraryTabList: [Tab, Tab] = [
 describe('tabs', () => {
   it.each(eachTabActiveOnce)('shows an active tab label: %s', ({ activeTabIndex }) => {
     const rendered = JSDOM.fragment(
-      tabs(arbitraryTabList)(
-        arbitraryHtmlFragment(),
+      tabs(
+        arbitraryTabList,
         activeTabIndex,
+      )(
+        arbitraryHtmlFragment(),
       ),
     );
     const activeTab = rendered.querySelector('[role="tab"][aria-selected="true"]');
@@ -34,9 +36,11 @@ describe('tabs', () => {
 
   it('active tab is not a link', () => {
     const rendered = JSDOM.fragment(
-      tabs(arbitraryTabList)(
-        arbitraryHtmlFragment(),
+      tabs(
+        arbitraryTabList,
         arbitraryNumber(0, 1) as 0 | 1,
+      )(
+        arbitraryHtmlFragment(),
       ),
     );
     const activeTab = rendered.querySelector('[role="tab"][aria-selected="true"]');
@@ -46,9 +50,11 @@ describe('tabs', () => {
 
   it.each(eachTabActiveOnce)('shows inactive tab as link: %s', ({ activeTabIndex, inactiveTabIndex }) => {
     const rendered = JSDOM.fragment(
-      tabs(arbitraryTabList)(
-        arbitraryHtmlFragment(),
+      tabs(
+        arbitraryTabList,
         activeTabIndex,
+      )(
+        arbitraryHtmlFragment(),
       ),
     );
     const inactiveTab = rendered.querySelector('[role="tab"]:not([aria-selected="true"])');
@@ -59,9 +65,11 @@ describe('tabs', () => {
 
   it.each(eachTabActiveOnce)('shows the correct label for inactive tab: %s', ({ activeTabIndex, inactiveTabIndex }) => {
     const rendered = JSDOM.fragment(
-      tabs(arbitraryTabList)(
-        arbitraryHtmlFragment(),
+      tabs(
+        arbitraryTabList,
         activeTabIndex,
+      )(
+        arbitraryHtmlFragment(),
       ),
     );
     const inactiveTab = rendered.querySelector('[role="tab"]:not([aria-selected="true"])');
@@ -71,9 +79,11 @@ describe('tabs', () => {
 
   it('orders tabs independently of active state', () => {
     const rendered = JSDOM.fragment(
-      tabs(arbitraryTabList)(
-        arbitraryHtmlFragment(),
+      tabs(
+        arbitraryTabList,
         arbitraryNumber(0, 1) as 0 | 1,
+      )(
+        arbitraryHtmlFragment(),
       ),
     );
     const tabElements = rendered.querySelectorAll('[role="tab"]');
@@ -85,9 +95,11 @@ describe('tabs', () => {
   it('shows the content in the tab panel', () => {
     const content = arbitraryHtmlFragment();
     const rendered = JSDOM.fragment(
-      tabs(arbitraryTabList)(
-        content,
+      tabs(
+        arbitraryTabList,
         arbitraryNumber(0, 1) as 0 | 1,
+      )(
+        content,
       ),
     );
     const tabPanelContent = rendered.querySelector('[role="tabpanel"]');
