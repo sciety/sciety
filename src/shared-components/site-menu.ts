@@ -15,12 +15,12 @@ export const siteMenuItems = (user: O.Option<User>): HtmlFragment => toHtmlFragm
     <li><a href="/blog" class="site-menu__link site-menu__link--blog"><span class="site-menu__link_text">Blog</span></a></li>
     <li><a href="/about" class="site-menu__link site-menu__link--about"><span class="site-menu__link_text">About</span></a></li>
     ${O.fold(constant(''), myProfileMenuItem)(user)}
+    <li><a href="/contact-us" class="site-menu__link site-menu__link--contact-us"><span class="site-menu__link_text">Contact us</span></a></li>
   </ul>
 `);
 
 export const siteMenuFooter = toHtmlFragment(`
   <footer class="site-menu__footer">
-    <a href="/feedback" class="site-menu__feedback_button">Feedback</a>
     <small class="site-menu__small_print">
       © 2021 eLife Sciences Publications Ltd.
       <a href="/legal">Legal information</a>

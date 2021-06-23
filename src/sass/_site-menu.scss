@@ -76,17 +76,15 @@ $_link-min-height: baseline.increments(5);
   background-image: url('/static/images/profile.svg');
 }
 
+.site-menu__link--contact-us {
+  background-image: url('/static/images/contactus.svg');
+}
+
 .site-menu__footer {
   margin-top: auto;
   margin-bottom: baseline.increments(2);
   margin-left: functions.px-to-rem($_inline-spacing);
   margin-right: functions.px-to-rem($_inline-spacing);
-}
-
-.site-menu__feedback_button {
-  @include button.button-link();
-  display: inline-block;
-  margin-bottom: baseline.increments(3);
 }
 
 .site-menu__small_print {
