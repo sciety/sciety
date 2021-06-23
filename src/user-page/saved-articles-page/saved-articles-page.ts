@@ -3,7 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { savedArticles, Ports as SavedArticlesPorts } from './saved-articles';
 import { tabs } from '../../shared-components/tabs';
-import { toHtmlFragment } from '../../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
@@ -25,13 +25,20 @@ type Params = {
 
 type SavedArticlesPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
-export const savedArticlesPage = (ports: Ports): SavedArticlesPage => (params) => pipe(
-  {
-    userPageTabs: tabs({ tabList: tabList(params.id), activeTabIndex: 0 }),
-    userDetails: ports.getUserDetails(params.id),
-    tabContent: savedArticles(ports)(params.id),
-  },
-  ({ userPageTabs, userDetails, tabContent }) => ({
+type Tabs = (activeTabPanelContents: HtmlFragment) => HtmlFragment;
+
+type UserPage = (fooParam: {
+  userPageTabs: Tabs,
+  tabContent: TE.TaskEither<never, HtmlFragment>,
+  userDetails: ReturnType<GetUserDetails>,
+}) => TE.TaskEither<RenderPageError, Page>;
+
+const userPage: UserPage = flow(
+  ({
+    userPageTabs,
+    userDetails,
+    tabContent,
+  }) => ({
     header: pipe(
       userDetails,
       TE.map(renderHeader),
@@ -50,4 +57,13 @@ export const savedArticlesPage = (ports: Ports): SavedArticlesPage => (params) =
   }),
   sequenceS(TE.ApplyPar),
   TE.bimap(renderErrorPage, renderPage),
+);
+
+export const savedArticlesPage = (ports: Ports): SavedArticlesPage => (params) => pipe(
+  {
+    userPageTabs: tabs({ tabList: tabList(params.id), activeTabIndex: 0 }),
+    userDetails: ports.getUserDetails(params.id),
+    tabContent: savedArticles(ports)(params.id),
+  },
+  userPage,
 );
