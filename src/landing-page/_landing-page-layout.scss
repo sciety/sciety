@@ -14,25 +14,30 @@ $_header-height-in-px: 60px;
   padding-top: functions.px-to-rem(12px);
   padding-bottom: functions.px-to-rem(12px);
   display: flex;
-  justify-content: space-between;
-  align-content: center;
   height: functions.px-to-rem($_header-height-in-px);
 }
 
-.landing-page-header__follow_link {
-  @include typography.button();
-  margin-right: 1.5rem;
-  display: inline-flex;
-  align-items: center;
+.landing-page-header__link_container {
   margin-left: auto;
+  display: flex;
+}
 
-  &:link,
-  &:visited {
-    color: settings.$colour-text-primary;
+.landing-page-header__follow_link {
+  display: none;
+  @media screen and (min-width: common.$landing-page-breakpoint) {
+    @include typography.button();
+    margin-right: 1.5rem;
+    display: inline-flex;
+    align-items: center;
 
-    &:hover,
-    &:active {
+    &:link,
+    &:visited {
       color: settings.$colour-text-primary;
+
+      &:hover,
+      &:active {
+        color: settings.$colour-text-primary;
+      }
     }
   }
 }
@@ -51,6 +56,14 @@ $_header-height-in-px: 60px;
 
 .landing-page-header__login_button {
   @include button.button-link();
+  padding-top: 0.6rem;
+}
+
+.landing-page-header__signup_button {
+  @include common.secondary-button();
+  width: 6rem;
+  padding-top: 0.6rem;
+  margin-bottom: 0;
 }
 
 .landing-page-footer {
