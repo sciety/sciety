@@ -36,7 +36,7 @@ type PageOfResults = {
   category: string,
 };
 
-const renderListIfNecessary = (page: PageOfResults) => pipe(
+const searchResultsList = (page: PageOfResults) => pipe(
   page.cardsToDisplay,
   RNEA.fromReadonlyArray,
   O.fold(
@@ -53,11 +53,17 @@ const renderListIfNecessary = (page: PageOfResults) => pipe(
       </ul>
     `,
   ),
+  toHtmlFragment,
 );
 
 const renderSearchResult = (viewModel: ItemViewModel) => (
   isArticleViewModel(viewModel) ? renderArticleCard(viewModel) : renderGroupCard(viewModel)
 );
+
+const pagination = (searchResults: SearchResults) => (content: HtmlFragment) => toHtmlFragment(`
+  ${content}
+  ${nextLink({ ...searchResults, pageNumber: searchResults.pageNumber + 1 })}
+`);
 
 type Tabs = {
   query: string,
@@ -78,13 +84,9 @@ export const renderSearchResults: RenderSearchResults = (searchResults) => pipe(
     numberOfPages: searchResults.numberOfPages,
     category: searchResults.category,
   },
-  renderListIfNecessary,
-  (content) => `
-    ${content}
-    ${nextLink({ ...searchResults, pageNumber: searchResults.pageNumber + 1 })}
-  `,
-  toHtmlFragment,
-  (searchResultsList) => tabs(
+  searchResultsList,
+  pagination(searchResults),
+  (activeTabPanelContents) => tabs(
     [
       {
         label: `Articles (${searchResults.availableArticleMatches}<span class="visually-hidden"> search results</span>)`,
@@ -95,6 +97,6 @@ export const renderSearchResults: RenderSearchResults = (searchResults) => pipe(
         url: `/search?query=${htmlEscape(searchResults.query)}&category=groups`,
       },
     ],
-  )(searchResultsList, searchResults.category === 'groups' ? 1 : 0),
+  )(activeTabPanelContents, searchResults.category === 'groups' ? 1 : 0),
   toHtmlFragment,
 );
