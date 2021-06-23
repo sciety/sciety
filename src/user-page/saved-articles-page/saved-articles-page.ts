@@ -25,16 +25,16 @@ type Params = {
 
 type SavedArticlesPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
-type UserPage = (fooParam: {
-  tabs_: TE.TaskEither<never, HtmlFragment>,
+type UserPage = (
   userDetails: ReturnType<GetUserDetails>,
-}) => TE.TaskEither<RenderPageError, Page>;
+  tabs_: TE.TaskEither<never, HtmlFragment>,
+) => TE.TaskEither<RenderPageError, Page>;
 
 const userPage: UserPage = flow(
-  ({
-    tabs_,
+  (
     userDetails,
-  }) => ({
+    tabs_,
+  ) => ({
     header: pipe(
       userDetails,
       TE.map(renderHeader),
@@ -52,13 +52,12 @@ const userPage: UserPage = flow(
   TE.bimap(renderErrorPage, renderPage),
 );
 
-export const savedArticlesPage = (ports: Ports): SavedArticlesPage => (params) => pipe(
-  {
-    tabs_: pipe(
-      savedArticles(ports)(params.id),
-      TE.map(tabs({ tabList: tabList(params.id), activeTabIndex: 0 })),
-    ),
-    userDetails: ports.getUserDetails(params.id),
-  },
-  userPage,
+export const savedArticlesPage = (
+  ports: Ports
+): SavedArticlesPage => (params) => userPage(
+  ports.getUserDetails(params.id),
+  pipe(
+    savedArticles(ports)(params.id),
+    TE.map(tabs({ tabList: tabList(params.id), activeTabIndex: 0 })),
+  ),
 );
