@@ -2,6 +2,7 @@ import { pipe } from 'fp-ts/function';
 import { tabs } from '../../shared-components/tabs';
 import { Doi } from '../../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { tabList } from '../tab-list';
 
 // TODO: title should be HtmlFragment and sanitized outside of here
 type ArticleDetails = {
@@ -19,16 +20,7 @@ export const renderActivityPage = (components: {
   components.feed,
   toHtmlFragment,
   tabs({
-    tabList: [
-      {
-        label: '<span class="visually-hidden">Discover information and abstract about this </span>Article',
-        url: `/articles/meta/${components.doi.value}`,
-      },
-      {
-        label: '<span class="visually-hidden">Discover the </span>Activity<span class="visually-hidden"> around this article</span>',
-        url: `/articles/activity/${components.doi.value}`,
-      },
-    ],
+    tabList: tabList(components.doi),
     activeTabIndex: 1,
   }),
   (mainContent) => `
