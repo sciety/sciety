@@ -280,6 +280,9 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.redirect('/feedback', 'http://eepurl.com/hBml3D', StatusCodes.PERMANENT_REDIRECT);
 
+  const mailChimpUrl = 'https://us10.list-manage.com/contact-form?u=cdd934bce0d72af033c181267&form_id=4034dccf020ca9b50c404c32007ee091';
+  router.redirect('/contact-us', mailChimpUrl, StatusCodes.PERMANENT_REDIRECT);
+
   router.get(
     '/legal',
     pageHandler(() => pipe(legalPage, TE.right)),
