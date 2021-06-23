@@ -27,7 +27,7 @@ export const tabs: Tabs = (tabList) => (activeTabPanelContents, selectedTabIndex
     ${selectedTabIndex === 0 ? activeTab(tabList[0]) : inactiveTab(tabList[0])}
     ${selectedTabIndex === 0 ? inactiveTab(tabList[1]) : activeTab(tabList[1])}
   </ul>
-  <section role="tabpanel" aria-labelledby="active-tab">
+  <section class="tab-panel" role="tabpanel" aria-labelledby="active-tab">
     ${activeTabPanelContents}
   </section>
 `);

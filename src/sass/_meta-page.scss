@@ -1,17 +1,10 @@
 @use 'baseline';
 @use 'breakpoints';
 @use 'article-tabs';
-@use 'card';
 @use 'functions';
 @use 'list';
 @use 'settings';
 @use 'typography';
-
-.main-content--meta {
-  @include card.basics();
-
-  margin-bottom: baseline.increments(6);
-}
 
 .article-author-list {
   @include list.basics();

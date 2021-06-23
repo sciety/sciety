@@ -6,6 +6,7 @@
 @use 'breakpoints';
 @use 'typography';
 @use 'list';
+@use 'card';
 
 @mixin container() {
   border-bottom: 2px solid transparent;
@@ -56,4 +57,10 @@
 
 .tab--active {
   @include tab-heading();
+}
+
+.main-content--meta .tab-panel {
+  @include card.basics();
+
+  margin-bottom: baseline.increments(6);
 }

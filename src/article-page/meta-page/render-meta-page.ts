@@ -1,3 +1,4 @@
+import { tabs } from '../../shared-components/tabs';
 import { ArticleServer } from '../../types/article-server';
 import { Doi } from '../../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
@@ -26,12 +27,19 @@ export const renderMetaPage = (components: {
       </div>
     </header>
 
-    <div class="article-tabs-container">
-      <h2 class="article-tab article-tab--heading">Article</h2>
-      <a class="article-tab article-tab--link" href="/articles/activity/${components.doi.value}" aria-label="Discover article activity">Activity</a>
-    </div>
-
     <div class="main-content main-content--meta">
+        ${tabs(
+    [
+      {
+        label: '<span class="visually-hidden">Discover information and abstract about this </span>Article',
+        url: `/articles/meta/${components.doi.value}`,
+      },
+      {
+        label: '<span class="visually-hidden">Discover the </span>Activity<span class="visually-hidden"> around this article</span>',
+        url: `/articles/activity/${components.doi.value}`,
+      },
+    ],
+  )(toHtmlFragment(`
       <section class="article-meta">
         <ol aria-label="Authors of this article" class="article-author-list" role="list">
           ${components.articleDetails.authors.map((author) => `<li>${author}</li>`).join('')}
@@ -50,7 +58,9 @@ export const renderMetaPage = (components: {
       <a href="https://doi.org/${components.doi.value}" class="full-article-button" target="_blank">
         Read the full article
       </a>
-    </div>
+  `), 0)}
+      </div>
+
 
   </article>
 </div>
