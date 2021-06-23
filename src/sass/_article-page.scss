@@ -14,7 +14,6 @@
 }
 
 .sciety-grid--article > .page-header--article,
-.sciety-grid--article > .article-tabs-container,
 .sciety-grid--article > .main-content {
   grid-column: 1 / -1;
 }
@@ -27,7 +26,6 @@
 
 @include breakpoints.not-narrow {
   .sciety-grid--article > .page-header--article,
-  .sciety-grid--article > .article-tabs-container,
   .sciety-grid--article > .main-content {
     grid-column: 3 / 11;
   }
