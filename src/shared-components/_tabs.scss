@@ -1,12 +1,12 @@
 @use 'sass:math';
-@use 'settings';
-@use 'functions';
+@use '../sass/settings';
+@use '../sass/functions';
 
-@use 'baseline';
-@use 'breakpoints';
-@use 'typography';
-@use 'list';
-@use 'card';
+@use '../sass/baseline';
+@use '../sass/breakpoints';
+@use '../sass/typography';
+@use '../sass/list';
+@use '../sass/card';
 
 @mixin container() {
   border-bottom: 2px solid transparent;
