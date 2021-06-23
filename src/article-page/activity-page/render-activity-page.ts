@@ -18,8 +18,8 @@ export const renderActivityPage = (components: {
 }): HtmlFragment => pipe(
   components.feed,
   toHtmlFragment,
-  tabs(
-    [
+  tabs({
+    tabList: [
       {
         label: '<span class="visually-hidden">Discover information and abstract about this </span>Article',
         url: `/articles/meta/${components.doi.value}`,
@@ -29,8 +29,8 @@ export const renderActivityPage = (components: {
         url: `/articles/activity/${components.doi.value}`,
       },
     ],
-    1,
-  ),
+    activeTabIndex: 1,
+  }),
   (mainContent) => `
   <div class="page-content__background">
     <article class="sciety-grid sciety-grid--article">

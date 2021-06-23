@@ -72,8 +72,8 @@ type Tabs = {
   category: string,
 };
 
-const pageTabs = (searchResults: SearchResults) => tabs(
-  [
+const pageTabs = (searchResults: SearchResults) => tabs({
+  tabList: [
     {
       label: `Articles (${searchResults.availableArticleMatches}<span class="visually-hidden"> search results</span>)`,
       url: `/search?query=${htmlEscape(searchResults.query)}&category=articles`,
@@ -83,8 +83,8 @@ const pageTabs = (searchResults: SearchResults) => tabs(
       url: `/search?query=${htmlEscape(searchResults.query)}&category=groups`,
     },
   ],
-  searchResults.category === 'groups' ? 1 : 0,
-);
+  activeTabIndex: searchResults.category === 'groups' ? 1 : 0,
+});
 
 type RenderSearchResults = (rs: SearchResults) => HtmlFragment;
 

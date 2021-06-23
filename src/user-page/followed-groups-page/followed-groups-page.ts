@@ -29,7 +29,7 @@ type FollowedGroupsPage = (params: Params) => TE.TaskEither<RenderPageError, Pag
 
 export const followedGroupsPage = (ports: Ports): FollowedGroupsPage => (params) => pipe(
   {
-    userPageTabs: tabs(tabList(params.id), 1),
+    userPageTabs: tabs({ tabList: tabList(params.id), activeTabIndex: 1 }),
     userDetails: ports.getUserDetails(params.id),
     viewingUserId: pipe(
       params.user,

@@ -22,10 +22,10 @@ const arbitraryTabList: [Tab, Tab] = [
 describe('tabs', () => {
   it.each(eachTabActiveOnce)('shows an active tab label: %s', ({ activeTabIndex }) => {
     const rendered = JSDOM.fragment(
-      tabs(
-        arbitraryTabList,
+      tabs({
+        tabList: arbitraryTabList,
         activeTabIndex,
-      )(
+      })(
         arbitraryHtmlFragment(),
       ),
     );
@@ -36,10 +36,10 @@ describe('tabs', () => {
 
   it('active tab is not a link', () => {
     const rendered = JSDOM.fragment(
-      tabs(
-        arbitraryTabList,
-        arbitraryNumber(0, 1) as 0 | 1,
-      )(
+      tabs({
+        tabList: arbitraryTabList,
+        activeTabIndex: arbitraryNumber(0, 1) as 0 | 1,
+      })(
         arbitraryHtmlFragment(),
       ),
     );
@@ -50,10 +50,10 @@ describe('tabs', () => {
 
   it.each(eachTabActiveOnce)('shows inactive tab as link: %s', ({ activeTabIndex, inactiveTabIndex }) => {
     const rendered = JSDOM.fragment(
-      tabs(
-        arbitraryTabList,
+      tabs({
+        tabList: arbitraryTabList,
         activeTabIndex,
-      )(
+      })(
         arbitraryHtmlFragment(),
       ),
     );
@@ -65,10 +65,10 @@ describe('tabs', () => {
 
   it.each(eachTabActiveOnce)('shows the correct label for inactive tab: %s', ({ activeTabIndex, inactiveTabIndex }) => {
     const rendered = JSDOM.fragment(
-      tabs(
-        arbitraryTabList,
+      tabs({
+        tabList: arbitraryTabList,
         activeTabIndex,
-      )(
+      })(
         arbitraryHtmlFragment(),
       ),
     );
@@ -79,10 +79,10 @@ describe('tabs', () => {
 
   it('orders tabs independently of active state', () => {
     const rendered = JSDOM.fragment(
-      tabs(
-        arbitraryTabList,
-        arbitraryNumber(0, 1) as 0 | 1,
-      )(
+      tabs({
+        tabList: arbitraryTabList,
+        activeTabIndex: arbitraryNumber(0, 1) as 0 | 1,
+      })(
         arbitraryHtmlFragment(),
       ),
     );
@@ -95,10 +95,10 @@ describe('tabs', () => {
   it('shows the content in the tab panel', () => {
     const content = arbitraryHtmlFragment();
     const rendered = JSDOM.fragment(
-      tabs(
-        arbitraryTabList,
-        arbitraryNumber(0, 1) as 0 | 1,
-      )(
+      tabs({
+        tabList: arbitraryTabList,
+        activeTabIndex: arbitraryNumber(0, 1) as 0 | 1,
+      })(
         content,
       ),
     );

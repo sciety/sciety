@@ -5,10 +5,10 @@ export type Tab = {
   url: string,
 };
 
-type Tabs = (
+type Tabs = (tabProps: {
   tabList: [Tab, Tab],
-  selectedTabIndex: 0 | 1,
-) => (
+  activeTabIndex: 0 | 1,
+}) => (
   activeTabPanelContents: HtmlFragment,
 ) => HtmlFragment;
 
@@ -24,10 +24,10 @@ const inactiveTab = (tab: Tab) => `
   </li>
 `;
 
-export const tabs: Tabs = (tabList, selectedTabIndex) => (activeTabPanelContents) => toHtmlFragment(`
+export const tabs: Tabs = ({ tabList, activeTabIndex }) => (activeTabPanelContents) => toHtmlFragment(`
   <ul class="tab-list" role="tablist">
-    ${selectedTabIndex === 0 ? activeTab(tabList[0]) : inactiveTab(tabList[0])}
-    ${selectedTabIndex === 0 ? inactiveTab(tabList[1]) : activeTab(tabList[1])}
+    ${activeTabIndex === 0 ? activeTab(tabList[0]) : inactiveTab(tabList[0])}
+    ${activeTabIndex === 0 ? inactiveTab(tabList[1]) : activeTab(tabList[1])}
   </ul>
   <section class="tab-panel" role="tabpanel" aria-labelledby="active-tab">
     ${activeTabPanelContents}
