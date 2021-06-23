@@ -33,7 +33,7 @@ export const renderActivityPage = (components: {
         url: `/articles/meta/${components.doi.value}`,
       },
       {
-        label: 'Activity',
+        label: '<span class="visually-hidden">Discover the </span>Activity<span class="visually-hidden"> around this article</span>',
         url: `/articles/activity/${components.doi.value}`,
       },
     ],
