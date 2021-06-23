@@ -79,6 +79,11 @@ export const renderSearchResults: RenderSearchResults = (searchResults) => pipe(
     category: searchResults.category,
   },
   renderListIfNecessary,
+  (content) => `
+    ${content}
+    ${nextLink({ ...searchResults, pageNumber: searchResults.pageNumber + 1 })}
+  `,
+  toHtmlFragment,
   (searchResultsList) => tabs(
     [
       {
@@ -90,10 +95,6 @@ export const renderSearchResults: RenderSearchResults = (searchResults) => pipe(
         url: `/search?query=${htmlEscape(searchResults.query)}&category=groups`,
       },
     ],
-  )(toHtmlFragment(searchResultsList), searchResults.category === 'groups' ? 1 : 0),
-  (renderedTabs) => `
-    ${renderedTabs}
-    ${nextLink({ ...searchResults, pageNumber: searchResults.pageNumber + 1 })}
-  `,
+  )(searchResultsList, searchResults.category === 'groups' ? 1 : 0),
   toHtmlFragment,
 );
