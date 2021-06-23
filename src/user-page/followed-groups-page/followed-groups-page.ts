@@ -10,9 +10,10 @@ import { RenderPageError } from '../../types/render-page-error';
 import { User } from '../../types/user';
 import { UserId } from '../../types/user-id';
 import { renderErrorPage } from '../render-error-page';
-import { renderHeader, UserDetails } from '../render-header';
+import { renderHeader } from '../render-header';
 import { renderPage } from '../render-page';
 import { tabList } from '../tab-list';
+import { UserDetails } from '../user-details';
 
 type GetUserDetails = (userId: UserId) => TE.TaskEither<'not-found' | 'unavailable', UserDetails>;
 

@@ -9,9 +9,10 @@ import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
 import { UserId } from '../../types/user-id';
 import { renderErrorPage } from '../render-error-page';
-import { renderHeader, UserDetails } from '../render-header';
+import { renderHeader } from '../render-header';
 import { renderPage } from '../render-page';
 import { tabList } from '../tab-list';
+import { UserDetails } from '../user-details';
 
 type GetUserDetails = (userId: UserId) => TE.TaskEither<'not-found' | 'unavailable', UserDetails>;
 
@@ -26,7 +27,7 @@ type Params = {
 type SavedArticlesPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
 type UserPage = (
-  userDetails: ReturnType<GetUserDetails>,
+  userDetails: TE.TaskEither<'not-found' | 'unavailable', UserDetails>,
 ) => (
   tabs_: TE.TaskEither<never, HtmlFragment>,
 ) => TE.TaskEither<RenderPageError, Page>;

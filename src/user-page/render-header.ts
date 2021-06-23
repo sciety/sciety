@@ -1,11 +1,6 @@
 import { htmlEscape } from 'escape-goat';
+import { UserDetails } from './user-details';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-
-export type UserDetails = {
-  avatarUrl: string,
-  displayName: string,
-  handle: string,
-};
 
 export const renderHeader = (ud: UserDetails): HtmlFragment => toHtmlFragment(`
   <header class="page-header page-header--user">
