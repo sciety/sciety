@@ -141,27 +141,6 @@ $_avatar-border-width: settings.$border-width;
   @include typography.subtle-link();
 }
 
-.user-page-tabs-container {
-  @include tabs.container;
-  grid-column: 1 / -1;
-
-  @include breakpoints.not-narrow {
-    @include wide-columns();
-  }
-}
-
-.user-page-tab {
-  @include tabs.tab();
-}
-
-.user-page-tab--link {
-  @include tabs.tab-link();
-}
-
-.user-page-tab--heading {
-  @include tabs.tab-heading();
-}
-
 .followed-groups__no_groups {
   padding-top: baseline.increments(2);
 }
