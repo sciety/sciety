@@ -1,3 +1,4 @@
+import { tabs } from '../../shared-components/tabs';
 import { Doi } from '../../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
@@ -23,12 +24,20 @@ export const renderActivityPage = (components: {
           ${components.saveArticle}
         </div>
       </header>
-      <div class="article-tabs-container">
-        <a class="article-tab article-tab--link" href="/articles/meta/${components.doi.value}" aria-label="Discover article information and abstract">Article</a>
-        <h2 class="article-tab article-tab--heading">Activity</h2>
-      </div>
+        
       <div class="main-content">
-        ${components.feed}
+        ${tabs(
+    [
+      {
+        label: '<span class="visually-hidden">Discover information and abstract about this </span>Article',
+        url: `/articles/meta/${components.doi.value}`,
+      },
+      {
+        label: 'Activity',
+        url: `/articles/activity/${components.doi.value}`,
+      },
+    ],
+  )(toHtmlFragment(components.feed), 1)}
       </div>
     </article>
   </div>
