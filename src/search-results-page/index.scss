@@ -101,22 +101,6 @@ $_clear-button-inline-size: 48px;
   }
 }
 
-.search-results-tabs-container {
-  @include tabs.container;
-}
-
-.search-results-tab {
-  @include tabs.tab();
-}
-
-.search-results-tab--link {
-  @include tabs.tab-link();
-}
-
-.search-results-tab--heading {
-  @include tabs.tab-heading();
-}
-
 .search-results__page_count {
   @include typography.details();
   color: settings.$colour-text-primary;
