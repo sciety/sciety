@@ -29,8 +29,9 @@ export const savedArticlesPage = (ports: Ports): SavedArticlesPage => (params) =
   {
     userPageTabs: tabs({ tabList: tabList(params.id), activeTabIndex: 0 }),
     userDetails: ports.getUserDetails(params.id),
+    tabContent: savedArticles(ports)(params.id),
   },
-  ({ userPageTabs, userDetails }) => ({
+  ({ userPageTabs, userDetails, tabContent }) => ({
     header: pipe(
       userDetails,
       TE.map(renderHeader),
@@ -43,7 +44,7 @@ export const savedArticlesPage = (ports: Ports): SavedArticlesPage => (params) =
       )),
     ),
     tabs: pipe(
-      savedArticles(ports)(params.id),
+      tabContent,
       TE.map(userPageTabs),
     ),
   }),

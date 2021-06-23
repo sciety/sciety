@@ -31,12 +31,13 @@ export const followedGroupsPage = (ports: Ports): FollowedGroupsPage => (params)
   {
     userPageTabs: tabs({ tabList: tabList(params.id), activeTabIndex: 1 }),
     userDetails: ports.getUserDetails(params.id),
-    viewingUserId: pipe(
+    tabContent: followList(ports)(params.id, pipe(
       params.user,
       O.map((user) => user.id),
-    ),
+    )),
+
   },
-  ({ userPageTabs, userDetails, viewingUserId }) => ({
+  ({ userPageTabs, userDetails, tabContent }) => ({
     header: pipe(
       userDetails,
       TE.map(renderHeader),
@@ -49,7 +50,7 @@ export const followedGroupsPage = (ports: Ports): FollowedGroupsPage => (params)
       )),
     ),
     tabs: pipe(
-      followList(ports)(params.id, viewingUserId),
+      tabContent,
       TE.map(userPageTabs),
     ),
   }),
