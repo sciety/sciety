@@ -3,7 +3,7 @@ import { Page } from '../types/page';
 
 type Components = {
   header: HtmlFragment,
-  tabs: HtmlFragment,
+  mainContent: HtmlFragment,
   userDisplayName: string,
 };
 
@@ -15,7 +15,7 @@ export const renderPage = (components: Components): Page => ({
         ${components.header}
 
         <div class="main-content main-content--user">
-          ${components.tabs}
+          ${components.mainContent}
         </div>
 
       </article>
