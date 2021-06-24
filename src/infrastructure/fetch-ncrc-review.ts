@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as TE from 'fp-ts/TaskEither';
-import { constant, flow, pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { google, sheets_v4 } from 'googleapis';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
@@ -11,6 +11,7 @@ import * as PR from 'io-ts/PathReporter';
 import { constructNcrcReview } from './construct-ncrc-review';
 import { EvaluationFetcher } from './fetch-review';
 import { Logger } from './logger';
+import * as DE from '../types/data-error';
 import Params$Resource$Spreadsheets$Values$Get = sheets_v4.Params$Resource$Spreadsheets$Values$Get;
 
 // https://github.com/gcanti/io-ts/issues/431
@@ -107,7 +108,7 @@ const getRowNumber = (logger: Logger) => (key: string) => pipe(
       });
       return O.none;
     }),
-    E.fromOption(constant('not-found' as const)),
+    E.fromOption(() => DE.notFound),
   )),
 );
 

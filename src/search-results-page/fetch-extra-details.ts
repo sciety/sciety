@@ -8,6 +8,7 @@ import { ArticleItem, GroupItem, isArticleItem } from './data-types';
 import { ItemViewModel, SearchResults } from './render-search-results';
 import { GetAllEvents, GetGroup, populateGroupViewModel } from '../shared-components/group-card/populate-group-view-model';
 import { ArticleServer } from '../types/article-server';
+import * as DE from '../types/data-error';
 import { Doi } from '../types/doi';
 import { GroupId } from '../types/group-id';
 
@@ -51,7 +52,9 @@ const populateArticleViewModel = (
   TE.rightTask,
 );
 
-const fetchItemDetails = (ports: Ports) => (item: ArticleItem | GroupItem): TE.TaskEither<'not-found', ItemViewModel> => (
+const fetchItemDetails = (
+  ports: Ports,
+) => (item: ArticleItem | GroupItem): TE.TaskEither<DE.DataError, ItemViewModel> => (
   isArticleItem(item)
     ? pipe(item, populateArticleViewModel(ports.findReviewsForArticleDoi, ports.getLatestArticleVersionDate))
     : pipe(item.id, populateGroupViewModel(ports.getGroup, ports.getAllEvents)));

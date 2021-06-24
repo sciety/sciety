@@ -8,6 +8,7 @@ import { GetAllEvents, projectFollowedGroupIds } from './project-followed-group-
 import { renderFollowList } from './render-follow-list';
 import { populateGroupViewModel } from '../../shared-components/group-card/populate-group-view-model';
 import { renderGroupCard } from '../../shared-components/group-card/render-group-card';
+import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';
 import { GroupId } from '../../types/group-id';
 import { HtmlFragment } from '../../types/html-fragment';
@@ -21,7 +22,7 @@ export type Ports = {
 };
 
 type FollowList = (ports: Ports) => (userId: UserId, viewingUserId: O.Option<UserId>)
-=> TE.TaskEither<'not-found', HtmlFragment>;
+=> TE.TaskEither<DE.DataError, HtmlFragment>;
 
 export const followList: FollowList = (ports) => (userId) => pipe(
   userId,

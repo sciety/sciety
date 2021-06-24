@@ -6,6 +6,7 @@ import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe } from 'fp-ts/function';
 import { GroupViewModel } from './render-group-card';
 import { updateGroupMeta } from './update-group-meta';
+import * as DE from '../../types/data-error';
 import { DomainEvent } from '../../types/domain-events';
 import { Group } from '../../types/group';
 import { GroupId } from '../../types/group-id';
@@ -20,9 +21,9 @@ export const populateGroupViewModel = (
   getGroup: GetGroup,
   getAllEvents: GetAllEvents,
 ): (groupId: GroupId
-  ) => TE.TaskEither<'not-found', GroupViewModel> => flow(
+  ) => TE.TaskEither<DE.DataError, GroupViewModel> => flow(
   getGroup,
-  T.map(E.fromOption(() => 'not-found' as const)),
+  T.map(E.fromOption(() => DE.notFound)),
   TE.chainTaskK((group) => pipe(
     getAllEvents,
     T.map(RA.reduce({ reviewCount: 0, followerCount: 0 }, updateGroupMeta(group.id))),

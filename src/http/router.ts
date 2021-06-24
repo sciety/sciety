@@ -42,6 +42,7 @@ import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../se
 import { applyStandardPageLayout } from '../shared-components/apply-standard-page-layout';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
+import * as DE from '../types/data-error';
 import * as Doi from '../types/doi';
 import { toHtmlFragment } from '../types/html-fragment';
 import { followedGroupsPage } from '../user-page/followed-groups-page/followed-groups-page';
@@ -50,7 +51,7 @@ import { savedArticlesPage } from '../user-page/saved-articles-page/saved-articl
 const biorxivPrefix = '10.1101';
 
 const toNotFound = () => ({
-  type: 'not-found' as const,
+  type: DE.notFound,
   message: toHtmlFragment('Page not found'),
 });
 

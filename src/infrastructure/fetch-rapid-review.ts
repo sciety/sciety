@@ -6,6 +6,7 @@ import { constant, flow, pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import { EvaluationFetcher } from './fetch-review';
 import { Logger } from './logger';
+import * as DE from '../types/data-error';
 import { toHtmlFragment } from '../types/html-fragment';
 
 type GetHtml = (url: string) => TE.TaskEither<'unavailable', string>;
@@ -13,7 +14,7 @@ type GetHtml = (url: string) => TE.TaskEither<'unavailable', string>;
 const summary = (logger: Logger) => (doc: Document) => pipe(
   doc.querySelector('meta[name=description]')?.getAttribute('content'),
   O.fromNullable,
-  E.fromOption(constant('not-found' as const)),
+  E.fromOption(() => DE.notFound),
   E.bimap(
     (err) => {
       logger('error', 'Rapid-review summary has no description');

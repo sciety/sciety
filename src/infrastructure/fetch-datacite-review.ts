@@ -3,13 +3,12 @@ import { namedNode } from '@rdfjs/data-model';
 import { schema } from '@tpluscode/rdf-ns-builders';
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
-import {
-  constant, flow, pipe,
-} from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import type { NamedNode } from 'rdf-js';
 import { FetchDataset } from './fetch-dataset';
 import { EvaluationFetcher } from './fetch-review';
 import { Logger } from './logger';
+import * as DE from '../types/data-error';
 import { toHtmlFragment } from '../types/html-fragment';
 
 const fetchReviewContent = (
@@ -19,7 +18,7 @@ const fetchReviewContent = (
 ) => pipe(
   TE.tryCatch(
     async () => fetchDataset(reviewIri),
-    constant('unavailable' as const), // TODO might be 'not-found'
+    () => DE.unavailable, // TODO might be DE.notFound
   ),
   TE.chainEitherK(flow(
     (graph) => graph.out(schema.description).value,
