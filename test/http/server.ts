@@ -18,6 +18,7 @@ import { FetchDataset } from '../../src/infrastructure/fetch-dataset';
 import { fetchHypothesisAnnotation } from '../../src/infrastructure/fetch-hypothesis-annotation';
 import { fetchReview } from '../../src/infrastructure/fetch-review';
 import { inMemoryGroupRepository } from '../../src/infrastructure/in-memory-groups';
+import * as DE from '../../src/types/data-error';
 import { FollowList } from '../../src/types/follow-list';
 import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
 import { dummyLogger } from '../dummy-logger';
@@ -49,9 +50,9 @@ export const createTestServer = async (): Promise<TestServer> => {
   const fetchers = {
     doi: fetchDataciteReview(fetchDataCiteDataset, dummyLogger),
     hypothesis: fetchHypothesisAnnotation(shouldNotBeCalled, dummyLogger),
-    ncrc: () => TE.left('unavailable' as const),
-    prelights: () => TE.left('unavailable' as const),
-    rapidreviews: () => TE.left('unavailable' as const),
+    ncrc: () => TE.left(DE.unavailable),
+    prelights: () => TE.left(DE.unavailable),
+    rapidreviews: () => TE.left(DE.unavailable),
   };
 
   const adapters: Adapters = {

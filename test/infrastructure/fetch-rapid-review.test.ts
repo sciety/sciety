@@ -137,10 +137,20 @@ describe('fetch-rapid-review', () => {
   describe('getHtml fails', () => {
     it('return "unavailable"', async () => {
       const guid = new URL(arbitraryUri());
-      const getHtml = () => TE.left('unavailable' as const);
-      const fullText = await fetchRapidReview(dummyLogger, getHtml)(guid.toString())();
+      const getHtml = () => TE.left(DE.unavailable);
+      const fullText = await pipe(
+        guid.toString(),
+        fetchRapidReview(dummyLogger, getHtml),
+        T.map(flow(
+          E.matchW(
+            identity,
+            shouldNotBeCalled,
+          ),
+          DE.isUnavailable,
+        )),
+      )();
 
-      expect(fullText).toStrictEqual(E.left('unavailable' as const));
+      expect(fullText).toBe(true);
     });
   });
 });

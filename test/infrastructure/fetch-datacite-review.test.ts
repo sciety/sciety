@@ -2,11 +2,15 @@ import { literal } from '@rdfjs/data-model';
 import { schema } from '@tpluscode/rdf-ns-builders';
 import clownface from 'clownface';
 import * as E from 'fp-ts/Either';
+import * as T from 'fp-ts/Task';
+import { flow, identity, pipe } from 'fp-ts/function';
 import datasetFactory from 'rdf-dataset-indexed';
 import { fetchDataciteReview } from '../../src/infrastructure/fetch-datacite-review';
 import { FetchDataset } from '../../src/infrastructure/fetch-dataset';
+import * as DE from '../../src/types/data-error';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryWord } from '../helpers';
+import { shouldNotBeCalled } from '../should-not-be-called';
 
 const reviewDoi = arbitraryWord();
 
@@ -33,9 +37,19 @@ describe('fetch-datacite-review', () => {
         clownface({ dataset: datasetFactory(), term: iri })
       );
       const fetchReview = fetchDataciteReview(fetchDataset, dummyLogger);
-      const review = await fetchReview(reviewDoi)();
+      const review = await pipe(
+        reviewDoi,
+        fetchReview,
+        T.map(flow(
+          E.matchW(
+            identity,
+            shouldNotBeCalled,
+          ),
+          DE.isUnavailable,
+        )),
+      )();
 
-      expect(review).toStrictEqual(E.left('unavailable'));
+      expect(review).toBe(true);
     });
   });
 
@@ -45,9 +59,19 @@ describe('fetch-datacite-review', () => {
         throw new Error('Something went wrong.');
       };
       const fetchReview = fetchDataciteReview(fetchDataset, dummyLogger);
-      const review = await fetchReview(reviewDoi)();
+      const review = await pipe(
+        reviewDoi,
+        fetchReview,
+        T.map(flow(
+          E.matchW(
+            identity,
+            shouldNotBeCalled,
+          ),
+          DE.isUnavailable,
+        )),
+      )();
 
-      expect(review).toStrictEqual(E.left('unavailable'));
+      expect(review).toBe(true);
     });
   });
 });

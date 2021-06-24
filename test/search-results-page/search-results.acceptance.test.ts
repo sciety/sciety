@@ -6,6 +6,7 @@ import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import { searchResultsPage } from '../../src/search-results-page';
+import * as DE from '../../src/types/data-error';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import { Page } from '../../src/types/page';
 import { RenderPageError } from '../../src/types/render-page-error';
@@ -415,7 +416,7 @@ describe('search-results-page acceptance', () => {
               },
               searchResultsPage({
                 ...dummyAdapters,
-                searchEuropePmc: () => () => TE.left('unavailable'),
+                searchEuropePmc: () => () => TE.left(DE.unavailable),
               }),
             )();
 

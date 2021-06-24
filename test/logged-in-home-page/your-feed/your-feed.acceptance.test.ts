@@ -7,6 +7,7 @@ import {
   followSomething, noEvaluationsYet, troubleFetchingTryAgain,
 } from '../../../src/logged-in-home-page/your-feed/static-messages';
 import { feedTitle, yourFeed } from '../../../src/logged-in-home-page/your-feed/your-feed';
+import * as DE from '../../../src/types/data-error';
 import { Doi, eqDoi } from '../../../src/types/doi';
 import { editorialCommunityReviewedArticle, userFollowedEditorialCommunity } from '../../../src/types/domain-events';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
@@ -122,7 +123,7 @@ describe('your-feed acceptance', () => {
           const adapters = {
             fetchArticle: (doi: Doi) => (
               eqDoi.equals(doi, failingDoi)
-                ? TE.left('unavailable' as const)
+                ? TE.left(DE.unavailable)
                 : TE.right({
                   title: sanitise(toHtmlFragment('My article title')),
                   authors: [],
@@ -148,7 +149,7 @@ describe('your-feed acceptance', () => {
         it('display only an error message', async () => {
           const groupId = arbitraryGroupId();
           const adapters = {
-            fetchArticle: () => TE.left('unavailable' as const),
+            fetchArticle: () => TE.left(DE.unavailable),
             findVersionsForArticleDoi: shouldNotBeCalled,
             getAllEvents: T.of([
               userFollowedEditorialCommunity(userId, groupId),

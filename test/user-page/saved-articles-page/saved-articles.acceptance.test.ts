@@ -1,6 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
+import * as DE from '../../../src/types/data-error';
 import { userSavedArticle } from '../../../src/types/domain-events';
 import { savedArticles } from '../../../src/user-page/saved-articles-page/saved-articles';
 import { shouldNotBeCalled } from '../../should-not-be-called';
@@ -18,7 +19,7 @@ describe('saved-articles acceptance', () => {
             arbitraryDoi(),
           ),
         ]),
-        fetchArticle: () => TE.left('unavailable'),
+        fetchArticle: () => TE.left(DE.unavailable),
         findReviewsForArticleDoi: shouldNotBeCalled,
         findVersionsForArticleDoi: shouldNotBeCalled,
       };

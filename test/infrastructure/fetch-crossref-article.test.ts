@@ -34,9 +34,19 @@ describe('fetch-crossref-article', () => {
   describe('crossref returns an invalid XML document', () => {
     it('throws an error', async () => {
       const getXml = async (): Promise<string> => '';
-      const result = await fetchCrossrefArticle(getXml, dummyLogger)(doi)();
+      const result = await pipe(
+        doi,
+        fetchCrossrefArticle(getXml, dummyLogger),
+        T.map(flow(
+          E.matchW(
+            identity,
+            shouldNotBeCalled,
+          ),
+          DE.isUnavailable,
+        )),
+      )();
 
-      expect(result).toStrictEqual(E.left('unavailable'));
+      expect(result).toBe(true);
     });
   });
 });

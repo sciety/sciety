@@ -1,9 +1,12 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, identity, pipe } from 'fp-ts/function';
 import { fetchPrelightsHighlight } from '../../src/infrastructure/fetch-prelights-highlight';
+import * as DE from '../../src/types/data-error';
 import { arbitraryString, arbitraryUri } from '../helpers';
+import { shouldNotBeCalled } from '../should-not-be-called';
 
 const makeDoc = (descriptions: Array<string>) => `
   <!doctype html>
@@ -53,9 +56,19 @@ describe('fetch-prelight-highlight', () => {
     it('returns unavailable', async () => {
       const guid = new URL(arbitraryUri());
       const getHtml = () => TE.right(makeDoc([]));
-      const fullText = await fetchPrelightsHighlight(getHtml)(guid.toString())();
+      const fullText = await pipe(
+        guid.toString(),
+        fetchPrelightsHighlight(getHtml),
+        T.map(flow(
+          E.matchW(
+            identity,
+            shouldNotBeCalled,
+          ),
+          DE.isUnavailable,
+        )),
+      )();
 
-      expect(fullText).toStrictEqual(E.left('unavailable' as const));
+      expect(fullText).toBe(true);
     });
   });
 });
