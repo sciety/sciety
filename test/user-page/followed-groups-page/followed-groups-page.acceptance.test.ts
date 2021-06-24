@@ -70,7 +70,7 @@ describe('followed-groups-page', () => {
   });
 
   describe('user is following groups', () => {
-    it.skip('displays followed groups as group cards', async () => {
+    it('displays followed groups as group cards', async () => {
       const userId = arbitraryUserId();
       const ports = {
         follows: shouldNotBeCalled,
@@ -78,6 +78,8 @@ describe('followed-groups-page', () => {
           id: arbitraryGroupId(),
           name: arbitraryString(),
           avatarPath: arbitraryString(),
+          descriptionPath: arbitraryString(),
+          shortDescription: arbitraryString(),
         }),
         getUserDetails: () => TE.right({
           avatarUrl: arbitraryUri(),
