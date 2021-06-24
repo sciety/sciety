@@ -5,7 +5,7 @@ import { constant, flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
-import { __, match } from 'ts-pattern';
+import { match, when } from 'ts-pattern';
 import { XMLSerializer } from 'xmldom';
 import { Logger } from './logger';
 import { Doi } from '../types/doi';
@@ -188,11 +188,11 @@ export const getAuthorsJson = (doc: JSON, doi: Doi, logger: Logger): O.Option<Re
       RA.map((author) => pipe(
         match(author)
           .with(
-            { given_name: { _tag: 'Some' } },
+            { given_name: when(O.isSome) },
             (person) => O.some(`${person.given_name.value} ${person.surname}`),
           )
           .with(
-            { given_name: { _tag: 'None' }},
+            { given_name: when(O.isNone) },
             (person) => O.some(person.surname),
           )
           .otherwise(() => O.none),
