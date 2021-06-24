@@ -26,7 +26,7 @@ describe('follow a group', () => {
         await click('Follow');
         await click('My profile');
         await click('Followed groups');
-        const groupExists = await text('PeerJ', within($('.followed-groups'))).exists();
+        const groupExists = await text('PeerJ', within($('.followed-groups__list'))).exists();
 
         expect(groupExists).toBe(true);
       });
