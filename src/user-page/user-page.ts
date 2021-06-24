@@ -13,7 +13,7 @@ import { RenderPageError } from '../types/render-page-error';
 type UserPage = (
   userDetails: TE.TaskEither<DE.DataError, UserDetails>,
 ) => (
-  tabs: TE.TaskEither<DE.DataError, HtmlFragment>,
+  tabs: TE.TaskEither<never, HtmlFragment>,
 ) => TE.TaskEither<RenderPageError, Page>;
 
 export const userPage: UserPage = (userDetails) => flow(
