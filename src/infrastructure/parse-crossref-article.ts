@@ -153,7 +153,7 @@ const crossrefCodec = t.type({
       crossref: t.type({
         posted_content: t.type({
           contributors: t.type({
-            person_name: t.union([
+            person_name: tt.optionFromNullable(t.union([
               t.array(t.type({
                 given_name: tt.optionFromNullable(t.string),
                 surname: t.string,
@@ -164,7 +164,7 @@ const crossrefCodec = t.type({
                 surname: t.string,
                 '@_contributor_role': t.string,
               }),
-            ]),
+            ])),
           }),
         }),
       }),
@@ -180,7 +180,13 @@ type Contributor = {
 
 const contributorList = (response: t.TypeOf<typeof crossrefCodec>): ReadonlyArray<Contributor> => pipe(
   response.doi_records.doi_record.crossref.posted_content.contributors,
-  (constributors) => ([constributors.person_name].flat()),
+  (contributors) => (pipe(
+    contributors.person_name,
+    O.fold(
+      () => [],
+      (p) => [p].flat(),
+    ),
+  )),
   RA.map((contributor) => ({
     firstName: contributor.given_name,
     name: contributor.surname,
