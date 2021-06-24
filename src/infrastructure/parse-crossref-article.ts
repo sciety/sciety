@@ -172,6 +172,22 @@ const crossrefCodec = t.type({
   }),
 });
 
+type Contributor = {
+  firstName: O.Option<string>,
+  name: string,
+  role: string,
+};
+
+const contributorList = (response: t.TypeOf<typeof crossrefCodec>): ReadonlyArray<Contributor> => pipe(
+  response.doi_records.doi_record.crossref.posted_content.contributors,
+  (constributors) => ([constributors.person_name].flat()),
+  RA.map((contributor) => ({
+    firstName: contributor.given_name,
+    name: contributor.surname,
+    role: contributor['@_contributor_role'],
+  })),
+);
+
 export const getAuthorsJson = (doc: JSON, doi: Doi, logger: Logger): O.Option<ReadonlyArray<string>> => pipe(
   doc,
   (foo) => { console.log(JSON.stringify(foo, null, 2)); return foo; },
@@ -183,17 +199,18 @@ export const getAuthorsJson = (doc: JSON, doi: Doi, logger: Logger): O.Option<Re
       return O.some([]);
     },
     (response) => pipe(
-      [response.doi_records.doi_record.crossref.posted_content.contributors.person_name].flat(),
-      RA.filter((author) => author['@_contributor_role'] === 'author'),
+      response,
+      contributorList,
+      RA.filter((author) => author.role === 'author'),
       RA.map((author) => pipe(
         match(author)
           .with(
-            { given_name: when(O.isSome) },
-            (person) => O.some(`${person.given_name.value} ${person.surname}`),
+            { firstName: when(O.isSome) },
+            (person) => O.some(`${person.firstName.value} ${person.name}`),
           )
           .with(
-            { given_name: when(O.isNone) },
-            (person) => O.some(person.surname),
+            { firstName: when(O.isNone) },
+            (person) => O.some(person.name),
           )
           .otherwise(() => O.none),
         O.map(flow(toHtmlFragment, sanitise)),
