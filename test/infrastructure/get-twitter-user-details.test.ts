@@ -27,7 +27,7 @@ describe('get-twitter-user-details', () => {
     expect(await result()).toStrictEqual(E.right(expected));
   });
 
-  it('returns not-found if the Twitter user does not exist', async () => {
+  it('returns notFound if the Twitter user does not exist', async () => {
     const getTwitterResponse: GetTwitterResponse = async () => ({
       errors: [
         {
@@ -36,16 +36,26 @@ describe('get-twitter-user-details', () => {
           resource_type: 'user',
           parameter: 'id',
           value: '2244994946',
-          type: 'https://api.twitter.com/2/problems/resource-not-found',
+          type: 'https://api.twitter.com/2/problems/resource-notFound',
         },
       ],
     });
-    const result = getTwitterUserDetails(getTwitterResponse, dummyLogger)(arbitraryUserId());
+    const result = await pipe(
+      arbitraryUserId(),
+      getTwitterUserDetails(getTwitterResponse, dummyLogger),
+      T.map(flow(
+        E.matchW(
+          identity,
+          shouldNotBeCalled,
+        ),
+        DE.isNotFound,
+      )),
+    )();
 
-    expect(await result()).toStrictEqual(E.left('not-found'));
+    expect(result).toBe(true);
   });
 
-  it('returns not-found if the Twitter user ID is invalid', async () => {
+  it('returns notFound if the Twitter user ID is invalid', async () => {
     const getTwitterResponse: GetTwitterResponse = async () => {
       class InvalidTwitterIdError extends Error {
         isAxiosError = true;

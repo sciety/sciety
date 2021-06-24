@@ -1,11 +1,14 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, identity, pipe } from 'fp-ts/function';
 import { fetchRapidReview } from '../../src/infrastructure/fetch-rapid-review';
+import * as DE from '../../src/types/data-error';
 import { HtmlFragment } from '../../src/types/html-fragment';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryString, arbitraryUri } from '../helpers';
+import { shouldNotBeCalled } from '../should-not-be-called';
 
 const rapidReviewResponseWith = (metaTags: ReadonlyArray<[string, string]>) => `
   <!DOCTYPE html>
@@ -16,7 +19,7 @@ const rapidReviewResponseWith = (metaTags: ReadonlyArray<[string, string]>) => `
   </html>
 `;
 
-const toFullText = (html: string): TE.TaskEither<'not-found' | 'unavailable', HtmlFragment> => {
+const toFullText = (html: string): TE.TaskEither<DE.DataError, HtmlFragment> => {
   const doiUrl = arbitraryUri();
   const getHtml = () => TE.right(html);
   return pipe(
@@ -119,7 +122,14 @@ describe('fetch-rapid-review', () => {
             ['dc.creator', arbitraryString()],
           ]),
           toFullText,
-        )()).toStrictEqual(E.left('not-found'));
+          T.map(flow(
+            E.matchW(
+              identity,
+              shouldNotBeCalled,
+            ),
+            DE.isNotFound,
+          )),
+        )()).toBe(true);
       });
     });
   });

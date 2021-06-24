@@ -1,9 +1,13 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
+import { flow, identity, pipe } from 'fp-ts/function';
 import { fetchReview } from '../../src/infrastructure/fetch-review';
+import * as DE from '../../src/types/data-error';
 import * as RI from '../../src/types/review-id';
 import { arbitraryHtmlFragment, arbitraryUri } from '../helpers';
+import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryReviewId } from '../types/review-id.helper';
 
 describe('fetch-review', () => {
@@ -29,9 +33,19 @@ describe('fetch-review', () => {
       const fetchers = {};
 
       const id = arbitraryReviewId();
-      const result = await fetchReview(fetchers)(id)();
+      const result = await pipe(
+        id,
+        fetchReview(fetchers),
+        T.map(flow(
+          E.matchW(
+            identity,
+            shouldNotBeCalled,
+          ),
+          DE.isNotFound,
+        )),
+      )();
 
-      expect(result).toStrictEqual(E.left('not-found'));
+      expect(result).toBe(true);
     });
   });
 });
