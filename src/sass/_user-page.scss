@@ -82,14 +82,11 @@ $_inline-margin: 1rem;
 }
 
 .followed-groups__list {
-  padding-left: 0;
-  margin-top: 0;
+  @include card.list();
 }
 
 .followed-groups__item {
-  display: flex;
-  align-items: center;
-  margin-bottom: baseline.increments(1);
+  @include card.list-item();
 }
 
 .followed-groups__item_link:link,

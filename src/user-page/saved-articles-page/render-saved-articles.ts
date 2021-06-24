@@ -22,10 +22,5 @@ export const renderSavedArticles = flow(
       </ol>
     `,
   ),
-  (html) => `
-      <section id="saved-articles">
-        ${html}
-      </section>
-  `,
   toHtmlFragment,
 );

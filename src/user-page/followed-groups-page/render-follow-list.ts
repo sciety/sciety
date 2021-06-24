@@ -8,12 +8,6 @@ const followingNothing = `
   <p class="followed-groups__no_groups">They’re not following anything. When they do, they’ll be listed here.</p>
 `;
 
-const followListSection = (list: string) => `
-  <section class="followed-groups">
-    ${list}
-  </section>
-`;
-
 const renderList = (list: RNEA.ReadonlyNonEmptyArray<HtmlFragment>) => (`
   <ol class="followed-groups__list" role="list">
     ${templateListItems(list, 'followed-groups__item')}
@@ -25,6 +19,5 @@ type RenderFollowList = (communities: ReadonlyArray<HtmlFragment>) => HtmlFragme
 export const renderFollowList: RenderFollowList = flow(
   RNEA.fromReadonlyArray,
   O.fold(constant(followingNothing), renderList),
-  followListSection,
   toHtmlFragment,
 );
