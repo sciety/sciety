@@ -3,7 +3,7 @@
   "viewports": [
     {
       "label": "phone",
-      "width": 320,
+      "width": 360,
       "height": 480
     },
     {
