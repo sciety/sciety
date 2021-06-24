@@ -1,13 +1,13 @@
-import { updateGroupMeta } from '../../src/search-results-page/update-group-meta';
+import { updateGroupMeta } from '../../../src/shared-components/group-card/update-group-meta';
 import {
   editorialCommunityReviewedArticle,
   userFollowedEditorialCommunity, userSavedArticle,
   userUnfollowedEditorialCommunity,
-} from '../../src/types/domain-events';
-import { arbitraryDoi } from '../types/doi.helper';
-import { arbitraryGroupId } from '../types/group-id.helper';
-import { arbitraryReviewId } from '../types/review-id.helper';
-import { arbitraryUserId } from '../types/user-id.helper';
+} from '../../../src/types/domain-events';
+import { arbitraryDoi } from '../../types/doi.helper';
+import { arbitraryGroupId } from '../../types/group-id.helper';
+import { arbitraryReviewId } from '../../types/review-id.helper';
+import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('update-group-meta', () => {
   const groupId = arbitraryGroupId();

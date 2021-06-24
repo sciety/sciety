@@ -1,8 +1,8 @@
 import { htmlEscape } from 'escape-goat';
 import { flow, pipe } from 'fp-ts/function';
-import { GroupId } from '../types/group-id';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
+import { GroupId } from '../../types/group-id';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 
 export type GroupViewModel = {
   id: GroupId,

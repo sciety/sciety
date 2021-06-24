@@ -1,4 +1,3 @@
-import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
@@ -7,14 +6,10 @@ import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe, tupled } from 'fp-ts/function';
 import { ArticleItem, GroupItem, isArticleItem } from './data-types';
 import { ItemViewModel, SearchResults } from './render-search-results';
-import { updateGroupMeta } from './update-group-meta';
+import { GetAllEvents, GetGroup, populateGroupViewModel } from '../shared-components/group-card/populate-group-view-model';
 import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
-import { DomainEvent } from '../types/domain-events';
-import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
-import { toHtmlFragment } from '../types/html-fragment';
-import { sanitise } from '../types/sanitised-html-fragment';
 
 type Ports = {
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
@@ -22,10 +17,6 @@ type Ports = {
   getGroup: GetGroup,
   getLatestArticleVersionDate: GetLatestArticleVersionDate,
 };
-
-export type GetGroup = (groupId: GroupId) => TO.TaskOption<Group>;
-
-export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 // TODO: Find reviewsForArticleDoi should return a TaskEither
 export type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
@@ -60,20 +51,6 @@ const populateArticleViewModel = (
   TE.rightTask,
 );
 
-const populateGroupViewModel = (getGroup: GetGroup, getAllEvents: GetAllEvents) => flow(
-  (item: GroupItem) => item.id,
-  getGroup,
-  T.map(E.fromOption(() => 'not-found' as const)),
-  TE.chainTaskK((group) => pipe(
-    getAllEvents,
-    T.map(RA.reduce({ reviewCount: 0, followerCount: 0 }, updateGroupMeta(group.id))),
-    T.map((meta) => ({
-      ...group,
-      ...meta,
-      description: pipe(group.shortDescription, toHtmlFragment, sanitise),
-    })),
-  )),
-);
 const fetchItemDetails = (ports: Ports) => (item: ArticleItem | GroupItem): TE.TaskEither<'not-found', ItemViewModel> => (
   isArticleItem(item)
     ? pipe(item, populateArticleViewModel(ports.findReviewsForArticleDoi, ports.getLatestArticleVersionDate))

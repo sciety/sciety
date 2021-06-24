@@ -3,8 +3,8 @@ import {
   isEditorialCommunityReviewedArticleEvent,
   isUserFollowedEditorialCommunityEvent,
   isUserUnfollowedEditorialCommunityEvent,
-} from '../types/domain-events';
-import { GroupId } from '../types/group-id';
+} from '../../types/domain-events';
+import { GroupId } from '../../types/group-id';
 
 type GroupMeta = {
   reviewCount: number,
