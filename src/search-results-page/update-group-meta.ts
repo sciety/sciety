@@ -1,9 +1,6 @@
 import { match } from 'ts-pattern';
 import {
   DomainEvent,
-  isEditorialCommunityReviewedArticleEvent,
-  isUserFollowedEditorialCommunityEvent,
-  isUserUnfollowedEditorialCommunityEvent,
 } from '../types/domain-events';
 import { GroupId } from '../types/group-id';
 
@@ -14,15 +11,15 @@ type GroupMeta = {
 
 export const updateGroupMeta = (groupId: GroupId) => (meta: GroupMeta, event: DomainEvent): GroupMeta => match(event)
   .with(
-    { editorialCommunityId: groupId }, isEditorialCommunityReviewedArticleEvent,
+    { type: 'EditorialCommunityReviewedArticle', editorialCommunityId: groupId },
     () => ({ ...meta, reviewCount: meta.reviewCount + 1 }),
   )
   .with(
-    { editorialCommunityId: groupId }, isUserFollowedEditorialCommunityEvent,
+    { type: 'UserFollowedEditorialCommunity', editorialCommunityId: groupId },
     () => ({ ...meta, followerCount: meta.followerCount + 1 }),
   )
   .with(
-    { editorialCommunityId: groupId }, isUserUnfollowedEditorialCommunityEvent,
+    { type: 'UserUnfollowedEditorialCommunity', editorialCommunityId: groupId },
     () => ({ ...meta, followerCount: meta.followerCount - 1 }),
   )
   .otherwise(() => meta);
