@@ -101,8 +101,6 @@ describe('saved-articles-page', () => {
   });
 
   describe('when the user has saved articles', () => {
-    it.todo('shows the count in the tab');
-
     it('shows the articles as a list of cards', async () => {
       const userId = arbitraryUserId();
       const ports = {
@@ -136,6 +134,10 @@ describe('saved-articles-page', () => {
 
       expect(articleCards).toHaveLength(2);
     });
+
+    describe('article details unavailable for any article', () => {
+      it.todo('displays a single error message as the tab panel content');
+    });
   });
 
   describe('when the user has no saved articles', () => {
@@ -163,8 +165,6 @@ describe('saved-articles-page', () => {
         T.map(JSDOM.fragment),
       )();
     });
-
-    it.todo('shows a count of 0 in the tab');
 
     it('shows no list of article cards', () => {
       const articleCards = page.querySelectorAll('.article-card');

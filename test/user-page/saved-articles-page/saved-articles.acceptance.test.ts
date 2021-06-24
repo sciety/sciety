@@ -27,8 +27,4 @@ describe('saved-articles acceptance', () => {
       expect(component).toStrictEqual(E.right(expect.stringContaining('<p>We couldn\'t find this information; please try again later.</p>')));
     });
   });
-
-  describe('user has no saved articles', () => {
-    it.todo('does not render the component');
-  });
 });
