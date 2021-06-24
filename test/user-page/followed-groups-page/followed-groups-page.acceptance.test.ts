@@ -26,7 +26,6 @@ const contentOf = (page: TE.TaskEither<RenderPageError, Page>) => pipe(
 describe('followed-groups-page', () => {
   it('shows groups as the active tab', async () => {
     const ports = {
-      follows: shouldNotBeCalled,
       getGroup: shouldNotBeCalled,
       getUserDetails: () => TE.right({
         avatarUrl: arbitraryUri(),
@@ -52,7 +51,6 @@ describe('followed-groups-page', () => {
   it('uses the user displayname as page title', async () => {
     const userDisplayName = arbitraryString();
     const ports = {
-      follows: shouldNotBeCalled,
       getGroup: shouldNotBeCalled,
       getUserDetails: () => TE.right({
         avatarUrl: arbitraryUri(),
@@ -74,7 +72,6 @@ describe('followed-groups-page', () => {
     it('displays followed groups as group cards', async () => {
       const userId = arbitraryUserId();
       const ports = {
-        follows: shouldNotBeCalled,
         getGroup: () => TO.some({
           id: arbitraryGroupId(),
           name: arbitraryString(),
@@ -108,7 +105,6 @@ describe('followed-groups-page', () => {
       it('displays a single error message as the tab panel content', async () => {
         const userId = arbitraryUserId();
         const ports = {
-          follows: shouldNotBeCalled,
           getGroup: () => TO.none,
           getUserDetails: () => TE.right({
             avatarUrl: arbitraryUri(),
