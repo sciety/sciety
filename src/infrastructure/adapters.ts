@@ -11,6 +11,7 @@ import { GetTwitterUserDetails } from './get-twitter-user-details';
 import { Logger } from './logger';
 import { SearchResults } from './search-europe-pmc';
 import { ArticleServer } from '../types/article-server';
+import * as DE from '../types/data-error';
 import { Doi } from '../types/doi';
 import { DomainEvent, RuntimeGeneratedEvent } from '../types/domain-events';
 import { Group } from '../types/group';
@@ -37,7 +38,7 @@ export type Adapters = {
   commitEvents: (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<void>,
   fetchArticle: FetchCrossrefArticle,
   fetchReview: FetchReview,
-  fetchStaticFile: (filename: string) => TE.TaskEither<'not-found' | 'unavailable', string>,
+  fetchStaticFile: (filename: string) => TE.TaskEither<DE.DataError, string>,
   findGroups: (query: string) => T.Task<ReadonlyArray<GroupId>>,
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,

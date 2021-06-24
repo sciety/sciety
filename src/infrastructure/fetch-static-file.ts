@@ -5,8 +5,9 @@ import * as RTE from 'fp-ts/ReaderTaskEither';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as L from './logger';
+import * as DE from '../types/data-error';
 
-type FetchStaticFile = (filename: string) => RTE.ReaderTaskEither<L.LoggerIO, 'not-found' | 'unavailable', string>;
+type FetchStaticFile = (filename: string) => RTE.ReaderTaskEither<L.LoggerIO, DE.DataError, string>;
 
 export const fetchStaticFile: FetchStaticFile = (filename) => (logger) => pipe(
   path.resolve(__dirname, '..', '..', 'static', filename),
@@ -19,7 +20,7 @@ export const fetchStaticFile: FetchStaticFile = (filename) => (logger) => pipe(
   )),
   TE.swap,
   TE.bimap(
-    (error) => (error.code === 'ENOENT' ? 'not-found' : 'unavailable'),
+    (error) => (error.code === 'ENOENT' ? DE.notFound : DE.unavailable),
     String,
   ),
 );

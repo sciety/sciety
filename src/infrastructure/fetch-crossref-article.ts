@@ -7,21 +7,17 @@ import {
   getAbstract, getAuthors, getServer, getTitle,
 } from './parse-crossref-article';
 import { ArticleServer } from '../types/article-server';
+import * as DE from '../types/data-error';
 import { Doi } from '../types/doi';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
-type FetchCrossrefArticleError = 'not-found' | 'unavailable';
-
-export type FetchCrossrefArticle = (doi: Doi) => TE.TaskEither<
-FetchCrossrefArticleError,
-{
+export type FetchCrossrefArticle = (doi: Doi) => TE.TaskEither<DE.DataError, {
   abstract: SanitisedHtmlFragment,
   authors: ReadonlyArray<string>,
   doi: Doi,
   title: SanitisedHtmlFragment,
   server: ArticleServer,
-}
->;
+}>;
 
 type GetXml = (doi: Doi, acceptHeader: string) => Promise<string>;
 
@@ -47,11 +43,11 @@ export const fetchCrossrefArticle = (getXml: GetXml, logger: Logger): FetchCross
         doi,
         error,
       };
-      let errorType: FetchCrossrefArticleError = 'not-found';
+      let errorType: DE.DataError = DE.notFound;
       if (error instanceof Error) {
         payload.message = error.message;
         if (error.message === 'Empty response from Crossref') {
-          errorType = 'unavailable';
+          errorType = DE.unavailable;
         }
       }
       logger('error', 'Failed to fetch article', payload);

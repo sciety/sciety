@@ -6,6 +6,7 @@ import { constant, flow, pipe } from 'fp-ts/function';
 import striptags from 'striptags';
 import { renderMetaPage } from './render-meta-page';
 import { ArticleServer } from '../../types/article-server';
+import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
 import { DomainEvent } from '../../types/domain-events';
 import { toHtmlFragment } from '../../types/html-fragment';
@@ -24,7 +25,7 @@ type Params = {
   user: O.Option<User>,
 };
 
-type GetArticleDetails = (doi: Doi) => TE.TaskEither<'not-found' | 'unavailable', {
+type GetArticleDetails = (doi: Doi) => TE.TaskEither<DE.DataError, {
   title: SanitisedHtmlFragment,
   abstract: SanitisedHtmlFragment, // TODO Use HtmlFragment as the HTML is stripped
   authors: ReadonlyArray<string>,
@@ -36,7 +37,7 @@ type Ports = {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
 };
 
-const toErrorPage = (error: 'not-found' | 'unavailable') => ({
+const toErrorPage = (error: DE.DataError) => ({
   type: error,
   message: toHtmlFragment(`
     We’re having trouble finding this information.

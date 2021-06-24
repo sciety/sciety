@@ -4,10 +4,11 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
+import * as DE from '../types/data-error';
 import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
 
-type FetchStaticFile = (filename: string) => TE.TaskEither<'not-found' | 'unavailable', string>;
+type FetchStaticFile = (filename: string) => TE.TaskEither<DE.DataError, string>;
 
 type SearchableGroupFields = Group & { description: string };
 

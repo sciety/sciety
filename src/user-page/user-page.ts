@@ -5,14 +5,15 @@ import { renderErrorPage } from './render-error-page';
 import { renderHeader } from './render-header';
 import { renderPage } from './render-page';
 import { UserDetails } from './user-details';
+import * as DE from '../types/data-error';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 
 type UserPage = (
-  userDetails: TE.TaskEither<'not-found' | 'unavailable', UserDetails>,
+  userDetails: TE.TaskEither<DE.DataError, UserDetails>,
 ) => (
-  tabs: TE.TaskEither<'not-found', HtmlFragment>,
+  tabs: TE.TaskEither<DE.DataError, HtmlFragment>,
 ) => TE.TaskEither<RenderPageError, Page>;
 
 export const userPage: UserPage = (userDetails) => flow(
