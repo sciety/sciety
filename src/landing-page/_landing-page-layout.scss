@@ -26,7 +26,7 @@ $_header-height-in-px: 60px;
   display: none;
   @media screen and (min-width: common.$landing-page-breakpoint) {
     @include typography.button();
-    margin-right: 1.5rem;
+    margin-right: functions.px-to-rem(20px);
     display: inline-flex;
     align-items: center;
 
@@ -50,10 +50,6 @@ $_header-height-in-px: 60px;
   }
 }
 
-.landing-page-header__follow_icon {
-  margin-left: 0.5rem;
-}
-
 .landing-page-header__login_button {
   @include button.button-link();
   padding-top: 0.6rem;
@@ -64,6 +60,7 @@ $_header-height-in-px: 60px;
   width: 6rem;
   padding-top: 0.6rem;
   margin-bottom: 0;
+  margin-right: 0;
 }
 
 .landing-page-footer {
