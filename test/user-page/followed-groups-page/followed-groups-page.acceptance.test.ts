@@ -8,6 +8,7 @@ import { JSDOM } from 'jsdom';
 import { userFollowedEditorialCommunity } from '../../../src/types/domain-events';
 import { Page } from '../../../src/types/page';
 import { RenderPageError } from '../../../src/types/render-page-error';
+import { groupInformationUnavailable } from '../../../src/user-page/followed-groups-page/follow-list';
 import { followedGroupsPage } from '../../../src/user-page/followed-groups-page/followed-groups-page';
 import { arbitraryString, arbitraryUri, arbitraryWord } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
@@ -104,7 +105,7 @@ describe('followed-groups-page', () => {
     });
 
     describe('any of the group card generations fail', () => {
-      it.skip('displays a single error message as the tab panel content', async () => {
+      it('displays a single error message as the tab panel content', async () => {
         const userId = arbitraryUserId();
         const ports = {
           follows: shouldNotBeCalled,
@@ -133,7 +134,7 @@ describe('followed-groups-page', () => {
 
         const tabPanelContent = content.querySelector('.tab-panel')?.innerHTML;
 
-        expect(tabPanelContent).toContain('the error message');
+        expect(tabPanelContent).toContain(groupInformationUnavailable);
       });
     });
   });

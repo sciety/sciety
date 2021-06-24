@@ -8,10 +8,9 @@ import { GetAllEvents, projectFollowedGroupIds } from './project-followed-group-
 import { renderFollowList } from './render-follow-list';
 import { populateGroupViewModel } from '../../shared-components/group-card/populate-group-view-model';
 import { renderGroupCard } from '../../shared-components/group-card/render-group-card';
-import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';
 import { GroupId } from '../../types/group-id';
-import { HtmlFragment } from '../../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { UserId } from '../../types/user-id';
 
 type GetGroup = (groupId: GroupId) => TO.TaskOption<Group>;
@@ -22,7 +21,10 @@ export type Ports = {
 };
 
 type FollowList = (ports: Ports) => (userId: UserId, viewingUserId: O.Option<UserId>)
-=> TE.TaskEither<DE.DataError, HtmlFragment>;
+=> TE.TaskEither<never, HtmlFragment>;
+
+// ts-unused-exports:disable-next-line
+export const groupInformationUnavailable = toHtmlFragment('<p>We couldn\'t find this information; please try again later.</p>');
 
 export const followList: FollowList = (ports) => (userId) => pipe(
   userId,
@@ -30,4 +32,5 @@ export const followList: FollowList = (ports) => (userId) => pipe(
   T.chain(TE.traverseArray(populateGroupViewModel(ports.getGroup, ports.getAllEvents))),
   TE.map(RA.map(renderGroupCard)),
   TE.map(renderFollowList),
+  TE.orElse(() => TE.right(groupInformationUnavailable)),
 );
