@@ -218,7 +218,7 @@ export const getAuthorsJson = (doc: JSON, doi: Doi, logger: Logger): O.Option<Re
             { firstName: when(O.isNone) },
             (person) => O.some(person.name),
           )
-          .otherwise(() => O.none),
+          .exhaustive(),
         O.map(flow(toHtmlFragment, sanitise)),
       )),
       O.sequenceArray,
