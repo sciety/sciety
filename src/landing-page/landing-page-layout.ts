@@ -12,7 +12,8 @@ export const landingPageLayout = (page: Page): string => `<!doctype html>
     <header class="landing-page-header">
       <img src="/static/images/sciety-logo-blue-text.svg" alt="Sciety logo">
       <div class="landing-page-header__link_container">
-        <a href="https://twitter.com/scietyHQ" class="landing-page-header__follow_link"><img class="landing-page-header__follow_icon" src="/static/images/twitter-bird.svg" alt="Follow us"/></a>
+        <a href="https://twitter.com/scietyHQ" class="landing-page-header__follow_link"><img class="landing-page-header__follow_icon" src="/static/images/twitter-bird.svg" alt="Follow us on Twitter"/></a>
+        <a href="https://www.facebook.com/ScietyHQ/" class="landing-page-header__follow_link"><img class="landing-page-header__follow_icon" src="/static/images/facebook.svg" alt="Follow us on Facebook"/></a>
         <a href="/log-in" class="landing-page-header__login_button">Log in</a>
         <a href="/signup" class="landing-page-header__signup_button">Subscribe</a>
       </div>
