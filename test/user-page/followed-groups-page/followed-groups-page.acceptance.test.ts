@@ -102,5 +102,39 @@ describe('followed-groups-page', () => {
 
       expect(groupCards).toHaveLength(2);
     });
+
+    describe('any of the group card generations fail', () => {
+      it.skip('displays a single error message as the tab panel content', async () => {
+        const userId = arbitraryUserId();
+        const ports = {
+          follows: shouldNotBeCalled,
+          getGroup: () => TO.none,
+          getUserDetails: () => TE.right({
+            avatarUrl: arbitraryUri(),
+            displayName: arbitraryString(),
+            handle: arbitraryWord(),
+          }),
+          getAllEvents: T.of([
+            userFollowedEditorialCommunity(userId, arbitraryGroupId()),
+            userFollowedEditorialCommunity(userId, arbitraryGroupId()),
+          ]),
+        };
+        const params = { id: userId, user: O.none };
+
+        const content = await pipe(
+          params,
+          followedGroupsPage(ports),
+          TE.match(
+            shouldNotBeCalled,
+            (page) => page.content,
+          ),
+          T.map(JSDOM.fragment),
+        )();
+
+        const tabPanelContent = content.querySelector('.tab-panel')?.innerHTML;
+
+        expect(tabPanelContent).toContain('the error message');
+      });
+    });
   });
 });
