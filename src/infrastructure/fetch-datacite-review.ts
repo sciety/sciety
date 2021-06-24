@@ -22,7 +22,7 @@ const fetchReviewContent = (
   ),
   TE.chainEitherK(flow(
     (graph) => graph.out(schema.description).value,
-    E.fromNullable('unavailable' as const),
+    E.fromNullable(DE.unavailable),
     E.map(flow(
       toHtmlFragment,
       (fullText) => ({

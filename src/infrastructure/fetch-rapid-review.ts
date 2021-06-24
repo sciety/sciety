@@ -9,7 +9,7 @@ import { Logger } from './logger';
 import * as DE from '../types/data-error';
 import { toHtmlFragment } from '../types/html-fragment';
 
-type GetHtml = (url: string) => TE.TaskEither<'unavailable', string>;
+type GetHtml = (url: string) => TE.TaskEither<DE.DataError, string>;
 
 const summary = (logger: Logger) => (doc: Document) => pipe(
   doc.querySelector('meta[name=description]')?.getAttribute('content'),

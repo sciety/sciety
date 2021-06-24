@@ -16,7 +16,7 @@ export const aboutPage: AboutPage = flow(
   TE.map(renderPage),
   TE.bimap(
     () => ({
-      type: 'unavailable',
+      type: DE.unavailable,
       message: toHtmlFragment('We couldn\'t find this information; please try again later.'),
     }),
     (content) => ({

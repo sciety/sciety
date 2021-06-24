@@ -77,7 +77,7 @@ const querySheet = (logger: Logger) => <A>(
       async () => google.sheets('v4').spreadsheets.values.get(params),
       (error) => {
         logger('error', 'Error fetching Google sheet', { error });
-        return 'unavailable' as const;
+        return DE.unavailable;
       },
     ),
     TE.chainEitherKW((res) => pipe(
@@ -86,7 +86,7 @@ const querySheet = (logger: Logger) => <A>(
       E.mapLeft(PR.failure),
       E.mapLeft((errors) => {
         logger('error', 'Invalid response from Google sheet api', { res, errors });
-        return 'unavailable' as const;
+        return DE.unavailable;
       }),
     )),
   );

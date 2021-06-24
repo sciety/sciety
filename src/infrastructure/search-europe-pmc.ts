@@ -13,6 +13,7 @@ import * as PR from 'io-ts/PathReporter';
 import { Logger } from './logger';
 import { ArticleServer } from '../types/article-server';
 import { DoiFromString } from '../types/codecs/DoiFromString';
+import * as DE from '../types/data-error';
 import { Doi } from '../types/doi';
 import { toHtmlFragment } from '../types/html-fragment';
 import { sanitise, SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
@@ -105,7 +106,7 @@ const constructSearchResults = (pageSize: number) => (data: EuropePmcResponse) =
   };
 };
 
-type GetFromUrl = (url: string) => RTE.ReaderTaskEither<Dependencies, 'unavailable', EuropePmcResponse>;
+type GetFromUrl = (url: string) => RTE.ReaderTaskEither<Dependencies, DE.DataError, EuropePmcResponse>;
 
 const getFromUrl: GetFromUrl = (url: string) => ({ getJson, logger }: Dependencies) => pipe(
   TE.tryCatch(async () => getJson(url), E.toError),
@@ -113,21 +114,21 @@ const getFromUrl: GetFromUrl = (url: string) => ({ getJson, logger }: Dependenci
     (error) => {
       // TODO recognise not-found somehow
       logger('error', 'Could not fetch', { error, url });
-      return 'unavailable' as const;
+      return DE.unavailable;
     },
   ),
   TE.chainEitherKW(flow(
     europePmcResponse.decode,
     E.mapLeft((errors) => {
       logger('error', 'Could not parse response', { errors: PR.failure(errors), url });
-      return 'unavailable' as const;
+      return DE.unavailable;
     }),
   )),
 );
 
 type SearchEuropePmc = (pageSize: number)
 => (query: string, cursor: O.Option<string>)
-=> RTE.ReaderTaskEither<Dependencies, 'unavailable', SearchResults>;
+=> RTE.ReaderTaskEither<Dependencies, DE.DataError, SearchResults>;
 
 export const searchEuropePmc: SearchEuropePmc = (pageSize) => (query, cursor) => pipe(
   [query, cursor],

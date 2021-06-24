@@ -10,6 +10,7 @@ import { hypothesisAnnotation, HypothesisAnnotation } from './codecs/HypothesisA
 import { Evaluation } from './evaluation';
 import { EvaluationFetcher } from './fetch-review';
 import { Logger } from './logger';
+import * as DE from '../types/data-error';
 import { toHtmlFragment } from '../types/html-fragment';
 
 type GetJson = (uri: string) => Promise<Json>;
@@ -37,14 +38,14 @@ export const fetchHypothesisAnnotation = (getJson: GetJson, logger: Logger): Eva
       async () => getJson(uri),
       (error) => {
         logger('error', 'Failed to fetch hypothesis evaluation', { uri, error });
-        return 'unavailable' as const; // TODO: could be not-found
+        return DE.unavailable; // TODO: could be DE.notFound
       },
     ),
     TE.chainEitherK(flow(
       hypothesisAnnotation.decode,
       E.mapLeft((error) => {
         logger('error', 'Invalid response from hypothes.is', { uri, errors: PR.failure(error) });
-        return 'unavailable' as const;
+        return DE.unavailable;
       }),
     )),
     TE.map(toReview(logger)),

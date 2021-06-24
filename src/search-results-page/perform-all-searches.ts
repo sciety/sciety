@@ -8,9 +8,12 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { ArticleResults } from './data-types';
 import { Matches } from './select-subset-to-display';
+import * as DE from '../types/data-error';
 import { GroupId } from '../types/group-id';
 
-type FindArticles = (pageSize: number) => (query: string, cursor: O.Option<string>) => TE.TaskEither<'unavailable', ArticleResults>;
+type FindArticles = (
+  pageSize: number,
+) => (query: string, cursor: O.Option<string>) => TE.TaskEither<DE.DataError, ArticleResults>;
 
 type FindGroups = (q: string) => T.Task<ReadonlyArray<GroupId>>;
 
@@ -35,7 +38,7 @@ export type Params = t.TypeOf<typeof paramsCodec> & {
   pageSize: number,
 };
 
-export const performAllSearches = (ports: Ports) => (params: Params): TE.TaskEither<'unavailable', Matches> => pipe(
+export const performAllSearches = (ports: Ports) => (params: Params): TE.TaskEither<DE.DataError, Matches> => pipe(
   {
     query: TE.right(params.query),
     pageSize: TE.right(params.pageSize),

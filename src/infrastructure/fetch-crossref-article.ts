@@ -61,7 +61,7 @@ export const fetchCrossrefArticle = (getXml: GetXml, logger: Logger): FetchCross
       if (O.isNone(authors)) {
         logger('error', 'Unable to find authors', { doi, response });
 
-        return E.left('unavailable');
+        return E.left(DE.unavailable);
       }
 
       return E.right({
@@ -81,7 +81,7 @@ export const fetchCrossrefArticle = (getXml: GetXml, logger: Logger): FetchCross
       // - what happens if the title cannot be parsed (e.g. it's missing from the XML)?
       // - what happens if the abstract cannot be parsed (e.g. it has unforeseen tags)?
       // - ...
-      return E.left('unavailable');
+      return E.left(DE.unavailable);
     }
   };
 };

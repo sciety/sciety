@@ -49,5 +49,7 @@ export type Adapters = {
   getGroup: GetGroup,
   getUserDetails: GetTwitterUserDetails,
   logger: Logger,
-  searchEuropePmc: (pageSize: number) => (query: string, cursor: O.Option<string>) => TE.TaskEither<'unavailable', SearchResults>,
+  searchEuropePmc: (
+    pageSize: number,
+  ) => (query: string, cursor: O.Option<string>) => TE.TaskEither<DE.DataError, SearchResults>,
 };

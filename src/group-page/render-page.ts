@@ -1,4 +1,5 @@
 import { pipe } from 'fp-ts/function';
+import * as DE from '../types/data-error';
 import { Group } from '../types/group';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
@@ -36,7 +37,7 @@ const render = (components: Components) => `
 `;
 
 export const renderErrorPage = (): RenderPageError => ({
-  type: 'unavailable' as const,
+  type: DE.unavailable,
   message: toHtmlFragment('We couldn\'t retrieve this information. Please try again.'),
 });
 
