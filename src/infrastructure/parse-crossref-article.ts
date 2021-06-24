@@ -1,12 +1,11 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as R from 'fp-ts/Record';
 import { constant, flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
-import { __, match } from 'ts-pattern';
+import { __, match, select } from 'ts-pattern';
 import { XMLSerializer } from 'xmldom';
 import { Logger } from './logger';
 import { Doi } from '../types/doi';
@@ -157,13 +156,13 @@ const crossrefCodec = t.type({
             person_name: t.union([
               t.array(t.type({
                 given_name: tt.optionFromNullable(t.string),
-                surname: tt.optionFromNullable(t.string),
-                '@_contributor_role': tt.optionFromNullable(t.string),
+                surname: t.string,
+                '@_contributor_role': t.string,
               })),
               t.type({
                 given_name: tt.optionFromNullable(t.string),
-                surname: tt.optionFromNullable(t.string),
-                '@_contributor_role': tt.optionFromNullable(t.string),
+                surname: t.string,
+                '@_contributor_role': t.string,
               }),
             ]),
           }),
@@ -185,12 +184,17 @@ export const getAuthorsJson = (doc: JSON, doi: Doi, logger: Logger): O.Option<Re
     },
     (response) => pipe(
       [response.doi_records.doi_record.crossref.posted_content.contributors.person_name].flat(),
-      RA.map(R.map(O.getOrElseW(() => null))),
       RA.filter((author) => author['@_contributor_role'] === 'author'),
       RA.map((author) => pipe(
         match(author)
-          .with({ given_name: __.string, surname: __.string }, (a) => O.some(`${a.given_name} ${a.surname}`))
-          .with({ given_name: null, surname: __.string }, (a) => O.some(a.surname))
+          .with(
+            { given_name: { _tag: 'Some', value: select('first') }, surname: select('last') },
+            ({ first, last }) => O.some(`${first} ${last}`),
+          )
+          .with(
+            { given_name: { _tag: 'None' }, surname: __.string },
+            (a) => O.some(a.surname),
+          )
           .otherwise(() => O.none),
         O.map(flow(toHtmlFragment, sanitise)),
       )),
