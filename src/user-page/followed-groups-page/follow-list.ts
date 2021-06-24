@@ -26,11 +26,7 @@ type FollowList = (ports: Ports) => (userId: UserId, viewingUserId: O.Option<Use
 export const followList: FollowList = (ports) => (userId) => pipe(
   userId,
   projectFollowedGroupIds(ports.getAllEvents),
-  (foo) => foo,
-  T.map(RA.map((groupId) => ({ id: groupId }))),
-  (foo) => foo,
   T.chain(TE.traverseArray(populateGroupViewModel(ports.getGroup, ports.getAllEvents))),
-  (foo) => foo,
   TE.map(RA.map(renderGroupCard)),
   TE.map(renderFollowList),
 );

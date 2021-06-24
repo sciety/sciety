@@ -54,7 +54,7 @@ const populateArticleViewModel = (
 const fetchItemDetails = (ports: Ports) => (item: ArticleItem | GroupItem): TE.TaskEither<'not-found', ItemViewModel> => (
   isArticleItem(item)
     ? pipe(item, populateArticleViewModel(ports.findReviewsForArticleDoi, ports.getLatestArticleVersionDate))
-    : pipe(item, populateGroupViewModel(ports.getGroup, ports.getAllEvents)));
+    : pipe(item.id, populateGroupViewModel(ports.getGroup, ports.getAllEvents)));
 
 export type LimitedSet = {
   query: string,

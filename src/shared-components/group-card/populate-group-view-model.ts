@@ -16,16 +16,11 @@ export type GetGroup = (groupId: GroupId) => TO.TaskOption<Group>;
 
 export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-type GroupItem = {
-  id: GroupId,
-};
-
 export const populateGroupViewModel = (
   getGroup: GetGroup,
   getAllEvents: GetAllEvents,
-): (item: GroupItem
+): (groupId: GroupId
   ) => TE.TaskEither<'not-found', GroupViewModel> => flow(
-  (item) => item.id,
   getGroup,
   T.map(E.fromOption(() => 'not-found' as const)),
   TE.chainTaskK((group) => pipe(
