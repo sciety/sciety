@@ -1,3 +1,4 @@
+@use 'sass:math';
 @use '../sass/settings';
 @use '../sass/functions';
 @use '../sass/baseline';
@@ -23,22 +24,26 @@ $_header-height-in-px: 60px;
 }
 
 .landing-page-header__follow_link {
+  @include typography.button();
+
   display: none;
-  @media screen and (min-width: common.$landing-page-breakpoint) {
-    @include typography.button();
-    margin-right: functions.px-to-rem(20px);
-    display: inline-flex;
-    align-items: center;
 
-    &:link,
-    &:visited {
+  margin-right: functions.px-to-rem(20px);
+  align-items: center;
+
+  &:link,
+  &:visited {
+    color: settings.$colour-text-primary;
+
+    &:hover,
+    &:active {
       color: settings.$colour-text-primary;
-
-      &:hover,
-      &:active {
-        color: settings.$colour-text-primary;
-      }
     }
+  }
+
+
+  @media only screen and (min-width: #{math.div(430px, settings.$base-font-measure)}em) {
+    display: inline-flex;
   }
 }
 
