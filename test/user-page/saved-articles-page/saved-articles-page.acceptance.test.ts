@@ -9,7 +9,7 @@ import { Page } from '../../../src/types/page';
 import { RenderPageError } from '../../../src/types/render-page-error';
 import { savedArticlesPage } from '../../../src/user-page/saved-articles-page/saved-articles-page';
 
-import { informationUnavailable } from '../../../src/user-page/static-messages';
+import { informationUnavailable, noSavedArticles } from '../../../src/user-page/static-messages';
 import {
   arbitrarySanitisedHtmlFragment,
   arbitraryString,
@@ -202,9 +202,9 @@ describe('saved-articles-page', () => {
     });
 
     it('shows a message saying that the user has no saved articles', () => {
-      const message = page.querySelector('.saved-articles__no_articles');
+      const message = page.querySelector('.tab-panel')?.innerHTML;
 
-      expect(message).toBeDefined();
+      expect(message).toContain(noSavedArticles);
     });
   });
 });

@@ -5,6 +5,7 @@ import { flow } from 'fp-ts/function';
 import { renderArticleCard } from '../../shared-components/article-card';
 import { templateListItems } from '../../shared-components/list-items';
 import { toHtmlFragment } from '../../types/html-fragment';
+import { noSavedArticles } from '../static-messages';
 
 export const renderSavedArticles = flow(
   RA.map(renderArticleCard),
@@ -13,7 +14,7 @@ export const renderSavedArticles = flow(
   O.fold(
     () => `
       <p class="saved-articles__no_articles">
-      This user has no saved articles.
+      ${noSavedArticles}
       </p>
     `,
     (list) => `
