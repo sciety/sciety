@@ -8,7 +8,7 @@ const templateListItems = (items: ReadonlyArray<HtmlFragment>, itemClass = 'item
 );
 
 export const renderSavedArticles = (list: ReadonlyArray<HtmlFragment>): HtmlFragment => toHtmlFragment(`
-  <ol class="saved-articles" role="list">
-    ${templateListItems(list, 'saved-articles__item')}
+  <ol class="saved-articles-list" role="list">
+    ${templateListItems(list, 'saved-articles-list__item')}
   </ol>
 `);
