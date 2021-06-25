@@ -8,8 +8,8 @@ import { JSDOM } from 'jsdom';
 import { userFollowedEditorialCommunity } from '../../../src/types/domain-events';
 import { Page } from '../../../src/types/page';
 import { RenderPageError } from '../../../src/types/render-page-error';
-import { groupInformationUnavailable } from '../../../src/user-page/followed-groups-page/follow-list';
 import { followedGroupsPage } from '../../../src/user-page/followed-groups-page/followed-groups-page';
+import { informationUnavailable } from '../../../src/user-page/static-messages';
 import { arbitraryString, arbitraryUri, arbitraryWord } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryGroupId } from '../../types/group-id.helper';
@@ -130,7 +130,7 @@ describe('followed-groups-page', () => {
 
         const tabPanelContent = content.querySelector('.tab-panel')?.innerHTML;
 
-        expect(tabPanelContent).toContain(groupInformationUnavailable);
+        expect(tabPanelContent).toContain(informationUnavailable);
       });
     });
   });
