@@ -62,14 +62,6 @@ $_inline-margin: 1rem;
   }
 }
 
-.user-page-contents {
-  grid-column: 1 / -1;
-
-  @include breakpoints.not-narrow {
-    @include wide-columns();
-  }
-}
-
 .followed-groups-list {
   @include card.list();
 }
