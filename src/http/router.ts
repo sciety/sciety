@@ -334,6 +334,11 @@ export const createRouter = (adapters: Adapters): Router => {
       }
       await next();
     },
+    async (context, next) => {
+      context.request.query.username = 'a';
+      context.request.query.password = 'b';
+      await next();
+    },
     authenticate,
   );
 
