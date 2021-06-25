@@ -48,6 +48,28 @@ describe('followed-groups-page', () => {
 
   it.todo('shows the articles tab as the inactive tab');
 
+  it.skip('always shows a saved article count in the saved article tab title', async () => {
+    const ports = {
+      getGroup: shouldNotBeCalled,
+      getUserDetails: () => TE.right({
+        avatarUrl: arbitraryUri(),
+        displayName: arbitraryString(),
+        handle: arbitraryWord(),
+      }),
+      getAllEvents: T.of([]),
+    };
+    const params = { id: arbitraryUserId(), user: O.none };
+    const page = await pipe(
+      params,
+      followedGroupsPage(ports),
+      contentOf,
+      T.map(JSDOM.fragment),
+    )();
+    const tabHeading = page.querySelector('.tab--active')?.innerHTML;
+
+    expect(tabHeading).toContain('(0)');
+  });
+
   it('uses the user displayname as page title', async () => {
     const userDisplayName = arbitraryString();
     const ports = {
