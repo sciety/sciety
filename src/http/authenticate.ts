@@ -9,11 +9,10 @@ const authenticate = (strategy: 'twitter' | 'local'): Middleware => koaPassport.
 );
 
 export const logIn = (strategy: 'twitter' | 'local'): Middleware => async (context, next) => {
+  const twitterTestingAccountId = '1338873008283377664';
   switch (strategy) {
     case 'local':
-      context.request.query.username = 'a';
-      context.request.query.password = 'b';
-      context.redirect('/twitter/callback?username=a&password=b');
+      context.redirect(`/twitter/callback?username=${twitterTestingAccountId}&password=anypassword`);
       await next();
       return;
     case 'twitter':

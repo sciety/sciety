@@ -82,7 +82,7 @@ export const createApplicationServer = (router: Router, logger: Logger): E.Eithe
     koaPassport.use(new LocalStrategy(
       (username, password, cb) => {
         const user: User = {
-          id: toUserId('47998559'),
+          id: toUserId(username),
         };
         return cb(null, user);
       },
