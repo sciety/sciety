@@ -11,7 +11,7 @@ import { renderArticleCard } from '../../shared-components/article-card';
 import { FindVersionsForArticleDoi, getLatestArticleVersionDate } from '../../shared-components/article-card/get-latest-article-version-date';
 import { ArticleServer } from '../../types/article-server';
 import { Doi } from '../../types/doi';
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { HtmlFragment } from '../../types/html-fragment';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { UserId } from '../../types/user-id';
 import { informationUnavailable, noSavedArticles } from '../static-messages';
@@ -36,7 +36,7 @@ export const savedArticles: SavedArticles = (ports) => flow(
   TE.right,
   TE.chain(flow(
     projectSavedArticleDois(ports.getAllEvents),
-    TE.mapLeft(() => toHtmlFragment(noSavedArticles)),
+    TE.mapLeft(() => noSavedArticles),
   )),
   TE.chain(flow(
     TE.traverseArray(ports.fetchArticle),

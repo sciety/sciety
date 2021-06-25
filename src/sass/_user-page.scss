@@ -124,10 +124,6 @@ $_avatar-border-width: settings.$border-width;
   }
 }
 
-.saved-articles__no_articles {
-  padding-top: baseline.increments(2);
-}
-
 .saved-articles__item {
   @include card.list-item();
 }
@@ -137,6 +133,6 @@ $_avatar-border-width: settings.$border-width;
   @include typography.subtle-link();
 }
 
-.followed-groups__no_groups {
+.static-message {
   padding-top: baseline.increments(2);
 }
