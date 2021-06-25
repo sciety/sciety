@@ -335,13 +335,17 @@ export const createRouter = (adapters: Adapters): Router => {
       await next();
     },
     async (context, next) => {
-      context.request.query.username = 'a';
-      context.request.query.password = 'b';
+      if (process.env.AUTHENTICATION_STRATEGY === 'local') {
+        context.request.query.username = 'a';
+        context.request.query.password = 'b';
+      }
       await next();
     },
-    authenticate,
+    authenticate(process.env.AUTHENTICATION_STRATEGY === 'local' ? 'local' : 'twitter'),
     async (context, next) => {
-      context.redirect('/twitter/callback')
+      if (process.env.AUTHENTICATION_STRATEGY === 'local') {
+        context.redirect('/twitter/callback');
+      }
       await next();
     },
   );
@@ -356,7 +360,7 @@ export const createRouter = (adapters: Adapters): Router => {
       'Detected Twitter callback error',
       'Something went wrong, please try again.',
     ),
-    onlyIfNotAuthenticated(authenticate),
+    onlyIfNotAuthenticated(authenticate(process.env.AUTHENTICATION_STRATEGY === 'local' ? 'local' : 'twitter')),
     finishCommand(adapters),
     finishUnfollowCommand(adapters),
     finishRespondCommand(adapters),

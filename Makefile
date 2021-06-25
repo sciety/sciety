@@ -157,6 +157,7 @@ prod-sql:
 	-- psql
 
 taiko: export TARGET = dev
+taiko: export AUTHENTICATION_STRATEGY = local
 taiko: clean-db
 	${DOCKER_COMPOSE} up -d
 	scripts/wait-for-healthy.sh

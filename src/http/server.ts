@@ -5,8 +5,8 @@ import * as E from 'fp-ts/Either';
 import Koa from 'koa';
 import koaPassport from 'koa-passport';
 import koaSession from 'koa-session';
-import { Strategy as TwitterStrategy } from 'passport-twitter';
 import { Strategy as LocalStrategy } from 'passport-local';
+import { Strategy as TwitterStrategy } from 'passport-twitter';
 import { routeNotFound } from './route-not-found';
 import { Logger } from '../infrastructure/logger';
 import { User } from '../types/user';
@@ -78,31 +78,33 @@ export const createApplicationServer = (router: Router, logger: Logger): E.Eithe
     app,
   ));
 
-  //koaPassport.use(
-  //  new TwitterStrategy(
-  //    {
-  //      consumerKey: process.env.TWITTER_API_KEY ?? '',
-  //      consumerSecret: process.env.TWITTER_API_SECRET_KEY ?? '',
-  //      callbackURL: `${process.env.APP_ORIGIN ?? ''}/twitter/callback`,
-  //    },
-  //    (token, tokenSecret, profile, cb) => {
-  //      const user: User = {
-  //        id: toUserId(profile.id),
-  //      };
+  if (process.env.AUTHENTICATION_STRATEGY === 'local') {
+    koaPassport.use(new LocalStrategy(
+      (username, password, cb) => {
+        const user: User = {
+          id: toUserId('47998559'),
+        };
+        return cb(null, user);
+      },
+    ));
+  } else {
+    koaPassport.use(
+      new TwitterStrategy(
+        {
+          consumerKey: process.env.TWITTER_API_KEY ?? '',
+          consumerSecret: process.env.TWITTER_API_SECRET_KEY ?? '',
+          callbackURL: `${process.env.APP_ORIGIN ?? ''}/twitter/callback`,
+        },
+        (token, tokenSecret, profile, cb) => {
+          const user: User = {
+            id: toUserId(profile.id),
+          };
 
-  //      cb(undefined, user);
-  //    },
-  //  ),
-  //);
-  koaPassport.use(new LocalStrategy(
-    function (username, password, cb) {
-      console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>> LocalStrategy', username, password);
-      const user: User = {
-        id: toUserId('47998559'),
-      };
-      return cb(null, user);
-    }
-  ));
+          cb(undefined, user);
+        },
+      ),
+    );
+  }
 
   app.use(koaPassport.initialize());
   app.use(koaPassport.session());
