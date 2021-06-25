@@ -4,7 +4,7 @@ import { constant, flow } from 'fp-ts/function';
 import { templateListItems } from '../../shared-components/list-items';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
-const followingNothing = `
+export const followingNothing = `
   <p class="followed-groups__no_groups">This user is currently not following any groups.</p>
 `;
 
