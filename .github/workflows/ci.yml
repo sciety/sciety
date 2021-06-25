@@ -38,6 +38,11 @@ jobs:
       - name: Taiko
         run: |
           make taiko
+        env:
+          CROSSREF_API_BEARER_TOKEN: ${{ secrets.CROSSREF_API_BEARER_TOKEN }}
+          TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
+          TWITTER_API_SECRET_KEY: ${{ secrets.TWITTER_API_SECRET_KEY }}
+          TWITTER_API_BEARER_TOKEN: ${{ secrets.TWITTER_API_BEARER_TOKEN }}
 
       - name: Lint
         run: |
