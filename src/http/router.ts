@@ -9,7 +9,7 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { ParameterizedContext } from 'koa';
 import bodyParser from 'koa-bodyparser';
-import { authenticate } from './authenticate';
+import { authenticate, logIn } from './authenticate';
 import { catchErrors } from './catch-errors';
 import { catchStaticFileErrors } from './catch-static-file-errors';
 import { executeIfAuthenticated } from './execute-if-authenticated';
@@ -334,20 +334,7 @@ export const createRouter = (adapters: Adapters): Router => {
       }
       await next();
     },
-    async (context, next) => {
-      if (process.env.AUTHENTICATION_STRATEGY === 'local') {
-        context.request.query.username = 'a';
-        context.request.query.password = 'b';
-      }
-      await next();
-    },
-    authenticate(process.env.AUTHENTICATION_STRATEGY === 'local' ? 'local' : 'twitter'),
-    async (context, next) => {
-      if (process.env.AUTHENTICATION_STRATEGY === 'local') {
-        context.redirect('/twitter/callback');
-      }
-      await next();
-    },
+    logIn(process.env.AUTHENTICATION_STRATEGY === 'local' ? 'local' : 'twitter'),
   );
 
   router.get('/log-out', logOut);
