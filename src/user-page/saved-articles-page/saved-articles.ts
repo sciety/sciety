@@ -9,10 +9,10 @@ import { renderSavedArticles } from './render-saved-articles';
 import { FindVersionsForArticleDoi, getLatestArticleVersionDate } from '../../shared-components/article-card/get-latest-article-version-date';
 import { ArticleServer } from '../../types/article-server';
 import { Doi } from '../../types/doi';
-import { HtmlFragment } from '../../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { UserId } from '../../types/user-id';
-import { informationUnavailable } from '../static-messages';
+import { informationUnavailable, noSavedArticles } from '../static-messages';
 
 type FetchArticle = (doi: Doi) => TE.TaskEither<unknown, {
   doi: Doi,
@@ -31,15 +31,22 @@ export type Ports = {
 type SavedArticles = (ports: Ports) => (u: UserId) => TE.TaskEither<never, HtmlFragment>;
 
 export const savedArticles: SavedArticles = (ports) => flow(
-  projectSavedArticleDois(ports.getAllEvents),
-  T.chain(TE.traverseArray(ports.fetchArticle)),
-  TE.chainTaskK(T.traverseArray(populateArticleViewModel({
-    findReviewsForArticleDoi: ports.findReviewsForArticleDoi,
-    getLatestArticleVersionDate: getLatestArticleVersionDate(ports.findVersionsForArticleDoi),
-  }))),
-  TE.match(
-    () => informationUnavailable,
-    renderSavedArticles,
+  TE.right,
+  TE.chain(flow(
+    projectSavedArticleDois(ports.getAllEvents),
+    TE.mapLeft(() => toHtmlFragment(noSavedArticles)),
+  )),
+  TE.chain(flow(
+    TE.traverseArray(ports.fetchArticle),
+    TE.mapLeft(() => informationUnavailable),
+  )),
+  TE.chainTaskK(
+    T.traverseArray(populateArticleViewModel({
+      findReviewsForArticleDoi: ports.findReviewsForArticleDoi,
+      getLatestArticleVersionDate: getLatestArticleVersionDate(ports.findVersionsForArticleDoi),
+    })),
   ),
+  TE.map(renderSavedArticles),
+  TE.toUnion,
   TE.rightTask,
 );
