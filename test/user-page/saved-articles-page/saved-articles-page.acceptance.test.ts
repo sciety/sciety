@@ -79,6 +79,30 @@ describe('saved-articles-page', () => {
 
   it.todo('shows the groups tab as the inactive tab');
 
+  it.skip('always shows a count in the tab title', async () => {
+    const ports = {
+      getUserDetails: () => TE.right({
+        avatarUrl: arbitraryUri(),
+        displayName: arbitraryString(),
+        handle: arbitraryWord(),
+      }),
+      getAllEvents: T.of([]),
+      fetchArticle: shouldNotBeCalled,
+      findReviewsForArticleDoi: shouldNotBeCalled,
+      findVersionsForArticleDoi: shouldNotBeCalled,
+    };
+    const params = { id: arbitraryUserId() };
+    const page = await pipe(
+      params,
+      savedArticlesPage(ports),
+      contentOf,
+      T.map(JSDOM.fragment),
+    )();
+    const tabHeading = page.querySelector('.tab--active')?.innerHTML;
+
+    expect(tabHeading).toContain('(0)');
+  });
+
   it('uses the user displayname as page title', async () => {
     const userDisplayName = arbitraryString();
     const ports = {
