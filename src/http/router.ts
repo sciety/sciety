@@ -340,6 +340,10 @@ export const createRouter = (adapters: Adapters): Router => {
       await next();
     },
     authenticate,
+    async (context, next) => {
+      context.redirect('/twitter/callback')
+      await next();
+    },
   );
 
   router.get('/log-out', logOut);
