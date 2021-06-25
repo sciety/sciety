@@ -108,3 +108,10 @@ jobs:
           channel: sciety-general
           status: FAILED
           color: danger
+
+      - name: Archive Taiko screenshots
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: feature-test-screenshots
+          path: feature-test/screenshots
