@@ -9,7 +9,7 @@ import { userFollowedEditorialCommunity } from '../../../src/types/domain-events
 import { Page } from '../../../src/types/page';
 import { RenderPageError } from '../../../src/types/render-page-error';
 import { followedGroupsPage } from '../../../src/user-page/followed-groups-page/followed-groups-page';
-import { informationUnavailable } from '../../../src/user-page/static-messages';
+import { followingNothing, informationUnavailable } from '../../../src/user-page/static-messages';
 import { arbitraryString, arbitraryUri, arbitraryWord } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryGroupId } from '../../types/group-id.helper';
@@ -136,7 +136,9 @@ describe('followed-groups-page', () => {
   });
 
   describe('when the user is not following any groups', () => {
-    it('shows no list of followed groups', async () => {
+    let page: DocumentFragment;
+
+    beforeAll(async () => {
       const userId = arbitraryUserId();
       const ports = {
         getGroup: () => shouldNotBeCalled,
@@ -148,17 +150,24 @@ describe('followed-groups-page', () => {
         getAllEvents: T.of([]),
       };
       const params = { id: userId, user: O.none };
-      const page = await pipe(
+      page = await pipe(
         params,
         followedGroupsPage(ports),
         contentOf,
         T.map(JSDOM.fragment),
       )();
+    });
+
+    it('shows no list of followed groups', async () => {
       const groupCards = page.querySelectorAll('.group-card');
 
       expect(groupCards).toHaveLength(0);
     });
 
-    it.todo('shows a message saying the user is not following any groups');
+    it('shows a message saying the user is not following any groups', async () => {
+      const message = page.querySelector('.tab-panel')?.innerHTML;
+
+      expect(message).toContain(followingNothing);
+    });
   });
 });
