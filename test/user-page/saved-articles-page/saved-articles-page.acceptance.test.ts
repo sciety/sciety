@@ -9,6 +9,7 @@ import { Page } from '../../../src/types/page';
 import { RenderPageError } from '../../../src/types/render-page-error';
 import { savedArticlesPage } from '../../../src/user-page/saved-articles-page/saved-articles-page';
 
+import { informationUnavailable } from '../../../src/user-page/static-messages';
 import {
   arbitrarySanitisedHtmlFragment,
   arbitraryString,
@@ -163,7 +164,7 @@ describe('saved-articles-page', () => {
 
         const tabPanelContent = pageContent.querySelector('.tab-panel')?.innerHTML;
 
-        expect(tabPanelContent).toContain('<p>We couldn\'t find this information; please try again later.</p>');
+        expect(tabPanelContent).toContain(informationUnavailable);
       });
     });
   });

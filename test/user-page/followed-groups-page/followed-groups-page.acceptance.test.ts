@@ -137,6 +137,7 @@ describe('followed-groups-page', () => {
 
   describe('when the user is not following any groups', () => {
     it.todo('shows no list of followed groups');
+
     it.todo('shows a message saying the user is not following any groups');
   });
 });

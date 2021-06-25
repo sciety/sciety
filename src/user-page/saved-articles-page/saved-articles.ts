@@ -1,4 +1,3 @@
-import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow } from 'fp-ts/function';
@@ -10,9 +9,10 @@ import { renderSavedArticles } from './render-saved-articles';
 import { FindVersionsForArticleDoi, getLatestArticleVersionDate } from '../../shared-components/article-card/get-latest-article-version-date';
 import { ArticleServer } from '../../types/article-server';
 import { Doi } from '../../types/doi';
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { HtmlFragment } from '../../types/html-fragment';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { UserId } from '../../types/user-id';
+import { informationUnavailable } from '../static-messages';
 
 type FetchArticle = (doi: Doi) => TE.TaskEither<unknown, {
   doi: Doi,
@@ -28,8 +28,6 @@ export type Ports = {
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
 };
 
-const renderUnavailable = () => toHtmlFragment('<p>We couldn\'t find this information; please try again later.</p>');
-
 type SavedArticles = (ports: Ports) => (u: UserId) => TE.TaskEither<never, HtmlFragment>;
 
 export const savedArticles: SavedArticles = (ports) => flow(
@@ -39,6 +37,9 @@ export const savedArticles: SavedArticles = (ports) => flow(
     findReviewsForArticleDoi: ports.findReviewsForArticleDoi,
     getLatestArticleVersionDate: getLatestArticleVersionDate(ports.findVersionsForArticleDoi),
   }))),
-  T.map(E.fold(renderUnavailable, renderSavedArticles)),
+  TE.match(
+    () => informationUnavailable,
+    renderSavedArticles,
+  ),
   TE.rightTask,
 );
