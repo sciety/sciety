@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
-import { flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import { GroupViewModel } from './render-group-card';
 import { updateGroupMeta } from './update-group-meta';
 import * as DE from '../../types/data-error';
@@ -13,19 +13,25 @@ import { GroupId } from '../../types/group-id';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
 
-export type GetGroup = (groupId: GroupId) => TO.TaskOption<Group>;
+type GetGroup = (groupId: GroupId) => TO.TaskOption<Group>;
 
-export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
+type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-export const populateGroupViewModel = (
+export type Ports = {
   getGroup: GetGroup,
   getAllEvents: GetAllEvents,
-): (groupId: GroupId
-  ) => TE.TaskEither<DE.DataError, GroupViewModel> => flow(
-  getGroup,
+};
+
+export const populateGroupViewModel = (
+  ports: Ports,
+) => (
+  groupId: GroupId,
+): TE.TaskEither<DE.DataError, GroupViewModel> => pipe(
+  groupId,
+  ports.getGroup,
   T.map(E.fromOption(() => DE.notFound)),
   TE.chainTaskK((group) => pipe(
-    getAllEvents,
+    ports.getAllEvents,
     T.map(RA.reduce({ reviewCount: 0, followerCount: 0 }, updateGroupMeta(group.id))),
     T.map((meta) => ({
       ...group,
