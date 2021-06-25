@@ -79,7 +79,7 @@ describe('saved-articles-page', () => {
 
   it.todo('shows the groups tab as the inactive tab');
 
-  it.skip('always shows a count in the tab title', async () => {
+  it('always shows a count in the tab title', async () => {
     const ports = {
       getUserDetails: () => TE.right({
         avatarUrl: arbitraryUri(),

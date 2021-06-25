@@ -26,6 +26,6 @@ export const savedArticlesPage = (
   ports: Ports,
 ): SavedArticlesPage => (params) => pipe(
   savedArticles(ports)(params.id),
-  TE.map(({ content }) => tabs({ tabList: tabList(params.id), activeTabIndex: 0 })(content)),
+  TE.map(({ content, count }) => tabs({ tabList: tabList(params.id, count), activeTabIndex: 0 })(content)),
   userPage(ports.getUserDetails(params.id)),
 );
