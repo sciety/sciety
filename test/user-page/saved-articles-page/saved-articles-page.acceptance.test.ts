@@ -136,7 +136,35 @@ describe('saved-articles-page', () => {
     });
 
     describe('article details unavailable for any article', () => {
-      it.todo('displays a single error message as the tab panel content');
+      it('displays a single error message as the tab panel content', async () => {
+        const userId = arbitraryUserId();
+        const ports = {
+          getUserDetails: () => TE.right({
+            avatarUrl: arbitraryUri(),
+            displayName: arbitraryString(),
+            handle: arbitraryWord(),
+          }),
+          getAllEvents: T.of([
+            userSavedArticle(userId, arbitraryDoi()),
+            userSavedArticle(userId, arbitraryDoi()),
+          ]),
+          fetchArticle: () => TE.left('unavailable'),
+          findReviewsForArticleDoi: () => T.of([]),
+          findVersionsForArticleDoi: () => TO.none,
+        };
+        const params = { id: userId };
+
+        const pageContent = await pipe(
+          params,
+          savedArticlesPage(ports),
+          contentOf,
+          T.map(JSDOM.fragment),
+        )();
+
+        const tabPanelContent = pageContent.querySelector('.tab-panel')?.innerHTML;
+
+        expect(tabPanelContent).toContain('<p>We couldn\'t find this information; please try again later.</p>');
+      });
     });
   });
 
