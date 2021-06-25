@@ -136,7 +136,28 @@ describe('followed-groups-page', () => {
   });
 
   describe('when the user is not following any groups', () => {
-    it.todo('shows no list of followed groups');
+    it('shows no list of followed groups', async () => {
+      const userId = arbitraryUserId();
+      const ports = {
+        getGroup: () => shouldNotBeCalled,
+        getUserDetails: () => TE.right({
+          avatarUrl: arbitraryUri(),
+          displayName: arbitraryString(),
+          handle: arbitraryWord(),
+        }),
+        getAllEvents: T.of([]),
+      };
+      const params = { id: userId, user: O.none };
+      const page = await pipe(
+        params,
+        followedGroupsPage(ports),
+        contentOf,
+        T.map(JSDOM.fragment),
+      )();
+      const groupCards = page.querySelectorAll('.group-card');
+
+      expect(groupCards).toHaveLength(0);
+    });
 
     it.todo('shows a message saying the user is not following any groups');
   });
