@@ -35,6 +35,10 @@ jobs:
           make IMAGE_TAG=${IMAGE_TAG} TARGET=prod build
           make IMAGE_TAG=${IMAGE_TAG} TARGET=dev build
 
+      - name: Taiko
+        run: |
+          make taiko
+
       - name: Lint
         run: |
           make IMAGE_TAG=${IMAGE_TAG} lint
