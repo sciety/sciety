@@ -1,3 +1,4 @@
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow } from 'fp-ts/function';
@@ -6,6 +7,7 @@ import {
 } from './populate-article-view-model';
 import { GetAllEvents, projectSavedArticleDois } from './project-saved-article-dois';
 import { renderSavedArticles } from './render-saved-articles';
+import { renderArticleCard } from '../../shared-components/article-card';
 import { FindVersionsForArticleDoi, getLatestArticleVersionDate } from '../../shared-components/article-card/get-latest-article-version-date';
 import { ArticleServer } from '../../types/article-server';
 import { Doi } from '../../types/doi';
@@ -46,7 +48,10 @@ export const savedArticles: SavedArticles = (ports) => flow(
       getLatestArticleVersionDate: getLatestArticleVersionDate(ports.findVersionsForArticleDoi),
     })),
   ),
-  TE.map(renderSavedArticles),
+  TE.map(flow(
+    RA.map(renderArticleCard),
+    renderSavedArticles,
+  )),
   TE.toUnion,
   TE.rightTask,
 );
