@@ -1,7 +1,8 @@
+import { sequenceS } from 'fp-ts/Apply';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { flow } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import {
   FindReviewsForArticleDoi, populateArticleViewModel,
 } from './populate-article-view-model';
@@ -30,9 +31,10 @@ export type Ports = {
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
 };
 
-type SavedArticles = (ports: Ports) => (u: UserId) => TE.TaskEither<never, HtmlFragment>;
+type SavedArticles = (ports: Ports) => (u: UserId) => TE.TaskEither<never, { content: HtmlFragment, count: number }>;
 
-export const savedArticles: SavedArticles = (ports) => flow(
+export const savedArticles: SavedArticles = (ports) => (u) => pipe(
+  u,
   TE.right,
   TE.chain(flow(
     projectSavedArticleDois(ports.getAllEvents),
@@ -54,4 +56,18 @@ export const savedArticles: SavedArticles = (ports) => flow(
   )),
   TE.toUnion,
   TE.rightTask,
+  TE.chainTaskK((content) => pipe(
+    {
+      content: T.of(content),
+      count: pipe(
+        u,
+        projectSavedArticleDois(ports.getAllEvents),
+        TE.match(
+          () => 0,
+          (articles) => articles.length,
+        ),
+      ),
+    },
+    sequenceS(T.ApplyPar),
+  )),
 );
