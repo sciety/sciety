@@ -8,15 +8,18 @@ const authenticate = (strategy: 'twitter' | 'local'): Middleware => koaPassport.
   },
 );
 
-export const logIn = (strategy: 'twitter' | 'local'): Middleware => async (context, next) => {
-  const twitterTestingAccountId = '1338873008283377664';
+export const logIn = (strategy: 'twitter' | 'local'): Middleware => {
   switch (strategy) {
     case 'local':
-      context.redirect(`/twitter/callback?username=${twitterTestingAccountId}&password=anypassword`);
-      await next();
-      return;
+      return async (context, next) => {
+        const twitterTestingAccountId = '1338873008283377664';
+        context.redirect(`/twitter/callback?username=${twitterTestingAccountId}&password=anypassword`);
+        await next();
+      };
     case 'twitter':
-      await authenticate('twitter')(context, next);
+      return async (context, next) => {
+        await authenticate('twitter')(context, next);
+      };
   }
 };
 
