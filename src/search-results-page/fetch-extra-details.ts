@@ -12,16 +12,16 @@ import * as DE from '../types/data-error';
 import { Doi } from '../types/doi';
 import { GroupId } from '../types/group-id';
 
+// TODO: Find reviewsForArticleDoi should return a TaskEither
+type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
+  groupId: GroupId,
+  occurredAt: Date,
+}>>;
+
 export type Ports = PopulateGroupViewModelPorts & {
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
   getLatestArticleVersionDate: GetLatestArticleVersionDate,
 };
-
-// TODO: Find reviewsForArticleDoi should return a TaskEither
-export type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
-  groupId: GroupId,
-  occurredAt: Date,
-}>>;
 
 type GetLatestActivityDate = (reviews: ReadonlyArray<{ occurredAt: Date }>) => O.Option<Date>;
 
