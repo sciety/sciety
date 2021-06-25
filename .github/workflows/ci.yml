@@ -37,6 +37,7 @@ jobs:
 
       - name: Taiko
         run: |
+          rm -rf .jest
           make taiko
 
       - name: Lint
