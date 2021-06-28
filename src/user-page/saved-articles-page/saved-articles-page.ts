@@ -1,5 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { GetAllEvents, projectSavedArticleDois } from './project-saved-article-dois';
 import { savedArticles, Ports as SavedArticlesPorts } from './saved-articles';
 import { tabs } from '../../shared-components/tabs';
 import * as DE from '../../types/data-error';
@@ -13,6 +14,7 @@ import { userPage } from '../user-page';
 type GetUserDetails = (userId: UserId) => TE.TaskEither<DE.DataError, UserDetails>;
 
 type Ports = SavedArticlesPorts & {
+  getAllEvents: GetAllEvents,
   getUserDetails: GetUserDetails,
 };
 
@@ -25,7 +27,9 @@ type SavedArticlesPage = (params: Params) => TE.TaskEither<RenderPageError, Page
 export const savedArticlesPage = (
   ports: Ports,
 ): SavedArticlesPage => (params) => pipe(
-  savedArticles(ports)(params.id),
+  params.id,
+  projectSavedArticleDois(ports.getAllEvents),
+  savedArticles(ports),
   TE.map(({ content, count }) => tabs({ tabList: tabList(params.id, count), activeTabIndex: 0 })(content)),
   userPage(ports.getUserDetails(params.id)),
 );
