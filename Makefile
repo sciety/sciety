@@ -157,10 +157,11 @@ prod-sql:
 	-- psql
 
 taiko: export TARGET = dev
+taiko: export AUTHENTICATION_STRATEGY = local
 taiko: clean-db
 	${DOCKER_COMPOSE} up -d
 	scripts/wait-for-healthy.sh
-	npx jest ${TEST} --testTimeout=300000 --bail --roots ./feature-test/
+	npx jest ${TEST} --testTimeout=300000 --bail --cache-directory=.jest-taiko --roots ./feature-test/
 	${DOCKER_COMPOSE} down
 
 regression: taiko

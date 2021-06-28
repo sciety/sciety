@@ -57,6 +57,15 @@ jobs:
           TWITTER_API_SECRET_KEY: ${{ secrets.TWITTER_API_SECRET_KEY }}
           TWITTER_API_BEARER_TOKEN: ${{ secrets.TWITTER_API_BEARER_TOKEN }}
 
+      - name: Taiko
+        run: |
+          make taiko
+        env:
+          CROSSREF_API_BEARER_TOKEN: ${{ secrets.CROSSREF_API_BEARER_TOKEN }}
+          TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
+          TWITTER_API_SECRET_KEY: ${{ secrets.TWITTER_API_SECRET_KEY }}
+          TWITTER_API_BEARER_TOKEN: ${{ secrets.TWITTER_API_BEARER_TOKEN }}
+
       - name: Push Image to Docker Hub
         if: github.ref == 'refs/heads/main'
         run: |
@@ -104,3 +113,10 @@ jobs:
           channel: sciety-general
           status: FAILED
           color: danger
+
+      - name: Archive Taiko screenshots
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: feature-test-screenshots
+          path: feature-test/screenshots
