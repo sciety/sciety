@@ -12,13 +12,6 @@ Peer Community in Evolutionary Biology (PCI Evol Biol) has been launched in Janu
 
 * PCI Evol Biol is not exclusive: An article may be recommended by different Peer Communities in X (a feature of particular interest for articles relating to multidisciplinary studies) and may even be published in a traditional journal.
 
-### How it works
-<iframe width="370" height="200" src="https://www.youtube.com/embed/4PZhpnc8wwo" frameborder="0" allowfullscreen=""></iframe>
-<p class="cookieconsent-optout-marketing">
-  YouTube requires you to <a href="javascript:Cookiebot.renew()">accept marketing-cookies</a> to watch this video here.
-  Alternatively, you can <a href="https://www.youtube.com/v/4PZhpnc8wwo">watch the video on YouTube</a>.
-</p>
-
 ## Peer review model
 
 ### Which manuscripts can be recommended?
@@ -53,7 +46,7 @@ PCI Evol Biol recommends only preprints of high scientific quality that are meth
  
 PCI Evol Biol does not guarantee the evaluation or recommendation of all submitted preprints. Only preprints considered interesting by at least one competent recommender (equivalent to an associate editor in a classical journal) will be peer-reviewed. The interest of the preprint, as determined by the recommender, can relate to its context, the scientific question addressed, the methodology, or the results. PCI Evol Biol has a large number of recommenders, ensuring a considerable diversity of interests. The recommendations published by PCI Evol Biol are designed to draw the attention of the research community to the qualities of the article, including the subjective reasons for the recommender’s interest in it.
 
-## Managing Board
+## People
 
 * Guillaume Achaz (Paris, MNHN, ISyEB, France)
 * Juan Arroyo (Seville, University of Seville, Spain)
@@ -65,9 +58,7 @@ PCI Evol Biol does not guarantee the evaluation or recommendation of all submitt
 * Ruth Hufbauer (Fort Collins, Colorado S. Univ., USA)
 * Caroline Nieberding (UCLouvain, Belgium)
 
-To contact the Managing Board please send a message to [contact@evolbiol.peercommunityin.org](mailto:contact@evolbiol.peercommunityin.org)
-
-[https://evolbiol.peercommunityin.org/about/about](https://evolbiol.peercommunityin.org/about/about)
+Read more about [Peer Community in Evolutionary Biology](https://evolbiol.peercommunityin.org/about/about).
 
 ## Content License
 
