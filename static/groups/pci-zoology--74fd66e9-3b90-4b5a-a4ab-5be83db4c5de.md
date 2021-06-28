@@ -8,13 +8,6 @@ Peer Community in Zoology (PCI Zoology) has been launched in July 2020, replacin
 *   PCI Zoology is transparent: Reviews and recommendations (for unpublished articles) and recommendations (for published articles) are freely available for consultation. Recommendations are signed by the recommenders. Reviews may also be signed if the reviewers agree to do so.
 *   PCI Zoology is not exclusive: An article may be recommended by different Peer Communities in X (a feature of particular interest for articles relating to multidisciplinary studies) and may even be published in a traditional journal.
 
-### How it works
-<iframe width="370" height="200" src="https://www.youtube.com/embed/4PZhpnc8wwo" frameborder="0" allowfullscreen=""></iframe>
-<p class="cookieconsent-optout-marketing">
-  YouTube requires you to <a href="javascript:Cookiebot.renew()">accept marketing-cookies</a> to watch this video here.
-  Alternatively, you can <a href="https://www.youtube.com/v/4PZhpnc8wwo">watch the video on YouTube</a>.
-</p>
-
 ## Peer review model
 
 ### Which manuscripts can be recommended?
@@ -23,9 +16,7 @@ PCI Zoology will recommend preprints, and to a lesser extent postprints, dealing
 
 The articles recommended may have diverse formats: reviews, comments, opinion papers, research articles, data papers, technical notes, computer notes, movies, etc. No editing, formatting or proofing of the recommended papers is required. We only ask the authors of recommended article to add a cover page to their article and a sentence at the beginning of the abstract stating that their article has been recommended by PCI Zoology.
 
-PCI Zoology welcomes anonymous submissions (see [details](https://zool.peercommunityin.org/about/help_generic/for%20authors)).
-
-PCI Zoology also welcomes submissions of preregistrations (see [details](https://zool.peercommunityin.org/about/help_practical#To%20submit%20a%20preregistration%20of%20a%20study)).
+PCI Zoology welcomes anonymous submissions and submissions of preregistrations.
 
 ### Editorial Criteria
 
@@ -40,7 +31,7 @@ PCI Zoology recommends only preprints of high scientific quality that are method
 
 PCI Zoology does not guarantee the evaluation or recommendation of all submitted preprints. Only preprints considered interesting by at least one competent recommender (equivalent to an associate editor in a classical journal) will be peer-reviewed. The interest of the preprint, as determined by the recommender, can relate to its context, the scientific question addressed, the methodology, or the results. PCI Zoology has a large number of recommenders, ensuring a considerable diversity of interests. The recommendations published by PCI Zoology are designed to draw the attention of the research community to the qualities of the article, including the subjective reasons for the recommender’s interest in it.
 
-## Managing Board
+## People
 
 *   Dominique Adriaens (Ghent University, Belgium)
 *   Ellen Decaestecker (KULeuven, Belgium)
@@ -48,7 +39,7 @@ PCI Zoology does not guarantee the evaluation or recommendation of all submitted
 *   Isa Schön (Royal Belgian Institute of Natural Sciences, Belgium)
 *   Bertanne Visser (UCLouvain, Belgium)
 
-[https://zool.peercommunityin.org/about/about](https://zool.peercommunityin.org/about/about)
+Read more about [Peer Community In Zoology](https://zool.peercommunityin.org/about/about).
 
 ## Content License
 

@@ -104,7 +104,7 @@
     "build:css": "sass --no-source-map src/sass/style.scss:static/style.css",
     "build:js": "tsc",
     "lint": "run-p --aggregate-output --continue-on-error --print-label --silent lint:**",
-    "lint:eslint": "eslint ${ESLINT:-} . --ext .js,.ts --cache --cache-location .eslint/ --color",
+    "lint:eslint": "eslint ${ESLINT:-} . --ext .js,.ts --cache --cache-location .eslint/ --color --max-warnings 0",
     "lint:stylelint": "stylelint ${STYLELINT:-} \"src/**/*.scss\" --cache --cache-location .stylelint/",
     "lint:typescript:dev": "tsc --noEmit --project tsconfig.dev.json",
     "lint:typescript:prod": "tsc --noEmit",

@@ -18,7 +18,7 @@ One of the missions of RR:C19 is to accelerate peer review of COVID-19-related r
 
 We are prototyping a new type of peer curation network consisting of graduate students and field specialists. This cohort identifies relevant pre-print content for peer review, assisted by a new Natural Language Processing tool developed by COVIDScholar, an initiative of UC Berkeley and Lawrence Berkeley National Lab.
 
-For more information, see [https://rapidreviewscovid19.mitpress.mit.edu/guidelines](https://rapidreviewscovid19.mitpress.mit.edu/guidelines)
+Read more about [Rapid Reviews COVID-19](https://rapidreviewscovid19.mitpress.mit.edu/guidelines).
 
 ## License
 Content is licensed under the [Creative Commons CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) unless otherwise specified.

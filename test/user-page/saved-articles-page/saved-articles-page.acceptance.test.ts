@@ -9,6 +9,7 @@ import { Page } from '../../../src/types/page';
 import { RenderPageError } from '../../../src/types/render-page-error';
 import { savedArticlesPage } from '../../../src/user-page/saved-articles-page/saved-articles-page';
 
+import { informationUnavailable, noSavedArticles } from '../../../src/user-page/static-messages';
 import {
   arbitrarySanitisedHtmlFragment,
   arbitraryString,
@@ -78,6 +79,30 @@ describe('saved-articles-page', () => {
 
   it.todo('shows the groups tab as the inactive tab');
 
+  it('always shows a saved article count in the saved article tab title', async () => {
+    const ports = {
+      getUserDetails: () => TE.right({
+        avatarUrl: arbitraryUri(),
+        displayName: arbitraryString(),
+        handle: arbitraryWord(),
+      }),
+      getAllEvents: T.of([]),
+      fetchArticle: shouldNotBeCalled,
+      findReviewsForArticleDoi: shouldNotBeCalled,
+      findVersionsForArticleDoi: shouldNotBeCalled,
+    };
+    const params = { id: arbitraryUserId() };
+    const page = await pipe(
+      params,
+      savedArticlesPage(ports),
+      contentOf,
+      T.map(JSDOM.fragment),
+    )();
+    const tabHeading = page.querySelector('.tab--active')?.innerHTML;
+
+    expect(tabHeading).toContain('(0)');
+  });
+
   it('uses the user displayname as page title', async () => {
     const userDisplayName = arbitraryString();
     const ports = {
@@ -136,7 +161,35 @@ describe('saved-articles-page', () => {
     });
 
     describe('article details unavailable for any article', () => {
-      it.todo('displays a single error message as the tab panel content');
+      it('displays a single error message as the tab panel content', async () => {
+        const userId = arbitraryUserId();
+        const ports = {
+          getUserDetails: () => TE.right({
+            avatarUrl: arbitraryUri(),
+            displayName: arbitraryString(),
+            handle: arbitraryWord(),
+          }),
+          getAllEvents: T.of([
+            userSavedArticle(userId, arbitraryDoi()),
+            userSavedArticle(userId, arbitraryDoi()),
+          ]),
+          fetchArticle: () => TE.left('unavailable'),
+          findReviewsForArticleDoi: () => T.of([]),
+          findVersionsForArticleDoi: () => TO.none,
+        };
+        const params = { id: userId };
+
+        const pageContent = await pipe(
+          params,
+          savedArticlesPage(ports),
+          contentOf,
+          T.map(JSDOM.fragment),
+        )();
+
+        const tabPanelContent = pageContent.querySelector('.tab-panel')?.innerHTML;
+
+        expect(tabPanelContent).toContain(informationUnavailable);
+      });
     });
   });
 
@@ -173,9 +226,9 @@ describe('saved-articles-page', () => {
     });
 
     it('shows a message saying that the user has no saved articles', () => {
-      const message = page.querySelector('.saved-articles__no_articles');
+      const message = page.querySelector('.tab-panel')?.innerHTML;
 
-      expect(message).toBeDefined();
+      expect(message).toContain(noSavedArticles);
     });
   });
 });

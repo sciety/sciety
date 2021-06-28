@@ -6,24 +6,22 @@ import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe, tupled } from 'fp-ts/function';
 import { ArticleItem, GroupItem, isArticleItem } from './data-types';
 import { ItemViewModel, SearchResults } from './render-search-results';
-import { GetAllEvents, GetGroup, populateGroupViewModel } from '../shared-components/group-card/populate-group-view-model';
+import { populateGroupViewModel, Ports as PopulateGroupViewModelPorts } from '../shared-components/group-card/populate-group-view-model';
 import { ArticleServer } from '../types/article-server';
 import * as DE from '../types/data-error';
 import { Doi } from '../types/doi';
 import { GroupId } from '../types/group-id';
 
-type Ports = {
-  findReviewsForArticleDoi: FindReviewsForArticleDoi,
-  getAllEvents: GetAllEvents,
-  getGroup: GetGroup,
-  getLatestArticleVersionDate: GetLatestArticleVersionDate,
-};
-
 // TODO: Find reviewsForArticleDoi should return a TaskEither
-export type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
+type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
   groupId: GroupId,
   occurredAt: Date,
 }>>;
+
+export type Ports = PopulateGroupViewModelPorts & {
+  findReviewsForArticleDoi: FindReviewsForArticleDoi,
+  getLatestArticleVersionDate: GetLatestArticleVersionDate,
+};
 
 type GetLatestActivityDate = (reviews: ReadonlyArray<{ occurredAt: Date }>) => O.Option<Date>;
 
@@ -57,7 +55,7 @@ const fetchItemDetails = (
 ) => (item: ArticleItem | GroupItem): TE.TaskEither<DE.DataError, ItemViewModel> => (
   isArticleItem(item)
     ? pipe(item, populateArticleViewModel(ports.findReviewsForArticleDoi, ports.getLatestArticleVersionDate))
-    : pipe(item.id, populateGroupViewModel(ports.getGroup, ports.getAllEvents)));
+    : pipe(item.id, populateGroupViewModel(ports)));
 
 export type LimitedSet = {
   query: string,

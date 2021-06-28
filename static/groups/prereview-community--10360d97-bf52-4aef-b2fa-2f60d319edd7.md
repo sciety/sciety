@@ -16,7 +16,7 @@ At PREreview we ask all contributors to disclose any competing interest (CI) tha
 
 ## People
 
-[https://content.prereview.org/about/#toc-anchor\_4](https://content.prereview.org/about/#toc-anchor_4)
+Read more about [PREreview](https://content.prereview.org/about/#toc-anchor_4).
 
 ## Content License
 

@@ -31,7 +31,7 @@ describe('project-saved-article-dois', () => {
 
       const output = await projectSavedArticleDois(getAllEvents)(arbitraryUserId())();
 
-      expect(output).toHaveLength(0);
+      expect(output).toStrictEqual([]);
     });
   });
 
@@ -41,7 +41,7 @@ describe('project-saved-article-dois', () => {
 
       const output = await projectSavedArticleDois(getAllEvents)(arbitraryUserId())();
 
-      expect(output).toHaveLength(0);
+      expect(output).toStrictEqual([]);
     });
   });
 });

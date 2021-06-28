@@ -1,0 +1,83 @@
+@use '../sass/baseline';
+@use '../sass/functions';
+@use '../sass/list';
+@use '../sass/settings';
+@use '../sass/typography';
+@use '../sass/breakpoints';
+@use '../sass/layout';
+@use '../sass/card';
+
+$_inline-margin: 1rem;
+
+@mixin wide-columns() {
+  grid-column: 2 / 12; // local change, should maybe be rolled out across all sciety-grid use after larger discusssion
+}
+
+.sciety-grid.sciety-grid--user {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.sciety-grid--user > .page-header--user {
+  grid-column: 1 / -1;
+
+  @include breakpoints.not-narrow {
+    @include wide-columns();
+  }
+}
+
+.main-content--user {
+  grid-column: 1 / -1;
+
+  @include breakpoints.not-narrow {
+    @include wide-columns();
+  }
+}
+
+.page-header--user {
+  @include layout.page-header-top-space();
+  display: flex;
+  align-items: center;
+  margin: 0 $_inline-margin baseline.increments(3);
+
+  @include breakpoints.not-narrow {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .page-header__avatar {
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
+    margin-right: 1rem;
+    border-radius: 50%;
+  }
+
+  h1 {
+    margin-bottom: 0;
+  }
+
+  .page-header__handle {
+    @include typography.page-label();
+  }
+}
+
+.followed-groups-list {
+  @include card.list();
+}
+
+.followed-groups-list__item {
+  @include card.list-item();
+}
+
+.saved-articles-list {
+  @include card.list();
+}
+
+.saved-articles-list__item {
+  @include card.list-item();
+}
+
+.static-message {
+  padding-top: baseline.increments(2);
+}
