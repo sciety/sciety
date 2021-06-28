@@ -7,6 +7,7 @@ import * as DE from '../../types/data-error';
 import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
 import { UserId } from '../../types/user-id';
+import { followedGroupIds } from '../followed-groups-page/project-followed-group-ids';
 import { tabList } from '../tab-list';
 import { UserDetails } from '../user-details';
 import { userPage } from '../user-page';
@@ -27,8 +28,11 @@ type SavedArticlesPage = (params: Params) => TE.TaskEither<RenderPageError, Page
 export const savedArticlesPage = (
   ports: Ports,
 ): SavedArticlesPage => (params) => pipe(
-  params.id,
-  projectSavedArticleDois(ports.getAllEvents),
+  {
+    dois: projectSavedArticleDois(ports.getAllEvents)(params.id),
+    groupIds: followedGroupIds(ports.getAllEvents)(params.id),
+  },
+  (data) => data.dois,
   savedArticles(ports),
   TE.map(({ content, count }) => tabs({ tabList: tabList(params.id, count), activeTabIndex: 0 })(content)),
   userPage(ports.getUserDetails(params.id)),
