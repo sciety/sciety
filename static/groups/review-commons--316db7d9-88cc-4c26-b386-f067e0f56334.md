@@ -13,10 +13,6 @@ Review Commons will:
 *   Reduce re-reviewing at multiple journals.
 *   Accelerate the publishing process by providing journals with high-quality referee reports.
 
-### How it works
-
-<img src="https://www.reviewcommons.org/wp-content/uploads/2019/11/Infograph_2-scaled.jpg" width="100%">
-
 ## Peer review model
 
 An independent Managing Editor will liaise with the authors and assign experienced professional editors at EMBO Press to run a high-quality, in-depth peer-review process. The EMBO editors will only invite referees, but not assess the manuscript for their journals. Reviewers may co-review manuscripts with colleagues, e.g. members of their research groups.
@@ -29,7 +25,7 @@ The technology, workflow and policies of Review Commons are expected to evolve w
 
 ## People
 
-[https://www.reviewcommons.org/editors-and-board/](https://www.reviewcommons.org/editors-and-board/)
+Read more about [Review Commons](https://www.reviewcommons.org/editors-and-board/).
 
 ## Content License
 
