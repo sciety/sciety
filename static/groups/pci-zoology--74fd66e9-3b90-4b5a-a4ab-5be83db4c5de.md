@@ -16,9 +16,7 @@ PCI Zoology will recommend preprints, and to a lesser extent postprints, dealing
 
 The articles recommended may have diverse formats: reviews, comments, opinion papers, research articles, data papers, technical notes, computer notes, movies, etc. No editing, formatting or proofing of the recommended papers is required. We only ask the authors of recommended article to add a cover page to their article and a sentence at the beginning of the abstract stating that their article has been recommended by PCI Zoology.
 
-PCI Zoology welcomes anonymous submissions (see [details](https://zool.peercommunityin.org/about/help_generic/for%20authors)).
-
-PCI Zoology also welcomes submissions of preregistrations (see [details](https://zool.peercommunityin.org/about/help_practical#To%20submit%20a%20preregistration%20of%20a%20study)).
+PCI Zoology welcomes anonymous submissions and submissions of preregistrations.
 
 ### Editorial Criteria
 

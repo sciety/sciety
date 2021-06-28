@@ -9,7 +9,7 @@ Peer Community in Archaeology (PCI Archaeology) has been launched in March 2019.
 PCI Archaeology will evaluate preprints, and to a lesser extent articles published in journals, dealing with all fields of archaeology, anthropology and human-environment interactions, worldwide, since the appearance of human cultures. This include all kind of disciplines, and methods that enhance our knowledge about the human past.  
 The articles recommended may have diverse formats: reviews, comments, opinion papers, research articles, data papers, technical notes, computer notes, movies, etc. No editing, formatting or proofing of the recommended papers is required. We only ask the authors of recommended articles to add a cover page to their article and a sentence at the beginning of the abstract stating that their article has been recommended by PCI Archaeology. 
  
-PCI Archaeology welcomes anonymous submissions (see [details](https://archaeo.peercommunityin.org/about/help_generic/for%20authors)).
+PCI Archaeology welcomes anonymous submissions.
 
 * PCI Archaeology is a community of the parent project Peer Community In, an original idea of Denis Bourguet, Benoit Facon and Thomas Guillemaud.
 
