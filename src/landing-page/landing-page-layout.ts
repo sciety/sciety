@@ -26,7 +26,7 @@ export const landingPageLayout = (page: Page): string => `<!doctype html>
     <footer class="landing-page-footer">
       <ul class="landing-page-footer__links" role="list">
         <li class="landing-page-footer__link"><a href="/about">About</a></li>
-        <li class="landing-page-footer__link"><a href="/feedback">Feedback</a></li>
+        <li class="landing-page-footer__link"><a href="/contact-us">Contact us</a></li>
         <li class="landing-page-footer__link"><a href="/blog">Blog</a></li>
         <li class="landing-page-footer__link"><a href="https://twitter.com/scietyHQ">Follow us</a></li>
       </ul>
