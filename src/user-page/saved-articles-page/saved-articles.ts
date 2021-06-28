@@ -1,4 +1,3 @@
-import { sequenceS } from 'fp-ts/Apply';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
@@ -30,13 +29,14 @@ export type Ports = {
 };
 
 type SavedArticles = (ports: Ports) => (
-  dois: TE.TaskEither<'no-saved-articles', RNEA.ReadonlyNonEmptyArray<Doi>>,
+  dois: ReadonlyArray<Doi>,
 ) => TE.TaskEither<never, { content: HtmlFragment, count: number }>;
 
 export const savedArticles: SavedArticles = (ports) => (dois) => pipe(
   dois,
-  TE.mapLeft(() => noSavedArticles),
-  TE.chain(flow(
+  RNEA.fromReadonlyArray,
+  TE.fromOption(() => noSavedArticles),
+  TE.chainW(flow(
     TE.traverseArray(ports.fetchArticle),
     TE.mapLeft(() => informationUnavailable),
   )),
@@ -52,17 +52,8 @@ export const savedArticles: SavedArticles = (ports) => (dois) => pipe(
   )),
   TE.toUnion,
   TE.rightTask,
-  TE.chainTaskK((content) => pipe(
-    {
-      content: T.of(content),
-      count: pipe(
-        dois,
-        TE.match(
-          () => 0,
-          (articles) => articles.length,
-        ),
-      ),
-    },
-    sequenceS(T.ApplyPar),
-  )),
+  TE.map((content) => ({
+    content,
+    count: dois.length,
+  })),
 );

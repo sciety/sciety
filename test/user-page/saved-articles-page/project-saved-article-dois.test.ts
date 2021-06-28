@@ -1,4 +1,3 @@
-import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import { Doi } from '../../../src/types/doi';
 import { userSavedArticle } from '../../../src/types/domain-events';
@@ -20,7 +19,7 @@ describe('project-saved-article-dois', () => {
         new Doi('10.1101/12345'),
       ];
 
-      expect(output).toStrictEqual(E.right(expected));
+      expect(output).toStrictEqual(expected);
     });
   });
 
@@ -32,7 +31,7 @@ describe('project-saved-article-dois', () => {
 
       const output = await projectSavedArticleDois(getAllEvents)(arbitraryUserId())();
 
-      expect(output).toStrictEqual(E.left('no-saved-articles'));
+      expect(output).toStrictEqual([]);
     });
   });
 
@@ -42,7 +41,7 @@ describe('project-saved-article-dois', () => {
 
       const output = await projectSavedArticleDois(getAllEvents)(arbitraryUserId())();
 
-      expect(output).toStrictEqual(E.left('no-saved-articles'));
+      expect(output).toStrictEqual([]);
     });
   });
 });
