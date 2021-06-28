@@ -8,13 +8,6 @@ PCI Paleo values free access, transparency, and discoverability. Peer-reviewed a
 
 The purpose of PCI Paleo is not to offer a free peer-reviewing service to authors who simply want to improve their draft before submitting it to a journal. Therefore, PCI Paleo will only consider submissions of finalized articles (i.e., which have reached a stage of development deemed sufficient for submission to a journal).
 
-### How it works
-<iframe width="370" height="200" src="https://www.youtube.com/embed/4PZhpnc8wwo" frameborder="0" allowfullscreen=""></iframe>
-<p class="cookieconsent-optout-marketing">
-  YouTube requires you to <a href="javascript:Cookiebot.renew()">accept marketing-cookies</a> to watch this video here.
-  Alternatively, you can <a href="https://www.youtube.com/v/4PZhpnc8wwo">watch the video on YouTube</a>.
-</p>
-
 ## Peer review model
 
 * PCI Paleo promotes high quality: PCI Paleo recommends and promotes remarkable articles in Paleontology.
@@ -31,9 +24,9 @@ PCI Paleo recommends articles dealing with all fields of Paleontology. PCI Paleo
 
 PCI Paleo does not provide any editing or proofing services, and no specific formatting is required before submitting a preprint to PCI Paleo. When an article is recommended by PCI Paleo after the peer review process, it is formatted and clearly labelled as peer-reviewed. This final version includes a link to the recommendation and peer review reports on PCI Paleo.
 
-PCI Paleo also welcomes anonymous submissions ([see details](https://paleo.peercommunityin.org/about/help_practical)).
+PCI Paleo also welcomes anonymous submissions.
 
-## Managing Board
+## People
 
 * Jérémy Anquetin (Jurassica Museum, Porrentruy, Switzerland) [Founder and manager]
 * Faysal Bibi (Museum für Naturkunde, Berlin, Germany)
@@ -48,9 +41,7 @@ PCI Paleo also welcomes anonymous submissions ([see details](https://paleo.peerc
 * P. David Polly (Indiana University, Bloomington IN, USA)
 * Caroline A.E. Strömberg (University of Washington and Burke Museum, Seattle WA, USA)
 
-To contact the Managing Board please send a mail to [contact@paleo.peercommunityin.org](mailto:contact@paleo.peercommunityin.org)
-
-[https://paleo.peercommunityin.org/about/about](https://paleo.peercommunityin.org/about/about)
+Read more about [Peer Community in Paleontology](https://paleo.peercommunityin.org/about/about).
 
 ## Content License
 
