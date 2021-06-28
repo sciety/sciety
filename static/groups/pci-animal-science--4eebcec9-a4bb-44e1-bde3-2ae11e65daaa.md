@@ -16,14 +16,6 @@ Evaluation and recommendation by PCI Animal Science are free of charge. When an 
 
 *   PCI Animal Science is not exclusive: An article may be recommended by different Peer Communities in X (a feature of particular interest for articles relating to multidisciplinary studies) and may even be published in a traditional journal (although this is not the goal of PCI Animal Science).
 
-### How it works
-<iframe width="370" height="200" src="https://www.youtube.com/embed/4PZhpnc8wwo" frameborder="0" allowfullscreen=""></iframe>
-<p class="cookieconsent-optout-marketing">
-  YouTube requires you to <a href="javascript:Cookiebot.renew()">accept marketing-cookies</a> to watch this video here.
-  Alternatively, you can <a href="https://www.youtube.com/v/4PZhpnc8wwo">watch the video on YouTube</a>.
-</p>
-
-
 ## Peer review model
 
 ### Which manuscripts can be recommended by PCI Animal Science?
@@ -52,7 +44,7 @@ Welcomes preregistration submissions and preprint submissions based on preregist
 
 PCI Animal Science does not guarantee the evaluation or recommendation of all submitted preprints. Only preprints considered interesting by at least one competent PCI editor (equivalent to an associate editor in a classical journal) will be peer-reviewed. The interest of the preprint, as determined by the editor, can relate to its context, the scientific question addressed, the methodology, or the results. PCI Animal Science has a large number of editors, ensuring a considerable diversity of interests. The recommendations published by PCI Animal Science are designed to draw the attention of the research community to the qualities of the article, including the subjective reasons for the recommender’s interest in it.
 
-## Managing Board
+## People
 
 * Mohammed Gagaoua (Teagasc, Ireland)
 * Matthias Hess (University of California, Davis, USA)
@@ -64,9 +56,7 @@ PCI Animal Science does not guarantee the evaluation or recommendation of all su
 * Isabelle Veissier (INRAE, France)
 * Administrator: Rafael Muñoz-Tamayo (INRAE, France)
 
-To contact the Managing Board please send a message to [managing-board@animsci.peercommunityin.org](mailto:managing-board@animsci.peercommunityin.org)
-
-[https://animsci.peercommunityin.org/about/about](https://animsci.peercommunityin.org/about/about)
+Read more about [Peer Community in Animal Science](https://animsci.peercommunityin.org/about/about).
 
 ## Content License
 
