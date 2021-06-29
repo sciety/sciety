@@ -35,9 +35,18 @@ export const savedArticlesPage = (
     groupIds: followedGroupIds(ports.getAllEvents)(params.id),
   },
   sequenceS(T.ApplyPar),
-  T.map((data) => data.dois),
-  T.chain(savedArticles(ports)),
-  T.map(({ content, count }) => tabs({ tabList: tabList(params.id, count), activeTabIndex: 0 })(content)),
+  T.chain(({ dois, groupIds }) => pipe(
+    {
+      articleCount: T.of(dois.length),
+      groupCount: T.of(groupIds.length),
+      content: savedArticles(ports)(dois),
+    },
+    sequenceS(T.ApplyPar),
+  )),
+  T.map(({ content, articleCount, groupCount }) => tabs({
+    tabList: tabList(params.id, articleCount, groupCount),
+    activeTabIndex: 0,
+  })(content.content)),
   TE.rightTask,
   userPage(ports.getUserDetails(params.id)),
 );
