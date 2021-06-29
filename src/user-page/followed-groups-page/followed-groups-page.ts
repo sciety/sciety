@@ -3,6 +3,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { followList, Ports as FollowListPorts } from './follow-list';
+import { followedGroupIds } from './project-followed-group-ids';
 import { tabs } from '../../shared-components/tabs';
 import * as DE from '../../types/data-error';
 import { Page } from '../../types/page';
@@ -28,7 +29,8 @@ type FollowedGroupsPage = (params: Params) => TE.TaskEither<RenderPageError, Pag
 
 export const followedGroupsPage = (ports: Ports): FollowedGroupsPage => (params) => pipe(
   params.id,
-  followList(ports),
+  followedGroupIds(ports.getAllEvents),
+  T.chain(followList(ports)),
   T.map(tabs({
     tabList: tabList(params.id),
     activeTabIndex: 1,
