@@ -1,3 +1,4 @@
+import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -10,12 +11,10 @@ import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
 import { User } from '../../types/user';
 import { UserId } from '../../types/user-id';
+import { projectSavedArticleDois } from '../saved-articles-page/project-saved-article-dois';
 import { tabList } from '../tab-list';
 import { UserDetails } from '../user-details';
 import { userPage } from '../user-page';
-import {projectSavedArticleDois} from '../saved-articles-page/project-saved-article-dois';
-import {sequenceS} from 'fp-ts/Apply';
-import {savedArticles} from '../saved-articles-page/saved-articles';
 
 type GetUserDetails = (userId: UserId) => TE.TaskEither<DE.DataError, UserDetails>;
 
