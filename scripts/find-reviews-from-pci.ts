@@ -1,5 +1,6 @@
 import fs from 'fs';
 import axios from 'axios';
+import { printf } from 'fast-printf';
 import { DOMParser } from 'xmldom';
 
 /*
@@ -90,6 +91,7 @@ void (async (): Promise<void> => {
       `${recommendation.date.toISOString()},${recommendation.articleDoi},doi:${recommendation.reviewDoi}\n`
     )).join('');
     fs.writeFileSync(reviewsFilename, `Date,Article DOI,Review ID\n${contents}`);
-    process.stderr.write(`Written ${recommendations.length} reviews to ${reviewsFilename} for ${community.prefix}\n`);
+    const report = printf('PCI %-30s %5d evaluations\n', community.prefix, recommendations.length);
+    process.stderr.write(report);
   });
 })();

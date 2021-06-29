@@ -19,6 +19,7 @@
     "cls-rtracer": "^2.6.0",
     "csv-parse": "^4.16.0",
     "escape-goat": "^3.0.0",
+    "fast-printf": "1.6.5",
     "fast-xml-parser": "^3.19.0",
     "fp-ts": "^2.10.5",
     "googleapis": "^78.0.0",
