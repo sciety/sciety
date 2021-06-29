@@ -1,5 +1,4 @@
 import { sequenceS } from 'fp-ts/Apply';
-import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -9,7 +8,6 @@ import { tabs } from '../../shared-components/tabs';
 import * as DE from '../../types/data-error';
 import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
-import { User } from '../../types/user';
 import { UserId } from '../../types/user-id';
 import { projectSavedArticleDois } from '../saved-articles-page/project-saved-article-dois';
 import { tabList } from '../tab-list';
@@ -24,15 +22,14 @@ type Ports = FollowListPorts & {
 
 type Params = {
   id: UserId,
-  user: O.Option<User>,
 };
 
 type FollowedGroupsPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
-export const followedGroupsPage = (ports: Ports): FollowedGroupsPage => (params) => pipe(
+export const followedGroupsPage = (ports: Ports): FollowedGroupsPage => ({ id }) => pipe(
   {
-    dois: projectSavedArticleDois(ports.getAllEvents)(params.id),
-    groupIds: followedGroupIds(ports.getAllEvents)(params.id),
+    dois: projectSavedArticleDois(ports.getAllEvents)(id),
+    groupIds: followedGroupIds(ports.getAllEvents)(id),
   },
   sequenceS(T.ApplyPar),
   T.chain(({ dois, groupIds }) => pipe(
@@ -44,9 +41,9 @@ export const followedGroupsPage = (ports: Ports): FollowedGroupsPage => (params)
     sequenceS(T.ApplyPar),
   )),
   T.map(({ articleCount, groupCount, content }) => tabs({
-    tabList: tabList(params.id, articleCount, groupCount),
+    tabList: tabList(id, articleCount, groupCount),
     activeTabIndex: 1,
   })(content)),
   TE.rightTask,
-  userPage(ports.getUserDetails(params.id)),
+  userPage(ports.getUserDetails(id)),
 );
