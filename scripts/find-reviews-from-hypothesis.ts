@@ -17,7 +17,8 @@ const processRow = (server: string) => (row: Row): void => {
   const doiRegex = '(10\\.[0-9]{4,}(?:\\.[1-9][0-9]*)*/(?:[^%"#?\\s])+)';
   // TODO bioRxiv/medRxiv content is available at multiple URL patterns:
   // curl "https://api.hypothes.is/api/search?uri.parts=biorxiv&limit=100" | jq --raw-output ".rows[].target[].source"
-  const matches = new RegExp(`https://www.${server}.org/content/${doiRegex}v[0-9]+$`).exec(row.uri);
+  // eslint-disable-next-line no-useless-escape
+  const matches = new RegExp(`https://www.${server}.org/content/${doiRegex}v[0-9]+\.*$`).exec(row.uri);
   if (matches === null) {
     throw new Error(`Cannot parse a DOI out of '${row.uri}'`);
   }
