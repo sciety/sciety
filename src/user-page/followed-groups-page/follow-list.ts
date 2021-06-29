@@ -1,5 +1,7 @@
-import * as O from 'fp-ts/Option';
+import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { followedGroupIds, GetAllEvents } from './project-followed-group-ids';
@@ -16,7 +18,7 @@ type FollowedGroupIdsPorts = {
 
 export type Ports = PopulateGroupViewModelPorts & FollowedGroupIdsPorts;
 
-type FollowList = (ports: Ports) => (userId: UserId, viewingUserId: O.Option<UserId>)
+type FollowList = (ports: Ports) => (userId: UserId)
 => TE.TaskEither<never, HtmlFragment>;
 
 export const followList: FollowList = (ports) => (userId) => pipe(
@@ -24,7 +26,8 @@ export const followList: FollowList = (ports) => (userId) => pipe(
   TE.right,
   TE.chain(flow(
     followedGroupIds(ports.getAllEvents),
-    TE.mapLeft(() => followingNothing),
+    T.map(RNEA.fromReadonlyArray),
+    T.map(E.fromOption(() => followingNothing)),
   )),
   TE.chain(flow(
     TE.traverseArray(populateGroupViewModel(ports)),

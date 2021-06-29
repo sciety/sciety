@@ -1,4 +1,3 @@
-import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import { userFollowedEditorialCommunity, userSavedArticle, userUnfollowedEditorialCommunity } from '../../../src/types/domain-events';
 import { followedGroupIds } from '../../../src/user-page/followed-groups-page/project-followed-group-ids';
@@ -18,7 +17,7 @@ describe('project-followed-group-ids', () => {
     it('lists that group', async () => {
       const followed = await followedGroupIds(getAllEvents)(importantUser)();
 
-      expect(followed).toStrictEqual(E.right([group1]));
+      expect(followed).toStrictEqual([group1]);
     });
   });
 
@@ -35,7 +34,7 @@ describe('project-followed-group-ids', () => {
     it('returns a list', async () => {
       const followed = await followedGroupIds(getAllEvents)(importantUser)();
 
-      expect(followed).toStrictEqual(E.right([group1, group2, group3]));
+      expect(followed).toStrictEqual([group1, group2, group3]);
     });
   });
 
@@ -49,7 +48,7 @@ describe('project-followed-group-ids', () => {
     it('does not list that group', async () => {
       const followed = await followedGroupIds(getAllEvents)(importantUser)();
 
-      expect(followed).toStrictEqual(E.left('not-following-groups'));
+      expect(followed).toStrictEqual([]);
     });
   });
 
@@ -64,7 +63,7 @@ describe('project-followed-group-ids', () => {
     it('lists that group', async () => {
       const followed = await followedGroupIds(getAllEvents)(importantUser)();
 
-      expect(followed).toStrictEqual(E.right([group1]));
+      expect(followed).toStrictEqual([group1]);
     });
   });
 
@@ -77,7 +76,7 @@ describe('project-followed-group-ids', () => {
     it('is ignored', async () => {
       const followed = await followedGroupIds(getAllEvents)(importantUser)();
 
-      expect(followed).toStrictEqual(E.left('not-following-groups'));
+      expect(followed).toStrictEqual([]);
     });
   });
 
@@ -90,7 +89,7 @@ describe('project-followed-group-ids', () => {
         userSavedArticle(importantUser, arbitraryDoi()),
       ]))(importantUser)();
 
-      expect(followed).toStrictEqual(E.right([group1]));
+      expect(followed).toStrictEqual([group1]);
     });
   });
 });
