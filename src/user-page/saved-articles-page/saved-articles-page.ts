@@ -46,7 +46,7 @@ export const savedArticlesPage = (
   T.map(({ content, articleCount, groupCount }) => tabs({
     tabList: tabList(params.id, articleCount, groupCount),
     activeTabIndex: 0,
-  })(content.content)),
+  })(content)),
   TE.rightTask,
   userPage(ports.getUserDetails(params.id)),
 );

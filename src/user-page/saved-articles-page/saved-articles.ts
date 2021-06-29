@@ -30,7 +30,7 @@ export type Ports = {
 
 type SavedArticles = (ports: Ports) => (
   dois: ReadonlyArray<Doi>,
-) => T.Task<{ content: HtmlFragment, count: number }>;
+) => T.Task<HtmlFragment>;
 
 export const savedArticles: SavedArticles = (ports) => (dois) => pipe(
   dois,
@@ -51,8 +51,4 @@ export const savedArticles: SavedArticles = (ports) => (dois) => pipe(
     renderSavedArticles,
   )),
   TE.toUnion,
-  T.map((content) => ({
-    content,
-    count: dois.length,
-  })),
 );
