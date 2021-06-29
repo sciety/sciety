@@ -31,27 +31,9 @@ type FollowedGroupsPage = (params: Params) => TE.TaskEither<RenderPageError, Pag
 
 export const followedGroupsPage = (ports: Ports): FollowedGroupsPage => ({ id }) => pipe(
   {
-    dois: projectSavedArticleDois(ports.getAllEvents)(id),
-    groupIds: followedGroupIds(ports.getAllEvents)(id),
-  },
-  sequenceS(T.ApplyPar),
-  T.chain(({ dois, groupIds }) => pipe(
-    {
-      articleCount: T.of(dois.length),
-      groupCount: T.of(groupIds.length),
-      content: followList(ports)(groupIds),
-      activeTabIndex: T.of(1 as const),
-    },
-    sequenceS(T.ApplyPar),
-  )),
-  T.map(({
-    articleCount, groupCount, content, activeTabIndex,
-  }) => tabs({
-    tabList: tabList(id, articleCount, groupCount),
-    activeTabIndex,
-  })(content)),
-  TE.rightTask,
-  (mainContent) => ({
+    activeTabIndex: TE.right(1 as const),
+    dois: TE.rightTask(projectSavedArticleDois(ports.getAllEvents)(id)),
+    groupIds: TE.rightTask(followedGroupIds(ports.getAllEvents)(id)),
     header: pipe(
       ports.getUserDetails(id),
       TE.map(renderHeader),
@@ -63,8 +45,31 @@ export const followedGroupsPage = (ports: Ports): FollowedGroupsPage => ({ id })
         toHtmlFragment,
       )),
     ),
-    mainContent,
-  }),
+  },
   sequenceS(TE.ApplyPar),
+  TE.chainTaskK(({
+    activeTabIndex, dois, groupIds, header, userDisplayName,
+  }) => pipe(
+    followList(ports)(groupIds),
+    T.map((content) => (
+      {
+        articleCount: dois.length,
+        groupCount: groupIds.length,
+        content,
+        activeTabIndex,
+        header,
+        userDisplayName,
+      })),
+  )),
+  TE.map(({
+    articleCount, groupCount, content, activeTabIndex, header, userDisplayName,
+  }) => ({
+    mainContent: tabs({
+      tabList: tabList(id, articleCount, groupCount),
+      activeTabIndex,
+    })(content),
+    header,
+    userDisplayName,
+  })),
   TE.bimap(renderErrorPage, renderPage),
 );
