@@ -85,16 +85,11 @@ void (async (): Promise<void> => {
   pciCommunities.forEach(async (community) => {
     const recommendations = await findRecommendations(community);
 
-    if (recommendations.length === 0) {
-      process.stderr.write(`No recommendations found for ${community.prefix}\n`);
-      return;
-    }
-
     const reviewsFilename = `./data/reviews/${community.id}.csv`;
     const contents = recommendations.map((recommendation) => (
-      `${recommendation.date.toISOString()},${recommendation.articleDoi},doi:${recommendation.reviewDoi}`
-    )).join('\n');
-    fs.writeFileSync(reviewsFilename, `Date,Article DOI,Review ID\n${contents}\n`);
+      `${recommendation.date.toISOString()},${recommendation.articleDoi},doi:${recommendation.reviewDoi}\n`
+    )).join('');
+    fs.writeFileSync(reviewsFilename, `Date,Article DOI,Review ID\n${contents}`);
     process.stderr.write(`Written ${recommendations.length} reviews to ${reviewsFilename} for ${community.prefix}\n`);
   });
 })();
