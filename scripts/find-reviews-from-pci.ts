@@ -89,8 +89,12 @@ const writeCsv = (group: Group) => (evaluations: ReadonlyArray<Evaluation>) => {
     `${evaluation.date.toISOString()},${evaluation.articleDoi},doi:${evaluation.reviewDoi}\n`
   )).join('');
   fs.writeFileSync(reviewsFilename, `Date,Article DOI,Review ID\n${contents}`);
-  const report = printf('PCI %-30s %5d evaluations\n', group.prefix, evaluations.length);
-  process.stderr.write(report);
+  return evaluations;
+};
+
+const report = (group: Group) => (evaluations: ReadonlyArray<Evaluation>) => {
+  const output = printf('PCI %-30s %5d evaluations\n', group.prefix, evaluations.length);
+  process.stderr.write(output);
 };
 
 void (async (): Promise<void> => {
@@ -98,6 +102,7 @@ void (async (): Promise<void> => {
     pipe(
       await fetchEvaluations(group),
       writeCsv(group),
+      report(group),
     );
   });
 })();
