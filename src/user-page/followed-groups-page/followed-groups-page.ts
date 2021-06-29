@@ -37,7 +37,6 @@ export const followedGroupsPage = (ports: Ports): FollowedGroupsPage => ({ id })
   },
   sequenceS(TE.ApplyPar),
   TE.map(({ userDetails, dois, groupIds }) => ({
-    activeTabIndex: 1 as const,
     header: renderHeader(userDetails),
     userDisplayName: toHtmlFragment(userDetails.displayName),
     dois,
@@ -48,11 +47,11 @@ export const followedGroupsPage = (ports: Ports): FollowedGroupsPage => ({ id })
     T.map((content) => ({ ...rest, groupIds, content })),
   )),
   TE.map(({
-    dois, groupIds, content, activeTabIndex, header, userDisplayName,
+    dois, groupIds, content, header, userDisplayName,
   }) => ({
     mainContent: tabs({
       tabList: tabList(id, dois.length, groupIds.length),
-      activeTabIndex,
+      activeTabIndex: 1 as const,
     })(content),
     header,
     userDisplayName,
