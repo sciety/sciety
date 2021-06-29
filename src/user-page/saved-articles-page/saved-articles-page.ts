@@ -36,8 +36,8 @@ export const savedArticlesPage = (
   },
   sequenceS(T.ApplyPar),
   T.map((data) => data.dois),
+  T.chain(savedArticles(ports)),
+  T.map(({ content, count }) => tabs({ tabList: tabList(params.id, count), activeTabIndex: 0 })(content)),
   TE.rightTask,
-  TE.chain(savedArticles(ports)),
-  TE.map(({ content, count }) => tabs({ tabList: tabList(params.id, count), activeTabIndex: 0 })(content)),
   userPage(ports.getUserDetails(params.id)),
 );
