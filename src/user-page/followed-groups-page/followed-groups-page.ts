@@ -30,7 +30,8 @@ type Params = {
 type FollowedGroupsPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
 export const followedGroupsPage = (ports: Ports): FollowedGroupsPage => ({ id }) => pipe(
-  {
+  ports.getUserDetails(id),
+  (details) => ({
     activeTabIndex: TE.right(1 as const),
     dois: TE.rightTask(projectSavedArticleDois(ports.getAllEvents)(id)),
     groupIds: TE.rightTask(followedGroupIds(ports.getAllEvents)(id)),
@@ -39,13 +40,13 @@ export const followedGroupsPage = (ports: Ports): FollowedGroupsPage => ({ id })
       TE.map(renderHeader),
     ),
     userDisplayName: pipe(
-      ports.getUserDetails(id),
+      details,
       TE.map(flow(
         ({ displayName }) => displayName,
         toHtmlFragment,
       )),
     ),
-  },
+  }),
   sequenceS(TE.ApplyPar),
   TE.chainTaskK(({ groupIds, ...rest }) => pipe(
     followList(ports)(groupIds),
