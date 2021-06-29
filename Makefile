@@ -27,6 +27,9 @@ prod: .env build
 .gcp-ncrc-key.json:
 	gcloud iam service-accounts keys create ./.gcp-ncrc-key.json --iam-account ncrc-sheet@sciety.iam.gserviceaccount.com
 
+unused-sass:
+	sass-unused 'src/**/*.scss'
+
 lint: export TARGET = dev
 lint: build
 	${DOCKER_COMPOSE} run --rm app npm run lint
