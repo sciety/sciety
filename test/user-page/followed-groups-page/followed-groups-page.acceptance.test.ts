@@ -48,7 +48,7 @@ describe('followed-groups-page', () => {
 
   it.todo('shows the articles tab as the inactive tab');
 
-  it.skip('always shows a saved article count in the saved article tab title', async () => {
+  it('always shows a saved article count in the saved article tab title', async () => {
     const ports = {
       getGroup: shouldNotBeCalled,
       getUserDetails: () => TE.right({

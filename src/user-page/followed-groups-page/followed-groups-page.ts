@@ -13,6 +13,9 @@ import { UserId } from '../../types/user-id';
 import { tabList } from '../tab-list';
 import { UserDetails } from '../user-details';
 import { userPage } from '../user-page';
+import {projectSavedArticleDois} from '../saved-articles-page/project-saved-article-dois';
+import {sequenceS} from 'fp-ts/Apply';
+import {savedArticles} from '../saved-articles-page/saved-articles';
 
 type GetUserDetails = (userId: UserId) => TE.TaskEither<DE.DataError, UserDetails>;
 
@@ -28,13 +31,23 @@ type Params = {
 type FollowedGroupsPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
 export const followedGroupsPage = (ports: Ports): FollowedGroupsPage => (params) => pipe(
-  params.id,
-  followedGroupIds(ports.getAllEvents),
-  T.chain(followList(ports)),
-  T.map(tabs({
-    tabList: tabList(params.id),
+  {
+    dois: projectSavedArticleDois(ports.getAllEvents)(params.id),
+    groupIds: followedGroupIds(ports.getAllEvents)(params.id),
+  },
+  sequenceS(T.ApplyPar),
+  T.chain(({ dois, groupIds }) => pipe(
+    {
+      articleCount: T.of(dois.length),
+      groupCount: T.of(groupIds.length),
+      content: followList(ports)(groupIds),
+    },
+    sequenceS(T.ApplyPar),
+  )),
+  T.map(({ articleCount, groupCount, content }) => tabs({
+    tabList: tabList(params.id, articleCount, groupCount),
     activeTabIndex: 1,
-  })),
+  })(content)),
   TE.rightTask,
   userPage(ports.getUserDetails(params.id)),
 );
