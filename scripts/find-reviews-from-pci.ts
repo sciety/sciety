@@ -1,6 +1,8 @@
 import fs from 'fs';
 import axios from 'axios';
 import { printf } from 'fast-printf';
+import * as RA from 'fp-ts/ReadonlyArray';
+import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { DOMParser } from 'xmldom';
 
@@ -83,26 +85,41 @@ const fetchEvaluations = async (group: Group): Promise<Array<Evaluation>> => {
   return result;
 };
 
-const writeCsv = (group: Group) => (evaluations: ReadonlyArray<Evaluation>) => {
-  const reviewsFilename = `./data/reviews/${group.id}.csv`;
-  const contents = evaluations.map((evaluation) => (
+const writeFile = (path: string) => (contents: string) => TE.taskify(fs.writeFile)(path, contents);
+
+const writeCsv = (group: Group) => (evaluations: ReadonlyArray<Evaluation>) => pipe(
+  evaluations,
+  RA.map((evaluation) => (
     `${evaluation.date.toISOString()},${evaluation.articleDoi},${evaluation.evaluationLocator}\n`
-  )).join('');
-  fs.writeFileSync(reviewsFilename, `Date,Article DOI,Review ID\n${contents}`);
-  return evaluations;
+  )),
+  (events) => `Date,Article DOI,Review ID\n${events.join('')}`,
+  writeFile(`./data/rexxxviews/${group.id}.csv`),
+  TE.map(() => evaluations),
+);
+
+const report = (group: Group) => (message: string) => {
+  const output = printf('PCI %-30s %s\n', group.prefix, message);
+  process.stderr.write(output);
 };
 
-const report = (group: Group) => (evaluations: ReadonlyArray<Evaluation>) => {
-  const output = printf('PCI %-30s %5d evaluations\n', group.prefix, evaluations.length);
-  process.stderr.write(output);
+const reportSuccess = (group: Group) => (evaluations: ReadonlyArray<Evaluation>) => {
+  const output = printf('%5d evaluations', evaluations.length);
+  report(group)(output);
+};
+
+const reportError = (group: Group) => (error: NodeJS.ErrnoException) => {
+  report(group)(error.toString());
 };
 
 void (async (): Promise<void> => {
   groups.forEach(async (group) => {
-    pipe(
+    await pipe(
       await fetchEvaluations(group),
       writeCsv(group),
-      report(group),
-    );
+      TE.bimap(
+        reportError(group),
+        reportSuccess(group),
+      ),
+    )();
   });
 })();
