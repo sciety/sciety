@@ -40,12 +40,15 @@ export const followedGroupsPage = (ports: Ports): FollowedGroupsPage => ({ id })
       articleCount: T.of(dois.length),
       groupCount: T.of(groupIds.length),
       content: followList(ports)(groupIds),
+      activeTabIndex: T.of(1 as const),
     },
     sequenceS(T.ApplyPar),
   )),
-  T.map(({ articleCount, groupCount, content }) => tabs({
+  T.map(({
+    articleCount, groupCount, content, activeTabIndex,
+  }) => tabs({
     tabList: tabList(id, articleCount, groupCount),
-    activeTabIndex: 1,
+    activeTabIndex,
   })(content)),
   TE.rightTask,
   (mainContent) => ({
