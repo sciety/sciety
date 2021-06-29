@@ -43,7 +43,7 @@ const parser = new DOMParser({
 type Evaluation = {
   date: Date,
   articleDoi: string,
-  reviewDoi: string,
+  evaluationLocator: string,
 };
 
 const fetchPage = async (url: string): Promise<{ data: string }> => {
@@ -75,7 +75,7 @@ const fetchEvaluations = async (group: Group): Promise<Array<Evaluation>> => {
       result.push({
         date: new Date(date),
         articleDoi,
-        reviewDoi,
+        evaluationLocator: `doi:${reviewDoi}`,
       });
     }
   }
@@ -86,7 +86,7 @@ const fetchEvaluations = async (group: Group): Promise<Array<Evaluation>> => {
 const writeCsv = (group: Group) => (evaluations: ReadonlyArray<Evaluation>) => {
   const reviewsFilename = `./data/reviews/${group.id}.csv`;
   const contents = evaluations.map((evaluation) => (
-    `${evaluation.date.toISOString()},${evaluation.articleDoi},doi:${evaluation.reviewDoi}\n`
+    `${evaluation.date.toISOString()},${evaluation.articleDoi},${evaluation.evaluationLocator}\n`
   )).join('');
   fs.writeFileSync(reviewsFilename, `Date,Article DOI,Review ID\n${contents}`);
   return evaluations;
