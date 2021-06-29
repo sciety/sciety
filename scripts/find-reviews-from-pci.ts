@@ -1,6 +1,7 @@
 import fs from 'fs';
 import axios from 'axios';
 import { printf } from 'fast-printf';
+import { pipe } from 'fp-ts/function';
 import { DOMParser } from 'xmldom';
 
 /*
@@ -18,13 +19,13 @@ pipe(
     )
 */
 
-type PciCommunity = {
+type Group = {
   id: string,
   prefix: string,
   url: string,
 };
 
-const pciCommunities: Array<PciCommunity> = [
+const pciCommunities: Array<Group> = [
   { id: '74fd66e9-3b90-4b5a-a4ab-5be83db4c5de', prefix: 'zool', url: 'https://zool.peercommunityin.org/rss/rss4elife' },
   { id: '19b7464a-edbe-42e8-b7cc-04d1eb1f7332', prefix: 'evolbiol', url: 'https://evolbiol.peercommunityin.org/rss/rss4elife' },
   { id: '32025f28-0506-480e-84a0-b47ef1e92ec5', prefix: 'ecology', url: 'https://ecology.peercommunityin.org/rss/rss4elife' },
@@ -54,7 +55,7 @@ const fetchPage = async (url: string): Promise<{ data: string }> => {
   }
 };
 
-const findRecommendations = async (community: PciCommunity): Promise<Array<Recommendation>> => {
+const findRecommendations = async (community: Group): Promise<Array<Recommendation>> => {
   const result = [];
 
   const { data: feed } = await fetchPage(community.url);
@@ -82,16 +83,21 @@ const findRecommendations = async (community: PciCommunity): Promise<Array<Recom
   return result;
 };
 
-void (async (): Promise<void> => {
-  pciCommunities.forEach(async (community) => {
-    const recommendations = await findRecommendations(community);
+const writeCsv = (community: Group) => (evaluations: ReadonlyArray<Recommendation>) => {
+  const reviewsFilename = `./data/reviews/${community.id}.csv`;
+  const contents = evaluations.map((evaluation) => (
+    `${evaluation.date.toISOString()},${evaluation.articleDoi},doi:${evaluation.reviewDoi}\n`
+  )).join('');
+  fs.writeFileSync(reviewsFilename, `Date,Article DOI,Review ID\n${contents}`);
+  const report = printf('PCI %-30s %5d evaluations\n', community.prefix, evaluations.length);
+  process.stderr.write(report);
+};
 
-    const reviewsFilename = `./data/reviews/${community.id}.csv`;
-    const contents = recommendations.map((recommendation) => (
-      `${recommendation.date.toISOString()},${recommendation.articleDoi},doi:${recommendation.reviewDoi}\n`
-    )).join('');
-    fs.writeFileSync(reviewsFilename, `Date,Article DOI,Review ID\n${contents}`);
-    const report = printf('PCI %-30s %5d evaluations\n', community.prefix, recommendations.length);
-    process.stderr.write(report);
+void (async (): Promise<void> => {
+  pciCommunities.forEach(async (group) => {
+    pipe(
+      await findRecommendations(group),
+      writeCsv(group),
+    );
   });
 })();
