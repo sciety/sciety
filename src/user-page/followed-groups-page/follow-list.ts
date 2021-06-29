@@ -19,7 +19,7 @@ type FollowedGroupIdsPorts = {
 export type Ports = PopulateGroupViewModelPorts & FollowedGroupIdsPorts;
 
 type FollowList = (ports: Ports) => (userId: UserId)
-=> TE.TaskEither<never, HtmlFragment>;
+=> T.Task<HtmlFragment>;
 
 export const followList: FollowList = (ports) => (userId) => pipe(
   userId,
@@ -38,5 +38,4 @@ export const followList: FollowList = (ports) => (userId) => pipe(
     renderFollowList,
   )),
   TE.toUnion,
-  TE.rightTask,
 );

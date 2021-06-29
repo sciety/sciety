@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { followList, Ports as FollowListPorts } from './follow-list';
@@ -28,6 +29,10 @@ type FollowedGroupsPage = (params: Params) => TE.TaskEither<RenderPageError, Pag
 export const followedGroupsPage = (ports: Ports): FollowedGroupsPage => (params) => pipe(
   params.id,
   followList(ports),
-  TE.map(tabs({ tabList: tabList(params.id), activeTabIndex: 1 })),
+  T.map(tabs({
+    tabList: tabList(params.id),
+    activeTabIndex: 1,
+  })),
+  TE.rightTask,
   userPage(ports.getUserDetails(params.id)),
 );
