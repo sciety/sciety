@@ -47,25 +47,15 @@ export const followedGroupsPage = (ports: Ports): FollowedGroupsPage => ({ id })
     ),
   },
   sequenceS(TE.ApplyPar),
-  TE.chainTaskK(({
-    activeTabIndex, dois, groupIds, header, userDisplayName,
-  }) => pipe(
+  TE.chainTaskK(({ groupIds, ...rest }) => pipe(
     followList(ports)(groupIds),
-    T.map((content) => (
-      {
-        articleCount: dois.length,
-        groupCount: groupIds.length,
-        content,
-        activeTabIndex,
-        header,
-        userDisplayName,
-      })),
+    T.map((content) => ({ ...rest, groupIds, content })),
   )),
   TE.map(({
-    articleCount, groupCount, content, activeTabIndex, header, userDisplayName,
+    dois, groupIds, content, activeTabIndex, header, userDisplayName,
   }) => ({
     mainContent: tabs({
-      tabList: tabList(id, articleCount, groupCount),
+      tabList: tabList(id, dois.length, groupIds.length),
       activeTabIndex,
     })(content),
     header,
