@@ -1,18 +1,21 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { GetAllEvents, projectSavedArticleDois } from './project-saved-article-dois';
 import { savedArticles, Ports as SavedArticlesPorts } from './saved-articles';
 import { tabs } from '../../shared-components/tabs';
 import * as DE from '../../types/data-error';
+import { toHtmlFragment } from '../../types/html-fragment';
 import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
 import { UserId } from '../../types/user-id';
 import { followedGroupIds } from '../followed-groups-page/project-followed-group-ids';
+import { renderErrorPage } from '../render-error-page';
+import { renderHeader } from '../render-header';
+import { renderPage } from '../render-page';
 import { tabList } from '../tab-list';
 import { UserDetails } from '../user-details';
-import { userPage } from '../user-page';
 
 type GetUserDetails = (userId: UserId) => TE.TaskEither<DE.DataError, UserDetails>;
 
@@ -46,5 +49,20 @@ export const savedArticlesPage = (ports: Ports): SavedArticlesPage => ({ id }) =
     activeTabIndex: 0,
   })(content)),
   TE.rightTask,
-  userPage(ports.getUserDetails(id)),
+  (mainContent) => ({
+    header: pipe(
+      ports.getUserDetails(id),
+      TE.map(renderHeader),
+    ),
+    userDisplayName: pipe(
+      ports.getUserDetails(id),
+      TE.map(flow(
+        ({ displayName }) => displayName,
+        toHtmlFragment,
+      )),
+    ),
+    mainContent,
+  }),
+  sequenceS(TE.ApplyPar),
+  TE.bimap(renderErrorPage, renderPage),
 );
