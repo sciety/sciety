@@ -60,9 +60,10 @@ type Evaluation = {
   evaluationLocator: string,
 };
 
-const fetchPage = async (url: string): Promise<{ data: string }> => {
+const fetchPage = async (url: string): Promise<string> => {
   try {
-    return await axios.get(url);
+    const response = await axios.get<string>(url);
+    return response.data;
   } catch (e: unknown) {
     process.stderr.write(`Could not fetch ${url}\n`);
     throw e;
@@ -72,7 +73,7 @@ const fetchPage = async (url: string): Promise<{ data: string }> => {
 const fetchPciEvaluations = async (url: string): Promise<Array<Evaluation>> => {
   const result = [];
 
-  const { data: feed } = await fetchPage(url);
+  const feed = await fetchPage(url);
   const doc = parser.parseFromString(feed, 'text/xml');
 
   // eslint-disable-next-line no-loops/no-loops
