@@ -44,17 +44,19 @@ export const savedArticlesPage = (ports: Ports): SavedArticlesPage => ({ id }) =
       groupCount: groupIds.length,
       content,
       userDetails,
+      header: renderHeader(userDetails),
+      userDisplayName: toHtmlFragment(userDetails.displayName),
     })),
   )),
   TE.map(({
-    content, articleCount, groupCount, userDetails,
+    content, articleCount, groupCount, header, userDisplayName,
   }) => ({
     mainContent: tabs({
       tabList: tabList(id, articleCount, groupCount),
       activeTabIndex: 0,
     })(content),
-    header: renderHeader(userDetails),
-    userDisplayName: toHtmlFragment(userDetails.displayName),
+    header,
+    userDisplayName,
   })),
   TE.bimap(renderErrorPage, renderPage),
 );
