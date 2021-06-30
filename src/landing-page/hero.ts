@@ -4,7 +4,7 @@ export const hero = toHtmlFragment(`
   <section class="landing-page-hero">
     <div class="landing-page-hero__content">
       <h1 class="landing-page-hero__content_title">
-        The home of public preprint evaluation
+        Sciety: the home of public preprint evaluation
       </h1>
       <p class="landing-page-hero__content_byline">
         Open evaluation and curation together in one place.
