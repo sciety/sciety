@@ -37,12 +37,12 @@ export const savedArticlesPage = (ports: Ports): SavedArticlesPage => ({ id }) =
   },
   sequenceS(T.ApplyPar),
   T.chain(({ dois, groupIds }) => pipe(
-    {
-      articleCount: T.of(dois.length),
-      groupCount: T.of(groupIds.length),
-      content: savedArticles(ports)(dois),
-    },
-    sequenceS(T.ApplyPar),
+    savedArticles(ports)(dois),
+    T.map((content) => ({
+      articleCount: dois.length,
+      groupCount: groupIds.length,
+      content,
+    })),
   )),
   T.map(({ content, articleCount, groupCount }) => tabs({
     tabList: tabList(id, articleCount, groupCount),
