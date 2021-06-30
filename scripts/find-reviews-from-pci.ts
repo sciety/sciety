@@ -1,7 +1,10 @@
 import fs from 'fs';
 import axios from 'axios';
 import { printf } from 'fast-printf';
+import * as D from 'fp-ts/Date';
+import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as S from 'fp-ts/string'
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { DOMParser } from 'xmldom';
@@ -87,8 +90,19 @@ const fetchEvaluations = async (group: Group): Promise<Array<Evaluation>> => {
 
 const writeFile = (path: string) => (contents: string) => TE.taskify(fs.writeFile)(path, contents);
 
+const byDateAscending: Ord.Ord<Evaluation> = pipe(
+  D.Ord,
+  Ord.contramap((ev) => ev.date),
+);
+
+const byArticleLocatorAscending: Ord.Ord<Evaluation> = pipe(
+  S.Ord,
+  Ord.contramap((ev) => ev.articleDoi),
+);
+
 const writeCsv = (group: Group) => (evaluations: ReadonlyArray<Evaluation>) => pipe(
   evaluations,
+  RA.sortBy([byDateAscending, byArticleLocatorAscending]),
   RA.map((evaluation) => (
     `${evaluation.date.toISOString()},${evaluation.articleDoi},${evaluation.evaluationLocator}\n`
   )),
