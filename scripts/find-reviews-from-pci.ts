@@ -4,25 +4,10 @@ import { printf } from 'fast-printf';
 import * as D from 'fp-ts/Date';
 import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as S from 'fp-ts/string'
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import * as S from 'fp-ts/string';
 import { DOMParser } from 'xmldom';
-
-/*
-pipe(
-  groups,
-  RA.map(
-    flow(
-      fetch feed
-      T.Map flow(
-        xml-to-json (xml-js),
-        decode feed,
-        E.map flow(array links => array options<reviews>, compact, fs.writeFileSync),
-        E.mapLeft log error,
-      )
-    )
-*/
 
 type Group = {
   id: string,
@@ -84,10 +69,10 @@ const fetchPage = async (url: string): Promise<{ data: string }> => {
   }
 };
 
-const fetchEvaluations = async (group: Group): Promise<Array<Evaluation>> => {
+const fetchPciEvaluations = async (url: string): Promise<Array<Evaluation>> => {
   const result = [];
 
-  const { data: feed } = await fetchPage(group.url);
+  const { data: feed } = await fetchPage(url);
   const doc = parser.parseFromString(feed, 'text/xml');
 
   // eslint-disable-next-line no-loops/no-loops
@@ -152,7 +137,7 @@ const reportError = (group: Group) => (error: NodeJS.ErrnoException) => {
 void (async (): Promise<void> => {
   groups.forEach(async (group) => {
     await pipe(
-      await fetchEvaluations(group),
+      await fetchPciEvaluations(group.url),
       writeCsv(group),
       TE.bimap(
         reportError(group),
