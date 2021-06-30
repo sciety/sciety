@@ -2,6 +2,7 @@ import fs from 'fs';
 import axios from 'axios';
 import { printf } from 'fast-printf';
 import * as D from 'fp-ts/Date';
+import * as E from 'fp-ts/Either';
 import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
@@ -60,37 +61,41 @@ type Evaluation = {
   evaluationLocator: string,
 };
 
-const fetchPage = async (url: string): Promise<string> => {
-  try {
-    const response = await axios.get<string>(url);
-    return response.data;
-  } catch (e: unknown) {
-    process.stderr.write(`Could not fetch ${url}\n`);
-    throw e;
-  }
-};
+const fetchPage = (url: string): TE.TaskEither<string, string> => pipe(
+  TE.tryCatch(
+    async () => axios.get<string>(url),
+    E.toError,
+  ),
+  TE.bimap(
+    (error) => error.toString(),
+    (response) => response.data,
+  ),
+);
 
-const fetchPciEvaluations = async (url: string): Promise<Array<Evaluation>> => fetchPage(url).then((feed) => {
-  const result = [];
-  const doc = parser.parseFromString(feed, 'text/xml');
-  // eslint-disable-next-line no-loops/no-loops
-  for (const link of Array.from(doc.getElementsByTagName('link'))) {
-    const articleDoiString = link.getElementsByTagName('doi')[1]?.textContent ?? '';
-    const reviewDoiString = link.getElementsByTagName('doi')[0]?.textContent ?? '';
-    const date = link.getElementsByTagName('date')[0]?.textContent ?? '';
-    const bioAndmedrxivDoiRegex = /^\s*(?:doi:|(?:(?:https?:\/\/)?(?:dx\.)?doi\.org\/))?(10\.1101\/(?:[^%"#?\s])+)\s*$/;
-    const [, articleDoi] = bioAndmedrxivDoiRegex.exec(articleDoiString) ?? [];
-    if (articleDoi) {
-      const reviewDoi = reviewDoiString.replace('https://doi.org/', '').replace('http://dx.doi.org/', '');
-      result.push({
-        date: new Date(date),
-        articleDoi,
-        evaluationLocator: `doi:${reviewDoi}`,
-      });
+const fetchPciEvaluations = (url: string): TE.TaskEither<string, Array<Evaluation>> => pipe(
+  fetchPage(url),
+  TE.map((feed) => {
+    const result = [];
+    const doc = parser.parseFromString(feed, 'text/xml');
+    // eslint-disable-next-line no-loops/no-loops
+    for (const link of Array.from(doc.getElementsByTagName('link'))) {
+      const articleDoiString = link.getElementsByTagName('doi')[1]?.textContent ?? '';
+      const reviewDoiString = link.getElementsByTagName('doi')[0]?.textContent ?? '';
+      const date = link.getElementsByTagName('date')[0]?.textContent ?? '';
+      const bioAndmedrxivDoiRegex = /^\s*(?:doi:|(?:(?:https?:\/\/)?(?:dx\.)?doi\.org\/))?(10\.1101\/(?:[^%"#?\s])+)\s*$/;
+      const [, articleDoi] = bioAndmedrxivDoiRegex.exec(articleDoiString) ?? [];
+      if (articleDoi) {
+        const reviewDoi = reviewDoiString.replace('https://doi.org/', '').replace('http://dx.doi.org/', '');
+        result.push({
+          date: new Date(date),
+          articleDoi,
+          evaluationLocator: `doi:${reviewDoi}`,
+        });
+      }
     }
-  }
-  return result;
-});
+    return result;
+  }),
+);
 
 const writeFile = (path: string) => (contents: string) => TE.taskify(fs.writeFile)(path, contents);
 
@@ -112,7 +117,10 @@ const writeCsv = (group: Group) => (evaluations: ReadonlyArray<Evaluation>) => p
   )),
   (events) => `Date,Article DOI,Review ID\n${events.join('')}`,
   writeFile(`./data/reviews/${group.id}.csv`),
-  TE.map(() => evaluations),
+  TE.bimap(
+    (error) => error.toString(),
+    () => evaluations,
+  ),
 );
 
 const report = (group: Group) => (message: string) => {
@@ -125,15 +133,15 @@ const reportSuccess = (group: Group) => (evaluations: ReadonlyArray<Evaluation>)
   report(group)(output);
 };
 
-const reportError = (group: Group) => (error: NodeJS.ErrnoException) => {
-  report(group)(error.toString());
+const reportError = (group: Group) => (error: string) => {
+  report(group)(error);
 };
 
 void (async (): Promise<void> => {
   groups.forEach(async (group) => {
     await pipe(
-      await fetchPciEvaluations(group.url),
-      writeCsv(group),
+      fetchPciEvaluations(group.url),
+      TE.chain(writeCsv(group)),
       TE.bimap(
         reportError(group),
         reportSuccess(group),
