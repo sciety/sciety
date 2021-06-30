@@ -18,6 +18,14 @@ $_header-height-in-px: 60px;
   height: functions.px-to-rem($_header-height-in-px);
 }
 
+.landing-page-header__logo {
+  display: none;
+
+  @media only screen and (min-width: #{math.div(430px, settings.$base-font-measure)}em) {
+    display: unset;
+  }
+}
+
 .landing-page-header__link_container {
   margin-left: auto;
   display: flex;
