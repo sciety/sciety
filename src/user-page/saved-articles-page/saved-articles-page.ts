@@ -39,24 +39,15 @@ export const savedArticlesPage = (ports: Ports): SavedArticlesPage => ({ id }) =
   sequenceS(TE.ApplyPar),
   TE.chainTaskK(({ dois, groupIds, userDetails }) => pipe(
     savedArticles(ports)(dois),
-    T.map((content) => ({
-      articleCount: dois.length,
-      groupCount: groupIds.length,
-      content,
-      userDetails,
+    T.map(tabs({
+      tabList: tabList(id, dois.length, groupIds.length),
+      activeTabIndex: 0,
+    })),
+    T.map((mainContent) => ({
       header: renderHeader(userDetails),
       userDisplayName: toHtmlFragment(userDetails.displayName),
+      mainContent,
     })),
   )),
-  TE.map(({
-    content, articleCount, groupCount, header, userDisplayName,
-  }) => ({
-    mainContent: tabs({
-      tabList: tabList(id, articleCount, groupCount),
-      activeTabIndex: 0,
-    })(content),
-    header,
-    userDisplayName,
-  })),
   TE.bimap(renderErrorPage, renderPage),
 );
