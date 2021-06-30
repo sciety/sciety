@@ -93,7 +93,7 @@ const writeCsv = (group: Group) => (evaluations: ReadonlyArray<Evaluation>) => p
     `${evaluation.date.toISOString()},${evaluation.articleDoi},${evaluation.evaluationLocator}\n`
   )),
   (events) => `Date,Article DOI,Review ID\n${events.join('')}`,
-  writeFile(`./data/rexxxviews/${group.id}.csv`),
+  writeFile(`./data/reviews/${group.id}.csv`),
   TE.map(() => evaluations),
 );
 
