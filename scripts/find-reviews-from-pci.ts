@@ -26,17 +26,41 @@ pipe(
 
 type Group = {
   id: string,
-  prefix: string,
+  name: string,
   url: string,
 };
 
 const groups: Array<Group> = [
-  { id: '74fd66e9-3b90-4b5a-a4ab-5be83db4c5de', prefix: 'zool', url: 'https://zool.peercommunityin.org/rss/rss4elife' },
-  { id: '19b7464a-edbe-42e8-b7cc-04d1eb1f7332', prefix: 'evolbiol', url: 'https://evolbiol.peercommunityin.org/rss/rss4elife' },
-  { id: '32025f28-0506-480e-84a0-b47ef1e92ec5', prefix: 'ecology', url: 'https://ecology.peercommunityin.org/rss/rss4elife' },
-  { id: '4eebcec9-a4bb-44e1-bde3-2ae11e65daaa', prefix: 'animsci', url: 'https://animsci.peercommunityin.org/rss/rss4elife' },
-  { id: 'b90854bf-795c-42ba-8664-8257b9c68b0c', prefix: 'archaeo', url: 'https://archaeo.peercommunityin.org/rss/rss4elife' },
-  { id: '7a9e97d1-c1fe-4ac2-9572-4ecfe28f9f84', prefix: 'paleo', url: 'https://paleo.peercommunityin.org/rss/rss4elife' },
+  {
+    id: '74fd66e9-3b90-4b5a-a4ab-5be83db4c5de',
+    name: 'PCI Zoology',
+    url: 'https://zool.peercommunityin.org/rss/rss4elife',
+  },
+  {
+    id: '19b7464a-edbe-42e8-b7cc-04d1eb1f7332',
+    name: 'PCI Evolutionary Biology',
+    url: 'https://evolbiol.peercommunityin.org/rss/rss4elife',
+  },
+  {
+    id: '32025f28-0506-480e-84a0-b47ef1e92ec5',
+    name: 'PCI Ecology',
+    url: 'https://ecology.peercommunityin.org/rss/rss4elife',
+  },
+  {
+    id: '4eebcec9-a4bb-44e1-bde3-2ae11e65daaa',
+    name: 'PCI Animal Science',
+    url: 'https://animsci.peercommunityin.org/rss/rss4elife',
+  },
+  {
+    id: 'b90854bf-795c-42ba-8664-8257b9c68b0c',
+    name: 'PCI Archaeology',
+    url: 'https://archaeo.peercommunityin.org/rss/rss4elife',
+  },
+  {
+    id: '7a9e97d1-c1fe-4ac2-9572-4ecfe28f9f84',
+    name: 'PCI Paleontology',
+    url: 'https://paleo.peercommunityin.org/rss/rss4elife',
+  },
 ];
 
 const parser = new DOMParser({
@@ -112,7 +136,7 @@ const writeCsv = (group: Group) => (evaluations: ReadonlyArray<Evaluation>) => p
 );
 
 const report = (group: Group) => (message: string) => {
-  const output = printf('PCI %-30s %s\n', group.prefix, message);
+  const output = printf('%-30s %s\n', group.name, message);
   process.stderr.write(output);
 };
 
