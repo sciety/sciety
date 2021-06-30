@@ -1,7 +1,7 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import { GetAllEvents, projectSavedArticleDois } from './project-saved-article-dois';
 import { savedArticles, Ports as SavedArticlesPorts } from './saved-articles';
 import { tabs } from '../../shared-components/tabs';
@@ -32,37 +32,29 @@ type SavedArticlesPage = (params: Params) => TE.TaskEither<RenderPageError, Page
 
 export const savedArticlesPage = (ports: Ports): SavedArticlesPage => ({ id }) => pipe(
   {
-    dois: projectSavedArticleDois(ports.getAllEvents)(id),
-    groupIds: followedGroupIds(ports.getAllEvents)(id),
+    dois: TE.rightTask(projectSavedArticleDois(ports.getAllEvents)(id)),
+    groupIds: TE.rightTask(followedGroupIds(ports.getAllEvents)(id)),
+    userDetails: ports.getUserDetails(id),
   },
-  sequenceS(T.ApplyPar),
-  T.chain(({ dois, groupIds }) => pipe(
+  sequenceS(TE.ApplyPar),
+  TE.chainTaskK(({ dois, groupIds, userDetails }) => pipe(
     savedArticles(ports)(dois),
     T.map((content) => ({
       articleCount: dois.length,
       groupCount: groupIds.length,
       content,
+      userDetails,
     })),
   )),
-  T.map(({ content, articleCount, groupCount }) => tabs({
-    tabList: tabList(id, articleCount, groupCount),
-    activeTabIndex: 0,
-  })(content)),
-  TE.rightTask,
-  (mainContent) => ({
-    header: pipe(
-      ports.getUserDetails(id),
-      TE.map(renderHeader),
-    ),
-    userDisplayName: pipe(
-      ports.getUserDetails(id),
-      TE.map(flow(
-        ({ displayName }) => displayName,
-        toHtmlFragment,
-      )),
-    ),
-    mainContent,
-  }),
-  sequenceS(TE.ApplyPar),
+  TE.map(({
+    content, articleCount, groupCount, userDetails,
+  }) => ({
+    mainContent: tabs({
+      tabList: tabList(id, articleCount, groupCount),
+      activeTabIndex: 0,
+    })(content),
+    header: renderHeader(userDetails),
+    userDisplayName: toHtmlFragment(userDetails.displayName),
+  })),
   TE.bimap(renderErrorPage, renderPage),
 );
