@@ -49,12 +49,6 @@ const groups: Array<Group> = [
   },
 ];
 
-const parser = new DOMParser({
-  errorHandler: (_, msg) => {
-    throw msg;
-  },
-});
-
 type Evaluation = {
   date: Date,
   articleDoi: string,
@@ -75,8 +69,13 @@ const fetchPage = (url: string): TE.TaskEither<string, string> => pipe(
 const fetchPciEvaluations = (url: string): TE.TaskEither<string, Array<Evaluation>> => pipe(
   fetchPage(url),
   TE.map((feed) => {
-    const result = [];
+    const parser = new DOMParser({
+      errorHandler: (_, msg) => {
+        throw msg;
+      },
+    });
     const doc = parser.parseFromString(feed, 'text/xml');
+    const result = [];
     // eslint-disable-next-line no-loops/no-loops
     for (const link of Array.from(doc.getElementsByTagName('link'))) {
       const articleDoiString = link.getElementsByTagName('doi')[1]?.textContent ?? '';
@@ -133,17 +132,13 @@ const reportSuccess = (group: Group) => (evaluations: ReadonlyArray<Evaluation>)
   report(group)(output);
 };
 
-const reportError = (group: Group) => (error: string) => {
-  report(group)(error);
-};
-
 void (async (): Promise<void> => {
   groups.forEach(async (group) => {
     await pipe(
       fetchPciEvaluations(group.url),
       TE.chain(writeCsv(group)),
       TE.bimap(
-        reportError(group),
+        report(group),
         reportSuccess(group),
       ),
     )();
