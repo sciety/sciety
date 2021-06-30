@@ -36,25 +36,19 @@ export const followedGroupsPage = (ports: Ports): FollowedGroupsPage => ({ id })
     groupIds: TE.rightTask(followedGroupIds(ports.getAllEvents)(id)),
   },
   sequenceS(TE.ApplyPar),
-  TE.map(({ userDetails, dois, groupIds }) => ({
-    header: renderHeader(userDetails),
-    userDisplayName: toHtmlFragment(userDetails.displayName),
-    dois,
-    groupIds,
-  })),
-  TE.chainTaskK(({ groupIds, ...rest }) => pipe(
+  TE.chainTaskK(({
+    dois, groupIds, userDetails,
+  }) => pipe(
     followList(ports)(groupIds),
-    T.map((content) => ({ ...rest, groupIds, content })),
-  )),
-  TE.map(({
-    dois, groupIds, content, header, userDisplayName,
-  }) => ({
-    mainContent: tabs({
+    T.map(tabs({
       tabList: tabList(id, dois.length, groupIds.length),
       activeTabIndex: 1 as const,
-    })(content),
-    header,
-    userDisplayName,
-  })),
+    })),
+    T.map((mainContent) => ({
+      header: renderHeader(userDetails),
+      userDisplayName: toHtmlFragment(userDetails.displayName),
+      mainContent,
+    })),
+  )),
   TE.bimap(renderErrorPage, renderPage),
 );
