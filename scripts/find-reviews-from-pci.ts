@@ -70,21 +70,16 @@ const fetchPage = async (url: string): Promise<string> => {
   }
 };
 
-const fetchPciEvaluations = async (url: string): Promise<Array<Evaluation>> => {
+const fetchPciEvaluations = async (url: string): Promise<Array<Evaluation>> => fetchPage(url).then((feed) => {
   const result = [];
-
-  const feed = await fetchPage(url);
   const doc = parser.parseFromString(feed, 'text/xml');
-
   // eslint-disable-next-line no-loops/no-loops
   for (const link of Array.from(doc.getElementsByTagName('link'))) {
     const articleDoiString = link.getElementsByTagName('doi')[1]?.textContent ?? '';
     const reviewDoiString = link.getElementsByTagName('doi')[0]?.textContent ?? '';
     const date = link.getElementsByTagName('date')[0]?.textContent ?? '';
-
     const bioAndmedrxivDoiRegex = /^\s*(?:doi:|(?:(?:https?:\/\/)?(?:dx\.)?doi\.org\/))?(10\.1101\/(?:[^%"#?\s])+)\s*$/;
     const [, articleDoi] = bioAndmedrxivDoiRegex.exec(articleDoiString) ?? [];
-
     if (articleDoi) {
       const reviewDoi = reviewDoiString.replace('https://doi.org/', '').replace('http://dx.doi.org/', '');
       result.push({
@@ -94,9 +89,8 @@ const fetchPciEvaluations = async (url: string): Promise<Array<Evaluation>> => {
       });
     }
   }
-
   return result;
-};
+});
 
 const writeFile = (path: string) => (contents: string) => TE.taskify(fs.writeFile)(path, contents);
 
