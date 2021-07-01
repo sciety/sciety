@@ -2,11 +2,11 @@
 
 The Automated Screening Working Groups is a group of software engineers and biologists passionate about improving scientific manuscripts on a large scale. Our goal is to process every manuscript in the biomedical sciences as it is being submitted for publication, and provide customized feedback to improve that manuscript. Our members have created tools that check for common problems in scientific manuscripts, including information needed to improve transparency and reproducibility. We have combined our tools into a single pipeline, called ScreenIT.
 
-## Screening Model
+## Evaluation model
 
 Papers are screened by seven automated screening tools, which are described in the table below. While automated screening is not a replacement for peer review, tools can help to identify common problems. Examples include failing to state whether experiments were blinded or randomized, not reporting the sex of participants, or misusing bar graphs to display continuous data. Automated tools aren’t perfect – they make mistakes, they can’t tell whether a paper will be reproducible, and they can’t always determine whether a particular criterion is relevant for a given manuscript. Despite these limitations, tools may be useful in drawing readers’ attention to factors that are important for transparency, rigor and reproducibility. We hope that by providing fast, customized feedback, our tools may help preprint authors to improve reporting prior to publication.
 
-## Tools used to screen preprints
+### Tools used to screen preprints
 
 | Tool | Screens For | Link & RRID|
 | ---- | ----------- | ---------- |
@@ -24,7 +24,7 @@ Papers are screened by seven automated screening tools, which are described in t
 
 Abbreviations: RRID, research resource identifier
 
-## Learn more about our tools
+### Learn more about our tools
 
 [SciScore](https://www.cell.com/iscience/fulltext/S2589-0042(20)30890-7?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS2589004220308907%3Fshowall%3Dtrue) 
 
