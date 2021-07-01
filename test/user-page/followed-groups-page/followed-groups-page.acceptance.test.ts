@@ -35,7 +35,7 @@ describe('followed-groups-page', () => {
       }),
       getAllEvents: T.of([]),
     };
-    const params = { id: arbitraryUserId(), user: O.none };
+    const params = { id: arbitraryUserId() };
     const page = await pipe(
       params,
       followedGroupsPage(ports),
@@ -59,7 +59,7 @@ describe('followed-groups-page', () => {
       }),
       getAllEvents: T.of([]),
     };
-    const params = { id: arbitraryUserId(), user: O.none };
+    const params = { id: arbitraryUserId() };
     const page = await pipe(
       params,
       followedGroupsPage(ports),
@@ -83,7 +83,7 @@ describe('followed-groups-page', () => {
         }),
         getAllEvents: T.of([]),
       };
-      const params = { id: arbitraryUserId(), user: O.none };
+      const params = { id: arbitraryUserId() };
       const page = await pipe(
         params,
         followedGroupsPage(ports),
@@ -103,7 +103,7 @@ describe('followed-groups-page', () => {
         }),
         getAllEvents: T.of([]),
       };
-      const params = { id: arbitraryUserId(), user: O.none };
+      const params = { id: arbitraryUserId() };
       const page = await pipe(
         params,
         followedGroupsPage(ports),
@@ -138,7 +138,7 @@ describe('followed-groups-page', () => {
           userFollowedEditorialCommunity(userId, arbitraryGroupId()),
         ]),
       };
-      const params = { id: userId, user: O.none };
+      const params = { id: userId };
       const page = await pipe(
         params,
         followedGroupsPage(ports),
@@ -173,7 +173,7 @@ describe('followed-groups-page', () => {
           userFollowedEditorialCommunity(userId, arbitraryGroupId()),
         ]),
       };
-      const params = { id: userId, user: O.none };
+      const params = { id: userId };
       const page = await pipe(
         params,
         followedGroupsPage(ports),
@@ -200,7 +200,7 @@ describe('followed-groups-page', () => {
             userFollowedEditorialCommunity(userId, arbitraryGroupId()),
           ]),
         };
-        const params = { id: userId, user: O.none };
+        const params = { id: userId };
 
         const content = await pipe(
           params,
@@ -233,7 +233,7 @@ describe('followed-groups-page', () => {
         }),
         getAllEvents: T.of([]),
       };
-      const params = { id: userId, user: O.none };
+      const params = { id: userId };
       page = await pipe(
         params,
         followedGroupsPage(ports),

@@ -198,7 +198,6 @@ describe('saved-articles-page', () => {
     it('uses the user displayname as page title', async () => {
       const userDisplayName = arbitraryString();
       const ports = {
-        getGroup: shouldNotBeCalled,
         getUserDetails: () => TE.right({
           avatarUrl: arbitraryUri(),
           displayName: userDisplayName,
@@ -221,7 +220,6 @@ describe('saved-articles-page', () => {
     it('uses the user displayname as the opengraph title', async () => {
       const userDisplayName = arbitraryString();
       const ports = {
-        getGroup: shouldNotBeCalled,
         getUserDetails: () => TE.right({
           avatarUrl: arbitraryUri(),
           displayName: userDisplayName,
@@ -249,13 +247,6 @@ describe('saved-articles-page', () => {
       const userDisplayName = arbitraryString();
       const userId = arbitraryUserId();
       const ports = {
-        getGroup: () => TO.some({
-          id: arbitraryGroupId(),
-          name: arbitraryString(),
-          avatarPath: arbitraryString(),
-          descriptionPath: arbitraryString(),
-          shortDescription: arbitraryString(),
-        }),
         getUserDetails: () => TE.right({
           avatarUrl: arbitraryUri(),
           displayName: userDisplayName,
