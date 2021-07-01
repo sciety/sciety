@@ -57,7 +57,7 @@ describe('user-page', () => {
   describe.each([
     ['saved-articles'],
     ['followed-groups'],
-  ])('page metadata tab: %s', (tabname: string) => {
+  ])('page tab: %s', (tabName: string) => {
     it('uses the user displayname as page title', async () => {
       const userDisplayName = arbitraryString();
       const ports = {
@@ -71,7 +71,7 @@ describe('user-page', () => {
       const params = { id: arbitraryUserId() };
       const page = await pipe(
         params,
-        userPage(ports)(tabname),
+        userPage(ports)(tabName),
       )();
 
       expect(page).toStrictEqual(E.right(expect.objectContaining({ title: userDisplayName })));
@@ -90,7 +90,7 @@ describe('user-page', () => {
       const params = { id: arbitraryUserId() };
       const page = await pipe(
         params,
-        userPage(ports)(tabname),
+        userPage(ports)(tabName),
       )();
 
       expect(page).toStrictEqual(E.right(expect.objectContaining({
@@ -113,7 +113,7 @@ describe('user-page', () => {
       const params = { id: userId };
       const page = await pipe(
         params,
-        userPage(ports)(tabname),
+        userPage(ports)(tabName),
       )();
 
       expect(page).toStrictEqual(E.right(expect.objectContaining({
@@ -121,6 +121,27 @@ describe('user-page', () => {
           description: '1 saved article | 2 followed groups',
         }),
       })));
+    });
+
+    it('shows the user details', async () => {
+      const avatarUrl = arbitraryUri();
+      const displayName = arbitraryString();
+      const handle = arbitraryWord();
+      const ports = {
+        ...defaultPorts,
+        getUserDetails: () => TE.right({
+          avatarUrl,
+          displayName,
+          handle,
+        }),
+      };
+      const params = { id: arbitraryUserId() };
+
+      const pageHtml = await contentOf(userPage(ports)(tabName)(params))();
+
+      expect(pageHtml).toContain(avatarUrl);
+      expect(pageHtml).toContain(displayName);
+      expect(pageHtml).toContain(handle);
     });
   });
 
@@ -262,31 +283,6 @@ describe('user-page', () => {
   });
 
   describe('saved-articles tab', () => {
-    it('shows the user details', async () => {
-      const avatarUrl = arbitraryUri();
-      const displayName = arbitraryString();
-      const handle = arbitraryWord();
-      const ports = {
-        getGroup: shouldNotBeCalled,
-        getUserDetails: () => TE.right({
-          avatarUrl,
-          displayName,
-          handle,
-        }),
-        getAllEvents: T.of([]),
-        fetchArticle: shouldNotBeCalled,
-        findReviewsForArticleDoi: shouldNotBeCalled,
-        findVersionsForArticleDoi: shouldNotBeCalled,
-      };
-      const params = { id: arbitraryUserId() };
-
-      const pageHtml = await contentOf(userPage(ports)('saved-articles')(params))();
-
-      expect(pageHtml).toContain(avatarUrl);
-      expect(pageHtml).toContain(displayName);
-      expect(pageHtml).toContain(handle);
-    });
-
     it('shows articles as the active tab', async () => {
       const ports = {
         getGroup: shouldNotBeCalled,
