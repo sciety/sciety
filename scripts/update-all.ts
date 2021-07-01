@@ -49,14 +49,13 @@ const writeCsv = (group: Group) => (evaluations: ReadonlyArray<Evaluation>) => p
 );
 
 const report = (group: Group) => (message: string) => {
-  const output = printf('%-30s %s\n', group.name, message);
-  process.stderr.write(output);
+  process.stderr.write(printf('%-30s %s\n', group.name, message));
 };
 
-const reportSuccess = (group: Group) => (evaluations: ReadonlyArray<Evaluation>) => {
-  const output = printf('%5d evaluations', evaluations.length);
-  report(group)(output);
-};
+const reportSuccess = (group: Group) => (evaluations: ReadonlyArray<Evaluation>) => pipe(
+  printf('%5d evaluations', evaluations.length),
+  report(group),
+);
 
 const updateGroup = (group: Group): T.Task<void> => pipe(
   group.fetchFeed,
