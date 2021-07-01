@@ -9,6 +9,10 @@ type Components = {
 
 export const renderPage = (components: Components): Page => ({
   title: components.userDisplayName,
+  openGraph: {
+    title: components.userDisplayName,
+    description: '',
+  },
   content: toHtmlFragment(`
     <div class="page-content__background">
       <article class="sciety-grid sciety-grid--user">

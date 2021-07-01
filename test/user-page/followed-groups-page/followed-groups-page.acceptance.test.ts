@@ -70,24 +70,52 @@ describe('followed-groups-page', () => {
     expect(tabHeading).toContain('(0)');
   });
 
-  it('uses the user displayname as page title', async () => {
-    const userDisplayName = arbitraryString();
-    const ports = {
-      getGroup: shouldNotBeCalled,
-      getUserDetails: () => TE.right({
-        avatarUrl: arbitraryUri(),
-        displayName: userDisplayName,
-        handle: arbitraryWord(),
-      }),
-      getAllEvents: T.of([]),
-    };
-    const params = { id: arbitraryUserId(), user: O.none };
-    const page = await pipe(
-      params,
-      followedGroupsPage(ports),
-    )();
+  describe('page metadata', () => {
+    it('uses the user displayname as page title', async () => {
+      const userDisplayName = arbitraryString();
+      const ports = {
+        getGroup: shouldNotBeCalled,
+        getUserDetails: () => TE.right({
+          avatarUrl: arbitraryUri(),
+          displayName: userDisplayName,
+          handle: arbitraryWord(),
+        }),
+        getAllEvents: T.of([]),
+      };
+      const params = { id: arbitraryUserId(), user: O.none };
+      const page = await pipe(
+        params,
+        followedGroupsPage(ports),
+      )();
 
-    expect(page).toStrictEqual(E.right(expect.objectContaining({ title: userDisplayName })));
+      expect(page).toStrictEqual(E.right(expect.objectContaining({ title: userDisplayName })));
+    });
+
+    it('uses the user displayname as the opengraph title', async () => {
+      const userDisplayName = arbitraryString();
+      const ports = {
+        getGroup: shouldNotBeCalled,
+        getUserDetails: () => TE.right({
+          avatarUrl: arbitraryUri(),
+          displayName: userDisplayName,
+          handle: arbitraryWord(),
+        }),
+        getAllEvents: T.of([]),
+      };
+      const params = { id: arbitraryUserId(), user: O.none };
+      const page = await pipe(
+        params,
+        followedGroupsPage(ports),
+      )();
+
+      expect(page).toStrictEqual(E.right(expect.objectContaining({
+        openGraph: expect.objectContaining({
+          title: userDisplayName,
+        }),
+      })));
+    });
+
+    it.todo('includes the count of saved articles and followed groups in the opengraph description');
   });
 
   describe('user is following groups', () => {
