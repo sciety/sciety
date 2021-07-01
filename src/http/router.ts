@@ -45,7 +45,7 @@ import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import * as DE from '../types/data-error';
 import * as Doi from '../types/doi';
 import { toHtmlFragment } from '../types/html-fragment';
-import { savedArticlesPage } from '../user-page/user-page';
+import { userPage } from '../user-page/user-page';
 
 const biorxivPrefix = '10.1101';
 
@@ -167,7 +167,7 @@ export const createRouter = (adapters: Adapters): Router => {
       userPageParams.decode,
       E.mapLeft(toNotFound),
       TE.fromEither,
-      TE.chain(savedArticlesPage(adapters)('saved-articles')),
+      TE.chain(userPage(adapters)('saved-articles')),
     )),
   );
 
@@ -177,7 +177,7 @@ export const createRouter = (adapters: Adapters): Router => {
       userPageParams.decode,
       E.mapLeft(toNotFound),
       TE.fromEither,
-      TE.chain(savedArticlesPage(adapters)('followed-groups')),
+      TE.chain(userPage(adapters)('followed-groups')),
     )),
   );
 

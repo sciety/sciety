@@ -8,7 +8,7 @@ import { userFollowedEditorialCommunity, userSavedArticle } from '../../../src/t
 import { Page } from '../../../src/types/page';
 import { RenderPageError } from '../../../src/types/render-page-error';
 import { followingNothing, informationUnavailable } from '../../../src/user-page/static-messages';
-import { savedArticlesPage } from '../../../src/user-page/user-page';
+import { userPage } from '../../../src/user-page/user-page';
 import { arbitraryString, arbitraryUri, arbitraryWord } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryDoi } from '../../types/doi.helper';
@@ -50,7 +50,7 @@ describe('followed-groups-page', () => {
     const params = { id: arbitraryUserId() };
     const page = await pipe(
       params,
-      savedArticlesPage(ports)('followed-groups'),
+      userPage(ports)('followed-groups'),
       contentOf,
       T.map(JSDOM.fragment),
     )();
@@ -73,7 +73,7 @@ describe('followed-groups-page', () => {
     const params = { id: arbitraryUserId() };
     const page = await pipe(
       params,
-      savedArticlesPage(ports)('followed-groups'),
+      userPage(ports)('followed-groups'),
       contentOf,
       T.map(JSDOM.fragment),
     )();
@@ -100,7 +100,7 @@ describe('followed-groups-page', () => {
       const params = { id: arbitraryUserId() };
       const page = await pipe(
         params,
-        savedArticlesPage(ports)('followed-groups'),
+        userPage(ports)('followed-groups'),
       )();
 
       expect(page).toStrictEqual(E.right(expect.objectContaining({ title: userDisplayName })));
@@ -123,7 +123,7 @@ describe('followed-groups-page', () => {
       const params = { id: arbitraryUserId() };
       const page = await pipe(
         params,
-        savedArticlesPage(ports)('followed-groups'),
+        userPage(ports)('followed-groups'),
       )();
 
       expect(page).toStrictEqual(E.right(expect.objectContaining({
@@ -150,7 +150,7 @@ describe('followed-groups-page', () => {
       const params = { id: userId };
       const page = await pipe(
         params,
-        savedArticlesPage(ports)('followed-groups'),
+        userPage(ports)('followed-groups'),
       )();
 
       expect(page).toStrictEqual(E.right(expect.objectContaining({
@@ -178,7 +178,7 @@ describe('followed-groups-page', () => {
       const params = { id: userId };
       const page = await pipe(
         params,
-        savedArticlesPage(ports)('followed-groups'),
+        userPage(ports)('followed-groups'),
         contentOf,
         T.map(JSDOM.fragment),
       )();
@@ -205,7 +205,7 @@ describe('followed-groups-page', () => {
 
         const content = await pipe(
           params,
-          savedArticlesPage(ports)('followed-groups'),
+          userPage(ports)('followed-groups'),
           contentOf,
           T.map(JSDOM.fragment),
         )();
@@ -233,7 +233,7 @@ describe('followed-groups-page', () => {
       const params = { id: userId };
       page = await pipe(
         params,
-        savedArticlesPage(ports)('followed-groups'),
+        userPage(ports)('followed-groups'),
         contentOf,
         T.map(JSDOM.fragment),
       )();

@@ -30,9 +30,9 @@ type Params = {
   id: UserId,
 };
 
-type SavedArticlesPage = (tab: string) => (params: Params) => TE.TaskEither<RenderPageError, Page>;
+type UserPage = (tab: string) => (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
-export const savedArticlesPage = (ports: Ports): SavedArticlesPage => (tab) => ({ id }) => pipe(
+export const userPage = (ports: Ports): UserPage => (tab) => ({ id }) => pipe(
   {
     dois: TE.rightTask(projectSavedArticleDois(ports.getAllEvents)(id)),
     groupIds: TE.rightTask(followedGroupIds(ports.getAllEvents)(id)),
