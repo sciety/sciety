@@ -1,7 +1,9 @@
+import { pipe } from 'fp-ts/function';
+import { parse } from 'ts-command-line-args';
 import { fetchPciEvaluations } from './fetch-pci-evaluations';
 import { Group, updateAll } from './update-all';
 
-const groups: Array<Group> = [
+const allGroups: Array<Group> = [
   {
     id: '74fd66e9-3b90-4b5a-a4ab-5be83db4c5de',
     name: 'PCI Zoology',
@@ -34,4 +36,15 @@ const groups: Array<Group> = [
   },
 ];
 
-void (async (): Promise<ReadonlyArray<void>> => updateAll(groups)())();
+type CliArgs = {
+  filter?: string,
+};
+
+const args = parse<CliArgs>({
+  filter: { type: String, alias: 'f', optional: true },
+});
+
+void (async (): Promise<ReadonlyArray<void>> => pipe(
+  allGroups,
+  updateAll,
+)())();
