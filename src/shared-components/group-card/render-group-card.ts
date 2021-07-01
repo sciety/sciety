@@ -1,8 +1,10 @@
 import { htmlEscape } from 'escape-goat';
+import * as O from 'fp-ts/Option';
 import { flow, pipe } from 'fp-ts/function';
 import { GroupId } from '../../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
+import { templateDate } from '../date';
 
 export type GroupViewModel = {
   id: GroupId,
@@ -11,6 +13,7 @@ export type GroupViewModel = {
   avatarPath: string,
   followerCount: number,
   reviewCount: number,
+  latestActivityDate: O.Option<Date>,
 };
 
 const wrapInSpan = (text: string) => toHtmlFragment(`<span>${text}</span>`);
@@ -27,6 +30,18 @@ const renderEvaluationCount = (evaluationCount: number): HtmlFragment => pipe(
   wrapInSpan,
 );
 
+const renderLatestActivity = (latestActivity: O.Option<Date>): HtmlFragment => pipe(
+  latestActivity,
+  O.fold(
+    () => toHtmlFragment(''),
+    flow(
+      templateDate,
+      (text) => `Latest activity ${text}`,
+      wrapInSpan,
+    ),
+  ),
+);
+
 export const renderGroupCard = flow(
   (result: GroupViewModel) => `
     <div class="group-card">
@@ -38,7 +53,7 @@ export const renderGroupCard = flow(
           ${result.description}
         </div>
         <span class="group-card__meta">
-          ${renderEvaluationCount(result.reviewCount)}${renderFollowerCount(result.followerCount)}
+          ${renderEvaluationCount(result.reviewCount)}${renderFollowerCount(result.followerCount)}${renderLatestActivity(result.latestActivityDate)}
         </span>
       </div>
       <img class="group-card__avatar" src="${result.avatarPath}" alt="" />
