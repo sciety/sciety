@@ -143,6 +143,26 @@ describe('user-page', () => {
       expect(pageHtml).toContain(displayName);
       expect(pageHtml).toContain(handle);
     });
+
+    it('always shows the counts in the tab titles', async () => {
+      const userId = arbitraryUserId();
+      const ports = {
+        ...defaultPorts,
+        getAllEvents: T.of([userFollowedEditorialCommunity(userId, arbitraryGroupId())]),
+      };
+      const params = { id: userId };
+      const page = await pipe(
+        params,
+        userPage(ports)(tabName),
+        contentOf,
+        T.map(JSDOM.fragment),
+      )();
+      const tabHeadings = page.querySelectorAll('.tab');
+      const headings = Array.from(tabHeadings).map((tab) => tab.innerHTML);
+
+      expect(headings[0]).toContain('Saved articles (0)');
+      expect(headings[1]).toContain('Followed groups (1)');
+    });
   });
 
   describe('followed-groups tab', () => {
@@ -168,27 +188,6 @@ describe('user-page', () => {
     });
 
     it.todo('shows the articles tab as the inactive tab');
-
-    it('always shows a saved article count in the saved article tab title', async () => {
-      const ports = {
-        getGroup: shouldNotBeCalled,
-        getUserDetails: () => TE.right(arbitraryUserDetails),
-        getAllEvents: T.of([]),
-        fetchArticle: shouldNotBeCalled,
-        findReviewsForArticleDoi: shouldNotBeCalled,
-        findVersionsForArticleDoi: shouldNotBeCalled,
-      };
-      const params = { id: arbitraryUserId() };
-      const page = await pipe(
-        params,
-        userPage(ports)('followed-groups'),
-        contentOf,
-        T.map(JSDOM.fragment),
-      )();
-      const tabHeading = page.querySelector('.tab--active')?.innerHTML;
-
-      expect(tabHeading).toContain('(0)');
-    });
 
     describe('user is following groups', () => {
       it('displays followed groups as group cards', async () => {
@@ -309,31 +308,6 @@ describe('user-page', () => {
     });
 
     it.todo('shows the groups tab as the inactive tab');
-
-    it('always shows a saved article count in the saved article tab title', async () => {
-      const ports = {
-        getGroup: shouldNotBeCalled,
-        getUserDetails: () => TE.right({
-          avatarUrl: arbitraryUri(),
-          displayName: arbitraryString(),
-          handle: arbitraryWord(),
-        }),
-        getAllEvents: T.of([]),
-        fetchArticle: shouldNotBeCalled,
-        findReviewsForArticleDoi: shouldNotBeCalled,
-        findVersionsForArticleDoi: shouldNotBeCalled,
-      };
-      const params = { id: arbitraryUserId() };
-      const page = await pipe(
-        params,
-        userPage(ports)('saved-articles'),
-        contentOf,
-        T.map(JSDOM.fragment),
-      )();
-      const tabHeading = page.querySelector('.tab--active')?.innerHTML;
-
-      expect(tabHeading).toContain('(0)');
-    });
 
     it('uses the user displayname as page title', async () => {
       const userDisplayName = arbitraryString();
