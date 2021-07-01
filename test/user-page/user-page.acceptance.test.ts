@@ -187,8 +187,6 @@ describe('user-page', () => {
       expect(tabHeading).toContain('Followed groups');
     });
 
-    it.todo('shows the articles tab as the inactive tab');
-
     describe('user is following groups', () => {
       it('displays followed groups as group cards', async () => {
         const userId = arbitraryUserId();
@@ -306,8 +304,6 @@ describe('user-page', () => {
 
       expect(tabHeading).toContain('Saved articles');
     });
-
-    it.todo('shows the groups tab as the inactive tab');
 
     it('uses the user displayname as page title', async () => {
       const userDisplayName = arbitraryString();
