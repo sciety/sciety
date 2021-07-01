@@ -11,6 +11,7 @@ import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
 import { UserId } from '../../types/user-id';
 import { followedGroupIds } from '../followed-groups-page/project-followed-group-ids';
+import { renderDescription } from '../render-description';
 import { renderErrorPage } from '../render-error-page';
 import { renderHeader } from '../render-header';
 import { renderPage } from '../render-page';
@@ -46,7 +47,7 @@ export const savedArticlesPage = (ports: Ports): SavedArticlesPage => ({ id }) =
     T.map((mainContent) => ({
       header: renderHeader(userDetails),
       userDisplayName: toHtmlFragment(userDetails.displayName),
-      description: '1 saved article | 2 followed groups',
+      description: renderDescription(dois.length, groupIds.length),
       mainContent,
     })),
   )),

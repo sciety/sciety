@@ -10,6 +10,7 @@ import { toHtmlFragment } from '../../types/html-fragment';
 import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
 import { UserId } from '../../types/user-id';
+import { renderDescription } from '../render-description';
 import { renderErrorPage } from '../render-error-page';
 import { renderHeader } from '../render-header';
 import { renderPage } from '../render-page';
@@ -45,7 +46,7 @@ export const followedGroupsPage = (ports: Ports): FollowedGroupsPage => ({ id })
     T.map((mainContent) => ({
       header: renderHeader(userDetails),
       userDisplayName: toHtmlFragment(userDetails.displayName),
-      description: '1 saved article | 2 followed groups',
+      description: renderDescription(dois.length, groupIds.length),
       mainContent,
     })),
   )),
