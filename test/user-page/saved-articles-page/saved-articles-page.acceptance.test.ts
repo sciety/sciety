@@ -7,9 +7,8 @@ import { JSDOM } from 'jsdom';
 import { userFollowedEditorialCommunity, userSavedArticle } from '../../../src/types/domain-events';
 import { Page } from '../../../src/types/page';
 import { RenderPageError } from '../../../src/types/render-page-error';
-import { savedArticlesPage } from '../../../src/user-page/saved-articles-page/saved-articles-page';
-
 import { informationUnavailable, noSavedArticles } from '../../../src/user-page/static-messages';
+import { savedArticlesPage } from '../../../src/user-page/user-page';
 import {
   arbitrarySanitisedHtmlFragment,
   arbitraryString,

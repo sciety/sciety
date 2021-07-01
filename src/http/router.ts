@@ -45,7 +45,7 @@ import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import * as DE from '../types/data-error';
 import * as Doi from '../types/doi';
 import { toHtmlFragment } from '../types/html-fragment';
-import { savedArticlesPage } from '../user-page/saved-articles-page/saved-articles-page';
+import { savedArticlesPage } from '../user-page/user-page';
 
 const biorxivPrefix = '10.1101';
 
