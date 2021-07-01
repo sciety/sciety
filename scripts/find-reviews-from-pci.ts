@@ -34,4 +34,4 @@ const groups: Array<Group> = [
   },
 ];
 
-void (async (): Promise<void> => updateAll(groups))();
+void (async (): Promise<ReadonlyArray<void>> => updateAll(groups)())();
