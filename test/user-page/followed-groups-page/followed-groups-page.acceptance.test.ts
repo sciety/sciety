@@ -5,13 +5,14 @@ import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
-import { userFollowedEditorialCommunity } from '../../../src/types/domain-events';
+import { userFollowedEditorialCommunity, userSavedArticle } from '../../../src/types/domain-events';
 import { Page } from '../../../src/types/page';
 import { RenderPageError } from '../../../src/types/render-page-error';
 import { followedGroupsPage } from '../../../src/user-page/followed-groups-page/followed-groups-page';
 import { followingNothing, informationUnavailable } from '../../../src/user-page/static-messages';
 import { arbitraryString, arbitraryUri, arbitraryWord } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
+import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
@@ -115,7 +116,40 @@ describe('followed-groups-page', () => {
       })));
     });
 
-    it.todo('includes the count of saved articles and followed groups in the opengraph description');
+    it('includes the count of saved articles and followed groups in the opengraph description', async () => {
+      const userDisplayName = arbitraryString();
+      const userId = arbitraryUserId();
+      const ports = {
+        getGroup: () => TO.some({
+          id: arbitraryGroupId(),
+          name: arbitraryString(),
+          avatarPath: arbitraryString(),
+          descriptionPath: arbitraryString(),
+          shortDescription: arbitraryString(),
+        }),
+        getUserDetails: () => TE.right({
+          avatarUrl: arbitraryUri(),
+          displayName: userDisplayName,
+          handle: arbitraryWord(),
+        }),
+        getAllEvents: T.of([
+          userSavedArticle(userId, arbitraryDoi()),
+          userFollowedEditorialCommunity(userId, arbitraryGroupId()),
+          userFollowedEditorialCommunity(userId, arbitraryGroupId()),
+        ]),
+      };
+      const params = { id: userId, user: O.none };
+      const page = await pipe(
+        params,
+        followedGroupsPage(ports),
+      )();
+
+      expect(page).toStrictEqual(E.right(expect.objectContaining({
+        openGraph: expect.objectContaining({
+          description: '1 saved article | 2 followed groups',
+        }),
+      })));
+    });
   });
 
   describe('user is following groups', () => {

@@ -5,13 +5,14 @@ type Components = {
   header: HtmlFragment,
   mainContent: HtmlFragment,
   userDisplayName: string,
+  description: string,
 };
 
 export const renderPage = (components: Components): Page => ({
   title: components.userDisplayName,
   openGraph: {
     title: components.userDisplayName,
-    description: '',
+    description: components.description,
   },
   content: toHtmlFragment(`
     <div class="page-content__background">

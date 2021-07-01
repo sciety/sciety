@@ -46,6 +46,7 @@ export const savedArticlesPage = (ports: Ports): SavedArticlesPage => ({ id }) =
     T.map((mainContent) => ({
       header: renderHeader(userDetails),
       userDisplayName: toHtmlFragment(userDetails.displayName),
+      description: '1 saved article | 2 followed groups',
       mainContent,
     })),
   )),
