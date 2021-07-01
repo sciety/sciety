@@ -7,7 +7,7 @@ import { JSDOM } from 'jsdom';
 import { userFollowedEditorialCommunity, userSavedArticle } from '../../../src/types/domain-events';
 import { Page } from '../../../src/types/page';
 import { RenderPageError } from '../../../src/types/render-page-error';
-import { followedGroupsPage } from '../../../src/user-page/followed-groups-page/followed-groups-page';
+import { savedArticlesPage } from '../../../src/user-page/saved-articles-page/saved-articles-page';
 import { followingNothing, informationUnavailable } from '../../../src/user-page/static-messages';
 import { arbitraryString, arbitraryUri, arbitraryWord } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
@@ -43,11 +43,14 @@ describe('followed-groups-page', () => {
       getGroup: shouldNotBeCalled,
       getUserDetails: () => TE.right(arbitraryUserDetails),
       getAllEvents: T.of([]),
+      fetchArticle: shouldNotBeCalled,
+      findReviewsForArticleDoi: shouldNotBeCalled,
+      findVersionsForArticleDoi: shouldNotBeCalled,
     };
     const params = { id: arbitraryUserId() };
     const page = await pipe(
       params,
-      followedGroupsPage(ports),
+      savedArticlesPage(ports)('followed-groups'),
       contentOf,
       T.map(JSDOM.fragment),
     )();
@@ -63,11 +66,14 @@ describe('followed-groups-page', () => {
       getGroup: shouldNotBeCalled,
       getUserDetails: () => TE.right(arbitraryUserDetails),
       getAllEvents: T.of([]),
+      fetchArticle: shouldNotBeCalled,
+      findReviewsForArticleDoi: shouldNotBeCalled,
+      findVersionsForArticleDoi: shouldNotBeCalled,
     };
     const params = { id: arbitraryUserId() };
     const page = await pipe(
       params,
-      followedGroupsPage(ports),
+      savedArticlesPage(ports)('followed-groups'),
       contentOf,
       T.map(JSDOM.fragment),
     )();
@@ -87,11 +93,14 @@ describe('followed-groups-page', () => {
           handle: arbitraryWord(),
         }),
         getAllEvents: T.of([]),
+        fetchArticle: shouldNotBeCalled,
+        findReviewsForArticleDoi: shouldNotBeCalled,
+        findVersionsForArticleDoi: shouldNotBeCalled,
       };
       const params = { id: arbitraryUserId() };
       const page = await pipe(
         params,
-        followedGroupsPage(ports),
+        savedArticlesPage(ports)('followed-groups'),
       )();
 
       expect(page).toStrictEqual(E.right(expect.objectContaining({ title: userDisplayName })));
@@ -107,11 +116,14 @@ describe('followed-groups-page', () => {
           handle: arbitraryWord(),
         }),
         getAllEvents: T.of([]),
+        fetchArticle: shouldNotBeCalled,
+        findReviewsForArticleDoi: shouldNotBeCalled,
+        findVersionsForArticleDoi: shouldNotBeCalled,
       };
       const params = { id: arbitraryUserId() };
       const page = await pipe(
         params,
-        followedGroupsPage(ports),
+        savedArticlesPage(ports)('followed-groups'),
       )();
 
       expect(page).toStrictEqual(E.right(expect.objectContaining({
@@ -131,11 +143,14 @@ describe('followed-groups-page', () => {
           userFollowedEditorialCommunity(userId, arbitraryGroupId()),
           userFollowedEditorialCommunity(userId, arbitraryGroupId()),
         ]),
+        fetchArticle: shouldNotBeCalled,
+        findReviewsForArticleDoi: shouldNotBeCalled,
+        findVersionsForArticleDoi: shouldNotBeCalled,
       };
       const params = { id: userId };
       const page = await pipe(
         params,
-        followedGroupsPage(ports),
+        savedArticlesPage(ports)('followed-groups'),
       )();
 
       expect(page).toStrictEqual(E.right(expect.objectContaining({
@@ -156,11 +171,14 @@ describe('followed-groups-page', () => {
           userFollowedEditorialCommunity(userId, arbitraryGroupId()),
           userFollowedEditorialCommunity(userId, arbitraryGroupId()),
         ]),
+        fetchArticle: shouldNotBeCalled,
+        findReviewsForArticleDoi: shouldNotBeCalled,
+        findVersionsForArticleDoi: shouldNotBeCalled,
       };
       const params = { id: userId };
       const page = await pipe(
         params,
-        followedGroupsPage(ports),
+        savedArticlesPage(ports)('followed-groups'),
         contentOf,
         T.map(JSDOM.fragment),
       )();
@@ -179,12 +197,15 @@ describe('followed-groups-page', () => {
             userFollowedEditorialCommunity(userId, arbitraryGroupId()),
             userFollowedEditorialCommunity(userId, arbitraryGroupId()),
           ]),
+          fetchArticle: shouldNotBeCalled,
+          findReviewsForArticleDoi: shouldNotBeCalled,
+          findVersionsForArticleDoi: shouldNotBeCalled,
         };
         const params = { id: userId };
 
         const content = await pipe(
           params,
-          followedGroupsPage(ports),
+          savedArticlesPage(ports)('followed-groups'),
           contentOf,
           T.map(JSDOM.fragment),
         )();
@@ -205,11 +226,14 @@ describe('followed-groups-page', () => {
         getGroup: () => shouldNotBeCalled,
         getUserDetails: () => TE.right(arbitraryUserDetails),
         getAllEvents: T.of([]),
+        fetchArticle: shouldNotBeCalled,
+        findReviewsForArticleDoi: shouldNotBeCalled,
+        findVersionsForArticleDoi: shouldNotBeCalled,
       };
       const params = { id: userId };
       page = await pipe(
         params,
-        followedGroupsPage(ports),
+        savedArticlesPage(ports)('followed-groups'),
         contentOf,
         T.map(JSDOM.fragment),
       )();

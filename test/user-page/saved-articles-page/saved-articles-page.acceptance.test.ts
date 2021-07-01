@@ -35,6 +35,7 @@ describe('saved-articles-page', () => {
     const displayName = arbitraryString();
     const handle = arbitraryWord();
     const ports = {
+      getGroup: shouldNotBeCalled,
       getUserDetails: () => TE.right({
         avatarUrl,
         displayName,
@@ -56,6 +57,7 @@ describe('saved-articles-page', () => {
 
   it('shows articles as the active tab', async () => {
     const ports = {
+      getGroup: shouldNotBeCalled,
       getUserDetails: () => TE.right({
         avatarUrl: arbitraryUri(),
         displayName: arbitraryString(),
@@ -82,6 +84,7 @@ describe('saved-articles-page', () => {
 
   it('always shows a saved article count in the saved article tab title', async () => {
     const ports = {
+      getGroup: shouldNotBeCalled,
       getUserDetails: () => TE.right({
         avatarUrl: arbitraryUri(),
         displayName: arbitraryString(),
@@ -107,6 +110,7 @@ describe('saved-articles-page', () => {
   it('uses the user displayname as page title', async () => {
     const userDisplayName = arbitraryString();
     const ports = {
+      getGroup: shouldNotBeCalled,
       getUserDetails: () => TE.right({
         avatarUrl: arbitraryUri(),
         displayName: userDisplayName,
@@ -130,6 +134,7 @@ describe('saved-articles-page', () => {
     it('shows the articles as a list of cards', async () => {
       const userId = arbitraryUserId();
       const ports = {
+        getGroup: shouldNotBeCalled,
         getUserDetails: () => TE.right({
           avatarUrl: arbitraryUri(),
           displayName: arbitraryString(),
@@ -165,6 +170,7 @@ describe('saved-articles-page', () => {
       it('displays a single error message as the tab panel content', async () => {
         const userId = arbitraryUserId();
         const ports = {
+          getGroup: shouldNotBeCalled,
           getUserDetails: () => TE.right({
             avatarUrl: arbitraryUri(),
             displayName: arbitraryString(),
@@ -198,6 +204,7 @@ describe('saved-articles-page', () => {
     it('uses the user displayname as page title', async () => {
       const userDisplayName = arbitraryString();
       const ports = {
+        getGroup: shouldNotBeCalled,
         getUserDetails: () => TE.right({
           avatarUrl: arbitraryUri(),
           displayName: userDisplayName,
@@ -220,6 +227,7 @@ describe('saved-articles-page', () => {
     it('uses the user displayname as the opengraph title', async () => {
       const userDisplayName = arbitraryString();
       const ports = {
+        getGroup: shouldNotBeCalled,
         getUserDetails: () => TE.right({
           avatarUrl: arbitraryUri(),
           displayName: userDisplayName,
@@ -247,6 +255,7 @@ describe('saved-articles-page', () => {
       const userDisplayName = arbitraryString();
       const userId = arbitraryUserId();
       const ports = {
+        getGroup: shouldNotBeCalled,
         getUserDetails: () => TE.right({
           avatarUrl: arbitraryUri(),
           displayName: userDisplayName,
@@ -281,6 +290,7 @@ describe('saved-articles-page', () => {
     beforeAll(async () => {
       const userId = arbitraryUserId();
       const ports = {
+        getGroup: shouldNotBeCalled,
         getUserDetails: () => TE.right({
           avatarUrl: arbitraryUri(),
           displayName: arbitraryString(),

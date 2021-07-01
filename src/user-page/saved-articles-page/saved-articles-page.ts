@@ -10,6 +10,7 @@ import { toHtmlFragment } from '../../types/html-fragment';
 import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
 import { UserId } from '../../types/user-id';
+import { followList, Ports as FollowListPorts } from '../followed-groups-page/follow-list';
 import { followedGroupIds } from '../followed-groups-page/project-followed-group-ids';
 import { renderDescription } from '../render-description';
 import { renderErrorPage } from '../render-error-page';
@@ -20,7 +21,7 @@ import { UserDetails } from '../user-details';
 
 type GetUserDetails = (userId: UserId) => TE.TaskEither<DE.DataError, UserDetails>;
 
-type Ports = SavedArticlesPorts & {
+type Ports = SavedArticlesPorts & FollowListPorts & {
   getAllEvents: GetAllEvents,
   getUserDetails: GetUserDetails,
 };
@@ -40,7 +41,7 @@ export const savedArticlesPage = (ports: Ports): SavedArticlesPage => (tab) => (
   },
   sequenceS(TE.ApplyPar),
   TE.chainTaskK((inputs) => pipe(
-    (inputs.activeTabIndex === 0) ? savedArticles(ports)(inputs.dois) : savedArticles(ports)(inputs.dois),
+    (inputs.activeTabIndex === 0) ? savedArticles(ports)(inputs.dois) : followList(ports)(inputs.groupIds),
     T.map(tabs({
       tabList: tabList(id, inputs.dois.length, inputs.groupIds.length),
       activeTabIndex: inputs.activeTabIndex,
