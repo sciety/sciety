@@ -6,7 +6,7 @@
   "dependencies": {
     "@godaddy/terminus": "^4.9.0",
     "@koa/router": "^10.0.0",
-    "@rdfjs/data-model": "^1.2.0",
+    "@rdfjs/data-model": "^1.3.1",
     "@rdfjs/fetch-lite": "^2.1.1",
     "@rdfjs/parser-jsonld": "^1.2.1",
     "@rdfjs/parser-n3": "^1.1.4",
