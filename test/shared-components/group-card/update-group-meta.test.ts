@@ -11,33 +11,43 @@ import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('update-group-meta', () => {
   const groupId = arbitraryGroupId();
-  const initial = { followerCount: 41, reviewCount: 27 };
+  const initial = { followerCount: 41, reviewCount: 27, latestActivityDate: new Date('1970') };
 
   it('updates the meta when passed a UserFollowedEditorialCommunityEvent', () => {
     const event = userFollowedEditorialCommunity(arbitraryUserId(), groupId);
     const result = updateGroupMeta(groupId)(initial, event);
 
-    expect(result).toStrictEqual({ followerCount: 42, reviewCount: 27 });
+    expect(result).toStrictEqual({ ...initial, followerCount: 42 });
   });
 
   it('updates the meta when passed a UserUnfollowedEditorialCommunityEvent', () => {
     const event = userUnfollowedEditorialCommunity(arbitraryUserId(), groupId);
     const result = updateGroupMeta(groupId)(initial, event);
 
-    expect(result).toStrictEqual({ followerCount: 40, reviewCount: 27 });
+    expect(result).toStrictEqual({ ...initial, followerCount: 40 });
   });
 
   it('updates the meta when passed a EditorialCommunityReviewedArticle', () => {
     const event = editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryReviewId());
     const result = updateGroupMeta(groupId)(initial, event);
 
-    expect(result).toStrictEqual({ followerCount: 41, reviewCount: 28 });
+    expect(result).toStrictEqual({ ...initial, reviewCount: 28 });
   });
+
+  it.skip('updates the latestActivity date when passed a newer EditorialCommunityReviewedArticle', () => {
+    const newerDate = new Date('2020');
+    const event = editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryReviewId(), newerDate);
+    const result = updateGroupMeta(groupId)(initial, event);
+
+    expect(result).toStrictEqual({ ...initial, reviewCount: 28, latestActivityDate: newerDate });
+  });
+
+  it.todo('does not change the latestActivity date when passed an older EditorialCommunityReviewedArticle');
 
   it('does not update the meta when passed any other domain event', () => {
     const event = userSavedArticle(arbitraryUserId(), arbitraryDoi());
     const result = updateGroupMeta(groupId)(initial, event);
 
-    expect(result).toStrictEqual({ followerCount: 41, reviewCount: 27 });
+    expect(result).toStrictEqual(initial);
   });
 });
