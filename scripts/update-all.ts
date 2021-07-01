@@ -3,6 +3,7 @@ import { printf } from 'fast-printf';
 import * as D from 'fp-ts/Date';
 import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
@@ -57,15 +58,16 @@ const reportSuccess = (group: Group) => (evaluations: ReadonlyArray<Evaluation>)
   report(group)(output);
 };
 
-export const updateAll = async (groups: ReadonlyArray<Group>): Promise<void> => {
-  groups.forEach(async (group) => {
-    await pipe(
-      group.fetchFeed,
-      TE.chain(writeCsv(group)),
-      TE.bimap(
-        report(group),
-        reportSuccess(group),
-      ),
-    )();
-  });
-};
+const updateGroup = (group: Group): T.Task<void> => pipe(
+  group.fetchFeed,
+  TE.chain(writeCsv(group)),
+  TE.match(
+    report(group),
+    reportSuccess(group),
+  ),
+);
+
+export const updateAll = (groups: ReadonlyArray<Group>): T.Task<ReadonlyArray<void>> => pipe(
+  groups,
+  T.traverseArray(updateGroup),
+);
