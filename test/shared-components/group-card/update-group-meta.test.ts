@@ -27,14 +27,7 @@ describe('update-group-meta', () => {
     expect(result).toStrictEqual({ ...initial, followerCount: 40 });
   });
 
-  it('updates the meta when passed a EditorialCommunityReviewedArticle', () => {
-    const event = editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryReviewId());
-    const result = updateGroupMeta(groupId)(initial, event);
-
-    expect(result).toStrictEqual({ ...initial, reviewCount: 28 });
-  });
-
-  it.skip('updates the latestActivity date when passed a newer EditorialCommunityReviewedArticle', () => {
+  it('updates the meta when passed a newer EditorialCommunityReviewedArticle', () => {
     const newerDate = new Date('2020');
     const event = editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryReviewId(), newerDate);
     const result = updateGroupMeta(groupId)(initial, event);

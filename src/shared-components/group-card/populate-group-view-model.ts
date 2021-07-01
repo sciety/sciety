@@ -32,7 +32,7 @@ export const populateGroupViewModel = (
   T.map(E.fromOption(() => DE.notFound)),
   TE.chainTaskK((group) => pipe(
     ports.getAllEvents,
-    T.map(RA.reduce({ reviewCount: 0, followerCount: 0 }, updateGroupMeta(group.id))),
+    T.map(RA.reduce({ reviewCount: 0, followerCount: 0, latestActivityDate: new Date('1970') }, updateGroupMeta(group.id))),
     T.map((meta) => ({
       ...group,
       ...meta,
