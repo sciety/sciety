@@ -23,15 +23,17 @@ const contentOf = (page: TE.TaskEither<RenderPageError, Page>) => pipe(
   ),
 );
 
+const arbitraryUserDetails = {
+  avatarUrl: arbitraryUri(),
+  displayName: arbitraryString(),
+  handle: arbitraryWord(),
+};
+
 describe('followed-groups-page', () => {
   it('shows groups as the active tab', async () => {
     const ports = {
       getGroup: shouldNotBeCalled,
-      getUserDetails: () => TE.right({
-        avatarUrl: arbitraryUri(),
-        displayName: arbitraryString(),
-        handle: arbitraryWord(),
-      }),
+      getUserDetails: () => TE.right(arbitraryUserDetails),
       getAllEvents: T.of([]),
     };
     const params = { id: arbitraryUserId() };
@@ -51,11 +53,7 @@ describe('followed-groups-page', () => {
   it('always shows a saved article count in the saved article tab title', async () => {
     const ports = {
       getGroup: shouldNotBeCalled,
-      getUserDetails: () => TE.right({
-        avatarUrl: arbitraryUri(),
-        displayName: arbitraryString(),
-        handle: arbitraryWord(),
-      }),
+      getUserDetails: () => TE.right(arbitraryUserDetails),
       getAllEvents: T.of([]),
     };
     const params = { id: arbitraryUserId() };
@@ -116,7 +114,6 @@ describe('followed-groups-page', () => {
     });
 
     it('includes the count of saved articles and followed groups in the opengraph description', async () => {
-      const userDisplayName = arbitraryString();
       const userId = arbitraryUserId();
       const ports = {
         getGroup: () => TO.some({
@@ -126,11 +123,7 @@ describe('followed-groups-page', () => {
           descriptionPath: arbitraryString(),
           shortDescription: arbitraryString(),
         }),
-        getUserDetails: () => TE.right({
-          avatarUrl: arbitraryUri(),
-          displayName: userDisplayName,
-          handle: arbitraryWord(),
-        }),
+        getUserDetails: () => TE.right(arbitraryUserDetails),
         getAllEvents: T.of([
           userSavedArticle(userId, arbitraryDoi()),
           userFollowedEditorialCommunity(userId, arbitraryGroupId()),
@@ -162,11 +155,7 @@ describe('followed-groups-page', () => {
           descriptionPath: arbitraryString(),
           shortDescription: arbitraryString(),
         }),
-        getUserDetails: () => TE.right({
-          avatarUrl: arbitraryUri(),
-          displayName: arbitraryString(),
-          handle: arbitraryWord(),
-        }),
+        getUserDetails: () => TE.right(arbitraryUserDetails),
         getAllEvents: T.of([
           userFollowedEditorialCommunity(userId, arbitraryGroupId()),
           userFollowedEditorialCommunity(userId, arbitraryGroupId()),
@@ -189,11 +178,7 @@ describe('followed-groups-page', () => {
         const userId = arbitraryUserId();
         const ports = {
           getGroup: () => TO.none,
-          getUserDetails: () => TE.right({
-            avatarUrl: arbitraryUri(),
-            displayName: arbitraryString(),
-            handle: arbitraryWord(),
-          }),
+          getUserDetails: () => TE.right(arbitraryUserDetails),
           getAllEvents: T.of([
             userFollowedEditorialCommunity(userId, arbitraryGroupId()),
             userFollowedEditorialCommunity(userId, arbitraryGroupId()),
@@ -225,11 +210,7 @@ describe('followed-groups-page', () => {
       const userId = arbitraryUserId();
       const ports = {
         getGroup: () => shouldNotBeCalled,
-        getUserDetails: () => TE.right({
-          avatarUrl: arbitraryUri(),
-          displayName: arbitraryString(),
-          handle: arbitraryWord(),
-        }),
+        getUserDetails: () => TE.right(arbitraryUserDetails),
         getAllEvents: T.of([]),
       };
       const params = { id: userId };
