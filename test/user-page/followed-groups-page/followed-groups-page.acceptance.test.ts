@@ -29,6 +29,14 @@ const arbitraryUserDetails = {
   handle: arbitraryWord(),
 };
 
+const arbitraryGroup = {
+  id: arbitraryGroupId(),
+  name: arbitraryString(),
+  avatarPath: arbitraryString(),
+  descriptionPath: arbitraryString(),
+  shortDescription: arbitraryString(),
+};
+
 describe('followed-groups-page', () => {
   it('shows groups as the active tab', async () => {
     const ports = {
@@ -116,13 +124,7 @@ describe('followed-groups-page', () => {
     it('includes the count of saved articles and followed groups in the opengraph description', async () => {
       const userId = arbitraryUserId();
       const ports = {
-        getGroup: () => TO.some({
-          id: arbitraryGroupId(),
-          name: arbitraryString(),
-          avatarPath: arbitraryString(),
-          descriptionPath: arbitraryString(),
-          shortDescription: arbitraryString(),
-        }),
+        getGroup: () => TO.some(arbitraryGroup),
         getUserDetails: () => TE.right(arbitraryUserDetails),
         getAllEvents: T.of([
           userSavedArticle(userId, arbitraryDoi()),
@@ -148,13 +150,7 @@ describe('followed-groups-page', () => {
     it('displays followed groups as group cards', async () => {
       const userId = arbitraryUserId();
       const ports = {
-        getGroup: () => TO.some({
-          id: arbitraryGroupId(),
-          name: arbitraryString(),
-          avatarPath: arbitraryString(),
-          descriptionPath: arbitraryString(),
-          shortDescription: arbitraryString(),
-        }),
+        getGroup: () => TO.some(arbitraryGroup),
         getUserDetails: () => TE.right(arbitraryUserDetails),
         getAllEvents: T.of([
           userFollowedEditorialCommunity(userId, arbitraryGroupId()),
@@ -189,10 +185,7 @@ describe('followed-groups-page', () => {
         const content = await pipe(
           params,
           followedGroupsPage(ports),
-          TE.match(
-            shouldNotBeCalled,
-            (page) => page.content,
-          ),
+          contentOf,
           T.map(JSDOM.fragment),
         )();
 
