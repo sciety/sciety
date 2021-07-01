@@ -12,7 +12,7 @@ import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('update-group-meta', () => {
   const groupId = arbitraryGroupId();
-  const initial = { followerCount: 41, reviewCount: 27, latestActivityDate: O.some(new Date('1970')) };
+  const initial = { followerCount: 41, reviewCount: 27, latestActivity: O.some(new Date('1970')) };
 
   it('updates the meta when passed a UserFollowedEditorialCommunityEvent', () => {
     const event = userFollowedEditorialCommunity(arbitraryUserId(), groupId);
@@ -33,7 +33,7 @@ describe('update-group-meta', () => {
     const event = editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryReviewId(), newerDate);
     const result = updateGroupMeta(groupId)(initial, event);
 
-    expect(result).toStrictEqual({ ...initial, reviewCount: 28, latestActivityDate: O.some(newerDate) });
+    expect(result).toStrictEqual({ ...initial, reviewCount: 28, latestActivity: O.some(newerDate) });
   });
 
   it('does not change the latestActivity date when passed an older EditorialCommunityReviewedArticle', () => {
@@ -47,9 +47,9 @@ describe('update-group-meta', () => {
   it('updates the meta when passed the first EditorialCommunityReviewedArticle', () => {
     const newerDate = new Date('2020');
     const event = editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryReviewId(), newerDate);
-    const result = updateGroupMeta(groupId)({ ...initial, reviewCount: 0, latestActivityDate: O.none }, event);
+    const result = updateGroupMeta(groupId)({ ...initial, reviewCount: 0, latestActivity: O.none }, event);
 
-    expect(result).toStrictEqual({ ...initial, reviewCount: 1, latestActivityDate: O.some(newerDate) });
+    expect(result).toStrictEqual({ ...initial, reviewCount: 1, latestActivity: O.some(newerDate) });
   });
 
   it('does not update the meta when passed any other domain event', () => {

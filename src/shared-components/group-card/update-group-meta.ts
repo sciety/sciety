@@ -11,7 +11,7 @@ import { GroupId } from '../../types/group-id';
 type GroupMeta = {
   reviewCount: number,
   followerCount: number,
-  latestActivityDate: O.Option<Date>,
+  latestActivity: O.Option<Date>,
 };
 
 export const updateGroupMeta = (groupId: GroupId) => (meta: GroupMeta, event: DomainEvent): GroupMeta => {
@@ -29,17 +29,17 @@ export const updateGroupMeta = (groupId: GroupId) => (meta: GroupMeta, event: Do
   }
   if (isEditorialCommunityReviewedArticleEvent(event) && event.editorialCommunityId === groupId) {
     return pipe(
-      meta.latestActivityDate,
+      meta.latestActivity,
       O.fold(
         () => ({
           ...meta,
           reviewCount: meta.reviewCount + 1,
-          latestActivityDate: O.some(event.date),
+          latestActivity: O.some(event.date),
         }),
         (date) => (event.date > date ? {
           ...meta,
           reviewCount: meta.reviewCount + 1,
-          latestActivityDate: O.some(event.date),
+          latestActivity: O.some(event.date),
         } : {
           ...meta,
           reviewCount: meta.reviewCount + 1,
