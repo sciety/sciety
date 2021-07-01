@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -32,7 +33,7 @@ export const populateGroupViewModel = (
   T.map(E.fromOption(() => DE.notFound)),
   TE.chainTaskK((group) => pipe(
     ports.getAllEvents,
-    T.map(RA.reduce({ reviewCount: 0, followerCount: 0, latestActivityDate: new Date('1970') }, updateGroupMeta(group.id))),
+    T.map(RA.reduce({ reviewCount: 0, followerCount: 0, latestActivityDate: O.none }, updateGroupMeta(group.id))),
     T.map((meta) => ({
       ...group,
       ...meta,
