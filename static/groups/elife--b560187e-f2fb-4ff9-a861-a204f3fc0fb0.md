@@ -2,7 +2,7 @@
 
 eLife is a selective journal that publishes promising research in all areas of biology and medicine.
 
-## Peer review model
+## Evaluation model
 
 eLife’s editorial process produces two outputs: i) an assessment by peers designed to be posted alongside a preprint for the benefit of readers; ii) detailed feedback on the manuscript for the authors, including requests for revisions and suggestions for improvement. 
 

@@ -2,7 +2,7 @@
 
 Peer Community in Archaeology (PCI Archaeology) has been launched in March 2019. It is a community of recommenders playing the role of editors who recommend unpublished articles based on peer-reviews to make them complete, reliable and citable articles, without the need for publication in ‘traditional’ journals. Evaluation and recommendation by PCI Archaeology are free of charge. When a recommender decides to recommend an article, he/she writes a recommendation text that is published along with all the editorial correspondence (reviews, recommender's decisions, authors’ replies) by PCI Archaeology. The article itself is not published by PCI Archaeology; it remains in the preprint server where it has been posted by the authors. PCI Archaeology recommenders can also recommend, but to a lesser extent, postprints.
 
-## Peer review model
+## Evaluation model
 
 ### Which manuscripts can be recommended by PCI Archeology?
 

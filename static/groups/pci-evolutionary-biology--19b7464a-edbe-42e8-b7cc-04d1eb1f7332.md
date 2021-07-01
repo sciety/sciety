@@ -12,7 +12,7 @@ Peer Community in Evolutionary Biology (PCI Evol Biol) has been launched in Janu
 
 * PCI Evol Biol is not exclusive: An article may be recommended by different Peer Communities in X (a feature of particular interest for articles relating to multidisciplinary studies) and may even be published in a traditional journal.
 
-## Peer review model
+## Evaluation model
 
 ### Which manuscripts can be recommended?
 
