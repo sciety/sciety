@@ -21,7 +21,8 @@ import { UserId } from '../types/user-id';
 
 type GetUserDetails = (userId: UserId) => TE.TaskEither<DE.DataError, UserDetails>;
 
-type Ports = SavedArticlesPorts & FollowListPorts & {
+// ts-unused-exports:disable-next-line
+export type Ports = SavedArticlesPorts & FollowListPorts & {
   getAllEvents: GetAllEvents,
   getUserDetails: GetUserDetails,
 };
