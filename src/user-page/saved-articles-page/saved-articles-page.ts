@@ -29,25 +29,26 @@ type Params = {
   id: UserId,
 };
 
-type SavedArticlesPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
+type SavedArticlesPage = (tab: string) => (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
-export const savedArticlesPage = (ports: Ports): SavedArticlesPage => ({ id }) => pipe(
+export const savedArticlesPage = (ports: Ports): SavedArticlesPage => (tab) => ({ id }) => pipe(
   {
     dois: TE.rightTask(projectSavedArticleDois(ports.getAllEvents)(id)),
     groupIds: TE.rightTask(followedGroupIds(ports.getAllEvents)(id)),
     userDetails: ports.getUserDetails(id),
+    activeTabIndex: TE.right(tab === 'saved-articles' ? 0 as const : 1 as const),
   },
   sequenceS(TE.ApplyPar),
-  TE.chainTaskK(({ dois, groupIds, userDetails }) => pipe(
-    savedArticles(ports)(dois),
+  TE.chainTaskK((inputs) => pipe(
+    (inputs.activeTabIndex === 0) ? savedArticles(ports)(inputs.dois) : savedArticles(ports)(inputs.dois),
     T.map(tabs({
-      tabList: tabList(id, dois.length, groupIds.length),
-      activeTabIndex: 0,
+      tabList: tabList(id, inputs.dois.length, inputs.groupIds.length),
+      activeTabIndex: inputs.activeTabIndex,
     })),
     T.map((mainContent) => ({
-      header: renderHeader(userDetails),
-      userDisplayName: toHtmlFragment(userDetails.displayName),
-      description: renderDescription(dois.length, groupIds.length),
+      header: renderHeader(inputs.userDetails),
+      userDisplayName: toHtmlFragment(inputs.userDetails.displayName),
+      description: renderDescription(inputs.dois.length, inputs.groupIds.length),
       mainContent,
     })),
   )),

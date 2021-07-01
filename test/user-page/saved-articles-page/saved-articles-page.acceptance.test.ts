@@ -47,7 +47,7 @@ describe('saved-articles-page', () => {
     };
     const params = { id: arbitraryUserId() };
 
-    const pageHtml = await contentOf(savedArticlesPage(ports)(params))();
+    const pageHtml = await contentOf(savedArticlesPage(ports)('saved-articles')(params))();
 
     expect(pageHtml).toContain(avatarUrl);
     expect(pageHtml).toContain(displayName);
@@ -69,7 +69,7 @@ describe('saved-articles-page', () => {
     const params = { id: arbitraryUserId() };
     const page = await pipe(
       params,
-      savedArticlesPage(ports),
+      savedArticlesPage(ports)('saved-articles'),
       contentOf,
       T.map(JSDOM.fragment),
     )();
@@ -95,7 +95,7 @@ describe('saved-articles-page', () => {
     const params = { id: arbitraryUserId() };
     const page = await pipe(
       params,
-      savedArticlesPage(ports),
+      savedArticlesPage(ports)('saved-articles'),
       contentOf,
       T.map(JSDOM.fragment),
     )();
@@ -120,7 +120,7 @@ describe('saved-articles-page', () => {
     const params = { id: arbitraryUserId() };
     const page = await pipe(
       params,
-      savedArticlesPage(ports),
+      savedArticlesPage(ports)('saved-articles'),
     )();
 
     expect(page).toStrictEqual(E.right(expect.objectContaining({ title: userDisplayName })));
@@ -152,7 +152,7 @@ describe('saved-articles-page', () => {
 
       const page = await pipe(
         params,
-        savedArticlesPage(ports),
+        savedArticlesPage(ports)('saved-articles'),
         contentOf,
         T.map(JSDOM.fragment),
       )();
@@ -182,7 +182,7 @@ describe('saved-articles-page', () => {
 
         const pageContent = await pipe(
           params,
-          savedArticlesPage(ports),
+          savedArticlesPage(ports)('saved-articles'),
           contentOf,
           T.map(JSDOM.fragment),
         )();
@@ -211,7 +211,7 @@ describe('saved-articles-page', () => {
       const params = { id: arbitraryUserId() };
       const page = await pipe(
         params,
-        savedArticlesPage(ports),
+        savedArticlesPage(ports)('saved-articles'),
       )();
 
       expect(page).toStrictEqual(E.right(expect.objectContaining({ title: userDisplayName })));
@@ -233,7 +233,7 @@ describe('saved-articles-page', () => {
       const params = { id: arbitraryUserId() };
       const page = await pipe(
         params,
-        savedArticlesPage(ports),
+        savedArticlesPage(ports)('saved-articles'),
       )();
 
       expect(page).toStrictEqual(E.right(expect.objectContaining({
@@ -264,7 +264,7 @@ describe('saved-articles-page', () => {
       const params = { id: userId };
       const page = await pipe(
         params,
-        savedArticlesPage(ports),
+        savedArticlesPage(ports)('saved-articles'),
       )();
 
       expect(page).toStrictEqual(E.right(expect.objectContaining({
@@ -295,7 +295,7 @@ describe('saved-articles-page', () => {
 
       page = await pipe(
         params,
-        savedArticlesPage(ports),
+        savedArticlesPage(ports)('saved-articles'),
         contentOf,
         T.map(JSDOM.fragment),
       )();
