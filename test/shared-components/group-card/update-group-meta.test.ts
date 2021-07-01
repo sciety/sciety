@@ -35,7 +35,13 @@ describe('update-group-meta', () => {
     expect(result).toStrictEqual({ ...initial, reviewCount: 28, latestActivityDate: newerDate });
   });
 
-  it.todo('does not change the latestActivity date when passed an older EditorialCommunityReviewedArticle');
+  it('does not change the latestActivity date when passed an older EditorialCommunityReviewedArticle', () => {
+    const olderDate = new Date('1920');
+    const event = editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryReviewId(), olderDate);
+    const result = updateGroupMeta(groupId)(initial, event);
+
+    expect(result).toStrictEqual({ ...initial, reviewCount: 28 });
+  });
 
   it('does not update the meta when passed any other domain event', () => {
     const event = userSavedArticle(arbitraryUserId(), arbitraryDoi());
