@@ -1,11 +1,11 @@
 import axios from 'axios';
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { constant, flow, pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
+import { FetchEvaluations } from './update-all';
 
 const resultsTotal = t.type({
   message: t.type({
@@ -31,7 +31,7 @@ const rapidReviewCodec = t.type({
 
 const extractEvaluations = (data: t.TypeOf<typeof rapidReviewCodec>) => pipe(
   data.message.items.map((item) => ({
-    date: item.created['date-time'].toISOString(),
+    date: new Date(item.created['date-time']),
     articleDoi: item.relation['is-review-of'][0].id,
     evaluationLocator: `rapidreviews:${item.URL}`,
   })),
@@ -63,26 +63,15 @@ const generatePageUrls = pipe(
   TE.map(constructUrls),
 );
 
-void (async (): Promise<void> => {
-  await pipe(
-    generatePageUrls,
-    TE.chain(TE.traverseArray(flow(
-      getJson,
-      TE.chainEitherK(rapidReviewCodec.decode),
-      TE.map(extractEvaluations),
-    ))),
-    TE.map(RA.flatten),
-    TE.bimap(
-      (errors) => process.stderr.write(PR.failure(errors).join('\n')),
-      (evaluations) => {
-        process.stdout.write('Date,Article DOI,Review ID\n');
-        pipe(
-          evaluations,
-          RA.map(({ date, articleDoi, evaluationLocator }) => process.stdout.write(`${date},${articleDoi},${evaluationLocator}\n`)),
-        );
-      },
-    ),
-    TE.match(constant(1), constant(0)),
-    T.map((exitStatus) => process.exit(exitStatus)),
-  )();
-})();
+export const fetchRapidReviews = (): FetchEvaluations => pipe(
+  generatePageUrls,
+  TE.chain(TE.traverseArray(flow(
+    getJson,
+    TE.chainEitherK(rapidReviewCodec.decode),
+    TE.map(extractEvaluations),
+  ))),
+  TE.bimap(
+    (errors) => PR.failure(errors).join('\n'),
+    RA.flatten,
+  ),
+);

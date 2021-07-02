@@ -111,11 +111,6 @@ find-prelights-reviews: build
 		cat ./data/reviews/f97bd177-5cb6-4296-8573-078318755bf2.csv | sort -g | uniq > /tmp/prelights.csv
 		mv /tmp/prelights.csv ./data/reviews/f97bd177-5cb6-4296-8573-078318755bf2.csv
 
-find-rapid-reviews: export TARGET = dev
-find-rapid-reviews: build
-	$(DOCKER_COMPOSE) run -T app \
-		npx ts-node scripts/find-reviews-from-rapid-reviews > ./data/reviews/5142a5bc-6b18-42b1-9a8d-7342d7d17e94.csv
-
 update-groups: export TARGET = dev
 update-groups: build
 	$(DOCKER_COMPOSE) run -e INGEST_LOG=${INGEST_LOG} app \
@@ -127,8 +122,7 @@ COMMUNITY_SCRIPTS := \
 	find-peerj-reviews \
 	find-screenit-reviews \
 	find-prereview-reviews \
-	find-prelights-reviews \
-	find-rapid-reviews
+	find-prelights-reviews
 
 sort-event-data:
 	find data -type f | xargs -I % sort -g -o % %

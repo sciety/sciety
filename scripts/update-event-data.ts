@@ -1,9 +1,15 @@
 import { pipe } from 'fp-ts/function';
 import { fetchNcrcEvaluations } from './fetch-ncrc-evaluations';
 import { fetchPciEvaluations } from './fetch-pci-evaluations';
+import { fetchRapidReviews } from './find-reviews-from-rapid-reviews';
 import { Group, updateAll } from './update-all';
 
 const allGroups: Array<Group> = [
+  {
+    id: '62f9b0d0-8d43-4766-a52a-ce02af61bc6a',
+    name: 'NCRC',
+    fetchFeed: fetchNcrcEvaluations(),
+  },
   {
     id: '74fd66e9-3b90-4b5a-a4ab-5be83db4c5de',
     name: 'PCI Zoology',
@@ -35,9 +41,9 @@ const allGroups: Array<Group> = [
     fetchFeed: fetchPciEvaluations('https://paleo.peercommunityin.org/rss/rss4elife'),
   },
   {
-    id: '62f9b0d0-8d43-4766-a52a-ce02af61bc6a',
-    name: 'NCRC',
-    fetchFeed: fetchNcrcEvaluations(),
+    id: '5142a5bc-6b18-42b1-9a8d-7342d7d17e94',
+    name: 'Rapid Reviews COVID-19',
+    fetchFeed: fetchRapidReviews(),
   },
 ];
 
