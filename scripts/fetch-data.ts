@@ -5,9 +5,9 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 
-const axiosGet = async (url: string) => {
+const axiosGet = async <D>(url: string, headers: Record<string, string>) => {
   const startTime = performance.now();
-  return axios.get<string>(url).finally(() => {
+  return axios.get<D>(url, { headers }).finally(() => {
     if (process.env.INGEST_LOG === 'io') {
       const endTime = performance.now();
       process.stdout.write(chalk.yellow(`Fetched ${url} (${Math.round(endTime - startTime)}ms)\n`));
@@ -15,9 +15,9 @@ const axiosGet = async (url: string) => {
   });
 };
 
-export const fetchPage = (url: string): TE.TaskEither<string, string> => pipe(
+export const fetchData = <D>(url: string, headers: Record<string, string> = {}): TE.TaskEither<string, D> => pipe(
   TE.tryCatch(
-    async () => axiosGet(url),
+    async () => axiosGet<D>(url, headers),
     E.toError,
   ),
   TE.bimap(
