@@ -2,12 +2,11 @@ import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { constant, flow, pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { google, sheets_v4 } from 'googleapis';
+import { FetchEvaluations } from './update-all';
 import Sheets = sheets_v4.Sheets;
-import {FetchEvaluations} from './update-all';
 
 const getSheets = (): Sheets => {
   const auth = new google.auth.GoogleAuth({
