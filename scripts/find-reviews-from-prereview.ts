@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
@@ -8,6 +7,7 @@ import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
+import { fetchData } from './fetch-data';
 import { FetchEvaluations } from './update-all';
 import { DoiFromString } from '../src/types/codecs/DoiFromString';
 import { Doi, isDoi } from '../src/types/doi';
@@ -60,14 +60,7 @@ const toReviews = (preprint: Preprint) => pipe(
 );
 
 export const fetchPrereviewEvaluations = (): FetchEvaluations => pipe(
-  TE.tryCatch(
-    async () => axios.get<unknown>(
-      'https://www.prereview.org/api/v2/preprints',
-      { headers: { Accept: 'application/json' } },
-    ),
-    String,
-  ),
-  TE.map((response) => response.data),
+  fetchData<unknown>('https://www.prereview.org/api/v2/preprints', { Accept: 'application/json' }),
   TE.chainEitherK(flow(
     preReviewResponse.decode,
     E.mapLeft((errors) => PR.failure(errors).join('\n')),
