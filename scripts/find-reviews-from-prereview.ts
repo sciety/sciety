@@ -8,9 +8,9 @@ import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
+import { FetchEvaluations } from './update-all';
 import { DoiFromString } from '../src/types/codecs/DoiFromString';
 import { Doi, isDoi } from '../src/types/doi';
-import * as RI from '../src/types/review-id';
 import { ReviewId } from '../src/types/review-id';
 
 const preReviewPreprint = t.type({
@@ -26,12 +26,6 @@ const preReviewResponse = t.type({
 });
 
 type PreReviewPreprint = t.TypeOf<typeof preReviewPreprint>;
-
-type Review = {
-  date: Date,
-  articleDoi: Doi,
-  reviewId: RI.ReviewId,
-};
 
 type Preprint = {
   handle: Doi,
@@ -56,12 +50,16 @@ const toPreprint = flow(
   )),
 );
 
-const toReviews = (preprint: Preprint): ReadonlyArray<Review> => pipe(
+const toReviews = (preprint: Preprint) => pipe(
   preprint.fullReviews,
-  RA.map(({ doi, createdAt }) => ({ date: createdAt, articleDoi: preprint.handle, reviewId: `doi:${doi.value}` as unknown as ReviewId })),
+  RA.map(({ doi, createdAt }) => ({
+    date: createdAt,
+    articleDoi: preprint.handle.value,
+    evaluationLocator: `doi:${doi.value}` as unknown as ReviewId,
+  })),
 );
 
-void pipe(
+export const fetchPrereviewEvaluations = (): FetchEvaluations => pipe(
   TE.tryCatch(
     async () => axios.get<unknown>(
       'https://www.prereview.org/api/v2/preprints',
@@ -79,18 +77,5 @@ void pipe(
     RA.map(toPreprint),
     RA.compact,
     RA.chain(toReviews),
-    RA.map(({ date, articleDoi, reviewId }) => `${date.toISOString()},${articleDoi.value},${RI.serialize(reviewId)}`),
   )),
-  TE.bimap(
-    (error) => process.stderr.write(error),
-    (reviews) => {
-      process.stdout.write('Date,Article DOI,Review ID\n');
-      process.stdout.write(reviews.join('\n'));
-      process.stdout.write('\n');
-    },
-  ),
-  TE.fold(
-    () => process.exit(1),
-    () => process.exit(0),
-  ),
-)();
+);

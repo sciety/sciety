@@ -94,11 +94,6 @@ find-peerj-reviews: build
 	$(DOCKER_COMPOSE) run -T app \
 		npx ts-node scripts/find-reviews-from-crossref-via-biorxiv 10.7717 10.7287 > ./data/reviews/53ed5364-a016-11ea-bb37-0242ac130002.csv
 
-find-prereview-reviews: export TARGET = dev
-find-prereview-reviews: build
-	$(DOCKER_COMPOSE) run -T app \
-		npx ts-node scripts/find-reviews-from-prereview > ./data/reviews/10360d97-bf52-4aef-b2fa-2f60d319edd7.csv
-
 find-screenit-reviews: export TARGET = dev
 find-screenit-reviews: build
 	$(DOCKER_COMPOSE) run -T app \
@@ -121,7 +116,6 @@ COMMUNITY_SCRIPTS := \
 	find-elife-reviews \
 	find-peerj-reviews \
 	find-screenit-reviews \
-	find-prereview-reviews \
 	find-prelights-reviews
 
 sort-event-data:

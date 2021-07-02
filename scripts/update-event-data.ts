@@ -1,6 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import { fetchNcrcEvaluations } from './fetch-ncrc-evaluations';
 import { fetchPciEvaluations } from './fetch-pci-evaluations';
+import { fetchPrereviewEvaluations } from './find-reviews-from-prereview';
 import { fetchRapidReviews } from './find-reviews-from-rapid-reviews';
 import { Group, updateAll } from './update-all';
 
@@ -39,6 +40,11 @@ const allGroups: Array<Group> = [
     id: '7a9e97d1-c1fe-4ac2-9572-4ecfe28f9f84',
     name: 'PCI Paleontology',
     fetchFeed: fetchPciEvaluations('https://paleo.peercommunityin.org/rss/rss4elife'),
+  },
+  {
+    id: '10360d97-bf52-4aef-b2fa-2f60d319edd7',
+    name: 'PREreview',
+    fetchFeed: fetchPrereviewEvaluations(),
   },
   {
     id: '5142a5bc-6b18-42b1-9a8d-7342d7d17e94',
