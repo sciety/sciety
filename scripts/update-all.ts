@@ -14,7 +14,7 @@ type Evaluation = {
   evaluationLocator: string,
 };
 
-export type FetchEvaluations = TE.TaskEither<string, Array<Evaluation>>;
+export type FetchEvaluations = TE.TaskEither<string, ReadonlyArray<Evaluation>>;
 
 export type Group = {
   id: string,
