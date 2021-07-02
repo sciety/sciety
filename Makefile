@@ -94,11 +94,6 @@ find-peerj-reviews: build
 	$(DOCKER_COMPOSE) run -T app \
 		npx ts-node scripts/find-reviews-from-crossref-via-biorxiv 10.7717 10.7287 > ./data/reviews/53ed5364-a016-11ea-bb37-0242ac130002.csv
 
-find-pci-reviews: export TARGET = dev
-find-pci-reviews: build
-	$(DOCKER_COMPOSE) run -T app \
-	npx ts-node scripts/find-reviews-from-pci
-
 find-prereview-reviews: export TARGET = dev
 find-prereview-reviews: build
 	$(DOCKER_COMPOSE) run -T app \
@@ -126,6 +121,11 @@ find-rapid-reviews: build
 	$(DOCKER_COMPOSE) run -T app \
 		npx ts-node scripts/find-reviews-from-rapid-reviews > ./data/reviews/5142a5bc-6b18-42b1-9a8d-7342d7d17e94.csv
 
+update-groups: export TARGET = dev
+update-groups: build
+	$(DOCKER_COMPOSE) run -T app \
+	npx ts-node scripts/update-groups
+
 COMMUNITY_SCRIPTS := \
 	find-review-commons-reviews \
 	find-elife-reviews \
@@ -140,7 +140,7 @@ COMMUNITY_SCRIPTS := \
 sort-event-data:
 	find data -type f | xargs -I % sort -g -o % %
 
-update-event-data: $(COMMUNITY_SCRIPTS) sort-event-data
+update-event-data: update-groups $(COMMUNITY_SCRIPTS) sort-event-data
 
 release: export TAG = latest/$(shell date +%Y%m%d%H%M)
 release:
