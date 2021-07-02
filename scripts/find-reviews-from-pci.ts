@@ -1,5 +1,4 @@
 import { pipe } from 'fp-ts/function';
-import { parse } from 'ts-command-line-args';
 import { fetchPciEvaluations } from './fetch-pci-evaluations';
 import { Group, updateAll } from './update-all';
 
@@ -35,14 +34,6 @@ const allGroups: Array<Group> = [
     fetchFeed: fetchPciEvaluations('https://paleo.peercommunityin.org/rss/rss4elife'),
   },
 ];
-
-type CliArgs = {
-  filter?: string,
-};
-
-const args = parse<CliArgs>({
-  filter: { type: String, alias: 'f', optional: true },
-});
 
 void (async (): Promise<ReadonlyArray<void>> => pipe(
   allGroups,
