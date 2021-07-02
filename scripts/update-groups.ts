@@ -1,4 +1,5 @@
 import { pipe } from 'fp-ts/function';
+import { fetchNcrcEvaluations } from './fetch-ncrc-evaluations';
 import { fetchPciEvaluations } from './fetch-pci-evaluations';
 import { Group, updateAll } from './update-all';
 
@@ -32,6 +33,11 @@ const allGroups: Array<Group> = [
     id: '7a9e97d1-c1fe-4ac2-9572-4ecfe28f9f84',
     name: 'PCI Paleontology',
     fetchFeed: fetchPciEvaluations('https://paleo.peercommunityin.org/rss/rss4elife'),
+  },
+  {
+    id: '62f9b0d0-8d43-4766-a52a-ce02af61bc6a',
+    name: 'NCRC',
+    fetchFeed: fetchNcrcEvaluations(),
   },
 ];
 
