@@ -118,7 +118,7 @@ find-rapid-reviews: build
 
 update-groups: export TARGET = dev
 update-groups: build
-	$(DOCKER_COMPOSE) run -T app \
+	$(DOCKER_COMPOSE) run -e INGEST_LOG=${INGEST_LOG} app \
 	npx ts-node scripts/update-event-data
 
 COMMUNITY_SCRIPTS := \

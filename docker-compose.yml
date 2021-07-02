@@ -15,6 +15,7 @@ services:
       EXPERIMENT_ENABLED: "true"
       FATHOM_SITE_ID:
       GOOGLE_TAG_MANAGER_ID:
+      INGEST_LOG:
       LOG_LEVEL:
       PGUSER: user
       PGHOST: db
