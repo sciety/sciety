@@ -30,7 +30,7 @@ export type Ports = {
 
 type SavedArticles = (ports: Ports) => (
   dois: ReadonlyArray<Doi>,
-) => TE.TaskEither<never, { content: HtmlFragment, count: number }>;
+) => T.Task<HtmlFragment>;
 
 export const savedArticles: SavedArticles = (ports) => (dois) => pipe(
   dois,
@@ -51,9 +51,4 @@ export const savedArticles: SavedArticles = (ports) => (dois) => pipe(
     renderSavedArticles,
   )),
   TE.toUnion,
-  TE.rightTask,
-  TE.map((content) => ({
-    content,
-    count: dois.length,
-  })),
 );

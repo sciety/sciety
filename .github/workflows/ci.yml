@@ -58,6 +58,7 @@ jobs:
           TWITTER_API_BEARER_TOKEN: ${{ secrets.TWITTER_API_BEARER_TOKEN }}
 
       - name: Taiko
+        if: github.ref == 'refs/heads/main'
         run: |
           make taiko
         env:

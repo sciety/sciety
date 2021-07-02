@@ -8,7 +8,7 @@ PCI Paleo values free access, transparency, and discoverability. Peer-reviewed a
 
 The purpose of PCI Paleo is not to offer a free peer-reviewing service to authors who simply want to improve their draft before submitting it to a journal. Therefore, PCI Paleo will only consider submissions of finalized articles (i.e., which have reached a stage of development deemed sufficient for submission to a journal).
 
-## Peer review model
+## Evaluation model
 
 * PCI Paleo promotes high quality: PCI Paleo recommends and promotes remarkable articles in Paleontology.
 

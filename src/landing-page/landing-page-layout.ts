@@ -10,7 +10,8 @@ export const landingPageLayout = (page: Page): string => `<!doctype html>
   ${googleTagManagerNoScript()}
   <div>
     <header class="landing-page-header">
-      <img src="/static/images/sciety-logo-blue-text.svg" alt="Sciety logo">
+      <img class="landing-page-header__logo" src="/static/images/sciety-logo-blue-text.svg" alt="Sciety logo">
+      <a href="/menu" class="landing-page-header__menu_link"><img src="/static/images/menu-icon.svg" alt="" /></a>
       <div class="landing-page-header__link_container">
         <a href="https://twitter.com/scietyHQ" class="landing-page-header__follow_link"><img src="/static/images/twitter-bird.svg" alt="Follow us on Twitter"/></a>
         <a href="https://www.facebook.com/ScietyHQ/" class="landing-page-header__follow_link"><img src="/static/images/facebook.svg" alt="Follow us on Facebook"/></a>

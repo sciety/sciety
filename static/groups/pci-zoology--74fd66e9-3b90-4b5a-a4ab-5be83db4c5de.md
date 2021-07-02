@@ -8,7 +8,7 @@ Peer Community in Zoology (PCI Zoology) has been launched in July 2020, replacin
 *   PCI Zoology is transparent: Reviews and recommendations (for unpublished articles) and recommendations (for published articles) are freely available for consultation. Recommendations are signed by the recommenders. Reviews may also be signed if the reviewers agree to do so.
 *   PCI Zoology is not exclusive: An article may be recommended by different Peer Communities in X (a feature of particular interest for articles relating to multidisciplinary studies) and may even be published in a traditional journal.
 
-## Peer review model
+## Evaluation model
 
 ### Which manuscripts can be recommended?
 

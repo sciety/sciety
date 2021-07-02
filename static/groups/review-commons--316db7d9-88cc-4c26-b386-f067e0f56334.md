@@ -13,7 +13,7 @@ Review Commons will:
 *   Reduce re-reviewing at multiple journals.
 *   Accelerate the publishing process by providing journals with high-quality referee reports.
 
-## Peer review model
+## Evaluation model
 
 An independent Managing Editor will liaise with the authors and assign experienced professional editors at EMBO Press to run a high-quality, in-depth peer-review process. The EMBO editors will only invite referees, but not assess the manuscript for their journals. Reviewers may co-review manuscripts with colleagues, e.g. members of their research groups.
 

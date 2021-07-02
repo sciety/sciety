@@ -1,3 +1,5 @@
+import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
 import {
   DomainEvent,
   isEditorialCommunityReviewedArticleEvent,
@@ -9,6 +11,7 @@ import { GroupId } from '../../types/group-id';
 type GroupMeta = {
   reviewCount: number,
   followerCount: number,
+  latestActivity: O.Option<Date>,
 };
 
 export const updateGroupMeta = (groupId: GroupId) => (meta: GroupMeta, event: DomainEvent): GroupMeta => {
@@ -25,10 +28,24 @@ export const updateGroupMeta = (groupId: GroupId) => (meta: GroupMeta, event: Do
     };
   }
   if (isEditorialCommunityReviewedArticleEvent(event) && event.editorialCommunityId === groupId) {
-    return {
-      ...meta,
-      reviewCount: meta.reviewCount + 1,
-    };
+    return pipe(
+      meta.latestActivity,
+      O.fold(
+        () => ({
+          ...meta,
+          reviewCount: meta.reviewCount + 1,
+          latestActivity: O.some(event.date),
+        }),
+        (date) => (event.date > date ? {
+          ...meta,
+          reviewCount: meta.reviewCount + 1,
+          latestActivity: O.some(event.date),
+        } : {
+          ...meta,
+          reviewCount: meta.reviewCount + 1,
+        }),
+      ),
+    );
   }
   return meta;
 };

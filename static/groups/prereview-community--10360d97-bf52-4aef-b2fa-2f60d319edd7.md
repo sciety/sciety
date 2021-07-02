@@ -4,7 +4,7 @@ PREreview's mission is to bring more diversity to scholarly peer review by suppo
 
 We envision a system in which any researcher, regardless of their prior engagement with journal-organized peer review, career level, geographical location, institutional affiliation, research field, gender, sexual orientation, and ability is invited to share openly constructive feedback on early version of research manuscripts shared as preprints on any web server.
 
-## Peer review model
+## Evaluation model
 
 At PREreview we believe all researchers should be allowed to help others by reviewing the work of their peers, as long as it is done constructively.
 

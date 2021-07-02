@@ -16,7 +16,7 @@ Evaluation and recommendation by PCI Animal Science are free of charge. When an 
 
 *   PCI Animal Science is not exclusive: An article may be recommended by different Peer Communities in X (a feature of particular interest for articles relating to multidisciplinary studies) and may even be published in a traditional journal (although this is not the goal of PCI Animal Science).
 
-## Peer review model
+## Evaluation model
 
 ### Which manuscripts can be recommended by PCI Animal Science?
 

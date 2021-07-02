@@ -11,30 +11,30 @@ type Card = {
 };
 
 const card1: Card = {
-  articleId: '10.1101/2021.04.06.21254882',
-  articleTitle: 'Evidence for increased breakthrough rates of SARS-CoV-2 variants of concern in BNT162b2 mRNA vaccinated individuals',
-  date: new Date('2021-04-22'),
-  groupId: '62f9b0d0-8d43-4766-a52a-ce02af61bc6a',
-  groupName: 'NCRC',
-  avatarPath: '/static/groups/ncrc--62f9b0d0-8d43-4766-a52a-ce02af61bc6a.jpg',
+  articleId: '10.1101/2021.01.20.427368',
+  articleTitle: 'GRP78 binds SARS-CoV-2 Spike protein and ACE2 and GRP78 depleting antibody blocks viral entry and infection in vitro',
+  date: new Date('2021-06-17'),
+  groupId: '5142a5bc-6b18-42b1-9a8d-7342d7d17e94',
+  groupName: 'RR:C19',
+  avatarPath: '/static/groups/rapid-reviews-covid-19--5142a5bc-6b18-42b1-9a8d-7342d7d17e94.png',
 };
 
 const card2: Card = {
-  articleId: '10.1101/2020.07.04.187583',
-  articleTitle: 'Gender, race and parenthood impact academic productivity during the COVID-19 pandemic: from survey to action',
-  date: new Date('2020-09-28'),
-  groupId: '10360d97-bf52-4aef-b2fa-2f60d319edd7',
-  groupName: 'PREreview',
-  avatarPath: '/static/groups/prereview-community--10360d97-bf52-4aef-b2fa-2f60d319edd7.jpg',
+  articleId: '10.1101/2020.12.21.423144',
+  articleTitle: 'Oligomerization of the Human Adenosine A 2A Receptor is Driven by the Intrinsically Disordered C-terminus',
+  date: new Date('2021-06-29'),
+  groupId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
+  groupName: 'eLife',
+  avatarPath: '/static/groups/elife--b560187e-f2fb-4ff9-a861-a204f3fc0fb0.png',
 };
 
 const card3: Card = {
-  articleId: '10.1101/2021.04.30.442087',
-  articleTitle: 'Diverse mechanisms for epigenetic imprinting in mammals',
+  articleId: '10.1101/2021.06.02.21258076',
+  articleTitle: 'Genomic characterization and Epidemiology of an emerging SARS-CoV-2 variant in Delhi, India',
   date: new Date('2021-06-18'),
-  groupId: 'f97bd177-5cb6-4296-8573-078318755bf2',
-  groupName: 'prelights',
-  avatarPath: '/static/groups/prelights--f97bd177-5cb6-4296-8573-078318755bf2.jpg',
+  groupId: '62f9b0d0-8d43-4766-a52a-ce02af61bc6a',
+  groupName: 'NCRC',
+  avatarPath: '/static/groups/ncrc--62f9b0d0-8d43-4766-a52a-ce02af61bc6a.jpg',
 };
 
 const renderCard = (card: Card) => `

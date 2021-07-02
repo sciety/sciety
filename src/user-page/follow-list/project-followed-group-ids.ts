@@ -1,8 +1,5 @@
-import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
-import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent } from '../../types/domain-events';
 import * as Gid from '../../types/group-id';
@@ -25,13 +22,11 @@ const calculateFollowedGroups = (userId: UserId) => (events: ReadonlyArray<Domai
   );
 };
 
-type FollowedGroupIds = (userId: UserId) => TE.TaskEither<'not-following-groups', RNEA.ReadonlyNonEmptyArray<Gid.GroupId>>;
+type FollowedGroupIds = (userId: UserId) => T.Task<ReadonlyArray<Gid.GroupId>>;
 
 export const followedGroupIds = (
   getAllEvents: GetAllEvents,
 ): FollowedGroupIds => (userId) => pipe(
   getAllEvents,
   T.map(calculateFollowedGroups(userId)),
-  T.map(RNEA.fromReadonlyArray),
-  T.map(E.fromOption(() => 'not-following-groups' as const)),
 );

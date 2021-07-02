@@ -2,7 +2,7 @@
 
 One of the missions of RR:C19 is to accelerate peer review of COVID-19-related research across a wide range of disciplines and deliver almost-real-time, dependable scientific information that policymakers, scholars, and health leaders can use. We do this by soliciting rapid peer reviews of time-sensitive and interesting preprints, which are then published online and linked to the preprint servers that host the manuscripts. An underlying value of RR:C19 is transparency and reliability. Each review is published online and assigned a DOI, making the work fully citable and claimable on reviewers’ ORCID and Publons accounts. Our standard practice is to publish the reviewers’ full names and affiliations, although we will allow reviewers to publish their review anonymously, upon request. RR:C19 assesses manuscripts with the same level of rigour as found for top journals. Assessments include how well the paper’s conclusions are substantiated by the research, graded on the RR:C19 Strength of Evidence Scale, with supporting comments.
 
-## Peer review model
+## Evaluation model
 
 - **Strong**: The main study claims are very well-justified by the data and analytic methods used. There is little room for doubt that the study produced has very similar results and conclusions as compared with the hypothetical ideal study. The study’s main claims should be considered conclusive and actionable without reservation.
 

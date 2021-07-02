@@ -6,9 +6,16 @@
 @use '../sass/breakpoints';
 @use '../sass/button';
 @use '../sass/list';
+@use '../sass/layout';
 @use 'common';
 
 $_header-height-in-px: 60px;
+
+@mixin landing-page-media-query() {
+  @media only screen and (min-width: #{math.div(430px, settings.$base-font-measure)}em) {
+    @content;
+  }
+}
 
 .landing-page-header {
   @include common.container-horizontal-spacing();
@@ -17,6 +24,34 @@ $_header-height-in-px: 60px;
   display: flex;
   height: functions.px-to-rem($_header-height-in-px);
 }
+
+.landing-page-header__logo {
+  display: none;
+
+  @include landing-page-media-query() {
+    display: unset;
+  }
+}
+
+.landing-page-header__menu_link {
+  display: inline-block;
+  float: left;
+  @supports (display: flex) {
+    display: flex;
+    float: none;
+  }
+
+  @include landing-page-media-query() {
+    display: none;
+  }
+
+  &::before {
+    @include layout.visually-hidden();
+    content: 'Open the menu';
+  }
+
+}
+
 
 .landing-page-header__link_container {
   margin-left: auto;
@@ -42,7 +77,7 @@ $_header-height-in-px: 60px;
   }
 
 
-  @media only screen and (min-width: #{math.div(430px, settings.$base-font-measure)}em) {
+  @include landing-page-media-query() {
     display: inline-flex;
   }
 }

@@ -64,7 +64,7 @@ const renderTagManagerNoScript = (tagManagerId: string) => `
 `;
 
 const renderFathomScript = (fathomId: string) => `
-  <script src="https://cdn.usefathom.com/script.js" data-site="${fathomId}" defer></script>
+  <script src="https://cdn.usefathom.com/script.js" data-site="${fathomId}" defer data-cookieconsent="ignore"></script>
 `;
 
 export const googleTagManager = (userId: O.Option<UserId>): HtmlFragment => pipe(
