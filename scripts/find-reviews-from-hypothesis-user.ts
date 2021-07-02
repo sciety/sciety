@@ -1,4 +1,6 @@
 import axios from 'axios';
+import * as T from 'fp-ts/Task';
+import { pipe } from 'fp-ts/function';
 
 const userId = process.argv[2];
 
@@ -27,7 +29,7 @@ const processRow = (server: string) => (row: Row): void => {
   }
 };
 
-const processServer = async (server: string): Promise<void> => {
+const processServer = (server: string) => async (): Promise<void> => {
   const perPage = 200;
   const { data: firstPage } = await axios.get<HypothesisResponse>(`https://api.hypothes.is/api/search?user=${userId}&uri.parts=${server}&limit=${perPage}&sort=created&order=asc`);
 
@@ -46,8 +48,8 @@ const processServer = async (server: string): Promise<void> => {
 
 void (async (): Promise<void> => {
   process.stdout.write('Date,Article DOI,Review ID\n');
-  await Promise.all([
-    processServer('biorxiv'),
-    processServer('medrxiv'),
-  ]);
+  await pipe(
+    ['biorxiv', 'medrxiv'],
+    T.traverseArray(processServer),
+  )();
 })();
