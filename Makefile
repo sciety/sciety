@@ -119,7 +119,7 @@ find-rapid-reviews: build
 update-groups: export TARGET = dev
 update-groups: build
 	$(DOCKER_COMPOSE) run -T app \
-	npx ts-node scripts/update-groups
+	npx ts-node scripts/update-event-data
 
 COMMUNITY_SCRIPTS := \
 	find-review-commons-reviews \
