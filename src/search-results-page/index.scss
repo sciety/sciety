@@ -14,9 +14,12 @@ $_search-form-text-inline-padding: 12px;
 $_inline-margin: settings.$base-font-measure;
 $_clear-button-inline-size: 48px;
 
+.sciety-grid--search-results > * {
+  @include layout.sciety-grid-columns();
+}
+
 .sciety-grid--search-results > .page-header--search-results {
   @include layout.page-header-top-space();
-  @include layout.sciety-grid-columns();
   color: settings.$colour-text-primary;
   margin: 0 1rem;
 
@@ -44,7 +47,6 @@ $_clear-button-inline-size: 48px;
 }
 
 .search-form {
-  @include layout.sciety-grid-columns();
   margin-left: functions.px-to-rem($_inline-margin);
   margin-right: functions.px-to-rem($_inline-margin);
   margin-bottom: baseline.increments(3);
@@ -88,10 +90,6 @@ $_clear-button-inline-size: 48px;
 .search-form__clear_icon {
   display: block;
   margin: 0 auto;
-}
-
-.sciety-grid--search-results > .search-results {
-  @include layout.sciety-grid-columns();
 }
 
 .search-results__page_count {

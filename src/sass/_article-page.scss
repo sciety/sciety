@@ -13,8 +13,7 @@
   margin-right: auto;
 }
 
-.sciety-grid--article > .page-header--article,
-.sciety-grid--article > .main-content {
+.sciety-grid--article > * {
   @include layout.sciety-grid-columns();
 }
 
