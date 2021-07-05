@@ -72,7 +72,7 @@
     "@types/rdfjs__sink-map": "^1.0.2",
     "@types/sanitize-html": "^2.3.1",
     "@types/supertest": "^2.0.11",
-    "@types/uuid": "^8.3.0",
+    "@types/uuid": "^8.3.1",
     "@types/xmldom": "^0.1.31",
     "@typescript-eslint/eslint-plugin": "^4.28.1",
     "@typescript-eslint/parser": "^4.28.1",
