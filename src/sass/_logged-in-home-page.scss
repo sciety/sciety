@@ -1,28 +1,16 @@
 @use 'baseline';
 @use 'card';
+@use 'layout';
 
 .sciety-grid--logged-in-home-page {
+  @include layout.sciety-grid-columns();
   margin-left: 1rem;
   margin-right: 1rem;
-
-  > .logged-in-home-page-header {
-    grid-column: 1 / -1;
-  }
 }
 
 .logged-in-home-page-header {
   text-align: center;
   margin-bottom: #{baseline.increments(7)};
-}
-
-.logged-in-home-page-feed-container {
-  grid-column: 1 / -1;
-}
-
-@media screen and (min-width: 56.25em) {
-  .sciety-grid--logged-in-home-page > .logged-in-home-page-feed-container {
-    grid-column: 1 / 9;
-  }
 }
 
 .your-feed__list {
