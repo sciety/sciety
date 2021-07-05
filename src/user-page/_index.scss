@@ -14,7 +14,7 @@ $_inline-margin: 1rem;
   margin-right: auto;
 }
 
-.sciety-grid--user > * {
+.sciety-grid--user {
   @include layout.sciety-grid-columns();
 }
 

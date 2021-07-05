@@ -36,10 +36,12 @@
 }
 
 @mixin sciety-grid-columns() {
-  grid-column: 1 / -1;
+  > * {
+    grid-column: 1 / -1;
 
-  @include breakpoints.not-narrow {
-    grid-column: 3 / 11;
+    @include breakpoints.not-narrow {
+      grid-column: 3 / 11;
+    }
   }
 }
 
