@@ -8,7 +8,7 @@ export const tabList = (userId: UserId, savedArticleCount: number, followedGroup
     url: `/users/${userId}/saved-articles`,
   },
   {
-    label: toHtmlFragment(`Followed groups${followedGroupsCount !== undefined ? ` (${followedGroupsCount})` : ''}`),
+    label: toHtmlFragment(`Following${followedGroupsCount !== undefined ? ` (${followedGroupsCount})` : ''}`),
     url: `/users/${userId}/followed-groups`,
   },
 ];

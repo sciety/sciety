@@ -161,7 +161,7 @@ describe('user-page', () => {
       const headings = Array.from(tabHeadings).map((tab) => tab.innerHTML);
 
       expect(headings[0]).toContain('Saved articles (0)');
-      expect(headings[1]).toContain('Followed groups (1)');
+      expect(headings[1]).toContain('Following (1)');
     });
   });
 
@@ -184,7 +184,7 @@ describe('user-page', () => {
       )();
       const tabHeading = page.querySelector('.tab--active')?.innerHTML;
 
-      expect(tabHeading).toContain('Followed groups');
+      expect(tabHeading).toContain('Following');
     });
 
     describe('user is following groups', () => {
