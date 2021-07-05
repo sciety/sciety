@@ -9,11 +9,6 @@
 
 $_inline-margin: 1rem;
 
-.sciety-grid.sciety-grid--user {
-  margin-left: auto;
-  margin-right: auto;
-}
-
 .sciety-grid--user {
   @include layout.sciety-grid-columns();
 }

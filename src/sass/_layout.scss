@@ -36,6 +36,9 @@
 }
 
 @mixin sciety-grid-columns() {
+  margin-left: auto;
+  margin-right: auto;
+
   > * {
     grid-column: 1 / -1;
 

@@ -1,16 +1,32 @@
 @use 'baseline';
+@use 'breakpoints';
 @use 'card';
 @use 'layout';
 
 .sciety-grid--logged-in-home-page {
   @include layout.sciety-grid-columns();
-  margin-left: 1rem;
-  margin-right: 1rem;
 }
 
 .logged-in-home-page-header {
   @include layout.page-header-top-space();
+  margin-left: 1rem;
+  margin-right: 1rem;
   margin-bottom: #{baseline.increments(7)};
+
+  @include breakpoints.not-narrow() {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+.logged-in-home-page-feed-container h2 {
+  margin-left: 1rem;
+  margin-right: 1rem;
+
+  @include breakpoints.not-narrow() {
+    margin-left: 0;
+    margin-right: 0;
+  }
 }
 
 .your-feed__list {
