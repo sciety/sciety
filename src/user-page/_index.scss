@@ -59,4 +59,11 @@ $_inline-margin: 1rem;
 
 .static-message {
   padding-top: baseline.increments(2);
+  margin-left: 1rem;
+  margin-right: 1rem;
+
+  @include breakpoints.not-narrow() {
+    margin-left: 0;
+    margin-right: 0;
+  }
 }
