@@ -15,20 +15,13 @@
 
 .sciety-grid--article > .page-header--article,
 .sciety-grid--article > .main-content {
-  grid-column: 1 / -1;
+  @include layout.sciety-grid-columns();
 }
 
 .sciety-grid--article > .page-header--article {
   @include layout.page-header-top-space();
   margin: 0 1rem baseline.increments(3);
   color: settings.$colour-text-primary;
-}
-
-@include breakpoints.not-narrow {
-  .sciety-grid--article > .page-header--article,
-  .sciety-grid--article > .main-content {
-    grid-column: 3 / 11;
-  }
 }
 
 .article-actions {

@@ -35,6 +35,14 @@
   flex-grow: 1;
 }
 
+@mixin sciety-grid-columns() {
+  grid-column: 1 / -1;
+
+  @include breakpoints.not-narrow {
+    grid-column: 3 / 11;
+  }
+}
+
 @mixin page-header-top-space() {
   padding-top: baseline.increments(2);
 
