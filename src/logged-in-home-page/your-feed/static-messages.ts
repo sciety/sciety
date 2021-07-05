@@ -2,7 +2,6 @@ export const followSomething = `
   <p>
     Your feed is empty! Start following some groups to see their most recent evaluations right here.
   </p>
-  <img src="/static/images/feed-screenshot.png" alt="Screenshot of a feed" class="feed__image">
 `;
 
 export const noEvaluationsYet = `

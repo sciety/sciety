@@ -37,13 +37,6 @@ body {
   min-height: 100vh;
 }
 
-.feed__image {
-  margin: 0 auto;
-  padding-top: #{baseline.increments(3)};
-  display: block;
-  width: 80%;
-}
-
 .sciety-grid--simple > * {
   grid-column: 1 / -1;
 }
