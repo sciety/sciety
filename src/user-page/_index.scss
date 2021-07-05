@@ -14,20 +14,9 @@ $_inline-margin: 1rem;
   margin-right: auto;
 }
 
-.sciety-grid--user > .page-header--user {
-  grid-column: 1 / -1;
-
-  @include breakpoints.not-narrow {
-    grid-column: 3 / 11;
-  }
-}
-
-.main-content--user {
-  grid-column: 1 / -1;
-
-  @include breakpoints.not-narrow {
-    grid-column: 3 / 11;
-  }
+.sciety-grid--user > .page-header--user,
+.sciety-grid--user > .main-content--user {
+  @include layout.sciety-grid-columns();
 }
 
 .page-header--user {
