@@ -1,7 +1,7 @@
-@use 'baseline';
-@use 'breakpoints';
-@use 'card';
-@use 'layout';
+@use '../sass/baseline';
+@use '../sass/breakpoints';
+@use '../sass/card';
+@use '../sass/layout';
 
 .sciety-grid--logged-in-home-page {
   @include layout.sciety-grid-columns();
