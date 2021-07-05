@@ -9,6 +9,7 @@
 }
 
 .logged-in-home-page-header {
+  @include layout.page-header-top-space();
   margin-bottom: #{baseline.increments(7)};
 }
 
