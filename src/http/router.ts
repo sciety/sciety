@@ -162,6 +162,16 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   router.get(
+    '/users/:id(.+)/followed-groups',
+    async (context, next) => {
+      context.status = StatusCodes.PERMANENT_REDIRECT;
+      context.redirect(`/users/${context.params.id}/following`);
+
+      await next();
+    },
+  );
+
+  router.get(
     '/users/:id/saved-articles',
     pageHandler(flow(
       userPageParams.decode,
@@ -172,7 +182,7 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   router.get(
-    '/users/:id/followed-groups',
+    '/users/:id/following',
     pageHandler(flow(
       userPageParams.decode,
       E.mapLeft(toNotFound),
