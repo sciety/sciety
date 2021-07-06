@@ -31,12 +31,13 @@ const processRow = (server: string) => (row: Row): void => {
 
 const processServer = (server: string) => async (): Promise<void> => {
   const perPage = 200;
-  let { data } = await axios.get<HypothesisResponse>(`https://api.hypothes.is/api/search?user=${userId}&uri.parts=${server}&limit=${perPage}&sort=created&order=asc`);
+  let latestDate = encodeURIComponent(new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString());
+  let { data } = await axios.get<HypothesisResponse>(`https://api.hypothes.is/api/search?user=${userId}&uri.parts=${server}&limit=${perPage}&sort=created&order=asc&search_after=${latestDate}`);
 
   // eslint-disable-next-line no-loops/no-loops
   while (data.rows.length > 0) {
     data.rows.forEach(processRow(server));
-    const latestDate = encodeURIComponent(data.rows[data.rows.length - 1].created);
+    latestDate = encodeURIComponent(data.rows[data.rows.length - 1].created);
     data = (await axios.get<HypothesisResponse>(`https://api.hypothes.is/api/search?user=${userId}&uri.parts=${server}&limit=${perPage}&sort=created&order=asc&search_after=${latestDate}`)).data;
   }
 };
