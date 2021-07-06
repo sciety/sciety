@@ -34,8 +34,20 @@ type Params = {
 
 type UserPage = (tab: string) => (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
+type ToUserId = (handle: string) => TE.TaskEither<DE.DataError, UserId>;
+
+const toUserId: ToUserId = (handle) => pipe(
+  handle,
+  () => TE.left(DE.unavailable),
+);
+
 export const userPage = (ports: Ports): UserPage => (tab) => (params) => {
   if (params.handle) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const taskEitherOfAnId = pipe(
+      params.handle,
+      toUserId,
+    );
     return TE.left({
       type: 'unavailable',
       message: toHtmlFragment('handle unavailable'),
