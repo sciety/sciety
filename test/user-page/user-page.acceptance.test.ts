@@ -118,7 +118,7 @@ describe('user-page', () => {
 
       expect(page).toStrictEqual(E.right(expect.objectContaining({
         openGraph: expect.objectContaining({
-          description: '1 saved article | 2 followed groups',
+          description: '1 saved article | Following 2 groups',
         }),
       })));
     });
