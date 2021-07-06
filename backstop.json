@@ -18,7 +18,6 @@
     }
   ],
   "misMatchThreshold": 0,
-  "onBeforeScript": "puppet/onBefore.js",
   "onReadyScript": "puppet/onReady.js",
   "scenarios": [
     {
