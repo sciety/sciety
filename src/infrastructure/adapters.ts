@@ -8,6 +8,7 @@ import { FetchCrossrefArticle } from './fetch-crossref-article';
 import { FetchReview } from './fetch-review';
 import { ArticleVersion } from './get-article-version-events-from-biorxiv';
 import { GetTwitterUserDetails } from './get-twitter-user-details';
+import { GetTwitterUserId } from './get-twitter-user-id';
 import { Logger } from './logger';
 import { SearchResults } from './search-europe-pmc';
 import { ArticleServer } from '../types/article-server';
@@ -48,6 +49,7 @@ export type Adapters = {
   getFollowList: EventSourcedFollowListRepository,
   getGroup: GetGroup,
   getUserDetails: GetTwitterUserDetails,
+  getUserId: GetTwitterUserId,
   logger: Logger,
   searchEuropePmc: (
     pageSize: number,

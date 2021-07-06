@@ -24,6 +24,7 @@ import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryWord } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
+import { arbitraryUserId } from '../types/user-id.helper';
 
 type TestServer = {
   adapters: Adapters,
@@ -73,6 +74,7 @@ export const createTestServer = async (): Promise<TestServer> => {
       displayName: '',
       handle: '',
     }),
+    getUserId: () => TE.right(arbitraryUserId()),
     follows: () => T.of(false),
     findVersionsForArticleDoi: () => T.of(O.none),
   };

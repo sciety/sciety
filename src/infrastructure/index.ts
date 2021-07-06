@@ -30,6 +30,7 @@ import { getEventsFromDatabase } from './get-events-from-database';
 import { getHtml } from './get-html';
 import { getTwitterResponse } from './get-twitter-response';
 import { getTwitterUserDetails } from './get-twitter-user-details';
+import { getTwitterUserId } from './get-twitter-user-id';
 import { getXmlFromCrossrefRestApi } from './get-xml-from-crossref-rest-api';
 import { inMemoryGroupRepository } from './in-memory-groups';
 import {
@@ -122,6 +123,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
           getTwitterResponse(dependencies.twitterApiBearerToken, logger),
           logger,
         ),
+        getUserId: getTwitterUserId,
         follows: (...args) => follows(...args)(getAllEvents),
         findVersionsForArticleDoi: biorxivCache(
           (...args) => getArticleVersionEventsFromBiorxiv(...args)({ getJson, logger: loggerIO(logger) }),

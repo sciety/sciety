@@ -49,6 +49,7 @@ const defaultPorts = {
     title: arbitrarySanitisedHtmlFragment(),
     authors: [],
   }),
+  getUserId: () => TE.right(arbitraryUserId()),
   findReviewsForArticleDoi: () => T.of([]),
   findVersionsForArticleDoi: () => TO.none,
 };
@@ -192,6 +193,7 @@ describe('user-page', () => {
         fetchArticle: shouldNotBeCalled,
         findReviewsForArticleDoi: shouldNotBeCalled,
         findVersionsForArticleDoi: shouldNotBeCalled,
+        getUserId: () => TE.right(arbitraryUserId()),
       };
       const params = { id: arbitraryUserId() };
       const page = await pipe(
@@ -218,6 +220,7 @@ describe('user-page', () => {
           fetchArticle: shouldNotBeCalled,
           findReviewsForArticleDoi: shouldNotBeCalled,
           findVersionsForArticleDoi: shouldNotBeCalled,
+          getUserId: () => TE.right(arbitraryUserId()),
         };
         const params = { id: userId };
         const page = await pipe(
@@ -244,6 +247,7 @@ describe('user-page', () => {
             fetchArticle: shouldNotBeCalled,
             findReviewsForArticleDoi: shouldNotBeCalled,
             findVersionsForArticleDoi: shouldNotBeCalled,
+            getUserId: () => TE.right(arbitraryUserId()),
           };
           const params = { id: userId };
 
@@ -273,6 +277,7 @@ describe('user-page', () => {
           fetchArticle: shouldNotBeCalled,
           findReviewsForArticleDoi: shouldNotBeCalled,
           findVersionsForArticleDoi: shouldNotBeCalled,
+          getUserId: () => TE.right(arbitraryUserId()),
         };
         const params = { id: userId };
         page = await pipe(
@@ -310,6 +315,7 @@ describe('user-page', () => {
         fetchArticle: shouldNotBeCalled,
         findReviewsForArticleDoi: shouldNotBeCalled,
         findVersionsForArticleDoi: shouldNotBeCalled,
+        getUserId: () => TE.right(arbitraryUserId()),
       };
       const params = { id: arbitraryUserId() };
       const page = await pipe(
@@ -336,6 +342,7 @@ describe('user-page', () => {
         fetchArticle: shouldNotBeCalled,
         findReviewsForArticleDoi: shouldNotBeCalled,
         findVersionsForArticleDoi: shouldNotBeCalled,
+        getUserId: () => TE.right(arbitraryUserId()),
       };
       const params = { id: arbitraryUserId() };
       const page = await pipe(
@@ -368,6 +375,7 @@ describe('user-page', () => {
           }),
           findReviewsForArticleDoi: () => T.of([]),
           findVersionsForArticleDoi: () => TO.none,
+          getUserId: () => TE.right(arbitraryUserId()),
         };
         const params = { id: userId };
 
@@ -399,6 +407,7 @@ describe('user-page', () => {
             fetchArticle: () => TE.left('unavailable'),
             findReviewsForArticleDoi: () => T.of([]),
             findVersionsForArticleDoi: () => TO.none,
+            getUserId: () => TE.right(arbitraryUserId()),
           };
           const params = { id: userId };
 
@@ -432,6 +441,7 @@ describe('user-page', () => {
           fetchArticle: shouldNotBeCalled,
           findReviewsForArticleDoi: shouldNotBeCalled,
           findVersionsForArticleDoi: shouldNotBeCalled,
+          getUserId: () => TE.right(arbitraryUserId()),
         };
         const params = { id: userId };
 

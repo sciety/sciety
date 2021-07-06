@@ -21,10 +21,13 @@ import { UserId } from '../types/user-id';
 
 type GetUserDetails = (userId: UserId) => TE.TaskEither<DE.DataError, UserDetails>;
 
+type GetUserId = (handle: string) => TE.TaskEither<DE.DataError, UserId>;
+
 // ts-unused-exports:disable-next-line
 export type Ports = SavedArticlesPorts & FollowListPorts & {
   getAllEvents: GetAllEvents,
   getUserDetails: GetUserDetails,
+  getUserId: GetUserId,
 };
 
 type Params = {
@@ -34,19 +37,12 @@ type Params = {
 
 type UserPage = (tab: string) => (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
-type ToUserId = (handle: string) => TE.TaskEither<DE.DataError, UserId>;
-
-const toUserId: ToUserId = (handle) => pipe(
-  handle,
-  () => TE.left(DE.unavailable),
-);
-
 export const userPage = (ports: Ports): UserPage => (tab) => (params) => {
   if (params.handle) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const taskEitherOfAnId = pipe(
       params.handle,
-      toUserId,
+      ports.getUserId,
     );
     return TE.left({
       type: 'unavailable',
