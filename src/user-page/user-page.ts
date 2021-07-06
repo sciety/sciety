@@ -29,30 +29,42 @@ export type Ports = SavedArticlesPorts & FollowListPorts & {
 
 type Params = {
   id: UserId,
+  handle?: string,
 };
 
 type UserPage = (tab: string) => (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
-export const userPage = (ports: Ports): UserPage => (tab) => ({ id }) => pipe(
-  {
-    dois: TE.rightTask(projectSavedArticleDois(ports.getAllEvents)(id)),
-    groupIds: TE.rightTask(followedGroupIds(ports.getAllEvents)(id)),
-    userDetails: ports.getUserDetails(id),
-    activeTabIndex: TE.right(tab === 'saved-articles' ? 0 as const : 1 as const),
-  },
-  sequenceS(TE.ApplyPar),
-  TE.chainTaskK((inputs) => pipe(
-    (inputs.activeTabIndex === 0) ? savedArticles(ports)(inputs.dois) : followList(ports)(inputs.groupIds),
-    T.map(tabs({
-      tabList: tabList(id, inputs.dois.length, inputs.groupIds.length),
-      activeTabIndex: inputs.activeTabIndex,
-    })),
-    T.map((mainContent) => ({
-      header: renderHeader(inputs.userDetails),
-      userDisplayName: toHtmlFragment(inputs.userDetails.displayName),
-      description: renderDescription(inputs.dois.length, inputs.groupIds.length),
-      mainContent,
-    })),
-  )),
-  TE.bimap(renderErrorPage, renderPage),
-);
+export const userPage = (ports: Ports): UserPage => (tab) => (params) => {
+  if (params.handle) {
+    return TE.left({
+      type: 'unavailable',
+      message: toHtmlFragment('handle unavailable'),
+    });
+  }
+
+  const { id } = params;
+
+  return pipe(
+    {
+      dois: TE.rightTask(projectSavedArticleDois(ports.getAllEvents)(id)),
+      groupIds: TE.rightTask(followedGroupIds(ports.getAllEvents)(id)),
+      userDetails: ports.getUserDetails(id),
+      activeTabIndex: TE.right(tab === 'saved-articles' ? 0 as const : 1 as const),
+    },
+    sequenceS(TE.ApplyPar),
+    TE.chainTaskK((inputs) => pipe(
+      (inputs.activeTabIndex === 0) ? savedArticles(ports)(inputs.dois) : followList(ports)(inputs.groupIds),
+      T.map(tabs({
+        tabList: tabList(id, inputs.dois.length, inputs.groupIds.length),
+        activeTabIndex: inputs.activeTabIndex,
+      })),
+      T.map((mainContent) => ({
+        header: renderHeader(inputs.userDetails),
+        userDisplayName: toHtmlFragment(inputs.userDetails.displayName),
+        description: renderDescription(inputs.dois.length, inputs.groupIds.length),
+        mainContent,
+      })),
+    )),
+    TE.bimap(renderErrorPage, renderPage),
+  );
+};

@@ -77,6 +77,24 @@ describe('user-page', () => {
       expect(page).toStrictEqual(E.right(expect.objectContaining({ title: userDisplayName })));
     });
 
+    it.skip('accepts the handle as an input param', async () => {
+      const ports = {
+        ...defaultPorts,
+        getUserDetails: () => TE.right({
+          avatarUrl: arbitraryUri(),
+          displayName: arbitraryString(),
+          handle: arbitraryWord(),
+        }),
+      };
+      const params = { handle: arbitraryWord(), id: arbitraryUserId() };
+      const page = await pipe(
+        params,
+        userPage(ports)(tabName),
+      )();
+
+      expect(E.isRight(page)).toStrictEqual(true);
+    });
+
     it('uses the user displayname as the opengraph title', async () => {
       const userDisplayName = arbitraryString();
       const ports = {
