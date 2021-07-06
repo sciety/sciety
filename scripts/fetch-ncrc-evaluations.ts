@@ -57,7 +57,7 @@ export const fetchNcrcEvaluations = (): FetchEvaluations => pipe(
     return {
       date: new Date(ncrcReview.date),
       articleDoi: `10.1101/${doiSuffix}`,
-      evaluationLocator: `doi:${ncrcReview.id}`,
+      evaluationLocator: `ncrc:${ncrcReview.id}`,
     };
   })),
 );
