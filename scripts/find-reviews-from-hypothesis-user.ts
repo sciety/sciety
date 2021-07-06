@@ -31,18 +31,13 @@ const processRow = (server: string) => (row: Row): void => {
 
 const processServer = (server: string) => async (): Promise<void> => {
   const perPage = 200;
-  const { data: firstPage } = await axios.get<HypothesisResponse>(`https://api.hypothes.is/api/search?user=${userId}&uri.parts=${server}&limit=${perPage}&sort=created&order=asc`);
-
-  firstPage.rows.forEach(processRow(server));
-  let latestDate = encodeURIComponent(firstPage.rows[firstPage.rows.length - 1].created);
-
-  const numRequestsNeeded = Math.ceil(firstPage.total / perPage);
+  let { data } = await axios.get<HypothesisResponse>(`https://api.hypothes.is/api/search?user=${userId}&uri.parts=${server}&limit=${perPage}&sort=created&order=asc`);
 
   // eslint-disable-next-line no-loops/no-loops
-  for (let i = 1; i < numRequestsNeeded; i += 1) {
-    const { data } = await axios.get<HypothesisResponse>(`https://api.hypothes.is/api/search?user=${userId}&uri.parts=${server}&limit=${perPage}&sort=created&order=asc&search_after=${latestDate}`);
+  while (data.rows.length > 0) {
     data.rows.forEach(processRow(server));
-    latestDate = encodeURIComponent(data.rows[data.rows.length - 1].created);
+    const latestDate = encodeURIComponent(data.rows[data.rows.length - 1].created);
+    data = (await axios.get<HypothesisResponse>(`https://api.hypothes.is/api/search?user=${userId}&uri.parts=${server}&limit=${perPage}&sort=created&order=asc&search_after=${latestDate}`)).data;
   }
 };
 
