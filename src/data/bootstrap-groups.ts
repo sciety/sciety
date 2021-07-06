@@ -106,7 +106,15 @@ const groups: RNEA.ReadonlyNonEmptyArray<Group> = [
 let downplayedPotentialGroups: ReadonlyArray<Group> = [];
 
 if (process.env.EXPERIMENT_ENABLED === 'true') {
-  downplayedPotentialGroups = [];
+  downplayedPotentialGroups = [
+    {
+      id: Gid.fromValidatedString('4bbf0c12-629b-4bb8-91d6-974f4df8efb2'),
+      name: 'Biophysics Colab',
+      avatarPath: '/static/groups/biophysics-colab--4bbf0c12-629b-4bb8-91d6-974f4df8efb2.png',
+      descriptionPath: 'biophysics-colab--4bbf0c12-629b-4bb8-91d6-974f4df8efb2.md',
+      shortDescription: 'Biophysics Colab is a collaboration of biophysicists who are working in partnership with eLife to improve the way in which original research is evaluated. We aim to drive forward the principles of open science by providing an equitable, inclusive, and transparent environment for peer review. Our ambition is to facilitate a publishing ecosystem in which the significance of research is recognised independently of publication venue.',
+    },
+  ];
 }
 
 export const bootstrapGroups = RNEA.concat(groups, downplayedPotentialGroups);
