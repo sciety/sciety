@@ -6,7 +6,7 @@ We will achieve these goals by leveraging our knowledge and expertise to provide
 
 Biophysics Colab is the first endeavour of the fledgling non-profit organisation, Science Colab, whose mission is to add rigour and integrity to the scientific literature in a way that supports and benefits the scientific community.
 
-## Peer review model
+## Evaluation model
 ## People
 
 - Kenton Swartz
