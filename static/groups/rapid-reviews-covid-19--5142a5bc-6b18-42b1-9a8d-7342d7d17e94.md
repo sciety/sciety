@@ -20,5 +20,5 @@ We are prototyping a new type of peer curation network consisting of graduate st
 
 Read more about [Rapid Reviews COVID-19](https://rapidreviewscovid19.mitpress.mit.edu/guidelines).
 
-## License
+## Content license
 Content is licensed under the [Creative Commons CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) unless otherwise specified.

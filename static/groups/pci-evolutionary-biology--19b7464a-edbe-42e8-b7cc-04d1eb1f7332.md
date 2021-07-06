@@ -58,6 +58,6 @@ PCI Evol Biol does not guarantee the evaluation or recommendation of all submitt
 
 Read more about [Peer Community in Evolutionary Biology](https://evolbiol.peercommunityin.org/about/about).
 
-## Content License
+## Content license
 
 Authors of comments, reviews and recommendations retain copyright© under [CC BY-ND](https://creativecommons.org/licenses/by-nd/4.0/).

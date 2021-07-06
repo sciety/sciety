@@ -41,6 +41,6 @@ PCI Zoology does not guarantee the evaluation or recommendation of all submitted
 
 Read more about [Peer Community In Zoology](https://zool.peercommunityin.org/about/about).
 
-## Content License
+## Content license
 
 Authors of comments, reviews and recommendations retain copyright© under [CC BY-ND](https://creativecommons.org/licenses/by-nd/4.0/).

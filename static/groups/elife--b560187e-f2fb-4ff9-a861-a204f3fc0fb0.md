@@ -16,6 +16,6 @@ Read more [about eLife](https://elifesciences.org/about).
 
 [Our editors.](https://elifesciences.org/about/people)
 
-## Content License
+## Content license
 
 Unless otherwise indicated, the articles and journal content published by eLife on the eLife Sites are licensed under a [Creative Commons Attribution license](https://creativecommons.org/licenses/by/4.0/) (also known as a CC-BY license). This means that you are free to use, reproduce and distribute the articles and related content (unless otherwise noted), for commercial and noncommercial purposes, subject to citation of the original source in accordance with the CC-BY license. For more information see the [eLife terms and conditions](https://elifesciences.org/terms).

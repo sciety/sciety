@@ -44,7 +44,7 @@ Abbreviations: RRID, research resource identifier
 
 [https://scicrunch.org/ASWG/about/People](https://scicrunch.org/ASWG/about/People)
 
-## Content License
+## Content license
 
 Public user content licensed CC-BY-NC 4.0 unless otherwise specified.
 

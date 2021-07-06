@@ -25,6 +25,6 @@ Biophysics Colab is the first endeavour of the fledgling non-profit organisation
 - Renae Ryan
 - William Zagotta.
 
-## Content License
+## Content license
 
 Content is licensed under the [Creative Commons CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) unless otherwise specified.

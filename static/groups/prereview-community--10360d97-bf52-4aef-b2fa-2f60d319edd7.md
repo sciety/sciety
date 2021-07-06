@@ -18,6 +18,6 @@ At PREreview we ask all contributors to disclose any competing interest (CI) tha
 
 Read more about [PREreview](https://content.prereview.org/about/#toc-anchor_4).
 
-## Content License
+## Content license
 
 Content is licensed [Creative Commons Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/legalcode) unless otherwise specified.
