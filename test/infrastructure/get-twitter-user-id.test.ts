@@ -6,15 +6,15 @@ import { arbitraryUserId } from '../types/user-id.helper';
 
 describe('get-twitter-user-id', () => {
   describe('when the user handle exists', () => {
-    it.skip('returns a UserId', async () => {
+    it('returns a UserId', async () => {
+      const userId = arbitraryUserId();
       const getTwitterResponse: GetTwitterResponse = async () => ({
         data: {
-          id: '47998559',
+          id: userId.toString(),
           name: 'Giorgio Sironi 🇮🇹🇬🇧🇪🇺',
           username: 'giorgiosironi',
         },
       });
-      const userId = arbitraryUserId();
       const result = await getTwitterUserId(getTwitterResponse)(arbitraryWord())();
 
       expect(result).toStrictEqual(E.right(userId));
