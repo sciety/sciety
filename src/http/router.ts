@@ -182,15 +182,18 @@ export const createRouter = (adapters: Adapters): Router => {
   router.get(
     '/users/:id([0-9]+)/saved-articles',
     async (context, next) => {
-      context.status = StatusCodes.PERMANENT_REDIRECT;
-      const userDetails = await adapters.getUserDetails(context.params.id as UserId)();
-      pipe(
-        userDetails,
-        E.fold(() => {
-          context.status = StatusCodes.NOT_FOUND;
-        },
-        ({ handle }) => context.redirect(`/users/${handle}/saved-articles`)),
-      );
+      await pipe(
+        adapters.getUserDetails(context.params.id as UserId),
+        T.map(E.fold(
+          () => {
+            context.status = StatusCodes.NOT_FOUND;
+          },
+          ({ handle }) => {
+            context.status = StatusCodes.PERMANENT_REDIRECT;
+            context.redirect(`/users/${handle}/saved-articles`);
+          },
+        )),
+      )();
 
       await next();
     },
