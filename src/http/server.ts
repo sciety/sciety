@@ -83,6 +83,7 @@ export const createApplicationServer = (router: Router, logger: Logger): E.Eithe
       (username, password, cb) => {
         const user: User = {
           id: toUserId(username),
+          handle: `local-${username}`,
         };
         return cb(null, user);
       },
@@ -98,6 +99,7 @@ export const createApplicationServer = (router: Router, logger: Logger): E.Eithe
         (token, tokenSecret, profile, cb) => {
           const user: User = {
             id: toUserId(profile.id),
+            handle: profile.username,
           };
 
           cb(undefined, user);
