@@ -83,7 +83,7 @@ export const createApplicationServer = (router: Router, logger: Logger): E.Eithe
       (username, password, cb) => {
         const user: User = {
           id: toUserId(username),
-          handle: `local-${username}`,
+          handle: 'account27775998',
         };
         return cb(null, user);
       },
