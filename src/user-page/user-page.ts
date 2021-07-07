@@ -17,7 +17,7 @@ import * as DE from '../types/data-error';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
-import { UserId } from '../types/user-id';
+import { toUserId, UserId } from '../types/user-id';
 
 type GetUserDetails = (userId: UserId) => TE.TaskEither<DE.DataError, UserDetails>;
 
@@ -31,17 +31,16 @@ export type Ports = SavedArticlesPorts & FollowListPorts & {
 };
 
 type Params = {
-  descriptor: UserId,
-  handle?: string,
+  descriptor: string,
 };
 
 type UserPage = (tab: string) => (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
 export const userPage = (ports: Ports): UserPage => (tab) => (params) => {
-  if (params.handle) {
+  if (!params.descriptor.match(/^\d+$/)) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const taskEitherOfAnId = pipe(
-      params.handle,
+      params.descriptor,
       ports.getUserId,
     );
     return TE.left({
@@ -50,7 +49,7 @@ export const userPage = (ports: Ports): UserPage => (tab) => (params) => {
     });
   }
 
-  const { descriptor } = params;
+  const descriptor = toUserId(params.descriptor);
 
   return pipe(
     {

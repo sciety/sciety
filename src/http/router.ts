@@ -80,7 +80,7 @@ const homePageParams = t.type({
 });
 
 const userPageParams = t.type({
-  descriptor: UserIdFromString,
+  descriptor: t.string,
 });
 
 export const createRouter = (adapters: Adapters): Router => {
