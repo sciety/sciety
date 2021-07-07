@@ -56,7 +56,7 @@ export const userPage = (ports: Ports): UserPage => (tab) => (params) => pipe(
   TE.chainTaskK((inputs) => pipe(
     (inputs.activeTabIndex === 0) ? savedArticles(ports)(inputs.dois) : followList(ports)(inputs.groupIds),
     T.map(tabs({
-      tabList: tabList(inputs.id, inputs.dois.length, inputs.groupIds.length),
+      tabList: tabList(inputs.userDetails.handle, inputs.dois.length, inputs.groupIds.length),
       activeTabIndex: inputs.activeTabIndex,
     })),
     T.map((mainContent) => ({
