@@ -81,9 +81,6 @@ const homePageParams = t.type({
 
 const userPageParams = t.type({
   descriptor: UserIdFromString,
-  user: tt.optionFromNullable(t.type({
-    id: UserIdFromString,
-  })),
 });
 
 export const createRouter = (adapters: Adapters): Router => {
