@@ -1,0 +1,15 @@
+{
+  "errors": [
+    {
+      "parameters": {
+        "username": [
+          "giorgdcsadsacsacdsani"
+        ]
+      },
+      "message": "The `username` query parameter value [giorgdcsadsacsacdsani] does not match ^[A-Za-z0-9_]{1,15}$"
+    }
+  ],
+  "title": "Invalid Request",
+  "detail": "One or more parameters to your request was invalid.",
+  "type": "https://api.twitter.com/2/problems/invalid-request"
+}
