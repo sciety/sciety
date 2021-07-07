@@ -1,13 +1,24 @@
+import * as E from 'fp-ts/Either';
+import { GetTwitterResponse } from '../../src/infrastructure/get-twitter-response';
+import { getTwitterUserId } from '../../src/infrastructure/get-twitter-user-id';
+import { arbitraryWord } from '../helpers';
+import { arbitraryUserId } from '../types/user-id.helper';
+
 describe('get-twitter-user-id', () => {
   describe('when the user handle exists', () => {
-    // {
-    //   "data": {
-    //     "id": "47998559",
-    //     "name": "Giorgio Sironi 🇮🇹🇬🇧🇪🇺",
-    //     "username": "giorgiosironi"
-    //   }
-    // }
-    it.todo('returns a UserId');
+    it.skip('returns a UserId', async () => {
+      const getTwitterResponse: GetTwitterResponse = async () => ({
+        data: {
+          id: '47998559',
+          name: 'Giorgio Sironi 🇮🇹🇬🇧🇪🇺',
+          username: 'giorgiosironi',
+        },
+      });
+      const userId = arbitraryUserId();
+      const result = await getTwitterUserId(getTwitterResponse)(arbitraryWord())();
+
+      expect(result).toStrictEqual(E.right(userId));
+    });
   });
 
   describe('when the user handle does not exist', () => {
