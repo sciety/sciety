@@ -36,13 +36,13 @@ type Params = {
 
 type UserPage = (tab: string) => (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
-const taskEitherOfAnId = (ports: Ports, params: Params) => pipe(
-  params.descriptor,
-  ports.getUserId,
+const userIdFromDescriptor = (getUserId: GetUserId) => (descriptor: string) => pipe(
+  descriptor.match(/^\d+$/) ? TE.right(toUserId(descriptor)) : getUserId(descriptor),
 );
 
 export const userPage = (ports: Ports): UserPage => (tab) => (params) => pipe(
-  params.descriptor.match(/^\d+$/) ? TE.right(toUserId(params.descriptor)) : taskEitherOfAnId(ports, params),
+  params.descriptor,
+  userIdFromDescriptor(ports.getUserId),
   TE.chain((id) => pipe(
     {
       dois: TE.rightTask(projectSavedArticleDois(ports.getAllEvents)(id)),
