@@ -36,42 +36,35 @@ type Params = {
 
 type UserPage = (tab: string) => (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
-export const userPage = (ports: Ports): UserPage => (tab) => (params) => {
-  if (!params.descriptor.match(/^\d+$/)) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const taskEitherOfAnId = pipe(
-      params.descriptor,
-      ports.getUserId,
-    );
-    return TE.left({
-      type: 'unavailable',
-      message: toHtmlFragment('handle unavailable'),
-    });
-  }
+const taskEitherOfAnId = (ports: Ports, params: Params) => pipe(
+  params.descriptor,
+  ports.getUserId,
+);
 
-  const descriptor = toUserId(params.descriptor);
-
-  return pipe(
+export const userPage = (ports: Ports): UserPage => (tab) => (params) => pipe(
+  params.descriptor.match(/^\d+$/) ? TE.right(toUserId(params.descriptor)) : taskEitherOfAnId(ports, params),
+  TE.chain((id) => pipe(
     {
-      dois: TE.rightTask(projectSavedArticleDois(ports.getAllEvents)(descriptor)),
-      groupIds: TE.rightTask(followedGroupIds(ports.getAllEvents)(descriptor)),
-      userDetails: ports.getUserDetails(descriptor),
+      dois: TE.rightTask(projectSavedArticleDois(ports.getAllEvents)(id)),
+      groupIds: TE.rightTask(followedGroupIds(ports.getAllEvents)(id)),
+      userDetails: ports.getUserDetails(id),
       activeTabIndex: TE.right(tab === 'saved-articles' ? 0 as const : 1 as const),
+      id: TE.right(id),
     },
     sequenceS(TE.ApplyPar),
-    TE.chainTaskK((inputs) => pipe(
-      (inputs.activeTabIndex === 0) ? savedArticles(ports)(inputs.dois) : followList(ports)(inputs.groupIds),
-      T.map(tabs({
-        tabList: tabList(descriptor, inputs.dois.length, inputs.groupIds.length),
-        activeTabIndex: inputs.activeTabIndex,
-      })),
-      T.map((mainContent) => ({
-        header: renderHeader(inputs.userDetails),
-        userDisplayName: toHtmlFragment(inputs.userDetails.displayName),
-        description: renderDescription(inputs.dois.length, inputs.groupIds.length),
-        mainContent,
-      })),
-    )),
-    TE.bimap(renderErrorPage, renderPage),
-  );
-};
+  )),
+  TE.chainTaskK((inputs) => pipe(
+    (inputs.activeTabIndex === 0) ? savedArticles(ports)(inputs.dois) : followList(ports)(inputs.groupIds),
+    T.map(tabs({
+      tabList: tabList(inputs.id, inputs.dois.length, inputs.groupIds.length),
+      activeTabIndex: inputs.activeTabIndex,
+    })),
+    T.map((mainContent) => ({
+      header: renderHeader(inputs.userDetails),
+      userDisplayName: toHtmlFragment(inputs.userDetails.displayName),
+      description: renderDescription(inputs.dois.length, inputs.groupIds.length),
+      mainContent,
+    })),
+  )),
+  TE.bimap(renderErrorPage, renderPage),
+);
