@@ -31,7 +31,7 @@ export type Ports = SavedArticlesPorts & FollowListPorts & {
 };
 
 type Params = {
-  id: UserId,
+  descriptor: UserId,
   handle?: string,
 };
 
@@ -50,20 +50,20 @@ export const userPage = (ports: Ports): UserPage => (tab) => (params) => {
     });
   }
 
-  const { id } = params;
+  const { descriptor } = params;
 
   return pipe(
     {
-      dois: TE.rightTask(projectSavedArticleDois(ports.getAllEvents)(id)),
-      groupIds: TE.rightTask(followedGroupIds(ports.getAllEvents)(id)),
-      userDetails: ports.getUserDetails(id),
+      dois: TE.rightTask(projectSavedArticleDois(ports.getAllEvents)(descriptor)),
+      groupIds: TE.rightTask(followedGroupIds(ports.getAllEvents)(descriptor)),
+      userDetails: ports.getUserDetails(descriptor),
       activeTabIndex: TE.right(tab === 'saved-articles' ? 0 as const : 1 as const),
     },
     sequenceS(TE.ApplyPar),
     TE.chainTaskK((inputs) => pipe(
       (inputs.activeTabIndex === 0) ? savedArticles(ports)(inputs.dois) : followList(ports)(inputs.groupIds),
       T.map(tabs({
-        tabList: tabList(id, inputs.dois.length, inputs.groupIds.length),
+        tabList: tabList(descriptor, inputs.dois.length, inputs.groupIds.length),
         activeTabIndex: inputs.activeTabIndex,
       })),
       T.map((mainContent) => ({

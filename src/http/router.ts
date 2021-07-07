@@ -80,7 +80,7 @@ const homePageParams = t.type({
 });
 
 const userPageParams = t.type({
-  id: UserIdFromString,
+  descriptor: UserIdFromString,
   user: tt.optionFromNullable(t.type({
     id: UserIdFromString,
   })),
@@ -152,10 +152,10 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   router.get(
-    '/users/:id(.+)',
+    '/users/:descriptor(.+)',
     async (context, next) => {
       context.status = StatusCodes.TEMPORARY_REDIRECT;
-      context.redirect(`/users/${context.params.id}/saved-articles`);
+      context.redirect(`/users/${context.params.descriptor}/saved-articles`);
 
       await next();
     },
@@ -172,7 +172,7 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   router.get(
-    '/users/:id/saved-articles',
+    '/users/:descriptor/saved-articles',
     pageHandler(flow(
       userPageParams.decode,
       E.mapLeft(toNotFound),
@@ -182,7 +182,7 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   router.get(
-    '/users/:id/following',
+    '/users/:descriptor/following',
     pageHandler(flow(
       userPageParams.decode,
       E.mapLeft(toNotFound),
