@@ -45,6 +45,7 @@ import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import * as DE from '../types/data-error';
 import * as Doi from '../types/doi';
 import { toHtmlFragment } from '../types/html-fragment';
+import { UserId } from '../types/user-id';
 import { userPage } from '../user-page/user-page';
 
 const biorxivPrefix = '10.1101';
@@ -176,6 +177,23 @@ export const createRouter = (adapters: Adapters): Router => {
       TE.fromEither,
       TE.chain(userPage(adapters)('saved-articles')),
     )),
+  );
+
+  router.get(
+    '/users/:id([0-9]+)/saved-articles',
+    async (context, next) => {
+      context.status = StatusCodes.PERMANENT_REDIRECT;
+      const userDetails = await adapters.getUserDetails(context.params.id as UserId)();
+      pipe(
+        userDetails,
+        E.fold(() => {
+          context.status = StatusCodes.NOT_FOUND;
+        },
+        ({ handle }) => context.redirect(`/users/${handle}/saved-articles`)),
+      );
+
+      await next();
+    },
   );
 
   router.get(
