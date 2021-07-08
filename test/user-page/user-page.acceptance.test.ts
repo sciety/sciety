@@ -78,7 +78,7 @@ describe('user-page', () => {
       expect(page).toStrictEqual(E.right(expect.objectContaining({ title: userDisplayName })));
     });
 
-    it.skip('accepts descriptor as a string', async () => {
+    it('accepts descriptor as a string', async () => {
       const ports = {
         ...defaultPorts,
         getUserDetails: () => TE.right({
