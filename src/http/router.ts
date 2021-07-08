@@ -20,6 +20,7 @@ import { onlyIfNotAuthenticated } from './only-if-authenticated';
 import { pageHandler, toErrorResponse } from './page-handler';
 import { ping } from './ping';
 import { redirectBack } from './redirect-back';
+import { redirectUserIdToHandle } from './redirects/redirect-user-id-to-handle';
 import { redirectAfterAuthenticating, requireAuthentication } from './require-authentication';
 import { robots } from './robots';
 import { aboutPage } from '../about-page';
@@ -181,22 +182,7 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.get(
     '/users/:id([0-9]+)/saved-articles',
-    async (context, next) => {
-      await pipe(
-        adapters.getUserDetails(context.params.id as UserId),
-        T.map(E.fold(
-          () => {
-            context.status = StatusCodes.NOT_FOUND;
-          },
-          ({ handle }) => {
-            context.status = StatusCodes.PERMANENT_REDIRECT;
-            context.redirect(`/users/${handle}/saved-articles`);
-          },
-        )),
-      )();
-
-      await next();
-    },
+    redirectUserIdToHandle(adapters),
   );
 
   router.get(
