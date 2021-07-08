@@ -7,11 +7,9 @@ import { JSDOM } from 'jsdom';
 import { userFollowedEditorialCommunity, userSavedArticle } from '../../src/types/domain-events';
 import { Page } from '../../src/types/page';
 import { RenderPageError } from '../../src/types/render-page-error';
-import { toUserId } from '../../src/types/user-id';
 import { followingNothing, informationUnavailable, noSavedArticles } from '../../src/user-page/static-messages';
 import { userPage } from '../../src/user-page/user-page';
 import {
-  arbitraryNumber,
   arbitrarySanitisedHtmlFragment, arbitraryString, arbitraryUri, arbitraryWord,
 } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
@@ -40,8 +38,6 @@ const arbitraryGroup = {
   descriptionPath: arbitraryString(),
   shortDescription: arbitraryString(),
 };
-
-const arbitraryUserIdAsString = () => arbitraryNumber(5000, 1000000).toString();
 
 const defaultPorts = {
   getGroup: () => TO.some(arbitraryGroup),
@@ -73,7 +69,7 @@ describe('user-page', () => {
           handle: arbitraryWord(),
         }),
       };
-      const params = { descriptor: arbitraryUserIdAsString() };
+      const params = { descriptor: arbitraryWord() };
       const page = await pipe(
         params,
         userPage(ports)(tabName),
@@ -110,7 +106,7 @@ describe('user-page', () => {
           handle: arbitraryWord(),
         }),
       };
-      const params = { descriptor: arbitraryUserIdAsString() };
+      const params = { descriptor: arbitraryWord() };
       const page = await pipe(
         params,
         userPage(ports)(tabName),
@@ -124,16 +120,17 @@ describe('user-page', () => {
     });
 
     it('includes the count of saved articles and followed groups in the opengraph description', async () => {
-      const userId = arbitraryUserIdAsString();
+      const userId = arbitraryUserId();
       const ports = {
         ...defaultPorts,
+        getUserId: () => TE.right(userId),
         getAllEvents: T.of([
-          userSavedArticle(toUserId(userId), arbitraryDoi()),
-          userFollowedEditorialCommunity(toUserId(userId), arbitraryGroupId()),
-          userFollowedEditorialCommunity(toUserId(userId), arbitraryGroupId()),
+          userSavedArticle(userId, arbitraryDoi()),
+          userFollowedEditorialCommunity(userId, arbitraryGroupId()),
+          userFollowedEditorialCommunity(userId, arbitraryGroupId()),
         ]),
       };
-      const params = { descriptor: userId };
+      const params = { descriptor: arbitraryWord() };
       const page = await pipe(
         params,
         userPage(ports)(tabName),
@@ -158,7 +155,7 @@ describe('user-page', () => {
           handle,
         }),
       };
-      const params = { descriptor: arbitraryUserIdAsString() };
+      const params = { descriptor: arbitraryWord() };
 
       const pageHtml = await contentOf(userPage(ports)(tabName)(params))();
 
@@ -168,12 +165,13 @@ describe('user-page', () => {
     });
 
     it('always shows the counts in the tab titles', async () => {
-      const userId = arbitraryUserIdAsString();
+      const userId = arbitraryUserId();
       const ports = {
         ...defaultPorts,
-        getAllEvents: T.of([userFollowedEditorialCommunity(toUserId(userId), arbitraryGroupId())]),
+        getUserId: () => TE.right(userId),
+        getAllEvents: T.of([userFollowedEditorialCommunity(userId, arbitraryGroupId())]),
       };
-      const params = { descriptor: userId };
+      const params = { descriptor: arbitraryWord() };
       const page = await pipe(
         params,
         userPage(ports)(tabName),
@@ -199,7 +197,7 @@ describe('user-page', () => {
         findVersionsForArticleDoi: shouldNotBeCalled,
         getUserId: () => TE.right(arbitraryUserId()),
       };
-      const params = { descriptor: arbitraryUserIdAsString() };
+      const params = { descriptor: arbitraryWord() };
       const page = await pipe(
         params,
         userPage(ports)('followed-groups'),
@@ -213,20 +211,20 @@ describe('user-page', () => {
 
     describe('user is following groups', () => {
       it('displays followed groups as group cards', async () => {
-        const userId = arbitraryUserIdAsString();
+        const userId = arbitraryUserId();
         const ports = {
           getGroup: () => TO.some(arbitraryGroup),
           getUserDetails: () => TE.right(arbitraryUserDetails),
           getAllEvents: T.of([
-            userFollowedEditorialCommunity(toUserId(userId), arbitraryGroupId()),
-            userFollowedEditorialCommunity(toUserId(userId), arbitraryGroupId()),
+            userFollowedEditorialCommunity(userId, arbitraryGroupId()),
+            userFollowedEditorialCommunity(userId, arbitraryGroupId()),
           ]),
           fetchArticle: shouldNotBeCalled,
           findReviewsForArticleDoi: shouldNotBeCalled,
           findVersionsForArticleDoi: shouldNotBeCalled,
-          getUserId: () => TE.right(arbitraryUserId()),
+          getUserId: () => TE.right(userId),
         };
-        const params = { descriptor: userId };
+        const params = { descriptor: arbitraryWord() };
         const page = await pipe(
           params,
           userPage(ports)('followed-groups'),
@@ -240,20 +238,20 @@ describe('user-page', () => {
 
       describe('any of the group card generations fail', () => {
         it('displays a single error message as the tab panel content', async () => {
-          const userId = arbitraryUserIdAsString();
+          const userId = arbitraryUserId();
           const ports = {
             getGroup: () => TO.none,
             getUserDetails: () => TE.right(arbitraryUserDetails),
             getAllEvents: T.of([
-              userFollowedEditorialCommunity(toUserId(userId), arbitraryGroupId()),
-              userFollowedEditorialCommunity(toUserId(userId), arbitraryGroupId()),
+              userFollowedEditorialCommunity(userId, arbitraryGroupId()),
+              userFollowedEditorialCommunity(userId, arbitraryGroupId()),
             ]),
             fetchArticle: shouldNotBeCalled,
             findReviewsForArticleDoi: shouldNotBeCalled,
             findVersionsForArticleDoi: shouldNotBeCalled,
-            getUserId: () => TE.right(arbitraryUserId()),
+            getUserId: () => TE.right(userId),
           };
-          const params = { descriptor: userId };
+          const params = { descriptor: arbitraryWord() };
 
           const content = await pipe(
             params,
@@ -273,7 +271,6 @@ describe('user-page', () => {
       let page: DocumentFragment;
 
       beforeAll(async () => {
-        const userId = arbitraryUserIdAsString();
         const ports = {
           getGroup: () => shouldNotBeCalled,
           getUserDetails: () => TE.right(arbitraryUserDetails),
@@ -283,7 +280,7 @@ describe('user-page', () => {
           findVersionsForArticleDoi: shouldNotBeCalled,
           getUserId: () => TE.right(arbitraryUserId()),
         };
-        const params = { descriptor: userId };
+        const params = { descriptor: arbitraryWord() };
         page = await pipe(
           params,
           userPage(ports)('followed-groups'),
@@ -321,7 +318,7 @@ describe('user-page', () => {
         findVersionsForArticleDoi: shouldNotBeCalled,
         getUserId: () => TE.right(arbitraryUserId()),
       };
-      const params = { descriptor: arbitraryUserIdAsString() };
+      const params = { descriptor: arbitraryWord() };
       const page = await pipe(
         params,
         userPage(ports)('saved-articles'),
@@ -348,7 +345,7 @@ describe('user-page', () => {
         findVersionsForArticleDoi: shouldNotBeCalled,
         getUserId: () => TE.right(arbitraryUserId()),
       };
-      const params = { descriptor: arbitraryUserIdAsString() };
+      const params = { descriptor: arbitraryWord() };
       const page = await pipe(
         params,
         userPage(ports)('saved-articles'),
@@ -359,7 +356,7 @@ describe('user-page', () => {
 
     describe('when the user has saved articles', () => {
       it('shows the articles as a list of cards', async () => {
-        const userId = arbitraryUserIdAsString();
+        const userId = arbitraryUserId();
         const ports = {
           getGroup: shouldNotBeCalled,
           getUserDetails: () => TE.right({
@@ -368,8 +365,8 @@ describe('user-page', () => {
             handle: arbitraryWord(),
           }),
           getAllEvents: T.of([
-            userSavedArticle(toUserId(userId), arbitraryDoi()),
-            userSavedArticle(toUserId(userId), arbitraryDoi()),
+            userSavedArticle(userId, arbitraryDoi()),
+            userSavedArticle(userId, arbitraryDoi()),
           ]),
           fetchArticle: () => TE.right({
             doi: arbitraryDoi(),
@@ -379,9 +376,9 @@ describe('user-page', () => {
           }),
           findReviewsForArticleDoi: () => T.of([]),
           findVersionsForArticleDoi: () => TO.none,
-          getUserId: () => TE.right(arbitraryUserId()),
+          getUserId: () => TE.right(userId),
         };
-        const params = { descriptor: userId };
+        const params = { descriptor: arbitraryWord() };
 
         const page = await pipe(
           params,
@@ -396,7 +393,7 @@ describe('user-page', () => {
 
       describe('article details unavailable for any article', () => {
         it('displays a single error message as the tab panel content', async () => {
-          const userId = arbitraryUserIdAsString();
+          const userId = arbitraryUserId();
           const ports = {
             getGroup: shouldNotBeCalled,
             getUserDetails: () => TE.right({
@@ -405,15 +402,15 @@ describe('user-page', () => {
               handle: arbitraryWord(),
             }),
             getAllEvents: T.of([
-              userSavedArticle(toUserId(userId), arbitraryDoi()),
-              userSavedArticle(toUserId(userId), arbitraryDoi()),
+              userSavedArticle(userId, arbitraryDoi()),
+              userSavedArticle(userId, arbitraryDoi()),
             ]),
             fetchArticle: () => TE.left('unavailable'),
             findReviewsForArticleDoi: () => T.of([]),
             findVersionsForArticleDoi: () => TO.none,
-            getUserId: () => TE.right(arbitraryUserId()),
+            getUserId: () => TE.right(userId),
           };
-          const params = { descriptor: userId };
+          const params = { descriptor: arbitraryWord() };
 
           const pageContent = await pipe(
             params,
@@ -433,7 +430,6 @@ describe('user-page', () => {
       let page: DocumentFragment;
 
       beforeAll(async () => {
-        const userId = arbitraryUserIdAsString();
         const ports = {
           getGroup: shouldNotBeCalled,
           getUserDetails: () => TE.right({
@@ -447,7 +443,7 @@ describe('user-page', () => {
           findVersionsForArticleDoi: shouldNotBeCalled,
           getUserId: () => TE.right(arbitraryUserId()),
         };
-        const params = { descriptor: userId };
+        const params = { descriptor: arbitraryWord() };
 
         page = await pipe(
           params,
