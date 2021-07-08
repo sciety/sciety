@@ -46,7 +46,6 @@ import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import * as DE from '../types/data-error';
 import * as Doi from '../types/doi';
 import { toHtmlFragment } from '../types/html-fragment';
-import { UserId } from '../types/user-id';
 import { userPage } from '../user-page/user-page';
 
 const biorxivPrefix = '10.1101';
@@ -151,7 +150,7 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   router.get(
-    '/users/:descriptor(.+)',
+    '/users/:descriptor',
     async (context, next) => {
       context.status = StatusCodes.TEMPORARY_REDIRECT;
       context.redirect(`/users/${context.params.descriptor}/saved-articles`);
@@ -161,7 +160,7 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   router.get(
-    '/users/:id(.+)/followed-groups',
+    '/users/:id/followed-groups',
     async (context, next) => {
       context.status = StatusCodes.PERMANENT_REDIRECT;
       context.redirect(`/users/${context.params.id}/following`);
