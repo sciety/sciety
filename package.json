@@ -12,7 +12,7 @@
     "@rdfjs/parser-n3": "^1.1.4",
     "@rdfjs/sink-map": "^1.0.1",
     "@tpluscode/rdf-ns-builders": "^0.1.0",
-    "@types/passport-local": "^1.0.33",
+    "@types/passport-local": "^1.0.34",
     "axios": "^0.21.1",
     "axios-retry": "^3.1.9",
     "chalk": "4.1.1",
