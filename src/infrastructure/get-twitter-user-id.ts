@@ -1,9 +1,11 @@
 import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
+import * as PR from 'io-ts/PathReporter';
 import { GetTwitterResponse } from './get-twitter-response';
+import { Logger } from './logger';
 import * as DE from '../types/data-error';
 import { toUserId, UserId } from '../types/user-id';
 
@@ -26,14 +28,22 @@ const twitterResponse = t.union([
   errorsTwitterResponse,
 ]);
 
-export const getTwitterUserId = (getTwitterResponse: GetTwitterResponse): GetTwitterUserId => (handle) => pipe(
+export const getTwitterUserId = (
+  getTwitterResponse: GetTwitterResponse,
+  logger: Logger,
+): GetTwitterUserId => (handle) => pipe(
   TE.tryCatch(
     async () => getTwitterResponse(`https://api.twitter.com/2/users/by/username/${handle}`),
     () => DE.unavailable,
   ),
-  T.map(E.chain(flow(
+  T.map(E.chain((response) => pipe(
+    response,
     twitterResponse.decode,
-    E.mapLeft(() => DE.unavailable),
+    E.mapLeft(PR.failure),
+    E.mapLeft((errors) => {
+      logger('error', 'Unable to parse Twitter response', { errors, response });
+      return DE.unavailable;
+    }),
   ))),
   TE.filterOrElseW(
     dataTwitterResponse.is,

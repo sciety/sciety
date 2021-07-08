@@ -2,6 +2,7 @@ import * as E from 'fp-ts/Either';
 import { GetTwitterResponse } from '../../src/infrastructure/get-twitter-response';
 import { getTwitterUserId } from '../../src/infrastructure/get-twitter-user-id';
 import * as DE from '../../src/types/data-error';
+import { dummyLogger } from '../dummy-logger';
 import { arbitraryWord } from '../helpers';
 import { arbitraryUserId } from '../types/user-id.helper';
 
@@ -16,7 +17,7 @@ describe('get-twitter-user-id', () => {
           username: 'giorgiosironi',
         },
       });
-      const result = await getTwitterUserId(getTwitterResponse)(arbitraryWord())();
+      const result = await getTwitterUserId(getTwitterResponse, dummyLogger)(arbitraryWord())();
 
       expect(result).toStrictEqual(E.right(userId));
     });
@@ -37,7 +38,7 @@ describe('get-twitter-user-id', () => {
           },
         ],
       });
-      const result = await getTwitterUserId(getTwitterResponse)(arbitraryWord())();
+      const result = await getTwitterUserId(getTwitterResponse, dummyLogger)(arbitraryWord())();
 
       expect(result).toStrictEqual(E.left(DE.notFound));
     });
@@ -46,7 +47,7 @@ describe('get-twitter-user-id', () => {
   describe('when the request fails', () => {
     it('returns unavailable', async () => {
       const getTwitterResponse: GetTwitterResponse = async () => { throw new Error('test'); };
-      const result = await getTwitterUserId(getTwitterResponse)(arbitraryWord())();
+      const result = await getTwitterUserId(getTwitterResponse, dummyLogger)(arbitraryWord())();
 
       expect(result).toStrictEqual(E.left(DE.unavailable));
     });

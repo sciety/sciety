@@ -123,7 +123,10 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
           getTwitterResponse(dependencies.twitterApiBearerToken, logger),
           logger,
         ),
-        getUserId: getTwitterUserId(getTwitterResponse(dependencies.twitterApiBearerToken, logger)),
+        getUserId: getTwitterUserId(
+          getTwitterResponse(dependencies.twitterApiBearerToken, logger),
+          logger,
+        ),
         follows: (...args) => follows(...args)(getAllEvents),
         findVersionsForArticleDoi: biorxivCache(
           (...args) => getArticleVersionEventsFromBiorxiv(...args)({ getJson, logger: loggerIO(logger) }),
