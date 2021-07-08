@@ -33,10 +33,11 @@ import { getTwitterUserDetails } from './get-twitter-user-details';
 import { getTwitterUserId } from './get-twitter-user-id';
 import { getXmlFromCrossrefRestApi } from './get-xml-from-crossref-rest-api';
 import { inMemoryGroupRepository } from './in-memory-groups';
+import { inMemoryResponseCache } from './in-memory-response-cache';
 import {
   jsonSerializer, loggerIO, rTracerLogger, streamLogger,
 } from './logger';
-import { inMemoryResponseCache } from './in-memory-response-cache';
+import { redisCache } from './redis-cache';
 import { searchEuropePmc } from './search-europe-pmc';
 import { bootstrapGroups } from '../data/bootstrap-groups';
 import * as DomainEvent from '../types/domain-events';
@@ -102,11 +103,23 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         rapidreviews: fetchRapidReview(logger, getHtml(logger)),
       };
 
-      return {
-        fetchArticle: fetchCrossrefArticle(inMemoryResponseCache(getXmlFromCrossrefRestApi(
+      const crossrefCache = (process.env.APP_CACHE ?? 'in-memory') === 'redis'
+        ? redisCache(
+          getXmlFromCrossrefRestApi(
+            logger,
+            dependencies.crossrefApiBearerToken,
+          ),
+        )
+        : inMemoryResponseCache(
+          getXmlFromCrossrefRestApi(
+            logger,
+            dependencies.crossrefApiBearerToken,
+          ),
           logger,
-          dependencies.crossrefApiBearerToken,
-        ), logger), logger),
+        );
+
+      return {
+        fetchArticle: fetchCrossrefArticle(crossrefCache, logger),
         fetchReview: fetchReview(fetchers),
         fetchStaticFile: fetchFile,
         findGroups: findGroups(fetchFile, bootstrapGroups),
