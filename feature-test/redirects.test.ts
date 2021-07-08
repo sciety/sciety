@@ -23,7 +23,7 @@ describe('legacy redirects', () => {
 
   describe('user page', () => {
     it('redirects to the saved-articles tab', async () => {
-      await goto('localhost:8080/users/1295307136415735808');
+      await goto('localhost:8080/users/scietyHQ');
       const isSavedArticlesTab = await text('Saved articles', within($('.tab--active'))).exists();
 
       expect(isSavedArticlesTab).toBe(true);
