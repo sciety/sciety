@@ -36,7 +36,7 @@ import { inMemoryGroupRepository } from './in-memory-groups';
 import {
   jsonSerializer, loggerIO, rTracerLogger, streamLogger,
 } from './logger';
-import { responseCache } from './response-cache';
+import { inMemoryResponseCache } from './in-memory-response-cache';
 import { searchEuropePmc } from './search-europe-pmc';
 import { bootstrapGroups } from '../data/bootstrap-groups';
 import * as DomainEvent from '../types/domain-events';
@@ -103,7 +103,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       };
 
       return {
-        fetchArticle: fetchCrossrefArticle(responseCache(getXmlFromCrossrefRestApi(
+        fetchArticle: fetchCrossrefArticle(inMemoryResponseCache(getXmlFromCrossrefRestApi(
           logger,
           dependencies.crossrefApiBearerToken,
         ), logger), logger),
