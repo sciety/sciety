@@ -69,7 +69,7 @@ describe('user-page', () => {
           handle: arbitraryWord(),
         }),
       };
-      const params = { descriptor: arbitraryWord() };
+      const params = { handle: arbitraryWord() };
       const page = await pipe(
         params,
         userPage(ports)(tabName),
@@ -78,7 +78,7 @@ describe('user-page', () => {
       expect(page).toStrictEqual(E.right(expect.objectContaining({ title: userDisplayName })));
     });
 
-    it('accepts descriptor as a string', async () => {
+    it('accepts handle as a string', async () => {
       const ports = {
         ...defaultPorts,
         getUserDetails: () => TE.right({
@@ -87,7 +87,7 @@ describe('user-page', () => {
           handle: arbitraryWord(),
         }),
       };
-      const params = { descriptor: arbitraryWord() };
+      const params = { handle: arbitraryWord() };
       const page = await pipe(
         params,
         userPage(ports)(tabName),
@@ -106,7 +106,7 @@ describe('user-page', () => {
           handle: arbitraryWord(),
         }),
       };
-      const params = { descriptor: arbitraryWord() };
+      const params = { handle: arbitraryWord() };
       const page = await pipe(
         params,
         userPage(ports)(tabName),
@@ -130,7 +130,7 @@ describe('user-page', () => {
           userFollowedEditorialCommunity(userId, arbitraryGroupId()),
         ]),
       };
-      const params = { descriptor: arbitraryWord() };
+      const params = { handle: arbitraryWord() };
       const page = await pipe(
         params,
         userPage(ports)(tabName),
@@ -155,7 +155,7 @@ describe('user-page', () => {
           handle,
         }),
       };
-      const params = { descriptor: arbitraryWord() };
+      const params = { handle: arbitraryWord() };
 
       const pageHtml = await contentOf(userPage(ports)(tabName)(params))();
 
@@ -171,7 +171,7 @@ describe('user-page', () => {
         getUserId: () => TE.right(userId),
         getAllEvents: T.of([userFollowedEditorialCommunity(userId, arbitraryGroupId())]),
       };
-      const params = { descriptor: arbitraryWord() };
+      const params = { handle: arbitraryWord() };
       const page = await pipe(
         params,
         userPage(ports)(tabName),
@@ -192,7 +192,7 @@ describe('user-page', () => {
         ...defaultPorts,
         getUserId: () => TE.right(arbitraryUserId()),
       };
-      const params = { descriptor: arbitraryWord() };
+      const params = { handle: arbitraryWord() };
       const page = await pipe(
         params,
         userPage(ports)('followed-groups'),
@@ -215,7 +215,7 @@ describe('user-page', () => {
           ]),
           getUserId: () => TE.right(userId),
         };
-        const params = { descriptor: arbitraryWord() };
+        const params = { handle: arbitraryWord() };
         const page = await pipe(
           params,
           userPage(ports)('followed-groups'),
@@ -239,7 +239,7 @@ describe('user-page', () => {
             ]),
             getUserId: () => TE.right(userId),
           };
-          const params = { descriptor: arbitraryWord() };
+          const params = { handle: arbitraryWord() };
 
           const content = await pipe(
             params,
@@ -268,7 +268,7 @@ describe('user-page', () => {
           findVersionsForArticleDoi: shouldNotBeCalled,
           getUserId: () => TE.right(arbitraryUserId()),
         };
-        const params = { descriptor: arbitraryWord() };
+        const params = { handle: arbitraryWord() };
         page = await pipe(
           params,
           userPage(ports)('followed-groups'),
@@ -306,7 +306,7 @@ describe('user-page', () => {
         findVersionsForArticleDoi: shouldNotBeCalled,
         getUserId: () => TE.right(arbitraryUserId()),
       };
-      const params = { descriptor: arbitraryWord() };
+      const params = { handle: arbitraryWord() };
       const page = await pipe(
         params,
         userPage(ports)('saved-articles'),
@@ -333,7 +333,7 @@ describe('user-page', () => {
         findVersionsForArticleDoi: shouldNotBeCalled,
         getUserId: () => TE.right(arbitraryUserId()),
       };
-      const params = { descriptor: arbitraryWord() };
+      const params = { handle: arbitraryWord() };
       const page = await pipe(
         params,
         userPage(ports)('saved-articles'),
@@ -366,7 +366,7 @@ describe('user-page', () => {
           findVersionsForArticleDoi: () => TO.none,
           getUserId: () => TE.right(userId),
         };
-        const params = { descriptor: arbitraryWord() };
+        const params = { handle: arbitraryWord() };
 
         const page = await pipe(
           params,
@@ -391,7 +391,7 @@ describe('user-page', () => {
             fetchArticle: () => TE.left('unavailable'),
             getUserId: () => TE.right(userId),
           };
-          const params = { descriptor: arbitraryWord() };
+          const params = { handle: arbitraryWord() };
 
           const pageContent = await pipe(
             params,
@@ -411,7 +411,7 @@ describe('user-page', () => {
       let page: DocumentFragment;
 
       beforeAll(async () => {
-        const params = { descriptor: arbitraryWord() };
+        const params = { handle: arbitraryWord() };
 
         page = await pipe(
           params,

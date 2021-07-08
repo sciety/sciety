@@ -81,7 +81,7 @@ const homePageParams = t.type({
 });
 
 const userPageParams = t.type({
-  descriptor: t.string,
+  handle: t.string,
 });
 
 export const createRouter = (adapters: Adapters): Router => {
@@ -170,7 +170,7 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   router.get(
-    '/users/:descriptor/saved-articles',
+    '/users/:handle/saved-articles',
     pageHandler(flow(
       userPageParams.decode,
       E.mapLeft(toNotFound),
@@ -185,7 +185,7 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   router.get(
-    '/users/:descriptor/following',
+    '/users/:handle/following',
     pageHandler(flow(
       userPageParams.decode,
       E.mapLeft(toNotFound),
