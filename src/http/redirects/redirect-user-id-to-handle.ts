@@ -11,7 +11,7 @@ type Ports = {
   getUserDetails: (userID: UserId) => TE.TaskEither<DE.DataError, { handle: string }>,
 };
 
-export const redirectUserIdToHandle = (ports: Ports): Middleware => async (context, next) => {
+export const redirectUserIdToHandle = (ports: Ports, path: string): Middleware => async (context, next) => {
   await pipe(
     ports.getUserDetails(context.params.id as UserId),
     T.map(E.fold(
@@ -20,7 +20,7 @@ export const redirectUserIdToHandle = (ports: Ports): Middleware => async (conte
       },
       ({ handle }) => {
         context.status = StatusCodes.PERMANENT_REDIRECT;
-        context.redirect(`/users/${handle}/saved-articles`);
+        context.redirect(`/users/${handle}/${path}`);
       },
     )),
   )();
