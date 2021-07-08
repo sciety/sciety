@@ -47,7 +47,10 @@ export const getTwitterUserId = (
   ))),
   TE.filterOrElseW(
     dataTwitterResponse.is,
-    () => DE.notFound,
+    (response) => {
+      logger('error', 'Error in Twitter response', { response });
+      return DE.notFound;
+    },
   ),
   TE.map((json) => json.data.id),
   TE.map(toUserId),
