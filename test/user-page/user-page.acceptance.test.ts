@@ -189,12 +189,7 @@ describe('user-page', () => {
   describe('followed-groups tab', () => {
     it('shows groups as the active tab', async () => {
       const ports = {
-        getGroup: shouldNotBeCalled,
-        getUserDetails: () => TE.right(arbitraryUserDetails),
-        getAllEvents: T.of([]),
-        fetchArticle: shouldNotBeCalled,
-        findReviewsForArticleDoi: shouldNotBeCalled,
-        findVersionsForArticleDoi: shouldNotBeCalled,
+        ...defaultPorts,
         getUserId: () => TE.right(arbitraryUserId()),
       };
       const params = { descriptor: arbitraryWord() };
@@ -213,15 +208,11 @@ describe('user-page', () => {
       it('displays followed groups as group cards', async () => {
         const userId = arbitraryUserId();
         const ports = {
-          getGroup: () => TO.some(arbitraryGroup),
-          getUserDetails: () => TE.right(arbitraryUserDetails),
+          ...defaultPorts,
           getAllEvents: T.of([
             userFollowedEditorialCommunity(userId, arbitraryGroupId()),
             userFollowedEditorialCommunity(userId, arbitraryGroupId()),
           ]),
-          fetchArticle: shouldNotBeCalled,
-          findReviewsForArticleDoi: shouldNotBeCalled,
-          findVersionsForArticleDoi: shouldNotBeCalled,
           getUserId: () => TE.right(userId),
         };
         const params = { descriptor: arbitraryWord() };
@@ -240,15 +231,12 @@ describe('user-page', () => {
         it('displays a single error message as the tab panel content', async () => {
           const userId = arbitraryUserId();
           const ports = {
+            ...defaultPorts,
             getGroup: () => TO.none,
-            getUserDetails: () => TE.right(arbitraryUserDetails),
             getAllEvents: T.of([
               userFollowedEditorialCommunity(userId, arbitraryGroupId()),
               userFollowedEditorialCommunity(userId, arbitraryGroupId()),
             ]),
-            fetchArticle: shouldNotBeCalled,
-            findReviewsForArticleDoi: shouldNotBeCalled,
-            findVersionsForArticleDoi: shouldNotBeCalled,
             getUserId: () => TE.right(userId),
           };
           const params = { descriptor: arbitraryWord() };
@@ -395,19 +383,12 @@ describe('user-page', () => {
         it('displays a single error message as the tab panel content', async () => {
           const userId = arbitraryUserId();
           const ports = {
-            getGroup: shouldNotBeCalled,
-            getUserDetails: () => TE.right({
-              avatarUrl: arbitraryUri(),
-              displayName: arbitraryString(),
-              handle: arbitraryWord(),
-            }),
+            ...defaultPorts,
             getAllEvents: T.of([
               userSavedArticle(userId, arbitraryDoi()),
               userSavedArticle(userId, arbitraryDoi()),
             ]),
             fetchArticle: () => TE.left('unavailable'),
-            findReviewsForArticleDoi: () => T.of([]),
-            findVersionsForArticleDoi: () => TO.none,
             getUserId: () => TE.right(userId),
           };
           const params = { descriptor: arbitraryWord() };
@@ -430,24 +411,11 @@ describe('user-page', () => {
       let page: DocumentFragment;
 
       beforeAll(async () => {
-        const ports = {
-          getGroup: shouldNotBeCalled,
-          getUserDetails: () => TE.right({
-            avatarUrl: arbitraryUri(),
-            displayName: arbitraryString(),
-            handle: arbitraryWord(),
-          }),
-          getAllEvents: T.of([]),
-          fetchArticle: shouldNotBeCalled,
-          findReviewsForArticleDoi: shouldNotBeCalled,
-          findVersionsForArticleDoi: shouldNotBeCalled,
-          getUserId: () => TE.right(arbitraryUserId()),
-        };
         const params = { descriptor: arbitraryWord() };
 
         page = await pipe(
           params,
-          userPage(ports)('saved-articles'),
+          userPage(defaultPorts)('saved-articles'),
           contentOf,
           T.map(JSDOM.fragment),
         )();
