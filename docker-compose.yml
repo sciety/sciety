@@ -40,3 +40,6 @@ services:
     healthcheck:
       test: pg_isready --username $$POSTGRES_USER --dbnam $$POSTGRES_DB || exit 1
       interval: 5s
+  cache:
+    container_name: sciety_cache
+    image: redis:6.2-alpine
