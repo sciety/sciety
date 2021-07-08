@@ -105,6 +105,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
 
       const crossrefCache = (process.env.APP_CACHE ?? 'in-memory') === 'redis'
         ? redisCache(
+          process.env.REDIS_HOST ?? 'localhost',
           getXmlFromCrossrefRestApi(
             logger,
             dependencies.crossrefApiBearerToken,
