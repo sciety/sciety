@@ -110,6 +110,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
             logger,
             dependencies.crossrefApiBearerToken,
           ),
+          logger,
         )
         : inMemoryResponseCache(
           getXmlFromCrossrefRestApi(
