@@ -9,6 +9,7 @@ services:
       ALLOW_SITE_CRAWLERS: "true"
       APP_ORIGIN: "http://localhost:8080"
       APP_SECRET: "secret"
+      APP_CACHE: '${APP_CACHE:-in-memory}'
       AUTHENTICATION_STRATEGY: '${AUTHENTICATION_STRATEGY:-twitter}'
       CROSSREF_API_BEARER_TOKEN:
       DISABLE_COOKIEBOT: '${DISABLE_COOKIEBOT}'
