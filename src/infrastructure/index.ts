@@ -6,6 +6,7 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { identity, pipe } from 'fp-ts/function';
+import Redis from 'ioredis';
 import { Pool } from 'pg';
 import { Adapters } from './adapters';
 import { biorxivCache } from './biorxiv-cache';
@@ -105,7 +106,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
 
       const crossrefCache = (process.env.APP_CACHE ?? 'in-memory') === 'redis'
         ? redisCache(
-          process.env.REDIS_HOST ?? 'localhost',
+          new Redis({ host: process.env.REDIS_HOST ?? 'localhost' }),
           getXmlFromCrossrefRestApi(
             logger,
             dependencies.crossrefApiBearerToken,
