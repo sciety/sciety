@@ -1,6 +1,6 @@
 import Redis from 'ioredis';
-import { Doi } from '../types/doi';
 import { Logger } from './logger';
+import { Doi } from '../types/doi';
 
 type DownstreamFetcher = (doi: Doi, acceptHeader: string) => Promise<string>;
 
@@ -19,6 +19,6 @@ export const redisCache = (
   }
   logger('debug', 'Redis cache miss', { doi });
   const fetched = await downstreamFetcher(doi, acceptHeader);
-  await redis.set(doi.toString(), fetched);
+  await redis.set(doi.toString(), fetched, 'EX', 60 * 60 * 24);
   return fetched;
 };
