@@ -1,7 +1,6 @@
 import { performance } from 'perf_hooks';
 import axios from 'axios';
 import chalk from 'chalk';
-import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 
@@ -18,10 +17,7 @@ const axiosGet = async <D>(url: string, headers: Record<string, string>) => {
 export const fetchData = <D>(url: string, headers: Record<string, string> = {}): TE.TaskEither<string, D> => pipe(
   TE.tryCatch(
     async () => axiosGet<D>(url, headers),
-    E.toError,
+    String,
   ),
-  TE.bimap(
-    (error) => error.toString(),
-    (response) => response.data,
-  ),
+  TE.map((response) => response.data),
 );
