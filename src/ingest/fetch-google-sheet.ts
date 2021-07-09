@@ -1,12 +1,12 @@
-import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, pipe } from 'fp-ts/function';
 import { google, sheets_v4 } from 'googleapis';
 import { GaxiosResponse } from 'googleapis-common';
-import Sheets = sheets_v4.Sheets;
 import Schema$ValueRange = sheets_v4.Schema$ValueRange;
 
-const getSheets = (): Sheets => {
+const getSheets = async (
+  spreadsheetId: string,
+  range: string,
+): Promise<GaxiosResponse<Schema$ValueRange>> => {
   const auth = new google.auth.GoogleAuth({
     keyFile: '/var/run/secrets/app/.gcp-ncrc-key.json',
     scopes: [
@@ -15,17 +15,13 @@ const getSheets = (): Sheets => {
     ],
   });
   google.options({ auth });
-  return google.sheets('v4');
+  return google.sheets('v4').spreadsheets.values.get({ spreadsheetId, range });
 };
 
 export const fetchGoogleSheet = (
   spreadsheetId: string,
   range: string,
-): TE.TaskEither<string, GaxiosResponse<Schema$ValueRange>> => pipe(
-  getSheets(),
-  TE.right,
-  TE.chain((sheets) => TE.tryCatch(
-    async () => sheets.spreadsheets.values.get({ spreadsheetId, range }),
-    flow(E.toError, (error) => error.toString()),
-  )),
+): TE.TaskEither<string, GaxiosResponse<Schema$ValueRange>> => TE.tryCatch(
+  async () => getSheets(spreadsheetId, range),
+  String,
 );
