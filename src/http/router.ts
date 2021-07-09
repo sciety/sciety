@@ -170,7 +170,7 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   router.get(
-    '/users/:handle/saved-articles',
+    '/users/:handle([^0-9].+)/saved-articles',
     pageHandler(flow(
       userPageParams.decode,
       E.mapLeft(toNotFound),
@@ -185,7 +185,7 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   router.get(
-    '/users/:handle/following',
+    '/users/:handle([^0-9].+)/following',
     pageHandler(flow(
       userPageParams.decode,
       E.mapLeft(toNotFound),
