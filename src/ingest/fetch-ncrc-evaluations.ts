@@ -4,22 +4,8 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import { google, sheets_v4 } from 'googleapis';
+import { fetchGoogleSheet } from './fetch-google-sheet';
 import { FetchEvaluations } from './update-all';
-import Sheets = sheets_v4.Sheets;
-
-const getSheets = (): Sheets => {
-  const auth = new google.auth.GoogleAuth({
-    keyFile: '/var/run/secrets/app/.gcp-ncrc-key.json',
-    scopes: ['https://www.googleapis.com/auth/cloud-platform', 'https://www.googleapis.com/auth/spreadsheets.readonly'],
-  });
-
-  google.options({
-    auth,
-  });
-
-  return google.sheets('v4');
-};
 
 const reviewFromRow = flow(
   RA.map(String),
@@ -33,15 +19,7 @@ const reviewFromRow = flow(
 );
 
 export const fetchNcrcEvaluations = (): FetchEvaluations => pipe(
-  getSheets(),
-  TE.right,
-  TE.chain((sheets) => TE.tryCatch(
-    async () => sheets.spreadsheets.values.get({
-      spreadsheetId: '1RJ_Neh1wwG6X0SkYZHjD-AEC9ykgAcya_8UCVNoE3SA',
-      range: 'Sheet1!A2:S',
-    }),
-    flow(E.toError, (error) => error.toString()),
-  )),
+  fetchGoogleSheet('1RJ_Neh1wwG6X0SkYZHjD-AEC9ykgAcya_8UCVNoE3SA', 'Sheet1!A2:S'),
   TE.chainEitherK(flow(
     (res) => res?.data?.values,
     O.fromNullable,
