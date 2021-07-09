@@ -4,8 +4,12 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import { fetchGoogleSheet } from './fetch-google-sheet';
+import { FetchGoogleSheet } from './fetch-google-sheet';
 import { FetchEvaluations } from './update-all';
+
+type Ports = {
+  fetchGoogleSheet: FetchGoogleSheet,
+};
 
 const reviewFromRow = flow(
   RA.map(String),
@@ -18,8 +22,8 @@ const reviewFromRow = flow(
   sequenceS(O.Apply),
 );
 
-export const fetchNcrcEvaluations = (): FetchEvaluations => pipe(
-  fetchGoogleSheet('1RJ_Neh1wwG6X0SkYZHjD-AEC9ykgAcya_8UCVNoE3SA', 'Sheet1!A2:S'),
+export const fetchNcrcEvaluations = (): FetchEvaluations => (ports: Ports) => pipe(
+  ports.fetchGoogleSheet('1RJ_Neh1wwG6X0SkYZHjD-AEC9ykgAcya_8UCVNoE3SA', 'Sheet1!A2:S'),
   TE.chainEitherK(flow(
     (res) => res?.data?.values,
     O.fromNullable,

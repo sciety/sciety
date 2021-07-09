@@ -7,11 +7,15 @@ import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
-import { fetchData } from './fetch-data';
+import { FetchData } from './fetch-data';
 import { FetchEvaluations } from './update-all';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { Doi, isDoi } from '../types/doi';
 import { ReviewId } from '../types/review-id';
+
+type Ports = {
+  fetchData: FetchData,
+};
 
 const preReviewPreprint = t.type({
   handle: t.union([DoiFromString, t.string]),
@@ -59,8 +63,8 @@ const toReviews = (preprint: Preprint) => pipe(
   })),
 );
 
-export const fetchPrereviewEvaluations = (): FetchEvaluations => pipe(
-  fetchData<unknown>('https://www.prereview.org/api/v2/preprints', { Accept: 'application/json' }),
+export const fetchPrereviewEvaluations = (): FetchEvaluations => (ports: Ports) => pipe(
+  ports.fetchData<unknown>('https://www.prereview.org/api/v2/preprints', { Accept: 'application/json' }),
   TE.chainEitherK(flow(
     preReviewResponse.decode,
     E.mapLeft((errors) => PR.failure(errors).join('\n')),

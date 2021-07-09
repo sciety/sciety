@@ -14,7 +14,9 @@ const axiosGet = async <D>(url: string, headers: Record<string, string>) => {
   });
 };
 
-export const fetchData = <D>(url: string, headers: Record<string, string> = {}): TE.TaskEither<string, D> => pipe(
+export type FetchData = <D>(url: string, headers?: Record<string, string>) => TE.TaskEither<string, D>;
+
+export const fetchData: FetchData = <D>(url: string, headers = {}): TE.TaskEither<string, D> => pipe(
   TE.tryCatch(
     async () => axiosGet<D>(url, headers),
     String,

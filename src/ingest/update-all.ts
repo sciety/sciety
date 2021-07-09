@@ -7,6 +7,8 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
+import { fetchData, FetchData } from './fetch-data';
+import { fetchGoogleSheet, FetchGoogleSheet } from './fetch-google-sheet';
 
 type Evaluation = {
   date: Date,
@@ -14,7 +16,12 @@ type Evaluation = {
   evaluationLocator: string,
 };
 
-export type FetchEvaluations = TE.TaskEither<string, ReadonlyArray<Evaluation>>;
+type Adapters = {
+  fetchData: FetchData,
+  fetchGoogleSheet: FetchGoogleSheet,
+};
+
+export type FetchEvaluations = (adapters: Adapters) => TE.TaskEither<string, ReadonlyArray<Evaluation>>;
 
 export type Group = {
   id: string,
@@ -58,7 +65,10 @@ const reportSuccess = (group: Group) => (evaluations: ReadonlyArray<Evaluation>)
 );
 
 const updateGroup = (group: Group): T.Task<void> => pipe(
-  group.fetchFeed,
+  group.fetchFeed({
+    fetchData,
+    fetchGoogleSheet,
+  }),
   TE.chain(writeCsv(group)),
   TE.match(
     report(group),

@@ -26,10 +26,14 @@ const getSheets = async (
   });
 };
 
-export const fetchGoogleSheet = (
+export type FetchGoogleSheet = (
   spreadsheetId: string,
   range: string,
-): TE.TaskEither<string, GaxiosResponse<Schema$ValueRange>> => TE.tryCatch(
-  async () => getSheets(spreadsheetId, range),
-  String,
+) => TE.TaskEither<string, GaxiosResponse<Schema$ValueRange>>;
+
+export const fetchGoogleSheet: FetchGoogleSheet = (spreadsheetId, range) => (
+  TE.tryCatch(
+    async () => getSheets(spreadsheetId, range),
+    String,
+  )
 );

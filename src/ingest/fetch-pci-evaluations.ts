@@ -1,11 +1,15 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { DOMParser } from 'xmldom';
-import { fetchData } from './fetch-data';
+import { FetchData } from './fetch-data';
 import { FetchEvaluations } from './update-all';
 
-export const fetchPciEvaluations = (url: string): FetchEvaluations => pipe(
-  fetchData<string>(url),
+type Ports = {
+  fetchData: FetchData,
+};
+
+export const fetchPciEvaluations = (url: string): FetchEvaluations => (ports: Ports) => pipe(
+  ports.fetchData<string>(url),
   TE.map((feed) => {
     const parser = new DOMParser({
       errorHandler: (_, msg) => {
