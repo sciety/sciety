@@ -1,3 +1,5 @@
+import { performance } from 'perf_hooks';
+import chalk from 'chalk';
 import * as TE from 'fp-ts/TaskEither';
 import { google, sheets_v4 } from 'googleapis';
 import { GaxiosResponse } from 'googleapis-common';
@@ -7,6 +9,7 @@ const getSheets = async (
   spreadsheetId: string,
   range: string,
 ): Promise<GaxiosResponse<Schema$ValueRange>> => {
+  const startTime = performance.now();
   const auth = new google.auth.GoogleAuth({
     keyFile: '/var/run/secrets/app/.gcp-ncrc-key.json',
     scopes: [
@@ -15,7 +18,12 @@ const getSheets = async (
     ],
   });
   google.options({ auth });
-  return google.sheets('v4').spreadsheets.values.get({ spreadsheetId, range });
+  return google.sheets('v4').spreadsheets.values.get({ spreadsheetId, range }).finally(() => {
+    if (process.env.INGEST_LOG === 'io') {
+      const endTime = performance.now();
+      process.stdout.write(chalk.yellow(`Fetched Google sheet ${spreadsheetId}/${range} (${Math.round(endTime - startTime)}ms)\n`));
+    }
+  });
 };
 
 export const fetchGoogleSheet = (
