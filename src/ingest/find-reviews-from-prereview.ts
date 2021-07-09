@@ -9,9 +9,9 @@ import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
 import { fetchData } from './fetch-data';
 import { FetchEvaluations } from './update-all';
-import { DoiFromString } from '../src/types/codecs/DoiFromString';
-import { Doi, isDoi } from '../src/types/doi';
-import { ReviewId } from '../src/types/review-id';
+import { DoiFromString } from '../types/codecs/DoiFromString';
+import { Doi, isDoi } from '../types/doi';
+import { ReviewId } from '../types/review-id';
 
 const preReviewPreprint = t.type({
   handle: t.union([DoiFromString, t.string]),

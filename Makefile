@@ -82,36 +82,36 @@ stop:
 find-review-commons-reviews: export TARGET = dev
 find-review-commons-reviews: build
 	$(DOCKER_COMPOSE) run -T app \
-		npx ts-node scripts/find-reviews-from-hypothesis NEGQVabn > ./data/reviews/316db7d9-88cc-4c26-b386-f067e0f56334.csv
+		npx ts-node src/ingest/find-reviews-from-hypothesis NEGQVabn > ./data/reviews/316db7d9-88cc-4c26-b386-f067e0f56334.csv
 
 find-elife-reviews: export TARGET = dev
 find-elife-reviews: build
 	$(DOCKER_COMPOSE) run -T app \
-		npx ts-node scripts/find-reviews-from-hypothesis q5X6RWJ6 > ./data/reviews/b560187e-f2fb-4ff9-a861-a204f3fc0fb0.csv
+		npx ts-node src/ingest/find-reviews-from-hypothesis q5X6RWJ6 > ./data/reviews/b560187e-f2fb-4ff9-a861-a204f3fc0fb0.csv
 
 find-peerj-reviews: export TARGET = dev
 find-peerj-reviews: build
 	$(DOCKER_COMPOSE) run -T app \
-		npx ts-node scripts/find-reviews-from-crossref-via-biorxiv 10.7717 10.7287 > ./data/reviews/53ed5364-a016-11ea-bb37-0242ac130002.csv
+		npx ts-node src/ingest/find-reviews-from-crossref-via-biorxiv 10.7717 10.7287 > ./data/reviews/53ed5364-a016-11ea-bb37-0242ac130002.csv
 
 find-screenit-reviews: export TARGET = dev
 find-screenit-reviews: build
 	$(DOCKER_COMPOSE) run -T app \
-		npx ts-node scripts/find-reviews-from-hypothesis-user sciscore >> ./data/reviews/8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65.csv
+		npx ts-node src/ingest/find-reviews-from-hypothesis-user sciscore >> ./data/reviews/8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65.csv
 		cat ./data/reviews/8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65.csv | sort -g | uniq > /tmp/8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65.csv
 		mv /tmp/8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65.csv ./data/reviews/8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65.csv
 
 find-prelights-reviews: export TARGET = dev
 find-prelights-reviews: build
 	$(DOCKER_COMPOSE) run -T app \
-		npx ts-node scripts/find-reviews-from-prelights >> ./data/reviews/f97bd177-5cb6-4296-8573-078318755bf2.csv
+		npx ts-node src/ingest/find-reviews-from-prelights >> ./data/reviews/f97bd177-5cb6-4296-8573-078318755bf2.csv
 		cat ./data/reviews/f97bd177-5cb6-4296-8573-078318755bf2.csv | sort -g | uniq > /tmp/prelights.csv
 		mv /tmp/prelights.csv ./data/reviews/f97bd177-5cb6-4296-8573-078318755bf2.csv
 
 update-groups: export TARGET = dev
 update-groups: build
 	$(DOCKER_COMPOSE) run -e INGEST_LOG=${INGEST_LOG} app \
-	npx ts-node scripts/update-event-data
+	npx ts-node src/ingest/update-event-data
 
 COMMUNITY_SCRIPTS := \
 	find-review-commons-reviews \
