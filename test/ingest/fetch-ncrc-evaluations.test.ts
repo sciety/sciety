@@ -2,7 +2,20 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { fetchNcrcEvaluations } from '../../src/ingest/fetch-ncrc-evaluations';
+import { arbitraryDate } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
+import { arbitraryDoi } from '../types/doi.helper';
+
+const arbitraryGoogleSheetsResponse = {
+  config: {},
+  data: {},
+  headers: {},
+  request: {
+    responseURL: '',
+  },
+  status: 200,
+  statusText: '',
+};
 
 describe('fetch-ncrc-evaluations', () => {
   describe('when there is an evaluation', () => {
@@ -11,18 +24,12 @@ describe('fetch-ncrc-evaluations', () => {
         {
           fetchData: shouldNotBeCalled,
           fetchGoogleSheet: () => TE.right({
-            config: {},
+            ...arbitraryGoogleSheetsResponse,
             data: {
               values: [
-                ['123', 0, 0, 0, 0, 0, '10.1101/abc', 0, 0, 0, 0, 0, 0, 0, 'medrxiv', 0, 0, 0, '2021-07-08'],
+                ['123', 0, 0, 0, 0, 0, arbitraryDoi(), 0, 0, 0, 0, 0, 0, 0, 'medrxiv', 0, 0, 0, arbitraryDate()],
               ],
             },
-            headers: {},
-            request: {
-              responseURL: '',
-            },
-            status: 200,
-            statusText: '',
           }),
         },
         fetchNcrcEvaluations(),
@@ -38,14 +45,8 @@ describe('fetch-ncrc-evaluations', () => {
         {
           fetchData: shouldNotBeCalled,
           fetchGoogleSheet: () => TE.right({
-            config: {},
+            ...arbitraryGoogleSheetsResponse,
             data: {},
-            headers: {},
-            request: {
-              responseURL: '',
-            },
-            status: 200,
-            statusText: '',
           }),
         },
         fetchNcrcEvaluations(),
