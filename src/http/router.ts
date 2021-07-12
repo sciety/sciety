@@ -386,6 +386,12 @@ export const createRouter = (adapters: Adapters): Router => {
     await next();
   });
 
+  router.get('/docmaps/v1/articles/10.1101/2021.04.25.441302.docmap.json', async (context, next) => {
+    context.response.body = [];
+
+    await next();
+  });
+
   // MISC
 
   router.get('/ping', ping());
