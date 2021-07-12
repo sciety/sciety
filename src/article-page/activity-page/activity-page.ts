@@ -20,6 +20,7 @@ import {
 import { renderArticleVersionFeedItem } from './render-article-version-feed-item';
 import { renderFeed } from './render-feed';
 import { renderReviewFeedItem } from './render-review-feed-item';
+import { toDisplayString } from '../../shared-components/date';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
@@ -33,7 +34,6 @@ import { User } from '../../types/user';
 import { projectHasUserSavedArticle } from '../project-has-user-saved-article';
 import { renderSaveArticle } from '../render-save-article';
 import { renderTweetThis } from '../render-tweet-this';
-import { toDisplayString } from '../../shared-components/date';
 
 type ActivityPage = (params: Params) => RTE.ReaderTaskEither<Ports, RenderPageError, Page>;
 
