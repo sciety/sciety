@@ -69,6 +69,7 @@ export const articleMetaPage: MetaPage = flow(
     (components) => ({
       content: renderMetaPage(components),
       title: striptags(components.articleDetails.title),
+      description: striptags(components.articleDetails.abstract),
       openGraph: {
         title: striptags(components.articleDetails.title),
         description: striptags(components.articleDetails.abstract),
