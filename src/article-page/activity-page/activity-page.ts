@@ -74,7 +74,7 @@ export const articleActivityPage: ActivityPage = flow(
   RTE.right,
   RTE.bind('userId', ({ user }) => pipe(user, O.map((u) => u.id), RTE.right)),
   RTE.bind('articleDetails', ({ doi }) => (ports: Ports) => pipe(doi, ports.fetchArticle)),
-  RTE.bindW('feed', ({ articleDetails, doi, userId }) => (ports: Ports) => pipe(
+  RTE.bindW('feedItems', ({ articleDetails, doi, userId }) => (ports: Ports) => pipe(
     articleDetails.server,
     (server) => getArticleFeedEvents(doi, server, userId)({
       ...ports,
@@ -87,7 +87,11 @@ export const articleActivityPage: ActivityPage = flow(
       countReviewResponses: (reviewId) => projectReviewResponseCounts(reviewId)(ports.getAllEvents),
       getUserReviewResponse: (reviewId) => projectUserReviewResponse(reviewId, userId)(ports.getAllEvents),
     }),
-    T.map(renderFeed(
+    TE.rightTask,
+  )),
+  RTE.bindW('feed', ({ feedItems }) => () => pipe(
+    feedItems,
+    renderFeed(
       (feedItem) => {
         switch (feedItem.type) {
           case 'article-version':
@@ -98,8 +102,8 @@ export const articleActivityPage: ActivityPage = flow(
             return renderReviewFeedItem(850)(feedItem);
         }
       },
-    )),
-    TE.rightTask,
+    ),
+    TE.right,
   )),
   RTE.bindW('hasUserSavedArticle', ({ doi, userId }) => pipe(
     userId,
