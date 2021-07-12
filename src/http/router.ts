@@ -374,7 +374,14 @@ export const createRouter = (adapters: Adapters): Router => {
 
   // DOCMAPS
   router.get('/docmaps/v1/index', async (context, next) => {
-    context.response.body = {};
+    context.response.body = {
+      articles: [
+        {
+          doi: '10.1101/2021.04.25.441302',
+          docmap: '/docmaps/v1/articles/10.1101/2021.04.25.441302.docmap.json',
+        },
+      ],
+    };
 
     await next();
   });
