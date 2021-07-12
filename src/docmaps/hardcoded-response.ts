@@ -56,7 +56,7 @@ export const hardcodedReviewCommonsArticle = {
         }],
         inputs: [{
           published: '2021-04-26T00:00:00Z',
-          uri: 'https://sciety.org/articles/meta/10.1101/2021.04.25.441302',
+          uri: 'https://doi.org/10.1101/2021.04.25.441302',
           doi: '10.1101/2021.04.25.441302',
         }],
       },
