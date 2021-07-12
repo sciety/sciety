@@ -5,7 +5,7 @@ export const hardcodedReviewCommonsArticle = {
     created: '2021-07-11T21:57:43.171Z',
     generatedAt: '2021-07-11T21:57:43.171Z',
     publisher: 'https://sciety.org/groups/316db7d9-88cc-4c26-b386-f067e0f56334',
-    id: 'https://eeb.embo.org/api/v2.1/docmap/10.1101/2021.04.25.441302',
+    id: 'https://sciety.org/docmaps/v1/articles/10.1101/2021.04.25.441302.docmap.json',
     type: 'docmap',
     steps: {
       '_:b-78200b4c-48b8-4d64-b0d0-bfc99453d5f0': {
