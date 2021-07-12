@@ -38,7 +38,7 @@ type UserPage = (tab: string) => (params: Params) => TE.TaskEither<RenderPageErr
 
 export const userPage = (ports: Ports): UserPage => (tab) => (params) => pipe(
   params.handle,
-  ports.getUserId,
+  ports.getUserId, // TODO: get the user details (extended to include the id) from Twitter here instead
   TE.chain((id) => pipe(
     {
       dois: TE.rightTask(projectSavedArticleDois(ports.getAllEvents)(id)),
