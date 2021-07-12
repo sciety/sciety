@@ -17,7 +17,7 @@ import {
   medrxivArticleVersionErrorFeedItem,
 } from './render-article-version-error-feed-item';
 import { renderArticleVersionFeedItem } from './render-article-version-feed-item';
-import { renderFeed } from './render-feed';
+import { FeedItem, renderFeed } from './render-feed';
 import { renderReviewFeedItem } from './render-review-feed-item';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
@@ -69,6 +69,16 @@ const toErrorPage = (error: DE.DataError) => ({
     You may need to come back later.
   `),
 });
+
+type MetaDescription = {
+  evaluationCount: number,
+};
+
+const calculateArticleMetaTagContent = (feedItems: ReadonlyArray<FeedItem>): MetaDescription => ({
+  evaluationCount: feedItems.filter((item) => item.type === 'review').length,
+});
+
+const renderDescriptionMetaTagContent = (meta: MetaDescription) => `Evaluations: ${meta.evaluationCount}`;
 
 export const articleActivityPage: ActivityPage = flow(
   RTE.right,
@@ -128,7 +138,10 @@ export const articleActivityPage: ActivityPage = flow(
     (components) => ({
       content: renderActivityPage(components),
       title: striptags(components.articleDetails.title),
-      description: striptags(components.articleDetails.abstract),
+      description: pipe(
+        calculateArticleMetaTagContent(components.feedItems),
+        renderDescriptionMetaTagContent,
+      ),
       openGraph: {
         title: striptags(components.articleDetails.title),
         description: striptags(components.articleDetails.abstract),
