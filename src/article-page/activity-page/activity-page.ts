@@ -33,6 +33,7 @@ import { User } from '../../types/user';
 import { projectHasUserSavedArticle } from '../project-has-user-saved-article';
 import { renderSaveArticle } from '../render-save-article';
 import { renderTweetThis } from '../render-tweet-this';
+import { toDisplayString } from '../../shared-components/date';
 
 type ActivityPage = (params: Params) => RTE.ReaderTaskEither<Ports, RenderPageError, Page>;
 
@@ -71,7 +72,8 @@ const toErrorPage = (error: DE.DataError) => ({
   `),
 });
 
-const renderDescriptionMetaTagContent = (meta: MetaDescription) => `Evaluations: ${meta.evaluationCount}`;
+const renderDescriptionMetaTagContent = (meta: MetaDescription) => `Evaluations: ${meta.evaluationCount}
+${pipe(meta.latestVersion, O.fold(constant(''), (latestVersion) => `Latest version: ${toDisplayString(latestVersion)}`))}`;
 
 export const articleActivityPage: ActivityPage = flow(
   RTE.right,

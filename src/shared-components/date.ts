@@ -7,7 +7,8 @@ const textFormatOptions: Intl.DateTimeFormatOptions = {
 };
 
 const toString = (date: Date) => date.toISOString().split('T')[0];
-const toDisplayString = (date: Date) => date.toLocaleDateString('en-US', textFormatOptions);
+
+export const toDisplayString = (date: Date) => date.toLocaleDateString('en-US', textFormatOptions);
 
 export const templateDate = (date: Date, className?: string): HtmlFragment => {
   const classNameAttribute = className ? ` class="${className}"` : '';
