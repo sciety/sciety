@@ -372,6 +372,13 @@ export const createRouter = (adapters: Adapters): Router => {
     redirectAfterAuthenticating(),
   );
 
+  // DOCMAPS
+  router.get('/docmaps/v1/index', async (context, next) => {
+    context.response.body = {};
+
+    await next();
+  });
+
   // MISC
 
   router.get('/ping', ping());
