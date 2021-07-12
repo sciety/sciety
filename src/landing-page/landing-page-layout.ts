@@ -5,7 +5,7 @@ import { Page } from '../types/page';
 
 export const landingPageLayout = (page: Page): string => `<!doctype html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
-  ${head(O.none, page.title, page.openGraph)}
+  ${head(O.none, page)}
 <body>
   ${googleTagManagerNoScript()}
   <div>

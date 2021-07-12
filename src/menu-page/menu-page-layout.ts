@@ -10,7 +10,7 @@ import { User } from '../types/user';
 // TODO: return a more specific type e.g. HtmlDocument
 export const menuPageLayout = (user: O.Option<User>, referer: O.Option<string>): string => `<!doctype html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
-  ${head(user, 'Menu')}
+  ${head(user, { title: 'Menu' })}
 <body>
   ${googleTagManagerNoScript()}
 

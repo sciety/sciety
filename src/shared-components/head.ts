@@ -3,25 +3,26 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { fathom, googleTagManager } from './analytics';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { Page } from '../types/page';
 import { User } from '../types/user';
 
 export const head = (
   user: O.Option<User>,
-  title: string,
-  openGraph?: { title: string, description: string },
+  page: Omit<Page, 'content'>,
 ): HtmlFragment => toHtmlFragment(`
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>
-    ${htmlEscape(title.startsWith('Sciety') ? title : `${title} | Sciety`)}
+    ${htmlEscape(page.title.startsWith('Sciety') ? page.title : `${page.title} | Sciety`)}
   </title>
+  ${(page.description) ? htmlEscape`<meta name="description" content="${page.description}">` : ''}
   <link rel="stylesheet" href="/static/style.css">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@scietyHQ">
   <meta property="og:site_name" content="Sciety">
-  <meta property="og:title" content="${htmlEscape(openGraph ? openGraph.title : 'Sciety')}">
-  <meta property="og:description" content="${htmlEscape(openGraph ? openGraph.description : 'Let Sciety help you navigate the preprint landscape.')}">
+  <meta property="og:title" content="${htmlEscape(page.openGraph ? page.openGraph.title : 'Sciety')}">
+  <meta property="og:description" content="${htmlEscape(page.openGraph ? page.openGraph.description : 'Let Sciety help you navigate the preprint landscape.')}">
   <meta property="og:image" content="${process.env.APP_ORIGIN ?? ''}/static/images/sciety-twitter-profile.png">
   <link rel="icon" type="image/svg+xml" href="/static/images/favicons/favicon.svg">
 

@@ -124,6 +124,7 @@ export const articleActivityPage: ActivityPage = flow(
     (components) => ({
       content: renderActivityPage(components),
       title: striptags(components.articleDetails.title),
+      description: striptags(components.articleDetails.abstract),
       openGraph: {
         title: striptags(components.articleDetails.title),
         description: striptags(components.articleDetails.abstract),
