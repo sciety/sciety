@@ -7,6 +7,7 @@ import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { constant, flow, pipe } from 'fp-ts/function';
 import striptags from 'striptags';
+import { articleMetaTagContent, MetaDescription } from './article-meta-tag-content';
 import { FindReviewsForArticleDoi, FindVersionsForArticleDoi, getArticleFeedEvents } from './get-article-feed-events';
 import { FetchReview } from './get-feed-events-content';
 import { projectReviewResponseCounts } from './project-review-response-counts';
@@ -17,7 +18,7 @@ import {
   medrxivArticleVersionErrorFeedItem,
 } from './render-article-version-error-feed-item';
 import { renderArticleVersionFeedItem } from './render-article-version-feed-item';
-import { FeedItem, renderFeed } from './render-feed';
+import { renderFeed } from './render-feed';
 import { renderReviewFeedItem } from './render-review-feed-item';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
@@ -68,14 +69,6 @@ const toErrorPage = (error: DE.DataError) => ({
     Ensure you have the correct URL, or try refreshing the page.
     You may need to come back later.
   `),
-});
-
-type MetaDescription = {
-  evaluationCount: number,
-};
-
-const calculateArticleMetaTagContent = (feedItems: ReadonlyArray<FeedItem>): MetaDescription => ({
-  evaluationCount: feedItems.filter((item) => item.type === 'review').length,
 });
 
 const renderDescriptionMetaTagContent = (meta: MetaDescription) => `Evaluations: ${meta.evaluationCount}`;
@@ -139,7 +132,7 @@ export const articleActivityPage: ActivityPage = flow(
       content: renderActivityPage(components),
       title: striptags(components.articleDetails.title),
       description: pipe(
-        calculateArticleMetaTagContent(components.feedItems),
+        articleMetaTagContent(components.feedItems),
         renderDescriptionMetaTagContent,
       ),
       openGraph: {
