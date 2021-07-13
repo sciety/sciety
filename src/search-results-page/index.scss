@@ -48,12 +48,16 @@ $_clear-button-inline-size: 48px;
   margin-left: functions.px-to-rem($_inline-margin);
   margin-right: functions.px-to-rem($_inline-margin);
   margin-bottom: baseline.increments(3);
-  position: relative;
 
   @include breakpoints.not-narrow {
     margin-left: 0;
     margin-right: 0;
   }
+}
+
+.search-form__form {
+  margin-bottom: baseline.increments(1);
+  position: relative;
 }
 
 .search-form__text {
