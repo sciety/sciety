@@ -43,10 +43,18 @@ const toDoi = (url: string): TE.TaskEither<string, string> => pipe(
     (meta) => meta?.getAttribute('content'),
     O.fromNullable,
     E.fromOption(() => {
-      const msg = `WARNING: Cannot find DC.identifier at url: ${url}\n`;
+      const msg = `WARNING: Cannot find DC.Identifier at url: ${url}\n`;
       process.stderr.write(msg);
       return msg;
     }),
+    E.filterOrElse(
+      (doi) => doi.startsWith('10.1101/'),
+      (doi) => {
+        const msg = `WARNING: Non-biorxiv DOI ${doi} at url: ${url}\n`;
+        process.stderr.write(msg);
+        return msg;
+      },
+    ),
   )),
 );
 
