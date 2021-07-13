@@ -19,6 +19,7 @@ export const hero = toHtmlFragment(`
         <button type="submit" class="landing-page-hero__search_button">Search</button>
         <button type="reset" class="visually-hidden">Reset</button>
       </form>
+      <p>Search examples: <a href="/search?query=COVID-19">COVID-19</a>, <a href="/search?query=C. elegans">C. elegans</a></p>
     </div>
 
     <picture>
