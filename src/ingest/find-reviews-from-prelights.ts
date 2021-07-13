@@ -1,5 +1,6 @@
 import parser from 'fast-xml-parser';
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -7,6 +8,7 @@ import { constant, flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
+import { JSDOM } from 'jsdom';
 import { fetchData } from './fetch-data';
 
 const key = process.env.PRELIGHTS_FEED_KEY ?? '';
@@ -33,16 +35,20 @@ const prelightsFeedCodec = t.type({
 
 type Feed = t.TypeOf<typeof prelightsFeedCodec>;
 
-const toDoi = (url: string): TE.TaskEither<string, string> => {
-  const doiRegex = '(10\\.[0-9]{4,}(?:\\.[1-9][0-9]*)*/(?:[^%"#?\\s])+)';
-  const matches = new RegExp(`https?://(?:www.)?biorxiv.org/content/${doiRegex}v[0-9]+$`).exec(url);
-  if (matches === null) {
-    const msg = `WARNING: Cannot parse url to DOI: ${url}\n`;
-    process.stderr.write(msg);
-    return TE.left(msg);
-  }
-  return TE.right(matches[1]);
-};
+const toDoi = (url: string): TE.TaskEither<string, string> => pipe(
+  fetchData<string>(url),
+  TE.chainEitherKW(flow(
+    (doc) => new JSDOM(doc),
+    (dom) => dom.window.document.querySelector('meta[name="DC.Identifier"]'),
+    (meta) => meta?.getAttribute('content'),
+    O.fromNullable,
+    E.fromOption(() => {
+      const msg = `WARNING: Cannot find DC.identifier at url: ${url}\n`;
+      process.stderr.write(msg);
+      return msg;
+    }),
+  )),
+);
 
 type Prelight = {
   guid: string,
