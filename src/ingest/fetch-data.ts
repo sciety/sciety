@@ -4,8 +4,12 @@ import chalk from 'chalk';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 
-const axiosGet = async <D>(url: string, headers: Record<string, string>) => {
+const axiosGet = async <D>(url: string, additionalHeaders: Record<string, string>) => {
   const startTime = performance.now();
+  const headers = {
+    'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)',
+    ...additionalHeaders,
+  };
   return axios.get<D>(url, { headers }).finally(() => {
     if (process.env.INGEST_LOG === 'io') {
       const endTime = performance.now();

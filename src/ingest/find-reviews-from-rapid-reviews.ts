@@ -51,7 +51,7 @@ const constructUrls = (numberOfEvaluations: number) => (
 );
 
 const fetchAndDecode = <A>(fetchData: FetchData, codec: t.Decoder<unknown, A>) => (url: string) => pipe(
-  fetchData<JSON>(url, { 'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)' }),
+  fetchData<JSON>(url),
   TE.chainEitherK(flow(
     codec.decode,
     E.mapLeft((errors) => PR.failure(errors).join('\n')),
