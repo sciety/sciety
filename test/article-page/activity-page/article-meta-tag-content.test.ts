@@ -1,5 +1,6 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
 import * as RFI from './review-feed-item.helper';
 import { articleMetaTagContent } from '../../../src/article-page/activity-page/article-meta-tag-content';
 import { arbitraryDate, arbitraryNumber, arbitraryUri } from '../../helpers';
@@ -41,4 +42,14 @@ describe('article-meta-tag-content', () => {
   });
 
   it.todo('ordering coupling problem');
+
+  it('returns the latest activity date', () => {
+    const date = arbitraryDate();
+    const result = articleMetaTagContent([
+      pipe(RFI.arbitrary(), RFI.withDate(date)),
+      pipe(RFI.arbitrary(), RFI.withDate(new Date('01-01-1970'))),
+    ]);
+
+    expect(result.latestActivity).toStrictEqual(O.some(date));
+  });
 });

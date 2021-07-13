@@ -38,3 +38,8 @@ export const withSource = (uri: string) => (rfi: ReviewFeedItem): ReviewFeedItem
   ...rfi,
   source: O.some(new URL(uri)),
 });
+
+export const withDate = (occurredAt: Date) => (rfi: ReviewFeedItem): ReviewFeedItem => ({
+  ...rfi,
+  occurredAt,
+});

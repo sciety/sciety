@@ -72,8 +72,9 @@ const toErrorPage = (error: DE.DataError) => ({
   `),
 });
 
-const renderDescriptionMetaTagContent = (meta: MetaDescription) => `${meta.evaluationCount} evaluations 
-${pipe(meta.latestVersion, O.fold(constant(''), (latestVersion) => `Latest version ${toDisplayString(latestVersion)}`))}`;
+const renderDescriptionMetaTagContent = (meta: MetaDescription) => `${meta.evaluationCount} evaluations
+${pipe(meta.latestVersion, O.fold(constant(''), (latestVersion) => `Latest version ${toDisplayString(latestVersion)}`))}
+${pipe(meta.latestActivity, O.fold(constant(''), (latestActivity) => `Latest activity ${toDisplayString(latestActivity)}`))}`;
 
 export const articleActivityPage: ActivityPage = flow(
   RTE.right,
