@@ -1,5 +1,6 @@
 import { htmlEscape } from 'escape-goat';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { renderExampleSearches } from './render-example-searches';
 
 export const renderSearchForm = (query: string): HtmlFragment => toHtmlFragment(`
   <div class="search-form">
@@ -12,6 +13,6 @@ export const renderSearchForm = (query: string): HtmlFragment => toHtmlFragment(
       </button>
       <button type="submit" class="visually-hidden">Search</button>
     </form>
-    <p>Search examples: <a href="/search?query=COVID-19">COVID-19</a>, <a href="/search?query=C. elegans">C. elegans</a></p>
+    ${renderExampleSearches()}
   </div>
 `);
