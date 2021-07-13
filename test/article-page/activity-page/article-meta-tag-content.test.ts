@@ -41,8 +41,6 @@ describe('article-meta-tag-content', () => {
     expect(result.latestVersion).toStrictEqual(O.some(date));
   });
 
-  it.todo('ordering coupling problem');
-
   it('returns the latest activity date', () => {
     const date = arbitraryDate();
     const result = articleMetaTagContent([
