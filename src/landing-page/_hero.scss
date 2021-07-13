@@ -23,7 +23,7 @@ $_search-button-width: functions.px-to-rem(70px);
   width: 100%;
   max-width: functions.px-to-rem(400px); // limit form width to match width of preceding copy
   position: relative;
-  margin-bottom: baseline.increments(4);
+  margin-bottom: baseline.increments(1);
 }
 
 .landing-page-hero__search_text {
@@ -49,6 +49,8 @@ $_search-button-width: functions.px-to-rem(70px);
 }
 
 .landing-page-hero__content {
+  margin-bottom: baseline.increments(4);
+
   @media screen and (min-width: common.$landing-page-breakpoint) {
     margin-top: baseline.increments(7.5); // Offset content from top of image
     padding-right: 2rem;
