@@ -33,15 +33,15 @@ const prelightsFeedCodec = t.type({
 
 type Feed = t.TypeOf<typeof prelightsFeedCodec>;
 
-const toDoi = (url: string) => {
+const toDoi = (url: string): TE.TaskEither<string, string> => {
   const doiRegex = '(10\\.[0-9]{4,}(?:\\.[1-9][0-9]*)*/(?:[^%"#?\\s])+)';
   const matches = new RegExp(`https?://(?:www.)?biorxiv.org/content/${doiRegex}v[0-9]+$`).exec(url);
   if (matches === null) {
     const msg = `WARNING: Cannot parse url to DOI: ${url}\n`;
     process.stderr.write(msg);
-    return E.left(msg);
+    return TE.left(msg);
   }
-  return E.right(matches[1]);
+  return TE.right(matches[1]);
 };
 
 type Prelight = {
@@ -65,26 +65,26 @@ const extractPrelights = (feed: Feed) => pipe(
       preprintUrl: item.preprints.preprint.preprinturl,
     }];
   }),
-  RA.map((item) => pipe(
+  T.traverseArray((item) => pipe(
     toDoi(item.preprintUrl),
-    E.map((articleDoi) => ({
+    TE.map((articleDoi) => ({
       date: item.pubDate.toISOString(),
       articleDoi,
       evaluationLocator: `prelights:${item.guid.replace('&#038;', '&')}`,
     })),
   )),
-  RA.rights,
+  T.map(RA.rights),
 );
 
 void (async (): Promise<void> => {
   await pipe(
-    fetchData<string>(`https://prelights.biologists.com/feed/sciety/?key=${key}&hours=120`),
+    fetchData<string>(`https://prelights.biologists.com/feed/sciety/?key=${key}`),
     TE.map((responseBody) => parser.parse(responseBody) as JSON),
     TE.chainEitherK(flow(
       prelightsFeedCodec.decode,
       E.mapLeft((errors) => PR.failure(errors).join('\n')),
     )),
-    TE.map(extractPrelights),
+    TE.chainTaskK(extractPrelights),
     TE.bimap(
       (errors) => {
         process.stderr.write(errors);
