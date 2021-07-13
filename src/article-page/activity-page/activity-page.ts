@@ -7,7 +7,7 @@ import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { constant, flow, pipe } from 'fp-ts/function';
 import striptags from 'striptags';
-import { articleMetaTagContent, MetaDescription } from './article-meta-tag-content';
+import { articleMetaTagContent } from './article-meta-tag-content';
 import { FindReviewsForArticleDoi, FindVersionsForArticleDoi, getArticleFeedEventsByDateDescending } from './get-article-feed-events';
 import { FetchReview } from './get-feed-events-content';
 import { projectReviewResponseCounts } from './project-review-response-counts';
@@ -18,9 +18,9 @@ import {
   medrxivArticleVersionErrorFeedItem,
 } from './render-article-version-error-feed-item';
 import { renderArticleVersionFeedItem } from './render-article-version-feed-item';
+import { renderDescriptionMetaTagContent } from './render-description-meta-tag-content';
 import { renderFeed } from './render-feed';
 import { renderReviewFeedItem } from './render-review-feed-item';
-import { toDisplayString } from '../../shared-components/date';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
@@ -71,10 +71,6 @@ const toErrorPage = (error: DE.DataError) => ({
     You may need to come back later.
   `),
 });
-
-const renderDescriptionMetaTagContent = (meta: MetaDescription) => `${meta.evaluationCount} evaluations
-${pipe(meta.latestVersion, O.fold(constant(''), (latestVersion) => `Latest version ${toDisplayString(latestVersion)}`))}
-${pipe(meta.latestActivity, O.fold(constant(''), (latestActivity) => `Latest activity ${toDisplayString(latestActivity)}`))}`;
 
 export const articleActivityPage: ActivityPage = flow(
   RTE.right,
