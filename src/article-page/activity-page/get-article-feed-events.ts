@@ -37,7 +37,7 @@ export type FindVersionsForArticleDoi = (
   version: number,
 }>>;
 
-type GetArticleFeedEvents = (
+type GetArticleFeedEventsByDateDescending = (
   doi: Doi,
   server: ArticleServer,
   userId: O.Option<UserId>,
@@ -52,7 +52,7 @@ type Dependencies = {
   getUserReviewResponse: GetUserReviewResponse,
 };
 
-export const getArticleFeedEvents: GetArticleFeedEvents = (doi, server, userId) => pipe(
+export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDescending = (doi, server, userId) => pipe(
   [
     pipe(
       RT.asks((deps: Dependencies) => deps.findReviewsForArticleDoi),

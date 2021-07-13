@@ -8,7 +8,7 @@ import * as TO from 'fp-ts/TaskOption';
 import { constant, flow, pipe } from 'fp-ts/function';
 import striptags from 'striptags';
 import { articleMetaTagContent, MetaDescription } from './article-meta-tag-content';
-import { FindReviewsForArticleDoi, FindVersionsForArticleDoi, getArticleFeedEvents } from './get-article-feed-events';
+import { FindReviewsForArticleDoi, FindVersionsForArticleDoi, getArticleFeedEventsByDateDescending } from './get-article-feed-events';
 import { FetchReview } from './get-feed-events-content';
 import { projectReviewResponseCounts } from './project-review-response-counts';
 import { projectUserReviewResponse } from './project-user-review-response';
@@ -80,9 +80,9 @@ export const articleActivityPage: ActivityPage = flow(
   RTE.right,
   RTE.bind('userId', ({ user }) => pipe(user, O.map((u) => u.id), RTE.right)),
   RTE.bind('articleDetails', ({ doi }) => (ports: Ports) => pipe(doi, ports.fetchArticle)),
-  RTE.bindW('feedItems', ({ articleDetails, doi, userId }) => (ports: Ports) => pipe(
+  RTE.bindW('feedItemsByDateDescending', ({ articleDetails, doi, userId }) => (ports: Ports) => pipe(
     articleDetails.server,
-    (server) => getArticleFeedEvents(doi, server, userId)({
+    (server) => getArticleFeedEventsByDateDescending(doi, server, userId)({
       ...ports,
       getGroup: flow(
         ports.getGroup,
@@ -95,8 +95,8 @@ export const articleActivityPage: ActivityPage = flow(
     }),
     TE.rightTask,
   )),
-  RTE.bindW('feed', ({ feedItems }) => () => pipe(
-    feedItems,
+  RTE.bindW('feed', ({ feedItemsByDateDescending }) => () => pipe(
+    feedItemsByDateDescending,
     renderFeed(
       (feedItem) => {
         switch (feedItem.type) {
@@ -135,7 +135,7 @@ export const articleActivityPage: ActivityPage = flow(
       content: renderActivityPage(components),
       title: striptags(components.articleDetails.title),
       description: pipe(
-        articleMetaTagContent(components.feedItems),
+        articleMetaTagContent(components.feedItemsByDateDescending),
         renderDescriptionMetaTagContent,
       ),
       openGraph: {
