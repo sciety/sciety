@@ -1,11 +1,13 @@
-import axios from 'axios';
 import parser from 'fast-xml-parser';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { constant, pipe } from 'fp-ts/function';
+import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
+import { constant, flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
+import { fetchData } from './fetch-data';
 
 const key = process.env.PRELIGHTS_FEED_KEY ?? '';
 
@@ -75,18 +77,18 @@ const extractPrelights = (feed: Feed) => pipe(
 );
 
 void (async (): Promise<void> => {
-  pipe(
-    await axios.get<string>(`https://prelights.biologists.com/feed/sciety/?key=${key}&hours=120`, {
-      headers: {
-        'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)',
+  await pipe(
+    fetchData<string>(`https://prelights.biologists.com/feed/sciety/?key=${key}&hours=120`),
+    TE.map((responseBody) => parser.parse(responseBody) as JSON),
+    TE.chainEitherK(flow(
+      prelightsFeedCodec.decode,
+      E.mapLeft((errors) => PR.failure(errors).join('\n')),
+    )),
+    TE.map(extractPrelights),
+    TE.bimap(
+      (errors) => {
+        process.stderr.write(errors);
       },
-    }),
-    (response) => response.data,
-    (responseBody) => parser.parse(responseBody) as JSON,
-    prelightsFeedCodec.decode,
-    E.map(extractPrelights),
-    E.bimap(
-      (errors) => process.stderr.write(PR.failure(errors).join('\n')),
       (evaluations) => {
         process.stdout.write('Date,Article DOI,Review ID\n');
         pipe(
@@ -95,7 +97,7 @@ void (async (): Promise<void> => {
         );
       },
     ),
-    E.fold(constant(1), constant(0)),
-    (exitStatus) => process.exit(exitStatus),
-  );
+    TE.fold(constant(T.of(1)), constant(T.of(0))),
+    T.map((exitStatus) => process.exit(exitStatus)),
+  )();
 })();
