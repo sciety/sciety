@@ -78,7 +78,7 @@ const extractPrelights = (feed: Feed) => pipe(
 
 void (async (): Promise<void> => {
   await pipe(
-    fetchData<string>(`https://prelights.biologists.com/feed/sciety/?key=${key}`),
+    fetchData<string>(`https://prelights.biologists.com/feed/sciety/?key=${key}&hours=120`),
     TE.map((responseBody) => parser.parse(responseBody) as JSON),
     TE.chainEitherK(flow(
       prelightsFeedCodec.decode,
