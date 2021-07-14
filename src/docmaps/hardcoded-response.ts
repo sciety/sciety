@@ -9,7 +9,7 @@ export const hardcodedReviewCommonsArticle = {
     type: 'docmap',
     steps: {
       '_:b-78200b4c-48b8-4d64-b0d0-bfc99453d5f0': {
-        assertions: [{ item: 'https://doi.org/10.1101/2021.04.25.441302', status: 'authors-replied-to-reviewers' }],
+        assertions: [],
         actions: [{
           outputs: {
             published: '2021-06-18T23:16:27.418601+00:00',
