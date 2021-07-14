@@ -40,7 +40,11 @@ export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ i
   TE.chain((group) => pipe(
     {
       header: pipe(
-        group.name,
+        `<header class="page-header page-header--search-results">
+          <h1 class="page-heading--search">
+            Articles recently evaluated by ${group.name}
+          </h1>
+        </header>`,
         toHtmlFragment,
         TE.right,
       ),
