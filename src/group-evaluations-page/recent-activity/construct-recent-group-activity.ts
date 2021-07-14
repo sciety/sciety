@@ -47,9 +47,9 @@ const addArticleDetails = (
 export const constructRecentGroupActivity = (
   getArticleDetails: GetArticleDetails,
   getAllEvents: GetAllEvents,
-) => (groupId: GroupId): T.Task<HtmlFragment> => pipe(
+) => (groupId: GroupId, pageNumber: number): T.Task<HtmlFragment> => pipe(
   getAllEvents,
-  T.map(groupActivities(groupId, 1, 20)),
+  T.map(groupActivities(groupId, pageNumber, 20)),
   T.chain(TO.traverseArray(addArticleDetails(getArticleDetails))),
   T.map(E.fromOption(noInformationFound)),
   TE.chainOptionK(noActivity)(RNEA.fromReadonlyArray),

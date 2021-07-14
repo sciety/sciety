@@ -31,13 +31,12 @@ export type Ports = {
 type RecentActivity = (ports: Ports) => (group: Group) => TE.TaskEither<never, HtmlFragment>;
 
 export const recentActivity: RecentActivity = (ports) => (group) => pipe(
-  group.id,
   constructRecentGroupActivity(
     fetchArticleDetails(
       getLatestArticleVersionDate(ports.findVersionsForArticleDoi),
       flow(ports.fetchArticle, T.map(O.fromEither)),
     ),
     ports.getAllEvents,
-  ),
+  )(group.id, 1),
   TE.rightTask,
 );
