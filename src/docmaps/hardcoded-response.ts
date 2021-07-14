@@ -2,7 +2,7 @@ export const hardcodedReviewCommonsArticle = {
   record: {
     'first-step': '_:b-336d69dd-06d2-484b-8866-256ea5bbc384',
     provider: 'https://sciety.org',
-    created: '2021-07-11T21:57:43.171Z',
+    created: '2021-06-21T15:59:56.000Z',
     generatedAt: '2021-07-11T21:57:43.171Z',
     publisher: 'https://sciety.org/groups/316db7d9-88cc-4c26-b386-f067e0f56334',
     id: 'https://sciety.org/docmaps/v1/articles/10.1101/2021.04.25.441302.docmap.json',
