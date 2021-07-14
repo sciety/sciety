@@ -49,7 +49,7 @@ export const constructRecentGroupActivity = (
   getAllEvents: GetAllEvents,
 ) => (groupId: GroupId): T.Task<HtmlFragment> => pipe(
   getAllEvents,
-  T.map(groupActivities(groupId)),
+  T.map(groupActivities(groupId, 20)),
   T.chain(TO.traverseArray(addArticleDetails(getArticleDetails))),
   T.map(E.fromOption(noInformationFound)),
   TE.chainOptionK(noActivity)(RNEA.fromReadonlyArray),

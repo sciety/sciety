@@ -79,9 +79,12 @@ const groupHasEvaluatedArticle = <T extends { latestActivityByGroup: O.Option<Da
   })),
 );
 
-type GroupActivities = (groupId: GroupId) => (events: ReadonlyArray<DomainEvent>) => ReadonlyArray<ArticleActivity>;
+type GroupActivities = (
+  groupId: GroupId,
+  pageSize: number,
+) => (events: ReadonlyArray<DomainEvent>) => ReadonlyArray<ArticleActivity>;
 
-export const groupActivities: GroupActivities = (groupId) => flow(
+export const groupActivities: GroupActivities = (groupId, pageSize) => flow(
   RA.filter(isEditorialCommunityReviewedArticleEvent),
   RA.reduce(new Map(), addEventToActivities(groupId)),
   RM.filterMapWithIndex(flow(
@@ -89,5 +92,5 @@ export const groupActivities: GroupActivities = (groupId) => flow(
     groupHasEvaluatedArticle,
   )),
   RM.values(byLatestActivityDateByGroupDesc),
-  RA.takeLeft(20),
+  RA.takeLeft(pageSize),
 );
