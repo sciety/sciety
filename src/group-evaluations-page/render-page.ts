@@ -15,9 +15,6 @@ const render = (components: Components) => `
     <div class="sciety-grid sciety-grid--search-results">
       ${components.header}
       <section>
-        <h2>
-          Recent Activity
-        </h2>
         ${components.recentActivity}
       </section>
     </div>
