@@ -27,7 +27,7 @@ import { aboutPage } from '../about-page';
 import { articleActivityPage, articleMetaPage } from '../article-page';
 import { hardcodedReviewCommonsArticle } from '../docmaps/hardcoded-response';
 import { finishUnfollowCommand, saveUnfollowCommand, unfollowHandler } from '../follow';
-import { groupEvaluationsPage } from '../group-evaluations-page/group-evaluations-page';
+import { groupEvaluationsPage, paramsCodec as groupEvaluationsPageParams } from '../group-evaluations-page/group-evaluations-page';
 import { groupPage, paramsCodec as groupPageParams } from '../group-page';
 import { groupsPage } from '../groups-page';
 import { Adapters } from '../infrastructure/adapters';
@@ -285,11 +285,10 @@ export const createRouter = (adapters: Adapters): Router => {
   router.get(
     '/groups/:id/recently-evaluated',
     pageHandler(flow(
-      // TODO: remove use of the codec from another page
-      groupPageParams.decode,
+      groupEvaluationsPageParams.decode,
       E.mapLeft(toNotFound),
       TE.fromEither,
-      TE.chain(groupEvaluationsPage()),
+      TE.chain(groupEvaluationsPage(adapters)),
     )),
   );
 
