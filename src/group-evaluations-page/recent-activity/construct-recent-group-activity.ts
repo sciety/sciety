@@ -50,7 +50,7 @@ export const constructRecentGroupActivity = (
 ) => (groupId: GroupId, pageNumber: number): T.Task<HtmlFragment> => pipe(
   getAllEvents,
   T.map(groupActivities(groupId, pageNumber, 20)),
-  T.chain(({ content }) => pipe(
+  T.chain(({ content, nextPageNumber }) => pipe(
     content,
     TO.traverseArray(addArticleDetails(getArticleDetails)),
     T.map(E.fromOption(noInformationFound)),
@@ -61,7 +61,10 @@ export const constructRecentGroupActivity = (
         latestVersionDate: articleViewModel.latestVersionDate,
         latestActivityDate: O.some(articleViewModel.latestActivityDate),
       })),
-      renderRecentGroupActivity(O.some(`/groups/${groupId}/recently-evaluated?page=${pageNumber + 1}`)),
+      renderRecentGroupActivity(pipe(
+        nextPageNumber,
+        O.map((p) => `/groups/${groupId}/recently-evaluated?page=${p}`),
+      )),
     )),
   )),
   TE.toUnion,
