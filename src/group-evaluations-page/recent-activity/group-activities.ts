@@ -14,8 +14,6 @@ import {
 } from '../../types/domain-events';
 import { GroupId } from '../../types/group-id';
 
-type GroupActivities = (events: ReadonlyArray<DomainEvent>) => (groupId: GroupId) => ReadonlyArray<ArticleActivity>;
-
 type ActivityDetails = {
   latestActivityDate: Date,
   latestActivityByGroup: O.Option<Date>,
@@ -81,8 +79,9 @@ const groupHasEvaluatedArticle = <T extends { latestActivityByGroup: O.Option<Da
   })),
 );
 
-export const groupActivities: GroupActivities = (events) => (groupId) => pipe(
-  events,
+type GroupActivities = (groupId: GroupId) => (events: ReadonlyArray<DomainEvent>) => ReadonlyArray<ArticleActivity>;
+
+export const groupActivities: GroupActivities = (groupId) => flow(
   RA.filter(isEditorialCommunityReviewedArticleEvent),
   RA.reduce(new Map(), addEventToActivities(groupId)),
   RM.filterMapWithIndex(flow(
