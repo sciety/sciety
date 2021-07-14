@@ -1,10 +1,12 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
+import * as tt from 'io-ts-types';
 import { recentActivity, Ports as RecentActivityPorts } from './recent-activity';
 import { renderErrorPage, renderPage } from './render-page';
 import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
@@ -23,6 +25,7 @@ type Ports = RecentActivityPorts & {
 
 export const paramsCodec = t.type({
   id: GroupIdFromString,
+  page: tt.optionFromNullable(tt.NumberFromString),
 });
 
 type Params = t.TypeOf<typeof paramsCodec>;
@@ -34,7 +37,7 @@ const notFoundResponse = () => ({
   message: toHtmlFragment('No such group. Please check and try again.'),
 } as const);
 
-export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ id }) => pipe(
+export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ id, page }) => pipe(
   ports.getGroup(id),
   T.map(E.fromOption(notFoundResponse)),
   TE.chain((group) => pipe(
@@ -48,7 +51,7 @@ export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ i
         toHtmlFragment,
         TE.right,
       ),
-      recentActivity: recentActivity(ports)(group, 1),
+      recentActivity: recentActivity(ports)(group, O.getOrElse(() => 1)(page)),
     },
     sequenceS(TE.ApplyPar),
     TE.bimap(renderErrorPage, renderPage(group)),
