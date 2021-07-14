@@ -37,7 +37,7 @@ describe('group-activities', () => {
     ];
 
     it('includes the article DOI', () => {
-      const activities = groupActivities(groupId, pageSize)(events);
+      const activities = groupActivities(groupId, 1, pageSize)(events);
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
@@ -47,7 +47,7 @@ describe('group-activities', () => {
     });
 
     it('has an evaluation count of 1', () => {
-      const activities = groupActivities(groupId, pageSize)(events);
+      const activities = groupActivities(groupId, 1, pageSize)(events);
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
@@ -57,7 +57,7 @@ describe('group-activities', () => {
     });
 
     it('latest activity date matches event date', () => {
-      const activities = groupActivities(groupId, pageSize)(events);
+      const activities = groupActivities(groupId, 1, pageSize)(events);
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
@@ -87,7 +87,7 @@ describe('group-activities', () => {
     ];
 
     it('has a single entry for the article', () => {
-      const activities = groupActivities(groupId, pageSize)(events);
+      const activities = groupActivities(groupId, 1, pageSize)(events);
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
@@ -97,7 +97,7 @@ describe('group-activities', () => {
     });
 
     it('has an evaluation count of the number of evaluations', () => {
-      const activities = groupActivities(groupId, pageSize)(events);
+      const activities = groupActivities(groupId, 1, pageSize)(events);
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
@@ -107,7 +107,7 @@ describe('group-activities', () => {
     });
 
     it('has a latest activity date of the latest evaluation', () => {
-      const activities = groupActivities(groupId, pageSize)(events);
+      const activities = groupActivities(groupId, 1, pageSize)(events);
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
@@ -150,7 +150,7 @@ describe('group-activities', () => {
     ];
 
     it('has an evaluation count of the number of evaluations by all groups', () => {
-      const activities = groupActivities(groupId, pageSize)(events);
+      const activities = groupActivities(groupId, 1, pageSize)(events);
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
@@ -161,7 +161,7 @@ describe('group-activities', () => {
     });
 
     it('has a latest activity date of the latest evaluation by any group', () => {
-      const activities = groupActivities(groupId, pageSize)(events);
+      const activities = groupActivities(groupId, 1, pageSize)(events);
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
@@ -191,7 +191,7 @@ describe('group-activities', () => {
           laterDate,
         ),
       ];
-      const activities = groupActivities(groupId, pageSize)(events);
+      const activities = groupActivities(groupId, 1, pageSize)(events);
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
@@ -203,9 +203,9 @@ describe('group-activities', () => {
       ]);
     });
 
-    it('limits the number of entries to 20', () => {
+    it('limits the number of entries to the requested page size', () => {
       const events = generateNEventsForGroup(pageSize + 3, groupId);
-      const activities = groupActivities(groupId, pageSize)(events);
+      const activities = groupActivities(groupId, 1, pageSize)(events);
 
       expect(activities).toHaveLength(pageSize);
     });
@@ -238,7 +238,7 @@ describe('group-activities', () => {
         ),
       ];
 
-      const activities = groupActivities(thisGroupId, pageSize)(events);
+      const activities = groupActivities(thisGroupId, 1, pageSize)(events);
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
@@ -264,7 +264,7 @@ describe('group-activities', () => {
         ),
       ];
 
-      const activities = groupActivities(thisGroupId, pageSize)(events);
+      const activities = groupActivities(thisGroupId, 1, pageSize)(events);
 
       expect(activities).toStrictEqual([]);
     });
