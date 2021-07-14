@@ -48,7 +48,7 @@ export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ i
         toHtmlFragment,
         TE.right,
       ),
-      recentActivity: recentActivity(ports)(group),
+      recentActivity: recentActivity(ports)(group, 1),
     },
     sequenceS(TE.ApplyPar),
     TE.bimap(renderErrorPage, renderPage(group)),
