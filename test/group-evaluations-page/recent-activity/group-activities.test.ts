@@ -1,4 +1,4 @@
-import { groupActivities } from '../../../src/group-page/recent-activity/group-activities';
+import { groupActivities } from '../../../src/group-evaluations-page/recent-activity/group-activities';
 import { Doi } from '../../../src/types/doi';
 import {
   editorialCommunityReviewedArticle,
@@ -201,11 +201,11 @@ describe('group-activities', () => {
       ]);
     });
 
-    it('limits the number of entries to 10', () => {
-      const events = generateNEventsForGroup(15, groupId);
+    it('limits the number of entries to 20', () => {
+      const events = generateNEventsForGroup(25, groupId);
       const activities = groupActivities(events)(groupId);
 
-      expect(activities).toHaveLength(10);
+      expect(activities).toHaveLength(20);
     });
   });
 
