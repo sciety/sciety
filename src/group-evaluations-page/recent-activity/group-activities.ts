@@ -83,7 +83,9 @@ type GroupActivities = (
   groupId: GroupId,
   page: number,
   pageSize: number,
-) => (events: ReadonlyArray<DomainEvent>) => ReadonlyArray<ArticleActivity>;
+) => (events: ReadonlyArray<DomainEvent>) => {
+  content: ReadonlyArray<ArticleActivity>,
+};
 
 export const groupActivities: GroupActivities = (groupId, page, pageSize) => flow(
   RA.filter(isEditorialCommunityReviewedArticleEvent),
@@ -93,7 +95,12 @@ export const groupActivities: GroupActivities = (groupId, page, pageSize) => flo
     groupHasEvaluatedArticle,
   )),
   RM.values(byLatestActivityDateByGroupDesc),
-  RA.chunksOf(pageSize),
-  RA.lookup(page - 1),
-  O.getOrElse((): ReadonlyArray<ArticleActivity> => []),
+  (allEvaluatedArticles) => ({
+    content: pipe(
+      allEvaluatedArticles,
+      RA.chunksOf(pageSize),
+      RA.lookup(page - 1),
+      O.getOrElse((): ReadonlyArray<ArticleActivity> => []),
+    ),
+  }),
 );

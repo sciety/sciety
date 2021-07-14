@@ -50,16 +50,19 @@ export const constructRecentGroupActivity = (
 ) => (groupId: GroupId, pageNumber: number): T.Task<HtmlFragment> => pipe(
   getAllEvents,
   T.map(groupActivities(groupId, pageNumber, 20)),
-  T.chain(TO.traverseArray(addArticleDetails(getArticleDetails))),
-  T.map(E.fromOption(noInformationFound)),
-  TE.chainOptionK(noActivity)(RNEA.fromReadonlyArray),
-  TE.map(flow(
-    RNEA.map((articleViewModel) => ({
-      ...articleViewModel,
-      latestVersionDate: articleViewModel.latestVersionDate,
-      latestActivityDate: O.some(articleViewModel.latestActivityDate),
-    })),
-    renderRecentGroupActivity(O.some(`/groups/${groupId}/recently-evaluated?page=${pageNumber + 1}`)),
+  T.chain(({ content }) => pipe(
+    content,
+    TO.traverseArray(addArticleDetails(getArticleDetails)),
+    T.map(E.fromOption(noInformationFound)),
+    TE.chainOptionK(noActivity)(RNEA.fromReadonlyArray),
+    TE.map(flow(
+      RNEA.map((articleViewModel) => ({
+        ...articleViewModel,
+        latestVersionDate: articleViewModel.latestVersionDate,
+        latestActivityDate: O.some(articleViewModel.latestActivityDate),
+      })),
+      renderRecentGroupActivity(O.some(`/groups/${groupId}/recently-evaluated?page=${pageNumber + 1}`)),
+    )),
   )),
   TE.toUnion,
 );
