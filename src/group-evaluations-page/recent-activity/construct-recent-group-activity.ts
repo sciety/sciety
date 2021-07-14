@@ -59,7 +59,7 @@ export const constructRecentGroupActivity = (
       latestVersionDate: articleViewModel.latestVersionDate,
       latestActivityDate: O.some(articleViewModel.latestActivityDate),
     })),
-    renderRecentGroupActivity,
+    renderRecentGroupActivity(groupId, pageNumber),
   )),
   TE.toUnion,
 );
