@@ -93,5 +93,7 @@ export const groupActivities: GroupActivities = (groupId, page, pageSize) => flo
     groupHasEvaluatedArticle,
   )),
   RM.values(byLatestActivityDateByGroupDesc),
-  RA.takeLeft(pageSize * page),
+  RA.chunksOf(pageSize),
+  RA.lookup(page - 1),
+  O.getOrElse((): ReadonlyArray<ArticleActivity> => []),
 );

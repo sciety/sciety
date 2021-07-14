@@ -209,6 +209,22 @@ describe('group-activities', () => {
 
       expect(activities).toHaveLength(pageSize);
     });
+
+    it('returns the specified page of the list', () => {
+      const earlierDate = new Date('2019-09-06T00:00:00.000Z');
+      const laterDate = new Date('2019-12-05T00:00:00.000Z');
+      const events = [
+        editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryReviewId(), earlierDate),
+        editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryReviewId(), laterDate),
+      ];
+      const activities = groupActivities(groupId, 2, 1)(events);
+
+      expect(activities).toStrictEqual([
+        expect.objectContaining({
+          latestActivityDate: earlierDate,
+        }),
+      ]);
+    });
   });
 
   describe('when another group evaluates an article previously evaluated by this group', () => {
