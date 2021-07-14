@@ -85,6 +85,7 @@ type GroupActivities = (
   pageSize: number,
 ) => (events: ReadonlyArray<DomainEvent>) => {
   content: ReadonlyArray<ArticleActivity>,
+  nextPageNumber: O.Option<number>,
 };
 
 export const groupActivities: GroupActivities = (groupId, page, pageSize) => flow(
@@ -102,5 +103,6 @@ export const groupActivities: GroupActivities = (groupId, page, pageSize) => flo
       RA.lookup(page - 1),
       O.getOrElse((): ReadonlyArray<ArticleActivity> => []),
     ),
+    nextPageNumber: O.none,
   }),
 );
