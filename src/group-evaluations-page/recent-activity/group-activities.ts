@@ -103,6 +103,10 @@ export const groupActivities: GroupActivities = (groupId, page, pageSize) => flo
       RA.lookup(page - 1),
       O.getOrElse((): ReadonlyArray<ArticleActivity> => []),
     ),
-    nextPageNumber: O.none,
+    nextPageNumber: pipe(
+      page + 1,
+      O.some,
+      O.filter((nextPage) => nextPage <= Math.ceil(allEvaluatedArticles.length / pageSize)),
+    ),
   }),
 );

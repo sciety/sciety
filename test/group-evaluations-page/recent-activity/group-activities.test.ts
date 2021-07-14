@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import { groupActivities } from '../../../src/group-evaluations-page/recent-activity/group-activities';
 import { Doi } from '../../../src/types/doi';
 import {
@@ -224,6 +225,21 @@ describe('group-activities', () => {
           latestActivityDate: earlierDate,
         }),
       ]);
+    });
+
+    it.each([
+      [0, 1, O.none],
+      [9, 1, O.none],
+      [11, 1, O.some(2)],
+      [20, 1, O.some(2)],
+      [20, 2, O.none],
+      [21, 2, O.some(3)],
+      [21, 3, O.none],
+    ])('returns the next page in the list if there is one', (numberOfEvents, page, expected) => {
+      const events = generateNEventsForGroup(numberOfEvents, groupId);
+      const { nextPageNumber } = groupActivities(groupId, page, 10)(events);
+
+      expect(nextPageNumber).toStrictEqual(expected);
     });
   });
 
