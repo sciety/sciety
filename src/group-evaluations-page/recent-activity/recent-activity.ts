@@ -29,14 +29,13 @@ export type Ports = {
   getAllEvents: GetAllEvents,
 };
 
+const getArticleDetails = (ports: Ports) => fetchArticleDetails(
+  getLatestArticleVersionDate(ports.findVersionsForArticleDoi),
+  flow(ports.fetchArticle, T.map(O.fromEither)),
+);
+
 type RecentActivity = (ports: Ports) => (group: Group, pageNumber: number) => TE.TaskEither<DE.DataError, HtmlFragment>;
 
 export const recentActivity: RecentActivity = (ports) => (group, pageNumber) => pipe(
-  constructRecentGroupActivity(
-    fetchArticleDetails(
-      getLatestArticleVersionDate(ports.findVersionsForArticleDoi),
-      flow(ports.fetchArticle, T.map(O.fromEither)),
-    ),
-    ports.getAllEvents,
-  )(group.id, pageNumber),
+  constructRecentGroupActivity(getArticleDetails(ports), ports.getAllEvents)(group.id, pageNumber),
 );
