@@ -21,14 +21,16 @@ const render = (components: Components) => `
       ${components.description}
       </div>
       <div class="group-page-side-bar">
-        ${components.followers}
+        <section class="followers">
+          ${components.followers}
+          <div class="group-page-side-bar--follow-toggle">
+            ${components.followButton}
+          </div>
+        </section>
         <section>
           <h2>
             Recent Activity
           </h2>
-          <div class="group-page-side-bar--follow-toggle">
-            ${components.followButton}
-          </div>
           ${components.recentActivity}
         </section>
       </div>
