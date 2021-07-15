@@ -3,6 +3,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { GroupActivities, groupActivities } from '../../../src/group-evaluations-page/recent-activity/group-activities';
+import * as DE from '../../../src/types/data-error';
 import { Doi } from '../../../src/types/doi';
 import {
   editorialCommunityReviewedArticle,
@@ -254,6 +255,25 @@ describe('group-activities', () => {
       expect(activities).toStrictEqual(E.right(expect.objectContaining({
         nextPageNumber: expected,
       })));
+    });
+
+    it.skip('returns not-found when asked for a page that does not exist', () => {
+      const events = generateNEventsForGroup(1, groupId);
+      const activities = groupActivities(groupId, 2, 10)(events);
+
+      expect(activities).toStrictEqual(E.left(DE.notFound));
+    });
+
+    it('returns an empty page 1 when there are no events', () => {
+      const activities = groupActivities(groupId, 1, 10)([]);
+
+      expectContentOf(activities, []);
+    });
+
+    it.skip('returns not-found when asked for a subsequent page when there are no events', () => {
+      const activities = groupActivities(groupId, 2, 10)([]);
+
+      expect(activities).toStrictEqual(E.left(DE.notFound));
     });
   });
 
