@@ -24,6 +24,7 @@ import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { UserId } from '../types/user-id';
+import {renderEvaluatedArticlesListCard} from './render-evaluated-articles-list-card';
 
 type FetchGroup = (groupId: GroupId) => TO.TaskOption<Group>;
 
@@ -85,8 +86,10 @@ export const groupPage = (ports: Ports): GroupPage => ({ id, user }) => pipe(
         TE.rightTask,
       ),
       evaluatedArticlesListCard: pipe(
-        `<a href="/groups/${group.id}/evaluated-articles">Evaluated articles</a>`,
-        toHtmlFragment,
+        {
+          groupId: group.id,
+        },
+        renderEvaluatedArticlesListCard,
         TE.right,
       ),
       recentActivity: recentActivity(ports)(group),
