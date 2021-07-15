@@ -79,16 +79,19 @@ const groupHasEvaluatedArticle = <T extends { latestActivityByGroup: O.Option<Da
   })),
 );
 
-type GroupActivities = (
-  groupId: GroupId,
-  page: number,
-  pageSize: number,
-) => (events: ReadonlyArray<DomainEvent>) => {
+// ts-unused-exports:disable-next-line
+export type GroupActivities = {
   content: ReadonlyArray<ArticleActivity>,
   nextPageNumber: O.Option<number>,
 };
 
-export const groupActivities: GroupActivities = (groupId, page, pageSize) => flow(
+type CalculateGroupActivities = (
+  groupId: GroupId,
+  page: number,
+  pageSize: number,
+) => (events: ReadonlyArray<DomainEvent>) => GroupActivities;
+
+export const groupActivities: CalculateGroupActivities = (groupId, page, pageSize) => flow(
   RA.filter(isEditorialCommunityReviewedArticleEvent),
   RA.reduce(new Map(), addEventToActivities(groupId)),
   RM.filterMapWithIndex(flow(
