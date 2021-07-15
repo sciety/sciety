@@ -4,6 +4,7 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 type ViewModel = {
   group: Group,
+  articleCount: number,
 };
 
 export const renderEvaluatedArticlesListCard = (viewModel: ViewModel): HtmlFragment => pipe(

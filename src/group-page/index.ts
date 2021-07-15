@@ -8,6 +8,7 @@ import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { countFollowersOf } from './count-followers';
+import { getEvaluatedArticlesListDetails } from './get-evaluated-articles-list-details';
 import { recentActivity, Ports as RecentActivityPorts } from './recent-activity';
 import { FetchStaticFile, renderDescription } from './render-description';
 import { renderEvaluatedArticlesListCard } from './render-evaluated-articles-list-card';
@@ -86,11 +87,14 @@ export const groupPage = (ports: Ports): GroupPage => ({ id, user }) => pipe(
         TE.rightTask,
       ),
       evaluatedArticlesListCard: pipe(
-        {
+        ports.getAllEvents,
+        T.map(getEvaluatedArticlesListDetails),
+        T.map((details) => ({
           group,
-        },
-        renderEvaluatedArticlesListCard,
-        TE.right,
+          ...details,
+        })),
+        T.map(renderEvaluatedArticlesListCard),
+        TE.rightTask,
       ),
       recentActivity: recentActivity(ports)(group),
     },
