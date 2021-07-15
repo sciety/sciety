@@ -92,15 +92,8 @@ type CalculateGroupActivities = (
   pageSize: number,
 ) => (events: ReadonlyArray<DomainEvent>) => GroupActivities;
 
-export const groupActivities: CalculateGroupActivities = (groupId, page, pageSize) => flow(
-  RA.filter(isEditorialCommunityReviewedArticleEvent),
-  RA.reduce(new Map(), addEventToActivities(groupId)),
-  RM.filterMapWithIndex(flow(
-    (key, activityDetails) => ({ ...activityDetails, doi: new Doi(key) }),
-    groupHasEvaluatedArticle,
-  )),
-  RM.values(byLatestActivityDateByGroupDesc),
-  (allEvaluatedArticles) => ({
+const paginate = (page: number, pageSize: number) => (allEvaluatedArticles: ReadonlyArray<ArticleActivity>) => pipe(
+  {
     content: pipe(
       allEvaluatedArticles,
       RA.chunksOf(pageSize),
@@ -112,6 +105,17 @@ export const groupActivities: CalculateGroupActivities = (groupId, page, pageSiz
       O.some,
       O.filter((nextPage) => nextPage <= Math.ceil(allEvaluatedArticles.length / pageSize)),
     ),
-  }),
+  },
   E.right,
+);
+
+export const groupActivities: CalculateGroupActivities = (groupId, page, pageSize) => flow(
+  RA.filter(isEditorialCommunityReviewedArticleEvent),
+  RA.reduce(new Map(), addEventToActivities(groupId)),
+  RM.filterMapWithIndex(flow(
+    (key, activityDetails) => ({ ...activityDetails, doi: new Doi(key) }),
+    groupHasEvaluatedArticle,
+  )),
+  RM.values(byLatestActivityDateByGroupDesc),
+  paginate(page, pageSize),
 );
