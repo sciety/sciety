@@ -9,6 +9,7 @@ type Components = {
   header: HtmlFragment,
   description: HtmlFragment,
   recentActivity: HtmlFragment,
+  evaluatedArticlesListCard: HtmlFragment,
   followers: HtmlFragment,
   followButton: HtmlFragment,
 };
@@ -29,9 +30,9 @@ const render = (components: Components) => `
         </section>
         <section>
           <h2>
-            Recent Activity
+            Lists
           </h2>
-          ${components.recentActivity}
+          ${components.evaluatedArticlesListCard}
         </section>
       </div>
     </div>

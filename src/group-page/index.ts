@@ -84,6 +84,11 @@ export const groupPage = (ports: Ports): GroupPage => ({ id, user }) => pipe(
         T.map(renderFollowToggle(group.id, group.name)),
         TE.rightTask,
       ),
+      evaluatedArticlesListCard: pipe(
+        `<a href="/groups/${group.id}/recently-evaluated">Evaluated articles</a>`,
+        toHtmlFragment,
+        TE.right,
+      ),
       recentActivity: recentActivity(ports)(group),
     },
     sequenceS(TE.ApplyPar),
