@@ -44,6 +44,15 @@
 @mixin meta() {
   @include typography.details();
   color: settings.$colour-text-secondary;
+
+  > * {
+    margin-right: 0.25rem;
+  }
+
+  > :nth-child(n+3)::before {
+    content: '•';
+    margin-right: 0.25rem;
+  }
 }
 
 @mixin list() {

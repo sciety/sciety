@@ -11,3 +11,7 @@
 .list-card__link {
   @include card.link();
 }
+
+.list-card__meta {
+  @include card.meta();
+}
