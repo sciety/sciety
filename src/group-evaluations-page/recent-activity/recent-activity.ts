@@ -6,6 +6,7 @@ import { constructRecentGroupActivity } from './construct-recent-group-activity'
 import { fetchArticleDetails } from '../../shared-components/article-card/fetch-article-details';
 import { FindVersionsForArticleDoi, getLatestArticleVersionDate } from '../../shared-components/article-card/get-latest-article-version-date';
 import { ArticleServer } from '../../types/article-server';
+import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
 import { DomainEvent } from '../../types/domain-events';
 import { Group } from '../../types/group';
@@ -28,7 +29,7 @@ export type Ports = {
   getAllEvents: GetAllEvents,
 };
 
-type RecentActivity = (ports: Ports) => (group: Group, pageNumber: number) => TE.TaskEither<never, HtmlFragment>;
+type RecentActivity = (ports: Ports) => (group: Group, pageNumber: number) => TE.TaskEither<DE.DataError, HtmlFragment>;
 
 export const recentActivity: RecentActivity = (ports) => (group, pageNumber) => pipe(
   constructRecentGroupActivity(
@@ -38,5 +39,4 @@ export const recentActivity: RecentActivity = (ports) => (group, pageNumber) => 
     ),
     ports.getAllEvents,
   )(group.id, pageNumber),
-  TE.rightTask,
 );

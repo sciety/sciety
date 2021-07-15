@@ -7,6 +7,7 @@ import * as TO from 'fp-ts/TaskOption';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { groupActivities } from './group-activities';
 import { renderRecentGroupActivity } from './render-recent-group-activity';
+import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
 import { DomainEvent } from '../../types/domain-events';
 import { GroupId } from '../../types/group-id';
@@ -20,12 +21,6 @@ type GetArticleDetails = (doi: Doi) => T.Task<O.Option<{
   authors: ReadonlyArray<string>,
   latestVersionDate: O.Option<Date>,
 }>>;
-
-const noInformationFound = pipe(
-  '<p>We couldn\'t find this information; please try again later.</p>',
-  toHtmlFragment,
-  constant,
-);
 
 const noActivity = pipe(
   '<p>It looks like this group hasn’t evaluated any articles yet. Try coming back later!</p>',
@@ -47,25 +42,27 @@ const addArticleDetails = (
 export const constructRecentGroupActivity = (
   getArticleDetails: GetArticleDetails,
   getAllEvents: GetAllEvents,
-) => (groupId: GroupId, pageNumber: number): T.Task<HtmlFragment> => pipe(
+) => (groupId: GroupId, pageNumber: number): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
   getAllEvents,
   T.map(groupActivities(groupId, pageNumber, 20)),
-  TE.chain(({ content, nextPageNumber }) => pipe(
+  TE.chainW(({ content, nextPageNumber }) => pipe(
     content,
     TO.traverseArray(addArticleDetails(getArticleDetails)),
-    T.map(E.fromOption(noInformationFound)),
-    TE.chainOptionK(noActivity)(RNEA.fromReadonlyArray),
-    TE.map(flow(
-      RNEA.map((articleViewModel) => ({
-        ...articleViewModel,
-        latestVersionDate: articleViewModel.latestVersionDate,
-        latestActivityDate: O.some(articleViewModel.latestActivityDate),
-      })),
-      renderRecentGroupActivity(pipe(
-        nextPageNumber,
-        O.map((p) => `/groups/${groupId}/recently-evaluated?page=${p}`),
-      )),
+    T.map(E.fromOption(() => DE.unavailable)),
+    TE.map(RNEA.fromReadonlyArray),
+    TE.map(O.fold(
+      noActivity,
+      flow(
+        RNEA.map((articleViewModel) => ({
+          ...articleViewModel,
+          latestVersionDate: articleViewModel.latestVersionDate,
+          latestActivityDate: O.some(articleViewModel.latestActivityDate),
+        })),
+        renderRecentGroupActivity(pipe(
+          nextPageNumber,
+          O.map((p) => `/groups/${groupId}/recently-evaluated?page=${p}`),
+        )),
+      ),
     )),
   )),
-  TE.toUnion,
 );
