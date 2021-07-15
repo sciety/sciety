@@ -8,6 +8,7 @@ import * as S from 'fp-ts/Semigroup';
 import { flow, pipe } from 'fp-ts/function';
 import * as N from 'fp-ts/number';
 import { ArticleActivity } from '../../types/article-activity';
+import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
 import {
   DomainEvent, EditorialCommunityReviewedArticleEvent,
@@ -81,7 +82,7 @@ const groupHasEvaluatedArticle = <T extends { latestActivityByGroup: O.Option<Da
 );
 
 // ts-unused-exports:disable-next-line
-export type GroupActivities = E.Either<never, {
+export type GroupActivities = E.Either<DE.DataError, {
   content: ReadonlyArray<ArticleActivity>,
   nextPageNumber: O.Option<number>,
 }>;
@@ -92,21 +93,24 @@ type CalculateGroupActivities = (
   pageSize: number,
 ) => (events: ReadonlyArray<DomainEvent>) => GroupActivities;
 
-const paginate = (page: number, pageSize: number) => (allEvaluatedArticles: ReadonlyArray<ArticleActivity>) => pipe(
-  {
-    content: pipe(
-      allEvaluatedArticles,
-      RA.chunksOf(pageSize),
-      RA.lookup(page - 1),
-      O.getOrElse((): ReadonlyArray<ArticleActivity> => []),
-    ),
-    nextPageNumber: pipe(
-      page + 1,
-      O.some,
-      O.filter((nextPage) => nextPage <= Math.ceil(allEvaluatedArticles.length / pageSize)),
-    ),
-  },
-  E.right,
+const paginate = (page: number, pageSize: number) => (allEvaluatedArticles: ReadonlyArray<ArticleActivity>) => (
+  (allEvaluatedArticles.length === 0) ? E.right({
+    content: [],
+    nextPageNumber: O.none,
+  }) : pipe(
+    allEvaluatedArticles,
+    RA.chunksOf(pageSize),
+    RA.lookup(page - 1),
+    E.fromOption(() => DE.notFound),
+    E.map((content) => ({
+      content,
+      nextPageNumber: pipe(
+        page + 1,
+        O.some,
+        O.filter((nextPage) => nextPage <= Math.ceil(allEvaluatedArticles.length / pageSize)),
+      ),
+    })),
+  )
 );
 
 export const groupActivities: CalculateGroupActivities = (groupId, page, pageSize) => flow(

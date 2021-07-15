@@ -241,14 +241,13 @@ describe('group-activities', () => {
     });
 
     it.each([
-      [0, 1, O.none],
       [9, 1, O.none],
       [11, 1, O.some(2)],
       [20, 1, O.some(2)],
       [20, 2, O.none],
       [21, 2, O.some(3)],
       [21, 3, O.none],
-    ])('returns the next page in the list if there is one', (numberOfEvents, page, expected) => {
+    ])('given %d events and a request for page %d, returns the next page', (numberOfEvents, page, expected) => {
       const events = generateNEventsForGroup(numberOfEvents, groupId);
       const activities = groupActivities(groupId, page, 10)(events);
 
@@ -257,7 +256,7 @@ describe('group-activities', () => {
       })));
     });
 
-    it.skip('returns not-found when asked for a page that does not exist', () => {
+    it('returns not-found when asked for a page that does not exist', () => {
       const events = generateNEventsForGroup(1, groupId);
       const activities = groupActivities(groupId, 2, 10)(events);
 
@@ -265,15 +264,9 @@ describe('group-activities', () => {
     });
 
     it('returns an empty page 1 when there are no events', () => {
-      const activities = groupActivities(groupId, 1, 10)([]);
+      const activities = groupActivities(groupId, arbitraryNumber(1, 20), 10)([]);
 
       expectContentOf(activities, []);
-    });
-
-    it.skip('returns not-found when asked for a subsequent page when there are no events', () => {
-      const activities = groupActivities(groupId, 2, 10)([]);
-
-      expect(activities).toStrictEqual(E.left(DE.notFound));
     });
   });
 
