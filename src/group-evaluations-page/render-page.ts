@@ -21,10 +21,18 @@ const render = (components: Components) => `
   </div>
 `;
 
-export const renderErrorPage = (): RenderPageError => ({
-  type: DE.unavailable,
-  message: toHtmlFragment('We couldn\'t retrieve this information. Please try again.'),
-});
+export const renderErrorPage = (e: DE.DataError): RenderPageError => pipe(
+  e,
+  DE.fold({
+    notFound: () => 'We couldn\'t find this information.',
+    unavailable: () => 'We couldn\'t retrieve this information. Please try again.',
+  }),
+  toHtmlFragment,
+  (message) => ({
+    type: e,
+    message,
+  }),
+);
 
 export const renderPage = (group: Group) => (components: Components): Page => ({
   title: group.name,
