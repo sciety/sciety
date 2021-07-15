@@ -283,7 +283,7 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   router.get(
-    '/groups/:id/recently-evaluated',
+    '/groups/:id/evaluated-articles',
     pageHandler(flow(
       groupEvaluationsPageParams.decode,
       E.mapLeft(toNotFound),

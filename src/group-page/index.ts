@@ -85,7 +85,7 @@ export const groupPage = (ports: Ports): GroupPage => ({ id, user }) => pipe(
         TE.rightTask,
       ),
       evaluatedArticlesListCard: pipe(
-        `<a href="/groups/${group.id}/recently-evaluated">Evaluated articles</a>`,
+        `<a href="/groups/${group.id}/evaluated-articles">Evaluated articles</a>`,
         toHtmlFragment,
         TE.right,
       ),

@@ -74,7 +74,7 @@ export const recentActivity: RecentActivity = (ports) => (group, pageNumber) => 
         })),
         renderRecentGroupActivity(pipe(
           nextPageNumber,
-          O.map((p) => `/groups/${group.id}/recently-evaluated?page=${p}`),
+          O.map((p) => `/groups/${group.id}/evaluated-articles?page=${p}`),
         )),
       ),
     )),
