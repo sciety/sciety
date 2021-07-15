@@ -87,7 +87,7 @@ export const groupPage = (ports: Ports): GroupPage => ({ id, user }) => pipe(
       ),
       evaluatedArticlesListCard: pipe(
         {
-          groupId: group.id,
+          group,
         },
         renderEvaluatedArticlesListCard,
         TE.right,
