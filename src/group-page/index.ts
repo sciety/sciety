@@ -10,6 +10,7 @@ import * as tt from 'io-ts-types';
 import { countFollowersOf } from './count-followers';
 import { recentActivity, Ports as RecentActivityPorts } from './recent-activity';
 import { FetchStaticFile, renderDescription } from './render-description';
+import { renderEvaluatedArticlesListCard } from './render-evaluated-articles-list-card';
 import { renderFollowers } from './render-followers';
 import { renderErrorPage, renderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
@@ -24,7 +25,6 @@ import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { UserId } from '../types/user-id';
-import {renderEvaluatedArticlesListCard} from './render-evaluated-articles-list-card';
 
 type FetchGroup = (groupId: GroupId) => TO.TaskOption<Group>;
 

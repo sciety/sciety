@@ -7,6 +7,12 @@ type ViewModel = {
 };
 
 export const renderEvaluatedArticlesListCard = (viewModel: ViewModel): HtmlFragment => pipe(
-  `<a href="/groups/${viewModel.groupId}/evaluated-articles">Evaluated articles</a>`,
+  `
+    <div class="list-card">
+      <h3 class="list-card__title">
+        <a href="/groups/${viewModel.groupId}/evaluated-articles" class="list-card__link">Evaluated articles</a>
+      </h3>
+    </div>
+  `,
   toHtmlFragment,
 );
