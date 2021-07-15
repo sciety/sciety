@@ -1,5 +1,7 @@
 /* eslint-disable jest/expect-expect */
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
 import { GroupActivities, groupActivities } from '../../../src/group-evaluations-page/recent-activity/group-activities';
 import { Doi } from '../../../src/types/doi';
 import {
@@ -23,7 +25,9 @@ const generateNEventsForGroup = (
   ))));
 
 const expectContentOf = (activities: GroupActivities, expectedContent: unknown) => (
-  expect(activities.content).toStrictEqual(expectedContent)
+  expect(activities).toStrictEqual(E.right(expect.objectContaining({
+    content: expectedContent,
+  })))
 );
 
 describe('group-activities', () => {
@@ -213,7 +217,10 @@ describe('group-activities', () => {
       const events = generateNEventsForGroup(pageSize + 3, groupId);
       const activities = groupActivities(groupId, 1, pageSize)(events);
 
-      expect(activities.content).toHaveLength(pageSize);
+      expect(pipe(
+        activities,
+        E.map((a) => a.content.length),
+      )).toStrictEqual(E.right(pageSize));
     });
 
     it('returns the specified page of the list', () => {
@@ -242,9 +249,11 @@ describe('group-activities', () => {
       [21, 3, O.none],
     ])('returns the next page in the list if there is one', (numberOfEvents, page, expected) => {
       const events = generateNEventsForGroup(numberOfEvents, groupId);
-      const { nextPageNumber } = groupActivities(groupId, page, 10)(events);
+      const activities = groupActivities(groupId, page, 10)(events);
 
-      expect(nextPageNumber).toStrictEqual(expected);
+      expect(activities).toStrictEqual(E.right(expect.objectContaining({
+        nextPageNumber: expected,
+      })));
     });
   });
 

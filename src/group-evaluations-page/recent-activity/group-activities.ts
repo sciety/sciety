@@ -1,4 +1,5 @@
 import * as D from 'fp-ts/Date';
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
@@ -80,10 +81,10 @@ const groupHasEvaluatedArticle = <T extends { latestActivityByGroup: O.Option<Da
 );
 
 // ts-unused-exports:disable-next-line
-export type GroupActivities = {
+export type GroupActivities = E.Either<never, {
   content: ReadonlyArray<ArticleActivity>,
   nextPageNumber: O.Option<number>,
-};
+}>;
 
 type CalculateGroupActivities = (
   groupId: GroupId,
@@ -112,4 +113,5 @@ export const groupActivities: CalculateGroupActivities = (groupId, page, pageSiz
       O.filter((nextPage) => nextPage <= Math.ceil(allEvaluatedArticles.length / pageSize)),
     ),
   }),
+  E.right,
 );

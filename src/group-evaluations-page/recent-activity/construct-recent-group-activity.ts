@@ -50,7 +50,7 @@ export const constructRecentGroupActivity = (
 ) => (groupId: GroupId, pageNumber: number): T.Task<HtmlFragment> => pipe(
   getAllEvents,
   T.map(groupActivities(groupId, pageNumber, 20)),
-  T.chain(({ content, nextPageNumber }) => pipe(
+  TE.chain(({ content, nextPageNumber }) => pipe(
     content,
     TO.traverseArray(addArticleDetails(getArticleDetails)),
     T.map(E.fromOption(noInformationFound)),
