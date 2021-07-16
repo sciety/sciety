@@ -4,12 +4,13 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { constant, flow, pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
 import { JSDOM } from 'jsdom';
-import { fetchData } from './fetch-data';
+import { FetchData } from './fetch-data';
+import { FetchEvaluations } from './update-all';
 
 const key = process.env.PRELIGHTS_FEED_KEY ?? '';
 
@@ -35,7 +36,7 @@ const prelightsFeedCodec = t.type({
 
 type Feed = t.TypeOf<typeof prelightsFeedCodec>;
 
-const toDoi = (url: string): TE.TaskEither<string, string> => pipe(
+const toDoi = (fetchData: FetchData) => (url: string): TE.TaskEither<string, string> => pipe(
   fetchData<string>(url),
   TE.chainEitherKW(flow(
     (doc) => new JSDOM(doc),
@@ -64,7 +65,7 @@ type Prelight = {
   preprintUrl: string,
 };
 
-const extractPrelights = (feed: Feed) => pipe(
+const extractPrelights = (fetchData: FetchData) => (feed: Feed) => pipe(
   feed.rss.channel.item,
   RA.filter((item) => item.category.includes('highlight')),
   RA.chain((item): Array<Prelight> => {
@@ -80,9 +81,10 @@ const extractPrelights = (feed: Feed) => pipe(
     }];
   }),
   T.traverseArray((item) => pipe(
-    toDoi(item.preprintUrl),
+    item.preprintUrl,
+    toDoi(fetchData),
     TE.map((articleDoi) => ({
-      date: item.pubDate.toISOString(),
+      date: item.pubDate,
       articleDoi,
       evaluationLocator: `prelights:${item.guid.replace('&#038;', '&')}`,
     })),
@@ -90,28 +92,16 @@ const extractPrelights = (feed: Feed) => pipe(
   T.map(RA.rights),
 );
 
-void (async (): Promise<void> => {
-  await pipe(
-    fetchData<string>(`https://prelights.biologists.com/feed/sciety/?key=${key}&hours=120`),
-    TE.map((responseBody) => parser.parse(responseBody) as JSON),
-    TE.chainEitherK(flow(
-      prelightsFeedCodec.decode,
-      E.mapLeft((errors) => PR.failure(errors).join('\n')),
-    )),
-    TE.chainTaskK(extractPrelights),
-    TE.bimap(
-      (errors) => {
-        process.stderr.write(errors);
-      },
-      (evaluations) => {
-        process.stdout.write('Date,Article DOI,Review ID\n');
-        pipe(
-          evaluations,
-          RA.map(({ date, articleDoi, evaluationLocator }) => process.stdout.write(`${date},${articleDoi},${evaluationLocator}\n`)),
-        );
-      },
-    ),
-    TE.fold(constant(T.of(1)), constant(T.of(0))),
-    T.map((exitStatus) => process.exit(exitStatus)),
-  )();
-})();
+type Ports = {
+  fetchData: FetchData,
+};
+
+export const fetchPrelightsEvaluations = (): FetchEvaluations => (ports: Ports) => pipe(
+  ports.fetchData<string>(`https://prelights.biologists.com/feed/sciety/?key=${key}&hours=120`),
+  TE.map((responseBody) => parser.parse(responseBody) as JSON),
+  TE.chainEitherK(flow(
+    prelightsFeedCodec.decode,
+    E.mapLeft((errors) => PR.failure(errors).join('\n')),
+  )),
+  TE.chainTaskK(extractPrelights(ports.fetchData)),
+);

@@ -101,13 +101,6 @@ find-screenit-reviews: build
 		cat ./data/reviews/8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65.csv | sort -g | uniq > /tmp/8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65.csv
 		mv /tmp/8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65.csv ./data/reviews/8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65.csv
 
-find-prelights-reviews: export TARGET = dev
-find-prelights-reviews: build
-	$(DOCKER_COMPOSE) run -T app \
-		npx ts-node src/ingest/find-reviews-from-prelights >> ./data/reviews/f97bd177-5cb6-4296-8573-078318755bf2.csv
-		cat ./data/reviews/f97bd177-5cb6-4296-8573-078318755bf2.csv | sort -g | uniq > /tmp/prelights.csv
-		mv /tmp/prelights.csv ./data/reviews/f97bd177-5cb6-4296-8573-078318755bf2.csv
-
 update-groups: export TARGET = dev
 update-groups: build
 	$(DOCKER_COMPOSE) run -e INGEST_LOG=${INGEST_LOG} app \
@@ -117,8 +110,7 @@ COMMUNITY_SCRIPTS := \
 	find-review-commons-reviews \
 	find-elife-reviews \
 	find-peerj-reviews \
-	find-screenit-reviews \
-	find-prelights-reviews
+	find-screenit-reviews
 
 sort-event-data:
 	find data -type f | xargs -I % sort -g -o % %
