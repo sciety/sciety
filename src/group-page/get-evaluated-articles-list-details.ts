@@ -15,20 +15,21 @@ export const getEvaluatedArticlesListDetails = (
   groupId: GroupId,
 ) => (
   events: ReadonlyArray<DomainEvent>,
-): ListDetails => ({
-  articleCount: pipe(
-    events,
-    RA.filter((event): event is EditorialCommunityReviewedArticleEvent => event.type === 'EditorialCommunityReviewedArticle'),
-    RA.filter((event) => event.editorialCommunityId === groupId),
-    RA.map((event) => event.articleId.value),
-    (articleIds) => (new Set(articleIds)),
-    RS.size,
-  ),
-  lastUpdated: pipe(
-    events,
-    RA.filter((event): event is EditorialCommunityReviewedArticleEvent => event.type === 'EditorialCommunityReviewedArticle'),
-    RA.filter((event) => event.editorialCommunityId === groupId),
-    RA.last,
-    O.map((event) => event.date),
-  ),
-});
+): ListDetails => pipe(
+  events,
+  RA.filter((event): event is EditorialCommunityReviewedArticleEvent => event.type === 'EditorialCommunityReviewedArticle'),
+  RA.filter((event) => event.editorialCommunityId === groupId),
+  (evaluationEvents) => ({
+    articleCount: pipe(
+      evaluationEvents,
+      RA.map((event) => event.articleId.value),
+      (articleIds) => (new Set(articleIds)),
+      RS.size,
+    ),
+    lastUpdated: pipe(
+      evaluationEvents,
+      RA.last,
+      O.map((event) => event.date),
+    ),
+  }),
+);
