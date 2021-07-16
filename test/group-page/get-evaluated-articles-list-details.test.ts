@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import { getEvaluatedArticlesListDetails } from '../../src/group-page/get-evaluated-articles-list-details';
 import { editorialCommunityReviewedArticle } from '../../src/types/domain-events';
 import { arbitraryDoi } from '../types/doi.helper';
@@ -8,13 +9,15 @@ describe('get-evaluated-articles-list-details', () => {
   const groupId = arbitraryGroupId();
 
   describe('when the group has evaluated no articles', () => {
-    it('returns a count of 0', () => {
-      const result = getEvaluatedArticlesListDetails(groupId)([]);
+    const result = getEvaluatedArticlesListDetails(groupId)([]);
 
+    it('returns a count of 0', () => {
       expect(result.articleCount).toStrictEqual(0);
     });
 
-    it.todo('returns no last updated date');
+    it('returns no last updated date', () => {
+      expect(result.lastUpdated).toStrictEqual(O.none);
+    });
   });
 
   describe('when the group has evaluated some articles', () => {
@@ -47,15 +50,17 @@ describe('get-evaluated-articles-list-details', () => {
   });
 
   describe('when a different group has evaluated some articles', () => {
-    it('returns a count of 0', () => {
-      const events = [
-        editorialCommunityReviewedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
-      ];
-      const result = getEvaluatedArticlesListDetails(groupId)(events);
+    const events = [
+      editorialCommunityReviewedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
+    ];
+    const result = getEvaluatedArticlesListDetails(groupId)(events);
 
+    it('returns a count of 0', () => {
       expect(result.articleCount).toStrictEqual(0);
     });
 
-    it.todo('returns no last updated date');
+    it('returns no last updated date', () => {
+      expect(result.lastUpdated).toStrictEqual(O.none);
+    });
   });
 });
