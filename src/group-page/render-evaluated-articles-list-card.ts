@@ -18,6 +18,7 @@ export const renderEvaluatedArticlesListCard = (viewModel: ViewModel): HtmlFragm
         ordered by most recent.
       </p>
       <div class="list-card__meta">
+        <span class="visually-hidden">This group has evaluated </span><span>${viewModel.articleCount} articles</span>
       </div>
     </div>
   `,
