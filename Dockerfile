@@ -16,7 +16,7 @@ FROM node AS npm-dev
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV TAIKO_SKIP_CHROMIUM_DOWNLOAD=true
 
-RUN npm ci
+RUN npm ci --loglevel silly
 
 
 
@@ -61,7 +61,7 @@ RUN npm run build
 #
 FROM node AS npm-prod
 
-RUN npm ci --production
+RUN npm ci --production --loglevel silly
 
 
 

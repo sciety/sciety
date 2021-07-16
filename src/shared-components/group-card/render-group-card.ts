@@ -53,7 +53,7 @@ export const renderGroupCard = flow(
           ${result.description}
         </div>
         <span class="group-card__meta">
-          ${renderEvaluationCount(result.reviewCount)}${renderFollowerCount(result.followerCount)}${renderLatestActivity(result.latestActivity)}
+          <span class="visually-hidden">This group has </span>${renderEvaluationCount(result.reviewCount)}${renderFollowerCount(result.followerCount)}${renderLatestActivity(result.latestActivity)}
         </span>
       </div>
       <img class="group-card__avatar" src="${result.avatarPath}" alt="" />

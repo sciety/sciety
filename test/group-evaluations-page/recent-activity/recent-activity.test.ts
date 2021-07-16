@@ -1,6 +1,6 @@
 import { performance } from 'perf_hooks';
 import * as T from 'fp-ts/Task';
-import { recentActivity } from '../../../src/group-page/recent-activity/recent-activity';
+import { recentActivity } from '../../../src/group-evaluations-page/recent-activity/recent-activity';
 import { editorialCommunityReviewedArticle } from '../../../src/types/domain-events';
 import { arbitraryDate, arbitraryWord } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
@@ -35,7 +35,7 @@ describe('recent-activity', () => {
         shortDescription: arbitraryWord(),
       };
       const startTime = performance.now();
-      await recentActivity(ports)(group)();
+      await recentActivity(ports)(group, 1)();
       const endTime = performance.now();
 
       expect(endTime - startTime).toBeLessThan(350);

@@ -8,7 +8,6 @@ import { RenderPageError } from '../types/render-page-error';
 type Components = {
   header: HtmlFragment,
   description: HtmlFragment,
-  recentActivity: HtmlFragment,
   evaluatedArticlesListCard: HtmlFragment,
   followers: HtmlFragment,
   followButton: HtmlFragment,
@@ -29,7 +28,7 @@ const render = (components: Components) => `
           </div>
         </section>
         <section>
-          <h2>
+          <h2 class="group-page-lists-heading">
             Lists
           </h2>
           ${components.evaluatedArticlesListCard}

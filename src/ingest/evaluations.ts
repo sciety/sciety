@@ -64,10 +64,14 @@ export const fromFile = (path: string): TE.TaskEither<string, Evaluations> => pi
   ),
 );
 
-export const toCsv = (evaluations: Evaluations): string => pipe(
+export const uniq = (evaluations: Evaluations): Evaluations => pipe(
   evaluations,
   RA.sortBy([byDateAscending, byArticleLocatorAscending]),
   RA.uniq(eqEval),
+);
+
+export const toCsv = (evaluations: Evaluations): string => pipe(
+  evaluations,
   RA.map((evaluation) => (
     `${evaluation.date.toISOString()},${evaluation.articleDoi},${evaluation.evaluationLocator}\n`
   )),

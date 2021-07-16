@@ -25,21 +25,39 @@ const writeFile = (path: string) => (contents: string) => TE.taskify(fs.writeFil
 const overwriteCsv = (group: Group) => (evaluations: Es.Evaluations) => pipe(
   `./data/reviews/${group.id}.csv`,
   Es.fromFile,
-  TE.map((existing) => [...existing, ...evaluations]),
-  TE.map(Es.toCsv),
-  TE.chainW(writeFile(`./data/reviews/${group.id}.csv`)),
-  TE.bimap(
-    (error) => error.toString(),
-    () => evaluations,
-  ),
+  TE.map((existing) => pipe(
+    [...existing, ...evaluations],
+    Es.uniq,
+    (all) => ({
+      all,
+      existing,
+    }),
+  )),
+  TE.chain((results) => pipe(
+    results.all,
+    Es.toCsv,
+    writeFile(`./data/reviews/${group.id}.csv`),
+    TE.bimap(
+      (error) => error.toString(),
+      () => ({
+        total: results.all.length,
+        added: results.all.length - results.existing.length,
+      }),
+    ),
+  )),
 );
 
 const report = (group: Group) => (message: string) => {
   process.stderr.write(printf('%-30s %s\n', group.name, message));
 };
 
-const reportSuccess = (group: Group) => (evaluations: Es.Evaluations) => pipe(
-  printf('%5d evaluations', evaluations.length),
+type Results = {
+  total: number,
+  added: number,
+};
+
+const reportSuccess = (group: Group) => (results: Results) => pipe(
+  printf('%5d evaluations (%d new)', results.total, results.added),
   report(group),
 );
 

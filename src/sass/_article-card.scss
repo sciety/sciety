@@ -31,13 +31,4 @@
 
 .article-card__meta {
   @include card.meta();
-
-  > * {
-    margin-right: 0.25rem;
-  }
-
-  > :nth-child(n+3)::before {
-    content: '•';
-    margin-right: 0.25rem;
-  }
 }

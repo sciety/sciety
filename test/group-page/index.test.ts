@@ -17,9 +17,7 @@ describe('group page', () => {
           user: O.none,
         },
         groupPage({
-          fetchArticle: shouldNotBeCalled,
           fetchStaticFile: shouldNotBeCalled,
-          findVersionsForArticleDoi: shouldNotBeCalled,
           follows: shouldNotBeCalled,
           getAllEvents: shouldNotBeCalled,
           getGroup: () => TO.none,

@@ -7,7 +7,8 @@
 @use 'standard-page-layout';
 @use 'site-menu';
 @use 'group';
-@use 'group-page';
+@use '../group-page';
+@use '../group-evaluations-page';
 @use 'page-header';
 @use '../user-page';
 @use '../logged-in-home-page';
@@ -29,7 +30,7 @@
 @use 'states';
 @use 'utility-bar';
 @use 'article-card';
-@use 'group-page/list-card';
+@use '../group-page/list-card';
 @use '../shared-components/tabs';
 
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,400;0,700;1,400&display=swap');
@@ -44,8 +45,4 @@ body {
 
 .hidden {
   display: none;
-}
-
-.followers {
-  margin-bottom: #{baseline.increments(8)};
 }

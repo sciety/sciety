@@ -1,0 +1,9 @@
+@use '../sass/card';
+
+.group-activity-list {
+  @include card.list();
+}
+
+.group-activity-list__item {
+  @include card.list-item();
+}
