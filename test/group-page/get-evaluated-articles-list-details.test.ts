@@ -13,6 +13,8 @@ describe('get-evaluated-articles-list-details', () => {
 
       expect(result.articleCount).toStrictEqual(0);
     });
+
+    it.todo('returns no last updated date');
   });
 
   describe('when the group has evaluated some articles', () => {
@@ -25,6 +27,8 @@ describe('get-evaluated-articles-list-details', () => {
 
       expect(result.articleCount).toStrictEqual(2);
     });
+
+    it.todo('returns the last updated date');
   });
 
   describe('when the group has evaluated one article more than once', () => {
@@ -38,6 +42,8 @@ describe('get-evaluated-articles-list-details', () => {
 
       expect(result.articleCount).toStrictEqual(1);
     });
+
+    it.todo('returns the last updated date');
   });
 
   describe('when a different group has evaluated some articles', () => {
@@ -49,5 +55,7 @@ describe('get-evaluated-articles-list-details', () => {
 
       expect(result.articleCount).toStrictEqual(0);
     });
+
+    it.todo('returns no last updated date');
   });
 });
