@@ -3,6 +3,7 @@
 @use 'baseline';
 @use 'normalise';
 @use 'layout';
+@use 'breakpoints';
 
 @use 'standard-page-layout';
 @use 'site-menu';
@@ -47,5 +48,12 @@ body {
 }
 
 .followers {
+  margin-left: 1rem;
+  margin-right: 1rem;
   margin-bottom: #{baseline.increments(8)};
+
+  @include breakpoints.not-narrow {
+    margin-left: 0;
+    margin-right: 0;
+  }
 }

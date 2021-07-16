@@ -35,7 +35,6 @@
 .group-page-side-bar {
   grid-column: 1 / -1;
   margin-bottom: baseline.increments(4);
-  padding: 1rem;
 }
 
 .group-page-side-bar--follow-toggle {
@@ -56,6 +55,16 @@
 
   .page-header__title {
     margin-bottom: 0;
+  }
+}
+
+.group-page-lists-heading {
+  margin-left: 1rem;
+  margin-right: 1rem;
+
+  @include breakpoints.not-narrow {
+    margin-left: 0;
+    margin-right: 0;
   }
 }
 

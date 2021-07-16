@@ -28,7 +28,7 @@ const render = (components: Components) => `
           </div>
         </section>
         <section>
-          <h2>
+          <h2 class="group-page-lists-heading">
             Lists
           </h2>
           ${components.evaluatedArticlesListCard}
