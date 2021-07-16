@@ -8,7 +8,6 @@ import { RenderPageError } from '../types/render-page-error';
 type Components = {
   header: HtmlFragment,
   description: HtmlFragment,
-  recentActivity: HtmlFragment,
   evaluatedArticlesListCard: HtmlFragment,
   followers: HtmlFragment,
   followButton: HtmlFragment,

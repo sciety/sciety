@@ -9,7 +9,6 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { countFollowersOf } from './count-followers';
 import { getEvaluatedArticlesListDetails } from './get-evaluated-articles-list-details';
-import { recentActivity, Ports as RecentActivityPorts } from './recent-activity';
 import { FetchStaticFile, renderDescription } from './render-description';
 import { renderEvaluatedArticlesListCard } from './render-evaluated-articles-list-card';
 import { renderFollowers } from './render-followers';
@@ -31,7 +30,7 @@ type FetchGroup = (groupId: GroupId) => TO.TaskOption<Group>;
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-type Ports = RecentActivityPorts & {
+type Ports = {
   fetchStaticFile: FetchStaticFile,
   getGroup: FetchGroup,
   getAllEvents: GetAllEvents,
@@ -96,7 +95,6 @@ export const groupPage = (ports: Ports): GroupPage => ({ id, user }) => pipe(
         T.map(renderEvaluatedArticlesListCard),
         TE.rightTask,
       ),
-      recentActivity: recentActivity(ports)(group),
     },
     sequenceS(TE.ApplyPar),
     TE.bimap(renderErrorPage, renderPage(group)),
