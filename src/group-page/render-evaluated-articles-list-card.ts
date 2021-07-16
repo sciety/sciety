@@ -1,11 +1,19 @@
+import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
+import { templateDate } from '../shared-components/date';
 import { Group } from '../types/group';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 type ViewModel = {
   group: Group,
   articleCount: number,
+  lastUpdated: O.Option<Date>,
 };
+
+const lastUpdated = O.fold(
+  () => '',
+  (date: Date) => `<span>Last updated ${templateDate(date)}</span>`,
+);
 
 export const renderEvaluatedArticlesListCard = (viewModel: ViewModel): HtmlFragment => pipe(
   `
@@ -18,7 +26,7 @@ export const renderEvaluatedArticlesListCard = (viewModel: ViewModel): HtmlFragm
         ordered by most recent.
       </p>
       <div class="list-card__meta">
-        <span class="visually-hidden">This group has evaluated </span><span>${viewModel.articleCount} articles</span>
+        <span class="visually-hidden">This group has evaluated </span><span>${viewModel.articleCount} articles</span>${lastUpdated(viewModel.lastUpdated)}
       </div>
     </div>
   `,
