@@ -28,7 +28,16 @@ describe('get-evaluated-articles-list-details', () => {
   });
 
   describe('when the group has evaluated one article more than once', () => {
-    it.todo('returns a count of 1');
+    it('returns a count of 1', () => {
+      const articleId = arbitraryDoi();
+      const events = [
+        editorialCommunityReviewedArticle(groupId, articleId, arbitraryReviewId()),
+        editorialCommunityReviewedArticle(groupId, articleId, arbitraryReviewId()),
+      ];
+      const result = getEvaluatedArticlesListDetails(groupId)(events);
+
+      expect(result.articleCount).toStrictEqual(1);
+    });
   });
 
   describe('when a different group has evaluated some articles', () => {
