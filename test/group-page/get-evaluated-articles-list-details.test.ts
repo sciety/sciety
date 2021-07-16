@@ -5,16 +5,26 @@ import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 
 describe('get-evaluated-articles-list-details', () => {
+  const groupId = arbitraryGroupId();
+
   describe('when the group has evaluated no articles', () => {
     it('returns a count of 0', () => {
-      const result = getEvaluatedArticlesListDetails([]);
+      const result = getEvaluatedArticlesListDetails(groupId)([]);
 
       expect(result.articleCount).toStrictEqual(0);
     });
   });
 
   describe('when the group has evaluated some articles', () => {
-    it.todo('returns a count of the articles');
+    it('returns a count of the articles', () => {
+      const events = [
+        editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
+        editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
+      ];
+      const result = getEvaluatedArticlesListDetails(groupId)(events);
+
+      expect(result.articleCount).toStrictEqual(2);
+    });
   });
 
   describe('when the group has evaluated one article more than once', () => {
@@ -26,7 +36,7 @@ describe('get-evaluated-articles-list-details', () => {
       const events = [
         editorialCommunityReviewedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
       ];
-      const result = getEvaluatedArticlesListDetails(events);
+      const result = getEvaluatedArticlesListDetails(groupId)(events);
 
       expect(result.articleCount).toStrictEqual(0);
     });

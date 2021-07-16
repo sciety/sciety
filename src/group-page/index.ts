@@ -88,7 +88,7 @@ export const groupPage = (ports: Ports): GroupPage => ({ id, user }) => pipe(
       ),
       evaluatedArticlesListCard: pipe(
         ports.getAllEvents,
-        T.map(getEvaluatedArticlesListDetails),
+        T.map(getEvaluatedArticlesListDetails(group.id)),
         T.map((details) => ({
           group,
           ...details,
