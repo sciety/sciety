@@ -3,12 +3,12 @@
 @use 'baseline';
 @use 'normalise';
 @use 'layout';
-@use 'breakpoints';
 
 @use 'standard-page-layout';
 @use 'site-menu';
 @use 'group';
-@use 'group-page';
+@use '../group-page';
+@use '../group-evaluations-page';
 @use 'page-header';
 @use '../user-page';
 @use '../logged-in-home-page';
@@ -45,15 +45,4 @@ body {
 
 .hidden {
   display: none;
-}
-
-.followers {
-  margin-left: 1rem;
-  margin-right: 1rem;
-  margin-bottom: #{baseline.increments(8)};
-
-  @include breakpoints.not-narrow {
-    margin-left: 0;
-    margin-right: 0;
-  }
 }

@@ -1,11 +1,11 @@
-@use 'settings';
-@use 'card';
-@use 'functions';
-@use 'baseline';
-@use 'typography';
-@use 'breakpoints';
+@use '../sass/settings';
+@use '../sass/card';
+@use '../sass/functions';
+@use '../sass/baseline';
+@use '../sass/typography';
+@use '../sass/breakpoints';
 
-@use 'list';
+@use '../sass/list';
 
 .sciety-grid--group {
   margin: 0 auto;
@@ -37,6 +37,17 @@
   margin-bottom: baseline.increments(4);
 }
 
+.followers {
+  margin-left: 1rem;
+  margin-right: 1rem;
+  margin-bottom: #{baseline.increments(8)};
+
+  @include breakpoints.not-narrow {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
 .group-page-side-bar--follow-toggle {
   margin-bottom: #{baseline.increments(3)};
 }
@@ -66,12 +77,4 @@
     margin-left: 0;
     margin-right: 0;
   }
-}
-
-.group-activity-list {
-  @include card.list();
-}
-
-.group-activity-list__item {
-  @include card.list-item();
 }
