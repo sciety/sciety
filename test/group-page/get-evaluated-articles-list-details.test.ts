@@ -44,11 +44,12 @@ describe('get-evaluated-articles-list-details', () => {
   });
 
   describe('when the group has evaluated one article more than once', () => {
+    const newerDate = new Date('2021-07-08');
     const articleId = arbitraryDoi();
     const result = pipe(
       [
         editorialCommunityReviewedArticle(groupId, articleId, arbitraryReviewId()),
-        editorialCommunityReviewedArticle(groupId, articleId, arbitraryReviewId()),
+        editorialCommunityReviewedArticle(groupId, articleId, arbitraryReviewId(), newerDate),
       ],
       getEvaluatedArticlesListDetails(groupId),
     );
@@ -57,7 +58,9 @@ describe('get-evaluated-articles-list-details', () => {
       expect(result.articleCount).toStrictEqual(1);
     });
 
-    it.todo('returns the last updated date');
+    it('returns the last updated date', () => {
+      expect(result.lastUpdated).toStrictEqual(O.some(newerDate));
+    });
   });
 
   describe('when a different group has evaluated some articles', () => {
