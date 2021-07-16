@@ -24,5 +24,11 @@ export const getEvaluatedArticlesListDetails = (
     (articleIds) => (new Set(articleIds)),
     RS.size,
   ),
-  lastUpdated: O.none,
+  lastUpdated: pipe(
+    events,
+    RA.filter((event): event is EditorialCommunityReviewedArticleEvent => event.type === 'EditorialCommunityReviewedArticle'),
+    RA.filter((event) => event.editorialCommunityId === groupId),
+    RA.last,
+    O.map((event) => event.date),
+  ),
 });
