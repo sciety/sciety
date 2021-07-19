@@ -1,5 +1,4 @@
 import * as D from 'fp-ts/Date';
-import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
@@ -8,7 +7,6 @@ import * as S from 'fp-ts/Semigroup';
 import { flow, pipe } from 'fp-ts/function';
 import * as N from 'fp-ts/number';
 import { ArticleActivity } from '../../types/article-activity';
-import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
 import {
   DomainEvent, EditorialCommunityReviewedArticleEvent,
@@ -79,45 +77,6 @@ const groupHasEvaluatedArticle = <T extends { latestActivityByGroup: O.Option<Da
     ...articleActivities,
     latestActivityByGroup,
   })),
-);
-
-// ts-unused-exports:disable-next-line
-export type GroupActivities = E.Either<DE.DataError, {
-  content: ReadonlyArray<ArticleActivity>,
-  nextPageNumber: O.Option<number>,
-  articleCount: number,
-}>;
-
-type PageOfArticles = {
-  content: ReadonlyArray<ArticleActivity>,
-  nextPageNumber: O.Option<number>,
-  articleCount: number,
-};
-
-// ts-unused-exports:disable-next-line
-export const paginate = (
-  page: number,
-  pageSize: number,
-) => (allEvaluatedArticles: ReadonlyArray<ArticleActivity>): E.Either<DE.DataError, PageOfArticles> => (
-  (allEvaluatedArticles.length === 0) ? E.right({
-    content: [],
-    nextPageNumber: O.none,
-    articleCount: 0,
-  }) : pipe(
-    allEvaluatedArticles,
-    RA.chunksOf(pageSize),
-    RA.lookup(page - 1),
-    E.fromOption(() => DE.notFound),
-    E.map((content) => ({
-      content,
-      nextPageNumber: pipe(
-        page + 1,
-        O.some,
-        O.filter((nextPage) => nextPage <= Math.ceil(allEvaluatedArticles.length / pageSize)),
-      ),
-      articleCount: allEvaluatedArticles.length,
-    })),
-  )
 );
 
 export const evaluatedArticles = (groupId: GroupId) => (

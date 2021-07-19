@@ -2,17 +2,14 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import {
-  GroupActivities,
-  paginate,
-} from '../../../src/group-evaluations-page/evaluated-articles-list/group-activities';
+import { PageOfArticles, paginate } from '../../../src/group-evaluations-page/evaluated-articles-list/paginate';
 import { ArticleActivity } from '../../../src/types/article-activity';
 import * as DE from '../../../src/types/data-error';
 
 import { arbitraryDate, arbitraryNumber } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
 
-const expectContentOf = (activities: GroupActivities, expectedContent: unknown) => (
+const expectContentOf = (activities: E.Either<DE.DataError, PageOfArticles>, expectedContent: unknown) => (
   expect(activities).toStrictEqual(E.right(expect.objectContaining({
     content: expectedContent,
   })))
