@@ -1,4 +1,5 @@
 @use '../sass/card';
+@use '../sass/settings';
 
 .group-activity-list {
   @include card.list();
@@ -6,4 +7,17 @@
 
 .group-activity-list__item {
   @include card.list-item();
+}
+
+.evaluated-articles__subheading {
+  display: flex;
+  align-items: center;
+}
+
+.evaluated-articles__avatar {
+  width: settings.$avatar-size;
+  height: settings.$avatar-size;
+  border-radius: settings.$border-radius;
+  border: settings.$avatar-border;
+  margin-right: 0.5rem;
 }
