@@ -85,6 +85,7 @@ const groupHasEvaluatedArticle = <T extends { latestActivityByGroup: O.Option<Da
 export type GroupActivities = E.Either<DE.DataError, {
   content: ReadonlyArray<ArticleActivity>,
   nextPageNumber: O.Option<number>,
+  articleCount: number,
 }>;
 
 type CalculateGroupActivities = (
@@ -97,6 +98,7 @@ const paginate = (page: number, pageSize: number) => (allEvaluatedArticles: Read
   (allEvaluatedArticles.length === 0) ? E.right({
     content: [],
     nextPageNumber: O.none,
+    articleCount: 0,
   }) : pipe(
     allEvaluatedArticles,
     RA.chunksOf(pageSize),
@@ -109,6 +111,7 @@ const paginate = (page: number, pageSize: number) => (allEvaluatedArticles: Read
         O.some,
         O.filter((nextPage) => nextPage <= Math.ceil(allEvaluatedArticles.length / pageSize)),
       ),
+      articleCount: allEvaluatedArticles.length,
     })),
   )
 );
