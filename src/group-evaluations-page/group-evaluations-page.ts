@@ -46,10 +46,10 @@ export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ i
     T.map(evaluatedArticles(group.id)),
     T.map((articles) => ({
       group,
-      articleCount: articles.length,
+      articles,
     })),
   )),
-  TE.chain(({ group, articleCount }) => pipe(
+  TE.chain(({ group, articles }) => pipe(
     {
       header: pipe(
         `<header class="page-header page-header--search-results">
@@ -58,7 +58,7 @@ export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ i
           </h1>
           <p>A list by <a href="/groups/${group.id}">${group.name}</a></p>
           <p>Articles that have been evaluated by ${group.name}, most recently evaluated first.</p>
-          <p>${articleCount} articles</p>
+          <p>${articles.length} articles</p>
         </header>`,
         toHtmlFragment,
         TE.right,
