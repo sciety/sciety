@@ -25,7 +25,7 @@ const processRow = (server: string) => (row: Row): void => {
     process.stderr.write(`Cannot parse a DOI out of '${row.uri}'\n`);
   } else {
     const doi = matches[1];
-    process.stdout.write(`${row.created},10.1101/${doi},hypothesis:${row.id}\n`);
+    process.stdout.write(`${new Date(row.created).toISOString()},10.1101/${doi},hypothesis:${row.id}\n`);
   }
 };
 

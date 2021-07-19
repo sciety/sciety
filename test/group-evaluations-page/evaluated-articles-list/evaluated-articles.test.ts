@@ -1,39 +1,15 @@
 /* eslint-disable jest/expect-expect */
-import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
-import { pipe } from 'fp-ts/function';
-import { GroupActivities, groupActivities } from '../../../src/group-evaluations-page/recent-activity/group-activities';
-import * as DE from '../../../src/types/data-error';
-import { Doi } from '../../../src/types/doi';
+import { performance } from 'perf_hooks';
+import { evaluatedArticles } from '../../../src/group-evaluations-page/evaluated-articles-list/evaluated-articles';
 import {
   editorialCommunityReviewedArticle,
-  EditorialCommunityReviewedArticleEvent,
 } from '../../../src/types/domain-events';
-import { GroupId } from '../../../src/types/group-id';
-import { arbitraryDate, arbitraryNumber } from '../../helpers';
+import { arbitraryDate, arbitraryWord } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 
-const generateNEventsForGroup = (
-  numberOfEvents: number,
-  groupId: GroupId,
-): ReadonlyArray<EditorialCommunityReviewedArticleEvent> => (
-  [...Array(numberOfEvents).keys()].map((i) => (editorialCommunityReviewedArticle(
-    groupId,
-    new Doi(`10.1101/${i}`),
-    arbitraryReviewId(),
-  ))));
-
-const expectContentOf = (activities: GroupActivities, expectedContent: unknown) => (
-  expect(activities).toStrictEqual(E.right(expect.objectContaining({
-    content: expectedContent,
-  })))
-);
-
-describe('group-activities', () => {
-  const pageSize = arbitraryNumber(3, 10);
-
+describe('evaluated-articles', () => {
   describe('when only a single group has evaluated an article once', () => {
     const articleId = arbitraryDoi();
     const groupId = arbitraryGroupId();
@@ -48,9 +24,9 @@ describe('group-activities', () => {
     ];
 
     it('includes the article DOI', () => {
-      const activities = groupActivities(groupId, 1, pageSize)(events);
+      const activities = evaluatedArticles(groupId)(events);
 
-      expectContentOf(activities, [
+      expect(activities).toStrictEqual([
         expect.objectContaining({
           doi: articleId,
         }),
@@ -58,9 +34,9 @@ describe('group-activities', () => {
     });
 
     it('has an evaluation count of 1', () => {
-      const activities = groupActivities(groupId, 1, pageSize)(events);
+      const activities = evaluatedArticles(groupId)(events);
 
-      expectContentOf(activities, [
+      expect(activities).toStrictEqual([
         expect.objectContaining({
           evaluationCount: 1,
         }),
@@ -68,9 +44,9 @@ describe('group-activities', () => {
     });
 
     it('latest activity date matches event date', () => {
-      const activities = groupActivities(groupId, 1, pageSize)(events);
+      const activities = evaluatedArticles(groupId)(events);
 
-      expectContentOf(activities, [
+      expect(activities).toStrictEqual([
         expect.objectContaining({
           latestActivityDate: date,
         }),
@@ -98,9 +74,9 @@ describe('group-activities', () => {
     ];
 
     it('has a single entry for the article', () => {
-      const activities = groupActivities(groupId, 1, pageSize)(events);
+      const activities = evaluatedArticles(groupId)(events);
 
-      expectContentOf(activities, [
+      expect(activities).toStrictEqual([
         expect.objectContaining({
           doi: articleId,
         }),
@@ -108,9 +84,9 @@ describe('group-activities', () => {
     });
 
     it('has an evaluation count of the number of evaluations', () => {
-      const activities = groupActivities(groupId, 1, pageSize)(events);
+      const activities = evaluatedArticles(groupId)(events);
 
-      expectContentOf(activities, [
+      expect(activities).toStrictEqual([
         expect.objectContaining({
           evaluationCount: 2,
         }),
@@ -118,9 +94,9 @@ describe('group-activities', () => {
     });
 
     it('has a latest activity date of the latest evaluation', () => {
-      const activities = groupActivities(groupId, 1, pageSize)(events);
+      const activities = evaluatedArticles(groupId)(events);
 
-      expectContentOf(activities, [
+      expect(activities).toStrictEqual([
         expect.objectContaining({
           latestActivityDate,
         }),
@@ -161,9 +137,9 @@ describe('group-activities', () => {
     ];
 
     it('has an evaluation count of the number of evaluations by all groups', () => {
-      const activities = groupActivities(groupId, 1, pageSize)(events);
+      const activities = evaluatedArticles(groupId)(events);
 
-      expectContentOf(activities, [
+      expect(activities).toStrictEqual([
         expect.objectContaining({
           doi: articleId,
           evaluationCount: 4,
@@ -172,9 +148,9 @@ describe('group-activities', () => {
     });
 
     it('has a latest activity date of the latest evaluation by any group', () => {
-      const activities = groupActivities(groupId, 1, pageSize)(events);
+      const activities = evaluatedArticles(groupId)(events);
 
-      expectContentOf(activities, [
+      expect(activities).toStrictEqual([
         expect.objectContaining({
           latestActivityDate: mostRecentActivityDate,
         }),
@@ -202,9 +178,9 @@ describe('group-activities', () => {
           laterDate,
         ),
       ];
-      const activities = groupActivities(groupId, 1, pageSize)(events);
+      const activities = evaluatedArticles(groupId)(events);
 
-      expectContentOf(activities, [
+      expect(activities).toStrictEqual([
         expect.objectContaining({
           latestActivityDate: laterDate,
         }),
@@ -212,61 +188,6 @@ describe('group-activities', () => {
           latestActivityDate: earlierDate,
         }),
       ]);
-    });
-
-    it('limits the number of entries to the requested page size', () => {
-      const events = generateNEventsForGroup(pageSize + 3, groupId);
-      const activities = groupActivities(groupId, 1, pageSize)(events);
-
-      expect(pipe(
-        activities,
-        E.map((a) => a.content.length),
-      )).toStrictEqual(E.right(pageSize));
-    });
-
-    it('returns the specified page of the list', () => {
-      const earlierDate = new Date('2019-09-06T00:00:00.000Z');
-      const laterDate = new Date('2019-12-05T00:00:00.000Z');
-      const events = [
-        editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryReviewId(), earlierDate),
-        editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryReviewId(), laterDate),
-      ];
-      const activities = groupActivities(groupId, 2, 1)(events);
-
-      expectContentOf(activities, [
-        expect.objectContaining({
-          latestActivityDate: earlierDate,
-        }),
-      ]);
-    });
-
-    it.each([
-      [9, 1, O.none],
-      [11, 1, O.some(2)],
-      [20, 1, O.some(2)],
-      [20, 2, O.none],
-      [21, 2, O.some(3)],
-      [21, 3, O.none],
-    ])('given %d events and a request for page %d, returns the next page', (numberOfEvents, page, expected) => {
-      const events = generateNEventsForGroup(numberOfEvents, groupId);
-      const activities = groupActivities(groupId, page, 10)(events);
-
-      expect(activities).toStrictEqual(E.right(expect.objectContaining({
-        nextPageNumber: expected,
-      })));
-    });
-
-    it('returns not-found when asked for a page that does not exist', () => {
-      const events = generateNEventsForGroup(1, groupId);
-      const activities = groupActivities(groupId, 2, 10)(events);
-
-      expect(activities).toStrictEqual(E.left(DE.notFound));
-    });
-
-    it('returns an empty page 1 when there are no events', () => {
-      const activities = groupActivities(groupId, arbitraryNumber(1, 20), 10)([]);
-
-      expectContentOf(activities, []);
     });
   });
 
@@ -297,9 +218,9 @@ describe('group-activities', () => {
         ),
       ];
 
-      const activities = groupActivities(thisGroupId, 1, pageSize)(events);
+      const activities = evaluatedArticles(thisGroupId)(events);
 
-      expectContentOf(activities, [
+      expect(activities).toStrictEqual([
         expect.objectContaining({
           doi: articleMostRecentlyReviewedByThisGroup,
         }),
@@ -323,9 +244,37 @@ describe('group-activities', () => {
         ),
       ];
 
-      const activities = groupActivities(thisGroupId, 1, pageSize)(events);
+      const activities = evaluatedArticles(thisGroupId)(events);
 
-      expectContentOf(activities, []);
+      expect(activities).toStrictEqual([]);
+    });
+  });
+
+  describe('given a large set of evaluation events', () => {
+    const numberOfEvents = 15000;
+
+    const events = (
+      [...Array(numberOfEvents)].map(() => editorialCommunityReviewedArticle(
+        arbitraryGroupId(),
+        arbitraryDoi(),
+        arbitraryReviewId(),
+        arbitraryDate(),
+      ))
+    );
+
+    it('performs acceptably', async () => {
+      const group = {
+        id: arbitraryGroupId(),
+        name: arbitraryWord(),
+        avatarPath: arbitraryWord(),
+        descriptionPath: arbitraryWord(),
+        shortDescription: arbitraryWord(),
+      };
+      const startTime = performance.now();
+      evaluatedArticles(group.id)(events);
+      const endTime = performance.now();
+
+      expect(endTime - startTime).toBeLessThan(350);
     });
   });
 });

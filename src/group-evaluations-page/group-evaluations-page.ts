@@ -7,10 +7,14 @@ import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { recentActivity, Ports as RecentActivityPorts } from './recent-activity';
+import { evaluatedArticlesList, Ports as EvaluatedArticlesListPorts } from './evaluated-articles-list';
+import { evaluatedArticles } from './evaluated-articles-list/evaluated-articles';
 import { renderErrorPage, renderPage } from './render-page';
+import { getEvaluatedArticlesListDetails } from '../group-page/get-evaluated-articles-list-details';
+import { templateDate } from '../shared-components/date';
 import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import * as DE from '../types/data-error';
+import { DomainEvent } from '../types/domain-events';
 import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
 import { toHtmlFragment } from '../types/html-fragment';
@@ -19,7 +23,10 @@ import { RenderPageError } from '../types/render-page-error';
 
 type FetchGroup = (groupId: GroupId) => TO.TaskOption<Group>;
 
-type Ports = RecentActivityPorts & {
+type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
+
+type Ports = EvaluatedArticlesListPorts & {
+  getAllEvents: GetAllEvents,
   getGroup: FetchGroup,
 };
 
@@ -37,21 +44,42 @@ const notFoundResponse = () => ({
   message: toHtmlFragment('No such group. Please check and try again.'),
 } as const);
 
+const renderLastUpdated = O.fold(
+  () => '',
+  (date: Date) => `<span> - Last updated ${templateDate(date)}</span>`,
+);
+
 export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ id, page }) => pipe(
   ports.getGroup(id),
   T.map(E.fromOption(notFoundResponse)),
-  TE.chain((group) => pipe(
+  TE.chainTaskK((group) => pipe(
+    ports.getAllEvents,
+    T.map((events) => ({
+      group,
+      articles: evaluatedArticles(group.id)(events),
+      ...getEvaluatedArticlesListDetails(group.id)(events),
+    })),
+  )),
+  TE.chain(({
+    group, articles, articleCount, lastUpdated,
+  }) => pipe(
     {
       header: pipe(
         `<header class="page-header page-header--search-results">
           <h1 class="page-heading--search">
-            Articles recently evaluated by ${group.name}
+            Evaluated Articles
           </h1>
+          <p class="evaluated-articles__subheading">
+            <img src="${group.avatarPath}" alt="" class="evaluated-articles__avatar">
+            <span>A list by <a href="/groups/${group.id}">${group.name}</a></span>
+          </p>
+          <p>Articles that have been evaluated by ${group.name}, most recently evaluated first.</p>
+          <p>${articleCount} articles${renderLastUpdated(lastUpdated)}</p>
         </header>`,
         toHtmlFragment,
         TE.right,
       ),
-      recentActivity: recentActivity(ports)(group, O.getOrElse(() => 1)(page)),
+      evaluatedArticlesList: evaluatedArticlesList(ports)(articles, group, O.getOrElse(() => 1)(page)),
     },
     sequenceS(TE.ApplyPar),
     TE.bimap(renderErrorPage, renderPage(group)),
