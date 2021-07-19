@@ -130,12 +130,6 @@ export const evaluatedArticles = (groupId: GroupId) => (
 );
 
 export const groupActivities: CalculateGroupActivities = (groupId, page, pageSize) => flow(
-  RA.filter(isEditorialCommunityReviewedArticleEvent),
-  RA.reduce(new Map(), addEventToActivities(groupId)),
-  RM.filterMapWithIndex(flow(
-    (key, activityDetails) => ({ ...activityDetails, doi: new Doi(key) }),
-    groupHasEvaluatedArticle,
-  )),
-  RM.values(byLatestActivityDateByGroupDesc),
+  evaluatedArticles(groupId),
   paginate(page, pageSize),
 );
