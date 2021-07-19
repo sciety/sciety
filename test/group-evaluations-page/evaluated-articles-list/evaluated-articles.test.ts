@@ -1,6 +1,6 @@
 /* eslint-disable jest/expect-expect */
 import { performance } from 'perf_hooks';
-import { evaluatedArticles } from '../../../src/group-evaluations-page/evaluated-articles-list/group-activities';
+import { evaluatedArticles } from '../../../src/group-evaluations-page/evaluated-articles-list/evaluated-articles';
 import {
   editorialCommunityReviewedArticle,
 } from '../../../src/types/domain-events';

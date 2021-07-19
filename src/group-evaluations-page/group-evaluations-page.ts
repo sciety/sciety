@@ -8,7 +8,7 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { evaluatedArticlesList, Ports as EvaluatedArticlesListPorts } from './evaluated-articles-list';
-import { evaluatedArticles } from './evaluated-articles-list/group-activities';
+import { evaluatedArticles } from './evaluated-articles-list/evaluated-articles';
 import { renderErrorPage, renderPage } from './render-page';
 import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import * as DE from '../types/data-error';
