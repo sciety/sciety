@@ -8,6 +8,7 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { recentActivity, Ports as RecentActivityPorts } from './recent-activity';
+import { evaluatedArticles } from './recent-activity/group-activities';
 import { renderErrorPage, renderPage } from './render-page';
 import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import * as DE from '../types/data-error';
@@ -40,7 +41,15 @@ const notFoundResponse = () => ({
 export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ id, page }) => pipe(
   ports.getGroup(id),
   T.map(E.fromOption(notFoundResponse)),
-  TE.chain((group) => pipe(
+  TE.chainTaskK((group) => pipe(
+    ports.getAllEvents,
+    T.map(evaluatedArticles(group.id)),
+    T.map((articles) => ({
+      group,
+      articleCount: articles.length,
+    })),
+  )),
+  TE.chain(({ group, articleCount }) => pipe(
     {
       header: pipe(
         `<header class="page-header page-header--search-results">
@@ -49,6 +58,7 @@ export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ i
           </h1>
           <p>A list by <a href="/groups/${group.id}">${group.name}</a></p>
           <p>Articles that have been evaluated by ${group.name}, most recently evaluated first.</p>
+          <p>${articleCount} articles</p>
         </header>`,
         toHtmlFragment,
         TE.right,

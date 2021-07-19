@@ -116,6 +116,19 @@ const paginate = (page: number, pageSize: number) => (allEvaluatedArticles: Read
   )
 );
 
+export const evaluatedArticles = (groupId: GroupId) => (
+  events: ReadonlyArray<DomainEvent>,
+): ReadonlyArray<ArticleActivity> => pipe(
+  events,
+  RA.filter(isEditorialCommunityReviewedArticleEvent),
+  RA.reduce(new Map(), addEventToActivities(groupId)),
+  RM.filterMapWithIndex(flow(
+    (key, activityDetails) => ({ ...activityDetails, doi: new Doi(key) }),
+    groupHasEvaluatedArticle,
+  )),
+  RM.values(byLatestActivityDateByGroupDesc),
+);
+
 export const groupActivities: CalculateGroupActivities = (groupId, page, pageSize) => flow(
   RA.filter(isEditorialCommunityReviewedArticleEvent),
   RA.reduce(new Map(), addEventToActivities(groupId)),
