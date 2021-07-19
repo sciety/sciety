@@ -5,31 +5,17 @@ import { pipe } from 'fp-ts/function';
 import {
   evaluatedArticles,
   GroupActivities,
-  groupActivities,
   paginate,
 } from '../../../src/group-evaluations-page/recent-activity/group-activities';
 import { ArticleActivity } from '../../../src/types/article-activity';
 import * as DE from '../../../src/types/data-error';
-import { Doi } from '../../../src/types/doi';
 import {
   editorialCommunityReviewedArticle,
-  EditorialCommunityReviewedArticleEvent,
 } from '../../../src/types/domain-events';
-import { GroupId } from '../../../src/types/group-id';
 import { arbitraryDate, arbitraryNumber } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
-
-const generateNEventsForGroup = (
-  numberOfEvents: number,
-  groupId: GroupId,
-): ReadonlyArray<EditorialCommunityReviewedArticleEvent> => (
-  [...Array(numberOfEvents).keys()].map((i) => (editorialCommunityReviewedArticle(
-    groupId,
-    new Doi(`10.1101/${i}`),
-    arbitraryReviewId(),
-  ))));
 
 const expectContentOf = (activities: GroupActivities, expectedContent: unknown) => (
   expect(activities).toStrictEqual(E.right(expect.objectContaining({
@@ -292,8 +278,6 @@ describe('paginate', () => {
     })));
 
   describe('when the group has evaluated multiple articles', () => {
-    const groupId = arbitraryGroupId();
-
     it('limits the number of entries to the requested page size', () => {
       const articleActivities = generateNArticles(pageSize + 3);
       const activities = paginate(1, pageSize)(articleActivities);
@@ -336,8 +320,8 @@ describe('paginate', () => {
       [21, 2, O.some(3)],
       [21, 3, O.none],
     ])('given %d events and a request for page %d, returns the next page', (numberOfEvents, page, expected) => {
-      const events = generateNEventsForGroup(numberOfEvents, groupId);
-      const activities = groupActivities(groupId, page, 10)(events);
+      const articles = generateNArticles(numberOfEvents);
+      const activities = paginate(page, 10)(articles);
 
       expect(activities).toStrictEqual(E.right(expect.objectContaining({
         nextPageNumber: expected,
@@ -345,14 +329,14 @@ describe('paginate', () => {
     });
 
     it('returns not-found when asked for a page that does not exist', () => {
-      const events = generateNEventsForGroup(1, groupId);
-      const activities = groupActivities(groupId, 2, 10)(events);
+      const articles = generateNArticles(1);
+      const activities = paginate(2, 10)(articles);
 
       expect(activities).toStrictEqual(E.left(DE.notFound));
     });
 
     it('returns an empty page 1 when there are no events', () => {
-      const activities = groupActivities(groupId, arbitraryNumber(1, 20), 10)([]);
+      const activities = paginate(arbitraryNumber(1, 20), 10)([]);
 
       expectContentOf(activities, []);
     });
