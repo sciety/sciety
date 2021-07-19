@@ -48,6 +48,7 @@ export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ i
             Evaluated Articles
           </h1>
           <p>A list by <a href="/groups/${group.id}">${group.name}</a></p>
+          <p>Articles that have been evaluated by ${group.name}, most recently evaluated first.</p>
         </header>`,
         toHtmlFragment,
         TE.right,
