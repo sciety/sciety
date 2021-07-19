@@ -10,6 +10,8 @@ import * as tt from 'io-ts-types';
 import { evaluatedArticlesList, Ports as EvaluatedArticlesListPorts } from './evaluated-articles-list';
 import { evaluatedArticles } from './evaluated-articles-list/evaluated-articles';
 import { renderErrorPage, renderPage } from './render-page';
+import { getEvaluatedArticlesListDetails } from '../group-page/get-evaluated-articles-list-details';
+import { templateDate } from '../shared-components/date';
 import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import * as DE from '../types/data-error';
 import { DomainEvent } from '../types/domain-events';
@@ -42,18 +44,25 @@ const notFoundResponse = () => ({
   message: toHtmlFragment('No such group. Please check and try again.'),
 } as const);
 
+const renderLastUpdated = O.fold(
+  () => '',
+  (date: Date) => `<span> - Last updated ${templateDate(date)}</span>`,
+);
+
 export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ id, page }) => pipe(
   ports.getGroup(id),
   T.map(E.fromOption(notFoundResponse)),
   TE.chainTaskK((group) => pipe(
     ports.getAllEvents,
-    T.map(evaluatedArticles(group.id)),
-    T.map((articles) => ({
+    T.map((events) => ({
       group,
-      articles,
+      articles: evaluatedArticles(group.id)(events),
+      ...getEvaluatedArticlesListDetails(group.id)(events),
     })),
   )),
-  TE.chain(({ group, articles }) => pipe(
+  TE.chain(({
+    group, articles, articleCount, lastUpdated,
+  }) => pipe(
     {
       header: pipe(
         `<header class="page-header page-header--search-results">
@@ -62,7 +71,7 @@ export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ i
           </h1>
           <p>A list by <a href="/groups/${group.id}">${group.name}</a></p>
           <p>Articles that have been evaluated by ${group.name}, most recently evaluated first.</p>
-          <p>${articles.length} articles</p>
+          <p>${articleCount} articles${renderLastUpdated(lastUpdated)}</p>
         </header>`,
         toHtmlFragment,
         TE.right,
