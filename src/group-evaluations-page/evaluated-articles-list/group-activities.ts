@@ -88,12 +88,6 @@ export type GroupActivities = E.Either<DE.DataError, {
   articleCount: number,
 }>;
 
-type CalculateGroupActivities = (
-  groupId: GroupId,
-  page: number,
-  pageSize: number,
-) => (events: ReadonlyArray<DomainEvent>) => GroupActivities;
-
 type PageOfArticles = {
   content: ReadonlyArray<ArticleActivity>,
   nextPageNumber: O.Option<number>,
@@ -137,9 +131,4 @@ export const evaluatedArticles = (groupId: GroupId) => (
     groupHasEvaluatedArticle,
   )),
   RM.values(byLatestActivityDateByGroupDesc),
-);
-
-export const groupActivities: CalculateGroupActivities = (groupId, page, pageSize) => flow(
-  evaluatedArticles(groupId),
-  paginate(page, pageSize),
 );

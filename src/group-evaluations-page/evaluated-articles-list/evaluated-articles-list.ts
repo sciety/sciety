@@ -5,7 +5,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { constant, flow, pipe } from 'fp-ts/function';
-import { groupActivities } from './group-activities';
+import { evaluatedArticles, paginate } from './group-activities';
 import { renderRecentGroupActivity } from './render-recent-group-activity';
 import { fetchArticleDetails } from '../../shared-components/article-card/fetch-article-details';
 import { FindVersionsForArticleDoi, getLatestArticleVersionDate } from '../../shared-components/article-card/get-latest-article-version-date';
@@ -63,7 +63,10 @@ type EvaluatedArticlesList = (
 
 export const evaluatedArticlesList: EvaluatedArticlesList = (ports) => (group, pageNumber) => pipe(
   ports.getAllEvents,
-  T.map(groupActivities(group.id, pageNumber, 20)),
+  T.map(flow(
+    evaluatedArticles(group.id),
+    paginate(pageNumber, 20),
+  )),
   TE.chainW(({ content, nextPageNumber }) => pipe(
     content,
     TO.traverseArray(addArticleDetails(ports)),
