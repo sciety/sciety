@@ -94,7 +94,17 @@ type CalculateGroupActivities = (
   pageSize: number,
 ) => (events: ReadonlyArray<DomainEvent>) => GroupActivities;
 
-const paginate = (page: number, pageSize: number) => (allEvaluatedArticles: ReadonlyArray<ArticleActivity>) => (
+type PageOfArticles = {
+  content: ReadonlyArray<ArticleActivity>,
+  nextPageNumber: O.Option<number>,
+  articleCount: number,
+};
+
+// ts-unused-exports:disable-next-line
+export const paginate = (
+  page: number,
+  pageSize: number,
+) => (allEvaluatedArticles: ReadonlyArray<ArticleActivity>): E.Either<DE.DataError, PageOfArticles> => (
   (allEvaluatedArticles.length === 0) ? E.right({
     content: [],
     nextPageNumber: O.none,

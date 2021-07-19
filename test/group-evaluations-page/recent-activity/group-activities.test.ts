@@ -2,7 +2,13 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { evaluatedArticles, GroupActivities, groupActivities } from '../../../src/group-evaluations-page/recent-activity/group-activities';
+import {
+  evaluatedArticles,
+  GroupActivities,
+  groupActivities,
+  paginate,
+} from '../../../src/group-evaluations-page/recent-activity/group-activities';
+import { ArticleActivity } from '../../../src/types/article-activity';
 import * as DE from '../../../src/types/data-error';
 import { Doi } from '../../../src/types/doi';
 import {
@@ -276,12 +282,21 @@ describe('evaluated-articles', () => {
 describe('paginate', () => {
   const pageSize = arbitraryNumber(3, 10);
 
+  const generateNArticles = (
+    numberOfArticles: number,
+  ): ReadonlyArray<ArticleActivity> => (
+    [...Array(numberOfArticles).keys()].map(() => ({
+      doi: arbitraryDoi(),
+      latestActivityDate: arbitraryDate(),
+      evaluationCount: arbitraryNumber(1, 5),
+    })));
+
   describe('when the group has evaluated multiple articles', () => {
     const groupId = arbitraryGroupId();
 
     it('limits the number of entries to the requested page size', () => {
-      const events = generateNEventsForGroup(pageSize + 3, groupId);
-      const activities = groupActivities(groupId, 1, pageSize)(events);
+      const articleActivities = generateNArticles(pageSize + 3);
+      const activities = paginate(1, pageSize)(articleActivities);
 
       expect(pipe(
         activities,
@@ -292,11 +307,19 @@ describe('paginate', () => {
     it('returns the specified page of the list', () => {
       const earlierDate = new Date('2019-09-06T00:00:00.000Z');
       const laterDate = new Date('2019-12-05T00:00:00.000Z');
-      const events = [
-        editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryReviewId(), earlierDate),
-        editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryReviewId(), laterDate),
+      const articleActivities = [
+        {
+          doi: arbitraryDoi(),
+          latestActivityDate: laterDate,
+          evaluationCount: arbitraryNumber(1, 5),
+        },
+        {
+          doi: arbitraryDoi(),
+          latestActivityDate: earlierDate,
+          evaluationCount: arbitraryNumber(1, 5),
+        },
       ];
-      const activities = groupActivities(groupId, 2, 1)(events);
+      const activities = paginate(2, 1)(articleActivities);
 
       expectContentOf(activities, [
         expect.objectContaining({
