@@ -12,6 +12,7 @@ import { evaluatedArticles } from './evaluated-articles-list/group-activities';
 import { renderErrorPage, renderPage } from './render-page';
 import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import * as DE from '../types/data-error';
+import { DomainEvent } from '../types/domain-events';
 import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
 import { toHtmlFragment } from '../types/html-fragment';
@@ -20,7 +21,10 @@ import { RenderPageError } from '../types/render-page-error';
 
 type FetchGroup = (groupId: GroupId) => TO.TaskOption<Group>;
 
+type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
+
 type Ports = EvaluatedArticlesListPorts & {
+  getAllEvents: GetAllEvents,
   getGroup: FetchGroup,
 };
 
@@ -63,7 +67,7 @@ export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ i
         toHtmlFragment,
         TE.right,
       ),
-      evaluatedArticlesList: evaluatedArticlesList(ports)(group, O.getOrElse(() => 1)(page)),
+      evaluatedArticlesList: evaluatedArticlesList(ports)(articles, group, O.getOrElse(() => 1)(page)),
     },
     sequenceS(TE.ApplyPar),
     TE.bimap(renderErrorPage, renderPage(group)),

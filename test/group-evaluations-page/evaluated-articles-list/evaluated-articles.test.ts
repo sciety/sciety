@@ -1,11 +1,10 @@
 /* eslint-disable jest/expect-expect */
-import {
-  evaluatedArticles,
-} from '../../../src/group-evaluations-page/evaluated-articles-list/group-activities';
+import { performance } from 'perf_hooks';
+import { evaluatedArticles } from '../../../src/group-evaluations-page/evaluated-articles-list/group-activities';
 import {
   editorialCommunityReviewedArticle,
 } from '../../../src/types/domain-events';
-import { arbitraryDate } from '../../helpers';
+import { arbitraryDate, arbitraryWord } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
@@ -248,6 +247,34 @@ describe('evaluated-articles', () => {
       const activities = evaluatedArticles(thisGroupId)(events);
 
       expect(activities).toStrictEqual([]);
+    });
+  });
+
+  describe('given a large set of evaluation events', () => {
+    const numberOfEvents = 15000;
+
+    const events = (
+      [...Array(numberOfEvents)].map(() => editorialCommunityReviewedArticle(
+        arbitraryGroupId(),
+        arbitraryDoi(),
+        arbitraryReviewId(),
+        arbitraryDate(),
+      ))
+    );
+
+    it('performs acceptably', async () => {
+      const group = {
+        id: arbitraryGroupId(),
+        name: arbitraryWord(),
+        avatarPath: arbitraryWord(),
+        descriptionPath: arbitraryWord(),
+        shortDescription: arbitraryWord(),
+      };
+      const startTime = performance.now();
+      evaluatedArticles(group.id)(events);
+      const endTime = performance.now();
+
+      expect(endTime - startTime).toBeLessThan(350);
     });
   });
 });
