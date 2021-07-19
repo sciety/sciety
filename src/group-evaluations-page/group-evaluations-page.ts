@@ -47,7 +47,7 @@ export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ i
           <h1 class="page-heading--search">
             Evaluated Articles
           </h1>
-          <p>A list by ${group.name}</p>
+          <p>A list by <a href="/groups/${group.id}">${group.name}</a></p>
         </header>`,
         toHtmlFragment,
         TE.right,
