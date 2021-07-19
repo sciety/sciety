@@ -7,8 +7,8 @@ import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { recentActivity, Ports as RecentActivityPorts } from './recent-activity';
-import { evaluatedArticles } from './recent-activity/group-activities';
+import { evaluatedArticlesList, Ports as EvaluatedArticlesListPorts } from './evaluated-articles-list';
+import { evaluatedArticles } from './evaluated-articles-list/group-activities';
 import { renderErrorPage, renderPage } from './render-page';
 import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import * as DE from '../types/data-error';
@@ -20,7 +20,7 @@ import { RenderPageError } from '../types/render-page-error';
 
 type FetchGroup = (groupId: GroupId) => TO.TaskOption<Group>;
 
-type Ports = RecentActivityPorts & {
+type Ports = EvaluatedArticlesListPorts & {
   getGroup: FetchGroup,
 };
 
@@ -63,7 +63,7 @@ export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ i
         toHtmlFragment,
         TE.right,
       ),
-      recentActivity: recentActivity(ports)(group, O.getOrElse(() => 1)(page)),
+      evaluatedArticlesList: evaluatedArticlesList(ports)(group, O.getOrElse(() => 1)(page)),
     },
     sequenceS(TE.ApplyPar),
     TE.bimap(renderErrorPage, renderPage(group)),

@@ -54,9 +54,14 @@ const addArticleDetails = (ports: Ports) => <A extends { doi: Doi }>(evaluatedAr
   })),
 );
 
-type RecentActivity = (ports: Ports) => (group: Group, pageNumber: number) => TE.TaskEither<DE.DataError, HtmlFragment>;
+type EvaluatedArticlesList = (
+  ports: Ports
+) => (
+  group: Group,
+  pageNumber: number
+) => TE.TaskEither<DE.DataError, HtmlFragment>;
 
-export const recentActivity: RecentActivity = (ports) => (group, pageNumber) => pipe(
+export const evaluatedArticlesList: EvaluatedArticlesList = (ports) => (group, pageNumber) => pipe(
   ports.getAllEvents,
   T.map(groupActivities(group.id, pageNumber, 20)),
   TE.chainW(({ content, nextPageNumber }) => pipe(

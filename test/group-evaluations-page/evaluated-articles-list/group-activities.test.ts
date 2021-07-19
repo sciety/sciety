@@ -6,7 +6,7 @@ import {
   evaluatedArticles,
   GroupActivities,
   paginate,
-} from '../../../src/group-evaluations-page/recent-activity/group-activities';
+} from '../../../src/group-evaluations-page/evaluated-articles-list/group-activities';
 import { ArticleActivity } from '../../../src/types/article-activity';
 import * as DE from '../../../src/types/data-error';
 import {
