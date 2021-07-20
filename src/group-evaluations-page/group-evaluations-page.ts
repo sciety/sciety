@@ -86,7 +86,7 @@ export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ i
   }) => pipe(
     {
       header: pipe(
-        `<header class="page-header page-header--search-results">
+        `<header class="page-header evaluated-articles">
           <h1>
             Evaluated Articles
           </h1>
@@ -96,8 +96,12 @@ export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ i
           </p>
           <p class="evaluated-articles__description">Articles that have been evaluated by ${group.name}, most recently evaluated first.</p>
           <p class="evaluated-articles__meta">${renderArticleCount(articleCount)}${renderLastUpdated(lastUpdated)}</p>
-          ${renderPageNumbers(page, articleCount, pageSize)}
         </header>`,
+        toHtmlFragment,
+        TE.right,
+      ),
+      pageNumbers: pipe(
+        renderPageNumbers(page, articleCount, pageSize),
         toHtmlFragment,
         TE.right,
       ),

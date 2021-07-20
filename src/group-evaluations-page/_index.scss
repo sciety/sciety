@@ -12,6 +12,11 @@ $_avatar-size: 48px;
   @include card.list-item();
 }
 
+.page-header.evaluated-articles {
+  color: settings.$colour-text-primary;
+  margin-bottom: 1rem;
+}
+
 .evaluated-articles__subheading {
   @include typography.subheading();
   display: flex;
@@ -38,5 +43,6 @@ $_avatar-size: 48px;
 .evaluated-articles__page_count {
   @include typography.details();
   font-weight: bold;
+  color: settings.$colour-text-primary;
   margin-bottom: 1rem;
 }

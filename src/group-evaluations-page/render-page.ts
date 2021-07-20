@@ -7,6 +7,7 @@ import { RenderPageError } from '../types/render-page-error';
 
 type Components = {
   header: HtmlFragment,
+  pageNumbers: HtmlFragment,
   evaluatedArticlesList: HtmlFragment,
 };
 
@@ -15,6 +16,7 @@ const render = (components: Components) => `
     <div class="sciety-grid sciety-grid--search-results">
       ${components.header}
       <section>
+        ${components.pageNumbers}
         ${components.evaluatedArticlesList}
       </section>
     </div>
