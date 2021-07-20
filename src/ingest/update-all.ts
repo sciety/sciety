@@ -1,4 +1,5 @@
 import fs from 'fs';
+import chalk from 'chalk';
 import { printf } from 'fast-printf';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -6,7 +7,6 @@ import { pipe } from 'fp-ts/function';
 import * as Es from './evaluations';
 import { fetchData, FetchData } from './fetch-data';
 import { fetchGoogleSheet, FetchGoogleSheet } from './fetch-google-sheet';
-import chalk from 'chalk';
 
 type Adapters = {
   fetchData: FetchData,
