@@ -129,3 +129,14 @@
   @include heading-base();
   font-size: functions.px-to-rem(14px);
 }
+
+@mixin list-separator() {
+  > * {
+    margin-right: 0.25rem;
+  }
+
+  > :nth-child(n+3)::before {
+    content: '•';
+    margin-right: 0.25rem;
+  }
+}
