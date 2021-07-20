@@ -1,6 +1,7 @@
 import fs from 'fs';
 import chalk from 'chalk';
 import { printf } from 'fast-printf';
+import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -63,7 +64,17 @@ type Results = {
 };
 
 const reportSuccess = (group: Group) => (results: Results) => pipe(
-  printf('%5d evaluations (%d new)', results.total, results.added),
+  process.env.INGEST_LOG,
+  O.fromNullable,
+  O.filter((v) => v === 'DEBUG'),
+  O.fold(
+    () => printf('%5d evaluations (%d new)', results.total, results.added),
+    () => printf('%5d evaluations (%s, %s existing, %s)',
+      results.total,
+      chalk.green(`${results.added} new`),
+      chalk.white(results.total - results.added),
+      chalk.yellow(`${0} skipped`)),
+  ),
   report(group),
 );
 
