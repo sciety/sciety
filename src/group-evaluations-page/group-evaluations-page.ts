@@ -75,6 +75,7 @@ export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ i
           </p>
           <p>Articles that have been evaluated by ${group.name}, most recently evaluated first.</p>
           <p>${articleCount} articles${renderLastUpdated(lastUpdated)}</p>
+          <p>Showing page ${pipe(page, O.getOrElse(() => 1))}<span class="visually-hidden"> pages of list content</span></p>
         </header>`,
         toHtmlFragment,
         TE.right,
