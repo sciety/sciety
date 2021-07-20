@@ -86,7 +86,7 @@ export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ i
   }) => pipe(
     {
       header: pipe(
-        `<header class="page-header evaluated-articles">
+        `<header class="page-header page-header--group-evaluations">
           <h1>
             Evaluated Articles
           </h1>

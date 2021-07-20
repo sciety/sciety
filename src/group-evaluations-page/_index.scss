@@ -1,9 +1,20 @@
+@use '../sass/breakpoints';
 @use '../sass/card';
 @use '../sass/layout';
 @use '../sass/settings';
 @use '../sass/typography';
 
 $_avatar-size: 48px;
+
+@mixin header-horizontal-spacing() {
+  margin-left: 1rem;
+  margin-right: 1rem;
+
+  @include breakpoints.not-narrow {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
 
 .group-activity-list {
   @include card.list();
@@ -13,13 +24,15 @@ $_avatar-size: 48px;
   @include card.list-item();
 }
 
-.page-header.evaluated-articles {
-  color: settings.$colour-text-primary;
-  margin-bottom: 1rem;
-}
-
 .sciety-grid--group-evaluations {
   @include layout.sciety-grid-columns();
+}
+
+.sciety-grid--group-evaluations > .page-header--group-evaluations {
+  @include layout.page-header-top-space();
+  @include header-horizontal-spacing();
+  color: settings.$colour-text-primary;
+  margin-bottom: 1rem;
 }
 
 .evaluated-articles__subheading {
@@ -47,6 +60,7 @@ $_avatar-size: 48px;
 
 .evaluated-articles__page_count {
   @include typography.details();
+  @include header-horizontal-spacing();
   font-weight: bold;
   color: settings.$colour-text-primary;
   margin-bottom: 1rem;
