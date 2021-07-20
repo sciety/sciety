@@ -43,8 +43,8 @@ const overwriteCsv = (group: Group) => (evaluations: Es.Evaluations) => pipe(
     TE.bimap(
       (error) => error.toString(),
       () => ({
-        total: results.all.length,
-        added: results.all.length - results.existing.length,
+        evaluationsCount: results.all.length,
+        newEvaluationsCount: results.all.length - results.existing.length,
         skippedItemsCount: results.skippedItems.length,
       }),
     ),
@@ -61,8 +61,8 @@ const reportError = (group: Group) => (message: string) => pipe(
 );
 
 type Results = {
-  total: number,
-  added: number,
+  evaluationsCount: number,
+  newEvaluationsCount: number,
   skippedItemsCount: number,
 };
 
@@ -71,11 +71,11 @@ const reportSuccess = (group: Group) => (results: Results) => pipe(
   O.fromNullable,
   O.filter((v) => v === 'DEBUG'),
   O.fold(
-    () => printf('%5d evaluations (%d new)', results.total, results.added),
+    () => printf('%5d evaluations (%d new)', results.evaluationsCount, results.newEvaluationsCount),
     () => printf('%5d evaluations (%s, %s existing, %s)',
-      results.total,
-      chalk.green(`${results.added} new`),
-      chalk.white(results.total - results.added),
+      results.evaluationsCount,
+      chalk.green(`${results.newEvaluationsCount} new`),
+      chalk.white(results.evaluationsCount - results.newEvaluationsCount),
       chalk.yellow(`${results.skippedItemsCount} skipped`)),
   ),
   report(group),
