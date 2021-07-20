@@ -94,7 +94,7 @@ export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ i
             <img src="${group.avatarPath}" alt="" class="evaluated-articles__avatar">
             <span>A list by <a href="/groups/${group.id}">${group.name}</a></span>
           </p>
-          <p>Articles that have been evaluated by ${group.name}, most recently evaluated first.</p>
+          <p class="evaluated-articles__description">Articles that have been evaluated by ${group.name}, most recently evaluated first.</p>
           <p class="evaluated-articles__meta">${renderArticleCount(articleCount)}${renderLastUpdated(lastUpdated)}</p>
           ${renderPageNumbers(page, articleCount, pageSize)}
         </header>`,
