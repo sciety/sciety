@@ -1,10 +1,10 @@
 @use '../sass/button';
 
-.search-results__link_container {
+.pagination-controls {
   text-align: center;
 }
 
-.search-results__next_link {
+.pagination-controls__next_link {
   @include button.button-link-secondary();
   display: inline-block;
   margin-bottom: 1.5rem;

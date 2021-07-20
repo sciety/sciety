@@ -255,7 +255,7 @@ describe('search-results-page acceptance', () => {
             }),
           );
           const rendered = await contentOf(page)();
-          const nextLink = rendered.querySelector('.search-results__next_link');
+          const nextLink = rendered.querySelector('.pagination-controls__next_link');
 
           expect(nextLink).not.toBeNull();
         });
@@ -281,7 +281,7 @@ describe('search-results-page acceptance', () => {
             }),
           );
           const rendered = await contentOf(page)();
-          const nextLinkHref = rendered.querySelector('.search-results__next_link')?.getAttribute('href');
+          const nextLinkHref = rendered.querySelector('.pagination-controls__next_link')?.getAttribute('href');
 
           expect(nextLinkHref).toContain('page=2');
         });

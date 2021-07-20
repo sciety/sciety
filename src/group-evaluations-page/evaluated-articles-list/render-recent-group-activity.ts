@@ -2,6 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { flow } from 'fp-ts/function';
 import { ArticleViewModel, renderArticleCard } from '../../shared-components/article-card';
+import { paginationControls } from '../../shared-components/pagination-controls';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 type RenderRecentGroupActivity = (
@@ -12,11 +13,7 @@ type RenderRecentGroupActivity = (
 
 const renderNextLink = O.fold(
   () => '',
-  (href: string) => `
-    <div class="search-results__link_container">
-      <a href="${href}" class="search-results__next_link">Next</a>
-    </div>
-  `,
+  paginationControls,
 );
 
 export const renderRecentGroupActivity: RenderRecentGroupActivity = (nextPageHref) => flow(
