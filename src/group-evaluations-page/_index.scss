@@ -1,4 +1,5 @@
 @use '../sass/card';
+@use '../sass/layout';
 @use '../sass/settings';
 @use '../sass/typography';
 
@@ -15,6 +16,10 @@ $_avatar-size: 48px;
 .page-header.evaluated-articles {
   color: settings.$colour-text-primary;
   margin-bottom: 1rem;
+}
+
+.sciety-grid--group-evaluations {
+  @include layout.sciety-grid-columns();
 }
 
 .evaluated-articles__subheading {
