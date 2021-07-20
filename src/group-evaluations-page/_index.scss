@@ -1,5 +1,6 @@
 @use '../sass/card';
 @use '../sass/settings';
+@use '../sass/typography';
 
 $_avatar-size: 48px;
 
@@ -12,6 +13,7 @@ $_avatar-size: 48px;
 }
 
 .evaluated-articles__subheading {
+  @include typography.subheading();
   display: flex;
   align-items: center;
 }
@@ -22,4 +24,13 @@ $_avatar-size: 48px;
   border-radius: settings.$border-radius;
   border: settings.$avatar-border;
   margin-right: 0.5rem;
+}
+
+.evaluated-articles__meta {
+  @include typography.details();
+}
+
+.evaluated-articles__page_count {
+  @include typography.details();
+  font-weight: bold;
 }

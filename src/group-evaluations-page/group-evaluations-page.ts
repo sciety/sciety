@@ -64,7 +64,7 @@ const renderPageNumbers = (page: O.Option<number>, articleCount: number, pageSiz
         currentPage: pipe(page, O.getOrElse(() => 1)),
         totalPages: Math.ceil(count / pageSize),
       },
-      ({ currentPage, totalPages }) => `<p>Showing page ${currentPage} of ${totalPages}<span class="visually-hidden"> pages of list content</span></p>`,
+      ({ currentPage, totalPages }) => `<p class="evaluated-articles__page_count">Showing page ${currentPage} of ${totalPages}<span class="visually-hidden"> pages of list content</span></p>`,
     ),
   ),
 );
@@ -95,7 +95,7 @@ export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ i
             <span>A list by <a href="/groups/${group.id}">${group.name}</a></span>
           </p>
           <p>Articles that have been evaluated by ${group.name}, most recently evaluated first.</p>
-          <p>${renderArticleCount(articleCount)}${renderLastUpdated(lastUpdated)}</p>
+          <p class="evaluated-articles__meta">${renderArticleCount(articleCount)}${renderLastUpdated(lastUpdated)}</p>
           ${renderPageNumbers(page, articleCount, pageSize)}
         </header>`,
         toHtmlFragment,
