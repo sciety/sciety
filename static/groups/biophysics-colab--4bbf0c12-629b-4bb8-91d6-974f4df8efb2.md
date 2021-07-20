@@ -1,29 +1,35 @@
 ## Summary
 
-Biophysics Colab is a collaboration of biophysicists who are working in partnership with eLife to improve the way in which original research is evaluated. We aim to drive forward the principles of open science by providing an equitable, inclusive, and transparent environment for peer review. Our ambition is to facilitate a publishing ecosystem in which the significance of research is recognised independently of publication venue.
+Biophysics Colab is a collaboration of biophysicists whose goal is to improve the way in which original research is evaluated and disseminated. 
 
-We will achieve these goals by leveraging our knowledge and expertise to provide considered, appropriate and constructive feedback on publicly available preprints. We will guide researchers to form the best possible interpretation of their data and launch a new journal in which we will endorse rigorous and robust studies in the form of articles. The relevance of these studies to the immediate community, the wider scientific enterprise, and society as a whole will be flagged by an ongoing curation service that recognises how the value of data can increase over time as scientific understanding progresses.
+By combining the knowledge and expertise of the biophysics community with the principles of open science, Biophysics Colab provide an equitable, inclusive, and transparent environment for peer review. Their free service delivers constructive feedback on publicly available preprints so that researchers can form the best possible interpretation of their data. In the future, Biophysics Colab will launch a journal to endorse rigorous and robust studies in the form of articles. 
 
-Biophysics Colab is the first endeavour of the fledgling non-profit organisation, Science Colab, whose mission is to add rigour and integrity to the scientific literature in a way that supports and benefits the scientific community.
+Biophysics Colab is the first endeavour of the fledgling non-profit organisation, Science Colab, whose mission is to add value and credibility to the scientific literature in a way that supports and benefits the scientific community. Their vision is of a publishing ecosystem in which research is judged by its intrinsic significance and not the venue in which it’s published.
+
+Further information can be obtained from Lesley Anson ([lesley@sciencecolab.org](mailto:lesley@sciencecolab.org)). 
+
 
 ## Evaluation model
+
+Biophysics Colab provide collaborative, community-based and journal-agnostic peer review of publicly available preprints. Reviewers do not pass judgement on the significance of a study, but instead highlight its strengths and weaknesses, and provide constructive feedback to tighten the interpretation of the available data. A consolidated report is shared with authors, who are then offered the opportunity to post it on bioRxiv and Sciety.
+
 ## People
 
-- Kenton Swartz
+- Kenton J Swartz
 - Richard Aldrich
-- Sudha Chakrpani
+- Sudha Chakrapani
 - Baron Chanda
-- José Faraldo-Gomez
+- José Faraldo-Gómez
 - Rachelle Gaudet
 - Teresa Giraldez
-- Sharona Gordon
+- Sharona E Gordon
 - Inga Hänelt
 - Merritt Maduke
-- Stephan Pless
-- Janice Robertson
+- Stephan A Pless
+- Janice L Robertson
 - Gary Rudnick
-- Renae Ryan
-- William Zagotta.
+- Renae M Ryan
+- William N Zagotta
 
 ## Content license
 
