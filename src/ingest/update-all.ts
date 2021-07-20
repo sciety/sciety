@@ -6,6 +6,7 @@ import { pipe } from 'fp-ts/function';
 import * as Es from './evaluations';
 import { fetchData, FetchData } from './fetch-data';
 import { fetchGoogleSheet, FetchGoogleSheet } from './fetch-google-sheet';
+import chalk from 'chalk';
 
 type Adapters = {
   fetchData: FetchData,
@@ -48,8 +49,13 @@ const overwriteCsv = (group: Group) => (evaluations: Es.Evaluations) => pipe(
 );
 
 const report = (group: Group) => (message: string) => {
-  process.stderr.write(printf('%-30s %s\n', group.name, message));
+  process.stderr.write(printf('%-36s %s\n', chalk.white(group.name), message));
 };
+
+const reportError = (group: Group) => (message: string) => pipe(
+  chalk.redBright(message),
+  report(group),
+);
 
 type Results = {
   total: number,
@@ -68,7 +74,7 @@ const updateGroup = (group: Group): T.Task<void> => pipe(
   }),
   TE.chain(overwriteCsv(group)),
   TE.match(
-    report(group),
+    reportError(group),
     reportSuccess(group),
   ),
 );
