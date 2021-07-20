@@ -1,6 +1,8 @@
 @use '../sass/card';
 @use '../sass/settings';
 
+$_avatar-size: 48px;
+
 .group-activity-list {
   @include card.list();
 }
@@ -15,8 +17,8 @@
 }
 
 .evaluated-articles__avatar {
-  width: settings.$avatar-size;
-  height: settings.$avatar-size;
+  width: $_avatar-size;
+  height: $_avatar-size;
   border-radius: settings.$border-radius;
   border: settings.$avatar-border;
   margin-right: 0.5rem;
