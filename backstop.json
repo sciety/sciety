@@ -63,8 +63,11 @@
     },
     {
       "label": "Group page",
-      "url": "http://sciety_app/groups/74fd66e9-3b90-4b5a-a4ab-5be83db4c5de",
-      "hideSelectors": ["iframe"]
+      "url": "http://sciety_app/groups/74fd66e9-3b90-4b5a-a4ab-5be83db4c5de"
+    },
+    {
+      "label": "Group evaluated articles list page",
+      "url": "http://sciety_app/groups/74fd66e9-3b90-4b5a-a4ab-5be83db4c5de/evaluated-articles"
     },
     {
       "label": "Groups page",
