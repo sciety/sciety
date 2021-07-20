@@ -46,12 +46,12 @@ const notFoundResponse = () => ({
 
 const renderArticleCount = (articleCount: number) => pipe(
   articleCount === 1,
-  (singular) => `${articleCount} ${singular ? 'article' : 'articles'}`,
+  (singular) => `<span>${articleCount} ${singular ? 'article' : 'articles'}</span>`,
 );
 
 const renderLastUpdated = O.fold(
   () => '',
-  (date: Date) => `<span> - Last updated ${templateDate(date)}</span>`,
+  (date: Date) => `<span>Last updated ${templateDate(date)}</span>`,
 );
 
 const renderPageNumbers = (page: O.Option<number>, articleCount: number, pageSize: number) => pipe(
@@ -95,7 +95,7 @@ export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ i
             <span>A list by <a href="/groups/${group.id}">${group.name}</a></span>
           </p>
           <p class="evaluated-articles__description">Articles that have been evaluated by ${group.name}, most recently evaluated first.</p>
-          <p class="evaluated-articles__meta">${renderArticleCount(articleCount)}${renderLastUpdated(lastUpdated)}</p>
+          <p class="evaluated-articles__meta"><span class="visually-hidden">This list contains </span>${renderArticleCount(articleCount)}${renderLastUpdated(lastUpdated)}</p>
         </header>`,
         toHtmlFragment,
         TE.right,
