@@ -44,6 +44,11 @@ const notFoundResponse = () => ({
   message: toHtmlFragment('No such group. Please check and try again.'),
 } as const);
 
+const renderArticleCount = (articleCount: number) => pipe(
+  articleCount === 1,
+  (singular) => `${articleCount} ${singular ? 'article' : 'articles'}`,
+);
+
 const renderLastUpdated = O.fold(
   () => '',
   (date: Date) => `<span> - Last updated ${templateDate(date)}</span>`,
@@ -90,7 +95,7 @@ export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ i
             <span>A list by <a href="/groups/${group.id}">${group.name}</a></span>
           </p>
           <p>Articles that have been evaluated by ${group.name}, most recently evaluated first.</p>
-          <p>${articleCount} articles${renderLastUpdated(lastUpdated)}</p>
+          <p>${renderArticleCount(articleCount)}${renderLastUpdated(lastUpdated)}</p>
           ${renderPageNumbers(page, articleCount, pageSize)}
         </header>`,
         toHtmlFragment,
