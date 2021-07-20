@@ -12,27 +12,39 @@ export type PageOfArticles = {
   articleCount: number,
 };
 
+const emptyPage = E.right({
+  content: [],
+  nextPageNumber: O.none,
+  articleCount: 0,
+});
+
+type SelectedPage = (
+  allEvaluatedArticles: ReadonlyArray<ArticleActivity>,
+  page: number,
+  pageSize: number,
+) => E.Either<DE.DataError, PageOfArticles>;
+
+const selectedPage: SelectedPage = (allEvaluatedArticles, page, pageSize) => pipe(
+  allEvaluatedArticles,
+  RA.chunksOf(pageSize),
+  RA.lookup(page - 1),
+  E.fromOption(() => DE.notFound),
+  E.map((content) => ({
+    content,
+    nextPageNumber: pipe(
+      page + 1,
+      O.some,
+      O.filter((nextPage) => nextPage <= Math.ceil(allEvaluatedArticles.length / pageSize)),
+    ),
+    articleCount: allEvaluatedArticles.length,
+  })),
+);
+
 export const paginate = (
   page: number,
   pageSize: number,
 ) => (allEvaluatedArticles: ReadonlyArray<ArticleActivity>): E.Either<DE.DataError, PageOfArticles> => (
-  (allEvaluatedArticles.length === 0) ? E.right({
-    content: [],
-    nextPageNumber: O.none,
-    articleCount: 0,
-  }) : pipe(
-    allEvaluatedArticles,
-    RA.chunksOf(pageSize),
-    RA.lookup(page - 1),
-    E.fromOption(() => DE.notFound),
-    E.map((content) => ({
-      content,
-      nextPageNumber: pipe(
-        page + 1,
-        O.some,
-        O.filter((nextPage) => nextPage <= Math.ceil(allEvaluatedArticles.length / pageSize)),
-      ),
-      articleCount: allEvaluatedArticles.length,
-    })),
-  )
+  (allEvaluatedArticles.length === 0)
+    ? emptyPage
+    : selectedPage(allEvaluatedArticles, page, pageSize)
 );
