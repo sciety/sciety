@@ -40,10 +40,14 @@ const selectedPage: SelectedPage = (allEvaluatedArticles, page, pageSize) => pip
   })),
 );
 
-export const paginate = (
+type Paginate = (
   page: number,
   pageSize: number,
-) => (allEvaluatedArticles: ReadonlyArray<ArticleActivity>): E.Either<DE.DataError, PageOfArticles> => (
+) => (
+  allEvaluatedArticles: ReadonlyArray<ArticleActivity>,
+) => E.Either<DE.DataError, PageOfArticles>;
+
+export const paginate: Paginate = (page, pageSize) => (allEvaluatedArticles) => (
   (allEvaluatedArticles.length === 0)
     ? emptyPage
     : selectedPage(allEvaluatedArticles, page, pageSize)
