@@ -33,6 +33,7 @@ const overwriteCsv = (group: Group) => (evaluations: Es.Evaluations) => pipe(
     (all) => ({
       all,
       existing,
+      skippedItems: [],
     }),
   )),
   TE.chain((results) => pipe(
@@ -44,7 +45,7 @@ const overwriteCsv = (group: Group) => (evaluations: Es.Evaluations) => pipe(
       () => ({
         total: results.all.length,
         added: results.all.length - results.existing.length,
-        skippedItemsCount: 0,
+        skippedItemsCount: results.skippedItems.length,
       }),
     ),
   )),
