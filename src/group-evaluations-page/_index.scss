@@ -65,3 +65,8 @@ $_avatar-size: 48px;
   color: settings.$colour-text-primary;
   margin-bottom: 1rem;
 }
+
+.group-evaluations__no_activity {
+  @include header-horizontal-spacing();
+  color: settings.$colour-text-primary;
+}

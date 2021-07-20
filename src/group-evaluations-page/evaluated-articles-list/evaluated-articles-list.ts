@@ -36,7 +36,7 @@ const getArticleDetails = (ports: Ports) => fetchArticleDetails(
 );
 
 const noActivity = pipe(
-  '<p>It looks like this group hasn’t evaluated any articles yet. Try coming back later!</p>',
+  '<p class="group-evaluations__no_activity">It looks like this group hasn’t evaluated any articles yet. Try coming back later!</p>',
   toHtmlFragment,
   constant,
 );
