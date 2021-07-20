@@ -49,7 +49,7 @@ const renderLastUpdated = O.fold(
   (date: Date) => `<span> - Last updated ${templateDate(date)}</span>`,
 );
 
-const renderPageNumbers = (page: O.Option<number>, articleCount: number) => pipe(
+const renderPageNumbers = (page: O.Option<number>, articleCount: number, pageSize: number) => pipe(
   articleCount,
   O.fromPredicate(() => articleCount > 0),
   O.fold(
@@ -57,7 +57,7 @@ const renderPageNumbers = (page: O.Option<number>, articleCount: number) => pipe
     (count) => pipe(
       {
         currentPage: pipe(page, O.getOrElse(() => 1)),
-        totalPages: Math.ceil(count / 20),
+        totalPages: Math.ceil(count / pageSize),
       },
       ({ currentPage, totalPages }) => `<p>Showing page ${currentPage} of ${totalPages}<span class="visually-hidden"> pages of list content</span></p>`,
     ),
@@ -73,10 +73,11 @@ export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ i
       group,
       articles: evaluatedArticles(group.id)(events),
       ...getEvaluatedArticlesListDetails(group.id)(events),
+      pageSize: 20,
     })),
   )),
   TE.chain(({
-    group, articles, articleCount, lastUpdated,
+    group, articles, articleCount, lastUpdated, pageSize,
   }) => pipe(
     {
       header: pipe(
@@ -90,12 +91,12 @@ export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ i
           </p>
           <p>Articles that have been evaluated by ${group.name}, most recently evaluated first.</p>
           <p>${articleCount} articles${renderLastUpdated(lastUpdated)}</p>
-          ${renderPageNumbers(page, articleCount)}
+          ${renderPageNumbers(page, articleCount, pageSize)}
         </header>`,
         toHtmlFragment,
         TE.right,
       ),
-      evaluatedArticlesList: evaluatedArticlesList(ports)(articles, group, O.getOrElse(() => 1)(page)),
+      evaluatedArticlesList: evaluatedArticlesList(ports)(articles, group, O.getOrElse(() => 1)(page), pageSize),
     },
     sequenceS(TE.ApplyPar),
     TE.bimap(renderErrorPage, renderPage(group)),

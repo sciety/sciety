@@ -55,12 +55,13 @@ type EvaluatedArticlesList = (
 ) => (
   articles: ReadonlyArray<ArticleActivity>,
   group: Group,
-  pageNumber: number
+  pageNumber: number,
+  pageSize: number
 ) => TE.TaskEither<DE.DataError, HtmlFragment>;
 
-export const evaluatedArticlesList: EvaluatedArticlesList = (ports) => (articles, group, pageNumber) => pipe(
+export const evaluatedArticlesList: EvaluatedArticlesList = (ports) => (articles, group, pageNumber, pageSize) => pipe(
   articles,
-  paginate(pageNumber, 20),
+  paginate(pageNumber, pageSize),
   TE.fromEither,
   TE.chainW(({ content, nextPageNumber }) => pipe(
     content,
