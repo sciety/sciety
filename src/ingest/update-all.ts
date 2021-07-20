@@ -44,6 +44,7 @@ const overwriteCsv = (group: Group) => (evaluations: Es.Evaluations) => pipe(
       () => ({
         total: results.all.length,
         added: results.all.length - results.existing.length,
+        skippedItemsCount: 0,
       }),
     ),
   )),
@@ -61,6 +62,7 @@ const reportError = (group: Group) => (message: string) => pipe(
 type Results = {
   total: number,
   added: number,
+  skippedItemsCount: number,
 };
 
 const reportSuccess = (group: Group) => (results: Results) => pipe(
@@ -73,7 +75,7 @@ const reportSuccess = (group: Group) => (results: Results) => pipe(
       results.total,
       chalk.green(`${results.added} new`),
       chalk.white(results.total - results.added),
-      chalk.yellow(`${0} skipped`)),
+      chalk.yellow(`${results.skippedItemsCount} skipped`)),
   ),
   report(group),
 );
