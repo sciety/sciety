@@ -3,18 +3,9 @@
 @use '../sass/layout';
 @use '../sass/settings';
 @use '../sass/typography';
+@use '../sass/page-header';
 
 $_avatar-size: 48px;
-
-@mixin header-horizontal-spacing() {
-  margin-left: 1rem;
-  margin-right: 1rem;
-
-  @include breakpoints.not-narrow {
-    margin-left: 0;
-    margin-right: 0;
-  }
-}
 
 .evaluated-articles-list {
   @include card.list();
@@ -25,7 +16,6 @@ $_avatar-size: 48px;
 }
 
 .page-header.page-header--group-evaluations {
-  @include header-horizontal-spacing();
   margin-bottom: 1rem;
 }
 
@@ -55,13 +45,13 @@ $_avatar-size: 48px;
 
 .evaluated-articles__page_count {
   @include typography.details();
-  @include header-horizontal-spacing();
+  @include page-header.header-horizontal-spacing();
   font-weight: bold;
   color: settings.$colour-text-primary;
   margin-bottom: 1rem;
 }
 
 .evaluated-articles__empty {
-  @include header-horizontal-spacing();
+  @include page-header.header-horizontal-spacing();
   color: settings.$colour-text-primary;
 }

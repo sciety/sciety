@@ -2,9 +2,21 @@
 @use 'baseline';
 @use 'layout';
 @use 'typography';
+@use 'breakpoints';
+
+@mixin header-horizontal-spacing() {
+  margin-left: 1rem;
+  margin-right: 1rem;
+
+  @include breakpoints.not-narrow {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
 
 .page-header {
   @include layout.page-header-top-space();
+  @include header-horizontal-spacing();
   color: settings.$colour-text-primary;
   margin-bottom: #{baseline.increments(6)};
 }

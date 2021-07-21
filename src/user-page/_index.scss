@@ -7,17 +7,11 @@
 @use '../sass/layout';
 @use '../sass/card';
 
-$_inline-margin: 1rem;
-
 .page-header--user {
   display: flex;
   align-items: center;
-  margin: 0 $_inline-margin baseline.increments(3);
-
-  @include breakpoints.not-narrow {
-    margin-left: 0;
-    margin-right: 0;
-  }
+  margin-top: 0;
+  margin-bottom: baseline.increments(3);
 
   .page-header__avatar {
     width: 48px;

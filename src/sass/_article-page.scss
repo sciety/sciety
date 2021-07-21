@@ -8,7 +8,8 @@
 @use 'typography';
 
 .page-header.page-header--article {
-  margin: 0 1rem baseline.increments(3);
+  margin-top: 0;
+  margin-bottom: baseline.increments(3);
 }
 
 .article-actions {

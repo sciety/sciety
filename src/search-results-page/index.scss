@@ -14,11 +14,8 @@ $_inline-margin: settings.$base-font-measure;
 $_clear-button-inline-size: 48px;
 
 .page-header.page-header--search-results {
-  margin: 0 1rem;
-
-  @include breakpoints.not-narrow {
-    margin: 0;
-  }
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .page-heading--search {
