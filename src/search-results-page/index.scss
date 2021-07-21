@@ -14,8 +14,6 @@ $_inline-margin: settings.$base-font-measure;
 $_clear-button-inline-size: 48px;
 
 .page-header.page-header--search-results {
-  @include layout.page-header-top-space();
-  color: settings.$colour-text-primary;
   margin: 0 1rem;
 
   @include breakpoints.not-narrow {

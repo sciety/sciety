@@ -1,7 +1,11 @@
+@use 'settings';
 @use 'baseline';
+@use 'layout';
 @use 'typography';
 
 .page-header {
+  @include layout.page-header-top-space();
+  color: settings.$colour-text-primary;
   margin-bottom: #{baseline.increments(6)};
 }
 

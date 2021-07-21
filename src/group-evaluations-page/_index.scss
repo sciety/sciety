@@ -25,9 +25,7 @@ $_avatar-size: 48px;
 }
 
 .page-header.page-header--group-evaluations {
-  @include layout.page-header-top-space();
   @include header-horizontal-spacing();
-  color: settings.$colour-text-primary;
   margin-bottom: 1rem;
 }
 
