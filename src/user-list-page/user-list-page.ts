@@ -1,3 +1,5 @@
+import { sequenceS } from 'fp-ts/Apply';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as DE from '../types/data-error';
@@ -12,14 +14,20 @@ type Params = {
   handle: string,
 };
 
+type UserDetails = {
+  avatarUrl: string,
+  handle: string,
+};
+
 type Ports = SavedArticlePorts & {
   getAllEvents: GetAllEvents,
   getUserId: (handle: string) => TE.TaskEither<DE.DataError, UserId>,
+  getUserDetails: (userId: UserId) => TE.TaskEither<DE.DataError, UserDetails>,
 };
 
 type UserListPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
-const render = (savedArticlesList: HtmlFragment, handle: string) => pipe(
+const render = (savedArticlesList: HtmlFragment, { handle, avatarUrl }: UserDetails) => pipe(
   `<div class="page-content__background">
       <div class="sciety-grid sciety-grid--one-column">
         <header class="page-header page-header--user-list">
@@ -27,7 +35,7 @@ const render = (savedArticlesList: HtmlFragment, handle: string) => pipe(
             Saved Articles
           </h1>
           <p class="page-header__subheading">
-            <img src="/static/images/biorxiv.jpg" alt="" class="page-header__avatar">
+            <img src="${avatarUrl}" alt="" class="page-header__avatar">
             <span>A list by <a href="/users/${handle}">${handle}</a></span>
           </p>
           <p class="page-header__description">Articles that have been saved by ${handle}, most recently saved first.</p>
@@ -42,16 +50,28 @@ const render = (savedArticlesList: HtmlFragment, handle: string) => pipe(
 export const userListPage = (ports: Ports): UserListPage => ({ handle }) => pipe(
   handle,
   ports.getUserId,
-  TE.chainTaskK(projectSavedArticleDois(ports.getAllEvents)),
-  TE.chainTaskK(savedArticles(ports)),
+  TE.chain((id) => pipe(
+    {
+      dois: TE.rightTask(projectSavedArticleDois(ports.getAllEvents)(id)),
+      userDetails: ports.getUserDetails(id),
+    },
+    sequenceS(TE.ApplyPar),
+  )),
+  TE.chainTaskK(({ dois, userDetails }) => pipe(
+    savedArticles(ports)(dois),
+    T.map((content) => ({
+      content,
+      userDetails,
+    })),
+  )),
   TE.bimap(
     (dataError) => ({
       type: dataError,
       message: toHtmlFragment('User not found.'),
     }),
-    (content: HtmlFragment) => ({
+    ({ content, userDetails }) => ({
       title: `${handle} | Saved articles`,
-      content: render(content, handle),
+      content: render(content, userDetails),
     }),
   ),
 );
