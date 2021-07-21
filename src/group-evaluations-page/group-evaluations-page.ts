@@ -90,12 +90,12 @@ export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ i
           <h1>
             Evaluated Articles
           </h1>
-          <p class="evaluated-articles__subheading">
-            <img src="${group.avatarPath}" alt="" class="evaluated-articles__avatar">
+          <p class="page-header__subheading">
+            <img src="${group.avatarPath}" alt="" class="page-header__avatar">
             <span>A list by <a href="/groups/${group.id}">${group.name}</a></span>
           </p>
-          <p class="evaluated-articles__description">Articles that have been evaluated by ${group.name}, most recently evaluated first.</p>
-          <p class="evaluated-articles__meta"><span class="visually-hidden">This list contains </span>${renderArticleCount(articleCount)}${renderLastUpdated(lastUpdated)}</p>
+          <p class="page-header__description">Articles that have been evaluated by ${group.name}, most recently evaluated first.</p>
+          <p class="page-header__meta"><span class="visually-hidden">This list contains </span>${renderArticleCount(articleCount)}${renderLastUpdated(lastUpdated)}</p>
         </header>`,
         toHtmlFragment,
         TE.right,
