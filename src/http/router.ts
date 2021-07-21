@@ -48,6 +48,7 @@ import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import * as DE from '../types/data-error';
 import * as Doi from '../types/doi';
 import { toHtmlFragment } from '../types/html-fragment';
+import { userListPage } from '../user-list-page';
 import { userPage } from '../user-page/user-page';
 
 const biorxivPrefix = '10.1101';
@@ -199,6 +200,16 @@ export const createRouter = (adapters: Adapters): Router => {
   router.get(
     '/users/:id([0-9]+)/following',
     redirectUserIdToHandle(adapters, 'following'),
+  );
+
+  router.get(
+    '/users/:handle([^0-9].+)/lists/saved-articles',
+    pageHandler(flow(
+      userPageParams.decode,
+      E.mapLeft(toNotFound),
+      TE.fromEither,
+      TE.chain(userListPage),
+    )),
   );
 
   router.get(
