@@ -5,7 +5,7 @@ export const legalPage: Page = {
   title: 'Legal information',
   content: toHtmlFragment(`
     <div class="sciety-grid sciety-grid--full-width">
-      <header class="page-header">
+      <header class="page-header-static">
         <h1>Legal information</h1>
       </header>
 

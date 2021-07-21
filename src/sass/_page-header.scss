@@ -5,6 +5,10 @@
   margin-bottom: #{baseline.increments(6)};
 }
 
+.page-header-static {
+  margin-bottom: #{baseline.increments(6)};
+}
+
 .page-header__title {
   @include typography.title-1();
 }

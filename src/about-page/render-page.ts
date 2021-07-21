@@ -4,7 +4,7 @@ import { toHtmlFragment } from '../types/html-fragment';
 
 const addPageWrapper = (html: string) => `
   <div class="about-page-wrapper">
-    <header class="page-header">
+    <header class="page-header-static">
       <h1>
         About Sciety
       </h1>
