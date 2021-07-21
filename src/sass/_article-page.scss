@@ -7,10 +7,6 @@
 @use 'settings';
 @use 'typography';
 
-.sciety-grid--article {
-  @include layout.sciety-grid-columns();
-}
-
 .sciety-grid--article > .page-header--article {
   @include layout.page-header-top-space();
   margin: 0 1rem baseline.increments(3);

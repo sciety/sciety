@@ -10,7 +10,7 @@ type Components = {
 
 const render = (components: Components) => `
   <div class="page-content__background">
-    <div class="sciety-grid sciety-grid--logged-in-home-page">
+    <div class="sciety-grid sciety-grid--one-column sciety-grid--logged-in-home-page">
       ${components.header}
       <div class="logged-in-home-page-feed-container">
         ${components.feed}

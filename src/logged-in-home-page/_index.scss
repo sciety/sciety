@@ -3,10 +3,6 @@
 @use '../sass/card';
 @use '../sass/layout';
 
-.sciety-grid--logged-in-home-page {
-  @include layout.sciety-grid-columns();
-}
-
 .logged-in-home-page-header {
   @include layout.page-header-top-space();
   margin-left: 1rem;

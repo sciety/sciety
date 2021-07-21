@@ -9,10 +9,6 @@
 
 $_inline-margin: 1rem;
 
-.sciety-grid--user {
-  @include layout.sciety-grid-columns();
-}
-
 .page-header--user {
   @include layout.page-header-top-space();
   display: flex;
