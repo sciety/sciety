@@ -13,7 +13,7 @@ $_search-form-text-inline-padding: 12px;
 $_inline-margin: settings.$base-font-measure;
 $_clear-button-inline-size: 48px;
 
-.sciety-grid--search-results > .page-header--search-results {
+.page-header.page-header--search-results {
   @include layout.page-header-top-space();
   color: settings.$colour-text-primary;
   margin: 0 1rem;

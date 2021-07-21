@@ -24,7 +24,7 @@ $_avatar-size: 48px;
   @include card.list-item();
 }
 
-.sciety-grid--group-evaluations > .page-header--group-evaluations {
+.page-header.page-header--group-evaluations {
   @include layout.page-header-top-space();
   @include header-horizontal-spacing();
   color: settings.$colour-text-primary;

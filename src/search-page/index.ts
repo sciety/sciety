@@ -6,7 +6,7 @@ export const searchPage: Page = {
   title: 'Search',
   content: toHtmlFragment(`
     <div class="page-content__background">
-      <div class="sciety-grid sciety-grid--one-column sciety-grid--search-results">
+      <div class="sciety-grid sciety-grid--one-column">
         <header class="page-header page-header--search-results">
           <h1 class="page-heading--search">Search Sciety</h1>
         </header>

@@ -46,7 +46,7 @@ export const renderMetaPage = (components: {
   }),
   (mainContent) => toHtmlFragment(`
 <div class="page-content__background">
-  <article class="sciety-grid sciety-grid--one-column sciety-grid--article">
+  <article class="sciety-grid sciety-grid--one-column">
     <header class="page-header page-header--article">
       <h1 class="page-header__title">${components.articleDetails.title}</h1>
       <div class="article-actions">

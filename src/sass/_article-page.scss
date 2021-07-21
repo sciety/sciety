@@ -7,7 +7,7 @@
 @use 'settings';
 @use 'typography';
 
-.sciety-grid--article > .page-header--article {
+.page-header.page-header--article {
   @include layout.page-header-top-space();
   margin: 0 1rem baseline.increments(3);
   color: settings.$colour-text-primary;

@@ -16,7 +16,7 @@ export const renderPage = (components: Components): Page => ({
   },
   content: toHtmlFragment(`
     <div class="page-content__background">
-      <article class="sciety-grid sciety-grid--one-column sciety-grid--user">
+      <article class="sciety-grid sciety-grid--one-column">
         ${components.header}
 
         <div class="main-content main-content--user">
