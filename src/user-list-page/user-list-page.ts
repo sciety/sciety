@@ -24,10 +24,10 @@ const render = (savedArticlesList: HtmlFragment, handle: string) => pipe(
       <div class="sciety-grid sciety-grid--one-column">
         <header class="page-header page-header--user-list">
           <h1>
-            List: saved articles
+            Saved Articles
           </h1>
           <p class="page-header__subheading">
-            <img src="#" alt="" class="page-header__avatar">
+            <img src="/static/images/biorxiv.jpg" alt="" class="page-header__avatar">
             <span>A list by <a href="/users/${handle}">${handle}</a></span>
           </p>
           <p class="page-header__description">Articles that have been saved by ${handle}, most recently saved first.</p>
@@ -50,7 +50,7 @@ export const userListPage = (ports: Ports): UserListPage => ({ handle }) => pipe
       message: toHtmlFragment('User not found.'),
     }),
     (content: HtmlFragment) => ({
-      title: 'Saved articles',
+      title: `${handle} | Saved articles`,
       content: render(content, handle),
     }),
   ),
