@@ -6,7 +6,7 @@ import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { paginate } from './paginate';
-import { renderRecentGroupActivity } from './render-recent-group-activity';
+import { renderEvaluatedArticlesList } from './render-evaluated-articles-list';
 import { fetchArticleDetails } from '../../shared-components/article-card/fetch-article-details';
 import { FindVersionsForArticleDoi, getLatestArticleVersionDate } from '../../shared-components/article-card/get-latest-article-version-date';
 import { ArticleActivity } from '../../types/article-activity';
@@ -35,8 +35,8 @@ const getArticleDetails = (ports: Ports) => fetchArticleDetails(
   flow(ports.fetchArticle, T.map(O.fromEither)),
 );
 
-const noActivity = pipe(
-  '<p class="group-evaluations__no_activity">It looks like this group hasn’t evaluated any articles yet. Try coming back later!</p>',
+const noEvaluatedArticles = pipe(
+  '<p class="evaluated-articles__empty">It looks like this group hasn’t evaluated any articles yet. Try coming back later!</p>',
   toHtmlFragment,
   constant,
 );
@@ -69,14 +69,14 @@ export const evaluatedArticlesList: EvaluatedArticlesList = (ports) => (articles
     T.map(E.fromOption(() => DE.unavailable)),
     TE.map(RNEA.fromReadonlyArray),
     TE.map(O.fold(
-      noActivity,
+      noEvaluatedArticles,
       flow(
         RNEA.map((articleViewModel) => ({
           ...articleViewModel,
           latestVersionDate: articleViewModel.latestVersionDate,
           latestActivityDate: O.some(articleViewModel.latestActivityDate),
         })),
-        renderRecentGroupActivity(pipe(
+        renderEvaluatedArticlesList(pipe(
           nextPageNumber,
           O.map((p) => `/groups/${group.id}/evaluated-articles?page=${p}`),
         )),

@@ -16,11 +16,11 @@ $_avatar-size: 48px;
   }
 }
 
-.group-activity-list {
+.evaluated-articles-list {
   @include card.list();
 }
 
-.group-activity-list__item {
+.evaluated-articles-list__item {
   @include card.list-item();
 }
 
@@ -63,7 +63,7 @@ $_avatar-size: 48px;
   margin-bottom: 1rem;
 }
 
-.group-evaluations__no_activity {
+.evaluated-articles__empty {
   @include header-horizontal-spacing();
   color: settings.$colour-text-primary;
 }

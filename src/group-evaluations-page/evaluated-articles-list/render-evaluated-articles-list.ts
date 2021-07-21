@@ -5,7 +5,7 @@ import { ArticleViewModel, renderArticleCard } from '../../shared-components/art
 import { paginationControls } from '../../shared-components/pagination-controls';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
-type RenderRecentGroupActivity = (
+type RenderEvaluatedArticlesList = (
   nextPageHref: O.Option<string>,
 ) => (
   articleViewModels: ReadonlyArray<ArticleViewModel>,
@@ -16,12 +16,12 @@ const renderNextLink = O.fold(
   paginationControls,
 );
 
-export const renderRecentGroupActivity: RenderRecentGroupActivity = (nextPageHref) => flow(
+export const renderEvaluatedArticlesList: RenderEvaluatedArticlesList = (nextPageHref) => flow(
   RA.map(renderArticleCard),
-  RA.map((activity) => `<li class="group-activity-list__item">${activity}</li>`),
+  RA.map((activity) => `<li class="evaluated-articles-list__item">${activity}</li>`),
   (renderedActivities) => `
     <div>
-      <ul class="group-activity-list" role="list">${renderedActivities.join('')}</ul>
+      <ul class="evaluated-articles-list" role="list">${renderedActivities.join('')}</ul>
       ${renderNextLink(nextPageHref)}
     </div>
   `,
