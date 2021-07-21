@@ -22,6 +22,17 @@ type UserListPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 const render = (savedArticlesList: HtmlFragment) => pipe(
   `<div class="page-content__background">
       <div class="sciety-grid sciety-grid--one-column">      
+        <header class="page-header page-header--user-list">
+          <h1>
+            List: saved articles
+          </h1>
+          <p class="page-header__subheading">
+            <img src="#" alt="" class="page-header__avatar">
+            <span>A list by <a href="/users/handle">handle</a></span>
+          </p>
+          <p class="page-header__description">Articles that have been saved by handle, most recently saved first.</p>
+          <p class="page-header__meta"><span class="visually-hidden">This list contains </span>8 articles<span><span>Last updated Jul 9, 2021</span></p>
+        </header>
         ${savedArticlesList}        
       </div>
     </div>`,
