@@ -7,10 +7,6 @@
 @use 'settings';
 @use 'typography';
 
-.sciety-grid.sciety-grid--article {
-  grid-auto-flow: unset;
-}
-
 .sciety-grid--article {
   @include layout.sciety-grid-columns();
 }
