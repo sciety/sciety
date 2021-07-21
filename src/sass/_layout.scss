@@ -35,7 +35,7 @@
   flex-grow: 1;
 }
 
-@mixin sciety-grid-columns() {
+@mixin sciety-grid-one-column() {
   margin-left: auto;
   margin-right: auto;
 
@@ -61,5 +61,9 @@
 }
 
 .sciety-grid--one-column {
-  @include sciety-grid-columns();
+  @include sciety-grid-one-column();
+}
+
+.sciety-grid--full-width > * {
+  grid-column: 1 / -1;
 }
