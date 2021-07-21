@@ -19,6 +19,15 @@ type Ports = SavedArticlePorts & {
 
 type UserListPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
+const render = (savedArticlesList: HtmlFragment) => pipe(
+  `<div class="page-content__background">
+      <div class="sciety-grid sciety-grid--one-column">      
+        ${savedArticlesList}        
+      </div>
+    </div>`,
+  toHtmlFragment,
+);
+
 export const userListPage = (ports: Ports): UserListPage => ({ handle }) => pipe(
   handle,
   ports.getUserId,
@@ -31,7 +40,7 @@ export const userListPage = (ports: Ports): UserListPage => ({ handle }) => pipe
     }),
     (content: HtmlFragment) => ({
       title: 'Saved articles',
-      content,
+      content: render(content),
     }),
   ),
 );
