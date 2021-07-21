@@ -39,10 +39,6 @@ $_clear-button-inline-size: 48px;
   }
 }
 
-.sciety-grid.sciety-grid--search-results {
-  grid-auto-flow: unset;
-}
-
 .search-form {
   margin-left: functions.px-to-rem($_inline-margin);
   margin-right: functions.px-to-rem($_inline-margin);
