@@ -59,3 +59,7 @@
     padding-top: baseline.increments(5);
   }
 }
+
+.sciety-grid--one-column {
+  @include sciety-grid-columns();
+}

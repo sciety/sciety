@@ -13,7 +13,7 @@ type Components = {
 
 const render = (components: Components) => `
   <div class="page-content__background">
-    <div class="sciety-grid sciety-grid--group-evaluations">
+    <div class="sciety-grid sciety-grid--one-column sciety-grid--group-evaluations">
       ${components.header}
       <section>
         ${components.pageNumbers}

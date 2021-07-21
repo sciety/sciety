@@ -24,10 +24,6 @@ $_avatar-size: 48px;
   @include card.list-item();
 }
 
-.sciety-grid--group-evaluations {
-  @include layout.sciety-grid-columns();
-}
-
 .sciety-grid--group-evaluations > .page-header--group-evaluations {
   @include layout.page-header-top-space();
   @include header-horizontal-spacing();
