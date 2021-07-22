@@ -1,0 +1,19 @@
+@use '../sass/settings';
+@use '../sass/typography';
+
+$_avatar-size: 48px;
+
+.page-header--user-list .page-header__subheading {
+  @include typography.subheading();
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.page-header--user-list .page-header__avatar {
+  width: $_avatar-size;
+  height: $_avatar-size;
+  border-radius: settings.$border-radius;
+  border: settings.$avatar-border;
+  margin-right: 0.5rem;
+}
