@@ -14,7 +14,6 @@ import {
 } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryDoi } from '../types/doi.helper';
-import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
 const contentOf = (page: TE.TaskEither<RenderPageError, Page>) => pipe(
@@ -31,16 +30,7 @@ const arbitraryUserDetails = {
   handle: arbitraryWord(),
 };
 
-const arbitraryGroup = {
-  id: arbitraryGroupId(),
-  name: arbitraryString(),
-  avatarPath: arbitraryString(),
-  descriptionPath: arbitraryString(),
-  shortDescription: arbitraryString(),
-};
-
 const defaultPorts = {
-  getGroup: () => TO.some(arbitraryGroup),
   getUserDetails: () => TE.right(arbitraryUserDetails),
   getAllEvents: T.of([]),
   fetchArticle: () => TE.right({
@@ -58,7 +48,6 @@ describe('user-list-page', () => {
   it('uses the user handle in the page title', async () => {
     const handle = arbitraryWord();
     const ports = {
-      getGroup: shouldNotBeCalled,
       getUserDetails: () => TE.right({
         avatarUrl: arbitraryUri(),
         displayName: arbitraryString(),
@@ -87,7 +76,6 @@ describe('user-list-page', () => {
     it('shows the articles as a list of cards', async () => {
       const userId = arbitraryUserId();
       const ports = {
-        getGroup: shouldNotBeCalled,
         getUserDetails: () => TE.right({
           avatarUrl: arbitraryUri(),
           displayName: arbitraryString(),
