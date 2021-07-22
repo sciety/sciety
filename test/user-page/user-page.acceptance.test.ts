@@ -10,7 +10,7 @@ import { RenderPageError } from '../../src/types/render-page-error';
 import { followingNothing, informationUnavailable } from '../../src/user-page/static-messages';
 import { userPage } from '../../src/user-page/user-page';
 import {
-  arbitrarySanitisedHtmlFragment, arbitraryString, arbitraryUri, arbitraryWord,
+  arbitraryString, arbitraryUri, arbitraryWord,
 } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryDoi } from '../types/doi.helper';
@@ -43,15 +43,7 @@ const defaultPorts = {
   getGroup: () => TO.some(arbitraryGroup),
   getUserDetails: () => TE.right(arbitraryUserDetails),
   getAllEvents: T.of([]),
-  fetchArticle: () => TE.right({
-    doi: arbitraryDoi(),
-    server: 'biorxiv' as const,
-    title: arbitrarySanitisedHtmlFragment(),
-    authors: [],
-  }),
   getUserId: () => TE.right(arbitraryUserId()),
-  findReviewsForArticleDoi: () => T.of([]),
-  findVersionsForArticleDoi: () => TO.none,
 };
 
 describe('user-page', () => {
@@ -263,9 +255,6 @@ describe('user-page', () => {
           getGroup: () => shouldNotBeCalled,
           getUserDetails: () => TE.right(arbitraryUserDetails),
           getAllEvents: T.of([]),
-          fetchArticle: shouldNotBeCalled,
-          findReviewsForArticleDoi: shouldNotBeCalled,
-          findVersionsForArticleDoi: shouldNotBeCalled,
           getUserId: () => TE.right(arbitraryUserId()),
         };
         const params = { handle: arbitraryWord() };
@@ -301,9 +290,6 @@ describe('user-page', () => {
           handle: arbitraryWord(),
         }),
         getAllEvents: T.of([]),
-        fetchArticle: shouldNotBeCalled,
-        findReviewsForArticleDoi: shouldNotBeCalled,
-        findVersionsForArticleDoi: shouldNotBeCalled,
         getUserId: () => TE.right(arbitraryUserId()),
       };
       const params = { handle: arbitraryWord() };
@@ -328,9 +314,6 @@ describe('user-page', () => {
           handle: arbitraryWord(),
         }),
         getAllEvents: T.of([]),
-        fetchArticle: shouldNotBeCalled,
-        findReviewsForArticleDoi: shouldNotBeCalled,
-        findVersionsForArticleDoi: shouldNotBeCalled,
         getUserId: () => TE.right(arbitraryUserId()),
       };
       const params = { handle: arbitraryWord() };

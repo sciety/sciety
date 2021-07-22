@@ -9,7 +9,6 @@ import { renderErrorPage } from './render-error-page';
 import { renderHeader } from './render-header';
 import { renderPage } from './render-page';
 import { GetAllEvents, projectSavedArticleDois } from './saved-articles/project-saved-article-dois';
-import { Ports as SavedArticlesPorts } from './saved-articles/saved-articles';
 import { tabList } from './tab-list';
 import { UserDetails } from './user-details';
 import { tabs } from '../shared-components/tabs';
@@ -24,7 +23,7 @@ type GetUserDetails = (userId: UserId) => TE.TaskEither<DE.DataError, UserDetail
 type GetUserId = (handle: string) => TE.TaskEither<DE.DataError, UserId>;
 
 // ts-unused-exports:disable-next-line
-export type Ports = SavedArticlesPorts & FollowListPorts & {
+export type Ports = FollowListPorts & {
   getAllEvents: GetAllEvents,
   getUserDetails: GetUserDetails,
   getUserId: GetUserId,
@@ -54,7 +53,7 @@ export const userPage = (ports: Ports): UserPage => (tab) => (params) => pipe(
       ? T.of(toHtmlFragment(`<p class="static-message"><a href="/users/${inputs.userDetails.handle}/lists/saved-articles">Saved articles</a></p>`))
       : followList(ports)(inputs.groupIds),
     T.map(tabs({
-      tabList: tabList(inputs.userDetails.handle, inputs.dois.length, inputs.groupIds.length),
+      tabList: tabList(inputs.userDetails.handle, inputs.groupIds.length),
       activeTabIndex: inputs.activeTabIndex,
     })),
     T.map((mainContent) => ({
