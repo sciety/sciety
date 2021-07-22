@@ -181,7 +181,7 @@ describe('user-page', () => {
       const tabHeadings = page.querySelectorAll('.tab');
       const headings = Array.from(tabHeadings).map((tab) => tab.innerHTML);
 
-      expect(headings[0]).toContain('Saved articles (0)');
+      expect(headings[0]).toContain('Lists (1)');
       expect(headings[1]).toContain('Following (1)');
     });
   });
@@ -292,7 +292,7 @@ describe('user-page', () => {
   });
 
   describe('lists tab', () => {
-    it.skip('shows lists as the active tab', async () => {
+    it('shows lists as the active tab', async () => {
       const ports = {
         getGroup: shouldNotBeCalled,
         getUserDetails: () => TE.right({
@@ -342,12 +342,19 @@ describe('user-page', () => {
       expect(page).toStrictEqual(E.right(expect.objectContaining({ title: userDisplayName })));
     });
 
-    it.skip('shows a link to the saved-articles list page', async () => {
+    it('shows a link to the saved-articles list page', async () => {
       const params = { handle: arbitraryWord() };
 
       const page = await pipe(
         params,
-        userPage(defaultPorts)('saved-articles'),
+        userPage({
+          ...defaultPorts,
+          getUserDetails: () => TE.right({
+            avatarUrl: arbitraryUri(),
+            displayName: arbitraryWord(),
+            handle: params.handle,
+          }),
+        })('saved-articles'),
         contentOf,
         T.map(JSDOM.fragment),
       )();

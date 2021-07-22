@@ -3,7 +3,7 @@ import { toHtmlFragment } from '../types/html-fragment';
 
 export const tabList = (userHandle: string, savedArticleCount: number, followingCount: number): [Tab, Tab] => [
   {
-    label: toHtmlFragment(`Saved articles (${savedArticleCount})`),
+    label: toHtmlFragment('Lists (1)'),
     url: `/users/${userHandle}/saved-articles`,
   },
   {
