@@ -32,6 +32,7 @@ type Params = {
 };
 
 type UserListCardViewModel = {
+  articleCount: number,
   handle: string,
 };
 
@@ -44,6 +45,15 @@ const renderUserListCard = (viewModel: UserListCardViewModel) => toHtmlFragment(
   </div>
 `);
 
+const userListCard = (handle: string) => pipe(
+  {
+    articleCount: 0,
+    handle,
+  },
+  renderUserListCard,
+  T.of,
+);
+
 type UserPage = (tab: string) => (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
 export const userPage = (ports: Ports): UserPage => (tab) => (params) => pipe(
@@ -54,13 +64,12 @@ export const userPage = (ports: Ports): UserPage => (tab) => (params) => pipe(
       groupIds: TE.rightTask(followedGroupIds(ports.getAllEvents)(id)),
       userDetails: ports.getUserDetails(id),
       activeTabIndex: TE.right(tab === 'lists' ? 0 as const : 1 as const),
-      id: TE.right(id),
     },
     sequenceS(TE.ApplyPar),
   )),
   TE.chainTaskK((inputs) => pipe(
     (inputs.activeTabIndex === 0)
-      ? T.of(renderUserListCard({ handle: inputs.userDetails.handle }))
+      ? userListCard(inputs.userDetails.handle)
       : followList(ports)(inputs.groupIds),
     T.map(tabs({
       tabList: tabList(inputs.userDetails.handle, inputs.groupIds.length),
