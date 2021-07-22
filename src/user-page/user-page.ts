@@ -10,6 +10,7 @@ import { renderHeader } from './render-header';
 import { renderPage } from './render-page';
 import { tabList } from './tab-list';
 import { UserDetails } from './user-details';
+import { userListCard } from './user-list-card';
 import { tabs } from '../shared-components/tabs';
 import * as DE from '../types/data-error';
 import { toHtmlFragment } from '../types/html-fragment';
@@ -30,29 +31,6 @@ export type Ports = FollowListPorts & {
 type Params = {
   handle: string,
 };
-
-type UserListCardViewModel = {
-  articleCount: number,
-  handle: string,
-};
-
-const renderUserListCard = (viewModel: UserListCardViewModel) => toHtmlFragment(`
-  <div class="list-card">
-    <h3 class="list-card__title">
-      <a href="/users/${viewModel.handle}/lists/saved-articles" class="list-card__link">Saved articles</a>
-    </h3>
-    <p>Articles that have been saved by @${viewModel.handle}, most recently saved first.</p>
-  </div>
-`);
-
-const userListCard = (handle: string) => pipe(
-  {
-    articleCount: 0,
-    handle,
-  },
-  renderUserListCard,
-  T.of,
-);
 
 type UserPage = (tab: string) => (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
