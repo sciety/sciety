@@ -156,7 +156,7 @@ export const createRouter = (adapters: Adapters): Router => {
     '/users/:descriptor',
     async (context, next) => {
       context.status = StatusCodes.TEMPORARY_REDIRECT;
-      context.redirect(`/users/${context.params.descriptor}/saved-articles`);
+      context.redirect(`/users/${context.params.descriptor}/lists`);
 
       await next();
     },
@@ -174,6 +174,16 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.get(
     '/users/:handle([^0-9].+)/saved-articles',
+    async (context, next) => {
+      context.status = StatusCodes.PERMANENT_REDIRECT;
+      context.redirect(`/users/${context.params.handle}/lists`);
+
+      await next();
+    },
+  );
+
+  router.get(
+    '/users/:handle([^0-9].+)/lists',
     pageHandler(flow(
       userPageParams.decode,
       E.mapLeft(toNotFound),
@@ -183,8 +193,8 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   router.get(
-    '/users/:id([0-9]+)/saved-articles',
-    redirectUserIdToHandle(adapters, 'saved-articles'),
+    '/users/:id([0-9]+)/lists',
+    redirectUserIdToHandle(adapters, 'lists'),
   );
 
   router.get(
