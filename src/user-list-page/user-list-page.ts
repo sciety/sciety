@@ -39,7 +39,7 @@ const render = (savedArticlesList: HtmlFragment, { handle, avatarUrl }: UserDeta
             <span>A list by <a href="/users/${handle}">${handle}</a></span>
           </p>
           <p class="page-header__description">Articles that have been saved by ${handle}, most recently saved first.</p>
-          <p class="page-header__meta"><span class="visually-hidden">This list contains </span>8 articles<span><span>Last updated Jul 9, 2021</span></p>
+<!--          <p class="page-header__meta"><span class="visually-hidden">This list contains </span>8 articles<span><span>Last updated Jul 9, 2021</span></p>-->
         </header>
         ${savedArticlesList}
       </div>
