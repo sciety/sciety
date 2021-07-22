@@ -24,16 +24,26 @@ export type Group = {
 
 const writeFile = (path: string) => (contents: string) => TE.taskify(fs.writeFile)(path, contents);
 
-const overwriteCsv = (group: Group) => (evaluations: Es.Evaluations) => pipe(
+type SkippedItem = {
+  item: string,
+  reason: string,
+};
+
+type FeedData = {
+  evaluations: Es.Evaluations,
+  skippedItems: ReadonlyArray<SkippedItem>,
+};
+
+const overwriteCsv = (group: Group) => (feedData: FeedData) => pipe(
   `./data/reviews/${group.id}.csv`,
   Es.fromFile,
   TE.map((existing) => pipe(
-    [...existing, ...evaluations],
+    [...existing, ...feedData.evaluations],
     Es.uniq,
     (all) => ({
       all,
       existing,
-      skippedItems: [],
+      skippedItems: feedData.skippedItems,
     }),
   )),
   TE.chain((results) => pipe(
@@ -86,6 +96,10 @@ const updateGroup = (group: Group): T.Task<void> => pipe(
     fetchData,
     fetchGoogleSheet,
   }),
+  TE.map((evaluations) => ({
+    evaluations,
+    skippedItems: [],
+  })),
   TE.chain(overwriteCsv(group)),
   TE.match(
     reportError(group),
