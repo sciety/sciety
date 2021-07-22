@@ -8,7 +8,6 @@ import { renderDescription } from './render-description';
 import { renderErrorPage } from './render-error-page';
 import { renderHeader } from './render-header';
 import { renderPage } from './render-page';
-import { GetAllEvents, projectSavedArticleDois } from './saved-articles/project-saved-article-dois';
 import { tabList } from './tab-list';
 import { UserDetails } from './user-details';
 import { tabs } from '../shared-components/tabs';
@@ -24,7 +23,6 @@ type GetUserId = (handle: string) => TE.TaskEither<DE.DataError, UserId>;
 
 // ts-unused-exports:disable-next-line
 export type Ports = FollowListPorts & {
-  getAllEvents: GetAllEvents,
   getUserDetails: GetUserDetails,
   getUserId: GetUserId,
 };
@@ -40,7 +38,6 @@ export const userPage = (ports: Ports): UserPage => (tab) => (params) => pipe(
   ports.getUserId, // TODO: get the user details (extended to include the id) from Twitter here instead
   TE.chain((id) => pipe(
     {
-      dois: TE.rightTask(projectSavedArticleDois(ports.getAllEvents)(id)),
       groupIds: TE.rightTask(followedGroupIds(ports.getAllEvents)(id)),
       userDetails: ports.getUserDetails(id),
       activeTabIndex: TE.right(tab === 'saved-articles' ? 0 as const : 1 as const),
@@ -59,7 +56,7 @@ export const userPage = (ports: Ports): UserPage => (tab) => (params) => pipe(
     T.map((mainContent) => ({
       header: renderHeader(inputs.userDetails),
       userDisplayName: toHtmlFragment(inputs.userDetails.displayName),
-      description: renderDescription(inputs.dois.length, inputs.groupIds.length),
+      description: renderDescription(inputs.groupIds.length),
       mainContent,
     })),
   )),

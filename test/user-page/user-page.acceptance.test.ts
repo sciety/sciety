@@ -4,7 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
-import { userFollowedEditorialCommunity, userSavedArticle } from '../../src/types/domain-events';
+import { userFollowedEditorialCommunity } from '../../src/types/domain-events';
 import { Page } from '../../src/types/page';
 import { RenderPageError } from '../../src/types/render-page-error';
 import { followingNothing, informationUnavailable } from '../../src/user-page/static-messages';
@@ -13,7 +13,6 @@ import {
   arbitraryString, arbitraryUri, arbitraryWord,
 } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
-import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
@@ -111,13 +110,12 @@ describe('user-page', () => {
       })));
     });
 
-    it('includes the count of saved articles and followed groups in the opengraph description', async () => {
+    it('includes the count of lists and followed groups in the opengraph description', async () => {
       const userId = arbitraryUserId();
       const ports = {
         ...defaultPorts,
         getUserId: () => TE.right(userId),
         getAllEvents: T.of([
-          userSavedArticle(userId, arbitraryDoi()),
           userFollowedEditorialCommunity(userId, arbitraryGroupId()),
           userFollowedEditorialCommunity(userId, arbitraryGroupId()),
         ]),
@@ -130,7 +128,7 @@ describe('user-page', () => {
 
       expect(page).toStrictEqual(E.right(expect.objectContaining({
         openGraph: expect.objectContaining({
-          description: '1 saved article | Following 2 groups',
+          description: '1 list | Following 2 groups',
         }),
       })));
     });
