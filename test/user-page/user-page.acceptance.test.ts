@@ -7,7 +7,7 @@ import { JSDOM } from 'jsdom';
 import { userFollowedEditorialCommunity, userSavedArticle } from '../../src/types/domain-events';
 import { Page } from '../../src/types/page';
 import { RenderPageError } from '../../src/types/render-page-error';
-import { followingNothing, informationUnavailable, noSavedArticles } from '../../src/user-page/static-messages';
+import { followingNothing, informationUnavailable } from '../../src/user-page/static-messages';
 import { userPage } from '../../src/user-page/user-page';
 import {
   arbitrarySanitisedHtmlFragment, arbitraryString, arbitraryUri, arbitraryWord,
@@ -291,8 +291,8 @@ describe('user-page', () => {
     });
   });
 
-  describe('saved-articles tab', () => {
-    it('shows articles as the active tab', async () => {
+  describe('lists tab', () => {
+    it.skip('shows lists as the active tab', async () => {
       const ports = {
         getGroup: shouldNotBeCalled,
         getUserDetails: () => TE.right({
@@ -315,7 +315,7 @@ describe('user-page', () => {
       )();
       const tabHeading = page.querySelector('.tab--active')?.innerHTML;
 
-      expect(tabHeading).toContain('Saved articles');
+      expect(tabHeading).toContain('Lists (1)');
     });
 
     it('uses the user displayname as page title', async () => {
@@ -342,96 +342,19 @@ describe('user-page', () => {
       expect(page).toStrictEqual(E.right(expect.objectContaining({ title: userDisplayName })));
     });
 
-    describe('when the user has saved articles', () => {
-      it('shows the articles as a list of cards', async () => {
-        const userId = arbitraryUserId();
-        const ports = {
-          getGroup: shouldNotBeCalled,
-          getUserDetails: () => TE.right({
-            avatarUrl: arbitraryUri(),
-            displayName: arbitraryString(),
-            handle: arbitraryWord(),
-          }),
-          getAllEvents: T.of([
-            userSavedArticle(userId, arbitraryDoi()),
-            userSavedArticle(userId, arbitraryDoi()),
-          ]),
-          fetchArticle: () => TE.right({
-            doi: arbitraryDoi(),
-            server: 'biorxiv' as const,
-            title: arbitrarySanitisedHtmlFragment(),
-            authors: [],
-          }),
-          findReviewsForArticleDoi: () => T.of([]),
-          findVersionsForArticleDoi: () => TO.none,
-          getUserId: () => TE.right(userId),
-        };
-        const params = { handle: arbitraryWord() };
+    it.skip('shows a link to the saved-articles list page', async () => {
+      const params = { handle: arbitraryWord() };
 
-        const page = await pipe(
-          params,
-          userPage(ports)('saved-articles'),
-          contentOf,
-          T.map(JSDOM.fragment),
-        )();
-        const articleCards = page.querySelectorAll('.article-card');
+      const page = await pipe(
+        params,
+        userPage(defaultPorts)('saved-articles'),
+        contentOf,
+        T.map(JSDOM.fragment),
+      )();
+      const link = page.querySelector('.tab-panel a');
 
-        expect(articleCards).toHaveLength(2);
-      });
-
-      describe('article details unavailable for any article', () => {
-        it('displays a single error message as the tab panel content', async () => {
-          const userId = arbitraryUserId();
-          const ports = {
-            ...defaultPorts,
-            getAllEvents: T.of([
-              userSavedArticle(userId, arbitraryDoi()),
-              userSavedArticle(userId, arbitraryDoi()),
-            ]),
-            fetchArticle: () => TE.left('unavailable'),
-            getUserId: () => TE.right(userId),
-          };
-          const params = { handle: arbitraryWord() };
-
-          const pageContent = await pipe(
-            params,
-            userPage(ports)('saved-articles'),
-            contentOf,
-            T.map(JSDOM.fragment),
-          )();
-
-          const tabPanelContent = pageContent.querySelector('.tab-panel')?.innerHTML;
-
-          expect(tabPanelContent).toContain(informationUnavailable);
-        });
-      });
-    });
-
-    describe('when the user has no saved articles', () => {
-      let page: DocumentFragment;
-
-      beforeAll(async () => {
-        const params = { handle: arbitraryWord() };
-
-        page = await pipe(
-          params,
-          userPage(defaultPorts)('saved-articles'),
-          contentOf,
-          T.map(JSDOM.fragment),
-        )();
-      });
-
-      it('shows no list of article cards', () => {
-        const articleCards = page.querySelectorAll('.article-card');
-
-        expect(articleCards).toHaveLength(0);
-      });
-
-      it('shows a message saying that the user has no saved articles', () => {
-        const message = page.querySelector('.tab-panel')?.innerHTML;
-
-        expect(message).toContain(noSavedArticles);
-      });
+      expect(link?.getAttribute('href')).toStrictEqual(`/users/${params.handle}/lists/saved-articles`);
+      expect(link?.textContent).toStrictEqual('Saved articles');
     });
   });
 });
