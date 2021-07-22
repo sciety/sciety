@@ -36,6 +36,7 @@ const renderUserListCard = (handle: string) => toHtmlFragment(`
     <h3 class="list-card__title">
       <a href="/users/${handle}/lists/saved-articles" class="list-card__link">Saved articles</a>
     </h3>
+    <p>Articles that have been saved by @${handle}, most recently saved first.</p>
   </div>
 `);
 
