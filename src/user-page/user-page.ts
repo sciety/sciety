@@ -31,12 +31,16 @@ type Params = {
   handle: string,
 };
 
-const renderUserListCard = (handle: string) => toHtmlFragment(`
+type UserListCardViewModel = {
+  handle: string,
+};
+
+const renderUserListCard = (viewModel: UserListCardViewModel) => toHtmlFragment(`
   <div class="list-card">
     <h3 class="list-card__title">
-      <a href="/users/${handle}/lists/saved-articles" class="list-card__link">Saved articles</a>
+      <a href="/users/${viewModel.handle}/lists/saved-articles" class="list-card__link">Saved articles</a>
     </h3>
-    <p>Articles that have been saved by @${handle}, most recently saved first.</p>
+    <p>Articles that have been saved by @${viewModel.handle}, most recently saved first.</p>
   </div>
 `);
 
@@ -56,7 +60,7 @@ export const userPage = (ports: Ports): UserPage => (tab) => (params) => pipe(
   )),
   TE.chainTaskK((inputs) => pipe(
     (inputs.activeTabIndex === 0)
-      ? T.of(renderUserListCard(inputs.userDetails.handle))
+      ? T.of(renderUserListCard({ handle: inputs.userDetails.handle }))
       : followList(ports)(inputs.groupIds),
     T.map(tabs({
       tabList: tabList(inputs.userDetails.handle, inputs.groupIds.length),
