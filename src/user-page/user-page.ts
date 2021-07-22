@@ -40,7 +40,7 @@ export const userPage = (ports: Ports): UserPage => (tab) => (params) => pipe(
     {
       groupIds: TE.rightTask(followedGroupIds(ports.getAllEvents)(id)),
       userDetails: ports.getUserDetails(id),
-      activeTabIndex: TE.right(tab === 'saved-articles' ? 0 as const : 1 as const),
+      activeTabIndex: TE.right(tab === 'lists' ? 0 as const : 1 as const),
       id: TE.right(id),
     },
     sequenceS(TE.ApplyPar),

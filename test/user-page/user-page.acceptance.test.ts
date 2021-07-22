@@ -47,7 +47,7 @@ const defaultPorts = {
 
 describe('user-page', () => {
   describe.each([
-    ['saved-articles'],
+    ['lists'],
     ['followed-groups'],
   ])('page tab: %s', (tabName: string) => {
     it('uses the user displayname as page title', async () => {
@@ -293,7 +293,7 @@ describe('user-page', () => {
       const params = { handle: arbitraryWord() };
       const page = await pipe(
         params,
-        userPage(ports)('saved-articles'),
+        userPage(ports)('lists'),
         contentOf,
         T.map(JSDOM.fragment),
       )();
@@ -317,7 +317,7 @@ describe('user-page', () => {
       const params = { handle: arbitraryWord() };
       const page = await pipe(
         params,
-        userPage(ports)('saved-articles'),
+        userPage(ports)('lists'),
       )();
 
       expect(page).toStrictEqual(E.right(expect.objectContaining({ title: userDisplayName })));
@@ -335,7 +335,7 @@ describe('user-page', () => {
             displayName: arbitraryWord(),
             handle: params.handle,
           }),
-        })('saved-articles'),
+        })('lists'),
         contentOf,
         T.map(JSDOM.fragment),
       )();

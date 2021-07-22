@@ -188,7 +188,7 @@ export const createRouter = (adapters: Adapters): Router => {
       userPageParams.decode,
       E.mapLeft(toNotFound),
       TE.fromEither,
-      TE.chain(userPage(adapters)('saved-articles')),
+      TE.chain(userPage(adapters)('lists')),
     )),
   );
 
