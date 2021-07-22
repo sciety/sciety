@@ -31,6 +31,14 @@ type Params = {
   handle: string,
 };
 
+const renderUserListCard = (handle: string) => toHtmlFragment(`
+  <div class="list-card">
+    <h3 class="list-card__title">
+      <a href="/users/${handle}/lists/saved-articles" class="list-card__link">Saved articles</a>
+    </h3>
+  </div>
+`);
+
 type UserPage = (tab: string) => (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
 export const userPage = (ports: Ports): UserPage => (tab) => (params) => pipe(
@@ -47,7 +55,7 @@ export const userPage = (ports: Ports): UserPage => (tab) => (params) => pipe(
   )),
   TE.chainTaskK((inputs) => pipe(
     (inputs.activeTabIndex === 0)
-      ? T.of(toHtmlFragment(`<p class="static-message"><a href="/users/${inputs.userDetails.handle}/lists/saved-articles">Saved articles</a></p>`))
+      ? T.of(renderUserListCard(inputs.userDetails.handle))
       : followList(ports)(inputs.groupIds),
     T.map(tabs({
       tabList: tabList(inputs.userDetails.handle, inputs.groupIds.length),
