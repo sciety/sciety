@@ -7,13 +7,13 @@ import {
   FindReviewsForArticleDoi, populateArticleViewModel,
 } from './populate-article-view-model';
 import { renderSavedArticles } from './render-saved-articles';
+import { informationUnavailable, noSavedArticles } from './static-messages';
 import { renderArticleCard } from '../../shared-components/article-card';
 import { FindVersionsForArticleDoi, getLatestArticleVersionDate } from '../../shared-components/article-card/get-latest-article-version-date';
 import { ArticleServer } from '../../types/article-server';
 import { Doi } from '../../types/doi';
 import { HtmlFragment } from '../../types/html-fragment';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
-import { informationUnavailable, noSavedArticles } from '../static-messages';
 
 type FetchArticle = (doi: Doi) => TE.TaskEither<unknown, {
   doi: Doi,

@@ -1,7 +1,7 @@
 import * as T from 'fp-ts/Task';
 import { Doi } from '../../../src/types/doi';
 import { userSavedArticle } from '../../../src/types/domain-events';
-import { projectSavedArticleDois } from '../../../src/user-page/saved-articles/project-saved-article-dois';
+import { projectSavedArticleDois } from '../../../src/user-list-page/saved-articles/project-saved-article-dois';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 

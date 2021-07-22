@@ -8,7 +8,7 @@ import { userSavedArticle } from '../../src/types/domain-events';
 import { Page } from '../../src/types/page';
 import { RenderPageError } from '../../src/types/render-page-error';
 import { userListPage } from '../../src/user-list-page';
-import { informationUnavailable, noSavedArticles } from '../../src/user-page/static-messages';
+import { informationUnavailable, noSavedArticles } from '../../src/user-list-page/saved-articles/static-messages';
 import {
   arbitrarySanitisedHtmlFragment, arbitraryString, arbitraryUri, arbitraryWord,
 } from '../helpers';

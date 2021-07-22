@@ -2,13 +2,13 @@ import { sequenceS } from 'fp-ts/Apply';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { GetAllEvents, projectSavedArticleDois } from './saved-articles/project-saved-article-dois';
+import { Ports as SavedArticlePorts, savedArticles } from './saved-articles/saved-articles';
 import * as DE from '../types/data-error';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { UserId } from '../types/user-id';
-import { GetAllEvents, projectSavedArticleDois } from '../user-page/saved-articles/project-saved-article-dois';
-import { Ports as SavedArticlePorts, savedArticles } from '../user-page/saved-articles/saved-articles';
 
 type Params = {
   handle: string,
