@@ -186,10 +186,14 @@ export type UserSavedArticleEvent = Readonly<{
   articleId: Doi,
 }>;
 
-export const userSavedArticle = (userId: UserId, doi: Doi): UserSavedArticleEvent => ({
+export const userSavedArticle = (
+  userId: UserId,
+  doi: Doi,
+  date: Date = new Date(),
+): UserSavedArticleEvent => ({
   id: generate(),
   type: 'UserSavedArticle',
-  date: new Date(),
+  date,
   userId,
   articleId: doi,
 });

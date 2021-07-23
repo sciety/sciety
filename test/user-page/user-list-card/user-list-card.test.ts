@@ -38,9 +38,23 @@ describe('user-list-card', () => {
   });
 
   describe('when list contains articles', () => {
-    it.todo('displays when the list was last updated');
+    it('displays when the list was last updated', async () => {
+      const handle = arbitraryWord();
+      const userId = arbitraryUserId();
+      const events = [
+        userSavedArticle(userId, arbitraryDoi(), new Date('2021-01-01')),
+        userSavedArticle(userId, arbitraryDoi(), new Date('2021-07-23')),
+      ];
+      const rendered = await pipe(
+        userListCard(T.of(events))(handle, userId),
+        T.map(JSDOM.fragment),
+      )();
+      const meta = rendered.querySelector('.list-card__meta');
 
-    it('displays the number of articles in the list', async () => {
+      expect(meta?.textContent).toContain('Last updated Jul 23, 2021');
+    });
+
+    it.skip('displays the number of articles in the list', async () => {
       const handle = arbitraryWord();
       const userId = arbitraryUserId();
       const events = [
