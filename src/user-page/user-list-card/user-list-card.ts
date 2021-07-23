@@ -1,15 +1,21 @@
 import * as T from 'fp-ts/Task';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { getUserListDetails } from './get-user-list-details';
 import { renderUserListCard } from './render-user-list-card';
+import { DomainEvent } from '../../types/domain-events';
 import { HtmlFragment } from '../../types/html-fragment';
-import { toUserId } from '../../types/user-id';
+import { UserId } from '../../types/user-id';
 
-export const userListCard = (handle: string): T.Task<HtmlFragment> => pipe(
-  {
-    ...getUserListDetails(toUserId('0'))([]),
-    handle,
-  },
-  renderUserListCard,
-  T.of,
+type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
+
+export const userListCard = (getAllEvents: GetAllEvents) => (handle: string, userId: UserId): T.Task<HtmlFragment> => pipe(
+  getAllEvents,
+  T.map(flow(
+    getUserListDetails(userId),
+    (listDetails) => ({
+      ...listDetails,
+      handle,
+    }),
+    renderUserListCard,
+  )),
 );

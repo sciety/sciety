@@ -11,5 +11,8 @@ export const renderUserListCard = (viewModel: UserListCardViewModel): HtmlFragme
       <a href="/users/${viewModel.handle}/lists/saved-articles" class="list-card__link">Saved articles</a>
     </h3>
     <p>Articles that have been saved by @${viewModel.handle}, most recently saved first.</p>
+    <div class="list-card__meta">
+      <span class="visually-hidden">This list contains </span><span>${viewModel.articleCount} articles</span>
+    </div>
   </div>
 `);
