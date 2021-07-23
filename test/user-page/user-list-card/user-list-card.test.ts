@@ -15,7 +15,13 @@ describe('user-list-card', () => {
     expect(rendered.querySelector('h3 a')).not.toBeNull();
   });
 
-  it.todo('displays the list owner\'s handle in the description');
+  it('displays the list owner\'s handle in the description', async () => {
+    const handle = arbitraryWord();
+    const rendered = JSDOM.fragment(await userListCard(handle)());
+    const description = rendered.querySelector('p');
+
+    expect(description?.textContent).toContain(handle);
+  });
 
   describe('when list contains articles', () => {
     it.todo('displays when the list was last updated');
