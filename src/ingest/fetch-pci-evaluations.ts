@@ -18,7 +18,8 @@ export const fetchPciEvaluations = (url: string): FetchEvaluations => (ports: Po
       },
     });
     const doc = parser.parseFromString(feed, 'text/xml');
-    const result = [];
+    const evaluations = [];
+    const skippedItems = [];
     // eslint-disable-next-line no-loops/no-loops
     for (const link of Array.from(doc.getElementsByTagName('link'))) {
       const articleDoiString = link.getElementsByTagName('doi')[1]?.textContent ?? '';
@@ -28,16 +29,21 @@ export const fetchPciEvaluations = (url: string): FetchEvaluations => (ports: Po
       const [, articleDoi] = bioAndmedrxivDoiRegex.exec(articleDoiString) ?? [];
       if (articleDoi) {
         const reviewDoi = reviewDoiString.replace('https://doi.org/', '').replace('http://dx.doi.org/', '');
-        result.push({
+        evaluations.push({
           date: new Date(date),
           articleDoi,
           evaluationLocator: `doi:${reviewDoi}`,
         });
+      } else {
+        skippedItems.push({
+          item: articleDoiString,
+          reason: 'not a biorxiv|medrxiv DOI',
+        });
       }
     }
     return {
-      evaluations: result,
-      skippedItems: O.none,
+      evaluations,
+      skippedItems: O.some(skippedItems),
     };
   }),
 );
