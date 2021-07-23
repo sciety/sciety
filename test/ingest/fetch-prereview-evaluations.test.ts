@@ -1,7 +1,9 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { fetchPrereviewEvaluations } from '../../src/ingest/fetch-prereview-evaluations';
+import { arbitraryDate } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
+import { arbitraryDoi } from '../types/doi.helper';
 
 describe('fetch-prereview-evaluations', () => {
   describe('when the reponse includes no preprints', () => {
@@ -17,6 +19,75 @@ describe('fetch-prereview-evaluations', () => {
     });
 
     it.todo('returns no skipped items');
+  });
+
+  describe('when the response includes a biorxiv preprint with valid reviews', () => {
+    const articleId = arbitraryDoi();
+    const date1 = arbitraryDate();
+    const date2 = arbitraryDate();
+    const reviewDoi1 = arbitraryDoi();
+    const reviewDoi2 = arbitraryDoi();
+    const response = [
+      {
+        handle: articleId.value,
+        fullReviews: [
+          { createdAt: date1.toString(), doi: reviewDoi1.value },
+          { createdAt: date2.toString(), doi: reviewDoi2.value },
+        ],
+      },
+    ];
+    const result = fetchPrereviewEvaluations()({
+      fetchData: <D>() => TE.right({ data: response } as unknown as D),
+      fetchGoogleSheet: shouldNotBeCalled,
+    });
+
+    it('returns the reviews', async () => {
+      expect(await result()).toStrictEqual(E.right(expect.objectContaining({
+        evaluations: [
+          {
+            articleDoi: articleId.value,
+            date: date1,
+            evaluationLocator: `doi:${reviewDoi1.value}`,
+          },
+          {
+            articleDoi: articleId.value,
+            date: date2,
+            evaluationLocator: `doi:${reviewDoi2.value}`,
+          },
+        ],
+      })));
+    });
+
+    it.todo('returns no skipped items');
+  });
+
+  describe('when the response includes a non-biorxiv preprint with valid reviews', () => {
+    const articleId = arbitraryDoi('10.1234');
+    const date1 = arbitraryDate();
+    const date2 = arbitraryDate();
+    const reviewDoi1 = arbitraryDoi();
+    const reviewDoi2 = arbitraryDoi();
+    const response = [
+      {
+        handle: articleId.value,
+        fullReviews: [
+          { createdAt: date1.toString(), doi: reviewDoi1.value },
+          { createdAt: date2.toString(), doi: reviewDoi2.value },
+        ],
+      },
+    ];
+    const result = fetchPrereviewEvaluations()({
+      fetchData: <D>() => TE.right({ data: response } as unknown as D),
+      fetchGoogleSheet: shouldNotBeCalled,
+    });
+
+    it('returns no reviews', async () => {
+      expect(await result()).toStrictEqual(E.right(expect.objectContaining({
+        evaluations: [],
+      })));
+    });
+
+    it.todo('returns a skipped item');
   });
 
   describe('when the response is corrupt', () => {
