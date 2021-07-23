@@ -2,7 +2,7 @@ import { pipe } from 'fp-ts/function';
 import { fetchNcrcEvaluations } from './fetch-ncrc-evaluations';
 import { fetchPciEvaluations } from './fetch-pci-evaluations';
 import { fetchPrelightsEvaluations } from './find-reviews-from-prelights';
-import { fetchPrereviewEvaluations } from './find-reviews-from-prereview';
+import { fetchPrereviewEvaluations } from './fetch-prereview-evaluations';
 import { fetchRapidReviews } from './find-reviews-from-rapid-reviews';
 import { Group, updateAll } from './update-all';
 
