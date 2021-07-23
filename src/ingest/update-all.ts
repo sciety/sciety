@@ -15,16 +15,6 @@ type Adapters = {
   fetchGoogleSheet: FetchGoogleSheet,
 };
 
-export type FetchEvaluations = (adapters: Adapters) => TE.TaskEither<string, Es.Evaluations>;
-
-export type Group = {
-  id: string,
-  name: string,
-  fetchFeed: FetchEvaluations,
-};
-
-const writeFile = (path: string) => (contents: string) => TE.taskify(fs.writeFile)(path, contents);
-
 type SkippedItem = {
   item: string,
   reason: string,
@@ -34,6 +24,16 @@ type FeedData = {
   evaluations: Es.Evaluations,
   skippedItems: O.Option<ReadonlyArray<SkippedItem>>,
 };
+
+export type FetchEvaluations = (adapters: Adapters) => TE.TaskEither<string, FeedData>;
+
+export type Group = {
+  id: string,
+  name: string,
+  fetchFeed: FetchEvaluations,
+};
+
+const writeFile = (path: string) => (contents: string) => TE.taskify(fs.writeFile)(path, contents);
 
 const overwriteCsv = (group: Group) => (feedData: FeedData) => pipe(
   `./data/reviews/${group.id}.csv`,
@@ -113,10 +113,6 @@ const updateGroup = (group: Group): T.Task<void> => pipe(
     fetchData,
     fetchGoogleSheet,
   }),
-  TE.map((evaluations) => ({
-    evaluations,
-    skippedItems: O.none,
-  })),
   TE.map(reportSkippedItems(group)),
   TE.chain(overwriteCsv(group)),
   TE.match(

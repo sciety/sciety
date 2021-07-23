@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { DOMParser } from 'xmldom';
@@ -34,6 +35,9 @@ export const fetchPciEvaluations = (url: string): FetchEvaluations => (ports: Po
         });
       }
     }
-    return result;
+    return {
+      evaluations: result,
+      skippedItems: O.none,
+    };
   }),
 );

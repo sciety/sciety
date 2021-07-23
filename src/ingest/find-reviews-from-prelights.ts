@@ -104,4 +104,8 @@ export const fetchPrelightsEvaluations = (): FetchEvaluations => (ports: Ports) 
     E.mapLeft((errors) => PR.failure(errors).join('\n')),
   )),
   TE.chainTaskK(extractPrelights(ports.fetchData)),
+  TE.map((evaluations) => ({
+    evaluations,
+    skippedItems: O.none,
+  })),
 );

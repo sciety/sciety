@@ -42,4 +42,8 @@ export const fetchNcrcEvaluations = (): FetchEvaluations => (ports: Ports) => pi
       evaluationLocator: `ncrc:${ncrcReview.id}`,
     };
   })),
+  TE.map((evaluations) => ({
+    evaluations,
+    skippedItems: O.none,
+  })),
 );

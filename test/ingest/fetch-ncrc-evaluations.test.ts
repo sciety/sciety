@@ -33,9 +33,11 @@ describe('fetch-ncrc-evaluations', () => {
           }),
         },
         fetchNcrcEvaluations(),
-      )()).toStrictEqual(E.right([expect.objectContaining({
-        evaluationLocator: 'ncrc:123',
-      })]));
+      )()).toStrictEqual(E.right(expect.objectContaining({
+        evaluations: [
+          expect.objectContaining({ evaluationLocator: 'ncrc:123' }),
+        ],
+      })));
     });
   });
 

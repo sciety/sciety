@@ -75,4 +75,8 @@ export const fetchPrereviewEvaluations = (): FetchEvaluations => (ports: Ports) 
     RA.compact,
     RA.chain(toReviews),
   )),
+  TE.map((evaluations) => ({
+    evaluations,
+    skippedItems: O.none,
+  })),
 );
