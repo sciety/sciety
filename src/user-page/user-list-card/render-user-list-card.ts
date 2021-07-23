@@ -12,7 +12,7 @@ export const renderUserListCard = (viewModel: UserListCardViewModel): HtmlFragme
     </h3>
     <p>Articles that have been saved by @${viewModel.handle}, most recently saved first.</p>
     <div class="list-card__meta">
-      <span class="visually-hidden">This list contains </span><span>${viewModel.articleCount} articles</span>
+      <span class="visually-hidden">This list contains </span><span>${viewModel.articleCount} article${viewModel.articleCount === 1 ? '' : 's'}</span>
     </div>
   </div>
 `);
