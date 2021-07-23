@@ -81,17 +81,11 @@ type Results = {
 };
 
 const reportSuccess = (group: Group) => (results: Results) => pipe(
-  process.env.INGEST_LOG,
-  O.fromNullable,
-  O.filter((v) => v === 'DEBUG'),
-  O.fold(
-    () => printf('%5d evaluations (%d new)', results.evaluationsCount, results.newEvaluationsCount),
-    () => printf('%5d evaluations (%s, %s existing, %s)',
-      results.evaluationsCount,
-      chalk.green(`${results.newEvaluationsCount} new`),
-      chalk.white(results.evaluationsCount - results.newEvaluationsCount),
-      chalk.yellow(`${O.getOrElseW(() => '?')(results.skippedItemsCount)} skipped`)),
-  ),
+  printf('%5d evaluations (%s, %s existing, %s)',
+    results.evaluationsCount,
+    chalk.green(`${results.newEvaluationsCount} new`),
+    chalk.white(results.evaluationsCount - results.newEvaluationsCount),
+    chalk.yellow(`${O.getOrElseW(() => '?')(results.skippedItemsCount)} skipped`)),
   report(group),
 );
 
