@@ -1,4 +1,3 @@
-import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
@@ -11,7 +10,6 @@ import { FetchData } from './fetch-data';
 import { FetchEvaluations } from './update-all';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { Doi, isDoi } from '../types/doi';
-import { ReviewId } from '../types/review-id';
 
 type Ports = {
   fetchData: FetchData,
@@ -31,35 +29,42 @@ const preReviewResponse = t.type({
 
 type PreReviewPreprint = t.TypeOf<typeof preReviewPreprint>;
 
-type Preprint = {
-  handle: Doi,
-  fullReviews: ReadonlyArray<{
-    createdAt: Date,
-    doi: Doi,
-  }>,
-};
-
 const biorxivPrefix = '10.1101';
 
-const toPreprint = flow(
-  (preprint: PreReviewPreprint) => O.some(preprint),
-  O.filter((preprint): preprint is PreReviewPreprint & { handle: Doi } => isDoi(preprint.handle)),
-  O.filter((preprint) => preprint.handle.hasPrefix(biorxivPrefix)),
-  O.map((preprint): Preprint => pipe(
-    preprint.fullReviews,
-    RA.map((review) => ({ createdAt: O.some(review.createdAt), doi: review.doi })),
-    RA.map(sequenceS(O.Apply)),
-    RA.compact,
-    (fullReviews) => ({ handle: preprint.handle, fullReviews }),
-  )),
+type Review = {
+  date: Date,
+  handle: string | Doi,
+  reviewDoi: O.Option<Doi>,
+};
+
+const toEvaluation = (preprint: Review) => pipe(
+  preprint,
+  E.right,
+  E.filterOrElse(
+    (p): p is Review & { handle: Doi } => isDoi(p.handle),
+    () => ({ item: preprint.handle.toString(), reason: 'not a DOI' }),
+  ),
+  E.filterOrElse(
+    (p) => p.handle.hasPrefix(biorxivPrefix),
+    () => ({ item: preprint.handle.toString(), reason: 'not a biorxiv DOI' }),
+  ),
+  E.filterOrElse(
+    (p): p is Review & { handle: Doi, reviewDoi: O.Some<Doi> } => O.isSome(p.reviewDoi),
+    () => ({ item: `${preprint.handle.toString()} / ${preprint.date.toISOString()}`, reason: 'review has no DOI' }),
+  ),
+  E.map((p) => ({
+    date: p.date,
+    articleDoi: p.handle.value,
+    evaluationLocator: `doi:${p.reviewDoi.value.value}`,
+  })),
 );
 
-const toReviews = (preprint: Preprint) => pipe(
+const toIndividualReviews = (preprint: PreReviewPreprint) => pipe(
   preprint.fullReviews,
-  RA.map(({ doi, createdAt }) => ({
-    date: createdAt,
-    articleDoi: preprint.handle.value,
-    evaluationLocator: `doi:${doi.value}` as unknown as ReviewId,
+  RA.map((review) => ({
+    date: review.createdAt,
+    handle: preprint.handle,
+    reviewDoi: review.doi,
   })),
 );
 
@@ -71,12 +76,11 @@ export const fetchPrereviewEvaluations = (): FetchEvaluations => (ports: Ports) 
   )),
   TE.map(flow(
     ({ data }) => data,
-    RA.map(toPreprint),
-    RA.compact,
-    RA.chain(toReviews),
+    RA.chain(toIndividualReviews),
+    RA.partitionMap(toEvaluation),
+    ({ left, right }) => ({
+      evaluations: right,
+      skippedItems: O.some(left),
+    }),
   )),
-  TE.map((evaluations) => ({
-    evaluations,
-    skippedItems: O.some([]),
-  })),
 );

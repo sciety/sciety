@@ -101,7 +101,15 @@ describe('fetch-prereview-evaluations', () => {
       })));
     });
 
-    it.todo('returns one skipped item for the DOI-less review');
+    it('returns one skipped item for the DOI-less review', async () => {
+      expect(await result()).toStrictEqual(E.right(expect.objectContaining({
+        skippedItems: O.some([
+          expect.objectContaining({
+            reason: 'review has no DOI',
+          }),
+        ]),
+      })));
+    });
   });
 
   describe('when the response includes a non-biorxiv preprint with valid reviews', () => {
@@ -130,7 +138,20 @@ describe('fetch-prereview-evaluations', () => {
       })));
     });
 
-    it.todo('returns a skipped item');
+    it('returns a skipped item', async () => {
+      expect(await result()).toStrictEqual(E.right(expect.objectContaining({
+        skippedItems: O.some([
+          {
+            item: articleId.toString(),
+            reason: 'not a biorxiv DOI',
+          },
+          {
+            item: articleId.toString(),
+            reason: 'not a biorxiv DOI',
+          },
+        ]),
+      })));
+    });
   });
 
   describe('when the response is corrupt', () => {
