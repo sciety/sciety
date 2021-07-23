@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { userSavedArticle } from '../../../src/types/domain-events';
 import { getUserListDetails } from '../../../src/user-page/user-list-card/get-user-list-details';
@@ -6,17 +7,19 @@ import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('get-user-list-details', () => {
   describe('when the list contains no articles', () => {
-    it('returns a count of 0', () => {
-      const userId = arbitraryUserId();
-      const details = pipe(
-        [],
-        getUserListDetails(userId),
-      );
+    const userId = arbitraryUserId();
+    const details = pipe(
+      [],
+      getUserListDetails(userId),
+    );
 
+    it('returns a count of 0', () => {
       expect(details.articleCount).toStrictEqual(0);
     });
 
-    it.todo('returns no last updated date');
+    it('returns no last updated date', () => {
+      expect(details.lastUpdated).toStrictEqual(O.none);
+    });
   });
 
   describe('when the list contains some articles', () => {
