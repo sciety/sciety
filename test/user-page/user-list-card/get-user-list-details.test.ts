@@ -1,6 +1,12 @@
+import { getUserListDetails } from '../../../src/user-page/user-list-card/get-user-list-details';
+
 describe('get-user-list-details', () => {
   describe('when the list contains no articles', () => {
-    it.todo('returns a count of 0');
+    it('returns a count of 0', () => {
+      const details = getUserListDetails();
+
+      expect(details.articleCount).toStrictEqual(0);
+    });
 
     it.todo('returns no last updated date');
   });
