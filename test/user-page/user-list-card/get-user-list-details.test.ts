@@ -44,19 +44,21 @@ describe('get-user-list-details', () => {
   });
 
   describe('when only a different user has saved articles', () => {
-    it('returns a count of 0', () => {
-      const userId = arbitraryUserId();
-      const differentUserId = arbitraryUserId();
-      const details = pipe(
-        [
-          userSavedArticle(differentUserId, arbitraryDoi()),
-        ],
-        getUserListDetails(userId),
-      );
+    const userId = arbitraryUserId();
+    const differentUserId = arbitraryUserId();
+    const details = pipe(
+      [
+        userSavedArticle(differentUserId, arbitraryDoi()),
+      ],
+      getUserListDetails(userId),
+    );
 
+    it('returns a count of 0', () => {
       expect(details.articleCount).toStrictEqual(0);
     });
 
-    it.todo('returns no last updated date');
+    it('returns no last updated date', () => {
+      expect(details.lastUpdated).toStrictEqual(O.none);
+    });
   });
 });

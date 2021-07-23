@@ -72,11 +72,20 @@ describe('user-list-card', () => {
   });
 
   describe('when list is empty', () => {
-    it.todo('does not display last updated date');
+    const handle = arbitraryWord();
+    const userId = arbitraryUserId();
+
+    it('does not display last updated date', async () => {
+      const rendered = await pipe(
+        userListCard(T.of([]))(handle, userId),
+        T.map(JSDOM.fragment),
+      )();
+      const meta = rendered.querySelector('.list-card__meta');
+
+      expect(meta?.textContent).not.toContain('Last updated');
+    });
 
     it('displays an article count of 0', async () => {
-      const handle = arbitraryWord();
-      const userId = arbitraryUserId();
       const rendered = await pipe(
         userListCard(T.of([]))(handle, userId),
         T.map(JSDOM.fragment),
