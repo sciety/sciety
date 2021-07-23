@@ -60,6 +60,17 @@ describe('user-list-card', () => {
   describe('when list is empty', () => {
     it.todo('does not display last updated date');
 
-    it.todo('displays an article count of 0');
+    it('displays an article count of 0', async () => {
+      const handle = arbitraryWord();
+      const userId = arbitraryUserId();
+      const events = [];
+      const rendered = await pipe(
+        userListCard(T.of(events))(handle, userId),
+        T.map(JSDOM.fragment),
+      )();
+      const meta = rendered.querySelector('.list-card__meta');
+
+      expect(meta?.textContent).toContain('0 articles');
+    });
   });
 });
