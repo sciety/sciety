@@ -16,5 +16,11 @@ export const getUserListDetails = (userId: UserId) => (events: ReadonlyArray<Dom
     RA.filter((event) => event.userId === userId),
     (relevantEvents) => relevantEvents.length,
   ),
-  lastUpdated: O.none,
+  lastUpdated: pipe(
+    events,
+    RA.filter(isUserSavedArticleEvent),
+    RA.filter((event) => event.userId === userId),
+    RA.last,
+    O.map((latestEvent) => latestEvent.date),
+  ),
 });

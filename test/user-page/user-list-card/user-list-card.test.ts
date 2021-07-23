@@ -38,7 +38,7 @@ describe('user-list-card', () => {
   });
 
   describe('when list contains articles', () => {
-    it.skip('displays when the list was last updated', async () => {
+    it('displays when the list was last updated', async () => {
       const handle = arbitraryWord();
       const userId = arbitraryUserId();
       const events = [

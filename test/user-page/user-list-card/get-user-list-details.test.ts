@@ -23,20 +23,24 @@ describe('get-user-list-details', () => {
   });
 
   describe('when the list contains some articles', () => {
-    it('returns a count of the articles', () => {
-      const userId = arbitraryUserId();
-      const details = pipe(
-        [
-          userSavedArticle(userId, arbitraryDoi()),
-          userSavedArticle(userId, arbitraryDoi()),
-        ],
-        getUserListDetails(userId),
-      );
+    const userId = arbitraryUserId();
+    const earlierDate = new Date('1970');
+    const laterDate = new Date('2020');
+    const details = pipe(
+      [
+        userSavedArticle(userId, arbitraryDoi(), earlierDate),
+        userSavedArticle(userId, arbitraryDoi(), laterDate),
+      ],
+      getUserListDetails(userId),
+    );
 
+    it('returns a count of the articles', () => {
       expect(details.articleCount).toStrictEqual(2);
     });
 
-    it.todo('returns the last updated date');
+    it('returns the last updated date', () => {
+      expect(details.lastUpdated).toStrictEqual(O.some(laterDate));
+    });
   });
 
   describe('when only a different user has saved articles', () => {
