@@ -8,7 +8,9 @@ import { UserId } from '../../types/user-id';
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-export const userListCard = (getAllEvents: GetAllEvents) => (handle: string, userId: UserId): T.Task<HtmlFragment> => pipe(
+export const userListCard = (
+  getAllEvents: GetAllEvents,
+) => (handle: string, userId: UserId): T.Task<HtmlFragment> => pipe(
   getAllEvents,
   T.map(flow(
     getUserListDetails(userId),
