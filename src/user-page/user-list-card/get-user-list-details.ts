@@ -9,18 +9,16 @@ type UserListDetails = {
   lastUpdated: O.Option<Date>,
 };
 
-export const getUserListDetails = (userId: UserId) => (events: ReadonlyArray<DomainEvent>): UserListDetails => ({
-  articleCount: pipe(
-    events,
-    RA.filter(isUserSavedArticleEvent),
-    RA.filter((event) => event.userId === userId),
-    (relevantEvents) => relevantEvents.length,
-  ),
-  lastUpdated: pipe(
-    events,
-    RA.filter(isUserSavedArticleEvent),
-    RA.filter((event) => event.userId === userId),
-    RA.last,
-    O.map((latestEvent) => latestEvent.date),
-  ),
-});
+export const getUserListDetails = (userId: UserId) => (events: ReadonlyArray<DomainEvent>): UserListDetails => pipe(
+  events,
+  RA.filter(isUserSavedArticleEvent),
+  RA.filter((event) => event.userId === userId),
+  (relevantEvents) => ({
+    articleCount: relevantEvents.length,
+    lastUpdated: pipe(
+      relevantEvents,
+      RA.last,
+      O.map((latestEvent) => latestEvent.date),
+    ),
+  }),
+);
