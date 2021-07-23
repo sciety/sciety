@@ -5,7 +5,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import * as Es from './evaluations';
 import { fetchData, FetchData } from './fetch-data';
 import { fetchGoogleSheet, FetchGoogleSheet } from './fetch-google-sheet';
@@ -32,7 +32,7 @@ type SkippedItem = {
 
 type FeedData = {
   evaluations: Es.Evaluations,
-  skippedItems: ReadonlyArray<SkippedItem>,
+  skippedItems: O.Option<ReadonlyArray<SkippedItem>>,
 };
 
 const overwriteCsv = (group: Group) => (feedData: FeedData) => pipe(
@@ -56,7 +56,10 @@ const overwriteCsv = (group: Group) => (feedData: FeedData) => pipe(
       () => ({
         evaluationsCount: results.all.length,
         newEvaluationsCount: results.all.length - results.existing.length,
-        skippedItemsCount: results.skippedItems.length,
+        skippedItemsCount: pipe(
+          results.skippedItems,
+          O.map((s) => s.length),
+        ),
       }),
     ),
   )),
@@ -74,7 +77,7 @@ const reportError = (group: Group) => (message: string) => pipe(
 type Results = {
   evaluationsCount: number,
   newEvaluationsCount: number,
-  skippedItemsCount: number,
+  skippedItemsCount: O.Option<number>,
 };
 
 const reportSuccess = (group: Group) => (results: Results) => pipe(
@@ -87,7 +90,7 @@ const reportSuccess = (group: Group) => (results: Results) => pipe(
       results.evaluationsCount,
       chalk.green(`${results.newEvaluationsCount} new`),
       chalk.white(results.evaluationsCount - results.newEvaluationsCount),
-      chalk.yellow(`${results.skippedItemsCount} skipped`)),
+      chalk.yellow(`${O.getOrElseW(() => '?')(results.skippedItemsCount)} skipped`)),
   ),
   report(group),
 );
@@ -96,8 +99,10 @@ const reportSkippedItems = (group: Group) => (feedData: FeedData) => {
   if (process.env.INGEST_LOG === 'DEBUG') {
     pipe(
       feedData.skippedItems,
-      RA.map((item) => chalk.cyan(`Skipped '${item.item}' -- ${item.reason}`)),
-      RA.map(report(group)),
+      O.map(flow(
+        RA.map((item) => chalk.cyan(`Skipped '${item.item}' -- ${item.reason}`)),
+        RA.map(report(group)),
+      )),
     );
   }
   return feedData;
@@ -110,7 +115,7 @@ const updateGroup = (group: Group): T.Task<void> => pipe(
   }),
   TE.map((evaluations) => ({
     evaluations,
-    skippedItems: [],
+    skippedItems: O.none,
   })),
   TE.map(reportSkippedItems(group)),
   TE.chain(overwriteCsv(group)),
