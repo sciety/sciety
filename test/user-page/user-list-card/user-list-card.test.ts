@@ -12,4 +12,16 @@ describe('user-list-card', () => {
   it.todo('links to the user list page');
 
   it.todo('displays the list owner\'s handle in the description');
+
+  describe('when list contains articles', () => {
+    it.todo('displays when the list was last updated');
+
+    it.todo('displays the number of articles in the list');
+  });
+
+  describe('when list is empty', () => {
+    it.todo('does not display last updated date');
+
+    it.todo('displays an article count of 0');
+  });
 });
