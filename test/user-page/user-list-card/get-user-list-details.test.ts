@@ -7,7 +7,11 @@ import { arbitraryUserId } from '../../types/user-id.helper';
 describe('get-user-list-details', () => {
   describe('when the list contains no articles', () => {
     it('returns a count of 0', () => {
-      const details = getUserListDetails([]);
+      const userId = arbitraryUserId();
+      const details = pipe(
+        [],
+        getUserListDetails(userId),
+      );
 
       expect(details.articleCount).toStrictEqual(0);
     });
@@ -23,7 +27,7 @@ describe('get-user-list-details', () => {
           userSavedArticle(userId, arbitraryDoi()),
           userSavedArticle(userId, arbitraryDoi()),
         ],
-        getUserListDetails,
+        getUserListDetails(userId),
       );
 
       expect(details.articleCount).toStrictEqual(2);
@@ -33,7 +37,18 @@ describe('get-user-list-details', () => {
   });
 
   describe('when only a different user has saved articles', () => {
-    it.todo('returns a count of 0');
+    it('returns a count of 0', () => {
+      const userId = arbitraryUserId();
+      const differentUserId = arbitraryUserId();
+      const details = pipe(
+        [
+          userSavedArticle(differentUserId, arbitraryDoi()),
+        ],
+        getUserListDetails(userId),
+      );
+
+      expect(details.articleCount).toStrictEqual(0);
+    });
 
     it.todo('returns no last updated date');
   });
