@@ -52,7 +52,7 @@ describe('fetch-ncrc-evaluations', () => {
           }),
         },
         fetchNcrcEvaluations(),
-      )()).toStrictEqual(E.left(expect.stringMatching(/Values not provided/)));
+      )()).toStrictEqual(E.left(expect.stringMatching(/.values not provided/)));
     });
   });
 });

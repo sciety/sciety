@@ -26,13 +26,12 @@ export const fetchNcrcEvaluations = (): FetchEvaluations => (ports: Ports) => pi
   ports.fetchGoogleSheet('1RJ_Neh1wwG6X0SkYZHjD-AEC9ykgAcya_8UCVNoE3SA', 'Sheet1!A2:S'),
   TE.chainEitherK(flow(
     (res) => res?.data?.values,
-    O.fromNullable,
-    O.map(flow(
-      RA.map(reviewFromRow),
-      RA.compact,
-      RA.filter((row) => /(biorxiv|medrxiv)/i.test(row.journal)),
-    )),
-    E.fromOption(() => 'Values not provided'),
+    E.fromNullable('.values not provided'),
+  )),
+  TE.map(flow(
+    RA.map(reviewFromRow),
+    RA.compact,
+    RA.filter((row) => /(biorxiv|medrxiv)/i.test(row.journal)),
   )),
   TE.map(RA.map((ncrcReview) => {
     const [, doiSuffix] = new RegExp('.*/([^/]*)$').exec(ncrcReview.link) ?? [];
