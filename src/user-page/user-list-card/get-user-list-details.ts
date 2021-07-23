@@ -1,5 +1,9 @@
+import { DomainEvent } from '../../types/domain-events';
+
 type UserListDetails = {
   articleCount: number,
 };
 
-export const getUserListDetails = (): UserListDetails => ({ articleCount: 0 });
+export const getUserListDetails = (events: ReadonlyArray<DomainEvent>): UserListDetails => ({
+  articleCount: events.length,
+});

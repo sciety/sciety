@@ -6,7 +6,7 @@ import { HtmlFragment } from '../../types/html-fragment';
 
 export const userListCard = (handle: string): T.Task<HtmlFragment> => pipe(
   {
-    ...getUserListDetails(),
+    ...getUserListDetails([]),
     handle,
   },
   renderUserListCard,
