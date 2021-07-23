@@ -26,7 +26,12 @@ describe('user-list-card', () => {
   describe('when list contains articles', () => {
     it.todo('displays when the list was last updated');
 
-    it.todo('displays the number of articles in the list');
+    it.skip('displays the number of articles in the list', async () => {
+      const handle = arbitraryWord();
+      const rendered = JSDOM.fragment(await userListCard(handle)());
+      const meta = rendered.querySelector('.list-card__meta');
+      expect(meta?.textContent).toContain('2 articles');
+    });
   });
 
   describe('when list is empty', () => {
