@@ -30,6 +30,7 @@ describe('user-list-card', () => {
       const handle = arbitraryWord();
       const rendered = JSDOM.fragment(await userListCard(handle)());
       const meta = rendered.querySelector('.list-card__meta');
+
       expect(meta?.textContent).toContain('2 articles');
     });
   });
