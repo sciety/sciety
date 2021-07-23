@@ -77,6 +77,6 @@ export const fetchPrereviewEvaluations = (): FetchEvaluations => (ports: Ports) 
   )),
   TE.map((evaluations) => ({
     evaluations,
-    skippedItems: O.none,
+    skippedItems: O.some([]),
   })),
 );

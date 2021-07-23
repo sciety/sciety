@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { fetchPrereviewEvaluations } from '../../src/ingest/fetch-prereview-evaluations';
 import { arbitraryDate } from '../helpers';
@@ -18,7 +19,11 @@ describe('fetch-prereview-evaluations', () => {
       })));
     });
 
-    it.todo('returns no skipped items');
+    it('returns no skipped items', async () => {
+      expect(await result()).toStrictEqual(E.right(expect.objectContaining({
+        skippedItems: O.some([]),
+      })));
+    });
   });
 
   describe('when the response includes a biorxiv preprint with valid reviews', () => {
@@ -58,7 +63,11 @@ describe('fetch-prereview-evaluations', () => {
       })));
     });
 
-    it.todo('returns no skipped items');
+    it('returns no skipped items', async () => {
+      expect(await result()).toStrictEqual(E.right(expect.objectContaining({
+        skippedItems: O.some([]),
+      })));
+    });
   });
 
   describe('when the response includes a biorxiv preprint with a non-DOI review', () => {
