@@ -42,6 +42,29 @@ describe('fetch-ncrc-evaluations', () => {
     });
   });
 
+  describe('when the row has data missing', () => {
+    it.skip('returns an NCRC evaluation locator', async () => {
+      expect(await pipe(
+        {
+          fetchData: shouldNotBeCalled,
+          fetchGoogleSheet: () => TE.right({
+            ...arbitraryGoogleSheetsResponse,
+            data: {
+              values: [
+                ['123', 0, 0, 0, 0, 0, arbitraryDoi()],
+              ],
+            },
+          }),
+        },
+        fetchNcrcEvaluations(),
+      )()).toStrictEqual(E.right(expect.objectContaining({
+        skippedItems: O.some([
+          expect.objectContaining({ item: '123' }),
+        ]),
+      })));
+    });
+  });
+
   describe('when there is a non-medrxiv or biorxiv evaluation', () => {
     it('returns an NCRC evaluation locator', async () => {
       expect(await pipe(
