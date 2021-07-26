@@ -31,8 +31,8 @@ export const fetchNcrcEvaluations = (): FetchEvaluations => (ports: Ports) => pi
   TE.map(flow(
     RA.map(reviewFromRow),
     RA.compact,
-    RA.filter((row) => /(biorxiv|medrxiv)/i.test(row.journal)),
   )),
+  TE.map(RA.filter((row) => /(biorxiv|medrxiv)/i.test(row.journal))),
   TE.map(RA.map((ncrcReview) => {
     const [, doiSuffix] = new RegExp('.*/([^/]*)$').exec(ncrcReview.link) ?? [];
     return {
