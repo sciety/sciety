@@ -47,16 +47,16 @@ export const fetchNcrcEvaluations = (): FetchEvaluations => (ports: Ports) => pi
   TE.map(flow(
     RA.map(reviewFromRow),
     RA.compact,
+    RA.partitionMap(E.fromPredicate(
+      (row) => /(biorxiv|medrxiv)/i.test(row.journal),
+      (row) => ({ item: row.id, reason: 'not a biorxiv | medrxiv article' }),
+    )),
+    ({ left, right }) => ({
+      evaluations: pipe(
+        right,
+        RA.map(toEvaluation),
+      ),
+      skippedItems: O.some(left),
+    }),
   )),
-  TE.map(RA.partitionMap(E.fromPredicate(
-    (row) => /(biorxiv|medrxiv)/i.test(row.journal),
-    (row) => ({ item: row.id, reason: 'not a biorxiv | medrxiv article' }),
-  ))),
-  TE.map(({ left, right }) => ({
-    evaluations: pipe(
-      right,
-      RA.map(toEvaluation),
-    ),
-    skippedItems: O.some(left),
-  })),
 );
