@@ -183,7 +183,7 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   router.get(
-    '/users/:handle([^0-9].+)/lists',
+    '/users/:handle([^0-9][^/]+)/lists',
     pageHandler(flow(
       userPageParams.decode,
       E.mapLeft(toNotFound),
