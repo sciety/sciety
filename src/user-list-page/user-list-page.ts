@@ -1,4 +1,5 @@
 import { sequenceS } from 'fp-ts/Apply';
+import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -12,6 +13,7 @@ import { UserId } from '../types/user-id';
 
 type Params = {
   handle: string,
+  user: O.Option<unknown>,
 };
 
 type UserDetails = {
@@ -46,7 +48,7 @@ const render = (savedArticlesList: HtmlFragment, { handle, avatarUrl }: UserDeta
   toHtmlFragment,
 );
 
-export const userListPage = (ports: Ports): UserListPage => ({ handle }) => pipe(
+export const userListPage = (ports: Ports): UserListPage => ({ handle, user }) => pipe(
   handle,
   ports.getUserId,
   TE.chain((id) => pipe(
@@ -57,7 +59,7 @@ export const userListPage = (ports: Ports): UserListPage => ({ handle }) => pipe
     sequenceS(TE.ApplyPar),
   )),
   TE.chainTaskK(({ dois, userDetails }) => pipe(
-    savedArticles(ports)(dois),
+    savedArticles(ports)(dois, user),
     T.map((content) => ({
       content,
       userDetails,

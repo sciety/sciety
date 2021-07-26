@@ -31,9 +31,16 @@ export type Ports = {
 
 type SavedArticles = (ports: Ports) => (
   dois: ReadonlyArray<Doi>,
+  loggedInUser: O.Option<unknown>,
 ) => T.Task<HtmlFragment>;
 
-export const savedArticles: SavedArticles = (ports) => (dois) => pipe(
+const controls = (loggedInUser: O.Option<unknown>) => (
+  process.env.EXPERIMENT_ENABLED === 'true' && O.isSome(loggedInUser)
+    ? O.some(toHtmlFragment('<img src="/static/images/delete.svg">'))
+    : O.none
+);
+
+export const savedArticles: SavedArticles = (ports) => (dois, loggedInUser) => pipe(
   dois,
   RNEA.fromReadonlyArray,
   TE.fromOption(() => noSavedArticles),
@@ -48,7 +55,7 @@ export const savedArticles: SavedArticles = (ports) => (dois) => pipe(
     })),
   ),
   TE.map(flow(
-    RA.map(renderArticleCard(process.env.EXPERIMENT_ENABLED === 'true' ? O.some(toHtmlFragment('<img src="/static/images/delete.svg">')) : O.none)),
+    RA.map(renderArticleCard(controls(loggedInUser))),
     renderSavedArticles,
   )),
   TE.toUnion,
