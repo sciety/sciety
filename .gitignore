@@ -13,3 +13,4 @@ coverage/
 /helm/*/charts/
 /static/*.css
 /static/*.css.map
+/.purgecss/
