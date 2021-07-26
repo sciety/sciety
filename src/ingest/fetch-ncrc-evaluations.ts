@@ -11,6 +11,13 @@ type Ports = {
   fetchGoogleSheet: FetchGoogleSheet,
 };
 
+type NcrcReview = {
+  date: string,
+  link: string,
+  id: string,
+  journal: string,
+};
+
 const reviewFromRow = flow(
   RA.map(String),
   (row) => ({
@@ -22,6 +29,15 @@ const reviewFromRow = flow(
   sequenceS(O.Apply),
 );
 
+const toEvaluation = (ncrcReview: NcrcReview) => {
+  const [, doiSuffix] = new RegExp('.*/([^/]*)$').exec(ncrcReview.link) ?? [];
+  return {
+    date: new Date(ncrcReview.date),
+    articleDoi: `10.1101/${doiSuffix}`,
+    evaluationLocator: `ncrc:${ncrcReview.id}`,
+  };
+};
+
 export const fetchNcrcEvaluations = (): FetchEvaluations => (ports: Ports) => pipe(
   ports.fetchGoogleSheet('1RJ_Neh1wwG6X0SkYZHjD-AEC9ykgAcya_8UCVNoE3SA', 'Sheet1!A2:S'),
   TE.chainEitherK(flow(
@@ -32,17 +48,15 @@ export const fetchNcrcEvaluations = (): FetchEvaluations => (ports: Ports) => pi
     RA.map(reviewFromRow),
     RA.compact,
   )),
-  TE.map(RA.filter((row) => /(biorxiv|medrxiv)/i.test(row.journal))),
-  TE.map(RA.map((ncrcReview) => {
-    const [, doiSuffix] = new RegExp('.*/([^/]*)$').exec(ncrcReview.link) ?? [];
-    return {
-      date: new Date(ncrcReview.date),
-      articleDoi: `10.1101/${doiSuffix}`,
-      evaluationLocator: `ncrc:${ncrcReview.id}`,
-    };
-  })),
-  TE.map((evaluations) => ({
-    evaluations,
-    skippedItems: O.none,
+  TE.map(RA.partitionMap(E.fromPredicate(
+    (row) => /(biorxiv|medrxiv)/i.test(row.journal),
+    (row) => ({ item: row.id, reason: 'not a biorxiv | medrxiv article' }),
+  ))),
+  TE.map(({ left, right }) => ({
+    evaluations: pipe(
+      right,
+      RA.map(toEvaluation),
+    ),
+    skippedItems: O.some(left),
   })),
 );
