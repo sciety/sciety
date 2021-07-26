@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import {
-  $, click, goto, openBrowser, text, within,
+  $, click, goto, openBrowser,
 } from 'taiko';
 import { authenticateViaTwitter, screenshotTeardown } from './utilities';
 
@@ -22,9 +22,9 @@ describe('journey-to-user-list', () => {
     it('navigates to user list page via user page', async () => {
       await click('My profile');
       await click('Saved articles');
-      const correctPage = await text('Saved Articles', within($('h1'))).exists();
+      const pageTitle = await $('h1').text();
 
-      expect(correctPage).toBe(true);
+      expect(pageTitle).toContain('Saved Articles');
     });
 
     it('navigates to the saved articles list from an article page', async () => {
@@ -32,9 +32,9 @@ describe('journey-to-user-list', () => {
       await click('Save to my list');
       await click('Saved to my list');
       await click('Saved articles');
-      const correctPage = await text('Saved Articles', within($('h1'))).exists();
+      const pageTitle = await $('h1').text();
 
-      expect(correctPage).toBe(true);
+      expect(pageTitle).toContain('Saved Articles');
     });
   });
 });
