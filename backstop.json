@@ -62,6 +62,10 @@
       "url": "http://sciety_app/users/scietyHQ/following"
     },
     {
+      "label": "ScietyHQ saved articles list page",
+      "url": "http://sciety_app/users/scietyHQ/lists/saved-articles"
+    },
+    {
       "label": "Group page",
       "url": "http://sciety_app/groups/74fd66e9-3b90-4b5a-a4ab-5be83db4c5de"
     },
