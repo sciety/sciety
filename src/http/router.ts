@@ -172,8 +172,10 @@ export const createRouter = (adapters: Adapters): Router => {
     },
   );
 
+  const matchHandle = '[^0-9][^/]+';
+
   router.get(
-    '/users/:handle([^0-9].+)/saved-articles',
+    `/users/:handle(${matchHandle})/saved-articles`,
     async (context, next) => {
       context.status = StatusCodes.PERMANENT_REDIRECT;
       context.redirect(`/users/${context.params.handle}/lists`);
@@ -183,7 +185,7 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   router.get(
-    '/users/:handle([^0-9][^/]+)/lists',
+    `/users/:handle(${matchHandle})/lists`,
     pageHandler(flow(
       userPageParams.decode,
       E.mapLeft(toNotFound),
@@ -198,7 +200,7 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   router.get(
-    '/users/:handle([^0-9].+)/following',
+    `/users/:handle(${matchHandle})/following`,
     pageHandler(flow(
       userPageParams.decode,
       E.mapLeft(toNotFound),
@@ -213,7 +215,7 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   router.get(
-    '/users/:handle([^0-9].+)/lists/saved-articles',
+    `/users/:handle(${matchHandle})/lists/saved-articles`,
     pageHandler(flow(
       userPageParams.decode,
       E.mapLeft(toNotFound),
