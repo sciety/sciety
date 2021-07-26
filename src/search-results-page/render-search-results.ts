@@ -57,7 +57,7 @@ const list = (page: PageOfResults) => pipe(
 );
 
 const renderSearchResult = (viewModel: ItemViewModel) => (
-  isArticleViewModel(viewModel) ? renderArticleCard(viewModel) : renderGroupCard(viewModel)
+  isArticleViewModel(viewModel) ? renderArticleCard(O.none)(viewModel) : renderGroupCard(viewModel)
 );
 
 const pagination = (searchResults: SearchResults) => (content: HtmlFragment) => toHtmlFragment(`

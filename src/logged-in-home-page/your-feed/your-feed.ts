@@ -69,7 +69,7 @@ const constructArticleViewModels = (ports: Ports) => flow(
 );
 
 const renderArticleCardList = flow(
-  RNEA.map(renderArticleCard),
+  RNEA.map(renderArticleCard(O.none)),
   RNEA.map((card) => `<li class="your-feed__list_item">${card}</li>`),
   (cards) => `<ul class="your-feed__list" role="list">${cards.join('')}</ul>`,
 );

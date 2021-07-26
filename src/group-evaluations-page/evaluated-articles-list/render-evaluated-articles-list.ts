@@ -17,7 +17,7 @@ const renderNextLink = O.fold(
 );
 
 export const renderEvaluatedArticlesList: RenderEvaluatedArticlesList = (nextPageHref) => flow(
-  RA.map(renderArticleCard),
+  RA.map(renderArticleCard(O.none)),
   RA.map((activity) => `<li class="evaluated-articles-list__item">${activity}</li>`),
   (renderedActivities) => `
     <div>

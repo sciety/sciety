@@ -25,7 +25,7 @@ const generateArticleViewModel = ({
 
 const getSpans = (articleViewModel: ArticleViewModel) => pipe(
   articleViewModel,
-  renderArticleCard,
+  renderArticleCard(O.none),
   JSDOM.fragment,
   (rendered) => rendered.querySelectorAll('span'),
 );
@@ -37,7 +37,7 @@ describe('render-article-card', () => {
       title: sanitise(toHtmlFragment('The article title')),
     });
 
-    const rendered = JSDOM.fragment(renderArticleCard(articleViewModel));
+    const rendered = JSDOM.fragment(renderArticleCard(O.none)(articleViewModel));
     const link = rendered.querySelector('a');
 
     expect(link?.getAttribute('href')).toStrictEqual('/articles/activity/10.1101/1234');
@@ -118,14 +118,14 @@ describe('render-article-card', () => {
       });
 
       it('the authors are in an ordered list', () => {
-        const rendered = JSDOM.fragment(renderArticleCard(articleViewModel));
+        const rendered = JSDOM.fragment(renderArticleCard(O.none)(articleViewModel));
         const authors = rendered.querySelector(authorListSelector);
 
         expect(authors?.tagName).toStrictEqual('OL');
       });
 
       it('displays the authors as a list', () => {
-        const rendered = JSDOM.fragment(renderArticleCard(articleViewModel));
+        const rendered = JSDOM.fragment(renderArticleCard(O.none)(articleViewModel));
         const authors = rendered.querySelectorAll(authorListItemSelector);
         const authorFullNames = Array.from(authors).map((element) => element.textContent);
 
@@ -140,7 +140,7 @@ describe('render-article-card', () => {
       it('displays nothing', () => {
         const articleViewModel = generateArticleViewModel({ authors: [] });
 
-        const rendered = JSDOM.fragment(renderArticleCard(articleViewModel));
+        const rendered = JSDOM.fragment(renderArticleCard(O.none)(articleViewModel));
         const authors = rendered.querySelector(authorListSelector);
 
         expect(authors).toBeNull();

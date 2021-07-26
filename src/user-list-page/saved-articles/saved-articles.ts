@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
@@ -12,7 +13,7 @@ import { renderArticleCard } from '../../shared-components/article-card';
 import { FindVersionsForArticleDoi, getLatestArticleVersionDate } from '../../shared-components/article-card/get-latest-article-version-date';
 import { ArticleServer } from '../../types/article-server';
 import { Doi } from '../../types/doi';
-import { HtmlFragment } from '../../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 
 type FetchArticle = (doi: Doi) => TE.TaskEither<unknown, {
@@ -47,7 +48,7 @@ export const savedArticles: SavedArticles = (ports) => (dois) => pipe(
     })),
   ),
   TE.map(flow(
-    RA.map(renderArticleCard),
+    RA.map(renderArticleCard(process.env.EXPERIMENT_ENABLED === 'true' ? O.some(toHtmlFragment('<img src="/static/images/delete.svg">')) : O.none)),
     renderSavedArticles,
   )),
   TE.toUnion,

@@ -62,7 +62,7 @@ const renderArticleLatestActivityDate = O.fold(
   ),
 );
 
-export const renderArticleCard = (model: ArticleViewModel): HtmlFragment => toHtmlFragment(`
+export const renderArticleCard = (controls: O.Option<HtmlFragment>) => (model: ArticleViewModel): HtmlFragment => toHtmlFragment(`
   <article class="article-card">
     <h3 class="article-card__title">
       <a class="article-card__link" href="/articles/activity/${model.doi.value}">${model.title}</a>
@@ -71,6 +71,6 @@ export const renderArticleCard = (model: ArticleViewModel): HtmlFragment => toHt
     <div class="article-card__meta">
       <span class="visually-hidden">This article has </span>${renderEvaluationCount(model.evaluationCount)}${renderArticleVersionDate(model.latestVersionDate)}${renderArticleLatestActivityDate(model.latestActivityDate)}
     </div>
-    ${process.env.EXPERIMENT_ENABLED === 'true' ? '<img src="/static/images/delete.svg">' : ''}
+    ${pipe(controls, O.getOrElse(constant('')))}
   </article>
 `);
