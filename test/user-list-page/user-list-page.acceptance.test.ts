@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
@@ -59,7 +60,7 @@ describe('user-list-page', () => {
       findVersionsForArticleDoi: shouldNotBeCalled,
       getUserId: () => TE.right(arbitraryUserId()),
     };
-    const params = { handle };
+    const params = { handle, user: O.none };
     const page = await pipe(
       params,
       userListPage(ports),
@@ -95,7 +96,7 @@ describe('user-list-page', () => {
         findVersionsForArticleDoi: () => TO.none,
         getUserId: () => TE.right(userId),
       };
-      const params = { handle: arbitraryWord() };
+      const params = { handle: arbitraryWord(), user: O.none };
 
       const page = await pipe(
         params,
@@ -120,7 +121,7 @@ describe('user-list-page', () => {
           fetchArticle: () => TE.left('unavailable'),
           getUserId: () => TE.right(userId),
         };
-        const params = { handle: arbitraryWord() };
+        const params = { handle: arbitraryWord(), user: O.none };
 
         const pageContent = await pipe(
           params,
@@ -140,7 +141,7 @@ describe('user-list-page', () => {
     let page: DocumentFragment;
 
     beforeAll(async () => {
-      const params = { handle: arbitraryWord() };
+      const params = { handle: arbitraryWord(), user: O.none };
 
       page = await pipe(
         params,
