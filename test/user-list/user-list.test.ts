@@ -1,4 +1,4 @@
-import { userSavedArticle } from '../../src/types/domain-events';
+import { articleRemovedFromUserList, userSavedArticle } from '../../src/types/domain-events';
 import { commandHandler } from '../../src/user-list/user-list';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
@@ -66,7 +66,22 @@ describe('user-list', () => {
     });
 
     describe('given a user list where the article has already been removed', () => {
-      it.todo('does not create new events');
+      it.skip('does not create new events', () => {
+        const articleId = arbitraryDoi();
+        const userId = arbitraryUserId();
+        const removeArticleFromUserList = {
+          type: 'RemoveArticleFromUserList' as const,
+          articleId,
+          userId,
+        };
+        const events = [
+          userSavedArticle(userId, articleId),
+          articleRemovedFromUserList(userId, articleId),
+        ];
+        const createdEvents = commandHandler(events, removeArticleFromUserList);
+
+        expect(createdEvents).toStrictEqual([]);
+      });
     });
   });
 });
