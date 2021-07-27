@@ -200,6 +200,11 @@ export const userSavedArticle = (
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+export const isArticleRemovedFromListEvent = (event: DomainEvent):
+  event is ArticleRemovedFromListEvent => (
+  event.type === 'ArticleRemovedFromList'
+);
+
 export type ArticleRemovedFromListEvent = Readonly<{
   id: EventId,
   type: 'ArticleRemovedFromList',

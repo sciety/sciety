@@ -23,7 +23,7 @@ describe('project-saved-article-dois', () => {
     });
 
     describe('and has removed one article', () => {
-      it.skip('only returns the DOIs of the remaining saved articles', async () => {
+      it('only returns the DOIs of the remaining saved articles', async () => {
         const userId = arbitraryUserId();
         const getAllEvents = T.of([
           userSavedArticle(userId, new Doi('10.1101/12345')),
