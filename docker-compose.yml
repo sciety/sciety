@@ -16,6 +16,7 @@ services:
       FATHOM_SITE_ID:
       GOOGLE_TAG_MANAGER_ID:
       INGEST_LOG:
+      INGEST_ONLY:
       LOG_LEVEL:
       PGUSER: user
       PGHOST: db

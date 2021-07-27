@@ -103,7 +103,7 @@ find-screenit-reviews: build
 
 update-groups: export TARGET = dev
 update-groups: build
-	$(DOCKER_COMPOSE) run -e INGEST_LOG=${INGEST_LOG} app \
+	$(DOCKER_COMPOSE) run -e INGEST_LOG=${INGEST_LOG} -e INGEST_ONLY=${INGEST_ONLY} app \
 	npx ts-node src/ingest/update-event-data
 
 COMMUNITY_SCRIPTS := \
