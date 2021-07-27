@@ -12,5 +12,5 @@ type CommandHandler = (
   command: Command
 ) => ReadonlyArray<ArticleRemovedFromUserListEvent>;
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const commandHandler: CommandHandler = (events, command) => [];
+// ts-unused-exports:disable-next-line
+export const commandHandler: CommandHandler = () => [];
