@@ -3,9 +3,9 @@ import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
 import { Doi } from '../../types/doi';
 import {
-  ArticleRemovedFromListEvent,
+  ArticleRemovedFromUserListEvent,
   DomainEvent,
-  isArticleRemovedFromListEvent,
+  isArticleRemovedFromUserListEvent,
   isUserSavedArticleEvent,
   UserSavedArticleEvent,
 } from '../../types/domain-events';
@@ -13,13 +13,13 @@ import { UserId } from '../../types/user-id';
 
 export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-type RelevantEvent = UserSavedArticleEvent | ArticleRemovedFromListEvent;
+type RelevantEvent = UserSavedArticleEvent | ArticleRemovedFromUserListEvent;
 
 const isRelevantEvent = (event: DomainEvent): event is RelevantEvent => (
-  isUserSavedArticleEvent(event) || isArticleRemovedFromListEvent(event)
+  isUserSavedArticleEvent(event) || isArticleRemovedFromUserListEvent(event)
 );
 
-const savedArticleDois = (
+const updateProjection = (
   articleDois: ReadonlyArray<Doi>,
   event: RelevantEvent,
 ) => (
@@ -31,14 +31,14 @@ const savedArticleDois = (
     )
 );
 
-type GetSavedArticleDois = (userId: UserId) => T.Task<ReadonlyArray<Doi>>;
+type SavedArticleDois = (userId: UserId) => T.Task<ReadonlyArray<Doi>>;
 
-export const projectSavedArticleDois = (getAllEvents: GetAllEvents): GetSavedArticleDois => (userId) => pipe(
+export const savedArticleDois = (getAllEvents: GetAllEvents): SavedArticleDois => (userId) => pipe(
   getAllEvents,
   T.map(flow(
     RA.filter(isRelevantEvent),
     RA.filter((event) => event.userId === userId),
-    RA.reduce([], savedArticleDois),
+    RA.reduce([], updateProjection),
     RA.reverse,
   )),
 );

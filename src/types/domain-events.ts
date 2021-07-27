@@ -200,26 +200,26 @@ export const userSavedArticle = (
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export const isArticleRemovedFromListEvent = (event: DomainEvent):
-  event is ArticleRemovedFromListEvent => (
-  event.type === 'ArticleRemovedFromList'
+export const isArticleRemovedFromUserListEvent = (event: DomainEvent):
+  event is ArticleRemovedFromUserListEvent => (
+  event.type === 'ArticleRemovedFromUserList'
 );
 
-export type ArticleRemovedFromListEvent = Readonly<{
+export type ArticleRemovedFromUserListEvent = Readonly<{
   id: EventId,
-  type: 'ArticleRemovedFromList',
+  type: 'ArticleRemovedFromUserList',
   date: Date,
   userId: UserId,
   articleId: Doi,
 }>;
 
-export const articleRemovedFromList = (
+export const articleRemovedFromUserList = (
   userId: UserId,
   doi: Doi,
   date: Date = new Date(),
-): ArticleRemovedFromListEvent => ({
+): ArticleRemovedFromUserListEvent => ({
   id: generate(),
-  type: 'ArticleRemovedFromList',
+  type: 'ArticleRemovedFromUserList',
   date,
   userId,
   articleId: doi,
@@ -230,7 +230,7 @@ export const articleRemovedFromList = (
 export type DomainEvent =
   EditorialCommunityReviewedArticleEvent |
   UserSavedArticleEvent |
-  ArticleRemovedFromListEvent |
+  ArticleRemovedFromUserListEvent |
   UserFollowedEditorialCommunityEvent |
   UserUnfollowedEditorialCommunityEvent |
   UserFoundReviewHelpfulEvent |

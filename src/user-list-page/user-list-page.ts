@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { GetAllEvents, projectSavedArticleDois } from './saved-articles/project-saved-article-dois';
+import { GetAllEvents, savedArticleDois } from './saved-articles/saved-article-dois';
 import { Ports as SavedArticlePorts, savedArticles } from './saved-articles/saved-articles';
 import * as DE from '../types/data-error';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -54,7 +54,7 @@ export const userListPage = (ports: Ports, showControls = true): UserListPage =>
   ports.getUserId,
   TE.chain((id) => pipe(
     {
-      dois: TE.rightTask(projectSavedArticleDois(ports.getAllEvents)(id)),
+      dois: TE.rightTask(savedArticleDois(ports.getAllEvents)(id)),
       userDetails: ports.getUserDetails(id),
       listOwnerId: TE.right(id),
     },
