@@ -19,24 +19,49 @@ describe('user-list', () => {
     });
 
     describe('given a user list where the article has already been saved', () => {
-      it('creates a ArticleRemovedFromUserList Event', () => {
-        const articleId = arbitraryDoi();
-        const userId = arbitraryUserId();
-        const removeArticleFromUserList = {
-          type: 'RemoveArticleFromUserList' as const,
-          articleId,
-          userId,
-        };
-        const events = [
-          userSavedArticle(userId, articleId),
-        ];
-        const createdEvents = commandHandler(events, removeArticleFromUserList);
+      describe('single article saved to list', () => {
+        it('creates a ArticleRemovedFromUserList Event', () => {
+          const articleId = arbitraryDoi();
+          const userId = arbitraryUserId();
+          const removeArticleFromUserList = {
+            type: 'RemoveArticleFromUserList' as const,
+            articleId,
+            userId,
+          };
+          const events = [
+            userSavedArticle(userId, articleId),
+          ];
+          const createdEvents = commandHandler(events, removeArticleFromUserList);
 
-        expect(createdEvents).toStrictEqual([expect.objectContaining({
-          type: 'ArticleRemovedFromUserList',
-          articleId,
-          userId,
-        })]);
+          expect(createdEvents).toStrictEqual([expect.objectContaining({
+            type: 'ArticleRemovedFromUserList',
+            articleId,
+            userId,
+          })]);
+        });
+      });
+
+      describe('multiple articles saved to list', () => {
+        it('creates a ArticleRemovedFromUserList Event', () => {
+          const articleId = arbitraryDoi();
+          const userId = arbitraryUserId();
+          const removeArticleFromUserList = {
+            type: 'RemoveArticleFromUserList' as const,
+            articleId,
+            userId,
+          };
+          const events = [
+            userSavedArticle(userId, articleId),
+            userSavedArticle(userId, arbitraryDoi()),
+          ];
+          const createdEvents = commandHandler(events, removeArticleFromUserList);
+
+          expect(createdEvents).toStrictEqual([expect.objectContaining({
+            type: 'ArticleRemovedFromUserList',
+            articleId,
+            userId,
+          })]);
+        });
       });
     });
 
