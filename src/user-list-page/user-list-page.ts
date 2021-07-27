@@ -48,7 +48,7 @@ const render = (savedArticlesList: HtmlFragment, { handle, avatarUrl }: UserDeta
   toHtmlFragment,
 );
 
-export const userListPage = (ports: Ports): UserListPage => ({ handle, user }) => pipe(
+export const userListPage = (ports: Ports, showControls = true): UserListPage => ({ handle, user }) => pipe(
   handle,
   ports.getUserId,
   TE.chain((id) => pipe(
@@ -59,7 +59,7 @@ export const userListPage = (ports: Ports): UserListPage => ({ handle, user }) =
     sequenceS(TE.ApplyPar),
   )),
   TE.chainTaskK(({ dois, userDetails }) => pipe(
-    savedArticles(ports)(dois, user),
+    savedArticles(ports)(dois, user, showControls),
     T.map((content) => ({
       content,
       userDetails,

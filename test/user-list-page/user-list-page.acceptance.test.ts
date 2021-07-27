@@ -137,7 +137,7 @@ describe('user-list-page', () => {
     });
 
     describe('when the logged in user is the list owner', () => {
-      it.skip('displays the delete buttons on the article cards', async () => {
+      it('displays the delete buttons on the article cards', async () => {
         const userId = arbitraryUserId();
         const ports = {
           getUserDetails: () => TE.right({
@@ -163,7 +163,7 @@ describe('user-list-page', () => {
 
         const page = await pipe(
           params,
-          userListPage(ports),
+          userListPage(ports, true),
           contentOf,
           T.map(JSDOM.fragment),
         )();
