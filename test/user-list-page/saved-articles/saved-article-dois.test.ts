@@ -37,6 +37,21 @@ describe('saved-article-dois', () => {
 
         expect(output).toStrictEqual(expected);
       });
+
+      it('allows the same article to be added again', async () => {
+        const userId = arbitraryUserId();
+        const getAllEvents = T.of([
+          userSavedArticle(userId, new Doi('10.1101/12345')),
+          articleRemovedFromUserList(userId, new Doi('10.1101/12345')),
+          userSavedArticle(userId, new Doi('10.1101/12345')),
+        ]);
+        const output = await savedArticleDois(getAllEvents)(userId)();
+        const expected = [
+          new Doi('10.1101/12345'),
+        ];
+
+        expect(output).toStrictEqual(expected);
+      });
     });
   });
 
