@@ -138,7 +138,7 @@ describe('user-list-page', () => {
 
     describe('when the logged in user is the list owner', () => {
       it('displays the delete buttons on the article cards', async () => {
-        const userId = arbitraryUserId();
+        const owningUserId = arbitraryUserId();
         const ports = {
           getUserDetails: () => TE.right({
             avatarUrl: arbitraryUri(),
@@ -146,8 +146,8 @@ describe('user-list-page', () => {
             handle: arbitraryWord(),
           }),
           getAllEvents: T.of([
-            userSavedArticle(userId, arbitraryDoi()),
-            userSavedArticle(userId, arbitraryDoi()),
+            userSavedArticle(owningUserId, arbitraryDoi()),
+            userSavedArticle(owningUserId, arbitraryDoi()),
           ]),
           fetchArticle: () => TE.right({
             doi: arbitraryDoi(),
@@ -157,9 +157,9 @@ describe('user-list-page', () => {
           }),
           findReviewsForArticleDoi: () => T.of([]),
           findVersionsForArticleDoi: () => TO.none,
-          getUserId: () => TE.right(userId),
+          getUserId: () => TE.right(owningUserId),
         };
-        const params = { handle: arbitraryWord(), user: O.some({ id: userId }) };
+        const params = { handle: arbitraryWord(), user: O.some({ id: owningUserId }) };
 
         const page = await pipe(
           params,
@@ -170,6 +170,44 @@ describe('user-list-page', () => {
         const deleteButtons = page.querySelectorAll('.article-card img');
 
         expect(deleteButtons).toHaveLength(2);
+      });
+    });
+
+    describe('when the logged in user is not the list owner', () => {
+      it.skip('does not display the delete buttons on the article cards', async () => {
+        const owningUserId = arbitraryUserId();
+        const loggedInUserId = arbitraryUserId();
+        const ports = {
+          getUserDetails: () => TE.right({
+            avatarUrl: arbitraryUri(),
+            displayName: arbitraryString(),
+            handle: arbitraryWord(),
+          }),
+          getAllEvents: T.of([
+            userSavedArticle(owningUserId, arbitraryDoi()),
+            userSavedArticle(owningUserId, arbitraryDoi()),
+          ]),
+          fetchArticle: () => TE.right({
+            doi: arbitraryDoi(),
+            server: 'biorxiv' as const,
+            title: arbitrarySanitisedHtmlFragment(),
+            authors: [],
+          }),
+          findReviewsForArticleDoi: () => T.of([]),
+          findVersionsForArticleDoi: () => TO.none,
+          getUserId: () => TE.right(owningUserId),
+        };
+        const params = { handle: arbitraryWord(), user: O.some({ id: loggedInUserId }) };
+
+        const page = await pipe(
+          params,
+          userListPage(ports, true),
+          contentOf,
+          T.map(JSDOM.fragment),
+        )();
+        const deleteButtons = page.querySelectorAll('.article-card img');
+
+        expect(deleteButtons).toHaveLength(0);
       });
     });
   });
