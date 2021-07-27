@@ -19,7 +19,7 @@ describe('user-list', () => {
     });
 
     describe('given a user list where the article has already been saved', () => {
-      it.skip('creates a ArticleRemovedFromUserList Event', () => {
+      it('creates a ArticleRemovedFromUserList Event', () => {
         const articleId = arbitraryDoi();
         const userId = arbitraryUserId();
         const removeArticleFromUserList = {

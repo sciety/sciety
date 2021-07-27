@@ -1,5 +1,12 @@
+import * as RA from 'fp-ts/ReadonlyArray';
+import { pipe } from 'fp-ts/function';
 import { Doi } from '../types/doi';
-import { ArticleRemovedFromUserListEvent, DomainEvent } from '../types/domain-events';
+import {
+  articleRemovedFromUserList,
+  ArticleRemovedFromUserListEvent,
+  DomainEvent,
+  isUserSavedArticleEvent,
+} from '../types/domain-events';
 import { UserId } from '../types/user-id';
 
 type Command = {
@@ -13,4 +20,10 @@ type CommandHandler = (
 ) => ReadonlyArray<ArticleRemovedFromUserListEvent>;
 
 // ts-unused-exports:disable-next-line
-export const commandHandler: CommandHandler = () => [];
+export const commandHandler: CommandHandler = (events, command) => pipe(
+  events,
+  RA.filter(isUserSavedArticleEvent),
+  (relevantEvents) => (
+    relevantEvents.length === 0 ? [] : [articleRemovedFromUserList(command.userId, command.articleId)]
+  ),
+);
