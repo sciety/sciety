@@ -9,11 +9,12 @@ import * as DE from '../types/data-error';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
+import { User } from '../types/user';
 import { UserId } from '../types/user-id';
 
 type Params = {
   handle: string,
-  user: O.Option<unknown>,
+  user: O.Option<User>,
 };
 
 type UserDetails = {
@@ -55,11 +56,12 @@ export const userListPage = (ports: Ports, showControls = true): UserListPage =>
     {
       dois: TE.rightTask(projectSavedArticleDois(ports.getAllEvents)(id)),
       userDetails: ports.getUserDetails(id),
+      listOwnerId: TE.right(id),
     },
     sequenceS(TE.ApplyPar),
   )),
-  TE.chainTaskK(({ dois, userDetails }) => pipe(
-    savedArticles(ports)(dois, user, showControls),
+  TE.chainTaskK(({ dois, userDetails, listOwnerId }) => pipe(
+    savedArticles(ports)(dois, pipe(user, O.map((u) => u.id)), listOwnerId, showControls),
     T.map((content) => ({
       content,
       userDetails,

@@ -174,7 +174,7 @@ describe('user-list-page', () => {
     });
 
     describe('when the logged in user is not the list owner', () => {
-      it.skip('does not display the delete buttons on the article cards', async () => {
+      it('does not display the delete buttons on the article cards', async () => {
         const owningUserId = arbitraryUserId();
         const loggedInUserId = arbitraryUserId();
         const ports = {
