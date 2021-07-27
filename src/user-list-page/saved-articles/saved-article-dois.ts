@@ -1,6 +1,6 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
-import { flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import { Doi } from '../../types/doi';
 import {
   ArticleRemovedFromUserListEvent,
@@ -31,14 +31,12 @@ const updateProjection = (
     )
 );
 
-type SavedArticleDois = (userId: UserId) => T.Task<ReadonlyArray<Doi>>;
+type SavedArticleDois = (userId: UserId) => ReadonlyArray<Doi>;
 
-export const savedArticleDois = (getAllEvents: GetAllEvents): SavedArticleDois => (userId) => pipe(
-  getAllEvents,
-  T.map(flow(
-    RA.filter(isRelevantEvent),
-    RA.filter((event) => event.userId === userId),
-    RA.reduce([], updateProjection),
-    RA.reverse,
-  )),
+export const savedArticleDois = (events: ReadonlyArray<DomainEvent>): SavedArticleDois => (userId) => pipe(
+  events,
+  RA.filter(isRelevantEvent),
+  RA.filter((event) => event.userId === userId),
+  RA.reduce([], updateProjection),
+  RA.reverse,
 );

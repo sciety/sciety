@@ -50,13 +50,16 @@ const render = (savedArticlesList: HtmlFragment, { handle, avatarUrl }: UserDeta
 );
 
 export const userListPage = (ports: Ports, showControls = true): UserListPage => ({ handle, user }) => pipe(
-  handle,
-  ports.getUserId,
-  TE.chain((id) => pipe(
+  {
+    userId: ports.getUserId(handle),
+    events: TE.rightTask(ports.getAllEvents),
+  },
+  sequenceS(TE.ApplyPar),
+  TE.chain(({ userId, events }) => pipe(
     {
-      dois: TE.rightTask(savedArticleDois(ports.getAllEvents)(id)),
-      userDetails: ports.getUserDetails(id),
-      listOwnerId: TE.right(id),
+      dois: TE.right(savedArticleDois(events)(userId)),
+      userDetails: ports.getUserDetails(userId),
+      listOwnerId: TE.right(userId),
     },
     sequenceS(TE.ApplyPar),
   )),

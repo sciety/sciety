@@ -1,4 +1,3 @@
-import * as T from 'fp-ts/Task';
 import { Doi } from '../../../src/types/doi';
 import { articleRemovedFromUserList, userSavedArticle } from '../../../src/types/domain-events';
 import { savedArticleDois } from '../../../src/user-list-page/saved-articles/saved-article-dois';
@@ -9,11 +8,11 @@ describe('saved-article-dois', () => {
   describe('when the user has saved articles', () => {
     it('returns the DOIs of the saved articles', async () => {
       const userId = arbitraryUserId();
-      const getAllEvents = T.of([
+      const events = [
         userSavedArticle(userId, new Doi('10.1101/12345')),
         userSavedArticle(userId, new Doi('10.1101/67890')),
-      ]);
-      const output = await savedArticleDois(getAllEvents)(userId)();
+      ];
+      const output = savedArticleDois(events)(userId);
       const expected = [
         new Doi('10.1101/67890'),
         new Doi('10.1101/12345'),
@@ -25,12 +24,12 @@ describe('saved-article-dois', () => {
     describe('and has removed one article', () => {
       it('only returns the DOIs of the remaining saved articles', async () => {
         const userId = arbitraryUserId();
-        const getAllEvents = T.of([
+        const events = [
           userSavedArticle(userId, new Doi('10.1101/12345')),
           userSavedArticle(userId, new Doi('10.1101/67890')),
           articleRemovedFromUserList(userId, new Doi('10.1101/12345')),
-        ]);
-        const output = await savedArticleDois(getAllEvents)(userId)();
+        ];
+        const output = savedArticleDois(events)(userId);
         const expected = [
           new Doi('10.1101/67890'),
         ];
@@ -40,12 +39,12 @@ describe('saved-article-dois', () => {
 
       it('allows the same article to be added again', async () => {
         const userId = arbitraryUserId();
-        const getAllEvents = T.of([
+        const events = [
           userSavedArticle(userId, new Doi('10.1101/12345')),
           articleRemovedFromUserList(userId, new Doi('10.1101/12345')),
           userSavedArticle(userId, new Doi('10.1101/12345')),
-        ]);
-        const output = await savedArticleDois(getAllEvents)(userId)();
+        ];
+        const output = savedArticleDois(events)(userId);
         const expected = [
           new Doi('10.1101/12345'),
         ];
@@ -57,11 +56,11 @@ describe('saved-article-dois', () => {
 
   describe('when another user has saved articles and the current user has not', () => {
     it('returns an empty array', async () => {
-      const getAllEvents = T.of([
+      const events = [
         userSavedArticle(arbitraryUserId(), arbitraryDoi()),
-      ]);
+      ];
 
-      const output = await savedArticleDois(getAllEvents)(arbitraryUserId())();
+      const output = savedArticleDois(events)(arbitraryUserId());
 
       expect(output).toStrictEqual([]);
     });
@@ -69,9 +68,7 @@ describe('saved-article-dois', () => {
 
   describe('when the user has not saved articles', () => {
     it('returns an empty array', async () => {
-      const getAllEvents = T.of([]);
-
-      const output = await savedArticleDois(getAllEvents)(arbitraryUserId())();
+      const output = savedArticleDois([])(arbitraryUserId());
 
       expect(output).toStrictEqual([]);
     });
