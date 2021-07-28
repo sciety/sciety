@@ -31,7 +31,17 @@ describe('command-handler', () => {
 
   describe('article is not in the list', () => {
     describe('and a RemoveArticleFromUserList Command is issued', () => {
-      it.todo('creates no events');
+      it('creates no events', () => {
+        const inList = false;
+        const removeArticleFromUserList = {
+          type: 'RemoveArticleFromUserList' as const,
+          articleId: arbitraryDoi(),
+          userId: arbitraryUserId(),
+        };
+        const createdEvents = commandHandler(inList, removeArticleFromUserList);
+
+        expect(createdEvents).toStrictEqual([]);
+      });
     });
 
     describe('and a SaveArticleToUserList Command is issued', () => {
