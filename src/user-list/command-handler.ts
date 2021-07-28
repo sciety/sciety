@@ -29,8 +29,11 @@ const handleSaveCommand = (saveState: SaveState, command: Command) => (
     : []);
 
 // ts-unused-exports:disable-next-line
-export const commandHandler: CommandHandler = (saveState, command) => (
-  command.type === 'RemoveArticleFromUserList'
-    ? handleRemoveCommand(saveState, command)
-    : handleSaveCommand(saveState, command)
-);
+export const commandHandler: CommandHandler = (saveState, command) => {
+  switch (command.type) {
+    case 'SaveArticleToUserList':
+      return handleSaveCommand(saveState, command);
+    case 'RemoveArticleFromUserList':
+      return handleRemoveCommand(saveState, command);
+  }
+};
