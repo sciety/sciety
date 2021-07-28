@@ -12,7 +12,7 @@ import { UserId } from '../types/user-id';
 type RelevantEvent = UserSavedArticleEvent | ArticleRemovedFromUserListEvent;
 
 const isRelevantEvent = (userId: UserId) => (event: DomainEvent): event is RelevantEvent => (
-  (isUserSavedArticleEvent(event) || isArticleRemovedFromUserListEvent(event)) 
+  (isUserSavedArticleEvent(event) || isArticleRemovedFromUserListEvent(event))
   && event.userId === userId
 );
 
