@@ -8,7 +8,7 @@ import { UserId } from '../types/user-id';
 type Command = {
   articleId: Doi,
   userId: UserId,
-  type: 'RemoveArticleFromUserList',
+  type: 'RemoveArticleFromUserList' | 'SaveArticleToUserList',
 };
 
 export type SaveState = 'saved' | 'not-saved';

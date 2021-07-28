@@ -3,7 +3,7 @@ import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
 describe('command-handler', () => {
-  describe('article is in the list', () => {
+  describe('article is saved', () => {
     describe('and a RemoveArticleFromUserList Command is issued', () => {
       it('creates an ArticleRemovedFromUserList Event', () => {
         const articleId = arbitraryDoi();
@@ -25,11 +25,23 @@ describe('command-handler', () => {
     });
 
     describe('and a SaveArticleToUserList Command is issued', () => {
-      it.todo('creates no events');
+      it.skip('creates no events', () => {
+        const articleId = arbitraryDoi();
+        const userId = arbitraryUserId();
+        const saveState = 'saved';
+        const saveArticleToUserList = {
+          type: 'SaveArticleToUserList' as const,
+          articleId,
+          userId,
+        };
+        const createdEvents = commandHandler(saveState, saveArticleToUserList);
+
+        expect(createdEvents).toStrictEqual([]);
+      });
     });
   });
 
-  describe('article is not in the list', () => {
+  describe('article is not-saved', () => {
     describe('and a RemoveArticleFromUserList Command is issued', () => {
       it('creates no events', () => {
         const saveState = 'not-saved';
