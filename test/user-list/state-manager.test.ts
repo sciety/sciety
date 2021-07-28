@@ -48,7 +48,18 @@ describe('state-manager', () => {
     expect(articleInList).toBe(true);
   });
 
-  it.todo('Alice saved article 1 but Bob has not: false');
+  it.skip('Alice saved article 1 but Bob has not: false', () => {
+    const alice = arbitraryUserId();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const bob = arbitraryUserId();
+    const article1 = arbitraryDoi();
+    const events: ReadonlyArray<DomainEvent> = [
+      userSavedArticle(alice, article1),
+    ];
+    const articleInList = stateManager(events);
+
+    expect(articleInList).toBe(true);
+  });
 
   it.todo('Bob has saved article 2: false');
 });
