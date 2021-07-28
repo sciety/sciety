@@ -1,7 +1,7 @@
 import { Doi } from '../types/doi';
 import {
   articleRemovedFromUserList,
-  ArticleRemovedFromUserListEvent,
+  ArticleRemovedFromUserListEvent, userSavedArticle, UserSavedArticleEvent,
 } from '../types/domain-events';
 import { UserId } from '../types/user-id';
 
@@ -16,11 +16,21 @@ export type SaveState = 'saved' | 'not-saved';
 type CommandHandler = (
   saveState: SaveState,
   command: Command
-) => ReadonlyArray<ArticleRemovedFromUserListEvent>;
+) => ReadonlyArray<ArticleRemovedFromUserListEvent | UserSavedArticleEvent>;
+
+const handleRemoveCommand = (saveState: SaveState, command: Command) => (
+  saveState === 'saved'
+    ? [articleRemovedFromUserList(command.userId, command.articleId)]
+    : []);
+
+const handleSaveCommand = (saveState: SaveState, command: Command) => (
+  saveState === 'not-saved'
+    ? [userSavedArticle(command.userId, command.articleId)]
+    : []);
 
 // ts-unused-exports:disable-next-line
 export const commandHandler: CommandHandler = (saveState, command) => (
-  saveState === 'saved'
-    ? [articleRemovedFromUserList(command.userId, command.articleId)]
-    : []
+  command.type === 'RemoveArticleFromUserList'
+    ? handleRemoveCommand(saveState, command)
+    : handleSaveCommand(saveState, command)
 );

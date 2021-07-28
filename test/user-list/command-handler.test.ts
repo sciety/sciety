@@ -25,7 +25,7 @@ describe('command-handler', () => {
     });
 
     describe('and a SaveArticleToUserList Command is issued', () => {
-      it.skip('creates no events', () => {
+      it('creates no events', () => {
         const articleId = arbitraryDoi();
         const userId = arbitraryUserId();
         const saveState = 'saved';
@@ -57,7 +57,7 @@ describe('command-handler', () => {
     });
 
     describe('and a SaveArticleToUserList Command is issued', () => {
-      it.skip('creates a UserSavedArticle Event', () => {
+      it('creates a UserSavedArticle Event', () => {
         const articleId = arbitraryDoi();
         const userId = arbitraryUserId();
         const saveState = 'not-saved';
