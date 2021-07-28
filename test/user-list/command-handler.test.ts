@@ -57,7 +57,23 @@ describe('command-handler', () => {
     });
 
     describe('and a SaveArticleToUserList Command is issued', () => {
-      it.todo('creates a UserSavedArticle Event');
+      it.skip('creates a UserSavedArticle Event', () => {
+        const articleId = arbitraryDoi();
+        const userId = arbitraryUserId();
+        const saveState = 'not-saved';
+        const saveArticleToUserList = {
+          type: 'SaveArticleToUserList' as const,
+          articleId,
+          userId,
+        };
+        const createdEvents = commandHandler(saveState, saveArticleToUserList);
+
+        expect(createdEvents).toStrictEqual([expect.objectContaining({
+          type: 'UserSavedArticle',
+          articleId,
+          userId,
+        })]);
+      });
     });
   });
 });
