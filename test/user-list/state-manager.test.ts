@@ -1,6 +1,8 @@
 /* eslint-disable jest/lowercase-name */
-import { DomainEvent } from '../../src/types/domain-events';
+import { DomainEvent, userSavedArticle } from '../../src/types/domain-events';
 import { stateManager } from '../../src/user-list/state-manager';
+import { arbitraryDoi } from '../types/doi.helper';
+import { arbitraryUserId } from '../types/user-id.helper';
 
 describe('state-manager', () => {
   it('Bob has not saved any articles: false', () => {
@@ -10,9 +12,18 @@ describe('state-manager', () => {
     expect(articleInList).toBe(false);
   });
 
-  it.todo('UserSavedArticle Bob, 1; ArticleRemovedFromUserList Bob, 1: false');
+  it.skip('UserSavedArticle Bob, 1: true', () => {
+    const bob = arbitraryUserId();
+    const article1 = arbitraryDoi();
+    const events: ReadonlyArray<DomainEvent> = [
+      userSavedArticle(bob, article1),
+    ];
+    const articleInList = stateManager(events);
 
-  it.todo('UserSavedArticle Bob, 1: true');
+    expect(articleInList).toBe(true);
+  });
+
+  it.todo('UserSavedArticle Bob, 1; ArticleRemovedFromUserList Bob, 1: false');
 
   it.todo('UserSavedArticle Bob, 1; ArticleRemovedFromUserList Bob, 1; UserSavedArticle Bob, 1: true');
 
