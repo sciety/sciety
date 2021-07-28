@@ -1,7 +1,14 @@
 /* eslint-disable jest/lowercase-name */
+import { DomainEvent } from '../../src/types/domain-events';
+import { stateManager } from '../../src/user-list/state-manager';
 
 describe('state-manager', () => {
-  it.todo('Bob has not saved any articles: false');
+  it('Bob has not saved any articles: false', () => {
+    const events: ReadonlyArray<DomainEvent> = [];
+    const articleInList = stateManager(events);
+
+    expect(articleInList).toBe(false);
+  });
 
   it.todo('UserSavedArticle Bob, 1; ArticleRemovedFromUserList Bob, 1: false');
 
