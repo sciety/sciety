@@ -1,4 +1,4 @@
-import { commandHandler } from '../../src/user-list/user-list';
+import { commandHandler } from '../../src/user-list/command-handler';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
