@@ -1,13 +1,13 @@
 /* eslint-disable jest/lowercase-name */
 import { articleRemovedFromUserList, DomainEvent, userSavedArticle } from '../../src/types/domain-events';
-import { stateManager } from '../../src/user-list/state-manager';
+import { articleSaveState } from '../../src/user-list/article-save-state';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
-describe('state-manager', () => {
+describe('article-save-state', () => {
   it('Bob has not saved any articles: false', () => {
     const events: ReadonlyArray<DomainEvent> = [];
-    const articleInList = stateManager(events, arbitraryUserId(), arbitraryDoi());
+    const articleInList = articleSaveState(events, arbitraryUserId(), arbitraryDoi());
 
     expect(articleInList).toBe('not-saved');
   });
@@ -18,7 +18,7 @@ describe('state-manager', () => {
     const events: ReadonlyArray<DomainEvent> = [
       userSavedArticle(bob, articleId),
     ];
-    const articleInList = stateManager(events, bob, articleId);
+    const articleInList = articleSaveState(events, bob, articleId);
 
     expect(articleInList).toBe('saved');
   });
@@ -30,7 +30,7 @@ describe('state-manager', () => {
       userSavedArticle(bob, articleId),
       articleRemovedFromUserList(bob, articleId),
     ];
-    const articleInList = stateManager(events, bob, articleId);
+    const articleInList = articleSaveState(events, bob, articleId);
 
     expect(articleInList).toBe('not-saved');
   });
@@ -43,7 +43,7 @@ describe('state-manager', () => {
       articleRemovedFromUserList(bob, articleId),
       userSavedArticle(bob, articleId),
     ];
-    const articleInList = stateManager(events, bob, articleId);
+    const articleInList = articleSaveState(events, bob, articleId);
 
     expect(articleInList).toBe('saved');
   });
@@ -55,7 +55,7 @@ describe('state-manager', () => {
     const events: ReadonlyArray<DomainEvent> = [
       userSavedArticle(alice, articleId),
     ];
-    const articleInList = stateManager(events, bob, articleId);
+    const articleInList = articleSaveState(events, bob, articleId);
 
     expect(articleInList).toBe('not-saved');
   });
@@ -68,7 +68,7 @@ describe('state-manager', () => {
     const events: ReadonlyArray<DomainEvent> = [
       userSavedArticle(bob, articleId2),
     ];
-    const articleInList = stateManager(events, bob, articleId1);
+    const articleInList = articleSaveState(events, bob, articleId1);
 
     expect(articleInList).toBe('not-saved');
   });
