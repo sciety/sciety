@@ -7,43 +7,43 @@ import { arbitraryUserId } from '../types/user-id.helper';
 describe('state-manager', () => {
   it('Bob has not saved any articles: false', () => {
     const events: ReadonlyArray<DomainEvent> = [];
-    const articleInList = stateManager(events, arbitraryUserId());
+    const articleInList = stateManager(events, arbitraryUserId(), arbitraryDoi());
 
     expect(articleInList).toBe(false);
   });
 
   it('UserSavedArticle Bob, 1: true', () => {
     const bob = arbitraryUserId();
-    const article1 = arbitraryDoi();
+    const articleId = arbitraryDoi();
     const events: ReadonlyArray<DomainEvent> = [
-      userSavedArticle(bob, article1),
+      userSavedArticle(bob, articleId),
     ];
-    const articleInList = stateManager(events, bob);
+    const articleInList = stateManager(events, bob, articleId);
 
     expect(articleInList).toBe(true);
   });
 
   it('UserSavedArticle Bob, 1; ArticleRemovedFromUserList Bob, 1: false', () => {
     const bob = arbitraryUserId();
-    const article1 = arbitraryDoi();
+    const articleId = arbitraryDoi();
     const events: ReadonlyArray<DomainEvent> = [
-      userSavedArticle(bob, article1),
-      articleRemovedFromUserList(bob, article1),
+      userSavedArticle(bob, articleId),
+      articleRemovedFromUserList(bob, articleId),
     ];
-    const articleInList = stateManager(events, bob);
+    const articleInList = stateManager(events, bob, articleId);
 
     expect(articleInList).toBe(false);
   });
 
   it('UserSavedArticle Bob, 1; ArticleRemovedFromUserList Bob, 1; UserSavedArticle Bob, 1: true', () => {
     const bob = arbitraryUserId();
-    const article1 = arbitraryDoi();
+    const articleId = arbitraryDoi();
     const events: ReadonlyArray<DomainEvent> = [
-      userSavedArticle(bob, article1),
-      articleRemovedFromUserList(bob, article1),
-      userSavedArticle(bob, article1),
+      userSavedArticle(bob, articleId),
+      articleRemovedFromUserList(bob, articleId),
+      userSavedArticle(bob, articleId),
     ];
-    const articleInList = stateManager(events, bob);
+    const articleInList = stateManager(events, bob, articleId);
 
     expect(articleInList).toBe(true);
   });
@@ -51,24 +51,24 @@ describe('state-manager', () => {
   it('Alice saved article 1 but Bob has not: false', () => {
     const alice = arbitraryUserId();
     const bob = arbitraryUserId();
-    const article1 = arbitraryDoi();
+    const articleId = arbitraryDoi();
     const events: ReadonlyArray<DomainEvent> = [
-      userSavedArticle(alice, article1),
+      userSavedArticle(alice, articleId),
     ];
-    const articleInList = stateManager(events, bob);
+    const articleInList = stateManager(events, bob, articleId);
 
     expect(articleInList).toBe(false);
   });
 
-  it.skip('Bob has saved article 2: false', () => {
+  it('Bob has saved article 2: false', () => {
     const bob = arbitraryUserId();
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const article1 = arbitraryDoi();
-    const article2 = arbitraryDoi();
+    const articleId1 = arbitraryDoi();
+    const articleId2 = arbitraryDoi();
     const events: ReadonlyArray<DomainEvent> = [
-      userSavedArticle(bob, article2),
+      userSavedArticle(bob, articleId2),
     ];
-    const articleInList = stateManager(events, bob);
+    const articleInList = stateManager(events, bob, articleId1);
 
     expect(articleInList).toBe(false);
   });
