@@ -1,6 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
+import { SaveState } from './command-handler';
 import { Doi } from '../types/doi';
 import {
   ArticleRemovedFromUserListEvent,
@@ -18,7 +19,7 @@ const isRelevantEvent = (userId: UserId, articleId: Doi) => (event: DomainEvent)
   && event.articleId.value === articleId.value
 );
 
-type StateManager = (events: ReadonlyArray<DomainEvent>, userId: UserId, articleId: Doi) => boolean;
+type StateManager = (events: ReadonlyArray<DomainEvent>, userId: UserId, articleId: Doi) => SaveState;
 
 // ts-unused-exports:disable-next-line
 export const stateManager: StateManager = (events, userId, articleId) => pipe(
@@ -26,5 +27,8 @@ export const stateManager: StateManager = (events, userId, articleId) => pipe(
   RA.filter(isRelevantEvent(userId, articleId)),
   RA.last,
   O.map(isUserSavedArticleEvent),
-  O.getOrElseW(() => false),
+  O.fold(
+    () => 'not-saved',
+    (isSavedEvent) => (isSavedEvent ? 'saved' : 'not-saved'),
+  ),
 );

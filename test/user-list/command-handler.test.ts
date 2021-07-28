@@ -8,13 +8,13 @@ describe('command-handler', () => {
       it('creates an ArticleRemovedFromUserList Event', () => {
         const articleId = arbitraryDoi();
         const userId = arbitraryUserId();
-        const inList = true;
+        const saveState = 'saved';
         const removeArticleFromUserList = {
           type: 'RemoveArticleFromUserList' as const,
           articleId,
           userId,
         };
-        const createdEvents = commandHandler(inList, removeArticleFromUserList);
+        const createdEvents = commandHandler(saveState, removeArticleFromUserList);
 
         expect(createdEvents).toStrictEqual([expect.objectContaining({
           type: 'ArticleRemovedFromUserList',
@@ -32,13 +32,13 @@ describe('command-handler', () => {
   describe('article is not in the list', () => {
     describe('and a RemoveArticleFromUserList Command is issued', () => {
       it('creates no events', () => {
-        const inList = false;
+        const saveState = 'not-saved';
         const removeArticleFromUserList = {
           type: 'RemoveArticleFromUserList' as const,
           articleId: arbitraryDoi(),
           userId: arbitraryUserId(),
         };
-        const createdEvents = commandHandler(inList, removeArticleFromUserList);
+        const createdEvents = commandHandler(saveState, removeArticleFromUserList);
 
         expect(createdEvents).toStrictEqual([]);
       });

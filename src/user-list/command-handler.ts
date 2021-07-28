@@ -11,14 +11,16 @@ type Command = {
   type: 'RemoveArticleFromUserList',
 };
 
+export type SaveState = 'saved' | 'not-saved';
+
 type CommandHandler = (
-  inList: boolean,
+  saveState: SaveState,
   command: Command
 ) => ReadonlyArray<ArticleRemovedFromUserListEvent>;
 
 // ts-unused-exports:disable-next-line
-export const commandHandler: CommandHandler = (articleAlreadyInList, command) => (
-  articleAlreadyInList
+export const commandHandler: CommandHandler = (saveState, command) => (
+  saveState === 'saved'
     ? [articleRemovedFromUserList(command.userId, command.articleId)]
     : []
 );
