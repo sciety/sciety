@@ -12,7 +12,7 @@ describe('state-manager', () => {
     expect(articleInList).toBe(false);
   });
 
-  it.skip('UserSavedArticle Bob, 1: true', () => {
+  it('UserSavedArticle Bob, 1: true', () => {
     const bob = arbitraryUserId();
     const article1 = arbitraryDoi();
     const events: ReadonlyArray<DomainEvent> = [
@@ -23,7 +23,7 @@ describe('state-manager', () => {
     expect(articleInList).toBe(true);
   });
 
-  it.skip('UserSavedArticle Bob, 1; ArticleRemovedFromUserList Bob, 1: false', () => {
+  it('UserSavedArticle Bob, 1; ArticleRemovedFromUserList Bob, 1: false', () => {
     const bob = arbitraryUserId();
     const article1 = arbitraryDoi();
     const events: ReadonlyArray<DomainEvent> = [
