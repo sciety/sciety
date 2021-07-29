@@ -24,7 +24,10 @@ export const getUserListDetails = (userId: UserId) => (events: ReadonlyArray<Dom
   RA.filter(isRelevantEvent),
   RA.filter((event) => event.userId === userId),
   (relevantEvents) => ({
-    articleCount: relevantEvents.length,
+    articleCount: pipe(
+      relevantEvents,
+      RA.reduce(0, (state, event) => (isUserSavedArticleEvent(event) ? state + 1 : state - 1)),
+    ),
     lastUpdated: pipe(
       relevantEvents,
       RA.last,

@@ -56,7 +56,7 @@ describe('get-user-list-details', () => {
       getUserListDetails(userId),
     );
 
-    it.skip('returns a count of the remaining articles', () => {
+    it('returns a count of the remaining articles', () => {
       expect(details.articleCount).toStrictEqual(0);
     });
 
