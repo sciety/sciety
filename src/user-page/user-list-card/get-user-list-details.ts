@@ -1,7 +1,13 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { DomainEvent, isUserSavedArticleEvent } from '../../types/domain-events';
+import {
+  DomainEvent,
+  isUserSavedArticleEvent,
+  isUserUnsavedArticleEvent,
+  UserSavedArticleEvent,
+  UserUnsavedArticleEvent,
+} from '../../types/domain-events';
 import { UserId } from '../../types/user-id';
 
 type UserListDetails = {
@@ -9,9 +15,13 @@ type UserListDetails = {
   lastUpdated: O.Option<Date>,
 };
 
+const isRelevantEvent = (event: DomainEvent): event is UserSavedArticleEvent | UserUnsavedArticleEvent => (
+  isUserSavedArticleEvent(event) || isUserUnsavedArticleEvent(event)
+);
+
 export const getUserListDetails = (userId: UserId) => (events: ReadonlyArray<DomainEvent>): UserListDetails => pipe(
   events,
-  RA.filter(isUserSavedArticleEvent),
+  RA.filter(isRelevantEvent),
   RA.filter((event) => event.userId === userId),
   (relevantEvents) => ({
     articleCount: relevantEvents.length,

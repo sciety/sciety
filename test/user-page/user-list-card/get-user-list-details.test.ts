@@ -60,7 +60,7 @@ describe('get-user-list-details', () => {
       expect(details.articleCount).toStrictEqual(0);
     });
 
-    it.skip('returns the date of the last activity', () => {
+    it('returns the date of the last activity', () => {
       expect(details.lastUpdated).toStrictEqual(O.some(laterDate));
     });
   });
