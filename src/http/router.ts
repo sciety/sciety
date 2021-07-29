@@ -49,6 +49,7 @@ import * as DE from '../types/data-error';
 import * as Doi from '../types/doi';
 import { toHtmlFragment } from '../types/html-fragment';
 import { userListPage } from '../user-list-page';
+import { unsaveArticle } from '../user-list/unsaveArticle';
 import { userPage } from '../user-page/user-page';
 
 const biorxivPrefix = '10.1101';
@@ -383,6 +384,7 @@ export const createRouter = (adapters: Adapters): Router => {
     '/unsave-article',
     bodyParser({ enableTypes: ['form'] }),
     requireAuthentication,
+    unsaveArticle(adapters),
     redirectBack,
   );
 

@@ -37,11 +37,11 @@ type SavedArticles = (ports: Ports) => (
   showControls: boolean,
 ) => T.Task<HtmlFragment>;
 
-const controls = (loggedInUserId: O.Option<UserId>, listOwnerId: UserId, showControls: boolean) => pipe(
+const controls = (loggedInUserId: O.Option<UserId>, listOwnerId: UserId, showControls: boolean, articleId: Doi) => pipe(
   loggedInUserId,
   O.filter(() => showControls),
   O.filter((userId) => userId === listOwnerId),
-  O.map(() => toHtmlFragment('<form method="post" action="/unsave-article"><button><img src="/static/images/delete.svg" alt="Remove from this list"></button></form>')),
+  O.map(() => toHtmlFragment(`<form method="post" action="/unsave-article"><input type="hidden" name="articleid" value="${articleId.value}"><button><img src="/static/images/delete.svg" alt="Remove from this list"></button></form>`)),
 );
 
 export const savedArticles: SavedArticles = (ports) => (dois, loggedInUser, listOwnerId, showControls) => pipe(
@@ -59,7 +59,9 @@ export const savedArticles: SavedArticles = (ports) => (dois, loggedInUser, list
     })),
   ),
   TE.map(flow(
-    RA.map(renderArticleCard(controls(loggedInUser, listOwnerId, showControls))),
+    RA.map((articleViewModel) => renderArticleCard(
+      controls(loggedInUser, listOwnerId, showControls, articleViewModel.doi),
+    )(articleViewModel)),
     renderSavedArticles,
   )),
   TE.toUnion,
