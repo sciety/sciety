@@ -1,7 +1,8 @@
 import * as T from 'fp-ts/Task';
 import { projectHasUserSavedArticle } from '../../src/article-page/project-has-user-saved-article';
 import { Doi } from '../../src/types/doi';
-import { userSavedArticle } from '../../src/types/domain-events';
+import { userSavedArticle, userUnsavedArticle } from '../../src/types/domain-events';
+
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
@@ -27,6 +28,23 @@ describe('project-has-user-saved-article', () => {
       const result = await projectHasUserSavedArticle(
         arbitraryDoi(),
         arbitraryUserId(),
+      )(getEvents)();
+
+      expect(result).toBe(false);
+    });
+  });
+
+  describe('when the user has saved and unsaved the article', () => {
+    it.skip('returns false', async () => {
+      const userId = arbitraryUserId();
+      const articleId = arbitraryDoi();
+      const getEvents = T.of([
+        userSavedArticle(userId, articleId),
+        userUnsavedArticle(userId, articleId),
+      ]);
+      const result = await projectHasUserSavedArticle(
+        articleId,
+        userId,
       )(getEvents)();
 
       expect(result).toBe(false);
