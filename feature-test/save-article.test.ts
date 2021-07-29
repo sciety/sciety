@@ -55,7 +55,7 @@ describe('unsave article', () => {
       await authenticateViaTwitter();
     });
 
-    it.skip('removes the article from the list', async () => {
+    it('removes the article from the list', async () => {
       await goto('localhost:8080/articles/10.1101/2021.02.16.431437');
       await click('Save to my list');
       await click('Saved to my list');

@@ -35,7 +35,7 @@ describe('project-has-user-saved-article', () => {
   });
 
   describe('when the user has saved and unsaved the article', () => {
-    it.skip('returns false', async () => {
+    it('returns false', async () => {
       const userId = arbitraryUserId();
       const articleId = arbitraryDoi();
       const getEvents = T.of([
