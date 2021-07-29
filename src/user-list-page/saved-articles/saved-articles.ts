@@ -41,7 +41,7 @@ const controls = (loggedInUserId: O.Option<UserId>, listOwnerId: UserId, showCon
   loggedInUserId,
   O.filter(() => showControls),
   O.filter((userId) => userId === listOwnerId),
-  O.map(() => toHtmlFragment('<img src="/static/images/delete.svg">')),
+  O.map(() => toHtmlFragment('<form method="post" action="/unsave-article"><button><img src="/static/images/delete.svg" alt="Remove from this list"></button></form>')),
 );
 
 export const savedArticles: SavedArticles = (ports) => (dois, loggedInUser, listOwnerId, showControls) => pipe(
