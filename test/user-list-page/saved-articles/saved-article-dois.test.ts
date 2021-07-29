@@ -1,5 +1,5 @@
 import { Doi } from '../../../src/types/doi';
-import { articleRemovedFromUserList, userSavedArticle } from '../../../src/types/domain-events';
+import { userSavedArticle, userUnsavedArticle } from '../../../src/types/domain-events';
 import { savedArticleDois } from '../../../src/user-list-page/saved-articles/saved-article-dois';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
@@ -27,7 +27,7 @@ describe('saved-article-dois', () => {
         const events = [
           userSavedArticle(userId, new Doi('10.1101/12345')),
           userSavedArticle(userId, new Doi('10.1101/67890')),
-          articleRemovedFromUserList(userId, new Doi('10.1101/12345')),
+          userUnsavedArticle(userId, new Doi('10.1101/12345')),
         ];
         const output = savedArticleDois(events)(userId);
         const expected = [
@@ -41,7 +41,7 @@ describe('saved-article-dois', () => {
         const userId = arbitraryUserId();
         const events = [
           userSavedArticle(userId, new Doi('10.1101/12345')),
-          articleRemovedFromUserList(userId, new Doi('10.1101/12345')),
+          userUnsavedArticle(userId, new Doi('10.1101/12345')),
           userSavedArticle(userId, new Doi('10.1101/12345')),
         ];
         const output = savedArticleDois(events)(userId);

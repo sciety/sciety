@@ -1,5 +1,5 @@
 /* eslint-disable jest/lowercase-name */
-import { articleRemovedFromUserList, DomainEvent, userSavedArticle } from '../../src/types/domain-events';
+import { DomainEvent, userSavedArticle, userUnsavedArticle } from '../../src/types/domain-events';
 import { articleSaveState } from '../../src/user-list/article-save-state';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
@@ -28,7 +28,7 @@ describe('article-save-state', () => {
     const articleId = arbitraryDoi();
     const events: ReadonlyArray<DomainEvent> = [
       userSavedArticle(bob, articleId),
-      articleRemovedFromUserList(bob, articleId),
+      userUnsavedArticle(bob, articleId),
     ];
     const articleInList = articleSaveState(events, bob, articleId);
 
@@ -40,7 +40,7 @@ describe('article-save-state', () => {
     const articleId = arbitraryDoi();
     const events: ReadonlyArray<DomainEvent> = [
       userSavedArticle(bob, articleId),
-      articleRemovedFromUserList(bob, articleId),
+      userUnsavedArticle(bob, articleId),
       userSavedArticle(bob, articleId),
     ];
     const articleInList = articleSaveState(events, bob, articleId);

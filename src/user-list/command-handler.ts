@@ -1,7 +1,7 @@
 import { Doi } from '../types/doi';
 import {
-  articleRemovedFromUserList,
-  ArticleRemovedFromUserListEvent, userSavedArticle, UserSavedArticleEvent,
+  userSavedArticle,
+  UserSavedArticleEvent, userUnsavedArticle, UserUnsavedArticleEvent,
 } from '../types/domain-events';
 import { UserId } from '../types/user-id';
 
@@ -16,11 +16,11 @@ export type SaveState = 'saved' | 'not-saved';
 type CommandHandler = (
   saveState: SaveState,
   command: Command
-) => ReadonlyArray<ArticleRemovedFromUserListEvent | UserSavedArticleEvent>;
+) => ReadonlyArray<UserUnsavedArticleEvent | UserSavedArticleEvent>;
 
 const handleRemoveCommand = (saveState: SaveState, command: Command) => (
   saveState === 'saved'
-    ? [articleRemovedFromUserList(command.userId, command.articleId)]
+    ? [userUnsavedArticle(command.userId, command.articleId)]
     : []);
 
 const handleSaveCommand = (saveState: SaveState, command: Command) => (

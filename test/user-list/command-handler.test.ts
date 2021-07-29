@@ -17,7 +17,7 @@ describe('command-handler', () => {
         const createdEvents = commandHandler(saveState, removeArticleFromUserList);
 
         expect(createdEvents).toStrictEqual([expect.objectContaining({
-          type: 'ArticleRemovedFromUserList',
+          type: 'UserUnsavedArticle',
           articleId,
           userId,
         })]);

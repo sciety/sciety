@@ -4,17 +4,17 @@ import { pipe } from 'fp-ts/function';
 import { SaveState } from './command-handler';
 import { Doi } from '../types/doi';
 import {
-  ArticleRemovedFromUserListEvent,
-  DomainEvent, isArticleRemovedFromUserListEvent,
-  isUserSavedArticleEvent,
+  DomainEvent,
+  isUserSavedArticleEvent, isUserUnsavedArticleEvent,
   UserSavedArticleEvent,
+  UserUnsavedArticleEvent,
 } from '../types/domain-events';
 import { UserId } from '../types/user-id';
 
-type RelevantEvent = UserSavedArticleEvent | ArticleRemovedFromUserListEvent;
+type RelevantEvent = UserSavedArticleEvent | UserUnsavedArticleEvent;
 
 const isRelevantEvent = (userId: UserId, articleId: Doi) => (event: DomainEvent): event is RelevantEvent => (
-  (isUserSavedArticleEvent(event) || isArticleRemovedFromUserListEvent(event))
+  (isUserSavedArticleEvent(event) || isUserUnsavedArticleEvent(event))
   && event.userId === userId
   && event.articleId.value === articleId.value
 );

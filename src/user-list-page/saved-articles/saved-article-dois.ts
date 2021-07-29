@@ -3,20 +3,20 @@ import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { Doi } from '../../types/doi';
 import {
-  ArticleRemovedFromUserListEvent,
   DomainEvent,
-  isArticleRemovedFromUserListEvent,
   isUserSavedArticleEvent,
+  isUserUnsavedArticleEvent,
   UserSavedArticleEvent,
+  UserUnsavedArticleEvent,
 } from '../../types/domain-events';
 import { UserId } from '../../types/user-id';
 
 export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-type RelevantEvent = UserSavedArticleEvent | ArticleRemovedFromUserListEvent;
+type RelevantEvent = UserSavedArticleEvent | UserUnsavedArticleEvent;
 
 const isRelevantEvent = (event: DomainEvent): event is RelevantEvent => (
-  isUserSavedArticleEvent(event) || isArticleRemovedFromUserListEvent(event)
+  isUserSavedArticleEvent(event) || isUserUnsavedArticleEvent(event)
 );
 
 const updateProjection = (
