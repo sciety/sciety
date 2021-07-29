@@ -50,6 +50,7 @@ describe('get-user-list-details', () => {
     const articleId = arbitraryDoi();
     const details = pipe(
       [
+        userSavedArticle(userId, arbitraryDoi(), new Date(1950)),
         userSavedArticle(userId, articleId, earlierDate),
         userUnsavedArticle(userId, articleId, laterDate),
       ],
@@ -57,7 +58,7 @@ describe('get-user-list-details', () => {
     );
 
     it('returns a count of the remaining articles', () => {
-      expect(details.articleCount).toStrictEqual(0);
+      expect(details.articleCount).toStrictEqual(1);
     });
 
     it('returns the date of the last activity', () => {
