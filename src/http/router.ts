@@ -379,6 +379,13 @@ export const createRouter = (adapters: Adapters): Router => {
     redirectBack,
   );
 
+  router.post(
+    '/unsave-article',
+    bodyParser({ enableTypes: ['form'] }),
+    requireAuthentication,
+    redirectBack,
+  );
+
   // AUTHENTICATION
 
   router.get(
