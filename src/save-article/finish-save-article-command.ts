@@ -1,25 +1,21 @@
 import * as O from 'fp-ts/Option';
-import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
-import * as B from 'fp-ts/boolean';
-import { constant, flow, pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
 import * as Doi from '../types/doi';
 import {
-  DomainEvent, isUserSavedArticleEvent, userSavedArticle, UserSavedArticleEvent,
+  ArticleRemovedFromUserListEvent,
+  DomainEvent, UserSavedArticleEvent,
 } from '../types/domain-events';
 import { User } from '../types/user';
-import { UserId } from '../types/user-id';
+import { articleSaveState } from '../user-list/article-save-state';
+import { commandHandler } from '../user-list/command-handler';
 
 const isCommand = (command: string): command is 'save-article' => command === 'save-article';
 
-const isMatchingSavedEvent = (userId: UserId, articleId: Doi.Doi) => (event: DomainEvent) => (
-  isUserSavedArticleEvent(event) && event.userId === userId && Doi.eqDoi.equals(event.articleId, articleId)
-);
-
 type Ports = {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
-  commitEvents: (events: ReadonlyArray<UserSavedArticleEvent>) => T.Task<void>,
+  commitEvents: (events: ReadonlyArray<UserSavedArticleEvent | ArticleRemovedFromUserListEvent>) => T.Task<void>,
 };
 
 export const finishSaveArticleCommand = (
@@ -35,11 +31,12 @@ export const finishSaveArticleCommand = (
       ({ articleId }) => pipe(
         getAllEvents,
         T.chain(flow(
-          RA.some(isMatchingSavedEvent(user.id, articleId)),
-          B.fold(
-            () => [userSavedArticle(user.id, articleId)],
-            constant([]),
-          ),
+          (events) => articleSaveState(events, user.id, articleId),
+          (state) => commandHandler(state, {
+            articleId,
+            userId: user.id,
+            type: 'SaveArticleToUserList' as const,
+          }),
           commitEvents,
         )),
         T.map(() => {

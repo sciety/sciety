@@ -239,6 +239,7 @@ export type DomainEvent =
   UserRevokedFindingReviewNotHelpfulEvent;
 
 export type RuntimeGeneratedEvent =
+  ArticleRemovedFromUserListEvent |
   UserFollowedEditorialCommunityEvent |
   UserUnfollowedEditorialCommunityEvent |
   UserFoundReviewHelpfulEvent |
