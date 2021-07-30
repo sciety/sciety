@@ -3,8 +3,8 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
-import {SkippedItem} from './update-all';
-import {Evaluation} from './evaluations';
+import { Evaluation } from './evaluations';
+import { SkippedItem } from './update-all';
 
 const userId = process.argv[2];
 
@@ -37,24 +37,29 @@ const toEvaluation = (server: string) => (row: Row): E.Either<SkippedItem, Evalu
 };
 
 const processServer = (server: string) => async (): Promise<void> => {
+  let result: ReadonlyArray<E.Either<SkippedItem, Evaluation>> = [];
   const perPage = 200;
   let latestDate = encodeURIComponent(new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString());
   let { data } = await axios.get<HypothesisResponse>(`https://api.hypothes.is/api/search?user=${userId}&uri.parts=${server}&limit=${perPage}&sort=created&order=asc&search_after=${latestDate}`);
 
   // eslint-disable-next-line no-loops/no-loops
   while (data.rows.length > 0) {
-    pipe(
+    const evaluations = pipe(
       data.rows,
       RA.map(toEvaluation(server)),
-      RA.rights,
-      RA.map((evaluation) => {
-        process.stdout.write(`${evaluation.date.toISOString()},${evaluation.articleDoi},${evaluation.evaluationLocator}\n`);
-        return evaluation;
-      }),
     );
+    result = [...result, ...evaluations];
     latestDate = encodeURIComponent(data.rows[data.rows.length - 1].created);
     data = (await axios.get<HypothesisResponse>(`https://api.hypothes.is/api/search?user=${userId}&uri.parts=${server}&limit=${perPage}&sort=created&order=asc&search_after=${latestDate}`)).data;
   }
+  pipe(
+    result,
+    RA.rights,
+    RA.map((evaluation) => {
+      process.stdout.write(`${evaluation.date.toISOString()},${evaluation.articleDoi},${evaluation.evaluationLocator}\n`);
+      return evaluation;
+    }),
+  );
 };
 
 void (async (): Promise<void> => {
