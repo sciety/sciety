@@ -21,7 +21,6 @@ const isRelevantEvent = (userId: UserId, articleId: Doi) => (event: DomainEvent)
 
 type ArticleSaveState = (events: ReadonlyArray<DomainEvent>, userId: UserId, articleId: Doi) => SaveState;
 
-// ts-unused-exports:disable-next-line
 export const articleSaveState: ArticleSaveState = (events, userId, articleId) => pipe(
   events,
   RA.filter(isRelevantEvent(userId, articleId)),

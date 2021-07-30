@@ -28,7 +28,6 @@ const handleSaveCommand = (saveState: SaveState, command: Command) => (
     ? [userSavedArticle(command.userId, command.articleId)]
     : []);
 
-// ts-unused-exports:disable-next-line
 export const commandHandler: CommandHandler = (saveState, command) => {
   switch (command.type) {
     case 'SaveArticleToUserList':
