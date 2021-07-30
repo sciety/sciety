@@ -15,7 +15,7 @@ type Adapters = {
   fetchGoogleSheet: FetchGoogleSheet,
 };
 
-type SkippedItem = {
+export type SkippedItem = {
   item: string,
   reason: string,
 };

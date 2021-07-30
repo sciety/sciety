@@ -10,7 +10,7 @@ import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
 import { JSDOM } from 'jsdom';
 import { FetchData } from './fetch-data';
-import { FetchEvaluations } from './update-all';
+import { FetchEvaluations, SkippedItem } from './update-all';
 
 const key = process.env.PRELIGHTS_FEED_KEY ?? '';
 
@@ -36,25 +36,18 @@ const prelightsFeedCodec = t.type({
 
 type Feed = t.TypeOf<typeof prelightsFeedCodec>;
 
-const toDoi = (fetchData: FetchData) => (url: string): TE.TaskEither<string, string> => pipe(
+const toDoi = (fetchData: FetchData) => (url: string): TE.TaskEither<SkippedItem, string> => pipe(
   fetchData<string>(url),
+  TE.mapLeft((e) => ({ item: url, reason: e })),
   TE.chainEitherKW(flow(
     (doc) => new JSDOM(doc),
     (dom) => dom.window.document.querySelector('meta[name="DC.Identifier"]'),
     (meta) => meta?.getAttribute('content'),
     O.fromNullable,
-    E.fromOption(() => {
-      const msg = `WARNING: Cannot find DC.Identifier at url: ${url}\n`;
-      process.stderr.write(msg);
-      return msg;
-    }),
+    E.fromOption(() => ({ item: url, reason: 'No DC.Identifier found' })),
     E.filterOrElse(
       (doi) => doi.startsWith('10.1101/'),
-      (doi) => {
-        const msg = `WARNING: Non-biorxiv DOI ${doi} at url: ${url}\n`;
-        process.stderr.write(msg);
-        return msg;
-      },
+      () => ({ item: url, reason: 'Not a biorxiv DOI' }),
     ),
   )),
 );
