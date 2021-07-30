@@ -72,9 +72,16 @@ export const fetchRapidReviews = (): FetchEvaluations => (ports: Ports) => pipe(
     TE.map(extractEvaluations),
   ))),
   TE.map(RA.flatten),
-  TE.map(RA.filter(({ articleDoi }) => articleDoi.startsWith('10.1101/'))),
-  TE.map((evaluations) => ({
-    evaluations,
-    skippedItems: O.none,
+  TE.map(RA.partitionMap((item) => pipe(
+    item,
+    E.right,
+    E.filterOrElse(
+      (review) => review.articleDoi.startsWith('10.1101/'),
+      (review) => ({ item: review.articleDoi, reason: 'Not a biorxiv article' }),
+    ),
+  ))),
+  TE.map((parts) => ({
+    evaluations: parts.right,
+    skippedItems: O.some(parts.left),
   })),
 );
