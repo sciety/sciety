@@ -36,18 +36,18 @@ const prelightsFeedCodec = t.type({
 
 type Feed = t.TypeOf<typeof prelightsFeedCodec>;
 
-const toDoi = (fetchData: FetchData) => (url: string): TE.TaskEither<SkippedItem, string> => pipe(
-  fetchData<string>(url),
-  TE.mapLeft((e) => ({ item: url, reason: e })),
+const toDoi = (fetchData: FetchData) => (item: Prelight): TE.TaskEither<SkippedItem, string> => pipe(
+  fetchData<string>(item.preprintUrl),
+  TE.mapLeft((e) => ({ item: item.guid, reason: e })),
   TE.chainEitherKW(flow(
     (doc) => new JSDOM(doc),
     (dom) => dom.window.document.querySelector('meta[name="DC.Identifier"]'),
     (meta) => meta?.getAttribute('content'),
     O.fromNullable,
-    E.fromOption(() => ({ item: url, reason: 'No DC.Identifier found' })),
+    E.fromOption(() => ({ item: item.guid, reason: 'No DC.Identifier found' })),
     E.filterOrElse(
       (doi) => doi.startsWith('10.1101/'),
-      () => ({ item: url, reason: 'Not a biorxiv DOI' }),
+      () => ({ item: item.guid, reason: 'Not a biorxiv DOI' }),
     ),
   )),
 );
@@ -76,10 +76,17 @@ const toIndividualPrelights = (item: FeedItem): Array<Prelight> => {
 
 const extractPrelights = (fetchData: FetchData) => (items: ReadonlyArray<Prelight>) => pipe(
   items,
-  RA.filter((item) => item.category.includes('highlight')),
   T.traverseArray((item) => pipe(
-    item.preprintUrl,
-    toDoi(fetchData),
+    item,
+    TE.right,
+    TE.filterOrElse(
+      (i) => i.category.includes('highlight'),
+      (i) => ({
+        item: i.guid,
+        reason: `Category was '${item.category}`,
+      }),
+    ),
+    TE.chain(toDoi(fetchData)),
     TE.map((articleDoi) => ({
       date: item.pubDate,
       articleDoi,
