@@ -76,11 +76,11 @@ export const renderArticleCard = (controls: O.Option<HtmlFragment>) => (model: A
       <a class="article-card__link" href="/articles/activity/${model.doi.value}">${model.title}</a>
     </h3>
     ${renderAuthors(model.authors, `article-card-author-list-${model.doi.value}`)}
-    <div class="article-card__footer">
+    <footer class="article-card__footer">
       <div class="article-card__meta">
         <span class="visually-hidden">This article has </span>${renderEvaluationCount(model.evaluationCount)}${renderArticleVersionDate(model.latestVersionDate)}${renderArticleLatestActivityDate(model.latestActivityDate)}
       </div>
       ${renderControls(controls)}
-    </div>
+    </footer>
   </article>
 `);
