@@ -57,7 +57,7 @@ const processServer = (
   return result;
 };
 
-export const fetchReviewsFromHypothesis = (publisherGroupId: string): FetchEvaluations => () => pipe(
+export const fetchReviewsFromHypothesisGroup = (publisherGroupId: string): FetchEvaluations => () => pipe(
   ['biorxiv', 'medrxiv'],
   T.traverseArray(processServer(publisherGroupId)),
   T.map(RA.flatten),
