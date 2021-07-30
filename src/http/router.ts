@@ -38,6 +38,7 @@ import { menuPageLayout } from '../menu-page/menu-page-layout';
 import { respondHandler } from '../respond';
 import { finishRespondCommand } from '../respond/finish-respond-command';
 import { saveRespondCommand } from '../respond/save-respond-command';
+import { unsaveArticle } from '../save-article/execute-unsave-article-command';
 import { finishSaveArticleCommand } from '../save-article/finish-save-article-command';
 import { saveSaveArticleCommand } from '../save-article/save-save-article-command';
 import { searchPage } from '../search-page';
@@ -49,7 +50,6 @@ import * as DE from '../types/data-error';
 import * as Doi from '../types/doi';
 import { toHtmlFragment } from '../types/html-fragment';
 import { userListPage } from '../user-list-page';
-import { unsaveArticle } from '../user-list/unsaveArticle';
 import { userPage } from '../user-page/user-page';
 
 const biorxivPrefix = '10.1101';

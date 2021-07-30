@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
-import { articleSaveState } from './article-save-state';
+import { articleSaveState } from '../user-list/article-save-state';
 import { commandHandler } from './command-handler';
 import * as Doi from '../types/doi';
 import {

@@ -9,7 +9,7 @@ import {
 } from '../types/domain-events';
 import { User } from '../types/user';
 import { articleSaveState } from '../user-list/article-save-state';
-import { commandHandler } from '../user-list/command-handler';
+import { commandHandler } from './command-handler';
 
 const isCommand = (command: string): command is 'save-article' => command === 'save-article';
 
