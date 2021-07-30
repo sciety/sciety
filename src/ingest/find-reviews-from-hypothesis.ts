@@ -37,23 +37,28 @@ const toEvaluation = (server: string) => (row: Row): E.Either<SkippedItem, Evalu
 };
 
 const processServer = async (server: string): Promise<void> => {
+  let result: ReadonlyArray<E.Either<SkippedItem, Evaluation>> = [];
   const perPage = 200;
   let data;
   let pageNumber = 0;
   // eslint-disable-next-line no-loops/no-loops
   do {
     data = (await axios.get<HypothesisResponse>(`https://api.hypothes.is/api/search?group=${publisherGroupId}&uri.parts=${server}&limit=${perPage}&offset=${perPage * pageNumber}`)).data;
-    pipe(
+    const evaluations = pipe(
       data.rows,
       RA.map(toEvaluation(server)),
-      RA.rights,
-      RA.map((evaluation) => {
-        process.stdout.write(`${evaluation.date.toISOString()},${evaluation.articleDoi},${evaluation.evaluationLocator}\n`);
-        return evaluation;
-      }),
     );
+    result = [...result, ...evaluations];
     pageNumber += 1;
   } while (data.rows.length > 0);
+  pipe(
+    result,
+    RA.rights,
+    RA.map((evaluation) => {
+      process.stdout.write(`${evaluation.date.toISOString()},${evaluation.articleDoi},${evaluation.evaluationLocator}\n`);
+      return evaluation;
+    }),
+  );
 };
 
 void (async (): Promise<void> => {
