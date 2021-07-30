@@ -59,27 +59,32 @@ const toDoi = (fetchData: FetchData) => (url: string): TE.TaskEither<string, str
   )),
 );
 
+type FeedItem = Feed['rss']['channel']['item'][0];
+
 type Prelight = {
   guid: string,
+  category: string,
   pubDate: Date,
   preprintUrl: string,
 };
 
+const toIndividualPrelights = (item: FeedItem): Array<Prelight> => {
+  if (item.preprints.preprint instanceof Array) {
+    return item.preprints.preprint.map((preprintItem) => ({
+      ...item,
+      preprintUrl: preprintItem.preprinturl,
+    }));
+  }
+  return [{
+    ...item,
+    preprintUrl: item.preprints.preprint.preprinturl,
+  }];
+};
+
 const extractPrelights = (fetchData: FetchData) => (feed: Feed) => pipe(
   feed.rss.channel.item,
+  RA.chain(toIndividualPrelights),
   RA.filter((item) => item.category.includes('highlight')),
-  RA.chain((item): Array<Prelight> => {
-    if (item.preprints.preprint instanceof Array) {
-      return item.preprints.preprint.map((preprintItem) => ({
-        ...item,
-        preprintUrl: preprintItem.preprinturl,
-      }));
-    }
-    return [{
-      ...item,
-      preprintUrl: item.preprints.preprint.preprinturl,
-    }];
-  }),
   T.traverseArray((item) => pipe(
     item.preprintUrl,
     toDoi(fetchData),
