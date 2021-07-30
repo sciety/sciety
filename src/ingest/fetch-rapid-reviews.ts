@@ -41,7 +41,6 @@ const extractEvaluations = (data: t.TypeOf<typeof rapidReviewCodec>) => pipe(
     articleDoi: item.relation['is-review-of'][0].id,
     evaluationLocator: `rapidreviews:${item.URL}`,
   })),
-  RA.filter(({ articleDoi }) => articleDoi.startsWith('10.1101/')),
 );
 
 const pageSize = 100;
@@ -73,6 +72,7 @@ export const fetchRapidReviews = (): FetchEvaluations => (ports: Ports) => pipe(
     TE.map(extractEvaluations),
   ))),
   TE.map(RA.flatten),
+  TE.map(RA.filter(({ articleDoi }) => articleDoi.startsWith('10.1101/'))),
   TE.map((evaluations) => ({
     evaluations,
     skippedItems: O.none,
