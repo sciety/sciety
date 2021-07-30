@@ -4,7 +4,7 @@ import { fetchNcrcEvaluations } from './fetch-ncrc-evaluations';
 import { fetchPciEvaluations } from './fetch-pci-evaluations';
 import { fetchPrelightsEvaluations } from './fetch-prelights-evaluations';
 import { fetchPrereviewEvaluations } from './fetch-prereview-evaluations';
-import { fetchRapidReviews } from './find-reviews-from-rapid-reviews';
+import { fetchRapidReviews } from './fetch-rapid-reviews';
 import { Group, updateAll } from './update-all';
 
 const allGroups: Array<Group> = [
