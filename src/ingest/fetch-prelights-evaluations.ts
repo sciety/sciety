@@ -93,7 +93,10 @@ const extractPrelights = (fetchData: FetchData) => (items: ReadonlyArray<Preligh
       evaluationLocator: `prelights:${item.guid.replace('&#038;', '&')}`,
     })),
   )),
-  T.map(RA.rights),
+  T.map((things) => ({
+    evaluations: RA.rights(things),
+    skippedItems: O.some(RA.lefts(things)),
+  })),
 );
 
 type Ports = {
@@ -112,8 +115,4 @@ export const fetchPrelightsEvaluations = (): FetchEvaluations => (ports: Ports) 
     RA.chain(toIndividualPrelights),
   )),
   TE.chainTaskK(extractPrelights(ports.fetchData)),
-  TE.map((evaluations) => ({
-    evaluations,
-    skippedItems: O.none,
-  })),
 );
