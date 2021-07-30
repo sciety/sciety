@@ -14,8 +14,9 @@ type Command = {
 export type SaveState = 'saved' | 'not-saved';
 
 type CommandHandler = (
+  command: Command,
+) => (
   saveState: SaveState,
-  command: Command
 ) => ReadonlyArray<UserUnsavedArticleEvent | UserSavedArticleEvent>;
 
 const handleRemoveCommand = (saveState: SaveState, command: Command) => (
@@ -28,7 +29,7 @@ const handleSaveCommand = (saveState: SaveState, command: Command) => (
     ? [userSavedArticle(command.userId, command.articleId)]
     : []);
 
-export const commandHandler: CommandHandler = (saveState, command) => {
+export const commandHandler: CommandHandler = (command) => (saveState) => {
   switch (command.type) {
     case 'SaveArticleToUserList':
       return handleSaveCommand(saveState, command);

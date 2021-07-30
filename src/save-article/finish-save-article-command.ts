@@ -32,7 +32,7 @@ export const finishSaveArticleCommand = (
         getAllEvents,
         T.chain(flow(
           (events) => articleSaveState(events, user.id, articleId),
-          (state) => commandHandler(state, {
+          commandHandler({
             articleId,
             userId: user.id,
             type: 'SaveArticleToUserList' as const,

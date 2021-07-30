@@ -14,7 +14,7 @@ describe('command-handler', () => {
           articleId,
           userId,
         };
-        const createdEvents = commandHandler(saveState, removeArticleFromUserList);
+        const createdEvents = commandHandler(removeArticleFromUserList)(saveState);
 
         expect(createdEvents).toStrictEqual([expect.objectContaining({
           type: 'UserUnsavedArticle',
@@ -34,7 +34,7 @@ describe('command-handler', () => {
           articleId,
           userId,
         };
-        const createdEvents = commandHandler(saveState, saveArticleToUserList);
+        const createdEvents = commandHandler(saveArticleToUserList)(saveState);
 
         expect(createdEvents).toStrictEqual([]);
       });
@@ -50,7 +50,7 @@ describe('command-handler', () => {
           articleId: arbitraryDoi(),
           userId: arbitraryUserId(),
         };
-        const createdEvents = commandHandler(saveState, removeArticleFromUserList);
+        const createdEvents = commandHandler(removeArticleFromUserList)(saveState);
 
         expect(createdEvents).toStrictEqual([]);
       });
@@ -66,7 +66,7 @@ describe('command-handler', () => {
           articleId,
           userId,
         };
-        const createdEvents = commandHandler(saveState, saveArticleToUserList);
+        const createdEvents = commandHandler(saveArticleToUserList)(saveState);
 
         expect(createdEvents).toStrictEqual([expect.objectContaining({
           type: 'UserSavedArticle',

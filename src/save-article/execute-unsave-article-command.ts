@@ -29,7 +29,7 @@ export const unsaveArticle = (
         getAllEvents,
         T.chain(flow(
           (events) => articleSaveState(events, user.id, articleId),
-          (state) => commandHandler(state, {
+          commandHandler({
             articleId,
             userId: user.id,
             type: 'RemoveArticleFromUserList' as const,
