@@ -1,5 +1,6 @@
 @use '../sass/settings';
 @use '../sass/typography';
+@use '../sass/button';
 
 $_avatar-size: 48px;
 
@@ -16,4 +17,9 @@ $_avatar-size: 48px;
   border-radius: settings.$border-radius;
   border: settings.$avatar-border;
   margin-right: 0.5rem;
+}
+
+.saved-articles-control {
+  @include button.basics();
+  background-color: transparent;
 }
