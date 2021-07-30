@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { SaveState } from '../save-article/command-handler';
+import { SaveState } from './command-handler';
 import { Doi } from '../types/doi';
 import {
   DomainEvent,

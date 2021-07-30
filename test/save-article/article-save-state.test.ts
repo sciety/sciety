@@ -1,6 +1,6 @@
 /* eslint-disable jest/lowercase-name */
+import { articleSaveState } from '../../src/save-article/article-save-state';
 import { DomainEvent, userSavedArticle, userUnsavedArticle } from '../../src/types/domain-events';
-import { articleSaveState } from '../../src/user-list/article-save-state';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 

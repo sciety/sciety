@@ -2,14 +2,14 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
+import { articleSaveState } from './article-save-state';
+import { commandHandler } from './command-handler';
 import * as Doi from '../types/doi';
 import {
   DomainEvent,
   UserSavedArticleEvent, UserUnsavedArticleEvent,
 } from '../types/domain-events';
 import { User } from '../types/user';
-import { articleSaveState } from '../user-list/article-save-state';
-import { commandHandler } from './command-handler';
 
 const isCommand = (command: string): command is 'save-article' => command === 'save-article';
 
