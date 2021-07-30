@@ -81,9 +81,8 @@ const toIndividualPrelights = (item: FeedItem): Array<Prelight> => {
   }];
 };
 
-const extractPrelights = (fetchData: FetchData) => (feed: Feed) => pipe(
-  feed.rss.channel.item,
-  RA.chain(toIndividualPrelights),
+const extractPrelights = (fetchData: FetchData) => (items: ReadonlyArray<Prelight>) => pipe(
+  items,
   RA.filter((item) => item.category.includes('highlight')),
   T.traverseArray((item) => pipe(
     item.preprintUrl,
@@ -107,6 +106,10 @@ export const fetchPrelightsEvaluations = (): FetchEvaluations => (ports: Ports) 
   TE.chainEitherK(flow(
     prelightsFeedCodec.decode,
     E.mapLeft((errors) => PR.failure(errors).join('\n')),
+  )),
+  TE.map(flow(
+    (feed) => feed.rss.channel.item,
+    RA.chain(toIndividualPrelights),
   )),
   TE.chainTaskK(extractPrelights(ports.fetchData)),
   TE.map((evaluations) => ({
