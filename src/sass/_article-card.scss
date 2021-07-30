@@ -29,6 +29,15 @@
   display: inline;
 }
 
+.article-card__footer {
+  display: flex;
+  justify-content: space-between;
+}
+
 .article-card__meta {
   @include card.meta();
+}
+
+.article-card__controls {
+  margin-left: 1rem;
 }
