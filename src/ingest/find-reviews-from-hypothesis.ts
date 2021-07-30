@@ -61,10 +61,9 @@ export const fetchReviewsFromHypothesis = (publisherGroupId: string): FetchEvalu
   ['biorxiv', 'medrxiv'],
   T.traverseArray(processServer(publisherGroupId)),
   T.map(RA.flatten),
-  T.map(RA.rights),
-  T.map((evaluations) => ({
-    evaluations,
-    skippedItems: O.none,
+  T.map((parts) => ({
+    evaluations: RA.rights(parts),
+    skippedItems: O.some(RA.lefts(parts)),
   })),
   TE.rightTask,
 );
