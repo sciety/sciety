@@ -16,7 +16,7 @@ import * as PR from 'io-ts/PathReporter';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import * as RI from '../types/review-id';
 
-type Evaluation = {
+export type Evaluation = {
   date: Date,
   articleDoi: string,
   evaluationLocator: string,
