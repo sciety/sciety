@@ -23,7 +23,7 @@ const processRow = (server: string) => (row: Row): void => {
     throw new Error(`Cannot parse a DOI out of '${row.uri}'`);
   }
   const doi = matches[1];
-  process.stdout.write(`${row.created},${doi},hypothesis:${row.id}\n`);
+  process.stdout.write(`${new Date(row.created).toISOString()},${doi},hypothesis:${row.id}\n`);
 };
 
 const processServer = async (server: string): Promise<void> => {
