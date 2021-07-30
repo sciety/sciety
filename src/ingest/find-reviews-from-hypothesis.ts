@@ -1,11 +1,12 @@
 import axios from 'axios';
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Evaluation } from './evaluations';
-import { SkippedItem } from './update-all';
-
-const publisherGroupId = process.argv[2];
+import { FetchEvaluations, SkippedItem } from './update-all';
 
 type Row = {
   id: string,
@@ -36,7 +37,9 @@ const toEvaluation = (server: string) => (row: Row): E.Either<SkippedItem, Evalu
   });
 };
 
-const processServer = async (server: string): Promise<void> => {
+const processServer = (
+  publisherGroupId: string,
+) => (server: string) => async (): Promise<ReadonlyArray<E.Either<SkippedItem, Evaluation>>> => {
   let result: ReadonlyArray<E.Either<SkippedItem, Evaluation>> = [];
   const perPage = 200;
   let data;
@@ -51,20 +54,17 @@ const processServer = async (server: string): Promise<void> => {
     result = [...result, ...evaluations];
     pageNumber += 1;
   } while (data.rows.length > 0);
-  pipe(
-    result,
-    RA.rights,
-    RA.map((evaluation) => {
-      process.stdout.write(`${evaluation.date.toISOString()},${evaluation.articleDoi},${evaluation.evaluationLocator}\n`);
-      return evaluation;
-    }),
-  );
+  return result;
 };
 
-void (async (): Promise<void> => {
-  process.stdout.write('Date,Article DOI,Review ID\n');
-  await Promise.all([
-    processServer('biorxiv'),
-    processServer('medrxiv'),
-  ]);
-})();
+export const fetchReviewsFromHypothesis = (publisherGroupId: string): FetchEvaluations => () => pipe(
+  ['biorxiv', 'medrxiv'],
+  T.traverseArray(processServer(publisherGroupId)),
+  T.map(RA.flatten),
+  T.map(RA.rights),
+  T.map((evaluations) => ({
+    evaluations,
+    skippedItems: O.none,
+  })),
+  TE.rightTask,
+);

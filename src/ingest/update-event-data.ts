@@ -5,9 +5,15 @@ import { fetchPciEvaluations } from './fetch-pci-evaluations';
 import { fetchPrelightsEvaluations } from './fetch-prelights-evaluations';
 import { fetchPrereviewEvaluations } from './fetch-prereview-evaluations';
 import { fetchRapidReviews } from './fetch-rapid-reviews';
+import { fetchReviewsFromHypothesis } from './find-reviews-from-hypothesis';
 import { Group, updateAll } from './update-all';
 
 const allGroups: Array<Group> = [
+  {
+    id: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
+    name: 'eLife',
+    fetchFeed: fetchReviewsFromHypothesis('q5X6RWJ6'),
+  },
   {
     id: '62f9b0d0-8d43-4766-a52a-ce02af61bc6a',
     name: 'NCRC',
@@ -57,6 +63,11 @@ const allGroups: Array<Group> = [
     id: '5142a5bc-6b18-42b1-9a8d-7342d7d17e94',
     name: 'Rapid Reviews COVID-19',
     fetchFeed: fetchRapidReviews(),
+  },
+  {
+    id: '316db7d9-88cc-4c26-b386-f067e0f56334',
+    name: 'Review Commons',
+    fetchFeed: fetchReviewsFromHypothesis('NEGQVabn'),
   },
 ];
 

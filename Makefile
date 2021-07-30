@@ -79,16 +79,6 @@ clean-db: stop
 stop:
 	$(DOCKER_COMPOSE) down
 
-find-review-commons-reviews: export TARGET = dev
-find-review-commons-reviews: build
-	$(DOCKER_COMPOSE) run -T app \
-		npx ts-node src/ingest/find-reviews-from-hypothesis NEGQVabn > ./data/reviews/316db7d9-88cc-4c26-b386-f067e0f56334.csv
-
-find-elife-reviews: export TARGET = dev
-find-elife-reviews: build
-	$(DOCKER_COMPOSE) run -T app \
-		npx ts-node src/ingest/find-reviews-from-hypothesis q5X6RWJ6 > ./data/reviews/b560187e-f2fb-4ff9-a861-a204f3fc0fb0.csv
-
 find-peerj-reviews: export TARGET = dev
 find-peerj-reviews: build
 	$(DOCKER_COMPOSE) run -T app \
@@ -107,8 +97,6 @@ update-groups: build
 	npx ts-node src/ingest/update-event-data
 
 COMMUNITY_SCRIPTS := \
-	find-review-commons-reviews \
-	find-elife-reviews \
 	find-peerj-reviews \
 	find-screenit-reviews
 
