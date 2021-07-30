@@ -21,7 +21,7 @@ type HypothesisResponse = {
 // TODO bioRxiv/medRxiv content is available at multiple URL patterns:
 // curl "https://api.hypothes.is/api/search?uri.parts=biorxiv&limit=100" | jq --raw-output ".rows[].target[].source"
 
-const processRow = (server: string) => (row: Row): E.Either<SkippedItem, Evaluation> => {
+const toEvaluation = (server: string) => (row: Row): E.Either<SkippedItem, Evaluation> => {
   const doiRegex = '(10\\.[0-9]{4,}(?:\\.[1-9][0-9]*)*/(?:[^%"#?\\s])+)';
   // eslint-disable-next-line no-useless-escape
   const matches = new RegExp(`https://www.${server}.org/content/${doiRegex}v[0-9]+\.*$`).exec(row.uri);
@@ -45,14 +45,13 @@ const processServer = async (server: string): Promise<void> => {
     data = (await axios.get<HypothesisResponse>(`https://api.hypothes.is/api/search?group=${publisherGroupId}&uri.parts=${server}&limit=${perPage}&offset=${perPage * pageNumber}`)).data;
     pipe(
       data.rows,
-      RA.map(processRow(server)),
+      RA.map(toEvaluation(server)),
       RA.rights,
       RA.map((evaluation) => {
         process.stdout.write(`${evaluation.date.toISOString()},${evaluation.articleDoi},${evaluation.evaluationLocator}\n`);
         return evaluation;
       }),
     );
-    data.rows.forEach(processRow(server));
     pageNumber += 1;
   } while (data.rows.length > 0);
 };
