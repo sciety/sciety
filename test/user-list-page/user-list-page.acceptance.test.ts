@@ -163,7 +163,7 @@ describe('user-list-page', () => {
 
         const page = await pipe(
           params,
-          userListPage(ports, true),
+          userListPage(ports),
           contentOf,
           T.map(JSDOM.fragment),
         )();
@@ -201,7 +201,7 @@ describe('user-list-page', () => {
 
         const page = await pipe(
           params,
-          userListPage(ports, true),
+          userListPage(ports),
           contentOf,
           T.map(JSDOM.fragment),
         )();

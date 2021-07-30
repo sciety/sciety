@@ -224,7 +224,7 @@ export const createRouter = (adapters: Adapters): Router => {
       userPageParams.decode,
       E.mapLeft(toNotFound),
       TE.fromEither,
-      TE.chain(userListPage(adapters, process.env.EXPERIMENT_ENABLED === 'true')),
+      TE.chain(userListPage(adapters)),
     )),
   );
 
