@@ -62,6 +62,14 @@ const renderArticleLatestActivityDate = O.fold(
   ),
 );
 
+const renderControls = (controls: O.Option<HtmlFragment>) => pipe(
+  controls,
+  O.fold(
+    () => '',
+    (content) => `<div class="article-card__controls">${content}</div>`,
+  ),
+);
+
 export const renderArticleCard = (controls: O.Option<HtmlFragment>) => (model: ArticleViewModel): HtmlFragment => toHtmlFragment(`
   <article class="article-card">
     <h3 class="article-card__title">
@@ -72,9 +80,7 @@ export const renderArticleCard = (controls: O.Option<HtmlFragment>) => (model: A
       <div class="article-card__meta">
         <span class="visually-hidden">This article has </span>${renderEvaluationCount(model.evaluationCount)}${renderArticleVersionDate(model.latestVersionDate)}${renderArticleLatestActivityDate(model.latestActivityDate)}
       </div>
-      <div class="article-card__controls">
-        ${pipe(controls, O.getOrElse(constant('')))}
-      </div>
+      ${renderControls(controls)}
     </div>
   </article>
 `);
