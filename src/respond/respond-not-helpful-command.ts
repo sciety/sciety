@@ -3,7 +3,7 @@ import {
   userFoundReviewNotHelpful,
   UserFoundReviewNotHelpfulEvent, userRevokedFindingReviewHelpful,
   UserRevokedFindingReviewHelpfulEvent,
-} from '../types/domain-events';
+} from '../domain-events';
 import { ReviewId } from '../types/review-id';
 import { UserId } from '../types/user-id';
 

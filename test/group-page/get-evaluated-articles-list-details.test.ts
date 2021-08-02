@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
+import { editorialCommunityReviewedArticle } from '../../src/domain-events';
 import { getEvaluatedArticlesListDetails } from '../../src/group-page/get-evaluated-articles-list-details';
-import { editorialCommunityReviewedArticle } from '../../src/types/domain-events';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';

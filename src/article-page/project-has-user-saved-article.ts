@@ -1,8 +1,8 @@
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
+import { DomainEvent } from '../domain-events';
 import { articleSaveState } from '../save-article/article-save-state';
 import { Doi } from '../types/doi';
-import { DomainEvent } from '../types/domain-events';
 import { UserId } from '../types/user-id';
 
 type GetEvents = T.Task<ReadonlyArray<DomainEvent>>;

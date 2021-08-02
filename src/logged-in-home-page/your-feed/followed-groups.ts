@@ -4,7 +4,7 @@ import {
   DomainEvent,
   isUserFollowedEditorialCommunityEvent,
   isUserUnfollowedEditorialCommunityEvent, UserFollowedEditorialCommunityEvent, UserUnfollowedEditorialCommunityEvent,
-} from '../../types/domain-events';
+} from '../../domain-events';
 import { GroupId } from '../../types/group-id';
 import { UserId } from '../../types/user-id';
 

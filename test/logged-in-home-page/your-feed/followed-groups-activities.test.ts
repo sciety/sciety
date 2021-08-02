@@ -1,10 +1,10 @@
 import { performance } from 'perf_hooks';
-import { followedGroupsActivities } from '../../../src/logged-in-home-page/your-feed/followed-groups-activities';
-import { Doi } from '../../../src/types/doi';
 import {
   editorialCommunityReviewedArticle,
   EditorialCommunityReviewedArticleEvent,
-} from '../../../src/types/domain-events';
+} from '../../../src/domain-events';
+import { followedGroupsActivities } from '../../../src/logged-in-home-page/your-feed/followed-groups-activities';
+import { Doi } from '../../../src/types/doi';
 import { GroupId } from '../../../src/types/group-id';
 import { arbitraryDate } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';

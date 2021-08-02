@@ -12,13 +12,13 @@ import {
   noEvaluationsYet,
   troubleFetchingTryAgain,
 } from './static-messages';
+import { DomainEvent } from '../../domain-events';
 import { renderArticleCard } from '../../shared-components/article-card';
 import { fetchArticleDetails } from '../../shared-components/article-card/fetch-article-details';
 import {
   FindVersionsForArticleDoi,
   getLatestArticleVersionDate,
 } from '../../shared-components/article-card/get-latest-article-version-date';
-import { DomainEvent } from '../../types/domain-events';
 import { GroupId } from '../../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { UserId } from '../../types/user-id';

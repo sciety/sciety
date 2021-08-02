@@ -8,7 +8,7 @@ import {
   UserFoundReviewNotHelpfulEvent,
   UserRevokedFindingReviewHelpfulEvent,
   UserRevokedFindingReviewNotHelpfulEvent,
-} from '../../types/domain-events';
+} from '../../domain-events';
 import * as ReviewId from '../../types/review-id';
 
 type GetEvents = T.Task<ReadonlyArray<DomainEvent>>;

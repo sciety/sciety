@@ -1,10 +1,10 @@
-import { reviewResponse } from '../../src/respond/review-response';
 import {
   userFoundReviewHelpful,
   userFoundReviewNotHelpful,
   userRevokedFindingReviewHelpful,
   userRevokedFindingReviewNotHelpful,
-} from '../../src/types/domain-events';
+} from '../../src/domain-events';
+import { reviewResponse } from '../../src/respond/review-response';
 import { arbitraryReviewId } from '../types/review-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 

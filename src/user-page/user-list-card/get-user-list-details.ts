@@ -7,7 +7,7 @@ import {
   isUserUnsavedArticleEvent,
   UserSavedArticleEvent,
   UserUnsavedArticleEvent,
-} from '../../types/domain-events';
+} from '../../domain-events';
 import { UserId } from '../../types/user-id';
 
 type UserListDetails = {

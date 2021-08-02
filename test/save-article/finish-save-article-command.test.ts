@@ -1,8 +1,8 @@
 import { RouterContext } from '@koa/router';
 import * as T from 'fp-ts/Task';
 import { ParameterizedContext } from 'koa';
+import { userSavedArticle } from '../../src/domain-events';
 import { finishSaveArticleCommand } from '../../src/save-article/finish-save-article-command';
-import { userSavedArticle } from '../../src/types/domain-events';
 import { User } from '../../src/types/user';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryUserId } from '../types/user-id.helper';

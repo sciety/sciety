@@ -1,10 +1,10 @@
 import * as O from 'fp-ts/Option';
-import { updateGroupMeta } from '../../../src/shared-components/group-card/update-group-meta';
 import {
   editorialCommunityReviewedArticle,
   userFollowedEditorialCommunity, userSavedArticle,
   userUnfollowedEditorialCommunity,
-} from '../../../src/types/domain-events';
+} from '../../../src/domain-events';
+import { updateGroupMeta } from '../../../src/shared-components/group-card/update-group-meta';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';

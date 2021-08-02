@@ -11,7 +11,7 @@ import {
   UserFoundReviewNotHelpfulEvent,
   UserRevokedFindingReviewHelpfulEvent,
   UserRevokedFindingReviewNotHelpfulEvent,
-} from '../../types/domain-events';
+} from '../../domain-events';
 import * as RI from '../../types/review-id';
 import { UserId } from '../../types/user-id';
 

@@ -1,7 +1,7 @@
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
-import { userSavedArticle } from '../../../src/types/domain-events';
+import { userSavedArticle } from '../../../src/domain-events';
 import { userListCard } from '../../../src/user-page/user-list-card';
 import { arbitraryWord } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';

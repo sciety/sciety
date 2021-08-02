@@ -1,6 +1,6 @@
 import * as T from 'fp-ts/Task';
+import { userFollowedEditorialCommunity, userUnfollowedEditorialCommunity } from '../../src/domain-events';
 import { follows } from '../../src/infrastructure/follows';
-import { userFollowedEditorialCommunity, userUnfollowedEditorialCommunity } from '../../src/types/domain-events';
 import { groupIdFromString } from '../types/group-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 

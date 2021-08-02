@@ -5,7 +5,7 @@ import {
   isEditorialCommunityReviewedArticleEvent,
   isUserFollowedEditorialCommunityEvent,
   isUserUnfollowedEditorialCommunityEvent,
-} from '../../types/domain-events';
+} from '../../domain-events';
 import { GroupId } from '../../types/group-id';
 
 type GroupMeta = {

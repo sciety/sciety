@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { userSavedArticle, userUnsavedArticle } from '../../../src/types/domain-events';
+import { userSavedArticle, userUnsavedArticle } from '../../../src/domain-events';
 import { getUserListDetails } from '../../../src/user-page/user-list-card/get-user-list-details';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';

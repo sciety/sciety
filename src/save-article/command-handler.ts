@@ -1,8 +1,8 @@
-import { Doi } from '../types/doi';
 import {
   userSavedArticle,
   UserSavedArticleEvent, userUnsavedArticle, UserUnsavedArticleEvent,
-} from '../types/domain-events';
+} from '../domain-events';
+import { Doi } from '../types/doi';
 import { UserId } from '../types/user-id';
 
 type Command = {

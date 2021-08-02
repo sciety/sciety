@@ -4,8 +4,8 @@ import * as T from 'fp-ts/Task';
 import { constVoid, flow, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
 import * as L from './logger';
+import { DomainEvent, RuntimeGeneratedEvent } from '../domain-events';
 import { domainEvent } from '../types/codecs/DomainEvent';
-import { DomainEvent, RuntimeGeneratedEvent } from '../types/domain-events';
 
 type Dependencies = {
   inMemoryEvents: Array<DomainEvent>,

@@ -1,5 +1,5 @@
 import * as T from 'fp-ts/Task';
-import { DomainEvent, isUserFollowedEditorialCommunityEvent, isUserUnfollowedEditorialCommunityEvent } from '../types/domain-events';
+import { DomainEvent, isUserFollowedEditorialCommunityEvent, isUserUnfollowedEditorialCommunityEvent } from '../domain-events';
 import { FollowList } from '../types/follow-list';
 import { UserId } from '../types/user-id';
 

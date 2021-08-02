@@ -1,9 +1,9 @@
 /* eslint-disable jest/expect-expect */
 import { performance } from 'perf_hooks';
-import { evaluatedArticles } from '../../../src/group-evaluations-page/evaluated-articles-list/evaluated-articles';
 import {
   editorialCommunityReviewedArticle,
-} from '../../../src/types/domain-events';
+} from '../../../src/domain-events';
+import { evaluatedArticles } from '../../../src/group-evaluations-page/evaluated-articles-list/evaluated-articles';
 import { arbitraryDate, arbitraryWord } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';

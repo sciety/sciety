@@ -2,8 +2,8 @@ import * as RT from 'fp-ts/ReaderTask';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { flow } from 'fp-ts/function';
+import { DomainEvent, isEditorialCommunityReviewedArticleEvent } from '../domain-events';
 import { Doi, eqDoi } from '../types/doi';
-import { DomainEvent, isEditorialCommunityReviewedArticleEvent } from '../types/domain-events';
 import { GroupId } from '../types/group-id';
 import { ReviewId } from '../types/review-id';
 

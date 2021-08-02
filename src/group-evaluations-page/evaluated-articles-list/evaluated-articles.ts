@@ -6,12 +6,12 @@ import * as RM from 'fp-ts/ReadonlyMap';
 import * as S from 'fp-ts/Semigroup';
 import { flow, pipe } from 'fp-ts/function';
 import * as N from 'fp-ts/number';
-import { ArticleActivity } from '../../types/article-activity';
-import { Doi } from '../../types/doi';
 import {
   DomainEvent, EditorialCommunityReviewedArticleEvent,
   isEditorialCommunityReviewedArticleEvent,
-} from '../../types/domain-events';
+} from '../../domain-events';
+import { ArticleActivity } from '../../types/article-activity';
+import { Doi } from '../../types/doi';
 import { GroupId } from '../../types/group-id';
 
 type ActivityDetails = {

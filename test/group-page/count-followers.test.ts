@@ -1,6 +1,6 @@
 import { pipe } from 'fp-ts/function';
+import { userFollowedEditorialCommunity, userSavedArticle, userUnfollowedEditorialCommunity } from '../../src/domain-events';
 import { countFollowersOf } from '../../src/group-page/count-followers';
-import { userFollowedEditorialCommunity, userSavedArticle, userUnfollowedEditorialCommunity } from '../../src/types/domain-events';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId, groupIdFromString } from '../types/group-id.helper';
 import { arbitraryUserId } from '../types/user-id.helper';

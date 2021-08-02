@@ -2,7 +2,7 @@ import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
 import { getUserListDetails } from './get-user-list-details';
 import { renderUserListCard } from './render-user-list-card';
-import { DomainEvent } from '../../types/domain-events';
+import { DomainEvent } from '../../domain-events';
 import { HtmlFragment } from '../../types/html-fragment';
 import { UserId } from '../../types/user-id';
 

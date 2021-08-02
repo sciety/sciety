@@ -4,11 +4,11 @@ import { flow, pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
 import { articleSaveState } from './article-save-state';
 import { commandHandler } from './command-handler';
-import * as Doi from '../types/doi';
 import {
   DomainEvent,
   UserSavedArticleEvent, UserUnsavedArticleEvent,
-} from '../types/domain-events';
+} from '../domain-events';
+import * as Doi from '../types/doi';
 import { User } from '../types/user';
 
 type Ports = {

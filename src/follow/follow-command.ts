@@ -1,6 +1,6 @@
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
-import { UserFollowedEditorialCommunityEvent } from '../types/domain-events';
+import { UserFollowedEditorialCommunityEvent } from '../domain-events';
 import { FollowList } from '../types/follow-list';
 import { GroupId } from '../types/group-id';
 import { User } from '../types/user';

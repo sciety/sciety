@@ -6,7 +6,7 @@ import { respondHelpful } from './respond-helpful-command';
 import { respondNotHelpful } from './respond-not-helpful-command';
 import { reviewResponse } from './review-response';
 import { revokeResponse } from './revoke-response-command';
-import { DomainEvent, RuntimeGeneratedEvent } from '../types/domain-events';
+import { DomainEvent, RuntimeGeneratedEvent } from '../domain-events';
 import { ReviewId } from '../types/review-id';
 import { UserId } from '../types/user-id';
 

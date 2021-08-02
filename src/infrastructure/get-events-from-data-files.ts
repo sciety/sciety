@@ -10,8 +10,8 @@ import { taskify } from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { DateFromISOString } from 'io-ts-types';
+import { DomainEvent, editorialCommunityReviewedArticle } from '../domain-events';
 import { DoiFromString } from '../types/codecs/DoiFromString';
-import { DomainEvent, editorialCommunityReviewedArticle } from '../types/domain-events';
 import { GroupId } from '../types/group-id';
 import { reviewIdCodec } from '../types/review-id';
 

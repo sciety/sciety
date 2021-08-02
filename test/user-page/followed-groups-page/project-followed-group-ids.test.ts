@@ -1,5 +1,5 @@
 import * as T from 'fp-ts/Task';
-import { userFollowedEditorialCommunity, userSavedArticle, userUnfollowedEditorialCommunity } from '../../../src/types/domain-events';
+import { userFollowedEditorialCommunity, userSavedArticle, userUnfollowedEditorialCommunity } from '../../../src/domain-events';
 import { followedGroupIds } from '../../../src/user-page/follow-list/project-followed-group-ids';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';

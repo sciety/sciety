@@ -3,13 +3,13 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { JSDOM } from 'jsdom';
+import { editorialCommunityReviewedArticle, userFollowedEditorialCommunity } from '../../../src/domain-events';
 import {
   followSomething, noEvaluationsYet, troubleFetchingTryAgain,
 } from '../../../src/logged-in-home-page/your-feed/static-messages';
 import { feedTitle, yourFeed } from '../../../src/logged-in-home-page/your-feed/your-feed';
 import * as DE from '../../../src/types/data-error';
 import { Doi, eqDoi } from '../../../src/types/doi';
-import { editorialCommunityReviewedArticle, userFollowedEditorialCommunity } from '../../../src/types/domain-events';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { sanitise } from '../../../src/types/sanitised-html-fragment';
 import { shouldNotBeCalled } from '../../should-not-be-called';

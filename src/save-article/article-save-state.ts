@@ -2,13 +2,13 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { SaveState } from './command-handler';
-import { Doi } from '../types/doi';
 import {
   DomainEvent,
   isUserSavedArticleEvent, isUserUnsavedArticleEvent,
   UserSavedArticleEvent,
   UserUnsavedArticleEvent,
-} from '../types/domain-events';
+} from '../domain-events';
+import { Doi } from '../types/doi';
 import { UserId } from '../types/user-id';
 
 type RelevantEvent = UserSavedArticleEvent | UserUnsavedArticleEvent;

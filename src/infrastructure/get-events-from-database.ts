@@ -7,8 +7,8 @@ import { flow, pipe } from 'fp-ts/function';
 import * as PR from 'io-ts/PathReporter';
 import { Pool } from 'pg';
 import * as L from './logger';
+import { RuntimeGeneratedEvent } from '../domain-events';
 import { domainEvents } from '../types/codecs/DomainEvent';
-import { RuntimeGeneratedEvent } from '../types/domain-events';
 
 type EventRow = {
   id: string,

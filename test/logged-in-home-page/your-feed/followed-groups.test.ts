@@ -1,5 +1,5 @@
+import { userFollowedEditorialCommunity, userUnfollowedEditorialCommunity } from '../../../src/domain-events';
 import { followedGroups } from '../../../src/logged-in-home-page/your-feed/followed-groups';
-import { userFollowedEditorialCommunity, userUnfollowedEditorialCommunity } from '../../../src/types/domain-events';
 import { arbitraryGroupId, groupIdFromString } from '../../types/group-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 

@@ -39,7 +39,7 @@ import {
 import { responseCache } from './response-cache';
 import { searchEuropePmc } from './search-europe-pmc';
 import { bootstrapGroups } from '../data/bootstrap-groups';
-import * as DomainEvent from '../types/domain-events';
+import * as DomainEvent from '../domain-events';
 
 type Dependencies = {
   prettyLog: boolean,
