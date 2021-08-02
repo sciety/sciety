@@ -62,7 +62,6 @@ describe('article-save-state', () => {
 
   it('Bob has saved article 2: not-saved', () => {
     const bob = arbitraryUserId();
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const articleId1 = arbitraryDoi();
     const articleId2 = arbitraryDoi();
     const events: ReadonlyArray<DomainEvent> = [
