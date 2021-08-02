@@ -16,12 +16,14 @@ type Ports = {
   commitEvents: (events: ReadonlyArray<UserSavedArticleEvent | UserUnsavedArticleEvent>) => T.Task<void>,
 };
 
+export const articleIdFieldName = 'articleid';
+
 export const unsaveArticle = (
   { getAllEvents, commitEvents }: Ports,
 ): Middleware => async (context, next) => {
   const user = context.state.user as User;
   await pipe(
-    context.request.body.articleid,
+    context.request.body[articleIdFieldName],
     Doi.fromString,
     O.fold(
       () => { throw new Error('no articleId passed to unsaveArticle'); },
