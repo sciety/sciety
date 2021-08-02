@@ -7,7 +7,7 @@ import { arbitraryUserId } from '../types/user-id.helper';
 describe('article-save-state', () => {
   it('Bob has not saved any articles: false', () => {
     const events: ReadonlyArray<DomainEvent> = [];
-    const articleInList = articleSaveState(events, arbitraryUserId(), arbitraryDoi());
+    const articleInList = articleSaveState(arbitraryUserId(), arbitraryDoi())(events);
 
     expect(articleInList).toBe('not-saved');
   });
@@ -18,7 +18,7 @@ describe('article-save-state', () => {
     const events: ReadonlyArray<DomainEvent> = [
       userSavedArticle(bob, articleId),
     ];
-    const articleInList = articleSaveState(events, bob, articleId);
+    const articleInList = articleSaveState(bob, articleId)(events);
 
     expect(articleInList).toBe('saved');
   });
@@ -30,7 +30,7 @@ describe('article-save-state', () => {
       userSavedArticle(bob, articleId),
       userUnsavedArticle(bob, articleId),
     ];
-    const articleInList = articleSaveState(events, bob, articleId);
+    const articleInList = articleSaveState(bob, articleId)(events);
 
     expect(articleInList).toBe('not-saved');
   });
@@ -43,7 +43,7 @@ describe('article-save-state', () => {
       userUnsavedArticle(bob, articleId),
       userSavedArticle(bob, articleId),
     ];
-    const articleInList = articleSaveState(events, bob, articleId);
+    const articleInList = articleSaveState(bob, articleId)(events);
 
     expect(articleInList).toBe('saved');
   });
@@ -55,7 +55,7 @@ describe('article-save-state', () => {
     const events: ReadonlyArray<DomainEvent> = [
       userSavedArticle(alice, articleId),
     ];
-    const articleInList = articleSaveState(events, bob, articleId);
+    const articleInList = articleSaveState(bob, articleId)(events);
 
     expect(articleInList).toBe('not-saved');
   });
@@ -68,7 +68,7 @@ describe('article-save-state', () => {
     const events: ReadonlyArray<DomainEvent> = [
       userSavedArticle(bob, articleId2),
     ];
-    const articleInList = articleSaveState(events, bob, articleId1);
+    const articleInList = articleSaveState(bob, articleId1)(events);
 
     expect(articleInList).toBe('not-saved');
   });

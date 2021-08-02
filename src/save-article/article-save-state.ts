@@ -19,9 +19,9 @@ const isRelevantEvent = (userId: UserId, articleId: Doi) => (event: DomainEvent)
   && event.articleId.value === articleId.value
 );
 
-type ArticleSaveState = (events: ReadonlyArray<DomainEvent>, userId: UserId, articleId: Doi) => SaveState;
+type ArticleSaveState = (userId: UserId, articleId: Doi) => (events: ReadonlyArray<DomainEvent>) => SaveState;
 
-export const articleSaveState: ArticleSaveState = (events, userId, articleId) => pipe(
+export const articleSaveState: ArticleSaveState = (userId, articleId) => (events) => pipe(
   events,
   RA.filter(isRelevantEvent(userId, articleId)),
   RA.last,

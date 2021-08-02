@@ -12,7 +12,7 @@ type ProjectHasUserSavedArticle = (doi: Doi, userId: UserId) => RT.ReaderTask<Ge
 
 export const projectHasUserSavedArticle: ProjectHasUserSavedArticle = (doi, userId) => T.map(
   flow(
-    (events) => articleSaveState(events, userId, doi),
+    articleSaveState(userId, doi),
     (state) => state === 'saved',
   ),
 );

@@ -28,7 +28,7 @@ export const unsaveArticle = (
       (articleId) => pipe(
         getAllEvents,
         T.chain(flow(
-          (events) => articleSaveState(events, user.id, articleId),
+          articleSaveState(user.id, articleId),
           commandHandler({
             articleId,
             userId: user.id,
