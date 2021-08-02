@@ -1,8 +1,11 @@
 @use '../sass/settings';
+@use '../sass/functions';
 @use '../sass/typography';
 @use '../sass/button';
 
 $_avatar-size: 48px;
+$_icon-size: 24px;
+$_icon-inline-offset: 6px;
 
 .page-header--user-list .page-header__subheading {
   @include typography.subheading();
@@ -26,4 +29,9 @@ $_avatar-size: 48px;
 
 .user-list-subscribe {
   @include button.button-link();
+  background-image: url('/static/images/subscribe-bell.svg');
+  background-size: functions.px-to-rem($_icon-size);
+  background-repeat: no-repeat;
+  background-position: functions.px-to-rem($_icon-inline-offset) center;
+  padding-left: functions.px-to-rem($_icon-inline-offset * 2 + $_icon-size);
 }
