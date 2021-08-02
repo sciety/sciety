@@ -9,11 +9,12 @@ import {
 } from './populate-article-view-model';
 import { renderSavedArticles } from './render-saved-articles';
 import { informationUnavailable, noSavedArticles } from './static-messages';
+import { renderUnsaveForm } from '../../save-article/render-unsave-form';
 import { renderArticleCard } from '../../shared-components/article-card';
 import { FindVersionsForArticleDoi, getLatestArticleVersionDate } from '../../shared-components/article-card/get-latest-article-version-date';
 import { ArticleServer } from '../../types/article-server';
 import { Doi } from '../../types/doi';
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { HtmlFragment } from '../../types/html-fragment';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { UserId } from '../../types/user-id';
 
@@ -39,7 +40,7 @@ type SavedArticles = (ports: Ports) => (
 const controls = (loggedInUserId: O.Option<UserId>, listOwnerId: UserId, articleId: Doi) => pipe(
   loggedInUserId,
   O.filter((userId) => userId === listOwnerId),
-  O.map(() => toHtmlFragment(`<form method="post" action="/unsave-article"><input type="hidden" name="articleid" value="${articleId.value}"><button class="saved-articles-control"><img src="/static/images/delete.svg" alt="Remove this article from the list"></button></form>`)),
+  O.map(() => renderUnsaveForm(articleId)),
 );
 
 export const savedArticles: SavedArticles = (ports) => (dois, loggedInUser, listOwnerId) => pipe(
