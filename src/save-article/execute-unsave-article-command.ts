@@ -32,7 +32,7 @@ export const unsaveArticle = (
           commandHandler({
             articleId,
             userId: user.id,
-            type: 'RemoveArticleFromUserList' as const,
+            type: 'UnsaveArticle' as const,
           }),
           commitEvents,
         )),

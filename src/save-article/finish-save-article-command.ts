@@ -35,7 +35,7 @@ export const finishSaveArticleCommand = (
           commandHandler({
             articleId,
             userId: user.id,
-            type: 'SaveArticleToUserList' as const,
+            type: 'SaveArticle' as const,
           }),
           commitEvents,
         )),

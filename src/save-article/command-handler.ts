@@ -8,7 +8,7 @@ import { UserId } from '../types/user-id';
 type Command = {
   articleId: Doi,
   userId: UserId,
-  type: 'RemoveArticleFromUserList' | 'SaveArticleToUserList',
+  type: 'UnsaveArticle' | 'SaveArticle',
 };
 
 export type SaveState = 'saved' | 'not-saved';
@@ -19,7 +19,7 @@ type CommandHandler = (
   saveState: SaveState,
 ) => ReadonlyArray<UserUnsavedArticleEvent | UserSavedArticleEvent>;
 
-const handleRemoveCommand = (saveState: SaveState, command: Command) => (
+const handleUnsaveCommand = (saveState: SaveState, command: Command) => (
   saveState === 'saved'
     ? [userUnsavedArticle(command.userId, command.articleId)]
     : []);
@@ -31,9 +31,9 @@ const handleSaveCommand = (saveState: SaveState, command: Command) => (
 
 export const commandHandler: CommandHandler = (command) => (saveState) => {
   switch (command.type) {
-    case 'SaveArticleToUserList':
+    case 'SaveArticle':
       return handleSaveCommand(saveState, command);
-    case 'RemoveArticleFromUserList':
-      return handleRemoveCommand(saveState, command);
+    case 'UnsaveArticle':
+      return handleUnsaveCommand(saveState, command);
   }
 };

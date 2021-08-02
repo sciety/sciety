@@ -4,17 +4,17 @@ import { arbitraryUserId } from '../types/user-id.helper';
 
 describe('command-handler', () => {
   describe('article is saved', () => {
-    describe('and a RemoveArticleFromUserList Command is issued', () => {
-      it('creates an ArticleRemovedFromUserList Event', () => {
+    describe('and a UnsaveArticle Command is issued', () => {
+      it('creates an UserUnsavedArticle Event', () => {
         const articleId = arbitraryDoi();
         const userId = arbitraryUserId();
         const saveState = 'saved';
-        const removeArticleFromUserList = {
-          type: 'RemoveArticleFromUserList' as const,
+        const unsaveArticle = {
+          type: 'UnsaveArticle' as const,
           articleId,
           userId,
         };
-        const createdEvents = commandHandler(removeArticleFromUserList)(saveState);
+        const createdEvents = commandHandler(unsaveArticle)(saveState);
 
         expect(createdEvents).toStrictEqual([expect.objectContaining({
           type: 'UserUnsavedArticle',
@@ -24,17 +24,17 @@ describe('command-handler', () => {
       });
     });
 
-    describe('and a SaveArticleToUserList Command is issued', () => {
+    describe('and a SaveArticle Command is issued', () => {
       it('creates no events', () => {
         const articleId = arbitraryDoi();
         const userId = arbitraryUserId();
         const saveState = 'saved';
-        const saveArticleToUserList = {
-          type: 'SaveArticleToUserList' as const,
+        const saveArticle = {
+          type: 'SaveArticle' as const,
           articleId,
           userId,
         };
-        const createdEvents = commandHandler(saveArticleToUserList)(saveState);
+        const createdEvents = commandHandler(saveArticle)(saveState);
 
         expect(createdEvents).toStrictEqual([]);
       });
@@ -42,31 +42,31 @@ describe('command-handler', () => {
   });
 
   describe('article is not-saved', () => {
-    describe('and a RemoveArticleFromUserList Command is issued', () => {
+    describe('and a UnsaveArticle Command is issued', () => {
       it('creates no events', () => {
         const saveState = 'not-saved';
-        const removeArticleFromUserList = {
-          type: 'RemoveArticleFromUserList' as const,
+        const unsaveArticle = {
+          type: 'UnsaveArticle' as const,
           articleId: arbitraryDoi(),
           userId: arbitraryUserId(),
         };
-        const createdEvents = commandHandler(removeArticleFromUserList)(saveState);
+        const createdEvents = commandHandler(unsaveArticle)(saveState);
 
         expect(createdEvents).toStrictEqual([]);
       });
     });
 
-    describe('and a SaveArticleToUserList Command is issued', () => {
+    describe('and a SaveArticle Command is issued', () => {
       it('creates a UserSavedArticle Event', () => {
         const articleId = arbitraryDoi();
         const userId = arbitraryUserId();
         const saveState = 'not-saved';
-        const saveArticleToUserList = {
-          type: 'SaveArticleToUserList' as const,
+        const saveArticle = {
+          type: 'SaveArticle' as const,
           articleId,
           userId,
         };
-        const createdEvents = commandHandler(saveArticleToUserList)(saveState);
+        const createdEvents = commandHandler(saveArticle)(saveState);
 
         expect(createdEvents).toStrictEqual([expect.objectContaining({
           type: 'UserSavedArticle',

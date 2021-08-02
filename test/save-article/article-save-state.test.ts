@@ -23,7 +23,7 @@ describe('article-save-state', () => {
     expect(articleInList).toBe('saved');
   });
 
-  it('UserSavedArticle Bob, 1; ArticleRemovedFromUserList Bob, 1: not-saved', () => {
+  it('UserSavedArticle Bob, 1; UserUnsavedArticle Bob, 1: not-saved', () => {
     const bob = arbitraryUserId();
     const articleId = arbitraryDoi();
     const events: ReadonlyArray<DomainEvent> = [
@@ -35,7 +35,7 @@ describe('article-save-state', () => {
     expect(articleInList).toBe('not-saved');
   });
 
-  it('UserSavedArticle Bob, 1; ArticleRemovedFromUserList Bob, 1; UserSavedArticle Bob, 1: saved', () => {
+  it('UserSavedArticle Bob, 1; UserUnsavedArticle Bob, 1; UserSavedArticle Bob, 1: saved', () => {
     const bob = arbitraryUserId();
     const articleId = arbitraryDoi();
     const events: ReadonlyArray<DomainEvent> = [
