@@ -23,3 +23,7 @@ $_avatar-size: 48px;
   @include button.basics();
   background-color: transparent;
 }
+
+.user-list-subscribe {
+  @include button.button-link();
+}
