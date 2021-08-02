@@ -42,6 +42,7 @@ const render = (savedArticlesList: HtmlFragment, { handle, avatarUrl }: UserDeta
             <span>A list by <a href="/users/${handle}">${handle}</a></span>
           </p>
           <p class="page-header__description">Articles that have been saved by @${handle}, most recently saved first.</p>
+          ${handle === 'AvasthiReading' ? '<a href="https://xag0lodamyw.typeform.com/to/OPBgQWgb">Subscribe</a>' : ''}
         </header>
         ${savedArticlesList}
       </div>
