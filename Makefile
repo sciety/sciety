@@ -121,7 +121,7 @@ prod-sql:
 
 taiko: export TARGET = dev
 taiko: export AUTHENTICATION_STRATEGY = local
-taiko: clean-db
+taiko: node_modules clean-db
 	${DOCKER_COMPOSE} up -d
 	scripts/wait-for-healthy.sh
 	npx jest ${TEST} --testTimeout=300000 --bail --cache-directory=.jest-taiko --roots ./feature-test/
