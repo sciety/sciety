@@ -6,6 +6,7 @@ import { fetchPrelightsEvaluations } from './fetch-prelights-evaluations';
 import { fetchPrereviewEvaluations } from './fetch-prereview-evaluations';
 import { fetchRapidReviews } from './fetch-rapid-reviews';
 import { fetchReviewsFromHypothesisGroup } from './fetch-reviews-from-hypothesis-group';
+import { fetchReviewsFromHypothesisUser } from './find-reviews-from-hypothesis-user';
 import { Group, updateAll } from './update-all';
 
 const allGroups: Array<Group> = [
@@ -68,6 +69,11 @@ const allGroups: Array<Group> = [
     id: '316db7d9-88cc-4c26-b386-f067e0f56334',
     name: 'Review Commons',
     fetchFeed: fetchReviewsFromHypothesisGroup('NEGQVabn'),
+  },
+  {
+    id: '8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65',
+    name: 'ScreenIT',
+    fetchFeed: fetchReviewsFromHypothesisUser('sciscore'),
   },
 ];
 

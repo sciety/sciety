@@ -1,12 +1,12 @@
 import axios from 'axios';
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Evaluation } from './evaluations';
-import { SkippedItem } from './update-all';
-
-const userId = process.argv[2];
+import { FetchEvaluations, SkippedItem } from './update-all';
 
 type Row = {
   id: string,
@@ -36,7 +36,9 @@ const toEvaluation = (server: string) => (row: Row): E.Either<SkippedItem, Evalu
   });
 };
 
-const processServer = (server: string) => async (): Promise<void> => {
+const processServer = (
+  userId: string,
+) => (server: string) => async (): Promise<ReadonlyArray<E.Either<SkippedItem, Evaluation>>> => {
   let result: ReadonlyArray<E.Either<SkippedItem, Evaluation>> = [];
   const perPage = 200;
   let latestDate = encodeURIComponent(new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString());
@@ -52,20 +54,16 @@ const processServer = (server: string) => async (): Promise<void> => {
     latestDate = encodeURIComponent(data.rows[data.rows.length - 1].created);
     data = (await axios.get<HypothesisResponse>(`https://api.hypothes.is/api/search?user=${userId}&uri.parts=${server}&limit=${perPage}&sort=created&order=asc&search_after=${latestDate}`)).data;
   }
-  pipe(
-    result,
-    RA.rights,
-    RA.map((evaluation) => {
-      process.stdout.write(`${evaluation.date.toISOString()},${evaluation.articleDoi},${evaluation.evaluationLocator}\n`);
-      return evaluation;
-    }),
-  );
+  return result;
 };
 
-void (async (): Promise<void> => {
-  process.stdout.write('Date,Article DOI,Review ID\n');
-  await pipe(
-    ['biorxiv', 'medrxiv'],
-    T.traverseArray(processServer),
-  )();
-})();
+export const fetchReviewsFromHypothesisUser = (publisherUserId: string): FetchEvaluations => () => pipe(
+  ['biorxiv', 'medrxiv'],
+  T.traverseArray(processServer(publisherUserId)),
+  T.map(RA.flatten),
+  T.map((parts) => ({
+    evaluations: RA.rights(parts),
+    skippedItems: O.some(RA.lefts(parts)),
+  })),
+  TE.rightTask,
+);

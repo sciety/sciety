@@ -84,21 +84,13 @@ find-peerj-reviews: build
 	$(DOCKER_COMPOSE) run -T app \
 		npx ts-node src/ingest/find-reviews-from-crossref-via-biorxiv 10.7717 10.7287 > ./data/reviews/53ed5364-a016-11ea-bb37-0242ac130002.csv
 
-find-screenit-reviews: export TARGET = dev
-find-screenit-reviews: build
-	$(DOCKER_COMPOSE) run -T app \
-		npx ts-node src/ingest/find-reviews-from-hypothesis-user sciscore >> ./data/reviews/8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65.csv
-		cat ./data/reviews/8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65.csv | sort -g | uniq > /tmp/8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65.csv
-		mv /tmp/8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65.csv ./data/reviews/8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65.csv
-
 update-groups: export TARGET = dev
 update-groups: build
 	$(DOCKER_COMPOSE) run -e INGEST_LOG=${INGEST_LOG} -e INGEST_ONLY=${INGEST_ONLY} app \
 	npx ts-node src/ingest/update-event-data
 
 COMMUNITY_SCRIPTS := \
-	find-peerj-reviews \
-	find-screenit-reviews
+	find-peerj-reviews
 
 sort-event-data:
 	find data -type f | xargs -I % sort -g -o % %
