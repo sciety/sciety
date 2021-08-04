@@ -33,4 +33,4 @@ Biophysics Colab provide collaborative, community-based and journal-agnostic pee
 
 ## Content license
 
-Content is licensed under the [Creative Commons CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) unless otherwise specified.
+Content is licensed under the [Creative Commons CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) unless otherwise specified.
