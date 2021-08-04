@@ -14,7 +14,9 @@ type Ports = {
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
 };
 
-export const hardcodedReviewCommonsArticle = (ports: Ports) => (id: string) => pipe(
+type Hardcodedreviewcommonsarticle = (ports: Ports) => (id: string) => T.Task<Record<string, unknown>>;
+
+export const hardcodedReviewCommonsArticle: Hardcodedreviewcommonsarticle = (ports) => (id) => pipe(
   new Doi(id),
   ports.findReviewsForArticleDoi,
   T.map(([{ groupId }]) => groupId),
@@ -91,4 +93,4 @@ export const hardcodedReviewCommonsArticle = (ports: Ports) => (id: string) => p
       },
     },
   })),
-)();
+);
