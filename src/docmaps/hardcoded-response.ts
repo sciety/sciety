@@ -4,7 +4,15 @@ export const hardcodedReviewCommonsArticle = {
     provider: 'https://sciety.org',
     created: '2021-06-21T15:59:56.000Z',
     generatedAt: '2021-07-11T21:57:43.171Z',
-    publisher: 'https://sciety.org/groups/316db7d9-88cc-4c26-b386-f067e0f56334',
+    publisher: {
+      id: 'https://www.reviewcommons.org/',
+      logo: 'https://sciety.org/static/groups/review-commons--316db7d9-88cc-4c26-b386-f067e0f56334.jpg',
+      homepage: 'https://www.reviewcommons.org/',
+      account: {
+        id: 'https://sciety.org/groups/316db7d9-88cc-4c26-b386-f067e0f56334',
+        service: 'https://sciety.org',
+      },
+    },
     id: 'https://sciety.org/docmaps/v1/articles/10.1101/2021.04.25.441302.docmap.json',
     type: 'docmap',
     steps: {
