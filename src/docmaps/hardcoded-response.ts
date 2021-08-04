@@ -1,6 +1,9 @@
+import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
+import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { Doi } from '../types/doi';
+import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
 import { ReviewId } from '../types/review-id';
 
@@ -10,28 +13,40 @@ type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
   occurredAt: Date,
 }>>;
 
+type GetGroup = (groupId: GroupId) => TO.TaskOption<Group>;
+
 type Ports = {
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
+  getGroup: GetGroup,
 };
 
-type Hardcodedreviewcommonsarticle = (ports: Ports) => (id: string) => T.Task<Record<string, unknown>>;
+type Hardcodedreviewcommonsarticle = (ports: Ports) => (articleId: string) => T.Task<Record<string, unknown>>;
 
-export const hardcodedReviewCommonsArticle: Hardcodedreviewcommonsarticle = (ports) => (id) => pipe(
-  new Doi(id),
+export const hardcodedReviewCommonsArticle: Hardcodedreviewcommonsarticle = (ports) => (articleId) => pipe(
+  new Doi(articleId),
   ports.findReviewsForArticleDoi,
   T.map(([{ groupId }]) => groupId),
-  T.map((groupId) => ({
+  T.chain(ports.getGroup),
+  T.map(O.getOrElse(() => ({
+    id: '',
+    name: '',
+    avatarPath: '',
+    descriptionPath: '',
+    shortDescription: '',
+    homepage: '',
+  }))),
+  T.map(({ id, avatarPath, homepage }) => ({
     record: {
       'first-step': '_:b-336d69dd-06d2-484b-8866-256ea5bbc384',
       provider: 'https://sciety.org',
       created: '2021-06-21T15:59:56.000Z',
       generatedAt: '2021-07-11T21:57:43.171Z',
       publisher: {
-        id: 'https://www.reviewcommons.org/',
-        logo: `https://sciety.org/static/groups/review-commons--${groupId}.jpg`,
-        homepage: 'https://www.reviewcommons.org/',
+        id: homepage,
+        logo: `https://sciety.org${avatarPath}`,
+        homepage,
         account: {
-          id: `https://sciety.org/groups/${groupId}`,
+          id: `https://sciety.org/groups/${id}`,
           service: 'https://sciety.org',
         },
       },
