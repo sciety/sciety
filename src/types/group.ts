@@ -6,4 +6,5 @@ export type Group = {
   avatarPath: string,
   descriptionPath: string,
   shortDescription: string,
+  homepage: string,
 };

@@ -1,6 +1,6 @@
 import { arbitraryGroupId } from './group-id.helper';
 import { Group } from '../../src/types/group';
-import { arbitraryString, arbitraryWord } from '../helpers';
+import { arbitraryString, arbitraryUri, arbitraryWord } from '../helpers';
 
 export const arbitraryGroup = (): Group => ({
   id: arbitraryGroupId(),
@@ -8,4 +8,5 @@ export const arbitraryGroup = (): Group => ({
   avatarPath: arbitraryWord(),
   descriptionPath: arbitraryWord(),
   shortDescription: arbitraryString(),
+  homepage: arbitraryUri(),
 });

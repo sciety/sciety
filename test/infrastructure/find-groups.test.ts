@@ -9,6 +9,7 @@ type Group = {
   descriptionPath?: string,
   name?: string,
   shortDescription?: string,
+  homepage?: string,
 };
 
 const constructGroup = ({
@@ -17,12 +18,14 @@ const constructGroup = ({
   descriptionPath = '',
   name = '',
   shortDescription = '',
+  homepage = '',
 }: Group) => ({
   id,
   avatarPath,
   descriptionPath,
   name,
   shortDescription,
+  homepage,
 });
 
 describe('find-groups', () => {

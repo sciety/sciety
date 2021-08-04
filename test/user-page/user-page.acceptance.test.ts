@@ -36,6 +36,7 @@ const arbitraryGroup = {
   avatarPath: arbitraryString(),
   descriptionPath: arbitraryString(),
   shortDescription: arbitraryString(),
+  homepage: arbitraryUri(),
 };
 
 const defaultPorts = {

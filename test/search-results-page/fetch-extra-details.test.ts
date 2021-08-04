@@ -89,6 +89,7 @@ describe('fetch-extra-details', () => {
             avatarPath: '',
             descriptionPath: '',
             shortDescription: '',
+            homepage: '',
           })),
           getLatestArticleVersionDate: shouldNotBeCalled,
         };
