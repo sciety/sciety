@@ -50,7 +50,7 @@ export const hardcodedReviewCommonsArticle: Hardcodedreviewcommonsarticle = (por
           service: 'https://sciety.org',
         },
       },
-      id: 'https://sciety.org/docmaps/v1/articles/10.1101/2021.04.25.441302.docmap.json',
+      id: `https://sciety.org/docmaps/v1/articles/${articleId}.docmap.json`,
       type: 'docmap',
       steps: {
         '_:b-78200b4c-48b8-4d64-b0d0-bfc99453d5f0': {
