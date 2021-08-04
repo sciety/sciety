@@ -27,8 +27,9 @@ describe('docmap-generation', () => {
         homepage: 'https://www.reviewcommons.org/',
       }),
     };
-    const docmap = await hardcodedReviewCommonsArticle(ports)('10.1101/2021.04.25.441302')();
+    const currentDateTime = new Date().toISOString();
+    const docmap = await hardcodedReviewCommonsArticle(ports)('10.1101/2021.04.25.441302', currentDateTime)();
 
-    expect(docmap).toStrictEqual(hardcodedDocmap);
+    expect(docmap).toStrictEqual(hardcodedDocmap(currentDateTime));
   });
 });

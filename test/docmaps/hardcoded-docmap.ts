@@ -1,9 +1,9 @@
-export const hardcodedDocmap = {
+export const hardcodedDocmap = (currentDateTime: string): Record<string, unknown> => ({
   record: {
     'first-step': '_:b-336d69dd-06d2-484b-8866-256ea5bbc384',
     provider: 'https://sciety.org',
     created: '2021-06-21T15:59:56.000Z',
-    generatedAt: '2021-07-11T21:57:43.171Z',
+    generatedAt: currentDateTime,
     publisher: {
       id: 'https://www.reviewcommons.org/',
       logo: 'https://sciety.org/static/groups/review-commons--316db7d9-88cc-4c26-b386-f067e0f56334.jpg',
@@ -70,4 +70,4 @@ export const hardcodedDocmap = {
       },
     },
   },
-};
+});

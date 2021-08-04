@@ -20,9 +20,15 @@ type Ports = {
   getGroup: GetGroup,
 };
 
-type Hardcodedreviewcommonsarticle = (ports: Ports) => (articleId: string) => T.Task<Record<string, unknown>>;
+type Hardcodedreviewcommonsarticle = (ports: Ports) => (
+  articleId: string,
+  currentDate: string,
+) => T.Task<Record<string, unknown>>;
 
-export const hardcodedReviewCommonsArticle: Hardcodedreviewcommonsarticle = (ports) => (articleId) => pipe(
+export const hardcodedReviewCommonsArticle: Hardcodedreviewcommonsarticle = (ports) => (
+  articleId,
+  currentDateTime,
+) => pipe(
   new Doi(articleId),
   ports.findReviewsForArticleDoi,
   T.map(([{ groupId }]) => groupId),
@@ -40,7 +46,7 @@ export const hardcodedReviewCommonsArticle: Hardcodedreviewcommonsarticle = (por
       'first-step': '_:b-336d69dd-06d2-484b-8866-256ea5bbc384',
       provider: 'https://sciety.org',
       created: '2021-06-21T15:59:56.000Z',
-      generatedAt: new Date().toISOString(),
+      generatedAt: currentDateTime,
       publisher: {
         id: homepage,
         logo: `https://sciety.org${avatarPath}`,
