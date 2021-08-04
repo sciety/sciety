@@ -79,7 +79,7 @@ export const hardcodedReviewCommonsArticle: Hardcodedreviewcommonsarticle = (por
         },
         '_:b-336d69dd-06d2-484b-8866-256ea5bbc384': {
           'next-step': '_:b-78200b4c-48b8-4d64-b0d0-bfc99453d5f0',
-          assertions: [{ item: 'https://doi.org/10.1101/2021.04.25.441302', status: 'reviewed' }],
+          assertions: [{ item: `https://doi.org/${articleId}`, status: 'reviewed' }],
           actions: [{
             outputs: [{
               published: '2021-06-18T23:16:26.146515+00:00',
@@ -107,8 +107,8 @@ export const hardcodedReviewCommonsArticle: Hardcodedreviewcommonsarticle = (por
           }],
           inputs: [{
             published: '2021-04-26T00:00:00Z',
-            uri: 'https://doi.org/10.1101/2021.04.25.441302',
-            doi: '10.1101/2021.04.25.441302',
+            uri: `https://doi.org/${articleId}`,
+            doi: articleId,
           }],
         },
       },
