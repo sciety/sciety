@@ -111,6 +111,18 @@ prod-sql:
 	--env=PGPASSWORD=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-password"'| base64 -d) \
 	-- psql
 
+prod-sql-to-csv:
+	kubectl run psql \
+	--image=postgres:12.3 \
+	--env=PGHOST=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-host"'| base64 -d) \
+	--env=PGDATABASE=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-database"'| base64 -d) \
+	--env=PGUSER=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-username"'| base64 -d) \
+	--env=PGPASSWORD=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-password"'| base64 -d) \
+	-- sleep 60
+	kubectl wait --for condition=Ready pod psql
+	kubectl exec psql -- psql -c "copy (select * from events) To STDOUT With CSV HEADER DELIMITER E'\t';" > ./events.csv
+	kubectl delete pod psql
+
 taiko: export TARGET = dev
 taiko: export AUTHENTICATION_STRATEGY = local
 taiko: node_modules clean-db
