@@ -6,7 +6,7 @@ import {
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { UserId } from '../types/user-id';
 
-const commandCodec = t.type({
+export const commandCodec = t.type({
   articleId: DoiFromString,
   type: t.union([
     t.literal('UnsaveArticle'),
@@ -14,7 +14,7 @@ const commandCodec = t.type({
   ]),
 });
 
-type Command = t.TypeOf<typeof commandCodec>;
+export type Command = t.TypeOf<typeof commandCodec>;
 
 export type SaveState = 'saved' | 'not-saved';
 
