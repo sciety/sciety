@@ -18,9 +18,22 @@ export const commandCodec = t.type({
 
 export type Command = t.TypeOf<typeof commandCodec>;
 
+const isCommand = (input: unknown): input is Command => {
+  if (typeof input !== 'string') {
+    return false;
+  }
+
+  return pipe(
+    input,
+    JSON.parse,
+    commandCodec.decode,
+    E.isRight,
+  );
+};
+
 export const CommandFromString = new t.Type<Command, string, unknown>(
   'CommandFromString',
-  (input): input is Command => true,
+  isCommand,
   (input, context) => pipe(
     t.string.validate(input, context),
     E.map(JSON.parse),
