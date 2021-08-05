@@ -2,8 +2,9 @@ import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
 import { hardcodedNcrcArticle } from '../../src/docmaps/hardcoded-ncrc-article';
 import * as GroupId from '../../src/types/group-id';
-import { arbitraryDate } from '../helpers';
+import { arbitraryDate, arbitraryString, arbitraryUri } from '../helpers';
 import { arbitraryDoi } from '../types/doi.helper';
+import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 
 describe('hardcoded-ncrc-article', () => {
@@ -25,6 +26,44 @@ describe('hardcoded-ncrc-article', () => {
 
     expect(docmap).toStrictEqual(expect.objectContaining({
       id: expect.stringContaining(articleId.value),
+    }));
+  });
+
+  it('includes the publisher properties', async () => {
+    const groupId = arbitraryGroupId();
+    const homepage = arbitraryUri();
+    const avatarPath = arbitraryString();
+    const ports = {
+      findReviewsForArticleDoi: () => T.of(
+        [
+          {
+            reviewId: arbitraryReviewId(),
+            groupId,
+            occurredAt: arbitraryDate(),
+          },
+        ],
+      ),
+      getGroup: () => TO.some({
+        id: groupId,
+        homepage,
+        avatarPath,
+        shortDescription: arbitraryString(),
+        descriptionPath: arbitraryString(),
+        name: arbitraryString(),
+      }),
+    };
+    const docmap = await hardcodedNcrcArticle(ports)(arbitraryDoi().value)();
+
+    expect(docmap).toStrictEqual(expect.objectContaining({
+      publisher: {
+        id: homepage,
+        logo: expect.stringContaining(avatarPath),
+        homepage,
+        account: {
+          id: expect.stringContaining(groupId),
+          service: 'https://sciety.org',
+        },
+      },
     }));
   });
 });
