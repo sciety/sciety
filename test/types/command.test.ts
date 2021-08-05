@@ -1,9 +1,10 @@
+import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { arbitraryDoi } from './doi.helper';
 import { CommandFromString } from '../../src/types/command';
 
 describe('command', () => {
-  it.skip('encodes and decodes tranparently', () => {
+  it('encodes and decodes tranparently', () => {
     const command = {
       type: 'SaveArticle' as const,
       articleId: arbitraryDoi(),
@@ -15,6 +16,6 @@ describe('command', () => {
       CommandFromString.decode,
     );
 
-    expect(result).toStrictEqual(command);
+    expect(result).toStrictEqual(E.right(command));
   });
 });

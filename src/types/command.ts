@@ -35,5 +35,11 @@ export const CommandFromString = new t.Type<Command, string, unknown>(
     E.map(JSON.parse),
     E.chain(commandCodec.decode),
   ),
-  (command) => JSON.stringify(command),
+  (command) => pipe(
+    {
+      articleId: DoiFromString.encode(command.articleId),
+      type: command.type,
+    },
+    JSON.stringify,
+  ),
 );
