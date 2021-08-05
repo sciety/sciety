@@ -31,11 +31,13 @@ export const unsaveArticle = (
         getAllEvents,
         T.chain(flow(
           articleSaveState(user.id, articleId),
-          commandHandler({
-            articleId,
-            userId: user.id,
-            type: 'UnsaveArticle' as const,
-          }),
+          commandHandler(
+            {
+              articleId,
+              type: 'UnsaveArticle' as const,
+            },
+            user.id,
+          ),
           commitEvents,
         )),
       ),

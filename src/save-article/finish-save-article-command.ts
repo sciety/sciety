@@ -32,11 +32,13 @@ export const finishSaveArticleCommand = (
         getAllEvents,
         T.chain(flow(
           articleSaveState(user.id, articleId),
-          commandHandler({
-            articleId,
-            userId: user.id,
-            type: 'SaveArticle' as const,
-          }),
+          commandHandler(
+            {
+              articleId,
+              type: 'SaveArticle' as const,
+            },
+            user.id,
+          ),
           commitEvents,
         )),
         T.map(() => {

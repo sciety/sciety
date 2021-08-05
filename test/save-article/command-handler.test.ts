@@ -12,9 +12,8 @@ describe('command-handler', () => {
         const unsaveArticle = {
           type: 'UnsaveArticle' as const,
           articleId,
-          userId,
         };
-        const createdEvents = commandHandler(unsaveArticle)(saveState);
+        const createdEvents = commandHandler(unsaveArticle, userId)(saveState);
 
         expect(createdEvents).toStrictEqual([expect.objectContaining({
           type: 'UserUnsavedArticle',
@@ -32,9 +31,8 @@ describe('command-handler', () => {
         const saveArticle = {
           type: 'SaveArticle' as const,
           articleId,
-          userId,
         };
-        const createdEvents = commandHandler(saveArticle)(saveState);
+        const createdEvents = commandHandler(saveArticle, userId)(saveState);
 
         expect(createdEvents).toStrictEqual([]);
       });
@@ -48,9 +46,8 @@ describe('command-handler', () => {
         const unsaveArticle = {
           type: 'UnsaveArticle' as const,
           articleId: arbitraryDoi(),
-          userId: arbitraryUserId(),
         };
-        const createdEvents = commandHandler(unsaveArticle)(saveState);
+        const createdEvents = commandHandler(unsaveArticle, arbitraryUserId())(saveState);
 
         expect(createdEvents).toStrictEqual([]);
       });
@@ -64,9 +61,8 @@ describe('command-handler', () => {
         const saveArticle = {
           type: 'SaveArticle' as const,
           articleId,
-          userId,
         };
-        const createdEvents = commandHandler(saveArticle)(saveState);
+        const createdEvents = commandHandler(saveArticle, userId)(saveState);
 
         expect(createdEvents).toStrictEqual([expect.objectContaining({
           type: 'UserSavedArticle',

@@ -7,7 +7,6 @@ import { UserId } from '../types/user-id';
 
 type Command = {
   articleId: Doi,
-  userId: UserId,
   type: 'UnsaveArticle' | 'SaveArticle',
 };
 
@@ -15,25 +14,26 @@ export type SaveState = 'saved' | 'not-saved';
 
 type CommandHandler = (
   command: Command,
+  userId: UserId
 ) => (
   saveState: SaveState,
 ) => ReadonlyArray<UserUnsavedArticleEvent | UserSavedArticleEvent>;
 
-const handleUnsaveCommand = (saveState: SaveState, command: Command) => (
+const handleUnsaveCommand = (saveState: SaveState, command: Command, userId: UserId) => (
   saveState === 'saved'
-    ? [userUnsavedArticle(command.userId, command.articleId)]
+    ? [userUnsavedArticle(userId, command.articleId)]
     : []);
 
-const handleSaveCommand = (saveState: SaveState, command: Command) => (
+const handleSaveCommand = (saveState: SaveState, command: Command, userId: UserId) => (
   saveState === 'not-saved'
-    ? [userSavedArticle(command.userId, command.articleId)]
+    ? [userSavedArticle(userId, command.articleId)]
     : []);
 
-export const commandHandler: CommandHandler = (command) => (saveState) => {
+export const commandHandler: CommandHandler = (command, userId) => (saveState) => {
   switch (command.type) {
     case 'SaveArticle':
-      return handleSaveCommand(saveState, command);
+      return handleSaveCommand(saveState, command, userId);
     case 'UnsaveArticle':
-      return handleUnsaveCommand(saveState, command);
+      return handleUnsaveCommand(saveState, command, userId);
   }
 };
