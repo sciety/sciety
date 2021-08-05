@@ -25,6 +25,7 @@ import { redirectAfterAuthenticating, requireAuthentication } from './require-au
 import { robots } from './robots';
 import { aboutPage } from '../about-page';
 import { articleActivityPage, articleMetaPage } from '../article-page';
+import { hardcodedNcrcArticle } from '../docmaps/hardcoded-ncrc-article';
 import { hardcodedReviewCommonsArticle } from '../docmaps/hardcoded-response';
 import { finishUnfollowCommand, saveUnfollowCommand, unfollowHandler } from '../follow';
 import { groupEvaluationsPage, paramsCodec as groupEvaluationsPageParams } from '../group-evaluations-page/group-evaluations-page';
@@ -439,7 +440,7 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.get('/docmaps/v1/articles/10.1101/2021.03.13.21253515.docmap.json', async (context, next) => {
     context.response.body = [
-      await hardcodedReviewCommonsArticle(adapters)('10.1101/2021.03.13.21253515', new Date().toISOString())(),
+      hardcodedNcrcArticle,
     ];
 
     await next();
