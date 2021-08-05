@@ -195,7 +195,7 @@ export const hardcodedNcrcArticle: HardcodedNcrcArticle = (ports) => (articleId)
   }))),
   T.map(({ id, avatarPath, homepage }) => ({
     '@context': context,
-    id: 'http://example.com/docmap/456',
+    id: 'https://sciety.org/docmaps/v1/articles/10.1101/2021.03.13.21253515.docmap.json',
     type: 'docmap',
     created: '2021-04-23',
     publisher: {
