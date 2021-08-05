@@ -1,14 +1,20 @@
+import * as t from 'io-ts';
 import {
   userSavedArticle,
   UserSavedArticleEvent, userUnsavedArticle, UserUnsavedArticleEvent,
 } from '../domain-events';
-import { Doi } from '../types/doi';
+import { DoiFromString } from '../types/codecs/DoiFromString';
 import { UserId } from '../types/user-id';
 
-type Command = {
-  articleId: Doi,
-  type: 'UnsaveArticle' | 'SaveArticle',
-};
+const commandCodec = t.type({
+  articleId: DoiFromString,
+  type: t.union([
+    t.literal('UnsaveArticle'),
+    t.literal('SaveArticle'),
+  ]),
+});
+
+type Command = t.TypeOf<typeof commandCodec>;
 
 export type SaveState = 'saved' | 'not-saved';
 
