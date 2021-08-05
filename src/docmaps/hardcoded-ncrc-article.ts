@@ -1,6 +1,6 @@
 import { URL } from 'url';
 import { sequenceS } from 'fp-ts/Apply';
-import * as O from 'fp-ts/Option';
+import * as E from 'fp-ts/Either';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -207,19 +207,15 @@ export const hardcodedNcrcArticle: HardcodedNcrcArticle = (ports) => (articleId)
       ports.findReviewsForArticleDoi,
       T.map(([{ groupId }]) => groupId),
       T.chain(ports.getGroup),
-      T.map(O.getOrElse(() => ({
-        id: '',
-        name: '',
-        avatarPath: '',
-        descriptionPath: '',
-        shortDescription: '',
-        homepage: '',
-      }))),
+      T.map(E.fromOption(() => DE.notFound)),
     ),
-    versions: ports.findVersionsForArticleDoi(new Doi(articleId), 'medrxiv'),
+    versions: pipe(
+      ports.findVersionsForArticleDoi(new Doi(articleId), 'medrxiv'),
+      TE.fromTaskOption(() => DE.unavailable),
+    ),
   },
-  sequenceS(T.ApplyPar),
-  T.map(({ group, versions }) => ({
+  sequenceS(TE.ApplyPar),
+  TE.map(({ group, versions }) => ({
     '@context': context,
     id: `https://sciety.org/docmaps/v1/articles/${articleId}.docmap.json`,
     type: 'docmap',
@@ -240,13 +236,7 @@ export const hardcodedNcrcArticle: HardcodedNcrcArticle = (ports) => (articleId)
         inputs: [{
           doi: articleId,
           url: `https://doi.org/${articleId}`,
-          published: pipe(
-            versions,
-            O.fold(
-              () => new Date('1970-01-01'),
-              (vs) => vs[vs.length - 1].occurredAt,
-            ),
-          ),
+          published: versions[versions.length - 1].occurredAt,
         }],
         actions: [
           {
@@ -280,5 +270,4 @@ export const hardcodedNcrcArticle: HardcodedNcrcArticle = (ports) => (articleId)
       },
     },
   })),
-  TE.rightTask,
 );

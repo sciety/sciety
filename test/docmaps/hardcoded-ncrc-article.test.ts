@@ -3,6 +3,7 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
 import { FindVersionsForArticleDoi, hardcodedNcrcArticle } from '../../src/docmaps/hardcoded-ncrc-article';
+import * as DE from '../../src/types/data-error';
 import * as GroupId from '../../src/types/group-id';
 import { arbitraryDate, arbitraryString, arbitraryUri } from '../helpers';
 import { arbitraryDoi } from '../types/doi.helper';
@@ -22,8 +23,21 @@ describe('hardcoded-ncrc-article', () => {
           },
         ],
       ),
-      findVersionsForArticleDoi: () => TO.none,
-      getGroup: () => TO.none,
+      findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.some([
+        {
+          source: new URL(arbitraryUri()),
+          occurredAt: arbitraryDate(),
+          version: 1,
+        },
+      ]),
+      getGroup: () => TO.some({
+        id: arbitraryGroupId(),
+        homepage: arbitraryUri(),
+        avatarPath: arbitraryString(),
+        shortDescription: arbitraryString(),
+        descriptionPath: arbitraryString(),
+        name: arbitraryString(),
+      }),
     };
     const docmap = await hardcodedNcrcArticle(ports)(articleId.value)();
 
@@ -46,7 +60,13 @@ describe('hardcoded-ncrc-article', () => {
           },
         ],
       ),
-      findVersionsForArticleDoi: () => TO.none,
+      findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.some([
+        {
+          source: new URL(arbitraryUri()),
+          occurredAt: arbitraryDate(),
+          version: 1,
+        },
+      ]),
       getGroup: () => TO.some({
         id: groupId,
         homepage,
@@ -83,8 +103,21 @@ describe('hardcoded-ncrc-article', () => {
           },
         ],
       ),
-      findVersionsForArticleDoi: () => TO.none,
-      getGroup: () => TO.none,
+      findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.some([
+        {
+          source: new URL(arbitraryUri()),
+          occurredAt: arbitraryDate(),
+          version: 1,
+        },
+      ]),
+      getGroup: () => TO.some({
+        id: arbitraryGroupId(),
+        homepage: arbitraryUri(),
+        avatarPath: arbitraryString(),
+        shortDescription: arbitraryString(),
+        descriptionPath: arbitraryString(),
+        name: arbitraryString(),
+      }),
     };
     const docmap = await hardcodedNcrcArticle(ports)(articleId)();
 
@@ -122,7 +155,14 @@ describe('hardcoded-ncrc-article', () => {
           version: 1,
         },
       ]),
-      getGroup: () => TO.none,
+      getGroup: () => TO.some({
+        id: arbitraryGroupId(),
+        homepage: arbitraryUri(),
+        avatarPath: arbitraryString(),
+        shortDescription: arbitraryString(),
+        descriptionPath: arbitraryString(),
+        name: arbitraryString(),
+      }),
     };
     const docmap = await hardcodedNcrcArticle(ports)(articleId)();
 
@@ -137,5 +177,34 @@ describe('hardcoded-ncrc-article', () => {
         }),
       }),
     })));
+  });
+
+  describe('when the group cant be retrieved', () => {
+    it('returns not-found', async () => {
+      const articleId = arbitraryDoi().value;
+      const articleDate = arbitraryDate();
+      const ports = {
+        findReviewsForArticleDoi: () => T.of(
+          [
+            {
+              reviewId: arbitraryReviewId(),
+              groupId: arbitraryGroupId(),
+              occurredAt: arbitraryDate(),
+            },
+          ],
+        ),
+        findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.some([
+          {
+            source: new URL(arbitraryUri()),
+            occurredAt: articleDate,
+            version: 1,
+          },
+        ]),
+        getGroup: () => TO.none,
+      };
+      const docmap = await hardcodedNcrcArticle(ports)(articleId)();
+
+      expect(docmap).toStrictEqual(E.left(DE.notFound));
+    });
   });
 });
