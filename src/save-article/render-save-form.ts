@@ -1,5 +1,5 @@
-import { CommandFromString } from './command-handler';
 import { articleIdFieldName, encodedCommandFieldName } from './save-save-article-command';
+import { CommandFromString } from '../types/command';
 import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
