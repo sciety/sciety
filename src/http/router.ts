@@ -440,7 +440,7 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.get('/docmaps/v1/articles/10.1101/2021.03.13.21253515.docmap.json', async (context, next) => {
     context.response.body = [
-      hardcodedNcrcArticle,
+      await hardcodedNcrcArticle(adapters)('10.1101/2021.03.13.21253515')(),
     ];
 
     await next();

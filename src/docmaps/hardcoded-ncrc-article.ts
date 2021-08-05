@@ -1,3 +1,24 @@
+import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
+import * as TO from 'fp-ts/TaskOption';
+import { pipe } from 'fp-ts/function';
+import { Doi } from '../types/doi';
+import { Group } from '../types/group';
+import { GroupId } from '../types/group-id';
+import { ReviewId } from '../types/review-id';
+
+type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
+  reviewId: ReviewId,
+  groupId: GroupId,
+  occurredAt: Date,
+}>>;
+type GetGroup = (groupId: GroupId) => TO.TaskOption<Group>;
+
+type Ports = {
+  findReviewsForArticleDoi: FindReviewsForArticleDoi,
+  getGroup: GetGroup,
+};
+
 const context = {
   dcterms: 'http://purl.org/dc/terms/',
   foaf: 'http://xmlns.com/foaf/0.1/',
@@ -158,61 +179,76 @@ const context = {
   editorial: 'fabio:Editorial',
 };
 
-export const hardcodedNcrcArticle = {
-  '@context': context,
-  id: 'http://example.com/docmap/456',
-  type: 'docmap',
-  created: '2021-04-23',
-  publisher: {
-    id: 'https://ncrc.jhsph.edu/',
-    logo: 'https://sciety.org/static/groups/ncrc--62f9b0d0-8d43-4766-a52a-ce02af61bc6a.jpg',
-    homepage: 'https://ncrc.jhsph.edu/',
-    account: {
-      id: 'https://sciety.org/groups/62f9b0d0-8d43-4766-a52a-ce02af61bc6a',
-      service: 'https://sciety.org',
+type HardcodedNcrcArticle = (ports: Ports) => (articleId: string) => T.Task<Record<string, unknown>>;
+export const hardcodedNcrcArticle: HardcodedNcrcArticle = (ports) => (articleId) => pipe(
+  new Doi(articleId),
+  ports.findReviewsForArticleDoi,
+  T.map(([{ groupId }]) => groupId),
+  T.chain(ports.getGroup),
+  T.map(O.getOrElse(() => ({
+    id: '',
+    name: '',
+    avatarPath: '',
+    descriptionPath: '',
+    shortDescription: '',
+    homepage: '',
+  }))),
+  T.map(({ id, avatarPath, homepage }) => ({
+    '@context': context,
+    id: 'http://example.com/docmap/456',
+    type: 'docmap',
+    created: '2021-04-23',
+    publisher: {
+      id: homepage,
+      logo: `https://sciety.org${avatarPath}`,
+      homepage,
+      account: {
+        id: `https://sciety.org/groups/${id}`,
+        service: 'https://sciety.org',
+      },
     },
-  },
-  'first-step': '_:b0',
-  steps: {
-    '_:b0': {
-      assertions: [
-        {
-          item: 'http://ec2-18-234-60-140.compute-1.amazonaws.com:8080/10.1101/2021.04.06.21254882v2',
-          status: 'reviewed',
-        },
-      ],
-      inputs: [
-        'http://ec2-18-234-60-140.compute-1.amazonaws.com:8080/10.1101/2021.04.06.21254882v2',
-      ],
-      actions: [
-        {
-          participants: [
-            {
-              actor: {
-                type: 'person',
-                name: 'Andrew Redd',
+    'first-step': '_:b0',
+    steps: {
+      '_:b0': {
+        assertions: [
+          {
+            item: 'http://ec2-18-234-60-140.compute-1.amazonaws.com:8080/10.1101/2021.04.06.21254882v2',
+            status: 'reviewed',
+          },
+        ],
+        inputs: [
+          'http://ec2-18-234-60-140.compute-1.amazonaws.com:8080/10.1101/2021.04.06.21254882v2',
+        ],
+        actions: [
+          {
+            participants: [
+              {
+                actor: {
+                  type: 'person',
+                  name: 'Andrew Redd',
+                },
+                role: 'peer-reviewer',
               },
-              role: 'peer-reviewer',
-            },
-          ],
-          outputs: [
-            {
-              type: 'review-article',
-              published: '2021-04-23',
-              content: [
-                {
-                  type: 'web-page',
-                  url: 'https://ncrc.jhsph.edu/research/evidence-for-increased-breakthrough-rates-of-sars-cov-2-variants-of-concern-in-bnt162b2-mrna-vaccinated-individuals/',
-                },
-                {
-                  type: 'web-page',
-                  url: 'https://sciety.org/articles/activity/10.1101/2020.11.09.374330#ncrc:c0e4f483-eb58-4c13-b475-66c3d86fb430',
-                },
-              ],
-            },
-          ],
-        },
-      ],
+            ],
+            outputs: [
+              {
+                type: 'review-article',
+                published: '2021-04-23',
+                content: [
+                  {
+                    type: 'web-page',
+                    url: 'https://ncrc.jhsph.edu/research/evidence-for-increased-breakthrough-rates-of-sars-cov-2-variants-of-concern-in-bnt162b2-mrna-vaccinated-individuals/',
+                  },
+                  {
+                    type: 'web-page',
+                    url: 'https://sciety.org/articles/activity/10.1101/2020.11.09.374330#ncrc:c0e4f483-eb58-4c13-b475-66c3d86fb430',
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
     },
-  },
-};
+  })),
+);
