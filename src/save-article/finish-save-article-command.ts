@@ -1,17 +1,16 @@
-import * as O from 'fp-ts/Option';
+import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
 import { articleSaveState } from './article-save-state';
 import { commandHandler } from './command-handler';
+import { encodedCommandFieldName } from './save-save-article-command';
 import {
   DomainEvent,
   UserSavedArticleEvent, UserUnsavedArticleEvent,
 } from '../domain-events';
-import * as Doi from '../types/doi';
+import { CommandFromString } from '../types/command';
 import { User } from '../types/user';
-
-const isCommand = (command: string): command is 'save-article' => command === 'save-article';
 
 type Ports = {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
@@ -23,27 +22,21 @@ export const finishSaveArticleCommand = (
 ): Middleware => async (context, next) => {
   const user = context.state.user as User;
   await pipe(
-    O.Do,
-    O.apS('articleId', pipe(context.session.articleId, Doi.fromString)),
-    O.apS('command', pipe(context.session.command, O.fromNullable, O.filter(isCommand))),
-    O.fold(
+    context.session[encodedCommandFieldName],
+    CommandFromString.decode,
+    E.fold(
       () => T.of(undefined),
-      ({ articleId }) => pipe(
+      (command) => pipe(
         getAllEvents,
         T.chain(flow(
-          articleSaveState(user.id, articleId),
-          commandHandler(
-            {
-              articleId,
-              type: 'SaveArticle' as const,
-            },
-            user.id,
-          ),
+          articleSaveState(user.id, command.articleId),
+          commandHandler(command, user.id),
           commitEvents,
         )),
         T.map(() => {
           delete context.session.command;
           delete context.session.articleId;
+          delete context.session[encodedCommandFieldName];
           return undefined;
         }),
       ),

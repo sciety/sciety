@@ -3,6 +3,8 @@ import * as T from 'fp-ts/Task';
 import { ParameterizedContext } from 'koa';
 import { userSavedArticle } from '../../src/domain-events';
 import { finishSaveArticleCommand } from '../../src/save-article/finish-save-article-command';
+import { encodedCommandFieldName } from '../../src/save-article/save-save-article-command';
+import { CommandFromString } from '../../src/types/command';
 import { User } from '../../src/types/user';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
@@ -16,6 +18,7 @@ describe('finish-save-article-command', () => {
         session: {
           command: 'save-article',
           articleId: articleId.toString(),
+          [encodedCommandFieldName]: CommandFromString.encode({ articleId, type: 'SaveArticle' }),
         },
         state: {
           user: {
@@ -45,6 +48,7 @@ describe('finish-save-article-command', () => {
         session: {
           command: 'save-article',
           articleId: articleId.toString(),
+          [encodedCommandFieldName]: CommandFromString.encode({ articleId, type: 'SaveArticle' }),
         },
         state: {
           user: {
@@ -72,6 +76,7 @@ describe('finish-save-article-command', () => {
         session: {
           command: 'save-article',
           articleId: articleId.toString(),
+          [encodedCommandFieldName]: CommandFromString.encode({ articleId, type: 'SaveArticle' }),
         },
         state: {
           user: {
