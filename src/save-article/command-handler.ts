@@ -1,3 +1,5 @@
+import * as E from 'fp-ts/Either';
+import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import {
   userSavedArticle,
@@ -15,6 +17,17 @@ export const commandCodec = t.type({
 });
 
 export type Command = t.TypeOf<typeof commandCodec>;
+
+export const CommandFromString = new t.Type<Command, string, unknown>(
+  'CommandFromString',
+  (input): input is Command => true,
+  (input, context) => pipe(
+    t.string.validate(input, context),
+    E.map(JSON.parse),
+    E.chain(commandCodec.decode),
+  ),
+  (command) => JSON.stringify(command),
+);
 
 export type SaveState = 'saved' | 'not-saved';
 
