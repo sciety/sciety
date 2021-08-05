@@ -424,11 +424,23 @@ export const createRouter = (adapters: Adapters): Router => {
     context.response.body = {
       articles: [
         {
+          doi: '10.1101/2021.03.13.21253515',
+          docmap: 'https://sciety.org/docmaps/v1/articles/10.1101/2021.03.13.21253515.docmap.json',
+        },
+        {
           doi: '10.1101/2021.04.25.441302',
           docmap: 'https://sciety.org/docmaps/v1/articles/10.1101/2021.04.25.441302.docmap.json',
         },
       ],
     };
+
+    await next();
+  });
+
+  router.get('/docmaps/v1/articles/10.1101/2021.03.13.21253515.docmap.json', async (context, next) => {
+    context.response.body = [
+      await hardcodedReviewCommonsArticle(adapters)('10.1101/2021.03.13.21253515', new Date().toISOString())(),
+    ];
 
     await next();
   });
