@@ -439,10 +439,27 @@ export const createRouter = (adapters: Adapters): Router => {
   });
 
   router.get('/docmaps/v1/articles/10.1101/2021.03.13.21253515.docmap.json', async (context, next) => {
-    context.response.body = [
-      await hardcodedNcrcArticle(adapters)('10.1101/2021.03.13.21253515')(),
-    ];
+    const response = await pipe(
+      hardcodedNcrcArticle(adapters)('10.1101/2021.03.13.21253515'),
+      TE.fold(
+        (error) => T.of({
+          body: {},
+          status: pipe(
+            error,
+            DE.fold({
+              notFound: () => StatusCodes.NOT_FOUND,
+              unavailable: () => StatusCodes.SERVICE_UNAVAILABLE,
+            }),
+          ),
+        }),
+        (body) => T.of({
+          body: [body],
+          status: StatusCodes.OK,
+        }),
+      ),
+    )();
 
+    Object.assign(context.response, response);
     await next();
   });
 

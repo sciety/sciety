@@ -1,4 +1,5 @@
 import { URL } from 'url';
+import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
 import { FindVersionsForArticleDoi, hardcodedNcrcArticle } from '../../src/docmaps/hardcoded-ncrc-article';
@@ -26,9 +27,9 @@ describe('hardcoded-ncrc-article', () => {
     };
     const docmap = await hardcodedNcrcArticle(ports)(articleId.value)();
 
-    expect(docmap).toStrictEqual(expect.objectContaining({
+    expect(docmap).toStrictEqual(E.right(expect.objectContaining({
       id: expect.stringContaining(articleId.value),
-    }));
+    })));
   });
 
   it('includes the publisher properties', async () => {
@@ -57,7 +58,7 @@ describe('hardcoded-ncrc-article', () => {
     };
     const docmap = await hardcodedNcrcArticle(ports)(arbitraryDoi().value)();
 
-    expect(docmap).toStrictEqual(expect.objectContaining({
+    expect(docmap).toStrictEqual(E.right(expect.objectContaining({
       publisher: {
         id: homepage,
         logo: expect.stringContaining(avatarPath),
@@ -67,7 +68,7 @@ describe('hardcoded-ncrc-article', () => {
           service: 'https://sciety.org',
         },
       },
-    }));
+    })));
   });
 
   it('includes the uri and doi in the inputs to the first step', async () => {
@@ -87,7 +88,7 @@ describe('hardcoded-ncrc-article', () => {
     };
     const docmap = await hardcodedNcrcArticle(ports)(articleId)();
 
-    expect(docmap).toStrictEqual(expect.objectContaining({
+    expect(docmap).toStrictEqual(E.right(expect.objectContaining({
       steps: expect.objectContaining({
         '_:b0': expect.objectContaining({
           inputs: [expect.objectContaining(
@@ -98,7 +99,7 @@ describe('hardcoded-ncrc-article', () => {
           )],
         }),
       }),
-    }));
+    })));
   });
 
   it('includes the article publication date in the inputs to the first step', async () => {
@@ -125,7 +126,7 @@ describe('hardcoded-ncrc-article', () => {
     };
     const docmap = await hardcodedNcrcArticle(ports)(articleId)();
 
-    expect(docmap).toStrictEqual(expect.objectContaining({
+    expect(docmap).toStrictEqual(E.right(expect.objectContaining({
       steps: expect.objectContaining({
         '_:b0': expect.objectContaining({
           inputs: [expect.objectContaining(
@@ -135,6 +136,6 @@ describe('hardcoded-ncrc-article', () => {
           )],
         }),
       }),
-    }));
+    })));
   });
 });

@@ -3,9 +3,11 @@ import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { ArticleServer } from '../types/article-server';
+import * as DE from '../types/data-error';
 import { Doi } from '../types/doi';
 import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
@@ -194,7 +196,9 @@ const context = {
   editorial: 'fabio:Editorial',
 };
 
-type HardcodedNcrcArticle = (ports: Ports) => (articleId: string) => T.Task<Record<string, unknown>>;
+type HardcodedNcrcArticle = (
+  ports: Ports,
+) => (articleId: string) => TE.TaskEither<DE.DataError, Record<string, unknown>>;
 
 export const hardcodedNcrcArticle: HardcodedNcrcArticle = (ports) => (articleId) => pipe(
   {
@@ -276,4 +280,5 @@ export const hardcodedNcrcArticle: HardcodedNcrcArticle = (ports) => (articleId)
       },
     },
   })),
+  TE.rightTask,
 );
