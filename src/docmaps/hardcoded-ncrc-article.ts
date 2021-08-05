@@ -212,9 +212,11 @@ export const hardcodedNcrcArticle: HardcodedNcrcArticle = (ports) => (articleId)
     steps: {
       '_:b0': {
         assertions: [],
-        inputs: [
-          'http://ec2-18-234-60-140.compute-1.amazonaws.com:8080/10.1101/2021.04.06.21254882v2',
-        ],
+        inputs: [{
+          doi: articleId,
+          url: `https://doi.org/${articleId}`,
+          published: '2021-08-05',
+        }],
         actions: [
           {
             participants: [

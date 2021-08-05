@@ -66,4 +66,34 @@ describe('hardcoded-ncrc-article', () => {
       },
     }));
   });
+
+  it('includes the uri and doi in the inputs to the first step', async () => {
+    const articleId = arbitraryDoi().value;
+    const ports = {
+      findReviewsForArticleDoi: () => T.of(
+        [
+          {
+            reviewId: arbitraryReviewId(),
+            groupId: arbitraryGroupId(),
+            occurredAt: arbitraryDate(),
+          },
+        ],
+      ),
+      getGroup: () => TO.none,
+    };
+    const docmap = await hardcodedNcrcArticle(ports)(articleId)();
+
+    expect(docmap).toStrictEqual(expect.objectContaining({
+      steps: expect.objectContaining({
+        '_:b0': expect.objectContaining({
+          inputs: [expect.objectContaining(
+            {
+              doi: articleId,
+              url: expect.stringContaining(articleId),
+            },
+          )],
+        }),
+      }),
+    }));
+  });
 });
