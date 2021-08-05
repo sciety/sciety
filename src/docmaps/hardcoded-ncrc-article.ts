@@ -180,6 +180,7 @@ const context = {
 };
 
 type HardcodedNcrcArticle = (ports: Ports) => (articleId: string) => T.Task<Record<string, unknown>>;
+
 export const hardcodedNcrcArticle: HardcodedNcrcArticle = (ports) => (articleId) => pipe(
   new Doi(articleId),
   ports.findReviewsForArticleDoi,
@@ -210,12 +211,7 @@ export const hardcodedNcrcArticle: HardcodedNcrcArticle = (ports) => (articleId)
     'first-step': '_:b0',
     steps: {
       '_:b0': {
-        assertions: [
-          {
-            item: 'http://ec2-18-234-60-140.compute-1.amazonaws.com:8080/10.1101/2021.04.06.21254882v2',
-            status: 'reviewed',
-          },
-        ],
+        assertions: [],
         inputs: [
           'http://ec2-18-234-60-140.compute-1.amazonaws.com:8080/10.1101/2021.04.06.21254882v2',
         ],
