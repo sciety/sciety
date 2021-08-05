@@ -1,6 +1,7 @@
+import { URL } from 'url';
 import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
-import { hardcodedNcrcArticle } from '../../src/docmaps/hardcoded-ncrc-article';
+import { FindVersionsForArticleDoi, hardcodedNcrcArticle } from '../../src/docmaps/hardcoded-ncrc-article';
 import * as GroupId from '../../src/types/group-id';
 import { arbitraryDate, arbitraryString, arbitraryUri } from '../helpers';
 import { arbitraryDoi } from '../types/doi.helper';
@@ -20,6 +21,7 @@ describe('hardcoded-ncrc-article', () => {
           },
         ],
       ),
+      findVersionsForArticleDoi: () => TO.none,
       getGroup: () => TO.none,
     };
     const docmap = await hardcodedNcrcArticle(ports)(articleId.value)();
@@ -43,6 +45,7 @@ describe('hardcoded-ncrc-article', () => {
           },
         ],
       ),
+      findVersionsForArticleDoi: () => TO.none,
       getGroup: () => TO.some({
         id: groupId,
         homepage,
@@ -79,6 +82,7 @@ describe('hardcoded-ncrc-article', () => {
           },
         ],
       ),
+      findVersionsForArticleDoi: () => TO.none,
       getGroup: () => TO.none,
     };
     const docmap = await hardcodedNcrcArticle(ports)(articleId)();
@@ -90,6 +94,43 @@ describe('hardcoded-ncrc-article', () => {
             {
               doi: articleId,
               url: expect.stringContaining(articleId),
+            },
+          )],
+        }),
+      }),
+    }));
+  });
+
+  it('includes the article publication date in the inputs to the first step', async () => {
+    const articleId = arbitraryDoi().value;
+    const articleDate = arbitraryDate();
+    const ports = {
+      findReviewsForArticleDoi: () => T.of(
+        [
+          {
+            reviewId: arbitraryReviewId(),
+            groupId: arbitraryGroupId(),
+            occurredAt: arbitraryDate(),
+          },
+        ],
+      ),
+      findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.some([
+        {
+          source: new URL(arbitraryUri()),
+          occurredAt: articleDate,
+          version: 1,
+        },
+      ]),
+      getGroup: () => TO.none,
+    };
+    const docmap = await hardcodedNcrcArticle(ports)(articleId)();
+
+    expect(docmap).toStrictEqual(expect.objectContaining({
+      steps: expect.objectContaining({
+        '_:b0': expect.objectContaining({
+          inputs: [expect.objectContaining(
+            {
+              published: articleDate,
             },
           )],
         }),

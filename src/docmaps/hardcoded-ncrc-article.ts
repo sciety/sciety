@@ -1,11 +1,24 @@
+import { URL } from 'url';
+import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
+import { ArticleServer } from '../types/article-server';
 import { Doi } from '../types/doi';
 import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
 import { ReviewId } from '../types/review-id';
+
+export type FindVersionsForArticleDoi = (
+  doi: Doi,
+  server: ArticleServer
+) => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<{
+  source: URL,
+  occurredAt: Date,
+  version: number,
+}>>;
 
 type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
   reviewId: ReviewId,
@@ -16,6 +29,7 @@ type GetGroup = (groupId: GroupId) => TO.TaskOption<Group>;
 
 type Ports = {
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
+  findVersionsForArticleDoi: FindVersionsForArticleDoi,
   getGroup: GetGroup,
 };
 
@@ -182,29 +196,35 @@ const context = {
 type HardcodedNcrcArticle = (ports: Ports) => (articleId: string) => T.Task<Record<string, unknown>>;
 
 export const hardcodedNcrcArticle: HardcodedNcrcArticle = (ports) => (articleId) => pipe(
-  new Doi(articleId),
-  ports.findReviewsForArticleDoi,
-  T.map(([{ groupId }]) => groupId),
-  T.chain(ports.getGroup),
-  T.map(O.getOrElse(() => ({
-    id: '',
-    name: '',
-    avatarPath: '',
-    descriptionPath: '',
-    shortDescription: '',
-    homepage: '',
-  }))),
-  T.map(({ id, avatarPath, homepage }) => ({
+  {
+    group: pipe(
+      new Doi(articleId),
+      ports.findReviewsForArticleDoi,
+      T.map(([{ groupId }]) => groupId),
+      T.chain(ports.getGroup),
+      T.map(O.getOrElse(() => ({
+        id: '',
+        name: '',
+        avatarPath: '',
+        descriptionPath: '',
+        shortDescription: '',
+        homepage: '',
+      }))),
+    ),
+    versions: ports.findVersionsForArticleDoi(new Doi(articleId), 'medrxiv'),
+  },
+  sequenceS(T.ApplyPar),
+  T.map(({ group, versions }) => ({
     '@context': context,
     id: `https://sciety.org/docmaps/v1/articles/${articleId}.docmap.json`,
     type: 'docmap',
     created: '2021-04-23',
     publisher: {
-      id: homepage,
-      logo: `https://sciety.org${avatarPath}`,
-      homepage,
+      id: group.homepage,
+      logo: `https://sciety.org${group.avatarPath}`,
+      homepage: group.homepage,
       account: {
-        id: `https://sciety.org/groups/${id}`,
+        id: `https://sciety.org/groups/${group.id}`,
         service: 'https://sciety.org',
       },
     },
@@ -215,7 +235,13 @@ export const hardcodedNcrcArticle: HardcodedNcrcArticle = (ports) => (articleId)
         inputs: [{
           doi: articleId,
           url: `https://doi.org/${articleId}`,
-          published: '2021-08-05',
+          published: pipe(
+            versions,
+            O.fold(
+              () => new Date('1970-01-01'),
+              (vs) => vs[vs.length - 1].occurredAt,
+            ),
+          ),
         }],
         actions: [
           {
