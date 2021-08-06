@@ -213,9 +213,16 @@ export const hardcodedNcrcArticle: HardcodedNcrcArticle = (ports) => (articleId)
       ports.findVersionsForArticleDoi(new Doi(articleId), 'medrxiv'),
       TE.fromTaskOption(() => DE.unavailable),
     ),
+    evaluationDate: pipe(
+      new Doi(articleId),
+      ports.findReviewsForArticleDoi,
+      T.map(([{ occurredAt }]) => occurredAt),
+      TE.fromTask,
+      TE.mapLeft(() => DE.unavailable),
+    ),
   },
   sequenceS(TE.ApplyPar),
-  TE.map(({ group, versions }) => ({
+  TE.map(({ group, versions, evaluationDate }) => ({
     '@context': context,
     id: `https://sciety.org/docmaps/v1/articles/${articleId}.docmap.json`,
     type: 'docmap',
@@ -252,7 +259,7 @@ export const hardcodedNcrcArticle: HardcodedNcrcArticle = (ports) => (articleId)
             outputs: [
               {
                 type: 'review-article',
-                published: '2021-04-23',
+                published: evaluationDate,
                 content: [
                   {
                     type: 'web-page',

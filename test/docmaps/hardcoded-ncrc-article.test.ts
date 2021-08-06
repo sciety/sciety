@@ -179,7 +179,7 @@ describe('hardcoded-ncrc-article', () => {
     })));
   });
 
-  it.skip('includes the published date of the evaluation in the outputs of the actions of the first step', async () => {
+  it('includes the published date of the evaluation in the outputs of the actions of the first step', async () => {
     const articleId = arbitraryDoi().value;
     const evaluationDate = arbitraryDate();
     const ports = {
