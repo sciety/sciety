@@ -27,6 +27,14 @@ const defaultPorts = {
       version: 1,
     },
   ]),
+  getGroup: () => TO.some({
+    id: arbitraryGroupId(),
+    homepage: arbitraryUri(),
+    avatarPath: arbitraryString(),
+    shortDescription: arbitraryString(),
+    descriptionPath: arbitraryString(),
+    name: arbitraryString(),
+  }),
 };
 
 describe('hardcoded-ncrc-article', () => {
@@ -43,14 +51,6 @@ describe('hardcoded-ncrc-article', () => {
           },
         ],
       ),
-      getGroup: () => TO.some({
-        id: arbitraryGroupId(),
-        homepage: arbitraryUri(),
-        avatarPath: arbitraryString(),
-        shortDescription: arbitraryString(),
-        descriptionPath: arbitraryString(),
-        name: arbitraryString(),
-      }),
     };
     const docmap = await hardcodedNcrcArticle(ports)(articleId.value)();
 
@@ -100,18 +100,7 @@ describe('hardcoded-ncrc-article', () => {
 
   it('includes the uri and doi in the inputs to the first step', async () => {
     const articleId = arbitraryDoi().value;
-    const ports = {
-      ...defaultPorts,
-      getGroup: () => TO.some({
-        id: arbitraryGroupId(),
-        homepage: arbitraryUri(),
-        avatarPath: arbitraryString(),
-        shortDescription: arbitraryString(),
-        descriptionPath: arbitraryString(),
-        name: arbitraryString(),
-      }),
-    };
-    const docmap = await hardcodedNcrcArticle(ports)(articleId)();
+    const docmap = await hardcodedNcrcArticle(defaultPorts)(articleId)();
 
     expect(docmap).toStrictEqual(E.right(expect.objectContaining({
       steps: expect.objectContaining({
@@ -139,14 +128,6 @@ describe('hardcoded-ncrc-article', () => {
           version: 1,
         },
       ]),
-      getGroup: () => TO.some({
-        id: arbitraryGroupId(),
-        homepage: arbitraryUri(),
-        avatarPath: arbitraryString(),
-        shortDescription: arbitraryString(),
-        descriptionPath: arbitraryString(),
-        name: arbitraryString(),
-      }),
     };
     const docmap = await hardcodedNcrcArticle(ports)(articleId)();
 
@@ -177,14 +158,6 @@ describe('hardcoded-ncrc-article', () => {
           },
         ],
       ),
-      getGroup: () => TO.some({
-        id: arbitraryGroupId(),
-        homepage: arbitraryUri(),
-        avatarPath: arbitraryString(),
-        shortDescription: arbitraryString(),
-        descriptionPath: arbitraryString(),
-        name: arbitraryString(),
-      }),
     };
 
     const docmap = await hardcodedNcrcArticle(ports)(articleId)();
