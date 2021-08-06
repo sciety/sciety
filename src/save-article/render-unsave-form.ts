@@ -1,15 +1,15 @@
 import { pipe } from 'fp-ts/function';
-import { articleIdFieldName } from './execute-unsave-article-command';
+import { encodedCommandFieldName } from './save-save-article-command';
+import { CommandFromString } from '../types/command';
 import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 export const renderUnsaveForm = (articleId: Doi): HtmlFragment => pipe(
-  articleId.value,
-  (id) => `<form method="post" action="/unsave-article">
-      <input type="hidden" name="${articleIdFieldName}" value="${id}">
-      <button class="saved-articles-control">
-        <img src="/static/images/delete.svg" alt="Remove this article from the list">
-      </button>
-    </form>`,
+  `<form method="post" action="/unsave-article">
+    <input type="hidden" name="${encodedCommandFieldName}" value="${CommandFromString.encode({ articleId, type: 'UnsaveArticle' })}">
+    <button class="saved-articles-control">
+      <img src="/static/images/delete.svg" alt="Remove this article from the list">
+    </button>
+  </form>`,
   toHtmlFragment,
 );
