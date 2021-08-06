@@ -1,11 +1,12 @@
 import { URL } from 'url';
 import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { ArticleServer } from '../types/article-server';
 import * as DE from '../types/data-error';
 import { Doi } from '../types/doi';
@@ -202,35 +203,31 @@ type HardcodedNcrcArticle = (
 
 export const hardcodedNcrcArticle: HardcodedNcrcArticle = (ports) => (articleId) => pipe(
   {
-    group: pipe(
+    evaluation: pipe(
       new Doi(articleId),
       ports.findReviewsForArticleDoi,
-      T.map(([{ groupId }]) => groupId),
-      T.chain(ports.getGroup),
+      T.map(RA.head),
       T.map(E.fromOption(() => DE.notFound)),
     ),
     versions: pipe(
       ports.findVersionsForArticleDoi(new Doi(articleId), 'medrxiv'),
       TE.fromTaskOption(() => DE.unavailable),
     ),
-    evaluationDate: pipe(
-      new Doi(articleId),
-      ports.findReviewsForArticleDoi,
-      T.map(([{ occurredAt }]) => occurredAt),
-      TE.fromTask,
-      TE.mapLeft(() => DE.unavailable),
-    ),
-    evaluationId: pipe(
-      new Doi(articleId),
-      ports.findReviewsForArticleDoi,
-      T.map(([{ reviewId }]) => reviewId),
-      TE.fromTask,
-      TE.mapLeft(() => DE.unavailable),
-    ),
   },
+  ({ evaluation, versions }) => ({
+    group: pipe(
+      evaluation,
+      TE.chain(flow(
+        ({ groupId }) => ports.getGroup(groupId),
+        TE.fromTaskOption(() => DE.notFound),
+      )),
+    ),
+    versions,
+    evaluation,
+  }),
   sequenceS(TE.ApplyPar),
   TE.map(({
-    group, versions, evaluationDate, evaluationId,
+    group, versions, evaluation,
   }) => ({
     '@context': context,
     id: `https://sciety.org/docmaps/v1/articles/${articleId}.docmap.json`,
@@ -268,7 +265,7 @@ export const hardcodedNcrcArticle: HardcodedNcrcArticle = (ports) => (articleId)
             outputs: [
               {
                 type: 'review-article',
-                published: evaluationDate,
+                published: evaluation.occurredAt,
                 content: [
                   {
                     type: 'web-page',
@@ -276,7 +273,7 @@ export const hardcodedNcrcArticle: HardcodedNcrcArticle = (ports) => (articleId)
                   },
                   {
                     type: 'web-page',
-                    url: `https://sciety.org/articles/activity/${articleId}#${evaluationId}`,
+                    url: `https://sciety.org/articles/activity/${articleId}#${evaluation.reviewId}`,
                   },
                 ],
               },
