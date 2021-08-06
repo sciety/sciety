@@ -20,12 +20,20 @@ const defaultPorts = {
       },
     ],
   ),
+  findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.some([
+    {
+      source: new URL(arbitraryUri()),
+      occurredAt: arbitraryDate(),
+      version: 1,
+    },
+  ]),
 };
 
 describe('hardcoded-ncrc-article', () => {
   it('includes the article id', async () => {
     const articleId = arbitraryDoi();
     const ports = {
+      ...defaultPorts,
       findReviewsForArticleDoi: () => T.of(
         [
           {
@@ -35,13 +43,6 @@ describe('hardcoded-ncrc-article', () => {
           },
         ],
       ),
-      findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.some([
-        {
-          source: new URL(arbitraryUri()),
-          occurredAt: arbitraryDate(),
-          version: 1,
-        },
-      ]),
       getGroup: () => TO.some({
         id: arbitraryGroupId(),
         homepage: arbitraryUri(),
@@ -63,6 +64,7 @@ describe('hardcoded-ncrc-article', () => {
     const homepage = arbitraryUri();
     const avatarPath = arbitraryString();
     const ports = {
+      ...defaultPorts,
       findReviewsForArticleDoi: () => T.of(
         [
           {
@@ -72,13 +74,6 @@ describe('hardcoded-ncrc-article', () => {
           },
         ],
       ),
-      findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.some([
-        {
-          source: new URL(arbitraryUri()),
-          occurredAt: arbitraryDate(),
-          version: 1,
-        },
-      ]),
       getGroup: () => TO.some({
         id: groupId,
         homepage,
@@ -107,13 +102,6 @@ describe('hardcoded-ncrc-article', () => {
     const articleId = arbitraryDoi().value;
     const ports = {
       ...defaultPorts,
-      findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.some([
-        {
-          source: new URL(arbitraryUri()),
-          occurredAt: arbitraryDate(),
-          version: 1,
-        },
-      ]),
       getGroup: () => TO.some({
         id: arbitraryGroupId(),
         homepage: arbitraryUri(),
@@ -179,6 +167,7 @@ describe('hardcoded-ncrc-article', () => {
     const articleId = arbitraryDoi().value;
     const evaluationDate = arbitraryDate();
     const ports = {
+      ...defaultPorts,
       findReviewsForArticleDoi: () => T.of(
         [
           {
@@ -188,13 +177,6 @@ describe('hardcoded-ncrc-article', () => {
           },
         ],
       ),
-      findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.some([
-        {
-          source: new URL(arbitraryUri()),
-          occurredAt: arbitraryDate(),
-          version: 1,
-        },
-      ]),
       getGroup: () => TO.some({
         id: arbitraryGroupId(),
         homepage: arbitraryUri(),
@@ -223,16 +205,8 @@ describe('hardcoded-ncrc-article', () => {
   describe('when the group cant be retrieved', () => {
     it('returns not-found', async () => {
       const articleId = arbitraryDoi().value;
-      const articleDate = arbitraryDate();
       const ports = {
         ...defaultPorts,
-        findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.some([
-          {
-            source: new URL(arbitraryUri()),
-            occurredAt: articleDate,
-            version: 1,
-          },
-        ]),
         getGroup: () => TO.none,
       };
       const docmap = await hardcodedNcrcArticle(ports)(articleId)();
