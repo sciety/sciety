@@ -179,6 +179,51 @@ describe('hardcoded-ncrc-article', () => {
     })));
   });
 
+  it.skip('includes the published date of the evaluation in the outputs of the actions of the first step', async () => {
+    const articleId = arbitraryDoi().value;
+    const evaluationDate = arbitraryDate();
+    const ports = {
+      findReviewsForArticleDoi: () => T.of(
+        [
+          {
+            reviewId: arbitraryReviewId(),
+            groupId: arbitraryGroupId(),
+            occurredAt: evaluationDate,
+          },
+        ],
+      ),
+      findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.some([
+        {
+          source: new URL(arbitraryUri()),
+          occurredAt: arbitraryDate(),
+          version: 1,
+        },
+      ]),
+      getGroup: () => TO.some({
+        id: arbitraryGroupId(),
+        homepage: arbitraryUri(),
+        avatarPath: arbitraryString(),
+        shortDescription: arbitraryString(),
+        descriptionPath: arbitraryString(),
+        name: arbitraryString(),
+      }),
+    };
+
+    const docmap = await hardcodedNcrcArticle(ports)(articleId)();
+
+    expect(docmap).toStrictEqual(E.right(expect.objectContaining({
+      steps: expect.objectContaining({
+        '_:b0': expect.objectContaining({
+          actions: [expect.objectContaining({
+            outputs: [expect.objectContaining({
+              published: evaluationDate,
+            })],
+          })],
+        }),
+      }),
+    })));
+  });
+
   describe('when the group cant be retrieved', () => {
     it('returns not-found', async () => {
       const articleId = arbitraryDoi().value;
