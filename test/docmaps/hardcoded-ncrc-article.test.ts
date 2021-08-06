@@ -10,6 +10,18 @@ import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 
+const defaultPorts = {
+  findReviewsForArticleDoi: () => T.of(
+    [
+      {
+        reviewId: arbitraryReviewId(),
+        groupId: arbitraryGroupId(),
+        occurredAt: arbitraryDate(),
+      },
+    ],
+  ),
+};
+
 describe('hardcoded-ncrc-article', () => {
   it('includes the article id', async () => {
     const articleId = arbitraryDoi();
@@ -94,15 +106,7 @@ describe('hardcoded-ncrc-article', () => {
   it('includes the uri and doi in the inputs to the first step', async () => {
     const articleId = arbitraryDoi().value;
     const ports = {
-      findReviewsForArticleDoi: () => T.of(
-        [
-          {
-            reviewId: arbitraryReviewId(),
-            groupId: arbitraryGroupId(),
-            occurredAt: arbitraryDate(),
-          },
-        ],
-      ),
+      ...defaultPorts,
       findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.some([
         {
           source: new URL(arbitraryUri()),
@@ -139,15 +143,7 @@ describe('hardcoded-ncrc-article', () => {
     const articleId = arbitraryDoi().value;
     const articleDate = arbitraryDate();
     const ports = {
-      findReviewsForArticleDoi: () => T.of(
-        [
-          {
-            reviewId: arbitraryReviewId(),
-            groupId: arbitraryGroupId(),
-            occurredAt: arbitraryDate(),
-          },
-        ],
-      ),
+      ...defaultPorts,
       findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.some([
         {
           source: new URL(arbitraryUri()),
@@ -229,15 +225,7 @@ describe('hardcoded-ncrc-article', () => {
       const articleId = arbitraryDoi().value;
       const articleDate = arbitraryDate();
       const ports = {
-        findReviewsForArticleDoi: () => T.of(
-          [
-            {
-              reviewId: arbitraryReviewId(),
-              groupId: arbitraryGroupId(),
-              occurredAt: arbitraryDate(),
-            },
-          ],
-        ),
+        ...defaultPorts,
         findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.some([
           {
             source: new URL(arbitraryUri()),
