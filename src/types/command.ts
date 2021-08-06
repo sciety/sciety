@@ -1,6 +1,8 @@
+import { htmlEscape, htmlUnescape } from 'escape-goat';
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
+import { JsonFromString } from 'io-ts-types';
 
 import { DoiFromString } from './codecs/DoiFromString';
 
@@ -32,7 +34,8 @@ export const CommandFromString = new t.Type<Command, string, unknown>(
   isCommand,
   (input, context) => pipe(
     t.string.validate(input, context),
-    E.map(JSON.parse),
+    E.map((hackForTypeInference) => htmlUnescape(hackForTypeInference)),
+    E.chain(JsonFromString.decode),
     E.chain(commandCodec.decode),
   ),
   (command) => pipe(
@@ -40,6 +43,7 @@ export const CommandFromString = new t.Type<Command, string, unknown>(
       articleId: DoiFromString.encode(command.articleId),
       type: command.type,
     },
-    JSON.stringify,
+    JsonFromString.encode,
+    (hackForTypeInference) => htmlEscape(hackForTypeInference),
   ),
 );
