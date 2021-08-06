@@ -1,6 +1,7 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { FindVersionsForArticleDoi, hardcodedNcrcArticle } from '../../src/docmaps/hardcoded-ncrc-article';
 import * as DE from '../../src/types/data-error';
@@ -172,6 +173,41 @@ describe('hardcoded-ncrc-article', () => {
               actions: [expect.objectContaining({
                 outputs: [expect.objectContaining({
                   published: evaluationDate,
+                })],
+              })],
+            }),
+          }),
+        })));
+      });
+
+      it.skip('includes the url to the original evaluation source', async () => {
+        const evaluationId = arbitraryReviewId();
+        const sourceUrl = arbitraryUri();
+        const ports = {
+          ...defaultPorts,
+          findReviewsForArticleDoi: () => T.of(
+            [
+              {
+                reviewId: evaluationId,
+                groupId: arbitraryGroupId(),
+                occurredAt: arbitraryDate(),
+              },
+            ],
+          ),
+          fetchReview: () => TE.right({ url: sourceUrl }),
+        };
+        const articleId = arbitraryDoi().value;
+        const docmap = await hardcodedNcrcArticle(ports)(articleId)();
+
+        expect(docmap).toStrictEqual(E.right(expect.objectContaining({
+          steps: expect.objectContaining({
+            '_:b0': expect.objectContaining({
+              actions: [expect.objectContaining({
+                outputs: [expect.objectContaining({
+                  content: expect.arrayContaining([{
+                    type: 'web-page',
+                    url: sourceUrl,
+                  }]),
                 })],
               })],
             }),
