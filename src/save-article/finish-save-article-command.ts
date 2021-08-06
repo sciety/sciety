@@ -34,8 +34,6 @@ export const finishSaveArticleCommand = (
           commitEvents,
         )),
         T.map(() => {
-          delete context.session.command;
-          delete context.session.articleId;
           delete context.session[encodedCommandFieldName];
           return undefined;
         }),

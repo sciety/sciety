@@ -16,8 +16,6 @@ describe('finish-save-article-command', () => {
       const articleId = arbitraryDoi();
       const context = ({
         session: {
-          command: 'save-article',
-          articleId: articleId.toString(),
           [encodedCommandFieldName]: CommandFromString.encode({ articleId, type: 'SaveArticle' }),
         },
         state: {
@@ -46,8 +44,6 @@ describe('finish-save-article-command', () => {
       const articleId = arbitraryDoi();
       const context = ({
         session: {
-          command: 'save-article',
-          articleId: articleId.toString(),
           [encodedCommandFieldName]: CommandFromString.encode({ articleId, type: 'SaveArticle' }),
         },
         state: {
@@ -74,8 +70,6 @@ describe('finish-save-article-command', () => {
       const articleId = arbitraryDoi();
       const context = ({
         session: {
-          command: 'save-article',
-          articleId: articleId.toString(),
           [encodedCommandFieldName]: CommandFromString.encode({ articleId, type: 'SaveArticle' }),
         },
         state: {
