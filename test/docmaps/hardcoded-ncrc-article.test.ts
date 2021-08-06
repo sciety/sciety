@@ -175,6 +175,39 @@ describe('hardcoded-ncrc-article', () => {
     })));
   });
 
+  it('includes the url to the evaluation on sciety in the content of the output of the first action of the first step', async () => {
+    const evaluationId = arbitraryReviewId();
+    const ports = {
+      ...defaultPorts,
+      findReviewsForArticleDoi: () => T.of(
+        [
+          {
+            reviewId: evaluationId,
+            groupId: arbitraryGroupId(),
+            occurredAt: arbitraryDate(),
+          },
+        ],
+      ),
+    };
+    const articleId = arbitraryDoi().value;
+    const docmap = await hardcodedNcrcArticle(ports)(articleId)();
+
+    expect(docmap).toStrictEqual(E.right(expect.objectContaining({
+      steps: expect.objectContaining({
+        '_:b0': expect.objectContaining({
+          actions: [expect.objectContaining({
+            outputs: [expect.objectContaining({
+              content: expect.arrayContaining([{
+                type: 'web-page',
+                url: `https://sciety.org/articles/activity/${articleId}#${evaluationId}`,
+              }]),
+            })],
+          })],
+        }),
+      }),
+    })));
+  });
+
   describe('when the group cant be retrieved', () => {
     it('returns not-found', async () => {
       const articleId = arbitraryDoi().value;

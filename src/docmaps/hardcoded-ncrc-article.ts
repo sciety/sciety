@@ -220,9 +220,18 @@ export const hardcodedNcrcArticle: HardcodedNcrcArticle = (ports) => (articleId)
       TE.fromTask,
       TE.mapLeft(() => DE.unavailable),
     ),
+    evaluationId: pipe(
+      new Doi(articleId),
+      ports.findReviewsForArticleDoi,
+      T.map(([{ reviewId }]) => reviewId),
+      TE.fromTask,
+      TE.mapLeft(() => DE.unavailable),
+    ),
   },
   sequenceS(TE.ApplyPar),
-  TE.map(({ group, versions, evaluationDate }) => ({
+  TE.map(({
+    group, versions, evaluationDate, evaluationId,
+  }) => ({
     '@context': context,
     id: `https://sciety.org/docmaps/v1/articles/${articleId}.docmap.json`,
     type: 'docmap',
@@ -267,7 +276,7 @@ export const hardcodedNcrcArticle: HardcodedNcrcArticle = (ports) => (articleId)
                   },
                   {
                     type: 'web-page',
-                    url: 'https://sciety.org/articles/activity/10.1101/2020.11.09.374330#ncrc:c0e4f483-eb58-4c13-b475-66c3d86fb430',
+                    url: `https://sciety.org/articles/activity/${articleId}#${evaluationId}`,
                   },
                 ],
               },
