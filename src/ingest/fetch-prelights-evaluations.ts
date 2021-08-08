@@ -29,10 +29,7 @@ const itemCodec = t.type({
 const prelightsFeedCodec = t.type({
   rss: t.type({
     channel: t.type({
-      item: t.union([
-        itemCodec,
-        t.array(itemCodec),
-      ]),
+      item: t.array(itemCodec),
     }),
   }),
 });
@@ -82,10 +79,7 @@ const extractPrelights = (fetchData: FetchData) => (items: ReadonlyArray<Preligh
     TE.right,
     TE.filterOrElse(
       (i) => i.category.includes('highlight'),
-      (i) => ({
-        item: i.guid,
-        reason: `Category was '${item.category}`,
-      }),
+      (i) => ({ item: i.guid, reason: `Category was '${item.category}` }),
     ),
     TE.chain(toDoi(fetchData)),
     TE.map((articleDoi) => ({
@@ -106,14 +100,13 @@ type Ports = {
 
 export const fetchPrelightsEvaluations = (): FetchEvaluations => (ports: Ports) => pipe(
   ports.fetchData<string>(`https://prelights.biologists.com/feed/sciety/?key=${key}&hours=120`),
-  TE.map((responseBody) => parser.parse(responseBody) as JSON),
+  TE.map((responseBody) => parser.parse(responseBody, { arrayMode: /item/ }) as JSON),
   TE.chainEitherK(flow(
     prelightsFeedCodec.decode,
     E.mapLeft((errors) => PR.failure(errors).join('\n')),
   )),
   TE.map(flow(
     (feed) => feed.rss.channel.item,
-    (item) => ((item instanceof Array) ? item : [item]),
     RA.chain(toIndividualPrelights),
   )),
   TE.chainTaskK(extractPrelights(ports.fetchData)),
