@@ -14,25 +14,28 @@ import { FetchEvaluations, SkippedItem } from './update-all';
 
 const key = process.env.PRELIGHTS_FEED_KEY ?? '';
 
-const prelightsFeedCodec = t.type({
-  rss: t.type({
-    channel: t.type({
-      item: t.array(t.type({
-        pubDate: tt.DateFromISOString,
-        category: t.string,
-        guid: t.string,
-        preprints: t.type({
-          preprint: t.union([
-            t.type({ preprinturl: t.string }),
-            t.array(t.type({ preprinturl: t.string })),
-          ]),
-        }),
-      })),
-    }),
+const itemCodec = t.type({
+  pubDate: tt.DateFromISOString,
+  category: t.string,
+  guid: t.string,
+  preprints: t.type({
+    preprint: t.union([
+      t.type({ preprinturl: t.string }),
+      t.array(t.type({ preprinturl: t.string })),
+    ]),
   }),
 });
 
-type Feed = t.TypeOf<typeof prelightsFeedCodec>;
+const prelightsFeedCodec = t.type({
+  rss: t.type({
+    channel: t.type({
+      item: t.union([
+        itemCodec,
+        t.array(itemCodec),
+      ]),
+    }),
+  }),
+});
 
 const toDoi = (fetchData: FetchData) => (item: Prelight): TE.TaskEither<SkippedItem, string> => pipe(
   fetchData<string>(item.preprintUrl),
@@ -50,7 +53,7 @@ const toDoi = (fetchData: FetchData) => (item: Prelight): TE.TaskEither<SkippedI
   )),
 );
 
-type FeedItem = Feed['rss']['channel']['item'][0];
+type FeedItem = t.TypeOf<typeof itemCodec>;
 
 type Prelight = {
   guid: string,
@@ -110,6 +113,7 @@ export const fetchPrelightsEvaluations = (): FetchEvaluations => (ports: Ports) 
   )),
   TE.map(flow(
     (feed) => feed.rss.channel.item,
+    (item) => ((item instanceof Array) ? item : [item]),
     RA.chain(toIndividualPrelights),
   )),
   TE.chainTaskK(extractPrelights(ports.fetchData)),
