@@ -22,12 +22,10 @@ const prelightsFeedCodec = t.type({
         category: t.string,
         guid: t.string,
         preprints: t.type({
-          preprint: t.union([t.type({
-            preprinturl: t.string,
-          }),
-          t.array(t.type({
-            preprinturl: t.string,
-          }))]),
+          preprint: t.union([
+            t.type({ preprinturl: t.string }),
+            t.array(t.type({ preprinturl: t.string })),
+          ]),
         }),
       })),
     }),
