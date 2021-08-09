@@ -20,7 +20,7 @@ export type SkippedItem = {
   reason: string,
 };
 
-type FeedData = {
+export type FeedData = {
   evaluations: Es.Evaluations,
   skippedItems: O.Option<ReadonlyArray<SkippedItem>>,
 };

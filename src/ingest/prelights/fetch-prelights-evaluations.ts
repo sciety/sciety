@@ -1,16 +1,14 @@
 import parser from 'fast-xml-parser';
 import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
-import { JSDOM } from 'jsdom';
+import { extractPrelights } from './extract-prelights';
 import { FetchData } from '../fetch-data';
-import { FetchEvaluations, SkippedItem } from '../update-all';
+import { FetchEvaluations } from '../update-all';
 
 const key = process.env.PRELIGHTS_FEED_KEY ?? '';
 
@@ -34,22 +32,6 @@ const prelightsFeedCodec = t.type({
   }),
 });
 
-const toDoi = (fetchData: FetchData) => (item: Prelight): TE.TaskEither<SkippedItem, string> => pipe(
-  fetchData<string>(item.preprintUrl),
-  TE.mapLeft((e) => ({ item: item.guid, reason: e })),
-  TE.chainEitherKW(flow(
-    (doc) => new JSDOM(doc),
-    (dom) => dom.window.document.querySelector('meta[name="DC.Identifier"]'),
-    (meta) => meta?.getAttribute('content'),
-    O.fromNullable,
-    E.fromOption(() => ({ item: item.guid, reason: 'No DC.Identifier found' })),
-    E.filterOrElse(
-      (doi) => doi.startsWith('10.1101/'),
-      () => ({ item: item.guid, reason: 'Not a biorxiv DOI' }),
-    ),
-  )),
-);
-
 type FeedItem = t.TypeOf<typeof itemCodec>;
 
 type Prelight = {
@@ -71,28 +53,6 @@ const toIndividualPrelights = (item: FeedItem): Array<Prelight> => {
     preprintUrl: item.preprints.preprint.preprinturl,
   }];
 };
-
-const extractPrelights = (fetchData: FetchData) => (items: ReadonlyArray<Prelight>) => pipe(
-  items,
-  T.traverseArray((item) => pipe(
-    item,
-    TE.right,
-    TE.filterOrElse(
-      (i) => i.category.includes('highlight'),
-      (i) => ({ item: i.guid, reason: `Category was '${item.category}` }),
-    ),
-    TE.chain(toDoi(fetchData)),
-    TE.map((articleDoi) => ({
-      date: item.pubDate,
-      articleDoi,
-      evaluationLocator: `prelights:${item.guid.replace('&#038;', '&')}`,
-    })),
-  )),
-  T.map((things) => ({
-    evaluations: RA.rights(things),
-    skippedItems: O.some(RA.lefts(things)),
-  })),
-);
 
 type Ports = {
   fetchData: FetchData,
