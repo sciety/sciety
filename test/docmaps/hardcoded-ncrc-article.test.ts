@@ -124,203 +124,217 @@ describe('hardcoded-ncrc-article', () => {
     })));
   });
 
-  describe('in the first step', () => {
-    it('assertions are always empty', async () => {
-      const articleId = arbitraryDoi();
-      const docmap = await hardcodedNcrcArticle(defaultPorts)(articleId, [articleId])();
+  describe('when there are multiple evaluations by NCRC', () => {
+    it.todo('only uses the earliest evaluation');
+  });
 
-      expect(docmap).toStrictEqual(E.right(expect.objectContaining({
-        steps: expect.objectContaining({
-          '_:b0': expect.objectContaining({
-            assertions: [],
-          }),
-        }),
-      })));
-    });
+  describe('when there are no evaluations by NCRC', () => {
+    it.todo('returns not-found');
+  });
 
-    describe('the inputs', () => {
-      it('include the uri and doi', async () => {
+  describe('when there are evaluations by other groups', () => {
+    it.todo('only uses the NCRC evaluation');
+  });
+
+  describe('when there is a single evaluation by NCRC', () => {
+    describe('in the first step', () => {
+      it('assertions are always empty', async () => {
         const articleId = arbitraryDoi();
         const docmap = await hardcodedNcrcArticle(defaultPorts)(articleId, [articleId])();
 
         expect(docmap).toStrictEqual(E.right(expect.objectContaining({
           steps: expect.objectContaining({
             '_:b0': expect.objectContaining({
-              inputs: [expect.objectContaining(
-                {
-                  doi: articleId.value,
-                  url: expect.stringContaining(articleId.value),
-                },
-              )],
+              assertions: [],
             }),
           }),
         })));
       });
 
-      it('include the article publication date', async () => {
-        const articleId = arbitraryDoi();
-        const articleDate = arbitraryDate();
-        const ports = {
-          ...defaultPorts,
-          findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.some([
-            {
-              source: new URL(arbitraryUri()),
-              occurredAt: articleDate,
-              version: 1,
-            },
-          ]),
-        };
-        const docmap = await hardcodedNcrcArticle(ports)(articleId, [articleId])();
-
-        expect(docmap).toStrictEqual(E.right(expect.objectContaining({
-          steps: expect.objectContaining({
-            '_:b0': expect.objectContaining({
-              inputs: [expect.objectContaining(
-                {
-                  published: articleDate,
-                },
-              )],
-            }),
-          }),
-        })));
-      });
-    });
-
-    describe('the only action', () => {
-      describe('the only participant', () => {
-        it('is anonymous', async () => {
+      describe('the inputs', () => {
+        it('include the uri and doi', async () => {
           const articleId = arbitraryDoi();
           const docmap = await hardcodedNcrcArticle(defaultPorts)(articleId, [articleId])();
 
           expect(docmap).toStrictEqual(E.right(expect.objectContaining({
             steps: expect.objectContaining({
               '_:b0': expect.objectContaining({
-                actions: [expect.objectContaining({
-                  participants: [
-                    { actor: { name: 'anonymous', type: 'person' }, role: 'peer-reviewer' },
-                  ],
-                })],
+                inputs: [expect.objectContaining(
+                  {
+                    doi: articleId.value,
+                    url: expect.stringContaining(articleId.value),
+                  },
+                )],
+              }),
+            }),
+          })));
+        });
+
+        it('include the article publication date', async () => {
+          const articleId = arbitraryDoi();
+          const articleDate = arbitraryDate();
+          const ports = {
+            ...defaultPorts,
+            findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.some([
+              {
+                source: new URL(arbitraryUri()),
+                occurredAt: articleDate,
+                version: 1,
+              },
+            ]),
+          };
+          const docmap = await hardcodedNcrcArticle(ports)(articleId, [articleId])();
+
+          expect(docmap).toStrictEqual(E.right(expect.objectContaining({
+            steps: expect.objectContaining({
+              '_:b0': expect.objectContaining({
+                inputs: [expect.objectContaining(
+                  {
+                    published: articleDate,
+                  },
+                )],
               }),
             }),
           })));
         });
       });
 
-      describe('the only output', () => {
-        it('is always of type review-article', async () => {
-          const articleId = arbitraryDoi();
-          const docmap = await hardcodedNcrcArticle(defaultPorts)(articleId, [articleId])();
+      describe('the only action', () => {
+        describe('the only participant', () => {
+          it('is anonymous', async () => {
+            const articleId = arbitraryDoi();
+            const docmap = await hardcodedNcrcArticle(defaultPorts)(articleId, [articleId])();
 
-          expect(docmap).toStrictEqual(E.right(expect.objectContaining({
-            steps: expect.objectContaining({
-              '_:b0': expect.objectContaining({
-                actions: [expect.objectContaining({
-                  outputs: [expect.objectContaining({
-                    type: 'review-article',
+            expect(docmap).toStrictEqual(E.right(expect.objectContaining({
+              steps: expect.objectContaining({
+                '_:b0': expect.objectContaining({
+                  actions: [expect.objectContaining({
+                    participants: [
+                      { actor: { name: 'anonymous', type: 'person' }, role: 'peer-reviewer' },
+                    ],
                   })],
-                })],
+                }),
               }),
-            }),
-          })));
+            })));
+          });
         });
 
-        it('includes the published date of the evaluation', async () => {
-          const articleId = arbitraryDoi();
-          const evaluationDate = arbitraryDate();
-          const ports = {
-            ...defaultPorts,
-            findReviewsForArticleDoi: () => T.of(
-              [
-                {
-                  reviewId: arbitraryReviewId(),
-                  groupId: arbitraryGroupId(),
-                  occurredAt: evaluationDate,
-                },
-              ],
-            ),
-          };
+        describe('the only output', () => {
+          it('is always of type review-article', async () => {
+            const articleId = arbitraryDoi();
+            const docmap = await hardcodedNcrcArticle(defaultPorts)(articleId, [articleId])();
 
-          const docmap = await hardcodedNcrcArticle(ports)(articleId, [articleId])();
-
-          expect(docmap).toStrictEqual(E.right(expect.objectContaining({
-            steps: expect.objectContaining({
-              '_:b0': expect.objectContaining({
-                actions: [expect.objectContaining({
-                  outputs: [expect.objectContaining({
-                    published: evaluationDate,
+            expect(docmap).toStrictEqual(E.right(expect.objectContaining({
+              steps: expect.objectContaining({
+                '_:b0': expect.objectContaining({
+                  actions: [expect.objectContaining({
+                    outputs: [expect.objectContaining({
+                      type: 'review-article',
+                    })],
                   })],
-                })],
+                }),
               }),
-            }),
-          })));
-        });
+            })));
+          });
 
-        it('includes the url to the original evaluation source', async () => {
-          const evaluationId = arbitraryReviewId();
-          const sourceUrl = arbitraryUri();
-          const ports = {
-            ...defaultPorts,
-            findReviewsForArticleDoi: () => T.of(
-              [
-                {
-                  reviewId: evaluationId,
-                  groupId: arbitraryGroupId(),
-                  occurredAt: arbitraryDate(),
-                },
-              ],
-            ),
-            fetchReview: () => TE.right({ url: new URL(sourceUrl) }),
-          };
-          const articleId = arbitraryDoi();
-          const docmap = await hardcodedNcrcArticle(ports)(articleId, [articleId])();
+          it('includes the published date of the evaluation', async () => {
+            const articleId = arbitraryDoi();
+            const evaluationDate = arbitraryDate();
+            const ports = {
+              ...defaultPorts,
+              findReviewsForArticleDoi: () => T.of(
+                [
+                  {
+                    reviewId: arbitraryReviewId(),
+                    groupId: arbitraryGroupId(),
+                    occurredAt: evaluationDate,
+                  },
+                ],
+              ),
+            };
 
-          expect(docmap).toStrictEqual(E.right(expect.objectContaining({
-            steps: expect.objectContaining({
-              '_:b0': expect.objectContaining({
-                actions: [expect.objectContaining({
-                  outputs: [expect.objectContaining({
-                    content: expect.arrayContaining([{
-                      type: 'web-page',
-                      url: sourceUrl,
-                    }]),
+            const docmap = await hardcodedNcrcArticle(ports)(articleId, [articleId])();
+
+            expect(docmap).toStrictEqual(E.right(expect.objectContaining({
+              steps: expect.objectContaining({
+                '_:b0': expect.objectContaining({
+                  actions: [expect.objectContaining({
+                    outputs: [expect.objectContaining({
+                      published: evaluationDate,
+                    })],
                   })],
-                })],
+                }),
               }),
-            }),
-          })));
-        });
+            })));
+          });
 
-        it('includes the url to the evaluation on sciety', async () => {
-          const evaluationId = arbitraryReviewId();
-          const ports = {
-            ...defaultPorts,
-            findReviewsForArticleDoi: () => T.of(
-              [
-                {
-                  reviewId: evaluationId,
-                  groupId: arbitraryGroupId(),
-                  occurredAt: arbitraryDate(),
-                },
-              ],
-            ),
-          };
-          const articleId = arbitraryDoi();
-          const docmap = await hardcodedNcrcArticle(ports)(articleId, [articleId])();
+          it('includes the url to the original evaluation source', async () => {
+            const evaluationId = arbitraryReviewId();
+            const sourceUrl = arbitraryUri();
+            const ports = {
+              ...defaultPorts,
+              findReviewsForArticleDoi: () => T.of(
+                [
+                  {
+                    reviewId: evaluationId,
+                    groupId: arbitraryGroupId(),
+                    occurredAt: arbitraryDate(),
+                  },
+                ],
+              ),
+              fetchReview: () => TE.right({ url: new URL(sourceUrl) }),
+            };
+            const articleId = arbitraryDoi();
+            const docmap = await hardcodedNcrcArticle(ports)(articleId, [articleId])();
 
-          expect(docmap).toStrictEqual(E.right(expect.objectContaining({
-            steps: expect.objectContaining({
-              '_:b0': expect.objectContaining({
-                actions: [expect.objectContaining({
-                  outputs: [expect.objectContaining({
-                    content: expect.arrayContaining([{
-                      type: 'web-page',
-                      url: `https://sciety.org/articles/activity/${articleId.value}#${evaluationId}`,
-                    }]),
+            expect(docmap).toStrictEqual(E.right(expect.objectContaining({
+              steps: expect.objectContaining({
+                '_:b0': expect.objectContaining({
+                  actions: [expect.objectContaining({
+                    outputs: [expect.objectContaining({
+                      content: expect.arrayContaining([{
+                        type: 'web-page',
+                        url: sourceUrl,
+                      }]),
+                    })],
                   })],
-                })],
+                }),
               }),
-            }),
-          })));
+            })));
+          });
+
+          it('includes the url to the evaluation on sciety', async () => {
+            const evaluationId = arbitraryReviewId();
+            const ports = {
+              ...defaultPorts,
+              findReviewsForArticleDoi: () => T.of(
+                [
+                  {
+                    reviewId: evaluationId,
+                    groupId: arbitraryGroupId(),
+                    occurredAt: arbitraryDate(),
+                  },
+                ],
+              ),
+            };
+            const articleId = arbitraryDoi();
+            const docmap = await hardcodedNcrcArticle(ports)(articleId, [articleId])();
+
+            expect(docmap).toStrictEqual(E.right(expect.objectContaining({
+              steps: expect.objectContaining({
+                '_:b0': expect.objectContaining({
+                  actions: [expect.objectContaining({
+                    outputs: [expect.objectContaining({
+                      content: expect.arrayContaining([{
+                        type: 'web-page',
+                        url: `https://sciety.org/articles/activity/${articleId.value}#${evaluationId}`,
+                      }]),
+                    })],
+                  })],
+                }),
+              }),
+            })));
+          });
         });
       });
     });
