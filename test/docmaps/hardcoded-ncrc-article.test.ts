@@ -203,7 +203,21 @@ describe('hardcoded-ncrc-article', () => {
       });
 
       describe('the only output', () => {
-        it.todo('is always of type review-article');
+        it('is always of type review-article', async () => {
+          const docmap = await hardcodedNcrcArticle(defaultPorts)(arbitraryDoi().value)();
+
+          expect(docmap).toStrictEqual(E.right(expect.objectContaining({
+            steps: expect.objectContaining({
+              '_:b0': expect.objectContaining({
+                actions: [expect.objectContaining({
+                  outputs: [expect.objectContaining({
+                    type: 'review-article',
+                  })],
+                })],
+              }),
+            }),
+          })));
+        });
 
         it('includes the published date of the evaluation', async () => {
           const articleId = arbitraryDoi().value;
