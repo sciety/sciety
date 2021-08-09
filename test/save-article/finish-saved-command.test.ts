@@ -2,8 +2,8 @@ import { RouterContext } from '@koa/router';
 import * as T from 'fp-ts/Task';
 import { ParameterizedContext } from 'koa';
 import { userSavedArticle } from '../../src/domain-events';
-import { finishSaveArticleCommand } from '../../src/save-article/finish-save-article-command';
-import { encodedCommandFieldName } from '../../src/save-article/save-save-article-command';
+import { finishSavedCommand } from '../../src/save-article/finish-saved-command';
+import { encodedCommandFieldName } from '../../src/save-article/save-command';
 import { CommandFromString } from '../../src/types/command';
 import { User } from '../../src/types/user';
 import { arbitraryDoi } from '../types/doi.helper';
@@ -28,7 +28,7 @@ describe('finish-save-article-command', () => {
       const getAllEvents = T.of([]);
       const commitEvents = jest.fn().mockImplementation(() => T.of(undefined));
 
-      await finishSaveArticleCommand({ getAllEvents, commitEvents })(context, jest.fn());
+      await finishSavedCommand({ getAllEvents, commitEvents })(context, jest.fn());
 
       expect(commitEvents).toHaveBeenCalledWith([expect.objectContaining({
         type: 'UserSavedArticle',
@@ -58,7 +58,7 @@ describe('finish-save-article-command', () => {
       ]);
       const commitEvents = jest.fn().mockImplementation(() => T.of(undefined));
 
-      await finishSaveArticleCommand({ getAllEvents, commitEvents })(context, jest.fn());
+      await finishSavedCommand({ getAllEvents, commitEvents })(context, jest.fn());
 
       expect(commitEvents).toHaveBeenCalledWith([]);
     });
@@ -79,7 +79,7 @@ describe('finish-save-article-command', () => {
         },
       } as unknown) as ParameterizedContext;
 
-      await finishSaveArticleCommand({
+      await finishSavedCommand({
         commitEvents: () => T.of(undefined),
         getAllEvents: async () => [],
       })(context, jest.fn());

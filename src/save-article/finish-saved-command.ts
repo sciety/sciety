@@ -4,7 +4,7 @@ import { flow, pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
 import { articleSaveState } from './article-save-state';
 import { commandHandler } from './command-handler';
-import { encodedCommandFieldName } from './save-save-article-command';
+import { encodedCommandFieldName } from './save-command';
 import {
   DomainEvent,
   UserSavedArticleEvent, UserUnsavedArticleEvent,
@@ -17,17 +17,15 @@ type Ports = {
   commitEvents: (events: ReadonlyArray<UserSavedArticleEvent | UserUnsavedArticleEvent>) => T.Task<void>,
 };
 
-export const articleIdFieldName = 'articleid';
-
-export const unsaveArticle = (
+export const finishSavedCommand = (
   { getAllEvents, commitEvents }: Ports,
 ): Middleware => async (context, next) => {
   const user = context.state.user as User;
   await pipe(
-    context.request.body[encodedCommandFieldName],
+    context.session[encodedCommandFieldName],
     CommandFromString.decode,
     E.fold(
-      () => { throw new Error('Failed to decode command'); },
+      () => T.of(undefined),
       (command) => pipe(
         getAllEvents,
         T.chain(flow(
@@ -35,6 +33,10 @@ export const unsaveArticle = (
           commandHandler(command, user.id),
           commitEvents,
         )),
+        T.map(() => {
+          delete context.session[encodedCommandFieldName];
+          return undefined;
+        }),
       ),
     ),
   )();

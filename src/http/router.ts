@@ -40,9 +40,8 @@ import { menuPageLayout } from '../menu-page/menu-page-layout';
 import { respondHandler } from '../respond';
 import { finishRespondCommand } from '../respond/finish-respond-command';
 import { saveRespondCommand } from '../respond/save-respond-command';
-import { unsaveArticle } from '../save-article/execute-unsave-article-command';
-import { finishSaveArticleCommand } from '../save-article/finish-save-article-command';
-import { saveSaveArticleCommand } from '../save-article/save-save-article-command';
+import { finishSavedCommand } from '../save-article/finish-saved-command';
+import { saveCommand } from '../save-article/save-command';
 import { searchPage } from '../search-page';
 import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../search-results-page';
 import { applyStandardPageLayout } from '../shared-components/apply-standard-page-layout';
@@ -362,19 +361,11 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   router.post(
-    '/save-article',
+    '/command',
     bodyParser({ enableTypes: ['form'] }),
-    saveSaveArticleCommand,
+    saveCommand,
     requireAuthentication,
-    finishSaveArticleCommand(adapters),
-    redirectBack,
-  );
-
-  router.post(
-    '/unsave-article',
-    bodyParser({ enableTypes: ['form'] }),
-    requireAuthentication,
-    unsaveArticle(adapters),
+    finishSavedCommand(adapters),
     redirectBack,
   );
 
@@ -405,7 +396,7 @@ export const createRouter = (adapters: Adapters): Router => {
     finishCommand(adapters),
     finishUnfollowCommand(adapters),
     finishRespondCommand(adapters),
-    finishSaveArticleCommand(adapters),
+    finishSavedCommand(adapters),
     redirectAfterAuthenticating(),
   );
 
