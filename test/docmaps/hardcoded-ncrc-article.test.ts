@@ -12,6 +12,7 @@ import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 
 const defaultPorts = {
+  fetchReview: () => TE.right({ url: new URL(arbitraryUri()) }),
   findReviewsForArticleDoi: () => T.of(
     [
       {
@@ -180,7 +181,7 @@ describe('hardcoded-ncrc-article', () => {
         })));
       });
 
-      it.skip('includes the url to the original evaluation source', async () => {
+      it('includes the url to the original evaluation source', async () => {
         const evaluationId = arbitraryReviewId();
         const sourceUrl = arbitraryUri();
         const ports = {
@@ -194,7 +195,7 @@ describe('hardcoded-ncrc-article', () => {
               },
             ],
           ),
-          fetchReview: () => TE.right({ url: sourceUrl }),
+          fetchReview: () => TE.right({ url: new URL(sourceUrl) }),
         };
         const articleId = arbitraryDoi().value;
         const docmap = await hardcodedNcrcArticle(ports)(articleId)();

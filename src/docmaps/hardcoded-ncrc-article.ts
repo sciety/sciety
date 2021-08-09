@@ -32,6 +32,7 @@ type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
 type GetGroup = (groupId: GroupId) => TO.TaskOption<Group>;
 
 type Ports = {
+  fetchReview: (reviewId: ReviewId) => TE.TaskEither<DE.DataError, { url: URL }>,
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
   getGroup: GetGroup,
@@ -222,12 +223,19 @@ export const hardcodedNcrcArticle: HardcodedNcrcArticle = (ports) => (articleId)
         TE.fromTaskOption(() => DE.notFound),
       )),
     ),
+    sourceUrl: pipe(
+      evaluation,
+      TE.chain(flow(
+        ({ reviewId }) => ports.fetchReview(reviewId),
+        TE.map(({ url }) => url),
+      )),
+    ),
     versions,
     evaluation,
   }),
   sequenceS(TE.ApplyPar),
   TE.map(({
-    group, versions, evaluation,
+    group, versions, evaluation, sourceUrl,
   }) => ({
     '@context': context,
     id: `https://sciety.org/docmaps/v1/articles/${articleId}.docmap.json`,
@@ -269,7 +277,7 @@ export const hardcodedNcrcArticle: HardcodedNcrcArticle = (ports) => (articleId)
                 content: [
                   {
                     type: 'web-page',
-                    url: 'https://ncrc.jhsph.edu/research/evidence-for-increased-breakthrough-rates-of-sars-cov-2-variants-of-concern-in-bnt162b2-mrna-vaccinated-individuals/',
+                    url: sourceUrl.toString(),
                   },
                   {
                     type: 'web-page',
