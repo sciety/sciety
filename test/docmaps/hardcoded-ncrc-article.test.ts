@@ -100,7 +100,7 @@ describe('hardcoded-ncrc-article', () => {
     })));
   });
 
-  it.todo('something re: created date (TODO)');
+  it.todo('sets created to the date of the first evaluation');
 
   describe('in the first step', () => {
     it.todo('assertions are always empty');
@@ -264,7 +264,7 @@ describe('hardcoded-ncrc-article', () => {
   });
 
   describe('when the group cant be retrieved', () => {
-    it('returns not-found', async () => {
+    it.skip('returns 500', async () => {
       const articleId = arbitraryDoi().value;
       const ports = {
         ...defaultPorts,
@@ -274,5 +274,13 @@ describe('hardcoded-ncrc-article', () => {
 
       expect(docmap).toStrictEqual(E.left(DE.notFound));
     });
+  });
+
+  describe('when the versions cant be retrieved from preprint server', () => {
+    it.todo('returns unavailable');
+  });
+
+  describe('when the evaluations can not be retrieved', () => {
+    it.todo('returns unavailable');
   });
 });
