@@ -2,7 +2,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { fetchNcrcEvaluations } from './fetch-ncrc-evaluations';
 import { fetchPciEvaluations } from './fetch-pci-evaluations';
-import { fetchPrelightsEvaluations } from './fetch-prelights-evaluations';
+import { fetchPrelightsEvaluations } from './prelights/fetch-prelights-evaluations';
 import { fetchPrereviewEvaluations } from './fetch-prereview-evaluations';
 import { fetchRapidReviews } from './fetch-rapid-reviews';
 import { fetchReviewsFromHypothesisGroup } from './fetch-reviews-from-hypothesis-group';

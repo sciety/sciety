@@ -9,8 +9,8 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
 import { JSDOM } from 'jsdom';
-import { FetchData } from './fetch-data';
-import { FetchEvaluations, SkippedItem } from './update-all';
+import { FetchData } from '../fetch-data';
+import { FetchEvaluations, SkippedItem } from '../update-all';
 
 const key = process.env.PRELIGHTS_FEED_KEY ?? '';
 
