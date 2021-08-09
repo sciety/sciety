@@ -322,16 +322,7 @@ describe('hardcoded-ncrc-article', () => {
   });
 
   describe('when the group cant be retrieved', () => {
-    it.skip('returns 500', async () => {
-      const articleId = arbitraryDoi().value;
-      const ports = {
-        ...defaultPorts,
-        getGroup: () => TO.none,
-      };
-      const docmap = await hardcodedNcrcArticle(ports)(articleId)();
-
-      expect(docmap).toStrictEqual(E.left(DE.notFound));
-    });
+    it.todo('returns 500');
   });
 
   describe('when the versions cant be retrieved from preprint server', () => {
