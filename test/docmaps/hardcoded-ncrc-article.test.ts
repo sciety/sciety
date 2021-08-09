@@ -327,7 +327,7 @@ describe('hardcoded-ncrc-article', () => {
   });
 
   describe('when the doi is not in the docmap index', () => {
-    it.skip('returns not-found', async () => {
+    it('returns not-found', async () => {
       const articleId = arbitraryDoi();
       const docmap = await hardcodedNcrcArticle(defaultPorts)(articleId, [])();
 

@@ -202,43 +202,48 @@ type HardcodedNcrcArticle = (
   ports: Ports,
 ) => (articleId: Doi, index: ReadonlyArray<Doi>) => TE.TaskEither<DE.DataError, Record<string, unknown>>;
 
-export const hardcodedNcrcArticle: HardcodedNcrcArticle = (ports) => (articleId) => pipe(
-  {
-    evaluation: pipe(
-      articleId,
-      ports.findReviewsForArticleDoi,
-      T.map(RA.head),
-      T.map(E.fromOption(() => DE.notFound)),
-    ),
-    versions: pipe(
-      ports.findVersionsForArticleDoi(articleId, 'medrxiv'),
-      TE.fromTaskOption(() => DE.unavailable),
-    ),
-  },
-  ({ evaluation, versions }) => ({
-    group: pipe(
+export const hardcodedNcrcArticle: HardcodedNcrcArticle = (ports) => (articleDoi, index) => pipe(
+  index,
+  RA.findFirst((doi) => doi.value === articleDoi.value),
+  TE.fromOption(() => DE.notFound),
+  TE.chain((articleId) => pipe(
+    {
+      evaluation: pipe(
+        articleId,
+        ports.findReviewsForArticleDoi,
+        T.map(RA.head),
+        T.map(E.fromOption(() => DE.notFound)),
+      ),
+      versions: pipe(
+        ports.findVersionsForArticleDoi(articleId, 'medrxiv'),
+        TE.fromTaskOption(() => DE.unavailable),
+      ),
+    },
+    ({ evaluation, versions }) => ({
+      group: pipe(
+        evaluation,
+        TE.chain(flow(
+          ({ groupId }) => ports.getGroup(groupId),
+          TE.fromTaskOption(() => DE.notFound),
+        )),
+      ),
+      sourceUrl: pipe(
+        evaluation,
+        TE.chain(flow(
+          ({ reviewId }) => ports.fetchReview(reviewId),
+          TE.map(({ url }) => url),
+        )),
+      ),
+      versions,
       evaluation,
-      TE.chain(flow(
-        ({ groupId }) => ports.getGroup(groupId),
-        TE.fromTaskOption(() => DE.notFound),
-      )),
-    ),
-    sourceUrl: pipe(
-      evaluation,
-      TE.chain(flow(
-        ({ reviewId }) => ports.fetchReview(reviewId),
-        TE.map(({ url }) => url),
-      )),
-    ),
-    versions,
-    evaluation,
-  }),
-  sequenceS(TE.ApplyPar),
+    }),
+    sequenceS(TE.ApplyPar),
+  )),
   TE.map(({
     group, versions, evaluation, sourceUrl,
   }) => ({
     '@context': context,
-    id: `https://sciety.org/docmaps/v1/articles/${articleId.value}.docmap.json`,
+    id: `https://sciety.org/docmaps/v1/articles/${articleDoi.value}.docmap.json`,
     type: 'docmap',
     created: evaluation.occurredAt.toISOString(),
     publisher: {
@@ -255,8 +260,8 @@ export const hardcodedNcrcArticle: HardcodedNcrcArticle = (ports) => (articleId)
       '_:b0': {
         assertions: [],
         inputs: [{
-          doi: articleId.value,
-          url: `https://doi.org/${articleId.value}`,
+          doi: articleDoi.value,
+          url: `https://doi.org/${articleDoi.value}`,
           published: versions[versions.length - 1].occurredAt,
         }],
         actions: [
@@ -275,7 +280,7 @@ export const hardcodedNcrcArticle: HardcodedNcrcArticle = (ports) => (articleId)
                   },
                   {
                     type: 'web-page',
-                    url: `https://sciety.org/articles/activity/${articleId.value}#${evaluation.reviewId}`,
+                    url: `https://sciety.org/articles/activity/${articleDoi.value}#${evaluation.reviewId}`,
                   },
                 ],
               },
