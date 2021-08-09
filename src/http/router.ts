@@ -438,10 +438,14 @@ export const createRouter = (adapters: Adapters): Router => {
     await next();
   });
 
-  router.get('/docmaps/v1/articles/10.1101/2021.03.13.21253515.docmap.json', async (context, next) => {
+  router.get('/docmaps/v1/articles/:doi(.+).docmap.json', async (context, next) => {
     const articleId = new Doi.Doi('10.1101/2021.03.13.21253515');
     const response = await pipe(
-      hardcodedNcrcArticle(adapters)(articleId, [articleId]),
+      context.params.doi,
+      DoiFromString.decode,
+      E.mapLeft(() => DE.notFound),
+      TE.fromEither,
+      TE.chain((doi) => hardcodedNcrcArticle(adapters)(doi, [articleId])),
       TE.fold(
         (error) => T.of({
           body: {},
