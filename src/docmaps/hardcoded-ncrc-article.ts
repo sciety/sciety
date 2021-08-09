@@ -240,7 +240,7 @@ export const hardcodedNcrcArticle: HardcodedNcrcArticle = (ports) => (articleId)
     '@context': context,
     id: `https://sciety.org/docmaps/v1/articles/${articleId}.docmap.json`,
     type: 'docmap',
-    created: '2021-04-23',
+    created: evaluation.occurredAt.toISOString(),
     publisher: {
       id: group.homepage,
       logo: `https://sciety.org${group.avatarPath}`,

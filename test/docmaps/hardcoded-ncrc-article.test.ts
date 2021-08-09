@@ -100,7 +100,27 @@ describe('hardcoded-ncrc-article', () => {
     })));
   });
 
-  it.todo('sets created to the date of the first evaluation');
+  it('sets created to the date of the first evaluation', async () => {
+    const evaluationDate = arbitraryDate();
+    const ports = {
+      ...defaultPorts,
+      findReviewsForArticleDoi: () => T.of(
+        [
+          {
+            reviewId: arbitraryReviewId(),
+            groupId: arbitraryGroupId(),
+            occurredAt: evaluationDate,
+          },
+        ],
+      ),
+    };
+
+    const docmap = await hardcodedNcrcArticle(ports)(arbitraryDoi().value)();
+
+    expect(docmap).toStrictEqual(E.right(expect.objectContaining({
+      created: evaluationDate.toISOString(),
+    })));
+  });
 
   describe('in the first step', () => {
     it.todo('assertions are always empty');
