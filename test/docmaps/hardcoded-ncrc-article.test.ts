@@ -185,7 +185,21 @@ describe('hardcoded-ncrc-article', () => {
 
     describe('the only action', () => {
       describe('the only participant', () => {
-        it.todo('is anonymous');
+        it('is anonymous', async () => {
+          const docmap = await hardcodedNcrcArticle(defaultPorts)(arbitraryDoi().value)();
+
+          expect(docmap).toStrictEqual(E.right(expect.objectContaining({
+            steps: expect.objectContaining({
+              '_:b0': expect.objectContaining({
+                actions: [expect.objectContaining({
+                  participants: [
+                    { actor: { name: 'anonymous', type: 'person' }, role: 'peer-reviewer' },
+                  ],
+                })],
+              }),
+            }),
+          })));
+        });
       });
 
       describe('the only output', () => {

@@ -262,13 +262,7 @@ export const hardcodedNcrcArticle: HardcodedNcrcArticle = (ports) => (articleId)
         actions: [
           {
             participants: [
-              {
-                actor: {
-                  type: 'person',
-                  name: 'Andrew Redd',
-                },
-                role: 'peer-reviewer',
-              },
+              { actor: { name: 'anonymous', type: 'person' }, role: 'peer-reviewer' },
             ],
             outputs: [
               {
