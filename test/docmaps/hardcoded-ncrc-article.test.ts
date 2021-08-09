@@ -346,8 +346,4 @@ describe('hardcoded-ncrc-article', () => {
       expect(docmap).toStrictEqual(E.left(DE.unavailable));
     });
   });
-
-  describe('when the evaluations can not be retrieved', () => {
-    it.todo('returns unavailable');
-  });
 });
