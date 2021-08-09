@@ -335,7 +335,16 @@ describe('hardcoded-ncrc-article', () => {
   });
 
   describe('when the versions cant be retrieved from preprint server', () => {
-    it.todo('returns unavailable');
+    it('returns unavailable', async () => {
+      const articleId = arbitraryDoi().value;
+      const ports = {
+        ...defaultPorts,
+        findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.none,
+      };
+      const docmap = await hardcodedNcrcArticle(ports)(articleId)();
+
+      expect(docmap).toStrictEqual(E.left(DE.unavailable));
+    });
   });
 
   describe('when the evaluations can not be retrieved', () => {
