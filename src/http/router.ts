@@ -440,7 +440,7 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.get('/docmaps/v1/articles/10.1101/2021.03.13.21253515.docmap.json', async (context, next) => {
     const response = await pipe(
-      hardcodedNcrcArticle(adapters)('10.1101/2021.03.13.21253515'),
+      hardcodedNcrcArticle(adapters)('10.1101/2021.03.13.21253515', [new Doi.Doi('10.1101/2021.03.13.21253515')]),
       TE.fold(
         (error) => T.of({
           body: {},
