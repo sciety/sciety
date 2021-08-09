@@ -1,4 +1,4 @@
-import { encodedCommandFieldName } from './save-command';
+import { encodedCommandFieldName } from '../command/save-command';
 import { CommandFromString } from '../types/command';
 import { Doi } from '../types/doi';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';

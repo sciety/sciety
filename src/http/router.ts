@@ -25,6 +25,8 @@ import { redirectAfterAuthenticating, requireAuthentication } from './require-au
 import { robots } from './robots';
 import { aboutPage } from '../about-page';
 import { articleActivityPage, articleMetaPage } from '../article-page';
+import { finishSavedCommand } from '../command/finish-saved-command';
+import { saveCommand } from '../command/save-command';
 import { generateDocmap } from '../docmaps/generate-docmap';
 import { generateDocmapIndex } from '../docmaps/generate-docmap-index';
 import { hardcodedReviewCommonsDocmap } from '../docmaps/hardcoded-review-commons-docmap';
@@ -40,8 +42,6 @@ import { menuPageLayout } from '../menu-page/menu-page-layout';
 import { respondHandler } from '../respond';
 import { finishRespondCommand } from '../respond/finish-respond-command';
 import { saveRespondCommand } from '../respond/save-respond-command';
-import { finishSavedCommand } from '../save-article/finish-saved-command';
-import { saveCommand } from '../save-article/save-command';
 import { searchPage } from '../search-page';
 import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../search-results-page';
 import { applyStandardPageLayout } from '../shared-components/apply-standard-page-layout';

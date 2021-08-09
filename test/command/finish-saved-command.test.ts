@@ -1,9 +1,9 @@
 import { RouterContext } from '@koa/router';
 import * as T from 'fp-ts/Task';
 import { ParameterizedContext } from 'koa';
+import { finishSavedCommand } from '../../src/command/finish-saved-command';
+import { encodedCommandFieldName } from '../../src/command/save-command';
 import { userSavedArticle } from '../../src/domain-events';
-import { finishSavedCommand } from '../../src/save-article/finish-saved-command';
-import { encodedCommandFieldName } from '../../src/save-article/save-command';
 import { CommandFromString } from '../../src/types/command';
 import { User } from '../../src/types/user';
 import { arbitraryDoi } from '../types/doi.helper';

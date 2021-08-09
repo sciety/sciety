@@ -2,13 +2,13 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
-import { articleSaveState } from './article-save-state';
-import { commandHandler } from './command-handler';
 import { encodedCommandFieldName } from './save-command';
 import {
   DomainEvent,
   UserSavedArticleEvent, UserUnsavedArticleEvent,
 } from '../domain-events';
+import { articleSaveState } from '../save-article/article-save-state';
+import { commandHandler } from '../save-article/command-handler';
 import { CommandFromString } from '../types/command';
 import { User } from '../types/user';
 
