@@ -54,7 +54,7 @@ describe('hardcoded-ncrc-article', () => {
         ],
       ),
     };
-    const docmap = await hardcodedNcrcArticle(ports)(articleId.value, [articleId])();
+    const docmap = await hardcodedNcrcArticle(ports)(articleId, [articleId])();
 
     expect(docmap).toStrictEqual(E.right(expect.objectContaining({
       id: expect.stringContaining(articleId.value),
@@ -86,7 +86,7 @@ describe('hardcoded-ncrc-article', () => {
         name: arbitraryString(),
       }),
     };
-    const docmap = await hardcodedNcrcArticle(ports)(articleId.value, [articleId])();
+    const docmap = await hardcodedNcrcArticle(ports)(articleId, [articleId])();
 
     expect(docmap).toStrictEqual(E.right(expect.objectContaining({
       publisher: {
@@ -117,7 +117,7 @@ describe('hardcoded-ncrc-article', () => {
       ),
     };
 
-    const docmap = await hardcodedNcrcArticle(ports)(articleId.value, [articleId])();
+    const docmap = await hardcodedNcrcArticle(ports)(articleId, [articleId])();
 
     expect(docmap).toStrictEqual(E.right(expect.objectContaining({
       created: evaluationDate.toISOString(),
@@ -127,7 +127,7 @@ describe('hardcoded-ncrc-article', () => {
   describe('in the first step', () => {
     it('assertions are always empty', async () => {
       const articleId = arbitraryDoi();
-      const docmap = await hardcodedNcrcArticle(defaultPorts)(articleId.value, [articleId])();
+      const docmap = await hardcodedNcrcArticle(defaultPorts)(articleId, [articleId])();
 
       expect(docmap).toStrictEqual(E.right(expect.objectContaining({
         steps: expect.objectContaining({
@@ -141,7 +141,7 @@ describe('hardcoded-ncrc-article', () => {
     describe('the inputs', () => {
       it('include the uri and doi', async () => {
         const articleId = arbitraryDoi();
-        const docmap = await hardcodedNcrcArticle(defaultPorts)(articleId.value, [articleId])();
+        const docmap = await hardcodedNcrcArticle(defaultPorts)(articleId, [articleId])();
 
         expect(docmap).toStrictEqual(E.right(expect.objectContaining({
           steps: expect.objectContaining({
@@ -170,7 +170,7 @@ describe('hardcoded-ncrc-article', () => {
             },
           ]),
         };
-        const docmap = await hardcodedNcrcArticle(ports)(articleId.value, [articleId])();
+        const docmap = await hardcodedNcrcArticle(ports)(articleId, [articleId])();
 
         expect(docmap).toStrictEqual(E.right(expect.objectContaining({
           steps: expect.objectContaining({
@@ -190,7 +190,7 @@ describe('hardcoded-ncrc-article', () => {
       describe('the only participant', () => {
         it('is anonymous', async () => {
           const articleId = arbitraryDoi();
-          const docmap = await hardcodedNcrcArticle(defaultPorts)(articleId.value, [articleId])();
+          const docmap = await hardcodedNcrcArticle(defaultPorts)(articleId, [articleId])();
 
           expect(docmap).toStrictEqual(E.right(expect.objectContaining({
             steps: expect.objectContaining({
@@ -209,7 +209,7 @@ describe('hardcoded-ncrc-article', () => {
       describe('the only output', () => {
         it('is always of type review-article', async () => {
           const articleId = arbitraryDoi();
-          const docmap = await hardcodedNcrcArticle(defaultPorts)(articleId.value, [articleId])();
+          const docmap = await hardcodedNcrcArticle(defaultPorts)(articleId, [articleId])();
 
           expect(docmap).toStrictEqual(E.right(expect.objectContaining({
             steps: expect.objectContaining({
@@ -240,7 +240,7 @@ describe('hardcoded-ncrc-article', () => {
             ),
           };
 
-          const docmap = await hardcodedNcrcArticle(ports)(articleId.value, [articleId])();
+          const docmap = await hardcodedNcrcArticle(ports)(articleId, [articleId])();
 
           expect(docmap).toStrictEqual(E.right(expect.objectContaining({
             steps: expect.objectContaining({
@@ -272,7 +272,7 @@ describe('hardcoded-ncrc-article', () => {
             fetchReview: () => TE.right({ url: new URL(sourceUrl) }),
           };
           const articleId = arbitraryDoi();
-          const docmap = await hardcodedNcrcArticle(ports)(articleId.value, [articleId])();
+          const docmap = await hardcodedNcrcArticle(ports)(articleId, [articleId])();
 
           expect(docmap).toStrictEqual(E.right(expect.objectContaining({
             steps: expect.objectContaining({
@@ -305,7 +305,7 @@ describe('hardcoded-ncrc-article', () => {
             ),
           };
           const articleId = arbitraryDoi();
-          const docmap = await hardcodedNcrcArticle(ports)(articleId.value, [articleId])();
+          const docmap = await hardcodedNcrcArticle(ports)(articleId, [articleId])();
 
           expect(docmap).toStrictEqual(E.right(expect.objectContaining({
             steps: expect.objectContaining({
@@ -328,7 +328,7 @@ describe('hardcoded-ncrc-article', () => {
 
   describe('when the doi is not in the docmap index', () => {
     it.skip('returns not-found', async () => {
-      const articleId = arbitraryDoi().value;
+      const articleId = arbitraryDoi();
       const docmap = await hardcodedNcrcArticle(defaultPorts)(articleId, [])();
 
       expect(docmap).toStrictEqual(E.left(DE.notFound));
@@ -346,7 +346,7 @@ describe('hardcoded-ncrc-article', () => {
         ...defaultPorts,
         findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.none,
       };
-      const docmap = await hardcodedNcrcArticle(ports)(articleId.value, [articleId])();
+      const docmap = await hardcodedNcrcArticle(ports)(articleId, [articleId])();
 
       expect(docmap).toStrictEqual(E.left(DE.unavailable));
     });

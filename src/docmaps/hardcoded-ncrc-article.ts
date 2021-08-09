@@ -200,18 +200,18 @@ const context = {
 
 type HardcodedNcrcArticle = (
   ports: Ports,
-) => (articleId: string, index: ReadonlyArray<Doi>) => TE.TaskEither<DE.DataError, Record<string, unknown>>;
+) => (articleId: Doi, index: ReadonlyArray<Doi>) => TE.TaskEither<DE.DataError, Record<string, unknown>>;
 
 export const hardcodedNcrcArticle: HardcodedNcrcArticle = (ports) => (articleId) => pipe(
   {
     evaluation: pipe(
-      new Doi(articleId),
+      articleId,
       ports.findReviewsForArticleDoi,
       T.map(RA.head),
       T.map(E.fromOption(() => DE.notFound)),
     ),
     versions: pipe(
-      ports.findVersionsForArticleDoi(new Doi(articleId), 'medrxiv'),
+      ports.findVersionsForArticleDoi(articleId, 'medrxiv'),
       TE.fromTaskOption(() => DE.unavailable),
     ),
   },
@@ -238,7 +238,7 @@ export const hardcodedNcrcArticle: HardcodedNcrcArticle = (ports) => (articleId)
     group, versions, evaluation, sourceUrl,
   }) => ({
     '@context': context,
-    id: `https://sciety.org/docmaps/v1/articles/${articleId}.docmap.json`,
+    id: `https://sciety.org/docmaps/v1/articles/${articleId.value}.docmap.json`,
     type: 'docmap',
     created: evaluation.occurredAt.toISOString(),
     publisher: {
@@ -255,8 +255,8 @@ export const hardcodedNcrcArticle: HardcodedNcrcArticle = (ports) => (articleId)
       '_:b0': {
         assertions: [],
         inputs: [{
-          doi: articleId,
-          url: `https://doi.org/${articleId}`,
+          doi: articleId.value,
+          url: `https://doi.org/${articleId.value}`,
           published: versions[versions.length - 1].occurredAt,
         }],
         actions: [
@@ -275,7 +275,7 @@ export const hardcodedNcrcArticle: HardcodedNcrcArticle = (ports) => (articleId)
                   },
                   {
                     type: 'web-page',
-                    url: `https://sciety.org/articles/activity/${articleId}#${evaluation.reviewId}`,
+                    url: `https://sciety.org/articles/activity/${articleId.value}#${evaluation.reviewId}`,
                   },
                 ],
               },
