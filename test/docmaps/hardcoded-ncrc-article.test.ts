@@ -124,19 +124,55 @@ describe('hardcoded-ncrc-article', () => {
     })));
   });
 
-  describe('when there are multiple evaluations by NCRC', () => {
-    it.todo('only uses the earliest evaluation');
+  describe('when there are multiple evaluations by the selected group', () => {
+    it.skip('only uses the earliest evaluation', async () => {
+      const articleId = arbitraryDoi();
+      const earlierDate = new Date('1900');
+      const laterDate = new Date('2000');
+      const groupId = arbitraryGroupId();
+      const ports = {
+        ...defaultPorts,
+        findReviewsForArticleDoi: () => T.of(
+          [
+            {
+              reviewId: arbitraryReviewId(),
+              groupId,
+              occurredAt: earlierDate,
+            },
+            {
+              reviewId: arbitraryReviewId(),
+              groupId,
+              occurredAt: laterDate,
+            },
+          ],
+        ),
+      };
+
+      const docmap = await hardcodedNcrcArticle(ports)(articleId, [articleId])();
+
+      expect(docmap).toStrictEqual(E.right(expect.objectContaining({
+        steps: expect.objectContaining({
+          '_:b0': expect.objectContaining({
+            actions: [expect.objectContaining({
+              outputs: [expect.objectContaining({
+                published: earlierDate,
+              })],
+            })],
+          }),
+        }),
+      })));
+    });
   });
 
-  describe('when there are no evaluations by NCRC', () => {
+  describe('when there are no evaluations by the selected group', () => {
     it.todo('returns not-found');
   });
 
   describe('when there are evaluations by other groups', () => {
-    it.todo('only uses the NCRC evaluation');
+    it.todo('only uses the evaluation by the selected group');
   });
 
-  describe('when there is a single evaluation by NCRC', () => {
+  describe('when there is a single evaluation by the selected group', () => {
     describe('in the first step', () => {
       it('assertions are always empty', async () => {
         const articleId = arbitraryDoi();
