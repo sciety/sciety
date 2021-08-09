@@ -11,30 +11,30 @@ type Card = {
 };
 
 const card1: Card = {
-  articleId: '10.1101/2021.05.20.21257512',
-  articleTitle: 'Anti-Sars-Cov-2 IgA And IgG In Human Milk After Vaccination Is Dependent On Vaccine Type And Previous Sars-Cov-2 Exposure: A Longitudinal Study',
-  date: new Date('2021-07-09'),
-  groupId: '62f9b0d0-8d43-4766-a52a-ce02af61bc6a',
-  groupName: 'NCRC',
-  avatarPath: '/static/groups/ncrc--62f9b0d0-8d43-4766-a52a-ce02af61bc6a.jpg',
+  articleId: '10.1101/2021.08.02.21261504',
+  articleTitle: 'SARS-CoV-2 antibody binding and neutralization in dried blood spot eluates and paired plasma',
+  date: new Date('2021-08-06'),
+  groupId: '8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65',
+  groupName: 'ScreenIT',
+  avatarPath: '/static/groups/screenit--8ccea9c2-e6c8-4dd7-bf1d-37c3fa86ff65.jpg',
 };
 
 const card2: Card = {
-  articleId: '10.1101/2021.05.02.442186',
-  articleTitle: 'Embryonic hyperglycemia perturbs the development of specific retinal cell types, including photoreceptors',
-  date: new Date('2021-07-09'),
-  groupId: '316db7d9-88cc-4c26-b386-f067e0f56334',
-  groupName: 'Review Commons',
-  avatarPath: '/static/groups/review-commons--316db7d9-88cc-4c26-b386-f067e0f56334.jpg',
+  articleId: '10.1101/2021.04.12.439487',
+  articleTitle: 'VHL ligand binding increases intracellular level of VHL',
+  date: new Date('2021-05-27'),
+  groupId: '10360d97-bf52-4aef-b2fa-2f60d319edd7',
+  groupName: 'PREreview',
+  avatarPath: '/static/groups/prereview-community--10360d97-bf52-4aef-b2fa-2f60d319edd7.jpg',
 };
 
 const card3: Card = {
-  articleId: '10.1101/2021.01.07.425654',
-  articleTitle: 'Gpr161 ciliary pools prevent hedgehog pathway hyperactivation phenotypes specifically from lack of Gli transcriptional repression',
-  date: new Date('2021-07-13'),
-  groupId: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
-  groupName: 'eLife',
-  avatarPath: '/static/groups/elife--b560187e-f2fb-4ff9-a861-a204f3fc0fb0.png',
+  articleId: '10.1101/2021.03.13.435259',
+  articleTitle: 'Host phenology can drive the evolution of intermediate virulence strategies in some obligate-killer parasites',
+  date: new Date('2021-07-19'),
+  groupId: '19b7464a-edbe-42e8-b7cc-04d1eb1f7332',
+  groupName: 'Peer Community in Evolutionary Biology',
+  avatarPath: '/static/groups/pci-evolutionary-biology--19b7464a-edbe-42e8-b7cc-04d1eb1f7332.jpg',
 };
 
 const renderCard = (card: Card) => `
