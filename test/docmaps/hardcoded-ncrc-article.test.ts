@@ -123,7 +123,17 @@ describe('hardcoded-ncrc-article', () => {
   });
 
   describe('in the first step', () => {
-    it.todo('assertions are always empty');
+    it('assertions are always empty', async () => {
+      const docmap = await hardcodedNcrcArticle(defaultPorts)(arbitraryDoi().value)();
+
+      expect(docmap).toStrictEqual(E.right(expect.objectContaining({
+        steps: expect.objectContaining({
+          '_:b0': expect.objectContaining({
+            assertions: [],
+          }),
+        }),
+      })));
+    });
 
     describe('the inputs', () => {
       it('include the uri and doi', async () => {
