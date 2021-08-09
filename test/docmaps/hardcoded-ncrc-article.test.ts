@@ -328,9 +328,8 @@ describe('hardcoded-ncrc-article', () => {
 
   describe('when the doi is not in the docmap index', () => {
     it.skip('returns not-found', async () => {
-      const index = [];
       const articleId = arbitraryDoi().value;
-      const docmap = await hardcodedNcrcArticle(defaultPorts)(articleId, index)();
+      const docmap = await hardcodedNcrcArticle(defaultPorts)(articleId, [])();
 
       expect(docmap).toStrictEqual(E.left(DE.notFound));
     });
