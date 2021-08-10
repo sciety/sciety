@@ -20,12 +20,12 @@ type Ports = {
   getGroup: GetGroup,
 };
 
-type Hardcodedreviewcommonsarticle = (ports: Ports) => (
+type HardcodedReviewCommonsDocmap = (ports: Ports) => (
   articleId: string,
   currentDate: string,
 ) => T.Task<Record<string, unknown>>;
 
-export const hardcodedReviewCommonsArticle: Hardcodedreviewcommonsarticle = (ports) => (
+export const hardcodedReviewCommonsDocmap: HardcodedReviewCommonsDocmap = (ports) => (
   articleId,
   currentDateTime,
 ) => pipe(

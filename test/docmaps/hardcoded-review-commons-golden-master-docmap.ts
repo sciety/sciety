@@ -1,4 +1,4 @@
-export const hardcodedDocmap = (currentDateTime: string): Record<string, unknown> => ({
+export const hardcodedReviewCommonsGoldenMasterDocmap = (currentDateTime: string): Record<string, unknown> => ({
   record: {
     'first-step': '_:b-336d69dd-06d2-484b-8866-256ea5bbc384',
     provider: 'https://sciety.org',

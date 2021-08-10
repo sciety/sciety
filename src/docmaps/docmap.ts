@@ -198,7 +198,7 @@ const context = {
   editorial: 'fabio:Editorial',
 };
 
-type HardcodedNcrcArticle = (
+type Docmap = (
   ports: Ports,
 ) => (
   articleId: Doi,
@@ -206,7 +206,7 @@ type HardcodedNcrcArticle = (
   indexedGroupId: GroupId,
 ) => TE.TaskEither<DE.DataError, Record<string, unknown>>;
 
-export const hardcodedNcrcArticle: HardcodedNcrcArticle = (ports) => (articleDoi, index, indexedGroupId) => pipe(
+export const docmap: Docmap = (ports) => (articleDoi, index, indexedGroupId) => pipe(
   index,
   RA.findFirst((doi) => doi.value === articleDoi.value),
   TE.fromOption(() => DE.notFound),

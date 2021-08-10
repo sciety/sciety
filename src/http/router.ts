@@ -25,8 +25,8 @@ import { redirectAfterAuthenticating, requireAuthentication } from './require-au
 import { robots } from './robots';
 import { aboutPage } from '../about-page';
 import { articleActivityPage, articleMetaPage } from '../article-page';
-import { hardcodedNcrcArticle } from '../docmaps/hardcoded-ncrc-article';
-import { hardcodedReviewCommonsArticle } from '../docmaps/hardcoded-response';
+import { docmap } from '../docmaps/docmap';
+import { hardcodedReviewCommonsDocmap } from '../docmaps/hardcoded-review-commons-docmap';
 import { finishUnfollowCommand, saveUnfollowCommand, unfollowHandler } from '../follow';
 import { groupEvaluationsPage, paramsCodec as groupEvaluationsPageParams } from '../group-evaluations-page/group-evaluations-page';
 import { groupPage, paramsCodec as groupPageParams } from '../group-page';
@@ -447,7 +447,7 @@ export const createRouter = (adapters: Adapters): Router => {
       DoiFromString.decode,
       E.mapLeft(() => DE.notFound),
       TE.fromEither,
-      TE.chain((doi) => hardcodedNcrcArticle(adapters)(doi, [articleId], ncrcGroupId)),
+      TE.chain((doi) => docmap(adapters)(doi, [articleId], ncrcGroupId)),
       TE.fold(
         (error) => T.of({
           body: {},
@@ -472,7 +472,7 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.get('/docmaps/v1/articles/10.1101/2021.04.25.441302.docmap.json', async (context, next) => {
     context.response.body = [
-      await hardcodedReviewCommonsArticle(adapters)('10.1101/2021.04.25.441302', new Date().toISOString())(),
+      await hardcodedReviewCommonsDocmap(adapters)('10.1101/2021.04.25.441302', new Date().toISOString())(),
     ];
 
     await next();
