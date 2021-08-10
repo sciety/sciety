@@ -7,6 +7,7 @@ import { docmap, FindVersionsForArticleDoi } from '../../src/docmaps/docmap';
 import * as DE from '../../src/types/data-error';
 import { GroupId } from '../../src/types/group-id';
 import { arbitraryDate, arbitraryString, arbitraryUri } from '../helpers';
+import { arbitraryArticleServer } from '../types/article-server.helper';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
@@ -19,12 +20,6 @@ const review = (groupId: GroupId, date: Date) => ({
   groupId,
   occurredAt: date,
 });
-
-const arbitraryArticleServer = () => (
-  Math.random() > 0.5
-    ? 'biorxiv' as const
-    : 'medrxiv' as const
-);
 
 const defaultPorts = {
   fetchReview: () => TE.right({ url: new URL(arbitraryUri()) }),
