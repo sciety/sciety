@@ -25,6 +25,7 @@ import { redirectAfterAuthenticating, requireAuthentication } from './require-au
 import { robots } from './robots';
 import { aboutPage } from '../about-page';
 import { articleActivityPage, articleMetaPage } from '../article-page';
+import { allDocmapDois } from '../docmaps/all-docmap-dois';
 import { docmap } from '../docmaps/docmap';
 import { hardcodedReviewCommonsDocmap } from '../docmaps/hardcoded-review-commons-docmap';
 import { finishUnfollowCommand, saveUnfollowCommand, unfollowHandler } from '../follow';
@@ -440,14 +441,13 @@ export const createRouter = (adapters: Adapters): Router => {
   });
 
   router.get('/docmaps/v1/articles/:doi(.+).docmap.json', async (context, next) => {
-    const articleId = new Doi.Doi('10.1101/2021.03.13.21253515');
     const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
     const response = await pipe(
       context.params.doi,
       DoiFromString.decode,
       E.mapLeft(() => DE.notFound),
       TE.fromEither,
-      TE.chain((doi) => docmap(adapters)(doi, [articleId], ncrcGroupId)),
+      TE.chain((doi) => docmap(adapters)(doi, allDocmapDois(), ncrcGroupId)),
       TE.fold(
         (error) => T.of({
           body: {},
