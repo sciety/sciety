@@ -114,6 +114,27 @@ describe('docmap', () => {
     })));
   });
 
+  it('handles all article servers', async () => {
+    const findVersionsForArticleDoi = jest.fn().mockImplementation(
+      (): ReturnType<FindVersionsForArticleDoi> => TO.some([
+        {
+          source: new URL(arbitraryUri()),
+          occurredAt: arbitraryDate(),
+          version: 1,
+        },
+      ]),
+    );
+    const server = arbitraryArticleServer();
+    const ports = {
+      ...defaultPorts,
+      findVersionsForArticleDoi,
+      fetchArticle: () => TE.right({ server }),
+    };
+    await docmap(ports)(articleId, [articleId], indexedGroupId)();
+
+    expect(findVersionsForArticleDoi).toHaveBeenCalledWith(articleId, server);
+  });
+
   describe('when there are multiple evaluations by the selected group', () => {
     it('only uses the earliest evaluation', async () => {
       const earlierDate = new Date('1900');
@@ -203,20 +224,15 @@ describe('docmap', () => {
 
         it('include the article publication date', async () => {
           const articleDate = arbitraryDate();
-          const findVersionsForArticleDoi = jest.fn().mockImplementation(
-            (): ReturnType<FindVersionsForArticleDoi> => TO.some([
+          const ports = {
+            ...defaultPorts,
+            findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.some([
               {
                 source: new URL(arbitraryUri()),
                 occurredAt: articleDate,
                 version: 1,
               },
             ]),
-          );
-          const server = arbitraryArticleServer();
-          const ports = {
-            ...defaultPorts,
-            findVersionsForArticleDoi,
-            fetchArticle: () => TE.right({ server }),
           };
           const result = await docmap(ports)(articleId, [articleId], indexedGroupId)();
 
@@ -231,7 +247,6 @@ describe('docmap', () => {
               }),
             }),
           })));
-          expect(findVersionsForArticleDoi).toHaveBeenCalledWith(articleId, server);
         });
       });
 
