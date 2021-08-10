@@ -12,17 +12,16 @@ import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 
 const indexedGroupId = arbitraryGroupId();
+
+const review = (groupId: GroupId, date: Date) => ({
+  reviewId: arbitraryReviewId(),
+  groupId,
+  occurredAt: date,
+});
+
 const defaultPorts = {
   fetchReview: () => TE.right({ url: new URL(arbitraryUri()) }),
-  findReviewsForArticleDoi: () => T.of(
-    [
-      {
-        reviewId: arbitraryReviewId(),
-        groupId: indexedGroupId,
-        occurredAt: arbitraryDate(),
-      },
-    ],
-  ),
+  findReviewsForArticleDoi: () => T.of([review(indexedGroupId, arbitraryDate())]),
   findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.some([
     {
       source: new URL(arbitraryUri()),
@@ -39,12 +38,6 @@ const defaultPorts = {
     name: arbitraryString(),
   }),
 };
-
-const review = (groupId: GroupId, date: Date) => ({
-  reviewId: arbitraryReviewId(),
-  groupId,
-  occurredAt: date,
-});
 
 const expectOutputs = (ex: Record<string, unknown>) => E.right(expect.objectContaining({
   steps: expect.objectContaining({
