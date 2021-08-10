@@ -38,6 +38,7 @@ const defaultPorts = {
     descriptionPath: arbitraryString(),
     name: arbitraryString(),
   }),
+  fetchArticle: () => TE.right({ server: 'biorxiv' as const }),
 };
 
 const expectOutputs = (ex: Record<string, unknown>) => E.right(expect.objectContaining({
@@ -205,7 +206,7 @@ describe('docmap', () => {
               },
             ]),
           );
-          const server = 'biorxiv';
+          const server = 'biorxiv' as const;
           const ports = {
             ...defaultPorts,
             findVersionsForArticleDoi,
