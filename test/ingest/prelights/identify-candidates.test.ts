@@ -1,5 +1,5 @@
-describe('fetch-prelights-evaluations', () => {
-  describe('when the feed contains a highlight ...', () => {
+describe('identify-candidates', () => {
+  describe('when the feed contains an item ...', () => {
     describe('referring to a single preprint', () => {
       it.todo('records the highlight as an evaluation');
 
@@ -10,12 +10,6 @@ describe('fetch-prelights-evaluations', () => {
       it.todo('records the highlight as two evaluations');
 
       it.todo('records no skipped items');
-    });
-
-    describe('referring to an article that is not on biorxiv', () => {
-      it.todo('records no evaluations');
-
-      it.todo('records the item as skipped');
     });
   });
 
