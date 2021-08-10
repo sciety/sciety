@@ -1,4 +1,5 @@
 import Router from '@koa/router';
+import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
@@ -444,11 +445,21 @@ export const createRouter = (adapters: Adapters): Router => {
   router.get('/docmaps/v1/articles/:doi(.+).docmap.json', async (context, next) => {
     const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
     const response = await pipe(
-      context.params.doi,
-      DoiFromString.decode,
-      E.mapLeft(() => DE.notFound),
-      TE.fromEither,
-      TE.chain((doi) => docmap(adapters)(doi, allDocmapDois(ncrcGroupId)([]), ncrcGroupId)),
+      {
+        doi: pipe(
+          context.params.doi,
+          DoiFromString.decode,
+          E.mapLeft(() => DE.notFound),
+          TE.fromEither,
+        ),
+        indexedDois: pipe(
+          adapters.getAllEvents,
+          T.map(allDocmapDois(ncrcGroupId)),
+          TE.rightTask,
+        ),
+      },
+      sequenceS(TE.ApplyPar),
+      TE.chain(({ doi, indexedDois }) => docmap(adapters)(doi, indexedDois, ncrcGroupId)),
       TE.fold(
         (error) => T.of({
           body: {},
