@@ -25,6 +25,19 @@ describe('all-docmap-dois', () => {
   });
 
   describe('when there are evaluated events by the specified group and others', () => {
-    it.todo('returns a list of article ids evaluated by the specified group');
+    it('returns a list of article ids evaluated by the specified group', () => {
+      const articleId1 = arbitraryDoi();
+      const groupId = arbitraryGroupId();
+      const events = [
+        editorialCommunityReviewedArticle(groupId, articleId1, arbitraryReviewId()),
+        editorialCommunityReviewedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
+      ];
+
+      const dois = allDocmapDois(groupId)(events);
+
+      expect(dois).toStrictEqual([
+        articleId1,
+      ]);
+    });
   });
 });
