@@ -218,44 +218,41 @@ export const hardcodedNcrcArticle: HardcodedNcrcArticle = (ports) => (articleDoi
         T.map(RA.findFirst((ev) => ev.groupId === indexedGroupId)),
         T.map(E.fromOption(() => DE.notFound)),
       ),
-      versions: pipe(
+      articleVersions: pipe(
         ports.findVersionsForArticleDoi(articleId, 'medrxiv'),
         TE.fromTaskOption(() => DE.unavailable),
       ),
-    },
-    ({ evaluation, versions }) => ({
-      group: pipe(
-        evaluation,
-        TE.chain(flow(
-          ({ groupId }) => ports.getGroup(groupId),
-          TE.fromTaskOption(() => DE.notFound),
-        )),
+      indexedGroup: pipe(
+        indexedGroupId,
+        ports.getGroup,
+        TE.fromTaskOption(() => DE.notFound),
       ),
+    },
+    (domain) => ({
+      ...domain,
       sourceUrl: pipe(
-        evaluation,
+        domain.evaluation,
         TE.chain(flow(
           ({ reviewId }) => ports.fetchReview(reviewId),
           TE.map(({ url }) => url),
         )),
       ),
-      versions,
-      evaluation,
     }),
     sequenceS(TE.ApplyPar),
   )),
   TE.map(({
-    group, versions, evaluation, sourceUrl,
+    indexedGroup, articleVersions, evaluation, sourceUrl,
   }) => ({
     '@context': context,
     id: `https://sciety.org/docmaps/v1/articles/${articleDoi.value}.docmap.json`,
     type: 'docmap',
     created: evaluation.occurredAt.toISOString(),
     publisher: {
-      id: group.homepage,
-      logo: `https://sciety.org${group.avatarPath}`,
-      homepage: group.homepage,
+      id: indexedGroup.homepage,
+      logo: `https://sciety.org${indexedGroup.avatarPath}`,
+      homepage: indexedGroup.homepage,
       account: {
-        id: `https://sciety.org/groups/${group.id}`,
+        id: `https://sciety.org/groups/${indexedGroup.id}`,
         service: 'https://sciety.org',
       },
     },
@@ -266,7 +263,7 @@ export const hardcodedNcrcArticle: HardcodedNcrcArticle = (ports) => (articleDoi
         inputs: [{
           doi: articleDoi.value,
           url: `https://doi.org/${articleDoi.value}`,
-          published: versions[versions.length - 1].occurredAt,
+          published: articleVersions[articleVersions.length - 1].occurredAt,
         }],
         actions: [
           {
