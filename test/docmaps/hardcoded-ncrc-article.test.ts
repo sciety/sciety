@@ -129,7 +129,15 @@ describe('hardcoded-ncrc-article', () => {
   });
 
   describe('when there are no evaluations by the selected group', () => {
-    it.todo('returns not-found');
+    it('returns not-found', async () => {
+      const ports = {
+        ...defaultPorts,
+        findReviewsForArticleDoi: () => T.of([]),
+      };
+      const docmap = await hardcodedNcrcArticle(ports)(articleId, [articleId], indexedGroupId)();
+
+      expect(docmap).toStrictEqual(E.left('not-found'));
+    });
   });
 
   describe('when there are evaluations by other groups', () => {
