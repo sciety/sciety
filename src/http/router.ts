@@ -3,6 +3,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
+import * as RA from 'fp-ts/ReadonlyArray'
 import { constant, flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import * as t from 'io-ts';
@@ -425,16 +426,13 @@ export const createRouter = (adapters: Adapters): Router => {
   // DOCMAPS
   router.get('/docmaps/v1/index', async (context, next) => {
     context.response.body = {
-      articles: [
-        {
-          doi: '10.1101/2021.03.13.21253515',
-          docmap: 'https://sciety.org/docmaps/v1/articles/10.1101/2021.03.13.21253515.docmap.json',
-        },
-        {
-          doi: '10.1101/2021.04.25.441302',
-          docmap: 'https://sciety.org/docmaps/v1/articles/10.1101/2021.04.25.441302.docmap.json',
-        },
-      ],
+      articles: pipe(
+        allDocmapDois(),
+        RA.map((doi) => ({
+          doi: doi.value,
+          docmap: `https://sciety.org/docmaps/v1/articles/${doi.value}.docmap.json`,
+        })),
+      ),
     };
 
     await next();
