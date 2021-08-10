@@ -12,6 +12,7 @@ import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 
 const indexedGroupId = arbitraryGroupId();
+const articleId = arbitraryDoi();
 
 const review = (groupId: GroupId, date: Date) => ({
   reviewId: arbitraryReviewId(),
@@ -51,7 +52,6 @@ const expectOutputs = (ex: Record<string, unknown>) => E.right(expect.objectCont
 
 describe('hardcoded-ncrc-article', () => {
   it('includes the article id', async () => {
-    const articleId = arbitraryDoi();
     const ports = {
       ...defaultPorts,
       findReviewsForArticleDoi: () => T.of([review(indexedGroupId, arbitraryDate())]),
@@ -65,7 +65,6 @@ describe('hardcoded-ncrc-article', () => {
 
   it('includes the publisher properties', async () => {
     const homepage = arbitraryUri();
-    const articleId = arbitraryDoi();
     const avatarPath = arbitraryString();
     const ports = {
       ...defaultPorts,
@@ -96,7 +95,6 @@ describe('hardcoded-ncrc-article', () => {
 
   it('sets created to the date of the first evaluation', async () => {
     const evaluationDate = arbitraryDate();
-    const articleId = arbitraryDoi();
     const ports = {
       ...defaultPorts,
       findReviewsForArticleDoi: () => T.of([review(indexedGroupId, evaluationDate)]),
@@ -111,7 +109,6 @@ describe('hardcoded-ncrc-article', () => {
 
   describe('when there are multiple evaluations by the selected group', () => {
     it('only uses the earliest evaluation', async () => {
-      const articleId = arbitraryDoi();
       const earlierDate = new Date('1900');
       const laterDate = new Date('2000');
       const ports = {
@@ -137,7 +134,6 @@ describe('hardcoded-ncrc-article', () => {
 
   describe('when there are evaluations by other groups', () => {
     it('only uses the evaluation by the selected group', async () => {
-      const articleId = arbitraryDoi();
       const earlierDate = new Date('1900');
       const laterDate = new Date('2000');
       const ports = {
@@ -161,7 +157,6 @@ describe('hardcoded-ncrc-article', () => {
   describe('when there is a single evaluation by the selected group', () => {
     describe('in the first step', () => {
       it('assertions are always empty', async () => {
-        const articleId = arbitraryDoi();
         const docmap = await hardcodedNcrcArticle(defaultPorts)(articleId, [articleId], indexedGroupId)();
 
         expect(docmap).toStrictEqual(E.right(expect.objectContaining({
@@ -175,7 +170,6 @@ describe('hardcoded-ncrc-article', () => {
 
       describe('the inputs', () => {
         it('include the uri and doi', async () => {
-          const articleId = arbitraryDoi();
           const docmap = await hardcodedNcrcArticle(defaultPorts)(articleId, [articleId], indexedGroupId)();
 
           expect(docmap).toStrictEqual(E.right(expect.objectContaining({
@@ -193,7 +187,6 @@ describe('hardcoded-ncrc-article', () => {
         });
 
         it('include the article publication date', async () => {
-          const articleId = arbitraryDoi();
           const articleDate = arbitraryDate();
           const ports = {
             ...defaultPorts,
@@ -224,7 +217,6 @@ describe('hardcoded-ncrc-article', () => {
       describe('the only action', () => {
         describe('the only participant', () => {
           it('is anonymous', async () => {
-            const articleId = arbitraryDoi();
             const docmap = await hardcodedNcrcArticle(defaultPorts)(articleId, [articleId], indexedGroupId)();
 
             expect(docmap).toStrictEqual(E.right(expect.objectContaining({
@@ -243,7 +235,6 @@ describe('hardcoded-ncrc-article', () => {
 
         describe('the only output', () => {
           it('is always of type review-article', async () => {
-            const articleId = arbitraryDoi();
             const docmap = await hardcodedNcrcArticle(defaultPorts)(articleId, [articleId], indexedGroupId)();
 
             expect(docmap).toStrictEqual(expectOutputs({
@@ -252,7 +243,6 @@ describe('hardcoded-ncrc-article', () => {
           });
 
           it('includes the published date of the evaluation', async () => {
-            const articleId = arbitraryDoi();
             const evaluationDate = arbitraryDate();
             const ports = {
               ...defaultPorts,
@@ -282,7 +272,6 @@ describe('hardcoded-ncrc-article', () => {
               ),
               fetchReview: () => TE.right({ url: new URL(sourceUrl) }),
             };
-            const articleId = arbitraryDoi();
             const docmap = await hardcodedNcrcArticle(ports)(articleId, [articleId], indexedGroupId)();
 
             expect(docmap).toStrictEqual(expectOutputs({
@@ -307,7 +296,6 @@ describe('hardcoded-ncrc-article', () => {
                 ],
               ),
             };
-            const articleId = arbitraryDoi();
             const docmap = await hardcodedNcrcArticle(ports)(articleId, [articleId], indexedGroupId)();
 
             expect(docmap).toStrictEqual(expectOutputs({
@@ -324,7 +312,6 @@ describe('hardcoded-ncrc-article', () => {
 
   describe('when the doi is not in the docmap index', () => {
     it('returns not-found', async () => {
-      const articleId = arbitraryDoi();
       const docmap = await hardcodedNcrcArticle(defaultPorts)(articleId, [], arbitraryGroupId())();
 
       expect(docmap).toStrictEqual(E.left(DE.notFound));
@@ -337,7 +324,6 @@ describe('hardcoded-ncrc-article', () => {
 
   describe('when the versions cant be retrieved from preprint server', () => {
     it('returns unavailable', async () => {
-      const articleId = arbitraryDoi();
       const ports = {
         ...defaultPorts,
         findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.none,
