@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import { identifyCandidates } from '../../../src/ingest/prelights/identify-candidates';
-import {arbitraryDate, arbitraryString, arbitraryUri} from '../../helpers';
+import { arbitraryDate, arbitraryString, arbitraryUri } from '../../helpers';
 
 describe('identify-candidates', () => {
   describe('when the feed contains an item ...', () => {
