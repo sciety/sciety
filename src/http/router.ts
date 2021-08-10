@@ -428,15 +428,17 @@ export const createRouter = (adapters: Adapters): Router => {
   router.get('/docmaps/v1/index', async (context, next) => {
     const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
     context.response.body = {
-      articles: pipe(
-        [],
-        allDocmapDois(ncrcGroupId),
-        (dois) => [...dois, new Doi.Doi('10.1101/2021.04.25.441302')],
-        RA.map((doi) => ({
-          doi: doi.value,
-          docmap: `https://sciety.org/docmaps/v1/articles/${doi.value}.docmap.json`,
-        })),
-      ),
+      articles: await pipe(
+        adapters.getAllEvents,
+        T.map(flow(
+          allDocmapDois(ncrcGroupId),
+          (dois) => [...dois, new Doi.Doi('10.1101/2021.04.25.441302')],
+          RA.map((doi) => ({
+            doi: doi.value,
+            docmap: `https://sciety.org/docmaps/v1/articles/${doi.value}.docmap.json`,
+          })),
+        )),
+      )(),
     };
 
     await next();
