@@ -20,6 +20,12 @@ const review = (groupId: GroupId, date: Date) => ({
   occurredAt: date,
 });
 
+const arbitraryArticleServer = () => (
+  Math.random() > 0.5
+    ? 'biorxiv' as const
+    : 'medrxiv' as const
+);
+
 const defaultPorts = {
   fetchReview: () => TE.right({ url: new URL(arbitraryUri()) }),
   findReviewsForArticleDoi: () => T.of([review(indexedGroupId, arbitraryDate())]),
@@ -38,7 +44,7 @@ const defaultPorts = {
     descriptionPath: arbitraryString(),
     name: arbitraryString(),
   }),
-  fetchArticle: () => TE.right({ server: 'biorxiv' as const }),
+  fetchArticle: () => TE.right({ server: arbitraryArticleServer() }),
 };
 
 const expectOutputs = (ex: Record<string, unknown>) => E.right(expect.objectContaining({
@@ -206,7 +212,7 @@ describe('docmap', () => {
               },
             ]),
           );
-          const server = 'biorxiv' as const;
+          const server = arbitraryArticleServer();
           const ports = {
             ...defaultPorts,
             findVersionsForArticleDoi,
