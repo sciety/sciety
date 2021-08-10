@@ -5,6 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { FindVersionsForArticleDoi, hardcodedNcrcArticle } from '../../src/docmaps/hardcoded-ncrc-article';
 import * as DE from '../../src/types/data-error';
+import { GroupId } from '../../src/types/group-id';
 import { arbitraryDate, arbitraryString, arbitraryUri } from '../helpers';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
@@ -39,21 +40,19 @@ const defaultPorts = {
   }),
 };
 
+const review = (groupId: GroupId, date: Date) => ({
+  reviewId: arbitraryReviewId(),
+  groupId,
+  occurredAt: date,
+});
+
 describe('hardcoded-ncrc-article', () => {
   it('includes the article id', async () => {
     const articleId = arbitraryDoi();
     const groupId = arbitraryGroupId();
     const ports = {
       ...defaultPorts,
-      findReviewsForArticleDoi: () => T.of(
-        [
-          {
-            reviewId: arbitraryReviewId(),
-            groupId,
-            occurredAt: arbitraryDate(),
-          },
-        ],
-      ),
+      findReviewsForArticleDoi: () => T.of([review(groupId, arbitraryDate())]),
     };
     const docmap = await hardcodedNcrcArticle(ports)(articleId, [articleId], groupId)();
 
@@ -69,15 +68,7 @@ describe('hardcoded-ncrc-article', () => {
     const avatarPath = arbitraryString();
     const ports = {
       ...defaultPorts,
-      findReviewsForArticleDoi: () => T.of(
-        [
-          {
-            reviewId: arbitraryReviewId(),
-            groupId,
-            occurredAt: arbitraryDate(),
-          },
-        ],
-      ),
+      findReviewsForArticleDoi: () => T.of([review(groupId, arbitraryDate())]),
       getGroup: () => TO.some({
         id: groupId,
         homepage,
@@ -108,15 +99,7 @@ describe('hardcoded-ncrc-article', () => {
     const groupId = arbitraryGroupId();
     const ports = {
       ...defaultPorts,
-      findReviewsForArticleDoi: () => T.of(
-        [
-          {
-            reviewId: arbitraryReviewId(),
-            groupId,
-            occurredAt: evaluationDate,
-          },
-        ],
-      ),
+      findReviewsForArticleDoi: () => T.of([review(groupId, evaluationDate)]),
     };
 
     const docmap = await hardcodedNcrcArticle(ports)(articleId, [articleId], groupId)();
@@ -136,16 +119,8 @@ describe('hardcoded-ncrc-article', () => {
         ...defaultPorts,
         findReviewsForArticleDoi: () => T.of(
           [
-            {
-              reviewId: arbitraryReviewId(),
-              groupId,
-              occurredAt: earlierDate,
-            },
-            {
-              reviewId: arbitraryReviewId(),
-              groupId,
-              occurredAt: laterDate,
-            },
+            review(groupId, earlierDate),
+            review(groupId, laterDate),
           ],
         ),
       };
@@ -179,16 +154,8 @@ describe('hardcoded-ncrc-article', () => {
         ...defaultPorts,
         findReviewsForArticleDoi: () => T.of(
           [
-            {
-              reviewId: arbitraryReviewId(),
-              groupId: arbitraryGroupId(),
-              occurredAt: earlierDate,
-            },
-            {
-              reviewId: arbitraryReviewId(),
-              groupId: indexedGroupId,
-              occurredAt: laterDate,
-            },
+            review(arbitraryGroupId(), earlierDate),
+            review(indexedGroupId, laterDate),
           ],
         ),
       };
@@ -315,15 +282,7 @@ describe('hardcoded-ncrc-article', () => {
             const evaluationDate = arbitraryDate();
             const ports = {
               ...defaultPorts,
-              findReviewsForArticleDoi: () => T.of(
-                [
-                  {
-                    reviewId: arbitraryReviewId(),
-                    groupId: indexedGroupId,
-                    occurredAt: evaluationDate,
-                  },
-                ],
-              ),
+              findReviewsForArticleDoi: () => T.of([review(indexedGroupId, evaluationDate)]),
             };
 
             const docmap = await hardcodedNcrcArticle(ports)(articleId, [articleId], indexedGroupId)();
