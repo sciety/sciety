@@ -43,7 +43,9 @@ const toIndividualPrelights = (item: FeedItem): Array<Prelight> => {
     }));
   }
   return [{
-    ...item,
+    guid: item.guid,
+    category: item.category,
+    pubDate: item.pubDate,
     preprintUrl: item.preprints.preprint.preprinturl,
   }];
 };
