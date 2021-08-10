@@ -220,8 +220,12 @@ export const docmap: Docmap = (ports) => (articleDoi, index, indexedGroupId) => 
         T.map(E.fromOption(() => DE.notFound)),
       ),
       articleVersions: pipe(
-        ports.findVersionsForArticleDoi(articleId, 'medrxiv'),
-        TE.fromTaskOption(() => DE.unavailable),
+        articleId,
+        ports.fetchArticle,
+        TE.chainW(({ server }) => pipe(
+          ports.findVersionsForArticleDoi(articleId, server),
+          TE.fromTaskOption(() => DE.unavailable),
+        )),
       ),
       indexedGroup: pipe(
         indexedGroupId,

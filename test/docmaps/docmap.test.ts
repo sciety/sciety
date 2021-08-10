@@ -195,7 +195,7 @@ describe('docmap', () => {
           })));
         });
 
-        it.skip('include the article publication date', async () => {
+        it('include the article publication date', async () => {
           const articleDate = arbitraryDate();
           const findVersionsForArticleDoi = jest.fn().mockImplementation(
             (): ReturnType<FindVersionsForArticleDoi> => TO.some([
