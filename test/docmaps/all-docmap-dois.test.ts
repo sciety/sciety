@@ -6,7 +6,7 @@ import { arbitraryReviewId } from '../types/review-id.helper';
 
 describe('all-docmap-dois', () => {
   describe('when there are evaluated events by the specified group', () => {
-    it.skip('returns a list of all the evaluated article ids', () => {
+    it('returns a list of all the evaluated article ids', () => {
       const articleId1 = arbitraryDoi();
       const articleId2 = arbitraryDoi();
       const groupId = arbitraryGroupId();
