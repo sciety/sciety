@@ -428,6 +428,7 @@ export const createRouter = (adapters: Adapters): Router => {
     context.response.body = {
       articles: pipe(
         allDocmapDois(),
+        (dois) => [...dois, new Doi.Doi('10.1101/2021.04.25.441302')],
         RA.map((doi) => ({
           doi: doi.value,
           docmap: `https://sciety.org/docmaps/v1/articles/${doi.value}.docmap.json`,
