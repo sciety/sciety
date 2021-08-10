@@ -200,7 +200,11 @@ const context = {
 
 type HardcodedNcrcArticle = (
   ports: Ports,
-) => (articleId: Doi, index: ReadonlyArray<Doi>) => TE.TaskEither<DE.DataError, Record<string, unknown>>;
+) => (
+  articleId: Doi,
+  index: ReadonlyArray<Doi>,
+  groupId: GroupId,
+) => TE.TaskEither<DE.DataError, Record<string, unknown>>;
 
 export const hardcodedNcrcArticle: HardcodedNcrcArticle = (ports) => (articleDoi, index) => pipe(
   index,

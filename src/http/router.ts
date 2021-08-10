@@ -49,6 +49,7 @@ import { DoiFromString } from '../types/codecs/DoiFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import * as DE from '../types/data-error';
 import * as Doi from '../types/doi';
+import * as GID from '../types/group-id';
 import { toHtmlFragment } from '../types/html-fragment';
 import { userListPage } from '../user-list-page';
 import { userPage } from '../user-page/user-page';
@@ -440,12 +441,13 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.get('/docmaps/v1/articles/:doi(.+).docmap.json', async (context, next) => {
     const articleId = new Doi.Doi('10.1101/2021.03.13.21253515');
+    const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
     const response = await pipe(
       context.params.doi,
       DoiFromString.decode,
       E.mapLeft(() => DE.notFound),
       TE.fromEither,
-      TE.chain((doi) => hardcodedNcrcArticle(adapters)(doi, [articleId])),
+      TE.chain((doi) => hardcodedNcrcArticle(adapters)(doi, [articleId], ncrcGroupId)),
       TE.fold(
         (error) => T.of({
           body: {},
