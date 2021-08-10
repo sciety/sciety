@@ -425,9 +425,11 @@ export const createRouter = (adapters: Adapters): Router => {
 
   // DOCMAPS
   router.get('/docmaps/v1/index', async (context, next) => {
+    const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
     context.response.body = {
       articles: pipe(
-        allDocmapDois(),
+        [],
+        allDocmapDois(ncrcGroupId),
         (dois) => [...dois, new Doi.Doi('10.1101/2021.04.25.441302')],
         RA.map((doi) => ({
           doi: doi.value,
@@ -446,7 +448,7 @@ export const createRouter = (adapters: Adapters): Router => {
       DoiFromString.decode,
       E.mapLeft(() => DE.notFound),
       TE.fromEither,
-      TE.chain((doi) => docmap(adapters)(doi, allDocmapDois(), ncrcGroupId)),
+      TE.chain((doi) => docmap(adapters)(doi, allDocmapDois(ncrcGroupId)([]), ncrcGroupId)),
       TE.fold(
         (error) => T.of({
           body: {},
