@@ -52,12 +52,11 @@ const expectOutputs = (ex: Record<string, unknown>) => E.right(expect.objectCont
 describe('hardcoded-ncrc-article', () => {
   it('includes the article id', async () => {
     const articleId = arbitraryDoi();
-    const groupId = arbitraryGroupId();
     const ports = {
       ...defaultPorts,
-      findReviewsForArticleDoi: () => T.of([review(groupId, arbitraryDate())]),
+      findReviewsForArticleDoi: () => T.of([review(indexedGroupId, arbitraryDate())]),
     };
-    const docmap = await hardcodedNcrcArticle(ports)(articleId, [articleId], groupId)();
+    const docmap = await hardcodedNcrcArticle(ports)(articleId, [articleId], indexedGroupId)();
 
     expect(docmap).toStrictEqual(E.right(expect.objectContaining({
       id: expect.stringContaining(articleId.value),
@@ -65,15 +64,14 @@ describe('hardcoded-ncrc-article', () => {
   });
 
   it('includes the publisher properties', async () => {
-    const groupId = arbitraryGroupId();
     const homepage = arbitraryUri();
     const articleId = arbitraryDoi();
     const avatarPath = arbitraryString();
     const ports = {
       ...defaultPorts,
-      findReviewsForArticleDoi: () => T.of([review(groupId, arbitraryDate())]),
+      findReviewsForArticleDoi: () => T.of([review(indexedGroupId, arbitraryDate())]),
       getGroup: () => TO.some({
-        id: groupId,
+        id: indexedGroupId,
         homepage,
         avatarPath,
         shortDescription: arbitraryString(),
@@ -81,7 +79,7 @@ describe('hardcoded-ncrc-article', () => {
         name: arbitraryString(),
       }),
     };
-    const docmap = await hardcodedNcrcArticle(ports)(articleId, [articleId], groupId)();
+    const docmap = await hardcodedNcrcArticle(ports)(articleId, [articleId], indexedGroupId)();
 
     expect(docmap).toStrictEqual(E.right(expect.objectContaining({
       publisher: {
@@ -89,7 +87,7 @@ describe('hardcoded-ncrc-article', () => {
         logo: expect.stringContaining(avatarPath),
         homepage,
         account: {
-          id: expect.stringContaining(groupId),
+          id: expect.stringContaining(indexedGroupId),
           service: 'https://sciety.org',
         },
       },
@@ -99,13 +97,12 @@ describe('hardcoded-ncrc-article', () => {
   it('sets created to the date of the first evaluation', async () => {
     const evaluationDate = arbitraryDate();
     const articleId = arbitraryDoi();
-    const groupId = arbitraryGroupId();
     const ports = {
       ...defaultPorts,
-      findReviewsForArticleDoi: () => T.of([review(groupId, evaluationDate)]),
+      findReviewsForArticleDoi: () => T.of([review(indexedGroupId, evaluationDate)]),
     };
 
-    const docmap = await hardcodedNcrcArticle(ports)(articleId, [articleId], groupId)();
+    const docmap = await hardcodedNcrcArticle(ports)(articleId, [articleId], indexedGroupId)();
 
     expect(docmap).toStrictEqual(E.right(expect.objectContaining({
       created: evaluationDate.toISOString(),
@@ -117,17 +114,16 @@ describe('hardcoded-ncrc-article', () => {
       const articleId = arbitraryDoi();
       const earlierDate = new Date('1900');
       const laterDate = new Date('2000');
-      const groupId = arbitraryGroupId();
       const ports = {
         ...defaultPorts,
         findReviewsForArticleDoi: () => T.of(
           [
-            review(groupId, earlierDate),
-            review(groupId, laterDate),
+            review(indexedGroupId, earlierDate),
+            review(indexedGroupId, laterDate),
           ],
         ),
       };
-      const docmap = await hardcodedNcrcArticle(ports)(articleId, [articleId], groupId)();
+      const docmap = await hardcodedNcrcArticle(ports)(articleId, [articleId], indexedGroupId)();
 
       expect(docmap).toStrictEqual(expectOutputs({
         published: earlierDate,
