@@ -194,17 +194,22 @@ describe('docmap', () => {
           })));
         });
 
-        it('include the article publication date', async () => {
+        it.skip('include the article publication date', async () => {
           const articleDate = arbitraryDate();
-          const ports = {
-            ...defaultPorts,
-            findVersionsForArticleDoi: (): ReturnType<FindVersionsForArticleDoi> => TO.some([
+          const findVersionsForArticleDoi = jest.fn().mockImplementation(
+            (): ReturnType<FindVersionsForArticleDoi> => TO.some([
               {
                 source: new URL(arbitraryUri()),
                 occurredAt: articleDate,
                 version: 1,
               },
             ]),
+          );
+          const server = 'biorxiv';
+          const ports = {
+            ...defaultPorts,
+            findVersionsForArticleDoi,
+            fetchArticle: () => TE.right({ server }),
           };
           const result = await docmap(ports)(articleId, [articleId], indexedGroupId)();
 
@@ -219,6 +224,7 @@ describe('docmap', () => {
               }),
             }),
           })));
+          expect(findVersionsForArticleDoi).toHaveBeenCalledWith(articleId, server);
         });
       });
 
