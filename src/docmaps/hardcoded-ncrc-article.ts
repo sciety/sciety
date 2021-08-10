@@ -203,10 +203,10 @@ type HardcodedNcrcArticle = (
 ) => (
   articleId: Doi,
   index: ReadonlyArray<Doi>,
-  groupId: GroupId,
+  indexedGroupId: GroupId,
 ) => TE.TaskEither<DE.DataError, Record<string, unknown>>;
 
-export const hardcodedNcrcArticle: HardcodedNcrcArticle = (ports) => (articleDoi, index) => pipe(
+export const hardcodedNcrcArticle: HardcodedNcrcArticle = (ports) => (articleDoi, index, indexedGroupId) => pipe(
   index,
   RA.findFirst((doi) => doi.value === articleDoi.value),
   TE.fromOption(() => DE.notFound),
@@ -215,7 +215,7 @@ export const hardcodedNcrcArticle: HardcodedNcrcArticle = (ports) => (articleDoi
       evaluation: pipe(
         articleId,
         ports.findReviewsForArticleDoi,
-        T.map(RA.head),
+        T.map(RA.findFirst((ev) => ev.groupId === indexedGroupId)),
         T.map(E.fromOption(() => DE.notFound)),
       ),
       versions: pipe(

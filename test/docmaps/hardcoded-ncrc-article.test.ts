@@ -171,7 +171,42 @@ describe('hardcoded-ncrc-article', () => {
   });
 
   describe('when there are evaluations by other groups', () => {
-    it.todo('only uses the evaluation by the selected group');
+    it('only uses the evaluation by the selected group', async () => {
+      const articleId = arbitraryDoi();
+      const earlierDate = new Date('1900');
+      const laterDate = new Date('2000');
+      const ports = {
+        ...defaultPorts,
+        findReviewsForArticleDoi: () => T.of(
+          [
+            {
+              reviewId: arbitraryReviewId(),
+              groupId: arbitraryGroupId(),
+              occurredAt: earlierDate,
+            },
+            {
+              reviewId: arbitraryReviewId(),
+              groupId: indexedGroupId,
+              occurredAt: laterDate,
+            },
+          ],
+        ),
+      };
+
+      const docmap = await hardcodedNcrcArticle(ports)(articleId, [articleId], indexedGroupId)();
+
+      expect(docmap).toStrictEqual(E.right(expect.objectContaining({
+        steps: expect.objectContaining({
+          '_:b0': expect.objectContaining({
+            actions: [expect.objectContaining({
+              outputs: [expect.objectContaining({
+                published: laterDate,
+              })],
+            })],
+          }),
+        }),
+      })));
+    });
   });
 
   describe('when there is a single evaluation by the selected group', () => {
