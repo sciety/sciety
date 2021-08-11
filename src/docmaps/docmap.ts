@@ -1,6 +1,7 @@
 import { URL } from 'url';
 import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
@@ -213,11 +214,17 @@ export const docmap: Docmap = (ports) => (articleDoi, index, indexedGroupId) => 
   TE.fromOption(() => DE.notFound),
   TE.chain((articleId) => pipe(
     {
-      evaluation: pipe(
+      evaluations: pipe(
         articleId,
         ports.findReviewsForArticleDoi,
-        T.map(RA.findFirst((ev) => ev.groupId === indexedGroupId)),
-        T.map(E.fromOption(() => DE.notFound)),
+        T.map((reviews) => pipe(
+          {
+            firstEvaluation: pipe(reviews, RA.findFirst((ev) => ev.groupId === indexedGroupId)),
+            lastEvaluation: pipe(reviews, RA.findLast((ev) => ev.groupId === indexedGroupId)),
+          },
+          sequenceS(O.Apply),
+          E.fromOption(() => DE.notFound),
+        )),
       ),
       articleVersions: pipe(
         articleId,
@@ -236,9 +243,9 @@ export const docmap: Docmap = (ports) => (articleDoi, index, indexedGroupId) => 
     (domain) => ({
       ...domain,
       sourceUrl: pipe(
-        domain.evaluation,
+        domain.evaluations,
         TE.chain(flow(
-          ({ reviewId }) => ports.fetchReview(reviewId),
+          ({ firstEvaluation }) => ports.fetchReview(firstEvaluation.reviewId),
           TE.map(({ url }) => url),
         )),
       ),
@@ -246,12 +253,13 @@ export const docmap: Docmap = (ports) => (articleDoi, index, indexedGroupId) => 
     sequenceS(TE.ApplyPar),
   )),
   TE.map(({
-    indexedGroup, articleVersions, evaluation, sourceUrl,
+    indexedGroup, articleVersions, evaluations, sourceUrl,
   }) => ({
     '@context': context,
     id: `https://sciety.org/docmaps/v1/articles/${articleDoi.value}.docmap.json`,
     type: 'docmap',
-    created: evaluation.occurredAt.toISOString(),
+    created: evaluations.firstEvaluation.occurredAt.toISOString(),
+    updated: evaluations.lastEvaluation.occurredAt.toISOString(),
     publisher: {
       id: indexedGroup.homepage,
       logo: `https://sciety.org${indexedGroup.avatarPath}`,
@@ -278,7 +286,7 @@ export const docmap: Docmap = (ports) => (articleDoi, index, indexedGroupId) => 
             outputs: [
               {
                 type: 'review-article',
-                published: evaluation.occurredAt,
+                published: evaluations.firstEvaluation.occurredAt,
                 content: [
                   {
                     type: 'web-page',
@@ -286,7 +294,7 @@ export const docmap: Docmap = (ports) => (articleDoi, index, indexedGroupId) => 
                   },
                   {
                     type: 'web-page',
-                    url: `https://sciety.org/articles/activity/${articleDoi.value}#${evaluation.reviewId}`,
+                    url: `https://sciety.org/articles/activity/${articleDoi.value}#${evaluations.firstEvaluation.reviewId}`,
                   },
                 ],
               },

@@ -109,6 +109,26 @@ describe('docmap', () => {
     })));
   });
 
+  it('sets updated to the date of the last evaluation', async () => {
+    const earlierDate = new Date('1900');
+    const laterDate = new Date('2000');
+    const ports = {
+      ...defaultPorts,
+      findReviewsForArticleDoi: () => T.of(
+        [
+          review(indexedGroupId, earlierDate),
+          review(indexedGroupId, laterDate),
+        ],
+      ),
+    };
+
+    const result = await docmap(ports)(articleId, [articleId], indexedGroupId)();
+
+    expect(result).toStrictEqual(E.right(expect.objectContaining({
+      updated: laterDate.toISOString(),
+    })));
+  });
+
   it('handles all article servers', async () => {
     const findVersionsForArticleDoi = jest.fn().mockImplementation(
       (): ReturnType<FindVersionsForArticleDoi> => TO.some([
