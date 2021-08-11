@@ -68,6 +68,7 @@ describe('docmap', () => {
   it('includes the publisher properties', async () => {
     const homepage = arbitraryUri();
     const avatarPath = arbitraryString();
+    const name = arbitraryString();
     const ports = {
       ...defaultPorts,
       findReviewsForArticleDoi: () => T.of([review(indexedGroupId, arbitraryDate())]),
@@ -77,7 +78,7 @@ describe('docmap', () => {
         avatarPath,
         shortDescription: arbitraryString(),
         descriptionPath: arbitraryString(),
-        name: arbitraryString(),
+        name,
       }),
     };
     const result = await docmap(ports)(articleId, [articleId], indexedGroupId)();
@@ -85,6 +86,7 @@ describe('docmap', () => {
     expect(result).toStrictEqual(E.right(expect.objectContaining({
       publisher: {
         id: homepage,
+        name,
         logo: expect.stringContaining(avatarPath),
         homepage,
         account: {

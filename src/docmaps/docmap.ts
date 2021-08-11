@@ -262,6 +262,7 @@ export const docmap: Docmap = (ports) => (articleDoi, index, indexedGroupId) => 
     updated: evaluations.lastEvaluation.occurredAt.toISOString(),
     publisher: {
       id: indexedGroup.homepage,
+      name: indexedGroup.name,
       logo: `https://sciety.org${indexedGroup.avatarPath}`,
       homepage: indexedGroup.homepage,
       account: {
