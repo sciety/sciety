@@ -18,9 +18,18 @@ type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 const listCards = (ports: Ports) => pipe(
   {
-    prachee: userListCard(ports)(toUserId('1412019815619911685')),
-    kenton: userListCard(ports)(toUserId('1417520401282854918')),
-    marius: userListCard(ports)(toUserId('1223116442549145601')),
+    prachee: userListCard(ports)(
+      toUserId('1412019815619911685'),
+      'See what researchers at Prachee Avasthi’s lab are reading to discover some interesting new work',
+    ),
+    kenton: userListCard(ports)(
+      toUserId('1417520401282854918'),
+      'Some interesting preprints on ion channel proteins',
+    ),
+    marius: userListCard(ports)(
+      toUserId('1223116442549145601'),
+      'A list of papers on virology curated by Ailís O’Carroll',
+    ),
   },
   sequenceS(TE.ApplyPar),
 );

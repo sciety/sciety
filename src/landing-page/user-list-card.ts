@@ -20,7 +20,7 @@ type Ports = {
 
 export const userListCard = (
   ports: Ports,
-) => (userId: UserId): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
+) => (userId: UserId, description: string): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
   {
     userDetails: ports.getUserDetails(userId),
     listDetails: pipe(
@@ -33,6 +33,7 @@ export const userListCard = (
   TE.map((details) => ({
     ...details.listDetails,
     ...details.userDetails,
+    description,
   })),
   TE.map(renderUserListCard),
 );
