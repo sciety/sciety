@@ -28,7 +28,7 @@ const listCards = (ports: Ports) => pipe(
     ),
     marius: userListCard(ports)(
       toUserId('1223116442549145601'),
-      'A list of papers on virology curated by Ailís O’Carroll',
+      'A list of papers on innate immunology curated by Ailís O’Carroll',
     ),
   },
   sequenceS(TE.ApplyPar),
