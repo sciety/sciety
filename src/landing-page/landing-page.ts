@@ -9,7 +9,7 @@ import { DomainEvent } from '../domain-events';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { toUserId } from '../types/user-id';
-import { userListCard } from '../user-page/user-list-card';
+import { userListCard } from './user-list-card';
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
