@@ -1,23 +1,38 @@
+import { sequenceS } from 'fp-ts/Apply';
 import * as T from 'fp-ts/Task';
-import { flow, pipe } from 'fp-ts/function';
+import * as TE from 'fp-ts/TaskEither';
+import { pipe } from 'fp-ts/function';
 import { renderUserListCard } from './render-user-list-card';
 import { DomainEvent } from '../domain-events';
+import * as DE from '../types/data-error';
 import { HtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 import { getUserListDetails } from '../user-page/user-list-card/get-user-list-details';
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-export const userListCard = (
+type GetUserDetails = (userId: UserId) => TE.TaskEither<DE.DataError, { avatarUrl: string, handle: string }>;
+
+type Ports = {
   getAllEvents: GetAllEvents,
-) => (handle: string, userId: UserId): T.Task<HtmlFragment> => pipe(
-  getAllEvents,
-  T.map(flow(
-    getUserListDetails(userId),
-    (listDetails) => ({
-      ...listDetails,
-      handle,
-    }),
-    renderUserListCard,
-  )),
+  getUserDetails: GetUserDetails,
+};
+
+export const userListCard = (
+  ports: Ports,
+) => (userId: UserId): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
+  {
+    userDetails: ports.getUserDetails(userId),
+    listDetails: pipe(
+      ports.getAllEvents,
+      T.map(getUserListDetails(userId)),
+      TE.rightTask,
+    ),
+  },
+  sequenceS(TE.ApplyPar),
+  TE.map((details) => ({
+    ...details.listDetails,
+    ...details.userDetails,
+  })),
+  TE.map(renderUserListCard),
 );

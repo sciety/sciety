@@ -6,6 +6,7 @@ type UserListCardViewModel = {
   articleCount: number,
   lastUpdated: O.Option<Date>,
   handle: string,
+  avatarUrl: string,
 };
 
 const lastUpdated = O.fold(

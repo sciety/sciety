@@ -1,4 +1,7 @@
+import * as E from 'fp-ts/Either';
+import { pipe } from 'fp-ts/function';
 import { templateDate } from '../shared-components/date';
+import * as DE from '../types/data-error';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 type Card = {
@@ -52,24 +55,32 @@ const renderCard = (card: Card) => `
   </article>
 `;
 
-export const recentlyEvaluated = (userLists: Record<string, HtmlFragment>): HtmlFragment => toHtmlFragment(`
+export const recentlyEvaluated = (userLists: E.Either<DE.DataError, Record<string, HtmlFragment>>): HtmlFragment => toHtmlFragment(`
   <section class="landing-page-recently-evaluated">
-    <h2 class="landing-page-recently-evaluated__title">Most active curators</h2>
-    <p class="landing-page-recently-evaluated__explanatory_text">
-      Check out featured lists that have been curated by users like you.
-      Log in to create your own list by searching for and saving articles.
-    </p>
-    <ul class="landing-page-recently-evaluated__articles">
-      <li>
-        ${userLists.kenton}
-      </li>
-      <li>
-        ${userLists.prachee}
-      </li>
-      <li>
-        ${userLists.marius}
-      </li>
-    </ul>
+    ${pipe(
+    userLists,
+    E.fold(
+      () => '',
+      (cards) => `
+          <h2 class="landing-page-recently-evaluated__title">Most active curators</h2>
+          <p class="landing-page-recently-evaluated__explanatory_text">
+            Check out featured lists that have been curated by users like you.
+            Log in to create your own list by searching for and saving articles.
+          </p>
+          <ul class="landing-page-recently-evaluated__articles">
+            <li>
+              ${cards.kenton}
+            </li>
+            <li>
+              ${cards.prachee}
+            </li>
+            <li>
+              ${cards.marius}
+            </li>
+          </ul>
+        `,
+    ),
+  )}
     <h2 class="landing-page-recently-evaluated__title">Recently evaluated by groups on Sciety</h2>
     <p class="landing-page-recently-evaluated__explanatory_text">
       Evaluations by groups of scientists.
