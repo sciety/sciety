@@ -62,10 +62,10 @@ export const recentlyEvaluated = (userLists: E.Either<DE.DataError, Record<strin
     E.fold(
       () => '',
       (cards) => `
-          <h2 class="landing-page-recently-evaluated__title">Most active curators</h2>
+          <h2 class="landing-page-recently-evaluated__title">Most actively curated lists</h2>
           <p class="landing-page-recently-evaluated__explanatory_text">
-            Check out featured lists that have been curated by users like you.
-            Log in to create your own list by searching for and saving articles.
+            Featured lists curated by users.
+            <a href="/log-in">Log in</a> to save articles to your own list.
           </p>
           <ul class="landing-page-recently-evaluated__articles">
             <li>
@@ -81,9 +81,10 @@ export const recentlyEvaluated = (userLists: E.Either<DE.DataError, Record<strin
         `,
     ),
   )}
-    <h2 class="landing-page-recently-evaluated__title">Recently evaluated by groups on Sciety</h2>
+    <h2 class="landing-page-recently-evaluated__title">Recent group evaluations</h2>
     <p class="landing-page-recently-evaluated__explanatory_text">
-      Evaluations by groups of scientists.
+      Highlighted evaluations by selected groups of discipline experts.
+      <a href="/groups">View all groups</a>.
     </p>
     <ul class="landing-page-recently-evaluated__articles">
       <li>
