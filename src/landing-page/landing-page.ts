@@ -5,11 +5,11 @@ import { callsToAction } from './calls-to-action';
 import { hero } from './hero';
 import { personas } from './personas';
 import { recentlyEvaluated } from './recently-evaluated';
+import { userListCard } from './user-list-card';
 import { DomainEvent } from '../domain-events';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { toUserId } from '../types/user-id';
-import { userListCard } from './user-list-card';
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
