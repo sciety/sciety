@@ -54,22 +54,26 @@ const renderCard = (card: Card) => `
 
 export const recentlyEvaluated = (userLists: Record<string, HtmlFragment>): HtmlFragment => toHtmlFragment(`
   <section class="landing-page-recently-evaluated">
-    ${process.env.EXPERIMENT_ENABLED ? `
-      <h2 class="landing-page-recently-evaluated__title">Featured user lists</h2>
-      <p>
-        You can use Sciety to curate lists of articles.
-        Here are this month's featured lists made by noted scientists.
-      </p>
-      <ul class="landing-page-recently-evaluated__articles">
-        <li>
-          ${userLists.prachee}
-        </li>
-        <li>
-          ${userLists.kenton}
-        </li>
-      </ul>
-    ` : ''}
+    <h2 class="landing-page-recently-evaluated__title">Most active curators</h2>
+    <p class="landing-page-recently-evaluated__explanatory_text">
+      Check out featured lists that have been curated by users like you.
+      Log in to create your own list by searching for and saving articles.
+    </p>
+    <ul class="landing-page-recently-evaluated__articles">
+      <li>
+        ${userLists.kenton}
+      </li>
+      <li>
+        ${userLists.prachee}
+      </li>
+      <li>
+        ${userLists.marius}
+      </li>
+    </ul>
     <h2 class="landing-page-recently-evaluated__title">Recently evaluated by groups on Sciety</h2>
+    <p class="landing-page-recently-evaluated__explanatory_text">
+      Evaluations by groups of scientists.
+    </p>
     <ul class="landing-page-recently-evaluated__articles">
       <li>
         ${renderCard(card1)}

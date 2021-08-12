@@ -17,6 +17,7 @@ const userLists = (getAllEvents: GetAllEvents) => pipe(
   {
     prachee: userListCard(getAllEvents)('avasthireading', toUserId('1412019815619911685')),
     kenton: userListCard(getAllEvents)('kenton_swartz', toUserId('1417520401282854918')),
+    marius: userListCard(getAllEvents)('behrenstimb', toUserId('1406668195361136640')),
   },
   sequenceS(T.ApplyPar),
 );
