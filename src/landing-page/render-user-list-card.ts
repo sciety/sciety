@@ -15,13 +15,16 @@ const lastUpdated = O.fold(
 );
 
 export const renderUserListCard = (viewModel: UserListCardViewModel): HtmlFragment => toHtmlFragment(`
-  <a href="/users/${viewModel.handle}/lists/saved-articles" class="list-card__link">
-    <div class="list-card">
-      <h3 class="list-card__title">@${viewModel.handle}</h3>
-      <p>Saved articles</p>
-      <div class="list-card__meta">
-        <span class="visually-hidden">This list contains </span><span>${viewModel.articleCount} article${viewModel.articleCount === 1 ? '' : 's'}</span>${lastUpdated(viewModel.lastUpdated)}
+  <a href="/users/${viewModel.handle}/lists/saved-articles" class="landing-page-list-card__link">
+    <div class="landing-page-list-card">
+      <div>
+        <h3 class="landing-page-list-card__title">@${viewModel.handle}</h3>
+        <p>Saved articles</p>
+        <div class="landing-page-list-card__meta">
+          <span class="visually-hidden">This list contains </span><span>${viewModel.articleCount} article${viewModel.articleCount === 1 ? '' : 's'}</span>${lastUpdated(viewModel.lastUpdated)}
+        </div>
       </div>
+      <img class="landing-page-list-card__avatar" src="${viewModel.avatarUrl}" alt="" />
     </div>
   </a>
 `);
