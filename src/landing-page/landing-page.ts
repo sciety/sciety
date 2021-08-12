@@ -1,3 +1,4 @@
+import { sequenceS } from 'fp-ts/Apply';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { callsToAction } from './calls-to-action';
@@ -12,7 +13,14 @@ import { userListCard } from '../user-page/user-list-card';
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-const userLists = (getAllEvents: GetAllEvents) => userListCard(getAllEvents)('avasthireading', toUserId('1412019815619911685'));
+const userLists = (getAllEvents: GetAllEvents) => pipe(
+  {
+    prachee: userListCard(getAllEvents)('avasthireading', toUserId('1412019815619911685')),
+    kenton: userListCard(getAllEvents)('kenton_swartz', toUserId('1417520401282854918')),
+  },
+  sequenceS(T.ApplyPar),
+  T.map((cards) => `${cards.prachee}${cards.kenton}`),
+);
 
 const renderContent = (userlists: string) => toHtmlFragment(`
   <div class="landing-page">
