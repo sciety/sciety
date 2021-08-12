@@ -39,10 +39,8 @@ export const CommandFromString = new t.Type<Command, string, unknown>(
     E.chain(commandCodec.decode),
   ),
   (command) => pipe(
-    {
-      articleId: DoiFromString.encode(command.articleId),
-      type: command.type,
-    },
+    command,
+    commandCodec.encode,
     JsonFromString.encode,
     (hackForTypeInference) => htmlEscape(hackForTypeInference),
   ),
