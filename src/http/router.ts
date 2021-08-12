@@ -121,9 +121,8 @@ export const createRouter = (adapters: Adapters): Router => {
         TE.map((params) => params.user),
         TE.chainTaskK(O.fold(
           () => pipe(
-            landingPage,
-            landingPageLayout,
-            T.of,
+            landingPage(adapters),
+            T.map(landingPageLayout),
           ),
           (user) => pipe(
             user.id,
