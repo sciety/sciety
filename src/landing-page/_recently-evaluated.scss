@@ -125,6 +125,12 @@
   @include card.basics();
   display: flex;
   justify-content: space-between;
+
+  @media screen and (min-width: common.$landing-page-breakpoint) {
+    @supports (display: flex) {
+      height: 100%;
+    }
+  }
 }
 
 .landing-page-list-card__title {
@@ -139,7 +145,13 @@
   @include card.meta();
 }
 
+.landing-page-list-card__body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 .landing-page-list-card__avatar {
   @include card.group-avatar();
-  margin-right: functions.px-to-rem(8px);
+  margin-left: functions.px-to-rem(8px);
 }
