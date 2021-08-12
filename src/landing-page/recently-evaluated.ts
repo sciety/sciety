@@ -1,5 +1,5 @@
 import { templateDate } from '../shared-components/date';
-import { toHtmlFragment } from '../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 type Card = {
   articleId: string,
@@ -52,8 +52,23 @@ const renderCard = (card: Card) => `
   </article>
 `;
 
-export const recentlyEvaluated = toHtmlFragment(`
+export const recentlyEvaluated = (userLists: Record<string, HtmlFragment>): HtmlFragment => toHtmlFragment(`
   <section class="landing-page-recently-evaluated">
+    ${process.env.EXPERIMENT_ENABLED ? `
+      <h2 class="landing-page-recently-evaluated__title">Featured user lists</h2>
+      <p>
+        You can use Sciety to curate lists of articles.
+        Here are this month's featured lists made by noted scientists.
+      </p>
+      <ul class="landing-page-recently-evaluated__articles">
+        <li>
+          ${userLists.prachee}
+        </li>
+        <li>
+          ${userLists.kenton}
+        </li>
+      </ul>
+    ` : ''}
     <h2 class="landing-page-recently-evaluated__title">Recently evaluated by groups on Sciety</h2>
     <ul class="landing-page-recently-evaluated__articles">
       <li>

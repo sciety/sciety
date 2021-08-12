@@ -6,7 +6,7 @@ import { hero } from './hero';
 import { personas } from './personas';
 import { recentlyEvaluated } from './recently-evaluated';
 import { DomainEvent } from '../domain-events';
-import { toHtmlFragment } from '../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { toUserId } from '../types/user-id';
 import { userListCard } from '../user-page/user-list-card';
@@ -19,18 +19,12 @@ const userLists = (getAllEvents: GetAllEvents) => pipe(
     kenton: userListCard(getAllEvents)('kenton_swartz', toUserId('1417520401282854918')),
   },
   sequenceS(T.ApplyPar),
-  T.map((cards) => `${cards.prachee}${cards.kenton}`),
 );
 
-const renderContent = (userlists: string) => toHtmlFragment(`
+const renderContent = (userlists: Record<string, HtmlFragment>) => toHtmlFragment(`
   <div class="landing-page">
     ${hero}
-    ${recentlyEvaluated}
-    ${process.env.EXPERIMENT_ENABLED === 'true' ? `
-      <div>
-        ${userlists}
-      </div>
-      ` : ''}
+    ${recentlyEvaluated(userlists)}
     ${personas}
     ${callsToAction}
   </div>
