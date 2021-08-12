@@ -23,7 +23,7 @@ export const hero = toHtmlFragment(`
       ${renderExampleSearches()}
     </div>
 
-    <picture>
+    <picture class="landing-page-hero__picture">
       <source srcset="/static/images/landing-page-illustration.svg" media="(min-width: 60.25em)">
       <img src="data:" alt="" class="landing-page-hero__image">
     </picture>

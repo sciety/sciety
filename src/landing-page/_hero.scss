@@ -16,7 +16,7 @@ $_search-button-width: functions.px-to-rem(70px);
 .landing-page-hero {
   @include common.container-horizontal-spacing();
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
 }
 
 .landing-page-hero__search_form {
@@ -68,6 +68,10 @@ $_search-button-width: functions.px-to-rem(70px);
 
 .landing-page-hero__content_byline {
   @include typography.body-1();
+}
+
+.landing-page-hero__picture {
+  max-width: functions.px-to-rem(512px);
 }
 
 .landing-page-hero__image {
