@@ -65,7 +65,7 @@ export const recentlyEvaluated = (userLists: E.Either<DE.DataError, Record<strin
           <h2 class="landing-page-recently-evaluated__title">Most actively curated lists</h2>
           <p class="landing-page-recently-evaluated__explanatory_text">
             Featured lists curated by users.
-            <a href="/log-in">Log in</a> to save articles to your own list.
+            Log in to save articles to your own list.
           </p>
           <ul class="landing-page-recently-evaluated__articles">
             <li>
