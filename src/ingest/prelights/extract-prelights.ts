@@ -24,7 +24,7 @@ const toDoi = (fetchData: FetchData) => (item: Prelight): TE.TaskEither<SkippedI
   )),
 );
 
-type Prelight = {
+export type Prelight = {
   guid: string,
   category: string,
   pubDate: Date,
