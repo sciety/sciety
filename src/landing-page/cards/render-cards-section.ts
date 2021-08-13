@@ -55,32 +55,35 @@ const renderCard = (card: Card) => `
   </article>
 `;
 
+const userListCards = (userLists: E.Either<DE.DataError, Record<string, HtmlFragment>>): HtmlFragment => pipe(
+  userLists,
+  E.fold(
+    () => '',
+    (cards) => `
+        <h2 class="landing-page-recently-evaluated__title">Most actively curated lists</h2>
+        <p class="landing-page-recently-evaluated__explanatory_text">
+          Featured lists curated by users.
+          Log in to save articles to your own list.
+        </p>
+        <ul class="landing-page-recently-evaluated__articles">
+          <li>
+            ${cards.kenton}
+          </li>
+          <li>
+            ${cards.prachee}
+          </li>
+          <li>
+            ${cards.marius}
+          </li>
+        </ul>
+      `,
+  ),
+  toHtmlFragment,
+);
+
 export const renderCardsSection = (userLists: E.Either<DE.DataError, Record<string, HtmlFragment>>): HtmlFragment => toHtmlFragment(`
   <section class="landing-page-recently-evaluated">
-    ${pipe(
-    userLists,
-    E.fold(
-      () => '',
-      (cards) => `
-          <h2 class="landing-page-recently-evaluated__title">Most actively curated lists</h2>
-          <p class="landing-page-recently-evaluated__explanatory_text">
-            Featured lists curated by users.
-            Log in to save articles to your own list.
-          </p>
-          <ul class="landing-page-recently-evaluated__articles">
-            <li>
-              ${cards.kenton}
-            </li>
-            <li>
-              ${cards.prachee}
-            </li>
-            <li>
-              ${cards.marius}
-            </li>
-          </ul>
-        `,
-    ),
-  )}
+    ${userListCards(userLists)}
     <h2 class="landing-page-recently-evaluated__title">Recent group evaluations</h2>
     <p class="landing-page-recently-evaluated__explanatory_text">
       Highlighted evaluations by selected groups of discipline experts.
