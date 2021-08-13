@@ -90,20 +90,16 @@ stop:
 find-peerj-reviews: export TARGET = dev
 find-peerj-reviews: build
 	$(DOCKER_COMPOSE) run -T app \
-		npx ts-node src/ingest/find-reviews-from-crossref-via-biorxiv 10.7717 10.7287 > ./data/reviews/53ed5364-a016-11ea-bb37-0242ac130002.csv
+		npx ts-node src/ingest/find-reviews-from-crossref-via-biorxiv 10.7717 10.7287 >> ./data/reviews/53ed5364-a016-11ea-bb37-0242ac130002.csv
+		cat ./data/reviews/53ed5364-a016-11ea-bb37-0242ac130002.csv | sort -g | uniq > /tmp/peerj.csv
+		mv /tmp/peerj.csv ./data/reviews/53ed5364-a016-11ea-bb37-0242ac130002.csv
 
 update-groups: export TARGET = dev
 update-groups: build
 	$(DOCKER_COMPOSE) run -e INGEST_LOG=${INGEST_LOG} -e INGEST_ONLY=${INGEST_ONLY} app \
 	npx ts-node src/ingest/update-event-data
 
-COMMUNITY_SCRIPTS := \
-	find-peerj-reviews
-
-sort-event-data:
-	find data -type f | xargs -I % sort -g -o % %
-
-update-event-data: update-groups $(COMMUNITY_SCRIPTS) sort-event-data
+update-event-data: update-groups find-peerj-reviews
 
 release: export TAG = latest/$(shell date +%Y%m%d%H%M)
 release:

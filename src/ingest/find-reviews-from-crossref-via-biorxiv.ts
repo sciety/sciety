@@ -32,6 +32,8 @@ type CrossrefResponse = {
 };
 
 void (async (): Promise<void> => {
+  const now = new Date();
+  const startDate = new Date(now.getTime() - (6 * 24 * 60 * 60)).toISOString().split('T')[0];
   const today = new Date().toISOString().split('T')[0];
 
   process.stdout.write('Date,Article DOI,Review ID\n');
@@ -40,7 +42,7 @@ void (async (): Promise<void> => {
   let total: number;
   do {
     const { data: biorxivData } = await axios.get<BiorxivResponse>(
-      `https://api.biorxiv.org/publisher/${publisherDoiPrefix}/2000-01-01/${today}/${offset}`,
+      `https://api.biorxiv.org/publisher/${publisherDoiPrefix}/${startDate}/${today}/${offset}`,
     );
     const { count } = biorxivData.messages[0];
     total = biorxivData.messages[0].total;
