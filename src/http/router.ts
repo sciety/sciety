@@ -2,7 +2,6 @@ import Router from '@koa/router';
 import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
@@ -29,6 +28,7 @@ import { aboutPage } from '../about-page';
 import { articleActivityPage, articleMetaPage } from '../article-page';
 import { allDocmapDois } from '../docmaps/all-docmap-dois';
 import { docmap } from '../docmaps/docmap';
+import { generateDocmapIndex } from '../docmaps/generate-docmap-index';
 import { hardcodedReviewCommonsDocmap } from '../docmaps/hardcoded-review-commons-docmap';
 import { finishUnfollowCommand, saveUnfollowCommand, unfollowHandler } from '../follow';
 import { groupEvaluationsPage, paramsCodec as groupEvaluationsPageParams } from '../group-evaluations-page/group-evaluations-page';
@@ -425,21 +425,7 @@ export const createRouter = (adapters: Adapters): Router => {
 
   // DOCMAPS
   router.get('/docmaps/v1/index', async (context, next) => {
-    const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
-    context.response.body = {
-      articles: await pipe(
-        adapters.getAllEvents,
-        T.map(flow(
-          allDocmapDois(ncrcGroupId),
-          (dois) => [...dois, new Doi.Doi('10.1101/2021.04.25.441302')],
-          RA.map((doi) => ({
-            doi: doi.value,
-            docmap: `https://sciety.org/docmaps/v1/articles/${doi.value}.docmap.json`,
-          })),
-        )),
-      )(),
-    };
-
+    context.response.body = await generateDocmapIndex(adapters)();
     await next();
   });
 
