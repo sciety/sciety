@@ -2,7 +2,7 @@ import { sequenceS } from 'fp-ts/Apply';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { callsToAction } from './calls-to-action';
-import { cards, Ports } from './cards/cards';
+import { cards, Ports } from './cards';
 import { hero } from './hero';
 import { personas } from './personas';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';

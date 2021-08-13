@@ -13,7 +13,7 @@ type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 type GetUserDetails = (userId: UserId) => TE.TaskEither<DE.DataError, { avatarUrl: string, handle: string }>;
 
-type Ports = {
+export type Ports = {
   getAllEvents: GetAllEvents,
   getUserDetails: GetUserDetails,
 };

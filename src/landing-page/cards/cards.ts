@@ -3,20 +3,9 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { recentlyEvaluated } from './recently-evaluated';
-import { userListCard } from './user-list-card';
-import { DomainEvent } from '../../domain-events';
-import * as DE from '../../types/data-error';
+import { Ports, userListCard } from './user-list-card';
 import { HtmlFragment } from '../../types/html-fragment';
-import { toUserId, UserId } from '../../types/user-id';
-
-type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
-
-type GetUserDetails = (userId: UserId) => TE.TaskEither<DE.DataError, { avatarUrl: string, handle: string }>;
-
-export type Ports = {
-  getAllEvents: GetAllEvents,
-  getUserDetails: GetUserDetails,
-};
+import { toUserId } from '../../types/user-id';
 
 export const cards = (ports: Ports): T.Task<HtmlFragment> => pipe(
   {
