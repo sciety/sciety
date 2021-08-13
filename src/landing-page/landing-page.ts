@@ -33,12 +33,19 @@ const listCards = (ports: Ports) => pipe(
   sequenceS(TE.ApplyPar),
 );
 
-const renderContent = (cards: HtmlFragment) => toHtmlFragment(`
+type Components = {
+  hero: HtmlFragment,
+  cards: HtmlFragment,
+  personas: HtmlFragment,
+  callsToAction: HtmlFragment,
+};
+
+const renderContent = (components: Components) => toHtmlFragment(`
   <div class="landing-page">
-    ${hero}
-    ${cards}
-    ${personas}
-    ${callsToAction}
+    ${components.hero}
+    ${components.cards}
+    ${components.personas}
+    ${components.callsToAction}
   </div>
 `);
 
@@ -50,8 +57,16 @@ type Ports = {
 };
 
 export const landingPage = (ports: Ports): T.Task<Page> => pipe(
-  listCards(ports),
-  T.map(recentlyEvaluated),
+  {
+    hero: T.of(hero),
+    cards: pipe(
+      listCards(ports),
+      T.map(recentlyEvaluated),
+    ),
+    personas: T.of(personas),
+    callsToAction: T.of(callsToAction),
+  },
+  sequenceS(T.ApplyPar),
   T.map(renderContent),
   T.map((content) => ({
     title: 'Sciety: the home of public preprint evaluation',
