@@ -429,12 +429,12 @@ export const createRouter = (adapters: Adapters): Router => {
     await next();
   });
 
-  router.get('/docmaps/v1/articles/:doi(.+).docmap.json', async (context, next) => {
+  const generateDocmap = () => (input: unknown) => {
     const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
-    const response = await pipe(
+    return pipe(
       {
         doi: pipe(
-          context.params.doi,
+          input,
           DoiFromString.decode,
           E.mapLeft(() => DE.notFound),
           TE.fromEither,
@@ -447,6 +447,13 @@ export const createRouter = (adapters: Adapters): Router => {
       },
       sequenceS(TE.ApplyPar),
       TE.chain(({ doi, indexedDois }) => docmap(adapters)(doi, indexedDois, ncrcGroupId)),
+    );
+  };
+
+  router.get('/docmaps/v1/articles/:doi(.+).docmap.json', async (context, next) => {
+    const response = await pipe(
+      context.params.doi,
+      generateDocmap(),
       TE.fold(
         (error) => T.of({
           body: {},
