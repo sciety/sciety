@@ -77,10 +77,10 @@ type Results = {
 };
 
 const reportSuccess = (group: Group) => (results: Results) => pipe(
-  printf('%5d evaluations (%s, %s existing, %s)',
+  printf('%5d evaluations (%s, %s, %s)',
     results.evaluationsCount,
     chalk.green(`${results.newEvaluationsCount} new`),
-    chalk.white(results.evaluationsCount - results.newEvaluationsCount),
+    chalk.grey(`${results.evaluationsCount - results.newEvaluationsCount} existing`),
     chalk.yellow(`${results.skippedItemsCount} skipped`)),
   report(group),
 );
