@@ -60,7 +60,7 @@
   }
 }
 
-@mixin group-avatar() {
+@mixin avatar() {
   width: settings.$avatar-size;
   height: settings.$avatar-size;
   border-radius: settings.$border-radius;

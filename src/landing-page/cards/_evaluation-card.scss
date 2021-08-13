@@ -44,6 +44,6 @@
 }
 
 .evaluation-card__avatar {
-  @include card.group-avatar();
+  @include card.avatar();
   margin-right: functions.px-to-rem(8px);
 }

@@ -33,6 +33,6 @@
 }
 
 .user-list-card__avatar {
-  @include card.group-avatar();
+  @include card.avatar();
   margin-left: functions.px-to-rem(8px);
 }
