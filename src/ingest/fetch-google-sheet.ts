@@ -19,7 +19,7 @@ const getSheets = async (
   });
   google.options({ auth });
   return google.sheets('v4').spreadsheets.values.get({ spreadsheetId, range }).finally(() => {
-    if (process.env.INGEST_LOG === 'io') {
+    if (process.env.INGEST_DEBUG !== undefined) {
       const endTime = performance.now();
       process.stdout.write(chalk.yellow(`Fetched Google sheet ${spreadsheetId}/${range} (${Math.round(endTime - startTime)}ms)\n`));
     }

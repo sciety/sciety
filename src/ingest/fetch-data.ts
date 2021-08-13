@@ -11,7 +11,7 @@ const axiosGet = async <D>(url: string, additionalHeaders: Record<string, string
     ...additionalHeaders,
   };
   return axios.get<D>(url, { headers }).finally(() => {
-    if (process.env.INGEST_LOG === 'io') {
+    if (process.env.INGEST_DEBUG !== undefined) {
       const endTime = performance.now();
       process.stdout.write(chalk.yellow(`Fetched ${url} (${Math.round(endTime - startTime)}ms)\n`));
     }

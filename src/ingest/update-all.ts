@@ -90,7 +90,7 @@ const reportSuccess = (group: Group) => (results: Results) => pipe(
 );
 
 const reportSkippedItems = (group: Group) => (feedData: FeedData) => {
-  if (process.env.INGEST_LOG === 'DEBUG') {
+  if (process.env.INGEST_DEBUG !== undefined) {
     pipe(
       feedData.skippedItems,
       O.map(flow(

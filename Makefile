@@ -89,7 +89,7 @@ stop:
 
 update-event-data: export TARGET = dev
 update-event-data: build
-	$(DOCKER_COMPOSE) run -e INGEST_LOG=${INGEST_LOG} -e INGEST_ONLY=${INGEST_ONLY} app \
+	$(DOCKER_COMPOSE) run -e INGEST_DEBUG=${INGEST_DEBUG} -e INGEST_ONLY=${INGEST_ONLY} app \
 	npx ts-node src/ingest/update-event-data
 
 release: export TAG = latest/$(shell date +%Y%m%d%H%M)
