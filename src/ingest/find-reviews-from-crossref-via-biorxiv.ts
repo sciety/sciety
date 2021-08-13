@@ -6,9 +6,6 @@ import { pipe } from 'fp-ts/function';
 import { Evaluation } from './evaluations';
 import { FetchEvaluations } from './update-all';
 
-const publisherDoiPrefix = process.argv[2];
-const publisherReviewDoiPrefix = process.argv[3];
-
 type BiorxivResponse = {
   messages: Array<{
     cursor: number | string,
@@ -36,7 +33,7 @@ type CrossrefResponse = {
   },
 };
 
-const fetchReviews = async () => {
+const fetchReviews = (doiPrefix: string, reviewDoiPrefix: string) => async () => {
   const startDate = new Date(Date.now() - (60 * 24 * 60 * 60 * 1000)).toISOString().split('T')[0];
   const today = new Date().toISOString().split('T')[0];
   const result: Array<Evaluation> = [];
@@ -44,7 +41,7 @@ const fetchReviews = async () => {
   let total: number;
   do {
     const { data: biorxivData } = await axios.get<BiorxivResponse>(
-      `https://api.biorxiv.org/publisher/${publisherDoiPrefix}/${startDate}/${today}/${offset}`,
+      `https://api.biorxiv.org/publisher/${doiPrefix}/${startDate}/${today}/${offset}`,
     );
     const { count } = biorxivData.messages[0];
     total = biorxivData.messages[0].total;
@@ -58,7 +55,7 @@ const fetchReviews = async () => {
         headers['Crossref-Plus-API-Token'] = `Bearer ${process.env.CROSSREF_API_BEARER_TOKEN}`;
       }
       const { data } = await axios.get<CrossrefResponse>(
-        `https://api.crossref.org/prefixes/${publisherReviewDoiPrefix}/works?rows=1000&filter=type:peer-review,relation.object:${publishedDoi}`,
+        `https://api.crossref.org/prefixes/${reviewDoiPrefix}/works?rows=1000&filter=type:peer-review,relation.object:${publishedDoi}`,
         { headers },
       );
       data.message.items.forEach((item) => {
@@ -77,8 +74,11 @@ const fetchReviews = async () => {
   return result;
 };
 
-export const fetchReviewsFromCrossrefViaBiorxiv = (): FetchEvaluations => () => pipe(
-  fetchReviews,
+export const fetchReviewsFromCrossrefViaBiorxiv = (
+  doiPrefix: string,
+  reviewDoiPrefix: string,
+): FetchEvaluations => () => pipe(
+  fetchReviews(doiPrefix, reviewDoiPrefix),
   T.map((evaluations) => ({
     evaluations,
     skippedItems: [],

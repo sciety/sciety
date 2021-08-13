@@ -54,7 +54,7 @@ const allGroups: Array<Group> = [
   {
     id: '53ed5364-a016-11ea-bb37-0242ac130002',
     name: 'PeerJ',
-    fetchFeed: fetchReviewsFromCrossrefViaBiorxiv(),
+    fetchFeed: fetchReviewsFromCrossrefViaBiorxiv('10.7717', '10.7287'),
   },
   {
     id: 'f97bd177-5cb6-4296-8573-078318755bf2',
