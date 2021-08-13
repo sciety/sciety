@@ -9,7 +9,7 @@
 
 @use '../common';
 
-.landing-page-recently-evaluated {
+.landing-page-cards {
   background-color: settings.$colour-component-background;
   padding-top: common.$section-top-padding;
   padding-bottom: baseline.increments(3);
@@ -23,17 +23,17 @@
   }
 }
 
-.landing-page-recently-evaluated * {
+.landing-page-cards * {
   color: settings.$colour-text-primary;
 }
 
-.landing-page-recently-evaluated__title {
+.landing-page-cards__title {
   @include typography.section();
   margin-bottom: baseline.increments(2.5);
   text-align: center;
 }
 
-.landing-page-recently-evaluated__articles {
+.landing-page-cards__cards {
   @include list.basics();
   padding-bottom: baseline.increments(5);
   margin-bottom: 0;
@@ -46,7 +46,7 @@
   }
 }
 
-.landing-page-recently-evaluated__articles li {
+.landing-page-cards__cards li {
   @include card.list-item;
 
   @media screen and (min-width: common.$landing-page-breakpoint) {
@@ -63,17 +63,17 @@
   }
 }
 
-.landing-page-recently-evaluated__explanatory_text {
+.landing-page-cards__explanatory_text {
   text-align: center;
   padding-left: 16px;
   padding-right: 16px;
 }
 
-.landing-page-recently-evaluated__call_to_action {
+.landing-page-cards__call_to_action {
   text-align: center;
 }
 
-.landing-page-recently-evaluated__button {
+.landing-page-cards__button {
   @include common.secondary-button();
 }
 
