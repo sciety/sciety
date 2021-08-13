@@ -2,12 +2,12 @@ import { sequenceS } from 'fp-ts/Apply';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { recentlyEvaluated } from './recently-evaluated';
+import { userListCard } from './user-list-card';
 import { DomainEvent } from '../../domain-events';
 import * as DE from '../../types/data-error';
 import { HtmlFragment } from '../../types/html-fragment';
 import { toUserId, UserId } from '../../types/user-id';
-import { recentlyEvaluated } from '../recently-evaluated';
-import { userListCard } from '../user-list-card';
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 

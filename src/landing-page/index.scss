@@ -2,6 +2,6 @@
 @use 'landing-page-layout';
 @use 'landing-page';
 @use 'hero';
-@use 'recently-evaluated';
+@use './cards/recently-evaluated';
 @use 'personas';
 @use 'calls-to-action';

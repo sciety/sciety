@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
-import { templateDate } from '../shared-components/date';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { templateDate } from '../../shared-components/date';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 type UserListCardViewModel = {
   articleCount: number,

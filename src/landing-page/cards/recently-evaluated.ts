@@ -1,8 +1,8 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { templateDate } from '../shared-components/date';
-import * as DE from '../types/data-error';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { templateDate } from '../../shared-components/date';
+import * as DE from '../../types/data-error';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 type Card = {
   articleId: string,
