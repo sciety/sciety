@@ -86,7 +86,7 @@ const reportSuccess = (group: Group) => (results: Results) => pipe(
 );
 
 const reportSkippedItems = (group: Group) => (feedData: FeedData) => {
-  if (process.env.INGEST_DEBUG !== undefined) {
+  if (process.env.INGEST_DEBUG && process.env.INGEST_DEBUG.length > 0) {
     pipe(
       feedData.skippedItems,
       RA.map((item) => chalk.cyan(`Skipped '${item.item}' -- ${item.reason}`)),
