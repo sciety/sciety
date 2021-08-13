@@ -2,7 +2,7 @@ import { sequenceS } from 'fp-ts/Apply';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { recentlyEvaluated } from './recently-evaluated';
+import { renderCardsSection } from './render-cards-section';
 import { Ports, userListCard } from './user-list-card';
 import { HtmlFragment } from '../../types/html-fragment';
 import { toUserId } from '../../types/user-id';
@@ -23,5 +23,5 @@ export const cards = (ports: Ports): T.Task<HtmlFragment> => pipe(
     ),
   },
   sequenceS(TE.ApplyPar),
-  T.map(recentlyEvaluated),
+  T.map(renderCardsSection),
 );

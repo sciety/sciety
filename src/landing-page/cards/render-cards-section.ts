@@ -55,7 +55,7 @@ const renderCard = (card: Card) => `
   </article>
 `;
 
-export const recentlyEvaluated = (userLists: E.Either<DE.DataError, Record<string, HtmlFragment>>): HtmlFragment => toHtmlFragment(`
+export const renderCardsSection = (userLists: E.Either<DE.DataError, Record<string, HtmlFragment>>): HtmlFragment => toHtmlFragment(`
   <section class="landing-page-recently-evaluated">
     ${pipe(
     userLists,
