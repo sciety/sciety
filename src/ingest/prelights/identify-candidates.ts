@@ -38,7 +38,9 @@ type Prelight = {
 const toIndividualPrelights = (item: FeedItem): Array<Prelight> => {
   if (item.preprints.preprint instanceof Array) {
     return item.preprints.preprint.map((preprintItem) => ({
-      ...item,
+      guid: item.guid,
+      category: item.category,
+      pubDate: item.pubDate,
       preprintUrl: preprintItem.preprinturl,
     }));
   }
