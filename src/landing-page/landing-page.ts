@@ -1,5 +1,4 @@
 import { sequenceS } from 'fp-ts/Apply';
-import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -34,10 +33,10 @@ const listCards = (ports: Ports) => pipe(
   sequenceS(TE.ApplyPar),
 );
 
-const renderContent = (cards: E.Either<DE.DataError, Record<string, HtmlFragment>>) => toHtmlFragment(`
+const renderContent = (cards: HtmlFragment) => toHtmlFragment(`
   <div class="landing-page">
     ${hero}
-    ${recentlyEvaluated(cards)}
+    ${cards}
     ${personas}
     ${callsToAction}
   </div>
@@ -52,6 +51,7 @@ type Ports = {
 
 export const landingPage = (ports: Ports): T.Task<Page> => pipe(
   listCards(ports),
+  T.map(recentlyEvaluated),
   T.map(renderContent),
   T.map((content) => ({
     title: 'Sciety: the home of public preprint evaluation',
