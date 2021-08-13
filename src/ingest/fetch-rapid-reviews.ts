@@ -1,5 +1,4 @@
 import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
@@ -82,6 +81,6 @@ export const fetchRapidReviews = (): FetchEvaluations => (ports: Ports) => pipe(
   ))),
   TE.map((parts) => ({
     evaluations: parts.right,
-    skippedItems: O.some(parts.left),
+    skippedItems: parts.left,
   })),
 );

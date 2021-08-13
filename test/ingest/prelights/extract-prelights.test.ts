@@ -1,4 +1,3 @@
-import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { extractPrelights } from '../../../src/ingest/prelights/extract-prelights';
 import { arbitraryDate, arbitraryWord } from '../../helpers';
@@ -25,9 +24,9 @@ describe('extract-prelights', () => {
     it('skips the item', async () => {
       expect(await result()).toStrictEqual(expect.objectContaining({
         evaluations: [],
-        skippedItems: O.some([expect.objectContaining({
+        skippedItems: [expect.objectContaining({
           item: guid,
-        })]),
+        })],
       }));
     });
   });

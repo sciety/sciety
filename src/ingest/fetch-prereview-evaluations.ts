@@ -80,7 +80,7 @@ export const fetchPrereviewEvaluations = (): FetchEvaluations => (ports: Ports) 
     RA.partitionMap(toEvaluation),
     ({ left, right }) => ({
       evaluations: right,
-      skippedItems: O.some(left),
+      skippedItems: left,
     }),
   )),
 );

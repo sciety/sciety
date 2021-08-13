@@ -1,6 +1,5 @@
 import axios from 'axios';
 import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -63,7 +62,7 @@ export const fetchReviewsFromHypothesisUser = (publisherUserId: string): FetchEv
   T.map(RA.flatten),
   T.map((parts) => ({
     evaluations: RA.rights(parts),
-    skippedItems: O.some(RA.lefts(parts)),
+    skippedItems: RA.lefts(parts),
   })),
   TE.rightTask,
 );

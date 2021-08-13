@@ -49,6 +49,6 @@ export const extractPrelights = (fetchData: FetchData) => (items: ReadonlyArray<
   )),
   T.map((things) => ({
     evaluations: RA.rights(things),
-    skippedItems: O.some(RA.lefts(things)),
+    skippedItems: RA.lefts(things),
   })),
 );

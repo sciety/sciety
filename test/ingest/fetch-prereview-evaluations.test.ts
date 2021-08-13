@@ -1,5 +1,4 @@
 import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { fetchPrereviewEvaluations } from '../../src/ingest/fetch-prereview-evaluations';
 import { arbitraryDate } from '../helpers';
@@ -21,7 +20,7 @@ describe('fetch-prereview-evaluations', () => {
 
     it('returns no skipped items', async () => {
       expect(await result()).toStrictEqual(E.right(expect.objectContaining({
-        skippedItems: O.some([]),
+        skippedItems: [],
       })));
     });
   });
@@ -65,7 +64,7 @@ describe('fetch-prereview-evaluations', () => {
 
     it('returns no skipped items', async () => {
       expect(await result()).toStrictEqual(E.right(expect.objectContaining({
-        skippedItems: O.some([]),
+        skippedItems: [],
       })));
     });
   });
@@ -103,11 +102,11 @@ describe('fetch-prereview-evaluations', () => {
 
     it('returns one skipped item for the DOI-less review', async () => {
       expect(await result()).toStrictEqual(E.right(expect.objectContaining({
-        skippedItems: O.some([
+        skippedItems: [
           expect.objectContaining({
             reason: 'review has no DOI',
           }),
-        ]),
+        ],
       })));
     });
   });
@@ -140,7 +139,7 @@ describe('fetch-prereview-evaluations', () => {
 
     it('returns a skipped item', async () => {
       expect(await result()).toStrictEqual(E.right(expect.objectContaining({
-        skippedItems: O.some([
+        skippedItems: [
           {
             item: articleId.toString(),
             reason: 'not a biorxiv DOI',
@@ -149,7 +148,7 @@ describe('fetch-prereview-evaluations', () => {
             item: articleId.toString(),
             reason: 'not a biorxiv DOI',
           },
-        ]),
+        ],
       })));
     });
   });

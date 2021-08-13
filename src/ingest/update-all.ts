@@ -1,11 +1,10 @@
 import fs from 'fs';
 import chalk from 'chalk';
 import { printf } from 'fast-printf';
-import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import * as Es from './evaluations';
 import { fetchData, FetchData } from './fetch-data';
 import { fetchGoogleSheet, FetchGoogleSheet } from './fetch-google-sheet';
@@ -22,7 +21,7 @@ export type SkippedItem = {
 
 export type FeedData = {
   evaluations: Es.Evaluations,
-  skippedItems: O.Option<ReadonlyArray<SkippedItem>>,
+  skippedItems: ReadonlyArray<SkippedItem>,
 };
 
 export type FetchEvaluations = (adapters: Adapters) => TE.TaskEither<string, FeedData>;
@@ -56,10 +55,7 @@ const overwriteCsv = (group: Group) => (feedData: FeedData) => pipe(
       () => ({
         evaluationsCount: results.all.length,
         newEvaluationsCount: results.all.length - results.existing.length,
-        skippedItemsCount: pipe(
-          results.skippedItems,
-          O.map((s) => s.length),
-        ),
+        skippedItemsCount: results.skippedItems.length,
       }),
     ),
   )),
@@ -77,7 +73,7 @@ const reportError = (group: Group) => (message: string) => pipe(
 type Results = {
   evaluationsCount: number,
   newEvaluationsCount: number,
-  skippedItemsCount: O.Option<number>,
+  skippedItemsCount: number,
 };
 
 const reportSuccess = (group: Group) => (results: Results) => pipe(
@@ -85,7 +81,7 @@ const reportSuccess = (group: Group) => (results: Results) => pipe(
     results.evaluationsCount,
     chalk.green(`${results.newEvaluationsCount} new`),
     chalk.white(results.evaluationsCount - results.newEvaluationsCount),
-    chalk.yellow(`${O.getOrElseW(() => '?')(results.skippedItemsCount)} skipped`)),
+    chalk.yellow(`${results.skippedItemsCount} skipped`)),
   report(group),
 );
 
@@ -93,10 +89,8 @@ const reportSkippedItems = (group: Group) => (feedData: FeedData) => {
   if (process.env.INGEST_DEBUG !== undefined) {
     pipe(
       feedData.skippedItems,
-      O.map(flow(
-        RA.map((item) => chalk.cyan(`Skipped '${item.item}' -- ${item.reason}`)),
-        RA.map(report(group)),
-      )),
+      RA.map((item) => chalk.cyan(`Skipped '${item.item}' -- ${item.reason}`)),
+      RA.map(report(group)),
     );
   }
   return feedData;

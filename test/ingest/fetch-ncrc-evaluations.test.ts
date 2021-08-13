@@ -1,5 +1,4 @@
 import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { fetchNcrcEvaluations } from '../../src/ingest/fetch-ncrc-evaluations';
@@ -58,9 +57,9 @@ describe('fetch-ncrc-evaluations', () => {
         },
         fetchNcrcEvaluations(),
       )()).toStrictEqual(E.right(expect.objectContaining({
-        skippedItems: O.some([
+        skippedItems: [
           expect.objectContaining({ item: 'row 0' }),
-        ]),
+        ],
       })));
     });
   });
@@ -81,9 +80,9 @@ describe('fetch-ncrc-evaluations', () => {
         },
         fetchNcrcEvaluations(),
       )()).toStrictEqual(E.right(expect.objectContaining({
-        skippedItems: O.some([
+        skippedItems: [
           expect.objectContaining({ item: '123' }),
-        ]),
+        ],
       })));
     });
   });

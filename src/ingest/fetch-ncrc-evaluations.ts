@@ -57,7 +57,7 @@ export const fetchNcrcEvaluations = (): FetchEvaluations => (ports: Ports) => pi
         right,
         RA.map(toEvaluation),
       ),
-      skippedItems: O.some(left),
+      skippedItems: left,
     }),
   )),
 );
