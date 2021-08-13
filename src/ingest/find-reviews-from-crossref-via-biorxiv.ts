@@ -1,6 +1,11 @@
 /* eslint-disable no-loops/no-loops */
 import axios from 'axios';
+import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
+import { pipe } from 'fp-ts/function';
 import { Evaluation } from './evaluations';
+import { FetchEvaluations } from './update-all';
 
 const publisherDoiPrefix = process.argv[2];
 const publisherReviewDoiPrefix = process.argv[3];
@@ -32,10 +37,9 @@ type CrossrefResponse = {
   },
 };
 
-void (async (): Promise<void> => {
+const fetchReviews = async () => {
   const startDate = new Date(Date.now() - (60 * 24 * 60 * 60 * 1000)).toISOString().split('T')[0];
   const today = new Date().toISOString().split('T')[0];
-
   const result: Array<Evaluation> = [];
   let offset = 0;
   let total: number;
@@ -45,11 +49,9 @@ void (async (): Promise<void> => {
     );
     const { count } = biorxivData.messages[0];
     total = biorxivData.messages[0].total;
-
     for (const biorxivItem of biorxivData.collection) {
       const publishedDoi = biorxivItem.published_doi;
       const biorxivDoi = biorxivItem.biorxiv_doi;
-
       const headers: Record<string, string> = {
         'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)',
       };
@@ -60,7 +62,6 @@ void (async (): Promise<void> => {
         `https://api.crossref.org/prefixes/${publisherReviewDoiPrefix}/works?rows=1000&filter=type:peer-review,relation.object:${publishedDoi}`,
         { headers },
       );
-
       data.message.items.forEach((item) => {
         const [year, month, day] = item['published-print']['date-parts'][0];
         const date = new Date(year, month - 1, day);
@@ -72,12 +73,16 @@ void (async (): Promise<void> => {
         });
       });
     }
-
     offset += count;
   } while (offset < total);
+  return result;
+};
 
-  process.stdout.write('Date,Article DOI,Review ID\n');
-  result.forEach((evaluation) => {
-    process.stdout.write(`${evaluation.date.toISOString()},${evaluation.articleDoi},${evaluation.evaluationLocator}\n`);
-  });
-})();
+export const fetchReviewsFromCrossrefViaBiorxiv = (): FetchEvaluations => () => pipe(
+  fetchReviews,
+  T.map((evaluations) => ({
+    evaluations,
+    skippedItems: O.some([]),
+  })),
+  TE.rightTask,
+);

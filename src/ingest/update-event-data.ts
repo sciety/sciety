@@ -5,6 +5,7 @@ import { fetchPciEvaluations } from './fetch-pci-evaluations';
 import { fetchPrereviewEvaluations } from './fetch-prereview-evaluations';
 import { fetchRapidReviews } from './fetch-rapid-reviews';
 import { fetchReviewsFromHypothesisGroup } from './fetch-reviews-from-hypothesis-group';
+import { fetchReviewsFromCrossrefViaBiorxiv } from './find-reviews-from-crossref-via-biorxiv';
 import { fetchReviewsFromHypothesisUser } from './find-reviews-from-hypothesis-user';
 import { fetchPrelightsEvaluations } from './prelights/fetch-prelights-evaluations';
 import { Group, updateAll } from './update-all';
@@ -49,6 +50,11 @@ const allGroups: Array<Group> = [
     id: '7a9e97d1-c1fe-4ac2-9572-4ecfe28f9f84',
     name: 'PCI Paleontology',
     fetchFeed: fetchPciEvaluations('https://paleo.peercommunityin.org/rss/rss4elife'),
+  },
+  {
+    id: '53ed5364-a016-11ea-bb37-0242ac130002',
+    name: 'PeerJ',
+    fetchFeed: fetchReviewsFromCrossrefViaBiorxiv(),
   },
   {
     id: 'f97bd177-5cb6-4296-8573-078318755bf2',
