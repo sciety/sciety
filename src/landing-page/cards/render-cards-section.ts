@@ -15,15 +15,15 @@ type Card = {
 };
 
 const renderEvaluationCard = (card: Card) => `
-  <article class="landing-page-card">
-    <h3 class="landing-page-card__title">
-      <a class="landing-page-card__link" href="/articles/activity/${card.articleId}">${card.articleTitle}</a>
+  <article class="evaluation-card">
+    <h3 class="evaluation-card__title">
+      <a class="evaluation-card__link" href="/articles/activity/${card.articleId}">${card.articleTitle}</a>
     </h3>
-    <p class="landing-page-card__group">
-      <img class="landing-page-card__avatar" src="${card.avatarPath}" alt="" />
+    <p class="evaluation-card__group">
+      <img class="evaluation-card__avatar" src="${card.avatarPath}" alt="" />
       <span>Evaluated by <a href="/groups/${card.groupId}">${card.groupName}</a></span>
     </p>
-    <div class="landing-page-card__meta">
+    <div class="evaluation-card__meta">
       ${templateDate(card.date)}
     </div>
   </article>
