@@ -20,9 +20,10 @@ const itemCodec = t.type({
 
 const prelightsFeedCodec = t.type({
   rss: t.type({
-    channel: t.type({
-      item: t.array(itemCodec),
-    }),
+    channel: t.intersection([
+      t.interface({ title: t.string }),
+      t.partial({ item: t.array(itemCodec) }),
+    ]),
   }),
 });
 
@@ -43,7 +44,7 @@ export const identifyCandidates = (responseBody: string): E.Either<string, Reado
   E.bimap(
     (errors) => PR.failure(errors).join('\n'),
     flow(
-      (feed) => feed.rss.channel.item,
+      (feed) => feed.rss.channel.item ?? [],
       RA.chain(toIndividualPrelights),
     ),
   ),

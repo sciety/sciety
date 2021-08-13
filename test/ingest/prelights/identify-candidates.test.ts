@@ -14,6 +14,7 @@ describe('identify-candidates', () => {
           <?xml version="1.0" encoding="UTF-8"?>
           <rss version="2.0">
           <channel>
+            <title>preLights</title>
             <item>
               <category>${category}</category>
               <guid isPermaLink="false">${guid}</guid>
@@ -50,6 +51,7 @@ describe('identify-candidates', () => {
           <?xml version="1.0" encoding="UTF-8"?>
           <rss version="2.0">
           <channel>
+            <title>preLights</title>
             <item>
               <category>${category}</category>
               <guid isPermaLink="false">${guid}</guid>
@@ -80,6 +82,17 @@ describe('identify-candidates', () => {
   });
 
   describe('when the feed is empty', () => {
-    it.todo('identifies no candidate evaluations');
+    it('identifies no candidate evaluations', () => {
+      const result = identifyCandidates(`
+        <?xml version="1.0" encoding="UTF-8"?>
+        <rss version="2.0">
+          <channel>
+            <title>preLights</title>
+          </channel>
+        </rss>
+      `);
+
+      expect(result).toStrictEqual(E.right([]));
+    });
   });
 });
