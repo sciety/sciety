@@ -1,0 +1,38 @@
+@use '../../sass/functions';
+@use '../../sass/card';
+@use '../common';
+
+.user-list-card {
+  @include card.basics();
+  display: flex;
+  justify-content: space-between;
+
+  @media screen and (min-width: common.$landing-page-breakpoint) {
+    @supports (display: flex) {
+      height: 100%;
+    }
+  }
+}
+
+.user-list-card__title {
+  @include card.title();
+}
+
+.user-list-card__link {
+  @include card.link();
+}
+
+.user-list-card__meta {
+  @include card.meta();
+}
+
+.user-list-card__body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.user-list-card__avatar {
+  @include card.group-avatar();
+  margin-left: functions.px-to-rem(8px);
+}

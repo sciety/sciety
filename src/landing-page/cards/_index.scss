@@ -1,13 +1,13 @@
 @use '../../sass/settings';
 @use '../../sass/functions';
-
 @use '../../sass/baseline';
 @use '../../sass/typography';
 @use '../../sass/breakpoints';
 @use '../../sass/list';
 @use '../../sass/card';
-
 @use '../common';
+@use './evaluation-card';
+@use './user-list-card';
 
 .landing-page-cards {
   background-color: settings.$colour-component-background;
@@ -75,83 +75,4 @@
 
 .landing-page-cards__button {
   @include common.secondary-button();
-}
-
-.evaluation-card {
-  @include card.basics();
-  display: flex;
-  flex-direction: column;
-
-  @media screen and (min-width: common.$landing-page-breakpoint) {
-    @supports (display: flex) {
-      height: 100%;
-    }
-  }
-}
-
-.evaluation-card__group {
-  @include typography.body-1();
-  display: flex;
-  align-items: center;
-  margin-bottom: baseline.increments(2);
-  order: 1;
-}
-
-.evaluation-card__title {
-  @include typography.title-2();
-  margin-bottom: baseline.increments(2);
-  order: 2;
-}
-
-.evaluation-card__link {
-  @include card.link();
-}
-
-.evaluation-card__meta {
-  @include card.meta();
-  order: 3;
-
-  @media screen and (min-width: common.$landing-page-breakpoint) {
-    margin-top: auto;
-  }
-}
-
-.evaluation-card__avatar {
-  @include card.group-avatar();
-  margin-right: functions.px-to-rem(8px);
-}
-
-.user-list-card {
-  @include card.basics();
-  display: flex;
-  justify-content: space-between;
-
-  @media screen and (min-width: common.$landing-page-breakpoint) {
-    @supports (display: flex) {
-      height: 100%;
-    }
-  }
-}
-
-.user-list-card__title {
-  @include card.title();
-}
-
-.user-list-card__link {
-  @include card.link();
-}
-
-.user-list-card__meta {
-  @include card.meta();
-}
-
-.user-list-card__body {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.user-list-card__avatar {
-  @include card.group-avatar();
-  margin-left: functions.px-to-rem(8px);
 }
