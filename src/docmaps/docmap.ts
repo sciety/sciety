@@ -32,7 +32,7 @@ type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
 }>>;
 type GetGroup = (groupId: GroupId) => TO.TaskOption<Group>;
 
-type Ports = {
+export type Ports = {
   fetchReview: (reviewId: ReviewId) => TE.TaskEither<DE.DataError, { url: URL }>,
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,

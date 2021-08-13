@@ -1,5 +1,4 @@
 import Router from '@koa/router';
-import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
@@ -26,8 +25,7 @@ import { redirectAfterAuthenticating, requireAuthentication } from './require-au
 import { robots } from './robots';
 import { aboutPage } from '../about-page';
 import { articleActivityPage, articleMetaPage } from '../article-page';
-import { allDocmapDois } from '../docmaps/all-docmap-dois';
-import { docmap } from '../docmaps/docmap';
+import { generateDocmap } from '../docmaps/generate-docmap';
 import { generateDocmapIndex } from '../docmaps/generate-docmap-index';
 import { hardcodedReviewCommonsDocmap } from '../docmaps/hardcoded-review-commons-docmap';
 import { finishUnfollowCommand, saveUnfollowCommand, unfollowHandler } from '../follow';
@@ -52,7 +50,6 @@ import { DoiFromString } from '../types/codecs/DoiFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import * as DE from '../types/data-error';
 import * as Doi from '../types/doi';
-import * as GID from '../types/group-id';
 import { toHtmlFragment } from '../types/html-fragment';
 import { userListPage } from '../user-list-page';
 import { userPage } from '../user-page/user-page';
@@ -429,31 +426,10 @@ export const createRouter = (adapters: Adapters): Router => {
     await next();
   });
 
-  const generateDocmap = () => (input: unknown) => {
-    const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
-    return pipe(
-      {
-        doi: pipe(
-          input,
-          DoiFromString.decode,
-          E.mapLeft(() => DE.notFound),
-          TE.fromEither,
-        ),
-        indexedDois: pipe(
-          adapters.getAllEvents,
-          T.map(allDocmapDois(ncrcGroupId)),
-          TE.rightTask,
-        ),
-      },
-      sequenceS(TE.ApplyPar),
-      TE.chain(({ doi, indexedDois }) => docmap(adapters)(doi, indexedDois, ncrcGroupId)),
-    );
-  };
-
   router.get('/docmaps/v1/articles/:doi(.+).docmap.json', async (context, next) => {
     const response = await pipe(
       context.params.doi,
-      generateDocmap(),
+      generateDocmap(adapters),
       TE.fold(
         (error) => T.of({
           body: {},
