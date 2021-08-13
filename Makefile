@@ -119,7 +119,7 @@ prod-sql:
 	--env=PGPASSWORD=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-password"'| base64 -d) \
 	-- psql
 
-prod-sql-to-csv:
+update-db-dump:
 	kubectl run psql \
 	--image=postgres:12.3 \
 	--env=PGHOST=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-host"'| base64 -d) \
@@ -128,8 +128,11 @@ prod-sql-to-csv:
 	--env=PGPASSWORD=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-password"'| base64 -d) \
 	-- sleep 60
 	kubectl wait --for condition=Ready pod psql
-	kubectl exec psql -- psql -c "copy (select json_agg(payload) from events) To STDOUT;" > ./events.json
-	kubectl delete pod psql
+	kubectl exec psql -- psql -c "copy (select json_agg(events) from events) To STDOUT;" | sed -e 's/\\n//g' > ./events.json
+	kubectl delete --wait=false pod psql
+	gcloud config set project sciety
+	gsutil cp events.json gs://sciety-data/events/events.json
+	gsutil acl set public-read gs://sciety-data/events/events.json
 
 taiko: export TARGET = dev
 taiko: export AUTHENTICATION_STRATEGY = local
