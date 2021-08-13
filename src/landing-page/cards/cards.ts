@@ -9,15 +9,15 @@ import { toUserId } from '../../types/user-id';
 
 export const cards = (ports: Ports): T.Task<HtmlFragment> => pipe(
   {
-    prachee: userListCard(ports)(
-      toUserId('1412019815619911685'),
-      'See what researchers at Prachee Avasthi’s lab are reading to discover some interesting new work',
-    ),
-    kenton: userListCard(ports)(
+    first: userListCard(ports)(
       toUserId('1417520401282854918'),
       'Some interesting preprints on ion channel proteins',
     ),
-    marius: userListCard(ports)(
+    second: userListCard(ports)(
+      toUserId('1412019815619911685'),
+      'See what researchers at Prachee Avasthi’s lab are reading to discover some interesting new work',
+    ),
+    third: userListCard(ports)(
       toUserId('1223116442549145601'),
       'A list of papers on innate immunology curated by Ailís O’Carroll',
     ),

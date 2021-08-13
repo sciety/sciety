@@ -41,13 +41,13 @@ const userListCards = (userLists: E.Either<DE.DataError, Record<string, HtmlFrag
         </p>
         <ul class="landing-page-recently-evaluated__articles">
           <li>
-            ${cards.kenton}
+            ${cards.first}
           </li>
           <li>
-            ${cards.prachee}
+            ${cards.second}
           </li>
           <li>
-            ${cards.marius}
+            ${cards.third}
           </li>
         </ul>
       `,
