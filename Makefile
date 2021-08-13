@@ -120,7 +120,7 @@ prod-sql-to-csv:
 	--env=PGPASSWORD=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-password"'| base64 -d) \
 	-- sleep 60
 	kubectl wait --for condition=Ready pod psql
-	kubectl exec psql -- psql -c "copy (select * from events) To STDOUT With CSV HEADER DELIMITER E'\t';" > ./events.csv
+	kubectl exec psql -- psql -c "copy (select json_agg(payload) from events) To STDOUT;" > ./events.json
 	kubectl delete pod psql
 
 taiko: export TARGET = dev
