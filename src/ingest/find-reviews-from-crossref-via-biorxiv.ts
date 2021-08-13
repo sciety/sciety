@@ -1,5 +1,6 @@
 /* eslint-disable no-loops/no-loops */
 import axios from 'axios';
+import { Evaluation } from './evaluations';
 
 const publisherDoiPrefix = process.argv[2];
 const publisherReviewDoiPrefix = process.argv[3];
@@ -32,12 +33,10 @@ type CrossrefResponse = {
 };
 
 void (async (): Promise<void> => {
-  const now = new Date();
-  const startDate = new Date(now.getTime() - (6 * 24 * 60 * 60)).toISOString().split('T')[0];
+  const startDate = new Date(Date.now() - (60 * 24 * 60 * 60 * 1000)).toISOString().split('T')[0];
   const today = new Date().toISOString().split('T')[0];
 
-  process.stdout.write('Date,Article DOI,Review ID\n');
-
+  const result: Array<Evaluation> = [];
   let offset = 0;
   let total: number;
   do {
@@ -51,7 +50,6 @@ void (async (): Promise<void> => {
       const publishedDoi = biorxivItem.published_doi;
       const biorxivDoi = biorxivItem.biorxiv_doi;
 
-      // specify a User-Agent: https://github.com/CrossRef/rest-api-doc/issues/491
       const headers: Record<string, string> = {
         'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)',
       };
@@ -67,11 +65,19 @@ void (async (): Promise<void> => {
         const [year, month, day] = item['published-print']['date-parts'][0];
         const date = new Date(year, month - 1, day);
         const reviewDoi = item.DOI;
-
-        process.stdout.write(`${date.toISOString()},${biorxivDoi},doi:${reviewDoi}\n`);
+        result.push({
+          date,
+          articleDoi: biorxivDoi,
+          evaluationLocator: `doi:${reviewDoi}`,
+        });
       });
     }
 
     offset += count;
   } while (offset < total);
+
+  process.stdout.write('Date,Article DOI,Review ID\n');
+  result.forEach((evaluation) => {
+    process.stdout.write(`${evaluation.date.toISOString()},${evaluation.articleDoi},${evaluation.evaluationLocator}\n`);
+  });
 })();
