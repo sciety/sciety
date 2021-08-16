@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
-import { flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
 import { encodedCommandFieldName } from './save-command';
 import {
@@ -9,7 +9,7 @@ import {
 } from '../domain-events';
 import { articleSaveState } from '../save-article/article-save-state';
 import { commandHandler } from '../save-article/command-handler';
-import { CommandFromString } from '../types/command';
+import { Command, CommandFromString } from '../types/command';
 import { User } from '../types/user';
 
 type Ports = {
@@ -17,8 +17,14 @@ type Ports = {
   commitEvents: (events: ReadonlyArray<UserSavedArticleEvent | UserUnsavedArticleEvent>) => T.Task<void>,
 };
 
+const eventsFromCommand = (ports: Ports) => (user: User, command: Command) => pipe(
+  ports.getAllEvents,
+  T.map(articleSaveState(user.id, command.articleId)),
+  T.map(commandHandler(command, user.id)),
+);
+
 export const finishSavedCommand = (
-  { getAllEvents, commitEvents }: Ports,
+  ports: Ports,
 ): Middleware => async (context, next) => {
   const user = context.state.user as User;
   await pipe(
@@ -27,12 +33,8 @@ export const finishSavedCommand = (
     E.fold(
       () => T.of(undefined),
       (command) => pipe(
-        getAllEvents,
-        T.chain(flow(
-          articleSaveState(user.id, command.articleId),
-          commandHandler(command, user.id),
-          commitEvents,
-        )),
+        eventsFromCommand(ports)(user, command),
+        T.chain(ports.commitEvents),
         T.map(() => {
           delete context.session[encodedCommandFieldName];
           return undefined;
