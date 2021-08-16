@@ -29,18 +29,13 @@ export const generateDocmap = (
         E.mapLeft(() => DE.notFound),
         TE.fromEither,
       ),
-      indexedDois: pipe(
-        ports.getAllEvents,
-        T.map(allDocmapDois(ncrcGroupId)),
-        TE.rightTask,
-      ),
     },
     sequenceS(TE.ApplyPar),
-    TE.chain(({ doi, indexedDois }) => pipe(
-      indexedDois,
-      RA.findFirst((indexedDoi) => indexedDoi.value === doi.value),
-      TE.fromOption(() => DE.notFound),
-
+    TE.chain(({ doi }) => pipe(
+      ports.getAllEvents,
+      T.map(allDocmapDois(ncrcGroupId)),
+      T.map(RA.findFirst((indexedDoi) => indexedDoi.value === doi.value)),
+      TE.fromTaskOption(() => DE.notFound),
     )),
     TE.chain(docmap(ports, ncrcGroupId)),
   );
