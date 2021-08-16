@@ -2,6 +2,7 @@
 @use '../sass/functions';
 @use '../sass/typography';
 @use '../sass/button';
+@use '../sass/card';
 
 $_avatar-size: 48px;
 $_icon-size: 24px;
@@ -34,4 +35,8 @@ $_icon-inline-offset: 6px;
   background-repeat: no-repeat;
   background-position: functions.px-to-rem($_icon-inline-offset) center;
   padding-left: functions.px-to-rem($_icon-inline-offset * 2 + $_icon-size);
+}
+
+.user-list-page-blog-card {
+  @include card.basics();
 }
