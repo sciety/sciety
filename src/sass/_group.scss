@@ -1,19 +1,15 @@
+@use 'card';
 @use 'list';
 @use 'settings';
 @use 'baseline';
 
 .group-list {
-  @include list.basics();
-  margin-top: 0;
-  margin-bottom: 0;
-  display: grid;
-  grid-row-gap: baseline.increments(4);
-  grid-column-gap: baseline.increments(3);
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  @include card.list();
+  margin-bottom: 1.5rem;
 }
 
 .group-list__item {
-  display: grid;
+  @include card.list-item();
 }
 
 .group {

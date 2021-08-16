@@ -1,8 +1,7 @@
-import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { templateListItems } from '../shared-components/list-items';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
-export const renderGroups = (groups: RNEA.ReadonlyNonEmptyArray<HtmlFragment>): HtmlFragment => toHtmlFragment(`
+export const renderGroups = (groups: ReadonlyArray<HtmlFragment>): HtmlFragment => toHtmlFragment(`
   <div class="page-content__background">
     <div class="sciety-grid sciety-grid--one-column">
       <header class="page-header">
