@@ -1,4 +1,3 @@
-import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
@@ -22,16 +21,11 @@ export const generateDocmap = (
 ): TE.TaskEither<DE.DataError, Record<string, unknown>> => {
   const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
   return pipe(
-    {
-      doi: pipe(
-        input,
-        DoiFromString.decode,
-        E.mapLeft(() => DE.notFound),
-        TE.fromEither,
-      ),
-    },
-    sequenceS(TE.ApplyPar),
-    TE.chain(({ doi }) => pipe(
+    input,
+    DoiFromString.decode,
+    E.mapLeft(() => DE.notFound),
+    TE.fromEither,
+    TE.chain((doi) => pipe(
       ports.getAllEvents,
       T.map(allDocmapDois(ncrcGroupId)),
       T.map(RA.findFirst((indexedDoi) => indexedDoi.value === doi.value)),
