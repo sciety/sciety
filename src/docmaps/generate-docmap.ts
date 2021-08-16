@@ -1,5 +1,6 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -35,6 +36,12 @@ export const generateDocmap = (
       ),
     },
     sequenceS(TE.ApplyPar),
-    TE.chain(({ doi, indexedDois }) => docmap(ports)(doi, indexedDois, ncrcGroupId)),
+    TE.chain(({ doi, indexedDois }) => pipe(
+      indexedDois,
+      RA.findFirst((indexedDoi) => indexedDoi.value === doi.value),
+      TE.fromOption(() => DE.notFound),
+
+    )),
+    TE.chain(docmap(ports, ncrcGroupId)),
   );
 };

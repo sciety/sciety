@@ -43,61 +43,55 @@ export type Ports = {
 
 type Docmap = (
   ports: Ports,
+  indexedGroupId: GroupId,
 ) => (
   articleId: Doi,
-  index: ReadonlyArray<Doi>,
-  indexedGroupId: GroupId,
 ) => TE.TaskEither<DE.DataError, Record<string, unknown>>;
 
-export const docmap: Docmap = (ports) => (articleDoi, index, indexedGroupId) => pipe(
-  index,
-  RA.findFirst((doi) => doi.value === articleDoi.value),
-  TE.fromOption(() => DE.notFound),
-  TE.chain((articleId) => pipe(
-    {
-      evaluations: pipe(
-        articleId,
-        ports.findReviewsForArticleDoi,
-        T.map((reviews) => pipe(
-          {
-            firstEvaluation: pipe(reviews, RA.findFirst((ev) => ev.groupId === indexedGroupId)),
-            lastEvaluation: pipe(reviews, RA.findLast((ev) => ev.groupId === indexedGroupId)),
-          },
-          sequenceS(O.Apply),
-          E.fromOption(() => DE.notFound),
-        )),
-      ),
-      articleVersions: pipe(
-        articleId,
-        ports.fetchArticle,
-        TE.chainW(({ server }) => pipe(
-          ports.findVersionsForArticleDoi(articleId, server),
-          TE.fromTaskOption(() => DE.unavailable),
-        )),
-      ),
-      indexedGroup: pipe(
-        indexedGroupId,
-        ports.getGroup,
-        TE.fromTaskOption(() => DE.notFound),
-      ),
-    },
-    (domain) => ({
-      ...domain,
-      sourceUrl: pipe(
-        domain.evaluations,
-        TE.chain(flow(
-          ({ firstEvaluation }) => ports.fetchReview(firstEvaluation.reviewId),
-          TE.map(({ url }) => url),
-        )),
-      ),
-    }),
-    sequenceS(TE.ApplyPar),
-  )),
+export const docmap: Docmap = (ports, indexedGroupId) => (articleId) => pipe(
+  {
+    evaluations: pipe(
+      articleId,
+      ports.findReviewsForArticleDoi,
+      T.map((reviews) => pipe(
+        {
+          firstEvaluation: pipe(reviews, RA.findFirst((ev) => ev.groupId === indexedGroupId)),
+          lastEvaluation: pipe(reviews, RA.findLast((ev) => ev.groupId === indexedGroupId)),
+        },
+        sequenceS(O.Apply),
+        E.fromOption(() => DE.notFound),
+      )),
+    ),
+    articleVersions: pipe(
+      articleId,
+      ports.fetchArticle,
+      TE.chainW(({ server }) => pipe(
+        ports.findVersionsForArticleDoi(articleId, server),
+        TE.fromTaskOption(() => DE.unavailable),
+      )),
+    ),
+    indexedGroup: pipe(
+      indexedGroupId,
+      ports.getGroup,
+      TE.fromTaskOption(() => DE.notFound),
+    ),
+  },
+  (domain) => ({
+    ...domain,
+    sourceUrl: pipe(
+      domain.evaluations,
+      TE.chain(flow(
+        ({ firstEvaluation }) => ports.fetchReview(firstEvaluation.reviewId),
+        TE.map(({ url }) => url),
+      )),
+    ),
+  }),
+  sequenceS(TE.ApplyPar),
   TE.map(({
     indexedGroup, articleVersions, evaluations, sourceUrl,
   }) => ({
     '@context': context,
-    id: `https://sciety.org/docmaps/v1/articles/${articleDoi.value}.docmap.json`,
+    id: `https://sciety.org/docmaps/v1/articles/${articleId.value}.docmap.json`,
     type: 'docmap',
     created: evaluations.firstEvaluation.occurredAt.toISOString(),
     updated: evaluations.lastEvaluation.occurredAt.toISOString(),
@@ -116,8 +110,8 @@ export const docmap: Docmap = (ports) => (articleDoi, index, indexedGroupId) => 
       '_:b0': {
         assertions: [],
         inputs: [{
-          doi: articleDoi.value,
-          url: `https://doi.org/${articleDoi.value}`,
+          doi: articleId.value,
+          url: `https://doi.org/${articleId.value}`,
           published: articleVersions[articleVersions.length - 1].occurredAt,
         }],
         actions: [
@@ -136,7 +130,7 @@ export const docmap: Docmap = (ports) => (articleDoi, index, indexedGroupId) => 
                   },
                   {
                     type: 'web-page',
-                    url: `https://sciety.org/articles/activity/${articleDoi.value}#${evaluations.firstEvaluation.reviewId}`,
+                    url: `https://sciety.org/articles/activity/${articleId.value}#${evaluations.firstEvaluation.reviewId}`,
                   },
                 ],
               },
