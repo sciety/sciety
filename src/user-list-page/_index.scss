@@ -96,3 +96,7 @@ $_icon-inline-offset: 6px;
 .user-list-page-blog-card {
   @include card.basics();
 }
+
+.user-list-page-blog-card__title {
+  @include card.title();
+}
