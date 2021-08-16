@@ -7,12 +7,14 @@ import { UserId } from '../types/user-id';
 
 export type SaveState = 'saved' | 'not-saved';
 
+export type SaveArticleEvents = UserSavedArticleEvent | UserUnsavedArticleEvent;
+
 type CommandHandler = (
   command: Command,
   userId: UserId
 ) => (
   saveState: SaveState,
-) => ReadonlyArray<UserUnsavedArticleEvent | UserSavedArticleEvent>;
+) => ReadonlyArray<SaveArticleEvents>;
 
 const handleUnsaveCommand = (saveState: SaveState, command: Command, userId: UserId) => (
   saveState === 'saved'

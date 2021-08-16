@@ -3,15 +3,12 @@ import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
 import { encodedCommandFieldName } from './save-command';
-import {
-  UserSavedArticleEvent, UserUnsavedArticleEvent,
-} from '../domain-events';
-import { saveArticleEvents, Ports as SavedArticlePorts } from '../save-article';
+import { generateEvents, SaveArticleEvents, Ports as SavedArticlePorts } from '../save-article';
 import { CommandFromString } from '../types/command';
 import { User } from '../types/user';
 
 type Ports = SavedArticlePorts & {
-  commitEvents: (events: ReadonlyArray<UserSavedArticleEvent | UserUnsavedArticleEvent>) => T.Task<void>,
+  commitEvents: (events: ReadonlyArray<SaveArticleEvents>) => T.Task<void>,
 };
 
 export const finishSavedCommand = (
@@ -24,7 +21,7 @@ export const finishSavedCommand = (
     E.fold(
       () => T.of(undefined),
       (command) => pipe(
-        saveArticleEvents(ports)(user, command),
+        generateEvents(ports)(user, command),
         T.chain(ports.commitEvents),
         T.map(() => {
           delete context.session[encodedCommandFieldName];
