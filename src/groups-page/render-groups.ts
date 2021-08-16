@@ -1,13 +1,11 @@
-import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
-import { constant, flow, pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { Group, RenderGroup } from './render-group';
 import { templateListItems } from '../shared-components/list-items';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-import { UserId } from '../types/user-id';
 
-type RenderGroups = (userId: O.Option<UserId>) => T.Task<HtmlFragment>;
+type RenderGroups = T.Task<HtmlFragment>;
 
 export type GetAllGroups = T.Task<RNEA.ReadonlyNonEmptyArray<Group>>;
 
@@ -35,13 +33,12 @@ const render = (links: RNEA.ReadonlyNonEmptyArray<HtmlFragment>) => `
 export const renderGroups = (
   editorialCommunities: GetAllGroups,
   renderGroup: RenderGroup,
-): RenderGroups => (userId) => (
+): RenderGroups => (
   pipe(
     editorialCommunities,
-    T.chain(T.traverseArray(renderGroup(userId))),
     T.map(flow(
-      RNEA.fromReadonlyArray, // TODO shouldn't be needed, fp-ts types needs fixing
-      O.fold(constant(''), render),
+      RNEA.map(renderGroup),
+      render,
       toHtmlFragment,
     )),
   )
