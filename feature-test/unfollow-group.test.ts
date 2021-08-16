@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import {
-  $, button, click, goto, openBrowser, text, within,
+  $, click, goto, openBrowser, text, within,
 } from 'taiko';
 import { authenticateViaTwitter, screenshotTeardown } from './utilities';
 
