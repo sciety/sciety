@@ -13,9 +13,14 @@ export type GetAllGroups = T.Task<RNEA.ReadonlyNonEmptyArray<Group>>;
 
 const render = (links: RNEA.ReadonlyNonEmptyArray<HtmlFragment>) => `
   <section class="groups-page">
-    <h1>
-      Groups
-    </h1>
+    <header>
+      <h1>
+        Groups
+      </h1>
+      <p>
+        A Sciety group is a team of scientists who evaluate, curate and screen research articles. <a href="https://blog.sciety.org/sciety-groups/">Read more about Sciety groups</a>.
+      </p>
+    </header>
     <ol class="group-list" role="list">
       ${templateListItems(links, 'group-list__item')}
     </ol>
