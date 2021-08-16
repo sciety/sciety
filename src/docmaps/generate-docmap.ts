@@ -8,10 +8,21 @@ import { docmap, Ports as DocmapPorts } from './docmap';
 import { DomainEvent } from '../domain-events';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import * as DE from '../types/data-error';
+import { Doi } from '../types/doi';
 import * as GID from '../types/group-id';
+import { GroupId } from '../types/group-id';
+
+type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
+
+const isInIndex = (getAllEvents: GetAllEvents, indexedGroupId: GroupId) => (doi: Doi) => pipe(
+  getAllEvents,
+  T.map(allDocmapDois(indexedGroupId)),
+  T.map(RA.findFirst((indexedDoi) => indexedDoi.value === doi.value)),
+  TE.fromTaskOption(() => DE.notFound),
+);
 
 type Ports = {
-  getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
+  getAllEvents: GetAllEvents,
 } & DocmapPorts;
 
 export const generateDocmap = (
@@ -25,12 +36,7 @@ export const generateDocmap = (
     DoiFromString.decode,
     E.mapLeft(() => DE.notFound),
     TE.fromEither,
-    TE.chain((doi) => pipe(
-      ports.getAllEvents,
-      T.map(allDocmapDois(ncrcGroupId)),
-      T.map(RA.findFirst((indexedDoi) => indexedDoi.value === doi.value)),
-      TE.fromTaskOption(() => DE.notFound),
-    )),
+    TE.chain(isInIndex(ports.getAllEvents, ncrcGroupId)),
     TE.chain(docmap(ports, ncrcGroupId)),
   );
 };
