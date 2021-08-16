@@ -13,7 +13,7 @@ export type GetAllGroups = T.Task<RNEA.ReadonlyNonEmptyArray<Group>>;
 
 const render = (links: RNEA.ReadonlyNonEmptyArray<HtmlFragment>) => `
   <section class="groups-page">
-    <header>
+    <header class="page-header">
       <h1>
         Groups
       </h1>
