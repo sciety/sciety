@@ -32,7 +32,7 @@ type UserListPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
 const render = (savedArticlesList: HtmlFragment, { handle, avatarUrl }: UserDetails) => pipe(
   `<div class="page-content__background">
-      <div class="sciety-grid sciety-grid--one-column">
+      <div class="sciety-grid sciety-grid--user-list">
         <header class="page-header page-header--user-list">
           <h1>
             Saved Articles

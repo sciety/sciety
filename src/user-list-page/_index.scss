@@ -1,5 +1,6 @@
 @use '../sass/settings';
 @use '../sass/functions';
+@use '../sass/breakpoints';
 @use '../sass/typography';
 @use '../sass/button';
 @use '../sass/card';
@@ -7,6 +8,61 @@
 $_avatar-size: 48px;
 $_icon-size: 24px;
 $_icon-inline-offset: 6px;
+
+.sciety-grid--user-list {
+  margin-left: auto;
+  margin-right: auto;
+
+  > .page-header--user-list {
+    grid-column: 1 / -1;
+
+    @include breakpoints.not-narrow {
+      grid-column: 1 / 9;
+    }
+
+    @media screen and (min-width: 68.75em) {
+      grid-column: 1 / 9;
+    }
+  }
+
+  > .saved-articles-list {
+    grid-column: 1 / -1;
+
+    @include breakpoints.not-narrow {
+      grid-column: 1 / 9;
+    }
+
+    @media screen and (min-width: 68.75em) {
+      grid-column: 1 / 9;
+    }
+  }
+
+  > .static-message {
+    grid-column: 1 / -1;
+
+    @include breakpoints.not-narrow {
+      grid-column: 1 / 9;
+    }
+
+    @media screen and (min-width: 68.75em) {
+      grid-column: 1 / 9;
+    }
+  }
+
+  > .user-list-page-blog-card {
+    grid-column: 1 / -1;
+
+    @include breakpoints.not-narrow {
+      grid-column: 10 / 13;
+      grid-row: 2;
+    }
+
+    @media screen and (min-width: 68.75em) {
+      grid-column: 10 / 13;
+    }
+  }
+
+}
 
 .page-header--user-list .page-header__subheading {
   @include typography.subheading();
