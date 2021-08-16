@@ -4,9 +4,9 @@ import { fetchNcrcEvaluations } from './fetch-ncrc-evaluations';
 import { fetchPciEvaluations } from './fetch-pci-evaluations';
 import { fetchPrereviewEvaluations } from './fetch-prereview-evaluations';
 import { fetchRapidReviews } from './fetch-rapid-reviews';
+import { fetchReviewsFromCrossrefViaBiorxiv } from './fetch-reviews-from-crossref-via-biorxiv';
 import { fetchReviewsFromHypothesisGroup } from './fetch-reviews-from-hypothesis-group';
-import { fetchReviewsFromCrossrefViaBiorxiv } from './find-reviews-from-crossref-via-biorxiv';
-import { fetchReviewsFromHypothesisUser } from './find-reviews-from-hypothesis-user';
+import { fetchReviewsFromHypothesisUser } from './fetch-reviews-from-hypothesis-user';
 import { fetchPrelightsEvaluations } from './prelights/fetch-prelights-evaluations';
 import { Group, updateAll } from './update-all';
 
