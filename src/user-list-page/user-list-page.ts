@@ -32,7 +32,7 @@ type UserListPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
 const render = (savedArticlesList: HtmlFragment, { handle, avatarUrl }: UserDetails) => pipe(
   `<div class="page-content__background">
-      <div class="sciety-grid sciety-grid--user-list">
+      <div class="sciety-grid sciety-grid--one-column">
         <header class="page-header page-header--user-list">
           <h1>
             Saved Articles
@@ -45,7 +45,6 @@ const render = (savedArticlesList: HtmlFragment, { handle, avatarUrl }: UserDeta
           ${handle === 'AvasthiReading' ? '<a class="user-list-subscribe" href="https://xag0lodamyw.typeform.com/to/OPBgQWgb">Subscribe</a>' : ''}
           ${handle === 'kenton_swartz' ? '<a class="user-list-subscribe" href="https://xag0lodamyw.typeform.com/to/DxFgFs13">Subscribe</a>' : ''}
         </header>
-        ${savedArticlesList}
         <section class="user-list-page-supplementary">
           <article class="user-list-page-blog-card">
             <h2 class="user-list-page-blog-card__title">What is a list?</h2>
@@ -53,6 +52,7 @@ const render = (savedArticlesList: HtmlFragment, { handle, avatarUrl }: UserDeta
             <a href="https://blog.sciety.org/lists-on-sciety/">Read more about lists</a>
           </article>
         </section>
+        ${savedArticlesList}
       </div>
     </div>`,
   toHtmlFragment,
