@@ -19,11 +19,12 @@ describe('unfollow a group', () => {
       await authenticateViaTwitter();
     });
 
-    describe('from the groups page', () => {
+    describe('from the NCRC group page', () => {
       it('removes the group from my profile page', async () => {
         await goto('localhost:8080/groups');
-        await click(button({ 'aria-label': 'Follow NCRC' }));
-        await click(button({ 'aria-label': 'Unfollow NCRC' }));
+        await click('NCRC');
+        await click('Follow');
+        await click('Unfollow');
         await click('My profile');
         const groupExists = await text('NCRC', within($('.followed-groups'))).exists();
 

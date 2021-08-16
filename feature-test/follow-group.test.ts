@@ -19,7 +19,7 @@ describe('follow a group', () => {
       await authenticateViaTwitter();
     });
 
-    describe('from the group page', () => {
+    describe('from the PeerJ group page', () => {
       it('adds the group to my profile page', async () => {
         await goto('localhost:8080/groups');
         await click('PeerJ');
