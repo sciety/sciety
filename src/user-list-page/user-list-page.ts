@@ -46,6 +46,11 @@ const render = (savedArticlesList: HtmlFragment, { handle, avatarUrl }: UserDeta
           ${handle === 'kenton_swartz' ? '<a class="user-list-subscribe" href="https://xag0lodamyw.typeform.com/to/DxFgFs13">Subscribe</a>' : ''}
         </header>
         ${savedArticlesList}
+        <article>
+          <h2>What is a list?</h2>
+          <p> A list on Sciety is a collection of your own hand-picked articles, stored in one place for easy reference and sharing.</p>
+          <a href="https://blog.sciety.org/lists-on-sciety/">Read more about lists</a>
+        </article>
       </div>
     </div>`,
   toHtmlFragment,
