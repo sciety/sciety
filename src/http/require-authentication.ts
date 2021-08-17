@@ -1,3 +1,5 @@
+import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
 import { Middleware, ParameterizedContext } from 'koa';
 import { User } from '../types/user';
 
@@ -6,13 +8,24 @@ type State = {
   targetFragmentId?: string,
 };
 
-export const constructRedirectUrl = (context: ParameterizedContext<State>): string => {
-  const result = context.request.headers.referer ?? '/';
-  if (context.state.targetFragmentId) {
-    return `${result}#${context.state.targetFragmentId}`;
-  }
-  return result;
-};
+export const constructRedirectUrl = (context: ParameterizedContext<State>): string => pipe(
+  {
+    referer: pipe(
+      context.request.headers.referer,
+      O.fromNullable,
+      O.getOrElse(() => '/'),
+    ),
+    fragmentId: pipe(
+      context.state.targetFragmentId,
+      O.fromNullable,
+      O.fold(
+        () => '',
+        (fragment) => `#${fragment}`,
+      ),
+    ),
+  },
+  (({ referer, fragmentId }) => `${referer}${fragmentId}`),
+);
 
 export const requireAuthentication: Middleware<State> = async (context, next) => {
   if (!(context.state.user)) {
