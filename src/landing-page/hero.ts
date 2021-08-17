@@ -8,20 +8,24 @@ import { renderExampleSearches } from '../shared-components/render-example-searc
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 const renderStatistics = (listCount: number) => toHtmlFragment(`
+  <p class="visually-hidden">On Sciety you can find:</p>
   <ul role="list" class="landing-page-hero__statistics">
     <li class="landing-page-hero__statistic">
       <a href="https://blog.sciety.org/lists-on-sciety/" class="landing-page-hero__statistic_link">
         <span class="landing-page-hero__statistic_number">${listCount}</span><span class="landing-page-hero__statistic_title"> user curated lists</span>
+        <span class="visually-hidden">. Find out more about lists on Sciety.</span>
       </a>
     </li>
     <li class="landing-page-hero__statistic">
       <a href="/groups" class="landing-page-hero__statistic_link">
         <span class="landing-page-hero__statistic_number">20k</span><span class="landing-page-hero__statistic_title"> evaluations</span>
+        <span class="visually-hidden">. Find out more about the groups producing them.</span>
       </a>
     </li>
     <li class="landing-page-hero__statistic">
       <a href="/groups" class="landing-page-hero__statistic_link">
         <span class="landing-page-hero__statistic_number">15k</span><span class="landing-page-hero__statistic_title"> evaluated articles</span>
+        <span class="visually-hidden">. Find out more about the groups evaluating them.</span>
       </a>
     </li>
   </ul>
