@@ -1,8 +1,0 @@
-@use 'settings';
-@use 'functions';
-
-.about-page-wrapper {
-  margin-left: 1rem;
-  margin-right: 1rem;
-  max-width: functions.px-to-rem(settings.$max-site-width);
-}
