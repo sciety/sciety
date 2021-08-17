@@ -24,7 +24,6 @@
 @use 'menu-page';
 @use 'meta-page';
 @use '../search-results-page';
-@use 'group-card';
 @use 'list';
 @use 'typography';
 @use 'states';
@@ -33,6 +32,7 @@
 @use '../group-page/list-card';
 @use '../shared-components/pagination-controls';
 @use '../shared-components/tabs';
+@use '../shared-components/group-card';
 
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,400;0,700;1,400&display=swap');
 

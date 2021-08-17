@@ -1,9 +1,9 @@
-@use 'settings';
-@use 'functions';
-@use 'baseline';
-@use 'card';
-@use 'breakpoints';
-@use 'typography';
+@use '../../sass/settings';
+@use '../../sass/functions';
+@use '../../sass/baseline';
+@use '../../sass/card';
+@use '../../sass/breakpoints';
+@use '../../sass/typography';
 
 .group-card {
   @include card.basics();
