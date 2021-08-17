@@ -14,7 +14,7 @@ import {
   UserRevokedFindingReviewNotHelpfulEvent,
 } from '../domain-events';
 import { ReviewId } from '../types/review-id';
-import { UserId } from '../types/user-id';
+import { User } from '../types/user';
 
 export type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
@@ -41,16 +41,25 @@ type GeneratedEvents = (
   UserRevokedFindingReviewNotHelpfulEvent
 );
 
-type CommandHandler = (input: { command: Command, reviewId: ReviewId }) => T.Task<ReadonlyArray<GeneratedEvents>>;
+type CommandHandler = (
+  user: User,
+  input: { command: Command, reviewId: ReviewId },
+) => T.Task<ReadonlyArray<GeneratedEvents>>;
+
+type Ports = {
+  getAllEvents: GetAllEvents,
+};
 
 export const commandHandler = (
-  getAllEvents: GetAllEvents,
-  userId: UserId,
-): CommandHandler => ({
-  command,
-  reviewId,
-}) => pipe(
-  getAllEvents,
-  T.map(reviewResponse(userId, reviewId)),
-  T.map((currentResponse) => commands[command](currentResponse, userId, reviewId)),
+  ports: Ports,
+): CommandHandler => (
+  user,
+  {
+    command,
+    reviewId,
+  },
+) => pipe(
+  ports.getAllEvents,
+  T.map(reviewResponse(user.id, reviewId)),
+  T.map((currentResponse) => commands[command](currentResponse, user.id, reviewId)),
 );

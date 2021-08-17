@@ -27,7 +27,7 @@ export const respondHandler = (ports: Ports): Middleware<{ user: User }> => asyn
     O.fold(
       () => context.throw(StatusCodes.BAD_REQUEST),
       flow(
-        commandHandler(ports.getAllEvents, user.id),
+        (command) => commandHandler(ports)(user, command),
         T.chain(ports.commitEvents),
       ),
     ),

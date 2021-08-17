@@ -16,7 +16,7 @@ type Ports = {
 };
 
 export const finishRespondCommand = (ports: Ports): Middleware => async (context, next) => {
-  const userId = context.state.user.id;
+  const { user } = context.state;
   await pipe(
     // TODO: move userId, reviewId, command into a new type that gets constructed by a validator
     O.Do,
@@ -25,10 +25,7 @@ export const finishRespondCommand = (ports: Ports): Middleware => async (context
     O.fold(
       () => T.of(undefined),
       flow(
-        commandHandler(
-          ports.getAllEvents,
-          userId,
-        ),
+        (command) => commandHandler(ports)(user, command),
         T.chain(ports.commitEvents),
         T.map(() => {
           delete context.session.command;
