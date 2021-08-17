@@ -1,16 +1,17 @@
 import { ParameterizedContext } from 'koa';
-import { annotateWithTwitterSuccess, requireAuthentication } from '../../src/http/require-authentication';
+import { annotateWithTwitterSuccess, requireAuthentication, targetFragmentIdField } from '../../src/http/require-authentication';
 
 describe('require-authentication', () => {
   describe('createRequireAuthentication', () => {
     it('adds targetFragmentId to the successRedirect', async () => {
       const context = ({
-        state: {
-          targetFragmentId: 'bar',
-        },
+        state: {},
         request: {
           headers: {
             referer: '/foo',
+          },
+          body: {
+            [targetFragmentIdField]: 'bar',
           },
         },
         session: {},

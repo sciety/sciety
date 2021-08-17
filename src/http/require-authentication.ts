@@ -1,14 +1,17 @@
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
+import * as tt from 'io-ts-types';
 import { Middleware, ParameterizedContext } from 'koa';
 import { User } from '../types/user';
 
 type State = {
   user?: User,
-  targetFragmentId?: string,
 };
 
-export const constructRedirectUrl = (context: ParameterizedContext<State>): string => pipe(
+export const targetFragmentIdField = 'targetFragmentId';
+
+export const constructRedirectUrl = (context: ParameterizedContext): string => pipe(
   {
     referer: pipe(
       context.request.headers.referer,
@@ -16,9 +19,9 @@ export const constructRedirectUrl = (context: ParameterizedContext<State>): stri
       O.getOrElse(() => '/'),
     ),
     fragmentId: pipe(
-      context.state.targetFragmentId,
-      O.fromNullable,
-      O.fold(
+      context.request.body[targetFragmentIdField],
+      tt.NonEmptyString.decode,
+      E.fold(
         () => '',
         (fragment) => `#${fragment}`,
       ),

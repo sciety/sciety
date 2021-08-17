@@ -1,6 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { encodedCommandFieldName } from '../../command/save-command';
+import { targetFragmentIdField } from '../../http/require-authentication';
 import { CommandFromString } from '../../types/command';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import * as RI from '../../types/review-id';
@@ -49,12 +50,14 @@ export const renderReviewResponses: RenderReviewResponses = ({
         <div class="responses__action">
           <form method="post" action="/respond">
             <input type="hidden" name="reviewid" value="${RI.reviewIdCodec.encode(reviewId)}">
+            <input type="hidden" name="${targetFragmentIdField}" value="${RI.reviewIdCodec.encode(reviewId)}">
             ${helpfulButton(helpfulCount)}
           </form>
         </div>
         <div class="responses__action">
           <form method="post" action="/respond">
             <input type="hidden" name="reviewid" value="${RI.reviewIdCodec.encode(reviewId)}">
+            <input type="hidden" name="${targetFragmentIdField}" value="${RI.reviewIdCodec.encode(reviewId)}">
             ${notHelpfulButton(notHelpfulCount)}
           </form>
         </div>
