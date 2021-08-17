@@ -6,7 +6,7 @@ import { JsonFromString } from 'io-ts-types';
 import { respondCodec } from '../respond/command-handler';
 import { saveArticleCodec } from '../save-article/command-handler';
 
-export const commandCodec = t.union([
+const commandCodec = t.union([
   saveArticleCodec,
   respondCodec,
 ]);
