@@ -21,6 +21,9 @@ export const hero = toHtmlFragment(`
         <button type="reset" class="visually-hidden">Reset</button>
       </form>
       ${renderExampleSearches()}
+      <span class="landing-page-hero__statistic_number">20+</span><span class="landing-page-hero__statistic_title"> user curated lists</span>
+      <span class="landing-page-hero__statistic_number">20k</span><span class="landing-page-hero__statistic_title"> evaluations</span>
+      <span class="landing-page-hero__statistic_number">15k</span><span class="landing-page-hero__statistic_title"> evaluated articles</span>
     </div>
 
     <picture class="landing-page-hero__picture">

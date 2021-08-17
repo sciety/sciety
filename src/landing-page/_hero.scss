@@ -84,3 +84,13 @@ $_search-button-width: functions.px-to-rem(70px);
     width: 100%;
   }
 }
+
+.landing-page-hero__statistic_number {
+  @include typography.section();
+  color: settings.$colour-text-primary;
+}
+
+.landing-page-hero__statistic_title {
+  color: settings.$colour-text-primary;
+  margin-right: 1rem;
+}
