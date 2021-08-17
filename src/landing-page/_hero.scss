@@ -7,6 +7,7 @@
 @use '../sass/typography';
 
 @use '../sass/button';
+@use '../sass/list';
 @use 'common';
 
 
@@ -88,12 +89,17 @@ $_search-button-width: functions.px-to-rem(70px);
 }
 
 .landing-page-hero__statistics {
+  @include list.basics();
   margin-bottom: 1.5rem;
   display: flex;
   flex-wrap: wrap;
 }
 
-.landing-page-hero__statistics_link {
+.landing-page-hero__statistic {
+  @include typography.body-1();
+}
+
+.landing-page-hero__statistic_link {
   display: flex;
   align-items: baseline;
 }

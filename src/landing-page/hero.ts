@@ -8,17 +8,23 @@ import { renderExampleSearches } from '../shared-components/render-example-searc
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 const renderStatistics = (listCount: number) => toHtmlFragment(`
-  <div class="landing-page-hero__statistics">
-    <a href="https://blog.sciety.org/lists-on-sciety/" class="landing-page-hero__statistics_link">
-      <span class="landing-page-hero__statistic_number">${listCount}</span><span class="landing-page-hero__statistic_title"> user curated lists</span>
-    </a>
-    <a href="/groups" class="landing-page-hero__statistics_link">
-      <span class="landing-page-hero__statistic_number">20k</span><span class="landing-page-hero__statistic_title"> evaluations</span>
-    </a>
-    <a href="/groups" class="landing-page-hero__statistics_link">
-      <span class="landing-page-hero__statistic_number">15k</span><span class="landing-page-hero__statistic_title"> evaluated articles</span>
-    </a>
-  </div>
+  <ul role="list" class="landing-page-hero__statistics">
+    <li class="landing-page-hero__statistic">
+      <a href="https://blog.sciety.org/lists-on-sciety/" class="landing-page-hero__statistic_link">
+        <span class="landing-page-hero__statistic_number">${listCount}</span><span class="landing-page-hero__statistic_title"> user curated lists</span>
+      </a>
+    </li>
+    <li class="landing-page-hero__statistic">
+      <a href="/groups" class="landing-page-hero__statistic_link">
+        <span class="landing-page-hero__statistic_number">20k</span><span class="landing-page-hero__statistic_title"> evaluations</span>
+      </a>
+    </li>
+    <li class="landing-page-hero__statistic">
+      <a href="/groups" class="landing-page-hero__statistic_link">
+        <span class="landing-page-hero__statistic_number">15k</span><span class="landing-page-hero__statistic_title"> evaluated articles</span>
+      </a>
+    </li>
+  </ul>
 `);
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
