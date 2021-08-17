@@ -85,6 +85,10 @@ $_search-button-width: functions.px-to-rem(70px);
   }
 }
 
+.landing-page-hero__statistics {
+  margin-bottom: 1.5rem;
+}
+
 .landing-page-hero__statistic_number {
   @include typography.section();
   color: settings.$colour-text-primary;
