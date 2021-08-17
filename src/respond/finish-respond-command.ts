@@ -21,7 +21,7 @@ export const finishRespondCommand = (ports: Ports): Middleware => async (context
     // TODO: move userId, reviewId, command into a new type that gets constructed by a validator
     O.Do,
     O.apS('reviewId', pipe(context.session.reviewId, reviewIdCodec.decode, O.fromEither)),
-    O.apS('command', pipe(context.session.command, toCommand)),
+    O.apS('type', pipe(context.session.command, toCommand)),
     O.fold(
       () => T.of(undefined),
       flow(

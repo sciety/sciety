@@ -23,7 +23,7 @@ export const respondHandler = (ports: Ports): Middleware<{ user: User }> => asyn
   await pipe(
     O.Do,
     O.apS('reviewId', pipe(context.request.body.reviewid, RI.deserialize)),
-    O.apS('command', pipe(context.request.body.command, toCommand)),
+    O.apS('type', pipe(context.request.body.command, toCommand)),
     O.fold(
       () => context.throw(StatusCodes.BAD_REQUEST),
       flow(
