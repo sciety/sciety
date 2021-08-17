@@ -1,27 +1,40 @@
+import * as t from 'io-ts';
 import {
   userSavedArticle,
-  UserSavedArticleEvent, userUnsavedArticle, UserUnsavedArticleEvent,
+  UserSavedArticleEvent,
+  userUnsavedArticle,
+  UserUnsavedArticleEvent,
 } from '../domain-events';
-import { Command } from '../types/command';
+import { DoiFromString } from '../types/codecs/DoiFromString';
 import { UserId } from '../types/user-id';
 
 export type SaveState = 'saved' | 'not-saved';
 
 export type SaveArticleEvents = UserSavedArticleEvent | UserUnsavedArticleEvent;
 
+export const saveArticleCodec = t.type({
+  articleId: DoiFromString,
+  type: t.union([
+    t.literal('UnsaveArticle'),
+    t.literal('SaveArticle'),
+  ]),
+});
+
+export type SaveArticleCommand = t.TypeOf<typeof saveArticleCodec>;
+
 type CommandHandler = (
-  command: Command,
+  command: SaveArticleCommand,
   userId: UserId
 ) => (
   saveState: SaveState,
 ) => ReadonlyArray<SaveArticleEvents>;
 
-const handleUnsaveCommand = (saveState: SaveState, command: Command, userId: UserId) => (
+const handleUnsaveCommand = (saveState: SaveState, command: SaveArticleCommand, userId: UserId) => (
   saveState === 'saved'
     ? [userUnsavedArticle(userId, command.articleId)]
     : []);
 
-const handleSaveCommand = (saveState: SaveState, command: Command, userId: UserId) => (
+const handleSaveCommand = (saveState: SaveState, command: SaveArticleCommand, userId: UserId) => (
   saveState === 'not-saved'
     ? [userSavedArticle(userId, command.articleId)]
     : []);

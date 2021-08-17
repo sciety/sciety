@@ -3,16 +3,13 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { JsonFromString } from 'io-ts-types';
+import { respondCodec } from '../respond/command-handler';
+import { saveArticleCodec } from '../save-article/command-handler';
 
-import { DoiFromString } from './codecs/DoiFromString';
-
-export const commandCodec = t.type({
-  articleId: DoiFromString,
-  type: t.union([
-    t.literal('UnsaveArticle'),
-    t.literal('SaveArticle'),
-  ]),
-});
+export const commandCodec = t.union([
+  saveArticleCodec,
+  respondCodec,
+]);
 
 export type Command = t.TypeOf<typeof commandCodec>;
 

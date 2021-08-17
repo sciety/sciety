@@ -35,7 +35,7 @@ export const toCommand = flow(
   O.filter(isCommand),
 );
 
-const commandCodec = t.type({
+export const respondCodec = t.type({
   reviewId: reviewIdCodec,
   type: t.union([
     t.literal('respond-helpful'),
@@ -44,7 +44,7 @@ const commandCodec = t.type({
   ]),
 });
 
-type Command = t.TypeOf<typeof commandCodec>;
+type Command = t.TypeOf<typeof respondCodec>;
 
 type GeneratedEvents = (
   UserFoundReviewHelpfulEvent |
