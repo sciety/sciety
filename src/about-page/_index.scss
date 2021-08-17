@@ -1,0 +1,5 @@
+@use '../sass/page-header';
+
+.about-page-content {
+  @include page-header.header-horizontal-spacing();
+}

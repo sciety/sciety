@@ -10,7 +10,9 @@ const addPageWrapper = (html: string) => `
           About Sciety
         </h1>
       </header>
-      ${html}
+      <div class="about-page-content">
+        ${html}
+      </div>
     </div>
   </div>
 `;

@@ -6,6 +6,8 @@
 
 @use 'standard-page-layout';
 @use 'site-menu';
+@use '../about-page';
+@use '../legal-page';
 @use '../groups-page';
 @use '../group-page';
 @use '../group-evaluations-page';
