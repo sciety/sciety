@@ -3,9 +3,12 @@ import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
 import {
-  commandHandler, CommitEvents, GetAllEvents, toCommand,
+  commandHandler, GetAllEvents, toCommand,
 } from './command-handler';
+import { RuntimeGeneratedEvent } from '../domain-events/runtime-generated-event';
 import { reviewIdCodec } from '../types/review-id';
+
+type CommitEvents = (events: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<void>;
 
 type Ports = {
   commitEvents: CommitEvents,
@@ -23,14 +26,14 @@ export const finishRespondCommand = (ports: Ports): Middleware => async (context
       () => T.of(undefined),
       flow(
         commandHandler(
-          ports.commitEvents,
           ports.getAllEvents,
           userId,
         ),
-        T.map((task) => {
+        T.chain(ports.commitEvents),
+        T.map(() => {
           delete context.session.command;
           delete context.session.reviewId;
-          return task;
+          return undefined;
         }),
       ),
     ),

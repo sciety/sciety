@@ -1,11 +1,15 @@
 import { Middleware } from '@koa/router';
 import * as O from 'fp-ts/Option';
-import { pipe } from 'fp-ts/function';
+import * as T from 'fp-ts/Task';
+import { flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
-import { commandHandler, CommitEvents, toCommand } from './command-handler';
+import { commandHandler, toCommand } from './command-handler';
 import { GetAllEvents } from './respond-helpful-command';
+import { RuntimeGeneratedEvent } from '../domain-events/runtime-generated-event';
 import * as RI from '../types/review-id';
 import { User } from '../types/user';
+
+type CommitEvents = (events: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<void>;
 
 type Ports = {
   commitEvents: CommitEvents,
@@ -22,7 +26,10 @@ export const respondHandler = (ports: Ports): Middleware<{ user: User }> => asyn
     O.apS('command', pipe(context.request.body.command, toCommand)),
     O.fold(
       () => context.throw(StatusCodes.BAD_REQUEST),
-      commandHandler(ports.commitEvents, ports.getAllEvents, user.id),
+      flow(
+        commandHandler(ports.getAllEvents, user.id),
+        T.chain(ports.commitEvents),
+      ),
     ),
   )();
 
