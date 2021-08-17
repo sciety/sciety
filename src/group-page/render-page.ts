@@ -20,19 +20,17 @@ const render = (components: Components) => `
       <div class="group-page-follow-toggle">
         ${components.followButton}
       </div>
+      <section class="group-page-lists">
+        <h2 class="group-page-lists-heading">
+          Lists
+        </h2>
+        ${components.evaluatedArticlesListCard}
+      </section>
+      <section class="group-page-followers">
+        ${components.followers}
+      </section>
       <div class="group-page-description">
-      ${components.description}
-      </div>
-      <div class="group-page-side-bar">
-        <section class="followers">
-          ${components.followers}
-        </section>
-        <section>
-          <h2 class="group-page-lists-heading">
-            Lists
-          </h2>
-          ${components.evaluatedArticlesListCard}
-        </section>
+        ${components.description}
       </div>
     </div>
   </div>

@@ -7,20 +7,22 @@
 
 @use '../sass/list';
 
-.group-page-description {
-  margin-bottom: baseline.increments(4);
-  padding: 1rem;
-  background-color: settings.$colour-white;
+.page-header.page-header--group {
+  margin-bottom: baseline.increments(3);
 }
 
-.group-page-side-bar {
-  margin-bottom: baseline.increments(4);
+.group-page-follow-toggle {
+  margin-bottom: baseline.increments(6);
 }
 
-.followers {
+.group-page-lists {
+  margin-bottom: baseline.increments(3);
+}
+
+.group-page-followers {
   margin-left: 1rem;
   margin-right: 1rem;
-  margin-bottom: baseline.increments(8);
+  margin-bottom: baseline.increments(3);
 
   @include breakpoints.not-narrow {
     margin-left: 0;
@@ -28,8 +30,10 @@
   }
 }
 
-.group-page-follow-toggle {
+.group-page-description {
   margin-bottom: baseline.increments(3);
+  padding: 1rem;
+  background-color: settings.$colour-white;
 }
 
 .page-header--group {
