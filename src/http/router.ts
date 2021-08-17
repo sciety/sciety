@@ -19,7 +19,6 @@ import { logOut } from './log-out';
 import { onlyIfNotAuthenticated } from './only-if-authenticated';
 import { pageHandler, toErrorResponse } from './page-handler';
 import { ping } from './ping';
-import { redirectBack } from './redirect-back';
 import { redirectUserIdToHandle } from './redirects/redirect-user-id-to-handle';
 import { redirectAfterAuthenticating, requireAuthentication } from './require-authentication';
 import { robots } from './robots';
@@ -366,7 +365,6 @@ export const createRouter = (adapters: Adapters): Router => {
     saveCommand,
     requireAuthentication,
     finishSavedCommand(adapters),
-    redirectBack,
   );
 
   // AUTHENTICATION
