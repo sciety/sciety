@@ -48,12 +48,12 @@
   }
 }
 
-.group-page-side-bar--follow-toggle {
+.group-page-follow-toggle {
+  grid-column: 1 / -1;
   margin-bottom: baseline.increments(3);
 }
 
 .page-header--group {
-
   .page-header__identity {
     display: flex;
     align-items: center;

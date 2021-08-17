@@ -17,15 +17,15 @@ const render = (components: Components) => `
   <div class="page-content__background">
     <div class="sciety-grid sciety-grid--group">
       ${components.header}
+      <div class="group-page-follow-toggle">
+        ${components.followButton}
+      </div>
       <div class="group-page-description">
       ${components.description}
       </div>
       <div class="group-page-side-bar">
         <section class="followers">
           ${components.followers}
-          <div class="group-page-side-bar--follow-toggle">
-            ${components.followButton}
-          </div>
         </section>
         <section>
           <h2 class="group-page-lists-heading">
