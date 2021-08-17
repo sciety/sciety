@@ -1,7 +1,17 @@
+import * as T from 'fp-ts/Task';
+import { DomainEvent } from '../domain-events';
 import { renderExampleSearches } from '../shared-components/render-example-searches';
-import { toHtmlFragment } from '../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
-export const hero = toHtmlFragment(`
+type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
+
+export type Ports = {
+  getAllEvents: GetAllEvents,
+};
+
+type Hero = (ports: Ports) => T.Task<HtmlFragment>;
+
+export const hero: Hero = () => T.of(toHtmlFragment(`
   <section class="landing-page-hero">
     <div class="landing-page-hero__content">
       <h1 class="landing-page-hero__content_title">
@@ -39,4 +49,4 @@ export const hero = toHtmlFragment(`
       <img src="data:" alt="" class="landing-page-hero__image">
     </picture>
   </section>
-`);
+`));
