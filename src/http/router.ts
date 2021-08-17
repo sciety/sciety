@@ -40,7 +40,6 @@ import { landingPage, landingPageLayout } from '../landing-page';
 import { legalPage } from '../legal-page';
 import { loggedInHomePage } from '../logged-in-home-page';
 import { menuPageLayout } from '../menu-page/menu-page-layout';
-import { finishRespondCommand } from '../respond/finish-respond-command';
 import { searchPage } from '../search-page';
 import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../search-results-page';
 import { applyStandardPageLayout } from '../shared-components/apply-standard-page-layout';
@@ -387,7 +386,6 @@ export const createRouter = (adapters: Adapters): Router => {
     onlyIfNotAuthenticated(logInCallback(process.env.AUTHENTICATION_STRATEGY === 'local' ? 'local' : 'twitter')),
     finishCommand(adapters),
     finishUnfollowCommand(adapters),
-    finishRespondCommand(adapters),
     finishSavedCommand(adapters),
     redirectAfterAuthenticating(),
   );
