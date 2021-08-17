@@ -72,6 +72,8 @@ $_search-button-width: functions.px-to-rem(70px);
 
 .landing-page-hero__picture {
   max-width: functions.px-to-rem(512px);
+  display: flex;
+  align-items: flex-end;
 }
 
 .landing-page-hero__image {
