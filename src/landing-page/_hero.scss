@@ -87,11 +87,19 @@ $_search-button-width: functions.px-to-rem(70px);
 
 .landing-page-hero__statistics {
   margin-bottom: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.landing-page-hero__statistics_link {
+  display: flex;
+  align-items: baseline;
 }
 
 .landing-page-hero__statistic_number {
   @include typography.section();
   color: settings.$colour-text-primary;
+  margin-right: 4px;
 }
 
 .landing-page-hero__statistic_title {

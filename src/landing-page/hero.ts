@@ -14,13 +14,13 @@ export const hero = toHtmlFragment(`
       </p>
       <p class="landing-page-hero__content_byline">Follow the journey through <a href="/blog">our blog</a>.</p>
       <div class="landing-page-hero__statistics">
-        <a href="https://blog.sciety.org/lists-on-sciety/">
+        <a href="https://blog.sciety.org/lists-on-sciety/" class="landing-page-hero__statistics_link">
           <span class="landing-page-hero__statistic_number">20+</span><span class="landing-page-hero__statistic_title"> user curated lists</span>
         </a>
-        <a href="/groups">
+        <a href="/groups" class="landing-page-hero__statistics_link">
           <span class="landing-page-hero__statistic_number">20k</span><span class="landing-page-hero__statistic_title"> evaluations</span>
         </a>
-        <a href="/groups">
+        <a href="/groups" class="landing-page-hero__statistics_link">
           <span class="landing-page-hero__statistic_number">15k</span><span class="landing-page-hero__statistic_title"> evaluated articles</span>
         </a>
       </div>
