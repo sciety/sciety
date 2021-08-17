@@ -45,6 +45,5 @@ export const finishSavedCommand = (
     ),
   )();
 
-  context.redirect('back');
   await next();
 };

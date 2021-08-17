@@ -20,7 +20,9 @@ import { onlyIfNotAuthenticated } from './only-if-authenticated';
 import { pageHandler, toErrorResponse } from './page-handler';
 import { ping } from './ping';
 import { redirectUserIdToHandle } from './redirects/redirect-user-id-to-handle';
-import { redirectAfterAuthenticating, requireAuthentication } from './require-authentication';
+import {
+  finishSavedRedirect, redirectAfterAuthenticating, requireAuthentication, saveRedirectTarget,
+} from './require-authentication';
 import { robots } from './robots';
 import { aboutPage } from '../about-page';
 import { articleActivityPage, articleMetaPage } from '../article-page';
@@ -38,9 +40,7 @@ import { landingPage, landingPageLayout } from '../landing-page';
 import { legalPage } from '../legal-page';
 import { loggedInHomePage } from '../logged-in-home-page';
 import { menuPageLayout } from '../menu-page/menu-page-layout';
-import { respondHandler } from '../respond';
 import { finishRespondCommand } from '../respond/finish-respond-command';
-import { saveRespondCommand } from '../respond/save-respond-command';
 import { searchPage } from '../search-page';
 import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../search-results-page';
 import { applyStandardPageLayout } from '../shared-components/apply-standard-page-layout';
@@ -352,19 +352,13 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   router.post(
-    '/respond',
-    bodyParser({ enableTypes: ['form'] }),
-    saveRespondCommand,
-    requireAuthentication,
-    respondHandler(adapters),
-  );
-
-  router.post(
     '/command',
     bodyParser({ enableTypes: ['form'] }),
     saveCommand,
+    saveRedirectTarget,
     requireAuthentication,
     finishSavedCommand(adapters),
+    finishSavedRedirect(),
   );
 
   // AUTHENTICATION

@@ -59,3 +59,19 @@ export const redirectAfterAuthenticating = (): Middleware => (
     await next();
   }
 );
+
+export const saveRedirectTarget: Middleware = async (context, next) => {
+  context.session.successRedirect = constructRedirectUrl(context);
+
+  await next();
+};
+
+export const finishSavedRedirect = (): Middleware => (
+  async (context, next) => {
+    const successRedirect = context.session.successRedirect || '/';
+    context.redirect(successRedirect);
+    delete context.session.successRedirect;
+
+    await next();
+  }
+);

@@ -34,7 +34,7 @@ describe('authentication-and-redirect', () => {
 
     it('respond command returns to review fragment on the article page', async () => {
       await goto('localhost:8080/articles/10.1101/2020.07.13.199174');
-      await click($('.activity-feed__item:first-child button[value="respond-helpful"]'));
+      await click($('.activity-feed__item:first-child button img[src*="thumb-up-outline"]'));
       await authenticateViaTwitter();
 
       const result = await currentURL();
@@ -71,7 +71,7 @@ describe('authentication-and-redirect', () => {
 
     it('respond command returns to review fragment on the article page', async () => {
       await goto('localhost:8080/articles/10.1101/2020.07.13.199174');
-      await click($('.activity-feed__item:first-child button[value="respond-not-helpful"]'));
+      await click($('.activity-feed__item:first-child button img[src*="thumb-down-outline"]'));
 
       const result = await currentURL();
 

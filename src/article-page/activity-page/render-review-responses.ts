@@ -20,11 +20,11 @@ export const renderReviewResponses: RenderReviewResponses = ({
   const helpfulButton = (count: number): HtmlFragment => (
     saidHelpful
       ? toHtmlFragment(`
-        <button type="submit" name="command" value="revoke-response" aria-label="You said this evaluation is helpful; press to undo." class="responses__button">${count}<span class="visually-hidden"> people said this evaluation is helpful</span><img src="/static/images/thumb-up-solid.svg" alt="" class="responses__button__icon"></button>
+        <button type="submit" aria-label="You said this evaluation is helpful; press to undo." class="responses__button">${count}<span class="visually-hidden"> people said this evaluation is helpful</span><img src="/static/images/thumb-up-solid.svg" alt="" class="responses__button__icon"></button>
         <input type="hidden" name="${encodedCommandFieldName}" value="${CommandFromString.encode({ reviewId, type: 'revoke-response' })}">
     `)
       : toHtmlFragment(`
-        <button type="submit" name="command" value="respond-helpful" aria-label="This evaluation is helpful" class="responses__button">
+        <button type="submit" aria-label="This evaluation is helpful" class="responses__button">
         ${count}<span class="visually-hidden"> people said this evaluation is helpful</span><img src="/static/images/thumb-up-outline.svg" alt="" class="responses__button__icon">
         </button>
         <input type="hidden" name="${encodedCommandFieldName}" value="${CommandFromString.encode({ reviewId, type: 'respond-helpful' })}">
@@ -34,11 +34,11 @@ export const renderReviewResponses: RenderReviewResponses = ({
   const notHelpfulButton = (count: number): HtmlFragment => (
     saidNotHelpful
       ? toHtmlFragment(`
-        <button type="submit" name="command" value="revoke-response" aria-label="You said this evaluation is not helpful; press to undo." class="responses__button">${count}<span class="visually-hidden"> people said this evaluation is not helpful</span><img src="/static/images/thumb-down-solid.svg" alt="" class="responses__button__icon"></button>
+        <button type="submit" aria-label="You said this evaluation is not helpful; press to undo." class="responses__button">${count}<span class="visually-hidden"> people said this evaluation is not helpful</span><img src="/static/images/thumb-down-solid.svg" alt="" class="responses__button__icon"></button>
         <input type="hidden" name="${encodedCommandFieldName}" value="${CommandFromString.encode({ reviewId, type: 'revoke-response' })}">
     `)
       : toHtmlFragment(`
-        <button type="submit" name="command" value="respond-not-helpful" aria-label="This evaluation is not helpful" class="responses__button">${count}<span class="visually-hidden"> people said this evaluation is not helpful</span><img src="/static/images/thumb-down-outline.svg" alt="" class="responses__button__icon"></button>
+        <button type="submit" aria-label="This evaluation is not helpful" class="responses__button">${count}<span class="visually-hidden"> people said this evaluation is not helpful</span><img src="/static/images/thumb-down-outline.svg" alt="" class="responses__button__icon"></button>
         <input type="hidden" name="${encodedCommandFieldName}" value="${CommandFromString.encode({ reviewId, type: 'respond-not-helpful' })}">
     `)
   );
@@ -48,15 +48,13 @@ export const renderReviewResponses: RenderReviewResponses = ({
       <div class="responses__question">Was this evaluation helpful?</div>
       <div class="responses__actions">
         <div class="responses__action">
-          <form method="post" action="/respond">
-            <input type="hidden" name="reviewid" value="${RI.reviewIdCodec.encode(reviewId)}">
+          <form method="post" action="/command">
             <input type="hidden" name="${targetFragmentIdField}" value="${RI.reviewIdCodec.encode(reviewId)}">
             ${helpfulButton(helpfulCount)}
           </form>
         </div>
         <div class="responses__action">
-          <form method="post" action="/respond">
-            <input type="hidden" name="reviewid" value="${RI.reviewIdCodec.encode(reviewId)}">
+          <form method="post" action="/command">
             <input type="hidden" name="${targetFragmentIdField}" value="${RI.reviewIdCodec.encode(reviewId)}">
             ${notHelpfulButton(notHelpfulCount)}
           </form>
