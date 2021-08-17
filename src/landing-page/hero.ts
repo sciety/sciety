@@ -21,9 +21,15 @@ export const hero = toHtmlFragment(`
         <button type="reset" class="visually-hidden">Reset</button>
       </form>
       ${renderExampleSearches()}
-      <span class="landing-page-hero__statistic_number">20+</span><span class="landing-page-hero__statistic_title"> user curated lists</span>
-      <span class="landing-page-hero__statistic_number">20k</span><span class="landing-page-hero__statistic_title"> evaluations</span>
-      <span class="landing-page-hero__statistic_number">15k</span><span class="landing-page-hero__statistic_title"> evaluated articles</span>
+      <a href="https://blog.sciety.org/lists-on-sciety/">
+        <span class="landing-page-hero__statistic_number">20+</span><span class="landing-page-hero__statistic_title"> user curated lists</span>
+      </a>
+      <a href="/groups">
+        <span class="landing-page-hero__statistic_number">20k</span><span class="landing-page-hero__statistic_title"> evaluations</span>
+      </a>
+      <a href="/groups">
+        <span class="landing-page-hero__statistic_number">15k</span><span class="landing-page-hero__statistic_title"> evaluated articles</span>
+      </a>
     </div>
 
     <picture class="landing-page-hero__picture">
