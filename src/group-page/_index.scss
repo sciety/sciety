@@ -7,33 +7,13 @@
 
 @use '../sass/list';
 
-.sciety-grid--group {
-  margin: 0 auto;
-
-  > .page-header--group {
-    grid-column: 1 / -1;
-  }
-
-  @include breakpoints.not-narrow {
-    > .group-page-description {
-      grid-column: 1 / 7;
-    }
-
-    > .group-page-side-bar {
-      grid-column: 8 / -1;
-    }
-  }
-}
-
 .group-page-description {
-  grid-column: 1 / -1;
   margin-bottom: baseline.increments(4);
   padding: 1rem;
   background-color: settings.$colour-white;
 }
 
 .group-page-side-bar {
-  grid-column: 1 / -1;
   margin-bottom: baseline.increments(4);
 }
 
@@ -49,7 +29,6 @@
 }
 
 .group-page-follow-toggle {
-  grid-column: 1 / -1;
   margin-bottom: baseline.increments(3);
 }
 
