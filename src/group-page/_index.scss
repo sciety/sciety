@@ -4,6 +4,7 @@
 @use '../sass/baseline';
 @use '../sass/typography';
 @use '../sass/breakpoints';
+@use '../sass/layout';
 
 @use '../sass/list';
 
@@ -12,6 +13,7 @@
 }
 
 .group-page-follow-toggle {
+  @include layout.basic-horizontal-spacing();
   margin-bottom: baseline.increments(6);
 }
 

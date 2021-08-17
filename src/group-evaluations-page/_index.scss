@@ -45,13 +45,13 @@ $_avatar-size: 48px;
 
 .evaluated-articles__page_count {
   @include typography.details();
-  @include page-header.header-horizontal-spacing();
+  @include layout.basic-horizontal-spacing();
   font-weight: bold;
   color: settings.$colour-text-primary;
   margin-bottom: 1rem;
 }
 
 .evaluated-articles__empty {
-  @include page-header.header-horizontal-spacing();
+  @include layout.basic-horizontal-spacing();
   color: settings.$colour-text-primary;
 }

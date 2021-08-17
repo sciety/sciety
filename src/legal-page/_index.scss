@@ -1,5 +1,5 @@
-@use '../sass/page-header';
+@use '../sass/layout';
 
 .legal-page-content {
-  @include page-header.header-horizontal-spacing();
+  @include layout.basic-horizontal-spacing();
 }
