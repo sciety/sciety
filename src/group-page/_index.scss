@@ -40,7 +40,7 @@
 .followers {
   margin-left: 1rem;
   margin-right: 1rem;
-  margin-bottom: #{baseline.increments(8)};
+  margin-bottom: baseline.increments(8);
 
   @include breakpoints.not-narrow {
     margin-left: 0;
@@ -49,12 +49,16 @@
 }
 
 .group-page-side-bar--follow-toggle {
-  margin-bottom: #{baseline.increments(3)};
+  margin-bottom: baseline.increments(3);
 }
 
 .page-header--group {
-  display: flex;
-  align-items: center;
+
+  .page-header__identity {
+    display: flex;
+    align-items: center;
+    margin-bottom: baseline.increments(3);
+  }
 
   .page-header__avatar {
     width: 76px;

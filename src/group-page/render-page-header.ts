@@ -5,14 +5,20 @@ import { toHtmlFragment } from '../types/html-fragment';
 type Group = {
   name: string,
   avatarPath: string,
+  shortDescription: string,
 };
 
 const render = (group: Group) => `
   <header class="page-header page-header--group">
-    <img src="${group.avatarPath}" alt="" class="page-header__avatar">
-    <h1 class="page-header__title">
-      ${htmlEscape(group.name)}
-    </h1>
+    <div class="page-header__identity">
+      <img src="${group.avatarPath}" alt="" class="page-header__avatar">
+      <h1 class="page-header__title">
+        ${htmlEscape(group.name)}
+      </h1>
+    </div>
+    <p>
+      ${htmlEscape(group.shortDescription)}
+    </p>
   </header>
 `;
 
