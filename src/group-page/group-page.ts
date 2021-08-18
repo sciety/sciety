@@ -38,11 +38,12 @@ type Ports = {
   follows: (userId: UserId, groupId: GroupId) => T.Task<boolean>,
 };
 
-type TabIndex = 0 | 1;
+type TabIndex = 0 | 1 | 2;
 
 export const groupPageTabs: Record<string, TabIndex> = {
   lists: 0,
   about: 1,
+  followers: 2,
 };
 
 export const paramsCodec = t.type({
@@ -59,9 +60,8 @@ const notFoundResponse = () => ({
   message: toHtmlFragment('No such group. Please check and try again.'),
 } as const);
 
-const renderAbout = ({ followers, description }: { followers: HtmlFragment, description: HtmlFragment }) => toHtmlFragment(`
+const renderAbout = ({ description }: { description: HtmlFragment }) => toHtmlFragment(`
   <div class="group-page-description">
-    ${followers}
     ${description}
   </div>
 `);
@@ -72,14 +72,6 @@ const aboutTabComponents = (ports: Ports) => (group: Group) => pipe(
       `groups/${group.descriptionPath}`,
       ports.fetchStaticFile,
       TE.map(renderDescription),
-    ),
-    followers: pipe(
-      ports.getAllEvents,
-      T.map(flow(
-        countFollowersOf(group.id),
-        renderFollowers,
-        E.right,
-      )),
     ),
   },
   sequenceS(TE.ApplyPar),
@@ -104,7 +96,26 @@ const listTabComponents = (ports: Ports) => (group: Group) => pipe(
   TE.rightTask,
 );
 
-const tabList = (groupId: GroupId): [Tab, Tab] => [
+const followersTabComponents = (ports: Ports) => (group: Group) => pipe(
+  ports.getAllEvents,
+  T.map(flow(
+    countFollowersOf(group.id),
+    renderFollowers,
+    E.right,
+  )),
+);
+
+const contentRenderers: Record<TabIndex, (
+  ports: Ports
+) => (
+  group: Group
+) => TE.TaskEither<DE.DataError, HtmlFragment>> = {
+  0: listTabComponents,
+  1: aboutTabComponents,
+  2: followersTabComponents,
+};
+
+const tabList = (groupId: GroupId): [Tab, Tab, Tab] => [
   {
     label: toHtmlFragment('Lists'),
     url: `/groups/${groupId}/lists`,
@@ -112,6 +123,10 @@ const tabList = (groupId: GroupId): [Tab, Tab] => [
   {
     label: toHtmlFragment('About'),
     url: `/groups/${groupId}/about`,
+  },
+  {
+    label: toHtmlFragment('Followers'),
+    url: `/groups/${groupId}/followers`,
   },
 ];
 
@@ -143,7 +158,7 @@ export const groupPage: GroupPage = (ports) => (activeTabIndex) => ({ id, user }
         TE.rightTask,
       ),
       content: pipe(
-        activeTabIndex === groupPageTabs.lists ? listTabComponents(ports)(group) : aboutTabComponents(ports)(group),
+        contentRenderers[activeTabIndex](ports)(group),
         TE.map(tabs({
           tabList: tabList(group.id),
           activeTabIndex,

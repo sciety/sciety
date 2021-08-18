@@ -15,7 +15,7 @@
 @mixin tab() {
   @include typography.button();
   line-height: math.div(20px, 14px);
-  min-width: functions.px-to-rem(120px);
+  min-width: functions.px-to-rem(119px); // to prevent three tabs wrapping at lowest resolution (360px)
   display: inline-block;
   margin-bottom: -2px;
   text-align: center;

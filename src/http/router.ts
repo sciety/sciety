@@ -320,6 +320,16 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   router.get(
+    '/groups/:id/followers',
+    pageHandler(flow(
+      groupPageParams.decode,
+      E.mapLeft(toNotFound),
+      TE.fromEither,
+      TE.chain(groupPage(adapters)(groupPageTabs.followers)),
+    )),
+  );
+
+  router.get(
     '/groups/:id/evaluated-articles',
     pageHandler(flow(
       groupEvaluationsPageParams.decode,
