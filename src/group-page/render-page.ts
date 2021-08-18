@@ -8,19 +8,10 @@ import { RenderPageError } from '../types/render-page-error';
 type Components = {
   header: HtmlFragment,
   description: HtmlFragment,
-  evaluatedArticlesListCard: HtmlFragment,
+  lists: HtmlFragment,
   followers: HtmlFragment,
   followButton: HtmlFragment,
 };
-
-const renderLists = (evaluatedArticlesListCard: HtmlFragment) => `
-  <section class="group-page-lists">
-    <h2 class="group-page-lists-heading">
-      Lists
-    </h2>
-    ${evaluatedArticlesListCard}
-  </section>
-`;
 
 const renderAbout = (followers: HtmlFragment, description: HtmlFragment) => `
   <section class="group-page-followers">
@@ -38,7 +29,7 @@ const render = (components: Components) => `
       <div class="group-page-follow-toggle">
         ${components.followButton}
       </div>
-      ${renderLists(components.evaluatedArticlesListCard)}
+      ${components.lists}
       ${renderAbout(components.followers, components.description)}      
     </div>
   </div>

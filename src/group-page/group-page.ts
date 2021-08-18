@@ -21,7 +21,7 @@ import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import * as DE from '../types/data-error';
 import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
-import { toHtmlFragment } from '../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { UserId } from '../types/user-id';
@@ -72,8 +72,17 @@ const aboutTabComponents = (ports: Ports) => (group: Group) => ({
   ),
 });
 
+const renderLists = (evaluatedArticlesListCard: HtmlFragment) => toHtmlFragment(`
+  <section class="group-page-lists">
+    <h2 class="group-page-lists-heading">
+      Lists
+    </h2>
+    ${evaluatedArticlesListCard}
+  </section>
+`);
+
 const listTabComponents = (ports: Ports) => (group: Group) => ({
-  evaluatedArticlesListCard: pipe(
+  lists: pipe(
     ports.getAllEvents,
     T.map(getEvaluatedArticlesListDetails(group.id)),
     T.map((details) => ({
@@ -81,6 +90,7 @@ const listTabComponents = (ports: Ports) => (group: Group) => ({
       ...details,
     })),
     T.map(renderEvaluatedArticlesListCard),
+    T.map(renderLists),
     TE.rightTask,
   ),
 });
