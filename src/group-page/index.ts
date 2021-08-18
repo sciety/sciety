@@ -51,6 +51,35 @@ const notFoundResponse = () => ({
   message: toHtmlFragment('No such group. Please check and try again.'),
 } as const);
 
+const aboutTabComponents = (ports: Ports) => (group: Group) => ({
+  description: pipe(
+    `groups/${group.descriptionPath}`,
+    ports.fetchStaticFile,
+    TE.map(renderDescription),
+  ),
+  followers: pipe(
+    ports.getAllEvents,
+    T.map(flow(
+      countFollowersOf(group.id),
+      renderFollowers,
+      E.right,
+    )),
+  ),
+});
+
+const listTabComponents = (ports: Ports) => (group: Group) => ({
+  evaluatedArticlesListCard: pipe(
+    ports.getAllEvents,
+    T.map(getEvaluatedArticlesListDetails(group.id)),
+    T.map((details) => ({
+      group,
+      ...details,
+    })),
+    T.map(renderEvaluatedArticlesListCard),
+    TE.rightTask,
+  ),
+});
+
 type GroupPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
 export const groupPage = (ports: Ports): GroupPage => ({ id, user }) => pipe(
@@ -63,19 +92,6 @@ export const groupPage = (ports: Ports): GroupPage => ({ id, user }) => pipe(
         renderPageHeader,
         TE.right,
       ),
-      description: pipe(
-        `groups/${group.descriptionPath}`,
-        ports.fetchStaticFile,
-        TE.map(renderDescription),
-      ),
-      followers: pipe(
-        ports.getAllEvents,
-        T.map(flow(
-          countFollowersOf(group.id),
-          renderFollowers,
-          E.right,
-        )),
-      ),
       followButton: pipe(
         user,
         O.fold(
@@ -85,16 +101,8 @@ export const groupPage = (ports: Ports): GroupPage => ({ id, user }) => pipe(
         T.map(renderFollowToggle(group.id, group.name)),
         TE.rightTask,
       ),
-      evaluatedArticlesListCard: pipe(
-        ports.getAllEvents,
-        T.map(getEvaluatedArticlesListDetails(group.id)),
-        T.map((details) => ({
-          group,
-          ...details,
-        })),
-        T.map(renderEvaluatedArticlesListCard),
-        TE.rightTask,
-      ),
+      ...aboutTabComponents(ports)(group),
+      ...listTabComponents(ports)(group),
     },
     sequenceS(TE.ApplyPar),
     TE.bimap(renderErrorPage, renderPage(group)),
