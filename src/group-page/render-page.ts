@@ -13,6 +13,24 @@ type Components = {
   followButton: HtmlFragment,
 };
 
+const renderLists = (evaluatedArticlesListCard: HtmlFragment) => `
+  <section class="group-page-lists">
+    <h2 class="group-page-lists-heading">
+      Lists
+    </h2>
+    ${evaluatedArticlesListCard}
+  </section>
+`;
+
+const renderAbout = (followers: HtmlFragment, description: HtmlFragment) => `
+  <section class="group-page-followers">
+    ${followers}
+  </section>
+  <div class="group-page-description">
+    ${description}
+  </div>
+`;
+
 const render = (components: Components) => `
   <div class="page-content__background">
     <div class="sciety-grid sciety-grid--one-column">
@@ -20,18 +38,8 @@ const render = (components: Components) => `
       <div class="group-page-follow-toggle">
         ${components.followButton}
       </div>
-      <section class="group-page-lists">
-        <h2 class="group-page-lists-heading">
-          Lists
-        </h2>
-        ${components.evaluatedArticlesListCard}
-      </section>
-      <section class="group-page-followers">
-        ${components.followers}
-      </section>
-      <div class="group-page-description">
-        ${components.description}
-      </div>
+      ${renderLists(components.evaluatedArticlesListCard)}
+      ${renderAbout(components.followers, components.description)}      
     </div>
   </div>
 `;
