@@ -37,6 +37,11 @@ type Ports = {
   follows: (userId: UserId, groupId: GroupId) => T.Task<boolean>,
 };
 
+export const groupPageTabs = {
+  lists: 0,
+};
+
+// ts-unused-exports:disable-next-line
 export const paramsCodec = t.type({
   id: GroupIdFromString,
   user: tt.optionFromNullable(t.type({
@@ -80,9 +85,9 @@ const listTabComponents = (ports: Ports) => (group: Group) => ({
   ),
 });
 
-type GroupPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
+type GroupPage = (ports: Ports) => (tab: number) => (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
-export const oldGroupPage = (ports: Ports): GroupPage => ({ id, user }) => pipe(
+export const groupPage: GroupPage = (ports) => () => ({ id, user }) => pipe(
   ports.getGroup(id),
   T.map(E.fromOption(notFoundResponse)),
   TE.chain((group) => pipe(

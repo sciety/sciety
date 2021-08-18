@@ -30,7 +30,8 @@ import { generateDocmapIndex } from '../docmaps/generate-docmap-index';
 import { hardcodedReviewCommonsDocmap } from '../docmaps/hardcoded-review-commons-docmap';
 import { finishUnfollowCommand, saveUnfollowCommand, unfollowHandler } from '../follow';
 import { groupEvaluationsPage, paramsCodec as groupEvaluationsPageParams } from '../group-evaluations-page/group-evaluations-page';
-import { groupPage, paramsCodec as groupPageParams } from '../group-page';
+import { paramsCodec as groupPageParams, oldGroupPage } from '../group-page';
+import { groupPage, groupPageTabs } from '../group-page/group-page';
 import { groupsPage } from '../groups-page';
 import { Adapters } from '../infrastructure/adapters';
 import { landingPage, landingPageLayout } from '../landing-page';
@@ -295,7 +296,7 @@ export const createRouter = (adapters: Adapters): Router => {
       groupPageParams.decode,
       E.mapLeft(toNotFound),
       TE.fromEither,
-      TE.chain(groupPage(adapters)),
+      TE.chain(oldGroupPage(adapters)),
     )),
   );
 
@@ -305,7 +306,7 @@ export const createRouter = (adapters: Adapters): Router => {
       groupPageParams.decode,
       E.mapLeft(toNotFound),
       TE.fromEither,
-      TE.chain(groupPage(adapters)),
+      TE.chain(groupPage(adapters)(groupPageTabs.lists)),
     )),
   );
 
