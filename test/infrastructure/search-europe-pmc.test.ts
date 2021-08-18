@@ -172,6 +172,33 @@ describe('search-europe-pmc adapter', () => {
       });
     });
 
+    describe('when there is no next cursor mark', () => {
+      it('nextCursor should be none', async () => {
+        const results = await searchEuropePmc(10)('some query', O.none)({
+          getJson: async () => ({
+            hitCount: arbitraryNumber(0, 100),
+            resultList: {
+              result: [{
+                doi: '10.1111/1234',
+                title: 'Article title',
+                authorList: {
+                  author: [],
+                },
+                bookOrReportDetails: {
+                  publisher: 'bioRxiv',
+                },
+              }],
+            },
+          }),
+          logger: dummyLogger,
+        })();
+
+        expect(results).toStrictEqual(E.right(expect.objectContaining({
+          nextCursor: O.none,
+        })));
+      });
+    });
+
     describe('when there are less results than the page size', () => {
       it('nextCursor should be none', async () => {
         const nextCursor = arbitraryWord();

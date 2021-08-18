@@ -9,6 +9,7 @@ import {
   constant, flow, pipe, tupled,
 } from 'fp-ts/function';
 import * as t from 'io-ts';
+import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
 import { Logger } from './logger';
 import { ArticleServer } from '../types/article-server';
@@ -58,7 +59,7 @@ const resultDetails = t.type({
 
 const europePmcResponse = t.type({
   hitCount: t.number,
-  nextCursorMark: t.string,
+  nextCursorMark: tt.optionFromNullable(t.string),
   resultList: t.type({
     result: t.array(resultDetails),
   }),
@@ -98,7 +99,7 @@ const constructSearchResults = (pageSize: number) => (data: EuropePmcResponse) =
       RA.map((author) => ('fullName' in author ? author.fullName : author.collectiveName)),
     ),
   }));
-  const nextCursor = data.resultList.result.length < pageSize ? O.none : O.some(data.nextCursorMark);
+  const nextCursor = data.resultList.result.length < pageSize ? O.none : data.nextCursorMark;
   return {
     items,
     total: data.hitCount,
