@@ -16,6 +16,7 @@ import { renderErrorPage, renderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
 import { DomainEvent } from '../domain-events';
 import { renderFollowToggle } from '../follow/render-follow-toggle';
+import { Tab, tabs } from '../shared-components/tabs';
 import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import * as DE from '../types/data-error';
@@ -37,7 +38,9 @@ type Ports = {
   follows: (userId: UserId, groupId: GroupId) => T.Task<boolean>,
 };
 
-export const groupPageTabs = {
+type TabIndex = 0 | 1;
+
+export const groupPageTabs: Record<string, TabIndex> = {
   lists: 0,
   about: 1,
 };
@@ -107,9 +110,26 @@ const listTabComponents = (ports: Ports) => (group: Group) => pipe(
   TE.rightTask,
 );
 
-type GroupPage = (ports: Ports) => (tab: number) => (params: Params) => TE.TaskEither<RenderPageError, Page>;
+const tabList = (groupId: GroupId): [Tab, Tab] => [
+  {
+    label: toHtmlFragment('Lists'),
+    url: `/groups/${groupId}/lists`,
+  },
+  {
+    label: toHtmlFragment('About'),
+    url: `/groups/${groupId}/about`,
+  },
+];
 
-export const groupPage: GroupPage = (ports) => (tab) => ({ id, user }) => pipe(
+type GroupPage = (
+  ports: Ports
+) => (
+  activeTabIndex: TabIndex
+) => (
+  params: Params
+) => TE.TaskEither<RenderPageError, Page>;
+
+export const groupPage: GroupPage = (ports) => (activeTabIndex) => ({ id, user }) => pipe(
   ports.getGroup(id),
   T.map(E.fromOption(notFoundResponse)),
   TE.chain((group) => pipe(
@@ -128,7 +148,13 @@ export const groupPage: GroupPage = (ports) => (tab) => ({ id, user }) => pipe(
         T.map(renderFollowToggle(group.id, group.name)),
         TE.rightTask,
       ),
-      content: tab === groupPageTabs.lists ? listTabComponents(ports)(group) : aboutTabComponents(ports)(group),
+      content: pipe(
+        activeTabIndex === groupPageTabs.lists ? listTabComponents(ports)(group) : aboutTabComponents(ports)(group),
+        TE.map(tabs({
+          tabList: tabList(group.id),
+          activeTabIndex,
+        })),
+      ),
     },
     sequenceS(TE.ApplyPar),
     TE.bimap(renderErrorPage, renderPage(group)),
