@@ -45,7 +45,6 @@ export const groupPageTabs: Record<string, TabIndex> = {
   about: 1,
 };
 
-// ts-unused-exports:disable-next-line
 export const paramsCodec = t.type({
   id: GroupIdFromString,
   user: tt.optionFromNullable(t.type({

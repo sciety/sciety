@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe } from 'fp-ts/function';
-import { oldGroupPage as groupPage } from '../../src/group-page';
+import { groupPage, groupPageTabs } from '../../src/group-page/group-page';
 import * as DE from '../../src/types/data-error';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryGroupId } from '../types/group-id.helper';
@@ -21,7 +21,7 @@ describe('group page', () => {
           follows: shouldNotBeCalled,
           getAllEvents: shouldNotBeCalled,
           getGroup: () => TO.none,
-        }),
+        })(groupPageTabs.lists),
         T.map(flow(
           E.matchW(
             (res) => res.type,

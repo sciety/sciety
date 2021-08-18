@@ -21,17 +21,6 @@
   margin-bottom: baseline.increments(3);
 }
 
-.group-page-followers {
-  margin-left: 1rem;
-  margin-right: 1rem;
-  margin-bottom: baseline.increments(3);
-
-  @include breakpoints.not-narrow {
-    margin-left: 0;
-    margin-right: 0;
-  }
-}
-
 .group-page-description {
   margin-bottom: baseline.increments(3);
   padding: 1rem;
