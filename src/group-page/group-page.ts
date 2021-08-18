@@ -96,19 +96,17 @@ const renderLists = (evaluatedArticlesListCard: HtmlFragment) => toHtmlFragment(
   </section>
 `);
 
-const listTabComponents = (ports: Ports) => (group: Group) => ({
-  lists: pipe(
-    ports.getAllEvents,
-    T.map(getEvaluatedArticlesListDetails(group.id)),
-    T.map((details) => ({
-      group,
-      ...details,
-    })),
-    T.map(renderEvaluatedArticlesListCard),
-    T.map(renderLists),
-    TE.rightTask,
-  ),
-});
+const listTabComponents = (ports: Ports) => (group: Group) => pipe(
+  ports.getAllEvents,
+  T.map(getEvaluatedArticlesListDetails(group.id)),
+  T.map((details) => ({
+    group,
+    ...details,
+  })),
+  T.map(renderEvaluatedArticlesListCard),
+  T.map(renderLists),
+  TE.rightTask,
+);
 
 type GroupPage = (ports: Ports) => (tab: number) => (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
@@ -132,7 +130,7 @@ export const groupPage: GroupPage = (ports) => () => ({ id, user }) => pipe(
         TE.rightTask,
       ),
       ...aboutTabComponents(ports)(group),
-      ...listTabComponents(ports)(group),
+      content: listTabComponents(ports)(group),
     },
     sequenceS(TE.ApplyPar),
     TE.bimap(renderErrorPage, renderPage(group)),

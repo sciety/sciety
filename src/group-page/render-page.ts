@@ -8,8 +8,7 @@ import { RenderPageError } from '../types/render-page-error';
 type Components = {
   header: HtmlFragment,
   followButton: HtmlFragment,
-  about: HtmlFragment,
-  lists: HtmlFragment,
+  content: HtmlFragment,
 };
 
 const render = (components: Components) => `
@@ -19,8 +18,7 @@ const render = (components: Components) => `
       <div class="group-page-follow-toggle">
         ${components.followButton}
       </div>
-      ${components.lists}
-      ${components.about}
+      ${components.content}
     </div>
   </div>
 `;
