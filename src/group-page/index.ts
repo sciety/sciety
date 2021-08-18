@@ -82,6 +82,7 @@ const listTabComponents = (ports: Ports) => (group: Group) => ({
 
 type GroupPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
+// ts-unused-exports:disable-next-line
 export const oldGroupPage = (ports: Ports): GroupPage => ({ id, user }) => pipe(
   ports.getGroup(id),
   T.map(E.fromOption(notFoundResponse)),
