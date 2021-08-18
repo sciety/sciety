@@ -9,10 +9,10 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { countFollowersOf } from './count-followers';
 import { getEvaluatedArticlesListDetails } from './get-evaluated-articles-list-details';
+import { oldRenderErrorPage, oldRenderPage } from './old-render-page';
 import { FetchStaticFile, renderDescription } from './render-description';
 import { renderEvaluatedArticlesListCard } from './render-evaluated-articles-list-card';
 import { renderFollowers } from './render-followers';
-import { renderErrorPage, renderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
 import { DomainEvent } from '../domain-events';
 import { renderFollowToggle } from '../follow/render-follow-toggle';
@@ -105,6 +105,6 @@ export const oldGroupPage = (ports: Ports): GroupPage => ({ id, user }) => pipe(
       ...listTabComponents(ports)(group),
     },
     sequenceS(TE.ApplyPar),
-    TE.bimap(renderErrorPage, renderPage(group)),
+    TE.bimap(oldRenderErrorPage, oldRenderPage(group)),
   )),
 );
