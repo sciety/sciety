@@ -7,20 +7,10 @@ import { RenderPageError } from '../types/render-page-error';
 
 type Components = {
   header: HtmlFragment,
-  description: HtmlFragment,
-  lists: HtmlFragment,
-  followers: HtmlFragment,
   followButton: HtmlFragment,
+  about: HtmlFragment,
+  lists: HtmlFragment,
 };
-
-const renderAbout = (followers: HtmlFragment, description: HtmlFragment) => `
-  <section class="group-page-followers">
-    ${followers}
-  </section>
-  <div class="group-page-description">
-    ${description}
-  </div>
-`;
 
 const render = (components: Components) => `
   <div class="page-content__background">
@@ -30,7 +20,7 @@ const render = (components: Components) => `
         ${components.followButton}
       </div>
       ${components.lists}
-      ${renderAbout(components.followers, components.description)}      
+      ${components.about}
     </div>
   </div>
 `;
