@@ -61,10 +61,8 @@ const notFoundResponse = () => ({
 } as const);
 
 const renderAbout = ({ followers, description }: { followers: HtmlFragment, description: HtmlFragment }) => toHtmlFragment(`
-  <section class="group-page-followers">
-    ${followers}
-  </section>
   <div class="group-page-description">
+    ${followers}
     ${description}
   </div>
 `);
@@ -91,9 +89,6 @@ const aboutTabComponents = (ports: Ports) => (group: Group) => pipe(
 
 const renderLists = (evaluatedArticlesListCard: HtmlFragment) => toHtmlFragment(`
   <section class="group-page-lists">
-    <h2 class="group-page-lists-heading">
-      Lists
-    </h2>
     ${evaluatedArticlesListCard}
   </section>
 `);
