@@ -1,3 +1,5 @@
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
+import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 export type Tab = {
@@ -6,8 +8,8 @@ export type Tab = {
 };
 
 type TabProps = {
-  tabList: [Tab, Tab],
-  activeTabIndex: 0 | 1,
+  tabList: RNEA.ReadonlyNonEmptyArray<Tab>,
+  activeTabIndex: number,
 };
 
 type Tabs = (tabProps: TabProps) => (activeTabPanelContents: HtmlFragment) => HtmlFragment;
@@ -20,9 +22,11 @@ const inactiveTab = (tab: Tab) => `<li class="tab" role="presentation">
     <a role="tab" href="${tab.url}">${tab.label}</a>
   </li>`;
 
-const bothTabs = ({ tabList, activeTabIndex }: TabProps) => (activeTabIndex === 0
-  ? `${activeTab(tabList[0])}${inactiveTab(tabList[1])}`
-  : `${inactiveTab(tabList[0])}${activeTab(tabList[1])}`);
+const bothTabs = ({ tabList, activeTabIndex }: TabProps) => pipe(
+  tabList,
+  RNEA.mapWithIndex((i, tab) => (i === activeTabIndex ? activeTab(tab) : inactiveTab(tab))),
+  (tabs) => tabs.join(''),
+);
 
 export const tabs: Tabs = (tabProps) => (activeTabPanelContents) => toHtmlFragment(`
   <ul class="tab-list" role="tablist">

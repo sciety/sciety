@@ -1,22 +1,25 @@
 import { JSDOM } from 'jsdom';
 import { Tab, tabs } from '../../src/shared-components/tabs';
+import { toHtmlFragment } from '../../src/types/html-fragment';
 import {
   arbitraryHtmlFragment, arbitraryNumber, arbitraryUri,
 } from '../helpers';
 
 type EachTabActiveOnce = ReadonlyArray<[{
-  activeTabIndex: 0 | 1,
+  activeTabIndex: 0 | 1 | 2,
   inactiveTabIndex: 0 | 1,
 }]>;
 
 const eachTabActiveOnce: EachTabActiveOnce = [
   [{ activeTabIndex: 0, inactiveTabIndex: 1 }],
   [{ activeTabIndex: 1, inactiveTabIndex: 0 }],
+  [{ activeTabIndex: 2, inactiveTabIndex: 0 }],
 ];
 
-const arbitraryTabList: [Tab, Tab] = [
-  { label: arbitraryHtmlFragment(), url: arbitraryUri() },
-  { label: arbitraryHtmlFragment(), url: arbitraryUri() },
+const arbitraryTabList: [Tab, Tab, Tab] = [
+  { label: toHtmlFragment('first'), url: arbitraryUri() },
+  { label: toHtmlFragment('second'), url: arbitraryUri() },
+  { label: toHtmlFragment('third'), url: arbitraryUri() },
 ];
 
 describe('tabs', () => {
@@ -81,7 +84,7 @@ describe('tabs', () => {
     const rendered = JSDOM.fragment(
       tabs({
         tabList: arbitraryTabList,
-        activeTabIndex: arbitraryNumber(0, 1) as 0 | 1,
+        activeTabIndex: arbitraryNumber(0, 2),
       })(
         arbitraryHtmlFragment(),
       ),
@@ -89,7 +92,7 @@ describe('tabs', () => {
     const tabElements = rendered.querySelectorAll('[role="tab"]');
     const tabLabels = Array.from(tabElements).map((tab) => tab.textContent);
 
-    expect(tabLabels).toStrictEqual([arbitraryTabList[0].label, arbitraryTabList[1].label]);
+    expect(tabLabels).toStrictEqual([arbitraryTabList[0].label, arbitraryTabList[1].label, arbitraryTabList[2].label]);
   });
 
   it('shows the content in the tab panel', () => {
