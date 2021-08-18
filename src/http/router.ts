@@ -311,6 +311,16 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   router.get(
+    '/groups/:id/about',
+    pageHandler(flow(
+      groupPageParams.decode,
+      E.mapLeft(toNotFound),
+      TE.fromEither,
+      TE.chain(groupPage(adapters)(groupPageTabs.about)),
+    )),
+  );
+
+  router.get(
     '/groups/:id/evaluated-articles',
     pageHandler(flow(
       groupEvaluationsPageParams.decode,

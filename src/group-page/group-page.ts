@@ -39,6 +39,7 @@ type Ports = {
 
 export const groupPageTabs = {
   lists: 0,
+  about: 1,
 };
 
 // ts-unused-exports:disable-next-line
@@ -65,27 +66,25 @@ const renderAbout = ({ followers, description }: { followers: HtmlFragment, desc
   </div>
 `);
 
-const aboutTabComponents = (ports: Ports) => (group: Group) => ({
-  about: pipe(
-    {
-      description: pipe(
-        `groups/${group.descriptionPath}`,
-        ports.fetchStaticFile,
-        TE.map(renderDescription),
-      ),
-      followers: pipe(
-        ports.getAllEvents,
-        T.map(flow(
-          countFollowersOf(group.id),
-          renderFollowers,
-          E.right,
-        )),
-      ),
-    },
-    sequenceS(TE.ApplyPar),
-    TE.map(renderAbout),
-  ),
-});
+const aboutTabComponents = (ports: Ports) => (group: Group) => pipe(
+  {
+    description: pipe(
+      `groups/${group.descriptionPath}`,
+      ports.fetchStaticFile,
+      TE.map(renderDescription),
+    ),
+    followers: pipe(
+      ports.getAllEvents,
+      T.map(flow(
+        countFollowersOf(group.id),
+        renderFollowers,
+        E.right,
+      )),
+    ),
+  },
+  sequenceS(TE.ApplyPar),
+  TE.map(renderAbout),
+);
 
 const renderLists = (evaluatedArticlesListCard: HtmlFragment) => toHtmlFragment(`
   <section class="group-page-lists">
@@ -110,7 +109,7 @@ const listTabComponents = (ports: Ports) => (group: Group) => pipe(
 
 type GroupPage = (ports: Ports) => (tab: number) => (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
-export const groupPage: GroupPage = (ports) => () => ({ id, user }) => pipe(
+export const groupPage: GroupPage = (ports) => (tab) => ({ id, user }) => pipe(
   ports.getGroup(id),
   T.map(E.fromOption(notFoundResponse)),
   TE.chain((group) => pipe(
@@ -129,8 +128,7 @@ export const groupPage: GroupPage = (ports) => () => ({ id, user }) => pipe(
         T.map(renderFollowToggle(group.id, group.name)),
         TE.rightTask,
       ),
-      ...aboutTabComponents(ports)(group),
-      content: listTabComponents(ports)(group),
+      content: tab === groupPageTabs.lists ? listTabComponents(ports)(group) : aboutTabComponents(ports)(group),
     },
     sequenceS(TE.ApplyPar),
     TE.bimap(renderErrorPage, renderPage(group)),
