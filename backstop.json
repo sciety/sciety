@@ -66,8 +66,16 @@
       "url": "http://sciety_app/users/scietyHQ/lists/saved-articles"
     },
     {
-      "label": "Group page",
-      "url": "http://sciety_app/groups/74fd66e9-3b90-4b5a-a4ab-5be83db4c5de"
+      "label": "Group page, lists tab",
+      "url": "http://sciety_app/groups/74fd66e9-3b90-4b5a-a4ab-5be83db4c5de/lists"
+    },
+    {
+      "label": "Group page, about tab",
+      "url": "http://sciety_app/groups/74fd66e9-3b90-4b5a-a4ab-5be83db4c5de/about"
+    },
+    {
+      "label": "Group page, followers",
+      "url": "http://sciety_app/groups/74fd66e9-3b90-4b5a-a4ab-5be83db4c5de/followers"
     },
     {
       "label": "Group evaluated articles list page",
