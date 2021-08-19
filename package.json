@@ -98,7 +98,7 @@
     "stylelint": "^13.13.1",
     "stylelint-config-sass-guidelines": "^8.0.0",
     "supertest": "^6.1.5",
-    "taiko": "^1.2.5",
+    "taiko": "^1.2.7",
     "ts-jest": "^26.5.6",
     "ts-node-dev": "^1.1.8",
     "ts-unused-exports": "^7.0.3",
