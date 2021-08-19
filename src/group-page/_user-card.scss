@@ -1,0 +1,36 @@
+@use '../sass/settings';
+@use '../sass/functions';
+@use '../sass/baseline';
+@use '../sass/card';
+@use '../sass/breakpoints';
+@use '../sass/typography';
+
+.user-card {
+  @include card.basics();
+  display: flex;
+}
+
+.user-card__body {
+  flex-grow: 1;
+}
+
+.user-card__title {
+  @include card.title();
+}
+
+.user-card__link {
+  @include card.link();
+}
+
+.user-card__handle {
+  margin-bottom: baseline.increments(1);
+}
+
+.user-card__avatar {
+  @include card.avatar();
+  margin-left: functions.px-to-rem(32px);
+}
+
+.user-card__meta {
+  @include card.meta();
+}

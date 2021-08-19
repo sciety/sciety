@@ -5,8 +5,9 @@
 @use '../sass/typography';
 @use '../sass/breakpoints';
 @use '../sass/layout';
-
 @use '../sass/list';
+
+@use './user-card';
 
 .page-header.page-header--group {
   margin-bottom: baseline.increments(3);
@@ -67,8 +68,4 @@
 
 .group-page-followers-list__item {
   @include card.list-item();
-}
-
-.user-card {
-  @include card.basics();
 }
