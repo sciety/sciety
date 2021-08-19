@@ -1,5 +1,7 @@
-import { flow } from 'fp-ts/function';
+import * as RA from 'fp-ts/ReadonlyArray';
+import { flow, pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { templateListItems } from '../shared-components/list-items';
 
 type RenderFollowers = (followers: number) => HtmlFragment;
 
@@ -32,6 +34,19 @@ const renderUserCard = (userCard: UserCardViewModel): HtmlFragment => toHtmlFrag
   </article>
 `);
 
+const renderFollowersList = (userCards: ReadonlyArray<UserCardViewModel>) => pipe(
+  userCards,
+  RA.map(flow(
+    renderUserCard,
+    (userCard) => `<li class="group-page-followers-list__item">${userCard}</li>`,
+  )),
+  (items) => `
+    <ul class="group-page-followers-list">
+      ${items.join('')}
+    </ul>
+  `,
+);
+
 export const renderFollowers: RenderFollowers = flow(
   (followerCount) => `
     <p>
@@ -39,13 +54,7 @@ export const renderFollowers: RenderFollowers = flow(
     </p>
     ${
   process.env.EXPERIMENT_ENABLED === 'true'
-    ? `
-    <ul class="group-page-followers-list">
-      <li class="group-page-followers-list__item">
-        ${renderUserCard(userCardViewModel)}
-      </li>
-    </ul>
-  `
+    ? renderFollowersList([userCardViewModel])
     : ''
 }
 `,
