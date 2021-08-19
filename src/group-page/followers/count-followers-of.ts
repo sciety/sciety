@@ -3,8 +3,8 @@ import {
   DomainEvent,
   isUserFollowedEditorialCommunityEvent,
   isUserUnfollowedEditorialCommunityEvent,
-} from '../domain-events';
-import { GroupId } from '../types/group-id';
+} from '../../domain-events';
+import { GroupId } from '../../types/group-id';
 
 type Reducer = (groupId: GroupId) => (count: number, event: DomainEvent) => number;
 

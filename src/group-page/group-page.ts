@@ -4,14 +4,13 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
-import { flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { countFollowersOf } from './count-followers';
+import { followers, Ports as FollowersPorts } from './followers/followers';
 import { getEvaluatedArticlesListDetails } from './get-evaluated-articles-list-details';
 import { FetchStaticFile, renderDescription } from './render-description';
 import { renderEvaluatedArticlesListCard } from './render-evaluated-articles-list-card';
-import { renderFollowers } from './render-followers';
 import { renderErrorPage, renderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
 import { DomainEvent } from '../domain-events';
@@ -31,7 +30,7 @@ type FetchGroup = (groupId: GroupId) => TO.TaskOption<Group>;
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-type Ports = {
+type Ports = FollowersPorts & {
   fetchStaticFile: FetchStaticFile,
   getGroup: FetchGroup,
   getAllEvents: GetAllEvents,
@@ -91,29 +90,6 @@ const listTabComponents = (ports: Ports) => (group: Group) => pipe(
   TE.rightTask,
 );
 
-const userCardViewModel = {
-  link: '/users/scietyhq',
-  title: 'Sciety',
-  handle: 'scietyHQ',
-  listCount: 1,
-  followedGroupCount: 13,
-  avatarUrl: 'https://pbs.twimg.com/profile_images/1323645945179967488/DIp-lv6v_normal.png',
-};
-
-const followersTabComponents = (ports: Ports) => (group: Group) => pipe(
-  ports.getAllEvents,
-  T.map(flow(
-    countFollowersOf(group.id),
-    (followerCount) => ({
-      followerCount,
-      followers: process.env.EXPERIMENT_ENABLED === 'true' ? [userCardViewModel] : [],
-    }),
-    renderFollowers,
-    toHtmlFragment,
-    E.right,
-  )),
-);
-
 const contentRenderers: Record<TabIndex, (
   ports: Ports
 ) => (
@@ -121,7 +97,7 @@ const contentRenderers: Record<TabIndex, (
 ) => TE.TaskEither<DE.DataError, HtmlFragment>> = {
   0: listTabComponents,
   1: aboutTabComponents,
-  2: followersTabComponents,
+  2: followers,
 };
 
 const tabList = (groupId: GroupId): [Tab, Tab, Tab] => [

@@ -1,0 +1,10 @@
+@use '../../sass/card';
+@use './user-card';
+
+.group-page-followers-list {
+  @include card.list();
+}
+
+.group-page-followers-list__item {
+  @include card.list-item();
+}

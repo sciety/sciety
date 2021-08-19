@@ -1,4 +1,4 @@
-import { renderFollowers } from '../../src/group-page/render-followers';
+import { renderFollowers } from '../../../src/group-page/followers/render-followers';
 
 describe('render-followers', () => {
   it('renders the follower count', async () => {
