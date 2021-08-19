@@ -95,6 +95,7 @@ const followersTabComponents = (ports: Ports) => (group: Group) => pipe(
   ports.getAllEvents,
   T.map(flow(
     countFollowersOf(group.id),
+    (followerCount) => ({ followerCount }),
     renderFollowers,
     toHtmlFragment,
     E.right,

@@ -1,9 +1,12 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-import { templateListItems } from '../shared-components/list-items';
 
-type RenderFollowers = (followers: number) => HtmlFragment;
+type FollowerListViewModel = {
+  followerCount: number,
+};
+
+type RenderFollowers = (followerListViewModel: FollowerListViewModel) => HtmlFragment;
 
 type UserCardViewModel = {
   link: string,
@@ -47,10 +50,11 @@ const renderFollowersList = (userCards: ReadonlyArray<UserCardViewModel>) => pip
   `,
 );
 
-export const renderFollowers: RenderFollowers = flow(
-  (followerCount) => `
+export const renderFollowers: RenderFollowers = ({ followerCount }) => pipe(
+  followerCount,
+  (count) => `
     <p>
-      ${followerCount} ${followerCount === 1 ? 'user is' : 'users are'} following this group.
+      ${count} ${count === 1 ? 'user is' : 'users are'} following this group.
     </p>
     ${
   process.env.EXPERIMENT_ENABLED === 'true'
