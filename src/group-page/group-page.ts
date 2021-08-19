@@ -60,21 +60,16 @@ const notFoundResponse = () => ({
   message: toHtmlFragment('No such group. Please check and try again.'),
 } as const);
 
-const renderAbout = ({ description }: { description: HtmlFragment }) => toHtmlFragment(`
+const renderAbout = (description: HtmlFragment) => toHtmlFragment(`
   <div class="group-page-description">
     ${description}
   </div>
 `);
 
 const aboutTabComponents = (ports: Ports) => (group: Group) => pipe(
-  {
-    description: pipe(
-      `groups/${group.descriptionPath}`,
-      ports.fetchStaticFile,
-      TE.map(renderDescription),
-    ),
-  },
-  sequenceS(TE.ApplyPar),
+  `groups/${group.descriptionPath}`,
+  ports.fetchStaticFile,
+  TE.map(renderDescription),
   TE.map(renderAbout),
 );
 
