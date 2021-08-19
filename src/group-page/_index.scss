@@ -25,6 +25,10 @@
   margin-bottom: baseline.increments(3);
   padding: 1rem;
   background-color: settings.$colour-white;
+
+  @include breakpoints.not-narrow {
+    border-radius: settings.$border-radius;
+  }
 }
 
 .page-header--group {
