@@ -60,3 +60,15 @@
     margin-right: 0;
   }
 }
+
+.group-page-followers-list {
+  @include card.list();
+}
+
+.group-page-followers-list__item {
+  @include card.list-item();
+}
+
+.user-card {
+  @include card.basics();
+}
