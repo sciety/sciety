@@ -3,6 +3,15 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 type RenderFollowers = (followers: number) => HtmlFragment;
 
+type UserCardViewModel = {
+  link: string,
+  title: string,
+  handle: string,
+  listCount: number,
+  followedGroupCount: number,
+  avatarUrl: string,
+};
+
 const userCardViewModel = {
   link: '/users/scietyhq',
   title: 'Sciety',
@@ -11,6 +20,17 @@ const userCardViewModel = {
   followedGroupCount: 13,
   avatarUrl: 'https://pbs.twimg.com/profile_images/1323645945179967488/DIp-lv6v_normal.png',
 };
+
+const renderUserCard = (userCard: UserCardViewModel): HtmlFragment => toHtmlFragment(`
+  <article class="user-card">
+    <div class="user-card__body">
+      <h3 class="user-card__title"><a href="${userCard.link}" class="user-card__link">${userCard.title}</a></h3>
+      <div class="user-card__handle">@${userCard.handle}</div>
+      <span class="user-card__meta"><span class="visually-hidden">This user has </span><span>${userCard.listCount} list</span><span>${userCard.followedGroupCount} groups followed</span></span>
+    </div>
+    <img class="user-card__avatar" src="${userCard.avatarUrl}" alt="">
+  </article>
+`);
 
 export const renderFollowers: RenderFollowers = flow(
   (followerCount) => `
@@ -22,14 +42,7 @@ export const renderFollowers: RenderFollowers = flow(
     ? `
     <ul class="group-page-followers-list">
       <li class="group-page-followers-list__item">
-        <article class="user-card">
-          <div class="user-card__body">
-            <h3 class="user-card__title"><a href="${userCardViewModel.link}" class="user-card__link">${userCardViewModel.title}</a></h3>
-            <div class="user-card__handle">@${userCardViewModel.handle}</div>
-            <span class="user-card__meta"><span class="visually-hidden">This user has </span><span>${userCardViewModel.listCount} list</span><span>${userCardViewModel.followedGroupCount} groups followed</span></span>
-          </div>
-          <img class="user-card__avatar" src="${userCardViewModel.avatarUrl}" alt="">
-        </article>
+        ${renderUserCard(userCardViewModel)}
       </li>
     </ul>
   `
