@@ -8,6 +8,24 @@ export const renderFollowers: RenderFollowers = flow(
     <p>
       ${followerCount} ${followerCount === 1 ? 'user is' : 'users are'} following this group.
     </p>
+    ${
+  process.env.EXPERIMENT_ENABLED === 'true'
+    ? `
+    <ul class="group-page-followers-list">
+      <li class="group-page-followers-list__item">
+        <article class="user-card">
+          @ScietyHQ
+        </article>
+      </li>
+      <li class="group-page-followers-list__item">
+        <article class="user-card">
+          @Bluerezz
+        </article>
+      </li>
+    </ul>
+  `
+    : ''
+}
 `,
   toHtmlFragment,
 );

@@ -91,31 +91,11 @@ const listTabComponents = (ports: Ports) => (group: Group) => pipe(
   TE.rightTask,
 );
 
-const hardcodedUserCards = (groupId: GroupId) => toHtmlFragment(
-  groupId === 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0'
-    ? `
-    <ul class="group-page-followers-list">
-      <li class="group-page-followers-list__item">
-        <article class="user-card">
-          @ScietyHQ
-        </article>
-      </li>
-      <li class="group-page-followers-list__item">
-        <article class="user-card">
-          @Bluerezz
-        </article>
-      </li>
-    </ul>
-  `
-    : '',
-);
-
 const followersTabComponents = (ports: Ports) => (group: Group) => pipe(
   ports.getAllEvents,
   T.map(flow(
     countFollowersOf(group.id),
     renderFollowers,
-    (renderedFollowers) => `${renderedFollowers}${hardcodedUserCards(group.id)}`,
     toHtmlFragment,
     E.right,
   )),
