@@ -2,8 +2,8 @@ import { renderFollowers } from '../../src/group-page/render-followers';
 
 describe('render-followers', () => {
   it('renders the follower count', async () => {
-    const rendered = renderFollowers(2);
+    const rendered = renderFollowers({ followerCount: 0, followers: [] });
 
-    expect(rendered).toStrictEqual(expect.stringContaining('2 users'));
+    expect(rendered).toStrictEqual(expect.stringContaining('0 users'));
   });
 });

@@ -2,12 +2,6 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
-type FollowerListViewModel = {
-  followerCount: number,
-};
-
-type RenderFollowers = (followerListViewModel: FollowerListViewModel) => HtmlFragment;
-
 type UserCardViewModel = {
   link: string,
   title: string,
@@ -17,14 +11,12 @@ type UserCardViewModel = {
   avatarUrl: string,
 };
 
-const userCardViewModel = {
-  link: '/users/scietyhq',
-  title: 'Sciety',
-  handle: 'scietyHQ',
-  listCount: 1,
-  followedGroupCount: 13,
-  avatarUrl: 'https://pbs.twimg.com/profile_images/1323645945179967488/DIp-lv6v_normal.png',
+type FollowerListViewModel = {
+  followerCount: number,
+  followers: ReadonlyArray<UserCardViewModel>,
 };
+
+type RenderFollowers = (followerListViewModel: FollowerListViewModel) => HtmlFragment;
 
 const renderUserCard = (userCard: UserCardViewModel): HtmlFragment => toHtmlFragment(`
   <article class="user-card">
@@ -50,7 +42,7 @@ const renderFollowersList = (userCards: ReadonlyArray<UserCardViewModel>) => pip
   `,
 );
 
-export const renderFollowers: RenderFollowers = ({ followerCount }) => pipe(
+export const renderFollowers: RenderFollowers = ({ followerCount, followers }) => pipe(
   followerCount,
   (count) => `
     <p>
@@ -58,7 +50,7 @@ export const renderFollowers: RenderFollowers = ({ followerCount }) => pipe(
     </p>
     ${
   process.env.EXPERIMENT_ENABLED === 'true'
-    ? renderFollowersList([userCardViewModel])
+    ? renderFollowersList(followers)
     : ''
 }
 `,

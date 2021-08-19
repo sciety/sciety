@@ -91,11 +91,20 @@ const listTabComponents = (ports: Ports) => (group: Group) => pipe(
   TE.rightTask,
 );
 
+const userCardViewModel = {
+  link: '/users/scietyhq',
+  title: 'Sciety',
+  handle: 'scietyHQ',
+  listCount: 1,
+  followedGroupCount: 13,
+  avatarUrl: 'https://pbs.twimg.com/profile_images/1323645945179967488/DIp-lv6v_normal.png',
+};
+
 const followersTabComponents = (ports: Ports) => (group: Group) => pipe(
   ports.getAllEvents,
   T.map(flow(
     countFollowersOf(group.id),
-    (followerCount) => ({ followerCount }),
+    (followerCount) => ({ followerCount, followers: [userCardViewModel] }),
     renderFollowers,
     toHtmlFragment,
     E.right,
