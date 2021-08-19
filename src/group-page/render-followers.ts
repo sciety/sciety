@@ -35,24 +35,16 @@ const renderFollowersList = (userCards: ReadonlyArray<UserCardViewModel>) => pip
     renderUserCard,
     (userCard) => `<li class="group-page-followers-list__item">${userCard}</li>`,
   )),
-  (items) => `
+  (items) => (items.length === 0 ? '' : `
     <ul class="group-page-followers-list">
       ${items.join('')}
     </ul>
-  `,
+  `),
 );
 
-export const renderFollowers: RenderFollowers = ({ followerCount, followers }) => pipe(
-  followerCount,
-  (count) => `
-    <p>
-      ${count} ${count === 1 ? 'user is' : 'users are'} following this group.
-    </p>
-    ${
-  process.env.EXPERIMENT_ENABLED === 'true'
-    ? renderFollowersList(followers)
-    : ''
-}
-`,
-  toHtmlFragment,
-);
+export const renderFollowers: RenderFollowers = ({ followerCount, followers }) => toHtmlFragment(`
+  <p>
+    ${followerCount} ${followerCount === 1 ? 'user is' : 'users are'} following this group.
+  </p>
+  ${renderFollowersList(followers)}
+`);

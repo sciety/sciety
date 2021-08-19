@@ -104,7 +104,10 @@ const followersTabComponents = (ports: Ports) => (group: Group) => pipe(
   ports.getAllEvents,
   T.map(flow(
     countFollowersOf(group.id),
-    (followerCount) => ({ followerCount, followers: [userCardViewModel] }),
+    (followerCount) => ({
+      followerCount,
+      followers: process.env.EXPERIMENT_ENABLED === 'true' ? [userCardViewModel] : [],
+    }),
     renderFollowers,
     toHtmlFragment,
     E.right,
