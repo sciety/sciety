@@ -17,11 +17,6 @@ export const renderFollowers: RenderFollowers = flow(
           @ScietyHQ
         </article>
       </li>
-      <li class="group-page-followers-list__item">
-        <article class="user-card">
-          @Bluerezz
-        </article>
-      </li>
     </ul>
   `
     : ''
