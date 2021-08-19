@@ -21,6 +21,7 @@ describe('group page', () => {
           follows: shouldNotBeCalled,
           getAllEvents: shouldNotBeCalled,
           getGroup: () => TO.none,
+          getUserDetails: shouldNotBeCalled,
         })(groupPageTabs.lists),
         T.map(flow(
           E.matchW(
