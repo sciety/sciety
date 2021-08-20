@@ -1,6 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import * as CR from './crossref';
 import { fetchData } from './fetch-data';
 import { FetchEvaluations } from './update-all';
 
@@ -18,42 +19,18 @@ type BiorxivResponse = {
   collection: Array<BiorxivItem>,
 };
 
-type CrossrefItem = {
-  DOI: string,
-  'published-print': {
-    'date-parts': [
-      [number, number, number],
-    ],
-  },
-};
-
-type CrossrefResponse = {
-  message: {
-    items: [CrossrefItem],
-  },
-};
-
-type CrossrefReview = CrossrefItem & {
+type CrossrefReview = CR.CrossrefItem & {
   biorxivDoi: string,
 };
 
-const crossrefReviewsUrl = (reviewDoiPrefix: string, articleDoi: string) => (
-  `https://api.crossref.org/prefixes/${reviewDoiPrefix}/works?rows=1000&filter=type:peer-review,relation.object:${articleDoi}`
+const getReviews = (reviewDoiPrefix: string) => (biorxivItem: BiorxivItem) => pipe(
+  biorxivItem.published_doi,
+  CR.fetchReviewsBy(reviewDoiPrefix),
+  TE.map(RA.map((item) => ({
+    ...item,
+    biorxivDoi: biorxivItem.biorxiv_doi,
+  }))),
 );
-
-const getReviews = (reviewDoiPrefix: string) => (biorxivItem: BiorxivItem) => {
-  const headers: Record<string, string> = (process.env.CROSSREF_API_BEARER_TOKEN !== undefined)
-    ? { 'Crossref-Plus-API-Token': `Bearer ${process.env.CROSSREF_API_BEARER_TOKEN}` }
-    : { };
-  return pipe(
-    fetchData<CrossrefResponse>(crossrefReviewsUrl(reviewDoiPrefix, biorxivItem.published_doi), headers),
-    TE.map((response) => response.message.items),
-    TE.map(RA.map((item) => ({
-      ...item,
-      biorxivDoi: biorxivItem.biorxiv_doi,
-    }))),
-  );
-};
 
 const toEvaluation = (review: CrossrefReview) => {
   const [year, month, day] = review['published-print']['date-parts'][0];
