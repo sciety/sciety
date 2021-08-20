@@ -9,7 +9,7 @@ import { findFollowers } from './find-followers';
 import { renderFollowers } from './render-followers';
 import { DomainEvent } from '../../domain-events';
 import * as DE from '../../types/data-error';
-import { Group } from '../../types/group';
+import { GroupId } from '../../types/group-id';
 import { HtmlFragment } from '../../types/html-fragment';
 
 export type Ports = AugmentWithUserDetailsPorts & {
@@ -19,7 +19,7 @@ export type Ports = AugmentWithUserDetailsPorts & {
 export const followers = (
   ports: Ports,
 ) => (
-  group: Group,
+  group: { id: GroupId },
   pageNumber: number,
 ): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
   {
