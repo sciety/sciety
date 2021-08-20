@@ -14,7 +14,7 @@ export type Ports = {
   getUserDetails: (userId: UserId) => TE.TaskEither<DE.DataError, UserDetails>,
 };
 
-type Follower = {
+export type Follower = {
   userId: UserId,
   listCount: number,
   followedGroupCount: number,

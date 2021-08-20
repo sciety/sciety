@@ -4,12 +4,12 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { augmentWithUserDetails, Ports as AugmentWithUserDetailsPorts } from './augment-with-user-details';
 import { countFollowersOf } from './count-followers-of';
+import { findFollowers } from './find-followers';
 import { renderFollowers } from './render-followers';
 import { DomainEvent } from '../../domain-events';
 import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';
 import { HtmlFragment } from '../../types/html-fragment';
-import { toUserId } from '../../types/user-id';
 
 export type Ports = AugmentWithUserDetailsPorts & {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
@@ -23,12 +23,9 @@ export const followers = (ports: Ports) => (group: Group): TE.TaskEither<DE.Data
       TE.rightTask,
     ),
     followers: pipe(
-      process.env.EXPERIMENT_ENABLED === 'true' ? [{
-        userId: toUserId('1295307136415735808'),
-        listCount: 1,
-        followedGroupCount: 13,
-      }] : [],
-      TE.right,
+      ports.getAllEvents,
+      T.map(findFollowers(group.id)),
+      TE.rightTask,
       TE.chain(TE.traverseArray(augmentWithUserDetails(ports))),
     ),
   },
