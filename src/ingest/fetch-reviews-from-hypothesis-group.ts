@@ -46,7 +46,7 @@ const processServer = (publisherGroupId: string) => (server: string) => async ()
     const data = await pipe(
       fetchData<HypothesisResponse>(`${baseUrl}${offset}`),
       TE.fold(
-        (error) => { console.log(error); return T.of([]); },
+        () => T.of([]),
         (response) => T.of(response.rows),
       ),
     )();
