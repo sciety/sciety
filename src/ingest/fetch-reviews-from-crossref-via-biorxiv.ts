@@ -33,7 +33,10 @@ type CrossrefResponse = {
   },
 };
 
-const fetchReviews = (doiPrefix: string, reviewDoiPrefix: string) => async () => {
+const identifyCandidates = (
+  doiPrefix: string,
+  reviewDoiPrefix: string,
+) => async (): Promise<ReadonlyArray<Evaluation>> => {
   const startDate = new Date(Date.now() - (60 * 24 * 60 * 60 * 1000)).toISOString().split('T')[0];
   const today = new Date().toISOString().split('T')[0];
   const result: Array<Evaluation> = [];
@@ -78,7 +81,7 @@ export const fetchReviewsFromCrossrefViaBiorxiv = (
   doiPrefix: string,
   reviewDoiPrefix: string,
 ): FetchEvaluations => () => pipe(
-  fetchReviews(doiPrefix, reviewDoiPrefix),
+  identifyCandidates(doiPrefix, reviewDoiPrefix),
   T.map((evaluations) => ({
     evaluations,
     skippedItems: [],
