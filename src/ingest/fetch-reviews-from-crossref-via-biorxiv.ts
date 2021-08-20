@@ -1,6 +1,4 @@
-import axios from 'axios';
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { fetchData } from './fetch-data';
@@ -43,21 +41,18 @@ const crossrefReviewsUrl = (reviewDoiPrefix: string, articleDoi: string) => (
   `https://api.crossref.org/prefixes/${reviewDoiPrefix}/works?rows=1000&filter=type:peer-review,relation.object:${articleDoi}`
 );
 
-const getReviews = (reviewDoiPrefix: string) => (biorxivItem: BiorxivItem) => async () => {
-  const headers: Record<string, string> = {
-    'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)',
-  };
-  if (process.env.CROSSREF_API_BEARER_TOKEN !== undefined) {
-    headers['Crossref-Plus-API-Token'] = `Bearer ${process.env.CROSSREF_API_BEARER_TOKEN}`;
-  }
-  const { data } = await axios.get<CrossrefResponse>(
-    crossrefReviewsUrl(reviewDoiPrefix, biorxivItem.published_doi),
-    { headers },
+const getReviews = (reviewDoiPrefix: string) => (biorxivItem: BiorxivItem) => {
+  const headers: Record<string, string> = (process.env.CROSSREF_API_BEARER_TOKEN !== undefined)
+    ? { 'Crossref-Plus-API-Token': `Bearer ${process.env.CROSSREF_API_BEARER_TOKEN}` }
+    : { };
+  return pipe(
+    fetchData<CrossrefResponse>(crossrefReviewsUrl(reviewDoiPrefix, biorxivItem.published_doi), headers),
+    TE.map((response) => response.message.items),
+    TE.map(RA.map((item) => ({
+      ...item,
+      biorxivDoi: biorxivItem.biorxiv_doi,
+    }))),
   );
-  return data.message.items.map((item) => ({
-    ...item,
-    biorxivDoi: biorxivItem.biorxiv_doi,
-  }));
 };
 
 const toEvaluation = (review: CrossrefReview) => {
@@ -71,17 +66,14 @@ const toEvaluation = (review: CrossrefReview) => {
   };
 };
 
-const fetchPaginatedData = (baseUrl: string, offset: number): T.Task<ReadonlyArray<BiorxivItem>> => pipe(
+const fetchPaginatedData = (baseUrl: string, offset: number): TE.TaskEither<string, ReadonlyArray<BiorxivItem>> => pipe(
   fetchData<BiorxivResponse>(`${baseUrl}/${offset}`),
-  TE.fold(
-    (error) => { console.log(error); return T.of([]); },
-    (data) => T.of(data.collection),
-  ),
-  T.chain(RA.match(
-    () => T.of([]),
+  TE.map((response) => response.collection),
+  TE.chain(RA.match(
+    () => TE.right([]),
     (items) => pipe(
       fetchPaginatedData(baseUrl, offset + items.length),
-      T.map((next) => [...items, ...next]),
+      TE.map((next) => [...items, ...next]),
     ),
   )),
 );
@@ -92,8 +84,8 @@ const identifyCandidates = (doiPrefix: string, reviewDoiPrefix: string) => {
   const baseUrl = `https://api.biorxiv.org/publisher/${doiPrefix}/${startDate}/${today}`;
   return pipe(
     fetchPaginatedData(baseUrl, 0),
-    T.chain(T.traverseArray(getReviews(reviewDoiPrefix))),
-    T.map(RA.flatten),
+    TE.chain(TE.traverseArray(getReviews(reviewDoiPrefix))),
+    TE.map(RA.flatten),
   );
 };
 
@@ -102,10 +94,9 @@ export const fetchReviewsFromCrossrefViaBiorxiv = (
   reviewDoiPrefix: string,
 ): FetchEvaluations => () => pipe(
   identifyCandidates(doiPrefix, reviewDoiPrefix),
-  T.map(RA.map(toEvaluation)),
-  T.map((evaluations) => ({
+  TE.map(RA.map(toEvaluation)),
+  TE.map((evaluations) => ({
     evaluations,
     skippedItems: [],
   })),
-  TE.rightTask,
 );
