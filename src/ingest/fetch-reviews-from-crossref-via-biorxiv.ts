@@ -39,9 +39,11 @@ type CrossrefReview = CrossrefItem & {
   biorxivDoi: string,
 };
 
+const crossrefReviewsUrl = (reviewDoiPrefix: string, articleDoi: string) => (
+  `https://api.crossref.org/prefixes/${reviewDoiPrefix}/works?rows=1000&filter=type:peer-review,relation.object:${articleDoi}`
+);
+
 const getReviews = (reviewDoiPrefix: string) => (biorxivItem: BiorxivItem) => async () => {
-  const publishedDoi = biorxivItem.published_doi;
-  const biorxivDoi = biorxivItem.biorxiv_doi;
   const headers: Record<string, string> = {
     'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)',
   };
@@ -49,12 +51,12 @@ const getReviews = (reviewDoiPrefix: string) => (biorxivItem: BiorxivItem) => as
     headers['Crossref-Plus-API-Token'] = `Bearer ${process.env.CROSSREF_API_BEARER_TOKEN}`;
   }
   const { data } = await axios.get<CrossrefResponse>(
-    `https://api.crossref.org/prefixes/${reviewDoiPrefix}/works?rows=1000&filter=type:peer-review,relation.object:${publishedDoi}`,
+    crossrefReviewsUrl(reviewDoiPrefix, biorxivItem.published_doi),
     { headers },
   );
   return data.message.items.map((item) => ({
     ...item,
-    biorxivDoi,
+    biorxivDoi: biorxivItem.biorxiv_doi,
   }));
 };
 
