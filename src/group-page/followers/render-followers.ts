@@ -55,5 +55,8 @@ export const renderFollowers: RenderFollowers = ({ followerCount, followers, nex
     ${followerCount} ${followerCount === 1 ? 'user is' : 'users are'} following this group.
   </p>
   ${renderFollowersList(followers)}
-  ${renderNextLink(nextLink)}
+  ${process.env.EXPERIMENT_ENABLED === 'true'
+    ? renderNextLink(nextLink)
+    : ''
+}
 `);

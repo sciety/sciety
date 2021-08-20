@@ -79,7 +79,8 @@ const listTabComponents = (ports: Ports) => (group: Group) => pipe(
 const contentRenderers: Record<TabIndex, (
   ports: Ports
 ) => (
-  group: Group
+  group: Group,
+  pageNumber: number
 ) => TE.TaskEither<DE.DataError, HtmlFragment>> = {
   0: listTabComponents,
   1: about,
@@ -129,7 +130,7 @@ export const groupPage: GroupPage = (ports) => (activeTabIndex) => ({ id, user }
         TE.rightTask,
       ),
       content: pipe(
-        contentRenderers[activeTabIndex](ports)(group),
+        contentRenderers[activeTabIndex](ports)(group, 2),
         TE.map(tabs({
           tabList: tabList(group.id),
           activeTabIndex,

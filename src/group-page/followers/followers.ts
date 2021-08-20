@@ -16,7 +16,12 @@ export type Ports = AugmentWithUserDetailsPorts & {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
 };
 
-export const followers = (ports: Ports) => (group: Group): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
+export const followers = (
+  ports: Ports,
+) => (
+  group: Group,
+  pageNumber: number,
+): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
   {
     followerCount: pipe(
       ports.getAllEvents,
@@ -33,7 +38,7 @@ export const followers = (ports: Ports) => (group: Group): TE.TaskEither<DE.Data
   sequenceS(TE.ApplyPar),
   TE.map((partialViewModel) => ({
     ...partialViewModel,
-    nextLink: O.none,
+    nextLink: O.some(`/groups/${group.id}/followers?page=${pageNumber + 1}`),
   })),
   TE.map(renderFollowers),
 );
