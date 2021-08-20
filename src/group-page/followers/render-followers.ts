@@ -2,7 +2,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
-type UserCardViewModel = {
+export type UserCardViewModel = {
   link: string,
   title: string,
   handle: string,
