@@ -10,7 +10,7 @@ Our community-driven technology effort is producing an application that can supp
 
 ## Approach
 
-We use techniques popularised by [extreme programming](#beck) to concentrate on meeting your needs and getting feedback early.
+We use techniques popularised by extreme programming to concentrate on meeting your needs and getting feedback early.
 
 ## Future direction and considerations
 
@@ -18,8 +18,8 @@ We gather feedback from users as we build which helps inform our future directio
 
 ## References
 
-<a name="beck">Beck K (2000)</a> <i>Extreme Programming Explained: Embrace Change</i>.
+Beck K (2000) <i>Extreme Programming Explained: Embrace Change</i>.
 Addison-Wesley Professional, 2000.
 ISBN 0201616416.
 
-<a name="stern-oshea">Stern BM, O’Shea EK (2019)</a> [A proposal for the future of scientific publishing in the life sciences](https://doi.org/10.1371/journal.pbio.3000116). PLoS Biol 17(2): e3000116.
+Stern BM, O’Shea EK (2019) [A proposal for the future of scientific publishing in the life sciences](https://doi.org/10.1371/journal.pbio.3000116). PLoS Biol 17(2): e3000116.
