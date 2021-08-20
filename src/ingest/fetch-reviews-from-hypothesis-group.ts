@@ -40,12 +40,16 @@ const processServer = (publisherGroupId: string) => (server: string) => async ()
   const result: Array<Row> = [];
   const perPage = 200;
   let data;
-  let pageNumber = 0;
+  let offset = 0;
+  const baseUrl = `https://api.hypothes.is/api/search?group=${publisherGroupId}&uri.parts=${server}&limit=${perPage}&offset=`;
   // eslint-disable-next-line no-loops/no-loops
   do {
-    data = (await axios.get<HypothesisResponse>(`https://api.hypothes.is/api/search?group=${publisherGroupId}&uri.parts=${server}&limit=${perPage}&offset=${perPage * pageNumber}`)).data;
+    data = (await axios.get<HypothesisResponse>(`${baseUrl}${offset}`)).data;
+    if (data.rows.length === 0) {
+      return result;
+    }
     result.concat(data.rows);
-    pageNumber += 1;
+    offset += 200;
   } while (data.rows.length > 0);
   return result;
 };
