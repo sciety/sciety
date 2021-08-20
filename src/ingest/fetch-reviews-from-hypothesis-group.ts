@@ -36,21 +36,15 @@ const toEvaluation = (row: Row): E.Either<SkippedItem, Evaluation> => {
   });
 };
 
-const processServer = (
-  publisherGroupId: string,
-) => (server: string) => async (): Promise<ReadonlyArray<E.Either<SkippedItem, Evaluation>>> => {
-  let result: ReadonlyArray<E.Either<SkippedItem, Evaluation>> = [];
+const processServer = (publisherGroupId: string) => (server: string) => async () => {
+  const result: Array<Row> = [];
   const perPage = 200;
   let data;
   let pageNumber = 0;
   // eslint-disable-next-line no-loops/no-loops
   do {
     data = (await axios.get<HypothesisResponse>(`https://api.hypothes.is/api/search?group=${publisherGroupId}&uri.parts=${server}&limit=${perPage}&offset=${perPage * pageNumber}`)).data;
-    const evaluations = pipe(
-      data.rows,
-      RA.map(toEvaluation),
-    );
-    result = [...result, ...evaluations];
+    result.concat(data.rows);
     pageNumber += 1;
   } while (data.rows.length > 0);
   return result;
@@ -60,6 +54,7 @@ export const fetchReviewsFromHypothesisGroup = (publisherGroupId: string): Fetch
   ['biorxiv', 'medrxiv'],
   T.traverseArray(processServer(publisherGroupId)),
   T.map(RA.flatten),
+  T.map(RA.map(toEvaluation)),
   T.map((parts) => ({
     evaluations: RA.rights(parts),
     skippedItems: RA.lefts(parts),
