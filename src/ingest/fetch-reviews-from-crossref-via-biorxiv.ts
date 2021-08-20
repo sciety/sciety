@@ -64,14 +64,12 @@ const getReviews = (reviewDoiPrefix: string) => (biorxivItem: BiorxivItem) => as
   return result;
 };
 
-const fetchPage = (reviewDoiPrefix: string, baseUrl: string, offset: number) => pipe(
+const fetchPage = (baseUrl: string, offset: number): T.Task<ReadonlyArray<BiorxivItem>> => pipe(
   fetchData<BiorxivResponse>(`${baseUrl}/${offset}`),
   TE.fold(
     (error) => { console.log(error); return T.of([]); },
     (data) => T.of(data.collection),
   ),
-  T.chain(T.traverseArray(getReviews(reviewDoiPrefix))),
-  T.map(RA.flatten),
 );
 
 const identifyCandidates = (
@@ -80,18 +78,22 @@ const identifyCandidates = (
 ) => async (): Promise<ReadonlyArray<Evaluation>> => {
   const startDate = new Date(Date.now() - (60 * 24 * 60 * 60 * 1000)).toISOString().split('T')[0];
   const today = new Date().toISOString().split('T')[0];
-  const result: Array<Evaluation> = [];
+  const result: Array<BiorxivItem> = [];
+  const baseUrl = `https://api.biorxiv.org/publisher/${doiPrefix}/${startDate}/${today}`;
   let offset = 0;
   do {
-    const baseUrl = `https://api.biorxiv.org/publisher/${doiPrefix}/${startDate}/${today}`;
-    const reviews = await fetchPage(reviewDoiPrefix, baseUrl, offset)();
+    const reviews = await fetchPage(baseUrl, offset)();
     if (reviews.length === 0) {
-      return result;
+      break;
     }
     result.concat(reviews);
     offset += reviews.length;
   } while (offset >= 0);
-  return result;
+  return pipe(
+    result,
+    T.traverseArray(getReviews(reviewDoiPrefix)),
+    T.map(RA.flatten),
+  )();
 };
 
 export const fetchReviewsFromCrossrefViaBiorxiv = (
