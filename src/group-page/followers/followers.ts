@@ -29,8 +29,11 @@ export const followers = (ports: Ports) => (group: Group): TE.TaskEither<DE.Data
       TE.rightTask,
       TE.chain(TE.traverseArray(augmentWithUserDetails(ports))),
     ),
-    nextLink: TE.right(O.none),
   },
   sequenceS(TE.ApplyPar),
+  TE.map((partialViewModel) => ({
+    ...partialViewModel,
+    nextLink: O.none,
+  })),
   TE.map(renderFollowers),
 );
