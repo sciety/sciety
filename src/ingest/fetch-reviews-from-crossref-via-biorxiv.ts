@@ -1,9 +1,11 @@
 /* eslint-disable no-loops/no-loops */
 import axios from 'axios';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Evaluation } from './evaluations';
+import { fetchData } from './fetch-data';
 import { FetchEvaluations } from './update-all';
 
 type BiorxivItem = {
@@ -35,7 +37,7 @@ type CrossrefResponse = {
   },
 };
 
-const getReviews = (reviewDoiPrefix: string) => async (biorxivItem: BiorxivItem) => {
+const getReviews = (reviewDoiPrefix: string) => (biorxivItem: BiorxivItem) => async () => {
   const result: Array<Evaluation> = [];
   const publishedDoi = biorxivItem.published_doi;
   const biorxivDoi = biorxivItem.biorxiv_doi;
@@ -62,6 +64,16 @@ const getReviews = (reviewDoiPrefix: string) => async (biorxivItem: BiorxivItem)
   return result;
 };
 
+const fetchPage = (reviewDoiPrefix: string, baseUrl: string, offset: number) => pipe(
+  fetchData<BiorxivResponse>(`${baseUrl}/${offset}`),
+  TE.fold(
+    (error) => { console.log(error); return T.of([]); },
+    (data) => T.of(data.collection),
+  ),
+  T.chain(T.traverseArray(getReviews(reviewDoiPrefix))),
+  T.map(RA.flatten),
+);
+
 const identifyCandidates = (
   doiPrefix: string,
   reviewDoiPrefix: string,
@@ -70,18 +82,15 @@ const identifyCandidates = (
   const today = new Date().toISOString().split('T')[0];
   const result: Array<Evaluation> = [];
   let offset = 0;
-  let total: number;
   do {
-    const { data: biorxivData } = await axios.get<BiorxivResponse>(
-      `https://api.biorxiv.org/publisher/${doiPrefix}/${startDate}/${today}/${offset}`,
-    );
-    const { count } = biorxivData.messages[0];
-    total = biorxivData.messages[0].total;
-    for (const biorxivItem of biorxivData.collection) {
-      result.concat(await getReviews(reviewDoiPrefix)(biorxivItem));
+    const baseUrl = `https://api.biorxiv.org/publisher/${doiPrefix}/${startDate}/${today}`;
+    const reviews = await fetchPage(reviewDoiPrefix, baseUrl, offset)();
+    if (reviews.length === 0) {
+      return result;
     }
-    offset += count;
-  } while (offset < total);
+    result.concat(reviews);
+    offset += reviews.length;
+  } while (offset >= 0);
   return result;
 };
 
