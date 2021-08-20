@@ -63,7 +63,7 @@ const getReviews = (reviewDoiPrefix: string) => (biorxivItem: BiorxivItem) => as
   return result;
 };
 
-const fetchPage = (baseUrl: string, offset: number): T.Task<ReadonlyArray<BiorxivItem>> => pipe(
+const fetchPaginatedData = (baseUrl: string, offset: number): T.Task<ReadonlyArray<BiorxivItem>> => pipe(
   fetchData<BiorxivResponse>(`${baseUrl}/${offset}`),
   TE.fold(
     (error) => { console.log(error); return T.of([]); },
@@ -72,24 +72,21 @@ const fetchPage = (baseUrl: string, offset: number): T.Task<ReadonlyArray<Biorxi
   T.chain(RA.match(
     () => T.of([]),
     (items) => pipe(
-      fetchPage(baseUrl, offset + items.length),
+      fetchPaginatedData(baseUrl, offset + items.length),
       T.map((next) => [...items, ...next]),
     ),
   )),
 );
 
-const identifyCandidates = (
-  doiPrefix: string,
-  reviewDoiPrefix: string,
-) => async (): Promise<ReadonlyArray<Evaluation>> => {
+const identifyCandidates = (doiPrefix: string, reviewDoiPrefix: string) => {
   const startDate = new Date(Date.now() - (60 * 24 * 60 * 60 * 1000)).toISOString().split('T')[0];
   const today = new Date().toISOString().split('T')[0];
   const baseUrl = `https://api.biorxiv.org/publisher/${doiPrefix}/${startDate}/${today}`;
   return pipe(
-    fetchPage(baseUrl, 0),
+    fetchPaginatedData(baseUrl, 0),
     T.chain(T.traverseArray(getReviews(reviewDoiPrefix))),
     T.map(RA.flatten),
-  )();
+  );
 };
 
 export const fetchReviewsFromCrossrefViaBiorxiv = (
