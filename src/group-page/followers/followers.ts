@@ -1,4 +1,5 @@
 import { sequenceS } from 'fp-ts/Apply';
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -6,7 +7,7 @@ import { pipe } from 'fp-ts/function';
 import { augmentWithUserDetails, Ports as AugmentWithUserDetailsPorts } from './augment-with-user-details';
 import { countFollowersOf } from './count-followers-of';
 import { findFollowers } from './find-followers';
-import { renderFollowers } from './render-followers';
+import { renderFollowers, UserCardViewModel } from './render-followers';
 import { DomainEvent } from '../../domain-events';
 import * as DE from '../../types/data-error';
 import { GroupId } from '../../types/group-id';
@@ -15,6 +16,16 @@ import { HtmlFragment } from '../../types/html-fragment';
 export type Ports = AugmentWithUserDetailsPorts & {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
 };
+
+type PartialViewModel = {
+  followerCount: number,
+  followers: ReadonlyArray<UserCardViewModel>,
+};
+
+const paginate = (groupId: GroupId, pageNumber: number) => (partialViewModel: PartialViewModel) => E.right({
+  ...partialViewModel,
+  nextLink: O.some(`/groups/${groupId}/followers?page=${pageNumber + 1}`),
+});
 
 export const followers = (
   ports: Ports,
@@ -36,9 +47,6 @@ export const followers = (
     ),
   },
   sequenceS(TE.ApplyPar),
-  TE.map((partialViewModel) => ({
-    ...partialViewModel,
-    nextLink: O.some(`/groups/${group.id}/followers?page=${pageNumber + 1}`),
-  })),
+  TE.chainEitherKW(paginate(group.id, pageNumber)),
   TE.map(renderFollowers),
 );
