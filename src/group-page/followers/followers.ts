@@ -27,6 +27,20 @@ const paginate = (groupId: GroupId, pageNumber: number) => (partialViewModel: Pa
   nextLink: O.some(`/groups/${groupId}/followers?page=${pageNumber + 1}`),
 });
 
+const augmentFollowersWithUserDetails = (
+  ports: Ports,
+) => (partialViewModel: PartialViewModel & { nextLink: O.Option<string> }) => pipe(
+  {
+    followerCount: TE.right(partialViewModel.followerCount),
+    nextLink: TE.right(partialViewModel.nextLink),
+    followers: pipe(
+      partialViewModel.followers,
+      TE.traverseArray(augmentWithUserDetails(ports)),
+    ),
+  },
+  sequenceS(TE.ApplyPar),
+);
+
 export const followers = (
   ports: Ports,
 ) => (
@@ -45,16 +59,6 @@ export const followers = (
   },
   sequenceS(T.ApplyPar),
   T.map(paginate(group.id, pageNumber)),
-  TE.chain((partialViewModel) => pipe(
-    {
-      followerCount: TE.right(partialViewModel.followerCount),
-      nextLink: TE.right(partialViewModel.nextLink),
-      followers: pipe(
-        partialViewModel.followers,
-        TE.traverseArray(augmentWithUserDetails(ports)),
-      ),
-    },
-    sequenceS(TE.ApplyPar),
-  )),
+  TE.chain(augmentFollowersWithUserDetails(ports)),
   TE.map(renderFollowers),
 );
