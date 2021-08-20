@@ -3,7 +3,6 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { Evaluation } from './evaluations';
 import { fetchData } from './fetch-data';
 import { FetchEvaluations } from './update-all';
 
@@ -21,23 +20,26 @@ type BiorxivResponse = {
   collection: Array<BiorxivItem>,
 };
 
-type CrossrefResponse = {
-  message: {
-    items: [
-      {
-        DOI: string,
-        'published-print': {
-          'date-parts': [
-            [number, number, number],
-          ],
-        },
-      },
+type CrossrefItem = {
+  DOI: string,
+  'published-print': {
+    'date-parts': [
+      [number, number, number],
     ],
   },
 };
 
+type CrossrefResponse = {
+  message: {
+    items: [CrossrefItem],
+  },
+};
+
+type CrossrefReview = CrossrefItem & {
+  biorxivDoi: string,
+};
+
 const getReviews = (reviewDoiPrefix: string) => (biorxivItem: BiorxivItem) => async () => {
-  const result: Array<Evaluation> = [];
   const publishedDoi = biorxivItem.published_doi;
   const biorxivDoi = biorxivItem.biorxiv_doi;
   const headers: Record<string, string> = {
@@ -50,17 +52,21 @@ const getReviews = (reviewDoiPrefix: string) => (biorxivItem: BiorxivItem) => as
     `https://api.crossref.org/prefixes/${reviewDoiPrefix}/works?rows=1000&filter=type:peer-review,relation.object:${publishedDoi}`,
     { headers },
   );
-  data.message.items.forEach((item) => {
-    const [year, month, day] = item['published-print']['date-parts'][0];
-    const date = new Date(year, month - 1, day);
-    const reviewDoi = item.DOI;
-    result.push({
-      date,
-      articleDoi: biorxivDoi,
-      evaluationLocator: `doi:${reviewDoi}`,
-    });
-  });
-  return result;
+  return data.message.items.map((item) => ({
+    ...item,
+    biorxivDoi,
+  }));
+};
+
+const toEvaluation = (review: CrossrefReview) => {
+  const [year, month, day] = review['published-print']['date-parts'][0];
+  const date = new Date(year, month - 1, day);
+  const reviewDoi = review.DOI;
+  return {
+    date,
+    articleDoi: review.biorxivDoi,
+    evaluationLocator: `doi:${reviewDoi}`,
+  };
 };
 
 const fetchPaginatedData = (baseUrl: string, offset: number): T.Task<ReadonlyArray<BiorxivItem>> => pipe(
@@ -94,6 +100,7 @@ export const fetchReviewsFromCrossrefViaBiorxiv = (
   reviewDoiPrefix: string,
 ): FetchEvaluations => () => pipe(
   identifyCandidates(doiPrefix, reviewDoiPrefix),
+  T.map(RA.map(toEvaluation)),
   T.map((evaluations) => ({
     evaluations,
     skippedItems: [],
