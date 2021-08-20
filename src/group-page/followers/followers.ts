@@ -1,4 +1,5 @@
 import { sequenceS } from 'fp-ts/Apply';
+import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -28,6 +29,7 @@ export const followers = (ports: Ports) => (group: Group): TE.TaskEither<DE.Data
       TE.rightTask,
       TE.chain(TE.traverseArray(augmentWithUserDetails(ports))),
     ),
+    nextLink: TE.right(O.none),
   },
   sequenceS(TE.ApplyPar),
   TE.map(renderFollowers),
