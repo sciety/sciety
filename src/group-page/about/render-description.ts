@@ -1,8 +1,8 @@
 import * as TE from 'fp-ts/TaskEither';
 import { flow } from 'fp-ts/function';
 import { Remarkable } from 'remarkable';
-import * as DE from '../types/data-error';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import * as DE from '../../types/data-error';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 type RenderDescription = (description: string) => HtmlFragment;
 

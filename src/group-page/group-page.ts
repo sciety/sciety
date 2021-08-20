@@ -7,9 +7,9 @@ import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
+import { about, Ports as AboutPorts } from './about/about';
 import { followers, Ports as FollowersPorts } from './followers/followers';
 import { getEvaluatedArticlesListDetails } from './get-evaluated-articles-list-details';
-import { FetchStaticFile, renderDescription } from './render-description';
 import { renderEvaluatedArticlesListCard } from './render-evaluated-articles-list-card';
 import { renderErrorPage, renderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
@@ -30,8 +30,7 @@ type FetchGroup = (groupId: GroupId) => TO.TaskOption<Group>;
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-type Ports = FollowersPorts & {
-  fetchStaticFile: FetchStaticFile,
+type Ports = AboutPorts & FollowersPorts & {
   getGroup: FetchGroup,
   getAllEvents: GetAllEvents,
   follows: (userId: UserId, groupId: GroupId) => T.Task<boolean>,
@@ -59,19 +58,6 @@ const notFoundResponse = () => ({
   message: toHtmlFragment('No such group. Please check and try again.'),
 } as const);
 
-const renderAbout = (description: HtmlFragment) => toHtmlFragment(`
-  <div class="group-page-description">
-    ${description}
-  </div>
-`);
-
-const aboutTabComponents = (ports: Ports) => (group: Group) => pipe(
-  `groups/${group.descriptionPath}`,
-  ports.fetchStaticFile,
-  TE.map(renderDescription),
-  TE.map(renderAbout),
-);
-
 const renderLists = (evaluatedArticlesListCard: HtmlFragment) => toHtmlFragment(`
   <section class="group-page-lists">
     ${evaluatedArticlesListCard}
@@ -96,7 +82,7 @@ const contentRenderers: Record<TabIndex, (
   group: Group
 ) => TE.TaskEither<DE.DataError, HtmlFragment>> = {
   0: listTabComponents,
-  1: aboutTabComponents,
+  1: about,
   2: followers,
 };
 
