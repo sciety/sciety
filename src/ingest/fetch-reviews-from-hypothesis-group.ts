@@ -1,10 +1,10 @@
-import axios from 'axios';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Evaluation } from './evaluations';
+import { fetchData } from './fetch-data';
 import { FetchEvaluations, SkippedItem } from './update-all';
 
 type Row = {
@@ -38,19 +38,24 @@ const toEvaluation = (row: Row): E.Either<SkippedItem, Evaluation> => {
 
 const processServer = (publisherGroupId: string) => (server: string) => async () => {
   const result: Array<Row> = [];
-  const perPage = 200;
-  let data;
+  const pageSize = 200;
   let offset = 0;
-  const baseUrl = `https://api.hypothes.is/api/search?group=${publisherGroupId}&uri.parts=${server}&limit=${perPage}&offset=`;
+  const baseUrl = `https://api.hypothes.is/api/search?group=${publisherGroupId}&uri.parts=${server}&limit=${pageSize}&offset=`;
   // eslint-disable-next-line no-loops/no-loops
   do {
-    data = (await axios.get<HypothesisResponse>(`${baseUrl}${offset}`)).data;
-    if (data.rows.length === 0) {
+    const data = await pipe(
+      fetchData<HypothesisResponse>(`${baseUrl}${offset}`),
+      TE.fold(
+        (error) => { console.log(error); return T.of([]); },
+        (response) => T.of(response.rows),
+      ),
+    )();
+    if (data.length === 0) {
       return result;
     }
-    result.concat(data.rows);
-    offset += 200;
-  } while (data.rows.length > 0);
+    result.concat(data);
+    offset += pageSize;
+  } while (offset < 10000);
   return result;
 };
 
