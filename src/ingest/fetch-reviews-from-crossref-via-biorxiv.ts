@@ -1,4 +1,3 @@
-/* eslint-disable no-loops/no-loops */
 import axios from 'axios';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
@@ -70,6 +69,13 @@ const fetchPage = (baseUrl: string, offset: number): T.Task<ReadonlyArray<Biorxi
     (error) => { console.log(error); return T.of([]); },
     (data) => T.of(data.collection),
   ),
+  T.chain(RA.match(
+    () => T.of([]),
+    (items) => pipe(
+      fetchPage(baseUrl, offset + items.length),
+      T.map((next) => [...items, ...next]),
+    ),
+  )),
 );
 
 const identifyCandidates = (
@@ -78,20 +84,10 @@ const identifyCandidates = (
 ) => async (): Promise<ReadonlyArray<Evaluation>> => {
   const startDate = new Date(Date.now() - (60 * 24 * 60 * 60 * 1000)).toISOString().split('T')[0];
   const today = new Date().toISOString().split('T')[0];
-  const result: Array<BiorxivItem> = [];
   const baseUrl = `https://api.biorxiv.org/publisher/${doiPrefix}/${startDate}/${today}`;
-  let offset = 0;
-  do {
-    const reviews = await fetchPage(baseUrl, offset)();
-    if (reviews.length === 0) {
-      break;
-    }
-    result.concat(reviews);
-    offset += reviews.length;
-  } while (offset >= 0);
   return pipe(
-    result,
-    T.traverseArray(getReviews(reviewDoiPrefix)),
+    fetchPage(baseUrl, 0),
+    T.chain(T.traverseArray(getReviews(reviewDoiPrefix))),
     T.map(RA.flatten),
   )();
 };
