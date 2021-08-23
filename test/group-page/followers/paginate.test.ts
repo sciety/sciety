@@ -97,6 +97,16 @@ describe('paginate', () => {
       expect(result).toStrictEqual(E.left(DE.notFound));
     });
 
-    it.todo('returns an empty page 1 when there are no followers');
+    it('returns an empty page 1 when there are no followers', () => {
+      const result = pipe(
+        {
+          followerCount: 0,
+          followers: [],
+        },
+        paginate(arbitraryGroupId(), 1, arbitraryNumber(1, 10)),
+      );
+
+      expect(result).toStrictEqual(E.right(expect.objectContaining({ followers: [] })));
+    });
   });
 });

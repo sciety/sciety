@@ -10,7 +10,11 @@ export type PartialViewModel = {
   followers: ReadonlyArray<Follower>,
 };
 
-const numberOfPages = (followerCount: number, pageSize: number) => Math.ceil(followerCount / pageSize);
+const numberOfPages = (followerCount: number, pageSize: number) => (
+  followerCount === 0
+    ? 1
+    : Math.ceil(followerCount / pageSize)
+);
 
 export const paginate = (
   groupId: GroupId,
