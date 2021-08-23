@@ -39,7 +39,40 @@ describe('paginate', () => {
       expect(result.followers).toHaveLength(2);
     });
 
-    it.todo('returns the specified page of the followers');
+    it('returns the specified page of the followers', () => {
+      const userId = arbitraryUserId();
+      const partialViewModel = {
+        followerCount: 3,
+        followers: [
+          {
+            userId: arbitraryUserId(),
+            listCount: arbitraryNumber(0, 10),
+            followedGroupCount: arbitraryNumber(0, 10),
+          },
+          {
+            userId,
+            listCount: arbitraryNumber(0, 10),
+            followedGroupCount: arbitraryNumber(0, 10),
+          },
+          {
+            userId: arbitraryUserId(),
+            listCount: arbitraryNumber(0, 10),
+            followedGroupCount: arbitraryNumber(0, 10),
+          },
+        ],
+      };
+      const result = pipe(
+        partialViewModel,
+        paginate(arbitraryGroupId(), 2, 1),
+        E.getOrElseW(shouldNotBeCalled),
+      );
+
+      expect(result.followers).toStrictEqual([
+        expect.objectContaining({
+          userId,
+        }),
+      ]);
+    });
 
     // it.each([
     //  [9, 1, O.none],
