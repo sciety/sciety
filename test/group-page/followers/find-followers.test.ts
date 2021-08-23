@@ -56,7 +56,25 @@ describe('find-followers', () => {
   });
 
   describe('when multiple users have followed the group', () => {
-    it.todo('returns a list containing them as followers');
+    it('returns a list containing them as followers', () => {
+      const firstUserId = arbitraryUserId();
+      const secondUserId = arbitraryUserId();
+      const groupId = arbitraryGroupId();
+      const events = [
+        userFollowedEditorialCommunity(firstUserId, groupId),
+        userFollowedEditorialCommunity(secondUserId, groupId),
+      ];
+      const result = findFollowers(groupId)(events);
+
+      expect(result).toStrictEqual(expect.arrayContaining([
+        expect.objectContaining({
+          userId: firstUserId,
+        }),
+        expect.objectContaining({
+          userId: secondUserId,
+        }),
+      ]));
+    });
 
     it.todo('the list is ordered with most recently followed first');
   });
