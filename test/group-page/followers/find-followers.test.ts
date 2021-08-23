@@ -72,7 +72,7 @@ describe('find-followers', () => {
       expect(result).toStrictEqual([expect.objectContaining({ userId })]);
     });
 
-    it.skip('their followedGroupCount is 2', () => {
+    it('their followedGroupCount is 2', () => {
       expect(result).toStrictEqual([expect.objectContaining({ followedGroupCount: 2 })]);
     });
   });

@@ -8,10 +8,17 @@ import { UserId } from '../../types/user-id';
 type FindFollowers = (groupId: GroupId) => (events: ReadonlyArray<DomainEvent>) => ReadonlyArray<Follower>;
 
 const calculateFollowedGroupCounts = (
-  groupId: GroupId,
   events: ReadonlyArray<DomainEvent>,
   userIds: ReadonlyArray<UserId>,
-) => new Map(userIds.map((id) => [id, 1]));
+) => pipe(
+  events,
+  RA.reduce(new Map<UserId, number>(), (state, event) => {
+    if (isUserFollowedEditorialCommunityEvent(event) && userIds.includes(event.userId)) {
+      return state.set(event.userId, (state.get(event.userId) ?? 0) + 1);
+    }
+    return state;
+  }),
+);
 
 export const findFollowers: FindFollowers = (groupId) => (events) => pipe(
   events,
@@ -26,7 +33,7 @@ export const findFollowers: FindFollowers = (groupId) => (events) => pipe(
   }),
   (userIds) => ({
     userIds,
-    followedGroupCounts: calculateFollowedGroupCounts(groupId, events, userIds),
+    followedGroupCounts: calculateFollowedGroupCounts(events, userIds),
   }),
   ({ userIds, followedGroupCounts }) => pipe(
     userIds,
