@@ -1,7 +1,5 @@
-import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
-import { paginationControls } from '../../shared-components/pagination-controls';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 export type UserCardViewModel = {
@@ -16,7 +14,7 @@ export type UserCardViewModel = {
 type FollowerListViewModel = {
   followerCount: number,
   followers: ReadonlyArray<UserCardViewModel>,
-  nextLink: O.Option<string>,
+  nextLink: HtmlFragment,
 };
 
 type RenderFollowers = (followerListViewModel: FollowerListViewModel) => HtmlFragment;
@@ -45,17 +43,12 @@ const renderFollowersList = (userCards: ReadonlyArray<UserCardViewModel>) => pip
   `),
 );
 
-const renderNextLink = O.fold(
-  () => '',
-  paginationControls,
-);
-
 export const renderFollowers: RenderFollowers = ({ followerCount, followers, nextLink }) => toHtmlFragment(`
   <p>
     ${followerCount} ${followerCount === 1 ? 'user is' : 'users are'} following this group.
   </p>
   ${process.env.EXPERIMENT_ENABLED === 'true'
-    ? `${renderFollowersList(followers)}${renderNextLink(nextLink)}`
+    ? `${renderFollowersList(followers)}${nextLink}`
     : ''
 }
 `);
