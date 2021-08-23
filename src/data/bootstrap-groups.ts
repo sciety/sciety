@@ -131,9 +131,9 @@ if (process.env.EXPERIMENT_ENABLED === 'true') {
   downplayedPotentialGroups = [
     {
       id: Gid.fromValidatedString('50401e46-b764-47b7-8557-6bb35444b7c8'),
-      name: 'ASAPbio crowd review trial',
-      avatarPath: '/static/groups/asapbio-crowd-review-trieal--50401e46-b764-47b7-8557-6bb35444b7c8.png',
-      descriptionPath: 'asapbio-crowd-review-trieal--50401e46-b764-47b7-8557-6bb35444b7c8.md',
+      name: 'ASAPbio crowd review',
+      avatarPath: '/static/groups/asapbio-crowd-review--50401e46-b764-47b7-8557-6bb35444b7c8.png',
+      descriptionPath: 'asapbio-crowd-review--50401e46-b764-47b7-8557-6bb35444b7c8.md',
       shortDescription: 'We promote the productive use of preprints for research dissemination and transparent peer review and feedback on all research outputs.',
       homepage: 'https://asapbio.org/about-us',
     },
