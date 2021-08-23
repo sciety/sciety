@@ -130,7 +130,7 @@ export const groupPage: GroupPage = (ports) => (activeTabIndex) => ({ id, user }
         TE.rightTask,
       ),
       content: pipe(
-        contentRenderers[activeTabIndex](ports)(group, 2),
+        contentRenderers[activeTabIndex](ports)(group, 1),
         TE.map(tabs({
           tabList: tabList(group.id),
           activeTabIndex,
