@@ -48,7 +48,7 @@ export const followers = (
     ),
   },
   sequenceS(T.ApplyPar),
-  T.map(paginate(group.id, pageNumber)),
+  T.map(paginate(group.id, pageNumber, 2)),
   TE.chain(augmentFollowersWithUserDetails(ports)),
   TE.map(renderFollowers),
 );

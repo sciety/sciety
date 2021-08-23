@@ -9,10 +9,20 @@ import { arbitraryUserId } from '../../types/user-id.helper';
 /* eslint-disable jest/no-commented-out-tests */
 describe('paginate', () => {
   describe('when the group has multiple followers', () => {
-    it.skip('limits the number of followers cards to the requested page size', () => {
+    it('limits the number of followers to the requested page size', () => {
       const partialViewModel = {
         followerCount: 3,
         followers: [
+          {
+            userId: arbitraryUserId(),
+            listCount: arbitraryNumber(0, 10),
+            followedGroupCount: arbitraryNumber(0, 10),
+          },
+          {
+            userId: arbitraryUserId(),
+            listCount: arbitraryNumber(0, 10),
+            followedGroupCount: arbitraryNumber(0, 10),
+          },
           {
             userId: arbitraryUserId(),
             listCount: arbitraryNumber(0, 10),
@@ -22,7 +32,7 @@ describe('paginate', () => {
       };
       const result = pipe(
         partialViewModel,
-        paginate(arbitraryGroupId(), 1),
+        paginate(arbitraryGroupId(), 1, 2),
         E.getOrElseW(shouldNotBeCalled),
       );
 

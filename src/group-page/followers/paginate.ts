@@ -11,9 +11,11 @@ export type PartialViewModel = {
 export const paginate = (
   groupId: GroupId,
   pageNumber: number,
+  pageSize: number,
 ) => (
   partialViewModel: PartialViewModel,
 ): E.Either<never, PartialViewModel & { nextLink: O.Option<string> }> => E.right({
-  ...partialViewModel,
+  followers: partialViewModel.followers.slice(0, pageSize),
+  followerCount: partialViewModel.followerCount,
   nextLink: O.some(`/groups/${groupId}/followers?page=${pageNumber + 1}`),
 });
