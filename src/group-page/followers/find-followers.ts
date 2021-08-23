@@ -7,6 +7,18 @@ import { UserId } from '../../types/user-id';
 
 type FindFollowers = (groupId: GroupId) => (events: ReadonlyArray<DomainEvent>) => ReadonlyArray<Follower>;
 
+const calculateFollowerUserIds = (
+  groupId: GroupId,
+) => RA.reduce([], (state: ReadonlyArray<UserId>, event: DomainEvent) => {
+  if (isUserFollowedEditorialCommunityEvent(event) && event.editorialCommunityId === groupId) {
+    return [...state, event.userId];
+  }
+  if (isUserUnfollowedEditorialCommunityEvent(event) && event.editorialCommunityId === groupId) {
+    return state.filter((userId) => userId !== event.userId);
+  }
+  return state;
+});
+
 const calculateFollowedGroupCounts = (
   events: ReadonlyArray<DomainEvent>,
   userIds: ReadonlyArray<UserId>,
@@ -25,15 +37,7 @@ const calculateFollowedGroupCounts = (
 
 export const findFollowers: FindFollowers = (groupId) => (events) => pipe(
   events,
-  RA.reduce([], (state: ReadonlyArray<UserId>, event) => {
-    if (isUserFollowedEditorialCommunityEvent(event) && event.editorialCommunityId === groupId) {
-      return [...state, event.userId];
-    }
-    if (isUserUnfollowedEditorialCommunityEvent(event) && event.editorialCommunityId === groupId) {
-      return state.filter((userId) => userId !== event.userId);
-    }
-    return state;
-  }),
+  calculateFollowerUserIds(groupId),
   (userIds) => ({
     userIds,
     followedGroupCounts: calculateFollowedGroupCounts(events, userIds),
