@@ -1,5 +1,6 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { paginate } from '../../../src/group-page/followers/paginate';
 import { arbitraryNumber } from '../../helpers';
@@ -7,13 +8,15 @@ import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
-const generateFollowers = (followerCount: number) => Array.from(
+const generateFollowers = (followerCount: number) => pipe(
   Array(followerCount).keys(),
-).map(() => ({
-  userId: arbitraryUserId(),
-  listCount: arbitraryNumber(0, 10),
-  followedGroupCount: arbitraryNumber(0, 10),
-}));
+  Array.from,
+  RA.map(() => ({
+    userId: arbitraryUserId(),
+    listCount: arbitraryNumber(0, 10),
+    followedGroupCount: arbitraryNumber(0, 10),
+  })),
+);
 
 /* eslint-disable jest/no-commented-out-tests */
 describe('paginate', () => {
@@ -21,23 +24,7 @@ describe('paginate', () => {
     it('limits the number of followers to the requested page size', () => {
       const partialViewModel = {
         followerCount: 3,
-        followers: [
-          {
-            userId: arbitraryUserId(),
-            listCount: arbitraryNumber(0, 10),
-            followedGroupCount: arbitraryNumber(0, 10),
-          },
-          {
-            userId: arbitraryUserId(),
-            listCount: arbitraryNumber(0, 10),
-            followedGroupCount: arbitraryNumber(0, 10),
-          },
-          {
-            userId: arbitraryUserId(),
-            listCount: arbitraryNumber(0, 10),
-            followedGroupCount: arbitraryNumber(0, 10),
-          },
-        ],
+        followers: generateFollowers(3),
       };
       const result = pipe(
         partialViewModel,
@@ -50,24 +37,17 @@ describe('paginate', () => {
 
     it('returns the specified page of the followers', () => {
       const userId = arbitraryUserId();
+      const [follower1, follower2] = generateFollowers(2);
       const partialViewModel = {
         followerCount: 3,
         followers: [
-          {
-            userId: arbitraryUserId(),
-            listCount: arbitraryNumber(0, 10),
-            followedGroupCount: arbitraryNumber(0, 10),
-          },
+          follower1,
           {
             userId,
             listCount: arbitraryNumber(0, 10),
             followedGroupCount: arbitraryNumber(0, 10),
           },
-          {
-            userId: arbitraryUserId(),
-            listCount: arbitraryNumber(0, 10),
-            followedGroupCount: arbitraryNumber(0, 10),
-          },
+          follower2,
         ],
       };
       const result = pipe(
