@@ -16,6 +16,9 @@ const calculateFollowedGroupCounts = (
     if (isUserFollowedEditorialCommunityEvent(event) && userIds.includes(event.userId)) {
       return state.set(event.userId, (state.get(event.userId) ?? 0) + 1);
     }
+    if (isUserUnfollowedEditorialCommunityEvent(event) && userIds.includes(event.userId)) {
+      return state.set(event.userId, (state.get(event.userId) ?? 0) - 1);
+    }
     return state;
   }),
 );

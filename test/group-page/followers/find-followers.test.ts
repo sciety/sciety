@@ -84,7 +84,7 @@ describe('find-followers', () => {
     });
 
     describe('and then unfollowed the other group', () => {
-      it.skip('their followedGroupCount is 1', () => {
+      it('their followedGroupCount is 1', () => {
         const otherGroupId = arbitraryGroupId();
         const events = [
           userFollowedEditorialCommunity(userId, groupId),
