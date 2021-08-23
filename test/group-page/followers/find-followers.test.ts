@@ -66,26 +66,35 @@ describe('find-followers', () => {
   });
 
   describe('when multiple users have followed the group', () => {
-    it('returns a list containing them as followers', () => {
-      const firstUserId = arbitraryUserId();
-      const secondUserId = arbitraryUserId();
-      const groupId = arbitraryGroupId();
-      const events = [
-        userFollowedEditorialCommunity(firstUserId, groupId),
-        userFollowedEditorialCommunity(secondUserId, groupId),
-      ];
-      const result = findFollowers(groupId)(events);
+    const leastRecentFollowingUserId = arbitraryUserId();
+    const mostRecentFollowingUserId = arbitraryUserId();
+    const groupId = arbitraryGroupId();
+    const events = [
+      userFollowedEditorialCommunity(leastRecentFollowingUserId, groupId),
+      userFollowedEditorialCommunity(mostRecentFollowingUserId, groupId),
+    ];
+    const result = findFollowers(groupId)(events);
 
+    it('returns a list containing them as followers', () => {
       expect(result).toStrictEqual(expect.arrayContaining([
         expect.objectContaining({
-          userId: firstUserId,
+          userId: leastRecentFollowingUserId,
         }),
         expect.objectContaining({
-          userId: secondUserId,
+          userId: mostRecentFollowingUserId,
         }),
       ]));
     });
 
-    it.todo('the list is ordered with most recently followed first');
+    it('the list is ordered with most recently followed first', () => {
+      expect(result).toStrictEqual([
+        expect.objectContaining({
+          userId: mostRecentFollowingUserId,
+        }),
+        expect.objectContaining({
+          userId: leastRecentFollowingUserId,
+        }),
+      ]);
+    });
   });
 });

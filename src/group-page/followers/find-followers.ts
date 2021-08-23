@@ -23,4 +23,5 @@ export const findFollowers: FindFollowers = (groupId) => (events) => pipe(
     followedGroupCount: 1,
     listCount: 1,
   })),
+  RA.reverse,
 );
