@@ -20,5 +20,7 @@ export const paginate = (
     pageSize * pageNumber,
   ),
   followerCount: partialViewModel.followerCount,
-  nextPage: O.some(pageNumber + 1),
+  nextPage: partialViewModel.followerCount - pageSize * pageNumber > 0
+    ? O.some(pageNumber + 1)
+    : O.none,
 });

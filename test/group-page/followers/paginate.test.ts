@@ -84,12 +84,12 @@ describe('paginate', () => {
     });
 
     it.each([
-      // [9, 1, O.none],
+      [9, 1, O.none],
       [11, 1, O.some(2)],
       [20, 1, O.some(2)],
-      // [20, 2, O.none],
+      [20, 2, O.none],
       [21, 2, O.some(3)],
-      // [21, 3, O.none],
+      [21, 3, O.none],
     ])('given %d followers and a request for page %d, returns the next page', (followerCount, page, nextPage) => {
       const partialViewModel = {
         followerCount,
