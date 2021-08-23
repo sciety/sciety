@@ -1,4 +1,4 @@
-import { userFollowedEditorialCommunity } from '../../../src/domain-events';
+import { userFollowedEditorialCommunity, userUnfollowedEditorialCommunity } from '../../../src/domain-events';
 import { findFollowers } from '../../../src/group-page/followers/find-followers';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
@@ -46,7 +46,17 @@ describe('find-followers', () => {
   });
 
   describe('when 1 user has followed then unfollowed the group', () => {
-    it.todo('return empty list');
+    it.skip('return empty list', () => {
+      const userId = arbitraryUserId();
+      const groupId = arbitraryGroupId();
+      const events = [
+        userFollowedEditorialCommunity(userId, groupId),
+        userUnfollowedEditorialCommunity(userId, groupId),
+      ];
+      const result = findFollowers(groupId)(events);
+
+      expect(result).toStrictEqual([]);
+    });
   });
 
   describe('when 1 user has followed the group and another group', () => {
