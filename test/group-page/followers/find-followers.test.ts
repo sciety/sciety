@@ -60,19 +60,21 @@ describe('find-followers', () => {
   });
 
   describe('when 1 user has followed the group and another group', () => {
-    it('returns a list containing them as a follower', () => {
-      const userId = arbitraryUserId();
-      const groupId = arbitraryGroupId();
-      const events = [
-        userFollowedEditorialCommunity(userId, groupId),
-        userFollowedEditorialCommunity(userId, arbitraryGroupId()),
-      ];
-      const result = findFollowers(groupId)(events);
+    const userId = arbitraryUserId();
+    const groupId = arbitraryGroupId();
+    const events = [
+      userFollowedEditorialCommunity(userId, groupId),
+      userFollowedEditorialCommunity(userId, arbitraryGroupId()),
+    ];
+    const result = findFollowers(groupId)(events);
 
+    it('returns a list containing them as a follower', () => {
       expect(result).toStrictEqual([expect.objectContaining({ userId })]);
     });
 
-    it.todo('their followedGroupCount is 2');
+    it.skip('their followedGroupCount is 2', () => {
+      expect(result).toStrictEqual([expect.objectContaining({ followedGroupCount: 2 })]);
+    });
   });
 
   describe('when multiple users have followed the group', () => {
