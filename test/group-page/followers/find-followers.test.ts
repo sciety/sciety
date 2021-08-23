@@ -60,7 +60,17 @@ describe('find-followers', () => {
   });
 
   describe('when 1 user has followed the group and another group', () => {
-    it.todo('returns a list containing them as a follower');
+    it('returns a list containing them as a follower', () => {
+      const userId = arbitraryUserId();
+      const groupId = arbitraryGroupId();
+      const events = [
+        userFollowedEditorialCommunity(userId, groupId),
+        userFollowedEditorialCommunity(userId, arbitraryGroupId()),
+      ];
+      const result = findFollowers(groupId)(events);
+
+      expect(result).toStrictEqual([expect.objectContaining({ userId })]);
+    });
 
     it.todo('their followedGroupCount is 2');
   });
