@@ -62,18 +62,39 @@ describe('find-followers', () => {
   describe('when 1 user has followed the group and another group', () => {
     const userId = arbitraryUserId();
     const groupId = arbitraryGroupId();
-    const events = [
-      userFollowedEditorialCommunity(userId, groupId),
-      userFollowedEditorialCommunity(userId, arbitraryGroupId()),
-    ];
-    const result = findFollowers(groupId)(events);
 
     it('returns a list containing them as a follower', () => {
+      const events = [
+        userFollowedEditorialCommunity(userId, groupId),
+        userFollowedEditorialCommunity(userId, arbitraryGroupId()),
+      ];
+      const result = findFollowers(groupId)(events);
+
       expect(result).toStrictEqual([expect.objectContaining({ userId })]);
     });
 
     it('their followedGroupCount is 2', () => {
+      const events = [
+        userFollowedEditorialCommunity(userId, groupId),
+        userFollowedEditorialCommunity(userId, arbitraryGroupId()),
+      ];
+      const result = findFollowers(groupId)(events);
+
       expect(result).toStrictEqual([expect.objectContaining({ followedGroupCount: 2 })]);
+    });
+
+    describe('and then unfollowed the other group', () => {
+      it.skip('their followedGroupCount is 1', () => {
+        const otherGroupId = arbitraryGroupId();
+        const events = [
+          userFollowedEditorialCommunity(userId, groupId),
+          userFollowedEditorialCommunity(userId, otherGroupId),
+          userUnfollowedEditorialCommunity(userId, otherGroupId),
+        ];
+        const result = findFollowers(groupId)(events);
+
+        expect(result).toStrictEqual([expect.objectContaining({ followedGroupCount: 1 })]);
+      });
     });
   });
 
