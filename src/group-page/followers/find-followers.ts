@@ -7,6 +7,12 @@ import { UserId } from '../../types/user-id';
 
 type FindFollowers = (groupId: GroupId) => (events: ReadonlyArray<DomainEvent>) => ReadonlyArray<Follower>;
 
+const calculateFollowedGroupCounts = (
+  groupId: GroupId,
+  events: ReadonlyArray<DomainEvent>,
+  userIds: ReadonlyArray<UserId>,
+) => new Map(userIds.map((id) => [id, 1]));
+
 export const findFollowers: FindFollowers = (groupId) => (events) => pipe(
   events,
   RA.reduce([], (state: ReadonlyArray<UserId>, event) => {
@@ -18,10 +24,17 @@ export const findFollowers: FindFollowers = (groupId) => (events) => pipe(
     }
     return state;
   }),
-  RA.map((userId) => ({
-    userId,
-    followedGroupCount: 1,
-    listCount: 1,
-  })),
-  RA.reverse,
+  (userIds) => ({
+    userIds,
+    followedGroupCounts: calculateFollowedGroupCounts(groupId, events, userIds),
+  }),
+  ({ userIds, followedGroupCounts }) => pipe(
+    userIds,
+    RA.map((userId) => ({
+      userId,
+      followedGroupCount: followedGroupCounts.get(userId) ?? 0,
+      listCount: 1,
+    })),
+    RA.reverse,
+  ),
 );
