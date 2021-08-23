@@ -1,6 +1,8 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
 import { Follower } from './augment-with-user-details';
+import * as DE from '../../types/data-error';
 import { GroupId } from '../../types/group-id';
 
 export type PartialViewModel = {
@@ -8,19 +10,28 @@ export type PartialViewModel = {
   followers: ReadonlyArray<Follower>,
 };
 
+const numberOfPages = (followerCount: number, pageSize: number) => Math.ceil(followerCount / pageSize);
+
 export const paginate = (
   groupId: GroupId,
   pageNumber: number,
   pageSize: number,
 ) => (
   partialViewModel: PartialViewModel,
-): E.Either<never, PartialViewModel & { nextPage: O.Option<number> }> => E.right({
-  followers: partialViewModel.followers.slice(
-    pageSize * (pageNumber - 1),
-    pageSize * pageNumber,
+): E.Either<DE.DataError, PartialViewModel & { nextPage: O.Option<number> }> => pipe(
+  partialViewModel,
+  E.fromPredicate(
+    ({ followerCount }) => pageNumber <= numberOfPages(followerCount, pageSize),
+    () => DE.notFound,
   ),
-  followerCount: partialViewModel.followerCount,
-  nextPage: partialViewModel.followerCount - pageSize * pageNumber > 0
-    ? O.some(pageNumber + 1)
-    : O.none,
-});
+  E.map(() => ({
+    followers: partialViewModel.followers.slice(
+      pageSize * (pageNumber - 1),
+      pageSize * pageNumber,
+    ),
+    followerCount: partialViewModel.followerCount,
+    nextPage: partialViewModel.followerCount - pageSize * pageNumber > 0
+      ? O.some(pageNumber + 1)
+      : O.none,
+  })),
+);

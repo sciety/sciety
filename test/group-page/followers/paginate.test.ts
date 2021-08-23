@@ -3,6 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { paginate } from '../../../src/group-page/followers/paginate';
+import * as DE from '../../../src/types/data-error';
 import { arbitraryNumber } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryGroupId } from '../../types/group-id.helper';
@@ -84,7 +85,17 @@ describe('paginate', () => {
       expect(result.nextPage).toStrictEqual(nextPage);
     });
 
-    it.todo('returns not-found when asked for a page that does not exist');
+    it('returns not-found when asked for a page that does not exist', () => {
+      const result = pipe(
+        {
+          followerCount: 3,
+          followers: generateFollowers(3),
+        },
+        paginate(arbitraryGroupId(), 3, 3),
+      );
+
+      expect(result).toStrictEqual(E.left(DE.notFound));
+    });
 
     it.todo('returns an empty page 1 when there are no followers');
   });
