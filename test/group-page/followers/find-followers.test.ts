@@ -13,14 +13,14 @@ describe('find-followers', () => {
   });
 
   describe('when 1 user has followed the group', () => {
-    it('returns a list containing them as a follower', () => {
-      const userId = arbitraryUserId();
-      const groupId = arbitraryGroupId();
-      const events = [
-        userFollowedEditorialCommunity(userId, groupId),
-      ];
-      const result = findFollowers(groupId)(events);
+    const userId = arbitraryUserId();
+    const groupId = arbitraryGroupId();
+    const events = [
+      userFollowedEditorialCommunity(userId, groupId),
+    ];
+    const result = findFollowers(groupId)(events);
 
+    it('returns a list containing them as a follower', () => {
       expect(result).toStrictEqual([
         expect.objectContaining({
           userId,
@@ -28,9 +28,21 @@ describe('find-followers', () => {
       ]);
     });
 
-    it.todo('their followedGroupCount is 1');
+    it('their followedGroupCount is 1', () => {
+      expect(result).toStrictEqual([
+        expect.objectContaining({
+          followedGroupCount: 1,
+        }),
+      ]);
+    });
 
-    it.todo('their listCount is 1');
+    it('their listCount is 1', () => {
+      expect(result).toStrictEqual([
+        expect.objectContaining({
+          listCount: 1,
+        }),
+      ]);
+    });
   });
 
   describe('when 1 user has followed then unfollowed the group', () => {
