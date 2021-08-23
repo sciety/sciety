@@ -46,7 +46,7 @@ describe('find-followers', () => {
   });
 
   describe('when 1 user has followed then unfollowed the group', () => {
-    it.skip('return empty list', () => {
+    it('return empty list', () => {
       const userId = arbitraryUserId();
       const groupId = arbitraryGroupId();
       const events = [
