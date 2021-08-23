@@ -1,6 +1,13 @@
+import { findFollowers } from '../../../src/group-page/followers/find-followers';
+import { arbitraryGroupId } from '../../types/group-id.helper';
+
 describe('find-followers', () => {
   describe('when no users have followed the group', () => {
-    it.todo('return empty list');
+    it('return empty list', () => {
+      const result = findFollowers(arbitraryGroupId())([]);
+
+      expect(result).toStrictEqual([]);
+    });
   });
 
   describe('when 1 user has followed the group', () => {
