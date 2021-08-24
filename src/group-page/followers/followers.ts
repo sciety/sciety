@@ -26,7 +26,6 @@ const augmentFollowersWithUserDetails = (
     nextPage: TE.right(partialViewModel.nextPage),
     followers: pipe(
       partialViewModel.followers,
-      // TE.traverseArray(augmentWithUserDetails(ports)),
       augmentWithUserDetails(ports),
     ),
   },

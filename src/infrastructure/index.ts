@@ -123,6 +123,10 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
           getTwitterResponse(dependencies.twitterApiBearerToken, logger),
           logger,
         ),
+        getUserDetailsBatch: TE.traverseArray(getTwitterUserDetails(
+          getTwitterResponse(dependencies.twitterApiBearerToken, logger),
+          logger,
+        )),
         getUserId: getTwitterUserId(
           getTwitterResponse(dependencies.twitterApiBearerToken, logger),
           logger,

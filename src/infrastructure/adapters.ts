@@ -35,6 +35,14 @@ type GetGroup = (groupId: GroupId) => TO.TaskOption<Group>;
 
 type GetAllGroups = T.Task<RNEA.ReadonlyNonEmptyArray<Group>>;
 
+type UserDetails = {
+  avatarUrl: string,
+  displayName: string,
+  handle: string,
+};
+
+type GetUserDetailsBatch = (userId: ReadonlyArray<UserId>) => TE.TaskEither<DE.DataError, ReadonlyArray<UserDetails>>;
+
 export type Adapters = {
   commitEvents: (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<void>,
   fetchArticle: FetchCrossrefArticle,
@@ -49,6 +57,7 @@ export type Adapters = {
   getFollowList: EventSourcedFollowListRepository,
   getGroup: GetGroup,
   getUserDetails: GetTwitterUserDetails,
+  getUserDetailsBatch: GetUserDetailsBatch,
   getUserId: GetTwitterUserId,
   logger: Logger,
   searchEuropePmc: (

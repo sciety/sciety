@@ -12,7 +12,7 @@ type UserDetails = {
 };
 
 export type Ports = {
-  getUserDetails: (userId: UserId) => TE.TaskEither<DE.DataError, UserDetails>,
+  getUserDetailsBatch: (userId: ReadonlyArray<UserId>) => TE.TaskEither<DE.DataError, ReadonlyArray<UserDetails>>,
 };
 
 export type Follower = {
@@ -28,7 +28,7 @@ export const augmentWithUserDetails = (
 ): TE.TaskEither<DE.DataError, ReadonlyArray<UserCardViewModel>> => pipe(
   followers,
   RA.map((follower) => follower.userId),
-  TE.traverseArray(ports.getUserDetails),
+  ports.getUserDetailsBatch,
   TE.map(RA.mapWithIndex((i, userDetails) => ({
     ...followers[i],
     ...userDetails,

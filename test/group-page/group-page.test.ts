@@ -22,7 +22,7 @@ describe('group page', () => {
           follows: shouldNotBeCalled,
           getAllEvents: shouldNotBeCalled,
           getGroup: () => TO.none,
-          getUserDetails: shouldNotBeCalled,
+          getUserDetailsBatch: shouldNotBeCalled,
         })(groupPageTabs.lists),
         T.map(flow(
           E.matchW(

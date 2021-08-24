@@ -74,6 +74,11 @@ export const createTestServer = async (): Promise<TestServer> => {
       displayName: '',
       handle: '',
     }),
+    getUserDetailsBatch: TE.traverseArray(() => TE.right({
+      avatarUrl: '',
+      displayName: '',
+      handle: '',
+    })),
     getUserId: () => TE.right(arbitraryUserId()),
     follows: () => T.of(false),
     findVersionsForArticleDoi: () => T.of(O.none),
