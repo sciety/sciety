@@ -1,8 +1,21 @@
+import * as TE from 'fp-ts/TaskEither';
+import { pipe } from 'fp-ts/function';
+import { getTwitterUserDetailsBatch } from '../../src/infrastructure/get-twitter-user-details-batch';
+import { shouldNotBeCalled } from '../should-not-be-called';
+
 describe('get-twitter-user-details-batch', () => {
   describe('when given no user ids', () => {
     it.todo('does not call Twitter');
 
-    it.todo('returns an empty array');
+    it('returns an empty array', async () => {
+      const result = await pipe(
+        [],
+        getTwitterUserDetailsBatch,
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+
+      expect(result).toStrictEqual([]);
+    });
   });
 
   describe('when given one or more user ids', () => {
