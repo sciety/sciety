@@ -20,26 +20,20 @@ export type Follower = {
   followedGroupCount: number,
 };
 
-const augmentSingleUser = (
-  ports: Ports,
-) => (
-  follower: Follower,
-): TE.TaskEither<DE.DataError, UserCardViewModel> => pipe(
-  follower.userId,
-  ports.getUserDetails,
-  TE.map((userDetails) => ({
-    ...follower,
-    ...userDetails,
-    link: `/users/${userDetails.handle}`,
-    title: userDetails.displayName,
-  })),
-);
-
 export const augmentWithUserDetails = (
   ports: Ports,
 ) => (
   followers: ReadonlyArray<Follower>,
 ): TE.TaskEither<DE.DataError, ReadonlyArray<UserCardViewModel>> => pipe(
   followers,
-  TE.traverseArray(augmentSingleUser(ports)),
+  TE.traverseArray((follower) => pipe(
+    follower.userId,
+    ports.getUserDetails,
+    TE.map((userDetails) => ({
+      ...follower,
+      ...userDetails,
+      link: `/users/${userDetails.handle}`,
+      title: userDetails.displayName,
+    })),
+  )),
 );
