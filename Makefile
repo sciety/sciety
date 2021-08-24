@@ -135,3 +135,10 @@ regression: taiko
 
 render-sanitised-markdown: node_modules
 	npx ts-node --transpile-only ./scripts/hypothesis-review-render-testbed.ts
+
+exploratory-test: node_modules clean-db build
+	${DOCKER_COMPOSE} up -d
+	scripts/wait-for-healthy.sh
+	${DOCKER_COMPOSE} exec -T db psql -c "copy events from '/data/exploratory-test.csv' with CSV" sciety user
+	${DOCKER_COMPOSE} restart app
+	scripts/wait-for-healthy.sh
