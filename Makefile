@@ -63,8 +63,10 @@ backstop-test: node_modules clean-db build
 	npx backstop --docker test
 	${DOCKER_COMPOSE} down
 
+backstop-approve: export LATEST_TEST_PNG_FOLDER=$(shell ls -1 backstop_data/bitmaps_test/ | sort | tail -n 1)
 backstop-approve: node_modules
-	npx backstop approve
+	cp backstop_data/bitmaps_test/$$LATEST_TEST_PNG_FOLDER/*.png backstop_data/bitmaps_reference/
+	git status
 
 build:
 	$(DOCKER_COMPOSE) build app
