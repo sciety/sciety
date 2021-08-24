@@ -15,6 +15,7 @@ describe('group page', () => {
         {
           id: arbitraryGroupId(),
           user: O.none,
+          page: 1,
         },
         groupPage({
           fetchStaticFile: shouldNotBeCalled,

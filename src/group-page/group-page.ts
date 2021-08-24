@@ -49,6 +49,7 @@ export const paramsCodec = t.type({
   user: tt.optionFromNullable(t.type({
     id: UserIdFromString,
   })),
+  page: tt.withFallback(tt.NumberFromString, 1),
 });
 
 type Params = t.TypeOf<typeof paramsCodec>;
@@ -110,7 +111,7 @@ type GroupPage = (
   params: Params
 ) => TE.TaskEither<RenderPageError, Page>;
 
-export const groupPage: GroupPage = (ports) => (activeTabIndex) => ({ id, user }) => pipe(
+export const groupPage: GroupPage = (ports) => (activeTabIndex) => ({ id, user, page: pageNumber }) => pipe(
   ports.getGroup(id),
   T.map(E.fromOption(notFoundResponse)),
   TE.chain((group) => pipe(
@@ -130,7 +131,7 @@ export const groupPage: GroupPage = (ports) => (activeTabIndex) => ({ id, user }
         TE.rightTask,
       ),
       content: pipe(
-        contentRenderers[activeTabIndex](ports)(group, 1),
+        contentRenderers[activeTabIndex](ports)(group, pageNumber),
         TE.map(tabs({
           tabList: tabList(group.id),
           activeTabIndex,
