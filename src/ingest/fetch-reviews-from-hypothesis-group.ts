@@ -37,7 +37,7 @@ const toEvaluation = (row: Row): E.Either<SkippedItem, Evaluation> => {
 };
 
 const processServer = (publisherGroupId: string) => (server: string) => async () => {
-  const result: Array<Row> = [];
+  let result: Array<Row> = [];
   const pageSize = 200;
   let offset = 0;
   const baseUrl = `https://api.hypothes.is/api/search?group=${publisherGroupId}&uri.parts=${server}&limit=${pageSize}&offset=`;
@@ -53,7 +53,7 @@ const processServer = (publisherGroupId: string) => (server: string) => async ()
     if (data.length === 0) {
       return result;
     }
-    result.concat(data);
+    result = result.concat(data);
     offset += pageSize;
   } while (offset < 10000);
   return result;
