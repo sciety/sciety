@@ -20,7 +20,7 @@ export type Follower = {
   followedGroupCount: number,
 };
 
-export const augmentWithUserDetails = (
+const augmentSingleUser = (
   ports: Ports,
 ) => (
   follower: Follower,
@@ -33,4 +33,13 @@ export const augmentWithUserDetails = (
     link: `/users/${userDetails.handle}`,
     title: userDetails.displayName,
   })),
+);
+
+export const augmentWithUserDetails = (
+  ports: Ports,
+) => (
+  followers: ReadonlyArray<Follower>,
+): TE.TaskEither<DE.DataError, ReadonlyArray<UserCardViewModel>> => pipe(
+  followers,
+  TE.traverseArray(augmentSingleUser(ports)),
 );
