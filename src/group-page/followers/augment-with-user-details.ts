@@ -1,3 +1,4 @@
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { UserCardViewModel } from './render-followers';
@@ -26,14 +27,12 @@ export const augmentWithUserDetails = (
   followers: ReadonlyArray<Follower>,
 ): TE.TaskEither<DE.DataError, ReadonlyArray<UserCardViewModel>> => pipe(
   followers,
-  TE.traverseArray((follower) => pipe(
-    follower.userId,
-    ports.getUserDetails,
-    TE.map((userDetails) => ({
-      ...follower,
-      ...userDetails,
-      link: `/users/${userDetails.handle}`,
-      title: userDetails.displayName,
-    })),
-  )),
+  RA.map((follower) => follower.userId),
+  TE.traverseArray(ports.getUserDetails),
+  TE.map(RA.mapWithIndex((i, userDetails) => ({
+    ...followers[i],
+    ...userDetails,
+    link: `/users/${userDetails.handle}`,
+    title: userDetails.displayName,
+  }))),
 );
