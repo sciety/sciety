@@ -1,8 +1,8 @@
-import { AxiosError } from 'axios';
 import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, identity, pipe } from 'fp-ts/function';
+import { axiosError } from './helpers';
 import { GetTwitterResponse } from '../../src/infrastructure/get-twitter-response';
 import { getTwitterUserDetails } from '../../src/infrastructure/get-twitter-user-details';
 import * as DE from '../../src/types/data-error';
@@ -58,16 +58,7 @@ describe('get-twitter-user-details', () => {
   });
 
   it('returns notFound if the Twitter user ID is invalid', async () => {
-    const getTwitterResponse: GetTwitterResponse = () => {
-      class InvalidTwitterIdError extends Error {
-        isAxiosError = true;
-
-        response = {
-          status: 400,
-        };
-      }
-      return TE.left(new InvalidTwitterIdError() as AxiosError);
-    };
+    const getTwitterResponse: GetTwitterResponse = () => TE.left(axiosError(400));
     const result = await pipe(
       arbitraryUserId(),
       getTwitterUserDetails(getTwitterResponse, dummyLogger),
@@ -84,7 +75,7 @@ describe('get-twitter-user-details', () => {
   });
 
   it('returns unavailable if the Twitter API is unavailable', async () => {
-    const getTwitterResponse: GetTwitterResponse = () => TE.left(new Error('Twitter API Unavailable') as AxiosError);
+    const getTwitterResponse: GetTwitterResponse = () => TE.left(axiosError(500));
     const result = await pipe(
       arbitraryUserId(),
       getTwitterUserDetails(getTwitterResponse, dummyLogger),

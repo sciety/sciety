@@ -1,6 +1,6 @@
-import { AxiosError } from 'axios';
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
+import { axiosError } from './helpers';
 import { GetTwitterResponse } from '../../src/infrastructure/get-twitter-response';
 import { getTwitterUserId } from '../../src/infrastructure/get-twitter-user-id';
 import * as DE from '../../src/types/data-error';
@@ -48,7 +48,7 @@ describe('get-twitter-user-id', () => {
 
   describe('when the request fails', () => {
     it('returns unavailable', async () => {
-      const getTwitterResponse: GetTwitterResponse = () => TE.left(new Error('test') as AxiosError);
+      const getTwitterResponse: GetTwitterResponse = () => TE.left(axiosError(500));
       const result = await getTwitterUserId(getTwitterResponse, dummyLogger)(arbitraryWord())();
 
       expect(result).toStrictEqual(E.left(DE.unavailable));

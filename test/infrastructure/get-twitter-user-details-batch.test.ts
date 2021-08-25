@@ -1,7 +1,7 @@
-import { AxiosError } from 'axios';
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { axiosError } from './helpers';
 import { getTwitterUserDetailsBatch } from '../../src/infrastructure/get-twitter-user-details-batch';
 import * as DE from '../../src/types/data-error';
 import { toUserId } from '../../src/types/user-id';
@@ -160,13 +160,7 @@ describe('get-twitter-user-details-batch', () => {
 
   describe('if at least one Twitter user ID is invalid', () => {
     it('returns notFound', async () => {
-      const getTwitterResponse = () => TE.left({
-        isAxiosError: true,
-        response: {
-          status: 400,
-        },
-      } as AxiosError);
-
+      const getTwitterResponse = () => TE.left(axiosError(400));
       const result = await pipe(
         [toUserId('47998559'), toUserId('foo')],
         getTwitterUserDetailsBatch(getTwitterResponse),
@@ -178,12 +172,7 @@ describe('get-twitter-user-details-batch', () => {
 
   describe('if the Twitter API is unavailable', () => {
     it('returns unavailable', async () => {
-      const getTwitterResponse = () => TE.left({
-        isAxiosError: true,
-        response: {
-          status: 500,
-        },
-      } as AxiosError);
+      const getTwitterResponse = () => TE.left(axiosError(500));
 
       const result = await pipe(
         [toUserId('47998559')],
