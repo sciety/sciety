@@ -40,6 +40,7 @@ import { responseCache } from './response-cache';
 import { searchEuropePmc } from './search-europe-pmc';
 import { bootstrapGroups } from '../data/bootstrap-groups';
 import * as DomainEvent from '../domain-events';
+import { getTwitterUserDetailsBatch } from "./get-twitter-user-details-batch";
 
 type Dependencies = {
   prettyLog: boolean,
@@ -123,10 +124,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
           getTwitterResponse(dependencies.twitterApiBearerToken, logger),
           logger,
         ),
-        getUserDetailsBatch: TE.traverseArray(getTwitterUserDetails(
-          getTwitterResponse(dependencies.twitterApiBearerToken, logger),
-          logger,
-        )),
+        getUserDetailsBatch: getTwitterUserDetailsBatch(getTwitterResponse(dependencies.twitterApiBearerToken, logger)),
         getUserId: getTwitterUserId(
           getTwitterResponse(dependencies.twitterApiBearerToken, logger),
           logger,

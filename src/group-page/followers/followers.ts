@@ -41,6 +41,8 @@ const renderNextLink = (groupId: GroupId) => flow(
   toHtmlFragment,
 );
 
+const pageSize = 10;
+
 export const followers = (
   ports: Ports,
 ) => (
@@ -58,7 +60,7 @@ export const followers = (
     ),
   },
   sequenceS(T.ApplyPar),
-  T.map(paginate(group.id, pageNumber, 2)),
+  T.map(paginate(group.id, pageNumber, pageSize)),
   TE.chain(augmentFollowersWithUserDetails(ports)),
   TE.map((partial) => ({
     ...partial,
