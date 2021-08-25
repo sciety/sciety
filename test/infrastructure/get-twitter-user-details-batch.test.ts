@@ -21,46 +21,37 @@ describe('get-twitter-user-details-batch', () => {
   });
 
   describe('when given one or more user ids', () => {
-    it('returns details for each user id', async () => {
-      const handleA = arbitraryWord();
-      const handleB = arbitraryWord();
+    it('returns details for each user id in the same order', async () => {
+      const handle1 = arbitraryWord();
+      const handle2 = arbitraryWord();
+      const userId1 = arbitraryUserId();
+      const userId2 = arbitraryUserId();
       const getTwitterResponse = async () => (
         {
           data: [
             {
-              id: '2244994945',
-              username: handleA,
+              id: userId1,
+              username: handle1,
               name: 'Twitter Dev',
             },
             {
-              id: '783214',
-              username: handleB,
+              id: userId2,
+              username: handle2,
               name: 'Twitter',
             },
           ],
         }
       );
 
-      const result = await pipe(
-        [
-          arbitraryUserId(),
-          arbitraryUserId(),
-        ],
+      const [result1, result2] = await pipe(
+        [userId1, userId2],
         getTwitterUserDetailsBatch(getTwitterResponse),
         TE.getOrElse(shouldNotBeCalled),
       )();
 
-      expect(result).toStrictEqual(expect.arrayContaining([
-        expect.objectContaining({
-          handle: handleA,
-        }),
-        expect.objectContaining({
-          handle: handleB,
-        }),
-      ]));
+      expect(result1).toStrictEqual(expect.objectContaining({ handle: handle1 }));
+      expect(result2).toStrictEqual(expect.objectContaining({ handle: handle2 }));
     });
-
-    it.todo('returns details in the same order as that supplied');
 
     it.todo('asks Twitter for the user\'s avatarUrl, displayName, and handle');
   });
