@@ -67,7 +67,28 @@ describe('get-twitter-user-details-batch', () => {
       });
     });
 
-    it.todo('asks Twitter for the user\'s avatarUrl, displayName, and handle');
+    it.skip('asks Twitter for the user\'s avatarUrl', async () => {
+      const getTwitterResponseMock = jest.fn();
+      await pipe(
+        [arbitraryUserId(), arbitraryUserId()],
+        getTwitterUserDetailsBatch(getTwitterResponseMock),
+      )();
+
+      expect(getTwitterResponseMock).toHaveBeenCalledWith(expect.stringContaining('user.fields=profile_image_url'));
+    });
+
+    it.skip('asks Twitter for the user ids', async () => {
+      const getTwitterResponseMock = jest.fn();
+      const userId1 = arbitraryUserId();
+      const userId2 = arbitraryUserId();
+
+      await pipe(
+        [userId1, userId2],
+        getTwitterUserDetailsBatch(getTwitterResponseMock),
+      )();
+
+      expect(getTwitterResponseMock).toHaveBeenCalledWith(expect.stringContaining(`ids=${userId1},${userId2}`));
+    });
   });
 
   describe('if at least one Twitter user does not exist', () => {
