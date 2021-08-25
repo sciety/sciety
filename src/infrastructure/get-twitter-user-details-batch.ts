@@ -19,21 +19,6 @@ type GetTwitterUserDetailsBatch = (
   userIds: ReadonlyArray<UserId>
 ) => TE.TaskEither<DE.DataError, ReadonlyArray<UserDetails>>;
 
-//  {
-//    data: [
-//      {
-//        id: '2244994945',
-//        username: handleA,
-//        name: 'Twitter Dev',
-//      },
-//      {
-//        id: '783214',
-//        username: handleB,
-//        name: 'Twitter',
-//      },
-//    ],
-//  }
-
 const codec = t.type({
   data: t.array(t.type({
     username: t.string,
