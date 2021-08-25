@@ -158,24 +158,6 @@ describe('get-twitter-user-details-batch', () => {
   });
 
   describe('if at least one Twitter user ID is invalid', () => {
-    /*
-    400
-    {
-  "errors": [
-    {
-      "parameters": {
-        "ids": [
-          "47998559,foo"
-        ]
-      },
-      "message": "The `ids` query parameter value [foo] does not match ^[0-9]{1,19}$"
-    }
-  ],
-  "title": "Invalid Request",
-  "detail": "One or more parameters to your request was invalid.",
-  "type": "https://api.twitter.com/2/problems/invalid-request"
-}
-    */
     it('returns notFound', async () => {
       const getTwitterResponse = jest.fn().mockRejectedValue({
         isAxiosError: true,
@@ -194,14 +176,37 @@ describe('get-twitter-user-details-batch', () => {
   });
 
   describe('if the Twitter API is unavailable', () => {
-    it.todo('returns unavailable');
+    it('returns unavailable', async () => {
+      const getTwitterResponse = jest.fn().mockRejectedValue({
+        isAxiosError: true,
+        response: {
+          status: 500,
+        },
+      });
+
+      const result = await pipe(
+        [toUserId('47998559')],
+        getTwitterUserDetailsBatch(getTwitterResponse),
+      )();
+
+      expect(result).toStrictEqual(E.left(DE.unavailable));
+    });
   });
 
   describe('if we cannot understand the Twitter response', () => {
-    it.todo('returns unavailable');
-  });
+    it('returns unavailable', async () => {
+      const getTwitterResponse = async () => (
+        {
+          data: 'foo',
+        }
+      );
 
-  describe('if we cannot generate userDetails for each user ID', () => {
-    it.todo('returns unavailable');
+      const result = await pipe(
+        [arbitraryUserId()],
+        getTwitterUserDetailsBatch(getTwitterResponse),
+      )();
+
+      expect(result).toStrictEqual(E.left(DE.unavailable));
+    });
   });
 });
