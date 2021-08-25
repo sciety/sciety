@@ -67,7 +67,7 @@ describe('get-twitter-user-details-batch', () => {
       });
     });
 
-    it.skip('asks Twitter for the user\'s avatarUrl', async () => {
+    it('asks Twitter for the user\'s avatarUrl', async () => {
       const getTwitterResponseMock = jest.fn();
       await pipe(
         [arbitraryUserId(), arbitraryUserId()],

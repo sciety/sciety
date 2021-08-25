@@ -36,7 +36,7 @@ export const getTwitterUserDetailsBatch: GetTwitterUserDetailsBatch = (
   RA.match(
     constant(TE.right([])),
     () => pipe(
-      TE.tryCatch(async () => getTwitterResponse(`https://api.twitter.com/2/users?ids=${userIds.join(',')}`), E.toError),
+      TE.tryCatch(async () => getTwitterResponse(`https://api.twitter.com/2/users?ids=${userIds.join(',')}&user.fields=profile_image_url`), E.toError),
       TE.chainEitherKW(codec.decode),
       TE.map((response) => response.data),
       TE.bimap(
