@@ -7,15 +7,15 @@ import { arbitraryUserId } from '../types/user-id.helper';
 
 describe('get-twitter-user-details-batch', () => {
   describe('when given no user ids', () => {
-    it.todo('does not call Twitter');
-
-    it('returns an empty array', async () => {
+    it('does not call Twitter and returns an empty array', async () => {
+      const getTwitterResponseMock = jest.fn();
       const result = await pipe(
         [],
-        getTwitterUserDetailsBatch(shouldNotBeCalled),
+        getTwitterUserDetailsBatch(getTwitterResponseMock),
         TE.getOrElse(shouldNotBeCalled),
       )();
 
+      expect(getTwitterResponseMock).not.toHaveBeenCalled();
       expect(result).toStrictEqual([]);
     });
   });
