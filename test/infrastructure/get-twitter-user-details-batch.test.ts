@@ -133,7 +133,7 @@ describe('get-twitter-user-details-batch', () => {
   ]
 }
      */
-    it.skip('returns notFound', async () => {
+    it('returns notFound', async () => {
       const getTwitterResponse = async () => (
         {
           errors: [
