@@ -176,7 +176,21 @@ describe('get-twitter-user-details-batch', () => {
   "type": "https://api.twitter.com/2/problems/invalid-request"
 }
     */
-    it.todo('returns notFound');
+    it.skip('returns notFound', async () => {
+      const getTwitterResponse = jest.fn().mockRejectedValue({
+        isAxiosError: true,
+        response: {
+          status: 400,
+        },
+      });
+
+      const result = await pipe(
+        [toUserId('47998559'), toUserId('foo')],
+        getTwitterUserDetailsBatch(getTwitterResponse),
+      )();
+
+      expect(result).toStrictEqual(E.left(DE.notFound));
+    });
   });
 
   describe('if the Twitter API is unavailable', () => {
