@@ -92,10 +92,66 @@ describe('get-twitter-user-details-batch', () => {
   });
 
   describe('if at least one Twitter user does not exist', () => {
+    /**
+     * 200
+     * "data" is only present if there are some valids
+     * {
+  "data": [
+    {
+      "id": "47998559",
+      "name": "Giorgio Sironi 🇮🇹🇬🇧🇪🇺",
+      "username": "giorgiosironi"
+    }
+  ],
+  "errors": [
+    {
+      "value": "1234556",
+      "detail": "Could not find user with ids: [1234556].",
+      "title": "Not Found Error",
+      "resource_type": "user",
+      "parameter": "ids",
+      "resource_id": "1234556",
+      "type": "https://api.twitter.com/2/problems/resource-not-found"
+    }
+  ]
+}
+
+{
+  "errors": [
+    {
+      "value": "1234556",
+      "detail": "Could not find user with ids: [1234556].",
+      "title": "Not Found Error",
+      "resource_type": "user",
+      "parameter": "ids",
+      "resource_id": "1234556",
+      "type": "https://api.twitter.com/2/problems/resource-not-found"
+    }
+  ]
+}
+     */
     it.todo('returns notFound');
   });
 
   describe('if at least one Twitter user ID is invalid', () => {
+    /*
+    400
+    {
+  "errors": [
+    {
+      "parameters": {
+        "ids": [
+          "47998559,foo"
+        ]
+      },
+      "message": "The `ids` query parameter value [foo] does not match ^[0-9]{1,19}$"
+    }
+  ],
+  "title": "Invalid Request",
+  "detail": "One or more parameters to your request was invalid.",
+  "type": "https://api.twitter.com/2/problems/invalid-request"
+}
+    */
     it.todo('returns notFound');
   });
 
