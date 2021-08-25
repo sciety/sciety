@@ -17,7 +17,7 @@ const lastUpdated = O.fold(
 
 export const renderUserListCard = (viewModel: UserListCardViewModel): HtmlFragment => toHtmlFragment(`
   <a href="/users/${viewModel.handle}/lists/saved-articles" class="user-list-card__link">
-    <div class="user-list-card">
+    <article class="user-list-card">
       <div class="user-list-card__body">
         <div>
           <h3 class="user-list-card__title">@${viewModel.handle}</h3>
@@ -28,6 +28,6 @@ export const renderUserListCard = (viewModel: UserListCardViewModel): HtmlFragme
         </div>
       </div>
       <img class="user-list-card__avatar" src="${viewModel.avatarUrl}" alt="" />
-    </div>
+    </article>
   </a>
 `);

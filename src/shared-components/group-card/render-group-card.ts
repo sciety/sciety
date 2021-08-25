@@ -44,7 +44,7 @@ const renderLatestActivity = (latestActivity: O.Option<Date>): HtmlFragment => p
 
 export const renderGroupCard = flow(
   (result: GroupViewModel) => `
-    <div class="group-card">
+    <article class="group-card">
       <div class="group-card__body">
         <h3 class="group-card__title">
           <a class="group-card__link" href="/groups/${result.id}">${htmlEscape(result.name)}</a>
@@ -57,7 +57,7 @@ export const renderGroupCard = flow(
         </span>
       </div>
       <img class="group-card__avatar" src="${result.avatarPath}" alt="" />
-    </div>
+    </article>
   `,
   toHtmlFragment,
 );

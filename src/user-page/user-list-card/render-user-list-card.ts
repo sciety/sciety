@@ -15,7 +15,7 @@ const lastUpdated = O.fold(
 
 // TODO: should not reuse CSS classes from the group page
 export const renderUserListCard = (viewModel: UserListCardViewModel): HtmlFragment => toHtmlFragment(`
-  <div class="list-card">
+  <article class="list-card">
     <h3 class="list-card__title">
       <a href="/users/${viewModel.handle}/lists/saved-articles" class="list-card__link">Saved articles</a>
     </h3>
@@ -23,5 +23,5 @@ export const renderUserListCard = (viewModel: UserListCardViewModel): HtmlFragme
     <div class="list-card__meta">
       <span class="visually-hidden">This list contains </span><span>${viewModel.articleCount} article${viewModel.articleCount === 1 ? '' : 's'}</span>${lastUpdated(viewModel.lastUpdated)}
     </div>
-  </div>
+  </article>
 `);
