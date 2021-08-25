@@ -30,6 +30,7 @@ import { getEventsFromDatabase } from './get-events-from-database';
 import { getHtml } from './get-html';
 import { getTwitterResponse } from './get-twitter-response';
 import { getTwitterUserDetails } from './get-twitter-user-details';
+import { getTwitterUserDetailsBatch } from './get-twitter-user-details-batch';
 import { getTwitterUserId } from './get-twitter-user-id';
 import { getXmlFromCrossrefRestApi } from './get-xml-from-crossref-rest-api';
 import { inMemoryGroupRepository } from './in-memory-groups';
@@ -40,7 +41,6 @@ import { responseCache } from './response-cache';
 import { searchEuropePmc } from './search-europe-pmc';
 import { bootstrapGroups } from '../data/bootstrap-groups';
 import * as DomainEvent from '../domain-events';
-import { getTwitterUserDetailsBatch } from "./get-twitter-user-details-batch";
 
 type Dependencies = {
   prettyLog: boolean,
