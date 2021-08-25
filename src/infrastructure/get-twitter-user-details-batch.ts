@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -46,6 +47,7 @@ export const getTwitterUserDetailsBatch: GetTwitterUserDetailsBatch = (
       ))),
       T.map(E.chainW(({ data }) => pipe(
         data,
+        O.filter((validResults) => validResults.length === userIds.length),
         E.fromOption(() => DE.notFound),
       ))),
       TE.map(

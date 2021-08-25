@@ -95,7 +95,7 @@ describe('get-twitter-user-details-batch', () => {
   });
 
   describe('if no ids match existing Twitter users', () => {
-    it.skip('returns notFound', async () => {
+    it('returns notFound', async () => {
       const getTwitterResponse = async () => (
         {
           data: [
@@ -103,6 +103,7 @@ describe('get-twitter-user-details-batch', () => {
               id: '987655',
               name: arbitraryWord(),
               username: arbitraryWord(),
+              profile_image_url: arbitraryUri(),
             },
           ],
           errors: [
