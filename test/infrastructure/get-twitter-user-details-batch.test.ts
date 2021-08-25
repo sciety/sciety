@@ -1,6 +1,9 @@
+import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { getTwitterUserDetailsBatch } from '../../src/infrastructure/get-twitter-user-details-batch';
+import * as DE from '../../src/types/data-error';
+import { toUserId } from '../../src/types/user-id';
 import { arbitraryUri, arbitraryWord } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryUserId } from '../types/user-id.helper';
@@ -91,7 +94,7 @@ describe('get-twitter-user-details-batch', () => {
     });
   });
 
-  describe('if at least one Twitter user does not exist', () => {
+  describe('if no ids match existing Twitter users', () => {
     /**
      * 200
      * "data" is only present if there are some valids
@@ -130,7 +133,31 @@ describe('get-twitter-user-details-batch', () => {
   ]
 }
      */
-    it.todo('returns notFound');
+    it.skip('returns notFound', async () => {
+      const getTwitterResponse = async () => (
+        {
+          errors: [
+            {
+              value: '1234556',
+              detail: 'Could not find user with ids: [1234556].',
+              title: 'Not Found Error',
+              resource_type: 'user',
+              parameter: 'ids',
+              resource_id: '1234556',
+              type: 'https://api.twitter.com/2/problems/resource-not-found',
+            },
+          ],
+        }
+
+      );
+
+      const result = await pipe(
+        [toUserId('1234556')],
+        getTwitterUserDetailsBatch(getTwitterResponse),
+      )();
+
+      expect(result).toStrictEqual(E.left(DE.notFound));
+    });
   });
 
   describe('if at least one Twitter user ID is invalid', () => {
