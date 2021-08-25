@@ -95,44 +95,40 @@ describe('get-twitter-user-details-batch', () => {
   });
 
   describe('if no ids match existing Twitter users', () => {
-    /**
-     * 200
-     * "data" is only present if there are some valids
-     * {
-  "data": [
-    {
-      "id": "47998559",
-      "name": "Giorgio Sironi 🇮🇹🇬🇧🇪🇺",
-      "username": "giorgiosironi"
-    }
-  ],
-  "errors": [
-    {
-      "value": "1234556",
-      "detail": "Could not find user with ids: [1234556].",
-      "title": "Not Found Error",
-      "resource_type": "user",
-      "parameter": "ids",
-      "resource_id": "1234556",
-      "type": "https://api.twitter.com/2/problems/resource-not-found"
-    }
-  ]
-}
+    it.skip('returns notFound', async () => {
+      const getTwitterResponse = async () => (
+        {
+          data: [
+            {
+              id: '987655',
+              name: arbitraryWord(),
+              username: arbitraryWord(),
+            },
+          ],
+          errors: [
+            {
+              value: '1234556',
+              detail: 'Could not find user with ids: [1234556].',
+              title: 'Not Found Error',
+              resource_type: 'user',
+              parameter: 'ids',
+              resource_id: '1234556',
+              type: 'https://api.twitter.com/2/problems/resource-not-found',
+            },
+          ],
+        }
+      );
 
-{
-  "errors": [
-    {
-      "value": "1234556",
-      "detail": "Could not find user with ids: [1234556].",
-      "title": "Not Found Error",
-      "resource_type": "user",
-      "parameter": "ids",
-      "resource_id": "1234556",
-      "type": "https://api.twitter.com/2/problems/resource-not-found"
-    }
-  ]
-}
-     */
+      const result = await pipe(
+        [toUserId('987655'), toUserId('1234556')],
+        getTwitterUserDetailsBatch(getTwitterResponse),
+      )();
+
+      expect(result).toStrictEqual(E.left(DE.notFound));
+    });
+  });
+
+  describe('if not all ids match Twitter user IDs', () => {
     it('returns notFound', async () => {
       const getTwitterResponse = async () => (
         {
