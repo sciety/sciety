@@ -77,7 +77,7 @@ describe('get-twitter-user-details-batch', () => {
       expect(getTwitterResponseMock).toHaveBeenCalledWith(expect.stringContaining('user.fields=profile_image_url'));
     });
 
-    it.skip('asks Twitter for the user ids', async () => {
+    it('asks Twitter for the user ids', async () => {
       const getTwitterResponseMock = jest.fn();
       const userId1 = arbitraryUserId();
       const userId2 = arbitraryUserId();
