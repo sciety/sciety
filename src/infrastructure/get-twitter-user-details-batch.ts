@@ -23,6 +23,7 @@ const codec = t.type({
   data: t.array(t.type({
     username: t.string,
     name: t.string,
+    profile_image_url: t.string,
   })),
 });
 
@@ -42,7 +43,7 @@ export const getTwitterUserDetailsBatch: GetTwitterUserDetailsBatch = (
       TE.bimap(
         () => DE.unavailable,
         RA.map((item) => ({
-          avatarUrl: '',
+          avatarUrl: item.profile_image_url,
           displayName: item.name,
           handle: item.username,
         })),

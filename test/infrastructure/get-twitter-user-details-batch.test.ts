@@ -21,7 +21,7 @@ describe('get-twitter-user-details-batch', () => {
   });
 
   describe('when given one or more user ids', () => {
-    it.skip('returns details for each user id in the same order', async () => {
+    it('returns details for each user id in the same order', async () => {
       const handle1 = arbitraryWord();
       const handle2 = arbitraryWord();
       const userId1 = arbitraryUserId();
