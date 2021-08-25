@@ -1,7 +1,7 @@
+import axios from 'axios';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { GetTwitterResponse } from './get-twitter-response';
-import { isAxiosError } from './is-axios-error';
 import { Logger, Payload } from './logger';
 import * as DE from '../types/data-error';
 import { UserId } from '../types/user-id';
@@ -44,7 +44,7 @@ const handleOk = (
 const handleError = (logger: Logger, userId: UserId) => (error: unknown) => {
   const payload: Payload = { error, userId };
 
-  if (isAxiosError(error) && error.response) {
+  if (axios.isAxiosError(error) && error.response) {
     payload.status = error.response.status;
     payload.data = error.response.data;
 
