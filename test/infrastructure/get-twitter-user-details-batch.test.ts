@@ -26,18 +26,20 @@ describe('get-twitter-user-details-batch', () => {
       const handle2 = arbitraryWord();
       const userId1 = arbitraryUserId();
       const userId2 = arbitraryUserId();
+      const name1 = arbitraryWord();
+      const name2 = arbitraryWord();
       const getTwitterResponse = async () => (
         {
           data: [
             {
               id: userId1,
               username: handle1,
-              name: 'Twitter Dev',
+              name: name1,
             },
             {
               id: userId2,
               username: handle2,
-              name: 'Twitter',
+              name: name2,
             },
           ],
         }
@@ -49,8 +51,8 @@ describe('get-twitter-user-details-batch', () => {
         TE.getOrElse(shouldNotBeCalled),
       )();
 
-      expect(result1).toStrictEqual(expect.objectContaining({ handle: handle1 }));
-      expect(result2).toStrictEqual(expect.objectContaining({ handle: handle2 }));
+      expect(result1).toStrictEqual(expect.objectContaining({ handle: handle1, displayName: name1 }));
+      expect(result2).toStrictEqual(expect.objectContaining({ handle: handle2, displayName: name2 }));
     });
 
     it.todo('asks Twitter for the user\'s avatarUrl, displayName, and handle');

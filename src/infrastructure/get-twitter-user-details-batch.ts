@@ -37,6 +37,7 @@ type GetTwitterUserDetailsBatch = (
 const codec = t.type({
   data: t.array(t.type({
     username: t.string,
+    name: t.string,
   })),
 });
 
@@ -57,7 +58,7 @@ export const getTwitterUserDetailsBatch: GetTwitterUserDetailsBatch = (
         () => DE.unavailable,
         RA.map((item) => ({
           avatarUrl: '',
-          displayName: '',
+          displayName: item.name,
           handle: item.username,
         })),
       ),
