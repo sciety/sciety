@@ -32,10 +32,8 @@ export const getTwitterUserId = (
   getTwitterResponse: GetTwitterResponse,
   logger: Logger,
 ): GetTwitterUserId => (handle) => pipe(
-  TE.tryCatch(
-    async () => getTwitterResponse(`https://api.twitter.com/2/users/by/username/${handle}`),
-    () => DE.unavailable,
-  ),
+  getTwitterResponse(`https://api.twitter.com/2/users/by/username/${handle}`),
+  TE.mapLeft(() => DE.unavailable),
   T.map(E.chain((response) => pipe(
     response,
     twitterResponse.decode,

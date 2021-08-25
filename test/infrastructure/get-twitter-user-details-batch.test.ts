@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios';
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -33,7 +34,7 @@ describe('get-twitter-user-details-batch', () => {
       const displayName2 = arbitraryWord();
       const avatarUrl1 = arbitraryUri();
       const avatarUrl2 = arbitraryUri();
-      const getTwitterResponse = async () => (
+      const getTwitterResponse = () => TE.right(
         {
           data: [
             {
@@ -49,7 +50,7 @@ describe('get-twitter-user-details-batch', () => {
               profile_image_url: avatarUrl2,
             },
           ],
-        }
+        },
       );
 
       const [result1, result2] = await pipe(
@@ -71,7 +72,7 @@ describe('get-twitter-user-details-batch', () => {
     });
 
     it('asks Twitter for the user\'s avatarUrl', async () => {
-      const getTwitterResponseMock = jest.fn();
+      const getTwitterResponseMock = jest.fn(() => TE.right({}));
       await pipe(
         [arbitraryUserId(), arbitraryUserId()],
         getTwitterUserDetailsBatch(getTwitterResponseMock),
@@ -81,7 +82,7 @@ describe('get-twitter-user-details-batch', () => {
     });
 
     it('asks Twitter for the user ids', async () => {
-      const getTwitterResponseMock = jest.fn();
+      const getTwitterResponseMock = jest.fn(() => TE.right({}));
       const userId1 = arbitraryUserId();
       const userId2 = arbitraryUserId();
 
@@ -96,7 +97,7 @@ describe('get-twitter-user-details-batch', () => {
 
   describe('if no ids match existing Twitter users', () => {
     it('returns notFound', async () => {
-      const getTwitterResponse = async () => (
+      const getTwitterResponse = () => TE.right(
         {
           data: [
             {
@@ -117,7 +118,7 @@ describe('get-twitter-user-details-batch', () => {
               type: 'https://api.twitter.com/2/problems/resource-not-found',
             },
           ],
-        }
+        },
       );
 
       const result = await pipe(
@@ -131,7 +132,7 @@ describe('get-twitter-user-details-batch', () => {
 
   describe('if not all ids match Twitter user IDs', () => {
     it('returns notFound', async () => {
-      const getTwitterResponse = async () => (
+      const getTwitterResponse = () => TE.right(
         {
           errors: [
             {
@@ -144,7 +145,7 @@ describe('get-twitter-user-details-batch', () => {
               type: 'https://api.twitter.com/2/problems/resource-not-found',
             },
           ],
-        }
+        },
 
       );
 
@@ -159,12 +160,12 @@ describe('get-twitter-user-details-batch', () => {
 
   describe('if at least one Twitter user ID is invalid', () => {
     it('returns notFound', async () => {
-      const getTwitterResponse = jest.fn().mockRejectedValue({
+      const getTwitterResponse = () => TE.left({
         isAxiosError: true,
         response: {
           status: 400,
         },
-      });
+      } as AxiosError);
 
       const result = await pipe(
         [toUserId('47998559'), toUserId('foo')],
@@ -177,12 +178,12 @@ describe('get-twitter-user-details-batch', () => {
 
   describe('if the Twitter API is unavailable', () => {
     it('returns unavailable', async () => {
-      const getTwitterResponse = jest.fn().mockRejectedValue({
+      const getTwitterResponse = () => TE.left({
         isAxiosError: true,
         response: {
           status: 500,
         },
-      });
+      } as AxiosError);
 
       const result = await pipe(
         [toUserId('47998559')],
@@ -195,10 +196,10 @@ describe('get-twitter-user-details-batch', () => {
 
   describe('if we cannot understand the Twitter response', () => {
     it('returns unavailable', async () => {
-      const getTwitterResponse = async () => (
+      const getTwitterResponse = () => TE.right(
         {
           data: 'foo',
-        }
+        },
       );
 
       const result = await pipe(

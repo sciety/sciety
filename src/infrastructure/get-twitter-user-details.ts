@@ -63,11 +63,11 @@ export const getTwitterUserDetails = (
   logger: Logger,
 ): GetTwitterUserDetails => (
   (userId) => pipe(
-    TE.tryCatch(
-      async () => getTwitterResponse(`https://api.twitter.com/2/users/${userId}?user.fields=profile_image_url`),
+    getTwitterResponse(`https://api.twitter.com/2/users/${userId}?user.fields=profile_image_url`),
+    TE.bimap(
       handleError(logger, userId),
+      (data) => data as TwitterResponse,
     ),
-    TE.map((data) => data as TwitterResponse),
     TE.chainW(handleOk(logger, userId)),
   )
 );

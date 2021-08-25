@@ -1,4 +1,6 @@
+import { AxiosError } from 'axios';
 import * as E from 'fp-ts/Either';
+import * as TE from 'fp-ts/TaskEither';
 import { GetTwitterResponse } from '../../src/infrastructure/get-twitter-response';
 import { getTwitterUserId } from '../../src/infrastructure/get-twitter-user-id';
 import * as DE from '../../src/types/data-error';
@@ -10,7 +12,7 @@ describe('get-twitter-user-id', () => {
   describe('when the user handle exists', () => {
     it('returns a UserId', async () => {
       const userId = arbitraryUserId();
-      const getTwitterResponse: GetTwitterResponse = async () => ({
+      const getTwitterResponse: GetTwitterResponse = () => TE.right({
         data: {
           id: userId.toString(),
           name: 'Giorgio Sironi 🇮🇹🇬🇧🇪🇺',
@@ -25,7 +27,7 @@ describe('get-twitter-user-id', () => {
 
   describe('when the user handle does not exist', () => {
     it('returns not found', async () => {
-      const getTwitterResponse: GetTwitterResponse = async () => ({
+      const getTwitterResponse: GetTwitterResponse = () => TE.right({
         errors: [
           {
             value: 'giggggfbgfb',
@@ -46,7 +48,7 @@ describe('get-twitter-user-id', () => {
 
   describe('when the request fails', () => {
     it('returns unavailable', async () => {
-      const getTwitterResponse: GetTwitterResponse = async () => { throw new Error('test'); };
+      const getTwitterResponse: GetTwitterResponse = () => TE.left(new Error('test') as AxiosError);
       const result = await getTwitterUserId(getTwitterResponse, dummyLogger)(arbitraryWord())();
 
       expect(result).toStrictEqual(E.left(DE.unavailable));
