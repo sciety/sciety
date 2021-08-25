@@ -1,3 +1,4 @@
+import axios from 'axios';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
@@ -40,7 +41,12 @@ export const getTwitterUserDetailsBatch: GetTwitterUserDetailsBatch = (
   RA.match(
     constant(TE.right([])),
     () => pipe(
-      TE.tryCatch(async () => getTwitterResponse(`https://api.twitter.com/2/users?ids=${userIds.join(',')}&user.fields=profile_image_url`), () => DE.unavailable),
+      TE.tryCatch(
+        async () => getTwitterResponse(`https://api.twitter.com/2/users?ids=${userIds.join(',')}&user.fields=profile_image_url`),
+        (error) => (axios.isAxiosError(error) && error.response?.status === 400
+          ? DE.notFound
+          : DE.unavailable),
+      ),
       T.map(E.chainW(flow(
         codec.decode,
         E.mapLeft(() => DE.unavailable),

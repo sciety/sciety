@@ -176,7 +176,7 @@ describe('get-twitter-user-details-batch', () => {
   "type": "https://api.twitter.com/2/problems/invalid-request"
 }
     */
-    it.skip('returns notFound', async () => {
+    it('returns notFound', async () => {
       const getTwitterResponse = jest.fn().mockRejectedValue({
         isAxiosError: true,
         response: {
