@@ -9,9 +9,10 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { GetTwitterResponse } from './get-twitter-response';
 import * as DE from '../types/data-error';
-import { UserId } from '../types/user-id';
+import { toUserId, UserId } from '../types/user-id';
 
 type UserDetails = {
+  userId: UserId,
   avatarUrl: string,
   displayName: string,
   handle: string,
@@ -25,6 +26,7 @@ type GetTwitterUserDetailsBatch = (
 
 const codec = t.type({
   data: tt.optionFromNullable(t.array(t.type({
+    id: t.string,
     username: t.string,
     name: t.string,
     profile_image_url: t.string,
@@ -56,6 +58,7 @@ export const getTwitterUserDetailsBatch: GetTwitterUserDetailsBatch = (
       ))),
       TE.map(
         RA.map((item) => ({
+          userId: toUserId(item.id),
           avatarUrl: item.profile_image_url,
           displayName: item.name,
           handle: item.username,

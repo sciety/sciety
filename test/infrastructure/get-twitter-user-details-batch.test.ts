@@ -60,11 +60,13 @@ describe('get-twitter-user-details-batch', () => {
       )();
 
       expect(result1).toStrictEqual({
+        userId: userId1,
         handle: handle1,
         displayName: displayName1,
         avatarUrl: avatarUrl1,
       });
       expect(result2).toStrictEqual({
+        userId: userId2,
         handle: handle2,
         displayName: displayName2,
         avatarUrl: avatarUrl2,
