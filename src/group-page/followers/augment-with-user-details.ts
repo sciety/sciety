@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
@@ -31,18 +32,21 @@ export const augmentWithUserDetails = (
   followers,
   RA.map((follower) => follower.userId),
   ports.getUserDetailsBatch,
-  TE.map(RA.mapWithIndex((i, userDetails) => pipe(
-    followers,
-    RA.findFirst((follower) => userDetails.userId === follower.userId),
-    O.fold(
-      () => { throw Error('userId not in list of followers'); },
-      (follower) => (
-        {
-          ...follower,
-          ...userDetails,
-          link: `/users/${userDetails.handle}`,
-          title: userDetails.displayName,
-        }),
-    ),
-  ))),
+  TE.chainEitherKW(
+    E.traverseArray((userDetails) => pipe(
+      followers,
+      RA.findFirst((follower) => userDetails.userId === follower.userId),
+      O.fold(
+        () => E.left(DE.unavailable),
+        (follower) => E.right(
+          {
+            ...follower,
+            ...userDetails,
+            link: `/users/${userDetails.handle}`,
+            title: userDetails.displayName,
+          },
+        ),
+      ),
+    )),
+  ),
 );
