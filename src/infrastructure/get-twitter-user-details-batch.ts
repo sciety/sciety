@@ -8,6 +8,7 @@ import { constant, flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { GetTwitterResponse } from './get-twitter-response';
+import { Logger } from './logger';
 import * as DE from '../types/data-error';
 import { toUserId, UserId } from '../types/user-id';
 
@@ -19,7 +20,8 @@ type UserDetails = {
 };
 
 type GetTwitterUserDetailsBatch = (
-  getTwitterResponse: GetTwitterResponse
+  getTwitterResponse: GetTwitterResponse,
+  logger: Logger,
 ) => (
   userIds: ReadonlyArray<UserId>
 ) => TE.TaskEither<DE.DataError, ReadonlyArray<UserDetails>>;

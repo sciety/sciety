@@ -5,6 +5,7 @@ import { axiosError } from './helpers';
 import { getTwitterUserDetailsBatch } from '../../src/infrastructure/get-twitter-user-details-batch';
 import * as DE from '../../src/types/data-error';
 import { toUserId } from '../../src/types/user-id';
+import { dummyLogger } from '../dummy-logger';
 import { arbitraryUri, arbitraryWord } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryUserId } from '../types/user-id.helper';
@@ -15,7 +16,7 @@ describe('get-twitter-user-details-batch', () => {
       const getTwitterResponseMock = jest.fn();
       const result = await pipe(
         [],
-        getTwitterUserDetailsBatch(getTwitterResponseMock),
+        getTwitterUserDetailsBatch(getTwitterResponseMock, dummyLogger),
         TE.getOrElse(shouldNotBeCalled),
       )();
 
@@ -55,7 +56,7 @@ describe('get-twitter-user-details-batch', () => {
 
       const [result1, result2] = await pipe(
         [userId1, userId2],
-        getTwitterUserDetailsBatch(getTwitterResponse),
+        getTwitterUserDetailsBatch(getTwitterResponse, dummyLogger),
         TE.getOrElse(shouldNotBeCalled),
       )();
 
@@ -77,7 +78,7 @@ describe('get-twitter-user-details-batch', () => {
       const getTwitterResponseMock = jest.fn(() => TE.right({}));
       await pipe(
         [arbitraryUserId(), arbitraryUserId()],
-        getTwitterUserDetailsBatch(getTwitterResponseMock),
+        getTwitterUserDetailsBatch(getTwitterResponseMock, dummyLogger),
       )();
 
       expect(getTwitterResponseMock).toHaveBeenCalledWith(expect.stringContaining('user.fields=profile_image_url'));
@@ -90,7 +91,7 @@ describe('get-twitter-user-details-batch', () => {
 
       await pipe(
         [userId1, userId2],
-        getTwitterUserDetailsBatch(getTwitterResponseMock),
+        getTwitterUserDetailsBatch(getTwitterResponseMock, dummyLogger),
       )();
 
       expect(getTwitterResponseMock).toHaveBeenCalledWith(expect.stringContaining(`ids=${userId1},${userId2}`));
@@ -126,7 +127,7 @@ describe('get-twitter-user-details-batch', () => {
 
       const result = await pipe(
         [userId, toUserId('1234556')],
-        getTwitterUserDetailsBatch(getTwitterResponse),
+        getTwitterUserDetailsBatch(getTwitterResponse, dummyLogger),
         TE.getOrElse(shouldNotBeCalled),
       )();
 
@@ -157,7 +158,7 @@ describe('get-twitter-user-details-batch', () => {
 
       const result = await pipe(
         [toUserId('1234556')],
-        getTwitterUserDetailsBatch(getTwitterResponse),
+        getTwitterUserDetailsBatch(getTwitterResponse, dummyLogger),
         TE.getOrElse(shouldNotBeCalled),
       )();
 
@@ -170,7 +171,7 @@ describe('get-twitter-user-details-batch', () => {
       const getTwitterResponse = () => TE.left(axiosError(400));
       const result = await pipe(
         [toUserId('47998559'), toUserId('foo')],
-        getTwitterUserDetailsBatch(getTwitterResponse),
+        getTwitterUserDetailsBatch(getTwitterResponse, dummyLogger),
       )();
 
       expect(result).toStrictEqual(E.left(DE.notFound));
@@ -183,7 +184,7 @@ describe('get-twitter-user-details-batch', () => {
 
       const result = await pipe(
         [toUserId('47998559')],
-        getTwitterUserDetailsBatch(getTwitterResponse),
+        getTwitterUserDetailsBatch(getTwitterResponse, dummyLogger),
       )();
 
       expect(result).toStrictEqual(E.left(DE.unavailable));
@@ -200,10 +201,26 @@ describe('get-twitter-user-details-batch', () => {
 
       const result = await pipe(
         [arbitraryUserId()],
-        getTwitterUserDetailsBatch(getTwitterResponse),
+        getTwitterUserDetailsBatch(getTwitterResponse, dummyLogger),
       )();
 
       expect(result).toStrictEqual(E.left(DE.unavailable));
+    });
+  });
+
+  describe('when Twitter returns a successful response with an errors property', () => {
+    it.skip('logs the errors array', async () => {
+      const logger = jest.fn();
+      const getTwitterResponse = () => TE.right({ errors: [{ error: 'oh no!' }] });
+      await pipe(
+        [arbitraryUserId()],
+        getTwitterUserDetailsBatch(getTwitterResponse, logger),
+      )();
+
+      expect(logger).toHaveBeenCalledWith('warn', 'Twitter returned an errors property', {
+        uri: 'www.somewhere.com',
+        errors: [{ error: 'oh no!' }],
+      });
     });
   });
 });
