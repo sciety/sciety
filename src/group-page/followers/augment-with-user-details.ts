@@ -1,4 +1,3 @@
-import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
@@ -32,21 +31,20 @@ export const augmentWithUserDetails = (
   followers,
   RA.map((follower) => follower.userId),
   ports.getUserDetailsBatch,
-  TE.chainEitherKW(
-    E.traverseArray((userDetails) => pipe(
+  TE.map(
+    (userDetailsArray) => pipe(
       followers,
-      RA.findFirst((follower) => userDetails.userId === follower.userId),
-      O.fold(
-        () => E.left(DE.unavailable),
-        (follower) => E.right(
-          {
-            ...follower,
-            ...userDetails,
-            link: `/users/${userDetails.handle}`,
-            title: userDetails.displayName,
-          },
-        ),
-      ),
-    )),
+      RA.map((follower) => pipe(
+        userDetailsArray,
+        RA.findFirst((userDetails) => userDetails.userId === follower.userId),
+        O.map((userDetails) => ({
+          ...follower,
+          ...userDetails,
+          link: `/users/${userDetails.handle}`,
+          title: userDetails.displayName,
+        })),
+      )),
+      RA.compact,
+    ),
   ),
 );

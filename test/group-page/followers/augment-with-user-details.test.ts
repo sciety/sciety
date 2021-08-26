@@ -67,7 +67,7 @@ describe('augment-with-user-details', () => {
     });
   });
 
-  it.skip('returns the user card view models in the same order as the input followers', async () => {
+  it('returns the user card view models in the same order as the input followers', async () => {
     const userId1 = arbitraryUserId();
     const handle1 = arbitraryWord();
     const userId2 = arbitraryUserId();
