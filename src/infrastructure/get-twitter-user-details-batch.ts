@@ -54,6 +54,10 @@ const logErrors = (logger: Logger, userIds: ReadonlyArray<UserId>) => TE.map((re
   () => response,
 ));
 
+const handleResponseErrors = TE.mapLeft((error) => (axios.isAxiosError(error) && error.response?.status === 400
+  ? DE.notFound
+  : DE.unavailable));
+
 export const getTwitterUserDetailsBatch: GetTwitterUserDetailsBatch = (
   getTwitterResponse,
   logger,
@@ -67,9 +71,7 @@ export const getTwitterUserDetailsBatch: GetTwitterUserDetailsBatch = (
       userIds,
       generateUrl,
       getTwitterResponse,
-      TE.mapLeft((error) => (axios.isAxiosError(error) && error.response?.status === 400
-        ? DE.notFound
-        : DE.unavailable)),
+      handleResponseErrors,
       T.map(E.chainW(flow(
         codec.decode,
         E.mapLeft(() => DE.unavailable),
