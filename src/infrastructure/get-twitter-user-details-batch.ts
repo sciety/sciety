@@ -58,6 +58,11 @@ const handleResponseErrors = TE.mapLeft((error) => (axios.isAxiosError(error) &&
   ? DE.notFound
   : DE.unavailable));
 
+const decodeResponse = T.map(E.chainW(flow(
+  codec.decode,
+  E.mapLeft(() => DE.unavailable),
+)));
+
 export const getTwitterUserDetailsBatch: GetTwitterUserDetailsBatch = (
   getTwitterResponse,
   logger,
@@ -72,10 +77,7 @@ export const getTwitterUserDetailsBatch: GetTwitterUserDetailsBatch = (
       generateUrl,
       getTwitterResponse,
       handleResponseErrors,
-      T.map(E.chainW(flow(
-        codec.decode,
-        E.mapLeft(() => DE.unavailable),
-      ))),
+      decodeResponse,
       logErrors(logger, userIds),
       TE.map(({ data }) => pipe(
         data,
