@@ -4,6 +4,14 @@ import * as Gid from '../types/group-id';
 
 const groups: RNEA.ReadonlyNonEmptyArray<Group> = [
   {
+    id: Gid.fromValidatedString('50401e46-b764-47b7-8557-6bb35444b7c8'),
+    name: 'ASAPbio crowd review',
+    avatarPath: '/static/groups/asapbio-crowd-review--50401e46-b764-47b7-8557-6bb35444b7c8.png',
+    descriptionPath: 'asapbio-crowd-review--50401e46-b764-47b7-8557-6bb35444b7c8.md',
+    shortDescription: 'We promote the productive use of preprints for research dissemination and transparent peer review and feedback on all research outputs.',
+    homepage: 'https://asapbio.org/about-us',
+  },
+  {
     id: Gid.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a'),
     name: 'NCRC',
     avatarPath: '/static/groups/ncrc--62f9b0d0-8d43-4766-a52a-ce02af61bc6a.jpg',
@@ -129,14 +137,6 @@ let downplayedPotentialGroups: ReadonlyArray<Group> = [];
 
 if (process.env.EXPERIMENT_ENABLED === 'true') {
   downplayedPotentialGroups = [
-    {
-      id: Gid.fromValidatedString('50401e46-b764-47b7-8557-6bb35444b7c8'),
-      name: 'ASAPbio crowd review',
-      avatarPath: '/static/groups/asapbio-crowd-review--50401e46-b764-47b7-8557-6bb35444b7c8.png',
-      descriptionPath: 'asapbio-crowd-review--50401e46-b764-47b7-8557-6bb35444b7c8.md',
-      shortDescription: 'We promote the productive use of preprints for research dissemination and transparent peer review and feedback on all research outputs.',
-      homepage: 'https://asapbio.org/about-us',
-    },
   ];
 }
 
