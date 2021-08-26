@@ -67,5 +67,46 @@ describe('augment-with-user-details', () => {
     });
   });
 
-  it.todo('returns the user card view models in the same order as the input followers');
+  it.skip('returns the user card view models in the same order as the input followers', async () => {
+    const userId1 = arbitraryUserId();
+    const handle1 = arbitraryWord();
+    const userId2 = arbitraryUserId();
+    const handle2 = arbitraryWord();
+    const ports = {
+      getUserDetailsBatch: () => TE.right([
+        {
+          userId: userId2,
+          handle: handle2,
+          avatarUrl: arbitraryUri(),
+          displayName: arbitraryString(),
+        },
+        {
+          userId: userId1,
+          handle: handle1,
+          avatarUrl: arbitraryUri(),
+          displayName: arbitraryString(),
+        },
+      ]),
+    };
+    const followers = [
+      {
+        userId: userId1,
+        listCount: arbitraryNumber(0, 10),
+        followedGroupCount: arbitraryNumber(0, 10),
+      },
+      {
+        userId: userId2,
+        listCount: arbitraryNumber(0, 10),
+        followedGroupCount: arbitraryNumber(0, 10),
+      },
+    ];
+    const [{ handle: resultHandle1 }, { handle: resultHandle2 }] = await pipe(
+      followers,
+      augmentWithUserDetails(ports),
+      TE.getOrElse(shouldNotBeCalled),
+    )();
+
+    expect(resultHandle1).toStrictEqual(handle1);
+    expect(resultHandle2).toStrictEqual(handle2);
+  });
 });
