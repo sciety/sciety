@@ -98,7 +98,7 @@ describe('get-twitter-user-details-batch', () => {
   });
 
   describe('if not all ids match Twitter user IDs', () => {
-    it.skip('returns an array of userDetails for those retrievable', async () => {
+    it('returns an array of userDetails for those retrievable', async () => {
       const userId = arbitraryUserId();
       const getTwitterResponse = () => TE.right(
         {
@@ -127,6 +127,7 @@ describe('get-twitter-user-details-batch', () => {
       const result = await pipe(
         [userId, toUserId('1234556')],
         getTwitterUserDetailsBatch(getTwitterResponse),
+        TE.getOrElse(shouldNotBeCalled),
       )();
 
       expect(result).toStrictEqual([expect.objectContaining({
@@ -157,9 +158,10 @@ describe('get-twitter-user-details-batch', () => {
       const result = await pipe(
         [toUserId('1234556')],
         getTwitterUserDetailsBatch(getTwitterResponse),
+        TE.getOrElse(shouldNotBeCalled),
       )();
 
-      expect(result).toStrictEqual(E.right([]));
+      expect(result).toStrictEqual([]);
     });
   });
 
