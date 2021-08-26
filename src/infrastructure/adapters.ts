@@ -39,6 +39,7 @@ type UserDetails = {
   avatarUrl: string,
   displayName: string,
   handle: string,
+  userId: UserId,
 };
 
 type GetUserDetailsBatch = (userId: ReadonlyArray<UserId>) => TE.TaskEither<DE.DataError, ReadonlyArray<UserDetails>>;

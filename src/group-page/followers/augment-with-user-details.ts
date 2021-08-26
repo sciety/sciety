@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -9,6 +10,7 @@ type UserDetails = {
   avatarUrl: string,
   handle: string,
   displayName: string,
+  userId: UserId,
 };
 
 export type Ports = {
@@ -29,10 +31,18 @@ export const augmentWithUserDetails = (
   followers,
   RA.map((follower) => follower.userId),
   ports.getUserDetailsBatch,
-  TE.map(RA.mapWithIndex((i, userDetails) => ({
-    ...followers[i],
-    ...userDetails,
-    link: `/users/${userDetails.handle}`,
-    title: userDetails.displayName,
-  }))),
+  TE.map(RA.mapWithIndex((i, userDetails) => pipe(
+    followers,
+    RA.findFirst((follower) => userDetails.userId === follower.userId),
+    O.fold(
+      () => { throw Error('userId not in list of followers'); },
+      (follower) => (
+        {
+          ...follower,
+          ...userDetails,
+          link: `/users/${userDetails.handle}`,
+          title: userDetails.displayName,
+        }),
+    ),
+  ))),
 );

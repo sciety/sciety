@@ -9,7 +9,7 @@ import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('augment-with-user-details', () => {
   describe('not all user details are returned from the port', () => {
-    it.skip('returns a shorter array of user card view models', async () => {
+    it('returns a shorter array of user card view models', async () => {
       const userId1 = arbitraryUserId();
       const listCount1 = 1;
       const handle1 = arbitraryWord();

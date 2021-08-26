@@ -21,6 +21,7 @@ import { inMemoryGroupRepository } from '../../src/infrastructure/in-memory-grou
 import * as DE from '../../src/types/data-error';
 import { FollowList } from '../../src/types/follow-list';
 import { SanitisedHtmlFragment } from '../../src/types/sanitised-html-fragment';
+import { toUserId } from '../../src/types/user-id';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryWord } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
@@ -78,6 +79,7 @@ export const createTestServer = async (): Promise<TestServer> => {
       avatarUrl: '',
       displayName: '',
       handle: '',
+      userId: toUserId(''),
     })),
     getUserId: () => TE.right(arbitraryUserId()),
     follows: () => T.of(false),
