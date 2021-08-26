@@ -36,6 +36,8 @@ const codec = t.type({
   errors: tt.optionFromNullable(t.unknown),
 });
 
+const generateUrl = (userIds: ReadonlyArray<UserId>) => `https://api.twitter.com/2/users?ids=${userIds.join(',')}&user.fields=profile_image_url`;
+
 export const getTwitterUserDetailsBatch: GetTwitterUserDetailsBatch = (
   getTwitterResponse,
   logger,
@@ -46,7 +48,9 @@ export const getTwitterUserDetailsBatch: GetTwitterUserDetailsBatch = (
   RA.match(
     constant(TE.right([])),
     () => pipe(
-      getTwitterResponse(`https://api.twitter.com/2/users?ids=${userIds.join(',')}&user.fields=profile_image_url`),
+      userIds,
+      generateUrl,
+      getTwitterResponse,
       TE.mapLeft((error) => (axios.isAxiosError(error) && error.response?.status === 400
         ? DE.notFound
         : DE.unavailable)),
@@ -61,7 +65,7 @@ export const getTwitterUserDetailsBatch: GetTwitterUserDetailsBatch = (
           'warn',
           'Twitter returned an errors property',
           {
-            uri: `https://api.twitter.com/2/users?ids=${userIds.join(',')}&user.fields=profile_image_url`,
+            uri: generateUrl(userIds),
             errors,
           },
         )),
