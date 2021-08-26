@@ -26,13 +26,17 @@ type GetTwitterUserDetailsBatch = (
   userIds: ReadonlyArray<UserId>
 ) => TE.TaskEither<DE.DataError, ReadonlyArray<UserDetails>>;
 
+const twitterUserCodec = t.type({
+  id: t.string,
+  username: t.string,
+  name: t.string,
+  profile_image_url: t.string,
+});
+
+type TwitterUser = t.TypeOf<typeof twitterUserCodec>;
+
 const codec = t.type({
-  data: tt.optionFromNullable(t.array(t.type({
-    id: t.string,
-    username: t.string,
-    name: t.string,
-    profile_image_url: t.string,
-  }))),
+  data: tt.optionFromNullable(t.array(twitterUserCodec)),
   errors: tt.optionFromNullable(t.unknown),
 });
 
@@ -63,6 +67,13 @@ const decodeResponse = T.map(E.chainW(flow(
   E.mapLeft(() => DE.unavailable),
 )));
 
+const translateToUserDetails = RA.map((item: TwitterUser) => ({
+  userId: toUserId(item.id),
+  avatarUrl: item.profile_image_url,
+  displayName: item.name,
+  handle: item.username,
+}));
+
 export const getTwitterUserDetailsBatch: GetTwitterUserDetailsBatch = (
   getTwitterResponse,
   logger,
@@ -83,12 +94,7 @@ export const getTwitterUserDetailsBatch: GetTwitterUserDetailsBatch = (
         data,
         O.fold(
           () => [],
-          RA.map((item) => ({
-            userId: toUserId(item.id),
-            avatarUrl: item.profile_image_url,
-            displayName: item.name,
-            handle: item.username,
-          })),
+          translateToUserDetails,
         ),
       )),
     ),
