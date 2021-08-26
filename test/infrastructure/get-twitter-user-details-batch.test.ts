@@ -95,7 +95,7 @@ describe('get-twitter-user-details-batch', () => {
     });
   });
 
-  describe('if no ids match existing Twitter users', () => {
+  describe('if not all ids match Twitter user IDs', () => {
     it('returns notFound', async () => {
       const getTwitterResponse = () => TE.right(
         {
@@ -130,7 +130,7 @@ describe('get-twitter-user-details-batch', () => {
     });
   });
 
-  describe('if not all ids match Twitter user IDs', () => {
+  describe('if no ids match existing Twitter users', () => {
     it('returns notFound', async () => {
       const getTwitterResponse = () => TE.right(
         {
