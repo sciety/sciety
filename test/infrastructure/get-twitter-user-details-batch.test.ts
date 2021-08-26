@@ -136,7 +136,7 @@ describe('get-twitter-user-details-batch', () => {
   });
 
   describe('if no ids match existing Twitter users', () => {
-    it('returns notFound', async () => {
+    it.skip('returns empty array', async () => {
       const getTwitterResponse = () => TE.right(
         {
           errors: [
@@ -159,7 +159,7 @@ describe('get-twitter-user-details-batch', () => {
         getTwitterUserDetailsBatch(getTwitterResponse),
       )();
 
-      expect(result).toStrictEqual(E.left(DE.notFound));
+      expect(result).toStrictEqual(E.right([]));
     });
   });
 
