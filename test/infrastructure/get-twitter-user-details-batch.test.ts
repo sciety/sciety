@@ -209,7 +209,7 @@ describe('get-twitter-user-details-batch', () => {
   });
 
   describe('when Twitter returns a successful response with an errors property', () => {
-    it.skip('logs the errors array', async () => {
+    it('logs the errors array', async () => {
       const logger = jest.fn();
       const getTwitterResponse = () => TE.right({ errors: [{ error: 'oh no!' }] });
       await pipe(
@@ -218,7 +218,7 @@ describe('get-twitter-user-details-batch', () => {
       )();
 
       expect(logger).toHaveBeenCalledWith('warn', 'Twitter returned an errors property', {
-        uri: 'www.somewhere.com',
+        uri: expect.stringContaining('https://'),
         errors: [{ error: 'oh no!' }],
       });
     });

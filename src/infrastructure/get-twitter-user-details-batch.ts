@@ -33,11 +33,12 @@ const codec = t.type({
     name: t.string,
     profile_image_url: t.string,
   }))),
+  errors: tt.optionFromNullable(t.unknown),
 });
 
-// ts-unused-exports:disable-next-line
 export const getTwitterUserDetailsBatch: GetTwitterUserDetailsBatch = (
   getTwitterResponse,
+  logger,
 ) => (
   userIds,
 ) => pipe(
@@ -53,6 +54,19 @@ export const getTwitterUserDetailsBatch: GetTwitterUserDetailsBatch = (
         codec.decode,
         E.mapLeft(() => DE.unavailable),
       ))),
+      TE.map((response) => pipe(
+        response,
+        ({ errors }) => errors,
+        O.map((errors) => logger(
+          'warn',
+          'Twitter returned an errors property',
+          {
+            uri: `https://api.twitter.com/2/users?ids=${userIds.join(',')}&user.fields=profile_image_url`,
+            errors,
+          },
+        )),
+        () => response,
+      )),
       TE.map(({ data }) => pipe(
         data,
         O.fold(
