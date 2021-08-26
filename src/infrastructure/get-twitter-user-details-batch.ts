@@ -51,19 +51,18 @@ export const getTwitterUserDetailsBatch: GetTwitterUserDetailsBatch = (
         codec.decode,
         E.mapLeft(() => DE.unavailable),
       ))),
-      T.map(E.chainW(({ data }) => pipe(
+      TE.map(({ data }) => pipe(
         data,
-        O.filter((validResults) => validResults.length === userIds.length),
-        E.fromOption(() => DE.notFound),
-      ))),
-      TE.map(
-        RA.map((item) => ({
-          userId: toUserId(item.id),
-          avatarUrl: item.profile_image_url,
-          displayName: item.name,
-          handle: item.username,
-        })),
-      ),
+        O.fold(
+          () => [],
+          RA.map((item) => ({
+            userId: toUserId(item.id),
+            avatarUrl: item.profile_image_url,
+            displayName: item.name,
+            handle: item.username,
+          })),
+        ),
+      )),
     ),
   ),
 );

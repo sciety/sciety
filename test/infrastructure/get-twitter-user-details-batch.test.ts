@@ -136,7 +136,7 @@ describe('get-twitter-user-details-batch', () => {
   });
 
   describe('if no ids match existing Twitter users', () => {
-    it.skip('returns empty array', async () => {
+    it('returns empty array', async () => {
       const getTwitterResponse = () => TE.right(
         {
           errors: [
