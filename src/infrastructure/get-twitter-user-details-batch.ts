@@ -36,7 +36,23 @@ const codec = t.type({
   errors: tt.optionFromNullable(t.unknown),
 });
 
+type TwitterResponse = t.TypeOf<typeof codec>;
+
 const generateUrl = (userIds: ReadonlyArray<UserId>) => `https://api.twitter.com/2/users?ids=${userIds.join(',')}&user.fields=profile_image_url`;
+
+const logErrors = (logger: Logger, userIds: ReadonlyArray<UserId>) => TE.map((response: TwitterResponse) => pipe(
+  response,
+  ({ errors }) => errors,
+  O.map((errors) => logger(
+    'warn',
+    'Twitter returned an errors property',
+    {
+      uri: generateUrl(userIds),
+      errors,
+    },
+  )),
+  () => response,
+));
 
 export const getTwitterUserDetailsBatch: GetTwitterUserDetailsBatch = (
   getTwitterResponse,
@@ -58,19 +74,7 @@ export const getTwitterUserDetailsBatch: GetTwitterUserDetailsBatch = (
         codec.decode,
         E.mapLeft(() => DE.unavailable),
       ))),
-      TE.map((response) => pipe(
-        response,
-        ({ errors }) => errors,
-        O.map((errors) => logger(
-          'warn',
-          'Twitter returned an errors property',
-          {
-            uri: generateUrl(userIds),
-            errors,
-          },
-        )),
-        () => response,
-      )),
+      logErrors(logger, userIds),
       TE.map(({ data }) => pipe(
         data,
         O.fold(
