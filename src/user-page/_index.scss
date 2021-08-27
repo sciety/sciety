@@ -6,6 +6,7 @@
 @use '../sass/breakpoints';
 @use '../sass/layout';
 @use '../sass/card';
+@use '../sass/avatar';
 
 .page-header--user {
   display: flex;
@@ -14,11 +15,11 @@
   margin-bottom: baseline.increments(3);
 
   .page-header__avatar {
-    width: 48px;
-    height: 48px;
-    flex: 0 0 48px;
+    @include avatar.border();
+    width: avatar.$size--medium;
+    height: avatar.$size--medium;
+    flex: 0 0 avatar.$size--medium;
     margin-right: 1rem;
-    border-radius: 50%;
   }
 
   h1 {
