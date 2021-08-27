@@ -16,9 +16,9 @@
 
   .page-header__avatar {
     @include avatar.border();
-    width: avatar.$size--medium;
-    height: avatar.$size--medium;
-    flex: 0 0 avatar.$size--medium;
+    width: avatar.$size--large;
+    height: avatar.$size--large;
+    flex: 0 0 avatar.$size--large;
     margin-right: 1rem;
   }
 
