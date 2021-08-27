@@ -44,11 +44,7 @@
 }
 
 .activity-feed__item__avatar {
-  width: settings.$avatar-size;
-  height: settings.$avatar-size;
-  border: settings.$avatar-border;
-  border-radius: settings.$border-radius;
-  flex: 0 0 settings.$avatar-size;
+  @include card.avatar();
   margin-right: functions.px-to-rem(8px);
 }
 
