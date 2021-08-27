@@ -5,7 +5,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
-import { constant, flow, pipe } from 'fp-ts/function';
+import { constant, pipe } from 'fp-ts/function';
 import {
   CountReviewResponses,
   FetchReview,
@@ -60,15 +60,12 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
       deps.findReviewsForArticleDoi(doi),
       T.map(RA.map((review) => ({ type: 'review', ...review } as const))),
     ),
-    pipe(
-      RT.asks((deps: Dependencies) => deps.findVersionsForArticleDoi),
-      RT.chainTaskK(flow(
-        (findVersionsForArticleDoi) => findVersionsForArticleDoi(doi, server),
-        TO.matchW(
-          constant([]),
-          RNEA.map((version) => ({ type: 'article-version', ...version } as const)),
-        ),
-      )),
+    (deps: Dependencies) => pipe(
+      deps.findVersionsForArticleDoi(doi, server),
+      TO.matchW(
+        constant([]),
+        RNEA.map((version) => ({ type: 'article-version', ...version } as const)),
+      ),
     ),
   ] as const,
   mergeFeeds,
