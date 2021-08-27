@@ -56,10 +56,9 @@ type Dependencies = {
 
 export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDescending = (doi, server, userId) => pipe(
   [
-    pipe(
-      RT.asks((deps: Dependencies) => deps.findReviewsForArticleDoi),
-      RT.chainTaskK((findReviewsForArticleDoi) => findReviewsForArticleDoi(doi)),
-      RT.map(RA.map((review) => ({ type: 'review', ...review } as const))),
+    (deps: Dependencies) => pipe(
+      deps.findReviewsForArticleDoi(doi),
+      T.map(RA.map((review) => ({ type: 'review', ...review } as const))),
     ),
     pipe(
       RT.asks((deps: Dependencies) => deps.findVersionsForArticleDoi),

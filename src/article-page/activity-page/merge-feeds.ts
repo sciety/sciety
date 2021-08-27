@@ -21,7 +21,8 @@ const byDateDescending: Ord.Ord<FeedEvent> = pipe(
   Ord.reverse,
 );
 
-export const mergeFeeds: MergeFeeds = flow(
+export const mergeFeeds: MergeFeeds = (feeds) => pipe(
+  feeds,
   RT.sequenceArray,
   RT.map(flow(
     RA.flatten,
