@@ -4,6 +4,7 @@
 @use 'list';
 @use 'settings';
 @use 'typography';
+@use 'avatar';
 
 @mixin basics () {
   background-color: settings.$colour-white;
@@ -60,9 +61,8 @@
 }
 
 @mixin avatar() {
+  @include avatar.border();
   width: settings.$avatar-size;
   height: settings.$avatar-size;
-  border-radius: settings.$border-radius;
-  border: settings.$avatar-border;
   flex: 0 0 settings.$avatar-size;
 }

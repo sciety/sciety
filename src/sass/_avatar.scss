@@ -1,0 +1,6 @@
+@use 'settings';
+
+@mixin border() {
+  border-radius: settings.$border-radius;
+  border: settings.$avatar-border;
+}
