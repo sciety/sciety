@@ -32,7 +32,7 @@ import { projectHasUserSavedArticle } from '../project-has-user-saved-article';
 import { renderSaveArticle } from '../render-save-article';
 import { renderTweetThis } from '../render-tweet-this';
 
-type ActivityPage = (params: Params) => (ports: Ports) => TE.TaskEither<RenderPageError, Page>;
+type ActivityPage = (ports: Ports) => (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
 type Params = {
   doi: Doi,
@@ -69,7 +69,7 @@ const toErrorPage = (error: DE.DataError) => ({
   `),
 });
 
-export const articleActivityPage: ActivityPage = (params) => (ports) => pipe(
+export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
   params,
   TE.right,
   TE.bind('userId', ({ user }) => pipe(user, O.map((u) => u.id), TE.right)),
