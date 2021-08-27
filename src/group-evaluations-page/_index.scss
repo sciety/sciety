@@ -4,8 +4,7 @@
 @use '../sass/settings';
 @use '../sass/typography';
 @use '../sass/page-header';
-
-$_avatar-size: 48px;
+@use '../sass/avatar';
 
 .evaluated-articles-list {
   @include card.list();
@@ -27,10 +26,9 @@ $_avatar-size: 48px;
 }
 
 .page-header--group-evaluations .page-header__avatar {
-  width: $_avatar-size;
-  height: $_avatar-size;
-  border-radius: settings.$border-radius;
-  border: settings.$avatar-border;
+  @include avatar.border();
+  width: avatar.$size--medium;
+  height: avatar.$size--medium;
   margin-right: 0.5rem;
 }
 

@@ -1,6 +1,7 @@
 @use 'settings';
 
 $size--small: 36px;
+$size--medium: 48px;
 $size--large: 76px;
 
 @mixin border() {
