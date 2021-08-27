@@ -1,13 +1,12 @@
-import * as RT from 'fp-ts/ReaderTask';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
-import { flow } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { DomainEvent, isEditorialCommunityReviewedArticleEvent } from '../domain-events';
 import { Doi, eqDoi } from '../types/doi';
 import { GroupId } from '../types/group-id';
 import { ReviewId } from '../types/review-id';
 
-type FindReviewsForArticleDoi = (articleDoi: Doi) => RT.ReaderTask<GetAllEvents, ReadonlyArray<{
+type FindReviewsForArticleDoi = (getAllEvents: GetAllEvents) => (articleDoi: Doi) => T.Task<ReadonlyArray<{
   reviewId: ReviewId,
   groupId: GroupId,
   occurredAt: Date,
@@ -15,7 +14,8 @@ type FindReviewsForArticleDoi = (articleDoi: Doi) => RT.ReaderTask<GetAllEvents,
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
-export const findReviewsForArticleDoi: FindReviewsForArticleDoi = (articleDoi) => (
+export const findReviewsForArticleDoi: FindReviewsForArticleDoi = (getAllEvents) => (articleDoi) => pipe(
+  getAllEvents,
   T.map(flow(
     RA.filter(isEditorialCommunityReviewedArticleEvent),
     RA.filter((event) => eqDoi.equals(event.articleId, articleDoi)),
@@ -24,5 +24,5 @@ export const findReviewsForArticleDoi: FindReviewsForArticleDoi = (articleDoi) =
       groupId: event.editorialCommunityId,
       occurredAt: event.date,
     })),
-  ))
+  )),
 );

@@ -116,7 +116,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         ),
         getGroup: groups.lookup,
         getAllGroups: groups.all,
-        findReviewsForArticleDoi: (...args) => findReviewsForArticleDoi(...args)(getAllEvents),
+        findReviewsForArticleDoi: findReviewsForArticleDoi(getAllEvents),
         getAllEvents,
         commitEvents: (...args) => commitEvents(...args)({ inMemoryEvents: events, pool, logger: loggerIO(logger) }),
         getFollowList,

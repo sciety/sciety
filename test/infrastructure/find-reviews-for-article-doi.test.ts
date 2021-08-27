@@ -30,8 +30,8 @@ describe('find-reviews-for-article-doi', () => {
       [arbitraryDoi(), []],
     ])('finds the review references for article %s', async (articleDoi, expectedReviews) => {
       const actualReviews = await pipe(
-        getAllEvents,
-        findReviewsForArticleDoi(articleDoi),
+        articleDoi,
+        findReviewsForArticleDoi(getAllEvents),
         T.map(RA.map((reviewReference) => reviewReference.reviewId)),
       )();
 
@@ -53,7 +53,7 @@ describe('find-reviews-for-article-doi', () => {
 
     it('performs acceptably', async () => {
       const startTime = performance.now();
-      await findReviewsForArticleDoi(arbitraryDoi())(T.of(events))();
+      await findReviewsForArticleDoi(T.of(events))(arbitraryDoi())();
       const endTime = performance.now();
 
       expect(endTime - startTime).toBeLessThan(50);
