@@ -1,4 +1,3 @@
-import * as RT from 'fp-ts/ReaderTask';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
@@ -39,9 +38,12 @@ const projection = (reviewId: ReviewId.ReviewId) => (events: ReadonlyArray<Domai
 });
 
 type ProjectReviewResponseCounts = (
+  getEvents: GetEvents
+) => (
   reviewId: ReviewId.ReviewId,
-) => RT.ReaderTask<GetEvents, { helpfulCount: number, notHelpfulCount: number }>;
+) => T.Task<{ helpfulCount: number, notHelpfulCount: number }>;
 
-export const projectReviewResponseCounts: ProjectReviewResponseCounts = (reviewId) => (
-  T.map(projection(reviewId))
+export const projectReviewResponseCounts: ProjectReviewResponseCounts = (getEvents) => (reviewId) => pipe(
+  getEvents,
+  T.map(projection(reviewId)),
 );

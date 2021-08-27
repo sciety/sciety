@@ -84,7 +84,7 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
           throw new Error('No such group');
         }),
       ),
-      countReviewResponses: (reviewId) => projectReviewResponseCounts(reviewId)(ports.getAllEvents),
+      countReviewResponses: projectReviewResponseCounts(ports.getAllEvents),
       getUserReviewResponse: (reviewId) => projectUserReviewResponse(reviewId, userId)(ports.getAllEvents),
     }),
     TE.rightTask,
