@@ -1,6 +1,5 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
-import * as RT from 'fp-ts/ReaderTask';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
@@ -38,11 +37,11 @@ export type FindVersionsForArticleDoi = (
 }>>;
 
 type GetArticleFeedEventsByDateDescending = (
+  dependencies: Dependencies
+) => (
   doi: Doi,
   server: ArticleServer,
   userId: O.Option<UserId>,
-) => (
-  dependencies: Dependencies
 ) => T.Task<RNEA.ReadonlyNonEmptyArray<FeedItem>>;
 
 type Dependencies = {
@@ -54,23 +53,25 @@ type Dependencies = {
   getUserReviewResponse: GetUserReviewResponse,
 };
 
-export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDescending = (doi, server, userId) => pipe(
-  (deps: Dependencies) => pipe(
-    [
-      pipe(
-        deps.findReviewsForArticleDoi(doi),
-        T.map(RA.map((review) => ({ type: 'review', ...review } as const))),
+export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDescending = (
+  deps,
+) => (
+  doi, server, userId,
+) => pipe(
+  [
+    pipe(
+      deps.findReviewsForArticleDoi(doi),
+      T.map(RA.map((review) => ({ type: 'review', ...review } as const))),
+    ),
+    pipe(
+      deps.findVersionsForArticleDoi(doi, server),
+      TO.matchW(
+        constant([]),
+        RNEA.map((version) => ({ type: 'article-version', ...version } as const)),
       ),
-      pipe(
-        deps.findVersionsForArticleDoi(doi, server),
-        TO.matchW(
-          constant([]),
-          RNEA.map((version) => ({ type: 'article-version', ...version } as const)),
-        ),
-      ),
-    ] as const,
-    mergeFeeds,
-    T.chain((feedEvents) => getFeedEventsContent(feedEvents, server, userId)(deps)),
-    T.map((feedEvents) => handleArticleVersionErrors(feedEvents, server)),
-  ),
+    ),
+  ] as const,
+  mergeFeeds,
+  T.chain((feedEvents) => getFeedEventsContent(feedEvents, server, userId)(deps)),
+  T.map((feedEvents) => handleArticleVersionErrors(feedEvents, server)),
 );

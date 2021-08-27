@@ -76,7 +76,7 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
   TE.bind('articleDetails', ({ doi }) => pipe(doi, ports.fetchArticle)),
   TE.bindW('feedItemsByDateDescending', ({ articleDetails, doi, userId }) => pipe(
     articleDetails.server,
-    (server) => getArticleFeedEventsByDateDescending(doi, server, userId)({
+    (server) => getArticleFeedEventsByDateDescending({
       ...ports,
       getGroup: flow(
         ports.getGroup,
@@ -86,7 +86,7 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
       ),
       countReviewResponses: projectReviewResponseCounts(ports.getAllEvents),
       getUserReviewResponse: projectUserReviewResponse(ports.getAllEvents),
-    }),
+    })(doi, server, userId),
     TE.rightTask,
   )),
   TE.bindW('feed', ({ feedItemsByDateDescending }) => pipe(
