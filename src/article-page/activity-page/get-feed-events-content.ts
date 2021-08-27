@@ -103,18 +103,18 @@ type Dependencies = {
   getUserReviewResponse: GetUserReviewResponse,
 };
 
-type GetFeedEventsContent = <R extends Dependencies>(
+type GetFeedEventsContent = (r: Dependencies) => (
   feedEvents: ReadonlyArray<FeedEvent>,
   server: ArticleServer,
   userId: O.Option<UserId>,
-) => (r: R) => T.Task<ReadonlyArray<FeedItem>>;
+) => T.Task<ReadonlyArray<FeedItem>>;
 
-export const getFeedEventsContent: GetFeedEventsContent = (feedEvents, server, userId) => ({
+export const getFeedEventsContent: GetFeedEventsContent = ({
   fetchReview,
   getGroup,
   countReviewResponses,
   getUserReviewResponse,
-}) => {
+}) => (feedEvents, server, userId) => {
   const toFeedItem = (feedEvent: FeedEvent): T.Task<FeedItem> => {
     switch (feedEvent.type) {
       case 'article-version':
