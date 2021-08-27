@@ -6,6 +6,7 @@
 @use '../sass/breakpoints';
 @use '../sass/layout';
 @use '../sass/list';
+@use '../sass/avatar';
 
 @use './followers';
 
@@ -40,11 +41,11 @@
   }
 
   .page-header__avatar {
-    width: 76px;
-    height: 76px;
-    flex: 0 0 76px;
+    @include avatar.border();
+    width: avatar.$size--large;
+    height: avatar.$size--large;
+    flex: 0 0 avatar.$size--large;
     margin-right: 1rem;
-    border-radius: 50%;
   }
 
   .page-header__title {

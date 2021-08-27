@@ -1,6 +1,7 @@
 @use 'settings';
 
 $size--small: 36px;
+$size--large: 76px;
 
 @mixin border() {
   border-radius: settings.$border-radius;
