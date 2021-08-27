@@ -1,4 +1,3 @@
-import * as RTE from 'fp-ts/ReaderTaskEither';
 import * as TE from 'fp-ts/TaskEither';
 import { flow } from 'fp-ts/function';
 import { renderPage } from './render-page';
@@ -9,7 +8,7 @@ import { RenderPageError } from '../types/render-page-error';
 
 type FetchStaticFile = (filename: string) => TE.TaskEither<DE.DataError, string>;
 
-type AboutPage = RTE.ReaderTaskEither<FetchStaticFile, RenderPageError, Page>;
+type AboutPage = (fetchStaticFile: FetchStaticFile) => TE.TaskEither<RenderPageError, Page>;
 
 export const aboutPage: AboutPage = flow(
   (fetchStaticFile) => fetchStaticFile('about.md'),

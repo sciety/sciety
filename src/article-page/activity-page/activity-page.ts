@@ -35,7 +35,7 @@ import { projectHasUserSavedArticle } from '../project-has-user-saved-article';
 import { renderSaveArticle } from '../render-save-article';
 import { renderTweetThis } from '../render-tweet-this';
 
-type ActivityPage = (params: Params) => RTE.ReaderTaskEither<Ports, RenderPageError, Page>;
+type ActivityPage = (params: Params) => (ports: Ports) => TE.TaskEither<RenderPageError, Page>;
 
 type Params = {
   doi: Doi,
