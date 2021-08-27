@@ -23,7 +23,7 @@ describe('meta page acceptance criteria', () => {
       getAllEvents: T.of([]),
     };
     const page = await pipe(
-      articleMetaPage(params)(adapters),
+      articleMetaPage(adapters)(params),
       TE.getOrElse(() => { throw new Error('cannot happen'); }),
     )();
 

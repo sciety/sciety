@@ -17,7 +17,7 @@ import { projectHasUserSavedArticle } from '../project-has-user-saved-article';
 import { renderSaveArticle } from '../render-save-article';
 import { renderTweetThis } from '../render-tweet-this';
 
-type MetaPage = (params: Params) => (ports: Ports) => TE.TaskEither<RenderPageError, Page>;
+type MetaPage = (ports: Ports) => (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
 type Params = {
   doi: Doi,
@@ -45,7 +45,7 @@ const toErrorPage = (error: DE.DataError) => ({
   `),
 });
 
-export const articleMetaPage: MetaPage = (params) => (ports) => pipe(
+export const articleMetaPage: MetaPage = (ports) => (params) => pipe(
   params,
   TE.right,
   TE.bind('userId', ({ user }) => pipe(user, O.map((u) => u.id), TE.right)),
