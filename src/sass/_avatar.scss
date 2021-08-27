@@ -6,5 +6,5 @@ $size--large: 73px; // size of profile images returned by twitter
 
 @mixin border() {
   border-radius: settings.$border-radius;
-  border: settings.$avatar-border;
+  border: 3px settings.$colour-furniture solid;
 }
