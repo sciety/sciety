@@ -134,7 +134,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         ),
         follows: (...args) => follows(...args)(getAllEvents),
         findVersionsForArticleDoi: biorxivCache(
-          (...args) => getArticleVersionEventsFromBiorxiv(...args)({ getJson, logger: loggerIO(logger) }),
+          getArticleVersionEventsFromBiorxiv({ getJson, logger: loggerIO(logger) }),
           logger,
         ),
         ...adapters,

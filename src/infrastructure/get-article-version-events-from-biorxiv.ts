@@ -4,6 +4,7 @@ import * as IO from 'fp-ts/IO';
 import { Json } from 'fp-ts/Json';
 import * as O from 'fp-ts/Option';
 import * as RT from 'fp-ts/ReaderTask';
+import * as T from 'fp-ts/Task';
 import * as RTE from 'fp-ts/ReaderTaskEither';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as TE from 'fp-ts/TaskEither';
@@ -27,10 +28,10 @@ type ArticleVersion = {
   version: number,
 };
 
-type GetArticleVersionEventsFromBiorxiv = (
+type GetArticleVersionEventsFromBiorxiv = (dependencies: Dependencies) => (
   doi: Doi,
   server: ArticleServer,
-) => RT.ReaderTask<Dependencies, O.Option<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>>;
+) => T.Task<O.Option<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>>;
 
 const makeRequest = (doi: Doi, server: ArticleServer) => ({ getJson, logger }: Dependencies) => pipe(
   TE.tryCatch(
@@ -59,10 +60,10 @@ const mapResponse = (doi: Doi, server: ArticleServer) => flow(
   })),
 );
 
-const getArticleVersionEventsFromBiorxiv: GetArticleVersionEventsFromBiorxiv = (doi, server) => pipe(
-  makeRequest(doi, server),
-  RTE.map(mapResponse(doi, server)),
-  RT.map(O.fromEither),
+const getArticleVersionEventsFromBiorxiv: GetArticleVersionEventsFromBiorxiv = (deps) => (doi, server) => pipe(
+  makeRequest(doi, server)(deps),
+  TE.map(mapResponse(doi, server)),
+  T.map(O.fromEither),
 );
 
 export { getArticleVersionEventsFromBiorxiv, ArticleVersion };
