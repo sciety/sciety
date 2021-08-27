@@ -94,7 +94,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       const groups = inMemoryGroupRepository(bootstrapGroups);
       const getAllEvents = T.of(events);
       const getFollowList = createEventSourceFollowListRepository(getAllEvents);
-      const fetchFile = (f: string) => fetchStaticFile(f)(loggerIO(logger));
+      const fetchFile = fetchStaticFile(loggerIO(logger));
       const fetchers = {
         doi: fetchDataciteReview(fetchDataset(logger), logger),
         hypothesis: fetchHypothesisAnnotation(getJson, logger),
