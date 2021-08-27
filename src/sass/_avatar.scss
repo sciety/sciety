@@ -1,5 +1,7 @@
 @use 'settings';
 
+$size--small: 36px;
+
 @mixin border() {
   border-radius: settings.$border-radius;
   border: settings.$avatar-border;

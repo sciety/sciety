@@ -6,7 +6,6 @@
 @use 'typography';
 @use 'avatar';
 
-$_avatar-size: 36px;
 
 @mixin basics () {
   background-color: settings.$colour-white;
@@ -64,7 +63,7 @@ $_avatar-size: 36px;
 
 @mixin avatar() {
   @include avatar.border();
-  width: $_avatar-size;
-  height: $_avatar-size;
-  flex: 0 0 $_avatar-size;
+  width: avatar.$size--small;
+  height: avatar.$size--small;
+  flex: 0 0 avatar.$size--small;
 }
