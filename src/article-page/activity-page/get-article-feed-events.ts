@@ -70,7 +70,7 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
       ),
     ] as const,
     mergeFeeds,
+    T.chain((feedEvents) => getFeedEventsContent(feedEvents, server, userId)(deps)),
   ),
-  RT.chain((feedEvents) => getFeedEventsContent(feedEvents, server, userId)),
   RT.map((feedEvents) => handleArticleVersionErrors(feedEvents, server)),
 );
