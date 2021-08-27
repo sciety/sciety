@@ -55,20 +55,22 @@ type Dependencies = {
 };
 
 export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDescending = (doi, server, userId) => pipe(
-  [
-    (deps: Dependencies) => pipe(
-      deps.findReviewsForArticleDoi(doi),
-      T.map(RA.map((review) => ({ type: 'review', ...review } as const))),
-    ),
-    (deps: Dependencies) => pipe(
-      deps.findVersionsForArticleDoi(doi, server),
-      TO.matchW(
-        constant([]),
-        RNEA.map((version) => ({ type: 'article-version', ...version } as const)),
+  (deps: Dependencies) => pipe(
+    [
+      pipe(
+        deps.findReviewsForArticleDoi(doi),
+        T.map(RA.map((review) => ({ type: 'review', ...review } as const))),
       ),
-    ),
-  ] as const,
-  mergeFeeds,
+      pipe(
+        deps.findVersionsForArticleDoi(doi, server),
+        TO.matchW(
+          constant([]),
+          RNEA.map((version) => ({ type: 'article-version', ...version } as const)),
+        ),
+      ),
+    ] as const,
+    mergeFeeds,
+  ),
   RT.chain((feedEvents) => getFeedEventsContent(feedEvents, server, userId)),
   RT.map((feedEvents) => handleArticleVersionErrors(feedEvents, server)),
 );
