@@ -13,7 +13,7 @@ describe('project-user-review-response', () => {
   describe('no response events', () => {
     it('returns nothing', async () => {
       const events = async () => [];
-      const userResponse = await projectUserReviewResponse(arbitraryReviewId(), O.some(arbitraryUserId()))(events)();
+      const userResponse = await projectUserReviewResponse(events)(arbitraryReviewId(), O.some(arbitraryUserId()))();
 
       expect(userResponse).toStrictEqual(O.none);
     });
@@ -26,7 +26,7 @@ describe('project-user-review-response', () => {
       const events = async () => [
         userFoundReviewHelpful(userId, reviewId),
       ];
-      const userResponse = await projectUserReviewResponse(reviewId, O.some(userId))(events)();
+      const userResponse = await projectUserReviewResponse(events)(reviewId, O.some(userId))();
 
       expect(userResponse).toStrictEqual(O.some('helpful'));
     });
@@ -38,7 +38,7 @@ describe('project-user-review-response', () => {
       const events = async () => [
         userFoundReviewHelpful(arbitraryUserId(), reviewId),
       ];
-      const userResponse = await projectUserReviewResponse(reviewId, O.some(arbitraryUserId()))(events)();
+      const userResponse = await projectUserReviewResponse(events)(reviewId, O.some(arbitraryUserId()))();
 
       expect(userResponse).toStrictEqual(O.none);
     });
@@ -50,7 +50,7 @@ describe('project-user-review-response', () => {
       const events = async () => [
         userFoundReviewHelpful(userId, arbitraryReviewId()),
       ];
-      const userResponse = await projectUserReviewResponse(arbitraryReviewId(), O.some(userId))(events)();
+      const userResponse = await projectUserReviewResponse(events)(arbitraryReviewId(), O.some(userId))();
 
       expect(userResponse).toStrictEqual(O.none);
     });
@@ -62,7 +62,7 @@ describe('project-user-review-response', () => {
       const events = async () => [
         userFoundReviewHelpful(arbitraryUserId(), reviewId),
       ];
-      const userResponse = await projectUserReviewResponse(reviewId, O.none)(events)();
+      const userResponse = await projectUserReviewResponse(events)(reviewId, O.none)();
 
       expect(userResponse).toStrictEqual(O.none);
     });
@@ -76,7 +76,7 @@ describe('project-user-review-response', () => {
         userFoundReviewHelpful(userId, reviewId),
         userRevokedFindingReviewHelpful(userId, reviewId),
       ];
-      const userResponse = await projectUserReviewResponse(arbitraryReviewId(), O.some(userId))(events)();
+      const userResponse = await projectUserReviewResponse(events)(arbitraryReviewId(), O.some(userId))();
 
       expect(userResponse).toStrictEqual(O.none);
     });
@@ -92,7 +92,7 @@ describe('project-user-review-response', () => {
         userFoundReviewHelpful(userId, otherReviewId),
         userRevokedFindingReviewHelpful(userId, otherReviewId),
       ];
-      const userResponse = await projectUserReviewResponse(reviewId, O.some(userId))(events)();
+      const userResponse = await projectUserReviewResponse(events)(reviewId, O.some(userId))();
 
       expect(userResponse).toStrictEqual(O.some('helpful'));
     });
@@ -105,7 +105,7 @@ describe('project-user-review-response', () => {
       const events = async () => [
         userFoundReviewNotHelpful(userId, reviewId),
       ];
-      const userResponse = await projectUserReviewResponse(reviewId, O.some(userId))(events)();
+      const userResponse = await projectUserReviewResponse(events)(reviewId, O.some(userId))();
 
       expect(userResponse).toStrictEqual(O.some('not-helpful'));
     });
@@ -119,7 +119,7 @@ describe('project-user-review-response', () => {
         userFoundReviewNotHelpful(userId, reviewId),
         userRevokedFindingReviewNotHelpful(userId, reviewId),
       ];
-      const userResponse = await projectUserReviewResponse(reviewId, O.some(userId))(events)();
+      const userResponse = await projectUserReviewResponse(events)(reviewId, O.some(userId))();
 
       expect(userResponse).toStrictEqual(O.none);
     });

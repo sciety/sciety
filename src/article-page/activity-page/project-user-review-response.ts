@@ -1,5 +1,4 @@
 import * as O from 'fp-ts/Option';
-import * as RT from 'fp-ts/ReaderTask';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
@@ -50,11 +49,13 @@ const projectResponse = (getEvents: GetEvents) => (reviewId: RI.ReviewId, userId
 );
 
 type ProjectUserReviewResponse = (
+  getEvents: GetEvents
+) => (
   reviewId: RI.ReviewId,
   userId: O.Option<UserId>,
-) => RT.ReaderTask<GetEvents, O.Option<'helpful' | 'not-helpful'>>;
+) => T.Task<O.Option<'helpful' | 'not-helpful'>>;
 
-export const projectUserReviewResponse: ProjectUserReviewResponse = (reviewId, userId) => (getEvents) => pipe(
+export const projectUserReviewResponse: ProjectUserReviewResponse = (getEvents) => (reviewId, userId) => pipe(
   userId,
   O.fold(
     () => TO.none,

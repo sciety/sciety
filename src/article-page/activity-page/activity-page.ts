@@ -85,7 +85,7 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
         }),
       ),
       countReviewResponses: projectReviewResponseCounts(ports.getAllEvents),
-      getUserReviewResponse: (reviewId) => projectUserReviewResponse(reviewId, userId)(ports.getAllEvents),
+      getUserReviewResponse: projectUserReviewResponse(ports.getAllEvents),
     }),
     TE.rightTask,
   )),
