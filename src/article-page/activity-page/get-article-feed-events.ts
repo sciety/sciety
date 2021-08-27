@@ -41,7 +41,9 @@ type GetArticleFeedEventsByDateDescending = (
   doi: Doi,
   server: ArticleServer,
   userId: O.Option<UserId>,
-) => RT.ReaderTask<Dependencies, RNEA.ReadonlyNonEmptyArray<FeedItem>>;
+) => (
+  dependencies: Dependencies
+) => T.Task<RNEA.ReadonlyNonEmptyArray<FeedItem>>;
 
 type Dependencies = {
   findReviewsForArticleDoi: FindReviewsForArticleDoi,

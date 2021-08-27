@@ -1,7 +1,6 @@
 import { URL } from 'url';
 import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
-import * as RT from 'fp-ts/ReaderTask';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
@@ -108,7 +107,7 @@ type GetFeedEventsContent = <R extends Dependencies>(
   feedEvents: ReadonlyArray<FeedEvent>,
   server: ArticleServer,
   userId: O.Option<UserId>,
-) => RT.ReaderTask<R, ReadonlyArray<FeedItem>>;
+) => (r: R) => T.Task<ReadonlyArray<FeedItem>>;
 
 export const getFeedEventsContent: GetFeedEventsContent = (feedEvents, server, userId) => ({
   fetchReview,
