@@ -2,7 +2,6 @@ import { URLSearchParams } from 'url';
 import * as E from 'fp-ts/Either';
 import { Json } from 'fp-ts/Json';
 import * as O from 'fp-ts/Option';
-import * as RTE from 'fp-ts/ReaderTaskEither';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import {
@@ -107,9 +106,9 @@ const constructSearchResults = (pageSize: number) => (data: EuropePmcResponse) =
   };
 };
 
-type GetFromUrl = (url: string) => RTE.ReaderTaskEither<Dependencies, DE.DataError, EuropePmcResponse>;
+type GetFromUrl = (dependencies: Dependencies) => (url: string) => TE.TaskEither<DE.DataError, EuropePmcResponse>;
 
-const getFromUrl: GetFromUrl = (url: string) => ({ getJson, logger }: Dependencies) => pipe(
+const getFromUrl: GetFromUrl = ({ getJson, logger }: Dependencies) => (url: string) => pipe(
   TE.tryCatch(async () => getJson(url), E.toError),
   TE.mapLeft(
     (error) => {
@@ -127,14 +126,15 @@ const getFromUrl: GetFromUrl = (url: string) => ({ getJson, logger }: Dependenci
   )),
 );
 
-type SearchEuropePmc = (pageSize: number)
+type SearchEuropePmc = (dependencies: Dependencies)
+=> (pageSize: number)
 => (query: string, cursor: O.Option<string>)
-=> RTE.ReaderTaskEither<Dependencies, DE.DataError, SearchResults>;
+=> TE.TaskEither<DE.DataError, SearchResults>;
 
-export const searchEuropePmc: SearchEuropePmc = (pageSize) => (query, cursor) => pipe(
+export const searchEuropePmc: SearchEuropePmc = (dependencies) => (pageSize) => (query, cursor) => pipe(
   [query, cursor],
   tupled(constructQueryParams(pageSize)),
   constructSearchUrl,
-  getFromUrl,
-  RTE.map(constructSearchResults(pageSize)),
+  getFromUrl(dependencies),
+  TE.map(constructSearchResults(pageSize)),
 );

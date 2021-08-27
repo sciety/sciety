@@ -9,7 +9,7 @@ import { arbitraryNumber, arbitraryString, arbitraryWord } from '../helpers';
 describe('search-europe-pmc adapter', () => {
   it('converts Europe PMC search result into our view model', async () => {
     const nextCursor = arbitraryWord();
-    const results = await searchEuropePmc(2)('some query', O.none)({
+    const results = await searchEuropePmc({
       getJson: async () => ({
         hitCount: 3,
         nextCursorMark: nextCursor,
@@ -45,7 +45,7 @@ describe('search-europe-pmc adapter', () => {
         },
       }),
       logger: dummyLogger,
-    })();
+    })(2)('some query', O.none)();
 
     const expected = E.right({
       total: 3,
@@ -76,7 +76,7 @@ describe('search-europe-pmc adapter', () => {
   });
 
   it('handles collective name and full name authors', async () => {
-    const results = await searchEuropePmc(10)('some query', O.none)({
+    const results = await searchEuropePmc({
       getJson: async () => ({
         hitCount: 1,
         nextCursorMark: arbitraryWord(),
@@ -99,7 +99,7 @@ describe('search-europe-pmc adapter', () => {
         },
       }),
       logger: dummyLogger,
-    })();
+    })(10)('some query', O.none)();
 
     const expected = E.right(expect.objectContaining({
       items: [
@@ -125,7 +125,7 @@ describe('search-europe-pmc adapter', () => {
     });
     const spy = jest.fn(getJson);
 
-    await searchEuropePmc(10)('Structural basis of αE&', O.none)({ getJson: spy, logger: dummyLogger })();
+    await searchEuropePmc({ getJson: spy, logger: dummyLogger })(10)('Structural basis of αE&', O.none)();
 
     expect(spy).toHaveBeenCalledTimes(1);
 
@@ -146,7 +146,7 @@ describe('search-europe-pmc adapter', () => {
     const cursor = arbitraryWord();
     const spy = jest.fn(getJson);
 
-    await searchEuropePmc(10)(arbitraryString(), O.some(cursor))({ getJson: spy, logger: dummyLogger })();
+    await searchEuropePmc({ getJson: spy, logger: dummyLogger })(10)(arbitraryString(), O.some(cursor))();
 
     expect(spy).toHaveBeenCalledWith(expect.stringContaining(`cursorMark=${cursor}`));
   });
@@ -155,7 +155,7 @@ describe('search-europe-pmc adapter', () => {
     describe('when there are no results', () => {
       it('nextCursor should be none', async () => {
         const nextCursor = arbitraryWord();
-        const results = await searchEuropePmc(10)('some query', O.none)({
+        const results = await searchEuropePmc({
           getJson: async () => ({
             hitCount: arbitraryNumber(0, 100),
             nextCursorMark: nextCursor,
@@ -164,7 +164,7 @@ describe('search-europe-pmc adapter', () => {
             },
           }),
           logger: dummyLogger,
-        })();
+        })(10)('some query', O.none)();
 
         expect(results).toStrictEqual(E.right(expect.objectContaining({
           nextCursor: O.none,
@@ -174,7 +174,7 @@ describe('search-europe-pmc adapter', () => {
 
     describe('when there is no next cursor mark', () => {
       it('nextCursor should be none', async () => {
-        const results = await searchEuropePmc(10)('some query', O.none)({
+        const results = await searchEuropePmc({
           getJson: async () => ({
             hitCount: arbitraryNumber(0, 100),
             resultList: {
@@ -191,7 +191,7 @@ describe('search-europe-pmc adapter', () => {
             },
           }),
           logger: dummyLogger,
-        })();
+        })(10)('some query', O.none)();
 
         expect(results).toStrictEqual(E.right(expect.objectContaining({
           nextCursor: O.none,
@@ -202,7 +202,7 @@ describe('search-europe-pmc adapter', () => {
     describe('when there are less results than the page size', () => {
       it('nextCursor should be none', async () => {
         const nextCursor = arbitraryWord();
-        const results = await searchEuropePmc(10)('some query', O.none)({
+        const results = await searchEuropePmc({
           getJson: async () => ({
             hitCount: arbitraryNumber(0, 100),
             nextCursorMark: nextCursor,
@@ -220,7 +220,7 @@ describe('search-europe-pmc adapter', () => {
             },
           }),
           logger: dummyLogger,
-        })();
+        })(10)('some query', O.none)();
 
         expect(results).toStrictEqual(E.right(expect.objectContaining({
           nextCursor: O.none,
@@ -231,7 +231,7 @@ describe('search-europe-pmc adapter', () => {
     describe('when result count equals page size', () => {
       it('nextCursor should be some', async () => {
         const nextCursor = arbitraryWord();
-        const results = await searchEuropePmc(2)('some query', O.none)({
+        const results = await searchEuropePmc({
           getJson: async () => ({
             hitCount: arbitraryNumber(3, 100),
             nextCursorMark: nextCursor,
@@ -267,7 +267,7 @@ describe('search-europe-pmc adapter', () => {
             },
           }),
           logger: dummyLogger,
-        })();
+        })(2)('some query', O.none)();
 
         expect(results).toStrictEqual(E.right(expect.objectContaining({
           nextCursor: O.some(nextCursor),
