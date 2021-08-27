@@ -1,10 +1,10 @@
 @use '../sass/settings';
 @use '../sass/functions';
 @use '../sass/typography';
+@use '../sass/avatar';
 @use '../sass/button';
 @use '../sass/card';
 
-$_avatar-size: 48px;
 $_icon-size: 24px;
 $_icon-inline-offset: 6px;
 
@@ -16,10 +16,9 @@ $_icon-inline-offset: 6px;
 }
 
 .page-header--user-list .page-header__avatar {
-  width: $_avatar-size;
-  height: $_avatar-size;
-  border-radius: settings.$border-radius;
-  border: settings.$avatar-border;
+  @include avatar.border();
+  width: avatar.$size--medium;
+  height: avatar.$size--medium;
   margin-right: 0.5rem;
 }
 
