@@ -13,7 +13,7 @@ describe('follows', () => {
     const getAllEvents = T.of([]);
 
     it('is not following the group', async () => {
-      const result = await follows(someone, groupIdFromString('group-1'))(getAllEvents)();
+      const result = await follows(getAllEvents)(someone, groupIdFromString('group-1'))();
 
       expect(result).toBe(false);
     });
@@ -25,7 +25,7 @@ describe('follows', () => {
     ]);
 
     it('is following the group', async () => {
-      const result = await follows(someone, groupIdFromString('group-1'))(getAllEvents)();
+      const result = await follows(getAllEvents)(someone, groupIdFromString('group-1'))();
 
       expect(result).toBe(true);
     });
@@ -38,7 +38,7 @@ describe('follows', () => {
     ]);
 
     it('not following the group', async () => {
-      const result = await follows(someone, groupIdFromString('group-1'))(getAllEvents)();
+      const result = await follows(getAllEvents)(someone, groupIdFromString('group-1'))();
 
       expect(result).toBe(false);
     });
@@ -51,7 +51,7 @@ describe('follows', () => {
     ]);
 
     it('not following the group', async () => {
-      const result = await follows(someone, groupIdFromString('group-1'))(getAllEvents)();
+      const result = await follows(getAllEvents)(someone, groupIdFromString('group-1'))();
 
       expect(result).toBe(false);
     });
@@ -65,7 +65,7 @@ describe('follows', () => {
     ]);
 
     it('is following the group', async () => {
-      const result = await follows(someone, groupIdFromString('group-1'))(getAllEvents)();
+      const result = await follows(getAllEvents)(someone, groupIdFromString('group-1'))();
 
       expect(result).toBe(true);
     });

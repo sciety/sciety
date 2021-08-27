@@ -132,7 +132,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
           getTwitterResponse(dependencies.twitterApiBearerToken, logger),
           logger,
         ),
-        follows: (...args) => follows(...args)(getAllEvents),
+        follows: follows(getAllEvents),
         findVersionsForArticleDoi: biorxivCache(
           getArticleVersionEventsFromBiorxiv({ getJson, logger: loggerIO(logger) }),
           logger,
