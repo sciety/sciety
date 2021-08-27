@@ -1,5 +1,4 @@
 import * as IO from 'fp-ts/IO';
-import * as RT from 'fp-ts/ReaderTask';
 import * as T from 'fp-ts/Task';
 import { constVoid, flow, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
@@ -14,9 +13,9 @@ type Dependencies = {
 };
 
 // TODO: should return a TaskEither
-type CommitEvents = (event: ReadonlyArray<RuntimeGeneratedEvent>) => RT.ReaderTask<Dependencies, void>;
+type CommitEvents = (dependencies: Dependencies) => (event: ReadonlyArray<RuntimeGeneratedEvent>) => T.Task<void>;
 
-export const commitEvents: CommitEvents = (events) => ({ inMemoryEvents, pool, logger }) => pipe(
+export const commitEvents: CommitEvents = ({ inMemoryEvents, pool, logger }) => (events) => pipe(
   events,
   T.traverseArray(flow(
     T.of,

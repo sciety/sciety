@@ -118,7 +118,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         getAllGroups: groups.all,
         findReviewsForArticleDoi: findReviewsForArticleDoi(getAllEvents),
         getAllEvents,
-        commitEvents: (...args) => commitEvents(...args)({ inMemoryEvents: events, pool, logger: loggerIO(logger) }),
+        commitEvents: commitEvents({ inMemoryEvents: events, pool, logger: loggerIO(logger) }),
         getFollowList,
         getUserDetails: getTwitterUserDetails(
           getTwitterResponse(dependencies.twitterApiBearerToken, logger),
