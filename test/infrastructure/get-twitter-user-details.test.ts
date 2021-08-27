@@ -29,6 +29,26 @@ describe('get-twitter-user-details', () => {
     expect(await result()).toStrictEqual(E.right(expected));
   });
 
+  it('returns the bigger version of the avatar url', async () => {
+    const getTwitterResponse: GetTwitterResponse = () => TE.right({
+      data: {
+        name: 'John Smith',
+        profile_image_url: 'http://pbs.twimg.com/profile_images/2284174872/7df3h38zabcvjylnyfe3_normal.png',
+        username: 'arbitrary_twitter_handle',
+      },
+    });
+
+    const result = await pipe(
+      arbitraryUserId(),
+      getTwitterUserDetails(getTwitterResponse, dummyLogger),
+      TE.getOrElse(shouldNotBeCalled),
+    )();
+
+    expect(result).toStrictEqual(expect.objectContaining({
+      avatarUrl: 'http://pbs.twimg.com/profile_images/2284174872/7df3h38zabcvjylnyfe3_bigger.png',
+    }));
+  });
+
   it('returns notFound if the Twitter user does not exist', async () => {
     const getTwitterResponse: GetTwitterResponse = () => TE.right({
       errors: [

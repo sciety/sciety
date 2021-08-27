@@ -32,7 +32,7 @@ const handleOk = (
   if (data.data) {
     logger('debug', 'Data from Twitter', { userId, data });
     return TE.right({
-      avatarUrl: data.data.profile_image_url,
+      avatarUrl: data.data.profile_image_url.replace('_normal.png', '_bigger.png'),
       displayName: data.data.name,
       handle: data.data.username,
     });
