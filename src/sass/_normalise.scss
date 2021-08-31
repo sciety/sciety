@@ -17,10 +17,6 @@ body {
   color: rgba(0, 0, 0, 0.87);
 }
 
-main {
-  margin-bottom: baseline.increments(6);
-}
-
 p {
   @include typography.body-2();
   margin-top: 0;

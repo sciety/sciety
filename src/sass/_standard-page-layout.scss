@@ -56,6 +56,7 @@ $_drawer-logo-left-spacing: 27px;
 }
 
 .page-content {
+  margin-bottom: baseline.increments(6);
   display: block;
 
   @supports (display: flex) {
