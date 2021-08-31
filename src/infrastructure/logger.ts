@@ -93,4 +93,5 @@ const logEntry = (level: LevelName) => (message: string) => (payload?: Payload):
 
 export const error = logEntry('error');
 export const info = logEntry('info');
+export const warn = logEntry('warn');
 export const debug = logEntry('debug');

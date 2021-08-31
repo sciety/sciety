@@ -43,7 +43,7 @@ const makeRequest = (doi: Doi, server: ArticleServer) => ({ getJson, logger }: D
   TE.swap,
   TE.chainFirstIOK(flow(
     (error) => ({ doi, message: error.message }),
-    L.error('Failed to retrieve article versions'),
+    L.warn('Failed to retrieve article versions'),
     IO.chain(logger),
   )),
   TE.swap,
