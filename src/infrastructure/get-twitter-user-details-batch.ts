@@ -90,12 +90,10 @@ export const getTwitterUserDetailsBatch: GetTwitterUserDetailsBatch = (
       handleResponseErrors,
       decodeResponse,
       logErrors(logger, userIds),
-      TE.map(({ data }) => pipe(
-        data,
-        O.fold(
-          () => [],
-          translateToUserDetails,
-        ),
+      TE.map(({ data }) => data),
+      TE.map(O.fold(
+        () => [],
+        translateToUserDetails,
       )),
     ),
   ),
