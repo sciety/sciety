@@ -4,7 +4,6 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { augmentWithUserDetails, Ports as AugmentWithUserDetailsPorts } from './augment-with-user-details';
-import { countFollowersOf } from './count-followers-of';
 import { findFollowers } from './find-followers';
 import { paginate, PartialViewModel } from './paginate';
 import { renderFollowers } from './render-followers';
@@ -50,15 +49,18 @@ export const followers = (
   pageNumber: number,
 ): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
   {
-    followerCount: pipe(
-      ports.getAllEvents,
-      T.map(countFollowersOf(group.id)),
-    ),
     followers: pipe(
       ports.getAllEvents,
       T.map(findFollowers(group.id)),
     ),
   },
+  (partial) => ({
+    followers: partial.followers,
+    followerCount: pipe(
+      partial.followers,
+      T.map((f) => f.length),
+    ),
+  }),
   sequenceS(T.ApplyPar),
   T.map(paginate(group.id, pageNumber, pageSize)),
   TE.chain(augmentFollowersWithUserDetails(ports)),
