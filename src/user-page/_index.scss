@@ -41,6 +41,8 @@
 
 .saved-articles-list {
   @include card.list();
+
+  margin-bottom: 3rem;
 }
 
 .saved-articles-list__item {
