@@ -77,24 +77,19 @@ const translateToUserDetails = RA.map((item: TwitterUser) => ({
 export const getTwitterUserDetailsBatch: GetTwitterUserDetailsBatch = (
   getTwitterResponse,
   logger,
-) => (
-  userIds,
-) => pipe(
-  userIds,
-  RA.match(
-    constant(TE.right([])),
-    () => pipe(
-      userIds,
-      generateUrl,
-      getTwitterResponse,
-      handleResponseErrors,
-      decodeResponse,
-      logErrors(logger, userIds),
-      TE.map(({ data }) => data),
-      TE.map(O.fold(
-        () => [],
-        translateToUserDetails,
-      )),
-    ),
+) => RA.match(
+  constant(TE.right([])),
+  (userIds) => pipe(
+    userIds,
+    generateUrl,
+    getTwitterResponse,
+    handleResponseErrors,
+    decodeResponse,
+    logErrors(logger, userIds),
+    TE.map(({ data }) => data),
+    TE.map(O.fold(
+      () => [],
+      translateToUserDetails,
+    )),
   ),
 );
