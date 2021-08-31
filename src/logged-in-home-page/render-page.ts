@@ -9,12 +9,10 @@ type Components = {
 };
 
 const render = (components: Components) => `
-  <div class="page-content__background">
-    <div class="sciety-grid sciety-grid--one-column">
-      ${components.header}
-      <div class="logged-in-home-page-feed-container">
-        ${components.feed}
-      </div>
+  <div class="sciety-grid sciety-grid--one-column">
+    ${components.header}
+    <div class="logged-in-home-page-feed-container">
+      ${components.feed}
     </div>
   </div>
 `;

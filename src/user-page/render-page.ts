@@ -15,15 +15,13 @@ export const renderPage = (components: Components): Page => ({
     description: components.description,
   },
   content: toHtmlFragment(`
-    <div class="page-content__background">
-      <article class="sciety-grid sciety-grid--one-column">
-        ${components.header}
+    <article class="sciety-grid sciety-grid--one-column">
+      ${components.header}
 
-        <div class="main-content main-content--user">
-          ${components.mainContent}
-        </div>
+      <div class="main-content main-content--user">
+        ${components.mainContent}
+      </div>
 
-      </article>
-    </div>
+    </article>
   `),
 });

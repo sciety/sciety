@@ -12,14 +12,12 @@ type Components = {
 };
 
 const render = (components: Components) => `
-  <div class="page-content__background">
-    <div class="sciety-grid sciety-grid--one-column">
-      ${components.header}
-      <section class="evaluated-articles">
-        ${components.pageNumbers}
-        ${components.evaluatedArticlesList}
-      </section>
-    </div>
+  <div class="sciety-grid sciety-grid--one-column">
+    ${components.header}
+    <section class="evaluated-articles">
+      ${components.pageNumbers}
+      ${components.evaluatedArticlesList}
+    </section>
   </div>
 `;
 

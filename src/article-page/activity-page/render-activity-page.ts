@@ -24,7 +24,6 @@ export const renderActivityPage = (components: {
     activeTabIndex: 1,
   }),
   (mainContent) => `
-  <div class="page-content__background">
     <article class="sciety-grid sciety-grid--one-column">
       <header class="page-header page-header--article">
         <h1 class="page-header__title" >${components.articleDetails.title}</h1>
@@ -38,7 +37,6 @@ export const renderActivityPage = (components: {
         ${mainContent}
       </div>
     </article>
-  </div>
-`,
+  `,
   toHtmlFragment,
 );

@@ -30,33 +30,30 @@ type Ports = SavedArticlePorts & {
 
 type UserListPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
-const render = (savedArticlesList: HtmlFragment, { handle, avatarUrl }: UserDetails) => pipe(
-  `<div class="page-content__background">
-      <div class="sciety-grid sciety-grid--one-column">
-        <header class="page-header page-header--user-list">
-          <h1>
-            Saved Articles
-          </h1>
-          <p class="page-header__subheading">
-            <img src="${avatarUrl}" alt="" class="page-header__avatar">
-            <span>A list by <a href="/users/${handle}">${handle}</a></span>
-          </p>
-          <p class="page-header__description">Articles that have been saved by @${handle}, most recently saved first.</p>
-          ${handle === 'AvasthiReading' ? '<a class="user-list-subscribe" href="https://xag0lodamyw.typeform.com/to/OPBgQWgb">Subscribe</a>' : ''}
-          ${handle === 'kenton_swartz' ? '<a class="user-list-subscribe" href="https://xag0lodamyw.typeform.com/to/DxFgFs13">Subscribe</a>' : ''}
-        </header>
-        <section class="user-list-page-supplementary">
-          <article class="user-list-page-blog-card">
-            <h2 class="user-list-page-blog-card__title">What is a list?</h2>
-            <p> A list on Sciety is a collection of your own hand-picked articles, stored in one place for easy reference and sharing.</p>
-            <a href="https://blog.sciety.org/lists-on-sciety/">Read more about lists</a>
-          </article>
-        </section>
-        ${savedArticlesList}
-      </div>
-    </div>`,
-  toHtmlFragment,
-);
+const render = (savedArticlesList: HtmlFragment, { handle, avatarUrl }: UserDetails) => toHtmlFragment(`
+  <div class="sciety-grid sciety-grid--one-column">
+    <header class="page-header page-header--user-list">
+      <h1>
+        Saved Articles
+      </h1>
+      <p class="page-header__subheading">
+        <img src="${avatarUrl}" alt="" class="page-header__avatar">
+        <span>A list by <a href="/users/${handle}">${handle}</a></span>
+      </p>
+      <p class="page-header__description">Articles that have been saved by @${handle}, most recently saved first.</p>
+      ${handle === 'AvasthiReading' ? '<a class="user-list-subscribe" href="https://xag0lodamyw.typeform.com/to/OPBgQWgb">Subscribe</a>' : ''}
+      ${handle === 'kenton_swartz' ? '<a class="user-list-subscribe" href="https://xag0lodamyw.typeform.com/to/DxFgFs13">Subscribe</a>' : ''}
+    </header>
+    <section class="user-list-page-supplementary">
+      <article class="user-list-page-blog-card">
+        <h2 class="user-list-page-blog-card__title">What is a list?</h2>
+        <p> A list on Sciety is a collection of your own hand-picked articles, stored in one place for easy reference and sharing.</p>
+        <a href="https://blog.sciety.org/lists-on-sciety/">Read more about lists</a>
+      </article>
+    </section>
+    ${savedArticlesList}
+  </div>
+`);
 
 export const userListPage = (ports: Ports): UserListPage => ({ handle, user }) => pipe(
   {
