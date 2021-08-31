@@ -24,7 +24,7 @@ export const renderActivityPage = (components: {
     activeTabIndex: 1,
   }),
   (mainContent) => `
-    <article class="sciety-grid sciety-grid--one-column">
+    <article class="sciety-grid-two-columns">
       <header class="page-header page-header--article">
         <h1 class="page-header__title" >${components.articleDetails.title}</h1>
         <div class="article-actions">

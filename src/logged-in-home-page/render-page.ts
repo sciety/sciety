@@ -9,7 +9,7 @@ type Components = {
 };
 
 const render = (components: Components) => `
-  <div class="sciety-grid sciety-grid--one-column">
+  <div class="sciety-grid-two-columns">
     ${components.header}
     <div class="logged-in-home-page-feed-container">
       ${components.feed}

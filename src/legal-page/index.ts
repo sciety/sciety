@@ -4,7 +4,7 @@ import { Page } from '../types/page';
 export const legalPage: Page = {
   title: 'Legal information',
   content: toHtmlFragment(`
-    <div class="sciety-grid sciety-grid--one-column">
+    <div class="sciety-grid-two-columns">
       <header class="page-header">
         <h1>Legal information</h1>
       </header>

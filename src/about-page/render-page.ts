@@ -3,7 +3,7 @@ import { Remarkable } from 'remarkable';
 import { toHtmlFragment } from '../types/html-fragment';
 
 const addPageWrapper = (html: string) => `
-  <div class="sciety-grid sciety-grid--one-column">
+  <div class="sciety-grid-two-columns">
     <header class="page-header">
       <h1>
         About Sciety

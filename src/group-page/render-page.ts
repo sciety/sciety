@@ -12,7 +12,7 @@ type Components = {
 };
 
 const render = (components: Components) => `
-  <div class="sciety-grid sciety-grid--one-column">
+  <div class="sciety-grid-two-columns">
     ${components.header}
     <div class="group-page-follow-toggle">
       ${components.followButton}
