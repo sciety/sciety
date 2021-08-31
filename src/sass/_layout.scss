@@ -29,48 +29,10 @@
   @include visually-hidden();
 }
 
-@supports (display: grid) {
-  .sciety-grid {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    grid-column-gap: 20px;
-    grid-auto-rows: min-content;
-    grid-auto-flow: column;
-  }
-}
-
-.sciety-grid {
-  width: 100%;
-  max-width: functions.px-to-rem(settings.$max-site-width);
-  margin: 0 1rem;
-  flex-grow: 1;
-}
-
-@mixin sciety-grid-one-column() {
-  margin-left: auto;
-  margin-right: auto;
-
-  > * {
-    grid-column: 1 / -1;
-
-    @include breakpoints.not-narrow {
-      grid-column: 2 / 12;
-    }
-
-    @media screen and (min-width: 68.75em) {
-      grid-column: 3 / 11;
-    }
-  }
-}
-
 @mixin page-header-top-space() {
   padding-top: baseline.increments(2);
 
   @include breakpoints.not-narrow {
     padding-top: baseline.increments(5);
   }
-}
-
-.sciety-grid--one-column {
-  @include sciety-grid-one-column();
 }
