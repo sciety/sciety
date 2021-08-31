@@ -56,7 +56,8 @@ $_drawer-logo-left-spacing: 27px;
 }
 
 .page-content {
-  margin-bottom: baseline.increments(6);
+  background-color: settings.$colour-page-background;
+  padding-bottom: baseline.increments(6);
   display: block;
 
   @supports (display: flex) {
@@ -75,6 +76,5 @@ $_drawer-logo-left-spacing: 27px;
 }
 
 .page-content__background {
-  background-color: settings.$colour-page-background;
   width: 100%;
 }
