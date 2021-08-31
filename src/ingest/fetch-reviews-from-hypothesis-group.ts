@@ -4,7 +4,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Evaluation } from './evaluations';
-import { fetchData, FetchData } from './fetch-data';
+import { FetchData } from './fetch-data';
 import { FetchEvaluations, SkippedItem } from './update-all';
 
 type Row = {
@@ -63,9 +63,13 @@ export const processServer = (
   return result;
 };
 
-export const fetchReviewsFromHypothesisGroup = (publisherGroupId: string): FetchEvaluations => () => pipe(
+type Ports = {
+  fetchData: FetchData,
+};
+
+export const fetchReviewsFromHypothesisGroup = (publisherGroupId: string): FetchEvaluations => (ports: Ports) => pipe(
   ['biorxiv', 'medrxiv'],
-  T.traverseArray(processServer(publisherGroupId, fetchData)),
+  T.traverseArray(processServer(publisherGroupId, ports.fetchData)),
   T.map(RA.flatten),
   T.map(RA.map(toEvaluation)),
   T.map((parts) => ({
