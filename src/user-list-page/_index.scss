@@ -71,3 +71,10 @@ $_icon-inline-offset: 6px;
     margin: 0 1rem;
   }
 }
+
+.user-list-page-supplementary {
+  @media screen and (min-width: 68.75em) {
+    grid-column: 9 / 13;
+    grid-row: 2;
+  }
+}
