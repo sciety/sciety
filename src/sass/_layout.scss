@@ -3,6 +3,7 @@
 @use 'baseline';
 @use 'breakpoints';
 
+
 @mixin visually-hidden() {
   border: 0;
   clip: rect(0 0 0 0);
@@ -34,5 +35,39 @@
 
   @include breakpoints.not-narrow {
     padding-top: baseline.increments(5);
+  }
+}
+
+@supports (display: grid) {
+  .sciety-grid-two-columns {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-column-gap: 20px;
+    grid-auto-rows: min-content;
+    grid-auto-flow: column;
+
+    > * {
+      grid-column: 1 / -1;
+
+      @include breakpoints.two-column-display {
+        grid-column: 1 / 9;
+      }
+    }
+  }
+}
+
+.sciety-grid-two-columns {
+  width: 100%;
+  max-width: functions.px-to-rem(settings.$max-site-width);
+  flex-grow: 1;
+  @include breakpoints.not-narrow {
+    margin: 0 1rem;
+  }
+}
+
+@mixin column-two() {
+  @include breakpoints.two-column-display {
+    grid-column: 9 / 13;
+    grid-row: 2;
   }
 }

@@ -3,3 +3,7 @@
 @mixin not-narrow() {
   @media screen and (min-width: settings.$breakpoint-narrow) { @content; }
 }
+
+@mixin two-column-display() {
+  @media screen and (min-width: 68.75em) { @content; }
+}

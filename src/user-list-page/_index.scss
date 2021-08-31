@@ -1,6 +1,7 @@
 @use '../sass/settings';
 @use '../sass/functions';
 @use '../sass/breakpoints';
+@use '../sass/layout';
 @use '../sass/typography';
 @use '../sass/avatar';
 @use '../sass/button';
@@ -45,36 +46,6 @@ $_icon-inline-offset: 6px;
   @include card.title();
 }
 
-@supports (display: grid) {
-  .sciety-grid-two-columns {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    grid-column-gap: 20px;
-    grid-auto-rows: min-content;
-    grid-auto-flow: column;
-
-    > * {
-      grid-column: 1 / -1;
-
-      @media screen and (min-width: 68.75em) {
-        grid-column: 1 / 9;
-      }
-    }
-  }
-}
-
-.sciety-grid-two-columns {
-  width: 100%;
-  max-width: functions.px-to-rem(settings.$max-site-width);
-  flex-grow: 1;
-  @include breakpoints.not-narrow {
-    margin: 0 1rem;
-  }
-}
-
 .user-list-page-supplementary {
-  @media screen and (min-width: 68.75em) {
-    grid-column: 9 / 13;
-    grid-row: 2;
-  }
+  @include layout.column-two();
 }
