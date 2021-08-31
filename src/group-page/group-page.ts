@@ -77,12 +77,14 @@ const listTabComponents = (ports: Ports) => (group: Group) => pipe(
   TE.rightTask,
 );
 
-const contentRenderers: Record<TabIndex, (
+type TabComponent = (
   ports: Ports
 ) => (
   group: Group,
   pageNumber: number
-) => TE.TaskEither<DE.DataError, HtmlFragment>> = {
+) => TE.TaskEither<DE.DataError, HtmlFragment>;
+
+const contentRenderers: Record<TabIndex, TabComponent> = {
   0: listTabComponents,
   1: about,
   2: followers,
