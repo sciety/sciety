@@ -4,7 +4,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Evaluation } from './evaluations';
-import { fetchData } from './fetch-data';
+import { fetchData, FetchData } from './fetch-data';
 import { FetchEvaluations, SkippedItem } from './update-all';
 
 type Row = {
@@ -36,7 +36,11 @@ const toEvaluation = (row: Row): E.Either<SkippedItem, Evaluation> => {
   });
 };
 
-const processServer = (publisherGroupId: string) => (server: string) => async () => {
+// ts-unused-exports:disable-next-line
+export const processServer = (
+  publisherGroupId: string,
+  getData: FetchData,
+) => (server: string) => async (): Promise<ReadonlyArray<Row>> => {
   let result: Array<Row> = [];
   const pageSize = 200;
   let offset = 0;
@@ -44,7 +48,7 @@ const processServer = (publisherGroupId: string) => (server: string) => async ()
   // eslint-disable-next-line no-loops/no-loops
   do {
     const data = await pipe(
-      fetchData<HypothesisResponse>(`${baseUrl}${offset}`),
+      getData<HypothesisResponse>(`${baseUrl}${offset}`),
       TE.fold(
         () => T.of([]),
         (response) => T.of(response.rows),
@@ -61,7 +65,7 @@ const processServer = (publisherGroupId: string) => (server: string) => async ()
 
 export const fetchReviewsFromHypothesisGroup = (publisherGroupId: string): FetchEvaluations => () => pipe(
   ['biorxiv', 'medrxiv'],
-  T.traverseArray(processServer(publisherGroupId)),
+  T.traverseArray(processServer(publisherGroupId, fetchData)),
   T.map(RA.flatten),
   T.map(RA.map(toEvaluation)),
   T.map((parts) => ({
