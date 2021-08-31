@@ -41,7 +41,7 @@ const supplementaryInfo = `
 `;
 
 const render = (savedArticlesList: HtmlFragment, { handle, avatarUrl }: UserDetails) => toHtmlFragment(`
-  <div class="sciety-grid sciety-grid--one-column">
+  <div class="sciety-grid-two-columns">
     <header class="page-header page-header--user-list">
       <h1>
         Saved Articles
