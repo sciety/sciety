@@ -3,14 +3,14 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { allDocmapDois } from './all-docmap-dois';
 import { docmap, Ports as DocmapPorts } from './docmap';
-import { DomainEvent } from '../domain-events';
-import { DoiFromString } from '../types/codecs/DoiFromString';
-import * as DE from '../types/data-error';
-import { Doi } from '../types/doi';
-import * as GID from '../types/group-id';
-import { GroupId } from '../types/group-id';
+import { DomainEvent } from '../../domain-events';
+import { DoiFromString } from '../../types/codecs/DoiFromString';
+import * as DE from '../../types/data-error';
+import { Doi } from '../../types/doi';
+import * as GID from '../../types/group-id';
+import { GroupId } from '../../types/group-id';
+import { allDocmapDois } from '../all-docmap-dois';
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 

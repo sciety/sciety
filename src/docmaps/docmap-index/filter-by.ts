@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import * as Doi from '../types/doi';
+import * as Doi from '../../types/doi';
 
 export const paramsCodec = t.type({
   updatedAfter: tt.optionFromNullable(tt.DateFromISOString),

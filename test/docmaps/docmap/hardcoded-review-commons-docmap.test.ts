@@ -1,10 +1,10 @@
 import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
 import { hardcodedReviewCommonsGoldenMasterDocmap } from './hardcoded-review-commons-golden-master-docmap';
-import { hardcodedReviewCommonsDocmap } from '../../src/docmaps/hardcoded-review-commons-docmap';
-import * as GroupId from '../../src/types/group-id';
-import { arbitraryDate } from '../helpers';
-import { arbitraryReviewId } from '../types/review-id.helper';
+import { hardcodedReviewCommonsDocmap } from '../../../src/docmaps/docmap/hardcoded-review-commons-docmap';
+import * as GroupId from '../../../src/types/group-id';
+import { arbitraryDate } from '../../helpers';
+import { arbitraryReviewId } from '../../types/review-id.helper';
 
 describe('docmap-generation', () => {
   it('matches the hardcoded structure', async () => {

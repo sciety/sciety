@@ -2,10 +2,10 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
-import { Doi } from '../types/doi';
-import { Group } from '../types/group';
-import { GroupId } from '../types/group-id';
-import { ReviewId } from '../types/review-id';
+import { Doi } from '../../types/doi';
+import { Group } from '../../types/group';
+import { GroupId } from '../../types/group-id';
+import { ReviewId } from '../../types/review-id';
 
 type FindReviewsForArticleDoi = (articleDoi: Doi) => T.Task<ReadonlyArray<{
   reviewId: ReviewId,

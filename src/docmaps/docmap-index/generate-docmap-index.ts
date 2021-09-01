@@ -1,11 +1,11 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
-import { allDocmapDois } from './all-docmap-dois';
 import { filterBy, Params } from './filter-by';
-import { DomainEvent } from '../domain-events';
-import * as Doi from '../types/doi';
-import * as GID from '../types/group-id';
+import { DomainEvent } from '../../domain-events';
+import * as Doi from '../../types/doi';
+import * as GID from '../../types/group-id';
+import { allDocmapDois } from '../all-docmap-dois';
 
 type DocmapIndex = {
   articles: ReadonlyArray<{ doi: string, docmap: string }>,

@@ -9,12 +9,12 @@ import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe } from 'fp-ts/function';
 import { context } from './context';
-import { ArticleServer } from '../types/article-server';
-import * as DE from '../types/data-error';
-import { Doi } from '../types/doi';
-import { Group } from '../types/group';
-import { GroupId } from '../types/group-id';
-import { ReviewId } from '../types/review-id';
+import { ArticleServer } from '../../types/article-server';
+import * as DE from '../../types/data-error';
+import { Doi } from '../../types/doi';
+import { Group } from '../../types/group';
+import { GroupId } from '../../types/group-id';
+import { ReviewId } from '../../types/review-id';
 
 // ts-unused-exports:disable-next-line
 export type FindVersionsForArticleDoi = (
