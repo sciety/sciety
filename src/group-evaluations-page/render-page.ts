@@ -12,13 +12,11 @@ type Components = {
 };
 
 const render = (components: Components) => `
-  <div class="sciety-grid-two-columns">
-    ${components.header}
-    <section class="evaluated-articles">
-      ${components.pageNumbers}
-      ${components.evaluatedArticlesList}
-    </section>
-  </div>
+  ${components.header}
+  <section class="evaluated-articles">
+    ${components.pageNumbers}
+    ${components.evaluatedArticlesList}
+  </section>
 `;
 
 export const renderErrorPage = (e: DE.DataError): RenderPageError => pipe(

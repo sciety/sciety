@@ -45,22 +45,20 @@ const supplementaryInfo = `
 `;
 
 const render = (savedArticlesList: HtmlFragment, { handle, avatarUrl }: UserDetails) => toHtmlFragment(`
-  <div class="sciety-grid-two-columns">
-    <header class="page-header page-header--user-list">
-      <h1>
-        Saved Articles
-      </h1>
-      <p class="page-header__subheading">
-        <img src="${avatarUrl}" alt="" class="page-header__avatar">
-        <span>A list by <a href="/users/${handle}">${handle}</a></span>
-      </p>
-      <p class="page-header__description">Articles that have been saved by @${handle}, most recently saved first.</p>
-      ${handle === 'AvasthiReading' ? '<a class="user-list-subscribe" href="https://xag0lodamyw.typeform.com/to/OPBgQWgb">Subscribe</a>' : ''}
-      ${handle === 'kenton_swartz' ? '<a class="user-list-subscribe" href="https://xag0lodamyw.typeform.com/to/DxFgFs13">Subscribe</a>' : ''}
-    </header>
-    ${savedArticlesList}
-    ${supplementaryInfo}
-  </div>
+  <header class="page-header page-header--user-list">
+    <h1>
+      Saved Articles
+    </h1>
+    <p class="page-header__subheading">
+      <img src="${avatarUrl}" alt="" class="page-header__avatar">
+      <span>A list by <a href="/users/${handle}">${handle}</a></span>
+    </p>
+    <p class="page-header__description">Articles that have been saved by @${handle}, most recently saved first.</p>
+    ${handle === 'AvasthiReading' ? '<a class="user-list-subscribe" href="https://xag0lodamyw.typeform.com/to/OPBgQWgb">Subscribe</a>' : ''}
+    ${handle === 'kenton_swartz' ? '<a class="user-list-subscribe" href="https://xag0lodamyw.typeform.com/to/DxFgFs13">Subscribe</a>' : ''}
+  </header>
+  ${savedArticlesList}
+  ${supplementaryInfo}
 `);
 
 export const userListPage = (ports: Ports): UserListPage => ({ handle, user }) => pipe(

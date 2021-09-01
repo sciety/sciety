@@ -24,19 +24,17 @@ export const renderActivityPage = (components: {
     activeTabIndex: 1,
   }),
   (mainContent) => `
-    <article class="sciety-grid-two-columns">
-      <header class="page-header page-header--article">
-        <h1 class="page-header__title" >${components.articleDetails.title}</h1>
-        <div class="article-actions">
-          ${components.tweetThis}
-          ${components.saveArticle}
-        </div>
-      </header>
-
-      <div class="main-content">
-        ${mainContent}
+    <header class="page-header page-header--article">
+      <h1 class="page-header__title" >${components.articleDetails.title}</h1>
+      <div class="article-actions">
+        ${components.tweetThis}
+        ${components.saveArticle}
       </div>
-    </article>
+    </header>
+
+    <div class="main-content">
+      ${mainContent}
+    </div>
   `,
   toHtmlFragment,
 );

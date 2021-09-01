@@ -23,15 +23,13 @@ const supplementaryInfo = `
 `;
 
 export const renderGroups = (groups: ReadonlyArray<HtmlFragment>): HtmlFragment => toHtmlFragment(`
-  <div class="sciety-grid-two-columns">
-    <header class="page-header">
-      <h1>
-        Groups
-      </h1>
-    </header>
-    <ol class="group-list" role="list">
-      ${templateListItems(groups, 'group-list__item')}
-    </ol>
-    ${supplementaryInfo}
-  </div>
+  <header class="page-header">
+    <h1>
+      Groups
+    </h1>
+  </header>
+  <ol class="group-list" role="list">
+    ${templateListItems(groups, 'group-list__item')}
+  </ol>
+  ${supplementaryInfo}
 `);

@@ -16,14 +16,12 @@ export const renderErrorPage = (error: DE.DataError): RenderPageError => ({
 export const renderPage = (searchResults: SearchResults): Page => ({
   title: `Search results for ${searchResults.query}`,
   content: toHtmlFragment(`
-    <div class="sciety-grid-two-columns">
-      <header class="page-header page-header--search-results">
-        <h1 class="page-heading--search">Search Sciety</h1>
-      </header>
-      ${renderSearchForm(searchResults.query)}
-      <section class="search-results">
-        ${renderSearchResults(searchResults)}
-      </section>
-    </div>
+    <header class="page-header page-header--search-results">
+      <h1 class="page-heading--search">Search Sciety</h1>
+    </header>
+    ${renderSearchForm(searchResults.query)}
+    <section class="search-results">
+      ${renderSearchResults(searchResults)}
+    </section>
   `),
 });

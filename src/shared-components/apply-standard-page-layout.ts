@@ -33,7 +33,9 @@ export const applyStandardPageLayout = (user: O.Option<User>) => (page: Page): s
     </header>
 
     <main class="page-content">
-      ${page.content}
+      <div class="sciety-grid-two-columns">
+        ${page.content}
+      </div>
     </main>
   </div>
 

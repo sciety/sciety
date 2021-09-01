@@ -12,13 +12,11 @@ type Components = {
 };
 
 const render = (components: Components) => `
-  <div class="sciety-grid-two-columns">
-    ${components.header}
-    <div class="group-page-follow-toggle">
-      ${components.followButton}
-    </div>
-    ${components.content}
+  ${components.header}
+  <div class="group-page-follow-toggle">
+    ${components.followButton}
   </div>
+  ${components.content}
 `;
 
 export const renderErrorPage = (): RenderPageError => ({
