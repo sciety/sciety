@@ -31,7 +31,7 @@ type Ports = SavedArticlePorts & {
 type UserListPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
 const supplementaryInfo = `
-  <section class="user-list-page-supplementary">
+  <aside class="user-list-page-supplementary">
     <ul class="group-list" role="list">
       <li class="group-list__item">
         <article class="user-list-page-blog-card">
@@ -41,7 +41,7 @@ const supplementaryInfo = `
         </article>
       </li>
     </ul>
-  </section>
+  </aside>
 `;
 
 const render = (savedArticlesList: HtmlFragment, { handle, avatarUrl }: UserDetails) => toHtmlFragment(`

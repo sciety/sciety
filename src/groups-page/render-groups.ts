@@ -2,7 +2,7 @@ import { templateListItems } from '../shared-components/list-items';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 const supplementaryInfo = `
-  <section class="user-list-page-supplementary">
+  <aside class="user-list-page-supplementary">
     <ul class="group-list" role="list">
       <li class="group-list__item">
         <article class="user-list-page-blog-card">
@@ -19,7 +19,7 @@ const supplementaryInfo = `
         </article>
       </li>
     </ul>
-  </section>
+  </aside>
 `;
 
 export const renderGroups = (groups: ReadonlyArray<HtmlFragment>): HtmlFragment => toHtmlFragment(`
