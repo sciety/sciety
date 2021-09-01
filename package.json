@@ -18,7 +18,7 @@
     "chalk": "4.1.2",
     "clownface": "^1.4.0",
     "cls-rtracer": "^2.6.0",
-    "csv-parse": "^4.16.0",
+    "csv-parse": "^4.16.2",
     "escape-goat": "^3.0.0",
     "fast-printf": "1.6.9",
     "fast-xml-parser": "^3.19.0",
