@@ -36,31 +36,30 @@ const toEvaluation = (row: Row): E.Either<SkippedItem, Evaluation> => {
   });
 };
 
+const fetchPaginatedData = (
+  getData: FetchData,
+  baseUrl: string,
+  offset: number,
+): TE.TaskEither<string, ReadonlyArray<Row>> => pipe(
+  getData<HypothesisResponse>(`${baseUrl}${offset}`),
+  TE.map((response) => response.rows),
+  TE.chain(RA.match(
+    () => TE.right([]),
+    (items) => pipe(
+      fetchPaginatedData(getData, baseUrl, offset + items.length),
+      TE.map((next) => [...items, ...next]),
+    ),
+  )),
+);
+
 // ts-unused-exports:disable-next-line
 export const processServer = (
   publisherGroupId: string,
   getData: FetchData,
-) => (server: string) => async (): Promise<ReadonlyArray<Row>> => {
-  let result: Array<Row> = [];
+) => (server: string): TE.TaskEither<string, ReadonlyArray<Row>> => {
   const pageSize = 200;
-  let offset = 0;
   const baseUrl = `https://api.hypothes.is/api/search?group=${publisherGroupId}&uri.parts=${server}&limit=${pageSize}&offset=`;
-  // eslint-disable-next-line no-loops/no-loops
-  do {
-    const data = await pipe(
-      getData<HypothesisResponse>(`${baseUrl}${offset}`),
-      TE.fold(
-        () => T.of([]),
-        (response) => T.of(response.rows),
-      ),
-    )();
-    if (data.length === 0) {
-      return result;
-    }
-    result = result.concat(data);
-    offset += pageSize;
-  } while (offset < 10000);
-  return result;
+  return fetchPaginatedData(getData, baseUrl, 0);
 };
 
 type Ports = {
@@ -69,12 +68,11 @@ type Ports = {
 
 export const fetchReviewsFromHypothesisGroup = (publisherGroupId: string): FetchEvaluations => (ports: Ports) => pipe(
   ['biorxiv', 'medrxiv'],
-  T.traverseArray(processServer(publisherGroupId, ports.fetchData)),
-  T.map(RA.flatten),
-  T.map(RA.map(toEvaluation)),
-  T.map((parts) => ({
+  TE.traverseArray(processServer(publisherGroupId, ports.fetchData)),
+  TE.map(RA.flatten),
+  TE.map(RA.map(toEvaluation)),
+  TE.map((parts) => ({
     evaluations: RA.rights(parts),
     skippedItems: RA.lefts(parts),
   })),
-  TE.rightTask,
 );
