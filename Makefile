@@ -136,6 +136,26 @@ regression: taiko
 render-sanitised-markdown: node_modules
 	npx ts-node --transpile-only ./scripts/hypothesis-review-render-testbed.ts
 
+download-exploratory-test-from-prod:
+	kubectl run psql \
+	--image=postgres:12.3 \
+	--env=PGHOST=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-host"'| base64 -d) \
+	--env=PGDATABASE=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-database"'| base64 -d) \
+	--env=PGUSER=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-username"'| base64 -d) \
+	--env=PGPASSWORD=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-password"'| base64 -d) \
+	-- sleep 60
+	kubectl wait --for condition=Ready pod psql
+	kubectl exec psql -- psql -c "COPY (SELECT * FROM events ORDER BY date ASC) TO STDOUT CSV;" > ./data/exploratory-test-from-prod.csv
+	kubectl delete --wait=false pod psql
+
+exploratory-test-from-prod: node_modules clean-db build
+	${DOCKER_COMPOSE} up -d
+	scripts/wait-for-healthy.sh
+	${DOCKER_COMPOSE} exec -T db psql -c "COPY events FROM '/data/exploratory-test-from-prod.csv' WITH CSV" sciety user
+	${DOCKER_COMPOSE} restart app
+	scripts/wait-for-healthy.sh
+	${DOCKER_COMPOSE} logs -f app
+
 exploratory-test: node_modules clean-db build
 	${DOCKER_COMPOSE} up -d
 	scripts/wait-for-healthy.sh

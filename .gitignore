@@ -6,6 +6,7 @@ coverage/
 /build/
 /backstop_data/bitmaps_test/
 /backstop_data/html_report/
+/data/exploratory-test-from-prod.csv
 /feature-test/screenshots/*.png
 /node_modules/
 /.env
