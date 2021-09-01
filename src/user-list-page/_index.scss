@@ -37,15 +37,3 @@ $_icon-inline-offset: 6px;
   background-position: functions.px-to-rem($_icon-inline-offset) center;
   padding-left: functions.px-to-rem($_icon-inline-offset * 2 + $_icon-size);
 }
-
-.user-list-page-blog-card {
-  @include card.basics();
-}
-
-.user-list-page-blog-card__title {
-  @include card.title();
-}
-
-.user-list-page-supplementary {
-  @include layout.column-two();
-}

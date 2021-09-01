@@ -1,0 +1,22 @@
+@use 'layout';
+@use 'card';
+
+.supplementary-info {
+  @include layout.column-two();
+}
+
+.supplementary-list {
+  @include card.list();
+}
+
+.supplementary-list__item {
+  @include card.list-item();
+}
+
+.supplementary-card {
+  @include card.basics();
+}
+
+.supplementary-card__title {
+  @include card.title();
+}

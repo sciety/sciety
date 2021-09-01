@@ -31,11 +31,11 @@ type Ports = SavedArticlePorts & {
 type UserListPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
 const supplementaryInfo = `
-  <aside class="user-list-page-supplementary">
-    <ul class="group-list" role="list">
-      <li class="group-list__item">
-        <article class="user-list-page-blog-card">
-          <h2 class="user-list-page-blog-card__title">What is a list?</h2>
+  <aside class="supplementary-info">
+    <ul class="supplementary-list" role="list">
+      <li class="supplementary-list__item">
+        <article class="supplementary-card">
+          <h2 class="supplementary-card__title">What is a list?</h2>
           <p> A list on Sciety is a collection of your own hand-picked articles, stored in one place for easy reference and sharing.</p>
           <a href="https://blog.sciety.org/lists-on-sciety/">Read more about lists</a>
         </article>
