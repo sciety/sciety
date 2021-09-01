@@ -4,23 +4,18 @@ import { pipe } from 'fp-ts/function';
 import { processServer } from '../../src/ingest/fetch-reviews-from-hypothesis-group';
 import { arbitraryWord } from '../helpers';
 
+const arbitraryAnnotation = () => ({
+  id: arbitraryWord(),
+  created: arbitraryWord(),
+  uri: arbitraryWord(),
+});
+
 describe('fetch-reviews-from-hypothesis-group', () => {
   describe('when there is one page of annotations', () => {
     it('returns the annotations from that page', async () => {
       const fetchData = jest.fn()
         .mockReturnValueOnce(TE.right({
-          rows: [
-            {
-              id: arbitraryWord(),
-              created: arbitraryWord(),
-              uri: arbitraryWord(),
-            },
-            {
-              id: arbitraryWord(),
-              created: arbitraryWord(),
-              uri: arbitraryWord(),
-            },
-          ],
+          rows: [arbitraryAnnotation(), arbitraryAnnotation()],
         }))
         .mockReturnValueOnce(TE.right({
           rows: [],
@@ -38,18 +33,7 @@ describe('fetch-reviews-from-hypothesis-group', () => {
     it('returns an error', async () => {
       const fetchData = jest.fn()
         .mockReturnValueOnce(TE.right({
-          rows: [
-            {
-              id: arbitraryWord(),
-              created: arbitraryWord(),
-              uri: arbitraryWord(),
-            },
-            {
-              id: arbitraryWord(),
-              created: arbitraryWord(),
-              uri: arbitraryWord(),
-            },
-          ],
+          rows: [arbitraryAnnotation(), arbitraryAnnotation()],
         }))
         .mockReturnValueOnce(TE.left('bad thing occurred'));
       const result = await processServer(arbitraryWord(), fetchData)('medrxiv')();

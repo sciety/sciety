@@ -1,6 +1,5 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Evaluation } from './evaluations';
