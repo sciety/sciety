@@ -26,7 +26,7 @@ import { robots } from './robots';
 import { aboutPage } from '../about-page';
 import { articleActivityPage, articleMetaPage } from '../article-page';
 import { generateDocmap } from '../docmaps/generate-docmap';
-import { generateDocmapIndex } from '../docmaps/generate-docmap-index';
+import { paramsCodec as docmapIndexParamsCodec, generateDocmapIndex } from '../docmaps/generate-docmap-index';
 import { hardcodedReviewCommonsDocmap } from '../docmaps/hardcoded-review-commons-docmap';
 import { finishUnfollowCommand, saveUnfollowCommand, unfollowHandler } from '../follow';
 import { groupEvaluationsPage, paramsCodec as groupEvaluationsPageParams } from '../group-evaluations-page/group-evaluations-page';
@@ -441,7 +441,16 @@ export const createRouter = (adapters: Adapters): Router => {
 
   // DOCMAPS
   router.get('/docmaps/v1/index', async (context, next) => {
-    context.response.body = await generateDocmapIndex(adapters)();
+    context.response.body = await pipe(
+      context.query,
+      docmapIndexParamsCodec.decode,
+      E.fold(
+        () => T.of({
+          articles: [],
+        }),
+        generateDocmapIndex(adapters),
+      ),
+    )();
     await next();
   });
 
