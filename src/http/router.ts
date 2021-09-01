@@ -25,8 +25,9 @@ import { redirectAfterAuthenticating, requireAuthentication } from './require-au
 import { robots } from './robots';
 import { aboutPage } from '../about-page';
 import { articleActivityPage, articleMetaPage } from '../article-page';
+import { paramsCodec as docmapIndexParamsCodec } from '../docmaps/filter-by';
 import { generateDocmap } from '../docmaps/generate-docmap';
-import { paramsCodec as docmapIndexParamsCodec, generateDocmapIndex } from '../docmaps/generate-docmap-index';
+import { generateDocmapIndex } from '../docmaps/generate-docmap-index';
 import { hardcodedReviewCommonsDocmap } from '../docmaps/hardcoded-review-commons-docmap';
 import { finishUnfollowCommand, saveUnfollowCommand, unfollowHandler } from '../follow';
 import { groupEvaluationsPage, paramsCodec as groupEvaluationsPageParams } from '../group-evaluations-page/group-evaluations-page';
