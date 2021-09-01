@@ -1,9 +1,7 @@
+@use '../sass/layout';
 @use '../sass/settings';
 
 .error-page {
-  background-color: settings.$colour-page-background;
+  @include layout.page-header-top-space();
   color: settings.$colour-text-primary;
-  padding-top: 2.5rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
 }
