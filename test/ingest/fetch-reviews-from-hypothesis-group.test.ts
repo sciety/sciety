@@ -10,7 +10,7 @@ const arbitraryAnnotation = () => ({
   uri: arbitraryWord(),
 });
 
-describe('fetch-reviews-from-hypothesis-group', () => {
+describe('process-server', () => {
   describe('when there is one page of annotations', () => {
     it('returns the annotations from that page', async () => {
       const fetchData = jest.fn()
@@ -26,6 +26,28 @@ describe('fetch-reviews-from-hypothesis-group', () => {
         result,
         E.map((items) => items.length),
       )).toStrictEqual(E.right(2));
+    });
+  });
+
+  describe('when there are no annotations', () => {
+    it('returns an empty array', async () => {
+      const fetchData = jest.fn()
+        .mockReturnValueOnce(TE.right({
+          rows: [],
+        }));
+      const result = await processServer(arbitraryWord(), fetchData)('medrxiv')();
+
+      expect(result).toStrictEqual(E.right([]));
+    });
+  });
+
+  describe('when the first page of annotations cannot be fetched', () => {
+    it('returns an error', async () => {
+      const fetchData = jest.fn()
+        .mockReturnValueOnce(TE.left('bad thing occurred'));
+      const result = await processServer(arbitraryWord(), fetchData)('medrxiv')();
+
+      expect(result).toStrictEqual(E.left('bad thing occurred'));
     });
   });
 
