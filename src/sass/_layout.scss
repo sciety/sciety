@@ -3,6 +3,7 @@
 @use 'baseline';
 @use 'breakpoints';
 
+$_column-gap: functions.px-to-rem(20px);
 
 @mixin visually-hidden() {
   border: 0;
@@ -42,7 +43,7 @@
   .sciety-grid-two-columns {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
-    grid-column-gap: 20px;
+    grid-column-gap: $_column-gap;
     grid-auto-rows: min-content;
     grid-auto-flow: column;
 
@@ -61,7 +62,7 @@
   max-width: functions.px-to-rem(settings.$max-site-width);
   flex-grow: 1;
   @include breakpoints.not-narrow {
-    margin: 0 1rem;
+    margin: 0 $_column-gap;
   }
 }
 
