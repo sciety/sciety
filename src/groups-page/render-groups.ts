@@ -3,7 +3,7 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 const supplementaryInfo = `
   <section class="user-list-page-supplementary">
-    <ol class="group-list" role="list">
+    <ul class="group-list" role="list">
       <li class="group-list__item">
         <article class="user-list-page-blog-card">
           <h2 class="user-list-page-blog-card__title">What is a group?</h2>
@@ -18,7 +18,7 @@ const supplementaryInfo = `
           <a href="https://blog.sciety.org/covid-groups/">Read more about how groups are selected for Sciety</a>.
         </article>
       </li>
-    </ol>
+    </ul>
   </section>
 `;
 
