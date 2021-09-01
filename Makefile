@@ -143,3 +143,15 @@ exploratory-test: node_modules clean-db build
 	${DOCKER_COMPOSE} restart app
 	scripts/wait-for-healthy.sh
 	${DOCKER_COMPOSE} logs -f app
+
+download-db-dump-staging:
+	kubectl run psql \
+	--image=postgres:12.3 \
+	--env=PGHOST=$$(kubectl get secret hive-staging-rds-postgres -o json | jq -r '.data."postgresql-host"'| base64 -d) \
+	--env=PGDATABASE=$$(kubectl get secret hive-staging-rds-postgres -o json | jq -r '.data."postgresql-database"'| base64 -d) \
+	--env=PGUSER=$$(kubectl get secret hive-staging-rds-postgres -o json | jq -r '.data."postgresql-username"'| base64 -d) \
+	--env=PGPASSWORD=$$(kubectl get secret hive-staging-rds-postgres -o json | jq -r '.data."postgresql-password"'| base64 -d | sed -e 's/\$$\$$/$$$$$$$$/g') \
+	-- sleep 600
+	kubectl wait --for condition=Ready pod psql
+	kubectl exec psql -- psql -c "copy (select json_agg(events) from events) To STDOUT;" | sed -e 's/\\n//g' > ./events-staging.json
+	kubectl delete --wait=false pod psql
