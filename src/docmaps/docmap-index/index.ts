@@ -1,2 +1,2 @@
 export { generateDocmapIndex } from './generate-docmap-index';
-export { filterBy, paramsCodec } from './filter-by';
+export { paramsCodec } from './filter-by';

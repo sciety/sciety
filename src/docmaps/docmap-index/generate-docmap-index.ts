@@ -1,8 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
-import { filterBy } from '.';
-import { Params } from './filter-by';
+import { filterBy, Params } from './filter-by';
 import { DomainEvent } from '../../domain-events';
 import * as Doi from '../../types/doi';
 import * as GID from '../../types/group-id';

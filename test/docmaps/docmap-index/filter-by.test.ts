@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { filterBy } from '../../../src/docmaps/docmap-index';
+import { filterBy } from '../../../src/docmaps/docmap-index/filter-by';
 import { arbitraryDoi } from '../../types/doi.helper';
 
 describe('filter-by', () => {
