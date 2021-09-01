@@ -33,4 +33,28 @@ describe('fetch-reviews-from-hypothesis-group', () => {
       )).toStrictEqual(E.right(2));
     });
   });
+
+  describe('when the second page of annotations cannot be fetched', () => {
+    it('returns an error', async () => {
+      const fetchData = jest.fn()
+        .mockReturnValueOnce(TE.right({
+          rows: [
+            {
+              id: arbitraryWord(),
+              created: arbitraryWord(),
+              uri: arbitraryWord(),
+            },
+            {
+              id: arbitraryWord(),
+              created: arbitraryWord(),
+              uri: arbitraryWord(),
+            },
+          ],
+        }))
+        .mockReturnValueOnce(TE.left('bad thing occurred'));
+      const result = await processServer(arbitraryWord(), fetchData)('medrxiv')();
+
+      expect(result).toStrictEqual(E.left('bad thing occurred'));
+    });
+  });
 });
