@@ -4,22 +4,13 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Evaluation } from './evaluations';
 import { FetchData } from './fetch-data';
+import * as Hyp from './hypothesis';
 import { FetchEvaluations, SkippedItem } from './update-all';
-
-type Row = {
-  id: string,
-  created: string,
-  uri: string,
-};
-
-type HypothesisResponse = {
-  rows: Array<Row>,
-};
 
 // TODO bioRxiv/medRxiv content is available at multiple URL patterns:
 // curl "https://api.hypothes.is/api/search?uri.parts=biorxiv&limit=100" | jq --raw-output ".rows[].target[].source"
 
-const toEvaluation = (row: Row): E.Either<SkippedItem, Evaluation> => {
+const toEvaluation = (row: Hyp.Annotation): E.Either<SkippedItem, Evaluation> => {
   const shortRegex = '((?:[^%"#?\\s])+)';
   const matches = new RegExp(`https?://(?:www.)?(bio|med)rxiv.org/cgi/content/(?:10.1101|short)/${shortRegex}$`).exec(row.uri);
   if (matches === null) {
@@ -33,7 +24,7 @@ const toEvaluation = (row: Row): E.Either<SkippedItem, Evaluation> => {
   });
 };
 
-const latestDateOf = (items: ReadonlyArray<Row>) => (
+const latestDateOf = (items: ReadonlyArray<Hyp.Annotation>) => (
   encodeURIComponent(items[items.length - 1].created)
 );
 
@@ -41,8 +32,8 @@ const fetchPaginatedData = (
   getData: FetchData,
   baseUrl: string,
   offset: string,
-): TE.TaskEither<string, ReadonlyArray<Row>> => pipe(
-  getData<HypothesisResponse>(`${baseUrl}${offset}`),
+): TE.TaskEither<string, ReadonlyArray<Hyp.Annotation>> => pipe(
+  getData<Hyp.Response>(`${baseUrl}${offset}`),
   TE.map((response) => response.rows),
   TE.chain(RA.match(
     () => TE.right([]),
@@ -57,7 +48,7 @@ const fetchPaginatedData = (
 export const processServer = (
   userId: string,
   getData: FetchData,
-) => (server: string): TE.TaskEither<string, ReadonlyArray<Row>> => {
+) => (server: string): TE.TaskEither<string, ReadonlyArray<Hyp.Annotation>> => {
   const perPage = 200;
   const latestDate = encodeURIComponent(new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString());
   const baseUrl = `https://api.hypothes.is/api/search?user=${userId}&uri.parts=${server}&limit=${perPage}&sort=created&order=asc&search_after=`;
