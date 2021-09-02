@@ -26,10 +26,14 @@ const toEvaluation = (row: Hyp.Annotation): E.Either<SkippedItem, Evaluation> =>
   });
 };
 
+const latestDateOf = (items: ReadonlyArray<Hyp.Annotation>) => (
+  encodeURIComponent(items[items.length - 1].created)
+);
+
 const fetchPaginatedData = (
   getData: FetchData,
   baseUrl: string,
-  offset: number,
+  offset: string,
 ): TE.TaskEither<string, ReadonlyArray<Hyp.Annotation>> => pipe(
   getData<unknown>(`${baseUrl}${offset}`),
   TE.chainEitherK(flow(
@@ -40,7 +44,7 @@ const fetchPaginatedData = (
   TE.chain(RA.match(
     () => TE.right([]),
     (items) => pipe(
-      fetchPaginatedData(getData, baseUrl, offset + items.length),
+      fetchPaginatedData(getData, baseUrl, latestDateOf(items)),
       TE.map((next) => [...items, ...next]),
     ),
   )),
@@ -51,9 +55,9 @@ export const processServer = (
   publisherGroupId: string,
   getData: FetchData,
 ) => (server: string): TE.TaskEither<string, ReadonlyArray<Hyp.Annotation>> => {
-  const pageSize = 200;
-  const baseUrl = `https://api.hypothes.is/api/search?group=${publisherGroupId}&uri.parts=${server}&limit=${pageSize}&offset=`;
-  return fetchPaginatedData(getData, baseUrl, 0);
+  const latestDate = encodeURIComponent(new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString());
+  const baseUrl = `https://api.hypothes.is/api/search?group=${publisherGroupId}&uri.parts=${server}&limit=200&sort=created&order=asc&search_after=`;
+  return fetchPaginatedData(getData, baseUrl, latestDate);
 };
 
 type Ports = {
