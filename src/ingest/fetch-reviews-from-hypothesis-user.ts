@@ -13,7 +13,6 @@ type Row = {
 };
 
 type HypothesisResponse = {
-  total: number,
   rows: Array<Row>,
 };
 
