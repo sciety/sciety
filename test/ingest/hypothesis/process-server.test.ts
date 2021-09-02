@@ -1,8 +1,8 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { processServer } from '../../src/ingest/fetch-reviews-from-hypothesis-user';
-import { arbitraryWord } from '../helpers';
+import { processServer } from '../../../src/ingest/hypothesis/process-server';
+import { arbitraryDate, arbitraryWord } from '../../helpers';
 
 const arbitraryAnnotation = () => ({
   id: arbitraryWord(),
@@ -20,7 +20,7 @@ describe('process-server', () => {
         .mockReturnValueOnce(TE.right({
           rows: [],
         }));
-      const result = await processServer(arbitraryWord(), fetchData)('medrxiv')();
+      const result = await processServer(arbitraryWord(), arbitraryDate(), fetchData)('medrxiv')();
 
       expect(pipe(
         result,
@@ -35,7 +35,7 @@ describe('process-server', () => {
         .mockReturnValueOnce(TE.right({
           rows: [],
         }));
-      const result = await processServer(arbitraryWord(), fetchData)('medrxiv')();
+      const result = await processServer(arbitraryWord(), arbitraryDate(), fetchData)('medrxiv')();
 
       expect(result).toStrictEqual(E.right([]));
     });
@@ -45,7 +45,7 @@ describe('process-server', () => {
     it('returns an error', async () => {
       const fetchData = jest.fn()
         .mockReturnValueOnce(TE.left('bad thing occurred'));
-      const result = await processServer(arbitraryWord(), fetchData)('medrxiv')();
+      const result = await processServer(arbitraryWord(), arbitraryDate(), fetchData)('medrxiv')();
 
       expect(result).toStrictEqual(E.left('bad thing occurred'));
     });
@@ -58,7 +58,7 @@ describe('process-server', () => {
           rows: [arbitraryAnnotation(), arbitraryAnnotation()],
         }))
         .mockReturnValueOnce(TE.left('bad thing occurred'));
-      const result = await processServer(arbitraryWord(), fetchData)('medrxiv')();
+      const result = await processServer(arbitraryWord(), arbitraryDate(), fetchData)('medrxiv')();
 
       expect(result).toStrictEqual(E.left('bad thing occurred'));
     });
@@ -73,7 +73,7 @@ describe('process-server', () => {
     ])('returns an error', async (response) => {
       const fetchData = jest.fn()
         .mockReturnValueOnce(TE.right(response));
-      const result = await processServer(arbitraryWord(), fetchData)('medrxiv')();
+      const result = await processServer(arbitraryWord(), arbitraryDate(), fetchData)('medrxiv')();
 
       expect(result).toStrictEqual(E.left(expect.stringMatching('Invalid value')));
     });
