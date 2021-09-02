@@ -14,7 +14,7 @@ describe('generate-docmap-index', () => {
   it('includes an absolute url for each docmap in the index', async () => {
     const doi = arbitraryDoi();
     const result = await pipe(
-      { updatedAfter: O.none },
+      { updatedAfter: O.none, group: O.none },
       generateDocmapIndex({
         getAllEvents: T.of([
           editorialCommunityReviewedArticle(ncrcGroupId, doi, arbitraryReviewId()),
@@ -33,7 +33,7 @@ describe('generate-docmap-index', () => {
   describe('when no group identifier is supplied', () => {
     it('includes the doi of the hardcoded Review Commons docmap', async () => {
       const result = await pipe(
-        { updatedAfter: O.none },
+        { updatedAfter: O.none, group: O.none },
         generateDocmapIndex({
           getAllEvents: T.of([]),
         }),
@@ -50,7 +50,7 @@ describe('generate-docmap-index', () => {
     it('includes dois for each NCRC docmap', async () => {
       const doi = arbitraryDoi();
       const result = await pipe(
-        { updatedAfter: O.none },
+        { updatedAfter: O.none, group: O.none },
         generateDocmapIndex({
           getAllEvents: T.of([
             editorialCommunityReviewedArticle(ncrcGroupId, doi, arbitraryReviewId()),

@@ -13,7 +13,7 @@ describe('filter-by', () => {
       ];
       const filtered = pipe(
         inputDois,
-        filterBy({ updatedAfter: O.none }),
+        filterBy({ updatedAfter: O.none, group: O.none }),
       );
 
       expect(filtered).toStrictEqual(inputDois);
