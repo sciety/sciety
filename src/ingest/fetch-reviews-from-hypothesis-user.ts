@@ -21,13 +21,13 @@ type HypothesisResponse = {
 // TODO bioRxiv/medRxiv content is available at multiple URL patterns:
 // curl "https://api.hypothes.is/api/search?uri.parts=biorxiv&limit=100" | jq --raw-output ".rows[].target[].source"
 
-const toEvaluation = (server: string) => (row: Row): E.Either<SkippedItem, Evaluation> => {
+const toEvaluation = (row: Row): E.Either<SkippedItem, Evaluation> => {
   const shortRegex = '((?:[^%"#?\\s])+)';
-  const matches = new RegExp(`https?://(?:www.)?${server}.org/cgi/content/(?:10.1101|short)/${shortRegex}$`).exec(row.uri);
+  const matches = new RegExp(`https?://(?:www.)?(bio|med)rxiv.org/cgi/content/(?:10.1101|short)/${shortRegex}$`).exec(row.uri);
   if (matches === null) {
     return E.left({ item: row.uri, reason: 'Cannot parse into the biorxiv DOI' });
   }
-  const doi = matches[1];
+  const doi = matches[2];
   return E.right({
     date: new Date(row.created),
     articleDoi: `10.1101/${doi}`,
@@ -47,7 +47,7 @@ const processServer = (
   while (data.rows.length > 0) {
     const evaluations = pipe(
       data.rows,
-      RA.map(toEvaluation(server)),
+      RA.map(toEvaluation),
     );
     result = [...result, ...evaluations];
     latestDate = encodeURIComponent(data.rows[data.rows.length - 1].created);
