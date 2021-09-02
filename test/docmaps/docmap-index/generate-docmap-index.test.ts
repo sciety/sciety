@@ -68,7 +68,7 @@ describe('generate-docmap-index', () => {
   });
 
   describe('when passed a group identifier for NCRC', () => {
-    it.skip('only returns urls for NCRC docmaps', async () => {
+    it('only returns urls for NCRC docmaps', async () => {
       const doi = arbitraryDoi();
       const result = await pipe(
         { updatedAfter: O.none, group: O.some(ncrcGroupId) },

@@ -12,6 +12,7 @@ export const paramsCodec = t.type({
 
 export type Params = t.TypeOf<typeof paramsCodec>;
 
+// ts-unused-exports:disable-next-line
 export const filterBy = (params: Params) => (dois: ReadonlyArray<Doi.Doi>): ReadonlyArray<Doi.Doi> => pipe(
   params.updatedAfter,
   O.fold(
