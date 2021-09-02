@@ -22,7 +22,14 @@ const filterByGroup = (group: O.Option<GID.GroupId>) => (dois: ReadonlyArray<Doi
   group,
   O.fold(
     () => [...dois, new Doi.Doi('10.1101/2021.04.25.441302')],
-    () => dois,
+    (gid) => {
+      switch (gid) {
+        case ncrcGroupId:
+          return dois;
+        default:
+          return [new Doi.Doi('10.1101/2021.04.25.441302')];
+      }
+    },
   ),
 );
 

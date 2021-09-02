@@ -92,7 +92,7 @@ describe('generate-docmap-index', () => {
   });
 
   describe('when passed a group identifier for Review Commons', () => {
-    it.skip('only returns the doi for the hardcoded Review Commons docmap', async () => {
+    it('only returns the doi for the hardcoded Review Commons docmap', async () => {
       const result = await pipe(
         { updatedAfter: O.none, group: O.some(reviewCommonsGroupId) },
         generateDocmapIndex({
