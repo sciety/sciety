@@ -63,4 +63,19 @@ describe('process-server', () => {
       expect(result).toStrictEqual(E.left('bad thing occurred'));
     });
   });
+
+  describe('when a response from Hypothesis is corrupt', () => {
+    it.each([
+      [{}],
+      [{ rows: 25 }],
+      [{ rows: [{}] }],
+      [{ rows: [{ id: arbitraryWord() }] }],
+    ])('returns an error', async (response) => {
+      const fetchData = jest.fn()
+        .mockReturnValueOnce(TE.right(response));
+      const result = await processServer(arbitraryWord(), fetchData)('medrxiv')();
+
+      expect(result).toStrictEqual(E.left(expect.stringMatching('Invalid value')));
+    });
+  });
 });

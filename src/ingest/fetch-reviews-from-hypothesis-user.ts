@@ -1,7 +1,8 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
+import * as PR from 'io-ts/PathReporter';
 import { Evaluation } from './evaluations';
 import { FetchData } from './fetch-data';
 import * as Hyp from './hypothesis';
@@ -33,7 +34,11 @@ const fetchPaginatedData = (
   baseUrl: string,
   offset: string,
 ): TE.TaskEither<string, ReadonlyArray<Hyp.Annotation>> => pipe(
-  getData<Hyp.Response>(`${baseUrl}${offset}`),
+  getData<unknown>(`${baseUrl}${offset}`),
+  TE.chainEitherK(flow(
+    Hyp.responseFromJson.decode,
+    E.mapLeft((error) => PR.failure(error).join('\n')),
+  )),
   TE.map((response) => response.rows),
   TE.chain(RA.match(
     () => TE.right([]),
