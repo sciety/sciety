@@ -10,6 +10,8 @@ import { arbitraryReviewId } from '../../types/review-id.helper';
 
 describe('generate-docmap-index', () => {
   const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
+  const reviewCommonsGroupId = GID.fromValidatedString('316db7d9-88cc-4c26-b386-f067e0f56334');
+  const hardcodedReviewCommonsDocmapDoi = '10.1101/2021.04.25.441302';
 
   it('includes an absolute url for each docmap in the index', async () => {
     const doi = arbitraryDoi();
@@ -42,7 +44,7 @@ describe('generate-docmap-index', () => {
 
       expect(result).toStrictEqual(expect.arrayContaining([
         expect.objectContaining({
-          doi: '10.1101/2021.04.25.441302',
+          doi: hardcodedReviewCommonsDocmapDoi,
         }),
       ]));
     });
@@ -90,7 +92,24 @@ describe('generate-docmap-index', () => {
   });
 
   describe('when passed a group identifier for Review Commons', () => {
-    it.todo('only returns urls for Review Commons docmaps');
+    it.skip('only returns the doi for the hardcoded Review Commons docmap', async () => {
+      const result = await pipe(
+        { updatedAfter: O.none, group: O.some(reviewCommonsGroupId) },
+        generateDocmapIndex({
+          getAllEvents: T.of([
+            editorialCommunityReviewedArticle(ncrcGroupId, arbitraryDoi(), arbitraryReviewId()),
+            editorialCommunityReviewedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
+          ]),
+        }),
+        T.map(({ articles }) => articles),
+      )();
+
+      expect(result).toStrictEqual([
+        expect.objectContaining({
+          doi: hardcodedReviewCommonsDocmapDoi,
+        }),
+      ]);
+    });
   });
 
   describe('when passed anything else as the group argument', () => {
