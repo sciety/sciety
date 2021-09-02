@@ -8,9 +8,10 @@ import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 
 describe('generate-docmap-index', () => {
+  const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
+
   it('includes an absolute url for each docmap in the index', async () => {
     const doi = arbitraryDoi();
-    const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
     const result = await pipe(
       { updatedAfter: O.none },
       generateDocmapIndex({
@@ -45,7 +46,24 @@ describe('generate-docmap-index', () => {
       ]));
     });
 
-    it.todo('includes urls to the NCRC docmaps');
+    it('includes dois for each NCRC docmap', async () => {
+      const doi = arbitraryDoi();
+      const result = await pipe(
+        { updatedAfter: O.none },
+        generateDocmapIndex({
+          getAllEvents: T.of([
+            editorialCommunityReviewedArticle(ncrcGroupId, doi, arbitraryReviewId()),
+          ]),
+        }),
+        T.map(({ articles }) => articles),
+      )();
+
+      expect(result).toStrictEqual(expect.arrayContaining([
+        expect.objectContaining({
+          doi: doi.value,
+        }),
+      ]));
+    });
   });
 
   describe('when passed a group identifier for NCRC', () => {
