@@ -32,11 +32,11 @@ const latestDateOf = (items: ReadonlyArray<Hyp.Annotation>) => (
 );
 
 const fetchPaginatedData = (
-  getData: FetchData,
+  fetchData: FetchData,
   baseUrl: string,
   offset: string,
 ): TE.TaskEither<string, ReadonlyArray<Hyp.Annotation>> => pipe(
-  getData<unknown>(`${baseUrl}${offset}`),
+  fetchData<unknown>(`${baseUrl}${offset}`),
   TE.chainEitherK(flow(
     Hyp.responseFromJson.decode,
     E.mapLeft((error) => PR.failure(error).join('\n')),
@@ -45,7 +45,7 @@ const fetchPaginatedData = (
   TE.chain(RA.match(
     () => TE.right([]),
     (items) => pipe(
-      fetchPaginatedData(getData, baseUrl, latestDateOf(items)),
+      fetchPaginatedData(fetchData, baseUrl, latestDateOf(items)),
       TE.map((next) => [...items, ...next]),
     ),
   )),
@@ -53,22 +53,31 @@ const fetchPaginatedData = (
 
 // ts-unused-exports:disable-next-line
 export const processServer = (
-  publisherGroupId: string,
-  getData: FetchData,
+  owner: string,
+  startDate: Date,
+  fetchData: FetchData,
 ) => (server: string): TE.TaskEither<string, ReadonlyArray<Hyp.Annotation>> => {
-  const latestDate = encodeURIComponent(daysAgo(5).toISOString());
-  const baseUrl = `https://api.hypothes.is/api/search?group=${publisherGroupId}&uri.parts=${server}&limit=200&sort=created&order=asc&search_after=`;
-  return fetchPaginatedData(getData, baseUrl, latestDate);
+  const latestDate = encodeURIComponent(startDate.toISOString());
+  const baseUrl = `https://api.hypothes.is/api/search?${owner}&uri.parts=${server}&limit=200&sort=created&order=asc&search_after=`;
+  return fetchPaginatedData(fetchData, baseUrl, latestDate);
 };
+
+const fetchEvaluationsByGroupSince = (
+  startDate: Date,
+  fetchData: FetchData,
+) => (groupId: string): TE.TaskEither<string, ReadonlyArray<Hyp.Annotation>> => pipe(
+  ['biorxiv', 'medrxiv'],
+  TE.traverseArray(processServer(`group=${groupId}`, startDate, fetchData)),
+  TE.map(RA.flatten),
+);
 
 type Ports = {
   fetchData: FetchData,
 };
 
 export const fetchReviewsFromHypothesisGroup = (publisherGroupId: string): FetchEvaluations => (ports: Ports) => pipe(
-  ['biorxiv', 'medrxiv'],
-  TE.traverseArray(processServer(publisherGroupId, ports.fetchData)),
-  TE.map(RA.flatten),
+  publisherGroupId,
+  fetchEvaluationsByGroupSince(daysAgo(5), ports.fetchData),
   TE.map(RA.map(toEvaluation)),
   TE.map((parts) => ({
     evaluations: RA.rights(parts),
