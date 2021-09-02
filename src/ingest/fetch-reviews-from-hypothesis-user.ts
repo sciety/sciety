@@ -6,6 +6,7 @@ import * as PR from 'io-ts/PathReporter';
 import { Evaluation } from './evaluations';
 import { FetchData } from './fetch-data';
 import * as Hyp from './hypothesis';
+import { daysAgo } from './time';
 import { FetchEvaluations, SkippedItem } from './update-all';
 
 // TODO bioRxiv/medRxiv content is available at multiple URL patterns:
@@ -54,9 +55,8 @@ export const processServer = (
   userId: string,
   getData: FetchData,
 ) => (server: string): TE.TaskEither<string, ReadonlyArray<Hyp.Annotation>> => {
-  const perPage = 200;
-  const latestDate = encodeURIComponent(new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString());
-  const baseUrl = `https://api.hypothes.is/api/search?user=${userId}&uri.parts=${server}&limit=${perPage}&sort=created&order=asc&search_after=`;
+  const latestDate = encodeURIComponent(daysAgo(5).toISOString());
+  const baseUrl = `https://api.hypothes.is/api/search?user=${userId}&uri.parts=${server}&limit=200&sort=created&order=asc&search_after=`;
   return fetchPaginatedData(getData, baseUrl, latestDate);
 };
 
