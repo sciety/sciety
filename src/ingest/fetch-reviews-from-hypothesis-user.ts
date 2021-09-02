@@ -37,19 +37,15 @@ const toEvaluation = (row: Row): E.Either<SkippedItem, Evaluation> => {
 
 const processServer = (
   userId: string,
-) => (server: string) => async (): Promise<ReadonlyArray<E.Either<SkippedItem, Evaluation>>> => {
-  let result: ReadonlyArray<E.Either<SkippedItem, Evaluation>> = [];
+) => (server: string) => async (): Promise<ReadonlyArray<Row>> => {
+  let result: ReadonlyArray<Row> = [];
   const perPage = 200;
   let latestDate = encodeURIComponent(new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString());
   let { data } = await axios.get<HypothesisResponse>(`https://api.hypothes.is/api/search?user=${userId}&uri.parts=${server}&limit=${perPage}&sort=created&order=asc&search_after=${latestDate}`);
 
   // eslint-disable-next-line no-loops/no-loops
   while (data.rows.length > 0) {
-    const evaluations = pipe(
-      data.rows,
-      RA.map(toEvaluation),
-    );
-    result = [...result, ...evaluations];
+    result = [...result, ...data.rows];
     latestDate = encodeURIComponent(data.rows[data.rows.length - 1].created);
     data = (await axios.get<HypothesisResponse>(`https://api.hypothes.is/api/search?user=${userId}&uri.parts=${server}&limit=${perPage}&sort=created&order=asc&search_after=${latestDate}`)).data;
   }
@@ -60,6 +56,7 @@ export const fetchReviewsFromHypothesisUser = (publisherUserId: string): FetchEv
   ['biorxiv', 'medrxiv'],
   T.traverseArray(processServer(publisherUserId)),
   T.map(RA.flatten),
+  T.map(RA.map(toEvaluation)),
   T.map((parts) => ({
     evaluations: RA.rights(parts),
     skippedItems: RA.lefts(parts),
