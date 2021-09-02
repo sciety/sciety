@@ -107,27 +107,28 @@
 
 @mixin heading-2 () {
   @include heading-base();
-  font-size: functions.px-to-rem(30px);
+  font-size: functions.px-to-rem(18px);
 }
 
 @mixin heading-3 () {
   @include heading-base();
-  font-size: functions.px-to-rem(26px);
+  font-size: functions.px-to-rem(16px);
 }
 
 @mixin heading-4 () {
   @include heading-base();
-  font-size: functions.px-to-rem(22px);
+  font-size: functions.px-to-rem(15px);
 }
 
 @mixin heading-5 () {
   @include heading-base();
-  font-size: functions.px-to-rem(18px);
+  font-size: functions.px-to-rem(14px);
 }
 
 @mixin heading-6 () {
   @include heading-base();
   font-size: functions.px-to-rem(14px);
+  font-style: italic;
 }
 
 @mixin list-separator() {
