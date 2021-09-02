@@ -1,6 +1,5 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Evaluation } from './evaluations';
@@ -35,33 +34,35 @@ const toEvaluation = (row: Row): E.Either<SkippedItem, Evaluation> => {
   });
 };
 
+const latestDateOf = (items: ReadonlyArray<Row>) => (
+  encodeURIComponent(items[items.length - 1].created)
+);
+
+const fetchPaginatedData = (
+  getData: FetchData,
+  baseUrl: string,
+  offset: string,
+): TE.TaskEither<string, ReadonlyArray<Row>> => pipe(
+  getData<HypothesisResponse>(`${baseUrl}${offset}`),
+  TE.map((response) => response.rows),
+  TE.chain(RA.match(
+    () => TE.right([]),
+    (items) => pipe(
+      fetchPaginatedData(getData, baseUrl, latestDateOf(items)),
+      TE.map((next) => [...items, ...next]),
+    ),
+  )),
+);
+
 // ts-unused-exports:disable-next-line
 export const processServer = (
   userId: string,
   getData: FetchData,
-) => (server: string) => async (): Promise<ReadonlyArray<Row>> => {
-  let result: ReadonlyArray<Row> = [];
+) => (server: string): TE.TaskEither<string, ReadonlyArray<Row>> => {
   const perPage = 200;
-  let latestDate = encodeURIComponent(new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString());
-  let rows;
-
-  // eslint-disable-next-line no-loops/no-loops
-  do {
-    const url = `https://api.hypothes.is/api/search?user=${userId}&uri.parts=${server}&limit=${perPage}&sort=created&order=asc&search_after=${latestDate}`;
-    rows = await pipe(
-      getData<HypothesisResponse>(url),
-      TE.fold(
-        () => T.of([]),
-        (response) => T.of(response.rows),
-      ),
-    )();
-    if (rows.length === 0) {
-      return result;
-    }
-    result = [...result, ...rows];
-    latestDate = encodeURIComponent(rows[rows.length - 1].created);
-  } while (rows.length > 0);
-  return result;
+  const latestDate = encodeURIComponent(new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString());
+  const baseUrl = `https://api.hypothes.is/api/search?user=${userId}&uri.parts=${server}&limit=${perPage}&sort=created&order=asc&search_after=`;
+  return fetchPaginatedData(getData, baseUrl, latestDate);
 };
 
 type Ports = {
@@ -70,12 +71,11 @@ type Ports = {
 
 export const fetchReviewsFromHypothesisUser = (publisherUserId: string): FetchEvaluations => (ports: Ports) => pipe(
   ['biorxiv', 'medrxiv'],
-  T.traverseArray(processServer(publisherUserId, ports.fetchData)),
-  T.map(RA.flatten),
-  T.map(RA.map(toEvaluation)),
-  T.map((parts) => ({
+  TE.traverseArray(processServer(publisherUserId, ports.fetchData)),
+  TE.map(RA.flatten),
+  TE.map(RA.map(toEvaluation)),
+  TE.map((parts) => ({
     evaluations: RA.rights(parts),
     skippedItems: RA.lefts(parts),
   })),
-  TE.rightTask,
 );

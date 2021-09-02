@@ -1,5 +1,6 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
+import { pipe } from 'fp-ts/function';
 import { processServer } from '../../src/ingest/fetch-reviews-from-hypothesis-user';
 import { arbitraryWord } from '../helpers';
 
@@ -21,7 +22,10 @@ describe('process-server', () => {
         }));
       const result = await processServer(arbitraryWord(), fetchData)('medrxiv')();
 
-      expect(result).toHaveLength(2);
+      expect(pipe(
+        result,
+        E.map((items) => items.length),
+      )).toStrictEqual(E.right(2));
     });
   });
 
@@ -33,12 +37,12 @@ describe('process-server', () => {
         }));
       const result = await processServer(arbitraryWord(), fetchData)('medrxiv')();
 
-      expect(result).toStrictEqual([]);
+      expect(result).toStrictEqual(E.right([]));
     });
   });
 
   describe('when the first page of annotations cannot be fetched', () => {
-    it.skip('returns an error', async () => {
+    it('returns an error', async () => {
       const fetchData = jest.fn()
         .mockReturnValueOnce(TE.left('bad thing occurred'));
       const result = await processServer(arbitraryWord(), fetchData)('medrxiv')();
@@ -48,7 +52,7 @@ describe('process-server', () => {
   });
 
   describe('when the second page of annotations cannot be fetched', () => {
-    it.skip('returns an error', async () => {
+    it('returns an error', async () => {
       const fetchData = jest.fn()
         .mockReturnValueOnce(TE.right({
           rows: [arbitraryAnnotation(), arbitraryAnnotation()],
