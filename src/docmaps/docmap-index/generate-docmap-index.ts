@@ -8,6 +8,7 @@ import { DomainEvent } from '../../domain-events';
 import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
 import * as Doi from '../../types/doi';
 import * as GID from '../../types/group-id';
+import { GroupId } from '../../types/group-id';
 import { allDocmapDois } from '../all-docmap-dois';
 
 export const paramsCodec = t.type({
@@ -29,20 +30,16 @@ const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6
 const reviewCommonsGroupId = GID.fromValidatedString('316db7d9-88cc-4c26-b386-f067e0f56334');
 const hardcodedReviewCommonsDocmapDoi = new Doi.Doi('10.1101/2021.04.25.441302');
 
-const filterByGroup = (group: O.Option<GID.GroupId>) => (dois: ReadonlyArray<Doi.Doi>) => pipe(
-  group,
+const filterByGroup = (
+  selectedGroup: O.Option<GID.GroupId>,
+) => (docmaps: ReadonlyArray<{ doi: Doi.Doi, groupId: GroupId }>) => pipe(
+  selectedGroup,
   O.fold(
-    () => [...dois, hardcodedReviewCommonsDocmapDoi],
-    (gid) => {
-      switch (gid) {
-        case ncrcGroupId:
-          return dois;
-        case reviewCommonsGroupId:
-          return [hardcodedReviewCommonsDocmapDoi];
-        default:
-          return [];
-      }
-    },
+    () => docmaps,
+    (groupId) => pipe(
+      docmaps,
+      RA.filter((docmap) => docmap.groupId === groupId),
+    ),
   ),
 );
 
@@ -50,8 +47,10 @@ export const generateDocmapIndex = (ports: Ports) => (params: Params): T.Task<Do
   ports.getAllEvents,
   T.map(flow(
     allDocmapDois(ncrcGroupId),
+    RA.map((doi) => ({ doi, groupId: ncrcGroupId })),
+    RA.append({ doi: hardcodedReviewCommonsDocmapDoi, groupId: reviewCommonsGroupId }),
     filterByGroup(params.group),
-    RA.map((doi) => ({
+    RA.map(({ doi }) => ({
       doi: doi.value,
       docmap: `https://sciety.org/docmaps/v1/articles/${doi.value}.docmap.json`,
     })),
