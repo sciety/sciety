@@ -113,6 +113,19 @@ describe('generate-docmap-index', () => {
   });
 
   describe('when passed anything else as the group argument', () => {
-    it.todo('returns an empty index');
+    it('returns an empty index', async () => {
+      const result = await pipe(
+        { updatedAfter: O.none, group: O.some(GID.fromValidatedString('foo')) },
+        generateDocmapIndex({
+          getAllEvents: T.of([
+            editorialCommunityReviewedArticle(ncrcGroupId, arbitraryDoi(), arbitraryReviewId()),
+            editorialCommunityReviewedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
+          ]),
+        }),
+        T.map(({ articles }) => articles),
+      )();
+
+      expect(result).toStrictEqual([]);
+    });
   });
 });

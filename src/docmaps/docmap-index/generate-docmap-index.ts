@@ -17,6 +17,7 @@ type Ports = {
 };
 
 const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
+const reviewCommonsGroupId = GID.fromValidatedString('316db7d9-88cc-4c26-b386-f067e0f56334');
 
 const filterByGroup = (group: O.Option<GID.GroupId>) => (dois: ReadonlyArray<Doi.Doi>) => pipe(
   group,
@@ -26,8 +27,10 @@ const filterByGroup = (group: O.Option<GID.GroupId>) => (dois: ReadonlyArray<Doi
       switch (gid) {
         case ncrcGroupId:
           return dois;
-        default:
+        case reviewCommonsGroupId:
           return [new Doi.Doi('10.1101/2021.04.25.441302')];
+        default:
+          return [];
       }
     },
   ),
