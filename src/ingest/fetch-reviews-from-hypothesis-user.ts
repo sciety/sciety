@@ -1,10 +1,10 @@
-import axios from 'axios';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Evaluation } from './evaluations';
+import { FetchData } from './fetch-data';
 import { FetchEvaluations, SkippedItem } from './update-all';
 
 type Row = {
@@ -35,29 +35,42 @@ const toEvaluation = (row: Row): E.Either<SkippedItem, Evaluation> => {
   });
 };
 
-const processServer = (
+// ts-unused-exports:disable-next-line
+export const processServer = (
   userId: string,
+  getData: FetchData,
 ) => (server: string) => async (): Promise<ReadonlyArray<Row>> => {
   let result: ReadonlyArray<Row> = [];
   const perPage = 200;
   let latestDate = encodeURIComponent(new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString());
-  let data;
+  let rows;
 
   // eslint-disable-next-line no-loops/no-loops
   do {
-    data = (await axios.get<HypothesisResponse>(`https://api.hypothes.is/api/search?user=${userId}&uri.parts=${server}&limit=${perPage}&sort=created&order=asc&search_after=${latestDate}`)).data;
-    if (data.rows.length === 0) {
+    const url = `https://api.hypothes.is/api/search?user=${userId}&uri.parts=${server}&limit=${perPage}&sort=created&order=asc&search_after=${latestDate}`;
+    rows = await pipe(
+      getData<HypothesisResponse>(url),
+      TE.fold(
+        () => T.of([]),
+        (response) => T.of(response.rows),
+      ),
+    )();
+    if (rows.length === 0) {
       return result;
     }
-    result = [...result, ...data.rows];
-    latestDate = encodeURIComponent(data.rows[data.rows.length - 1].created);
-  } while (data.rows.length > 0);
+    result = [...result, ...rows];
+    latestDate = encodeURIComponent(rows[rows.length - 1].created);
+  } while (rows.length > 0);
   return result;
 };
 
-export const fetchReviewsFromHypothesisUser = (publisherUserId: string): FetchEvaluations => () => pipe(
+type Ports = {
+  fetchData: FetchData,
+};
+
+export const fetchReviewsFromHypothesisUser = (publisherUserId: string): FetchEvaluations => (ports: Ports) => pipe(
   ['biorxiv', 'medrxiv'],
-  T.traverseArray(processServer(publisherUserId)),
+  T.traverseArray(processServer(publisherUserId, ports.fetchData)),
   T.map(RA.flatten),
   T.map(RA.map(toEvaluation)),
   T.map((parts) => ({
