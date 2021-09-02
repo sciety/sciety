@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
-import { generateDocmapIndex } from '../../../src/docmaps/docmap-index/generate-docmap-index';
+import { generateDocmapIndex } from '../../../src/docmaps/docmap-index';
 import { editorialCommunityReviewedArticle } from '../../../src/domain-events';
 import * as GID from '../../../src/types/group-id';
 import { arbitraryDoi } from '../../types/doi.helper';
