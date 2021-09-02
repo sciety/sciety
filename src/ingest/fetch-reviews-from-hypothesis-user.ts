@@ -41,14 +41,17 @@ const processServer = (
   let result: ReadonlyArray<Row> = [];
   const perPage = 200;
   let latestDate = encodeURIComponent(new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString());
-  let { data } = await axios.get<HypothesisResponse>(`https://api.hypothes.is/api/search?user=${userId}&uri.parts=${server}&limit=${perPage}&sort=created&order=asc&search_after=${latestDate}`);
+  let data;
 
   // eslint-disable-next-line no-loops/no-loops
-  while (data.rows.length > 0) {
+  do {
+    data = (await axios.get<HypothesisResponse>(`https://api.hypothes.is/api/search?user=${userId}&uri.parts=${server}&limit=${perPage}&sort=created&order=asc&search_after=${latestDate}`)).data;
+    if (data.rows.length === 0) {
+      return result;
+    }
     result = [...result, ...data.rows];
     latestDate = encodeURIComponent(data.rows[data.rows.length - 1].created);
-    data = (await axios.get<HypothesisResponse>(`https://api.hypothes.is/api/search?user=${userId}&uri.parts=${server}&limit=${perPage}&sort=created&order=asc&search_after=${latestDate}`)).data;
-  }
+  } while (data.rows.length > 0);
   return result;
 };
 
