@@ -5,6 +5,7 @@ import { generateDocmapIndex } from '../../../src/docmaps/docmap-index/generate-
 import { editorialCommunityReviewedArticle } from '../../../src/domain-events';
 import * as GID from '../../../src/types/group-id';
 import { arbitraryDoi } from '../../types/doi.helper';
+import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 
 describe('generate-docmap-index', () => {
@@ -67,7 +68,25 @@ describe('generate-docmap-index', () => {
   });
 
   describe('when passed a group identifier for NCRC', () => {
-    it.todo('only returns urls for NCRC docmaps');
+    it.skip('only returns urls for NCRC docmaps', async () => {
+      const doi = arbitraryDoi();
+      const result = await pipe(
+        { updatedAfter: O.none, group: O.some(ncrcGroupId) },
+        generateDocmapIndex({
+          getAllEvents: T.of([
+            editorialCommunityReviewedArticle(ncrcGroupId, doi, arbitraryReviewId()),
+            editorialCommunityReviewedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
+          ]),
+        }),
+        T.map(({ articles }) => articles),
+      )();
+
+      expect(result).toStrictEqual([
+        expect.objectContaining({
+          doi: doi.value,
+        }),
+      ]);
+    });
   });
 
   describe('when passed a group identifier for Review Commons', () => {
