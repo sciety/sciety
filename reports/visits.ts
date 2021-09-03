@@ -5,22 +5,34 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
+import * as t from 'io-ts';
+import * as tt from 'io-ts-types';
 
-type LogEntry = {
-  http_user_agent: string,
-  request: string,
-  remote_addr: string,
-  time_local: string,
-};
+const logEntryFromJson = t.type({
+  http_user_agent: t.string,
+  request: t.string,
+  remote_addr: t.string,
+  time_local: tt.DateFromISOString,
+});
 
-const toVisits = (logs: Json.Json) => pipe(
-  logs as ReadonlyArray<LogEntry>,
+const logsFromJson = t.array(logEntryFromJson);
+
+type Logs = t.TypeOf<typeof logsFromJson>;
+
+const toVisits = (logs: Logs) => pipe(
+  logs,
   RA.filter((log) => !log.http_user_agent.match(/bot|spider|crawler|dataminr|ltx71/i)),
   RA.filter((log) => !log.request.match(/^GET \/static/)),
+  RA.map(({
+    http_user_agent, request, remote_addr, time_local,
+  }) => ({
+    http_user_agent, request, remote_addr, time_local,
+  })),
 );
 
 const parseFile = flow(
   Json.parse,
+  E.chainW(logsFromJson.decode),
   E.map(toVisits),
   E.map((visits) => JSON.stringify(visits, null, 2)),
   // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
