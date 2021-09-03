@@ -86,6 +86,11 @@ const allGroups: Array<Group> = [
     name: 'Biophysics Colab',
     fetchFeed: fetchReviewsFromHypothesisGroup('e277wiod'),
   },
+  {
+    id: '50401e46-b764-47b7-8557-6bb35444b7c8',
+    name: 'ASAPbio crowd review',
+    fetchFeed: fetchReviewsFromHypothesisGroup('EBy1rZMX'),
+  },
 ];
 
 const shouldUpdate = (group: Group) => {
