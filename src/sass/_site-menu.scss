@@ -76,6 +76,10 @@ $_link-min-height: baseline.increments(5);
   background-image: url('/static/images/profile.svg');
 }
 
+.site-menu__link--feed {
+  background-image: url('/static/images/feed.svg');
+}
+
 .site-menu__link--contact-us {
   background-image: url('/static/images/contactus.svg');
 }
