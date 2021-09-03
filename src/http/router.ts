@@ -79,7 +79,7 @@ const homePageParams = t.type({
   })),
 });
 
-const yourFeedParams = t.type({
+const myFeedParams = t.type({
   user: t.type({
     id: UserIdFromString,
   }),
@@ -143,7 +143,7 @@ export const createRouter = (adapters: Adapters): Router => {
     async (context, next) => {
       const response = await pipe(
         context.state,
-        toParams(yourFeedParams),
+        toParams(myFeedParams),
         TE.map((params) => params.user),
         TE.chainTaskK((user) => pipe(
           user.id,
