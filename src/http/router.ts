@@ -79,6 +79,12 @@ const homePageParams = t.type({
   })),
 });
 
+const yourFeedParams = t.type({
+  user: t.type({
+    id: UserIdFromString,
+  }),
+});
+
 const userPageParams = t.type({
   handle: t.string,
   user: tt.optionFromNullable(t.type({
@@ -119,6 +125,30 @@ export const createRouter = (adapters: Adapters): Router => {
             loggedInHomePage(adapters),
             T.map(applyStandardPageLayout(O.some(user))),
           ),
+        )),
+        TE.match(
+          toErrorResponse(O.fromNullable(context.state.user)),
+          toSuccessResponse,
+        ),
+      )();
+
+      context.response.type = 'html';
+      Object.assign(context.response, response);
+      await next();
+    },
+  );
+
+  router.get(
+    '/my-feed',
+    async (context, next) => {
+      const response = await pipe(
+        context.state,
+        toParams(yourFeedParams),
+        TE.map((params) => params.user),
+        TE.chainTaskK((user) => pipe(
+          user.id,
+          loggedInHomePage(adapters),
+          T.map(applyStandardPageLayout(O.some(user))),
         )),
         TE.match(
           toErrorResponse(O.fromNullable(context.state.user)),
