@@ -11,7 +11,7 @@ PORT := 8080
 export IMAGE
 export IMAGE_TAG
 
-.PHONY: backstop* build clean* dev find-* git-lfs install lint* prod release stop test* update-event-data
+.PHONY: backstop* build clean* dev find-* git-lfs install lint* prod release reports stop test* update-event-data
 
 dev: export TARGET = dev
 dev: .env install build
@@ -175,3 +175,6 @@ download-db-dump-staging:
 	kubectl wait --for condition=Ready pod psql
 	kubectl exec psql -- psql -c "copy (select json_agg(events) from events) To STDOUT;" | sed -e 's/\\n//g' > ./events-staging.json
 	kubectl delete --wait=false pod psql
+
+reports:
+	npx ts-node reports/visits.ts

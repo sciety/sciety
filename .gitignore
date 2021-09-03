@@ -12,6 +12,7 @@ coverage/
 /.env
 /.gcp-ncrc-key.json
 /helm/*/charts/
+*.log
 /static/*.css
 /static/*.css.map
 /.purgecss/
