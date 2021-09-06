@@ -16,6 +16,6 @@ const render = (components: Components) => `
 `;
 
 export const renderPage = (components: Components): Page => ({
-  title: 'Sciety: where research is evaluated and curated by the communities you trust',
+  title: 'My Feed',
   content: pipe(components, render, toHtmlFragment),
 });
