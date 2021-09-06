@@ -6,6 +6,8 @@ import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import { userSavedArticle } from '../../src/domain-events';
+import * as DE from '../../src/types/data-error';
+import { Doi } from '../../src/types/doi';
 import { Page } from '../../src/types/page';
 import { RenderPageError } from '../../src/types/render-page-error';
 import { userListPage } from '../../src/user-list-page';
@@ -137,7 +139,46 @@ describe('user-list-page', () => {
     });
 
     describe('article details unavailable for some articles', () => {
-      it.todo('displays the remaining available articles');
+      it.skip('displays the remaining available articles', async () => {
+        const failingArticleId = arbitraryDoi();
+        const userId = arbitraryUserId();
+        const ports = {
+          getUserDetails: () => TE.right({
+            avatarUrl: arbitraryUri(),
+            displayName: arbitraryString(),
+            handle: arbitraryWord(),
+          }),
+          getAllEvents: T.of([
+            userSavedArticle(userId, arbitraryDoi()),
+            userSavedArticle(userId, failingArticleId),
+            userSavedArticle(userId, arbitraryDoi()),
+          ]),
+          fetchArticle: (doi: Doi) => (
+            doi.value === failingArticleId.value
+              ? TE.left(DE.notFound)
+              : TE.right({
+                doi,
+                server: 'biorxiv' as const,
+                title: arbitrarySanitisedHtmlFragment(),
+                authors: [],
+              })
+          ),
+          findReviewsForArticleDoi: () => T.of([]),
+          findVersionsForArticleDoi: () => TO.none,
+          getUserId: () => TE.right(userId),
+        };
+        const params = { handle: arbitraryWord(), user: O.none };
+
+        const page = await pipe(
+          params,
+          userListPage(ports),
+          contentOf,
+          T.map(JSDOM.fragment),
+        )();
+        const articleCards = page.querySelectorAll('.article-card');
+
+        expect(articleCards).toHaveLength(2);
+      });
     });
 
     describe('when the logged in user is the list owner', () => {
