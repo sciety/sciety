@@ -1,3 +1,4 @@
+import * as crypto from 'crypto';
 import * as fs from 'fs';
 import * as E from 'fp-ts/Either';
 import * as Json from 'fp-ts/Json';
@@ -28,7 +29,9 @@ const toVisits = (logs: Logs) => pipe(
   RA.map(({
     http_user_agent, request, remote_addr, time_local,
   }) => ({
-    http_user_agent, request, remote_addr, time_local,
+    visitorId: crypto.createHash('md5').update(`${remote_addr}${http_user_agent}`).digest('hex'),
+    time_local,
+    request,
   })),
 );
 
