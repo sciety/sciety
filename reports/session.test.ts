@@ -1,5 +1,5 @@
 import * as S from './session';
-import { arbitraryDate, arbitraryString, arbitraryWord } from '../test/helpers';
+import { arbitraryString, arbitraryWord } from '../test/helpers';
 
 describe('session', () => {
   describe('split', () => {

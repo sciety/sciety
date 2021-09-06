@@ -44,7 +44,6 @@ import { finishSaveArticleCommand } from '../save-article/finish-save-article-co
 import { saveSaveArticleCommand } from '../save-article/save-save-article-command';
 import { searchPage } from '../search-page';
 import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../search-results-page';
-import { applyStandardPageLayout } from '../shared-components/apply-standard-page-layout';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import * as DE from '../types/data-error';
@@ -128,25 +127,12 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.get(
     '/my-feed',
-    async (context, next) => {
-      const response = await pipe(
-        context.state,
-        toParams(myFeedParams),
-        TE.chainW((params) => pipe(
-          params,
-          myFeedPage(adapters),
-          TE.map(applyStandardPageLayout(params.user)),
-        )),
-        TE.match(
-          toErrorResponse(O.fromNullable(context.state.user)),
-          toSuccessResponse,
-        ),
-      )();
-
-      context.response.type = 'html';
-      Object.assign(context.response, response);
-      await next();
-    },
+    pageHandler(flow(
+      myFeedParams.decode,
+      E.mapLeft(toNotFound),
+      TE.fromEither,
+      TE.chainW(myFeedPage(adapters)),
+    )),
   );
 
   router.get(
