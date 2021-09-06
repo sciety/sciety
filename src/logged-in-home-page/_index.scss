@@ -1,3 +1,4 @@
+@use '../sass/settings';
 @use '../sass/baseline';
 @use '../sass/breakpoints';
 @use '../sass/card';
@@ -5,6 +6,10 @@
 
 .logged-in-home-page-cta {
   @include layout.basic-horizontal-spacing();
+}
+
+.logged-in-home-page-feed-container {
+  color: settings.$colour-text-primary;
 }
 
 .logged-in-home-page-feed-container h2 {
