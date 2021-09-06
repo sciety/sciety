@@ -132,10 +132,10 @@ export const createRouter = (adapters: Adapters): Router => {
       const response = await pipe(
         context.state,
         toParams(myFeedParams),
-        TE.chainTaskK((params) => pipe(
+        TE.chainW((params) => pipe(
           params,
           myFeedPage(adapters),
-          T.map(applyStandardPageLayout(params.user)),
+          TE.map(applyStandardPageLayout(params.user)),
         )),
         TE.match(
           toErrorResponse(O.fromNullable(context.state.user)),
