@@ -3,6 +3,8 @@ import * as fs from 'fs';
 import * as E from 'fp-ts/Either';
 import * as Json from 'fp-ts/Json';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as RM from 'fp-ts/ReadonlyMap';
+import * as S from 'fp-ts/string';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
@@ -29,18 +31,20 @@ type ObfuscatedPageView = PageView & {
   visitorId: string,
 };
 
-type Visits = Record<string, ReadonlyArray<PageView>>;
+type Visits = Map<string, ReadonlyArray<PageView>>;
 
-const saveVisit = (accum: Visits, pageView: ObfuscatedPageView): Visits => {
-  if (!accum.hasOwnProperty(pageView.visitorId)) {
-    accum[pageView.visitorId] = [];
-  }
-  accum[pageView.visitorId] = accum[pageView.visitorId].concat({
+const collectPageViewsForVisitor = (accum: Visits, pageView: ObfuscatedPageView): Visits => {
+  const pvs = accum.get(pageView.visitorId) || [];
+  return accum.set(pageView.visitorId, pvs.concat({
     time_local: pageView.time_local,
     request: pageView.request,
-  });
-  return accum;
+  }));
 };
+
+const isNotCrawler = (pageViews: ReadonlyArray<PageView>) => pipe(
+  pageViews,
+  RA.every((v) => !v.request.match(/\/robots.txt$|php/)),
+);
 
 const toVisits = (logs: Logs) => pipe(
   logs,
@@ -49,7 +53,6 @@ const toVisits = (logs: Logs) => pipe(
   RA.filter((log) => !log.request.match(/^HEAD /)),
   RA.filter((log) => !log.request.match(/^GET \/static/)),
   RA.filter((log) => !log.request.match(/^GET \/favicon.ico/)),
-  RA.filter((log) => !log.request.match(/\.php/)),
   RA.map(({
     http_user_agent, request, remote_addr, time_local,
   }) => ({
@@ -57,13 +60,15 @@ const toVisits = (logs: Logs) => pipe(
     time_local,
     request: request.replace(/ HTTP[^ ]+$/, ''),
   })),
-  RA.reduce({}, saveVisit),
+  RA.reduce(new Map(), collectPageViewsForVisitor),
+  RM.filter(isNotCrawler),
 );
 
 const parseFile = flow(
   Json.parse,
   E.chainW(logsFromJson.decode),
   E.map(toVisits),
+  E.map(RM.toReadonlyArray(S.Ord)),
   E.map((visits) => JSON.stringify(visits, null, 2)),
   // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
   E.getOrElse((e) => { process.stderr.write(`${e}\n`); return ''; }),
