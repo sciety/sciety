@@ -31,7 +31,7 @@ const toVisits = (logs: Logs) => pipe(
   }) => ({
     visitorId: crypto.createHash('md5').update(`${remote_addr}${http_user_agent}`).digest('hex'),
     time_local,
-    request,
+    request: request.replace(/ HTTP[^ ]+$/, ''),
   })),
 );
 
