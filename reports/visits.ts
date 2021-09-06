@@ -23,9 +23,10 @@ type Logs = t.TypeOf<typeof logsFromJson>;
 const toVisits = (logs: Logs) => pipe(
   logs,
   RA.filter((log) => log.http_user_agent.length > 0),
-  RA.filter((log) => !log.http_user_agent.match(/bot|spider|crawler|dataminr|ltx71|cloud mapping|python-requests|twingly|dark|expanse/i)),
+  RA.filter((log) => !log.http_user_agent.match(/bot|spider|crawler|ubermetrics|dataminr|ltx71|cloud mapping|python-requests|twingly|dark|expanse/i)),
   RA.filter((log) => !log.request.match(/^HEAD /)),
   RA.filter((log) => !log.request.match(/^GET \/static/)),
+  RA.filter((log) => !log.request.match(/^GET \/favicon.ico/)),
   RA.map(({
     http_user_agent, request, remote_addr, time_local,
   }) => ({
