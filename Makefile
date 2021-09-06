@@ -177,4 +177,4 @@ download-db-dump-staging:
 	kubectl delete --wait=false pod psql
 
 reports:
-	npx ts-node reports/visits.ts
+	@npx ts-node reports/visits.ts
