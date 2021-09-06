@@ -74,16 +74,18 @@ const laterDate = (accum: Date, logEntry: LogEntry) => (
   accum < logEntry.time_local ? logEntry.time_local : accum
 );
 
-const toReport = (logs: Logs) => ({
-  logEntriesCount: logs.length,
-  logStartTime: RA.reduce(new Date('2970-01-01'), earlierDate)(logs),
-  logEndTime: RA.reduce(new Date('1970-01-01'), laterDate)(logs),
-  visitors: pipe(
-    logs,
-    toVisits,
-    RM.toReadonlyArray(S.Ord),
-  ),
-});
+const toReport = (logs: Logs) => pipe(
+  logs,
+  toVisits,
+  RM.toReadonlyArray(S.Ord),
+  (visitors) => ({
+    logEntriesCount: logs.length,
+    logStartTime: RA.reduce(new Date('2970-01-01'), earlierDate)(logs),
+    logEndTime: RA.reduce(new Date('1970-01-01'), laterDate)(logs),
+    visitorsCount: visitors.length,
+    visitors,
+  }),
+);
 
 const parseFile = flow(
   Json.parse,
