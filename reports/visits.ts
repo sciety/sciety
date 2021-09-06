@@ -7,11 +7,8 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import * as LF from './log-file';
-
-type PageView = {
-  time_local: Date,
-  request: string,
-};
+import { PageView } from './page-view';
+import * as Sess from './session';
 
 type ObfuscatedPageView = PageView & {
   visitorId: string,
@@ -37,7 +34,7 @@ const byDate: Ord.Ord<PageView> = pipe(
   Ord.contramap((event) => event.time_local),
 );
 
-const toVisits = (logs: LF.Logs) => pipe(
+const toVisitors = (logs: LF.Logs) => pipe(
   logs,
   RA.filter((log) => log.http_user_agent.length > 0),
   RA.filter((log) => !log.http_user_agent.match(/bot|spider|crawler|ubermetrics|dataminr|ltx71|cloud mapping|python-requests|twingly|dark|expanse/i)),
@@ -56,16 +53,25 @@ const toVisits = (logs: LF.Logs) => pipe(
   RM.map(RA.sort(byDate)),
 );
 
+const toSessions = (visitors: ReadonlyMap<string, ReadonlyArray<PageView>>): ReadonlyArray<Sess.Session> => pipe(
+  visitors,
+  RM.toReadonlyArray(S.Ord),
+  RA.map(([visitorId, pageViews]) => ({
+    visitorId,
+    pageViews,
+  })),
+  RA.chain(Sess.split),
+);
+
 const toVisitorsReport = (logFile: LF.LogFile) => pipe(
   logFile.logEntries,
-  toVisits,
-  RM.toReadonlyArray(S.Ord),
+  toVisitors,
   (visitors) => ({
     logEntriesCount: logFile.logEntriesCount,
     logStartTime: logFile.logStartTime,
     logEndTime: logFile.logEndTime,
-    visitorsCount: visitors.length,
-    visitors,
+    visitorsCount: pipe(visitors, RM.size),
+    sessions: pipe(visitors, toSessions),
   }),
   (report) => JSON.stringify(report, null, 2),
 );
