@@ -2,8 +2,14 @@ import * as O from 'fp-ts/Option';
 import { googleTagManagerNoScript } from '../shared-components/analytics';
 import { head } from '../shared-components/head';
 import { Page } from '../types/page';
+import { User } from '../types/user';
 
-export const landingPageLayout = (page: Page): string => `<!doctype html>
+const loginButton = O.fold(
+  () => '<a href="/log-in" class="landing-page-header__login_button">Log in</a>',
+  () => '<a href="/log-out" class="landing-page-header__login_button">Log out</a>',
+);
+
+export const landingPageLayout = (user: O.Option<User>) => (page: Page): string => `<!doctype html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
   ${head(O.none, page)}
 <body>
@@ -15,7 +21,7 @@ export const landingPageLayout = (page: Page): string => `<!doctype html>
       <div class="landing-page-header__link_container">
         <a href="https://twitter.com/scietyHQ" class="landing-page-header__follow_link"><img src="/static/images/twitter-bird.svg" alt="Follow us on Twitter"/></a>
         <a href="https://www.facebook.com/ScietyHQ/" class="landing-page-header__follow_link"><img src="/static/images/facebook.svg" alt="Follow us on Facebook"/></a>
-        <a href="/log-in" class="landing-page-header__login_button">Log in</a>
+        ${loginButton(user)}
         <a href="/signup" class="landing-page-header__signup_button">Subscribe</a>
       </div>
     </header>
