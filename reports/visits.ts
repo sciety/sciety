@@ -18,6 +18,8 @@ const logEntryFromJson = t.type({
   time_local: tt.DateFromISOString,
 });
 
+type LogEntry = t.TypeOf<typeof logEntryFromJson>;
+
 const logsFromJson = t.array(logEntryFromJson);
 
 type Logs = t.TypeOf<typeof logsFromJson>;
@@ -64,12 +66,30 @@ const toVisits = (logs: Logs) => pipe(
   RM.filter(isNotCrawler),
 );
 
+const earlierDate = (accum: Date, logEntry: LogEntry) => (
+  accum < logEntry.time_local ? accum : logEntry.time_local
+);
+
+const laterDate = (accum: Date, logEntry: LogEntry) => (
+  accum < logEntry.time_local ? logEntry.time_local : accum
+);
+
+const toReport = (logs: Logs) => ({
+  logEntriesCount: logs.length,
+  logStartTime: RA.reduce(new Date('2970-01-01'), earlierDate)(logs),
+  logEndTime: RA.reduce(new Date('1970-01-01'), laterDate)(logs),
+  visitors: pipe(
+    logs,
+    toVisits,
+    RM.toReadonlyArray(S.Ord),
+  ),
+});
+
 const parseFile = flow(
   Json.parse,
   E.chainW(logsFromJson.decode),
-  E.map(toVisits),
-  E.map(RM.toReadonlyArray(S.Ord)),
-  E.map((visits) => JSON.stringify(visits, null, 2)),
+  E.map(toReport),
+  E.map((report) => JSON.stringify(report, null, 2)),
   // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
   E.getOrElse((e) => { process.stderr.write(`${e}\n`); return ''; }),
 );
