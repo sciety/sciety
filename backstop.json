@@ -25,6 +25,10 @@
       "url": "http://sciety_app"
     },
     {
+      "label": "My feed (logged out)",
+      "url": "http://sciety_app/my-feed"
+    },
+    {
       "label": "Menu page",
       "url": "http://sciety_app/menu"
     },
