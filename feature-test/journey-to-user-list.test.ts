@@ -20,6 +20,7 @@ describe('journey-to-user-list', () => {
     });
 
     it('navigates to user list page via user page', async () => {
+      await goto('localhost:8080/my-feed');
       await click('My profile');
       await click('Saved articles');
       const pageTitle = await $('h1').text();
