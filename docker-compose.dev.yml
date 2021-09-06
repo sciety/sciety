@@ -15,6 +15,7 @@ services:
       - './data:/app/data'
       - './scripts:/app/scripts'
       - './src:/app/src'
+      - './reports:/app/reports'
       - './static:/app/static'
       - './test:/app/test'
       - './feature-test:/app/feature-test'
