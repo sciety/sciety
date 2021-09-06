@@ -115,16 +115,10 @@ export const createRouter = (adapters: Adapters): Router => {
         context.state,
         toParams(homePageParams),
         TE.map((params) => params.user),
-        TE.chainTaskK(O.fold(
-          () => pipe(
-            landingPage(adapters)(O.none),
-            T.map(landingPageLayout(O.none)),
-          ),
-          (user) => pipe(
-            user.id,
-            loggedInHomePage(adapters),
-            T.map(applyStandardPageLayout(O.some(user))),
-          ),
+        TE.chainTaskK((user) => pipe(
+          user,
+          landingPage(adapters),
+          T.map(landingPageLayout(user)),
         )),
         TE.match(
           toErrorResponse(O.fromNullable(context.state.user)),
