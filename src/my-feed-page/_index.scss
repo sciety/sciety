@@ -4,15 +4,15 @@
 @use '../sass/card';
 @use '../sass/layout';
 
-.logged-in-home-page-cta {
+.my-feed-page-cta {
   @include layout.basic-horizontal-spacing();
 }
 
-.logged-in-home-page-feed-container {
+.my-feed-page-feed-container {
   color: settings.$colour-text-primary;
 }
 
-.logged-in-home-page-feed-container h2 {
+.my-feed-page-feed-container h2 {
   margin-left: 1rem;
   margin-right: 1rem;
 

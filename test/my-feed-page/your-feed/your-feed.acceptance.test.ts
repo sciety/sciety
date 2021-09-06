@@ -6,8 +6,8 @@ import { JSDOM } from 'jsdom';
 import { editorialCommunityReviewedArticle, userFollowedEditorialCommunity } from '../../../src/domain-events';
 import {
   followSomething, noEvaluationsYet, troubleFetchingTryAgain,
-} from '../../../src/logged-in-home-page/your-feed/static-messages';
-import { feedTitle, yourFeed } from '../../../src/logged-in-home-page/your-feed/your-feed';
+} from '../../../src/my-feed-page/your-feed/static-messages';
+import { feedTitle, yourFeed } from '../../../src/my-feed-page/your-feed/your-feed';
 import * as DE from '../../../src/types/data-error';
 import { Doi, eqDoi } from '../../../src/types/doi';
 import { toHtmlFragment } from '../../../src/types/html-fragment';

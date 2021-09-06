@@ -10,7 +10,7 @@ type Components = {
 
 const render = (components: Components) => `
   ${components.header}
-  <div class="logged-in-home-page-feed-container">
+  <div class="my-feed-page-feed-container">
     ${components.content}
   </div>
 `;

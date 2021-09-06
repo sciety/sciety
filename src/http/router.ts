@@ -34,8 +34,8 @@ import { groupsPage } from '../groups-page';
 import { Adapters } from '../infrastructure/adapters';
 import { landingPage, landingPageLayout } from '../landing-page';
 import { legalPage } from '../legal-page';
-import { loggedInHomePage } from '../logged-in-home-page';
 import { menuPageLayout } from '../menu-page/menu-page-layout';
+import { myFeedPage } from '../my-feed-page';
 import { respondHandler } from '../respond';
 import { finishRespondCommand } from '../respond/finish-respond-command';
 import { saveRespondCommand } from '../respond/save-respond-command';
@@ -141,7 +141,7 @@ export const createRouter = (adapters: Adapters): Router => {
         TE.map((params) => params.user),
         TE.chainTaskK((user) => pipe(
           user,
-          loggedInHomePage(adapters),
+          myFeedPage(adapters),
           T.map(applyStandardPageLayout(user)),
         )),
         TE.match(

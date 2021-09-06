@@ -3,7 +3,7 @@ import {
   editorialCommunityReviewedArticle,
   EditorialCommunityReviewedArticleEvent,
 } from '../../../src/domain-events';
-import { followedGroupsActivities } from '../../../src/logged-in-home-page/your-feed/followed-groups-activities';
+import { followedGroupsActivities } from '../../../src/my-feed-page/your-feed/followed-groups-activities';
 import { Doi } from '../../../src/types/doi';
 import { GroupId } from '../../../src/types/group-id';
 import { arbitraryDate } from '../../helpers';
