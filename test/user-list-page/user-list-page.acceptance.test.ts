@@ -112,7 +112,7 @@ describe('user-list-page', () => {
     });
 
     describe('article details unavailable for all articles', () => {
-      it('displays the error message', async () => {
+      it.skip('displays the error message', async () => {
         const userId = arbitraryUserId();
         const ports = {
           ...defaultPorts,
@@ -139,7 +139,7 @@ describe('user-list-page', () => {
     });
 
     describe('article details unavailable for some articles', () => {
-      it.skip('displays the remaining available articles', async () => {
+      it('displays the remaining available articles', async () => {
         const failingArticleId = arbitraryDoi();
         const userId = arbitraryUserId();
         const ports = {

@@ -48,7 +48,9 @@ export const savedArticles: SavedArticles = (ports) => (dois, loggedInUser, list
   RNEA.fromReadonlyArray,
   TE.fromOption(() => noSavedArticles),
   TE.chainW(flow(
-    TE.traverseArray(ports.fetchArticle),
+    T.traverseArray(ports.fetchArticle),
+    T.map(RA.rights),
+    TE.fromTask,
     TE.mapLeft(() => informationUnavailable),
   )),
   TE.chainTaskK(
