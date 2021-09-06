@@ -20,6 +20,28 @@ const logsFromJson = t.array(logEntryFromJson);
 
 type Logs = t.TypeOf<typeof logsFromJson>;
 
+type PageView = {
+  time_local: Date,
+  request: string,
+};
+
+type ObfuscatedPageView = PageView & {
+  visitorId: string,
+};
+
+type Visits = Record<string, ReadonlyArray<PageView>>;
+
+const saveVisit = (accum: Visits, pageView: ObfuscatedPageView): Visits => {
+  if (!accum.hasOwnProperty(pageView.visitorId)) {
+    accum[pageView.visitorId] = [];
+  }
+  accum[pageView.visitorId] = accum[pageView.visitorId].concat({
+    time_local: pageView.time_local,
+    request: pageView.request,
+  });
+  return accum;
+};
+
 const toVisits = (logs: Logs) => pipe(
   logs,
   RA.filter((log) => log.http_user_agent.length > 0),
@@ -34,6 +56,7 @@ const toVisits = (logs: Logs) => pipe(
     time_local,
     request: request.replace(/ HTTP[^ ]+$/, ''),
   })),
+  RA.reduce({}, saveVisit),
 );
 
 const parseFile = flow(
