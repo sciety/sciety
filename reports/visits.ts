@@ -1,4 +1,6 @@
 import * as crypto from 'crypto';
+import * as D from 'fp-ts/Date';
+import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RM from 'fp-ts/ReadonlyMap';
 import * as TE from 'fp-ts/TaskEither';
@@ -30,6 +32,11 @@ const isNotCrawler = (pageViews: ReadonlyArray<PageView>) => pipe(
   RA.every((v) => !v.request.match(/\/robots.txt$|php/)),
 );
 
+const byDate: Ord.Ord<PageView> = pipe(
+  D.Ord,
+  Ord.contramap((event) => event.time_local),
+);
+
 const toVisits = (logs: LF.Logs) => pipe(
   logs,
   RA.filter((log) => log.http_user_agent.length > 0),
@@ -46,6 +53,7 @@ const toVisits = (logs: LF.Logs) => pipe(
   })),
   RA.reduce(new Map(), collectPageViewsForVisitor),
   RM.filter(isNotCrawler),
+  RM.map(RA.sort(byDate)),
 );
 
 const toVisitorsReport = (logFile: LF.LogFile) => pipe(
