@@ -3,18 +3,6 @@
 @use '../sass/card';
 @use '../sass/layout';
 
-.logged-in-home-page-header {
-  @include layout.page-header-top-space();
-  margin-left: 1rem;
-  margin-right: 1rem;
-  margin-bottom: #{baseline.increments(7)};
-
-  @include breakpoints.not-narrow() {
-    margin-left: 0;
-    margin-right: 0;
-  }
-}
-
 .logged-in-home-page-feed-container h2 {
   margin-left: 1rem;
   margin-right: 1rem;
