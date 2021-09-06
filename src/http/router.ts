@@ -32,7 +32,7 @@ import { groupEvaluationsPage, paramsCodec as groupEvaluationsPageParams } from 
 import { groupPage, paramsCodec as groupPageParams, groupPageTabs } from '../group-page/group-page';
 import { groupsPage } from '../groups-page';
 import { Adapters } from '../infrastructure/adapters';
-import { landingPage, landingPageLayout } from '../landing-page';
+import { landingPage, landingPageLayout, landingPageParams } from '../landing-page';
 import { legalPage } from '../legal-page';
 import { menuPageLayout } from '../menu-page/menu-page-layout';
 import { myFeedPage, myFeedParams } from '../my-feed-page';
@@ -72,12 +72,6 @@ const articlePageParams = t.type({
   })),
 });
 
-const homePageParams = t.type({
-  user: tt.optionFromNullable(t.type({
-    id: UserIdFromString,
-  })),
-});
-
 const userPageParams = t.type({
   handle: t.string,
   user: tt.optionFromNullable(t.type({
@@ -106,7 +100,7 @@ export const createRouter = (adapters: Adapters): Router => {
     async (context, next) => {
       const response = await pipe(
         context.state,
-        toParams(homePageParams),
+        toParams(landingPageParams),
         TE.map((params) => params.user),
         TE.chainTaskK((user) => pipe(
           user,
