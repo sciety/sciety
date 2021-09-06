@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
@@ -50,8 +51,10 @@ export const savedArticles: SavedArticles = (ports) => (dois, loggedInUser, list
   TE.chainW(flow(
     T.traverseArray(ports.fetchArticle),
     T.map(RA.rights),
-    TE.fromTask,
-    TE.mapLeft(() => informationUnavailable),
+    T.map(RA.match(
+      () => E.left(informationUnavailable),
+      (values) => E.right(values),
+    )),
   )),
   TE.chainTaskK(
     T.traverseArray(populateArticleViewModel({

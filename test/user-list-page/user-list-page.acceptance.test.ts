@@ -112,7 +112,7 @@ describe('user-list-page', () => {
     });
 
     describe('article details unavailable for all articles', () => {
-      it.skip('displays the error message', async () => {
+      it('displays the error message', async () => {
         const userId = arbitraryUserId();
         const ports = {
           ...defaultPorts,
