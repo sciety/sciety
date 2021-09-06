@@ -49,6 +49,7 @@ const toVisits = (logs: Logs) => pipe(
   RA.filter((log) => !log.request.match(/^HEAD /)),
   RA.filter((log) => !log.request.match(/^GET \/static/)),
   RA.filter((log) => !log.request.match(/^GET \/favicon.ico/)),
+  RA.filter((log) => !log.request.match(/\.php/)),
   RA.map(({
     http_user_agent, request, remote_addr, time_local,
   }) => ({
