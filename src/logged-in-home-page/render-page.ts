@@ -5,13 +5,13 @@ import { Page } from '../types/page';
 // TODO: should all be HtmlFragment
 type Components = {
   header: string,
-  feed: string,
+  content: string,
 };
 
 const render = (components: Components) => `
   ${components.header}
   <div class="logged-in-home-page-feed-container">
-    ${components.feed}
+    ${components.content}
   </div>
 `;
 
