@@ -35,7 +35,7 @@ import { Adapters } from '../infrastructure/adapters';
 import { landingPage, landingPageLayout } from '../landing-page';
 import { legalPage } from '../legal-page';
 import { menuPageLayout } from '../menu-page/menu-page-layout';
-import { myFeedPage } from '../my-feed-page';
+import { myFeedPage, myFeedParams } from '../my-feed-page';
 import { respondHandler } from '../respond';
 import { finishRespondCommand } from '../respond/finish-respond-command';
 import { saveRespondCommand } from '../respond/save-respond-command';
@@ -74,12 +74,6 @@ const articlePageParams = t.type({
 });
 
 const homePageParams = t.type({
-  user: tt.optionFromNullable(t.type({
-    id: UserIdFromString,
-  })),
-});
-
-const myFeedParams = t.type({
   user: tt.optionFromNullable(t.type({
     id: UserIdFromString,
   })),
