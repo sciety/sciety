@@ -109,7 +109,7 @@ describe('user-list-page', () => {
       expect(articleCards).toHaveLength(2);
     });
 
-    describe('article details unavailable for any article', () => {
+    describe('article details unavailable for all articles', () => {
       it('displays the error message', async () => {
         const userId = arbitraryUserId();
         const ports = {
@@ -134,6 +134,10 @@ describe('user-list-page', () => {
 
         expect(message).toContain(informationUnavailable);
       });
+    });
+
+    describe('article details unavailable for some articles', () => {
+      it.todo('displays the remaining available articles');
     });
 
     describe('when the logged in user is the list owner', () => {
