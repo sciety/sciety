@@ -80,9 +80,9 @@ const homePageParams = t.type({
 });
 
 const myFeedParams = t.type({
-  user: t.type({
+  user: tt.optionFromNullable(t.type({
     id: UserIdFromString,
-  }),
+  })),
 });
 
 const userPageParams = t.type({
@@ -145,10 +145,26 @@ export const createRouter = (adapters: Adapters): Router => {
         context.state,
         toParams(myFeedParams),
         TE.map((params) => params.user),
-        TE.chainTaskK((user) => pipe(
-          user.id,
-          loggedInHomePage(adapters),
-          T.map(applyStandardPageLayout(O.some(user))),
+        TE.chainTaskK(O.fold(
+          () => pipe(
+            T.of({
+              title: 'My Feed',
+              content: toHtmlFragment(`
+                <header class="page-header">
+                  <h1>My Feed</h1>
+                  <p>Never miss a preprint evaluation.</p>
+                </header>
+
+                <p><a href="/log-in">Log in with Twitter</a> to follow your favourite Sciety groups and see what they have evaluated.</p>
+              `),
+            }),
+            T.map(applyStandardPageLayout(O.none)),
+          ),
+          (user) => pipe(
+            user.id,
+            loggedInHomePage(adapters),
+            T.map(applyStandardPageLayout(O.some(user))),
+          ),
         )),
         TE.match(
           toErrorResponse(O.fromNullable(context.state.user)),
