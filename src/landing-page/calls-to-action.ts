@@ -1,6 +1,9 @@
-import { toHtmlFragment } from '../types/html-fragment';
+import * as O from 'fp-ts/Option';
+import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { User } from '../types/user';
 
-export const callsToAction = toHtmlFragment(`
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const callsToAction = (user: O.Option<User>): HtmlFragment => toHtmlFragment(`
   <section class="landing-page-calls-to-action">
     <h2 class="landing-page-calls-to-action__title">Get started with Sciety</h2>
     <p class="landing-page-call-to-action__text">Follow your first group, save interesting articles and keep up to date with the latest trends.</p>
