@@ -3,6 +3,10 @@
 @use '../sass/card';
 @use '../sass/layout';
 
+.logged-in-home-page-cta {
+  @include layout.basic-horizontal-spacing();
+}
+
 .logged-in-home-page-feed-container h2 {
   margin-left: 1rem;
   margin-right: 1rem;

@@ -11,7 +11,7 @@ import { User } from '../types/user';
 
 type HomePage = (user: O.Option<User>) => T.Task<Page>;
 
-const callToAction = toHtmlFragment('<p><a href="/log-in">Log in with Twitter</a> to follow your favourite Sciety groups and see what they have evaluated.</p>');
+const callToAction = toHtmlFragment('<p class="logged-in-home-page-cta"><a href="/log-in">Log in with Twitter</a> to follow your favourite Sciety groups and see what they have evaluated.</p>');
 
 export const loggedInHomePage = (ports: Ports): HomePage => flow(
   (user) => ({
