@@ -33,5 +33,34 @@ describe('session', () => {
         expect(S.split(session)).toStrictEqual([session]);
       });
     });
+
+    describe('when the pageViews fall into different chunks of time', () => {
+      it.skip('returns a split session', () => {
+        const visitorId = arbitraryWord();
+        const pv1 = {
+          time_local: new Date('2021-09-06 11:00'),
+          request: arbitraryString(),
+        };
+        const pv2 = {
+          time_local: new Date('2021-09-06 12:00'),
+          request: arbitraryString(),
+        };
+        const session = {
+          visitorId,
+          pageViews: [pv1, pv2],
+        };
+
+        expect(S.split(session)).toStrictEqual([
+          {
+            visitorId,
+            pageViews: [pv1],
+          },
+          {
+            visitorId,
+            pageViews: [pv2],
+          },
+        ]);
+      });
+    });
   });
 });
