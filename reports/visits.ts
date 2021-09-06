@@ -29,7 +29,7 @@ const collectPageViewsForVisitor = (accum: Visits, pageView: ObfuscatedPageView)
 
 const isNotCrawler = (pageViews: ReadonlyArray<PageView>) => pipe(
   pageViews,
-  RA.every((v) => !v.request.match(/\/robots.txt$|php/)),
+  RA.every((v) => !v.request.match(/\/robots.txt$|php|\.env/)),
 );
 
 const byDate: Ord.Ord<PageView> = pipe(
