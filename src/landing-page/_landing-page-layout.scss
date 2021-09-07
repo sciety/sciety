@@ -25,14 +25,6 @@ $_header-height-in-px: 60px;
   height: functions.px-to-rem($_header-height-in-px);
 }
 
-.landing-page-header__logo {
-  display: none;
-
-  @include landing-page-media-query() {
-    display: unset;
-  }
-}
-
 .landing-page-header__menu_link {
   display: inline-block;
   float: left;

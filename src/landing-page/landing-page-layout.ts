@@ -25,7 +25,6 @@ export const landingPageLayout = (user: O.Option<User>) => (page: Page): string 
     </nav>
 
     <header class="landing-page-header">
-      <img class="landing-page-header__logo" src="/static/images/sciety-logo-blue-text.svg" alt="Sciety logo">
       <a href="/menu" class="landing-page-header__menu_link"><img src="/static/images/menu-icon.svg" alt="" /></a>
       <div class="landing-page-header__link_container">
         <a href="https://twitter.com/scietyHQ" class="landing-page-header__follow_link"><img src="/static/images/twitter-bird.svg" alt="Follow us on Twitter"/></a>
