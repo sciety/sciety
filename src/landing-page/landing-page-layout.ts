@@ -1,6 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { googleTagManagerNoScript } from '../shared-components/analytics';
 import { head } from '../shared-components/head';
+import { siteMenuFooter, siteMenuItems } from '../shared-components/site-menu';
 import { Page } from '../types/page';
 import { User } from '../types/user';
 
@@ -14,7 +15,15 @@ export const landingPageLayout = (user: O.Option<User>) => (page: Page): string 
   ${head(O.none, page)}
 <body>
   ${googleTagManagerNoScript()}
-  <div>
+  <div class="page-container">
+    <nav class="drawer">
+      <a href="/" class="drawer__logo_link" aria-hidden="true">
+        <img src="/static/images/sciety-logo-white-text.svg " alt="Sciety" class="drawer__logo">
+      </a>
+      ${siteMenuItems(user)}
+      ${siteMenuFooter}
+    </nav>
+
     <header class="landing-page-header">
       <img class="landing-page-header__logo" src="/static/images/sciety-logo-blue-text.svg" alt="Sciety logo">
       <a href="/menu" class="landing-page-header__menu_link"><img src="/static/images/menu-icon.svg" alt="" /></a>
