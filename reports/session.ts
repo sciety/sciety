@@ -16,7 +16,7 @@ const postToCorrectSubsession = (accum: Chunks, pv: PageView): Chunks => {
   const currentChunk = accum[accum.length - 1];
   const latestPageView = currentChunk[currentChunk.length - 1];
   if (pv.time_local.getTime() - latestPageView.time_local.getTime() <= 30 * 60 * 1000) {
-    let precedingChunks = accum.slice(0, -1);
+    const precedingChunks = accum.slice(0, -1);
     if (precedingChunks.length === 0) {
       return [currentChunk.concat([pv])];
     }
