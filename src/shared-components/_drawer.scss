@@ -1,0 +1,42 @@
+@use 'sass:math';
+
+@use '../sass/baseline';
+@use '../sass/breakpoints';
+@use '../sass/functions';
+@use '../sass/settings';
+
+$_drawer-logo-left-spacing: 27px;
+
+.drawer {
+  max-width: settings.$drawer-width;
+  float: left;
+  @supports (display: grid) {
+    max-width: none;
+    float: none;
+  }
+  display: none;
+  position: sticky;
+  top: 0;
+  background-color: settings.$colour-navigation-menu-background;
+  color: settings.$colour-white;
+  width: 100%;
+  height: 100vh;
+  padding-top: baseline.increments(math.div(19, 8));
+
+  @include breakpoints.not-narrow() {
+    display: flex;
+    flex-direction: column;
+    grid-column: 1 / 1;
+    grid-row: 1 / -1;
+  }
+}
+
+.drawer__logo_link {
+  align-self: flex-start;
+  margin-left: functions.px-to-rem($_drawer-logo-left-spacing);
+  margin-bottom: baseline.increments(4.5);
+}
+
+.drawer__logo {
+  display: block;
+}

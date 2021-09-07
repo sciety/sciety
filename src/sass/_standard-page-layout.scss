@@ -7,8 +7,6 @@
 @use 'settings';
 @use 'typography';
 
-$_drawer-logo-left-spacing: 27px;
-
 .page-container {
   min-height: 100vh;
   @supports (display: grid) {
@@ -19,40 +17,6 @@ $_drawer-logo-left-spacing: 27px;
   @include breakpoints.not-narrow() {
     grid-template-columns: functions.px-to-rem(settings.$drawer-width) 1fr;
   }
-}
-
-.drawer {
-  max-width: settings.$drawer-width;
-  float: left;
-  @supports (display: grid) {
-    max-width: none;
-    float: none;
-  }
-  display: none;
-  position: sticky;
-  top: 0;
-  background-color: settings.$colour-navigation-menu-background;
-  color: settings.$colour-white;
-  width: 100%;
-  height: 100vh;
-  padding-top: baseline.increments(math.div(19, 8));
-
-  @include breakpoints.not-narrow() {
-    display: flex;
-    flex-direction: column;
-    grid-column: 1 / 1;
-    grid-row: 1 / -1;
-  }
-}
-
-.drawer__logo_link {
-  align-self: flex-start;
-  margin-left: functions.px-to-rem($_drawer-logo-left-spacing);
-  margin-bottom: baseline.increments(4.5);
-}
-
-.drawer__logo {
-  display: block;
 }
 
 .page-content {
