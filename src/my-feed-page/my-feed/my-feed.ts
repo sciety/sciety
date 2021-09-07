@@ -70,15 +70,15 @@ const constructArticleViewModels = (ports: Ports) => flow(
 
 const renderArticleCardList = flow(
   RNEA.map(renderArticleCard(O.none)),
-  RNEA.map((card) => `<li class="your-feed__list_item">${card}</li>`),
-  (cards) => `<ul class="your-feed__list" role="list">${cards.join('')}</ul>`,
+  RNEA.map((card) => `<li class="my-feed__list_item">${card}</li>`),
+  (cards) => `<ul class="my-feed__list" role="list">${cards.join('')}</ul>`,
 );
 
 type YourFeed = (ports: Ports) => (
   userId: UserId,
 ) => T.Task<HtmlFragment>;
 
-export const yourFeed: YourFeed = (ports) => flow(
+export const myFeed: YourFeed = (ports) => flow(
   TE.right,
   TE.chain(flow(
     getFollowedGroups(ports),

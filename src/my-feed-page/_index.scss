@@ -22,10 +22,10 @@
   }
 }
 
-.your-feed__list {
+.my-feed__list {
   @include card.list();
 }
 
-.your-feed__list_item {
+.my-feed__list_item {
   @include card.list-item();
 }

@@ -4,10 +4,10 @@ import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { JSDOM } from 'jsdom';
 import { editorialCommunityReviewedArticle, userFollowedEditorialCommunity } from '../../../src/domain-events';
+import { feedTitle, myFeed } from '../../../src/my-feed-page/my-feed/my-feed';
 import {
   followSomething, noEvaluationsYet, troubleFetchingTryAgain,
-} from '../../../src/my-feed-page/your-feed/static-messages';
-import { feedTitle, yourFeed } from '../../../src/my-feed-page/your-feed/your-feed';
+} from '../../../src/my-feed-page/my-feed/static-messages';
 import * as DE from '../../../src/types/data-error';
 import { Doi, eqDoi } from '../../../src/types/doi';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
@@ -18,9 +18,9 @@ import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
-describe('your-feed acceptance', () => {
+describe('my-feed acceptance', () => {
   it('displays the feed title', async () => {
-    const html = await yourFeed({
+    const html = await myFeed({
       fetchArticle: shouldNotBeCalled,
       findVersionsForArticleDoi: shouldNotBeCalled,
       getAllEvents: T.of([]),
@@ -40,7 +40,7 @@ describe('your-feed acceptance', () => {
           getAllEvents: T.of([userFollowedEditorialCommunity(userId, arbitraryGroupId())]),
         };
 
-        const html = await yourFeed(adapters)(userId)();
+        const html = await myFeed(adapters)(userId)();
 
         expect(html).toContain(noEvaluationsYet);
       });
@@ -54,7 +54,7 @@ describe('your-feed acceptance', () => {
           findVersionsForArticleDoi: shouldNotBeCalled,
           getAllEvents: T.of([]),
         };
-        const html = await yourFeed(adapters)(userId)();
+        const html = await myFeed(adapters)(userId)();
 
         expect(html).toContain(followSomething);
       });
@@ -81,7 +81,7 @@ describe('your-feed acceptance', () => {
             editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
           ]),
         };
-        const html = await yourFeed(adapters)(userId)();
+        const html = await myFeed(adapters)(userId)();
 
         expect(html).toContain('class="article-card"');
       });
@@ -111,7 +111,7 @@ describe('your-feed acceptance', () => {
             editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
           ]),
         };
-        const html = await yourFeed(adapters)(userId)();
+        const html = await myFeed(adapters)(userId)();
 
         expect(html).toContain('My article title');
       });
@@ -137,7 +137,7 @@ describe('your-feed acceptance', () => {
             ]),
           };
 
-          const html = await yourFeed(adapters)(userId)();
+          const html = await myFeed(adapters)(userId)();
           const fragment = JSDOM.fragment(html);
           const cards = Array.from(fragment.querySelectorAll('.article-card'));
 
@@ -156,7 +156,7 @@ describe('your-feed acceptance', () => {
               editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
             ]),
           };
-          const html = await yourFeed(adapters)(userId)();
+          const html = await myFeed(adapters)(userId)();
 
           expect(html).toContain(troubleFetchingTryAgain);
         });

@@ -5,9 +5,9 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
+import { myFeed, Ports } from './my-feed';
 import { renderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
-import { Ports, yourFeed } from './your-feed';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
@@ -31,7 +31,7 @@ export const myFeedPage = (ports: Ports): HomePage => flow(
       user,
       O.fold(
         () => T.of(callToAction),
-        ({ id }) => yourFeed(ports)(id),
+        ({ id }) => myFeed(ports)(id),
       ),
     ),
   }),
