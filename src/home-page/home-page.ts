@@ -13,7 +13,7 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { User } from '../types/user';
 
-export const landingPageParams = t.type({
+export const homePageParams = t.type({
   user: tt.optionFromNullable(t.type({
     id: UserIdFromString,
   })),
@@ -37,7 +37,7 @@ const renderContent = (components: Components) => toHtmlFragment(`
   </div>
 `);
 
-export const landingPage = (ports: Ports) => (user: O.Option<User>): T.Task<Page> => pipe(
+export const homePage = (ports: Ports) => (user: O.Option<User>): T.Task<Page> => pipe(
   {
     hero: hero(ports),
     cards: cards(ports),

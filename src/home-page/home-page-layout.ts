@@ -10,7 +10,7 @@ const loginButton = O.fold(
   () => '<a href="/log-out" class="landing-page-header__login_button">Log out</a>',
 );
 
-export const landingPageLayout = (user: O.Option<User>) => (page: Page): string => `<!doctype html>
+export const homePageLayout = (user: O.Option<User>) => (page: Page): string => `<!doctype html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
   ${head(O.none, page)}
 <body>
