@@ -9,9 +9,21 @@ export type Session = {
 
 type Chunks = ReadonlyArray<ReadonlyArray<PageView>>;
 
-const postToCorrectSubsession = (accum: Chunks, pv: PageView): Chunks => pipe(
-  [accum[0].concat(pv)],
-);
+const postToCorrectSubsession = (accum: Chunks, pv: PageView): Chunks => {
+  if (accum[0].length === 0) {
+    return [[pv]];
+  }
+  const currentChunk = accum[accum.length - 1];
+  const latestPageView = currentChunk[currentChunk.length - 1];
+  if (pv.time_local.getTime() - latestPageView.time_local.getTime() <= 30 * 60 * 1000) {
+    let precedingChunks = accum.slice(0, -1);
+    if (precedingChunks.length === 0) {
+      return [currentChunk.concat([pv])];
+    }
+    return precedingChunks.concat([currentChunk.concat([pv])]);
+  }
+  return accum.concat([[pv]]);
+};
 
 export const split = (s: Session): ReadonlyArray<Session> => pipe(
   s.pageViews,

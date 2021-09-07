@@ -27,6 +27,10 @@ describe('session', () => {
               time_local: new Date('2021-09-06 11:05'),
               request: arbitraryString(),
             },
+            {
+              time_local: new Date('2021-09-06 11:06'),
+              request: arbitraryString(),
+            },
           ],
         };
 
@@ -35,7 +39,7 @@ describe('session', () => {
     });
 
     describe('when the pageViews fall into different chunks of time', () => {
-      it.skip('returns a split session', () => {
+      it('returns a split session', () => {
         const visitorId = arbitraryWord();
         const pv1 = {
           time_local: new Date('2021-09-06 11:00'),
@@ -45,9 +49,13 @@ describe('session', () => {
           time_local: new Date('2021-09-06 12:00'),
           request: arbitraryString(),
         };
+        const pv3 = {
+          time_local: new Date('2021-09-06 12:05'),
+          request: arbitraryString(),
+        };
         const session = {
           visitorId,
-          pageViews: [pv1, pv2],
+          pageViews: [pv1, pv2, pv3],
         };
 
         expect(S.split(session)).toStrictEqual([
@@ -57,7 +65,7 @@ describe('session', () => {
           },
           {
             visitorId,
-            pageViews: [pv2],
+            pageViews: [pv2, pv3],
           },
         ]);
       });
