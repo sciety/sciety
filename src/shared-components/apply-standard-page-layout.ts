@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { googleTagManagerNoScript } from './analytics';
+import { drawer } from './drawer';
 import { head } from './head';
-import { siteMenuFooter, siteMenuItems } from './site-menu';
 import { utilityBar } from './utility-bar';
 import { Page } from '../types/page';
 import { User } from '../types/user';
@@ -13,15 +13,8 @@ export const applyStandardPageLayout = (user: O.Option<User>) => (page: Page): s
 <body>
   ${googleTagManagerNoScript()}
   <div class="page-container">
-    <nav class="drawer">
-      <a href="/" class="drawer__logo_link" aria-hidden="true">
-        <img src="/static/images/sciety-logo-white-text.svg " alt="Sciety" class="drawer__logo">
-      </a>
+    ${drawer(user)}
 
-      ${siteMenuItems(user)}
-      ${siteMenuFooter}
-
-    </nav>
     <header class="site-header">
       <div class="site-header__inner">
         <a href="/menu" class="site-header__menu_link">
