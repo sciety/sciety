@@ -21,7 +21,7 @@
   "onReadyScript": "puppet/onReady.js",
   "scenarios": [
     {
-      "label": "Landing-Page",
+      "label": "Home page",
       "url": "http://sciety_app"
     },
     {
