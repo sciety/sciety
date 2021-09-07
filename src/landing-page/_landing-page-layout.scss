@@ -99,13 +99,14 @@ $_header-height-in-px: 60px;
 .landing-page-footer {
   grid-column: 2 / -1;
   justify-self: center;
-  margin-bottom: baseline.increments(1.5);
+  margin-bottom: baseline.increments(2);
 }
 
 .landing-page-footer__links {
   @include list.basics();
   display: flex;
   justify-content: center;
+  margin-bottom: 0;
 }
 
 .landing-page-footer__link {
@@ -114,11 +115,4 @@ $_header-height-in-px: 60px;
   &:last-child {
     margin-right: 0;
   }
-}
-
-.landing-page-footer__small_print {
-  display: block;
-  text-align: center;
-  padding-left: functions.px-to-rem(12px);
-  padding-right: functions.px-to-rem(12px);
 }

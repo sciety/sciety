@@ -45,10 +45,6 @@ export const landingPageLayout = (user: O.Option<User>) => (page: Page): string 
         <li class="landing-page-footer__link"><a href="/blog">Blog</a></li>
         <li class="landing-page-footer__link"><a href="https://twitter.com/scietyHQ">Follow us</a></li>
       </ul>
-      <small class="landing-page-footer__small_print">
-        © 2021 eLife Sciences Publications Ltd.
-        <a href="/legal">Legal information</a>
-      </small>
     </footer>
   </div>
 
