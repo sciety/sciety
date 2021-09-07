@@ -4,7 +4,7 @@
 @use '../sass/baseline';
 @use '../sass/button';
 
-$landing-page-breakpoint: 60.25em;
+$landing-page-breakpoint: 60.25em + ((settings.$drawer-width / settings.$base-font-measure) * 1em);
 
 $section-top-padding: baseline.increments(5);
 
