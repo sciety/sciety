@@ -72,7 +72,7 @@ export const hero: Hero = (ports) => pipe(
       </div>
 
       <picture class="home-page-hero__picture">
-        <source srcset="/static/images/landing-page-illustration.svg" media="(min-width: 60.25em)">
+        <source srcset="/static/images/home-page-illustration.svg" media="(min-width: 60.25em)">
         <img src="data:" alt="" class="home-page-hero__image">
       </picture>
     </section>
