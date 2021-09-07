@@ -28,12 +28,13 @@ $_header-height-in-px: 60px;
 .landing-page-header__menu_link {
   display: inline-block;
   float: left;
+
   @supports (display: flex) {
     display: flex;
     float: none;
   }
 
-  @include landing-page-media-query() {
+  @include breakpoints.not-narrow() {
     display: none;
   }
 
