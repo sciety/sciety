@@ -6,8 +6,8 @@ import { Page } from '../types/page';
 import { User } from '../types/user';
 
 const loginButton = O.fold(
-  () => '<a href="/log-in" class="landing-page-header__login_button">Log in</a>',
-  () => '<a href="/log-out" class="landing-page-header__login_button">Log out</a>',
+  () => '<a href="/log-in" class="home-page-header__login_button">Log in</a>',
+  () => '<a href="/log-out" class="home-page-header__login_button">Log out</a>',
 );
 
 export const homePageLayout = (user: O.Option<User>) => (page: Page): string => `<!doctype html>
@@ -18,13 +18,13 @@ export const homePageLayout = (user: O.Option<User>) => (page: Page): string => 
   <div class="page-container">
     ${drawer(user)}
 
-    <header class="landing-page-header">
-      <a href="/menu" class="landing-page-header__menu_link"><img src="/static/images/menu-icon.svg" alt="" /></a>
-      <div class="landing-page-header__link_container">
-        <a href="https://twitter.com/scietyHQ" class="landing-page-header__follow_link"><img src="/static/images/twitter-bird.svg" alt="Follow us on Twitter"/></a>
-        <a href="https://www.facebook.com/ScietyHQ/" class="landing-page-header__follow_link"><img src="/static/images/facebook.svg" alt="Follow us on Facebook"/></a>
+    <header class="home-page-header">
+      <a href="/menu" class="home-page-header__menu_link"><img src="/static/images/menu-icon.svg" alt="" /></a>
+      <div class="home-page-header__link_container">
+        <a href="https://twitter.com/scietyHQ" class="home-page-header__follow_link"><img src="/static/images/twitter-bird.svg" alt="Follow us on Twitter"/></a>
+        <a href="https://www.facebook.com/ScietyHQ/" class="home-page-header__follow_link"><img src="/static/images/facebook.svg" alt="Follow us on Facebook"/></a>
         ${loginButton(user)}
-        <a href="/signup" class="landing-page-header__signup_button">Subscribe</a>
+        <a href="/signup" class="home-page-header__signup_button">Subscribe</a>
       </div>
     </header>
 
@@ -32,12 +32,12 @@ export const homePageLayout = (user: O.Option<User>) => (page: Page): string => 
       ${page.content}
     </main>
 
-    <footer class="landing-page-footer">
-      <ul class="landing-page-footer__links" role="list">
-        <li class="landing-page-footer__link"><a href="/about">About</a></li>
-        <li class="landing-page-footer__link"><a href="/contact-us">Contact us</a></li>
-        <li class="landing-page-footer__link"><a href="/blog">Blog</a></li>
-        <li class="landing-page-footer__link"><a href="https://twitter.com/scietyHQ">Follow us</a></li>
+    <footer class="home-page-footer">
+      <ul class="home-page-footer__links" role="list">
+        <li class="home-page-footer__link"><a href="/about">About</a></li>
+        <li class="home-page-footer__link"><a href="/contact-us">Contact us</a></li>
+        <li class="home-page-footer__link"><a href="/blog">Blog</a></li>
+        <li class="home-page-footer__link"><a href="https://twitter.com/scietyHQ">Follow us</a></li>
       </ul>
     </footer>
   </div>

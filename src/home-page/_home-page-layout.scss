@@ -11,13 +11,13 @@
 
 $_header-height-in-px: 60px;
 
-@mixin landing-page-media-query() {
+@mixin home-page-media-query() {
   @media only screen and (min-width: #{math.div(430px, settings.$base-font-measure)}em) {
     @content;
   }
 }
 
-.landing-page-header {
+.home-page-header {
   @include common.container-horizontal-spacing();
   padding-top: functions.px-to-rem(12px);
   padding-bottom: functions.px-to-rem(12px);
@@ -25,7 +25,7 @@ $_header-height-in-px: 60px;
   height: functions.px-to-rem($_header-height-in-px);
 }
 
-.landing-page-header__menu_link {
+.home-page-header__menu_link {
   display: inline-block;
   float: left;
 
@@ -45,13 +45,12 @@ $_header-height-in-px: 60px;
 
 }
 
-
-.landing-page-header__link_container {
+.home-page-header__link_container {
   margin-left: auto;
   display: flex;
 }
 
-.landing-page-header__follow_link {
+.home-page-header__follow_link {
   @include typography.button();
 
   display: none;
@@ -70,25 +69,17 @@ $_header-height-in-px: 60px;
   }
 
 
-  @include landing-page-media-query() {
+  @include home-page-media-query() {
     display: inline-flex;
   }
 }
 
-.landing-page-header__follow_link_text {
-  display: none;
-
-  @include breakpoints.not-narrow() {
-    display: unset;
-  }
-}
-
-.landing-page-header__login_button {
+.home-page-header__login_button {
   @include button.button-link();
   padding-top: 0.6rem;
 }
 
-.landing-page-header__signup_button {
+.home-page-header__signup_button {
   @include common.secondary-button();
   width: 6rem;
   padding-top: 0.6rem;
@@ -96,20 +87,20 @@ $_header-height-in-px: 60px;
   margin-right: 0;
 }
 
-.landing-page-footer {
+.home-page-footer {
   grid-column: 2 / -1;
   justify-self: center;
   margin-bottom: baseline.increments(2);
 }
 
-.landing-page-footer__links {
+.home-page-footer__links {
   @include list.basics();
   display: flex;
   justify-content: center;
   margin-bottom: 0;
 }
 
-.landing-page-footer__link {
+.home-page-footer__link {
   margin-right: 1rem;
 
   &:last-child {

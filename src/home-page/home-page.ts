@@ -29,7 +29,7 @@ type Components = {
 type Ports = CardsPorts & HeroPorts;
 
 const renderContent = (components: Components) => toHtmlFragment(`
-  <div class="landing-page">
+  <div class="home-page">
     ${components.hero}
     ${components.cards}
     ${components.personas}
