@@ -34,12 +34,12 @@ const userListCards = (userLists: E.Either<DE.DataError, Record<string, HtmlFrag
   E.fold(
     () => '',
     (cards) => `
-        <h2 class="landing-page-cards__title">Most actively curated lists</h2>
-        <p class="landing-page-cards__explanatory_text">
+        <h2 class="home-page-cards__title">Most actively curated lists</h2>
+        <p class="home-page-cards__explanatory_text">
           Featured lists curated by users.
           Log in to save articles to your own list.
         </p>
-        <ul class="landing-page-cards__cards">
+        <ul class="home-page-cards__cards">
           <li>
             ${cards.first}
           </li>
@@ -56,12 +56,12 @@ const userListCards = (userLists: E.Either<DE.DataError, Record<string, HtmlFrag
 );
 
 const evaluationCards = (c1: Card, c2: Card, c3: Card) => toHtmlFragment(`
-  <h2 class="landing-page-cards__title">Recent group evaluations</h2>
-  <p class="landing-page-cards__explanatory_text">
+  <h2 class="home-page-cards__title">Recent group evaluations</h2>
+  <p class="home-page-cards__explanatory_text">
     Highlighted evaluations by selected groups of discipline experts.
     <a href="/groups">View all groups</a>.
   </p>
-  <ul class="landing-page-cards__cards">
+  <ul class="home-page-cards__cards">
     <li>
       ${renderEvaluationCard(c1)}
     </li>
@@ -75,11 +75,11 @@ const evaluationCards = (c1: Card, c2: Card, c3: Card) => toHtmlFragment(`
 `);
 
 export const renderCardsSection = (userLists: E.Either<DE.DataError, Record<string, HtmlFragment>>): HtmlFragment => toHtmlFragment(`
-  <section class="landing-page-cards">
+  <section class="home-page-cards">
     ${userListCards(userLists)}
     ${evaluationCards(card1, card2, card3)}
-    <div class="landing-page-cards__call_to_action">
-      <a href="/groups" class="landing-page-cards__button">Discover more groups</a>
+    <div class="home-page-cards__call_to_action">
+      <a href="/groups" class="home-page-cards__button">Discover more groups</a>
     </div>
   </section>
 `);

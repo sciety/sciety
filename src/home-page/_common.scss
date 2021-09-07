@@ -6,7 +6,7 @@
 @use '../sass/baseline';
 @use '../sass/button';
 
-$landing-page-breakpoint: 60.25em + (math.div(settings.$drawer-width, settings.$base-font-measure) * 1em);
+$home-page-breakpoint: 60.25em + (math.div(settings.$drawer-width, settings.$base-font-measure) * 1em);
 
 $section-top-padding: baseline.increments(5);
 
@@ -17,7 +17,7 @@ $_page-gutter--large: 3rem;
   padding-left: $_page-gutter--small;
   padding-right: $_page-gutter--small;
 
-  @media screen and (min-width: $landing-page-breakpoint) {
+  @media screen and (min-width: $home-page-breakpoint) {
     padding-left: $_page-gutter--large;
     padding-right: $_page-gutter--large;
   }

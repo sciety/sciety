@@ -7,7 +7,7 @@
   display: flex;
   justify-content: space-between;
 
-  @media screen and (min-width: common.$landing-page-breakpoint) {
+  @media screen and (min-width: common.$home-page-breakpoint) {
     @supports (display: flex) {
       height: 100%;
     }

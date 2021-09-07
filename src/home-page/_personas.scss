@@ -3,20 +3,24 @@
 @use '../sass/typography';
 @use 'common';
 
-.landing-page-personas {
+.home-page-personas {
   @include common.container-horizontal-spacing();
   margin-bottom: baseline.increments(6);
   text-align: center;
   padding-top: common.$section-top-padding;
+
+  * {
+    color: settings.$colour-text-primary;
+  }
 }
 
-.landing-page-personas__title {
+.home-page-personas__title {
   @include typography.section();
   margin-bottom: baseline.increments(2.5);
 }
 
-.landing-page-personas__content {
-  @media screen and (min-width: common.$landing-page-breakpoint) {
+.home-page-personas__content {
+  @media screen and (min-width: common.$home-page-breakpoint) {
     @supports (display: flex) {
       display: flex;
       justify-content: center;
@@ -25,10 +29,10 @@
   }
 }
 
-.landing-page-persona {
+.home-page-persona {
   margin-bottom: baseline.increments(6);
 
-  @media screen and (min-width: common.$landing-page-breakpoint) {
+  @media screen and (min-width: common.$home-page-breakpoint) {
     margin-bottom: 0;
 
     &:first-child {
@@ -37,16 +41,12 @@
   }
 }
 
-.landing-page-persona__image {
+.home-page-persona__image {
   width: 100%;
   max-width: 468px;
   margin-bottom: baseline.increments(1);
 }
 
-.landing-page-persona__text {
+.home-page-persona__text {
   @include typography.body-1();
-}
-
-.landing-page-personas * {
-  color: settings.$colour-text-primary;
 }

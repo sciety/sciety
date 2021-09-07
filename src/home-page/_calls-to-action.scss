@@ -4,7 +4,7 @@
 @use '../sass/typography';
 @use 'common';
 
-.landing-page-calls-to-action {
+.home-page-calls-to-action {
   @include common.container-horizontal-spacing();
   padding-top: common.$section-top-padding;
   padding-bottom: baseline.increments(3);
@@ -21,33 +21,33 @@
   }
 }
 
-.landing-page-calls-to-action * {
+.home-page-calls-to-action * {
   color: settings.$colour-text-primary;
 }
 
-.landing-page-calls-to-action__title {
+.home-page-calls-to-action__title {
   @include typography.section();
 }
 
-.landing-page-call-to-action__text {
+.home-page-call-to-action__text {
   @include typography.body-1();
   margin-bottom: baseline.increments(5);
 }
 
-.landing-page-calls-to-action__buttons {
+.home-page-calls-to-action__buttons {
   text-align: center;
   margin-bottom: baseline.increments(5);
 }
 
-.landing-page-calls-to-action__login_button {
+.home-page-calls-to-action__login_button {
   @include common.primary-button();
 }
 
-.landing-page-calls-to-action__subscribe_button {
+.home-page-calls-to-action__subscribe_button {
   @include common.secondary-button();
 }
 
-.landing-page-calls-to-action__byline {
+.home-page-calls-to-action__byline {
   @include typography.body-1();
   margin-bottom: 0;
 }

@@ -9,7 +9,7 @@
 @use './evaluation-card';
 @use './user-list-card';
 
-.landing-page-cards {
+.home-page-cards {
   background-color: settings.$colour-component-background;
   padding-top: common.$section-top-padding;
   padding-bottom: baseline.increments(3);
@@ -23,22 +23,22 @@
   }
 }
 
-.landing-page-cards * {
+.home-page-cards * {
   color: settings.$colour-text-primary;
 }
 
-.landing-page-cards__title {
+.home-page-cards__title {
   @include typography.section();
   margin-bottom: baseline.increments(2.5);
   text-align: center;
 }
 
-.landing-page-cards__cards {
+.home-page-cards__cards {
   @include list.basics();
   padding-bottom: baseline.increments(5);
   margin-bottom: 0;
 
-  @media screen and (min-width: common.$landing-page-breakpoint) {
+  @media screen and (min-width: common.$home-page-breakpoint) {
     @supports (display: flex) {
       display: flex;
       justify-content: space-evenly;
@@ -46,10 +46,10 @@
   }
 }
 
-.landing-page-cards__cards li {
+.home-page-cards__cards li {
   @include card.list-item;
 
-  @media screen and (min-width: common.$landing-page-breakpoint) {
+  @media screen and (min-width: common.$home-page-breakpoint) {
     @supports (display: flex) {
       flex: 1 0;
       max-width: 384px; // maximum desired card width
@@ -63,16 +63,16 @@
   }
 }
 
-.landing-page-cards__explanatory_text {
+.home-page-cards__explanatory_text {
   text-align: center;
   padding-left: 16px;
   padding-right: 16px;
 }
 
-.landing-page-cards__call_to_action {
+.home-page-cards__call_to_action {
   text-align: center;
 }
 
-.landing-page-cards__button {
+.home-page-cards__button {
   @include common.secondary-button();
 }
