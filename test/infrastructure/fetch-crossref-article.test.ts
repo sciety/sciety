@@ -10,6 +10,13 @@ import { arbitraryDoi } from '../types/doi.helper';
 describe('fetch-crossref-article', () => {
   const doi = arbitraryDoi();
 
+  it('uses the correct accept header', async () => {
+    const getXml = jest.fn();
+    await fetchCrossrefArticle(getXml, dummyLogger)(doi)();
+
+    expect(getXml).toHaveBeenCalledWith(doi, 'application/vnd.crossref.unixref+xml');
+  });
+
   describe('the request fails', () => {
     it('returns an error result', async () => {
       const getXml = async (): Promise<never> => {
