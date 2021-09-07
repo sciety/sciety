@@ -4,7 +4,6 @@
 @use 'normalise';
 @use 'layout';
 
-@use 'standard-page-layout';
 @use 'site-menu';
 @use '../about-page';
 @use '../legal-page';
@@ -33,6 +32,7 @@
 @use '../group-page/list-card';
 @use '../shared-components/drawer';
 @use '../shared-components/pagination-controls';
+@use '../shared-components/standard-page-layout';
 @use '../shared-components/tabs';
 @use '../shared-components/group-card';
 @use 'supplementary';

@@ -2,7 +2,7 @@ import { Middleware } from '@koa/router';
 import * as O from 'fp-ts/Option';
 import { StatusCodes } from 'http-status-codes';
 import { renderErrorPage } from './render-error-page';
-import { applyStandardPageLayout } from '../shared-components/apply-standard-page-layout';
+import { standardPageLayout } from '../shared-components/standard-page-layout';
 import { toHtmlFragment } from '../types/html-fragment';
 
 type Logger = (level: 'error', message: string, payload: Record<string, unknown>) => void;
@@ -15,7 +15,7 @@ export const catchErrors = (logger: Logger, logMessage: string, pageMessage: str
       logger('error', logMessage, { error });
 
       context.response.status = StatusCodes.INTERNAL_SERVER_ERROR;
-      context.response.body = applyStandardPageLayout(O.none)({
+      context.response.body = standardPageLayout(O.none)({
         title: 'Error',
         content: renderErrorPage(toHtmlFragment(pageMessage)),
       });

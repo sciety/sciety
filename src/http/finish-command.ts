@@ -5,7 +5,7 @@ import { renderErrorPage } from './render-error-page';
 import { finishFollowCommand } from '../follow';
 import { sessionGroupProperty } from '../follow/finish-follow-command';
 import { Adapters } from '../infrastructure/adapters';
-import { applyStandardPageLayout } from '../shared-components/apply-standard-page-layout';
+import { standardPageLayout } from '../shared-components/standard-page-layout';
 import { toHtmlFragment } from '../types/html-fragment';
 
 export const finishCommand = (adapters: Adapters): Middleware => async (context, next) => {
@@ -16,7 +16,7 @@ export const finishCommand = (adapters: Adapters): Middleware => async (context,
     if (O.isNone(result)) {
       adapters.logger('error', 'Could not finish command', { session: context.session });
       context.response.status = StatusCodes.INTERNAL_SERVER_ERROR;
-      context.response.body = applyStandardPageLayout(O.none)({
+      context.response.body = standardPageLayout(O.none)({
         title: 'Error',
         content: renderErrorPage(toHtmlFragment('Something went wrong, please try again.')),
       });

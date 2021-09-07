@@ -7,7 +7,7 @@ import { Page } from '../types/page';
 import { User } from '../types/user';
 
 // TODO: return a more specific type e.g. HtmlDocument
-export const applyStandardPageLayout = (user: O.Option<User>) => (page: Page): string => `<!doctype html>
+export const standardPageLayout = (user: O.Option<User>) => (page: Page): string => `<!doctype html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
   ${head(user, page)}
 <body>

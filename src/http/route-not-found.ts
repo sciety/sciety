@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { renderErrorPage } from './render-error-page';
-import { applyStandardPageLayout } from '../shared-components/apply-standard-page-layout';
+import { standardPageLayout } from '../shared-components/standard-page-layout';
 import { toHtmlFragment } from '../types/html-fragment';
 import { User } from '../types/user';
 
@@ -16,7 +16,7 @@ export const routeNotFound: Middleware<{ user: User | undefined }> = async (cont
         title: 'Page not found',
         content: renderErrorPage(toHtmlFragment('Page not found.')),
       },
-      applyStandardPageLayout(user),
+      standardPageLayout(user),
     );
   }
   await next();

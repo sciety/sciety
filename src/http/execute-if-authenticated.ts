@@ -9,7 +9,7 @@ import { constructRedirectUrl } from './require-authentication';
 import { sessionGroupProperty } from '../follow/finish-follow-command';
 import { CommitEvents, followCommand, GetFollowList } from '../follow/follow-command';
 import { groupProperty } from '../follow/follow-handler';
-import { applyStandardPageLayout } from '../shared-components/apply-standard-page-layout';
+import { standardPageLayout } from '../shared-components/standard-page-layout';
 import { Group } from '../types/group';
 import * as GroupId from '../types/group-id';
 import { toHtmlFragment } from '../types/html-fragment';
@@ -52,7 +52,7 @@ export const executeIfAuthenticated = ({
         logger('error', 'Problem with /follow', { error: StatusCodes.BAD_REQUEST });
 
         context.response.status = StatusCodes.INTERNAL_SERVER_ERROR;
-        context.response.body = applyStandardPageLayout(O.none)({
+        context.response.body = standardPageLayout(O.none)({
           title: 'Error',
           content: renderErrorPage(toHtmlFragment('Something went wrong; we\'re looking into it.')),
         });

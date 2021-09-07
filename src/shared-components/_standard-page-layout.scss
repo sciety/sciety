@@ -1,11 +1,9 @@
 @use 'sass:math';
 
-@use 'baseline';
-@use 'breakpoints';
-@use 'functions';
-@use 'list';
-@use 'settings';
-@use 'typography';
+@use '../sass/baseline';
+@use '../sass/breakpoints';
+@use '../sass/functions';
+@use '../sass/settings';
 
 .page-container {
   min-height: 100vh;

@@ -6,7 +6,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { renderErrorPage } from './render-error-page';
-import { applyStandardPageLayout } from '../shared-components/apply-standard-page-layout';
+import { standardPageLayout } from '../shared-components/standard-page-layout';
 import * as DE from '../types/data-error';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
@@ -27,7 +27,7 @@ export const toErrorResponse: ErrorToWebPage = (user) => (error) => pipe(
     title: 'Error',
     content,
   }),
-  applyStandardPageLayout(user),
+  standardPageLayout(user),
   (body) => ({
     body,
     status: pipe(
@@ -41,7 +41,7 @@ export const toErrorResponse: ErrorToWebPage = (user) => (error) => pipe(
 );
 
 const pageToSuccessResponse = (user: O.Option<User>) => flow(
-  applyStandardPageLayout(user),
+  standardPageLayout(user),
   (body) => ({
     body,
     status: StatusCodes.OK,
