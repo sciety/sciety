@@ -15,7 +15,7 @@ export const nextLink = ({
   category, query, nextCursor, pageNumber,
 }: SearchParameters): HtmlFragment => pipe(
   nextCursor,
-  O.map((cursor) => `/search?query=${htmlEscape(query)}&category=${category}&cursor=${htmlEscape(cursor)}&page=${pageNumber}`),
+  O.map((cursor) => `/search?query=${htmlEscape(query)}&category=${category}&cursor=${encodeURIComponent(cursor)}&page=${pageNumber}`),
   O.map(paginationControls),
   O.getOrElse(constant('')),
   toHtmlFragment,

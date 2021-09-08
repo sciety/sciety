@@ -3,7 +3,7 @@ import { JSDOM } from 'jsdom';
 import { nextLink } from '../../src/search-results-page/next-link';
 
 describe('next-link', () => {
-  it.skip('encodes the cursor for http', () => {
+  it('encodes the cursor for http', () => {
     const nextLinkAnchor = nextLink({
       pageNumber: 1,
       category: 'articles',
