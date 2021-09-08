@@ -18,6 +18,7 @@
     }
   ],
   "misMatchThreshold": 0,
+  "onBeforeScript": "puppet/onBefore.js",
   "onReadyScript": "puppet/onReady.js",
   "scenarios": [
     {
@@ -27,6 +28,11 @@
     {
       "label": "My feed (logged out)",
       "url": "http://sciety_app/my-feed"
+    },
+    {
+      "label": "My feed (logged in)",
+      "url": "http://sciety_app/my-feed",
+      "isUserLoggedIn": true
     },
     {
       "label": "Menu page",
