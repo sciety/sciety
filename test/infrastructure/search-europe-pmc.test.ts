@@ -136,19 +136,14 @@ describe('search-europe-pmc adapter', () => {
   });
 
   it('passes the cursorMark query parameter', async () => {
-    const getJson = async (): Promise<Json> => ({
-      hitCount: 0,
-      resultList: {
-        result: [],
-      },
-    });
+    const getJson = jest.fn();
 
-    const cursor = arbitraryWord();
-    const spy = jest.fn(getJson);
+    const unencodedCursor = 'AoJwgP+ir/YCKDQyNzg1Mjky';
+    const encodedCursor = 'AoJwgP%2Bir%2FYCKDQyNzg1Mjky';
 
-    await searchEuropePmc({ getJson: spy, logger: dummyLogger })(10)(arbitraryString(), O.some(cursor))();
+    await searchEuropePmc({ getJson, logger: dummyLogger })(10)(arbitraryString(), O.some(unencodedCursor))();
 
-    expect(spy).toHaveBeenCalledWith(expect.stringContaining(`cursorMark=${cursor}`));
+    expect(getJson).toHaveBeenCalledWith(expect.stringContaining(`cursorMark=${encodedCursor}`));
   });
 
   describe('nextCursor', () => {
