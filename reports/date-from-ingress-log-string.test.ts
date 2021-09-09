@@ -1,5 +1,18 @@
-describe('date-from-ingress-log-string', () => {
-  it.todo('decodes and encodes back to the same string');
+import * as E from 'fp-ts/Either';
+import { pipe } from 'fp-ts/function';
+import { dateFromIngressLogString } from './date-from-ingress-log-string';
 
-  it.todo('encodes and decodes to an equivalent Date object');
+describe('date-from-ingress-log-string', () => {
+  it.todo('encodes to an ISO string');
+
+  it.skip('decodes to the correct Date object', () => {
+    const input = '08/Aug/2021:22:31:46 +0000';
+    const expectedDate = new Date('08/Aug/2021 22:31:46 +0000');
+    const decoded = pipe(
+      input,
+      dateFromIngressLogString.decode,
+    );
+
+    expect(decoded).toStrictEqual(E.right(expectedDate));
+  });
 });
