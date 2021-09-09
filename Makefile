@@ -11,7 +11,7 @@ PORT := 8080
 export IMAGE
 export IMAGE_TAG
 
-.PHONY: backstop* build clean* dev find-* git-lfs install lint* prod release reports stop test* update-event-data
+.PHONY: backstop* build clean* dev find-* getlogs git-lfs install lint* prod release reports stop test* update-event-data
 
 dev: export TARGET = dev
 dev: .env install build
@@ -178,3 +178,7 @@ download-db-dump-staging:
 
 reports:
 	@npx ts-node reports/visits.ts
+
+getlogs:
+	export $$(cat .env | grep LOKI | xargs) && logcli query '{app_kubernetes_io_name="ingress-nginx"}'
+
