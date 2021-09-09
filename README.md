@@ -33,6 +33,7 @@ Development
 - [GNU Make]
 - [Node.js]
 - [Git LFS]
+- [logcli]
 
 </details>
 
@@ -181,3 +182,4 @@ We released this software under the [MIT license][license]. Copyright © 2020 [e
 [Production deployments]: https://github.com/sciety/sciety/actions?query=workflow%3AProduction
 [Production environment]: https://sciety.org
 [Staging environment]: https://staging.sciety.org
+[logcli]: https://github.com/grafana/loki/releases
