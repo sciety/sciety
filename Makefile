@@ -180,5 +180,7 @@ reports:
 	@npx ts-node reports/visits.ts
 
 getlogs:
-	export $$(cat .env | grep LOKI | xargs) && logcli query '{app_kubernetes_io_name="ingress-nginx"}'
+	@export $$(cat .env | grep LOKI | xargs) && \
+	logcli query -q -o raw --limit 600000 --batch 5000 --timezone=UTC --since=168h \
+	'{app_kubernetes_io_name="ingress-nginx"}' > reports/ingress-logs.jsonl
 
