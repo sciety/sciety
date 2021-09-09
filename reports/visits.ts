@@ -77,7 +77,7 @@ const toVisitorsReport = (logFile: LF.LogFile) => pipe(
 );
 
 void (async (): Promise<string> => pipe(
-  './reports/2021-09-03.log',
+  './reports/ingress-logs.jsonl',
   LF.read,
   TE.map(toVisitorsReport),
   TE.match(
