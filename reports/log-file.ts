@@ -7,16 +7,16 @@ import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { dateFromIngressLogString } from './date-from-ingress-log-string';
 
-const logEntryFromJson = t.type({
+const logEntryFromIngressLog = t.type({
   http_user_agent: t.string,
   request: t.string,
   remote_addr: t.string,
   time_local: dateFromIngressLogString,
 });
 
-type LogEntry = t.TypeOf<typeof logEntryFromJson>;
+type LogEntry = t.TypeOf<typeof logEntryFromIngressLog>;
 
-const logsFromJson = t.array(logEntryFromJson);
+const logsFromJson = t.array(logEntryFromIngressLog);
 
 export type Logs = t.TypeOf<typeof logsFromJson>;
 
@@ -51,14 +51,18 @@ const parseFile = flow(
   ),
 );
 
+const convertToValidJson = flow(
+  (input: string) => input.split('\n'),
+  RA.filter((line) => line.startsWith('{')),
+  (lines) => lines.join(','),
+  (entries) => `[${entries}]`,
+);
+
 export const read = (filename: string): TE.TaskEither<string, LogFile> => pipe(
   filename,
   TE.taskify(fs.readFile),
   TE.map((buffer) => buffer.toString()),
-  TE.map((wholeFile) => wholeFile.split('\n')),
-  TE.map(RA.filter((line) => line.startsWith('{'))),
-  TE.map((lines) => lines.join(',')),
-  TE.map((file) => `[${file}]`),
+  TE.map(convertToValidJson),
   TE.chainEitherKW(parseFile),
   TE.mapLeft((e) => e.toString()),
 );
