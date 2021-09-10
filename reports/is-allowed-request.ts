@@ -8,7 +8,6 @@ const allowedPostPaths = [
   '/respond',
 ];
 
-// ts-unused-exports:disable-next-line
 export const isAllowedRequest: IsAllowedRequest = (request) => {
   if (!request.startsWith('POST ')) {
     return true;

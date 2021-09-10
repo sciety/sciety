@@ -6,6 +6,7 @@ import * as RM from 'fp-ts/ReadonlyMap';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
+import { isAllowedRequest } from './is-allowed-request';
 import * as LF from './log-file';
 import { PageView } from './page-view';
 import * as Sess from './session';
@@ -41,6 +42,7 @@ const toVisitors = (logs: LF.Logs) => pipe(
   RA.filter((log) => !log.request.match(/^HEAD /)),
   RA.filter((log) => !log.request.match(/^GET \/static/)),
   RA.filter((log) => !log.request.match(/^GET \/favicon.ico/)),
+  RA.filter(({ request }) => isAllowedRequest(request)),
   RA.map(({
     http_user_agent, request, remote_addr, time_local,
   }) => ({
