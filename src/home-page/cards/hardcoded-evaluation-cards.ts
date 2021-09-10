@@ -8,19 +8,19 @@ export const card1 = {
 };
 
 export const card2 = {
+  articleId: '10.1101/2021.08.10.455713',
+  articleTitle: 'Laterally transferred macrophage mitochondria act as a signaling source promoting cancer cell proliferation',
+  date: new Date('2021-09-07'),
+  groupId: '50401e46-b764-47b7-8557-6bb35444b7c8',
+  groupName: 'ASAPbio crowd review',
+  avatarPath: '/static/groups/asapbio-crowd-review--50401e46-b764-47b7-8557-6bb35444b7c8.png',
+};
+
+export const card3 = {
   articleId: '10.1101/2021.07.31.454562',
   articleTitle: 'Ageing-associated myelin dysfunction drives amyloid deposition in mouse models of Alzheimer’s disease',
   date: new Date('2021-08-19'),
   groupId: 'f97bd177-5cb6-4296-8573-078318755bf2',
   groupName: 'preLights',
   avatarPath: '/static/groups/prelights--f97bd177-5cb6-4296-8573-078318755bf2.jpg',
-};
-
-export const card3 = {
-  articleId: '10.1101/2021.01.06.425396',
-  articleTitle: 'SARS-CoV-2 spike downregulates tetherin to enhance viral spread',
-  date: new Date('2021-08-13'),
-  groupId: '5142a5bc-6b18-42b1-9a8d-7342d7d17e94',
-  groupName: 'Rapid Reviews COVID-19',
-  avatarPath: '/static/groups/rapid-reviews-covid-19--5142a5bc-6b18-42b1-9a8d-7342d7d17e94.png',
 };
