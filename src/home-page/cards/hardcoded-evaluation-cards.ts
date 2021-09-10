@@ -1,19 +1,19 @@
 export const card1 = {
+  articleId: '10.1101/2021.07.05.451181',
+  articleTitle: 'Single-molecule imaging with cell-derived nanovesicles reveals early binding dynamics at a cyclic nucleotide-gated ion channel',
+  date: new Date('2021-09-08'),
+  groupId: '4bbf0c12-629b-4bb8-91d6-974f4df8efb2',
+  groupName: 'Biophysics Colab',
+  avatarPath: '/static/groups/biophysics-colab--4bbf0c12-629b-4bb8-91d6-974f4df8efb2.png',
+};
+
+export const card2 = {
   articleId: '10.1101/2021.07.31.454562',
   articleTitle: 'Ageing-associated myelin dysfunction drives amyloid deposition in mouse models of Alzheimer’s disease',
   date: new Date('2021-08-19'),
   groupId: 'f97bd177-5cb6-4296-8573-078318755bf2',
   groupName: 'preLights',
   avatarPath: '/static/groups/prelights--f97bd177-5cb6-4296-8573-078318755bf2.jpg',
-};
-
-export const card2 = {
-  articleId: '10.1101/2021.05.25.445589',
-  articleTitle: 'Loss of Resf1 reduces the efficiency of embryonic stem cell self-renewal and germline entry',
-  date: new Date('2021-08-12'),
-  groupId: '316db7d9-88cc-4c26-b386-f067e0f56334',
-  groupName: 'Review Commons',
-  avatarPath: '/static/groups/review-commons--316db7d9-88cc-4c26-b386-f067e0f56334.jpg',
 };
 
 export const card3 = {
