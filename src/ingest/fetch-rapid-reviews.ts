@@ -5,6 +5,7 @@ import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
+import { Evaluation } from './evaluations';
 import { FetchData } from './fetch-data';
 import { FetchEvaluations } from './update-all';
 
@@ -64,23 +65,29 @@ const generatePageUrls = (fetchData: FetchData) => pipe(
   TE.map(constructUrls),
 );
 
-export const fetchRapidReviews = (): FetchEvaluations => (ports: Ports) => pipe(
-  generatePageUrls(ports.fetchData),
+const identifyCandidates = (fetchData: FetchData) => pipe(
+  generatePageUrls(fetchData),
   TE.chain(TE.traverseArray(flow(
-    fetchAndDecode(ports.fetchData, rapidReviewCodec),
+    fetchAndDecode(fetchData, rapidReviewCodec),
     TE.map(extractEvaluations),
   ))),
   TE.map(RA.flatten),
-  TE.map(RA.partitionMap((item) => pipe(
-    item,
-    E.right,
-    E.filterOrElse(
-      (review) => review.articleDoi.startsWith('10.1101/'),
-      (review) => ({ item: review.articleDoi, reason: 'Not a biorxiv article' }),
-    ),
-  ))),
+);
+
+const toEvaluationOrSkip = (candidate: Evaluation) => pipe(
+  candidate,
+  E.right,
+  E.filterOrElse(
+    (review) => review.articleDoi.startsWith('10.1101/'),
+    (review) => ({ item: review.articleDoi, reason: 'Not a biorxiv article' }),
+  ),
+);
+
+export const fetchRapidReviews = (): FetchEvaluations => (ports: Ports) => pipe(
+  identifyCandidates(ports.fetchData),
+  TE.map(RA.map(toEvaluationOrSkip)),
   TE.map((parts) => ({
-    evaluations: parts.right,
-    skippedItems: parts.left,
+    evaluations: RA.rights(parts),
+    skippedItems: RA.lefts(parts),
   })),
 );
