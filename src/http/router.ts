@@ -130,6 +130,14 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   router.get(
+    '/all-events',
+    pageHandler(() => TE.right({
+      title: 'All events',
+      content: toHtmlFragment('<h1>All events</h1>'),
+    })),
+  );
+
+  router.get(
     '/menu',
     async (context, next) => {
       context.response.body = menuPageLayout(
