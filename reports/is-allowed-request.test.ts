@@ -1,6 +1,6 @@
 import { isAllowedRequest } from './is-allowed-request';
 
-describe.skip('is-allowed-request', () => {
+describe('is-allowed-request', () => {
   it('returns true if request does not start with POST', () => {
     const result = isAllowedRequest('GET / HTTP/1.1');
 
