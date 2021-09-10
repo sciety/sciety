@@ -14,7 +14,7 @@ export const isAllowedRequest: IsAllowedRequest = (request) => {
     return true;
   }
 
-  const matches = request.match(/^POST ([^ ]+) /);
+  const matches = request.match(/^POST ([^ ]+) HTTP/);
 
   return !!matches && allowedPostPaths.includes(matches[1]);
 };

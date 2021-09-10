@@ -19,8 +19,11 @@ describe('is-allowed-request', () => {
     expect(result).toBe(false);
   });
 
-  it('returns false if POST, and request is malformed', () => {
-    const result = isAllowedRequest('POST +bar');
+  it.each([
+    ['POST +bar'],
+    ['POST /follow foo'],
+  ])('returns false if POST, and request (%s) is malformed', (input) => {
+    const result = isAllowedRequest(input);
 
     expect(result).toBe(false);
   });
