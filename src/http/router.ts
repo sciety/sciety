@@ -24,6 +24,7 @@ import { redirectUserIdToHandle } from './redirects/redirect-user-id-to-handle';
 import { redirectAfterAuthenticating, requireAuthentication } from './require-authentication';
 import { robots } from './robots';
 import { aboutPage } from '../about-page';
+import { allEventsPage } from '../all-events-page';
 import { articleActivityPage, articleMetaPage } from '../article-page';
 import { generateDocmap, hardcodedReviewCommonsDocmap } from '../docmaps/docmap';
 import { paramsCodec as docmapIndexParamsCodec, generateDocmapIndex } from '../docmaps/docmap-index';
@@ -131,10 +132,7 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.get(
     '/all-events',
-    pageHandler(() => TE.right({
-      title: 'All events',
-      content: toHtmlFragment('<h1>All events</h1>'),
-    })),
+    pageHandler(allEventsPage),
   );
 
   router.get(
