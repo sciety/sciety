@@ -40,9 +40,9 @@ const crossrefReviewsFromJson = t.type({
 
 const pageSize = 100;
 
-const constructUrls = (numberOfEvaluations: number) => (
+const constructUrls = (reviewerId: string) => (numberOfEvaluations: number) => (
   Array.from(Array(Math.ceil(numberOfEvaluations / pageSize)).keys())
-    .map((i) => `https://api.crossref.org/prefixes/10.1162/works?filter=type:peer-review&rows=${pageSize}&offset=${pageSize * i}`)
+    .map((i) => `https://api.crossref.org/prefixes/${reviewerId}/works?filter=type:peer-review&rows=${pageSize}&offset=${pageSize * i}`)
 );
 
 const fetchAndDecode = <A>(fetchData: FetchData, codec: t.Decoder<unknown, A>) => (url: string) => pipe(
@@ -53,15 +53,15 @@ const fetchAndDecode = <A>(fetchData: FetchData, codec: t.Decoder<unknown, A>) =
   )),
 );
 
-const generatePageUrls = (fetchData: FetchData) => pipe(
-  'https://api.crossref.org/prefixes/10.1162/works?filter=type:peer-review&rows=1&offset=0',
+const generatePageUrls = (fetchData: FetchData) => (reviewerId: string) => pipe(
+  `https://api.crossref.org/prefixes/${reviewerId}/works?filter=type:peer-review&rows=1&offset=0`,
   fetchAndDecode(fetchData, resultsTotal),
   TE.map((obj) => obj.message['total-results']),
-  TE.map(constructUrls),
+  TE.map(constructUrls(reviewerId)),
 );
 
 const identifyCandidates = (fetchData: FetchData) => pipe(
-  generatePageUrls(fetchData),
+  generatePageUrls(fetchData)('10.1162'),
   TE.chain(TE.traverseArray(flow(
     fetchAndDecode(fetchData, crossrefReviewsFromJson),
     TE.map((data) => data.message.items),
