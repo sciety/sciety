@@ -5,7 +5,6 @@ import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
-import { Evaluation } from './evaluations';
 import { FetchData } from './fetch-data';
 import { FetchEvaluations } from './update-all';
 
@@ -19,29 +18,25 @@ const resultsTotal = t.type({
   }),
 });
 
-const rapidReviewCodec = t.type({
-  message: t.type({
-    items: t.array(t.type({
-      URL: t.string,
-      created: t.type({
-        'date-time': tt.DateFromISOString,
-      }),
-      relation: t.type({
-        'is-review-of': t.array(t.type({
-          id: t.string,
-        })),
-      }),
+const crossrefReviewFromJson = t.type({
+  URL: t.string,
+  created: t.type({
+    'date-time': tt.DateFromISOString,
+  }),
+  relation: t.type({
+    'is-review-of': t.array(t.type({
+      id: t.string,
     })),
   }),
 });
 
-const extractEvaluations = (data: t.TypeOf<typeof rapidReviewCodec>) => pipe(
-  data.message.items.map((item) => ({
-    date: new Date(item.created['date-time']),
-    articleDoi: item.relation['is-review-of'][0].id,
-    evaluationLocator: `rapidreviews:${item.URL}`,
-  })),
-);
+type CrossrefReview = t.TypeOf<typeof crossrefReviewFromJson>;
+
+const crossrefReviewsFromJson = t.type({
+  message: t.type({
+    items: t.array(crossrefReviewFromJson),
+  }),
+});
 
 const pageSize = 100;
 
@@ -68,15 +63,20 @@ const generatePageUrls = (fetchData: FetchData) => pipe(
 const identifyCandidates = (fetchData: FetchData) => pipe(
   generatePageUrls(fetchData),
   TE.chain(TE.traverseArray(flow(
-    fetchAndDecode(fetchData, rapidReviewCodec),
-    TE.map(extractEvaluations),
+    fetchAndDecode(fetchData, crossrefReviewsFromJson),
+    TE.map((data) => data.message.items),
   ))),
   TE.map(RA.flatten),
 );
 
-const toEvaluationOrSkip = (candidate: Evaluation) => pipe(
+const toEvaluationOrSkip = (candidate: CrossrefReview) => pipe(
   candidate,
   E.right,
+  E.map((review) => ({
+    date: new Date(review.created['date-time']),
+    articleDoi: review.relation['is-review-of'][0].id,
+    evaluationLocator: `rapidreviews:${review.URL}`,
+  })),
   E.filterOrElse(
     (review) => review.articleDoi.startsWith('10.1101/'),
     (review) => ({ item: review.articleDoi, reason: 'Not a biorxiv article' }),
