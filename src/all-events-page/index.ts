@@ -14,9 +14,9 @@ const renderContent = (item: string) => toHtmlFragment(`
 `);
 
 export const allEventsPage = (): TE.TaskEither<RenderPageError, Page> => pipe(
-  T.of('the_event_id'),
-  T.map((eventId: string) => E.right({
+  T.of(new Date('2021-09-10')),
+  T.map((eventDate: Date) => E.right({
     title: 'All events',
-    content: renderContent(eventId),
+    content: renderContent(eventDate.toISOString()),
   })),
 );
