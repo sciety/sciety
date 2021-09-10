@@ -176,10 +176,10 @@ download-db-dump-staging:
 	kubectl exec psql -- psql -c "copy (select json_agg(events) from events) To STDOUT;" | sed -e 's/\\n//g' > ./events-staging.json
 	kubectl delete --wait=false pod psql
 
-reports:
+report-visits:
 	@npx ts-node reports/visits.ts
 
-getlogs:
+get-ingress-logs:
 	@export $$(cat .env | grep LOKI | xargs) && \
 	logcli query -q -o raw --limit 600000 --batch 5000 \
 	--timezone=UTC \
