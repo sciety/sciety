@@ -5,6 +5,14 @@ import { fetchPciEvaluations } from '../../src/ingest/fetch-pci-evaluations';
 import { arbitraryUri } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 
+const ingest = (xml: string) => pipe(
+  {
+    fetchData: <D>() => TE.right(xml as unknown as D),
+    fetchGoogleSheet: shouldNotBeCalled,
+  },
+  fetchPciEvaluations(arbitraryUri()),
+);
+
 describe('fetch-pci-evaluations', () => {
   describe('when there are no evaluations', () => {
     it('returns no evaluations and no skipped items', async () => {
@@ -13,15 +21,8 @@ describe('fetch-pci-evaluations', () => {
         <links>
         </links>
       `;
-      const result = await pipe(
-        {
-          fetchData: <D>() => TE.right(pciXmlResponse as unknown as D),
-          fetchGoogleSheet: shouldNotBeCalled,
-        },
-        fetchPciEvaluations(arbitraryUri()),
-      )();
 
-      expect(result).toStrictEqual(E.right({
+      expect(await ingest(pciXmlResponse)()).toStrictEqual(E.right({
         evaluations: [],
         skippedItems: [],
       }));
@@ -33,6 +34,30 @@ describe('fetch-pci-evaluations', () => {
   });
 
   describe('when there is an invalid evaluation', () => {
-    it.todo('returns 0 evaluations and 1 skipped item');
+    it('returns 0 evaluations and 1 skipped item', async () => {
+      const articleId = '10.5281/zenodo.5118675';
+      const pciXmlResponse = `
+        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+        <links>
+          <link providerId="PCIArchaeology">
+            <resource>
+              <doi>10.24072/pci.archaeo.100011</doi>
+              <date>15 Aug 2021</date>
+            </resource>
+            <doi>${articleId}</doi>
+          </link>
+        </links>
+      `;
+
+      expect(await ingest(pciXmlResponse)()).toStrictEqual(E.right({
+        evaluations: [],
+        skippedItems: [
+          {
+            item: articleId,
+            reason: 'not a biorxiv|medrxiv DOI',
+          },
+        ],
+      }));
+    });
   });
 });
