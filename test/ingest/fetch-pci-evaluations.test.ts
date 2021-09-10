@@ -2,8 +2,9 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { fetchPciEvaluations } from '../../src/ingest/fetch-pci-evaluations';
-import { arbitraryUri } from '../helpers';
+import { arbitraryDate, arbitraryUri } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
+import { arbitraryDoi } from '../types/doi.helper';
 
 const ingest = (xml: string) => pipe(
   {
@@ -30,7 +31,34 @@ describe('fetch-pci-evaluations', () => {
   });
 
   describe('when there is a valid evaluation', () => {
-    it.todo('returns 1 evaluation and no skipped items');
+    it('returns 1 evaluation and no skipped items', async () => {
+      const articleId = arbitraryDoi().value;
+      const reviewId = arbitraryDoi().value;
+      const date = arbitraryDate();
+      const pciXmlResponse = `
+        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+        <links>
+          <link providerId="PCIArchaeology">
+            <resource>
+              <doi>${reviewId}</doi>
+              <date>${date.toString()}</date>
+            </resource>
+            <doi>${articleId}</doi>
+          </link>
+        </links>
+      `;
+
+      expect(await ingest(pciXmlResponse)()).toStrictEqual(E.right({
+        evaluations: [
+          {
+            articleDoi: articleId,
+            date,
+            evaluationLocator: `doi:${reviewId}`,
+          },
+        ],
+        skippedItems: [],
+      }));
+    });
   });
 
   describe('when there is an invalid evaluation', () => {
