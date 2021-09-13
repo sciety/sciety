@@ -20,19 +20,31 @@ const isEditorialCommunityReviewedArticleEvent = (event: StateEntry):
   event.type === 'EditorialCommunityReviewedArticle'
 );
 
-const isPreviousEntryRelevant = (state: ReadonlyArray<StateEntry>) => state.length && pipe(
+const collapsesIntoPreviousEvent = (
+  state: ReadonlyArray<StateEntry>, event: EditorialCommunityReviewedArticleEvent,
+) => state.length && pipe(
   state[state.length - 1],
-  (entry) => isEditorialCommunityReviewedArticleEvent(entry) || isCollapsedGroupEvaluatedArticle(entry),
+  (entry) => {
+    if (isEditorialCommunityReviewedArticleEvent(entry)) {
+      return entry.editorialCommunityId === event.editorialCommunityId
+        && entry.articleId.value === event.articleId.value;
+    }
+    if (isCollapsedGroupEvaluatedArticle(entry)) {
+      return entry.groupId === event.editorialCommunityId
+        && entry.articleId.value === event.articleId.value;
+    }
+    return false;
+  },
 );
 
-const processEvent = (state: ReadonlyArray<StateEntry>, event: DomainEvent) => pipe(
-  // matching GroupIds
-  // matching ArticleIds
-  isEditorialCommunityReviewedArticleEvent(event)
-    && isPreviousEntryRelevant(state)
-    ? [...state, event]
-    : [...state, event],
-);
+const replaceWithCollapseEvent = (state: ReadonlyArray<StateEntry>) => state;
+
+const processEvent = (
+  state: ReadonlyArray<StateEntry>, event: DomainEvent,
+) => (isEditorialCommunityReviewedArticleEvent(event)
+    && collapsesIntoPreviousEvent(state, event)
+  ? replaceWithCollapseEvent(state)
+  : [...state, event]);
 
 export const collapseCloseEvents = (
   events: ReadonlyArray<DomainEvent>,
