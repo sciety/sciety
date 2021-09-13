@@ -30,10 +30,36 @@ describe('collapse-close-events', () => {
   });
 
   describe('given consecutive events in which the same group evaluated different articles', () => {
-    it.todo('does not collapse the events');
+    it('does not collapse the events', () => {
+      const groupId = arbitraryGroupId();
+
+      const events = [
+        editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
+        editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
+      ];
+      const result = pipe(
+        events,
+        collapseCloseEvents,
+      );
+
+      expect(result).toStrictEqual(events);
+    });
   });
 
   describe('given consecutive events in which different groups evaluated an article', () => {
-    it.todo('does not collapse the events');
+    it('does not collapse the events', () => {
+      const articleId = arbitraryDoi();
+
+      const events = [
+        editorialCommunityReviewedArticle(arbitraryGroupId(), articleId, arbitraryReviewId()),
+        editorialCommunityReviewedArticle(arbitraryGroupId(), articleId, arbitraryReviewId()),
+      ];
+      const result = pipe(
+        events,
+        collapseCloseEvents,
+      );
+
+      expect(result).toStrictEqual(events);
+    });
   });
 });
