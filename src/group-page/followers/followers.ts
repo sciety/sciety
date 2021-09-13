@@ -54,7 +54,7 @@ export const followers = (
     followers: partial,
     followerCount: partial.length,
   })),
-  T.map(paginate(group.id, pageNumber, pageSize)),
+  T.map(paginate(pageNumber, pageSize)),
   TE.chain(augmentFollowersWithUserDetails(ports)),
   TE.map((partial) => ({
     ...partial,

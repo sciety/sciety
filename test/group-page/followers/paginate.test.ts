@@ -6,7 +6,6 @@ import { paginate } from '../../../src/group-page/followers/paginate';
 import * as DE from '../../../src/types/data-error';
 import { arbitraryNumber } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
 const generateFollowers = (followerCount: number) => pipe(
@@ -29,7 +28,7 @@ describe('paginate', () => {
       };
       const result = pipe(
         partialViewModel,
-        paginate(arbitraryGroupId(), 1, 2),
+        paginate(1, 2),
         E.getOrElseW(shouldNotBeCalled),
       );
 
@@ -53,7 +52,7 @@ describe('paginate', () => {
       };
       const result = pipe(
         partialViewModel,
-        paginate(arbitraryGroupId(), 2, 1),
+        paginate(2, 1),
         E.getOrElseW(shouldNotBeCalled),
       );
 
@@ -78,7 +77,7 @@ describe('paginate', () => {
       };
       const result = pipe(
         partialViewModel,
-        paginate(arbitraryGroupId(), page, 10),
+        paginate(page, 10),
         E.getOrElseW(shouldNotBeCalled),
       );
 
@@ -91,7 +90,7 @@ describe('paginate', () => {
           followerCount: 3,
           followers: generateFollowers(3),
         },
-        paginate(arbitraryGroupId(), 3, 3),
+        paginate(3, 3),
       );
 
       expect(result).toStrictEqual(E.left(DE.notFound));
@@ -103,7 +102,7 @@ describe('paginate', () => {
           followerCount: 0,
           followers: [],
         },
-        paginate(arbitraryGroupId(), 1, arbitraryNumber(1, 10)),
+        paginate(1, arbitraryNumber(1, 10)),
       );
 
       expect(result).toStrictEqual(E.right(expect.objectContaining({ followers: [] })));

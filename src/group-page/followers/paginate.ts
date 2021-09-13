@@ -3,7 +3,6 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { Follower } from './augment-with-user-details';
 import * as DE from '../../types/data-error';
-import { GroupId } from '../../types/group-id';
 
 export type PartialViewModel = {
   followerCount: number,
@@ -17,7 +16,6 @@ const numberOfPages = (followerCount: number, pageSize: number) => (
 );
 
 export const paginate = (
-  groupId: GroupId,
   pageNumber: number,
   pageSize: number,
 ) => (
