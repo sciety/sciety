@@ -3,6 +3,8 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import * as t from 'io-ts';
+import * as tt from 'io-ts-types';
 import { DomainEvent } from '../domain-events';
 import { templateListItems } from '../shared-components/list-items';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -15,6 +17,10 @@ const renderContent = (items: ReadonlyArray<HtmlFragment>) => toHtmlFragment(`
     ${templateListItems(items, 'all-events-list__item')}
   </ol>
 `);
+
+export const allEventsCodec = t.type({
+  page: tt.optionFromNullable(t.number),
+});
 
 type Ports = {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
