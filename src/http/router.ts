@@ -136,7 +136,7 @@ export const createRouter = (adapters: Adapters): Router => {
       allEventsCodec.decode,
       E.mapLeft(toNotFound),
       TE.fromEither,
-      allEventsPage(adapters),
+      TE.chain(allEventsPage(adapters)),
     )),
   );
 

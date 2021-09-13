@@ -19,17 +19,24 @@ const renderContent = (items: ReadonlyArray<HtmlFragment>) => toHtmlFragment(`
 `);
 
 export const allEventsCodec = t.type({
-  page: tt.optionFromNullable(t.number),
+  page: tt.withFallback(tt.NumberFromString, 1),
 });
 
 type Ports = {
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
 };
 
-export const allEventsPage = (ports: Ports) => (): TE.TaskEither<RenderPageError, Page> => pipe(
+type Params = t.TypeOf<typeof allEventsCodec>;
+
+const pageSize = 20;
+
+export const allEventsPage = (ports: Ports) => (params: Params): TE.TaskEither<RenderPageError, Page> => pipe(
   ports.getAllEvents,
   T.map(RA.reverse),
-  T.map(RA.takeLeft(1000)),
+  T.map((events) => events.slice(
+    (params.page - 1) * pageSize,
+    params.page * pageSize,
+  )),
   T.map(RA.map((event) => JSON.stringify(event, null, 2))),
   T.map(RA.map((event) => `
     <article class="all-events-card">
