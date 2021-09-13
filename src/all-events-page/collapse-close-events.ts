@@ -8,6 +8,8 @@ type CollapsedGroupEvaluatedArticle = {
   articleId: Doi,
 };
 
+const processEvent = (state: ReadonlyArray<DomainEvent>, event: DomainEvent) => state.concat([event]);
+
 export const collapseCloseEvents = (
   events: ReadonlyArray<DomainEvent>,
-): ReadonlyArray<CollapsedGroupEvaluatedArticle | DomainEvent> => events;
+): ReadonlyArray<CollapsedGroupEvaluatedArticle | DomainEvent> => events.reduce(processEvent, []);
