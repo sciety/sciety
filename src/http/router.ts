@@ -132,7 +132,7 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.get(
     '/all-events',
-    pageHandler(allEventsPage),
+    pageHandler(allEventsPage(adapters)),
   );
 
   router.get(
