@@ -5,6 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
+import { collapseCloseEvents } from './collapse-close-events';
 import { DomainEvent } from '../domain-events';
 import { templateListItems } from '../shared-components/list-items';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -33,6 +34,7 @@ const pageSize = 20;
 export const allEventsPage = (ports: Ports) => (params: Params): TE.TaskEither<RenderPageError, Page> => pipe(
   ports.getAllEvents,
   T.map(RA.reverse),
+  T.map(collapseCloseEvents),
   T.map((events) => events.slice(
     (params.page - 1) * pageSize,
     params.page * pageSize,
