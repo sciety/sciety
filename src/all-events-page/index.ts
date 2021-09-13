@@ -11,8 +11,8 @@ import { RenderPageError } from '../types/render-page-error';
 
 const renderContent = (items: ReadonlyArray<HtmlFragment>) => toHtmlFragment(`
   <h1>All events</h1>
-  <ol>
-    ${templateListItems(items)}
+  <ol class="all-events-list">
+    ${templateListItems(items, 'all-events-list__item')}
   </ol>
 `);
 
@@ -23,7 +23,13 @@ type Ports = {
 export const allEventsPage = (ports: Ports) => (): TE.TaskEither<RenderPageError, Page> => pipe(
   ports.getAllEvents,
   T.map(RA.reverse),
+  T.map(RA.takeLeft(1000)),
   T.map(RA.map((event) => JSON.stringify(event, null, 2))),
+  T.map(RA.map((event) => `
+    <article class="all-events-card">
+      ${event}
+    </article>
+  `)),
   T.map(RA.map(toHtmlFragment)),
   T.map((items) => E.right({
     title: 'All events',

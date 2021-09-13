@@ -1,0 +1,18 @@
+@use '../sass/card';
+@use '../sass/list';
+@use '../sass/settings';
+@use '../sass/baseline';
+
+.all-events-list {
+  @include card.list();
+  margin-bottom: 1.5rem;
+}
+
+.all-events-list__item {
+  @include card.list-item();
+}
+
+.all-events-card {
+  @include card.basics();
+  display: flex;
+}
