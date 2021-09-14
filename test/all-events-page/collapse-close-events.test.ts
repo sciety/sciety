@@ -64,6 +64,7 @@ describe('collapse-close-events', () => {
       const events = [
         editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
         editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
+        editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
       ];
       const result = pipe(
         events,
@@ -73,14 +74,14 @@ describe('collapse-close-events', () => {
       expect(result).toStrictEqual([{
         type: 'CollapsedGroupEvaluatedMultipleArticles',
         groupId,
-        articleCount: 2,
+        articleCount: 3,
         date: expect.any(Date),
       }]);
     });
   });
 
   describe('given two consecutive series of events in which the same group evaluated two different articles', () => {
-    it('collapses into one feed item', () => {
+    it.skip('collapses into one feed item', () => {
       const groupId = arbitraryGroupId();
       const firstArticleId = arbitraryDoi();
       const secondArticleId = arbitraryDoi();
@@ -107,7 +108,7 @@ describe('collapse-close-events', () => {
   });
 
   describe('given a group reviewing article 1 twice, then article 2 once, and then article 1 again', () => {
-    it('collapses into one feed item', () => {
+    it.skip('collapses into one feed item', () => {
       const groupId = arbitraryGroupId();
       const firstArticleId = arbitraryDoi();
       const secondArticleId = arbitraryDoi();

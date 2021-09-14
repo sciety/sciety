@@ -90,6 +90,13 @@ const replaceWithCollapseEvent = (
     }];
   }
 
+  if (isCollapsedGroupEvaluatedMultipleArticles(last)) {
+    return [...head, {
+      ...last,
+      articleCount: last.articleCount + 1,
+    }];
+  }
+
   return state;
 };
 
