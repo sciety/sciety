@@ -22,6 +22,10 @@ const isCollapsedGroupEvaluatedArticle = (
   entry: StateEntry,
 ): entry is CollapsedGroupEvaluatedArticle => entry.type === 'CollapsedGroupEvaluatedArticle';
 
+const isCollapsedGroupEvaluatedMultipleArticles = (
+  entry: StateEntry,
+): entry is CollapsedGroupEvaluatedMultipleArticles => entry.type === 'CollapsedGroupEvaluatedMultipleArticles';
+
 const isEditorialCommunityReviewedArticleEvent = (event: StateEntry):
   event is EditorialCommunityReviewedArticleEvent => (
   event.type === 'EditorialCommunityReviewedArticle'
@@ -39,6 +43,9 @@ const collapsesIntoPreviousEvent = (
     if (isCollapsedGroupEvaluatedArticle(entry)) {
       return entry.groupId === event.editorialCommunityId
         && entry.articleId.value === event.articleId.value;
+    }
+    if (isCollapsedGroupEvaluatedMultipleArticles(entry)) {
+      return entry.groupId === event.editorialCommunityId;
     }
     return false;
   },
