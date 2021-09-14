@@ -11,7 +11,7 @@ PORT := 8080
 export IMAGE
 export IMAGE_TAG
 
-.PHONY: backstop* build clean* dev find-* getlogs git-lfs install lint* prod release reports stop test* update-event-data
+.PHONY: backstop* build clean* dev find-* get* git-lfs install lint* prod release reports stop test* update-event-data
 
 dev: export TARGET = dev
 dev: .env install build
@@ -186,4 +186,11 @@ get-ingress-logs:
 	--from="2021-08-30T00:00:00Z" \
 	--to="2021-09-06T00:00:00Z" \
 	'{app_kubernetes_io_name="ingress-nginx"}' > reports/ingress-logs.jsonl
+
+get-error-logs:
+	@export $$(cat .env | grep LOKI | xargs) && \
+	logcli query -q -o raw --limit 600000 --batch 5000 \
+	--timezone=UTC \
+	--from="2021-09-10T00:00:00Z" \
+	'{app_kubernetes_io_instance="sciety--prod"} | json | __error__="" | level = "error"'
 
