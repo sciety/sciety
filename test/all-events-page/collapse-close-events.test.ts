@@ -1,6 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import { collapseCloseEvents } from '../../src/all-events-page/collapse-close-events';
-import { editorialCommunityReviewedArticle } from '../../src/domain-events/editorial-community-reviewed-article-event';
+import { editorialCommunityReviewedArticle } from '../../src/domain-events';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
