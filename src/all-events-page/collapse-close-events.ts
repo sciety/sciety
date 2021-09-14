@@ -78,9 +78,17 @@ const replaceWithCollapseEvent = (
   }
 
   if (isCollapsedGroupEvaluatedArticle(last)) {
+    if (event.articleId.value === last.articleId.value) {
+      return [...head, {
+        ...last,
+        evaluationCount: last.evaluationCount + 1,
+      }];
+    }
     return [...head, {
-      ...last,
-      evaluationCount: last.evaluationCount + 1,
+      type: 'CollapsedGroupEvaluatedMultipleArticles' as const,
+      groupId: last.groupId,
+      articleCount: 2,
+      date: last.date,
     }];
   }
 
