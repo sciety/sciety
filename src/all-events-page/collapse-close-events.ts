@@ -51,15 +51,26 @@ const collapsesIntoPreviousEvent = (
   },
 );
 
-const replaceWithCollapseEvent = (state: ReadonlyArray<StateEntry>) => {
+const replaceWithCollapseEvent = (
+  state: ReadonlyArray<StateEntry>,
+  event: EditorialCommunityReviewedArticleEvent,
+) => {
   const last = state[state.length - 1];
   const head = state.slice(0, -1);
   if (isEditorialCommunityReviewedArticleEvent(last)) {
+    if (event.articleId.value === last.articleId.value) {
+      return [...head, {
+        type: 'CollapsedGroupEvaluatedArticle' as const,
+        articleId: last.articleId,
+        groupId: last.editorialCommunityId,
+        evaluationCount: 2,
+        date: last.date,
+      }];
+    }
     return [...head, {
-      type: 'CollapsedGroupEvaluatedArticle' as const,
-      articleId: last.articleId,
+      type: 'CollapsedGroupEvaluatedMultipleArticles' as const,
       groupId: last.editorialCommunityId,
-      evaluationCount: 2,
+      articleCount: 2,
       date: last.date,
     }];
   }
@@ -78,7 +89,7 @@ const processEvent = (
   state: ReadonlyArray<StateEntry>, event: DomainEvent,
 ) => (isEditorialCommunityReviewedArticleEvent(event)
     && collapsesIntoPreviousEvent(state, event)
-  ? replaceWithCollapseEvent(state)
+  ? replaceWithCollapseEvent(state, event)
   : [...state, event]);
 
 export const collapseCloseEvents = (
