@@ -7,7 +7,7 @@ import { arbitraryReviewId } from '../types/review-id.helper';
 
 describe('collapse-close-events', () => {
   describe('given consecutive events in which the same group evaluated an article', () => {
-    it.skip('collapses the events into a single feed item', () => {
+    it('collapses the events into a single feed item', () => {
       const groupId = arbitraryGroupId();
       const articleId = arbitraryDoi();
       const date = new Date('2021-09-14 12:00');
@@ -26,13 +26,13 @@ describe('collapse-close-events', () => {
           type: 'CollapsedGroupEvaluatedArticle',
           groupId,
           articleId,
-          reviewCount: 2,
+          evaluationCount: 2,
           date,
         },
       ]);
     });
 
-    it.skip('collapses three events into a single feed item', () => {
+    it('collapses three events into a single feed item', () => {
       const groupId = arbitraryGroupId();
       const articleId = arbitraryDoi();
 
@@ -50,7 +50,7 @@ describe('collapse-close-events', () => {
           type: 'CollapsedGroupEvaluatedArticle',
           groupId,
           articleId,
-          reviewCount: 3,
+          evaluationCount: 3,
           date: expect.any(Date),
         },
       ]);
