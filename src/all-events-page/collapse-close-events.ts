@@ -8,12 +8,14 @@ type CollapsedGroupEvaluatedArticle = {
   groupId: GroupId,
   articleId: Doi,
   evaluationCount: number,
+  date: Date,
 };
 
 type CollapsedGroupEvaluatedMultipleArticles = {
   type: 'CollapsedGroupEvaluatedMultipleArticles',
   groupId: GroupId,
   articleCount: number,
+  date: Date,
 };
 
 type StateEntry = DomainEvent | CollapsedGroupEvaluatedArticle | CollapsedGroupEvaluatedMultipleArticles;
