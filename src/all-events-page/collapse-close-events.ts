@@ -10,7 +10,13 @@ type CollapsedGroupEvaluatedArticle = {
   evaluationCount: number,
 };
 
-type StateEntry = DomainEvent | CollapsedGroupEvaluatedArticle;
+type CollapsedGroupEvaluatedMultipleArticles = {
+  type: 'CollapsedGroupEvaluatedMultipleArticles',
+  groupId: GroupId,
+  articleCount: number,
+};
+
+type StateEntry = DomainEvent | CollapsedGroupEvaluatedArticle | CollapsedGroupEvaluatedMultipleArticles;
 
 const isCollapsedGroupEvaluatedArticle = (
   entry: StateEntry,
