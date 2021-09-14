@@ -37,7 +37,22 @@ const collapsesIntoPreviousEvent = (
   },
 );
 
-const replaceWithCollapseEvent = (state: ReadonlyArray<StateEntry>) => state;
+const replaceWithCollapseEvent = (state: ReadonlyArray<StateEntry>) => {
+  const last = state[state.length - 1];
+  const head = state.slice(0, -1);
+  let replacement = last;
+  if (isEditorialCommunityReviewedArticleEvent(last)) {
+    replacement = {
+      type: 'CollapsedGroupEvaluatedArticle' as const,
+      articleId: last.articleId,
+      groupId: last.editorialCommunityId,
+    };
+  }
+  return [
+    ...head,
+    replacement,
+  ];
+};
 
 const processEvent = (
   state: ReadonlyArray<StateEntry>, event: DomainEvent,

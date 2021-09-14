@@ -7,7 +7,7 @@ import { arbitraryReviewId } from '../types/review-id.helper';
 
 describe('collapse-close-events', () => {
   describe('given consecutive events in which the same group evaluated an article', () => {
-    it.skip('collapses the events into a single feed item', () => {
+    it('collapses the events into a single feed item', () => {
       const groupId = arbitraryGroupId();
       const articleId = arbitraryDoi();
 
