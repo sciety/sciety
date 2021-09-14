@@ -27,6 +27,59 @@ describe('collapse-close-events', () => {
         },
       ]);
     });
+
+    it('collapses three events into a single feed item', () => {
+      const groupId = arbitraryGroupId();
+      const articleId = arbitraryDoi();
+
+      const result = pipe(
+        [
+          editorialCommunityReviewedArticle(groupId, articleId, arbitraryReviewId()),
+          editorialCommunityReviewedArticle(groupId, articleId, arbitraryReviewId()),
+          editorialCommunityReviewedArticle(groupId, articleId, arbitraryReviewId()),
+        ],
+        collapseCloseEvents,
+      );
+
+      expect(result).toStrictEqual([
+        {
+          type: 'CollapsedGroupEvaluatedArticle',
+          groupId,
+          articleId,
+        },
+      ]);
+    });
+  });
+
+  describe('given two consecutive series of events in which the same group evaluated two different articles', () => {
+    it('collapses into two feed items', () => {
+      const groupId = arbitraryGroupId();
+      const firstArticleId = arbitraryDoi();
+      const secondArticleId = arbitraryDoi();
+
+      const result = pipe(
+        [
+          editorialCommunityReviewedArticle(groupId, firstArticleId, arbitraryReviewId()),
+          editorialCommunityReviewedArticle(groupId, firstArticleId, arbitraryReviewId()),
+          editorialCommunityReviewedArticle(groupId, secondArticleId, arbitraryReviewId()),
+          editorialCommunityReviewedArticle(groupId, secondArticleId, arbitraryReviewId()),
+        ],
+        collapseCloseEvents,
+      );
+
+      expect(result).toStrictEqual([
+        {
+          type: 'CollapsedGroupEvaluatedArticle',
+          groupId,
+          articleId: firstArticleId,
+        },
+        {
+          type: 'CollapsedGroupEvaluatedArticle',
+          groupId,
+          articleId: secondArticleId,
+        },
+      ]);
+    });
   });
 
   describe('given consecutive events in which the same group evaluated different articles', () => {
