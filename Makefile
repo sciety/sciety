@@ -11,7 +11,7 @@ PORT := 8080
 export IMAGE
 export IMAGE_TAG
 
-.PHONY: backstop* build clean* dev find-* get* git-lfs install lint* prod release reports stop test* update-event-data
+.PHONY: backstop* build clean* dev find-* get* git-lfs ingest* install lint* prod release reports stop test* update*
 
 dev: export TARGET = dev
 dev: .env install build
@@ -89,10 +89,12 @@ clean-db: stop
 stop:
 	$(DOCKER_COMPOSE) down
 
-update-event-data: export TARGET = dev
-update-event-data: build
+ingest-events: export TARGET = dev
+ingest-events: build
 	$(DOCKER_COMPOSE) run -e INGEST_DEBUG=${INGEST_DEBUG} -e INGEST_ONLY=${INGEST_ONLY} app \
 	npx ts-node src/ingest/update-event-data
+
+update-event-data: ingest-events backstop-test
 
 release: export TAG = latest/$(shell date +%Y%m%d%H%M)
 release:
