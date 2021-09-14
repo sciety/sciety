@@ -24,6 +24,7 @@ describe('collapse-close-events', () => {
           type: 'CollapsedGroupEvaluatedArticle',
           groupId,
           articleId,
+          count: 2,
         },
       ]);
     });
@@ -46,6 +47,7 @@ describe('collapse-close-events', () => {
           type: 'CollapsedGroupEvaluatedArticle',
           groupId,
           articleId,
+          count: 3,
         },
       ]);
     });
@@ -72,11 +74,13 @@ describe('collapse-close-events', () => {
           type: 'CollapsedGroupEvaluatedArticle',
           groupId,
           articleId: firstArticleId,
+          count: 2,
         },
         {
           type: 'CollapsedGroupEvaluatedArticle',
           groupId,
           articleId: secondArticleId,
+          count: 2,
         },
       ]);
     });
@@ -105,6 +109,7 @@ describe('collapse-close-events', () => {
           type: 'CollapsedGroupEvaluatedArticle',
           groupId,
           articleId: firstArticleId,
+          count: 2,
         },
         event3,
         event4,

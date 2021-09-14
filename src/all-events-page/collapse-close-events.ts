@@ -7,6 +7,7 @@ type CollapsedGroupEvaluatedArticle = {
   type: 'CollapsedGroupEvaluatedArticle',
   groupId: GroupId,
   articleId: Doi,
+  count: number,
 };
 
 type StateEntry = DomainEvent | CollapsedGroupEvaluatedArticle;
@@ -40,18 +41,23 @@ const collapsesIntoPreviousEvent = (
 const replaceWithCollapseEvent = (state: ReadonlyArray<StateEntry>) => {
   const last = state[state.length - 1];
   const head = state.slice(0, -1);
-  let replacement = last;
   if (isEditorialCommunityReviewedArticleEvent(last)) {
-    replacement = {
+    return [...head, {
       type: 'CollapsedGroupEvaluatedArticle' as const,
       articleId: last.articleId,
       groupId: last.editorialCommunityId,
-    };
+      count: 2,
+    }];
   }
-  return [
-    ...head,
-    replacement,
-  ];
+
+  if (isCollapsedGroupEvaluatedArticle(last)) {
+    return [...head, {
+      ...last,
+      count: last.count + 1,
+    }];
+  }
+
+  return state;
 };
 
 const processEvent = (
