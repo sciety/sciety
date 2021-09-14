@@ -149,4 +149,23 @@ describe('collapse-close-events', () => {
       expect(result).toStrictEqual(events);
     });
   });
+
+  describe('given group one evaluates 2 articles separated by group two reviewing an article', () => {
+    it('does not collapse the events', () => {
+      const groupOne = arbitraryGroupId();
+      const groupTwo = arbitraryGroupId();
+
+      const events = [
+        editorialCommunityReviewedArticle(groupOne, arbitraryDoi(), arbitraryReviewId()),
+        editorialCommunityReviewedArticle(groupTwo, arbitraryDoi(), arbitraryReviewId()),
+        editorialCommunityReviewedArticle(groupOne, arbitraryDoi(), arbitraryReviewId()),
+      ];
+      const result = pipe(
+        events,
+        collapseCloseEvents,
+      );
+
+      expect(result).toStrictEqual(events);
+    });
+  });
 });
