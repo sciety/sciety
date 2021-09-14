@@ -42,8 +42,7 @@ const collapsesIntoPreviousEvent = (
       return entry.editorialCommunityId === event.editorialCommunityId;
     }
     if (isCollapsedGroupEvaluatedArticle(entry)) {
-      return entry.groupId === event.editorialCommunityId
-        && entry.articleId.value === event.articleId.value;
+      return entry.groupId === event.editorialCommunityId;
     }
     if (isCollapsedGroupEvaluatedMultipleArticles(entry)) {
       return entry.groupId === event.editorialCommunityId;

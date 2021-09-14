@@ -80,7 +80,7 @@ describe('collapse-close-events', () => {
   });
 
   describe('given two consecutive series of events in which the same group evaluated two different articles', () => {
-    it.skip('collapses into one feed item', () => {
+    it('collapses into one feed item', () => {
       const groupId = arbitraryGroupId();
       const firstArticleId = arbitraryDoi();
       const secondArticleId = arbitraryDoi();
