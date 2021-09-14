@@ -82,6 +82,36 @@ describe('collapse-close-events', () => {
     });
   });
 
+  describe('given a group reviewing article 1 twice, then article 2 once, and then article 1 again', () => {
+    it('returns three feed items', () => {
+      const groupId = arbitraryGroupId();
+      const firstArticleId = arbitraryDoi();
+      const secondArticleId = arbitraryDoi();
+      const event3 = editorialCommunityReviewedArticle(groupId, secondArticleId, arbitraryReviewId());
+      const event4 = editorialCommunityReviewedArticle(groupId, firstArticleId, arbitraryReviewId());
+
+      const result = pipe(
+        [
+          editorialCommunityReviewedArticle(groupId, firstArticleId, arbitraryReviewId()),
+          editorialCommunityReviewedArticle(groupId, firstArticleId, arbitraryReviewId()),
+          event3,
+          event4,
+        ],
+        collapseCloseEvents,
+      );
+
+      expect(result).toStrictEqual([
+        {
+          type: 'CollapsedGroupEvaluatedArticle',
+          groupId,
+          articleId: firstArticleId,
+        },
+        event3,
+        event4,
+      ]);
+    });
+  });
+
   describe('given consecutive events in which the same group evaluated different articles', () => {
     it('does not collapse the events', () => {
       const groupId = arbitraryGroupId();
