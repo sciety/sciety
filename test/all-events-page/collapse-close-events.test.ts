@@ -107,7 +107,7 @@ describe('collapse-close-events', () => {
   });
 
   describe('given a group reviewing article 1 twice, then article 2 once, and then article 1 again', () => {
-    it.skip('collapses into one feed item', () => {
+    it('collapses into one feed item', () => {
       const groupId = arbitraryGroupId();
       const firstArticleId = arbitraryDoi();
       const secondArticleId = arbitraryDoi();
