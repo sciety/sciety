@@ -8,6 +8,10 @@ describe('arbitraryWord', () => {
   it('is different each time', () => {
     expect(t.arbitraryWord(8)).not.toStrictEqual(t.arbitraryWord(8));
   });
+
+  it('always begins with a letter', () => {
+    expect(t.arbitraryWord(8)).toMatch(/^[a-zA-Z]/);
+  });
 });
 
 describe('arbitraryString', () => {
