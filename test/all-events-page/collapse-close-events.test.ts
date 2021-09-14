@@ -58,7 +58,7 @@ describe('collapse-close-events', () => {
   });
 
   describe('given consecutive events in which the same group evaluated different articles', () => {
-    it.skip('collapses into one feed item', () => {
+    it('collapses into one feed item', () => {
       const groupId = arbitraryGroupId();
 
       const events = [

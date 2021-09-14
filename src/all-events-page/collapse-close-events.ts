@@ -39,8 +39,7 @@ const collapsesIntoPreviousEvent = (
   state[state.length - 1],
   (entry) => {
     if (isEditorialCommunityReviewedArticleEvent(entry)) {
-      return entry.editorialCommunityId === event.editorialCommunityId
-        && entry.articleId.value === event.articleId.value;
+      return entry.editorialCommunityId === event.editorialCommunityId;
     }
     if (isCollapsedGroupEvaluatedArticle(entry)) {
       return entry.groupId === event.editorialCommunityId
