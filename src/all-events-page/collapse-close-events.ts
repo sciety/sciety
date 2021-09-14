@@ -47,6 +47,7 @@ const replaceWithCollapseEvent = (state: ReadonlyArray<StateEntry>) => {
       articleId: last.articleId,
       groupId: last.editorialCommunityId,
       count: 2,
+      date: last.date,
     }];
   }
 

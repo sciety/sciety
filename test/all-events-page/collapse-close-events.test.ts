@@ -10,11 +10,13 @@ describe('collapse-close-events', () => {
     it('collapses the events into a single feed item', () => {
       const groupId = arbitraryGroupId();
       const articleId = arbitraryDoi();
+      const date = new Date('2021-09-14 12:00');
+      const earlierDate = new Date('2021-09-14 11:00');
 
       const result = pipe(
         [
-          editorialCommunityReviewedArticle(groupId, articleId, arbitraryReviewId()),
-          editorialCommunityReviewedArticle(groupId, articleId, arbitraryReviewId()),
+          editorialCommunityReviewedArticle(groupId, articleId, arbitraryReviewId(), date),
+          editorialCommunityReviewedArticle(groupId, articleId, arbitraryReviewId(), earlierDate),
         ],
         collapseCloseEvents,
       );
@@ -25,6 +27,7 @@ describe('collapse-close-events', () => {
           groupId,
           articleId,
           count: 2,
+          date,
         },
       ]);
     });
@@ -48,6 +51,7 @@ describe('collapse-close-events', () => {
           groupId,
           articleId,
           count: 3,
+          date: expect.any(Date),
         },
       ]);
     });
@@ -75,12 +79,14 @@ describe('collapse-close-events', () => {
           groupId,
           articleId: firstArticleId,
           count: 2,
+          date: expect.any(Date),
         },
         {
           type: 'CollapsedGroupEvaluatedArticle',
           groupId,
           articleId: secondArticleId,
           count: 2,
+          date: expect.any(Date),
         },
       ]);
     });
@@ -110,6 +116,7 @@ describe('collapse-close-events', () => {
           groupId,
           articleId: firstArticleId,
           count: 2,
+          date: expect.any(Date),
         },
         event3,
         event4,
