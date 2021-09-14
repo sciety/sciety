@@ -1,4 +1,5 @@
 import { URL } from 'url';
+import axios from 'axios';
 import * as E from 'fp-ts/Either';
 import { Json } from 'fp-ts/Json';
 import * as TE from 'fp-ts/TaskEither';
@@ -37,11 +38,15 @@ export const fetchHypothesisAnnotation = (getJson: GetJson, logger: Logger): Eva
     TE.tryCatch(
       async () => getJson(uri),
       (error) => {
+        if (axios.isAxiosError(error) && error.response?.status === 404) {
+          logger('warn', 'Missing hypothesis annotation', { uri, error });
+          return DE.notFound;
+        }
         logger('error', 'Failed to fetch hypothesis evaluation', { uri, error });
-        return DE.unavailable; // TODO: could be DE.notFound
+        return DE.unavailable;
       },
     ),
-    TE.chainEitherK(flow(
+    TE.chainEitherKW(flow(
       hypothesisAnnotation.decode,
       E.mapLeft((error) => {
         logger('error', 'Invalid response from hypothes.is', { uri, errors: PR.failure(error) });

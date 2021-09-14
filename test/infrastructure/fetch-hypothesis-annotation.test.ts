@@ -63,4 +63,8 @@ describe('fetch-hypothesis-annotation', () => {
       fullText: expect.stringContaining(input),
     })));
   });
+
+  it.todo('test the 404 response when hypothesis group has removed an annotation');
+
+  it.todo('test the 500 response when hypothesis is unreachable');
 });
