@@ -26,8 +26,11 @@ type CollapsedGroupEvaluatedMultipleArticles = {
   type: 'CollapsedGroupEvaluatedMultipleArticles',
   groupId: GroupId,
   articleIds: Set<string>,
+  articleCount: number,
   date: Date,
 };
+
+type StateEntry = DomainEvent | CollapsedGroupEvaluatedArticle | CollapsedGroupEvaluatedMultipleArticles;
 
 const collapsedGroupEvaluatedMultipleArticles = (
   last: GroupEvaluatedArticleEvent | CollapsedGroupEvaluatedArticle | CollapsedGroupEvaluatedMultipleArticles,
@@ -36,11 +39,9 @@ const collapsedGroupEvaluatedMultipleArticles = (
   type: 'CollapsedGroupEvaluatedMultipleArticles',
   groupId: last.groupId,
   articleIds,
+  articleCount: articleIds.size,
   date: last.date,
-
 });
-
-type StateEntry = DomainEvent | CollapsedGroupEvaluatedArticle | CollapsedGroupEvaluatedMultipleArticles;
 
 const isCollapsedGroupEvaluatedArticle = (
   entry: StateEntry,
@@ -108,4 +109,4 @@ const processEvent = (
 
 export const collapseCloseEvents = (
   events: ReadonlyArray<DomainEvent>,
-): Array<StateEntry> => events.reduce(processEvent, []);
+): ReadonlyArray<StateEntry> => events.reduce(processEvent, []);
