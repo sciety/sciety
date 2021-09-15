@@ -28,7 +28,7 @@ const isCollapsedGroupEvaluatedMultipleArticles = (
   entry: StateEntry,
 ): entry is CollapsedGroupEvaluatedMultipleArticles => entry.type === 'CollapsedGroupEvaluatedMultipleArticles';
 
-const isEditorialCommunityReviewedArticleEvent = (event: StateEntry):
+const isGroupEvaluatedArticleEvent = (event: StateEntry):
   event is GroupEvaluatedArticleEvent => (
   event.type === 'GroupEvaluatedArticle'
 );
@@ -39,7 +39,7 @@ const collapsesIntoPreviousEvent = (
   state[state.length - 1],
   (entry) => {
     if (
-      isEditorialCommunityReviewedArticleEvent(entry)
+      isGroupEvaluatedArticleEvent(entry)
       || isCollapsedGroupEvaluatedArticle(entry)
       || isCollapsedGroupEvaluatedMultipleArticles(entry)
     ) {
@@ -55,7 +55,7 @@ const replaceWithCollapseEvent = (
 ) => {
   const last = state.pop();
   if (!last) { return; }
-  if (isEditorialCommunityReviewedArticleEvent(last)) {
+  if (isGroupEvaluatedArticleEvent(last)) {
     if (event.articleId.value === last.articleId.value) {
       state.push({
         type: 'CollapsedGroupEvaluatedArticle' as const,
@@ -97,7 +97,7 @@ const replaceWithCollapseEvent = (
 const processEvent = (
   state: Array<StateEntry>, event: DomainEvent,
 ) => {
-  if (isEditorialCommunityReviewedArticleEvent(event)
+  if (isGroupEvaluatedArticleEvent(event)
     && collapsesIntoPreviousEvent(state, event)) {
     replaceWithCollapseEvent(state, event);
   } else {
