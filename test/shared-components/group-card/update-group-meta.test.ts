@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import {
-  editorialCommunityReviewedArticle,
+  groupEvaluatedArticle,
   userFollowedEditorialCommunity, userSavedArticle,
   userUnfollowedEditorialCommunity,
 } from '../../../src/domain-events';
@@ -28,25 +28,25 @@ describe('update-group-meta', () => {
     expect(result).toStrictEqual({ ...initial, followerCount: 40 });
   });
 
-  it('updates the meta when passed a newer EditorialCommunityReviewedArticle', () => {
+  it('updates the meta when passed a newer GroupEvaluatedArticle', () => {
     const newerDate = new Date('2020');
-    const event = editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryReviewId(), newerDate);
+    const event = groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId(), newerDate);
     const result = updateGroupMeta(groupId)(initial, event);
 
     expect(result).toStrictEqual({ ...initial, reviewCount: 28, latestActivity: O.some(newerDate) });
   });
 
-  it('does not change the latestActivity date when passed an older EditorialCommunityReviewedArticle', () => {
+  it('does not change the latestActivity date when passed an older GroupEvaluatedArticle', () => {
     const olderDate = new Date('1920');
-    const event = editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryReviewId(), olderDate);
+    const event = groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId(), olderDate);
     const result = updateGroupMeta(groupId)(initial, event);
 
     expect(result).toStrictEqual({ ...initial, reviewCount: 28 });
   });
 
-  it('updates the meta when passed the first EditorialCommunityReviewedArticle', () => {
+  it('updates the meta when passed the first GroupEvaluatedArticle', () => {
     const newerDate = new Date('2020');
-    const event = editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryReviewId(), newerDate);
+    const event = groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId(), newerDate);
     const result = updateGroupMeta(groupId)({ ...initial, reviewCount: 0, latestActivity: O.none }, event);
 
     expect(result).toStrictEqual({ ...initial, reviewCount: 1, latestActivity: O.some(newerDate) });

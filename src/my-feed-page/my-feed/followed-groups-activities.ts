@@ -5,8 +5,8 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as RM from 'fp-ts/ReadonlyMap';
 import { flow, pipe } from 'fp-ts/function';
 import {
-  DomainEvent, EditorialCommunityReviewedArticleEvent,
-  isEditorialCommunityReviewedArticleEvent,
+  DomainEvent, GroupEvaluatedArticleEvent,
+  isGroupEvaluatedArticleEvent,
 } from '../../domain-events';
 import { ArticleActivity } from '../../types/article-activity';
 import { Doi } from '../../types/doi';
@@ -23,11 +23,11 @@ type ActivityDetails = {
 };
 
 const eventToActivityDetails = (
-  event: EditorialCommunityReviewedArticleEvent,
+  event: GroupEvaluatedArticleEvent,
   groupIds: ReadonlyArray<GroupId>,
 ): ActivityDetails => ({
   latestActivityDate: event.date,
-  evaluatedByFollowedGroup: groupIds.map((groupId) => groupId).includes(event.editorialCommunityId),
+  evaluatedByFollowedGroup: groupIds.map((groupId) => groupId).includes(event.groupId),
   evaluationCount: 1,
 });
 
@@ -50,7 +50,7 @@ const addEventToActivities = (
   groupIds: ReadonlyArray<GroupId>,
 ) => (
   activities: Map<string, ActivityDetails>,
-  event: EditorialCommunityReviewedArticleEvent,
+  event: GroupEvaluatedArticleEvent,
 ) => pipe(
   activities.get(event.articleId.value),
   O.fromNullable,
@@ -71,7 +71,7 @@ const byLatestActivityDateDesc: Ord.Ord<ArticleActivity> = pipe(
 
 export const followedGroupsActivities: FollowedGroupsActivities = (events) => (groupIds) => pipe(
   events,
-  RA.filter(isEditorialCommunityReviewedArticleEvent),
+  RA.filter(isGroupEvaluatedArticleEvent),
   RA.reduce(new Map(), addEventToActivities(groupIds)),
   RM.filterMapWithIndex(flow(
     (key, activityDetails) => O.some({ doi: new Doi(key), ...activityDetails }),

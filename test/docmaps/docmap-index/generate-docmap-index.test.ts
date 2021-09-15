@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { generateDocmapIndex } from '../../../src/docmaps/docmap-index';
-import { editorialCommunityReviewedArticle } from '../../../src/domain-events';
+import { groupEvaluatedArticle } from '../../../src/domain-events';
 import * as GID from '../../../src/types/group-id';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
@@ -19,7 +19,7 @@ describe('generate-docmap-index', () => {
       { updatedAfter: O.none, group: O.none },
       generateDocmapIndex({
         getAllEvents: T.of([
-          editorialCommunityReviewedArticle(ncrcGroupId, doi, arbitraryReviewId()),
+          groupEvaluatedArticle(ncrcGroupId, doi, arbitraryReviewId()),
         ]),
       }),
       T.map(({ articles }) => articles),
@@ -55,7 +55,7 @@ describe('generate-docmap-index', () => {
         { updatedAfter: O.none, group: O.none },
         generateDocmapIndex({
           getAllEvents: T.of([
-            editorialCommunityReviewedArticle(ncrcGroupId, doi, arbitraryReviewId()),
+            groupEvaluatedArticle(ncrcGroupId, doi, arbitraryReviewId()),
           ]),
         }),
         T.map(({ articles }) => articles),
@@ -76,8 +76,8 @@ describe('generate-docmap-index', () => {
         { updatedAfter: O.none, group: O.some(ncrcGroupId) },
         generateDocmapIndex({
           getAllEvents: T.of([
-            editorialCommunityReviewedArticle(ncrcGroupId, doi, arbitraryReviewId()),
-            editorialCommunityReviewedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
+            groupEvaluatedArticle(ncrcGroupId, doi, arbitraryReviewId()),
+            groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
           ]),
         }),
         T.map(({ articles }) => articles),
@@ -97,8 +97,8 @@ describe('generate-docmap-index', () => {
         { updatedAfter: O.none, group: O.some(reviewCommonsGroupId) },
         generateDocmapIndex({
           getAllEvents: T.of([
-            editorialCommunityReviewedArticle(ncrcGroupId, arbitraryDoi(), arbitraryReviewId()),
-            editorialCommunityReviewedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
+            groupEvaluatedArticle(ncrcGroupId, arbitraryDoi(), arbitraryReviewId()),
+            groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
           ]),
         }),
         T.map(({ articles }) => articles),
@@ -118,8 +118,8 @@ describe('generate-docmap-index', () => {
         { updatedAfter: O.none, group: O.some(GID.fromValidatedString('foo')) },
         generateDocmapIndex({
           getAllEvents: T.of([
-            editorialCommunityReviewedArticle(ncrcGroupId, arbitraryDoi(), arbitraryReviewId()),
-            editorialCommunityReviewedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
+            groupEvaluatedArticle(ncrcGroupId, arbitraryDoi(), arbitraryReviewId()),
+            groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
           ]),
         }),
         T.map(({ articles }) => articles),

@@ -1,7 +1,7 @@
 /* eslint-disable jest/expect-expect */
 import { performance } from 'perf_hooks';
 import {
-  editorialCommunityReviewedArticle,
+  groupEvaluatedArticle,
 } from '../../../src/domain-events';
 import { evaluatedArticles } from '../../../src/group-evaluations-page/evaluated-articles-list/evaluated-articles';
 import { arbitraryDate, arbitraryWord } from '../../helpers';
@@ -15,7 +15,7 @@ describe('evaluated-articles', () => {
     const groupId = arbitraryGroupId();
     const date = arbitraryDate();
     const events = [
-      editorialCommunityReviewedArticle(
+      groupEvaluatedArticle(
         groupId,
         articleId,
         arbitraryReviewId(),
@@ -59,13 +59,13 @@ describe('evaluated-articles', () => {
     const articleId = arbitraryDoi();
     const latestActivityDate = new Date('2020-01-01');
     const events = [
-      editorialCommunityReviewedArticle(
+      groupEvaluatedArticle(
         groupId,
         articleId,
         arbitraryReviewId(),
         new Date('1980-01-01'),
       ),
-      editorialCommunityReviewedArticle(
+      groupEvaluatedArticle(
         groupId,
         articleId,
         arbitraryReviewId(),
@@ -110,25 +110,25 @@ describe('evaluated-articles', () => {
     const articleId = arbitraryDoi();
     const mostRecentActivityDate = new Date('2021-03-10T00:00:00.000Z');
     const events = [
-      editorialCommunityReviewedArticle(
+      groupEvaluatedArticle(
         groupId,
         articleId,
         arbitraryReviewId(),
         new Date('2020-10-14T00:00:00.000Z'),
       ),
-      editorialCommunityReviewedArticle(
+      groupEvaluatedArticle(
         otherGroupId,
         articleId,
         arbitraryReviewId(),
         mostRecentActivityDate,
       ),
-      editorialCommunityReviewedArticle(
+      groupEvaluatedArticle(
         otherGroupId,
         articleId,
         arbitraryReviewId(),
         mostRecentActivityDate,
       ),
-      editorialCommunityReviewedArticle(
+      groupEvaluatedArticle(
         otherGroupId,
         articleId,
         arbitraryReviewId(),
@@ -165,13 +165,13 @@ describe('evaluated-articles', () => {
       const earlierDate = new Date('2019-09-06T00:00:00.000Z');
       const laterDate = new Date('2019-12-05T00:00:00.000Z');
       const events = [
-        editorialCommunityReviewedArticle(
+        groupEvaluatedArticle(
           groupId,
           arbitraryDoi(),
           arbitraryReviewId(),
           earlierDate,
         ),
-        editorialCommunityReviewedArticle(
+        groupEvaluatedArticle(
           groupId,
           arbitraryDoi(),
           arbitraryReviewId(),
@@ -198,19 +198,19 @@ describe('evaluated-articles', () => {
       const articleMostRecentlyReviewedByThisGroup = arbitraryDoi();
       const articleThatWasMoreRecentlyReviewedButByAnotherGroup = arbitraryDoi();
       const events = [
-        editorialCommunityReviewedArticle(
+        groupEvaluatedArticle(
           thisGroupId,
           articleThatWasMoreRecentlyReviewedButByAnotherGroup,
           arbitraryReviewId(),
           new Date('1980-01-01'),
         ),
-        editorialCommunityReviewedArticle(
+        groupEvaluatedArticle(
           thisGroupId,
           articleMostRecentlyReviewedByThisGroup,
           arbitraryReviewId(),
           new Date('2000-01-01'),
         ),
-        editorialCommunityReviewedArticle(
+        groupEvaluatedArticle(
           anotherGroupId,
           articleThatWasMoreRecentlyReviewedButByAnotherGroup,
           arbitraryReviewId(),
@@ -236,7 +236,7 @@ describe('evaluated-articles', () => {
       const thisGroupId = arbitraryGroupId();
       const anotherGroupId = arbitraryGroupId();
       const events = [
-        editorialCommunityReviewedArticle(
+        groupEvaluatedArticle(
           anotherGroupId,
           arbitraryDoi(),
           arbitraryReviewId(),
@@ -254,7 +254,7 @@ describe('evaluated-articles', () => {
     const numberOfEvents = 15000;
 
     const events = (
-      [...Array(numberOfEvents)].map(() => editorialCommunityReviewedArticle(
+      [...Array(numberOfEvents)].map(() => groupEvaluatedArticle(
         arbitraryGroupId(),
         arbitraryDoi(),
         arbitraryReviewId(),

@@ -1,13 +1,13 @@
 import { DomainEvent } from './domain-event';
-import { EditorialCommunityReviewedArticleEvent } from './editorial-community-reviewed-article-event';
+import { GroupEvaluatedArticleEvent } from './group-evaluated-article-event';
 import { UserFollowedEditorialCommunityEvent } from './user-followed-editorial-community-event';
 import { UserSavedArticleEvent } from './user-saved-article-event';
 import { UserUnfollowedEditorialCommunityEvent } from './user-unfollowed-editorial-community-event';
 import { UserUnsavedArticleEvent } from './user-unsaved-article-event';
 
-export const isEditorialCommunityReviewedArticleEvent = (event: DomainEvent):
-  event is EditorialCommunityReviewedArticleEvent => (
-  event.type === 'EditorialCommunityReviewedArticle'
+export const isGroupEvaluatedArticleEvent = (event: DomainEvent):
+  event is GroupEvaluatedArticleEvent => (
+  event.type === 'GroupEvaluatedArticle'
 );
 export const isUserFollowedEditorialCommunityEvent = (event: DomainEvent):
   event is UserFollowedEditorialCommunityEvent => (

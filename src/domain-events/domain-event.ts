@@ -1,4 +1,4 @@
-import { EditorialCommunityReviewedArticleEvent } from './editorial-community-reviewed-article-event';
+import { GroupEvaluatedArticleEvent } from './group-evaluated-article-event';
 import { UserFollowedEditorialCommunityEvent } from './user-followed-editorial-community-event';
 import { UserFoundReviewHelpfulEvent } from './user-found-review-helpful-event';
 import { UserFoundReviewNotHelpfulEvent } from './user-found-review-not-helpful-event';
@@ -9,7 +9,7 @@ import { UserUnfollowedEditorialCommunityEvent } from './user-unfollowed-editori
 import { UserUnsavedArticleEvent } from './user-unsaved-article-event';
 
 export type DomainEvent =
-  EditorialCommunityReviewedArticleEvent |
+  GroupEvaluatedArticleEvent |
   UserSavedArticleEvent |
   UserUnsavedArticleEvent |
   UserFollowedEditorialCommunityEvent |

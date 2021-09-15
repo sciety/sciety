@@ -7,8 +7,8 @@ import * as S from 'fp-ts/Semigroup';
 import { flow, pipe } from 'fp-ts/function';
 import * as N from 'fp-ts/number';
 import {
-  DomainEvent, EditorialCommunityReviewedArticleEvent,
-  isEditorialCommunityReviewedArticleEvent,
+  DomainEvent, GroupEvaluatedArticleEvent,
+  isGroupEvaluatedArticleEvent,
 } from '../../domain-events';
 import { ArticleActivity } from '../../types/article-activity';
 import { Doi } from '../../types/doi';
@@ -27,13 +27,13 @@ const semigroupActivityDetails: S.Semigroup<ActivityDetails> = S.struct({
 });
 
 const eventToActivityDetails = (
-  event: EditorialCommunityReviewedArticleEvent,
+  event: GroupEvaluatedArticleEvent,
   groupId: GroupId,
 ): ActivityDetails => ({
   latestActivityDate: event.date,
   latestActivityByGroup: pipe(
     event.date,
-    O.fromPredicate(() => event.editorialCommunityId === groupId),
+    O.fromPredicate(() => event.groupId === groupId),
   ),
   evaluationCount: 1,
 });
@@ -44,7 +44,7 @@ const combineActivityDetails = (a: ActivityDetails) => O.fold(
 );
 
 const updateActivity = (
-  event: EditorialCommunityReviewedArticleEvent,
+  event: GroupEvaluatedArticleEvent,
   groupId: GroupId,
 ) => pipe(
   eventToActivityDetails(event, groupId),
@@ -55,7 +55,7 @@ const addEventToActivities = (
   groupId: GroupId,
 ) => (
   activities: Map<string, ActivityDetails>,
-  event: EditorialCommunityReviewedArticleEvent,
+  event: GroupEvaluatedArticleEvent,
 ) => pipe(
   activities.get(event.articleId.value),
   O.fromNullable,
@@ -83,7 +83,7 @@ export const evaluatedArticles = (groupId: GroupId) => (
   events: ReadonlyArray<DomainEvent>,
 ): ReadonlyArray<ArticleActivity> => pipe(
   events,
-  RA.filter(isEditorialCommunityReviewedArticleEvent),
+  RA.filter(isGroupEvaluatedArticleEvent),
   RA.reduce(new Map(), addEventToActivities(groupId)),
   RM.filterMapWithIndex(flow(
     (key, activityDetails) => ({ ...activityDetails, doi: new Doi(key) }),

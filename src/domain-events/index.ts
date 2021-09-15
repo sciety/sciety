@@ -1,6 +1,6 @@
 export { DomainEvent } from './domain-event';
 export { RuntimeGeneratedEvent } from './runtime-generated-event';
-export { EditorialCommunityReviewedArticleEvent, editorialCommunityReviewedArticle } from './editorial-community-reviewed-article-event';
+export { GroupEvaluatedArticleEvent, groupEvaluatedArticle } from './group-evaluated-article-event';
 export { userFollowedEditorialCommunity, UserFollowedEditorialCommunityEvent } from './user-followed-editorial-community-event';
 export { UserFoundReviewHelpfulEvent, userFoundReviewHelpful } from './user-found-review-helpful-event';
 export { UserFoundReviewNotHelpfulEvent, userFoundReviewNotHelpful } from './user-found-review-not-helpful-event';
@@ -12,7 +12,7 @@ export { userUnsavedArticle, UserUnsavedArticleEvent } from './user-unsaved-arti
 export {
   isUserFollowedEditorialCommunityEvent,
   isUserUnfollowedEditorialCommunityEvent,
-  isEditorialCommunityReviewedArticleEvent,
+  isGroupEvaluatedArticleEvent,
   isUserUnsavedArticleEvent,
   isUserSavedArticleEvent,
 } from './type-guards';

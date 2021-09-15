@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { editorialCommunityReviewedArticle } from '../../src/domain-events';
+import { groupEvaluatedArticle } from '../../src/domain-events';
 import { getEvaluatedArticlesListDetails } from '../../src/group-page/get-evaluated-articles-list-details';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
@@ -28,8 +28,8 @@ describe('get-evaluated-articles-list-details', () => {
     const newerDate = new Date('2021-07-08');
     const result = pipe(
       [
-        editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
-        editorialCommunityReviewedArticle(groupId, arbitraryDoi(), arbitraryReviewId(), newerDate),
+        groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
+        groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId(), newerDate),
       ],
       getEvaluatedArticlesListDetails(groupId),
     );
@@ -48,8 +48,8 @@ describe('get-evaluated-articles-list-details', () => {
     const articleId = arbitraryDoi();
     const result = pipe(
       [
-        editorialCommunityReviewedArticle(groupId, articleId, arbitraryReviewId()),
-        editorialCommunityReviewedArticle(groupId, articleId, arbitraryReviewId(), newerDate),
+        groupEvaluatedArticle(groupId, articleId, arbitraryReviewId()),
+        groupEvaluatedArticle(groupId, articleId, arbitraryReviewId(), newerDate),
       ],
       getEvaluatedArticlesListDetails(groupId),
     );
@@ -66,7 +66,7 @@ describe('get-evaluated-articles-list-details', () => {
   describe('when a different group has evaluated some articles', () => {
     const result = pipe(
       [
-        editorialCommunityReviewedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
+        groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
       ],
       getEvaluatedArticlesListDetails(groupId),
     );

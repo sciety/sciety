@@ -1,7 +1,7 @@
 import { performance } from 'perf_hooks';
 import {
-  editorialCommunityReviewedArticle,
-  EditorialCommunityReviewedArticleEvent,
+  groupEvaluatedArticle,
+  GroupEvaluatedArticleEvent,
 } from '../../../src/domain-events';
 import { followedGroupsActivities } from '../../../src/my-feed-page/my-feed/followed-groups-activities';
 import { Doi } from '../../../src/types/doi';
@@ -14,8 +14,8 @@ import { arbitraryReviewId } from '../../types/review-id.helper';
 const generateNEventsForGroup = (
   numberOfEvents: number,
   groupId: GroupId,
-): ReadonlyArray<EditorialCommunityReviewedArticleEvent> => (
-  [...Array(numberOfEvents).keys()].map((i) => (editorialCommunityReviewedArticle(
+): ReadonlyArray<GroupEvaluatedArticleEvent> => (
+  [...Array(numberOfEvents).keys()].map((i) => (groupEvaluatedArticle(
     groupId,
     new Doi(`10.1101/${i}`),
     arbitraryReviewId(),
@@ -26,7 +26,7 @@ describe('followed-groups-activities', () => {
     const articleId = arbitraryDoi();
     const groupId = '4eebcec9-a4bb-44e1-bde3-2ae11e65daaa';
     const events = [
-      editorialCommunityReviewedArticle(
+      groupEvaluatedArticle(
         groupIdFromString(groupId),
         articleId,
         arbitraryReviewId(),
@@ -70,7 +70,7 @@ describe('followed-groups-activities', () => {
       const followedGroupId = arbitraryGroupId();
       const notFollowedGroupId = arbitraryGroupId();
       const events = [
-        editorialCommunityReviewedArticle(
+        groupEvaluatedArticle(
           notFollowedGroupId,
           arbitraryDoi(),
           arbitraryReviewId(),
@@ -89,13 +89,13 @@ describe('followed-groups-activities', () => {
     const articleId = arbitraryDoi();
     const latestActivityDate = new Date('2020-01-01');
     const events = [
-      editorialCommunityReviewedArticle(
+      groupEvaluatedArticle(
         groupId,
         articleId,
         arbitraryReviewId(),
         new Date('1980-01-01'),
       ),
-      editorialCommunityReviewedArticle(
+      groupEvaluatedArticle(
         groupId,
         articleId,
         arbitraryReviewId(),
@@ -139,25 +139,25 @@ describe('followed-groups-activities', () => {
     const otherGroupId = arbitraryGroupId();
     const articleId = arbitraryDoi();
     const events = [
-      editorialCommunityReviewedArticle(
+      groupEvaluatedArticle(
         groupId,
         articleId,
         arbitraryReviewId(),
         new Date('2020-10-14T00:00:00.000Z'),
       ),
-      editorialCommunityReviewedArticle(
+      groupEvaluatedArticle(
         otherGroupId,
         articleId,
         arbitraryReviewId(),
         new Date('2021-03-10T00:00:00.000Z'),
       ),
-      editorialCommunityReviewedArticle(
+      groupEvaluatedArticle(
         otherGroupId,
         articleId,
         arbitraryReviewId(),
         new Date('2021-03-10T00:00:00.000Z'),
       ),
-      editorialCommunityReviewedArticle(
+      groupEvaluatedArticle(
         otherGroupId,
         articleId,
         arbitraryReviewId(),
@@ -194,13 +194,13 @@ describe('followed-groups-activities', () => {
       const earlierDate = new Date('2019-09-06T00:00:00.000Z');
       const laterDate = new Date('2019-12-05T00:00:00.000Z');
       const events = [
-        editorialCommunityReviewedArticle(
+        groupEvaluatedArticle(
           groupId,
           arbitraryDoi(),
           arbitraryReviewId(),
           earlierDate,
         ),
-        editorialCommunityReviewedArticle(
+        groupEvaluatedArticle(
           groupId,
           arbitraryDoi(),
           arbitraryReviewId(),
@@ -234,19 +234,19 @@ describe('followed-groups-activities', () => {
       const articleMostRecentlyReviewedByTheFollowedGroup = arbitraryDoi();
       const articleThatWasMoreRecentlyReviewedButByTheUnfollowedGroup = arbitraryDoi();
       const events = [
-        editorialCommunityReviewedArticle(
+        groupEvaluatedArticle(
           followedGroupId,
           articleThatWasMoreRecentlyReviewedButByTheUnfollowedGroup,
           arbitraryReviewId(),
           new Date('1980-01-01'),
         ),
-        editorialCommunityReviewedArticle(
+        groupEvaluatedArticle(
           followedGroupId,
           articleMostRecentlyReviewedByTheFollowedGroup,
           arbitraryReviewId(),
           new Date('2000-01-01'),
         ),
-        editorialCommunityReviewedArticle(
+        groupEvaluatedArticle(
           notFollowedGroupId,
           articleThatWasMoreRecentlyReviewedButByTheUnfollowedGroup,
           arbitraryReviewId(),
@@ -271,7 +271,7 @@ describe('followed-groups-activities', () => {
     const numberOfEvents = 15000;
 
     const events = (
-      [...Array(numberOfEvents)].map(() => editorialCommunityReviewedArticle(
+      [...Array(numberOfEvents)].map(() => groupEvaluatedArticle(
         arbitraryGroupId(),
         arbitraryDoi(),
         arbitraryReviewId(),

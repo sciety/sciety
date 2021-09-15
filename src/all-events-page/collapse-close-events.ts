@@ -1,5 +1,5 @@
 import { pipe } from 'fp-ts/function';
-import { DomainEvent, EditorialCommunityReviewedArticleEvent } from '../domain-events';
+import { DomainEvent, GroupEvaluatedArticleEvent } from '../domain-events';
 import { Doi } from '../types/doi';
 import { GroupId } from '../types/group-id';
 
@@ -29,23 +29,23 @@ const isCollapsedGroupEvaluatedMultipleArticles = (
 ): entry is CollapsedGroupEvaluatedMultipleArticles => entry.type === 'CollapsedGroupEvaluatedMultipleArticles';
 
 const isEditorialCommunityReviewedArticleEvent = (event: StateEntry):
-  event is EditorialCommunityReviewedArticleEvent => (
-  event.type === 'EditorialCommunityReviewedArticle'
+  event is GroupEvaluatedArticleEvent => (
+  event.type === 'GroupEvaluatedArticle'
 );
 
 const collapsesIntoPreviousEvent = (
-  state: ReadonlyArray<StateEntry>, event: EditorialCommunityReviewedArticleEvent,
+  state: ReadonlyArray<StateEntry>, event: GroupEvaluatedArticleEvent,
 ) => state.length && pipe(
   state[state.length - 1],
   (entry) => {
     if (isEditorialCommunityReviewedArticleEvent(entry)) {
-      return entry.editorialCommunityId === event.editorialCommunityId;
+      return entry.groupId === event.groupId;
     }
     if (isCollapsedGroupEvaluatedArticle(entry)) {
-      return entry.groupId === event.editorialCommunityId;
+      return entry.groupId === event.groupId;
     }
     if (isCollapsedGroupEvaluatedMultipleArticles(entry)) {
-      return entry.groupId === event.editorialCommunityId;
+      return entry.groupId === event.groupId;
     }
     return false;
   },
@@ -53,7 +53,7 @@ const collapsesIntoPreviousEvent = (
 
 const replaceWithCollapseEvent = (
   state: ReadonlyArray<StateEntry>,
-  event: EditorialCommunityReviewedArticleEvent,
+  event: GroupEvaluatedArticleEvent,
 ) => {
   const last = state[state.length - 1];
   const head = state.slice(0, -1);
@@ -62,14 +62,14 @@ const replaceWithCollapseEvent = (
       return [...head, {
         type: 'CollapsedGroupEvaluatedArticle' as const,
         articleId: last.articleId,
-        groupId: last.editorialCommunityId,
+        groupId: last.groupId,
         evaluationCount: 2,
         date: last.date,
       }];
     }
     return [...head, {
       type: 'CollapsedGroupEvaluatedMultipleArticles' as const,
-      groupId: last.editorialCommunityId,
+      groupId: last.groupId,
       articleCount: 2,
       date: last.date,
     }];

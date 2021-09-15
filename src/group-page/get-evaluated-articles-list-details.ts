@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RS from 'fp-ts/ReadonlySet';
 import { pipe } from 'fp-ts/function';
-import { DomainEvent, EditorialCommunityReviewedArticleEvent } from '../domain-events';
+import { DomainEvent, GroupEvaluatedArticleEvent } from '../domain-events';
 
 import { GroupId } from '../types/group-id';
 
@@ -17,8 +17,8 @@ export const getEvaluatedArticlesListDetails = (
   events: ReadonlyArray<DomainEvent>,
 ): ListDetails => pipe(
   events,
-  RA.filter((event): event is EditorialCommunityReviewedArticleEvent => event.type === 'EditorialCommunityReviewedArticle'),
-  RA.filter((event) => event.editorialCommunityId === groupId),
+  RA.filter((event): event is GroupEvaluatedArticleEvent => event.type === 'GroupEvaluatedArticle'),
+  RA.filter((event) => event.groupId === groupId),
   (evaluationEvents) => ({
     articleCount: pipe(
       evaluationEvents,

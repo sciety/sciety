@@ -1,7 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
-import { DomainEvent, isEditorialCommunityReviewedArticleEvent } from '../domain-events';
+import { DomainEvent, isGroupEvaluatedArticleEvent } from '../domain-events';
 import { Doi, eqDoi } from '../types/doi';
 import { GroupId } from '../types/group-id';
 import { ReviewId } from '../types/review-id';
@@ -17,11 +17,11 @@ type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 export const findReviewsForArticleDoi: FindReviewsForArticleDoi = (getAllEvents) => (articleDoi) => pipe(
   getAllEvents,
   T.map(flow(
-    RA.filter(isEditorialCommunityReviewedArticleEvent),
+    RA.filter(isGroupEvaluatedArticleEvent),
     RA.filter((event) => eqDoi.equals(event.articleId, articleDoi)),
     RA.map((event) => ({
       reviewId: event.reviewId,
-      groupId: event.editorialCommunityId,
+      groupId: event.groupId,
       occurredAt: event.date,
     })),
   )),
