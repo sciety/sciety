@@ -11,13 +11,6 @@ type CollapsedGroupEvaluatedArticle = {
   date: Date,
 };
 
-type CollapsedGroupEvaluatedMultipleArticles = {
-  type: 'CollapsedGroupEvaluatedMultipleArticles',
-  groupId: GroupId,
-  articleIds: Set<string>,
-  date: Date,
-};
-
 const collapsedGroupEvaluatedArticle = (
   last: GroupEvaluatedArticleEvent | CollapsedGroupEvaluatedArticle,
   evaluationCount: number,
@@ -27,6 +20,24 @@ const collapsedGroupEvaluatedArticle = (
   articleId: last.articleId,
   date: last.date,
   evaluationCount,
+});
+
+type CollapsedGroupEvaluatedMultipleArticles = {
+  type: 'CollapsedGroupEvaluatedMultipleArticles',
+  groupId: GroupId,
+  articleIds: Set<string>,
+  date: Date,
+};
+
+const collapsedGroupEvaluatedMultipleArticles = (
+  last: GroupEvaluatedArticleEvent | CollapsedGroupEvaluatedArticle | CollapsedGroupEvaluatedMultipleArticles,
+  articleIds: Set<string>,
+): CollapsedGroupEvaluatedMultipleArticles => ({
+  type: 'CollapsedGroupEvaluatedMultipleArticles',
+  groupId: last.groupId,
+  articleIds,
+  date: last.date,
+
 });
 
 type StateEntry = DomainEvent | CollapsedGroupEvaluatedArticle | CollapsedGroupEvaluatedMultipleArticles;
@@ -70,29 +81,16 @@ const replaceWithCollapseEvent = (
     if (event.articleId.value === last.articleId.value) {
       state.push(collapsedGroupEvaluatedArticle(last, 2));
     } else {
-      state.push({
-        type: 'CollapsedGroupEvaluatedMultipleArticles' as const,
-        groupId: last.groupId,
-        articleIds: new Set([last.articleId.value, event.articleId.value]),
-        date: last.date,
-      });
+      state.push(collapsedGroupEvaluatedMultipleArticles(last, new Set([last.articleId.value, event.articleId.value]));
     }
   } else if (isCollapsedGroupEvaluatedArticle(last)) {
     if (event.articleId.value === last.articleId.value) {
       state.push(collapsedGroupEvaluatedArticle(last, last.evaluationCount + 1));
     } else {
-      state.push({
-        type: 'CollapsedGroupEvaluatedMultipleArticles' as const,
-        groupId: last.groupId,
-        articleIds: new Set([last.articleId.value, event.articleId.value]),
-        date: last.date,
-      });
+      state.push(collapsedGroupEvaluatedMultipleArticles(last, new Set([last.articleId.value, event.articleId.value])));
     }
   } else if (isCollapsedGroupEvaluatedMultipleArticles(last)) {
-    state.push({
-      ...last,
-      articleIds: last.articleIds.add(event.articleId.value),
-    });
+    state.push(collapsedGroupEvaluatedMultipleArticles(last, last.articleIds.add(event.articleId.value)));
   }
 };
 
