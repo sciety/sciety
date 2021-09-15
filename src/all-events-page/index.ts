@@ -5,8 +5,9 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { collapseCloseEvents, CollapsedEvent } from './collapse-close-events';
+import { collapseCloseEvents, CollapsedEvent, isCollapsedGroupEvaluatedMultipleArticles } from './collapse-close-events';
 import { DomainEvent } from '../domain-events';
+import { templateDate } from '../shared-components/date';
 import { templateListItems } from '../shared-components/list-items';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
@@ -31,11 +32,21 @@ type Params = t.TypeOf<typeof allEventsCodec>;
 
 const pageSize = 20;
 
-const renderEvent = (event: DomainEvent | CollapsedEvent) => toHtmlFragment(`
-  <article class="all-events-card">
-    ${JSON.stringify(event, null, 2)}
-  </article>
-`);
+const renderEvent = (event: DomainEvent | CollapsedEvent) => {
+  if (isCollapsedGroupEvaluatedMultipleArticles(event)) {
+    return toHtmlFragment(`
+      <article class="all-events-card">
+        <span>${event.groupId} evaluated ${event.articleCount} articles. ${templateDate(event.date)}</span>
+      </article>
+    `);
+  }
+
+  return toHtmlFragment(`
+    <article class="all-events-card">
+      ${JSON.stringify(event, null, 2)}
+    </article>
+  `);
+};
 
 export const allEventsPage = (ports: Ports) => (params: Params): TE.TaskEither<RenderPageError, Page> => pipe(
   ports.getAllEvents,

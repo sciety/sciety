@@ -49,7 +49,7 @@ const isCollapsedGroupEvaluatedArticle = (
   entry: StateEntry,
 ): entry is CollapsedGroupEvaluatedArticle => entry.type === 'CollapsedGroupEvaluatedArticle';
 
-const isCollapsedGroupEvaluatedMultipleArticles = (
+export const isCollapsedGroupEvaluatedMultipleArticles = (
   entry: StateEntry,
 ): entry is CollapsedGroupEvaluatedMultipleArticles => entry.type === 'CollapsedGroupEvaluatedMultipleArticles';
 
