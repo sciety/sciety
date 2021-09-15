@@ -5,7 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { collapseCloseEvents } from './collapse-close-events';
+import { collapseCloseEvents, CollapsedEvent } from './collapse-close-events';
 import { DomainEvent } from '../domain-events';
 import { templateListItems } from '../shared-components/list-items';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -31,6 +31,12 @@ type Params = t.TypeOf<typeof allEventsCodec>;
 
 const pageSize = 20;
 
+const renderEvent = (event: DomainEvent | CollapsedEvent) => toHtmlFragment(`
+  <article class="all-events-card">
+    ${JSON.stringify(event, null, 2)}
+  </article>
+`);
+
 export const allEventsPage = (ports: Ports) => (params: Params): TE.TaskEither<RenderPageError, Page> => pipe(
   ports.getAllEvents,
   T.map(RA.reverse),
@@ -39,13 +45,7 @@ export const allEventsPage = (ports: Ports) => (params: Params): TE.TaskEither<R
     (params.page - 1) * pageSize,
     params.page * pageSize,
   )),
-  T.map(RA.map((event) => JSON.stringify(event, null, 2))),
-  T.map(RA.map((event) => `
-    <article class="all-events-card">
-      ${event}
-    </article>
-  `)),
-  T.map(RA.map(toHtmlFragment)),
+  T.map(RA.map(renderEvent)),
   T.map((items) => E.right({
     title: 'All events',
     content: renderContent(items),

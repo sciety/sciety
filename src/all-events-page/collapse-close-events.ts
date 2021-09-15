@@ -30,7 +30,9 @@ type CollapsedGroupEvaluatedMultipleArticles = {
   date: Date,
 };
 
-type StateEntry = DomainEvent | CollapsedGroupEvaluatedArticle | CollapsedGroupEvaluatedMultipleArticles;
+export type CollapsedEvent = CollapsedGroupEvaluatedArticle | CollapsedGroupEvaluatedMultipleArticles;
+
+type StateEntry = DomainEvent | CollapsedEvent;
 
 const collapsedGroupEvaluatedMultipleArticles = (
   last: GroupEvaluatedArticleEvent | CollapsedGroupEvaluatedArticle | CollapsedGroupEvaluatedMultipleArticles,
