@@ -47,6 +47,7 @@ const renderEvent = (getGroup: GetGroup) => (event: DomainEvent | CollapsedEvent
       getGroup,
       TO.map((group) => `
         <article class="all-events-card">
+          <img src="${group.avatarPath}" alt="" width="36" height="36">
           <span>${group.name} evaluated ${event.articleCount} articles. ${templateDate(event.date)}</span>
         </article>
       `),
