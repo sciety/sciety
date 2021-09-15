@@ -81,7 +81,7 @@ const replaceWithCollapseEvent = (
     if (event.articleId.value === last.articleId.value) {
       state.push(collapsedGroupEvaluatedArticle(last, 2));
     } else {
-      state.push(collapsedGroupEvaluatedMultipleArticles(last, new Set([last.articleId.value, event.articleId.value]));
+      state.push(collapsedGroupEvaluatedMultipleArticles(last, new Set([last.articleId.value, event.articleId.value])));
     }
   } else if (isCollapsedGroupEvaluatedArticle(last)) {
     if (event.articleId.value === last.articleId.value) {
