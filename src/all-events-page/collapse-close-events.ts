@@ -14,7 +14,7 @@ type CollapsedGroupEvaluatedArticle = {
 type CollapsedGroupEvaluatedMultipleArticles = {
   type: 'CollapsedGroupEvaluatedMultipleArticles',
   groupId: GroupId,
-  articleIds: ReadonlySet<string>,
+  articleIds: Set<string>,
   date: Date,
 };
 
@@ -55,49 +55,51 @@ const replaceWithCollapseEvent = (
   state: Array<StateEntry>,
   event: GroupEvaluatedArticleEvent,
 ) => {
-  const last = state[state.length - 1];
-  const head = state.slice(0, -1);
+  const last = state.pop();
+  if (!last) { return; }
   if (isEditorialCommunityReviewedArticleEvent(last)) {
     if (event.articleId.value === last.articleId.value) {
-      return [...head, {
+      state.push({
         type: 'CollapsedGroupEvaluatedArticle' as const,
         articleId: last.articleId,
         groupId: last.groupId,
         evaluationCount: 2,
         date: last.date,
-      }];
+      });
+      return;
     }
-    return [...head, {
+    state.push({
       type: 'CollapsedGroupEvaluatedMultipleArticles' as const,
       groupId: last.groupId,
       articleIds: new Set([last.articleId.value, event.articleId.value]),
       date: last.date,
-    }];
+    });
+    return;
   }
 
   if (isCollapsedGroupEvaluatedArticle(last)) {
     if (event.articleId.value === last.articleId.value) {
-      return [...head, {
+      state.push({
         ...last,
         evaluationCount: last.evaluationCount + 1,
-      }];
+      });
+      return;
     }
-    return [...head, {
+    state.push({
       type: 'CollapsedGroupEvaluatedMultipleArticles' as const,
       groupId: last.groupId,
       articleIds: new Set([last.articleId.value, event.articleId.value]),
       date: last.date,
-    }];
+    });
+    return;
   }
 
   if (isCollapsedGroupEvaluatedMultipleArticles(last)) {
-    return [...head, {
+    state.push({
       ...last,
-      articleIds: new Set([...last.articleIds, event.articleId.value]),
-    }];
+      articleIds: last.articleIds.add(event.articleId.value),
+    });
   }
-
-  return state;
 };
 
 const processEvent = (
@@ -105,9 +107,10 @@ const processEvent = (
 ) => {
   if (isEditorialCommunityReviewedArticleEvent(event)
     && collapsesIntoPreviousEvent(state, event)) {
-    return replaceWithCollapseEvent(state, event);
+    replaceWithCollapseEvent(state, event);
+  } else {
+    state.push(event);
   }
-  state.push(event);
   return state;
 };
 
