@@ -38,13 +38,11 @@ const collapsesIntoPreviousEvent = (
 ) => state.length && pipe(
   state[state.length - 1],
   (entry) => {
-    if (isEditorialCommunityReviewedArticleEvent(entry)) {
-      return entry.groupId === event.groupId;
-    }
-    if (isCollapsedGroupEvaluatedArticle(entry)) {
-      return entry.groupId === event.groupId;
-    }
-    if (isCollapsedGroupEvaluatedMultipleArticles(entry)) {
+    if (
+      isEditorialCommunityReviewedArticleEvent(entry)
+      || isCollapsedGroupEvaluatedArticle(entry)
+      || isCollapsedGroupEvaluatedMultipleArticles(entry)
+    ) {
       return entry.groupId === event.groupId;
     }
     return false;
@@ -66,35 +64,29 @@ const replaceWithCollapseEvent = (
         evaluationCount: 2,
         date: last.date,
       });
-      return;
+    } else {
+      state.push({
+        type: 'CollapsedGroupEvaluatedMultipleArticles' as const,
+        groupId: last.groupId,
+        articleIds: new Set([last.articleId.value, event.articleId.value]),
+        date: last.date,
+      });
     }
-    state.push({
-      type: 'CollapsedGroupEvaluatedMultipleArticles' as const,
-      groupId: last.groupId,
-      articleIds: new Set([last.articleId.value, event.articleId.value]),
-      date: last.date,
-    });
-    return;
-  }
-
-  if (isCollapsedGroupEvaluatedArticle(last)) {
+  } else if (isCollapsedGroupEvaluatedArticle(last)) {
     if (event.articleId.value === last.articleId.value) {
       state.push({
         ...last,
         evaluationCount: last.evaluationCount + 1,
       });
-      return;
+    } else {
+      state.push({
+        type: 'CollapsedGroupEvaluatedMultipleArticles' as const,
+        groupId: last.groupId,
+        articleIds: new Set([last.articleId.value, event.articleId.value]),
+        date: last.date,
+      });
     }
-    state.push({
-      type: 'CollapsedGroupEvaluatedMultipleArticles' as const,
-      groupId: last.groupId,
-      articleIds: new Set([last.articleId.value, event.articleId.value]),
-      date: last.date,
-    });
-    return;
-  }
-
-  if (isCollapsedGroupEvaluatedMultipleArticles(last)) {
+  } else if (isCollapsedGroupEvaluatedMultipleArticles(last)) {
     state.push({
       ...last,
       articleIds: last.articleIds.add(event.articleId.value),
