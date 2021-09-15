@@ -18,6 +18,17 @@ type CollapsedGroupEvaluatedMultipleArticles = {
   date: Date,
 };
 
+const collapsedGroupEvaluatedArticle = (
+  last: GroupEvaluatedArticleEvent | CollapsedGroupEvaluatedArticle,
+  evaluationCount: number,
+): CollapsedGroupEvaluatedArticle => ({
+  type: 'CollapsedGroupEvaluatedArticle',
+  groupId: last.groupId,
+  articleId: last.articleId,
+  date: last.date,
+  evaluationCount,
+});
+
 type StateEntry = DomainEvent | CollapsedGroupEvaluatedArticle | CollapsedGroupEvaluatedMultipleArticles;
 
 const isCollapsedGroupEvaluatedArticle = (
@@ -57,13 +68,7 @@ const replaceWithCollapseEvent = (
   if (!last) { return; }
   if (isGroupEvaluatedArticleEvent(last)) {
     if (event.articleId.value === last.articleId.value) {
-      state.push({
-        type: 'CollapsedGroupEvaluatedArticle' as const,
-        articleId: last.articleId,
-        groupId: last.groupId,
-        evaluationCount: 2,
-        date: last.date,
-      });
+      state.push(collapsedGroupEvaluatedArticle(last, 2));
     } else {
       state.push({
         type: 'CollapsedGroupEvaluatedMultipleArticles' as const,
@@ -74,10 +79,7 @@ const replaceWithCollapseEvent = (
     }
   } else if (isCollapsedGroupEvaluatedArticle(last)) {
     if (event.articleId.value === last.articleId.value) {
-      state.push({
-        ...last,
-        evaluationCount: last.evaluationCount + 1,
-      });
+      state.push(collapsedGroupEvaluatedArticle(last, last.evaluationCount + 1));
     } else {
       state.push({
         type: 'CollapsedGroupEvaluatedMultipleArticles' as const,
