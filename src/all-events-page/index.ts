@@ -40,7 +40,13 @@ type Params = t.TypeOf<typeof allEventsCodec>;
 
 const pageSize = 20;
 
-const renderEvent = (getGroup: GetGroup) => (event: DomainEvent | CollapsedEvent): TO.TaskOption<HtmlFragment> => {
+const renderGenericEvent = (event: DomainEvent | CollapsedEvent) => toHtmlFragment(`
+  <article class="all-events-card">
+    ${JSON.stringify(event, null, 2)}
+  </article>
+`);
+
+const eventCard = (getGroup: GetGroup) => (event: DomainEvent | CollapsedEvent): TO.TaskOption<HtmlFragment> => {
   if (isCollapsedGroupEvaluatedMultipleArticles(event)) {
     return pipe(
       event.groupId,
@@ -55,11 +61,7 @@ const renderEvent = (getGroup: GetGroup) => (event: DomainEvent | CollapsedEvent
     );
   }
 
-  return TO.of(toHtmlFragment(`
-    <article class="all-events-card">
-      ${JSON.stringify(event, null, 2)}
-    </article>
-  `));
+  return TO.of(renderGenericEvent(event));
 };
 
 export const allEventsPage = (ports: Ports) => (params: Params): TE.TaskEither<RenderPageError, Page> => pipe(
@@ -70,7 +72,7 @@ export const allEventsPage = (ports: Ports) => (params: Params): TE.TaskEither<R
     (params.page - 1) * pageSize,
     params.page * pageSize,
   )),
-  T.chain(TO.traverseArray(renderEvent(ports.getGroup))),
+  T.chain(TO.traverseArray(eventCard(ports.getGroup))),
   T.map(O.fold(
     () => E.left({ type: DE.unavailable, message: toHtmlFragment('invalid groupId') }),
     (items) => E.right({
