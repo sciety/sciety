@@ -60,11 +60,14 @@ describe('collapse-close-events', () => {
   describe('given consecutive events in which the same group evaluated different articles', () => {
     it('collapses into one feed item', () => {
       const groupId = arbitraryGroupId();
+      const articleId1 = arbitraryDoi();
+      const articleId2 = arbitraryDoi();
+      const articleId3 = arbitraryDoi();
 
       const events = [
-        groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
-        groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
-        groupEvaluatedArticle(groupId, arbitraryDoi(), arbitraryReviewId()),
+        groupEvaluatedArticle(groupId, articleId1, arbitraryReviewId()),
+        groupEvaluatedArticle(groupId, articleId2, arbitraryReviewId()),
+        groupEvaluatedArticle(groupId, articleId3, arbitraryReviewId()),
       ];
       const result = pipe(
         events,
@@ -74,14 +77,14 @@ describe('collapse-close-events', () => {
       expect(result).toStrictEqual([{
         type: 'CollapsedGroupEvaluatedMultipleArticles',
         groupId,
-        articleCount: 3,
+        articleIds: new Set([articleId1.value, articleId2.value, articleId3.value]),
         date: expect.any(Date),
       }]);
     });
   });
 
   describe('given two consecutive series of events in which the same group evaluated two different articles', () => {
-    it.skip('collapses into one feed item', () => {
+    it('collapses into one feed item', () => {
       const groupId = arbitraryGroupId();
       const firstArticleId = arbitraryDoi();
       const secondArticleId = arbitraryDoi();
@@ -100,7 +103,7 @@ describe('collapse-close-events', () => {
         {
           type: 'CollapsedGroupEvaluatedMultipleArticles',
           groupId,
-          articleCount: 2,
+          articleIds: new Set([firstArticleId.value, secondArticleId.value]),
           date: expect.any(Date),
         },
       ]);
@@ -108,7 +111,7 @@ describe('collapse-close-events', () => {
   });
 
   describe('given a group reviewing article 1 twice, then article 2 once, and then article 1 again', () => {
-    it.skip('collapses into one feed item', () => {
+    it('collapses into one feed item', () => {
       const groupId = arbitraryGroupId();
       const firstArticleId = arbitraryDoi();
       const secondArticleId = arbitraryDoi();
@@ -127,7 +130,7 @@ describe('collapse-close-events', () => {
         {
           type: 'CollapsedGroupEvaluatedMultipleArticles',
           groupId,
-          articleCount: 2,
+          articleIds: new Set([firstArticleId.value, secondArticleId.value]),
           date: expect.any(Date),
         },
       ]);

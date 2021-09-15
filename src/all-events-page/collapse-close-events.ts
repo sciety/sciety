@@ -14,7 +14,7 @@ type CollapsedGroupEvaluatedArticle = {
 type CollapsedGroupEvaluatedMultipleArticles = {
   type: 'CollapsedGroupEvaluatedMultipleArticles',
   groupId: GroupId,
-  articleCount: number,
+  articleIds: ReadonlySet<string>,
   date: Date,
 };
 
@@ -70,7 +70,7 @@ const replaceWithCollapseEvent = (
     return [...head, {
       type: 'CollapsedGroupEvaluatedMultipleArticles' as const,
       groupId: last.groupId,
-      articleCount: 2,
+      articleIds: new Set([last.articleId.value, event.articleId.value]),
       date: last.date,
     }];
   }
@@ -85,7 +85,7 @@ const replaceWithCollapseEvent = (
     return [...head, {
       type: 'CollapsedGroupEvaluatedMultipleArticles' as const,
       groupId: last.groupId,
-      articleCount: 2,
+      articleIds: new Set([last.articleId.value, event.articleId.value]),
       date: last.date,
     }];
   }
@@ -93,7 +93,7 @@ const replaceWithCollapseEvent = (
   if (isCollapsedGroupEvaluatedMultipleArticles(last)) {
     return [...head, {
       ...last,
-      articleCount: last.articleCount + 1,
+      articleIds: new Set([...last.articleIds, event.articleId.value]),
     }];
   }
 
