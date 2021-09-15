@@ -52,7 +52,7 @@ const collapsesIntoPreviousEvent = (
 );
 
 const replaceWithCollapseEvent = (
-  state: ReadonlyArray<StateEntry>,
+  state: Array<StateEntry>,
   event: GroupEvaluatedArticleEvent,
 ) => {
   const last = state[state.length - 1];
@@ -101,12 +101,16 @@ const replaceWithCollapseEvent = (
 };
 
 const processEvent = (
-  state: ReadonlyArray<StateEntry>, event: DomainEvent,
-) => (isEditorialCommunityReviewedArticleEvent(event)
-    && collapsesIntoPreviousEvent(state, event)
-  ? replaceWithCollapseEvent(state, event)
-  : [...state, event]);
+  state: Array<StateEntry>, event: DomainEvent,
+) => {
+  if (isEditorialCommunityReviewedArticleEvent(event)
+    && collapsesIntoPreviousEvent(state, event)) {
+    return replaceWithCollapseEvent(state, event);
+  }
+  state.push(event);
+  return state;
+};
 
 export const collapseCloseEvents = (
   events: ReadonlyArray<DomainEvent>,
-): ReadonlyArray<StateEntry> => events.reduce(processEvent, []);
+): Array<StateEntry> => events.reduce(processEvent, []);
