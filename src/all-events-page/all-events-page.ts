@@ -18,6 +18,7 @@ import { isGroupEvaluatedArticleEvent } from '../domain-events/type-guards';
 import { templateDate } from '../shared-components/date';
 import { templateListItems } from '../shared-components/list-items';
 import * as DE from '../types/data-error';
+import { Doi } from '../types/doi';
 import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -35,9 +36,14 @@ export const allEventsCodec = t.type({
   page: tt.withFallback(tt.NumberFromString, 1),
 });
 
+type FetchArticle = (doi: Doi) => TE.TaskEither<DE.DataError, {
+  title: HtmlFragment,
+}>;
+
 type GetGroup = (id: GroupId) => TO.TaskOption<Group>;
 
 type Ports = {
+  fetchArticle: FetchArticle,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
   getGroup: GetGroup,
 };
@@ -54,6 +60,7 @@ const renderGenericEvent = (event: DomainEvent | CollapsedEvent) => toHtmlFragme
 
 const eventCard = (
   getGroup: GetGroup,
+  fetchArticle: FetchArticle,
 ) => (
   event: DomainEvent | CollapsedEvent,
 ): TE.TaskEither<DE.DataError, HtmlFragment> => {
@@ -80,7 +87,10 @@ const eventCard = (
           getGroup,
           T.map(E.fromOption(constant(DE.unavailable))),
         ),
-        article: TE.right({ title: toHtmlFragment('An article title') }),
+        article: pipe(
+          event.articleId,
+          fetchArticle,
+        ),
       },
       sequenceS(TE.ApplyPar),
       TE.map(({ group, article }) => `
@@ -105,7 +115,7 @@ export const allEventsPage = (ports: Ports) => (params: Params): TE.TaskEither<R
     (params.page - 1) * params.pageSize,
     params.page * params.pageSize,
   )),
-  T.chain(TE.traverseArray(eventCard(ports.getGroup))),
+  T.chain(TE.traverseArray(eventCard(ports.getGroup, ports.fetchArticle))),
   TE.bimap(
     () => ({ type: DE.unavailable, message: toHtmlFragment('invalid groupId') }),
     (items) => ({
