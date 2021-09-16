@@ -12,7 +12,24 @@ import { arbitraryGroup } from '../types/group.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 
 describe('all-events-page', () => {
-  it.todo('renders collapsed single article evaluated events as a single card');
+  it.skip('renders collapsed single article evaluated events as a single card', async () => {
+    const group = arbitraryGroup();
+    const articleId = arbitraryDoi();
+    const ports = {
+      getGroup: () => TO.some(group),
+      getAllEvents: T.of([
+        groupEvaluatedArticle(group.id, articleId, arbitraryReviewId()),
+        groupEvaluatedArticle(group.id, articleId, arbitraryReviewId()),
+      ]),
+    };
+    const renderedPage = await pipe(
+      allEventsPage(ports)({ page: 1, pageSize: 20 }),
+      T.map(E.getOrElseW(shouldNotBeCalled)),
+      T.map((page) => page.content),
+    )();
+
+    expect(renderedPage).toContain(`${group.name} evaluated an article`);
+  });
 
   it('renders collapsed multiple article evaluated events as a single card', async () => {
     const group = arbitraryGroup();
