@@ -49,7 +49,23 @@ describe('all-events-page', () => {
     expect(renderedPage).toContain(`${group.name} evaluated 2 articles`);
   });
 
-  it.todo('renders a single evaluation as a card');
+  it('renders a single evaluation as a card', async () => {
+    const group = arbitraryGroup();
+    const articleId = arbitraryDoi();
+    const ports = {
+      getGroup: () => TO.some(group),
+      getAllEvents: T.of([
+        groupEvaluatedArticle(group.id, articleId, arbitraryReviewId()),
+      ]),
+    };
+    const renderedPage = await pipe(
+      allEventsPage(ports)({ page: 1, pageSize: 20 }),
+      T.map(E.getOrElseW(shouldNotBeCalled)),
+      T.map((page) => page.content),
+    )();
+
+    expect(renderedPage).toContain(`${group.name} evaluated an article`);
+  });
 
   it('renders at most a page of cards at a time', async () => {
     const events = [

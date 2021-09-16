@@ -14,6 +14,7 @@ import {
   isCollapsedGroupEvaluatedMultipleArticles,
 } from './collapse-close-events';
 import { DomainEvent } from '../domain-events';
+import { isGroupEvaluatedArticleEvent } from '../domain-events/type-guards';
 import { templateDate } from '../shared-components/date';
 import { templateListItems } from '../shared-components/list-items';
 import * as DE from '../types/data-error';
@@ -66,7 +67,7 @@ const eventCard = (getGroup: GetGroup) => (event: DomainEvent | CollapsedEvent):
     );
   }
 
-  if (isCollapsedGroupEvaluatedArticle(event)) {
+  if (isCollapsedGroupEvaluatedArticle(event) || isGroupEvaluatedArticleEvent(event)) {
     return pipe(
       event.groupId,
       getGroup,
