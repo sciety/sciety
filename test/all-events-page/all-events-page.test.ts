@@ -1,10 +1,12 @@
 import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import { allEventsPage } from '../../src/all-events-page/all-events-page';
 import { groupEvaluatedArticle } from '../../src/domain-events';
+import { arbitraryHtmlFragment } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryDoi } from '../types/doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
@@ -12,10 +14,14 @@ import { arbitraryGroup } from '../types/group.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 
 describe('all-events-page', () => {
-  it('renders collapsed single article evaluated events as a single card', async () => {
+  it.skip('renders collapsed single article evaluated events as a single card', async () => {
     const group = arbitraryGroup();
     const articleId = arbitraryDoi();
+    const articleTitle = arbitraryHtmlFragment();
     const ports = {
+      fetchArticle: () => TE.right({
+        title: articleTitle,
+      }),
       getGroup: () => TO.some(group),
       getAllEvents: T.of([
         groupEvaluatedArticle(group.id, articleId, arbitraryReviewId()),
@@ -29,6 +35,7 @@ describe('all-events-page', () => {
     )();
 
     expect(renderedPage).toContain(`${group.name} evaluated an article`);
+    expect(renderedPage).toContain(articleTitle);
   });
 
   it('renders collapsed multiple article evaluated events as a single card', async () => {
