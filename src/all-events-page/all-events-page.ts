@@ -1,10 +1,10 @@
+import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
-import { pipe } from 'fp-ts/function';
+import { constant, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import {
@@ -52,7 +52,11 @@ const renderGenericEvent = (event: DomainEvent | CollapsedEvent) => toHtmlFragme
   </article>
 `);
 
-const eventCard = (getGroup: GetGroup) => (event: DomainEvent | CollapsedEvent): TO.TaskOption<HtmlFragment> => {
+const eventCard = (
+  getGroup: GetGroup,
+) => (
+  event: DomainEvent | CollapsedEvent,
+): TE.TaskEither<DE.DataError, HtmlFragment> => {
   if (isCollapsedGroupEvaluatedMultipleArticles(event)) {
     return pipe(
       event.groupId,
@@ -64,24 +68,33 @@ const eventCard = (getGroup: GetGroup) => (event: DomainEvent | CollapsedEvent):
         </article>
       `),
       TO.map(toHtmlFragment),
+      T.map(E.fromOption(constant(DE.unavailable))),
     );
   }
 
   if (isCollapsedGroupEvaluatedArticle(event) || isGroupEvaluatedArticleEvent(event)) {
     return pipe(
-      event.groupId,
-      getGroup,
-      TO.map((group) => `
+      {
+        group: pipe(
+          event.groupId,
+          getGroup,
+          T.map(E.fromOption(constant(DE.unavailable))),
+        ),
+        article: TE.right({ title: toHtmlFragment('An article title') }),
+      },
+      sequenceS(TE.ApplyPar),
+      TE.map(({ group, article }) => `
         <article class="all-events-card">
           <img src="${group.avatarPath}" alt="" width="36" height="36">
           <span>${group.name} evaluated an article. ${templateDate(event.date)}</span>
+          ${article.title}
         </article>
       `),
-      TO.map(toHtmlFragment),
+      TE.map(toHtmlFragment),
     );
   }
 
-  return TO.of(renderGenericEvent(event));
+  return TE.right(renderGenericEvent(event));
 };
 
 export const allEventsPage = (ports: Ports) => (params: Params): TE.TaskEither<RenderPageError, Page> => pipe(
@@ -92,12 +105,12 @@ export const allEventsPage = (ports: Ports) => (params: Params): TE.TaskEither<R
     (params.page - 1) * params.pageSize,
     params.page * params.pageSize,
   )),
-  T.chain(TO.traverseArray(eventCard(ports.getGroup))),
-  T.map(O.fold(
-    () => E.left({ type: DE.unavailable, message: toHtmlFragment('invalid groupId') }),
-    (items) => E.right({
+  T.chain(TE.traverseArray(eventCard(ports.getGroup))),
+  TE.bimap(
+    () => ({ type: DE.unavailable, message: toHtmlFragment('invalid groupId') }),
+    (items) => ({
       title: 'All events',
       content: renderContent(items),
     }),
-  )),
+  ),
 );
