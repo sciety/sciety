@@ -2,10 +2,12 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
+import { JSDOM } from 'jsdom';
 import { allEventsPage } from '../../src/all-events-page/all-events-page';
 import { groupEvaluatedArticle } from '../../src/domain-events';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryDoi } from '../types/doi.helper';
+import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryGroup } from '../types/group.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 
@@ -22,7 +24,7 @@ describe('all-events-page', () => {
       ]),
     };
     const renderedPage = await pipe(
-      allEventsPage(ports)({ page: 1 }),
+      allEventsPage(ports)({ page: 1, pageSize: 20 }),
       T.map(E.getOrElseW(shouldNotBeCalled)),
       T.map((page) => page.content),
     )();
@@ -32,5 +34,25 @@ describe('all-events-page', () => {
 
   it.todo('renders a single evaluation as a card');
 
-  it.todo('renders at most 20 cards at a time');
+  it('renders at most a page of cards at a time', async () => {
+    const events = [
+      groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
+      groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
+      groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
+    ];
+    const ports = {
+      getGroup: () => TO.some(arbitraryGroup()),
+      getAllEvents: T.of(events),
+    };
+    const pageSize = events.length - 1;
+    const renderedPage = await pipe(
+      allEventsPage(ports)({ page: 1, pageSize }),
+      T.map(E.getOrElseW(shouldNotBeCalled)),
+      T.map((page) => page.content),
+    )();
+    const html = JSDOM.fragment(renderedPage);
+    const itemCount = Array.from(html.querySelectorAll('.all-events-card')).length;
+
+    expect(itemCount).toStrictEqual(pageSize);
+  });
 });

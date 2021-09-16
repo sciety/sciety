@@ -36,9 +36,9 @@ type Ports = {
   getGroup: GetGroup,
 };
 
-type Params = t.TypeOf<typeof allEventsCodec>;
-
-const pageSize = 20;
+type Params = t.TypeOf<typeof allEventsCodec> & {
+  pageSize: number,
+};
 
 const renderGenericEvent = (event: DomainEvent | CollapsedEvent) => toHtmlFragment(`
   <article class="all-events-card">
@@ -69,8 +69,8 @@ export const allEventsPage = (ports: Ports) => (params: Params): TE.TaskEither<R
   T.map(RA.reverse),
   T.map(collapseCloseEvents),
   T.map((events) => events.slice(
-    (params.page - 1) * pageSize,
-    params.page * pageSize,
+    (params.page - 1) * params.pageSize,
+    params.page * params.pageSize,
   )),
   T.chain(TO.traverseArray(eventCard(ports.getGroup))),
   T.map(O.fold(

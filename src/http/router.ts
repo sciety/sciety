@@ -134,7 +134,13 @@ export const createRouter = (adapters: Adapters): Router => {
     '/all-events',
     pageHandler(flow(
       allEventsCodec.decode,
-      E.mapLeft(toNotFound),
+      E.bimap(
+        toNotFound,
+        (params) => ({
+          ...params,
+          pageSize: 20,
+        }),
+      ),
       TE.fromEither,
       TE.chain(allEventsPage(adapters)),
     )),
