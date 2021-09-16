@@ -10,10 +10,11 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import {
   collapseCloseEvents,
-  CollapsedEvent, CollapsedGroupEvaluatedArticle, CollapsedGroupEvaluatedMultipleArticles,
+  CollapsedEvent, CollapsedGroupEvaluatedArticle,
   isCollapsedGroupEvaluatedArticle,
   isCollapsedGroupEvaluatedMultipleArticles,
 } from './collapse-close-events';
+import { multipleArticlesCard } from './multiple-articles-card';
 import { DomainEvent, GroupEvaluatedArticleEvent, isGroupEvaluatedArticleEvent } from '../domain-events';
 import { templateDate } from '../shared-components/date';
 import { templateListItems } from '../shared-components/list-items';
@@ -58,19 +59,6 @@ const renderGenericEvent = (event: DomainEvent | CollapsedEvent) => toHtmlFragme
     ${JSON.stringify(event, null, 2)}
   </article>
 `);
-
-const multipleArticlesCard = (getGroup: GetGroup) => (event: CollapsedGroupEvaluatedMultipleArticles) => pipe(
-  event.groupId,
-  getGroup,
-  TO.map((group) => `
-        <article class="all-events-card">
-          <img src="${group.avatarPath}" alt="" width="36" height="36">
-          <span>${group.name} evaluated ${event.articleCount} articles. ${templateDate(event.date)}</span>
-        </article>
-      `),
-  TO.map(toHtmlFragment),
-  T.map(E.fromOption(constant(DE.unavailable))),
-);
 
 const evaluatedArticleCard = (
   getGroup: GetGroup,
@@ -120,7 +108,10 @@ const eventCard = (
   event: DomainEvent | CollapsedEvent,
 ): TE.TaskEither<DE.DataError, HtmlFragment> => {
   if (isCollapsedGroupEvaluatedMultipleArticles(event)) {
-    return multipleArticlesCard(getGroup)(event);
+    return pipe(
+      event,
+      multipleArticlesCard(getGroup),
+    );
   }
 
   if (isCollapsedGroupEvaluatedArticle(event) || isGroupEvaluatedArticleEvent(event)) {

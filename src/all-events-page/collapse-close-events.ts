@@ -1,4 +1,5 @@
 import { pipe } from 'fp-ts/function';
+import { MultipleArticlesCard } from './multiple-articles-card';
 import { DomainEvent, GroupEvaluatedArticleEvent } from '../domain-events';
 import { Doi } from '../types/doi';
 import { GroupId } from '../types/group-id';
@@ -22,12 +23,8 @@ const collapsedGroupEvaluatedArticle = (
   evaluationCount,
 });
 
-export type CollapsedGroupEvaluatedMultipleArticles = {
-  type: 'CollapsedGroupEvaluatedMultipleArticles',
-  groupId: GroupId,
+type CollapsedGroupEvaluatedMultipleArticles = MultipleArticlesCard & {
   articleIds: Set<string>,
-  articleCount: number,
-  date: Date,
 };
 
 export type CollapsedEvent = CollapsedGroupEvaluatedArticle | CollapsedGroupEvaluatedMultipleArticles;
