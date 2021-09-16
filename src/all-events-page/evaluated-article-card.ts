@@ -16,7 +16,8 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 type GetGroup = (id: GroupId) => TO.TaskOption<Group>;
 
-type FetchArticle = (doi: Doi) => TE.TaskEither<DE.DataError, {
+export type FetchArticle = (doi: Doi) => TE.TaskEither<DE.DataError, {
+  doi: Doi,
   title: HtmlFragment,
   authors: ReadonlyArray<string>,
 }>;
@@ -61,15 +62,17 @@ export const evaluatedArticleCard = (
     ),
   })),
   TE.map(({ group, article, authors }) => `
-    <article class="all-events-card">
-      <img src="${group.avatarPath}" alt="" width="36" height="36">
-      <div>
-        <h3>${group.name} evaluated an article</h3>
-        <h4>${article.title}</h4>
-        ${authors}
-      </div>
-      ${templateDate(event.date)}
-    </article>
+    <a href="/articles/${article.doi.value}">
+      <article class="all-events-card">
+        <img src="${group.avatarPath}" alt="" width="36" height="36">
+        <div>
+          <h3>${group.name} evaluated an article</h3>
+          <h4>${article.title}</h4>
+          ${authors}
+        </div>
+        ${templateDate(event.date)}
+      </article>
+    </a>
   `),
   TE.map(toHtmlFragment),
 );

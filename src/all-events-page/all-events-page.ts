@@ -11,12 +11,11 @@ import {
   isCollapsedGroupEvaluatedArticle,
   isCollapsedGroupEvaluatedMultipleArticles,
 } from './collapse-close-events';
-import { evaluatedArticleCard } from './evaluated-article-card';
+import { evaluatedArticleCard, FetchArticle } from './evaluated-article-card';
 import { multipleArticlesCard } from './multiple-articles-card';
 import { DomainEvent, isGroupEvaluatedArticleEvent } from '../domain-events';
 import { templateListItems } from '../shared-components/list-items';
 import * as DE from '../types/data-error';
-import { Doi } from '../types/doi';
 import { Group } from '../types/group';
 import { GroupId } from '../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
@@ -33,11 +32,6 @@ const renderContent = (items: ReadonlyArray<HtmlFragment>) => toHtmlFragment(`
 export const allEventsCodec = t.type({
   page: tt.withFallback(tt.NumberFromString, 1),
 });
-
-type FetchArticle = (doi: Doi) => TE.TaskEither<DE.DataError, {
-  title: HtmlFragment,
-  authors: ReadonlyArray<string>,
-}>;
 
 type GetGroup = (id: GroupId) => TO.TaskOption<Group>;
 

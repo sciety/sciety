@@ -20,6 +20,7 @@ describe('all-events-page', () => {
     const articleTitle = arbitraryHtmlFragment();
     const ports = {
       fetchArticle: () => TE.right({
+        doi: arbitraryDoi(),
         title: articleTitle,
         authors: [],
       }),
@@ -43,6 +44,7 @@ describe('all-events-page', () => {
     const group = arbitraryGroup();
     const ports = {
       fetchArticle: () => TE.right({
+        doi: arbitraryDoi(),
         title: arbitraryHtmlFragment(),
         authors: [],
       }),
@@ -66,6 +68,7 @@ describe('all-events-page', () => {
     const articleId = arbitraryDoi();
     const ports = {
       fetchArticle: () => TE.right({
+        doi: arbitraryDoi(),
         title: arbitraryHtmlFragment(),
         authors: [],
       }),
@@ -91,6 +94,7 @@ describe('all-events-page', () => {
     ];
     const ports = {
       fetchArticle: () => TE.right({
+        doi: arbitraryDoi(),
         title: arbitraryHtmlFragment(),
         authors: [],
       }),
