@@ -24,7 +24,7 @@ import { redirectUserIdToHandle } from './redirects/redirect-user-id-to-handle';
 import { redirectAfterAuthenticating, requireAuthentication } from './require-authentication';
 import { robots } from './robots';
 import { aboutPage } from '../about-page';
-import { allEventsCodec, allEventsPage } from '../all-events-page';
+import { allEventsCodec, allEventsPage } from '../all-events-page/all-events-page';
 import { articleActivityPage, articleMetaPage } from '../article-page';
 import { generateDocmap, hardcodedReviewCommonsDocmap } from '../docmaps/docmap';
 import { paramsCodec as docmapIndexParamsCodec, generateDocmapIndex } from '../docmaps/docmap-index';
