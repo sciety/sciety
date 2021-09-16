@@ -1,3 +1,4 @@
+import { htmlEscape } from 'escape-goat';
 import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
@@ -38,6 +39,7 @@ export const allEventsCodec = t.type({
 
 type FetchArticle = (doi: Doi) => TE.TaskEither<DE.DataError, {
   title: HtmlFragment,
+  authors: ReadonlyArray<string>,
 }>;
 
 type GetGroup = (id: GroupId) => TO.TaskOption<Group>;
@@ -93,11 +95,26 @@ const eventCard = (
         ),
       },
       sequenceS(TE.ApplyPar),
-      TE.map(({ group, article }) => `
+      TE.map(({ group, article }) => ({
+        group,
+        article,
+        authors: pipe(
+          article.authors,
+          RA.map((author) => `<li class="article-card__author">${htmlEscape(author)}</li>`),
+          (authorListItems) => `
+            <ol class="article-card__authors" role="list">
+              ${authorListItems.join('')}
+            </ol>
+          `,
+          toHtmlFragment,
+        ),
+      })),
+      TE.map(({ group, article, authors }) => `
         <article class="all-events-card">
           <img src="${group.avatarPath}" alt="" width="36" height="36">
           <span>${group.name} evaluated an article. ${templateDate(event.date)}</span>
           ${article.title}
+          ${authors}
         </article>
       `),
       TE.map(toHtmlFragment),

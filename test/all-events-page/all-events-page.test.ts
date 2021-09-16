@@ -21,6 +21,7 @@ describe('all-events-page', () => {
     const ports = {
       fetchArticle: () => TE.right({
         title: articleTitle,
+        authors: [],
       }),
       getGroup: () => TO.some(group),
       getAllEvents: T.of([
@@ -41,7 +42,10 @@ describe('all-events-page', () => {
   it('renders collapsed multiple article evaluated events as a single card', async () => {
     const group = arbitraryGroup();
     const ports = {
-      fetchArticle: () => TE.right({ title: arbitraryHtmlFragment() }),
+      fetchArticle: () => TE.right({
+        title: arbitraryHtmlFragment(),
+        authors: [],
+      }),
       getGroup: () => TO.some(group),
       getAllEvents: T.of([
         groupEvaluatedArticle(group.id, arbitraryDoi(), arbitraryReviewId()),
@@ -61,7 +65,10 @@ describe('all-events-page', () => {
     const group = arbitraryGroup();
     const articleId = arbitraryDoi();
     const ports = {
-      fetchArticle: () => TE.right({ title: arbitraryHtmlFragment() }),
+      fetchArticle: () => TE.right({
+        title: arbitraryHtmlFragment(),
+        authors: [],
+      }),
       getGroup: () => TO.some(group),
       getAllEvents: T.of([
         groupEvaluatedArticle(group.id, articleId, arbitraryReviewId()),
@@ -83,7 +90,10 @@ describe('all-events-page', () => {
       groupEvaluatedArticle(arbitraryGroupId(), arbitraryDoi(), arbitraryReviewId()),
     ];
     const ports = {
-      fetchArticle: () => TE.right({ title: arbitraryHtmlFragment() }),
+      fetchArticle: () => TE.right({
+        title: arbitraryHtmlFragment(),
+        authors: [],
+      }),
       getGroup: () => TO.some(arbitraryGroup()),
       getAllEvents: T.of(events),
     };
