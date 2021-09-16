@@ -12,7 +12,6 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 type GetGroup = (id: GroupId) => TO.TaskOption<Group>;
 
 export type MultipleArticlesCard = {
-  type: 'CollapsedGroupEvaluatedMultipleArticles',
   groupId: GroupId,
   articleCount: number,
   date: Date,

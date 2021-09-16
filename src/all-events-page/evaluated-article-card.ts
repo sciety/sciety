@@ -22,7 +22,6 @@ type FetchArticle = (doi: Doi) => TE.TaskEither<DE.DataError, {
 }>;
 
 export type EvaluatedArticleCard = {
-  type: 'CollapsedGroupEvaluatedArticle',
   groupId: GroupId,
   articleId: Doi,
   evaluationCount: number,

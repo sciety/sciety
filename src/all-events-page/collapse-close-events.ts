@@ -3,7 +3,9 @@ import { EvaluatedArticleCard } from './evaluated-article-card';
 import { MultipleArticlesCard } from './multiple-articles-card';
 import { DomainEvent, GroupEvaluatedArticleEvent } from '../domain-events';
 
-type CollapsedGroupEvaluatedArticle = EvaluatedArticleCard;
+type CollapsedGroupEvaluatedArticle = EvaluatedArticleCard & {
+  type: 'CollapsedGroupEvaluatedArticle',
+};
 
 const collapsedGroupEvaluatedArticle = (
   last: GroupEvaluatedArticleEvent | CollapsedGroupEvaluatedArticle,
@@ -17,6 +19,7 @@ const collapsedGroupEvaluatedArticle = (
 });
 
 type CollapsedGroupEvaluatedMultipleArticles = MultipleArticlesCard & {
+  type: 'CollapsedGroupEvaluatedMultipleArticles',
   articleIds: Set<string>,
 };
 
