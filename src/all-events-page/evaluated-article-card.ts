@@ -63,9 +63,12 @@ export const evaluatedArticleCard = (
   TE.map(({ group, article, authors }) => `
     <article class="all-events-card">
       <img src="${group.avatarPath}" alt="" width="36" height="36">
-      <span>${group.name} evaluated an article. ${templateDate(event.date)}</span>
-      ${article.title}
-      ${authors}
+      <div>
+        <h3>${group.name} evaluated an article</h3>
+        <h4>${article.title}</h4>
+        ${authors}
+      </div>
+      ${templateDate(event.date)}
     </article>
   `),
   TE.map(toHtmlFragment),

@@ -27,7 +27,10 @@ export const multipleArticlesCard = (
   TO.map((group) => `
     <article class="all-events-card">
       <img src="${group.avatarPath}" alt="" width="36" height="36">
-      <span>${group.name} evaluated ${card.articleCount} articles. ${templateDate(card.date)}</span>
+      <div>
+        <h3>${group.name} evaluated ${card.articleCount} articles</h3>
+      </div>
+      ${templateDate(card.date)}
     </article>
   `),
   TO.map(toHtmlFragment),
