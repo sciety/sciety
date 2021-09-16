@@ -1,22 +1,19 @@
-import { htmlEscape } from 'escape-goat';
-import { sequenceS } from 'fp-ts/Apply';
-import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
-import { constant, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import {
   collapseCloseEvents,
-  CollapsedEvent, CollapsedGroupEvaluatedArticle,
+  CollapsedEvent,
   isCollapsedGroupEvaluatedArticle,
   isCollapsedGroupEvaluatedMultipleArticles,
 } from './collapse-close-events';
+import { evaluatedArticleCard } from './evaluated-article-card';
 import { multipleArticlesCard } from './multiple-articles-card';
-import { DomainEvent, GroupEvaluatedArticleEvent, isGroupEvaluatedArticleEvent } from '../domain-events';
-import { templateDate } from '../shared-components/date';
+import { DomainEvent, isGroupEvaluatedArticleEvent } from '../domain-events';
 import { templateListItems } from '../shared-components/list-items';
 import * as DE from '../types/data-error';
 import { Doi } from '../types/doi';
@@ -59,47 +56,6 @@ const renderGenericEvent = (event: DomainEvent | CollapsedEvent) => toHtmlFragme
     ${JSON.stringify(event, null, 2)}
   </article>
 `);
-
-const evaluatedArticleCard = (
-  getGroup: GetGroup,
-  fetchArticle: FetchArticle,
-) => (event: CollapsedGroupEvaluatedArticle | GroupEvaluatedArticleEvent) => pipe(
-  {
-    group: pipe(
-      event.groupId,
-      getGroup,
-      T.map(E.fromOption(constant(DE.unavailable))),
-    ),
-    article: pipe(
-      event.articleId,
-      fetchArticle,
-    ),
-  },
-  sequenceS(TE.ApplyPar),
-  TE.map(({ group, article }) => ({
-    group,
-    article,
-    authors: pipe(
-      article.authors,
-      RA.map((author) => `<li class="article-card__author">${htmlEscape(author)}</li>`),
-      (authorListItems) => `
-        <ol class="article-card__authors" role="list">
-          ${authorListItems.join('')}
-        </ol>
-      `,
-      toHtmlFragment,
-    ),
-  })),
-  TE.map(({ group, article, authors }) => `
-    <article class="all-events-card">
-      <img src="${group.avatarPath}" alt="" width="36" height="36">
-      <span>${group.name} evaluated an article. ${templateDate(event.date)}</span>
-      ${article.title}
-      ${authors}
-    </article>
-  `),
-  TE.map(toHtmlFragment),
-);
 
 const eventCard = (
   getGroup: GetGroup,

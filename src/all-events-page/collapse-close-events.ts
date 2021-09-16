@@ -1,16 +1,9 @@
 import { pipe } from 'fp-ts/function';
+import { EvaluatedArticleCard } from './evaluated-article-card';
 import { MultipleArticlesCard } from './multiple-articles-card';
 import { DomainEvent, GroupEvaluatedArticleEvent } from '../domain-events';
-import { Doi } from '../types/doi';
-import { GroupId } from '../types/group-id';
 
-export type CollapsedGroupEvaluatedArticle = {
-  type: 'CollapsedGroupEvaluatedArticle',
-  groupId: GroupId,
-  articleId: Doi,
-  evaluationCount: number,
-  date: Date,
-};
+type CollapsedGroupEvaluatedArticle = EvaluatedArticleCard;
 
 const collapsedGroupEvaluatedArticle = (
   last: GroupEvaluatedArticleEvent | CollapsedGroupEvaluatedArticle,
