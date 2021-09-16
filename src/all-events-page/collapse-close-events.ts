@@ -22,7 +22,7 @@ const collapsedGroupEvaluatedArticle = (
   evaluationCount,
 });
 
-type CollapsedGroupEvaluatedMultipleArticles = {
+export type CollapsedGroupEvaluatedMultipleArticles = {
   type: 'CollapsedGroupEvaluatedMultipleArticles',
   groupId: GroupId,
   articleIds: Set<string>,
