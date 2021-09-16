@@ -12,7 +12,7 @@ import { arbitraryGroup } from '../types/group.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 
 describe('all-events-page', () => {
-  it.skip('renders collapsed single article evaluated events as a single card', async () => {
+  it('renders collapsed single article evaluated events as a single card', async () => {
     const group = arbitraryGroup();
     const articleId = arbitraryDoi();
     const ports = {

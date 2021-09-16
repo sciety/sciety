@@ -45,7 +45,7 @@ const collapsedGroupEvaluatedMultipleArticles = (
   date: last.date,
 });
 
-const isCollapsedGroupEvaluatedArticle = (
+export const isCollapsedGroupEvaluatedArticle = (
   entry: StateEntry,
 ): entry is CollapsedGroupEvaluatedArticle => entry.type === 'CollapsedGroupEvaluatedArticle';
 

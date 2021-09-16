@@ -7,7 +7,12 @@ import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { collapseCloseEvents, CollapsedEvent, isCollapsedGroupEvaluatedMultipleArticles } from './collapse-close-events';
+import {
+  collapseCloseEvents,
+  CollapsedEvent,
+  isCollapsedGroupEvaluatedArticle,
+  isCollapsedGroupEvaluatedMultipleArticles,
+} from './collapse-close-events';
 import { DomainEvent } from '../domain-events';
 import { templateDate } from '../shared-components/date';
 import { templateListItems } from '../shared-components/list-items';
@@ -55,6 +60,20 @@ const eventCard = (getGroup: GetGroup) => (event: DomainEvent | CollapsedEvent):
         <article class="all-events-card">
           <img src="${group.avatarPath}" alt="" width="36" height="36">
           <span>${group.name} evaluated ${event.articleCount} articles. ${templateDate(event.date)}</span>
+        </article>
+      `),
+      TO.map(toHtmlFragment),
+    );
+  }
+
+  if (isCollapsedGroupEvaluatedArticle(event)) {
+    return pipe(
+      event.groupId,
+      getGroup,
+      TO.map((group) => `
+        <article class="all-events-card">
+          <img src="${group.avatarPath}" alt="" width="36" height="36">
+          <span>${group.name} evaluated an article. ${templateDate(event.date)}</span>
         </article>
       `),
       TO.map(toHtmlFragment),
