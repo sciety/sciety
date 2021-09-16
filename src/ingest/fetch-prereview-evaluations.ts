@@ -37,7 +37,7 @@ type Review = {
   reviewDoi: O.Option<Doi>,
 };
 
-const toEvaluation = (preprint: Review) => pipe(
+const toEvaluationOrSkip = (preprint: Review) => pipe(
   preprint,
   E.right,
   E.filterOrElse(
@@ -68,8 +68,8 @@ const toIndividualReviews = (preprint: PreReviewPreprint) => pipe(
   })),
 );
 
-export const fetchPrereviewEvaluations = (): FetchEvaluations => (ports: Ports) => pipe(
-  ports.fetchData<unknown>('https://www.prereview.org/api/v2/preprints', { Accept: 'application/json' }),
+const identifyCandidates = (fetchData: FetchData) => pipe(
+  fetchData<unknown>('https://www.prereview.org/api/v2/preprints', { Accept: 'application/json' }),
   TE.chainEitherK(flow(
     preReviewResponse.decode,
     E.mapLeft((errors) => PR.failure(errors).join('\n')),
@@ -77,10 +77,14 @@ export const fetchPrereviewEvaluations = (): FetchEvaluations => (ports: Ports) 
   TE.map(flow(
     ({ data }) => data,
     RA.chain(toIndividualReviews),
-    RA.partitionMap(toEvaluation),
-    ({ left, right }) => ({
-      evaluations: right,
-      skippedItems: left,
-    }),
   )),
+);
+
+export const fetchPrereviewEvaluations = (): FetchEvaluations => (ports: Ports) => pipe(
+  identifyCandidates(ports.fetchData),
+  TE.map(RA.map(toEvaluationOrSkip)),
+  TE.map((parts) => ({
+    evaluations: RA.rights(parts),
+    skippedItems: RA.lefts(parts),
+  })),
 );
