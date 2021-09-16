@@ -5,14 +5,13 @@ import { StatusCodes } from 'http-status-codes';
 import { commandHandler, CommitEvents, toCommand } from './command-handler';
 import { GetAllEvents } from './respond-helpful-command';
 import * as RI from '../types/review-id';
-import { User } from '../types/user';
 
 type Ports = {
   commitEvents: CommitEvents,
   getAllEvents: GetAllEvents,
 };
 
-export const respondHandler = (ports: Ports): Middleware<{ user: User }> => async (context, next) => {
+export const respondHandler = (ports: Ports): Middleware => async (context, next) => {
   const { user } = context.state;
 
   const referrer = (context.request.headers.referer ?? '/') as string;

@@ -4,14 +4,13 @@ import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { CommitEvents, GetFollowList, unfollowCommand } from './unfollow-command';
 import * as GroupId from '../types/group-id';
-import { User } from '../types/user';
 
 type Ports = {
   commitEvents: CommitEvents,
   getFollowList: GetFollowList,
 };
 
-export const unfollowHandler = (ports: Ports): Middleware<{ user: User }> => {
+export const unfollowHandler = (ports: Ports): Middleware => {
   const command = unfollowCommand(
     ports.getFollowList,
     ports.commitEvents,
