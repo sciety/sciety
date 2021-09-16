@@ -3,7 +3,7 @@ import { DomainEvent, GroupEvaluatedArticleEvent } from '../domain-events';
 import { Doi } from '../types/doi';
 import { GroupId } from '../types/group-id';
 
-type CollapsedGroupEvaluatedArticle = {
+export type CollapsedGroupEvaluatedArticle = {
   type: 'CollapsedGroupEvaluatedArticle',
   groupId: GroupId,
   articleId: Doi,

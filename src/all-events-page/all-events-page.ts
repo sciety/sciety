@@ -10,11 +10,11 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import {
   collapseCloseEvents,
-  CollapsedEvent, CollapsedGroupEvaluatedMultipleArticles,
+  CollapsedEvent, CollapsedGroupEvaluatedArticle, CollapsedGroupEvaluatedMultipleArticles,
   isCollapsedGroupEvaluatedArticle,
   isCollapsedGroupEvaluatedMultipleArticles,
 } from './collapse-close-events';
-import { DomainEvent, isGroupEvaluatedArticleEvent } from '../domain-events';
+import { DomainEvent, GroupEvaluatedArticleEvent, isGroupEvaluatedArticleEvent } from '../domain-events';
 import { templateDate } from '../shared-components/date';
 import { templateListItems } from '../shared-components/list-items';
 import * as DE from '../types/data-error';
@@ -72,6 +72,47 @@ const multipleArticlesCard = (getGroup: GetGroup) => (event: CollapsedGroupEvalu
   T.map(E.fromOption(constant(DE.unavailable))),
 );
 
+const evaluatedArticleCard = (
+  getGroup: GetGroup,
+  fetchArticle: FetchArticle,
+) => (event: CollapsedGroupEvaluatedArticle | GroupEvaluatedArticleEvent) => pipe(
+  {
+    group: pipe(
+      event.groupId,
+      getGroup,
+      T.map(E.fromOption(constant(DE.unavailable))),
+    ),
+    article: pipe(
+      event.articleId,
+      fetchArticle,
+    ),
+  },
+  sequenceS(TE.ApplyPar),
+  TE.map(({ group, article }) => ({
+    group,
+    article,
+    authors: pipe(
+      article.authors,
+      RA.map((author) => `<li class="article-card__author">${htmlEscape(author)}</li>`),
+      (authorListItems) => `
+        <ol class="article-card__authors" role="list">
+          ${authorListItems.join('')}
+        </ol>
+      `,
+      toHtmlFragment,
+    ),
+  })),
+  TE.map(({ group, article, authors }) => `
+    <article class="all-events-card">
+      <img src="${group.avatarPath}" alt="" width="36" height="36">
+      <span>${group.name} evaluated an article. ${templateDate(event.date)}</span>
+      ${article.title}
+      ${authors}
+    </article>
+  `),
+  TE.map(toHtmlFragment),
+);
+
 const eventCard = (
   getGroup: GetGroup,
   fetchArticle: FetchArticle,
@@ -83,43 +124,7 @@ const eventCard = (
   }
 
   if (isCollapsedGroupEvaluatedArticle(event) || isGroupEvaluatedArticleEvent(event)) {
-    return pipe(
-      {
-        group: pipe(
-          event.groupId,
-          getGroup,
-          T.map(E.fromOption(constant(DE.unavailable))),
-        ),
-        article: pipe(
-          event.articleId,
-          fetchArticle,
-        ),
-      },
-      sequenceS(TE.ApplyPar),
-      TE.map(({ group, article }) => ({
-        group,
-        article,
-        authors: pipe(
-          article.authors,
-          RA.map((author) => `<li class="article-card__author">${htmlEscape(author)}</li>`),
-          (authorListItems) => `
-            <ol class="article-card__authors" role="list">
-              ${authorListItems.join('')}
-            </ol>
-          `,
-          toHtmlFragment,
-        ),
-      })),
-      TE.map(({ group, article, authors }) => `
-        <article class="all-events-card">
-          <img src="${group.avatarPath}" alt="" width="36" height="36">
-          <span>${group.name} evaluated an article. ${templateDate(event.date)}</span>
-          ${article.title}
-          ${authors}
-        </article>
-      `),
-      TE.map(toHtmlFragment),
-    );
+    return evaluatedArticleCard(getGroup, fetchArticle)(event);
   }
 
   return TE.right(renderGenericEvent(event));
