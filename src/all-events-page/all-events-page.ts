@@ -14,8 +14,7 @@ import {
   isCollapsedGroupEvaluatedArticle,
   isCollapsedGroupEvaluatedMultipleArticles,
 } from './collapse-close-events';
-import { DomainEvent } from '../domain-events';
-import { isGroupEvaluatedArticleEvent } from '../domain-events/type-guards';
+import { DomainEvent, isGroupEvaluatedArticleEvent } from '../domain-events';
 import { templateDate } from '../shared-components/date';
 import { templateListItems } from '../shared-components/list-items';
 import * as DE from '../types/data-error';
