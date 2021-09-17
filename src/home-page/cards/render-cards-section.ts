@@ -9,7 +9,7 @@ type Card = {
   articleId: string,
   articleTitle: string,
   date: Date,
-  groupId: string,
+  groupSlug: string,
   groupName: string,
   avatarPath: string,
 };
@@ -21,7 +21,7 @@ const renderEvaluationCard = (card: Card) => `
     </h3>
     <p class="evaluation-card__group">
       <img class="evaluation-card__avatar" src="${card.avatarPath}" alt="" />
-      <span>Evaluated by <a href="/groups/${card.groupId}">${card.groupName}</a></span>
+      <span>Evaluated by <a href="/groups/${card.groupSlug}">${card.groupName}</a></span>
     </p>
     <div class="evaluation-card__meta">
       ${templateDate(card.date)}
