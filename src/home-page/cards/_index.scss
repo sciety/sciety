@@ -23,10 +23,6 @@
   }
 }
 
-.home-page-cards * {
-  color: settings.$colour-text-primary;
-}
-
 .home-page-cards__title {
   @include typography.section();
   margin-bottom: baseline.increments(2.5);
