@@ -78,7 +78,7 @@ export const evaluatedArticlesList: EvaluatedArticlesList = (ports) => (articles
         })),
         renderEvaluatedArticlesList(pipe(
           nextPageNumber,
-          O.map((p) => `/groups/${group.id}/evaluated-articles?page=${p}`),
+          O.map((p) => `/groups/${group.slug}/evaluated-articles?page=${p}`),
         )),
       ),
     )),
