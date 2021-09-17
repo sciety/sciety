@@ -1,3 +1,4 @@
+import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
@@ -34,11 +35,16 @@ const getLatestActivityDate: GetLatestActivityDate = flow(
 );
 
 export const populateArticleViewModel = (ports: Ports) => (item: ArticleItem): T.Task<ArticleViewModel> => pipe(
-  T.Do,
-  T.apS('reviews', pipe(item.doi, ports.findReviewsForArticleDoi)),
-  T.apS('latestVersionDate', ports.getLatestArticleVersionDate(item.doi, item.server)),
-  T.bind('latestActivityDate', ({ reviews }) => pipe(reviews, getLatestActivityDate, T.of)),
-  T.bind('evaluationCount', ({ reviews }) => pipe(reviews.length, T.of)),
+  item.doi,
+  ports.findReviewsForArticleDoi,
+  T.chain(flow(
+    (reviews) => ({
+      latestVersionDate: ports.getLatestArticleVersionDate(item.doi, item.server),
+      latestActivityDate: pipe(reviews, getLatestActivityDate, T.of),
+      evaluationCount: T.of(reviews.length),
+    }),
+    sequenceS(T.ApplyPar),
+  )),
   T.map(({ latestVersionDate, latestActivityDate, evaluationCount }) => ({
     ...item,
     latestVersionDate,
