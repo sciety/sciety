@@ -25,7 +25,7 @@ export const multipleArticlesCard = (
   card.groupId,
   getGroup,
   TO.map((group) => `
-    <a href="/groups/${card.groupId}">
+    <a href="/groups/${group.slug}">
       <article class="all-events-card">
         <img src="${group.avatarPath}" alt="" width="36" height="36">
         <div>

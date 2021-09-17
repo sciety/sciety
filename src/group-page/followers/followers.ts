@@ -31,8 +31,8 @@ const augmentFollowersWithUserDetails = (
   sequenceS(TE.ApplyPar),
 );
 
-const renderNextLink = (groupId: GroupId) => flow(
-  O.map((nextPage: number) => `/groups/${groupId}/followers?page=${nextPage}`),
+const renderNextLink = (groupSlug: string) => flow(
+  O.map((nextPage: number) => `/groups/${groupSlug}/followers?page=${nextPage}`),
   O.fold(
     () => '',
     paginationControls,
@@ -45,7 +45,7 @@ const pageSize = 10;
 export const followers = (
   ports: Ports,
 ) => (
-  group: { id: GroupId },
+  group: { id: GroupId, slug: string },
   pageNumber: number,
 ): TE.TaskEither<DE.DataError, HtmlFragment> => pipe(
   ports.getAllEvents,
@@ -58,7 +58,7 @@ export const followers = (
   TE.chain(augmentFollowersWithUserDetails(ports)),
   TE.map((partial) => ({
     ...partial,
-    nextLink: renderNextLink(group.id)(partial.nextPage),
+    nextLink: renderNextLink(group.slug)(partial.nextPage),
   })),
   TE.map(renderFollowers),
 );

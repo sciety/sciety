@@ -306,10 +306,10 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   router.get(
-    '/groups/:id',
+    '/groups/:idOrSlug',
     async (context, next) => {
       context.status = StatusCodes.TEMPORARY_REDIRECT;
-      context.redirect(`/groups/${context.params.id}/lists`);
+      context.redirect(`/groups/${context.params.idOrSlug}/lists`);
 
       await next();
     },
