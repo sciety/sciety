@@ -1,7 +1,6 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
@@ -9,7 +8,6 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { about, Ports as AboutPorts } from './about/about';
-import { findFollowers } from './followers/find-followers';
 import { followers, Ports as FollowersPorts } from './followers/followers';
 import { getEvaluatedArticlesListDetails } from './get-evaluated-articles-list-details';
 import { renderEvaluatedArticlesListCard } from './render-evaluated-articles-list-card';
@@ -87,7 +85,7 @@ const contentRenderers = (
   2: followers(ports)(group, pageNumber),
 });
 
-const tabList = (groupSlug: string, followerCount: number): [Tab, Tab, Tab] => [
+const tabList = (groupSlug: string): [Tab, Tab, Tab] => [
   {
     label: toHtmlFragment('Lists (1)'),
     url: `/groups/${groupSlug}/lists`,
@@ -97,8 +95,7 @@ const tabList = (groupSlug: string, followerCount: number): [Tab, Tab, Tab] => [
     url: `/groups/${groupSlug}/about`,
   },
   {
-    // remove visually-hidden when there is enough space for the tabs not to wrap on narrow
-    label: toHtmlFragment(`Followers<span class="visually-hidden"> (${followerCount})</span>`),
+    label: toHtmlFragment('Followers'),
     url: `/groups/${groupSlug}/followers`,
   },
 ];
@@ -131,20 +128,11 @@ export const groupPage: GroupPage = (ports) => (activeTabIndex) => ({ slug, user
         TE.rightTask,
       ),
       content: pipe(
-        {
-          activeTabPanelContents: contentRenderers(ports)(group, pageNumber)[activeTabIndex],
-          followerCount: pipe(
-            ports.getAllEvents,
-            T.map(findFollowers(group.id)),
-            T.map(RA.size),
-            T.map(E.right),
-          ),
-        },
-        sequenceS(TE.ApplyPar),
-        TE.map(({ activeTabPanelContents, followerCount }) => tabs({
-          tabList: tabList(group.slug, followerCount),
+        contentRenderers(ports)(group, pageNumber)[activeTabIndex],
+        TE.map(tabs({
+          tabList: tabList(group.slug),
           activeTabIndex,
-        })(activeTabPanelContents)),
+        })),
       ),
     },
     sequenceS(TE.ApplyPar),
