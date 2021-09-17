@@ -7,4 +7,5 @@ import { GroupId } from './group-id';
 export type GroupRepository = {
   all: T.Task<RNEA.ReadonlyNonEmptyArray<Group>>,
   lookup(id: GroupId): TO.TaskOption<Group>,
+  lookupBySlug(slug: string): TO.TaskOption<Group>,
 };
