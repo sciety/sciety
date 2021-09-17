@@ -9,7 +9,6 @@
 
 @mixin basics () {
   background-color: settings.$colour-white;
-  color: settings.$colour-text-primary;
   padding: baseline.increments(2) functions.px-to-rem(16px);
 
   border: settings.$border-width solid settings.$colour-furniture;
