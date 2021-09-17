@@ -10,6 +10,7 @@ import { arbitraryDate, arbitraryString, arbitraryUri } from '../../helpers';
 import { arbitraryArticleServer } from '../../types/article-server.helper';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
+import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 
 const indexedGroupId = arbitraryGroupId();
@@ -32,12 +33,8 @@ const defaultPorts = {
     },
   ]),
   getGroup: () => TO.some({
+    ...arbitraryGroup(),
     id: indexedGroupId,
-    homepage: arbitraryUri(),
-    avatarPath: arbitraryString(),
-    shortDescription: arbitraryString(),
-    descriptionPath: arbitraryString(),
-    name: arbitraryString(),
   }),
   fetchArticle: () => TE.right({ server: arbitraryArticleServer() }),
 };
@@ -73,11 +70,10 @@ describe('docmap', () => {
       ...defaultPorts,
       findReviewsForArticleDoi: () => T.of([review(indexedGroupId, arbitraryDate())]),
       getGroup: () => TO.some({
+        ...arbitraryGroup(),
         id: indexedGroupId,
         homepage,
         avatarPath,
-        shortDescription: arbitraryString(),
-        descriptionPath: arbitraryString(),
         name,
       }),
     };

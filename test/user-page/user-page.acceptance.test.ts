@@ -14,6 +14,7 @@ import {
 } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryGroupId } from '../types/group-id.helper';
+import { arbitraryGroup } from '../types/group.helper';
 import { arbitraryUserId } from '../types/user-id.helper';
 
 const contentOf = (page: TE.TaskEither<RenderPageError, Page>) => pipe(
@@ -30,17 +31,8 @@ const arbitraryUserDetails = {
   handle: arbitraryWord(),
 };
 
-const arbitraryGroup = {
-  id: arbitraryGroupId(),
-  name: arbitraryString(),
-  avatarPath: arbitraryString(),
-  descriptionPath: arbitraryString(),
-  shortDescription: arbitraryString(),
-  homepage: arbitraryUri(),
-};
-
 const defaultPorts = {
-  getGroup: () => TO.some(arbitraryGroup),
+  getGroup: () => TO.some(arbitraryGroup()),
   getUserDetails: () => TE.right(arbitraryUserDetails),
   getAllEvents: T.of([]),
   getUserId: () => TE.right(arbitraryUserId()),

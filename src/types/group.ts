@@ -7,4 +7,5 @@ export type Group = {
   descriptionPath: string,
   shortDescription: string,
   homepage: string,
+  slug: string,
 };

@@ -1,6 +1,7 @@
 import * as TE from 'fp-ts/TaskEither';
 import { findGroups } from '../../src/infrastructure/find-groups';
 import { GroupId } from '../../src/types/group-id';
+import { arbitraryWord } from '../helpers';
 import { arbitraryGroupId, groupIdFromString } from '../types/group-id.helper';
 
 type Group = {
@@ -26,6 +27,7 @@ const constructGroup = ({
   name,
   shortDescription,
   homepage,
+  slug: arbitraryWord(),
 });
 
 describe('find-groups', () => {

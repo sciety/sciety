@@ -6,9 +6,10 @@ import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe } from 'fp-ts/function';
 import { groupPage, groupPageTabs } from '../../src/group-page/group-page';
 import * as DE from '../../src/types/data-error';
-import { arbitraryString, arbitraryUri, arbitraryWord } from '../helpers';
+import { arbitraryString } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryGroupId } from '../types/group-id.helper';
+import { arbitraryGroup } from '../types/group.helper';
 
 describe('group page', () => {
   describe('when the group does not exist', () => {
@@ -41,14 +42,7 @@ describe('group page', () => {
 
   describe('when asked for a tab', () => {
     it('only loads the data for the current tab', async () => {
-      const group = {
-        id: arbitraryGroupId(),
-        name: arbitraryWord(),
-        avatarPath: arbitraryWord(),
-        descriptionPath: arbitraryWord(),
-        shortDescription: arbitraryWord(),
-        homepage: arbitraryUri(),
-      };
+      const group = arbitraryGroup();
       const result = await pipe(
         {
           id: arbitraryGroupId(),

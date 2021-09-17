@@ -25,6 +25,7 @@ describe('docmap-generation', () => {
         descriptionPath: 'review-commons--316db7d9-88cc-4c26-b386-f067e0f56334.md',
         shortDescription: 'Review Commons is a platform for high-quality journal-independent peer-review in the life sciences.',
         homepage: 'https://www.reviewcommons.org/',
+        slug: 'review-commons',
       }),
     };
     const currentDateTime = new Date().toISOString();

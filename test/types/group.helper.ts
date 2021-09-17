@@ -9,4 +9,5 @@ export const arbitraryGroup = (): Group => ({
   descriptionPath: arbitraryWord(),
   shortDescription: arbitraryString(),
   homepage: arbitraryUri(),
+  slug: arbitraryWord(),
 });

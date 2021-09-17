@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { inMemoryGroupRepository } from '../../src/infrastructure/in-memory-groups';
 import { GroupRepository } from '../../src/types/group-repository';
-import { arbitraryUri } from '../helpers';
+import { arbitraryUri, arbitraryWord } from '../helpers';
 import { arbitraryGroupId, groupIdFromString } from '../types/group-id.helper';
 
 const id = '530812a5-838a-4fb2-95b6-eb4828f0d37c';
@@ -16,6 +16,7 @@ describe('in-memory-editorial-communities', () => {
     shortDescription: '',
     descriptionPath: '/static/desc.md',
     homepage: arbitraryUri(),
+    slug: arbitraryWord(),
   };
 
   beforeEach(async () => {

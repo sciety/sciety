@@ -8,6 +8,7 @@ import { sanitise } from '../../src/types/sanitised-html-fragment';
 import { arbitraryNumber } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryGroupId } from '../types/group-id.helper';
+import { arbitraryGroup } from '../types/group.helper';
 import { arbitraryReviewId } from '../types/review-id.helper';
 
 describe('fetch-extra-details', () => {
@@ -84,12 +85,8 @@ describe('fetch-extra-details', () => {
           findReviewsForArticleDoi: shouldNotBeCalled,
           getAllEvents: T.of([]),
           getGroup: () => T.of(O.some({
+            ...arbitraryGroup(),
             id: groupId,
-            name: '',
-            avatarPath: '',
-            descriptionPath: '',
-            shortDescription: '',
-            homepage: '',
           })),
           getLatestArticleVersionDate: shouldNotBeCalled,
         };
