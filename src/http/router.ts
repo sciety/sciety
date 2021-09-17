@@ -312,8 +312,10 @@ export const createRouter = (adapters: Adapters): Router => {
     },
   );
 
+  const uuidRegex = '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}';
+
   router.get(
-    '/groups/:id/lists',
+    `/groups/:id(${uuidRegex})/lists`,
     pageHandler(flow(
       groupPageParams.decode,
       E.mapLeft(toNotFound),
@@ -323,7 +325,7 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   router.get(
-    '/groups/:id/about',
+    `/groups/:id(${uuidRegex})/about`,
     pageHandler(flow(
       groupPageParams.decode,
       E.mapLeft(toNotFound),
@@ -333,7 +335,7 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   router.get(
-    '/groups/:id/followers',
+    `/groups/:id(${uuidRegex})/followers`,
     pageHandler(flow(
       groupPageParams.decode,
       E.mapLeft(toNotFound),
