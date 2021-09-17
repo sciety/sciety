@@ -85,18 +85,18 @@ const contentRenderers = (
   2: followers(ports)(group, pageNumber),
 });
 
-const tabList = (groupId: GroupId): [Tab, Tab, Tab] => [
+const tabList = (groupSlug: string): [Tab, Tab, Tab] => [
   {
     label: toHtmlFragment('Lists'),
-    url: `/groups/${groupId}/lists`,
+    url: `/groups/${groupSlug}/lists`,
   },
   {
     label: toHtmlFragment('About'),
-    url: `/groups/${groupId}/about`,
+    url: `/groups/${groupSlug}/about`,
   },
   {
     label: toHtmlFragment('Followers'),
-    url: `/groups/${groupId}/followers`,
+    url: `/groups/${groupSlug}/followers`,
   },
 ];
 
@@ -130,7 +130,7 @@ export const groupPage: GroupPage = (ports) => (activeTabIndex) => ({ slug, user
       content: pipe(
         contentRenderers(ports)(group, pageNumber)[activeTabIndex],
         TE.map(tabs({
-          tabList: tabList(group.id),
+          tabList: tabList(group.slug),
           activeTabIndex,
         })),
       ),
