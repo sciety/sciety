@@ -82,7 +82,6 @@ p.activity-feed__item__title {
   position: relative;
   width: 100%;
   margin-right: functions.px-to-rem(24px);
-  color: settings.$colour-text-primary;
 
   h3 {
     @include typography.sizing($font-size: settings.$base-font-measure, $line-height-in-increments: 3);
@@ -110,7 +109,6 @@ p.activity-feed__item__title {
 }
 
 .activity-feed__item__title {
-  color: settings.$colour-text-primary;
 
   a:link,
   a:visited {
@@ -126,7 +124,6 @@ p.activity-feed__item__title {
 
 .responses__question {
   padding-right: functions.px-to-rem(8px);
-  color: settings.$colour-text-primary;
 }
 
 .responses__actions {
