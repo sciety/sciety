@@ -81,14 +81,11 @@ export const articleActivityPage: ActivityPage = (ports) => (params) => pipe(
       ...ports,
       getGroup: flow(
         ports.getGroup,
-        TO.getOrElse(() => {
-          throw new Error('No such group');
-        }),
+        TO.getOrElse(() => { throw new Error('No such group'); }),
       ),
       countReviewResponses: projectReviewResponseCounts(ports.getAllEvents),
       getUserReviewResponse: projectUserReviewResponse(ports.getAllEvents),
     })(doi, server, userId),
-    TE.rightTask,
   )),
   TE.bindW('feed', ({ feedItemsByDateDescending }) => pipe(
     feedItemsByDateDescending,

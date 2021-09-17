@@ -2,13 +2,14 @@ import * as D from 'fp-ts/Date';
 import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
-import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { FeedEvent } from './get-feed-events-content';
+import * as DE from '../../types/data-error';
+
+type Feed = TE.TaskEither<DE.DataError, ReadonlyArray<FeedEvent>>;
 
 type MergeFeeds = (feeds: RNEA.ReadonlyNonEmptyArray<Feed>) => Feed;
-
-type Feed = T.Task<ReadonlyArray<FeedEvent>>;
 
 const byDate: Ord.Ord<FeedEvent> = pipe(
   D.Ord,
@@ -22,8 +23,8 @@ const byDateDescending: Ord.Ord<FeedEvent> = pipe(
 
 export const mergeFeeds: MergeFeeds = (feeds) => pipe(
   feeds,
-  T.sequenceArray,
-  T.map(flow(
+  TE.sequenceArray,
+  TE.map(flow(
     RA.flatten,
     RA.sort(byDateDescending),
   )),
