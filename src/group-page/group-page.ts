@@ -44,7 +44,7 @@ export const groupPageTabs: Record<string, TabIndex> = {
   followers: 2,
 };
 
-export const paramsCodec = t.type({
+const paramsCodec = t.type({
   id: GroupIdFromString,
   user: tt.optionFromNullable(t.type({
     id: UserIdFromString,

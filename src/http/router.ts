@@ -20,6 +20,7 @@ import { onlyIfNotAuthenticated } from './only-if-authenticated';
 import { pageHandler, toErrorResponse } from './page-handler';
 import { ping } from './ping';
 import { redirectBack } from './redirect-back';
+import { redirectGroupIdToSlug } from './redirects/redirect-group-id-to-slug';
 import { redirectUserIdToHandle } from './redirects/redirect-user-id-to-handle';
 import { redirectAfterAuthenticating, requireAuthentication } from './require-authentication';
 import { robots } from './robots';
@@ -31,7 +32,7 @@ import { paramsCodec as docmapIndexParamsCodec, generateDocmapIndex } from '../d
 import { finishUnfollowCommand, saveUnfollowCommand, unfollowHandler } from '../follow';
 import { groupEvaluationsPage, paramsCodec as groupEvaluationsPageParams } from '../group-evaluations-page/group-evaluations-page';
 import {
-  groupPage, paramsCodec as groupPageParams, paramsSlugCodec as groupPageParamsSlug, groupPageTabs,
+  groupPage, paramsSlugCodec as groupPageParamsSlug, groupPageTabs,
 } from '../group-page/group-page';
 import { groupsPage } from '../groups-page';
 import { homePage, homePageLayout, homePageParams } from '../home-page';
@@ -367,32 +368,17 @@ export const createRouter = (adapters: Adapters): Router => {
 
   router.get(
     `/groups/:id(${uuidRegex})/lists`,
-    pageHandler(flow(
-      groupPageParams.decode,
-      E.mapLeft(toNotFound),
-      TE.fromEither,
-      TE.chain(groupPage(adapters)(groupPageTabs.lists)),
-    )),
+    redirectGroupIdToSlug(adapters, 'lists'),
   );
 
   router.get(
     `/groups/:id(${uuidRegex})/about`,
-    pageHandler(flow(
-      groupPageParams.decode,
-      E.mapLeft(toNotFound),
-      TE.fromEither,
-      TE.chain(groupPage(adapters)(groupPageTabs.about)),
-    )),
+    redirectGroupIdToSlug(adapters, 'about'),
   );
 
   router.get(
     `/groups/:id(${uuidRegex})/followers`,
-    pageHandler(flow(
-      groupPageParams.decode,
-      E.mapLeft(toNotFound),
-      TE.fromEither,
-      TE.chain(groupPage(adapters)(groupPageTabs.followers)),
-    )),
+    redirectGroupIdToSlug(adapters, 'followers'),
   );
 
   router.get(

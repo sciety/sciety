@@ -49,7 +49,7 @@ describe('authentication-and-redirect', () => {
 
       const result = await currentURL();
 
-      expect(result).toContain('/groups/4eebcec9-a4bb-44e1-bde3-2ae11e65daaa');
+      expect(result).toContain('/groups/pci-animal-science');
     });
   });
 
@@ -84,7 +84,7 @@ describe('authentication-and-redirect', () => {
 
       const result = await currentURL();
 
-      expect(result).toContain('/groups/10360d97-bf52-4aef-b2fa-2f60d319edd7');
+      expect(result).toContain('/groups/prereview');
     });
 
     it('back button doesn\'t break authentication', async () => {
