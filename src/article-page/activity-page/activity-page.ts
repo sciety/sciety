@@ -49,6 +49,7 @@ type GetArticleDetails = (doi: Doi) => TE.TaskEither<DE.DataError, {
 type GetGroup = (groupId: GroupId) => TO.TaskOption<{
   name: string,
   avatarPath: string,
+  slug: string,
 }>;
 
 type Ports = {

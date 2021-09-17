@@ -39,6 +39,7 @@ describe('get-feed-events-content', () => {
       const getGroup = () => T.of({
         name: 'A Group',
         avatarPath: 'https://example.com/avatar',
+        slug: 'a-group',
       });
       const countReviewResponses: CountReviewResponses = () => T.of({
         helpfulCount: 0,

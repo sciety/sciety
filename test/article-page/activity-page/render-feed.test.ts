@@ -2,7 +2,7 @@ import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import { renderFeed } from '../../../src/article-page/activity-page/render-feed';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
-import { arbitraryGroupId } from '../../types/group-id.helper';
+import { arbitraryWord } from '../../helpers';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 
 describe('render-feed', () => {
@@ -13,7 +13,7 @@ describe('render-feed', () => {
         id: arbitraryReviewId(),
         source: O.some(new URL('http://example.com')),
         occurredAt: new Date(),
-        groupId: arbitraryGroupId(),
+        groupSlug: arbitraryWord(),
         groupName: '',
         groupAvatar: '/images/xyz.png',
         fullText: O.none,

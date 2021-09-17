@@ -42,6 +42,7 @@ export type GetUserReviewResponse = (reviewId: ReviewId, userId: O.Option<UserId
 export type GetGroup = (id: GroupId) => T.Task<{
   name: string,
   avatarPath: string,
+  slug: string,
 }>;
 
 const articleVersionToFeedItem = (
@@ -87,7 +88,7 @@ const reviewToFeedItem = (
     id: feedEvent.reviewId,
     source: review.url,
     occurredAt: feedEvent.occurredAt,
-    groupId: feedEvent.groupId,
+    groupSlug: group.slug,
     groupName: group.name,
     groupAvatar: group.avatarPath,
     fullText: O.map(sanitise)(review.fullText),

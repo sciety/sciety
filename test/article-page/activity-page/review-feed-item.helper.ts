@@ -5,7 +5,7 @@ import { ReviewFeedItem } from '../../../src/article-page/activity-page/render-r
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { sanitise } from '../../../src/types/sanitised-html-fragment';
 import * as t from '../../helpers';
-import { arbitraryGroupId } from '../../types/group-id.helper';
+import { arbitraryWord } from '../../helpers';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 
 export const arbitrary = (): ReviewFeedItem => ({
@@ -13,7 +13,7 @@ export const arbitrary = (): ReviewFeedItem => ({
   id: arbitraryReviewId(),
   source: O.some(new URL(t.arbitraryUri())),
   occurredAt: new Date(),
-  groupId: arbitraryGroupId(),
+  groupSlug: arbitraryWord(),
   groupName: 'group 1',
   groupAvatar: '/avatar',
   fullText: pipe(t.arbitraryString(), toHtmlFragment, sanitise, O.some),

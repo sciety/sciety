@@ -5,7 +5,6 @@ import { constant, flow, pipe } from 'fp-ts/function';
 import clip from 'text-clipper';
 import { renderReviewResponses } from './render-review-responses';
 import { templateDate } from '../../shared-components/date';
-import { GroupId } from '../../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import * as RI from '../../types/review-id';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
@@ -17,7 +16,7 @@ export type ReviewFeedItem = {
   id: RI.ReviewId,
   source: O.Option<URL>,
   occurredAt: Date,
-  groupId: GroupId,
+  groupSlug: string,
   groupName: string,
   groupAvatar: string,
   fullText: O.Option<SanitisedHtmlFragment>,
@@ -32,7 +31,7 @@ const avatar = (review: ReviewFeedItem) => toHtmlFragment(`
 const eventMetadata = (review: ReviewFeedItem) => toHtmlFragment(`
   <div class="activity-feed__item__meta">
     <div class="activity-feed__item__title">
-      <a href="/groups/${review.groupId}">
+      <a href="/groups/${review.groupSlug}">
         ${htmlEscape(review.groupName)}
       </a>
     </div>
