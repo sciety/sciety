@@ -45,11 +45,9 @@
   @include typography.details();
   @include layout.basic-horizontal-spacing();
   font-weight: bold;
-  color: settings.$colour-text-primary;
   margin-bottom: 1rem;
 }
 
 .evaluated-articles__empty {
   @include layout.basic-horizontal-spacing();
-  color: settings.$colour-text-primary;
 }

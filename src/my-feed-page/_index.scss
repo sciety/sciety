@@ -8,10 +8,6 @@
   @include layout.basic-horizontal-spacing();
 }
 
-.my-feed-page-feed-container {
-  color: settings.$colour-text-primary;
-}
-
 .my-feed-page-feed-container h2 {
   margin-left: 1rem;
   margin-right: 1rem;

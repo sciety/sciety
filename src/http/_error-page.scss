@@ -3,5 +3,4 @@
 
 .error-page {
   @include layout.page-header-top-space();
-  color: settings.$colour-text-primary;
 }

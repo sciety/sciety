@@ -58,11 +58,6 @@ $_search-button-width: functions.px-to-rem(70px);
   }
 }
 
-.home-page-hero__content_title,
-.home-page-hero__content_byline {
-  color: settings.$colour-text-primary;
-}
-
 .home-page-hero__content_title {
   @include typography.headline();
 }

@@ -21,10 +21,6 @@
   }
 }
 
-.home-page-calls-to-action * {
-  color: settings.$colour-text-primary;
-}
-
 .home-page-calls-to-action__title {
   @include typography.section();
 }
