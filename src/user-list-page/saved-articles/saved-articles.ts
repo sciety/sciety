@@ -56,12 +56,13 @@ export const savedArticles: SavedArticles = (ports) => (dois, loggedInUser, list
       (values) => E.right(values),
     )),
   )),
-  TE.chainTaskK(
-    T.traverseArray(populateArticleViewModel({
+  TE.chain(flow(
+    TE.traverseArray(populateArticleViewModel({
       findReviewsForArticleDoi: ports.findReviewsForArticleDoi,
       getLatestArticleVersionDate: getLatestArticleVersionDate(ports.findVersionsForArticleDoi),
     })),
-  ),
+    TE.mapLeft(() => informationUnavailable),
+  )),
   TE.map(flow(
     RA.map((articleViewModel) => renderArticleCard(
       controls(loggedInUser, listOwnerId, articleViewModel.doi),

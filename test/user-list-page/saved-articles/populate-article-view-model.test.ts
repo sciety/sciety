@@ -1,11 +1,13 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { Doi } from '../../../src/types/doi';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { sanitise } from '../../../src/types/sanitised-html-fragment';
 import { populateArticleViewModel } from '../../../src/user-list-page/saved-articles/populate-article-view-model';
+import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryReviewId } from '../../types/review-id.helper';
 
@@ -35,7 +37,11 @@ describe('populate-article-view-model', () => {
       title: pipe('', toHtmlFragment, sanitise),
       authors: [],
     };
-    const viewModel = await populateArticleViewModel(ports)(article)();
+    const viewModel = await pipe(
+      article,
+      populateArticleViewModel(ports),
+      TE.getOrElseW(() => T.of(shouldNotBeCalled)),
+    )();
 
     expect(viewModel).toStrictEqual(expect.objectContaining({
       evaluationCount: 2,
