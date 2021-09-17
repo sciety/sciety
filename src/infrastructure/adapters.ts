@@ -34,7 +34,7 @@ type FindVersionsForArticleDoi = (
 type GetGroup = (groupId: GroupId) => TO.TaskOption<Group>;
 type GetGroupBySlug = (slug: string) => TO.TaskOption<Group>;
 
-type GetAllGroups = T.Task<RNEA.ReadonlyNonEmptyArray<Group>>;
+type GetAllGroups = TE.TaskEither<DE.DataError, RNEA.ReadonlyNonEmptyArray<Group>>;
 
 type UserDetails = {
   avatarUrl: string,

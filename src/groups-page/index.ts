@@ -1,6 +1,5 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { renderGroups } from './render-groups';
@@ -13,7 +12,7 @@ import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 
 type Ports = ViewModelPorts & {
-  getAllGroups: T.Task<RNEA.ReadonlyNonEmptyArray<Group>>,
+  getAllGroups: TE.TaskEither<DE.DataError, RNEA.ReadonlyNonEmptyArray<Group>>,
 };
 
 const renderErrorPage = (error: DE.DataError): RenderPageError => ({
@@ -25,8 +24,7 @@ type GroupsPage = TE.TaskEither<RenderPageError, Page>;
 
 export const groupsPage = (ports: Ports): GroupsPage => pipe(
   ports.getAllGroups,
-  T.map(RNEA.map((group) => group.id)),
-  TE.rightTask,
+  TE.map(RNEA.map((group) => group.id)),
   TE.chain(TE.traverseArray(populateGroupViewModel(ports))),
   TE.map(RA.map(renderGroupCard)),
   TE.map(renderGroups),
