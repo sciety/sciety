@@ -11,6 +11,7 @@ export type GroupViewModel = {
   name: string,
   description: SanitisedHtmlFragment,
   avatarPath: string,
+  slug: string,
   followerCount: number,
   reviewCount: number,
   latestActivity: O.Option<Date>,
@@ -47,7 +48,7 @@ export const renderGroupCard = flow(
     <article class="group-card">
       <div class="group-card__body">
         <h3 class="group-card__title">
-          <a class="group-card__link" href="/groups/${result.id}">${htmlEscape(result.name)}</a>
+          <a class="group-card__link" href="/groups/${result.slug}">${htmlEscape(result.name)}</a>
         </h3>
         <div class="group-card__description">
           ${result.description}
