@@ -349,6 +349,16 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   router.get(
+    `/groups/:slug(${groupSlugRegex})/evaluated-articles`,
+    pageHandler(flow(
+      groupEvaluationsPageParams.decode,
+      E.mapLeft(toNotFound),
+      TE.fromEither,
+      TE.chain(groupEvaluationsPage(adapters)),
+    )),
+  );
+
+  router.get(
     `/groups/:id(${uuidRegex})/lists`,
     redirectGroupIdToSlug(adapters, 'lists'),
   );
@@ -364,13 +374,8 @@ export const createRouter = (adapters: Adapters): Router => {
   );
 
   router.get(
-    '/groups/:id/evaluated-articles',
-    pageHandler(flow(
-      groupEvaluationsPageParams.decode,
-      E.mapLeft(toNotFound),
-      TE.fromEither,
-      TE.chain(groupEvaluationsPage(adapters)),
-    )),
+    `/groups/:id(${uuidRegex})/evaluated-articles`,
+    redirectGroupIdToSlug(adapters, 'evaluated-articles'),
   );
 
   router.get(

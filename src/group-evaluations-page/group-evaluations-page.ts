@@ -13,25 +13,21 @@ import { renderErrorPage, renderPage } from './render-page';
 import { DomainEvent } from '../domain-events';
 import { getEvaluatedArticlesListDetails } from '../group-page/get-evaluated-articles-list-details';
 import { templateDate } from '../shared-components/date';
-import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import * as DE from '../types/data-error';
 import { Group } from '../types/group';
-import { GroupId } from '../types/group-id';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
-
-type FetchGroup = (groupId: GroupId) => TO.TaskOption<Group>;
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 type Ports = EvaluatedArticlesListPorts & {
   getAllEvents: GetAllEvents,
-  getGroup: FetchGroup,
+  getGroupBySlug: (groupSlug: string) => TO.TaskOption<Group>,
 };
 
 export const paramsCodec = t.type({
-  id: GroupIdFromString,
+  slug: t.string,
   page: tt.optionFromNullable(tt.NumberFromString),
 });
 
@@ -69,8 +65,8 @@ const renderPageNumbers = (page: O.Option<number>, articleCount: number, pageSiz
   ),
 );
 
-export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ id, page }) => pipe(
-  ports.getGroup(id),
+export const groupEvaluationsPage = (ports: Ports): GroupEvaluationsPage => ({ slug, page }) => pipe(
+  ports.getGroupBySlug(slug),
   T.map(E.fromOption(notFoundResponse)),
   TE.chainTaskK((group) => pipe(
     ports.getAllEvents,
