@@ -16,7 +16,6 @@ import { renderPageHeader } from './render-page-header';
 import { DomainEvent } from '../domain-events';
 import { renderFollowToggle } from '../follow/render-follow-toggle';
 import { Tab, tabs } from '../shared-components/tabs';
-import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import { UserIdFromString } from '../types/codecs/UserIdFromString';
 import * as DE from '../types/data-error';
 import { Group } from '../types/group';
@@ -26,12 +25,10 @@ import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { UserId } from '../types/user-id';
 
-type FetchGroup = (groupId: GroupId) => TO.TaskOption<Group>;
-
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
 type Ports = AboutPorts & FollowersPorts & {
-  getGroup: FetchGroup,
+  getGroupBySlug: (slug: string) => TO.TaskOption<Group>,
   getAllEvents: GetAllEvents,
   follows: (userId: UserId, groupId: GroupId) => T.Task<boolean>,
 };
@@ -44,15 +41,7 @@ export const groupPageTabs: Record<string, TabIndex> = {
   followers: 2,
 };
 
-const paramsCodec = t.type({
-  id: GroupIdFromString,
-  user: tt.optionFromNullable(t.type({
-    id: UserIdFromString,
-  })),
-  page: tt.withFallback(tt.NumberFromString, 1),
-});
-
-export const paramsSlugCodec = t.type({
+export const paramsCodec = t.type({
   slug: t.string,
   user: tt.optionFromNullable(t.type({
     id: UserIdFromString,
@@ -119,8 +108,8 @@ type GroupPage = (
   params: Params
 ) => TE.TaskEither<RenderPageError, Page>;
 
-export const groupPage: GroupPage = (ports) => (activeTabIndex) => ({ id, user, page: pageNumber }) => pipe(
-  ports.getGroup(id),
+export const groupPage: GroupPage = (ports) => (activeTabIndex) => ({ slug, user, page: pageNumber }) => pipe(
+  ports.getGroupBySlug(slug),
   T.map(E.fromOption(notFoundResponse)),
   TE.chain((group) => pipe(
     {

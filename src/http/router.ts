@@ -32,7 +32,7 @@ import { paramsCodec as docmapIndexParamsCodec, generateDocmapIndex } from '../d
 import { finishUnfollowCommand, saveUnfollowCommand, unfollowHandler } from '../follow';
 import { groupEvaluationsPage, paramsCodec as groupEvaluationsPageParams } from '../group-evaluations-page/group-evaluations-page';
 import {
-  groupPage, paramsSlugCodec as groupPageParamsSlug, groupPageTabs,
+  groupPage, paramsCodec as groupPageParams, groupPageTabs,
 } from '../group-page/group-page';
 import { groupsPage } from '../groups-page';
 import { homePage, homePageLayout, homePageParams } from '../home-page';
@@ -321,15 +321,9 @@ export const createRouter = (adapters: Adapters): Router => {
   router.get(
     `/groups/:slug(${slugRegex})/lists`,
     pageHandler(flow(
-      groupPageParamsSlug.decode,
+      groupPageParams.decode,
       E.mapLeft(toNotFound),
       TE.fromEither,
-      TE.chain((params) => pipe(
-        params.slug,
-        adapters.getGroupBySlug,
-        TE.fromTaskOption(toNotFound),
-        TE.map((group) => ({ ...params, id: group.id })),
-      )),
       TE.chain(groupPage(adapters)(groupPageTabs.lists)),
     )),
   );
@@ -337,15 +331,9 @@ export const createRouter = (adapters: Adapters): Router => {
   router.get(
     `/groups/:slug(${slugRegex})/about`,
     pageHandler(flow(
-      groupPageParamsSlug.decode,
+      groupPageParams.decode,
       E.mapLeft(toNotFound),
       TE.fromEither,
-      TE.chain((params) => pipe(
-        params.slug,
-        adapters.getGroupBySlug,
-        TE.fromTaskOption(toNotFound),
-        TE.map((group) => ({ ...params, id: group.id })),
-      )),
       TE.chain(groupPage(adapters)(groupPageTabs.about)),
     )),
   );
@@ -353,15 +341,9 @@ export const createRouter = (adapters: Adapters): Router => {
   router.get(
     `/groups/:slug(${slugRegex})/followers`,
     pageHandler(flow(
-      groupPageParamsSlug.decode,
+      groupPageParams.decode,
       E.mapLeft(toNotFound),
       TE.fromEither,
-      TE.chain((params) => pipe(
-        params.slug,
-        adapters.getGroupBySlug,
-        TE.fromTaskOption(toNotFound),
-        TE.map((group) => ({ ...params, id: group.id })),
-      )),
       TE.chain(groupPage(adapters)(groupPageTabs.followers)),
     )),
   );

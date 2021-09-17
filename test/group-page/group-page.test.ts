@@ -6,9 +6,8 @@ import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe } from 'fp-ts/function';
 import { groupPage, groupPageTabs } from '../../src/group-page/group-page';
 import * as DE from '../../src/types/data-error';
-import { arbitraryString } from '../helpers';
+import { arbitraryString, arbitraryWord } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
-import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryGroup } from '../types/group.helper';
 
 describe('group page', () => {
@@ -16,7 +15,7 @@ describe('group page', () => {
     it('returns a notFound error', async () => {
       const result = await pipe(
         {
-          id: arbitraryGroupId(),
+          slug: arbitraryWord(),
           user: O.none,
           page: 1,
         },
@@ -24,7 +23,7 @@ describe('group page', () => {
           fetchStaticFile: shouldNotBeCalled,
           follows: shouldNotBeCalled,
           getAllEvents: shouldNotBeCalled,
-          getGroup: () => TO.none,
+          getGroupBySlug: () => TO.none,
           getUserDetailsBatch: shouldNotBeCalled,
         })(groupPageTabs.lists),
         T.map(flow(
@@ -45,13 +44,13 @@ describe('group page', () => {
       const group = arbitraryGroup();
       const result = await pipe(
         {
-          id: arbitraryGroupId(),
+          slug: arbitraryWord(),
           user: O.none,
           page: 1,
         },
         groupPage({
           fetchStaticFile: () => TE.right(arbitraryString()),
-          getGroup: () => TO.some(group),
+          getGroupBySlug: () => TO.some(group),
           follows: shouldNotBeCalled,
           getAllEvents: shouldNotBeCalled,
           getUserDetailsBatch: shouldNotBeCalled,
