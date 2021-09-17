@@ -7,7 +7,6 @@
 .page-header {
   @include layout.page-header-top-space();
   @include layout.basic-horizontal-spacing();
-  color: settings.$colour-text-primary;
   margin-bottom: #{baseline.increments(6)};
 }
 
