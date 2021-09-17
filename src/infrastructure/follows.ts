@@ -6,7 +6,7 @@ import { DomainEvent, isUserFollowedEditorialCommunityEvent, isUserUnfollowedEdi
 import { GroupId } from '../types/group-id';
 import { UserId } from '../types/user-id';
 
-type Follows = (getAllEvents: GetAllEvents) => (u: UserId, g: GroupId) => T.Task<boolean>;
+export type Follows = (u: UserId, g: GroupId) => T.Task<boolean>;
 
 type GetAllEvents = T.Task<ReadonlyArray<DomainEvent>>;
 
@@ -22,7 +22,7 @@ const isSignificantTo = (
     && event.userId === userId)
 );
 
-export const follows: Follows = (getAllEvents) => (userId, groupId) => pipe(
+export const follows = (getAllEvents: GetAllEvents): Follows => (userId, groupId) => pipe(
   getAllEvents,
   T.map(flow(
     A.findLast(isSignificantTo(userId, groupId)),

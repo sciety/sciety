@@ -7,6 +7,7 @@ import { EventSourcedFollowListRepository } from './event-sourced-follow-list-re
 import { FetchCrossrefArticle } from './fetch-crossref-article';
 import { FetchReview } from './fetch-review';
 import { FindReviewsForArticleDoi } from './find-reviews-for-article-doi';
+import { Follows } from './follows';
 import { ArticleVersion } from './get-article-version-events-from-biorxiv';
 import { GetTwitterUserDetails } from './get-twitter-user-details';
 import { GetTwitterUserId } from './get-twitter-user-id';
@@ -47,7 +48,7 @@ export type Adapters = {
   findGroups: (query: string) => T.Task<ReadonlyArray<GroupId>>,
   findReviewsForArticleDoi: FindReviewsForArticleDoi,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
-  follows: (userId: UserId, groupId: GroupId) => T.Task<boolean>,
+  follows: Follows,
   getAllGroups: GetAllGroups,
   getAllEvents: T.Task<ReadonlyArray<DomainEvent>>,
   getFollowList: EventSourcedFollowListRepository,
